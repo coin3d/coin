@@ -35,6 +35,15 @@
 
 /* ********************************************************************** */
 
+cc_string *
+cc_string_struct_malloc(void)
+{
+  cc_string * string_struct;
+  string_struct = (cc_string *) malloc(sizeof(cc_string));
+  assert(string_struct != NULL);
+  return string_struct;
+} /* cc_string_struct_malloc() */
+
 void
 cc_string_struct_init(cc_string * string_struct)
 {
@@ -49,6 +58,12 @@ cc_string_struct_clean(cc_string * string_struct)
   if ( string_struct->pointer != string_struct->buffer )
     free(string_struct->pointer);
 } /* cc_string_struct_clean() */
+
+void
+cc_string_struct_free(cc_string * string_struct)
+{
+  if ( string_struct ) free(string_struct);
+} /* cc_string_struct_free() */
 
 /* ********************************************************************** */
 

@@ -78,8 +78,10 @@ COIN_DLL_API int cc_string_compare_text(const char * lhs, const char * rhs);
 COIN_DLL_API void cc_string_sprintf(cc_string * string, const char * formatstr, ...);
 COIN_DLL_API void cc_string_vsprintf(cc_string * string, const char * formatstr, va_list args);
 
+COIN_DLL_API cc_string * cc_string_struct_malloc(void);
 COIN_DLL_API void cc_string_struct_init(cc_string * string_struct);
 COIN_DLL_API void cc_string_struct_clean(cc_string * string_struct);
+COIN_DLL_API void cc_string_struct_free(cc_string * string_struct);
 
 /* ********************************************************************** */
 
