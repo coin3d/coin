@@ -31,6 +31,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
@@ -263,6 +264,20 @@ SoCamera::GLRender(SoGLRenderAction *action)
 void
 SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
 {
+#if 0 // experimental code, not enabled, pederb, 2000-01-20
+  if (action->isInCameraSpace()) {
+    SoState *state = action->getState();
+    SbMatrix modelMatrix = SoModelMatrixElement::get(state);
+    SbVec3f cameraPos(0.0f, 0.0f, 0.0f);
+    SbVec3f cameraDir(0.0f, 0.0f, -1.0f);
+    modelMatrix.multVecMatrix(cameraPos, cameraPos);
+    modelMatrix.multDirMatrix(cameraDir, cameraDir);
+    cameraDir.normalize();
+    SoModelMatrixElement::translateBy(state, this, -cameraPos - SbVec3f(0,0,1));
+    SoModelMatrixElement::rotateBy(state, this, SbRotation(cameraDir, SbVec3f(0,0,-1)));
+    SoModelMatrixElement::makeIdentity(action->getState(), this);
+  }
+#endif // experimental code
   SoCamera::doAction(action);
 }
 
@@ -270,11 +285,17 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
   FIXME: write function documentation
 */
 void
-SoCamera::handleEvent(SoHandleEventAction * /* action */)
+SoCamera::handleEvent(SoHandleEventAction *action)
 {
-  // FIXME: anything to be done here? Perhaps something to get
-  // SoHandleEventAction handling of ray picks correct? 19990214
+  // FIXME: viewportMapping field is not accounted for. 19990315
   // mortene.
+  SoState *state = action->getState();
+
+  float aspectratio =
+    SoViewportRegionElement::get(state).getViewportAspectRatio();
+  
+  SbViewVolume vv = this->getViewVolume(aspectratio);
+  SoViewVolumeElement::set(state, this, vv);
 }
 
 /*!
