@@ -35,8 +35,6 @@ public:
   static void initClass(void);
   SoTextureCoordinateCube(void);
 
-  // FIXME: Add the origo as a public field? (20040122 handegar)
-
   virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);
   virtual void callback(SoCallbackAction * action);
