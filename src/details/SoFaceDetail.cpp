@@ -119,6 +119,7 @@ void
 SoFaceDetail::setNumPoints(const int num)
 {
   if (num > this->numAllocated) {
+    this->numAllocated = num;
     delete [] this->pointsArray;
     this->pointsArray = new SoPointDetail[this->numAllocated];
   }

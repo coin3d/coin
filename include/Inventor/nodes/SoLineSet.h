@@ -66,12 +66,6 @@ protected:
   virtual void generatePrimitives(SoAction * action);
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 #endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
-  virtual SoDetail * createLineSegmentDetail(SoRayPickAction * action,
-					     const SoPrimitiveVertex * v1,
-					     const SoPrimitiveVertex * v2,
-					     SoPickedPoint * pp);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 private:
   SbBool generateDefaultNormals(SoState *, SoNormalCache * nc);

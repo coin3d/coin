@@ -67,13 +67,6 @@ protected:
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOPRIMITIVEVERTEX)
-  virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
-					  const SoPrimitiveVertex * v1,
-					  const SoPrimitiveVertex * v2,
-					  const SoPrimitiveVertex * v3,
-					  SoPickedPoint * pp);
-#endif // !COIN_EXCLUDE_SOPRIMITIVEVERTEX
 
 private:
   int getNumTriangles(void);

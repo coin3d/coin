@@ -536,18 +536,3 @@ SoFaceSet::generatePrimitives(SoAction *action)
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
-/*!
-  FIXME: write doc
- */
-SoDetail *
-SoFaceSet::createTriangleDetail(SoRayPickAction * /* action */,
-                                const SoPrimitiveVertex * /* v1 */,
-                                const SoPrimitiveVertex * /* v2 */,
-                                const SoPrimitiveVertex * /* v3 */,
-                                SoPickedPoint * /* pp */)
-{
-  assert(0 && "FIXME: not implemented");
-  return NULL;
-}
-#endif // !COIN_EXCLUDE_SORAYPICKACTION

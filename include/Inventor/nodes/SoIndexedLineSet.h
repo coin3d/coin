@@ -69,12 +69,6 @@ private:
 #if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
 #endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
-  virtual SoDetail * createLineSegmentDetail(SoRayPickAction * action,
-					     const SoPrimitiveVertex *v1,
-					     const SoPrimitiveVertex *v2,
-					     SoPickedPoint *pp);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
   SbBool generateDefaultNormals(SoState *, SoNormalCache *nc);
 

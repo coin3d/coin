@@ -398,6 +398,58 @@ public:
                                             &this->vertsArray[i1]);
   }
 
+  SoDetail *createPickDetail() {
+    switch(this->shapeType) {
+    case SoShape::TRIANGLE_STRIP:
+    case SoShape::TRIANGLE_FAN:
+    case SoShape::TRIANGLES:
+      {
+        SoFaceDetail *detail = (SoFaceDetail*)this->faceDetail->copy();
+        detail->setNumPoints(3);
+        detail->setPoint(0, &this->pointDetails[0]);
+        detail->setPoint(1, &this->pointDetails[1]);
+        detail->setPoint(2, &this->pointDetails[2]);
+        return detail;
+      }      
+    case SoShape::POLYGON:
+      {
+        SoFaceDetail *detail = (SoFaceDetail*)this->faceDetail->copy();
+        detail->setNumPoints(this->counter);
+        for (int i = 0; i < this->counter; i++) {
+          detail->setPoint(i, &this->pointDetails[i]);
+        }
+        return detail;
+      }
+    case SoShape::QUADS:
+    case SoShape::QUAD_STRIP:
+      {
+        SoFaceDetail *detail = (SoFaceDetail*)this->faceDetail->copy();
+        detail->setNumPoints(4);
+        detail->setPoint(0, &this->pointDetails[0]);
+        detail->setPoint(1, &this->pointDetails[1]);
+        detail->setPoint(2, &this->pointDetails[2]);
+        detail->setPoint(3, &this->pointDetails[3]);
+        return detail;
+      }      
+    case SoShape::POINTS:
+      {
+        assert(0 && "should not get here");
+        return NULL;
+      }
+    case SoShape::LINES:
+    case SoShape::LINE_STRIP:
+      {
+        SoLineDetail *detail = (SoLineDetail*)this->lineDetail->copy();
+        detail->setPoint0(&this->pointDetails[0]);
+        detail->setPoint1(&this->pointDetails[1]);
+        return detail;
+      }
+    default:
+      assert(0 && "unknown shape type");
+      return NULL;
+    }
+  }
+
   static void tess_callback(void *v0, void *v1, void *v2, void *data) {
     shapePrimitiveData *thisp = (shapePrimitiveData*) data;
     thisp->shape->invokeTriangleCallbacks(thisp->action,
@@ -737,38 +789,84 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
 }
 
 /*!
-  FIXME: write function documentation
+  Will create triangle detail for a SoPickedPoint. This method will only be
+  called internally, when generatePrimitives() is used for picking 
+  (SoShape::rayPick() is not overloaded).
+  
+  This method returns NULL in OIV, and subclasses will need to overload
+  this method to create details for a SoPickedPoint. 
+
+  This is not necessary with Coin. Of course, if you choose to overload
+  it, it will work in the same way as OIV.
+
+  For this to work, you must supply a face or line detail when generating
+  primitives. If you supply NULL for the detail argument in SoShape::beginShape(),
+  you'll have to overload this method.
 */
 SoDetail *
-SoShape::createTriangleDetail(SoRayPickAction * /* action */,
-                              const SoPrimitiveVertex * /* v1 */,
-                              const SoPrimitiveVertex * /* v2 */,
-                              const SoPrimitiveVertex * /* v3 */,
-                              SoPickedPoint * /* pp */)
+SoShape::createTriangleDetail(SoRayPickAction *action,
+                              const SoPrimitiveVertex */*v1*/,
+                              const SoPrimitiveVertex */*v2*/,
+                              const SoPrimitiveVertex */*v3*/,
+                              SoPickedPoint *pp)
 {
-  return NULL;
+  assert(primData);
+  assert(primData->faceDetail);
+  assert(primData->shape == this);
+  assert(primData->action == (SoAction*) action);
+  
+  return primData->createPickDetail();
 }
 
 /*!
-  FIXME: write function documentation
+  Will create line detail for a SoPickedPoint. This method will only be
+  called internally, when generatePrimitives() is used for picking 
+  (SoShape::rayPick() is not overloaded).
+  
+  This method returns NULL in OIV, and OIV shape subclasses will need to overload
+  this method to create details for a SoPickedPoint. 
+
+  This is not necessary with Coin. Of course, if you choose to overload
+  it, it will work in the same way as OIV..
+
+  For this to work, you must supply a face or line detail when generating
+  primitives. If you supply NULL for the detail argument in SoShape::beginShape(),
+  you'll have to overload this method.
 */
 SoDetail *
-SoShape::createLineSegmentDetail(SoRayPickAction * /* action */,
+SoShape::createLineSegmentDetail(SoRayPickAction *action,
                                  const SoPrimitiveVertex * /* v1 */,
                                  const SoPrimitiveVertex * /* v2 */,
-                                 SoPickedPoint * /* pp */)
+                                 SoPickedPoint *pp)
 {
-  return NULL;
+  assert(primData);
+  assert(primData->lineDetail);
+  assert(primData->shape == this);
+  assert(primData->action == (SoAction*) action);
+  
+  return primData->createPickDetail();
 }
 
 /*!
-  FIXME: write function documentation
+  Will create point detail for a SoPickedPoint. This method will only be
+  called internally, when generatePrimitives() is used for picking 
+  (SoShape::rayPick() is not overloaded).
+  
+  This method returns NULL in OIV, and OIV shape subclasses will need to overload
+  this method to create details for a SoPickedPoint. 
+
+  This is not necessary with Coin. Of course, if you choose to overload
+  it, it will work in the same way as OIV.
+
+  For this to work, you must supply a point detail in the SoPrimitiveVertex
+  in generatePrimitives().
 */
 SoDetail *
 SoShape::createPointDetail(SoRayPickAction * /* action */,
-                           const SoPrimitiveVertex * /* v */,
+                           const SoPrimitiveVertex *v,
                            SoPickedPoint * /* pp */)
 {
+  if (v->getDetail()) return v->getDetail()->copy();
   return NULL;
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
@@ -796,10 +894,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
       if (ra->isBetweenPlanes(intersection)) {
         SoPickedPoint * pp = ra->addIntersection(intersection);
         if (pp) {
-          // FIXME: add face detail using createTriangleDetail()
-          // this is temporary code, pederb 1999-11-23
-          if (primData && primData->faceDetail)
-            pp->setDetail(primData->faceDetail->copy(), this);
+          pp->setDetail(this->createTriangleDetail(ra, v1, v2, v3, pp), this);
         }
       }
     }
@@ -833,10 +928,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
       if (ra->isBetweenPlanes(intersection)) {
         SoPickedPoint * pp = ra->addIntersection(intersection);
         if (pp) {
-          // FIXME: add line detail using createLineSegementDetail()
-          // This is temporary code, pederb 1999-11-23
-          if (primData && primData->lineDetail)
-            pp->setDetail(primData->lineDetail->copy(), this);
+          pp->setDetail(this->createLineSegmentDetail(ra, v1, v2, pp), this);
         }
       }
     }
@@ -874,10 +966,7 @@ SoShape::invokePointCallbacks(SoAction * const action,
       if (ra->isBetweenPlanes(intersection)) {
         SoPickedPoint * pp = ra->addIntersection(intersection);
         if (pp) {
-          // FIXME: add point detail using createPointDetail()
-          // this is temporary code, pederb 1999-11-23
-          if (v->getDetail())
-            pp->setDetail(v->getDetail()->copy(), this);
+          pp->setDetail(this->createPointDetail(ra, v, pp), this);
         }
       }
     }
