@@ -54,7 +54,7 @@
       rgb 1 0 0 #red
     }
     AsciiText {
-      width [ 0, 3, 20 ]
+      width [ 0, 1, 50 ]
       justification LEFT #Standard alignment
       string [ "LEFT", "LEFT", "LEFT", "LEFT", "LEFT LEFT" ]
     }
@@ -70,7 +70,7 @@
       rgb 0 1 0 #green
     }
     AsciiText {
-      width [ 0, 3, 20 ]
+      width [ 0, 1, 50 ]
       justification RIGHT
       string [ "RIGHT", "RIGHT", "RIGHT", "RIGHT", "RIGHT RIGHT" ]
     }
@@ -86,7 +86,7 @@
       rgb 0 0 1 #blue
     }
     AsciiText {
-      width [ 0, 3, 20 ]
+      width [ 0, 1, 50 ]
       justification CENTER
       string [ "CENTER", "CENTER", "CENTER", "CENTER", "CENTER CENTER" ]
     }
@@ -182,14 +182,15 @@
 
 /*!  \var SoMFFloat SoAsciiText::width
   Defines the width of each line. The text is scaled to be within the
-  specified width. The size of the text will remain the same; only the
-  advance in the x-direction is scaled. Width equal to the number of
-  characters in your text will not alter the text at all. When a width
-  is set to 0, the width field is ignored and the text rendered as
-  normal. The exact width of the rendered text depends in every case
-  on the font being used. If fewer widths are specified than the
-  number of strings, the strings without matching widths are rendered
-  with default width.
+  specified units. The size of the characters will remain the same;
+  only the the x-positions are scaled. When width <= 0, the width
+  value is ignored and the text rendered as normal. The exact width of
+  the rendered text depends not only on the width field, but also on
+  the maximum character width in the rendered string. The string will
+  be attempted to fit within the specified width, but if it is unable
+  to do so, it uses the largest character in the string as the
+  width. If fewer widths are specified than the number of strings, the
+  strings without matching widths are rendered with default width.
 */
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -201,6 +202,8 @@ public:
   SoAsciiText * master;
 
   void setUpGlyphs(SoState * state, SoAsciiText * textnode);
+  void calculateStringStretch(const int i, const cc_font_specification * fontspec, 
+                              float & stretchfactor, float & stretchlength);
   
   SbList <float> glyphwidths;
   SbList <float> stringwidths;
@@ -305,25 +308,22 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   glBegin(GL_TRIANGLES);
   glNormal3f(0.0f, 0.0f, 1.0f);
 
-  int glyphidx = 0;
   float ypos = 0.0f;
-
   int i, n = this->string.getNum();
   for (i = 0; i < n; i++) {
-
-    float stretchfactor = 1.0f;
-    if (i < this->width.getNum() && this->width[i] != 0) {
-      stretchfactor = this->width[i] / strlen(this->string[i].getString());
-    }
+    float stretchfactor, stretchlength;
+    PRIVATE(this)->calculateStringStretch(i, fontspec, stretchfactor, stretchlength);
 
     float xpos = 0.0f;
-    const float currwidth = PRIVATE(this)->stringwidths[i];
+    const float currwidth = stretchlength;
     switch (this->justification.getValue()) {
     case SoAsciiText::RIGHT:
       xpos = -currwidth;
       break;
     case SoAsciiText::CENTER:
       xpos = -currwidth * 0.5f;
+      break;
+    default:
       break;
     }
 
@@ -335,14 +335,14 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       // chars using the highest bit (i.e. characters above the ASCII
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
+      const uint32_t glyphchar = (const unsigned char) this->string[i][strcharidx];
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphchar, fontspec);
 
       // Get kerning
       if (strcharidx > 0) {
         float kerningx, kerningy;
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
-        xpos += kerningx * fontspec->size;
+        xpos += kerningx * stretchfactor * fontspec->size;
       }
 
       if (prevglyph) {
@@ -421,8 +421,8 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
         // chars using the highest bit (i.e. characters above the ASCII
         // set up to 127) be expanded to huge int numbers that turn
         // negative when casted to integer size.        
-        const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-        cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
+        const uint32_t glyphchar = (const unsigned char) this->string[i][strcharidx];
+        cc_glyph3d * glyph = cc_glyph3d_ref(glyphchar, fontspec);
 
         int cnt = 0;
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
@@ -443,6 +443,98 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 
 }
 
+// This method calculates the stretchfactor needed to make the string
+// occupy the specified amount of units. If no units are specified, an
+// identity stretchfactor of 1.0 is returned. The length of the
+// stretched string is also returned. It approximates to find one of the
+// most probable last characters of the rendered string, so small errors
+// might occur.
+void SoAsciiTextP::calculateStringStretch(const int i, const cc_font_specification * fontspec, 
+                                          float & stretchfactor, float & stretchedlength) 
+{
+  assert(i < master->string.getNum());
+
+  // Some sanitychecking before starting the calculations
+  if (i >= master->width.getNum() || master->width[i] <= 0 || 
+      master->string[i].getLength() == 0) {
+
+    stretchfactor = 1.0f;
+    stretchedlength = this->stringwidths[i];
+    return;
+  }
+
+  // Approximate the stretchfactor
+  stretchfactor = master->width[i] / this->stringwidths[i];
+
+  cc_glyph3d * prevglyph = NULL;
+  float originalmaxx = 0.0f;
+  float originalmaxxpos = 0.0f;
+  float originalxpos = 0.0f;
+  float maxglyphwidth = 0.0f;
+  float maxx = 0.0f;
+  int strcharidx;
+
+  // Find last character in the stretched text
+  for (strcharidx = 0; strcharidx < master->string[i].getLength(); strcharidx++) {
+    const uint32_t glyphchar = (const unsigned char) master->string[i][strcharidx];
+    cc_glyph3d * glyph = cc_glyph3d_ref(glyphchar, fontspec);
+    float glyphwidth = cc_glyph3d_getwidth(glyph) * fontspec->size;
+
+    // Adjust the distance between neighbouring characters
+    if (prevglyph) {
+      float kerningx, kerningy;
+      cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
+      originalxpos += kerningx * fontspec->size;
+    }
+
+    // Find the maxmimum endposition in the x-direction
+    float endx = originalxpos * stretchfactor + glyphwidth;
+    if (endx > maxx) {
+      originalmaxxpos = originalxpos;
+      originalmaxx = originalxpos + glyphwidth;
+
+      maxx = endx;
+      maxglyphwidth = glyphwidth;
+    }
+
+    // Advance to the next character in the x-direction
+    float advancex, advancey;
+    cc_glyph3d_getadvance(glyph, &advancex, &advancey);
+    originalxpos += advancex * fontspec->size;
+
+    // Remove the previous glyph from memory
+    if (prevglyph) {
+      cc_glyph3d_unref(prevglyph);
+    }
+
+    // Make ready for next run
+    prevglyph = glyph;
+  }
+
+  // Unreference the last glyph
+  cc_glyph3d_unref(prevglyph);
+  prevglyph = NULL;
+  
+  // Calculate the accurate stretchfactor and the width of the
+  // string. This should be close to the specified width unless the
+  // specified width is less than the longest character in the string.
+  const float oldendxpos = this->stringwidths[i] - maxglyphwidth;
+  const float newendxpos = master->width[i] - maxglyphwidth;
+  if (oldendxpos <= 0 || newendxpos <= 0) {
+    // oldendxpos should be > 0 anyways, but just in case.  if
+    // newendxpos < 0, then the specified width is less than that
+    // possible with the current font.
+    stretchfactor = 0.0f;
+    stretchedlength = maxglyphwidth;
+  }
+  else {
+    // The width of the stretched string is longer than the longest
+    // character in the string.
+    stretchfactor = newendxpos / oldendxpos;
+    stretchedlength = stretchfactor * originalmaxxpos + maxglyphwidth;
+  }
+}
+
 // Doc in parent.
 void
 SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
@@ -457,9 +549,12 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
   int i;
   float maxw = FLT_MIN;
-  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i)
-    maxw = SbMax(maxw, PRIVATE(this)->stringwidths[i]);
-  
+  for (i = 0; i < this->string.getNum(); i++) {
+    float stretchfactor, stretchlength;
+    PRIVATE(this)->calculateStringStretch(i, fontspec, stretchfactor, stretchlength);
+    maxw = SbMax(maxw, stretchlength);
+  }
+
   if (maxw == FLT_MIN) { // There is no text to bound. Returning.
     PRIVATE(this)->unlock();
     return; 
@@ -539,20 +634,15 @@ SoAsciiText::generatePrimitives(SoAction * action)
   this->beginShape(action, SoShape::TRIANGLES, NULL);
   vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
 
-  int glyphidx = 0;
   float ypos = 0.0f;
-
   int i, n = this->string.getNum();
   for (i = 0; i < n; i++) {
-
-    float stretchfactor = 1.0f;
-    if (i < this->width.getNum() && this->width[i] != 0) {
-      stretchfactor = this->width[i] / strlen(this->string[i].getString());
-    }
+    float stretchfactor, stretchlength;
+    PRIVATE(this)->calculateStringStretch(i, fontspec, stretchfactor, stretchlength);
 
     detail.setStringIndex(i);
     float xpos = 0.0f;
-    const float currwidth = PRIVATE(this)->stringwidths[i];
+    const float currwidth = stretchlength;
     switch (this->justification.getValue()) {
     case SoAsciiText::RIGHT:
       xpos = -currwidth;
@@ -562,27 +652,28 @@ SoAsciiText::generatePrimitives(SoAction * action)
       break;
     }
 
-
+    
     cc_glyph3d * prevglyph = NULL;
     const unsigned int length = this->string[i].getLength();
-    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
-      
+    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {      
+
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspec);
+      const uint32_t glyphchar = (const unsigned char) this->string[i][strcharidx];
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphchar, fontspec);
       
       // Get kerning
       if (strcharidx > 0) {
         float kerningx, kerningy;
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
-        xpos += kerningx * fontspec->size;
+        xpos += kerningx * stretchfactor * fontspec->size;
       }
       if (prevglyph) {
         cc_glyph3d_unref(prevglyph);
       }
+
       prevglyph = glyph;
       detail.setCharacterIndex(strcharidx);
 
@@ -703,19 +794,14 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
     float stringwidth = 0.0f;
     const float * maxbbox;
 
-    float stretchfactor = 1.0f;
-    if (i < this->master->width.getNum() && this->master->width[i] != 0) { 
-      stretchfactor = this->master->width[i] / strlen(this->master->string[i].getString());
-    }
-
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 
       // Note that the "unsigned char" cast is needed to avoid 8-bit
       // chars using the highest bit (i.e. characters above the ASCII
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
-      const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
-      cc_glyph3d * glyph = cc_glyph3d_ref(glyphidx, fontspecptr);
+      const uint32_t glyphchar = (const unsigned char) textnode->string[i][strcharidx];
+      cc_glyph3d * glyph = cc_glyph3d_ref(glyphchar, fontspecptr);
       this->cache->addGlyph(glyph);
       assert(glyph);
 
@@ -732,13 +818,14 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
         cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);          
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
 
-      stringwidth += (advancex * stretchfactor + kerningx) * fontspecptr->size;
+      stringwidth += (advancex + kerningx) * fontspecptr->size;
+
       prevglyph = glyph;
     }
-    
-    if (prevglyph != NULL) {
+
+    if (prevglyph) {
       // Have to remove the appended advance and add the last character to the calculated with
-      stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex * stretchfactor) * fontspecptr->size;
+      stringwidth += (cc_glyph3d_getwidth(prevglyph) - advancex) * fontspecptr->size;
       prevglyph = NULL; // To make sure the next line starts with blank sheets
     }
 
