@@ -824,9 +824,11 @@ SoInput::readHex(uint32_t & l)
 SbBool
 SoInput::read(char & c)
 {
+  if (!this->checkHeader()) return FALSE;
+
   SoInput_FileInfo * fi = this->getTopOfStack();
   assert(fi);
-  return (this->checkHeader() && fi->skipWhiteSpace() && fi->get(c));
+  return (fi->skipWhiteSpace() && fi->get(c));
 }
 
 /*!
