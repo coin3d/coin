@@ -21,17 +21,17 @@ Get the cygwin tools and install them.
 ______________________________________________________________
 Get the libraries over the cvs repository:
 
-cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot login
+cvs -d :pserver:cvs@cvs.coin3d.org:/export/cvsroot login
 pwd: cvs
 
-cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co Coin-1
-cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co simage-1
-cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co SoWin
-cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co SoQt
+cvs -d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co Coin-1
+cvs -d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co simage-1
+cvs -d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co SoWin
+cvs -d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co SoQt
 
 Get the SoGuiExamples:
 
-cvs –d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co SoGuiExamples
+cvs -d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co SoGuiExamples
 
 structure after (successful) check out:
 src
@@ -79,7 +79,7 @@ ______________________________________________________________
 
 Visual C++  Settings
 
-tools – options – Directories
+tools - options - Directories
 Include files
 	d:\Coin\include
 	d:\Qt\include
@@ -89,14 +89,14 @@ Library files
 --------------------------
 --> Project using SoQt <--
 --------------------------
-project – settings – C/C++
+project - settings - C/C++
 at Preprocessor Definitions add:
 	COIN_DLL
 	SIMAGE_DLL
 	QT_DLL
 	SOQT_DLL
 
-project – settings – Link
+project - settings - Link
 at Object/library modules add:
 	coin1.lib
 	simage1.lib
@@ -106,13 +106,13 @@ at Object/library modules add:
 ---------------------------
 --> Project using SoWin <--
 ---------------------------
-project – settings – C/C++
+project - settings - C/C++
 at Preprocessor Definitions add:
 	COIN_DLL
 	SIMAGE_DLL
 	SOWIN_DLL
 
-project – settings – Link
+project - settings - Link
 at Object/library modules add:
 	coin1.lib
 	simage1.lib
