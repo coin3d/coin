@@ -43,16 +43,18 @@ Index
   Q7: Is there a Coin port for Mac OS X/Darwin?
 
 2: Common Problems
-  Q1: Why doesn't it work properly to render the same scene graph in two
+  Q1: <Node>::classTypeId != SoType::badType() && "You forgot init()"?
+
+  Q2: Why doesn't it work properly to render the same scene graph in two
       different windows?
 
-  Q2: Why does my Visual C++ program using Coin work for debug builds but
+  Q3: Why does my Visual C++ program using Coin work for debug builds but
       not for release builds?
 
-  Q3: I try to change the SoText2/SoText3 font, but nothing happens.
+  Q4: I try to change the SoText2/SoText3 font, but nothing happens.
       Why, oh why?
 
-  Q4: Where does the SoGuiExamples module install the programs?
+  Q5: Where does the SoGuiExamples module install the programs?
 
 3: More Whys
   Q1: Why is the .so-version 20 for Coin 1.0?
@@ -235,7 +237,21 @@ A:      Coin configures and compiles on Mac OS X, but there is currently no
 Section 2. Common Problems
 ==========================
 
-Q2.1:   Why doesn't it work properly to render the same scene graph in two
+Q2.1:   <Node>::classTypeId != SoType::badType() && "You forgot init()"?
+
+A:      If you get this assert, it means the run-time type system in
+        Coin was not initialized at the time a <Node> object is constructed.
+
+        This can happen for several reasons:
+        - you haven't called SoDB::init() yet when you construct a node.
+        - you have a global node that is constructed automatically on startup
+          before main is run.
+        - [VC++] you have linked multiple instances of the Coin library into
+          your application or the Coin library and the application or some
+          other library are using different C library instances.
+
+
+Q2.2:   Why doesn't it work properly to render the same scene graph in two
         different windows?
 
 A:      The reason is probably that the two windows do not share the same
@@ -267,7 +283,7 @@ A:      The reason is probably that the two windows do not share the same
         to Coin from scratch.
 
 
-Q2.2:   Why does my Visual C++ program using Coin work for debug builds but
+Q2.3:   Why does my Visual C++ program using Coin work for debug builds but
         not for release builds?
 
 A:      The MS Visual C++ compiler changes behaviour when you change between
@@ -279,7 +295,7 @@ A:      The MS Visual C++ compiler changes behaviour when you change between
         There are of course other possible causes as well.
 
 
-Q2.3:   I try to change the SoText2/SoText3 font, but nothing happens.
+Q2.4:   I try to change the SoText2/SoText3 font, but nothing happens.
         Why, oh why?
 
 A:      The font support is currently limited to a hardcoded font for both
@@ -289,7 +305,7 @@ A:      The font support is currently limited to a hardcoded font for both
         TODO list.
 
 
-Q2.4:   Where does the SoGuiExamples module install the programs?
+Q2.5:   Where does the SoGuiExamples module install the programs?
 
 A:      They are not installed.  The programs are just examples, and do not
         belong with the installed executables on a system.  They are built
