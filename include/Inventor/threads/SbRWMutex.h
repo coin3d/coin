@@ -37,13 +37,25 @@ public:
   }
   ~SbRWMutex(void) { cc_rwmutex_destruct(this->rwmutex); }
 
-  int writeLock(void) { return cc_rwmutex_write_lock(this->rwmutex); }
-  int tryWriteLock(void) { return cc_rwmutex_write_try_lock(this->rwmutex); }
-  int writeUnlock(void) { return cc_rwmutex_write_unlock(this->rwmutex); }
-
-  int readLock(void) { return cc_rwmutex_read_lock(this->rwmutex); }
-  int tryReadLock(void) { return cc_rwmutex_read_try_lock(this->rwmutex); }
-  int readUnlock(void) { return cc_rwmutex_read_unlock(this->rwmutex); }
+  int writeLock(void) { 
+    return cc_rwmutex_write_lock(this->rwmutex) == CC_OK ? 0 : 1; 
+  }
+  SbBool tryWriteLock(void) { 
+    return cc_rwmutex_write_try_lock(this->rwmutex) == CC_OK; 
+  }
+  int writeUnlock(void) { 
+    return cc_rwmutex_write_unlock(this->rwmutex) == CC_OK ? 0 : 1; 
+  }
+  
+  int readLock(void) { 
+    return cc_rwmutex_read_lock(this->rwmutex) == CC_OK ? 0 : 1; 
+  }
+  int tryReadLock(void) { 
+    return cc_rwmutex_read_try_lock(this->rwmutex) == CC_OK; 
+  }
+  int readUnlock(void) { 
+    return cc_rwmutex_read_unlock(this->rwmutex) == CC_OK ? 0 : 1; 
+  }
 
 private:
   cc_rwmutex * rwmutex;

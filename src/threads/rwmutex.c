@@ -38,7 +38,7 @@ void
 cc_rwmutex_struct_init(cc_rwmutex * rwmutex)
 {
   assert(rwmutex->type == CC_INVALID_TYPE);
-  
+
   rwmutex->mutex.type = CC_INVALID_TYPE;
   cc_mutex_struct_init(&rwmutex->mutex);
   rwmutex->read.type = CC_INVALID_TYPE;
@@ -57,7 +57,7 @@ cc_rwmutex_struct_init(cc_rwmutex * rwmutex)
 /*!
   \internal
 */
-void 
+void
 cc_rwmutex_struct_clean(cc_rwmutex * rwmutex)
 {
   assert(rwmutex->type == CC_RWMUTEX_TYPE);
@@ -115,24 +115,6 @@ cc_rwmutex_destruct(cc_rwmutex * rwmutex)
 
 /* ********************************************************************** */
 
-#if 0
-static void
-cc_rwmutex_write_lock_cleanup(void * closure)
-{
-  int status;
-  cc_rwmutex * rwmutex;
-  rwmutex = (cc_rwmutex *) closure;
-  assert((rwmutex != NULL) && (rwmutex->type == CC_RWMUTEX_TYPE));
-  rwmutex->writewaiters--;
-  status = pthread_mutex_unlock(&(rwmutex->pthread.mutex));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
-      cc_fprintf(stderr, "pthread_mutex_unlock() error: %d\n", status);
-  }
-} /* cc_rwmutex_write_lock_cleanup() */
-
-#endif
-
 /*
 */
 
@@ -146,7 +128,7 @@ cc_rwmutex_write_lock(cc_rwmutex * rwmutex)
       rwmutex->writewaiters == 0) {
     rwmutex->writers++;
     cc_mutex_unlock(&rwmutex->mutex);
-    return 1;
+    return CC_OK;
   }
   rwmutex->writewaiters++;
   (void) cc_mutex_unlock(&rwmutex->mutex);
@@ -157,7 +139,7 @@ cc_rwmutex_write_lock(cc_rwmutex * rwmutex)
   rwmutex->writewaiters--;
   assert(rwmutex->writewaiters >= 0);
   cc_mutex_unlock(&rwmutex->mutex);
-  return 1;
+  return CC_OK;
 } /* cc_rwmutex_write_lock() */
 
 /*
@@ -173,10 +155,10 @@ cc_rwmutex_write_try_lock(cc_rwmutex * rwmutex)
       rwmutex->writewaiters == 0) {
     rwmutex->writers++;
     cc_mutex_unlock(&rwmutex->mutex);
-    return 1;
+    return CC_OK;
   }
   cc_mutex_unlock(&rwmutex->mutex);
-  return 0;
+  return CC_BUSY;
 } /* cc_rwmutex_write_try_lock() */
 
 /*
@@ -201,31 +183,9 @@ cc_rwmutex_write_unlock(cc_rwmutex * rwmutex)
     if (wwait) cc_condvar_wake_one(&rwmutex->write);
     else cc_condvar_wake_all(&rwmutex->read);
   }
-  return 0;
-} /* cc_rwmutex_write_unlock() */
+  return CC_OK;
+}
 
-/*
-*/
-
-#if 0
-static
-void
-cc_rwmutex_read_lock_cleanup(
-  void * closure)
-{
-  int status;
-  cc_rwmutex * rwmutex;
-  rwmutex = (cc_rwmutex *) closure;
-  assert((rwmutex != NULL) && (rwmutex->type == CC_RWMUTEX_TYPE));
-  rwmutex->readwaiters--;
-  status = pthread_mutex_unlock(&(rwmutex->pthread.mutex));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
-      cc_fprintf(stderr, "pthread_mutex_unlock() error: %d\n", status);
-  }
-} /* cc_rwmutex_read_lock_cleanup() */
-
-#endif
 /*
 */
 
@@ -237,7 +197,7 @@ cc_rwmutex_read_lock(cc_rwmutex * rwmutex)
   if (rwmutex->writers == 0) {
     rwmutex->readers++;
     (void) cc_mutex_unlock(&rwmutex->mutex);
-    return 1;
+    return CC_OK;
   }
   rwmutex->readwaiters++;
   (void) cc_mutex_unlock(&rwmutex->mutex);
@@ -248,8 +208,8 @@ cc_rwmutex_read_lock(cc_rwmutex * rwmutex)
   rwmutex->readwaiters--;
   assert(rwmutex->readwaiters >= 0);
   cc_mutex_unlock(&rwmutex->mutex);
-  return 1;
-} /* cc_rwmutex_read_lock() */
+  return CC_OK;
+}
 
 /*
 */
@@ -264,10 +224,10 @@ cc_rwmutex_read_try_lock(cc_rwmutex * rwmutex)
       rwmutex->writewaiters == 0) {
     rwmutex->readers++;
     (void) cc_mutex_unlock(&rwmutex->mutex);
-    return 1;
+    return CC_OK;
   }
   (void) cc_mutex_unlock(&rwmutex->mutex);
-  return 0;
+  return CC_BUSY;
 } /* cc_rwmutex_read_try_lock() */
 
 /*
@@ -295,7 +255,7 @@ cc_rwmutex_read_unlock(cc_rwmutex * rwmutex)
     if (wwait) cc_condvar_wake_one(&rwmutex->write);
     else cc_condvar_wake_all(&rwmutex->read);
   }
-  return 0;
+  return CC_OK;
 } /* cc_rwmutex_read_unlock() */
 
 /* ********************************************************************** */
