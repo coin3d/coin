@@ -90,17 +90,6 @@
 #include <Inventor/C/threads/threadsutilp.h>
 
 // flags for this->statusbits
-#define FLAG_TYPEMASK       0x0007  // need 3 bits for values [0-5]
-#define FLAG_ISDEFAULT      0x0008
-#define FLAG_IGNORE         0x0010
-#define FLAG_EXTSTORAGE     0x0020
-#define FLAG_ENABLECONNECTS 0x0040
-#define FLAG_NEEDEVALUATION 0x0080
-#define FLAG_READONLY       0x0100
-#define FLAG_DONOTIFY       0x0200
-#define FLAG_ISDESTRUCTING  0x0400
-#define FLAG_ISEVALUATING   0x0800
-#define FLAG_ISNOTIFIED     0x1000
 
 static const char IGNOREDCHAR = '~';
 static const char CONNECTIONCHAR = '=';
@@ -1642,12 +1631,19 @@ SoField::countWriteRefs(SoOutput * out) const
 }
 
 /*!
+  \fn void SoField::evaluate(void) const
+
   Re-evaluates the value of this field any time a getValue() call is
   made and the field is marked dirty. This is done in this way to gain
   the advantages of having lazy evaluation.
 */
+
+//
+// private method called from SoField::evaluate() when the field is
+// connected and dirty
+//
 void
-SoField::evaluate(void) const
+SoField::evaluateField(void) const
 {
   // if we're destructing, don't continue as this would cause
   // a call to the virtual evaluateConnection()
@@ -1658,16 +1654,10 @@ SoField::evaluate(void) const
 #endif // debug
     return;
   }
-  
-  // return immediately if field is not connected
-  if (this->isConnected() == FALSE) return;
 
-  CC_MUTEX_LOCK(this->storage->mutex);
+  if (!this->isConnected()) return;
 
-  if (this->getDirty() == FALSE) {
-    CC_MUTEX_UNLOCK(this->storage->mutex);
-    return;
-  }
+  assert(this->storage != NULL);
 
   // Recursive calls to SoField::evalute() should _absolutely_ not
   // happen, as the state of the field variables might not be
@@ -1691,6 +1681,7 @@ SoField::evaluate(void) const
     return;
   }
 
+  CC_MUTEX_LOCK(this->storage->mutex);
   // Cast away the const. (evaluate() must be const, since we're using
   // evaluate() from getValue().)
   SoField * that = (SoField *)this;

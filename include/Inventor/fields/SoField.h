@@ -113,8 +113,6 @@ public:
 
   virtual void countWriteRefs(SoOutput * out) const;
 
-  void evaluate(void) const;
-
   // enums for setFieldType()/getFieldType()
   enum FieldType {
     // FIXME: we might not need all these. Investigate before the next
@@ -132,6 +130,11 @@ public:
   SbBool getDirty(void) const;
   void setDirty(SbBool dirty);
 
+  void evaluate(void) const {
+    if ((this->statusbits & (FLAG_EXTSTORAGE|FLAG_NEEDEVALUATION)) == 
+        (FLAG_EXTSTORAGE|FLAG_NEEDEVALUATION)) this->evaluateField();
+  }
+
 protected:
   SoField(void);
 
@@ -145,6 +148,22 @@ protected:
   SbBool isDestructing(void) const;
 
 private:
+
+  enum FieldFlags {
+    FLAG_TYPEMASK = 0x0007,  // need 3 bits for values [0-5]
+    FLAG_ISDEFAULT = 0x0008,
+    FLAG_IGNORE = 0x0010,
+    FLAG_EXTSTORAGE = 0x0020,
+    FLAG_ENABLECONNECTS = 0x0040,
+    FLAG_NEEDEVALUATION = 0x0080,
+    FLAG_READONLY = 0x0100,
+    FLAG_DONOTIFY = 0x0200,
+    FLAG_ISDESTRUCTING = 0x0400,
+    FLAG_ISEVALUATING = 0x0800,
+    FLAG_ISNOTIFIED = 0x1000
+  };
+
+  void evaluateField(void) const;
   void extendStorageIfNecessary(void);
   SoFieldConverter * createConverter(SoType from) const;
   SoFieldContainer * resolveWriteConnection(SbName & mastername) const;
