@@ -63,7 +63,7 @@
 
   int matnr = 0;
 
-  while (viptr + 3 < viendptr) {
+  while (viptr + 2 < viendptr) {
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
@@ -77,10 +77,10 @@
 #endif // COIN_DEBUG
       break;
     }
-    v4 = *viptr++;
+    v4 = viptr < viendptr ? *viptr++ : -1;
     if (v4  < 0) newmode = GL_TRIANGLES;
     else {
-      v5 = *viptr++;
+      v5 = viptr < viendptr ? *viptr++ : -1;
       if (v5 < 0) newmode = GL_QUADS;
       else newmode = GL_POLYGON;
     }
@@ -191,7 +191,7 @@
                         *currnormal);
 #endif
         SEND_VERTEX(v5);
-        v1 = *viptr++;
+        v1 = viptr < viendptr ? *viptr++ : -1;
         while (v1 >= 0) {
       /* vertex 6-n (polygon) *****************************************/
 #if MBINDING==PER_VERTEX
@@ -212,7 +212,7 @@
                           *currnormal);
 #endif
           SEND_VERTEX(v1);
-          v1 = *viptr++;
+          v1 = viptr < viendptr ? *viptr++ : -1;
         }
         glEnd(); /* draw polygon */
       }

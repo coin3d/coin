@@ -100,7 +100,7 @@
 #if TEXTURES==TRUE
     texcoords->send(texindices ? *texindices++ : texidx++,coords->get3(previ), *currnormal);
 #endif
-    i = *indices++;
+    i = (indices < end) ? *indices++ : -1;
     while (i >= 0) {
 #if MBINDING==PER_SEGMENT
       materials->send(matnr++, TRUE);
@@ -133,7 +133,7 @@
 #endif
       SEND_VERTEX(i);
       previ = i;
-      i = *indices++;
+      i = indices < end ? *indices++ : -1;
     }
 #if MBINDING==PER_VERTEX_INDEXED
     matindices++;
@@ -174,7 +174,7 @@
     texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
 #endif
     SEND_VERTEX(i);
-    i = *indices++;
+    i = indices < end ? *indices++ : -1;
     while (i >= 0) {
 #if MBINDING==PER_VERTEX
       materials->send(matnr++, TRUE);
@@ -192,7 +192,7 @@
       texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
 #endif
       SEND_VERTEX(i);
-      i = *indices++;
+      i = indices < end ? *indices++ : -1;
     }
     if (!drawAsPoints)
       glEnd(); // end of line strip
