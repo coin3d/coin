@@ -36,9 +36,6 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <Inventor/SbName.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #include <malloc.h>
 
 

@@ -40,15 +40,12 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
-#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoDetail.h>
 
 #define CYL_SIDE_NUMTRIS 40.0f

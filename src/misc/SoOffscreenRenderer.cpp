@@ -34,11 +34,10 @@
  */
 
 #include <Inventor/SoOffscreenRenderer.h>
-#include <Inventor/SbVec2s.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <coindefs.h>
 #include <GL/gl.h>
 #include <assert.h>
+#include <string.h> // memset()
 #include <config.h>
 #include <coindefs.h> // COIN_STUB()
 

@@ -31,9 +31,7 @@
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/events/SoEvent.h>
-#include <Inventor/SbName.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
-#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>

@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoAnnoText3RenderPrintElement.h>
 
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

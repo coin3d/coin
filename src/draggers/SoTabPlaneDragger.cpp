@@ -45,8 +45,6 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/SbRotation.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SoPath.h>
 #include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 

@@ -22,14 +22,8 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbVec3f.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #define CONSTRAINT_OFF  0
 #define CONSTRAINT_WAIT 1

@@ -26,8 +26,6 @@
 
 #include <Inventor/elements/SoTransparencyElement.h>
 
-#include <Inventor/SbColor.h>
-#include <Inventor/SbName.h>
 #include <assert.h>
 
 static const float defaultValue = 0.0f;

@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoGLLightModelElement.h>
 
-#include <Inventor/SbName.h>
 
 #ifdef _WIN32
 #include <windows.h>

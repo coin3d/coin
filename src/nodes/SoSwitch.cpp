@@ -29,9 +29,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/misc/SoChildList.h>
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/errors/SoDebugError.h>
 
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>

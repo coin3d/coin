@@ -25,8 +25,6 @@
 
 #include <Inventor/elements/SoFloatElement.h>
 
-#include <Inventor/SbName.h>
-#include <Inventor/SoType.h>
 #include <assert.h>
 
 /*!

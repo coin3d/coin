@@ -25,9 +25,7 @@
   FIXME: write doc.
 */
 
-#include <Inventor/details/SoDetail.h>
 #include <Inventor/details/SoDetails.h>
-#include <Inventor/SbName.h>
 
 SoType SoDetail::classTypeId;
 

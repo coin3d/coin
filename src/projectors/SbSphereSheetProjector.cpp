@@ -31,7 +31,6 @@
 */
 
 #include <Inventor/projectors/SbSphereSheetProjector.h>
-#include <Inventor/SbVec2f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

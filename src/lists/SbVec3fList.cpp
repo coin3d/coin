@@ -31,8 +31,6 @@
   automatically, but are the responsibility of the user.
  */
 
-#include <Inventor/lists/SbVec3fList.h>
-#include <Inventor/SbVec3f.h>
 
 
 /*!

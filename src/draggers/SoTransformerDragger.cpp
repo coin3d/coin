@@ -712,6 +712,7 @@ SoTransformerDragger::dragStart(void)
       case 0: sizing = SoAntiSquish::X; break;
       case 1: sizing = SoAntiSquish::Y; break;
       case 2: sizing = SoAntiSquish::Z; break;
+      default: assert(FALSE); sizing = SoAntiSquish::Z; // Dummy assignment to avoid compiler warning.
       }
       squish->sizing = sizing;
       squish->recalc();

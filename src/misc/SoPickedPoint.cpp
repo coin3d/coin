@@ -33,14 +33,9 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/details/SoDetail.h>
-#include <Inventor/misc/SoTempPath.h>
-#include <Inventor/SbMatrix.h>
 #include <stdlib.h> // atexit
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 //
 // this is not thread-safe, but creating a new matrix action for

@@ -35,8 +35,6 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 
 
 SO_MFIELD_DERIVED_SOURCE(SoMFBitMask, not_used, not_used);

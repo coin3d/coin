@@ -25,9 +25,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbRotation.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/projectors/SbLineProjector.h>

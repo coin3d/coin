@@ -27,7 +27,6 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 
 #include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/SbName.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoImageInterface.h>
 
@@ -38,9 +37,6 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 SO_ELEMENT_SOURCE(SoGLTextureImageElement);
 

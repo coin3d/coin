@@ -25,7 +25,6 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodes/SoShapeHints.h>
 
 
 
@@ -34,7 +33,6 @@
 #include <Inventor/actions/SoPickAction.h>
 
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 

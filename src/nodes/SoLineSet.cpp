@@ -28,12 +28,10 @@
 #include <Inventor/nodes/SoLineSet.h>
 
 
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/nodes/SoVertexProperty.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
@@ -43,18 +41,14 @@
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
-#include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
-#include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 
 /*!

@@ -30,11 +30,8 @@
 */
 
 #include <Inventor/fields/SoMFMatrix.h>
-#include <Inventor/SbName.h>
-#include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSFMatrix.h>
-#include <Inventor/fields/SoSFString.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

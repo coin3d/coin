@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoProfileElement.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/nodes/SoProfile.h>
 
 #include <assert.h>

@@ -19,7 +19,6 @@
 
 #include <Inventor/engines/SoComposeRotation.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/SoType.h>
 #include <Inventor/fields/SoMFRotation.h>
 
 SO_ENGINE_SOURCE(SoComposeRotation);

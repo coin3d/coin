@@ -58,15 +58,10 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbVec3f.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/nodes/SoMatrixTransform.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/SoFullPath.h>
 #include <Inventor/misc/SoTempPath.h>
 #include <Inventor/SoNodeKitPath.h>
 

@@ -38,8 +38,6 @@
 */
 
 #include <Inventor/misc/SoBase.h>
-#include <Inventor/SbName.h>
-#include <Inventor/SbString.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
@@ -591,7 +589,7 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 
   3. A child was given as the "NULL" keyword. This can happen when
   reading the contents of SoSFNode or SoMFNode fields.
-  
+
 
   If \c TRUE is returned and \a base is non-NULL upon return,
   the instance was allocated and initialized according the what

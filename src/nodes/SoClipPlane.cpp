@@ -31,7 +31,6 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoGLClipPlaneElement.h>
-#include <Inventor/elements/SoClipPlaneElement.h>
 
 /*!
   \var SoSFPlane SoClipPlane::plane

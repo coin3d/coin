@@ -19,7 +19,6 @@
 
 #include <Inventor/engines/SoComposeMatrix.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/SoType.h>
 #include <Inventor/fields/SoMFMatrix.h>
 
 SO_ENGINE_SOURCE(SoComposeMatrix);

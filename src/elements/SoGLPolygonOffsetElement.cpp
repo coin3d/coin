@@ -26,8 +26,6 @@
 
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
 
-#include <Inventor/SbName.h>
-#include <Inventor/misc/SoGL.h>
 
 #ifdef _WIN32
 #include <windows.h>

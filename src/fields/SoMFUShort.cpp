@@ -26,9 +26,6 @@
 */
 
 #include <Inventor/fields/SoMFUShort.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFUShort.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

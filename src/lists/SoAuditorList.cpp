@@ -26,11 +26,9 @@
   not be necessary to be familiar with it for "ordinary" Coin use.
 */
 
-#include <Inventor/lists/SoAuditorList.h>
 
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldContainer.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
 
 

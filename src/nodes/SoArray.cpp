@@ -29,19 +29,13 @@
 
 #include <Inventor/nodes/SoArray.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <Inventor/misc/SoState.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/misc/SoChildList.h>
 
 /*!
   \enum SoArray::Origin

@@ -20,10 +20,6 @@
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbVec3f.h>
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_STUB()

@@ -30,7 +30,6 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGL.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -41,9 +40,6 @@
 
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/nodes/SoNode.h>
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 #include <assert.h>
 
 /*

@@ -25,7 +25,6 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodekits/SoSeparatorKit.h>
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoAppearanceKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>

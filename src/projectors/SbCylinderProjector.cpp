@@ -29,9 +29,6 @@
 #include <Inventor/SbRotation.h>
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   \var SbCylinderProjector::intersectFront

@@ -30,19 +30,16 @@
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/misc/SoImageInterface.h>
 #include <Inventor/SoInput.h>
 
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/SbPlane.h>
 #include <Inventor/misc/SoState.h>
 
 #ifdef _WIN32

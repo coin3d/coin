@@ -25,7 +25,6 @@
 
 #include <Inventor/elements/SoCreaseAngleElement.h>
 
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

@@ -27,9 +27,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbMatrix.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <coindefs.h> // COIN_STUB()
 #include <math.h>

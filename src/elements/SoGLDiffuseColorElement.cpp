@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/SbColor.h>
 
 #ifdef _WIN32
@@ -34,9 +33,6 @@
 #endif // !_WIN32
 
 #include <GL/gl.h>
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <assert.h>
 

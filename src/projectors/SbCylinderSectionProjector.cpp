@@ -26,7 +26,6 @@
  */
 
 #include <Inventor/projectors/SbCylinderSectionProjector.h>
-#include <Inventor/SbVec2f.h>
 #include <assert.h>
 
 #if COIN_DEBUG

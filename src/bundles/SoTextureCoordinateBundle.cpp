@@ -27,15 +27,11 @@
 
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/SbVec2s.h>
 
 #ifdef _WIN32
 #include <windows.h>

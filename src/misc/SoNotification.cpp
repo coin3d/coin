@@ -34,9 +34,6 @@
 */
 
 #include <Inventor/misc/SoNotification.h>
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 #include <assert.h>
 #include <time.h>
 

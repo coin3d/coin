@@ -33,7 +33,6 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoSFNode.h>
 #include <coindefs.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>

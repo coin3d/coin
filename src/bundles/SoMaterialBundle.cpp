@@ -27,7 +27,6 @@
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 
-#include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLAmbientColorElement.h>
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
 #include <Inventor/elements/SoGLEmissiveColorElement.h>

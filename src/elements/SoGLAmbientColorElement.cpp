@@ -26,8 +26,6 @@
 
 #include <Inventor/elements/SoGLAmbientColorElement.h>
 
-#include <Inventor/SbName.h>
-#include <Inventor/SbColor.h>
 
 #ifdef _WIN32
 #include <windows.h>

@@ -29,11 +29,7 @@
 */
 
 #include <Inventor/fields/SoMFFloat.h>
-#include <Inventor/SbName.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFString.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -25,7 +25,6 @@
 
 #include <Inventor/elements/SoComplexityElement.h>
 
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

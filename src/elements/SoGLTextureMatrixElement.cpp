@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoGLTextureMatrixElement.h>
 
-#include <Inventor/SbName.h>
 
 #ifdef _WIN32
 #include <windows.h>

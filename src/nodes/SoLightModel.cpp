@@ -25,11 +25,9 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodes/SoLightModel.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 

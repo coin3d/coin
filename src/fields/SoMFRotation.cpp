@@ -30,11 +30,7 @@
 */
 
 #include <Inventor/fields/SoMFRotation.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoSFString.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

@@ -36,7 +36,6 @@
 
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoMFVec3f.h>
-#include <Inventor/fields/SoSFString.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

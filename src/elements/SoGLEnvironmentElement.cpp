@@ -23,13 +23,13 @@
 
 */
 
+
 #include <Inventor/elements/SoGLEnvironmentElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
 
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/SbViewVolume.h>
 #include <Inventor/SbColor4f.h>
 
-#include <Inventor/elements/SoViewVolumeElement.h>
 
 #ifdef _WIN32
 #include <windows.h>

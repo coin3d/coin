@@ -27,16 +27,11 @@
 
 #include <Inventor/nodes/SoIndexedShape.h>
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 

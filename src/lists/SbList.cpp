@@ -59,7 +59,6 @@
   C++ compilers. 20000227 mortene.
  */
 
-#include <Inventor/lists/SbList.h>
 
 /*!
   \fn SbList<Type>::SbList(const int sizehint)

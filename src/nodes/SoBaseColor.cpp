@@ -29,13 +29,9 @@
 
 
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoOverrideElement.h>

@@ -25,7 +25,6 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodes/SoTransformation.h>
 
 
 

@@ -32,12 +32,10 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/nodekits/SoAppearanceKit.h>
-#include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/nodekits/SoCameraKit.h>
 #include <Inventor/nodekits/SoLightKit.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodekits/SoSceneKit.h>
-#include <Inventor/nodekits/SoSeparatorKit.h>
 #include <Inventor/nodekits/SoShapeKit.h>
 #include <Inventor/nodekits/SoWrapperKit.h>
 

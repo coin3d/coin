@@ -38,7 +38,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoMFColor.h>
-#include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

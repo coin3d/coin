@@ -27,8 +27,6 @@
 
 #include <Inventor/nodes/SoTextureCoordinateDefault.h>
 
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 

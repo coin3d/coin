@@ -24,14 +24,10 @@
 
 #include <Inventor/elements/SoClipPlaneElement.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 //

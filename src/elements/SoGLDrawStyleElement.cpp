@@ -24,7 +24,6 @@
 
 #include <Inventor/elements/SoGLDrawStyleElement.h>
 
-#include <Inventor/SbName.h>
 
 #ifdef _WIN32
 #include <windows.h>

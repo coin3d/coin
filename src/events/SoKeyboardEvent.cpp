@@ -34,7 +34,6 @@
   \sa SoEventCallback, SoHandleEventAction */
 
 #include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/SbName.h>
 #include <assert.h>
 
 /*¡

@@ -28,8 +28,6 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/nodes/SoSelection.h>
-#include <Inventor/misc/SoTempPath.h>
-#include <Inventor/lists/SoPathList.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
@@ -68,9 +66,6 @@ SoBoxHighlightRenderAction::getTypeId(void) const
 
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // static variables
 SoEnabledElementsList * SoBoxHighlightRenderAction::enabledElements;

@@ -22,8 +22,6 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbVec3f.h>
 #include <assert.h>
 #include <stdio.h>
 

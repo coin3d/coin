@@ -26,7 +26,6 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #ifdef _WIN32

@@ -46,13 +46,10 @@
 #include <Inventor/manips/SoTabBoxManip.h>
 #include <Inventor/manips/SoTrackballManip.h>
 #include <Inventor/manips/SoTransformBoxManip.h>
-#include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/manips/SoTransformerManip.h>
-#include <Inventor/nodekits/SoInteractionKit.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoExtSelection.h>
-#include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 
 

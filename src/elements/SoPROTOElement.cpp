@@ -28,7 +28,6 @@
 
 #include <coindefs.h> // COIN_STUB()
 
-#include <Inventor/SoType.h>
 
 #include <assert.h>
 

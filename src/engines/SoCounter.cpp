@@ -19,7 +19,6 @@
 
 #include <Inventor/engines/SoCounter.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/fields/SoSFBool.h>
 
 SO_ENGINE_SOURCE(SoCounter);
 

@@ -34,7 +34,6 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 
 

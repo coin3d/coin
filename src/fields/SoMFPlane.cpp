@@ -30,10 +30,7 @@
 */
 
 #include <Inventor/fields/SoMFPlane.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSFPlane.h>
-#include <Inventor/fields/SoSFString.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

@@ -25,7 +25,6 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoImageInterface.h>
 #include <Inventor/misc/SoGL.h>
-#include <Inventor/errors/SoDebugError.h>
 #include <stdio.h>
 #include <string.h>
 #ifdef _WIN32

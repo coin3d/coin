@@ -36,14 +36,9 @@
 
 #include <Inventor/fields/SoFieldContainer.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/VRMLnodes/SoVRMLInterpOutput.h>
-#include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
-#include <Inventor/engines/SoEngine.h>
-#include <Inventor/engines/SoEngineOutput.h>
-#include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <coindefs.h> // COIN_STUB()

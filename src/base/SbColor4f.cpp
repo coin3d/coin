@@ -43,7 +43,6 @@
 
 #include <assert.h>
 #include <Inventor/SbColor4f.h>
-#include <Inventor/SbColor.h>
 #include <Inventor/SbVec4f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -38,7 +38,6 @@
 #include <Inventor/errors/SoReadError.h>
 
 #include <Inventor/fields/SoSFMatrix.h>
-#include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoMFRotation.h>
 
 #if COIN_DEBUG

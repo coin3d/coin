@@ -30,7 +30,6 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 
 #include <Inventor/elements/SoComplexityElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
@@ -38,7 +37,6 @@
 #include <Inventor/elements/SoPointSizeElement.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoLightAttenuationElement.h>
 #include <Inventor/elements/SoAmbientColorElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
@@ -73,14 +71,8 @@
 #include <Inventor/elements/SoLazyElement.h>
 
 #include <Inventor/SoPath.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbViewVolume.h>
-#include <Inventor/SbVec2f.h>
-#include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
-#include <Inventor/SbVec2s.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/lists/SoTypeList.h>
 
 
 class SoCallbackData { //internal class

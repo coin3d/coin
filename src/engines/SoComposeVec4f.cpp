@@ -19,7 +19,6 @@
 
 #include <Inventor/engines/SoComposeVec4f.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/SoType.h>
 
 SO_ENGINE_SOURCE(SoComposeVec4f);
 

@@ -24,8 +24,6 @@
 
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/SoType.h>
-#include <Inventor/fields/SoMFFloat.h>
 
 SO_ENGINE_ABSTRACT_SOURCE(SoInterpolate);
 

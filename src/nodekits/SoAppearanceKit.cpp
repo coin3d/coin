@@ -35,9 +35,6 @@
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoFont.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 SO_KIT_SOURCE(SoAppearanceKit);

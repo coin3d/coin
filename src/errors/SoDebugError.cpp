@@ -45,8 +45,6 @@
 
 #include <Inventor/errors/SoDebugError.h>
 
-#include <Inventor/SbString.h>
-#include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 
 #include <stdarg.h>

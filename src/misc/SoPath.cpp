@@ -31,9 +31,7 @@
   how the file format is.
 */
 
-#include <Inventor/SoPath.h>
 
-#include <Inventor/SbString.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -41,7 +39,6 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
-#include <Inventor/nodes/SoNode.h>
 #include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG

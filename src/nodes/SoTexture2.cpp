@@ -25,19 +25,14 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodes/SoTexture2.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoImageInterface.h>

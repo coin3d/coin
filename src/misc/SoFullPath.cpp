@@ -32,9 +32,6 @@
 #include <Inventor/SoFullPath.h>
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   A constructor.

@@ -29,7 +29,6 @@
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLEnvironmentElement.h>
-#include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 
 /*!

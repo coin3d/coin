@@ -37,7 +37,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoSFString.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -25,7 +25,6 @@
 */
 
 #include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/SbName.h>
 #include <assert.h>
 
 SO_ELEMENT_SOURCE(SoTextureQualityElement);

@@ -22,7 +22,6 @@
   \brief The SoPickAction class is for picking nodes in a scene graph.
 */
 
-#include <Inventor/SbName.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/misc/SoState.h>

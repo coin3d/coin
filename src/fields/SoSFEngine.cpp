@@ -28,10 +28,7 @@
 #include <Inventor/fields/SoSFEngine.h>
 #include <Inventor/fields/SoMFEngine.h>
 #include <Inventor/engines/SoEngine.h>
-#include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

@@ -18,7 +18,6 @@
 \**************************************************************************/
 
 #include <Inventor/SbBSPTree.h>
-#include <Inventor/SbBox3f.h>
 #include <Inventor/SbSphere.h>
 #include <assert.h>
 #include <stdlib.h>

@@ -29,7 +29,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 
 #include <coindefs.h> // COIN_STUB()

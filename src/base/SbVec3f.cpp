@@ -30,8 +30,6 @@
 */
 
 #include <assert.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbMatrix.h>
 #include <Inventor/SbPlane.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

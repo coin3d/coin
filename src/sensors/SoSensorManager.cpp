@@ -47,7 +47,6 @@
 
 #include <Inventor/sensors/SoSensorManager.h>
 #include <Inventor/sensors/SoDelayQueueSensor.h>
-#include <Inventor/sensors/SoTimerQueueSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <coindefs.h> // COIN_STUB()
 

@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

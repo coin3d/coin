@@ -21,15 +21,8 @@
 #include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbMatrix.h>
 #include <coindefs.h> // COIN_STUB()
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 SO_KIT_SOURCE(SoPointLightDragger);
 

@@ -25,8 +25,8 @@
   FIXME: write class doc.
 */
 
-#include <assert.h>
 #include <Inventor/projectors/SbLineProjector.h>
+#include <assert.h>
 
 /*!
   \var SbLineProjector::line

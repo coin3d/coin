@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoGLPointSizeElement.h>
 
-#include <Inventor/SbName.h>
 
 #ifdef _WIN32
 #include <windows.h>

@@ -28,7 +28,6 @@
 #include <Inventor/nodes/SoCube.h>
 
 
-#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -49,9 +48,6 @@
 
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   \var SoSFFloat SoCube::width

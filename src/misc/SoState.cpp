@@ -37,15 +37,11 @@
 */
 
 #include <Inventor/misc/SoState.h>
-#include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/elements/SoElement.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   The constructor.  The \a theAction argument is the action object the state

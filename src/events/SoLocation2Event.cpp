@@ -35,7 +35,6 @@
   \sa SoEventCallback, SoHandleEventAction */
 
 #include <Inventor/events/SoLocation2Event.h>
-#include <Inventor/SbName.h>
 #include <assert.h>
 
 

@@ -38,16 +38,11 @@
 #include <GL/gl.h>
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
-#include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>

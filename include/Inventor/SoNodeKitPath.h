@@ -46,10 +46,10 @@ public:
 
 protected:
   SoNodeKitPath(const int approxLength);
-  virtual ~SoNodeKitPath();  
+  virtual ~SoNodeKitPath();
 
 private:
-  
+
   static void clean(void);
   static SoSearchAction *searchAction;
   SoSearchAction *getSearchAction(void);

@@ -28,7 +28,6 @@
 
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/fields/SoField.h>
-#include <Inventor/misc/SoNotification.h>
 #include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 

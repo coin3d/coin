@@ -25,11 +25,8 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodes/SoNode.h>
 #include <coindefs.h> // COIN_STUB()
 
-#include <Inventor/SbString.h>
-#include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/errors/SoDebugError.h>

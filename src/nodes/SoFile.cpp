@@ -30,7 +30,6 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/lists/SbStringList.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoCallbackAction.h>
 

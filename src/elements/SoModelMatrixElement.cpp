@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoModelMatrixElement.h>
 
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

@@ -30,7 +30,6 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/nodes/SoSelection.h>
-#include <Inventor/misc/SoTempPath.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>

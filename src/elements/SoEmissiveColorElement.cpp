@@ -27,7 +27,6 @@
 #include <Inventor/elements/SoEmissiveColorElement.h>
 
 #include <Inventor/SbColor.h>
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

@@ -77,8 +77,6 @@
 
 #include <Inventor/fields/SoSField.h>
 
-#include <Inventor/SbName.h>
-#include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSubField.h>
 #include <assert.h>
 

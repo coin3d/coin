@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoOverrideElement.h>
 
-#include <Inventor/SbName.h>
 #include <assert.h>
 
 #define SO_GET_OVERRIDE(flag) \

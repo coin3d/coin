@@ -26,8 +26,6 @@
 
 #include <Inventor/elements/SoGLSpecularColorElement.h>
 
-#include <Inventor/SbColor.h>
-#include <Inventor/SbName.h>
 
 #ifdef _WIN32
 #include <windows.h>

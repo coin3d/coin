@@ -25,15 +25,10 @@
   
  */
 
-#include <Inventor/engines/SoEngine.h>
 
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/engines/SoEngines.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/fields/SoField.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/lists/SoFieldList.h>
 
 SoType SoEngine::classTypeId = SoType::badType();
 

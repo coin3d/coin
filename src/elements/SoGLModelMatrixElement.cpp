@@ -27,10 +27,8 @@
 #include <Inventor/elements/SoGLModelMatrixElement.h>
 
 #include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/SbName.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
-#include <Inventor/errors/SoDebugError.h>
 
 #ifdef _WIN32
 #include <windows.h>

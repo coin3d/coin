@@ -39,13 +39,10 @@
 */
 
 #include <Inventor/nodes/SoSurroundScale.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/SbMatrix.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/misc/SoTempPath.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -35,21 +35,17 @@
 #include <Inventor/SoDB.h>
 
 #include <Inventor/SbName.h>
-#include <Inventor/SbTime.h>
 #include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/engines/SoEngine.h>
-#include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoGlobalField.h>
 #include <Inventor/fields/SoSFTime.h>
-#include <Inventor/misc/SoBase.h>
 #include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>

@@ -42,16 +42,10 @@
 
 #include <Inventor/actions/SoRayPickAction.h>
 
-#include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoComplexityElement.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
-#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoDetail.h>
 
 /*!

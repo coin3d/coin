@@ -24,18 +24,11 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbRotation.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/projectors/SbLineProjector.h>
-#include <Inventor/SoPath.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <coindefs.h> // COIN_STUB()
 

@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoPointSizeElement.h>
 
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

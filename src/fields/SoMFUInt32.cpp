@@ -30,9 +30,6 @@
 
 #include <Inventor/fields/SoMFUInt32.h>
 
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFUInt32.h>
 
 #if COIN_DEBUG

@@ -27,15 +27,12 @@
 
 
 #include <Inventor/nodes/SoLevelOfDetail.h>
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoComplexityElement.h>
-#include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/SbVec2s.h>
-#include <Inventor/SbBox3f.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
 

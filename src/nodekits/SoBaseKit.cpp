@@ -33,20 +33,13 @@
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/nodekits/SoNodekitCatalog.h>
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/SbString.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/SoPath.h>
-#include <Inventor/SoFullPath.h>
-#include <Inventor/SoNodeKitPath.h>
 #include <Inventor/SoInput.h>
 #include <stdlib.h>
 #include <limits.h>

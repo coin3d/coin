@@ -30,15 +30,11 @@
   therefore should be passed around by value for efficiency reasons.
 */
 
-#include <Inventor/SoType.h>
 
-#include <Inventor/SbString.h>
-#include <Inventor/SbName.h>
 #ifdef COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 #include <Inventor/lists/SoTypeList.h>
-#include <Inventor/lists/SbList.h>
 
 #include <assert.h>
 #include <stdlib.h> // NULL

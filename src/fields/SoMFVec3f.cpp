@@ -32,8 +32,6 @@
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

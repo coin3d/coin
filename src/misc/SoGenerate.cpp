@@ -26,7 +26,6 @@
 
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoCylinder.h>
-#include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
 
 // generate a 3d circle in the x-z plane

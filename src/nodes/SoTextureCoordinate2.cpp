@@ -29,13 +29,9 @@
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 
 
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
 
 /*!
   \var SoMFVec2f SoTextureCoordinate2::point

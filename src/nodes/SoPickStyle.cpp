@@ -25,9 +25,7 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodes/SoPickStyle.h>
 
-#include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/actions/SoCallbackAction.h>

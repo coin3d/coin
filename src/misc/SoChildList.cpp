@@ -32,9 +32,6 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/nodes/SoNode.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 /*!

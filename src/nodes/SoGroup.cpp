@@ -31,7 +31,6 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -40,9 +39,6 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/actions/SoCallbackAction.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 static const char * const DEFINITION_KEYWORD = "DEF";
 static const char * const REFERENCE_KEYWORD  = "USE";

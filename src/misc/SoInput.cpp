@@ -65,11 +65,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbStringList.h>
-#include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoDB.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoBase.h>
 
 #ifdef _WIN32
 #include <windows.h>

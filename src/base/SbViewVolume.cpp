@@ -52,7 +52,6 @@ These methods need better documentation:
 #include <Inventor/SbLine.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbPlane.h>
-#include <Inventor/SbVec2f.h>
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbBox3f.h>
 #if COIN_DEBUG

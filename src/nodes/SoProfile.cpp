@@ -27,7 +27,6 @@
 
 #include <Inventor/nodes/SoProfile.h>
 
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>

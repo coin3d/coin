@@ -55,9 +55,7 @@
 #include <assert.h>
 #include <coindefs.h> // COIN_STUB()
 
-#include <Inventor/fields/SoField.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -65,16 +63,10 @@
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/engines/SoConvertAll.h>
-#include <Inventor/engines/SoEngine.h>
-#include <Inventor/engines/SoEngineOutput.h>
-#include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoFields.h>
-#include <Inventor/lists/SoAuditorList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/lists/SoFieldList.h>
 #include <Inventor/lists/SoVRMLInterpOutputList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 

@@ -29,12 +29,8 @@
 */
 
 #include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/SbVec3f.h>
 #include <Inventor/misc/SoNormalGenerator.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 //
 // fixme: add test to shrink normalArray.

@@ -20,8 +20,6 @@
 #include <Inventor/misc/SoImageInterface.h>
 
 #include <Inventor/SoInput.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SbStringList.h>
 #include <config.h> // HAVE_LIBSIMAGE define
 #include <stddef.h>

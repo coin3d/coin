@@ -28,13 +28,10 @@
 #include <Inventor/nodes/SoWWWInline.h>
 
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/SbBox3f.h>
 #include <Inventor/SbColor.h>
 
-#include <Inventor/SoInput.h>
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32

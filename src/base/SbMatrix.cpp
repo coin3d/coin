@@ -43,7 +43,6 @@
 
 
 #include <Inventor/SbMatrix.h>
-#include <Inventor/SbVec3f.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbLine.h>
 #include <coindefs.h> // COIN_STUB()

@@ -28,7 +28,6 @@
 #include <Inventor/nodes/SoQuadMesh.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/misc/SoState.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -40,7 +39,6 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -50,7 +48,6 @@
 #include <GL/gl.h>
 
 #include <Inventor/details/SoFaceDetail.h>
-#include <Inventor/details/SoPointDetail.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -29,13 +29,8 @@
 
 
 #include <coindefs.h> // COIN_STUB()
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 
 #include <Inventor/elements/SoModelMatrixElement.h>

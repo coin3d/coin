@@ -34,12 +34,8 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <coindefs.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <Inventor/elements/SoGLLightIdElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoGLRenderPassElement.h>
 #include <Inventor/elements/SoGLUpdateAreaElement.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>

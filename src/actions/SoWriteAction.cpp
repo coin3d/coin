@@ -30,14 +30,10 @@
 #include <Inventor/actions/SoSubAction.h>
 #include <coindefs.h> // COIN_STUB()
 
-#include <Inventor/SbName.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // *************************************************************************
 

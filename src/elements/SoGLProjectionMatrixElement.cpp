@@ -26,10 +26,6 @@
 
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
 
-#include <Inventor/SbName.h>
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #ifdef _WIN32
 #include <windows.h>

@@ -39,7 +39,6 @@
 
 #include <Inventor/elements/SoUnitsElement.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
 
 /*!
   \enum SoUnits::Units

@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoMaterialBindingElement.h>
 
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

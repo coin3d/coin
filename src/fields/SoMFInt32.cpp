@@ -34,10 +34,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFString.h>
 
 
 SO_MFIELD_SOURCE_MALLOC(SoMFInt32, int32_t, int32_t);

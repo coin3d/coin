@@ -30,7 +30,6 @@
 
 #include <Inventor/errors/SoReadError.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/SoInput.h>
 

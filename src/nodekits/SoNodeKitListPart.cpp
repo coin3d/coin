@@ -38,9 +38,6 @@
  */
 
 #include <Inventor/nodekits/SoNodeKitListPart.h>
-#include <Inventor/SbName.h>
-#include <Inventor/SoType.h>
-#include <Inventor/lists/SoTypeList.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -522,7 +519,7 @@ SoNodeKitListPart::syncInternalData(void)
     this->containerNode.setValue((SoNode*)containerType.createInstance());
     this->containerNode.setDefault(TRUE);
   }
-  
+
   if (this->children->getLength() == 0) {
     this->children->append(this->containerNode.getValue());
   }

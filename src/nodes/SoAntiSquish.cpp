@@ -31,9 +31,6 @@
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbBox3f.h>
 
 /*!
   \enum SoAntiSquish::Sizing

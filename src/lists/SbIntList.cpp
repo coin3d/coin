@@ -23,7 +23,6 @@
   \ingroup base
 */
 
-#include <Inventor/lists/SbIntList.h>
 
 /*!
   \fn SbIntList::SbIntList(void)

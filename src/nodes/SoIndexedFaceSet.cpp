@@ -27,15 +27,10 @@
 
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/lists/SbPList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoConvexDataCache.h>
-#include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/details/SoFaceDetail.h>
-#include <Inventor/details/SoPointDetail.h>
-#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -49,11 +44,8 @@
 
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <assert.h>

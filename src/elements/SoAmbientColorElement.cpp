@@ -25,7 +25,6 @@
 #include <Inventor/elements/SoAmbientColorElement.h>
 
 #include <Inventor/SbColor.h>
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

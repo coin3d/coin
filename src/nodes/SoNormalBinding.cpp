@@ -25,7 +25,6 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodes/SoNormalBinding.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>

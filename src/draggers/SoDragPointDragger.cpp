@@ -286,7 +286,7 @@ SoDragPointDragger::dragStart(void)
       sw = SO_GET_ANY_PART(this, "zFeedbackSwitch", SoSwitch);
       break;
     default:
-      assert(0);
+      assert(0); sw = NULL; // Dummy assignment to avoid compiler warning.
       break;
     }
     SoInteractionKit::setSwitchValue(sw, 0);

@@ -25,7 +25,6 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodes/SoDrawStyle.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoCallbackAction.h>

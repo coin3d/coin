@@ -44,10 +44,8 @@
 
 #include <Inventor/errors/SoErrors.h>
 
-#include <Inventor/SoType.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/SoPath.h>
-#include <Inventor/SbName.h>
 #include <Inventor/engines/SoEngine.h>
 
 #include <stdarg.h>

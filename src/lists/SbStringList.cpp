@@ -26,7 +26,6 @@
   strings themselves are not compared, only the pointer values.
  */
 
-#include <Inventor/lists/SbStringList.h>
 
 /*!
   \fn SbStringList::SbStringList(void)

@@ -45,7 +45,6 @@
   \sa SoDB::addConverter()
  */
 
-#include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/engines/SoConvertAll.h>
 #include <coindefs.h> // COIN_STUB()
 

@@ -31,7 +31,6 @@
   \sa SoEventCallback, SoHandleEventAction */
 
 #include <Inventor/events/SoMotion3Event.h>
-#include <Inventor/SbName.h>
 #include <assert.h>
 
 

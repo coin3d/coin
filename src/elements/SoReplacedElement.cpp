@@ -26,9 +26,7 @@
 
 #include <Inventor/elements/SoReplacedElement.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
-#include <Inventor/SoType.h>
 
 #include <assert.h>
 

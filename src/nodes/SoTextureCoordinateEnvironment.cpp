@@ -26,12 +26,10 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 
 #ifdef _WIN32
 #include <windows.h>

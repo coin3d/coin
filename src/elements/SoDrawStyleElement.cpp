@@ -28,7 +28,6 @@
 
 #include <Inventor/elements/SoShapeStyleElement.h>
 
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

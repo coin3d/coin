@@ -33,7 +33,6 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/SoFullPath.h>
 
 #include <Inventor/nodes/SoNode.h>
 

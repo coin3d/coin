@@ -26,19 +26,15 @@
 */
 
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
-#include <Inventor/lists/SoPickedPointList.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoPickRayElement.h>
 #include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/SbRotation.h>
 #include <Inventor/misc/SoState.h>
 #include <float.h>
 

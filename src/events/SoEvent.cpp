@@ -44,8 +44,6 @@
 #include <Inventor/events/SoSpaceballButtonEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMotion3Event.h>
-#include <Inventor/SbName.h>
-#include <Inventor/SbVec2f.h>
 #include <Inventor/SbViewportRegion.h>
 #include <assert.h>
 

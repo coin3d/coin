@@ -27,7 +27,6 @@
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoSubAction.h>
-#include <Inventor/SbName.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/elements/SoViewportRegionElement.h>

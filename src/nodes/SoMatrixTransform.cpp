@@ -27,10 +27,7 @@
 
 #include <Inventor/nodes/SoMatrixTransform.h>
 
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>

@@ -27,7 +27,6 @@
 
 #include <Inventor/elements/SoShapeStyleElement.h>
 
-#include <Inventor/SbName.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -36,9 +35,6 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 SO_ELEMENT_SOURCE(SoGLTextureCoordinateElement);
 

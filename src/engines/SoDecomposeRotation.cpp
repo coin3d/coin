@@ -19,7 +19,6 @@
 
 #include <Inventor/engines/SoDecomposeRotation.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/SoType.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFFloat.h>
 

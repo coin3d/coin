@@ -29,13 +29,10 @@
 #include <Inventor/misc/SoChildList.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoNotification.h>
 
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoCallbackAction.h>

@@ -30,7 +30,6 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
 
 

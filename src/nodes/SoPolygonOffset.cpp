@@ -29,7 +29,6 @@
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
-#include <Inventor/elements/SoPolygonOffsetElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 

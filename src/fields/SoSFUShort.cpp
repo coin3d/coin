@@ -38,7 +38,6 @@
 #include <Inventor/fields/SoSFUInt32.h>
 #include <Inventor/fields/SoSFShort.h>
 #include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoMFUShort.h>
 
 #if COIN_DEBUG

@@ -28,10 +28,7 @@
 #include <Inventor/nodes/SoRotation.h>
 
 
-#include <Inventor/SbVec3f.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
 /*!

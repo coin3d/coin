@@ -30,7 +30,6 @@
 
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/SbName.h>
 #include <Inventor/SbDict.h>
 #include <assert.h>
 

@@ -27,7 +27,6 @@
 
 #include <Inventor/fields/SoMFPath.h>
 #include <Inventor/fields/SoSFPath.h>
-#include <Inventor/SbName.h>
 #include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

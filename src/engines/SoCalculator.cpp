@@ -20,7 +20,6 @@
 
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/SoType.h>
 #include <assert.h>
 
 /* ChangeLog / General Messages

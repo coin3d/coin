@@ -49,7 +49,6 @@
 
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 
-#include <Inventor/SbName.h>
 
 #ifdef _WIN32
 #include <windows.h>

@@ -47,7 +47,6 @@
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 

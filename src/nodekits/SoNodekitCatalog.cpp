@@ -28,10 +28,8 @@
   \sa SoNodeKit, SoBaseKit
 */
 
-#include <Inventor/nodekits/SoNodekitCatalog.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/lists/SoTypeList.h>
-#include <Inventor/SbName.h>
 #include <assert.h>
 
 #if COIN_DEBUG

@@ -24,10 +24,8 @@
   FIXME: write doc.
 */
 
+
 #include <Inventor/elements/SoTextOutlineEnabledElement.h>
-
-#include <Inventor/SbName.h>
-
 #include <assert.h>
 
 SO_ELEMENT_SOURCE(SoTextOutlineEnabledElement);

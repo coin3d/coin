@@ -30,14 +30,9 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/lists/SoCallbackList.h>
-#include <Inventor/SoPath.h>
-#include <Inventor/events/SoButtonEvent.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <coindefs.h> // COIN_STUB()
 

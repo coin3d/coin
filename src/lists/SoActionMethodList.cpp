@@ -28,15 +28,9 @@
 */
 
 #include <Inventor/lists/SoActionMethodList.h>
-#include <Inventor/SbName.h>
-#include <Inventor/actions/SoAction.h>
 #include <Inventor/lists/SoTypeList.h>
-#include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   The constructor.  The \a parentlist argument is the parent action's

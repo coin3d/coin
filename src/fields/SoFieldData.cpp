@@ -42,14 +42,13 @@
  */
 
 #include <Inventor/fields/SoFieldData.h>
-#include <Inventor/SbName.h>
+#include <Inventor/nodes/SoUnknownNode.h>
+#include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
-#include <Inventor/fields/SoFieldContainer.h>
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/nodes/SoUnknownNode.h>
 #include <ctype.h>
 
 #if COIN_DEBUG

@@ -25,12 +25,10 @@
   FIXME: write class doc
 */
 
-#include <Inventor/nodes/SoTextureCoordinateBinding.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 
 
 /*!

@@ -25,7 +25,6 @@
 
 #include <Inventor/elements/SoInt32Element.h>
 
-#include <Inventor/SbName.h>
 
 #include <assert.h>
 

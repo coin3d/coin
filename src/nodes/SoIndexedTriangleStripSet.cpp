@@ -28,7 +28,6 @@
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
 #include <coindefs.h> // COIN_STUB()
 
-#include <Inventor/lists/SbPList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -48,7 +47,6 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>

@@ -26,7 +26,6 @@
 
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
 
 #include <assert.h>

@@ -27,14 +27,9 @@
 
 #include <Inventor/nodes/SoPackedColor.h>
 #include <coindefs.h> // COIN_STUB()
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
-#include <Inventor/elements/SoDiffuseColorElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoOverrideElement.h>
 

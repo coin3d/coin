@@ -28,7 +28,6 @@
 #include <Inventor/nodes/SoIndexedLineSet.h>
 
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -44,11 +43,7 @@
 
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoNormalElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
@@ -57,7 +52,6 @@
 #include <assert.h>
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 
 #if COIN_DEBUG

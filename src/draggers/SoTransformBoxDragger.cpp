@@ -26,9 +26,6 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbMatrix.h>
 #include <coindefs.h> // COIN_STUB()
 
 SO_KIT_SOURCE(SoTransformBoxDragger);

@@ -31,7 +31,6 @@
 */
 
 #include <Inventor/details/SoNodeKitDetail.h>
-#include <Inventor/SbName.h>
 #include <assert.h>
 
 

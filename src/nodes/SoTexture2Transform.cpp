@@ -30,7 +30,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureMatrixElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/elements/SoTextureMatrixElement.h>
 
 
 /*!

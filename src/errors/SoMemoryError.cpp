@@ -54,7 +54,6 @@
 
 #include <Inventor/errors/SoMemoryError.h>
 #include <Inventor/SoType.h>
-#include <Inventor/SbName.h>
 #include <stdio.h>
 
 

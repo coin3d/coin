@@ -35,13 +35,7 @@
 #include <GL/glu.h>
 
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoNormalBindingElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoCreaseAngleElement.h>
 
 /*!
   \var SoSFInt32 SoNurbsCurve::numControlPoints
