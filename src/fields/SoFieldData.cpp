@@ -64,6 +64,7 @@
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/misc/SoProto.h>
+#include <Inventor/C/threads/threadsutilp.h>
 
 static const char OPEN_BRACE_CHAR = '[';
 static const char CLOSE_BRACE_CHAR = ']';
@@ -195,16 +196,20 @@ void
 SoFieldData::addField(SoFieldContainer * base, const char * name,
                       const SoField * field)
 {
+  CC_GLOBAL_LOCK;
+  if (!this->hasField(name)) {
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoFieldData::addField",
-                         "class: ``%s'', field: ``%s''",
-                         base->getTypeId().getName().getString(),
-                         name);
+    SoDebugError::postInfo("SoFieldData::addField",
+                           "class: ``%s'', field: ``%s''",
+                           base->getTypeId().getName().getString(),
+                           name);
 #endif // debug
-
-  char * vbase = (char *)base;
-  char * vfield = (char *)field;
-  this->fields.append(new SoFieldEntry(name, vfield - vbase));
+    
+    char * vbase = (char *)base;
+    char * vfield = (char *)field;
+    this->fields.append(new SoFieldEntry(name, vfield - vbase));
+  }
+  CC_GLOBAL_UNLOCK;
 }
 
 /*!
@@ -310,28 +315,32 @@ void
 SoFieldData::addEnumValue(const char * enumname, const char * valuename,
                           int value)
 {
-  SoEnumEntry * e = NULL;
-
-  for (int i=0; !e && (i < this->enums.getLength()); i++) {
-    if (this->enums[i]->nameoftype == enumname) e = this->enums[i];
-  }
-
-  if (e == NULL) {
-    e = new SoEnumEntry(enumname);
-    this->enums.append(e);
-  }
-
+  CC_GLOBAL_LOCK;
+  if (!this->hasEnumValue(enumname, valuename)) {
+    SoEnumEntry * e = NULL;
+    
+    for (int i=0; !e && (i < this->enums.getLength()); i++) {
+      if (this->enums[i]->nameoftype == enumname) e = this->enums[i];
+    }
+    
+    if (e == NULL) {
+      e = new SoEnumEntry(enumname);
+      this->enums.append(e);
+    }
+    
 #if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoFieldData::addEnumValue",
-                         "enumname: %s, valuename: %s, value: %d",
-                         enumname, valuename, value);
+    SoDebugError::postInfo("SoFieldData::addEnumValue",
+                           "enumname: %s, valuename: %s, value: %d",
+                           enumname, valuename, value);
 #endif // debug
-
-  assert(e->names.find(valuename) == -1);
-  e->names.append(valuename);
-  // Note that an enum can have several names mapping to the same
-  // value. 20000101 mortene.
-  e->values.append(value);
+    
+    assert(e->names.find(valuename) == -1);
+    e->names.append(valuename);
+    // Note that an enum can have several names mapping to the same
+    // value. 20000101 mortene.
+    e->values.append(value);
+  }
+  CC_GLOBAL_UNLOCK;
 }
 
 /*!
@@ -891,4 +900,33 @@ SoFieldData::operator==(const SoFieldData * fd) const
   }
 
   return TRUE;
+}
+
+/*!
+  \internal
+  \since Coin 2.3
+*/
+SbBool 
+SoFieldData::hasField(const char * name) const
+{
+  for (int i = 0; i < this->fields.getLength(); i++) {
+    if (this->fields[i]->name == name) return TRUE;
+  }
+  return FALSE;
+}
+
+/*!
+  \internal
+  \since Coin 2.3
+*/
+SbBool 
+SoFieldData::hasEnumValue(const char * enumname, const char * valuename)
+{
+  SoEnumEntry * e = NULL;
+
+  for (int i=0; !e && (i < this->enums.getLength()); i++) {
+    if (this->enums[i]->nameoftype == enumname) e = this->enums[i];
+  }
+  if (e == NULL) return FALSE;
+  return e->names.find(valuename) != -1;
 }

@@ -75,6 +75,9 @@ public:
                               const SoFieldContainer * object) const;
 
 private:
+  SbBool hasField(const char * name) const;
+  SbBool hasEnumValue(const char * enumname, const char * valuename);
+
   // Bitflags for control word in the file format.
   enum ControlWord {
     NOTBUILTIN = 0x40
