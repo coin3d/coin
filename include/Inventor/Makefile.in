@@ -70,6 +70,7 @@ AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
 CC = @CC@
+COIN_DEBUG_BUILD = @COIN_DEBUG_BUILD@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
@@ -80,9 +81,7 @@ COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_VERSION = @COIN_VERSION@
-CPP = @CPP@
 CXX = @CXX@
-CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
@@ -148,7 +147,7 @@ $(srcdir)/SbBasic.h.in: @MAINTAINER_MODE_TRUE@$(srcdir)/./stamp-h2.in
 		rm -f $(srcdir)/./stamp-h2.in; \
 		$(MAKE) $(srcdir)/./stamp-h2.in; \
 	else :; fi
-$(srcdir)/./stamp-h2.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/acconfig.h
+$(srcdir)/./stamp-h2.in: $(top_srcdir)/configure.in $(ACLOCAL_M4) \$(top_srcdir)/acconfig.h
 	@rm -f $(srcdir)/./stamp-h2.in $(srcdir)/./stamp-h2.inT
 	@echo timestamp > $(srcdir)/./stamp-h2.inT 2> /dev/null
 	cd $(top_srcdir) && $(AUTOHEADER)
@@ -232,7 +231,7 @@ ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	       END { for (i in files) print i; }'`; \
 	mkid -fID $$unique $(LISP)
 
-TAGS: tags-recursive $(HEADERS) $(SOURCES) SbBasic.h.in $(TAGS_DEPENDENCIES) \
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
 		$(TAGS_FILES) $(LISP)
 	tags=; \
 	here=`pwd`; \
@@ -247,8 +246,8 @@ TAGS: tags-recursive $(HEADERS) $(SOURCES) SbBasic.h.in $(TAGS_DEPENDENCIES) \
 	  done | \
 	  $(AWK) '    { files[$$0] = 1; } \
 	       END { for (i in files) print i; }'`; \
-	test -z "$(ETAGS_ARGS)SbBasic.h.in$$unique$(LISP)$$tags" \
-	  || etags $(ETAGS_ARGS) $$tags SbBasic.h.in $$unique $(LISP)
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
 
 GTAGS:
 	here=`CDPATH=: && cd $(top_builddir) && pwd` \
@@ -347,20 +346,20 @@ maintainer-clean-am:  maintainer-clean-hdr maintainer-clean-tags \
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY: mostlyclean-hdr distclean-hdr clean-hdr maintainer-clean-hdr \
-install-recursive uninstall-recursive install-data-recursive \
-uninstall-data-recursive install-exec-recursive \
-uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
-all-recursive check-recursive installcheck-recursive info-recursive \
-dvi-recursive mostlyclean-recursive distclean-recursive clean-recursive \
-maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
-distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
-dvi-am dvi check check-am installcheck-am installcheck all-recursive-am \
-install-exec-am install-exec install-data-am install-data install-am \
-install uninstall-am uninstall all-redirect all-am all install-strip \
-installdirs-am installdirs mostlyclean-generic distclean-generic \
-clean-generic maintainer-clean-generic clean mostlyclean distclean \
-maintainer-clean
+.PHONY: all all-am all-recursive all-recursive-am all-redirect check \
+check-am check-recursive clean clean-generic clean-hdr clean-recursive \
+clean-tags distclean distclean-generic distclean-hdr \
+distclean-recursive distclean-tags distdir dvi dvi-am dvi-recursive \
+info info-am info-recursive install install-am install-data \
+install-data-am install-data-recursive install-exec install-exec-am \
+install-exec-recursive install-recursive install-strip installcheck \
+installcheck-am installcheck-recursive installdirs installdirs-am \
+installdirs-recursive maintainer-clean maintainer-clean-generic \
+maintainer-clean-hdr maintainer-clean-recursive maintainer-clean-tags \
+mostlyclean mostlyclean-generic mostlyclean-hdr mostlyclean-recursive \
+mostlyclean-tags tags tags-recursive uninstall uninstall-am \
+uninstall-data-recursive uninstall-exec-recursive uninstall-recursive \
+uninstalldirs-recursive
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

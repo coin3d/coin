@@ -70,6 +70,7 @@ AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
 CC = @CC@
+COIN_DEBUG_BUILD = @COIN_DEBUG_BUILD@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
@@ -80,9 +81,7 @@ COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_VERSION = @COIN_VERSION@
-CPP = @CPP@
 CXX = @CXX@
-CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
@@ -312,19 +311,19 @@ maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
 
 maintainer-clean: maintainer-clean-recursive
 
-.PHONY: install-recursive uninstall-recursive install-data-recursive \
-uninstall-data-recursive install-exec-recursive \
-uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
-all-recursive check-recursive installcheck-recursive info-recursive \
-dvi-recursive mostlyclean-recursive distclean-recursive clean-recursive \
-maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
-distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
-dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
-install-exec install-data-am install-data install-am install \
-uninstall-am uninstall all-redirect all-am all install-strip \
-installdirs-am installdirs mostlyclean-generic distclean-generic \
-clean-generic maintainer-clean-generic clean mostlyclean distclean \
-maintainer-clean
+.PHONY: all all-am all-recursive all-redirect check check-am \
+check-recursive clean clean-generic clean-recursive clean-tags \
+distclean distclean-generic distclean-recursive distclean-tags distdir \
+dvi dvi-am dvi-recursive info info-am info-recursive install install-am \
+install-data install-data-am install-data-recursive install-exec \
+install-exec-am install-exec-recursive install-recursive install-strip \
+installcheck installcheck-am installcheck-recursive installdirs \
+installdirs-am installdirs-recursive maintainer-clean \
+maintainer-clean-generic maintainer-clean-recursive \
+maintainer-clean-tags mostlyclean mostlyclean-generic \
+mostlyclean-recursive mostlyclean-tags tags tags-recursive uninstall \
+uninstall-am uninstall-data-recursive uninstall-exec-recursive \
+uninstall-recursive uninstalldirs-recursive
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -131,26 +131,56 @@ fi
 # EOF **********************************************************************
 
 # **************************************************************************
-# Usage: SIM_AC_MSVC_SUPPORT
+# SIM_AC_SETUP_MSVC_IFELSE( IF-FOUND, IF-NOT-FOUND )
 #
-#   This macro takes no arguments, and just checks if The MS VC++ compiler can
-#   be used to compile the project.
+# This macro invokes IF-FOUND if the msvccc wrapper can be run, and
+# IF-NOT-FOUND if not.
 #
 # Authors:
-#   Morten Eriksen <mortene@sim.no>
-#   Lars J. Aas <larsa@sim.no>
+#   Morten Eriksen <mortene@coin3d.org>
+#   Lars J. Aas <larsa@coin3d.org>
 
-AC_DEFUN([SIM_AC_MSVC_SUPPORT], [
 # **************************************************************************
+
+AC_DEFUN([SIM_AC_SETUP_MSVC_IFELSE],
+[# **************************************************************************
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
 
-BUILD_WITH_MSVC=false
+: ${BUILD_WITH_MSVC=false}
 sim_ac_msvccc=`cd $srcdir; pwd`/cfg/m4/msvccc
-if test -z "$CC" && test -z "$CXX" && $sim_ac_msvccc >/dev/null 2>&1; then
-  m4_ifdef([SIM_AC_MSVC_SUPPORT_VISITED],
-    [AC_FATAL([Macro SIM_AC_MSVC_SUPPORT invoked multiple times])])
-  m4_define([SIM_AC_MSVC_SUPPORT_VISITED], 1)
+if test -z "$CC" -a -z "$CXX" && $sim_ac_msvccc >/dev/null 2>&1; then
+  m4_ifdef([$0_VISITED],
+    [AC_FATAL([Macro $0 invoked multiple times])])
+  m4_define([$0_VISITED], 1)
+  CC=$sim_ac_msvccc
+  CXX=$sim_ac_msvccc
+  export CC CXX
+  BUILD_WITH_MSVC=true
+fi
+AC_SUBST(BUILD_WITH_MSVC)
+if $BUILD_WITH_MSVC; then
+  :
+  $1
+else
+  :
+  $2
+fi
+]) # SIM_AC_SETUP_MSVC_IFELSE
+
+# **************************************************************************
+
+AC_DEFUN([SIM_AC_MSVC_SUPPORT],
+[# **************************************************************************
+# If the Microsoft Visual C++ cl.exe compiler is available, set us up for
+# compiling with it and to generate an MSWindows .dll file.
+
+: ${BUILD_WITH_MSVC=false}
+sim_ac_msvccc=`cd $srcdir; pwd`/cfg/m4/msvccc
+if test -z "$CC" -a -z "$CXX" && $sim_ac_msvccc >/dev/null 2>&1; then
+  m4_ifdef([$0_VISITED],
+    [AC_FATAL([Macro $0 invoked multiple times])])
+  m4_define([$0_VISITED], 1)
   CC=$sim_ac_msvccc
   CXX=$sim_ac_msvccc
   export CC CXX
@@ -159,12 +189,20 @@ fi
 AC_SUBST(BUILD_WITH_MSVC)
 ]) # SIM_AC_MSVC_SUPPORT
 
+# EOF **********************************************************************
 
 # Do all the work for Automake.  This macro actually does too much --
 # some checks are only needed if your package does certain things.
 # But this isn't really a big deal.
 
-# serial 4
+# serial 5
+
+# There are a few dirty hacks below to avoid letting `AC_PROG_CC' be
+# written in clear, in which case automake, when reading aclocal.m4,
+# will think it sees a *use*, and therefore will trigger all it's
+# C support machinery.  Also note that it means that autoscan, seeing
+# CC etc. in the Makefile, will ask for an AC_PROG_CC use...
+
 
 # We require 2.13 because we rely on SHELL being computed by configure.
 AC_PREREQ([2.13])
@@ -218,40 +256,42 @@ AC_REQUIRE([AC_PROG_AWK])dnl
 AC_REQUIRE([AC_PROG_MAKE_SET])dnl
 AC_REQUIRE([AM_DEP_TRACK])dnl
 AC_REQUIRE([AM_SET_DEPDIR])dnl
-AC_PROVIDE_IFELSE([AC_PROG_CC],
+AC_PROVIDE_IFELSE([AC_PROG_][CC],
                   [AM_DEPENDENCIES(CC)],
-                  [define([AC_PROG_CC],
-                          defn([AC_PROG_CC])[AM_DEPENDENCIES(CC)])])dnl
-AC_PROVIDE_IFELSE([AC_PROG_CXX],
+                  [define([AC_PROG_][CC],
+                          defn([AC_PROG_][CC])[AM_DEPENDENCIES(CC)])])dnl
+AC_PROVIDE_IFELSE([AC_PROG_][CXX],
                   [AM_DEPENDENCIES(CXX)],
-                  [define([AC_PROG_CXX],
-                          defn([AC_PROG_CXX])[AM_DEPENDENCIES(CXX)])])dnl
+                  [define([AC_PROG_][CXX],
+                          defn([AC_PROG_][CXX])[AM_DEPENDENCIES(CXX)])])dnl
 ])
 
 #
 # Check to make sure that the build environment is sane.
 #
 
-# serial 2
+# serial 3
 
+# AM_SANITY_CHECK
+# ---------------
 AC_DEFUN([AM_SANITY_CHECK],
 [AC_MSG_CHECKING([whether build environment is sane])
 # Just in case
 sleep 1
-echo timestamp > conftestfile
+echo timestamp > conftest.file
 # Do `set' in a subshell so we don't clobber the current shell's
 # arguments.  Must try -L first in case configure is actually a
 # symlink; some systems play weird games with the mod time of symlinks
 # (eg FreeBSD returns the mod time of the symlink's containing
 # directory).
 if (
-   set X `ls -Lt $srcdir/configure conftestfile 2> /dev/null`
+   set X `ls -Lt $srcdir/configure conftest.file 2> /dev/null`
    if test "$[*]" = "X"; then
       # -L didn't work.
-      set X `ls -t $srcdir/configure conftestfile`
+      set X `ls -t $srcdir/configure conftest.file`
    fi
-   if test "$[*]" != "X $srcdir/configure conftestfile" \
-      && test "$[*]" != "X conftestfile $srcdir/configure"; then
+   if test "$[*]" != "X $srcdir/configure conftest.file" \
+      && test "$[*]" != "X conftest.file $srcdir/configure"; then
 
       # If neither matched, then we have a broken ls.  This can happen
       # if, for instance, CONFIG_SHELL is bash and it inherits a
@@ -261,7 +301,7 @@ if (
 alias in your environment])
    fi
 
-   test "$[2]" = conftestfile
+   test "$[2]" = conftest.file
    )
 then
    # Ok.
@@ -320,7 +360,13 @@ else
 fi
 ])
 
-# serial 2
+# serial 3
+
+# There are a few dirty hacks below to avoid letting `AC_PROG_CC' be
+# written in clear, in which case automake, when reading aclocal.m4,
+# will think it sees a *use*, and therefore will trigger all it's
+# C support machinery.  Also note that it means that autoscan, seeing
+# CC etc. in the Makefile, will ask for an AC_PROG_CC use...
 
 # AM_DEPENDENCIES(NAME)
 # ---------------------
@@ -328,19 +374,19 @@ fi
 # NAME is "CC", "CXX" or "OBJC".
 # We try a few techniques and use that to set a single cache variable.
 AC_DEFUN([AM_DEPENDENCIES],
-[AC_REQUIRE([AM_SET_DEPDIR])
-AC_REQUIRE([AM_OUTPUT_DEPENDENCY_COMMANDS])
+[AC_REQUIRE([AM_SET_DEPDIR])dnl
+AC_REQUIRE([AM_OUTPUT_DEPENDENCY_COMMANDS])dnl
 ifelse([$1], CC,
-       [AC_REQUIRE([AC_PROG_CC])
-AC_REQUIRE([AC_PROG_CPP])
+       [AC_REQUIRE([AC_PROG_][CC])dnl
+AC_REQUIRE([AC_PROG_][CPP])
 depcc="$CC"
 depcpp="$CPP"],
-       [$1], CXX, [AC_REQUIRE([AC_PROG_CXX])
-AC_REQUIRE([AC_PROG_CXXCPP])
+       [$1], CXX, [AC_REQUIRE([AC_PROG_][CXX])dnl
+AC_REQUIRE([AC_PROG_][CXXCPP])
 depcc="$CXX"
 depcpp="$CXXCPP"],
        [$1], OBJC, [am_cv_OBJC_dependencies_compiler_type=gcc],
-       [AC_REQUIRE([AC_PROG_$1])
+       [AC_REQUIRE([AC_PROG_][$1])dnl
 depcc="$$1"
 depcpp=""])
 
@@ -386,11 +432,13 @@ $1DEPMODE="depmode=$am_cv_$1_dependencies_compiler_type"
 AC_SUBST([$1DEPMODE])
 ])
 
+
+# AM_SET_DEPDIR
+# -------------
 # Choose a directory name for dependency files.
 # This macro is AC_REQUIREd in AM_DEPENDENCIES
-
-AC_DEFUN([AM_SET_DEPDIR],[
-if test -d .deps || mkdir .deps 2> /dev/null || test -d .deps; then
+AC_DEFUN([AM_SET_DEPDIR],
+[if test -d .deps || mkdir .deps 2> /dev/null || test -d .deps; then
   DEPDIR=.deps
   # We redirect because .deps might already exist and be populated.
   # In this situation we don't want to see an error.
@@ -401,8 +449,11 @@ fi
 AC_SUBST(DEPDIR)
 ])
 
-AC_DEFUN([AM_DEP_TRACK],[
-AC_ARG_ENABLE(dependency-tracking,
+
+# AM_DEP_TRACK
+# ------------
+AC_DEFUN([AM_DEP_TRACK],
+[AC_ARG_ENABLE(dependency-tracking,
 [  --disable-dependency-tracking Speeds up one-time builds
   --enable-dependency-tracking  Do not reject slow dependency extractors])
 if test "x$enable_dependency_tracking" = xno; then
@@ -1705,8 +1756,8 @@ fi
 ])
 
 
-# Usage:
-#   SIM_AC_HAVE_SIMAGE_IFELSE( IF-FOUND, IF-NOT-FOUND )
+# **************************************************************************
+# SIM_AC_HAVE_SIMAGE_IFELSE( IF-FOUND, IF-NOT-FOUND )
 #
 # Description:
 #   This macro locates the simage development system.  If it is found, the
@@ -1725,14 +1776,17 @@ fi
 # < $sim_ac_simage_version   (the libsimage version)
 #
 # Authors:
-#   Morten Eriksen, <mortene@sim.no>
-#   Lars J. Aas, <larsa@sim.no>
+#   Morten Eriksen <mortene@coin3d.org>
+#   Lars J. Aas <larsa@coin3d.org>
 #
 # TODO:
+# - rework variable name convention
+# - clean up shell scripting redundancy
+# - support debug symbols simage library
 #
 
-AC_DEFUN([SIM_AC_HAVE_SIMAGE_IFELSE], [
-AC_PREREQ([2.14a])
+AC_DEFUN([SIM_AC_HAVE_SIMAGE_IFELSE],
+[AC_PREREQ([2.14a])
 
 # official variables
 sim_ac_simage_avail=false
@@ -1767,6 +1821,8 @@ if $sim_ac_simage_desired; then
   AC_PATH_PROG(sim_ac_simage_configcmd, simage-config, false, $sim_ac_path)
 
   if $sim_ac_simage_configcmd; then
+    echo "$CPPFLAGS $CFLAGS $CXXFLAGS" | egrep -q -- "-g\\>" &&
+      sim_ac_simage_configcmd="$sim_ac_simage_configcmd --debug"
     sim_ac_simage_cppflags=`$sim_ac_simage_configcmd --cppflags`
     sim_ac_simage_ldflags=`$sim_ac_simage_configcmd --ldflags`
     sim_ac_simage_libs=`$sim_ac_simage_configcmd --libs`
@@ -1802,8 +1858,9 @@ if $sim_ac_simage_avail; then
 else
   ifelse([$2], , :, [$2])
 fi
-]) # SIM_AC_HAVE_SIMAGE_IFELSE()
+])
 
+# EOF **********************************************************************
 
 # Usage:
 #   SIM_AC_CHECK_MATHLIB([ACTION-IF-OK[, ACTION-IF-NOT-OK]])

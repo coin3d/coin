@@ -70,6 +70,7 @@ AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
 CC = @CC@
+COIN_DEBUG_BUILD = @COIN_DEBUG_BUILD@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
@@ -80,9 +81,7 @@ COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
 COIN_VERSION = @COIN_VERSION@
-CPP = @CPP@
 CXX = @CXX@
-CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
 DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
@@ -266,14 +265,14 @@ maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
 
 maintainer-clean: maintainer-clean-am
 
-.PHONY: uninstall-systemincHEADERS install-systemincHEADERS tags \
-mostlyclean-tags distclean-tags clean-tags maintainer-clean-tags \
-distdir info-am info dvi-am dvi check check-am installcheck-am \
-installcheck install-exec-am install-exec install-data-am install-data \
-install-am install uninstall-am uninstall all-redirect all-am all \
-install-strip installdirs mostlyclean-generic distclean-generic \
-clean-generic maintainer-clean-generic clean mostlyclean distclean \
-maintainer-clean
+.PHONY: all all-am all-redirect check check-am clean clean-generic \
+clean-tags distclean distclean-generic distclean-tags distdir dvi \
+dvi-am info info-am install install-am install-data install-data-am \
+install-exec install-exec-am install-strip install-systemincHEADERS \
+installcheck installcheck-am installdirs maintainer-clean \
+maintainer-clean-generic maintainer-clean-tags mostlyclean \
+mostlyclean-generic mostlyclean-tags tags uninstall uninstall-am \
+uninstall-systemincHEADERS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
