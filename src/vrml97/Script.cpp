@@ -165,12 +165,15 @@ SoVRMLScript::initClass(void) // static
                        SbName("VRMLScript"),
                        SoVRMLScript::createInstance,
                        SoNode::nextActionMethodIndex++);
+  SoNode::setCompatibilityTypes(SoVRMLScript::getClassTypeId(), SO_VRML97_NODE_TYPE);
 }
 
 SoVRMLScript::SoVRMLScript(void)
   : fielddata(NULL)
 {
   PRIVATE(this) = new SoVRMLScriptP(this);
+  this->setNodeType(SoNode::VRML2);
+  this->isBuiltIn = TRUE;
 
   this->isBuiltIn = TRUE;
   assert(SoVRMLScript::classTypeId != SoType::badType());
@@ -273,20 +276,35 @@ SoVRMLScript::handleEvent(SoHandleEventAction * action)
 void
 SoVRMLScript::write(SoWriteAction * action)
 {
+  int i;
+  const SbName URL("url");
+  const SbName DIRECTOUTPUT("directOutput");
+  const SbName MUSTEVALUATE("mustEvaluate");
+  const SoFieldData * fd = this->getFieldData();
+
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
+    // we will always write NORMAL and EXPOSED fields, so do a setDefault(FALSE)
+    // on them. We will not write other field types, so do a setDefault(TRUE) on
+    // them
+    for (i = 0; i < fd->getNumFields(); i++) {
+      const SoField * f = fd->getField(this, i);
+      SbName fieldname = fd->getFieldName(i);
+      if (fieldname != URL && fieldname != DIRECTOUTPUT &&
+          fieldname != MUSTEVALUATE) {
+        if ((f->getFieldType() == SoField::NORMAL_FIELD) ||
+            (f->getFieldType() == SoField::EXPOSED_FIELD)) {
+          ((SoField*)f)->setDefault(FALSE);
+        }
+        else ((SoField*)f)->setDefault(TRUE);
+      }
+    }
     inherited::write(action);
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, FALSE, FALSE))
       return;
-    const SbName URL("url");
-    const SbName DIRECTOUTPUT("directOutput");
-    const SbName MUSTEVALUATE("mustEvaluate");
-    const SoFieldData * fd = this->getFieldData();
-
-    SbString value;
-    for (int i = 0; i < fd->getNumFields(); i++) {
+    for (i = 0; i < fd->getNumFields(); i++) {
       const SoField * f = fd->getField(this, i);
       SbName fieldname = fd->getFieldName(i);
       SbBool writevalue = FALSE;
@@ -313,13 +331,15 @@ SoVRMLScript::write(SoWriteAction * action)
         }
         out->write(f->getTypeId().getName().getString());
         out->write(' ');
-        out->write(fieldname.getString());
+
         if (writevalue) {
-          ((SoField*)f)->get(value);
-          out->write(' ');
-          out->write(value.getString());
+          f->write(out, fieldname);
+        }
+        else {
+          out->write(fieldname.getString());
         }
         out->write("\n");
+        ((SoField*)f)->setDefault(TRUE); // don't write again when we do a SoFieldData::write later. 
       }
     }
     fd->write(out, this);
