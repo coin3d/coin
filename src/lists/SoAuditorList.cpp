@@ -34,14 +34,6 @@
 #include <Inventor/sensors/SoDataSensor.h>
 
 
-// Metadon doc
-/*¡
-  FIXME: there's some code missing within notify() -- we don't set the
-  type of the SoNotRec item.
- */
-
-
-
 /*!
   Default constructor.
 */
@@ -131,8 +123,8 @@ void
 SoAuditorList::remove(const int index)
 {
   assert(index >= 0 && index < this->getLength());
-  SbPList::remove(index * 2);
-  SbPList::remove(index * 2);
+  SbPList::remove(index * 2); // ptr
+  SbPList::remove(index * 2); // type
 }
 
 /*!
@@ -152,34 +144,25 @@ SoAuditorList::notify(SoNotList * l)
 {
   const int num = this->getLength();
   for (int i = 0; i < num; i++) {
+    void * auditor = this->getObject(i);
     SoNotRec::Type type = this->getType(i);
+
     switch (type) {
 
     case SoNotRec::CONTAINER:
-      {
-        SoFieldContainer * obj = (SoFieldContainer *)this->getObject(i);
-        // FIXME: this leads to a failed assertion in SoNotification
-        // (because of a missing call to
-        // SoNotification::append()?). 19990205 mortene.
-//        l->setLastType(SoNotRec::CONTAINER);
-        obj->notify(l);
-      }
-      break;
-
     case SoNotRec::PARENT:
       {
-        SoNode * obj = (SoNode *)this->getObject(i);
-      // FIXME: this leads to a failed assertion in SoNotification
-      // (because of a missing call to
-      // SoNotification::append()?). 19990205 mortene.
-//        l->setLastType(SoNotRec::PARENT);
+        SoFieldContainer * obj = (SoFieldContainer *)auditor;
+        SoNotRec rec(obj);
+        l->append(&rec);
+        l->setLastType(type);
         obj->notify(l);
       }
       break;
 
     case SoNotRec::SENSOR:
       {
-        SoDataSensor * obj = (SoDataSensor *)this->getObject(i);
+        SoDataSensor * obj = (SoDataSensor *)auditor;
         obj->schedule();
       }
       break;
@@ -188,11 +171,7 @@ SoAuditorList::notify(SoNotList * l)
     case SoNotRec::ENGINE:
     case SoNotRec::INTERP:
       {
-        // FIXME: this leads to a failed assertion in SoNotification
-        // (because of a missing call to
-        // SoNotification::append()?). 19990205 mortene.
-//        l->setLastType(type);
-        SoField * obj = (SoField *)this->getObject(i);
+        SoField * obj = (SoField *)auditor;
         if (!obj->getDirty()) obj->notify(l);
       }
       break;

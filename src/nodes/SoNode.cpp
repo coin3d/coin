@@ -139,6 +139,16 @@ SoNode::copy(SbBool copyconnections) const
 
 
 /*!
+  FIXME: write doc
+*/
+void
+SoNode::startNotify(void)
+{
+  SoNotList l; // FIXME: what should be added to this list? pederb, 19991214
+  this->notify(&l);
+}
+
+/*!
   FIXME: write function documentation
 */
 void
@@ -301,8 +311,7 @@ SoNode::initClasses(void)
 void
 SoNode::setOverride(const SbBool state)
 {
-  if ((state && !this->isOverride()) ||
-      (!state && this->isOverride())){
+  if ((state && !this->isOverride()) || (!state && this->isOverride())){
     // This change affects caches in the tree, so we must change our id
     // setting, so the caches are regenerated.
     this->uniqueId = SoNode::nextUniqueId++;
@@ -764,16 +773,6 @@ void
 SoNode::grabEventsCleanup(void)
 {
   COIN_STUB();
-}
-
-/*!
-  FIXME: write doc
-*/
-void
-SoNode::startNotify(void)
-{
-  SoNotList l; // FIXME: what should be added to this list? pederb, 19991214
-  this->notify(&l);
 }
 
 /*!

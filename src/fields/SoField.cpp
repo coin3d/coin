@@ -354,7 +354,9 @@ SoField::~SoField()
         break;
 
       case SoNotRec::CONTAINER:
-        this->storage->removeAuditor(0);
+        // I don't think we should have the container in the list.
+        assert(FALSE);
+//          this->storage->removeAuditor(0);
         break;
 
       case SoNotRec::SENSOR:
@@ -855,9 +857,6 @@ SoField::setContainer(SoFieldContainer * cont)
     this->storage->setContainer(cont);
   }
 
-  if (oldcontainer) this->removeAuditor(oldcontainer, SoNotRec::CONTAINER);
-  this->addAuditor(cont, SoNotRec::CONTAINER);
-
   // The field should have been set to its default value before it is
   // added to the container.
   this->setDefault(TRUE);
@@ -969,6 +968,7 @@ SoField::notify(SoNotList * nlist)
   if (this->isNotifyEnabled()) {
     SoNotRec rec(this->getContainer());
     nlist->append(&rec, this);
+    nlist->setLastType(SoNotRec::CONTAINER);
 
     this->notifyAuditors(nlist);
   }
@@ -1013,7 +1013,7 @@ SoField::addAuditor(void * f, SoNotRec::Type type)
   }
 
   this->storage->addAuditor(f, type);
-  if (type != SoNotRec::CONTAINER) this->connectionStatusChanged(+1);
+  this->connectionStatusChanged(+1);
 }
 
 /*!
@@ -1029,7 +1029,7 @@ SoField::removeAuditor(void * f, SoNotRec::Type type)
 
   assert(this->hasExtendedStorage());
   this->storage->removeAuditor(f, type);
-  if (type != SoNotRec::CONTAINER) this->connectionStatusChanged(-1);
+  this->connectionStatusChanged(-1);
 }
 
 /*!
@@ -1672,9 +1672,8 @@ SoField::valueChanged(SbBool resetdefault)
 void
 SoField::notifyAuditors(SoNotList * l)
 {
-  if (!this->hasExtendedStorage() && this->container)
-    this->container->notify(l);
-  else if (this->storage && this->storage->getNumAuditors())
+  if (this->getContainer()) this->getContainer()->notify(l);
+  if (this->hasExtendedStorage() && this->storage->getNumAuditors())
     this->storage->getAuditors().notify(l);
 }
 
