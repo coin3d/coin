@@ -312,6 +312,16 @@ void
 SoEngine::evaluateWrapper(void)
 {
   const SoEngineOutputData * outputs = this->getOutputData();
+
+  // For the engines which dynamically allocates input fields and
+  // outputs [*], they can be destructed before there's any
+  // SoEngineOutputData set up -- for instance upon an error on
+  // import.
+  //
+  // [*] (So far, that is: SoGate, SoConcatenate, SoSelectOne,
+  //     SoConvertAll.)
+  if (!outputs) return;
+
   int i, n = outputs->getNumOutputs();
   for (i = 0; i < n; i++) {
     outputs->getOutput(this, i)->prepareToWrite();

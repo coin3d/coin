@@ -38,6 +38,16 @@
   match what the SoGate::input is connected to since the type of the
   SoGate::output always should be the same as the type of the
   SoGate::input.
+
+
+  \ENGINE_TYPELESS_FILEFORMAT
+
+  \verbatim
+  Gate {
+    type <multivaluefieldtype>
+    [...fields...]
+  }
+  \endverbatim
 */
 
 #include <Inventor/engines/SoGate.h>
@@ -94,7 +104,17 @@ SO_INTERNAL_ENGINE_SOURCE_DYNAMIC_IO(SoGate);
 // used from import code or copy code.
 SoGate::SoGate(void)
 {
+  this->dynamicinput = NULL;
+  this->dynamicoutput = NULL;
   this->input = NULL;
+  this->output = NULL;
+}
+
+static SbBool
+SoGate_valid_type(SoType t)
+{
+  return (t.isDerivedFrom(SoMField::getClassTypeId()) &&
+          t.canCreateInstance());
 }
 
 /*!
@@ -102,15 +122,22 @@ SoGate::SoGate(void)
 */
 SoGate::SoGate(SoType type)
 {
+  this->dynamicinput = NULL;
+  this->dynamicoutput = NULL;
   this->input = NULL;
-  if (!this->initialize(type)) {
+  this->output = NULL;
+
 #if COIN_DEBUG
+  if (!SoGate_valid_type(type)) {
     SoDebugError::post("SoGate::SoGate",
-                       "invalid type '%s' for input field",
+                       "invalid type '%s' for input field, "
+                       "field must be non-abstract and a multi-value type.",
                        type == SoType::badType() ? "badType" :
                        type.getName().getString());
-#endif // COIN_DEBUG
   }
+#endif // COIN_DEBUG
+
+  (void)this->initialize(type);
 }
 
 
@@ -128,23 +155,18 @@ SbBool
 SoGate::initialize(const SoType inputfieldtype)
 {
   assert(this->input == NULL);
+  assert(SoGate_valid_type(inputfieldtype));
 
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoGate);
   SO_ENGINE_ADD_INPUT(trigger, ());
   SO_ENGINE_ADD_INPUT(enable, (FALSE));
 
-  if (inputfieldtype.isDerivedFrom(SoMField::getClassTypeId()) &&
-      inputfieldtype.canCreateInstance()) {
-    // Instead of SO_ENGINE_ADD_INPUT().
-    this->input = (SoMField *)inputfieldtype.createInstance();
-    this->input->setNum(0);
-    this->input->setContainer(this);
-    this->dynamicinput = new SoFieldData(SoGate::inputdata);
-    this->dynamicinput->addField(this, "input", this->input);
-  }
-  else {
-    return FALSE;
-  }
+  // Instead of SO_ENGINE_ADD_INPUT().
+  this->input = (SoMField *)inputfieldtype.createInstance();
+  this->input->setNum(0);
+  this->input->setContainer(this);
+  this->dynamicinput = new SoFieldData(SoGate::inputdata);
+  this->dynamicinput->addField(this, "input", this->input);
 
   // Instead of SO_ENGINE_ADD_OUTPUT().
   this->output = new SoEngineOutput;
@@ -210,7 +232,10 @@ SoGate::readInstance(SoInput * in, unsigned short flags)
 
   SbName tmp;
   if (!in->read(tmp) || tmp != "type") {
-    SoReadError::post(in, "\"type\" keyword is missing.");
+    SoReadError::post(in,
+                      "\"type\" keyword is missing, erroneous format for "
+                      "engine class '%s'.",
+                      this->getTypeId().getName().getString());
     return FALSE;
   }
   SbName fieldname;
@@ -219,12 +244,14 @@ SoGate::readInstance(SoInput * in, unsigned short flags)
     return FALSE;
   }
   SoType inputtype = SoType::fromName(fieldname);
-  if (!this->initialize(inputtype)) {
-    SoReadError::post(in, "Type \"%s\" for input field is not valid.",
+  if (!SoGate_valid_type(inputtype)) {
+    SoReadError::post(in, "Type \"%s\" for input field is not valid "
+                      "(field must be non-abstract and a multi-value type).",
                       fieldname.getString());
     return FALSE;
   }
 
+  (void)this->initialize(inputtype);
   return SoEngine::readInstance(in, flags);
 }
 
@@ -254,6 +281,7 @@ SoGate::writeInstance(SoOutput * out)
 void
 SoGate::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  this->initialize(((SoGate *)from)->input->getTypeId());
+  SoGate * gatesrc = (SoGate *)from;
+  if (gatesrc->input) { (void)this->initialize(gatesrc->input->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }

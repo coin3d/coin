@@ -38,6 +38,15 @@
   make it match what the SoConcatenate::input is connected to since
   the type of the SoConcatenate::output always should be the same as
   the type of the SoConcatenate::input.
+
+
+  \ENGINE_TYPELESS_FILEFORMAT
+
+  \verbatim
+  Concatenate {
+    type <multivaluefieldtype>
+    [...fields...]
+  }
 */
 
 #include <Inventor/engines/SoConcatenate.h>
@@ -83,23 +92,41 @@ SO_INTERNAL_ENGINE_SOURCE_DYNAMIC_IO(SoConcatenate);
 // used from import code or copy code.
 SoConcatenate::SoConcatenate(void)
 {
-  this->input[0] = NULL;
+  this->dynamicinput = NULL;
+  this->dynamicoutput = NULL;
+  for (int i=0; i < SoConcatenate::NUMINPUTS; i++) this->input[i] = NULL;
+  this->output = NULL;
 }
+
+static SbBool
+SoConcatenate_valid_type(SoType t)
+{
+  return (t.isDerivedFrom(SoMField::getClassTypeId()) &&
+          t.canCreateInstance());
+}
+
 
 /*!
   Constructor. The type of the input/output is specified in \a type.
 */
 SoConcatenate::SoConcatenate(SoType type)
 {
-  this->input[0] = NULL;
-  if (!this->initialize(type)) {
+  this->dynamicinput = NULL;
+  this->dynamicoutput = NULL;
+  for (int i=0; i < SoConcatenate::NUMINPUTS; i++) this->input[i] = NULL;
+  this->output = NULL;
+
 #if COIN_DEBUG
+  if (!SoConcatenate_valid_type(type)) {
     SoDebugError::post("SoConcatenate::SoConcatenate",
-                       "invalid type '%s' for input fields",
+                       "invalid type '%s' for input field, "
+                       "field must be non-abstract and a multi-value type.",
                        type == SoType::badType() ? "badType" :
                        type.getName().getString());
-#endif // COIN_DEBUG
   }
+#endif // COIN_DEBUG
+
+  (void)this->initialize(type);
 }
 
 
@@ -117,24 +144,19 @@ SbBool
 SoConcatenate::initialize(const SoType inputfieldtype)
 {
   assert(this->input[0] == NULL);
+  assert(SoConcatenate_valid_type(inputfieldtype));
 
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoConcatenate);
 
-  if (inputfieldtype.isDerivedFrom(SoMField::getClassTypeId()) &&
-      inputfieldtype.canCreateInstance()) {
-    // Instead of SO_ENGINE_ADD_INPUT().
-    this->dynamicinput = new SoFieldData(SoConcatenate::inputdata);
-    for (int i=0; i < SoConcatenate::NUMINPUTS; i++) {
-      this->input[i] = (SoMField *)inputfieldtype.createInstance();
-      this->input[i]->setNum(0);
-      this->input[i]->setContainer(this);
-      SbString s = "input";
-      s.addIntString(i);
-      this->dynamicinput->addField(this, s.getString(), this->input[i]);
-    }
-  }
-  else {
-    return FALSE;
+  // Instead of SO_ENGINE_ADD_INPUT().
+  this->dynamicinput = new SoFieldData(SoConcatenate::inputdata);
+  for (int i=0; i < SoConcatenate::NUMINPUTS; i++) {
+    this->input[i] = (SoMField *)inputfieldtype.createInstance();
+    this->input[i]->setNum(0);
+    this->input[i]->setContainer(this);
+    SbString s = "input";
+    s.addIntString(i);
+    this->dynamicinput->addField(this, s.getString(), this->input[i]);
   }
 
   // Instead of SO_ENGINE_ADD_OUTPUT().
@@ -168,7 +190,10 @@ SoConcatenate::readInstance(SoInput * in, unsigned short flags)
 
   SbName tmp;
   if (!in->read(tmp) || tmp != "type") {
-    SoReadError::post(in, "\"type\" keyword is missing.");
+    SoReadError::post(in,
+                      "\"type\" keyword is missing, erroneous format for "
+                      "engine class '%s'.",
+                      this->getTypeId().getName().getString());
     return FALSE;
   }
   SbName fieldname;
@@ -177,11 +202,14 @@ SoConcatenate::readInstance(SoInput * in, unsigned short flags)
     return FALSE;
   }
   SoType inputtype = SoType::fromName(fieldname);
-  if (!this->initialize(inputtype)) {
-    SoReadError::post(in, "Type \"%s\" for input field is not valid.",
+  if (!SoConcatenate_valid_type(inputtype)) {
+    SoReadError::post(in, "Type \"%s\" for input field is not valid "
+                      "(field must be non-abstract and a multi-value type).",
                       fieldname.getString());
     return FALSE;
   }
+
+  (void)this->initialize(inputtype);
 
   return SoEngine::readInstance(in, flags);
 }
@@ -213,7 +241,8 @@ void
 SoConcatenate::copyContents(const SoFieldContainer * from,
                             SbBool copyconnections)
 {
-  this->initialize(((SoConcatenate *)from)->input[0]->getTypeId());
+  SoConcatenate * concatenatesrc = (SoConcatenate *)from;
+  if (concatenatesrc->input[0]) { (void)this->initialize(concatenatesrc->input[0]->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }
 

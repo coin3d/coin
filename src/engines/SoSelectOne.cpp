@@ -38,6 +38,15 @@
   make it match what the SoSelectOne::input is connected to since the
   type of the SoSelectOne::output always should be the same as the
   type of the SoSelectOne::input.
+
+
+  \ENGINE_TYPELESS_FILEFORMAT
+
+  \verbatim
+  SelectOne {
+    type <multivaluefieldtype>
+    [...fields...]
+  }
 */
 
 #include <Inventor/engines/SoSelectOne.h>
@@ -82,6 +91,12 @@
 // dynamically allocated.
 SO_INTERNAL_ENGINE_SOURCE_DYNAMIC_IO(SoSelectOne);
 
+static SbBool
+SoSelectOne_valid_type(SoType t)
+{
+  return (t.isDerivedFrom(SoMField::getClassTypeId()) &&
+          t.canCreateInstance());
+}
 
 /*!
   Constructor. Sets the type of the input field. The input field must
@@ -89,22 +104,32 @@ SO_INTERNAL_ENGINE_SOURCE_DYNAMIC_IO(SoSelectOne);
 */
 SoSelectOne::SoSelectOne(SoType inputtype)
 {
+  this->dynamicinput = NULL;
+  this->dynamicoutput = NULL;
   this->input = NULL;
-  if (!this->initialize(inputtype)) {
+  this->output = NULL;
+
 #if COIN_DEBUG
+  if (!SoSelectOne_valid_type(inputtype)) {
     SoDebugError::post("SoSelectOne::SoSelectOne",
-                       "invalid type '%s' for input field",
+                       "invalid type '%s' for input field, "
+                       "field must be non-abstract and a multi-value type.",
                        inputtype == SoType::badType() ? "badType" :
                        inputtype.getName().getString());
-#endif // COIN_DEBUG
   }
+#endif // COIN_DEBUG
+
+  (void)this->initialize(inputtype);
 }
 
 // Default constructor. Leaves engine in invalid state. Should only be
 // used from import code or copy code.
 SoSelectOne::SoSelectOne(void)
 {
+  this->dynamicinput = NULL;
+  this->dynamicoutput = NULL;
   this->input = NULL;
+  this->output = NULL;
 }
 
 // Set up the input and output fields of the engine. This is done from
@@ -114,22 +139,17 @@ SbBool
 SoSelectOne::initialize(const SoType inputfieldtype)
 {
   assert(this->input == NULL);
+  assert(SoSelectOne_valid_type(inputfieldtype));
 
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoSelectOne);
   SO_ENGINE_ADD_INPUT(index, (0));
 
-  if (inputfieldtype.isDerivedFrom(SoMField::getClassTypeId()) &&
-      inputfieldtype.canCreateInstance()) {
-    // Instead of SO_ENGINE_ADD_INPUT().
-    this->input = (SoMField *)inputfieldtype.createInstance();
-    this->input->setNum(0);
-    this->input->setContainer(this);
-    this->dynamicinput = new SoFieldData(SoSelectOne::inputdata);
-    this->dynamicinput->addField(this, "input", this->input);
-  }
-  else {
-    return FALSE;
-  }
+  // Instead of SO_ENGINE_ADD_INPUT().
+  this->input = (SoMField *)inputfieldtype.createInstance();
+  this->input->setNum(0);
+  this->input->setContainer(this);
+  this->dynamicinput = new SoFieldData(SoSelectOne::inputdata);
+  this->dynamicinput->addField(this, "input", this->input);
 
   SbString multiname = inputfieldtype.getName().getString();
   // Built-in fields always start with the "MF", but we try to handle
@@ -204,7 +224,10 @@ SoSelectOne::readInstance(SoInput * in, unsigned short flags)
 
   SbName tmp;
   if (!in->read(tmp) || tmp != "type") {
-    SoReadError::post(in, "\"type\" keyword is missing.");
+    SoReadError::post(in,
+                      "\"type\" keyword is missing, erroneous format for "
+                      "engine class '%s'.",
+                      this->getTypeId().getName().getString());
     return FALSE;
   }
   SbName fieldname;
@@ -213,12 +236,14 @@ SoSelectOne::readInstance(SoInput * in, unsigned short flags)
     return FALSE;
   }
   SoType inputtype = SoType::fromName(fieldname);
-  if (!this->initialize(inputtype)) {
-    SoReadError::post(in, "Type \"%s\" for input field is not valid.",
+  if (!SoSelectOne_valid_type(inputtype)) {
+    SoReadError::post(in, "Type \"%s\" for input field is not valid "
+                      "(field must be non-abstract and a multi-value type).",
                       fieldname.getString());
     return FALSE;
   }
 
+  (void)this->initialize(inputtype);
   return SoEngine::readInstance(in, flags);
 }
 
@@ -249,6 +274,7 @@ void
 SoSelectOne::copyContents(const SoFieldContainer * from,
                           SbBool copyconnections)
 {
-  this->initialize(((SoSelectOne *)from)->input->getTypeId());
+  SoSelectOne * selectonesrc = (SoSelectOne *)from;
+  if (selectonesrc->input) { (void)this->initialize(selectonesrc->input->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }
