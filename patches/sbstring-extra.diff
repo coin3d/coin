@@ -1,3 +1,12 @@
+This patch depends on havinf applied sbstring-c-wrapper.diff first.
+The point of this patch is to collect optimizations and rewrites that
+can, and should, be done with the new SbString implementation.
+
+It currently only contains one insignificant optimization, but as
+time goes by I expect this patch to expand.
+
+  Lars J
+
 Index: src/misc/SoType.cpp
 ===================================================================
 RCS file: /export/cvsroot/Coin/src/misc/SoType.cpp,v

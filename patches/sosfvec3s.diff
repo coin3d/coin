@@ -1,3 +1,8 @@
+A new SoSFVec3s field.  Useful for three-dimensional integer vectors of
+relatively small size (short type).
+
+  Lars J
+
 Index: include/Inventor/fields/SoSFVec3s.h
 ===================================================================
 RCS file: include/Inventor/fields/SoSFVec3s.h

@@ -1,3 +1,20 @@
+This patch implements an alternative to SoInput::setBuffer() which is
+more convenient and portable to use with static strings.  Static strings
+can only be so large and still be portable.  A string array doesn't
+impose arbitrary size limitations on other than the individual strings,
+which will be well below the limit if you typically use one string for
+each line in the Inventor scene graph.
+
+An improvement on this patch would be to let SoInput read directly from
+the string array instead of doing the concatenation to a duplicate memory
+block (waste of memory), but this would be pretty complex to implement
+compared to this fully working implementation.
+
+There's also a couple of internal signature changes in this patch - adding
+"const" to a few methods.
+
+  Lars J
+
 Index: include/Inventor/SoInput.h
 ===================================================================
 RCS file: /export/cvsroot/Coin/include/Inventor/SoInput.h,v

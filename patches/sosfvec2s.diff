@@ -1,3 +1,8 @@
+Just a new SoSFVec2s field.  Useful for two-dimensional integer vectors
+with relatively small size (short type).
+
+  Lars J
+
 Index: include/Inventor/fields/SoSFVec2s.h
 ===================================================================
 RCS file: include/Inventor/fields/SoSFVec2s.h

@@ -1,3 +1,10 @@
+This is just a proposal for what could be a good replacement for the
+SbVec3f::print(FILE *)-type functions in the Sb classes.  You can't
+reliably pass FILE * pointers between libraries on Windows - generating
+strings on the other hand should be very portable.
+
+  Lars J
+
 Index: include/Inventor/misc/SoDebug.h
 ===================================================================
 RCS file: include/Inventor/misc/SoDebug.h

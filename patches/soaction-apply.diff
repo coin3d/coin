@@ -1,3 +1,9 @@
+This patch implements a shortcut for applying a new action on the same
+arguments as another action.  It may have limited usefulness, as you most
+often only want to apply actions on given nodes or the current path.
+
+  Lars J
+
 Index: include/Inventor/actions/SoAction.h
 ===================================================================
 RCS file: /export/cvsroot/Coin/include/Inventor/actions/SoAction.h,v
