@@ -37,13 +37,14 @@
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/errors/debugerror.h>
 
-#include <Inventor/C/glue/flwwin32.h>
+/*#include <Inventor/C/glue/flwwin32.h>*/
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 
 #include "fontlib_wrapper.h"
 #include "freetype.h"
+#include "win32.h"
 #include "../misc/defaultfonts.h"
 
 /* ********************************************************************** */
@@ -813,8 +814,7 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
     vector_glyph = cc_flwft_get_vector_glyph(fs->font, glyph);
   } 
   else {
-    cc_debugerror_postwarning("cc_flw_get_vector_glyph", "Only Freetype is supported.");
-    return NULL;
+	vector_glyph = cc_flww32_get_vector_glyph(fs->font, glyph);		               
   }
   
   FLW_MUTEX_UNLOCK(flw_global_lock);
@@ -828,8 +828,7 @@ cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
   if (freetypelib)
     return cc_flwft_get_vector_glyph_coords(vecglyph);
   else {
-    cc_debugerror_postwarning("cc_flw_get_vector_glyph_coords", "Only Freetype is supported.");
-    return NULL;
+    return cc_flww32_get_vector_glyph_coords(vecglyph);
   }
 }
 
@@ -839,8 +838,7 @@ cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
   if (freetypelib)
     return cc_flwft_get_vector_glyph_faceidx(vecglyph);
   else {
-    cc_debugerror_postwarning("cc_flw_get_vector_glyph_faceidx", "Only Freetype is supported.");
-    return NULL;
+    return cc_flww32_get_vector_glyph_faceidx(vecglyph);
   }
 }
 
@@ -850,7 +848,6 @@ cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
   if (freetypelib)
     return cc_flwft_get_vector_glyph_edgeidx(vecglyph);
   else {
-    cc_debugerror_postwarning("cc_flw_get_vector_glyph_edgeidx", "Only Freetype is supported.");
-    return NULL;
+    return cc_flww32_get_vector_glyph_edgeidx(vecglyph);
   }
 }
