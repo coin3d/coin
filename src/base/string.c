@@ -267,37 +267,11 @@ cc_string_append_text(cc_string * me, const char * text)
 void
 cc_string_append_integer(cc_string * me, const int digits)
 {
-  int i, f, s, w, len, tmp;
-
-  /* FIXME: Cheesus, this is lame. Use log10 instead. 19991216 mortene. */
-  w = 1;
-  if ( digits < 0 ) w++; /* sign */
-  tmp = digits;
-  while ( tmp >= 10 ) {
-    tmp /= 10;
-    w++;
-  }
-
-  cc_string_expand_buffer(me, w);
-
-  tmp = digits;
-  len = strlen(me->pointer);
-  if ( tmp < 0 ) {
-    tmp = -tmp;
-    me->pointer[len++] = '-';
-    w--;
-  }
-
-  f = 1;
-  for ( i = 0; i < w - 1; i++ ) f *= 10;
-  while ( w ) {
-    s = tmp / f;
-    tmp = tmp % f;
-    f /= 10;
-    w--;
-    me->pointer[len++] = (char) (s + 0x30);
-  }
-  me->pointer[len] = '\0';
+  cc_string s;
+  cc_string_struct_init(&s);
+  (void)cc_string_sprintf(&s, "%d", digits);
+  cc_string_append_string(me, &s);
+  cc_string_struct_clean(&s);
 } /* cc_string_append_integer() */
 
 void
