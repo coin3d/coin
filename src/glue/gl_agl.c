@@ -113,6 +113,7 @@ aglglue_contextdata_cleanup(struct aglglue_contextdata * c)
 void *
 aglglue_context_create_offscreen(unsigned int width, unsigned int height) 
 {
+  QDErr e;
   struct aglglue_contextdata context, * retctx;
   GLint attrib[] = {
     AGL_OFFSCREEN,
@@ -156,7 +157,7 @@ aglglue_context_create_offscreen(unsigned int width, unsigned int height)
      Mac OS X viewer is fully set up. */
   GetGWorld(&context.savedport, &context.savedgdh); 
 
-  QDErr e = NewGWorld(&context.drawable, 32, &context.bounds, 
+  e = NewGWorld(&context.drawable, 32, &context.bounds, 
                       NULL /* cTable */,  NULL /*aGDevice */, 0);
   if(e != noErr) {
     cc_debugerror_postwarning("aglglue_create_offscreen_context",
@@ -181,6 +182,7 @@ aglglue_context_make_current(void * ctx)
 {
   struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
   GLboolean r;
+  PixMapHandle pixmap;
 
   if (context->aglcontext) {
     context->storedcontext = aglGetCurrentContext();
@@ -195,7 +197,7 @@ aglglue_context_make_current(void * ctx)
                            context->storeddrawable);
   }
 
-  PixMapHandle pixmap = GetGWorldPixMap((GWorldPtr)context->drawable);
+  pixmap = GetGWorldPixMap((GWorldPtr)context->drawable);
   r = aglSetOffScreen(context->aglcontext, 
                       context->bounds.right - context->bounds.left, 
                       context->bounds.bottom - context->bounds.top,

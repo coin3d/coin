@@ -126,6 +126,9 @@
 #include <stdio.h>  /* snprintf() */
 #ifdef HAVE_LIBGEN_H
 #include <libgen.h> /* dirname() */
+#else
+/* Mac OS 10.1 has dirname in libc, but libgen.h is missing */
+char * dirname (const char *); 
 #endif /* HAVE_LIBGEN_H */
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h> /* PATH_MAX */
@@ -359,6 +362,7 @@ cc_dl_open(const char * filename)
 
 #elif defined (HAVE_DYLD_RUNTIME_BINDING) 
 
+{
   NSLinkEditErrors c;
   int e;
   const char * file;
@@ -395,6 +399,7 @@ cc_dl_open(const char * filename)
     return h;
 
   }
+}
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 
