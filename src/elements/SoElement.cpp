@@ -74,11 +74,15 @@
 /*!
   \fn SoElement * SoElement::getElement(SoState * const state, const int stackIndex)
 
-  This method returns the top instance (in the state stack) of the element
-  class with stack index \a stackIndex.  This instance is writable.  To make
-  this instance, some lazy evaluation may have to be perfomed, so use
-  getConstElement() instead if the instance shouldn't be modified.
-  If no instance can be returned, NULL is returned.
+  This method returns the top instance (in the \a state stack) of the
+  element class with stack index \a stackIndex.
+
+  The retuned instance is writable.  To make this instance, some lazy
+  evaluation may have to be perfomed, so use getConstElement() instead
+  if the instance shouldn't be modified.
+
+  If no instance is available and can not be made, \c NULL is
+  returned.
 
   \sa const SoElement * SoElement::getConstElement(SoState * const state, const int stackIndex)
 */

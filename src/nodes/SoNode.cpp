@@ -1000,7 +1000,19 @@ SoNode::grabEventsCleanup(void)
 }
 
 /*!
-  \internal
+  This returns the node's current unique identification number. It is
+  unlikely that application programmers will ever need use this method
+  fom client application code, unless working with extensions to the
+  core library (and probably not even then).
+
+  The id number is only valid for as long as the node is kept
+  unchanged -- upon \e any kind of change the internal id will be
+  updated (in the notify() method), and the old id number forgotten.
+
+  The technique described above plays an important role in the way
+  internal scenegraph caches are set up and invalidated.
+
+  \sa SoNode::getNextNodeId()
 */
 uint32_t
 SoNode::getNodeId(void) const
@@ -1073,8 +1085,13 @@ SoNode::copyThroughConnection(void) const
 }
 
 /*!
-  \internal
-  Return the next unique identification number to be assigned.
+  Return the next unique identification number to be assigned upon
+  node construction or change.  It is unlikely that application
+  programmers will ever need use this method fom client application
+  code, unless working with extensions to the core library (and
+  probably not even then).
+
+  \sa SoNode::getNodeId
 */
 uint32_t
 SoNode::getNextNodeId(void)

@@ -23,32 +23,41 @@
 
 /*!
   \class SoReplacedElement Inventor/elements/SoReplacedElement.h
-  \brief The SoReplacedElement class is yet to be documented.
+  \brief The SoReplacedElement class is an abstract element superclass.
   \ingroup elements
 
-  FIXME: write doc.
+  This is the superclass of all elements where the new element value
+  \e replaces the old value. Most elements in the Coin library is in
+  this category.
+
+  Apart from this conceptual difference from it's superclass, the
+  SoReplacedElement class also overloads the default getElement()
+  method to include a node reference. This reference is used to fetch
+  the unique node identification number of the node that last changed
+  the element.
+
+  The identifier values of nodes in the scenegraph is updated upon \e
+  any kind of change to a node, so this technique plays an important
+  role in the construction, validation and destruction of internal
+  scenegraph caches.
+
+  \sa SoAccumulatedElement
 */
 
 #include <Inventor/elements/SoReplacedElement.h>
-
 #include <Inventor/nodes/SoNode.h>
-
 #include <assert.h>
 
 /*!
-  \fn SoReplacedElement::nodeId
-
-  FIXME: write doc.
+  \var uint32_t SoReplacedElement::nodeId
+  \internal
 */
 
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoReplacedElement);
 
 
-/*!
-  This static method initializes static data for the SoReplacedElement class.
-*/
-
+// Documented in superclass.
 void
 SoReplacedElement::initClass(void)
 {
@@ -56,15 +65,13 @@ SoReplacedElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
 SoReplacedElement::~SoReplacedElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// Documented in superclass.
 void
 SoReplacedElement::init(SoState * state)
 {
@@ -72,8 +79,7 @@ SoReplacedElement::init(SoState * state)
   this->nodeId = 0;
 }
 
-//! FIXME: write doc.
-
+// Documented in superclass.
 SbBool
 SoReplacedElement::matches(const SoElement * element) const
 {
@@ -83,8 +89,7 @@ SoReplacedElement::matches(const SoElement * element) const
   return FALSE;
 }
 
-//! FIXME: write doc.
-
+// Documented in superclass.
 SoElement *
 SoReplacedElement::copyMatchInfo(void) const
 {
@@ -95,46 +100,46 @@ SoReplacedElement::copyMatchInfo(void) const
   return element;
 }
 
-//! FIXME: write doc.
-
+// Documented in superclass.
 void
 SoReplacedElement::print(FILE * file) const
 {
-  fprintf(file, "%s[%p]\n", getTypeId().getName().getString(),
-          this);
+  const char * typen = this->getTypeId().getName().getString();
+  (void)fprintf(file, "%s[%p]\n", typen, this);
 }
 
 /*!
-  This function returns the top element on the stack.
+  This function overloads SoElement::getElement() with an extra \a
+  node parameter, to let us set the SoReplacedElement::nodeId in the
+  element instance before returning.
 
-  This function overrides SoElement::getElement() to set the nodeId in
-  the instance before returning it.  SoReplacedElement subclasses should
-  use this method to get writable instances.
+  SoReplacedElement subclasses should use this method to get writable
+  instances.
+
+  The identifier values of nodes in the scenegraph is updated upon \e
+  any kind of change to a node, so this technique plays an important
+  role in the construction, validation and destruction of internal
+  scenegraph caches.
+
+  \sa SoElement::getElement()
 */
-
 SoElement *
-SoReplacedElement::getElement(SoState * const state,
-                              const int stackIndex,
+SoReplacedElement::getElement(SoState * const state, const int stackIndex,
                               SoNode * const node)
 {
-  SoReplacedElement *elem =
-    (SoReplacedElement*) SoElement::getElement(state, stackIndex);
-  if (node)
-    elem->nodeId = node->getNodeId();
-  else elem->nodeId = 0;
+  SoReplacedElement * elem =
+    (SoReplacedElement *)SoElement::getElement(state, stackIndex);
+  if (node) { elem->nodeId = node->getNodeId(); }
+  else { elem->nodeId = 0; }
   return elem;
 }
 
 /*!
-  \fn uint32_t SoReplacedElement::getNodeId(void) const
-
-  This function returns the node identifier for the node that previously
-  updated the SoReplacedElement.
+  Returns the node identifier for the node that previously updated the
+  SoReplacedElement.
 */
-
-//$ EXPORT INLINE
 uint32_t
-SoReplacedElement::getNodeId() const
+SoReplacedElement::getNodeId(void) const
 {
   return this->nodeId;
 }
