@@ -246,7 +246,7 @@ SoCallbackAction::SoCallbackAction(void)
 static void
 delete_list_elements(SbList<SoCallbackData *>&list)
 {
-  int i, n = list.getLength();
+  int n = list.getLength();
   SoCallbackData * data, * next;
   for (int i = 0; i < n; i++) {
     list[i]->deleteAll();
