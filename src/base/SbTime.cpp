@@ -229,9 +229,9 @@ SbTime::getValue(void) const
   \sa setValue().
  */
 void
-SbTime::getValue(int32_t & sec, long & usec) const
+SbTime::getValue(time_t & sec, long & usec) const
 {
-  sec = (int32_t)(this->dtime);
+  sec = (time_t)(this->dtime);
   double us = fmod(this->dtime, 1.0) * 1000000.0;
   usec = (long)(us + (us < 0.0 ? -0.5 : 0.5));
 }
@@ -302,7 +302,7 @@ SbTime::format(const char * const fmt) const
     if (c != '%') str += c;
     else {
       char m = fmt[++idx];
-      switch(m) {
+      switch (m) {
       case '%':
         str += m;
         break;
@@ -487,7 +487,7 @@ SbTime::parsedate(const char * const date)
   while (*dateptr != ' ' && *dateptr != '\t')
     dateptr++; // we don't give a shit if it's wednesday
   dateptr -= 2; // step back
-  if (dateptr[0] != 'y' && dateptr[1] == ',') { // RFC 822 / RFC 1123 format
+  if (dateptr[0] != 'y' && dateptr[1] == ', ') { // RFC 822 / RFC 1123 format
     // FORMAT: Wkd, DD Mnth YYYY HH:MM:SS GMT
 //     fprintf(stdout, "date format: RFC 822\n");
 
@@ -527,7 +527,7 @@ SbTime::parsedate(const char * const date)
     time.tm_wday = 0;
     time.tm_yday = 0;
     time.tm_isdst = 0;
-  } else if (dateptr[1] == ',') { // RFC 850 / RFC 1036 format
+  } else if (dateptr[1] == ', ') { // RFC 850 / RFC 1036 format
     // FORMAT: Weekday, DD-Mnth-YY HH:MM:SS GMT
 //     fprintf(stdout, "date format: RFC 850\n");
 
@@ -900,7 +900,7 @@ SbTime::print(FILE * fp) const
   struct timeval tm;
   this->getValue(&tm);
   SbString str = this->formatDate("   %A %D %T %Z");
-  fprintf( fp, "%s", str.getString() );
-  fprintf( fp, ", secs: %ld, msecs: %ld\n", tm.tv_sec, tm.tv_usec );
+  fprintf(fp, "%s", str.getString());
+  fprintf(fp, ", secs: %ld, msecs: %ld\n", tm.tv_sec, tm.tv_usec);
 #endif // COIN_DEBUG
 }
