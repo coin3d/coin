@@ -185,17 +185,17 @@ SoBaseKit::setPart(const SbName &partname, SoNode *from)
 }
 
 static const char *
-skip_space(const char *ptr)
+skip_spaces(const char *ptr)
 {
   while (isspace(*ptr)) ptr++;
   return ptr;
 }
 
 static int
-count_nonspace(const char *ptr)
+find_partname_length(const char *ptr)
 {
   int cnt = 0;
-  while (ptr[cnt] && !isspace(ptr[cnt])) cnt++;
+  while (ptr[cnt] && !isspace(ptr[cnt]) && ptr[cnt] != '{' && ptr[cnt] != '}') cnt++;
   return cnt;
 }
 
@@ -205,25 +205,63 @@ count_nonspace(const char *ptr)
 SbBool
 SoBaseKit::set(const char *namevaluepairliststring)
 {
-  // FIXME: the parsing does seem to contain obvious bugs -- what if a
-  // "{" or a "}" is enclosed within a string, for instance?
-  // 20000107 mortene.
-
-  const char *currptr = namevaluepairliststring;
-  const char *startbracket = strchr(currptr, '{');
-  const char *endbracket = strchr(currptr, '}');
-
-  while (*currptr && startbracket && endbracket) {
-    currptr = skip_space(currptr);
-    SbString partname(currptr, 0, count_nonspace(currptr)-1);
-    SbString parameter(startbracket+1, 0, endbracket-startbracket-1);
-
-    if (!this->set(partname.getString(), parameter.getString())) {
+  int stringlen = strlen(namevaluepairliststring); // cache this value
+  const char *currptr = skip_spaces(namevaluepairliststring);
+  SoInput memInput;
+  
+  while (*currptr) {
+    int partnamelen = find_partname_length(currptr);
+    const char *start = skip_spaces(currptr + partnamelen);
+    if (*start != '{') { // first non-space after partname should be a {
+#if COIN_DEBUG && 1 // debug
+      SoDebugError::postInfo("SoBaseKit::set",
+                             "parse error at byte %d in input string",
+                             start-namevaluepairliststring);
+#endif // debug
       return FALSE;
     }
-    currptr = endbracket + 1;
-    startbracket = strchr(currptr, '{');
-    endbracket = strchr(currptr, '}');
+    start++; // skip {
+    SbString partname(currptr, 0, partnamelen-1);
+    SoBaseKit *kit = this;
+    int partNum;
+    SbBool isList;
+    int listIdx;
+    if (!SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE)) {
+#if COIN_DEBUG && 1 // debug
+      SoDebugError::postInfo("SoBaseKit::set",
+                             "part ``%s'' not found",
+                             partname.getString());
+#endif // debug
+      return FALSE;
+    }
+    
+    SoNode *node = kit->fieldList[partNum]->getValue();
+    if (isList) {
+      SoNodeKitListPart *list = (SoNodeKitListPart*)node;
+      if (listIdx < 0 || listIdx >= list->getNumChildren()) {
+#if COIN_DEBUG && 1 // debug
+        SoDebugError::postInfo("SoBaseKit::set",
+                               "index %d out of bounds for part ``%s''",
+                               listIdx, partname.getString());
+#endif // debug
+        return FALSE;
+      }
+      node = list->getChild(listIdx);
+    }
+    memInput.setBuffer((void*)start, stringlen - (start-namevaluepairliststring));
+    SbBool dummy;
+    if (!node->getFieldData()->read(&memInput, node, TRUE, dummy)) {
+#if COIN_DEBUG && 1 // debug
+      SoDebugError::postInfo("SoBaseKit::set",
+                             "error while parsing data for part ``%s''",
+                             partname.getString());
+#endif // debug
+      return FALSE;
+    }
+    currptr = start + (int) memInput.getNumBytesRead();
+    if (*currptr == '}') currptr++;
+    assert(currptr <= namevaluepairliststring + stringlen);
+    currptr = skip_spaces(currptr);
   }
   return TRUE;
 }
@@ -547,9 +585,28 @@ SoBaseKit::copyContents(const SoFieldContainer * /*fromfc*/, SbBool /*copyconnec
   FIXME: write function documentation
 */
 SoGroup *
-SoBaseKit::getContainerNode(const SbName & /*listname*/, SbBool /*makeifneeded*/)
+SoBaseKit::getContainerNode(const SbName &listname, SbBool makeifneeded)
 {
-  COIN_STUB();
+  SoBaseKit *kit = this;
+  int partNum;
+  SbBool isList;
+  int listIdx;
+  if (SoBaseKit::findPart(SbString(listname.getString()), kit, partNum,
+                          isList, listIdx, makeifneeded)) {
+    SoNode *node = kit->fieldList[partNum]->getValue();
+    if (node == NULL) return NULL;
+    if (!isList) {
+#if COIN_DEBUG && 1 // debug
+      SoDebugError::postInfo("SoBaseKit::getContainerNode",
+                             "part ``%s'' is not a container",
+                             listname.getString());
+#endif // debug
+      return NULL;
+    }
+    assert(node->isOfType(SoNodeKitListPart::getClassTypeId()));
+    SoNodeKitListPart *list = (SoNodeKitListPart*)node;
+    return list->getContainerNode();
+  }
   return NULL;
 }
 
@@ -605,16 +662,33 @@ SoBaseKit::getAnyPart(const SbName &partname, SbBool makeifneeded, SbBool leafch
 SoNodeKitPath *
 SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBool /*leafcheck*/, SbBool /*publiccheck*/, const SoPath *pathtoextend)
 {
-  // this code is highly experimental :-) pederb, 2000-01-05
+  // FIXME: leafcheck and publiccheck support, pederb 2000-01-07  
+  
+  // FIXME: need to investigate whether containerNode for lists should be 
+  // in the path. pederb, 2000-01-07
 
-  // leafcheck and publiccheck are ignored for now
-
- // FIXME: implement path copy with tail test. pederb, 2000-01-05
-  assert(pathtoextend == NULL);
-
-  SoPath *path = new SoPath(this);
+  SoPath *path;
+  if (pathtoextend) {
+    path = pathtoextend->copy();
+    // pop off nodes beyond this kit node
+    if (path->containsNode(this)) while (path->getTail() != this && path->getLength()) path->pop();
+    if (path->getLength()) {
+      SoNode *node = path->getTail();
+      if (node->getChildren()->find(this) < 0) {
+#if COIN_DEBUG && 1 // debug
+        SoDebugError::postInfo("SoBaseKit::createPathToAnyPart",
+                               "pathtoextend is illegal");
+#endif // debug
+        return NULL;
+      }
+    }
+    path->append(this); // this should be safe now
+  }
+  else {
+    path= new SoPath(this);
+  }
   path->ref();
-
+  
   SoBaseKit *kit = this;
   int partNum;
   SbBool isList;
@@ -622,9 +696,28 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
 
   if (SoBaseKit::findPart(SbString(partname.getString()), kit, partNum,
                           isList, listIdx, makeifneeded, path)) {
-    return (SoNodeKitPath*)path;
+    SoNode *node = kit->fieldList[partNum]->getValue();
+    if (node) {
+      path->append(node);
+      if (isList) {
+        SoNodeKitListPart *list = (SoNodeKitListPart*)node;
+        if (listIdx < 0 || listIdx >= list->getNumChildren()) {
+#if COIN_DEBUG && 1 // debug
+          SoDebugError::postInfo("SoBaseKit::createPathToAnyPart",
+                                 "index %d out of bounds for part ``%s''",
+                                 listIdx, partname.getString());
+#endif // debug
+          path->unref();
+          return NULL;
+        }
+        else {
+          path->append(list->getChild(listIdx));
+        }
+      }
+      return (SoNodeKitPath*)path;
+    }
   }
-  else path->unref();
+  path->unref();
   return NULL;
 }
 
@@ -658,10 +751,10 @@ SoBaseKit::setAnyPart(const SbName &partname, SoNode *from, SbBool anypart)
           else {
 #if COIN_DEBUG && 1 // debug
             SoDebugError::postInfo("SoBaseKit::setAnyPart",
-                                   "index %d out of bounds for part: %s",
+                                   "index %d out of bounds for part ``%s''",
                                    listIdx, partname.getString());
 #endif // debug
-
+            
           }
         }
       }
@@ -796,7 +889,7 @@ SoBaseKit::readInstance(SoInput *in, unsigned short flags)
       if (partnode != nodelist[i]) {
         partnode->ref(); // ref to make sure node is not deleted
         this->fieldList[i]->setValue(nodelist[i]); // restore old value
-        nodelist[i] = partnode; // set value for second interation
+        nodelist[i] = partnode; // set value for second iteration
       }
       else nodelist[i] = NULL;
     }

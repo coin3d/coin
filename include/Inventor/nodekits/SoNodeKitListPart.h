@@ -93,6 +93,8 @@ private:
 
   SbBool typelistlocked;
   SoTypeList allowedtypes;
+
+  friend class SoBaseKit;
 };
 
 #endif // !__SONODEKITLISTPART_H__
