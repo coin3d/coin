@@ -250,4 +250,5 @@ SoAntiSquish::getUnsquishingMatrix(SbMatrix squishedMatrix,
 				   SbBool doInverse, SbMatrix & inverseAnswer)
 {
   assert(0 && "FIXME: not implemented");
+  return SbMatrix::identity();
 }

@@ -179,4 +179,5 @@ SbBool
 SoPackedColor::isTransparent(void)
 {
   assert(0 && "FIXME: not implemented");
+  return FALSE;
 }

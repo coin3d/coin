@@ -80,6 +80,10 @@
 
 #include <assert.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 // *************************************************************************
 
 class SoDB_HeaderInfo {

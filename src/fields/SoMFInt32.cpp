@@ -35,7 +35,12 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
 #include <Inventor/fields/SoSFString.h>
+
+#ifdef _WIN32
+#include <strstrea.h>
+#else // ! _WIN32
 #include <strstream.h>
+#endif // ! _WIN32
 
 // *************************************************************************
 

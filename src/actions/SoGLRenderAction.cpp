@@ -77,6 +77,10 @@
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
 
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
+
 #include <GL/gl.h>
 
 // *************************************************************************

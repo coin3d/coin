@@ -495,6 +495,7 @@ SbBool
 SoAction::isLastPathListAppliedTo() const
 { 
   assert(0 && "FIXME: Not implemented");
+  return FALSE;
 }
 
 /*!

@@ -39,7 +39,12 @@
 #include <Inventor/SoOutput.h>
 #include <malloc.h>
 #include <assert.h>
+
+#ifdef _WIN32
+#include <strstrea.h>
+#else // ! _WIN32
 #include <strstream.h>
+#endif // ! _WIN32
 
 // *************************************************************************
 

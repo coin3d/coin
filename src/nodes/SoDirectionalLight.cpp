@@ -32,6 +32,9 @@
 #include <Inventor/SbColor4f.h>
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
 #include <GL/gl.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION

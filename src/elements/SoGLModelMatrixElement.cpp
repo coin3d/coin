@@ -32,6 +32,10 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/errors/SoDebugError.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif // !_WIN32
+
 #include <GL/gl.h>
 #include <math.h>
 

@@ -20,7 +20,7 @@
 #ifndef __SBBOX3F_H__
 #define __SBBOX3F_H__
 
-#include <values.h>
+#include <float.h>
 #include <Inventor/SbVec3f.h>
 
 class ostream;

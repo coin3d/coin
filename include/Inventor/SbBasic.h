@@ -70,6 +70,10 @@
 
 typedef int SbBool;
 
+#ifdef _WIN32 // FIXME: this should be a HAVE_M_PI_DEFINITION check. 19990808 mortene.
+#define M_PI 3.14159265358979323846
+#endif // _WIN32
+
 #ifndef FALSE
 #define FALSE 0
 #define TRUE  1

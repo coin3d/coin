@@ -514,6 +514,7 @@ int
 SoMarkerSet::getNumDefinedMarkers(void)
 {
   assert(0 && "FIXME: not implemented");
+  return 0;
 }
 
 /*!
@@ -535,6 +536,7 @@ SoMarkerSet::getMarker(int markerIndex, SbVec2s & size,
 		       const unsigned char *& bytes, SbBool & isLSBFirst)
 {
   assert(0 && "FIXME: not implemented");
+  return FALSE;
 }
 
 /*!
@@ -544,6 +546,7 @@ SbBool
 SoMarkerSet::removeMarker(int markerIndex)
 {
   assert(0 && "FIXME: not implemented");
+  return FALSE;
 }
 
 /*!
@@ -553,4 +556,5 @@ SbBool
 SoMarkerSet::isMarkerBitSet(int markerIndex, int bitNumber)
 {
   assert(0 && "FIXME: not implemented");
+  return FALSE;
 }

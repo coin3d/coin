@@ -23,7 +23,10 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoMFFloat.h>
+
+#ifndef _WIN32
 #include <GL/glu.h>
+#endif // ! _WIN32
 
 #if defined(COIN_EXCLUDE_SONURBSSURFACE)
 #error Configuration settings disrespected -- do not include this file!
@@ -34,7 +37,7 @@
 class SoNurbsSurface : public SoShape {
   typedef SoShape inherited;
 
-//$ BEGIN TEMPLATE NodeHeader( SoNurbsSurface )
+//$ BEGIN TEMPLATE NodeHeader(SoNurbsSurface)
 private:
   static SoType classTypeId;
 
@@ -83,7 +86,11 @@ protected:
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
 private:
-  GLUnurbsObj *nurbsRenderer;
+#ifdef _WIN32
+  class GLUnurbs * nurbsRenderer;
+#else // !_WIN32
+  GLUnurbsObj * nurbsRenderer;
+#endif // ! _WIN32
 };
 
 #endif // !__SONURBSSURFACE_H__

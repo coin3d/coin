@@ -222,6 +222,7 @@ SbBool
 SoMultipleCopy::affectsState(void) const
 {
   assert(0 && "FIXME: not implemented");
+  return TRUE;
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

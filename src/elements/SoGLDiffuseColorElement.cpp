@@ -28,6 +28,11 @@
 
 #include <Inventor/SbName.h>
 #include <Inventor/SbColor.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif // !_WIN32
+
 #include <GL/gl.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

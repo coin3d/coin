@@ -1007,7 +1007,7 @@ SbMatrix::multRight(const SbMatrix & m)
   tmp[3][2]=m0[2]*t3[0]+m1[2]*t3[1]+m2[2]*t3[2]+m3[2]*t3[3];
   tmp[3][3]=m0[3]*t3[0]+m1[3]*t3[1]+m2[3]*t3[2]+m3[3]*t3[3];
 
-  this->setValue(tmp);
+  memcpy(this->matrix, tmp.matrix, sizeof(float)*4*4);
   return *this;
 }
 
@@ -1047,7 +1047,7 @@ SbMatrix::multLeft(const SbMatrix& m)
   tmp[3][2]=m3[0]*t0[2]+m3[1]*t1[2]+m3[2]*t2[2]+m3[3]*t3[2];
   tmp[3][3]=m3[0]*t0[3]+m3[1]*t1[3]+m3[2]*t2[3]+m3[3]*t3[3];
 
-  this->setValue(tmp);
+  memcpy(this->matrix, tmp.matrix, sizeof(float)*4*4);
   return *this;
 }
 

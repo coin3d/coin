@@ -56,10 +56,14 @@
 #endif // COIN_DEBUG
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
+#ifdef _WIN32
+#include <windows.h>
+#else // !_WIN32
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
-#include <GL/gl.h>
 #include <GL/glx.h>
+#endif // !_WIN32
+#include <GL/gl.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
@@ -202,6 +206,10 @@ SoText2::cleanClass(void)
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 
+#ifdef _WIN32
+
+#else // !_WIN32
+
 static Display * d = NULL;
 
 static XFontStruct *
@@ -328,6 +336,8 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
   }
 }
 
+#endif // !_WIN32
+
 /*!
   FIXME: write function documentation
 */
@@ -336,6 +346,9 @@ SoText2::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
+#ifdef _WIN32
+
+#else // !_WIN32
   SoState * state = action->getState();
 
   XFontStruct * fontstruct;
@@ -432,6 +445,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
   }
+#endif // !_WIN32
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

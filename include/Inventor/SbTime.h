@@ -20,7 +20,16 @@
 #ifndef __SBTIME_H__
 #define __SBTIME_H__
 
+#ifdef _WIN32
+#include <time.h>
+#include <sys/timeb.h>
+
+
+struct timeval;
+
+#else // ! WIN32
 #include <sys/time.h>
+#endif // ! WIN32
 
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
@@ -38,7 +47,9 @@ public:
   static SbTime getTimeOfDay(void);
   void setToTimeOfDay(void);
   static SbTime zero(void);
+#ifndef _WIN32
   static SbTime max(void);
+#endif
   void setValue(const double sec);
   void setValue(const int32_t sec, const long usec);
   void setValue(const struct timeval * const tv);

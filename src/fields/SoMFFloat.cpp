@@ -38,7 +38,12 @@
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
 #endif // !COIN_EXCLUDE_SOSFSTRING
+
+#ifdef _WIN32
+#include <strstrea.h>
+#else // ! _WIN32
 #include <strstream.h>
+#endif // ! _WIN32
 
 // *************************************************************************
 

@@ -20,7 +20,7 @@
 #ifndef __SBBOX2F_H__
 #define __SBBOX2F_H__
 
-#include <values.h>
+#include <float.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2f.h>
 

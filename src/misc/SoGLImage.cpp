@@ -28,6 +28,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
 #include <GL/gl.h>
 #include <Inventor/lists/SbPList.h>
 

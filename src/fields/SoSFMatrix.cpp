@@ -43,7 +43,12 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#ifdef _WIN32
+#include <strstrea.h>
+#else // ! _WIN32
 #include <strstream.h>
+#endif // ! _WIN32
 
 // *************************************************************************
 
@@ -209,7 +214,7 @@ SoSFMatrix::readValue(SoInput * in)
     in->read(mat[3][0]) && in->read(mat[3][1]) &&
     in->read(mat[3][2]) && in->read(mat[3][3]);
   
-  if (result) this->value.setValue(mat);
+  if (result) this->value = mat;
   return result;
 }
 

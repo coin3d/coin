@@ -508,7 +508,7 @@ SbViewVolume::narrow(const SbBox3f& box) const
 void
 SbViewVolume::ortho(float left, float right,
 		    float bottom, float top,
-		    float near, float far)
+		    float nearval, float farval)
 {
 #if COIN_DEBUG
   if (left>right) {
@@ -529,24 +529,24 @@ SbViewVolume::ortho(float left, float right,
     top=bottom;
     bottom=tmp;
   }
-  if (near>far) {
+  if (nearval>farval) {
     SoDebugError::postWarning("SbViewVolume::ortho",
 			      "far coordinate (%f) should be larger than near "
-			      "coordinate (%f). Swapping near/far.",far,near);
-    float tmp=far;
-    far=near;
-    near=tmp;
+			      "coordinate (%f). Swapping near/far.",farval,nearval);
+    float tmp=farval;
+    farval=nearval;
+    nearval=tmp;
   }
 #endif // COIN_DEBUG
 
   this->type = SbViewVolume::ORTHOGRAPHIC;
   this->projectionpt.setValue(0.0f, 0.0f, 0.0f);
   this->projectiondir.setValue(0.0f, 0.0f, -1.0f);
-  this->nearplanedistance = near;
-  this->nearfardistance = far - near;
-  this->lowerleftfrust.setValue(left, bottom, -near);
-  this->lowerrightfrust.setValue(right, bottom, -near);
-  this->upperleftfrust.setValue(left, top, -near);
+  this->nearplanedistance = nearval;
+  this->nearfardistance = farval - nearval;
+  this->lowerleftfrust.setValue(left, bottom, -nearval);
+  this->lowerrightfrust.setValue(right, bottom, -nearval);
+  this->upperleftfrust.setValue(left, top, -nearval);
 }
 
 /*!
@@ -560,7 +560,7 @@ SbViewVolume::ortho(float left, float right,
 */
 void
 SbViewVolume::perspective(float fovy, float aspect,
-			  float near, float far)
+			  float nearval, float farval)
 {
 #if COIN_DEBUG
   if (fovy<0.0f || fovy > M_PI) {
@@ -578,31 +578,31 @@ SbViewVolume::perspective(float fovy, float aspect,
     aspect=0.0f;
   }
 
-  if (near>far) {
+  if (nearval>farval) {
     SoDebugError::postWarning("SbViewVolume::perspective",
 			      "far coordinate (%f) should be larger than "
 			      "near coordinate (%f). Swapping near/far.",
-			      far,near);
-    float tmp=far;
-    far=near;
-    near=tmp;
+			      farval,nearval);
+    float tmp=farval;
+    farval=nearval;
+    nearval=tmp;
   }
 #endif // COIN_DEBUG
 
   this->type = SbViewVolume::PERSPECTIVE;
   this->projectionpt.setValue(0.0f, 0.0f, 0.0f);
   this->projectiondir.setValue(0.0f, 0.0f, -1.0f);
-  this->nearplanedistance = near;
-  this->nearfardistance = far - near;
+  this->nearplanedistance = nearval;
+  this->nearfardistance = farval - nearval;
 
-  float top = near * tan(fovy/2.0f);
+  float top = nearval * tan(fovy/2.0f);
   float bottom = -top;
   float left = bottom * aspect;
   float right = -left;
 
-  this->lowerleftfrust.setValue(left, bottom, -near);
-  this->lowerrightfrust.setValue(right, bottom, -near);
-  this->upperleftfrust.setValue(left, top, -near);
+  this->lowerleftfrust.setValue(left, bottom, -nearval);
+  this->lowerrightfrust.setValue(right, bottom, -nearval);
+  this->upperleftfrust.setValue(left, top, -nearval);
 }
 
 /*!
@@ -673,17 +673,17 @@ SbViewVolume::zVector(void) const
   \sa zVector().
  */
 SbViewVolume
-SbViewVolume::zNarrow(float near, float far) const
+SbViewVolume::zNarrow(float nearval, float farval) const
 {
 #if COIN_DEBUG
-  if (near>far) {
+  if (nearval>farval) {
     SoDebugError::postWarning("SbViewVolume::zNarrow",
 			      "far coordinate (%f) should be larger than "
 			      "near coordinate (%f). Swapping near/far.",
-			      far,near);
-    float tmp=far;
-    far=near;
-    near=tmp;
+			      farval,nearval);
+    float tmp=farval;
+    farval=nearval;
+    nearval=tmp;
   }
 #endif // COIN_DEBUG
 
@@ -694,8 +694,8 @@ SbViewVolume::zNarrow(float near, float far) const
 #if 0 // not working yet
   SbViewVolume nvw = *this;
 
-  float n = SbMin(1.0f, near);
-  float f = SbMax(0.0f, far);
+  float n = SbMin(1.0f, nearval);
+  float f = SbMax(0.0f, farval);
 
   nvw.nearplanedistance = n;
   nvw.nearfardistance = -(f-n) * this->nearfardistance;
@@ -890,7 +890,7 @@ SbViewVolume::getDepth(void) const
 SbMatrix
 SbViewVolume::getOrthoProjection(const float left, const float right,
 				 const float bottom, const float top,
-				 const float near, const float far)
+				 const float nearval, const float farval)
 {
   SbMatrix proj;
 
@@ -907,11 +907,11 @@ SbViewVolume::getOrthoProjection(const float left, const float right,
   proj[1][3] = 0.0f;
   proj[2][0] = 0.0f;
   proj[2][1] = 0.0f;
-  proj[2][2] = -2.0f/(far-near);
+  proj[2][2] = -2.0f/(farval-nearval);
   proj[2][3] = 0.0f;
   proj[3][0] = -(right+left)/(right-left);
   proj[3][1] = -(top+bottom)/(top-bottom);
-  proj[3][2] = -(far+near)/(far-near);
+  proj[3][2] = -(farval+nearval)/(farval-nearval);
   proj[3][3] = 1.0f;
 
   return proj;
@@ -924,28 +924,28 @@ SbViewVolume::getOrthoProjection(const float left, const float right,
 SbMatrix
 SbViewVolume::getPerspectiveProjection(const float left, const float right,
 				       const float bottom, const float top,
-				       const float near, const float far)
+				       const float nearval, const float farval)
 {
   SbMatrix proj;
 
   // Projection matrix. From the "OpenGL Programming Guide, release 1",
   // Appendix G (but with row-major mode).
 
-  proj[0][0] = 2.0f*near/(right-left);
+  proj[0][0] = 2.0f*nearval/(right-left);
   proj[0][1] = 0.0f;
   proj[0][2] = 0.0f;
   proj[0][3] = 0.0f;
   proj[1][0] = 0.0f;
-  proj[1][1] = 2.0f*near/(top-bottom);
+  proj[1][1] = 2.0f*nearval/(top-bottom);
   proj[1][2] = 0.0f;
   proj[1][3] = 0.0f;
   proj[2][0] = (right+left)/(right-left);
   proj[2][1] = (top+bottom)/(top-bottom);
-  proj[2][2] = -(far+near)/(far-near);
+  proj[2][2] = -(farval+nearval)/(farval-nearval);
   proj[2][3] = -1.0f;
   proj[3][0] = 0.0f;
   proj[3][1] = 0.0f;
-  proj[3][2] = -2.0f*far*near/(far-near);
+  proj[3][2] = -2.0f*farval*nearval/(farval-nearval);
   proj[3][3] = 0.0f;
 
   return proj;

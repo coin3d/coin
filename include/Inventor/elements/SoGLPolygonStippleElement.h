@@ -68,7 +68,7 @@ public:
   void evaluate() const;
 
 private:
-  static u_char patterns[64 + 1][32 * 4];
+  static unsigned char patterns[64 + 1][32 * 4];
 
   void updategl();
   SbBool isEnabled;

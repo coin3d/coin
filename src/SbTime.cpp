@@ -32,7 +32,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-#include <values.h>
+#include <limits.h>
 #include <math.h>
 #include <errno.h>
 
@@ -43,10 +43,14 @@
 
 
 // Used by SbTime::parsedate().
-#ifdef WIN32
-inline int strncasecmp(const char * const s1, const char * const s2) {
-    return _strncmpi(s1, s2);
-} // strncasecmp()
+#ifdef _WIN32
+inline int
+strncasecmp(const char * const s1, const char * const s2, int len)
+{
+  return _strnicmp(s1, s2, len);
+}
+
+#include <windows.h> // for struct timeval. It sucks, I know...
 #endif // WIN32
 
 
@@ -100,6 +104,12 @@ SbTime
 SbTime::getTimeOfDay(void)
 {
   struct timeval tmp;
+#ifdef _WIN32
+  struct _timeb timebuffer;
+  _ftime(&timebuffer);
+  tmp.tv_sec = timebuffer.time;
+  tmp.tv_usec = timebuffer.millitm * 1000; // FIXME: low accuracy */
+#else // ! _WIN32
   int result = gettimeofday(&tmp, NULL);
 
 #if COIN_DEBUG
@@ -108,7 +118,7 @@ SbTime::getTimeOfDay(void)
 			      "Something went wrong (invalid timezone "
 			      "setting?). Result is undefined.");
 #endif // COIN_DEBUG
-  
+#endif // ! _WIN32  
   return SbTime(&tmp);
 }
 
@@ -142,11 +152,14 @@ SbTime::zero(void)
 
   \sa zero().
  */
+
+#ifndef _WIN32 // FIXME: what's the problem? 19990808 mortene.
 SbTime
 SbTime::max(void)
 {
-  return SbTime(((double)MAXINT) + 0.999999);
+  return SbTime(((double)INT_MAX) + 0.999999);
 }
+#endif // _WIN32
 
 /*!
   Reset an SbTime instance to \a sec number of seconds.
@@ -857,12 +870,12 @@ SbTime::addToString(SbString & str, const double v) const
     return;
   }
 
-  while (val > (double)MAXINT) {
+  while (val > (double)INT_MAX) {
     int steps = 0;
     double vcopy = val;
 
     // "Clamp" value to within bounds of an integer.
-    while (val > (double)MAXINT) {
+    while (val > (double)INT_MAX) {
       val /= 10.0;
       steps++;
     }

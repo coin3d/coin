@@ -142,7 +142,7 @@ SoSearchAction::initClass(
 //$ END TEMPLATE InitActionSource
   // with so few methods - these could be removed from the SoNode interface
   // and it's virtual table...
-  SO_ACTION_ADD_METHOD( SoNode, SoNode::searchS );
+  SO_ACTION_ADD_METHOD(SoNode, (SoActionMethodFunc*)SoNode::searchS);
 
   methods->setDefault((void *)SoNode::searchS);
 } // initClass()

@@ -84,8 +84,8 @@ SbBox2f::~SbBox2f(void)
 void
 SbBox2f::makeEmpty(void)
 {
-  this->minpt.setValue(MAXFLOAT, MAXFLOAT);
-  this->maxpt.setValue(-MAXFLOAT, -MAXFLOAT);
+  this->minpt.setValue(FLT_MAX, FLT_MAX);
+  this->maxpt.setValue(-FLT_MAX, -FLT_MAX);
 }
 
 /*!

@@ -33,7 +33,12 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbDict.h>
 #include <assert.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#else // !_WIN32
 #include <netinet/in.h> // htons() & htonl() definitions
+#endif // !_WIN32
 
 // METADON doc:
 /*¡

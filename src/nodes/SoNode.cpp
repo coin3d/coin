@@ -31,6 +31,11 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/fields/SoField.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
+
 #include <Inventor/nodes/SoNodes.h>
 
 #include <Inventor/actions/SoActions.h>

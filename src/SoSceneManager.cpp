@@ -32,6 +32,11 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
+
 #include <GL/gl.h>
 #include <GL/glu.h> // For gluErrorString - not absolutely necessary.
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
@@ -245,6 +250,7 @@ SoSceneManager::isActive(void) const
 {
   // FIXME: implement
   assert(0);
+  return 0;
 }
 
 /*!

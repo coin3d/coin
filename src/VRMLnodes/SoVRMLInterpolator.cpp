@@ -106,4 +106,5 @@ SoVRMLInterpolator::getOutputName(const SoVRMLInterpOutput * output,
 				  SbName & outputName) const
 {
   assert(0 && "FIXME: not implemented yet");
+  return FALSE;
 }

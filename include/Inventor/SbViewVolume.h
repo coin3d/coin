@@ -60,13 +60,13 @@ public:
   SbViewVolume narrow(const SbBox3f& box) const;
   void ortho(float left, float right,
 	     float bottom, float top,
-	     float near, float far);
+	     float nearval, float farval);
   void perspective(float fovy, float aspect,
-		   float near, float far);
+		   float nearval, float farval);
   void rotateCamera(const SbRotation& q);
   void translateCamera(const SbVec3f& v);
   SbVec3f zVector(void) const;
-  SbViewVolume zNarrow(float near, float far) const;
+  SbViewVolume zNarrow(float nearval, float farval) const;
   void scale(float factor);
   void scaleWidth(float ratio);
   void scaleHeight(float ratio);
@@ -92,10 +92,10 @@ private:
 
   static SbMatrix getOrthoProjection(const float left, const float right,
 				     const float bottom, const float top,
-				     const float near, const float far);
+				     const float nearval, const float farval);
   static SbMatrix getPerspectiveProjection(const float left, const float right,
 					   const float bottom, const float top,
-					   const float near, const float far);
+					   const float nearval, const float farval);
 };
 
 #endif // !__SBVIEWVOLUME_H__

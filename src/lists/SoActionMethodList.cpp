@@ -107,7 +107,7 @@ SoActionMethod
 SoActionMethodList::parentMethod(const SoType nodeType) const
 {
   if (!parent) return NULL; // maybe return dummyAction?
-  return (*parent)[ nodeType.getData() ];
+  return (*parent)[ (int) nodeType.getData() ];
 }
 
 /*!

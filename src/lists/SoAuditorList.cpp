@@ -111,7 +111,7 @@ SoAuditorList::getObject(const int index) const
 SoNotRec::Type
 SoAuditorList::getType(const int index) const
 {
-  return (SoNotRec::Type) SbPList::operator[](index*2+1);
+  return (SoNotRec::Type) (int)SbPList::operator[](index*2+1);
 }
 
 /*!

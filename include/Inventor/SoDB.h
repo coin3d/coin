@@ -30,7 +30,12 @@
 #define COIN_EXCLUDE_SOEVENT 1
 #endif // __SOLIB_MAKEASBASE__
 
+#ifdef _WIN32
+typedef struct fd_set fd_set;
+#else // ! _WIN32
 #include <unistd.h> // fd_set
+#endif
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SoType.h>

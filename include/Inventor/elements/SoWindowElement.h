@@ -17,26 +17,33 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_WINDOW_ELEMENT_H_
-#define _SO_WINDOW_ELEMENT_H_
+#ifndef __SOWINDOWELEMENT_H__
+#define __SOWINDOWELEMENT_H__
 
-#include <Inventor/confdep.h>
+#include <Inventor/elements/SoElement.h>
+
 #if defined(COIN_EXCLUDE_SOWINDOWELEMENT)
 #error "Configuration settings disable this class!"
 #endif // COIN_EXCLUDE_SOWINDOWELEMENT
 
-#include <Inventor/elements/SoElement.h>
-
+// FIXME: ugly -- this pucks up system-independence within the base
+// Coin library. What is this element used for anyway? 19990808 mortene.
+#ifdef _WIN32
+typedef void * Window;
+typedef void * GLXContext;
+typedef void Display;
+#else // ! _WIN32
 #include <X11/Xlib.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
+#endif // !_WIN32
 
 class SoGLRenderAction;
 
 class SoWindowElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader( SoWindowElement )
+//$ BEGIN TEMPLATE ElementHeader(SoWindowElement)
 public:
   static SoType classTypeId;
   static SoType getClassTypeId(void);
@@ -54,20 +61,20 @@ protected:
 //$ END TEMPLATE ElementHeader
 
 public:
-  virtual void init( SoState * state );
+  virtual void init(SoState * state);
 
-  virtual void push( SoState * state );
-  virtual void pop( SoState * state, const SoElement * prevTopElement );
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state, const SoElement * prevTopElement);
 
-  virtual SbBool matches( const SoElement * element ) const;
-  virtual SoElement * copyMatchInfo( void ) const;
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
 
-  static  void set( SoState * const state, const Window & window,
+  static  void set(SoState * const state, const Window & window,
               const GLXContext & context, Display * const display,
-              SoGLRenderAction * const action );
-  static  void get( SoState * const state, Window & window,
+              SoGLRenderAction * const action);
+  static  void get(SoState * const state, Window & window,
               GLXContext & context, Display * & display,
-              SoGLRenderAction * & action );
+              SoGLRenderAction * & action);
 
 protected:
   Window window;
@@ -75,6 +82,6 @@ protected:
   Display * display;
   SoGLRenderAction * glRenderAction;
 
-}; // class SoWindowElement
+};
 
-#endif // ! _SO_WINDOW_ELEMENT_H_
+#endif // !__SOWINDOWELEMENT_H__

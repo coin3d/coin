@@ -34,6 +34,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#ifdef _WIN32
+#include <windows.h>
+#endif // !_WIN32
+
 #include <GL/gl.h>
 
 //$ BEGIN TEMPLATE ElementSource( SoGLViewingMatrixElement )

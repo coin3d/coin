@@ -162,5 +162,6 @@ int
 SoLevelOfSimplification::whichToTraverse(SoAction *)
 {
   assert(0 && "FIXME: not implemented");
+  return 0;
 }
 #endif // !COIN_EXCLUDE_SOACTION

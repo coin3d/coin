@@ -45,7 +45,6 @@
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <GL/gl.h>
 #endif // ! COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!

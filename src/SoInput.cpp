@@ -70,8 +70,12 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoBase.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#else // ! _WIN32
 #include <netinet/in.h> // ntohl() and ntohs() definitions
 #include <ctype.h>
+#endif // ! _WIN32
 
 const unsigned int READBUFSIZE = 65536;
 

@@ -28,10 +28,14 @@
 
 #include <Inventor/SbName.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif // !_WIN32
+
 #include <GL/gl.h>
 #include <assert.h>
 
-u_char SoGLPolygonStippleElement::patterns[64 + 1][32 * 4];
+unsigned char SoGLPolygonStippleElement::patterns[64 + 1][32 * 4];
 
 //$ BEGIN TEMPLATE ElementSource( SoGLPolygonStippleElement )
 
@@ -84,12 +88,13 @@ SoGLPolygonStippleElement::getClassStackIndex(void)
 // Some data and functions to create Bayer dither 
 // matrices (used for screen door transparency)
 
-static uint two_by_two[] = {0, 2, 3, 1};
+static unsigned int two_by_two[] = {0, 2, 3, 1};
 
 //
 // Used to generate a matrix twice the size of the input   
 //
-static void generate_next_matrix(uint *old, int oldsize, uint *matrix)
+static void generate_next_matrix(unsigned int *old, int oldsize, 
+				 unsigned int *matrix)
 {
   int i,j;
   int newsize = oldsize << 1;
@@ -109,13 +114,13 @@ static void make_dither_matrix(uint32_t *ptr, int size)
 {
   int currsize = 2;
 
-  uint *currmatrix = two_by_two;
-  uint *nextmatrix = NULL;
+  unsigned int *currmatrix = two_by_two;
+  unsigned int *nextmatrix = NULL;
   int nextsize;
 
   while (currsize < size) {
     nextsize = currsize << 1;
-    nextmatrix = new uint[nextsize*nextsize];
+    nextmatrix = new unsigned int[nextsize*nextsize];
     generate_next_matrix(currmatrix, currsize, nextmatrix);
     if (currmatrix != two_by_two) delete currmatrix;
     currmatrix = nextmatrix;

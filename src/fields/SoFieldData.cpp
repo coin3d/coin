@@ -40,6 +40,10 @@
 #include <Inventor/SbName.h>
 #include <ctype.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 static const char OPEN_BRACE_CHAR = '[';
 static const char CLOSE_BRACE_CHAR = ']';
 static const char VALUE_SEPARATOR_CHAR = ',';
@@ -299,8 +303,13 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 
       SbBool foundName;
       if (!this->read(in, object, fieldName, foundName)) return FALSE;
+#if 1 // debug
+      SoDebugError::postInfo("SoFieldData::read",
+			     "fieldname: '%s'", fieldName.getString());
+#endif // debug
+      
       // FIXME: handle case for binary format. 19990711 mortene.
-      assert(foundName);
+      assert(foundName && "FIXME: doesn't work in binary mode yet");
     }
   }
   else {

@@ -22,7 +22,7 @@
   \brief The SoGLShadeModelElement class is for GL optimization only.
   
   It keeps track of the current shade model (flat or smooth) and
-  evaluates lazyly when this should be changed. Flat-shaded
+  evaluates lazily when this should be changed. Flat-shaded
   triangles are much faster to draw (at least in SW) than smooth
   shaded triangles.
 */
@@ -30,6 +30,10 @@
 #include <Inventor/elements/SoGLShadeModelElement.h>
 
 #include <Inventor/SbName.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif // !_WIN32
 
 #include <GL/gl.h>
 #include <assert.h>

@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_DEBUG_ERROR_H_
-#define _SO_DEBUG_ERROR_H_
+#ifndef __SODEBUGERROR_H__
+#define __SODEBUGERROR_H__
 
 #include <Inventor/errors/SoError.h>
 
@@ -27,33 +27,41 @@ class SoDebugError : public SoError {
 
 public:
   enum Severity {
+#if defined(ERROR) // Problem with MS Visual C++ v5.0 (at least)
+    SERROR = 0,
+#else
     ERROR = 0,
+#endif
+#if defined(WARNING) // FIXME: not sure if this is necessary. 19990808 mortene.
+    SWARNING = 1,
+#else
     WARNING = 1,
+#endif
     INFO = 2
-  }; // enum Severity
+  };
 
-  static void setHandlerCallback( SoErrorCB * const function,
-      void * const data );
-  static SoErrorCB * getHandlerCallback( void );
-  static void * getHandlerData( void );
+  static void setHandlerCallback(SoErrorCB * const function,
+				 void * const data);
+  static SoErrorCB * getHandlerCallback(void);
+  static void * getHandlerData(void);
 
-  static SoType getClassTypeId( void );
-  virtual SoType getTypeId( void ) const;
+  static SoType getClassTypeId(void);
+  virtual SoType getTypeId(void) const;
 
-  SoDebugError::Severity getSeverity( void ) const;
+  SoDebugError::Severity getSeverity(void) const;
 
-  static void post( const char * const methodName,
-      const char * const formatString, ... );
-  static void postWarning( const char * const methodName,
-      const char * const formatString, ... );
-  static void postInfo( const char * const methodName,
-      const char * const formatString, ... );
+  static void post(const char * const methodName,
+		   const char * const formatString, ...);
+  static void postWarning(const char * const methodName,
+			  const char * const formatString, ...);
+  static void postInfo(const char * const methodName,
+		       const char * const formatString, ...);
 
-  static void initClass( void );
-  static void cleanClass( void );
+  static void initClass(void);
+  static void cleanClass(void);
 
 protected:
-  virtual SoErrorCB * getHandler( void * & data ) const;
+  virtual SoErrorCB * getHandler(void * & data) const;
 
 private:
   static SoType classTypeId;
@@ -61,6 +69,6 @@ private:
   static void * callbackData;
 
   Severity severity;
-}; // class SoDebugError
+};
 
-#endif // ! _SO_DEBUG_ERROR_H_
+#endif // !__SODEBUGERROR_H__

@@ -151,7 +151,7 @@ const SoType
 SoType::overrideType(const SoType originalType,
 		     const instantiationMethod method)
 {
-  SoType::typeDataList[originalType.getKey()]->method = method;
+  SoType::typeDataList[(int)originalType.getKey()]->method = method;
   return originalType;
 }
 
@@ -181,7 +181,7 @@ SoType
 SoType::fromKey(uint16_t key)
 {
   assert(key < SoType::typeList.getLength());
-  return SoType::typeList[key];
+  return SoType::typeList[(int)key];
 }
 
 /*!
@@ -192,7 +192,7 @@ SoType::fromKey(uint16_t key)
 SbName
 SoType::getName(void) const
 {
-  return SoType::typeDataList[ this->getKey() ]->name;
+  return SoType::typeDataList[ (int)this->getKey() ]->name;
 }
 
 /*!
@@ -205,7 +205,7 @@ SoType::getName(void) const
 uint16_t 
 SoType::getData(void) const
 {
-  return SoType::typeDataList[this->getKey()]->data;
+  return SoType::typeDataList[(int)this->getKey()]->data;
 }
 
 /*!
@@ -216,7 +216,7 @@ SoType::getData(void) const
 const SoType
 SoType::getParent(void) const
 {
-  return SoType::typeDataList[this->getKey()]->parent;
+  return SoType::typeDataList[(int)this->getKey()]->parent;
 }
 
 /*!
@@ -267,7 +267,7 @@ SoType::isDerivedFrom(const SoType parent) const
 			   parent.getName().getString());
 #endif // debug
     if (type == parent) return TRUE;
-    type = SoType::typeDataList[type.getKey()]->parent;
+    type = SoType::typeDataList[(int)type.getKey()]->parent;
   } while (!type.isBad());
 
   return FALSE;
@@ -286,7 +286,7 @@ SoType::getAllDerivedFrom(SoTypeList & list) const
 
   int counter = 0;
   SoType type = *this;
-  while (! (type = SoType::typeDataList[ type.getKey() ]->parent).isBad()) {
+  while (! (type = SoType::typeDataList[(int)type.getKey()]->parent).isBad()) {
     if (! type.isInternal()) {
       counter++;
       list.append(type);
@@ -315,7 +315,7 @@ SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
 SbBool
 SoType::canCreateInstance(void) const
 {
-  return (SoType::typeDataList[ this->getKey() ]->method != NULL);
+  return (SoType::typeDataList[(int)this->getKey()]->method != NULL);
 }
 
 /*!
@@ -328,7 +328,7 @@ void *
 SoType::createInstance(void) const
 {
   if (this->canCreateInstance()) {
-    return (*(SoType::typeDataList[ this->getKey() ]->method))();
+    return (*(SoType::typeDataList[(int)this->getKey()]->method))();
   }
   else {
 #if COIN_DEBUG
@@ -366,7 +366,7 @@ SoType::getNumTypes(void)
 void
 SoType::makeInternal(void)
 {
-  SoType::typeDataList[this->getKey()]->isPublic = FALSE;
+  SoType::typeDataList[(int)this->getKey()]->isPublic = FALSE;
 }
 
 /*!
@@ -376,7 +376,7 @@ SoType::makeInternal(void)
 SbBool
 SoType::isInternal(void) const
 {
-    return SoType::typeDataList[ this->getKey()]->isPublic == FALSE;
+    return SoType::typeDataList[(int)this->getKey()]->isPublic == FALSE;
 }
 
 /*!

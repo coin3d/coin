@@ -39,6 +39,9 @@
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif // _WIN32
 #include <GL/gl.h>
 #endif // ! COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -132,6 +135,7 @@ SoTextureCoordinateEnvironment::generate(void * userdata,
 				   const SbVec3f & n)
 {
   assert(0 && "FIXME: not implemented yet");
+  return SbVec4f(0,0,0,1);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

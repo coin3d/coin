@@ -298,8 +298,8 @@ SbBox3f::getSize(float& dx, float& dy, float& dz) const
 void 
 SbBox3f::makeEmpty(void)
 {
-  this->min.setValue(MAXFLOAT, MAXFLOAT, MAXFLOAT);
-  this->max.setValue(-MAXFLOAT, -MAXFLOAT, -MAXFLOAT);
+  this->min.setValue(FLT_MAX, FLT_MAX, FLT_MAX);
+  this->max.setValue(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 }
 
 /*!
@@ -357,7 +357,7 @@ SbBox3f::getVolume(void) const
 void
 SbBox3f::getSpan(const SbVec3f& dir, float& dMin, float& dMax) const
 {
-  float dist,mindist=MAXFLOAT,maxdist=-MAXFLOAT;
+  float dist,mindist=FLT_MAX,maxdist=-FLT_MAX;
   SbVec3f points[2]={this->min,this->max};
   SbVec3f corner;
   SbVec3f normdir(dir);

@@ -403,10 +403,17 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
   action->getTextureMatrix().getValue(texMatrix);
   action->getTextureInverse().getValue(invTexMatrix);
   SoSeparator::doAction(action);
+#ifdef _WIN32 // don't ask me why...
+  action->getMatrix() = matrix;
+  action->getInverse() = invMatrix;
+  action->getTextureMatrix() = texMatrix;
+  action->getTextureInverse() = invTexMatrix;
+#else // !_WIN32
   action->getMatrix().setValue(matrix);
   action->getInverse().setValue(invMatrix);
   action->getTextureMatrix().setValue(texMatrix);
   action->getTextureInverse().setValue(invTexMatrix);
+#endif // !_WIN32
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 

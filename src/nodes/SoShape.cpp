@@ -89,6 +89,11 @@
 
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif // !_WIN32
+
 #include <GL/gl.h>
 
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
@@ -693,6 +698,7 @@ float
 SoShape::getDecimatedComplexity(SoState * state, float complexity)
 {
   assert(0 && "FIXME: not implemented");
+  return 0.5f;
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)

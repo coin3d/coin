@@ -32,6 +32,9 @@
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif // !_WIN32
 #include <GL/gl.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -428,6 +431,7 @@ SbBool
 SoFaceSet::generateDefaultNormals(SoState * state, SoNormalBundle * nb)
 {
   assert(0 && "FIXME: not implemented");
+  return FALSE;
 }
 #endif
 
@@ -465,5 +469,6 @@ SoFaceSet::createTriangleDetail(SoRayPickAction * action,
 			 SoPickedPoint * pp)
 {
   assert(0 && "FIXME: not implemented");
+  return NULL;
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION

@@ -258,6 +258,7 @@ SbRotation
 SoRotationXYZ::getRotation(void) const
 {
   assert(0 && "FIXME: not implemented");
+  return SbRotation(SbVec3f(1,0,0), 0);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
