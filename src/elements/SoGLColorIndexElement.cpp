@@ -35,6 +35,8 @@
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 
+static int32_t defaultIndexArray[] = {1};
+
 SO_ELEMENT_SOURCE(SoGLColorIndexElement);
 
 // doc in parent
@@ -49,9 +51,9 @@ SoGLColorIndexElement::initClass(void)
 void
 SoGLColorIndexElement::init(SoState * /* state */)
 {
-  this->indices = NULL;
-  this->numindices = 0;
-
+  this->indices = defaultIndexArray;
+  this->numindices = 1;
+  
   GLboolean rgba;
   glGetBooleanv(GL_RGBA_MODE, &rgba);
   this->colorindexmode = ! rgba;
