@@ -391,7 +391,7 @@ cc_flw_create_font(const char * fontname, const int sizex, const int sizey)
 
   font = NULL;
   
-  if (win32api) { font = cc_flww32_get_font(fontname); }
+  if (win32api) { font = cc_flww32_get_font(fontname, sizex, sizey); }
   else if (freetypelib) { font = cc_flwft_get_font(fontname); }
 
   if (font) {
@@ -400,18 +400,16 @@ cc_flw_create_font(const char * fontname, const int sizex, const int sizey)
     fontstruct_set_size(fs, sizex, sizey);
 
     if (win32api) {
-      cc_flww32_set_char_size(font, sizex, sizey);
       createdfontname = cc_flww32_get_font_name(font);
       fontstruct_set_fontname(fs, cc_string_get_text(createdfontname));
       cc_string_destruct(createdfontname);
-      cc_flww32_set_char_size(font, sizex, sizey);
     }
     else if (freetypelib) {
       cc_flwft_set_char_size(font, sizex, sizey);
+
       createdfontname = cc_flwft_get_font_name(font);
       fontstruct_set_fontname(fs, cc_string_get_text(createdfontname));
       cc_string_destruct(createdfontname);
-      cc_flwft_set_char_size(font, sizex, sizey);
     }
     else {
       assert(FALSE && "incomplete code path");
