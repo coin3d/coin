@@ -3,7 +3,7 @@ New in Coin v2.0.0a (so far):
 - NB: this is an unstable source repository we don't release Coin from
 * This Coin branch is now under the GPL license
 * Inventor/C/ include hierarchy for C ADTs in Coin
-* multithread support primitive data types
+* platform-independent thread-handling abstraction classes
 * thread-safe action traversals
 * VRML97 support (see doc XXX for missing parts)
 * 3D-textures (SoTexture3, ...XXX list public API XXX...)
