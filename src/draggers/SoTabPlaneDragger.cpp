@@ -347,12 +347,11 @@ SoTabPlaneDragger::valueChangedCB(void *, SoDragger * d)
 void
 SoTabPlaneDragger::GLRender(SoGLRenderAction * action)
 {
-  //
-  // I think it is best to always recalculate tabs. In OIV, you'll need to
-  // click into the dragger sometimes to make the dragger recalculate tabs
-  // (after zooming, for instance).
-  //
-  if (1 || this->adjustTabs) {
+  // FIXME: it'd be better to adjust even when scaling, but it's a bit
+  // complicated to calculate the correct scale factor adjustment (to
+  // make the pointer stay at the exact same position in the tab no
+  // matter how the dragger is scaled). pederb, 2004-09-22
+  if (this->whatkind != WHATKIND_SCALE) {
     // disable notification do avoid multiple redraws, but
     // remember to invalidate open caches.
     SbBool oldnotify = this->enableNotify(FALSE);
