@@ -57,6 +57,7 @@
 #define FLAG_NEEDCOORDS         0x02
 #define FLAG_DEFAULT            0x04
 #define FLAG_DIDPUSH            0x08
+#define FLAG_3DTEXTURES         0x10
 
 /*!
   Constructor with \a action being the action applied to the node.
@@ -174,12 +175,16 @@ SoTextureCoordinateBundle::get(const SbVec3f &point, const SbVec3f &normal)
 {
   assert(this->coordElt != NULL && (this->flags & FLAG_FUNCTION));
   if (this->flags & FLAG_DEFAULT) {
-    SbVec2f pt(point[this->defaultdim0]-this->defaultorigo[0],
-               point[this->defaultdim1]-this->defaultorigo[1]);
-    //
-    // FIXME: when support for 3D textures is implemented, should
-    // we provide the third texture coordinate also? pederb
-    //
+    SbVec3f pt;
+    if (this->flags & FLAG_3DTEXTURES) {
+      pt = point - this->defaultorigo;
+      this->dummyInstance[2] = pt[2]/this->defaultsize[2];
+    }
+    else {
+      pt.setValue(point[this->defaultdim0]-this->defaultorigo[0],
+                  point[this->defaultdim1]-this->defaultorigo[1],
+                  0.0f);
+    }
     this->dummyInstance[0] = pt[0]/this->defaultsize[0];
     this->dummyInstance[1] = pt[1]/this->defaultsize[1];
     return this->dummyInstance;
@@ -250,20 +255,60 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
 
   SbVec3f size;
   box.getSize(size[0], size[1], size[2]);
+  SbVec3f origo = box.getMin();
 
-  // find the two biggest dimensions
-  int smallest = 0;
-  float smallval = size[0];
-  if (size[1] < smallval) {
-    smallest = 1;
-    smallval = size[1];
-  }
-  if (size[2] < smallval) {
-    smallest = 2;
-  }
+  // Map S,T,R to X,Y,Z for 3D texturing
+  if (SoGLTexture3EnabledElement::get(this->state)) {
+    this->flags |= FLAG_3DTEXTURES;
+    this->defaultdim0 = 0;
+    this->defaultdim1 = 1;
 
-  this->defaultdim0 = (smallest + 1) % 3;
-  this->defaultdim1 = (smallest + 2) % 3;
+  // disable texture coordinate generation if empty or one
+  // dimensional bounding box.
+    if (size[2] <= 0.0f) {
+      this->flags &= ~(FLAG_NEEDCOORDS|FLAG_DEFAULT|FLAG_FUNCTION);
+      return;
+    }
+
+    this->defaultorigo[2] = origo[2];
+    this->defaultsize[2] = size[2];
+    assert(this->defaultsize[2] > 0.0f);
+  }
+  else { // 2D textures
+    this->flags &= ~FLAG_3DTEXTURES;
+    // find the two biggest dimensions
+    int smallest = 0;
+    float smallval = size[0];
+    if (size[1] < smallval) {
+      smallest = 1;
+      smallval = size[1];
+    }
+    if (size[2] < smallval) {
+      smallest = 2;
+    }
+    
+    this->defaultdim0 = (smallest + 1) % 3;
+    this->defaultdim1 = (smallest + 2) % 3;
+    
+    if (size[this->defaultdim0] == size[this->defaultdim1]) {
+      // FIXME: this is probably an OIV bug. The OIV man pages are not
+      // clear on this point (surprise), but the VRML specification states
+      // that if the two dimensions are equal, the ordering X>Y>Z should
+      // be used.
+#if 0 // the correct way to do it
+      if (this->defaultdim0 > this->defaultdim1) {
+        SbSwap(this->defaultdim0, this->defaultdim1);
+      }
+#else // the OIV way to do it.
+      if (this->defaultdim0 < this->defaultdim1) {
+        SbSwap(this->defaultdim0, this->defaultdim1);
+      }
+#endif // OIV compatibility fix
+    }
+    else if (size[this->defaultdim0] < size[this->defaultdim1]) {
+      SbSwap(this->defaultdim0, this->defaultdim1);
+    }
+  }    
 
   // disable texture coordinate generation if empty or one
   // dimensional bounding box.
@@ -273,27 +318,6 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
     return;
   }
 
-  if (size[this->defaultdim0] == size[this->defaultdim1]) {
-    // FIXME: this is probably an OIV bug. The OIV man pages are not
-    // clear on this point (surprise), but the VRML specification states
-    // that if the two dimensions are equal, the ordering X>Y>Z should
-    // be used.
-    // FIXME: What about 3D textures? (kintel 20011115)
-#if 0 // the correct way to do it
-    if (this->defaultdim0 > this->defaultdim1) {
-      SbSwap(this->defaultdim0, this->defaultdim1);
-    }
-#else // the OIV way to do it.
-    if (this->defaultdim0 < this->defaultdim1) {
-      SbSwap(this->defaultdim0, this->defaultdim1);
-    }
-#endif // OIV compatibility fix
-  }
-  else if (size[this->defaultdim0] < size[this->defaultdim1]) {
-    SbSwap(this->defaultdim0, this->defaultdim1);
-  }
-
-  SbVec3f origo = box.getMin();
   this->defaultorigo[0] = origo[this->defaultdim0];
   this->defaultorigo[1] = origo[this->defaultdim1];
   this->defaultsize[0] = size[this->defaultdim0];

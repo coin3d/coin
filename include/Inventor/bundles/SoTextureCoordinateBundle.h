@@ -68,8 +68,8 @@ private:
                                   const SbVec3f & point,
                                   const SbVec3f & normal);
   SoVertexShape *shapenode; // FIXME: change to type SoShape in Coin version 2.0
-  SbVec2f defaultorigo;
-  SbVec2f defaultsize;
+  SbVec3f defaultorigo;
+  SbVec3f defaultsize;
   SbVec4f dummyInstance;
   int defaultdim0, defaultdim1;
   void initDefault(SoAction * const action, const SbBool forRendering);
