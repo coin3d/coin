@@ -272,11 +272,11 @@ SoIndexedNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbB
     this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
 
     if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_BEGIN_DATA, (void (*)())tessBegin);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_TEXTURE_COORD_DATA, (void (*)())tessTexCoord);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_NORMAL_DATA, (void (*)())tessNormal);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_VERTEX_DATA, (void (*)())tessVertex);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_END_DATA, (void (*)())tessEnd);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)tessBegin);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)tessTexCoord);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_NORMAL_DATA, (gluNurbsCallback_cb_t)tessNormal);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_VERTEX_DATA, (gluNurbsCallback_cb_t)tessVertex);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_END_DATA, (gluNurbsCallback_cb_t)tessEnd);
     }
   }
 

@@ -113,7 +113,8 @@ typedef void (*gluBeginCurve_t)(void *);
 typedef void (*gluEndCurve_t)(void *);
 typedef void (*gluNurbsCurve_t)(void *, GLint, GLfloat *, GLint, GLfloat *, GLint, GLenum);
 typedef void (*gluPwlCurve_t)(void *, GLint, GLfloat *, GLint, GLenum);
-typedef void (*gluNurbsCallback_t)(void *, GLenum, void (*)());
+typedef void (*gluNurbsCallback_cb_t)(void *, ...); /* Callback func type. */
+typedef void (*gluNurbsCallback_t)(void *, GLenum, gluNurbsCallback_cb_t);
 typedef void (*gluNurbsCallbackData_t)(void *, GLvoid *);
 
 

@@ -183,7 +183,7 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
     if (this->nurbsrenderer == NULL) {
       this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
       GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_W_NURBS_VERTEX,
-                                     (void (*)())nurbsprofile_tess_vertex);
+                                     (gluNurbsCallback_cb_t)nurbsprofile_tess_vertex);
       GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_NURBS_MODE, GLU_W_NURBS_TESSELLATOR);
       GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_AUTO_LOAD_MATRIX, FALSE);
       GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_DISPLAY_MODE, GLU_W_POINT);
