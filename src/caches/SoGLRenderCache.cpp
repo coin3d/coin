@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -29,16 +29,30 @@
 
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/lists/SbList.h>
 #include <assert.h>
+
+#ifndef DOXYGEN_SKIP_THIS
+class SoGLRenderCacheP {
+public:
+  SoGLDisplayList * displaylist;
+  SoState * openstate;
+  SbList <SoGLDisplayList*> nestedcachelist;
+};
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   Constructor with \a state being the current state.
 */
 SoGLRenderCache::SoGLRenderCache(SoState * state)
-  : SoCache(state),
-    displaylist(NULL),
-    openstate(NULL)
+  : SoCache(state)
 {
+  THIS = new SoGLRenderCacheP;
+  THIS->displaylist = NULL;
+  THIS->openstate = NULL;
 }
 
 /*!
@@ -47,8 +61,10 @@ SoGLRenderCache::SoGLRenderCache(SoState * state)
 SoGLRenderCache::~SoGLRenderCache()
 {
   // stuff should have been deleted in destroy()
-  assert(this->displaylist == NULL);
-  assert(this->nestedcachelist.getLength() == 0);
+  assert(THIS->displaylist == NULL);
+  assert(THIS->nestedcachelist.getLength() == 0);
+  
+  delete THIS;
 }
 
 /*!
@@ -60,13 +76,13 @@ SoGLRenderCache::~SoGLRenderCache()
 void
 SoGLRenderCache::open(SoState * state)
 {
-  assert(this->displaylist == NULL);
-  assert(this->openstate == NULL); // cache should not be open
-  this->openstate = state;
-  this->displaylist =
+  assert(THIS->displaylist == NULL);
+  assert(THIS->openstate == NULL); // cache should not be open
+  THIS->openstate = state;
+  THIS->displaylist =
     new SoGLDisplayList(state, SoGLDisplayList::DISPLAY_LIST);
-  this->displaylist->ref();
-  this->displaylist->open(state);
+  THIS->displaylist->ref();
+  THIS->displaylist->open(state);
 }
 
 /*!
@@ -77,10 +93,10 @@ SoGLRenderCache::open(SoState * state)
 void
 SoGLRenderCache::close(void)
 {
-  assert(this->openstate != NULL);
-  assert(this->displaylist != NULL);
-  this->displaylist->close(this->openstate);
-  this->openstate = NULL;
+  assert(THIS->openstate != NULL);
+  assert(THIS->displaylist != NULL);
+  THIS->displaylist->close(THIS->openstate);
+  THIS->openstate = NULL;
 }
 
 /*!
@@ -91,8 +107,8 @@ SoGLRenderCache::close(void)
 void
 SoGLRenderCache::call(SoState * state)
 {
-  assert(this->displaylist != NULL);
-  this->displaylist->call(state);
+  assert(THIS->displaylist != NULL);
+  THIS->displaylist->call(state);
 }
 
 /*!
@@ -104,7 +120,7 @@ SoGLRenderCache::call(SoState * state)
 int
 SoGLRenderCache::getCacheContext(void) const
 {
-  if (this->displaylist) return this->displaylist->getContext();
+  if (THIS->displaylist) return THIS->displaylist->getContext();
   return -1;
 }
 
@@ -128,21 +144,20 @@ void
 SoGLRenderCache::addNestedCache(SoGLDisplayList * child)
 {
   child->ref();
-  this->nestedcachelist.append(child);
+  THIS->nestedcachelist.append(child);
 }
 
 // Documented in superclass. Overridden to unref display lists.
 void
 SoGLRenderCache::destroy(SoState * state)
 {
-  int n = this->nestedcachelist.getLength();
+  int n = THIS->nestedcachelist.getLength();
   for (int i = 0; i < n; i++) {
-    this->nestedcachelist[i]->unref(state);
+    THIS->nestedcachelist[i]->unref(state);
   }
-  this->nestedcachelist.truncate(0);
-  if (this->displaylist) {
-    this->displaylist->unref(state);
-    this->displaylist = NULL;
+  THIS->nestedcachelist.truncate(0);
+  if (THIS->displaylist) {
+    THIS->displaylist->unref(state);
+    THIS->displaylist = NULL;
   }
 }
-

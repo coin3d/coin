@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -30,14 +30,32 @@
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoBoundingBoxCacheP {
+public:
+  SbXfBox3f bbox;
+  SbBox3f localbbox;
+  SbVec3f centerpoint;
+  unsigned int centerset : 1;
+  unsigned int linesorpoints : 1;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
+
 /*!
   Constructor with \a state being the current state.
 */
 SoBoundingBoxCache::SoBoundingBoxCache(SoState *state)
-  : SoCache(state),
-    centerSet(0),
-    linesOrPoints(0)
+  : SoCache(state)
 {
+  THIS = new SoBoundingBoxCacheP;
+  THIS->centerset = 0;
+  THIS->linesorpoints = 0;
 }
 
 /*!
@@ -45,6 +63,7 @@ SoBoundingBoxCache::SoBoundingBoxCache(SoState *state)
 */
 SoBoundingBoxCache::~SoBoundingBoxCache()
 {
+  delete THIS;
 }
 
 /*!
@@ -53,32 +72,32 @@ SoBoundingBoxCache::~SoBoundingBoxCache()
   geometry inside \a boundingBox.
 */
 void
-SoBoundingBoxCache::set(const SbXfBox3f &boundingBox,
-                        SbBool centerSet,
-                        const SbVec3f &centerPoint)
+SoBoundingBoxCache::set(const SbXfBox3f & boundingbox,
+                        SbBool centerset,
+                        const SbVec3f & centerpoint)
 {
-  this->bbox = boundingBox;
-  this->localBBox = boundingBox.project();
-  this->centerSet = centerSet ? 1 : 0;
-  this->centerPoint = centerPoint;
+  THIS->bbox = boundingbox;
+  THIS->localbbox = boundingbox.project();
+  THIS->centerset = centerset ? 1 : 0;
+  THIS->centerpoint = centerpoint;
 }
 
 /*!
   Returns the bounding box for this cache.
 */
 const SbXfBox3f &
-SoBoundingBoxCache::getBox() const
+SoBoundingBoxCache::getBox(void) const
 {
-  return this->bbox;
+  return THIS->bbox;
 }
 
 /*!
   Returns the projected bounding box for this cache.
 */
 const SbBox3f &
-SoBoundingBoxCache::getProjectedBox() const
+SoBoundingBoxCache::getProjectedBox(void) const
 {
-  return this->localBBox;
+  return THIS->localbbox;
 }
 
 /*!
@@ -88,9 +107,9 @@ SoBoundingBoxCache::getProjectedBox() const
   \sa SoBoundingBoxCache::getCenter()
 */
 SbBool
-SoBoundingBoxCache::isCenterSet() const
+SoBoundingBoxCache::isCenterSet(void) const
 {
-  return this->centerSet == 1;
+  return THIS->centerset == 1;
 }
 
 /*!
@@ -98,9 +117,9 @@ SoBoundingBoxCache::isCenterSet() const
   SoBoundingBoxCache::isCenterSet() returns \c TRUE.
 */
 const SbVec3f &
-SoBoundingBoxCache::getCenter() const
+SoBoundingBoxCache::getCenter(void) const
 {
-  return this->centerPoint;
+  return THIS->centerpoint;
 }
 
 /*!
@@ -132,7 +151,7 @@ SoBoundingBoxCache::setHasLinesOrPoints(SoState * state)
 
   while (elem) {
     SoBoundingBoxCache * cache = (SoBoundingBoxCache*) elem->getCache();
-    if (cache) cache->linesOrPoints = TRUE;
+    if (cache) cache->pimpl->linesorpoints = TRUE;
     elem = elem->getNextCacheElement();
   }
 }
@@ -145,5 +164,5 @@ SoBoundingBoxCache::setHasLinesOrPoints(SoState * state)
 SbBool
 SoBoundingBoxCache::hasLinesOrPoints(void) const
 {
-  return this->linesOrPoints == 1;
+  return THIS->linesorpoints == 1;
 }

@@ -29,6 +29,7 @@
 
 class SoGLRenderAction;
 class SoGLRenderCache;
+class SoGLCacheListP;
 
 class SoGLCacheList {
 public:
@@ -43,12 +44,7 @@ public:
   void invalidateAll(void);
 
 private:
-  SbList <SoGLRenderCache *> itemlist;
-  int numcaches;
-  unsigned int flags;
-  SoGLRenderCache * opencache;
-  SbBool savedinvalid;
-  int autocachebits;
+  SoGLCacheListP * pimpl;
 };
 
 #endif // !COIN_SOGLCACHELIST_H

@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -51,20 +51,40 @@
 // this flag is set and we will try to create a cache.
 #define FLAG_SHOULD_TRY 0x1
 
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoGLCacheListP {
+public:
+  SbList <SoGLRenderCache *> itemlist;
+  int numcaches;
+  unsigned int flags;
+  SoGLRenderCache * opencache;
+  SbBool savedinvalid;
+  int autocachebits;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
+
 /*!
   Constructor.
 */
 SoGLCacheList::SoGLCacheList(int numcaches)
-  : numcaches(numcaches),
-    flags(0),
-    opencache(NULL),
-    autocachebits(SoGLCacheContextElement::DO_AUTO_CACHE)
 {
   // FIXME: currently the \a numcaches argument is not used. ???????? pederb.
   //
   // UPDATE 20020220 mortene: yikes! This means the
   // SoSeparator::setNumRenderCaches() call is not working properly,
   // for instance.
+
+  THIS = new SoGLCacheListP;
+  THIS->flags = 0;
+  THIS->numcaches = numcaches;
+  THIS->opencache = NULL;
+  THIS->autocachebits = SoGLCacheContextElement::DO_AUTO_CACHE;
 }
 
 /*!
@@ -72,10 +92,11 @@ SoGLCacheList::SoGLCacheList(int numcaches)
 */
 SoGLCacheList::~SoGLCacheList()
 {
-  int n = this->itemlist.getLength();
+  const int n = THIS->itemlist.getLength();
   for (int i = 0; i < n; i++) {
-    this->itemlist[i]->unref();
+    THIS->itemlist[i]->unref();
   }
+  delete THIS;
 }
 
 /*!
@@ -92,9 +113,9 @@ SoGLCacheList::call(SoGLRenderAction * action, uint32_t pushattribbits)
   SoState * state = action->getState();
   int context = SoGLCacheContextElement::get(state);
 
-  int n = this->itemlist.getLength();
+  int n = THIS->itemlist.getLength();
   for (int i = 0; i < n; i++) {
-    SoGLRenderCache * cache = this->itemlist[i];
+    SoGLRenderCache * cache = THIS->itemlist[i];
     if (cache->getCacheContext() == context) {
       if (cache->isValid(state)) {
         if (pushattribbits) glPushAttrib(pushattribbits);
@@ -104,7 +125,7 @@ SoGLCacheList::call(SoGLRenderAction * action, uint32_t pushattribbits)
       }
       // if we get here cache is invalid. Throw it away.
       cache->unref(state);
-      this->itemlist.removeFast(i);
+      THIS->itemlist.removeFast(i);
       n--;
     }
   }
@@ -121,25 +142,25 @@ SoGLCacheList::call(SoGLRenderAction * action, uint32_t pushattribbits)
 void
 SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 {
-  assert(this->opencache == NULL);
+  assert(THIS->opencache == NULL);
   SoState * state = action->getState();
 
   // will be restored in close()
-  this->savedinvalid = SoCacheElement::setInvalid(FALSE);
+  THIS->savedinvalid = SoCacheElement::setInvalid(FALSE);
 
   if (SoCacheElement::anyOpen(state)) return;
-  if (autocache && !(this->flags & FLAG_SHOULD_TRY)) return;
-  
+  if (autocache && !(THIS->flags & FLAG_SHOULD_TRY)) return;
+
   SbBool shouldcreate = TRUE;
-  if (autocache && this->autocachebits == SoGLCacheContextElement::DO_AUTO_CACHE) {
+  if (autocache && THIS->autocachebits == SoGLCacheContextElement::DO_AUTO_CACHE) {
     shouldcreate = FALSE;
   }
-  
+
   if (shouldcreate) {
-    this->opencache = new SoGLRenderCache(state);
-    this->opencache->ref();
-    SoCacheElement::set(state, this->opencache);
-    this->opencache->open(state);
+    THIS->opencache = new SoGLRenderCache(state);
+    THIS->opencache->ref();
+    SoCacheElement::set(state, THIS->opencache);
+    THIS->opencache->open(state);
   }
 }
 
@@ -150,23 +171,23 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 void
 SoGLCacheList::close(SoGLRenderAction * action)
 {
-  if (this->opencache) {
-    this->opencache->close();
-    this->itemlist.append(this->opencache);
-    this->opencache = NULL;
+  if (THIS->opencache) {
+    THIS->opencache->close();
+    THIS->itemlist.append(THIS->opencache);
+    THIS->opencache = NULL;
   }
-  if (SoCacheElement::setInvalid(this->savedinvalid)) {
+  if (SoCacheElement::setInvalid(THIS->savedinvalid)) {
     // notify parent caches
     SoCacheElement::setInvalid(TRUE);
-    this->flags &= ~FLAG_SHOULD_TRY;
+    THIS->flags &= ~FLAG_SHOULD_TRY;
   }
   else {
-    this->flags |= FLAG_SHOULD_TRY;
+    THIS->flags |= FLAG_SHOULD_TRY;
   }
   SoState * state = action->getState();
   int bits = SoGLCacheContextElement::resetAutoCacheBits(state);
-  SoGLCacheContextElement::setAutoCacheBits(state, bits|this->autocachebits);
-  this->autocachebits = bits;
+  SoGLCacheContextElement::setAutoCacheBits(state, bits|THIS->autocachebits);
+  THIS->autocachebits = bits;
 }
 
 /*!
@@ -176,9 +197,9 @@ SoGLCacheList::close(SoGLRenderAction * action)
 void
 SoGLCacheList::invalidateAll(void)
 {
-  int n = this->itemlist.getLength();
+  int n = THIS->itemlist.getLength();
   for (int i = 0; i < n; i++) {
-    this->itemlist[i]->invalidate();
+    THIS->itemlist[i]->invalidate();
   }
-  this->flags &= ~FLAG_SHOULD_TRY;
+  THIS->flags &= ~FLAG_SHOULD_TRY;
 }

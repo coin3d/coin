@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -39,8 +39,20 @@
 #include <Inventor/SbTesselator.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
 #include <assert.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoConvexDataCacheP {
+public:
+  SbList <int32_t> coordIndices;
+  SbList <int32_t> normalIndices;
+  SbList <int32_t> materialIndices;
+  SbList <int32_t> texIndices;
+};
+
+#endif // DOXYGEN_SKIP_THIS
 
 /*!
   \enum SoConvexDataCache::Binding
@@ -49,6 +61,8 @@
   Binding applies to normals, materials and texture coordinates.
 */
 
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   Constructor with \a state being the current state.
@@ -56,6 +70,7 @@
 SoConvexDataCache::SoConvexDataCache(SoState * const state)
   : SoCache(state)
 {
+  THIS = new SoConvexDataCacheP;
 }
 
 /*!
@@ -63,6 +78,7 @@ SoConvexDataCache::SoConvexDataCache(SoState * const state)
 */
 SoConvexDataCache::~SoConvexDataCache()
 {
+  delete THIS;
 }
 
 /*!
@@ -72,7 +88,7 @@ SoConvexDataCache::~SoConvexDataCache()
 const int32_t *
 SoConvexDataCache::getCoordIndices(void) const
 {
-  if (this->coordIndices.getLength()) return this->coordIndices.getArrayPtr();
+  if (THIS->coordIndices.getLength()) return THIS->coordIndices.getArrayPtr();
   return NULL;
 }
 
@@ -83,7 +99,7 @@ SoConvexDataCache::getCoordIndices(void) const
 int
 SoConvexDataCache::getNumCoordIndices(void) const
 {
-  return this->coordIndices.getLength();
+  return THIS->coordIndices.getLength();
 }
 
 /*!
@@ -93,7 +109,7 @@ SoConvexDataCache::getNumCoordIndices(void) const
 const int32_t *
 SoConvexDataCache::getMaterialIndices(void) const
 {
-  if (this->materialIndices.getLength()) return this->materialIndices.getArrayPtr();
+  if (THIS->materialIndices.getLength()) return THIS->materialIndices.getArrayPtr();
   return NULL;
 }
 
@@ -104,7 +120,7 @@ SoConvexDataCache::getMaterialIndices(void) const
 int
 SoConvexDataCache::getNumMaterialIndices(void) const
 {
-  return this->materialIndices.getLength();
+  return THIS->materialIndices.getLength();
 }
 
 /*!
@@ -114,7 +130,7 @@ SoConvexDataCache::getNumMaterialIndices(void) const
 const int32_t *
 SoConvexDataCache::getNormalIndices(void) const
 {
-  if (this->normalIndices.getLength()) return this->normalIndices.getArrayPtr();
+  if (THIS->normalIndices.getLength()) return THIS->normalIndices.getArrayPtr();
   return NULL;
 }
 
@@ -125,7 +141,7 @@ SoConvexDataCache::getNormalIndices(void) const
 int
 SoConvexDataCache::getNumNormalIndices(void) const
 {
-  return this->normalIndices.getLength();
+  return THIS->normalIndices.getLength();
 }
 
 /*!
@@ -135,7 +151,7 @@ SoConvexDataCache::getNumNormalIndices(void) const
 const int32_t *
 SoConvexDataCache::getTexIndices(void) const
 {
-  if (this->texIndices.getLength()) return this->texIndices.getArrayPtr();
+  if (THIS->texIndices.getLength()) return THIS->texIndices.getArrayPtr();
   return NULL;
 }
 
@@ -146,7 +162,7 @@ SoConvexDataCache::getTexIndices(void) const
 int
 SoConvexDataCache::getNumTexIndices(void) const
 {
-  return this->texIndices.getLength();
+  return THIS->texIndices.getLength();
 }
 
 
@@ -202,10 +218,10 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
   SbBool identity = matrix == SbMatrix::identity();
 
   // remove old data
-  this->coordIndices.truncate(0);
-  this->materialIndices.truncate(0);
-  this->normalIndices.truncate(0);
-  this->texIndices.truncate(0);
+  THIS->coordIndices.truncate(0);
+  THIS->materialIndices.truncate(0);
+  THIS->normalIndices.truncate(0);
+  THIS->texIndices.truncate(0);
 
   int matnr = 0;
   int texnr = 0;
@@ -234,13 +250,13 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
 
   // if PER_FACE binding, the binding must change to PER_FACE_INDEXED
   // if convexify data is used.
-  tessdata.vertexIndex = &this->coordIndices;
+  tessdata.vertexIndex = &THIS->coordIndices;
   if (matbind != NONE)
-    tessdata.matIndex = &this->materialIndices;
+    tessdata.matIndex = &THIS->materialIndices;
   if (normbind != NONE)
-    tessdata.normIndex = &this->normalIndices;
+    tessdata.normIndex = &THIS->normalIndices;
   if (texbind != NONE)
-    tessdata.texIndex = &this->texIndices;
+    tessdata.texIndex = &THIS->texIndices;
 
   tessellator.beginPolygon(TRUE);
   for (int i = 0; i < numv; i++) {
@@ -280,10 +296,10 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
 
   delete [] tessdata.vertexInfo;
 
-  this->coordIndices.fit();
-  if (tessdata.matIndex) this->materialIndices.fit();
-  if (tessdata.normIndex) this->normalIndices.fit();
-  if (tessdata.texIndex) this->texIndices.fit();
+  THIS->coordIndices.fit();
+  if (tessdata.matIndex) THIS->materialIndices.fit();
+  if (tessdata.normIndex) THIS->normalIndices.fit();
+  if (tessdata.texIndex) THIS->texIndices.fit();
 }
 
 //

@@ -26,9 +26,10 @@
 
 class SoState;
 class SoElement;
+class SoCacheP;
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/lists/SbList.h>
+#include <stddef.h> // for NULL
 
 class COIN_DLL_API SoCache {
 public:
@@ -50,12 +51,7 @@ protected:
   virtual ~SoCache();
 
 private:
-
-  SbList <SoElement *> elements;
-  unsigned char * elementflags;
-  int refcount;
-  SbBool invalidated;
-  int statedepth;
+  SoCacheP * pimpl;
 };
 
 #endif // !COIN_SOCACHE_H

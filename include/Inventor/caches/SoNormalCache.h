@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -26,11 +26,10 @@
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/caches/SoCache.h>
-#include <Inventor/lists/SbList.h>
 #include <Inventor/system/inttypes.h>
 
 class SoNormalGenerator;
-
+class SoNormalCacheP;
 
 class COIN_DLL_API SoNormalCache : public SoCache {
   typedef SoCache inherited;
@@ -88,14 +87,7 @@ public:
   const int32_t *getIndices(void) const;
 
 private:
-  int numNormals;
-  union {
-    const SbVec3f *normals;
-    SoNormalGenerator *generator;
-  } normalData;
-  SbList <int32_t> indices;
-  SbList <SbVec3f> normalArray;
-
+  SoNormalCacheP * pimpl;
   void clearGenerator(void);
 };
 

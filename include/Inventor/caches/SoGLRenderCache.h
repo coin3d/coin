@@ -25,9 +25,9 @@
 \**************************************************************************/
 
 #include <Inventor/caches/SoCache.h>
-#include <Inventor/lists/SbList.h>
 
 class SoGLDisplayList;
+class SoGLRenderCacheP;
 
 class SoGLRenderCache : public SoCache {
   typedef SoCache inherited;
@@ -46,12 +46,10 @@ public:
   virtual void addNestedCache(SoGLDisplayList * child);
 
 protected:
-  virtual void  destroy(SoState *state);
+  virtual void destroy(SoState *state);
 
 private:
-  SoGLDisplayList * displaylist;
-  SoState * openstate;
-  SbList <SoGLDisplayList*> nestedcachelist;
+  SoGLRenderCacheP * pimpl;
 };
 
 #endif // !COIN_SOGLRENDERCACHE

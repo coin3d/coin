@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -27,31 +27,29 @@
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/SbXfBox3f.h>
 
+class SoBoundingBoxCacheP;
+
 class COIN_DLL_API SoBoundingBoxCache : public SoCache {
   typedef SoCache inherited;
 public:
   SoBoundingBoxCache(SoState *state);
   ~SoBoundingBoxCache();
 
-  void set(const SbXfBox3f &boundingBox,
-           SbBool centerSet,
-           const SbVec3f &centerPoint);
+  void set(const SbXfBox3f & boundingbox,
+           SbBool centerset,
+           const SbVec3f & centerpoint);
 
-  const SbXfBox3f &getBox() const;
-  const SbBox3f &getProjectedBox() const;
+  const SbXfBox3f & getBox() const;
+  const SbBox3f & getProjectedBox() const;
 
   SbBool isCenterSet() const;
-  const SbVec3f &getCenter() const;
+  const SbVec3f & getCenter() const;
 
   static void setHasLinesOrPoints(SoState *state);
-  SbBool hasLinesOrPoints() const;
+  SbBool hasLinesOrPoints(void) const;
 
 private:
-  SbXfBox3f bbox;
-  SbBox3f localBBox;
-  SbVec3f centerPoint;
-  unsigned int centerSet : 1;
-  unsigned int linesOrPoints : 1;
+  SoBoundingBoxCacheP * pimpl;
 };
 
 #endif // !COIN_SOBOUNDINGBOXCACHE_H

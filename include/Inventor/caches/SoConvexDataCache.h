@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -26,11 +26,11 @@
 
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/system/inttypes.h>
-#include <Inventor/lists/SbList.h>
 
 class SbVec3f;
 class SoCoordinateElement;
 class SbMatrix;
+class SoConvexDataCacheP;
 
 class COIN_DLL_API SoConvexDataCache : public SoCache {
   typedef SoCache inherited;
@@ -48,7 +48,7 @@ public:
     PER_VERTEX_INDEXED
   };
 
-  void generate(const SoCoordinateElement* const coords,
+  void generate(const SoCoordinateElement * const coords,
                 const SbMatrix & matrix,
                 const int32_t *coordindices,
                 const int numcoordindices,
@@ -57,20 +57,18 @@ public:
                 const Binding matbinding, const Binding normbinding,
                 const Binding texbinding);
 
-  const int32_t *getCoordIndices() const;
-  int getNumCoordIndices() const;
-  const int32_t *getMaterialIndices() const;
-  int getNumMaterialIndices() const;
-  const int32_t *getNormalIndices() const;
-  int getNumNormalIndices() const;
-  const int32_t *getTexIndices() const;
-  int getNumTexIndices() const;
+  const int32_t *getCoordIndices(void) const;
+  int getNumCoordIndices(void) const;
+  const int32_t *getMaterialIndices(void) const;
+  int getNumMaterialIndices(void) const;
+  const int32_t *getNormalIndices(void) const;
+  int getNumNormalIndices(void) const;
+  const int32_t *getTexIndices(void) const;
+  int getNumTexIndices(void) const;
 
 private:
-  SbList <int32_t> coordIndices;
-  SbList <int32_t> normalIndices;
-  SbList <int32_t> materialIndices;
-  SbList <int32_t> texIndices;
+  SoConvexDataCacheP * pimpl;
 };
 
 #endif // !COIN_SOCONVEXDATACACHE_H
+

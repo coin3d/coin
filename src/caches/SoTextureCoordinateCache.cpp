@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -27,6 +27,21 @@
 */
 
 #include <Inventor/caches/SoTextureCoordinateCache.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/SbBox3f.h>
+#include <Inventor/SbVec2f.h>
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoTextureCoordinateCacheP {
+public:
+  SbList <SbVec2f> texCoords;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   Constructor.
@@ -34,6 +49,7 @@
 SoTextureCoordinateCache::SoTextureCoordinateCache(SoState * const state)
   : SoCache(state)
 {
+  THIS = new SoTextureCoordinateCacheP;
 }
 
 /*!
@@ -41,7 +57,7 @@ SoTextureCoordinateCache::SoTextureCoordinateCache(SoState * const state)
 */
 SoTextureCoordinateCache::~SoTextureCoordinateCache()
 {
-
+  delete THIS;
 }
 
 /*!
@@ -50,8 +66,8 @@ SoTextureCoordinateCache::~SoTextureCoordinateCache()
   in OIV.
 */
 void
-SoTextureCoordinateCache::generate(const SbBox3f &bbox,
-                                   const SbVec3f *vertices,
+SoTextureCoordinateCache::generate(const SbBox3f & bbox,
+                                   const SbVec3f * vertices,
                                    const int numvertices)
 {
   // FIXME: Support 3D texture coordinates. This functionality
@@ -95,28 +111,28 @@ SoTextureCoordinateCache::generate(const SbBox3f &bbox,
     s /= sizes[0];
     t /= sizes[1];
     // expand list array as needed
-    if (i >= this->texCoords.getLength()) this->texCoords.append(SbVec2f());
-    this->texCoords[i].setValue(s, t);
+    if (i >= THIS->texCoords.getLength()) THIS->texCoords.append(SbVec2f());
+    THIS->texCoords[i].setValue(s, t);
   }
 
   // fit list array in case we used to have more items than now
-  this->texCoords.truncate(numvertices);
+  THIS->texCoords.truncate(numvertices);
 }
 
 /*!
   Returns the generated texture coordinates.
 */
 const SbVec2f *
-SoTextureCoordinateCache::get() const
+SoTextureCoordinateCache::get(void) const
 {
-  return this->texCoords.getArrayPtr();
+  return THIS->texCoords.getArrayPtr();
 }
 
 /*!
   Returns the number of generated texture coordinates.
 */
 int
-SoTextureCoordinateCache::getNum() const
+SoTextureCoordinateCache::getNum(void) const
 {
-  return this->texCoords.getLength();
+  return THIS->texCoords.getLength();
 }

@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -25,10 +25,11 @@
 \**************************************************************************/
 
 #include <Inventor/caches/SoCache.h>
-#include <Inventor/system/inttypes.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/SbBox3f.h>
-#include <Inventor/SbVec2f.h>
+
+class SbBox3f;
+class SbVec3f;
+class SbVec2f;
+class SoTextureCoordinateCacheP;
 
 class COIN_DLL_API SoTextureCoordinateCache : public SoCache {
   typedef SoCache inherited;
@@ -37,14 +38,14 @@ public:
   ~SoTextureCoordinateCache();
 
   // TODO: more ways to generate texture coordinates
-  void generate(const SbBox3f &bbox, const SbVec3f *vertices,
+  void generate(const SbBox3f & bbox, const SbVec3f * vertices,
                 const int numvertices);
 
-  const SbVec2f *get() const;
-  int getNum() const;
+  const SbVec2f * get(void) const;
+  int getNum(void) const;
 
 private:
-  SbList <SbVec2f> texCoords;
+  SoTextureCoordinateCacheP * pimpl;
 };
 
 #endif // !COIN_SOTEXTURECOORDINATECACHE_H
