@@ -40,8 +40,8 @@ rm -rf pkgroot pkgresources
 
 # Copy package files to pkgroot and pkgresources
 ditto -rsrcFork $FRAMEWORK pkgroot/Inventor.framework
-ditto -rsrcFork @top_srcdir@/packaging/macosx/License.rtfd pkgresources/License.rtfd
-ditto -rsrcFork @top_srcdir@/packaging/macosx/Coin_Welcome.rtfd pkgresources/Welcome.rtfd
+ditto -rsrcFork @top_srcdir@/packaging/macosx/License.rtf pkgresources/License.rtf
+ditto -rsrcFork @top_srcdir@/packaging/macosx/Coin_Welcome.rtf pkgresources/Welcome.rtf
 
 # Package creation using PackageMaker
 if test x$VERBOSE = x; then

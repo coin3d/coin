@@ -98,16 +98,16 @@ EXTRA_DIST = \
 	packaging/macosx/checklist.txt \
 	packaging/macosx/Coin_Description.plist.in \
 	packaging/macosx/Coin_Info.plist.in \
-	packaging/macosx/Coin_Welcome.rtfd/TXT.rtf \
+	packaging/macosx/Coin_Welcome.rtf \
 	packaging/macosx/CoinTools_Description.plist.in \
 	packaging/macosx/CoinTools_Info.plist.in \
-	packaging/macosx/CoinTools_Welcome.rtfd/TXT.rtf \
+	packaging/macosx/CoinTools_Welcome.rtf \
 	packaging/macosx/inst-dmg-files/.DS_Store \
 	packaging/macosx/inst-dmg-files/.VolumeIcon.icns \
 	packaging/macosx/inst-dmg-files/background.png \
 	packaging/macosx/inst-dmg-files/Desktop_DB \
 	packaging/macosx/inst-dmg-files/Desktop_DF \
-	packaging/macosx/License.rtfd/TXT.rtf \
+	packaging/macosx/License.rtf \
 	packaging/macosx/makecoinpkg.sh.in \
 	packaging/macosx/makecointoolspkg.sh.in \
 	packaging/macosx/makedmg.sh.in \
