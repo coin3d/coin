@@ -91,7 +91,7 @@ namemap_cleanup(void)
     }
   }
   free(nametable);
-  nametable = (struct NamemapBucketEntry **)0xdeadbeef;
+  nametable = (struct NamemapBucketEntry **)NULL;
 
   CC_MUTEX_DESTRUCT(access_mutex);
 }
@@ -149,7 +149,7 @@ namemap_find_or_add_string(const char * str, SbBool addifnotfound)
   CC_MUTEX_LOCK(access_mutex);
 
   if (nametable == NULL) { namemap_init(); }
-  assert(nametable != (struct NamemapBucketEntry **)0xdeadbeef && "name hash dead");
+  assert(nametable != (struct NamemapBucketEntry **)NULL && "name hash dead");
 
   h = cc_string_hash_text(str);
   i = h % NAME_TABLE_SIZE;
