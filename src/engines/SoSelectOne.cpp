@@ -98,6 +98,7 @@ SoSelectOne::SoSelectOne(SoType inputtype)
   // Instead of SO_ENGINE_ADD_INPUT().
   this->input = (SoMField *)inputtype.createInstance();
   this->input->setNum(0);
+  this->input->setContainer(this);
   this->dynamicinput = new SoFieldData(SoSelectOne::inputdata);
   this->dynamicinput->addField(this, "input", this->input);
 
