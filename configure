@@ -1860,10 +1860,10 @@ COIN_VERSION=$COIN_MAJOR_VERSION.$COIN_MINOR_VERSION.$COIN_MICRO_VERSION$COIN_BE
 
 VERSION=$COIN_VERSION
 
-if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Library version:$COIN_VERSION"
-else
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Library version:$COIN_VERSION"
+else
+  sim_ac_configuration_settings="Library version:$COIN_VERSION"
 fi
 
 
@@ -5819,8 +5819,9 @@ else
     rhapsody* | darwin1.[012])
       allow_undefined_flag='-undefined suppress'
       ;;
-    *) # Darwin 1.3 on
-      allow_undefined_flag='-flat_namespace -undefined suppress'
+    *) # On Mac OS 10.1 and above, two-level namespace libraries are the
+       # default, where undefined symbols are not allowed.
+      allow_undefined_flag=''
       ;;
     esac
     # FIXME: Relying on posixy $() will cause problems for
@@ -7042,7 +7043,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7045 "configure"
+#line 7046 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7140,7 +7141,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7143 "configure"
+#line 7144 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8894,18 +8895,18 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_3DS_IMPORT_CAPABILITIES
 _ACEOF
 
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="3ds import capabilities:Yes (warning: experimental)"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|3ds import capabilities:Yes (warning: experimental)"
+else
+  sim_ac_configuration_settings="3ds import capabilities:Yes (warning: experimental)"
 fi
 
 else
   HAVE_3DS_IMPORT_CAPABILITIES=0
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="3ds import capabilities:No  (enable with --enable-3ds-import)"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|3ds import capabilities:No  (enable with --enable-3ds-import)"
+else
+  sim_ac_configuration_settings="3ds import capabilities:No  (enable with --enable-3ds-import)"
 fi
 
 fi
@@ -8946,19 +8947,19 @@ cat >>confdefs.h <<\_ACEOF
 _ACEOF
 
   VRML97MAKEFILE=src/vrml97/Makefile
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="VRML97 support:Yes"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|VRML97 support:Yes"
+else
+  sim_ac_configuration_settings="VRML97 support:Yes"
 fi
 
 else
   HAVE_VRML97=0
   VRML97MAKEFILE=
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="VRML97 support:No  (enable with --enable-vrml97)"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|VRML97 support:No  (enable with --enable-vrml97)"
+else
+  sim_ac_configuration_settings="VRML97 support:No  (enable with --enable-vrml97)"
 fi
 
 fi
@@ -9304,10 +9305,10 @@ else
 fi
 
 
-if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="System threads API:$sim_ac_threads_api"
-else
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|System threads API:$sim_ac_threads_api"
+else
+  sim_ac_configuration_settings="System threads API:$sim_ac_threads_api"
 fi
 
 
@@ -9350,17 +9351,17 @@ cat >>confdefs.h <<\_ACEOF
 #define COIN_THREADSAFE 1
 _ACEOF
 
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Thread safe traversals:Yes  (in development)"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe traversals:Yes  (in development)"
+else
+  sim_ac_configuration_settings="Thread safe traversals:Yes  (in development)"
 fi
 
 else
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Thread safe traversals:No  (enable with --enable-threadsafe)"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe traversals:No  (enable with --enable-threadsafe)"
+else
+  sim_ac_configuration_settings="Thread safe traversals:No  (enable with --enable-threadsafe)"
 fi
 
 fi
@@ -13905,19 +13906,19 @@ else
 fi
 
 if test x"$want_man" = x"yes"; then
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="manpage installation:$mandir"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|manpage installation:$mandir"
+else
+  sim_ac_configuration_settings="manpage installation:$mandir"
 fi
 
 fi
 
 if test x"$want_html" = x"yes"; then
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="HTML installation:$htmldir"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|HTML installation:$htmldir"
+else
+  sim_ac_configuration_settings="HTML installation:$htmldir"
 fi
 
 fi
@@ -16678,10 +16679,10 @@ cat >>confdefs.h <<_ACEOF
 #define SIMAGE_RUNTIME_LINKING 1
 _ACEOF
 
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="simage linkage:run-time binding"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|simage linkage:run-time binding"
+else
+  sim_ac_configuration_settings="simage linkage:run-time binding"
 fi
 
 else
@@ -16845,10 +16846,10 @@ _ACEOF
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_simage_cppflags"
     COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
     COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
-    if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="simage linkage:link-time binding"
-else
+    if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|simage linkage:link-time binding"
+else
+  sim_ac_configuration_settings="simage linkage:link-time binding"
 fi
 
 
@@ -16858,10 +16859,10 @@ else
       { echo "$as_me:$LINENO: WARNING: simage development system not found" >&5
 echo "$as_me: WARNING: simage development system not found" >&2;};
     fi
-    if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="simage linkage:no simage support"
-else
+    if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|simage linkage:no simage support"
+else
+  sim_ac_configuration_settings="simage linkage:no simage support"
 fi
 
 
@@ -16907,10 +16908,10 @@ cat >>confdefs.h <<_ACEOF
 #define OPENAL_RUNTIME_LINKING 1
 _ACEOF
 
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="OpenAL support:Yes, run-time binding"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|OpenAL support:Yes, run-time binding"
+else
+  sim_ac_configuration_settings="OpenAL support:Yes, run-time binding"
 fi
 
 else
@@ -17172,10 +17173,10 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_OPENAL 1
 _ACEOF
 
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="OpenAL support:Yes, link-time binding"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|OpenAL support:Yes, link-time binding"
+else
+  sim_ac_configuration_settings="OpenAL support:Yes, link-time binding"
 fi
 
 
@@ -17188,10 +17189,10 @@ echo "${ECHO_T}failure" >&6
 echo "$as_me: WARNING: openal is needed for sound" >&2;}
     sim_ac_enable_sound=false
   fi
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="OpenAL support:No"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|OpenAL support:No"
+else
+  sim_ac_configuration_settings="OpenAL support:No"
 fi
 
 
@@ -17205,10 +17206,10 @@ echo "${ECHO_T}disabled" >&6
 echo "$as_me: WARNING: openal is needed for sound" >&2;}
     sim_ac_enable_sound=false
   fi
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="OpenAL support:No"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|OpenAL support:No"
+else
+  sim_ac_configuration_settings="OpenAL support:No"
 fi
 
 
@@ -17225,18 +17226,18 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_SOUND
 _ACEOF
 
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Sound support:Yes"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Sound support:Yes"
+else
+  sim_ac_configuration_settings="Sound support:Yes"
 fi
 
 else
   HAVE_SOUND=0
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Sound support:No  (enable with --enable-sound)"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Sound support:No  (enable with --enable-sound)"
+else
+  sim_ac_configuration_settings="Sound support:No  (enable with --enable-sound)"
 fi
 
 fi
@@ -20037,10 +20038,10 @@ _ACEOF
 
 else
 
-        if test x${sim_ac_configuration_warnings+set} != xset; then
-  sim_ac_configuration_warnings="Could not find or compile or link against any usable window-system OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32) nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality will be disabled. Note: this might be a configure bug. Check the file config.log."
-else
+        if test x"${sim_ac_configuration_warnings+set}" = x"set"; then
   sim_ac_configuration_warnings="$sim_ac_configuration_warnings|Could not find or compile or link against any usable window-system OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32) nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality will be disabled. Note: this might be a configure bug. Check the file config.log."
+else
+  sim_ac_configuration_warnings="Could not find or compile or link against any usable window-system OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32) nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality will be disabled. Note: this might be a configure bug. Check the file config.log."
 fi
 
 
@@ -20054,10 +20055,10 @@ fi
 
 
   if $enable_superglu; then
-    if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="GLU linkage:superglu"
-else
+    if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|GLU linkage:superglu"
+else
+  sim_ac_configuration_settings="GLU linkage:superglu"
 fi
 
   else
@@ -20305,10 +20306,10 @@ cat >>confdefs.h <<_ACEOF
 #define GLU_RUNTIME_LINKING 1
 _ACEOF
 
-        if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="GLU linkage:run-time binding, part of GL library"
-else
+        if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|GLU linkage:run-time binding, part of GL library"
+else
+  sim_ac_configuration_settings="GLU linkage:run-time binding, part of GL library"
 fi
 
 
@@ -20319,10 +20320,10 @@ cat >>confdefs.h <<_ACEOF
 #define GLU_RUNTIME_LINKING 1
 _ACEOF
 
-        if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="GLU linkage:run-time binding"
-else
+        if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|GLU linkage:run-time binding"
+else
+  sim_ac_configuration_settings="GLU linkage:run-time binding"
 fi
 
 
@@ -20612,10 +20613,10 @@ _ACEOF
         COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
         COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
         COIN_EXTRA_LIBS="$sim_ac_glu_libs $COIN_EXTRA_LIBS"
-        if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="GLU linkage:link-time binding"
-else
+        if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|GLU linkage:link-time binding"
+else
+  sim_ac_configuration_settings="GLU linkage:link-time binding"
 fi
 
 
@@ -20624,10 +20625,10 @@ fi
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
 
-        if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="GLU linkage:no GLU support"
-else
+        if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|GLU linkage:no GLU support"
+else
+  sim_ac_configuration_settings="GLU linkage:no GLU support"
 fi
 
 
@@ -21170,10 +21171,10 @@ if $sim_ac_build_library; then
     debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
 
     if $COIN_STATIC; then
-      if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Coin build type:static .lib"
-else
+      if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:static .lib"
+else
+  sim_ac_configuration_settings="Coin build type:static .lib"
 fi
 
       LIBFLAGS="-LIB $LIBFLAGS"
@@ -21182,19 +21183,19 @@ fi
       LIBFLAGS="-DLL /INCREMENTAL:NO $LIBFLAGS"
       case $enable_symbols in
       no | false)
-        if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Coin build type:dynamic .dll, no symbols"
-else
+        if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:dynamic .dll, no symbols"
+else
+  sim_ac_configuration_settings="Coin build type:dynamic .dll, no symbols"
 fi
 
         LIBFLAGS="$LIBFLAGS /RELEASE"
         ;;
       *)
-        if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Coin build type:dynamic .dll + .pdb"
-else
+        if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:dynamic .dll + .pdb"
+else
+  sim_ac_configuration_settings="Coin build type:dynamic .dll + .pdb"
 fi
 
         CFLAGS="/Fd$debugfile $CFLAGS"
@@ -21204,10 +21205,10 @@ fi
       esac
       LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.dll"
     fi
-    if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="C library version:$sim_ac_msvcrt"
-else
+    if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|C library version:$sim_ac_msvcrt"
+else
+  sim_ac_configuration_settings="C library version:$sim_ac_msvcrt"
 fi
 
 
@@ -21262,17 +21263,17 @@ fi
   fi
 
   if $sim_ac_framework; then
-    if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Coin build type:Mac OS X framework"
-else
+    if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:Mac OS X framework"
+else
+  sim_ac_configuration_settings="Coin build type:Mac OS X framework"
 fi
 
   elif $sim_ac_path_problem; then
-    if test x${sim_ac_configuration_warnings+set} != xset; then
-  sim_ac_configuration_warnings="Your \$PATH variable does not appear to include \"$prefix/bin\""
-else
+    if test x"${sim_ac_configuration_warnings+set}" = x"set"; then
   sim_ac_configuration_warnings="$sim_ac_configuration_warnings|Your \$PATH variable does not appear to include \"$prefix/bin\""
+else
+  sim_ac_configuration_warnings="Your \$PATH variable does not appear to include \"$prefix/bin\""
 fi
 
   fi
@@ -21298,26 +21299,26 @@ fi
   fi
   # Mac OS X 10.2 needs some additional tweaks (see also src/Makefile.am)
   if $sim_ac_macosx_10_2; then
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -L/usr/lib/gcc/darwin/3.1/private/"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -Wl,-prebind"
   fi
 
   case "$sim_ac_framework:$sim_ac_make_dsp" in
   true:* | *:true )
     ;;
   * )
-    if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Installation prefix:$prefix"
-else
+    if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Installation prefix:$prefix"
+else
+  sim_ac_configuration_settings="Installation prefix:$prefix"
 fi
 
     ;;
   esac
 else
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Coin build type:build disabled"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:build disabled"
+else
+  sim_ac_configuration_settings="Coin build type:build disabled"
 fi
 
 fi
@@ -21333,10 +21334,10 @@ COIN_DSP_INCS=
 COIN_DSP_DEFS=
 
 if $sim_ac_make_dsp; then
-  if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="Coin build type:msvc .dsp"
-else
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|Coin build type:msvc .dsp"
+else
+  sim_ac_configuration_settings="Coin build type:msvc .dsp"
 fi
 
 
@@ -23001,7 +23002,7 @@ if $sim_ac_build_library; then
   esac
 fi
 
-sim_ac_settings=$sim_ac_configuration_settings
+sim_ac_settings="$sim_ac_configuration_settings"
 sim_ac_num_settings=`echo "$sim_ac_settings" | tr -d -c "|" | wc -c`
 sim_ac_maxlength=0
 while test $sim_ac_num_settings -ge 0; do

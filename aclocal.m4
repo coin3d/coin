@@ -454,10 +454,10 @@ AC_SUBST([$1_DSP_DEFS])
 # SIM_AC_CONFIGURATION_SUMMARY macro.
 
 AC_DEFUN([SIM_AC_CONFIGURATION_SETTING],
-[if test x${sim_ac_configuration_settings+set} != xset; then
-  sim_ac_configuration_settings="$1:$2"
-else
+[if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|$1:$2"
+else
+  sim_ac_configuration_settings="$1:$2"
 fi
 ]) # SIM_AC_CONFIGURATION_SETTING
 
@@ -468,10 +468,10 @@ fi
 # SIM_AC_CONFIGURATION_SUMMARY macro.
 
 AC_DEFUN([SIM_AC_CONFIGURATION_WARNING],
-[if test x${sim_ac_configuration_warnings+set} != xset; then
-  sim_ac_configuration_warnings="$1"
-else
+[if test x"${sim_ac_configuration_warnings+set}" = x"set"; then
   sim_ac_configuration_warnings="$sim_ac_configuration_warnings|$1"
+else
+  sim_ac_configuration_warnings="$1"
 fi
 ]) # SIM_AC_CONFIGURATION_WARNING
 
@@ -481,7 +481,7 @@ fi
 # This macro dumps the settings and warnings summary.
 
 AC_DEFUN([SIM_AC_CONFIGURATION_SUMMARY],
-[sim_ac_settings=$sim_ac_configuration_settings
+[sim_ac_settings="$sim_ac_configuration_settings"
 sim_ac_num_settings=`echo "$sim_ac_settings" | tr -d -c "|" | wc -c`
 sim_ac_maxlength=0
 while test $sim_ac_num_settings -ge 0; do
@@ -2712,8 +2712,9 @@ else
     rhapsody* | darwin1.[[012]])
       allow_undefined_flag='-undefined suppress'
       ;;
-    *) # Darwin 1.3 on
-      allow_undefined_flag='-flat_namespace -undefined suppress'
+    *) # On Mac OS 10.1 and above, two-level namespace libraries are the
+       # default, where undefined symbols are not allowed.
+      allow_undefined_flag=''
       ;;
     esac
     # FIXME: Relying on posixy $() will cause problems for

@@ -233,7 +233,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 
 
 # we are dealing with the Mac OS X 10.2 gcc compiler toolset...
-@MACOSX_10_2_TRUE@LibtoolLinkArgs = -flat_namespace -undefined warning
+@MACOSX_10_2_TRUE@LibtoolLinkArgs = -twolevel_namespace -undefined error 
 @MACOSX_10_2_FALSE@LibtoolLinkArgs = -no-undefined
 
 libCoin@SUFFIX@_la_LDFLAGS = \
