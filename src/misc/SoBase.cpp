@@ -59,10 +59,10 @@
 /*!
   \fn SbBool SoBase::readInstance(SoInput * in, unsigned short flags)
 
-  Reads definition of SoBase instance from input stream \a in.
+  Reads definition of SoBase derived instance from input stream \a in.
 
   \a flags is used internally during binary import when reading user
-  extension nodes, groupnodes or engine classes.
+  extension nodes, group nodes or engines.
 */
 /*!
   \enum SoBase::BaseFlags
@@ -330,16 +330,16 @@ SoBase::setName(const SbName & newname)
 
   // check for bad characters
   const char * str = newname.getString();
-  SbBool isBad = FALSE;
+  SbBool isbad = FALSE;
 
-  isBad = (newname.getLength() > 0) && !SbName::isBaseNameStartChar(str[0]);
+  isbad = (newname.getLength() > 0) && !SbName::isBaseNameStartChar(str[0]);
 
   int i;
-  for (i = 1; i < newname.getLength() && !isBad; i++) {
-    isBad = !SbName::isIdentChar(str[i]);
+  for (i = 1; i < newname.getLength() && !isbad; i++) {
+    isbad = !SbName::isBaseNameChar(str[i]);
   }
 
-  if (isBad) {
+  if (isbad) {
     // replace bad characters
     SbString goodstring;
 
