@@ -11,6 +11,21 @@
   SbBool needNormals,
   SbBool drawPoints)
 {
+  const SbVec3f * coords3d = NULL;
+  const SbVec4f * coords4d = NULL;
+  const SbBool is3d = coords->is3D();
+  if (is3d) {
+    coords3d = coords->getArrayPtr3();
+  }
+  else {
+    coords4d = coords->getArrayPtr4();
+  }
+
+  // This is the same code as in SoGLCoordinateElement::send().
+  // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_) \
+  if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
+  else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
@@ -56,7 +71,8 @@
       currnormal = normals++;
       glNormal3fv((const GLfloat*)currnormal);
 #endif
-      coords->send(idx++);
+      SEND_VERTEX(idx);
+      idx++;
 
 #if NBINDING==PER_VERTEX
       currnormal = normals++;
@@ -68,7 +84,7 @@
 #if TEXTURES==TRUE
       tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
-      coords->send(idx);
+      SEND_VERTEX(idx);
     }
     idx++;
   }
@@ -95,7 +111,8 @@
 #if TEXTURES==TRUE
     tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
-    coords->send(idx++);
+    SEND_VERTEX(idx);
+    idx++;
     do {
 #if NBINDING==PER_VERTEX
       currnormal = normals++;
@@ -107,7 +124,8 @@
 #if TEXTURES==TRUE
       tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
-      coords->send(idx++);
+      SEND_VERTEX(idx);
+      idx++;
     } while (n--);
     if (!drawPoints) glEnd();
   }
@@ -116,3 +134,5 @@
 
   if (drawPoints) glEnd();
 }
+
+#undef SEND_VERTEX

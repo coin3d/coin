@@ -7,6 +7,22 @@
     int colsize,
     int start )
 {
+  const SbVec3f * coords3d = NULL;
+  const SbVec4f * coords4d = NULL;
+  const SbBool is3d = coords->is3D();
+  if (is3d) {
+    coords3d = coords->getArrayPtr3();
+  }
+  else {
+    coords4d = coords->getArrayPtr4();
+  }
+
+  // This is the same code as in SoGLCoordinateElement::send().
+  // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_) \
+  if (is3d) glVertex3fv((const GLfloat*) (coords3d + (_idx_))); \
+  else glVertex4fv((const GLfloat*) (coords4d + (_idx_)));
+
 #if MBINDING==PER_FACE || MBINDING==PER_ROW
   int midx = 0;
 #endif
@@ -31,7 +47,7 @@
 #if MBINDING==PER_ROW
     mb->send(midx++,TRUE);
 #endif
-    
+
     for (j = 0; j < rowsize; j++) {
       curridx = IDX(i,j);
 #if NBINDING==PER_VERTEX
@@ -45,12 +61,12 @@
 #if MBINDING==PER_VERTEX
       mb->send(curridx, TRUE);
 #endif
-      
+
 #if TEXTURES==TRUE
       tb->send(curridx, coords->get3(start + curridx),
                *currnormal);
 #endif
-      coords->send(start + curridx);
+      SEND_VERTEX(start + curridx);
       curridx = IDX(i+1,j);
 #if NBINDING==PER_VERTEX
       currnormal = &normals[curridx];
@@ -66,7 +82,7 @@
       // FIXME: optimize by moving first 2 vertices in row outside loop
       if (j > 0) mb->send(midx++, TRUE);
 #endif
-      coords->send(start + curridx);
+      SEND_VERTEX(start + curridx);
     }
     glEnd(); // end of strip/row
   }

@@ -65,6 +65,22 @@
   int32_t v1, v2, v3;
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
 
+  const SbVec3f * coords3d = NULL;
+  const SbVec4f * coords4d = NULL;
+  const SbBool is3d = vertexlist->is3D();
+  if (is3d) {
+    coords3d = vertexlist->getArrayPtr3();
+  }
+  else {
+    coords4d = vertexlist->getArrayPtr4();
+  }
+
+  // This is the same code as in SoGLCoordinateElement::send().
+  // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_) \
+  if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
+  else glVertex4fv((const GLfloat*) (coords4d + _idx_));
+ 
 #if NBINDING==PER_VERTEX || NBINDING==PER_TRIANGLE || NBINDING==PER_STRIP || NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_TRIANGLE_INDEXED || NBINDING==PER_STRIP_INDEXED || TEXTURES==TRUE
   const SbVec3f *currnormal = &dummynormal;
   if (normals) currnormal = normals;
@@ -107,7 +123,7 @@
                     vertexlist->get3(v1),
                     *currnormal);
 #endif
-    vertexlist->send(v1);
+    SEND_VERTEX(v1);
 
     /* vertex 2 *********************************************************/
 #if MBINDING==PER_VERTEX
@@ -127,7 +143,7 @@
                     vertexlist->get3(v2),
                     *currnormal);
 #endif
-    vertexlist->send(v2);
+    SEND_VERTEX(v2);
 
     /* vertex 3 *********************************************************/
 #if MBINDING==PER_VERTEX || MBINDING==PER_TRIANGLE
@@ -147,7 +163,7 @@
                     vertexlist->get3(v3),
                     *currnormal);
 #endif
-    vertexlist->send(v3);
+    SEND_VERTEX(v3);
 
     v1 = *viptr++;
     while (v1 >= 0) {
@@ -168,7 +184,7 @@
                       vertexlist->get3(v1),
                       *currnormal);
 #endif
-      vertexlist->send(v1);
+      SEND_VERTEX(v1);
       v1 = *viptr++;
     }
     glEnd(); // end of tristrip
@@ -186,5 +202,6 @@
   }
 }
 
+#undef SEND_VERTEX
 #undef MINDEX
 #undef NINDEX

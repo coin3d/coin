@@ -10,6 +10,22 @@
     const int32_t *end,
     SbBool needNormals)
 {
+  const SbVec3f * coords3d = NULL;
+  const SbVec4f * coords4d = NULL;
+  const SbBool is3d = coords->is3D();
+  if (is3d) {
+    coords3d = coords->getArrayPtr3();
+  }
+  else {
+    coords4d = coords->getArrayPtr4();
+  }
+
+  // This is the same code as in SoGLCoordinateElement::send().
+  // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_) \
+  if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
+  else glVertex4fv((const GLfloat*) (coords4d + _idx_));
+
 #if MBINDING!=OVERALL
   int matnr = 0;
 #endif
@@ -32,42 +48,47 @@
     glBegin(GL_TRIANGLE_STRIP);
 
 #if NBINDING==PER_VERTEX || NBINDING==PER_STRIP
-      currnormal = normals++;
-      glNormal3fv((const GLfloat *)currnormal);
+    currnormal = normals++;
+    glNormal3fv((const GLfloat *)currnormal);
 #endif
 #if MBINDING==PER_STRIP || MBINDING==PER_VERTEX
-      mb->send(matnr++, TRUE);
+    mb->send(matnr++, TRUE);
 #endif
 #if TEXTURES==TRUE
-      tb->send(texnr++, coords->get3(idx), *currnormal);
+    tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
-    coords->send(idx++);
-
+    SEND_VERTEX(idx);
+    idx++;
+    
 #if NBINDING==PER_VERTEX
-      currnormal = normals++;
-      glNormal3fv((const GLfloat *)currnormal);
+    currnormal = normals++;
+    glNormal3fv((const GLfloat *)currnormal);
 #endif
 #if MBINDING==PER_VERTEX
-      mb->send(matnr++, TRUE);
+    mb->send(matnr++, TRUE);
 #endif
 #if TEXTURES==TRUE
-      tb->send(texnr++, coords->get3(idx), *currnormal);
+    tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
-    coords->send(idx++);
+    SEND_VERTEX(idx);
+    idx++;
 
     while (n--) {
 #if NBINDING==PER_FACE || NBINDING==PER_VERTEX
-        currnormal = normals++;
-        glNormal3fv((const GLfloat *)currnormal);
+      currnormal = normals++;
+      glNormal3fv((const GLfloat *)currnormal);
 #endif
 #if MBINDING==PER_FACE || MBINDING==PER_VERTEX
-        mb->send(matnr++, TRUE);
+      mb->send(matnr++, TRUE);
 #endif
 #if TEXTURES==TRUE
-        tb->send(texnr++, coords->get3(idx), *currnormal);
+      tb->send(texnr++, coords->get3(idx), *currnormal);
 #endif
-      coords->send(idx++);
+      SEND_VERTEX(idx);
+      idx++;
     }
     glEnd();
   }
 }
+
+#undef SEND_VERTEX

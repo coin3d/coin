@@ -12,6 +12,21 @@
   const int32_t *texindices,
   const int drawAsPoints)
 {
+  const SbVec3f * coords3d = NULL;
+  const SbVec4f * coords4d = NULL;
+  const SbBool is3d = coords->is3D();
+  if (is3d) {
+    coords3d = coords->getArrayPtr3();
+  }
+  else {
+    coords4d = coords->getArrayPtr4();
+  }
+
+  // This is the same code as in SoGLCoordinateElement::send().
+  // It is inlined here for speed (~15% speed increase).
+#define SEND_VERTEX(_idx_) \
+  if (is3d) glVertex3fv((const GLfloat*) (coords3d + _idx_)); \
+  else glVertex4fv((const GLfloat*) (coords4d + _idx_));
 
 #if MBINDING==PER_VERTEX_INDEXED
   if (matindices == NULL) matindices = indices;
@@ -79,7 +94,7 @@
       currnormal = &normals[*normindices++];
       glNormal3fv((const GLfloat*)currnormal);
 #endif
-      coords->send(previ);
+      SEND_VERTEX(previ);
 #if MBINDING==PER_VERTEX
       materials->send(matnr++, TRUE);
 #elif MBINDING==PER_VERTEX_INDEXED
@@ -95,7 +110,7 @@
 #if TEXTURES==TRUE
       texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
 #endif
-      coords->send(i);
+      SEND_VERTEX(i);
       previ = i;
       i = *indices++;
     }
@@ -137,7 +152,7 @@
 #if TEXTURES==TRUE
     texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
 #endif
-    coords->send(i);
+    SEND_VERTEX(i);
     i = *indices++;
     while (i >= 0) {
 #if MBINDING==PER_VERTEX
@@ -155,7 +170,7 @@
 #if TEXTURES==TRUE
       texcoords->send(texindices ? *texindices++ : texidx++, coords->get3(i), *currnormal);
 #endif
-      coords->send(i);
+      SEND_VERTEX(i);
       i = *indices++;
     }
     if (!drawAsPoints)
@@ -174,3 +189,6 @@
     glEnd();
 #endif
 }
+
+#undef SEND_VERTEX
+
