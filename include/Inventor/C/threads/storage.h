@@ -31,9 +31,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#if 0 // for emacs indentation
+#if 0 /* for emacs indentation */
 }
-#endif // for emacs indentation
+#endif /* for emacs indentation */
 
 /* ********************************************************************** */
 typedef void cc_storage_apply_func(void * dataptr, void * closure);
