@@ -2,11 +2,17 @@
 ## 19990904 mortene.
 
 RegularSources = \
-	gl.c
+	gl.c \
+	gl_wgl.c gl_wgl.h \
+	gl_glx.c gl_glx.h \
+	dl.c
+
 LinkHackSources = \
 	all-c.c
+
+# Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders =
-PrivateHeaders =
+PrivateHeaders = 
 
 ##$ BEGIN TEMPLATE Make-Common(glue)
 

@@ -137,7 +137,8 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 glueincdir = $(includedir)/Inventor/C/glue
 glueinc_HEADERS = \
-	gl.h
+	gl.h dl.h
+
 
 EXTRA_DIST = \
 	glp.h

@@ -1,7 +1,8 @@
 
 glueincdir = $(includedir)/Inventor/C/glue
 glueinc_HEADERS = \
-	gl.h
+	gl.h dl.h
+
 ## These headers are not installed - they are internal to Coin...
 EXTRA_DIST = \
 	glp.h
