@@ -405,24 +405,29 @@ AM_CONDITIONAL([BUILD_WITH_THREADS], [$sim_ac_enable_threads])
 # *******************************************************************
 # Thread safe library
 
-sim_ac_enable_threadsafe=false
-AC_ARG_ENABLE(
-  [threadsafe],
+AC_ARG_ENABLE([threadsafe],
   AC_HELP_STRING([--enable-threadsafe], [enable thread safe traversals]),
   [case $enableval in
-     yes | true ) sim_ac_enable_threadsafe=true ;;
-     *) ;;
-   esac])
+  yes | true ) sim_ac_enable_threadsafe=true ;;
+  *) ;;
+  esac],
+  [sim_ac_enable_threadsafe=false])
+
+HAVE_THREADSAFE=0
 
 if $sim_ac_enable_threadsafe; then
   if test "$HAVE_THREADS" = "0"; then
     AC_MSG_ERROR([You can not enable thread safe action traversals while at the same time disabling the portable thread-handling abstractions. You must use "--enable-threadsafe" with "--enable-threads".])
   fi
+
+  HAVE_THREADSAFE=1
   AC_DEFINE([COIN_THREADSAFE], 1, [define to compile with thread safe action traversal for the library])
   SIM_AC_CONFIGURATION_SETTING([Thread safe traversals], [Yes  (in development)])
 else
   SIM_AC_CONFIGURATION_SETTING([Thread safe traversals], [No  (enable with --enable-threadsafe)])
 fi
+
+AC_SUBST([HAVE_THREADSAFE])
 
 # *******************************************************************
 # Headers we might want to use

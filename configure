@@ -9386,15 +9386,18 @@ fi
 # *******************************************************************
 # Thread safe library
 
-sim_ac_enable_threadsafe=false
 # Check whether --enable-threadsafe or --disable-threadsafe was given.
 if test "${enable_threadsafe+set}" = set; then
   enableval="$enable_threadsafe"
   case $enableval in
-     yes | true ) sim_ac_enable_threadsafe=true ;;
-     *) ;;
-   esac
+  yes | true ) sim_ac_enable_threadsafe=true ;;
+  *) ;;
+  esac
+else
+  sim_ac_enable_threadsafe=false
 fi;
+
+HAVE_THREADSAFE=0
 
 if $sim_ac_enable_threadsafe; then
   if test "$HAVE_THREADS" = "0"; then
@@ -9402,6 +9405,8 @@ if $sim_ac_enable_threadsafe; then
 echo "$as_me: error: You can not enable thread safe action traversals while at the same time disabling the portable thread-handling abstractions. You must use \"--enable-threadsafe\" with \"--enable-threads\"." >&2;}
    { (exit 1); exit 1; }; }
   fi
+
+  HAVE_THREADSAFE=1
 
 cat >>confdefs.h <<\_ACEOF
 #define COIN_THREADSAFE 1
@@ -9421,6 +9426,8 @@ else
 fi
 
 fi
+
+
 
 # *******************************************************************
 # Headers we might want to use
@@ -21127,6 +21134,7 @@ s,@BUILD_WITH_SUPERGLU_FALSE@,$BUILD_WITH_SUPERGLU_FALSE,;t t
 s,@HAVE_THREADS@,$HAVE_THREADS,;t t
 s,@BUILD_WITH_THREADS_TRUE@,$BUILD_WITH_THREADS_TRUE,;t t
 s,@BUILD_WITH_THREADS_FALSE@,$BUILD_WITH_THREADS_FALSE,;t t
+s,@HAVE_THREADSAFE@,$HAVE_THREADSAFE,;t t
 s,@BUILD_LIBRARY_TRUE@,$BUILD_LIBRARY_TRUE,;t t
 s,@BUILD_LIBRARY_FALSE@,$BUILD_LIBRARY_FALSE,;t t
 s,@htmldir@,$htmldir,;t t
