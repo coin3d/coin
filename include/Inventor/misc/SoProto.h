@@ -76,6 +76,7 @@ private:
   SbBool readInterface(SoInput * in);
   SbBool readDefinition(SoInput * in);
 
+  SbBool writeURLs(SoOutput * out);
   class SoProtoP * pimpl;
 
   SoNode * createInstanceRoot(SoProtoInstance * inst) const;

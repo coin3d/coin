@@ -216,13 +216,13 @@ SoProto::write(SoWriteAction * action)
 
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
-    if (THIS->defroot) {
+    if (THIS->defroot && !THIS->externurl) {
       this->writeDefinition(action);
     }
   }
   else if (out->getStage() == SoOutput::WRITE) {
     out->indent();
-    out->write("PROTO ");
+    out->write(THIS->externurl ? "EXTERNPROTO " : "PROTO ");
     out->write(THIS->name.getString());
     out->write(" [\n");
     out->incrementIndent();
@@ -232,16 +232,21 @@ SoProto::write(SoWriteAction * action)
     out->decrementIndent();
     out->indent();
     out->write("]\n");
-    out->indent();
-    out->write("{\n");
-    out->incrementIndent();
-
-    if (THIS->defroot) {
-      this->writeDefinition(action);
+    if (THIS->externurl) {
+      this->writeURLs(out);
     }
-    out->decrementIndent();
-    out->indent();
-    out->write("}\n");
+    else {
+      out->indent();
+      out->write("{\n");
+      out->incrementIndent();
+      
+      if (THIS->defroot) {
+        this->writeDefinition(action);
+      }
+      out->decrementIndent();
+      out->indent();
+      out->write("}\n");
+    }
   }
   else assert(0 && "unknown stage");
 
@@ -264,7 +269,26 @@ SoProto::writeInterface(SoOutput * out)
     case SoField::NORMAL_FIELD:
       out->write("field ");
       out->write(t.getName().getString());
-      f->write(out, fd->getFieldName(i));
+      if (THIS->externurl) {
+        out->write(' ');
+        out->write(fd->getFieldName(i).getString());
+        out->write("\n");
+      }
+      else {
+        f->write(out, fd->getFieldName(i));
+      }
+      break;
+    case SoField::EXPOSED_FIELD:
+      out->write("exposedField ");
+      out->write(t.getName().getString());
+      if (THIS->externurl) {
+        out->write(' ');
+        out->write(fd->getFieldName(i).getString());        
+        out->write("\n");
+      }
+      else {
+        f->write(out, fd->getFieldName(i));
+      }
       break;
     case SoField::EVENTIN_FIELD:
       out->write("eventIn ");
@@ -275,11 +299,6 @@ SoProto::writeInterface(SoOutput * out)
       out->write("eventOut ");
       out->write(t.getName().getString());
       out->write(fd->getFieldName(i).getString());
-      break;
-    case SoField::EXPOSED_FIELD:
-      out->write("exposedField ");
-      out->write(t.getName().getString());
-      f->write(out, fd->getFieldName(i));
       break;
     default:
       assert(0 && "invalid field type");
@@ -309,6 +328,37 @@ SoProto::writeDefinition(SoWriteAction * action)
     }
   }
   else assert(0 && "unknown stage");
+  return TRUE;
+}
+
+SbBool 
+SoProto::writeURLs(SoOutput * out)
+{
+  // We use this code to write the URLs to get nicer indentation. Just
+  // calling THIS->externurl->write(out, SbName("")) would also have
+  // produced a valid VRML file.
+
+  const int n = THIS->externurl->getNum();
+  if (n == 1) {
+    out->indent();
+    out->write('\"');
+    out->write((*THIS->externurl)[0].getString());
+    out->write("\"\n");
+  }
+  else {
+    out->indent();
+    out->write("[\n");
+    out->incrementIndent();
+    for (int i = 0; i < n; i++) {
+      out->indent();
+      out->write('\"');
+      out->write((*THIS->externurl)[i].getString());
+      out->write(i < n-1 ? "\",\n" : "\"\n");
+    }
+    out->decrementIndent();
+    out->indent();
+    out->write("]\n");
+  }
   return TRUE;
 }
 
