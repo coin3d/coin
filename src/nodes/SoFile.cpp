@@ -38,10 +38,13 @@
   which imports the filename you set in the field.
 */
 
-#include <string.h>
+// *************************************************************************
 
 #include <Inventor/nodes/SoFile.h>
 
+#include <string.h>
+
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -52,6 +55,8 @@
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+
+// *************************************************************************
 
 /*!
   \var SoSFString SoFile::name
@@ -72,6 +77,8 @@ const char SoFileP::UNDEFINED_FILE[] = "<Undefined file>";
 // *************************************************************************
 
 SO_NODE_SOURCE(SoFile);
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -104,6 +111,8 @@ SoFile::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoFile, SO_FROM_INVENTOR_1);
 }
+
+// *************************************************************************
 
 /*!  
   Returns the read filename, possibly including the (relative) path
@@ -171,8 +180,6 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
   // readNamedFile() as for this method, and then also the same name
   // dictionary -- which is necessary for "cross-file" references to
   // work.
-  //
-  // (Fixed Bugzilla #202.)
 
   this->fullname.makeEmpty();
   this->namesensor->detach();
@@ -194,10 +201,10 @@ SoFile::readNamedFile(SoInput * in)
 {
   if (this->name.getValue().getLength() == 0 ||
       strcmp(this->name.getValue().getString(), SoFileP::UNDEFINED_FILE) == 0) {
-    // We handle this different than Inventor, where the read process
-    // fails upon an unspecified filename.
+    // We handle this different than Inventor, where the whole read
+    // process fails upon an unspecified filename.
     SoDebugError::postWarning("SoFile::readNamedFile", 
-                              "Undefined filename in SoFile");
+                              "Undefined filename in SoFile.");
     return TRUE;
   }
 
@@ -207,6 +214,18 @@ SoFile::readNamedFile(SoInput * in)
   if (!in->pushFile(this->name.getValue().getString())) return TRUE;
 
   this->fullname = in->getCurFileName();
+
+  static int debugreading = -1;
+  if (debugreading == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_SOFILE_READ");
+    debugreading = env && (atoi(env) > 0);
+  }
+
+  if (debugreading) {
+    SoDebugError::postInfo("SoFile::readNamedFile", "(full) name=='%s'",
+                           this->fullname.getString());
+  }
+
 
   SoChildList cl(this);
   SbBool readok = TRUE;
