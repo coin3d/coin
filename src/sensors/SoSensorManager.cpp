@@ -444,6 +444,9 @@ SoSensorManager::processImmediateQueue(void)
 
   THIS->processingimmediatequeue = TRUE;
 
+  // FIXME: implement some better logic to break out of the 
+  // processing loop. Right now we break out if more than 10000
+  // immediate sensors are processed. pederb, 2002-01-30
   int triggercnt = 0;
 
   while (THIS->immediatequeue.getLength()) {
