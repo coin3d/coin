@@ -434,6 +434,7 @@ AM_CONDITIONAL(BUILD_EXAMPLES, test x"$want_examples" = xyes)
 
 SIM_EXPAND_DIR_VARS
 
+
 coin_src_dir=$srcdir
 coin_include_dir=$includedir
 coin_lib_dir=$libdir
@@ -452,6 +453,9 @@ AC_SUBST(coin_src_dir)
 AC_SUBST(coin_include_dir)
 AC_SUBST(coin_lib_dir)
 
+# For the coin.spec RPM specification file.
+SIM_AC_ISO8601_DATE(coin_configure_date)
+AC_SUBST(coin_configure_date)
 
 AC_OUTPUT([
         coin-config
@@ -497,6 +501,7 @@ AC_OUTPUT([
         build/coin_dll.mak
         build/CoinSDK.iwz
         build/SoCoinSDK.iwz.in
+        build/coin.spec
         docs/coin.doxygen
         ],
         [chmod a+x coin-config])

@@ -2383,9 +2383,20 @@ fi
 AC_DEFUN([SIM_EXPAND_DIR_VARS], [
 test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
 test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
-includedir="`eval echo $includedir`"
-libdir="`eval echo $libdir`"
+
+# This is the list of all install-path variables found in configure
+# scripts. FIXME: use another "eval-nesting" to move assignments into
+# a for-loop. 20000704 mortene.
+bindir="`eval echo $bindir`"
+sbindir="`eval echo $sbindir`"
+libexecdir="`eval echo $libexecdir`"
 datadir="`eval echo $datadir`"
+sysconfdir="`eval echo $sysconfdir`"
+sharedstatedir="`eval echo $sharedstatedir`"
+localstatedir="`eval echo $localstatedir`"
+libdir="`eval echo $libdir`"
+includedir="`eval echo $includedir`"
+infodir="`eval echo $infodir`"
 mandir="`eval echo $mandir`"
 ])
 
@@ -2415,4 +2426,17 @@ AC_DEFUN([SIM_AC_DODOUBLEBACKSLASH], [
 eval "$1=\"`echo $2 | sed -e 's%\\/%\\\\\\\\\\\\\\\\%g'`\""
 ])
 
+
+# Usage:
+#  SIM_AC_ISO8601_DATE(variable)
+#
+# Description:
+#   This macro sets the given variable to a strings representing
+#   the current date in the ISO8601-compliant format YYYYMMDD.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN(SIM_AC_ISO8601_DATE, [
+  eval "$1=\"`date +%Y%m%d`\""
+])
 

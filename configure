@@ -5065,9 +5065,20 @@ fi
 
 test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
 test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
-includedir="`eval echo $includedir`"
-libdir="`eval echo $libdir`"
+
+# This is the list of all install-path variables found in configure
+# scripts. FIXME: use another "eval-nesting" to move assignments into
+# a for-loop. 20000704 mortene.
+bindir="`eval echo $bindir`"
+sbindir="`eval echo $sbindir`"
+libexecdir="`eval echo $libexecdir`"
 datadir="`eval echo $datadir`"
+sysconfdir="`eval echo $sysconfdir`"
+sharedstatedir="`eval echo $sharedstatedir`"
+localstatedir="`eval echo $localstatedir`"
+libdir="`eval echo $libdir`"
+includedir="`eval echo $includedir`"
+infodir="`eval echo $infodir`"
 mandir="`eval echo $mandir`"
 
 
@@ -5095,6 +5106,11 @@ fi
 
 
 
+
+
+# For the coin.spec RPM specification file.
+
+  eval "coin_configure_date=\"`date +%Y%m%d`\""
 
 
 
@@ -5195,7 +5211,7 @@ config_files="\\
     examples/Makefile examples/advanced/Makefile
     examples/advanced/elements/Makefile build/Makefile build/coin.dsp
     build/coin.mak build/coin_dll.dsp build/coin_dll.mak build/CoinSDK.iwz
-    build/SoCoinSDK.iwz.in docs/coin.doxygen"
+    build/SoCoinSDK.iwz.in build/coin.spec docs/coin.doxygen"
 config_headers="\\
     config.h include/Inventor/SbBasic.h"
 
@@ -5282,6 +5298,7 @@ do
   'build/coin_dll.mak' ) CONFIG_FILES="\$CONFIG_FILES build/coin_dll.mak" ;;
   'build/CoinSDK.iwz' ) CONFIG_FILES="\$CONFIG_FILES build/CoinSDK.iwz" ;;
   'build/SoCoinSDK.iwz.in' ) CONFIG_FILES="\$CONFIG_FILES build/SoCoinSDK.iwz.in" ;;
+  'build/coin.spec' ) CONFIG_FILES="\$CONFIG_FILES build/coin.spec" ;;
   'docs/coin.doxygen' ) CONFIG_FILES="\$CONFIG_FILES docs/coin.doxygen" ;;
   'config.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS config.h" ;;
   'include/Inventor/SbBasic.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS include/Inventor/SbBasic.h" ;;
@@ -5416,6 +5433,7 @@ s%@coin_build_dir@%$coin_build_dir%;t t
 s%@coin_src_dir@%$coin_src_dir%;t t
 s%@coin_include_dir@%$coin_include_dir%;t t
 s%@coin_lib_dir@%$coin_lib_dir%;t t
+s%@coin_configure_date@%$coin_configure_date%;t t
 CEOF
 
 EOF

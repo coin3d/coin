@@ -95,6 +95,7 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 VERSION = @VERSION@
 coin_build_dir = @coin_build_dir@
+coin_configure_date = @coin_configure_date@
 coin_include_dir = @coin_include_dir@
 coin_lib_dir = @coin_lib_dir@
 coin_src_dir = @coin_src_dir@
