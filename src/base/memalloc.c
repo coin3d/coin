@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <assert.h>
+#include <stdio.h>
 
 /* internal struct used to store a linked list of free'ed items */
 struct cc_memalloc_free {
@@ -77,9 +78,10 @@ static struct cc_memalloc_memnode *
 create_memnode(cc_memalloc * allocator)
 {
   int numbytes;
-  cc_memalloc_memnode * node = 
+  cc_memalloc_memnode * node =
     (cc_memalloc_memnode*) malloc(sizeof(cc_memalloc_memnode));
   numbytes = allocator->allocated_size * allocator->strategy(allocator->num_allocated_units);
+  
   node->next = allocator->memnode;
   node->block = (unsigned char*) malloc(numbytes);
   node->currpos = 0;
@@ -90,14 +92,14 @@ create_memnode(cc_memalloc * allocator)
 
 /*
  * Allocate memory from the allocator's memnode. If the memnode is
- * full, a new memnode is created for the allocator. 
+ * full, a new memnode is created for the allocator.
 */
 static void *
 alloc_from_memnode(cc_memalloc * allocator)
 {
   int blocksize, unitsize;
   void * ret = NULL;
-  
+
   unitsize = allocator->allocated_size;
 
   if (allocator->memnode) ret = node_alloc(allocator->memnode, unitsize);
@@ -113,7 +115,7 @@ alloc_from_memnode(cc_memalloc * allocator)
   Construct a memory allocator. Each allocated unit will be \a unitsize
   bytes.
 */
-cc_memalloc * 
+cc_memalloc *
 cc_memalloc_construct(const unsigned int unitsize)
 {
   cc_memalloc * allocator = (cc_memalloc*)
@@ -126,6 +128,7 @@ cc_memalloc_construct(const unsigned int unitsize)
   allocator->requested_size = unitsize;
   allocator->free = NULL;
   allocator->memnode = NULL;
+  allocator->num_allocated_units = 0;
 
   cc_memalloc_set_strategy(allocator, NULL); /* will insert default handler */
 
@@ -135,7 +138,7 @@ cc_memalloc_construct(const unsigned int unitsize)
 /*!
   Destruct \a allocator, freeing all memory used.
 */
-void 
+void
 cc_memalloc_destruct(cc_memalloc * allocator)
 {
   cc_memalloc_clear(allocator);
@@ -145,7 +148,7 @@ cc_memalloc_destruct(cc_memalloc * allocator)
 /*!
   Allocate a memory unit from \a allocator.
 */
-void * 
+void *
 cc_memalloc_allocate(cc_memalloc * allocator)
 {
   allocator->num_allocated_units++;
@@ -161,7 +164,7 @@ cc_memalloc_allocate(cc_memalloc * allocator)
   Deallocate a memory unit. \a ptr must have been allocated using
   cc_memalloc_allocate(), of course.
 */
-void 
+void
 cc_memalloc_deallocate(cc_memalloc * allocator, void * ptr)
 {
   cc_memalloc_free * newfree = (cc_memalloc_free*) ptr;
@@ -173,7 +176,7 @@ cc_memalloc_deallocate(cc_memalloc * allocator, void * ptr)
 /*!
   Free all memory allocated by \a allocator.
 */
-void 
+void
 cc_memalloc_clear(cc_memalloc * allocator)
 {
   cc_memalloc_memnode * tmp;
@@ -203,10 +206,9 @@ default_strategy(const int numunits_allocated)
   just return the number of units allocated, unless the number of
   units allocated is less than 64, then 64 is returned.
 */
-void 
+void
 cc_memalloc_set_strategy(cc_memalloc * allocator, cc_memalloc_strategy_cb * cb)
 {
   if (cb == NULL) allocator->strategy = default_strategy;
   else allocator->strategy = cb;
 }
-
