@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
 /*
   This is an inelegant class that contains code for handling
   SoSoundElements. It is used by SoSwitch, SoVRMLSwitch, SoLOD,

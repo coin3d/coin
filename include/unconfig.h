@@ -10,6 +10,10 @@
  * the system.
  */
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
 #ifdef COIN_CONFIGURE_BUILD
 #undef COIN_CONFIGURE_BUILD
 #endif

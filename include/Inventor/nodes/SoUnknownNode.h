@@ -24,9 +24,18 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !CoiN_INTERNAL */
+
 #include <Inventor/nodes/SoSubNode.h>
 
 class SoUnknownNodeP;
+
+/*
+  This class is internal, but since the incorrect COIN_DLL_API tag wasn't
+  discovered before the 2.0.0 release, it has to stay for the 2.x branch.
+*/
 
 class SoUnknownNode : public SoNode {
   typedef SoNode inherited;

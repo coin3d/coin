@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
 class SbString;
 
 const char * coin_get_openal_error(int errcode);

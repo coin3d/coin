@@ -1,3 +1,6 @@
+#ifndef COIN_SOCONVERTALL_H
+#define COIN_SOCONVERTALL_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,12 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOCONVERTALL_H
-#define COIN_SOCONVERTALL_H
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
 
 #include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/engines/SoEngineOutput.h>
-
 
 class SoConvertAll : public SoFieldConverter {
   typedef SoFieldConverter inherited;

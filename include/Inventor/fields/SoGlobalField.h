@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
 #include <Inventor/fields/SoFieldContainer.h>
 
 class SoGlobalField : public SoFieldContainer {

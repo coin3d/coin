@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
 // This file contains GL code which is shared internally. It contains
 // mostly rendering code shared between several node types.
 
