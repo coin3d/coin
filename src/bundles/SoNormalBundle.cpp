@@ -140,7 +140,7 @@ SoNormalBundle::triangle(const SbVec3f & p1,
   pushed onto the current state.
 */
 void 
-SoNormalBundle::generate(int startindex = 0, SbBool addtostate)
+SoNormalBundle::generate(int startindex, SbBool addtostate)
 {
   // we don't support startindex != 0 
   // The SoNonIndexedShape::startIndex field has been obsoleted by
