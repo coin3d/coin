@@ -42,7 +42,7 @@
 // if (and how) the current function name is specified during parsing
 // for other compilers than GCC). 19991213 mortene.
 #if (!defined __GNUC__ || __GNUC__ < 2 || __GNUC_MINOR__ < (defined __cplusplus ? 6 : 4))
-#define COIN_STUB_FUNC ((__const char *) 0)
+#define COIN_STUB_FUNC ((const char *) 0)
 #else
 #define COIN_STUB_FUNC __PRETTY_FUNCTION__
 #endif
