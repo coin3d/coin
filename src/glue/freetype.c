@@ -302,7 +302,11 @@ cc_fcglue_FcPatternAddDouble(FcPattern *p, const char *object, double d)
 int
 cc_fcglue_available(void)
 {
-  fcglue_init();
+  const char * env;
+  
+  if (!((env = coin_getenv("COIN_FORCE_FONTCONFIG_OFF")) && (atoi(env) > 0))) {
+    fcglue_init();
+  }
   return fontconfig_instance && fontconfig_instance->available;
 }
 
