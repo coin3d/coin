@@ -29,6 +29,10 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <math.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 SO_KIT_SOURCE(SoScale2UniformDragger);
 
 
@@ -177,6 +181,10 @@ SoScale2UniformDragger::dragStart(void)
   SoInteractionKit::setSwitchValue(sw, 1);
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 1);
+   
+  SbVec3f startPt = this->getLocalStartingPoint();
+  startPt[2] = 0.0f;
+  this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), startPt));
 }
 
 void
@@ -185,18 +193,18 @@ SoScale2UniformDragger::drag(void)
   this->lineProj->setViewVolume(this->getViewVolume());
   this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
   SbVec3f startPt = this->getLocalStartingPoint();
-  this->lineProj->setLine(SbLine(startPt, startPt + SbVec3f(1.0f, 0.0f, 0.0f)));
-  SbVec3f projPtX = lineProj->project(this->getNormalizedLocaterPosition());
-  this->lineProj->setLine(SbLine(startPt, startPt + SbVec3f(0.0f, 1.0f, 0.0f)));
-  SbVec3f projPtY = lineProj->project(this->getNormalizedLocaterPosition());
+  SbVec3f projPt = lineProj->project(this->getNormalizedLocaterPosition());
+  startPt[2] = 0.0f;
+  projPt[2] = 0.0f;
 
-  float div = SbMax(fabs(startPt[0]), fabs(startPt[1]));
+  float orglen = startPt.length();
+  float currlen = projPt.length();
+  
   float scale = 0.0f;
-  if (div > 0.0f) {
-    float scalex = fabs(projPtX[0] / div);
-    float scaley = fabs(projPtY[1] / div);
-    scale = SbMax(scalex, scaley);
-  }
+  if (orglen > 0.0f) scale = currlen / orglen;
+
+  if (scale > 0.0f && startPt.dot(projPt) < 0.0f) scale = 0.0f;
+
   this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
                                           SbVec3f(scale, scale, 1.0f),
                                           SbVec3f(0.0f, 0.0f, 0.0f)));
