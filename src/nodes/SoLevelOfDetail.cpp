@@ -289,8 +289,6 @@ SoLevelOfDetail::doAction(SoAction *action)
     }
 
     bboxAction->setViewportRegion(SoViewportRegionElement::get(state));
-    // FIXME: add a bounding box cache in this node. pederb, 2002-07-01
-    
     // need to apply on the current path, not on the node, since we
     // might need coordinates from the state. Also, we need to set the
     // reset path so that we get the local bounding box for the nodes
