@@ -1,6 +1,6 @@
 coin (@VERSION@-1) unstable; urgency=low
 
-  * Initial Debian packaging.  Closes: #109046.
+  * Initial Debian packaging.
 
  -- Lars J. Aas <larsa@coin3d.org>  @RFC822_DATE@
 
