@@ -296,6 +296,26 @@ field of SoSeparator nodes to ON.
           be easier to do this on our internal development
           "repository" for the Autotools; nfs.trh.sim.no.
 
+
+8 How To Backport Development-Branch Extensions to Coin-1
+=========================================================
+
+You can not break forward ABI compatibility with earlier versions of
+Coin-1 when you backport extensions added to the Coin development branch.
+Virtual methods is one of the biggest problems with regards to this.
+
+* Backporting Virtualism
+
+  If you need to packport virtualism from Coin to Coin-1, one suggestion
+  is to add a non-virtual callback handler system on the lowest level in
+  the class hierarchy that needs this virtual function, and then the
+  deriving classes can register their overriding functions in the
+  constructor.  If they need to emulate invoking the inherited::*
+  function, they must of course store the callback/closure pair locally in
+  the class (private part) that was already set by the parent class when
+  they register the overriding function.
+
+
 =======================================================================
 XXX FIXME: complete doc. XXX
 
