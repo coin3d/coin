@@ -97,7 +97,8 @@ RegularSources = \
 	SoListenerPositionElement.cpp \
 	SoListenerOrientationElement.cpp \
 	SoListenerGainElement.cpp \
-	SoListenerVelocityElement.cpp
+	SoListenerVelocityElement.cpp \
+	SoSoundElement.cpp
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
@@ -199,7 +200,8 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoListenerPositionElement.h \
 	../../include/Inventor/elements/SoListenerOrientationElement.h \
 	../../include/Inventor/elements/SoListenerGainElement.h \
-	../../include/Inventor/elements/SoListenerVelocityElement.h 
+	../../include/Inventor/elements/SoListenerVelocityElement.h \
+	../../include/Inventor/elements/SoSoundElement.h
 PrivateHeaders = \
 	../../include/Inventor/elements/SoTextureScalePolicyElement.h
 ObsoletedHeaders =
