@@ -26,12 +26,9 @@
   programmer.
 */
 
-// Metadon doc
-/*¡
-  FIXME: doesn't handle post-initialization changes very well (fixing
-  this also needs some tempering to be done with SoAction, I think.)
-  20000305 mortene.
- */
+// FIXME: doesn't handle post-initialization changes very well (fixing
+// this also needs some tempering to be done with SoAction, I think.)
+// 20000305 mortene.
 
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <assert.h>

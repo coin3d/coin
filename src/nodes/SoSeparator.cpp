@@ -30,14 +30,6 @@
   through the use of caching.
 */
 
-// Metadon doc:
-/*¡
-  <ul>
-  <li>rendercaching is not implemented, neither is renderculling nor
-      pickculling</li>
-  </ul>
- */
-
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSeparator.h>

@@ -45,13 +45,6 @@
 */
 
 
-// Metadon doc:
-/*¡
-  Some code for various handling of connections to/from VRML
-  interpolators is missing. Do a "grep" for FIXME and COIN_STUB to
-  find and fix these cases when implementing the VRML support.
-*/
-
 #include <assert.h>
 #include <string.h>
 #include <coindefs.h> // COIN_STUB()

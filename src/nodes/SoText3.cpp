@@ -126,12 +126,9 @@
   Character parts.
 */
 
-// Metadon doc:
-/*¡
-  FIXME: missing features, pederb 20000224
-  - Texture coordinates are not generated yet.
-  - Normals for SIDES should be smoothed.
-*/
+// FIXME: missing features, pederb 20000224
+//   - Texture coordinates are not generated yet.
+//   - Normals for SIDES should be smoothed.
 
 // *************************************************************************
 

@@ -29,13 +29,12 @@
   about font settings, as you are \e not guaranteed to get exactly
   what you want.)
 
+  FIXME: this node will just be ignored yet due to capabilities
+  missing in the SoText2 and SoText3 node implementations (they use
+  hardcoded font data). 20000326 mortene.
+
   \sa SoFont, SoText2, SoText3
 */
-
-// Metadon doc:
-/*¡
-  FIXME: only works properly with X11 yet. 20000326 mortene.
- */
 
 #include <Inventor/nodes/SoFontStyle.h>
 #include <Inventor/nodes/SoSubNodeP.h>

@@ -47,17 +47,14 @@
 */
 
 
-// Metadon doc:
-/*¡
-  FIXME: all methods on this class is now inlined. This probably adds
-  quite a few (hundred) kBytes to the total size of the
-  library. Several methods on this class should therefore be
-  "de-inlined". The problem with this is that compilers seems to
-  differ on whether or not subclasses or template instances then need
-  to explicitly "declare themselves".  This is not too hard to fix,
-  but it involves _some_ pain as it needs to be tested with different
-  C++ compilers. 20000227 mortene.
- */
+// FIXME: all methods on this class is now inlined. This probably adds
+// quite a few (hundred) kBytes to the total size of the
+// library. Several methods on this class should therefore be
+// "de-inlined". The problem with this is that compilers seems to
+// differ on whether or not subclasses or template instances then need
+// to explicitly "declare themselves".  This is not too hard to fix,
+// but it involves _some_ pain as it needs some nifty configure
+// checking. 20000227 mortene.
 
 
 /*!

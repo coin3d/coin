@@ -67,12 +67,6 @@
 
 */
 
-// METADON doc:
-/*¡
-  A few minor things are missing in the SoInput class. Grep for
-  "FIXME" in the sourcecode.
-*/
-
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>

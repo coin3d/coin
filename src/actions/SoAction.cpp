@@ -37,12 +37,6 @@
   involved in detail.
 */
 
-// Metadon doc
-/*¡
-  FIXME: the capability to do correct traversal of the paths in a path
-  list is not implemented yet.
- */
-
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>

@@ -45,16 +45,6 @@
 #include <netinet/in.h> // htons() & htonl() definitions
 #endif // HAVE_NETINET_IN_H
 
-// METADON doc:
-/*¡
-  A few minor things are missing in the SoOutput class, both
-  implementation-wise and documentation-wise. Grep for "FIXME" in the
-  sourcecode.
-
-  Class has not been made VRML2-aware yet, though.
-*/
-
-
 /*! \enum SoOutput::Stage
   Enumerates the possible stages of a write operation (writing needs to be
   done in mutiple passes).
@@ -941,7 +931,7 @@ SoOutput::findReference(const SoBase * base) const
 void
 SoOutput::convertShort(short s, char * to)
 {
-  // Convert LSB -> MSB, if necessary.
+  // Convert LSB -> MSB order, if necessary.
   // FIXME: ugly hack, can we do better? 19990627 mortene.
   assert(sizeof(s) == sizeof(unsigned short int));
   *((unsigned short int *)to) = htons(*((unsigned short int *)&s));

@@ -23,13 +23,10 @@
   \ingroup projectors
  */
 
-// Metadon doc:
-/*¡
-  FIXME: we do not use a hyperbolic sheet, as we're supposed to do,
-  for this class. Instead we use a straight plane. This should hardly
-  be noticable for the user, but for correctness, a hyperbolic sheet
-  should of course be used. 20000308 mortene.
- */
+// FIXME: we do not use a hyperbolic sheet, as we're supposed to do,
+// for this class. Instead we use a straight plane. This should hardly
+// be noticable for the user, but for correctness, a hyperbolic sheet
+// should of course be used. 20000308 mortene.
 
 #include <Inventor/projectors/SbCylinderSheetProjector.h>
 

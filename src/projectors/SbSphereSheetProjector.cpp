@@ -23,11 +23,8 @@
   \ingroup projectors
  */
 
-// Metadon doc:
-/*¡
-  FIXME: Outside the sphere, points will map to a plane -- not a
-  hyperbolical sheet, as they are supposed to be.  pederb.
-*/
+// FIXME: Outside the sphere, points will map to a plane -- not a
+// hyperbolical sheet, as they are supposed to be.  pederb.
 
 #include <Inventor/projectors/SbSphereSheetProjector.h>
 #if COIN_DEBUG
