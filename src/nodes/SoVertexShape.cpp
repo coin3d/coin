@@ -154,7 +154,7 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
       // is unknown, it defaults to counterclockwise. pederb, 20000404
 
       // if normals are automatically generated, and vertexordering
-      // is unknown, force tow-side lighting
+      // is unknown, force two-sided lighting
       if (SoShapeHintsElement::getVertexOrdering(state) ==
           SoShapeHintsElement::UNKNOWN_ORDERING) {
         const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)

@@ -28,18 +28,14 @@
   methods on this class.
 */
 
-// Metadon doc:
-/*¡
-  FIXME:
-
-  * The SbMatrix::factor() function has not been implemented yet.
-
-  * The element access methods should be inlined.
-
-  * Optimizations are not done yet, so there's a lot of room for
-    improvements.
-
-*/
+// FIXME:
+//
+//  * The SbMatrix::factor() function has not been implemented yet.
+//
+//  * The element access methods should be inlined.
+//
+//  * Optimizations are not done yet, so there's a lot of room for
+//    improvements.
 
 
 #include <Inventor/SbMatrix.h>
@@ -284,10 +280,6 @@ SbMatrix::det3(void) const
 float
 SbMatrix::det4(void) const
 {
-  // FIXME: erroneous? this code gives the same results in the regression
-  // test as described in Kreyszig, but OI returns other values (except
-  // for 1 of the testmatrices!). 1998???? mortene.
-
   float det = 0.0f;
   det += this->matrix[0][0] * det3(1, 2, 3, 1, 2, 3);
   det -= this->matrix[1][0] * det3(0, 2, 3, 1, 2, 3);
@@ -467,7 +459,7 @@ operator ==(const SbMatrix & m1, const SbMatrix & m2)
 {
   for (int i=0; i < 4; i++) {
     for (int j=0; j < 4; j++) {
-      if (m1[i][j] != m2[i][j]) return FALSE;
+      if (m1.matrix[i][j] != m2.matrix[i][j]) return FALSE;
     }
   }
 
@@ -910,6 +902,11 @@ SbMatrix::transpose(void) const
 SbMatrix &
 SbMatrix::multRight(const SbMatrix & m)
 {
+  // FIXME: should check if one or the other matrix is the
+  // identity-matrix first. (Because it's major optimization if one of
+  // them _is_, and the check should be very quick in the common case
+  // where none of them are.)  20010919 mortene.
+
   SbMatrix tmp(*this);
   for (int i=0; i < 4; i++) {
     for (int j=0; j < 4; j++) {
@@ -932,6 +929,11 @@ SbMatrix::multRight(const SbMatrix & m)
 SbMatrix&
 SbMatrix::multLeft(const SbMatrix & m)
 {
+  // FIXME: should check if one or the other matrix is the
+  // identity-matrix first. (Because it's major optimization if one of
+  // them _is_, and the check should be very quick in the common case
+  // where none of them are.)  20010919 mortene.
+
   SbMatrix tmp(*this);
   for (int i=0; i < 4; i++) {
     for (int j=0; j < 4; j++) {
@@ -955,6 +957,8 @@ SbMatrix::multLeft(const SbMatrix & m)
 void
 SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
 {
+  // FIXME: should check if we're the identity matrix? 20010919 mortene.
+
   const float * t0 = (*this)[0];
   const float * t1 = (*this)[1];
   const float * t2 = (*this)[2];
@@ -981,6 +985,8 @@ SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
 void
 SbMatrix::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
 {
+  // FIXME: should check if we're the identity matrix? 20010919 mortene.
+
   const float * t0 = this->matrix[0];
   const float * t1 = this->matrix[1];
   const float * t2 = this->matrix[2];
@@ -1001,6 +1007,8 @@ SbMatrix::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
 void
 SbMatrix::multVecMatrix(const SbVec4f & src, SbVec4f & dst) const
 {
+  // FIXME: should check if we're the identity matrix? 20010919 mortene.
+
   const float * t0 = (*this)[0];
   const float * t1 = (*this)[1];
   const float * t2 = (*this)[2];
@@ -1027,6 +1035,8 @@ SbMatrix::multVecMatrix(const SbVec4f & src, SbVec4f & dst) const
 void
 SbMatrix::multDirMatrix(const SbVec3f & src, SbVec3f & dst) const
 {
+  // FIXME: should check if we're the identity matrix? 20010919 mortene.
+
   const float * t0 = (*this)[0];
   const float * t1 = (*this)[1];
   const float * t2 = (*this)[2];
@@ -1047,6 +1057,8 @@ SbMatrix::multDirMatrix(const SbVec3f & src, SbVec3f & dst) const
 void
 SbMatrix::multLineMatrix(const SbLine & src, SbLine & dst) const
 {
+  // FIXME: should check if we're the identity matrix? 20010919 mortene.
+
   SbVec3f newpt, newdir;
   this->multVecMatrix(src.getPosition(), newpt);
   this->multDirMatrix(src.getDirection(), newdir);

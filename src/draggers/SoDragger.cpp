@@ -202,7 +202,8 @@ float SoDragger::minscale = 0.001f;
 #define THISP thisp->pimpl
 
 /*!
-  A protected constructor.
+  A protected constructor for this abstract superclass for all Coin
+  draggers.
 */
 SoDragger::SoDragger(void)
   : pimpl(new SoDraggerP)
@@ -245,6 +246,9 @@ SoDragger::~SoDragger()
 // for dragger subclasses, so keep it general.
 /*!
   Initializes type system for this class.
+
+  Application programmers should usually not have to invoke this
+  method, see documentation of SoInteraction::initClass().
 */
 void
 SoDragger::initClass(void)

@@ -56,31 +56,35 @@ SbLine::SbLine(const SbVec3f& p0, const SbVec3f& p1)
 }
 
 /*!
-  Set new position and direction of the line by specifying line start point
-  and end point. \a p0 should not be the same as \a p1, as this will lead to
-  having a null vector as the direction vector, which would cause division
-  by zero problems in some of the other methods on this class.
+  Set new position and direction of the line by specifying line start
+  point and end point. \a p0 should not be the same as \a p1, as this
+  will lead to having a null vector as the direction vector, which
+  would cause division by zero problems in some of the other methods
+  on this class.
 */
 void
 SbLine::setValue(const SbVec3f& p0, const SbVec3f& p1)
 {
-#if COIN_DEBUG
-  if(!(p0 != p1))
-    SoDebugError::postWarning("SbLine::setValue",
-                              "The two points defining the line is "
-                              "equal => undefined line.");
-#endif // COIN_DEBUG
-
   this->pos = p0;
   this->dir = p1 - p0;
+
+#if COIN_DEBUG
+  if(!(p0 != p1)) {
+    SoDebugError::postWarning("SbLine::setValue",
+                              "The two points defining the line is "
+                              "equal => line is invalid.");
+    return;
+  }
+#endif // COIN_DEBUG
+
   this->dir.normalize();
 }
 
 /*!
-  Returns the two closest points on the lines. If the lines are parallel,
-  all points are equally close and we return FALSE. If the lines are not
-  parallel, the point positions will be stored in \a ptOnThis and
-  \a ptOnLine2, and we'll return TRUE.
+  Returns the two closest points on the lines. If the lines are
+  parallel, all points are equally close and we return \c FALSE. If
+  the lines are not parallel, the point positions will be stored in \a
+  ptOnThis and \a ptOnLine2, and we'll return \c TRUE.
 
   \sa getClosestPoint().
 */

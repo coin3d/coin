@@ -322,22 +322,7 @@ SoDragPointDragger::dragStart(void)
 {
   SoDragger * activechild = this->getActiveChildDragger();
 
-  // FIXME: the assert below will hit upon first attempt at
-  // interaction if one tries to set up replacements for some of the
-  // draggers, for instance like this:
-  //
-  // SoDragPointDragger * dpd = new SoDragPointDragger;
-  // dpd->setPart("xTranslator", node->copy());
-  // dpd->setPart("yTranslator", node->copy());
-  // dpd->setPart("zTranslator", node->copy());
-  //
-  // 20010914 mortene.
   assert(activechild != NULL);
-  // UPDATE 20010930 mortene: note that the above setPart() calls is
-  // not the correct procedure to change those dragger parts, because
-  // the [xyz]Translator parts are sub-draggers. Still, we should
-  // catch the application program error earlier on with a warning
-  // message and a FALSE return value for setPart().
 
   SoSwitch * sw;
   if (activechild->isOfType(SoTranslate2Dragger::getClassTypeId())) {

@@ -535,7 +535,7 @@ SoFieldContainer::getFieldData(void) const
 
 
 /*!
-  Copy field values and name of \from into this instance.
+  Copy field values and name of \a from into this instance.
  */
 void
 SoFieldContainer::copyContents(const SoFieldContainer * from,

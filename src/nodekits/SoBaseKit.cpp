@@ -25,8 +25,7 @@
   FIXME, write class doc:
 
   <ul>
-  <li> what are nodekits?
-  <li> (explain catalogs)
+  <li> what are nodekits? (explain catalogs, lazy instantation)
   <li> why nodekits?
   <li> how to use them
   <li> how to define your own

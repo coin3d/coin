@@ -59,9 +59,11 @@
 #include <Inventor/system/gl.h>
 
 #if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+#if COIN_DEBUG
 #define GLCACHE_DEBUG 0 // set to 1 to debug caching
-#else
-#define GLCACHE_DEBUG 0
 #endif
 
 // environment variable
@@ -131,10 +133,10 @@ int SoSeparator::numrendercaches = 2;
   traversals. Default value is SoSeparator::AUTO.
 
   When the render culling is turned off for Coin, it will be left to
-  do for the underlying immediate mode rendering library. This will
-  often be faster than doing culling from within Coin, so be careful
-  to monitor the change in execution speed if setting this field to
-  SoSeparator::ON.
+  be done for the underlying immediate mode rendering library. This
+  will often be faster than doing culling from within Coin, so be
+  careful to monitor the change in execution speed if setting this
+  field to SoSeparator::ON.
 
   See also documentation for SoSeparator::renderCaching.
 */
@@ -381,7 +383,9 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   SoGLCacheList * createcache = NULL;
   if ((this->renderCaching.getValue() == ON) && COIN_RENDER_CACHING) {
     // test if bbox is outside view-volume
-    if (this->cullTestNoPush(state)) return;
+    if (this->cullTestNoPush(state)) {
+      return;
+    }
 
     if (!this->glcachelist) {
       this->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
@@ -420,7 +424,8 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     createcache->open(action);
   }
 
-  if (createcache || !this->cullTest(state)) {
+  SbBool outsidefrustum = this->cullTest(state);
+  if (createcache || !outsidefrustum) {
     int n = this->children->getLength();
     SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
     action->pushCurPath();
@@ -661,10 +666,12 @@ SoSeparator::readInstance(SoInput * in, unsigned short flags)
 }
 
 /*!
-  Internal method which do view frustum culling. For now, view
-  frustum culling is performed if the renderCulling field is AUTO or
-  ON, and the bounding box cache is valid. Returns TRUE if this
-  separator is outside view frustum, FALSE if inside.
+  Internal method which do view frustum culling. For now, view frustum
+  culling is performed if the renderCulling field is \c AUTO or \c ON,
+  and the bounding box cache is valid.
+
+  Returns \c TRUE if this separator is outside view frustum, \c FALSE
+  if inside.
 */
 SbBool
 SoSeparator::cullTest(SoState * state)

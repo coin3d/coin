@@ -68,6 +68,26 @@ SbBool SoInteraction::isinitialized = FALSE;
   make sure all classes that the interaction functionality depends on
   have been initialized.
 
+
+  Application programmers should usually not have to invoke this
+  method directly from application code, as it is indirectly called
+  from the GUI-binding libraries' init()-functions.  Only if you are
+  using your own GUI-binding (and not one of Systems in Motion's SoQt,
+  SoGtk, SoXt, SoWin, etc libraries) do you have to explicitly call
+  SoInteraction::initClass().
+
+  \code
+  int main(int argc, char ** argv )
+  {
+    // SoQt::init() calls SoDB::init(), SoNodeKit::init() and
+    // SoInteraction::init().
+    QWidget * window = SoQt::init( argv[0] );
+
+    SoSeparator * root = make_scenegraph();
+    root->ref();
+    /// [... etc ...] ///
+  \endcode
+
  */
 void
 SoInteraction::init(void)

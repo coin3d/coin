@@ -799,19 +799,17 @@ SoShape::generateVertex(SoPrimitiveVertex * const pv,
   shapeVertex(pv);
 }
 
-/*!
-  Overloaded from default setting in SoNode, as we know for certain
-  that no node classes derived from SoShape will affect the rendering
-  state.
- */
+// Doc in superclass.
 SbBool
 SoShape::affectsState(void) const
 {
-  // a standard shape node should not affect the state.
+  // Overloaded from default setting in SoNode to return FALSE instead
+  // of TRUE, as we know for certain that no node classes derived from
+  // SoShape will affect the rendering state.
   return FALSE;
 }
 
-// Doc in parent.
+// Doc in superclass.
 void
 SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -819,7 +817,8 @@ SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 /*!
-  Not implemented in Coin. Should probably have been private in TGS Inventor.
+  Not implemented in Coin. Should probably have been private in TGS
+  Inventor API.
  */
 float
 SoShape::getDecimatedComplexity(SoState * state, float complexity)
@@ -829,7 +828,8 @@ SoShape::getDecimatedComplexity(SoState * state, float complexity)
 }
 
 /*!
-  Not implemented in Coin. Should probably have been private in OIV.
+  Not implemented in Coin. Should probably have been private in Open
+  Inventor API.
 */
 void
 SoShape::GLRenderBoundingBox(SoGLRenderAction * action)

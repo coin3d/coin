@@ -29,21 +29,6 @@
   \sa SbViewportRegion.
 */
 
-/*¡
-These methods are still not implemented:
-<UL>
-<LI>SbViewVolume::getAlignRotation()</LI>
-</UL>
-*/
-
-/*¡
-These methods need better documentation:
-<UL>
-<LI>SbViewVolume::ortho()</LI>
-<LI>SbViewVolume::perspective()</LI>
-</UL>
-*/
-
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbLine.h>
@@ -360,13 +345,16 @@ SbViewVolume::getSightPoint(const float distFromEye) const
 }
 
 /*!
-  Return the 3D point which projects to \a normPoint (in normalized
-  coordinates) and lies on the plane perpendicular to the camera
-  direction and \a distFromEye distance away from the camera position.
+  Return the 3D point which projects to \a normPoint and lies on the
+  plane perpendicular to the camera direction and \a distFromEye
+  distance away from the camera position.
+
+  \a normPoint should be given in normalized coordinates, where the
+  visible render canvas is covered by the range [0.0, 1.0].
  */
 SbVec3f
 SbViewVolume::getPlanePoint(const float distFromEye,
-                            const SbVec2f& normPoint) const
+                            const SbVec2f & normPoint) const
 {
   SbVec3f volpt;
 
@@ -407,7 +395,7 @@ SbViewVolume::getPlanePoint(const float distFromEye,
   we'll consider implementing it.
  */
 SbRotation
-SbViewVolume::getAlignRotation(SbBool /* rightAngleOnly */) const
+SbViewVolume::getAlignRotation(SbBool rightangleonly) const
 {
   COIN_OBSOLETED();
   return SbRotation::identity();
@@ -608,13 +596,13 @@ SbViewVolume::narrow(const SbBox3f & box) const
   return this->narrow(bmin[0], bmin[1], bmax[0], bmax[1]).zNarrow(bmax[2], bmin[2]);
 }
 
+// FIXME: bitmap-illustration for function doc which shows how the
+// frustum is set up wrt the input arguments. 20010919 mortene.
 /*!
   Set up the view volume as a rectangular box for orthographic
   parallel projections. The line of sight will be along the negative
   z axis, through the center of the plane defined by the point
   <(right+left)/2, (top+bottom)/2, 0>.
-
-  TODO: illustrate?
 
   \sa perspective().
 */
@@ -662,12 +650,11 @@ SbViewVolume::ortho(float left, float right,
   this->ulf.setValue(left, top, -nearval);
 }
 
+// FIXME: bitmap-illustration for function doc which shows how the
+// frustum is set up wrt the input arguments. 20010919 mortene.
 /*!
   Set up the view volume for perspective projections. The line of
   sight will be through origo along the negative z axis.
-
-  TODO: document relationship between field-of-view, aspect ratio and
-  span of near clipping plane. Should be illustrated.
 
   \sa ortho().
 */
