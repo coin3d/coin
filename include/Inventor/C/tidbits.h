@@ -45,6 +45,9 @@ COIN_DLL_API int coin_snprintf(char * dst, unsigned int n, const char * fmtstr, 
 COIN_DLL_API int coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args);
 
 COIN_DLL_API const char * coin_getenv(const char *);
+COIN_DLL_API SbBool coin_setenv(const char *, const char *, int);
+COIN_DLL_API void coin_unsetenv(const char *);
+
 COIN_DLL_API int coin_strncasecmp(const char *, const char *, int);
 
 /* int coin_host_get_endianness(void); - internal, declared static */

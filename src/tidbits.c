@@ -61,46 +61,46 @@
    BSD- or MIT-style licenses:
 
    1) The BSDs:
-   
+
       - http://www.openbsd.org/cgi-bin/cvsweb/src/lib/libc/stdio/
       - http://www.freebsd.org/cgi/cvsweb.cgi/src/lib/libc/stdio/
       - http://cvsweb.netbsd.org/cgi-bin/cvsweb.cgi/basesrc/lib/libc/stdio/
-   
-   
+
+
    2) A portable snprintf under either GNU (L?)GPL or the "Frontier
       Artistic Lisence" (wahtever that is):
-   
+
       - http://www.ijs.si/software/snprintf/
-   
-   
+
+
    3) TRIO (seems to be under an "MIT-like" license):
-   
+
       - http://daniel.haxx.se/trio/
-   
-   
+
+
    4) Samba (under GNU GPL?):
-   
+
       - http://samba.org/cgi-bin/cvsweb/samba/source/lib/snprintf.c
-   
-  
+
+
    5) Apache:
-   
+
       - http://www.apache.org
-   
-  
+
+
    6) Caolán McNamara's (GNU GPL?):
-   
+
       - http://www.csn.ul.ie/~caolan/publink/snprintf-1.1.tar.gz
-   
+
 
    7) Castaglia (GNU GPL?):
-   
+
       - http://www.castaglia.org/proftpd/doc/devel-guide/src/lib/vsnprintf.c.html
-   
-   
+
+
    8) Gnome (GNU (L?)GPL? -- looks very similar to the Samba
       implementation):
-   
+
       - http://cvs.gnome.org/lxr/
 
    20021128 mortene.
@@ -288,7 +288,7 @@ static void
 envlist_cleanup(void)
 {
   struct envvar_data * ptr = envlist_head;
-  while (ptr != NULL) {
+  while ( ptr != NULL ) {
     struct envvar_data * tmp = ptr;
     free(ptr->name);
     free(ptr->val);
@@ -314,6 +314,9 @@ envlist_append(struct envvar_data * item)
 
 /**************************************************************************/
 
+/* FIXME: should getenv/setenv/unsetenv be made mt-safe by locking access
+ * to the envlist linked list under Win32?  20030205 larsa */
+
 /*
   When working with MSWindows applications using Coin as a DLL,
   setenv() / getenv() will not work as expected, as the application
@@ -332,60 +335,153 @@ coin_getenv(const char * envname)
   /* Important note: this code is identical to the getenv() code in
      So@Gui@/.../common/SoAny.cpp.in. If you do bugfixes or whatever,
      keep them in sync! */
-
 #ifdef HAVE_GETENVIRONMENTVARIABLE
   int neededsize;
-
-  /* Try to find envvar among those requested earlier on. */
-  struct envvar_data * ptr = envlist_head;
-  while (ptr != NULL) {
-    if (strcmp(ptr->name, envname) == 0) { return ptr->val; }
-    ptr = ptr->next;
-  }
-
   neededsize = GetEnvironmentVariable(envname, NULL, 0);
-  if (neededsize > 1) {
+  if ( neededsize >= 1 ) {
     int resultsize;
-    struct envvar_data * item;
-    char * tmpbuf = (char *)malloc(neededsize + 1);
-    /* Augh. Could we handle this any better? */
-    if (tmpbuf == NULL) { return NULL; }
-    resultsize = GetEnvironmentVariable(envname, tmpbuf, neededsize);
-    /* Augh. Could we handle this any better? */
-    if (resultsize != neededsize-1) {
-      free(tmpbuf);
+    struct envvar_data * envptr;
+    char * valbuf = (char *) malloc(neededsize + 1);
+    if ( valbuf == NULL ) {
+      /* Augh. Could we handle this any better? */
+      /* If we already bookkeep a buffer for this variable, we /could/ try
+         to reuse it (much work for a non-100% solution).  20030205 larsa */
+      return NULL;
+    }
+    resultsize = GetEnvironmentVariable(envname, valbuf, neededsize);
+    if ( resultsize != (neededsize - 1) ) {
+      /* Augh. Could we handle this any better? */
+      /* How about looping to top and trying again (in case the reason is mt
+         and envval being changed in the background, or maybe just asserting?
+         20030205 larsa */
+      free(valbuf);
       return NULL;
     }
 
-    item = (struct envvar_data *)malloc(sizeof(struct envvar_data));
-    /* Augh. Could we handle this any better? */
-    if (item == NULL) {
-      free(tmpbuf);
-      return NULL;
+    /*
+      The GetEnvironmentVariable() signature forces us to allocate the space
+      for the value string on the outside of the call, as opposed to the UNIX
+      getenv() function.  We therefore have to do bookkeeping and maintain
+      this linked list of allocated buffers that should be cleaned up on exit
+      (atexit()).  We don't keep it for lookup of values - we actually can't
+      use the valus as value caches in case they have been changed from other
+      parts of the application.  We only keep them so we can free them later.
+    */
+
+    /* Try to find bookkeeped envvar buffer among those registered earlier. */
+    envptr = envlist_head;
+    while ( (envptr != NULL) && (strcmp(envptr->name, envname) != 0) )
+      envptr = envptr->next;
+
+    /* We can avoid this if-else by always freeing the envvar_data for the
+       variable upfront, but it's a tad less efficient. */
+    if ( envptr != NULL ) {
+      /* We are already bookkeeping a buffer for this variable.
+       * => free previous value buffer and bookkeep the new one instead */
+      free(envptr->val);
+      envptr->val = valbuf;
+    } else {
+      /* We aren't bookkeeping a buffer for this one yet. */
+      envptr = (struct envvar_data *) malloc(sizeof(struct envvar_data));
+      if ( envptr == NULL ) {
+        /* Augh. Could we handle this any better? */
+	/* We can alternatively ignore the bookkeeping and leak the buffer
+           - 20030205 larsa */
+        free(valbuf);
+        return NULL;
+      }
+      envptr->name = strdup(envname);
+      if ( envptr->name == NULL ) {
+        /* Augh. Could we handle this any better? */
+	/* We can alternatively ignore the bookkeeping and leak the buffer
+           - 20030205 larsa */
+	free(envptr);
+	free(valbuf);
+	return NULL;
+      }
+      envptr->val = valbuf;
+      envlist_append(envptr);
     }
-    item->name = strdup(envname);
-    /* FIXME: won't work with environment variables that are changed
-       "mid-execution". Rather nasty flaw if this is to be considered
-       a general replacement for getenv(). 20010821 mortene.*/
-    item->val = strdup(tmpbuf);
-    /* Augh. Could we handle this any better? */
-    if ((item->name == NULL) || (item->val == NULL)) {
-      free(tmpbuf);
-      if (item->name != NULL) { free(item->name); }
-      if (item->val != NULL) { free(item->val); }
-      free(item);
-      return NULL;
-    }
-    envlist_append(item);
-    return item->val;
+    return envptr->val;
   }
-  /* FIXME: fall through to the standard C-lib's getenv() if
-     GetEnvironmentVariable() fails? If this can cause a crash, it's
-     obviously a bad idea, but if not -- it should be
-     done. Investigate. 20010821 mortene. */
   return NULL;
 #else /* !HAVE_GETENVIRONMENTVARIABLE */
   return getenv(envname);
+#endif /* !HAVE_GETENVIRONMENTVARIABLE */
+}
+
+SbBool
+coin_setenv(const char * name, const char * value, int overwrite)
+{
+#ifdef HAVE_GETENVIRONMENTVARIABLE
+/*
+  The value is changed by the application, so we no longer need to
+  guarantee old buffers' existence to the outside world.  We therefore
+  free buffers we are bookkeeping here.  This code can be disabled
+  without any consequence though.
+*/
+  struct envvar_data * envptr, * prevptr;
+  envptr = envlist_head;
+  prevptr = NULL;
+  while ( (envptr != NULL) && (strcmp(envptr->name, name) != 0) ) {
+    prevptr = envptr;
+    envptr = envptr->next;
+  }
+  if ( envptr ) {
+    /* unlink node */
+    if ( prevptr ) prevptr->next = envptr->next;
+    else envlist_head = envptr->next;
+    /* free node */
+    free(envptr->name);
+    free(envptr->val);
+    free(envptr);
+  }
+
+  /* FIXME: This is from Win32s 1.3 Bug List - how should we handle it?
+  and what's with the typo in the function name?  20030205 larsa
+  ====================================================================
+  SetEnvironmentVariables() does not handle an empty string, an equal
+  sign (=), or foreign lowercase characters in the variable name.
+  */
+
+  if ( overwrite || (GetEnvironmentVariable(name, NULL, 0) == 0) )
+    return SetEnvironmentVariable(name, value) ? TRUE : FALSE;
+  else
+    return TRUE;
+#else /* !HAVE_GETENVIRONMENTVARIABLE */
+  return (setenv(name, value, overwrite) == -1) ? FALSE : TRUE;
+#endif /* !HAVE_GETENVIRONMENTVARIABLE */
+}
+
+void
+coin_unsetenv(const char * name)
+{
+#ifdef HAVE_GETENVIRONMENTVARIABLE
+/*
+  The value is removed by the application, so we no longer need to
+  guarantee old buffers' existence to the outside world.  We therefore
+  free buffers we are bookkeeping here.  This code can be disabled
+  without any consequence though.
+*/
+  struct envvar_data * envptr, * prevptr;
+  envptr = envlist_head;
+  prevptr = NULL;
+  while ( (envptr != NULL) && (strcmp(envptr->name, name) != 0) ) {
+    prevptr = envptr;
+    envptr = envptr->next;
+  }
+  if ( envptr ) {
+    /* unlink node */
+    if ( prevptr ) prevptr->next = envptr->next;
+    else envlist_head = envptr->next;
+    /* free node */
+    free(envptr->name);
+    free(envptr->val);
+    free(envptr);
+  }
+  SetEnvironmentVariable(name, NULL);
+#else /* !HAVE_GETENVIRONMENTVARIABLE */
+  unsetenv(name);
 #endif /* !HAVE_GETENVIRONMENTVARIABLE */
 }
 
