@@ -73,6 +73,7 @@
 #include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/caches/SoNormalCache.h>
+#include <Inventor/misc/SoGL.h>
 #include <assert.h>
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
@@ -606,6 +607,8 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   if (this->vertexProperty.getValue()) {
     state->pop();
   }
+  // send approx number of triangles for autocache handling
+  sogl_autocache_update(state, this->coordIndex.getNum() / 4);
 }
 
 #undef DO_VERTEX

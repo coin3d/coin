@@ -70,6 +70,7 @@
 #include <Inventor/misc/SoNormalGenerator.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoPointDetail.h>
+#include <Inventor/misc/SoGL.h>
 
 /*!
   \var SoMFInt32 SoTriangleStripSet::numVertices
@@ -619,6 +620,11 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   
   if (didpush)
     state->pop();
+
+  int numv = this->numVertices.getNum();
+  // send approx number of triangles for autocache handling
+  sogl_autocache_update(state, numv ? 
+                        (this->numVertices[0]-2)*numv : 0);
 }
 
 // doc from parent

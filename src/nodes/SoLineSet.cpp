@@ -70,6 +70,7 @@
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/details/SoLineDetail.h>
+#include <Inventor/misc/SoGL.h>
 
 /*!
   \var SoMFInt32 SoLineSet::numVertices
@@ -616,6 +617,11 @@ SoLineSet::GLRender(SoGLRenderAction * action)
 
   if (didpush)
     state->pop();
+
+  int numv = this->numVertices.getNum();
+  // send approx number of lines for autocache handling
+  sogl_autocache_update(state, numv ? 
+                        (this->numVertices[0]-1)*numv : 0);
 }
 
 // Documented in superclass.

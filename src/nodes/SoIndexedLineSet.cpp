@@ -303,6 +303,8 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   if (didpush) {
     state->pop();
   }
+  // send approx number of lines for autocache handling
+  sogl_autocache_update(state, this->coordIndex.getNum() / 2);
 }
 
 // Documented in superclass.

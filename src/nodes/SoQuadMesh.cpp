@@ -113,6 +113,7 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/misc/SoGL.h>
 
 #include <Inventor/details/SoFaceDetail.h>
 
@@ -650,6 +651,9 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 
   const int rowsize = this->verticesPerRow.getValue();
   const int colsize = this->verticesPerColumn.getValue();
+
+  // send approx number of triangles for autocache handling
+  sogl_autocache_update(state, (rowsize-1)*(colsize-1)*2);
 
   if (rowsize < 2 || colsize < 2) {
     if (this->vertexProperty.getValue()) state->pop();

@@ -530,6 +530,11 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   // needed for convex cache
   (void) SoCacheElement::setInvalid(storedinvalid);
   state->pop();
+  
+  int numv = this->numVertices.getNum();
+  // send approx number of triangles for autocache handling
+  sogl_autocache_update(state, numv ? 
+                        (this->numVertices[0]-2)*numv : 0);
 }
 
 // doc from parent
