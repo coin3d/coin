@@ -208,6 +208,7 @@ protected:
     this->elements = 0;
     this->threshold = (unsigned int) (newsize * this->loadfactor);
     this->buckets = new SbHashEntry<Type, Key> * [newsize];
+    memset(this->buckets, 0, this->size * sizeof(SbHashEntry<Type, Key> *));
 
     /* Transfer all mappings */
     unsigned int i;
