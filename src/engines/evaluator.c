@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h> /* NULL */
-
+#include <float.h> /* FLT_EPSILON */
 
 /*
  * create node, initialize all values to default
