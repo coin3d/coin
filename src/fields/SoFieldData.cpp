@@ -336,8 +336,8 @@ SoFieldData::getEnumData(const char * enumname, int & num,
       num = e->names.getLength();
       if (num) {
         assert(e->names.getLength() == e->values.getLength());
-        names = e->names;
-        values = e->values;
+        names = e->names.getArrayPtr();
+        values = e->values.getArrayPtr();
       }
       return;
     }
@@ -748,6 +748,5 @@ SoFieldData::writeFieldDescriptions(SoOutput * out,
 int
 SoFieldData::operator==(const SoFieldData * fd) const
 {
-  return (((*this->enums) == (*fd->enums)) &&
-          ((*this->fields) == (*fd->fields)));
+  return ((this->enums == fd->enums) && (this->fields == fd->fields));
 }

@@ -102,7 +102,7 @@ SoTextureCoordinateCache::generate(const SbBox3f &bbox,
 const SbVec2f *
 SoTextureCoordinateCache::get() const
 {
-  return this->texCoords;
+  return this->texCoords.getArrayPtr();
 }
 
 /*!

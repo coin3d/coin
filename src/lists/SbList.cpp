@@ -194,15 +194,10 @@
 */
 
 /*!
-  \fn SbList<Type>::operator Type *(void)
+  \fn const Type * SbList<Type>::getArrayPtr(const int start = 0) const
 
-  Returns pointer to a modifiable array of the lists elements.
-*/
-
-/*!
-  \fn SbList<Type>::operator const Type *(void) const
-
-  Returns pointer to a non-modifiable array of the lists elements.
+  Returns pointer to a non-modifiable array of the lists elements. 
+  \a start specifies an index into the array.
 */
 
 /*!

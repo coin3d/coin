@@ -165,7 +165,7 @@ SoPathList::sort(void)
     }
   }
 #else
-  qsort((void **)(*this), this->getLength(), sizeof(void *), compare_paths);
+  qsort((void **)this->getArrayPtr(), this->getLength(), sizeof(void *), compare_paths);
 #endif
 }
 

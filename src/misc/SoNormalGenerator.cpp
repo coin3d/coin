@@ -60,7 +60,7 @@ SoNormalGenerator::~SoNormalGenerator()
 void
 SoNormalGenerator::beginPolygon()
 {
-  currFaceStart = vertexList.getLength();
+  this->currFaceStart = vertexList.getLength();
 }
 
 /*!
@@ -71,8 +71,8 @@ SoNormalGenerator::beginPolygon()
 void
 SoNormalGenerator::polygonVertex(const SbVec3f &v)
 {
-  vertexList.append(bsp.addPoint(v));
-  vertexFace.append(this->faceNormals.getLength());
+  this->vertexList.append(bsp.addPoint(v));
+  this->vertexFace.append(this->faceNormals.getLength());
 }
 
 /*!
@@ -83,7 +83,7 @@ SoNormalGenerator::polygonVertex(const SbVec3f &v)
 void
 SoNormalGenerator::endPolygon()
 {
-  SbVec3f n = calcFaceNormal();
+  SbVec3f n = this->calcFaceNormal();
   this->faceNormals.append(n);
 }
 
@@ -95,11 +95,11 @@ SoNormalGenerator::triangle(const SbVec3f &v0,
                             const SbVec3f &v1,
                             const SbVec3f &v2)
 {
-  beginPolygon();
-  polygonVertex(v0);
-  polygonVertex(v1);
-  polygonVertex(v2);
-  endPolygon();
+  this->beginPolygon();
+  this->polygonVertex(v0);
+  this->polygonVertex(v1);
+  this->polygonVertex(v2);
+  this->endPolygon();
 }
 
 /*!
@@ -111,12 +111,12 @@ SoNormalGenerator::quad(const SbVec3f &v0,
                         const SbVec3f &v2,
                         const SbVec3f &v3)
 {
-  beginPolygon();
-  polygonVertex(v0);
-  polygonVertex(v1);
-  polygonVertex(v2);
-  polygonVertex(v3);
-  endPolygon();
+  this->beginPolygon();
+  this->polygonVertex(v0);
+  this->polygonVertex(v1);
+  this->polygonVertex(v2);
+  this->polygonVertex(v3);
+  this->endPolygon();
 }
 
 //
@@ -168,7 +168,7 @@ SoNormalGenerator::generate(const float creaseAngle,
   int numvi = this->vertexList.getLength();
 
   for (i = 0; i < numvi; i++) {
-    vertexFaceArray[vertexList[i]].append(vertexFace[i]);
+    vertexFaceArray[vertexList[i]].append(this->vertexFace[i]);
   }
 
   float threshold = (float)cos(creaseAngle);
@@ -178,30 +178,30 @@ SoNormalGenerator::generate(const float creaseAngle,
     for (int j = 0; j < numstrips; j++) {
       assert(i+2 < numvi);
       SbVec3f tmpvec;
-      calc_normal_vec(faceNormals,
-                      vertexFace[i],
+      calc_normal_vec(this->faceNormals.getArrayPtr(),
+                      this->vertexFace[i],
                       vertexFaceArray[vertexList[i]],
                       threshold, tmpvec);
       tmpvec.normalize();
-      vertexNormals.append(tmpvec);
-      calc_normal_vec(faceNormals,
-                      vertexFace[i+1],
+      this->vertexNormals.append(tmpvec);
+      calc_normal_vec(this->faceNormals.getArrayPtr(),
+                      this->vertexFace[i+1],
                       vertexFaceArray[vertexList[i+1]],
                       threshold, tmpvec);
       tmpvec.normalize();
-      vertexNormals.append(tmpvec);
+      this->vertexNormals.append(tmpvec);
 
       int num = striplens[j] - 2;
 
       while (num--) {
         i += 2;
         assert(i < numvi);
-        calc_normal_vec(faceNormals,
-                        vertexFace[i],
+        calc_normal_vec(this->faceNormals.getArrayPtr(),
+                        this->vertexFace[i],
                         vertexFaceArray[vertexList[i]],
                         threshold, tmpvec);
         tmpvec.normalize();
-        vertexNormals.append(tmpvec);
+        this->vertexNormals.append(tmpvec);
         i++;
       }
     }
@@ -209,12 +209,12 @@ SoNormalGenerator::generate(const float creaseAngle,
   else {
     for (i = 0; i < numvi; i++) {
       SbVec3f tmpvec;
-      calc_normal_vec(faceNormals,
-                      vertexFace[i],
+      calc_normal_vec(this->faceNormals.getArrayPtr(),
+                      this->vertexFace[i],
                       vertexFaceArray[vertexList[i]],
                       threshold, tmpvec);
       tmpvec.normalize();
-      vertexNormals.append(tmpvec);
+      this->vertexNormals.append(tmpvec);
     }
   }
   delete [] vertexFaceArray;
@@ -250,7 +250,7 @@ const SbVec3f *
 SoNormalGenerator::getNormals() const
 {
   assert(this->vertexNormals.getLength());
-  return this->vertexNormals;
+  return this->vertexNormals.getArrayPtr();
 }
 
 /*!
@@ -261,7 +261,7 @@ const SbVec3f &
 SoNormalGenerator::getNormal(const int32_t i) const
 {
   assert(i >= 0 && i < this->vertexNormals.getLength());
-  return ((const SbVec3f *)this->vertexNormals)[i];
+  return this->getNormals()[i];
 }
 
 /*!
@@ -282,7 +282,7 @@ SoNormalGenerator::calcFaceNormal()
 {
   int num = vertexList.getLength() - currFaceStart;
   assert(num >= 3);
-  const int * cind = (const int *)vertexList + currFaceStart;
+  const int * cind = (const int *)vertexList.getArrayPtr() + currFaceStart;
   const SbVec3f *coords = bsp.getPointsArrayPtr();
   SbVec3f ret;
 

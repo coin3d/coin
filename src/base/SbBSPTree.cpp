@@ -288,7 +288,7 @@ coin_bspnode::split()
 void
 coin_bspnode::sort()
 {
-  int * idxarray = this->indices;
+  int * idxarray = (int *)this->indices.getArrayPtr();
   int num = this->indices.getLength();
   int dim = this->dimension;
   SbVec3f * points = (SbVec3f *)this->pointsArray;
@@ -554,5 +554,5 @@ SbBSPTree::findClosest(const SbVec3f &pos) const
 const SbVec3f *
 SbBSPTree::getPointsArrayPtr(void) const
 {
-  return (const SbVec3f *)this->pointsArray;
+  return this->pointsArray.getArrayPtr();
 }

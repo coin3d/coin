@@ -63,7 +63,7 @@ SoConvexDataCache::~SoConvexDataCache()
 const int32_t *
 SoConvexDataCache::getCoordIndices(void) const
 {
-  if (this->coordIndices.getLength()) return this->coordIndices;
+  if (this->coordIndices.getLength()) return this->coordIndices.getArrayPtr();
   return NULL;
 }
 
@@ -84,7 +84,7 @@ SoConvexDataCache::getNumCoordIndices(void) const
 const int32_t *
 SoConvexDataCache::getMaterialIndices(void) const
 {
-  if (this->materialIndices.getLength()) return this->materialIndices;
+  if (this->materialIndices.getLength()) return this->materialIndices.getArrayPtr();
   return NULL;
 }
 
@@ -105,7 +105,7 @@ SoConvexDataCache::getNumMaterialIndices(void) const
 const int32_t *
 SoConvexDataCache::getNormalIndices(void) const
 {
-  if (this->normalIndices.getLength()) return this->normalIndices;
+  if (this->normalIndices.getLength()) return this->normalIndices.getArrayPtr();
   return NULL;
 }
 
@@ -126,9 +126,8 @@ SoConvexDataCache::getNumNormalIndices(void) const
 const int32_t *
 SoConvexDataCache::getTexIndices(void) const
 {
-  if (this->texIndices.getLength()) return this->texIndices;
+  if (this->texIndices.getLength()) return this->texIndices.getArrayPtr();
   return NULL;
-
 }
 
 /*!

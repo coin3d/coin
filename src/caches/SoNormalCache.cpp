@@ -124,7 +124,7 @@ SoNormalCache::getNumIndices() const
 const int32_t *
 SoNormalCache::getIndices() const
 {
-  if (this->indices.getLength()) return this->indices;
+  if (this->indices.getLength()) return this->indices.getArrayPtr();
   return NULL;
 }
 
@@ -343,7 +343,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
     }
   }
   if (this->normalArray.getLength()) {
-    this->normalData.normals = this->normalArray;
+    this->normalData.normals = this->normalArray.getArrayPtr();
     this->numNormals = this->normalArray.getLength();
   }
 #if 0 && COIN_DEBUG
@@ -417,7 +417,7 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
   }
 
   if (this->normalArray.getLength()) {
-    this->normalData.normals = this->normalArray;
+    this->normalData.normals = this->normalArray.getArrayPtr();
     this->numNormals = this->normalArray.getLength();
   }
 
@@ -480,7 +480,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
   }
 
   if (this->normalArray.getLength()) {
-    this->normalData.normals = this->normalArray;
+    this->normalData.normals = this->normalArray.getArrayPtr();
     this->numNormals = this->normalArray.getLength();
   }
 
@@ -541,7 +541,7 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
     this->normalArray.append(n);
   }
   if (this->normalArray.getLength()) {
-    this->normalData.normals = this->normalArray;
+    this->normalData.normals = this->normalArray.getArrayPtr();
     this->numNormals = this->normalArray.getLength();
   }
 }
@@ -578,7 +578,7 @@ SoNormalCache::generatePerVertexQuad(const SbVec3f * const coords,
 
 #undef IDX
 
-  this->normalData.normals = this->normalArray;
+  this->normalData.normals = this->normalArray.getArrayPtr();
   this->numNormals = this->normalArray.getLength();
 }
 
@@ -608,7 +608,7 @@ SoNormalCache::generatePerFaceQuad(const SbVec3f * const coords,
 #undef IDX
 
   if (this->normalArray.getLength()) {
-    this->normalData.normals = this->normalArray;
+    this->normalData.normals = this->normalArray.getArrayPtr();
     this->numNormals = this->normalArray.getLength();
   }
 }
@@ -641,7 +641,7 @@ SoNormalCache::generatePerRowQuad(const SbVec3f * const coords,
 #undef IDX
 
   if (this->normalArray.getLength()) {
-    this->normalData.normals = this->normalArray;
+    this->normalData.normals = this->normalArray.getArrayPtr();
     this->numNormals = this->normalArray.getLength();
   }
 }

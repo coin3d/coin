@@ -52,8 +52,7 @@ public:
 
   SbList<Type> & operator=(const SbList<Type> & l);
 
-  operator Type * (void);
-  operator const Type * (void) const;
+  const Type * getArrayPtr(const int start = 0) const;
 
   Type operator[](const int index) const;
   Type & operator[](const int index);
@@ -235,16 +234,10 @@ SbList<Type>::pop(void)
   return this->itembuffer[--this->numitems];
 }
 
-template <class Type> inline
-SbList<Type>::operator Type *(void)
+template <class Type> inline const Type *
+SbList<Type>::getArrayPtr(const int start) const
 {
-  return this->itembuffer;
-}
-
-template <class Type> inline
-SbList<Type>::operator const Type *(void) const
-{
-  return this->itembuffer;
+  return &this->itembuffer[start];
 }
 
 template <class Type> inline Type
