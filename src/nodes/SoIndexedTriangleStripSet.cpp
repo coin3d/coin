@@ -19,93 +19,68 @@
 
 /*!
   \class SoIndexedTriangleStripSet SoIndexedTriangleStripSet.h Inventor/nodes/SoIndexedTriangleStripSet.h
-  \brief The SoIndexedTriangleStripSet class ...
+  \brief The SoIndexedTriangleStripSet class keeps data for rendering and otherwise representing triangle strips.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use nodes of this type as an effective way of drawing triangles
+  which are strung together.
+
+  For more information, see the documentation of the \c
+  GL_TRIANGLE_STRIP primitive rendering type in OpenGL.
 */
 
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
 
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/caches/SoNormalCache.h>
-#include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
-
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGL.h>
-#ifdef _WIN32
-#include <windows.h>
-#endif // !_WIN32
-#include <GL/gl.h>
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/elements/SoNormalBindingElement.h>
-#include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoShapeHintsElement.h>
-#include <Inventor/elements/SoCreaseAngleElement.h>
-#include <Inventor/elements/SoTextureCoordinateBindingElement.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoPointDetail.h>
-
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoCreaseAngleElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
+#include <Inventor/elements/SoTextureCoordinateBindingElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoVertexProperty.h>
+#include <coindefs.h> // COIN_STUB()
 #include <assert.h>
+#ifdef _WIN32 // FIXME: use configure detection. 20000519 mortene.
+#include <windows.h> // Needed for the GL/gl.h include.
+#endif // !_WIN32
+#include <GL/gl.h>
 
 
 /*!
   \enum SoIndexedTriangleStripSet::Binding
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoIndexedTriangleStripSet::Binding SoIndexedTriangleStripSet::OVERALL
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedTriangleStripSet::Binding SoIndexedTriangleStripSet::PER_STRIP
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedTriangleStripSet::Binding SoIndexedTriangleStripSet::PER_STRIP_INDEXED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedTriangleStripSet::Binding SoIndexedTriangleStripSet::PER_TRIANGLE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedTriangleStripSet::Binding SoIndexedTriangleStripSet::PER_TRIANGLE_INDEXED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedTriangleStripSet::Binding SoIndexedTriangleStripSet::PER_VERTEX
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedTriangleStripSet::Binding SoIndexedTriangleStripSet::PER_VERTEX_INDEXED
-  FIXME: write documentation for enum definition
-*/
 
+  Enumeration of possible bindings to use for materials and normals
+  for triangle strip nodes.
+*/
 
 // *************************************************************************
 
 SO_NODE_SOURCE(SoIndexedTriangleStripSet);
 
 /*!
-  Constructor.
+  Constructor. Default field values will equal those set in the
+  SoIndexedShape parent class.
 */
-SoIndexedTriangleStripSet::SoIndexedTriangleStripSet()
+SoIndexedTriangleStripSet::SoIndexedTriangleStripSet(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedTriangleStripSet);
 
-  this->numTriangles = -1;
-  this->numStrips = -1;
+  this->numtriangles = -1;
+  this->numstrips = -1;
 }
 
 /*!
@@ -115,21 +90,14 @@ SoIndexedTriangleStripSet::~SoIndexedTriangleStripSet()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoIndexedTriangleStripSet class. This includes setting up the
-  type system, among other things.
-*/
+// doc from superclass
 void
 SoIndexedTriangleStripSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoIndexedTriangleStripSet);
 }
 
-
-/*!
-  \internal
-*/
+// private
 SoIndexedTriangleStripSet::Binding
 SoIndexedTriangleStripSet::findMaterialBinding(SoState * const state) const
 {
@@ -170,9 +138,7 @@ SoIndexedTriangleStripSet::findMaterialBinding(SoState * const state) const
   return binding;
 }
 
-/*!
-  \internal
-*/
+// private
 SoIndexedTriangleStripSet::Binding
 SoIndexedTriangleStripSet::findNormalBinding(SoState * const state) const
 {
@@ -212,9 +178,7 @@ SoIndexedTriangleStripSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from superclass
 void
 SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
 {
@@ -243,22 +207,21 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   const int32_t * nindices;
   const int32_t * tindices;
   const int32_t * mindices;
-  SbBool doTextures;
-  SbBool normalCacheUsed;
+  SbBool dotextures;
+  SbBool normalcacheused;
 
-  SbBool sendNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  SbBool sendnormals =
+    (SoLightModelElement::get(state) != SoLightModelElement::BASE_COLOR);
 
-  getVertexData(state, coords, normals, cindices,
-                nindices, tindices, mindices, numindices,
-                sendNormals, normalCacheUsed);
+  this->getVertexData(state, coords, normals, cindices,
+                      nindices, tindices, mindices, numindices,
+                      sendnormals, normalcacheused);
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
-  doTextures = tb.needCoordinates();
+  dotextures = tb.needCoordinates();
 
   Binding tbind = PER_VERTEX_INDEXED; // most common
-  if (doTextures) {
+  if (dotextures) {
     if (SoTextureCoordinateBindingElement::get(state) ==
         SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
@@ -269,12 +232,12 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
     }
   }
 
-  if (!sendNormals) nbind = OVERALL;
+  if (!sendnormals) nbind = OVERALL;
   else if (nbind == OVERALL) {
     if (normals) glNormal3fv(normals[0].getValue());
     else glNormal3f(0.0f, 0.0f, 1.0f);
   }
-  else if (normalCacheUsed && nbind == PER_VERTEX) {
+  else if (normalcacheused && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
   }
 
@@ -293,25 +256,24 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
                        tindices,
                        (int)nbind,
                        (int)mbind,
-                       doTextures?1:0);
+                       dotextures?1:0);
 
   if (this->vertexProperty.getValue()) {
     state->pop();
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc in SoVertexShape
 SbBool
 SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
                                                   SoNormalCache * nc)
 {
   SbBool ccw = TRUE;
-  const SoCoordinateElement *coordelem = SoCoordinateElement::getInstance(state);
+  const SoCoordinateElement * coordelem =
+    SoCoordinateElement::getInstance(state);
 
-  if (SoShapeHintsElement::getVertexOrdering(state) ==
-      SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
+  if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE)
+    ccw = FALSE;
 
   SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
   assert(!vp ||
@@ -361,19 +323,17 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// private
 int
-SoIndexedTriangleStripSet::getNumTriangles()
+SoIndexedTriangleStripSet::getNumTriangles(void)
 {
-  if (numTriangles == -1) {
+  if (this->numtriangles == -1) {
     const int32_t * ptr = coordIndex.getValues(0);
     const int32_t * endptr = ptr + coordIndex.getNum();
 
     if (endptr-ptr == 1 && ptr[0] == -1) {
-      this->numTriangles = 0;
-      this->numStrips = 0;
+      this->numtriangles = 0;
+      this->numstrips = 0;
       return 0;
     }
 
@@ -388,28 +348,23 @@ SoIndexedTriangleStripSet::getNumTriangles()
         tmpcnt = 0;
       }
     }
-    this->numTriangles = cnt;
-    this->numStrips = stripcnt;
+    this->numtriangles = cnt;
+    this->numstrips = stripcnt;
   }
-  return this->numTriangles;
+  return this->numtriangles;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// private
 int
-SoIndexedTriangleStripSet::getNumStrips()
+SoIndexedTriangleStripSet::getNumStrips(void)
 {
-  getNumTriangles();
-  return this->numStrips;
+  (void)this->getNumTriangles();
+  return this->numstrips;
 }
 
-
-/*!
-  FIXME: write doc
-*/
+// doc from superclass
 void
-SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
@@ -417,7 +372,7 @@ SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   if (n == 1 && this->coordIndex[0] == -1) return;
 
   if (action->canApproximateCount()) {
-    action->addNumTriangles(n-2); // assumes one strip
+    action->addNumTriangles(n - 2); // assumes one strip
   }
   else {
     action->addNumTriangles(this->getNumTriangles());
@@ -428,8 +383,8 @@ SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   FIXME: write doc
 */
 SbBool
-SoIndexedTriangleStripSet::generateDefaultNormals(SoState * /* state */,
-                                                  SoNormalBundle * /* nb */)
+SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
+                                                  SoNormalBundle * nb)
 {
   COIN_STUB();
   return FALSE;
@@ -439,7 +394,7 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * /* state */,
   FIXME: write doc
 */
 void
-SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
+SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
 {
   SoState * state = action->getState();
 
@@ -458,19 +413,19 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
   const int32_t * nindices;
   const int32_t * tindices;
   const int32_t * mindices;
-  SbBool doTextures;
-  SbBool sendNormals = TRUE;
-  SbBool normalCacheUsed;
+  SbBool dotextures;
+  SbBool sendnormals = TRUE;
+  SbBool normalcacheused;
 
-  getVertexData(state, coords, normals, cindices,
-                nindices, tindices, mindices, numindices,
-                sendNormals, normalCacheUsed);
+  this->getVertexData(state, coords, normals, cindices,
+                      nindices, tindices, mindices, numindices,
+                      sendnormals, normalcacheused);
 
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
-  doTextures = tb.needCoordinates();
+  dotextures = tb.needCoordinates();
 
   Binding tbind = PER_VERTEX_INDEXED; // most common
-  if (doTextures) {
+  if (dotextures) {
     if (SoTextureCoordinateBindingElement::get(state) ==
         SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
@@ -489,12 +444,12 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
   }
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
-  const SbVec3f *currnormal = &dummynormal;
-  if (!sendNormals) nbind = OVERALL;
+  const SbVec3f * currnormal = &dummynormal;
+  if (!sendnormals) nbind = OVERALL;
   else if (nbind == OVERALL) {
     if (normals) currnormal = normals;
   }
-  else if (normalCacheUsed && nbind == PER_VERTEX) {
+  else if (normalcacheused && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
   }
 
@@ -502,167 +457,167 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
   int matnr = 0;
   int normnr = 0;
 
-  const int32_t *viptr = cindices;
-  const int32_t *viendptr = viptr + numindices;
+  const int32_t * viptr = cindices;
+  const int32_t * viendptr = viptr + numindices;
   int32_t v1, v2, v3;
 
   SoPrimitiveVertex vertex;
-  SoPointDetail pointDetail;
-  SoFaceDetail faceDetail;
+  SoPointDetail pointdetail;
+  SoFaceDetail facedetail;
 
   vertex.setNormal(*currnormal);
-  vertex.setDetail(&pointDetail);
+  vertex.setDetail(&pointdetail);
 
   while (viptr < viendptr) {
-    faceDetail.setFaceIndex(0);
+    facedetail.setFaceIndex(0);
 
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
     assert(v1 >= 0 && v2 >= 0 && v3 >= 0);
 
-    this->beginShape(action, TRIANGLE_STRIP, &faceDetail);
+    this->beginShape(action, TRIANGLE_STRIP, &facedetail);
 
     // vertex 1
     // FIXME: optimize bindings test below
     if (mbind == PER_VERTEX || mbind == PER_TRIANGLE || mbind == PER_STRIP) {
-      pointDetail.setMaterialIndex(matnr);
+      pointdetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);
     }
     else if (mbind == PER_VERTEX_INDEXED || mbind == PER_STRIP_INDEXED ||
              mbind == PER_TRIANGLE_INDEXED) {
-      pointDetail.setMaterialIndex(*mindices);
+      pointdetail.setMaterialIndex(*mindices);
       vertex.setMaterialIndex(*mindices++);
     }
     if (nbind == PER_VERTEX || nbind == PER_TRIANGLE || nbind == PER_STRIP) {
-      pointDetail.setNormalIndex(normnr);
+      pointdetail.setNormalIndex(normnr);
       currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
     else if (nbind == PER_VERTEX || nbind == PER_TRIANGLE || nbind == PER_STRIP) {
-      pointDetail.setNormalIndex(*nindices++);
+      pointdetail.setNormalIndex(*nindices++);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
     }
-    if (doTextures) {
+    if (dotextures) {
       if (tb.isFunction()) {
         vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
       }
       else {
-        pointDetail.setTextureCoordIndex(tindices ? *tindices : texidx);
+        pointdetail.setTextureCoordIndex(tindices ? *tindices : texidx);
         vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
       }
     }
-    pointDetail.setCoordinateIndex(v1);
+    pointdetail.setCoordinateIndex(v1);
     vertex.setPoint(coords->get3(v1));
     this->shapeVertex(&vertex);
 
     /* vertex 2 *********************************************************/
     if (mbind == PER_VERTEX) {
-      pointDetail.setMaterialIndex(matnr);
+      pointdetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);
     }
     else if (mbind == PER_VERTEX_INDEXED) {
-      pointDetail.setMaterialIndex(*mindices);
+      pointdetail.setMaterialIndex(*mindices);
       vertex.setMaterialIndex(*mindices++);
     }
     if (nbind == PER_VERTEX) {
-      pointDetail.setNormalIndex(normnr);
+      pointdetail.setNormalIndex(normnr);
       currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
     else if (nbind == PER_VERTEX_INDEXED) {
-      pointDetail.setNormalIndex(*nindices);
+      pointdetail.setNormalIndex(*nindices);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
     }
 
-    if (doTextures) {
+    if (dotextures) {
       if (tb.isFunction()) {
         vertex.setTextureCoords(tb.get(coords->get3(v2), *currnormal));
       }
       else {
-        pointDetail.setTextureCoordIndex(tindices?*tindices:texidx);
+        pointdetail.setTextureCoordIndex(tindices?*tindices:texidx);
         vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
       }
     }
-    pointDetail.setCoordinateIndex(v2);
+    pointdetail.setCoordinateIndex(v2);
     vertex.setPoint(coords->get3(v2));
     this->shapeVertex(&vertex);
 
     // vertex 3
     if (mbind == PER_VERTEX) {
-      pointDetail.setMaterialIndex(matnr);
+      pointdetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);
     }
     else if (mbind == PER_VERTEX_INDEXED) {
-      pointDetail.setMaterialIndex(*mindices);
+      pointdetail.setMaterialIndex(*mindices);
       vertex.setMaterialIndex(*mindices++);
     }
     if (nbind == PER_VERTEX) {
-      pointDetail.setNormalIndex(normnr);
+      pointdetail.setNormalIndex(normnr);
       currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
     else if (nbind == PER_VERTEX_INDEXED) {
-      pointDetail.setNormalIndex(*nindices);
+      pointdetail.setNormalIndex(*nindices);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
     }
 
-    if (doTextures) {
+    if (dotextures) {
       if (tb.isFunction()) {
         vertex.setTextureCoords(tb.get(coords->get3(v3), *currnormal));
       }
       else {
-        pointDetail.setTextureCoordIndex(tindices?*tindices:texidx);
+        pointdetail.setTextureCoordIndex(tindices?*tindices:texidx);
         vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
       }
     }
-    pointDetail.setCoordinateIndex(v3);
+    pointdetail.setCoordinateIndex(v3);
     vertex.setPoint(coords->get3(v3));
     this->shapeVertex(&vertex);
-    faceDetail.incFaceIndex();
+    facedetail.incFaceIndex();
 
     v1 = *viptr++;
     while (v1 >= 0) {
       if (mbind == PER_VERTEX || mbind == PER_TRIANGLE) {
-        pointDetail.setMaterialIndex(matnr);
+        pointdetail.setMaterialIndex(matnr);
         vertex.setMaterialIndex(matnr++);
       }
       else if (mbind == PER_VERTEX_INDEXED || mbind == PER_TRIANGLE_INDEXED) {
-        pointDetail.setMaterialIndex(*mindices);
+        pointdetail.setMaterialIndex(*mindices);
         vertex.setMaterialIndex(*mindices++);
       }
       if (nbind == PER_VERTEX || nbind == PER_TRIANGLE) {
-        pointDetail.setNormalIndex(normnr);
+        pointdetail.setNormalIndex(normnr);
         currnormal = &normals[normnr++];
         vertex.setNormal(*currnormal);
       }
       else if (nbind == PER_VERTEX_INDEXED || nbind == PER_TRIANGLE_INDEXED) {
-        pointDetail.setNormalIndex(*nindices);
+        pointdetail.setNormalIndex(*nindices);
         currnormal = &normals[*nindices++];
         vertex.setNormal(*currnormal);
       }
 
-      if (doTextures) {
+      if (dotextures) {
         if (tb.isFunction()) {
           vertex.setTextureCoords(tb.get(coords->get3(v1), *currnormal));
         }
         else {
-          pointDetail.setTextureCoordIndex(tindices?*tindices:texidx);
+          pointdetail.setTextureCoordIndex(tindices?*tindices:texidx);
           vertex.setTextureCoords(tb.get(tindices ? *tindices++ : texidx++));
         }
       }
-      pointDetail.setCoordinateIndex(v1);
+      pointdetail.setCoordinateIndex(v1);
       vertex.setPoint(coords->get3(v1));
       this->shapeVertex(&vertex);
-      faceDetail.incFaceIndex();
+      facedetail.incFaceIndex();
 
       v1 = *viptr++;
     }
     this->endShape();
-    faceDetail.incPartIndex();
+    facedetail.incPartIndex();
 
     //
     // PER_TRIANGLE binding for strips is really stupid, so I'm not quite

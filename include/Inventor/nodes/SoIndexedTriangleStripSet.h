@@ -52,7 +52,6 @@ protected:
   virtual ~SoIndexedTriangleStripSet();
 
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
-
   virtual void generatePrimitives(SoAction * action);
 
 private:
@@ -62,8 +61,8 @@ private:
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
 
-  int numTriangles;
-  int numStrips;
+  int numtriangles;
+  int numstrips;
 };
 
 #endif // !COIN_SOINDEXEDTRIANGLESTRIPSET_H
