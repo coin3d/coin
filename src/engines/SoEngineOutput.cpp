@@ -67,7 +67,7 @@ SoEngineOutput::~SoEngineOutput()
   // Disconnect all fields.
   SoFieldList fl;
   int nr = this->getForwardConnections(fl);
-  for (int i=0; i < nr; i++) fl[0]->disconnect(this);
+  for (int i=0; i < nr; i++) fl[i]->disconnect(this);
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoEngineOutput::~SoEngineOutput", "done %p", this);
