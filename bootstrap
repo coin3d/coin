@@ -144,7 +144,9 @@ echo "Running automake (generating the Makefile.in files)..."
 
 if test -f configure.in.patch; then
   echo "Patching configure.in with Automake-incompatible features..."
-  if patch -p0 <configure.in.patch >/dev/null; then :; else
+  if patch -p0 --no-backup-if-mismatch <configure.in.patch >/dev/null; then
+    :
+  else
     echo >&2 "failed"
     exit 1
   fi
@@ -155,7 +157,7 @@ echo "Running autoconf (generating the configure script)..."
 
 if test -f configure.in.patch; then
   echo "Removing Automake-incompatibilities from configure.in again..."
-  patch -R -p0 <configure.in.patch >/dev/null
+  patch -R -p0 --no-backup-if-mismatch <configure.in.patch >/dev/null
 fi
 
 echo "Done."
