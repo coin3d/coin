@@ -403,7 +403,13 @@ SoGLLazyElement::init(SoState * state)
   this->precachestate = NULL;
   this->postcachestate = NULL;
   this->forcediffuse = FALSE;
+
+  // initialize this here to avoid UMR reports from
+  // Purify. cachebitmask is updated even when there are no open
+  // caches. It is only used (and properly initialized) when recording
+  // a cache though.
   this->cachebitmask = 0;
+
   glDisable(GL_POLYGON_STIPPLE);
 
   GLboolean rgba;
