@@ -297,9 +297,39 @@ SoAction::apply(SoNode * root)
 
   if (root) {
 #if COIN_DEBUG
-    if (root->getRefCount() == 0) {
+    static SbBool first = TRUE;
+    if ((root->getRefCount() == 0) && first) {
+
+      // This problem has turned out to be a FAQ, the reason probably
+      // being that it "works" under SGI / TGS Inventor with no
+      // warning that the client application code is actually buggy.
+      //
+      // We prefer to spit out a verbose warning to aid the
+      // application programmer in finding the bug quickly instead of
+      // her having to track down the bug due to some _really_ nasty
+      // sideeffects later.
+
       SoDebugError::postWarning("SoAction::apply",
-                                "root node has reference count equal to zero");
+
+                                "The root node that the %s was applied to "
+                                "has a reference count equal to zero. "
+
+                                "This is a bug in your application code which "
+                                "you should rectify: you need to ref() (and "
+                                "later unref()) the top-level root node to "
+                                "make sure you avoid memory leaks (bad) and "
+                                "/ or premature memory destruction (*really* "
+                                "bad) under certain conditions. "
+
+                                "Coin has an internal workaround to avoid "
+                                "just responding with mysterious crashes, "
+                                "but as it is not possible to cover _all_ "
+                                "cases of what can go wrong with this "
+                                "workaround you are *strongly* advised to "
+                                "fix the bug in your application code.",
+
+                                this->getTypeId().getName().getString());
+      first = FALSE;
     }
 #endif // COIN_DEBUG
     // So the graph is not deallocated during traversal.
