@@ -9,6 +9,7 @@ ldflags="@COIN_EXTRA_LDFLAGS@"
 libs="@COIN_EXTRA_LIBS@"
 msvcrt="@COIN_MSVC_LIBC@"
 datadir="@datadir@"
+includedir="@ivincludedir@"
 compiler="@COIN_COMPILER@"
 objext="@OBJEXT@"
 have_vrml97=@HAVE_VRML97@
