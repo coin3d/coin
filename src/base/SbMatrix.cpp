@@ -1059,10 +1059,10 @@ SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
 void
 SbMatrix::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
 {
-  const float * t0 = (*this)[0];
-  const float * t1 = (*this)[1];
-  const float * t2 = (*this)[2];
-  const float * t3 = (*this)[3];
+  const float * t0 = this->matrix[0];
+  const float * t1 = this->matrix[1];
+  const float * t2 = this->matrix[2];
+  const float * t3 = this->matrix[3];
   // Copy the src vector, just in case src and dst is the same vector.
   SbVec3f s = src;
 
