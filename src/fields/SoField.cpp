@@ -1775,7 +1775,12 @@ SoField::evaluateConnection(void) const
     SoEngineOutput * master = this->storage->masterengineouts[idx];
     SoFieldConverter * converter = this->storage->findConverter(master);
     if (converter) converter->evaluateWrapper();
-    else master->getContainer()->evaluateWrapper();
+    else if (master->isNodeEngineOutput()) {
+      master->getNodeContainer()->evaluateWrapper();
+    }
+    else {
+      master->getContainer()->evaluateWrapper();      
+    }
   }
   else {
     // Should never happen.
