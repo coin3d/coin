@@ -256,7 +256,7 @@ void
 cc_fcglue_FcDefaultSubstitute(FcPattern *pattern)
 {
   assert(fontconfig_instance && fontconfig_instance->available);
-  return fontconfig_instance->FcDefaultSubstitute(pattern);
+  fontconfig_instance->FcDefaultSubstitute(pattern);
 }
 
 FcPattern *
@@ -277,14 +277,14 @@ void
 cc_fcglue_FcPatternDestroy(FcPattern * pattern)
 {
   assert(fontconfig_instance && fontconfig_instance->available);
-  return fontconfig_instance->FcPatternDestroy(pattern);
+  fontconfig_instance->FcPatternDestroy(pattern);
 }
 
 void
 cc_fcglue_FcPatternPrint(const FcPattern * pattern)
 {
   assert(fontconfig_instance && fontconfig_instance->available);
-  return fontconfig_instance->FcPatternPrint(pattern);
+  fontconfig_instance->FcPatternPrint(pattern);
 }
 
 int
