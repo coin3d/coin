@@ -737,7 +737,10 @@ fi
 
 AC_DEFUN([AM_AUX_DIR_EXPAND], [
 # expand $ac_aux_dir to an absolute path
-am_aux_dir=`CDPATH=:; cd $ac_aux_dir && pwd`
+if test "${CDPATH+set}" = set; then
+  CDPATH=${ZSH_VERSION+.}:   # as recommended in autoconf.texi
+fi
+am_aux_dir=`cd $ac_aux_dir && pwd`
 ])
 
 # AM_PROG_INSTALL_SH
@@ -4951,14 +4954,14 @@ if test x"$with_pthread" != xno; then
   LIBS="$sim_ac_pthread_libs $LIBS"
 
   AC_CACHE_CHECK(
-    [whether the pthread development system is available],
+    [for POSIX threads],
     sim_cv_lib_pthread_avail,
     [AC_TRY_LINK([#include <pthread.h>],
                  [(void)pthread_create(0L, 0L, 0L, 0L);],
-                 [sim_cv_lib_pthread_avail=yes],
-                 [sim_cv_lib_pthread_avail=no])])
+                 [sim_cv_lib_pthread_avail=true],
+                 [sim_cv_lib_pthread_avail=false])])
 
-  if test x"$sim_cv_lib_pthread_avail" = xyes; then
+  if $sim_cv_lib_pthread_avail; then
     sim_ac_pthread_avail=yes
     $1
   else
