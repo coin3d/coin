@@ -31,6 +31,7 @@
 // SoGLDisplayList" statement in the class definition.
 class SoGLDisplayList;
 
+typedef void SoScheduleDeleteCB(void * closure, uint32_t contextid);
 
 class COIN_DLL_API SoGLCacheContextElement : public SoElement {
   typedef SoElement inherited;
@@ -63,8 +64,12 @@ public:
   static void setAutoCacheBits(SoState * state, int bits);
   static int resetAutoCacheBits(SoState * state);
   static SbBool getIsRemoteRendering(SoState * state);
-  
+
   static uint32_t getUniqueCacheContext(void);
+
+  static void scheduleDeleteCallback(const uint32_t contextid,
+                                     SoScheduleDeleteCB * cb,
+                                     void * closure);
 
 private:
   friend class SoGLDisplayList;

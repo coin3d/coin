@@ -55,8 +55,15 @@ typedef struct {
   int handle;
 } so_gltexhandle_info;
 
-static SbList <so_glext_info *> *extsupportlist;
-static SbList <SoGLDisplayList*> *scheduledeletelist;
+typedef struct {
+  uint32_t contextid;
+  SoScheduleDeleteCB * cb;
+  void * closure;
+} so_scheduledeletecb_info;
+
+static SbList <so_glext_info *> * extsupportlist;
+static SbList <SoGLDisplayList*> * scheduledeletelist;
+static SbList <so_scheduledeletecb_info*> * scheduledeletecblist; 
 static void * glcache_mutex;
 
 static void soglcachecontext_cleanup(void)
@@ -65,8 +72,15 @@ static void soglcachecontext_cleanup(void)
   for (i = 0; i < n; i++) {
     delete (*extsupportlist)[i];
   }
+  n = scheduledeletecblist->getLength();
+  for (i = 0; i < n; i++) {
+    // just delete callbacks, don't call them
+    delete (*scheduledeletecblist)[i];
+  }
+
   delete extsupportlist;
   delete scheduledeletelist;
+  delete scheduledeletecblist;
   CC_MUTEX_DESTRUCT(glcache_mutex);
 }
 
@@ -78,6 +92,7 @@ SoGLCacheContextElement::initClass(void)
 
   extsupportlist = new SbList <so_glext_info *>;
   scheduledeletelist = new SbList <SoGLDisplayList*>;
+  scheduledeletecblist = new SbList <so_scheduledeletecb_info*>;
   CC_MUTEX_CONSTRUCT(glcache_mutex);
   coin_atexit((coin_atexit_f *)soglcachecontext_cleanup, 0);
 }
@@ -158,6 +173,20 @@ SoGLCacheContextElement::set(SoState * state, int context,
     }
     else i++;
   }
+
+  i = 0;
+  n = scheduledeletecblist->getLength();
+  while (i < n) {
+    so_scheduledeletecb_info * info = (*scheduledeletecblist)[i];
+    if (info->contextid == (uint32_t)context) {
+      info->cb(info->closure, info->contextid);
+      scheduledeletecblist->removeFast(i);
+      n--;
+      delete info;
+    }
+    else i++;
+  }
+
   CC_MUTEX_UNLOCK(glcache_mutex);
 }
 
@@ -333,6 +362,28 @@ SoGLCacheContextElement::scheduleDelete(SoState * state, class SoGLDisplayList *
     scheduledeletelist->append(dl);
     CC_MUTEX_UNLOCK(glcache_mutex);
   }
+}
+
+/*!
+  Can be used to receive a callback the next time Coin knows that the
+  context (specified by \a contextid) is the current OpenGL context.
+
+  This function can be used to free OpenGL resources for a context.
+  
+*/
+void 
+SoGLCacheContextElement::scheduleDeleteCallback(const uint32_t contextid,
+                                                SoScheduleDeleteCB * cb,
+                                                void * closure)
+{
+  so_scheduledeletecb_info * info = new so_scheduledeletecb_info;
+  info->contextid = contextid;
+  info->cb = cb;
+  info->closure = closure;
+
+  CC_MUTEX_LOCK(glcache_mutex);
+  scheduledeletecblist->append(info);
+  CC_MUTEX_UNLOCK(glcache_mutex);
 }
 
 /*!
