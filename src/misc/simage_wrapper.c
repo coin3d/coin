@@ -178,6 +178,10 @@ simage_wrapper_resize3d(unsigned char * imagedata,
 const simage_wrapper_t *
 simage_wrapper(void)
 {
+  /* FIXME: we're not thread-safe, due to the "get_last_error" design
+     of simage. Should keep a single entry-lock here to work around
+     this. 20020628 mortene. */
+
   if (!simage_instance && !simage_failed_to_load) {
     /* First invocation, do initializations. */
     simage_wrapper_t * si = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
