@@ -1164,9 +1164,7 @@ SbBool
 SoInput::read(float & f)
 {
   if (this->isBinary()) {
-    float tmp;
-    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
-    f = tmp;
+    if (!this->readBinaryArray(&f, 1)) { return FALSE; }
     return TRUE;
   }
   else {
@@ -1182,9 +1180,7 @@ SbBool
 SoInput::read(double & d)
 {
   if (this->isBinary()) {
-    double tmp;
-    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
-    d = tmp;
+    if (!this->readBinaryArray(&d, 1)) { return FALSE; }
     return TRUE;
   }
   else {
@@ -1237,6 +1233,7 @@ SoInput::readBinaryArray(float * f, int length)
     return FALSE;
 
   this->convertFloatArray((char *)f, f, length);
+
   return TRUE;
 }
 
