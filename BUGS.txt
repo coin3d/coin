@@ -1781,6 +1781,15 @@
 
     20030516 mortene.
 
+    UPDATE 20030527 pederb: This is caused by the 
+    start-a-separate-thread-to-load-the-textures feature. If the
+    library is compiled with threads enabled, but without thread safe
+    traversals, it's not safe for the image loading thread to touch()
+    the node when the image is loaded (because the notify-mechanism 
+    is only thread safe when thread safe traversals is enabled). We 
+    should probably only start a new thread to load the image when 
+    the library is compiled with thread safe traversals.
+
 =====================================================================
 
 069 VRML97 Material::diffuseColor influences texture when it
