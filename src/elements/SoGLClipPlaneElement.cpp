@@ -109,7 +109,7 @@ SoGLClipPlaneElement::addToElt(const SbPlane & plane,
   equation[0] = norm[0];
   equation[1] = norm[1];
   equation[2] = norm[2];
-  equation[3] = plane.getDistanceFromOrigin();
+  equation[3] = - plane.getDistanceFromOrigin();
   glClipPlane((GLenum)((int)GL_CLIP_PLANE0 + idxadd), equation);
   glEnable((GLenum)((int)GL_CLIP_PLANE0 + idxadd));
 }
