@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,7 +108,6 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 
 COINLIB = libCoin@SUFFIX@.la
@@ -304,12 +304,12 @@ install-libCoin@SUFFIX@incHEADERS: $(libCoin@SUFFIX@inc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libCoin@SUFFIX@incdir)
 	@list='$(libCoin@SUFFIX@inc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if cmp -s $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; then :; else \
 	    echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f"; \
 	    $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoin@SUFFIX@incdir)/$$f; \
-	  fi; \
+	  fi \
 	done
 
 uninstall-libCoin@SUFFIX@incHEADERS:
@@ -415,7 +415,7 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@AM_INCLUDE@ $(DEPDIR)/snprintf.Plo
+@AMDEP@@AMINCLUDE@ $(DEPDIR)/snprintf.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -470,21 +470,19 @@ check-am: all-am
 check: check-recursive
 installcheck-am:
 installcheck: installcheck-recursive
-install-exec-am: install-libLTLIBRARIES
-	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-exec-hook
+install-exec-am: install-libLTLIBRARIES install-exec-local
 install-exec: install-exec-recursive
 
-install-data-am: install-libCoin@SUFFIX@incHEADERS
+install-data-am: install-libCoin@SUFFIX@incHEADERS install-data-local
 install-data: install-data-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-recursive
 uninstall-am: uninstall-libLTLIBRARIES \
-		uninstall-libCoin@SUFFIX@incHEADERS
+		uninstall-libCoin@SUFFIX@incHEADERS uninstall-local
 uninstall: uninstall-recursive
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES) $(HEADERS) all-local
 all-redirect: all-recursive
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
@@ -529,14 +527,15 @@ mostlyclean: mostlyclean-recursive
 mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libLTLIBRARIES mostlyclean-libtool
 
-.PHONY: all all-am all-recursive all-redirect check check-am \
+.PHONY: all all-am all-local all-recursive all-redirect check check-am \
 	check-recursive clean clean-generic clean-libLTLIBRARIES \
 	clean-libtool clean-recursive distclean distclean-compile \
 	distclean-depend distclean-generic distclean-libLTLIBRARIES \
 	distclean-libtool distclean-recursive distclean-tags distdir \
 	dvi dvi-am dvi-recursive info info-am info-recursive install \
-	install-am install-data install-data-am install-data-recursive \
-	install-exec install-exec-am install-exec-recursive \
+	install-am install-data install-data-am install-data-local \
+	install-data-recursive install-exec install-exec-am \
+	install-exec-local install-exec-recursive \
 	install-libCoin@SUFFIX@incHEADERS install-libLTLIBRARIES \
 	install-recursive install-strip installcheck installcheck-am \
 	installcheck-recursive installdirs installdirs-am \
@@ -546,41 +545,46 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libLTLIBRARIES mostlyclean-libtool \
 	mostlyclean-recursive tags tags-recursive uninstall \
 	uninstall-am uninstall-libCoin@SUFFIX@incHEADERS \
-	uninstall-libLTLIBRARIES uninstall-recursive
+	uninstall-libLTLIBRARIES uninstall-local uninstall-recursive
 
 
 #### Additional "native" Make rules #########################################
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@.dll: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
-	@rm -f coin@COIN_MAJOR_VERSION@@SUFFIX@.dll && \
+coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
+	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+	rm -f "$$basename.dll" "$$basename.lib"; \
 	if @BUILD_WITH_MSVC@; then \
-	  echo "Linking DLL..."; \
-	  $(CC) @DLLFLAGS@ /out:coin@COIN_MAJOR_VERSION@@SUFFIX@.dll \
-	        $(LDFLAGS) \
-	        `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
-	        $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
+	  $(CC) $(LDFLAGS) @LIBFLAGS@ \
+	    `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
+	    $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
 	else \
-	  touch coin@COIN_MAJOR_VERSION@@SUFFIX@.dll; \
+	  touch "$$basename.dll" "$$basename.lib"; \
 	fi
 
-install-exec-hook: coin@COIN_MAJOR_VERSION@@SUFFIX@.dll
-	@file="coin@COIN_MAJOR_VERSION@@SUFFIX@.dll"; \
-	if test -s $$file; then \
-	  echo "Installing $$file"; \
-	  $(INSTALL_DATA) $$file $(DESTDIR)$(bindir)/$$file; \
-	  for e in lib pdb; do \
-	    file="coin@COIN_MAJOR_VERSION@@SUFFIX@.$$e"; \
-	    test -s $$file && \
-	      $(INSTALL_DATA) $$file $(DESTDIR)$(libdir)/$$file; \
-	  done \
+all-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
+
+install-exec-local:
+	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+	if test -s "$$basename.dll"; then \
+	  $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
+	  $(INSTALL_PROGRAM) "$$basename.dll" "$(DESTDIR)$(bindir)/$$basename.dll"; \
 	fi
 
-uninstall: uninstall-am
-	@file="$(DESTDIR)$(bindir)/coin@COIN_MAJOR_VERSION@@SUFFIX@.dll"; \
-	test -f $$file && echo rm -f $$file && rm -f $$file; \
-	for e in lib pdb; do \
-	  file="$(DESTDIR)$(libdir)/coin@COIN_MAJOR_VERSION@@SUFFIX@.$$e"; \
-	  test -f $$file && echo rm -f $$file && rm -f $$file; \
+install-data-local:
+	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+	if test -s "$$basename.lib"; then \
+	  $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
+	  $(INSTALL_DATA) "$$basename.lib" "$(DESTDIR)$(bindir)/$$basename.lib"; \
+	fi
+
+uninstall-local:
+	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+	for file in \
+	  "$(DESTDIR)$(bindir)/$$basename.dll" \
+	  "$(DESTDIR)$(libdir)/$$basename.lib"; do \
+	  if test -f $$file; then \
+	    echo rm -f $$file && rm -f $$file; \
+	  fi \
 	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

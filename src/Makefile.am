@@ -83,47 +83,42 @@ libCoin@SUFFIX@inc_HEADERS = \
 
 #### Additional "native" Make rules #########################################
 
-## Rule for linking up a .DLL on MSWindows with MSVC++.
-##
-## Short explanation of what the shell-code does: tests if the C
-## compiler is our MSVC++ wrapper script, and if so: properly link the
-## DLL. If not, just make an empty coin{version}.dll file so the
-## install-exec-hook knows when to _not_ install the .dll.
+## Rule for creating a Windows library.
 
-coin@COIN_MAJOR_VERSION@@SUFFIX@.dll: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
-	@rm -f coin@COIN_MAJOR_VERSION@@SUFFIX@.dll && \
+coin@COIN_MAJOR_VERSION@@SUFFIX@.lib: $(libCoin@SUFFIX@_la_OBJECTS) $(libCoin@SUFFIX@_la_DEPENDENCIES)
+	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+	rm -f "$$basename.dll" "$$basename.lib"; \
 	if @BUILD_WITH_MSVC@; then \
-	  echo "Linking DLL..."; \
-	  $(CC) @DLLFLAGS@ /out:coin@COIN_MAJOR_VERSION@@SUFFIX@.dll \
-	        $(LDFLAGS) \
-	        `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
-	        $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
+	  $(CC) $(LDFLAGS) @LIBFLAGS@ \
+	    `echo $(libCoin@SUFFIX@_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
+	    $(libCoin@SUFFIX@_la_LIBADD) $(LIBS); \
 	else \
-	  touch coin@COIN_MAJOR_VERSION@@SUFFIX@.dll; \
+	  touch "$$basename.dll" "$$basename.lib"; \
 	fi
 
-## This hook will be run at the end of a ``make install''.
-##
-## The single action taken is to install the coin.dll and coin.lib
-## files (if they have been built properly).
+all-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 
-install-exec-hook: coin@COIN_MAJOR_VERSION@@SUFFIX@.dll
-	@file="coin@COIN_MAJOR_VERSION@@SUFFIX@.dll"; \
-	if test -s $$file; then \
-	  echo "Installing $$file"; \
-	  $(INSTALL_DATA) $$file $(DESTDIR)$(bindir)/$$file; \
-	  for e in lib pdb; do \
-	    file="coin@COIN_MAJOR_VERSION@@SUFFIX@.$$e"; \
-	    test -s $$file && \
-	      $(INSTALL_DATA) $$file $(DESTDIR)$(libdir)/$$file; \
-	  done \
+install-exec-local:
+	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+	if test -s "$$basename.dll"; then \
+	  $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
+	  $(INSTALL_PROGRAM) "$$basename.dll" "$(DESTDIR)$(bindir)/$$basename.dll"; \
 	fi
 
-uninstall: uninstall-am
-	@file="$(DESTDIR)$(bindir)/coin@COIN_MAJOR_VERSION@@SUFFIX@.dll"; \
-	test -f $$file && echo rm -f $$file && rm -f $$file; \
-	for e in lib pdb; do \
-	  file="$(DESTDIR)$(libdir)/coin@COIN_MAJOR_VERSION@@SUFFIX@.$$e"; \
-	  test -f $$file && echo rm -f $$file && rm -f $$file; \
+install-data-local:
+	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+	if test -s "$$basename.lib"; then \
+	  $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
+	  $(INSTALL_DATA) "$$basename.lib" "$(DESTDIR)$(bindir)/$$basename.lib"; \
+	fi
+
+uninstall-local:
+	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+	for file in \
+	  "$(DESTDIR)$(bindir)/$$basename.dll" \
+	  "$(DESTDIR)$(libdir)/$$basename.lib"; do \
+	  if test -f $$file; then \
+	    echo rm -f $$file && rm -f $$file; \
+	  fi \
 	done
 

@@ -66,8 +66,8 @@ host_triplet = @host@
 target_alias = @target_alias@
 target_triplet = @target@
 AMDEP = @AMDEP@
+AMINCLUDE = @AMINCLUDE@
 AMTAR = @AMTAR@
-AM_INCLUDE = @AM_INCLUDE@
 AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
@@ -75,6 +75,7 @@ CC = @CC@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
 COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
 COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
@@ -85,9 +86,9 @@ COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
 DEPDIR = @DEPDIR@
-DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
+LIBFLAGS = @LIBFLAGS@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
@@ -107,14 +108,11 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
-win_srcdir = @win_srcdir@
 
 
 SUBDIRS = include data src build
 
 bin_SCRIPTS = coin-config
-
-EXTRA_DIST = cfg/m4/coin.m4
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = cfg/m4/coin.m4
@@ -391,7 +389,7 @@ dist-all: distdir
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) > /dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/. $(distdir)/cfg $(distdir)/cfg/m4 . cfg cfg/m4
+	$(mkinstalldirs) $(distdir)/. $(distdir)/cfg . cfg
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
@@ -495,8 +493,8 @@ mostlyclean-am: mostlyclean-generic
 	uninstall-m4dataDATA uninstall-recursive
 
 
-coin-@CONFIG@.cfg: $(top_srcdir)/coin.cfg.in
-	@./config.status --file=$@:coin.cfg.in
+coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
+	@$(SHELL) config.status --file=$@:coin.cfg.in
 
 doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
