@@ -244,6 +244,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
+  PRIVATE(this)->fontspec->complexity = this->getComplexityValue(state->getAction());
   PRIVATE(this)->setUpGlyphs(state, this);
 
   SoMaterialBundle mb(action);
@@ -282,12 +283,13 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
   for (i = 0; i < n; i++) {
 
     float xpos = 0.0f;
-    const char * str = this->string[i].getString();
-  
+
+    
+   
     float stretchlength = 0.0f;
     if (i < this->length.getNum()) 
       stretchlength = this->length[i];
-    float stretchfactor = (stretchlength * PRIVATE(this)->textsize) / strlen(str);
+    float stretchfactor = (stretchlength * PRIVATE(this)->textsize) / strlen(this->string[i].getString());
     
     float compressfactor = 1;
     if (this->maxExtent.getValue() > 0) {
@@ -376,12 +378,17 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
 
     }
      
-
     const cc_glyph3d * lastglyph = NULL;
 
-    while (*str++) {
-
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
+    const unsigned int length = this->string[i].getLength();
+    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
+ 
+      // Note that the "unsigned char" cast is needed to avoid 8-bit
+      // chars using the highest bit (i.e. characters above the ASCII
+      // set up to 127) be expanded to huge int numbers that turn
+      // negative when casted to integer size.
+      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
 
       float width = cc_glyph3d_getwidth(glyph);
       if (width == 0) 
@@ -466,16 +473,26 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
 
   if (action->is3DTextCountedAsTriangles()) {        
-    int lines = this->string.getNum();
+    const int lines = this->string.getNum();
     int numtris = 0;      
+
     for (int i = 0;i < lines; ++i) {
-      int n = this->string[i].getLength();
-      const char * str = this->string[i].getString();
-      for (int j = 0; j < n; j++) {
-        cc_glyph3d * glyph = cc_glyph3d_getglyph(*str++, PRIVATE(this)->fontspec);
+
+      const unsigned int length = this->string[i].getLength();
+      for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
+
+        // Note that the "unsigned char" cast is needed to avoid 8-bit
+        // chars using the highest bit (i.e. characters above the ASCII
+        // set up to 127) be expanded to huge int numbers that turn
+        // negative when casted to integer size.             
+        const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+        const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+
         int cnt = 0;
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
-        while (*ptr++ >= 0) cnt++;
+        while (*ptr++ >= 0) 
+          cnt++;
+
         numtris += cnt / 3;
       }
     }
@@ -523,6 +540,13 @@ SoVRMLText::computeBBox(SoAction * action,
     maxw = SbMax(maxw, PRIVATE(this)->glyphwidths[i]); 
     maxstringchars = SbMax(maxstringchars, this->string[i].getLength());
   }
+
+  if(maxw == FLT_MIN) { // There is no text to bound. Returning.
+    box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
+    center = SbVec3f(0,0,0);
+    return; 
+  }
+
 
   float maxglyphsize = PRIVATE(this)->maxglyphheight;  
   float maxlength = 0.0f;
@@ -695,12 +719,12 @@ SoVRMLText::generatePrimitives(SoAction * action)
   for (i = 0; i < n; i++) {
     detail.setStringIndex(i);
     float xpos = 0.0f;
-    const char * str = this->string[i].getString();
+
     
     float stretchlength = 0.0f;
     if (i < this->length.getNum()) 
       stretchlength = this->length[i];
-    float stretchfactor = (stretchlength * PRIVATE(this)->textsize) / strlen(str);
+    float stretchfactor = (stretchlength * PRIVATE(this)->textsize) / strlen(this->string[i].getString());
     
     float compressfactor = 1;
     if (this->maxExtent.getValue() > 0) {
@@ -789,14 +813,20 @@ SoVRMLText::generatePrimitives(SoAction * action)
 
     }
     
-    int charidx = 0;
-    
-    while (*str++) {
-      detail.setCharacterIndex(charidx++);
+    const unsigned int length = this->string[i].getLength();
+    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
 
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
+      // Note that the "unsigned char" cast is needed to avoid 8-bit
+      // chars using the highest bit (i.e. characters above the ASCII
+      // set up to 127) be expanded to huge int numbers that turn
+      // negative when casted to integer size.
+      const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
+      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, PRIVATE(this)->fontspec);
+
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       const int * ptr = cc_glyph3d_getfaceindices(glyph);
+
+      detail.setCharacterIndex(strcharidx);
 
       float width = cc_glyph3d_getwidth(glyph);
       if (width == 0) 
@@ -891,21 +921,20 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   this->glyphwidths.truncate(0);
 
   for (int i = 0; i < textnode->string.getNum(); i++) {
-    const SbString & s = textnode->string[i];
-    int strlen = s.getLength();
-    // Note that the "unsigned char" cast is needed to avoid 8-bit
-    // chars using the highest bit (i.e. characters above the ASCII
-    // set up to 127) be expanded to huge int numbers that turn
-    // negative when casted to integer size.
-    const unsigned char * ptr = (const unsigned char *)s.getString();
+    
+    const unsigned int length = textnode->string[i].getLength();
     float stringwidth = 0.0f;
     float glyphwidth = 0.0f;
     const float * maxbbox;
     this->maxglyphbbox.makeEmpty();
 
-    for (int j = 0; j < strlen; j++) {
-   
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(ptr[j], this->fontspec);
+    for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
+      // Note that the "unsigned char" cast is needed to avoid 8-bit
+      // chars using the highest bit (i.e. characters above the ASCII
+      // set up to 127) be expanded to huge int numbers that turn
+      // negative when casted to integer size.   
+      const uint32_t glyphidx = (const unsigned char) textnode->string[i][strcharidx];
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, this->fontspec);
       assert(glyph);
 
       maxbbox = cc_glyph3d_getboundingbox(glyph); // Get max height
