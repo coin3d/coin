@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -24,13 +24,14 @@
  *
 \**************************************************************************/
 
-#include <Inventor/misc/SoBase.h>
+#include <Inventor/nodes/SoNode.h>
 
 class SoInput;
-class SoNode;
 class SoProtoInstance;
 
-class COIN_DLL_API SoProto : public SoBase {
+// We need to inherit SoNode to be able to insert the PROTO definition
+// into the scene graph.
+class COIN_DLL_API SoProto : public SoNode {
 public:
   SoProto(void);
 

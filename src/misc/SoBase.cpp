@@ -859,20 +859,6 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
       if (result ) result = in->read(name, TRUE);
       else return FALSE; // error while reading ROUTE
     }
-    while (result && name == PROTO_KEYWORD) {
-      SoProto * proto = new SoProto;
-      proto->ref();
-      result = proto->readInstance(in, 0);
-      if (result) {
-        proto->unrefNoDelete();
-        result = in->read(name, TRUE);
-        in->addProto(proto);
-      }
-      else {
-        proto->unref();
-        return FALSE;
-      }
-    }
   }
 
   // The SoInput stream does not start with a valid base name. Return
@@ -1317,7 +1303,22 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
   SbName refname;
 
   if (in->isFileVRML2()) {
-    if (classname == EXTERNPROTO_KEYWORD) {
+    if (classname == PROTO_KEYWORD) { // special case to handle PROTO definitions
+      SoProto * proto = new SoProto;
+      proto->ref();
+      ret = proto->readInstance(in, 0);
+      if (ret) {
+        proto->unrefNoDelete();
+        in->addProto(proto);
+      }
+      else {
+        proto->unref();
+        return FALSE;
+      }
+      base = proto;
+      return TRUE;
+    }
+    else if (classname == EXTERNPROTO_KEYWORD) {
       // FIXME: definitely needs to be fixed before releasing Coin
       // v2. 20020204 mortene.
       SoReadError::post(in, "EXTERNPROTO is not yet supported");

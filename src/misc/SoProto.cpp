@@ -78,7 +78,7 @@ SoProto::getClassTypeId(void)
 void
 SoProto::initClass(void)
 {
-  soproto_type = SoType::createType(SoBase::getClassTypeId(),
+  soproto_type = SoType::createType(SoNode::getClassTypeId(),
                                     SbName("SoProto"));
   protolist = new SbList<SoProto*>;
 }
