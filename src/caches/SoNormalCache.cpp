@@ -41,7 +41,7 @@
 // fixme: add test to shrink normalArray.
 //
 
-#define NORMAL_EPSILON 0.001f
+#define NORMAL_EPSILON FLT_EPSILON
 
 /*!
   Contructor with \a state being the current state.
@@ -287,7 +287,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       }
       if (found)
         this->indices.append(same_normal);
-      // might be equal to the previous normal (when all normals for a face are eq)
+      // might be equal to the previous normal (when all normals for a face are equal)
       else if ((nindex > 0) &&
                normalArray[nindex].equals(normalArray[nindex-1],
                                           NORMAL_EPSILON)) {
