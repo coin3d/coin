@@ -50,3 +50,6 @@
 #include "SbViewVolume.cpp"
 #include "SbViewportRegion.cpp"
 #include "SbXfBox3f.cpp"
+#include "base.c"
+#include "debug.c"
+#include "time.c"
