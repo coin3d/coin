@@ -24,6 +24,10 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
 // This file contains macros which are private to the
 // implementation. The header file is not installed for the Coin
 // development system.
