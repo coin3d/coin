@@ -331,6 +331,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle)
   */
   cc_hash * glyphhash;
 
+
   HFONT wfont = CreateFont(-sizey, /* Using a negative
                                       'sizey'. Otherwise leads to less
                                       details as it seems like the Win32
@@ -549,7 +550,7 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
   /* Connect device context to font. */
   previousfont = SelectObject(cc_flww32_globals.devctx, (HFONT)font);
   if (previousfont == NULL) {
-    cc_win32_print_error("cc_flww32_vector_advance", "SelectObject()", GetLastError());
+    cc_win32_print_error("cc_flww32_get_vector_advance", "SelectObject()", GetLastError());
     return;
   }
 
@@ -581,7 +582,7 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
                       "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_BITMAP, "
                       "<metricsstruct>, 0, NULL, <idmatrix>)",
                       cc_flww32_globals.devctx, glyph, (unsigned char)glyph);
-    cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
+    cc_win32_print_error("cc_flww32_get_vector_advance", cc_string_get_text(&str), GetLastError());
     cc_string_clean(&str);
     return;
   }
@@ -589,7 +590,7 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
   ret = GetObject((HFONT) font,sizeof(lfont), (LPVOID) &lfont);
   size = -lfont.lfHeight;
   if (ret == 0) {
-    cc_win32_print_error("cc_flww32_get_advance", "GetObject()", GetLastError());
+    cc_win32_print_error("cc_flww32_get_vector_advance", "GetObject()", GetLastError());
     size = 1;
   }
   
@@ -636,7 +637,7 @@ cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, flo
   ret = GetObject((HFONT) font,sizeof(lfont), (LPVOID) &lfont);
   size = -lfont.lfHeight;
   if (ret == 0) {
-    cc_win32_print_error("cc_flww32_get_advance", "GetObject()", GetLastError());
+    cc_win32_print_error("cc_flww32_get_vector_kerning", "GetObject()", GetLastError());
     size = 1;
   }
 
@@ -686,7 +687,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
   /* Connect device context to font. */
   previousfont = SelectObject(cc_flww32_globals.devctx, (HFONT)font);
   if (previousfont == NULL) {
-    cc_win32_print_error("cc_flww32_get_font", "SelectObject()", GetLastError());
+    cc_win32_print_error("cc_flww32_get_bitmap", "SelectObject()", GetLastError());
     return NULL;
   }
 
@@ -788,7 +789,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
 
   /* Reconnect device context to default font. */
   if (SelectObject(cc_flww32_globals.devctx, previousfont) != (HFONT)font) {
-    cc_win32_print_error("cc_flww32_get_font", "SelectObject()", GetLastError());
+    cc_win32_print_error("cc_flww32_get_bitmap", "SelectObject()", GetLastError());
   }
   
   return bm;
@@ -805,7 +806,7 @@ flww32_getVerticesFromPath(HDC hdc)
   int numpoints, i, lastmoveto;
 
   if (FlattenPath(hdc) == 0) {
-    cc_win32_print_error("getVerticesFromPath", "Failed when handeling TrueType font; "
+    cc_win32_print_error("flww32_getVerticesFromPath", "Failed when handeling TrueType font; "
                          "FlattenPath()", GetLastError());
     /* The system cannot convert splines to vectors. Aborting. */
     return;
@@ -814,7 +815,7 @@ flww32_getVerticesFromPath(HDC hdc)
   /* determine the number of endpoints in the path*/
   numpoints = GetPath(hdc, NULL, NULL, 0);
   if (numpoints < 0) {
-    cc_win32_print_error("getVerticesFromPath", "Failed when handeling TrueType font; "
+    cc_win32_print_error("flww32_getVerticesFromPath", "Failed when handeling TrueType font; "
                          "GetPath()", GetLastError());
     return;    
   }
