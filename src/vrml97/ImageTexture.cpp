@@ -161,7 +161,7 @@ SoVRMLImageTexture::initClass(void) // static
   imagedata_maxage = 500;
 
 #ifdef HAVE_THREADS
-  imagetexture_scheduler = cc_sched_construct(2);
+  imagetexture_scheduler = cc_sched_construct(1);
   coin_atexit((coin_atexit_f*) imagetexture_cleanup);
 #endif // HAVE_THREADS
 }
