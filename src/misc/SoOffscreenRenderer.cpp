@@ -206,6 +206,9 @@ public:
   SbBool lastnodewasacamera;
   SoCamera * visitedcamera;
 
+  bool mustaddonepixel;
+  bool mustaddoneline;
+
 };
 
 
@@ -321,9 +324,10 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
   PRIVATE(this)->internaldata = new SoOffscreenAGLData();
 #endif // HAVE_AGL
 
+  PRIVATE(this)->mustaddonepixel = false;
+  PRIVATE(this)->mustaddoneline = false;
   
   PRIVATE(this)->internaldata->master = PRIVATE(this);
-
   PRIVATE(this)->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   this->setViewportRegion(viewportregion);
 
@@ -416,11 +420,12 @@ static void getMaxCB(void *ptr, SoAction *action)
   if (strcmp(vendor, "NVIDIA Corporation") == 0) {
 
     // FIXME: Here we need to add a version check if NVIDIA fixes this
-    // bug in the future (23102002 handegar)
+    // bug in the future (20021023 handegar)
     
     // FIXME: Due to a possible NVIDIA bug, max render size is limited
-    // by desktop resolution, not numbers returned by OpenGL. This is
-    // fixed by limiting max size to the lowend desktop monitors. (23102002 handegar)
+    // by desktop resolution, not the texturesize returned by
+    // OpenGL. This is fixed temporarily by limiting max size to the
+    // lowend desktop monitors. (20021023 handegar)
 
     size[0] = 800;
     size[1] = 600;
@@ -519,31 +524,44 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
   PRIVATE(this)->viewport = region;
   
   // Adjust rendering canvas size if needed.
-  SbVec2s size = region.getViewportSizePixels();
+  SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
   SbVec2s maxsize = this->getMaximumResolution();
   
-  PRIVATE(this)->requestedsize = PRIVATE(this)->viewport.getViewportSizePixels();
-  
+  PRIVATE(this)->requestedsize = PRIVATE(this)->viewport.getViewportSizePixels();  
   PRIVATE(this)->mustusesubscreens = (size[0] > maxsize[0]) || (size[1] > maxsize[1]);
+
   if (PRIVATE(this)->mustusesubscreens) {
     PRIVATE(this)->setupSubscreens(size);
+
+    // Correcting totalsize due to floating point loss.
+    if(size[0] > PRIVATE(this)->numsubscreens[0]*PRIVATE(this)->subscreensize[0]){
+      size[0] = PRIVATE(this)->numsubscreens[0]*PRIVATE(this)->subscreensize[0];
+      // Due to rounding error we have to add one pixel for each horizontal line
+      PRIVATE(this)->mustaddonepixel = true;
+    }
+    if(size[1] > PRIVATE(this)->numsubscreens[1]*PRIVATE(this)->subscreensize[1]){
+      size[1] = PRIVATE(this)->numsubscreens[1]*PRIVATE(this)->subscreensize[1];
+      // Due to rounding error we have to add one line to buffer
+      PRIVATE(this)->mustaddoneline = true;
+    }
+
     PRIVATE(this)->currentsubscreen = 0;
     PRIVATE(this)->subviewport = SbViewportRegion(PRIVATE(this)->subscreensize);
   }
     
 
-  SbVec2s dims = PRIVATE(this)->viewport.getViewportSizePixels();
-
   if(!PRIVATE(this)->mustusesubscreens){
 
     if(PRIVATE(this)->renderaction) 
       PRIVATE(this)->renderaction->setViewportRegion(PRIVATE(this)->viewport);
-    PRIVATE(this)->internaldata->setBufferSize(dims);
+    PRIVATE(this)->internaldata->setBufferSize(size);
+
   } else {
     
     if(PRIVATE(this)->renderaction) 
       PRIVATE(this)->renderaction->setViewportRegion(PRIVATE(this)->subviewport);
     PRIVATE(this)->internaldata->setBufferSize(PRIVATE(this)->subscreensize);
+
   }
 
   if(!PRIVATE(this)->buffer)
@@ -705,7 +723,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     //Allocate memory for subscreen
     subscreen = new unsigned char [(subscreensize[0]*subscreensize[1]*this->master->getComponents())];
-
     
     // We have to grab cameras using this callback during rendering
     this->renderaction->setAbortCallback(&subscreenAbortCallback,this);    
@@ -721,8 +738,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       }
     
       this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
-
-
 
       if (base->isOfType(SoNode::getClassTypeId()))
         this->renderaction->apply((SoNode *)base);
@@ -1645,28 +1660,34 @@ SoOffscreenRendererP::pasteSubscreen(int renderpass)
   
   int subscreenposy = renderpass / this->numsubscreens[0]; // Exploiting integer division loss
   int subscreenposx = renderpass - subscreenposy*this->numsubscreens[0];
+
+  int endpixel = 0;
+  if(mustaddonepixel)
+    endpixel = 1;
   
   int suboffset = 0;
-  int offset = (subscreenposx*subscreensize[0] + (numsubscreens[1]-subscreenposy-1)*(subscreensize[1]*subscreensize[0]*numsubscreens[0])) * depth;
-  
-  
+  int offset = (subscreenposx*subscreensize[0] + (numsubscreens[1]-subscreenposy-1)*(subscreensize[1]*(subscreensize[0]*numsubscreens[0] + endpixel))) * depth;
+   
   const int linelen = this->subscreensize[0]*depth;
-  const int offsetinc = (this->numsubscreens[0]*this->subscreensize[0])*depth;
+  const int offsetinc = (this->numsubscreens[0]*this->subscreensize[0] + endpixel)*depth;
   const int suboffsetinc = this->subscreensize[0]*depth;
 
   switch (depth) {
   case SoOffscreenRenderer::RGB_TRANSPARENCY:
-     {
+    {
       for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
-        for(int k=0;k<linelen;k+=depth){ //For each pixel in subscreen line
-          this->buffer[offset + k]     = this->subscreen[suboffset + k];
-          this->buffer[offset + k + 1] = this->subscreen[suboffset + k + 1];
-          this->buffer[offset + k + 2] = this->subscreen[suboffset + k + 2];
-          this->buffer[offset + k + 3] = this->subscreen[suboffset + k + 3];
-        }
+        
+        memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);
+        
+        if(mustaddonepixel)
+          memset((unsigned char *) this->buffer + offset + linelen, 0, depth);
+        
         offset += offsetinc;
         suboffset += suboffsetinc;
       }
+      
+      if(mustaddoneline && (subscreenposy == 0))
+        memset((unsigned char *) this->buffer + offset ,0, linelen + endpixel*depth);
 
     }
     break;
@@ -1674,39 +1695,57 @@ SoOffscreenRendererP::pasteSubscreen(int renderpass)
   case SoOffscreenRenderer::RGB:
     {
       for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
-        for(int k=0;k<linelen;k+=depth){ //For each pixel in subscreen line
-          this->buffer[offset + k]     = this->subscreen[suboffset + k];
-          this->buffer[offset + k + 1] = this->subscreen[suboffset + k + 1];
-          this->buffer[offset + k + 2] = this->subscreen[suboffset + k + 2];
-        }
+
+        memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);
+
+        if(mustaddonepixel)
+          memset((unsigned char *) this->buffer + offset + linelen, 0, depth);
+
         offset += offsetinc;
         suboffset += suboffsetinc;
       }
+
+      if(mustaddoneline && (subscreenposy == 0))
+        memset((unsigned char *) this->buffer + offset ,0, linelen + endpixel*depth);
+  
     }
     break;
 
   case SoOffscreenRenderer::LUMINANCE_TRANSPARENCY:
     {
       for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
-        for(int k=0;k<linelen;k+=depth){ //For each pixel in subscreen line
-          this->buffer[offset + k]    = this->subscreen[suboffset + k];
-          this->buffer[offset + k +1] = this->subscreen[suboffset + k + 1];
-        }
+
+        memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);
+
+        if(mustaddonepixel)
+          memset((unsigned char *) this->buffer + offset + linelen, 0, depth);
+
         offset += offsetinc;
         suboffset += suboffsetinc;
       }
   
+      if(mustaddoneline && (subscreenposy == 0))
+        memset((unsigned char *) this->buffer + offset ,0, linelen + endpixel*depth);
+
     }
     break;
 
   case SoOffscreenRenderer::LUMINANCE:
     {
       for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
-        for(int k=0;k<linelen;k+=depth) //For each pixel in subscreen line
-          this->buffer[offset + k] = this->subscreen[suboffset + k];
+
+        memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);
+        
+        if(mustaddonepixel)
+          memset((unsigned char *) this->buffer + offset + linelen, 0, depth);
+        
         offset += offsetinc;
         suboffset += suboffsetinc;
       }
+  
+      if(mustaddoneline && (subscreenposy == 0))
+        memset((unsigned char *) this->buffer + offset ,0, linelen + endpixel*depth);
+
     }
     break;
   }
