@@ -53,7 +53,7 @@ public:
     // The remaining are Coin extensions to the common Inventor API
     SORTED_OBJECT_SORTED_TRIANGLE_ADD,
     SORTED_OBJECT_SORTED_TRIANGLE_BLEND,
-    NONE
+    NONE, SORTED_LAYERS_BLEND
   };
 
   enum AbortCode {
@@ -93,7 +93,10 @@ public:
 
   void addPreRenderCallback(SoGLPreRenderCB * func, void * userdata);
   void removePreRenderCallback(SoGLPreRenderCB * func, void * userdata);
-
+ 
+  void setSortedLayersNumPasses(int num);
+  int getSortedLayersNumPasses() const;
+  
 protected:
   virtual void beginTraversal(SoNode * node);
   virtual void endTraversal(SoNode * node);
