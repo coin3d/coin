@@ -667,7 +667,7 @@ SoExtSelection::SoExtSelection(void)
   // setup timer
   PRIVATE(this)->timersensor = new SoTimerSensor(&SoExtSelectionP::timercallback,
                                                  (void *)this);
-  PRIVATE(this)->timersensor->setBaseTime(SbTime(0.0));
+  PRIVATE(this)->timersensor->setBaseTime(SbTime::zero());
   PRIVATE(this)->timersensor->setInterval(SbTime(0.3));
 
 
