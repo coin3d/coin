@@ -1882,7 +1882,11 @@ SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
 
   SbString partstring(partname.getString());
 
-  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, FALSE, NULL, TRUE)) {
+  // FIXME: findPart() really needs another parameter, since we need
+  // to create intermediate parts, but not the leaf part. For now we
+  // just supply makeifneeded = TRUE, and then immediately overwrite
+  // the part here. pederb, 2004-06-07
+  if (SoBaseKit::findPart(partstring, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
     if (anypart || kit->getNodekitCatalog()->isPublic(partNum)) {
       if (isList) {
         SoNode * partnode = PRIVATE(kit)->instancelist[partNum]->getValue();
