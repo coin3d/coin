@@ -914,9 +914,8 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   SoSeparator::handleEvent(action);
   if (action->isHandled()) return;
 
-
   const SoEvent * event = action->getEvent();
-  const SbVec2s mousecoords = event->getPosition();
+  SbVec2s mousecoords = event->getPosition();
 
   switch (this->lassoType.getValue()) {
 
@@ -928,7 +927,17 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
 
     // ---------- RECTANGLE ----------
 
-  case SoExtSelection::RECTANGLE:
+  case SoExtSelection::RECTANGLE:    
+    {
+      // Make sure the new coord is inside the viewport
+      const SbViewportRegion & vpr = action->getViewportRegion();
+      const SbVec2s vprsize = vpr.getWindowSize();
+      mousecoords[0] = mousecoords[0] < vprsize[0] ? mousecoords[0] : vprsize[0];
+      mousecoords[1] = mousecoords[1] < vprsize[1] ? mousecoords[1] : vprsize[1];
+      mousecoords[0] = mousecoords[0] < 0 ? 0 : mousecoords[0];
+      mousecoords[1] = mousecoords[1] < 0 ? 0 : mousecoords[1];
+    }
+
     // mouse click
     if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
       PRIVATE(this)->isDragging = TRUE;
