@@ -28,9 +28,9 @@
 #include <stdio.h>
 #include <stddef.h>
 
-#include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/glue/flwfreetype.h>
 #include <Inventor/C/base/string.h>
 #include <ft2build.h>
 /* FIXME: FT build macros don't work for MSVC dsp builds. preng 2003-03-11
