@@ -246,7 +246,9 @@ SoEngineOutput::addConnection(SoField * f)
   this->getFieldContainer()->ref();
 
   // Trigger re-evaluation of engine.
-  this->getFieldContainer()->touch();
+  if (!this->isNodeEngineOutput()) {
+    this->getContainer()->setDirty();
+  }
 }
 
 /*!

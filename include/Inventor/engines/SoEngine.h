@@ -80,7 +80,12 @@ private:
     FLAG_ISNOTIFYING = (1 << 0),
     FLAG_ISDIRTY = (1 << 1)
   };
+
   unsigned int flags;
+
+  // needed for handling connections from SoEngineOutput
+  friend class SoEngineOutput;
+  void setDirty(void);
 };
 
 #if !defined(COIN_INTERNAL)

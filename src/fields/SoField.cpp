@@ -733,7 +733,9 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
     // Link up the input SoField of the SoFieldConverter to the master
     // field by recursively calling connectFrom().
     SoField * converterinput = conv->getInput(mastertype);
-    converterinput->connectFrom(master, notnotify);
+    // the converter engine should always be notified upon connection
+    // as it will never have a default value read in from a file.
+    converterinput->connectFrom(master, FALSE);
 
     // Connect from the SoFieldConverter output to the slave field.
     SoEngineOutput * converteroutput =
@@ -743,6 +745,7 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
     // Remember the connection from the slave field to the
     // SoFieldConverter by setting up a dict entry.
     this->storage->addConverter(master, conv);
+    notnotify = FALSE; // since converter never has a default value
   }
 
   // Common bookkeeping.
@@ -846,7 +849,9 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
     // Link up the input SoField of the SoFieldConverter to the master
     // SoEngineOutput by recursively calling connectFrom().
     SoField * converterinput = conv->getInput(mastertype);
-    converterinput->connectFrom(master, notnotify);
+    // the converter engine should always be notified upon connection
+    // as it will never have a default value read in from a file
+    converterinput->connectFrom(master, FALSE);
 
     // Connect from the SoFieldConverter output to the slave field.
     SoEngineOutput * converteroutput =
@@ -856,6 +861,7 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
     // Remember the connection from the slave field to the
     // SoFieldConverter by setting up a dict entry.
     this->storage->addConverter(master, conv);
+    notnotify = FALSE; // since converter never has a default value
   }
 
   // Match the ref() invocation.
@@ -1632,7 +1638,10 @@ READ_VAL(SoInput * in, Type & val)
 SbBool
 SoField::read(SoInput * in, const SbName & name)
 {
-  SbBool readok;
+  SbBool readok = TRUE;
+  SbBool oldnotify = this->enableNotify(FALSE);
+  SbBool didreadvalue = FALSE;
+
   if (in->checkISReference(this->getContainer(), name, readok) || readok == FALSE) {
     if (!readok) {
       SoFieldContainer * fc = this->getContainer();
@@ -1641,7 +1650,7 @@ SoField::read(SoInput * in, const SbName & name)
       SoReadError::post(in, "Couldn't read value for field \"%s\"%s",
                         name.getString(), s.getString());
     }
-    return readok;
+    goto sofield_read_return;
   }
 
   this->setDefault(FALSE);
@@ -1651,7 +1660,7 @@ SoField::read(SoInput * in, const SbName & name)
     char c;
     // Check for the ignored flag first, as it is valid to let the
     // field data be just the ignored flag and nothing else.
-    if (!READ_VAL(in, c)) { return FALSE; }
+    if (!READ_VAL(in, c)) { readok = FALSE; goto sofield_read_return; }
 
     if (c == IGNOREDCHAR) this->setIgnored(TRUE);
     else {
@@ -1685,13 +1694,8 @@ SoField::read(SoInput * in, const SbName & name)
         // message, to let the app programmer actually stand a chance
         // of debugging this when it happens. 20030811 mortene.
         if (c == CONNECTIONCHAR) { 
-          if (!this->readConnection(in)) { return FALSE; }
-          // Mark ourself as dirty so as to make the next evaluate()
-          // copy value(s) in from the master field. This is done
-          // because no value was read for this field, and we're most
-          // likely just set at the default.
-          this->setDirty(TRUE);
-          return TRUE;
+          if (!this->readConnection(in)) { readok = FALSE; goto sofield_read_return; }
+          goto sofield_read_return;
         }
         else in->putBack(c);
       }
@@ -1703,8 +1707,10 @@ SoField::read(SoInput * in, const SbName & name)
         if (fc) { s.sprintf(" of %s", fc->getTypeId().getName().getString()); }
         SoReadError::post(in, "Couldn't read value for field \"%s\"%s",
                           name.getString(), s.getString());
-        return FALSE;
+        readok = FALSE;
+        goto sofield_read_return;
       }
+      else didreadvalue = TRUE;
 
       // Check again for the ignored flag indicator after the field
       // value.
@@ -1717,7 +1723,7 @@ SoField::read(SoInput * in, const SbName & name)
     // Check field-to-field connection indicator again /after/ the
     // field (start-)value.
     if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
-      if (c == CONNECTIONCHAR) { if (!this->readConnection(in)) { return FALSE; } }
+      if (c == CONNECTIONCHAR) { if (!this->readConnection(in)) { readok = FALSE; goto sofield_read_return; } }
       else { in->putBack(c); }
     }
   }
@@ -1729,15 +1735,17 @@ SoField::read(SoInput * in, const SbName & name)
       if (fc) { s.sprintf(" of %s", fc->getTypeId().getName().getString()); }
       SoReadError::post(in, "Couldn't read value for field \"%s\"%s",
                         name.getString(), s.getString());
-      return FALSE;
+      readok = FALSE;
+      goto sofield_read_return;
     }
+    else didreadvalue = TRUE;
 
     // Check for the "ignored", "connection" and "default" flags.
     unsigned int flags;
-    if (!READ_VAL(in, flags)) { return FALSE; }
+    if (!READ_VAL(in, flags)) { readok = FALSE; goto sofield_read_return; }
 
     if (flags & SoField::IGNORED) this->setIgnored(TRUE);
-    if (flags & SoField::CONNECTED) { if (!this->readConnection(in)) return FALSE; }
+    if (flags & SoField::CONNECTED) { if (!this->readConnection(in)) { readok = FALSE; goto sofield_read_return; }}
     if (flags & SoField::DEFAULT) this->setDefault(TRUE);
 
 #if COIN_DEBUG
@@ -1750,7 +1758,14 @@ SoField::read(SoInput * in, const SbName & name)
 #endif // COIN_DEBUG
   }
 
-  return TRUE;
+ sofield_read_return:
+  (void) this->enableNotify(oldnotify);
+
+  if (readok) {
+    if (didreadvalue) this->valueChanged(FALSE);
+    else this->startNotify();
+  }
+  return readok;
 }
 
 /*!

@@ -490,3 +490,9 @@ SoEngine::isNotifying(void) const
 {
   return (this->flags & FLAG_ISNOTIFYING) != 0;
 }
+
+void 
+SoEngine::setDirty(void)
+{
+  this->flags |= FLAG_ISDIRTY;
+}
