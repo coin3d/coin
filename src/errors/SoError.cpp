@@ -212,7 +212,7 @@ SoError::post(const char * const format, ...)
 {
   va_list args;
   va_start(args, format);
-  cc_error_post(format, &args);
+  cc_error_post(format, args);
   va_end(args);
 }
 

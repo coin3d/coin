@@ -158,17 +158,14 @@ cc_error_get_debug_string(const cc_error * me)
 }
 
 void
-cc_error_post(const char * format, ...)
+cc_error_post(const char * format, va_list args)
 {
-  va_list args;
   cc_string s;
   cc_error err;
 
   cc_string_construct(&s);
 
-  va_start(args, format);
   cc_string_vsprintf(&s, format, args);
-  va_end(args);
 
   cc_error_init(&err);
   cc_error_set_debug_string(&err, cc_string_get_text(&s));

@@ -65,7 +65,7 @@ COIN_DLL_API cc_error_cb * cc_error_get_handler_callback(void);
 COIN_DLL_API void * cc_error_get_handler_data(void);
 
 /*   static void post(const char * const format, ...); */
-COIN_DLL_API void cc_error_post(const char * format, ...);
+COIN_DLL_API void cc_error_post(const char * format, va_list args);
 
   /* protected: */
   /*   void setDebugString(const char * const str); */
