@@ -175,6 +175,8 @@ public:
 
 private:
   SbBool isLeaf(void) const { return this->children[0] == NULL; }
+  SbBool isGroup(void) const { return ! this->isLeaf(); }
+
   unsigned int totalNumberOfItems(void) const;
 
   void splitBox(const SbBox3f & box, SbBox3f * destarray) const;
@@ -191,7 +193,7 @@ SbOctTreeNode::totalNumberOfItems(void) const
 {
   unsigned int nr = this->items.getLength();
 
-  if (!this->isLeaf()) {
+  if (this->isGroup()) {
     for (int i = 0; i < 8; i++) {
       nr += this->children[i]->totalNumberOfItems();
     }
@@ -216,7 +218,7 @@ SbOctTreeNode::debugTree(FILE *fp, const int indent, const SbBox3f & nodesize)
                 vmin[0], vmin[1], vmin[2], vmax[0], vmax[1], vmax[2]);
   (void)fprintf(fp, "\n");
 
-  if (!this->isLeaf()) {
+  if (this->isGroup()) {
     SbBox3f childboxes[8];
     this->splitBox(nodesize, childboxes);
 
@@ -244,7 +246,7 @@ SbOctTreeNode::SbOctTreeNode(void)
 
 SbOctTreeNode::~SbOctTreeNode()
 {
-  if (this->children[0]) {
+  if (this->isGroup()) {
     for (int i = 0; i < 8; i++) delete children[i];
   }
 }
@@ -255,7 +257,7 @@ SbOctTreeNode::addItem(void * const item,
                        const int maxitems,
                        const SbBox3f & nodesize)
 {
-  if (this->children[0]) { // node has been split
+  if (this->isGroup()) { // node has been split
     SbBox3f childbox[8];
     this->splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
@@ -313,7 +315,7 @@ SbOctTreeNode::findItems(const SbVec3f & pos,
                          const SbBox3f & nodesize,
                          const SbBool removeduplicates) const
 {
-  if (this->children[0]) {
+  if (this->isGroup()) {
     SbBox3f childbox[8];
     splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
@@ -345,7 +347,7 @@ SbOctTreeNode::findItems(const SbBox3f & box,
                          const SbBox3f & nodesize,
                          const SbBool removeduplicates) const
 {
-  if (this->children[0]) {
+  if (this->isGroup()) {
     SbBox3f childbox[8];
     splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
@@ -376,7 +378,7 @@ SbOctTreeNode::findItems(const SbSphere & sphere,
                          const SbBox3f & nodesize,
                          const SbBool removeduplicates) const
 {
-  if (this->children[0]) {
+  if (this->isGroup()) {
     SbBox3f childbox[8];
     splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
@@ -408,7 +410,7 @@ SbOctTreeNode::findItems(const SbPlane * const planes,
                          const SbBox3f & nodesize,
                          const SbBool removeduplicates) const
 {
-  if (this->children[0]) {
+  if (this->isGroup()) {
     SbBox3f childbox[8];
     splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
