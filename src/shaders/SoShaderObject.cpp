@@ -26,6 +26,7 @@
 #include <assert.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -63,8 +64,8 @@ public:
 
   void updateParameters(int start, int num);
   void updateAllParameters(void);
-  void updateStateMatrixParameters();
-  SbBool containStateMatrixParameters() const;
+  void updateStateMatrixParameters(void);
+  SbBool containStateMatrixParameters(void) const;
   void removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram);
 
   void setSearchDirectories(const SbStringList & list);
@@ -74,13 +75,13 @@ private:
 
   SbStringList searchdirectories;
 
-  void checkType(); // sets cachedSourceType
-  void readSource(); // sets cachedSourceProgram depending on sourceType
+  void checkType(void); // sets cachedSourceType
+  void readSource(void); // sets cachedSourceProgram depending on sourceType
 
   SbBool isSupported(SoShaderObject::SourceType sourceType);
 
 #if defined(SOURCE_HINT)
-  SbString getSourceHint() const;
+  SbString getSourceHint(void) const;
 #endif
 };
 
@@ -92,7 +93,7 @@ SO_NODE_ABSTRACT_SOURCE(SoShaderObject);
 
 // *************************************************************************
 
-void SoShaderObject::initClass()
+void SoShaderObject::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShaderObject,
                                        SO_FROM_COIN_2_4|SO_FROM_INVENTOR_5_0);
@@ -130,6 +131,35 @@ SoShaderObject::GLRender(SoGLRenderAction * action)
 }
 
 void
+SoShaderObject::search(SoSearchAction * action)
+{
+  // Include this node in the search.
+  SoNode::search(action);
+  if (action->isFound()) return;
+
+  // If we're not the one being sought after, try shader parameter.
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    // FIXME: not implemented -- 20050129 martin
+  }
+  else { // traverse all shader parameter
+    int num = this->parameter.getNum();
+    for (int i=0; i<num; i++) {
+      SoNode * node = this->parameter[i];
+      action->pushCurPath(i, node);
+      node->search(action);
+      action->popCurPath();
+      if (action->isFound()) return;
+    }
+  }
+  
+  //FIXME: only as long as SoShaderObject is derived by SoGroup
+  //       (which is not TGS conform) 20050129 martin
+  SoGroup::doAction((SoAction *)action);
+}
+
+void
 SoShaderObject::updateParameters(int start, int num)
 {
   SELF->updateParameters(start, num);
@@ -147,12 +177,12 @@ SoShaderObject::updateStateMatrixParameters(void)
   SELF->updateStateMatrixParameters();
 }
 
-SbBool SoShaderObject::containStateMatrixParameters() const
+SbBool SoShaderObject::containStateMatrixParameters(void) const
 {
   return SELF->containStateMatrixParameters();
 }
 
-SoGLShaderObject * SoShaderObject::getGLShaderObject() const
+SoGLShaderObject * SoShaderObject::getGLShaderObject(void) const
 {
   return SELF->glShaderObject;
 }
@@ -172,12 +202,12 @@ SoShaderObject::readInstance(SoInput * in, unsigned short flags)
   return ret;
 }
 
-SoShaderObject::SourceType SoShaderObject::getSourceType() const
+SoShaderObject::SourceType SoShaderObject::getSourceType(void) const
 {
   return SELF->cachedSourceType;
 }
 
-SbString SoShaderObject::getSourceProgram() const
+SbString SoShaderObject::getSourceProgram(void) const
 {
   return SELF->cachedSourceProgram;
 }
@@ -323,7 +353,7 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
 // sets this->cachedSourceType to [ARB|CG|GLSL]_PROGRAM
 // this->cachedSourceType will be set to FILENAME, if sourceType is unknown
 void
-SoShaderObjectP::checkType()
+SoShaderObjectP::checkType(void)
 {
   this->cachedSourceType =
     (SoShaderObject::SourceType)this->owner->sourceType.getValue();
@@ -472,7 +502,7 @@ SoShaderObjectP::updateAllParameters(void)
 
 // Update state matrix paramaters
 void
-SoShaderObjectP::updateStateMatrixParameters()
+SoShaderObjectP::updateStateMatrixParameters(void)
 {
 #define STATE_PARAM SoShaderStateMatrixParameter
   if (this->glShaderObject==NULL || !this->glShaderObject->isActive()) return;
@@ -493,7 +523,7 @@ SoShaderObjectP::updateStateMatrixParameters()
 }
 
 SbBool
-SoShaderObjectP::containStateMatrixParameters() const
+SoShaderObjectP::containStateMatrixParameters(void) const
 {
 #define STATE_PARAM SoShaderStateMatrixParameter
   int i, cnt = this->owner->parameter.getNum();

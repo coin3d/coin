@@ -35,33 +35,29 @@
 
 // *************************************************************************
 
+class SoGLShaderObject;
+
 class SoGLShaderParameter
 {
 public:
-  virtual SbBool isReferenced(void) = 0;
+  virtual void set1f(const SoGLShaderObject * shader, const float value, const char * name, const int id) = 0;
+  virtual void set2f(const SoGLShaderObject * shader, const float * value, const char * name, const int id) = 0;
+  virtual void set3f(const SoGLShaderObject * shader, const float * value, const char * name, const int id) = 0;
+  virtual void set4f(const SoGLShaderObject * shader, const float * value, const char * name, const int id) = 0;
 
-  virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id) = 0;
-  virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id) = 0;
-  virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id) = 0;
-  virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id) = 0;
+  virtual void set1fv(const SoGLShaderObject * shader, const int num, const float * value, const char* name, const int id) = 0;
+  virtual void set2fv(const SoGLShaderObject * shader, const int num, const float * value, const char* name, const int id) = 0;
+  virtual void set3fv(const SoGLShaderObject * shader, const int num, const float * value, const char* name, const int id) = 0;
+  virtual void set4fv(const SoGLShaderObject * shader, const int num, const float * value, const char* name, const int id) = 0;
 
-  virtual SoShader::ShaderType shaderType(void) const = 0;
+  virtual void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id) = 0;
+  virtual void setMatrixArray(const SoGLShaderObject * shader, const int num, const float * value, const char * name, const int id) = 0;
 
-public:
-  virtual SbBool isFloat(void);
-  virtual SbBool isFloat2(void);
-  virtual SbBool isFloat3(void);
-  virtual SbBool isFloat4(void);
-  virtual SbBool isTexture(void);
+  virtual SoShader::Type shaderType(void) const = 0;
 
 public: 
-  SoGLShaderParameter(void);
-
   void operator delete(void * obj);
   void operator delete[](void * obj);
-
-protected:
-  SoShader::ValueType type;
 };
 
 #endif /* ! COIN_SOGLSHADERPARAMETER_H */

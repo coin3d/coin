@@ -22,99 +22,170 @@
 \**************************************************************************/
 
 #include "SoGLSLShaderParameter.h"
+#include "SoGLSLShaderObject.h"
 
 #include <Inventor/errors/SoDebugError.h>
 
 // *************************************************************************
 
-SoGLSLShaderParameter::SoGLSLShaderParameter(const cc_glglue * g,
-                                             COIN_GLhandle program,
-                                             const char * theName)
+SoGLSLShaderParameter::SoGLSLShaderParameter(void)
 {
-  this->location =
-    g->glGetUniformLocationARB(program, (const COIN_GLchar *)theName);
-  if (this->location == -1)
-    this->type = SoShader::UNKNOWN_TYPE;
-  else {
-    GLsizei length, size;
-    GLenum type;
-    COIN_GLchar name[128];
-
-    g->glGetActiveUniformARB(program,this->location,128,&length,&size,&type,name);
-    this->type = SoGLSLShaderParameter::getParameterTypeFor(type);
-    if (this->type == SoShader::UNKNOWN_TYPE) 
-      this->location = -1;
-    else
-      this->name = theName;
-  }
+  this->location  = -1;
+  this->cacheType = GL_FLOAT;
+  this->cacheName = "";
+  this->cacheSize =  0;
 }
 
 SoGLSLShaderParameter::~SoGLSLShaderParameter()
 {
 }
 
-// *************************************************************************
-
-SoShader::ShaderType
+SoShader::Type
 SoGLSLShaderParameter::shaderType(void) const
 { 
   return SoShader::GLSL_SHADER;
 }
 
-// *************************************************************************
-
 void
-SoGLSLShaderParameter::set1f(const cc_glglue * g, const float value,
-                             const char *, const int)
+SoGLSLShaderParameter::set1f(const SoGLShaderObject * shader,
+			     const float value, const char *name, const int)
 {
-  if (this->isReferenced() && isFloat()) {
-    g->glUniform1fARB(this->location, value);
-  }
+  if (this->isValid(shader, name, GL_FLOAT))
+    shader->GLContext()->glUniform1fARB(this->location, value);
 }
 
 void
-SoGLSLShaderParameter::set2f(const cc_glglue * g, const float * value,
-                             const char *, const int)
+SoGLSLShaderParameter::set2f(const SoGLShaderObject * shader,
+			     const float * value, const char *name, const int)
 {
-  if (this->isReferenced() && isFloat2()) {
-    g->glUniform2fARB(this->location, value[0], value[1]);
-  }
+  if (this->isValid(shader, name, GL_FLOAT_VEC2_ARB))
+    shader->GLContext()->glUniform2fARB(this->location, value[0], value[1]);
 }
 
 void
-SoGLSLShaderParameter::set3f(const cc_glglue * g, const float * value,
-                             const char *, const int)
+SoGLSLShaderParameter::set3f(const SoGLShaderObject * shader,
+			     const float * v, const char *name, const int)
 {
-  if (this->isReferenced() && isFloat3()) {
-    g->glUniform3fARB(this->location, value[0], value[1], value[2]);
-  }
+  if (this->isValid(shader, name, GL_FLOAT_VEC3_ARB))
+    shader->GLContext()->glUniform3fARB(this->location, v[0], v[1], v[2]);
 }
 
 void
-SoGLSLShaderParameter::set4f(const cc_glglue * g, const float * value,
-                             const char *, const int)
+SoGLSLShaderParameter::set4f(const SoGLShaderObject * shader,
+			     const float * v, const char *name, const int)
 {
-  if (this->isReferenced() && isFloat4()) {
-    g->glUniform4fARB(this->location, value[0], value[1],value[2],value[3]);
-  }
+  if (this->isValid(shader, name, GL_FLOAT_VEC4_ARB))
+    shader->GLContext()->glUniform4fARB(this->location, v[0], v[1], v[2], v[3]);
 }
 
-// *************************************************************************
 
-SoShader::ValueType
-SoGLSLShaderParameter::getParameterTypeFor(GLenum type)
+void
+SoGLSLShaderParameter::set1fv(const SoGLShaderObject * shader, const int num,
+			      const float *value, const char * name, const int)
 {
-  switch (type) {
-  case GL_FLOAT: return SoShader::FLOAT;
-  case GL_FLOAT_VEC2_ARB: return SoShader::FLOAT2;
-  case GL_FLOAT_VEC3_ARB: return SoShader::FLOAT3;
-  case GL_FLOAT_VEC4_ARB: return SoShader::FLOAT4;
-  case GL_FLOAT_MAT2_ARB: return SoShader::FLOAT_MATRIX2;
-  case GL_FLOAT_MAT3_ARB: return SoShader::FLOAT_MATRIX3;
-  case GL_FLOAT_MAT4_ARB: return SoShader::FLOAT_MATRIX4;
-  default:
-    SoDebugError::post("SoGLSLShaderParameter::getParameterTypeFor",
-                       "Cannot map GLtype to ValueType");
-    return SoShader::UNKNOWN_TYPE;
+  int cnt = num;
+  if (this->isValid(shader, name, GL_FLOAT, &cnt))
+    shader->GLContext()->glUniform1fvARB(this->location, cnt, value);
+}
+
+void
+SoGLSLShaderParameter::set2fv(const SoGLShaderObject * shader, const int num,
+			      const float* value, const char* name, const int)
+{
+  int cnt = num;
+  if (this->isValid(shader, name, GL_FLOAT_VEC2_ARB, &cnt))
+    shader->GLContext()->glUniform2fvARB(this->location, cnt, value);
+}
+
+void
+SoGLSLShaderParameter::set3fv(const SoGLShaderObject * shader, const int num,
+			      const float* value, const char * name, const int)
+{
+  int cnt = num;
+  if (this->isValid(shader, name, GL_FLOAT_VEC3_ARB, &cnt))
+    shader->GLContext()->glUniform3fvARB(this->location, cnt, value);
+}
+
+void
+SoGLSLShaderParameter::set4fv(const SoGLShaderObject * shader, const int num,
+			      const float* value, const char * name, const int)
+{
+  int cnt = num;
+  if (this->isValid(shader, name, GL_FLOAT_VEC4_ARB, &cnt))
+    shader->GLContext()->glUniform4fvARB(this->location, cnt, value);
+}
+
+void
+SoGLSLShaderParameter::setMatrix(const SoGLShaderObject *,
+				 const float *, const char *,
+				 const int)
+{
+  // FIXME not implemented yet -- 20050128 martin
+}
+
+  
+void
+SoGLSLShaderParameter::setMatrixArray(const SoGLShaderObject *,
+				      const int, const float *,
+				      const char *, const int)
+{
+  // FIXME not implemented yet -- 20050128 martin
+}
+
+
+SbBool
+SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
+			       const char * name, GLenum type,
+			       int * num)
+{
+  assert(shader);
+  assert(shader->shaderType() == SoShader::GLSL_SHADER);
+  
+  if (this->location>-1 && this->cacheName==name && this->cacheType==type) {
+    if (num) { // assume: ARRAY
+      if (this->cacheSize < *num) {
+	// FIXME: better error handling - 20050128 martin
+	SoDebugError::postWarning("SoGLSLShaderParameter::isValid",
+				  "parameter %s[%d] < input[%d]!",
+				  this->cacheName.getString(),
+				  this->cacheSize, *num);
+	*num = this->cacheSize;
+      }
+      return (*num > 0);
+    }
+    return TRUE;
   }
+ 
+  COIN_GLhandle pHandle = ((SoGLSLShaderObject*)shader)->programHandle;
+  const cc_glglue * g = shader->GLContext();
+
+  this->cacheSize = 0;  
+  this->location  = g->glGetUniformLocationARB(pHandle,
+					       (const COIN_GLchar *)name);
+
+  if (this->location == -1)  return FALSE;
+
+  GLsizei     length;
+  COIN_GLchar myName[128]; // FIXME: check this 20050128 martin
+    
+  g->glGetActiveUniformARB(pHandle, this->location, 128, &length,
+			   &this->cacheSize, &this->cacheType, myName);
+
+  this->cacheName = name;
+
+  if (this->location == -1) return FALSE;
+  if (this->cacheType != type) return FALSE;
+  
+  if (num) { // assume: ARRAY
+    if (this->cacheSize < *num) {
+      // FIXME: better error handling - 20050128 martin
+      SoDebugError::postWarning("SoGLSLShaderParameter::isValid",
+				"parameter %s[%d] < input[%d]!",
+				this->cacheName.getString(),
+				this->cacheSize, *num);
+      *num = this->cacheSize;
+    }
+    return (*num > 0);
+  }
+  return TRUE;
 }

@@ -61,7 +61,8 @@ public:
 
   static void initClass(void);
 
-  void GLRender(SoGLRenderAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void search(SoSearchAction * action);
 
   void updateParameters(int start, int num);
   void updateAllParameters(void);

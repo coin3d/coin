@@ -26,6 +26,7 @@
 #include <assert.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
@@ -78,7 +79,7 @@ SoShaderProgram::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLShaderProgramElement);
 }
 
-SoShaderProgram::SoShaderProgram()
+SoShaderProgram::SoShaderProgram(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShaderProgram);
 
@@ -97,6 +98,35 @@ void
 SoShaderProgram::GLRender(SoGLRenderAction * action)
 {
   PRIVATE(this)->GLRender(action);
+}
+
+void
+SoShaderProgram::search(SoSearchAction * action)
+{
+  // Include this node in the search.
+  SoNode::search(action);
+  if (action->isFound()) return;
+
+  // If we're not the one being sought after, try shader objects.
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    // FIXME: not implemented -- 20050129 martin
+  }
+  else { // traverse all shader objects
+    int num = this->shaderObject.getNum();
+    for (int i=0; i<num; i++) {
+      SoNode * node = this->shaderObject[i];
+      action->pushCurPath(i, node);
+      node->search(action);
+      action->popCurPath();
+      if (action->isFound()) return;
+    }
+  }
+  
+  //FIXME: only as long as SoShaderProgram is derived by SoGroup
+  //       (which is not TGS conform) 20050129 martin
+  SoGroup::doAction((SoAction *)action);
 }
 
 void
@@ -231,10 +261,16 @@ SoShaderProgramP::updateProgramAndPreviousChildren(void)
   assert(this->previousChildren.getLength() == 0);
   cnt1 = PUBLIC(this)->shaderObject.getNum();
   cnt2 = PUBLIC(this)->getNumChildren();
-  for (i=0; i<cnt1; i++)
-    this->previousChildren.append(PUBLIC(this)->shaderObject[i]);
-  for (i=0; i<cnt2; i++)
-    this->previousChildren.append(PUBLIC(this)->getChild(i));
+  for (i=0; i<cnt1; i++) {
+    SoNode * node = PUBLIC(this)->shaderObject[i];
+    if (node->isOfType(SoShaderObject::getClassTypeId()))
+      this->previousChildren.append(node);
+  }
+  for (i=0; i<cnt2; i++) {
+    SoNode * node = PUBLIC(this)->getChild(i);
+    if (node->isOfType(SoShaderObject::getClassTypeId()))
+      this->previousChildren.append(node);
+  }
   this->previousChildren.truncate(this->previousChildren.getLength());
 }
 

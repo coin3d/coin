@@ -93,9 +93,6 @@ class COIN_DLL_API SoUniformShaderParameter : public SoShaderParameter {
   virtual void updateParameter(SoGLShaderObject *shaderObject) = 0;
   SbBool isRegularBehavior() const { return isRegularBehaviorFlag; }
 
-  // FIXME: Coin extension vs TGS Inventor? Investigate. 20050120 mortene. 
-  virtual void reset(void);
-
 protected:
   SoUniformShaderParameter();
   virtual ~SoUniformShaderParameter();
@@ -103,7 +100,7 @@ protected:
   SbBool isRegularBehaviorFlag; 
   SoGLShaderParameter * parameter;
 
-  SbBool ensureParameter(SoGLShaderObject * shader, int type);
+  void ensureParameter(SoGLShaderObject * shader);
 };
 
 /* **************************************************************************
@@ -526,29 +523,5 @@ public:
   static void initClass(void);
   virtual void updateParameter(SoGLShaderObject *shaderObject);
 };
-
-/* **************************************************************************
- * *** SoShaderParameterSampler2D ***
- * **************************************************************************/
-
-class COIN_DLL_API SoShaderParameterSampler2D : public SoUniformShaderParameter {
-  typedef SoUniformShaderParameter inherited;
-  SO_NODE_HEADER(SoShaderParameterSampler2D);
-
-public:
-  SoSFString filename;
-  SoSFImage image;
-
-  SoShaderParameterSampler2D();
-
-  SoINTERNAL public:
-  static void initClass();
-  virtual void updateParameter(SoGLShaderObject *shaderObject);
-
-protected:
-  virtual ~SoShaderParameterSampler2D();
-};
-
-/*--------------------------------------------------------------------------*/
 
 #endif /* ! COIN_SOSHADERPARAMETER_H */

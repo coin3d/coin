@@ -46,20 +46,20 @@ SoGLCgShaderObject::~SoGLCgShaderObject()
   SoGLCgShaderObject::destroyCgContext();
 }
 
-SoShader::ShaderType
-SoGLCgShaderObject::shaderType() const
+SoShader::Type
+SoGLCgShaderObject::shaderType(void) const
 {
   return SoShader::CG_SHADER;
 }
 
 SoGLShaderParameter *
-SoGLCgShaderObject::getParameter(int, const char* name, SoShader::ValueType type)
+SoGLCgShaderObject::getNewParameter(void) const
 {
-  return new SoGLCgShaderParameter(this, name, type);
+  return new SoGLCgShaderParameter();
 }
 
 SbBool
-SoGLCgShaderObject::isLoaded() const
+SoGLCgShaderObject::isLoaded(void) const
 {
   return glue_cgIsProgram(this->cgProgram);
 }
@@ -104,7 +104,7 @@ SoGLCgShaderObject::load(const char* sourceString)
 }
 
 void
-SoGLCgShaderObject::unload()
+SoGLCgShaderObject::unload(void)
 {
   if (glue_cgIsProgram(this->cgProgram)) {
     glue_cgDestroyProgram(this->cgProgram);
@@ -114,7 +114,7 @@ SoGLCgShaderObject::unload()
 
 
 void
-SoGLCgShaderObject::enable()
+SoGLCgShaderObject::enable(void)
 {
   if (glue_cgIsProgram(this->cgProgram)) {
     glue_cgGLBindProgram(this->cgProgram);
@@ -123,7 +123,7 @@ SoGLCgShaderObject::enable()
 }
 
 void
-SoGLCgShaderObject::disable()
+SoGLCgShaderObject::disable(void)
 {
   if (glue_cgIsProgram(this->cgProgram)) glue_cgGLDisableProfile(this->cgProfile);
 }
@@ -173,7 +173,7 @@ SoGLCgShaderObject::cgErrorCallback(void)
 }
 
 void
-SoGLCgShaderObject::ensureCgContext()
+SoGLCgShaderObject::ensureCgContext(void)
 {
   if (!glue_cgIsContext(SoGLCgShaderObject::cgContext)) {
     SoGLCgShaderObject::cgContext = glue_cgCreateContext();
@@ -182,7 +182,7 @@ SoGLCgShaderObject::ensureCgContext()
 }
 
 void
-SoGLCgShaderObject::destroyCgContext()
+SoGLCgShaderObject::destroyCgContext(void)
 {
   SoGLCgShaderObject::instanceCount--;
 

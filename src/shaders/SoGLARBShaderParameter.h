@@ -37,22 +37,30 @@
 class SoGLARBShaderParameter : public SoGLShaderParameter
 {
  public: // satisfy SoGLShaderParameter protocol interface
-  virtual inline SbBool isReferenced() { return FALSE; }
+  virtual SoShader::Type shaderType(void) const;
 
-  virtual SoShader::ShaderType shaderType() const;
+  virtual void set1f(const SoGLShaderObject * shader, const float value, const char * name, const int id);
+  virtual void set2f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
+  virtual void set3f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
+  virtual void set4f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
 
-  virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id);
-  virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
+  virtual void set1fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
+  virtual void set2fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
+  virtual void set3fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
+  virtual void set4fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
+
+  virtual void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id);  
+  virtual void setMatrixArray(const SoGLShaderObject * shader, const int num, const float * value, const char * name, const int id);
 
 public:
-  SoGLARBShaderParameter(GLenum target, GLuint index);
+  SoGLARBShaderParameter(void);
   virtual ~SoGLARBShaderParameter();
 
 private:
   GLenum target;
   GLuint identifier;
+
+  SbBool isValid(const SoGLShaderObject * shader, const int idx);
 };
 
 #endif /* ! COIN_SOGLARBSHADERPARAMETER_H */

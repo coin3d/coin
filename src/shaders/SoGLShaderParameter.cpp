@@ -31,30 +31,6 @@
 
 // *************************************************************************
 
-SoGLShaderParameter::SoGLShaderParameter()
-{
-  this->type = SoShader::UNKNOWN_TYPE;
-}
-
-SbBool SoGLShaderParameter::isFloat() { return this->type==SoShader::FLOAT; }
-SbBool SoGLShaderParameter::isFloat2(){ return this->type==SoShader::FLOAT2;}
-SbBool SoGLShaderParameter::isFloat3(){ return this->type==SoShader::FLOAT3;}
-SbBool SoGLShaderParameter::isFloat4(){ return this->type==SoShader::FLOAT4;}
-
-SbBool SoGLShaderParameter::isTexture() 
-{
-  switch (this->type) {
-  case SoShader::TEXTURE1D:
-  case SoShader::TEXTURE2D:
-  case SoShader::TEXTURE3D:
-  case SoShader::TEXTURE_CUBE:
-  case SoShader::TEXTURE_RECT:
-    return TRUE;
-  default:
-    return FALSE;
-  }
-}
-
 void SoGLShaderParameter::operator delete(void *obj) 
 {
   switch (((SoGLShaderParameter*)obj)->shaderType()) {

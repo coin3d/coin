@@ -35,7 +35,7 @@ SO_ELEMENT_SOURCE(SoGLShaderProgramElement);
 // *************************************************************************
 
 void
-SoGLShaderProgramElement::initClass()
+SoGLShaderProgramElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoGLShaderProgramElement, inherited);
 }

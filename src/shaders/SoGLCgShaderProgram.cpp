@@ -61,14 +61,14 @@ SoGLCgShaderProgram::removeShaderObject(SoGLCgShaderObject * shaderObject)
 }
 
 void
-SoGLCgShaderProgram::enable()
+SoGLCgShaderProgram::enable(void)
 {
   if (this->fragmentShader) this->fragmentShader->enable();
   if (this->vertexShader) this->vertexShader->enable();
 }
 
 void
-SoGLCgShaderProgram::disable()
+SoGLCgShaderProgram::disable(void)
 {
   if (this->fragmentShader) this->fragmentShader->disable();
   if (this->vertexShader) this->vertexShader->disable();

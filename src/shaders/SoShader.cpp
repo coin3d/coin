@@ -61,6 +61,8 @@ SoShader::init(void)
     SoShaderParameter::initClass();
   if (SoUniformShaderParameter::getClassTypeId() == SoType::badType())
     SoUniformShaderParameter::initClass();
+
+  // float vector parameter nodes
   if (SoShaderParameter1f::getClassTypeId() == SoType::badType())
     SoShaderParameter1f::initClass();
   if (SoShaderParameter2f::getClassTypeId() == SoType::badType())
@@ -70,11 +72,7 @@ SoShader::init(void)
   if (SoShaderParameter4f::getClassTypeId() == SoType::badType())
     SoShaderParameter4f::initClass();
 
-  if (SoShaderStateMatrixParameter::getClassTypeId() == SoType::badType())
-    SoShaderStateMatrixParameter::initClass();
-
-  // FIXME: array parameters are not implemented yet 20040924 martin
-#if 0 // --- array parameter support ------------------------------------
+  // float vector array parameter nodes
   if (SoShaderParameterArray1f::getClassTypeId() == SoType::badType())
     SoShaderParameterArray1f::initClass();
   if (SoShaderParameterArray2f::getClassTypeId() == SoType::badType())
@@ -83,11 +81,14 @@ SoShader::init(void)
     SoShaderParameterArray3f::initClass();
   if (SoShaderParameterArray4f::getClassTypeId() == SoType::badType())
     SoShaderParameterArray4f::initClass();
+
+  // matrix parameter nodes
+  if (SoShaderStateMatrixParameter::getClassTypeId() == SoType::badType())
+    SoShaderStateMatrixParameter::initClass();
   if (SoShaderParameterMatrix::getClassTypeId() == SoType::badType())
     SoShaderParameterMatrix::initClass();
   if (SoShaderParameterMatrixArray::getClassTypeId() == SoType::badType())
     SoShaderParameterMatrixArray::initClass();
-#endif
 
   // FIXME: Do we need int32 support (like in TGS)? 20040924 martin 
 #if 0 // int32 support

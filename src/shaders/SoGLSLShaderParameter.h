@@ -39,27 +39,34 @@
 
 class SoGLSLShaderParameter : public SoGLShaderParameter
 {
+public: // satisfy SoGLShaderParameter protocol interface
+  virtual SoShader::Type shaderType(void) const;
+
+  virtual void set1f(const SoGLShaderObject * shader, const float value, const char * name, const int id);
+  virtual void set2f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
+  virtual void set3f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
+  virtual void set4f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
+
+  virtual void set1fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
+  virtual void set2fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
+  virtual void set3fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
+  virtual void set4fv(const SoGLShaderObject * shader, const int num, const float* value, const char* name, const int id);
+
+  virtual void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id);  
+  virtual void setMatrixArray(const SoGLShaderObject * shader, const int num, const float * value, const char * name, const int id);
+
 public:
-  SoGLSLShaderParameter(const cc_glglue * g,
-                        COIN_GLhandle program,
-                        const char* name);
+  SoGLSLShaderParameter(void);
   virtual ~SoGLSLShaderParameter();
 
-  virtual inline SbBool isTexture(void) { return FALSE; }
-  virtual inline SbBool isReferenced(void) { return (this->location >= 0); }
-
-  virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id);
-  virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
-
-  virtual SoShader::ShaderType shaderType(void) const;
-
 private:
-  GLint location;
-  SbString name;
+  GLint    location;
+  SbString cacheName;
+  int      cacheSize;
+  GLenum   cacheType;
 
-  static SoShader::ValueType getParameterTypeFor(GLenum type);
+  SbBool isValid(const SoGLShaderObject * shader, const char * name, 
+		 GLenum type, int * num=NULL);
 };
 
 #endif /* ! COIN_SOGLSLSHADERPARAMETER_H */

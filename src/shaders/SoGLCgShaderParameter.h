@@ -33,6 +33,7 @@
 #include "SoGLShaderParameter.h"
 
 #include <Inventor/C/glue/cg.h>
+#include <Inventor/SbString.h>
 
 class SoGLCgShaderObject;
 
@@ -40,31 +41,37 @@ class SoGLCgShaderObject;
 
 class SoGLCgShaderParameter : public SoGLShaderParameter
 {
+public: // satisfy SoGLShaderParameter protocol interface
+  virtual SoShader::Type shaderType(void) const;
+
+  virtual void set1f(const SoGLShaderObject * shader, const float value, const char * name, const int id);
+  virtual void set2f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
+  virtual void set3f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
+  virtual void set4f(const SoGLShaderObject * shader, const float * value, const char * name, const int id);
+
+  virtual void set1fv(const SoGLShaderObject * shader, const int num, const float *value, const char* name, const int id);
+  virtual void set2fv(const SoGLShaderObject * shader, const int num, const float *value, const char* name, const int id);
+  virtual void set3fv(const SoGLShaderObject * shader, const int num, const float *value, const char* name, const int id);
+  virtual void set4fv(const SoGLShaderObject * shader, const int num, const float *value, const char* name, const int id);
+
+  virtual void setMatrix(const SoGLShaderObject * shader, const float * value, const char * name, const int id);  
+  virtual void setMatrixArray(const SoGLShaderObject * shader, const int num, const float * value, const char * name, const int id);
+
+public: // additional support for state matrices (only defined in Cg)
+  void setState(const SoGLShaderObject * shader, CGGLenum matrix, CGGLenum transform, const char* name);
+
 public:
-  SoGLCgShaderParameter(SoGLCgShaderObject * shader, 
-                        const char * name,
-                        SoShader::ValueType type);
+  SoGLCgShaderParameter(void);
   virtual ~SoGLCgShaderParameter();
 
-  virtual inline SbBool isReferenced();
-
-  virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id);
-  virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
-
-  virtual SoShader::ShaderType shaderType() const;
-
-public:
-  void setState(CGGLenum matrix, CGGLenum transform, const char* name);
-
 private:
-  CGprogram* cgProgram;
   CGparameter cgParameter;
+  CGtype      cacheType;
+  SbString    cacheName;
+  int         cacheSize;
 
-  SbBool isCorrectType(SoShader::ValueType theType);
-  static SoShader::ValueType getParameterTypeFor(CGtype type);
-  SbBool ensureParameter(const char* name, SoShader::ValueType theType);
+  SbBool isEqual(CGtype type1, CGtype type2);
+  SbBool isValid(const SoGLShaderObject * shader, const char * name, CGtype type, int * num=NULL);
 };
 
 #endif /* ! COIN_SOGLCGSHADER_H */

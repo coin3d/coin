@@ -37,7 +37,7 @@ class SoGLARBShaderObject;
 class SoGLARBShaderProgram
 {
 public:
-  SoGLARBShaderProgram();
+  SoGLARBShaderProgram(void);
 
   virtual void addShaderObject(SoGLARBShaderObject * shaderObject);
   virtual void removeShaderObject(SoGLARBShaderObject * shaderObject);
