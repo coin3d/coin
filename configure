@@ -9010,6 +9010,7 @@ echo "${ECHO_T}$sim_cv_lib_pthread_avail" >&6
   if $sim_cv_lib_pthread_avail; then
     sim_ac_pthread_avail=yes
 
+
 cat >>confdefs.h <<\_ACEOF
 #define USE_PTHREAD
 _ACEOF
@@ -9019,7 +9020,11 @@ cat >>confdefs.h <<\_ACEOF
 #define COIN_THREADID_TYPE pthread_t
 _ACEOF
 
-       sim_ac_threads_api="POSIX"
+      sim_ac_threads_api="POSIX"
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_pthread_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_pthread_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_pthread_libs $COIN_EXTRA_LIBS"
+
   else
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
@@ -18805,6 +18810,73 @@ fi
   # *******************************************************************
 
 
+sim_ac_save_libs=$LIBS
+sim_ac_wgl_libs="-lgdi32"
+LIBS="$LIBS $sim_ac_wgl_libs"
+
+echo "$as_me:$LINENO: checking whether WGL is on the system" >&5
+echo $ECHO_N "checking whether WGL is on the system... $ECHO_C" >&6
+if test "${sim_cv_have_wgl+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+
+#include <windows.h>
+#include <GL/gl.h>
+
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+(void)wglCreateContext(0L);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_cv_have_wgl=true
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+sim_cv_have_wgl=false
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $sim_cv_have_wgl" >&5
+echo "${ECHO_T}$sim_cv_have_wgl" >&6
+
+LIBS=$sim_ac_save_libs
+if ${sim_cv_have_wgl=false}; then
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_WGL 1
+_ACEOF
+
+    LIBS="$LIBS $sim_ac_wgl_libs"
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_wgl_libs"
+
+else
+
+
 echo "$as_me:$LINENO: checking whether GLX is on the system" >&5
 echo $ECHO_N "checking whether GLX is on the system... $ECHO_C" >&6
 if test "${sim_cv_have_glx+set}" = set; then
@@ -18866,8 +18938,96 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_GLX 1
 _ACEOF
 
+
 else
-  :
+
+
+sim_ac_save_ldflags=$LDFLAGS
+sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
+
+LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+
+echo "$as_me:$LINENO: checking whether AGL is on the system" >&5
+echo $ECHO_N "checking whether AGL is on the system... $ECHO_C" >&6
+if test "${sim_cv_have_agl+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <AGL/agl.h>
+#include <Carbon/Carbon.h>
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+aglGetCurrentContext();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_cv_have_agl=true
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+sim_cv_have_agl=false
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $sim_cv_have_agl" >&5
+echo "${ECHO_T}$sim_cv_have_agl" >&6
+
+LDFLAGS=$sim_ac_save_ldflags
+if ${sim_cv_have_agl=false}; then
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_AGL 1
+_ACEOF
+
+        LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+        COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+
+else
+
+        if test x${sim_ac_configuration_warnings+set} != xset; then
+  sim_ac_configuration_warnings="
+Could not find or compile or link against any usable window-system
+OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32)
+nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality
+will be disabled. Note: this might be a configure bug. Check the file
+config.log."
+else
+  sim_ac_configuration_warnings="$sim_ac_configuration_warnings|
+Could not find or compile or link against any usable window-system
+OpenGL binding, neither GLX (OpenGL on X11), nor WGL (OpenGL on Win32)
+nor AGL (OpenGL on Mac OS). The SoOffscreenRenderer functionality
+will be disabled. Note: this might be a configure bug. Check the file
+config.log."
+fi
+
+
+fi
+
+fi
+
 fi
 
 
@@ -18939,144 +19099,6 @@ else
 fi
 
   fi
-
-
-sim_ac_save_libs=$LIBS
-sim_ac_wgl_libs="-lgdi32"
-LIBS="$LIBS $sim_ac_wgl_libs"
-
-echo "$as_me:$LINENO: checking whether WGL is on the system" >&5
-echo $ECHO_N "checking whether WGL is on the system... $ECHO_C" >&6
-if test "${sim_cv_have_wgl+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-
-#include <windows.h>
-#include <GL/gl.h>
-
-#ifdef F77_DUMMY_MAIN
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-#endif
-int
-main ()
-{
-(void)wglCreateContext(0L);
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_cv_have_wgl=true
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-sim_cv_have_wgl=false
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: $sim_cv_have_wgl" >&5
-echo "${ECHO_T}$sim_cv_have_wgl" >&6
-
-LIBS=$sim_ac_save_libs
-if ${sim_cv_have_wgl=false}; then
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_WGL 1
-_ACEOF
-
-    LIBS="$LIBS $sim_ac_wgl_libs"
-    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_wgl_libs"
-else
-  :
-fi
-
-
-
-sim_ac_save_ldflags=$LDFLAGS
-sim_ac_agl_ldflags="-Wl,-framework,ApplicationServices -Wl,-framework,AGL"
-
-LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
-
-echo "$as_me:$LINENO: checking whether AGL is on the system" >&5
-echo $ECHO_N "checking whether AGL is on the system... $ECHO_C" >&6
-if test "${sim_cv_have_agl+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <AGL/agl.h>
-#include <Carbon/Carbon.h>
-#ifdef F77_DUMMY_MAIN
-#  ifdef __cplusplus
-     extern "C"
-#  endif
-   int F77_DUMMY_MAIN() { return 1; }
-#endif
-int
-main ()
-{
-aglGetCurrentContext();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  sim_cv_have_agl=true
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-sim_cv_have_agl=false
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: $sim_cv_have_agl" >&5
-echo "${ECHO_T}$sim_cv_have_agl" >&6
-
-LDFLAGS=$sim_ac_save_ldflags
-if ${sim_cv_have_agl=false}; then
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_AGL 1
-_ACEOF
-
-    LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
-
-else
-  :
-fi
-
 
   if $enable_superglu; then
     if test x${sim_ac_configuration_settings+set} != xset; then
@@ -20329,7 +20351,7 @@ if $sim_ac_enable_vrml97; then :; else
   vrml97makefile=
 fi
 
-ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile $vrml97makefile docs/coin.doxygen"
+ac_config_files="$ac_config_files Makefile bin/Makefile include/Makefile include/Inventor/Makefile include/Inventor/C/Makefile include/Inventor/C/base/Makefile include/Inventor/C/errors/Makefile include/Inventor/C/threads/Makefile include/Inventor/lock/Makefile include/Inventor/system/Makefile data/Makefile data/draggerDefaults/Makefile man/Makefile man/man1/Makefile man/man3/Makefile html/Makefile src/Makefile src/base/Makefile src/actions/Makefile src/bundles/Makefile src/caches/Makefile src/details/Makefile src/draggers/Makefile src/elements/Makefile src/engines/Makefile src/errors/Makefile src/events/Makefile src/fields/Makefile src/manips/Makefile src/misc/Makefile src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile src/upgraders/Makefile src/threads/Makefile src/extensions/Makefile src/vrml97/Makefile docs/coin.doxygen"
 
 
 cat >confcache <<\_ACEOF
@@ -20852,7 +20874,7 @@ do
   "src/upgraders/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/upgraders/Makefile" ;;
   "src/threads/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/threads/Makefile" ;;
   "src/extensions/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/extensions/Makefile" ;;
-  "$vrml97makefile" ) CONFIG_FILES="$CONFIG_FILES $vrml97makefile" ;;
+  "src/vrml97/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/vrml97/Makefile" ;;
   "docs/coin.doxygen" ) CONFIG_FILES="$CONFIG_FILES docs/coin.doxygen" ;;
   "default-1" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
   "include/config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS include/config.h" ;;

@@ -305,7 +305,7 @@ EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-libvrml97incdir = $(includedir)/Inventor/vrml97
+libvrml97incdir = $(includedir)/Inventor/VRMLnodes
 libvrml97inc_HEADERS = $(PublicHeaders)
 
 vrml97_lst_SOURCES = $(BuildSources)
@@ -579,7 +579,7 @@ DIST_SOURCES = $(vrml97_lst_SOURCES) $(EXTRA_vrml97_lst_SOURCES) \
 	$(EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS = $(libvrml97inc_HEADERS)
 
-DIST_COMMON = $(libvrml97inc_HEADERS) Makefile.am Makefile.in
+DIST_COMMON = $(libvrml97inc_HEADERS) Makefile.am Makefile.in TODO
 SOURCES = $(vrml97_lst_SOURCES) $(EXTRA_vrml97_lst_SOURCES) $(libvrml97_la_SOURCES) $(EXTRA_libvrml97_la_SOURCES) $(libvrml97@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES)
 
 all: all-am

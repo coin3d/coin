@@ -301,10 +301,15 @@ if $sim_ac_enable_threads; then
   fi
 
   if ! $sim_ac_w32thread; then
-    SIM_AC_CHECK_PTHREAD(
-      [AC_DEFINE([USE_PTHREAD], , [define to use the POSIX threads API])
-       AC_DEFINE([COIN_THREADID_TYPE], pthread_t, [System dependant thread ID type])
-       sim_ac_threads_api="POSIX"])
+    SIM_AC_CHECK_PTHREAD([
+      AC_DEFINE([USE_PTHREAD], , [define to use the POSIX threads API])
+      AC_DEFINE([COIN_THREADID_TYPE], pthread_t,
+        [System dependant thread ID type])
+      sim_ac_threads_api="POSIX"
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_pthread_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_pthread_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_pthread_libs $COIN_EXTRA_LIBS"
+    ])
   fi
 fi
 
