@@ -222,12 +222,26 @@ SoFieldContainer::get(SbString & fielddata)
   e.g. hide private fields.
 */
 int
-SoFieldContainer::getFields(SoFieldList & l) const
+SoFieldContainer::getFields(SoFieldList & fields) const
 {
-  const SoFieldData * fd = this->getFieldData();
-  if (!fd) return 0;
-  int numfields = fd->getNumFields();
-  for (int i=0; i < numfields; i++) l.append(fd->getField(this, i));
+  const SoFieldData * fielddata = this->getFieldData();
+  if ( fielddata == NULL ) return 0;
+  int numfields = fielddata->getNumFields();
+  for ( int i = 0; i < numfields; i++ ) {
+    SoField * field = fielddata->getField(this, i);
+    assert(field != NULL);
+    switch ( field->getFieldType() ) {
+    // these field types are ignored
+    case SoField::EVENTIN_FIELD:
+    case SoField::EVENTOUT_FIELD:
+    case SoField::INTERNAL_FIELD:
+      numfields--;
+      break;
+    default:
+      fields.append(field);
+      break;
+    }
+  }
   return numfields;
 }
 
@@ -238,17 +252,14 @@ SoFieldContainer::getFields(SoFieldList & l) const
   \sa getFields()
  */
 int
-SoFieldContainer::getAllFields(SoFieldList & l) const
+SoFieldContainer::getAllFields(SoFieldList & fields) const
 {
-  // No VRML support yet. Add eventIn and eventOut fields when it is
-  // implemented.
-
-  // FIXME: after implementation, remember to check up on the code
-  // which uses SoFieldContainer::getFields() and see if it should
-  // really call this method instead. 20000512 mortene.
-
-  COIN_STUB();
-  return this->getFields(l);
+  const SoFieldData * fielddata = this->getFieldData();
+  if ( fielddata == NULL ) return 0;
+  int numfields = fielddata->getNumFields();
+  for ( int i=0; i < numfields; i++ )
+    fields.append(fielddata->getField(this, i));
+  return numfields;
 }
 
 /*!
