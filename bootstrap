@@ -103,7 +103,10 @@ aclocal -I $MACRODIR
 
 if $libtoolize; then
   libtoolize --copy --force
-  ( cd cfg; patch -p0 < ltmain.sh.diff )
+  ( cd cfg;
+    test -f ltmain.sh.diff && patch -p0 < ltmain.sh.diff
+    test -f ltconfig.diff  && patch -p0 < ltconfig.diff
+  )
 fi
 
 echo "Running autoconf (generating the configure script)..."
