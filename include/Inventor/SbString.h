@@ -36,6 +36,7 @@ public:
   SbString(const char * str);
   SbString(const char * str, int start, int end);
   SbString(const SbString & str);
+  SbString(const int digits);
   ~SbString();
 
   uint32_t hash(void);

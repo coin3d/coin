@@ -136,6 +136,19 @@ SbString::SbString(const char * str, int start, int end)
 }
 
 /*!
+  Construct an SbString instance containing the \a digits of the
+  integer argument.
+ */
+SbString::SbString(const int digits)
+{
+  this->sstring = this->staticstorage;
+  this->storagesize = SB_STRING_STATIC_STORAGE_SIZE;
+  this->sstring[0] = '\0';
+
+  this->addIntString(digits);
+}
+
+/*!
   Constructs a string from the given integer (e.g. intToString(42) creates
   the string "42"), and adds this to the contents of the string.
 */
