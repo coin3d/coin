@@ -233,7 +233,7 @@ nullfileptr(void)
 
       if (tmpname) {
         nullfd = open(tmpname, O_CREAT|O_WRONLY);
-        (void)unlink(tmpname);
+        (void)remove(tmpname);
       }
     }
 
