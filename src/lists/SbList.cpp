@@ -203,6 +203,9 @@
 
   Returns pointer to a non-modifiable array of the lists elements.
   \a start specifies an index into the array.
+
+  The caller is \e not responsible for freeing up the array, as it is
+  just a pointer into the internal array used by the list.
 */
 
 /*!
