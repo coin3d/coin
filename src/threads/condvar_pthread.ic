@@ -24,6 +24,7 @@
 /* This file should only be included from condvar.c */
 
 #include <Inventor/C/threads/mutexp.h>
+#include <Inventor/C/time.h>
 
 static int
 internal_condvar_struct_init(cc_condvar * condvar_struct)
@@ -73,24 +74,16 @@ static int
 internal_condvar_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
 {
   struct timespec timeout;
+  cc_time when;
   int status, ret;
-#ifdef HAVE_GETTIMEOFDAY
-  struct timeval now;
-  struct timezone zone;
-#else /* HAVE_GETTIMEOFDAY */
-  unsigned long int now;
-#endif /* ! HAVE_GETTIMEOFDAY */
 
-#ifdef HAVE_GETTIMEOFDAY
-  gettimeofday(&now, &zone);
-  timeout.tv_sec = now.tv_sec + (int) floor(period);
-  timeout.tv_nsec = now.tv_usec + (int) ((period - floor(period)) * 1000000.0f);
-#else /* HAVE_GETTIMEODDAY */
-  /*FIXME: write a configure macro to test for existence of timeGetTime */
-  now = timeGetTime(); /* in milliseconds */
-  timeout.tv_sec = (int) floor(now/1000.0) + (int) floor(period);
-  timeout.tv_nsec = (now-timeout.tv_sec*1000.0)*1000.0;
-#endif /* ! HAVE_GETTIMEOFDAY */
+  when = cc_time_gettimeofday() + period;
+  timeout.tv_sec = (int) floor(when);
+#ifdef HAVE_PTHREAD_TIMESPEC_NSEC
+  timeout.tv_nsec = (int) ((when - floor(when)) * 1000000.0f);
+#else
+  timeout.tv_usec = (int) ((when - floor(when)) * 1000.0f);
+#endif
   status = pthread_cond_timedwait(&condvar->pthread.condid,
                                   &mutex->pthread.mutexid, &timeout);
   ret = CC_OK;
