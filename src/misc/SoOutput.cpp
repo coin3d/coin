@@ -87,6 +87,30 @@ static const char EOLSTR[] = "\n";
 // 19990627 mortene.
 static const int HOSTWORDSIZE = 4;
 
+#ifndef DOXYGEN_SKIP_THIS
+class SoOutputP {
+public:
+  int precision;
+  int indentlevel;
+  SbBool usersetfp, binarystream, writecompact;
+  SbBool disabledwriting, memorybuffer;
+  FILE * filep;
+  SbString * headerstring;
+  void * buffer;
+  size_t buffersize;
+  SoOutputReallocCB * reallocfunc;
+  int32_t bufferoffset;
+  SoOutput::Stage stage;
+  SbDict * sobase2id;
+  int nextreferenceid;
+  uint32_t annotationbits;
+  SbDict * defnames;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+#undef THIS
+#define THIS this->pimpl
 
 /*!
   The default constructor makes an SoOutput instance which will write
@@ -97,8 +121,8 @@ static const int HOSTWORDSIZE = 4;
 SoOutput::SoOutput(void)
 {
   this->constructorCommon();
-  this->sobase2id = NULL;
-  this->defnames = NULL;
+  THIS->sobase2id = NULL;
+  THIS->defnames = NULL;
 }
 
 /*!
@@ -109,8 +133,8 @@ SoOutput::SoOutput(SoOutput * dictOut)
 {
   assert(dictOut != NULL);
   this->constructorCommon();
-  this->sobase2id = new SbDict(*(dictOut->sobase2id));
-  this->defnames = new SbDict(*(dictOut->defnames));
+  THIS->sobase2id = new SbDict(*(dictOut->pimpl->sobase2id));
+  THIS->defnames = new SbDict(*(dictOut->pimpl->defnames));
 }
 
 /*!
@@ -120,19 +144,21 @@ SoOutput::SoOutput(SoOutput * dictOut)
 void
 SoOutput::constructorCommon(void)
 {
-  this->usersetfp = FALSE;
-  this->binarystream = FALSE;
-  this->disabledwriting = FALSE;
+  THIS = new SoOutputP;
+
+  THIS->usersetfp = FALSE;
+  THIS->binarystream = FALSE;
+  THIS->disabledwriting = FALSE;
   this->wroteHeader = FALSE;
-  this->memorybuffer = FALSE;
-  this->writecompact = FALSE;
-  this->filep = stdout;
-  this->buffer = NULL;
-  this->headerstring = NULL;
-  this->precision = 3;
-  this->indentlevel = 0;
-  this->nextreferenceid = 0;
-  this->annotationbits = 0x00;
+  THIS->memorybuffer = FALSE;
+  THIS->writecompact = FALSE;
+  THIS->filep = stdout;
+  THIS->buffer = NULL;
+  THIS->headerstring = NULL;
+  THIS->precision = 3;
+  THIS->indentlevel = 0;
+  THIS->nextreferenceid = 0;
+  THIS->annotationbits = 0x00;
 }
 
 /*!
@@ -141,7 +167,8 @@ SoOutput::constructorCommon(void)
 SoOutput::~SoOutput(void)
 {
   this->reset();
-  delete this->headerstring;
+  delete THIS->headerstring;
+  delete THIS;
 }
 
 /*!
@@ -158,7 +185,7 @@ void
 SoOutput::setFilePointer(FILE * newFP)
 {
   this->reset();
-  this->filep = newFP;
+  THIS->filep = newFP;
 }
 
 /*!
@@ -176,7 +203,7 @@ FILE *
 SoOutput::getFilePointer(void) const
 {
   if (this->isToBuffer()) return NULL;
-  else return this->filep;
+  else return THIS->filep;
 }
 
 /*!
@@ -195,7 +222,7 @@ SoOutput::openFile(const char * const fileName)
   FILE * newfile = fopen(fileName, "wb");
   if (newfile) {
     this->setFilePointer(newfile);
-    this->usersetfp = TRUE;
+    THIS->usersetfp = TRUE;
   }
   else {
     SoDebugError::postWarning("SoOutput::openFile",
@@ -203,7 +230,7 @@ SoOutput::openFile(const char * const fileName)
                               fileName);
   }
 
-  return this->usersetfp;
+  return THIS->usersetfp;
 }
 
 /*!
@@ -215,9 +242,9 @@ SoOutput::openFile(const char * const fileName)
 void
 SoOutput::closeFile(void)
 {
-  if (this->usersetfp) fclose(this->filep);
-  this->filep = NULL;
-  this->usersetfp = FALSE;
+  if (THIS->usersetfp) fclose(THIS->filep);
+  THIS->filep = NULL;
+  THIS->usersetfp = FALSE;
 }
 
 /*!
@@ -242,11 +269,11 @@ SoOutput::setBuffer(void * bufPointer, size_t initSize,
 {
   this->reset();
 
-  this->memorybuffer = TRUE;
-  this->buffer = bufPointer;
-  this->buffersize = initSize;
-  this->reallocfunc = reallocFunc;
-  this->bufferoffset = offset;
+  THIS->memorybuffer = TRUE;
+  THIS->buffer = bufPointer;
+  THIS->buffersize = initSize;
+  THIS->reallocfunc = reallocFunc;
+  THIS->bufferoffset = offset;
 }
 
 /*!
@@ -261,8 +288,8 @@ SbBool
 SoOutput::getBuffer(void *& bufPointer, size_t & nBytes) const
 {
   if (this->isToBuffer()) {
-    bufPointer = this->buffer;
-    nBytes = this->bufferoffset;
+    bufPointer = THIS->buffer;
+    nBytes = THIS->bufferoffset;
     return TRUE;
   }
 
@@ -277,7 +304,7 @@ SoOutput::getBuffer(void *& bufPointer, size_t & nBytes) const
 size_t
 SoOutput::getBufferSize(void) const
 {
-  return this->buffersize;
+  return THIS->buffersize;
 }
 
 /*!
@@ -288,7 +315,7 @@ void
 SoOutput::resetBuffer(void)
 {
   assert(this->isToBuffer());
-  this->bufferoffset = 0;
+  THIS->bufferoffset = 0;
 }
 
 /*!
@@ -301,7 +328,7 @@ SoOutput::resetBuffer(void)
 void
 SoOutput::setBinary(const SbBool flag)
 {
-  this->binarystream = flag;
+  THIS->binarystream = flag;
 }
 
 /*!
@@ -313,7 +340,7 @@ SoOutput::setBinary(const SbBool flag)
 SbBool
 SoOutput::isBinary(void) const
 {
-  return this->binarystream;
+  return THIS->binarystream;
 }
 
 /*!
@@ -324,8 +351,8 @@ SoOutput::isBinary(void) const
 void
 SoOutput::setHeaderString(const SbString & str)
 {
-  if (this->headerstring) *(this->headerstring) = str;
-  else this->headerstring = new SbString(str);
+  if (THIS->headerstring) *(THIS->headerstring) = str;
+  else THIS->headerstring = new SbString(str);
 }
 
 /*!
@@ -336,8 +363,8 @@ SoOutput::setHeaderString(const SbString & str)
 void
 SoOutput::resetHeaderString(void)
 {
-  delete this->headerstring;
-  this->headerstring = NULL;
+  delete THIS->headerstring;
+  THIS->headerstring = NULL;
 }
 
 /*!
@@ -369,7 +396,7 @@ SoOutput::getDefaultBinaryHeader(void)
 void
 SoOutput::setFloatPrecision(const int precision)
 {
-  this->precision = precision;
+  THIS->precision = precision;
 }
 
 /*!
@@ -384,7 +411,7 @@ SoOutput::setFloatPrecision(const int precision)
 void
 SoOutput::setStage(Stage stage)
 {
-  this->stage = stage;
+  THIS->stage = stage;
 }
 
 /*!
@@ -400,7 +427,7 @@ SoOutput::setStage(Stage stage)
 SoOutput::Stage
 SoOutput::getStage(void) const
 {
-  return this->stage;
+  return THIS->stage;
 }
 
 
@@ -601,7 +628,7 @@ SoOutput::write(const double d)
 void
 SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
 {
-  if (this->disabledwriting) return;
+  if (THIS->disabledwriting) return;
 
   this->checkHeader();
 
@@ -610,25 +637,25 @@ SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
     int writelen = this->isBinary() ? length : length + 1;
 
     if (this->makeRoomInBuf(writelen)) {
-      char * writeptr = &(((char *)(this->buffer))[this->bufferoffset]);
+      char * writeptr = &(((char *)(THIS->buffer))[THIS->bufferoffset]);
       (void)memcpy(writeptr, constc, length);
       writeptr += length;
-      this->bufferoffset += length;
+      THIS->bufferoffset += length;
       if (!this->isBinary()) *writeptr = '\0'; // Terminate.
     }
     else {
       SoDebugError::postWarning("SoOutput::writeBinaryArray",
                                 "Couldn't write any more bytes to the memory "
                                 "buffer.");
-      this->disabledwriting = TRUE;
+      THIS->disabledwriting = TRUE;
     }
   }
   else {
-    size_t wrote = fwrite(constc, 1, length, this->filep);
+    size_t wrote = fwrite(constc, 1, length, THIS->filep);
     if (wrote != (size_t)length) {
       SoDebugError::postWarning("SoOutput::writeBinaryArray",
                                 "Couldn't write to file.");
-      this->disabledwriting = TRUE;
+      THIS->disabledwriting = TRUE;
     }
   }
 }
@@ -686,7 +713,7 @@ SoOutput::writeBinaryArray(const double * const d, const int length)
 void
 SoOutput::incrementIndent(const int levels)
 {
-  this->indentlevel += levels;
+  THIS->indentlevel += levels;
 }
 
 /*!
@@ -697,12 +724,12 @@ SoOutput::incrementIndent(const int levels)
 void
 SoOutput::decrementIndent(const int levels)
 {
-  this->indentlevel -= levels;
+  THIS->indentlevel -= levels;
 #if COIN_DEBUG
-  if (this->indentlevel < 0) {
+  if (THIS->indentlevel < 0) {
     SoDebugError::postInfo("SoOutput::decrementIndent",
                            "indentation level < 0!");
-    this->indentlevel = 0;
+    THIS->indentlevel = 0;
   }
 #endif // COIN_DEBUG
 }
@@ -725,7 +752,7 @@ SoOutput::indent(void)
   }
 #endif // COIN_DEBUG
 
-  int i = indentlevel;
+  int i = THIS->indentlevel;
   while (i > 1) {
     this->write('\t');
     i -= 2;
@@ -741,16 +768,16 @@ void
 SoOutput::reset(void)
 {
   this->closeFile();
-  delete this->sobase2id; this->sobase2id = NULL;
-  delete this->defnames; this->defnames = NULL;
+  delete THIS->sobase2id; THIS->sobase2id = NULL;
+  delete THIS->defnames; THIS->defnames = NULL;
 
-  this->usersetfp = FALSE;
-  this->disabledwriting = FALSE;
+  THIS->usersetfp = FALSE;
+  THIS->disabledwriting = FALSE;
   this->wroteHeader = FALSE;
-  this->memorybuffer = FALSE;
-  this->filep = stdout;
-  this->buffer = NULL;
-  this->indentlevel = 0;
+  THIS->memorybuffer = FALSE;
+  THIS->filep = stdout;
+  THIS->buffer = NULL;
+  THIS->indentlevel = 0;
 }
 
 /*!
@@ -762,13 +789,13 @@ SoOutput::setCompact(SbBool flag)
   // FIXME: go through output code and make the output more
   // compact. 19990623 morten.
 #if COIN_DEBUG
-  if (!this->writecompact && flag) {
+  if (!THIS->writecompact && flag) {
     SoDebugError::postWarning("SoOutput::setCompact",
                               "compact export is not implemented in Coin yet");
   }
 #endif // COIN_DEBUG
 
-  this->writecompact = flag;
+  THIS->writecompact = flag;
 }
 
 /*!
@@ -781,7 +808,7 @@ SoOutput::setCompact(SbBool flag)
 SbBool
 SoOutput::isCompact(void) const
 {
-  return this->writecompact;
+  return THIS->writecompact;
 }
 
 /*!
@@ -794,14 +821,14 @@ SoOutput::setAnnotation(uint32_t bits)
   // FIXME: go through output code and insert annotations where applicable.
   // 19990623 morten.
 #if COIN_DEBUG
-  if (this->annotationbits != bits) {
+  if (THIS->annotationbits != bits) {
     SoDebugError::postWarning("SoOutput::setAnnotation",
                               "annotated export is not implemented in Coin "
                               "yet");
   }
 #endif // COIN_DEBUG
 
-  this->annotationbits = bits;
+  THIS->annotationbits = bits;
 }
 
 /*!
@@ -810,7 +837,7 @@ SoOutput::setAnnotation(uint32_t bits)
 uint32_t
 SoOutput::getAnnotation(void)
 {
-  return this->annotationbits;
+  return THIS->annotationbits;
 }
 
 /*!
@@ -826,11 +853,11 @@ SoOutput::getAnnotation(void)
 SbBool
 SoOutput::makeRoomInBuf(size_t bytes)
 {
-  if ((this->bufferoffset + bytes) > this->buffersize) {
-    if (this->reallocfunc) {
-      this->buffersize =  this->bufferoffset + bytes;
-      this->buffer = reallocfunc(this->buffer, this->buffersize);
-      if (this->buffer) return TRUE;
+  if ((THIS->bufferoffset + bytes) > THIS->buffersize) {
+    if (THIS->reallocfunc) {
+      THIS->buffersize =  THIS->bufferoffset + bytes;
+      THIS->buffer = THIS->reallocfunc(THIS->buffer, THIS->buffersize);
+      if (THIS->buffer) return TRUE;
     }
     return FALSE;
   }
@@ -876,7 +903,7 @@ SoOutput::checkHeader(void)
     this->wroteHeader = TRUE;
 
     SbString h;
-    if (this->headerstring) h = *(this->headerstring);
+    if (THIS->headerstring) h = *(THIS->headerstring);
     else if (this->isBinary()) h = SoOutput::getDefaultBinaryHeader();
     else h = SoOutput::getDefaultASCIIHeader();
 
@@ -898,7 +925,7 @@ SoOutput::checkHeader(void)
 SbBool
 SoOutput::isToBuffer(void) const
 {
-  return this->memorybuffer;
+  return THIS->memorybuffer;
 }
 
 /*!
@@ -907,8 +934,8 @@ SoOutput::isToBuffer(void) const
 size_t
 SoOutput::bytesInBuf(void) const
 {
-  if (this->isToBuffer()) return this->bufferoffset;
-  else return ftell(this->filep);
+  if (this->isToBuffer()) return THIS->bufferoffset;
+  else return ftell(THIS->filep);
 }
 
 /*!
@@ -917,11 +944,11 @@ SoOutput::bytesInBuf(void) const
 int
 SoOutput::addReference(const SoBase * base)
 {
-  if (!this->sobase2id) this->sobase2id = new SbDict;
-  int id = this->nextreferenceid++;
+  if (!THIS->sobase2id) THIS->sobase2id = new SbDict;
+  int id = THIS->nextreferenceid++;
   // Ugly! Should be solved by making a decent templetized
   // SbDict-alike class.
-  this->sobase2id->enter((unsigned long)base, (void *)id);
+  THIS->sobase2id->enter((unsigned long)base, (void *)id);
   return id;
 }
 
@@ -934,7 +961,7 @@ SoOutput::findReference(const SoBase * base) const
   // Ugly! Should be solved by making a decent templetized
   // SbDict-alike class.
   void * id;
-  SbBool ok = this->sobase2id && this->sobase2id->find((unsigned long)base, id);
+  SbBool ok = THIS->sobase2id && THIS->sobase2id->find((unsigned long)base, id);
   return ok ? (int)id : -1;
 }
 
@@ -944,8 +971,8 @@ SoOutput::findReference(const SoBase * base) const
 void
 SoOutput::setReference(const SoBase * base, int refid)
 {
-  if (!this->sobase2id) this->sobase2id = new SbDict;
-  this->sobase2id->enter((unsigned long)base, (void *)refid);
+  if (!THIS->sobase2id) THIS->sobase2id = new SbDict;
+  THIS->sobase2id->enter((unsigned long)base, (void *)refid);
 }
 
 /*!
@@ -956,8 +983,8 @@ void
 SoOutput::addDEFNode(SbName name)
 {
   void * value = NULL;
-  if (!this->defnames) this->defnames = new SbDict;
-  this->defnames->enter((unsigned long)name.getString(), value);
+  if (!THIS->defnames) THIS->defnames = new SbDict;
+  THIS->defnames->enter((unsigned long)name.getString(), value);
 }
 
 /*!
@@ -968,8 +995,8 @@ SbBool
 SoOutput::lookupDEFNode(SbName name)
 {
   void * value;
-  if (!this->defnames) this->defnames = new SbDict;
-  return this->defnames->find((unsigned long)name.getString(), value);
+  if (!THIS->defnames) THIS->defnames = new SbDict;
+  return THIS->defnames->find((unsigned long)name.getString(), value);
 }
 
 /*!
@@ -980,8 +1007,8 @@ SoOutput::lookupDEFNode(SbName name)
 void 
 SoOutput::removeDEFNode(SbName name)
 {
-  assert(this->defnames);
-  if (this->defnames) this->defnames->remove((unsigned long)name.getString());
+  assert(THIS->defnames);
+  if (THIS->defnames) THIS->defnames->remove((unsigned long)name.getString());
 }
 
 
@@ -1125,3 +1152,12 @@ SoOutput::padHeader(const SbString & inString)
 
   return h;
 }
+
+void 
+SoOutput::removeSoBase2IdRef(const SoBase * base)
+{
+  THIS->sobase2id->remove((unsigned long)base);
+}
+
+#undef THIS
+

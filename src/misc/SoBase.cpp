@@ -1200,7 +1200,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     // SoBase" in the SoOutput class definition. Should fix with
     // proper design for Coin-2. 20020426 mortene
     if (out->findReference(this) != REFID_FIRSTWRITE)
-      out->sobase2id->remove((unsigned long)this);
+      out->removeSoBase2IdRef(this);
   }
   else {
     set_current_writeref(this, refcount);

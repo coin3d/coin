@@ -32,6 +32,7 @@
 class SbDict;
 class SbName;
 class SoBase;
+class SoOutputP;
 
 typedef void * SoOutputReallocCB(void * ptr, size_t newSize);
 
@@ -118,28 +119,15 @@ protected:
   SbBool wroteHeader;
 
 private:
-  int precision;
-  int indentlevel;
-  SbBool usersetfp, binarystream, writecompact;
-  SbBool disabledwriting, memorybuffer;
-  FILE * filep;
-  SbString * headerstring;
-  void * buffer;
-  size_t buffersize;
-  SoOutputReallocCB * reallocfunc;
-  int32_t bufferoffset;
-  Stage stage;
-  SbDict * sobase2id;
-  int nextreferenceid;
-  uint32_t annotationbits;
-  SbDict * defnames;
+  SoOutputP * pimpl;
 
   void constructorCommon(void);
 
   void checkHeader(void);
   void writeBytesWithPadding(const char * const p, const size_t nr);
-
+  
   friend class SoBase; // Need to be able to remove items from dict.
+  void removeSoBase2IdRef(const SoBase * base);
 };
 
 #endif // !COIN_SOOUTPUT_H
