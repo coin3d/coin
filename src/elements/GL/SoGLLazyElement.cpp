@@ -43,6 +43,8 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoTextureCombineElement.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/nodes/SoNode.h>
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <coindefs.h> // COIN_OBSOLETED
@@ -515,12 +517,17 @@ SoGLLazyElement::sendDiffuseByIndex(const int index) const
   if (index < 0 || index >= this->coinstate.numdiffuse) {
     static int first = 1;
     if (first) {
+      SoAction * action = this->state->getAction();
+      SoFullPath * path = (SoFullPath*) this->state->getAction()->getCurPath();
+      SoNode * tail = path->getTail();
+      SbName name = tail->getName();
       SoDebugError::postWarning("SoGLLazyElement::sendDiffuseByIndex",
-                                "index %d out of bounds [0, %d] "
+                                "index %d out of bounds [0, %d] in node %p: %s "
                                 "(this warning will only be printed once, but there "
                                 "might be more errors)",
                                 index,
-                                this->coinstate.numdiffuse-1);
+                                this->coinstate.numdiffuse-1,
+                                tail, name != SbName("") ? name.getString() : "<noname>");
       first = 0;
     }
 
