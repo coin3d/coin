@@ -95,7 +95,10 @@
 /*! \defgroup collision Collision detections between scene geometry */
 /*! \defgroup details Detail classes */
 /*! \defgroup draggers Draggers */
-/*! \defgroup elements Elements (mostly for internal use) */
+/*! \defgroup elements Elements (mostly for internal use)
+  See the class documentation of SoElement for a detailed description
+  of the purpose and design of the element classes.
+*/
 /*! \defgroup engines Engine classes */
 /*! \defgroup errors Error handling */
 /*! \defgroup events Event classes */

@@ -558,7 +558,7 @@ SoGLBigImageP::copySubImage(SoGLBigImageTls * tls,
 
     // FIXME: investigate if it's possible to set the pixel transfer
     // mode so that we don't have to copy the data into a temporary
-    // image. This is probably fast enough though.
+    // image. This is probably fast enough though.  pederb?.
 
     int origin[2];
     int fullsize[2];

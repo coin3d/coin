@@ -31,20 +31,23 @@
   cache. If any of the elements have changed since the cache was
   created, the cache is invalid.
 */
+// FIXME: this really needs a usage example, preferably with source
+// code for when using an extension cache. 20040722 mortene.
+
+// *************************************************************************
 
 #include <Inventor/caches/SoCache.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoElement.h>
-#include <Inventor/lists/SbList.h>
+
 #include <string.h>
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbName.h>
-#endif // COIN_DEBUG
+#include <Inventor/elements/SoElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoState.h>
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoCacheP {
 public:
@@ -55,10 +58,10 @@ public:
   int statedepth;
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
 #undef THIS
 #define THIS this->pimpl
+
+// *************************************************************************
 
 /*!
   Constructor with \a state being the current state.
@@ -93,6 +96,8 @@ SoCache::~SoCache()
   delete THIS;
 }
 
+// *************************************************************************
+
 /*!
   Increases the reference count by one.
 */
@@ -116,6 +121,8 @@ SoCache::unref(SoState *state)
     delete this;
   }
 }
+
+// *************************************************************************
 
 /*!
   Adds \a elem to the list of elements this cache depends on.
@@ -213,7 +220,4 @@ SoCache::destroy(SoState *)
 {
 }
 
-
-
-
-
+// *************************************************************************

@@ -23,20 +23,23 @@
 
 /*!
   \class SoCacheElement Inventor/elements/SoCacheElement.h
-  \brief The SoCacheElement class stores and manages the opene caches.
+  \brief The SoCacheElement class stores and manages the open caches.
   \ingroup elements
 */
+
+// *************************************************************************
+
+#include <Inventor/elements/SoCacheElement.h>
+
+#include <assert.h>
+#include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <assert.h>
-#include <stdlib.h>
-
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/caches/SoCache.h>
-#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
 
@@ -44,11 +47,14 @@
 #include <Inventor/threads/SbTypedStorage.h>
 #endif // COIN_THREADSAFE
 
+// *************************************************************************
 
 SbBool SoCacheElement::invalidated = FALSE;
 
+// *************************************************************************
 
 #ifdef COIN_THREADSAFE
+
 static SbTypedStorage <SbBool*> * invalidated_storage = NULL;
 
 static void
@@ -59,12 +65,13 @@ cacheelement_cleanup(void)
 
 #endif // COIN_THREADSAFE
 
+// *************************************************************************
+
 SO_ELEMENT_SOURCE(SoCacheElement);
 
-/*!
-  This static method initializes static data for the SoCacheElement class.
-*/
+// *************************************************************************
 
+// Doc in superclass.
 void
 SoCacheElement::initClass(void)
 {
@@ -85,16 +92,15 @@ SoCacheElement::~SoCacheElement(void)
 {
 }
 
-/*!
-  Initializes element in state stack.
-*/
-
+// Doc in superclass.
 void
 SoCacheElement::init(SoState * state)
 {
   inherited::init(state);
   this->cache = NULL;
 }
+
+// *************************************************************************
 
 // Documented in superclass. Overridden to initialize element.
 void
@@ -195,14 +201,10 @@ SoCacheElement::invalidate(SoState * const state)
   SoCacheElement objects should not be compared because you obviously don't
   cache them in the cache.
 */
-
 SbBool
-SoCacheElement::matches(const SoElement * /* element */) const
+SoCacheElement::matches(const SoElement * element) const
 {
-#if COIN_DEBUG && 1 // debug
-  SoDebugError::postInfo("SoCacheElement::matches",
-                         "this method should not be called for this element");
-#endif // debug
+  assert(FALSE && "this method should not be called for this element");
   return FALSE;
 }
 
@@ -212,14 +214,10 @@ SoCacheElement::matches(const SoElement * /* element */) const
 
   \sa SbBool SoCacheElement::matches(const SoElement * element) const
 */
-
 SoElement *
 SoCacheElement::copyMatchInfo(void) const
 {
-#if COIN_DEBUG && 1 // debug
-  SoDebugError::postInfo("SoCacheElement::copyMatchInfo",
-                         "this method should not be called for this element");
-#endif // debug
+  assert(FALSE && "this method should not be called for this element");
   return NULL;
 }
 

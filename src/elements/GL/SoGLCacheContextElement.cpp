@@ -203,6 +203,13 @@ SoGLCacheContextElement::set(SoState * state, int context,
 
 /*!
   Returns context id.
+
+  Note that the signature on this function is slightly wrong: the
+  function should really return an \c uint32_t, like
+  SoGLRenderAction::getCacheContext() does. It is kept like this for
+  compatibility reasons.
+
+  The value returned will always be a positive integer.
 */
 int
 SoGLCacheContextElement::get(SoState * state)

@@ -272,10 +272,10 @@ SoRayPickAction::setPoint(const SbVec2s & viewportpoint)
 {
   PRIVATE(this)->vppoint = viewportpoint;
   PRIVATE(this)->clearFlag(SoRayPickActionP::NORM_POINT |
-                  SoRayPickActionP::WS_RAY_SET |
-                  SoRayPickActionP::WS_RAY_COMPUTED);
+                           SoRayPickActionP::WS_RAY_SET |
+                           SoRayPickActionP::WS_RAY_COMPUTED);
   PRIVATE(this)->setFlag(SoRayPickActionP::CLIP_NEAR |
-                SoRayPickActionP::CLIP_FAR);
+                         SoRayPickActionP::CLIP_FAR);
 }
 
 /*!
@@ -289,10 +289,10 @@ SoRayPickAction::setNormalizedPoint(const SbVec2f & normpoint)
 {
   PRIVATE(this)->normvppoint = normpoint;
   PRIVATE(this)->clearFlag(SoRayPickActionP::WS_RAY_SET |
-                  SoRayPickActionP::WS_RAY_COMPUTED);
+                           SoRayPickActionP::WS_RAY_COMPUTED);
   PRIVATE(this)->setFlag(SoRayPickActionP::NORM_POINT |
-                SoRayPickActionP::CLIP_NEAR |
-                SoRayPickActionP::CLIP_FAR);
+                         SoRayPickActionP::CLIP_NEAR |
+                         SoRayPickActionP::CLIP_FAR);
 }
 
 /*!
@@ -313,8 +313,8 @@ SoRayPickAction::setRadius(const float radiusinpixels)
   Sets the intersection ray in world-space coordinates.
 
   Use this method if you want to send any ray through the scene to
-  detect intersections, independently of mouseposition and
-  mouseclicks.
+  detect intersections, independently of mouse cursor position upon
+  clicks and scene graph camera settings.
 */
 void
 SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
@@ -512,9 +512,9 @@ SoRayPickAction::computeWorldSpaceRay(void)
       float(SbMin(vp.getViewportSizePixels()[0], vp.getViewportSizePixels()[1]));
 
     PRIVATE(this)->wsvolume = vv.narrow(PRIVATE(this)->normvppoint[0] - normradius,
-                               PRIVATE(this)->normvppoint[1] - normradius,
-                               PRIVATE(this)->normvppoint[0] + normradius,
-                               PRIVATE(this)->normvppoint[1] + normradius);
+                                        PRIVATE(this)->normvppoint[1] - normradius,
+                                        PRIVATE(this)->normvppoint[0] + normradius,
+                                        PRIVATE(this)->normvppoint[1] + normradius);
     SoPickRayElement::set(state, PRIVATE(this)->wsvolume);
     PRIVATE(this)->setFlag(SoRayPickActionP::OSVOLUME_DIRTY);
   }

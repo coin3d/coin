@@ -200,7 +200,16 @@ SoNotList::print(FILE * const file) const
     ptr->print(file);
     ptr = ptr->getPrevious();
   }
-  (void)fprintf(file, "\tfirstAtNode = %p, lastField = %p\n",
-                this->getFirstRecAtNode(), this->getLastField());
+
+  const SoBase * n = this->getFirstRecAtNode()->getBase();
+  const SoField * f = this->getLastField();
+  SbName fname("");
+  if (n && n->isOfType(SoNode::getClassTypeId()) && f) {
+    (void)((SoNode *)n)->getFieldName(f, fname);
+  }
+
+  (void)fprintf(file, "\tfirstAtNode = %p, lastField = %p (\"%s\")\n",
+                this->getFirstRecAtNode(),
+                this->getLastField(), fname.getString());
 #endif // COIN_DEBUG
 }

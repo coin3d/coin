@@ -140,8 +140,8 @@ SoError::getTypeId(void) const
 SbBool
 SoError::isOfType(const SoType type) const
 {
-  const SoType myType = getTypeId();
-  return (myType == type) ? TRUE : myType.isDerivedFrom( type );
+  const SoType myType = this->getTypeId();
+  return (myType == type) ? TRUE : myType.isDerivedFrom(type);
 }
 
 /*!

@@ -169,6 +169,10 @@ SoEvent::setPosition(const SbVec2s & p)
   this->positionofevent = p;
 }
 
+// FIXME: "window" below is ambiguous, replace with something less
+// generic, like e.g. "the rendering canvas" or some such. Should also
+// scan API docs for other references to "window" (and "widget"?) and
+// do likewise. 20040728 mortene.
 /*!
   Returns the mouse pointer position when the event occurred. The
   coordinates are given relative to the window coordinates.

@@ -32,6 +32,12 @@
 // FIXME: should be documented and be part of the Doxygen API doc,
 // since it's a public class (and possibly useful
 // externally). 20030225 mortene.
+//
+// UPDATE: there also a function in SoGLCacheContextElement which
+// looks like it might do the same thing: scheduleDeleteCallback()..?
+// Investigate.
+//
+// 20040723 mortene.
 
 // *************************************************************************
 

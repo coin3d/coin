@@ -193,7 +193,7 @@
   strings without matching widths are rendered with default width.
 */
 
-#ifndef DOXYGEN_SKIP_THIS
+// *************************************************************************
 
 class SoAsciiTextP {
 public:
@@ -227,13 +227,13 @@ private:
 #endif // COIN_THREADSAFE
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
 #define PRIVATE(p) ((p)->pimpl)
 
 // *************************************************************************
 
 SO_NODE_SOURCE(SoAsciiText);
+
+// *************************************************************************
 
 /*!
   Constructor.
@@ -759,10 +759,8 @@ SoAsciiText::getWidth(const int idx, const float fontsize)
   return PRIVATE(this)->glyphwidths[idx];
 }
 
+// *************************************************************************
 // SoAsciiTextP methods implemented below
-
-
-#ifndef DOXYGEN_SKIP_THIS
 
 // recalculate glyphs
 void
@@ -839,4 +837,4 @@ SoAsciiTextP::setUpGlyphs(SoState * state, SoAsciiText * textnode)
   if (oldcache) oldcache->unref();
 }
 
-#endif // DOXYGEN_SKIP_THIS
+// *************************************************************************

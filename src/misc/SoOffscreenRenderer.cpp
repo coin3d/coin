@@ -35,13 +35,19 @@
   Here's a dead simple usage example:
 
   \code
-  SoOffscreenRenderer * myRenderer = new SoOffscreenRenderer(vpregion);
+  SoOffscreenRenderer myRenderer(vpregion);
   SoNode * root = myViewer->getSceneManager()->getSceneGraph();
-  SbBool ok = myRenderer->render(root);
-  unsigned char * imgbuffer = myRenderer->getBuffer();
+  SbBool ok = myRenderer.render(root);
+  unsigned char * imgbuffer = myRenderer.getBuffer();
   // [then use image buffer in a texture, or write it to file, or whatever]
   \endcode
 
+  Note that the SoOffscreenRenderer potentially allocates a fairly
+  large amount of resources, both OpenGL and general system resources,
+  for each instance. You will therefore be well adviced to try to
+  reuse SoOffscreenRenderer instances, instead of constructing and
+  destructing a new instance e.g. for each frame when generating
+  pictures for video.
 
   Offscreen rendering is internally done through either a GLX
   offscreen context (i.e. OpenGL on X11) or a WGL (i.e. OpenGL on

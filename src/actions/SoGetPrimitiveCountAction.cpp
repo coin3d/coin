@@ -102,6 +102,12 @@ SoGetPrimitiveCountAction::getLineCount(void) const
 
 /*!
   Returns number of points in graph.
+
+  Note that by "point", it is meant an actual point primitive (for
+  rendering), such as in the SoPointSet shape node, not a polygon
+  vertice. For counting the total number of polygon vertices in a
+  scene (sub) graph, use instead the SoCallbackAction with the
+  appropriate callback.
 */
 int
 SoGetPrimitiveCountAction::getPointCount(void) const

@@ -206,18 +206,16 @@
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 
-#include <Inventor/C/glue/dl.h>
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/namemap.h>
 #include <Inventor/C/errors/debugerror.h>
-
-#include <Inventor/C/base/hash.h>
+#include <Inventor/C/glue/dl.h>
+#include <Inventor/C/glue/gl_agl.h>
+#include <Inventor/C/glue/gl_glx.h>
+#include <Inventor/C/glue/gl_wgl.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/glue/gl_wgl.h>
-#include <Inventor/C/glue/gl_glx.h>
-#include <Inventor/C/glue/gl_agl.h>
 
 /* ********************************************************************** */
 

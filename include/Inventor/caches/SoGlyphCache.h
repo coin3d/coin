@@ -24,6 +24,12 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
+// *************************************************************************
+
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
@@ -35,23 +41,26 @@
 class SoGlyphCacheP;
 class SoState;
 
+// *************************************************************************
+
 class SoGlyphCache : public SoCache {
   typedef SoCache inherited;
+
 public:
   SoGlyphCache(SoState * state);
   ~SoGlyphCache();
-  
+
   void readFontspec(SoState * state);
   const cc_font_specification * getCachedFontspec(void) const;
-  
+
   void addGlyph(cc_glyph2d * glyph);
   void addGlyph(cc_glyph3d * glyph);
-  
-private:
 
+private:
   friend class SoGlyphCacheP;
   SoGlyphCacheP * pimpl;
 };
 
-#endif // COIN_SOGLYPHCACHE_H
+// *************************************************************************
 
+#endif // !COIN_SOGLYPHCACHE_H

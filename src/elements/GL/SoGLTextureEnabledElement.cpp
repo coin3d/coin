@@ -171,6 +171,9 @@ SoGLTextureEnabledElement::updategl(void)
 void 
 SoGLTextureEnabledElement::updategl(const Mode newvalue, const Mode oldvalue)
 {
+  // FIXME: the code below looks fairly non-optimal. Should at least
+  // avoid doing glDisable() then glEnable(). 20040802 mortene.
+
   switch (oldvalue) {
   case DISABLED:
     break;

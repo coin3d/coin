@@ -1082,9 +1082,8 @@ wglglue_context_can_render_to_texture(void * ctx)
 
 /* ********************************************************************** */
 
-/* This assumes the context has already been made current. If ctx does
-   not point at a pbuffer context, but rather a "normal" offscreen
-   context, it will return FALSE.
+/* If ctx does not point at a pbuffer context, but rather a "normal"
+   offscreen context, it will return FALSE.
 
    Upon other error conditions, FALSE will also be returned.
 */

@@ -1644,8 +1644,11 @@ SoGLRenderActionP::initSortedLayersBlendRendering(const SoState * state)
   if (glue->has_arb_fragment_program && !this->usenvidiaregistercombiners) {
   
     // Initialize fragment program
-    glue->glGenProgramsARB(1, &sortedlayersblendprogramid);
-    glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, sortedlayersblendprogramid);
+    //
+    // FIXME: the program id must be bound to the current rendering
+    // context, and deallocated when it is destructed. 20040718 mortene.
+    glue->glGenProgramsARB(1, &this->sortedlayersblendprogramid);
+    glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, this->sortedlayersblendprogramid);
     glue->glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
                              strlen(sortedlayersblendprogram), sortedlayersblendprogram);
    
@@ -1878,6 +1881,8 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
     // Depth texture setup
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
   
+    // FIXME: the texture id must be bound to the current rendering
+    // context, and deallocated when it is destructed. 20040718 mortene.
     glGenTextures(1, &this->depthtextureid);
     glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->depthtextureid);      
     glTexImage2D(GL_TEXTURE_RECTANGLE_EXT, 0, GL_DEPTH_COMPONENT24, canvassize[0], canvassize[1],
@@ -1900,6 +1905,8 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
     if(this->usenvidiaregistercombiners) { 
       // HILO texture setup
       GLushort HILOtexture[] = {0, 0};
+      // FIXME: the texture id must be bound to the current rendering
+      // context, and deallocated when it is destructed. 20040718 mortene.
       glGenTextures(1, &this->hilotextureid);
       glBindTexture(GL_TEXTURE_2D, this->hilotextureid);  
       glTexImage2D(GL_TEXTURE_2D, 0, GL_HILO_NV, 1, 1, 0, GL_HILO_NV, 
@@ -1915,6 +1922,9 @@ SoGLRenderActionP::setupSortedLayersBlendTextures(const SoState * state)
     // FIXME: What if channels are > 8 bits? This must be examined
     // closer... [Only highend ATI cards supports these resolutions if
     // I'm not mistaken.] (20031126 handegar)
+    //
+    // FIXME: the texture ids must be bound to the current rendering
+    // context, and deallocated when it is destructed. 20040718 mortene.
     glGenTextures(this->sortedlayersblendpasses, this->rgbatextureids);
     for (int i=0;i<sortedlayersblendpasses;++i) {
       glBindTexture(GL_TEXTURE_RECTANGLE_EXT, this->rgbatextureids[i]);  
