@@ -873,4 +873,40 @@ THE WISH LIST
   sending a "viewport" event through the scene, fields can be updated in
   advance and the render pass won't trigger a second one.
 
+* Extending SoInput to support callbacks for file operations
+
+I suggest we add a static function to SoInput to set (user-supplied)
+callbacks for opening, reading, (possibly seeking and "telling" file
+position) and closing a datastream (which internally in SoInput would
+be handled allmost identically to a file). 
+
+The callbacks would look something like this:
+
+  void * (*open_func)  (const char *filename, 
+                        ... maybe some more params here?)
+  size_t (*read_func)  (void *ptr, size_t size, size_t nmemb, 
+                        void *datasource);
+        // datasource is whatever open_func returns, 
+        // could be a filehandle, or not.
+  int    (*seek_func)  (void *datasource, int64 offset, 
+                        int whence);
+  int    (*close_func) (void *datasource);
+  int64  (*tell_func)  (void *datasource);
+
+This is approx. how vorbisfile does it. See
+
+http://www.xiph.org/ogg/vorbis/doc/vorbisfile/callbacks.html
+
+This way it's the applications responsibility to do file i/o,
+streaming, decompressing, or whatever.
+
+I use this mechanism in simage to get around any problems with passing
+filehandles to the "normal" (stdio) libvorbisfile API. See
+simage/src/simage_oggvorbis_reader.c.
+
+I'm not sure this mechanism is sufficient for texture-reading though,
+because the open_func callback might need some more info about where
+the texture file is located.  A relative path might not be enough,
+since the scenegraph might have been generated from several VRML2
+files with identical textturefilenames (but different textures).
 
