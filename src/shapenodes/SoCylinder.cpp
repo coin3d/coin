@@ -215,7 +215,7 @@ SoCylinder::GLRender(SoGLRenderAction * action)
                        this->height.getValue(),
                        (int)(CYL_SIDE_NUMTRIS * complexity),
                        &mb,
-                       flags);
+                       flags, state);
 }
 
 /*!

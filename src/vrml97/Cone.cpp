@@ -176,7 +176,7 @@ SoVRMLCone::GLRender(SoGLRenderAction * action)
                    this->height.getValue(),
                    (int)(CONE_SIDE_NUMTRIS * complexity),
                    &mb,
-                   flags);
+                   flags, state);
 }
 
 // Doc in parent

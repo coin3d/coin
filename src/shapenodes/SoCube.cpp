@@ -148,7 +148,7 @@ SoCube::GLRender(SoGLRenderAction * action)
                    height.getValue(),
                    depth.getValue(),
                    &mb,
-                   flags);
+                   flags, state);
 }
 
 // Doc in parent.

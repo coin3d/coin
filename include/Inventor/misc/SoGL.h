@@ -45,13 +45,14 @@ class SbVec2f;
 
 // flags for cone, cylinder and cube
 
-#define SOGL_RENDER_SIDE       0x01
-#define SOGL_RENDER_TOP        0x02
-#define SOGL_RENDER_BOTTOM     0x04
-#define SOGL_MATERIAL_PER_PART 0x08
-#define SOGL_NEED_NORMALS      0x10
-#define SOGL_NEED_TEXCOORDS    0x20
-#define SOGL_NEED_3DTEXCOORDS  0x40
+#define SOGL_RENDER_SIDE         0x01
+#define SOGL_RENDER_TOP          0x02
+#define SOGL_RENDER_BOTTOM       0x04
+#define SOGL_MATERIAL_PER_PART   0x08
+#define SOGL_NEED_NORMALS        0x10
+#define SOGL_NEED_TEXCOORDS      0x20
+#define SOGL_NEED_3DTEXCOORDS    0x40
+#define SOGL_NEED_MULTITEXCOORDS 0x80 // internal
 
 // Convenience function for access to OpenGL wrapper from an SoState
 // pointer.
@@ -63,14 +64,16 @@ void sogl_render_cone(const float bottomRadius,
                       const float height,
                       const int numslices,
                       SoMaterialBundle * const material,
-                      const unsigned int flags);
+                      const unsigned int flags,
+                      SoState * state);
 
 
 void sogl_render_cylinder(const float radius,
                           const float height,
                           const int numslices,
                           SoMaterialBundle * const material,
-                          const unsigned int flags);
+                          const unsigned int flags,
+                          SoState * state);
 
 void sogl_render_sphere(const float radius,
                         const int numstacks,
@@ -83,7 +86,8 @@ void sogl_render_cube(const float width,
                       const float height,
                       const float depth,
                       SoMaterialBundle * const material,
-                      const unsigned int flags);
+                      const unsigned int flags,
+                      SoState * state);
 
 // FIXME: must be kept around due to ABI & API compatibility reasons
 // for now, but should consider taking it out for the next major Coin

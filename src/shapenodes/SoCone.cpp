@@ -210,7 +210,7 @@ SoCone::GLRender(SoGLRenderAction * action)
                    this->height.getValue(),
                    (int)(CONE_SIDE_NUMTRIS * complexity),
                    &mb,
-                   flags);
+                   flags, state);
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoCone::GLRender", "end");

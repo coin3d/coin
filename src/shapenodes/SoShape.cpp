@@ -1086,7 +1086,7 @@ SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
   glPushMatrix();
   glTranslatef(center[0], center[1], center[2]);
   sogl_render_cube(size[0], size[1], size[2], &mb,
-                   SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
+                   SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS, NULL);
   glPopMatrix();
 }
 

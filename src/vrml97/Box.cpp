@@ -137,7 +137,7 @@ SoVRMLBox::GLRender(SoGLRenderAction * action)
                    s[1],
                    s[2],
                    &mb,
-                   flags);
+                   flags, state);
 }
 
 // Doc in parent
