@@ -123,7 +123,7 @@ SoMatrixTransform::getMatrix(SoGetMatrixAction *action)
   action->getMatrix().multLeft(m);
   
   SbMatrix mi = m.inverse();
-  action->getInverse().multRight(m);
+  action->getInverse().multRight(mi);
 }
 
 /*!
