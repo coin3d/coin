@@ -109,6 +109,7 @@
 
 #include <float.h> // FLT_MIN
 #include <stddef.h>
+#include <string.h>
 
 #include <Inventor/VRMLnodes/SoVRMLText.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
