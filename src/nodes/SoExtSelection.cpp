@@ -687,7 +687,6 @@ SoExtSelection::~SoExtSelection()
   if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
   delete PRIVATE(this)->timersensor;
   delete PRIVATE(this)->cbaction;
-  delete PRIVATE(this)->visibletrianglesbitarray;
 }
 
 // doc in parent
