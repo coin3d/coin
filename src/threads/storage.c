@@ -165,24 +165,24 @@ cc_storage_thread_cleanup(unsigned long threadid)
   \brief The SbStorage class manages thread-local memory.
   \ingroup threads
 
-  This class manages thread-local memory.  When different threads access
-  the memory an SbStorage object manages, they will receive different
-  memory blocks back.  This is one of the most common techniques used
-  to make old thread-unsafe libraries thread-safe when it is the sharing
-  of read/write static data inside the library that is the problem.
+  This class manages thread-local memory.  When different threads
+  access the memory an SbStorage object manages, they will receive
+  different memory blocks back.
+
+  This provides a mechanism for sharing read/write static data.
 */
 
 /*!
   \fn SbStorage::SbStorage(unsigned int size)
 
-  Constructor.  \c size specifies the number of bytes each thread should
+  Constructor.  \a size specifies the number of bytes each thread should
   have in this thread-local memory management object.
 */
 
 /*!
   \fn SbStorage::SbStorage(unsigned int size, void (*constr)(void *), void (*destr)(void *))
 
-  Constructor.  \c size specifies the number of bytes each thread should
+  Constructor.  \a size specifies the number of bytes each thread should
   have in this thread-local memory management object.  A constructor and
   a destructor functions can be given that will be called when the actual
   memory blocks are allocated and freed.
@@ -205,6 +205,48 @@ cc_storage_thread_cleanup(unsigned long threadid)
   
   This method will call \a func for all thread local storage data.
   \a closure will be supplied as the second parameter to the callback.
+*/
+
+/* ********************************************************************** */
+
+/*!
+  \class SbTypedStorage Inventor/threads/SbTypedStorage.h
+  \brief The SbTypedStorage class manages generic thread-local memory.
+  \ingroup threads
+
+  This class manages thread-local memory.  When different threads
+  access the memory an SbTypedStorage object manages, they will receive
+  different memory blocks back.
+
+  This provides a mechanism for sharing read/write static data.
+*/
+
+/*!
+  \fn SbTypedStorage<Type>::SbTypedStorage(unsigned int size)
+
+  Constructor.  \a size specifies the number of bytes each thread should
+  have in this thread-local memory management object.
+*/
+
+/*!
+  \fn SbTypedStorage<Type>::SbTypedStorage(unsigned int size, void (*constr)(void *), void (*destr)(void *))
+
+  Constructor.  \a size specifies the number of bytes each thread
+  should have in this thread-local memory management object.
+  Constructor and a destructor functions can be specified that will be
+  called when the actual memory blocks are allocated and freed.
+*/
+
+/*!
+  \fn SbTypedStorage<Type>::~SbTypedStorage(void)
+
+  The destructor.
+*/
+
+/*!
+  \fn Type SbTypedStorage<Type>::get(void)
+
+  This method returns the calling thread's thread-local memory block.
 */
 
 /* ********************************************************************** */

@@ -171,12 +171,17 @@
   mycamera->orientation.setValue(SbRotation(SbVec3f(0, 1, 0), M_PI / 2.0f);
   \endcode
 
-  For queries, e.g. to get the "up" vector of the camera:
+  For queries, e.g. to get the current "up" and "look at" vectors of
+  the camera:
 
   \code
-  SbVec3f up(0, 1, 0); // up-vector on no rotation
   SbRotation camrot = mycamera->orientation.getValue();
-  camrot.multVec(up, up);
+
+  SbVec3f upvec(0, 1, 0); // init to default up vector
+  camrot.multVec(upvec, upvec);
+
+  SbVec3f lookat(0, 0, -1); // init to default view direction vector
+  camrot.multVec(lookat, lookat);
   \endcode
 */
 /*!
