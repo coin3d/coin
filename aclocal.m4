@@ -5154,6 +5154,20 @@ if test x"$with_pthread" != xno; then
                  [sim_cv_lib_pthread_avail=false])])
 
   if $sim_cv_lib_pthread_avail; then
+    AC_CACHE_CHECK(
+      [the struct timespec resolution],
+      sim_cv_lib_pthread_timespec_resolution,
+      [AC_TRY_COMPILE([#include <pthread.h>],
+                      [struct timespec timeout;
+                       timeout.tv_nsec = 0;],
+                      [sim_cv_lib_pthread_timespec_resolution=nsecs],
+                      [sim_cv_lib_pthread_timespec_resolution=usecs])])
+    if test x"$sim_cv_lib_pthread_timespec_resolution" = x"nsecs"; then
+      AC_DEFINE([HAVE_PTHREAD_TIMESPEC_NSEC], 1, [define if pthread's struct timespec uses nsecs and not usecs])
+    fi
+  fi
+
+  if $sim_cv_lib_pthread_avail; then
     sim_ac_pthread_avail=yes
     $1
   else

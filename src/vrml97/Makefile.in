@@ -802,7 +802,7 @@ distclean-depend:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(CXXCOMPILE) -c -o $@ `cygpath -w $<`
+	$(CXXCOMPILE) -c -o $@ `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
 
 .cpp.lo:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@

@@ -334,7 +334,7 @@ distclean-depend:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-	$(COMPILE) -c `cygpath -w $<`
+	$(COMPILE) -c `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
 
 .c.lo:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
