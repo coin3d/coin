@@ -168,6 +168,7 @@ SoAsciiText::initClass(void)
 void
 SoAsciiText::GLRender(SoGLRenderAction * action)
 {
+    
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
@@ -203,10 +204,8 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   float longeststring = FLT_MIN;
   for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i)
     longeststring = SbMax(longeststring, PRIVATE(this)->stringwidths[i]);
-
-  // FIXME: Must add support for stretched/compressed text
-  // according to the 'width' field. (20030910 handegar)
-
+ 
+  
   glBegin(GL_TRIANGLES);
   glNormal3f(0.0f, 0.0f, 1.0f);
 
@@ -214,7 +213,13 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   float ypos = 0.0f;
 
   for (i = 0; i < n; i++) {
-    float currwidth = PRIVATE(this)->stringwidths[i];
+
+    const float currwidth = PRIVATE(this)->stringwidths[i];
+    float stretchlength = 0.0f;
+    if (i < this->width.getNum()) 
+      stretchlength = this->width[i];
+    float stretchfactor =  (stretchlength) / strlen(this->string[i].getString());
+
     float xpos = 0.0f;
     switch (this->justification.getValue()) {
     case SoAsciiText::RIGHT:
@@ -244,7 +249,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         xpos += kerningx* fontspec.size;
       }
       prevglyph = glyph;
-      
+
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       const int * ptr = cc_glyph3d_getfaceindices(glyph);
 
@@ -254,24 +259,26 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
 
-        if (do2Dtextures)
+        if (do2Dtextures) {
           glTexCoord2f(v0[0], v0[1]);
+        }
         glVertex3f(v0[0] * fontspec.size + xpos, v0[1] * fontspec.size + ypos, 0.0f);
         
-        if (do2Dtextures) 
+        if (do2Dtextures) {
           glTexCoord2f(v1[0], v1[1]);        
+        }
         glVertex3f(v1[0] * fontspec.size + xpos, v1[1] * fontspec.size + ypos, 0.0f);
         
-        if (do2Dtextures) 
+        if (do2Dtextures) {
           glTexCoord2f(v2[0], v2[1]);        
+        }
         glVertex3f(v2[0] * fontspec.size + xpos, v2[1] * fontspec.size + ypos, 0.0f);
 
       }
 
-      // FIXME: Add proper support for kerning aswell. (20030923 handegar)
       float advancex, advancey;
       cc_glyph3d_getadvance(glyph, &advancex, &advancey);
-      xpos += advancex * fontspec.size;
+      xpos += (advancex + stretchfactor) * fontspec.size;
 
     }
     ypos -= fontspec.size * this->spacing.getValue();
@@ -289,8 +296,6 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 void
 SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-
-  //PRIVATE(this)->setUpGlyphs(action->getState(), this);
 
   if (action->is3DTextCountedAsTriangles()) {        
     const int lines = this->string.getNum();
@@ -339,19 +344,11 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 
   int i;
   const int n = this->string.getNum();
-
-
   const float linespacing = this->spacing.getValue();
 
   float maxw = FLT_MIN;
-  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i) {
+  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i) 
     maxw = SbMax(maxw, PRIVATE(this)->stringwidths[i]);
-    // FIXME: Must add support for stretched/compressed text
-    // according to the 'width' field here. (20030910 handegar)
-    /*if((this->width[i] * PRIVATE(this)->textsize) < maxw)
-      maxw = this->width[i] * PRIVATE(this)->textsize;*/
-  }
-  
   
   if(maxw == FLT_MIN) { // There is no text to bound. Returning.
     box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
@@ -359,11 +356,18 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     return; 
   }
 
+  float longeststring = FLT_MIN;
+  float maxwidth = 0.0f;
+  for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i) 
+    longeststring = SbMax(longeststring, PRIVATE(this)->stringwidths[i]);
+  for (i = 0;i<(this->width.getNum() || n);++i)  
+    maxwidth = SbMax(maxwidth, this->width[i]);
+  
   float maxy, miny;
   float minx, maxx;
   
   minx = 0;
-  maxx = maxw;
+  maxx = maxw + maxwidth*fontspec.size;
 
   miny = -fontspec.size * this->spacing.getValue() * (n-1);
   maxy = fontspec.size;
@@ -402,12 +406,26 @@ SoAsciiText::generatePrimitives(SoAction * action)
   cc_fontspec_construct(&fontspec, SoFontNameElement::get(state).getString(),
                         SoFontSizeElement::get(state),
                         this->getComplexityValue(action));
+
   PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
 
-
-  float size = SoFontSizeElement::get(action->getState());
-
   int i, n = this->string.getNum();
+
+  SbBool do2Dtextures = FALSE;
+  SbBool do3Dtextures = FALSE;
+  if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
+  else if (SoGLTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
+
+  // FIXME: implement proper support for 3D-texturing, and get rid of
+  // this. 20020120 mortene.
+  if (do3Dtextures) {
+    static SbBool first = TRUE;
+    if (first) {
+      first = FALSE;
+      SoDebugError::postWarning("SoAsciiText::GLRender",
+                                "3D-textures not properly supported for this node type yet.");
+    }
+  }
 
   SoPrimitiveVertex vertex;
   SoTextDetail detail;
@@ -415,18 +433,24 @@ SoAsciiText::generatePrimitives(SoAction * action)
   vertex.setDetail(&detail);
   vertex.setMaterialIndex(0);
 
-  this->beginShape(action, SoShape::TRIANGLES, NULL);
-  vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
-
   float longeststring = FLT_MIN;
   for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i)
     longeststring = SbMax(longeststring, PRIVATE(this)->stringwidths[i]);
+
+  this->beginShape(action, SoShape::TRIANGLES, NULL);
+  vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
 
   int glyphidx = 0;
   float ypos = 0.0f;
 
   for (i = 0; i < n; i++) {
+
     const float currwidth = PRIVATE(this)->stringwidths[i];
+    float stretchlength = 0.0f;
+    if (i < this->width.getNum()) 
+      stretchlength = this->width[i];
+    float stretchfactor =  (stretchlength) / strlen(this->string[i].getString());
+
     detail.setStringIndex(i);
     float xpos = 0.0f;
     switch (this->justification.getValue()) {
@@ -438,6 +462,8 @@ SoAsciiText::generatePrimitives(SoAction * action)
       break;
     }
 
+
+    cc_glyph3d * prevglyph = NULL;
     const unsigned int length = this->string[i].getLength();
     for (unsigned int strcharidx = 0; strcharidx < length; strcharidx++) {
       
@@ -446,13 +472,17 @@ SoAsciiText::generatePrimitives(SoAction * action)
       // set up to 127) be expanded to huge int numbers that turn
       // negative when casted to integer size.
       const uint32_t glyphidx = (const unsigned char) this->string[i][strcharidx];
-      const cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
-
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(glyphidx, &fontspec);
+      
+      // Get kerning
+      if (strcharidx > 0) {
+        float kerningx, kerningy;
+        cc_glyph3d_getkerning(prevglyph, glyph, &kerningx, &kerningy);
+        xpos += kerningx * fontspec.size;
+      }
+      prevglyph = glyph;
       detail.setCharacterIndex(strcharidx);
 
-      float width = cc_glyph3d_getwidth(glyph);
-      if (width == 0) 
-        width = (1.0f / 3.0f); // setting spacesize to fontsize/3   
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
       const int * ptr = cc_glyph3d_getfaceindices(glyph);
 
@@ -461,19 +491,32 @@ SoAsciiText::generatePrimitives(SoAction * action)
         v0 = coords[*ptr++];
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
-        vertex.setTextureCoords(SbVec2f(v0[0], v0[1]));
-        vertex.setPoint(SbVec3f(v0[0] * size + xpos, v0[1] * size + ypos, 0.0f));
+
+        if(do2Dtextures) {
+          vertex.setTextureCoords(SbVec2f(v0[0], v0[1]));
+        }
+        vertex.setPoint(SbVec3f(v0[0] * fontspec.size + xpos, v0[1] * fontspec.size + ypos, 0.0f));
         this->shapeVertex(&vertex);
-        vertex.setTextureCoords(SbVec2f(v1[0], v1[1]));
-        vertex.setPoint(SbVec3f(v1[0] * size + xpos, v1[1] * size + ypos, 0.0f));
+
+        if(do2Dtextures) {
+          vertex.setTextureCoords(SbVec2f(v1[0], v1[1]));
+        }
+        vertex.setPoint(SbVec3f(v1[0] * fontspec.size + xpos, v1[1] * fontspec.size + ypos, 0.0f));
         this->shapeVertex(&vertex);
-        vertex.setTextureCoords(SbVec2f(v2[0], v2[1]));
-        vertex.setPoint(SbVec3f(v2[0] * size + xpos, v2[1] * size + ypos, 0.0f));
+
+        if(do2Dtextures) {
+          vertex.setTextureCoords(SbVec2f(v2[0], v2[1]));
+        }
+        vertex.setPoint(SbVec3f(v2[0] * fontspec.size + xpos, v2[1] * fontspec.size + ypos, 0.0f));
         this->shapeVertex(&vertex);
+
       }
-      xpos += width * size;
+
+      float advancex, advancey;
+      cc_glyph3d_getadvance(glyph, &advancex, &advancey);
+      xpos += (advancex + stretchfactor) * fontspec.size;
     }
-    ypos -= size * this->spacing.getValue();
+    ypos -= fontspec.size * this->spacing.getValue();
   }
   this->endShape();
 }
@@ -581,7 +624,7 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
       stringwidth += (advancex + kerningx) * fontspec->size;
       prevglyph = glyph;
     }
-
+    
     if (prevglyph != NULL) {
       // Italic font might cause last letter to be outside bbox. Add width if needed.
       if (advancex < cc_glyph3d_getwidth(prevglyph)) 
