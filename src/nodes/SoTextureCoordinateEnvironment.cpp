@@ -57,7 +57,9 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/C/tidbitsp.h>
 #include <stdlib.h>
 
@@ -160,9 +162,22 @@ SoTextureCoordinateEnvironment::doAction(SoAction * action)
 void
 SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
 {
-  SoTextureCoordinateEnvironment::doAction((SoAction *)action);
-  SoGLTextureCoordinateElement::setTexGen(action->getState(),
-                                          this, handleTexgen);
+  SoState * state = action->getState();
+  int unit = SoTextureUnitElement::get(state);
+  if (unit == 0) {
+    SoTextureCoordinateEnvironment::doAction((SoAction *)action);
+    SoGLTextureCoordinateElement::setTexGen(action->getState(),
+                                            this, handleTexgen);
+  }
+  else {
+    SoMultiTextureCoordinateElement::setFunction(action->getState(), this,
+                                                 unit,
+                                                 generate,
+                                                 action->getState());
+    SoGLMultiTextureCoordinateElement::setTexGen(action->getState(),
+                                                 this, unit, handleTexgen);
+
+  }
 }
 
 // doc from parent
