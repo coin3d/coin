@@ -36,8 +36,8 @@
 
   This node class is an extension versus the original SGI Inventor
   v2.1 API.  In addition to being a Coin extension, it is also present
-  in TGS' Inventor implementation (except TGS doesn't support the NONE
-  markerIndex value).
+  in TGS' Inventor implementation. (Note that TGS's implementation
+  doesn't support the NONE markerIndex value.)
 
   \since TGS Inventor 2.5
   \since Coin 1.0
@@ -63,6 +63,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoCullElement.h>
 #include <Inventor/C/tidbitsp.h>
 #include <math.h>
 #include <string.h>
@@ -1187,31 +1188,45 @@ SoMarkerSet::GLRender(SoGLRenderAction * action)
 
     if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
 
-    if (this->markerIndex[midx]!=NONE) {
-      SbVec3f point = coords->get3(idx);
-      mat.multVecMatrix(point, point);  // wcs
-      vv.projectToScreen(point, point); // normalized screen coordinates
-      point[0] = point[0] * float(vpsize[0]); // screen pixel position
-      point[1] = point[1] * float(vpsize[1]);
-      // change z range from [0,1] to [-1,1]
-      point[2] *= 2.0f;
-      point[2] -= 1.0f;
-
-      so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
-
-      // To have the exact center point of the marker drawn at the
-      // projected 3D position.  (FIXME: I haven't actually checked that
-      // this is what TGS' implementation of the SoMarkerSet node does
-      // when rendering, but it seems likely. 20010823 mortene.)
-      point[0] = point[0] - (tmp->width - 1) / 2;
-      point[1] = point[1] - (tmp->height - 1) / 2;
-
-      glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
-      glRasterPos3f(point[0], point[1], -point[2]);
-      glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
-    }
+    SbVec3f point = coords->get3(idx);
     idx++;
+
+    if (this->markerIndex[midx] == NONE) { continue; }
+
+    mat.multVecMatrix(point, point);  // to wcs
+
+    // OpenGL's glBitmap() will not be clipped against anything but
+    // the near and far planes. We want markers to also be clipped
+    // against other clipping planes, to behave like the SoPointSet
+    // superclass.
+    const SbBox3f bbox(point, point);
+    // FIXME: if there are *heaps* of markers, this next line will
+    // probably become a bottleneck. Should really partition marker
+    // positions in a oct-tree data structure and cull several at
+    // the same time.  20031219 mortene.
+    if (SoCullElement::cullTest(state, bbox, TRUE)) { continue; }
+
+    vv.projectToScreen(point, point); // normalized screen coordinates
+    point[0] = point[0] * float(vpsize[0]); // screen pixel position
+    point[1] = point[1] * float(vpsize[1]);
+    // change z range from [0,1] to [-1,1]
+    point[2] *= 2.0f;
+    point[2] -= 1.0f;
+
+    so_marker * tmp = &(*markerlist)[ this->markerIndex[midx] ];
+
+    // To have the exact center point of the marker drawn at the
+    // projected 3D position.  (FIXME: I haven't actually checked that
+    // this is what TGS' implementation of the SoMarkerSet node does
+    // when rendering, but it seems likely. 20010823 mortene.)
+    point[0] = point[0] - (tmp->width - 1) / 2;
+    point[1] = point[1] - (tmp->height - 1) / 2;
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, tmp->align);
+    glRasterPos3f(point[0], point[1], -point[2]);
+    glBitmap(tmp->width, tmp->height, 0, 0, 0, 0, tmp->data);
   }
+
   // FIXME: this looks wrong, shouldn't we rather reset the alignment
   // value to what it was previously?  20010824 mortene.
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // restore default value
