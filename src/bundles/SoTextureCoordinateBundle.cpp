@@ -242,10 +242,6 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   // texture coordinate mapping shouldn't be used. We might optimize this
   // by using a SoTextureCoordinateCache soon though. pederb, 20000218
   this->shapenode->computeBBox(action, box, center);
-  if (!box.hasVolume()) {
-    this->flags &= ~(FLAG_NEEDCOORDS|FLAG_DEFAULT|FLAG_FUNCTION);
-    return;
-  }
 
   SbVec3f size;
   box.getSize(size[0], size[1], size[2]);
@@ -260,9 +256,17 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   if (size[2] < smallval) {
     smallest = 2;
   }
-
+  
   this->defaultdim0 = (smallest + 1) % 3;
   this->defaultdim1 = (smallest + 2) % 3;
+
+  // disable texture coordinate generation if empty or one
+  // dimensional bounding box.
+  if (size[this->defaultdim0] <= 0.0f ||
+      size[this->defaultdim1] <= 0.0f) {
+    this->flags &= ~(FLAG_NEEDCOORDS|FLAG_DEFAULT|FLAG_FUNCTION);
+    return;
+  }
 
   if (size[this->defaultdim0] == size[this->defaultdim1]) {
     // FIXME: this is probably an OIV bug. The OIV man pages are not
