@@ -70,6 +70,7 @@ void * SoError::callbackData = NULL;
 // "Converter" constructor.
 SoError::SoError(const cc_error * error)
 {
+  cc_error_init(&this->err);
   cc_error_copy(error, &this->err);
 }
 
@@ -162,7 +163,8 @@ SoError::isOfType(const SoType type) const
 void
 SoError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
-  if (SoError::callback == NULL) {
+  if (SoError::callback == SoError::defaultHandlerCB ||
+      SoError::callback == NULL) {
     // The user is overriding the default handler, so set up a
     // "converter" callback function that makes an SoError out of an
     // cc_error and forwards control to the callback function given as
