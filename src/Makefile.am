@@ -113,14 +113,14 @@ install-exec-hook: coin@COIN_MAJOR_VERSION@.dll
 	  echo "Installing coin@COIN_MAJOR_VERSION@.dll"; \
 	  for e in dll lib pdb; do \
 	    file="coin@COIN_MAJOR_VERSION@.$$e"; \
-	    if test -f "$$file"; then \
+	    if test -s "$$file"; then \
 	      $(INSTALL_DATA) $$file $(DESTDIR)$(libdir)/$$file; \
 	    fi \
 	  done \
 	fi
 
 uninstall: uninstall-am
-	for e in dll lib pdb; do \
+	@for e in dll lib pdb; do \
 	  file="$(DESTDIR)$(libdir)/coin@COIN_MAJOR_VERSION@.$$e"; \
 	  if test -f "$$file"; then \
 	    echo rm -f "$$file"; \

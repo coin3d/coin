@@ -731,3 +731,5 @@ esac
 
 echo ""
 echo "Now, run 'make install' to build and install Coin."
+echo ""
+
