@@ -38,6 +38,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
@@ -486,6 +487,12 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     SoGLLazyElement::beginCaching(state, THIS->opencache->getPreLazyState(),
                                   THIS->opencache->getPostLazyState());
     THIS->opencache->open(state);
+
+    // force a dependency on the transparecy type 
+    // FIXME: consider adding a new element for storing the
+    // transparency type.  The dependency tracking on the transparency
+    // type would then work automatically. pederb, 2005-02-18
+    (void) SoShapeStyleElement::get(state);
 
 #if COIN_DEBUG // debug
     if (COIN_DEBUG_CACHING) {
