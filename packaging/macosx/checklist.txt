@@ -3,9 +3,7 @@
 #
 
 Prerequisites: 
-- simage and freetype-2.1.5 sources present in the ../checkout directory
-  (NB! freetype-2.1.7 is needed to compile on a plain Panther; 2.1.5 will
-  work if a new libtool is installed)
+- simage and freetype-2.1.7 sources present in the ../checkout directory
 - An official Coin-$(VERSION).tar.gz
 
 
@@ -26,8 +24,7 @@ o configure and build freetype
 
   mkdir freetype-config
   cd freetype-config
-  # NB! Might be 2.1.7 on Panther
-  ../../../checkout/freetype-2.1.5/configure --prefix=$PWD/../macosx/supportlibs/install --disable-static --libdir=$PWD/../macosx/supportlibs/lib
+  ../../../checkout/freetype-2.1.7/configure --prefix=$PWD/../macosx/supportlibs/install --disable-static --libdir=$PWD/../macosx/supportlibs/lib
   make install
   cd ..
 
