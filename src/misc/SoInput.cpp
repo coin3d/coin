@@ -442,7 +442,7 @@ SoInput::checkISReference(SoFieldContainer * container, const SbName & fieldname
           else state = STATE_NOTFOUND;
           break;
         default:
-          assert(0 && "should not happend");
+          assert(0 && "should not happen");
           break;
         }
       }
