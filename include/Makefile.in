@@ -84,6 +84,7 @@ CPP = @CPP@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
+DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -143,10 +144,8 @@ install-thisincHEADERS: $(thisinc_HEADERS)
 	@list='$(thisinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(thisincdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
-	  fi; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(thisincdir)/$$f; \
 	done
 
 uninstall-thisincHEADERS:

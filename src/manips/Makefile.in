@@ -84,6 +84,7 @@ CPP = @CPP@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
+DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -302,10 +303,8 @@ install-libmanipsincHEADERS: $(libmanipsinc_HEADERS)
 	@list='$(libmanipsinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f; \
-	  fi; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f; \
 	done
 
 uninstall-libmanipsincHEADERS:

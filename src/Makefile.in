@@ -84,6 +84,7 @@ CPP = @CPP@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
 DEPDIR = @DEPDIR@
+DLLFLAGS = @DLLFLAGS@
 DLLTOOL = @DLLTOOL@
 LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
@@ -302,10 +303,8 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then :; else \
-	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
-	    $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
-	  fi; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
 	done
 
 uninstall-libCoinincHEADERS:
@@ -563,7 +562,7 @@ coin@COIN_MAJOR_VERSION@.dll: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
 	@rm -f coin@COIN_MAJOR_VERSION@.dll && \
 	if @BUILD_WITH_MSVC@; then \
 	  echo "Linking DLL..."; \
-	  $(CC) /dll /out:coin@COIN_MAJOR_VERSION@.dll $(LDFLAGS) \
+	  $(CC) @DLLFLAGS@ /out:coin@COIN_MAJOR_VERSION@.dll $(LDFLAGS) \
 	        `echo $(libCoin_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
 	        $(libCoin_la_LIBADD) $(LIBS); \
 	else \
@@ -573,10 +572,22 @@ coin@COIN_MAJOR_VERSION@.dll: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
 install-exec-hook: coin@COIN_MAJOR_VERSION@.dll
 	@if test -s coin@COIN_MAJOR_VERSION@.dll; then \
 	  echo "Installing coin@COIN_MAJOR_VERSION@.dll"; \
-	  for i in coin@COIN_MAJOR_VERSION@.dll coin@COIN_MAJOR_VERSION@.lib; do \
-	    $(INSTALL_DATA) $$i $(DESTDIR)$(libdir)/$$i; \
+	  for e in dll lib pdb; do \
+	    file="coin@COIN_MAJOR_VERSION@.$$e"; \
+	    if test -f "$$file"; then \
+	      $(INSTALL_DATA) $$file $(DESTDIR)$(libdir)/$$file; \
+	    fi \
 	  done \
 	fi
+
+uninstall: uninstall-am
+	for e in dll lib pdb; do \
+	  file="$(DESTDIR)$(libdir)/coin@COIN_MAJOR_VERSION@.$$e"; \
+	  if test -f "$$file"; then \
+	    echo rm -f "$$file"; \
+	    rm -f "$$file"; \
+	  fi \
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
