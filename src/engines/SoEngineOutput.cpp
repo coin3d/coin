@@ -42,10 +42,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-// FIXME: part of the "store-list-in-dict" hack to keep ABI
-// compatibility.  20010910 mortene.
-static const unsigned long SOENGINEOUTPUT_MAGICNUMBER = 0xdeadbeef;
-
 /*!
   Constructor. The SoEngineOutput will initially not be contained
   within an SoEngine nor will it have any slave fields attached.
@@ -53,13 +49,9 @@ static const unsigned long SOENGINEOUTPUT_MAGICNUMBER = 0xdeadbeef;
   \sa setContainer()
 */
 SoEngineOutput::SoEngineOutput(void)
-  : notifyflags(1)
 {
   this->enabled = TRUE;
   this->container = NULL;
-
-  SbList<SbBool> * fieldnotiflist = new SbList<SbBool>;
-  this->notifyflags.enter(SOENGINEOUTPUT_MAGICNUMBER, fieldnotiflist);
 }
 
 /*!
@@ -70,14 +62,6 @@ SoEngineOutput::~SoEngineOutput()
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoEngineOutput::~SoEngineOutput", "start %p", this);
 #endif // debug
-
-  // FIXME: the "list-in-dict" hack to keep ABI
-  // compatibility. 20010910 mortene.
-  void * vval;
-  SbBool r = this->notifyflags.find(SOENGINEOUTPUT_MAGICNUMBER, vval);
-  assert(r);
-  SbList<SbBool> * notiflist = (SbList<SbBool> *)vval;
-  delete notiflist;
 
   // Avoids evaluation from the fields in SoField::disconnect() (which
   // would again lead to problems with the pure virtual
@@ -322,19 +306,13 @@ SoEngineOutput::operator[](int i) const
 void
 SoEngineOutput::prepareToWrite(void) const
 {
-  // FIXME: the "list-in-dict" hack to keep ABI
-  // compatibility. 20010910 mortene.
-  void * vval;
-  SbBool r = this->notifyflags.find(SOENGINEOUTPUT_MAGICNUMBER, vval);
-  assert(r);
-  SbList<SbBool> * notiflist = (SbList<SbBool> *)vval;
-
-  notiflist->truncate(0);
+  SoEngineOutput * that = (SoEngineOutput *)this;
+  that->fieldnotiflist.truncate(0);
 
   int n = this->slaves.getLength();
   for (int i = 0; i < n; i++) {
     SoField * f = this->slaves[i];
-    notiflist->append(f->isNotifyEnabled());
+    that->fieldnotiflist.append(f->isNotifyEnabled());
     f->enableNotify(FALSE);
   }
 }
@@ -348,13 +326,6 @@ SoEngineOutput::prepareToWrite(void) const
 void
 SoEngineOutput::doneWriting(void) const
 {
-  // FIXME: the "list-in-dict" hack to keep ABI
-  // compatibility. 20010910 mortene.
-  void * vval;
-  SbBool r = this->notifyflags.find(SOENGINEOUTPUT_MAGICNUMBER, vval);
-  assert(r);
-  SbList<SbBool> * notiflist = (SbList<SbBool> *)vval;
-
   // We should have the exact same set of slave fields now as on entry
   // to prepareToWrite(), as the field writing is supposed be a
   // "closed" operation.  (All notifications on the fields are
@@ -362,9 +333,9 @@ SoEngineOutput::doneWriting(void) const
   // SoEngine evaluation.)
 
   int n = this->slaves.getLength();
-  assert(n == notiflist->getLength());
+  assert(n == this->fieldnotiflist.getLength());
 
-  const SbBool * notifs = notiflist->getArrayPtr();
+  const SbBool * notifs = this->fieldnotiflist.getArrayPtr();
 
   for (int i = 0; i < n; i++) {
     this->slaves[i]->enableNotify(notifs[i]);
