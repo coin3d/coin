@@ -24,6 +24,16 @@
 
   This engine will forward values from the SoGate::input field to the
   SoGate::output field when the SoGate::enable field is \c TRUE.
+
+
+  Note that this engine's output field deviates a little from the
+  "standard" output mechanism of the majority of engine classes: the
+  SoGate::output is not a permanent SoEngineOutput instance, but a \e
+  pointer to a SoEngineOutput instance.  The reason for this is that
+  it is necessary to allocate the output field dynamically to make it
+  match what the SoGate::input is connected to since the type of the
+  SoGate::output always should be the same as the type of the
+  SoGate::input.
 */
 
 #include <Inventor/engines/SoGate.h>

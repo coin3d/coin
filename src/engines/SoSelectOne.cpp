@@ -24,6 +24,16 @@
 
   The output field will be the index'th value of the input multivalue
   field.
+
+
+  Note that this engine's output field deviates a little from the
+  "standard" output mechanism of the majority of engine classes: the
+  SoSelectOne::output is not a permanent SoEngineOutput instance, but
+  a \e pointer to a SoEngineOutput instance.  The reason for this is
+  that it is necessary to allocate the output field dynamically to
+  make it match what the SoSelectOne::input is connected to since the
+  type of the SoSelectOne::output always should be the same as the
+  type of the SoSelectOne::input.
 */
 
 #include <Inventor/engines/SoSelectOne.h>

@@ -24,6 +24,16 @@
 
   Takes all the values from the 10 input multivalue fields in turn and
   concatenates them into the multivalue output.
+
+
+  Note that this engine's output field deviates a little from the
+  "standard" output mechanism of the majority of engine classes: the
+  SoConcatenate::output is not a permanent SoEngineOutput instance,
+  but a \e pointer to a SoEngineOutput instance.  The reason for this
+  is that it is necessary to allocate the output field dynamically to
+  make it match what the SoConcatenate::input is connected to since
+  the type of the SoConcatenate::output always should be the same as
+  the type of the SoConcatenate::input.
 */
 
 #include <Inventor/engines/SoConcatenate.h>
