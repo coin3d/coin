@@ -23,7 +23,7 @@
 
 /*!
   \class SoPrimitiveVertexCache include/Inventor/SoPrimitiveVertexCache.h
-  The SoPrimitiveVertexClass is used to cache generated texture coordinates.
+  The SoPrimitiveVertexClass is used to cache generated triangles.
 */
 
 #include <Inventor/caches/SoPrimitiveVertexCache.h>
