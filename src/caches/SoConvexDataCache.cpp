@@ -262,8 +262,12 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
   for (int i = 0; i < numv; i++) {
     if (vind[i] < 0) {
       tessellator.endPolygon();
-      if (matbind == PER_VERTEX_INDEXED) matnr++;
-      if (normbind == PER_VERTEX_INDEXED) normnr++;
+      if (matbind == PER_VERTEX_INDEXED || 
+          matbind == PER_FACE ||
+          matbind == PER_FACE_INDEXED) matnr++;
+      if (normbind == PER_VERTEX_INDEXED ||
+          normbind == PER_FACE ||
+          normbind == PER_FACE_INDEXED) normnr++;
       if (texbind == PER_VERTEX_INDEXED) texnr++;
       if (i < numv - 1) { // if not last polygon
         tessellator.beginPolygon();
