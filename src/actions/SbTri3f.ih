@@ -39,6 +39,11 @@ public:
   SbTri3f & setValue(const SbVec3f & a, const SbVec3f & b, const SbVec3f & c);
   void getValue(SbTri3f & t) const;
   void getValue(SbVec3f & a, SbVec3f & b, SbVec3f & c) const;
+  SbVec3f getNormal() const;
+  float getDistance(const SbTri3f & t) const;
+  float getDistance(const SbVec3f & p, 
+                    const SbVec3f & p1, const SbVec3f & p2) const;
+  float getDistance(const SbVec3f & p) const;
 
   SbTri3f & operator = (const SbTri3f & t);
 

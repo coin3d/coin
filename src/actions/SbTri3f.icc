@@ -22,6 +22,7 @@
 \**************************************************************************/
 
 #include <assert.h>
+#include <float.h>
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbPlane.h>
@@ -397,11 +398,101 @@ SbTri3f::intersect(const SbTri3f & t) const
 SbBool
 SbTri3f::intersect(const SbTri3f & t, float e) const
 {
-  if ( this->intersect(t) ) return TRUE;
-  if ( COIN_DEBUG )
-    SoDebugError::postInfo("SbTri3f::intersect",
-                           "intersection testing with epsilon is not implemented yet");
+  if (e == 0.0f) return this->intersect(t);
+  if (this->getDistance(t) <= e) return TRUE;
   return FALSE;
+}
+
+SbVec3f
+SbTri3f::getNormal() const
+{
+  SbVec3f p[3];
+  this->getValue(p[0], p[1], p[2]);
+  SbPlane pl(p[0], p[1], p[2]);
+  return pl.getNormal();
+}
+
+/*!
+  Returns the distance from the given point to this triangle.
+*/
+float 
+SbTri3f::getDistance(const SbVec3f & p) const
+{
+  float dist = FLT_MAX;
+  SbVec3f thisp[3];
+  this->getValue(thisp[0], thisp[1], thisp[2]);
+  SbPlane pl(thisp[0], thisp[1], thisp[2]);
+
+  SbVec3f intersect;
+  SbVec3f n = this->getNormal();
+  SbLine line(p, p+n);
+  if (pl.intersect(line, intersect)) {
+    int i;
+    for (i=0;i<3;i++) {
+      SbPlane edgepl(thisp[i], thisp[i]+n, thisp[(i+1)%3]);
+      if (!edgepl.isInHalfSpace(intersect)) break;
+    }
+    if (i == 3) dist = fabs(pl.getDistance(p));
+    else { // We didn't project inside triangle
+      for (int j=0;j<3;j++) {
+        float d = this->getDistance(p, thisp[j], thisp[(j+1)%3]);
+	if (d < dist) dist = d;
+      }
+//      for (int j=0;j<3;j++) {
+//        float d = (p-thisp[j]).length();
+//	if (d < dist) dist = d;
+//      }
+    }
+  }
+  else {
+    assert(false);
+  }
+  return dist;
+}
+
+/*!
+  Returns the distance from p to the line segment p1-p2.
+*/
+float 
+SbTri3f::getDistance(const SbVec3f & p, 
+                     const SbVec3f & p1, const SbVec3f & p2) const
+{
+  SbVec3f normal = p2 - p1;
+  SbPlane pl(normal, p);
+  SbPlane pl1(normal, p1);
+  SbPlane pl2(-normal, p2);
+
+  if (pl1.isInHalfSpace(p) && pl2.isInHalfSpace(p)) {
+    SbLine line(p1, p2);
+    return (line.getClosestPoint(p)-p).length();
+  }
+  else {
+    float d1 = (p - p1).length();
+    float d2 = (p - p2).length();
+    return (d1<d2)?d1:d2;
+  }
+}
+
+/*!
+  Returns the minimum distance from this triangle to the given triangle.
+*/
+float 
+SbTri3f::getDistance(const SbTri3f & t) const
+{
+  float dist = FLT_MAX;
+  SbVec3f p[3];
+  t.getValue(p[0], p[1], p[2]);
+  for (int i=0;i<3;i++) {
+    float d = this->getDistance(p[i]);
+    if (d < dist) dist = d;
+  }
+  this->getValue(p[0], p[1], p[2]);
+  for (int i=0;i<3;i++) {
+    float d = t.getDistance(p[i]);
+    if (d < dist) dist = d;
+  }
+
+  return dist;
 }
 
 // *************************************************************************
