@@ -475,11 +475,16 @@ SoText3::render(SoState * state, unsigned int part)
       break;
     }
 
-    const char * str = this->string[i].getString();
+    // Note that the "unsigned char" cast is needed to avoid 8-bit
+    // chars using the highest bit (i.e. characters above the ASCII
+    // set up to 127) be expanded to huge int numbers that turn
+    // negative when casted to integer size.
+    const unsigned char * str = (const unsigned char *)this->string[i].getString();
 
-    while (*str++) {
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
-
+    const unsigned int len = this->string[i].getLength();
+    for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(str[strcharidx], PRIVATE(this)->fontspec);
+      
       float glyphwidth = cc_glyph3d_getwidth(glyph);
       if (glyphwidth == 0) 
         glyphwidth = 1.0f/3.0f; // SPACE width is set to 'font size'/3
@@ -737,19 +742,24 @@ SoText3::generate(SoAction * action, unsigned int part)
       break;
     }
 
-    const char * str = this->string[i].getString();
-    
-    int charidx = 0;
+    unsigned int detailcharidx = 0;
 
-    while (*str++) {
-      cc_glyph3d * glyph = cc_glyph3d_getglyph(*(str-1), PRIVATE(this)->fontspec);
+    // Note that the "unsigned char" cast is needed to avoid 8-bit
+    // chars using the highest bit (i.e. characters above the ASCII
+    // set up to 127) be expanded to huge int numbers that turn
+    // negative when casted to integer size.
+    const unsigned char * str = (const unsigned char *)this->string[i].getString();
+
+    const unsigned int len = this->string[i].getLength();
+    for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
+      cc_glyph3d * glyph = cc_glyph3d_getglyph(str[strcharidx], PRIVATE(this)->fontspec);
 
       float glyphwidth = cc_glyph3d_getwidth(glyph);
       if (glyphwidth == 0) 
         glyphwidth = 1.0f/3.0f; // SPACE width is set to 'font size'/3
     
       const SbVec2f * coords = (SbVec2f *) cc_glyph3d_getcoords(glyph);
-      detail.setCharacterIndex(charidx++);
+      detail.setCharacterIndex(detailcharidx++);
 
       if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
