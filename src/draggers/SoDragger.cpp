@@ -405,6 +405,7 @@ SbMatrix
 SoDragger::getLocalToWorldMatrix(void)
 {
   assert(this->draggerCache);
+  this->draggerCache->updateMatrix();
   SbMatrix m = this->draggerCache->draggerToWorld;
   m.multLeft(this->getMotionMatrix());
   return m;
@@ -419,6 +420,7 @@ SoDragger::getWorldToLocalMatrix(void)
 {
   // FIXME: cache the inverse motion matrix
   assert(this->draggerCache);
+  this->draggerCache->updateMatrix();
   SbMatrix m = this->draggerCache->worldToDragger;
   m.multRight(this->getMotionMatrix().inverse());
   return m;
@@ -1093,6 +1095,9 @@ SoDragger::transferMotion(SoDragger * child)
   SbMatrix childmatrix = child->getMotionMatrix();
   SbMatrix parttolocal, localtopart;
 
+  SbBool oldval = this->enableValueChangedCallbacks(FALSE);
+  this->setMotionMatrix(this->startMotionMatrix);
+  this->enableValueChangedCallbacks(oldval);
   this->transformMatrixToLocalSpace(childmatrix, childmatrix, SbName(partname.getString()));
   SbMatrix mat = this->startMotionMatrix;
   mat.multRight(childmatrix);
