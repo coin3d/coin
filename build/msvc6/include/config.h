@@ -24,13 +24,13 @@
 #define COIN_INT32_T int
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INT64_T long long
+#define COIN_INT64_T __int64
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_INT8_T char
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_INTPTR_T intptr_t
+#define COIN_INTPTR_T int
 
 /* define this to the libCoin major version number */
 #define COIN_MAJOR_VERSION 3
@@ -57,13 +57,13 @@
 #define COIN_UINT32_T unsigned int
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINT64_T unsigned long long
+#define COIN_UINT64_T unsigned __int64
 
 /* define this to a type of the indicated bitwidth */
 #define COIN_UINT8_T unsigned char
 
 /* define this to a type of the indicated bitwidth */
-#define COIN_UINTPTR_T uintptr_t
+#define COIN_UINTPTR_T unsigned int
 
 /* define to "remove" conflicting IN_PATH define from <sys/unistd.h> */
 /* #undef COIN_UNDEF_IN_PATH_HACK */
@@ -108,10 +108,10 @@
 /* #undef HAVE_BZIP2 */
 
 /* The CPP compiler has a variable containing the current function name */
-#define HAVE_CPP_COMPILER_FUNCTION_NAME_VAR __FUNCTION__
+/* #undef HAVE_CPP_COMPILER_FUNCTION_NAME_VAR */
 
 /* The C compiler has a variable containing the current function name */
-#define HAVE_C_COMPILER_FUNCTION_NAME_VAR __FUNCTION__
+/* #undef HAVE_C_COMPILER_FUNCTION_NAME_VAR */
 
 /* Define to 1 if you have the <direct.h> header file. */
 #define HAVE_DIRECT_H 1
@@ -201,7 +201,7 @@
 /* #undef HAVE_INT8_T */
 
 /* define this if the type is available on the system */
-#define HAVE_INTPTR_T 1
+/* #undef HAVE_INTPTR_T */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 /* #undef HAVE_INTTYPES_H */
@@ -333,7 +333,7 @@
 /* #undef HAVE_UINT8_T */
 
 /* define this if the type is available on the system */
-#define HAVE_UINTPTR_T 1
+/* #undef HAVE_UINTPTR_T */
 
 /* Define to 1 if you have the <unistd.h> header file. */
 /* #undef HAVE_UNISTD_H */

@@ -87,8 +87,8 @@
 /* #undef HAVE_UINT32_T */
 /* #undef HAVE_INT64_T */
 /* #undef HAVE_UINT64_T */
-#define HAVE_INTPTR_T 1
-#define HAVE_UINTPTR_T 1
+/* #undef HAVE_INTPTR_T */
+/* #undef HAVE_UINTPTR_T */
 
 /* The type which the configure script found to match the given
    bitwidth. */
@@ -98,10 +98,10 @@
 #define COIN_UINT16_T unsigned short
 #define COIN_INT32_T int
 #define COIN_UINT32_T unsigned int
-#define COIN_INT64_T long long
-#define COIN_UINT64_T unsigned long long
-#define COIN_INTPTR_T intptr_t
-#define COIN_UINTPTR_T uintptr_t
+#define COIN_INT64_T __int64
+#define COIN_UINT64_T unsigned __int64
+#define COIN_INTPTR_T int
+#define COIN_UINTPTR_T unsigned int
 
 #endif /* (end wrapper) ! COIN_CONFIGURE_BUILD */
 
