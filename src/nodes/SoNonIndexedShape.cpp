@@ -19,10 +19,11 @@
 
 /*!
   \class SoNonIndexedShape SoNonIndexedShape.h Inventor/nodes/SoNonIndexedShape.h
-  \brief The SoNonIndexedShape class ...
+  \brief The SoNonIndexedShape class is the superclass for all non-indexed vertex based shapes.
   \ingroup nodes
-
-  FIXME: write class doc
+  
+  It contains the (now obsoleted) startIndex field and a convenience method for 
+  calculating the bounding box.
 */
 
 #include <Inventor/nodes/SoNonIndexedShape.h>
@@ -32,9 +33,10 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 
-/*!
-  \var SoSFInt32 SoNonIndexedShape::startIndex
-  FIXME: write documentation for field
+/*!  
+  \var SoSFInt32 SoNonIndexedShape::startIndex 
+  Coordinates are fetched from this index on. This field is now obsoleted, and 
+  is provided only for backward compatibility.  
 */
 
 
@@ -57,11 +59,7 @@ SoNonIndexedShape::~SoNonIndexedShape()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoNonIndexedShape class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoNonIndexedShape::initClass()
 {
@@ -121,7 +119,7 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
   center /= float(lastidx + 1 - startidx);
 }
 
-/*!
+/*!  
   Convenience method that might adjust \a start and \a end
   pointers, which should point at the start and end of the numVertices
   array when calling this method. This takes care of the case where
@@ -131,7 +129,7 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
 
   \a dummyarray should be a temporary array, with room for one integer.
 
-  Not part of the OIV API.
+  Not part of the OIV API.  
 */
 void
 SoNonIndexedShape::fixNumVerticesPointers(SoState *state, const int32_t *&start, const int32_t *&end,
