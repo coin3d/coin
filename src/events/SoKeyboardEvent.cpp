@@ -215,11 +215,10 @@ SoKeyboardEvent::isKeyReleaseEvent(const SoEvent * e,
   This conversion does not work on non-US keyboards, so we recommend
   that you set the printable character using this method instead.
 
-  This methods is an extension versus the Open Inventor API.
+  This method is an extension versus the Open Inventor API.
 
   \sa getPrintableCharacter()
 */
-
 void 
 SoKeyboardEvent::setPrintableCharacter(const char c)
 {
