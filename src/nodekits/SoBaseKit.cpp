@@ -557,6 +557,7 @@ is_default_node(SoNode * node, const SoType & typecheck)
   for (i = 0; i < n; i++) {
     SoField * field = fielddata->getField(node, i);
     if (!field->isDefault()) break;
+    if (field->isConnectionEnabled() && field->isConnected()) break;
     if (definstance == NULL) {
       definstance = (SoNode*) typecheck.createInstance();
       definstance->ref();
