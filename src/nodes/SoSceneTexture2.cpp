@@ -512,12 +512,7 @@ SoSceneTexture2P::SoSceneTexture2P(SoSceneTexture2 * api)
   this->glrectangle = FALSE;
   this->offscreenbuffer = NULL;
   this->offscreenbuffersize = 0;
-
-#if defined(HAVE_AGL) || defined(HAVE_WGL)
-  this->canrendertotexture = TRUE;
-#else // AGL || WGL
   this->canrendertotexture = FALSE;
-#endif // ! AGL && WGL
 }
 
 SoSceneTexture2P::~SoSceneTexture2P()
@@ -595,8 +590,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     // (RGB or RGBA, I guess). pederb, 2003-11-27
     this->glcontext = cc_glglue_context_create_offscreen(this->glcontextsize[0],
                                                          this->glcontextsize[1]);
-    // FIXME: test if we actually got a pbuffer. pederb, 2003-11-27
-
+    this->canrendertotexture - cc_glglue_context_can_render_to_texture(this->glcontext);
     if (this->glaction) delete this->glaction;
     this->glaction = new SoGLRenderAction(SbViewportRegion(this->glcontextsize));
     this->glaction->setCacheContext((int) SoGLCacheContextElement::getUniqueCacheContext());
