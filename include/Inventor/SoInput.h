@@ -42,6 +42,10 @@ class COIN_DLL_API SoInput {
 public:
   SoInput(void);
   SoInput(SoInput * dictIn);
+
+  void addRoute(const SbName & fromnode, const SbName & fromfield,
+                const SbName & tonode, const SbName & tofield);
+
   virtual ~SoInput(void);
 
   virtual void setFilePointer(FILE * newFP);

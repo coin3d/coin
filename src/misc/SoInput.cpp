@@ -72,13 +72,14 @@
   this is no longer possible, since the reading now starts at the
   SoFile node, with an empty dictionary.
 
-  \sa SoOutput, SoDB 
+  \sa SoOutput, SoDB
 */
 
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbStringList.h>
+#include <Inventor/fields/SoField.h>
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoDB.h>
 #include <Inventor/SbName.h>
@@ -152,6 +153,9 @@ public:
   SbBool isFileVRML1(void) {
     return this->vrml1file;
   }
+  SbBool isFileVRML2(void) {
+    return this->vrml2file;
+  }
   void setIvVersion(const float v) {
       this->ivversion = v;
   }
@@ -175,6 +179,15 @@ public:
     if (this->postfunc) this->postfunc(this->userdata, soinput);
   }
 
+  void addRoute(const SbName & fromnode, const SbName & fromfield,
+                const SbName & tonode, const SbName & tofield) {
+    this->routelist.append(fromnode);
+    this->routelist.append(fromfield);
+    this->routelist.append(tonode);
+    this->routelist.append(tofield);
+  }
+  void connectRoutes(void);
+
 private:
   SbString filename;
   FILE * fp;
@@ -197,6 +210,9 @@ private:
   SbBool ismembuffer;
   SbBool headerisread, eof;
   SbBool vrml1file;
+  SbBool vrml2file;
+
+  SbList <SbName> routelist;
 };
 
 SbStringList * SoInput::dirsearchlist = NULL;
@@ -237,6 +253,23 @@ SoInput::constructorsCommon(void)
 SoInput::~SoInput(void)
 {
   this->closeFile();
+}
+
+/*!
+  Adds a ROUTE from /a fromnode's \fromfield, to \a tonode's
+  tofield. This makes it possible to defines ROUTEs in files
+  before the \a fromnode or \a tonode is parsed.
+*/
+void
+SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
+                  const SbName & tonode, const SbName & tofield)
+{
+  SoInput_FileInfo * info = this->getTopOfStack();
+  assert(info);
+  if (info) {
+    info->addRoute(fromnode, fromfield,
+                   tonode, tofield);
+  }
 }
 
 /*!
@@ -1070,7 +1103,7 @@ SoInput::findReference(const SbName & name) const
     if (env) COIN_SOINPUT_SEARCH_GLOBAL_DICT = atoi(env);
     else COIN_SOINPUT_SEARCH_GLOBAL_DICT = 0;
   }
-  
+
   if (COIN_SOINPUT_SEARCH_GLOBAL_DICT) {
     return SoBase::getNamedBase(name, SoNode::getClassTypeId());
   }
@@ -1373,15 +1406,15 @@ SoInput::getBasename(const SbString & s)
 }
 
 // internal method used for testing if a file exists
-static SbBool 
+static SbBool
 test_filename(const SbString & filename)
-{ 
+{
   FILE * fp = fopen(filename.getString(), "rb");
 #if COIN_DEBUG && 0 // flip 1<->0 to turn texture search trace on or off
   SoDebugError::postInfo("test_filename", "file search: %s (%s)\n",
                          filename.getString(), fp ? "hit" : "miss");
 #endif // !COIN_DEBUG
-  
+
   if (fp != NULL) {
     fclose(fp);
     return TRUE;
@@ -1389,21 +1422,21 @@ test_filename(const SbString & filename)
   return FALSE;
 }
 
-/*!  
+/*!
   Given a \a basename for a file and an array of \a directories to
   search, returns the full name of the file found.
-  
+
   In addition to looking at the root of each directory in \a
   directories, all \a subdirectories is also searched for each item in
   \a directories.
 
   If no file matching \a basename could be found in any of the
-  directories, returns an empty string.  
+  directories, returns an empty string.
 
   This method is a Coin extension, not part of the original Inventor
   API.
 */
-SbString 
+SbString
 SoInput::searchForFile(const SbString & basename,
                        const SbStringList & directories,
                        const SbStringList & subdirectories)
@@ -1429,7 +1462,7 @@ SoInput::searchForFile(const SbString & basename,
     for (i = 0; i < directories.getLength(); i++) {
       SbString dirname(directories[i]->getString());
       int dirlen = dirname.getLength();
-      
+
       if (dirlen > 0 &&
           dirname[dirlen-1] != '/' &&
           dirname[dirlen-1] != '\\' &&
@@ -1450,7 +1483,7 @@ SoInput::searchForFile(const SbString & basename,
   for (i = 0; i < directories.getLength(); i++) {
     SbString dirname(directories[i]->getString());
     int dirlen = dirname.getLength();
-    
+
     if (dirlen > 0 &&
         dirname[dirlen-1] != '/' &&
         dirname[dirlen-1] != '\\' &&
@@ -1562,10 +1595,13 @@ SoInput::popFile(void)
 {
   if (this->filestack.getLength() == 0) return FALSE;
 
-  // apply post callback, even if we're not going to pop
   SoInput_FileInfo * topofstack = this->getTopOfStack();
-  topofstack->applyPostCallback(this);
 
+  // connect routes before applying post callbacks
+  topofstack->connectRoutes();
+
+  // apply post callback, even if we're not going to pop
+  topofstack->applyPostCallback(this);
   if (this->filestack.getLength() == 1) return FALSE;
 
   if (topofstack->ivFilePointer()) {
@@ -1965,12 +2001,19 @@ SoInput::isFileVRML1(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \a TRUE if current file is a VRML97 file.
+  This method is provided for backwards compatibility only,
+  and will always return the same as isFileVRML97(), which
+  we prefer that you use.
+
+  `This method is an extension versus the Open Inventor API.
 */
 SbBool
 SoInput::isFileVRML2(void)
 {
-  COIN_STUB();
+  (void) this->checkHeader();
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  if (fi) return fi->isFileVRML2();
   return FALSE;
 }
 
@@ -2151,6 +2194,7 @@ SoInput_FileInfo::commonConstructor(void)
   this->eof = FALSE;
   this->isbinary = FALSE;
   this->vrml1file = FALSE;
+  this->vrml2file = FALSE;
   this->prefunc = NULL;
   this->postfunc = NULL;
 }
@@ -2325,8 +2369,8 @@ SoInput_FileInfo::skipWhiteSpace(void)
   while (TRUE) {
     char c;
     SbBool gotchar;
-    while ((gotchar = this->get(c)) && isspace(c));
-
+    while ((gotchar = this->get(c)) && (isspace(c) || (this->isFileVRML2() && c == ',')));
+    
     if (!gotchar) return FALSE;
 
     if (c == COMMENT_CHAR) {
@@ -2360,6 +2404,7 @@ SoInput_FileInfo::readHeader(SoInput * soinput)
   this->header = "";
   this->ivversion = 0.0f;
   this->vrml1file = FALSE;
+  this->vrml2file = FALSE;
 
   char c;
   if (!this->get(c)) return FALSE;
@@ -2383,9 +2428,33 @@ SoInput_FileInfo::readHeader(SoInput * soinput)
     if (this->header == SbString("#VRML V1.0 ascii")) {
       this->vrml1file = TRUE;
     }
+    else if (this->header == SbString("#VRML V2.0 utf8")) {
+      this->vrml2file = TRUE;
+    }
     if (this->prefunc) this->prefunc(this->userdata, soinput);
   }
   return TRUE;
+}
+
+void
+SoInput_FileInfo::connectRoutes(void)
+{
+  const SbName * routeptr = this->routelist.getArrayPtr();
+  const int n = this->routelist.getLength();
+  for (int i = 0; i < n; i += 4) {
+    if (!SoBase::connectRoute(routeptr[i],
+                              routeptr[i+1],
+                              routeptr[i+2],
+                              routeptr[i+3])) {
+      SoDebugError::postWarning("SoInput_FileInfo::connectRoutes",
+                                "Unable to create route from %s.%s to %s.%s",
+                                routeptr[i].getString(),
+                                routeptr[i+1].getString(),
+                                routeptr[i+2].getString(),
+                                routeptr[i+3].getString());
+
+    }
+  }
 }
 
 
