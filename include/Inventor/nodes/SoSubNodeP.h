@@ -61,6 +61,15 @@
     SoNode::setCompatibilityTypes(_class_::getClassTypeId(), _fileformats_); \
   } while (0)
 
+
+// Convenience defines to use for the second parameter of the
+// SO_NODE_INTERNAL_INIT_CLASS() macro (for internal node classes).
+//
+// It's is handy to use these defines instead of the enum flags
+// directly, as these can be updated in this one central location,
+// instead of having to update all node source files on each new Coin
+// major release.
+
 #define SO_FROM_COIN_2_0 \
   (SoNode::COIN_2_0)
 
