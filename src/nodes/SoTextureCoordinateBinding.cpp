@@ -77,11 +77,7 @@ SoTextureCoordinateBinding::~SoTextureCoordinateBinding()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoTextureCoordinateBinding class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoTextureCoordinateBinding::initClass(void)
 {

@@ -208,6 +208,7 @@ SoShapeHints::~SoShapeHints()
 {
 }
 
+// doc in super
 void
 SoShapeHints::initClass(void)
 {

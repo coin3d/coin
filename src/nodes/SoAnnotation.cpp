@@ -56,11 +56,7 @@ SoAnnotation::~SoAnnotation()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoAnnotation class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoAnnotation::initClass(void)
 {

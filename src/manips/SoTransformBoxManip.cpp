@@ -25,6 +25,7 @@
 SO_NODE_SOURCE(SoTransformBoxManip);
 
 
+// doc in super
 void
 SoTransformBoxManip::initClass(void)
 {

@@ -71,6 +71,7 @@ SoProfileCoordinate3::~SoProfileCoordinate3()
 {
 }
 
+// doc in super
 void
 SoProfileCoordinate3::initClass(void)
 {

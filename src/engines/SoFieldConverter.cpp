@@ -93,6 +93,7 @@ SoFieldConverter::~SoFieldConverter()
 {
 }
 
+// doc in super
 void
 SoFieldConverter::initClass(void)
 {

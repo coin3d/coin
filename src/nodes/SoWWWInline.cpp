@@ -208,11 +208,7 @@ SoWWWInline::~SoWWWInline()
   private_data_dict->remove((unsigned long) this);
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoWWWInline class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoWWWInline::initClass(void)
 {

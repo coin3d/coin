@@ -172,12 +172,7 @@ SoText2::~SoText2()
   delete THIS;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoText2 class. This includes setting up the
-  type system, among other things.
-*/
-
+// doc in super
 void
 SoText2::initClass(void)
 {

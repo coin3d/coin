@@ -96,6 +96,7 @@ SoPickStyle::~SoPickStyle()
 {
 }
 
+// doc in super
 void
 SoPickStyle::initClass(void)
 {

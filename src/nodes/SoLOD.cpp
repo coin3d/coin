@@ -87,11 +87,7 @@ SoLOD::~SoLOD()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoLOD class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoLOD::initClass(void)
 {

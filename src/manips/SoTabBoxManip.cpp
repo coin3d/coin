@@ -24,6 +24,7 @@
 
 SO_NODE_SOURCE(SoTabBoxManip);
 
+// doc in super
 void
 SoTabBoxManip::initClass(void)
 {

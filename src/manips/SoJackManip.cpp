@@ -25,6 +25,7 @@
 SO_NODE_SOURCE(SoJackManip);
 
 
+// doc in super
 void
 SoJackManip::initClass(void)
 {

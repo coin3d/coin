@@ -27,6 +27,7 @@
 SO_NODE_SOURCE(SoCenterballManip);
 
 
+// doc in super
 void
 SoCenterballManip::initClass(void)
 {

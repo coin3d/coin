@@ -120,6 +120,7 @@ SoPolygonOffset::~SoPolygonOffset()
 {
 }
 
+// doc in super
 void
 SoPolygonOffset::initClass(void)
 {

@@ -49,11 +49,7 @@ SoTextureCoordinateFunction::~SoTextureCoordinateFunction()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoTextureCoordinateFunction class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoTextureCoordinateFunction::initClass(void)
 {

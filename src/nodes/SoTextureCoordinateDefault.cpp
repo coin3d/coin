@@ -50,11 +50,7 @@ SoTextureCoordinateDefault::~SoTextureCoordinateDefault()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoTextureCoordinateDefault class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoTextureCoordinateDefault::initClass(void)
 {

@@ -83,6 +83,7 @@ SoUnknownNode::~SoUnknownNode()
   delete this->alternate;
 }
 
+// doc in super
 void
 SoUnknownNode::initClass(void)
 {

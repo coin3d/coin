@@ -61,11 +61,7 @@ SoMultipleCopy::~SoMultipleCopy()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoMultipleCopy class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoMultipleCopy::initClass(void)
 {

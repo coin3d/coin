@@ -25,6 +25,7 @@
 SO_NODE_SOURCE(SoTrackballManip);
 
 
+// doc in super
 void
 SoTrackballManip::initClass(void)
 {

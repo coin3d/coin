@@ -85,11 +85,7 @@ SoWWWAnchor::~SoWWWAnchor()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoWWWAnchor class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoWWWAnchor::initClass(void)
 {

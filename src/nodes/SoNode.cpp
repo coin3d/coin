@@ -257,7 +257,7 @@ SoNode::incNextActionMethodIndex(void)
   SoNode::nextActionMethodIndex++;
 }
 
-// Overridden from parent class.
+// doc in super
 void
 SoNode::initClass(void)
 {

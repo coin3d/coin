@@ -102,11 +102,7 @@ SoSwitch::~SoSwitch()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoSwitch class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoSwitch::initClass(void)
 {

@@ -118,11 +118,7 @@ SoArray::~SoArray()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoArray class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoArray::initClass(void)
 {

@@ -29,6 +29,7 @@
 SO_NODE_SOURCE(SoTransformerManip);
 
 
+// doc in super
 void
 SoTransformerManip::initClass(void)
 {

@@ -519,7 +519,7 @@ SoConvertAll::register_converter(converter_func * f, SoType from, SoType to)
   assert(nonexist);
 }
 
-
+// doc in super
 void
 SoConvertAll::initClass(void)
 {

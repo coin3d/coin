@@ -59,11 +59,7 @@ SoTextureCoordinate2::~SoTextureCoordinate2()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoTextureCoordinate2 class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoTextureCoordinate2::initClass(void)
 {
