@@ -569,13 +569,16 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             zval = farz;
           }
           if(do2Dtextures)
-            glTexCoord2f(v0[0], v0[1]);           
+            glTexCoord2f(v0[0] + xpos/fontspec->size, 
+                         v0[1] + ypos/fontspec->size);           
           glVertex3f(v0[0] * fontspec->size + xpos, v0[1] * fontspec->size + ypos, zval);
           if(do2Dtextures)
-            glTexCoord2f(v1[0], v1[1]);                       
+            glTexCoord2f(v1[0] + xpos/fontspec->size, 
+                         v1[1] + ypos/fontspec->size);
           glVertex3f(v1[0] * fontspec->size + xpos, v1[1] * fontspec->size + ypos, zval);
           if(do2Dtextures)
-            glTexCoord2f(v2[0], v2[1]);           
+            glTexCoord2f(v2[0] + xpos/fontspec->size, 
+                         v2[1] + ypos/fontspec->size);
           glVertex3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, zval);
 
         }
@@ -845,6 +848,23 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
   vertex.setDetail(&detail);
   vertex.setMaterialIndex(matidx);
 
+  SbBool do2Dtextures = FALSE;
+  SbBool do3Dtextures = FALSE;
+  if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
+  else if (SoGLTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
+
+  // FIXME: implement proper support for 3D-texturing, and get rid of
+  // this. (20031010 handegar)
+  if (do3Dtextures) {
+    static SbBool first = TRUE;
+    if (first) {
+      first = FALSE;
+      SoDebugError::postWarning("SoText3::GLRender",
+                                "3D-textures not supported for this node type yet.");
+    }
+  }
+
+
   int i, n = this->widths.getLength();
 
   int firstprofile = -1;
@@ -941,10 +961,22 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
             v0 = coords[*ptr++];
             zval = farz;
           }
+
+          if(do2Dtextures) {
+            vertex.setTextureCoords(SbVec2f(v0[0] + xpos/fontspec->size, v0[1] + ypos/fontspec->size));
+          }          
           vertex.setPoint(SbVec3f(v0[0] * fontspec->size + xpos, v0[1] * fontspec->size + ypos, zval));
           PUBLIC(this)->shapeVertex(&vertex);
+
+          if(do2Dtextures) {
+            vertex.setTextureCoords(SbVec2f(v1[0] + xpos/fontspec->size, v1[1] + ypos/fontspec->size));
+          }   
           vertex.setPoint(SbVec3f(v1[0] * fontspec->size + xpos, v1[1] * fontspec->size + ypos, zval));
           PUBLIC(this)->shapeVertex(&vertex);
+
+          if(do2Dtextures) {
+            vertex.setTextureCoords(SbVec2f(v2[0] + xpos/fontspec->size, v2[1] + ypos/fontspec->size));
+          }   
           vertex.setPoint(SbVec3f(v2[0] * fontspec->size + xpos, v2[1] * fontspec->size + ypos, zval));
           PUBLIC(this)->shapeVertex(&vertex);
         }

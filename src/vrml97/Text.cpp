@@ -413,18 +413,19 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
         
+     
         if (do2Dtextures) {
-          glTexCoord2f(v0[0], v0[1]);
+          glTexCoord2f(v0[0] + xpos/PRIVATE(this)->textsize, v0[1] + ypos/PRIVATE(this)->textsize);
         }
         glVertex3f((v0[0]*PRIVATE(this)->textsize) + xpos, (v0[1]*PRIVATE(this)->textsize) + ypos, 0.0f);
 
         if (do2Dtextures) {
-          glTexCoord2f(v1[0], v1[1]);
+          glTexCoord2f(v1[0] + xpos/PRIVATE(this)->textsize, v1[1] + ypos/PRIVATE(this)->textsize);
         }
         glVertex3f(v1[0] * PRIVATE(this)->textsize + xpos, v1[1] * PRIVATE(this)->textsize + ypos, 0.0f);
 
         if (do2Dtextures) {
-          glTexCoord2f(v2[0], v2[1]);
+          glTexCoord2f(v2[0] + xpos/PRIVATE(this)->textsize, v2[1] + ypos/PRIVATE(this)->textsize);
         }
         glVertex3f(v2[0] * PRIVATE(this)->textsize + xpos, v2[1] * PRIVATE(this)->textsize + ypos, 0.0f);
 
@@ -851,19 +852,22 @@ SoVRMLText::generatePrimitives(SoAction * action)
         v2 = coords[*ptr++];
 
         if (do2Dtextures) {
-          vertex.setTextureCoords(SbVec2f(v0[0], v0[1]));
+          vertex.setTextureCoords(SbVec2f(v0[0] + xpos/PRIVATE(this)->textsize, 
+                                          v0[1] + ypos/PRIVATE(this)->textsize));
         }
         vertex.setPoint(SbVec3f(v0[0] * PRIVATE(this)->textsize + xpos, v0[1] * PRIVATE(this)->textsize + ypos, 0.0f));
         this->shapeVertex(&vertex);
 
         if (do2Dtextures) {
-          vertex.setTextureCoords(SbVec2f(v1[0], v1[1]));
+          vertex.setTextureCoords(SbVec2f(v1[0] + xpos/PRIVATE(this)->textsize, 
+                                          v1[1] + ypos/PRIVATE(this)->textsize));
         }
         vertex.setPoint(SbVec3f(v1[0] * PRIVATE(this)->textsize + xpos, v1[1] * PRIVATE(this)->textsize + ypos, 0.0f));
         this->shapeVertex(&vertex);
 
         if (do2Dtextures) {
-          vertex.setTextureCoords(SbVec2f(v2[0], v2[1]));
+          vertex.setTextureCoords(SbVec2f(v2[0] + xpos/PRIVATE(this)->textsize, 
+                                          v2[1] + ypos/PRIVATE(this)->textsize));
         }
         vertex.setPoint(SbVec3f(v2[0] * PRIVATE(this)->textsize + xpos, v2[1] * PRIVATE(this)->textsize + ypos, 0.0f));
         this->shapeVertex(&vertex);
