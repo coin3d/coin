@@ -20,8 +20,9 @@
 /*!
   \class SoVRMLAnchor SoVRMLAnchor.h Inventor/VRMLnodes/SoVRMLAnchor.h
   \brief The SoVRMLAnchor class is used for linking to other URL resources.
+  \ingroup VRMLnodes
 
-  The following documentation is copyright The Web3D Consortium, and 
+  The following documentation is copyright The Web3D Consortium, and
   is used by permission of the Consortium.
 
   \verbatim
@@ -52,10 +53,12 @@
   scene. An Anchor node with an empty url does nothing when its
   children are chosen. A description of how multiple Anchors and
   pointing-device sensors are resolved on activation is contained in
-  4.6.7, Sensor nodes.
+  4.6.7, Sensor nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.7).
 
   More details on the children, addChildren, and removeChildren fields
-  and eventIns can be found in 4.6.5, Grouping and children nodes.
+  and eventIns can be found in 4.6.5, Grouping and children nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5).
 
   The description field in the Anchor node specifies a textual
   description of the Anchor node. This may be used by browser-specific
@@ -91,7 +94,7 @@
   when the Anchor node's geometry (Box) is activated. If the named
   Viewpoint node is not found in the VRML file, the VRML file is
   loaded using the default Viewpoint node binding stack rules (see
-  6.53, Viewpoint).  If the url field is specified in the form
+  VRMLViewpoint).  If the url field is specified in the form
   "#ViewpointName" (i.e. no file name), the Viewpoint node with the
   given name ("ViewpointName") in the Anchor's run-time name scope(s)
   shall be bound (set_bind TRUE).  The results are undefined if there
@@ -99,17 +102,17 @@
   name scope(s). The results are undefined if the Anchor node is not
   part of any run-time name scope or is part of more than one run-time
   name scope. See 4.4.6, Run-time name scope, for a description of
-  run-time name scopes. See 6.53, Viewpoint, for the Viewpoint
+  run-time name scopes. See VRMLViewpoint, for the Viewpoint
   transition rules that specify how browsers shall interpret the
   transition from the old Viewpoint node to the new one. For example:
 
   \verbatim
 
-  Anchor { 
-    url "#Doorway" 
-    children Shape { 
-      geometry Sphere {} 
-    } 
+  Anchor {
+    url "#Doorway"
+    children Shape {
+      geometry Sphere {}
+    }
   }
   \endverbatim
 
@@ -117,34 +120,48 @@
   in the current world when the sphere is activated. In this case, if
   the Viewpoint is not found, no action occurs on activation.  More
   details on the url field are contained in 4.5, VRML and the World
-  Wide Web.  The bboxCenter and bboxSize fields specify a bounding box
+  Wide Web
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5).
+  The bboxCenter and bboxSize fields specify a bounding box
   that encloses the Anchor's children. This is a hint that may be used
   for optimization purposes. The results are undefined if the
   specified bounding box is smaller than the actual bounding box of
   the children at any time.  The default bboxSize value, (-1, -1, -1),
   implies that the bounding box is not specified and if needed shall
   be calculated by the browser. More details on the bboxCenter and
-  bboxSize fields can be found in 4.6.4, Bounding boxes.
+  bboxSize fields can be found in 4.6.4, Bounding boxes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.4).
+
 */
 
 /*!
   \var SoVRMLAnchor::url
-  
+
   The URL string.
 */
 
 /*!
   \var SoVRMLAnchor::description
-  
+
   The textual description of the URL.
 */
 
 /*!
   \var SoVRMLAnchor::parameter
-  
+
   May be used to supply additional information to the browser.
 
   Each string should be pairs of \e keyword = \e value.
+*/
+
+/*!
+  \var SoVRMLAnchor::bboxCenter
+  Children bounding box hint center. Default value is (0, 0, 0).
+*/
+
+/*!
+  \var SoVRMLAnchor::bboxSize
+  Children bounding box size hint. Default value is (-1, -1, -1).
 */
 
 #include <Inventor/VRMLnodes/SoVRMLAnchor.h>
@@ -156,15 +173,6 @@
 #include <stdlib.h>
 
 SO_NODE_SOURCE(SoVRMLAnchor);
-
-
-static SbString * dummystring = NULL;
-
-static void
-cleanup_anchor(void)
-{
-  delete dummystring;
-}
 
 // doc in parent
 void

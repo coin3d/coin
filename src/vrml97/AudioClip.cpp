@@ -20,10 +20,76 @@
 /*!
   \class SoVRMLAudioClip SoVRMLAudioClip.h Inventor/VRMLnodes/SoVRMLAudioClip.h
   \brief The SoVRMLAudioClip class is used to load and store audio data.
+  \ingroup VRMLnodes
 
-  Browsers should support at least the uncompressed PCM wavfile format,
-  but it is supported that browsers also support the MIDI file type 1
-  sound format.
+  WEB3DCOPYRIGHT
+
+  \verbatim
+  AudioClip {
+    exposedField   SFString description      ""
+    exposedField   SFBool   loop             FALSE
+    exposedField   SFFloat  pitch            1.0        # (0, inf)
+    exposedField   SFTime   startTime        0          # (-inf, inf)
+    exposedField   SFTime   stopTime         0          # (-inf, inf)
+    exposedField   MFString url              []
+    eventOut       SFTime   duration_changed
+    eventOut       SFBool   isActive
+  }
+  \endverbatim
+
+  An AudioClip node specifies audio data that can be referenced by
+  Sound nodes.  The description field specifies a textual description
+  of the audio source. A browser is not required to display the
+  description field but may choose to do so in addition to playing the
+  sound.  The url field specifies the URL from which the sound is
+  loaded.  Browsers shall support at least the wavefile format in
+  uncompressed PCM format (see
+  http://www.web3d.org/technicalinfo/specifications/vrml97/part1/bibliography.html#[WAV]).
+  It is recommended that browsers also support the MIDI file type 1
+  sound format 
+  (see http://www.web3d.org/technicalinfo/specifications/vrml97/part1/references.html#[MIDI]); 
+  MIDI files are presumed to use the
+  General MIDI patch set. Subclause 4.5, VRML and the World Wide Web
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.5),
+  contains details on the url field. The results are undefined when no
+  URLs refer to supported data types.
+  
+  The loop, startTime, and stopTime exposedFields and the isActive
+  eventOut, and their effects on the AudioClip node, are discussed in
+  detail in 4.6.9, Time-dependent nodes
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.9).
+  The "cycle" of an AudioClip is the length of time in seconds for one
+  playing of the audio at the specified pitch.  The pitch field
+  specifies a multiplier for the rate at which sampled sound is
+  played. Values for the pitch field shall be greater than
+  zero. Changing the pitch field affects both the pitch and playback
+  speed of a sound. A set_pitch event to an active AudioClip is
+  ignored and no pitch_changed eventOut is generated. If pitch is set
+  to 2.0, the sound shall be played one octave higher than normal and
+  played twice as fast. For a sampled sound, the pitch field alters
+  the sampling rate at which the sound is played. The proper
+  implementation of pitch control for MIDI (or other note sequence
+  sound clips) is to multiply the tempo of the playback by the pitch
+  value and adjust the MIDI Coarse Tune and Fine Tune controls to
+  achieve the proper pitch change.  A duration_changed event is sent
+  whenever there is a new value for the "normal" duration of the
+  clip. Typically, this will only occur when the current url in use
+  changes and the sound data has been loaded, indicating that the clip
+  is playing a different sound source.  The duration is the length of
+  time in seconds for one cycle of the audio for a pitch set to
+  1.0. Changing the pitch field will not trigger a duration_changed
+  event. A duration value of "-1" implies that the sound data has not
+  yet loaded or the value is unavailable for some reason. A
+  duration_changed event shall be generated if the AudioClip node is
+  loaded when the VRML file is read or the AudioClip node is added to
+  the scene graph.  The isActive eventOut may be used by other nodes
+  to determine if the clip is currently active. If an AudioClip is
+  active, it shall be playing the sound corresponding to the sound
+  time (i.e., in the sound's local time system with sample 0 at time
+  0): 
+  \verbatim
+  t = (now - startTime) modulo (duration / pitch)
+  \endverbatim
 */
 
 /*!

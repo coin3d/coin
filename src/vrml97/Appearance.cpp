@@ -20,9 +20,37 @@
 /*!
   \class SoVRMLAppearance SoVRMLAppearance.h Inventor/VRMLnodes/SoVRMLAppearance.h
   \brief The SoVRMLAppearance class specifies visual properties for shapes.
+  \ingroup VRMLnodes
+  
+  WEB3DCOPYRIGHT
 
-  Setting one or more of the \e material, \e texture and/or textureTransform
-  fields will set these properties for the Shape geometry.
+  \verbatim
+
+  Appearance {
+    exposedField SFNode material          NULL
+    exposedField SFNode texture           NULL
+    exposedField SFNode textureTransform  NULL
+  }
+  \endverbatim
+
+  The Appearance node specifies the visual properties of geometry. The
+  value for each of the fields in this node may be NULL. However, if
+  the field is non-NULL, it shall contain one node of the appropriate
+  type.  The material field, if specified, shall contain a VRMLMaterial
+  node. If the material field is NULL or unspecified, lighting is off
+  (all lights are ignored during rendering of the object that
+  references this Appearance) and the unlit object colour is (1, 1,
+  1). Details of the VRML lighting model are in 4.14, Lighting model
+  (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.14).
+
+  The texture field, if specified, shall contain one of the various
+  types of texture nodes (VRMLImageTexture, VRMLMovieTexture, or
+  VRMLPixelTexture).  If the texture node is NULL or the texture field
+  is unspecified, the object that references this Appearance is not
+  textured.  The textureTransform field, if specified, shall contain a
+  VRMLTextureTransform node. If the textureTransform is NULL or
+  unspecified, the textureTransform field has no effect.
+
 */
 
 /*!
@@ -32,7 +60,7 @@
 
 /*!
   \var SoSFNode SoVRMLAppearance::texture
-  Can contain a texture node (SoVRMLImageTexture, SoVRMLMovieTexture, SoVRMLPixelTexture or SoTexture2) node. Is NULL by default.
+  Can contain a texture node. Is NULL by default.
 */
 
 /*!
@@ -146,7 +174,7 @@ SoVRMLAppearance::GLRender(SoGLRenderAction * action)
     }
     action->popCurPath();
   }
-  
+
   if (this->texture.getValue() && SoTextureQualityElement::get(state) > 0.0f) {
     static SbColor white;
     white.setValue(1.0f, 1.0f, 1.0f);
