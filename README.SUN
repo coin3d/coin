@@ -1,12 +1,35 @@
+Here is some information about a few common problems when building on
+Sun Solaris platforms:
 
-The Forte compiler suite for SunOS/Solaris might complain about
-undefined symbols when trying to link Coin.  When these symbols
-contains the string "Crun", it means that libCrun is not linked
-in on the link line, but should be.  To get -lCrun to work, you
-might need to specify the linker path to that library.  Exactly
-where you will find it is system dependent, but somewhere under
-the Forte installation directory would be a good place to look.
+========================================================================
 
-One user had libCrun in /opt/forte-6.1/SUNWspro/WS6U1/lib/.
-As usual, "locate" and "find" are your friends...
+ 1 The Forte compiler suite for SunOS/Solaris might complain about
+   undefined symbols when trying to link Coin.  When these symbols
+   contains the string "Crun", it means that libCrun is not linked in
+   on the link line, but should be.
 
+   The workaround for this problem is to add LIBS="-lCrun" at the end
+   of the Coin configure invocation line, something like this:
+
+        $ <srcdir>/configure <youroptions> LIBS="-lCrun"
+
+   To get -lCrun to work, you might also need to specify the linker
+   path to that library.  Exactly where you will find it is system
+   dependent, but somewhere under the Forte installation directory
+   would be a good place to look.
+
+   One user had libCrun in /opt/forte-6.1/SUNWspro/WS6U1/lib/.  As
+   usual, "locate" and "find" are your friends.
+
+   (To let configure know about this extra path, add LDFLAGS="-L<path>"
+   at the end of the configure invocation, like explained for the LIBS
+   setting above.)
+
+========================================================================
+
+These are so far the only problems we are aware of on Sun Solaris
+platforms when trying to configure and build Coin. If you bump into
+any other problems, please let us know.
+
+--
+mortene@sim.no
