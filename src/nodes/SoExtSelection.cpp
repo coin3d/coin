@@ -155,7 +155,21 @@ public:
   static SoCallbackAction::Response myCallback(void *data,
                                                SoCallbackAction *action,
                                                const SoNode *node);
+  
+  SoCallbackAction::Response testShape(SoCallbackAction * action, const SoShape * shape);
 
+  SoCallbackAction::Response testBBox(SoCallbackAction * action,
+                                      const SbMatrix & projmatrix,
+                                      const SoShape * shape,
+                                      const SbBox2s & lassorect,
+                                      const SbBool full);
+
+  SoCallbackAction::Response testPrimitives(SoCallbackAction * action,
+                                            const SbMatrix & projmatrix,
+                                            const SoShape * shape,
+                                            const SbBox2s & lassorect,
+                                            const SbBool full);
+  
 };
 
 void
@@ -213,82 +227,9 @@ pointinpoly(const SbList <SbVec2s> & coords, float x, float y)
 SoCallbackAction::Response
 SoExtSelectionP::myCallback(void *data, SoCallbackAction *action, const SoNode *node)
 {
-  SoState * state = action->getState();
-
   SoExtSelection * ext = (SoExtSelection*)data;
-
-  SoShape *shape = (SoShape *)node;
-  SbBox3f bbox;
-  SbVec3f center;
-  shape->computeBBox(action, bbox, center);
-
-  SbVec3f mincorner = bbox.getMin();
-  SbVec3f maxcorner = bbox.getMax();
-
-  SbMatrix projmatrix;
-  projmatrix = (SoModelMatrixElement::get(state) *
-                SoViewingMatrixElement::get(state) *
-                SoProjectionMatrixElement::get(state));
-
-  SbBox2s shapebbox;
-
-  SbVec2s vppt;
-  SbVec3f normpt;
-  SbVec2s vpo = ext->pimpl->curvp.getViewportOriginPixels();
-  SbVec2s vps = ext->pimpl->curvp.getViewportSizePixels();
-
-  for(int i=0; i < 2; i++) {
-    for(int j=0; j < 2; j++) {
-      for(int k=0; k < 2; k++) {
-	SbVec3f corner(i ? mincorner[0] : maxcorner[0],
-                       j ? mincorner[1] : maxcorner[1],
-                       k ? mincorner[2] : maxcorner[2]);
-	projmatrix.multVecMatrix(corner, normpt);
-        normpt[0] += 1.0f;
-        normpt[1] += 1.0f;
-        normpt[0] *= 0.5f;
-        normpt[1] *= 0.5f;
-
-        normpt[0] *= (float) vps[0];
-        normpt[1] *= (float) vps[1];
-        normpt[0] += (float)vpo[0];
-        normpt[1] += (float)vpo[1];
-        
-        vppt[0] = (short) SbClamp(normpt[0], -32768.0f, 32767.0f);
-        vppt[1] = (short) SbClamp(normpt[1], -32768.0f, 32767.0f);
-        shapebbox.extendBy(vppt);
-      }
-    }
-  }
-
-  const SbList <SbVec2s> & coords = ext->pimpl->getCoords();;
-  switch(ext->lassoType.getValue()) {
-  case SoExtSelection::NOLASSO:
-    break;
-  case SoExtSelection::LASSO:
-#if 0
-    if ((pointinpoly(coords, bbminx,bbminy) == 1)
-	&& (pointinpoly(coords, bbmaxx, bbminy) == 1)
-	&& (pointinpoly(coords, bbminx, bbmaxy) == 1)
-	&& (pointinpoly(coords, bbmaxx, bbmaxy) == 1)) {
-    }
-#endif
-    break;
-
-  case SoExtSelection::RECTANGLE:
-    {
-      SbBox2s rectbbox;
-      rectbbox.extendBy(coords[0]);
-      rectbbox.extendBy(coords[1]);
-      if (rectbbox.intersect(shapebbox)) {
-        ext->startCBList->invokeCallbacks(ext);
-        ext->invokeSelectionPolicy((SoPath*) action->getCurPath(), TRUE);
-        ext->finishCBList->invokeCallbacks(ext);
-      }
-    }
-    break;
-  }
-  return SoCallbackAction::CONTINUE;
+  assert(node->isOfType(SoShape::getClassTypeId()));
+  return ext->pimpl->testShape(action, (const SoShape*) node); 
 }
 
 #undef THIS
@@ -684,3 +625,104 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 }
 
 #undef THIS
+
+#ifndef DOXYGEN_SKIP_THIS
+
+SoCallbackAction::Response
+SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
+{
+  int i;
+  SoState * state = action->getState();
+
+  SbBox2s rectbbox;
+  for (i = 0; i < this->coords.getLength(); i++) {
+    rectbbox.extendBy(this->coords[i]);
+  } 
+
+  SbMatrix projmatrix;
+  projmatrix = (SoModelMatrixElement::get(state) *
+                SoViewingMatrixElement::get(state) *
+                SoProjectionMatrixElement::get(state));
+
+  SbBool full = FALSE;
+  switch (this->master->lassoPolicy.getValue()) {
+  case SoExtSelection::FULL_BBOX:
+    full = TRUE;
+  case SoExtSelection::PART_BBOX:
+    return testBBox(action, projmatrix, shape, rectbbox, full);
+  case SoExtSelection::FULL:
+  case SoExtSelection::PART:
+  default:
+    assert(0 && "unknown lasso policy");
+    break;
+  }
+  return SoCallbackAction::CONTINUE;
+}
+
+
+SoCallbackAction::Response 
+SoExtSelectionP::testBBox(SoCallbackAction * action,
+                          const SbMatrix & projmatrix,
+                          const SoShape * shape,
+                          const SbBox2s & lassorect,
+                          const SbBool full)
+{
+  SbBox3f bbox;
+  SbVec3f center;
+  ((SoShape*)shape)->computeBBox(action, bbox, center);
+  
+  SbVec3f mincorner = bbox.getMin();
+  SbVec3f maxcorner = bbox.getMax();
+
+  SbBox2s shapebbox;
+
+  SbVec2s vppt;
+  SbVec3f normpt;
+  SbVec2s vpo = this->curvp.getViewportOriginPixels();
+  SbVec2s vps = this->curvp.getViewportSizePixels();
+
+  for (int i = 0; i < 8; i++) {
+    SbVec3f corner(i & 1 ? mincorner[0] : maxcorner[0],
+                   i & 2 ? mincorner[1] : maxcorner[1],
+                   i & 4 ? mincorner[2] : maxcorner[2]);
+    projmatrix.multVecMatrix(corner, normpt);
+    normpt[0] += 1.0f;
+    normpt[1] += 1.0f;
+    normpt[0] *= 0.5f;
+    normpt[1] *= 0.5f;
+    
+    normpt[0] *= (float) vps[0];
+    normpt[1] *= (float) vps[1];
+    normpt[0] += (float)vpo[0];
+    normpt[1] += (float)vpo[1];
+    
+    vppt[0] = (short) SbClamp(normpt[0], -32768.0f, 32767.0f);
+    vppt[1] = (short) SbClamp(normpt[1], -32768.0f, 32767.0f);
+    shapebbox.extendBy(vppt);
+  }
+  if (lassorect.intersect(shapebbox)) {
+    if (!full ||
+        (shapebbox.getMin()[0] >= lassorect.getMin()[0] &&
+         shapebbox.getMin()[1] >= lassorect.getMin()[1] &&
+         shapebbox.getMax()[0] <= lassorect.getMax()[0] &&
+         shapebbox.getMax()[1] <= lassorect.getMax()[1])) {
+      this->master->startCBList->invokeCallbacks(this->master);
+      this->master->invokeSelectionPolicy((SoPath*) action->getCurPath(), TRUE);
+      this->master->finishCBList->invokeCallbacks(this->master);
+    }
+  }
+  return SoCallbackAction::CONTINUE;
+}
+
+SoCallbackAction::Response 
+SoExtSelectionP::testPrimitives(SoCallbackAction * action,
+                                const SbMatrix & projmatrix,
+                                const SoShape * shape,
+                                const SbBox2s & lassorect,
+                                const SbBool full)
+{
+  COIN_STUB();
+  return SoCallbackAction::CONTINUE;
+}
+
+#endif // DOXYGEN_SKIP_THIS
