@@ -143,6 +143,7 @@ SoDragger::SoDragger(void)
   this->currentEvent = NULL;
   this->pickedPath = NULL;
   this->draggerCache = NULL;
+  this->isGrabbing = FALSE;
 }
 
 /*!
@@ -691,7 +692,7 @@ SoDragger::setTempPathToThis(const SoPath *)
 
 /*!
   Called when dragger starts grabbing events (mouse button down).
-  Overload if toy need to do something extra in your dragger.
+  Overload if you need to do something extra in your dragger.
   \sa grabEventCleanup()
 */
 void
@@ -699,8 +700,6 @@ SoDragger::grabEventsSetup(void)
 {
   assert(this->eventAction);
   this->eventAction->setGrabber(this);
-
-  this->updateDraggerCache(this->eventAction->getCurPath());
 }
 
 /*!
@@ -1048,7 +1047,8 @@ SoDragger::handleEvent(SoHandleEventAction * action)
       this->pickedPath->ref();
 
       this->startLocaterPos = event->getPosition();
-      this->grabEventsSetup();
+      this->isGrabbing = FALSE;
+      this->updateDraggerCache(this->eventAction->getCurPath());
       this->saveStartParameters();
       this->startCB.invokeCallbacks(this);
     }
@@ -1056,7 +1056,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   else if (this->isActive.getValue() && SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
     this->isActive = FALSE;
     this->eventHandled(event, action);
-    this->grabEventsCleanup();
+    if (this->isGrabbing) this->grabEventsCleanup();
     if (this->pickedPath) {
       this->pickedPath->unref();
       this->pickedPath = NULL;
@@ -1067,6 +1067,10 @@ SoDragger::handleEvent(SoHandleEventAction * action)
     this->eventHandled(event, action);
     this->updateDraggerCache(NULL);
     this->motionCB.invokeCallbacks(this);
+    if (!this->isGrabbing) {
+      this->grabEventsSetup();
+      this->isGrabbing = TRUE;
+    }
   }
   else if (this->isActive.getValue()) {
     this->eventAction = action;

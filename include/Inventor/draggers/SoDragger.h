@@ -164,6 +164,7 @@ private:
   SbViewportRegion viewport;
   SbVec2s startLocaterPos;
   SoDragger *activeChildDragger;
+  SbBool isGrabbing;
 
   SbBool isPicked(SoPath *path);
   void eventHandled(const SoEvent *event, SoHandleEventAction *action);
