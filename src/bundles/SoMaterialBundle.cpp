@@ -171,7 +171,13 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
   }
   else {
     if (!isBetweenBeginEnd) {
-      diffuseElt->send(index, 1.0f - transparencyElt->get(index));
+      // If the transparency element has fewer items than the diffuse element,
+      // use transparency 0 (see SoMaterialBinding man page)
+      int transp_index = index;
+      if (diffuseElt->getNum() > transparencyElt->getNum()) {
+         transp_index = 0;
+      }
+      diffuseElt->send(index, 1.0f - transparencyElt->get(transp_index));
       diffuseElt->send(index);
     }
     else {
