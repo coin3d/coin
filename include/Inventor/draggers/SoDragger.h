@@ -58,6 +58,15 @@ public:
 
   enum ProjectorFrontSetting { FRONT, BACK, USE_PICK };
 
+  // overload these in case we decide to do some extra work later
+  virtual void callback(SoCallbackAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void getMatrix(SoGetMatrixAction * action);
+  virtual void rayPick(SoRayPickAction * action);
+  virtual void search(SoSearchAction * action);
+  virtual void write(SoWriteAction * action);
+  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+
   void addStartCallback(SoDraggerCB * func, void * data = NULL);
   void removeStartCallback(SoDraggerCB * func, void * data = NULL);
   void addMotionCallback(SoDraggerCB * func, void * data = NULL);
@@ -153,6 +162,7 @@ protected:
   void updateDraggerCache(const SoPath * path);
 
 private:
+  void updateElements(class SoState * state);
   SbBool isPicked(SoPath * path);
   void eventHandled(const SoEvent * event, SoHandleEventAction * action);
   static float minscale;

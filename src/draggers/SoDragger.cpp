@@ -87,6 +87,24 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
+#include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/elements/SoCreaseAngleElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/nodes/SoMatrixTransform.h>
 #include <Inventor/SoPickedPoint.h>
@@ -259,6 +277,125 @@ SoDragger::initClasses(void)
   SoTransformerDragger::initClass();
   SoTranslate1Dragger::initClass();
   SoTranslate2Dragger::initClass();
+}
+
+// private method that sets some elements to default 
+// (for our draggers) values
+void 
+SoDragger::updateElements(SoState * state)
+{
+  if (state->isElementEnabled(SoShapeHintsElement::getClassStackIndex())) {
+    // turn on backface culling for draggers
+    SoShapeHintsElement::set(state, this,
+                             SoShapeHintsElement::COUNTERCLOCKWISE,
+                             SoShapeHintsElement::SOLID,
+                             SoShapeHintsElement::CONVEX);
+  }
+  if (state->isElementEnabled(SoTextureImageElement::getClassStackIndex())) {
+    // clear texture data
+    SoTextureImageElement::setDefault(state, this);
+  }
+  if (state->isElementEnabled(SoGLTextureEnabledElement::getClassStackIndex())) {
+    // disable texture
+    SoGLTextureEnabledElement::set(state, this, FALSE);
+  }
+  if (state->isElementEnabled(SoNormalBindingElement::getClassStackIndex())) {
+    // make default
+    SoNormalBindingElement::set(state, SoNormalBindingElement::DEFAULT);
+  }
+  if (state->isElementEnabled(SoMaterialBindingElement::getClassStackIndex())) {
+    // make default
+    SoMaterialBindingElement::set(state, SoMaterialBindingElement::DEFAULT);
+  }
+  if (state->isElementEnabled(SoLightModelElement::getClassStackIndex())) {
+    // we need phong shading for our geometry
+    SoLightModelElement::set(state, this, SoLightModelElement::PHONG);
+  }
+
+  if (state->isElementEnabled(SoNormalElement::getClassStackIndex())) {
+    // lines/shapes will use normals if on state. We don't want that.
+    SoNormalElement::set(state, this, 0, NULL);
+  }
+  if (state->isElementEnabled(SoLineWidthElement::getClassStackIndex())) {
+    // make default
+    SoLineWidthElement::set(state, this, SoLineWidthElement::getDefault());
+  }
+  if (state->isElementEnabled(SoLinePatternElement::getClassStackIndex())) {
+    // make default
+    SoLinePatternElement::set(state, this, SoLinePatternElement::getDefault());
+  }
+  if (state->isElementEnabled(SoCreaseAngleElement::getClassStackIndex())) {
+    // set to 0.5, which is the value we like 
+    SoCreaseAngleElement::set(state, this, 0.5f);
+  }
+  if (state->isElementEnabled(SoComplexityElement::getClassStackIndex())) {
+    // make default
+    SoComplexityElement::set(state, this, SoComplexityElement::getDefault());
+  }
+  if (state->isElementEnabled(SoComplexityElement::getClassStackIndex())) {
+    // make default
+    SoComplexityTypeElement::set(state, this, SoComplexityTypeElement::getDefault());
+  }
+  // hopefully we didn't forget something...
+}
+
+// the action methods are overloaded in case we decide to do some
+// extra work before passing the control on the SoBaseKit
+void
+SoDragger::callback(SoCallbackAction * action)
+{
+  SoState * state = action->getState();
+  state->push();
+  inherited::callback(action);
+  state->pop();
+}
+
+void 
+SoDragger::GLRender(SoGLRenderAction * action)
+{
+  SoState * state = action->getState();
+  state->push();
+  this->updateElements(state);
+  inherited::GLRender(action);
+  state->pop();
+}
+
+void 
+SoDragger::getMatrix(SoGetMatrixAction * action)
+{
+  inherited::getMatrix(action);
+}
+
+void 
+SoDragger::rayPick(SoRayPickAction * action)
+{
+  SoState * state = action->getState();
+  state->push();
+  this->updateElements(state);
+  inherited::rayPick(action);
+  state->pop();
+}
+
+void 
+SoDragger::search(SoSearchAction * action)
+{
+  inherited::search(action);
+}
+
+void 
+SoDragger::write(SoWriteAction * action)
+{
+  inherited::write(action);
+}
+
+void 
+SoDragger::getPrimitiveCount(SoGetPrimitiveCountAction * action)
+{
+  SoState * state = action->getState();
+  state->push();
+  this->updateElements(state);
+  inherited::getPrimitiveCount(action);
+  state->pop();
 }
 
 /*!
