@@ -126,9 +126,14 @@
 */
 /*!
   \var SoSelection::Policy SoSelection::SINGLE
+
   Only one object can be selected at any time. When the user picks a
   new object, the previous selection will be unselected. If the user
   picks on nothing, the current selection will be unselected.
+
+  Note that if a new selection matches one already present in the
+  selection list, neither a deselect nor a select notification
+  callback will be made about that selection path.
 */
 /*!
   \var SoSelection::Policy SoSelection::TOGGLE
@@ -641,10 +646,32 @@ SoSelection::invokeSelectionPolicy(SoPath * path,
 void
 SoSelection::performSingleSelection(SoPath * path)
 {
-  while (this->getNumSelected()) {
-    this->removePath(this->getNumSelected()-1);
+  // Make a copy of the path from the selection node down, to use for
+  // comparisons versus already selected paths.
+  SoPath * cmppath = path ? this->copyFromThis(path) : NULL;
+  if (cmppath) { cmppath->ref(); }
+
+  const int nrsel = this->getNumSelected();
+  SbBool alreadyselected = FALSE;
+
+  // Remove all selected paths already present, *except* if one of
+  // them matches the new selection path -- then we'll just keep it.
+  for (int i = (nrsel - 1); i >= 0; i--) {
+    SoPath * selp = this->getPath(i);
+
+    // If selection happened on an already selected path, just keep it
+    // in and don't trigger a "deselect + select" pair of
+    // notifications.
+    if (cmppath && (*selp == *cmppath)) { alreadyselected = TRUE; }
+    else { this->removePath(i); }
   }
-  if (path) this->select(path);
+
+  // If path was not already selected, then add it to selection
+  // list. (And since this is SINGLE mode selection, it will now be
+  // the only selected path.)
+  if (path && !alreadyselected) { this->select(path); }
+
+  if (cmppath) { cmppath->unref(); }
 }
 
 /*!
