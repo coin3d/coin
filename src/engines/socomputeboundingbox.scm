@@ -77,7 +77,6 @@ Separator { \
     (-> searchaction 'getpath)))
 
 ;; Connect SoComputeBoundingBox engine to path.
-;; FIXME: this shows off Bugzilla #203. 20000925 mortene.
 (-> (-> computebbox 'path) 'setvalue conepath)
 
 ;; Change cone to see that notification works.
