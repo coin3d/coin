@@ -32,6 +32,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/tidbits.h>
@@ -658,6 +659,7 @@ SoPrimitiveVertexCache::fit(void)
 #undef PRIVATE
 
 
+
 SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
 {
   unsigned long key = 0;
@@ -673,6 +675,12 @@ SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
     key ^= (ptr[i]<<shift);
   }
   return key;
+}
+
+int 
+SoPrimitiveVertexCache::Vertex::operator==(const Vertex & v)
+{
+  return memcmp(this, &v, sizeof(v)) == 0;
 }
 
 void 

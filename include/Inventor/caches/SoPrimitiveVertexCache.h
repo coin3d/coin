@@ -48,11 +48,11 @@ public:
     COLOR = 0x04,
     ALL = (NORMAL|TEXCOORD|COLOR)
   };
-  
+
   void renderTriangles(SoState * state, const int arrays = ALL) const;
   void renderLines(SoState * state, const int arrays = ALL) const;
   void renderPoints(SoState * state, const int array = ALL) const;
-  
+
   void addTriangle(const SoPrimitiveVertex * v0,
                    const SoPrimitiveVertex * v1,
                    const SoPrimitiveVertex * v2,
@@ -77,7 +77,7 @@ public:
 
   int getNumLineIndices(void) const;
   int getNumPointIndices(void) const;
-  
+
   const int32_t * getLineIndices(void) const;
   const int32_t * getPointIndices(void) const;
 
@@ -96,6 +96,10 @@ private:
 
     // needed for SbHash
     operator unsigned long(void) const;
+    
+    // needed, since if we don't add this the unsigned long operator
+    // will be used when comparing two vertices.
+    int operator==(const Vertex & v);
   };
 
   SoPrimitiveVertexCacheP * pimpl;
