@@ -50,11 +50,15 @@ echo "/Volumes/$VOLNAME/background.png. Make sure \"This window only\" is chosen
 echo "When done, press enter to continue."
 read
 # Hide files
+/Developer/Tools/SetFile -a V /Volumes/$VOLNAME/.VolumeIcon.icns
 /Developer/Tools/SetFile -a V /Volumes/$VOLNAME/.DS_Store
 /Developer/Tools/SetFile -a V /Volumes/$VOLNAME/Desktop\ DB
 /Developer/Tools/SetFile -a V /Volumes/$VOLNAME/Desktop\ DF
 /Developer/Tools/SetFile -a V /Volumes/$VOLNAME/background.png
-hdiutil detach $DEVICE -quiet
+# We have a custom volume icon
+/Developer/Tools/SetFile -a C /Volumes/$VOLNAME
+
 # Convert to a compressed, read-only image
+hdiutil detach $DEVICE -quiet
 hdiutil convert $OUTNAME.tmp.sparseimage -quiet -format UDZO -o $OUTNAME
 rm $OUTNAME.tmp.sparseimage
