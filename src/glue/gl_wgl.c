@@ -25,6 +25,7 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include <stdlib.h>
 #include "gl_wgl.h"
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
