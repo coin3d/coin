@@ -72,7 +72,7 @@ private:
   coin_bspnode *left;
   coin_bspnode *right;
   int dimension;   // which dimension?
-  float position;  // position in dimension
+  double position;  // position in dimension (double to avoid floating point precision problems)
   SbList <int> indices;
   SbList <SbVec3f> *pointsArray;
 };
@@ -94,7 +94,7 @@ coin_bspnode::~coin_bspnode()
 inline int
 coin_bspnode::leftOf(const SbVec3f &pt) const
 {
-  return pt[this->dimension] < this->position;
+  return double(pt[this->dimension]) < this->position;
 }
 
 int
@@ -200,7 +200,7 @@ coin_bspnode::split()
   }
   SbVec3f diag = box.getMax() - box.getMin();
   int dim;
-  float pos;
+  double pos;
 
   if (diag[0] > diag[1]) {
     if (diag[0] > diag[2]) dim = DIM_YZ;
@@ -227,7 +227,7 @@ coin_bspnode::split()
   }
 
 #else
-  pos = (box.getMin()[this->dimension]+box.getMax()[this->dimension]) / 2.0f;
+  pos = (double(box.getMin()[this->dimension])+double(box.getMax()[this->dimension])) / 2.0;
 #endif // BSP_SORTED_SPLIT
 
   this->position = pos;
