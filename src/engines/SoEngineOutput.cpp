@@ -155,17 +155,33 @@ SoEngineOutput::setContainer(SoEngine * engine)
 /*!
   Adds \a f to the list of connections from this output.
 
+  Adds 1 to the reference count of the container engine.
+
   \sa removeConnection(), getForwardConnections()
 */
 void
 SoEngineOutput::addConnection(SoField * f)
 {
   int i = this->slaves.find(f);
-  if (i < 0) this->slaves.append(f);
+#if COIN_DEBUG
+  if (i != -1) {
+    SoDebugError::postWarning("SoEngineOutput::addConnection",
+                              "connection from %p already made", f);
+    return;
+  }
+#endif // COIN_DEBUG
+  this->slaves.append(f);
+
+  this->getContainer()->ref();
 }
 
 /*!
   Removes \a f from the list of connections from this output.
+
+  Subtracts 1 from the reference count of the container engine. If the
+  reference count reaches zero (which will happen if this was the last
+  connection and the application programmer did not explicitly \e ref
+  the engine), the container engine will be deallocated.
 
   \sa addConnection(), getForwardConnections()
 */
@@ -173,7 +189,16 @@ void
 SoEngineOutput::removeConnection(SoField * f)
 {
   int i = this->slaves.find(f);
-  if (i >= 0) this->slaves.remove(i);
+#if COIN_DEBUG
+  if (i == -1) {
+    SoDebugError::postWarning("SoEngineOutput::removeConnection",
+                              "no connection from %p present", f);
+    return;
+  }
+#endif // COIN_DEBUG
+  this->slaves.remove(i);
+
+  this->getContainer()->unref();
 }
 
 /*!

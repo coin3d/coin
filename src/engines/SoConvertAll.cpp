@@ -837,6 +837,9 @@ SoConvertAll::SoConvertAll(const SoType from, const SoType to)
 
 SoConvertAll::~SoConvertAll()
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoConvertAll::~SoConvertAll", "%p", this);
+#endif // debug
   delete this->input;
 }
 

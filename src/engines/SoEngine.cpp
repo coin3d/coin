@@ -30,6 +30,17 @@
   fields in the scene graph, 2) as a convenient way to animate parts
   of the scene graph (most often geometry, but also other aspects of
   the scene).
+
+  The reference count of an engine will be increased by 1 for each
+  connection made to one of its engine outputs, and decreased by one
+  for a disconnect. See SoEngineOutput::addConnection() and
+  SoEngineOutput::removeConnection(). When the reference count goes
+  down to zero, the engine will automatically be destroyed, and
+  subsequent attempts at using the engine will lead to a crash.
+
+  If you want complete control over when an engine gets destructed,
+  use SoBase::ref() and SoBase::unref() for explicit
+  referencing/dereferencing.
 */
 
 #include <Inventor/engines/SoEngines.h>
