@@ -166,6 +166,10 @@ SoGLCacheList::call(SoGLRenderAction * action)
         // OpenGL commands are sent when _building_ a cache. This
         // makes it likely that such problems are due to faulty GL
         // drivers.
+        //
+        // If this happens, try to set IV_SEPARATOR_MAX_CACHES=0 to
+        // check if the GL error is still present even when not using
+        // GL displaylists.
 
         static SbBool chkglerr = sogl_glerror_debugging();
         if (chkglerr) {
@@ -359,9 +363,6 @@ SoGLCacheList::call(SoGLRenderAction * action)
         //       871.44604, 1419.9783, 1419.9783, 1419.9783,
         //       1419.9783 ]
         // -----8<---- [snip] ------------------8<---- [snip] -------------
-   } 
-}
-
 
 #endif // COIN_DEBUG
 
