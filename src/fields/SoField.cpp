@@ -1582,8 +1582,11 @@ SoField::read(SoInput * in, const SbName & name)
   SbBool readok;
   if (in->checkISReference(this->getContainer(), name, readok) || readok == FALSE) {
     if (!readok) {
-      SoReadError::post(in, "Couldn't read value for field \"%s\"",
-                        name.getString());
+      SoFieldContainer * fc = this->getContainer();
+      SbString s("");
+      if (fc) { s.sprintf(" of %s", fc->getTypeId().getName().getString()); }
+      SoReadError::post(in, "Couldn't read value for field \"%s\"%s",
+                        name.getString(), s.getString());
     }
     return readok;
   }
@@ -1642,8 +1645,11 @@ SoField::read(SoInput * in, const SbName & name)
       
       // Read field value(s).
       if (!this->readValue(in)) {
-        SoReadError::post(in, "Couldn't read value for field \"%s\"",
-                          name.getString());
+        SoFieldContainer * fc = this->getContainer();
+        SbString s("");
+        if (fc) { s.sprintf(" of %s", fc->getTypeId().getName().getString()); }
+        SoReadError::post(in, "Couldn't read value for field \"%s\"%s",
+                          name.getString(), s.getString());
         return FALSE;
       }
 
@@ -1665,8 +1671,11 @@ SoField::read(SoInput * in, const SbName & name)
   else { // Binary file format.
     // Read field value(s).
     if (!this->readValue(in)) {
-      SoReadError::post(in, "Couldn't read value for field \"%s\"",
-                        name.getString());
+      SoFieldContainer * fc = this->getContainer();
+      SbString s("");
+      if (fc) { s.sprintf(" of %s", fc->getTypeId().getName().getString()); }
+      SoReadError::post(in, "Couldn't read value for field \"%s\"%s",
+                        name.getString(), s.getString());
       return FALSE;
     }
 

@@ -816,8 +816,11 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
         newfield->setFieldType(SoField::EXPOSED_FIELD);
       }
       if (readfieldvalues && !newfield->read(in, fieldname)) {
-        SoReadError::post(in, "Unable to read value for field '%s'",
-                          fieldname.getString());
+        SoFieldContainer * fc = newfield->getContainer();
+        SbString s("");
+        if (fc) { s.sprintf(" of %s", fc->getTypeId().getName().getString()); }
+        SoReadError::post(in, "Unable to read value for field '%s'%s",
+                          fieldname.getString(), s.getString());
         return FALSE;
       }
     }
