@@ -42,53 +42,7 @@
 
 #define DIV255 0.0039215686f
 
-//$ BEGIN TEMPLATE ElementSource(SoGLDiffuseColorElement)
-
-/*!
-  \var SoGLDiffuseColorElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLDiffuseColorElement class.
-*/
-
-SoType SoGLDiffuseColorElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLDiffuseColorElement::getClassTypeId(void)
-{
-  return SoGLDiffuseColorElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLDiffuseColorElement class.
-*/
-void *
-SoGLDiffuseColorElement::createInstance(void)
-{
-  return (void *) new SoGLDiffuseColorElement;
-}
-
-/*!
-  \var SoGLDiffuseColorElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLDiffuseColorElement class.
-*/
-int SoGLDiffuseColorElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLDiffuseColorElement class.
-*/
-int
-SoGLDiffuseColorElement::getClassStackIndex(void)
-{
-  return SoGLDiffuseColorElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLDiffuseColorElement);
 
 /*!
   This static method initializes static data for the
@@ -98,23 +52,7 @@ SoGLDiffuseColorElement::getClassStackIndex(void)
 void
 SoGLDiffuseColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLDiffuseColorElement)
-  assert(SoGLDiffuseColorElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLDiffuseColorElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLDiffuseColorElement",
-                       &SoGLDiffuseColorElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLDiffuseColorElement::classStackIndex =
-      createStackIndex(SoGLDiffuseColorElement::classTypeId);
-  }
-  else {
-    SoGLDiffuseColorElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLDiffuseColorElement, inherited);
 }
 
 /*!

@@ -38,48 +38,7 @@
   This is a SoMFNodeField.
 */
 
-//$ BEGIN TEMPLATE AbstractElementSource(SoAccumulatedElement)
-
-/*!
-  \var SoAccumulatedElement::classTypeId
-
-  This is the static class type identifier for
-  SoAccumulatedElement.
-*/
-
-SoType SoAccumulatedElement::classTypeId = SoType::badType(); // static
-
-/*!
-  This static method returns the SoType type for SoAccumulatedElement.
-*/
-
-SoType
-SoAccumulatedElement::getClassTypeId( // static
-  void )
-{
-  return SoAccumulatedElement::classTypeId;
-}
-
-/*!
-  \var SoAccumulatedElement::classStackIndex
-
-  This is the static state stack index for the
-  SoAccumulatedElement class.
-*/
-
-int SoAccumulatedElement::classStackIndex; // static
-
-/*!
-  This static method returns the state stack index for the SoAccumulatedElement class.
-*/
-
-int
-SoAccumulatedElement::getClassStackIndex( // static
-  void )
-{
-  return SoAccumulatedElement::classStackIndex;
-}
-//$ END TEMPLATE AbstractElementSource
+SO_ELEMENT_ABSTRACT_SOURCE(SoAccumulatedElement);
 
 /*!
   This static method initializes static data for the SoAccumulatedElement
@@ -89,21 +48,7 @@ SoAccumulatedElement::getClassStackIndex( // static
 void
 SoAccumulatedElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitAbstractElementSource(SoAccumulatedElement)
-  assert(SoAccumulatedElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoAccumulatedElement::classTypeId = SoType::createType(inherited::getClassTypeId(),
-    "SoAccumulatedElement", NULL );
-
-  if ( inherited::classStackIndex < 0 ) {
-    SoAccumulatedElement::classStackIndex =
-      createStackIndex( SoAccumulatedElement::classTypeId );
-  } else {
-    SoAccumulatedElement::classStackIndex =
-      inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitAbstractElementSource
+  SO_ELEMENT_INIT_ABSTRACT_CLASS(SoAccumulatedElement, inherited);
 }
 
 /*!

@@ -45,53 +45,7 @@ static const SbColor defaultColor(0,0,0);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoSpecularColorElement)
-
-/*!
-  \var SoSpecularColorElement::classTypeId
-
-  This is the static class type identifier for the
-  SoSpecularColorElement class.
-*/
-
-SoType SoSpecularColorElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoSpecularColorElement::getClassTypeId(void)
-{
-  return SoSpecularColorElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoSpecularColorElement class.
-*/
-void *
-SoSpecularColorElement::createInstance(void)
-{
-  return (void *) new SoSpecularColorElement;
-}
-
-/*!
-  \var SoSpecularColorElement::classStackIndex
-
-  This is the static state stack index for the
-  SoSpecularColorElement class.
-*/
-int SoSpecularColorElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoSpecularColorElement class.
-*/
-int
-SoSpecularColorElement::getClassStackIndex(void)
-{
-  return SoSpecularColorElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoSpecularColorElement);
 
 /*!
   This static method initializes static data for the SoSpecularColorElement
@@ -101,23 +55,7 @@ SoSpecularColorElement::getClassStackIndex(void)
 void
 SoSpecularColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoSpecularColorElement)
-  assert(SoSpecularColorElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSpecularColorElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoSpecularColorElement",
-                       &SoSpecularColorElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoSpecularColorElement::classStackIndex =
-      createStackIndex(SoSpecularColorElement::classTypeId);
-  }
-  else {
-    SoSpecularColorElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoSpecularColorElement, inherited);
 }
 
 /*!
@@ -193,7 +131,7 @@ SoSpecularColorElement::get(const int index) const
   Returns a pointer to the color array. This method is not part of the OIV API.
 */
 const SbColor *
-SoSpecularColorElement::getArrayPtr() const 
+SoSpecularColorElement::getArrayPtr() const
 {
   return this->colors;
 }

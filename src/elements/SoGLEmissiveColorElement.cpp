@@ -36,53 +36,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLEmissiveColorElement)
-
-/*!
-  \var SoGLEmissiveColorElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLEmissiveColorElement class.
-*/
-
-SoType SoGLEmissiveColorElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLEmissiveColorElement::getClassTypeId(void)
-{
-  return SoGLEmissiveColorElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLEmissiveColorElement class.
-*/
-void *
-SoGLEmissiveColorElement::createInstance(void)
-{
-  return (void *) new SoGLEmissiveColorElement;
-}
-
-/*!
-  \var SoGLEmissiveColorElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLEmissiveColorElement class.
-*/
-int SoGLEmissiveColorElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLEmissiveColorElement class.
-*/
-int
-SoGLEmissiveColorElement::getClassStackIndex(void)
-{
-  return SoGLEmissiveColorElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLEmissiveColorElement);
 
 /*!
   This static method initializes static data for the
@@ -92,23 +46,7 @@ SoGLEmissiveColorElement::getClassStackIndex(void)
 void
 SoGLEmissiveColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLEmissiveColorElement)
-  assert(SoGLEmissiveColorElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLEmissiveColorElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLEmissiveColorElement",
-                       &SoGLEmissiveColorElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLEmissiveColorElement::classStackIndex =
-      createStackIndex(SoGLEmissiveColorElement::classTypeId);
-  }
-  else {
-    SoGLEmissiveColorElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLEmissiveColorElement, inherited);
 }
 
 /*!

@@ -44,53 +44,7 @@ static const float defaultValue = 0;
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoTransparencyElement)
-
-/*!
-  \var SoTransparencyElement::classTypeId
-
-  This is the static class type identifier for the
-  SoTransparencyElement class.
-*/
-
-SoType SoTransparencyElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoTransparencyElement::getClassTypeId(void)
-{
-  return SoTransparencyElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoTransparencyElement class.
-*/
-void *
-SoTransparencyElement::createInstance(void)
-{
-  return (void *) new SoTransparencyElement;
-}
-
-/*!
-  \var SoTransparencyElement::classStackIndex
-
-  This is the static state stack index for the
-  SoTransparencyElement class.
-*/
-int SoTransparencyElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoTransparencyElement class.
-*/
-int
-SoTransparencyElement::getClassStackIndex(void)
-{
-  return SoTransparencyElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoTransparencyElement);
 
 /*!
   This static method initializes static data for the
@@ -100,23 +54,7 @@ SoTransparencyElement::getClassStackIndex(void)
 void
 SoTransparencyElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoTransparencyElement)
-  assert(SoTransparencyElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTransparencyElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoTransparencyElement",
-                       &SoTransparencyElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoTransparencyElement::classStackIndex =
-      createStackIndex(SoTransparencyElement::classTypeId);
-  }
-  else {
-    SoTransparencyElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoTransparencyElement, inherited);
 }
 
 /*!
@@ -183,7 +121,7 @@ SoTransparencyElement::get(const int index) const
   Returns a pointer to the transparency values. This method is not part of the OIV API.
 */
 const float *
-SoTransparencyElement::getArrayPtr() const 
+SoTransparencyElement::getArrayPtr() const
 {
   return this->values;
 }

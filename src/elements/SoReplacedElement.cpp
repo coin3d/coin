@@ -38,48 +38,9 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE AbstractElementSource(SoReplacedElement)
 
-/*!
-  \var SoReplacedElement::classTypeId
+SO_ELEMENT_ABSTRACT_SOURCE(SoReplacedElement);
 
-  This is the static class type identifier for
-  SoReplacedElement.
-*/
-
-SoType SoReplacedElement::classTypeId = SoType::badType(); // static
-
-/*!
-  This static method returns the SoType type for SoReplacedElement.
-*/
-
-SoType
-SoReplacedElement::getClassTypeId( // static
-  void )
-{
-  return SoReplacedElement::classTypeId;
-}
-
-/*!
-  \var SoReplacedElement::classStackIndex
-
-  This is the static state stack index for the
-  SoReplacedElement class.
-*/
-
-int SoReplacedElement::classStackIndex; // static
-
-/*!
-  This static method returns the state stack index for the SoReplacedElement class.
-*/
-
-int
-SoReplacedElement::getClassStackIndex( // static
-  void )
-{
-  return SoReplacedElement::classStackIndex;
-}
-//$ END TEMPLATE AbstractElementSource
 
 /*!
   This static method initializes static data for the SoReplacedElement class.
@@ -88,21 +49,7 @@ SoReplacedElement::getClassStackIndex( // static
 void
 SoReplacedElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitAbstractElementSource(SoReplacedElement)
-  assert(SoReplacedElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoReplacedElement::classTypeId = SoType::createType(inherited::getClassTypeId(),
-    "SoReplacedElement", NULL );
-
-  if ( inherited::classStackIndex < 0 ) {
-    SoReplacedElement::classStackIndex =
-      createStackIndex( SoReplacedElement::classTypeId );
-  } else {
-    SoReplacedElement::classStackIndex =
-      inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitAbstractElementSource
+  SO_ELEMENT_INIT_ABSTRACT_CLASS(SoReplacedElement, inherited);
 }
 
 /*!

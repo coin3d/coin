@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoTextOutlineEnabledElement)
-
-/*!
-  \var SoTextOutlineEnabledElement::classTypeId
-
-  This is the static class type identifier for the
-  SoTextOutlineEnabledElement class.
-*/
-
-SoType SoTextOutlineEnabledElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoTextOutlineEnabledElement::getClassTypeId(void)
-{
-  return SoTextOutlineEnabledElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoTextOutlineEnabledElement class.
-*/
-void *
-SoTextOutlineEnabledElement::createInstance(void)
-{
-  return (void *) new SoTextOutlineEnabledElement;
-}
-
-/*!
-  \var SoTextOutlineEnabledElement::classStackIndex
-
-  This is the static state stack index for the
-  SoTextOutlineEnabledElement class.
-*/
-int SoTextOutlineEnabledElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoTextOutlineEnabledElement class.
-*/
-int
-SoTextOutlineEnabledElement::getClassStackIndex(void)
-{
-  return SoTextOutlineEnabledElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoTextOutlineEnabledElement);
 
 /*!
   This static method initializes static data for the
@@ -86,23 +40,7 @@ SoTextOutlineEnabledElement::getClassStackIndex(void)
 void
 SoTextOutlineEnabledElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoTextOutlineEnabledElement)
-  assert(SoTextOutlineEnabledElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextOutlineEnabledElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoTextOutlineEnabledElement",
-                       &SoTextOutlineEnabledElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoTextOutlineEnabledElement::classStackIndex =
-      createStackIndex(SoTextOutlineEnabledElement::classTypeId);
-  }
-  else {
-    SoTextOutlineEnabledElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoTextOutlineEnabledElement, inherited);
 }
 
 /*!

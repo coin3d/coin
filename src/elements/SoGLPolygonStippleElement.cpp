@@ -37,53 +37,7 @@
 
 unsigned char SoGLPolygonStippleElement::patterns[64 + 1][32 * 4];
 
-//$ BEGIN TEMPLATE ElementSource(SoGLPolygonStippleElement)
-
-/*!
-  \var SoGLPolygonStippleElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLPolygonStippleElement class.
-*/
-
-SoType SoGLPolygonStippleElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLPolygonStippleElement::getClassTypeId(void)
-{
-  return SoGLPolygonStippleElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLPolygonStippleElement class.
-*/
-void *
-SoGLPolygonStippleElement::createInstance(void)
-{
-  return (void *) new SoGLPolygonStippleElement;
-}
-
-/*!
-  \var SoGLPolygonStippleElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLPolygonStippleElement class.
-*/
-int SoGLPolygonStippleElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLPolygonStippleElement class.
-*/
-int
-SoGLPolygonStippleElement::getClassStackIndex(void)
-{
-  return SoGLPolygonStippleElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLPolygonStippleElement);
 
 // Some data and functions to create Bayer dither
 // matrices (used for screen door transparency)
@@ -174,23 +128,7 @@ static void create_matrix_bitmap(int intensity, uint32_t *bitmap,
 void
 SoGLPolygonStippleElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLPolygonStippleElement)
-  assert(SoGLPolygonStippleElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLPolygonStippleElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLPolygonStippleElement",
-                       &SoGLPolygonStippleElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLPolygonStippleElement::classStackIndex =
-      createStackIndex(SoGLPolygonStippleElement::classTypeId);
-  }
-  else {
-    SoGLPolygonStippleElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLPolygonStippleElement, inherited);
 
   // create patterns
   int i;

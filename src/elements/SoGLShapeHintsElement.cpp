@@ -63,53 +63,7 @@
 #define SOSH_TWOSIDE  0x02
 #define SOSH_CULL     0x04
 
-//$ BEGIN TEMPLATE ElementSource(SoGLShapeHintsElement)
-
-/*!
-  \var SoGLShapeHintsElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLShapeHintsElement class.
-*/
-
-SoType SoGLShapeHintsElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLShapeHintsElement::getClassTypeId(void)
-{
-  return SoGLShapeHintsElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLShapeHintsElement class.
-*/
-void *
-SoGLShapeHintsElement::createInstance(void)
-{
-  return (void *) new SoGLShapeHintsElement;
-}
-
-/*!
-  \var SoGLShapeHintsElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLShapeHintsElement class.
-*/
-int SoGLShapeHintsElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLShapeHintsElement class.
-*/
-int
-SoGLShapeHintsElement::getClassStackIndex(void)
-{
-  return SoGLShapeHintsElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLShapeHintsElement);
 
 /*!
   This static method initializes static data for the
@@ -119,23 +73,7 @@ SoGLShapeHintsElement::getClassStackIndex(void)
 void
 SoGLShapeHintsElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLShapeHintsElement)
-  assert(SoGLShapeHintsElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLShapeHintsElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLShapeHintsElement",
-                       &SoGLShapeHintsElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLShapeHintsElement::classStackIndex =
-      createStackIndex(SoGLShapeHintsElement::classTypeId);
-  }
-  else {
-    SoGLShapeHintsElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLShapeHintsElement, inherited);
 }
 
 /*!

@@ -35,53 +35,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoNormalBindingElement)
-
-/*!
-  \var SoNormalBindingElement::classTypeId
-
-  This is the static class type identifier for the
-  SoNormalBindingElement class.
-*/
-
-SoType SoNormalBindingElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoNormalBindingElement::getClassTypeId(void)
-{
-  return SoNormalBindingElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoNormalBindingElement class.
-*/
-void *
-SoNormalBindingElement::createInstance(void)
-{
-  return (void *) new SoNormalBindingElement;
-}
-
-/*!
-  \var SoNormalBindingElement::classStackIndex
-
-  This is the static state stack index for the
-  SoNormalBindingElement class.
-*/
-int SoNormalBindingElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoNormalBindingElement class.
-*/
-int
-SoNormalBindingElement::getClassStackIndex(void)
-{
-  return SoNormalBindingElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoNormalBindingElement);
 
 /*!
   This static method initializes static methods for the
@@ -91,23 +45,7 @@ SoNormalBindingElement::getClassStackIndex(void)
 void
 SoNormalBindingElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoNormalBindingElement)
-  assert(SoNormalBindingElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoNormalBindingElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoNormalBindingElement",
-                       &SoNormalBindingElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoNormalBindingElement::classStackIndex =
-      createStackIndex(SoNormalBindingElement::classTypeId);
-  }
-  else {
-    SoNormalBindingElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoNormalBindingElement, inherited);
 }
 
 /*!

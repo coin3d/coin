@@ -54,53 +54,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoWindowElement)
-
-/*!
-  \var SoWindowElement::classTypeId
-
-  This is the static class type identifier for the
-  SoWindowElement class.
-*/
-
-SoType SoWindowElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoWindowElement::getClassTypeId(void)
-{
-  return SoWindowElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoWindowElement class.
-*/
-void *
-SoWindowElement::createInstance(void)
-{
-  return (void *) new SoWindowElement;
-}
-
-/*!
-  \var SoWindowElement::classStackIndex
-
-  This is the static state stack index for the
-  SoWindowElement class.
-*/
-int SoWindowElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoWindowElement class.
-*/
-int
-SoWindowElement::getClassStackIndex(void)
-{
-  return SoWindowElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoWindowElement);
 
 /*!
   This static method initializes static data for the SoWindowElement class.
@@ -109,23 +63,7 @@ SoWindowElement::getClassStackIndex(void)
 void
 SoWindowElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoWindowElement)
-  assert(SoWindowElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoWindowElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoWindowElement",
-                       &SoWindowElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoWindowElement::classStackIndex =
-      createStackIndex(SoWindowElement::classTypeId);
-  }
-  else {
-    SoWindowElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoWindowElement, inherited);
 }
 
 /*!

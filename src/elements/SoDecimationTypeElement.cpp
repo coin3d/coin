@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoDecimationTypeElement)
-
-/*!
-  \var SoDecimationTypeElement::classTypeId
-
-  This is the static class type identifier for the
-  SoDecimationTypeElement class.
-*/
-
-SoType SoDecimationTypeElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoDecimationTypeElement::getClassTypeId(void)
-{
-  return SoDecimationTypeElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoDecimationTypeElement class.
-*/
-void *
-SoDecimationTypeElement::createInstance(void)
-{
-  return (void *) new SoDecimationTypeElement;
-}
-
-/*!
-  \var SoDecimationTypeElement::classStackIndex
-
-  This is the static state stack index for the
-  SoDecimationTypeElement class.
-*/
-int SoDecimationTypeElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoDecimationTypeElement class.
-*/
-int
-SoDecimationTypeElement::getClassStackIndex(void)
-{
-  return SoDecimationTypeElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoDecimationTypeElement);
 
 /*!
   This static method initializes static data for the
@@ -92,23 +46,7 @@ SoDecimationTypeElement::getClassStackIndex(void)
 void
 SoDecimationTypeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoDecimationTypeElement)
-  assert(SoDecimationTypeElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoDecimationTypeElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoDecimationTypeElement",
-                       &SoDecimationTypeElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoDecimationTypeElement::classStackIndex =
-      createStackIndex(SoDecimationTypeElement::classTypeId);
-  }
-  else {
-    SoDecimationTypeElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoDecimationTypeElement, inherited);
 }
 
 /*!

@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoProjectionMatrixElement)
-
-/*!
-  \var SoProjectionMatrixElement::classTypeId
-
-  This is the static class type identifier for the
-  SoProjectionMatrixElement class.
-*/
-
-SoType SoProjectionMatrixElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoProjectionMatrixElement::getClassTypeId(void)
-{
-  return SoProjectionMatrixElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoProjectionMatrixElement class.
-*/
-void *
-SoProjectionMatrixElement::createInstance(void)
-{
-  return (void *) new SoProjectionMatrixElement;
-}
-
-/*!
-  \var SoProjectionMatrixElement::classStackIndex
-
-  This is the static state stack index for the
-  SoProjectionMatrixElement class.
-*/
-int SoProjectionMatrixElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoProjectionMatrixElement class.
-*/
-int
-SoProjectionMatrixElement::getClassStackIndex(void)
-{
-  return SoProjectionMatrixElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoProjectionMatrixElement);
 
 /*!
   This static method initializes static data for the SoProjectionMatrixElement
@@ -86,23 +40,7 @@ SoProjectionMatrixElement::getClassStackIndex(void)
 void
 SoProjectionMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoProjectionMatrixElement)
-  assert(SoProjectionMatrixElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoProjectionMatrixElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoProjectionMatrixElement",
-                       &SoProjectionMatrixElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoProjectionMatrixElement::classStackIndex =
-      createStackIndex(SoProjectionMatrixElement::classTypeId);
-  }
-  else {
-    SoProjectionMatrixElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoProjectionMatrixElement, inherited);
 }
 
 /*!

@@ -37,53 +37,7 @@
 // static variables
 int SoGLClipPlaneElement::maxGLPlanes = -1;
 
-//$ BEGIN TEMPLATE ElementSource(SoGLClipPlaneElement)
-
-/*!
-  \var SoGLClipPlaneElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLClipPlaneElement class.
-*/
-
-SoType SoGLClipPlaneElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLClipPlaneElement::getClassTypeId(void)
-{
-  return SoGLClipPlaneElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLClipPlaneElement class.
-*/
-void *
-SoGLClipPlaneElement::createInstance(void)
-{
-  return (void *) new SoGLClipPlaneElement;
-}
-
-/*!
-  \var SoGLClipPlaneElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLClipPlaneElement class.
-*/
-int SoGLClipPlaneElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLClipPlaneElement class.
-*/
-int
-SoGLClipPlaneElement::getClassStackIndex(void)
-{
-  return SoGLClipPlaneElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLClipPlaneElement);
 
 /*!
   This static method initializes static data for the SoGLClipPlaneElement
@@ -93,23 +47,7 @@ SoGLClipPlaneElement::getClassStackIndex(void)
 void
 SoGLClipPlaneElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLClipPlaneElement)
-  assert(SoGLClipPlaneElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLClipPlaneElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLClipPlaneElement",
-                       &SoGLClipPlaneElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLClipPlaneElement::classStackIndex =
-      createStackIndex(SoGLClipPlaneElement::classTypeId);
-  }
-  else {
-    SoGLClipPlaneElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLClipPlaneElement, inherited);
 }
 
 /*!

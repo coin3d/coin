@@ -34,53 +34,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoLocalBBoxMatrixElement)
-
-/*!
-  \var SoLocalBBoxMatrixElement::classTypeId
-
-  This is the static class type identifier for the
-  SoLocalBBoxMatrixElement class.
-*/
-
-SoType SoLocalBBoxMatrixElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoLocalBBoxMatrixElement::getClassTypeId(void)
-{
-  return SoLocalBBoxMatrixElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoLocalBBoxMatrixElement class.
-*/
-void *
-SoLocalBBoxMatrixElement::createInstance(void)
-{
-  return (void *) new SoLocalBBoxMatrixElement;
-}
-
-/*!
-  \var SoLocalBBoxMatrixElement::classStackIndex
-
-  This is the static state stack index for the
-  SoLocalBBoxMatrixElement class.
-*/
-int SoLocalBBoxMatrixElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoLocalBBoxMatrixElement class.
-*/
-int
-SoLocalBBoxMatrixElement::getClassStackIndex(void)
-{
-  return SoLocalBBoxMatrixElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoLocalBBoxMatrixElement);
 
 /*!
   This static method initializes static data for the
@@ -90,23 +44,7 @@ SoLocalBBoxMatrixElement::getClassStackIndex(void)
 void
 SoLocalBBoxMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoLocalBBoxMatrixElement)
-  assert(SoLocalBBoxMatrixElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLocalBBoxMatrixElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoLocalBBoxMatrixElement",
-                       &SoLocalBBoxMatrixElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoLocalBBoxMatrixElement::classStackIndex =
-      createStackIndex(SoLocalBBoxMatrixElement::classTypeId);
-  }
-  else {
-    SoLocalBBoxMatrixElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoLocalBBoxMatrixElement, inherited);
 }
 
 /*!

@@ -29,53 +29,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoCreaseAngleElement)
-
-/*!
-  \var SoCreaseAngleElement::classTypeId
-
-  This is the static class type identifier for the
-  SoCreaseAngleElement class.
-*/
-
-SoType SoCreaseAngleElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoCreaseAngleElement::getClassTypeId(void)
-{
-  return SoCreaseAngleElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoCreaseAngleElement class.
-*/
-void *
-SoCreaseAngleElement::createInstance(void)
-{
-  return (void *) new SoCreaseAngleElement;
-}
-
-/*!
-  \var SoCreaseAngleElement::classStackIndex
-
-  This is the static state stack index for the
-  SoCreaseAngleElement class.
-*/
-int SoCreaseAngleElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoCreaseAngleElement class.
-*/
-int
-SoCreaseAngleElement::getClassStackIndex(void)
-{
-  return SoCreaseAngleElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoCreaseAngleElement);
 
 /*!
   This static method initializes static data for the
@@ -85,23 +39,7 @@ SoCreaseAngleElement::getClassStackIndex(void)
 void
 SoCreaseAngleElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoCreaseAngleElement)
-  assert(SoCreaseAngleElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCreaseAngleElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoCreaseAngleElement",
-                       &SoCreaseAngleElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoCreaseAngleElement::classStackIndex =
-      createStackIndex(SoCreaseAngleElement::classTypeId);
-  }
-  else {
-    SoCreaseAngleElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoCreaseAngleElement, inherited);
 }
 
 /*!

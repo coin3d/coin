@@ -44,53 +44,7 @@ static SbVec3f defaultNormal(0.0f, 0.0f, 1.0f);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoNormalElement)
-
-/*!
-  \var SoNormalElement::classTypeId
-
-  This is the static class type identifier for the
-  SoNormalElement class.
-*/
-
-SoType SoNormalElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoNormalElement::getClassTypeId(void)
-{
-  return SoNormalElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoNormalElement class.
-*/
-void *
-SoNormalElement::createInstance(void)
-{
-  return (void *) new SoNormalElement;
-}
-
-/*!
-  \var SoNormalElement::classStackIndex
-
-  This is the static state stack index for the
-  SoNormalElement class.
-*/
-int SoNormalElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoNormalElement class.
-*/
-int
-SoNormalElement::getClassStackIndex(void)
-{
-  return SoNormalElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoNormalElement);
 
 /*!
   This static method initializes static data for the SoNormalElement class.
@@ -99,23 +53,7 @@ SoNormalElement::getClassStackIndex(void)
 void
 SoNormalElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoNormalElement)
-  assert(SoNormalElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoNormalElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoNormalElement",
-                       &SoNormalElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoNormalElement::classStackIndex =
-      createStackIndex(SoNormalElement::classTypeId);
-  }
-  else {
-    SoNormalElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoNormalElement, inherited);
 }
 
 /*!
@@ -205,7 +143,7 @@ SoNormalElement::get(const int index) const
   Returns a pointer to the normal array. This method is not part of the OIV API.
 */
 const SbVec3f *
-SoNormalElement::getArrayPtr() const 
+SoNormalElement::getArrayPtr() const
 {
   return this->normals;
 }

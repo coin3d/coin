@@ -40,53 +40,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLEnvironmentElement)
-
-/*!
-  \var SoGLEnvironmentElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLEnvironmentElement class.
-*/
-
-SoType SoGLEnvironmentElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLEnvironmentElement::getClassTypeId(void)
-{
-  return SoGLEnvironmentElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLEnvironmentElement class.
-*/
-void *
-SoGLEnvironmentElement::createInstance(void)
-{
-  return (void *) new SoGLEnvironmentElement;
-}
-
-/*!
-  \var SoGLEnvironmentElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLEnvironmentElement class.
-*/
-int SoGLEnvironmentElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLEnvironmentElement class.
-*/
-int
-SoGLEnvironmentElement::getClassStackIndex(void)
-{
-  return SoGLEnvironmentElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLEnvironmentElement);
 
 /*!
   This static method initializes static data for the
@@ -96,23 +50,7 @@ SoGLEnvironmentElement::getClassStackIndex(void)
 void
 SoGLEnvironmentElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLEnvironmentElement)
-  assert(SoGLEnvironmentElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLEnvironmentElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLEnvironmentElement",
-                       &SoGLEnvironmentElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLEnvironmentElement::classStackIndex =
-      createStackIndex(SoGLEnvironmentElement::classTypeId);
-  }
-  else {
-    SoGLEnvironmentElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLEnvironmentElement, inherited);
 }
 
 /*!

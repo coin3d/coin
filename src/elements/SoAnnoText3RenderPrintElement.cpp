@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoAnnoText3RenderPrintElement)
-
-/*!
-  \var SoAnnoText3RenderPrintElement::classTypeId
-
-  This is the static class type identifier for the
-  SoAnnoText3RenderPrintElement class.
-*/
-
-SoType SoAnnoText3RenderPrintElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoAnnoText3RenderPrintElement::getClassTypeId(void)
-{
-  return SoAnnoText3RenderPrintElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoAnnoText3RenderPrintElement class.
-*/
-void *
-SoAnnoText3RenderPrintElement::createInstance(void)
-{
-  return (void *) new SoAnnoText3RenderPrintElement;
-}
-
-/*!
-  \var SoAnnoText3RenderPrintElement::classStackIndex
-
-  This is the static state stack index for the
-  SoAnnoText3RenderPrintElement class.
-*/
-int SoAnnoText3RenderPrintElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoAnnoText3RenderPrintElement class.
-*/
-int
-SoAnnoText3RenderPrintElement::getClassStackIndex(void)
-{
-  return SoAnnoText3RenderPrintElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoAnnoText3RenderPrintElement);
 
 /*!
   This static method initializes static data for the
@@ -92,23 +46,7 @@ SoAnnoText3RenderPrintElement::getClassStackIndex(void)
 void
 SoAnnoText3RenderPrintElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoAnnoText3RenderPrintElement)
-  assert(SoAnnoText3RenderPrintElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoAnnoText3RenderPrintElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoAnnoText3RenderPrintElement",
-                       &SoAnnoText3RenderPrintElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoAnnoText3RenderPrintElement::classStackIndex =
-      createStackIndex(SoAnnoText3RenderPrintElement::classTypeId);
-  }
-  else {
-    SoAnnoText3RenderPrintElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoAnnoText3RenderPrintElement, inherited);
 }
 
 /*!

@@ -29,53 +29,9 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoComplexityElement)
 
-/*!
-  \var SoComplexityElement::classTypeId
+SO_ELEMENT_SOURCE(SoComplexityElement);
 
-  This is the static class type identifier for the
-  SoComplexityElement class.
-*/
-
-SoType SoComplexityElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoComplexityElement::getClassTypeId(void)
-{
-  return SoComplexityElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoComplexityElement class.
-*/
-void *
-SoComplexityElement::createInstance(void)
-{
-  return (void *) new SoComplexityElement;
-}
-
-/*!
-  \var SoComplexityElement::classStackIndex
-
-  This is the static state stack index for the
-  SoComplexityElement class.
-*/
-int SoComplexityElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoComplexityElement class.
-*/
-int
-SoComplexityElement::getClassStackIndex(void)
-{
-  return SoComplexityElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
 
 /*!
   This static method initializes static data for the SoComplexityElement
@@ -85,23 +41,7 @@ SoComplexityElement::getClassStackIndex(void)
 void
 SoComplexityElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoComplexityElement)
-  assert(SoComplexityElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoComplexityElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoComplexityElement",
-                       &SoComplexityElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoComplexityElement::classStackIndex =
-      createStackIndex(SoComplexityElement::classTypeId);
-  }
-  else {
-    SoComplexityElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoComplexityElement, inherited);
 }
 
 /*!

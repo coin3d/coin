@@ -44,53 +44,7 @@ const SbVec3f SoLightAttenuationElement::defaultAttenuation(0,0,1);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoLightAttenuationElement)
-
-/*!
-  \var SoLightAttenuationElement::classTypeId
-
-  This is the static class type identifier for the
-  SoLightAttenuationElement class.
-*/
-
-SoType SoLightAttenuationElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoLightAttenuationElement::getClassTypeId(void)
-{
-  return SoLightAttenuationElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoLightAttenuationElement class.
-*/
-void *
-SoLightAttenuationElement::createInstance(void)
-{
-  return (void *) new SoLightAttenuationElement;
-}
-
-/*!
-  \var SoLightAttenuationElement::classStackIndex
-
-  This is the static state stack index for the
-  SoLightAttenuationElement class.
-*/
-int SoLightAttenuationElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoLightAttenuationElement class.
-*/
-int
-SoLightAttenuationElement::getClassStackIndex(void)
-{
-  return SoLightAttenuationElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoLightAttenuationElement);
 
 /*!
   This static method initializes static data for the
@@ -100,23 +54,7 @@ SoLightAttenuationElement::getClassStackIndex(void)
 void
 SoLightAttenuationElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoLightAttenuationElement)
-  assert(SoLightAttenuationElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLightAttenuationElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoLightAttenuationElement",
-                       &SoLightAttenuationElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoLightAttenuationElement::classStackIndex =
-      createStackIndex(SoLightAttenuationElement::classTypeId);
-  }
-  else {
-    SoLightAttenuationElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoLightAttenuationElement, inherited);
 }
 
 /*!

@@ -43,53 +43,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLTextureEnabledElement)
-
-/*!
-  \var SoGLTextureEnabledElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLTextureEnabledElement class.
-*/
-
-SoType SoGLTextureEnabledElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLTextureEnabledElement::getClassTypeId(void)
-{
-  return SoGLTextureEnabledElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLTextureEnabledElement class.
-*/
-void *
-SoGLTextureEnabledElement::createInstance(void)
-{
-  return (void *) new SoGLTextureEnabledElement;
-}
-
-/*!
-  \var SoGLTextureEnabledElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLTextureEnabledElement class.
-*/
-int SoGLTextureEnabledElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLTextureEnabledElement class.
-*/
-int
-SoGLTextureEnabledElement::getClassStackIndex(void)
-{
-  return SoGLTextureEnabledElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLTextureEnabledElement);
 
 /*!
   This static method initializes static data for the
@@ -99,23 +53,7 @@ SoGLTextureEnabledElement::getClassStackIndex(void)
 void
 SoGLTextureEnabledElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLTextureEnabledElement)
-  assert(SoGLTextureEnabledElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLTextureEnabledElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLTextureEnabledElement",
-                       &SoGLTextureEnabledElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLTextureEnabledElement::classStackIndex =
-      createStackIndex(SoGLTextureEnabledElement::classTypeId);
-  }
-  else {
-    SoGLTextureEnabledElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLTextureEnabledElement, inherited);
 }
 
 /*!

@@ -60,53 +60,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoPolygonOffsetElement)
-
-/*!
-  \var SoPolygonOffsetElement::classTypeId
-
-  This is the static class type identifier for the
-  SoPolygonOffsetElement class.
-*/
-
-SoType SoPolygonOffsetElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoPolygonOffsetElement::getClassTypeId(void)
-{
-  return SoPolygonOffsetElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoPolygonOffsetElement class.
-*/
-void *
-SoPolygonOffsetElement::createInstance(void)
-{
-  return (void *) new SoPolygonOffsetElement;
-}
-
-/*!
-  \var SoPolygonOffsetElement::classStackIndex
-
-  This is the static state stack index for the
-  SoPolygonOffsetElement class.
-*/
-int SoPolygonOffsetElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoPolygonOffsetElement class.
-*/
-int
-SoPolygonOffsetElement::getClassStackIndex(void)
-{
-  return SoPolygonOffsetElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoPolygonOffsetElement);
 
 /*!
   This static method initializes static data for the SoPolygonOffsetElement
@@ -116,23 +70,7 @@ SoPolygonOffsetElement::getClassStackIndex(void)
 void
 SoPolygonOffsetElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoPolygonOffsetElement)
-  assert(SoPolygonOffsetElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPolygonOffsetElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoPolygonOffsetElement",
-                       &SoPolygonOffsetElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoPolygonOffsetElement::classStackIndex =
-      createStackIndex(SoPolygonOffsetElement::classTypeId);
-  }
-  else {
-    SoPolygonOffsetElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoPolygonOffsetElement, inherited);
 }
 
 /*!

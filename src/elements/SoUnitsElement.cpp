@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoUnitsElement)
-
-/*!
-  \var SoUnitsElement::classTypeId
-
-  This is the static class type identifier for the
-  SoUnitsElement class.
-*/
-
-SoType SoUnitsElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoUnitsElement::getClassTypeId(void)
-{
-  return SoUnitsElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoUnitsElement class.
-*/
-void *
-SoUnitsElement::createInstance(void)
-{
-  return (void *) new SoUnitsElement;
-}
-
-/*!
-  \var SoUnitsElement::classStackIndex
-
-  This is the static state stack index for the
-  SoUnitsElement class.
-*/
-int SoUnitsElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoUnitsElement class.
-*/
-int
-SoUnitsElement::getClassStackIndex(void)
-{
-  return SoUnitsElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoUnitsElement);
 
 /*!
   This static method initializes static data for the SoUnitsElement class.
@@ -91,23 +45,7 @@ SoUnitsElement::getClassStackIndex(void)
 void
 SoUnitsElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoUnitsElement)
-  assert(SoUnitsElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoUnitsElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoUnitsElement",
-                       &SoUnitsElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoUnitsElement::classStackIndex =
-      createStackIndex(SoUnitsElement::classTypeId);
-  }
-  else {
-    SoUnitsElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoUnitsElement, inherited);
 }
 
 /*!

@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoPickRayElement)
-
-/*!
-  \var SoPickRayElement::classTypeId
-
-  This is the static class type identifier for the
-  SoPickRayElement class.
-*/
-
-SoType SoPickRayElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoPickRayElement::getClassTypeId(void)
-{
-  return SoPickRayElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoPickRayElement class.
-*/
-void *
-SoPickRayElement::createInstance(void)
-{
-  return (void *) new SoPickRayElement;
-}
-
-/*!
-  \var SoPickRayElement::classStackIndex
-
-  This is the static state stack index for the
-  SoPickRayElement class.
-*/
-int SoPickRayElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoPickRayElement class.
-*/
-int
-SoPickRayElement::getClassStackIndex(void)
-{
-  return SoPickRayElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoPickRayElement);
 
 /*!
   This static method initializes static data for the SoPickRayElement class.
@@ -91,23 +45,7 @@ SoPickRayElement::getClassStackIndex(void)
 void
 SoPickRayElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoPickRayElement)
-  assert(SoPickRayElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPickRayElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoPickRayElement",
-                       &SoPickRayElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoPickRayElement::classStackIndex =
-      createStackIndex(SoPickRayElement::classTypeId);
-  }
-  else {
-    SoPickRayElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoPickRayElement, inherited);
 }
 
 /*!

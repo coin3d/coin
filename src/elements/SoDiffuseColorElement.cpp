@@ -51,53 +51,7 @@ static const SbColor defaultColor(0.8f, 0.8f, 0.8f);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoDiffuseColorElement)
-
-/*!
-  \var SoDiffuseColorElement::classTypeId
-
-  This is the static class type identifier for the
-  SoDiffuseColorElement class.
-*/
-
-SoType SoDiffuseColorElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoDiffuseColorElement::getClassTypeId(void)
-{
-  return SoDiffuseColorElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoDiffuseColorElement class.
-*/
-void *
-SoDiffuseColorElement::createInstance(void)
-{
-  return (void *) new SoDiffuseColorElement;
-}
-
-/*!
-  \var SoDiffuseColorElement::classStackIndex
-
-  This is the static state stack index for the
-  SoDiffuseColorElement class.
-*/
-int SoDiffuseColorElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoDiffuseColorElement class.
-*/
-int
-SoDiffuseColorElement::getClassStackIndex(void)
-{
-  return SoDiffuseColorElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoDiffuseColorElement);
 
 /*!
   This static method initializes static data for the
@@ -107,23 +61,7 @@ SoDiffuseColorElement::getClassStackIndex(void)
 void
 SoDiffuseColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoDiffuseColorElement)
-  assert(SoDiffuseColorElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoDiffuseColorElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoDiffuseColorElement",
-                       &SoDiffuseColorElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoDiffuseColorElement::classStackIndex =
-      createStackIndex(SoDiffuseColorElement::classTypeId);
-  }
-  else {
-    SoDiffuseColorElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoDiffuseColorElement, inherited);
 }
 
 //! FIXME: write doc.
@@ -222,18 +160,18 @@ SoDiffuseColorElement::getNum() const
 
 /*!
   Returns the color array. This method is not part of the OIV API.
-*/ 
+*/
 const SbColor *
-SoDiffuseColorElement::getColorArrayPtr() const 
+SoDiffuseColorElement::getColorArrayPtr() const
 {
   return this->colors;
 }
 
 /*!
   Returns the packed color array. This method is not part of the OIV API.
-*/ 
+*/
 const uint32_t *
-SoDiffuseColorElement::getPackedArrayPtr() const 
+SoDiffuseColorElement::getPackedArrayPtr() const
 {
   return this->packedColors;
 }

@@ -39,53 +39,7 @@
 #include <GL/gl.h>
 #include <math.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLModelMatrixElement)
-
-/*!
-  \var SoGLModelMatrixElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLModelMatrixElement class.
-*/
-
-SoType SoGLModelMatrixElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLModelMatrixElement::getClassTypeId(void)
-{
-  return SoGLModelMatrixElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLModelMatrixElement class.
-*/
-void *
-SoGLModelMatrixElement::createInstance(void)
-{
-  return (void *) new SoGLModelMatrixElement;
-}
-
-/*!
-  \var SoGLModelMatrixElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLModelMatrixElement class.
-*/
-int SoGLModelMatrixElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLModelMatrixElement class.
-*/
-int
-SoGLModelMatrixElement::getClassStackIndex(void)
-{
-  return SoGLModelMatrixElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLModelMatrixElement);
 
 /*!
   This static method initializes static data for the
@@ -95,23 +49,7 @@ SoGLModelMatrixElement::getClassStackIndex(void)
 void
 SoGLModelMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLModelMatrixElement)
-  assert(SoGLModelMatrixElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLModelMatrixElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLModelMatrixElement",
-                       &SoGLModelMatrixElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLModelMatrixElement::classStackIndex =
-      createStackIndex(SoGLModelMatrixElement::classTypeId);
-  }
-  else {
-    SoGLModelMatrixElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLModelMatrixElement, inherited);
 }
 
 /*!

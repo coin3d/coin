@@ -47,53 +47,7 @@ static const float defaultValue = 0.2f;
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoShininessElement)
-
-/*!
-  \var SoShininessElement::classTypeId
-
-  This is the static class type identifier for the
-  SoShininessElement class.
-*/
-
-SoType SoShininessElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoShininessElement::getClassTypeId(void)
-{
-  return SoShininessElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoShininessElement class.
-*/
-void *
-SoShininessElement::createInstance(void)
-{
-  return (void *) new SoShininessElement;
-}
-
-/*!
-  \var SoShininessElement::classStackIndex
-
-  This is the static state stack index for the
-  SoShininessElement class.
-*/
-int SoShininessElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoShininessElement class.
-*/
-int
-SoShininessElement::getClassStackIndex(void)
-{
-  return SoShininessElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoShininessElement);
 
 /*!
   This static method initializes static data for the SoShininessElement class.
@@ -102,23 +56,7 @@ SoShininessElement::getClassStackIndex(void)
 void
 SoShininessElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoShininessElement)
-  assert(SoShininessElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoShininessElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoShininessElement",
-                       &SoShininessElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoShininessElement::classStackIndex =
-      createStackIndex(SoShininessElement::classTypeId);
-  }
-  else {
-    SoShininessElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoShininessElement, inherited);
 }
 
 /*!
@@ -194,7 +132,7 @@ SoShininessElement::get(const int index) const
   Returns a pointer to the shininess values. This method is not part of the OIV API.
 */
 const float *
-SoShininessElement::getArrayPtr() const 
+SoShininessElement::getArrayPtr() const
 {
   return this->values;
 }

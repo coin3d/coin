@@ -33,53 +33,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLDrawStyleElement)
-
-/*!
-  \var SoGLDrawStyleElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLDrawStyleElement class.
-*/
-
-SoType SoGLDrawStyleElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLDrawStyleElement::getClassTypeId(void)
-{
-  return SoGLDrawStyleElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLDrawStyleElement class.
-*/
-void *
-SoGLDrawStyleElement::createInstance(void)
-{
-  return (void *) new SoGLDrawStyleElement;
-}
-
-/*!
-  \var SoGLDrawStyleElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLDrawStyleElement class.
-*/
-int SoGLDrawStyleElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLDrawStyleElement class.
-*/
-int
-SoGLDrawStyleElement::getClassStackIndex(void)
-{
-  return SoGLDrawStyleElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLDrawStyleElement);
 
 /*!
   This static method initializes static data for the
@@ -89,23 +43,7 @@ SoGLDrawStyleElement::getClassStackIndex(void)
 void
 SoGLDrawStyleElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLDrawStyleElement)
-  assert(SoGLDrawStyleElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLDrawStyleElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLDrawStyleElement",
-                       &SoGLDrawStyleElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLDrawStyleElement::classStackIndex =
-      createStackIndex(SoGLDrawStyleElement::classTypeId);
-  }
-  else {
-    SoGLDrawStyleElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLDrawStyleElement, inherited);
 }
 
 /*!

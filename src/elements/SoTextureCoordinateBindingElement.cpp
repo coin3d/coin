@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoTextureCoordinateBindingElement)
-
-/*!
-  \var SoTextureCoordinateBindingElement::classTypeId
-
-  This is the static class type identifier for the
-  SoTextureCoordinateBindingElement class.
-*/
-
-SoType SoTextureCoordinateBindingElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoTextureCoordinateBindingElement::getClassTypeId(void)
-{
-  return SoTextureCoordinateBindingElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoTextureCoordinateBindingElement class.
-*/
-void *
-SoTextureCoordinateBindingElement::createInstance(void)
-{
-  return (void *) new SoTextureCoordinateBindingElement;
-}
-
-/*!
-  \var SoTextureCoordinateBindingElement::classStackIndex
-
-  This is the static state stack index for the
-  SoTextureCoordinateBindingElement class.
-*/
-int SoTextureCoordinateBindingElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoTextureCoordinateBindingElement class.
-*/
-int
-SoTextureCoordinateBindingElement::getClassStackIndex(void)
-{
-  return SoTextureCoordinateBindingElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoTextureCoordinateBindingElement);
 
 /*!
   This static method initializes static data for the
@@ -92,23 +46,7 @@ SoTextureCoordinateBindingElement::getClassStackIndex(void)
 void
 SoTextureCoordinateBindingElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoTextureCoordinateBindingElement)
-  assert(SoTextureCoordinateBindingElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureCoordinateBindingElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoTextureCoordinateBindingElement",
-                       &SoTextureCoordinateBindingElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoTextureCoordinateBindingElement::classStackIndex =
-      createStackIndex(SoTextureCoordinateBindingElement::classTypeId);
-  }
-  else {
-    SoTextureCoordinateBindingElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoTextureCoordinateBindingElement, inherited);
 }
 
 /*!

@@ -53,53 +53,7 @@ int SoGLLightIdElement::maxGLSources = -1;
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoGLLightIdElement)
-
-/*!
-  \var SoGLLightIdElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLLightIdElement class.
-*/
-
-SoType SoGLLightIdElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLLightIdElement::getClassTypeId(void)
-{
-  return SoGLLightIdElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLLightIdElement class.
-*/
-void *
-SoGLLightIdElement::createInstance(void)
-{
-  return (void *) new SoGLLightIdElement;
-}
-
-/*!
-  \var SoGLLightIdElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLLightIdElement class.
-*/
-int SoGLLightIdElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLLightIdElement class.
-*/
-int
-SoGLLightIdElement::getClassStackIndex(void)
-{
-  return SoGLLightIdElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLLightIdElement);
 
 /*!
   This static method initializes static data for the
@@ -109,23 +63,7 @@ SoGLLightIdElement::getClassStackIndex(void)
 void
 SoGLLightIdElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLLightIdElement)
-  assert(SoGLLightIdElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLLightIdElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLLightIdElement",
-                       &SoGLLightIdElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLLightIdElement::classStackIndex =
-      createStackIndex(SoGLLightIdElement::classTypeId);
-  }
-  else {
-    SoGLLightIdElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLLightIdElement, inherited);
 }
 
 /*!

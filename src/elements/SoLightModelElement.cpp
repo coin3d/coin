@@ -40,53 +40,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoLightModelElement)
-
-/*!
-  \var SoLightModelElement::classTypeId
-
-  This is the static class type identifier for the
-  SoLightModelElement class.
-*/
-
-SoType SoLightModelElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoLightModelElement::getClassTypeId(void)
-{
-  return SoLightModelElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoLightModelElement class.
-*/
-void *
-SoLightModelElement::createInstance(void)
-{
-  return (void *) new SoLightModelElement;
-}
-
-/*!
-  \var SoLightModelElement::classStackIndex
-
-  This is the static state stack index for the
-  SoLightModelElement class.
-*/
-int SoLightModelElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoLightModelElement class.
-*/
-int
-SoLightModelElement::getClassStackIndex(void)
-{
-  return SoLightModelElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoLightModelElement);
 
 /*!
   This static method initializes static data for the
@@ -96,23 +50,7 @@ SoLightModelElement::getClassStackIndex(void)
 void
 SoLightModelElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoLightModelElement)
-  assert(SoLightModelElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLightModelElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoLightModelElement",
-                       &SoLightModelElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoLightModelElement::classStackIndex =
-      createStackIndex(SoLightModelElement::classTypeId);
-  }
-  else {
-    SoLightModelElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoLightModelElement, inherited);
 }
 
 /*!

@@ -37,53 +37,7 @@
 
 float SoGLLineWidthElement::sizerange[2] = {-1.0f, -1.0f};
 
-//$ BEGIN TEMPLATE ElementSource(SoGLLineWidthElement)
-
-/*!
-  \var SoGLLineWidthElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLLineWidthElement class.
-*/
-
-SoType SoGLLineWidthElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLLineWidthElement::getClassTypeId(void)
-{
-  return SoGLLineWidthElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLLineWidthElement class.
-*/
-void *
-SoGLLineWidthElement::createInstance(void)
-{
-  return (void *) new SoGLLineWidthElement;
-}
-
-/*!
-  \var SoGLLineWidthElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLLineWidthElement class.
-*/
-int SoGLLineWidthElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLLineWidthElement class.
-*/
-int
-SoGLLineWidthElement::getClassStackIndex(void)
-{
-  return SoGLLineWidthElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLLineWidthElement);
 
 /*!
   This static method initializes static data for the
@@ -93,23 +47,7 @@ SoGLLineWidthElement::getClassStackIndex(void)
 void
 SoGLLineWidthElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLLineWidthElement)
-  assert(SoGLLineWidthElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLLineWidthElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLLineWidthElement",
-                       &SoGLLineWidthElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLLineWidthElement::classStackIndex =
-      createStackIndex(SoGLLineWidthElement::classTypeId);
-  }
-  else {
-    SoGLLineWidthElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLLineWidthElement, inherited);
 }
 
 /*!

@@ -45,53 +45,7 @@ static const SbColor defaultColor(0.0f, 0.0f, 0.0f);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoEmissiveColorElement)
-
-/*!
-  \var SoEmissiveColorElement::classTypeId
-
-  This is the static class type identifier for the
-  SoEmissiveColorElement class.
-*/
-
-SoType SoEmissiveColorElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoEmissiveColorElement::getClassTypeId(void)
-{
-  return SoEmissiveColorElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoEmissiveColorElement class.
-*/
-void *
-SoEmissiveColorElement::createInstance(void)
-{
-  return (void *) new SoEmissiveColorElement;
-}
-
-/*!
-  \var SoEmissiveColorElement::classStackIndex
-
-  This is the static state stack index for the
-  SoEmissiveColorElement class.
-*/
-int SoEmissiveColorElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoEmissiveColorElement class.
-*/
-int
-SoEmissiveColorElement::getClassStackIndex(void)
-{
-  return SoEmissiveColorElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoEmissiveColorElement);
 
 /*!
   This static method initializes static data for the SoEmissiveColorElement
@@ -101,23 +55,7 @@ SoEmissiveColorElement::getClassStackIndex(void)
 void
 SoEmissiveColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoEmissiveColorElement)
-  assert(SoEmissiveColorElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoEmissiveColorElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoEmissiveColorElement",
-                       &SoEmissiveColorElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoEmissiveColorElement::classStackIndex =
-      createStackIndex(SoEmissiveColorElement::classTypeId);
-  }
-  else {
-    SoEmissiveColorElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoEmissiveColorElement, inherited);
 }
 
 /*!
@@ -193,7 +131,7 @@ SoEmissiveColorElement::get(const int index) const
   Returns a pointer to the colora array. This method is not part of the OIV API.
 */
 const SbColor *
-SoEmissiveColorElement::getArrayPtr() const 
+SoEmissiveColorElement::getArrayPtr() const
 {
   return this->colors;
 }

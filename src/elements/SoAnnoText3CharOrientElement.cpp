@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoAnnoText3CharOrientElement)
-
-/*!
-  \var SoAnnoText3CharOrientElement::classTypeId
-
-  This is the static class type identifier for the
-  SoAnnoText3CharOrientElement class.
-*/
-
-SoType SoAnnoText3CharOrientElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoAnnoText3CharOrientElement::getClassTypeId(void)
-{
-  return SoAnnoText3CharOrientElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoAnnoText3CharOrientElement class.
-*/
-void *
-SoAnnoText3CharOrientElement::createInstance(void)
-{
-  return (void *) new SoAnnoText3CharOrientElement;
-}
-
-/*!
-  \var SoAnnoText3CharOrientElement::classStackIndex
-
-  This is the static state stack index for the
-  SoAnnoText3CharOrientElement class.
-*/
-int SoAnnoText3CharOrientElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoAnnoText3CharOrientElement class.
-*/
-int
-SoAnnoText3CharOrientElement::getClassStackIndex(void)
-{
-  return SoAnnoText3CharOrientElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoAnnoText3CharOrientElement);
 
 /*!
   This static method initializes static data for the
@@ -86,23 +40,7 @@ SoAnnoText3CharOrientElement::getClassStackIndex(void)
 void
 SoAnnoText3CharOrientElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoAnnoText3CharOrientElement)
-  assert(SoAnnoText3CharOrientElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoAnnoText3CharOrientElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoAnnoText3CharOrientElement",
-                       &SoAnnoText3CharOrientElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoAnnoText3CharOrientElement::classStackIndex =
-      createStackIndex(SoAnnoText3CharOrientElement::classTypeId);
-  }
-  else {
-    SoAnnoText3CharOrientElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoAnnoText3CharOrientElement, inherited);
 }
 
 /*!

@@ -72,53 +72,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoEnvironmentElement)
-
-/*!
-  \var SoEnvironmentElement::classTypeId
-
-  This is the static class type identifier for the
-  SoEnvironmentElement class.
-*/
-
-SoType SoEnvironmentElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoEnvironmentElement::getClassTypeId(void)
-{
-  return SoEnvironmentElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoEnvironmentElement class.
-*/
-void *
-SoEnvironmentElement::createInstance(void)
-{
-  return (void *) new SoEnvironmentElement;
-}
-
-/*!
-  \var SoEnvironmentElement::classStackIndex
-
-  This is the static state stack index for the
-  SoEnvironmentElement class.
-*/
-int SoEnvironmentElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoEnvironmentElement class.
-*/
-int
-SoEnvironmentElement::getClassStackIndex(void)
-{
-  return SoEnvironmentElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoEnvironmentElement);
 
 /*!
   This static method initializes static data for the
@@ -128,23 +82,7 @@ SoEnvironmentElement::getClassStackIndex(void)
 void
 SoEnvironmentElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoEnvironmentElement)
-  assert(SoEnvironmentElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoEnvironmentElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoEnvironmentElement",
-                       &SoEnvironmentElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoEnvironmentElement::classStackIndex =
-      createStackIndex(SoEnvironmentElement::classTypeId);
-  }
-  else {
-    SoEnvironmentElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoEnvironmentElement, inherited);
 }
 
 /*!

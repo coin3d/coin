@@ -38,53 +38,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLProjectionMatrixElement)
-
-/*!
-  \var SoGLProjectionMatrixElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLProjectionMatrixElement class.
-*/
-
-SoType SoGLProjectionMatrixElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLProjectionMatrixElement::getClassTypeId(void)
-{
-  return SoGLProjectionMatrixElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLProjectionMatrixElement class.
-*/
-void *
-SoGLProjectionMatrixElement::createInstance(void)
-{
-  return (void *) new SoGLProjectionMatrixElement;
-}
-
-/*!
-  \var SoGLProjectionMatrixElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLProjectionMatrixElement class.
-*/
-int SoGLProjectionMatrixElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLProjectionMatrixElement class.
-*/
-int
-SoGLProjectionMatrixElement::getClassStackIndex(void)
-{
-  return SoGLProjectionMatrixElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLProjectionMatrixElement);
 
 /*!
   This static method initializes static data for the
@@ -94,23 +48,7 @@ SoGLProjectionMatrixElement::getClassStackIndex(void)
 void
 SoGLProjectionMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLProjectionMatrixElement)
-  assert(SoGLProjectionMatrixElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLProjectionMatrixElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLProjectionMatrixElement",
-                       &SoGLProjectionMatrixElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLProjectionMatrixElement::classStackIndex =
-      createStackIndex(SoGLProjectionMatrixElement::classTypeId);
-  }
-  else {
-    SoGLProjectionMatrixElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLProjectionMatrixElement, inherited);
 }
 
 /*!

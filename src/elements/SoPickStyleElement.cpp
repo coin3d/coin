@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoPickStyleElement)
-
-/*!
-  \var SoPickStyleElement::classTypeId
-
-  This is the static class type identifier for the
-  SoPickStyleElement class.
-*/
-
-SoType SoPickStyleElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoPickStyleElement::getClassTypeId(void)
-{
-  return SoPickStyleElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoPickStyleElement class.
-*/
-void *
-SoPickStyleElement::createInstance(void)
-{
-  return (void *) new SoPickStyleElement;
-}
-
-/*!
-  \var SoPickStyleElement::classStackIndex
-
-  This is the static state stack index for the
-  SoPickStyleElement class.
-*/
-int SoPickStyleElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoPickStyleElement class.
-*/
-int
-SoPickStyleElement::getClassStackIndex(void)
-{
-  return SoPickStyleElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoPickStyleElement);
 
 /*!
   This static method initializes static data for the SoPickStyleElement class.
@@ -91,23 +45,7 @@ SoPickStyleElement::getClassStackIndex(void)
 void
 SoPickStyleElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoPickStyleElement)
-  assert(SoPickStyleElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPickStyleElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoPickStyleElement",
-                       &SoPickStyleElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoPickStyleElement::classStackIndex =
-      createStackIndex(SoPickStyleElement::classTypeId);
-  }
-  else {
-    SoPickStyleElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoPickStyleElement, inherited);
 }
 
 /*!

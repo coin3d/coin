@@ -37,53 +37,7 @@
 
 float SoGLPointSizeElement::sizerange[2] = {-1.0f, -1.0f};
 
-//$ BEGIN TEMPLATE ElementSource(SoGLPointSizeElement)
-
-/*!
-  \var SoGLPointSizeElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLPointSizeElement class.
-*/
-
-SoType SoGLPointSizeElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLPointSizeElement::getClassTypeId(void)
-{
-  return SoGLPointSizeElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLPointSizeElement class.
-*/
-void *
-SoGLPointSizeElement::createInstance(void)
-{
-  return (void *) new SoGLPointSizeElement;
-}
-
-/*!
-  \var SoGLPointSizeElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLPointSizeElement class.
-*/
-int SoGLPointSizeElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLPointSizeElement class.
-*/
-int
-SoGLPointSizeElement::getClassStackIndex(void)
-{
-  return SoGLPointSizeElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLPointSizeElement);
 
 /*!
   This static method initializes static data for the SoGLPointSizeElement
@@ -93,23 +47,7 @@ SoGLPointSizeElement::getClassStackIndex(void)
 void
 SoGLPointSizeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLPointSizeElement)
-  assert(SoGLPointSizeElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLPointSizeElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLPointSizeElement",
-                       &SoGLPointSizeElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLPointSizeElement::classStackIndex =
-      createStackIndex(SoGLPointSizeElement::classTypeId);
-  }
-  else {
-    SoGLPointSizeElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLPointSizeElement, inherited);
 }
 
 /*!

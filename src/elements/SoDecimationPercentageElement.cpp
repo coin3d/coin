@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoDecimationPercentageElement)
-
-/*!
-  \var SoDecimationPercentageElement::classTypeId
-
-  This is the static class type identifier for the
-  SoDecimationPercentageElement class.
-*/
-
-SoType SoDecimationPercentageElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoDecimationPercentageElement::getClassTypeId(void)
-{
-  return SoDecimationPercentageElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoDecimationPercentageElement class.
-*/
-void *
-SoDecimationPercentageElement::createInstance(void)
-{
-  return (void *) new SoDecimationPercentageElement;
-}
-
-/*!
-  \var SoDecimationPercentageElement::classStackIndex
-
-  This is the static state stack index for the
-  SoDecimationPercentageElement class.
-*/
-int SoDecimationPercentageElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoDecimationPercentageElement class.
-*/
-int
-SoDecimationPercentageElement::getClassStackIndex(void)
-{
-  return SoDecimationPercentageElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoDecimationPercentageElement);
 
 /*!
   This static method initializes static data for the
@@ -86,23 +40,7 @@ SoDecimationPercentageElement::getClassStackIndex(void)
 void
 SoDecimationPercentageElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoDecimationPercentageElement)
-  assert(SoDecimationPercentageElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoDecimationPercentageElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoDecimationPercentageElement",
-                       &SoDecimationPercentageElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoDecimationPercentageElement::classStackIndex =
-      createStackIndex(SoDecimationPercentageElement::classTypeId);
-  }
-  else {
-    SoDecimationPercentageElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoDecimationPercentageElement, inherited);
 }
 
 /*!

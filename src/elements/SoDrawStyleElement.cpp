@@ -40,53 +40,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoDrawStyleElement)
-
-/*!
-  \var SoDrawStyleElement::classTypeId
-
-  This is the static class type identifier for the
-  SoDrawStyleElement class.
-*/
-
-SoType SoDrawStyleElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoDrawStyleElement::getClassTypeId(void)
-{
-  return SoDrawStyleElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoDrawStyleElement class.
-*/
-void *
-SoDrawStyleElement::createInstance(void)
-{
-  return (void *) new SoDrawStyleElement;
-}
-
-/*!
-  \var SoDrawStyleElement::classStackIndex
-
-  This is the static state stack index for the
-  SoDrawStyleElement class.
-*/
-int SoDrawStyleElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoDrawStyleElement class.
-*/
-int
-SoDrawStyleElement::getClassStackIndex(void)
-{
-  return SoDrawStyleElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoDrawStyleElement);
 
 /*!
   This static method initializes static data for the
@@ -96,23 +50,7 @@ SoDrawStyleElement::getClassStackIndex(void)
 void
 SoDrawStyleElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoDrawStyleElement)
-  assert(SoDrawStyleElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoDrawStyleElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoDrawStyleElement",
-                       &SoDrawStyleElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoDrawStyleElement::classStackIndex =
-      createStackIndex(SoDrawStyleElement::classTypeId);
-  }
-  else {
-    SoDrawStyleElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoDrawStyleElement, inherited);
 }
 
 /*!

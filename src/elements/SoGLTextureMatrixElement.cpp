@@ -34,53 +34,7 @@
 
 #include <GL/gl.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLTextureMatrixElement)
-
-/*!
-  \var SoGLTextureMatrixElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLTextureMatrixElement class.
-*/
-
-SoType SoGLTextureMatrixElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLTextureMatrixElement::getClassTypeId(void)
-{
-  return SoGLTextureMatrixElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLTextureMatrixElement class.
-*/
-void *
-SoGLTextureMatrixElement::createInstance(void)
-{
-  return (void *) new SoGLTextureMatrixElement;
-}
-
-/*!
-  \var SoGLTextureMatrixElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLTextureMatrixElement class.
-*/
-int SoGLTextureMatrixElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLTextureMatrixElement class.
-*/
-int
-SoGLTextureMatrixElement::getClassStackIndex(void)
-{
-  return SoGLTextureMatrixElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLTextureMatrixElement);
 
 /*!
   This static method initializes static data for the
@@ -90,23 +44,7 @@ SoGLTextureMatrixElement::getClassStackIndex(void)
 void
 SoGLTextureMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLTextureMatrixElement)
-  assert(SoGLTextureMatrixElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLTextureMatrixElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLTextureMatrixElement",
-                       &SoGLTextureMatrixElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLTextureMatrixElement::classStackIndex =
-      createStackIndex(SoGLTextureMatrixElement::classTypeId);
-  }
-  else {
-    SoGLTextureMatrixElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLTextureMatrixElement, inherited);
 }
 
 /*!

@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoShapeHintsElement)
-
-/*!
-  \var SoShapeHintsElement::classTypeId
-
-  This is the static class type identifier for the
-  SoShapeHintsElement class.
-*/
-
-SoType SoShapeHintsElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoShapeHintsElement::getClassTypeId(void)
-{
-  return SoShapeHintsElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoShapeHintsElement class.
-*/
-void *
-SoShapeHintsElement::createInstance(void)
-{
-  return (void *) new SoShapeHintsElement;
-}
-
-/*!
-  \var SoShapeHintsElement::classStackIndex
-
-  This is the static state stack index for the
-  SoShapeHintsElement class.
-*/
-int SoShapeHintsElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoShapeHintsElement class.
-*/
-int
-SoShapeHintsElement::getClassStackIndex(void)
-{
-  return SoShapeHintsElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoShapeHintsElement);
 
 /*!
   This static method initializes static data for the SoShapeHintsElement
@@ -86,23 +40,7 @@ SoShapeHintsElement::getClassStackIndex(void)
 void
 SoShapeHintsElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoShapeHintsElement)
-  assert(SoShapeHintsElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoShapeHintsElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoShapeHintsElement",
-                       &SoShapeHintsElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoShapeHintsElement::classStackIndex =
-      createStackIndex(SoShapeHintsElement::classTypeId);
-  }
-  else {
-    SoShapeHintsElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoShapeHintsElement, inherited);
 }
 
 /*!

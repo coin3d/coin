@@ -61,50 +61,27 @@
   FIXME: write doc
 */
 
-// This class should probably not use any templates...
 
-//$ BEGIN TEMPLATE AbstractElementSource(SoElement)
 
-/*!
-  \var SoElement::classTypeId
-
-  This is the static class type identifier for
-  SoElement.
-*/
-
-SoType SoElement::classTypeId = SoType::badType(); // static
+// FIXME: do we need to duplicate the following documentation in all
+// subclasses as well to keep Doxygen happy? 19991209 mortene.
 
 /*!
-  This static method returns the SoType type for SoElement.
+  \fn SoType SoElement::getClassTypeId(void)
+  This static method returns the class type.
 */
-
-SoType
-SoElement::getClassTypeId( // static
-  void )
-{
-  return SoElement::classTypeId;
-}
-
 /*!
   \var SoElement::classStackIndex
-
-  This is the static state stack index for the
-  SoElement class.
+  This is the static state stack index for the class.
 */
-
-int SoElement::classStackIndex; // static
-
 /*!
-  This static method returns the state stack index for the SoElement class.
+  \fn int SoElement::getClassStackIndex(void)
+  This static method returns the state stack index for the class.
 */
 
-int
-SoElement::getClassStackIndex( // static
-  void )
-{
-  return SoElement::classStackIndex;
-}
-//$ END TEMPLATE AbstractElementSource
+SO_ELEMENT_ABSTRACT_SOURCE(SoElement);
+
+
 
 /*!
   This function initializes all the standard Inventor element classes.

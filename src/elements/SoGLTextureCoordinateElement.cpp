@@ -42,53 +42,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-//$ BEGIN TEMPLATE ElementSource(SoGLTextureCoordinateElement)
-
-/*!
-  \var SoGLTextureCoordinateElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLTextureCoordinateElement class.
-*/
-
-SoType SoGLTextureCoordinateElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLTextureCoordinateElement::getClassTypeId(void)
-{
-  return SoGLTextureCoordinateElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLTextureCoordinateElement class.
-*/
-void *
-SoGLTextureCoordinateElement::createInstance(void)
-{
-  return (void *) new SoGLTextureCoordinateElement;
-}
-
-/*!
-  \var SoGLTextureCoordinateElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLTextureCoordinateElement class.
-*/
-int SoGLTextureCoordinateElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLTextureCoordinateElement class.
-*/
-int
-SoGLTextureCoordinateElement::getClassStackIndex(void)
-{
-  return SoGLTextureCoordinateElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLTextureCoordinateElement);
 
 /*!
   This static method initializes static data for the
@@ -98,23 +52,7 @@ SoGLTextureCoordinateElement::getClassStackIndex(void)
 void
 SoGLTextureCoordinateElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLTextureCoordinateElement)
-  assert(SoGLTextureCoordinateElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLTextureCoordinateElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLTextureCoordinateElement",
-                       &SoGLTextureCoordinateElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLTextureCoordinateElement::classStackIndex =
-      createStackIndex(SoGLTextureCoordinateElement::classTypeId);
-  }
-  else {
-    SoGLTextureCoordinateElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLTextureCoordinateElement, inherited);
 }
 
 /*!

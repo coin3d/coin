@@ -35,53 +35,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLViewportRegionElement)
-
-/*!
-  \var SoGLViewportRegionElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLViewportRegionElement class.
-*/
-
-SoType SoGLViewportRegionElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLViewportRegionElement::getClassTypeId(void)
-{
-  return SoGLViewportRegionElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLViewportRegionElement class.
-*/
-void *
-SoGLViewportRegionElement::createInstance(void)
-{
-  return (void *) new SoGLViewportRegionElement;
-}
-
-/*!
-  \var SoGLViewportRegionElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLViewportRegionElement class.
-*/
-int SoGLViewportRegionElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLViewportRegionElement class.
-*/
-int
-SoGLViewportRegionElement::getClassStackIndex(void)
-{
-  return SoGLViewportRegionElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLViewportRegionElement);
 
 /*!
   This static method initializes static data for the
@@ -91,23 +45,7 @@ SoGLViewportRegionElement::getClassStackIndex(void)
 void
 SoGLViewportRegionElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLViewportRegionElement)
-  assert(SoGLViewportRegionElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLViewportRegionElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLViewportRegionElement",
-                       &SoGLViewportRegionElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLViewportRegionElement::classStackIndex =
-      createStackIndex(SoGLViewportRegionElement::classTypeId);
-  }
-  else {
-    SoGLViewportRegionElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLViewportRegionElement, inherited);
 }
 
 /*!

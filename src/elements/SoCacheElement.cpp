@@ -32,53 +32,7 @@
 // static variables
 SbBool SoCacheElement::invalidated;
 
-//$ BEGIN TEMPLATE ElementSource(SoCacheElement)
-
-/*!
-  \var SoCacheElement::classTypeId
-
-  This is the static class type identifier for the
-  SoCacheElement class.
-*/
-
-SoType SoCacheElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoCacheElement::getClassTypeId(void)
-{
-  return SoCacheElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoCacheElement class.
-*/
-void *
-SoCacheElement::createInstance(void)
-{
-  return (void *) new SoCacheElement;
-}
-
-/*!
-  \var SoCacheElement::classStackIndex
-
-  This is the static state stack index for the
-  SoCacheElement class.
-*/
-int SoCacheElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoCacheElement class.
-*/
-int
-SoCacheElement::getClassStackIndex(void)
-{
-  return SoCacheElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoCacheElement);
 
 /*!
   This static method initializes static data for the SoCacheElement class.
@@ -87,23 +41,7 @@ SoCacheElement::getClassStackIndex(void)
 void
 SoCacheElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoCacheElement)
-  assert(SoCacheElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCacheElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoCacheElement",
-                       &SoCacheElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoCacheElement::classStackIndex =
-      createStackIndex(SoCacheElement::classTypeId);
-  }
-  else {
-    SoCacheElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoCacheElement, inherited);
 }
 
 /*!

@@ -38,53 +38,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLShadeModelElement)
-
-/*!
-  \var SoGLShadeModelElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLShadeModelElement class.
-*/
-
-SoType SoGLShadeModelElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLShadeModelElement::getClassTypeId(void)
-{
-  return SoGLShadeModelElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLShadeModelElement class.
-*/
-void *
-SoGLShadeModelElement::createInstance(void)
-{
-  return (void *) new SoGLShadeModelElement;
-}
-
-/*!
-  \var SoGLShadeModelElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLShadeModelElement class.
-*/
-int SoGLShadeModelElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLShadeModelElement class.
-*/
-int
-SoGLShadeModelElement::getClassStackIndex(void)
-{
-  return SoGLShadeModelElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLShadeModelElement);
 
 /*!
   This static method initializes static data for the
@@ -94,23 +48,7 @@ SoGLShadeModelElement::getClassStackIndex(void)
 void
 SoGLShadeModelElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLShadeModelElement)
-  assert(SoGLShadeModelElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLShadeModelElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLShadeModelElement",
-                       &SoGLShadeModelElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLShadeModelElement::classStackIndex =
-      createStackIndex(SoGLShadeModelElement::classTypeId);
-  }
-  else {
-    SoGLShadeModelElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLShadeModelElement, inherited);
 }
 
 /*!

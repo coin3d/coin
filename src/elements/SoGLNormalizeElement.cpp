@@ -49,53 +49,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-//$ BEGIN TEMPLATE ElementSource(SoGLNormalizeElement)
-
-/*!
-  \var SoGLNormalizeElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLNormalizeElement class.
-*/
-
-SoType SoGLNormalizeElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLNormalizeElement::getClassTypeId(void)
-{
-  return SoGLNormalizeElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLNormalizeElement class.
-*/
-void *
-SoGLNormalizeElement::createInstance(void)
-{
-  return (void *) new SoGLNormalizeElement;
-}
-
-/*!
-  \var SoGLNormalizeElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLNormalizeElement class.
-*/
-int SoGLNormalizeElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLNormalizeElement class.
-*/
-int
-SoGLNormalizeElement::getClassStackIndex(void)
-{
-  return SoGLNormalizeElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLNormalizeElement);
 
 /*!
   This static method initializes static data for the
@@ -105,23 +59,7 @@ SoGLNormalizeElement::getClassStackIndex(void)
 void
 SoGLNormalizeElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLNormalizeElement)
-  assert(SoGLNormalizeElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLNormalizeElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLNormalizeElement",
-                       &SoGLNormalizeElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLNormalizeElement::classStackIndex =
-      createStackIndex(SoGLNormalizeElement::classTypeId);
-  }
-  else {
-    SoGLNormalizeElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLNormalizeElement, inherited);
 }
 
 /*!

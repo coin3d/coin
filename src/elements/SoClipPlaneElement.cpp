@@ -61,56 +61,7 @@ so_plane_data::so_plane_data(const SbPlane &plane, const SbMatrix &matrix)
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoClipPlaneElement)
-
-/*!
-  \var SoClipPlaneElement::classTypeId
-
-  This is the static class type identifier for the
-  SoClipPlaneElement class.
-*/
-
-SoType SoClipPlaneElement::classTypeId = SoType::badType();
-
-
-
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoClipPlaneElement::getClassTypeId(void)
-{
-  return SoClipPlaneElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoClipPlaneElement class.
-*/
-void *
-SoClipPlaneElement::createInstance(void)
-{
-  return (void *) new SoClipPlaneElement;
-}
-
-/*!
-  \var SoClipPlaneElement::classStackIndex
-
-  This is the static state stack index for the
-  SoClipPlaneElement class.
-*/
-int SoClipPlaneElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoClipPlaneElement class.
-*/
-int
-SoClipPlaneElement::getClassStackIndex(void)
-{
-  return SoClipPlaneElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoClipPlaneElement);
 
 /*!
   This static method initializes static data for the
@@ -120,23 +71,7 @@ SoClipPlaneElement::getClassStackIndex(void)
 void
 SoClipPlaneElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoClipPlaneElement)
-  assert(SoClipPlaneElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoClipPlaneElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoClipPlaneElement",
-                       &SoClipPlaneElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoClipPlaneElement::classStackIndex =
-      createStackIndex(SoClipPlaneElement::classTypeId);
-  }
-  else {
-    SoClipPlaneElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoClipPlaneElement, inherited);
 }
 
 /*!

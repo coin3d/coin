@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoFontSizeElement)
-
-/*!
-  \var SoFontSizeElement::classTypeId
-
-  This is the static class type identifier for the
-  SoFontSizeElement class.
-*/
-
-SoType SoFontSizeElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoFontSizeElement::getClassTypeId(void)
-{
-  return SoFontSizeElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoFontSizeElement class.
-*/
-void *
-SoFontSizeElement::createInstance(void)
-{
-  return (void *) new SoFontSizeElement;
-}
-
-/*!
-  \var SoFontSizeElement::classStackIndex
-
-  This is the static state stack index for the
-  SoFontSizeElement class.
-*/
-int SoFontSizeElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoFontSizeElement class.
-*/
-int
-SoFontSizeElement::getClassStackIndex(void)
-{
-  return SoFontSizeElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoFontSizeElement);
 
 /*!
   This static method initializes static data for the SoFontSizeElement
@@ -86,23 +40,7 @@ SoFontSizeElement::getClassStackIndex(void)
 void
 SoFontSizeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoFontSizeElement)
-  assert(SoFontSizeElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoFontSizeElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoFontSizeElement",
-                       &SoFontSizeElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoFontSizeElement::classStackIndex =
-      createStackIndex(SoFontSizeElement::classTypeId);
-  }
-  else {
-    SoFontSizeElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoFontSizeElement, inherited);
 }
 
 /*!

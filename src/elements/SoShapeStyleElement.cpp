@@ -61,53 +61,7 @@
 #define FLAG_TEXMASK (FLAG_TEXENABLED|FLAG_TEXFUNC)
 #define FLAG_DELAYMASK (FLAG_BBOXCMPLX|FLAG_INVISIBLE|FLAG_ABORTCB)
 
-//$ BEGIN TEMPLATE ElementSource(SoShapeStyleElement)
-
-/*!
-  \var SoShapeStyleElement::classTypeId
-
-  This is the static class type identifier for the
-  SoShapeStyleElement class.
-*/
-
-SoType SoShapeStyleElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoShapeStyleElement::getClassTypeId(void)
-{
-  return SoShapeStyleElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoShapeStyleElement class.
-*/
-void *
-SoShapeStyleElement::createInstance(void)
-{
-  return (void *) new SoShapeStyleElement;
-}
-
-/*!
-  \var SoShapeStyleElement::classStackIndex
-
-  This is the static state stack index for the
-  SoShapeStyleElement class.
-*/
-int SoShapeStyleElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoShapeStyleElement class.
-*/
-int
-SoShapeStyleElement::getClassStackIndex(void)
-{
-  return SoShapeStyleElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoShapeStyleElement);
 
 /*!
   This static method initializes static data for the SoShapeStyleElement class.
@@ -116,23 +70,7 @@ SoShapeStyleElement::getClassStackIndex(void)
 void
 SoShapeStyleElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoShapeStyleElement)
-  assert(SoShapeStyleElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoShapeStyleElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoShapeStyleElement",
-                       &SoShapeStyleElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoShapeStyleElement::classStackIndex =
-      createStackIndex(SoShapeStyleElement::classTypeId);
-  }
-  else {
-    SoShapeStyleElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoShapeStyleElement, inherited);
 }
 
 /*!

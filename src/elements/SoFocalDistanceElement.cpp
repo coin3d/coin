@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoFocalDistanceElement)
-
-/*!
-  \var SoFocalDistanceElement::classTypeId
-
-  This is the static class type identifier for the
-  SoFocalDistanceElement class.
-*/
-
-SoType SoFocalDistanceElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoFocalDistanceElement::getClassTypeId(void)
-{
-  return SoFocalDistanceElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoFocalDistanceElement class.
-*/
-void *
-SoFocalDistanceElement::createInstance(void)
-{
-  return (void *) new SoFocalDistanceElement;
-}
-
-/*!
-  \var SoFocalDistanceElement::classStackIndex
-
-  This is the static state stack index for the
-  SoFocalDistanceElement class.
-*/
-int SoFocalDistanceElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoFocalDistanceElement class.
-*/
-int
-SoFocalDistanceElement::getClassStackIndex(void)
-{
-  return SoFocalDistanceElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoFocalDistanceElement);
 
 /*!
   This static method initializes static data for the
@@ -86,23 +40,7 @@ SoFocalDistanceElement::getClassStackIndex(void)
 void
 SoFocalDistanceElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoFocalDistanceElement)
-  assert(SoFocalDistanceElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoFocalDistanceElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoFocalDistanceElement",
-                       &SoFocalDistanceElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoFocalDistanceElement::classStackIndex =
-      createStackIndex(SoFocalDistanceElement::classTypeId);
-  }
-  else {
-    SoFocalDistanceElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoFocalDistanceElement, inherited);
 }
 
 /*!

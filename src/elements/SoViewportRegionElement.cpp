@@ -39,53 +39,7 @@ SbViewportRegion * SoViewportRegionElement::emptyViewportRegion;
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoViewportRegionElement)
-
-/*!
-  \var SoViewportRegionElement::classTypeId
-
-  This is the static class type identifier for the
-  SoViewportRegionElement class.
-*/
-
-SoType SoViewportRegionElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoViewportRegionElement::getClassTypeId(void)
-{
-  return SoViewportRegionElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoViewportRegionElement class.
-*/
-void *
-SoViewportRegionElement::createInstance(void)
-{
-  return (void *) new SoViewportRegionElement;
-}
-
-/*!
-  \var SoViewportRegionElement::classStackIndex
-
-  This is the static state stack index for the
-  SoViewportRegionElement class.
-*/
-int SoViewportRegionElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoViewportRegionElement class.
-*/
-int
-SoViewportRegionElement::getClassStackIndex(void)
-{
-  return SoViewportRegionElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoViewportRegionElement);
 
 /*!
   This static method initializes static data for the SoViewportregionElement
@@ -95,23 +49,7 @@ SoViewportRegionElement::getClassStackIndex(void)
 void
 SoViewportRegionElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoViewportRegionElement)
-  assert(SoViewportRegionElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoViewportRegionElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoViewportRegionElement",
-                       &SoViewportRegionElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoViewportRegionElement::classStackIndex =
-      createStackIndex(SoViewportRegionElement::classTypeId);
-  }
-  else {
-    SoViewportRegionElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoViewportRegionElement, inherited);
 }
 
 /*!

@@ -40,53 +40,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoComplexityTypeElement)
-
-/*!
-  \var SoComplexityTypeElement::classTypeId
-
-  This is the static class type identifier for the
-  SoComplexityTypeElement class.
-*/
-
-SoType SoComplexityTypeElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoComplexityTypeElement::getClassTypeId(void)
-{
-  return SoComplexityTypeElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoComplexityTypeElement class.
-*/
-void *
-SoComplexityTypeElement::createInstance(void)
-{
-  return (void *) new SoComplexityTypeElement;
-}
-
-/*!
-  \var SoComplexityTypeElement::classStackIndex
-
-  This is the static state stack index for the
-  SoComplexityTypeElement class.
-*/
-int SoComplexityTypeElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoComplexityTypeElement class.
-*/
-int
-SoComplexityTypeElement::getClassStackIndex(void)
-{
-  return SoComplexityTypeElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoComplexityTypeElement);
 
 /*!
   This static method initializes static data for the SoComplexityTypeElement
@@ -96,23 +50,7 @@ SoComplexityTypeElement::getClassStackIndex(void)
 void
 SoComplexityTypeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoComplexityTypeElement)
-  assert(SoComplexityTypeElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoComplexityTypeElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoComplexityTypeElement",
-                       &SoComplexityTypeElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoComplexityTypeElement::classStackIndex =
-      createStackIndex(SoComplexityTypeElement::classTypeId);
-  }
-  else {
-    SoComplexityTypeElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoComplexityTypeElement, inherited);
 }
 
 /*!

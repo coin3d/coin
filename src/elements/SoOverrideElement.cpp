@@ -29,107 +29,43 @@
 #include <Inventor/SbName.h>
 #include <assert.h>
 
-#define SO_GET_OVERRIDE(flag)                             \
-        const SoOverrideElement * const element =           \
-            (const SoOverrideElement *)                     \
-            getConstElement(state, classStackIndex);      \
-        return (element->flags & flag)
+#define SO_GET_OVERRIDE(flag) \
+const SoOverrideElement * const element = \
+  (const SoOverrideElement *) getConstElement(state, classStackIndex); \
+return (element->flags & flag)
 
-#define SO_SET_OVERRIDE(flag)                             \
-        SoOverrideElement * const element =                 \
-            (SoOverrideElement *)                           \
-            getElement(state, classStackIndex);           \
-        if (override)                                     \
-            element->flags |= flag;                         \
-        else                                                \
-            element->flags &= ~flag
+#define SO_SET_OVERRIDE(flag) \
+SoOverrideElement * const element = \
+  (SoOverrideElement *) getElement(state, classStackIndex); \
+if (override) \
+  element->flags |= flag; \
+else \
+  element->flags &= ~flag
 
 
-/*!
-  \enum SoOverrideElement::FlagBits
+/*! 
+\enum SoOverrideElement::FlagBits
 
-  FIXME: write doc.
+FIXME: write doc. 
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoOverrideElement)
+SO_ELEMENT_SOURCE(SoOverrideElement);
 
-/*!
-  \var SoOverrideElement::classTypeId
-
-  This is the static class type identifier for the
-  SoOverrideElement class.
-*/
-
-SoType SoOverrideElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoOverrideElement::getClassTypeId(void)
-{
-  return SoOverrideElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoOverrideElement class.
-*/
-void *
-SoOverrideElement::createInstance(void)
-{
-  return (void *) new SoOverrideElement;
-}
-
-/*!
-  \var SoOverrideElement::classStackIndex
-
-  This is the static state stack index for the
-  SoOverrideElement class.
-*/
-int SoOverrideElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoOverrideElement class.
-*/
-int
-SoOverrideElement::getClassStackIndex(void)
-{
-  return SoOverrideElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
-
-/*!
-  This static method initializes static data for the
-  SoOverrideElement class.
+/*! 
+This static method initializes static data for the
+SoOverrideElement class. 
 */
 
 void
 SoOverrideElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoOverrideElement)
-  assert(SoOverrideElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoOverrideElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoOverrideElement",
-                       &SoOverrideElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoOverrideElement::classStackIndex =
-      createStackIndex(SoOverrideElement::classTypeId);
-  }
-  else {
-    SoOverrideElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoOverrideElement, inherited);
 }
 
-/*!
-  A constructor.  Can't be used directly.
+/*! 
+A constructor.  Can't be used directly. 
 
-  \sa void * SoOverrideElement::createInstance(void)
+\sa void * SoOverrideElement::createInstance(void)
 */
 
 SoOverrideElement::SoOverrideElement(void)

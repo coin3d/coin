@@ -19,49 +19,12 @@
 
 #include "texturefilenameelement.h"
 
-SoType SoTextureFilenameElement::classTypeId = SoType::badType();
-
-SoType
-SoTextureFilenameElement::getClassTypeId(void)
-{
-  return SoTextureFilenameElement::classTypeId;
-}
-
-void *
-SoTextureFilenameElement::createInstance(void)
-{
-  return (void *) new SoTextureFilenameElement;
-}
-
-int SoTextureFilenameElement::classStackIndex;
-
-int
-SoTextureFilenameElement::getClassStackIndex(void)
-{
-  return SoTextureFilenameElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoTextureFilenameElement);
 
 void
 SoTextureFilenameElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoTextureFilenameElement)
-  assert(SoTextureFilenameElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureFilenameElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoTextureFilenameElement",
-                       &SoTextureFilenameElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoTextureFilenameElement::classStackIndex =
-      createStackIndex(SoTextureFilenameElement::classTypeId);
-  }
-  else {
-    SoTextureFilenameElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoTextureFilenameElement, inherited);
 }
 
 void

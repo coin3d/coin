@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoSwitchElement)
-
-/*!
-  \var SoSwitchElement::classTypeId
-
-  This is the static class type identifier for the
-  SoSwitchElement class.
-*/
-
-SoType SoSwitchElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoSwitchElement::getClassTypeId(void)
-{
-  return SoSwitchElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoSwitchElement class.
-*/
-void *
-SoSwitchElement::createInstance(void)
-{
-  return (void *) new SoSwitchElement;
-}
-
-/*!
-  \var SoSwitchElement::classStackIndex
-
-  This is the static state stack index for the
-  SoSwitchElement class.
-*/
-int SoSwitchElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoSwitchElement class.
-*/
-int
-SoSwitchElement::getClassStackIndex(void)
-{
-  return SoSwitchElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoSwitchElement);
 
 /*!
   This static method initializes static data for the SoSwitchElement class.
@@ -85,23 +39,7 @@ SoSwitchElement::getClassStackIndex(void)
 void
 SoSwitchElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoSwitchElement)
-  assert(SoSwitchElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSwitchElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoSwitchElement",
-                       &SoSwitchElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoSwitchElement::classStackIndex =
-      createStackIndex(SoSwitchElement::classTypeId);
-  }
-  else {
-    SoSwitchElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoSwitchElement, inherited);
 }
 
 /*!

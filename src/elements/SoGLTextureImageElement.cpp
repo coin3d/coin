@@ -41,53 +41,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-//$ BEGIN TEMPLATE ElementSource(SoGLTextureImageElement)
-
-/*!
-  \var SoGLTextureImageElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLTextureImageElement class.
-*/
-
-SoType SoGLTextureImageElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLTextureImageElement::getClassTypeId(void)
-{
-  return SoGLTextureImageElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLTextureImageElement class.
-*/
-void *
-SoGLTextureImageElement::createInstance(void)
-{
-  return (void *) new SoGLTextureImageElement;
-}
-
-/*!
-  \var SoGLTextureImageElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLTextureImageElement class.
-*/
-int SoGLTextureImageElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLTextureImageElement class.
-*/
-int
-SoGLTextureImageElement::getClassStackIndex(void)
-{
-  return SoGLTextureImageElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLTextureImageElement);
 
 /*!
   This static method initializes static data in the
@@ -97,23 +51,7 @@ SoGLTextureImageElement::getClassStackIndex(void)
 void
 SoGLTextureImageElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLTextureImageElement)
-  assert(SoGLTextureImageElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLTextureImageElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLTextureImageElement",
-                       &SoGLTextureImageElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLTextureImageElement::classStackIndex =
-      createStackIndex(SoGLTextureImageElement::classTypeId);
-  }
-  else {
-    SoGLTextureImageElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLTextureImageElement, inherited);
 }
 
 /*!
@@ -165,8 +103,8 @@ SoGLTextureImageElement::pop(SoState * state,
     }
     else {
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-      glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, prev->blendColor.getValue());      
-    }                
+      glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, prev->blendColor.getValue());
+    }
   }
 }
 
@@ -194,7 +132,7 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    SoTextureImageElement::REPEAT,
                    model,
                    blendColor);
-    
+
     elem->glimage = glimage;
     glimage->apply();
     if (model == DECAL) {
@@ -205,8 +143,8 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
     }
     else {
       glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-      glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendColor.getValue());      
-    }                
+      glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendColor.getValue());
+    }
   }
   else {
     elem->glimage = NULL;

@@ -84,53 +84,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoTextureImageElement)
-
-/*!
-  \var SoTextureImageElement::classTypeId
-
-  This is the static class type identifier for the
-  SoTextureImageElement class.
-*/
-
-SoType SoTextureImageElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoTextureImageElement::getClassTypeId(void)
-{
-  return SoTextureImageElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoTextureImageElement class.
-*/
-void *
-SoTextureImageElement::createInstance(void)
-{
-  return (void *) new SoTextureImageElement;
-}
-
-/*!
-  \var SoTextureImageElement::classStackIndex
-
-  This is the static state stack index for the
-  SoTextureImageElement class.
-*/
-int SoTextureImageElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoTextureImageElement class.
-*/
-int
-SoTextureImageElement::getClassStackIndex(void)
-{
-  return SoTextureImageElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoTextureImageElement);
 
 /*!
   This static method initializes static data for the
@@ -140,23 +94,7 @@ SoTextureImageElement::getClassStackIndex(void)
 void
 SoTextureImageElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoTextureImageElement)
-  assert(SoTextureImageElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureImageElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoTextureImageElement",
-                       &SoTextureImageElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoTextureImageElement::classStackIndex =
-      createStackIndex(SoTextureImageElement::classTypeId);
-  }
-  else {
-    SoTextureImageElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoTextureImageElement, inherited);
 }
 
 /*!

@@ -35,48 +35,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE AbstractElementSource(SoFloatElement)
-
-/*!
-  \var SoFloatElement::classTypeId
-
-  This is the static class type identifier for
-  SoFloatElement.
-*/
-
-SoType SoFloatElement::classTypeId = SoType::badType(); // static
-
-/*!
-  This static method returns the SoType type for SoFloatElement.
-*/
-
-SoType
-SoFloatElement::getClassTypeId( // static
-  void )
-{
-  return SoFloatElement::classTypeId;
-}
-
-/*!
-  \var SoFloatElement::classStackIndex
-
-  This is the static state stack index for the
-  SoFloatElement class.
-*/
-
-int SoFloatElement::classStackIndex; // static
-
-/*!
-  This static method returns the state stack index for the SoFloatElement class.
-*/
-
-int
-SoFloatElement::getClassStackIndex( // static
-  void )
-{
-  return SoFloatElement::classStackIndex;
-}
-//$ END TEMPLATE AbstractElementSource
+SO_ELEMENT_ABSTRACT_SOURCE(SoFloatElement);
 
 /*!
   This static method initializes static data for the SoFloatElement class.
@@ -85,21 +44,7 @@ SoFloatElement::getClassStackIndex( // static
 void
 SoFloatElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitAbstractElementSource(SoFloatElement)
-  assert(SoFloatElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoFloatElement::classTypeId = SoType::createType(inherited::getClassTypeId(),
-    "SoFloatElement", NULL );
-
-  if ( inherited::classStackIndex < 0 ) {
-    SoFloatElement::classStackIndex =
-      createStackIndex( SoFloatElement::classTypeId );
-  } else {
-    SoFloatElement::classStackIndex =
-      inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitAbstractElementSource
+  SO_ELEMENT_INIT_ABSTRACT_CLASS(SoFloatElement, inherited);
 }
 
 /*!

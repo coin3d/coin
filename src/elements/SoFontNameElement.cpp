@@ -44,53 +44,7 @@ const SbName SoFontNameElement::defaultFontName("defaultFont");
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoFontNameElement)
-
-/*!
-  \var SoFontNameElement::classTypeId
-
-  This is the static class type identifier for the
-  SoFontNameElement class.
-*/
-
-SoType SoFontNameElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoFontNameElement::getClassTypeId(void)
-{
-  return SoFontNameElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoFontNameElement class.
-*/
-void *
-SoFontNameElement::createInstance(void)
-{
-  return (void *) new SoFontNameElement;
-}
-
-/*!
-  \var SoFontNameElement::classStackIndex
-
-  This is the static state stack index for the
-  SoFontNameElement class.
-*/
-int SoFontNameElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoFontNameElement class.
-*/
-int
-SoFontNameElement::getClassStackIndex(void)
-{
-  return SoFontNameElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoFontNameElement);
 
 /*!
   This static method initializes static data for the SoFontNameElement
@@ -100,23 +54,7 @@ SoFontNameElement::getClassStackIndex(void)
 void
 SoFontNameElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoFontNameElement)
-  assert(SoFontNameElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoFontNameElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoFontNameElement",
-                       &SoFontNameElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoFontNameElement::classStackIndex =
-      createStackIndex(SoFontNameElement::classTypeId);
-  }
-  else {
-    SoFontNameElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoFontNameElement, inherited);
 }
 
 /*!

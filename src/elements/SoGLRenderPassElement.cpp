@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoGLRenderPassElement)
-
-/*!
-  \var SoGLRenderPassElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLRenderPassElement class.
-*/
-
-SoType SoGLRenderPassElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLRenderPassElement::getClassTypeId(void)
-{
-  return SoGLRenderPassElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLRenderPassElement class.
-*/
-void *
-SoGLRenderPassElement::createInstance(void)
-{
-  return (void *) new SoGLRenderPassElement;
-}
-
-/*!
-  \var SoGLRenderPassElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLRenderPassElement class.
-*/
-int SoGLRenderPassElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLRenderPassElement class.
-*/
-int
-SoGLRenderPassElement::getClassStackIndex(void)
-{
-  return SoGLRenderPassElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLRenderPassElement);
 
 /*!
   This static method initializes static data for the
@@ -92,23 +46,7 @@ SoGLRenderPassElement::getClassStackIndex(void)
 void
 SoGLRenderPassElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLRenderPassElement)
-  assert(SoGLRenderPassElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLRenderPassElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLRenderPassElement",
-                       &SoGLRenderPassElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLRenderPassElement::classStackIndex =
-      createStackIndex(SoGLRenderPassElement::classTypeId);
-  }
-  else {
-    SoGLRenderPassElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLRenderPassElement, inherited);
 }
 
 /*!

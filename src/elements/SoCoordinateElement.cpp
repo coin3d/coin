@@ -58,53 +58,7 @@ SbVec3f SoCoordinateElement::initialdefaultcoords(0.0f, 0.0f, 0.0f);
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoCoordinateElement)
-
-/*!
-  \var SoCoordinateElement::classTypeId
-
-  This is the static class type identifier for the
-  SoCoordinateElement class.
-*/
-
-SoType SoCoordinateElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoCoordinateElement::getClassTypeId(void)
-{
-  return SoCoordinateElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoCoordinateElement class.
-*/
-void *
-SoCoordinateElement::createInstance(void)
-{
-  return (void *) new SoCoordinateElement;
-}
-
-/*!
-  \var SoCoordinateElement::classStackIndex
-
-  This is the static state stack index for the
-  SoCoordinateElement class.
-*/
-int SoCoordinateElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoCoordinateElement class.
-*/
-int
-SoCoordinateElement::getClassStackIndex(void)
-{
-  return SoCoordinateElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoCoordinateElement);
 
 /*!
   This static method initializes static data for the
@@ -114,23 +68,7 @@ SoCoordinateElement::getClassStackIndex(void)
 void
 SoCoordinateElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoCoordinateElement)
-  assert(SoCoordinateElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCoordinateElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoCoordinateElement",
-                       &SoCoordinateElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoCoordinateElement::classStackIndex =
-      createStackIndex(SoCoordinateElement::classTypeId);
-  }
-  else {
-    SoCoordinateElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoCoordinateElement, inherited);
 }
 
 /*!
@@ -269,21 +207,21 @@ SoCoordinateElement::is3D() const
 }
 
 /*!
-  Returns a pointer to the 3D coordinate array. This method is not part of the 
+  Returns a pointer to the 3D coordinate array. This method is not part of the
   OIV API.
 */
 const SbVec3f *
-SoCoordinateElement::getArrayPtr3() const 
+SoCoordinateElement::getArrayPtr3() const
 {
   return this->coords3D;
 }
 
 /*!
-  Returns a pointer to the 4D coordinate array. This method is not part of the 
+  Returns a pointer to the 4D coordinate array. This method is not part of the
   OIV API.
 */
 const SbVec4f *
-SoCoordinateElement::getArrayPtr4() const 
+SoCoordinateElement::getArrayPtr4() const
 {
   return this->coords4D;
 }

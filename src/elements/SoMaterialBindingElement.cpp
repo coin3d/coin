@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoMaterialBindingElement)
-
-/*!
-  \var SoMaterialBindingElement::classTypeId
-
-  This is the static class type identifier for the
-  SoMaterialBindingElement class.
-*/
-
-SoType SoMaterialBindingElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoMaterialBindingElement::getClassTypeId(void)
-{
-  return SoMaterialBindingElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoMaterialBindingElement class.
-*/
-void *
-SoMaterialBindingElement::createInstance(void)
-{
-  return (void *) new SoMaterialBindingElement;
-}
-
-/*!
-  \var SoMaterialBindingElement::classStackIndex
-
-  This is the static state stack index for the
-  SoMaterialBindingElement class.
-*/
-int SoMaterialBindingElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoMaterialBindingElement class.
-*/
-int
-SoMaterialBindingElement::getClassStackIndex(void)
-{
-  return SoMaterialBindingElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoMaterialBindingElement);
 
 /*!
   This static method initializes static data for the
@@ -92,23 +46,7 @@ SoMaterialBindingElement::getClassStackIndex(void)
 void
 SoMaterialBindingElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoMaterialBindingElement)
-  assert(SoMaterialBindingElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMaterialBindingElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoMaterialBindingElement",
-                       &SoMaterialBindingElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoMaterialBindingElement::classStackIndex =
-      createStackIndex(SoMaterialBindingElement::classTypeId);
-  }
-  else {
-    SoMaterialBindingElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoMaterialBindingElement, inherited);
 }
 
 /*!

@@ -40,53 +40,7 @@
 
 #include <GL/gl.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLViewingMatrixElement)
-
-/*!
-  \var SoGLViewingMatrixElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLViewingMatrixElement class.
-*/
-
-SoType SoGLViewingMatrixElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLViewingMatrixElement::getClassTypeId(void)
-{
-  return SoGLViewingMatrixElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLViewingMatrixElement class.
-*/
-void *
-SoGLViewingMatrixElement::createInstance(void)
-{
-  return (void *) new SoGLViewingMatrixElement;
-}
-
-/*!
-  \var SoGLViewingMatrixElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLViewingMatrixElement class.
-*/
-int SoGLViewingMatrixElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLViewingMatrixElement class.
-*/
-int
-SoGLViewingMatrixElement::getClassStackIndex(void)
-{
-  return SoGLViewingMatrixElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLViewingMatrixElement);
 
 /*!
   This static method initializes static data for the
@@ -96,23 +50,7 @@ SoGLViewingMatrixElement::getClassStackIndex(void)
 void
 SoGLViewingMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLViewingMatrixElement)
-  assert(SoGLViewingMatrixElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLViewingMatrixElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLViewingMatrixElement",
-                       &SoGLViewingMatrixElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLViewingMatrixElement::classStackIndex =
-      createStackIndex(SoGLViewingMatrixElement::classTypeId);
-  }
-  else {
-    SoGLViewingMatrixElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLViewingMatrixElement, inherited);
 }
 
 /*!

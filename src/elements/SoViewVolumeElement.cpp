@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoViewVolumeElement)
-
-/*!
-  \var SoViewVolumeElement::classTypeId
-
-  This is the static class type identifier for the
-  SoViewVolumeElement class.
-*/
-
-SoType SoViewVolumeElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoViewVolumeElement::getClassTypeId(void)
-{
-  return SoViewVolumeElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoViewVolumeElement class.
-*/
-void *
-SoViewVolumeElement::createInstance(void)
-{
-  return (void *) new SoViewVolumeElement;
-}
-
-/*!
-  \var SoViewVolumeElement::classStackIndex
-
-  This is the static state stack index for the
-  SoViewVolumeElement class.
-*/
-int SoViewVolumeElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoViewVolumeElement class.
-*/
-int
-SoViewVolumeElement::getClassStackIndex(void)
-{
-  return SoViewVolumeElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoViewVolumeElement);
 
 /*!
   This static method initializes static data for the SoViewVolumeElement class.
@@ -91,23 +45,7 @@ SoViewVolumeElement::getClassStackIndex(void)
 void
 SoViewVolumeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoViewVolumeElement)
-  assert(SoViewVolumeElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoViewVolumeElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoViewVolumeElement",
-                       &SoViewVolumeElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoViewVolumeElement::classStackIndex =
-      createStackIndex(SoViewVolumeElement::classTypeId);
-  }
-  else {
-    SoViewVolumeElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoViewVolumeElement, inherited);
 }
 
 /*!

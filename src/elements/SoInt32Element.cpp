@@ -35,48 +35,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE AbstractElementSource(SoInt32Element)
-
-/*!
-  \var SoInt32Element::classTypeId
-
-  This is the static class type identifier for
-  SoInt32Element.
-*/
-
-SoType SoInt32Element::classTypeId = SoType::badType(); // static
-
-/*!
-  This static method returns the SoType type for SoInt32Element.
-*/
-
-SoType
-SoInt32Element::getClassTypeId( // static
-  void )
-{
-  return SoInt32Element::classTypeId;
-}
-
-/*!
-  \var SoInt32Element::classStackIndex
-
-  This is the static state stack index for the
-  SoInt32Element class.
-*/
-
-int SoInt32Element::classStackIndex; // static
-
-/*!
-  This static method returns the state stack index for the SoInt32Element class.
-*/
-
-int
-SoInt32Element::getClassStackIndex( // static
-  void )
-{
-  return SoInt32Element::classStackIndex;
-}
-//$ END TEMPLATE AbstractElementSource
+SO_ELEMENT_ABSTRACT_SOURCE(SoInt32Element);
 
 /*!
   This static method initializes static data for the SoInt32Element class.
@@ -85,22 +44,7 @@ SoInt32Element::getClassStackIndex( // static
 void
 SoInt32Element::initClass(void)
 {
-//$ BEGIN TEMPLATE InitAbstractElementSource(SoInt32Element)
-  assert(SoInt32Element::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoInt32Element::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoInt32Element", NULL );
-
-  if ( inherited::classStackIndex < 0 ) {
-    SoInt32Element::classStackIndex =
-      createStackIndex( SoInt32Element::classTypeId );
-  } else {
-    SoInt32Element::classStackIndex =
-      inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitAbstractElementSource
+  SO_ELEMENT_INIT_ABSTRACT_CLASS(SoInt32Element, inherited);
 }
 
 /*!

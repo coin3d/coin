@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoLineWidthElement)
-
-/*!
-  \var SoLineWidthElement::classTypeId
-
-  This is the static class type identifier for the
-  SoLineWidthElement class.
-*/
-
-SoType SoLineWidthElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoLineWidthElement::getClassTypeId(void)
-{
-  return SoLineWidthElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoLineWidthElement class.
-*/
-void *
-SoLineWidthElement::createInstance(void)
-{
-  return (void *) new SoLineWidthElement;
-}
-
-/*!
-  \var SoLineWidthElement::classStackIndex
-
-  This is the static state stack index for the
-  SoLineWidthElement class.
-*/
-int SoLineWidthElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoLineWidthElement class.
-*/
-int
-SoLineWidthElement::getClassStackIndex(void)
-{
-  return SoLineWidthElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoLineWidthElement);
 
 /*!
   This static method initializes static data for the
@@ -86,23 +40,7 @@ SoLineWidthElement::getClassStackIndex(void)
 void
 SoLineWidthElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoLineWidthElement)
-  assert(SoLineWidthElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLineWidthElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoLineWidthElement",
-                       &SoLineWidthElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoLineWidthElement::classStackIndex =
-      createStackIndex(SoLineWidthElement::classTypeId);
-  }
-  else {
-    SoLineWidthElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoLineWidthElement, inherited);
 }
 
 /*!

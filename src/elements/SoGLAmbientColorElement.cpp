@@ -36,53 +36,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLAmbientColorElement)
-
-/*!
-  \var SoGLAmbientColorElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLAmbientColorElement class.
-*/
-
-SoType SoGLAmbientColorElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLAmbientColorElement::getClassTypeId(void)
-{
-  return SoGLAmbientColorElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLAmbientColorElement class.
-*/
-void *
-SoGLAmbientColorElement::createInstance(void)
-{
-  return (void *) new SoGLAmbientColorElement;
-}
-
-/*!
-  \var SoGLAmbientColorElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLAmbientColorElement class.
-*/
-int SoGLAmbientColorElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLAmbientColorElement class.
-*/
-int
-SoGLAmbientColorElement::getClassStackIndex(void)
-{
-  return SoGLAmbientColorElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLAmbientColorElement);
 
 /*!
   This static method initializes static data for the
@@ -92,23 +46,7 @@ SoGLAmbientColorElement::getClassStackIndex(void)
 void
 SoGLAmbientColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLAmbientColorElement)
-  assert(SoGLAmbientColorElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLAmbientColorElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLAmbientColorElement",
-                       &SoGLAmbientColorElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLAmbientColorElement::classStackIndex =
-      createStackIndex(SoGLAmbientColorElement::classTypeId);
-  }
-  else {
-    SoGLAmbientColorElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLAmbientColorElement, inherited);
 }
 
 /*!

@@ -43,53 +43,7 @@ static const SbColor defaultColor(0.2f, 0.2f, 0.2f);
   This is an array of ambient colors.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoAmbientColorElement)
-
-/*!
-  \var SoAmbientColorElement::classTypeId
-
-  This is the static class type identifier for the
-  SoAmbientColorElement class.
-*/
-
-SoType SoAmbientColorElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoAmbientColorElement::getClassTypeId(void)
-{
-  return SoAmbientColorElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoAmbientColorElement class.
-*/
-void *
-SoAmbientColorElement::createInstance(void)
-{
-  return (void *) new SoAmbientColorElement;
-}
-
-/*!
-  \var SoAmbientColorElement::classStackIndex
-
-  This is the static state stack index for the
-  SoAmbientColorElement class.
-*/
-int SoAmbientColorElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoAmbientColorElement class.
-*/
-int
-SoAmbientColorElement::getClassStackIndex(void)
-{
-  return SoAmbientColorElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoAmbientColorElement);
 
 /*!
   This static method initializes static data for the
@@ -99,23 +53,7 @@ SoAmbientColorElement::getClassStackIndex(void)
 void
 SoAmbientColorElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoAmbientColorElement)
-  assert(SoAmbientColorElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoAmbientColorElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoAmbientColorElement",
-                       &SoAmbientColorElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoAmbientColorElement::classStackIndex =
-      createStackIndex(SoAmbientColorElement::classTypeId);
-  }
-  else {
-    SoAmbientColorElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoAmbientColorElement, inherited);
 }
 
 //! FIXME: write doc.
@@ -191,7 +129,7 @@ SoAmbientColorElement::get(const int index) const
   Return a pointer to the color array. This method is not part of the OIV API.
 */
 const SbColor *
-SoAmbientColorElement::getArrayPtr() const 
+SoAmbientColorElement::getArrayPtr() const
 {
   return this->colors;
 }

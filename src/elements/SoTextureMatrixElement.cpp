@@ -36,53 +36,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoTextureMatrixElement)
-
-/*!
-  \var SoTextureMatrixElement::classTypeId
-
-  This is the static class type identifier for the
-  SoTextureMatrixElement class.
-*/
-
-SoType SoTextureMatrixElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoTextureMatrixElement::getClassTypeId(void)
-{
-  return SoTextureMatrixElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoTextureMatrixElement class.
-*/
-void *
-SoTextureMatrixElement::createInstance(void)
-{
-  return (void *) new SoTextureMatrixElement;
-}
-
-/*!
-  \var SoTextureMatrixElement::classStackIndex
-
-  This is the static state stack index for the
-  SoTextureMatrixElement class.
-*/
-int SoTextureMatrixElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoTextureMatrixElement class.
-*/
-int
-SoTextureMatrixElement::getClassStackIndex(void)
-{
-  return SoTextureMatrixElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoTextureMatrixElement);
 
 /*!
   This static method initializes static data for the
@@ -92,23 +46,7 @@ SoTextureMatrixElement::getClassStackIndex(void)
 void
 SoTextureMatrixElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoTextureMatrixElement)
-  assert(SoTextureMatrixElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureMatrixElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoTextureMatrixElement",
-                       &SoTextureMatrixElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoTextureMatrixElement::classStackIndex =
-      createStackIndex(SoTextureMatrixElement::classTypeId);
-  }
-  else {
-    SoTextureMatrixElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoTextureMatrixElement, inherited);
 }
 
 /*!

@@ -35,53 +35,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLLightModelElement)
-
-/*!
-  \var SoGLLightModelElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLLightModelElement class.
-*/
-
-SoType SoGLLightModelElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLLightModelElement::getClassTypeId(void)
-{
-  return SoGLLightModelElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLLightModelElement class.
-*/
-void *
-SoGLLightModelElement::createInstance(void)
-{
-  return (void *) new SoGLLightModelElement;
-}
-
-/*!
-  \var SoGLLightModelElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLLightModelElement class.
-*/
-int SoGLLightModelElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLLightModelElement class.
-*/
-int
-SoGLLightModelElement::getClassStackIndex(void)
-{
-  return SoGLLightModelElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLLightModelElement);
 
 /*!
   This static method initializes static data for the
@@ -91,23 +45,7 @@ SoGLLightModelElement::getClassStackIndex(void)
 void
 SoGLLightModelElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLLightModelElement)
-  assert(SoGLLightModelElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLLightModelElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLLightModelElement",
-                       &SoGLLightModelElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLLightModelElement::classStackIndex =
-      createStackIndex(SoGLLightModelElement::classTypeId);
-  }
-  else {
-    SoGLLightModelElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLLightModelElement, inherited);
 }
 
 /*!

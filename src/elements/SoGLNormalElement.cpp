@@ -35,53 +35,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLNormalElement)
-
-/*!
-  \var SoGLNormalElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLNormalElement class.
-*/
-
-SoType SoGLNormalElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLNormalElement::getClassTypeId(void)
-{
-  return SoGLNormalElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLNormalElement class.
-*/
-void *
-SoGLNormalElement::createInstance(void)
-{
-  return (void *) new SoGLNormalElement;
-}
-
-/*!
-  \var SoGLNormalElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLNormalElement class.
-*/
-int SoGLNormalElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLNormalElement class.
-*/
-int
-SoGLNormalElement::getClassStackIndex(void)
-{
-  return SoGLNormalElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLNormalElement);
 
 /*!
   This static method initializes static data for the SoGLNormalElement class.
@@ -90,23 +44,7 @@ SoGLNormalElement::getClassStackIndex(void)
 void
 SoGLNormalElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLNormalElement)
-  assert(SoGLNormalElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLNormalElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLNormalElement",
-                       &SoGLNormalElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLNormalElement::classStackIndex =
-      createStackIndex(SoGLNormalElement::classTypeId);
-  }
-  else {
-    SoGLNormalElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLNormalElement, inherited);
 }
 
 /*!

@@ -30,53 +30,7 @@
 
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoPointSizeElement)
-
-/*!
-  \var SoPointSizeElement::classTypeId
-
-  This is the static class type identifier for the
-  SoPointSizeElement class.
-*/
-
-SoType SoPointSizeElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoPointSizeElement::getClassTypeId(void)
-{
-  return SoPointSizeElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoPointSizeElement class.
-*/
-void *
-SoPointSizeElement::createInstance(void)
-{
-  return (void *) new SoPointSizeElement;
-}
-
-/*!
-  \var SoPointSizeElement::classStackIndex
-
-  This is the static state stack index for the
-  SoPointSizeElement class.
-*/
-int SoPointSizeElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoPointSizeElement class.
-*/
-int
-SoPointSizeElement::getClassStackIndex(void)
-{
-  return SoPointSizeElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoPointSizeElement);
 
 /*!
   This static method initializes static data for the SoPointSizeElement class.
@@ -85,23 +39,7 @@ SoPointSizeElement::getClassStackIndex(void)
 void
 SoPointSizeElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoPointSizeElement)
-  assert(SoPointSizeElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPointSizeElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoPointSizeElement",
-                       &SoPointSizeElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoPointSizeElement::classStackIndex =
-      createStackIndex(SoPointSizeElement::classTypeId);
-  }
-  else {
-    SoPointSizeElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoPointSizeElement, inherited);
 }
 
 /*!

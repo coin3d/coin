@@ -36,53 +36,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLPolygonOffsetElement)
-
-/*!
-  \var SoGLPolygonOffsetElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLPolygonOffsetElement class.
-*/
-
-SoType SoGLPolygonOffsetElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLPolygonOffsetElement::getClassTypeId(void)
-{
-  return SoGLPolygonOffsetElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLPolygonOffsetElement class.
-*/
-void *
-SoGLPolygonOffsetElement::createInstance(void)
-{
-  return (void *) new SoGLPolygonOffsetElement;
-}
-
-/*!
-  \var SoGLPolygonOffsetElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLPolygonOffsetElement class.
-*/
-int SoGLPolygonOffsetElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLPolygonOffsetElement class.
-*/
-int
-SoGLPolygonOffsetElement::getClassStackIndex(void)
-{
-  return SoGLPolygonOffsetElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLPolygonOffsetElement);
 
 /*!
   This static method initializes static data for the
@@ -92,23 +46,7 @@ SoGLPolygonOffsetElement::getClassStackIndex(void)
 void
 SoGLPolygonOffsetElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLPolygonOffsetElement)
-  assert(SoGLPolygonOffsetElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLPolygonOffsetElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLPolygonOffsetElement",
-                       &SoGLPolygonOffsetElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLPolygonOffsetElement::classStackIndex =
-      createStackIndex(SoGLPolygonOffsetElement::classTypeId);
-  }
-  else {
-    SoGLPolygonOffsetElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLPolygonOffsetElement, inherited);
 }
 
 /*!

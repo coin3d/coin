@@ -35,53 +35,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE ElementSource(SoGLLinePatternElement)
-
-/*!
-  \var SoGLLinePatternElement::classTypeId
-
-  This is the static class type identifier for the
-  SoGLLinePatternElement class.
-*/
-
-SoType SoGLLinePatternElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoGLLinePatternElement::getClassTypeId(void)
-{
-  return SoGLLinePatternElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoGLLinePatternElement class.
-*/
-void *
-SoGLLinePatternElement::createInstance(void)
-{
-  return (void *) new SoGLLinePatternElement;
-}
-
-/*!
-  \var SoGLLinePatternElement::classStackIndex
-
-  This is the static state stack index for the
-  SoGLLinePatternElement class.
-*/
-int SoGLLinePatternElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoGLLinePatternElement class.
-*/
-int
-SoGLLinePatternElement::getClassStackIndex(void)
-{
-  return SoGLLinePatternElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoGLLinePatternElement);
 
 /*!
   This static method initializes static data for the
@@ -91,23 +45,7 @@ SoGLLinePatternElement::getClassStackIndex(void)
 void
 SoGLLinePatternElement::initClass(void)
 {
-//$ BEGIN TEMPLATE InitElementSource(SoGLLinePatternElement)
-  assert(SoGLLinePatternElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLLinePatternElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoGLLinePatternElement",
-                       &SoGLLinePatternElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoGLLinePatternElement::classStackIndex =
-      createStackIndex(SoGLLinePatternElement::classTypeId);
-  }
-  else {
-    SoGLLinePatternElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoGLLinePatternElement, inherited);
 }
 
 /*!

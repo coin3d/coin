@@ -90,53 +90,7 @@
   FIXME: write doc.
 */
 
-//$ BEGIN TEMPLATE ElementSource(SoTextureCoordinateElement)
-
-/*!
-  \var SoTextureCoordinateElement::classTypeId
-
-  This is the static class type identifier for the
-  SoTextureCoordinateElement class.
-*/
-
-SoType SoTextureCoordinateElement::classTypeId = SoType::badType();
-
-/*!
-  This method returns the SoType object for the element class of
-  the instance.
-*/
-SoType
-SoTextureCoordinateElement::getClassTypeId(void)
-{
-  return SoTextureCoordinateElement::classTypeId;
-}
-
-/*!
-  This static method creates an object instance of the SoTextureCoordinateElement class.
-*/
-void *
-SoTextureCoordinateElement::createInstance(void)
-{
-  return (void *) new SoTextureCoordinateElement;
-}
-
-/*!
-  \var SoTextureCoordinateElement::classStackIndex
-
-  This is the static state stack index for the
-  SoTextureCoordinateElement class.
-*/
-int SoTextureCoordinateElement::classStackIndex;
-
-/*!
-  This static method returns the state stack index for the SoTextureCoordinateElement class.
-*/
-int
-SoTextureCoordinateElement::getClassStackIndex(void)
-{
-  return SoTextureCoordinateElement::classStackIndex;
-}
-//$ END TEMPLATE ElementSource
+SO_ELEMENT_SOURCE(SoTextureCoordinateElement);
 
 /*!
   This static method initializes static data for the
@@ -146,23 +100,7 @@ SoTextureCoordinateElement::getClassStackIndex(void)
 void
 SoTextureCoordinateElement::initClass()
 {
-//$ BEGIN TEMPLATE InitElementSource(SoTextureCoordinateElement)
-  assert(SoTextureCoordinateElement::classTypeId == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoTextureCoordinateElement::classTypeId =
-    SoType::createType(inherited::getClassTypeId(),
-                       "SoTextureCoordinateElement",
-                       &SoTextureCoordinateElement::createInstance);
-
-  if (inherited::classStackIndex < 0) {
-    SoTextureCoordinateElement::classStackIndex =
-      createStackIndex(SoTextureCoordinateElement::classTypeId);
-  }
-  else {
-    SoTextureCoordinateElement::classStackIndex = inherited::classStackIndex;
-  }
-//$ END TEMPLATE InitElementSource
+  SO_ELEMENT_INIT_CLASS(SoTextureCoordinateElement, inherited);
 }
 
 /*!
@@ -379,7 +317,7 @@ SoTextureCoordinateElement::is2D() const
   part of the OIV API.
 */
 const SbVec2f *
-SoTextureCoordinateElement::getArrayPtr2() const 
+SoTextureCoordinateElement::getArrayPtr2() const
 {
   return this->coords2;
 }
@@ -389,7 +327,7 @@ SoTextureCoordinateElement::getArrayPtr2() const
   part of the OIV API.
 */
 const SbVec4f *
-SoTextureCoordinateElement::getArrayPtr4() const 
+SoTextureCoordinateElement::getArrayPtr4() const
 {
   return this->coords4;
 }
