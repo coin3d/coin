@@ -148,6 +148,20 @@
   (SoMFVec3f) Output value with result from the calculations.
 */
 
+class SoCalculatorP {
+public:
+  float ta_th[8];
+  SbVec3f tA_tH[8];
+
+  float a_h[8];
+  SbVec3f A_H[8];
+  float oa_od[4];
+  SbVec3f oA_oD[4];
+  SbList <struct so_eval_node*> evaluatorList;
+};
+
+#undef PRIVATE
+#define PRIVATE(thisp) (thisp->pimpl)
 
 SO_ENGINE_SOURCE(SoCalculator);
 
@@ -156,6 +170,8 @@ SO_ENGINE_SOURCE(SoCalculator);
 */
 SoCalculator::SoCalculator(void)
 {
+  PRIVATE(this) = new SoCalculatorP;
+
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoCalculator);
 
   SO_ENGINE_ADD_INPUT(a, (0.0f));
@@ -188,8 +204,8 @@ SoCalculator::SoCalculator(void)
   // initialize temporary registers (ta-th, tA-tH)
   int i;
   for (i = 0; i < 8; i++) {
-    this->ta_th[i] = 0.0f;
-    this->tA_tH[i].setValue(0.0f, 0.0f, 0.0f);
+    PRIVATE(this)->ta_th[i] = 0.0f;
+    PRIVATE(this)->tA_tH[i].setValue(0.0f, 0.0f, 0.0f);
   }
 }
 
@@ -198,9 +214,10 @@ SoCalculator::SoCalculator(void)
 */
 SoCalculator::~SoCalculator(void)
 {
-  for (int i = 0; i < this->evaluatorList.getLength(); i++) {
-    so_eval_delete(this->evaluatorList[i]);
+  for (int i = 0; i < PRIVATE(this)->evaluatorList.getLength(); i++) {
+    so_eval_delete(PRIVATE(this)->evaluatorList[i]);
   }
+  delete PRIVATE(this);
 }
 
 // Documented in superclass.
@@ -219,11 +236,11 @@ SoCalculator::evaluate(void)
   if (this->expression.getNum() == 0 ||
       this->expression[0].getLength() == 0) return;
 
-  if (this->evaluatorList.getLength() == 0) {
+  if (PRIVATE(this)->evaluatorList.getLength() == 0) {
     for (i = 0; i < this->expression.getNum(); i++) {
       const SbString &s = this->expression[i];
       if (s.getLength()) {
-        this->evaluatorList.append(so_eval_parse(s.getString()));
+        PRIVATE(this)->evaluatorList.append(so_eval_parse(s.getString()));
 #if COIN_DEBUG
         if (so_eval_error()) {
           SoDebugError::postWarning("SoCalculator::evaluateExpression",
@@ -231,7 +248,7 @@ SoCalculator::evaluate(void)
         }
 #endif // COIN_DEBUG
       }
-      else this->evaluatorList.append(NULL);
+      else PRIVATE(this)->evaluatorList.append(NULL);
     }
   }
 
@@ -243,8 +260,8 @@ SoCalculator::evaluate(void)
   for (i = 0; i < 16; i++) inused[i] = 0;
   for (i = 0; i < 8; i++) outused[i] = 0;
 
-  for (i = 0; i < this->evaluatorList.getLength(); i++) {
-    this->findUsed(this->evaluatorList[i], inused, outused);
+  for (i = 0; i < PRIVATE(this)->evaluatorList.getLength(); i++) {
+    this->findUsed(PRIVATE(this)->evaluatorList[i], inused, outused);
   }
 
   // find max number of values in used input fields
@@ -278,19 +295,19 @@ SoCalculator::evaluate(void)
   for (i = 0; i < maxnum; i++) {
     // just initialize output registers to default values
     // (in case an expression reads from an output before setting its value)
-    oA_oD[0] = SbVec3f(0.0f, 0.0f, 0.0f);
-    oA_oD[1] = SbVec3f(0.0f, 0.0f, 0.0f);
-    oA_oD[2] = SbVec3f(0.0f, 0.0f, 0.0f);
-    oA_oD[3] = SbVec3f(0.0f, 0.0f, 0.0f);
-    oa_od[0] = 0.0f;
-    oa_od[1] = 0.0f;
-    oa_od[2] = 0.0f;
-    oa_od[3] = 0.0f;
+    PRIVATE(this)->oA_oD[0] = SbVec3f(0.0f, 0.0f, 0.0f);
+    PRIVATE(this)->oA_oD[1] = SbVec3f(0.0f, 0.0f, 0.0f);
+    PRIVATE(this)->oA_oD[2] = SbVec3f(0.0f, 0.0f, 0.0f);
+    PRIVATE(this)->oA_oD[3] = SbVec3f(0.0f, 0.0f, 0.0f);
+    PRIVATE(this)->oa_od[0] = 0.0f;
+    PRIVATE(this)->oa_od[1] = 0.0f;
+    PRIVATE(this)->oa_od[2] = 0.0f;
+    PRIVATE(this)->oa_od[3] = 0.0f;
 
     // evaluate all expressions for this fieldidx
-    for (j = 0; j < this->evaluatorList.getLength(); j++) {
-      if (this->evaluatorList[j]) {
-        this->evaluateExpression(this->evaluatorList[j], i);
+    for (j = 0; j < PRIVATE(this)->evaluatorList.getLength(); j++) {
+      if (PRIVATE(this)->evaluatorList[j]) {
+        this->evaluateExpression(PRIVATE(this)->evaluatorList[j], i);
       }
     }
   }
@@ -331,8 +348,8 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
       fieldname[0] = 'a' + i;
       SoMFFloat *field = (SoMFFloat*) this->getField(fieldname);
       int num = field->getNum();
-      if (num) a_h[i] = field->getValues(0)[SbMin(fieldidx, num-1)];
-      else a_h[i] = 0.0f;
+      if (num) PRIVATE(this)->a_h[i] = field->getValues(0)[SbMin(fieldidx, num-1)];
+      else PRIVATE(this)->a_h[i] = 0.0f;
     }
   }
   for (i = 0; i < 8; i++) {
@@ -340,22 +357,22 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
       fieldname[0] = 'A' + i;
       SoMFVec3f *field = (SoMFVec3f*) this->getField(fieldname);
       int num = field->getNum();
-      if (num) A_H[i] = field->getValues(0)[SbMin(fieldidx, num-1)];
-      else A_H[i] = SbVec3f(0.0f, 0.0f, 0.0f);
+      if (num) PRIVATE(this)->A_H[i] = field->getValues(0)[SbMin(fieldidx, num-1)];
+      else PRIVATE(this)->A_H[i] = SbVec3f(0.0f, 0.0f, 0.0f);
     }
   }
   so_eval_evaluate(node, &cbdata);
 
   // copy the output values from "registers" to engine output
-  if (outused[0]) { SO_ENGINE_OUTPUT(oa, SoMFFloat, set1Value(fieldidx, oa_od[0])); }
-  if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, set1Value(fieldidx, oa_od[1])); }
-  if (outused[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, set1Value(fieldidx, oa_od[2])); }
-  if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, set1Value(fieldidx, oa_od[3])); }
+  if (outused[0]) { SO_ENGINE_OUTPUT(oa, SoMFFloat, set1Value(fieldidx, PRIVATE(this)->oa_od[0])); }
+  if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, set1Value(fieldidx, PRIVATE(this)->oa_od[1])); }
+  if (outused[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, set1Value(fieldidx, PRIVATE(this)->oa_od[2])); }
+  if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, set1Value(fieldidx, PRIVATE(this)->oa_od[3])); }
 
-  if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, set1Value(fieldidx, oA_oD[0])); }
-  if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, set1Value(fieldidx, oA_oD[1])); }
-  if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, set1Value(fieldidx, oA_oD[2])); }
-  if (outused[7]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, set1Value(fieldidx, oA_oD[3])); }
+  if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, set1Value(fieldidx, PRIVATE(this)->oA_oD[0])); }
+  if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, set1Value(fieldidx, PRIVATE(this)->oA_oD[1])); }
+  if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, set1Value(fieldidx, PRIVATE(this)->oA_oD[2])); }
+  if (outused[7]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, set1Value(fieldidx, PRIVATE(this)->oA_oD[3])); }
 }
 
 
@@ -416,10 +433,10 @@ SoCalculator::inputChanged(SoField *which)
 {
   // if expression changes we have to rebuild the eval tree structure
   if (which == &this->expression) {
-    for (int i = 0; i < this->evaluatorList.getLength(); i++) {
-      so_eval_delete(this->evaluatorList[i]);
+    for (int i = 0; i < PRIVATE(this)->evaluatorList.getLength(); i++) {
+      so_eval_delete(PRIVATE(this)->evaluatorList[i]);
     }
-    this->evaluatorList.truncate(0);
+    PRIVATE(this)->evaluatorList.truncate(0);
   }
 }
 
@@ -437,39 +454,39 @@ SoCalculator::readfieldcb(const char *fieldname, float *data, void *userdata)
     // this will work if output was set in an earlier expression
     if ((fieldname[1] >= 'A') && (fieldname[1] <= 'D')) {
       int idx = fieldname[1] - 'A';
-      data[0] = thisp->oA_oD[idx][0];
-      data[1] = thisp->oA_oD[idx][1];
-      data[2] = thisp->oA_oD[idx][2];
+      data[0] = PRIVATE(thisp)->oA_oD[idx][0];
+      data[1] = PRIVATE(thisp)->oA_oD[idx][1];
+      data[2] = PRIVATE(thisp)->oA_oD[idx][2];
     }
     else {
       assert((fieldname[1] >= 'a') && (fieldname[1] <= 'd'));
       int idx = fieldname[1] - 'a';
-      data[0] = thisp->oa_od[idx];
+      data[0] = PRIVATE(thisp)->oa_od[idx];
     }
   }
   else if (fieldname[0] == 't') {
     if ((fieldname[1] >= 'A') && (fieldname[1] <= 'H')) {
       int idx = fieldname[1] - 'A';
-      data[0] = thisp->tA_tH[idx][0];
-      data[1] = thisp->tA_tH[idx][1];
-      data[2] = thisp->tA_tH[idx][2];
+      data[0] = PRIVATE(thisp)->tA_tH[idx][0];
+      data[1] = PRIVATE(thisp)->tA_tH[idx][1];
+      data[2] = PRIVATE(thisp)->tA_tH[idx][2];
     }
     else {
       assert((fieldname[1] >= 'a') && (fieldname[1] <= 'h'));
       int idx = fieldname[1] - 'a';
-      data[0] = thisp->ta_th[idx];
+      data[0] = PRIVATE(thisp)->ta_th[idx];
     }
   }
   else if ((fieldname[0] >= 'A') && (fieldname[0] <= 'H')) {
     int idx = fieldname[0] - 'A';
-    data[0] = thisp->A_H[idx][0];
-    data[1] = thisp->A_H[idx][1];
-    data[2] = thisp->A_H[idx][2];
+    data[0] = PRIVATE(thisp)->A_H[idx][0];
+    data[1] = PRIVATE(thisp)->A_H[idx][1];
+    data[2] = PRIVATE(thisp)->A_H[idx][2];
   }
   else {
     assert((fieldname[0] >= 'a') && (fieldname[0] <= 'h'));
     int idx = fieldname[0] - 'a';
-    data[0] = thisp->a_h[idx];
+    data[0] = PRIVATE(thisp)->a_h[idx];
   }
 }
 
@@ -483,39 +500,42 @@ SoCalculator::writefieldcb(const char *fieldname, float *data,
     if ((fieldname[1] >= 'A') && (fieldname[1] <= 'D')) {
       int idx = fieldname[1] - 'A';
       if (comp >= 0) {
-        thisp->oA_oD[idx][comp] = data[0];
+        PRIVATE(thisp)->oA_oD[idx][comp] = data[0];
       }
       else {
-        thisp->oA_oD[idx][0] = data[0];
-        thisp->oA_oD[idx][1] = data[1];
-        thisp->oA_oD[idx][2] = data[2];
+        PRIVATE(thisp)->oA_oD[idx][0] = data[0];
+        PRIVATE(thisp)->oA_oD[idx][1] = data[1];
+        PRIVATE(thisp)->oA_oD[idx][2] = data[2];
       }
     }
     else {
       assert((fieldname[1] >= 'a') && (fieldname[1] <= 'd'));
       int idx = fieldname[1] - 'a';
-      thisp->oa_od[idx] = data[0];
+      PRIVATE(thisp)->oa_od[idx] = data[0];
     }
   }
   else if (fieldname[0] == 't') {
     if ((fieldname[1] >= 'A') && (fieldname[1] <= 'H')) {
       int idx = fieldname[1] - 'A';
       if (comp >= 0) {
-        thisp->tA_tH[idx][comp] = data[0];
+        PRIVATE(thisp)->tA_tH[idx][comp] = data[0];
       }
       else {
-        thisp->tA_tH[idx][0] = data[0];
-        thisp->tA_tH[idx][1] = data[1];
-        thisp->tA_tH[idx][2] = data[2];
+        PRIVATE(thisp)->tA_tH[idx][0] = data[0];
+        PRIVATE(thisp)->tA_tH[idx][1] = data[1];
+        PRIVATE(thisp)->tA_tH[idx][2] = data[2];
       }
     }
     else {
       assert((fieldname[1] >= 'a') && (fieldname[1] <= 'h'));
       int idx = fieldname[1] - 'a';
-      thisp->ta_th[idx] = data[0];
+      PRIVATE(thisp)->ta_th[idx] = data[0];
     }
   }
   else {
     assert(0 && "should not happen");
   }
 }
+
+#undef PRIVATE
+
