@@ -316,12 +316,12 @@ SoCylinder::rayPick(SoRayPickAction *action)
     // maintainers, b) have an autoconf check to test for this exact
     // bug. 19991230 mortene.
     SbCylinder cyl(SbLine(SbVec3f(0,0,0), SbVec3f(0,1,0)), r);
-#else // GCC 2.95 fix.
+#else // GCC 2.95 work-around.
     SbVec3f v0(0.0f, 0.0f, 0.0f);
     SbVec3f v1(0.0f, 1.0f, 0.0f);
     SbLine l(v0, v1);
     SbCylinder cyl(l, r);
-#endif // GCC 2.95 fix.
+#endif // GCC 2.95 work-around.
     if (cyl.intersect(line, enter, exit)) {
       if ((fabs(enter[1]) <= h) && action->isBetweenPlanes(enter)) {
         SoPickedPoint *pp = action->addIntersection(enter);
