@@ -910,8 +910,9 @@ glxglue_context_make_current(void * ctx)
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_make_context_current",
-                           "%ssuccessfully made context %p current",
-                           (r == True) ? "" : "un", context->glxcontext);
+                           "%s context %p current",
+                           (r == True) ? "successfully made" : "failed to make", 
+			   context->glxcontext);
   }
 
   return (r == True) ? TRUE : FALSE;
@@ -924,7 +925,8 @@ glxglue_context_reinstate_previous(void * ctx)
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_context_reinstate_previous",
-                           "releasing context (glxMakeCurrent(d, None, NULL))");
+                           "releasing context (glxMakeCurrent(%p, None, NULL))",
+			   glxglue_get_display());
   }
 
   (void)glXMakeCurrent(glxglue_get_display(), None, NULL); /* release */
