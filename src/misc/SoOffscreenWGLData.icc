@@ -108,8 +108,7 @@ SoOffscreenWGLData::makeContextCurrent(uint32_t contextid)
     if (this->storedcontext) {
       this->storeddc = wglGetCurrentDC();
     }
-    wglMakeCurrent(this->devicecontext, this->context);
-    return TRUE;
+    return wglMakeCurrent(this->devicecontext, this->context) ? TRUE : FALSE;
   }
   return FALSE;
 }

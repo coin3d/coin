@@ -203,9 +203,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
     components(RGB),
     renderaction(new SoGLRenderAction(viewportregion)),
     didallocaction(TRUE),
-    internaldata(NULL),
     buffer(NULL)
 {
+  this->internaldata = NULL;
 #ifdef HAVE_GLX
   this->internaldata = new SoOffscreenGLXData();
 #elif defined(HAVE_WGL)
@@ -229,9 +229,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
     components(RGB),
     renderaction(action),
     didallocaction(FALSE),
-    internaldata(NULL),
     buffer(NULL)
 {
+  this->internaldata = NULL;
 #ifdef HAVE_GLX
   this->internaldata = new SoOffscreenGLXData();
 #elif defined(HAVE_WGL)
@@ -259,12 +259,13 @@ SoOffscreenRenderer::~SoOffscreenRenderer()
 float
 SoOffscreenRenderer::getScreenPixelsPerInch(void)
 {
+  SbVec2f pixmmres(72.0f / 25.4f, 72.0f / 25.4f);
 #ifdef HAVE_GLX
-  SbVec2f pixmmres = SoOffscreenGLXData::getResolution();
+  pixmmres = SoOffscreenGLXData::getResolution();
 #elif defined(HAVE_WGL)
-  SbVec2f pixmmres = SoOffscreenWGLData::getResolution();
+  pixmmres = SoOffscreenWGLData::getResolution();
 #elif defined(HAVE_AGL)
-  SbVec2f pixmmres = SoOffscreenAGLData::getResolution();
+  pixmmres = SoOffscreenAGLData::getResolution();
 #endif // HAVE_AGL
 
   // The API-signature of this method is not what it should be: it
@@ -282,11 +283,11 @@ SbVec2s
 SoOffscreenRenderer::getMaximumResolution(void)
 {
 #ifdef HAVE_GLX
-  SoOffscreenGLXData::getMaxDimensions();
+  return SoOffscreenGLXData::getMaxDimensions();
 #elif defined(HAVE_WGL)
-  SoOffscreenWGLData::getMaxDimensions();
+  return SoOffscreenWGLData::getMaxDimensions();
 #elif defined(HAVE_AGL)
-  SoOffscreenAGLData::getMaxDimensions();
+  return SoOffscreenAGLData::getMaxDimensions();
 #endif // HAVE_AGL
   return SbVec2s(0, 0);
 }
@@ -409,49 +410,62 @@ pre_render_cb(void * userdata, SoGLRenderAction * action)
 SbBool
 SoOffscreenRenderer::renderFromBase(SoBase * base)
 {
+  if (!this->internaldata) {
+    static SbBool first = TRUE;
+    if (first) {
+      SoDebugError::post("SoOffscreenRenderer::renderFromBase",
+                         "SoOffscreenRenderer not compiled against any "
+                         "window-system binding, it is defunct for this build.");
+      first = FALSE;
+    }
+    return FALSE;
+  }
+
   uint32_t oldcontext = this->renderaction->getCacheContext();
-  if (this->internaldata &&
-      this->internaldata->makeContextCurrent(oldcontext)) {
+
+  if (!this->internaldata->makeContextCurrent(oldcontext)) {
+    SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
+                              "could not set up a current OpenGL context.");
+    return FALSE;
+  }
 
 #if COIN_DEBUG && 0 // debug, enable to check offscreen canvas properties
-    GLint colbits[4];
-    glGetIntegerv(GL_RED_BITS, &colbits[0]);
-    glGetIntegerv(GL_GREEN_BITS, &colbits[1]);
-    glGetIntegerv(GL_BLUE_BITS, &colbits[2]);
-    glGetIntegerv(GL_ALPHA_BITS, &colbits[3]);
-    SoDebugError::postInfo("SoOffscreenRenderer::renderFromBase",
-                           "GL context GL_[RED|GREEN|BLUE|ALPHA]_BITS=="
-                           "[%d, %d, %d, %d]",
-                           colbits[0], colbits[1], colbits[2], colbits[3]);
+  GLint colbits[4];
+  glGetIntegerv(GL_RED_BITS, &colbits[0]);
+  glGetIntegerv(GL_GREEN_BITS, &colbits[1]);
+  glGetIntegerv(GL_BLUE_BITS, &colbits[2]);
+  glGetIntegerv(GL_ALPHA_BITS, &colbits[3]);
+  SoDebugError::postInfo("SoOffscreenRenderer::renderFromBase",
+                         "GL context GL_[RED|GREEN|BLUE|ALPHA]_BITS=="
+                         "[%d, %d, %d, %d]",
+                         colbits[0], colbits[1], colbits[2], colbits[3]);
 #endif // debug
 
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(this->backgroundcolor[0],
-                 this->backgroundcolor[1],
-                 this->backgroundcolor[2],
-                 0.0f);
+  glEnable(GL_DEPTH_TEST);
+  glClearColor(this->backgroundcolor[0],
+               this->backgroundcolor[1],
+               this->backgroundcolor[2],
+               0.0f);
 
-    // needed to clear viewport after glViewport is called
-    this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
+  // needed to clear viewport after glViewport is called
+  this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
 
-    if (!this->didallocaction) {
-      this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
-    }
-    if (base->isOfType(SoNode::getClassTypeId()))
-      this->renderaction->apply((SoNode *)base);
-    else if (base->isOfType(SoPath::getClassTypeId()))
-      this->renderaction->apply((SoPath *)base);
-    else assert(FALSE && "impossible");
-
-    this->internaldata->postRender();
-    this->convertBuffer();
-
-    if (!this->didallocaction) {
-      this->renderaction->setCacheContext(oldcontext);
-    }
-    return TRUE;
+  if (!this->didallocaction) {
+    this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   }
-  return FALSE;
+  if (base->isOfType(SoNode::getClassTypeId()))
+    this->renderaction->apply((SoNode *)base);
+  else if (base->isOfType(SoPath::getClassTypeId()))
+    this->renderaction->apply((SoPath *)base);
+  else assert(FALSE && "impossible");
+
+  this->internaldata->postRender();
+  this->convertBuffer();
+
+  if (!this->didallocaction) {
+    this->renderaction->setCacheContext(oldcontext);
+  }
+  return TRUE;
 }
 
 // Convert from RGBA format to the application programmer's requested
