@@ -23,7 +23,7 @@ DBGCFLAGS = $(ALLCFLAGS) /GZ /Zi /Yd
 OPTCFLAGS = $(ALLCFLAGS) /Oitgb1 /Gs
 DLLCFLAGS = /GD
 
-BUILDOPTIONS = --enable-vrml97 --enable-threads --enable-threadsafe # --enable-3ds-import
+BUILDOPTIONS = --enable-threads --enable-threadsafe # --enable-3ds-import
 
 BUILDS = buildfiles docs shared-release shared-debug # static-release static-debug
 
