@@ -514,24 +514,35 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 void
 SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 {
+  // In Coin, we always write field description for all fields in
+  // extension nodes. This means that we also need to write all fields
+  // for the binary format, since the number of fields and field
+  // descriptions is printed in a byte before the field
+  // descriptions. Phew, the OIV binary format sucks....
+  SbBool writeallfields = out->isBinary() && ! object->getIsBuiltIn();
+
   uint16_t i;
 
   if (out->getStage() == SoOutput::COUNT_REFS) {
     // Handle first stage of write operations.
-    for (i=0; i < this->getNumFields(); i++)
-      this->getField(object, i)->write(out, this->getFieldName(i));
+    for (i=0; i < this->getNumFields(); i++) {
+      SoField * f = this->getField(object, i);
+      if (writeallfields || f->shouldWrite()) {
+        f->write(out, this->getFieldName(i));
+      }
+    }
     return;
   }
   // Ok, we've passed the first write stage and is _really_ writing.
-
+  
   // FIXME: is this really the best place to write the flags +
   // numfields value? 20000102 mortene.
   if (out->isBinary()) {
     // Check how many fields will be written.
     uint8_t numfields = 0;
-    for (int j=0; j < this->getNumFields(); j++) {
+    for (int j = 0; j < this->getNumFields(); j++) {
       const SoField * f = this->getField(object, j);
-      if (f->shouldWrite()) {
+      if (writeallfields || f->shouldWrite()) {
         // This is an amazingly lame limitation, but we can't really
         // fix it without breaking compatibility with the SGI binary
         // .iv format.  (The moral of the story is: avoid binary
@@ -546,20 +557,24 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
     // FIXME: take care of setting flags for SoUnknownEngines, if
     // necessary. 20000102 mortene.
     if (!object->getIsBuiltIn()) fieldflags |= SoFieldData::NOTBUILTIN;
-
+    
     uint32_t w = fieldflags;
     w <<= 8;
     w |= numfields;
 
     out->write(w);
   }
-
+  
   // FIXME: write descriptions for SoUnknownEngine, if
   // necessary. 20000102 mortene.
   if (!object->getIsBuiltIn()) this->writeFieldDescriptions(out, object);
 
-  for (i=0; i < this->getNumFields(); i++)
-    this->getField(object, i)->write(out, this->getFieldName(i));
+  for (i=0; i < this->getNumFields(); i++) {
+    SoField * f = this->getField(object, i);
+    if (writeallfields || f->shouldWrite()) {
+      f->write(out, this->getFieldName(i));
+    }
+  }
 }
 
 

@@ -1452,9 +1452,6 @@ SoField::write(SoOutput * out, const SbName & name) const
 
   // Ok, we've passed the first write stage and is _really_ writing.
 
-
-  if (!this->shouldWrite()) return;
-
   // Check connection (this is common code for ASCII and binary
   // write).
   SbBool writeconnection = FALSE;
