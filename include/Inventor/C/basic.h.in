@@ -162,6 +162,7 @@ typedef int SbBool;
 #undef COIN_MAJOR_VERSION
 #undef COIN_MINOR_VERSION
 #undef COIN_MICRO_VERSION
+#undef COIN_BETA_VERSION
 #undef COIN_VERSION
 
 /* This define is set by the configure script if singleprecision math
