@@ -110,17 +110,17 @@ State of library when milestone is met:
 * all dragger classes fully implemented according to what Open
   Inventor provides.
 
-  [Estimate for remaining work: ~ 1.5 man-months.]
+  [Almost done.]
 
 * all manipulator classes fully implemented according to what Open
   Inventor provides.
 
-  [Estimate for remaining work: ~ 1.5 man-months.]
+  [Almost done.]
 
 * all nodekit classes fully implemented according to what Open
   Inventor provides.
 
-  [Estimate for remaining work: ~ 2 man-weeks.]
+  [Almost done.]
 
 * all projector classes fully implemented according to what Open
   Inventor provides.
