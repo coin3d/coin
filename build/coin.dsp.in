@@ -957,10 +957,6 @@ SOURCE="@coin_src_dir@\src\nodes\SoImage.cpp"
 # End Source File
 # Begin Source File
 
-SOURCE="@coin_src_dir@\src\misc\SoImageInterface.cpp"
-# End Source File
-# Begin Source File
-
 SOURCE="@coin_src_dir@\src\nodes\SoIndexedFaceSet.cpp"
 # End Source File
 # Begin Source File

@@ -253,7 +253,6 @@ CLEAN :
 	-@erase "$(INTDIR)\SoHandleEventAction.obj"
 	-@erase "$(INTDIR)\SoIdleSensor.obj"
 	-@erase "$(INTDIR)\SoImage.obj"
-	-@erase "$(INTDIR)\SoImageInterface.obj"
 	-@erase "$(INTDIR)\SoIndexedFaceSet.obj"
 	-@erase "$(INTDIR)\SoIndexedLineSet.obj"
 	-@erase "$(INTDIR)\SoIndexedNurbsCurve.obj"
@@ -788,7 +787,6 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoHandleEventAction.obj" \
 	"$(INTDIR)\SoIdleSensor.obj" \
 	"$(INTDIR)\SoImage.obj" \
-	"$(INTDIR)\SoImageInterface.obj" \
 	"$(INTDIR)\SoIndexedFaceSet.obj" \
 	"$(INTDIR)\SoIndexedLineSet.obj" \
 	"$(INTDIR)\SoIndexedNurbsCurve.obj" \
@@ -1287,7 +1285,6 @@ CLEAN :
 	-@erase "$(INTDIR)\SoHandleEventAction.obj"
 	-@erase "$(INTDIR)\SoIdleSensor.obj"
 	-@erase "$(INTDIR)\SoImage.obj"
-	-@erase "$(INTDIR)\SoImageInterface.obj"
 	-@erase "$(INTDIR)\SoIndexedFaceSet.obj"
 	-@erase "$(INTDIR)\SoIndexedLineSet.obj"
 	-@erase "$(INTDIR)\SoIndexedNurbsCurve.obj"
@@ -1823,7 +1820,6 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoHandleEventAction.obj" \
 	"$(INTDIR)\SoIdleSensor.obj" \
 	"$(INTDIR)\SoImage.obj" \
-	"$(INTDIR)\SoImageInterface.obj" \
 	"$(INTDIR)\SoIndexedFaceSet.obj" \
 	"$(INTDIR)\SoIndexedLineSet.obj" \
 	"$(INTDIR)\SoIndexedNurbsCurve.obj" \
@@ -3400,12 +3396,6 @@ SOURCE="@coin_src_dir@\src\sensors\SoIdleSensor.cpp"
 SOURCE="@coin_src_dir@\src\nodes\SoImage.cpp"
 
 "$(INTDIR)\SoImage.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="@coin_src_dir@\src\misc\SoImageInterface.cpp"
-
-"$(INTDIR)\SoImageInterface.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

@@ -30,7 +30,6 @@
 #include "SoFullPath.cpp"
 #include "SoTempPath.cpp"
 #include "SoLightPath.cpp"
-#include "SoImageInterface.cpp"
 #include "SoInput.cpp"
 #include "SoInteraction.cpp"
 #include "SoOutput.cpp"

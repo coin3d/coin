@@ -118,7 +118,6 @@ sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoFullPath.cpp SoFullPath.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.cpp SoTempPath.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightPath.cpp SoLightPath.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoImageInterface.cpp SoImageInterface.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.cpp SoInput.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoInteraction.cpp SoInteraction.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.cpp SoOutput.h \
@@ -192,14 +191,14 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoGlyph.lo SoNormalGenerator.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoNotification.lo SoState.lo SoDB.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoFullPath.lo SoTempPath.lo SoLightPath.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoImageInterface.lo SoInput.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInteraction.lo SoOutput.lo SoPath.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPickedPoint.lo SoPrimitiveVertex.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSceneManager.lo SoType.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoOffscreenRenderer.lo SoGenerate.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLockManager.lo SoByteStream.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTranSender.lo SoTranReceiver.lo \
-@HACKING_COMPACT_BUILD_FALSE@default3dfont.lo default2dfont.lo
+@HACKING_COMPACT_BUILD_FALSE@SoInput.lo SoInteraction.lo SoOutput.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPath.lo SoPickedPoint.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPrimitiveVertex.lo SoSceneManager.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoType.lo SoOffscreenRenderer.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGenerate.lo SoLockManager.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoByteStream.lo SoTranSender.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTranReceiver.lo default3dfont.lo \
+@HACKING_COMPACT_BUILD_FALSE@default2dfont.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS =  all.lo
 libmisc_la_OBJECTS =  $(am_libmisc_la_OBJECTS)
 libmiscLINKHACK_la_LDFLAGS = 
@@ -209,14 +208,14 @@ libmiscLINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoGlyph.lo SoNormalGenerator.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoNotification.lo SoState.lo SoDB.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoFullPath.lo SoTempPath.lo SoLightPath.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoImageInterface.lo SoInput.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoInteraction.lo SoOutput.lo SoPath.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPickedPoint.lo SoPrimitiveVertex.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoSceneManager.lo SoType.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoOffscreenRenderer.lo SoGenerate.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLockManager.lo SoByteStream.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoTranSender.lo SoTranReceiver.lo \
-@HACKING_COMPACT_BUILD_FALSE@default3dfont.lo default2dfont.lo
+@HACKING_COMPACT_BUILD_FALSE@SoInput.lo SoInteraction.lo SoOutput.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPath.lo SoPickedPoint.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPrimitiveVertex.lo SoSceneManager.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoType.lo SoOffscreenRenderer.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGenerate.lo SoLockManager.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoByteStream.lo SoTranSender.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTranReceiver.lo default3dfont.lo \
+@HACKING_COMPACT_BUILD_FALSE@default2dfont.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmiscLINKHACK_la_OBJECTS =  all.lo
 libmiscLINKHACK_la_OBJECTS =  $(am_libmiscLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -236,8 +235,7 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBase.Plo $(DEPDIR)/SoByteStream.Plo \
 $(DEPDIR)/SoChildList.Plo $(DEPDIR)/SoDB.Plo $(DEPDIR)/SoFullPath.Plo \
 $(DEPDIR)/SoGL.Plo $(DEPDIR)/SoGLImage.Plo $(DEPDIR)/SoGenerate.Plo \
-$(DEPDIR)/SoGlyph.Plo $(DEPDIR)/SoImageInterface.Plo \
-$(DEPDIR)/SoInput.Plo $(DEPDIR)/SoInteraction.Plo \
+$(DEPDIR)/SoGlyph.Plo $(DEPDIR)/SoInput.Plo $(DEPDIR)/SoInteraction.Plo \
 $(DEPDIR)/SoLightPath.Plo $(DEPDIR)/SoLockManager.Plo \
 $(DEPDIR)/SoNormalGenerator.Plo $(DEPDIR)/SoNotification.Plo \
 $(DEPDIR)/SoOffscreenRenderer.Plo $(DEPDIR)/SoOutput.Plo \
@@ -378,7 +376,6 @@ maintainer-clean-tags:
 @AMDEP@include $(DEPDIR)/SoGLImage.Plo
 @AMDEP@include $(DEPDIR)/SoGenerate.Plo
 @AMDEP@include $(DEPDIR)/SoGlyph.Plo
-@AMDEP@include $(DEPDIR)/SoImageInterface.Plo
 @AMDEP@include $(DEPDIR)/SoInput.Plo
 @AMDEP@include $(DEPDIR)/SoInteraction.Plo
 @AMDEP@include $(DEPDIR)/SoLightPath.Plo

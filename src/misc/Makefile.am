@@ -17,7 +17,6 @@ ALLSOURCES = \
 	SoFullPath.cpp SoFullPath.h \
 	SoTempPath.cpp SoTempPath.h \
 	SoLightPath.cpp SoLightPath.h \
-	SoImageInterface.cpp SoImageInterface.h \
 	SoInput.cpp SoInput.h \
 	SoInteraction.cpp SoInteraction.h \
 	SoOutput.cpp SoOutput.h \
