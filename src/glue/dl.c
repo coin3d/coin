@@ -32,6 +32,10 @@
 #include <dlfcn.h> /* Programming interface to libdl. */
 #endif /* HAVE_DLFCN_H */
 
+#if HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+
 #include <stddef.h> /* NULL definition. */
 #include <malloc.h>
 #include <Inventor/C/glue/dl.h>
@@ -47,7 +51,14 @@ cc_dl_open(const char * filename)
   cc_libhandle h = (cc_libhandle) malloc(sizeof(struct cc_libhandle_struct));
   /* if (!h), FIXME: error handling. 20020906 mortene. */
   h->nativehnd = dlopen(filename, RTLD_LAZY);
-  /* if (!h) FIXME: Error handling (kintel 20011121) */
+  /* FIXME: Error handling (kintel 20011121) */
+  return h;
+#elif defined (HAVE_WINDLL_RUNTIME_BINDING)
+  cc_libhandle h = (cc_libhandle) malloc(sizeof(struct cc_libhandle_struct));
+  /* if (!h), FIXME: error handling. 20020906 mortene. */
+  h->nativehnd = LoadLibrary(filename);
+  /* FIXME: If the return value is NULL, we should call GetLastError() to 
+     get extended error information and report this error. 20021015 thammer. */
   return h;
 #endif
   return NULL;
@@ -61,6 +72,10 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
 
 #ifdef HAVE_DL_LIB
   ptr = dlsym(handle->nativehnd, symbolname);
+#elif defined (HAVE_WINDLL_RUNTIME_BINDING)
+  ptr = GetProcAddress(handle->nativehnd, symbolname);
+  /* FIXME: If the return value is NULL, we should call GetLastError() to 
+     get extended error information and report this error. 20021015 thammer. */
 #endif /* HAVE_DL_LIB */
 
   return ptr;
@@ -71,6 +86,10 @@ cc_dl_close(cc_libhandle handle)
 {
 #ifdef HAVE_DL_LIB
   (void)dlclose(handle->nativehnd);
+#elif defined (HAVE_WINDLL_RUNTIME_BINDING)
+  (void)FreeLibrary(handle->nativehnd);
+  /* FIXME: If the return value is NULL, we should call GetLastError() to 
+     get extended error information and report this error. 20021015 thammer. */
 #endif /* HAVE_DL_LIB */
   
   free(handle);
