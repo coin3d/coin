@@ -940,6 +940,60 @@ SoInput::read(SbString & s)
   return TRUE;
 }
 
+// helper function to handle VRML97
+static SbBool 
+soinput_is_ident_start_char(SoInput * in, char c)
+{
+  if (in->isFileVRML2()) {
+    if (c <= 0x20) return FALSE;
+    if (c >= 0x30 && c <= 0x39) return FALSE;
+    switch (c) {
+    case 0x22:
+    case 0x23:
+    case 0x27: 
+    case 0x2b: 
+    case 0x2c:
+    case 0x2d: 
+    case 0x2e:
+    case 0x5b:
+    case 0x5c:
+    case 0x5d:
+    case 0x7b: 
+    case 0x7d:
+    case 0x7f:
+      return FALSE;
+    }
+    return TRUE;
+  }
+  else return SbName::isIdentStartChar(c);
+}
+
+// helper function to handle VRML97
+static SbBool 
+soinput_is_ident_char(SoInput * in, char c)
+{
+  if (in->isFileVRML2()) {
+    if (c <= 0x20) return FALSE;
+    switch (c) {
+    case 0x22:
+    case 0x23: 
+    case 0x27:
+    case 0x2c: 
+    case 0x2e:
+    case 0x5b:
+    case 0x5c: 
+    case 0x5d:
+    case 0x7b: 
+    case 0x7d:
+    case 0x7f:
+      return FALSE;
+    }
+    return TRUE;
+  }
+  else return SbName::isIdentChar(c);
+}
+
+
 /*!
   Read a name from the current stream and place it in \a n.
 
@@ -968,9 +1022,9 @@ SoInput::read(SbName & n, SbBool validIdent)
     n = s;
 
     if (validIdent && s.getLength() > 0) {
-      if (!SbName::isIdentStartChar(s[0])) return FALSE;
+      if (!soinput_is_ident_start_char(this, s[0])) return FALSE;
       for (int i = 1; i < s.getLength(); i++)
-        if (!SbName::isIdentChar(s[i])) return FALSE;
+        if (!soinput_is_ident_char(this, s[i])) return FALSE;
     }
 
     return TRUE;
@@ -1009,10 +1063,10 @@ SoInput::read(SbName & n, SbBool validIdent)
       char c;
       SbBool gotchar;
 
-      if ((gotchar = fi->get(c)) && SbName::isIdentStartChar(c)) {
+      if ((gotchar = fi->get(c)) && soinput_is_ident_start_char(this, c)) {
         *b++ = c;
 
-        while ((gotchar = fi->get(c)) && SbName::isIdentChar(c)) {
+        while ((gotchar = fi->get(c)) && soinput_is_ident_char(this, c)) {
           *b++ = c;
           if (b - buf == 255) {
             *b = '\0';
