@@ -46,6 +46,7 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/misc/SoChildList.h>
 
 SO_NODE_SOURCE(SoTransformSeparator);
@@ -125,6 +126,8 @@ SoTransformSeparator::GLRender(SoGLRenderAction * action)
   SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
   inherited::GLRender(action);
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
+  SoGLCacheContextElement::shouldAutoCache(action->getState(),
+                                           SoGLCacheContextElement::DONT_AUTO_CACHE);
 }
 
 // Documented in superclass.
