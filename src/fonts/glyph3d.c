@@ -109,7 +109,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   cc_glyph3d * glyph;
   int glyphidx;
   int fontidx;
-  int i;
+  int i, temp;
   void * val;
   cc_font_specification * newspec;
   int namelen = 0;
@@ -144,8 +144,6 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
   assert(glyphlist);
 
-
-
   /* build a new glyph struct */
   glyph = (cc_glyph3d *) malloc(sizeof(cc_glyph3d));
 
@@ -178,6 +176,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   glyph->glyphidx = glyphidx;
   glyph->fontidx = fontidx;
   glyph->bbox = (float *) malloc(sizeof(float) * 4);
+
 
   if (fontidx != 0)
     glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, character, newspec->complexity);
@@ -354,12 +353,32 @@ glyph3d_specmatch(const cc_font_specification * spec1,
                   const cc_font_specification * spec2)
 {
 
+  float c1, c2;
+  int temp;
+
   assert(spec1);
   assert(spec2);
 
+  /* Reducing precision of the complexity variable. This is done to
+     prevent the user from flooding the memory with generated glyphs
+     which might be more or less identical */
+  c1 = spec1->complexity;
+  c2 = spec2->complexity;
+
+  /* Clamp values to [0...1] */
+  if (c1 > 1.0f) c1 = 1.0f;
+  if (c1 < 0.0f) c1 = 0.0f;
+  if (c2 > 1.0f) c2 = 1.0f;
+  if (c2 < 0.0f) c2 = 0.0f;
+
+  temp = (int) c1 * 10;
+  c1 = ((float) temp / 10);
+  temp = (int) c2 * 10;
+  c2 = ((float) temp / 10);
+
   if ((!cc_string_compare(&spec1->name, &spec2->name)) &&
       (!cc_string_compare(&spec1->style, &spec2->style)) &&
-      (spec1->complexity == spec2->complexity)) {
+      (c1 == c2)) {
     /* No need to compare size for 3D fonts */
     return TRUE;
   }
