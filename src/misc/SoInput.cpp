@@ -488,10 +488,21 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
 SbBool
 SoInput::pushFile(const char * filename)
 {
-  // FIXME: files on the stack should be automatically popped when we
-  // reach their end-of-file marker, I think. That strategy is chock
-  // full of pitfalls, though -- so be careful when
-  // implementing. 19990623 mortene.
+  // FIXME:
+  //
+  // Files on the stack should be automatically popped when we reach
+  // their end-of-file marker, I think. That strategy is chock full of
+  // pitfalls, though -- so be careful when implementing. 19990623
+  // mortene.
+  //
+  // One (or "_the_"?) major problem is that SoInput will try to
+  // continue reading from stdin if the last "real" file is popped off
+  // the stack. Need to solve this first (remove stdin from the stack
+  // upon first setFilePointer()/pushFile()/openFile() call? Looks
+  // like that could work.) 19991208 mortene.
+  //
+  // Could we implement the auto-popping by simply adding the eof
+  // check to SoInput::checkHeader()? 19991208 mortene.
 
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);

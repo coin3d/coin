@@ -135,6 +135,10 @@ protected:
 
 private:
   friend class SoDB;
+  // FIXME: remove this "friend" definition when automatic popping is
+  // in place. 19991208 mortene.
+  friend class SoFile;
+
   void constructorsCommon(void);
 
   static void addDirectoryIdx(const int idx, const char * dirName);

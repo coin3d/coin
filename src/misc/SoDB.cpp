@@ -365,6 +365,10 @@ SoDB::readAll(SoInput * in)
 {
 #if 1 // New code, designed to work better with binary files. 19990711 mortene.
 
+#if COIN_DEBUG
+  int stackdepth = in->filestack.getLength();
+#endif // COIN_DEBUG
+
   SoSeparator * root = new SoSeparator;
   root->ref();
 
@@ -388,6 +392,16 @@ SoDB::readAll(SoInput * in)
     retnode = root;
     root->unrefNoDelete();
   }
+
+#if COIN_DEBUG
+  // FIXME: assert check disabled, due to the fact that SoInput
+  // doesn't automatically pop the way it should and because this
+  // assert then triggers on the hack in
+  // SoFile::readInstance(). 19991208 mortene.
+
+  // Detect problems with missing pops from the SoInput file stack.
+//    assert(stackdepth == in->filestack.getLength());
+#endif // COIN_DEBUG
 
   return retnode;
 

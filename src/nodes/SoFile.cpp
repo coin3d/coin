@@ -118,14 +118,14 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
     return TRUE;
   }
 
-  // SoDB::readAll() will pop the file after it
-  // is loaded
-
   in->pushFile(name.getValue().getString());
   SoSeparator * node = SoDB::readAll(in);
+  // FIXME: this should really be done implicit in SoInput upon
+  // hitting EOF. 19990708 mortene.
+  in->popFile();
   if (node) this->children->append((SoNode *)node);
   else {
-    SoReadError::post(in, "Unable to open subfile: %s",
+    SoReadError::post(in, "Unable to open subfile: ``%s''",
                       this->name.getValue().getString());
   }
   return TRUE;
