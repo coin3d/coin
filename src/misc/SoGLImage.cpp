@@ -353,6 +353,40 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   }
 }
 
+//
+// a low quality resize function. It is only used when neither simage
+// nor GLU is available.
+//
+static void
+fast_image_resize(const unsigned char * src, 
+                  unsigned char * dest,
+                  int width,
+                  int height, int num_comp,
+                  int newwidth, int newheight)
+{
+  float sx, sy, dx, dy;
+  int src_bpr, dest_bpr, xstop, ystop, x, y, offset, i;
+  
+  dx = ((float)width)/((float)newwidth);
+  dy = ((float)height)/((float)newheight);
+  src_bpr = width * num_comp;
+  dest_bpr = newwidth * num_comp;
+  
+  sy = 0.0f;
+  ystop = newheight * dest_bpr;
+  xstop = newwidth * num_comp;   
+  for (y = 0; y < ystop; y += dest_bpr) {
+    sx = 0.0f;
+    for (x = 0; x < xstop; x += num_comp) {
+      offset = ((int)sy)*src_bpr + ((int)sx)*num_comp;
+      for (i = 0; i < num_comp; i++) dest[x+y+i] = src[offset+i];
+      sx += dx;
+    }
+    sy += dy;
+  }
+}
+
+
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -1093,12 +1127,11 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
         glPixelStorei(GL_PACK_ALIGNMENT, 4);
       }
-#if COIN_DEBUG
-      else {
-        SoDebugError::postWarning("SoGLImageP::resizeImage",
-                                  "No resize function found.");
+      else { // fall back to the internal low-quality resize function
+        fast_image_resize(bytes, glimage_tmpimagebuffer,
+                          xsize, ysize, numcomponents,
+                          newx, newy);
       }
-#endif // COIN_DEBUG
     }
     else { // (zsize > 0) => 3D image
       if (simage_wrapper()->available &&
@@ -1113,6 +1146,8 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
       }
 #if COIN_DEBUG
       else {
+        // FIXME: implement at least a dead-simple resize
+        // method. 20020503 mortene.
         SoDebugError::postWarning("SoGLImageP::resizeImage",
                                   "No 3D resize function found.");
       }
