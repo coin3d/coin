@@ -109,6 +109,17 @@ A:    Yes, as a service for those who would like to use the Coin library
       since the Coin library is what our developers love to work with,
       it's given with a smile.  :-)
 
+      Oh, and one additional benefit from being a Coin Professional
+      Edition License holder: you are allowed to cut'n'paste from our
+      sourcecode and use it in your own applications without having to
+      worry about licensing issues. This is for instance very
+      convenient when writing extensions components for Coin, like new
+      nodes or action types.
+
+      You may also cut'n'paste code from all our example programs in
+      the same manner (these are originally under the GNU GPL, by the
+      way).
+
 
 Q0.3: How can you sell a "Professional Edition License" when the
       library is released under the GNU LGPL? Wouldn't that be
