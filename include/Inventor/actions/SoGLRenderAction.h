@@ -81,6 +81,8 @@ public:
   void setRenderingIsRemote(SbBool isremote);
   SbBool getRenderingIsRemote(void) const;
 
+  virtual void invalidateState(void);
+
 protected:
   virtual void beginTraversal(SoNode * node);
   virtual void endTraversal(SoNode * node);
@@ -99,7 +101,6 @@ private:
   SoGLRenderAbortCB * abortcallback;
   void * abortcallbackdata;
   uint32_t cachecontext;
-  SbBool firstrender;
   int currentpass;
   SbBool didhavetransparent;
   SbBool isblendenabled;
@@ -113,6 +114,7 @@ private:
   class SoGetBoundingBoxAction * bboxaction;
   SbVec2f updateorigin, updatesize;
   SbBool renderingremote;
+  SbBool needglinit;
 };
 
 #endif // !COIN_SOGLRENDERACTION_H

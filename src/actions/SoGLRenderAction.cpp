@@ -184,7 +184,6 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   this->smoothing = FALSE;
   this->numpasses = 1;
   this->transparencytype = SoGLRenderAction::SCREEN_DOOR;
-  this->firstrender = TRUE;
   this->delayedrender = FALSE;
   this->sortrender = FALSE;
   this->isblendenabled = FALSE;
@@ -195,6 +194,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   this->renderingremote = FALSE;
   this->abortcallback = NULL;
   this->cachecontext = 0;
+  this->needglinit = TRUE;
 }
 
 /*!
@@ -276,7 +276,10 @@ SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
 void
 SoGLRenderAction::setTransparencyType(const TransparencyType type)
 {
-  this->transparencytype = type;
+  if (this->transparencytype != type) {
+    this->transparencytype = type;
+    this->needglinit = TRUE;
+  }
 }
 
 /*!
@@ -301,7 +304,10 @@ SoGLRenderAction::getTransparencyType(void) const
 void
 SoGLRenderAction::setSmoothing(const SbBool smooth)
 {
-  this->smoothing = smooth;
+  if (smooth != this->smoothing) {
+    this->smoothing = smooth;
+    this->needglinit = TRUE;
+  }
 }
 
 /*!
@@ -396,46 +402,51 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     inherited::beginTraversal(node);
     return;
   }
-  if (this->firstrender) {
-    this->firstrender = FALSE;
-    glDisable(GL_CLIP_PLANE0);
-    glDisable(GL_CLIP_PLANE1);
-    glDisable(GL_CLIP_PLANE2);
-    glDisable(GL_CLIP_PLANE3);
-    glDisable(GL_CLIP_PLANE4);
-    glDisable(GL_CLIP_PLANE5);
-    glDisable(GL_LIGHT0);
-    glDisable(GL_LIGHT1);
-    glDisable(GL_LIGHT2);
-    glDisable(GL_LIGHT3);
-    glDisable(GL_LIGHT4);
-    glDisable(GL_LIGHT5);
-    glDisable(GL_LIGHT6);
-    glDisable(GL_LIGHT7);
-    glDisable(GL_TEXTURE_GEN_S);
-    glDisable(GL_TEXTURE_GEN_T);
-    glDisable(GL_TEXTURE_GEN_R);
-    glDisable(GL_TEXTURE_GEN_Q);
+  if (this->needglinit) {
+    this->needglinit = FALSE;
 
-    // we are always using GL_COLOR_MATERIAL
+    // we are always using GL_COLOR_MATERIAL in Coin
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
+    
+    // force blending to off in case GL state is invalid
     this->disableBlend(TRUE);
+
+    switch(this->transparencytype) {
+    case BLEND:
+    case DELAYED_BLEND:
+    case SORTED_OBJECT_BLEND:
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      break;
+    case ADD:
+    case DELAYED_ADD:
+    case SORTED_OBJECT_ADD:
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+      break;
+    case SCREEN_DOOR:
+      // needed for line smoothing to work properly
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      break;
+    }
+    if (this->smoothing) {
+      glEnable(GL_POINT_SMOOTH);
+      glEnable(GL_LINE_SMOOTH);
+    }
+    else {
+      glDisable(GL_POINT_SMOOTH);
+      glDisable(GL_POINT_SMOOTH);
+    }
   }
   this->currentpass = 0;
   this->didhavetransparent = FALSE;
-  this->disableBlend(); // just in case
 
-  if (this->transparencytype == BLEND ||
-      this->transparencytype == DELAYED_BLEND ||
-      this->transparencytype == SORTED_OBJECT_BLEND) {
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  if (this->transparencytype == SCREEN_DOOR && this->smoothing) {
+    this->enableBlend(); // needed for line smoothing
   }
-  else if (this->transparencytype == ADD ||
-           this->transparencytype == DELAYED_ADD ||
-           this->transparencytype == SORTED_OBJECT_ADD) {
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+  else {
+    this->disableBlend();
   }
+
   this->getState()->push();
 
   SoShapeStyleElement::setTransparencyType(this->getState(),
@@ -679,9 +690,19 @@ SoGLRenderAction::disableBlend(const SbBool force)
 {
   if (force || this->isblendenabled) {
     glDisable(GL_BLEND);
-    if (!this->delayedrender) glDepthMask(GL_TRUE);
+    if (!this->delayedrender && this->transparencytype != SCREEN_DOOR) glDepthMask(GL_TRUE);
     this->isblendenabled = FALSE;
   }
+}
+
+/*!
+  Overloaded to reinitialize GL state on next apply.
+*/
+void
+SoGLRenderAction::invalidateState(void)
+{
+  inherited::invalidateState();
+  this->needglinit = TRUE;
 }
 
 // Enable OpenGL blending.
@@ -690,7 +711,7 @@ SoGLRenderAction::enableBlend(const SbBool force)
 {
   if (force || !this->isblendenabled) {
     glEnable(GL_BLEND);
-    if (!this->delayedrender) glDepthMask(GL_FALSE);
+    if (!this->delayedrender && this->transparencytype != SCREEN_DOOR) glDepthMask(GL_FALSE);
     this->isblendenabled = TRUE;
   }
 }
