@@ -670,14 +670,12 @@ THE WISH LIST
   ...with corresponding SbVec and field types.
 
 
-* SoType::getInstanciationMethod()
+* SoType::getInstantiationMethod()
   2002-01-17  Lars J. Aas  <larsa@sim.no>
   [upwards compatible extension]
 
-  For temporary overriding of nodes, the current instanciation method is
+  For temporary overriding of nodes, the current instantiation method is
   lost when you set the new one, and calling overrideType() with NULL
   just disables the type.  To be able to properly save the current state
-  you need to be able to get the current pointer for the instanciation
+  you need to be able to get the current pointer for the instantiation
   method.
-
-
