@@ -114,6 +114,16 @@ SoEvent::initEvents(void)
 }
 
 /*!
+  Constructor, will set all modifiers to "off" state.
+*/
+SoEvent::SoEvent(void)
+{
+  this->modifiers.shiftdown = 0;
+  this->modifiers.ctrldown = 0;
+  this->modifiers.altdown = 0;
+}
+
+/*!
   Destructor.
  */
 SoEvent::~SoEvent()

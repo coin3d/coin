@@ -39,6 +39,7 @@ public:
 //$ END TEMPLATE EventHeader
 
 public:
+  SoEvent(void);
   virtual ~SoEvent();
 
   SbBool isOfType(SoType type) const;
