@@ -1409,9 +1409,18 @@ SoField::appendConnection(SoVRMLInterpOutput * master, SbBool notnotify)
 SoFieldConverter *
 SoField::createConverter(SoType from) const
 {
-  assert(from != this->getTypeId());
-  SoType convtype = SoDB::getConverter(from, this->getTypeId());
-  if (convtype == SoType::badType()) return NULL;
+  SoType thistype = this->getTypeId();
+  assert(from != thistype);
+  SoType convtype = SoDB::getConverter(from, thistype);
+  if (convtype == SoType::badType()) {
+#if COIN_DEBUG // COIN_DEBUG
+    SoDebugError::postWarning("SoField::createConverter",
+                              "no converter for %s to %s",
+                              from.getName().getString(),
+                              thistype.getName().getString());
+#endif // COIN_DEBUG
+    return NULL;
+  }
 
   // FIXME: is it really wise to treat the SoConvertAll field
   // converters as a special case? 20000217 mortene.
