@@ -575,16 +575,21 @@ SoField::isConnectionEnabled(void) const
   value of this field will be automatically updated when \a master is
   changed (as long as the connection also is enabled).
 
-  If the field connected \e from has a different type from the field
-  connected \e to, a field converter is inserted. For some
-  combinations of fields no such conversion is possible, and we'll
-  return \c FALSE.
-
   If this field had any connections to master fields beforehand, these
   are all broken up if \a append is \c FALSE.
 
   Call with \a notnotify if you want to avoid the initial notification
   of connected auditors (a.k.a. \e slaves).
+
+  Function will return \c TRUE unless:
+
+  \li If the field connected \e from has a different type from the
+      field connected \e to, a field converter is inserted. For some
+      combinations of fields no such conversion is possible, and we'll
+      return \c FALSE.
+
+  \li If this field is already connected to the \a master, we will
+      return \c FALSE.
 
   \sa enableConnection(), isConnectionEnabled(), isConnectedFromField()
   \sa getConnectedField(), appendConnection(SoField *)
@@ -624,7 +629,11 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
   }
   else { // Needs an SoFieldConverter between the fields.
     SoFieldConverter * conv = this->createConverter(mastertype);
-    if (!conv) return FALSE;
+    if (!conv) {
+      // Just return FALSE and don't bother to warn, as that is done
+      // by the createConverter() method.
+      return FALSE;
+    }
 
     if (!append) this->disconnect();
 
@@ -665,16 +674,21 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
   of this field will be automatically updated when \a master is changed (as
   long as the connection also is enabled).
 
-  If the field output connected \e from is of a different type from
-  the field connected \e to, a field converter is inserted. For some
-  combinations of fields no such conversion is possible, and we'll
-  return \c FALSE.
-
   If this field had any master-relationships beforehand, these are all
   broken up if \a append is \c FALSE.
 
   Call with \a notnotify if you want to avoid the initial notification
   of connected auditors (a.k.a. \e slaves).
+
+  Function will return \c TRUE unless:
+
+  \li If the field output connected \e from is of a different type
+      from the engine output field-type connected \e to, a field
+      converter is inserted. For some combinations of fields no such
+      conversion is possible, and we'll return \c FALSE.
+
+  \li If this field is already connected to the \a master, we will
+      return \c FALSE.
 
   \sa enableConnection(), isConnectionEnabled(), isConnectedFromField()
   \sa getConnectedField(), appendConnection(SoEngineOutput *)
@@ -729,7 +743,8 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
     if (!conv) { // Handle this exception.
       // Clean up the ref().
       if (masterengine) masterengine->unref();
-      // Sorry, can't connect.
+      // Sorry, can't connect. Don't bother to spit out a warning, as
+      // that is done in createConverter().
       return FALSE;
     }
 

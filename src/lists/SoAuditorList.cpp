@@ -159,7 +159,12 @@ SoAuditorList::notify(SoNotList * l)
   if (num == 1) { // fast path for common case
     this->doNotify(l, this->getObject(0), this->getType(0));
   }
-  else if (num > 1) { // handle multiple auditors
+  // handle multiple auditors by copying the list, in case any one of
+  // the notifications we're sending out changes the list
+  // mid-traversal (that's also why we take special care of the
+  // 1-auditor case above -- so we don't have to copy the list for the
+  // common case)
+  else if (num > 1) {
     // FIXME: should perhaps use a more general mechanism to detect when
     // to ignore notification? (In SoFieldContainer::notify() -- based
     // on SoNotList::getTimeStamp()?) 20000304 mortene.
