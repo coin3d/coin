@@ -35,7 +35,6 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoNode.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -450,7 +449,7 @@ SoAction::traverse(SoNode * const node)
         }
         else {
           assert(idx < this->appliedData.path->getFullLength());
-          assert(node->isOfType(SoGroup::getClassTypeId()));
+          assert(node->getChildren());
           this->nextInPathChildIndex = this->appliedData.path->getIndex(idx);
         }
       }
