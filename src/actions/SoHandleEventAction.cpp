@@ -33,6 +33,7 @@
   \sa SoEvent
 */
 
+#include <Inventor/SbViewportRegion.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/events/SoEvent.h>
@@ -44,6 +45,39 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/misc/SoState.h>
 
+
+// *************************************************************************
+
+// The private data for the SoHandleEventAction.
+
+class SoHandleEventActionP {
+public:
+  SoHandleEventActionP(SoHandleEventAction * o) {
+    this->owner = o;
+  }
+
+  // Hidden private methods.
+
+  void doPick(SoRayPickAction * ra);
+  SoRayPickAction * getPickAction(void);
+
+  // Hidden private variables.
+
+  SbViewportRegion viewport;
+  const SoEvent * event;
+  SoNode * grabber;
+  SoNode * pickroot;
+  SbBool pickvalid;
+  SbBool didpickall;
+  SoRayPickAction * pickaction;
+
+private:
+  SoHandleEventAction * owner;
+};
+
+#define THIS (this->pimpl)
+
+// *************************************************************************
 
 SO_ACTION_SOURCE(SoHandleEventAction);
 
@@ -68,9 +102,16 @@ SoHandleEventAction::initClass(void)
   under the mouse cursor.
 */
 SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion)
-  : viewport(viewportregion), event(NULL), grabber(NULL), pickroot(NULL),
-    pickvalid(FALSE), pickaction(NULL), applynode(NULL)
 {
+  THIS = new SoHandleEventActionP(this);
+  THIS->viewport = viewportregion;
+  THIS->event = NULL;
+  THIS->grabber = NULL;
+  THIS->pickroot = NULL;
+  THIS->pickvalid = FALSE;
+  THIS->didpickall = FALSE;
+  THIS->pickaction = NULL;
+
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::handleEventS);
@@ -81,7 +122,10 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion
 */
 SoHandleEventAction::~SoHandleEventAction()
 {
-  delete this->pickaction;
+  if (THIS->pickroot) THIS->pickroot->unref();
+  delete THIS->pickaction;
+
+  delete THIS;
 }
 
 /*!
@@ -91,9 +135,8 @@ SoHandleEventAction::~SoHandleEventAction()
 void
 SoHandleEventAction::setViewportRegion(const SbViewportRegion & newregion)
 {
-  this->viewport = newregion;
-  delete this->pickaction;
-  this->pickaction = NULL;
+  THIS->viewport = newregion;
+  if (THIS->pickaction) THIS->pickaction->setViewportRegion(newregion);
 }
 
 /*!
@@ -102,7 +145,7 @@ SoHandleEventAction::setViewportRegion(const SbViewportRegion & newregion)
 const SbViewportRegion &
 SoHandleEventAction::getViewportRegion(void) const
 {
-  return this->viewport;
+  return THIS->viewport;
 }
 
 /*!
@@ -111,7 +154,7 @@ SoHandleEventAction::getViewportRegion(void) const
 void
 SoHandleEventAction::setEvent(const SoEvent * ev)
 {
-  this->event = ev;
+  THIS->event = ev;
 }
 
 /*!
@@ -120,7 +163,7 @@ SoHandleEventAction::setEvent(const SoEvent * ev)
 const SoEvent *
 SoHandleEventAction::getEvent(void) const
 {
-  return this->event;
+  return THIS->event;
 }
 
 /*!
@@ -161,9 +204,9 @@ SoHandleEventAction::setGrabber(SoNode * node)
   // performance, but is also necessary to remove the potential for
   // infinite recursion. See comment in releaseGrabber().
 
-  if (node != this->grabber) {
+  if (node != THIS->grabber) {
     this->releaseGrabber();
-    this->grabber = node;
+    THIS->grabber = node;
     if (node) node->grabEventsSetup();
   }
 }
@@ -182,8 +225,8 @@ SoHandleEventAction::releaseGrabber(void)
   // recursive calls from grabEventsCleanup() back to this method
   // (which happens from dragger classes).
 
-  SoNode * old = this->grabber;
-  this->grabber = NULL;
+  SoNode * old = THIS->grabber;
+  THIS->grabber = NULL;
   if (old) old->grabEventsCleanup();
 }
 
@@ -193,7 +236,7 @@ SoHandleEventAction::releaseGrabber(void)
 SoNode *
 SoHandleEventAction::getGrabber(void) const
 {
-  return this->grabber;
+  return THIS->grabber;
 }
 
 /*!
@@ -203,7 +246,10 @@ SoHandleEventAction::getGrabber(void) const
 void
 SoHandleEventAction::setPickRoot(SoNode * node)
 {
-  this->pickroot = node;
+  if (THIS->pickroot != NULL) THIS->pickroot->unref();
+  THIS->pickroot = node;
+  THIS->pickroot->ref();
+  THIS->pickvalid = FALSE;
 }
 
 /*!
@@ -213,7 +259,7 @@ SoHandleEventAction::setPickRoot(SoNode * node)
 SoNode *
 SoHandleEventAction::getPickRoot(void) const
 {
-  return this->pickroot;
+  return THIS->pickroot;
 }
 
 /*!
@@ -222,7 +268,7 @@ SoHandleEventAction::getPickRoot(void) const
 void
 SoHandleEventAction::setPickRadius(const float radiusinpixels)
 {
-  this->getPickAction()->setRadius(radiusinpixels);
+  THIS->getPickAction()->setRadius(radiusinpixels);
 }
 
 /*!
@@ -232,16 +278,13 @@ SoHandleEventAction::setPickRadius(const float radiusinpixels)
 const SoPickedPoint *
 SoHandleEventAction::getPickedPoint(void)
 {
-  if (this->event && (this->pickroot || this->applynode) &&
-      (!this->pickvalid || this->didpickall)) {
-    this->getPickAction()->setPoint(this->event->getPosition());
-    this->getPickAction()->setPickAll(FALSE);
-    this->getPickAction()->apply(this->pickroot ? this->pickroot : this->applynode);
-    this->pickvalid = TRUE;
-    this->didpickall = FALSE;
+  SoRayPickAction * ra = THIS->getPickAction();
+  if (!THIS->pickvalid || THIS->didpickall) {
+    ra->setPickAll(FALSE);
+    THIS->doPick(ra);
   }
-  return this->getPickAction()->getPickedPoint();
-}
+  return ra->getPickedPoint();
+}  
 
 /*!
   Returns a list of all intersection points below the mouse cursor.
@@ -249,19 +292,12 @@ SoHandleEventAction::getPickedPoint(void)
 const SoPickedPointList &
 SoHandleEventAction::getPickedPointList(void)
 {
-
-//   Maybe it is A Good Thing to make an extension to SoRayPickAction,
-//   to always make it store all picked points, but also store the
-//   closest picked point?  pederb, 19991214
-
-  if (this->event && (this->pickroot || this->applynode) &&
-      (!this->pickvalid || this->didpickall)) {
-    this->getPickAction()->setPickAll(TRUE);
-    this->getPickAction()->apply(this->pickroot ? this->pickroot : this->applynode);
-    this->pickvalid = TRUE;
-    this->didpickall = TRUE;
+  SoRayPickAction * ra = THIS->getPickAction();
+  if (!THIS->pickvalid || !THIS->didpickall) {
+    ra->setPickAll(TRUE);
+    THIS->doPick(ra);
   }
-  return this->getPickAction()->getPickedPointList();
+  return ra->getPickedPointList();
 }
 
 /*!
@@ -271,28 +307,61 @@ SoHandleEventAction::getPickedPointList(void)
 void
 SoHandleEventAction::beginTraversal(SoNode * node)
 {
-  assert(this->event);
-  this->pickvalid = FALSE;
-  this->applynode = node;
-
+  assert(THIS->event);
+  this->setPickRoot(node);
+  
   this->getState()->push();
-  SoViewportRegionElement::set(this->getState(), this->viewport);
-  if (this->grabber) {
-    // ?? is this correct ?? pederb, 19991214
-    this->traverse(this->grabber);
+  SoViewportRegionElement::set(this->getState(), THIS->viewport);
+  if (THIS->grabber) {
+    this->traverse(THIS->grabber);
   }
-  else {
-    inherited::beginTraversal(node);
+  if (!this->isHandled()) {
+    this->traverse(node);
   }
   this->getState()->pop();
 }
 
+//////// Hidden private methods for //////////////////////////////////////
+//////// SoHandleEventActionP (pimpl) ////////////////////////////////////
+
 // Singleton pattern for the pick action instance.
 SoRayPickAction *
-SoHandleEventAction::getPickAction(void)
+SoHandleEventActionP::getPickAction(void)
 {
   if (this->pickaction == NULL) {
     this->pickaction = new SoRayPickAction(this->viewport);
   }
   return this->pickaction;
+}
+
+void
+SoHandleEventActionP::doPick(SoRayPickAction * ra)
+{
+  if (!this->event || !this->pickroot) return;
+  
+  SbBool didapply = FALSE;
+  ra->setPoint(this->event->getPosition());
+  if (this->owner->getWhatAppliedTo() == SoAction::PATH) {
+    const SoPath * path = this->owner->getPathAppliedTo();
+    if (path->getHead() == this->pickroot) {
+      ra->apply((SoPath*)path);
+      didapply = TRUE;
+    }
+    else { // make subpath if pickroot can be found in path
+      int i, n = path->getLength();
+      for (i = 1; i < n; i++) {
+        if (path->getNode(i) == this->pickroot) break;
+      }
+      if (i < n) {
+        SoPath * tmppath = path->copy(i);
+        tmppath->ref();
+        ra->apply(tmppath);
+        tmppath->unref();
+        didapply = TRUE;
+      }
+    }
+  }
+  if (!didapply) ra->apply(this->pickroot);
+  this->didpickall = ra->isPickAll();
+  this->pickvalid = TRUE;
 }

@@ -22,12 +22,11 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
-#include <Inventor/SbViewportRegion.h>
 
+class SbViewportRegion;
 class SoEvent;
 class SoPickedPoint;
 class SoPickedPointList;
-class SoRayPickAction;
 
 
 class COIN_DLL_API SoHandleEventAction : public SoAction {
@@ -59,16 +58,7 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  SoRayPickAction * getPickAction(void);
-
-  SbViewportRegion viewport;
-  const SoEvent * event;
-  SoNode * grabber;
-  SoNode * pickroot;
-  SbBool pickvalid;
-  SbBool didpickall;
-  SoRayPickAction * pickaction;
-  SoNode * applynode;
+  class SoHandleEventActionP * pimpl;
 };
 
 #endif // !COIN_SOHANDLEEVENTACTION_H
