@@ -50,7 +50,9 @@
 public: \
   virtual SoType getTypeId(void) const; \
   static SoType getClassTypeId(void); \
+  /*! \COININTERNAL */ \
   static void addMethod(const SoType type, SoActionMethod method); \
+  /*! \COININTERNAL */ \
   static void enableElement(const SoType type, const int stackindex); \
  \
 protected: \
