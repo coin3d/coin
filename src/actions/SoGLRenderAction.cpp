@@ -140,6 +140,41 @@
   \sa setAbortCallback()
 */
 
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoGLRenderActionP {
+public:
+  SbViewportRegion viewport;
+  int numpasses;
+  SoGLRenderAction::TransparencyType transparencytype;
+  SbBool smoothing;
+  SbBool passupdate;
+  SoGLRenderPassCB * passcallback;
+  void * passcallbackdata;
+  SoGLRenderAction::SoGLRenderAbortCB * abortcallback;
+  void * abortcallbackdata;
+  uint32_t cachecontext;
+  int currentpass;
+  SbBool didhavetransparent;
+  SbBool isblendenabled;
+  SoPathList delayedpaths;
+  SbBool delayedrender;
+  SbBool sortrender;
+  SoPathList transpobjpaths;
+  SbList<float> transpobjdistances;
+  SoGetBoundingBoxAction * bboxaction;
+  SbVec2f updateorigin, updatesize;
+  SbBool renderingremote;
+  SbBool needglinit;
+public:
+  void disableBlend(const SbBool force = FALSE);
+  void enableBlend(const SbBool force = FALSE);
+
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
 SO_ACTION_SOURCE(SoGLRenderAction);
 
 // Override from parent class.
@@ -165,6 +200,13 @@ SoGLRenderAction::initClass(void)
 
 // *************************************************************************
 
+#ifdef THIS
+#define COIN_THIS_DEFINE_COPY THIS
+#undef THIS
+#endif // THIS
+
+#define THIS this->pimpl
+
 /*!
   Constructor. Sets up the render action for rendering within the
   given \a viewportregion.
@@ -175,26 +217,27 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::GLRenderS);
 
+  THIS = new SoGLRenderActionP;
   // Can't just push this on the SoViewportRegionElement stack, as the
   // state hasn't been made yet.
-  this->viewport = viewportregion;
+  THIS->viewport = viewportregion;
 
-  this->passcallback = NULL;
-  this->passcallbackdata = NULL;
-  this->smoothing = FALSE;
-  this->numpasses = 1;
-  this->transparencytype = SoGLRenderAction::SCREEN_DOOR;
-  this->delayedrender = FALSE;
-  this->sortrender = FALSE;
-  this->isblendenabled = FALSE;
-  this->passupdate = FALSE;
-  this->bboxaction = NULL;
-  this->updateorigin.setValue(0.0f, 0.0f);
-  this->updatesize.setValue(1.0f, 1.0f);
-  this->renderingremote = FALSE;
-  this->abortcallback = NULL;
-  this->cachecontext = 0;
-  this->needglinit = TRUE;
+  THIS->passcallback = NULL;
+  THIS->passcallbackdata = NULL;
+  THIS->smoothing = FALSE;
+  THIS->numpasses = 1;
+  THIS->transparencytype = SoGLRenderAction::SCREEN_DOOR;
+  THIS->delayedrender = FALSE;
+  THIS->sortrender = FALSE;
+  THIS->isblendenabled = FALSE;
+  THIS->passupdate = FALSE;
+  THIS->bboxaction = NULL;
+  THIS->updateorigin.setValue(0.0f, 0.0f);
+  THIS->updatesize.setValue(1.0f, 1.0f);
+  THIS->renderingremote = FALSE;
+  THIS->abortcallback = NULL;
+  THIS->cachecontext = 0;
+  THIS->needglinit = TRUE;
 }
 
 /*!
@@ -202,7 +245,8 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
 */
 SoGLRenderAction::~SoGLRenderAction()
 {
-  delete this->bboxaction;
+  delete THIS->bboxaction;
+  delete THIS;
 }
 
 /*!
@@ -212,7 +256,7 @@ SoGLRenderAction::~SoGLRenderAction()
 void
 SoGLRenderAction::setViewportRegion(const SbViewportRegion & newregion)
 {
-  this->viewport = newregion;
+  THIS->viewport = newregion;
 
   // The SoViewportRegionElement is not set here, as it is always
   // initialized before redraw in beginTraversal().
@@ -224,7 +268,7 @@ SoGLRenderAction::setViewportRegion(const SbViewportRegion & newregion)
 const SbViewportRegion &
 SoGLRenderAction::getViewportRegion(void) const
 {
-  return this->viewport;
+  return THIS->viewport;
 }
 
 /*!
@@ -238,8 +282,8 @@ SoGLRenderAction::getViewportRegion(void) const
 void
 SoGLRenderAction::setUpdateArea(const SbVec2f & origin, const SbVec2f & size)
 {
-  this->updateorigin = origin;
-  this->updatesize = size;
+  THIS->updateorigin = origin;
+  THIS->updatesize = size;
 }
 
 /*!
@@ -249,8 +293,8 @@ SoGLRenderAction::setUpdateArea(const SbVec2f & origin, const SbVec2f & size)
 void
 SoGLRenderAction::getUpdateArea(SbVec2f & origin, SbVec2f & size) const
 {
-  origin = this->updateorigin;
-  size = this->updatesize;
+  origin = THIS->updateorigin;
+  size = THIS->updatesize;
 }
 
 /*!
@@ -263,8 +307,8 @@ void
 SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
                                    void * const userdata)
 {
-  this->abortcallback = func;
-  this->abortcallbackdata = userdata;
+  THIS->abortcallback = func;
+  THIS->abortcallbackdata = userdata;
 }
 
 /*!
@@ -276,9 +320,9 @@ SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
 void
 SoGLRenderAction::setTransparencyType(const TransparencyType type)
 {
-  if (this->transparencytype != type) {
-    this->transparencytype = type;
-    this->needglinit = TRUE;
+  if (THIS->transparencytype != type) {
+    THIS->transparencytype = type;
+    THIS->needglinit = TRUE;
   }
 }
 
@@ -288,7 +332,7 @@ SoGLRenderAction::setTransparencyType(const TransparencyType type)
 SoGLRenderAction::TransparencyType
 SoGLRenderAction::getTransparencyType(void) const
 {
-  return this->transparencytype;
+  return THIS->transparencytype;
 }
 
 /*!
@@ -304,9 +348,9 @@ SoGLRenderAction::getTransparencyType(void) const
 void
 SoGLRenderAction::setSmoothing(const SbBool smooth)
 {
-  if (smooth != this->smoothing) {
-    this->smoothing = smooth;
-    this->needglinit = TRUE;
+  if (smooth != THIS->smoothing) {
+    THIS->smoothing = smooth;
+    THIS->needglinit = TRUE;
   }
 }
 
@@ -316,7 +360,7 @@ SoGLRenderAction::setSmoothing(const SbBool smooth)
 SbBool
 SoGLRenderAction::isSmoothing(void) const
 {
-  return this->smoothing;
+  return THIS->smoothing;
 }
 
 /*!
@@ -326,7 +370,7 @@ SoGLRenderAction::isSmoothing(void) const
 void
 SoGLRenderAction::setNumPasses(const int num)
 {
-  this->numpasses = num;
+  THIS->numpasses = num;
 }
 
 /*!
@@ -335,7 +379,7 @@ SoGLRenderAction::setNumPasses(const int num)
 int
 SoGLRenderAction::getNumPasses(void) const
 {
-  return this->numpasses;
+  return THIS->numpasses;
 }
 
 /*!
@@ -344,7 +388,7 @@ SoGLRenderAction::getNumPasses(void) const
 void
 SoGLRenderAction::setPassUpdate(const SbBool flag)
 {
-  this->passupdate = flag;
+  THIS->passupdate = flag;
 }
 
 /*!
@@ -355,7 +399,7 @@ SoGLRenderAction::setPassUpdate(const SbBool flag)
 SbBool
 SoGLRenderAction::isPassUpdate(void) const
 {
-  return this->passupdate;
+  return THIS->passupdate;
 }
 
 /*!
@@ -366,8 +410,8 @@ void
 SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
                                   void * const userdata)
 {
-  this->passcallback = func;
-  this->passcallbackdata = userdata;
+  THIS->passcallback = func;
+  THIS->passcallbackdata = userdata;
 }
 
 /*!
@@ -377,8 +421,8 @@ SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
 void
 SoGLRenderAction::setCacheContext(const uint32_t context)
 {
-  if (context != this->cachecontext) {
-    this->cachecontext = context;
+  if (context != THIS->cachecontext) {
+    THIS->cachecontext = context;
     this->invalidateState();
   }
 }
@@ -389,7 +433,7 @@ SoGLRenderAction::setCacheContext(const uint32_t context)
 uint32_t
 SoGLRenderAction::getCacheContext(void) const
 {
-  return this->cachecontext;
+  return THIS->cachecontext;
 }
 
 /*!
@@ -398,21 +442,21 @@ SoGLRenderAction::getCacheContext(void) const
 void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {
-  if (this->sortrender || this->delayedrender) {
+  if (THIS->sortrender || THIS->delayedrender) {
     inherited::beginTraversal(node);
     return;
   }
-  if (this->needglinit) {
-    this->needglinit = FALSE;
+  if (THIS->needglinit) {
+    THIS->needglinit = FALSE;
 
     // we are always using GL_COLOR_MATERIAL in Coin
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
 
     // force blending to off in case GL state is invalid
-    this->disableBlend(TRUE);
+    THIS->disableBlend(TRUE);
 
-    switch(this->transparencytype) {
+    switch(THIS->transparencytype) {
     case BLEND:
     case DELAYED_BLEND:
     case SORTED_OBJECT_BLEND:
@@ -428,7 +472,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       break;
     }
-    if (this->smoothing) {
+    if (THIS->smoothing) {
       glEnable(GL_POINT_SMOOTH);
       glEnable(GL_LINE_SMOOTH);
     }
@@ -437,74 +481,75 @@ SoGLRenderAction::beginTraversal(SoNode * node)
       glDisable(GL_LINE_SMOOTH);
     }
   }
-  this->currentpass = 0;
-  this->didhavetransparent = FALSE;
+  THIS->currentpass = 0;
+  THIS->didhavetransparent = FALSE;
 
-  if (this->transparencytype == SCREEN_DOOR && this->smoothing) {
-    this->enableBlend(); // needed for line smoothing
+  if (THIS->transparencytype == SCREEN_DOOR && THIS->smoothing) {
+    THIS->enableBlend(); // needed for line smoothing
   }
   else {
-    this->disableBlend();
+    THIS->disableBlend();
   }
 
-  this->getState()->push();
+  SoState * state = this->getState();
+  state->push();
 
-  SoShapeStyleElement::setTransparencyType(this->getState(),
-                                           this->transparencytype);
+  SoShapeStyleElement::setTransparencyType(state,
+                                           THIS->transparencytype);
 
-  SoViewportRegionElement::set(this->getState(), this->viewport);
-  SoLazyElement::setTransparencyType(this->getState(),
-                                     (int32_t)this->transparencytype);
-  SoLazyElement::setBlending(this->getState(), FALSE);
-  SoLazyElement::setColorMaterial(this->getState(), TRUE);
+  SoViewportRegionElement::set(state, THIS->viewport);
+  SoLazyElement::setTransparencyType(state,
+                                     (int32_t)THIS->transparencytype);
+  SoLazyElement::setBlending(state, FALSE);
+  SoLazyElement::setColorMaterial(state, TRUE);
 
   // FIXME: is this the correct place to set these elements? 19990314 mortene.
-  SoDecimationPercentageElement::set(this->getState(), 1.0f);
-  SoDecimationTypeElement::set(this->getState(),
+  SoDecimationPercentageElement::set(state, 1.0f);
+  SoDecimationTypeElement::set(state,
                                SoDecimationTypeElement::AUTOMATIC);
 
   // FIXME: use these as they're supposed to be used. 19990314 mortene.
-  SoGLRenderPassElement::set(this->getState(), 0);
-  SoGLUpdateAreaElement::set(this->getState(),
+  SoGLRenderPassElement::set(state, 0);
+  SoGLUpdateAreaElement::set(state,
                              SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
 
-  SoGLCacheContextElement::set(this->getState(), this->cachecontext,
-                               FALSE, this->renderingremote);
+  SoGLCacheContextElement::set(state, THIS->cachecontext,
+                               FALSE, THIS->renderingremote);
 
   inherited::beginTraversal(node);
 
-  if (this->didhavetransparent && !this->sortrender) {
-    if (this->transparencytype == DELAYED_BLEND ||
-        this->transparencytype == DELAYED_ADD) {
-      this->currentpass = 1;
-      SoGLRenderPassElement::set(this->getState(), 1);
-      SoGLCacheContextElement::set(this->getState(), this->cachecontext,
-                                   TRUE, this->renderingremote);
-      this->enableBlend();
+  if (THIS->didhavetransparent && !THIS->sortrender) {
+    if (THIS->transparencytype == DELAYED_BLEND ||
+        THIS->transparencytype == DELAYED_ADD) {
+      THIS->currentpass = 1;
+      SoGLRenderPassElement::set(state, 1);
+      SoGLCacheContextElement::set(state, THIS->cachecontext,
+                                   TRUE, THIS->renderingremote);
+      THIS->enableBlend();
       inherited::beginTraversal(node);
-      this->disableBlend();
+      THIS->disableBlend();
     }
-    else if (this->transparencytype == SORTED_OBJECT_BLEND ||
-             this->transparencytype == SORTED_OBJECT_ADD) {
-      SoGLCacheContextElement::set(this->getState(), this->cachecontext,
-                                   TRUE, this->renderingremote);
-      this->sortrender = TRUE;
+    else if (THIS->transparencytype == SORTED_OBJECT_BLEND ||
+             THIS->transparencytype == SORTED_OBJECT_ADD) {
+      SoGLCacheContextElement::set(state, THIS->cachecontext,
+                                   TRUE, THIS->renderingremote);
+      THIS->sortrender = TRUE;
       this->doPathSort();
-      this->enableBlend();
-      this->apply(this->transpobjpaths, TRUE);
-      this->disableBlend();
+      THIS->enableBlend();
+      this->apply(THIS->transpobjpaths, TRUE);
+      THIS->disableBlend();
     }
   }
 
-  this->disableBlend();
+  THIS->disableBlend();
 
-  if (this->delayedpaths.getLength()) {
-    if (!this->delayedrender) {
-      this->delayedrender = TRUE;
-      this->apply(this->delayedpaths, TRUE);
+  if (THIS->delayedpaths.getLength()) {
+    if (!THIS->delayedrender) {
+      THIS->delayedrender = TRUE;
+      this->apply(THIS->delayedpaths, TRUE);
     }
   }
-  this->getState()->pop();
+  state->pop();
 }
 
 /*!
@@ -514,15 +559,15 @@ SoGLRenderAction::beginTraversal(SoNode * node)
 void
 SoGLRenderAction::endTraversal(SoNode *)
 {
-  if (this->delayedpaths.getLength() && this->delayedrender) {
-    this->delayedrender = FALSE;
-    this->delayedpaths.truncate(0);
+  if (THIS->delayedpaths.getLength() && THIS->delayedrender) {
+    THIS->delayedrender = FALSE;
+    THIS->delayedpaths.truncate(0);
   }
 
-  if (this->transpobjpaths.getLength() && this->sortrender) {
-    this->sortrender = FALSE;
-    this->transpobjpaths.truncate(0);
-    this->transpobjdistances.truncate(0);
+  if (THIS->transpobjpaths.getLength() && THIS->sortrender) {
+    THIS->sortrender = FALSE;
+    THIS->transpobjpaths.truncate(0);
+    THIS->transpobjdistances.truncate(0);
   }
 }
 
@@ -534,33 +579,33 @@ SoGLRenderAction::endTraversal(SoNode *)
 SbBool
 SoGLRenderAction::handleTransparency(SbBool istransparent)
 {
-  if (this->delayedrender) { // special case when rendering delayed paths
+  if (THIS->delayedrender) { // special case when rendering delayed paths
     if (!istransparent) {
-      this->disableBlend();
+      THIS->disableBlend();
     }
     else {
-      if (this->transparencytype != SCREEN_DOOR) this->enableBlend();
-      else this->disableBlend();
+      if (THIS->transparencytype != SCREEN_DOOR) THIS->enableBlend();
+      else THIS->disableBlend();
     }
     return FALSE; // always render
   }
 
   // normal case
-  if (istransparent) this->didhavetransparent = TRUE;
-  if (this->transparencytype == DELAYED_ADD ||
-      this->transparencytype == DELAYED_BLEND) {
-    if (this->currentpass == 0) return istransparent;
+  if (istransparent) THIS->didhavetransparent = TRUE;
+  if (THIS->transparencytype == DELAYED_ADD ||
+      THIS->transparencytype == DELAYED_BLEND) {
+    if (THIS->currentpass == 0) return istransparent;
     else return !istransparent;
   }
-  else if (this->transparencytype == SORTED_OBJECT_ADD ||
-           this->transparencytype == SORTED_OBJECT_BLEND) {
-    if (this->sortrender || !istransparent) return FALSE;
+  else if (THIS->transparencytype == SORTED_OBJECT_ADD ||
+           THIS->transparencytype == SORTED_OBJECT_BLEND) {
+    if (THIS->sortrender || !istransparent) return FALSE;
     this->addTransPath(this->getCurPath()->copy());
     return TRUE;
   }
-  else if (this->transparencytype == ADD || this->transparencytype == BLEND) {
-    if (istransparent) this->enableBlend();
-    else this->disableBlend();
+  else if (THIS->transparencytype == ADD || THIS->transparencytype == BLEND) {
+    if (istransparent) THIS->enableBlend();
+    else THIS->disableBlend();
     return FALSE; // node should always render
   }
   else
@@ -574,7 +619,7 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
 int
 SoGLRenderAction::getCurPass(void) const
 {
-  return this->currentpass;
+  return THIS->currentpass;
 }
 
 /*!
@@ -588,8 +633,8 @@ SoGLRenderAction::abortNow(void)
 {
   if (this->hasTerminated()) return TRUE;
   SbBool abort = FALSE;
-  if (this->abortcallback) {
-    switch (this->abortcallback(this->abortcallbackdata)) {
+  if (THIS->abortcallback) {
+    switch (THIS->abortcallback(THIS->abortcallbackdata)) {
     case CONTINUE:
       break;
     case ABORT:
@@ -625,7 +670,7 @@ SoGLRenderAction::abortNow(void)
 void
 SoGLRenderAction::setRenderingIsRemote(SbBool isremote)
 {
-  this->renderingremote = isremote;
+  THIS->renderingremote = isremote;
 }
 
 /*!
@@ -636,7 +681,7 @@ SoGLRenderAction::setRenderingIsRemote(SbBool isremote)
 SbBool
 SoGLRenderAction::getRenderingIsRemote(void) const
 {
-  return this->renderingremote;
+  return THIS->renderingremote;
 }
 
 /*!
@@ -645,9 +690,9 @@ SoGLRenderAction::getRenderingIsRemote(void) const
 void
 SoGLRenderAction::addDelayedPath(SoPath * path)
 {
-  assert(!this->delayedrender);
+  assert(!THIS->delayedrender);
   SoPath * copy = path->copy();
-  this->delayedpaths.append(copy);
+  THIS->delayedpaths.append(copy);
 }
 
 /*!
@@ -657,7 +702,7 @@ SoGLRenderAction::addDelayedPath(SoPath * path)
 SbBool
 SoGLRenderAction::isRenderingDelayedPaths(void) const
 {
-  return this->delayedrender;
+  return THIS->delayedrender;
 }
 
 // Remember a path containing a transparent object for later
@@ -667,29 +712,18 @@ SoGLRenderAction::addTransPath(SoPath * path)
 {
   // Do this first to increase the reference count (we want to avoid a
   // zero refcount for the bboxaction apply()).
-  this->transpobjpaths.append(path);
+  THIS->transpobjpaths.append(path);
 
-  if (this->bboxaction == NULL) {
-    this->bboxaction =
+  if (THIS->bboxaction == NULL) {
+    THIS->bboxaction =
       new SoGetBoundingBoxAction(SoViewportRegionElement::get(this->state));
   }
-  this->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
-  this->bboxaction->apply(path);
-  SbVec3f center = this->bboxaction->getBoundingBox().getCenter();
+  THIS->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
+  THIS->bboxaction->apply(path);
+  SbVec3f center = THIS->bboxaction->getBoundingBox().getCenter();
   SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
   float dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
-  this->transpobjdistances.append(dist);
-}
-
-// Disable OpenGL blending.
-void
-SoGLRenderAction::disableBlend(const SbBool force)
-{
-  if (force || this->isblendenabled) {
-    glDisable(GL_BLEND);
-    if (!this->delayedrender && this->transparencytype != SCREEN_DOOR) glDepthMask(GL_TRUE);
-    this->isblendenabled = FALSE;
-  }
+  THIS->transpobjdistances.append(dist);
 }
 
 /*!
@@ -699,18 +733,7 @@ void
 SoGLRenderAction::invalidateState(void)
 {
   inherited::invalidateState();
-  this->needglinit = TRUE;
-}
-
-// Enable OpenGL blending.
-void
-SoGLRenderAction::enableBlend(const SbBool force)
-{
-  if (force || !this->isblendenabled) {
-    glEnable(GL_BLEND);
-    if (!this->delayedrender && this->transparencytype != SCREEN_DOOR) glDepthMask(GL_FALSE);
-    this->isblendenabled = TRUE;
-  }
+  THIS->needglinit = TRUE;
 }
 
 // Sort paths with transparent objects before rendering.
@@ -718,10 +741,10 @@ void
 SoGLRenderAction::doPathSort(void)
 {
   // need to cast to SbPList to avoid ref/unref problems
-  SbPList * plist = (SbPList *)&this->transpobjpaths;
-  float * darray = (float *)this->transpobjdistances.getArrayPtr();
+  SbPList * plist = (SbPList *)&THIS->transpobjpaths;
+  float * darray = (float *)THIS->transpobjdistances.getArrayPtr();
 
-  int i, j, distance, n = this->transpobjdistances.getLength();
+  int i, j, distance, n = THIS->transpobjdistances.getLength();
   void * ptmp;
   float dtmp;
 
@@ -742,3 +765,41 @@ SoGLRenderAction::doPathSort(void)
     }
   }
 }
+
+#undef THIS
+
+#ifdef COIN_THIS_DEFINE_COPY
+#define THIS COIN_THIS_DEFINE_COPY
+#endif // COIN_THIS_DEFINE_COPY
+
+
+// methods in SoGLRenderActionP
+
+// Enable OpenGL blending.
+void
+SoGLRenderActionP::enableBlend(const SbBool force)
+{
+  if (force || !this->isblendenabled) {
+    glEnable(GL_BLEND);
+    if (!this->delayedrender && 
+        this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
+      glDepthMask(GL_FALSE);
+    }
+    this->isblendenabled = TRUE;
+  }
+}
+
+// Disable OpenGL blending.
+void
+SoGLRenderActionP::disableBlend(const SbBool force)
+{
+  if (force || this->isblendenabled) {
+    glDisable(GL_BLEND);
+    if (!this->delayedrender && 
+        this->transparencytype != SoGLRenderAction::SCREEN_DOOR) {
+      glDepthMask(GL_TRUE);
+    }
+    this->isblendenabled = FALSE;
+  }
+}
+

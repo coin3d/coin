@@ -91,30 +91,8 @@ private:
   void addTransPath(SoPath * path);
   void doPathSort(void);
 
-  SbViewportRegion viewport;
-  int numpasses;
-  TransparencyType transparencytype;
-  SbBool smoothing;
-  SbBool passupdate;
-  SoGLRenderPassCB * passcallback;
-  void * passcallbackdata;
-  SoGLRenderAbortCB * abortcallback;
-  void * abortcallbackdata;
-  uint32_t cachecontext;
-  int currentpass;
-  SbBool didhavetransparent;
-  SbBool isblendenabled;
-  void disableBlend(const SbBool force = FALSE);
-  void enableBlend(const SbBool force = FALSE);
-  SoPathList delayedpaths;
-  SbBool delayedrender;
-  SbBool sortrender;
-  SoPathList transpobjpaths;
-  SbList<float> transpobjdistances;
-  class SoGetBoundingBoxAction * bboxaction;
-  SbVec2f updateorigin, updatesize;
-  SbBool renderingremote;
-  SbBool needglinit;
+  class SoGLRenderActionP * pimpl;
+  friend class SoGLRenderActionP;
 };
 
 #endif // !COIN_SOGLRENDERACTION_H
