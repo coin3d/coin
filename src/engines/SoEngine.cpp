@@ -22,14 +22,13 @@
   \brief SoEngine is the base class for Coin engines.
   \ingroup engines
 
-  Engines enables the application programmer to make complex
+  Engines enables the application programmers to make complex
   connections between fields.
 
   The most common cases where you use engines are: 1) to constrain the
   values of a field with regard to the contents of one or more other
   fields in the scene graph, 2) as a convenient way to animate parts
-  of the scene graph (most often geometry, but also other aspects of
-  the scene).
+  of the scene graph.
 
   The reference count of an engine will be increased by 1 for each
   connection made to one of its engine outputs, and decreased by one
@@ -73,7 +72,7 @@ SoType SoEngine::classTypeId;
 */
 SoEngine::SoEngine(void)
 {
-  this->stateflags.dirty = 0;
+  this->stateflags.hasnotified = 0;
   this->stateflags.isnotifying = 0;
 }
 
@@ -278,85 +277,41 @@ SoEngine::inputChanged(SoField * which)
 void
 SoEngine::notify(SoNotList * nl)
 {
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoEngine::notify",
-                         "%p (%s, '%s', dirty: %d) -- start",
-                         this,
-                         this->getTypeId().getName().getString(),
-                         this->getName().getString(),
-                         this->stateflags.dirty);
-  this->stateflags.dirty = 0;
-#endif // debug
-
   // Avoid recursive notification calls.
   if (this->isNotifying()) return;
-  this->stateflags.isnotifying = TRUE;
+  this->stateflags.isnotifying = 1;
 
   // Let engine know that a field changed, so we can recalculate
   // internal variables, if necessary.
   this->inputChanged(nl->getLastField());
 
-  // Nothing more to do, output connections have been notified
-  // earlier.
+  // If hasnotified is set, there's nothing more to do, as output
+  // connections have been notified earlier.
   //
-  // FIXME: we'll need to investigate whether this optimization is
-  // valid and if it is worth it.  pederb, 20000828
-  if (this->stateflags.dirty) return;
+  // (Note: this is a "premature" optimization -- we're not actually
+  // sure it is worth the added complexity (it is for instance also
+  // necessary to fiddle with this flag from SoEngineOutput). There's
+  // also the question if we perhaps _should_ send notification
+  // no-matter-what -- as that's what SGI's Open Inventor does.)
+  if (this->stateflags.hasnotified == 0) {
+    this->stateflags.hasnotified = 1;
 
-  if (this->isNotifyEnabled()) {
-    SoEngineOutput * output;
-    SoField * field;
     const SoEngineOutputData * outputs = this->getOutputData();
     int numoutputs = outputs->getNumOutputs();
-    int numconnections;
-
-#if COIN_DEBUG && 0 // debug
-    if (this->getTypeId().isDerivedFrom(SoFieldConverter::getClassTypeId()))
-      SoDebugError::postInfo("SoEngine::notify", "numoutputs: %d", numoutputs);
-#endif // debug
-
     for (int i = 0; i < numoutputs; i++) {
-      output = outputs->getOutput(this, i);
+      SoEngineOutput * output = outputs->getOutput(this, i);
       if (output->isEnabled()) {
-        numconnections = output->getNumConnections();
-#if COIN_DEBUG && 0 // debug
-        if (this->getTypeId().isDerivedFrom(SoFieldConverter::getClassTypeId()))
-          SoDebugError::postInfo("SoEngine::notify",
-                                 "numconnections: %d",
-                                 numconnections);
-#endif // debug
+        int numconnections = output->getNumConnections();
         for (int j = 0; j < numconnections; j++) {
-          this->stateflags.dirty = 1;
-          field = (*output)[j];
-#if COIN_DEBUG && 0 // debug
-          SoDebugError::postInfo("SoEngine::notify",
-                                 "field %p (%s, '%s'), dirty: %d",
-                                 field,
-                                 field->getContainer() ? field->getContainer()->getTypeId().getName().getString() : "*none*",
-                                 field->getContainer() ? field->getContainer()->getName().getString() : "*none*",
-                                 field->getDirty());
-          // Make sure notification happens _also_ when field is
-          // dirty (only valid within this debug code block).
-          if (field->getDirty()) field->notify(nl);
-#endif // debug
-          // FIXME: we'll need to investigate whether this
-          // optimization is valid and if it is worth it.  pederb,
-          // 20000828
-          if (!field->getDirty()) field->notify(nl);
+          SoField * field = (*output)[j];
+          if (this->isNotifyEnabled()) field->notify(nl);
+          else field->setDirty(TRUE);
         }
       }
     }
   }
 
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoEngine::notify",
-                         "%p (%s, '%s') -- done",
-                         this,
-                         this->getTypeId().getName().getString(),
-                         this->getName().getString());
-#endif // debug
-
-  this->stateflags.isnotifying = FALSE;
+  this->stateflags.isnotifying = 0;
 }
 
 /*!
@@ -374,7 +329,7 @@ SoEngine::evaluateWrapper(void)
   for (i = 0; i < n; i++) {
     outputs->getOutput(this, i)->doneWriting();
   }
-  this->stateflags.dirty = 0;
+  this->stateflags.hasnotified = 0;
 }
 
 /*!

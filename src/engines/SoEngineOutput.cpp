@@ -80,10 +80,10 @@ SoEngineOutput::~SoEngineOutput()
 SoType
 SoEngineOutput::getConnectionType(void) const
 {
-  assert(this->container != NULL);
-  const SoEngineOutputData *outputs = this->container->getOutputData();
+  assert(this->getContainer() != NULL);
+  const SoEngineOutputData *outputs = this->getContainer()->getOutputData();
   assert(outputs);
-  int idx = outputs->getIndex(this->container, this);
+  int idx = outputs->getIndex(this->getContainer(), this);
   assert(idx >= 0);
   return outputs->getType(idx);
 }
@@ -112,9 +112,11 @@ SoEngineOutput::getForwardConnections(SoFieldList & fl) const
 void
 SoEngineOutput::enable(const SbBool flag)
 {
-  if (this->container) {
+  if (this->getContainer()) {
     // need to notify fields connected to this output
-    this->container->stateflags.dirty = 0;
+    this->getContainer()->stateflags.hasnotified = 0;
+    // FIXME: I think the above is not enough -- probably need to
+    // notify fields directly. 20000911 mortene.
   }
   this->enabled = flag;
 }
@@ -173,6 +175,10 @@ SoEngineOutput::addConnection(SoField * f)
   this->slaves.append(f);
 
   this->getContainer()->ref();
+
+  // New field has of course not been notified about changes in
+  // engine.
+  this->getContainer()->stateflags.hasnotified = 0;
 }
 
 /*!

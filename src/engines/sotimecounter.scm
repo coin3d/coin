@@ -8,13 +8,11 @@
 (define text (new-sotext3))
 (-> (-> text 'string) 'setValue "x") ; initial value, workaround Bugzilla #193
 
-(define scene-graph text)
-
 (define timecounter (new-sotimecounter))
 (-> (-> text 'string) 'connectFrom (-> timecounter 'output))
 
 (define viewer (new-soxtexaminerviewer))
-(-> viewer 'setscenegraph scene-graph)
+(-> viewer 'setscenegraph text)
 (-> viewer 'setdecoration 0)
 (-> viewer 'setsize (new-sbvec2s 128 128))
 (-> viewer 'show)

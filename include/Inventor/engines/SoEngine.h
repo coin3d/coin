@@ -78,7 +78,7 @@ private:
   // appears. 20000201 mortene.
 #ifndef DOXYGEN_SKIP_THIS
   struct {
-    unsigned int dirty : 1;
+    unsigned int hasnotified : 1;
     unsigned int isnotifying : 1;
   } stateflags;
 #endif // !DOXYGEN_SKIP_THIS
