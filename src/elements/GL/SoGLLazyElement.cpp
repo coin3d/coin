@@ -403,6 +403,7 @@ SoGLLazyElement::init(SoState * state)
   this->precachestate = NULL;
   this->postcachestate = NULL;
   this->forcediffuse = FALSE;
+  this->cachebitmask = 0;
   glDisable(GL_POLYGON_STIPPLE);
 
   GLboolean rgba;
