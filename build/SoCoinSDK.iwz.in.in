@@ -45,9 +45,9 @@ LangDir=LANG\ENG\
 AppName=So@so_name_hi@ Coin SDK
 AppExe=
 AppExeFile=
-Version=@so_version@
+Version=@COIN_VERSION@
 Company=Systems In Motion
-Title=@so_name_hi@ Coin SDK
+Title=So@so_name_hi@ Coin SDK
 TitleType=1
 BackgrndBmp=
 BackgrndAlign=4
@@ -946,9 +946,9 @@ SelectProgramFolderName=CoinSDK
 WelcomeMessage=1
 WelcomeMessageFile=
 LicenseAgreement=1
-LicenseAgreementFile=C:@coin_build_dir@\build\qpl.txt
+LicenseAgreementFile=C:@coin_build_dir@\qpl.txt
 ReadMeFileBrowser=1
-ReadMeFileBrowserFile=C:@coin_build_dir@\build\info.txt
+ReadMeFileBrowserFile=C:@coin_src_dir@\build\important.txt
 DestinationLocation=1
 SetupType=1
 CustomSetup=1
@@ -1029,3 +1029,7 @@ Password=
 
 [Uninstall]
 UserUninstall=0
+
+
+
+
