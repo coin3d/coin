@@ -738,6 +738,71 @@
 #define WGL_PBUFFER_HEIGHT_ARB 0x2035
 #endif /* WGL_PBUFFER_HEIGHT_ARB */
 
+/* WGL_ARB_render_texture */
+#ifndef WGL_BIND_TO_TEXTURE_RGB_ARB
+#define WGL_BIND_TO_TEXTURE_RGB_ARB        0x2070
+#endif /* WGL_BIND_TO_TEXTURE_RGB_ARB */
+
+#ifndef WGL_BIND_TO_TEXTURE_RGBA_ARB
+#define WGL_BIND_TO_TEXTURE_RGBA_ARB       0x2071
+#endif /* WGL_BIND_TO_TEXTURE_RGBA_ARB */
+
+#ifndef WGL_TEXTURE_FORMAT_ARB
+#define WGL_TEXTURE_FORMAT_ARB             0x2072
+#endif /* WGL_TEXTURE_FORMAT_ARB */
+
+#ifndef WGL_TEXTURE_TARGET_ARB
+#define WGL_TEXTURE_TARGET_ARB             0x2073
+#endif /* WGL_TEXTURE_TARGET_ARB */
+
+#ifndef WGL_MIPMAP_TEXTURE_ARB
+#define WGL_MIPMAP_TEXTURE_ARB             0x2074
+#endif /* WGL_MIPMAP_TEXTURE_ARB */
+
+#ifndef WGL_TEXTURE_RGB_ARB
+#define WGL_TEXTURE_RGB_ARB                0x2075
+#endif /* WGL_TEXTURE_RGB_ARB */
+
+#ifndef WGL_TEXTURE_RGBA_ARB
+#define WGL_TEXTURE_RGBA_ARB               0x2076
+#endif /* WGL_TEXTURE_RGBA_ARB */
+
+#ifndef WGL_NO_TEXTURE_ARB
+#define WGL_NO_TEXTURE_ARB                 0x2077
+#endif /* WGL_NO_TEXTURE_ARB */
+
+#ifndef WGL_TEXTURE_CUBE_MAP_ARB
+#define WGL_TEXTURE_CUBE_MAP_ARB           0x2078
+#endif /* WGL_TEXTURE_CUBE_MAP_ARB */
+
+#ifndef WGL_TEXTURE_1D_ARB
+#define WGL_TEXTURE_1D_ARB                 0x2079
+#endif /* WGL_TEXTURE_1D_ARB */
+
+#ifndef WGL_TEXTURE_2D_ARB
+#define WGL_TEXTURE_2D_ARB                 0x207A
+#endif /* WGL_TEXTURE_2D_ARB */
+
+#ifndef WGL_MIPMAP_LEVEL_ARB
+#define WGL_MIPMAP_LEVEL_ARB               0x207B
+#endif /* WGL_MIPMAP_LEVEL_ARB */
+
+#ifndef WGL_FRONT_LEFT_ARB
+#define WGL_FRONT_LEFT_ARB                 0x2083
+#endif /* WGL_FRONT_LEFT_ARB */
+
+#ifndef WGL_FRONT_RIGHT_ARB
+#define WGL_FRONT_RIGHT_ARB                0x2084
+#endif /* WGL_FRONT_RIGHT_ARB */
+
+#ifndef WGL_BACK_LEFT_ARB
+#define WGL_BACK_LEFT_ARB                  0x2085
+#endif /* WGL_BACK_LEFT_ARB */
+
+#ifndef WGL_BACK_RIGHT_ARB
+#define WGL_BACK_RIGHT_ARB                 0x2086
+#endif /* WGL_BACK_RIGHT_ARB */
+
 /* Note: the above also exists in *_EXT variants. They have the same
    values. So we only bother with the *_ARB names, as they can be used
    in place of the *_EXT names. */
