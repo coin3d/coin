@@ -34,7 +34,7 @@
     field        SFVec3f  bboxCenter     0 0 0     # (-inf, inf)
     field        SFVec3f  bboxSize       -1 -1 -1  # (0, inf) or -1,-1,-1
   }
-  
+
   The Billboard node is a grouping node which modifies its coordinate
   system so that the Billboard node's local Z-axis turns to point at
   the viewer.  The Billboard node has children which may be other
@@ -42,15 +42,15 @@
   use to perform the rotation. This axis is defined in the local
   coordinate system.  When the axisOfRotation field is not (0, 0, 0),
   the following steps describe how to rotate the billboard to face the
-  viewer: 
+  viewer:
 
   \li a. Compute the vector from the Billboard node's origin to the
   viewer's position. This vector is called the billboard-to-viewer
   vector.
- 
-  \li b. Compute the plane defined by the axisOfRotation and the 
+
+  \li b. Compute the plane defined by the axisOfRotation and the
   billboard-to-viewer vector.
-  
+
   \li c. Rotate the local Z-axis of the billboard into the plane from b., pivoting
   around the axisOfRotation.
 
@@ -62,11 +62,11 @@
   align the billboard's Y-axis to the Y-axis of the viewer:
 
   \li d. Compute the billboard-to-viewer vector.
- 
+
   \li e. Rotate the Z-axis of the billboard to be collinear with the
   billboard-to-viewer vector and pointing towards the viewer's
   position.
- 
+
   \li f. Rotate the Y-axis of the billboard to be parallel and
   oriented in the same direction as the Y-axis of the viewer.
 
@@ -143,6 +143,9 @@ SoVRMLBillboard::SoVRMLBillboard(void)
   SO_VRMLNODE_ADD_EXPOSED_FIELD(axisOfRotation, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_FIELD(bboxSize, (-1.0f, -1.0f, -1.0f));
+  // part of SoVRMLParent, but added here for nicer export (the
+  // "children" field is written last)
+  SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(children);
 }
 
 /*!

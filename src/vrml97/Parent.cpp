@@ -95,7 +95,6 @@ SoVRMLParent::commonConstructor(void)
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLParent);
 
-  SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(children);
   SO_VRMLNODE_ADD_EVENT_IN(addChildren);
   SO_VRMLNODE_ADD_EVENT_IN(removeChildren);
 
