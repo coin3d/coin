@@ -136,5 +136,5 @@ cc_dynarray_eq(const cc_dynarray * arr1, const cc_dynarray * arr2)
 void
 cc_dynarray_set(cc_dynarray * arr, unsigned int idx, void * item)
 {
-  return arr->plist.set(idx, item);
+  arr->plist.set(idx, item);
 }
