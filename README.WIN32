@@ -237,7 +237,17 @@ you on your way if you experience the same kind of problem:
 Section 04 -- Building non-default configurations.
 ==================================================
 
-  FIXME: explain how to build release versions of the
+For builds with Microsoft Visual C++, any additional options to the
+cl.exe and link.exe tools can be given by setting the environment
+variables CL and LINK, respectively. These matches what you can do
+with CPPFLAGS / CFLAGS / CXXFLAGS and LDFLAGS on typical UNIX compiler
+systems. For additional information, see the following article in
+Microsoft's Developer Knowledge Base:
+
+  http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccore/html/_core_cl_environment_variable.asp
+
+
+* FIXME: explain how to build release versions of the
   libraries. 20011019 mortene.
 
   (One snippet of information wrt release builds: "-O2" (or whatever
@@ -245,11 +255,11 @@ Section 04 -- Building non-default configurations.
   to CFLAGS/CXXFLAGS.)
 
 
-  FIXME: explain how to build static versions of the
+* FIXME: explain how to build static versions of the
   libraries. 20011019 mortene.
 
 
-  FIXME: explain how to build the full library-chain on top of other
+* FIXME: explain how to build the full library-chain on top of other
   versions of the Microsoft C libraries than the default one. 20011019 mortene.
 
 
