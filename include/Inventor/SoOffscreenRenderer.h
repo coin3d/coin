@@ -63,6 +63,7 @@ public:
 
 private:
   SbBool renderFromBase(SoBase * base);
+  void convertBuffer(void);
 
   SbViewportRegion viewport;
   SbColor backgroundcolor;
@@ -70,6 +71,7 @@ private:
   SoGLRenderAction * renderaction;
   SbBool didallocaction;
   class SoOffscreenInternalData * internaldata;
+  unsigned char * buffer;
 };
 
 

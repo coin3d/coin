@@ -39,7 +39,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <GL/gl.h>
 #include <assert.h>
-#include <string.h> // memset()
+#include <string.h> // memset(), memcpy()
 #include <config.h>
 #include <coindefs.h> // COIN_STUB()
 
@@ -326,10 +326,11 @@ private:
 */
 SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion)
   : backgroundcolor(0.0f, 0.0f, 0.0f),
-    components(RGB_TRANSPARENCY),
+    components(RGB),
     renderaction(new SoGLRenderAction(viewportregion)),
     didallocaction(TRUE),
-    internaldata(NULL)
+    internaldata(NULL),
+    buffer(NULL)
 {
 #if HAVE_OSMESACREATECONTEXT
   this->internaldata = new SoOffscreenMesaData();
@@ -347,10 +348,11 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
 SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
   : viewport(256, 256),
     backgroundcolor(0.0f, 0.0f, 0.0f),
-    components(RGB_TRANSPARENCY),
+    components(RGB),
     renderaction(action),
     didallocaction(FALSE),
-    internaldata(NULL)
+    internaldata(NULL),
+    buffer(NULL)
 {
 #if HAVE_OSMESACREATECONTEXT
   this->internaldata = new SoOffscreenMesaData();
@@ -366,6 +368,7 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 */
 SoOffscreenRenderer::~SoOffscreenRenderer()
 {
+  delete this->buffer;
   delete this->internaldata;
   if (this->didallocaction) delete this->renderaction;
 }
@@ -401,17 +404,12 @@ SoOffscreenRenderer::getMaximumResolution(void)
 void
 SoOffscreenRenderer::setComponents(const Components components)
 {
-  // FIXME: create support for other image formats, pederb 20000109
-
-  // FIXME: should eventually default to 3-component RGB
-  // format. 20000417 mortene.
-
-  if (components != RGB_TRANSPARENCY) {
-    COIN_STUB();
-    return;
-  }
-
   this->components = components;
+
+  SbVec2s dims = this->getViewportRegion().getViewportSizePixels();
+
+  delete this->buffer;
+  this->buffer = new unsigned char[dims[0] * dims[1] * this->components];
 }
 
 /*!
@@ -432,10 +430,15 @@ void
 SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
 {
   this->viewport = region;
+
   if (this->renderaction)
     this->renderaction->setViewportRegion(region);
-  if (this->internaldata)
-    this->internaldata->setBufferSize(region.getViewportSizePixels());
+
+  SbVec2s dims = region.getViewportSizePixels();
+  if (this->internaldata) this->internaldata->setBufferSize(dims);
+
+  delete this->buffer;
+  this->buffer = new unsigned char[dims[0] * dims[1] * this->getComponents()];
 }
 
 /*!
@@ -504,9 +507,68 @@ SoOffscreenRenderer::renderFromBase(SoBase * base)
     else assert(FALSE && "impossible");
 
     this->internaldata->postRender();
+    this->convertBuffer();
+
     return TRUE;
   }
   return FALSE;
+}
+
+// Convert from RGBA format to the application programmer's requested
+// format.
+void
+SoOffscreenRenderer::convertBuffer(void)
+{
+  SbVec2s dims = this->getViewportRegion().getViewportSizePixels();
+  int pixels = dims[0] * dims[1];
+  int depth = this->getComponents();
+  unsigned char * nativebuffer = this->internaldata->getBuffer();
+
+  switch (this->getComponents()) {
+  case SoOffscreenRenderer::RGB_TRANSPARENCY:
+    memcpy(this->buffer, nativebuffer, pixels * depth);
+    break;
+
+  case SoOffscreenRenderer::RGB:
+    {
+      unsigned char * native = nativebuffer;
+      unsigned char * local = this->buffer;
+      for (int i=0; i < pixels; i++) {
+        *local++ = *native++;
+        *local++ = *native++;
+        *local++ = *native++;
+        native++;
+      }
+    }
+    break;
+
+  case SoOffscreenRenderer::LUMINANCE_TRANSPARENCY:
+    {
+      unsigned char * native = nativebuffer;
+      unsigned char * local = this->buffer;
+      for (int i=0; i < pixels; i++) {
+        int val = (int(*native++) + int(*native++) + int(*native++)) / 3;
+        *local++ = (unsigned char)val;
+        *local++ = *native++;
+      }
+    }
+    break;
+
+  case SoOffscreenRenderer::LUMINANCE:
+    {
+      unsigned char * native = nativebuffer;
+      unsigned char * local = this->buffer;
+      for (int i=0; i < pixels; i++) {
+        int val = (int(*native++) + int(*native++) + int(*native++)) / 3;
+        *local++ = (unsigned char)val;
+        native++;
+      }
+    }
+    break;
+
+  default:
+    assert(FALSE && "unknown buffer format"); break;
+  }
 }
 
 /*!
@@ -533,7 +595,7 @@ SoOffscreenRenderer::render(SoPath * scene)
 unsigned char *
 SoOffscreenRenderer::getBuffer(void) const
 {
-  return this->internaldata ? this->internaldata->getBuffer() : NULL;
+  return this->buffer;
 }
 
 //
@@ -542,8 +604,8 @@ SoOffscreenRenderer::getBuffer(void) const
 static int
 write_short(FILE * fp, unsigned short val)
 {
-  // FIXME: does this code work on both little endian and big endian
-  // platforms? 20000110 mortene.
+  // FIXME: does this code really work on both little endian and big
+  // endian platforms? 20000110 mortene.
   unsigned char tmp[2];
   tmp[0] = (unsigned char)(val >> 8);
   tmp[1] = (unsigned char)(val & 0xff);
@@ -582,7 +644,7 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
 
     unsigned char * tmpbuf = new unsigned char[size[0]];
 
-    unsigned char * ptr = this->internaldata->getBuffer();
+    unsigned char * ptr = this->buffer;
     for (int c = 0; c < comp; c++) {
       for (int y = 0; y < size[1]; y++) {
         for (int x = 0; x < size[0]; x++) {
