@@ -81,6 +81,7 @@ public:
   const int32_t * getLineIndices(void) const;
   const int32_t * getPointIndices(void) const;
 
+  void fit(void);
 private:
 
   friend class SoPrimitiveVertexCacheP;

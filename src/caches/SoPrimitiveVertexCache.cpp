@@ -537,30 +537,44 @@ SoPrimitiveVertexCache::getMultiTextureCoordinateArray(const int unit) const
 int 
 SoPrimitiveVertexCache::getNumLineIndices(void) const
 {
-  return 0;
+  return PRIVATE(this)->lineindices.getLength();
 }
 
 int 
 SoPrimitiveVertexCache::getNumPointIndices(void) const
 {
-  return 0;
+  return PRIVATE(this)->pointindices.getLength();
 }
 
   
 const int32_t * 
 SoPrimitiveVertexCache::getLineIndices(void) const
 {
-  return NULL;
+  return PRIVATE(this)->lineindices.getArrayPtr();
 }
 
 const int32_t * 
 SoPrimitiveVertexCache::getPointIndices(void) const
 {
-  return NULL;
+  return PRIVATE(this)->pointindices.getArrayPtr();
 }
 
+void 
+SoPrimitiveVertexCache::fit(void)
+{
+  PRIVATE(this)->vertexlist.fit();
+  PRIVATE(this)->normallist.fit();
+  PRIVATE(this)->texcoordlist.fit();
+  PRIVATE(this)->bumpcoordlist.fit();
+  PRIVATE(this)->rgbalist.fit();
+  PRIVATE(this)->indices.fit();
+  PRIVATE(this)->lineindices.fit();
+  PRIVATE(this)->pointindices.fit();
+  PRIVATE(this)->vhash.clear();
+}
 
 #undef PRIVATE
+
 
 SoPrimitiveVertexCache::Vertex::operator unsigned long(void) const
 {
