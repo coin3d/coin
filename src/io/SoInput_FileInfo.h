@@ -31,6 +31,19 @@
 #include <Inventor/C/tidbitsp.h>
 #include "SoInput_Reader.h"
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+// #define SOINPUT_ASYNC_IO // define this to test async reading of files
+
+#if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
+#include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/sched.h>
+#include <Inventor/C/threads/condvar.h>
+#endif // HAVE_THREADS && SOINPUT_ASYNC_IO
+#include <ctype.h>
+
 class SoInput_FileInfo {
 public:
   SoInput_FileInfo(SoInput_Reader * reader);
@@ -150,6 +163,14 @@ public:
 
   void connectRoutes(class SoInput * in);
   void unrefProtos(void);
+  int readChar(char * s, char charToRead);
+  int readDigits(char * str);
+  int readHexDigits(char * str);
+
+  SbBool readUnsignedIntegerString(char * str);
+  SbBool readUnsignedInteger(uint32_t & l);
+  SbBool readInteger(int32_t & l);
+  SbBool readReal(double & d);
 
 private:
 
@@ -182,6 +203,18 @@ private:
 
   SbString stdinname; // needed for ivFilename()
   char * deletebuffer;
+
+#if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
+  static void sched_cb(void * closure);
+  cc_mutex * mutex;
+  cc_sched * sched;
+  cc_condvar * condvar;
+  char * threadbuf[2];
+  int threadbuflen[2];
+  int threadreadidx;
+  int threadbufidx;
+  SbBool threadeof;
+#endif // HAVE_THREADS && SOINPUT_ASYNC_IO
 };
 
 #endif // COIN_SOINPUT_FILEINFO_H

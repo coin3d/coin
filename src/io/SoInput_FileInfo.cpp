@@ -33,15 +33,29 @@
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/zlib.h>
-
 #include "SoInput_FileInfo.h"
+#include <math.h> // pow()
 
-const unsigned int READBUFSIZE = 65536;
+const unsigned int READBUFSIZE = 65536*2;
 
 SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr)
 {
   this->reader = readerptr;
+#if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
+  this->mutex = cc_mutex_construct();
+  this->condvar = cc_condvar_construct();
+  this->sched = cc_sched_construct(1);
+  this->threadbuf[0] = new char[READBUFSIZE];
+  this->threadbuf[1] = new char[READBUFSIZE];
+  this->threadbuflen[0] = -1;
+  this->threadbuflen[1] = -1;
+  this->threadreadidx = 0;
+  this->threadbufidx = 0;
+  this->threadeof = FALSE;
+  this->readbuf = NULL;
+#else // HAVE_THREADS && SOINPUT_ASYNC_IO
   this->readbuf = new char[READBUFSIZE];
+#endif // !(HAVE_THREADS && SOINPUT_ASYNC_IO)
   this->readbuflen = 0;
   this->readbufidx = 0;
 
@@ -60,15 +74,54 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr)
   this->postfunc = NULL;
   this->stdinname = "<stdin>";
   this->deletebuffer = NULL;
+
+#if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
+  if (this->reader) {
+    // schedule two buffer reads
+    cc_sched_schedule(this->sched, sched_cb, this, 0);
+  }
+#endif // HAVE_THREADS && SOINPUT_ASYNC_IO
 }
 
 SoInput_FileInfo::~SoInput_FileInfo()
 {
+#if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
+  cc_sched_wait_all(this->sched);
+  cc_condvar_destruct(this->condvar);
+  cc_mutex_destruct(this->mutex);
+  delete[] this->threadbuf[0];
+  delete[] this->threadbuf[1];
+#else // HAVE_THREADS && SOINPUT_ASYNC_IO
   delete[] this->readbuf;
+#endif // !(HAVE_THREADS && SOINPUT_ASYNC_IO)
   delete this->reader;
   // to be safe, delete this after deleting the reader 
   delete[] this->deletebuffer;
 }
+
+#if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
+void 
+SoInput_FileInfo::sched_cb(void * closure)
+{
+  SoInput_FileInfo * thisp = (SoInput_FileInfo*) closure;
+  cc_mutex_lock(thisp->mutex);
+  if (!thisp->threadeof) {
+    int idx = thisp->threadreadidx;
+    assert(thisp->threadbuflen[idx] == -1);
+    int len = thisp->getReader()->readBuffer(thisp->threadbuf[idx], READBUFSIZE);
+    if (len <= 0) {
+      thisp->threadeof = TRUE;
+      thisp->threadbuflen[idx] = 0;
+    }
+    else {
+      thisp->threadbuflen[idx] = len;
+      thisp->threadreadidx ^= 1;
+    }
+  }
+  cc_mutex_unlock(thisp->mutex);
+  cc_condvar_wake_one(thisp->condvar);
+}
+#endif // HAVE_THREADS && SOINPUT_ASYNC_IO
 
 SbBool
 SoInput_FileInfo::doBufferRead(void)
@@ -76,6 +129,37 @@ SoInput_FileInfo::doBufferRead(void)
   // Make sure that we really do need to read more bytes.
   assert(this->backbuffer.getLength() == 0);
   assert(this->readbufidx == this->readbuflen);
+
+#if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
+  cc_mutex_lock(this->mutex);
+  int idx = this->threadbufidx;
+  while (this->threadbuflen[idx] == -1) {
+    cc_condvar_wait(this->condvar, this->mutex);
+  }
+  if (this->threadbuflen[idx] == 0) {
+    this->readbufidx = 0;
+    this->readbuflen = 0;
+    this->eof = TRUE;
+#if 0 // debug
+    SoDebugError::postInfo("doBufferRead", "met Mr End-of-file");
+#endif // debug
+    cc_mutex_unlock(this->mutex);
+    return FALSE;
+  }
+  this->totalread += this->readbufidx;
+  this->readbufidx = 0;
+  this->readbuflen = this->threadbuflen[idx];
+  this->readbuf = this->threadbuf[idx];
+  this->threadbufidx ^= 1;
+  // make previous buffer ready for new data
+  this->threadbuflen[this->threadbufidx] = -1;
+  if (!this->threadeof) {
+    cc_sched_schedule(this->sched, sched_cb, this, 0);
+  }
+  cc_mutex_unlock(this->mutex);
+  return TRUE;
+
+#else // HAVE_THREADS && SOINPUT_ASYNC_IO
 
   int len = this->getReader()->readBuffer(this->readbuf, READBUFSIZE);
   if (len <= 0) {
@@ -92,6 +176,8 @@ SoInput_FileInfo::doBufferRead(void)
   this->readbufidx = 0;
   this->readbuflen = len;
   return TRUE;
+
+#endif // !(HAVE_THREADS && SOINPUT_ASYNC_IO)
 }
 
 size_t
@@ -340,6 +426,241 @@ SoInput_FileInfo::getReader(void)
 {
   if (this->reader == NULL) {
     this->reader = SoInput_Reader::createReader(coin_get_stdin(), SbString("<stdin>"));
+#if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
+    // schedule a buffer read
+    cc_sched_schedule(this->sched, sched_cb, this, 0);
+#endif // HAVE_THREADS && SOINPUT_ASYNC_IO
   }
   return this->reader;
+}
+
+SbBool 
+SoInput_FileInfo::readUnsignedIntegerString(char * str)
+{
+  int minSize = 1;
+  char * s = str;
+  
+  if (this->readChar(s, '0')) {
+    if (this->readChar(s + 1, 'x')) {
+      s += 2 + this->readHexDigits(s + 2);
+      minSize = 3;
+    }
+    else
+      s += 1 + this->readDigits(s + 1);
+  }
+  else
+    s += this->readDigits(s);
+  
+  if (s - str < minSize)
+    return FALSE;
+  
+  *s = '\0';  
+  return TRUE;
+}
+
+SbBool 
+SoInput_FileInfo::readUnsignedInteger(uint32_t & l) 
+{
+  // FIXME: fixed size buffer for input of unknown
+  // length. Ouch. 19990530 mortene.
+  char str[512];
+  if (! this->readUnsignedIntegerString(str))
+    return FALSE;
+  
+  // FIXME: check man page of strtoul and exploit the functionality
+  // provided better -- it looks like we are duplicating some of the
+  // effort. 19990530 mortene.
+  l = strtoul(str, NULL, 0);
+  
+  return TRUE;
+}
+
+SbBool 
+SoInput_FileInfo::readInteger(int32_t & l) 
+{
+  // FIXME: fixed size buffer for input of unknown
+  // length. Ouch. 19990530 mortene.
+  char str[512];
+  char * s = str;
+  SbBool minus = FALSE;
+  if (this->readChar(s, '-')) {
+    minus = TRUE;
+    s++;
+  }
+  else if (this->readChar(s, '+')) s++;
+  if (! this->readUnsignedIntegerString(s))
+    return FALSE;
+  
+  // FIXME: check man page of strtol and exploit the functionality
+  // provided better -- it looks like we are duplicating some of the
+  // effort. 19990530 mortene.
+#if 1 // old code
+  l = strtol(str, NULL, 0);
+#else // first version of replacement of strtol. Not activated yet
+  int i, n = strlen(s);
+  if (n >= 3 && s[0] == '0' && s[1] == 'x') {
+    int v = 0;
+    int mul = 1;
+    for (i = 2; i < n; i++) {
+      char c = s[(n-1)-i];
+      if (c >= '0' && c <= '9') {
+        v += (c-'0') * mul;
+      }
+      else if (c >= 'a' && c <= 'f') {
+        v += ((c-'a')+10) * mul; 
+      }
+      else {
+        v += ((c-'A')+10) * mul; 
+      }
+      mul <<= 4;
+    }
+    l = v;
+  }
+  else {
+    int v = 0;
+    int mul = 1;
+    for (i = 0; i < n; i++) {
+      char c = s[(n-1)-i];
+      v += (c-'0') * mul;
+      mul *= 10;
+    }
+    l = v;
+  }
+  if (minus) l = -l;
+#endif // strtol replacement
+  return TRUE;
+}
+
+SbBool 
+SoInput_FileInfo::readReal(double & d) 
+{
+  const int BUFSIZE = 2048;
+  SbBool minus = FALSE;
+  SbBool gotNum = FALSE;
+  int i, n;
+  char str[BUFSIZE];
+  char * s = str;
+  
+  double number;
+  double exponent;
+  
+  n = this->readChar(s, '-');
+  if (n == 0) {
+    n = this->readChar(s, '+');
+  }
+  else minus = TRUE;
+  s += n;
+  
+  if ((n = this->readDigits(s)) > 0) {
+    gotNum = TRUE;
+    number = 0.0;
+    double mul = 1.0;
+    for (i = 0; i < n; i++) {
+      number += (s[(n-1)-i] - '0') * mul;
+      mul *= 10.0;
+    }
+    s += n;
+  }
+  else {
+    number = 0.0;
+  }
+  if (this->readChar(s, '.') > 0) {
+    s++;
+
+    if ((n = this->readDigits(s)) > 0) {
+      gotNum = TRUE;
+      double mul = 0.1;
+      for (i = 0; i < n; i++) {
+        number += (s[i]-'0') * mul;
+        mul *= 0.1;
+      }
+      s += n;
+    }
+  }
+  
+  if (! gotNum)
+    return FALSE;
+
+  if (minus) number = -number;
+  
+  n = this->readChar(s, 'e');
+  if (n == 0)
+    n = this->readChar(s, 'E');
+  
+  if (n > 0) {
+    s += n;
+    
+    minus = FALSE;
+    n = this->readChar(s, '-');
+    if (n == 0) {
+      n = this->readChar(s, '+');
+    }
+    else minus = TRUE;
+    s += n;
+    
+    if ((n = this->readDigits(s)) > 0) {
+      exponent = 0.0;
+      double mul = 1.0;
+      for (i = 0; i < n; i++) {
+        exponent += (s[(n-1)-i]-'0') * mul;
+        mul *= 10.0;
+      }
+      if (minus) exponent = -exponent;
+
+      number *= pow(10.0, exponent);
+    }
+    else
+      return FALSE; 
+  }
+
+  d = number;
+  return TRUE;
+}
+
+int 
+SoInput_FileInfo::readChar(char * s, char charToRead) 
+{
+  int ret = 0;
+  char c;
+  if (this->get(c)) {
+    if (c == charToRead) {
+      *s = c;
+      ret = 1;
+    }
+      else {
+        this->putBack(c);
+      }
+  }
+  return ret;
+}
+
+int 
+SoInput_FileInfo::readDigits(char * str)
+{
+  char c, * s = str;
+  
+  while (this->get(c)) {
+    if (isdigit(c))
+      *s++ = c;
+    else {
+      this->putBack(c);
+      break;
+    }
+  }
+  return s - str;
+}
+
+int 
+SoInput_FileInfo::readHexDigits(char * str) 
+{
+  char c, * s = str;
+  while (this->get(c)) {
+    
+    if (isxdigit(c)) *s++ = c;
+    else {
+      this->putBack(c);
+      break;
+    }
+  }
+  return s - str;
 }

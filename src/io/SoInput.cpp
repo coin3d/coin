@@ -1069,12 +1069,11 @@ SoInput::read(SbName & n, SbBool validIdent)
 }
 
 #define READ_NUM(reader, readType, num, type) \
-  if (!this->checkHeader()) return FALSE; \
   SoInput_FileInfo * fi = this->getTopOfStack(); \
   assert(fi); \
   if (!fi->skipWhiteSpace()) return FALSE; \
   readType _tmp; \
-  if (!this->reader(_tmp)) return FALSE; \
+  if (!fi->reader(_tmp)) return FALSE; \
   num = (type) _tmp;
 
 #define READ_INTEGER(num, type) \
