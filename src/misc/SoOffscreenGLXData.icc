@@ -238,7 +238,8 @@ SoOffscreenGLXData::setBufferSize(const SbVec2s & size)
                                  this->visinfo->depth);
     if (!this->pixmap) {
       SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
-                                "Couldn't create %dx%dx%d Pixmap.");
+                                "Couldn't create %dx%dx%d Pixmap.",
+                                size[0], size[1], this->visinfo->depth);
     }
     else {
       this->glxpixmap = glXCreateGLXPixmap(SoOffscreenGLXData::getDisplay(),
