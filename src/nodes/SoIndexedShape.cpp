@@ -104,6 +104,7 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
   int numCoords = vpvtx ?
     vp->vertex.getNum() :
     coordelem->getNum();
+  if (numCoords == 0) return;
 
   if (vpvtx || coordelem->is3D()) {
     const SbVec3f * coords = vpvtx ?
