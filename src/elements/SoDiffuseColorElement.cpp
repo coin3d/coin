@@ -31,6 +31,7 @@
 
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/SbColor.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <../tidbits.h> // coin_atexit()
 #include <assert.h>
 #include <stdlib.h>
@@ -173,20 +174,44 @@ SoDiffuseColorElement::getNum() const
 }
 
 /*!
-  Returns the color array. This method is not part of the OIV API.
+  Returns the color array. Don't use this unless
+  SoDiffuseColorElement::isPacked() returns \c FALSE.
+
+  This method is not part of the original SGI Open Inventor v2.1 API.
+
+  \since Coin 1.0.0
 */
 const SbColor *
 SoDiffuseColorElement::getColorArrayPtr() const
 {
+#if COIN_DEBUG
+  if (this->isPacked()) {
+    SoDebugError::postWarning("SoDiffuseColorElement::getColorArrayPtr",
+                              "colors are packed -- use getPackedArrayPtr() "
+                              "instead");
+  }
+#endif // COIN_DEBUG
   return this->colors;
 }
 
 /*!
-  Returns the packed color array. This method is not part of the OIV API.
+  Returns the packed color array. Don't use this unless
+  SoDiffuseColorElement::isPacked() returns \c TRUE.
+
+  This method is not part of the original SGI Open Inventor v2.1 API.
+
+  \since Coin 1.0.0
 */
 const uint32_t *
 SoDiffuseColorElement::getPackedArrayPtr() const
 {
+#if COIN_DEBUG
+  if (!this->isPacked()) {
+    SoDebugError::postWarning("SoDiffuseColorElement::getPackedArrayPtr",
+                              "colors are *not* packed -- use "
+                              "getColorArrayPtr() instead");
+  }
+#endif // COIN_DEBUG
   return this->packedColors;
 }
 

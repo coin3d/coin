@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoNode.h>
 #include <../tidbits.h> // coin_atexit()
 #include <assert.h>
@@ -214,22 +215,46 @@ SoCoordinateElement::is3D() const
 }
 
 /*!
-  Returns a pointer to the 3D coordinate array. This method is not part of the
-  OIV API.
+  Returns a pointer to the 3D coordinate array. Don't use this method
+  unless SoCoordinateElement::is3D() returns \c TRUE.
+
+  This method is not part of the original SGI Open Inventor v2.1 API.
+
+  \since Coin 1.0.0
 */
 const SbVec3f *
 SoCoordinateElement::getArrayPtr3() const
 {
+#if COIN_DEBUG
+  if (!this->is3D()) {
+    SoDebugError::postWarning("SoDiffuseColorElement::getArrayPtr3",
+                              "coordinates are *not* 3D -- use "
+                              "getArrayPtr4() instead");
+  }
+#endif // COIN_DEBUG
+
   return this->coords3D;
 }
 
 /*!
-  Returns a pointer to the 4D coordinate array. This method is not part of the
-  OIV API.
+  Returns a pointer to the 4D coordinate array. Don't use this method
+  unless SoCoordinateElement::is3D() returns \c FALSE.
+
+  This method is not part of the original SGI Open Inventor v2.1 API.
+
+  \since Coin 1.0.0
 */
 const SbVec4f *
 SoCoordinateElement::getArrayPtr4() const
 {
+#if COIN_DEBUG
+  if (this->is3D()) {
+    SoDebugError::postWarning("SoDiffuseColorElement::getArrayPtr4",
+                              "coordinates are *not* 4D -- use "
+                              "getArrayPtr3() instead");
+  }
+#endif // COIN_DEBUG
+
   return this->coords4D;
 }
 
