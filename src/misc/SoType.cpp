@@ -70,6 +70,7 @@
 // MSVC++ needs 'SbName.h' and 'SbString.h' to compile
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
+#include <Inventor/SoDB.h>
 #include <Inventor/lists/SbList.h>
 
 #include <Inventor/C/tidbits.h>
@@ -376,8 +377,9 @@ SoType::fromName(const SbName name)
   // FIXME: we need to split SbDict into SbIntDict and SbPtrDict. 20030223 larsa
   if (!SoType::typedict->find((unsigned long)name.getString(), temp) &&
       !SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
-    SbBool nomsg = // SoError not initialized yet so we can't msg...
-      (SoError::getClassTypeId() == SoType::badType()) ? TRUE : FALSE;
+    if ( !SoDB::isInitialized() ) {
+      return SoType::badType();
+    }
 
     // find out which C++ name mangling scheme the compiler uses
     static mangleFunc * manglefunc = getManglingFunction();
@@ -385,9 +387,9 @@ SoType::fromName(const SbName name)
       // dynamic loading is not yet supported for this compiler suite
       static long first = 1;
       if ( first ) {
-        // fprintf(coin_get_stderr(), "unable to figure out the C++ name mangling scheme\n");
-        if ( !nomsg )
-	  SoDebugError::post("SoType::fromName", "unable to figure out the C++ name mangling scheme");
+#if COIN_DEBUG
+        SoDebugError::post("SoType::fromName", "unable to figure out the C++ name mangling scheme");
+#endif
         first = 0;
       }
       return SoType::badType();
@@ -444,8 +446,13 @@ SoType::fromName(const SbName name)
       // FIXME: if a module is found and opened and initialization
       // fails, the remaining module name patterns are not tried.
       // might trigger as a problem one day...  2030224 larsa
-      if ( !nomsg )
-	SoDebugError::postWarning("SoType::fromName", "mangled symbol %s not found in module %d.  it might be compiled with the wrong compiler/compiler settings or something similar.", mangled.getString(), modulename.getString());
+#if COIN_DEBUG
+      SoDebugError::postWarning("SoType::fromName",
+                                "Mangled symbol %s not found in module %s. "
+                                "It might be compiled with the wrong compiler / "
+                                "compiler-settings or something similar.",
+                                mangled.getString(), modulename.getString());
+#endif
       cc_dl_close(handle);
       return SoType::badType();
     }
