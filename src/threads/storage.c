@@ -163,7 +163,7 @@ cc_storage_thread_cleanup(unsigned long threadid)
 /*!
   \class SbStorage Inventor/threads/SbStorage.h
   \brief The SbStorage class manages thread-local memory.
-  \ingroup multi-threading
+  \ingroup threads
 
   This class manages thread-local memory.  When different threads access
   the memory an SbStorage object manages, they will receive different

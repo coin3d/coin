@@ -201,7 +201,7 @@ cc_thread_init(void)
 
 /*!
   \class SbThread Inventor/threads/SbThread.h
-  \ingroup multi-threading
+  \ingroup threads
 */
 
 /*!

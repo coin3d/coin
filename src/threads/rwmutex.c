@@ -248,7 +248,7 @@ cc_rwmutex_read_unlock(cc_rwmutex * rwmutex)
 
 /*!
   \class SbRWMutex Inventor/threads/SbRWMutex.h
-  \ingroup multi-threading
+  \ingroup threads
 
   The SbRWMutex is a mutex that i sused to grant both read and write access
   to the data it protects.  Multiple threads can have read locks on the data

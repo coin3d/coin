@@ -153,7 +153,7 @@ cc_condvar_wake_all(cc_condvar * condvar)
 
 /*!
   \class SbCondVar Inventor/threads/SbCondVar.h
-  \ingroup multi-threading
+  \ingroup threads
 
   FIXME: write doc
 */

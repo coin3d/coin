@@ -89,7 +89,7 @@ cc_barrier_enter(cc_barrier * barrier)
   \class SbBarrier Inventor/threads/SbBarrier.h
   \brief The SbBarrier class implements the "barrier" multi-thread
   synchronization technique.
-  \ingroup multi-threading
+  \ingroup threads
 
   A barrier is a synchronization mechanism that is used for blocking
   threads as they enter the barrier until a given number of threads are
