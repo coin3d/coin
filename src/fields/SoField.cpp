@@ -1465,7 +1465,7 @@ SoField::evaluate(void) const
   Do we need re-evaluation?
 */
 SbBool
-SoField::getDirty(void)
+SoField::getDirty(void) const
 {
   return this->statusflags.needevaluation;
 }

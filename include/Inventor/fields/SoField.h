@@ -125,7 +125,7 @@ public:
   void setFieldType(int type);
   int getFieldType(void) const;
 
-  SbBool getDirty(void);
+  SbBool getDirty(void) const;
   void setDirty(SbBool dirty);
 
 protected:
