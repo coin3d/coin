@@ -270,6 +270,34 @@ SoConnectStorage::add_vrml2_routes(SoOutput * out, const SoField * f)
   }
 }
 
+// Collects some private code for SoField.
+//
+// Note that there is no private implementation data pointer (aka
+// "pimpl" or Cheshire Cat) for the SoField instances, as they should
+// be as slim as possible. Therefore, this class only contains static
+// functions.
+class SoFieldP {
+public:
+  // Convenience method to extract a string that identifies the field
+  // with as much relevant info as possible. Used from other debug
+  // output code.
+  static SbString getDebugIdString(SoField * f)
+  {
+    SoFieldContainer * fcontainer = f->getContainer();
+    SbName fname("<no-container>");
+    if (fcontainer) {
+      SbBool ok = fcontainer->getFieldName(f, fname);
+      if (!ok) { fname = "<not-yet-added>"; }
+    }
+    SbString s;
+    s.sprintf("field==%p/%s/'%s'",
+              this,
+              this->getTypeId().getName().getString(),
+              fname.getString());
+    return s;
+  }
+};
+
 // *************************************************************************
 
 // Documentation for abstract methods.
@@ -501,6 +529,12 @@ SoField::isIgnored(void) const
 void
 SoField::setDefault(SbBool def)
 {
+#if COIN_DEBUG && 0 // debug
+  SbString finfo = SoFieldP::getDebugIdString();
+  SoDebugError::postInfo("SoField::setDefault", "%s, setDefault(%s)",
+                         finfo.getString(), def ? "TRUE" : "FALSE");
+#endif // debug
+
   (void) this->changeStatusBits(FLAG_ISDEFAULT, def);
 }
 
@@ -1374,14 +1408,22 @@ SoField::operator !=(const SoField & f) const
 SbBool
 SoField::shouldWrite(void) const
 {
+#if COIN_DEBUG && 0 // debug
+  SbString finfo = SoFieldP::getDebugIdString();
+  SoDebugError::postInfo("SoField::shouldWrite",
+                         "%s: isDefault==%d, isIgnored==%d, isConnected==%d",
+                         finfo.getString(), this->isDefault(),
+                         this->isIgnored(), this->isConnected());
+#endif // debug
+
   if (!this->isDefault()) return TRUE;
   if (this->isIgnored()) return TRUE;
   if (this->isConnected()) return TRUE;
 
-  // FIXME: SGI Inventor seems to test forward connections here
-  // also. We consider this is bug, since this field should not write
-  // just because some field is connected from this field.
-  // pederb, 2002-02-07
+  // SGI Inventor seems to test forward connections here also. We
+  // consider this is bug, since this field should not write just
+  // because some field is connected from this field.  pederb.
+
   return FALSE;
 }
 
