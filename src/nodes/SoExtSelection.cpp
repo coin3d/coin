@@ -197,7 +197,12 @@ public:
                       SoCallbackAction *action,
                       const SoPrimitiveVertex *v);
 
-  struct {
+  // Note: Microsoft Visual C++ 6.0 needs to have a type definition
+  // and an explicit variable declaration, just using
+  //     struct { ... } structname;
+  // won't do.
+  typedef struct
+  {
     SbMatrix projmatrix;
     SbBool fulltest;
     SbBox2s lassorect;
@@ -206,7 +211,8 @@ public:
     SbVec2s vporg;
     SbVec2s vpsize;
     SbBool abort;
-  } primcbdata;
+  } primcbdata_t;
+  primcbdata_t primcbdata;
 
   void doSelect(const SoPath * path);
   SoLassoSelectionFilterCB * filterCB;
