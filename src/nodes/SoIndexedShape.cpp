@@ -215,9 +215,16 @@ SoIndexedShape::getTexCoordIndices()
   return NULL;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from superclass
+SbBool
+SoIndexedShape::generateDefaultNormals(SoState *, SoNormalBundle *)
+{
+  // FIXME: create to SoNormalBundle class.
+  COIN_STUB();
+  return FALSE;
+}
+
+// doc from superclass
 SbBool
 SoIndexedShape::generateDefaultNormals(SoState * state,
                                        SoNormalCache * nc)

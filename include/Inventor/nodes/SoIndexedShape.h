@@ -71,6 +71,8 @@ protected:
 
 private:
   virtual SbBool generateDefaultNormals(SoState * state,
+                                        SoNormalBundle * bundle);
+  virtual SbBool generateDefaultNormals(SoState * state,
                                         SoNormalCache * cache);
 
   int32_t * tIndices;

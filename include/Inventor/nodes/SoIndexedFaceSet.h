@@ -49,18 +49,16 @@ public:
   virtual void GLRender(SoGLRenderAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 
-  SbBool generateDefaultNormals(SoState *state, SoNormalBundle *nb);
-
 protected:
   virtual ~SoIndexedFaceSet();
 
-  virtual void generatePrimitives(SoAction *action);
+  virtual void generatePrimitives(SoAction * action);
 
 private:
   int findNumFaces() const;
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
-  virtual void notify(SoNotList *list);
+  virtual void notify(SoNotList * list);
 
   SbBool countPrimitives();
 
@@ -68,7 +66,7 @@ private:
   int numQuads;
   int numPolygons;
 
-  SoConvexDataCache *convexCache;
+  SoConvexDataCache * convexCache;
 
 };
 

@@ -653,14 +653,3 @@ SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->addNumTriangles(add);
   }
 }
-
-/*!
-  FIXME: write doc
-*/
-SbBool
-SoIndexedFaceSet::generateDefaultNormals(SoState * /* state */,
-                                         SoNormalBundle * /* nb */)
-{
-  COIN_STUB();
-  return FALSE;
-}

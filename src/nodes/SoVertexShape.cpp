@@ -105,6 +105,7 @@ SoVertexShape::generateDefaultNormals(SoState * ,
                                       SoNormalBundle *)
 {
   // FIXME: create to SoNormalBundle class.
+  COIN_STUB();
   return FALSE;
 }
 
