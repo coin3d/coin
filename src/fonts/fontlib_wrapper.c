@@ -37,7 +37,6 @@
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/errors/debugerror.h>
 
-/*#include <Inventor/C/glue/flwwin32.h>*/
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
@@ -62,14 +61,14 @@ static void * flw_global_lock = NULL;
    will typically happen for one out of two reasons:
 
    1) The mutex is locked but not released. To check whether or not
-      this is the cause, look for multiple exit points (return
-      statements) in a function.
+   this is the cause, look for multiple exit points (return
+   statements) in a function.
 
    2) A cc_flw_*() function locks the global mutex, then calls another
-      cc_flw_*() function, which when attempting to lock the same
-      mutex will simply hang.
+   cc_flw_*() function, which when attempting to lock the same
+   mutex will simply hang.
 
-  -- mortene.
+   -- mortene.
 */
 #if 0
 
@@ -126,7 +125,6 @@ static struct cc_flw_bitmap *
 get_default_bitmap(unsigned int character)
 {
   struct cc_flw_bitmap * bm;
-
 
   if (character < 256) {
     const int fontsize = coin_default2dfont_get_size();
@@ -808,13 +806,13 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
 
   fs = flw_fontidx2fontptr(font);
   
-  /* FIXME: Only FreeType is supported for now. Win32 coming up
-     next. (20030905 handegar) */
   if (freetypelib) {      
     vector_glyph = cc_flwft_get_vector_glyph(fs->font, glyph);
   } 
-  else {
-	vector_glyph = cc_flww32_get_vector_glyph(fs->font, glyph);		               
+  else if (win32api) {
+    vector_glyph = cc_flww32_get_vector_glyph(fs->font, glyph);		               
+  } else {
+    vector_glyph = NULL;
   }
   
   FLW_MUTEX_UNLOCK(flw_global_lock);
@@ -827,8 +825,16 @@ cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
 {
   if (freetypelib)
     return cc_flwft_get_vector_glyph_coords(vecglyph);
-  else {
+  else if (win32api) {
     return cc_flww32_get_vector_glyph_coords(vecglyph);
+  } else {
+    /*
+    // FIXME: Should one assert here instead? It should be impossible
+    // to call this method with an valid glyph and get NULL
+    // returned... Goes for the others below aswell (20030912
+    // handegar)
+    */
+    return NULL;
   }
 }
 
@@ -837,8 +843,10 @@ cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
 {
   if (freetypelib)
     return cc_flwft_get_vector_glyph_faceidx(vecglyph);
-  else {
+  else if (win32api) {
     return cc_flww32_get_vector_glyph_faceidx(vecglyph);
+  } else {
+    return NULL;
   }
 }
 
@@ -847,7 +855,9 @@ cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
 {
   if (freetypelib)
     return cc_flwft_get_vector_glyph_edgeidx(vecglyph);
-  else {
+  else if (win32api) {
     return cc_flww32_get_vector_glyph_edgeidx(vecglyph);
+  } else {
+    return NULL;
   }
 }
