@@ -24,7 +24,23 @@
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoBoxHighlightRenderAction.h>
+#include <Inventor/actions/SoSubAction.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
+
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoMatrixTransform.h>
+#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoSelection.h>
+
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+
+#include <Inventor/SoPath.h>
 
 // *************************************************************************
 
@@ -131,7 +147,7 @@ SoBoxHighlightRenderAction::initClass(void)
 SoBoxHighlightRenderAction::SoBoxHighlightRenderAction(void)
   : inherited(SbViewportRegion())
 {
-  assert(0 && "FIXME: not implemented");
+  this->init();
 }
 
 /*!
@@ -141,8 +157,51 @@ SoBoxHighlightRenderAction::SoBoxHighlightRenderAction(void)
 SoBoxHighlightRenderAction::SoBoxHighlightRenderAction(const SbViewportRegion & viewportRegion)
   : inherited(viewportRegion)
 {
-  assert(0 && "FIXME: not implemented");
+  this->init();
 }
+
+//
+// private. called by both constructors
+//
+void 
+SoBoxHighlightRenderAction::init()
+{
+  SO_ACTION_CONSTRUCTOR(SoBoxHighlightRenderAction);
+  
+  SoBoxHighlightRenderAction::methods->setUp(); // initialize action methods
+ 
+  this->localRoot = new SoSeparator;
+  this->localRoot->ref();
+ 
+  this->lightModel = new SoLightModel;
+  this->lightModel->model = SoLightModel::BASE_COLOR;
+  this->baseColor = new SoBaseColor;
+  this->drawStyle = new SoDrawStyle;
+  this->drawStyle->style = SoDrawStyle::LINES; 
+  this->texture = new SoTexture2; // only there to turn off texture
+  this->xlate = new SoTranslation; // transform to bbox center
+  this->xform = new SoMatrixTransform; // scale and rotate
+  this->cube = new SoCube; // draw actual box
+
+  this->localRoot->addChild(this->lightModel);
+  this->localRoot->addChild(this->baseColor);
+  this->localRoot->addChild(this->drawStyle);
+  this->localRoot->addChild(this->texture);
+  this->localRoot->addChild(this->xlate);
+  this->localRoot->addChild(this->xform);
+  this->localRoot->addChild(this->cube);
+
+  this->localRoot->renderCaching = SoSeparator::OFF;
+  this->localRoot->boundingBoxCaching = SoSeparator::OFF;
+  this->localRoot->renderCulling = SoSeparator::OFF;
+  this->localRoot->pickCulling = SoSeparator::OFF;
+
+  this->hlVisible = TRUE;
+  this->selPath = NULL;
+  this->searchAction = NULL;
+  this->bboxAction = NULL;
+}
+
 
 /*!
   The destructor.
@@ -150,6 +209,131 @@ SoBoxHighlightRenderAction::SoBoxHighlightRenderAction(const SbViewportRegion & 
 
 SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(void)
 {
-  assert(0 && "FIXME: not implemented");
+  this->localRoot->unref();
+  if (this->selPath) this->selPath->unref();
+  delete this->searchAction;
+  delete this->bboxAction;
+}
+
+/*!
+  Applies this action on scene rooted by \a node.
+*/
+void 
+SoBoxHighlightRenderAction::apply(SoNode *node)
+{
+  SoGLRenderAction::apply(node);
+  if (this->hlVisible) {
+    if (this->searchAction == NULL) {
+      this->searchAction = new SoSearchAction;
+      this->searchAction->setType(SoSelection::getClassTypeId());
+      this->searchAction->setInterest(SoSearchAction::FIRST);
+    }
+    this->searchAction->apply(node);
+    if (this->searchAction->isFound()) {
+      SoSelection *selection = (SoSelection*)
+	this->searchAction->getPath()->getTail();
+      assert(selection->getTypeId().
+	     isDerivedFrom(SoSelection::getClassTypeId()));
+      
+      int n = selection->getNumSelected();
+      for (int i = 0; i < n; i++) {
+	this->updateBBox(selection->getPath(i));
+	SoGLRenderAction::apply(this->localRoot);
+      }
+    }
+  }
+}
+
+/*!
+  Sets if highlighted box should be visible.
+*/
+void 
+SoBoxHighlightRenderAction::setVisible(const SbBool visible)
+{
+  this->hlVisible = visible;
+}
+
+/*!
+  Return if selected box should be visible.
+*/
+SbBool 
+SoBoxHighlightRenderAction::isVisible() const
+{
+  return this->hlVisible;
+}
+
+/*!
+  Sets the color for the highlighted box.
+*/
+void 
+SoBoxHighlightRenderAction::setColor(const SbColor &color)
+{
+  this->baseColor->rgb = color;
+}
+
+/*!
+  Differs from OIV by returning const.
+*/
+const SbColor &
+SoBoxHighlightRenderAction::getColor()
+{
+  return this->baseColor->rgb[0];
+}
+
+/*!
+  Sets the line pattern used for the highlighted box.
+*/
+void 
+SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
+{
+  this->drawStyle->linePattern = pattern;
+}
+
+/*!
+  Returns line pattern used when drawing box.
+*/
+unsigned short 
+SoBoxHighlightRenderAction::getLinePattern() const
+{
+  return this->drawStyle->linePattern.getValue();
+}
+
+/*!
+  Sets the line width used when drawing box.
+*/
+void 
+SoBoxHighlightRenderAction::setLineWidth(const float width)
+{
+  this->drawStyle->lineWidth = width;
+}
+
+/*!
+  Returns the line width used when drawing highlight box.
+*/
+float 
+SoBoxHighlightRenderAction::getLineWidth() const
+{
+  return this->drawStyle->lineWidth.getValue();
+}
+
+/*!
+  Is called to calculate bbox for a selected object.
+*/
+void 
+SoBoxHighlightRenderAction::updateBBox(SoPath *path)
+{
+  if (this->bboxAction == NULL) {
+    this->bboxAction = new SoGetBoundingBoxAction(this->getViewportRegion());
+  }
+  this->bboxAction->setViewportRegion(this->getViewportRegion());
+  this->bboxAction->apply(path);
+  SbBox3f box = this->bboxAction->getBoundingBox();
+  this->xlate->translation = box.getCenter();
+  float w, h, d;
+  box.getSize(w,h,d);
+  SbMatrix scale;
+  scale.makeIdentity();
+  scale.setScale(SbVec3f(w,h,d));
+  this->xform->matrix = scale;
 }
 

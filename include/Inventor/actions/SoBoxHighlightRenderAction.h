@@ -26,6 +26,7 @@
 #endif // COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/SbColor.h>
 
 class SoBoxHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
@@ -56,6 +57,38 @@ public:
   SoBoxHighlightRenderAction(void);
   SoBoxHighlightRenderAction(const SbViewportRegion & viewportRegion);
 
+  virtual void apply(SoNode *node);
+  void setVisible(const SbBool visible);
+  SbBool isVisible() const;
+  void setColor(const SbColor &color);
+  const SbColor &getColor();
+  void setLinePattern(unsigned short pattern);
+  unsigned short getLinePattern() const;
+  void setLineWidth(const float width);
+  float getLineWidth() const;
+
+protected:
+  // for some reason all these are protected under OIV.I've kept
+  // them protected, using the same names even though I think
+  // it would be better to have them under private. pederb, 1999-11-24
+
+  void updateBBox(SoPath *path);
+  class SoSeparator *localRoot;
+  class SoLightModel *lightModel;
+  class SoBaseColor *baseColor;
+  class SoDrawStyle *drawStyle;
+  class SoTexture2 *texture;
+  class SoTranslation *xlate;
+  class SoMatrixTransform *xform;
+  class SoCube *cube;
+
+  SbBool hlVisible;
+  SoPath *selPath;
+
+private:
+  class SoSearchAction *searchAction;
+  class SoGetBoundingBoxAction *bboxAction;
+  void init();
 };
 
 #endif // !__SOBOXHIGHLIGHTRENDERACTION_H__
