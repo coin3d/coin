@@ -153,22 +153,36 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
-  int nc;
-  SbVec2s size;
-  const unsigned char * bytes = this->image.getValue(size, nc);
-  
-  if (bytes && size != SbVec2s(0,0)) {
-    if (!PRIVATE(this)->glimagevalid) {
-      PRIVATE(this)->glimage->setData(bytes, size, nc,
-                                      SoGLImage::CLAMP_TO_EDGE,
-                                      SoGLImage::CLAMP_TO_EDGE,
-                                      0.4f);
-      PRIVATE(this)->glimagevalid = TRUE;
+  const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
+
+  if (cc_glglue_can_do_bumpmapping(glue)) {
+    int nc;
+    SbVec2s size;
+    const unsigned char * bytes = this->image.getValue(size, nc);
+    
+    if (bytes && size != SbVec2s(0,0)) {
+      if (!PRIVATE(this)->glimagevalid) {
+        PRIVATE(this)->glimage->setData(bytes, size, nc,
+                                        SoGLImage::CLAMP_TO_EDGE,
+                                        SoGLImage::CLAMP_TO_EDGE,
+                                        0.4f);
+        PRIVATE(this)->glimagevalid = TRUE;
+      }
+      SoBumpMapElement::set(state, this, PRIVATE(this)->glimage);
     }
-    SoBumpMapElement::set(state, this, PRIVATE(this)->glimage);
+    else {
+      SoBumpMapElement::set(state, this, NULL);
+    }
   }
   else {
-    SoBumpMapElement::set(state, this, NULL);
+    static int didwarn = 0;
+    if (!didwarn) {
+      // FIXME: add link to bumpmapping doc on doc.coin3d.org. pederb, 2003-11-18
+      SoDebugError::postWarning("SoBumpMap::GLRender", 
+                                "Your OpenGL driver does not support the "
+                                "required extensions to do bumpmapping.");
+      didwarn = 1;
+    }
   }
 }
 
