@@ -453,10 +453,12 @@ GLWrapper(int contextid)
     else if (GLWrapper_glEXTSupported(gi, "GL_SGIS_texture_edge_clamp")) {
       gi->hasTextureEdgeClamp = TRUE;
     }
-    //FIXME: Does this extension actually exist?
-//      else if (GLWrapper_glEXTSupported(gi, "GL_EXT_texture_edge_clamp")) {
-//        gi->hasTextureEdgeClamp = TRUE;
-//      }
+    // this test was for some reason disabled a while ago, which
+    // caused big problems for me.  _Never_ disable this test again,
+    // please! pederb, 2002-03-27
+    else if (GLWrapper_glEXTSupported(gi, "GL_EXT_texture_edge_clamp")) {
+      gi->hasTextureEdgeClamp = TRUE;
+    }
 
     if (GLWrapper_glVersionMatchesAtLeast(gi,1,1,0)) {
       gi->has2DProxyTextures = TRUE;
