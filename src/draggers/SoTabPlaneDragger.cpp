@@ -539,7 +539,12 @@ SoTabPlaneDragger::dragStart(void)
   }
 
   if (this->whatkind == WHATKIND_SCALE) {
-    this->lineProj->setLine(SbLine(this->scaleCenter, startpt));
+    // startpt might have a non-zero z-component that could cause
+    // trouble when scaling down to very small sizes, so create a
+    // point equal to startpt, but with the z-component set to zero.
+    // scaleCenter already has a zero z-value.
+    SbVec3f linept(startpt[0], startpt[1], 0.0f);
+    this->lineProj->setLine(SbLine(this->scaleCenter, linept));
   }
   else { // translate
     this->planeProj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 1.0f), startpt));
@@ -564,13 +569,19 @@ SoTabPlaneDragger::drag(void)
     SbVec3f projpt = this->lineProj->project(this->getNormalizedLocaterPosition());
 
     SbVec3f center = this->scaleCenter;
+    SbVec3f orgvec = startpt - center;
+    SbVec3f currvec = projpt - center;
 
-    float orglen = (startpt-center).length();
-    float currlen = (projpt-center).length();
+    // Ignore the possible z-component of the vectors
+    orgvec[2] = 0.0f;
+    currvec[2] = 0.0f;
+
+    float orglen = orgvec.length();
+    float currlen = currvec.length();
     float scale = 0.0f;
 
     if (orglen > 0.0f) scale = currlen / orglen;
-    if (scale > 0.0f && (startpt-center).dot(projpt-center) <= 0.0f) scale = 0.0f;
+    if (scale > 0.0f && orgvec.dot(currvec) <= 0.0f) scale = 0.0f;
 
     SbVec3f scalevec(scale, scale, 1.0f);
     if (this->constraintState == CONSTRAINT_X) {
