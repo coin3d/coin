@@ -84,6 +84,7 @@ SoGLMultiTextureImageElement::SoGLMultiTextureImageElement(void)
 
 SoGLMultiTextureImageElement::~SoGLMultiTextureImageElement(void)
 {
+  delete PRIVATE(this);
 }
 
 // doc from parent
