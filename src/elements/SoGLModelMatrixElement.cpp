@@ -110,9 +110,9 @@ SoGLModelMatrixElement::pop(SoState * state,
     prevTopElement;
 
   if (prev->stackoverflow) {
-    const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
+    SbMatrix mat = SoGLViewingMatrixElement::getResetMatrix(this->state);
+    mat.multLeft(this->modelMatrix);
     glLoadMatrixf(mat[0]);
-    glMultMatrixf(this->modelMatrix[0]);
   }
   else {
     glPopMatrix();
@@ -124,7 +124,7 @@ SoGLModelMatrixElement::pop(SoState * state,
 void
 SoGLModelMatrixElement::makeEltIdentity()
 {
-  const SbMatrix &mat = SoViewingMatrixElement::get(this->state);
+  SbMatrix mat = SoGLViewingMatrixElement::getResetMatrix(this->state);
   glLoadMatrixf(mat[0]);
   inherited::makeEltIdentity();
 }
@@ -132,12 +132,12 @@ SoGLModelMatrixElement::makeEltIdentity()
 //! FIXME: write doc.
 
 void
-SoGLModelMatrixElement::setElt(const SbMatrix &matrix)
+SoGLModelMatrixElement::setElt(const SbMatrix & matrix)
 {
-  inherited::setElt(matrix);
-  const SbMatrix &mat = SoViewingMatrixElement::get(this->state);
+  SbMatrix mat = SoGLViewingMatrixElement::getResetMatrix(this->state);
+  mat.multLeft(matrix);
   glLoadMatrixf(mat[0]);
-  glMultMatrixf(matrix[0]);
+  inherited::setElt(matrix);
 }
 
 //! FIXME: write doc.
@@ -200,3 +200,4 @@ SoGLModelMatrixElement::popMatrixElt(const SbMatrix &matrix)
   }
   inherited::popMatrixElt(matrix);
 }
+

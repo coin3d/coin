@@ -42,6 +42,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
@@ -394,7 +395,7 @@ SoCamera::GLRender(SoGLRenderAction * action)
 
   SbViewportRegion vp;
   SbViewVolume vv;
-  this->getView(action, vv, vp);
+  this->getView(action, vv, vp, FALSE);
 
   SbMatrix affine, proj;
   if (vv.getDepth() == 0.0f || vv.getWidth() == 0.0f || vv.getHeight() == 0.0f) {
@@ -417,6 +418,12 @@ SoCamera::GLRender(SoGLRenderAction * action)
     }
     else {
       vv.getMatrices(affine, proj);
+    }
+    SbBool identity;
+    const SbMatrix & mm = SoModelMatrixElement::get(state, identity);
+    if (!identity) {
+      affine.multRight(mm.inverse());
+      vv.transform(SoModelMatrixElement::get(state));
     }
     SoCullElement::setViewVolume(state, vv);
   }
@@ -589,9 +596,11 @@ SoCamera::jitter(int numpasses, int curpass, const SbViewportRegion & vpreg,
 void
 SoCamera::doAction(SoAction * action)
 {
+  SoState * state = action->getState();
+
   SbViewportRegion vp;
   SbViewVolume vv;
-  this->getView(action, vv, vp);
+  this->getView(action, vv, vp, FALSE);
 
   SbMatrix affine, proj;
   if (vv.getDepth() == 0.0f || vv.getWidth() == 0.0f || vv.getHeight() == 0.0f) {
@@ -600,8 +609,14 @@ SoCamera::doAction(SoAction * action)
   }
   else {
     vv.getMatrices(affine, proj);
+
+    SbBool identity;
+    const SbMatrix & mm = SoModelMatrixElement::get(state, identity);
+    if (!identity) {
+      vv.transform(mm);
+      affine.multRight(mm.inverse());
+    }
   }
-  SoState * state = action->getState();
   SoViewVolumeElement::set(state, this, vv);
   SoProjectionMatrixElement::set(state, this, proj);
   SoViewingMatrixElement::set(state, this, affine);

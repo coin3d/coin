@@ -39,15 +39,17 @@ public:
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
 
-  static  uint32_t getNodeId(SoState * const state);
+  static uint32_t getNodeId(SoState * const state);
+  static SbMatrix getResetMatrix(SoState * state);
 
 protected:
   virtual void setElt(const SbMatrix & matrix);
 
 private:
   SoState * state;
-  void updategl();
-
+  SbMatrix modelmatrix;
+  SbBool mmidentity;
+  void updategl(void);
 };
 
 #endif // !COIN_SOGLVIEWINGMATRIXELEMENT_H

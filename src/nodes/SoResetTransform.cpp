@@ -110,8 +110,10 @@ SoResetTransform::GLRender(SoGLRenderAction * action)
 void
 SoResetTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  if (this->whatToReset.getValue() & SoResetTransform::BBOX)
+  if (this->whatToReset.getValue() & SoResetTransform::BBOX) {
     action->getXfBoundingBox().makeEmpty();
+    action->resetCenter();
+  }
 
   if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM)
     SoModelMatrixElement::set(action->getState(), this,

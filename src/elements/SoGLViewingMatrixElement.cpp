@@ -19,10 +19,14 @@
 
 /*!
   \class SoGLViewingMatrixElement Inventor/elements/SoGLViewingMatrixElement.h
-  \brief The SoGLViewingMatrixElement class is yet to be documented.
+  \brief The SoGLViewingMatrixElement class is used to store the current viewing matrix.
   \ingroup elements
 
-  FIXME: write doc.
+  The viewing matrix contains the inverse camera coordinate system
+  matrix. The camera coordinate system is built from the field values
+  in the current SoCamera (currently either SoPerspectiveCamera or
+  SoOrthographicCamera) and any transformations prior to the camera in
+  the scene graph.  
 */
 
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
@@ -40,11 +44,7 @@
 
 SO_ELEMENT_SOURCE(SoGLViewingMatrixElement);
 
-/*!
-  This static method initializes static data for the
-  SoGLViewingMatrixElement class.
-*/
-
+// doc in parent
 void
 SoGLViewingMatrixElement::initClass(void)
 {
@@ -54,13 +54,11 @@ SoGLViewingMatrixElement::initClass(void)
 /*!
   The destructor.
 */
-
 SoGLViewingMatrixElement::~SoGLViewingMatrixElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 void
 SoGLViewingMatrixElement::init(SoState * state)
 {
@@ -68,8 +66,7 @@ SoGLViewingMatrixElement::init(SoState * state)
   this->state = state;
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 void
 SoGLViewingMatrixElement::push(SoState * state)
 {
@@ -77,8 +74,7 @@ SoGLViewingMatrixElement::push(SoState * state)
   this->state = state;
 }
 
-//! FIXME: write doc.
-
+// doc in parent
 void
 SoGLViewingMatrixElement::pop(SoState * state,
                               const SoElement * prevTopElement)
@@ -87,8 +83,11 @@ SoGLViewingMatrixElement::pop(SoState * state,
   this->updategl();
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns the node id of the current camera node. This is used by
+  SoGLModelMatrixElement to detect a change in the viewing matrix
+  inside an SoTransformSeparator node.
+*/
 uint32_t
 SoGLViewingMatrixElement::getNodeId(SoState * const state)
 {
@@ -97,25 +96,54 @@ SoGLViewingMatrixElement::getNodeId(SoState * const state)
   return elem->getNodeId();
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets the current viewing matrix.
+*/
 void
 SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
 {
   inherited::setElt(matrix);
+  this->modelmatrix = SoModelMatrixElement::get(this->state, this->mmidentity);
   this->updategl();
 }
 
-//! FIXME: write doc.
-
+// sends the current viewing matrix to GL. Eliminates the model matrix
+// part of the matrix, since a GL matrix is always located in 0 0 0. 
 void
-SoGLViewingMatrixElement::updategl()
+SoGLViewingMatrixElement::updategl(void)
 {
-  SbMatrix vm = this->viewingMatrix;
-  SbBool isIdentity = FALSE;
-  const SbMatrix &mm = SoModelMatrixElement::get(this->state, isIdentity);
-  if (!isIdentity) {
-    vm.multRight(mm);
+  SbMatrix mat = this->viewingMatrix;
+  if (!this->mmidentity) {
+    mat.multRight(this->modelmatrix);
   }
-  glLoadMatrixf((float*)vm);
+  glLoadMatrixf((float*)mat);
+}
+
+/*!
+  Returns the matrix that should be used by SoGLModelMatrixElement
+  when the transformation should be reset during traversal (typically
+  when encountering an SoResetTransform node). It is not sufficient to
+  simply load the viewing matrix, since the transformations that were
+  applied before the camera needs to be accounted for.
+
+  This method was not part of the Open Inventor V2.1 API, and
+  is an extension specific to Coin.
+
+  \since 2001-11-02
+*/
+SbMatrix 
+SoGLViewingMatrixElement::getResetMatrix(SoState * state)
+{
+  const SoGLViewingMatrixElement * element = (const SoGLViewingMatrixElement *)
+    SoElement::getConstElement(state, classStackIndex);
+  
+  SbMatrix mat = element->viewingMatrix;
+  if (!element->mmidentity) {
+    // first eliminate model matrix part of matrix
+    mat.multRight(element->modelmatrix);
+    // then move geometry to account for the transformations prior to
+    // the camera
+    mat.multLeft(element->modelmatrix.inverse());
+  }
+  return mat;
 }
