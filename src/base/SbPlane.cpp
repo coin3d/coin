@@ -304,18 +304,18 @@ SbPlane::intersect(const SbPlane & pl, SbLine & line)
 
   const SbVec3f & pl1n = this->normal;
   const SbVec3f & pl2n = pl.normal;
-  const float pl1w = - this->distance;
-  const float pl2w = - pl.distance;
+  const float pl1w = -this->distance;
+  const float pl2w = -pl.distance;
 
-  if (dir2[2] > dir2[1] && dir2[2] > dir2[0] && dir2[2] > FLT_EPSILON) {
+  if ((dir2[2] > dir2[1]) && (dir2[2] > dir2[0]) && (dir2[2] > FLT_EPSILON)) {
     // then get a point on the XY plane
     invdet = 1.0f / xdir[2];
     xpt = SbVec3f(pl1n[1] * pl2w - pl2n[1] * pl1w,
                   pl2n[0] * pl1w - pl1n[0] * pl2w, 0.0f);
   }
-  else if (dir2[1] > dir2[0] && dir2[1] > FLT_EPSILON) {
+  else if ((dir2[1] > dir2[0]) && (dir2[1] > FLT_EPSILON)) {
     // then get a point on the XZ plane
-    invdet = 1.0f / xdir[1];
+    invdet = - 1.0f / xdir[1];
     xpt = SbVec3f(pl1n[2] * pl2w - pl2n[2] * pl1w, 0.0f,
                   pl2n[0] * pl1w - pl1n[0] * pl2w);
   }
@@ -332,7 +332,7 @@ SbPlane::intersect(const SbPlane & pl, SbLine & line)
   invdet = 1.0f / (float) sqrt(dir2[0] + dir2[1] + dir2[2]);
 
   xdir *= invdet;
-  line = SbLine(xpt, xpt+xdir);
+  line = SbLine(xpt, xpt + xdir);
   return TRUE;
 }
 
