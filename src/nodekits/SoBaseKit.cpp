@@ -495,9 +495,9 @@ SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoBaseKit::getMatrix(SoGetMatrixAction * action)
 {
-  int numIndices;
+  int numindices;
   const int * indices;
-  if (action->getPathCode(numIndices, indices) == SoAction::IN_PATH) {
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
     this->children->traverseInPath(action, numindices, indices);
   }
 }
