@@ -325,7 +325,33 @@ find_partname_length(const char * ptr)
 }
 
 /*!
-  FIXME: write function documentation
+
+  Sets nodekit part field values. The input argument string is of the
+  format:
+
+  \code
+  partname {
+    fieldname fieldval
+    fieldname fieldval
+    [...]
+  }
+  partname {
+    fieldname fieldval
+    fieldname fieldval
+    [...]
+  }
+  [...]
+  \endcode
+
+  (Whitespace layout is ignored, as always for Inventor format input
+  strings.)
+
+  Here's an example, changing several values of the camera part of an
+  SoCameraKit instance:
+
+  \code
+  camera { heightAngle 0.3927  nearDistance 1.1  farDistance 999.9 }
+  \endcode
 */
 SbBool
 SoBaseKit::set(const char * namevaluepairliststring)

@@ -31,6 +31,15 @@
   node. When manipulation is finished, the node is put back into the
   graph, replacing the manipulator.
 
+  An SoJackDragger is used by instances this manipulator class as the
+  default dragger when manipulating SoClipPlane nodes. See the
+  documentation of SoJackDragger for details about how to control the
+  manipulator.
+
+  This manipulator is an extension versus the original SGI Inventor
+  v2.1 API.  In addition to being a Coin extension, it is also present
+  in TGS' Inventor implementation (with the same API).
+
   \since TGS Inventor 2.5
   \since Coin 1.0
 */
@@ -88,9 +97,9 @@ SoClipPlaneManip::initClass(void)
 }
 
 /*!
-  An SoJackDragger is the default dragger used to manipulate
-  SoClipPlane nodes.
- */
+  An SoJackDragger is set up here as the internal dragger used for
+  manipulation of an SoClipPlane node.
+*/
 SoClipPlaneManip::SoClipPlaneManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoClipPlaneManip);

@@ -42,6 +42,9 @@
   The name "Jack dragger" probably stems from this dragger being
   implemented by SGI for interacting with a "jack-in-the-box" type
   model way back in the Inventor history.
+
+  For programmer convenience, this dragger comes fully wrapped within
+  instances of the SoClipPlaneManip class.
 */
 
 #include <Inventor/draggers/SoJackDragger.h>
