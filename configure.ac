@@ -1467,7 +1467,7 @@ if $sim_ac_make_dsp; then
 
   # -DHAVE_CONFIG_H is set up in $DEFS too late for use to use, and some
   # include directives are set up in the Makefile.am files
-  for arg in -DHAVE_CONFIG_H -I$coin_build_dir/include -I$coin_src_dir -I$coin_build_dir/include $CPPFLAGS $LDFLAGS $LIBS; do
+  for arg in -DHAVE_CONFIG_H -I$coin_build_dir -I$coin_build_dir/include -I$coin_src_dir/include $CPPFLAGS $LDFLAGS $LIBS; do
     case $arg in
     -L* )
       # libdir=`echo $arg | cut -c3-`
