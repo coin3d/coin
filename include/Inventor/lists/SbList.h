@@ -96,7 +96,7 @@ SbList<Type>::SbList(const int initsize)
   : numitems(0)
 {
   this->itembuffersize = SbMax(4, initsize);
-  this->itembuffer = new Type[initsize];
+  this->itembuffer = new Type[this->itembuffersize];
 }
 
 template <class Type> inline
