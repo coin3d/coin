@@ -15,27 +15,28 @@ Separator {
 
       BaseColor { rgb 1 0 1 }
       Translation { translation +4 0 0 }
-      Font { name "times" }
+      Font { name "Times New Roman" }
       Text2 { string [ "font", "is", "times" ] }
 
-      BaseColor { rgb 0 0 1 }
-      Translation { translation +4 0 0 }
-      Font { name "helvetica" }
-      Text2 { string [ "font", "is", "helvetica" ] }
+      # Helvetica currently not supported. kyrah 20031010
+      # BaseColor { rgb 0 0 1 }
+      # Translation { translation +4 0 0 }
+      # Font { name "helvetica" }
+      # Text2 { string [ "font", "is", "helvetica" ] }
 
       BaseColor { rgb 1 0 1 }
       Translation { translation +4 0 0 }
-      Font { name "courier" }
+      Font { name "Courier" }
       Text2 { string [ "font", "is", "courier" ] }
 
       BaseColor { rgb 1 1 1 }
       Translation { translation +4 0 0 }
-      Font { size 8 }
+      Font { name "Times New Roman"  size 8 }
       Text2 { string [ "fontsize", "is 8" ] }
 
       BaseColor { rgb 0 1 1 }
       Translation { translation +4 0 0 }
-      Font { size 25 }
+      Font { name "Times New Roman"  size 25 }
       Text2 { string [ "fontsize", "is 25" ] }
 
       BaseColor { rgb 1 0 0 }
