@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SbIntList.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbBox3f.h>
 #include <stddef.h> // for NULL definition
@@ -48,13 +49,18 @@ public:
   int removePoint(const SbVec3f & pt);
   void removePoint(const int idx);
   int findPoint(const SbVec3f & pos) const;
-  void findPoints(const SbSphere & sphere, SbList <int> & array) const;
-  int findClosest(const SbSphere & sphere, SbList <int> & array) const;
   int findClosest(const SbVec3f & pos) const;
   void clear(const int initsize = 4);
+  void findPoints(const SbSphere & sphere, SbIntList & array) const;
+  int findClosest(const SbSphere & sphere, SbIntList & array) const;
 
   const SbBox3f & getBBox() const;
   const SbVec3f * getPointsArrayPtr() const;
+
+  // Please stop using these two functions. They will be removed in
+  // Coin 3.0. Use the SbIntList versions instead.
+  void findPoints(const SbSphere & sphere, SbList <int> & array) const;
+  int findClosest(const SbSphere & sphere, SbList <int> & array) const;
 
 private:
   friend class coin_bspnode;

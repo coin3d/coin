@@ -54,6 +54,7 @@ public:
   int addPoint(const SbVec3f &pt, const int maxpts);
   int findPoint(const SbVec3f &pt) const;
   void findPoints(const SbSphere &sphere, SbList <int> &array);
+  void findPoints(const SbSphere &sphere, SbIntList & array);
   int removePoint(const SbVec3f &pt);
 
 private:
@@ -145,6 +146,27 @@ coin_bspnode::findPoint(const SbVec3f &pt) const
 
 void
 coin_bspnode::findPoints(const SbSphere &sphere, SbList <int> &array)
+{
+  if (this->left) {
+    SbVec3f min, max;
+    min = max = sphere.getCenter();
+    min[this->dimension] -= sphere.getRadius();
+    max[this->dimension] += sphere.getRadius();
+
+    if (this->leftOf(min)) this->left->findPoints(sphere, array);
+    if (!this->leftOf(max)) this->right->findPoints(sphere, array);
+  }
+  else {
+    int i, n = this->indices.getLength();
+    for (i = 0; i < n; i++) {
+      SbVec3f pt = (*pointsArray)[this->indices[i]];
+      if (sphere.pointInside(pt)) array.append(this->indices[i]);
+    }
+  }
+}
+
+void
+coin_bspnode::findPoints(const SbSphere &sphere, SbIntList & array)
 {
   if (this->left) {
     SbVec3f min, max;
@@ -445,43 +467,6 @@ SbBSPTree::findPoint(const SbVec3f &pos) const
 }
 
 /*!
-  Will return indices to all points inside \a sphere.
-*/
-void
-SbBSPTree::findPoints(const SbSphere &sphere,
-                      SbList <int> &array) const
-{
-  assert(array.getLength() == 0);
-  this->topnode->findPoints(sphere, array);
-}
-
-/*!
-  Will return the index to the point closest to the center of \a
-  sphere. Indices to all points inside the sphere is returned in
-  \a arr. If no points can be found inside the sphere, -1 is
-  returned.
-*/
-int
-SbBSPTree::findClosest(const SbSphere &sphere,
-                       SbList <int> &arr) const
-{
-  this->findPoints(sphere, arr);
-  SbVec3f pos = sphere.getCenter();
-  int n = arr.getLength();
-  int closeidx = -1;
-  float closedist = FLT_MAX;
-  for (int i = 0; i < n; i++) {
-    int idx = arr[i];
-    float tmp = (pos-this->pointsArray[idx]).sqrLength();
-    if (tmp < closedist) {
-      closeidx = idx;
-      closedist = tmp;
-    }
-  }
-  return closeidx;
-}
-
-/*!
   Will empty all points from the BSP tree.
 */
 void
@@ -558,4 +543,86 @@ const SbVec3f *
 SbBSPTree::getPointsArrayPtr(void) const
 {
   return this->pointsArray.getArrayPtr();
+}
+
+/*!
+  Will return indices to all points inside \a sphere.
+
+  \since Coin 2.3
+*/
+void 
+SbBSPTree::findPoints(const SbSphere & sphere, SbIntList & array) const
+{
+  this->topnode->findPoints(sphere, array);
+}
+
+/*!
+  Will return the index to the point closest to the center of \a
+  sphere. Indices to all points inside the sphere is returned in
+  \a arr. If no points can be found inside the sphere, -1 is
+  returned.
+
+  \since Coin 2.3
+*/
+int 
+SbBSPTree::findClosest(const SbSphere & sphere, SbIntList & arr) const
+{
+  this->findPoints(sphere, arr);
+  SbVec3f pos = sphere.getCenter();
+  int n = arr.getLength();
+  int closeidx = -1;
+  float closedist = FLT_MAX;
+  for (int i = 0; i < n; i++) {
+    int idx = arr[i];
+    float tmp = (pos-this->pointsArray[idx]).sqrLength();
+    if (tmp < closedist) {
+      closeidx = idx;
+      closedist = tmp;
+    }
+  }
+  return closeidx;
+}
+
+
+/*!
+  WARNING: Please don't use this function. It can cause hard to find
+  bugs on the Windows platform if your application is linked against a
+  different CRT than your Coin DLL. 
+  
+  Use int findClosest(const SbSphere &sphere, SbIntList & arr)
+  instead.
+*/
+int
+SbBSPTree::findClosest(const SbSphere &sphere,
+                       SbList <int> &arr) const
+{
+  this->findPoints(sphere, arr);
+  SbVec3f pos = sphere.getCenter();
+  int n = arr.getLength();
+  int closeidx = -1;
+  float closedist = FLT_MAX;
+  for (int i = 0; i < n; i++) {
+    int idx = arr[i];
+    float tmp = (pos-this->pointsArray[idx]).sqrLength();
+    if (tmp < closedist) {
+      closeidx = idx;
+      closedist = tmp;
+    }
+  }
+  return closeidx;
+}
+
+/*!
+  WARNING: Please don't use this function. It can cause hard to find
+  bugs on the Windows platform if your application is linked against a
+  different CRT than your Coin DLL. 
+  
+  Use void findPoints(const SbSphere &sphere, SbIntList & array)
+  instead.
+*/
+void
+SbBSPTree::findPoints(const SbSphere &sphere,
+                      SbList <int> &array) const
+{
+  this->topnode->findPoints(sphere, array);
 }
