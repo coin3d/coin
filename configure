@@ -1692,6 +1692,7 @@ _ACEOF
 
 
 
+
 # Check whether --enable-msvcdsp or --disable-msvcdsp was given.
 if test "${enable_msvcdsp+set}" = set; then
   enableval="$enable_msvcdsp"
@@ -1705,7 +1706,9 @@ fi;
 
 if $sim_ac_make_dsp; then
   enable_dependency_tracking=no
+  enable_libtool_lock=no
 fi
+
 
 # If the Microsoft Visual C++ cl.exe compiler is available, set us up for
 # compiling with it and to generate an MSWindows .dll file.
@@ -5105,7 +5108,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5108 "configure"' > conftest.$ac_ext
+  echo '#line 5111 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5641,7 +5644,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5644: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5647: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7434,7 +7437,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7437 "configure"
+#line 7440 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7532,7 +7535,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7535 "configure"
+#line 7538 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -15835,6 +15838,14 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 
 coin_can_do_runtime_linking=false
 
+# We currently don't support runtime linking on Mac OS X, so we
+# shouldn't try to do runtime linking, even if somebody happens to have
+# libdl installed.
+
+case $host_os in
+  darwin* ) coin_can_do_runtime_linking=false ;;
+  * )
+
 
 
 # Check whether --with-dl or --without-dl was given.
@@ -16034,10 +16045,10 @@ cat >>confdefs.h <<_ACEOF
 #define HAVE_DL_LIB 1
 _ACEOF
 
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
-  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
-  COIN_EXTRA_LIBS="$sim_ac_dl_libs $COIN_EXTRA_LIBS"
-  coin_can_do_runtime_linking=true
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_dl_libs $COIN_EXTRA_LIBS"
+    coin_can_do_runtime_linking=true
 
   else
     CPPFLAGS=$sim_ac_save_cppflags
@@ -16048,9 +16059,9 @@ _ACEOF
 fi
 
 
-if $coin_can_do_runtime_linking; then
-  :
-else
+  if $coin_can_do_runtime_linking; then
+    :
+  else
 
 # Check whether --enable-loadlibrary or --disable-loadlibrary was given.
 if test "${enable_loadlibrary+set}" = set; then
@@ -16238,23 +16249,16 @@ cat >>confdefs.h <<_ACEOF
 #define HAVE_WINDLL_RUNTIME_BINDING 1
 _ACEOF
 
-    coin_can_do_runtime_linking=true
+      coin_can_do_runtime_linking=true
 
   else
     :
   fi
 fi
 
-fi
-
-# We currently don't support runtime linking on Mac OS X, so we
-# shouldn't try to do runtime linking, even if somebody happens to have
-# libdl installed.
-
-case $host_os in
-  darwin* ) coin_can_do_runtime_linking=false ;;
+  fi
+;;
 esac
-
 
 # *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
@@ -20907,8 +20911,8 @@ fi
 
 
 
-# **************************************************************************
-# Microsoft Developer Studio Project files
+
+
 
 COIN_DSP_LIBDIRS=
 COIN_DSP_LIBS=
@@ -20924,18 +20928,22 @@ fi
 
 
   # -DHAVE_CONFIG_H is set up in $DEFS too late for use to use, and some
-  # include directives are set up in the Makefile.am files
-  for arg in -DHAVE_CONFIG_H -I$coin_build_dir/include -I$coin_src_dir -I$coin_build_dir/include $CPPFLAGS $LDFLAGS $LIBS; do
+  # include directives are usually set up in the Makefile.am files
+  for arg in -DHAVE_CONFIG_H -I$coin_build_dir -I$coin_build_dir/include -I$coin_src_dir/include $CPPFLAGS $LDFLAGS $LIBS; do
     case $arg in
     -L* )
-      # libdir=`echo $arg | cut -c3-`
-      # libdir=`cygpath -w "$libdir" 2>/dev/null || echo "$libdir"`
-      # COIN_DSP_LIBDIRS="$COIN_DSP_LIBDIRS /? \"$libdir\""
-      # FIXME: there is no /L-option to feed to the linker - $LIB is used
-      # at linktime, so the libs must be in such a location already...
+      libdir=`echo $arg | cut -c3-`
+      COIN_DSP_LIBDIRS="$COIN_DSP_LIBDIRS $libdir"
       ;;
     -l* )
       libname=`echo $arg | cut -c3-`
+      for libdir in $COIN_DSP_LIBDIRS; do
+        if test -f $libdir/$libname.lib; then
+          # lib is not in any standard location - use full path
+          libname=`cygpath -w "$libdir/$libname" 2>/dev/null || echo "$libdir/$libname"`
+          break
+        fi
+      done
       if test x"$COIN_DSP_LIBS" = x""; then
         COIN_DSP_LIBS="$libname.lib"
       else
@@ -20953,7 +20961,7 @@ fi
       ;;
     -DCOIN_DEBUG* | -DNDEBUG )
       # Defines that vary between release/debug configurations can't be
-      # set up dynamically in COIN_DSP_DEFS - they must be static in the
+      # set up dynamically in <lib>_DSP_DEFS - they must be static in the
       # gendsp.sh script.  We therefore catche them here so we can ignore
       # checking for them below.
       ;;
@@ -20985,6 +20993,7 @@ fi
   rm -f libtool.bak
   chmod 755 libtool
 fi
+
 
 
 
@@ -22626,7 +22635,7 @@ if $sim_ac_build_library; then
 
 Warning: You are now building the development version of the Coin library.
   Unless you are working on development of Coin, you will probably want to
-  build the sources from the Coin-1.* release branch instead.  This
+  build the sources from the Coin-2.* release branch instead.  This
   development branch may become ABI-incompatible with itself from time
   to time, with all the headaches that follow...
 

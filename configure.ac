@@ -1445,7 +1445,7 @@ fi
 AC_SUBST([COIN_COMPILER])
 
 
-SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin])
+SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin], [-I$coin_build_dir -I$coin_build_dir/include -I$coin_src_dir/include])
 
 # **************************************************************************
 
