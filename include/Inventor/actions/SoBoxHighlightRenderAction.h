@@ -23,6 +23,8 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
 
+class SoTempPath;
+class SoPathList;
 
 class SoBoxHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
@@ -64,27 +66,23 @@ public:
   float getLineWidth() const;
 
 protected:
-  // for some reason all these are protected under OIV.I've kept
-  // them protected, using the same names even though I think
-  // it would be better to have them under private. pederb, 1999-11-24
-
-  void updateBBox(SoPath *path);
-  class SoSeparator *localRoot;
-  class SoLightModel *lightModel;
-  class SoBaseColor *baseColor;
-  class SoDrawStyle *drawStyle;
-  class SoTexture2 *texture;
-  class SoTranslation *xlate;
-  class SoMatrixTransform *xform;
-  class SoCube *cube;
 
   SbBool hlVisible;
-  SoPath *selPath;
 
+  // Some protected members are missing compared to OIV here.
+  // I doubt that anyone will use them though, since it looked
+  // like they should have been private. We chose to implement this 
+  // action in a differnet manner. But, if you need the protected members
+  // provided by OIV here, contact us any we'll consider reimplementing
+  // the action to conform more to OIV. pederb, 20000222
+  
 private:
   class SoSearchAction *searchAction;
-  class SoGetBoundingBoxAction *bboxAction;
   void init();
+  void drawBoxes(SoPath *pathtothis, const SoPathList *pathlist);
+  SbColor color;
+  unsigned short linepattern;
+  float linewidth;
 };
 
 #endif // !COIN_SOBOXHIGHLIGHTRENDERACTION_H

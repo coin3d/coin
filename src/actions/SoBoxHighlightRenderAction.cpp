@@ -26,21 +26,21 @@
 #include <Inventor/actions/SoBoxHighlightRenderAction.h>
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
-
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoLightModel.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoDrawStyle.h>
-#include <Inventor/nodes/SoTexture2.h>
-#include <Inventor/nodes/SoTranslation.h>
-#include <Inventor/nodes/SoMatrixTransform.h>
-#include <Inventor/nodes/SoCube.h>
-#include <Inventor/nodes/SoSelection.h>
-
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-
-#include <Inventor/SoPath.h>
+#include <Inventor/nodes/SoSelection.h>
+#include <Inventor/misc/SoTempPath.h>
+#include <Inventor/lists/SoPathList.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
+#include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/misc/SoState.h>
+#include <assert.h>
 
 // *************************************************************************
 
@@ -67,6 +67,10 @@ SoBoxHighlightRenderAction::getTypeId(void) const
 }
 
 #include <assert.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 // static variables
 SoEnabledElementsList * SoBoxHighlightRenderAction::enabledElements;
@@ -168,36 +172,11 @@ SoBoxHighlightRenderAction::init()
 
   SoBoxHighlightRenderAction::methods->setUp(); // initialize action methods
 
-  this->localRoot = new SoSeparator;
-  this->localRoot->ref();
-
-  this->lightModel = new SoLightModel;
-  this->lightModel->model = SoLightModel::BASE_COLOR;
-  this->baseColor = new SoBaseColor;
-  this->drawStyle = new SoDrawStyle;
-  this->drawStyle->style = SoDrawStyle::LINES;
-  this->texture = new SoTexture2; // only there to turn off texture
-  this->xlate = new SoTranslation; // transform to bbox center
-  this->xform = new SoMatrixTransform; // scale and rotate
-  this->cube = new SoCube; // draw actual box
-
-  this->localRoot->addChild(this->lightModel);
-  this->localRoot->addChild(this->baseColor);
-  this->localRoot->addChild(this->drawStyle);
-  this->localRoot->addChild(this->texture);
-  this->localRoot->addChild(this->xlate);
-  this->localRoot->addChild(this->xform);
-  this->localRoot->addChild(this->cube);
-
-  this->localRoot->renderCaching = SoSeparator::OFF;
-  this->localRoot->boundingBoxCaching = SoSeparator::OFF;
-  this->localRoot->renderCulling = SoSeparator::OFF;
-  this->localRoot->pickCulling = SoSeparator::OFF;
-
   this->hlVisible = TRUE;
-  this->selPath = NULL;
+  this->color = SbColor(1.0f, 0.0f, 0.0f);
+  this->linepattern = 0xffff;
+  this->linewidth = 3.0f;
   this->searchAction = NULL;
-  this->bboxAction = NULL;
 }
 
 
@@ -207,10 +186,7 @@ SoBoxHighlightRenderAction::init()
 
 SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(void)
 {
-  this->localRoot->unref();
-  if (this->selPath) this->selPath->unref();
   delete this->searchAction;
-  delete this->bboxAction;
 }
 
 /*!
@@ -231,12 +207,10 @@ SoBoxHighlightRenderAction::apply(SoNode *node)
       SoSelection *selection = (SoSelection*)
         this->searchAction->getPath()->getTail();
       assert(selection->getTypeId().
-             isDerivedFrom(SoSelection::getClassTypeId()));
+             isDerivedFrom(SoSelection::getClassTypeId()));      
 
-      int n = selection->getNumSelected();
-      for (int i = 0; i < n; i++) {
-        this->updateBBox(selection->getPath(i));
-        SoGLRenderAction::apply(this->localRoot);
+      if (selection->getNumSelected()) {
+        this->drawBoxes(this->searchAction->getPath(), selection->getList());
       }
     }
   }
@@ -266,7 +240,7 @@ SoBoxHighlightRenderAction::isVisible() const
 void
 SoBoxHighlightRenderAction::setColor(const SbColor &color)
 {
-  this->baseColor->rgb = color;
+  this->color = color;
 }
 
 /*!
@@ -275,7 +249,7 @@ SoBoxHighlightRenderAction::setColor(const SbColor &color)
 const SbColor &
 SoBoxHighlightRenderAction::getColor()
 {
-  return this->baseColor->rgb[0];
+  return this->color;
 }
 
 /*!
@@ -284,7 +258,7 @@ SoBoxHighlightRenderAction::getColor()
 void
 SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
 {
-  this->drawStyle->linePattern = pattern;
+  this->linepattern = pattern;
 }
 
 /*!
@@ -293,7 +267,7 @@ SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
 unsigned short
 SoBoxHighlightRenderAction::getLinePattern() const
 {
-  return this->drawStyle->linePattern.getValue();
+  return this->linepattern;
 }
 
 /*!
@@ -302,7 +276,7 @@ SoBoxHighlightRenderAction::getLinePattern() const
 void
 SoBoxHighlightRenderAction::setLineWidth(const float width)
 {
-  this->drawStyle->lineWidth = width;
+  this->linewidth = width;
 }
 
 /*!
@@ -311,26 +285,47 @@ SoBoxHighlightRenderAction::setLineWidth(const float width)
 float
 SoBoxHighlightRenderAction::getLineWidth() const
 {
-  return this->drawStyle->lineWidth.getValue();
+  return this->linewidth;
 }
 
-/*!
-  Is called to calculate bbox for a selected object.
-*/
-void
-SoBoxHighlightRenderAction::updateBBox(SoPath *path)
+void 
+SoBoxHighlightRenderAction::drawBoxes(SoPath *pathtothis, const SoPathList *pathlist)
 {
-  if (this->bboxAction == NULL) {
-    this->bboxAction = new SoGetBoundingBoxAction(this->getViewportRegion());
+  int i;
+  int thispos = ((SoFullPath*)pathtothis)->getLength()-1;
+  assert(thispos >= 0);
+  SoTempPath temppath(32);
+  temppath.ref(); // to avoid having refcount == 0
+
+  for (i = 0; i < thispos; i++) temppath.append(pathtothis->getNode(i));
+
+  SoState *state = this->getState();
+  state->push();
+
+  SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
+  SoDiffuseColorElement::set(state, NULL, 1, &color);
+  SoLineWidthElement::set(state, this->linewidth);
+  SoLinePatternElement::set(state, this->linepattern);
+  SoTextureQualityElement::set(state, 0.0f);
+  SoComplexityTypeElement::set(state, SoComplexityTypeElement::BOUNDING_BOX);
+  SoDrawStyleElement::set(state, SoDrawStyleElement::LINES);
+  SoOverrideElement::setLightModelOverride(state, NULL, TRUE);
+  SoOverrideElement::setDiffuseColorOverride(state, NULL, TRUE);
+  SoOverrideElement::setLineWidthOverride(state, NULL, TRUE);
+  SoOverrideElement::setLinePatternOverride(state, NULL, TRUE);
+  SoOverrideElement::setComplexityTypeOverride(state, NULL, TRUE);
+  SoTextureOverrideElement::setQualityOverride(state, TRUE);
+  
+  for (i = 0; i < pathlist->getLength(); i++) {
+    SoFullPath *path = (SoFullPath*)(*pathlist)[i];
+
+    for (int j = 0; j < path->getLength(); j++) {
+      temppath.append(path->getNode(j));
+    }
+    
+    SoGLRenderAction::apply(&temppath);
+    temppath.truncate(thispos);
   }
-  this->bboxAction->setViewportRegion(this->getViewportRegion());
-  this->bboxAction->apply(path);
-  SbBox3f box = this->bboxAction->getBoundingBox();
-  this->xlate->translation = box.getCenter();
-  float w, h, d;
-  box.getSize(w,h,d);
-  SbMatrix scale;
-  scale.makeIdentity();
-  scale.setScale(SbVec3f(w,h,d));
-  this->xform->matrix = scale;
+  state->pop();
 }
+
