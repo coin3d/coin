@@ -33,6 +33,7 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/nodes/SoVertexProperty.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
@@ -124,7 +125,6 @@ SoLineSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   int32_t numvertices = 0;
   for (int i=0; i < this->numVertices.getNum(); i++)
     numvertices += this->numVertices[i];
-
   inherited::computeCoordBBox(action, numvertices, box, center);
 }
 
@@ -264,12 +264,12 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   const int32_t * end = ptr + numVertices.getNum();
 
   //
-  // fix to render hidden geometry (used in dragges)
+  // fix to render default lineset (numVertices array = -1)
   //
-  int32_t dummy_array[1] = {-1};
-  if (this->numVertices.isDefault() && (ptr + 1 == end) && (*ptr == -1)) {
-    ptr = dummy_array;
+  int32_t dummy_array[1];
+  if ((ptr + 1 == end) && (*ptr == -1)) {
     dummy_array[0] = coords->getNum() - idx; // draw all available vertices
+    ptr = dummy_array;
     end = ptr + 1;
   }
 
@@ -346,18 +346,32 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
-  int n = this->numVertices.getNum();
-  if (n == 1 && this->numVertices[0] == -1) return;
-
-  if (action->canApproximateCount()) {
-    action->addNumLines(n);
+  if (this->numVertices.getNum() == 1 && this->numVertices[0] == -1) {
+    const SoCoordinateElement *coordelem =
+      SoCoordinateElement::getInstance(action->getState());
+    SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
+    assert(!vp ||
+           vp->getTypeId().isDerivedFrom(SoVertexProperty::getClassTypeId()));
+    SbBool vpvtx = vp && (vp->vertex.getNum() > 0);
+    
+    const int numCoords = vpvtx ?
+      vp->vertex.getNum() :
+      coordelem->getNum();
+    
+    action->addNumLines(numCoords - this->startIndex.getValue());
   }
   else {
-    int cnt = 0;
-    for (int i = 0; i < n; i++) {
-      cnt += this->numVertices[i]-1;
+    int n = this->numVertices.getNum();
+    if (action->canApproximateCount()) {
+      action->addNumLines(n);
     }
-    action->addNumLines(cnt);
+    else {
+      int cnt = 0;
+      for (int i = 0; i < n; i++) {
+        cnt += this->numVertices[i]-1;
+      }
+      action->addNumLines(cnt);
+    }
   }
 }
 
@@ -409,6 +423,16 @@ SoLineSet::generatePrimitives(SoAction *action)
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
 
+  //
+  // fix to support default lineset (numVertices array = -1)
+  //
+  int32_t dummy_array[1];
+  if ((ptr + 1 == end) && (*ptr == -1)) {
+    dummy_array[0] = coords->getNum() - idx;
+    ptr = dummy_array;
+    end = ptr + 1;
+  }
+  
   int normnr = 0;
   int matnr = 0;
   int texnr = 0;
