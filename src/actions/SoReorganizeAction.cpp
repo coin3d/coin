@@ -30,6 +30,25 @@
 #include <Inventor/actions/SoReorganizeAction.h>
 #include <coindefs.h> // COIN_STUB()
 
+class SoReorganizeActionP {
+ public:
+  SoReorganizeActionP(SoReorganizeAction * masterin) 
+    : master(masterin),
+      gennormals(TRUE),
+      gentexcoords(TRUE),
+      gentristrips(FALSE),
+      genvp(FALSE),
+      matchidx(TRUE) { }
+
+  SoReorganizeAction * master;
+  SbBool gennormals;
+  SbBool gentexcoords;
+  SbBool gentristrips;
+  SbBool genvp;
+  SbBool matchidx;
+};
+
+#define PRIVATE(obj) obj->pimpl
 
 SO_ACTION_SOURCE(SoReorganizeAction);
 
@@ -45,9 +64,10 @@ SoReorganizeAction::initClass(void)
   A constructor.
 */
 
-SoReorganizeAction::SoReorganizeAction(void)
+SoReorganizeAction::SoReorganizeAction(SoSimplifier * simplifier)
 {
-  COIN_STUB();
+  PRIVATE(this) = new SoReorganizeActionP(this);
+  SO_ACTION_CONSTRUCTOR(SoReorganizeAction);
 }
 
 /*!
@@ -55,6 +75,108 @@ SoReorganizeAction::SoReorganizeAction(void)
 */
 
 SoReorganizeAction::~SoReorganizeAction(void)
+{
+  delete PRIVATE(this);
+}
+
+SoSeparator * 
+SoReorganizeAction::getSimplifiedSceneGraph(void) const
+{
+  return NULL;
+}
+
+void 
+SoReorganizeAction::generateNormals(SbBool onoff)
+{
+  PRIVATE(this)->gennormals = onoff;
+}
+
+SbBool 
+SoReorganizeAction::areNormalGenerated(void) const
+{
+  return PRIVATE(this)->gennormals;
+}
+
+void 
+SoReorganizeAction::generateTriangleStrips(SbBool onoff)
+{
+  PRIVATE(this)->gentristrips = onoff;
+}
+
+SbBool 
+SoReorganizeAction::areTriangleStripGenerated(void) const
+{
+  return PRIVATE(this)->gentristrips;
+}
+
+void 
+SoReorganizeAction::generateTexCoords(SbBool onoff)
+{
+  PRIVATE(this)->gentexcoords = onoff;
+}
+
+SbBool 
+SoReorganizeAction::areTexCoordsGenerated(void) const
+{
+  return PRIVATE(this)->gentexcoords;
+}
+
+void 
+SoReorganizeAction::generateVPNodes(SbBool onoff)
+{
+  PRIVATE(this)->genvp = onoff;
+}
+
+SbBool 
+SoReorganizeAction::areVPNodesGenerated(void)
+{
+  return PRIVATE(this)->genvp;
+}
+
+void 
+SoReorganizeAction::matchIndexArrays(SbBool onoff)
+{
+  PRIVATE(this)->matchidx = onoff;
+}
+
+SbBool 
+SoReorganizeAction::areIndexArraysMatched(void) const
+{
+  return PRIVATE(this)->matchidx;
+}
+
+SoSimplifier * 
+SoReorganizeAction::getSimplifier(void) const
+{
+  return NULL;
+}
+
+void 
+SoReorganizeAction::apply(SoNode * root)
+{
+  COIN_STUB();
+}
+
+void 
+SoReorganizeAction::apply(SoPath * path)
+{
+  COIN_STUB();
+}
+
+void 
+SoReorganizeAction::apply(const SoPathList & pathlist, SbBool obeysrules)
+{
+  COIN_STUB();
+}
+
+void 
+SoReorganizeAction::startReport(const char * msg)
+{
+  COIN_STUB();
+}
+
+void 
+SoReorganizeAction::finishReport(void)
 {
   COIN_STUB();
 }

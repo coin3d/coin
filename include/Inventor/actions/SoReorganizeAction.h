@@ -26,19 +26,45 @@
 
 #include <Inventor/actions/SoSimplifyAction.h>
 
+class SoSimplifier;
+class SoReorganizeActionP;
+class SoSeparator;
+
 class COIN_DLL_API SoReorganizeAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;
 
   SO_ACTION_HEADER(SoReorganizeAction);
 
 public:
-  SoReorganizeAction(void);
+  SoReorganizeAction (SoSimplifier * simplifier = NULL);
   virtual ~SoReorganizeAction();
-
   static void initClass(void);
 
-protected:
+  SoSeparator * getSimplifiedSceneGraph(void) const;
+  void generateNormals(SbBool onoff);
+  SbBool areNormalGenerated(void) const;
+  void generateTriangleStrips(SbBool onoff);
+  SbBool areTriangleStripGenerated(void) const;
+  void generateTexCoords(SbBool onoff);
+  SbBool areTexCoordsGenerated(void) const;
+  void generateVPNodes(SbBool onoff); 
+  SbBool areVPNodesGenerated(void); 
+  void matchIndexArrays(SbBool onoff);
+  SbBool areIndexArraysMatched(void) const;
+  SoSimplifier * getSimplifier(void) const;
+
+  virtual void apply(SoNode * root);
+  virtual void apply(SoPath * path);
+  virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+
+  static void startReport(const char * msg);
+  static void finishReport(void);
+
+ protected:
   virtual void beginTraversal(SoNode * node);
+
+ private:
+  SoReorganizeActionP * pimpl;
 };
 
 #endif // !COIN_SOREORGANIZEACTION_H

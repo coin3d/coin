@@ -48,7 +48,7 @@ SoSimplifyAction::initClass(void)
 
 SoSimplifyAction::SoSimplifyAction(void)
 {
-  COIN_STUB();
+  SO_ACTION_CONSTRUCTOR(SoSimplifyAction);
 }
 
 /*!
