@@ -79,8 +79,10 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
@@ -160,18 +162,48 @@ SoVRMLPixelTexture::~SoVRMLPixelTexture()
   delete THIS;
 }
 
-// Doc in parent
-void
-SoVRMLPixelTexture::doAction(SoAction * action)
-{
-  // FIXME: set image in SoTextureImageElement
-}
-
 static SoGLImage::Wrap
 pixeltexture_translate_wrap(const SbBool repeat)
 {
   if (repeat) return SoGLImage::REPEAT;
   return SoGLImage::CLAMP_TO_EDGE;
+}
+
+// Doc in parent
+void
+SoVRMLPixelTexture::doAction(SoAction * action)
+{
+  SoState * state = action->getState();
+
+  if (SoTextureOverrideElement::getImageOverride(state))
+    return;
+
+  SoTexture3EnabledElement::set(state, this, FALSE);
+  int nc;
+  SbVec2s size;
+  const unsigned char * bytes = this->image.getValue(size, nc);
+
+  if (size == SbVec2s(0, 0)) {
+    SoTextureEnabledElement::set(state, this, FALSE);    
+  }
+  else {
+    SoTextureImageElement::set(state, this,
+                               size, nc, bytes,
+                               pixeltexture_translate_wrap(this->repeatS.getValue()),
+                               pixeltexture_translate_wrap(this->repeatT.getValue()),
+                               SoTextureImageElement::MODULATE,
+                               SbColor(1.0f, 1.0f, 1.0f));
+    SoTextureEnabledElement::set(state, this, TRUE);
+  }
+  if (this->isOverride()) {
+    SoTextureOverrideElement::setImageOverride(state, TRUE);
+  }
+}
+
+void 
+SoVRMLPixelTexture::rayPick(SoRayPickAction * action)
+{
+  SoVRMLPixelTexture::doAction(action);
 }
 
 // Doc in parent
@@ -182,6 +214,8 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
 
   if (SoTextureOverrideElement::getImageOverride(state))
     return;
+
+  SoGLTexture3EnabledElement::set(state, this, FALSE);
 
   float quality = SoTextureQualityElement::get(state);
 
@@ -238,6 +272,7 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
 void
 SoVRMLPixelTexture::callback(SoCallbackAction * action)
 {
+  SoVRMLPixelTexture::doAction(action);
 }
 
 // doc in parent

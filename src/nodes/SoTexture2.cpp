@@ -97,6 +97,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
@@ -321,6 +322,13 @@ SoTexture2::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLTexture3EnabledElement);
 
   SO_ENABLE(SoCallbackAction, SoTextureImageElement);
+  SO_ENABLE(SoCallbackAction, SoTextureEnabledElement);
+  SO_ENABLE(SoCallbackAction, SoTexture3EnabledElement);
+
+  SO_ENABLE(SoRayPickAction, SoTextureImageElement);
+  SO_ENABLE(SoRayPickAction, SoTextureEnabledElement);
+  SO_ENABLE(SoRayPickAction, SoTexture3EnabledElement);
+
 }
 
 
@@ -425,6 +433,8 @@ SoTexture2::doAction(SoAction * action)
   SbVec2s size;
   const unsigned char * bytes = this->image.getValue(size, nc);
 
+  SoTexture3EnabledElement::set(state, this, FALSE);
+
   if (size != SbVec2s(0,0)) {
     SoTextureImageElement::set(state, this,
                                size, nc, bytes,
@@ -432,6 +442,7 @@ SoTexture2::doAction(SoAction * action)
                                (int)this->wrapS.getValue(),
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
+    SoTextureEnabledElement::set(state, this, TRUE);
   }
   // if a filename has been set, but the file has not been loaded, supply
   // a dummy texture image to make sure texture coordinates are generated.
@@ -443,9 +454,11 @@ SoTexture2::doAction(SoAction * action)
                                (int)this->wrapS.getValue(),
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
+    SoTextureEnabledElement::set(state, this, TRUE);
   }
   else {
     SoTextureImageElement::setDefault(state, this);
+    SoTextureEnabledElement::set(state, this, FALSE);
   }
   if (this->isOverride()) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
@@ -455,6 +468,13 @@ SoTexture2::doAction(SoAction * action)
 // doc from parent
 void
 SoTexture2::callback(SoCallbackAction * action)
+{
+  SoTexture2::doAction(action);
+}
+
+// doc from parent
+void 
+SoTexture2::rayPick(SoRayPickAction * action)
 {
   SoTexture2::doAction(action);
 }

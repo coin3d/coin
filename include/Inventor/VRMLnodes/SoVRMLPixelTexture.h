@@ -41,9 +41,10 @@ public:
 
   SoSFImage image;
 
-  virtual void doAction( SoAction * action );
-  virtual void GLRender( SoGLRenderAction * action );
-  virtual void callback( SoCallbackAction * action );
+  virtual void doAction(SoAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void callback(SoCallbackAction * action);
+  virtual void rayPick(SoRayPickAction * action);
 
 protected:
   virtual ~SoVRMLPixelTexture();
