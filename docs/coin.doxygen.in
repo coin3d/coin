@@ -295,6 +295,8 @@ INPUT                  = @coin_build_dir@/include/Inventor/SbBasic.h \
                          @coin_src_dir@/include/Inventor/SbString.h \
                          @coin_src_dir@/src/base/SbName.cpp \
                          @coin_src_dir@/include/Inventor/SbName.h \
+                         @coin_src_dir@/src/base/SbImage.cpp \
+                         @coin_src_dir@/include/Inventor/SbImage.h \
                          @coin_src_dir@/include/Inventor/actions/SoSubAction.h \
                          @coin_src_dir@/src/actions/SoAction.cpp \
                          @coin_src_dir@/include/Inventor/actions/SoAction.h \
@@ -837,6 +839,8 @@ INPUT                  = @coin_build_dir@/include/Inventor/SbBasic.h \
                          @coin_src_dir@/include/Inventor/nodekits/SoNodeKitListPart.h \
                          @coin_src_dir@/src/nodekits/SoNodekitCatalog.cpp \
                          @coin_src_dir@/include/Inventor/nodekits/SoNodekitCatalog.h \
+                         @coin_src_dir@/src/nodekits/SoBaseKit.cpp \
+                         @coin_src_dir@/include/Inventor/nodekits/SoBaseKit.h \
                          @coin_src_dir@/src/draggers/SoDragger.cpp \
                          @coin_src_dir@/include/Inventor/draggers/SoDragger.h \
                          @coin_src_dir@/src/manips/commoncode.cpp \

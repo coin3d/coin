@@ -45,6 +45,10 @@ public:
     return ! operator == (image);
   }
 
+  static SbString searchForFile(const SbString & basename,
+                                const SbString * const * dirlist,
+                                const int numdirs);
+
 private:
   unsigned char * bytes;
   SbVec2s size;

@@ -17,6 +17,20 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SbImage SbImage.h Inventor/SbImage.h
+  \brief The SbImage class is an abstract datatype for 2D images.
+  \ingroup base
+
+  This class is a Coin extension to the original Open Inventor API.
+*/
+
+// FIXME: this class could be used to handle image reusage, since it's
+// quite common that the same image is used several times in a scene
+// and for different contexts. The API should stay the same though.
+// 20001026 mortene (original comment by pederb).
+
+
 #include <Inventor/SbImage.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbString.h>
@@ -37,19 +51,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-
-/*!
-  \class SbImage SbImage.h Inventor/SbImage.h
-  \brief The SbImage class is used to handle a 2D image.
-  \ingroup base
-
-  In the future this class will probably be used to handle image
-  reusage, since it's quite common that the same image is used several
-  times in a scene and for different contexts. The API will stay the
-  same though.
-
-  This class is an extension to the OIV API.
-*/
 
 /// Data for libsimage interface. ////////////////////////////////////////
 
@@ -156,7 +157,7 @@ SbImage::getValue(SbVec2s & size, int & bytesperpixel) const
 
 //
 // The TRY_FILE macro is used to immediately return from the
-// search_for_file function when a file can be opened.
+// SbImage::searchForFile() function when a file can be opened.
 //
 
 #if COIN_DEBUG && 0 // flip 1<->0 to turn texture search trace on or off
@@ -176,23 +177,33 @@ SbImage::getValue(SbVec2s & size, int & bytesperpixel) const
     } \
   } while (0)
 
-//
-// used internally to search for a file in different paths
-// and subdirectories.
-//
-static SbString
-search_for_file(const SbString & orgname,
-                const SbString * const * dirlist,
-                const int numdirs)
+/*!
+  Given a \a basename for a file and and array of directories to
+  search (in \a dirlist, of length \a numdirs), returns the full name
+  of the file found.
+
+  In addition to looking at the root of each directory in \a dirlist,
+  we also look into the subdirectories \e texture/, \e textures/, \e
+  images/, \e pics/ and \e pictures/ of each \a dirlist directory.
+
+  If no file matching \a basename could be found, returns an empty
+  string.
+*/
+SbString
+SbImage::searchForFile(const SbString & basename,
+                       const SbString * const * dirlist, const int numdirs)
 {
+  // FIXME: this method could be abstracted further and stuffed into
+  // SoDB or SoInput. 20001026 mortene.
+
   int i;
 
-  TRY_FILE(orgname);
+  TRY_FILE(basename);
 
-  SbString fullname = orgname;
+  SbString fullname = basename;
 
   SbBool trypath = TRUE;
-  const char * strptr = orgname.getString();
+  const char * strptr = basename.getString();
   const char * lastunixdelim = strrchr(strptr, '/');
   const char * lastdosdelim = strrchr(strptr, '\\');
   if (!lastdosdelim) {
@@ -220,9 +231,9 @@ search_for_file(const SbString & orgname,
     }
   }
 
-  SbString basename = lastdelim ?
-    orgname.getSubString(lastdelim-strptr + 1, -1) :
-    orgname;
+  SbString base = lastdelim ?
+    basename.getSubString(lastdelim-strptr + 1, -1) :
+    basename;
 
   for (i = 0; i < numdirs; i++) {
     SbString dirname = *(dirlist[i]);
@@ -236,32 +247,32 @@ search_for_file(const SbString & orgname,
     }
 
     fullname.sprintf("%s%s", dirname.getString(),
-                     basename.getString());
+                     base.getString());
     TRY_FILE(fullname);
 
     // also try come common texture/picture subdirectories
     fullname.sprintf("%stexture/%s", dirname.getString(),
-                     basename.getString());
+                     base.getString());
     TRY_FILE(fullname);
 
     fullname.sprintf("%stextures/%s",
                      dirname.getString(),
-                     basename.getString());
+                     base.getString());
     TRY_FILE(fullname);
 
     fullname.sprintf("%simages/%s",
                      dirname.getString(),
-                     basename.getString());
+                     base.getString());
     TRY_FILE(fullname);
 
     fullname.sprintf("%spics/%s",
                      dirname.getString(),
-                     basename.getString());
+                     base.getString());
     TRY_FILE(fullname);
 
     fullname.sprintf("%spictures/%s",
                      dirname.getString(),
-                     basename.getString());
+                     base.getString());
     TRY_FILE(fullname);
   }
 
@@ -289,8 +300,8 @@ SbImage::readFile(const SbString & filename,
                   const SbString * const * searchdirectories,
                   const int numdirectories)
 {
-  SbString finalname = search_for_file(filename, searchdirectories,
-                                       numdirectories);
+  SbString finalname = SbImage::searchForFile(filename, searchdirectories,
+                                              numdirectories);
   if (finalname.getLength()) {
     int w, h, nc;
     unsigned char * simagedata = NULL;
