@@ -51,7 +51,7 @@ public:
   void setOverride(const SbBool state);
   SbBool isOverride(void) const;
 
-  SoNode * copy(SbBool copyconnections = FALSE) const;
+  virtual SoNode * copy(SbBool copyconnections = FALSE) const;
   virtual SbBool affectsState(void) const;
 
   virtual void doAction(SoAction * action);

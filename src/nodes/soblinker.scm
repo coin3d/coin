@@ -35,12 +35,22 @@
 
 ;; Copy the scenegraph.
 (define viewer-copy (new-soxtexaminerviewer))
-(-> viewer-copy 'show)
 (-> viewer-copy 'setscenegraph (-> blinker 'copy 1))
+(-> viewer-copy 'show)
+
+;; Test copy.
+(define blinkercopy (soblinker-cast (-> viewer-copy 'getscenegraph)))
+(-> (-> blinkercopy 'on) 'setvalue 0)
 
 ;; Export scenegraph with SoBlinker.
 (define writeaction (new-sowriteaction))
 (-> writeaction 'apply (-> viewer 'getscenegraph))
+
+;; Export a copied blinker node.
+(let* ((blinker (new-soblinker))
+       (writeaction (new-sowriteaction))
+       (blinker-copy (-> blinker 'copy 1)))
+  (-> writeaction 'apply blinker-copy))
 
 ;; Read scenegraph with SoBlinker in it.
 (let ((buffer "#Inventor V2.1 ascii\n\nSeparator { Blinker { Material { diffuseColor 1 0 0 } Material { diffuseColor 1 1 0 } }  Cube {} }")
@@ -55,3 +65,4 @@
 (-> viewer 'viewAll)
 (-> viewer 'setscenegraph (new-socube))
 (display (-> blinker 'getnumchildren))
+(display (-> (soblinker-cast (-> viewer 'getscenegraph)) 'getnumchildren))

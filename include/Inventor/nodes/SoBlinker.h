@@ -49,6 +49,10 @@ protected:
   virtual void notify(SoNotList * nl);
 
 private:
+  virtual SoNode * copy(SbBool copyconnections = FALSE) const;
+  void deconnectInternalEngine(void);
+  void reconnectInternalEngine(void);
+
   SoTimeCounter * counter;
 };
 

@@ -30,12 +30,12 @@
 
 #include <Inventor/nodes/SoBlinker.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/engines/SoTimeCounter.h>
 #include <Inventor/misc/SoChildList.h>
-
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/SoOutput.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -105,23 +105,19 @@ SoBlinker::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoBlinker::write(SoWriteAction * action)
 {
+  SoOutput * out = action->getOutput();
+
   // Decouple connections to/from internal engine to avoid it being
-  // written.
-  this->whichChild.disconnect(&this->counter->output);
-  this->counter->on.disconnect(&this->on);
-  this->counter->on = FALSE;
-  this->counter->frequency.disconnect(&this->speed);
+  // written. (Only done at first pass.)
+  if (out->getStage() == SoOutput::COUNT_REFS)
+    this->deconnectInternalEngine();
 
   inherited::write(action);
 
-  // Reenable all connections to/from internal engine.
-  this->counter->frequency.connectFrom(&this->speed);
-  this->counter->on.connectFrom(&this->on);
-  this->whichChild.connectFrom(&this->counter->output);
-
-  // Make sure "on" field of engine get synchronized with the "on"
-  // field of the blinker.
-  this->on.touch();
+  // Reenable all connections to/from internal engine. (Only done at
+  // last pass.)
+  if (out->getStage() == SoOutput::WRITE)
+    this->reconnectInternalEngine();
 }
 
 /*!
@@ -161,4 +157,44 @@ SoBlinker::notify(SoNotList * nl)
   }
 
   inherited::notify(nl);
+}
+
+// Overloaded to decouple and reconnect engine around copy operation.
+SoNode *
+SoBlinker::copy(SbBool copyconnections) const
+{
+  // Decouple connections to/from internal engine to avoid it being
+  // written.
+  ((SoBlinker *)this)->deconnectInternalEngine();
+
+  SoNode * cp = inherited::copy(copyconnections);
+
+  // Reenable all connections to/from internal engine.
+  ((SoBlinker *)this)->reconnectInternalEngine();
+
+  return cp;
+}
+
+// Remove connections to and from internal engine.
+void
+SoBlinker::deconnectInternalEngine(void)
+{
+  this->whichChild.disconnect(&this->counter->output);
+  this->counter->on.disconnect(&this->on);
+  this->counter->on = FALSE;
+  this->counter->frequency.disconnect(&this->speed);
+}
+
+
+// Reset connections to and from internal engine.
+void
+SoBlinker::reconnectInternalEngine(void)
+{
+  this->counter->frequency.connectFrom(&this->speed);
+  this->counter->on.connectFrom(&this->on);
+  this->whichChild.connectFrom(&this->counter->output);
+
+  // Make sure "on" field of engine get synchronized with the "on"
+  // field of the blinker.
+  this->on.touch();
 }

@@ -116,6 +116,9 @@ SoNode::~SoNode()
   If \a copyconnections is \c TRUE, we also copy the connections to
   fields within this node (and ditto for any children and children's
   children etc).
+
+  Note that this function has been made virtual in Coin, which is not
+  the case in the original Open Inventor API.
 */
 SoNode *
 SoNode::copy(SbBool copyconnections) const
