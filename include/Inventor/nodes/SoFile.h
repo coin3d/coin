@@ -24,7 +24,9 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFString.h>
 
+class SoFieldSensor;
 class SoGroup;
+class SoSensor;
 
 
 class SoFile : public SoNode {
@@ -58,7 +60,11 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
 
 private:
-  class SoChildList * children;
+  SbBool readNamedFile(SoInput * in);
+  static void nameFieldModified(void * userdata, SoSensor * sensor);
+
+  SoChildList * children;
+  SoFieldSensor * namesensor;
 };
 
 #endif // !COIN_SOFILE_H

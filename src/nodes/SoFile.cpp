@@ -28,15 +28,22 @@
   Just provide the name of the model file to include in the
   SoFile::name field, and it will automatically be loaded and have its
   nodes inserted into the scenegraph at the point of the SoFile node.
+
+  You can also set the SoFile::name field manually. Such an action
+  will then automatically trigger an invocation of a read operation
+  which imports the filename you set in the field.
 */
 
 #include <Inventor/nodes/SoFile.h>
+
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoChildList.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+
 
 /*!
   \var SoSFString SoFile::name
@@ -60,6 +67,10 @@ SoFile::SoFile(void)
 
   SO_NODE_ADD_FIELD(name, (UNDEFINED_FILE));
 
+  this->namesensor = new SoFieldSensor(SoFile::nameFieldModified, this);
+  this->namesensor->setPriority(0); // immediate sensor
+  this->namesensor->attach(& this->name);
+
   this->children = new SoChildList(this);
 }
 
@@ -68,6 +79,7 @@ SoFile::SoFile(void)
 */
 SoFile::~SoFile()
 {
+  delete this->namesensor;
   delete this->children;
 }
 
@@ -98,6 +110,19 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
 {
   if (!inherited::readInstance(in, flags)) return FALSE;
 
+  // Note that a file specified in the SoFile::name field will be
+  // automatically loaded upon import due to the SoFieldSensor
+  // attached to it.
+
+  // FIXME: this method isn't really necessary. 20000404 mortene.
+
+  return TRUE;
+}
+
+// Private method. Read the file named in the SoFile::name field.
+SbBool
+SoFile::readNamedFile(SoInput * in)
+{
   if (this->name.getValue().getLength() == 0 ||
       strcmp(this->name.getValue().getString(), UNDEFINED_FILE) == 0) {
     // We handle this different than Inventor, where the read process
@@ -137,14 +162,26 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
   return TRUE;
 }
 
+// Callback for the field sensor.
+void
+SoFile::nameFieldModified(void * userdata, SoSensor * sensor)
+{
+  SoFile * that = (SoFile *)userdata;
+  SoInput in;
+  (void)that->readNamedFile(&in);
+}
+
 /*!
-  Returns a group node with a deep copy of the children of this node.
- */
+  Returns a subgraph with a deep copy of the children of this node.
+*/
 SoGroup *
 SoFile::copyChildren(void) const
 {
-  COIN_STUB(); // FIXME
-  return NULL;
+  if (this->children->getLength() == 0) return NULL;
+  assert(this->children->getLength() == 1);
+  SoNode * rootcopy = (*(this->children))[0]->copy();
+  assert(rootcopy->isOfType(SoGroup::getClassTypeId()));
+  return (SoGroup *)rootcopy;
 }
 
 // Doc from superclass.
@@ -204,5 +241,16 @@ SoFile::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoFile::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  COIN_STUB(); // FIXME
+  this->children->truncate(0);
+  inherited::copyContents(from, copyconnections);
+
+  SoFile * filenode = (SoFile *)from;
+
+  if (filenode->children->getLength() == 0) return;
+
+  assert(filenode->children->getLength() == 1);
+
+  SoNode * cp = (SoNode *)
+    SoFieldContainer::findCopy((*(filenode->children))[0], copyconnections);
+  this->children->append(cp);
 }
