@@ -32,22 +32,7 @@
   FIXME. This is missing from the implementation:
   <ul>
 
-  <li> the abort callback function is never called -- it _should_ be
-       called for every node during traversal.
-
-  <li> the pass callback function is never called.
-
-  <li> the cachecontext setting for sharing OpenGL display lists is
-       not used.
-
   <li> the UpdateArea setting isn't heeded.
-
-  <li> the Smoothing flag does not influence rendering.
-
-  <li> the PassUpdate flag is not used.
-
-  <li> antialiased rendering is not done if number of rendering passes
-       is larger than 1.
 
   </ul>
  */
@@ -738,6 +723,9 @@ SoGLRenderActionP::disableBlend(const SbBool force)
   }
 }
 
+//
+// render the scene. Called from beginTraversal()
+//
 void
 SoGLRenderActionP::render(SoNode * node)
 {
@@ -788,6 +776,9 @@ SoGLRenderActionP::render(SoNode * node)
   this->isrendering = FALSE;
 }
 
+//
+// render multiple passes (antialiasing)
+//
 void
 SoGLRenderActionP::renderMulti(SoNode * node)
 {
@@ -805,6 +796,7 @@ SoGLRenderActionP::renderMulti(SoNode * node)
       glAccum(GL_RETURN, float(this->numpasses) / float(i));
     }
     if (this->passcallback) this->passcallback(this->passcallbackdata);
+    else glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     this->currentpass = i;
     this->renderSingle(node);
 
@@ -814,6 +806,10 @@ SoGLRenderActionP::renderMulti(SoNode * node)
   glAccum(GL_RETURN, 1.0f);
 }
 
+//
+// render a single pass. Might start a transparency or delayed pass
+// though.
+//
 void
 SoGLRenderActionP::renderSingle(SoNode * node)
 {
