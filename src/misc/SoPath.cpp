@@ -323,7 +323,7 @@ has_hidden_children(SoNode * node)
 void
 SoPath::append(SoNode * const node, const int index)
 {
-  if (!this->firsthiddendirty && this->firsthidden < 0) {
+  if (node && !this->firsthiddendirty && this->firsthidden < 0) {
     if (has_hidden_children(node)) {
       this->firsthidden = this->getFullLength();
       this->firsthiddendirty = FALSE;
