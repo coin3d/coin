@@ -168,7 +168,7 @@
   E.g., to rotate the camera to point along the X axis:
 
   \code
-  mycamera->orientation.setValue(SbRotation(SbVec3f(0, 1, 0), M_PI / 2.0f);
+  mycamera->orientation.setValue(SbRotation(SbVec3f(0, 1, 0), M_PI / 2.0f));
   \endcode
 
   For queries, e.g. to get the current "up" and "look at" vectors of
