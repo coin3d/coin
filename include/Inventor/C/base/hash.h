@@ -32,16 +32,19 @@ extern "C" {
 
   typedef struct cc_hash cc_hash;
   typedef unsigned long cc_hash_func(unsigned long key);
-  
+  typedef void cc_hash_apply_func(unsigned long key, void * val, void * closure);
+
   COIN_DLL_API cc_hash * cc_hash_construct(unsigned int size, float loadfactor);
   COIN_DLL_API void cc_hash_destruct(cc_hash * ht);
   COIN_DLL_API void cc_hash_clear(cc_hash * ht);
-  
+
   COIN_DLL_API SbBool cc_hash_put(cc_hash * ht, unsigned long key, void * val);
   COIN_DLL_API SbBool cc_hash_get(cc_hash * ht, unsigned long key, void ** val);
   COIN_DLL_API SbBool cc_hash_remove(cc_hash * ht, unsigned long key);
+  COIN_DLL_API void cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure);
+
   COIN_DLL_API unsigned int cc_hash_get_num_elements(cc_hash * ht);
-  
+
   COIN_DLL_API void cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func);
   COIN_DLL_API void cc_hash_print_stat(cc_hash * ht);
 
@@ -52,4 +55,3 @@ extern "C" {
 #endif /* __cplusplus */
 
 #endif /* ! CC_HASH_H */
-

@@ -47,18 +47,18 @@ hash_resize(cc_hash * ht, unsigned int newsize)
 {
   cc_hash_entry ** oldbuckets = ht->buckets;
   unsigned int oldsize = ht->size, i;
-  
+
   assert((newsize & -newsize) == newsize); /* must be power of 2 */
-  
+
   /* Never shrink the table */
   if (ht->size > newsize)
     return;
-  
+
   ht->size = newsize;
   ht->elements = 0;
   ht->threshold = (unsigned int) (newsize * ht->loadfactor);
   ht->buckets = (cc_hash_entry **) calloc(newsize, sizeof(cc_hash_entry));
-  
+
   /* Transfer all mappings */
   for (i = 0; i < oldsize; i++) {
     cc_hash_entry * he = oldbuckets[i];
@@ -88,7 +88,7 @@ cc_hash *
 cc_hash_construct(unsigned int size, float loadfactor)
 {
   cc_hash * ht = (cc_hash *) malloc(sizeof(cc_hash));
-  
+
   /* Size must be a power of two */
   unsigned int s = 1;
   while (s < size)
@@ -140,8 +140,8 @@ cc_hash_clear(cc_hash * ht)
   Insert a new element in the hash table \a ht. \a key is the key used
   to identify the element, while \a val is the element value. If \a
   key is already used by another element, the element value will be
-  overwritten, and \e TRUE is returned. Otherwise a new element is
-  created and \e FALSE is returned.
+  overwritten, and \e FALSE is returned. Otherwise a new element is
+  created and \e TRUE is returned.
 
  */
 SbBool
@@ -154,11 +154,11 @@ cc_hash_put(cc_hash * ht, unsigned long key, void * val)
     if (he->key == key) {
       /* Replace the old value */
       he->val = val;
-      return TRUE;
+      return FALSE;
     }
     he = he->next;
   }
-  
+
   /* Key not already in the hash table; insert a new
    * entry as the first element in the bucket
    */
@@ -167,11 +167,11 @@ cc_hash_put(cc_hash * ht, unsigned long key, void * val)
   he->val = val;
   he->next = ht->buckets[i];
   ht->buckets[i] = he;
-  
+
   if (ht->elements++ >= ht->threshold) {
     hash_resize(ht, ht->size * 2);
   }
-  return FALSE;
+  return TRUE;
 }
 
 /*!
@@ -238,13 +238,30 @@ cc_hash_get_num_elements(cc_hash * ht)
 }
 
 /*!
-  Set the hash func that is used to map key values into 
+  Set the hash func that is used to map key values into
   a bucket index.
 */
 void
 cc_hash_set_hash_func(cc_hash * ht, cc_hash_func * func)
 {
   ht->hashfunc = func;
+}
+
+/*!
+  Call \a func for for each element in the hash table.
+*/ 
+void 
+cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure)
+{
+  unsigned int i;
+  cc_hash_entry * elem;
+  for (i = 0; i < ht->size; i++) {
+    elem = ht->buckets[i];
+    while (elem) {
+      func(elem->key, elem->val, closure);
+      elem = elem->next;
+    }
+  }
 }
 
 /*!
@@ -266,6 +283,6 @@ cc_hash_print_stat(cc_hash * ht)
       if (chain_l > max_chain_l) max_chain_l = chain_l;
     }
   }
-  printf("Used buckets %u of %u (%u elements), avg chain length: %.2f, max chain length: %u\n", 
+  printf("Used buckets %u of %u (%u elements), avg chain length: %.2f, max chain length: %u\n",
          used_buckets, ht->size, ht->elements, (float)ht->elements / used_buckets, max_chain_l);
 }
