@@ -46,6 +46,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/caches/SoPrimitiveVertexCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -147,14 +148,17 @@ class SoShapeP {
 public:
   SoShapeP() {
     this->bboxcache = NULL;
+    this->pvcache = NULL;
     this->shouldcache = FALSE;
   }
   ~SoShapeP() {
     if (this->bboxcache) { this->bboxcache->unref(); }
+    if (this->pvcache) { this->pvcache->unref(); }
   }
   static void calibrateBBoxCache(void);
   static double bboxcachetimelimit;
   SoBoundingBoxCache * bboxcache;
+  SoPrimitiveVertexCache * pvcache;
   SbBool shouldcache;
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
@@ -195,7 +199,7 @@ typedef struct {
   // need these in invokeTriangleCallbacks()
   SbBool is_doing_sorted_rendering;
   SbBool is_doing_bigtexture_rendering;
-  SbBool is_doing_bumpmap_rendering;
+  SbBool is_doing_pvcache_rendering;
 } soshape_staticdata;
 
 static soshape_bigtexture *
@@ -224,7 +228,7 @@ soshape_construct_staticdata(void * closure)
   data->bumprender = NULL;
   data->is_doing_sorted_rendering = FALSE;
   data->is_doing_bigtexture_rendering = FALSE;
-  data->is_doing_bumpmap_rendering = FALSE;
+  data->is_doing_pvcache_rendering = FALSE;
 }
 
 static void
@@ -564,11 +568,27 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       if (shapedata->bumprender == NULL) {
         shapedata->bumprender = new soshape_bumprender;
       }
-      shapedata->bumprender->init(state);
-      shapedata->is_doing_bumpmap_rendering = TRUE;
-      this->generatePrimitives(action);
-      shapedata->is_doing_bumpmap_rendering = FALSE;
-      
+      PRIVATE(this)->lock();
+      if (PRIVATE(this)->pvcache == NULL ||
+          !PRIVATE(this)->pvcache->isValid(state)) {
+        if (PRIVATE(this)->pvcache) {
+          PRIVATE(this)->pvcache->unref();
+        }
+        SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+        // must push state to make cache dependencies work
+        state->push();
+        PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
+        PRIVATE(this)->pvcache->ref();
+        SoCacheElement::set(state, PRIVATE(this)->pvcache);
+        shapedata->bumprender->init(state);
+        shapedata->is_doing_pvcache_rendering = TRUE;
+        this->generatePrimitives(action);
+        shapedata->is_doing_pvcache_rendering = FALSE;
+        state->pop();
+        SoCacheElement::setInvalid(storedinvalid);
+      }
+      PRIVATE(this)->unlock();
+
       // FIXME: disable multi-texture units 2-n (if active)
       
       glPushAttrib(GL_DEPTH_BUFFER_BIT);
@@ -586,7 +606,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       m = m.inverse();
       m.multLeft(lm);
 
-      shapedata->bumprender->renderBump((SoLight*)lights[0], m);
+      shapedata->bumprender->renderBump(PRIVATE(this)->pvcache, (SoLight*)lights[0], m);
       
       SoGLLazyElement::getInstance(state)->reset(state, 
                                                  SoLazyElement::DIFFUSE_MASK|
@@ -601,7 +621,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       if (SoGLTextureEnabledElement::get(state)) glEnable(GL_TEXTURE_2D);
       // FIXME: enable multi-texture units 1-n (if active)
       
-      shapedata->bumprender->renderNormal();
+      shapedata->bumprender->renderNormal(PRIVATE(this)->pvcache);
       glPopAttrib();
       glDisable(GL_BLEND); // FIXME: temporary for FPS-counter
       
@@ -851,8 +871,8 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
     else if (shapedata->is_doing_bigtexture_rendering) {
       shapedata->currentbigtexture->triangle(action->getState(), v1, v2, v3);
     }
-    else if (shapedata->is_doing_bumpmap_rendering) {
-      shapedata->bumprender->addTriangle(v1, v2, v3);
+    else if (shapedata->is_doing_pvcache_rendering) {
+      PRIVATE(this)->pvcache->addTriangle(v1, v2, v3);
     }
     else {
       glBegin(GL_TRIANGLES);
@@ -1197,6 +1217,9 @@ SoShape::notify(SoNotList * nl)
   PRIVATE(this)->lock();
   if (PRIVATE(this)->bboxcache) {
     PRIVATE(this)->bboxcache->invalidate();
+  }
+  if (PRIVATE(this)->pvcache) {
+    PRIVATE(this)->pvcache->invalidate();
   }
   PRIVATE(this)->shouldcache = FALSE;
   PRIVATE(this)->unlock();
