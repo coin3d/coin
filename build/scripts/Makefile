@@ -9,7 +9,7 @@ CFLAGS = $(OPTIM) $(INCDIRS)
 
 all: sourceinclusion
 
-sourceinclusion: sourceinclusion.cpp ../../include/Inventor/config.h ../../include/Inventor/confdep.h
+sourceinclusion: sourceinclusion.cpp ../../include/Inventor/soconfig.h ../../include/Inventor/confdep.h
 	$(CPP) $(CFLAGS) -o sourceinclusion sourceinclusion.cpp
 
 clean:

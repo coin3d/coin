@@ -554,7 +554,7 @@ save_configuration () {
 
 	DEF_CONFIG="${1:-$_CONFIG}"
 
-	CONFIG=../include/Inventor/config
+	CONFIG=../include/Inventor/soconfig
 	CONFIG_H=${CONFIG}.h
 
 	echo "#" >$CONFIG
@@ -603,7 +603,7 @@ cleanup1 () {
 }
 
 cleanup2 () {
-	rm -f ../include/Inventor/config ../include/Inventor/config.h
+	rm -f ../include/Inventor/soconfig ../include/Inventor/soconfig.h
 }
 
 set_geometry () {

@@ -81,7 +81,7 @@ config:
 	$(MAKE) -C scripts/lxdialog all
 	$(SHELL) scripts/Menuconfig scripts/Config.in
 
-coin: ../include/Inventor/config.h makefile.coin .coin
+coin: ../include/Inventor/soconfig.h makefile.coin .coin
 
 release: makefile.release .release
 
@@ -89,10 +89,10 @@ profile: makefile.profile .profile
 
 base: header makefile.base .base footer
 
-# Autogenerate the config.h file if it has not been manually made.
+# Autogenerate the soconfig.h file if it has not been manually made.
 
-../include/Inventor/config.h:
-	if ! [ -f ../include/Inventor/config.h ]; then echo "#define COIN_EXCLUDE_NOTHING 1" > ../include/Inventor/config.h; fi
+../include/Inventor/soconfig.h:
+	if ! [ -f ../include/Inventor/soconfig.h ]; then echo "#define COIN_EXCLUDE_NOTHING 1" > ../include/Inventor/soconfig.h; fi
 
 # Rules.
 
@@ -124,7 +124,7 @@ makefile.profile: profile.pro common.pro sources.pro
 makefile.base: base.pro
 	tmake base.pro -o makefile.base
 
-sources.pro: ../include/Inventor/config.h ../include/Inventor/confdep.h scripts/sourceinclusion.cpp
+sources.pro: ../include/Inventor/soconfig.h ../include/Inventor/confdep.h scripts/sourceinclusion.cpp
 	$(MAKE) -C scripts all
 	scripts/sourceinclusion > sources.pro
 

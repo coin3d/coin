@@ -20,7 +20,7 @@
 # Common build settings for the debug, profile and release makefiles.
 
 TEMPLATE	=	lib
-# FIXME: this should eventually be "warn_on". 990314 mortene. 
+# FIXME: this should eventually be "warn_on". 19990314 mortene.
 CONFIG		+=	warn_off
 
 DEFINES		+=	__SOLIB_INTERNAL__
