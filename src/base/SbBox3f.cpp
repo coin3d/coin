@@ -34,9 +34,11 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbMatrix.h>
 #include <assert.h>
+#include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
 
 /*!
   The default constructor makes an empty box.
@@ -66,7 +68,7 @@ SbBox3f::SbBox3f(const float minx, const float miny, const float minz,
   The coordinates of \a min should be less than the coordinates of
   \a max if you want to make a valid box.
  */
-SbBox3f::SbBox3f(const SbVec3f& min, const SbVec3f& max)
+SbBox3f::SbBox3f(const SbVec3f & min, const SbVec3f & max)
 {
   this->min = min;
   this->max = max;
@@ -110,13 +112,13 @@ SbVec3f
 SbBox3f::getCenter(void) const
 {
 #if COIN_DEBUG
-  if(this->isEmpty())
+  if (this->isEmpty())
     SoDebugError::postWarning("SbBox3f::getCenter",
                               "The box is empty.");
 #endif // COIN_DEBUG
-  return SbVec3f((max[0] + min[0])*0.5f,
-                 (max[1] + min[1])*0.5f,
-                 (max[2] + min[2])*0.5f);
+  return SbVec3f((max[0] + min[0]) * 0.5f,
+                 (max[1] + min[1]) * 0.5f,
+                 (max[2] + min[2]) * 0.5f);
 }
 
 /*!
@@ -124,7 +126,7 @@ SbBox3f::getCenter(void) const
   point fit inside the box if it isn't already so.
  */
 void
-SbBox3f::extendBy(const SbVec3f& point)
+SbBox3f::extendBy(const SbVec3f & point)
 {
   if (this->isEmpty()) {
     this->setBounds(point, point);
@@ -147,10 +149,10 @@ SbBox3f::extendBy(const SbVec3f& point)
   is equal to calling extendBy() twice with the corner points.
  */
 void
-SbBox3f::extendBy(const SbBox3f& box)
+SbBox3f::extendBy(const SbBox3f & box)
 {
 #if COIN_DEBUG
-  if(box.isEmpty()) {
+  if (box.isEmpty()) {
     SoDebugError::postWarning("SbBox3f::extendBy",
                               "The box is not valid.");
     return;
@@ -170,7 +172,7 @@ SbBox3f::extendBy(const SbBox3f& box)
   Check if the given point lies within the boundaries of this box.
  */
 SbBool
-SbBox3f::intersect(const SbVec3f& point) const
+SbBox3f::intersect(const SbVec3f & point) const
 {
   return !(point[0] < this->min[0] ||
            point[0] > this->max[0] ||
@@ -185,9 +187,9 @@ SbBox3f::intersect(const SbVec3f& point) const
   of this box.
  */
 SbBool
-SbBox3f::intersect(const SbBox3f& box) const
+SbBox3f::intersect(const SbBox3f & box) const
 {
-  if((box.max[0] < this->min[0]) ||
+  if ((box.max[0] < this->min[0]) ||
      (box.max[1] < this->min[1]) ||
      (box.max[2] < this->min[2]) ||
      (box.min[0] > this->max[0]) ||
@@ -210,7 +212,7 @@ SbBox3f::setBounds(const float minx, const float miny, const float minz,
                    const float maxx, const float maxy, const float maxz)
 {
 #if COIN_DEBUG
-  if(!(minx<=maxx && miny<=maxy && minz<= maxz)) {
+  if (!(minx<=maxx && miny<=maxy && minz<= maxz)) {
     SoDebugError::postWarning("SbBox3f::setBounds",
                               "The box is not valid.");
     assert(0);
@@ -229,10 +231,10 @@ SbBox3f::setBounds(const float minx, const float miny, const float minz,
   \sa getBounds().
  */
 void
-SbBox3f::setBounds(const SbVec3f& min, const SbVec3f& max)
+SbBox3f::setBounds(const SbVec3f & min, const SbVec3f & max)
 {
 #if COIN_DEBUG
-  if(!(min[0]<=max[0] && min[1]<=max[1] && min[2]<=max[2])) {
+  if (!(min[0]<=max[0] && min[1]<=max[1] && min[2]<=max[2])) {
     SoDebugError::postWarning("SbBox3f::setBounds",
                               "The box is not valid.");
     assert(0);
@@ -249,8 +251,8 @@ SbBox3f::setBounds(const SbVec3f& min, const SbVec3f& max)
   \sa setBounds().
 */
 void
-SbBox3f::getBounds(float& minx, float& miny, float& minz,
-                        float& maxx, float& maxy, float& maxz) const
+SbBox3f::getBounds(float & minx, float & miny, float & minz,
+                   float & maxx, float & maxy, float & maxz) const
 {
   this->min.getValue(minx, miny, minz);
   this->max.getValue(maxx, maxy, maxz);
@@ -262,7 +264,7 @@ SbBox3f::getBounds(float& minx, float& miny, float& minz,
   \sa setBounds().
 */
 void
-SbBox3f::getBounds(SbVec3f& min, SbVec3f& max) const
+SbBox3f::getBounds(SbVec3f & min, SbVec3f & max) const
 {
   min = this->min;
   max = this->max;
@@ -274,19 +276,19 @@ SbBox3f::getBounds(SbVec3f& min, SbVec3f& max) const
   \sa getMin().
 */
 void
-SbBox3f::getOrigin(float& x0, float& y0, float& z0) const
+SbBox3f::getOrigin(float & x0, float & y0, float & z0) const
 {
-  this->min.getValue(x0,y0,z0);
+  this->min.getValue(x0, y0, z0);
 }
 
 /*!
   Returns width, height and depth of box.
  */
 void
-SbBox3f::getSize(float& dx, float& dy, float& dz) const
+SbBox3f::getSize(float & dx, float & dy, float & dz) const
 {
 #if COIN_DEBUG
-  if(this->isEmpty()) SoDebugError::postWarning("SbBox3f::getSize",
+  if (this->isEmpty()) SoDebugError::postWarning("SbBox3f::getSize",
                                                 "The box is not valid.");
 #endif // COIN_DEBUG
 
@@ -360,37 +362,37 @@ SbBox3f::getVolume(void) const
   between these values gives the span.
 */
 void
-SbBox3f::getSpan(const SbVec3f& dir, float& dMin, float& dMax) const
+SbBox3f::getSpan(const SbVec3f & dir, float & dmin, float & dmax) const
 {
-  float dist,mindist=FLT_MAX,maxdist=-FLT_MAX;
-  SbVec3f points[2]={this->min,this->max};
+  float dist, mindist=FLT_MAX, maxdist=-FLT_MAX;
+  SbVec3f points[2]={this->min, this->max};
   SbVec3f corner;
   SbVec3f normdir(dir);
-  normdir.normalize(); //To save a division
+  normdir.normalize(); // To avoid a division
 
   for (int i=0;i<8;i++) {
     //Find all corners the "binary" way :-)
-    corner.setValue(points[(i&4)>>2][0],points[(i&2)>>1][1],points[i&1][2]);
+    corner.setValue(points[(i&4)>>2][0], points[(i&2)>>1][1], points[i&1][2]);
 
     // a = dir
-    // b = corner-[0,0,0]
+    // b = corner-[0, 0, 0]
     // v = dir/|dir|
     //
     // The dot product formula (1) gives the formula we use (2).
     //
-    // (1)  a * b = |a|*|b| * cos(angle(a,b))
+    // (1)  a * b = |a|*|b| * cos(angle(a, b))
     //
     // (2)  distance = v * b
     //
     // This dot product (2) gives the distance from origo to the plane
     // defined by normdir and corner.
     dist=normdir.dot(corner);
-    if (dist<mindist) mindist=dist;
-    if (dist>maxdist) maxdist=dist;
+    if (dist < mindist) mindist = dist;
+    if (dist > maxdist) maxdist = dist;
   }
 
-  dMin=mindist;
-  dMax=maxdist;
+  dmin = mindist;
+  dmax = maxdist;
 }
 
 /*!
@@ -400,10 +402,10 @@ SbBox3f::getSpan(const SbVec3f& dir, float& dMin, float& dMax) const
   Doesn't touch illegal/empty boxes.
  */
 void
-SbBox3f::transform(const SbMatrix& matrix)
+SbBox3f::transform(const SbMatrix & matrix)
 {
 #if COIN_DEBUG
-  if(this->isEmpty()) {
+  if (this->isEmpty()) {
     SoDebugError::postWarning("SbBox3f::transform",
                               "The box is not valid!");
     return;
@@ -411,18 +413,18 @@ SbBox3f::transform(const SbMatrix& matrix)
 #endif // COIN_DEBUG
 
   SbVec3f dst;
-  SbVec3f points[2]={this->min,this->max};
+  SbVec3f points[2]={this->min, this->max};
   SbVec3f corner;
   SbBox3f newbox;
 
   //transform all the corners and include them into the new box.
   for (int i=0;i<8;i++) {
     //Find all corners the "binary" way :-)
-    corner.setValue(points[(i&4)>>2][0],points[(i&2)>>1][1],points[i&1][2]);
-    matrix.multVecMatrix(corner,dst);
+    corner.setValue(points[(i&4)>>2][0], points[(i&2)>>1][1], points[i&1][2]);
+    matrix.multVecMatrix(corner, dst);
     newbox.extendBy(dst);
   }
-  this->setBounds(newbox.min,newbox.max);
+  this->setBounds(newbox.min, newbox.max);
 }
 
 /*!
@@ -439,4 +441,71 @@ SbBox3f::print(FILE * fp) const
   fprintf(fp, " ");
   maxv.print(fp);
 #endif // COIN_DEBUG
+}
+
+/*!
+  \relates SbBox3f
+
+  Check \a b1 and \a b2 for equality.
+*/
+int
+operator ==(const SbBox3f & b1, const SbBox3f & b2)
+{
+  return b1.getMin() == b2.getMin() && b1.getMax() == b2.getMax();
+}
+
+/*!
+  \relates SbBox3f
+
+  Check \a b1 and \a b2 for inequality.
+*/
+int
+operator !=(const SbBox3f & b1, const SbBox3f & b2)
+{
+  return !(b1 == b2);
+}
+
+/*!
+  Check if the box is outside the view volume defined by the \a mvp
+  matrix. Sets \a cullbits according to which planes we're inside or
+  outside.
+ */
+SbBool
+SbBox3f::outside(const SbMatrix & mvp, int & cullbits) const
+{
+  COIN_STUB();
+  return FALSE;
+}
+
+/*!
+  Return the point on the box closest to the given \a point.
+ */
+SbVec3f
+SbBox3f::getClosestPoint(const SbVec3f & point) const
+{
+  SbVec3f closest = point;
+
+  SbVec3f center = this->getCenter();
+  float devx = closest[0] - center[0];
+  float devy = closest[1] - center[1];
+  float devz = closest[2] - center[2];
+  float halfwidth = (this->max[0] - this->min[0]) / 2.0f;
+  float halfheight = (this->max[1] - this->min[1]) / 2.0f;
+  float halfdepth = (this->max[2] - this->min[2]) / 2.0f;
+
+  // Move point to be on the nearest plane of the box.
+//    printf("%f %f %f\n", devx, devy, devz);
+  if ((fabs(devx) > fabs(devy)) && (fabs(devx) > fabs(devz)))
+    closest[0] = center[0] + halfwidth * ((devx < 0.0f) ? -1.0f : 1.0f);
+  else if (fabs(devy) > fabs(devz))
+    closest[1] = center[1] + halfheight * ((devy < 0.0f) ? -1.0f : 1.0f);
+  else
+    closest[2] = center[2] + halfdepth * ((devz < 0.0f) ? -1.0f : 1.0f);
+
+  // Clamp to be inside box.
+  closest[0] = SbMin(SbMax(closest[0], this->min[0]), this->max[0]);
+  closest[1] = SbMin(SbMax(closest[1], this->min[1]), this->max[1]);
+  closest[2] = SbMin(SbMax(closest[2], this->min[2]), this->max[2]);
+
+  return closest;
 }

@@ -28,27 +28,30 @@ class COIN_DLL_EXPORT SbBox2f {
 public:
   SbBox2f(void);
   SbBox2f(float xmin, float ymin, float xmax, float ymax);
-  SbBox2f(const SbVec2f& min, const SbVec2f& max);
+  SbBox2f(const SbVec2f & min, const SbVec2f & max);
   ~SbBox2f(void);
 
-  const SbVec2f& getMin(void) const;
-  const SbVec2f& getMax(void) const;
+  const SbVec2f & getMin(void) const;
+  const SbVec2f & getMax(void) const;
   SbVec2f getCenter(void) const;
-  void extendBy(const SbVec2f& point);
-  void extendBy(const SbBox2f& box);
-  SbBool intersect(const SbVec2f& point) const;
-  SbBool intersect(const SbBox2f& box) const;
+  void extendBy(const SbVec2f & point);
+  void extendBy(const SbBox2f & box);
+  SbBool intersect(const SbVec2f & point) const;
+  SbBool intersect(const SbBox2f & box) const;
+  SbVec2f getClosestPoint(const SbVec2f & p) const;
   void setBounds(float xmin, float ymin, float xmax, float ymax);
-  void setBounds(const SbVec2f& min, const SbVec2f& max);
-  void getBounds(float& xmin, float& ymin, float& xmax, float& ymax) const;
-  void getBounds(SbVec2f& min, SbVec2f& max) const;
-  void getOrigin(float& x0, float& y0) const;
-  void getSize(float& w, float& h) const;
+  void setBounds(const SbVec2f & min, const SbVec2f & max);
+  void getBounds(float & xmin, float & ymin, float & xmax, float & ymax) const;
+  void getBounds(SbVec2f & min, SbVec2f & max) const;
+  void getOrigin(float & x0, float & y0) const;
+  void getSize(float & w, float & h) const;
   float getAspectRatio(void) const;
   void makeEmpty(void);
   SbBool isEmpty(void) const;
   SbBool hasArea(void) const;
 
+  friend COIN_DLL_EXPORT int operator ==(const SbBox2f & b1, const SbBox2f & b2);
+  friend COIN_DLL_EXPORT int operator !=(const SbBox2f & b1, const SbBox2f & b2);
 
 private:
   SbVec2f minpt, maxpt;
@@ -56,5 +59,8 @@ private:
   float width(void) const;
   float height(void) const;
 };
+
+COIN_DLL_EXPORT int operator ==(const SbBox2f & b1, const SbBox2f & b2);
+COIN_DLL_EXPORT int operator !=(const SbBox2f & b1, const SbBox2f & b2);
 
 #endif // !COIN_SBBOX2F_H
