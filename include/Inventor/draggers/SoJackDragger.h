@@ -60,6 +60,10 @@ protected:
   SoFieldSensor * rotFieldSensor;
   SoFieldSensor * translFieldSensor;
   SoFieldSensor * scaleFieldSensor;
+
+private:
+  void addChildDragger(SoDragger *child);
+  void removeChildDragger(const char *childname);
 };
 
 #endif // !COIN_SOJACKDRAGGER_H
