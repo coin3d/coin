@@ -253,7 +253,7 @@ private:
   size_t totalread;
   SbList<char> backbuffer; // Used as a stack (SbList provides push() and pop()).
   int lastputback; // The last character put back into the stream.
-  char lastchar; // Last read character.
+  int lastchar; // Last read character.
   SbBool ismembuffer;
   SbBool headerisread, eof;
   SbBool vrml1file;
