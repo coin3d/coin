@@ -32,9 +32,136 @@
   free-form engine expressions and places the results on the output
   fields.
 
-  FIXME: more class documentation! It's close to hopeless to use this
-  class with this little doc (without looking in the sourcecode or at
-  the Inventor Mentor). 20020925 mortene.
+  The engine has sixteen input fields; eight scalar inputs (\e a, \e
+  b, \e c, \e d, \e, f \e g, and \e h), and eight vector inputs (\e A,
+  \e B, \e C, \e D, \e E, \e F, \e G, and \e H).
+
+  There are eight output fields; four scalar outputs (\e oa, \e ob, \e
+  oc, and \e od), and four vector outputs (\e oA, \e oB, \e oC, and \e
+  oD).
+
+  The expression syntax is quite similar to C/C++, with a very limited
+  set of keywords and functions.
+  
+  An example:
+  
+  \code
+
+  oa = a * (0.5 + b) / c
+
+  \endcode
+ 
+  Will multiple the value in \e a with the value in \e b plus 0.5,
+  divide that result with \e c, and place the result in \e oa. Since
+  this is an engine, the expression will only be evaluated when
+  someone attempts to read the value in \e oa, not every time an input
+  in changed.
+
+  All inputs are multi-fields, and if there are several values in an
+  input, the expression will be evaluated once for every input field
+  value, and the output will create as many values as there are input
+  field values.
+
+  If there is more than one input field, and the input fields do not
+  have the same number of values, the engine will create as many
+  output values as the input field with the biggest number of
+  values. When the index get out of bounds for some other input field,
+  the last field value will be used.
+  
+  Vector expressions are similar to scalar expression. An example:
+
+  \code
+  
+  oA = A + vec3f(1.0, 0.0, 0.0) * B
+  
+  \endcode
+
+  Will take the vector in \e A, add the value in \e B multiplied with
+  (1,0,0), and place the result in \e oA.
+
+  In addition to regular arithmetics, the SoCalculator syntax also
+  includes some functions.
+
+  Scalar functions:
+
+  \li cos(x) - cosine function (x in radians)
+  \li sin(x) - sinus function
+  \li tan(x) - tangent function
+  \li acos(x) - arc cosine function
+  \li asin(x) - arc sinus function
+  \li atan(x) - arc tangent function
+  \li atan2(y, x) - arc tangent function of two variables (y, x).
+  \li cosh(x) - hyperbolic cosine function
+  \li sinh(x) - hyperbolic sinus function
+  \li tanh(x) - hyperbolic tangent function
+  \li sqrt(x) - square root function
+  \li pow(x,y) - x raised to the power of y 
+  \li exp(x) - e to the power of x
+  \li log(x) - natural logarithm of x
+  \li log10() - base-10 logarithm of x
+  \li ceil(x) - rounds x upwards to the nearest integer
+  \li floor(x) - rounds x downwards to the nearest integer
+  \li fabs(x) - absolute value
+  \li fmod(x, y) - remainder of dividing x by y 
+  \li rand(x) - pseudo-random value between 0 and 1
+
+  Vector functions:
+
+  \li cross(x, y) - cross product of x and y
+  \li dot(x,y) - dot product of x and y (returns scalar value)
+  \li length(x) - length of x (returns scalar value)
+  \li normalize(x) - returns normalized version of x
+  \li x[y] - access components in x (y should be a scalar value in the range [0,2])
+
+  There are also some named constants that can be used:
+
+  \li MAXFLOAT
+  \li MINFLOAT
+  \li M_E
+  \li M_LOG2E
+  \li M_LOG10E
+  \li M_LN2
+  \li M_PI
+  \li M_SQRT2 - sqrt(2)
+  \li M_SQRT1_2 - sqrt(1/2)
+  
+  The only control flow available is the \e ? operator. An example:
+
+  \code
+
+  oa = (a > b) ? (a * 0.5) : (b * c)
+
+  \endcode
+
+  (The parentheses are not necessary, they're there just to make the
+  example easier to read)
+  
+  In addition to the standard comparators (\e <, \e >, \e <=, \e >=,
+  \e ==, \e !=), you can also use \e && (AND) and \e || (OR) to
+  combine expression, and the unary \e ! (NOT) operator.
+
+  One final thing worth mentioning is the temporary variables. There
+  exists sixteen temporary variables that can be used in expressions.
+  \e ta, \e tb, \e tc, \e td, \e te, \e tf, \e tg, and \e th are scalar
+  variables, and \e tA, \e tB, \e tC, \e tD, \e tE, \e tF, \e tG, and \e tH 
+  are vector variables. They are usually used when you have more than
+  one expression that should be evaluated in order.
+
+  An example with three expressions:
+
+  \code
+  
+  ta = a * b; tb = c + d; tc = e - f
+  tA = vec3f(ta, tb, tc) + A
+  oA = tA * B
+
+  \endcode
+
+  The example just shows how temporary variables can be used to make
+  your expressions easier to read. Please note that it's possible to
+  have several statements in one expression. You just separate them
+  with semicolons.
+
 */
 
 #include <Inventor/engines/SoCalculator.h>
