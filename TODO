@@ -27,12 +27,6 @@ TODO:
   out which dependency causes recompilation of a file? That would be a
   nice feature.
 
-* [mortene:19991108] it looks like the header files are copied twice
-  upon ``make install'', so the hack in the Makefile.am files to work
-  around an Automake bug should be improved a bit.. or perhaps we
-  could just as well wait for the next Automake release, and remove
-  the hack altogether?
-
 * [mortene:19991107] example programs and tools shouldn't be compiled
   with the __SOLIB_INTERNAL__ define set.
 
@@ -121,13 +115,11 @@ TODO:
   \param + \return format (this is a _huge_ and boring job, but it can
   be done gradually, of course).
 
-* [mortene:19990913] move tasklist from docs/todo.txt into this file.
-
 * [mortene:19990913] write non-generic instructions in the INSTALL
   file.
 
-* [mortene:19990913] write a file ``HACKING'' with tips & tricks for
-  faster turn-around when doing development.
+* [mortene:19990913] fill in the ``HACKING'' file with tips & tricks
+  for faster turn-around when doing development.
 
 
 ===============================================================================
@@ -141,6 +133,13 @@ DONE:
 
 
 *** BUILD ITEMS ***
+
+* [mortene:19991108][mortene:19991213] it looks like the header files
+  are copied twice upon ``make install'', so the hack in the
+  Makefile.am files to work around an Automake bug should be improved
+  a bit.. or perhaps we could just as well wait for the next Automake
+  release, and remove the hack altogether?
+  => this was a "false alarm"
 
 * [mortene:19990916][mortene:19991205] make ``make install'' avoid
   re-installing header files which has not been modified (and other
@@ -216,7 +215,8 @@ DONE:
 
 *** GENERIC ITEMS ***
 
-
+* [mortene:19990913][mortene:19991213] move tasklist from
+  docs/todo.txt into this file => killed todo.txt alltogether.
 
 *** SUPPORT ITEMS ***
 
