@@ -404,10 +404,15 @@ SoGroup::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
+#if 0 // OBSOLETED: this code is plain wrong, I believe. 19991112 mortene.
     int n = this->getNumChildren();
     for (int i = 0; i < n; i++)
       this->getChild(i)->addWriteReference(out, FALSE);
-    SoGroup::doAction((SoAction *)action);
+#endif // OBSOLETED
+    inherited::write(action);
+    // Only increase number of writereferences to the top level node
+    // in a tree which is used multiple times.
+    if (!this->hasMultipleWriteRefs()) SoGroup::doAction((SoAction *)action);
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;

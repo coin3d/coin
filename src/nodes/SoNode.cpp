@@ -896,9 +896,13 @@ SoNode::writeS(SoAction * const action, SoNode * const node)
 void
 SoNode::write(SoWriteAction * action)
 {
+  // Note: make sure this code is in sync with the code in
+  // SoSFNode::writeValue(). Any changes here need to be propagated to
+  // that method.
+
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
-    // FIXME: anything missing here? 19990701 mortene.
+    this->addWriteReference(out, FALSE);
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, FALSE, FALSE)) return;

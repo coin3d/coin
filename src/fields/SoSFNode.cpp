@@ -214,9 +214,31 @@ SoSFNode::referencesCopy(void) const
   FIXME: write function documentation
 */
 void
-SoSFNode::writeValue(SoOutput * /* out */) const
+SoSFNode::writeValue(SoOutput * out) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  // Note: make sure this code is in sync with the code in
+  // SoNode::write(). Any changes here might need to be propagated to
+  // that method.
+
+  // FIXME: could this be done in a better way? As it stands now, we
+  // need a "friend SoSFNode" definition in SoBase (writeHeader() and
+  // writeFooter() are protected members). 19991112 mortene.
+
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    this->addWriteReference(out, FALSE);
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    SoNode * node = this->getValue();
+    if (node) {
+      if (node->writeHeader(out, FALSE, FALSE)) return;
+      node->writeInstance(out);
+      node->writeFooter(out);
+    }
+    else {
+      assert(0 && "FIXME: not implemented yet");
+    }
+  }
+  else assert(0 && "unknown stage");
 }
 
 void
