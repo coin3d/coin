@@ -26,6 +26,7 @@
 #error You have tried to use one of the private Coin header files
 #endif /* ! COIN_INTERNAL */
 
+#include <Inventor/C/base/memalloc.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,7 +38,7 @@ extern "C" {
     struct cc_hash_entry * next;
   };
   typedef struct cc_hash_entry cc_hash_entry;
-  
+
   struct cc_hash {
     unsigned int size;
     unsigned int elements;
@@ -45,8 +46,9 @@ extern "C" {
     unsigned int threshold;
     cc_hash_entry ** buckets;
     cc_hash_func * hashfunc;
+    cc_memalloc * memalloc;
   };
-  
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

@@ -51,7 +51,7 @@ hash_resize(cc_hash * ht, unsigned int newsize)
   assert((newsize & -newsize) == newsize); /* must be power of 2 */
 
   /* Never shrink the table */
-  if (ht->size > newsize)
+  if (ht->size >= newsize)
     return;
 
   ht->size = newsize;
@@ -102,6 +102,9 @@ cc_hash_construct(unsigned int size, float loadfactor)
   ht->loadfactor = loadfactor;
   ht->buckets = (cc_hash_entry **) calloc(s, sizeof(cc_hash_entry));
   ht->hashfunc = hash_default_hashfunc;
+  /* we use a memory allocator to avoid an operating system malloc
+     every time a new entry is needed */
+  ht->memalloc = cc_memalloc_construct(sizeof(cc_hash_entry));
   return ht;
 }
 
@@ -112,6 +115,7 @@ void
 cc_hash_destruct(cc_hash * ht)
 {
   cc_hash_clear(ht);
+  cc_memalloc_destruct(ht->memalloc);
   free(ht->buckets);
   free(ht);
 }
@@ -122,15 +126,7 @@ cc_hash_destruct(cc_hash * ht)
 void
 cc_hash_clear(cc_hash * ht)
 {
-  unsigned int i;
-  for (i = 0; i < ht->size; i++) {
-    cc_hash_entry * he = ht->buckets[i];
-    while (he) {
-      cc_hash_entry * next = he->next;
-      free(he);
-      he = next;
-    }
-  }
+  cc_memalloc_clear(ht->memalloc); /* free all memory used by all entries */
   memset(ht->buckets, 0, ht->size * sizeof(cc_hash_entry));
   ht->elements = 0;
 }
@@ -162,7 +158,7 @@ cc_hash_put(cc_hash * ht, unsigned long key, void * val)
   /* Key not already in the hash table; insert a new
    * entry as the first element in the bucket
    */
-  he = (cc_hash_entry *) malloc(sizeof(cc_hash_entry));
+  he = (cc_hash_entry *) cc_memalloc_allocate(ht->memalloc);
   he->key = key;
   he->val = val;
   he->next = ht->buckets[i];
@@ -219,7 +215,7 @@ cc_hash_remove(cc_hash * ht, unsigned long key)
       else {
         prev->next = next;
       }
-      free(he);
+      cc_memalloc_deallocate(ht->memalloc, (void*) he);
       return TRUE;
     }
     prev = he;
