@@ -123,23 +123,54 @@ cc_sleep(float seconds)
 #endif
 };
 
+#ifdef USE_PTHREAD
 unsigned long 
 cc_thread_id(void)
 {
-#ifdef USE_PTHREAD
   return (unsigned long) pthread_self();
+}
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
-  return 0; /* not supported yet */
-#endif /* USE_W32THREAD */
+
+static DWORD win32_threadid_idx;
+
+unsigned long 
+cc_thread_id(void)
+{
+  static unsigned long currentidx = 1;
+  LPVOID val = TlsGetValue(win32_threadid_idx);
+  if (val == 0) { /* not set yet */
+    cc_global_lock();
+    val = (LPVOID) currentidx++;
+    cc_global_unlock();
+    if (!TlsSetValue(win32_threadid_idx, (LPVOID)val)) {
+      assert(0 && "unexpected failure");
+    }
+  }
+  return (unsigned long) val;
 }
+
+static void 
+win32_threadid_idx_cleanup(void)
+{
+  TlsFree(win32_threadid_idx);
+}
+
+#endif /* USE_WIN32THREAD */
+
 
 void
 cc_thread_init(void)
 {
   cc_mutex_init();
   cc_sync_init();
+#ifdef USE_W32THREAD
+  /* needed to quickly generate a thread-id for each thread */
+  win32_threadid_idx = TlsAlloc();
+  assert(win32_threadid_idx != TLS_OUT_OF_INDEXES); 
+  atexit(win32_threadid_idx_cleanup);
+#endif /* USE_WIN32THREAD */ 
 }
 
 /* ********************************************************************** */
