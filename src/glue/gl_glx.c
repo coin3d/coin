@@ -333,7 +333,10 @@ static XVisualInfo *
 glxglue_find_gl_visual(void)
 {
   int trynum = 0;
-  const int ARRAYSIZE = 32;
+  /* This used to be an "const int", but not all C compilers can
+     handle arrays declaration with const int sizes. (We had a report
+     of this failing for some compiler under HP-UX 10.20.) */
+#define ARRAYSIZE 32
   int attrs[ARRAYSIZE];
   XVisualInfo * visinfo = NULL;
 
@@ -354,6 +357,7 @@ glxglue_find_gl_visual(void)
   }
 
   return visinfo;
+#undef ARRAYSIZE
 }
 
 void *
