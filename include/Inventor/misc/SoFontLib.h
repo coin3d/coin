@@ -33,41 +33,25 @@ class SoFontLibP;
 
 class SoFontLib {
 public:
-  
-  static void initialize();
-
-  static void exit();
-  
-  static const SbString createFont(const SbName &fontname, const SbName &stylename, const SbVec2s &size);
-  
-  static int getFont(const SbName &fontname, const SbVec2s &size);
-  
+  static void initialize(void);
+  static void exit(void);
+  static const SbString createFont(const SbName & fontname, const SbName & stylename, const SbVec2s & size);
+  static int getFont(const SbName & fontname, const SbVec2s & size);
   static void doneFont(const int font);
-  
   static int getNumCharmaps(const int font);
-  
   static SbName getCharmapName(const int font, const int charmap);
-  
   static void setCharmap(const int font, const int charmap);
-  
-  static void setCharSize(const int font, const SbVec2s &size);
-  
+  static void setCharSize(const int font, const SbVec2s & size);
   static void setFontRotation(const int font, const float angle);
-  
   static int getGlyph(const int font, const int charidx);
-  
   static SbVec2s getAdvance(const int font, const int glyph);
-  
   static SbVec2s getKerning(const int font, const int leftglyph, const int rightglyph);
-  
   static void doneGlyph(const int font, const int glyph);
-  
-  static unsigned char * getBitmap(const int font, const int glyph, SbVec2s &size, SbVec2s &pos, const SbBool antialiased);
-  
+  static unsigned char * getBitmap(const int font, const int glyph, SbVec2s & size, SbVec2s & pos, const SbBool antialiased);
   static int getOutline(const int font, const int glyph);
 
 protected:
-  SoFontLib();
+  SoFontLib(void);
   ~SoFontLib();
   
 private:

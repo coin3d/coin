@@ -32,44 +32,55 @@
 #include <config.h>
 #endif
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 #include <Inventor/misc/SoFontLib.h>
 
 #include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbString.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/SoInput.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
+/*************************************************************************/
 
-static void * SoFontLib_mutex = NULL;
-static SbStringList fontfiles;
+class SoFontLibP {
+public:
+  static void * initmutex;
+  static SbStringList * fontfiles;
+};
+
+void * SoFontLibP::initmutex = NULL;
+SbStringList * SoFontLibP::fontfiles = NULL;
+
+/*************************************************************************/
 
 /*!
   Constructor.
 */
-SoFontLib::SoFontLib() 
+SoFontLib::SoFontLib(void)
 {
 }
 
 /*!
   Destructor.
 */
-SoFontLib::~SoFontLib() 
+SoFontLib::~SoFontLib()
 {
 }
 
-void 
-SoFontLib::initialize() 
+void
+SoFontLib::initialize(void)
 {
-  if (SoFontLib_mutex == NULL)
-    CC_MUTEX_CONSTRUCT(SoFontLib_mutex);
-  CC_MUTEX_LOCK(SoFontLib_mutex);
-  
+  if (SoFontLibP::initmutex == NULL)
+    CC_MUTEX_CONSTRUCT(SoFontLibP::initmutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
+
   // Where to look for font files
   if (coin_getenv("COIN_FONT_PATH") != NULL) {
     SoInput::addEnvDirectoriesLast("COIN_FONT_PATH", NULL);
@@ -81,179 +92,156 @@ SoFontLib::initialize()
   // C:/WINDOWS. 20030316 mortene.
   SoInput::addDirectoryLast("c:/WINDOWS/Fonts");
 #endif
-  
+
   // Built-in mappings from font name to font file name
-  fontfiles.truncate(0);
-  fontfiles.append(new SbString("Arial"));
-  fontfiles.append(new SbString("arial.ttf"));
-  fontfiles.append(new SbString("Arial Bold"));
-  fontfiles.append(new SbString("arialbd.ttf"));
-  fontfiles.append(new SbString("Arial Bold Italic"));
-  fontfiles.append(new SbString("arialbi.ttf"));
-  fontfiles.append(new SbString("Arial Italic"));
-  fontfiles.append(new SbString("ariali.ttf"));
-  fontfiles.append(new SbString("Century Gothic"));
-  fontfiles.append(new SbString("gothic.ttf"));
-  fontfiles.append(new SbString("Century Gothic Bold"));
-  fontfiles.append(new SbString("gothicb.ttf"));
-  fontfiles.append(new SbString("Century Gothic Bold Italic"));
-  fontfiles.append(new SbString("gothicbi.ttf"));
-  fontfiles.append(new SbString("Century Gothic Italic"));
-  fontfiles.append(new SbString("gothici.ttf"));
-  fontfiles.append(new SbString("Courier"));
-  fontfiles.append(new SbString("cour.ttf"));
-  fontfiles.append(new SbString("Courier Bold"));
-  fontfiles.append(new SbString("courbd.ttf"));
-  fontfiles.append(new SbString("Courier Bold Italic"));
-  fontfiles.append(new SbString("courbi.ttf"));
-  fontfiles.append(new SbString("Courier Italic"));
-  fontfiles.append(new SbString("couri.ttf"));
-  fontfiles.append(new SbString("Simian"));
-  fontfiles.append(new SbString("simtoran.ttf"));
-  fontfiles.append(new SbString("Times New Roman"));
-  fontfiles.append(new SbString("times.ttf"));
-  fontfiles.append(new SbString("Times New Roman Bold"));
-  fontfiles.append(new SbString("timesbd.ttf"));
-  fontfiles.append(new SbString("Times New Roman Bold Italic"));
-  fontfiles.append(new SbString("timesbi.ttf"));
-  fontfiles.append(new SbString("Times New Roman Italic"));
-  fontfiles.append(new SbString("timesi.ttf"));
-  fontfiles.append(new SbString("Verdana"));
-  fontfiles.append(new SbString("verdana.ttf"));
-  fontfiles.append(new SbString("Verdana Bold"));
-  fontfiles.append(new SbString("verdanab.ttf"));
-  fontfiles.append(new SbString("Verdana Bold Italic"));
-  fontfiles.append(new SbString("verdanaz.ttf"));
-  fontfiles.append(new SbString("Verdana Italic"));
-  fontfiles.append(new SbString("verdanai.ttf"));
+  const char * fontmappings[] = {
+    "Arial", "arial.ttf", "Arial Bold", "arialbd.ttf",
+    "Arial Bold Italic", "arialbi.ttf", "Arial Italic", "ariali.ttf",
+    "Century Gothic", "gothic.ttf", "Century Gothic Bold", "gothicb.ttf",
+    "Century Gothic Bold Italic", "gothicbi.ttf",
+    "Century Gothic Italic", "gothici.ttf",
+    "Courier", "cour.ttf", "Courier Bold", "courbd.ttf",
+    "Courier Bold Italic", "courbi.ttf", "Courier Italic", "couri.ttf",
+    "Simian", "simtoran.ttf", "Times New Roman", "times.ttf",
+    "Times New Roman Bold", "timesbd.ttf",
+    "Times New Roman Bold Italic", "timesbi.ttf",
+    "Times New Roman Italic", "timesi.ttf",
+    "Verdana", "verdana.ttf", "Verdana Bold", "verdanab.ttf",
+    "Verdana Bold Italic", "verdanaz.ttf", "Verdana Italic", "verdanai.ttf"
+  };
+
+  SoFontLibP::fontfiles = new SbStringList;
+  for (unsigned int i=0; i < (sizeof(fontmappings) / sizeof(fontmappings[0])); i++) {
+    SoFontLibP::fontfiles->append(new SbString(fontmappings[i]));
+  }
 
   flwInitialize();
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
 }
 
-void 
-SoFontLib::exit() 
+void
+SoFontLib::exit()
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   flwExit();
-  fontfiles.truncate(0);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
-  if (SoFontLib_mutex != NULL)
-    CC_MUTEX_DESTRUCT(SoFontLib_mutex);
+  delete SoFontLibP::fontfiles;
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
+  if (SoFontLibP::initmutex != NULL)
+    CC_MUTEX_DESTRUCT(SoFontLibP::initmutex);
 }
 
 const SbString
-SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbVec2s &size) 
+SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbVec2s &size)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   SbString path;
   char name[300];
   int fileidx, i, retval;
   SbStringList emptylist;
   fileidx = -1;
-  for (i=0; i<fontfiles.getLength(); i+=2)
-    if (!strcmp(fontfiles[i]->getString(), fontname.getString())) {
+  for (i=0; i<SoFontLibP::fontfiles->getLength(); i+=2)
+    if (!strcmp((*SoFontLibP::fontfiles)[i]->getString(), fontname.getString())) {
       fileidx = i;
-      i = fontfiles.getLength();
+      i = SoFontLibP::fontfiles->getLength();
     }
   // fprintf(stderr,"createFont: fileidx %d\n", fileidx);  // DEBUG
   if (fileidx >= 0) {  // Valid font name
-    path = SoInput::searchForFile(*fontfiles[fileidx+1], SoInput::getDirectories(), emptylist);
+    path = SoInput::searchForFile(*(*SoFontLibP::fontfiles)[fileidx+1], SoInput::getDirectories(), emptylist);
   } else {  // Treat as font file name
     path = SoInput::searchForFile(fontname.getString(), SoInput::getDirectories(), emptylist);
   }
   // fprintf(stderr,"createFont: path %s\n", path.getString());  // DEBUG
   int font = flwCreateFont( path.getString(), name, 300, 12, 12 );
-  if (font >= 0) 
+  if (font >= 0)
     flwSetCharSize(font, (int)size[0], (int)size[1]);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
   return SbString(name);
 }
 
 int
-SoFontLib::getFont(const SbName &fontname, const SbVec2s &size) 
+SoFontLib::getFont(const SbName &fontname, const SbVec2s &size)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   int font = flwGetFont( fontname.getString(), (int)size[0], (int)size[1]);
   // flwSetFontRotation(font, 45.0);  // DEBUG
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
   return font;
 }
 
-void 
+void
 SoFontLib::doneFont(const int font)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   if (font >= 0)
     flwDoneFont(font);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
 }
 
 int
 SoFontLib::getNumCharmaps(const int font)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   int retval = 0;
   if (font >= 0)
     retval = flwGetNumCharmaps(font);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
   return retval;
 }
 
-SbName 
-SoFontLib::getCharmapName(const int font, const int charmap) 
+SbName
+SoFontLib::getCharmapName(const int font, const int charmap)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   char namebuf[80];
   sprintf(namebuf,"unknown");
   if (font >= 0)
     flwGetCharmapName(font, charmap, namebuf, 80);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
   return SbName(namebuf);
 }
 
-void 
-SoFontLib::setCharmap(const int font, const int charmap) 
+void
+SoFontLib::setCharmap(const int font, const int charmap)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   if (font >= 0)
     flwSetCharmap(font, charmap);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
 }
 
-void 
-SoFontLib::setCharSize(const int font, const SbVec2s &size) 
+void
+SoFontLib::setCharSize(const int font, const SbVec2s &size)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   if (font >= 0)
     flwSetCharSize(font, (int)size[0], (int)size[1]);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
 }
 
-void 
-SoFontLib::setFontRotation(const int font, const float angle) 
+void
+SoFontLib::setFontRotation(const int font, const float angle)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   if (font >= 0)
     flwSetFontRotation(font, angle);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
 }
 
 int
-SoFontLib::getGlyph(const int font, const int charidx) 
+SoFontLib::getGlyph(const int font, const int charidx)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   int retval = -1;
   if (font >= 0)
     retval = flwGetGlyph(font, charidx);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
   return retval;
 }
 
-SbVec2s 
-SoFontLib::getAdvance(const int font, const int glyph) 
+SbVec2s
+SoFontLib::getAdvance(const int font, const int glyph)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   SbVec2s retval(0, 0);
   if (font >= 0) {
     float x, y;
@@ -261,14 +249,14 @@ SoFontLib::getAdvance(const int font, const int glyph)
     if (result==0)
       retval = SbVec2s((short)x, (short)y);
   }
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
   return retval;
 }
 
-SbVec2s 
-SoFontLib::getKerning(const int font, const int leftglyph, const int rightglyph) 
+SbVec2s
+SoFontLib::getKerning(const int font, const int leftglyph, const int rightglyph)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   SbVec2s retval(0, 0);
   if (font >= 0) {
     float x, y;
@@ -276,17 +264,17 @@ SoFontLib::getKerning(const int font, const int leftglyph, const int rightglyph)
     if (result==0)
       retval = SbVec2s((short)x, (short)y);
   }
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
   return retval;
 }
 
-void 
-SoFontLib::doneGlyph(const int font, const int glyph) 
+void
+SoFontLib::doneGlyph(const int font, const int glyph)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   if (font >= 0)
     flwDoneGlyph(font, glyph);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
 }
 
 
@@ -294,10 +282,10 @@ SoFontLib::doneGlyph(const int font, const int glyph)
 // !antialiased  -> 1 pixel per byte
 // Bitmaps are cached in fontlib_wrapper, no need to free any data.
 // FIXME: Support antialiased fonts. preng 20030224.
-unsigned char * 
-SoFontLib::getBitmap(const int font, const int glyph, SbVec2s &size, SbVec2s &pos, const SbBool antialiased) 
+unsigned char *
+SoFontLib::getBitmap(const int font, const int glyph, SbVec2s &size, SbVec2s &pos, const SbBool antialiased)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   unsigned char * retval = NULL;
   if (font >= 0 && glyph >= 0) {
     FLWbitmap * bm = flwGetBitmap(font, glyph);
@@ -309,19 +297,17 @@ SoFontLib::getBitmap(const int font, const int glyph, SbVec2s &size, SbVec2s &po
       retval = bm->buffer;
     }
   }
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
   return retval;
 }
 
-int 
-SoFontLib::getOutline(const int font, const int glyph) 
+int
+SoFontLib::getOutline(const int font, const int glyph)
 {
-  CC_MUTEX_LOCK(SoFontLib_mutex);
+  CC_MUTEX_LOCK(SoFontLibP::initmutex);
   int retval = -1;
   if (font >= 0)
     retval = flwGetOutline(font, glyph);
-  CC_MUTEX_UNLOCK(SoFontLib_mutex);
+  CC_MUTEX_UNLOCK(SoFontLibP::initmutex);
   return retval;
 }
-
-
