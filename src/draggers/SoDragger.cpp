@@ -341,6 +341,11 @@ SoDragger::updateElements(SoState * state)
 
 // the action methods are overloaded in case we decide to do some
 // extra work before passing the control on the SoBaseKit
+
+/*!
+  Overloaded to initialize some elements before traversing
+  children.
+*/
 void
 SoDragger::callback(SoCallbackAction * action)
 {
@@ -350,6 +355,10 @@ SoDragger::callback(SoCallbackAction * action)
   state->pop();
 }
 
+/*!
+  Overloaded to initialize some elements before traversing
+  children.
+*/
 void 
 SoDragger::GLRender(SoGLRenderAction * action)
 {
@@ -360,12 +369,21 @@ SoDragger::GLRender(SoGLRenderAction * action)
   state->pop();
 }
 
+/*!
+  Overloaded to initialize some elements before traversing
+  children.
+*/
 void 
 SoDragger::getMatrix(SoGetMatrixAction * action)
 {
+  // no need to update any elements here
   inherited::getMatrix(action);
 }
 
+/*!
+  Overloaded to initialize some elements before traversing
+  children.
+*/
 void 
 SoDragger::rayPick(SoRayPickAction * action)
 {
@@ -376,18 +394,32 @@ SoDragger::rayPick(SoRayPickAction * action)
   state->pop();
 }
 
+/*!
+  Overloaded to initialize some elements before traversing
+  children.
+*/
 void 
 SoDragger::search(SoSearchAction * action)
 {
+  // no need to update any elements here
   inherited::search(action);
 }
 
+/*!
+  Overloaded to initialize some elements before traversing
+  children.
+*/
 void 
 SoDragger::write(SoWriteAction * action)
 {
+  // no need to update any elements here
   inherited::write(action);
 }
 
+/*!
+  Overloaded to initialize some elements before traversing
+  children.
+*/
 void 
 SoDragger::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
