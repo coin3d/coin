@@ -57,6 +57,7 @@
   which is something that can easily be done when setting up
   individual state-changing nodes in the scenegraph.
 
+  \since Inventor 2.1
   \sa SoVertexShape
   \sa SoCoordinate3, SoTextureCoordinate2, SoTextureCoordinate3, SoNormal
   \sa SoPackedColor

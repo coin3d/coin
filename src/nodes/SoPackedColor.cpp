@@ -32,6 +32,11 @@
   \sa SoBaseColor
 */
 
+// FIXME: the name of the "orderedRGBA" field was actually "rgba" in
+// the version 2.0 Inventor file format, and the semantics was also
+// different (reversed order). This means that Inventor 2.0 files with
+// PackedColor nodes will not import properly at the moment.  20020508 mortene.
+
 #include <Inventor/nodes/SoPackedColor.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 

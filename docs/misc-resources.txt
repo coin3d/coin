@@ -198,4 +198,4 @@ THE LINKS
   <URL:http://devel-home.kde.org/~sewardj/> (or
   <URL:http://developer.kde.org/~sewardj>).
 
-
+* TrueType Fonts with very liberal licensing: <URL:http://fonts.tom7.com/>

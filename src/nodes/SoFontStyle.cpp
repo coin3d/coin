@@ -35,6 +35,7 @@
   consider SoFontStyle nodes as nodes giving \e hints about font
   settings, as you are \e not guaranteed to get exactly what you want.
 
+  \since Inventor 2.1
   \sa SoFont, SoText2, SoText3
 */
 

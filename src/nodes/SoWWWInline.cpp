@@ -34,6 +34,8 @@
   of the node will be that of a bounding box enclosing the geometry we
   expect to fetch from the URL.  The application is naturally also
   responsible for specifying the expected dimensions of the geometry.
+
+  \since Inventor 2.1
 */
 
 #include <Inventor/nodes/SoWWWInline.h>

@@ -365,6 +365,9 @@ SoAction::apply(SoNode * root)
 
 /*!
   Applies the action to the parts of the graph defined by \a path.
+
+  If the \a path ends in an SoGroup node, the action will also
+  traverse the tail node's children.
 */
 void
 SoAction::apply(SoPath * path)

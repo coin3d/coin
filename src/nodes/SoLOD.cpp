@@ -61,6 +61,7 @@ LOD {
   rendering when models get far enough away from the camera that we
   want to remove them completely).
 
+  \since Inventor 2.1
   \sa SoLevelOfDetail
 */
 

@@ -1137,7 +1137,7 @@ SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded, SbBool leafc
 
 #if COIN_DEBUG
   if (makeifneeded) { // user probably expected part to be found, post a warning
-    SoDebugError::postWarning("SoBaseKit::findPart",
+    SoDebugError::postWarning("SoBaseKit::getAnyPart",
                               "part ``%s'' not found in %s",
                               partname.getString(),
                               this->getTypeId().getName().getString());

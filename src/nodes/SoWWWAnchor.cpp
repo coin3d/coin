@@ -27,6 +27,8 @@
   \ingroup nodes
 
   FIXME: write class doc
+
+  \since Inventor 2.1
 */
 
 

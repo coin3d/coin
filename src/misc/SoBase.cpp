@@ -78,11 +78,12 @@
   void foo(SoNode * node)
   {
     if (node->getTypeId() == SoFile::getClassTypeId()) {
+      SoFile * filenode = (SoFile *)node;  // safe downward cast, knows the type
       /// [then something] ///
     }
     else if (node->getTypeId().isOfType(SoGroup::getClassTypeId())) {
-      SoGroup * group = (SoGroup *)node;  // safe downward cast, know the type
-      // then something else
+      SoGroup * group = (SoGroup *)node;  // safe downward cast, knows the type
+      /// [then something else] ///
     }
   }
   \endcode

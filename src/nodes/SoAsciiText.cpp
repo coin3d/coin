@@ -32,6 +32,8 @@
   scales, translates etc just like other geometry in the scene. It is
   different from the SoText3 node in that it renders the text "flat",
   i.e. does not extrude the fonts to have depth.
+
+  \since Inventor 2.1
 */
 
 #include <Inventor/nodes/SoAsciiText.h>
