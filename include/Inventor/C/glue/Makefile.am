@@ -7,7 +7,6 @@ PrivateHeaders = \
 	GLUWrapper.h \
 	bzip2.h \
 	dlp.h \
-	flwwin32.h \
 	freetype.h \
 	gl_agl.h \
 	gl_glx.h \
@@ -17,6 +16,7 @@ PrivateHeaders = \
 	simage_wrapper.h \
 	win32api.h \
 	zlib.h
+
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(cglue, C/glue)
