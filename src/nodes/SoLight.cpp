@@ -118,6 +118,7 @@ SoLight::initClass(void)
 
   SO_ENABLE(SoGLRenderAction, SoLightAttenuationElement);
   SO_ENABLE(SoGLRenderAction, SoGLLightIdElement);
+  SO_ENABLE(SoGLRenderAction, SoLightElement);
 
   SO_ENABLE(SoCallbackAction, SoLightAttenuationElement);
   SO_ENABLE(SoCallbackAction, SoLightElement);
