@@ -34,6 +34,7 @@
 
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/lists/SoTypeList.h>
+#include <Inventor/C/threads/threadsutilp.h>
 #include <assert.h>
 
 #if COIN_DEBUG
@@ -475,7 +476,6 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
                            SbBool islist, SoType listcontainertype,
                            SoType listitemtype, SbBool ispublic)
 {
-
   // The elements of a nodekit catalog is conceptually ordered like a
   // tree, but implementation-wise we stuff them inside a list. This
   // will make it speedier to access the elements through preset part
@@ -498,50 +498,51 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
                          "new entry: ``%s''", name.getString());
 #endif
 
-  assert((name != "") && "Empty name not allowed");
-  assert((this->getPartNumber( this->items, name ) == SO_CATALOG_NAME_NOT_FOUND ) && "partname already in use" );
-  assert(this->getPartNumber( this->delayeditems, name ) == SO_CATALOG_NAME_NOT_FOUND && "partname already in use" );
-  assert( (parent!="" || this->getNumEntries() == 0) && "need a parent name" );
-  assert( (type != SoType::badType()) && "bad type" );
-  assert( (defaulttype != SoType::badType()) && "bad default type" );
-  
-  // NOTE: !(A ^ B) <=> !A v !B
-  assert( (!islist || (listcontainertype != SoType::badType())) && 
-          "bad list container type");
-  assert( (!islist || (listitemtype != SoType::badType())) &&
-          "bad list item type" );
-  
-  CatalogItem * newitem = new CatalogItem;
-  newitem->name = name;
-  newitem->type = type;
-  newitem->defaulttype = defaulttype;
-  newitem->isdefaultnull = isdefaultnull;
-  newitem->parentname = parent;
-  newitem->siblingname = rightsibling;
-  newitem->islist = islist;
-  newitem->containertype = listcontainertype;
-  newitem->itemtypeslist.append(listitemtype);
-  newitem->ispublic = ispublic;
-
-  SbBool delay = FALSE;
-  if (rightsibling != "" &&
-      this->getPartNumber(this->items, rightsibling) == SO_CATALOG_NAME_NOT_FOUND) {
-    delay = TRUE;
-  }
-  else if (parent != "" &&
-           this->getPartNumber(this->items, parent) == SO_CATALOG_NAME_NOT_FOUND) {
-    delay = TRUE;
-  }  
-
-  if (delay)
-    this->delayeditems.append(newitem);
-  else 
-    this->reallyAddEntry(newitem);
-
-  // Move elements from list of delayed inserts to "real" catalog
-  // list, if possible.
-  for (int i = 0; i < this->delayeditems.getLength(); i++)
-    {
+  CC_GLOBAL_LOCK;
+  if (!this->hasEntry(name)) {
+    assert((name != "") && "Empty name not allowed");
+    assert((this->getPartNumber( this->items, name ) == SO_CATALOG_NAME_NOT_FOUND ) && "partname already in use" );
+    assert(this->getPartNumber( this->delayeditems, name ) == SO_CATALOG_NAME_NOT_FOUND && "partname already in use" );
+    assert( (parent!="" || this->getNumEntries() == 0) && "need a parent name" );
+    assert( (type != SoType::badType()) && "bad type" );
+    assert( (defaulttype != SoType::badType()) && "bad default type" );
+    
+    // NOTE: !(A ^ B) <=> !A v !B
+    assert( (!islist || (listcontainertype != SoType::badType())) && 
+            "bad list container type");
+    assert( (!islist || (listitemtype != SoType::badType())) &&
+            "bad list item type" );
+    
+    CatalogItem * newitem = new CatalogItem;
+    newitem->name = name;
+    newitem->type = type;
+    newitem->defaulttype = defaulttype;
+    newitem->isdefaultnull = isdefaultnull;
+    newitem->parentname = parent;
+    newitem->siblingname = rightsibling;
+    newitem->islist = islist;
+    newitem->containertype = listcontainertype;
+    newitem->itemtypeslist.append(listitemtype);
+    newitem->ispublic = ispublic;
+    
+    SbBool delay = FALSE;
+    if (rightsibling != "" &&
+        this->getPartNumber(this->items, rightsibling) == SO_CATALOG_NAME_NOT_FOUND) {
+      delay = TRUE;
+    }
+    else if (parent != "" &&
+             this->getPartNumber(this->items, parent) == SO_CATALOG_NAME_NOT_FOUND) {
+      delay = TRUE;
+    }  
+    
+    if (delay)
+      this->delayeditems.append(newitem);
+    else 
+      this->reallyAddEntry(newitem);
+    
+    // Move elements from list of delayed inserts to "real" catalog
+    // list, if possible.
+    for (int i = 0; i < this->delayeditems.getLength(); i++) {
       const SbName & p = this->delayeditems[i]->parentname;
       const SbName & r = this->delayeditems[i]->siblingname;
       
@@ -561,10 +562,11 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 #endif
       }
     }
-
-  if( this->delayeditems.getLength() == 0 )
-    SoNodekitCatalogPropagateDefaultInit( this );
-
+    
+    if( this->delayeditems.getLength() == 0 )
+      SoNodekitCatalogPropagateDefaultInit( this );
+  }
+  CC_GLOBAL_UNLOCK;
   return TRUE;
 }
 
@@ -657,19 +659,23 @@ SoNodekitCatalog::addListItemType(int part, SoType type)
 void
 SoNodekitCatalog::addListItemType(const SbName & name, SoType type)
 {
-  // FIXME: If a part name is invalid, this procedure bails out
-  // elsewhere on an assert. The check and debug comment should be
-  // superflous? If it isn't, it should be possible to find a way to
-  // write this that expresses the code intentions better. 
-  // 20021029 rolvs
-
-  if (!this->addListItemType(this->items, name, type) &&
-      !this->addListItemType(this->delayeditems, name, type)) {
+  CC_GLOBAL_LOCK;
+  if (!this->hasListItemType(name, type)) {
+    // FIXME: If a part name is invalid, this procedure bails out
+    // elsewhere on an assert. The check and debug comment should be
+    // superflous? If it isn't, it should be possible to find a way to
+    // write this that expresses the code intentions better. 
+    // 20021029 rolvs
+    
+    if (!this->addListItemType(this->items, name, type) &&
+        !this->addListItemType(this->delayeditems, name, type)) {
 #if COIN_DEBUG
-    SoDebugError::post("SoNodekitCatalog::addListItemType",
-                       "invalid part name, \"%s\"", name.getString());
+      SoDebugError::post("SoNodekitCatalog::addListItemType",
+                         "invalid part name, \"%s\"", name.getString());
 #endif
+    }
   }
+  CC_GLOBAL_UNLOCK;
 }
 
 /*!
@@ -681,6 +687,8 @@ void
 SoNodekitCatalog::narrowTypes(const SbName & name,
                               SoType newtype, SoType newdefaulttype)
 {
+  CC_GLOBAL_LOCK;
+
   assert(this->delayeditems.getLength() == 0);
 
   int part = this->getPartNumber(name);
@@ -694,6 +702,8 @@ SoNodekitCatalog::narrowTypes(const SbName & name,
 
   this->items[part]->type = newtype;
   this->items[part]->defaulttype = newdefaulttype;
+
+  CC_GLOBAL_UNLOCK;
 }
 
 /*!
@@ -824,4 +834,40 @@ SoNodekitCatalog::addListItemType(const SbList<class CatalogItem *> & l,
   if (part == SO_CATALOG_NAME_NOT_FOUND) return FALSE;
   this->addListItemType(l, part, type);
   return TRUE;
+}
+
+/*!
+  \internal
+  \since Coin 2.3
+*/
+SbBool 
+SoNodekitCatalog::hasEntry(const SbName & name) const
+{ 
+  if (this->getPartNumber(this->items, name) != SO_CATALOG_NAME_NOT_FOUND) return TRUE;
+  if (this->getPartNumber(this->delayeditems, name) != SO_CATALOG_NAME_NOT_FOUND) return TRUE;
+  return FALSE;
+}
+
+/*!
+  \internal
+  \since Coin 2.3
+*/
+SbBool 
+SoNodekitCatalog::hasListItemType(const SbName & name, SoType type) const
+{
+  const SbList <class CatalogItem*> * lptr = &this->items;
+  int part = this->getPartNumber(this->items, name);
+  if (part == SO_CATALOG_NAME_NOT_FOUND) {
+    lptr = &this->delayeditems;
+    part = this->getPartNumber(this->delayeditems, name);
+  }
+  const SbList <class CatalogItem*> & l = *lptr;
+  assert(part >= 0 && part < l.getLength() && 
+         "invalid part number");
+  assert(type != SoType::badType() &&
+         "dont add SoType::badType(), you stupid!");
+  assert(l[part]->islist &&
+         "type must be a list-item type" );
+
+  return l[part]->itemtypeslist.find( type ) != -1;
 }

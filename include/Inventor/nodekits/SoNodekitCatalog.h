@@ -91,6 +91,8 @@ public:
   void printCheck(void) const;
 
 private:
+  SbBool hasEntry(const SbName & name) const;
+  SbBool hasListItemType(const SbName & name, SoType type) const;
   SbBool reallyAddEntry(class CatalogItem * newitem);
 
   int getPartNumber(const SbList<class CatalogItem *> & l,
