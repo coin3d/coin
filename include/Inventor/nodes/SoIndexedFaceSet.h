@@ -63,7 +63,10 @@ private:
     NONE = OVERALL
   };
 
-  SbBool useConvexCache(SoAction * action);
+  SbBool useConvexCache(SoAction * action,
+                        const SbVec3f * normals,
+                        const int32_t * nindices,
+                        const SbBool normalsfromcache);
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
   virtual void notify(SoNotList * list);

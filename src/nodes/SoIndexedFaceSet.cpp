@@ -71,6 +71,7 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoNormalElement.h>
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <assert.h>
@@ -325,7 +326,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   }
 
   SbBool convexcacheused = FALSE;
-  if (this->useConvexCache(action)) {
+  if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {
     cindices = THIS->convexCache->getCoordIndices();
     numindices = THIS->convexCache->getNumCoordIndices();
     mindices = THIS->convexCache->getMaterialIndices();
@@ -477,7 +478,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   }
 
   SbBool convexcacheused = FALSE;
-  if (this->useConvexCache(action)) {
+  if (this->useConvexCache(action, normals, nindices, normalCacheUsed)) {
     cindices = THIS->convexCache->getCoordIndices();
     numindices = THIS->convexCache->getNumCoordIndices();
     mindices = THIS->convexCache->getMaterialIndices();
@@ -648,12 +649,15 @@ SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 // used. this->convexCache is then guaranteed to be != NULL.
 //
 SbBool
-SoIndexedFaceSet::useConvexCache(SoAction * action)
+SoIndexedFaceSet::useConvexCache(SoAction * action,
+                                 const SbVec3f * normals,
+                                 const int32_t * nindices,
+                                 const SbBool normalsfromcache)
 {
   SoState * state = action->getState();
   if (SoShapeHintsElement::getFaceType(state) == SoShapeHintsElement::CONVEX)
     return FALSE;
-
+  
   if (THIS->concavestatus == STATUS_UNKNOWN) {
     const int32_t * ptr = this->coordIndex.getValues(0);
     const int32_t * endptr = ptr + this->coordIndex.getNum();
@@ -694,23 +698,28 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
   SoCacheElement::set(state, THIS->convexCache);
   if (this->vertexProperty.getValue()) this->vertexProperty.getValue()->doAction(action);
   const SoCoordinateElement * coords;
-  const SbVec3f * normals;
+  const SbVec3f * dummynormals;
   const int32_t * cindices;
   int32_t numindices;
-  const int32_t * nindices;
+  const int32_t * dummynindices;
   const int32_t * tindices;
   const int32_t * mindices;
-  SbBool normalCacheUsed;
-  SbBool sendNormals = TRUE;
+  SbBool dummy;
 
-  this->getVertexData(state, coords, normals, cindices,
-                      nindices, tindices, mindices, numindices,
-                      sendNormals, normalCacheUsed);
+  // normals was included as parameters to this function (to avoid
+  // a double readLock on the normal cache), so tell getVertexData()
+  // not to return normals.
+  this->getVertexData(state, coords, dummynormals, cindices,
+                      dummynindices, tindices, mindices, numindices,
+                      FALSE, dummy);
+  
+  // force a cache-dependency on SoNormalElement
+  (void) SoNormalElement::getInstance(state);
 
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
 
-  if (normalCacheUsed && nbind == PER_VERTEX) {
+  if (normalsfromcache && nbind == PER_VERTEX) {
     nbind = PER_VERTEX_INDEXED;
   }
 
@@ -740,10 +749,6 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
                               (SoConvexDataCache::Binding)tbind);
 
   THIS->writeUnlockConvexCache();
-
-  if (normalCacheUsed) {
-    this->readUnlockNormalCache();
-  }
 
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
