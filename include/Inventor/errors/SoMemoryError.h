@@ -22,30 +22,30 @@
 
 #include <Inventor/errors/SoError.h>
 
+
 class SoMemoryError : public SoError {
   typedef SoError inherited;
 
 public:
-  static  void setHandlerCallback(SoErrorCB * const callback,
-              void * const data);
-  static  SoErrorCB * getHandlerCallback(void);
-  static  void * getHandlerData(void);
+  static void setHandlerCallback(SoErrorCB * const callback,
+                                 void * const data);
+  static SoErrorCB * getHandlerCallback(void);
+  static void * getHandlerData(void);
 
-  static  SoType getClassTypeId(void);
+  static SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const;
 
-  static  void post(const char * const whatWasAllocated);
+  static void post(const char * const whatWasAllocated);
 
-  static  void initClass(void);
+  static void initClass(void);
 
 protected:
   virtual SoErrorCB * getHandler(void * & data) const;
 
 private:
-  static  SoType classTypeId;
-  static  SoErrorCB * callback;
-  static  void * callbackData;
-
+  static SoType classTypeId;
+  static SoErrorCB * callback;
+  static void * callbackData;
 };
 
 #endif // !__SOMEMORYERROR_H__

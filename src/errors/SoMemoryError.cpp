@@ -18,14 +18,42 @@
 \**************************************************************************/
 
 /*!
-  \class SoMemoryError Inventor/elements/SoMemoryError.h
-  \brief The SoMemoryError class is yet to be documented.
+  \class SoMemoryError SoMemoryError.h Inventor/elements/SoMemoryError.h
+  \brief The SoMemoryError class is used to inform of problems with
+  memory allocation.
 
-  FIXME: write doc.
+  Modern operating systems takes care of handling most out of memory
+  conditions for you, but in certain situations it can be wise to do
+  some manual checking and intervention. This class is provided as an
+  aid to help out in these situations.
+
+  The basic design of the Coin library is to pass on the
+  responsibility for handling failed attempts at memory allocation to
+  the application programmer. If you want to detect and take care of
+  these, you should compile Coin with the C++ exception throwing on
+  and wrap your code within \c try{} and \c catch{} blocks. The most
+  you can do if you get a failed allocation is typically to notify the
+  user and then exit the application, though, and this is something
+  most operating systems will do for you, so you probably need not
+  consider this at all.
+
+  So, where does the SoMemoryError class come in handy? There are
+  certain things which could happen within the library which are best
+  taken care of by internally handling failed attempts at memory
+  allocation. An example: the user tries to load a model file which
+  contains a filename pointer to a huge bitmapfile with a texture
+  map. The machine you are one does not provide you with enough memory
+  to load the file and prepare the texture image for rendering,
+  though. This is a case where it is possible to just emit a warning
+  and continue. The warning will then be passed through this class.
+
+  Note that SoMemoryError is probably not of much use to the
+  application programmer.
+
 */
 
 /*¡
-  potensial buffer overflow errors detected, should be fixed - 990610 larsa
+  potensial buffer overflow errors, should be fixed - 990610 larsa
 */
 
 #include <Inventor/errors/SoMemoryError.h>
@@ -35,34 +63,13 @@
 
 #include <stdio.h>
 
-/*!
-  \var SoMemoryError::classTypeId
-
-  FIXME: write doc.
-*/
 
 SoType SoMemoryError::classTypeId;
-
-/*!
-  \var SoMemoryError::callback
-
-  FIXME: write doc.
-*/
-
 SoErrorCB * SoMemoryError::callback = SoError::defaultHandlerCB;
-
-/*!
-  \var SoMemoryError::callbackData
-
-  FIXME: write doc.
-*/
-
 void * SoMemoryError::callbackData = NULL;
 
-/*!
-  This static method initializes static data for the SoMemoryError class.
-*/
 
+// Documented for parent class. 
 void
 SoMemoryError::initClass(void)
 {
@@ -72,30 +79,21 @@ SoMemoryError::initClass(void)
     SoType::createType(SoError::getClassTypeId(), "MemoryError");
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoType
 SoMemoryError::getClassTypeId(void)
 {
   return SoMemoryError::classTypeId;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoType
 SoMemoryError::getTypeId(void) const
 {
   return SoMemoryError::classTypeId;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 void
 SoMemoryError::setHandlerCallback(SoErrorCB * const function,
                                   void * const data)
@@ -104,20 +102,14 @@ SoMemoryError::setHandlerCallback(SoErrorCB * const function,
   SoMemoryError::callbackData = data;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoErrorCB *
 SoMemoryError::getHandlerCallback(void)
 {
   return SoMemoryError::callback;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 void *
 SoMemoryError::getHandlerData(void)
 {
@@ -125,9 +117,9 @@ SoMemoryError::getHandlerData(void)
 }
 
 /*!
-  FIXME: write doc.
+  Posts a warning about a failed memory allocation. \a whatWasAllocated
+  should contain a description of what we tried to allocate.
 */
-
 void
 SoMemoryError::post(const char * const whatWasAllocated)
 {
@@ -138,10 +130,7 @@ SoMemoryError::post(const char * const whatWasAllocated)
   error.handleError();
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoErrorCB * SoMemoryError::getHandler(void * & data) const
 {
   data = SoMemoryError::callbackData;

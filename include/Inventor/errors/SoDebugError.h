@@ -22,12 +22,15 @@
 
 #include <Inventor/errors/SoError.h>
 
+
 class SoDebugError : public SoError {
   typedef SoError inherited;
 
 public:
   enum Severity {
-#if defined(ERROR) // Problem with MS Visual C++ v5.0 (at least)
+    // FIXME: improve this code. Use #undef and then redefine or
+    // something. 19991226 mortene.
+#if defined(ERROR) // Avoid problem with MS Visual C++ v5.0 (at later, probably)
     SERROR = 0,
 #else
     ERROR = 0,

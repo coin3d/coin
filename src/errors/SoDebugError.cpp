@@ -18,14 +18,33 @@
 \**************************************************************************/
 
 /*!
-  \class SoDebugError Inventor/errors/SoDebugError.h
-  \brief The SoDebugError class is yet to be documented.
+  \class SoDebugError SoDebugError.h Inventor/errors/SoDebugError.h
+  \brief The SoDebugError class is the internal debugging message
+  passing mechanism.
 
-  FIXME: write doc.
+  This class basically serves two purposes:
+
+  1) it is the message interface through which error and warning
+  conditions are passed to the programmer which is using the Coin
+  library API for building applications.  These messages are generated
+  when API methods are used in an incorrect manner, or if actions on
+  the library has caused it to enter an inconsistent state. Coin
+  programmers should then quickly be able to trace down errors in
+  their application code.
+
+  For this service to be available, the Coin library must be compiled
+  with debugging information. For release builds, most of this
+  "programmer's safety net" is removed to gain maximum speed and to
+  use minimum space (build the smallest possible library).
+
+  2) Coin application programmers can call the SoDebugError methods
+  within their own code as a convenient way of debugging application
+  code, replacing the usual cascades of fprintf() calls.
+
 */
 
 /*¡
-  potensial buffer overflow errors detected, should be fixed - 990610 larsa
+  potensial buffer overflow errors, should be fixed - 990610 larsa
 */
 
 #include <Inventor/errors/SoDebugError.h>
@@ -37,40 +56,18 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-/*!
-  \var SoDebugError::classTypeId
-
-  FIXME: write doc.
-*/
-
 SoType SoDebugError::classTypeId;
-
-/*!
-  \var SoDebugError::callback
-
-  FIXME: write doc.
-*/
-
 SoErrorCB * SoDebugError::callback = SoError::defaultHandlerCB;
-
-/*!
-  \var SoDebugError::callbackData
-
-  FIXME: write doc.
-*/
-
 void * SoDebugError::callbackData = NULL;
 
 /*!
   \enum SoDebugError::Severity
 
-  FIXME: write doc.
+  Specifies the available severity levels of the debug messages.
 */
 
-/*!
-  This static method initializes static data for the SoDebugError class.
-*/
 
+// Documented for parent class. 
 void
 SoDebugError::initClass(void)
 {
@@ -80,52 +77,36 @@ SoDebugError::initClass(void)
     SoType::createType(SoError::getClassTypeId(), "DebugError");
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 void
-SoDebugError::setHandlerCallback(SoErrorCB * const function,
-                                 void * const data)
+SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
   SoDebugError::callback = function;
   SoDebugError::callbackData = data;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoErrorCB *
 SoDebugError::getHandlerCallback(void)
 {
   return SoDebugError::callback;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 void *
 SoDebugError::getHandlerData(void)
 {
   return SoDebugError::callbackData;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoType
 SoDebugError::getClassTypeId(void)
 {
   return SoDebugError::classTypeId;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoType
 SoDebugError::getTypeId(void) const
 {
@@ -133,9 +114,14 @@ SoDebugError::getTypeId(void) const
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Returns severity level of current message.
 
+  You can use this to filter out debug messages and only let warnings
+  and/or errors pass through to the end-user if you have set your own
+  handler callback.
+
+  \sa setHandlerCallback()
+*/
 SoDebugError::Severity
 SoDebugError::getSeverity(void) const
 {
@@ -145,11 +131,9 @@ SoDebugError::getSeverity(void) const
 /*!
   This method posts a message with severity level "ERROR".
 */
-
 void
 SoDebugError::post(const char * const methodName,
-                   const char * const formatString,
-                   ...)
+                   const char * const formatString, ...)
 {
   va_list args;
   va_start(args, formatString);
@@ -165,13 +149,11 @@ SoDebugError::post(const char * const methodName,
 }
 
 /*!
-  FIXME: write doc.
+  This method posts a message with severity level "WARNING".
 */
-
 void
 SoDebugError::postWarning(const char * const methodName,
-                          const char * const formatString,
-                          ...)
+                          const char * const formatString, ...)
 {
   va_list args;
   va_start(args, formatString);
@@ -187,13 +169,11 @@ SoDebugError::postWarning(const char * const methodName,
 }
 
 /*!
-  FIXME: write doc.
+  This method posts a message with severity level "INFO".
 */
-
 void
 SoDebugError::postInfo(const char * const methodName,
-                       const char * const formatString,
-                       ...)
+                       const char * const formatString, ...)
 {
   va_list args;
   va_start(args, formatString);
@@ -208,10 +188,7 @@ SoDebugError::postInfo(const char * const methodName,
   error.handleError();
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoErrorCB *
 SoDebugError::getHandler(void * & data) const
 {

@@ -45,21 +45,22 @@ void coin_stub(const char *, unsigned int, const char *) { }
 
 /*************************************************************************/
 
-
 /*!
-  \class SoError Inventor/errors/SoError.h
+  \class SoError SoError.h Inventor/errors/SoError.h
   \brief The SoError class is the base class for all the error
-  \brief handling classes.
+  handling classes.
 
-  The SoError class handles both error handling and posting.
- 
-  The default handler just prints messages on the standard error
+  The default error handler just prints messages on the standard error
   output channel, but this can be overridden by client applications.
 
   Being able to override the default handler is useful when you want
   to collect error messages upon e.g. model import for later
   presentation of the messages to the user in any custom manner (like
   for instance in a GUI messagebox).
+
+  The SoError class is not designed to be particularly useful for
+  "direct use". Within the Coin library it is only used through its
+  subclasses.
 
 */
 
@@ -79,33 +80,18 @@ void coin_stub(const char *, unsigned int, const char *) { }
 #include <assert.h>
 
 /*!
-  \var SoError::classTypeId
+  \fn SoError::~SoError()
 
-  FIXME: write doc.
+  The default destructor does nothing.
 */
 
 SoType SoError::classTypeId;
-
-/*!
-  \var SoError::callback
-
-  FIXME: write doc.
-*/
-
 SoErrorCB * SoError::callback = SoError::defaultHandlerCB;
-
-/*!
-  \var SoError::callbackData
-
-  FIXME: write doc.
-*/
-
 void * SoError::callbackData = NULL;
 
 /*!
-  This static method initializes static data for the SoError class.
+  This method takes care of initializing all static data for the class.
 */
-
 void
 SoError::initClass(void)
 {
@@ -118,9 +104,8 @@ SoError::initClass(void)
 /*!
   This static method initializes all the SoError classes.
 */
-
 void
-SoError::initErrors(void)
+SoError::initClasses(void)
 {
   SoError::initClass();
   SoDebugError::initClass();
@@ -129,9 +114,10 @@ SoError::initErrors(void)
 }
 
 /*!
-  This static method returns the SoType for the SoError class.
-*/
+  This static method returns the SoType for this class.
 
+  \sa getTypeId()
+*/
 SoType
 SoError::getClassTypeId(void)
 {
@@ -139,10 +125,10 @@ SoError::getClassTypeId(void)
 }
 
 /*!
-  This method returns the type of the SoError (or SoError-derived) class
-  instance.
-*/
+  This method returns the SoType of a particular object instance.
 
+  \sa getClassTypeId()
+*/
 SoType
 SoError::getTypeId(void) const
 {
@@ -150,10 +136,9 @@ SoError::getTypeId(void) const
 }
 
 /*!
-  This method returns TRUE if the error instance is of - or derived from -
-  \a type, and FALSE otherwise.
+  This method returns \c TRUE if the error instance is of - or derived
+  from - \a type, and \c FALSE otherwise.
 */
-
 SbBool
 SoError::isOfType(const SoType type) const
 {
@@ -162,58 +147,54 @@ SoError::isOfType(const SoType type) const
 }
 
 /*!
-  This method sets the error handler callback for the SoError class type.
-*/
+  This method sets the error handler callback for messages posted
+  via this class.
 
+  \sa defaultHandlerCB()
+*/
 void
 SoError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
-    SoError::callback = function;
-    SoError::callbackData = data;
+  SoError::callback = function;
+  SoError::callbackData = data;
 }
 
 /*!
-  This method returns the error handler callback for the SoError class type.
+  Returns the error handler callback for messages posted via this
+  class.
 */
-
-//$ EXPORT INLINE
 SoErrorCB *
 SoError::getHandlerCallback(void)
 {
-    return SoError::callback;
+  return SoError::callback;
 }
 
 /*!
-  This method returns the handler callback data for the SoError class type.
+  This method returns the pointer used for passing data back to the
+  callback handler method.
 */
-
-//$ EXPORT INLINE
 void *
 SoError::getHandlerData(void)
 {
-    return SoError::callbackData;
+  return SoError::callbackData;
 }
 
 /*!
   This method returns an SbString containing error info from the given
   error instance.
 */
-
-//$ EXPORT INLINE
 const SbString &
 SoError::getDebugString(void) const
 {
-  return debugString;
+  return this->debugstring;
 }
 
 /*!
   This method posts an error message.  The \a format argument and all the
   trailing aguments follows the printf() standard.
 */
-
 void
-SoError::post(const char * const format, // printf format
-              ...)
+SoError::post(const char * const format, ...)
 {
   va_list args;
   va_start(args, format);
@@ -226,55 +207,57 @@ SoError::post(const char * const format, // printf format
 }
 
 /*!
-  FIXME: write doc.
+  Constructs a string identifying the \a node with name (if available)
+  and memory pointer.
 */
-
 SbString
 SoError::getString(const SoNode * const node)
 {
-  SbString string;
-  generateBaseString(string, node, "node");
-  return string;
+  SbString str;
+  SoError::generateBaseString(str, node, "node");
+  return str;
 }
 
 /*!
-  FIXME: write doc.
+  Constructs a string identifying the \a path with name (if available)
+  and memory pointer.
 */
-
 SbString
 SoError::getString(const SoPath * const path)
 {
-  SbString string;
-  generateBaseString(string, path, "path");
-  return string;
+  SbString str;
+  SoError::generateBaseString(str, path, "path");
+  return str;
 }
 
 /*!
-  FIXME: write doc.
+  Constructs a string identifying the \a engine with name (if available)
+  and memory pointer.
 */
-
 SbString
 SoError::getString(const SoEngine * const engine)
 {
-  SbString string;
-  generateBaseString(string, engine, "engine");
-  return string;
+  SbString str;
+  SoError::generateBaseString(str, engine, "engine");
+  return str;
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Contains the default code for handling error strings.
 
+  Default treatment of an error message is to print it out on the
+  standard error file handle.
+*/
 void
 SoError::defaultHandlerCB(const SoError * error, void * /* data */)
 {
-  fprintf(stderr, "%s\n", error->getDebugString().getString());
+  (void)fprintf(stderr, "%s\n", error->getDebugString().getString());
 }
 
 /*!
-  FIXME: write doc.
+  This is just a convenience wrapper around the getHandlerCallback() and
+  getHandlerData() methods.
 */
-
 SoErrorCB *
 SoError::getHandler(void * & data) const
 {
@@ -283,25 +266,21 @@ SoError::getHandler(void * & data) const
 }
 
 /*!
-  FIXME: write doc.
+  Replace the latest stored debug string with \a str.
 */
-
-//$ EXPORT INLINE
 void
-SoError::setDebugString(const char * const string)
+SoError::setDebugString(const char * const str)
 {
-  debugString = string;
+  this->debugstring = str;
 }
 
 /*!
-  FIXME: write doc.
+  Add \a str at the end of the currently stored debug string.
 */
-
-//$ EXPORT INLINE
 void
-SoError::appendToDebugString(const char * const string)
+SoError::appendToDebugString(const char * const str)
 {
-    debugString += string;
+  this->debugstring += str;
 }
 
 /*!
@@ -309,12 +288,11 @@ SoError::appendToDebugString(const char * const string)
   error handling goes through this method, and is therefore a good
   candidate for a debugger breakpoint.
 */
-
 void
 SoError::handleError(void)
 {
   void * arg = NULL;
-  SoErrorCB * function = getHandler(arg);
+  SoErrorCB * function = this->getHandler(arg);
   assert(function);
   (*function)(this, arg);
 }
@@ -323,29 +301,13 @@ SoError::handleError(void)
   This method is used by the getString methods.  It just generates a
   '<what> named "<name>" at address <address>' string.
 */
-
 void
-SoError::generateBaseString(SbString & string,
+SoError::generateBaseString(SbString & str,
                             const SoBase * const base,
                             const char * const what)
 {
   char buffer[120]; // FIXME: buffer overflow?  990610 larsa
   sprintf(buffer, "%s named \"%s\" at address %p",
-      what, base->getName().getString(), base);
-  string = buffer;
-}
-
-/*!
-  This static method is just a wraparound for the SoError::initErrors()
-  method.  It's here for OIV compatibility.  We like the name \a initErrors
-  better.
-
-  \sa void SoError::initErrors(void)
-*/
-
-//$ EXPORT INLINE
-void
-SoError::initClasses(void)
-{
-  initErrors();
+          what, base->getName().getString(), base);
+  str = buffer;
 }

@@ -155,7 +155,7 @@ SoDB::init(void)
   // This obviously needs to be done first.
   SoType::init();
 
-  SoError::initErrors();
+  SoError::initClasses();
   SoInput::init();
   SoBase::initClass();
   SoDetail::initClass();

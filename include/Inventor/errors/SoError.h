@@ -23,15 +23,14 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
 
-class SbString;
 class SoType;
-class SoError;
 class SoBase;
 class SoNode;
 class SoPath;
 class SoEngine;
 
-typedef void SoErrorCB(const SoError * error, void * data);
+
+typedef void SoErrorCB(const class SoError * error, void * data);
 
 class SoError {
 public:
@@ -52,17 +51,15 @@ public:
   static SbString getString(const SoEngine * const engine);
 
   static void initClass(void);
-
   static void initClasses(void);
-  static void initErrors(void);
+
+  virtual ~SoError() { } // Kill g++ compiler warnings.
 
 protected:
-  virtual ~SoError() { }
-
   static void defaultHandlerCB(const SoError * error, void * userdata);
   virtual SoErrorCB * getHandler(void * & data) const;
-  void setDebugString(const char * const string);
-  void appendToDebugString(const char * const string);
+  void setDebugString(const char * const str);
+  void appendToDebugString(const char * const str);
 
   void handleError(void);
 
@@ -71,13 +68,11 @@ private:
   static SoErrorCB * callback;
   static void * callbackData;
 
-  SbString debugString;
+  SbString debugstring;
 
-  static void generateBaseString(SbString & string,
+  static void generateBaseString(SbString & str,
                                  const SoBase * const base,
                                  const char * const what);
 };
-
-//$ IMPORT INLINE ../../../src/errors/SoError.cpp
 
 #endif // !__SOERROR_H__

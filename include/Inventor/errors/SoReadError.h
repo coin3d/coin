@@ -24,6 +24,7 @@
 
 class SoInput;
 
+
 class SoReadError : public SoError {
   typedef SoError inherited;
 

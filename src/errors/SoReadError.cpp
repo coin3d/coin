@@ -18,14 +18,18 @@
 \**************************************************************************/
 
 /*!
-  \class SoReadError Inventor/errors/SoReadError.h
-  \brief The SoReadError class is yet to be documented.
+  \class SoReadError SoReadError.h Inventor/errors/SoReadError.h
+  \brief The SoReadError class is used during model import operations.
 
-  FIXME: write doc.
+  During model file import, this class will be used to output any
+  error or warning messages.
+
+  Depending on your application, setting up your own error handler
+  callbacks for SoReadError might be a good idea.
 */
 
 /*¡
-  Potential buffer overflow errors detected, should be fixed - 990610 larsa
+  Potential buffer overflow errors, should be fixed - 990610 larsa
 */
 
 #include <Inventor/errors/SoReadError.h>
@@ -37,34 +41,13 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-/*!
-  \var SoReadError::classTypeId
-
-  FIXME: write doc.
-*/
 
 SoType SoReadError::classTypeId;
-
-/*!
-  \var SoReadError::callback
-
-  FIXME: write doc.
-*/
-
 SoErrorCB * SoReadError::callback = SoError::defaultHandlerCB;
-
-/*!
-  \var SoReadError::callbackData
-
-  FIXME: write doc.
-*/
-
 void * SoReadError::callbackData = NULL;
 
-/*!
-  This static method initializes static data for the SoReadError class.
-*/
 
+// Documented for parent class. 
 void
 SoReadError::initClass(void)
 {
@@ -74,30 +57,21 @@ SoReadError::initClass(void)
     SoType::createType(SoError::getClassTypeId(), "ReadError");
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoType
 SoReadError::getClassTypeId(void)
 {
   return SoReadError::classTypeId;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoType
 SoReadError::getTypeId(void) const
 {
   return SoReadError::classTypeId;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 void
 SoReadError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
@@ -105,20 +79,14 @@ SoReadError::setHandlerCallback(SoErrorCB * const function, void * const data)
   SoReadError::callbackData = data;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoErrorCB *
 SoReadError::getHandlerCallback(void)
 {
   return SoReadError::callback;
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 void *
 SoReadError::getHandlerData(void)
 {
@@ -126,9 +94,12 @@ SoReadError::getHandlerData(void)
 }
 
 /*!
-  FIXME: write doc.
-*/
+  Method used from import code to post error or warning messages for
+  model files which are not 100% compliant to the format specification.
 
+  The messages will be wrapped within information on line number,
+  file offset etc.
+*/
 void
 SoReadError::post(const SoInput * const in, const char * const format, ...)
 {
@@ -147,10 +118,7 @@ SoReadError::post(const SoInput * const in, const char * const format, ...)
   error.handleError();
 }
 
-/*!
-  FIXME: write doc.
-*/
-
+// Documented for parent class. 
 SoErrorCB *
 SoReadError::getHandler(void * & data) const
 {

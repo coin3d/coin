@@ -3,9 +3,7 @@
 # CONFIG "The Error Classes"
 #
 # FLAGS
-# C = made 100% API conform with Open Inventor
 # I = implementation complete, or nearly so
-# R = made robust
 # D = fully documented for Doxygen generation of html/man
 #
 # values:
@@ -14,12 +12,12 @@
 # 
 ############################################################################
 #
-# CIRD
-# ====
+# ID
+# ==
 # HIERARCHY
-# CI d  SoError
-# CI d          SoDebugError
-# CI d          SoMemoryError
-# CI d          SoReadError
+# ID  SoError
+# ID      SoDebugError
+# ID      SoMemoryError
+# ID      SoReadError
 #
 ############################################################################
