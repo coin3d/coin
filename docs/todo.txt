@@ -123,3 +123,8 @@ STUFF TO FIX IN COIN
   header to reflect the actual contents. As it is now, everything is
   just written as Inventor v2.1, even if there are nodes from Inventor
   >2.1, or nodes specific for Coin.
+
+  To make it possible to do this, it seems likely that we need some
+  way of tagging API elements that can be exported to file -- ie
+  primarily nodes and engines -- with some kind of versioning
+  identification. So that's a prerequisite.
