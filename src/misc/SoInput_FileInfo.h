@@ -75,28 +75,11 @@ public:
     return this->linenr;
   }
   FILE * ivFilePointer(void) {
-    switch (this->reader->getType()) {
-    case SoInput_Reader::REGULAR_FILE:
-      return ((SoInput_FileReader*)this->reader)->fp;
-    case SoInput_Reader::MEMBUFFER:
-      return NULL;
-    default:
-      assert(0 && "unknown type");
-      return NULL;
-    }
+    return this->reader->getFilePointer();
   }
-  SbString ivFilename(void) {
-    switch (this->reader->getType()) {
-    case SoInput_Reader::REGULAR_FILE:
-      return ((SoInput_FileReader*)this->reader)->filename;
-    case SoInput_Reader::MEMBUFFER:
-      return SbString("");
-    default:
-      assert(0 && "unknown type");
-      return SbString("");
-    }
+  const SbString & ivFilename(void) {
+    return this->reader->getFilename();
   }
-
   SbBool isEndOfFile(void) {
     return this->eof;
   }

@@ -23,15 +23,46 @@
 
 #include "SoInput_Reader.h"
 #include <string.h>
+#include <assert.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_ZLIB
+#include <zlib.h>
+#endif // HAVE_ZLIB
+
+// 
+// abstract class
+//
 
 SoInput_Reader::SoInput_Reader(void) 
+  : dummyname("")
 { 
 }
 
 SoInput_Reader::~SoInput_Reader()
 {
 }
-  
+
+const SbString & 
+SoInput_Reader::getFilename(void)
+{
+  return this->dummyname;
+}
+
+FILE * 
+SoInput_Reader::getFilePointer(void)
+{
+  return NULL;
+}
+
+
+// 
+// standard FILE * class
+//
+
 SoInput_FileReader::SoInput_FileReader(const char * const filename, FILE * filepointer) 
 {
   this->fp = filepointer;
@@ -63,6 +94,10 @@ SoInput_FileReader::readBuffer(char * buf, const size_t readlen)
   return fread(buf, 1, readlen, this->fp);
 }
 
+// 
+// standard membuffer class
+//
+
 SoInput_MemBufferReader::SoInput_MemBufferReader(void * bufPointer, size_t bufSize) 
 {
   this->buf = (char*) bufPointer;
@@ -91,4 +126,39 @@ SoInput_MemBufferReader::readBuffer(char * buf, const size_t readlen)
   
   return len;
 }
+
+// 
+// gzFile class 
+//
+
+SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, void * fp)
+{
+  this->gzfp = fp;
+  this->filename = filename;
+}
+
+SoInput_GZFileReader::~SoInput_GZFileReader()
+{
+#ifdef HAVE_ZLIB
+  assert((gzFile) this->gzfp);
+  gzclose(this->gzfp);
+#endif // HAVE_ZLIB
+}
+
+SoInput_Reader::ReaderType 
+SoInput_GZFileReader::getType(void) const
+{
+  return GZFILE;
+}
+
+int 
+SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
+{
+#ifdef HAVE_ZLIB
+  return gzread((gzFile)this->gzfp, (void*) buf, readlen);
+#else // HAVE_ZLIB
+  return 0;
+#endif // ! HAVE_ZLIB
+}
+
 

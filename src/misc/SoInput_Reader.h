@@ -34,11 +34,17 @@ public:
 
   enum ReaderType {
     REGULAR_FILE,
-    MEMBUFFER
+    MEMBUFFER,
+    GZFILE
   };
-
   virtual ReaderType getType(void) const = 0;
   virtual int readBuffer(char * buf, const size_t readlen) = 0;
+
+  virtual const SbString & getFilename(void);
+  virtual FILE * getFilePointer(void);
+
+public:
+  SbString dummyname;
 };
 
 class SoInput_FileReader : public SoInput_Reader {
@@ -69,5 +75,17 @@ public:
   size_t bufpos;
 };
 
+class SoInput_GZFileReader : public SoInput_Reader {
+public:
+  SoInput_GZFileReader(const char * const filename, void * fp);
+  virtual ~SoInput_GZFileReader();
+
+  virtual ReaderType getType(void) const;
+  virtual int readBuffer(char * buf, const size_t readlen);
+
+public:
+  void * gzfp;
+  SbString filename;
+};
 
 #endif // COIN_SOINPUT_READER_H
