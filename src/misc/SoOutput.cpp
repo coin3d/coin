@@ -1400,10 +1400,11 @@ SoOutput::removeSoBase2IdRef(const SoBase * base)
 // FIXME: temporary workaround needed to test if we are currently
 // exporting a VRML97 or an Inventor file. Used from
 // SoBase::writeHeader(). pederb, 2003-02-18
-const SbString & 
+SbString
 SoOutput_getHeaderString(const SoOutputP * pout)
 {
-  return *(pout->headerstring);
+  if (pout->headerstring) return *(pout->headerstring);
+  else return SoOutput::getDefaultASCIIHeader();
 }
 
 #undef THIS

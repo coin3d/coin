@@ -1148,7 +1148,7 @@ SoBase::hasMultipleWriteRefs(void) const
 // FIXME: temporary bug-workaround needed to test if we are exporting
 // a VRML97 or an Inventor file. Implementation in SoOutput.cpp.
 // pederb, 2003-03-18
-extern const SbString & SoOutput_getHeaderString(const SoOutputP * out);
+extern SbString SoOutput_getHeaderString(const SoOutputP * out);
 
 /*!
   Write out the header of any SoBase derived object. The header consists
