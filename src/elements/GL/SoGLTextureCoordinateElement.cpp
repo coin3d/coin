@@ -63,6 +63,7 @@ public:
 // This is temporary code for Coin-2, but is also in Coin developement
 // to make it easier to sync the files while developing.  
 // pederb, 2003-10-27
+#undef PRIVATE
 #define PRIVATE(obj) ((SoGLTextureCoordinateElementP*)(obj->texgenData))
 
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLTextureCoordinateElement);
