@@ -341,16 +341,13 @@ SoSeparator::handleEvent(SoHandleEventAction * action)
   SoSeparator::doAction(action);
 }
 
-// transform box to world space, and test for intersection
-// with world space ray.
+// compute object space ray and test for intersection
 static SbBool
 ray_intersect(SoRayPickAction * action, const SbBox3f &box)
 {
   if (box.isEmpty()) return FALSE;
-  SoState * state = action->getState();
-  SbBox3f worldbox = box;
-  worldbox.transform(SoModelMatrixElement::get(state));
-  return action->intersect(worldbox, TRUE);
+  action->setObjectSpace();
+  return action->intersect(box, TRUE);
 }
 
 // Doc from superclass.

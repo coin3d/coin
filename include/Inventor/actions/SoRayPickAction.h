@@ -67,6 +67,8 @@ public:
                    SbVec3f & intersection) const;
   SbBool intersect(const SbVec3f & point) const;
   SbBool intersect(const SbBox3f & box, const SbBool usefullviewvolume = TRUE);
+  SbBool intersect(const SbBox3f & box, SbVec3f & intersection,
+                   const SbBool usefullviewvolume = TRUE);
   const SbViewVolume & getViewVolume(void);
   const SbLine & getLine(void);
   SbBool isBetweenPlanes(const SbVec3f & intersection) const;

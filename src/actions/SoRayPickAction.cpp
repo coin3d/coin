@@ -424,17 +424,18 @@ SoRayPickAction::intersect(const SbVec3f & point) const
 
 /*!
   \internal
- */
-SbBool
-SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
+*/
+SbBool 
+SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
+                           const SbBool usefullviewvolume)
 {
   // FIXME: usefullviewvolume == TRUE is not supported.
   // pederb, 20000519
-  const SbLine & line = this->wsline;
+  const SbLine & line = this->osline;
   SbVec3f bounds[2];
   bounds[0] = box.getMin();
   bounds[1] = box.getMax();
-
+  
   for (int j = 0; j < 2; j++) {
     for (int i = 0; i < 3; i++) {
       SbVec3f norm(0, 0, 0);
@@ -446,11 +447,25 @@ SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
         int i1 = (i+1) % 3;
         int i2 = (i+2) % 3;
         if (isect[i1] >= bounds[0][i1] && isect[i1] <= bounds[1][i1] &&
-            isect[i2] >= bounds[0][i2] && isect[i2] <= bounds[1][i2]) return TRUE;
+            isect[i2] >= bounds[0][i2] && isect[i2] <= bounds[1][i2]) {
+          intersection = isect;
+          return TRUE;
+        }
       }
     }
   }
   return FALSE;
+}
+
+
+/*!
+  \internal
+ */
+SbBool
+SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
+{
+  SbVec3f dummy;
+  return this->intersect(box, dummy, usefullviewvolume);
 }
 
 /*!
