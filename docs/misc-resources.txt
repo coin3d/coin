@@ -175,3 +175,8 @@ THE LINKS
 
   Read through this doc and see if it is something we should link to
   from the HACKING file.
+
+* Z-Buffer CSG Rendering (solid modeling with boolean logic)
+
+  http://www.nigels.com/research/
+
