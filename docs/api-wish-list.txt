@@ -205,3 +205,11 @@ THE WISH LIST
   SoGLAlphaTestElement, since Coin supports alpha test rendering of
   textures.
 
+* Add SoMFMatrix input fields in SoCalculator
+
+  It could be useful to do matrix operations in the calculator, and
+  by adding some SoMFMatrix input fields we could do just that.
+  Some new functions would be needed of course, such as 
+  multvecmatrix(), multdirmatrix(), multleft(), multright(), 
+  inverse() and identity(). 
+
