@@ -3713,7 +3713,7 @@ end
     
         #Inventor V2.X ascii
 
-    headers, where X can be 2.0, 2.4 or 2.5. When changing
+    headers, where X can be 0, 4 or 5. When changing
     the header to
 
         #Inventor V2.1 ascii
