@@ -72,19 +72,23 @@
   \endverbatim
 
   Coin has support for two different font APIs. On non-Windows
-  platforms, the \e FreeType library is used. On Windows the Win32
-  GDI library is used. \e FreeType is dynamically loaded by Coin at
-  startup if accessible. It is possible to use the \e FreeType library
-  on Windows also if one wishes.
+  platforms, the \e FreeType library is used. On Windows the Win32 GDI
+  library is used. \e FreeType is dynamically loaded on demand by Coin
+  if font support are requested by a node. When fontsupport is loaded
+  on Windows, FreeType will have precedence over Win32 if
+  located. This can be prevented by setting the
+  "COIN_FORCE_FREETYPE_OFF" environment variable to 1.
 
-  If Coin cannot load the \e FreeType library, only the default fonts
-  will be accessible.
+  If Coin cannot load the \e FreeType library, and is not running on
+  Microsoft Windows, only the default fonts will be accessible.
 
-  It is possible to specify the TrueType font file directly if
-  \e FreeType is used as the font engine. This is done by including the
+  It is possible to specify the TrueType font file directly if \e
+  FreeType is used as the font engine. This is done by including the
   ".ttf" in the filename, i.e. "Comic_Sans_MS.ttf". Coin will then
-  search the default font path and then the path specified by the
-  "COIN_FONT_PATH" environment variable.
+  search the local path for the running program and then the path
+  specified by the "COIN_FONT_PATH" environment variable. If the
+  program is using \e FreeType on a Windows platform, the
+  "$WINDIR/Fonts" directory will also be searched.
 
   It is not possible to directly specify a TrueType font file if
   Windows is handling the fonts. This is due to the way Windows is
@@ -96,7 +100,12 @@
   Beware that some non-English versions of Windows are using different
   name for the styles (i.e. "Italique" instead of "Italic"). These
   names are supported in Coin, but it is recommended for portability
-  purposes to only use the English terms.
+  purposes to only use the English terms. Please note that there is
+  still a possibility that there are no fonts installed using the
+  terms "Bold" or "Italic" on the Windows platform. To guarantee that
+  a font is accessible you must either use the \e FreeType library and
+  include a TrueType font in your distribution, or you must avoid
+  using styles and stick to the standard Windows fonts.
 
   If the "COIN_DEBUG_FONTSUPPORT" environment variable is set to 1, an
   extensive amount of information about loading, initializing and
@@ -107,20 +116,6 @@
 
   \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
 */
-
-
-
-// FIXME: add correct and elaborate info on this to the class docs
-// above;
-//
-//   Font files are searched for in COIN_FONT_PATH if that environment
-//   variable is defined.
-//
-//   On Win32 systems the $WINDIR/Fonts directory will also be searched.
-//
-//   Currently, only TrueType fonts are supported.
-//
-// 20030612 mortene.  
 
 
 #include <string.h>
