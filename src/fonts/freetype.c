@@ -86,7 +86,7 @@ static int lineToCallback(FT_Vector * to, void * user);
 static int conicToCallback(FT_Vector * control, FT_Vector * to, void * user);
 static int cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * user);
 
-static GLUtesselator * tesselator_object;
+static coin_GLUtesselator * tesselator_object;
 static SbBool contour_open;
 static float vertex_scale;
 static int tesselation_steps;
@@ -493,6 +493,10 @@ cc_flwft_get_font(const char * fontname)
                            face->family_name, face->style_name);
   }
 
+  /*
+  // FIXME: Nordic characters like 'זרו' wont display correctly. I
+  // have tried both LATIN1 and UNICODE... (20030905 handegar)
+  */
   cc_flwft_set_charmap(face, FT_ENCODING_ADOBE_LATIN_1);
 
   return face;
@@ -671,9 +675,9 @@ cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
   assert(error == 0 && "FT_Load_Glyph() unexpected failure, investigate");
 
   tmp = face->glyph->advance.x * vertex_scale;
-  x[0] = (tmp / (float)64.0) * fontscalingx;
+  x[0] = (tmp / 64.0f) * fontscalingx;
   tmp = face->glyph->advance.y * vertex_scale;
-  y[0] = (tmp / (float)64.0) * fontscalingy;
+  y[0] = (tmp / 64.0f) * fontscalingy;
 }
 
 void
@@ -694,8 +698,8 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
     if (error) {
       cc_debugerror_post("cc_flwft_get_kerning", "FT_Get_Kerning() => %d", error);
     }
-    *x = (kerning.x / (float)64.0) * fontscalingx;
-    *y = (kerning.y / (float)64.0) * fontscalingy;
+    *x = (kerning.x / 64.0f) * fontscalingx;
+    *y = (kerning.y / 64.0f) * fontscalingy;
   }
   else {
     *x = 0.0;
@@ -770,12 +774,23 @@ cc_flwft_get_vector_glyph(void * font, int glyph)
   FT_Outline outline;
   int glyphindex;
 
+  if (!GLUWrapper()->available) {
+    cc_debugerror_post("cc_flwft_get_vector_glyph","GLU library not available.");
+    return NULL;
+  }
+
+  if ((GLUWrapper()->gluNewTess == NULL) ||
+      (GLUWrapper()->gluTessCallback == NULL) ||
+      (GLUWrapper()->gluTessBeginPolygon == NULL) ||
+      (GLUWrapper()->gluTessEndContour == NULL) ||
+      (GLUWrapper()->gluTessEndPolygon == NULL) ||
+      (GLUWrapper()->gluDeleteTess == NULL) ||
+      (GLUWrapper()->gluTessVertex == NULL) ||
+      (GLUWrapper()->gluTessBeginContour == NULL))
+      return NULL;
+
   face = (FT_Face) font;
 
-  /*
-  // FIXME: Maybe the font-points should be dynamic depending on camera
-  // distance. (26Aug2003 handegar)
-  */  
   error = cc_ftglue_FT_Set_Char_Size(face, (font3dsize<<6), (font3dsize<<6), 72, 72);
   if (error != 0) 
     return NULL;
@@ -951,9 +966,9 @@ cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void
 {
 
   /*
-    NOTE!: Cubic splines is not tested due to the fact that I haven't
+    FIXME: Cubic splines is not tested due to the fact that I haven't
     managed to find any fonts which contains other spline types than
-    conic splines. (handegar 05092003)
+    conic splines. (20030905 handegar)
   */
 
   int i;
