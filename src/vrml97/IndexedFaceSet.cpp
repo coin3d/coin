@@ -807,7 +807,7 @@ SoVRMLIndexedFaceSet::generateDefaultNormals(SoState * state,
 
   const SbVec3f * coords = node->point.getValues(0);
 
-  int numcoords = SoCoordinateElement::getInstance(state)->getNum();
+  int numcoords = node->point.getNum();
 
   switch (this->findNormalBinding(state)) {
   case PER_VERTEX:
