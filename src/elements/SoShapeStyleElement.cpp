@@ -96,19 +96,22 @@ SoShapeStyleElement::pop(SoState * state, const SoElement * prevTopElement)
 //! FIXME: write doc.
 
 SbBool
-SoShapeStyleElement::matches(const SoElement * /* element */) const
+SoShapeStyleElement::matches(const SoElement * element) const
 {
-  COIN_STUB();
-  return FALSE;
+  const SoShapeStyleElement * elem =
+    (const SoShapeStyleElement*) element;
+  return this->flags == elem->flags;
 }
 
 //! FIXME: write doc.
 
 SoElement *
-SoShapeStyleElement::copyMatchInfo() const
+SoShapeStyleElement::copyMatchInfo(void) const
 {
-  COIN_STUB();
-  return NULL;
+  SoShapeStyleElement * elem =
+    (SoShapeStyleElement*) this->getTypeId().createInstance();
+  elem->flags = this->flags;
+  return elem;
 }
 
 //! FIXME: write doc.
