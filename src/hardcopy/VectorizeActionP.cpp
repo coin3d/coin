@@ -53,12 +53,7 @@
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoClipPlaneElement.h>
-
-#if COIN_MAJOR_VERSION < 2
-#include "SbV1Clip.h"
-#else
 #include <Inventor/SbClip.h>
-#endif
 
 #include <stdlib.h>
 
@@ -668,7 +663,6 @@ SoVectorizeActionP::pre_shape_cb(void * userdata,
   SbBox3f bbox;
 
   SoShape * shape = (SoShape *) node;
-#if COIN_MAJOR_VERSION >= 2
   const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
   if (bboxcache && bboxcache->isValid(state)) {
     bbox = bboxcache->getProjectedBox();
@@ -677,11 +671,6 @@ SoVectorizeActionP::pre_shape_cb(void * userdata,
     SbVec3f center;
     shape->computeBBox(action, bbox, center);
   }
-#else // COIN_MAJOR_VERSION >= 2
-  SbVec3f center;
-  shape->computeBBox(action, bbox, center);
-#endif // COIN_MAJOR_VERSION < 2
-
   if (SoCullElement::cullBox(state, bbox, TRUE)) {
     return SoCallbackAction::PRUNE;
   }
