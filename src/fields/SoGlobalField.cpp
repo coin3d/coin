@@ -122,11 +122,24 @@ void
 SoGlobalField::clean(void)
 {
 #if COIN_DEBUG
-  while (SoGlobalField::allcontainers->getLength())
-    SoGlobalField::allcontainers->remove(0);
+
+  // Warn about all global fields still alive, as they have the
+  // potential to cause harm if there for instance are SoFieldSensor
+  // instances attached to any of them. (The SoSensorManager is likely
+  // to be dead at this point in time, which then causes havoc when
+  // the sensors wants to unschedule themselves).
+  for (int i=0; i < SoGlobalField::allcontainers->getLength(); i++) {
+    SoGlobalField * gf = (SoGlobalField *)((*SoGlobalField::allcontainers)[i]);
+    SoDebugError::postWarning("SoGlobalField::clean",
+                              "Global field '%s' not deallocated -- use "
+                              "SoDB::renameGlobalField() on exit to "
+                              "accomplish this.",
+                              gf->getName().getString());
+  }
 
   delete SoGlobalField::allcontainers;
   SoGlobalField::allcontainers = NULL;
+
 #endif // COIN_DEBUG
 }
 
@@ -145,7 +158,8 @@ SoGlobalField::getGlobalFieldIndex(const SbName & name)
 void
 SoGlobalField::removeGlobalFieldContainer(SoGlobalField * fieldcontainer)
 {
-  int idx = SoGlobalField::getGlobalFieldIndex(fieldcontainer->getName());
+  const int idx = SoGlobalField::getGlobalFieldIndex(fieldcontainer->getName());
+  assert(idx >= 0);
   SoGlobalField::allcontainers->remove(idx);
   return;
 }
