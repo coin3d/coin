@@ -394,9 +394,7 @@ SoType::fromName(const SbName name)
   // and get the correct type id, even though the types in some type
   // hierarchies are named internally without the prefix.
   SbString tmp(name.getString());
-  if ((tmp.getLength() > 2) &&
-      (strcmp(tmp.getSubString(0, 1).getString(), "So") == 0))
-    tmp = tmp.getSubString(2);
+  if ( tmp.compareSubString("So") == 0 ) tmp = tmp.getSubString(2);
   SbName noprefixname(tmp);
 
   void * temp = NULL;
