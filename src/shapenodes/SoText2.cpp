@@ -518,8 +518,8 @@ SoText2P::dumpGlyphCache()
       fprintf(stderr,"  stringwidth[%d]=%d\n", i, this->stringwidth[i]);
       fprintf(stderr,"  laststring[%d]=%s\n", i, this->laststring[i]->getString());
       if (validarraydims == 2) {
-        for (int j=0; j<strlen(this->laststring[i]->getString()); j++) {
-          fprintf(stderr,"    glyph[%d][%d]=%x\n", i, j, this->glyphs[i][j]);
+        for (int j = 0; j < (int) strlen(this->laststring[i]->getString()); j++) {
+          fprintf(stderr,"    glyph[%d][%d]=%p\n", i, j, this->glyphs[i][j]);
           fprintf(stderr,"    position[%d][%d]=(%d, %d)\n", i, j, this->positions[i][j][0], this->positions[i][j][1]);
         }
       }
