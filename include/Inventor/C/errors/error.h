@@ -22,8 +22,11 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/base/string.h>
+/* FIXME: missing stuff from SoError: type-system. 20020526 mortene. */
 
+/* ********************************************************************** */
+
+#include <Inventor/C/base/string.h>
 #include <stdarg.h>
 
 #ifdef __cplusplus
@@ -32,21 +35,34 @@ extern "C" {
 
 /* ********************************************************************** */
 
-struct cc_error {
+typedef struct cc_error {
   cc_string debugstring;
-};
-
-typedef  struct cc_error  cc_error;
+} cc_error;
 
 typedef void cc_error_cb(const cc_error * err, void * data);
 
 /* ********************************************************************** */
 
-void cc_error_construct(cc_error * me);
+void cc_error_init(cc_error * me);
 void cc_error_clean(cc_error * me);
 
   /*   const SbString & getDebugString(void) const; */
 const cc_string * cc_error_get_debug_string(const cc_error * me);
+
+/*   static void setHandlerCallback(SoErrorCB * const func, void * const data); */
+
+void cc_error_set_handler_callback(cc_error_cb * func, void * data);
+
+/*   static SoErrorCB * getHandlerCallback(void); */
+
+cc_error_cb * cc_error_get_handler_callback(void);
+
+/*   static void * getHandlerData(void); */
+
+void * cc_error_get_handler_data(void);
+
+/*   static void post(const char * const format, ...); */
+void cc_error_post(const char * format, ...);
 
   /* protected: */
   /*   void setDebugString(const char * const str); */
@@ -69,35 +85,8 @@ cc_error_cb * cc_error_get_handler(void ** data);
 
 /* ********************************************************************** */
 
-/* class COIN_DLL_API SoError { */
-/* public: */
-/*   static void setHandlerCallback(SoErrorCB * const func, void * const data); */
-/*   static SoErrorCB * getHandlerCallback(void); */
-/*   static void * getHandlerData(void); */
-
-/*   static SoType getClassTypeId(void); */
-/*   virtual SoType getTypeId(void) const; */
-/*   SbBool isOfType(const SoType type) const; */
-
-/*   static void post(const char * const format, ...); */
-
-/*   static SbString getString(const SoNode * const node); */
-/*   static SbString getString(const SoPath * const path); */
-/*   static SbString getString(const SoEngine * const engine); */
-
-/*   static void initClass(void); */
-/*   static void initClasses(void); */
-
-/* private: */
-/*   static void generateBaseString(SbString & str, const SoBase * const base, */
-/*                                  const char * const what); */
-
-/*   static SoType classTypeId; */
-
-/* ********************************************************************** */
-
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_ERROR_H */
+#endif /* !CC_ERROR_H */

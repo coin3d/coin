@@ -19,7 +19,7 @@
 /* FIXME: should be hidden from public API, and only visible to
    subclasses. 20020526 mortene. */
 void
-cc_default_handler_cb(const cc_error * err, void * data)
+cc_error_default_handler_cb(const cc_error * err, void * data)
 {
   // It is not possible to "pass" C library data from the application
   // to a MSWin .DLL, so this is necessary to get hold of the stderr
@@ -36,12 +36,12 @@ cc_default_handler_cb(const cc_error * err, void * data)
   }
 }
 
-static cc_error_cb * callback = cc_default_handler_cb;
-static void * callback_data = NULL;
+static cc_error_cb * cc_error_callback = cc_error_default_handler_cb;
+static void * cc_error_callback_data = NULL;
 
 
 void
-cc_error_construct(cc_error * me)
+cc_error_init(cc_error * me)
 {
   cc_string_construct(&(me->debugstring));
 }
@@ -73,15 +73,55 @@ cc_error_handle(cc_error * me)
   (*function)(me, arg);
 }
 
+void
+cc_error_set_handler_callback(cc_error_cb * func, void * data)
+{
+  cc_error_callback = func;
+  cc_error_callback_data = data;
+}
+
+cc_error_cb *
+cc_error_get_handler_callback(void)
+{
+  return cc_error_callback;
+}
+
+void *
+cc_error_get_handler_data(void)
+{
+  return cc_error_callback_data;
+}
+
 cc_error_cb *
 cc_error_get_handler(void ** data)
 {
-  *data = callback_data;
-  return callback;
+  *data = cc_error_callback_data;
+  return cc_error_callback;
 }
 
 const cc_string *
 cc_error_get_debug_string(const cc_error * me)
 {
   return &(me->debugstring);
+}
+
+void
+cc_error_post(const char * format, ...)
+{
+  va_list args;
+  cc_string s;
+  cc_error err;
+
+  cc_string_construct(&s);
+
+  va_start(args, format);
+  cc_string_vsprintf(&s, format, args);
+  va_end(args);
+
+  cc_error_init(&err);
+  cc_error_set_debug_string(&err, cc_string_get_text(&s));
+  cc_error_handle(&err);
+  cc_error_clean(&err);
+
+  cc_string_clean(&s);
 }

@@ -1,15 +1,17 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <stdlib.h>
 
-extern void cc_default_handler_cb(const cc_error * err, void * data);
+extern void cc_error_default_handler_cb(const cc_error * err, void * data);
 
-static cc_error_cb * callback = cc_default_handler_cb;
+/* FIXME: name clash with cc_error's static members, will cause
+   all-c.c compilation to fail. 20020526 mortene. */
+static cc_error_cb * callback = cc_error_default_handler_cb;
 static void * callback_data = NULL;
 
 void
-cc_debugerror_construct(cc_debugerror * me)
+cc_debugerror_init(cc_debugerror * me)
 {
-  cc_error_construct((cc_error *)me);
+  cc_error_init((cc_error *)me);
 }
 
 void
@@ -44,9 +46,37 @@ cc_debugerror_get_handler_data(void)
   return callback_data;
 }
 
+cc_error_cb *
+cc_debugerror_get_handler(void ** data)
+{
+  *data = callback_data;
+  return callback;
+}
+
+static void
+cc_debugerror_internal_post(const char * source, cc_string * msg,
+                            CC_DEBUGERROR_SEVERITY sev, const char * type)
+{
+  cc_debugerror deberr;
+
+  cc_debugerror_init(&deberr);
+
+  deberr.severity = sev;
+  cc_error_set_debug_string((cc_error *)&deberr, "Coin ");
+  cc_error_append_to_debug_string((cc_error *)&deberr, type);
+  cc_error_append_to_debug_string((cc_error *)&deberr, " in ");
+  cc_error_append_to_debug_string((cc_error *)&deberr, source);
+  cc_error_append_to_debug_string((cc_error *)&deberr, "(): ");
+  cc_error_append_to_debug_string((cc_error *)&deberr, cc_string_get_text(msg));
+  cc_error_handle((cc_error *)&deberr);
+  /* FIXME: port to C. 20020524 mortene. */
+  /* check_breakpoints(source);*/
+
+  cc_debugerror_clean(&deberr);
+}
+
 #define CC_DEBUGERROR_POST(SEVERITY, TYPE) \
   cc_string s; \
-  cc_debugerror error; \
   va_list args; \
  \
   va_start(args, format); \
@@ -54,16 +84,7 @@ cc_debugerror_get_handler_data(void)
   cc_string_vsprintf(&s, format, args); \
   va_end(args); \
  \
-  error.severity = SEVERITY; \
-  cc_error_set_debug_string((cc_error *)&error, "Coin "); \
-  cc_error_append_to_debug_string((cc_error *)&error, TYPE); \
-  cc_error_append_to_debug_string((cc_error *)&error, " in "); \
-  cc_error_append_to_debug_string((cc_error *)&error, source); \
-  cc_error_append_to_debug_string((cc_error *)&error, "(): "); \
-  cc_error_append_to_debug_string((cc_error *)&error, cc_string_get_text(&s)); \
-  cc_error_handle((cc_error *)&error); \
-  /* FIXME: port to C. 20020524 mortene. */ \
-  /* check_breakpoints(source);*/ \
+  cc_debugerror_internal_post(source, &s, SEVERITY, TYPE); \
   cc_string_clean(&s)
 
 void

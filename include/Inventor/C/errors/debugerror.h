@@ -33,26 +33,24 @@ extern "C" {
 
 /* ********************************************************************** */
 
-enum CC_DEBUGERROR_SEVERITY_ { CC_DEBUGERROR_ERROR,
-                               CC_DEBUGERROR_WARNING,
-                               CC_DEBUGERROR_INFO };
+typedef enum CC_DEBUGERROR_SEVERITY {
+  CC_DEBUGERROR_ERROR,
+  CC_DEBUGERROR_WARNING,
+  CC_DEBUGERROR_INFO
+} CC_DEBUGERROR_SEVERITY;
 
-typedef enum CC_DEBUGERROR_SEVERITY_ CC_DEBUGERROR_SEVERITY;
-
-struct cc_debugerror {
+typedef struct cc_debugerror {
   cc_error super; /* make struct is-A cc_error */
 
   CC_DEBUGERROR_SEVERITY severity;
-};
-
-typedef  struct cc_debugerror  cc_debugerror;
+} cc_debugerror;
 
 /* ********************************************************************** */
 
 /* FIXME: missing stuff from SoDebugError: type-system,
    COIN_DEBUG_BREAK handling, ... 20020524 mortene. */
 
-void cc_debugerror_construct(cc_debugerror * me);
+void cc_debugerror_init(cc_debugerror * me);
 void cc_debugerror_clean(cc_debugerror * me);
 
 //   SoDebugError::Severity getSeverity(void) const;
@@ -83,18 +81,10 @@ void cc_debugerror_postwarning(const char * source, const char * format, ...);
 
 void cc_debugerror_postinfo(const char * source, const char * format, ...);
 
-// class COIN_DLL_API SoDebugError : public SoError {
-
-// public:
-
-//   static void post(const char * const source, const char * const format, ...);
-//   static void postWarning(const char * const source, const char * const format, ...);
-//   static void postInfo(const char * const source, const char * const format, ...);
-
 // protected:
 //   virtual SoErrorCB * getHandler(void * & data) const;
 
-// };
+cc_error_cb * cc_debugerror_get_handler(void ** data);
 
 /* ********************************************************************** */
 
