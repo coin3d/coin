@@ -270,12 +270,11 @@ cc_flww32_initialize(void)
   /* Are we running Windows 95/98/Me? */
   ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
   osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);    
-  if (!cc_win32()->GetVersionEx(&osvi)) {      
-    cc_win32_print_error("flww32_initialize", "GetVersionEx()", GetLastError());
-    assert(FALSE && "unexpected error");      
-  }
+  cc_win32()->GetVersionEx(&osvi);
+
   if (osvi.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {          
     flww32_win9598Me = TRUE;
+	printf("Win98!\n");
   } 
 
   return TRUE;
