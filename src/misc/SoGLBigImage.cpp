@@ -242,9 +242,17 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
       THIS->glimagearray[idx] = new SoGLImage();
     THIS->glimagediv[idx] = div;
 
-    THIS->glimagearray[idx]->setFlags(SoGLImage::NO_MIPMAP|
-                                      SoGLImage::LINEAR_MIN_FILTER|
-                                      SoGLImage::LINEAR_MAG_FILTER);
+    uint32_t flags = this->getFlags();
+    flags |= NO_MIPMAP;
+
+    if (flags & USE_QUALITY_VALUE) {
+      flags &= ~USE_QUALITY_VALUE;
+      if (quality >= 0.5f) {
+        flags |= LINEAR_MIN_FILTER|LINEAR_MAG_FILTER;
+      }
+    }
+    THIS->glimagearray[idx]->setFlags(flags);
+
     SbVec2s actualsize(THIS->imagesize[0]/div,
                        THIS->imagesize[1]/div);
     
