@@ -1506,6 +1506,8 @@ if test x"$with_opengl" != xno; then
     done
   ])
 
+  LIBS="$sim_ac_save_libs"
+
   if test "x$sim_cv_lib_gl" != "xUNRESOLVED"; then
     sim_ac_gl_libs="$sim_cv_lib_gl"
   else
@@ -1513,10 +1515,7 @@ if test x"$with_opengl" != xno; then
 
     SIM_AC_CHECK_PTHREAD([
       sim_ac_gl_cppflags="$sim_ac_gl_cppflags $sim_ac_pthread_cppflags"
-      sim_ac_gl_ldflags="$sim_ac_gl_ldflags $sim_ac_pthread_ldflags"
-      CPPFLAGS="$CPPFLAGS $sim_ac_pthread_cppflags"
-      LDFLAGS="$LDFLAGS $sim_ac_pthread_ldflags"
-      LIBS="$sim_ac_pthread_libs $LIBS"],
+      sim_ac_gl_ldflags="$sim_ac_gl_ldflags $sim_ac_pthread_ldflags"],
       AC_MSG_WARN(couldn't compile or link with pthread library))
 
     if test "x$sim_ac_pthread_avail" = "xyes"; then
@@ -1527,7 +1526,7 @@ if test x"$with_opengl" != xno; then
         # Some platforms (like BeOS) have the GLU functionality in the GL library.
         for sim_ac_gl_libcheck in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
           if test "x$sim_cv_lib_gl_pthread" = "xUNRESOLVED"; then
-            LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
+            LIBS="$sim_ac_gl_libcheck $sim_ac_pthread_libs $sim_ac_save_libs"
             AC_TRY_LINK([#include <GL/gl.h>
                         #include <GL/glu.h>],
                         [glPointSize(1.0f);
