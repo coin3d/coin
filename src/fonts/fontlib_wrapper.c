@@ -514,7 +514,7 @@ cc_flw_unref_font(int fontid)
   needing any error checking on behalf of the client code.
 */
 int
-cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey, 
+cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey,
                    const float angle, const float complexity)
 {
   void * font;
@@ -535,7 +535,7 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsign
   if (win32api) { 
     font = cc_flww32_get_font(fontname, sizex, sizey, angle, complexity);
   } else if (freetypelib) { 
-    font = cc_flwft_get_font(fontname);    
+    font = cc_flwft_get_font(fontname, sizex);    
   }
 
 
