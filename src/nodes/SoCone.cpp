@@ -39,6 +39,7 @@
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoState.h>
 #include <assert.h>
+#include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -282,9 +283,11 @@ SoCone::rayPick(SoRayPickAction * action)
   int numisect = 0;
   SbVec3f isect[2];
 
+  float h = this->height.getValue();
+
   if (this->parts.getValue() & SoCone::SIDES) {
     numisect = intersect_cone_line(this->bottomRadius.getValue(),
-                                   this->height.getValue(),
+                                   h,
                                    line,
                                    isect[0],
                                    isect[1]);
@@ -293,6 +296,21 @@ SoCone::rayPick(SoRayPickAction * action)
       if (action->isBetweenPlanes(isect[i])) {
         SoPickedPoint * pp = action->addIntersection(isect[i]);
         if (pp) {
+          // normalize the cone so that the apex is at (0,0,0)
+          SbVec3f npoint(isect[i][0], isect[i][1] - h*0.5f, isect[i][2]);
+          SbVec3f ptonaxis(0.0f, npoint[1], 0.0f);
+          
+          // calculate some vectors to help find the normal
+          // these calculations can be optimized, but who cares...
+          SbVec3f v0 = npoint-ptonaxis;
+          SbVec3f v1 = v0.cross(SbVec3f(0.0f, -1.0f, 0.0f));
+          v1.normalize();
+          SbVec3f n = npoint.cross(v1);
+          n.normalize();
+          pp->setObjectNormal(n);
+          pp->setObjectTextureCoords(SbVec4f((float) (atan2(npoint[0], npoint[2]) *
+                                                      (1.0 / (2.0 * M_PI)) + 0.5),
+                                             -npoint[1] / h, 0.0f, 1.0f));
           SoConeDetail * detail = new SoConeDetail;
           detail->setPart((int)SoCone::SIDES);
           pp->setDetail(detail, this);
@@ -302,15 +320,20 @@ SoCone::rayPick(SoRayPickAction * action)
   }
 
   if ((numisect < 2) && (this->parts.getValue() & SoCone::BOTTOM)) {
-    SbPlane bottom(SbVec3f(0, 1, 0), -this->height.getValue()* 0.5f);
+    SbPlane bottom(SbVec3f(0, 1, 0), -h * 0.5f);
     SbVec3f bpt;
-    float r2 = this->bottomRadius.getValue();
-    r2 *= r2;
+    float r = this->bottomRadius.getValue();
+    float r2 = r * r;
     if (bottom.intersect(line, bpt)) {
       if (((bpt[0] * bpt[0] + bpt[2] * bpt[2]) <= r2) &&
           (action->isBetweenPlanes(bpt))) {
         SoPickedPoint * pp = action->addIntersection(bpt);
         if (pp) {
+          pp->setObjectNormal(SbVec3f(0.0f, -1.0f, 0.0f));
+          pp->setObjectTextureCoords(SbVec4f(0.5f + bpt[0] / (2.0f * r),
+                                             0.5f + bpt[2] / (2.0f * r),
+                                             0.0f, 1.0f));
+
           SoConeDetail * detail = new SoConeDetail();
           detail->setPart((int)SoCone::BOTTOM);
           pp->setDetail(detail, this);
