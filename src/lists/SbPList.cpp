@@ -32,12 +32,6 @@
 #include <Inventor/lists/SbPList.h>
 
 /*!
-  \fn SbPList::SbPList(void)
-
-  Default constructor.
-*/
-
-/*!
   \fn SbPList::SbPList(const int sizehint)
 
   This constructor initializes the internal allocated size for the
@@ -54,10 +48,10 @@
 */
 
 /*!
-  \fn void SbPList::set(const int index, void * const item)
+  \fn void SbPList::set(const int index, void * item)
   
   Index operator to set element at \a index. Does \e not expand array
-   bounds if \a index is outside the list.
+  bounds if \a index is outside the list.
 */
 
 /*!
@@ -105,7 +99,7 @@
 */
 
 /*!
-  \fn SbBool SbPList::operator!=(const SbList<Type> & l) const
+  \fn SbBool SbPList::operator!=(const SbPList & l) const
 
   Inequality operator. Returns \c TRUE if this list and \a l are not
   equal.
