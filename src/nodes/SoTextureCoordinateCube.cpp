@@ -141,6 +141,12 @@ SoTextureCoordinateCube::SoTextureCoordinateCube(void)
 */
 SoTextureCoordinateCube::~SoTextureCoordinateCube()
 {
+#ifdef COIN_THREADSAFE
+  delete pimpl->so_texcoord_storage;
+#else // COIN_THREADSAFE
+  delete pimpl->so_texcoord_single_data;
+#endif // COIN_THREADSAFE
+  delete PRIVATE(this);
 }
 
 // Documented in superclass.

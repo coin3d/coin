@@ -130,7 +130,7 @@ SoTextureCoordinateSphere::SoTextureCoordinateSphere(void)
                                              so_texcoordsphere_destruct_data);
 #else // COIN_THREADSAFE
   pimpl->so_texcoord_single_data = new so_texcoordsphere_data;
-  so_texcoordsphere_construct_data((void*) pimpl->so_texcoordsphere_single_data);
+  so_texcoordsphere_construct_data((void*) pimpl->so_texcoord_single_data);
 #endif // COIN_THREADSAFE
 
 }
@@ -140,6 +140,12 @@ SoTextureCoordinateSphere::SoTextureCoordinateSphere(void)
 */
 SoTextureCoordinateSphere::~SoTextureCoordinateSphere()
 {
+#ifdef COIN_THREADSAFE
+  delete pimpl->so_texcoord_storage;
+#else // COIN_THREADSAFE
+  delete pimpl->so_texcoord_single_data;
+#endif // COIN_THREADSAFE
+  delete PRIVATE(this);
 }
 
 // Documented in superclass.
