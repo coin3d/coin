@@ -21,12 +21,12 @@
   \class SoFullPath Inventor/SoFullPath.h
   \brief The SoFullPath class allows examination of hidden children in paths.
 
-  SoPath allows only access from the head node to the first node with hidden
-  children, but not any further.
+  SoPath allows only access from the head node to the first node with
+  hidden children, but not any further.
 
-  Since the SoFullPath is derived from SoPath and contains no private data,
-  you can cast SoPath instances to the SoFullPath type.  This will allow you
-  to examine hidden children.
+  Since the SoFullPath is derived from SoPath and contains no private
+  data, you can cast SoPath instances to the SoFullPath type.  This
+  will allow you to examine hidden children.
 */
 
 #include <Inventor/SoFullPath.h>
@@ -54,8 +54,8 @@ SoFullPath::~SoFullPath(void)
 }
 
 /*!
-  This method overrides SoPath::pop() to allow clients to get at all the nodes
-  in the path.
+  This method overrides SoPath::pop() to allow clients to get at all
+  the nodes in the path.
 */
 void
 SoFullPath::pop(void)
@@ -64,8 +64,8 @@ SoFullPath::pop(void)
 }
 
 /*!
-  This method overrides SoPath::getTail() to allow clients to get the tail
-  node, counting internal path nodes.
+  This method overrides SoPath::getTail() to allow clients to get the
+  tail node, counting internal path nodes.
 */
 SoNode *
 SoFullPath::getTail(void) const
@@ -74,8 +74,9 @@ SoFullPath::getTail(void) const
 }
 
 /*!
-  This method overrides SoPath::getNodeFromTail() to allow clients to get the
-  node positioned \a index nodes from the tail, counting internal path nodes.
+  This method overrides SoPath::getNodeFromTail() to allow clients to
+  get the node positioned \a index nodes from the tail, counting
+  internal path nodes.
 */
 SoNode *
 SoFullPath::getNodeFromTail(const int index) const
@@ -84,9 +85,9 @@ SoFullPath::getNodeFromTail(const int index) const
 }
 
 /*!
-  This method overrides SoPath::getIndexFromTail() to allow clients to get
-  the child index number for nodes based on their position from the tail,
-  counting hidden nodes.
+  This method overrides SoPath::getIndexFromTail() to allow clients to
+  get the child index number for nodes based on their position from
+  the tail, counting hidden nodes.
 */
 int
 SoFullPath::getIndexFromTail(const int index) const
@@ -95,7 +96,8 @@ SoFullPath::getIndexFromTail(const int index) const
 }
 
 /*!
-  This method returns the length of the path, counting hidden nodes also.
+  This method returns the length of the path, counting hidden nodes
+  also.
 */
 int
 SoFullPath::getLength(void) const

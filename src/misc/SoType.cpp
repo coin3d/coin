@@ -145,6 +145,10 @@ SoType::createType(const SoType parent, const SbName name,
   }
 #endif // COIN_DEBUG
 
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoType::createType", "%s", name.getString());
+#endif // debug
+
   SoTypeData * typeData = new SoTypeData(name, TRUE, data, parent, method);
   SoType newType;
   newType.index = SoType::typelist->getLength();

@@ -413,7 +413,7 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
 #endif // COIN_DEBUG
     return;
   }
-  
+
   // FIXME: maybe we should convert to an SbXfBox3f? 19990320 mortene.
   SbBox3f tbox = box;
   tbox.transform(SoLocalBBoxMatrixElement::get(this->state));

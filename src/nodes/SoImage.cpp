@@ -54,6 +54,12 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+// Metadon FIXME
+/*¡
+  What happens if the node contains an image and the user modifies
+  the width and/or height and/or numcomponents values? 20000217 mortene.
+ */
+
 
 /*!
   \enum SoImage::VertAlignment

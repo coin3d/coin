@@ -25,6 +25,12 @@
   All other nodes are hidden from the user.
 */
 
+/*¡
+  We now need a "friend class SoNodeKitPath;" in the SoPath
+  definition -- could we do without it? That would clean up
+  the implementation a bit.
+ */
+
 #include <Inventor/SoNodeKitPath.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/actions/SoSearchAction.h>

@@ -92,7 +92,7 @@ nullfileptr(void)
 
     if ((stat(unixdevnull, &sbuf) == 0) && (sbuf.st_mode & S_IFCHR))
       nullfd = open(unixdevnull, O_WRONLY);
-  
+
     if (nullfd == -1) {
       const char * tmpname = tmpnam(NULL);
 
