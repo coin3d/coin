@@ -1420,36 +1420,6 @@
 
 =====================================================================
 
-062 Crash when rendering flawed VRML97 file.
-
-    According to kintel, this file will crash Coin (no assert) when
-    attempted imported and viewed from a viewer:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #VRML V2.0 utf8
-
-    Shape {
-      appearance Appearance {
-        material Material {
-          diffuseColor 1 0 0
-        }
-      }
-      geometry IndexedFaceSet {
-        coord Coordinate {
-          point [ 0 0 0, 1 0 0 ]
-        }
-        coordIndex [ 0, 1, -1 ]
-      }
-    }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    Notice how the face has only two vertices. We should be robust on
-    this case, IMHO.
-
-    20030312 mortene.
-
-=====================================================================
-
 064 SoCenterballDragger translation bug.
 
     Load the scene below into e.g. the ExaminerViewer, and first
