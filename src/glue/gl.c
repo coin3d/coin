@@ -650,6 +650,12 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_ARB_vertex_buffer_object 1
 #define GL_EXT_multi_draw_arrays 1
 #define GL_NV_vertex_array_range 1
+#define GL_NV_register_combiners 1
+#define GL_NV_texture_rectangle 1
+#define GL_NV_texture_shader 1
+#define GL_ARB_depth_texture 1
+#define GL_ARB_shadow 1
+
 
 #else /* static binding */
 
@@ -1056,11 +1062,101 @@ glglue_resolve_symbols(cc_glglue * w)
     }
   }
 
+  /* GL_NV_register_combiners */
+  w->glCombinerParameterfvNV = NULL;
+  w->glCombinerParameterivNV = NULL;
+  w->glCombinerParameterfNV = NULL;
+  w->glCombinerParameteriNV = NULL;
+  w->glCombinerInputNV = NULL;
+  w->glCombinerOutputNV = NULL;
+  w->glFinalCombinerInputNV = NULL;
+  w->glGetCombinerInputParameterfvNV = NULL;
+  w->glGetCombinerInputParameterivNV = NULL;
+  w->glGetCombinerOutputParameterfvNV = NULL;
+  w->glGetCombinerOutputParameterivNV = NULL;
+  w->glGetFinalCombinerInputParameterfvNV = NULL;
+  w->glGetFinalCombinerInputParameterivNV = NULL;
+
+#ifdef GL_NV_register_combiners  
+  w->has_nv_register_combiners = FALSE;
+  if (cc_glglue_glext_supported(w, "GL_NV_register_combiners")) {
+    w->glCombinerParameterfvNV = (COIN_PFNGLCOMBINERPARAMETERFVNVPROC) PROC(glCombinerParameterfvNV);
+    w->glCombinerParameterivNV = (COIN_PFNGLCOMBINERPARAMETERIVNVPROC) PROC(glCombinerParameterivNV);
+    w->glCombinerParameterfNV = (COIN_PFNGLCOMBINERPARAMETERFNVPROC) PROC(glCombinerParameterfNV);
+    w->glCombinerParameteriNV = (COIN_PFNGLCOMBINERPARAMETERINVPROC) PROC(glCombinerParameteriNV);
+    w->glCombinerInputNV = (COIN_PFNGLCOMBINERINPUTNVPROC) PROC(glCombinerInputNV);
+    w->glCombinerOutputNV = (COIN_PFNGLCOMBINEROUTPUTNVPROC) PROC(glCombinerOutputNV);
+    w->glFinalCombinerInputNV = (COIN_PFNGLFINALCOMBINERINPUTNVPROC) PROC(glFinalCombinerInputNV);
+    w->glGetCombinerInputParameterfvNV = (COIN_PFNGLGETCOMBINERINPUTPARAMETERFVNVPROC) PROC(glGetCombinerInputParameterfvNV);
+    w->glGetCombinerInputParameterivNV = (COIN_PFNGLGETCOMBINERINPUTPARAMETERIVNVPROC) PROC(glGetCombinerInputParameterivNV);
+    w->glGetCombinerOutputParameterfvNV = (COIN_PFNGLGETCOMBINEROUTPUTPARAMETERFVNVPROC) PROC(glGetCombinerOutputParameterfvNV);
+    w->glGetCombinerOutputParameterivNV = (COIN_PFNGLGETCOMBINEROUTPUTPARAMETERIVNVPROC) PROC(glGetCombinerOutputParameterivNV);
+    w->glGetFinalCombinerInputParameterfvNV = (COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC) PROC(glGetFinalCombinerInputParameterfvNV);
+    w->glGetFinalCombinerInputParameterivNV = (COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC) PROC(glGetFinalCombinerInputParameterivNV);
+
+    if (!(w->glCombinerParameterfvNV &&
+          w->glCombinerParameterivNV &&
+          w->glCombinerParameterfNV &&
+          w->glCombinerParameteriNV &&
+          w->glCombinerInputNV &&
+          w->glCombinerOutputNV &&
+          w->glFinalCombinerInputNV &&
+          w->glGetCombinerInputParameterfvNV &&
+          w->glGetCombinerInputParameterivNV &&
+          w->glGetCombinerOutputParameterfvNV &&
+          w->glGetCombinerOutputParameterivNV &&
+          w->glGetFinalCombinerInputParameterfvNV &&
+          w->glGetFinalCombinerInputParameterivNV)) {      
+      cc_debugerror_postwarning("glglue_init","GL_NV_register_combiners found, but one or more of its "
+                                "functions could not be bound.");
+    }
+    else {
+      w->has_nv_register_combiners = TRUE;
+    }
+    
+  } 
+    
+#endif /* GL_NV_register_combiners */
+  
+
+#ifdef GL_NV_texture_rectangle 
+  if (cc_glglue_glext_supported(w, "GL_NV_texture_rectangle")) 
+    w->has_nv_texture_rectangle = TRUE;
+  else
+    w->has_nv_texture_rectangle = FALSE;
+#endif /* GL_NV_texture_rectangle */
+
+
+#ifdef GL_NV_texture_shader
+ if (cc_glglue_glext_supported(w, "GL_NV_texture_shader")) 
+   w->has_nv_texture_shader = TRUE;
+ else
+   w->has_nv_texture_shader = FALSE;
+#endif /* GL_NV_texture_shader */
+
+
+#ifdef GL_ARB_shadow
+ if (cc_glglue_glext_supported(w, "GL_ARB_shadow")) 
+   w->has_arb_shadow = TRUE;
+ else
+   w->has_arb_shadow = FALSE;
+#endif /* GL_ARB_shadow */
+
+
+#ifdef GL_ARB_depth_texture
+ if (cc_glglue_glext_supported(w, "GL_ARB_depth_texture")) 
+   w->has_arb_depth_texture = TRUE;
+ else
+   w->has_arb_depth_texture = FALSE;
+#endif /* GL_ARB_depth_texture */
+
+
+
   w->glVertexArrayRangeNV = NULL;
 #if defined(GL_NV_vertex_array_range) && (defined(HAVE_GLX) || defined(HAVE_WGL))
   if (cc_glglue_glext_supported(w, "GL_NV_vertex_array_range")) {
     w->glVertexArrayRangeNV = (COIN_PFNGLVERTEXARRAYRANGENVPROC) PROC(glVertexArrayRangeNV);
-    w->glFlushVertexArrayRangeNV = (COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC) PROC(glFlushVertexArrayRangeNV);
+    w->glFlushVertexArrayRangeNV = (COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC) PROC(glFlushVertexArrayRangeNV);                
 #ifdef HAVE_GLX
     w->glAllocateMemoryNV = (COIN_PFNGLALLOCATEMEMORYNVPROC) PROC(glXAllocateMemoryNV);
     w->glFreeMemoryNV = (COIN_PFNGLFREEMEMORYNVPROC) PROC(glXFreeMemoryNV);
@@ -1091,6 +1187,21 @@ glglue_resolve_symbols(cc_glglue * w)
         cc_glglue_glext_supported(w, "ARB_texture_env_dot3")))) {
     w->can_do_bumpmapping = TRUE;
   }
+
+  
+  /* FIXME: We should be able to support more than one way to do order
+     independent transparency (eg. by using fragment
+     programming). This would demand a different combinations of
+     extensions (and thus; a different codepath in
+     SoGLRenderAction). (20031124 handegar) */
+  w->can_do_sortedlayersblend = FALSE;
+  if(w->has_nv_register_combiners &&
+     w->has_nv_texture_rectangle &&
+     w->has_nv_texture_shader &&
+     w->has_arb_depth_texture &&
+     w->has_arb_shadow)
+    w->can_do_sortedlayersblend = TRUE;
+  
 }
 
 #undef PROC
@@ -2402,6 +2513,181 @@ cc_glglue_can_do_bumpmapping(const cc_glglue * glue)
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->can_do_bumpmapping;
 }
+
+SbBool
+cc_glglue_can_do_sortedlayersblend(const cc_glglue * glue)
+{
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  return glue->can_do_sortedlayersblend;
+}
+
+/* GL_NV_register_combiners functions */
+SbBool
+cc_glglue_has_nv_register_combiners(const cc_glglue * glue)
+{  
+  return glue->has_nv_register_combiners;
+}
+
+void 
+cc_glglue_glCombinerParameterfvNV(const cc_glglue * glue,
+                                  GLenum pname,
+                                  const GLfloat *params)
+{
+  glue->glCombinerParameterfvNV(pname, params);
+}
+
+void 
+cc_glglue_glCombinerParameterivNV(const cc_glglue * glue,
+                                  GLenum pname,
+                                  const GLint *params)
+{
+  glue->glCombinerParameterivNV(pname, params);
+}
+
+void 
+cc_glglue_glCombinerParameterfNV(const cc_glglue * glue,
+                                 GLenum pname,
+                                 GLfloat param)
+{
+  glue->glCombinerParameterfNV(pname, param);
+}
+
+void 
+cc_glglue_glCombinerParameteriNV(const cc_glglue * glue,
+                                 GLenum pname,
+                                 GLint param)
+{
+  glue->glCombinerParameteriNV(pname, param);
+}
+
+void 
+cc_glglue_glCombinerInputNV(const cc_glglue * glue,
+                            GLenum stage,
+                            GLenum portion,
+                            GLenum variable,
+                            GLenum input,
+                            GLenum mapping,
+                            GLenum componentUsage)
+{
+  glue->glCombinerInputNV(stage, portion, variable, input, mapping, componentUsage);
+}
+
+void 
+cc_glglue_glCombinerOutputNV(const cc_glglue * glue,
+                             GLenum stage,
+                             GLenum portion, 
+                             GLenum abOutput,
+                             GLenum cdOutput,
+                             GLenum sumOutput,
+                             GLenum scale,
+                             GLenum bias,
+                             GLboolean abDotProduct,
+                             GLboolean cdDotProduct,
+                             GLboolean muxSum)
+{
+  glue->glCombinerOutputNV(stage, portion, abOutput, cdOutput, sumOutput, scale, bias,
+                           abDotProduct, cdDotProduct, muxSum);
+}
+
+void 
+cc_glglue_glFinalCombinerInputNV(const cc_glglue * glue,
+                                 GLenum variable,
+                                 GLenum input,
+                                 GLenum mapping,
+                                 GLenum componentUsage)
+{
+  glue->glFinalCombinerInputNV(variable, input, mapping, componentUsage);
+}
+
+void 
+cc_glglue_glGetCombinerInputParameterfvNV(const cc_glglue * glue,
+                                          GLenum stage,
+                                          GLenum portion,
+                                          GLenum variable,
+                                          GLenum pname,
+                                          GLfloat *params)
+{
+  glue->glGetCombinerInputParameterfvNV(stage, portion, variable, pname, params);
+}
+
+void 
+cc_glglue_glGetCombinerInputParameterivNV(const cc_glglue * glue,
+                                          GLenum stage,
+                                          GLenum portion,
+                                          GLenum variable,
+                                          GLenum pname,
+                                          GLint *params)
+{
+  glue->glGetCombinerInputParameterivNV(stage, portion, variable, pname, params);
+}
+
+void 
+cc_glglue_glGetCombinerOutputParameterfvNV(const cc_glglue * glue,
+                                           GLenum stage,
+                                           GLenum portion, 
+                                           GLenum pname,
+                                           GLfloat *params)
+{
+  glue->glGetCombinerOutputParameterfvNV(stage, portion, pname, params);
+}
+
+void 
+cc_glglue_glGetCombinerOutputParameterivNV(const cc_glglue * glue,
+                                           GLenum stage,
+                                           GLenum portion, 
+                                           GLenum pname,
+                                           GLint *params)
+{
+  glue->glGetCombinerOutputParameterivNV(stage, portion, pname, params);
+}
+
+void 
+cc_glglue_glGetFinalCombinerInputParameterfvNV(const cc_glglue * glue,
+                                               GLenum variable,
+                                               GLenum pname,
+                                               GLfloat *params)
+{
+  glue->glGetFinalCombinerInputParameterfvNV(variable, pname, params);
+}
+
+void 
+cc_glglue_glGetFinalCombinerInputParameterivNV(const cc_glglue * glue,
+                                               GLenum variable,
+                                               GLenum pname,
+                                               GLint *params)
+{
+  glue->glGetFinalCombinerInputParameterivNV(variable, pname, params);
+}
+
+
+/* GL_NV_texture_rectangle */
+SbBool 
+cc_glglue_has_nv_texture_rectangle(const cc_glglue * glue)
+{
+  return glue->has_nv_texture_rectangle;
+}
+
+/* GL_NV_texture_shader */
+SbBool
+cc_glglue_has_nv_texture_shader(const cc_glglue * glue)
+{
+  return glue->has_nv_texture_shader;
+}
+
+/* GL_ARB_shadow */
+SbBool 
+cc_glglue_has_arb_shadow(const cc_glglue * glue)
+{
+  return glue->has_arb_shadow;
+}
+
+/* GL_ARB_depth_texture */
+SbBool
+cc_glglue_has_arb_depth_texture(const cc_glglue * glue)
+{
+  return glue->has_arb_depth_texture;
+}
+
 
 
 /*!
