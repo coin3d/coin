@@ -43,6 +43,7 @@ extern "C" {
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
+#define _WIN32_WINNT 0x0400 /* FIXME: testing TryCriticalSection */
 #include <windows.h>
 #undef NO_IMPLEMENTATION
 #endif /* USE_W32THREAD */

@@ -24,6 +24,8 @@
 #define EVENT_SIGNAL 0
 #define EVENT_BROADCAST 1
 
+#include <Inventor/C/base/basep.h>
+
 /*
  * This implementation is based on the SetEvent (3.2) solution decribed at
  * http://www.cs.wustl.edu/~schmidt/win32-cv-1.html.
@@ -33,7 +35,7 @@ static int
 internal_struct_init(cc_condvar * condvar_struct)
 {
   /* auto-reset, initially is non-signaled */
-  condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] = 
+  condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] =
     CreateEvent(NULL, FALSE, FALSE, NULL);
   if (condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] == NULL) {
     if (COIN_DEBUG) {
@@ -48,7 +50,7 @@ internal_struct_init(cc_condvar * condvar_struct)
     return CC_ERROR;
   }
   /* auto-reset, initially is non-signaled */
-  condvar_struct->w32thread.eventhandle[EVENT_BROADCAST] = 
+  condvar_struct->w32thread.eventhandle[EVENT_BROADCAST] =
     CreateEvent(NULL, TRUE, FALSE, NULL);
   if (condvar_struct->w32thread.eventhandle[EVENT_BROADCAST] == NULL) {
     if (COIN_DEBUG) {
@@ -62,8 +64,8 @@ internal_struct_init(cc_condvar * condvar_struct)
     }
     return CC_ERROR;
   }
-  InitializeCriticalSection(&condvar_struct->w32thread.waiters_count_lock);  
-  condvar_struct->w32thread.waiters_count = 0; 
+  InitializeCriticalSection(&condvar_struct->w32thread.waiters_count_lock);
+  condvar_struct->w32thread.waiters_count = 0;
   return CC_OK;
 }
 
@@ -111,17 +113,17 @@ internal_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD period)
   EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
   condvar->w32thread.waiters_count++;
   LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
-  
+
   /* It's ok to release <mutex> here since Win32 manual-reset events
    * maintain state when used with <SetEvent>.  This avoids the "lost
    * wakeup" bug... */
   cc_mutex_unlock(mutex);
 
   result = WaitForMultipleObjects(2, condvar->w32thread.eventhandle, FALSE, period);
-  
+
   EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
-  condvar->w32thread.waiters_lock--;
-  last_waiter = 
+  condvar->w32thread.waiters_count--;
+  last_waiter =
     result == WAIT_OBJECT_0 + EVENT_BROADCAST &&
     condvar->w32thread.waiters_count == 0;
   LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
@@ -135,7 +137,7 @@ internal_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD period)
   /* relock the mutex before returning */
   cc_mutex_lock(mutex);
 
-  if (status == WAIT_FAILED) {
+  if (result == WAIT_FAILED) {
     if (COIN_DEBUG) {
       DWORD err;
       char *errstr;
@@ -158,7 +160,7 @@ internal_wait(cc_condvar * condvar, cc_mutex * mutex)
 }
 
 static int
-internal_timed_wait(cc_condvar * condvar, cc_time period)
+internal_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
 {
   return internal_wait_common(condvar, mutex, (DWORD)floor(period*1000.0f));
 }
@@ -168,9 +170,9 @@ internal_wake_one(cc_condvar * condvar)
 {
   int have_waiters;
   EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
-  have_waiters = convar->w32thread.waiters_count > 0;
+  have_waiters = condvar->w32thread.waiters_count > 0;
   LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
-  
+
   if (have_waiters) {
     SetEvent(condvar->w32thread.eventhandle[EVENT_SIGNAL]);
   }
@@ -181,10 +183,10 @@ static int
 internal_wake_all(cc_condvar * condvar)
 {
   int have_waiters;
-  EnterCriticalSection(condvar->w32thread.waiters_count_lock);
-  have_waiters = condvar->waiters_count_lock > 0;
-  LeaveCriticalSection(condvar->w32thread.waiters_count_lock);
-  
+  EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
+  have_waiters = condvar->w32thread.waiters_count > 0;
+  LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
+
   if (have_waiters) {
     SetEvent(condvar->w32thread.eventhandle[EVENT_BROADCAST]);
   }
