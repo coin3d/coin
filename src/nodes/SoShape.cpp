@@ -308,8 +308,8 @@ public:
     if (this->faceDetail) {
       this->faceDetail->setNumPoints(3);
       this->faceDetail->setPoint(0, &this->pointDetails[i0]);
-      this->faceDetail->setPoint(1, &this->pointDetails[i0]);
-      this->faceDetail->setPoint(2, &this->pointDetails[i0]);
+      this->faceDetail->setPoint(1, &this->pointDetails[i1]);
+      this->faceDetail->setPoint(2, &this->pointDetails[i2]);
       this->vertsArray[i0].setDetail(this->faceDetail);
       this->vertsArray[i1].setDetail(this->faceDetail);
       this->vertsArray[i2].setDetail(this->faceDetail);
