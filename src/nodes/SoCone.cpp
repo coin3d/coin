@@ -27,10 +27,12 @@
 
 #include <Inventor/nodes/SoCone.h>
 
-
+#include <Inventor/SbLine.h>
+#include <Inventor/SbPlane.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
 #include <assert.h>
+#include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -40,6 +42,12 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/details/SoConeDetail.h>
+#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -102,63 +110,59 @@
 
 SO_NODE_SOURCE(SoCone);
 
+//
+// this was actually much easier than I first though since the Cone
+// is aligned with the y-axis.
+//
+// A point on a SoCone can be expressed by:
+// 
+// x^2 + z^2 = r^2, where r = ((h/2)-y)*br/h
+//
+// Substituting x, y and z with the parametric line equations, and we
+// can find zero, one or two solutions for t. We have to check the y-value
+// afterwards to see if it's between +/- (h/2) 
+//
 
-// parameterized equation for a point on a line:
-//     Q = P + t*D,  P is a known line point, D is the line direction
-//
-// equation for a point on a cone:
-// 
-//  |Q - L| = r
-//
-//     h - y 
-// r = ----- * bottomr,  L = y-axis
-//       h 
-//
-// |P + t*D - L| = r
-//
-// some algebra (phew) leads to:
-// 
-// h * ((dx^2 + dy^2 + dz^2 + 1) * t^2 +
-// (2dx - 2y0^2 + 3y0 + 2dz) * t  +
-// x0^2 + 2y0^2 + z0^2 - h)            =  0
-//                                   
-// using
-//
-// t = -b +/- sqrt(b^2 - 4ac)/2a
-//
-// a = h(dx^2 + dy^2 +dz^2 + 1)
-// b = h(2dx - 2y0^2 + 3y0 + 2dz)
-// c = h(x0^2 + 2y0^2 + z0^2 - h)
-//
-// we get zero, one or two t-values.
-//
-// After backsubstitution in the line equation, 
-// we have to check if 0 <= y <= h.
-//
-static SbBool 
-intersect_cone_line(const float bottomr,
+static int 
+intersect_cone_line(const float br,
 		    const float h,
 		    const SbLine &line,
 		    SbVec3f &enter,
 		    SbVec3f &exit)
 {
-#if 0
-  const SbVec3f &d = line.getDirection();
-  const SbVec3f &p = line.getPosition();
-  float a = h*(d.dot(d) + 1.0f);
-  float b = h*(d[0] - 2.0f*p[1]*p[1] + 3.0f*p[1] + 2.0f*d[2]);
-  float c = h*(p[0]*p[0] + 2.0f*p[1]*p[1] + p[2]*p[2] - h);
+  float h2 = h * 0.5f;
+  SbVec3f d = line.getDirection();
+  SbVec3f p = line.getPosition();
+
+  float tmp = (br*br)/(h*h);
+
+  float a = d[0]*d[0] + d[2]*d[2] - d[1]*d[1]*tmp;
+  float b = 2.0f*d[0]*p[0] + 2.0f*d[2]*p[2] + (2.0f*h2*d[1] - 2.0f*p[1]*d[1]) * tmp;
+  float c = p[0]*p[0] + p[2]*p[2] + (2.0f*p[1]*h2 - h2*h2 - p[1]*p[1])*tmp;
 
   float root = b*b - 4.0f*a*c;
-  if (root < 0.0f) return FALSE; // no solutions
-  
-  root = sqrt(root);
-  
-  float t0 = (-b + root) / (2.0f*a);
-  float t1 = (-b - root) / (2.0f*a);
-#endif
 
+  if (root < 0) return 0;
+
+  root = (float) sqrt(root);
+
+  float t0 = (-b - root) / (2.0f*a);
+  float t1 = (-b + root) / (2.0f*a);
+
+  if (t1 < t0) SbSwap(t0,t1);
+  
+  enter = p + t0*d;
+  exit = p + t1*d;
+
+  int numisect = 0;
+  if (fabs(enter[1]) <= h2) numisect++;
+  if (fabs(exit[1]) <= h2 && t0 != t1) {
+    numisect++;
+    if (numisect == 1) enter = exit;
+  }
+  return numisect;
 }
+
 
 
 /*!
@@ -365,12 +369,52 @@ SoCone::hasPart(SoCone::Part part) const
   FIXME: write doc
 */
 void
-SoCone::rayPick(SoRayPickAction * /* action */)
+SoCone::rayPick(SoRayPickAction *action)
 {
-#if 0
+  if (!this->shouldRayPick(action)) return;
+
   action->setObjectSpace();
   const SbLine &line = action->getLine();
-#endif
+
+  int numisect = 0;
+  SbVec3f isect[2];
+
+  if (this->parts.getValue() & SoCone::SIDES) {
+    numisect = intersect_cone_line(this->bottomRadius.getValue(),
+				   this->height.getValue(),
+				   line,
+				   isect[0],
+				   isect[1]);
+    
+    for (int i = 0; i < numisect; i++) {
+      if (action->isBetweenPlanes(isect[i])) {
+	SoPickedPoint *pp = action->addIntersection(isect[i]);
+	if (pp) {
+	  SoConeDetail *detail = new SoConeDetail;
+	  detail->setPart((int)SoCone::SIDES);
+	  pp->setDetail(detail, this);
+	}
+      }
+    }
+  }
+  
+  if ((numisect < 2) && (this->parts.getValue() & SoCone::BOTTOM)) {
+    SbPlane bottom(SbVec3f(0,1,0), -this->height.getValue()*0.5f);
+    SbVec3f bpt;
+    float r2 = this->bottomRadius.getValue();
+    r2 *= r2;
+    if (bottom.intersect(line, bpt)) {
+      if (((bpt[0]*bpt[0] + bpt[2]*bpt[2]) <= r2) &&
+	  (action->isBetweenPlanes(bpt))) {
+	SoPickedPoint *pp = action->addIntersection(bpt);
+	if (pp) {
+	  SoConeDetail *detail = new SoConeDetail();
+	  detail->setPart((int)SoCone::BOTTOM);      
+	  pp->setDetail(detail, this);	
+	}
+      }
+    }
+  }
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
