@@ -3817,10 +3817,11 @@ incremented during the copy, but never decremented :(
 
         Cases in which this has potential of breaking Coin:
         o Offscreen rendering w/Cocoa
-        o Offscreen rendering using a window system layer on top
-          of the native system (as Morten also pointed out), e.g. SoXt under 
-          Windows.
-        o Offscreen rendering of a scene containing an SoSceneTexture2 node
+        o Offscreen rendering using a window system layer on top of
+          the native system (as Morten also pointed out), e.g. SoXt
+          under Windows.
+        o Offscreen rendering of a scene containing an SoSceneTexture2
+          node
         o Offscreen rendering done from a callback node
         o Nested SoSceneTexture2 nodes
 
@@ -3830,21 +3831,23 @@ incremented during the copy, but never decremented :(
         kyrah suggested initially (i.e. using callbacks into client
         code):
 
-        o Must call back into client code (we cannot e.g. execute Objective-C
-          code from Coin)
-        o Must have a stack of these callbacks (to take nested offscreen renderers
-          into account)
-        o Must take into account that multiple threads can simultaneously render
-          (by having one stack per thread?)
-        o Should be able to share resources between on-screen and off-screen 
+        o Must call back into client code (we cannot e.g. execute
+          Objective-C code from Coin)
+        o Must have a stack of these callbacks (to take nested
+          offscreen renderers into account)
+        o Must take into account that multiple threads can
+          simultaneously render (by having one stack per thread?)
+        o Should be able to share resources between on-screen and
+          off-screen contexts:
+          - Imagine rendering a huge volume with SIMVoleon and wanting
+            to also offscreen render that every frame. Without texture
+            sharing, this is not going to be very fast.
+        o Should also support sharing between "layered" and native
           contexts:
-          - Imagine rendering a huge volume with SIMVoleon and wanting to
-            also offscreen render that every frame. Without texture sharing, this is
-            not going to be very fast.
-        o Should also support sharing between "layered" and native contexts:
-          - Using e.g. GLX on Windows or NSOpenGL on Mac, we should make the
-            offscreen context (WGL and AGL respectively) able to share
-            from the layered contexts by e.g. extracting the core component.
+          - Using e.g. GLX on Windows or NSOpenGL on Mac, we should
+            make the offscreen context (WGL and AGL respectively) able
+            to share from the layered contexts by e.g. extracting the
+            core component.
 
     larsa's feedback:
 
@@ -3943,5 +3946,21 @@ main(void)
 
     20041005 mortene, issue originally reported on coin-discuss by
     Albert van der Meer.
+
+=====================================================================
+
+145 Offscreen rendering not working on Mac OS X/X11.
+
+    This might either be a problem with our offscreen rendering code
+    (rather unlikely, since the GLX code that works on other platform
+    is used) or a limitation of the X11 implementation itself (more
+    likely - it was a known bug in the last public beta before they
+    went GM, but was neither mentioned as resolved in the release
+    notes nor is it still listed as a known problem).
+
+    In any case, we should definitely not just crash (as we do now
+    when trying to render a scenetexture node).
+
+    20041007 kyrah
 
 =====================================================================
