@@ -62,7 +62,7 @@
 #endif // COIN_DEBUG
 
 /*!
-  \typedef void SoEventCallback::SoEventCallbackCB(void * userdata, SoEventCallback * node)
+  \typedef void SoEventCallbackCB(void * userdata, SoEventCallback * node)
 
   Callback functions for SoEventCallback::addEventCallback() must be
   of this type.  \a userdata is the last argument to
