@@ -153,6 +153,7 @@ SoText2::~SoText2()
   SoText2 class. This includes setting up the
   type system, among other things.
 */
+
 void
 SoText2::initClass(void)
 {
@@ -291,6 +292,9 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
 
 #endif // _WIN32 || __BEOS__
 
+
+extern unsigned char coin_default2dfont[][12];
+
 /*!
   FIXME: write function documentation
 */
@@ -298,17 +302,20 @@ void
 SoText2::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
-
 #if defined(_WIN32) || defined(__BEOS__)
 
 #else // !_WIN32 && !__BEOS__
   SoState * state = action->getState();
-
   XFontStruct * fontstruct;
+
+#if 0 // FIXME: crashes on freya.sim.no? 20000905 mortene.
   unsigned int fontlistbase = getGLList(action, fontstruct);
+#else
+  // FIXME: hack. 20000905 skei.
+  unsigned int fontlistbase = NOT_AVAILABLE;
+#endif
 
   if (fontlistbase != NOT_AVAILABLE) {
-
     SoMaterialBundle mb(action);
     mb.sendFirst();
 
@@ -397,6 +404,71 @@ SoText2::GLRender(SoGLRenderAction * action)
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
   }
+
+  // Default font drawing.
+  else {
+    SoMaterialBundle mb(action);
+    mb.sendFirst();
+    SoGLLightModelElement::getInstance(state)->forceSend(SoLightModelElement::BASE_COLOR);
+    SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
+    const SbMatrix & mat = SoModelMatrixElement::get(state);
+    mat.multVecMatrix(nilpoint, nilpoint);
+    const SbViewVolume & vv = SoViewVolumeElement::get(state);
+    // this function will also modify the z-value of nilpoint
+    // according to the view matrix
+    vv.projectToScreen(nilpoint, nilpoint);
+    const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+    SbVec2s vpsize = vp.getViewportSizePixels();
+    nilpoint[0] = nilpoint[0] * float(vpsize[0]);
+    nilpoint[1] = nilpoint[1] * float(vpsize[1]);
+    // Set new state.
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+		
+    int xpos,ypos,width;
+		
+    ypos = nilpoint[1];
+    for (int i = 0; i < this->string.getNum(); i++) {
+      const char *s = this->string[i].getString();
+      width = strlen(s);
+      //xpos = nilpoint[0];
+      switch (this->justification.getValue()) {
+      case SoText2::LEFT:
+        xpos = nilpoint[0];
+        break;
+      case SoText2::RIGHT:
+        xpos = nilpoint[0] - (width*8);
+        break;
+      case SoText2::CENTER:
+        xpos = nilpoint[0] - (width*8)/2;
+        break;
+      }
+      for (int i2=0;i2<width;i2++) {
+        if ( (s[i2] >= 32) && (s[i2] <= 127) ) { // just in case?
+          glRasterPos2i(0,0);
+          glBitmap(0,0,0,0,xpos,ypos,NULL);
+          glBitmap(8,12,0,0,0,0,(const GLubyte *)coin_default2dfont + 12 * (s[i2]-32) );
+        }
+        xpos += 8;
+      }
+      // - instead of + because of OpenGL's "inverted" y coordinate...
+      ypos -= ( 12 * this->spacing.getValue() );
+    }
+		
+    glPixelStorei(GL_UNPACK_ALIGNMENT,4);
+    // Pop old GL state.
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+  }
+
 #endif // _WIN32 || __BEOS__
 }
 
