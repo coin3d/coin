@@ -103,8 +103,10 @@ EXTRA_DIST = \
              data/draggerDefaults/dragPointDragger.iv \
              data/draggerDefaults/pointLightDragger.iv \
              data/draggerDefaults/handleBoxDragger.iv \
+             data/draggerDefaults/trackballDragger.iv \
              data/draggerDefaults/scaleUniformDragger.iv \
-             data/draggerDefaults/rotateCylindricalDragger.iv
+             data/draggerDefaults/rotateCylindricalDragger.iv \
+             data/draggerDefaults/transformBoxDragger.iv
 
 
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
@@ -113,8 +115,10 @@ draggerdefdata_DATA = translate1Dragger.iv \
 			dragPointDragger.iv \
 			pointLightDragger.iv \
 			handleBoxDragger.iv \
+			trackballDragger.iv \
 			scaleUniformDragger.iv \
-			rotateCylindricalDragger.iv
+			rotateCylindricalDragger.iv \
+			transformBoxDragger.iv
 
 
 BUILT_SOURCES = \
@@ -123,8 +127,10 @@ BUILT_SOURCES = \
 	dragPointDragger.h \
 	pointLightDragger.h \
 	handleBoxDragger.h \
+	trackballDragger.h \
 	scaleUniformDragger.h \
-	rotateCylindricalDragger.h
+	rotateCylindricalDragger.h \
+	transformBoxDragger.h
 
 subdir = data/draggerDefaults
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -265,11 +271,17 @@ pointLightDragger.h: $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv $(t
 handleBoxDragger.h: $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/handleBoxDragger.iv > handleBoxDragger.h
 
+trackballDragger.h: $(top_srcdir)/data/draggerDefaults/trackballDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/trackballDragger.iv > trackballDragger.h
+
 scaleUniformDragger.h: $(top_srcdir)/data/draggerDefaults/scaleUniformDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/scaleUniformDragger.iv > scaleUniformDragger.h
 
 rotateCylindricalDragger.h: $(top_srcdir)/data/draggerDefaults/rotateCylindricalDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/rotateCylindricalDragger.iv > rotateCylindricalDragger.h
+
+transformBoxDragger.h: $(top_srcdir)/data/draggerDefaults/transformBoxDragger.iv $(top_srcdir)/data/draggerDefaults/iv2h.sh
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/transformBoxDragger.iv > transformBoxDragger.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
