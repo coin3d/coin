@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoDecomposeRotation SoDecomposeRotation.h Inventor/engines/SoDecomposeRotation.h
+  \class SoDecomposeRotation SoCompose.h Inventor/engines/SoCompose.h
   \brief The SoDecomposeRotation class is used to decompose a rotation into angle and axis.
   \ingroup engines
 */

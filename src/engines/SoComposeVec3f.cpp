@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoComposeVec3f SoComposeVec3f.h Inventor/engines/SoComposeVec3f.h
+  \class SoComposeVec3f SoCompose.h Inventor/engines/SoCompose.h
   \brief The SoComposeVec3f class is used to compose 3D vectors from floats.
   \ingroup engines
 */

@@ -20,9 +20,22 @@
 #ifndef COIN_SOCOMPOSE_H
 #define COIN_SOCOMPOSE_H
 
-#if defined(COIN_INTERNAL)
-#error "Do not include SbCompose.h internally."
+#ifdef COIN_INTERNAL
+/* Detect erroneous include statements in library code. Application
+   programmers can ignore this. */
+#error "Do not include SbCompose.h in internal library code."
 #endif // COIN_INTERNAL
+
+/*
+ * Note to application programmers: include this header file instead
+ * of the specific class header files below if you want to be
+ * sourcecode compatible with the SGI and TGS Inventor
+ * implementations.
+ *
+ * (All the class definitions below are placed in the SoCompose.h file
+ * in SGI and TGS Inventor, and the following header files are not
+ * part of the SDK.)
+ */
 
 #include <Inventor/engines/SoComposeVec2f.h>
 #include <Inventor/engines/SoComposeVec3f.h>

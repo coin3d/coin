@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoDecomposeMatrix SoDecomposeMatrix.h Inventor/engines/SoDecomposeMatrix.h
+  \class SoDecomposeMatrix SoCompose.h Inventor/engines/SoCompose.h
   \brief The SoDecomposeMatrix class is used to decompose a matrix into simple transformations.
   \ingroup engines
 */

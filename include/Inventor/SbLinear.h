@@ -21,8 +21,21 @@
 #define COIN_SBLINEAR_H
 
 #ifdef COIN_INTERNAL
-#error "Do not include SbLinear.h internally."
+/* Detect erroneous include statements in library code. Application
+   programmers can ignore this. */
+#error "Do not include SbLinear.h in internal library code."
 #endif // COIN_INTERNAL
+
+/*
+ * Note to application programmers: include this header file in your
+ * application code instead of the specific class header files below
+ * if you want to be sourcecode compatible with the SGI and TGS
+ * Inventor implementations.
+ *
+ * (All the class definitions below are placed in the SbLinear.h file
+ * in SGI and TGS Inventor, and the following header files are not
+ * part of the SDK.)
+ */
 
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2s.h>

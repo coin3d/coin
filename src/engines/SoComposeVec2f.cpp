@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoComposeVec2f SoComposeVec2f.h Inventor/engines/SoComposeVec2f.h
+  \class SoComposeVec2f SoCompose.h Inventor/engines/SoCompose.h
   \brief The SoComposeVec2f class is used to compose 2D vectors from two floats.
   \ingroup engines
 */

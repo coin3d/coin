@@ -20,6 +20,12 @@
 #ifndef COIN_SOCOMPOSEVEC4F_H
 #define COIN_SOCOMPOSEVEC4F_H
 
+// Warning for application programmers: do not include this header
+// file in your application code if you want to stay sourcecode
+// compatible with SGI or TGS Inventor.  In those Inventor
+// implementations, all SoCompose* and SoDecompose* engine classes are
+// defined in the header file SoCompose.h.
+
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoMFFloat.h>
