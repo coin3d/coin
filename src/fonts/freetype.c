@@ -925,10 +925,10 @@ flwft_addTessVertex(double * vertex)
 
   cc_list_append(flwft_tessellator.edgeindexlist, (void *) (flwft_tessellator.vertex_counter));
 
-  counter = (int*) malloc(sizeof(int));
+  counter = (int *) malloc(sizeof(int));
   counter[0] = flwft_tessellator.vertex_counter++;
   GLUWrapper()->gluTessVertex(flwft_tessellator.tessellator_object, vertex, counter);
-  
+
   cc_list_append(flwft_tessellator.edgeindexlist, (void *) (flwft_tessellator.vertex_counter));
   
 }
@@ -969,6 +969,7 @@ flwft_lineToCallback(FT_Vector * to, void * user)
 
   flwft_addTessVertex(vertex);
 
+  free(vertex);
   return 0;
 }
 
@@ -1009,9 +1010,9 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
     vertex = (double*) malloc(sizeof(double)*3);
     vertex[0] = f[0];
     vertex[1] = f[1];
-    vertex[2] = 0;
-    
+    vertex[2] = 0;    
     flwft_addTessVertex(vertex);
+    free(vertex);
 
     df[0] += df2[0];
     df[1] += df2[1];
@@ -1023,6 +1024,7 @@ flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
   vertex[1] = to->y;
   vertex[2] = 0;
   flwft_addTessVertex(vertex);
+  free(vertex);
   
   flwft_tessellator.last_vertex.x = to->x;
   flwft_tessellator.last_vertex.y = to->y;
@@ -1035,7 +1037,7 @@ flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to
 {
 
   /*
-    FIXME: Cubic splines is not tested due to the fact that I
+    FIXME: Cubic splines are not tested due to the fact that I
     haven't managed to find any fonts which contains other spline
     types than conic splines. (20030905 handegar)
   */
@@ -1098,6 +1100,7 @@ flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to
   vertex[1] = to->y;
   vertex[2] = 0;
   flwft_addTessVertex(vertex);
+  free(vertex);
   
   flwft_tessellator.last_vertex.x = to->x;
   flwft_tessellator.last_vertex.y = to->y;
@@ -1111,8 +1114,7 @@ static void
 flwft_vertexCallback(GLvoid * data)
 {
 
-  int index;
-  index = ((int *) data)[0];
+  int index = ((int *) data)[0];
 
   if ((flwft_tessellator.triangle_fan_root_index == -1) &&
      (flwft_tessellator.triangle_index_counter == 0)) {
@@ -1214,7 +1216,6 @@ flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4
 
   ret = (int*) malloc(sizeof(int));
   ret[0] = flwft_tessellator.vertex_counter++;
-
   
   *dataOut = ret;
 
