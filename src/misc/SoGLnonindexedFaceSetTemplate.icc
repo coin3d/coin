@@ -33,6 +33,9 @@
     const int32_t *end,
     SbBool needNormals)
 {
+  // Make sure specified coordinate startindex is valid
+  assert(idx >= 0);
+
   const SbVec3f * coords3d = NULL;
   const SbVec4f * coords4d = NULL;
   const SbBool is3d = coords->is3D();
@@ -42,6 +45,7 @@
   else {
     coords4d = coords->getArrayPtr4();
   }
+  int numcoords = coords->getNum();
 
   // This is the same code as in SoGLCoordinateElement::send().
   // It is inlined here for speed (~15% speed increase).
@@ -63,8 +67,23 @@
 #endif
 
   while (ptr < end) {
-
     n = *ptr++;
+
+    if (n < 3 || idx + n > numcoords) {
+      static uint32_t current_errors = 0;
+      if (current_errors < 1) {
+        SoDebugError::postWarning("[nonindexedfaceset]::GLRender", "Erroneous "
+                                  "number of coordinates specified: %d. Must "
+                                  "be >= 3 and less than or equal to the number of "
+                                  "coordinates available (which is: %d). Aborting "
+                                  "rendering. This message will be shown only once, "
+                                  "but more errors might be present", n, numcoords - idx);
+      }
+
+      current_errors++;
+      break;
+    }
+
     if (n == 3) newmode = GL_TRIANGLES;
     else if (n == 4) newmode = GL_QUADS;
     else newmode = GL_POLYGON;
