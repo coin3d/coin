@@ -27,11 +27,14 @@
 #include <stdio.h>
 #include <Inventor/SbBasic.h>
 
+class SbVec3f;
+
 class COIN_DLL_API SbVec3d {
 public:
   SbVec3d(void);
   SbVec3d(const double v[3]);
   SbVec3d(const double x, const double y, const double z);
+  SbVec3d(const SbVec3f & v);
   SbVec3d cross(const SbVec3d & v) const;
   double dot(const SbVec3d & v) const;
   SbBool equals(const SbVec3d & v, const double tolerance) const;
@@ -48,6 +51,7 @@ public:
                      const SbVec3d & v0,
                      const SbVec3d & v1,
                      const SbVec3d & v2);
+  SbVec3d & setValue(const SbVec3f & v);
   double & operator [](const int i);
   const double & operator [](const int i) const;
   SbVec3d & operator *=(const double d);

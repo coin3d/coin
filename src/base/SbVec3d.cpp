@@ -55,6 +55,7 @@
 
 #include <assert.h>
 #include <Inventor/SbVec3d.h>
+#include <Inventor/SbVec3f.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -87,6 +88,17 @@ SbVec3d::SbVec3d(const double x, const double y, const double z)
   this->vec[0] = x;
   this->vec[1] = y;
   this->vec[2] = z;
+}
+
+/*!  
+  Constructs an SbVec3d instance with initial values from \the
+  single precision vector \a v.  
+
+  \since 2002-04-25
+*/
+SbVec3d::SbVec3d(const SbVec3f & v)
+{
+  this->setValue(v);
 }
 
 /*!
@@ -273,6 +285,21 @@ SbVec3d::setValue(const SbVec3d & barycentric,
   this->vec[0] = barycentric[0]*v0[0]+barycentric[1]*v1[0]+barycentric[2]*v2[0];
   this->vec[1] = barycentric[0]*v0[1]+barycentric[1]*v1[1]+barycentric[2]*v2[1];
   this->vec[2] = barycentric[0]*v0[2]+barycentric[1]*v1[2]+barycentric[2]*v2[2];
+  return *this;
+}
+
+/*!
+  Sets this vector to the single precision vector \a v, converting
+  the vector to a double precision vector.
+
+  \since 2002-04-25
+*/
+SbVec3d & 
+SbVec3d::setValue(const SbVec3f & v)
+{
+  this->vec[0] = (double) v[0];
+  this->vec[1] = (double) v[1];
+  this->vec[2] = (double) v[2];
   return *this;
 }
 

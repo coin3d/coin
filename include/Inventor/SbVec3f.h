@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -29,6 +29,7 @@
 #include <Inventor/SbBasic.h>
 
 class SbPlane;
+class SbVec3d;
 
 class COIN_DLL_API SbVec3f {
 public:
@@ -36,6 +37,7 @@ public:
   SbVec3f(const float v[3]);
   SbVec3f(const float x, const float y, const float z);
   SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2);
+  SbVec3f(const SbVec3d & v);
   SbVec3f cross(const SbVec3f & v) const;
   float dot(const SbVec3f & v) const;
   SbBool equals(const SbVec3f & v, const float tolerance) const;
@@ -52,6 +54,7 @@ public:
                      const SbVec3f & v0,
                      const SbVec3f & v1,
                      const SbVec3f & v2);
+  SbVec3f & setValue(const SbVec3d & v);
   float & operator [](const int i);
   const float & operator [](const int i) const;
   SbVec3f & operator *=(const float d);

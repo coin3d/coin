@@ -54,7 +54,9 @@
 */
 
 #include <assert.h>
+#include <float.h> // FLT_MAX
 #include <Inventor/SbPlane.h>
+#include <Inventor/SbVec3d.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -184,6 +186,17 @@ SbVec3f::SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2)
   this->vec[0] = x[0];
   this->vec[1] = x[1];
   this->vec[2] = x[2];
+}
+
+/*!  
+  Constructs an SbVec3f instance with initial values from \the
+  double precision vector \a v.  
+
+  \since 2002-04-25
+*/
+SbVec3f::SbVec3f(const SbVec3d & v)
+{
+  this->setValue(v);
 }
 
 /*!
@@ -374,6 +387,34 @@ SbVec3f::setValue(const SbVec3f & barycentric,
   this->vec[0] = barycentric[0]*v0[0]+barycentric[1]*v1[0]+barycentric[2]*v2[0];
   this->vec[1] = barycentric[0]*v0[1]+barycentric[1]*v1[1]+barycentric[2]*v2[1];
   this->vec[2] = barycentric[0]*v0[2]+barycentric[1]*v1[2]+barycentric[2]*v2[2];
+  return *this;
+}
+
+/*!
+  Sets this vector to the double precision vector \a v, converting
+  the vector to a single precision vector.
+
+  \since 2002-04-25
+*/
+SbVec3f & 
+SbVec3f::setValue(const SbVec3d & v)
+{
+#if COIN_DEBUG
+  if (v[0] < - FLT_MAX ||
+      v[0] > FLT_MAX ||
+      v[1] < -FLT_MAX ||
+      v[1] > FLT_MAX ||
+      v[2] < -FLT_MAX ||
+      v[2] > FLT_MAX) {
+    SoDebugError::postWarning("SbVec3f::setValue",
+                              "The double precision vector will not fit into a "
+                              "single precision vector.");
+  }
+#endif // COIN_DEBUG
+
+  this->vec[0] = (float) v[0];
+  this->vec[1] = (float) v[1];
+  this->vec[2] = (float) v[2];
   return *this;
 }
 
