@@ -27,8 +27,8 @@
 
 #ifndef HAVE_FREETYPE
 
-// Dummy versions of all functions. Only cc_flwft_initialize() and
-// cc_flwft_exit() will be used from generic wrapper.
+// Dummy versions of all functions. Only cc_flwft_initialize() will be
+// used from generic wrapper.
 
 SbBool cc_flwft_initialize(void) { return FALSE; }
 void cc_flwft_exit(void) { }
@@ -45,13 +45,13 @@ int cc_flwft_set_charmap(void * font, int charmap) { assert(FALSE); return 0; }
 int cc_flwft_set_char_size(void * font, int width, int height) { assert(FALSE); return 0; }
 int cc_flwft_set_font_rotation(void * font, float angle) { assert(FALSE); return 0; }
   
-cc_FLWglyph cc_flwft_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
-int cc_flwft_get_advance(void * font, cc_FLWglyph glyph, float *x, float *y) { assert(FALSE); return 0; }
-int cc_flwft_get_kerning(void * font, cc_FLWglyph glyph1, cc_FLWglyph glyph2, float *x, float *y) { assert(FALSE); return 0; }
-void cc_flwft_done_glyph(void * font, cc_FLWglyph glyph) { assert(FALSE); }
+int cc_flwft_get_glyph(void * font, unsigned int charidx) { assert(FALSE); return 0; }
+int cc_flwft_get_advance(void * font, int glyph, float *x, float *y) { assert(FALSE); return 0; }
+int cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y) { assert(FALSE); return 0; }
+void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
   
-cc_FLWbitmap * cc_flwft_get_bitmap(void * font, cc_FLWglyph glyph) { assert(FALSE); return NULL; }
-int cc_flwft_get_outline(void * font, cc_FLWglyph glyph) { assert(FALSE); return 0; }
+struct cc_FLWbitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
+int cc_flwft_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 
 #else // HAVE_FREETYPE
 
@@ -307,7 +307,7 @@ cc_flwft_set_font_rotation(void * font, float angle)
   Returns the glyph index. If the character code is undefined, returns
   0.
 */
-cc_FLWglyph
+int
 cc_flwft_get_glyph(void * font, unsigned int charidx)
 {
   FT_Face face;
@@ -330,7 +330,7 @@ cc_flwft_get_glyph(void * font, unsigned int charidx)
 }
 
 int
-cc_flwft_get_advance(void * font, cc_FLWglyph glyph, float *x, float *y)
+cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
 {
   FT_Error error;
   FT_Face face;
@@ -350,7 +350,7 @@ cc_flwft_get_advance(void * font, cc_FLWglyph glyph, float *x, float *y)
 }
 
 int
-cc_flwft_get_kerning(void * font, cc_FLWglyph glyph1, cc_FLWglyph glyph2, float *x, float *y)
+cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
 {
   FT_Error error;
   FT_Vector kerning;
@@ -374,16 +374,16 @@ cc_flwft_get_kerning(void * font, cc_FLWglyph glyph1, cc_FLWglyph glyph2, float 
 }
 
 void
-cc_flwft_done_glyph(void * font, cc_FLWglyph glyph)
+cc_flwft_done_glyph(void * font, int glyph)
 {
-  /* No action, since an cc_FLWglyph is just an index. */
+  /* No action, since an int is just an index. */
 }
 
-cc_FLWbitmap *
-cc_flwft_get_bitmap(void * font, cc_FLWglyph glyph)
+struct cc_FLWbitmap *
+cc_flwft_get_bitmap(void * font, int glyph)
 {
   FT_Error error;
-  cc_FLWbitmap * bm;
+  struct cc_FLWbitmap * bm;
   FT_Face face;
   FT_Glyph g;
   FT_BitmapGlyph tfbmg;
@@ -408,7 +408,7 @@ cc_flwft_get_bitmap(void * font, cc_FLWglyph glyph)
   }
   tfbmg = (FT_BitmapGlyph)g;
   tfbm = &tfbmg->bitmap;
-  bm = (cc_FLWbitmap *)malloc(sizeof(cc_FLWbitmap));
+  bm = (struct cc_FLWbitmap *)malloc(sizeof(struct cc_FLWbitmap));
   bm->buffer = (unsigned char *)malloc(tfbm->rows * tfbm->pitch);
   bm->bearingX = tfbmg->left;
   bm->bearingY = tfbmg->top;
@@ -421,7 +421,7 @@ cc_flwft_get_bitmap(void * font, cc_FLWglyph glyph)
 }
 
 int
-cc_flwft_get_outline(void * font, cc_FLWglyph glyph)
+cc_flwft_get_outline(void * font, int glyph)
 {
   /* FIXME: implement. */
   if (cc_freetype_debug()) cc_debugerror_postinfo("cc_flwft_get_outline", "Function has not been implemented yet.\n");

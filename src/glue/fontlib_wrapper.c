@@ -40,8 +40,8 @@
 
 
 struct cc_glyphstruct {
-  cc_FLWglyph glyph;
-  cc_FLWbitmap * bitmap;
+  int glyph;
+  struct cc_FLWbitmap * bitmap;
   int defaultglyph;
 };
 
@@ -70,16 +70,16 @@ static SbBool freetypelib = FALSE;
 /* ********************************************************************** */
 /* BEGIN Internal functions */
 
-static cc_FLWbitmap *
+static struct cc_FLWbitmap *
 get_default_bitmap(unsigned int character)
 {
-  cc_FLWbitmap * bm;
+  struct cc_FLWbitmap * bm;
   if (character < 256) {
     const int fontsize = coin_default2dfont_get_size();
     const int * isomapping = coin_default2dfont_get_isolatin1_mapping();
     const unsigned char * fontdata = coin_default2dfont_get_data();
 
-    bm = (cc_FLWbitmap *)malloc(sizeof(cc_FLWbitmap));
+    bm = (struct cc_FLWbitmap *)malloc(sizeof(struct cc_FLWbitmap));
     bm->buffer = (unsigned char *) fontdata + 
       fontsize * isomapping[character];
     bm->bearingX = 0;
@@ -95,7 +95,7 @@ get_default_bitmap(unsigned int character)
 static void
 glyphstruct_init(struct cc_glyphstruct * gs)
 {
-  gs->glyph = (cc_FLWglyph)NOGLYPH;
+  gs->glyph = (int)NOGLYPH;
   gs->bitmap = NULL;
   gs->defaultglyph = 0;
 }
@@ -204,8 +204,8 @@ fontstruct_rmfont(int font)
   for (i=0; i<fonts[font]->glyphcnt; i++) {
     fontstruct_rmglyph(fonts[font], i);
   }
-  free( fonts[font]->glyphs );
-  free( fonts[font] );
+  free(fonts[font]->glyphs);
+  free(fonts[font]);
   fonts[font] = NULL;
 }
 
@@ -260,7 +260,7 @@ fontstruct_expand_glyphs(struct cc_fontstruct * fs)
 }
 
 static int
-fontstruct_insert_glyph(int font, cc_FLWglyph glyph, int defaultglyph)
+fontstruct_insert_glyph(int font, int glyph, int defaultglyph)
 {
   int i;
   struct cc_fontstruct * fs;
@@ -495,13 +495,11 @@ cc_flw_set_font_rotation(int font, float angle)
 int
 cc_flw_get_glyph(int font, int charidx)
 {
-  cc_FLWglyph glyph;
+  int glyph = 0;
 
   assert(font >= 0 && font < fontcnt && fonts[font]);
   
-  glyph = 0;
-  
-  if ( !fonts[font]->defaultfont ) {
+  if (!fonts[font]->defaultfont) {
     if (freetypelib) { glyph = cc_flwft_get_glyph(fonts[font]->font, charidx); }
     
     if (glyph > 0) {
@@ -591,12 +589,12 @@ cc_flw_done_glyph(int font, int glyph)
   }
 }
 
-cc_FLWbitmap *
+struct cc_FLWbitmap *
 cc_flw_get_bitmap(int font, int glyph)
 {
   unsigned char * buf;
   struct cc_fontstruct * fs;
-  cc_FLWbitmap * bm;
+  struct cc_FLWbitmap * bm;
   int i, defaultglyph;
   defaultglyph = 0;
   bm = NULL;
@@ -640,9 +638,9 @@ cc_flw_get_outline(int font, int glyph)
 }
 
 void
-cc_flw_done_bitmap(cc_FLWbitmap * bitmap)
+cc_flw_done_bitmap(struct cc_FLWbitmap * bitmap)
 {
-  assert( bitmap);
+  assert(bitmap);
   if (bitmap->buffer)
     free(bitmap->buffer);
   free(bitmap);

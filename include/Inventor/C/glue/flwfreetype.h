@@ -54,13 +54,13 @@ extern "C" {
   int cc_flwft_set_char_size(void * font, int width, int height);
   int cc_flwft_set_font_rotation(void * font, float angle);
   
-  cc_FLWglyph cc_flwft_get_glyph(void * font, unsigned int charidx);
-  int cc_flwft_get_advance(void * font, cc_FLWglyph glyph, float *x, float *y);
-  int cc_flwft_get_kerning(void * font, cc_FLWglyph glyph1, cc_FLWglyph glyph2, float *x, float *y);
-  void cc_flwft_done_glyph(void * font, cc_FLWglyph glyph);
+  int cc_flwft_get_glyph(void * font, unsigned int charidx);
+  int cc_flwft_get_advance(void * font, int glyph, float * x, float * y);
+  int cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y);
+  void cc_flwft_done_glyph(void * font, int glyph);
   
-  cc_FLWbitmap * cc_flwft_get_bitmap(void * font, cc_FLWglyph glyph);
-  int cc_flwft_get_outline(void * font, cc_FLWglyph glyph);
+  struct cc_FLWbitmap * cc_flwft_get_bitmap(void * font, int glyph);
+  int cc_flwft_get_outline(void * font, int glyph);
   
 #ifdef __cplusplus
 }

@@ -35,20 +35,17 @@ extern "C" {
     FLW is a Font Library Wrapper designed to allow any number of
     underlying font libraries to be used through the same
     API. Functions and datatypes are modelled on the FreeType font
-    library, which is also the only library supported in this first
-    version of FLW.
+    library.
 
-    Which underlying font library to use is determined at compile
-    time.
+    Which underlying font library to use is currently determined at
+    compile time.
 
     See http://www.freetype.org for more information about the
     FreeType font library.
   */
   
   
-  typedef int cc_FLWglyph;
-  
-  typedef struct cc_FLWbitmap {
+  struct cc_FLWbitmap {
     int bearingX; /* left side of bitmap relative to pen */
     int bearingY; /* top of bitmap relative to pen */
     unsigned int rows; /* height of bitmap */
@@ -57,7 +54,7 @@ extern "C" {
     int advanceX; /* where to position pen for next glyph */
     int advanceY;
     unsigned char * buffer; /* bitmap data */
-  } cc_FLWbitmap;
+  };
   
   void cc_flw_initialize(void);
   void cc_flw_exit(void);
@@ -79,8 +76,8 @@ extern "C" {
   int cc_flw_get_kerning(int font, int glyph1, int glyph2, float *x, float *y);
   void cc_flw_done_glyph(int font, int glyph);
 
-  cc_FLWbitmap * cc_flw_get_bitmap(int font, int glyph);
-  void cc_flw_done_bitmap(cc_FLWbitmap * bitmap);
+  struct cc_FLWbitmap * cc_flw_get_bitmap(int font, int glyph);
+  void cc_flw_done_bitmap(struct cc_FLWbitmap * bitmap);
   
   int cc_flw_get_outline(int font, int glyph);
   
