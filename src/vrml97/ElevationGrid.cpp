@@ -468,7 +468,7 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
       }
       if (dotex) {
         if (tcoords) glTexCoord2fv(tcoords[idx2].getValue());
-        else glTexCoord2f(0.0f, float(z)/float(zdim-1));
+        else glTexCoord2f(0.0f, float(z+1)/float(zdim-1));
       }
       if (mbind == PER_VERTEX) {
         mb.send(idx2, TRUE);
@@ -493,7 +493,7 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
 
         if (dotex) {
           if (tcoords) glTexCoord2fv(tcoords[idx2].getValue());
-          else glTexCoord2f(float(x+1) / float(xdim-1), float(z)/float(zdim-1));
+          else glTexCoord2f(float(x) / float(xdim-1), float(z+1)/float(zdim-1));
         }
         if (nbind == PER_VERTEX) {
           glNormal3fv(normals[idx2].getValue());
