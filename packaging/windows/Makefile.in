@@ -23,6 +23,8 @@ DBGCFLAGS = $(ALLCFLAGS) /GZ /Zi /Yd
 OPTCFLAGS = $(ALLCFLAGS) /Oitgb1 /Gs
 DLLCFLAGS = /GD
 
+BUILDOPTIONS = --enable-vrml97 --enable-threads --enable-threadsafe # --enable-3ds-import
+
 BUILDS = docs shared-release shared-debug build-files # static-release static-debug
 
 # **************************************************************************
@@ -140,10 +142,7 @@ build-shared-release/src/coin@COIN_MAJOR@.dll: Coin-$(VERSION)
 	../Coin-$(VERSION)/configure \
 	  CFLAGS="$(OPTCFLAGS) $(DLLCFLAGS)" \
 	  CXXFLAGS="$(OPTCFLAGS) $(DLLCFLAGS)" \
-	  --enable-threads \
-	  --enable-threadsafe \
-	  --enable-vrml97 \
-	  --enable-3ds-import \
+	  $(BUILDOPTIONS) \
 	  --disable-dependency-tracking \
 	  --disable-debug \
 	  --disable-symbols \
@@ -162,10 +161,7 @@ build-shared-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
 	../Coin-$(VERSION)/configure \
 	  CFLAGS="$(DBGCFLAGS)" \
 	  CXXFLAGS="$(DBGCFLAGS)" \
-	  --enable-threads \
-	  --enable-threadsafe \
-	  --enable-vrml97 \
-	  --enable-3ds-import \
+	  $(BUILDOPTIONS) \
 	  --disable-dependency-tracking \
 	  --enable-debug \
 	  --enable-symbols \
@@ -186,6 +182,7 @@ build-static-release/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
 	../Coin-$(VERSION)/configure \
 	  CFLAGS="$(OPTCFLAGS)" \
 	  CXXFLAGS="$(OPTCFLAGS)" \
+	  $(BUILDOPTIONS) \
 	  --disable-dependency-tracking \
 	  --disable-shared \
 	  --disable-debug \
@@ -207,6 +204,7 @@ build-static-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
 	../Coin-$(VERSION)/configure \
 	  CFLAGS="$(DBGCFLAGS)" \
 	  CXXFLAGS="$(DBGCFLAGS)" \
+	  $(BUILDOPTIONS) \
 	  --disable-dependency-tracking \
 	  --disable-shared \
 	  --enable-debug \
@@ -227,7 +225,9 @@ build-files: build-files/coin@COIN_MAJOR_VERSION@.dsp
 build-files/coin@COIN_MAJOR_VERSION@.dsp: Coin-$(VERSION)
 	@if test -d build-files; then :; else mkdir build-files; fi
 	cd build-files; \
-	../Coin-$(VERSION)/configure --enable-msvcdsp; \
+	../Coin-$(VERSION)/configure \
+	  $(BUILDOPTIONS) \
+	  --enable-msvcdsp; \
 	$(MAKE) clean && $(MAKE)
 
 .PHONY: docs shared-release shared-debug static-release static-debug
