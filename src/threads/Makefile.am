@@ -11,9 +11,11 @@ RegularSources = \
 	sched.c \
 	sync.c \
 	fifo.c \
-	barrier.c
+	barrier.c \
+	threads-dummy.cpp
 LinkHackSources = \
-	all-c.c
+	all-c.c \
+	threads-dummy.cpp
 PublicHeaders = \
 	../../include/Inventor/threads/SbThread.h \
 	../../include/Inventor/threads/SbMutex.h \

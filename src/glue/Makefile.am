@@ -10,10 +10,12 @@ RegularSources = \
 	simage_wrapper.c \
 	openal_wrapper.c \
         fontlib_wrapper.c \
-	win32api.c
+	win32api.c \
+	glue-dummy.cpp
 
 LinkHackSources = \
-	all-c.c
+	all-c.c \
+	glue-dummy.cpp
 
 # Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders =

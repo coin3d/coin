@@ -249,11 +249,13 @@ RegularSources = \
 	simage_wrapper.c \
 	openal_wrapper.c \
         fontlib_wrapper.c \
-	win32api.c
+	win32api.c \
+	glue-dummy.cpp
 
 
 LinkHackSources = \
-	all-c.c
+	all-c.c \
+	glue-dummy.cpp
 
 
 # Header installation is controlled from include/Inventor/C/glue/Makefile.am.
@@ -333,13 +335,14 @@ glue_lst_AR = $(AR) cru
 glue_lst_LIBADD =
 am__glue_lst_SOURCES_DIST = flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c \
 	gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
-	openal_wrapper.c fontlib_wrapper.c win32api.c all-c.c
-am__objects_1 = all-c.$(OBJEXT)
+	openal_wrapper.c fontlib_wrapper.c win32api.c glue-dummy.cpp \
+	all-c.c
+am__objects_1 = all-c.$(OBJEXT) glue-dummy.$(OBJEXT)
 am__objects_2 = flwfreetype.$(OBJEXT) flwwin32.$(OBJEXT) dl.$(OBJEXT) \
 	gl.$(OBJEXT) gl_wgl.$(OBJEXT) gl_agl.$(OBJEXT) gl_glx.$(OBJEXT) \
 	GLUWrapper.$(OBJEXT) simage_wrapper.$(OBJEXT) \
 	openal_wrapper.$(OBJEXT) fontlib_wrapper.$(OBJEXT) \
-	win32api.$(OBJEXT)
+	win32api.$(OBJEXT) glue-dummy.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_glue_lst_OBJECTS = $(am__objects_3)
@@ -354,9 +357,10 @@ am__EXTRA_glue_lst_SOURCES_DIST = \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h \
 	../../include/Inventor/C/glue/fontlib_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h all-c.c flwfreetype.c \
-	flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c \
-	simage_wrapper.c openal_wrapper.c fontlib_wrapper.c win32api.c
+	../../include/Inventor/C/glue/win32api.h all-c.c glue-dummy.cpp \
+	flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
+	GLUWrapper.c simage_wrapper.c openal_wrapper.c \
+	fontlib_wrapper.c win32api.c
 glue_lst_OBJECTS = $(am_glue_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -364,11 +368,12 @@ libglue_la_LDFLAGS =
 libglue_la_LIBADD =
 am__libglue_la_SOURCES_DIST = flwfreetype.c flwwin32.c dl.c gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
-	openal_wrapper.c fontlib_wrapper.c win32api.c all-c.c
-am__objects_6 = all-c.lo
+	openal_wrapper.c fontlib_wrapper.c win32api.c glue-dummy.cpp \
+	all-c.c
+am__objects_6 = all-c.lo glue-dummy.lo
 am__objects_7 = flwfreetype.lo flwwin32.lo dl.lo gl.lo gl_wgl.lo \
 	gl_agl.lo gl_glx.lo GLUWrapper.lo simage_wrapper.lo \
-	openal_wrapper.lo fontlib_wrapper.lo win32api.lo
+	openal_wrapper.lo fontlib_wrapper.lo win32api.lo glue-dummy.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libglue_la_OBJECTS = $(am__objects_8)
@@ -383,16 +388,17 @@ am__EXTRA_libglue_la_SOURCES_DIST = \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h \
 	../../include/Inventor/C/glue/fontlib_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h all-c.c flwfreetype.c \
-	flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c \
-	simage_wrapper.c openal_wrapper.c fontlib_wrapper.c win32api.c
+	../../include/Inventor/C/glue/win32api.h all-c.c glue-dummy.cpp \
+	flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
+	GLUWrapper.c simage_wrapper.c openal_wrapper.c \
+	fontlib_wrapper.c win32api.c
 libglue_la_OBJECTS = $(am_libglue_la_OBJECTS)
 libglue@SUFFIX@LINKHACK_la_LDFLAGS =
 libglue@SUFFIX@LINKHACK_la_LIBADD =
 am__libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = flwfreetype.c flwwin32.c \
 	dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c \
 	simage_wrapper.c openal_wrapper.c fontlib_wrapper.c win32api.c \
-	all-c.c
+	glue-dummy.cpp all-c.c
 am_libglue@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/glue/flwfreetype.h \
@@ -405,9 +411,10 @@ am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h \
 	../../include/Inventor/C/glue/fontlib_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h all-c.c flwfreetype.c \
-	flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c \
-	simage_wrapper.c openal_wrapper.c fontlib_wrapper.c win32api.c
+	../../include/Inventor/C/glue/win32api.h all-c.c glue-dummy.cpp \
+	flwfreetype.c flwwin32.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
+	GLUWrapper.c simage_wrapper.c openal_wrapper.c \
+	fontlib_wrapper.c win32api.c
 libglue@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libglue@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -423,7 +430,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/gl.Po ./$(DEPDIR)/gl_agl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gl_agl.Po ./$(DEPDIR)/gl_glx.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gl_glx.Po ./$(DEPDIR)/gl_wgl.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/gl_wgl.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/gl_wgl.Po ./$(DEPDIR)/glue-dummy.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/glue-dummy.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/openal_wrapper.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/openal_wrapper.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/simage_wrapper.Plo \
@@ -435,6 +443,14 @@ LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
 	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__glue_lst_SOURCES_DIST) \
 	$(am__EXTRA_glue_lst_SOURCES_DIST) \
@@ -450,7 +466,7 @@ SOURCES = $(glue_lst_SOURCES) $(EXTRA_glue_lst_SOURCES) $(libglue_la_SOURCES) $(
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .lo .o .obj
+.SUFFIXES: .c .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/glue/Makefile
@@ -497,9 +513,9 @@ clean-noinstLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libglue.la: $(libglue_la_OBJECTS) $(libglue_la_DEPENDENCIES) 
-	$(LINK)  $(libglue_la_LDFLAGS) $(libglue_la_OBJECTS) $(libglue_la_LIBADD) $(LIBS)
+	$(CXXLINK)  $(libglue_la_LDFLAGS) $(libglue_la_OBJECTS) $(libglue_la_LIBADD) $(LIBS)
 libglue@SUFFIX@LINKHACK.la: $(libglue@SUFFIX@LINKHACK_la_OBJECTS) $(libglue@SUFFIX@LINKHACK_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(libglue@SUFFIX@LINKHACK_la_LDFLAGS) $(libglue@SUFFIX@LINKHACK_la_OBJECTS) $(libglue@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
+	$(CXXLINK) -rpath $(libdir) $(libglue@SUFFIX@LINKHACK_la_LDFLAGS) $(libglue@SUFFIX@LINKHACK_la_OBJECTS) $(libglue@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -527,6 +543,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_glx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_wgl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gl_wgl.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glue-dummy.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/glue-dummy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/openal_wrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/openal_wrapper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simage_wrapper.Plo@am__quote@
@@ -569,6 +587,39 @@ distclean-depend:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+.cpp.o:
+@am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
+
+.cpp.obj:
+@am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Po"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `if test -f '$<'; then $(CYGPATH_W) '$<'; else $(CYGPATH_W) '$(srcdir)/$<'; fi`
+
+.cpp.lo:
+@am__fastdepCXX_TRUE@	if $(LTCXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" \
+@am__fastdepCXX_TRUE@	  -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/$*.Tpo" "$(DEPDIR)/$*.Plo"; \
+@am__fastdepCXX_TRUE@	else rm -f "$(DEPDIR)/$*.Tpo"; exit 1; \
+@am__fastdepCXX_TRUE@	fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ `test -f '$<' || echo '$(srcdir)/'`$<
 
 mostlyclean-libtool:
 	-rm -f *.lo

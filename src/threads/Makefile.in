@@ -252,10 +252,12 @@ RegularSources = \
 	sched.c \
 	sync.c \
 	fifo.c \
-	barrier.c
+	barrier.c \
+	threads-dummy.cpp
 
 LinkHackSources = \
-	all-c.c
+	all-c.c \
+	threads-dummy.cpp
 
 PublicHeaders = \
 	../../include/Inventor/threads/SbThread.h \
@@ -359,12 +361,12 @@ threads_lst_AR = $(AR) cru
 threads_lst_LIBADD =
 am__threads_lst_SOURCES_DIST = common.c thread.c mutex.c rwmutex.c \
 	storage.c condvar.c worker.c wpool.c sched.c sync.c fifo.c \
-	barrier.c all-c.c
-am__objects_1 = all-c.$(OBJEXT)
+	barrier.c threads-dummy.cpp all-c.c
+am__objects_1 = all-c.$(OBJEXT) threads-dummy.$(OBJEXT)
 am__objects_2 = common.$(OBJEXT) thread.$(OBJEXT) mutex.$(OBJEXT) \
 	rwmutex.$(OBJEXT) storage.$(OBJEXT) condvar.$(OBJEXT) \
 	worker.$(OBJEXT) wpool.$(OBJEXT) sched.$(OBJEXT) sync.$(OBJEXT) \
-	fifo.$(OBJEXT) barrier.$(OBJEXT)
+	fifo.$(OBJEXT) barrier.$(OBJEXT) threads-dummy.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_threads_lst_OBJECTS = $(am__objects_3)
@@ -392,9 +394,9 @@ am__EXTRA_threads_lst_SOURCES_DIST = \
 	../../include/Inventor/C/threads/threadp.h \
 	../../include/Inventor/C/threads/threadsutilp.h \
 	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h all-c.c common.c \
-	thread.c mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c \
-	sched.c sync.c fifo.c barrier.c
+	../../include/Inventor/C/threads/wpoolp.h all-c.c \
+	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
+	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
 threads_lst_OBJECTS = $(am_threads_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -402,11 +404,11 @@ libthreads_la_LDFLAGS =
 libthreads_la_LIBADD =
 am__libthreads_la_SOURCES_DIST = common.c thread.c mutex.c rwmutex.c \
 	storage.c condvar.c worker.c wpool.c sched.c sync.c fifo.c \
-	barrier.c all-c.c
-am__objects_7 = all-c.lo
+	barrier.c threads-dummy.cpp all-c.c
+am__objects_7 = all-c.lo threads-dummy.lo
 am__objects_8 = common.lo thread.lo mutex.lo rwmutex.lo storage.lo \
 	condvar.lo worker.lo wpool.lo sched.lo sync.lo fifo.lo \
-	barrier.lo
+	barrier.lo threads-dummy.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
 am_libthreads_la_OBJECTS = $(am__objects_9)
@@ -434,15 +436,15 @@ am__EXTRA_libthreads_la_SOURCES_DIST = \
 	../../include/Inventor/C/threads/threadp.h \
 	../../include/Inventor/C/threads/threadsutilp.h \
 	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h all-c.c common.c \
-	thread.c mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c \
-	sched.c sync.c fifo.c barrier.c
+	../../include/Inventor/C/threads/wpoolp.h all-c.c \
+	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
+	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
 libthreads_la_OBJECTS = $(am_libthreads_la_OBJECTS)
 libthreads@SUFFIX@LINKHACK_la_LDFLAGS =
 libthreads@SUFFIX@LINKHACK_la_LIBADD =
 am__libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = common.c thread.c \
 	mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c sched.c \
-	sync.c fifo.c barrier.c all-c.c
+	sync.c fifo.c barrier.c threads-dummy.cpp all-c.c
 am_libthreads@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/threads/SbThread.h \
@@ -468,9 +470,9 @@ am__EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/C/threads/threadp.h \
 	../../include/Inventor/C/threads/threadsutilp.h \
 	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h all-c.c common.c \
-	thread.c mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c \
-	sched.c sync.c fifo.c barrier.c
+	../../include/Inventor/C/threads/wpoolp.h all-c.c \
+	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
+	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -486,9 +488,11 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/storage.Plo ./$(DEPDIR)/storage.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/sync.Plo ./$(DEPDIR)/sync.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/thread.Plo ./$(DEPDIR)/thread.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/worker.Plo ./$(DEPDIR)/worker.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/wpool.Plo ./$(DEPDIR)/wpool.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/wrappers.Plo ./$(DEPDIR)/wrappers.Po
+@AMDEP_TRUE@	./$(DEPDIR)/threads-dummy.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/threads-dummy.Po ./$(DEPDIR)/worker.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/worker.Po ./$(DEPDIR)/wpool.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/wpool.Po ./$(DEPDIR)/wrappers.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/wrappers.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -597,6 +601,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sync.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/thread.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/thread.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/threads-dummy.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/threads-dummy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/worker.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/worker.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/wpool.Plo@am__quote@
