@@ -226,9 +226,14 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
                               quick read-over of the CreateFont() API
                               doc. 20030530 mortene. */
                            DEFAULT_CHARSET,
-                           /* FIXME: should be OUT_TT_PRECIS or
-                              OUT_OUTLINE_PRECIS? 20030530 mortene. */
-                           OUT_DEFAULT_PRECIS, /* output precision */
+                           /* FIXME: to also make it possible to use
+                              Window's raster fonts, this should
+                              rather be OUT_DEFAULT_PRECIS. Then when
+                              GetGlyphOutline() fails on a font, we
+                              should grab it's bitmap by using
+                              TextOut() and GetDIBits(). 20030610 mortene.
+                           */
+                           OUT_TT_ONLY_PRECIS, /* output precision */
                            CLIP_DEFAULT_PRECIS, /* clipping precision */
                            PROOF_QUALITY, /* output quality */
                            DEFAULT_PITCH, /* pitch and family */
@@ -375,6 +380,7 @@ cc_flww32_get_advance(void * font, int glyph, float * x, float * y)
   if (glyphstruct == NULL) {
     *x = 10.0f;
     *y = 0.0f;
+    return;
   }
 #endif
 
@@ -443,6 +449,16 @@ cc_flww32_get_bitmap(void * font, int glyph)
                         &identitymatrix /* transformation matrix */
                         );
 
+  /* As of now, GetGlyphOutline() should have no known reason to
+     fail.
+
+     FIXME: We should eventually allow non-TT fonts to be loaded
+     aswell, by changing the "precision" setting in the call to
+     CreateFont() to also allow raster fonts (see FIXME comment where
+     CreateFont() is called). Then, when GetGlyphOutline() fails, use
+     TextOut() and GetDIBits() to grab a font glyph's bitmap.
+     20030610 mortene.
+  */
   if (ret == GDI_ERROR) {
     cc_string str;
     cc_string_construct(&str);
@@ -477,7 +493,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
       cc_string str;
       cc_string_construct(&str);
       cc_string_sprintf(&str,
-                        "GetGlyphOutline(%p, 0x%x '%c', GGO_BITMAP, "
+                        "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_BITMAP, "
                         "<metricsstruct>, %d, <buffer>, <idmatrix>)",
                         cc_flww32_globals.devctx, glyph, (unsigned char)glyph, size);
       cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
