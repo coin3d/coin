@@ -114,10 +114,8 @@ SoPickAction::getViewportRegion(void)
   return this->vpRegion;
 }
 
-/*!
-  Overloads parent traversal to set up the state element for the
-  viewport region.
-*/
+// Documented in superclass. Overrides parent traversal to set up the
+// state element for the viewport region.
 void
 SoPickAction::beginTraversal(SoNode * node)
 {

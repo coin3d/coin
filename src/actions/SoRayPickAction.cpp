@@ -925,9 +925,7 @@ SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint)
   return pp;
 }
 
-/*!
-  Overloaded to set up internal data.
- */
+// Documented in superclass.
 void
 SoRayPickAction::beginTraversal(SoNode * node)
 {

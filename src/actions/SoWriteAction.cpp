@@ -138,14 +138,14 @@ SoWriteAction::continueToApply(SoPath * path)
   this->continuing = wascontinuing;
 }
 
-/*!
-  Overloaded from parent class, as the write action is actually done
-  in two passes.
-
-  The first pass is done to count the references of the objects in the
-  scene graph and otherwise prepare instance in the scene for export.
-  The second pass does the actual writing.
-*/
+// Documented for Doxygen in superclass.
+//
+// Overridden from parent class, as the write action is actually done
+// in two passes.
+//
+// The first pass is done to count the references of the objects in
+// the scene graph and otherwise prepare instance in the scene for
+// export.  The second pass does the actual writing.
 void
 SoWriteAction::beginTraversal(SoNode * node)
 {

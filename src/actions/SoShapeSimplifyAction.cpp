@@ -60,10 +60,7 @@ SoShapeSimplifyAction::~SoShapeSimplifyAction(void)
   COIN_STUB();
 }
 
-/*!
-  This method is called at the beginning of the traversal.
-*/
-
+// Documented in superclass.
 void
 SoShapeSimplifyAction::beginTraversal(SoNode * /* node */)
 {

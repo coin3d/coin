@@ -59,10 +59,7 @@ SoReorganizeAction::~SoReorganizeAction(void)
   COIN_STUB();
 }
 
-/*!
-  This method is called before the graph is traversed.
-*/
-
+// Documented in superclass.
 void
 SoReorganizeAction::beginTraversal(SoNode * /* node */)
 {

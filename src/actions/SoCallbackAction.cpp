@@ -1185,10 +1185,8 @@ SoCallbackAction::setCurrentNode(SoNode * const node)
   THIS->currentnode = node;
 }
 
-/*!
-  Overloaded from parent class to initialize variables which need to
-  be reset for each traversal.
- */
+// Documented in superclass. Overridden from parent class to
+// initialize variables which need to be reset for each traversal.
 void
 SoCallbackAction::beginTraversal(SoNode * node)
 {

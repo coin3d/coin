@@ -302,10 +302,8 @@ SoHandleEventAction::getPickedPointList(void)
   return ra->getPickedPointList();
 }
 
-/*!
-  Overloaded to initialize local data members before executing the
-  scene traversal.
-*/
+// Documented in superclass. Overridden to initialize local data
+// members before executing the scene traversal.
 void
 SoHandleEventAction::beginTraversal(SoNode * node)
 {

@@ -143,10 +143,8 @@ SoGetMatrixAction::getTextureInverse(void)
   return this->invtexmatrix;
 }
 
-/*!
-  Overloaded from parent class to initialize the matrices before
-  traversal starts.
- */
+// Documented in superclass. Overridden from parent class to
+// initialize the matrices before traversal starts.
 void
 SoGetMatrixAction::beginTraversal(SoNode * node)
 {

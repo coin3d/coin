@@ -60,10 +60,7 @@ SoToVRML2Action::~SoToVRML2Action(void)
   // FIXME: implement.
 }
 
-/*!
-  This method is called before the scene graph traversal is begun.
-*/
-
+// Documented in superclass.
 void
 SoToVRML2Action::beginTraversal(SoNode * /* node */)
 {

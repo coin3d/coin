@@ -565,9 +565,8 @@ SoGLRenderAction::getCacheContext(void) const
   return THIS->cachecontext;
 }
 
-/*!
-  Overloaded from parent class to initialize the OpenGL state.
-*/
+// Documented in superclass. Overridden from parent class to
+// initialize the OpenGL state.
 void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {

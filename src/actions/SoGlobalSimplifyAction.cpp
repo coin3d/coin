@@ -60,10 +60,7 @@ SoGlobalSimplifyAction::~SoGlobalSimplifyAction(void)
   COIN_STUB();
 }
 
-/*!
-  This method is called at the beginning of the traversal.
-*/
-
+// Documented in superclass.
 void
 SoGlobalSimplifyAction::beginTraversal(SoNode * /* node */)
 {

@@ -60,10 +60,7 @@ SoToVRMLAction::~SoToVRMLAction(void)
   // FIXME: implement.
 }
 
-/*!
-  This method is called before the traversal is begun.
-*/
-
+// Documented in superclass.
 void
 SoToVRMLAction::beginTraversal(SoNode * /* node */)
 {

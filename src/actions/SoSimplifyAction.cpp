@@ -59,10 +59,7 @@ SoSimplifyAction::~SoSimplifyAction(void)
 {
 }
 
-/*!
-  This method is called before a scene graph traversal.
-*/
-
+// Documented in superclass.
 void
 SoSimplifyAction::beginTraversal(SoNode * /* node */)
 {

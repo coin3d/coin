@@ -372,9 +372,8 @@ SoSearchAction::addPath(SoPath * const path)
 
 // *************************************************************************
 
-/*!
-  Overloaded from superclass to initialize internal data.
-*/
+// Documented in superclass. Overridden from superclass to initialize
+// internal data.
 void
 SoSearchAction::beginTraversal(SoNode * node)
 {

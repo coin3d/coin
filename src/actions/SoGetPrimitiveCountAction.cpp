@@ -27,7 +27,15 @@
   \ingroup actions
 
   Apply this action to a scene if you need to know the number of
-  primitives present.
+  primitives present in a scenegraph, or parts of a scenegraph.
+
+
+  One common mistake to make when using this action is to think that
+  it traverses just the parts currently in view, like SoGLRenderAction
+  does. (SoGLRenderAction culls away the scenegraph parts outside the
+  camera view volume and does not traverse those.) Like most other
+  action classes, SoGetPrimitiveCountAction actually traverses the
+  complete scenegraph, not just the parts currently in view.
 */
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -323,9 +331,8 @@ SoGetPrimitiveCountAction::incNumImage(void)
 }
 
 
-/*!
-  Overloaded to reset all counters to zero before traversal starts.
-*/
+// Documented in superclass. Overridden to reset all counters to zero
+// before traversal starts.
 void
 SoGetPrimitiveCountAction::beginTraversal(SoNode * node)
 {

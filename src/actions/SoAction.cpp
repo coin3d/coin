@@ -864,10 +864,19 @@ SoAction::getClassActionMethods(void)
   return SoAction::methods;
 }
 
+// This is common doc for SoAction and all SoAction-derived classes,
+// so keep it general.
 /*!
-  This virtual method can be overloaded to initialize the action at
-  traversal start.  Default method just calls traverse(), which any
-  overloaded method must do too (or call SoAction::beginTraversal()).
+  This virtual method is called from SoAction::apply(), and is the
+  entry point for the actual scenegraph traversal.
+
+  It can be overridden to initialize the action at traversal start,
+  for specific initializations in the action subclasses inheriting
+  SoAction.
+
+  Default method just calls traverse(), which any overridden
+  implementation of the method must do too (or call
+  SoAction::beginTraversal()) to trigger the scenegraph traversal.
 */
 void
 SoAction::beginTraversal(SoNode * node)
