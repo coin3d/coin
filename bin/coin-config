@@ -85,10 +85,7 @@ else
 fi
 
 # Remove gcc system directories includes from the include path
-if test -n "$compiler" && 
-   test x"$compiler" != x"wrapmsvc" &&
-   test -n "`$compiler --version 2>/dev/null | grep GCC`";
-then
+if test x"$compiler_is_gcc" = x"yes"; then 
   sim_ac_save_cpp=$CPP
   CPP="cpp"
   case `uname -s` in

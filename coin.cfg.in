@@ -20,3 +20,4 @@ have_sound=@HAVE_SOUND@
 have_superglu=@HAVE_SUPERGLU@
 have_threads=@HAVE_THREADS@
 have_threadsafe=@HAVE_THREADSAFE@
+compiler_is_gcc=@ac_compiler_gnu@
