@@ -303,7 +303,7 @@ SoConcatenate::evaluate(void)
   const int numconnections = this->output->getNumConnections();
   const SoType type = this->output->getConnectionType();
 
-  for (int i = 0; i < numconnections; i++) {
+  for (i = 0; i < numconnections; i++) {
     SoMField * out = (SoMField *)(*this->output)[i];
     if (!out->isReadOnly()) {
       int cnt = 0;
