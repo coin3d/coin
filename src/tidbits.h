@@ -30,33 +30,12 @@ extern "C" {
 
 /* ********************************************************************** */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <Inventor/system/inttypes.h>
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
 #include <stdarg.h>
 
-#ifndef HAVE_SNPRINTF
-#ifdef HAVE__SNPRINTF
-/* This is how it is defined in MSVC++ 5.0. */
-#define snprintf _snprintf
-#else /* !HAVE__SNPRINTF */
-int snprintf(char * target, size_t n, const char * formatstr, ...);
-#endif /* !HAVE__SNPRINTF */
-#endif /* !HAVE_SNPRINTF */
 
-#ifndef HAVE_VSNPRINTF
-#ifdef HAVE__VSNPRINTF
-/* This is how it is defined in MSVC++ 5.0. */
-#define vsnprintf _vsnprintf
-#else /* !HAVE__VSNPRINTF */
-int vsnprintf(char * target, size_t n, const char * formatstr, va_list args);
-#endif /* !HAVE__VSNPRINTF */
-#endif /* !HAVE_VSNPRINTF */
+int coin_snprintf(char * dst, size_t n, const char * fmtstr, ...);
+int coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args);
 
 const char * coin_getenv(const char *);
 int coin_strncasecmp(const char *, const char *, int);

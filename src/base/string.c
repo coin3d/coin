@@ -25,7 +25,7 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include "../tidbits.h" /* snprintf() and vsnprintf() definitions. */
+#include "../tidbits.h" /* coin_vsnprintf() */
 
 #include <assert.h>
 #include <string.h>
@@ -423,27 +423,8 @@ cc_string_vsprintf(cc_string * me, const char * formatstr, va_list args)
   int length;
   SbBool expand;
   do {
-    length = vsnprintf(me->pointer, me->bufsize, formatstr, args);
-
-    /* Some vsnprintf() implementations returns -1 upon failure (this
-       is what vsnprintf() from GNU libc is documented to do). */
+    length = coin_vsnprintf(me->pointer, me->bufsize, formatstr, args);
     expand = (length == -1);
-    /* At least with GNU libc 2.1.1, vsnprintf() does _not_ return -1
-       (as documented in the snprintf(3) man-page) when we can't fit
-       the constructed string within the given buffer, but rather the
-       number of characters needed. */
-    if (!expand) { expand = (length > me->bufsize); }
-    /* IRIX 6.5 vsnprintf() just returns the number of characters
-       until clipped. */
-    if (!expand) { expand = (length == me->bufsize - 1); }
-
-    /* FIXME: all the vsnprintf() differences should be hidden in a
-       tidbits.c coin_vsnprintf() implementation. Or perhaps just make
-       our own vsnprintf() implementation from scratch (could perhaps
-       grab something from the Public Domain? This wheel must have
-       been invented many times over now.) 20011116 mortene. */
-
-
     if ( expand )
       cc_string_expand_buffer(me, 1024); /* increase linearly in 1Kb intervals */
   } while ( expand );

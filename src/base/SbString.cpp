@@ -43,7 +43,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include "../tidbits.h" // snprintf() and vsnprintf() definitions.
+#include "../tidbits.h" // coin_vsnprintf()
 #include <assert.h>
 #include <string.h>
 
@@ -506,26 +506,8 @@ SbString::sprintf(const char * formatstr, ...)
 
   SbBool expand;
   do {
-    int length = vsnprintf(this->sstring, this->storagesize, formatstr, args);
-
-    // Some vsnprintf() implementations returns -1 upon failure (this
-    // is what vsnprintf() from GNU libc is documented to do).
+    int length = coin_vsnprintf(this->sstring, this->storagesize, formatstr, args);
     expand = (length == -1);
-    // At least with GNU libc 2.1.1, vsnprintf() does _not_ return -1
-    // (as documented in the snprintf(3) man-page) when we can't fit
-    // the constructed string within the given buffer, but rather the
-    // number of characters needed.
-    if (!expand) { expand = (length > this->storagesize); }
-    // IRIX 6.5 vsnprintf() just returns the number of characters
-    // until clipped.
-    if (!expand) { expand = (length == this->storagesize - 1); }
-
-    // FIXME: all the vsnprintf() differences should be hidden in a
-    // tidbits.c coin_vsnprintf() implementation. Or perhaps just make
-    // our own vsnprintf() implementation from scratch (could perhaps
-    // grab something from the Public Domain? This wheel must have
-    // been invented many times over now.) 20011116 mortene.
-
     if (expand) this->expand(1024); // increase linearly in 1Kb intervals
   } while (expand);
 
@@ -547,12 +529,8 @@ SbString::vsprintf(const char * formatstr, va_list args)
 {
   SbBool expand;
   do {
-    int length = vsnprintf(this->sstring, this->storagesize, formatstr, args);
-    // At least with GNU libc 2.1.1, vsnprintf() does _not_ return -1
-    // (as documented in the snprintf(3) man-page) when we can't fit
-    // the constructed string within the given buffer, but rather the
-    // number of characters needed.
-    expand = (length == -1) || (length > this->storagesize);
+    int length = coin_vsnprintf(this->sstring, this->storagesize, formatstr, args);
+    expand = (length == -1);
     if (expand) this->expand(1024); // increase linearly in 1Kb intervals
   } while (expand);
 

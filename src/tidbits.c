@@ -31,7 +31,7 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include <Inventor/system/inttypes.h>
+#include <tidbits.h>
 
 #include <assert.h>
 #include <string.h> /* strncasecmp() */
@@ -42,16 +42,45 @@
 #include <windows.h> /* GetEnvironmentVariable() */
 #endif /* HAVE_WINDOWS_H */
 
-#include <tidbits.h>
 
-#ifndef HAVE_VSNPRINTF
+/**************************************************************************/
+/*
+  coin_vsnprintf() wrapper. Returns -1 if resultant string will be
+  longer than n.
+*/
 
-#ifdef HAVE__VSNPRINTF
+#ifdef HAVE_VSNPRINTF
 
-/* This is how it is defined in MSVC++ 5.0. */
-#define vsnprintf _vsnprintf
+int
+coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args)
+{
+  int length = vsnprintf(dst, n, fmtstr, args);
 
-#else /* !HAVE__VSNPRINTF */
+  /* Not all vsnprintf() implementations returns -1 upon failure (this
+     is what vsnprintf() from GNU libc is documented to do).
+  
+     At least with GNU libc 2.1.1, vsnprintf() does _not_ return -1
+     (as documented in the snprintf(3) man-page) when we can't fit the
+     constructed string within the given buffer, but rather the number
+     of characters needed. */
+  if (length > (int)n) { length = -1; }
+  /* IRIX 6.5 vsnprintf() just returns the number of characters until
+     clipped. */
+  if (length == (((int)n) - 1)) { length = -1; }
+
+  return length;
+}
+
+#elif defined HAVE__VSNPRINTF 
+
+int
+coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args)
+{
+  /* This is how it is defined in MSVC++ 5.0. */
+  return _vsnprintf(dst, n, fmtstr, args);
+}
+
+#else /* neither vsnprintf() nor _vsnprintf() available, roll our own */
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -129,46 +158,33 @@ nullfileptr(void)
 }
 
 int
-vsnprintf(char * target, size_t n, const char * formatstr, va_list args)
+coin_vsnprintf(char * dst, size_t n, const char * fmtstr, va_list args)
 {
-  int len = vfprintf(nullfileptr(), formatstr, args);
+  int len = vfprintf(nullfileptr(), fmtstr, args);
   if (((size_t)(len+1)) > n) return -1;
-  (void)vsprintf(target, formatstr, args);
+  (void)vsprintf(dst, fmtstr, args);
   return len;
 }
-
-#endif /* !HAVE__VSNPRINTF */
-
-#endif /* !HAVE_VSNPRINTF */
+#endif /* coin_vsnprintf() */
 
 
 /**************************************************************************/
-
-#ifndef HAVE_SNPRINTF
-
-#ifdef HAVE__SNPRINTF
-
-/* This is how it is defined in MSVC++ 5.0. */
-#define snprintf _snprintf
-
-#else /* !HAVE__SNPRINTF */
-
-#include <stdarg.h>
+/*
+  coin_snprintf() wrapper. Returns -1 if resultant string will be
+  longer than n.
+*/
 
 int
-snprintf(char * target, size_t n, const char * formatstr, ...)
+coin_snprintf(char * dst, size_t n, const char * fmtstr, ...)
 {
   int len;
   va_list argptr;
-  va_start(argptr, formatstr);
-  len = vsnprintf(target, n, formatstr, argptr);
+  va_start(argptr, fmtstr);
+  len = coin_vsnprintf(dst, n, fmtstr, argptr);
   va_end(argptr);
   return len;
 }
 
-#endif /* !HAVE__SNPRINTF */
-
-#endif /* !HAVE_SNPRINTF */
 
 /**************************************************************************/
 
