@@ -158,14 +158,17 @@ static void sfield_to_mfstring(SoField * from, SoField * to)
 // Function for converting SoMFString -> SoSField.
 static void mfstring_to_sfield(SoField * from, SoField * to)
 {
-  if (((SoMFString *)from)->getNum() > 0) ((SoSField *)to)->set((*((SoMFString *)from))[0].getString());
+  if (((SoMFString *)from)->getNum() > 0)
+    ((SoSField *)to)->set((*((SoMFString *)from))[0].getString());
 }
 
 // Function for converting SoMField -> SoMFString.
 static void mfield_to_mfstring(SoField * from, SoField * to)
 {
+  unsigned int numvals = ((SoMField *)from)->getNum();
+  ((SoMField *)to)->setNum(numvals);
   SbString s;
-  for (int i=0; i < ((SoMField *)from)->getNum(); i++) {
+  for (unsigned int i=0; i < numvals; i++) {
     ((SoMField *)from)->get1(i, s);
     ((SoMFString *)to)->set1Value(i, s);
   }
@@ -174,7 +177,10 @@ static void mfield_to_mfstring(SoField * from, SoField * to)
 // Function for converting SoMFString -> SoMField.
 static void mfstring_to_mfield(SoField * from, SoField * to)
 {
-  for (int i=0; i < ((SoMFString *)from)->getNum(); i++)
+  unsigned int numvals = ((SoMField *)from)->getNum();
+  ((SoMField *)to)->setNum(numvals);
+
+  for (unsigned int i=0; i < numvals; i++)
     ((SoMField *)to)->set1(i, (*((SoMFString *)from))[i].getString());
 }
 
@@ -302,7 +308,9 @@ SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFFloat_SoSFTime, SoMFFloat, SoSFTime, SbTime)
 #define SOCONVERTALL_CAST_MFIELD2MFIELD(_fromto_, _from_, _to_, _tobase_) \
 static void _fromto_(SoField * from, SoField * to) \
 { \
-  for (int i=0; i < ((SoMField *)from)->getNum(); i++) \
+  unsigned int numvals = ((SoMField *)from)->getNum(); \
+  ((SoMField *)to)->setNum(numvals); \
+  for (unsigned int i=0; i < numvals; i++) \
     ((_to_ *)to)->set1Value(i, (_tobase_)((*((_from_ *)from))[i])); \
 }
 
@@ -361,7 +369,9 @@ static void SoMFTime_SoSFFloat(SoField * from, SoField * to)
 // Function for converting SoMFTime -> SoMFFloat.
 static void SoMFTime_SoMFFloat(SoField * from, SoField * to)
 {
-  for (int i=0; i < ((SoMField *)from)->getNum(); i++)
+  unsigned int numvals = ((SoMField *)from)->getNum();
+  ((SoMField *)to)->setNum(numvals);
+  for (unsigned int i=0; i < numvals; i++)
     ((SoMFFloat *)to)->set1Value(i, (float)((*((SoMFTime *)from))[i]).getValue());
 }
 
@@ -417,7 +427,9 @@ static void SoMFRotation_SoSFMatrix(SoField * from, SoField * to)
 // Function for converting SoMFRotation -> SoMFMatrix.
 static void SoMFRotation_SoMFMatrix(SoField * from, SoField * to)
 {
-  for (int i=0; i < ((SoMField *)from)->getNum(); i++) {
+  unsigned int numvals = ((SoMField *)from)->getNum();
+  ((SoMField *)to)->setNum(numvals);
+  for (unsigned int i=0; i < numvals; i++) {
     SbMatrix mat;
     mat.setRotate((*((SoMFRotation *)from))[i]);
     ((SoMFMatrix *)to)->set1Value(i, mat);
@@ -471,8 +483,10 @@ static void mftime_to_sfstring(SoField * from, SoField * to)
 static void mftime_to_mfstring(SoField * from, SoField * to)
 {
   SoMFTime * ff = (SoMFTime *)from;
+  unsigned int numvals = ff->getNum();
+  ((SoMField *)to)->setNum(numvals);
   SbString s;
-  for (int i=0; i < ff->getNum(); i++) {
+  for (unsigned int i=0; i < numvals; i++) {
     time2string((*ff)[i], s);
     ((SoMFString *)to)->set1Value(i, s);
   }
