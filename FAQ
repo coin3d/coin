@@ -3,10 +3,13 @@ Frequently Asked Questions for Coin
 ===================================
 
 Last Updated:
-Wed, 31 Oct 2001 16:08:09 +0100
+$Date$
 
 For answers to common Open Inventor programming issues not covered in this
 FAQ, take a look at the FAQs directory in the SoGuiExamples archive.
+
+For answers to common qquestions regarding the SoQt library, see the FAQ
+in the SoQt source archive.
 
 
 Index
@@ -31,7 +34,11 @@ Index
 
   Q3: Can Coin do multi-pipe rendering?
 
-  Q4: Is there a Coin port for Mac OS X/Darwin?
+  Q4: Can I do volume rendering with Coin?
+
+  Q5: Does Coin support VRML97?
+
+  Q6: Is there a Coin port for Mac OS X/Darwin?
 
 2: Common Problems
   Q1: Why doesn't it work properly to render the same scene graph in two
@@ -91,7 +98,8 @@ A:    Yes, as a service for those who would like to use the Coin library
       in proprietary software, we at Systems in Motion offer the "Coin
       Professional Edition License" which buys developers that are
       license holders the option to use the library with no strings
-      attached.
+      attached.  The "Coin Professional Edition License" covers all the
+      Coin libraries, including all the GUI toolkits.
 
       By "no strings attached", we of course mean that you as a
       proprietary software developer would not have to obey the
@@ -160,7 +168,23 @@ A:      Not yet.  We certainly want to support this.  Note that this
         Coin first.
 
 
-Q1.4:   Is there a Coin port for Mac OS X/Darwin?
+Q1.4:   Can I do volume rendering with Coin?
+
+A:      There are no volume rendering extensions for Coin yet.  Support for
+        3D textures, which is a prerequisite for proper volume rendering
+        support, is in the works.  When fullblown volume rendering is going
+        to be implemented is in the blue, but it is a topic we see a demand
+        for and are very interested in adding support for.
+
+
+Q1.5:   Does Coin support VRML97?
+
+A:      Coin does not support VRML97 currently, but support is planned for
+        Coin v2.0.  The development repository for Coin will probably contain
+        VRML97 support code in not too long.
+
+
+Q1.6:   Is there a Coin port for Mac OS X/Darwin?
 
 A:      Coin configures and compiles on Mac OS X, but there is currently no
         SoMac library available.
