@@ -19,18 +19,17 @@
 
 /*!
   \class SoDB SoDB.h Inventor/SoDB.h
-  \brief The SoDB class keeps track of all internal global data for
-  the Coin library.
+  \brief The SoDB class keeps track of internal global data.
   \ingroup general
+
+  This class collects various methods for initializing, setting and
+  accessing common global data from the Coin library.
 
   All methods on SoDB are static.
 
   Make sure you call SoDB::init() (either directly or indirectly
   through the init() method of the GUI glue library) before you use
   any of the other Coin classes.
-
-  FIXME: more doc.
-
 */
 
 #include <Inventor/SoDB.h>
@@ -75,15 +74,15 @@ class SoDB_HeaderInfo {
 public:
   SoDB_HeaderInfo(const SbString & hs, const SbBool bin, const float ver,
                   SoDBHeaderCB * pre, SoDBHeaderCB * post, void * ud)
-    : headerstring(hs), isBinary(bin), ivVersion(ver),
-        preCB(pre), postCB(post), userdata(ud)
+    : headerstring(hs), isbinary(bin), ivversion(ver),
+        preload_cb(pre), postload_cb(post), userdata(ud)
     { }
 
   SbString headerstring;
-  SbBool isBinary;
-  float ivVersion;
+  SbBool isbinary;
+  float ivversion;
   // FIXME: the callbacks aren't used. 20000130 mortene.
-  SoDBHeaderCB * preCB, * postCB;
+  SoDBHeaderCB * preload_cb, * postload_cb;
   void * userdata;
 };
 
@@ -267,23 +266,43 @@ SoDB::getVersion(void)
 }
 
 /*!
-  FIXME: doc
+  Instantiates and reads an SoPath object from \a in and returns a
+  pointer to it in \a path.
+
+  The reference count of the SoPath object will initially be zero.
+
+  Returns \c FALSE on error. Returns \c TRUE with \a path equal to \a
+  NULL if we hit end of file instead of a new path specification in
+  the file.
 */
 SbBool
-SoDB::read(SoInput * /* in */, SoPath *& /* path */)
+SoDB::read(SoInput * in, SoPath *& path)
 {
-  COIN_STUB();
-  return FALSE;
+  path = NULL;
+  SoBase * baseptr;
+  if (!SoDB::read(in, baseptr)) return FALSE;
+  if (!baseptr) return TRUE; // eof
+
+  if (!baseptr->isOfType(SoPath::getClassTypeId())) {
+    SoReadError::post(in, "'%s' not derived from SoPath",
+                      baseptr->getTypeId().getName().getString());
+    baseptr->ref();
+    baseptr->unref();
+    return FALSE;
+  }
+
+  path = (SoPath *)baseptr;
+  return TRUE;
 }
 
 /*!
-  Instantiates and reads an object of type SoBase from \a in and returns
-  a pointer to it in \a base. \a base will be \c NULL on return if we hit
-  end of file.
+  Instantiates and reads an object of type SoBase from \a in and
+  returns a pointer to it in \a base. \a base will be \c NULL on
+  return if we hit end of file.
 
   The reference count of the base object will initially be zero.
 
-  Returns \a FALSE on error.
+  Returns \c FALSE on error.
 */
 SbBool
 SoDB::read(SoInput * in, SoBase *& base)
@@ -294,12 +313,12 @@ SoDB::read(SoInput * in, SoBase *& base)
 
 /*!
   Instantiates and reads an object of type SoNode from \a in and returns
-  a pointer to it in \a base.
+  a pointer to it in \a rootnode.
 
   The reference count of the node will initially be zero.
 
-  Returns \a FALSE on error. Returns \a TRUE with \a rootNode equal to
-  \a NULL if we hit end of file instead of a new node specification in
+  Returns \c FALSE on error. Returns \c TRUE with \a rootnode equal to
+  \c NULL if we hit end of file instead of a new node specification in
   the file.
  */
 SbBool
@@ -307,20 +326,19 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
 {
   rootnode = NULL;
   SoBase * baseptr;
-  SbBool result = SoDB::read(in, baseptr);
-  if (result && baseptr) {
-    if (baseptr->isOfType(SoNode::getClassTypeId())) {
-      rootnode = (SoNode *)baseptr;
-    }
-    else {
-      SoReadError::post(in, "'%s' not derived from SoNode",
-                        baseptr->getTypeId().getName().getString());
-      baseptr->ref();
-      baseptr->unref();
-      result = FALSE;
-    }
+  if (!SoDB::read(in, baseptr)) return FALSE;
+  if (!baseptr) return TRUE; // eof
+
+  if (!baseptr->isOfType(SoNode::getClassTypeId())) {
+    SoReadError::post(in, "'%s' not derived from SoNode",
+                      baseptr->getTypeId().getName().getString());
+    baseptr->ref();
+    baseptr->unref();
+    return FALSE;
   }
-  return result;
+
+  rootnode = (SoNode *)baseptr;
+  return TRUE;
 }
 
 /*!
@@ -333,7 +351,7 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   be zero. Other nodes in the returned scene graph will have reference counts
   according to the number of parent-child relationsships, as usual.
 
-  Returns \a NULL on any error.
+  Returns \c NULL on any error.
  */
 SoSeparator *
 SoDB::readAll(SoInput * in)
@@ -385,9 +403,9 @@ SoDB::readAll(SoInput * in)
 SbBool
 SoDB::isValidHeader(const char * teststring)
 {
-  SbBool isBinary;
-  float ivVersion;
-  SoDBHeaderCB * preCB, * postCB;
+  SbBool isbinary;
+  float ivversion;
+  SoDBHeaderCB * preload_cb, * postload_cb;
   void * userdata;
 
 #if COIN_DEBUG
@@ -398,8 +416,8 @@ SoDB::isValidHeader(const char * teststring)
   }
 #endif // COIN_DEBUG
 
-  return SoDB::getHeaderData(SbString(teststring), isBinary, ivVersion,
-                             preCB, postCB, userdata, TRUE);
+  return SoDB::getHeaderData(SbString(teststring), isbinary, ivversion,
+                             preload_cb, postload_cb, userdata, TRUE);
 }
 
 /*!
@@ -407,15 +425,15 @@ SoDB::isValidHeader(const char * teststring)
   file import. This is a convenient way for library users to register
   their own VRML or Coin derived file formats.
 
-  Set \a isbinary to TRUE if the file should be read as binary data, and
-  set \a ivversion to indicate which Coin library version is
+  Set \a isbinary to \c TRUE if the file should be read as binary
+  data, and set \a ivversion to indicate which Coin library version is
   needed to read the file.
 
   Callbacks \a precallback and \a postcallback will be called before
   and after importing the custom format.
 
   If \a headerstring can not be accepted as a valid file format header
-  for Coin files, \a FALSE will be returned. A valid header \e must
+  for Coin files, \c FALSE will be returned. A valid header \e must
   start with a '#' character, and not be more than 80 characters long.
 
   \sa getHeaderData()
@@ -459,11 +477,11 @@ SoDB::registerHeader(const SbString & headerstring,
   Returns the settings for the given \a headerstring, if \a headerstring
   is a valid header.
 
-  If \a substringok is \a TRUE, ignore trailing characters in \a headerstring
+  If \a substringok is \c TRUE, ignore trailing characters in \a headerstring
   when checking for validity.
 
-  If no valid header string by this name is found, \a FALSE is returned,
-  otherwise \a TRUE will be returned, and the other input arguments will
+  If no valid header string by this name is found, \c FALSE is returned,
+  otherwise \c TRUE will be returned, and the other input arguments will
   be set to their respective values.
 
   \sa isValidHeader(), registerHeader()
@@ -504,10 +522,10 @@ SoDB::getHeaderData(const SbString & headerstring, SbBool & isbinary,
       hit = TRUE;
 
     if (hit) {
-      isbinary = hi->isBinary;
-      ivversion = hi->ivVersion;
-      precallback = hi->preCB;
-      postcallback = hi->postCB;
+      isbinary = hi->isbinary;
+      ivversion = hi->ivversion;
+      precallback = hi->preload_cb;
+      postcallback = hi->postload_cb;
       userdata = hi->userdata;
     }
   }
@@ -709,10 +727,10 @@ SoDB::getSensorManager(void)
 }
 
 /*!
-  This is a wrapper around the POSIX \a select() call. It is provided
-  so you can do synchronous I/O while Coin continous to handle
-  sensor events, rendering, etc. The parameters are the same as for
-  \a select(), so check your system documentation on how to use them.
+  This is a wrapper around the POSIX \c select() call. It is provided
+  so you can do synchronous I/O while Coin continous to handle sensor
+  events, rendering, etc. The parameters are the same as for \c
+  select(), so check your system documentation on how to use them.
  */
 int
 SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
@@ -732,54 +750,54 @@ SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
 }
 
 /*!
-  FIXME: doc
+  Notify SoDB that there exists a way to convert data from the \a from
+  SoField type to the \a to SoField type, by connecting them with an
+  instance of the \a converter SoFieldConverter type.
+
+  By doing this, SoDB::createConverter() will later be able to
+  automatically make an instance of the correct conversion class when
+  requested.
+
+  Coin internally provides conversion between most field types, so
+  application programmers should usually not need to use this
+  function. The exception is if you are writing your own field type
+  classes, and want to be able to connect them to the internal field
+  types (or other extensions field types).
+
+  \sa createConverter(), SoFieldConverter
  */
 void
 SoDB::addConverter(SoType from, SoType to, SoType converter)
 {
-  unsigned long val=from.getKey() * 65536 + to.getKey();
-  converters->enter(val, (void *)converter.getKey());
-  //FIXME: Check output => warning? kintel
+  uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
+  SbBool existed = SoDB::converters->enter(val, (void *)converter.getKey());
+  assert(!existed);
 }
 
 /*!
-  FIXME: doc
+  Return an instance of an SoFieldConverter class which is able to
+  convert data between fields of type \a from to the data field(s) of
+  field type \a to.
+
+  If no conversion between the given field types is possible, returns
+  \c NULL.
+
+  \sa addConverter()
  */
 SoFieldConverter *
 SoDB::createConverter(SoType from, SoType to)
 {
-  void * type;
-  unsigned long val=from.getKey() * 65536 + to.getKey();
-  if (converters->find(val, type)) {
-    uint16_t key = (uint16_t)((uint32_t)type);
-    SoFieldConverter * conv;
-    if (SoType::fromKey(key)==SoConvertAll::getClassTypeId())
-      conv=new SoConvertAll(from, to);
+  void * key;
+  uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
+  // FIXME: ugly, need a better dict/hash class. 20000216 mortene.
+  if (SoDB::converters->find(val, key)) {
+    uint16_t convkey = (uint16_t)((uint32_t)key);
+    if (SoType::fromKey(convkey) == SoConvertAll::getClassTypeId())
+      return new SoConvertAll(from, to);
     else
-      conv=(SoFieldConverter *)SoType::fromKey(key).createInstance();
-    return conv;
+      return (SoFieldConverter *)SoType::fromKey(convkey).createInstance();
   }
   return NULL;
-}
-
-/*!
-  FIXME: doc
- */
-SoVRMLGroup *
-SoDB::readAllVRML(SoInput * /* in */)
-{
-  COIN_STUB();
-  return NULL;
-}
-
-/*!
-  FIXME: doc
- */
-void
-SoDB::createRoute(SoNode * /* fromnode */, const char * /* eventout */,
-                  SoNode * /* tonode */, const char * /* eventin */)
-{
-  COIN_STUB();
 }
 
 /*!

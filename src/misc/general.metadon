@@ -16,14 +16,14 @@
 # ==
 # HIERARCHY
 # ID  SoBase
-# id  SoDB
+# iD  SoDB
 # ID  SoInput
 # ID  SoOutput
 # iD  SoOffscreenRenderer
 # ID  SoInteraction
 # id  SoPath
 # id      SoFullPath
-# id      SoTempPath
+# id          SoTempPath
 #     SoLightPath
 #     SoPickedPoint
 # i   SoPrimitiveVertex

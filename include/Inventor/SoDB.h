@@ -59,9 +59,6 @@ public:
   static SbBool read(SoInput * in, SoBase *& base);
   static SbBool read(SoInput * in, SoNode *& rootnode);
   static SoSeparator * readAll(SoInput * in);
-  static void createRoute(SoNode * fromnode, const char * eventout,
-                          SoNode * tonode, const char * eventin);
-  static SoVRMLGroup * readAllVRML(SoInput * in);
   static SbBool isValidHeader(const char * teststring);
   static SbBool registerHeader(const SbString & headerstring,
                                SbBool isbinary,
