@@ -1034,7 +1034,21 @@ coin_atexit(coin_atexit_f * f, uint32_t priority)
 
   if (atexit_list == NULL) {
     atexit_list = cc_list_construct();
-    (void)atexit(coin_atexit_cleanup);
+    /* The atexit() registration was disabled, since it has proved
+       dangerous to let the C library trigger the callbacks.
+
+       There is for instance the known problem with deallocating
+       resources from a DLL we're using (like OpenAL), as the DLL
+       could already have been "offloaded" or simply cleaned up /
+       cleaned out when our callback triggers.
+
+       We therefore now force cleanup at exit to be done explicitly
+       from application code by invoking the SoDB::cleanup() method,
+       which then invokes the coin_atexit_cleanup() method.
+
+       mortene.
+    */
+    /* (void)atexit(coin_atexit_cleanup); */
   }
 
   data = (tb_atexit_data*) malloc(sizeof(tb_atexit_data));
