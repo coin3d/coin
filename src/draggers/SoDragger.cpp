@@ -1065,7 +1065,7 @@ SoDragger::transferMotion(SoDragger * child)
 
   this->transformMatrixToLocalSpace(childmatrix, childmatrix, SbName(partname.getString()));
   SbMatrix mat = this->startMotionMatrix;
-  mat.multLeft(childmatrix);
+  mat.multRight(childmatrix);
   this->setMotionMatrix(mat);
   child->setMotionMatrix(SbMatrix::identity());
 }
