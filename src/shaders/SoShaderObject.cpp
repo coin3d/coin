@@ -370,14 +370,14 @@ SoShaderObjectP::readSource(void)
       // read. 20050120 mortene.
       FILE * f = fopen(fileName.getString(), "rb");
       if (f) {
-        int ok = fseek(f, 0L, SEEK_END);
-        assert(ok); // FIXME: be more robust. 20050120 mortene.
+        int ret = fseek(f, 0L, SEEK_END);
+        assert(ret == 0); // FIXME: be more robust. 20050120 mortene.
         const long length = ftell(f);
         assert(length != -1); // FIXME: be more robust. 20050120 mortene.
         assert(length != 0); // FIXME: be more robust. 20050120 mortene.
 
-        ok = fseek(f, 0L, SEEK_SET);
-        assert(ok); // FIXME: be more robust. 20050120 mortene.
+        ret = fseek(f, 0L, SEEK_SET);
+        assert(ret == 0); // FIXME: be more robust. 20050120 mortene.
 
         char * srcstr = new char[length+1];
         size_t readlen = fread(srcstr, 1, length, f);
@@ -398,7 +398,8 @@ SoShaderObjectP::readSource(void)
   }
 }
 
-SbBool SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType)
+SbBool
+SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType)
 {
   if (this->owner->isVertexShader())
     return SoVertexShader::isSupported(sourceType);
@@ -406,7 +407,8 @@ SbBool SoShaderObjectP::isSupported(SoShaderObject::SourceType sourceType)
     return SoFragmentShader::isSupported(sourceType);
 }
 
-void SoShaderObjectP::updateParameters(int start, int num)
+void
+SoShaderObjectP::updateParameters(int start, int num)
 {
   // FIXME: the group's children are ignored at the moment (20041011 martin)
   if (!this->owner->isActive.getValue() || this->glShaderObject==NULL) return;
