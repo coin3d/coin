@@ -41,10 +41,6 @@ public:
 
   SoOutput * getOutput(void) const;
 
-  void writePROTO(SoVRMLPROTODef * protoDef);
-  void writeEXTERNPROTO(SoVRMLEXTERNPROTODef * externprotoDef);
-  void writeAllPROTO(void);
-
   void continueToApply(SoNode * node);
   void continueToApply(SoPath * path);
 

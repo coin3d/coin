@@ -18,24 +18,43 @@
 \**************************************************************************/
 
 /*!
-  \class SoWriteAction Inventor/actions/SoWriteAction.h
-  \brief The SoWriteAction class writes the scene graph to a file.
+  \class SoWriteAction SoWriteAction.h Inventor/actions/SoWriteAction.h
+  \brief The SoWriteAction class writes a scene graph to file.
 
-  FIXME: more doc
+  When applied to a scene, this action writes its contents to the
+  stream contained within an SoOutput instance. This can be a file, a
+  memory buffer or a system filehandle like \c stdout, for instance.
+
+  \e All information considered part of the scene graph should be
+  written out, including not only nodes, but also the nodes' field
+  values, global fields (at least those with connections inside the
+  scene the action is applied to), engines in the scene, paths, etc.
+
+  The scene is written in the Open Inventor file format. Files in this
+  format can be parsed into their scene graph structures by using the
+  SoDB::readAll() method (SoDB also contains a few other import
+  methods you can use).
 
   \sa SoOutput
 */
 
+// Metadon doc
+/*!
+  FIXME: the implementation for continueApply() on paths is
+  missing. 20000306 mortene.
+ */
+
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoSubActionP.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/SoOutput.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 SO_ACTION_SOURCE(SoWriteAction);
+
 
 // Overridden from parent class.
 void
@@ -45,7 +64,8 @@ SoWriteAction::initClass(void)
 }
 
 /*!
-  Default constructor. Output will be written to stdout in ASCII format.
+  Default constructor. Output will be written to \c stdout in ASCII
+  format.
 */
 SoWriteAction::SoWriteAction(void)
 {
@@ -69,7 +89,7 @@ SoWriteAction::commonConstructor(SoOutput * out)
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::writeS);
 
-  methods->setUp(); // FIXME: not sure if this should be called here...
+  SoWriteAction::methods->setUp();
 
   this->outobj = out;
 }
@@ -79,14 +99,12 @@ SoWriteAction::commonConstructor(SoOutput * out)
 */
 SoWriteAction::~SoWriteAction(void)
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoWriteAction::~SoWriteAction", "%p", this);
-#endif // debug
   if (this->localoutputalloc) delete this->outobj;
 }
 
 /*!
-  Returns the SoOutput object we're using when writing the scene graph.
+  Returns a pointer to the SoOutput object we're using when writing
+  the scene graph.
  */
 SoOutput *
 SoWriteAction::getOutput(void) const
@@ -95,35 +113,11 @@ SoWriteAction::getOutput(void) const
 }
 
 /*!
-  FIXME: write function documentation
-*/
-void
-SoWriteAction::writePROTO(SoVRMLPROTODef * /* protoDef */)
-{
-  COIN_STUB();
-}
+  Applies the write method to the subgraph starting at \a node with
+  the current SoOutput instance, without resetting any of the internal
+  state of the action instance.
 
-/*!
-  FIXME: write function documentation
-*/
-void
-SoWriteAction::writeEXTERNPROTO(SoVRMLEXTERNPROTODef * /* externprotoDef */)
-{
-  COIN_STUB();
-}
-
-/*!
-  FIXME: write function documentation
-*/
-void
-SoWriteAction::writeAllPROTO(void)
-{
-  COIN_STUB();
-}
-
-/*!
-  Applies the write method at \a node (and its children) with the
-  current SoOutput instance.
+  This should normally be for internal use only.
 */
 void
 SoWriteAction::continueToApply(SoNode * node)
@@ -132,18 +126,25 @@ SoWriteAction::continueToApply(SoNode * node)
 }
 
 /*!
-  FIXME: write function documentation
+  Applies the write method to \a path with the current SoOutput
+  instance, without resetting any of the internal state of the action
+  instance.
+
+  This should normally be for internal use only.
 */
 void
-SoWriteAction::continueToApply(SoPath * /* path */)
+SoWriteAction::continueToApply(SoPath * path)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }
 
 /*!
-  Starts traversal at \a node. The write action is actually done in two
-  passes, one to count the references of the objects in the scene graph,
-  and one to do the actual writing.
+  Overloaded from parent class, as the write action is actually done
+  in two passes.
+
+  The first pass is done to count the references of the objects in the
+  scene graph and otherwise prepare instance in the scene for export.
+  The second pass does the actual writing.
 */
 void
 SoWriteAction::beginTraversal(SoNode * node)
@@ -156,11 +157,17 @@ SoWriteAction::beginTraversal(SoNode * node)
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
+
+  Compact path lists are not implemented in Coin (yet), but if they
+  are, SoWriteAction should return \c FALSE here -- it would only be
+  extra overhead for the SoWriteAction to have pathlists compacted
+  before traversal.
+
+  Seems like a silly optimization to me, though.. :^/  20000306 mortene.
 */
 SbBool
 SoWriteAction::shouldCompactPathLists(void) const
 {
-  COIN_STUB();
   return FALSE;
 }
