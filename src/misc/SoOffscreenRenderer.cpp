@@ -150,6 +150,16 @@
 #include "../misc/GLWrapper.h"
 #include <math.h> // for ceil()
 
+#include <Inventor/nodes/SoCamera.h> 
+#include <Inventor/SbMatrix.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoCullElement.h>
+
 /*!
   \enum SoOffscreenRenderer::Components
 
@@ -171,18 +181,32 @@ public:
 
   SoOffscreenRenderer * master;
 
-
+  static SoGLRenderAction::AbortCode subscreenAbortCallback(void *userData);
   SbBool renderFromBase(SoBase * base);
   void convertBuffer(void);
-  
+  void convertSubscreenBuffer(int renderpass);
+  void setSubscreenCameraPosition(int renderpass, SoCamera *cam);
+  void setupSubscreens(SbVec2s totalSize);
+  void pasteSubscreen(int renderpass);
+
   SbViewportRegion viewport;
+  SbViewportRegion subviewport;
   SbColor backgroundcolor;
   SoOffscreenRenderer::Components components;
   SoGLRenderAction * renderaction;
   SbBool didallocaction;
   class SoOffscreenInternalData * internaldata;
   unsigned char * buffer;
-  
+
+  int numsubscreens[2];
+  SbVec2s subscreensize;
+  SbVec2s requestedsize;
+  unsigned char * subscreen;
+  int currentsubscreen;
+  SbBool mustusesubscreens;
+  SbBool lastnodewasacamera;
+  SoCamera *visitedcamera;
+
 };
 
 
@@ -194,6 +218,8 @@ public:
   virtual ~SoOffscreenInternalData() {
   }
 
+  SoOffscreenRendererP * master;
+
   // Return FALSE if the necessary resource for rendering are not
   // available.
   virtual SbBool makeContextCurrent(uint32_t contextid) = 0;
@@ -202,7 +228,7 @@ public:
 
   virtual void setBufferSize(const SbVec2s & size) {
     SbVec2s maxsize = this->getMax();
-
+    
 #if COIN_DEBUG
     if (size[0] > maxsize[0]) {
       SoDebugError::postWarning("SoOffscreenInternalData::setBufferSize",
@@ -224,17 +250,21 @@ public:
     }
 #endif // COIN_DEBUG
 
+
     // The explicit casts are done to humour the HPUX aCC compiler,
     // which will otherwise say ``Template deduction failed to find a
     // match for the call to 'SbMin'''. mortene.
+    
     this->buffersize[0] = SbMax((short)1,
                                 SbMin((short)size[0], (short)maxsize[0]));
     this->buffersize[1] = SbMax((short)1,
                                 SbMin((short)size[1], (short)maxsize[1]));
+    
+
   }
 
   SbVec2s getSize(void) const {
-    return this->buffersize;
+     return this->buffersize;
   }
 
   // Will be called right after a render operation has taken
@@ -245,7 +275,11 @@ protected:
   SbVec2s buffersize;
 
   // Note: should _really_ be overridden by subclasses.
-  virtual SbVec2s getMax(void) { return SbVec2s(32767, 32767); }
+  virtual SbVec2s getMax(void) { 
+    
+    SbVec2s maxres = SoOffscreenRenderer::getMaximumResolution();
+    return(maxres);
+  }
 };
 
 
@@ -271,12 +305,15 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
 {
   PRIVATE(this) = new SoOffscreenRendererP(this);
 
+  PRIVATE(this)->mustusesubscreens = FALSE;
+  PRIVATE(this)->currentsubscreen = 0;
   PRIVATE(this)->backgroundcolor.setValue(0,0,0);
   PRIVATE(this)->components = RGB;
   PRIVATE(this)->didallocaction = TRUE;
   PRIVATE(this)->buffer = NULL;
   PRIVATE(this)->renderaction = new SoGLRenderAction(viewportregion);
 
+  PRIVATE(this)->lastnodewasacamera = FALSE;
 
   PRIVATE(this)->internaldata = NULL;
 #ifdef HAVE_GLX
@@ -287,8 +324,13 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
   PRIVATE(this)->internaldata = new SoOffscreenAGLData();
 #endif // HAVE_AGL
 
+  
+  PRIVATE(this)->internaldata->master = PRIVATE(this);
+
   PRIVATE(this)->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   this->setViewportRegion(viewportregion);
+
+
 }
 
 /*!
@@ -300,12 +342,15 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 {
   PRIVATE(this) = new SoOffscreenRendererP(this);
 
+  PRIVATE(this)->mustusesubscreens = FALSE;
+  PRIVATE(this)->currentsubscreen = 0;
   PRIVATE(this)->viewport.setWindowSize(256,256);
   PRIVATE(this)->backgroundcolor.setValue(0,0,0);
   PRIVATE(this)->components = RGB;
   PRIVATE(this)->didallocaction = TRUE;
   PRIVATE(this)->buffer = NULL;
   PRIVATE(this)->renderaction = action;
+  PRIVATE(this)->lastnodewasacamera = FALSE;
 
   PRIVATE(this)->internaldata = NULL;
 #ifdef HAVE_GLX
@@ -316,7 +361,11 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
   PRIVATE(this)->internaldata = new SoOffscreenAGLData();
 #endif // HAVE_AGL
   assert(action);
+
+  PRIVATE(this)->internaldata->master = PRIVATE(this);
+
   this->setViewportRegion(action->getViewportRegion());
+
 }
 
 /*!
@@ -324,9 +373,11 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 */
 SoOffscreenRenderer::~SoOffscreenRenderer()
 {
-  delete[] PRIVATE(this)->buffer;
+  delete [] PRIVATE(this)->buffer;
+  if(PRIVATE(this)->mustusesubscreens) delete [] PRIVATE(this)->subscreen;
   delete PRIVATE(this)->internaldata;
-  if (PRIVATE(this)->didallocaction) delete PRIVATE(this)->renderaction;
+  if(PRIVATE(this)->didallocaction) delete PRIVATE(this)->renderaction;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -387,11 +438,7 @@ void
 SoOffscreenRenderer::setComponents(const Components components)
 {
   PRIVATE(this)->components = components;
-
   SbVec2s dims = this->getViewportRegion().getViewportSizePixels();
-
-  delete[] PRIVATE(this)->buffer;
-  PRIVATE(this)->buffer = new unsigned char[dims[0] * dims[1] * PRIVATE(this)->components];
 }
 
 /*!
@@ -423,14 +470,38 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
   
   PRIVATE(this)->viewport = region;
   
-  if (PRIVATE(this)->renderaction)
-    PRIVATE(this)->renderaction->setViewportRegion(region);
+  // Adjust rendering canvas size if needed.
+  SbVec2s size = region.getViewportSizePixels();
+  SbVec2s maxsize = this->getMaximumResolution();
   
-  SbVec2s dims = region.getViewportSizePixels();
-  if (PRIVATE(this)->internaldata) PRIVATE(this)->internaldata->setBufferSize(dims);
+  PRIVATE(this)->requestedsize = PRIVATE(this)->viewport.getViewportSizePixels();
   
-  delete[] PRIVATE(this)->buffer;
-  PRIVATE(this)->buffer = new unsigned char[dims[0] * dims[1] * this->getComponents()];
+  if((size[0] > maxsize[0]) || (size[1] > maxsize[1])){
+    this->pimpl->mustusesubscreens = TRUE;
+    this->pimpl->setupSubscreens(size);
+    this->pimpl->currentsubscreen = 0;
+    PRIVATE(this)->subviewport = SbViewportRegion(PRIVATE(this)->subscreensize);
+  } else {
+    this->pimpl->mustusesubscreens = FALSE;
+  }
+    
+
+  SbVec2s dims = PRIVATE(this)->viewport.getViewportSizePixels();
+
+
+  if(!this->pimpl->mustusesubscreens){
+
+    if(PRIVATE(this)->renderaction) 
+      PRIVATE(this)->renderaction->setViewportRegion(PRIVATE(this)->viewport);
+    PRIVATE(this)->internaldata->setBufferSize(dims);
+  } else {
+    
+    if(PRIVATE(this)->renderaction) 
+      PRIVATE(this)->renderaction->setViewportRegion(PRIVATE(this)->subviewport);
+    PRIVATE(this)->internaldata->setBufferSize(PRIVATE(this)->subscreensize);
+  }
+  
+  delete [] PRIVATE(this)->buffer;
 }
 
 /*!
@@ -488,10 +559,38 @@ pre_render_cb(void * userdata, SoGLRenderAction * action)
   action->removePreRenderCallback(pre_render_cb, userdata);
 }
 
+
+// Callback when rendering scenegraph to subscreens. Searching for cameras.
+SoGLRenderAction::AbortCode 
+SoOffscreenRendererP::subscreenAbortCallback(void *userData)
+{
+
+  SoOffscreenRendererP *thisp = (SoOffscreenRendererP *) userData;
+  const SoFullPath *path = (const SoFullPath*) thisp->renderaction->getCurPath();
+  SoNode *node = path->getTail();
+
+  if(thisp->lastnodewasacamera){
+    thisp->setSubscreenCameraPosition(thisp->currentsubscreen, thisp->visitedcamera);
+    thisp->lastnodewasacamera=FALSE;
+    return SoGLRenderAction::CONTINUE;
+  }
+ 
+  if(node != NULL){
+    if(node->isOfType(SoCamera::getClassTypeId())){
+      thisp->visitedcamera = (SoCamera *) node;
+      thisp->lastnodewasacamera=TRUE;
+    }
+  }
+ 
+  return SoGLRenderAction::CONTINUE;
+}
+
+
 // Collects common code from the two render() functions.
 SbBool
 SoOffscreenRendererP::renderFromBase(SoBase * base)
 {
+
   if (!this->internaldata) {
     static SbBool first = TRUE;
     if (first) {
@@ -528,47 +627,97 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                this->backgroundcolor[1],
                this->backgroundcolor[2],
                0.0f);
-
-  // needed to clear viewport after glViewport is called
-  this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
-
+  
   if (!this->didallocaction) {
     this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   }
-  if (base->isOfType(SoNode::getClassTypeId()))
-    this->renderaction->apply((SoNode *)base);
-  else if (base->isOfType(SoPath::getClassTypeId()))
-    this->renderaction->apply((SoPath *)base);
-  else assert(FALSE && "impossible");
+ 
+  // Allocate target buffer
+  this->buffer = new unsigned char[this->requestedsize[0] * this->requestedsize[1] * master->getComponents()];
 
-  this->internaldata->postRender();
-  this->convertBuffer();
 
+  // Shall we use subscreen rendering or regular one-screen renderer?
+  if(this->mustusesubscreens){
+
+    //Allocate memory for subscreen
+    subscreen = new (unsigned char)[(subscreensize[0]*subscreensize[1]*this->master->getComponents())];
+
+    
+    // We have to grab cameras using this callback during rendering
+    this->renderaction->setAbortCallback(&subscreenAbortCallback,this);
+    
+    this->currentsubscreen = 0;
+    
+    // Render entire scenegraph for each subscreen.
+    for(int i=0;i<(this->numsubscreens[0]*this->numsubscreens[1]);++i){
+
+      if (!this->internaldata->makeContextCurrent(oldcontext)) {
+        SoDebugError::postWarning("SoOffscreenRenderer::renderFromBase",
+                                  "could not set up a current OpenGL context.");
+        return FALSE;
+      }
+    
+      this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
+
+      if (base->isOfType(SoNode::getClassTypeId()))
+        this->renderaction->apply((SoNode *)base);
+      else if (base->isOfType(SoPath::getClassTypeId()))
+        this->renderaction->apply((SoPath *)base);
+      else assert(FALSE && "impossible");
+      
+      this->internaldata->postRender();
+      this->convertSubscreenBuffer(this->currentsubscreen);
+      this->pasteSubscreen(this->currentsubscreen);
+
+      ++this->currentsubscreen;
+    }
+
+    this->renderaction->setAbortCallback(NULL, this);
+
+
+  } else { // -- Regular rendering
+    // needed to clear viewport after glViewport is called
+    this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
+
+    if (base->isOfType(SoNode::getClassTypeId()))
+      this->renderaction->apply((SoNode *)base);
+    else if (base->isOfType(SoPath::getClassTypeId()))
+      this->renderaction->apply((SoPath *)base);
+    else assert(FALSE && "impossible");
+
+    this->internaldata->postRender();
+    this->convertBuffer();
+ 
+  }
+  
   if (!this->didallocaction) {
     this->renderaction->setCacheContext(oldcontext);
   }
+  
+
   return TRUE;
 }
 
 // Convert from RGBA format to the application programmer's requested
 // format.
 void
-SoOffscreenRendererP::convertBuffer(void)
+SoOffscreenRendererP::convertSubscreenBuffer(int renderpass)
 {
   SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
-  int pixels = dims[0] * dims[1];
+  int pixels = subscreensize[0]*subscreensize[1];
   int depth = PUBLIC(this)->getComponents();
-  unsigned char * nativebuffer = this->internaldata->getBuffer();
+
+  unsigned char * local = this->subscreen;
+  unsigned char * native = this->internaldata->getBuffer();
 
   switch (master->getComponents()) {
   case SoOffscreenRenderer::RGB_TRANSPARENCY:
-    memcpy(this->buffer, nativebuffer, pixels * depth);
+    memcpy(local, native, pixels * depth);
     break;
 
   case SoOffscreenRenderer::RGB:
     {
-      unsigned char * native = nativebuffer;
-      unsigned char * local = this->buffer;
+      int counter = 0;
       for (int i=0; i < pixels; i++) {
         *local++ = *native++;
         *local++ = *native++;
@@ -580,8 +729,6 @@ SoOffscreenRendererP::convertBuffer(void)
 
   case SoOffscreenRenderer::LUMINANCE_TRANSPARENCY:
     {
-      unsigned char * native = nativebuffer;
-      unsigned char * local = this->buffer;
       for (int i=0; i < pixels; i++) {
         int val = (int(*native++) + int(*native++) + int(*native++)) / 3;
         *local++ = (unsigned char)val;
@@ -592,8 +739,61 @@ SoOffscreenRendererP::convertBuffer(void)
 
   case SoOffscreenRenderer::LUMINANCE:
     {
-      unsigned char * native = nativebuffer;
-      unsigned char * local = this->buffer;
+      for (int i=0; i < pixels; i++) {
+        uint32_t val = 76*native[0]+155*native[1]+26*native[2];
+        *local++ = (unsigned char)(val>>8);
+        native += 4;
+      }
+    }
+    break;
+
+  default:
+    assert(FALSE && "unknown buffer format"); break;
+  }
+}
+
+// Convert from RGBA format to the application programmer's requested
+// format.
+void
+SoOffscreenRendererP::convertBuffer(void)
+{
+
+  SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
+  int pixels = dims[0] * dims[1];
+  int depth = PUBLIC(this)->getComponents();
+  unsigned char * nativebuffer = this->internaldata->getBuffer();
+
+  unsigned char * native = nativebuffer;
+  unsigned char * local = this->buffer;
+ 
+  switch (master->getComponents()) {
+  case SoOffscreenRenderer::RGB_TRANSPARENCY:
+    memcpy(local, nativebuffer, pixels * depth);
+    break;
+
+  case SoOffscreenRenderer::RGB:
+    {
+      for (int i=0; i < pixels; i++) {
+        *local++ = *native++;
+        *local++ = *native++;
+        *local++ = *native++;
+        native++;
+      }
+    }
+    break;
+
+  case SoOffscreenRenderer::LUMINANCE_TRANSPARENCY:
+    {
+      for (int i=0; i < pixels; i++) {
+        int val = (int(*native++) + int(*native++) + int(*native++)) / 3;
+        *local++ = (unsigned char)val;
+        *local++ = *native++;
+      }
+    }
+    break;
+
+  case SoOffscreenRenderer::LUMINANCE:
+    {
       for (int i=0; i < pixels; i++) {
         uint32_t val = 76*native[0]+155*native[1]+26*native[2];
         *local++ = (unsigned char)(val>>8);
@@ -695,7 +895,14 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
   // FIXME: errorchecking when writing! 20010625 mortene.
 
   if (PRIVATE(this)->internaldata) {
+    
     SbVec2s size = PRIVATE(this)->internaldata->getSize();
+    if(PRIVATE(this)->mustusesubscreens){
+      size[0] = PRIVATE(this)->numsubscreens[0] * PRIVATE(this)->subscreensize[0];
+      size[1] = PRIVATE(this)->numsubscreens[1] * PRIVATE(this)->subscreensize[1];
+    }
+
+
     write_short(fp, 0x01da); // imagic
     write_short(fp, 0x0001); // raw (no rle yet)
 
@@ -1210,4 +1417,194 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
     return ret ? TRUE : FALSE;
   }
   return FALSE;
+}
+
+
+void
+SoOffscreenRendererP::setupSubscreens(SbVec2s totalsize)
+{
+
+  SbVec2s maxres = this->master->getMaximumResolution();
+   
+  // Was this really called for?
+  if((maxres[0] > totalsize[0]) &&
+     (maxres[1] > totalsize[1])){
+    numsubscreens[0] = 0;
+    numsubscreens[1] = 0;
+    this->mustusesubscreens = FALSE;  // False alarm, DONT use subscreens...
+    return;
+  }
+  
+  int tmpint;
+  float tmpfloat;
+  
+  // Number of subscreens along x
+  tmpfloat = ((float) totalsize[0])/maxres[0];
+  tmpint = (int) tmpfloat;
+  if((tmpfloat-tmpint) > 0)
+    ++tmpint;
+  numsubscreens[0] = (short) tmpint;
+  
+  // Number of subscreens along y
+  tmpfloat = ((float) totalsize[1])/maxres[1];
+  tmpint = (int) tmpfloat;
+  if((tmpfloat-tmpint) > 0)
+    ++tmpint;
+  numsubscreens[1] = (short) tmpint;
+   
+  // Subscreen dimensions.
+  if(numsubscreens[0] != 0)
+    subscreensize[0] = totalsize[0]/numsubscreens[0];
+  else
+    subscreensize[0] = totalsize[0];
+ 
+  if(numsubscreens[1] != 0)
+    subscreensize[1] = totalsize[1]/numsubscreens[1];
+  else
+    subscreensize[1] = totalsize[1];
+
+  return;
+}
+
+
+void 
+SoOffscreenRendererP::setSubscreenCameraPosition(int renderpass, SoCamera * cam)
+{
+
+  int subscreenposx = 0;
+  int subscreenposy = 0;
+
+  if(renderpass >= numsubscreens[0]*numsubscreens[1]){
+    subscreenposx = numsubscreens[0]-1;
+    subscreenposy = numsubscreens[1]-1;
+    SoDebugError::post("setSubscreenCameraPosition",
+                       "ERROR: Internal error. Not enough subscreens allocated for offscreenrendering.\n"
+                       "Rendering to last allocated subscreen.");
+  } else {
+    subscreenposy = renderpass / this->numsubscreens[0]; // Exploiting integer division loss
+    subscreenposx = renderpass - subscreenposy*this->numsubscreens[0];
+  }
+
+
+  SoState * state = (this->master->getGLRenderAction())->getState();
+  const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+
+
+  // A small trick to change the aspect ratio without changing the scenegraph camera
+  SbViewVolume vv;
+  int vpm = cam->viewportMapping.getValue();
+  float aspectratio = this->viewport.getViewportAspectRatio();
+  switch (vpm) {
+  case SoCamera::CROP_VIEWPORT_FILL_FRAME:
+  case SoCamera::CROP_VIEWPORT_LINE_FRAME:
+  case SoCamera::CROP_VIEWPORT_NO_FRAME:
+    vv = cam->getViewVolume(0.0f);
+    break;
+  case SoCamera::ADJUST_CAMERA:
+    vv = cam->getViewVolume(aspectratio);
+    if (aspectratio < 1.0f) vv.scale(1.0f / aspectratio);
+    break;
+  case SoCamera::LEAVE_ALONE:
+    vv = cam->getViewVolume(0.0f);
+    break;
+  default:
+    assert(0 && "unknown viewport mapping");
+    break;
+  }
+
+  SbVec2s siz = vp.getViewportSizePixels();
+
+  siz[0] = numsubscreens[0]*subscreensize[0];
+  siz[1] = numsubscreens[1]*subscreensize[1];
+    
+  float left =   ((float) (subscreenposx*this->subscreensize[0])) / siz[0];
+  float bottom = ((float) ((numsubscreens[1]-subscreenposy-1)*this->subscreensize[1])) / siz[1];
+  float right =  ((float) ((subscreenposx + 1)*this->subscreensize[0])) / siz[0];
+  float top =    ((float) ((numsubscreens[1] - subscreenposy)*this->subscreensize[1])) / siz[1];
+  
+  // Reshape view volume
+  vv = vv.narrow(left, bottom, right, top);
+  SbMatrix proj, affine;
+  
+  vv.getMatrices(affine, proj);
+  
+  SoCullElement::setViewVolume(state, vv);
+  SoViewVolumeElement::set(state, cam, vv);
+  SoProjectionMatrixElement::set(state, cam, proj);
+  SoViewingMatrixElement::set(state, cam, affine);
+    
+}
+
+void 
+SoOffscreenRendererP::pasteSubscreen(int renderpass)
+{
+  
+  int depth = this->master->getComponents();
+  
+  int subscreenposy = renderpass / this->numsubscreens[0]; // Exploiting integer division loss
+  int subscreenposx = renderpass - subscreenposy*this->numsubscreens[0];
+  
+  int suboffset = 0;
+  int offset = subscreenposx*subscreensize[0]*depth + (numsubscreens[1]-subscreenposy-1) * (subscreensize[1]*subscreensize[0]*numsubscreens[0]) * depth;
+  
+  const int linelen = this->subscreensize[0]*depth;
+  const int offsetinc = (this->numsubscreens[0]*this->subscreensize[0])*depth;
+  const int suboffsetinc = this->subscreensize[0]*depth;
+
+  switch (depth) {
+  case SoOffscreenRenderer::RGB_TRANSPARENCY:
+     {
+      for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
+        for(int k=0;k<linelen;k+=depth){ //For each pixel in subscreen line
+          this->buffer[offset + k]     = this->subscreen[suboffset + k];
+          this->buffer[offset + k + 1] = this->subscreen[suboffset + k + 1];
+          this->buffer[offset + k + 2] = this->subscreen[suboffset + k + 2];
+          this->buffer[offset + k + 3] = this->subscreen[suboffset + k + 3];
+        }
+        offset += offsetinc;
+        suboffset += suboffsetinc;
+      }
+    }
+    break;
+    
+  case SoOffscreenRenderer::RGB:
+    {
+      for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
+        for(int k=0;k<linelen;k+=depth){ //For each pixel in subscreen line
+          this->buffer[offset + k]     = this->subscreen[suboffset + k];
+          this->buffer[offset + k + 1] = this->subscreen[suboffset + k + 1];
+          this->buffer[offset + k + 2] = this->subscreen[suboffset + k + 2];
+        }
+        offset += offsetinc;
+        suboffset += suboffsetinc;
+      }
+    }
+    break;
+
+  case SoOffscreenRenderer::LUMINANCE_TRANSPARENCY:
+    {
+      for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
+        for(int k=0;k<linelen;k+=depth){ //For each pixel in subscreen line
+          this->buffer[offset + k]    = this->subscreen[suboffset + k];
+          this->buffer[offset + k +1] = this->subscreen[suboffset + k + 1];
+        }
+        offset += offsetinc;
+        suboffset += suboffsetinc;
+      }
+  
+    }
+    break;
+
+  case SoOffscreenRenderer::LUMINANCE:
+    {
+      for(int j=0;j<this->subscreensize[1];++j){ //For each line in a subscreen
+        for(int k=0;k<linelen;k+=depth) //For each pixel in subscreen line
+          this->buffer[offset + k] = this->subscreen[suboffset + k];
+        offset += offsetinc;
+        suboffset += suboffsetinc;
+      }
+    }
+    break;
+  }
+ 
 }

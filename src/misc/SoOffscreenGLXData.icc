@@ -330,9 +330,23 @@ SoOffscreenGLXData::postRender(void)
 SbVec2s
 SoOffscreenGLXData::getMaxDimensions(void)
 {
-  // FIXME: where can we get hold of the _real_ max values for
-  // Pixmap and/or GLXPixmap? 20000417 mortene.
-  return SbVec2s(32767, 32767);
+
+  /*
+    FIXME: Here we have to have access to a valid GL context
+    if we want this to work... (handegar)
+  */
+
+  /*
+    GLint maxdims[2];
+    glGetIntegerv(GL_MAX_VIEWPORT_DIMS, maxdims);
+    // FIXME: clamp GLint to be within the size of SbVec2s. 20020809 mortene.
+  */
+
+#if 1
+  return SbVec2s(2048,2048);
+#else // Shrink offscreen capacities for testing and debugging (handegar)
+  return SbVec2s(640/2+1,480/7); 
+#endif
 }
 
 SbVec2s
