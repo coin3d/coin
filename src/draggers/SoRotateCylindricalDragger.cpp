@@ -30,7 +30,7 @@
   end-users of your application rotate geometry around any axis vector
   in 3D.
 
-  For the dragger orientation and positiing itself, use some kind of
+  For the dragger orientation and positing itself, use some kind of
   transformation node in your scenegraph, as usual.
 */
 

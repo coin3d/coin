@@ -30,7 +30,14 @@
   end-users of your application rotate geometry around any axis vector
   in 3D.
 
-  For the dragger orientation and positiing itself, use some kind of
+  The special feature of this dragger that sets it apart from the
+  other draggers that provides rotation around an axis (like the
+  SoRotateCylindricalDragger) is that it provides a convenient
+  interface to rotate around an axis that is pointing in approximately
+  the same direction as the camera. This is useful for interacting
+  with for instance something like a "volume" knob.
+
+  For the dragger orientation and positing itself, use some kind of
   transformation node in your scenegraph, as usual.
 */
 
