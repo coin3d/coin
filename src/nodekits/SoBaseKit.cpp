@@ -664,17 +664,9 @@ SoBaseKit::getContainerNode(const SbName &listname, SbBool makeifneeded)
   SbBool isList;
   int listIdx;
   if (SoBaseKit::findPart(SbString(listname.getString()), kit, partNum,
-                          isList, listIdx, makeifneeded)) {
+                          isList, listIdx, makeifneeded, NULL, TRUE)) {
     SoNode *node = kit->fieldList[partNum]->getValue();
     if (node == NULL) return NULL;
-    if (!isList) {
-#if COIN_DEBUG && 1 // debug
-      SoDebugError::postInfo("SoBaseKit::getContainerNode",
-                             "part ``%s'' is not a container",
-                             listname.getString());
-#endif // debug
-      return NULL;
-    }
     assert(node->isOfType(SoNodeKitListPart::getClassTypeId()));
     SoNodeKitListPart *list = (SoNodeKitListPart*)node;
     return list->getContainerNode();
@@ -1169,6 +1161,10 @@ SoBaseKit::makePart(const int partnum)
   assert(this->fieldList[partnum]->getValue() == NULL);
 
   SoNode *node = (SoNode*)catalog->getDefaultType(partnum).createInstance();
+  if (catalog->isList(partnum) && 
+      (catalog->getListContainerType(partnum) != SoGroup::getClassTypeId())) {
+    ((SoNodeKitListPart*)node)->setContainerType(catalog->getListContainerType(partnum));
+  }
   return this->setPart(partnum, node);
 }
 
