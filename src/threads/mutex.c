@@ -189,15 +189,19 @@ cc_mutex_cleanup(void)
 void
 cc_mutex_init(void)
 {
-#ifdef USE_W32THREAD
-  /* TryEnterCriticalSection test. */
+#ifdef USE_W32THREAD /* TryEnterCriticalSection test. */
+
   HINSTANCE h = GetModuleHandle("kernel32.dll");
-  if (h) {
-    /* this function is unsupported in Win95/98/Me and NT <=3.51 */
-    cc_mutex_try_enter_critical_section = 
-      (cc_mutex_try_enter_critical_section_func*)
-      GetProcAddress(h, "TryEnterCriticalSection");
+  /* If we can't get a handle to kernel32.dll, something is seriously
+     wrong, and we should investigate. <mortene> */
+  assert(h && "GetModuleHandle('kernel32.dll') failed!");
+
+  /* this function is unsupported in Win95/98/Me and NT <=3.51 */
+  cc_mutex_try_enter_critical_section = 
+    (cc_mutex_try_enter_critical_section_func*)
+    GetProcAddress(h, "TryEnterCriticalSection");
   }
+  
 #endif /* USE_W32THREAD */
 
   if (cc_global_mutex == NULL) {
