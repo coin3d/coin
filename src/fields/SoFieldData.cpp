@@ -499,10 +499,20 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 void
 SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 {
+  uint16_t i;
+
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    // Handle first stage of write operations.
+    for (i=0; i < this->getNumFields(); i++)
+      this->getField(object, i)->write(out, this->getFieldName(i));
+    return;
+  }
+  // Ok, we've passed the first write stage and is _really_ writing.
+
+
   // Make sure all fields get written on SoUnknownNode nodes, even if
   // they have their default flags set to TRUE.
   SbList<SbBool> defaultflags(this->getNumFields() ? this->getNumFields() : 1);
-  uint16_t i;
   if (object->getTypeId().isDerivedFrom(SoUnknownNode::getClassTypeId())) {
     for (i=0; i < this->getNumFields(); i++) {
       SoField * f = this->getField(object, i);
@@ -700,11 +710,11 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
     }
   }
 
-  return TRUE;
-}
-
 #undef READ_CHAR
 #undef READ_NAME
+
+  return TRUE;
+}
 
 
 /*!

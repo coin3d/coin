@@ -1255,6 +1255,14 @@ SoField::read(SoInput * in, const SbName & name)
 void
 SoField::write(SoOutput * out, const SbName & name) const
 {
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    // Handle first stage of write operations.
+    this->countWriteRefs(out);
+    return;
+  }
+  // Ok, we've passed the first write stage and is _really_ writing.
+
+
   if(!this->shouldWrite()) return;
 
   // ASCII write.
@@ -1294,12 +1302,19 @@ SoField::write(SoOutput * out, const SbName & name) const
 }
 
 /*!
-  FIXME: write doc
+  This method is called during the first pass of write operations,
+  to count the number of write references to this field and
+  to "forward" the reference counting operation to the field
+  containers we're connected to.
  */
 void
-SoField::countWriteRefs(SoOutput * /* out */) const
+SoField::countWriteRefs(SoOutput * out) const
 {
-  COIN_STUB();
+  // FIXME: call the "writereference" method of all connected fields
+  // etc. 20000130 mortene.
+  SbName dummy;
+  SoFieldContainer * fc = this->resolveWriteConnection(dummy);
+  if (fc) fc->addWriteReference(out, TRUE);
 }
 
 /*!
@@ -1545,16 +1560,22 @@ SoField::writeConnection(SoOutput * out) const
     out->write(CONNECTIONCHAR);
   }
 
-  if (fc->isOfType(SoNode::getClassTypeId())) {
+#if 1 // OBSOLETED? use the more generic code below -- if it is correct.
+      // 20000130 mortene.
+  if (fc->isOfType(SoEngine::getClassTypeId())) {
+    COIN_STUB();
+  }
+  else {
     // FIXME: is this the correct thing to do if fc is an
     // SoVRMLInterpolator? 20000129 mortene.
     SoWriteAction wa(out);
     wa.continueToApply((SoNode *)fc);
   }
-  else if (fc->isOfType(SoEngine::getClassTypeId())) {
-    COIN_STUB();
-  }
-  else assert(FALSE);
+#else // NEW CODE
+  // FIXME: ouch, this doesn't cut it. Look at the code in
+  // SoNode::write() to see what has to be done. 20000130 mortene.
+  fc->writeInstance(out);
+#endif // NEW CODE
 
   if (!out->isBinary()) {
     out->indent();
@@ -1649,8 +1670,8 @@ SoField::evaluateConnection(void) const
   \e never call this method from anywhere in the code where the field
   value is being set through an evaluation of its connections.
 
-  If \a resetDefault is \a TRUE, the flag marking whether or not the
-  field has its default value will be set to \a FALSE.
+  If \a resetDefault is \c TRUE, the flag marking whether or not the
+  field has its default value will be set to \c FALSE.
 
   The method will also notify any auditors that its value has changed.
  */

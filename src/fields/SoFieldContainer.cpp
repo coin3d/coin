@@ -75,7 +75,7 @@ SoFieldContainer::SoFieldContainer(void)
 /*!
   Destructor.
 */
-SoFieldContainer::~SoFieldContainer(void)
+SoFieldContainer::~SoFieldContainer()
 {
 }
 
@@ -473,23 +473,8 @@ void
 SoFieldContainer::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
   inherited::addWriteReference(out, isfromfield);
-  if (isfromfield) return;
-
-  // FIXME: move this into SoField::write(), and generally fix up the
-  // write reference counting, so the program flow is about the same
-  // during the first write pass as the second. 19990707 mortene.
   const SoFieldData * fd = this->getFieldData();
-  for (int i=0; i < fd->getNumFields(); i++) {
-    SoField * fieldmaster;
-    SoEngineOutput * enginemaster;
-    SoVRMLInterpOutput * interpmaster;
-    if (fd->getField(this, i)->getConnectedField(fieldmaster))
-      fieldmaster->getContainer()->addWriteReference(out, TRUE);
-    else if (fd->getField(this, i)->getConnectedEngine(enginemaster))
-      enginemaster->getContainer()->addWriteReference(out, TRUE);
-    else if (fd->getField(this, i)->getConnectedVRMLInterp(interpmaster))
-      interpmaster->getContainer()->addWriteReference(out, TRUE);
-  }
+  if (fd) fd->write(out, this);
 }
 
 

@@ -82,7 +82,7 @@ public:
 
 protected:
   SoFieldContainer(void);
-  ~SoFieldContainer(void);
+  ~SoFieldContainer();
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   SbBool isBuiltIn;
