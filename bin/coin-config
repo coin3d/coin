@@ -102,7 +102,7 @@ if test x"$compiler_is_gcc" = x"yes"; then
     s/ /-I/
     p
   }'
-  EOF`
+EOF`
   result=
   for inc_path in $cppflags; do
     additem=true
