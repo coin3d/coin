@@ -854,9 +854,7 @@ SIM_AC_CHECK_DYLD([
   coin_can_do_runtime_linking=true
 ])
 
-if $coin_can_do_runtime_linking; then
-  :
-else
+if ! $coin_can_do_runtime_linking; then
   SIM_AC_CHECK_DL([
     AC_DEFINE_UNQUOTED([HAVE_DL_LIB],1, [define if you have the dl library])
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
@@ -866,12 +864,19 @@ else
   ])
 fi
 
-if $coin_can_do_runtime_linking; then
-  :
-else
+if ! $coin_can_do_runtime_linking; then
   SIM_AC_CHECK_LOADLIBRARY([
     AC_DEFINE_UNQUOTED([HAVE_WINDLL_RUNTIME_BINDING],1,
                        [define if the Win32 LoadLibrary method is available])
+    coin_can_do_runtime_linking=true
+  ])
+fi
+
+if ! $coin_can_do_runtime_linking; then
+  SIM_AC_CHECK_DLD([
+    AC_DEFINE_UNQUOTED([HAVE_DLD_LIB],1,
+                       [define if the DLD shared library loader is available])
+    COIN_EXTRA_LIBS="$sim_ac_dld_libs $COIN_EXTRA_LIBS"
     coin_can_do_runtime_linking=true
   ])
 fi
