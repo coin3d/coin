@@ -257,8 +257,6 @@ SoText3::GLRender(SoGLRenderAction * action)
 
   SbBool matperpart = binding != SoMaterialBindingElement::OVERALL;
 
-  unsigned int parts = this->parts.getValue();
-
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
@@ -310,7 +308,6 @@ SoText3::generatePrimitives(SoAction * action)
 {
   this->setUpGlyphs(action->getState());
 
-  unsigned int parts = this->parts.getValue();
   unsigned int prts = this->parts.getValue();
 
   if (prts & SoText3::FRONT) {
@@ -394,7 +391,8 @@ void
 SoText3::render(SoState * state, unsigned int part)
 {
   float size = SoFontSizeElement::get(state);
-  SbBool doTextures = SoGLTextureEnabledElement::get(state);
+  // FIXME: not in use (yet?). 20000525 mortene.
+//    SbBool doTextures = SoGLTextureEnabledElement::get(state);
 
   int i, n = this->widths.getLength();
 

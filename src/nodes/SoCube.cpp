@@ -108,10 +108,6 @@ SoCube::GLRender(SoGLRenderAction * action)
 
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
 
-  SbBool useTexFunc =
-    (SoTextureCoordinateElement::getType(state) ==
-     SoTextureCoordinateElement::FUNCTION);
-
   SbBool sendNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);

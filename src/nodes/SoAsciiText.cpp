@@ -175,7 +175,6 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
       const int * ptr = glyph->getFaceIndices();
       while (*ptr >= 0) {
         SbVec2f v0, v1, v2;
-        float zval;
         v0 = coords[*ptr++];
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];
@@ -314,7 +313,6 @@ SoAsciiText::generatePrimitives(SoAction * action)
       const int * ptr = glyph->getFaceIndices();
       while (*ptr >= 0) {
         SbVec2f v0, v1, v2;
-        float zval;
         v0 = coords[*ptr++];
         v1 = coords[*ptr++];
         v2 = coords[*ptr++];

@@ -48,9 +48,6 @@
 #endif // COIN_DEBUG
 
 
-static const char * const DEFINITION_KEYWORD = "DEF";
-static const char * const REFERENCE_KEYWORD  = "USE";
-
 /*!
   \var SoChildList * SoGroup::children
   List of managed child nodes.

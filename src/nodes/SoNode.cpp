@@ -116,7 +116,7 @@ SoNode *
 SoNode::copy(SbBool copyconnections) const
 {
   SoFieldContainer::initCopyDict();
-  SoNode * cpnode = this->addToCopyDict();
+  (void)this->addToCopyDict();
   // Call findCopy() to have copyContents() run only once.
   SoNode * cp = (SoNode *)SoFieldContainer::findCopy(this, copyconnections);
   SoFieldContainer::copyDone();
