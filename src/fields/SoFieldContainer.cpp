@@ -118,8 +118,9 @@ SoFieldContainer::setToDefaults(void)
   // Allocate a fresh template to retrieve values from.
   const SoFieldContainer * from = (const SoFieldContainer *)
     this->getTypeId().createInstance();
-
+  from->ref();
   fd->overlay(this, from, FALSE);
+  from->unref();
 
   SoFieldList l;
   int n = this->getFields(l);
@@ -139,8 +140,10 @@ SoFieldContainer::hasDefaultValues(void) const
   // Allocate a fresh template to compare with.
   const SoFieldContainer * fc = (const SoFieldContainer *)
     this->getTypeId().createInstance();
-
-  return fd->isSame(this, fc);
+  fc->ref();
+  SbBool hasdefaultvalues = fd->isSame(this, fc);
+  fc->unref();
+  return hasdefaultvalues;
 }
 
 /*!
