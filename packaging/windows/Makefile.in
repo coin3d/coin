@@ -136,7 +136,7 @@ build-docs/html/index.html: Coin-$(VERSION)
 
 docs: build-docs/html/index.html
 
-build-shared-release/src/coin@COIN_MAJOR@.dll: Coin-$(VERSION)
+build-shared-release/src/coin@COIN_MAJOR_VERSION@.dll: Coin-$(VERSION)
 	@if test -d build-shared-release; then :; else mkdir build-shared-release; fi
 	cd build-shared-release; \
 	../Coin-$(VERSION)/configure \
@@ -153,9 +153,9 @@ build-shared-release/src/coin@COIN_MAJOR@.dll: Coin-$(VERSION)
 	cd build-shared-release; \
 	$(MAKE) install
 
-shared-release: build-shared-release/src/coin@COIN_MAJOR@.dll
+shared-release: build-shared-release/src/coin@COIN_MAJOR_VERSION@.dll
 
-build-shared-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
+build-shared-debug/src/coin@COIN_MAJOR_VERSION@d.dll: Coin-$(VERSION)
 	@if test -d build-shared-debug; then :; else mkdir build-shared-debug; fi
 	cd build-shared-debug; \
 	../Coin-$(VERSION)/configure \
@@ -174,9 +174,9 @@ build-shared-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
 	cd build-shared-debug; \
 	$(MAKE) install
 
-shared-debug: build-shared-debug/src/coin@COIN_MAJOR@d.dll
+shared-debug: build-shared-debug/src/coin@COIN_MAJOR_VERSION@d.dll
 
-build-static-release/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
+build-static-release/src/coin@COIN_MAJOR_VERSION@d.dll: Coin-$(VERSION)
 	@if test -d build-static-release; then :; else mkdir build-static-release; fi
 	cd build-static-release; \
 	../Coin-$(VERSION)/configure \
@@ -196,9 +196,9 @@ build-static-release/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
 	cd build-static-release; \
 	$(MAKE) install
 
-static-release: build-static-release/src/coin@COIN_MAJOR@d.dll
+static-release: build-static-release/src/coin@COIN_MAJOR_VERSION@d.dll
 
-build-static-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
+build-static-debug/src/coin@COIN_MAJOR_VERSION@d.dll: Coin-$(VERSION)
 	@if test -d build-static-debug; then :; else mkdir build-static-debug; fi
 	cd build-static-debug; \
 	../Coin-$(VERSION)/configure \
@@ -218,7 +218,7 @@ build-static-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
 	cd build-static-debug; \
 	$(MAKE) install
 
-static-debug: build-static-debug/src/coin@COIN_MAJOR@d.dll
+static-debug: build-static-debug/src/coin@COIN_MAJOR_VERSION@d.dll
 
 build-files: build-files/coin@COIN_MAJOR_VERSION@.dsp
 
