@@ -522,7 +522,7 @@ cc_glglue_instance(int contextid)
     coin_glx_version(&(gi->glxVersion.major), &(gi->glxVersion.minor));
 
     gi->isdirect = coin_glx_isdirect();
-    gi->vendor_is_SGI = strcmp(glGetString(GL_VENDOR), "SGI") == 0;
+    gi->vendor_is_SGI = strcmp((const char *) glGetString(GL_VENDOR), "SGI") == 0;
 
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("cc_glglue_instance",
