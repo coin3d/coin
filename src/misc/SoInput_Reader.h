@@ -49,7 +49,8 @@ public:
     REGULAR_FILE,
     MEMBUFFER,
     GZFILE,
-    BZ2FILE
+    BZ2FILE,
+    GZMEMBUFFER
   };
 
   // must be overloaded to return type
@@ -105,6 +106,19 @@ public:
 };
 
 #ifdef HAVE_ZLIB
+
+class SoInput_GZMemBufferReader : public SoInput_Reader {
+public:
+  SoInput_GZMemBufferReader(void * bufPointer, size_t bufSize);
+  virtual ~SoInput_GZMemBufferReader();
+
+  virtual ReaderType getType(void) const;
+  virtual int readBuffer(char * buf, const size_t readlen);
+
+public:
+  void * gzmfile;
+};
+
 
 class SoInput_GZFileReader : public SoInput_Reader {
 public:

@@ -38,6 +38,10 @@
 #include <io.h> // Win32 dup()
 #endif // HAVE_IO_H
 
+#ifdef HAVE_ZLIB
+#include "gzmemio.h"
+#endif // HAVE_ZLIB
+
 //
 // abstract class
 //
@@ -194,9 +198,39 @@ SoInput_MemBufferReader::readBuffer(char * buf, const size_t readlen)
 }
 
 //
-// gzFile class
+// gzip readers
 //
 #ifdef HAVE_ZLIB
+
+//
+// gzipped membuffer class
+//
+
+SoInput_GZMemBufferReader::SoInput_GZMemBufferReader(void * bufPointer, size_t bufSize)
+{
+  this->gzmfile = gzm_open((uint8_t *)bufPointer, bufSize);
+}
+
+SoInput_GZMemBufferReader::~SoInput_GZMemBufferReader()
+{
+  gzm_close(this->gzmfile);
+}
+
+SoInput_Reader::ReaderType
+SoInput_GZMemBufferReader::getType(void) const
+{
+  return GZMEMBUFFER;
+}
+
+int
+SoInput_GZMemBufferReader::readBuffer(char * buf, const size_t readlen)
+{
+  return gzm_read(this->gzmfile, buf, readlen);
+}
+
+//
+// gzFile class
+//
 
 SoInput_GZFileReader::SoInput_GZFileReader(const char * const filename, gzFile fp)
 {

@@ -557,8 +557,11 @@ SoInput::setBuffer(void * bufpointer, size_t bufsize)
   // been a "const char *"? 20010821 mortene.
 
   this->closeFile();
-  
-  SoInput_MemBufferReader * reader = new SoInput_MemBufferReader(bufpointer, bufsize);
+#ifdef HAVE_ZLIB
+  SoInput_Reader * reader = new SoInput_GZMemBufferReader(bufpointer, bufsize);  
+#else // HAVE_ZLIB
+  SoInput_Reader * reader = new SoInput_MemBufferReader(bufpointer, bufsize);
+#endif // ! HAVE_ZLIB
   SoInput_FileInfo * newfile = new SoInput_FileInfo(reader);
   this->filestack.insert(newfile, 0);
 }
