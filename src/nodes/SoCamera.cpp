@@ -431,6 +431,12 @@ SoCamera::viewAll(SoNode * const sceneroot, const SbViewportRegion & vpregion,
                          "bbox: <%f %f %f>, <%f %f %f>\n",
                          box.getMin()[0], box.getMin()[1], box.getMin()[2],
                          box.getMax()[0], box.getMax()[1], box.getMax()[2]);
+  SoDebugError::postInfo("SoCamera::viewAll",
+                         "viewportregion, windowsize: <%f, %f>, <%d, %d>\n", 
+                         vpregion.getViewportSize()[0], 
+                         vpregion.getViewportSize()[1], 
+                         vpregion.getWindowSize()[0], 
+                         vpregion.getWindowSize()[1] );
 #endif // debug
 
   // Only check for "flagged" emptiness and don't use

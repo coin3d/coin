@@ -1219,6 +1219,12 @@
 
     20030103 mortene.
 
+    WONTFIX? 20030225 rolvs: In this example, setSceneGraph calls
+    viewAll() before the window is 'show'-ed. The viewport region
+    passed to (*SoCamera)->viewAll( graph, vpreg ) is therefore wrong,
+    causing a malformed boundingbox for the image and thus a malformed
+    view.
+
 =====================================================================
 
 052 MSWin dependency walker gives surprising results.
