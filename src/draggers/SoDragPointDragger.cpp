@@ -110,12 +110,12 @@ SoDragPointDragger::SoDragPointDragger(void)
   this->setPartAsDefault("yzFeedback", "dragPointYZFeedback");
 
   // create simple draggers that compromise this dragger
-  SoDragger *xdragger = SO_GET_ANY_PART(this, "xTranslator", SoTranslate1Dragger);
-  SoDragger *ydragger = SO_GET_ANY_PART(this, "yTranslator", SoTranslate1Dragger);
-  SoDragger *zdragger = SO_GET_ANY_PART(this, "zTranslator", SoTranslate1Dragger);
-  SoDragger *xydragger = SO_GET_ANY_PART(this, "xyTranslator", SoTranslate2Dragger);
-  SoDragger *xzdragger = SO_GET_ANY_PART(this, "xzTranslator", SoTranslate2Dragger);
-  SoDragger *yzdragger = SO_GET_ANY_PART(this, "yzTranslator", SoTranslate2Dragger);
+  (void)SO_GET_ANY_PART(this, "xTranslator", SoTranslate1Dragger);
+  (void)SO_GET_ANY_PART(this, "yTranslator", SoTranslate1Dragger);
+  (void)SO_GET_ANY_PART(this, "zTranslator", SoTranslate1Dragger);
+  (void)SO_GET_ANY_PART(this, "xyTranslator", SoTranslate2Dragger);
+  (void)SO_GET_ANY_PART(this, "xzTranslator", SoTranslate2Dragger);
+  (void)SO_GET_ANY_PART(this, "yzTranslator", SoTranslate2Dragger);
 
   // set rotations to align draggers to their respective axis/planes
   SoRotation *xrot = new SoRotation;
