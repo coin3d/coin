@@ -9,9 +9,14 @@ development. 19990926 mortene.
 		o using multiply configure'd build directories
 			- slim
 			- full debug
+                        - with profiling
+                        - different platforms
 		o --enable-hacking (gives quick turn-around time)
 		o symlinks from install directory to avoid ``make install''
-		o explain coindev/coindev.cpp mechanisms
+                o make install-data
+                o make *-am
+		o explain mechanisms for overloading methods in
+                  dynamic libraries
 
 * Styleguide for code
 	- rip out the text from Metadon.conf
