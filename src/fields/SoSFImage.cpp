@@ -109,13 +109,23 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <stdlib.h> // free()
 
 class SoSFImageP {
 public:
-  SoSFImageP(void) { this->image = new SbImage; }
-  ~SoSFImageP() { delete this->image; }
-
+  SoSFImageP(void) { 
+    this->image = new SbImage; 
+    this->freeimage = NULL;
+    this->deleteimage = NULL;
+  }
+  ~SoSFImageP() { 
+    delete this->image; 
+    if (this->freeimage) free(this->freeimage);
+    delete[] this->deleteimage;
+  }
   SbImage * image;
+  unsigned char * deleteimage; // free this data using delete[]
+  unsigned char * freeimage; // free this data using free()
 };
 
 #undef PRIVATE
@@ -334,13 +344,34 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
                     const unsigned char * pixels,
                     SoSFImage::CopyPolicy copypolicy)
 {
-  if (copypolicy != SoSFImage::COPY) {
-    SoDebugError::postWarning("SoSFImage::setValue",
-                              "The only CopyPolicy supported yet is COPY. "
-                              "If you need this functionality, get in touch.");
+  // free old data
+  if (PRIVATE(this)->freeimage) {
+    free(PRIVATE(this)->freeimage);
+    PRIVATE(this)->freeimage = NULL;
   }
-
-  PRIVATE(this)->image->setValue(size, nc, pixels);
+  if (PRIVATE(this)->deleteimage) {
+    delete[] PRIVATE(this)->deleteimage;
+    PRIVATE(this)->deleteimage = NULL;
+  }
+  // set new data
+  switch (copypolicy) {
+  default:
+    assert(0 && "unknown copy policy");
+  case COPY:
+    PRIVATE(this)->image->setValue(size, nc, pixels);
+    break;
+  case NO_COPY:
+    PRIVATE(this)->image->setValuePtr(size, nc, pixels);
+    break;
+  case NO_COPY_AND_DELETE:
+    PRIVATE(this)->image->setValuePtr(size, nc, pixels);
+    PRIVATE(this)->deleteimage = (unsigned char*) pixels;
+    break;
+  case NO_COPY_AND_FREE:
+    PRIVATE(this)->image->setValuePtr(size, nc, pixels);
+    PRIVATE(this)->freeimage = (unsigned char*) pixels;
+    break;    
+  }
   this->valueChanged();
 }
 
