@@ -51,7 +51,7 @@ extern "C" {
   unsigned int cc_name_get_length(const cc_name * name);
 
   SbBool cc_name_equals(const cc_name * name1, const cc_name * name2);
-  SbBool cc_name_equals_string(const cc_name * name, const char * st);
+  SbBool cc_name_equals_string(const cc_name * name, const char * str);
 
 /* ********************************************************************** */
 

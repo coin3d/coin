@@ -30,6 +30,19 @@
 //
 // 20030606 mortene.
 
+// FIXME: couldn't the API be better implemented as simply:
+//
+//  const char * cc_namemap_add_string(const char *); // Returns ptr in map.
+//  const char * cc_namemap_get_address(const char *); // Return NULL if non-existing.
+//
+// ?
+//
+// That actually seems sufficient to me (but I haven't given it much
+// thought yet). I believe SbName could have been layered on top of
+// those two simple functions.
+//
+// 20030606 mortene.
+
 #include <Inventor/C/base/name.h>
 #include <Inventor/SbName.h>
 
