@@ -54,6 +54,7 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/C/tidbits.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -284,32 +285,6 @@ SoGLBigImage::getGLDisplayList(SoState * state)
   return NULL;
 }
 
-// returns the number of bits set, and sets highbit to
-// the highest bit set.
-static int
-bi_cnt_bits(unsigned long val, int & highbit)
-{
-  int cnt = 0;
-  highbit = 0;
-  while (val) {
-    if (val & 1) cnt++;
-    val>>=1;
-    highbit++;
-  }
-  return cnt;
-}
-
-// returns the next power of two greater or equal to val
-static short
-bi_next_power_of_two(short val)
-{
-  int highbit;
-  if (bi_cnt_bits((unsigned long) val, highbit) > 1) {
-    return (short) (1<<highbit);
-  }
-  return val;
-}
-
 int
 SoGLBigImage::initSubImages(const SbVec2s & subimagesize) const
 {
@@ -320,8 +295,8 @@ SoGLBigImage::initSubImages(const SbVec2s & subimagesize) const
       tls->dim[0] > 0) return tls->dim[0] * tls->dim[1];
 
   tls->imagesize = subimagesize;
-  tls->glimagesize[0] = bi_next_power_of_two(tls->imagesize[0]);
-  tls->glimagesize[1] = bi_next_power_of_two(tls->imagesize[1]);
+  tls->glimagesize[0] = coin_geq_power_of_two(tls->imagesize[0]);
+  tls->glimagesize[1] = coin_geq_power_of_two(tls->imagesize[1]);
 
   if (tls->glimagesize[0] > tls->imagesize[0] && tls->glimagesize[0] >= 256) {
     int diff = tls->imagesize[0] - (tls->glimagesize[0]>>1);
