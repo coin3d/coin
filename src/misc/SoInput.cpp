@@ -944,10 +944,11 @@ SoInput::read(SbString & s)
 static SbBool 
 soinput_is_ident_start_char(SoInput * in, char c)
 {
+  unsigned char uc = (unsigned char) c;
   if (in->isFileVRML2()) {
-    if (c >= 0 && c <= 0x20) return FALSE;
-    if (c >= 0x30 && c <= 0x39) return FALSE;
-    switch (c) {
+    if (uc <= 0x20) return FALSE;
+    if (uc >= 0x30 && uc <= 0x39) return FALSE;
+    switch (uc) {
     case 0x22:
     case 0x23:
     case 0x27: 
@@ -972,9 +973,10 @@ soinput_is_ident_start_char(SoInput * in, char c)
 static SbBool 
 soinput_is_ident_char(SoInput * in, char c)
 {
+  unsigned char uc = (unsigned char) c;
   if (in->isFileVRML2()) {
-    if (c >= 0 && c <= 0x20) return FALSE;
-    switch (c) {
+    if (uc <= 0x20) return FALSE;
+    switch (uc) {
     case 0x22:
     case 0x23: 
     case 0x27:
