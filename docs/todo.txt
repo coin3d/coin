@@ -47,6 +47,10 @@ STUFF TO FIX IN COIN
         * could not find texture file <filename> in any of these
           directories: <searchlist>
 
+        * found texture file at <fullfilename>, recognized file format
+          as 'X', which is not supported with this build of the simage
+          library
+
         * found texture file at <fullfilename>, but does not recognize
           file format
 
@@ -566,7 +570,7 @@ STUFF TO FIX IN COIN
     2002-12-18  Morten Eriksen  <mortene@sim.no>
 
     An idea in the "wild, crazy and cool" department; it would have
-    been really nifty if would provide MSWindows Coin-users a
+    been really nifty if we could provide Coin-users on MSWindows a
     www-interface where they could
 
       a) set up the parameters for how they wanted their MSWindows
@@ -692,6 +696,36 @@ STUFF TO FIX IN COIN
        resources.
 
 
+030 Offscreen context support functions.
+    2003-01-31  Morten Eriksen  <mortene@sim.no>
+
+    There's a hack in use which should be cleaned out: from several
+    places in the Coin source code, an SoOffscreenRenderer is set up
+    with a single SoCallback node scene graph -- just as a hack to get
+    a current offscreen GL context.
+
+    As of now, this trick is used by the SoExtSelection node and the
+    code which wraps the GLU nurbs tessellation functions (which needs
+    a current GL context for some weird reason).
+
+    This should be cleaned up by making available an internal set of
+    functions (perhaps on the gl wrapper interface?):
+
+        glcontextstruct * make_offscreen_context(...);
+        glcontextstruct * set_current_context(glcontextstruct *); /* returns previous context */
+        void free_offscreen_context(glcontextstruct *);
+
+    The code for these methods has basically been written already, and
+    is now contained within the Coin/src/misc/SoOffscreen* files. It
+    should be moved out of there, and SoOffscreenRenderer,
+    SoExtSelection and the GLU nurbs tesselation wrapping should all
+    use the new methods.
+
+    Note that setting up an offscreen GL context uses
+    platform-dependent code, and is implemented for 3 different
+    systems: GLX (X11), WGL (MSWin) and AGL (Mac OS X).
+
+
 
 OTHER COIN-RELATED STUFF TO FIX
 ===============================
@@ -700,15 +734,9 @@ These are from a "hotlist" of items after our November 2002 SIM Coin
 summit -- i.e. tasks that we should try really hard to get resources
 for in upcoming projects:
 
-   * SoWin completion: ~ 2 man-weeks.
-
-   * SoXt completion: ~ 3 man-weeks.
-
    * Profit library made release-ready: ~ 2-3 days.
 
    * Dime library made release-ready: ~ 2-3 days.
-
-   * Better font support: 1-2 man-weeks.
 
    * Use simacros for old projects (Coin-1, Coin, SoQt, SoWin, Profit,
      Dime, etc etc) instead of conf-macros: ~ 1/2 day for each
