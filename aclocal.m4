@@ -831,7 +831,7 @@ else
 fi])
 
 # Usage:
-#   SIM_CHECK_MACRO_QUOTE([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#   SIM_AC_CHECK_MACRO_QUOTE([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 # Description:
 #   Find out how to quote strings within macros.
@@ -851,8 +851,7 @@ fi])
 # Author: Morten Eriksen, <mortene@sim.no>.
 #
 
-AC_DEFUN([SIM_CHECK_MACRO_QUOTE], [
-AC_PREREQ([2.14])
+AC_DEFUN([SIM_AC_CHECK_MACRO_QUOTE], [
 
 sim_ac_quote_hash=no
 sim_ac_quote_apostrophes=
@@ -869,7 +868,7 @@ AC_CACHE_CHECK(
 
 if test x"$sim_cv_quote_hash" = x"yes"; then
   sim_ac_quote_hash=yes
-  ifelse([$1], , :, [$1])
+  $1
 else
   AC_CACHE_CHECK(
     [whether quoting in macros can be done with apostrophes],
@@ -878,7 +877,8 @@ else
                  #define TEST_QUOTE(str) "str"
                  int main(void) { return strcmp("sim", TEST_QUOTE(sim)); }],
                 [sim_cv_quote_apostrophes=yes],
-                [sim_cv_quote_apostrophes=no])])
+                [sim_cv_quote_apostrophes=no],
+                [sim_cv_quote_apostrophes=yes])]),
   if test x"$sim_cv_quote_apostrophes" = x"yes"; then
     sim_ac_quote_apostrophes=yes
     $1
@@ -888,7 +888,6 @@ else
   fi
 fi
 ])
-
 
 # Usage:
 #   SIM_AC_CHECK_SIMAGE( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )

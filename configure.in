@@ -97,7 +97,7 @@ dnl *******************************************************************
 dnl * Check compiler features, bugs, etc.
 dnl *******************************************************************
 
-SIM_CHECK_MACRO_QUOTE( , AC_MSG_ERROR(couldn't figure out how to quote strings in macros))
+SIM_AC_CHECK_MACRO_QUOTE( , AC_MSG_ERROR(couldn't figure out how to quote strings in macros))
 if test x"$sim_ac_quote_hash" = xyes; then
   AC_DEFINE(HAVE_HASH_QUOTING)
 else
