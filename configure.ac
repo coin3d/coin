@@ -762,6 +762,16 @@ SIM_AC_PROFILING_SUPPORT
 SIM_AC_COMPILER_WARNINGS
 SIM_AC_DETECT_COMMON_COMPILER_FLAGS
 
+# Disable bool type with MSVC.
+#
+# "/noBool" should not be part of the SIM_AC_DETECT_COMMON_COMPILER_FLAGS
+# macro, because some projects will not compile properly with it.
+# (Like at least SoQt, since the Qt headers defines the bool type, which
+# will then cause a compiler error when q[whatever].h is included.)
+
+SIM_AC_CC_COMPILER_OPTION([/noBool], [sim_ac_compiler_CFLAGS="$sim_ac_compiler_CFLAGS /noBool"])
+SIM_AC_CXX_COMPILER_OPTION([/noBool], [sim_ac_compiler_CXXFLAGS="$sim_ac_compiler_CXXFLAGS /noBool"])
+
 #  Yep, this is important in case we want to add code to make
 #  the API interface "Open Inventor strict", meaning the user must
 #  use the exact same include files as under "real" Open Inventor.
