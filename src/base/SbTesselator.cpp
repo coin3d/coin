@@ -499,7 +499,7 @@ SbTesselator::clippable(SbTVertex *v)
   bbox.makeEmpty();
   bbox.extendBy(SbVec3f(v->v[X], v->v[Y], 0.0f));
   bbox.extendBy(SbVec3f(v->next->v[X], v->next->v[Y], 0.0f));
-  bbox.extendBy(SbVec3f(v->next->next->v[X], v->next->next->v[Y], 1.0f));
+  bbox.extendBy(SbVec3f(v->next->next->v[X], v->next->next->v[Y], 0.0f));
   
   SbSphere sphere;
   sphere.circumscribe(bbox);
