@@ -1044,14 +1044,10 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
 #if COIN_DEBUG && 0 // debug
   // This debug statement is extremely useful when debugging the
   // import code, so keep it around.
-  SoDebugError::postInfo("SoBase::read", "name: '%s'", name.getString());
+  SoDebugError::postInfo("SoBase::read",
+                         "SoInput::read(name, TRUE) => returns %s, name=='%s'",
+                         result ? "TRUE" : "FALSE", name.getString());
 #endif // debug
-
-  if (name == "") {
-    SoReadError::post(in, "Expected type name or identifier when reading new "
-                      "base item, but found empty string.");
-    return FALSE;
-  }
 
   //.read all (vrml97) routes
   if (in->isFileVRML2()) {
@@ -1066,6 +1062,10 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   // The SoInput stream does not start with a valid base name. Return
   // TRUE with base==NULL.
   if (!result) return TRUE;
+
+  // If no valid name / identifier string is found, the return value
+  // from SbInput::read(SbName&,TRUE) _should_ also be FALSE.
+  assert(name != "");
 
   if (name == USE_KEYWORD) result = SoBase::readReference(in, base);
   else if (name == NULL_KEYWORD) return TRUE;
