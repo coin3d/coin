@@ -797,12 +797,13 @@ SbBool SoVRMLSoundP::stopPlaying()
   ALint      processed;
   ALint      queued;
 
-#ifdef _WIN32
+#if (defined _WIN32 || defined __APPLE__)
   alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
 #else
   alGetSourceiv(this->sourceId, AL_BUFFERS_QUEUED, &queued);
 #endif
-#ifdef _WIN32
+//#ifdef _WIN32
+#if (defined _WIN32 || defined __APPLE__)
   alGetSourcei(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
 #else
   alGetSourceiv(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
@@ -854,7 +855,7 @@ SbBool SoVRMLSoundP::stopPlaying()
     return FALSE;
   }
 
-#ifdef _WIN32
+#if (defined _WIN32 || defined __APPLE__)
   alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
 #else
   alGetSourceiv(this->sourceId, AL_BUFFERS_QUEUED, &queued);
@@ -960,14 +961,14 @@ void SoVRMLSoundP::fillBuffers()
   ALint      processed;
 
   // Get status
-#ifdef _WIN32
+#if (defined _WIN32 || defined __APPLE__)
   alGetSourcei(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
 #else
   alGetSourceiv(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
 #endif
 
   ALint      queued;
-#ifdef _WIN32
+#if (defined _WIN32 || defined __APPLE__)
   alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
 #else
   alGetSourceiv(this->sourceId, AL_BUFFERS_QUEUED, &queued);
@@ -1132,7 +1133,7 @@ void SoVRMLSoundP::fillBuffers()
       // buffer in the queue and changed state from playing to stopped.
 
       ALint      state;
-#ifdef _WIN32
+#if (defined _WIN32 || defined __APPLE__)
       alGetSourcei(this->sourceId, AL_SOURCE_STATE, &state);
 #else
       alGetSourceiv(this->sourceId, AL_SOURCE_STATE, &state);
