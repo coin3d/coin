@@ -37,6 +37,27 @@
 #endif // !COIN_INTERNAL
 
 
+// only internal nodes can use this macro and pass "inherited" as arg #4
+#define PRIVATE_INTERNAL_COMMON_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
+  do { \
+    /* Make sure we only initialize once. */ \
+    assert(_class_::classTypeId == SoType::badType() && "don't init() twice!"); \
+    /* Make sure superclass gets initialized before subclass. */ \
+    assert(_parentclass_::getClassTypeId() != SoType::badType() && "you forgot init() on parentclass!"); \
+ \
+    /* Set up entry in the type system. */ \
+    _class_::classTypeId = \
+      SoType::createType(_parentclass_::getClassTypeId(), \
+                         _classname_, \
+                         _createfunc_, \
+                         SoNode::getNextActionMethodIndex()); \
+    SoNode::incNextActionMethodIndex(); \
+ \
+    /* Store parent's fielddata pointer for later use in the constructor. */ \
+    _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
+    SoType::setFieldDataPtr(_class_::classTypeId, (const SoFieldData **) &_class_::fieldData); \
+  } while (0)
+
 #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
     SO_NODE_CONSTRUCTOR(_class_); \
@@ -49,7 +70,7 @@
 #define SO_NODE_INTERNAL_INIT_CLASS(_class_, _fileformats_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
-    PRIVATE_COMMON_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
+    PRIVATE_INTERNAL_COMMON_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
     SoNode::setCompatibilityTypes(_class_::getClassTypeId(), _fileformats_); \
   } while (0)
 
@@ -57,7 +78,7 @@
 #define SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(_class_, _fileformats_) \
   do { \
     const char * classname = SO__QUOTE(_class_); \
-    PRIVATE_COMMON_INIT_CODE(_class_, &classname[2], NULL, inherited); \
+    PRIVATE_INTERNAL_COMMON_INIT_CODE(_class_, &classname[2], NULL, inherited); \
     SoNode::setCompatibilityTypes(_class_::getClassTypeId(), _fileformats_); \
   } while (0)
 

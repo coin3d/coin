@@ -55,6 +55,9 @@ public: \
 private: \
   static SoType classTypeId
 
+#ifndef NDEBUG
+#include <string.h> /* strcmp used in assert() */
+#endif
 
 // FIXME: document. 20000103 mortene.
 #define SO_NODE_ABSTRACT_HEADER(_class_) \
@@ -142,23 +145,34 @@ _class_::createInstance(void) \
   } while (0)
 
 
+// FIXME: create-type with get-next and inc-next must be an atomic step in an MT
+// environment  20020216 larsa
+// FIXME: you can not use the _parentclass_ argument directly as a class specifier
+// in initClass because such usage causes dynamic loading to fail when trying to
+// invoke the initClass method in the case where _parentclass_ also has to be
+// dynamically loaded.  that is the reason for this roundabout way of getting the
+// parent class type.  20020216 larsa
+
 #define PRIVATE_COMMON_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
   do { \
     /* Make sure we only initialize once. */ \
     assert(_class_::classTypeId == SoType::badType() && "don't init() twice!"); \
     /* Make sure superclass gets initialized before subclass. */ \
-    assert(_parentclass_::getClassTypeId() != SoType::badType() && "you forgot init() on parentclass!"); \
+    assert(strcmp(SO__QUOTE(_parentclass_), "inherited")); \
+    SoType parentType(SoType::fromName(SO__QUOTE(_parentclass_))); \
+    assert(parentType != SoType::badType() && "you forgot init() on parentclass!"); \
  \
     /* Set up entry in the type system. */ \
     _class_::classTypeId = \
-      SoType::createType(_parentclass_::getClassTypeId(), \
+      SoType::createType(parentType, \
                          _classname_, \
                          _createfunc_, \
                          SoNode::getNextActionMethodIndex()); \
     SoNode::incNextActionMethodIndex(); \
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
-    _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
+    _class_::parentFieldData = SoType::getFieldDataPtr(parentType); \
+    SoType::setFieldDataPtr(_class_::classTypeId, (const SoFieldData **) &_class_::fieldData); \
   } while (0)
 
 

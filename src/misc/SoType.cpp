@@ -72,9 +72,12 @@
 #include <Inventor/SbString.h>
 
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/glue/dl.h>
 #include <assert.h>
 #include <stdlib.h> // NULL
 #include <string.h> // strcmp()
+
+#include <cppmangle.icc>
 
 struct SoTypeData {
   SoTypeData(const SbName theName,
@@ -83,13 +86,14 @@ struct SoTypeData {
              const SoType theParent = SoType::badType(),
              const SoType::instantiationMethod createMethod = NULL)
     : name(theName), isPublic(ispublic), data(theData),
-      parent(theParent), method(createMethod) { };
+      parent(theParent), method(createMethod), fielddata(NULL) { };
 
   SbName name;
   SbBool isPublic;
   uint16_t data;
   SoType parent;
   SoType::instantiationMethod method;
+  const SoFieldData ** fielddata;
 };
 
 // OBSOLETED: this code was only active for GCC 2.7.x, and I don't
@@ -106,6 +110,7 @@ template class SbList<SoTypeData *>;
 SoTypeList * SoType::typelist = NULL;
 SbList<SoTypeData *> * SoType::typedatalist = NULL;
 SbDict * SoType::typedict = NULL;
+SbDict * SoType::moduledict = NULL;
 
 /*!
   \typedef SoType::instantiationMethod
@@ -332,9 +337,32 @@ SoType::overrideType(const SoType originalType,
 // far-reaching consequences for the whole SoType class implementation.
 // 2002-01-24 larsa
 
+// FIXME: wrap the below dlopen-dependent code in ifdefs.  20020216 larsa
+// FIXME: this implementation currently only works for single-level inheritance
+// from builtin nodes - I have not yet been able to load modules that are
+// derived from other modules.  This might be related to my module-building 
+// parameters though, and not this code, so maybe it works if I could build
+// the modules correctly...  20020216 larsa
+
 /*!
-  This static method returns the SoType object associated with name \a name.
-  If no known type matches the given name, SoType::badType() is returned.
+  This static function returns the SoType object associated with name \a name.
+
+  Type objects for builtin types can be retreived by name both with and
+  without the "So" prefix.  For dynamically loadable extension nodes, the
+  name given to this function must match exactly.
+
+  FIXME: investigate how it works for non-builtin extension nodes.  It
+  probably works as for builtins, given that the class in question isn't
+  named with an "So" prefix.  20030223 larsa
+
+  If no node type with the given name has been initialized, a dynamically
+  loadable extension node with the given name is searched for.  If one is
+  if found, it is loaded and initialized, and the SoType object for the
+  newly initialized class type returned.  If no module is found, or the
+  initialization of the module fails, SoType::badType() is returned.
+
+  Support for dynamically loadable extension nodes varies from platform
+  to platform, and compiler suite to compiler suite.
 */
 
 SoType
@@ -344,21 +372,90 @@ SoType::fromName(const SbName name)
   // and get the correct type id, even though the types in some type
   // hierarchies are named internally without the prefix.
   SbString tmp(name.getString());
-  if ((tmp.getLength() > 2) && (strcmp(tmp.getSubString(0, 1).getString(), "So") == 0))
+  if ((tmp.getLength() > 2) &&
+      (strcmp(tmp.getSubString(0, 1).getString(), "So") == 0))
     tmp = tmp.getSubString(2);
   SbName noprefixname(tmp);
 
   void * temp = NULL;
-  if (SoType::typedict->find((unsigned long)name.getString(), temp) ||
-      SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
-    // the intermediate casting to long needed for 64-bits IRIX CC
-    const int index = (int)((long)temp);
-    assert(index >= 0 && index < SoType::typelist->getLength());
-    assert(((*SoType::typedatalist)[index]->name == name) ||
-           ((*SoType::typedatalist)[index]->name == noprefixname));
-    return (*SoType::typelist)[index];
+  // FIXME: we need to split SbDict into SbIntDict and SbPtrDict. 20030223 larsa
+  if (!SoType::typedict->find((unsigned long)name.getString(), temp) &&
+      !SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
+    SbBool nomsg = // SoError not initialized yet
+      (SoError::getClassTypeId() == SoType::badType()) ? TRUE : FALSE;
+    mangleFunc * manglefunc = getManglingFunction();
+    if ( manglefunc == NULL ) {
+      // dynamic loading is not yet supported for this compiler suite
+      static long first = 1;
+      if ( first ) {
+        if ( !nomsg )
+	  SoDebugError::post("SoType::fromName", "unable to figure out the C++ name mangling scheme");
+        first = 0;
+      }
+      return SoType::badType();
+    }
+    SbString mangled = manglefunc(name.getString());
+    SbString modulenamestring(name.getString());
+
+    // FIXME: put the module suffix string into a config.h variable.
+    // 20030223 larsa
+#ifdef HAVE_WINDOWS_H
+    modulenamestring += ".dll";
+#else
+    modulenamestring += ".so";
+#endif
+    SbName module(modulenamestring.getString());
+
+    if ( !SoType::moduledict ) {
+      SoType::moduledict = new SbDict;
+      // FIXME: add cleanup function to atexit()?
+    } else {
+      void * idx = NULL;
+      if ( SoType::moduledict->find((unsigned long) module.getString(), idx) ) {
+        // Module has been loaded, but type is not yet finished initializing.
+        // SoType::badType() is here the expected return value.  See below.
+        return SoType::badType();
+      }
+    }
+
+    // FIXME: should we maybe use a Coin-specific search path variable
+    // instead of the LD_LIBRARY_PATH one?  20020216 larsa
+    // FIXME: should we search the already loaded application code for
+    // the initClass() symbol first?  dlopen(NULL) might not be portable
+    // enough.  20030223 larsa
+
+    cc_libhandle handle = cc_dl_open(module.getString());
+    if ( handle != NULL ) {
+      // We register the module so we don't recurse infinitely in the
+      // initClass() function which calls SoType::fromName() on itself
+      // and expects SoType::badType() in return.  See above.
+      SoType::moduledict->enter((unsigned long)module.getString(), handle);
+    } else {
+      // no such module
+      return SoType::badType();
+    }
+
+    // find and invoke the initClass() function.
+    void (*initClass)() = (void (*)()) cc_dl_sym(handle, mangled.getString());
+    if ( initClass == NULL ) {
+      if ( !nomsg )
+	SoDebugError::postWarning("SoType::fromName", "mangled symbol %s not found in module %d.  it might be compiled with the wrong compiler/compiler settings or something similar.", mangled.getString(), module.getString());
+      cc_dl_close(handle);
+      return SoType::badType();
+    }
+    initClass();
+    // We run these tests to get the index into the temp pointer - that's
+    // what typedict stores as userdata in SoType::createType().
+    if (!SoType::typedict->find((unsigned long)name.getString(), temp) &&
+        !SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
+      return SoType::badType();
+    }
   }
-  return SoType::badType();
+  const int index = (int) temp;
+  assert(index >= 0 && index < SoType::typelist->getLength());
+  assert(((*SoType::typedatalist)[index]->name == name) ||
+         ((*SoType::typedatalist)[index]->name == noprefixname));
+  return (*SoType::typelist)[index];
 }
 
 /*!
@@ -554,6 +651,32 @@ SoType::instantiationMethod
 SoType::getInstantiationMethod(void) const
 {
   return (*SoType::typedatalist)[(int)this->getKey()]->method;
+}
+
+/*!
+  Registers the field data pointer for a class type.
+  This function is for internal use only.
+
+  \since 2002-02-16
+*/
+
+void
+SoType::setFieldDataPtr(SoType type, const SoFieldData ** ptr) // static
+{
+  (*SoType::typedatalist)[(int)type.getKey()]->fielddata = ptr;
+}
+
+/*!
+  Returns the field data pointer for a class type.
+  This function is for internal use only.
+
+  \since 2002-02-16
+*/
+
+const SoFieldData **
+SoType::getFieldDataPtr(SoType type) // static
+{
+  return (*SoType::typedatalist)[(int)type.getKey()]->fielddata;
 }
 
 /*!

@@ -31,6 +31,7 @@
 class SbName;
 class SoTypedObject;
 class SoTypeList;
+class SoFieldData;
 struct SoTypeData;
 template <class Type> class SbList;
 
@@ -79,6 +80,9 @@ public:
 
   instantiationMethod getInstantiationMethod(void) const;
 
+  static void setFieldDataPtr(SoType type, const SoFieldData ** ptr);
+  static const SoFieldData ** getFieldDataPtr(SoType type);
+
 private:
   static void clean(void);
 
@@ -87,6 +91,7 @@ private:
   static SoTypeList * typelist;
   static SbList<SoTypeData *> * typedatalist;
   static SbDict * typedict;
+  static SbDict * moduledict;
 };
 
 /* inline methods ************************************************/
