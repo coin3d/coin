@@ -25,7 +25,8 @@
 
 class SoSensor;
 class SoFieldSensor;
-
+class SbPlaneProjector;
+class SbLineProjector;
 
 class SoHandleBoxDragger : public SoDragger {
   typedef SoDragger inherited;
@@ -134,6 +135,19 @@ protected:
 
   SoFieldSensor * translFieldSensor;
   SoFieldSensor * scaleFieldSensor;
+
+private:
+
+  void updateSwitches();
+  void updateArrows();
+  SoNode *getNodeFieldNode(const char *fieldname);
+  SbPlaneProjector *planeProj;
+  SbLineProjector *lineProj;
+  int whatkind;
+  int whatnum;
+  int constraintState;
+  SbBool ctrlDown;
+  SbVec3f worldRestartPt;
 };
 
 #endif // !COIN_SOHANDLEBOXDRAGGER_H

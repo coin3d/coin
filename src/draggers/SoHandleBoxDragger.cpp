@@ -23,7 +23,40 @@
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/projectors/SbPlaneProjector.h>
+#include <Inventor/projectors/SbLineProjector.h>
+#include <Inventor/SoPath.h>
+#include <Inventor/events/SoKeyboardEvent.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+#define WHATKIND_NONE       0
+#define WHATKIND_TRANSLATOR 1
+#define WHATKIND_EXTRUDER   2
+#define WHATKIND_UNIFORM    3
+
+#define CONSTRAINT_OFF  0
+#define CONSTRAINT_WAIT 1
+#define CONSTRAINT_X    2
+#define CONSTRAINT_Y    3
+#define CONSTRAINT_Z    4
+
+static int uniform_ctrl_lookup[8][6] = {
+  { 1,4,5,2,3,6 },
+  { 1,4,6,2,3,5 },
+  { 2,4,5,1,3,6 },
+  { 2,4,6,1,3,5 },
+  { 1,3,5,2,4,6 },
+  { 1,3,6,2,4,5 },
+  { 2,3,5,1,4,6 },
+  { 2,3,6,1,4,5 }
+};
 
 SO_KIT_SOURCE(SoHandleBoxDragger);
 
@@ -114,87 +147,516 @@ SoHandleBoxDragger::SoHandleBoxDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(arrow6Switch, SoSwitch, TRUE, geomSeparator, "", FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(arrow6, SoSeparator, TRUE, arrow6Switch, "", TRUE);
 
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoInteractionKit::readDefaultParts("handleBoxDragger.iv", NULL, 0);
+  }
+
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
   SO_KIT_INIT_INSTANCE();
+
+  this->setPartAsDefault("translator1", "handleBoxTranslator1");
+  this->setPartAsDefault("translator2", "handleBoxTranslator2");
+  this->setPartAsDefault("translator3", "handleBoxTranslator3");
+  this->setPartAsDefault("translator4", "handleBoxTranslator4");
+  this->setPartAsDefault("translator5", "handleBoxTranslator5");
+  this->setPartAsDefault("translator6", "handleBoxTranslator6");
+
+  this->setPartAsDefault("translator1Active", "handleBoxTranslator1Active");
+  this->setPartAsDefault("translator2Active", "handleBoxTranslator2Active");
+  this->setPartAsDefault("translator3Active", "handleBoxTranslator3Active");
+  this->setPartAsDefault("translator4Active", "handleBoxTranslator4Active");
+  this->setPartAsDefault("translator5Active", "handleBoxTranslator5Active");
+  this->setPartAsDefault("translator6Active", "handleBoxTranslator6Active");
+
+  this->setPartAsDefault("extruder1", "handleBoxExtruder1");
+  this->setPartAsDefault("extruder2", "handleBoxExtruder2");
+  this->setPartAsDefault("extruder3", "handleBoxExtruder3");
+  this->setPartAsDefault("extruder4", "handleBoxExtruder4");
+  this->setPartAsDefault("extruder5", "handleBoxExtruder5");
+  this->setPartAsDefault("extruder6", "handleBoxExtruder6");
+
+  this->setPartAsDefault("extruder1Active", "handleBoxExtruder1Active");
+  this->setPartAsDefault("extruder2Active", "handleBoxExtruder2Active");
+  this->setPartAsDefault("extruder3Active", "handleBoxExtruder3Active");
+  this->setPartAsDefault("extruder4Active", "handleBoxExtruder4Active");
+  this->setPartAsDefault("extruder5Active", "handleBoxExtruder5Active");
+  this->setPartAsDefault("extruder6Active", "handleBoxExtruder6Active");
+
+  this->setPartAsDefault("uniform1", "handleBoxUniform1");
+  this->setPartAsDefault("uniform2", "handleBoxUniform2");
+  this->setPartAsDefault("uniform3", "handleBoxUniform3");
+  this->setPartAsDefault("uniform4", "handleBoxUniform4");
+  this->setPartAsDefault("uniform5", "handleBoxUniform5");
+  this->setPartAsDefault("uniform6", "handleBoxUniform6");
+  this->setPartAsDefault("uniform7", "handleBoxUniform7");
+  this->setPartAsDefault("uniform8", "handleBoxUniform8");
+
+  this->setPartAsDefault("uniform1Active", "handleBoxUniform1Active");
+  this->setPartAsDefault("uniform2Active", "handleBoxUniform2Active");
+  this->setPartAsDefault("uniform3Active", "handleBoxUniform3Active");
+  this->setPartAsDefault("uniform4Active", "handleBoxUniform4Active");
+  this->setPartAsDefault("uniform5Active", "handleBoxUniform5Active");
+  this->setPartAsDefault("uniform6Active", "handleBoxUniform6Active");
+  this->setPartAsDefault("uniform7Active", "handleBoxUniform7Active");
+  this->setPartAsDefault("uniform8Active", "handleBoxUniform8Active");
+
+  this->setPartAsDefault("arrow1", "handleBoxArrow1");
+  this->setPartAsDefault("arrow2", "handleBoxArrow2");
+  this->setPartAsDefault("arrow3", "handleBoxArrow3");
+  this->setPartAsDefault("arrow4", "handleBoxArrow4");
+  this->setPartAsDefault("arrow5", "handleBoxArrow5");
+  this->setPartAsDefault("arrow6", "handleBoxArrow6");
+
+  this->constraintState = CONSTRAINT_OFF;
+  this->whatkind = WHATKIND_NONE;
+
+  this->setAllPartsActive(FALSE);
+
+  this->planeProj = new SbPlaneProjector;
+  this->lineProj = new SbLineProjector;
+
+  this->addStartCallback(SoHandleBoxDragger::startCB);
+  this->addMotionCallback(SoHandleBoxDragger::motionCB);
+  this->addFinishCallback(SoHandleBoxDragger::finishCB);
+  this->addValueChangedCallback(SoHandleBoxDragger::valueChangedCB);
+  this->addOtherEventCallback(SoHandleBoxDragger::metaKeyChangeCB);
+
+  this->translFieldSensor = new SoFieldSensor(SoHandleBoxDragger::fieldSensorCB, this);
+  this->translFieldSensor->setPriority(0);
+  this->scaleFieldSensor = new SoFieldSensor(SoHandleBoxDragger::fieldSensorCB, this);
+  this->scaleFieldSensor->setPriority(0);
+
+  this->setUpConnections(TRUE, TRUE);
 }
 
 
 SoHandleBoxDragger::~SoHandleBoxDragger()
 {
-  COIN_STUB();
+  delete this->lineProj;
+  delete this->planeProj;
+  delete this->translFieldSensor;
+  delete this->scaleFieldSensor;
 }
 
 SbBool
 SoHandleBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  COIN_STUB();
-  return FALSE;
+  if (!doitalways && this->connectionsSetUp == onoff) return onoff;
+
+  if (onoff) {
+    inherited::setUpConnections(onoff, doitalways);
+    
+    SoHandleBoxDragger::fieldSensorCB(this, NULL);
+
+    if (this->translFieldSensor->getAttachedField() != &this->translation) {
+      this->translFieldSensor->attach(&this->translation);
+    }
+    if (this->scaleFieldSensor->getAttachedField() != &this->scaleFactor) {
+      this->scaleFieldSensor->attach(&this->scaleFactor);
+    }
+
+  }
+  else {
+    if (this->translFieldSensor->getAttachedField() != NULL) {
+      this->translFieldSensor->detach();
+    }
+    if (this->scaleFieldSensor->getAttachedField() != NULL) {
+      this->scaleFieldSensor->detach();
+    }
+    inherited::setUpConnections(onoff, doitalways);
+  }
+  return !(this->connectionsSetUp = onoff);
 }
 
 void
 SoHandleBoxDragger::setDefaultOnNonWritingFields(void)
 {
   COIN_STUB();
+  inherited::setDefaultOnNonWritingFields();
 }
 
 void
-SoHandleBoxDragger::fieldSensorCB(void * f, SoSensor * s)
+SoHandleBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  COIN_STUB();
+  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  thisp->workFieldsIntoTransform(matrix);
+  thisp->setMotionMatrix(matrix);
 }
 
 void
 SoHandleBoxDragger::valueChangedCB(void * f, SoDragger * d)
 {
-  COIN_STUB();
+  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  matrix.getTransform(trans, rot, scale, scaleOrient);
+
+  thisp->translFieldSensor->detach();
+  if (thisp->translation.getValue() != trans)
+    thisp->translation = trans;
+  thisp->translFieldSensor->attach(&thisp->translation);
+  
+  thisp->scaleFieldSensor->detach();
+  if (thisp->scaleFactor.getValue() != scale)
+    thisp->scaleFactor = scale;
+  thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
 void
-SoHandleBoxDragger::startCB(void * f, SoDragger * d)
+SoHandleBoxDragger::startCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  thisp->dragStart();
 }
 
 void
-SoHandleBoxDragger::motionCB(void * f, SoDragger * d)
+SoHandleBoxDragger::motionCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  thisp->drag();
 }
 
 void
-SoHandleBoxDragger::finishCB(void * f, SoDragger * d)
+SoHandleBoxDragger::finishCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  thisp->dragFinish();
 }
 
 void
-SoHandleBoxDragger::metaKeyChangeCB(void * f, SoDragger * d)
+SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
+  if (!thisp->isActive.getValue()) return;
+  
+  const SoEvent *event = thisp->getEvent();
+  if (SO_KEY_RELEASE_EVENT(event, LEFT_SHIFT) ||
+      SO_KEY_RELEASE_EVENT(event, RIGHT_SHIFT)) {
+    if (thisp->constraintState != CONSTRAINT_OFF) thisp->drag();
+  }
+  else if (thisp->ctrlDown != event->wasCtrlDown()) {
+    thisp->ctrlDown = !thisp->ctrlDown;
+    thisp->updateSwitches();
+  }
 }
 
 void
 SoHandleBoxDragger::dragStart(void)
 {
-  COIN_STUB();
+  static const char translatorname[] = "translator";
+  static const char extrudername[] = "extruder";
+  static const char uniformname[] = "uniform";
+
+  const SoPath *pickpath = this->getPickPath();
+
+  SbBool found = FALSE;
+  this->whatkind = WHATKIND_NONE;
+  this->whatnum = 0;
+
+  int i;
+  char buf[512];
+  if (!found) {
+    for (i = 1; i <= 6; i++) {
+      sprintf(buf,"%s%d", translatorname, i);
+      if (pickpath->findNode(this->getNodeFieldNode(buf)) >= 0) break;
+    }
+    if (i <= 6) {
+      found = TRUE;
+      this->whatkind = WHATKIND_TRANSLATOR;
+      this->whatnum = i;
+    }
+  }
+
+  if (!found) {
+    for (i = 1; i <= 6; i++) {
+      sprintf(buf,"%s%d", extrudername, i);
+      if (pickpath->findNode(this->getNodeFieldNode(buf))>= 0) break;
+    }
+    if (i <= 6) {
+      found = TRUE;
+      this->whatkind = WHATKIND_EXTRUDER;
+      this->whatnum = i;
+    }
+  }
+  if (!found) {
+    for (i = 1; i <= 8; i++) {
+      sprintf(buf,"%s%d", uniformname, i);
+      if (pickpath->findNode(this->getNodeFieldNode(buf))>= 0) break;
+    }
+    if (i <= 8) {
+      found = TRUE;
+      this->whatkind = WHATKIND_UNIFORM;
+      this->whatnum = i;
+    }
+  }
+  assert(found);
+  if (!found) return;
+
+  SbVec3f startPt = this->getLocalStartingPoint();
+  SoSwitch *sw;
+
+  switch(this->whatkind) {
+  case WHATKIND_TRANSLATOR:
+    {        
+      SbVec3f n;
+      if (this->whatnum <= 2) {
+        n = SbVec3f(0.0f, 1.0f, 0.0f);        
+      }
+      else if (this->whatnum <= 4) {
+        n = SbVec3f(1.0f, 0.0f, 0.0f);
+      }
+      else {
+        n = SbVec3f(0.0f, 0.0f, 1.0f);
+      }
+      this->planeProj->setPlane(SbPlane(n, startPt));
+      SbLine myline(SbVec3f(0.0f, 0.0f, 0.0f), n);
+      SoTranslation *t = SO_GET_ANY_PART(this, "arrowTranslation", SoTranslation);
+      t->translation = myline.getClosestPoint(startPt);
+      if (this->getEvent()->wasShiftDown()) {
+        this->getLocalToWorldMatrix().multVecMatrix(startPt, this->worldRestartPt);
+        this->constraintState = CONSTRAINT_WAIT;
+      }
+    }
+    break;
+  case WHATKIND_EXTRUDER:
+    this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), startPt));
+    break;
+  case WHATKIND_UNIFORM:
+    this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), startPt));
+    break;
+  }
+  this->ctrlDown = this->getEvent()->wasCtrlDown();
+  this->updateSwitches();
 }
 
 void
 SoHandleBoxDragger::drag(void)
 {
-  COIN_STUB();
+  SbVec3f startPt = this->getLocalStartingPoint();
+  
+  if (this->whatkind == WHATKIND_TRANSLATOR) {
+    this->planeProj->setViewVolume(this->getViewVolume());
+    this->planeProj->setWorkingSpace(this->getLocalToWorldMatrix());
+    SbVec3f projPt = this->planeProj->project(this->getNormalizedLocaterPosition());
+    
+    const SoEvent *event = this->getEvent();
+    if (event->wasShiftDown() && this->constraintState == CONSTRAINT_OFF) {
+      this->constraintState = CONSTRAINT_WAIT;
+      this->setStartLocaterPosition(event->getPosition());
+      this->getLocalToWorldMatrix().multVecMatrix(projPt, this->worldRestartPt);
+    }
+    else if (!event->wasShiftDown() && this->constraintState != CONSTRAINT_OFF) {
+      this->constraintState = CONSTRAINT_OFF;
+      this->updateArrows();
+    }
+        
+    SbVec3f motion, localrestartpt;
+    if (this->constraintState != CONSTRAINT_OFF) {
+      this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt, 
+                                                  localrestartpt);
+      motion = localrestartpt - startPt;
+    }
+    else motion = projPt - startPt;
+    switch(this->constraintState) {
+    case CONSTRAINT_OFF:
+      break;
+    case CONSTRAINT_WAIT:
+      if (this->isAdequateConstraintMotion()) {
+        SbVec3f newmotion = projPt - localrestartpt;
+        int biggest = 0;
+        double bigval = fabs(newmotion[0]);
+        if (fabs(newmotion[1]) > bigval) {
+          biggest = 1;
+          bigval = fabs(newmotion[1]);
+        }
+        if (fabs(newmotion[2]) > bigval) {
+          biggest = 2;
+        } 
+        motion[biggest] += newmotion[biggest];
+        this->constraintState = CONSTRAINT_X + biggest;
+        this->updateArrows();
+      }
+      else {
+        return;
+      }
+      break;
+    case CONSTRAINT_X:
+      motion[0] += projPt[0] - localrestartpt[0];
+      break;
+    case CONSTRAINT_Y:
+      motion[1] += projPt[1] - localrestartpt[1];
+      break;
+    case CONSTRAINT_Z:
+      motion[2] += projPt[2] - localrestartpt[2];
+    }
+    this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
+  }
+  else {
+    this->lineProj->setViewVolume(this->getViewVolume());
+    this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
+    SbVec3f projPt = this->lineProj->project(this->getNormalizedLocaterPosition());
+    SbVec3f center(0.0f, 0.0f, 0.0f);
+    if (this->getEvent()->wasCtrlDown()) center -= projPt;
+
+    float orglen = (startPt-center).length();
+    float currlen = (projPt-center).length();
+    float scale = 0.0f;
+    if (orglen > 0.0f) scale = currlen / orglen;
+    if (scale > 0.0f && (startPt-center).dot(projPt-center) < 0.0f) scale = 0.0f;
+
+    SbVec3f scalevec(scale, scale, scale);
+    if (this->whatkind == WHATKIND_EXTRUDER) {
+      if (this->whatnum <= 2) scalevec[0] = scalevec[2] = 1.0f;
+      else if (this->whatnum <= 4) scalevec[1] = scalevec[2] = 1.0f;
+      else scalevec[0] = scalevec[1] = 1.0f;
+    }
+    
+    this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
+                                            scalevec,
+                                            center));
+  }
 }
 
 void
 SoHandleBoxDragger::dragFinish(void)
 {
-  COIN_STUB();
+  this->constraintState = CONSTRAINT_OFF;
+  this->whatkind = WHATKIND_NONE;
+  this->setAllPartsActive(FALSE);
 }
 
 void
 SoHandleBoxDragger::setAllPartsActive(SbBool onoroff)
 {
-  COIN_STUB();
+  int i;
+  int val = onoroff ? 1 : 0;
+  SoSwitch *sw;
+  char buf[512];
+  for (i = 1; i <= 6; i++) {
+    sprintf(buf, "translator%dSwitch", i);
+    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, val);
+  }
+  for (i = 1; i <= 6; i++) {
+    sprintf(buf, "extruder%dSwitch", i);
+    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, val);
+  } 
+  for (i = 1; i <= 8; i++) {
+    sprintf(buf, "uniform%dSwitch", i);
+    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, val);
+  } 
+  this->updateArrows();
+}
+
+SoNode *
+SoHandleBoxDragger::getNodeFieldNode(const char *fieldname)
+{
+  SoField *field = this->getField(fieldname);
+  assert(field != NULL);
+  assert(field->isOfType(SoSFNode::getClassTypeId()));
+  assert(((SoSFNode*)field)->getValue() != NULL);
+  return ((SoSFNode*)field)->getValue();
+}
+
+void 
+SoHandleBoxDragger::updateSwitches()
+{
+  int i;
+  char buf[512];
+  SoSwitch *sw;
+
+  if (this->whatkind == WHATKIND_UNIFORM) {
+    if (this->ctrlDown) {
+      const int *ptr = uniform_ctrl_lookup[this->whatnum-1];
+      for (i = 0; i < 6; i++) {
+        sprintf(buf, "extruder%dSwitch", ptr[i]);
+        sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+        SoInteractionKit::setSwitchValue(sw, i < 3 ? 1 : 0);
+      }
+    }
+    else {
+      for (i = 1; i <= 6; i++) {
+        sprintf(buf, "extruder%dSwitch", i);
+        sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+        SoInteractionKit::setSwitchValue(sw, 1);
+      }
+    }
+    sprintf(buf, "uniform%dSwitch", this->whatnum);
+    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, 1);    
+  }
+  else if (this->whatkind == WHATKIND_EXTRUDER) {
+    int othernum = ((this->whatnum-1) & ~1) + 1;
+    if (othernum == this->whatnum) othernum++;
+
+    sprintf(buf, "extruder%dSwitch", this->whatnum);
+    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, 1);
+    sprintf(buf, "extruder%dSwitch", othernum);
+    sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, this->ctrlDown ? 0 : 1);    
+  }
+  else {
+    this->setAllPartsActive(TRUE);
+    this->updateArrows();
+  }
+}
+
+void 
+SoHandleBoxDragger::updateArrows()
+{
+  int i;
+  char buf[512];
+  SoSwitch *sw;
+  
+  if (this->constraintState >= CONSTRAINT_X) {
+    int onval = -1;
+    switch (this->constraintState) {
+    case CONSTRAINT_X:
+      onval = 3;
+      break;
+    case CONSTRAINT_Y:
+      onval = 1;
+      break;
+    case CONSTRAINT_Z:
+      onval = 5;
+      break;
+    }
+    for (i = 1; i <= 6; i++) {
+      sprintf(buf, "arrow%dSwitch", i);
+      sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+      if (i == onval || i == onval + 1) {
+        SoInteractionKit::setSwitchValue(sw, 0);
+      }
+      else {
+        SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+      }
+    }    
+  }
+  else if (this->whatkind == WHATKIND_TRANSLATOR) {
+    int num = (this->whatnum-1) & ~1;
+    for (i = 0; i < 6; i++) { 
+      sprintf(buf, "arrow%dSwitch", i+1);
+      sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+      if (i == num || i == num+1) {
+        SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);      
+      }
+      else {
+        SoInteractionKit::setSwitchValue(sw, 0);
+      }
+    }
+  }
+  else {
+    for (i = 1; i <= 6; i++) {
+      sprintf(buf, "arrow%dSwitch", i);
+      sw = SO_GET_ANY_PART(this, buf, SoSwitch);
+      SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+    }
+  }
 }
