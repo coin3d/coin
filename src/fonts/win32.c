@@ -833,6 +833,10 @@ cc_flww32_get_bitmap(void * font, int glyph)
   bm->width = gm.gmBlackBoxX;
   bm->pitch = (bm->width + 7) / 8;
   bm->buffer = NULL;
+  /* FIXME: hardcoded mono to true until i figured out the correct
+     pitch calculation and 64 gray level conversion for
+     GGO_GRAY8_BITMAP. 20040918 tamer. */
+  bm->mono = 1;
   if (w32bitmap != NULL) { /* Could be NULL for at least space char glyph. */
     unsigned int i;
     bm->buffer = (unsigned char *)malloc(bm->rows * bm->pitch);
