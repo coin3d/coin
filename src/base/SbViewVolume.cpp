@@ -1094,3 +1094,29 @@ SbViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
   planes[4] = SbPlane(this->upperleftfrust, near_ur, this->lowerrightfrust); // near
   planes[5] = SbPlane(far_ll, far_lr, far_ur); // far
 }
+
+void 
+SbViewVolume::transform(const SbMatrix &matrix)
+{
+  matrix.multDirMatrix(this->projectiondir, this->projectiondir);
+  
+  if(this->type == SbViewVolume::ORTHOGRAPHIC) {
+    matrix.multVecMatrix(this->lowerleftfrust, this->lowerleftfrust);
+    matrix.multVecMatrix(this->lowerrightfrust, this->lowerrightfrust);
+    matrix.multVecMatrix(this->upperleftfrust, this->upperleftfrust);
+  }
+  // SbViewVolume::PERSPECTIVE
+  else {
+    matrix.multVecMatrix(this->lowerleftfrust - this->projectionpt,
+                         this->lowerleftfrust);
+    matrix.multVecMatrix(this->lowerrightfrust - this->projectionpt,
+                         this->lowerrightfrust);
+    matrix.multVecMatrix(this->upperleftfrust - this->projectionpt,
+                         this->upperleftfrust);
+    matrix.multVecMatrix(this->projectionpt, this->projectionpt);
+
+    this->lowerleftfrust += this->projectionpt;
+    this->lowerrightfrust += this->projectionpt;
+    this->upperleftfrust += this->projectionpt;
+  }
+}

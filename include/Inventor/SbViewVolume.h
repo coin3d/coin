@@ -78,8 +78,9 @@ public:
   float getHeight(void) const;
   float getDepth(void) const;
 
-  void print(FILE * fp) const;
+  void print(FILE * fp) const;  
   void getViewVolumePlanes(SbPlane planes[6]) const;
+  void transform(const SbMatrix &matrix);
 
 private:
   ProjectionType type;

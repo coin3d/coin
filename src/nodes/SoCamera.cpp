@@ -340,8 +340,6 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoCamera::handleEvent(SoHandleEventAction * action)
 {
-  // FIXME: viewportMapping field is not accounted for. 19990315
-  // mortene.
   SoState * state = action->getState();
 
   SbViewportRegion vp = SoViewportRegionElement::get(state);
@@ -408,7 +406,12 @@ SoCamera::doAction(SoAction * action)
 
   SbViewVolume vv =
     this->getViewVolume(vpm == ADJUST_CAMERA ? aspectratio : 0.0f);
-
+  { // test for transformations before camera
+    SbBool isidentity;
+    const SbMatrix &mm = SoModelMatrixElement::get(state, isidentity);
+    if (!isidentity) vv.transform(mm);
+  }
+  
   SbBool adjustvp = FALSE;
 
   switch (vpm) {
@@ -454,7 +457,6 @@ SoCamera::doAction(SoAction * action)
     vv.getMatrices(affine, proj);
   }
 
-  affine.multRight(SoModelMatrixElement::get(state).inverse());
   SoProjectionMatrixElement::set(state, this, proj);
   SoViewingMatrixElement::set(state, this, affine);
   SoFocalDistanceElement::set(state, this, this->focalDistance.getValue());

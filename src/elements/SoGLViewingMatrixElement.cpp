@@ -86,6 +86,7 @@ SoGLViewingMatrixElement::pop(SoState * state,
                               const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
+  ((SoGLViewingMatrixElement*)prevTopElement)->updategl();
 }
 
 //! FIXME: write doc.
@@ -103,13 +104,7 @@ SoGLViewingMatrixElement::getNodeId(SoState * const state)
 void
 SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
 {
-  this->viewingMatrix = matrix;
-
-  SbBool isIdentity = FALSE;
-  const SbMatrix &mat = SoModelMatrixElement::get(this->state, isIdentity);
-  if (!isIdentity) {
-    this->viewingMatrix.multRight(mat);
-  }
+  inherited::setElt(matrix);
   this->updategl();
 }
 
@@ -118,5 +113,11 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
 void
 SoGLViewingMatrixElement::updategl()
 {
-  glLoadMatrixf((float*)this->viewingMatrix);
+  SbMatrix vm = this->viewingMatrix;
+  SbBool isIdentity = FALSE;
+  const SbMatrix &mm = SoModelMatrixElement::get(this->state, isIdentity);
+  if (!isIdentity) {
+    vm.multRight(mm);
+  }
+  glLoadMatrixf((float*)vm);
 }
