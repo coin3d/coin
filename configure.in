@@ -417,22 +417,6 @@ AC_ARG_WITH(depmode,
 # actually use the given depmode. 20000525 mortene.
 
 # *******************************************************************
-# * Do we want to build the tools?
-# *******************************************************************
-
-AC_ARG_WITH(tools,
-  AC_HELP_STRING([--with-tools], [build Coin-based tools [[default=yes]]]),
-  [case "${withval}" in
-    yes) want_tools=yes ;;
-    no)  want_tools=no ;;
-    *) AC_MSG_ERROR(bad value "${withval}" for --with-tools) ;;
-  esac],
-  [want_tools=yes])
-
-AM_CONDITIONAL(BUILD_TOOLS, test x"$want_tools" = xyes)
-
-
-# *******************************************************************
 # * Do we want to build the example programs?
 # *******************************************************************
 
@@ -536,11 +520,6 @@ AC_OUTPUT([
         src/projectors/Makefile
         src/sensors/Makefile
         src/system/Makefile
-        tools/Makefile
-        tools/ivcat/Makefile
-        tools/ivhierarchy/Makefile
-        tools/ivNodeKitStructure/Makefile
-        tools/renderos/Makefile
         examples/Makefile
         examples/advanced/Makefile
         examples/advanced/elements/Makefile

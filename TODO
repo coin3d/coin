@@ -19,9 +19,6 @@ TODO:
 * [pederb:19991217] demand at least version 2.8 when trying to compile
   with GCC (g++).
 
-* [mortene:19991107] example programs and tools shouldn't be compiled
-  with the COIN_INTERNAL define set.
-
 * [mortene:19990912] get rid of Inventor/system/inttypes.h. Check to
   see if we can use the AC_COMPILE_CHECK_SIZEOF macro from the
   autoconf macro archive to find and define types for 8/16/32/64 bits.

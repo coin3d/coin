@@ -6,14 +6,7 @@ else
 EXAMPLEDIR =
 endif
 
-if BUILD_TOOLS
-TOOLDIR = tools
-else
-TOOLDIR = 
-endif
-
-
-SUBDIRS = include data build src $(TOOLDIR) $(EXAMPLEDIR)
+SUBDIRS = include data build src $(EXAMPLEDIR)
 
 bin_SCRIPTS = coin-config
 BUILT_SOURCES = coin-config
