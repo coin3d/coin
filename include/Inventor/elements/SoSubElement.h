@@ -37,14 +37,19 @@
  */
 
 #define SO_ELEMENT_ABSTRACT_HEADER(_class_) \
-private: \
-  static SoType classTypeId; \
-protected: \
-  _class_(void); \
-  static int classStackIndex; \
 public: \
   static SoType getClassTypeId(void); \
-  static int getClassStackIndex(void)
+  static int getClassStackIndex(void); \
+protected: \
+  _class_(void); \
+private: \
+  /* classStackIndex is protected in the OIV UNIX distribution in */ \
+  /* SoSubElement.h and private in the Win32 distribution. Since */ \
+  /* there is a getClassStackIndex() access method, it seems more */ \
+  /* sensible to keep it private.  20000808 mortene. */ \
+  static int classStackIndex; \
+  static SoType classTypeId
+
 
 #define SO_ELEMENT_HEADER(_class_) \
   SO_ELEMENT_ABSTRACT_HEADER(_class_); \
@@ -79,8 +84,8 @@ void * _class_::createInstance(void) { return (void *) new _class_; }
     _class_::classTypeId = SoType::createType(_parent_::getClassTypeId(), \
                                               SO__QUOTE(_class_), \
                                               _instantiate_); \
-    if (_parent_::classStackIndex < 0) _class_::classStackIndex = _class_::createStackIndex(_class_::classTypeId); \
-    else _class_::classStackIndex = _parent_::classStackIndex; \
+    if (_parent_::getClassStackIndex() < 0) _class_::classStackIndex = _class_::createStackIndex(_class_::classTypeId); \
+    else _class_::classStackIndex = _parent_::getClassStackIndex(); \
   } while (0)
 
 
