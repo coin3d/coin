@@ -26,18 +26,492 @@
   \brief The SoBaseKit class is the toplevel superclass for nodekits.
   \ingroup nodekits
 
-  FIXME, write class doc:
+  Node kits are collections of nodes and other node kits (from here on
+  node kits which is part of some other node kit, will only be referred 
+  to as nodes or parts, see catalogs and parts), organized in a way 
+  that is convenient for its use. A node kit inherits SoNode and can 
+  thus be inserted into a scenegraph as any other node.
+  
+  The organizing of the nodes and node kits of some node kit, is done
+  through catalogs. A node kit's catalog describes the nodes that can
+  be members of the node kit. These members are called parts. Thus a
+  node kit has a catalog describing the parts that it offers to the
+  user.
 
-  <ul>
-  <li> what are nodekits? (explain catalogs, lazy instantation)
-  <li> why nodekits?
-  <li> how to use them
-  <li> how to define your own
-  <li> ...
-  </ul>
+  Each part in the catalog has some values saying something about the
+  part itself and about the role the part plays in the scenegraph.
+  Those values are:
+  
+  <dl>
+  <dt> Name
+  <dd> The name of the part.
+  <dt> Type
+  <dd> The part's node type.
+  <dt> Default Type  
+  <dd> If the part's type is an abstract superclass, this value will hold 
+  the default subclass used by this part.
+  <dt> Created by Default? 
+  <dd> Holds \c TRUE if the part should be instantiated when the node kit 
+  is instantiated, otherwise the part is kept empty until it is set by some 
+  of the means applicable.
+  <dt> Parent Name 
+  <dd> The name of the part that is this part's parent.
+  <dt> Right Sibling 
+  <dd> The name of the part that is the part immediately to the right of 
+  this part in the node kit scenegraph.
+  <dt> Is it a List?
+  <dd> Holds \c TRUE if the part is a list, otherwise it is \c FALSE. See 
+  SoNodeKitListPart for more info on node kit lists.
+  <dt> List Cointainer Type 
+  <dd> The type of group node used to hold the items if the part is a list.
+  <dt> List Element Type 
+  <dd> The types of nodes that is allowed to be held by this part if the part 
+  is a list.
+  <dt> Is It Public? 
+  <dd> Holds \c TRUE if the part should be publically available, otherwise 
+  it holds \c FALSE.
+  </dl>
+
+  Node kits use lazy instantiation when it creates it's parts. This means
+  that the nodes making up the parts of the nodekit only are created when
+  they are needed. If the "Created by Default?" holds TRUE, then the part
+  is created when the node kit itself is instantiated. If not, parts are 
+  created when they are requested through SoBaseKit::getPart() or the
+  SO_GET_PART() macro, or created with SoBaseKit::set(). Also, if a part is 
+  set with SoBaseKit::setPart() or the SO_SET_PART() macro, any previously
+  uncreated parts above the set part in the hierarchy, is created
+  automatically.
+
+  The advantages of using node kits to represent a scenegraph are many.
+  \li Since a node kit collects nodes into a single unit, it becomes
+      an extra abstraction layer for the application programmer. Such
+      a layer can represent a model of a human being as one unit where
+      subunits as arms, legs, textures, etc are contained within. Thus
+      we can instantiate a model of a human by creating an instance of
+      the node kit, instead of having to create a possibly large
+      amount of nodes needed for such a model.
+  \li A part of the node kit doesn't have one spesific setup. A shape part
+      can e.g. be swapped with any other shape, since they are of the same
+      type. If the node kit of a human has a part called "head" which is of
+      type SoShape, it might default to a sphere. But if the programmer 
+      thinks that a cube might fit better, one can set the "head" part to
+      a cube instead, or maybe a face set representing a complex model of
+      a head.
+  \li Node kits can have as simple or as complex catalogs as needed. The
+      nodes included in the node kit can, if needed, represent the
+      whole range of Inventor features. One part can as easily be of a
+      node kit type, making it possible to create hierarchys of node kits.
+      Having a node kit of a human, it might be feasible to have sub node
+      kits describing the different body parts.
+  \li Node kits are an efficient way of creating scenegraphs. If some
+      part of it isn't needed at the moment of node kit instantiation,
+      they aren't created. Thus parts are only created when needed, either
+      by the application or some other part.
+  \li The application code becomes smaller and easier to read, as the node 
+      kits provides simple routines for creating and setting parts.
+  \li New node kits can be created through subclassing to obtain simple
+      setups of scenegraphs best fitted to the application.
+
+  The usage of a node kit is straightforward. Below follows a code
+  example showing some simple SoShapeKit usage.
+
+  \code
+
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/nodekits/SoShapeKit.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoCube.h>
+  
+  int
+  main(int argc, char ** argv)
+  {
+    QWidget * window = SoQt::init( argv[0] );
+  
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer( window );
+  
+    // Instantiating a shape kit, by default creating a simple sphere.
+    SoShapeKit * shapekit = new SoShapeKit;
+    // Swapping the sphere with a cube.
+    shapekit->setPart("shape", new SoCube);
+    // Setting the cube to be rendered in the color red. The shape kit
+    // has a SoAppearanceKit as one of it's parts. The "material" part
+    // used to set the color of the shape, really belongs the 
+    // appearance kit. If the SoShapeKit::set() is used, it will
+    // check if some of its sub kits has a part with the name given,
+    // and delegate the setting to the correct kit.
+    shapekit->set("material", "diffuseColor 1 0 0");
+    
+    SoSeparator * newroot = new SoSeparator;
+    newroot->ref();
+    
+    newroot->addChild(shapekit);
+    
+    viewer->setSceneGraph(newroot);
+    
+    viewer->show();
+    SoQt::show( window );
+    
+    SoQt::mainLoop();
+    delete viewer;
+
+    newroot->unref();
+    return 0;
+  }
+  \endcode
+
+  The above code snippet will produce a viewer with a side view to
+  the scene shown below:
+  
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/nodekits/basekitexample.png">
+  </center>
+
+  Notice that the code needed for creating this simple shape using
+  a shape kit, amounts to this code;
+  \code
+   SoShapeKit * shapekit = new SoShapeKit;
+   
+   shapekit->setPart("shape", new SoCube);
+   shapekit->set("material", "diffuseColor 1 0 0");
+  \endcode
+  
+  while doing it without shape kits amounts to this:
+  \code
+  SoSeparator * root = new SoSeparator;
+  SoMaterial * material = new SoMaterial;
+  material->diffuseColor.setValue(1,0,0);
+  root->addChild(material);
+  root->addChild(new SoCube);
+  \endcode
+
+  So even for this miniscule mock-up example, you save on code
+  verbosity and complexity.
 
 
   \TOOLMAKER_REF
+
+  Following is a complete example of a node kit extension.
+
+  The header file:
+  \code
+  **************************************************************************
+  *
+  *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
+  *
+  **************************************************************************
+
+  #ifndef COIN_SHAPESCALE_H
+  #define COIN_SHAPESCALE_H
+  #include <Inventor/nodekits/SoSubKit.h>
+  #include <Inventor/nodekits/SoBaseKit.h>
+  #include <Inventor/fields/SoSFFloat.h>
+
+  class SbViewport;
+  class SoState;
+  class SbColor;
+  class SbVec2s;
+  
+  class ShapeScale : public SoBaseKit {
+    typedef SoBaseKit inherited;
+  
+    SO_KIT_HEADER(ShapeScale);
+    
+    SO_KIT_CATALOG_ENTRY_HEADER(topSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(scale);
+    SO_KIT_CATALOG_ENTRY_HEADER(shape);
+    
+   public:
+    ShapeScale(void);
+
+    static void initClass(void);
+
+   public:
+
+    SoSFFloat active;
+    SoSFFloat projectedSize;
+
+   protected:
+    virtual void GLRender(SoGLRenderAction * action);
+    virtual ~ShapeScale();
+  
+  };
+
+  #endif // ! SHAPESCALE_H
+  \endcode
+
+  The source code for the example:
+  \code
+
+  **************************************************************************
+  *
+  *  Copyright (C) 2000-2002 by Systems in Motion. All rights reserved.
+  *
+  **************************************************************************
+
+  
+  //  The ShapeScale class is used for scaling a shape based on projected size.
+
+  //  This nodekit can be inserted in your scene graph to add for instance
+  //  3D markers that will be of a constant projected size.
+  
+  //  The marker shape is stored in the "shape" part. Any kind of node
+  //  can be used, even group nodes with several shapes, but the marker
+  //  shape should be approximately of unit size, and with a center 
+  //  position in (0, 0, 0).
+  
+  
+  //  SoSFFloat ShapeScale::active
+  //  Turns the scaling on/off. Default value is TRUE.
+  
+
+  //  SoSFFloat ShapeScale::projectedSize
+  //  The requested projected size of the shape. Default value is 5.0.
+
+  #include "ShapeScale.h"
+  
+  #include <Inventor/actions/SoGLRenderAction.h>
+  #include <Inventor/nodes/SoShape.h>
+  #include <Inventor/nodes/SoScale.h>
+  #include <Inventor/nodes/SoCube.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/elements/SoViewVolumeElement.h>
+  #include <Inventor/elements/SoViewportRegionElement.h>
+  #include <Inventor/elements/SoModelMatrixElement.h>
+  
+  SO_KIT_SOURCE(ShapeScale);
+  
+  
+  //  Constructor.
+  ShapeScale::ShapeScale(void) 
+  {
+    SO_KIT_CONSTRUCTOR(ShapeScale);
+  
+    SO_KIT_ADD_FIELD(active, (TRUE));
+    SO_KIT_ADD_FIELD(projectedSize, (5.0f));  
+
+    SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, FALSE, this, \x0, FALSE);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(shape, SoNode, SoCube, TRUE, topSeparator, \x0, TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(scale, SoScale, FALSE, topSeparator, shape, FALSE);
+    
+    SO_KIT_INIT_INSTANCE();
+  }
+    
+    
+  // Destructor.
+  ShapeScale::~ShapeScale()
+  {
+  }
+    
+  // Initializes this class. Call before using it.
+
+  void
+  ShapeScale::initClass(void)
+  {
+    SO_KIT_INIT_CLASS(ShapeScale, SoBaseKit, "BaseKit");
+  }
+
+  static void 
+  update_scale(SoScale * scale, const SbVec3f & v)
+  {
+    // only write to field when scaling has changed.
+    if (scale->scaleFactor.getValue() != v) {
+      scale->scaleFactor = v;
+    }
+  }
+
+  // Overridden to (re)initialize scaling before rendering marker.
+  void 
+  ShapeScale::GLRender(SoGLRenderAction * action)
+  {
+    SoState * state = action->getState();
+
+    SoScale * scale = (SoScale*) this->getAnyPart(SbName("scale"), TRUE);
+    if (!this->active.getValue()) {
+      update_scale(scale, SbVec3f(1.0f, 1.0f, 1.0f));
+    }
+    else {
+      const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+      const SbViewVolume & vv = SoViewVolumeElement::get(state);
+      SbVec3f center(0.0f, 0.0f, 0.0f);
+      float nsize = this->projectedSize.getValue() / float(vp.getViewportSizePixels()[1]);
+      SoModelMatrixElement::get(state).multVecMatrix(center, center); // transform to WCS
+      float scalefactor = vv.getWorldToScreenScale(center, nsize);
+      update_scale(scale, SbVec3f(scalefactor, scalefactor, scalefactor));
+    }
+    inherited::GLRender(action);
+  }
+  \endcode
+
+  And a complete example showing how one can use this node kit:
+  \code
+  **************************************************************************
+  *
+  *  Copyright (C) 2000-2002 by Systems in Motion. All rights reserved.
+  *
+  **************************************************************************
+
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/SoInput.h>
+  #include <Inventor/SoOutput.h>
+  #include <Inventor/SoPickedPoint.h>
+  #include <Inventor/actions/SoRayPickAction.h>
+  #include <Inventor/events/SoMouseButtonEvent.h>
+  #include <Inventor/nodes/SoBaseColor.h>
+  #include <Inventor/nodes/SoCube.h>
+  #include <Inventor/nodes/SoEventCallback.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoSwitch.h>
+  #include <Inventor/nodes/SoTranslation.h>
+  #include <assert.h>
+  #include <stdlib.h>
+  #include <time.h>
+
+  #include "ShapeScale.h"
+
+  // Returns random value between 0.0f and 1.0f.
+  static float
+  normalized_rand(void)
+  {
+    return float(rand())/float(RAND_MAX);
+  }
+
+  static SoSeparator *
+  construct_new_marker(const SbVec3f & v)
+  {
+    SoSeparator * markerroot = new SoSeparator;
+
+    SoTranslation * t = new SoTranslation;
+    t->translation = v;
+    markerroot->addChild(t);
+    
+    ShapeScale * kit = new ShapeScale;
+    kit->active = TRUE;
+    kit->projectedSize = 5.0f;
+    
+    // create the marker
+    SoSeparator * markersep = new SoSeparator;
+    
+    SoBaseColor * mat = new SoBaseColor;
+    mat->rgb.setValue(normalized_rand(), normalized_rand(), normalized_rand());
+    markersep->addChild(mat);
+    
+    // marker shape should be unit size, with center in (0.0f, 0.0f, 0.0f)
+    SoCube * cube = new SoCube;
+    cube->width = 1.0f;
+    cube->height = 1.0f;
+    cube->depth = 1.0f;
+    
+    markersep->addChild(cube);
+    kit->setPart("shape", markersep);
+    markerroot->addChild(kit);
+    
+    return markerroot;
+  }
+
+  static void
+  event_cb(void * ud, SoEventCallback * n)
+  {
+    const SoMouseButtonEvent * mbe = (SoMouseButtonEvent *)n->getEvent();
+  
+    if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 &&
+      mbe->getState() == SoButtonEvent::DOWN) {
+
+      SoQtExaminerViewer * viewer = (SoQtExaminerViewer *)ud;
+    
+      SoRayPickAction rp(viewer->getViewportRegion());
+      rp.setPoint(mbe->getPosition());
+      rp.apply(viewer->getSceneManager()->getSceneGraph());
+      
+      SoPickedPoint * point = rp.getPickedPoint();
+      if (point == NULL) {
+        (void)fprintf(stderr, "\n** miss! **\n\n");
+        return;
+      }
+
+      n->setHandled();
+
+      const SoPath * p = rp.getCurPath();
+
+      for (int i = 0; i < p->getLength(); i++) {
+        SoNode * n = p->getNodeFromTail(i);
+        if (n->isOfType(SoGroup::getClassTypeId())) {
+          SoGroup * g = (SoGroup *)n;
+          g->addChild(construct_new_marker(point->getPoint()));
+          break;
+        }
+      }
+    }
+  }
+
+  void
+  show_instructions( void )
+  {
+    (void)fprintf(stdout, 
+      "\nThis example program demonstrates the use of the ShapeScale nodekit.\n"
+      "\nQuick instructions:\n\n"
+      "  * place the marker by clicking on a shape with the left mouse button\n"
+      "  * hit ESC to toggle back and forth to view mode\n"
+      "  * zoom back and forth to see how the markers stay the same size\n\n");
+  }
+
+  int
+  main(int argc, char ** argv)
+  {
+    if (argc != 2) {
+      (void) fprintf(stderr,"\nSpecify an Inventor file as argument.\n");
+      return -1;
+    }
+
+    QWidget * window = SoQt::init( argv[0] );
+    ShapeScale::initClass(); // init our extension nodekit
+
+    SoQtExaminerViewer * ex1 = new SoQtExaminerViewer( window );
+  
+    SoInput input;
+    SbBool ok = input.openFile(argv[1]);
+    if (!ok) {
+      (void) fprintf(stderr, "Unable to open file: %s\n", argv[1]);
+      return -1;
+    }
+
+    SoSeparator * root = SoDB::readAll(&input); 
+  
+    if (root == NULL) {
+      (void) fprintf(stderr, "Unable to read file: %s\n", argv[1]);
+      return -1;
+    }
+
+    show_instructions();
+
+    SoSeparator * newroot = new SoSeparator;
+    newroot->ref();
+  
+    newroot->addChild(root);
+
+    // create event callback and marker nodes
+    SoSeparator * sep = new SoSeparator;
+    newroot->addChild(sep);
+  
+    SoEventCallback * ecb = new SoEventCallback;
+    ecb->addEventCallback(SoMouseButtonEvent::getClassTypeId(), event_cb, ex1);
+    sep->addChild(ecb);
+  
+    ex1->setSceneGraph(newroot);
+    ex1->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
+    ex1->setViewing(FALSE);
+    
+    ex1->show();
+    SoQt::show( window );
+
+    SoQt::mainLoop();
+    delete ex1;
+
+    newroot->unref();
+    return 0;
+  }
+  \endcode
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
