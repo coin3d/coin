@@ -25,15 +25,13 @@ class SoState;
 class SoPrimitiveVertex;
 class SoMaterialBundle;
 
-int bigtexture_init(SoState * state, 
-                    SoGLBigImage * image,
-                    const float quality);
-void bigtexture_subinit(SoState * state, const int idx);
+void bigtexture_begin_shape(SoState * state, 
+                            SoGLBigImage * image,
+                            const float quality);
 void bigtexture_triangle(SoState * state,
-                         SoMaterialBundle & mb,
                          const SoPrimitiveVertex * v1,
                          const SoPrimitiveVertex * v2,
                          const SoPrimitiveVertex * v3);
-
+void bigtexture_end_shape(SoState * state, SoMaterialBundle & mb);
 
 #endif // COIN_SOSHAPE_BIGTEXTURE_H

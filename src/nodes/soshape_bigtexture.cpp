@@ -24,6 +24,7 @@
 #include <Inventor/SbVec2f.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/SbBox3f.h>
+#include <Inventor/SbBox2f.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <stdlib.h>
@@ -36,20 +37,39 @@
 #endif
 #include <GL/gl.h>
 
-static SbClip * bigtexture_clipper;
-static SbPlane * bigtexture_planes;
-static SoPrimitiveVertex * bigtexture_primv;
-static SbVec2f bigtexture_start;
-static SbVec2f bigtexture_end;
-static SbVec2f bigtexture_tcmul;
-static SoGLBigImage * bigtexture_image;
-static SbBool bigtexture_didsubapply;
-static float bigtexture_quality;
-static int bigtexture_primvcount;
-static int bigtexture_subidx;
+class bt_region {
+public:
+  SbVec2f start, end, tcmul;
+  SbPlane planes[4];
+  SbList <SoPrimitiveVertex*> pvlist;
+  SbList <int> facelist;
+};
+
+static SbList <SoPrimitiveVertex*> * bt_pvlist;
+static int bt_pvlistcnt;
+
+static SoPrimitiveVertex * 
+bt_get_new_pv(void)
+{
+  if (bt_pvlistcnt < bt_pvlist->getLength()) 
+    return (*bt_pvlist)[bt_pvlistcnt++];
+  else {
+    SoPrimitiveVertex * pv = new SoPrimitiveVertex;
+    bt_pvlistcnt++;
+    bt_pvlist->append(pv);
+    return pv;
+  }
+}
+
+static SbClip * bt_clipper;
+static SoGLBigImage * bt_image;
+static float bt_quality;
+static bt_region * bt_regions;
+static int bt_numallocregions;
+static int bt_numregions;
 
 static void *
-bigtexture_clipcb(const SbVec3f & v0, void * vdata0,
+bt_clipcb(const SbVec3f & v0, void * vdata0,
                   const SbVec3f & v1, void * vdata1,
                   const SbVec3f & newvertex,
                   void * userdata)
@@ -62,132 +82,159 @@ bigtexture_clipcb(const SbVec3f & v0, void * vdata0,
   if (dist == 0.0f) newdist = 0.0f;
   else newdist /= dist;
 
-  SoPrimitiveVertex npv;
-  npv.setPoint(pv0->getPoint() + (pv1->getPoint()-pv0->getPoint()) * newdist);
-  npv.setTextureCoords(SbVec2f(newvertex[0], newvertex[1]));
-  npv.setNormal(pv0->getNormal() + (pv1->getNormal()-pv0->getNormal()) * newdist);
-  npv.setMaterialIndex(pv0->getMaterialIndex());
-
-  bigtexture_primv[bigtexture_primvcount] = npv;
-  return &bigtexture_primv[bigtexture_primvcount++];
+  SoPrimitiveVertex * pv = bt_get_new_pv();
+  pv->setPoint(pv0->getPoint() + (pv1->getPoint()-pv0->getPoint()) * newdist);
+  pv->setTextureCoords(SbVec2f(newvertex[0], newvertex[1]));
+  pv->setNormal(pv0->getNormal() + (pv1->getNormal()-pv0->getNormal()) * newdist);
+  pv->setMaterialIndex(pv0->getMaterialIndex());
+  return pv;
 }
 
 static void
 cleanup_bigtexture(void)
 {
-  delete bigtexture_clipper;
-  delete[] bigtexture_planes;
-  delete[] bigtexture_primv;
+  delete[] bt_regions;
+  delete bt_clipper;
+
+  int n = bt_pvlist->getLength();
+  for (int i = 0; i < n; i++) {
+    delete (*bt_pvlist)[i];
+  }
+  delete bt_pvlist;
 }
 
-int
-bigtexture_init(SoState * state, 
-                SoGLBigImage * image,
-                const float quality)
+void
+bigtexture_begin_shape(SoState * state, 
+                       SoGLBigImage * image,
+                       const float quality)
 {
-  if (bigtexture_clipper == NULL) {
-    bigtexture_clipper = new SbClip(bigtexture_clipcb);
-    bigtexture_planes = new SbPlane[4];
-    bigtexture_primv = new SoPrimitiveVertex[256];
+  bt_image = image;
+  bt_quality = quality;
+  bt_pvlistcnt = 0;
+
+  int num = image->initSubImages(state, SbVec2s(512, 512));
+  bt_numregions = num;
+
+  if (bt_clipper == NULL) {
+    bt_clipper = new SbClip(bt_clipcb);
+    bt_pvlist = new SbList <SoPrimitiveVertex*>;
+    bt_regions = new bt_region[num];
+    bt_numallocregions = num;
     atexit(cleanup_bigtexture);
   }
-  bigtexture_image = image;
-  bigtexture_quality = quality;
-
-  return image->initSubImages(state, SbVec2s(512, 512));
+  if (num > bt_numallocregions) {
+    delete[] bt_regions;
+    bt_regions = new bt_region[num];
+    bt_numallocregions = num;
+  }
+  for (int i = 0; i < num; i++) {
+    bt_region & reg = bt_regions[i];
+    reg.facelist.truncate(0);
+    reg.pvlist.truncate(0);
+    bt_image->handleSubImage(i,
+                             reg.start,
+                             reg.end,
+                             reg.tcmul);
+    reg.planes[0] = 
+      SbPlane(SbVec3f(1.0f, 0.0f, 0.0f), reg.start[0]);
+    reg.planes[1] = 
+      SbPlane(SbVec3f(0.0f, 1.0f, 0.0f), reg.start[1]);
+    reg.planes[2] = 
+      SbPlane(SbVec3f(-1.0f, 0.0f, 0.0f), -reg.end[0]);
+    reg.planes[3] = 
+      SbPlane(SbVec3f(0.0f, -1.0f, 0.0f), -reg.end[1]);
+  }
 }
 
-void 
-bigtexture_subinit(SoState * state, const int idx)
+void
+bigtexture_end_shape(SoState * state, SoMaterialBundle & mb)
 {
-  bigtexture_subidx = idx;
-  bigtexture_didsubapply = FALSE;
-  bigtexture_image->handleSubImage(idx,
-                                   bigtexture_start,
-                                   bigtexture_end,
-                                   bigtexture_tcmul);
+  const int numreg = bt_numregions;
+  for (int i = 0; i < numreg; i++) {
+    const bt_region & reg = bt_regions[i];
+    int numface = reg.facelist.getLength();
+    if (numface == 0) continue;
 
-#ifdef BIGTEXTURE_DEBUG
-  fprintf(stderr,"big start: %g %g\n",
-          bigtexture_start[0], bigtexture_start[1]);
-  fprintf(stderr,"big end: %g %g\n",
-          bigtexture_end[0], bigtexture_end[1]);
-#endif
-  
-  bigtexture_planes[0] = SbPlane(SbVec3f(1.0f, 0.0f, 0.0f), bigtexture_start[0]);
-  bigtexture_planes[1] = SbPlane(SbVec3f(0.0f, 1.0f, 0.0f), bigtexture_start[1]);
-  bigtexture_planes[2] = SbPlane(SbVec3f(-1.0f, 0.0f, 0.0f), -bigtexture_end[0]);
-  bigtexture_planes[3] = SbPlane(SbVec3f(0.0f, -1.0f, 0.0f), -bigtexture_end[1]);
+    bt_image->applySubImage(state, i, bt_quality, SbVec2s(0,0));
+    int vcnt = 0;
+    for (int j = 0; j < numface; j++) {
+      glBegin(GL_TRIANGLE_FAN);
+      int numv = reg.facelist[j];
+      for (int k = 0; k < numv; k++) {
+        SoPrimitiveVertex * v = reg.pvlist[vcnt++];
+        SbVec4f tc = v->getTextureCoords();
+        tc[0] -= reg.start[0];
+        tc[1] -= reg.start[1];
+        tc[0] /= (reg.end[0]-reg.start[0]);
+        tc[1] /= (reg.end[1]-reg.start[1]);
+        glTexCoord4fv(tc.getValue());
+        glNormal3fv(v->getNormal().getValue());
+        mb.send(v->getMaterialIndex(), TRUE);
+        glVertex3fv(v->getPoint().getValue());
+      }
+      glEnd();
+    } 
+  }
 }
 
 void 
 bigtexture_triangle(SoState * state,
-                    SoMaterialBundle & mb,
                     const SoPrimitiveVertex * v1,
                     const SoPrimitiveVertex * v2,
                     const SoPrimitiveVertex * v3)
 {
-  bigtexture_primv[0] = *v1;
-  bigtexture_primv[1] = *v2;
-  bigtexture_primv[2] = *v3;
-  bigtexture_primvcount = 3;
-  bigtexture_clipper->reset();
-  bigtexture_clipper->addVertex(SbVec3f(v1->getTextureCoords()[0],
-                                        v1->getTextureCoords()[1],
-                                        0.0f),
-                                &bigtexture_primv[0]);
-  bigtexture_clipper->addVertex(SbVec3f(v2->getTextureCoords()[0],
-                                        v2->getTextureCoords()[1],
-                                        0.0f),
-                                &bigtexture_primv[1]);
-  bigtexture_clipper->addVertex(SbVec3f(v3->getTextureCoords()[0],
-                                        v3->getTextureCoords()[1],
-                                        0.0f),
-                                &bigtexture_primv[2]);
-  bigtexture_clipper->clip(bigtexture_planes[0]);
-  bigtexture_clipper->clip(bigtexture_planes[1]);
-  bigtexture_clipper->clip(bigtexture_planes[2]);
-  bigtexture_clipper->clip(bigtexture_planes[3]);
+  const SbVec4f & tc1 = v1->getTextureCoords();
+  const SbVec4f & tc2 = v2->getTextureCoords();
+  const SbVec4f & tc3 = v3->getTextureCoords();
+
+  SbBox2f bbox;
+  bbox.extendBy(SbVec2f(tc1[0], tc1[1]));
+  bbox.extendBy(SbVec2f(tc2[0], tc2[1]));
+  bbox.extendBy(SbVec2f(tc3[0], tc3[1]));
+  SbBox2f regbbox;
   
-  assert(bigtexture_primvcount <= 256);
-  
-  const int numv = bigtexture_clipper->getNumVertices();
-#ifdef BIGTEXTURE_DEBUG
-  fprintf(stderr,"bigtexture numv: %d\n", numv);
-#endif
-  if (numv >= 3) {
-    int i;
-    SbBox3f bbox;
-    for (i = 0; i < numv; i++) {
-      SoPrimitiveVertex * v = (SoPrimitiveVertex*) bigtexture_clipper->getVertexData(i);
-      bbox.extendBy(v->getPoint());
-    }
-    if (SoCullElement::cullTest(state, bbox)) return;
+  for (int i = 0; i < bt_numregions; i++) {
+    bt_region & reg = bt_regions[i];
+    regbbox.makeEmpty();
+    regbbox.extendBy(reg.start);
+    regbbox.extendBy(reg.end);
     
-    if (!bigtexture_didsubapply) {
-      bigtexture_didsubapply = TRUE;
-      bigtexture_image->applySubImage(state,
-                                      bigtexture_subidx,
-                                      bigtexture_quality,
-                                      SbVec2s(1,1));
+    // check if there is a chance for an intersection
+    if (regbbox.intersect(bbox)) {
+      bt_clipper->reset();
+
+      // need copies
+      SoPrimitiveVertex * pv1 = bt_get_new_pv();
+      *pv1 = *v1;
+      SoPrimitiveVertex * pv2 = bt_get_new_pv();
+      *pv2 = *v2;
+      SoPrimitiveVertex * pv3 = bt_get_new_pv();
+      *pv3 = *v3;
+      
+      bt_clipper->addVertex(SbVec3f(tc1[0], tc1[1],0.0f), pv1);
+      bt_clipper->addVertex(SbVec3f(tc2[0], tc2[1],0.0f), pv2);
+      bt_clipper->addVertex(SbVec3f(tc3[0], tc3[1],0.0f), pv3);
+      
+      bt_clipper->clip(reg.planes[0]);
+      bt_clipper->clip(reg.planes[1]);
+      bt_clipper->clip(reg.planes[2]);
+      bt_clipper->clip(reg.planes[3]);
+      
+      const int numv = bt_clipper->getNumVertices();
+      if (numv >= 3) {
+        int j;
+        SbBox3f obox;
+        for (j = 0; j < numv; j++) {
+          SoPrimitiveVertex * v = (SoPrimitiveVertex*) bt_clipper->getVertexData(j);
+          obox.extendBy(v->getPoint());
+        }
+        if (!SoCullElement::cullTest(state, obox)) {
+          reg.facelist.append(numv);
+          for (j = 0; j < numv; j++) {
+            reg.pvlist.append((SoPrimitiveVertex*) bt_clipper->getVertexData(j));
+          }
+        }
+      }
     }
-    glBegin(GL_TRIANGLE_FAN);
-    
-    for (i = 0; i < numv; i++) {
-      SoPrimitiveVertex * v = (SoPrimitiveVertex*) bigtexture_clipper->getVertexData(i);
-#ifdef BIGTEXTURE_DEBUG
-      fprintf(stderr,"prividx: %p, %d\n", v, int(v-bigtexture_primv));
-#endif
-      SbVec4f tc = v->getTextureCoords();
-      tc[0] -= bigtexture_start[0];
-      tc[1] -= bigtexture_start[1];
-      tc[0] /= (bigtexture_end[0]-bigtexture_start[0]);
-      tc[1] /= (bigtexture_end[1]-bigtexture_start[1]);
-      glTexCoord4fv(tc.getValue());
-      glNormal3fv(v->getNormal().getValue());
-      mb.send(v->getMaterialIndex(), TRUE);
-      glVertex3fv(v->getPoint().getValue());
-    }
-    glEnd();
   }
 }

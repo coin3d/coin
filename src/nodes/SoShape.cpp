@@ -381,12 +381,10 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     is_doing_bigtexture_rendering = TRUE;
 
-    const int num = bigtexture_init(state, big, SoTextureQualityElement::get(state));
-
-    for (int i = 0; i < num; i++) {
-      bigtexture_subinit(state, i);
-      this->generatePrimitives(action);
-    }
+    
+    bigtexture_begin_shape(state, big, SoTextureQualityElement::get(state));    
+    this->generatePrimitives(action);
+    bigtexture_end_shape(state, mb);
     is_doing_bigtexture_rendering = FALSE;
 
     return FALSE;
@@ -614,7 +612,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
       trisort_triangle(action->getState(), v1, v2, v3);
     }
     else if (is_doing_bigtexture_rendering) {
-      bigtexture_triangle(action->getState(), *currentBundle, v1, v2, v3);
+      bigtexture_triangle(action->getState(), v1, v2, v3);
     }
     else {
       glBegin(GL_TRIANGLES);
