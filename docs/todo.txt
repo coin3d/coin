@@ -9,9 +9,6 @@ with Coin. The items are roughly categorized in these categories:
 
 * Network: tasks in the vein of making Coin "network-friendly".
 
-* Misc: other items which are hard to categorize.
-
-
 ******************************************************************************
 
 001. (Rendering) [1999????] Implement caching.
@@ -50,6 +47,3 @@ with Coin. The items are roughly categorized in these categories:
 
 028. (Network) [1999????] Interface relevant parts of Coin to Curl
      (SoWWWAnchor, SoWWWInline, texture import, misc VRML support).
-
-031. (Misc) [1999????] Implement the various parts of Large Model
-     Visualization.
