@@ -874,13 +874,14 @@ THE WISH LIST
   advance and the render pass won't trigger a second one.
 
 * Extending SoInput to support callbacks for file operations
+  2003-02-21  Thomas Hammer  <thammer@sim.no>
 
-I suggest we add a static function to SoInput to set (user-supplied)
-callbacks for opening, reading, (possibly seeking and "telling" file
-position) and closing a datastream (which internally in SoInput would
-be handled allmost identically to a file). 
+  I suggest we add a static function to SoInput to set (user-supplied)
+  callbacks for opening, reading, (possibly seeking and "telling" file
+  position) and closing a datastream (which internally in SoInput
+  would be handled allmost identically to a file).
 
-The callbacks would look something like this:
+  The callbacks would look something like this:
 
   void * (*open_func)  (const char *filename, 
                         ... maybe some more params here?)
@@ -893,20 +894,21 @@ The callbacks would look something like this:
   int    (*close_func) (void *datasource);
   int64  (*tell_func)  (void *datasource);
 
-This is approx. how vorbisfile does it. See
+  This is approx. how vorbisfile does it. See
 
-http://www.xiph.org/ogg/vorbis/doc/vorbisfile/callbacks.html
+  http://www.xiph.org/ogg/vorbis/doc/vorbisfile/callbacks.html
 
-This way it's the applications responsibility to do file i/o,
-streaming, decompressing, or whatever.
+  This way it's the applications responsibility to do file i/o,
+  streaming, decompressing, or whatever.
 
-I use this mechanism in simage to get around any problems with passing
-filehandles to the "normal" (stdio) libvorbisfile API. See
-simage/src/simage_oggvorbis_reader.c.
+  I use this mechanism in simage to get around any problems with
+  passing filehandles to the "normal" (stdio) libvorbisfile API. See
+  simage/src/simage_oggvorbis_reader.c.
 
-I'm not sure this mechanism is sufficient for texture-reading though,
-because the open_func callback might need some more info about where
-the texture file is located.  A relative path might not be enough,
-since the scenegraph might have been generated from several VRML2
-files with identical textturefilenames (but different textures).
+  I'm not sure this mechanism is sufficient for texture-reading
+  though, because the open_func callback might need some more info
+  about where the texture file is located.  A relative path might not
+  be enough, since the scenegraph might have been generated from
+  several VRML2 files with identical textturefilenames (but different
+  textures).
 
