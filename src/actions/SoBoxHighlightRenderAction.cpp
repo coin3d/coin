@@ -65,9 +65,23 @@
   nodes should be visible.
  */
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoBoxHighlightRenderActionP {
+public:
+  SoSearchAction * searchaction;
+  SbColor color;
+  unsigned short linepattern;
+  float linewidth;
+  SoTempPath * postprocpath;
+};
+
+#endif // DOXYGEN_SKIP_THIS
 
 SO_ACTION_SOURCE(SoBoxHighlightRenderAction);
 
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
 
 // Overridden from parent class.
 void
@@ -104,15 +118,17 @@ SoBoxHighlightRenderAction::init(void)
 {
   SO_ACTION_CONSTRUCTOR(SoBoxHighlightRenderAction);
 
+  PRIVATE(this) = new SoBoxHighlightRenderActionP;
+
   this->hlVisible = TRUE;
-  this->color = SbColor(1.0f, 0.0f, 0.0f);
-  this->linepattern = 0xffff;
-  this->linewidth = 3.0f;
-  this->searchaction = NULL;
+  PRIVATE(this)->color = SbColor(1.0f, 0.0f, 0.0f);
+  PRIVATE(this)->linepattern = 0xffff;
+  PRIVATE(this)->linewidth = 3.0f;
+  PRIVATE(this)->searchaction = NULL;
 
   // SoBase-derived objects should be dynamically allocated.
-  this->postprocpath = new SoTempPath(32);
-  this->postprocpath->ref();
+  PRIVATE(this)->postprocpath = new SoTempPath(32);
+  PRIVATE(this)->postprocpath->ref();
 }
 
 
@@ -121,8 +137,9 @@ SoBoxHighlightRenderAction::init(void)
 */
 SoBoxHighlightRenderAction::~SoBoxHighlightRenderAction(void)
 {
-  this->postprocpath->unref();
-  delete this->searchaction;
+  PRIVATE(this)->postprocpath->unref();
+  delete PRIVATE(this)->searchaction;
+  delete PRIVATE(this);
 }
 
 // Documented in superclass. Overridden to add highlighting after the
@@ -132,19 +149,19 @@ SoBoxHighlightRenderAction::apply(SoNode * node)
 {
   SoGLRenderAction::apply(node);
   if (this->hlVisible) {
-    if (this->searchaction == NULL) {
-      this->searchaction = new SoSearchAction;
-      this->searchaction->setType(SoSelection::getClassTypeId());
-      this->searchaction->setInterest(SoSearchAction::FIRST);
+    if (PRIVATE(this)->searchaction == NULL) {
+      PRIVATE(this)->searchaction = new SoSearchAction;
+      PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
+      PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
     }
-    this->searchaction->apply(node);
-    if (this->searchaction->isFound()) {
+    PRIVATE(this)->searchaction->apply(node);
+    if (PRIVATE(this)->searchaction->isFound()) {
       SoSelection * selection =
-        (SoSelection *)this->searchaction->getPath()->getTail();
+        (SoSelection *)PRIVATE(this)->searchaction->getPath()->getTail();
       assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
 
       if (selection->getNumSelected()) {
-        this->drawBoxes(this->searchaction->getPath(), selection->getList());
+        this->drawBoxes(PRIVATE(this)->searchaction->getPath(), selection->getList());
       }
     }
   }
@@ -201,7 +218,7 @@ SoBoxHighlightRenderAction::isVisible(void) const
 void
 SoBoxHighlightRenderAction::setColor(const SbColor & color)
 {
-  this->color = color;
+  PRIVATE(this)->color = color;
 }
 
 /*!
@@ -210,7 +227,7 @@ SoBoxHighlightRenderAction::setColor(const SbColor & color)
 const SbColor &
 SoBoxHighlightRenderAction::getColor(void)
 {
-  return this->color;
+  return PRIVATE(this)->color;
 }
 
 /*!
@@ -220,7 +237,7 @@ SoBoxHighlightRenderAction::getColor(void)
 void
 SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
 {
-  this->linepattern = pattern;
+  PRIVATE(this)->linepattern = pattern;
 }
 
 /*!
@@ -229,7 +246,7 @@ SoBoxHighlightRenderAction::setLinePattern(unsigned short pattern)
 unsigned short
 SoBoxHighlightRenderAction::getLinePattern(void) const
 {
-  return this->linepattern;
+  return PRIVATE(this)->linepattern;
 }
 
 /*!
@@ -239,7 +256,7 @@ SoBoxHighlightRenderAction::getLinePattern(void) const
 void
 SoBoxHighlightRenderAction::setLineWidth(const float width)
 {
-  this->linewidth = width;
+  PRIVATE(this)->linewidth = width;
 }
 
 /*!
@@ -248,9 +265,8 @@ SoBoxHighlightRenderAction::setLineWidth(const float width)
 float
 SoBoxHighlightRenderAction::getLineWidth(void) const
 {
-  return this->linewidth;
+  return PRIVATE(this)->linewidth;
 }
-
 
 void
 SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pathlist)
@@ -258,18 +274,18 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
   int i;
   int thispos = ((SoFullPath *)pathtothis)->getLength()-1;
   assert(thispos >= 0);
-  this->postprocpath->truncate(0); // reset
-
+  PRIVATE(this)->postprocpath->truncate(0); // reset
+  
   for (i = 0; i < thispos; i++)
-    this->postprocpath->append(pathtothis->getNode(i));
-
+    PRIVATE(this)->postprocpath->append(pathtothis->getNode(i));
+  
   SoState * state = this->getState();
   state->push();
 
   SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
-  SoDiffuseColorElement::set(state, NULL, 1, &color);
-  SoLineWidthElement::set(state, this->linewidth);
-  SoLinePatternElement::set(state, this->linepattern);
+  SoDiffuseColorElement::set(state, NULL, 1, &PRIVATE(this)->color);
+  SoLineWidthElement::set(state, PRIVATE(this)->linewidth);
+  SoLinePatternElement::set(state, PRIVATE(this)->linepattern);
   SoTextureQualityElement::set(state, 0.0f);
   SoComplexityTypeElement::set(state, SoComplexityTypeElement::BOUNDING_BOX);
   SoDrawStyleElement::set(state, SoDrawStyleElement::LINES);
@@ -285,11 +301,14 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pa
     SoFullPath * path = (SoFullPath *)(*pathlist)[i];
 
     for (int j = 0; j < path->getLength(); j++) {
-      this->postprocpath->append(path->getNode(j));
+      PRIVATE(this)->postprocpath->append(path->getNode(j));
     }
 
-    SoGLRenderAction::apply(this->postprocpath);
-    this->postprocpath->truncate(thispos);
+    SoGLRenderAction::apply(PRIVATE(this)->postprocpath);
+    PRIVATE(this)->postprocpath->truncate(thispos);
   }
   state->pop();
 }
+
+#undef PRIVATE
+

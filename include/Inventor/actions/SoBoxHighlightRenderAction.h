@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -27,8 +27,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
 
-class SoPathList;
-
+class SoBoxHighlightRenderActionP;
 
 class COIN_DLL_API SoBoxHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
@@ -61,19 +60,15 @@ protected:
   // Some protected members are missing compared to OIV here.
   // I doubt that anyone will use them though, since it looked
   // like they should have been private. We chose to implement this
-  // action in a differnet manner. But, if you need the protected members
+  // action in a different manner. But, if you need the protected members
   // provided by OIV here, contact us any we'll consider reimplementing
   // the action to conform more to OIV. pederb, 20000222
 
 private:
-  class SoSearchAction * searchaction;
   void init(void);
   void drawBoxes(SoPath * pathtothis, const SoPathList * pathlist);
 
-  SbColor color;
-  unsigned short linepattern;
-  float linewidth;
-  SoTempPath * postprocpath;
+  SoBoxHighlightRenderActionP * pimpl;
 };
 
 #endif // !COIN_SOBOXHIGHLIGHTRENDERACTION_H
