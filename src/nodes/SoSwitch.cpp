@@ -250,6 +250,17 @@ SoSwitch::doAction(SoAction * action)
 SbBool
 SoSwitch::affectsState(void) const
 {
+  // FIXME: this function can be called during an SoSearchAction's
+  // invocation of SoSwitch::search(), which means we should check
+  // that condition and behave as if whichChild was == SO_SWITCH_ALL
+  // if the SoSearchAction::isSearchingAll() flag equated to TRUE.
+  //
+  // There are probably also other functions in this class that need
+  // an "is-searching-all" flag in case we're inside the "mode" of an
+  // SoSearchAction search in the "searching-all" state.
+  //
+  // 20011219 mortene.
+
   int idx = this->whichChild.getValue();
   if (idx == SO_SWITCH_NONE) return FALSE;
   if (idx >= this->getNumChildren()) return FALSE;
