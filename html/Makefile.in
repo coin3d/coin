@@ -263,12 +263,18 @@ uninstall-am: uninstall-info-am uninstall-local
 # **************************************************************************
 # build trickery
 
-@BUILD_HTMLPAGES_TRUE@all-local: filelist.txt
+@BUILD_HTMLPAGES_TRUE@$(top_builddir)/docs/coin.doxygen: $(top_srcdir)/docs/coin.doxygen.in $(top_builddir)/config.status
+@BUILD_HTMLPAGES_TRUE@	@( cd $(top_builddir); $(MAKE) docs/coin.doxygen )
 
-@BUILD_HTMLPAGES_TRUE@clean-local:
-@BUILD_HTMLPAGES_TRUE@	@if test -f filelist.txt; then \
-@BUILD_HTMLPAGES_TRUE@	  cat filelist.txt | xargs rm -f filelist.txt; \
-@BUILD_HTMLPAGES_TRUE@	fi
+@BUILD_HTMLPAGES_TRUE@index.html: $(top_builddir)/docs/coin.doxygen
+@BUILD_HTMLPAGES_TRUE@	@( cd ..; \
+@BUILD_HTMLPAGES_TRUE@	echo " @sim_ac_doxygen_exe@ docs/coin.doxygen"; \
+@BUILD_HTMLPAGES_TRUE@	@sim_ac_doxygen_exe@ docs/coin.doxygen )
+
+@BUILD_HTMLPAGES_TRUE@filelist.txt: index.html
+@BUILD_HTMLPAGES_TRUE@	@ls -1 | egrep '(\.html|\.png|\.gif|\.css)$$' >filelist.txt
+
+@BUILD_HTMLPAGES_TRUE@all-local: filelist.txt
 
 # **************************************************************************
 # install trickery
@@ -278,35 +284,55 @@ uninstall-am: uninstall-info-am uninstall-local
 
 @BUILD_HTMLPAGES_TRUE@uninstall-local: uninstall-html
 
-@BUILD_HTMLPAGES_TRUE@install-html: filelist.txt
-@BUILD_HTMLPAGES_TRUE@	@$(NORMAL_INSTALL)
-@BUILD_HTMLPAGES_TRUE@	$(mkinstalldirs) $(DESTDIR)$(htmldir)
-@BUILD_HTMLPAGES_TRUE@	@list="`cat filelist.txt`"; \
-@BUILD_HTMLPAGES_TRUE@	for i in $$list; do \
-@BUILD_HTMLPAGES_TRUE@	  echo " $(INSTALL_DATA) $$i $(DESTDIR)$(htmldir)/$$i"; \
-@BUILD_HTMLPAGES_TRUE@	  $(INSTALL_DATA) $$i $(DESTDIR)$(htmldir)/$$i; \
-@BUILD_HTMLPAGES_TRUE@	done
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@install-html: filelist.txt
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	@$(NORMAL_INSTALL)
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	$(mkinstalldirs) "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Documentation"
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	@echo " ln -sf Versions/Current/Documentation $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Documentation"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	ln -sf Versions/Current/Documentation "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Documentation"
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	@destdir="$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Documentation"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	list="`cat filelist.txt`"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	for file in $$list; do \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	  echo " $(INSTALL_DATA) $$file $(DESTDIR)$$destdir/$$file"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	  $(INSTALL_DATA) $$file "$(DESTDIR)$$destdir/$$file"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	done
 
-@BUILD_HTMLPAGES_TRUE@uninstall-html: filelist.txt
-@BUILD_HTMLPAGES_TRUE@	@$(NORMAL_UNINSTALL)
-@BUILD_HTMLPAGES_TRUE@	@list="`cat filelist.txt`"; \
-@BUILD_HTMLPAGES_TRUE@	for i in $$list; do \
-@BUILD_HTMLPAGES_TRUE@	  echo " rm -f $(DESTDIR)$(htmldir)/$$i"; \
-@BUILD_HTMLPAGES_TRUE@	  rm -f $(DESTDIR)$(htmldir)/$$i; \
-@BUILD_HTMLPAGES_TRUE@	done
-@BUILD_HTMLPAGES_TRUE@	@echo " rmdir $(DESTDIR)$(htmldir)"; \
-@BUILD_HTMLPAGES_TRUE@	rmdir $(DESTDIR)$(htmldir) 2>/dev/null; \
-@BUILD_HTMLPAGES_TRUE@	:
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@uninstall-html: filelist.txt
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	@$(NORMAL_UNINSTALL)
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	@destdir="$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Documentation"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	list="`cat filelist.txt`"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	for file in $$list; do \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	  echo " rm -f $(DESTDIR)$(destdir)/$$file"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	  rm -f "$(DESTDIR)$(destdir)/$$file"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	done
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	@echo " rmdir $(DESTDIR)$(destdir)"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	rmdir $(DESTDIR)$(destdir) 2>/dev/null; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_TRUE@	:
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@install-html: filelist.txt
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	@$(NORMAL_INSTALL)
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	$(mkinstalldirs) $(DESTDIR)$(htmldir)
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	@list="`cat filelist.txt`"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	for file in $$list; do \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	  echo " $(INSTALL_DATA) $$file $(DESTDIR)$(htmldir)/$$file"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	  $(INSTALL_DATA) $$file "$(DESTDIR)$(htmldir)/$$file"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	done
 
-$(top_builddir)/docs/coin.doxygen: $(top_srcdir)/docs/coin.doxygen.in $(top_builddir)/config.status
-	@( cd $(top_builddir); $(MAKE) docs/coin.doxygen )
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@uninstall-html: filelist.txt
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	@$(NORMAL_UNINSTALL)
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	@list="`cat filelist.txt`"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	for file in $$list; do \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	  echo " rm -f $(DESTDIR)$(htmldir)/$$file"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	  rm -f "$(DESTDIR)$(htmldir)/$$file"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	done
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	@echo " rmdir $(DESTDIR)$(htmldir)"; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	rmdir $(DESTDIR)$(htmldir) 2>/dev/null; \
+@BUILD_HTMLPAGES_TRUE@@MAC_FRAMEWORK_FALSE@	:
 
-index.html: $(top_builddir)/docs/coin.doxygen
-	@echo " @sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen"; \
-	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
-
-filelist.txt: index.html
-	@ls -1 *.html *.gif *.css >filelist.txt
+# IRIX make barfs if clean-local is moved inside the conditional clause.
+# Automake bug?  20011025 larsa
+clean-local:
+	@if test -f filelist.txt; then \
+	  cat filelist.txt | xargs rm -f filelist.txt; \
+	fi
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
