@@ -36,6 +36,7 @@
 #include <assert.h>
 #include <string.h> /* strncasecmp() */
 #include <stdio.h>
+#include <ctype.h> /* tolower() */
 #include <stdlib.h>
 #ifdef HAVE_WINDOWS_H
 #include <windows.h> /* GetEnvironmentVariable() */
@@ -303,9 +304,11 @@ coin_strncasecmp(const char * s1, const char * s2, int len)
 
   assert(s1 && s2);
   while (len > 0) {
-    if (*s1 < *s2) { return -1; }
-    if (*s1 > *s2) { return +1; }
-    if (*s1=='\0' && *s2=='\0') { return 0; } /* in case len is too large */
+    int c1 = tolower(*s1);
+    int c2 = tolower(*s2);
+    if (c1 < c2) { return -1; }
+    if (c1 > c2) { return +1; }
+    if (c1=='\0' && c2=='\0') { return 0; } /* in case len is too large */
     len--; s1++; s2++;
   }
   return 0;
