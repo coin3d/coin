@@ -57,7 +57,7 @@ static SbBool SIMAGE_failed_to_load = FALSE;
 static void * SIMAGE_libhandle = NULL;
 typedef unsigned char * (*SIMAGE_read_image_t)(const char *, int *, int *, int *);
 static SIMAGE_read_image_t SIMAGE_read_image;
-typedef char * (*SIMAGE_get_last_error_t)(char *, int);
+typedef const char * (*SIMAGE_get_last_error_t)(void);
 static SIMAGE_get_last_error_t SIMAGE_get_last_error;
 
 static void SIMAGE_cleanup(void)
@@ -338,10 +338,7 @@ SbImage::readFile(const SbString & filename,
       simagedata = SIMAGE_read_image(finalname.getString(), &w, &h, &nc);
 #if COIN_DEBUG
       if (!simagedata) {
-        char buffer[256];
-        SoDebugError::post("SbImage::readFile",
-                           "%s",
-                           SIMAGE_get_last_error(buffer, 255));
+        SoDebugError::post("SbImage::readFile", "%s", SIMAGE_get_last_error());
       }
 #endif // COIN_DEBUG
     }
