@@ -196,7 +196,7 @@ SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
     // "converter" callback function that makes an SoDebugError out of
     // an cc_debugerror and forwards control to the callback function
     // given as an argument to setHandlerCallback().
-    cc_debugerror_set_handler_callback(SoDebugError::callbackForwarder, NULL);
+    cc_debugerror_set_handler_callback((cc_debugerror_cb *) SoDebugError::callbackForwarder, NULL);
   }
 
   SoDebugError::callback = function;

@@ -449,7 +449,7 @@ find_font_file(const char * fontname)
   key = (unsigned long)cc_namemap_get_address(fontname);
   found_in_hash = cc_hash_get(fontname2filename, key, &val);
   if (!found_in_hash) {
-    char * c = NULL;
+    const char * c = NULL;
     if (cc_flw_debug()) {
       cc_debugerror_postinfo("find_font_file",
                              "fontname '%s' not found in name hash",

@@ -765,13 +765,18 @@ qsort_compare(const void * q0, const void * q1)
 // Will sort and output items (painter's algorithm). FIXME: implement
 // a better algorithm for hidden surface handling.
 //
+
+extern "C" {
+typedef int qsort_cmp(const void *, const void *);
+}
+
 void
 SoVectorizeActionP::outputItems(void)
 {
   int i, n = this->itemlist.getLength();
   if (n) {
     SoVectorizeItem ** ptr = (SoVectorizeItem**) this->itemlist.getArrayPtr();
-    qsort(ptr, n, sizeof(void*), qsort_compare);
+    qsort(ptr, n, sizeof(void*), (qsort_cmp *) qsort_compare);
     
     for (i = 0; i < n; i++) {
       PUBLIC(this)->printItem(ptr[i]);

@@ -484,7 +484,7 @@ SoType::fromName(const SbName name)
     // the Mac cc_dl_open() and cc_dl_sym() code. 20030318 kyrah
 
     SbString modulename;
-    static char * modulenamepatterns[] = {
+    static const char * modulenamepatterns[] = {
       "%s.so", "lib%s.so", "%s.dll", "lib%s.dll", "%s.dylib", "lib%s.dylib",
       NULL
     };

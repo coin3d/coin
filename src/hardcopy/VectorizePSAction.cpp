@@ -178,7 +178,7 @@ SoVectorizePSAction::getPSOutput(void) const
   return (SoPSVectorOutput*)SoVectorizeAction::getOutput();
 }
 
-static char * gouraudtriangle[] = {
+static const char * gouraudtriangle[] = {
   "% the gouraudtriangle PostScript fragement below is free",
   "% written by Frederic Delhoume (delhoume@ilog.fr)",
   "/bd{bind def}bind def /triangle { aload pop   setrgbcolor  aload pop 5 3",
@@ -209,7 +209,7 @@ static char * gouraudtriangle[] = {
   NULL
 };
 
-static char * flatshadetriangle[] = {
+static const char * flatshadetriangle[] = {
   "% flatshade a triangle",
   "/flatshadetriangle",
   "{ newpath moveto",
@@ -221,7 +221,7 @@ static char * flatshadetriangle[] = {
   NULL
 };
 
-static char * rightshow[] = {
+static const char * rightshow[] = {
   "% print a right justified string",
   "/rightshow",
   "{ dup stringwidth pop",
@@ -231,7 +231,7 @@ static char * rightshow[] = {
   NULL
 };
 
-static char * centershow[] = {
+static const char * centershow[] = {
   "% print a center justified string",
   "/centershow",
   "{ dup stringwidth pop",
@@ -242,7 +242,7 @@ static char * centershow[] = {
   NULL
 };
 
-static void print_array(FILE * fp, char ** array)
+static void print_array(FILE * fp, const char ** array)
 {
   for (int i = 0; array[i]; i++) {
     fputs(array[i], fp);

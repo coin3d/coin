@@ -108,6 +108,10 @@ SoAudioDevice::instance()
   return SoAudioDeviceP::singleton;
 }
 
+extern "C" {
+typedef void atexit_f();
+}
+
 /*!
   Constructor
  */
@@ -121,7 +125,7 @@ SoAudioDevice::SoAudioDevice()
   PRIVATE(this)->initOK = FALSE;
   PRIVATE(this)->lastGain = 1.0f;
   if (!SoAudioDeviceP::atexitcalled) {
-    atexit(SoAudioDeviceP::clean);
+    atexit((atexit_f *)SoAudioDeviceP::clean);
     // Note: This object will be cleaned up as part of Coin's atexit()
     // queue. If Coin is built as a dll, this queue might very well be
     // different from the application's atexit() queue, which means

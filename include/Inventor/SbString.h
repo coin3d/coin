@@ -34,14 +34,14 @@ class COIN_DLL_API SbString {
 public:
   SbString(void) { cc_string_construct(&this->str); }
 
-  SbString(const char * str)
-  { cc_string_construct(&this->str); cc_string_set_text(&this->str, str); }
+  SbString(const char * s)
+  { cc_string_construct(&this->str); cc_string_set_text(&this->str, s); }
 
-  SbString(const char * str, int start, int end)
-  { cc_string_construct(&this->str); cc_string_set_subtext(&this->str, str, start, end); }
+  SbString(const char * s, int start, int end)
+  { cc_string_construct(&this->str); cc_string_set_subtext(&this->str, s, start, end); }
 
-  SbString(const SbString & str)
-  { cc_string_construct(&this->str); cc_string_set_string(&this->str, &str.str); }
+  SbString(const SbString & s)
+  { cc_string_construct(&this->str); cc_string_set_string(&this->str, &s.str); }
 
   SbString(const int digits)
   { cc_string_construct(&this->str); cc_string_set_integer(&this->str, digits); }
@@ -76,15 +76,15 @@ public:
 
   char operator[](int index) const { return this->str.pointer[index]; }
 
-  SbString & operator=(const char * str)
-  { cc_string_set_text(&this->str, str); return *this; }
-  SbString & operator=(const SbString & str)
-  { cc_string_set_text(&this->str, str.str.pointer); return *this; }
+  SbString & operator=(const char * s)
+  { cc_string_set_text(&this->str, s); return *this; }
+  SbString & operator=(const SbString & s)
+  { cc_string_set_text(&this->str, s.str.pointer); return *this; }
 
-  SbString & operator+=(const char * str)
-  { cc_string_append_text(&this->str, str); return *this; }
-  SbString & operator+=(const SbString & str)
-  { cc_string_append_string(&this->str, &str.str); return *this; }
+  SbString & operator+=(const char * s)
+  { cc_string_append_text(&this->str, s); return *this; }
+  SbString & operator+=(const SbString & s)
+  { cc_string_append_string(&this->str, &s.str); return *this; }
   SbString & operator+=(const char c)
   { cc_string_append_char(&this->str, c); return *this; }
 
@@ -104,31 +104,31 @@ public:
 
   void apply(char (*func)(char input)) { cc_string_apply(&this->str, (cc_apply_f)func); }
 
-  int find(const SbString & str) const;
-  SbBool findAll(const SbString & str, SbIntList & found) const;
+  int find(const SbString & s) const;
+  SbBool findAll(const SbString & s, SbIntList & found) const;
 
-  friend int operator==(const SbString & str, const char * s);
-  friend int operator==(const char * s, const SbString & str);
+  friend int operator==(const SbString & sbstr, const char * s);
+  friend int operator==(const char * s, const SbString & sbstr);
   friend int operator==(const SbString & str1, const SbString & str2);
-  friend int operator!=(const SbString & str, const char * s);
-  friend int operator!=(const char * s, const SbString & str);
+  friend int operator!=(const SbString & sbstr, const char * s);
+  friend int operator!=(const char * s, const SbString & sbstr);
   friend int operator!=(const SbString & str1, const SbString & str2);
 
 private:
   struct cc_string str;
 };
 
-inline int operator==(const SbString & str, const char * s)
-{ return (cc_string_compare_text(str.str.pointer, s) == 0); }
-inline int operator==(const char * s, const SbString & str)
-{ return (cc_string_compare_text(s, str.str.pointer) == 0); }
+inline int operator==(const SbString & sbstr, const char * s)
+{ return (cc_string_compare_text(sbstr.str.pointer, s) == 0); }
+inline int operator==(const char * s, const SbString & sbstr)
+{ return (cc_string_compare_text(s, sbstr.str.pointer) == 0); }
 inline int operator==(const SbString & str1, const SbString & str2)
 { return (cc_string_compare_text(str1.str.pointer, str2.str.pointer) == 0); }
 
-inline int operator!=(const SbString & str, const char * s)
-{ return (cc_string_compare_text(str.str.pointer, s) != 0); }
-inline int operator!=(const char * s, const SbString & str)
-{ return (cc_string_compare_text(s, str.str.pointer) != 0); }
+inline int operator!=(const SbString & sbstr, const char * s)
+{ return (cc_string_compare_text(sbstr.str.pointer, s) != 0); }
+inline int operator!=(const char * s, const SbString & sbstr)
+{ return (cc_string_compare_text(s, sbstr.str.pointer) != 0); }
 inline int operator!=(const SbString & str1, const SbString & str2)
 { return (cc_string_compare_text(str1.str.pointer, str2.str.pointer) != 0); }
 

@@ -1140,6 +1140,10 @@ SbBool SoVRMLSoundP::stopPlaying()
 #endif // HAVE_SOUND
 }
 
+extern "C" {
+typedef void * thread_f(void *);
+}
+
 SbBool SoVRMLSoundP::startPlaying()
 {
 #ifdef HAVE_SOUND
@@ -1211,7 +1215,7 @@ SbBool SoVRMLSoundP::startPlaying()
     this->workerThreadSleepTime = this->sleepTime;
     this->errorInThread = FALSE;
     this->exitthread = FALSE;
-    this->workerThread = cc_thread_construct(this->threadCallbackWrapper, this);
+    this->workerThread = cc_thread_construct((thread_f *) this->threadCallbackWrapper, this);
 #endif // HAVE_THREADS
   }
 
