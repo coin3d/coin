@@ -453,16 +453,17 @@ SbTime::formatDate(const char * const fmt) const
   HH:MM:SS GMT), the RFC 850 / RFC 1036 format (Weekday, DD-Mnth-YY
   HH:MM:SS GMT), or the asctime() format (Wkdy Mnth D HH:MM:SS YYYY).
 
-  TODO: write a few examples.
-
   Feeding an invalid date string to this method will make it return
   \a FALSE.
 */
+// FIXME: write a few examples for the doc.
 SbBool
 SbTime::parsedate(const char * const date)
 {
-  // TODO: make method 100% robust for erraneous date strings.
+  // FIXME: make method 100% robust for erraneous date strings.
   // 19981001 mortene.
+
+  // FIXME: accept datestrings conforming to ISO 8601. 20000331 mortene.
 
 #if COIN_DEBUG
   if (!date) {
