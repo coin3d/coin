@@ -47,6 +47,7 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
+#include <Inventor/engines/SoNodeEngine.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -1247,6 +1248,7 @@ find_field(SoNode * node, const SbName & fieldname)
       int len = str.getLength();
       const char CHANGED[] = "_changed";
       const int changedsize = sizeof(CHANGED) - 1;
+      
       if (len > changedsize && strcmp(str.getString()+len-changedsize,
                                       CHANGED) == 0) {
         SbString substr = str.getSubString(0, len-(changedsize+1));
@@ -1278,15 +1280,22 @@ SoBase::connectRoute(const SbName & fromnodename, const SbName & fromfieldname,
   if (fromnode && tonode) {
     SoField * from = find_field(fromnode, fromfieldname);
     SoField * to = find_field(tonode, tofieldname);
+    SoEngineOutput * output = NULL;
+    if (from == NULL && fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
+      output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
+    }
 
-    if (from && to) {
+    if (to && (from || output)) {
       SbBool notnotify = FALSE;
       SbBool append = FALSE;
-      if (from->getFieldType() == SoField::EVENTOUT_FIELD) {
+      if (output || from->getFieldType() == SoField::EVENTOUT_FIELD) {
         notnotify = TRUE;
       }
       if (to->getFieldType() == SoField::EVENTIN_FIELD) append = TRUE;
-      to->connectFrom(from, notnotify, append);
+      if (from) 
+        to->connectFrom(from, notnotify, append);
+      else
+        to->connectFrom(output, notnotify, append);
       return TRUE;
     }
   }
@@ -1358,8 +1367,7 @@ SoBase::readRoute(SoInput * in)
     }
     else if (!SoBase::connectRoute(fromnodename, fromfieldname,
                                    tonodename, tofieldname)) {
-      SoReadError::post(in, "SoBase::readRoute",
-                        "Unable to create route from %s.%s to %s.%s. Delaying.",
+      SoReadError::post(in, "Unable to create route from %s.%s to %s.%s. Delaying.",
                         fromnodename.getString(),
                         fromfieldname.getString(),
                         tonodename.getString(),
