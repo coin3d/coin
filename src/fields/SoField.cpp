@@ -97,6 +97,10 @@
   \sa SoFieldContainer, SoFieldData
 */
 
+#include <assert.h>
+#include <string.h>
+
+#include <Inventor/fields/SoFields.h>
 
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbitsp.h>
@@ -108,14 +112,12 @@
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/misc/SbHash.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
-#include <assert.h>
 #include <coindefs.h> // COIN_STUB()
-#include <string.h>
 
 // flags for this->statusbits
 
@@ -296,7 +298,56 @@ public:
               fname.getString());
     return s;
   }
+
+  static SbHash<char **, char *> * getReallocHash(void);
+  static void * hashRealloc(void * bufptr, size_t size);
+
+private:
+  static void hashExitCleanup(void);
+  static SbHash<char **, char *> * ptrhash;
 };
+
+SbHash<char **, char *> * SoFieldP::ptrhash = NULL;
+
+SbHash<char **, char *> *
+SoFieldP::getReallocHash(void)
+{
+  // XXX protect with mutex?
+  if (SoFieldP::ptrhash == NULL) {
+    SoFieldP::ptrhash = new SbHash<char **, char *>;
+    coin_atexit((coin_atexit_f *)SoFieldP::hashExitCleanup, 0);
+  }
+  return SoFieldP::ptrhash;
+}
+
+void
+SoFieldP::hashExitCleanup(void)
+{
+  assert(SoFieldP::ptrhash->getNumElements() == 0);
+  delete SoFieldP::ptrhash;
+  SoFieldP::ptrhash = NULL;
+}
+
+void *
+SoFieldP::hashRealloc(void * bufptr, size_t size)
+{
+  char ** bufptrptr;
+  int ok = SoFieldP::ptrhash->get((char *)bufptr, bufptrptr);
+  assert(ok);
+
+  // If *bufptrptr contains a NULL pointer, this is the first
+  // invocation and the initial memory buffer was on the stack.
+  char * newbuf = (char *)realloc(*bufptrptr ? bufptr : NULL, size);
+
+  if (newbuf != bufptr) {
+    ok = SoFieldP::ptrhash->remove((char *)bufptr);
+    assert(ok);
+    *bufptrptr = newbuf;
+    SoFieldP::ptrhash->put(newbuf, bufptrptr);
+  }
+
+  return newbuf;
+}
 
 // *************************************************************************
 
@@ -1130,28 +1181,6 @@ SoField::set(const char * valuestring)
   return TRUE;
 }
 
-static void * field_buffer = NULL;
-static size_t field_buffer_size = 0;
-
-static void
-field_buffer_cleanup(void)
-{
-  if (field_buffer) {
-    free(field_buffer);
-    field_buffer = NULL;
-    field_buffer_size = 0;
-  }
-}
-
-static void *
-field_buffer_realloc(void * bufptr, size_t size)
-{
-  void * newbuf = realloc(bufptr, size);
-  field_buffer = newbuf;
-  field_buffer_size = size;
-  return newbuf;
-}
-
 /*!
   Returns the field's value as an ASCII string in the export data
   format for Inventor files.
@@ -1161,28 +1190,22 @@ field_buffer_realloc(void * bufptr, size_t size)
 void
 SoField::get(SbString & valuestring)
 {
+  // NOTE: this code has an almost verbatim copy in SoMField::get1(),
+  // so remember to update both places if any fixes are done.
+
   if (sofield_mutex) {
     CC_MUTEX_LOCK(sofield_mutex); // need to lock since a static array is used
   }
-  // Note: this code has an almost verbatim copy in SoMField::get1(),
-  // so remember to update both places if any fixes are done.
 
   // Initial buffer setup.
   SoOutput out;
-  const size_t STARTSIZE = 32;
-  // if buffer grow bigger than 1024 bytes, free memory
-  // at end of method. Otherwise, just keep using the allocated
-  // memory the next time this method is called.
-  const size_t MAXSIZE = 1024;
+  char initbuffer[1024];
+  char * bufferptr = NULL; // indicates that initial buffer is on the stack
 
-  if (field_buffer_size < STARTSIZE) {
-    field_buffer = malloc(STARTSIZE);
-    field_buffer_size = STARTSIZE;
-    coin_atexit((coin_atexit_f *)field_buffer_cleanup, 0);
-  }
+  int ok = SoFieldP::getReallocHash()->put(initbuffer, &bufferptr);
+  assert(ok);
 
-  out.setBuffer(field_buffer, field_buffer_size,
-                field_buffer_realloc);
+  out.setBuffer(initbuffer, sizeof(initbuffer), SoFieldP::hashRealloc);
 
   // Record offset to skip header.
   out.write("");
@@ -1201,10 +1224,10 @@ SoField::get(SbString & valuestring)
   out.getBuffer(buffer, size);
   valuestring = ((char *)buffer) + offset;
 
-  // check if buffer grew too big
-  if (field_buffer_size >= MAXSIZE) {
-    (void) field_buffer_realloc(field_buffer, STARTSIZE);
-  }
+  // dealloc tmp memory buffer
+  if (bufferptr) { free(bufferptr); }
+  ok = SoFieldP::getReallocHash()->remove(bufferptr ? bufferptr : initbuffer);
+  assert(ok);
 
   if (sofield_mutex) {
     CC_MUTEX_UNLOCK(sofield_mutex);
