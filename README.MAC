@@ -168,16 +168,6 @@ Until this has been fixed, I suggest the obvious workaround of not
 having any spaces in the path leading to Coin.
 
 
-o "I installed qt from fink, but SoQt configure doesn't find it"
-   -------------------------------------------------------------
-
-That's because SoQt is looking for Qt/Mac -- the Mac OS X native
-version of the Qt toolkit. What you install using fink is *not*
-Qt/Mac but Qt/X11, i.e. the version of Qt that was created for X11.
-We do not yet support the X11 version of Qt, but we are planning to do
-so in the near future.                                 
-
-
 o "When I try to load a texture, my application crashes"
   ------------------------------------------------------
 
