@@ -471,7 +471,7 @@ SoGroup::search(SoSearchAction * action)
   FIXME: write function documentation
 */
 SoChildList *
-SoGroup::getChildren() const
+SoGroup::getChildren(void) const
 {
   return ((SoGroup *)this)->children;
 }
@@ -520,7 +520,7 @@ SoGroup::replaceChild(const int index, SoNode * const newChild)
 void
 SoGroup::replaceChild(SoNode * const oldChild, SoNode * const newChild)
 {
-  this->replaceChild(findChild(oldChild), newChild);
+  this->replaceChild(this->findChild(oldChild), newChild);
 }
 
 

@@ -20,12 +20,6 @@ TODO:
 
 *** BUILD ITEMS ***
 
-* [mortene:19991124] install the binaries under the tools/ directory
-  in $prefix/bin.
-        
-* [mortene:19991124] write documentation for the tools (ivcat,
-  ivhierarchy, ...)
-
 * [mortene:19991113] is it possible to get the make process to print
   out which dependency causes recompilation of a file? That would be a
   nice feature.
@@ -46,15 +40,17 @@ TODO:
 * [mortene:19990926] add configure option for specifying location of
   simage.
 
-* [mortene:19990912] get rid of Inventor/system/inttypes.h.
+* [mortene:19990912] get rid of Inventor/system/inttypes.h. Check to
+  see if we can use the AC_COMPILE_CHECK_SIZEOF macro from the
+  autoconf macro archive to find and define types for 8/16/32/64 bits.
 
-* [mortene:19990912] get rid of Inventor/system/kosher.h. (Needs to
-  try compiling under g++ and SGI CC to check that we've covered the
-  functionality provided.)
+* [mortene:19990912] get rid of Inventor/system/kosher.h, replace with
+  autoconf checks. (Needs to try compiling under g++ and SGI CC to
+  check that we've covered the functionality provided.)
 
 * [mortene:19990924] clean up the configure.in file a bit by making
   macros SIM_ARG_WITH_BOOL, SIM_ARG_WITHOUT_BOOL, SIM_ARG_ENABLE_BOOL
-  and SIM_ARG_DISABLE_BOOL.
+  and SIM_ARG_DISABLE_BOOL?
 
 * [mortene:19990912] add options in configure for compiling slimmed
   versions of Coin (--without-coin-engines etc). Or perhaps make a
@@ -63,23 +59,31 @@ TODO:
 * [mortene:19990913] integrate the doxygen man- and html-generation
   into "make install".
 
-* [mortene:19990916] make ``install'' avoid re-installing header files
-  which has not been modified (and other untouched files, for that
-  matter).
+* [mortene:19990916] make ``make install'' avoid re-installing header
+  files which has not been modified (and other untouched files, for
+  that matter).
 
 * [mortene:19990917] clean up the .h-files before installation: remove
   "//$ BEGIN TEMPLATE" and "//$ END TEMPLATE". Remove
   "#if.*(COIN_EXCLUDE_.*)" blocks? Remove stuff between
   __SOLIB_INTERNAL__.
 
-* [mortene:19990926] remove compiler warnings when configuring with
-  --disable-debug.
+* [mortene:19990926] fix code which generates warnings when configured
+  with --disable-debug.
 
 * [mortene:1999????] make Coin build under MSWindows with the Cygwin
   tools.
 
+* [mortene:19991127] use the PETI_WITH_DMALLOC from the autoconf macro
+  archives to optionally make with dmalloc (<http://www.dmalloc.com>).
 
 *** GENERIC ITEMS ***
+
+* [mortene:19991128] code restructuring: convert internal use of lists
+  to SbList wherever possible.
+
+* [mortene:19991124] write documentation for the tools (ivcat,
+  ivhierarchy, ...)
 
 * [kintel:19990928] test and fix problems with running on 64-bit
   platforms.
@@ -134,6 +138,9 @@ DONE:
 
 *** BUILD ITEMS ***
 
+* [mortene:19991124][mortene:19991126] install the binaries under the
+  tools/ directory in $prefix/bin.
+        
 * [mortene:19990916][mortene:19991030] improve the autoconf macro
   which checks for Mesa/OpenGL (read the FIXME's in configure.in just
   above where it's in use). NB: this macro is _completely_ and

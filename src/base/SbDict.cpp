@@ -36,21 +36,21 @@ class SbDictEntry
 private:
   SbDictEntry(const unsigned long key,
               void * const value) {
-    this->key = key; 
+    this->key = key;
     this->value = value;
   }
 private:
   unsigned long key;
   void * value;
   SbDictEntry * next;
-  
+
   friend class SbDict;
 };
 
 //
 // default hashing function will just return the key
 //
-static unsigned long 
+static unsigned long
 default_hashfunc(const unsigned long key)
 {
   return key;
@@ -122,7 +122,7 @@ SbDict::clear(void)
 {
   int i;
   SbDictEntry * entry, * nextEntry;
-  
+
   for (i = 0; i < this->tablesize; i++) {
     for (entry = buckets[i]; entry != NULL; entry = nextEntry) {
       nextEntry = entry->next;
@@ -135,7 +135,7 @@ SbDict::clear(void)
 /*!
   Inserts a new entry into the dictionary. \a key should be
   a unique number, and \a value is the generic user data.
-  
+
   \e If \a key does not exist in the dictionary, a new entry
   is created and TRUE is returned. Otherwise, the generic user
   data is chenged to \a value, and \e FALSE is returned.
@@ -270,18 +270,18 @@ SbDict::findEntry(const unsigned long key,
 }
 
 /*!
-  Sets a new hashing function for this dictionary. Default 
+  Sets a new hashing function for this dictionary. Default
   hashing function just returns the key.
-  
-  If you find that items entered into the dictionary seems to make 
-  clusters in only a few buckets, you should try setting a hashing 
-  function. If you're for instance using strings, you could use the 
+
+  If you find that items entered into the dictionary seems to make
+  clusters in only a few buckets, you should try setting a hashing
+  function. If you're for instance using strings, you could use the
   static SbString::hash() function (you'd need to make a static function
   that will cast from unsigned long to char * of course).
-  
+
   This function is not part of the OIV API.
 */
-void 
+void
 SbDict::setHashingFunction(unsigned long (*func)(const unsigned long key))
 {
   this->hashfunc = func;

@@ -48,7 +48,7 @@
 
 SbName::SbName(void)
 {
-  entry = SbNameEntry::insert("");
+  this->entry = SbNameEntry::insert("");
 }
 
 /*!
@@ -122,7 +122,7 @@ SbName::getLength(void) const
 SbBool
 SbName::isIdentStartChar(const char c)
 {
-    if (isdigit( c) ) return FALSE;
+    if (isdigit(c) ) return FALSE;
     return isIdentChar(c);
 }
 
@@ -136,7 +136,7 @@ SbName::isIdentStartChar(const char c)
 SbBool
 SbName::isIdentChar(const char c)
 {
-    if (isalnum( c) || c == '_' ) return TRUE;
+    if (isalnum(c) || c == '_' ) return TRUE;
     return FALSE;
 }
 
@@ -280,11 +280,11 @@ struct SbNameChunk {
   // should be allowed to grow dynamically unbounded.
   // 19990608 mortene.
   // DONTFIXME: Won't new chunks be created in a dynamic unbounded way?
-    char mem[ CHUNK_SIZE ];
+    char mem[CHUNK_SIZE];
     char * curByte;
     int bytesLeft;
     SbNameChunk * next;
-}; // struct SbNameChunk
+};
 
 int SbNameEntry::nameTableSize;
 SbNameEntry * * SbNameEntry::nameTable;

@@ -97,9 +97,9 @@ SoCube::SoCube()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCube);
 
-    SO_NODE_ADD_FIELD(width,(2.0f));
-    SO_NODE_ADD_FIELD(height,(2.0f));
-    SO_NODE_ADD_FIELD(depth,(2.0f));
+  SO_NODE_ADD_FIELD(width,(2.0f));
+  SO_NODE_ADD_FIELD(height,(2.0f));
+  SO_NODE_ADD_FIELD(depth,(2.0f));
 }
 
 /*!

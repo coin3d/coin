@@ -44,9 +44,9 @@ public:
   SbBool find(const unsigned long key, void *& value) const;
   void makePList(SbPList & keys, SbPList & values);
   SbBool remove(const unsigned long key);
-  
+
   void setHashingFunction(unsigned long (*func)(const unsigned long key));
-  
+
 private:
   unsigned long (*hashfunc)(const unsigned long key);
   int tablesize;

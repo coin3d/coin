@@ -200,6 +200,7 @@ if test "x$want_simage" = "xyes"; then
 
   dnl Not found in any of the standard system locations, try libCoin
   dnl installation directory.
+  dnl FIXME: use AC_DEFINE_DIR from the autoconf macro archive. 19991127 mortene.
   if test "x$simage_dev" = "xno"; then
     _COINPREFIX=$prefix
     test "x$_COINPREFIX" = xNONE && _COINPREFIX=$ac_default_prefix

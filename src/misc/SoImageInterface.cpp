@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <stddef.h>
 
-#include <config.h>
+#include <config.h> // HAVE_LIBSIMAGE define
 
 #if defined(HAVE_LIBSIMAGE)
 #include <simage.h>
@@ -48,7 +48,7 @@
   a similar way to Coin nodes. This way it can be shared
   between, for instance, several nodes.
 
-  This class uses the CoinImage library for loading images.
+  This class uses the simage library for loading images.
 */
 
 
