@@ -512,8 +512,9 @@ cc_flww32_done_font(void * font)
   BOOL ok;
   SbBool found;
   cc_hash * khash;	
+  cc_hash * glyphs;
 
-  cc_hash * glyphs = get_glyph_hash(font);
+  glyphs = get_glyph_hash(font);
   assert(glyphs && "called with non-existent font");
 
   found = cc_hash_remove(cc_flww32_globals.font2glyphhash,
@@ -530,8 +531,12 @@ cc_flww32_done_font(void * font)
   cc_hash_destruct(glyphs);
     
   /* Delete kerninghash for this font using apply-callbacks */
-  if (cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) font, &khash))
+
+  if (cc_hash_get(cc_flww32_globals.font2kerninghash, (unsigned long) font, &khash)) {
+    cc_hash_remove(cc_flww32_globals.font2kerninghash, (unsigned long) font);
     cc_hash_apply(khash, cc_flww32_kerninghash_deleteCB2, NULL);
+    cc_hash_destruct(khash);
+  }
 
   ok = DeleteObject((HFONT)font);
   assert(ok && "DeleteObject() failed, investigate");
