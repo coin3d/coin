@@ -16,6 +16,7 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoPickAction.h \
 	../../include/Inventor/actions/SoRayPickAction.h \
 	../../include/Inventor/actions/SoSearchAction.h \
+	../../include/Inventor/actions/SoToVRMLAction.h \
 	../../include/Inventor/actions/SoWriteAction.h
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h
@@ -34,6 +35,7 @@ RegularSources = \
 	SoPickAction.cpp \
 	SoRayPickAction.cpp \
 	SoSearchAction.cpp \
+	SoToVRMLAction.cpp \
 	SoWriteAction.cpp
 
 ##$ BEGIN TEMPLATE Make-Common(actions)

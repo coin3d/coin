@@ -146,6 +146,7 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoPickAction.h \
 	../../include/Inventor/actions/SoRayPickAction.h \
 	../../include/Inventor/actions/SoSearchAction.h \
+	../../include/Inventor/actions/SoToVRMLAction.h \
 	../../include/Inventor/actions/SoWriteAction.h
 
 PrivateHeaders = \
@@ -167,6 +168,7 @@ RegularSources = \
 	SoPickAction.cpp \
 	SoRayPickAction.cpp \
 	SoSearchAction.cpp \
+	SoToVRMLAction.cpp \
 	SoWriteAction.cpp
 
 
@@ -224,6 +226,7 @@ actions_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoPickAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoRayPickAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoToVRMLAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.$(OBJEXT)
 actions_lst_OBJECTS = $(am_actions_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -241,7 +244,8 @@ libactions_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoHandleEventAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLineHighlightRenderAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickAction.lo SoRayPickAction.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.lo SoWriteAction.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoToVRMLAction.lo SoWriteAction.lo
 libactions_la_OBJECTS = $(am_libactions_la_OBJECTS)
 libactions@SUFFIX@LINKHACK_la_LDFLAGS =
 libactions@SUFFIX@LINKHACK_la_LIBADD =
@@ -258,7 +262,8 @@ libactions@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoHandleEventAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoLineHighlightRenderAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickAction.lo SoRayPickAction.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.lo SoWriteAction.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoToVRMLAction.lo SoWriteAction.lo
 libactions@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libactions@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -290,6 +295,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoRayPickAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoSearchAction.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoSearchAction.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoToVRMLAction.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoToVRMLAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoWriteAction.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoWriteAction.Po $(DEPDIR)/all.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/all.Po
@@ -401,6 +408,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoRayPickAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSearchAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoSearchAction.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoToVRMLAction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoToVRMLAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoWriteAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoWriteAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Plo@am__quote@
