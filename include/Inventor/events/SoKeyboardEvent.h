@@ -92,6 +92,7 @@ public:
   void setKey(SoKeyboardEvent::Key key);
   SoKeyboardEvent::Key getKey(void) const;
 
+  void setPrintableCharacter(const char c);
   char getPrintableCharacter(void) const;
 
   static SbBool isKeyPressEvent(const SoEvent * e,
@@ -103,6 +104,8 @@ public:
 
 private:
   Key key;
+  char printable;
+  char isprintableset;
 };
 
 
