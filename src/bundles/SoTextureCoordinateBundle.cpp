@@ -253,9 +253,13 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   // shapenode is of type SoVertexShape.
   ((SoShape*)this->shapenode)->computeBBox(action, box, center);
 
-  SbVec3f size;
-  box.getSize(size[0], size[1], size[2]);
-  SbVec3f origo = box.getMin();
+  // just use som default values if the shape bbox is empty
+  SbVec3f size(1.0f, 1.0f, 1.0f);
+  SbVec3f origo(0.f, 0.0f, 0.0f);
+  if (!box.isEmpty()) {
+    box.getSize(size[0], size[1], size[2]);
+    origo = box.getMin();
+  }
 
   // Map S,T,R to X,Y,Z for 3D texturing
   if (SoGLTexture3EnabledElement::get(this->state)) {
