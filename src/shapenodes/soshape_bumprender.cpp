@@ -56,9 +56,9 @@
 #include <assert.h>
 
 // Fragment program for bumpmapping
-static const char * bumpspecfpprogram = 
+static const char * bumpspecfpprogram =
 "!!ARBfp1.0"
-"PARAM u0 = program.env[0];\n" // Specular color (3 floats) 
+"PARAM u0 = program.env[0];\n" // Specular color (3 floats)
 "PARAM u1 = program.env[1];\n" // Shininess color (1 float)
 "PARAM c0 = {2, 0.5, 0, 0};\n"
 "TEMP R0;\n"
@@ -80,7 +80,7 @@ static const char * bumpspecfpprogram =
 "END\n";
 
 // Vertex program for directional lights
-static const char * directionallightvpprogram = 
+static const char * directionallightvpprogram =
 "!!ARBvp1.0\n"
 "TEMP R0;\n"
 "ATTRIB v26 = vertex.texcoord[2];\n"
@@ -109,7 +109,7 @@ static const char * directionallightvpprogram =
 "END\n";
 
 // Vertex program for point lights
-static const char * pointlightvpprogram = 
+static const char * pointlightvpprogram =
 "!!ARBvp1.0\n"
 "TEMP R0;\n"
 "ATTRIB v26 = vertex.texcoord[2];\n"
@@ -141,14 +141,57 @@ static const char * pointlightvpprogram =
 " DP3 result.texcoord[2].z, v18.xyzx, R0.xyzx;\n"
 "END\n";
 
+// vertex program for bumpmapping (calculate tsb coordinates for
+// texture unit 1)
+static const char * diffusebumpdirlightvpprogram =
+"!!ARBvp1.0\n"
+"PARAM c5 = { 1, 0, 2, 0 };\n"
+"PARAM color = { 1, 1, 1, 1 };\n"
+"ATTRIB v19 = vertex.color;\n"
+"ATTRIB v25 = vertex.texcoord[1];\n"
+"ATTRIB v24 = vertex.texcoord[0];\n"
+"ATTRIB v18 = vertex.normal;\n"
+"ATTRIB v16 = vertex.position;\n"
+"PARAM c0 = program.env[0];\n"
+"PARAM c1[4] = { state.matrix.mvp };\n"
+" MOV result.texcoord[0].xy, v24;\n"
+" MOV result.color, color;\n"
+" DPH result.position.x, v16.xyzz, c1[0];\n"
+" DPH result.position.y, v16.xyzz, c1[1];\n"
+" DPH result.position.z, v16.xyzz, c1[2];\n"
+" DPH result.position.w, v16.xyzz, c1[3];\n"
+" DP3 result.texcoord[1].x, v25.xyzx, c0.xyzx;\n"
+" DP3 result.texcoord[1].y, v19.xyzx, c0.xyzx;\n"
+" DP3 result.texcoord[1].z, v18.xyzx, c0.xyzx;\n"
+"END\n";
+
+// vertex program for normal rendering. Needed to get exactly the same
+// z-buffer value for each vertex
+static const char * normalrenderingvpprogram =
+"!!ARBvp1.0\n"
+"ATTRIB v19 = vertex.color;\n"
+"ATTRIB v16 = vertex.position;\n"
+"ATTRIB v25 = vertex.texcoord[1];\n"
+"ATTRIB v24 = vertex.texcoord[0];\n"
+"PARAM c1[4] = { state.matrix.mvp };\n"
+" DPH result.position.x, v16.xyzz, c1[0];\n"
+" DPH result.position.y, v16.xyzz, c1[1];\n"
+" DPH result.position.z, v16.xyzz, c1[2];\n"
+" DPH result.position.w, v16.xyzz, c1[3];\n"
+" MOV result.texcoord[0].xy, v24;\n"
+" MOV result.texcoord[1].xy, v25;\n"
+" MOV result.color, v19;\n"
+"END\n";
 
 soshape_bumprender::soshape_bumprender(void)
 {
+  this->diffuseprogramsinitialized = FALSE;
   this->programsinitialized = FALSE;
 }
 
 soshape_bumprender::~soshape_bumprender()
 {
+  // FIXME: deallocate vertex/fragment programs
 }
 
 // to avoid warnings from SbVec3f::normalize()
@@ -164,6 +207,41 @@ inline void NORMALIZE(SbVec3f &v)
 }
 
 void
+soshape_bumprender::initDiffusePrograms(const cc_glglue * glue)
+{
+  glue->glGenProgramsARB(1, &diffusebumpdirlightvertexprogramid);
+  glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, diffusebumpdirlightvertexprogramid);
+  glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                           strlen(diffusebumpdirlightvpprogram), diffusebumpdirlightvpprogram);
+  GLint errorPos;
+  GLenum err = glGetError();
+
+  if (err) {
+    glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+    SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
+                              "Error in diffuse dirlight vertex program! (byte pos: %d) '%s'.\n",
+                              errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+
+  }
+
+  glue->glGenProgramsARB(1, &normalrenderingvertexprogramid);
+  glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);
+  glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
+                           strlen(normalrenderingvpprogram), normalrenderingvpprogram);
+  err = glGetError();
+
+  if (err) {
+    glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
+    SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
+                              "Error in normal rendering vertex program! (byte pos: %d) '%s'.\n",
+                              errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
+
+  }
+
+  this->diffuseprogramsinitialized = TRUE;
+}
+
+void
 soshape_bumprender::initPrograms(const cc_glglue * glue)
 {
 
@@ -175,19 +253,18 @@ soshape_bumprender::initPrograms(const cc_glglue * glue)
   glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, fragmentprogramid);
   glue->glProgramStringARB(GL_FRAGMENT_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
                            strlen(bumpspecfpprogram), bumpspecfpprogram);
-
   // FIXME: Maybe a wrapper for catching fragment program errors
-  // should be a part of GLUE... (20031204 handegar)
-  GLint errorPos;    
+    // should be a part of GLUE... (20031204 handegar)
+  GLint errorPos;
   GLenum err = glGetError();
   if (err) {
     glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
     SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in fragment program! (byte pos: %d) '%s'.\n", 
+                              "Error in fragment program! (byte pos: %d) '%s'.\n",
                               errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-    
+
   }
-  
+
   glue->glGenProgramsARB(1, &dirlightvertexprogramid); // -- Directional light program
   glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, dirlightvertexprogramid);
   glue->glProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB,
@@ -197,9 +274,9 @@ soshape_bumprender::initPrograms(const cc_glglue * glue)
   if (err) {
     glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
     SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in vertex program! (byte pos: %d) '%s'.\n", 
+                              "Error in vertex program! (byte pos: %d) '%s'.\n",
                               errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-    
+
   }
 
   glue->glGenProgramsARB(1, &pointlightvertexprogramid); // -- Point light program
@@ -211,14 +288,12 @@ soshape_bumprender::initPrograms(const cc_glglue * glue)
   if (err) {
     glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
     SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in vertex program! (byte pos: %d) '%s'.\n", 
+                              "Error in vertex program! (byte pos: %d) '%s'.\n",
                               errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
-    
+
   }
 
-
   this->programsinitialized = TRUE;
-
 }
 
 void
@@ -233,12 +308,12 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   //
 
   const cc_glglue * glue = sogl_glue_instance(state);
-  const SbColor spec = SoLazyElement::getSpecular(state); 
+  const SbColor spec = SoLazyElement::getSpecular(state);
   float shininess = SoLazyElement::getShininess(state);
 
   if (!this->programsinitialized)
-    this->initPrograms(glue);    
-    
+    this->initPrograms(glue);
+
   this->initLight(light, toobjectspace);
 
   const SbMatrix & oldtexture0matrix = SoTextureMatrixElement::get(state);
@@ -247,7 +322,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   int i, lastenabled = -1;
   const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-  
+
   // disable texture units 1-n
   for (i = 1; i <= lastenabled; i++) {
     if (enabled[i]) {
@@ -270,42 +345,42 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   glEnable(GL_TEXTURE_2D);
   bumpimage->getGLDisplayList(state)->call(state);
 
-  
-  // FRAGMENT: Setting up spec. colour and shininess for the fragment program  
+
+  // FRAGMENT: Setting up spec. colour and shininess for the fragment program
   glEnable(GL_FRAGMENT_PROGRAM_ARB);
-  glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, fragmentprogramid);    
-  glue->glProgramEnvParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, 0, 
-                                   spec[0], spec[1], spec[2], 1.0f); 
-  
-  glue->glProgramEnvParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, 1, 
-                                   shininess * 64, 0.0f, 0.0f, 1.0f); 
-  
+  glue->glBindProgramARB(GL_FRAGMENT_PROGRAM_ARB, fragmentprogramid);
+  glue->glProgramEnvParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, 0,
+                                   spec[0], spec[1], spec[2], 1.0f);
+
+  glue->glProgramEnvParameter4fARB(GL_FRAGMENT_PROGRAM_ARB, 1,
+                                   shininess * 64, 0.0f, 0.0f, 1.0f);
+
   const SbViewVolume & vv = SoViewVolumeElement::get(state);
   const SbMatrix & vm = SoViewingMatrixElement::get(state);
-  
+
   SbVec3f eyepos = vv.getProjectionPoint();
   SoModelMatrixElement::get(state).inverse().multVecMatrix(eyepos, eyepos);
-  
+
   // VERTEX: Setting up lightprograms
   glEnable(GL_VERTEX_PROGRAM_ARB);
   if (!this->ispointlight) {
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, dirlightvertexprogramid);  
+    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, dirlightvertexprogramid);
   }
   else {
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, pointlightvertexprogramid); 
+    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, pointlightvertexprogramid);
   }
 
-  glue->glProgramEnvParameter4fARB(GL_VERTEX_PROGRAM_ARB, 0, 
-                                     this->lightvec[0], 
-                                     this->lightvec[1], 
-                                     this->lightvec[2], 1); 
-  
-  glue->glProgramEnvParameter4fARB(GL_VERTEX_PROGRAM_ARB, 1, 
-                                     eyepos[0], 
-                                     eyepos[1], 
+  glue->glProgramEnvParameter4fARB(GL_VERTEX_PROGRAM_ARB, 0,
+                                     this->lightvec[0],
+                                     this->lightvec[1],
+                                     this->lightvec[2], 1);
+
+  glue->glProgramEnvParameter4fARB(GL_VERTEX_PROGRAM_ARB, 1,
+                                     eyepos[0],
+                                     eyepos[1],
                                      eyepos[2], 1);
-  
-  
+
+
   cc_glglue_glActiveTexture(glue, GL_TEXTURE1);
   if (oldtexture1matrix != SbMatrix::identity()) {
     glMatrixMode(GL_TEXTURE);
@@ -316,7 +391,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   glEnable(GL_TEXTURE_CUBE_MAP);
 
   cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
- 
+
   const SoPrimitiveVertexCache::Vertex * vptr = cache->getVertices();
   const int n = cache->getNumIndices();
   const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
@@ -338,13 +413,13 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 6*sizeof(float), (GLvoid*) tptr);
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
-  cc_glglue_glClientActiveTexture(glue, GL_TEXTURE2);  
+  cc_glglue_glClientActiveTexture(glue, GL_TEXTURE2);
   cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 6*sizeof(float), (GLvoid*) (tptr + 1));
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
-  
-  cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT, 
+
+  cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
                            (const GLvoid*) cache->getIndices());
- 
+
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE1);
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
@@ -356,8 +431,8 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   glDisable(GL_FRAGMENT_PROGRAM_ARB);
   glDisable(GL_VERTEX_PROGRAM_ARB);
   glDisable(GL_TEXTURE_CUBE_MAP); // unit 1
-  
-  // reenable texture units 1-n if enabled  
+
+  // reenable texture units 1-n if enabled
   for (i = 1; i <= lastenabled; i++) {
     if (enabled[i]) {
       cc_glglue_glActiveTexture(glue, GL_TEXTURE0+i);
@@ -376,7 +451,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
     glLoadMatrixf(oldtexture1matrix[0]);
     glMatrixMode(GL_MODELVIEW);
   }
-  
+
   cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
 
   if (bumpmapmatrix != oldtexture0matrix) {
@@ -385,11 +460,11 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
     glMatrixMode(GL_MODELVIEW);
   }
 
- 
+
   // disable texturing for unit 0 if not enabled
   if (!SoGLTextureEnabledElement::get(state)) glDisable(GL_TEXTURE_2D);
 }
-  
+
 
 void
 soshape_bumprender::renderBump(SoState * state,
@@ -397,16 +472,15 @@ soshape_bumprender::renderBump(SoState * state,
                                SoLight * light, const SbMatrix & toobjectspace)
 {
   this->initLight(light, toobjectspace);
-  this->calcTSBCoords(cache, light);
 
+  const cc_glglue * glue = sogl_glue_instance(state);
   const SbMatrix & oldtexture0matrix = SoTextureMatrixElement::get(state);
   const SbMatrix & oldtexture1matrix = SoMultiTextureMatrixElement::get(state, 1);
   const SbMatrix & bumpmapmatrix = SoBumpMapMatrixElement::get(state);
 
-  const cc_glglue * glue = sogl_glue_instance(state);
   int i, lastenabled = -1;
   const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-  
+
   // disable texture units 1-n
   for (i = 1; i <= lastenabled; i++) {
     if (enabled[i]) {
@@ -414,6 +488,20 @@ soshape_bumprender::renderBump(SoState * state,
       glDisable(GL_TEXTURE_2D);
     }
   }
+
+  // only use vertex program if two texture units (or less) are used
+  // (only two units supported in the vertex program)
+  SbBool use_vertex_program = lastenabled <= 1 && glue->has_arb_vertex_program;
+  if (use_vertex_program) {
+    if (!this->diffuseprogramsinitialized) {
+      this->initDiffusePrograms(glue);
+    }
+  }
+  else {
+    // need to calculate tsb coordinates manually
+    this->calcTSBCoords(cache, light);
+  }
+
   SoGLImage * bumpimage = SoBumpMapElement::get(state);
   assert(bumpimage);
 
@@ -450,6 +538,7 @@ soshape_bumprender::renderBump(SoState * state,
     cache->getVertices();
   const int n = cache->getNumIndices();
   const SbVec3f * cmptr = this->cubemaplist.getArrayPtr();
+  const SbVec3f * tsptr = this->tangentlist.getArrayPtr();
 
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
                             (GLvoid*) &vptr->vertex);
@@ -459,21 +548,52 @@ soshape_bumprender::renderBump(SoState * state,
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE1);
-  cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 0,
-                              (GLvoid*) cmptr);
+  if (use_vertex_program) {
+    cc_glglue_glColorPointer(glue, 3, GL_FLOAT, 6*sizeof(float),
+                             (GLvoid*) (tsptr + 1));
+    cc_glglue_glEnableClientState(glue, GL_COLOR_ARRAY);
+    cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 6*sizeof(float),
+                                (GLvoid*) tsptr);
+    cc_glglue_glNormalPointer(glue, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
+                              (GLvoid*) &vptr->normal);
+    cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
+  }
+  else {
+    cc_glglue_glTexCoordPointer(glue, 3, GL_FLOAT, 0,
+                                (GLvoid*) cmptr);
+  }
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
+
+  if (use_vertex_program) {
+    glEnable(GL_VERTEX_PROGRAM_ARB);
+    if (!this->ispointlight) {
+      glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, diffusebumpdirlightvertexprogramid);
+    }
+    else {
+      assert(0);
+    }
+    glue->glProgramEnvParameter4fARB(GL_VERTEX_PROGRAM_ARB, 0,
+                                     this->lightvec[0],
+                                     this->lightvec[1],
+                                     this->lightvec[2], 1);
+  }
 
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
                            (const GLvoid*) cache->getIndices());
 
+  if (use_vertex_program) {
+    cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
+    cc_glglue_glDisableClientState(glue, GL_COLOR_ARRAY);
+    glDisable(GL_VERTEX_PROGRAM_ARB);
+  }
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
   cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
   cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
 
   glDisable(GL_TEXTURE_CUBE_MAP); // unit 1
-  
-  // reenable texture units 1-n if enabled  
+
+  // reenable texture units 1-n if enabled
   for (i = 1; i <= lastenabled; i++) {
     if (enabled[i]) {
       cc_glglue_glActiveTexture(glue, GL_TEXTURE0+i);
@@ -492,7 +612,7 @@ soshape_bumprender::renderBump(SoState * state,
     glLoadMatrixf(oldtexture1matrix[0]);
     glMatrixMode(GL_MODELVIEW);
   }
-  
+
   cc_glglue_glActiveTexture(glue, GL_TEXTURE0);
 
   if (bumpmapmatrix != oldtexture0matrix) {
@@ -503,7 +623,7 @@ soshape_bumprender::renderBump(SoState * state,
   // disable texturing for unit 0 if not enabled
   if (!SoGLTextureEnabledElement::get(state)) glDisable(GL_TEXTURE_2D);
 }
-  
+
 void
 soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache * cache)
 {
@@ -514,17 +634,24 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
   const int n = cache->getNumIndices();
 
   int lastenabled = -1;
-  const SbBool * enabled = 
+  const SbBool * enabled =
     SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-  
+
+  // only use vertex program if two texture units (or less) are used
+  // (only two units supported in the vertex program)
+  SbBool use_vertex_program = lastenabled <= 1 && glue->has_arb_vertex_program;
+  if (use_vertex_program) {
+    if (!this->diffuseprogramsinitialized) {
+      this->initDiffusePrograms(glue);
+    }
+  }
+
   SbBool colorpervertex = cache->colorPerVertex();
 
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
                             (GLvoid*) &vptr->vertex);
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
-  cc_glglue_glNormalPointer(glue, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
-                            (GLvoid*) &vptr->normal);
   cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
 
   cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
@@ -547,10 +674,19 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
       cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
     }
   }
-  
+
+  if (use_vertex_program) {
+    glEnable(GL_VERTEX_PROGRAM_ARB);
+    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);
+  }
+
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
                            (const GLvoid*) cache->getIndices());
-  
+
+  if (use_vertex_program) {
+    glDisable(GL_VERTEX_PROGRAM_ARB);
+  }
+
   for (i = 1; i <= lastenabled; i++) {
     if (enabled[i]) {
       cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0 + i);
@@ -559,11 +695,10 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
   }
   if (lastenabled >= 1) {
     // reset to default
-    cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0); 
+    cc_glglue_glClientActiveTexture(glue, GL_TEXTURE0);
   }
 
   cc_glglue_glDisableClientState(glue, GL_VERTEX_ARRAY);
-  cc_glglue_glDisableClientState(glue, GL_NORMAL_ARRAY);
   cc_glglue_glDisableClientState(glue, GL_TEXTURE_COORD_ARRAY);
 
   if (colorpervertex) {

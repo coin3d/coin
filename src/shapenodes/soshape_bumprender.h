@@ -37,6 +37,7 @@ private:
   void calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light);
   SbVec3f getLightVec(const SbVec3f & v) const;
   void initPrograms(const cc_glglue * glue);
+  void initDiffusePrograms(const cc_glglue * glue);
   SbList <SbVec3f> cubemaplist;
   SbList <SbVec3f> tangentlist;
 
@@ -47,6 +48,10 @@ private:
   GLuint dirlightvertexprogramid;
   GLuint pointlightvertexprogramid;
   SbBool programsinitialized;
+
+  GLuint normalrenderingvertexprogramid;
+  GLuint diffusebumpdirlightvertexprogramid;
+  SbBool diffuseprogramsinitialized;
 
 };
 
