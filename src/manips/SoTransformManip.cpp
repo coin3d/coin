@@ -135,9 +135,10 @@ SoTransformManip::~SoTransformManip()
   delete this->children;
 }
 
+// Note: this documentation is also shared by some of the subclasses,
+// so keep it general enough to also be valid for those.
 /*!
-  Sets a dragger for this manipulator. The default dragger is a
-  SoTransformerDragger.
+  Sets up the dragger instance to be controlled by this manipulator.
 */
 void
 SoTransformManip::setDragger(SoDragger * newdragger)

@@ -48,6 +48,11 @@ SoJackManip::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoJackManip);
 }
 
+/*!
+  Default constructor. Allocates an SoCenterballDragger and an
+  SoSurroundScale node to surround the geometry within our part of the
+  scenegraph.
+*/
 SoJackManip::SoJackManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoJackManip);
@@ -62,6 +67,9 @@ SoJackManip::SoJackManip(void)
 }
 
 
+/*!
+  Destructor.
+*/
 SoJackManip::~SoJackManip()
 {
 }

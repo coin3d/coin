@@ -51,6 +51,11 @@ SoCenterballManip::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoCenterballManip);
 }
 
+/*!
+  Default constructor. Allocates an SoCenterballDragger and an
+  SoSurroundScale node to surround the geometry within our part of the
+  scenegraph.
+*/
 SoCenterballManip::SoCenterballManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCenterballManip);
@@ -70,16 +75,21 @@ SoCenterballManip::SoCenterballManip(void)
 }
 
 
+/*!
+  Destructor.
+*/
 SoCenterballManip::~SoCenterballManip()
 {
 }
 
+// Doc in superclass.
 void
 SoCenterballManip::setDragger(SoDragger * newDragger)
 {
   inherited::setDragger(newDragger);
 }
 
+// Doc in superclass.
 void
 SoCenterballManip::fieldSensorCB(void * f, SoSensor * s)
 {
@@ -88,6 +98,7 @@ SoCenterballManip::fieldSensorCB(void * f, SoSensor * s)
   inherited::fieldSensorCB(f, s);
 }
 
+// Doc in superclass.
 void
 SoCenterballManip::valueChangedCB(void * f, SoDragger * d)
 {
