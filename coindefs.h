@@ -20,14 +20,17 @@
 #ifndef COIN_DEFS_H
 #define COIN_DEFS_H
 
-// This file contains definitions which should _only_ be used during
-// library build. It is not installed for use by the application
-// programmer.
+/*
+  This file contains definitions which should _only_ be used during
+  library build. It is not installed for use by the application
+  programmer.
+*/
+
 #ifndef COIN_INTERNAL
 #error Only for internal use during library build.
-#endif // !COIN_INTERNAL
+#endif /* !COIN_INTERNAL */
 
-#include <config.h> // for HAVE_* defines
+#include <config.h> /* for HAVE_* defines */
 
 
 #ifdef __FILE__
@@ -50,12 +53,14 @@
 #define COIN_STUB_FUNC ((const char *)0L)
 #endif
 
-// COIN_STUB(): this is the method which prints out stub
-// information. Used where there is functionality missing.
+/*
+  COIN_STUB(): this is the method which prints out stub
+  information. Used where there is functionality missing.
+*/
 
 #if COIN_DEBUG
 
-#include <stdio.h> // fprintf()
+#include <stdio.h> /* fprintf() */
 
 #define COIN_STUB() \
   do { \
@@ -68,11 +73,11 @@
     (void)fprintf(stderr, "\n"); \
   } while (0)
 
-#else // !COIN_DEBUG
+#else /* !COIN_DEBUG */
 
 #define COIN_STUB()  do { } while (0)
 
-#endif // !COIN_DEBUG
+#endif /* !COIN_DEBUG */
 
 
-#endif // !COIN_DEFS_H
+#endif /* !COIN_DEFS_H */
