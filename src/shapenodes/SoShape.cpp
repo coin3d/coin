@@ -727,6 +727,9 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   }
 
   if (soshape_use_gl_vertex_arrays && ((PRIVATE(this)->flags & SoShapeP::DISABLE_VERTEX_ARRAY_CACHE) == 0)) {
+    // only create cache for built in Coin shapes. Make it possible to
+    // override by setting COIN_USE_GL_VERTEX_ARRAYS=-1
+    if (!this->isBuiltIn && (soshape_use_gl_vertex_arrays != -1)) return TRUE;
     soshape_staticdata * shapedata = soshape_get_staticdata();
     // lock mutex since pvcache is shared among all threads
     PRIVATE(this)->lock();
