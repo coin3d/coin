@@ -1860,15 +1860,12 @@ cc_glglue_context_destruct(void * ctx)
 }
 
 void
-cc_glglue_context_max_dimensions(short * width, short * height)
+cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 {
   
   GLint size[2] = { 128, 128 };  
   void * ctx = cc_glglue_context_create_offscreen(128, 128);
   const char * vendor;
-  const char * env;
-  static int forcedtilewidth = -1;
-  static int forcedtileheight = -1;
   SbBool ok;
 
   if (ctx) {
@@ -1893,28 +1890,16 @@ cc_glglue_context_max_dimensions(short * width, short * height)
         size[0] = 512;
         size[1] = 512;
       }
-      
-      // Makes it possible to override the default tilesizes. Should prove
-      // useful for debugging problems on remote sites.
-       if (forcedtilewidth == -1) {
-        env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
-        forcedtilewidth = env ? atoi(env) : 0;
-        env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
-        forcedtileheight = env ? atoi(env) : 0;
-      }
-      if (forcedtilewidth != 0) { size[0] = forcedtilewidth; }
-      if (forcedtileheight != 0) { size[1] = forcedtileheight; }
-      
       cc_glglue_context_reinstate_previous(ctx);
     }
     cc_glglue_context_destruct(ctx);
   }
 
-  if(size[0] < SHRT_MAX) *width = (short) size[0];
-  else *width = (short) SHRT_MAX;
+  if(size[0] < SHRT_MAX) *width = size[0];
+  else *width = SHRT_MAX;
 
-  if(size[1] < SHRT_MAX) *height = (short) size[1];
-  else *height = (short) SHRT_MAX;
+  if(size[1] < SHRT_MAX) *height = size[1];
+  else *height = SHRT_MAX;
   
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
