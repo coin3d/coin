@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -29,7 +29,7 @@
 
 #define SO_END_FACE_INDEX (-1)
 
-class SoConvexDataCache;
+class SoIndexedFaceSetP;
 
 class COIN_DLL_API SoIndexedFaceSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
@@ -67,8 +67,8 @@ private:
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
   virtual void notify(SoNotList * list);
-  SoConvexDataCache * convexCache;
-  int concavestatus;
+
+  SoIndexedFaceSetP * pimpl;
 };
 
 #endif // !COIN_SOINDEXEDFACESET_H
