@@ -63,6 +63,37 @@
   derived classes are.
 */
 
+/*!
+  \page dynload_overview Dynamic Loading of Extension Nodes
+
+  When Coin tries to instantiate a node based on the name of the
+  node type, it will if no such node type has been initialized,
+  scan the file system for a dynamically loadable extension node
+  with that given name.  On UNIX, extensions nodes are regular
+  .so files.  On Win32, extension nodes are built as DLLs.  On
+  Mac OS X systems, extension nodes are built as .dylib files.
+  Whether the dynamically loadable objects are named with or
+  without the prefix "lib" is optional.
+
+  See ftp://ftp.coin3d.org/pub/coin/src/dynloadsample.tar.gz for
+  an example using two dynamically loadable extension nodes.
+
+  Only a limited set of C++ compilers are supported as of yet.
+  This is because, to initialize the extension node, it is necessary
+  to know something about how the C++ compiler mangles the initClass
+  symbol.  If we don't know that, there is no way to locate the
+  initClass method in the library.
+
+  If your C++ compiler is not supported, the source file to add
+  support for a new compiler in is src/misc/cppmangle.cpp.  It
+  is fairly trivial to add support for new compilers, but if you
+  don't understand how, just ask us about it.  Patches with support
+  for new compilers are of course very welcome.
+
+  \sa SoType
+  
+  \since Coin 2.0
+*/
 
 #include <Inventor/errors/SoDebugError.h>
 
