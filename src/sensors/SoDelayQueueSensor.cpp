@@ -81,6 +81,10 @@ void
 SoDelayQueueSensor::setPriority(uint32_t pri)
 {
   this->priority = pri;
+
+  // FIXME: reschedule if new priority is != old priority?
+  // FIXME: immediately trigger if isScheduled()==TRUE and pri=0.
+  // 20000401 mortene.
 }
 
 /*!
@@ -115,8 +119,8 @@ SoDelayQueueSensor::getDefaultPriority(void)
 void
 SoDelayQueueSensor::schedule(void)
 {
-  // FIXME: is this correct, or should we perhaps re-schedule? 19990226
-  // mortene.
+  // FIXME: is this correct, or should we perhaps re-schedule?
+  // 19990226 mortene.
   if (this->isScheduled()) return;
 
   SoDB::getSensorManager()->insertDelaySensor(this);
@@ -132,8 +136,6 @@ void
 SoDelayQueueSensor::unschedule(void)
 {
 #if COIN_DEBUG
-  // FIXME: this triggers if I start a spin and then stop
-  // it. 19990226 mortene.
   if (!this->isScheduled()) {
     SoDebugError::postWarning("SoDelayQueueSensor::unschedule",
                               "tried to unschedule a sensor which is "
