@@ -22,10 +22,18 @@
   \brief The SoOverrideElement maintains a list of overridable elements and a list over which elements should be overridden.
 
   Only certain elements can be overridden.
+  
+  Coin has an optional feature that makes it possible to have separate
+  diffuse color and transparency override settings. Set the
+  environment variable COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE to
+  "1" to enable this feature. Please note that this feature will not
+  work when the PackedColor or VertexProperty node is used to specify
+  diffuse color and transparency.
 */
 
 #include <Inventor/elements/SoOverrideElement.h>
 
+#include <stdlib.h>
 #include <assert.h>
 
 #define SO_GET_OVERRIDE(flag) \
@@ -41,6 +49,24 @@ if (override) \
 else \
   element->flags &= ~flag
 
+
+static int COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE = -1;
+
+static SbBool
+use_separate_transp_diffuse(void)
+{
+  if (COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE < 0) {
+    COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE = 0;
+
+    char * env = (char*)
+      getenv("COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE");
+    if (env) {
+      COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE = atoi(env);
+    }
+  }
+  return COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE ?
+    TRUE : FALSE;
+}
 
 /*!
 \enum SoOverrideElement::FlagBits
@@ -384,14 +410,24 @@ SoOverrideElement::setCreaseAngleOverride(SoState * const state,
   SO_SET_OVERRIDE(CREASE_ANGLE);
 }
 
-//! FIXME: write doc.
+/*!
+  Can be used to set diffuse color override. This will also set the
+  transparency override. Since we feel this is a design flaw,
+  it is possible to override this behaviour by setting an environement
+  value called COIN_SEPARATE_DIFFUSE_TRANSPARENCY_OVERRIDE to 1.
 
+  Please note that separate override will not work for the PackedColor
+  or SoVertexProperty nodes.
+*/
 void
 SoOverrideElement::setDiffuseColorOverride(SoState * const state,
                                            SoNode * const /* node */,
                                            const SbBool override)
 {
   SO_SET_OVERRIDE(DIFFUSE_COLOR);
+  if (!use_separate_transp_diffuse()) {
+    SO_SET_OVERRIDE(TRANSPARENCY);
+  }
 }
 
 /*!
@@ -560,12 +596,19 @@ SoOverrideElement::setSpecularColorOverride(SoState * const state,
   SO_SET_OVERRIDE(SPECULAR_COLOR);
 }
 
-//! FIXME: write doc.
 
+/*!
+  Can be used to set the transparency override.
+
+  \sa setDiffuseColorOverride().
+*/
 void
 SoOverrideElement::setTransparencyOverride(SoState * const state,
                                            SoNode * const /* node */,
                                            const SbBool override)
 {
   SO_SET_OVERRIDE(TRANSPARENCY);
+  if (!use_separate_transp_diffuse()) {
+    SO_SET_OVERRIDE(DIFFUSE_COLOR);
+  }
 }

@@ -43,7 +43,6 @@ public:
     COMPLEXITY_TYPE  = 0x00000008,
     CREASE_ANGLE     = 0x00000010,
     DIFFUSE_COLOR    = 0x00000020,
-    TRANSPARENCY     = DIFFUSE_COLOR,
     DRAW_STYLE       = 0x00000040,
     EMISSIVE_COLOR   = 0x00000080,
     FONT_NAME        = 0x00000100,
@@ -57,7 +56,8 @@ public:
     SHAPE_HINTS      = 0x00010000,
     SHININESS        = 0x00020000,
     SPECULAR_COLOR   = 0x00040000,
-    POLYGON_OFFSET   = 0x00080000
+    POLYGON_OFFSET   = 0x00080000,
+    TRANSPARENCY     = 0x00100000
   };
 
   virtual void init(SoState * state);
