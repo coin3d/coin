@@ -66,13 +66,15 @@
 
 /*!
   \def SO_MOUSE_PRESS_EVENT(EVENT, BUTTON)
-  This macro evaluates to \c TRUE iff the \c EVENT represents a press on the
-  given \c BUTTON.
+
+  This macro evaluates to \c TRUE iff the \a EVENT represents a press
+  on the given \a BUTTON.
 */
 /*!
   \def SO_MOUSE_RELEASE_EVENT(EVENT, BUTTON)
-  This macro evaluates to \c TRUE iff the \c EVENT represents a release of the
-  given \c BUTTON.
+
+  This macro evaluates to \c TRUE iff the \a EVENT represents a
+  release of the given \a BUTTON.
 */
 
 
@@ -131,7 +133,7 @@ SoMouseButtonEvent::getButton(void) const
 
 /*!
   Convenience method for quickly checking if the given event is a
-  press on the given button, \c whichButton.
+  press on the given button, \a whichButton.
 
   \sa isButtonReleaseEvent(), isOfType(), getButton(), getState()
  */
@@ -150,7 +152,7 @@ SoMouseButtonEvent::isButtonPressEvent(const SoEvent * e,
 
 /*!
   Convenience method for quickly checking if the given event is a
-  release of the given button, \c whichButton.
+  release of the given button, \a whichButton.
 
   \sa isButtonPressEvent(), isOfType(), getButton(), getState()
  */
