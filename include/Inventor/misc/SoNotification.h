@@ -37,7 +37,7 @@ public:
     INTERP
   };
 
-  SoNotRec(SoBase * const base);
+  SoNotRec(SoBase * const notifbase);
   void setType(const SoNotRec::Type type);
   SoBase * getBase(void) const;
   SoNotRec::Type getType(void) const;
@@ -58,7 +58,7 @@ class SoVRMLInterpOutput;
 class SoNotList {
 public:
   SoNotList(void);
-  SoNotList(const SoNotList * const copyFrom);
+  SoNotList(const SoNotList * nl);
 
   void append(SoNotRec * const rec);
   void append(SoNotRec * const rec, SoField * const field);

@@ -17,24 +17,21 @@
  *
 \**************************************************************************/
 
-/*!
-  \class SoNotRec include/Inventor/misc/SoNotification.h
-  \brief The SoNotRec class ...
 
-  FIXME: write class doc
+/////// SoNotRec //////////////////////////////////////////////////////////
+
+/*!
+  \class SoNotRec SoNotification.h Inventor/misc/SoNotification.h
+  \brief The SoNotRec class is the basis for records in notification lists.
+  \ingroup general
 */
 
 /*!
-  \enum SoNotRec::Type include/Inventor/misc/SoNotification.h
-  The Type enum is used to specify the notification type.
-*/
+  \enum SoNotRec::Type
 
-/*!
-  \class SoNotList include/Inventor/misc/SoNotification.h
-  \brief The SoNotList class is a container class for a list of SoNotRec
-  notification records.
+  This enum is used to specify the type of the notification source
+  within the record.
 */
-
 
 #include <Inventor/misc/SoNotification.h>
 #if COIN_DEBUG
@@ -44,19 +41,15 @@
 #include <time.h>
 
 /*!
-  Constructor.
+  Constructor. Initializes the record with \a notifbase pointer.
 */
-SoNotRec::SoNotRec(SoBase * const theBase)
-  : base(theBase), prev(NULL)
+SoNotRec::SoNotRec(SoBase * const notifbase)
+  : base(notifbase), prev(NULL)
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoNotRec::SoNotRec", "rec %p, base %p",
-                         this, base);
-#endif // debug
 }
 
 /*!
-  Sets the notification type.
+  Set the \a type of the notification source of this record.
 */
 void
 SoNotRec::setType(const SoNotRec::Type type)
@@ -65,20 +58,16 @@ SoNotRec::setType(const SoNotRec::Type type)
 }
 
 /*!
-  Returns the SoBase pointer for this notification.
+  Returns the notification source within this record.
 */
 SoBase *
 SoNotRec::getBase(void) const
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoNotRec::getBase", "rec %p, base %p",
-                         this, this->base);
-#endif // debug
   return this->base;
 }
 
 /*!
-  Returns the notification type.
+  Returns the type of the notification source within this record.
 */
 SoNotRec::Type
 SoNotRec::getType(void) const
@@ -87,7 +76,8 @@ SoNotRec::getType(void) const
 }
 
 /*!
-  Returns the previous notification record.
+  Returns the previous notification source (i.e. the source that the
+  base within this record was auditing).
 */
 const SoNotRec *
 SoNotRec::getPrevious(void) const
@@ -97,7 +87,7 @@ SoNotRec::getPrevious(void) const
 }
 
 /*!
-  Sets the previous notification record.
+  Set pointer to the previous notification record.
 */
 void
 SoNotRec::setPrevious(const SoNotRec * const prev)
@@ -113,26 +103,31 @@ void
 SoNotRec::print(FILE * const file) const
 {
 #if COIN_DEBUG
-  fprintf(file, "SoNotRec %p {\n", this);
+  (void)fprintf(file, "SoNotRec %p {\n  type = ", this);
   switch (this->type) {
-  case CONTAINER:       fprintf(file, "  type = CONTAINER, \n"); break;
-  case PARENT:          fprintf(file, "  type = PARENT, \n"); break;
-  case SENSOR:          fprintf(file, "  type = SENSOR, \n"); break;
-  case FIELD:           fprintf(file, "  type = FIELD, \n"); break;
-  case ENGINE:          fprintf(file, "  type = ENGINE, \n"); break;
-  case INTERP:          fprintf(file, "  type = INTERP, \n"); break;
-  default:              fprintf(file, "  type = ???, \n"); break;
+  case CONTAINER:  (void)fprintf(file, "CONTAINER"); break;
+  case PARENT:     (void)fprintf(file, "PARENT"); break;
+  case SENSOR:     (void)fprintf(file, "SENSOR"); break;
+  case FIELD:      (void)fprintf(file, "FIELD"); break;
+  case ENGINE:     (void)fprintf(file, "ENGINE"); break;
+  case INTERP:     (void)fprintf(file, "INTERP"); break;
+  default:         (void)fprintf(file, "???"); break;
   }
-  if (this->base)     fprintf(file, "  base = %p, \n", this->base);
-  else                  fprintf(file, "  base = NULL\n");
-  if (this->prev) fprintf(file, "  previous = %p\n", this->prev);
-  else                  fprintf(file, "  previous = NULL\n");
-  fprintf(file, "}\n");
-#endif
+  (void)fprintf(file, ", \n  base = %p, \n  previous = %p\n}\n",
+                this->base, this->prev);
+#endif // COIN_DEBUG
 }
 
+/////// SoNotList /////////////////////////////////////////////////////////
+
 /*!
-  A constructor.
+  \class SoNotList SoNotification.h Inventor/misc/SoNotification.h
+  \brief The SoNotList class is a list of SoNotRec notification records.
+  \ingroup general
+*/
+
+/*!
+  Initialize list.
 */
 SoNotList::SoNotList(void)
 {
@@ -141,20 +136,21 @@ SoNotList::SoNotList(void)
   this->lastfield = NULL;
   this->lastengine = NULL;
   this->lastinterp = NULL;
-  this->stamp = 0;
+//    this->stamp = 0;
+  this->stamp = time(NULL);
 }
 
 /*!
-  Copy constructor.  Does a bitwise copy of the copyFrom object (no
+  Copy constructor. Does a bitwise copy of the \a nl object (no
   duplication of list elements).
 */
-SoNotList::SoNotList(const SoNotList * const copyFrom)
+SoNotList::SoNotList(const SoNotList * nl)
 {
-  *this = *copyFrom;
+  *this = *nl;
 }
 
 /*!
-  FIXME: write function documentation
+  Append \a rec notification source to the list.
 */
 void
 SoNotList::append(SoNotRec * const rec)
@@ -162,30 +158,28 @@ SoNotList::append(SoNotRec * const rec)
   // Link into list.
   rec->setPrevious(this->tail);
   this->tail = rec;
-  if (!this->head) this->head = this->tail;
+  if (!this->head) this->head = rec;
 
   if (!this->firstnoderec) this->firstnoderec = rec;
-  this->stamp = time(NULL);
+//    this->stamp = time(NULL);
 }
 
 /*!
-  FIXME: write function documentation
+  Append \a rec notification source to the list, setting \a field as
+  the last field having been influenced by the notification process.
 */
 void
 SoNotList::append(SoNotRec * const rec, SoField * const field)
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoNotList::append", "rec %p, base %p, field %p",
-                         rec, rec->getBase(), field);
-#endif // debug
-
   assert(field);
   this->lastfield = field;
   this->append(rec);
 }
 
 /*!
-  FIXME: write function documentation
+  Append \a rec notification source to the list, setting \a interpout
+  as the last VRML interpolator having been influenced by the
+  notification process.
 */
 void
 SoNotList::append(SoNotRec * const rec, SoVRMLInterpOutput * const interpout)
@@ -196,7 +190,9 @@ SoNotList::append(SoNotRec * const rec, SoVRMLInterpOutput * const interpout)
 }
 
 /*!
-  FIXME: write function documentation
+  Append \a rec notification source to the list, setting \a engineout
+  as the last engine output field having been influenced by the
+  notification process.
 */
 void
 SoNotList::append(SoNotRec * const rec, SoEngineOutput * const engineout)
@@ -207,7 +203,7 @@ SoNotList::append(SoNotRec * const rec, SoEngineOutput * const engineout)
 }
 
 /*!
-  FIXME: write function documentation
+  Set the \a type of the last notification record in the list.
 */
 void
 SoNotList::setLastType(const SoNotRec::Type type)
@@ -227,7 +223,7 @@ SoNotList::setLastType(const SoNotRec::Type type)
 }
 
 /*!
-  This function returns the first record in the list.
+  Returns the first record in the list.
 */
 SoNotRec *
 SoNotList::getFirstRec(void) const
@@ -236,7 +232,7 @@ SoNotList::getFirstRec(void) const
 }
 
 /*!
-  This function returns the last record in the list.
+  Returns the last record in the list.
 */
 SoNotRec *
 SoNotList::getLastRec(void) const
@@ -254,7 +250,7 @@ SoNotList::getFirstRecAtNode(void) const
 }
 
 /*!
-  Returns the last field set by notification.
+  Returns the last field touched by notification.
 */
 SoField *
 SoNotList::getLastField(void) const
@@ -263,7 +259,8 @@ SoNotList::getLastField(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the last VRML interpolator output field touched by
+  notification.
 */
 SoVRMLInterpOutput *
 SoNotList::getLastInterpOutput(void) const
@@ -272,7 +269,7 @@ SoNotList::getLastInterpOutput(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the last engine output field touched by notification.
 */
 SoEngineOutput *
 SoNotList::getLastEngineOutput(void) const
@@ -281,7 +278,7 @@ SoNotList::getLastEngineOutput(void) const
 }
 
 /*!
-  Returns the time stamp for this notification.
+  Returns the time stamp when the notification started.
 */
 uint32_t
 SoNotList::getTimeStamp(void) const
@@ -290,18 +287,19 @@ SoNotList::getTimeStamp(void) const
 }
 
 /*!
-  Dump contents of list. For debugging only.
+  Dump contents of list from tail record and backwards. Only available
+  if compiled with debug information on.
 */
 void
 SoNotList::print(FILE * const file) const
 {
 #if COIN_DEBUG
-  fprintf(file, "SoNotList {\n");
+  (void)fprintf(file, "SoNotList {\n");
   const SoNotRec * ptr = this->tail;
   while (ptr) {
     ptr->print(file);
     ptr = ptr->getPrevious();
   }
-  fprintf(file, "}\n");
+  (void)fprintf(file, "}\n");
 #endif // COIN_DEBUG
 }
