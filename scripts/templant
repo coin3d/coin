@@ -45,6 +45,11 @@
 #  $Id$
 #
 #  $Log$
+#  Revision 1.3  1999/12/05 09:41:48  mortene
+#  Made it possible to recognize "##$" as a token prefix in addition to
+#  "//$". Will be put in use later when "templanting" the Makefile.am
+#  files with common rules.
+#
 #  Revision 1.2  1999/09/23 06:31:49  mortene
 #  Cleaned up the sources a bit to be more in conformance with the wanted
 #  coding style.
@@ -110,6 +115,8 @@ $inline = 0;             # inline functions
 $debug = 0;              # dump debug output
 $compact = 1;            # only wrap level-0 templates with comments
 $spacing = 0;            # replace TABs with spaces, and remove WS at EOL
+
+$prefix = '(\#\#\$|//\$)';
 
 @incpath = ();
 push( @incpath, "" );    # $incpath[0] is set to the current file's directory
@@ -224,19 +231,19 @@ sub FoldTemplates { ########################################################
 
 template:
     for ( $line = scalar( @lines ) - 1; $line >= 0; $line-- ) {
-        if ( $lines[$line] =~ m#^//\$ +BEGIN +TEMPLATE +#o ) {
+        if ( $lines[$line] =~ m|^$prefix +BEGIN +TEMPLATE +|o ) {
             chop( $proto = $lines[$line] );
-            $proto =~ s#^//\$ +BEGIN +TEMPLATE +##;
+            $proto =~ s|^$prefix +BEGIN +TEMPLATE +||;
             $name = $proto;
             $name =~ s/^([a-zA-Z0-9_-]+)\(.*/$1/og;
             $i = $line + 1;
             while ( $i < scalar( @lines ) ) {
-                if ( $lines[$i] =~ m#^//\$ +END +TEMPLATE +#o ) {
+                if ( $lines[$i] =~ m|^$prefix +END +TEMPLATE +|o ) {
                     chop( $temp = $lines[$i] );
-                    $temp =~ s#^//\$ +END +TEMPLATE +##;
+                    $temp =~ s|^$prefix +END +TEMPLATE +||;
                     if ( $temp eq $name ) {
                         splice( @lines, $line, ($i - $line + 1), 
-                             ( "//\$ INSERT TEMPLATE " . $proto . "\n" ) );
+                             ( "$1 INSERT TEMPLATE " . $proto . "\n" ) );
                         next template;
                     } else {
                         print STDERR "ERROR: TEMPLATE BEGIN ($name) / END mismatch.\n";
@@ -264,14 +271,14 @@ sub UnfoldTemplates { ######################################################
 
     $templates = 0;
     for ( $line = 0; $line < @lines; $line++ ) {
-        if ( $lines[$line] =~ /^\/\/\$ +INSERT +TEMPLATE +/o ) {
+        if ( $lines[$line] =~ /^$prefix +INSERT +TEMPLATE +/o ) {
             chop( $proto = $lines[$line] );
-            $proto =~ s#^//\$ +INSERT +TEMPLATE +##o;
+            $proto =~ s|^$prefix +INSERT +TEMPLATE +||o;
             $name = $proto;
             $name =~ s/\(.*//o;
 
             $filename = &FindFile( $name . ".tpl" );
-            print "READING TEMPLATE $filename\n" if $debug;
+            print "READING TEMPLATE '$filename'\n" if $debug;
             if ( ! -f $filename || ! open( TEMPLATE, $filename ) ) {
                 print STDERR "ERROR: Unable to open '$filename' ($name).\n";
                 exit( -1 );
@@ -283,13 +290,21 @@ sub UnfoldTemplates { ######################################################
             $arguments = $proto;
             $arguments =~ s/^[^\(]+\([ \t]*(.*)[ \t]*\)[^()]*$/\1/;
             @arguments = &SplitArgs( $arguments );
-            if ( $template[0] !~ /^\/\/\$ +TEMPLATE +/ ) {
+
+            if ($debug) {
+                foreach (@arguments) {
+                    print "argument: ``$_''\n";
+                }
+            }
+
+            if ( $template[0] !~ /^$prefix +TEMPLATE +/ ) {
                 print STDERR $filename, " is not a valid template file.\n";
                 exit( -1 );
             }
 
             chop( $prototype = shift( @template ) );
-            $prototype =~ s#^//\$ +TEMPLATE +##o;
+            $prototype =~ s|^$prefix +TEMPLATE +||o;
+            $prefixstr = $1;
             $prototypename = $prototype;
             $prototypename =~ s/\(.*//;
             if ( $prototypename ne $name ) {
@@ -304,6 +319,11 @@ sub UnfoldTemplates { ######################################################
                 s/^[ \t]+//;
                 s/[ \t]+$//;
             }
+            if ($debug) {
+                foreach (@templatevariables) {
+                    print "templatevar: ``$_''\n";
+                }
+            }
             if ( scalar( @templatevariables ) != scalar( @arguments ) ) {
                 print STDERR $filename, ": template call in '", $file,
                              "' does not match prototype.\n";
@@ -316,17 +336,17 @@ sub UnfoldTemplates { ######################################################
             for ( $index = 0; $index < scalar( @arguments ); $index++ ) {
                 for ( $linenum = 0; $linenum < scalar( @template ); $linenum++ ) {
                     $template[$linenum] =~
-   s/([^#])#[ \t]*\b$templatevariables[$index]\b/\1"$arguments[$index]"/g;
+   s/([^#])#[ \t]*$templatevariables[$index]/\1"$arguments[$index]"/g;
                     $template[$linenum] =~
-   s/([ \t]*##[ \t]*)?\b$templatevariables[$index]\b([ \t]*##[ \t]*)?/$arguments[$index]/g;
+   s/([ \t]*##[ \t]*)?$templatevariables[$index]([ \t]*##[ \t]*)?/$arguments[$index]/g;
                 }
             }
 
             # insert template
             if ( $level == 0 || ! $compact ) { # add header and footer
-                unshift( @template, "//\$ BEGIN TEMPLATE " .
+                unshift( @template, "$prefixstr BEGIN TEMPLATE " .
                          $name . "(" . join( ", ", @arguments ) . ")\n" );
-                push( @template, "//\$ END TEMPLATE " . $name . "\n" );
+                push( @template, "$prefixstr END TEMPLATE " . $name . "\n" );
             }
             splice( @lines, $line, 1, @template );
             $line += @template - 1;
@@ -342,16 +362,16 @@ sub FoldInlining { #########################################################
 
 session:
     for ( $line = @lines - 1; $line >= 0; $line-- ) {
-        if ( $lines[$line] =~ m#^//\$ +BEGIN +IMPORT +INLINE +#o ) {
+        if ( $lines[$line] =~ m|^$prefix +BEGIN +IMPORT +INLINE +|o ) {
             chop( $from = $lines[$line] );
-            $from =~ s#^//\$ +BEGIN +IMPORT +INLINE +##o;
+            $from =~ s|^$prefix +BEGIN +IMPORT +INLINE +||o;
             for ( $i = $line + 1; $i < scalar( @lines ); $i++ ) {
-                if ( $lines[$i] =~ m#^//\$ +END +IMPORT +INLINE +#o ) {
+                if ( $lines[$i] =~ m|^$prefix +END +IMPORT +INLINE +|o ) {
                     chop( $temp = $lines[$i] );
-                    $temp =~ s#^//\$ +END +IMPORT +INLINE +##o;
+                    $temp =~ s|^$prefix +END +IMPORT +INLINE +||o;
                     if ( $from eq $temp ) {
                         $lines[$line] =~
-                            s#^//\$ +BEGIN +IMPORT +INLINE +#//\$ IMPORT INLINE #o;
+                            s|^$prefix +BEGIN +IMPORT +INLINE +|$prefix IMPORT INLINE |o;
                         splice( @lines, $line + 1, $i - $line, () );
                         next session;
                     } else {
@@ -373,10 +393,10 @@ sub FoldInliningSource { ###################################################
 
     @source = ();
     for ( $line = 0; $line < @lines; $line++ ) {
-        if ( $lines[$line] =~ m#^//\$ +IMPORT +INLINE +#o ) {
+        if ( $lines[$line] =~ m|^$prefix +IMPORT +INLINE +|o ) {
             $modified = 0;
             chop( $from = $lines[$line] );
-            $from =~ s#^//\$ +IMPORT +INLINE +##o;
+            $from =~ s|^$prefix +IMPORT +INLINE +||o;
             $fromfile = &FindFile( $from );
             if ( ! -f $fromfile || ! open( SOURCE, $fromfile ) ) {
                 print "ERROR: Could not open file '$from'.\n";
@@ -385,11 +405,11 @@ sub FoldInliningSource { ###################################################
             @source = <SOURCE>;
             close( SOURCE );
             for ( $i = 0; $i < scalar( @source ); $i++ ) {
-                if ( $source[$i] =~ m#^//\$ +BEGIN +EXPORT +INLINE *$#o ) {
-                    splice( @source, $i, 2, "//\$ EXPORT INLINE\n" );
+                if ( $source[$i] =~ m|^$prefix +BEGIN +EXPORT +INLINE *$|o ) {
+                    splice( @source, $i, 2, "$1 EXPORT INLINE\n" );
                     $modified = 1;
                     $i -= 1;
-                } elsif ( $source[$i] =~ m#^//\$ +END +EXPORT +INLINE *$#o ) {
+                } elsif ( $source[$i] =~ m|^$prefix +END +EXPORT +INLINE *$|o ) {
                     splice( @source, $i - 1, 2 );
                     $modified = 1;
                     $i -= 2;
@@ -420,9 +440,10 @@ sub UnfoldInlining { #######################################################
     @inline = ();
 line:
     for ( $line = 0; $line < @lines; $line++ ) {
-        if ( $lines[$line] =~ m#^//\$ +IMPORT +INLINE +#o ) {
+        if ( $lines[$line] =~ m|^$prefix +IMPORT +INLINE +|o ) {
             chop( $from = $lines[$line] );
-            $from =~ s#^//\$ +IMPORT +INLINE +##o;
+            $from =~ s|^$prefix +IMPORT +INLINE +||o;
+            $prefixstr = $1;
             $fromfile = &FindFile( $from );
             if ( ! -f $fromfile || ! open( SOURCE, $fromfile ) ) {
                 print STDERR "ERROR:  Unable to open '$from'.\n";
@@ -432,7 +453,7 @@ line:
             close( SOURCE );
             @inline = ();
             for ( $i = 0; $i < scalar( @source ); $i++ ) {
-                if ( $source[$i] =~ m#^//\$ +EXPORT +INLINE$#o ) {
+                if ( $source[$i] =~ m|^$prefix +EXPORT +INLINE$|o ) {
                     push( @inline, "\n" ) if ( $modified == 1 );
                     $modified = 0;
                     $c = 0;
@@ -455,14 +476,14 @@ line:
                     print "ERROR: Didn't find end of function.\n";
                     exit( -1 );
 contin:
-                    $source[$i] = "//\$ BEGIN EXPORT INLINE\n";
+                    $source[$i] = "$prefixstr BEGIN EXPORT INLINE\n";
                     splice( @source, $i + 1, 0, ( "#ifndef $define\n" ) );
                     $j++;
                     splice( @source, $j + 1, 0, "#endif // ! $define\n" );
-                    splice( @source, $j + 2, 0, "//\$ END EXPORT INLINE\n" );
-                } elsif ( $source[$i] =~ m#^//\$ +BEGIN +EXPORT +INLINE *$#o ) {
+                    splice( @source, $j + 2, 0, "$prefixstr END EXPORT INLINE\n" );
+                } elsif ( $source[$i] =~ m|^$prefix +BEGIN +EXPORT +INLINE *$|o ) {
                     for ( $j = $i + 3; $j < scalar( @source ); $j++ ) {
-                        if ( $source[$j] =~ m#^//\$ +END +EXPORT +INLINE *$#o ) {
+                        if ( $source[$j] =~ m|^$prefix +END +EXPORT +INLINE *$|o ) {
                             if ( scalar( @inline ) > 0 ) {
                                 push( @inline, "\n" );
                             }
@@ -495,8 +516,8 @@ contin2:
             }
             unshift( @inline, "\n" );
             unshift( @inline, "#define $define\n" );
-            unshift( @inline, "//\$ BEGIN IMPORT INLINE $from\n" );
-            push( @inline, "//\$ END IMPORT INLINE $from\n" );
+            unshift( @inline, "$prefixstr BEGIN IMPORT INLINE $from\n" );
+            push( @inline, "$prefixstr END IMPORT INLINE $from\n" );
             splice( @lines, $line, 1, @inline );
         }
     }
@@ -620,9 +641,11 @@ Options:
 Environment:
     TEMPLANT_INCLUDE     : include directories for templant
 Directives:
-    //\$ INSERT TEMPLATE TemplateName( args )
-    //\$ IMPORT INLINE FilePath
-    //\$ EXPORT INLINE
+    [PREFIXSTR] INSERT TEMPLATE TemplateName( args )
+    [PREFIXSTR] IMPORT INLINE FilePath
+    [PREFIXSTR] EXPORT INLINE
+
+    ([PREFIXSTR] can be either ``##\$'' or ``//\$'').
 END_OF_USAGE
 }
 
