@@ -707,8 +707,6 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLIndexedLineSet.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLIndexedShape.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLInline.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLInterpOutput.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLInterpOutputData.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLInterpolator.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLLOD.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLLight.h \
