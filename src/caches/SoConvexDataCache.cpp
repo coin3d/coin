@@ -27,7 +27,7 @@
 
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/misc/SoTessellator.h>
+#include <Inventor/SbTesselator.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <assert.h>
 
@@ -222,8 +222,8 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
   tessdata.firstvertex = TRUE;
 
   // create tessellator
-  SoTessellator tessellator(do_triangle, &tessdata);
-
+  SbTesselator tessellator(do_triangle, &tessdata);
+  
   // if PER_FACE binding, the binding must change to PER_FACE_INDEXED
   // if convexify data is used.
   tessdata.vertexIndex = &this->coordIndices;
@@ -308,9 +308,9 @@ vertex_tri(tVertexInfo *info, tTessData *tessdata)
 }
 
 //
-// handles callbacks from SoTessellator
+// handles callbacks from SbTesselator
 // 
-void 
+static void 
 do_triangle(void *v0, void *v1, void *v2, void *data)
 {
   tTessData *tessdata = (tTessData*)data;

@@ -265,7 +265,7 @@ void
 SoFaceSet::GLRender(SoGLRenderAction * action)
 {
   // FIXME: check for concave polygons, and use the
-  // SoTessellator to draw triangles...
+  // SbTesselator to draw triangles...
 
   SoState * state = action->getState();
 

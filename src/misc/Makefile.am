@@ -29,9 +29,7 @@ ALLSOURCES = \
 	SoNotification.cpp \
 	SoNotification.h \
 	SoState.cpp \
-	SoState.h \
-	SoTessellator.cpp \
-	SoTessellator.h
+	SoState.h
 
 libmisc_la_SOURCES = $(ALLSOURCES)
 libmiscLINKHACK_la_SOURCES = $(ALLSOURCES)

@@ -92,7 +92,7 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
 
-ALLSOURCES =  	SoBase.cpp 	SoBase.h 	SoChildList.cpp 	SoChildList.h 	SoGL.cpp 	SoGL.h 	SoGLImage.cpp 	SoGLImage.h 	SoNormalGenerator.cpp 	SoNormalGenerator.h 	SoNotification.cpp 	SoNotification.h 	SoState.cpp 	SoState.h 	SoTessellator.cpp 	SoTessellator.h
+ALLSOURCES =  	SoBase.cpp 	SoBase.h 	SoChildList.cpp 	SoChildList.h 	SoGL.cpp 	SoGL.h 	SoGLImage.cpp 	SoGLImage.h 	SoNormalGenerator.cpp 	SoNormalGenerator.h 	SoNotification.cpp 	SoNotification.h 	SoState.cpp 	SoState.h
 
 
 libmisc_la_SOURCES = $(ALLSOURCES)
@@ -118,12 +118,11 @@ LDFLAGS = @LDFLAGS@
 libmiscLINKHACK_la_LDFLAGS = 
 libmiscLINKHACK_la_LIBADD = 
 libmiscLINKHACK_la_OBJECTS =  SoBase.lo SoChildList.lo SoGL.lo \
-SoGLImage.lo SoNormalGenerator.lo SoNotification.lo SoState.lo \
-SoTessellator.lo
+SoGLImage.lo SoNormalGenerator.lo SoNotification.lo SoState.lo
 libmisc_la_LDFLAGS = 
 libmisc_la_LIBADD = 
 libmisc_la_OBJECTS =  SoBase.lo SoChildList.lo SoGL.lo SoGLImage.lo \
-SoNormalGenerator.lo SoNotification.lo SoState.lo SoTessellator.lo
+SoNormalGenerator.lo SoNotification.lo SoState.lo
 CXXFLAGS = @CXXFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -145,7 +144,7 @@ TAR = gtar
 GZIP_ENV = --best
 DEP_FILES =  .deps/SoBase.P .deps/SoChildList.P .deps/SoGL.P \
 .deps/SoGLImage.P .deps/SoNormalGenerator.P .deps/SoNotification.P \
-.deps/SoState.P .deps/SoTessellator.P
+.deps/SoState.P
 SOURCES = $(libmiscLINKHACK_la_SOURCES) $(libmisc_la_SOURCES)
 OBJECTS = $(libmiscLINKHACK_la_OBJECTS) $(libmisc_la_OBJECTS)
 

@@ -48,6 +48,8 @@ libCoin_la_SOURCES = \
 	SbCylinder.h \
 	SbDict.cpp \
 	SbDict.h \
+	SbHeap.cpp \
+	SbHeap.h \
 	SbLine.cpp \
 	SbLine.h \
 	SbMatrix.cpp \
@@ -62,6 +64,8 @@ libCoin_la_SOURCES = \
 	SbSphere.h \
 	SbString.cpp \
 	SbString.h \
+	SbTesselator.cpp \
+	SbTesselator.h \
 	SbTime.cpp \
 	SbTime.h \
 	SbVec2f.cpp \
@@ -122,6 +126,7 @@ libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbColor4f.h \
 	$(top_srcdir)/include/Inventor/SbCylinder.h \
 	$(top_srcdir)/include/Inventor/SbDict.h \
+	$(top_srcdir)/include/Inventor/SbHeap.h \
 	$(top_srcdir)/include/Inventor/SbLine.h \
 	$(top_srcdir)/include/Inventor/SbMatrix.h \
 	$(top_srcdir)/include/Inventor/SbName.h \
@@ -129,6 +134,7 @@ libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbRotation.h \
 	$(top_srcdir)/include/Inventor/SbSphere.h \
 	$(top_srcdir)/include/Inventor/SbString.h \
+	$(top_srcdir)/include/Inventor/SbTesselator.h \
 	$(top_srcdir)/include/Inventor/SbTime.h \
 	$(top_srcdir)/include/Inventor/SbVec2f.h \
 	$(top_srcdir)/include/Inventor/SbVec2s.h \
