@@ -253,7 +253,7 @@
 
 SO_NODE_SOURCE(SoVRMLBackground);
 
-static char scenery_data[] = {
+static char background_scenery_data[] = {
   "#Inventor 2.1 ascii\n\n"
   "  BaseColor { rgb [1 1 1] }\n"
   "  Coordinate3 { point [-1 -1 -1, -1 1 -1, 1 1 -1, 1 -1 -1,   -1 -1 1, -1 1 1, 1 1 1, 1 -1 1]}\n"
@@ -261,9 +261,9 @@ static char scenery_data[] = {
   "  TextureCoordinateBinding { value PER_VERTEX_INDEXED }\n"
 };
 
-static void geometrychangeCB(void * data, SoSensor * sensor);
-static void vrmltexturechangeCB(void * data, SoSensor * sensor);
-static void bindingchangeCB(void * data, SoSensor * sensor);
+static void background_geometrychangeCB(void * data, SoSensor * sensor);
+static void background_vrmltexturechangeCB(void * data, SoSensor * sensor);
+static void background_bindingchangeCB(void * data, SoSensor * sensor);
 
 class SoVRMLBackgroundP {
 
@@ -357,8 +357,8 @@ SoVRMLBackground::SoVRMLBackground(void)
   PRIVATE(this)->children = new SoChildList(this);
   
   // Binding sensors 
-  PRIVATE(this)->setbindsensor = new SoFieldSensor(bindingchangeCB, PRIVATE(this));
-  PRIVATE(this)->isboundsensor = new SoFieldSensor(bindingchangeCB, PRIVATE(this));
+  PRIVATE(this)->setbindsensor = new SoFieldSensor(background_bindingchangeCB, PRIVATE(this));
+  PRIVATE(this)->isboundsensor = new SoFieldSensor(background_bindingchangeCB, PRIVATE(this));
  
   PRIVATE(this)->setbindsensor->attach(&this->set_bind);
   PRIVATE(this)->isboundsensor->attach(&this->isBound);
@@ -367,10 +367,10 @@ SoVRMLBackground::SoVRMLBackground(void)
   PRIVATE(this)->isboundsensor->setPriority(5);
 
   // Geometry sensors
-  PRIVATE(this)->groundanglesensor = new SoFieldSensor(geometrychangeCB, PRIVATE(this));
-  PRIVATE(this)->groundcolorsensor = new SoFieldSensor(geometrychangeCB, PRIVATE(this));
-  PRIVATE(this)->skyanglesensor = new SoFieldSensor(geometrychangeCB, PRIVATE(this));
-  PRIVATE(this)->skycolorsensor = new SoFieldSensor(geometrychangeCB, PRIVATE(this));
+  PRIVATE(this)->groundanglesensor = new SoFieldSensor(background_geometrychangeCB, PRIVATE(this));
+  PRIVATE(this)->groundcolorsensor = new SoFieldSensor(background_geometrychangeCB, PRIVATE(this));
+  PRIVATE(this)->skyanglesensor = new SoFieldSensor(background_geometrychangeCB, PRIVATE(this));
+  PRIVATE(this)->skycolorsensor = new SoFieldSensor(background_geometrychangeCB, PRIVATE(this));
 
   PRIVATE(this)->groundanglesensor->attach(&this->groundAngle);
   PRIVATE(this)->groundcolorsensor->attach(&this->groundColor);
@@ -383,12 +383,12 @@ SoVRMLBackground::SoVRMLBackground(void)
   PRIVATE(this)->skycolorsensor->setPriority(5);
 
   // URL/skybox sensors  
-  PRIVATE(this)->backurlsensor = new SoFieldSensor(vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->fronturlsensor = new SoFieldSensor(vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->lefturlsensor = new SoFieldSensor(vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->righturlsensor = new SoFieldSensor(vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->bottomurlsensor = new SoFieldSensor(vrmltexturechangeCB, PRIVATE(this));
-  PRIVATE(this)->topurlsensor = new SoFieldSensor(vrmltexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->backurlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->fronturlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->lefturlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->righturlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->bottomurlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
+  PRIVATE(this)->topurlsensor = new SoFieldSensor(background_vrmltexturechangeCB, PRIVATE(this));
 
   PRIVATE(this)->backurlsensor->attach(&this->backUrl);
   PRIVATE(this)->fronturlsensor->attach(&this->frontUrl);
@@ -710,7 +710,7 @@ SoVRMLBackgroundP::buildGeometry()
 
   SoDB::init();
   SoInput in;
-  in.setBuffer(scenery_data, sizeof(scenery_data));
+  in.setBuffer(background_scenery_data, sizeof(background_scenery_data));
   SoSeparator * cubedata = SoDB::readAll(&in);
 
   SoShapeHints * shapehintscube = new SoShapeHints;
@@ -889,7 +889,7 @@ SoVRMLBackgroundP::modifyCubeFace(SoMFString & urls, SoSeparator * sep, const in
 
 
 void
-vrmltexturechangeCB(void * data, SoSensor * sensor)
+background_vrmltexturechangeCB(void * data, SoSensor * sensor)
 {
 
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
@@ -940,7 +940,7 @@ vrmltexturechangeCB(void * data, SoSensor * sensor)
 }
 
 void
-geometrychangeCB(void * data, SoSensor * sensor)
+background_geometrychangeCB(void * data, SoSensor * sensor)
 {
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
 
@@ -954,7 +954,7 @@ geometrychangeCB(void * data, SoSensor * sensor)
 }
 
 void
-bindingchangeCB(void * data, SoSensor * sensor)
+background_bindingchangeCB(void * data, SoSensor * sensor)
 {
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
 
@@ -964,10 +964,10 @@ bindingchangeCB(void * data, SoSensor * sensor)
   // nodes aswell) (11Aug2003 handegar)
 
   if (sensor == pimpl->setbindsensor) {
-    SoDebugError::postWarning("bindingchangeCB", "'set_bind' event not implemented yet");
+    SoDebugError::postWarning("background_bindingchangeCB", "'set_bind' event not implemented yet");
   }
   else if (sensor == pimpl->isboundsensor) {
-    SoDebugError::postWarning("bindingchangeCB", "'isBound' event not implemented yet");
+    SoDebugError::postWarning("background_bindingchangeCB", "'isBound' event not implemented yet");
   }
 
 }
