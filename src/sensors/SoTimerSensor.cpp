@@ -188,19 +188,24 @@ void
 SoTimerSensor::unschedule(void)
 {
 #if DEBUG_TIMERSENSOR_TRACE // debug
-  SoDebugError::postInfo("SoTimerSensor::unschedule", "");
+  SoDebugError::postInfo("SoTimerSensor::unschedule", "%p start", this);
 #endif // debug
 
 #if COIN_DEBUG
   if (!this->isScheduled()) {
     SoDebugError::postWarning("SoTimerSensor::unschedule",
-                              "not scheduled!");
+                              "%p not scheduled (istriggering=%s)",
+                              this, this->istriggering ? "TRUE" : "FALSE");
     return;
   }
 #endif // COIN_DEBUG
 
   if (this->istriggering) this->wasunscheduled = TRUE;
   else inherited::unschedule();
+
+#if DEBUG_TIMERSENSOR_TRACE // debug
+  SoDebugError::postInfo("SoTimerSensor::unschedule", "%p done", this);
+#endif // debug
 }
 
 /*!
@@ -211,7 +216,7 @@ void
 SoTimerSensor::trigger(void)
 {
 #if DEBUG_TIMERSENSOR_TRACE // debug
-  SoDebugError::postInfo("SoTimerSensor::trigger", "");
+  SoDebugError::postInfo("SoTimerSensor::trigger", "%p start", this);
 #endif // debug
 
   this->istriggering = TRUE;
@@ -229,6 +234,10 @@ SoTimerSensor::trigger(void)
 
   this->istriggering = FALSE;
   this->wasunscheduled = FALSE;
+
+#if DEBUG_TIMERSENSOR_TRACE // debug
+  SoDebugError::postInfo("SoTimerSensor::trigger", "%p done", this);
+#endif // debug
 }
 
 /*!
