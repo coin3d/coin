@@ -698,8 +698,17 @@ SoPath::removeIndex(SoNode * const parent, const int oldindex)
   if (parent == this->nodes[this->getFullLength() - 1]) return;
 
   int pos = this->findNode(parent);
+#if COIN_DEBUG
   // shouldn't be notified if parent is not in path
-  assert(pos >= 0 && pos < this->getFullLength()-1);
+  if (!(pos >= 0 && pos < this->getFullLength()-1)) {
+    SoDebugError::post("SoPath::removeIndex",
+                       "failure: pos==%d (len=%d), parent=%p (%s)",
+                       pos, this->getFullLength(),
+                       parent,
+                       parent->getTypeId().getName().getString());
+    return;
+  }
+#endif // COIN_DEBUG
   pos++;
 
   if (oldindex < this->indices[pos]) this->indices[pos]--;
