@@ -29,4 +29,5 @@
 #include "storage.c"
 #include "sched.c"
 #include "sync.c"
+#include "wpool.c"
 /* #include "barrier.c" */

@@ -34,6 +34,7 @@
 #include "SbHeap.cpp"
 #include "SbImage.cpp"
 #include "SbLine.cpp"
+#include "SbDPLine.cpp"
 #include "SbMatrix.cpp"
 #include "SbDPMatrix.cpp"
 #include "SbName.cpp"
