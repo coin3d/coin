@@ -57,7 +57,7 @@ simage_wrapper_cleanup(void)
   free(simage_instance);
 }
 
-/* backup-functions. More robust when simage is an old version, or not available */ 
+/* backup-functions. More robust when simage is an old version, or not available */
 
 static int
 simage_wrapper_versionMatchesAtLeast(int major,
@@ -98,19 +98,19 @@ simage_wrapper_save_image(const char * jada,
   return 0;
 }
 
-const char * 
+const char *
 simage_wrapper_get_saver_extensions(void * handle)
 {
   return "";
 }
 
-const char * 
+const char *
 simage_wrapper_get_saver_fullname(void * handle)
 {
   return NULL;
 }
 
-const char * 
+const char *
 simage_wrapper_get_saver_description(void * handle)
 {
   return NULL;
@@ -215,6 +215,7 @@ simage_wrapper(void)
     SIMAGEWRAPPER_REGISTER_FUNC(simage_next_power_of_two, simage_next_power_of_two_t);
 
     if (simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
+#if !defined(HAVE_LIBSIMAGE) || defined(SIMAGE_VERSION_1_1) 
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_num_savers, simage_get_num_savers_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_handle, simage_get_saver_handle_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_check_save_supported, simage_check_save_supported_t);
@@ -222,15 +223,16 @@ simage_wrapper(void)
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_extensions, simage_get_saver_extensions_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_fullname, simage_get_saver_fullname_t);
       SIMAGEWRAPPER_REGISTER_FUNC(simage_get_saver_description, simage_get_saver_description_t);
+#endif /* !HAVE_LIBSIMAGE || SIMAGE_VERSION_1_1 */
     }
     else {
       simage_instance->simage_get_saver_handle = simage_wrapper_get_saver_handle;
       simage_instance->simage_get_num_savers = simage_wrapper_get_num_savers;
       simage_instance->simage_check_save_supported = simage_wrapper_check_save_supported;
       simage_instance->simage_save_image = simage_wrapper_save_image;
-      simage_instance->simage_get_saver_extensions = simage_wrapper_get_saver_extensions;   
+      simage_instance->simage_get_saver_extensions = simage_wrapper_get_saver_extensions;
       simage_instance->simage_get_saver_fullname = simage_wrapper_get_saver_fullname;
-      simage_instance->simage_get_saver_description = simage_wrapper_get_saver_description;   
+      simage_instance->simage_get_saver_description = simage_wrapper_get_saver_description;
     }
   }
   return simage_instance;
