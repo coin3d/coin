@@ -19,7 +19,7 @@ build-stamp:
 	dh_testdir
 	./configure --prefix=/usr \
 	  --with-html=`pwd`/debian/tmp/usr/doc/coin@COIN_MAJOR_VERSION@/html \
-	  --with-man=`pwd`/debian/tmp/usr/man \
+	  --with-man=`pwd`/debian/tmp/usr/share/man \
 	  --enable-static --without-mesa
 	$(MAKE)
 	touch build-stamp
