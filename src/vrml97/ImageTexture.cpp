@@ -121,14 +121,14 @@ static void * imagetexture_prequalify_closure = NULL;
 static SbBool imagetexture_delay_fetch = TRUE;
 static SbBool imagetexture_is_exiting = FALSE;
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
 
 #include <Inventor/C/threads/sched.h>
 #include <Inventor/threads/SbMutex.h>
 
 static cc_sched * imagetexture_scheduler = NULL;
 
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -163,12 +163,12 @@ SO_NODE_SOURCE(SoVRMLImageTexture);
 static void
 imagetexture_cleanup(void)
 {
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   imagetexture_is_exiting = TRUE;
   if (imagetexture_scheduler) {
     cc_sched_destruct(imagetexture_scheduler);
   }
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 }
 
 // Doc in parent
@@ -178,10 +178,10 @@ SoVRMLImageTexture::initClass(void) // static
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLImageTexture, SO_VRML97_NODE_TYPE);
   imagedata_maxage = 500;
 
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   imagetexture_scheduler = cc_sched_construct(1);
   coin_atexit((coin_atexit_f*) imagetexture_cleanup, 0);
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 }
 
 #undef PRIVATE
@@ -216,13 +216,13 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
 */
 SoVRMLImageTexture::~SoVRMLImageTexture()
 {
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   // just wait for all threads to finish reading
   if (imagetexture_scheduler) {
     PRIVATE(this)->isdestructing = TRUE; // signal thread that we are destructing
     cc_sched_wait_all(imagetexture_scheduler);
   }
-#endif // HAVE_THREADS  
+#endif // COIN_THREADSAFE  
 
   if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(NULL);
   delete PRIVATE(this)->urlsensor;
@@ -463,7 +463,7 @@ SoVRMLImageTexture::loadUrl(void)
 void
 SoVRMLImageTexture::glimage_callback(void * closure)
 {
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   if (PRIVATE(thisp)->glimage) {
     int age = PRIVATE(thisp)->glimage->getNumFramesSinceUsed();
@@ -475,7 +475,7 @@ SoVRMLImageTexture::glimage_callback(void * closure)
       (void) thisp->loadUrl();
     }
   }
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
 }
 
 SbBool
@@ -544,17 +544,17 @@ SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, vo
   data->thisp = thisp;
   data->filename = filename;
 
-#if defined(HAVE_THREADS)
+#if defined(COIN_THREADSAFE)
   // use a separate thread to load the image  
   cc_sched_schedule(imagetexture_scheduler,
                     read_thread, data, 0);
   return TRUE;
-#else // HAVE_THREADS
+#else // COIN_THREADSAFE
   // trigger a sensor to read the image
   SoOneShotSensor * sensor = new SoOneShotSensor(oneshot_readimage_cb, data);
   sensor->schedule();
   return TRUE;
-#endif // ! HAVE_THREADS
+#endif // ! COIN_THREADSAFE
 }
 
 //
@@ -577,9 +577,9 @@ SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
     if (thisp->url.getNum() == 0 || thisp->url[0].getLength() == 0) {
       // wait for threads to finish in case a new thread is used to
       // load the previous image, and the thread has not finished yet.
-#ifdef HAVE_THREADS
+#ifdef COIN_THREADSAFE
       cc_sched_wait_all(imagetexture_scheduler);
-#endif // HAVE_THREADS
+#endif // COIN_THREADSAFE
       thisp->pimpl->image.setValue(SbVec2s(0,0), 0, NULL);
       thisp->pimpl->glimagevalid = FALSE;
       if (PRIVATE(thisp)->glimage) {
