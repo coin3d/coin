@@ -22,24 +22,35 @@
   \brief The SoText3 class renders extruded 3D text.
   \ingroup nodes
 
-  FIXME: write class doc
+  Render text as 3D geometry.
+
+  Beware that using a lot of SoText3 text characters in a scene will
+  usually have severe impact on the rendering performance, as each and
+  every character of the text contributes a lot of polygon primitives
+  to the rendering system.
+
+  Due to the aove mentioned fact, SoText3 nodes are better used in
+  situations where you need just one or a few characters to be placed
+  in your scene, than to visualize e.g. complete sentences.
+
+  \sa SoText2, SoAsciiText, SoProfile
 */
 
 #include <Inventor/nodes/SoText3.h>
+#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGlyph.h>
-#include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/details/SoTextDetail.h>
+#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/elements/SoGLShapeHintsElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
-#include <Inventor/details/SoTextDetail.h>
-#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/misc/SoGlyph.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #ifdef _WIN32
 #include <windows.h> // *sigh* needed for gl.h
@@ -124,7 +135,7 @@ SO_NODE_SOURCE(SoText3);
 /*!
   Constructor.
 */
-SoText3::SoText3()
+SoText3::SoText3(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoText3);
 
@@ -167,8 +178,7 @@ SoText3::initClass(void)
 
 // doc in parent
 void
-SoText3::computeBBox(SoAction *action,
-                     SbBox3f &box, SbVec3f &center)
+SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   this->setUpGlyphs(action->getState());
 
@@ -193,7 +203,7 @@ SoText3::computeBBox(SoAction *action,
   switch (this->justification.getValue()) {
   case SoText3::LEFT:
     minx = 0.0f;
-    maxx = maxw*size;
+    maxx = maxw * size;
     break;
   case SoText3::RIGHT:
     minx = -maxw * size;
@@ -226,8 +236,7 @@ SoText3::computeBBox(SoAction *action,
   know if you need this method for anything, and we'll implement it.
 */
 SbBox3f
-SoText3::getCharacterBounds(SoState * /* state */,
-                            int /* stringIndex */, int /* charIndex */)
+SoText3::getCharacterBounds(SoState * state, int stringindex, int charindex)
 {
   COIN_STUB();
   return SbBox3f();
@@ -235,11 +244,11 @@ SoText3::getCharacterBounds(SoState * /* state */,
 
 // doc in parent
 void
-SoText3::GLRender(SoGLRenderAction *action)
+SoText3::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
-  SoState *state = action->getState();
+  SoState * state = action->getState();
   this->setUpGlyphs(state);
 
   SoMaterialBindingElement::Binding binding =
@@ -284,7 +293,7 @@ SoText3::GLRender(SoGLRenderAction *action)
 
 // doc in parent
 void
-SoText3::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoText3::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (action->is3DTextCountedAsTriangles()) {
     COIN_STUB();
@@ -296,7 +305,7 @@ SoText3::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
 // doc in parent
 void
-SoText3::generatePrimitives(SoAction *action)
+SoText3::generatePrimitives(SoAction * action)
 {
   this->setUpGlyphs(action->getState());
     
@@ -331,9 +340,9 @@ SoText3::willUpdateNormalizeElement(SoState *) const
 // doc in parent
 SoDetail *
 SoText3::createTriangleDetail(SoRayPickAction * action,
-                              const SoPrimitiveVertex *v1,
-                              const SoPrimitiveVertex * /*v2*/,
-                              const SoPrimitiveVertex * /*v3*/,
+                              const SoPrimitiveVertex * v1,
+                              const SoPrimitiveVertex * v2,
+                              const SoPrimitiveVertex * v3,
                               SoPickedPoint * pp)
 {
   // generatePrimitives() places text details inside each primitive vertex
@@ -344,13 +353,13 @@ SoText3::createTriangleDetail(SoRayPickAction * action,
 
 // recalculate glyphs
 void 
-SoText3::setUpGlyphs(SoState *state)
+SoText3::setUpGlyphs(SoState * state)
 {
   if (!this->needsetup) return;
   this->needsetup = FALSE;
 
   // store old glyphs to avoid freeing glyphs too soon
-  SbList <const SoGlyph*> oldglyphs; 
+  SbList <const SoGlyph *> oldglyphs; 
   int i;
   int n = this->glyphs.getLength();
   for (i = 0; i < n; i++) {
@@ -360,12 +369,12 @@ SoText3::setUpGlyphs(SoState *state)
   this->widths.truncate(0);
 
   for (i = 0; i < this->string.getNum(); i++) {
-    const SbString &s = this->string[i];
+    const SbString & s = this->string[i];
     int strlen = s.getLength();
-    const char *ptr = s.getString();
+    const char * ptr = s.getString();
     float width = 0.0f;
     for (int j = 0; j < strlen; j++) {
-      const SoGlyph *glyph = SoGlyph::getGlyph(ptr[j], SbName("default"));
+      const SoGlyph * glyph = SoGlyph::getGlyph(ptr[j], SbName("default"));
       this->glyphs.append(glyph);
       width += glyph->getWidth();
     }
@@ -381,7 +390,7 @@ SoText3::setUpGlyphs(SoState *state)
 
 // render text geometry
 void 
-SoText3::render(SoState *state, unsigned int part)
+SoText3::render(SoState * state, unsigned int part)
 {
   float size = SoFontSizeElement::get(state);
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
@@ -411,13 +420,13 @@ SoText3::render(SoState *state, unsigned int part)
       break;
     }
 
-    const char *str = this->string[i].getString();
+    const char * str = this->string[i].getString();
     
     while (*str++) {
-      const SoGlyph *glyph = this->glyphs[glyphidx++];
-      const SbVec2f *coords = glyph->getCoords();
+      const SoGlyph * glyph = this->glyphs[glyphidx++];
+      const SbVec2f * coords = glyph->getCoords();
       if (part != SoText3::SIDES) {
-        const int *ptr = glyph->getFaceIndices();
+        const int * ptr = glyph->getFaceIndices();
         while (*ptr >= 0) {          
           SbVec2f v0, v1, v2;
           float zval;
@@ -439,7 +448,7 @@ SoText3::render(SoState *state, unsigned int part)
         }
       }
       else { // SIDES
-        const int *ptr = glyph->getEdgeIndices();
+        const int * ptr = glyph->getEdgeIndices();
         SbVec2f v0, v1;
         while (*ptr >= 0) {          
           v0 = coords[*ptr++];
@@ -467,7 +476,7 @@ SoText3::render(SoState *state, unsigned int part)
 
 // generate text geometry
 void 
-SoText3::generate(SoAction *action, unsigned int part)
+SoText3::generate(SoAction * action, unsigned int part)
 {
   float size = SoFontSizeElement::get(action->getState());
   
@@ -509,16 +518,16 @@ SoText3::generate(SoAction *action, unsigned int part)
       break;
     }
 
-    const char *str = this->string[i].getString();
+    const char * str = this->string[i].getString();
     
     int charidx = 0;
 
     while (*str++) {
       detail.setCharacterIndex(charidx++);
-      const SoGlyph *glyph = this->glyphs[glyphidx++];
-      const SbVec2f *coords = glyph->getCoords();
+      const SoGlyph * glyph = this->glyphs[glyphidx++];
+      const SbVec2f * coords = glyph->getCoords();
       if (part != SoText3::SIDES) {
-        const int *ptr = glyph->getFaceIndices();
+        const int * ptr = glyph->getFaceIndices();
         while (*ptr >= 0) {          
           SbVec2f v0, v1, v2;
           float zval;
@@ -543,7 +552,7 @@ SoText3::generate(SoAction *action, unsigned int part)
         }
       }
       else { // SIDES
-        const int *ptr = glyph->getEdgeIndices();
+        const int * ptr = glyph->getEdgeIndices();
         SbVec2f v0, v1;
         while (*ptr >= 0) {          
           v0 = coords[*ptr++];
@@ -575,9 +584,9 @@ SoText3::generate(SoAction *action, unsigned int part)
 
 // called whenever SoText3::string is edited 
 void 
-SoText3::fieldSensorCB(void *d, SoSensor *)
+SoText3::fieldSensorCB(void * d, SoSensor *)
 {
-  SoText3 *thisp = (SoText3*)d;
+  SoText3 * thisp = (SoText3 *)d;
   thisp->needsetup = TRUE;
 }
 

@@ -47,7 +47,7 @@ public:
     BACK =  4,
     ALL = FRONT|BACK|SIDES
   };
-  
+
   enum Justification {
     LEFT = 1,
     RIGHT,
@@ -59,7 +59,7 @@ public:
   SoSFEnum justification;
   SoSFBitMask parts;
 
-  SbBox3f getCharacterBounds(SoState *state, int stringIndex, int charIndex);
+  SbBox3f getCharacterBounds(SoState * state, int stringindex, int charindex);
 
   virtual void GLRender(SoGLRenderAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
@@ -71,23 +71,23 @@ protected:
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
   virtual SbBool willSetShapeHints(void) const;
   virtual SbBool willUpdateNormalizeElement(SoState *) const;
-  virtual SoDetail *createTriangleDetail(SoRayPickAction * action,
-                                         const SoPrimitiveVertex *v1,
-                                         const SoPrimitiveVertex *v2,
-                                         const SoPrimitiveVertex *v3,
+  virtual SoDetail * createTriangleDetail(SoRayPickAction * action,
+                                         const SoPrimitiveVertex * v1,
+                                         const SoPrimitiveVertex * v2,
+                                         const SoPrimitiveVertex * v3,
                                          SoPickedPoint * pp);
 
 private:
-  SbList <const SoGlyph*> glyphs;
+  SbList <const SoGlyph *> glyphs;
   SbList <float> widths;
-  void setUpGlyphs(SoState *state);
+  void setUpGlyphs(SoState * state);
   SbBool needsetup;
-  
-  SoFieldSensor *stringsensor;
-  static void fieldSensorCB(void *d, SoSensor *s);
-  
-  void render(SoState *state, unsigned int part);
-  void generate(SoAction *action, unsigned int part);
+
+  SoFieldSensor * stringsensor;
+  static void fieldSensorCB(void * d, SoSensor * s);
+
+  void render(SoState * state, unsigned int part);
+  void generate(SoAction * action, unsigned int part);
 };
 
 #endif // !COIN_SOTEXT3_H
