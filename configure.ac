@@ -843,14 +843,17 @@ AC_TRY_LINK([
 
 coin_can_do_runtime_linking=false
 
-# We currently don't support runtime linking on Mac OS X, so we
-# shouldn't try to do runtime linking, even if somebody happens to have
-# libdl installed.
+# Try to use Mac OS X dyld first, since libdl has problems on Mac OS X.
 
-case $host_os in
-  darwin* ) coin_can_do_runtime_linking=false ;;
-  * )
+SIM_AC_CHECK_DYLD([
+  AC_DEFINE_UNQUOTED([HAVE_DYLD_RUNTIME_BINDING],1,
+                     [define if the Mac OS X dyld can be used for runtime binding])
+  coin_can_do_runtime_linking=true
+])
 
+if $coin_can_do_runtime_linking; then
+  :
+else
   SIM_AC_CHECK_DL([
     AC_DEFINE_UNQUOTED([HAVE_DL_LIB],1, [define if you have the dl library])
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
@@ -858,18 +861,17 @@ case $host_os in
     COIN_EXTRA_LIBS="$sim_ac_dl_libs $COIN_EXTRA_LIBS"
     coin_can_do_runtime_linking=true
   ])
+fi
 
-  if $coin_can_do_runtime_linking; then
-    :
-  else
-    SIM_AC_CHECK_LOADLIBRARY([
-      AC_DEFINE_UNQUOTED([HAVE_WINDLL_RUNTIME_BINDING],1,
-                         [define if the Win32 LoadLibrary method is available])
-      coin_can_do_runtime_linking=true
-    ])
-  fi
-;;
-esac 
+if $coin_can_do_runtime_linking; then
+  :
+else
+  SIM_AC_CHECK_LOADLIBRARY([
+    AC_DEFINE_UNQUOTED([HAVE_WINDLL_RUNTIME_BINDING],1,
+                       [define if the Win32 LoadLibrary method is available])
+    coin_can_do_runtime_linking=true
+  ])
+fi
 
 # *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
