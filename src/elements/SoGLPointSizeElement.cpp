@@ -34,6 +34,10 @@
 #include <GL/gl.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 float SoGLPointSizeElement::sizerange[2] = {-1.0f, -1.0f};
 
 SO_ELEMENT_SOURCE(SoGLPointSizeElement);

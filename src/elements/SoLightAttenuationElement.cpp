@@ -85,7 +85,7 @@ SoLightAttenuationElement::get(SoState * const state)
 //! FIXME: write doc.
 
 SbBool
-SoLightAttenuationElement::matches(SoElement * element) const
+SoLightAttenuationElement::matches(const SoElement * element) const
 {
   if (this->lightAttenuation !=
       ((SoLightAttenuationElement *)element)->lightAttenuation)

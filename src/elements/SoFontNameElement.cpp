@@ -100,7 +100,7 @@ SoFontNameElement::get(SoState * const state)
 //! FIXME: write doc.
 
 SbBool
-SoFontNameElement::matches(SoElement * element) const
+SoFontNameElement::matches(const SoElement * element) const
 {
   if ((SoElement *)this == element)
     return TRUE;

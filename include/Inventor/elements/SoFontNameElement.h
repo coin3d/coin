@@ -41,8 +41,8 @@ public:
   static const SbName & get(SoState * const state);
   static SbName getDefault(void);
 
-  virtual SbBool matches(SoElement * element) const;
-  virtual SoElement * copyMatchInfo() const;
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
 
   virtual void print(FILE * file) const;
 
