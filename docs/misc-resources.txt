@@ -151,3 +151,9 @@ THE LINKS
 
 * OpenGL FAQ and Troubleshooting Guide:
      <URL:http://www.frii.com/~martz/oglfaq/>
+
+* FSF Copyright Assignment paperworks
+  http://www.gnu.org/prep/maintain_7.html#SEC7
+  NB: Coin is not an FSF-project, this link is here only for
+  reference/comparison
+
