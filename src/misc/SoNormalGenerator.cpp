@@ -30,6 +30,8 @@
 */
 
 #include <Inventor/misc/SoNormalGenerator.h>
+
+#include <Inventor/errors/SoDebugError.h>
 #include <coindefs.h> // COIN_OBSOLETED()
 #include <stdio.h>
 
@@ -378,9 +380,9 @@ SoNormalGenerator::setNormal(const int32_t /* index */,
 // Calculates the face normal to the current face.
 //
 SbVec3f
-SoNormalGenerator::calcFaceNormal()
+SoNormalGenerator::calcFaceNormal(void)
 {
-  int num = this->vertexList.getLength() - this->currFaceStart;
+  const int num = this->vertexList.getLength() - this->currFaceStart;
 
   assert(num >= 3);
   const int * cind = (const int *) this->vertexList.getArrayPtr() + this->currFaceStart;
@@ -388,18 +390,13 @@ SoNormalGenerator::calcFaceNormal()
   SbVec3f ret;
 
   if (num == 3) { // triangle
-    if (!ccw)
-      ret =
-        (coords[cind[0]] -
-         coords[cind[1]]).cross(coords[cind[2]] -
-                                coords[cind[1]]);
-    else
-      ret =
-        (coords[cind[2]] -
-         coords[cind[1]]).cross(coords[cind[0]] -
-                                coords[cind[1]]);
+    const SbVec3f v0 = coords[cind[0]] - coords[cind[1]];
+    const SbVec3f v1 = coords[cind[2]] - coords[cind[1]];
+    if (!this->ccw) { ret = v0.cross(v1); }
+    else { ret = v1.cross(v0); }
   }
   else {
+    // For non-triangle faces
     const SbVec3f *vert1, *vert2;
     ret.setValue(0.0f, 0.0f, 0.0f);
     vert2 = coords + cind[num-1];
@@ -410,8 +407,25 @@ SoNormalGenerator::calcFaceNormal()
       ret[1] += ((*vert1)[2] - (*vert2)[2]) * ((*vert1)[0] + (*vert2)[0]);
       ret[2] += ((*vert1)[0] - (*vert2)[0]) * ((*vert1)[1] + (*vert2)[1]);
     }
-    if (!ccw) ret = -ret;
+    if (!this->ccw) ret = -ret;
   }
-  ret.normalize();
+
+  if (ret.length() > 0.0f) { ret.normalize(); }
+#if COIN_DEBUG
+  else {
+    SbString s;
+    for (int i = 0; i < num; i++) {
+      const SbVec3f v = coords[cind[i]];
+      SbString c;
+      c.sprintf(" <%f, %f, %f>", v[0], v[1], v[2]);
+      s += c;
+    }
+    SoDebugError::postWarning("SoNormalGenerator::calcFaceNormal",
+                              "Normal vector found to be of zero length "
+                              "for face with vertex coordinates:%s",
+                              s.getString());
+  }
+#endif // COIN_DEBUG
+
   return ret;
 }
