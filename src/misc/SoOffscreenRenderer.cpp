@@ -363,7 +363,7 @@ public:
     // initialization of member variables
 
     this->cleanupWGL();
-    
+
     this->devicecontext = CreateCompatibleDC(NULL);
     if (this->devicecontext == NULL) {
       DWORD dwError = GetLastError();
@@ -378,7 +378,7 @@ public:
     bmi.bmiHeader.biHeight = this->buffersize[1];
     bmi.bmiHeader.biPlanes = 1;
     bmi.bmiHeader.biBitCount = 24;
-    bmi.bmiHeader.biCompression = BI_RGB; 
+    bmi.bmiHeader.biCompression = BI_RGB;
     bmi.bmiHeader.biSizeImage = 0;
     bmi.bmiHeader.biXPelsPerMeter = 0;
     bmi.bmiHeader.biYPelsPerMeter = 0;
@@ -406,38 +406,38 @@ public:
                                 "Couldn't select bitmap into device context. SelectObject() failed with error code %d.", dwError);
     }
 
-    PIXELFORMATDESCRIPTOR pfd = { 
-        sizeof(PIXELFORMATDESCRIPTOR),   // size of this pfd 
-        1,                     // version number 
-        PFD_DRAW_TO_BITMAP |   // support bitmap 
-        PFD_SUPPORT_OPENGL,    // support OpenGL 
-        PFD_TYPE_RGBA,         // RGBA type 
-        24,                    // 24-bit color depth 
-        0, 0, 0, 0, 0, 0,      // color bits ignored 
-        0,                     // no alpha buffer 
-        0,                     // shift bit ignored 
-        0,                     // no accumulation buffer 
-        0, 0, 0, 0,            // accum bits ignored 
-        32,                    // 32-bit z-buffer 
-        0,                     // no stencil buffer 
-        0,                     // no auxiliary buffer 
-        PFD_MAIN_PLANE,        // main layer 
-        0,                     // reserved 
-        0, 0, 0                // layer masks ignored 
-    }; 
+    PIXELFORMATDESCRIPTOR pfd = {
+        sizeof(PIXELFORMATDESCRIPTOR),   // size of this pfd
+        1,                     // version number
+        PFD_DRAW_TO_BITMAP |   // support bitmap
+        PFD_SUPPORT_OPENGL,    // support OpenGL
+        PFD_TYPE_RGBA,         // RGBA type
+        24,                    // 24-bit color depth
+        0, 0, 0, 0, 0, 0,      // color bits ignored
+        0,                     // no alpha buffer
+        0,                     // shift bit ignored
+        0,                     // no accumulation buffer
+        0, 0, 0, 0,            // accum bits ignored
+        32,                    // 32-bit z-buffer
+        0,                     // no stencil buffer
+        0,                     // no auxiliary buffer
+        PFD_MAIN_PLANE,        // main layer
+        0,                     // reserved
+        0, 0, 0                // layer masks ignored
+    };
 
-    int iPixelFormat; 
- 
-    // get the best available match of pixel format for the device context  
-    iPixelFormat = ChoosePixelFormat(this->devicecontext, &pfd); 
+    int iPixelFormat;
+
+    // get the best available match of pixel format for the device context
+    iPixelFormat = ChoosePixelFormat(this->devicecontext, &pfd);
     if (iPixelFormat == 0) {
       DWORD dwError = GetLastError();
       SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
                                 "ChoosePixelFormat failed with error code %d.", dwError);
     }
 
-    // make that the pixel format of the device context 
-    bool ret = SetPixelFormat(this->devicecontext, iPixelFormat, &pfd); 
+    // make that the pixel format of the device context
+    bool ret = SetPixelFormat(this->devicecontext, iPixelFormat, &pfd);
     if (!ret)
     {
       DWORD dwError = GetLastError();
@@ -670,6 +670,13 @@ SoOffscreenRenderer::getGLRenderAction(void) const
   return this->renderaction;
 }
 
+static void 
+pre_render_cb(void * userdata, SoGLRenderAction * action)
+{
+  glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+  action->removePreRenderCallback(pre_render_cb, userdata);
+}
+
 // Collects common code from the two render() functions.
 SbBool
 SoOffscreenRenderer::renderFromBase(SoBase * base)
@@ -680,8 +687,10 @@ SoOffscreenRenderer::renderFromBase(SoBase * base)
                  this->backgroundcolor[1],
                  this->backgroundcolor[2],
                  0.0f);
-    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
 
+    // needed to clear viewport after glViewport is called
+    this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
+    
     if (base->isOfType(SoNode::getClassTypeId()))
       this->renderaction->apply((SoNode *)base);
     else if (base->isOfType(SoPath::getClassTypeId()))
