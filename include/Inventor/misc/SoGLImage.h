@@ -37,16 +37,10 @@ class SoImageInterface;
 class SoGLImage {
 public:
 
-  // to create a SoGLImage from data already in memory
-  SoGLImage(const SbVec2s size,
-            const int numComponents,
-            const unsigned char * bytes);
+  static SoGLImage *findOrCreateGLImage(SoImageInterface * const image,
+                                        void * const context);
 
-  void unref();
-
-
-  static SoGLImage *getGLImage(const char * const texname,
-                               void * const context);
+  void unref(); // use this to delete
 
   SbBool init(const SbBool clamps, const SbBool clampt);
   SbBool isInitialized() const;
@@ -58,23 +52,16 @@ public:
   SbBool shouldClampT() const;
 
 private:
-  friend class SoTexHandler;
+  friend class dummyClass; // avoid warnings on stupid compilers
 
   SoGLImage(SoImageInterface * const img,
-            const char * const filename,
-            const char * const org_name,
             void * const context);
   ~SoGLImage();
 
-  void replaceImage(SoImageInterface * const newimage,
-                    const char * const fname,
-                    const char * const oname);
-
+  static void unrefGLImage(SoGLImage * const image);
   void checkResize();
 
   SoImageInterface *image;
-  SbString orgname;
-  SbString filename;
 
   unsigned int alpha : 1;
   unsigned int clampS : 1;

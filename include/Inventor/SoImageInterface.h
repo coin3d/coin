@@ -26,12 +26,9 @@
 
 class SoImageInterface {
 public:
-  SoImageInterface(const char * const filename);
   SoImageInterface(const SbVec2s size,
                    const int numComponents,
                    const unsigned char * data);
-  ~SoImageInterface();
-
   SbBool resize(const SbVec2s newsize);
   //void changeDepth(const int newDepth);
   SbBool load(const SbBool forceTry = FALSE);
@@ -44,9 +41,18 @@ public:
   SbVec2s getOriginalSize() const;
 
   void ref();
-  void unref();
+  void unref(); // use this to delete
+
+  static SoImageInterface *findOrCreateImage(const char * const filename);
 
 private:
+  friend class dummyClass; // avoid warnings on stupid compilers
+
+  static void unrefImage(SoImageInterface * const image);
+
+  SoImageInterface(const char * const filename);
+  ~SoImageInterface();
+
   SbString filename;
   SbVec2s orgSize;
   int orgNumComponents;

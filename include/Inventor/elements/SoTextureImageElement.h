@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -62,41 +62,43 @@ public:
     REPEAT,
     CLAMP
   };
-  
+
   virtual void init(SoState * state);
 
-  static  void set(SoState * const state, SoNode * const node,
-		   const SbVec2s & size, const int numComponents,
-		   const unsigned char * bytes, 
-		   const int wrapS, const int wrapT,
-		   const int model, const SbColor & blendColor);
+  static void setDefault(SoState * const state, SoNode * const node);
 
-  static  void set(SoState * const state, SoNode * const node,
-		   const SbVec2s & size, const int numComponents,
-		   const unsigned char * bytes, 
-		   const Wrap wrapS, const Wrap wrapT,
-		   const Model model, const SbColor & blendColor);
+  static void set(SoState * const state, SoNode * const node,
+                  const SbVec2s & size, const int numComponents,
+                  const unsigned char * bytes,
+                  const int wrapS, const int wrapT,
+                  const int model, const SbColor & blendColor);
 
-  static const unsigned char *get(SoState * const state,
-				  SbVec2s & size, 
-				  int & numComponents, 
-				  Wrap & wrapS, 
-				  Wrap & wrapT,
-				  Model & model, 
-				  SbColor & blendColor);
+  static void set(SoState * const state, SoNode * const node,
+                  const SbVec2s & size, const int numComponents,
+                  const unsigned char * bytes,
+                  const Wrap wrapS, const Wrap wrapT,
+                  const Model model, const SbColor & blendColor);
 
   static const unsigned char *get(SoState * const state,
-				  SbVec2s & size, 
-				  int & numComponents, 
-				  int & wrapS, 
-				  int & wrapT,
-				  int & model, 
-				  SbColor & blendColor);
+                                  SbVec2s & size,
+                                  int & numComponents,
+                                  Wrap & wrapS,
+                                  Wrap & wrapT,
+                                  Model & model,
+                                  SbColor & blendColor);
+
+  static const unsigned char *get(SoState * const state,
+                                  SbVec2s & size,
+                                  int & numComponents,
+                                  int & wrapS,
+                                  int & wrapT,
+                                  int & model,
+                                  SbColor & blendColor);
 
   static const SbColor &getBlendColor(SoState * const state);
   static const unsigned char *getImage(SoState * const state,
-				       SbVec2s &size,
-				       int &numComponents);
+                                       SbVec2s &size,
+                                       int &numComponents);
   static Model getModel(SoState * const state);
   static Wrap getWrapS(SoState * const state);
   static Wrap getWrapT(SoState * const state);
@@ -107,9 +109,9 @@ public:
 
 protected:
   virtual void setElt(const SbVec2s & size, const int numComponents,
-		      const unsigned char * bytes, 
-		      const Wrap wrapS, const Wrap wrapT,
-		      const Model model, const SbColor & blendColor);
+                      const unsigned char * bytes,
+                      const Wrap wrapS, const Wrap wrapT,
+                      const Model model, const SbColor & blendColor);
 
   SbVec2s size;
   int numComponents;
@@ -118,6 +120,8 @@ protected:
   Model model;
   SbColor blendColor;
 
+private:
+  void setDefaultValues();
 };
 
 #endif // !__SOTEXTUREIMAGEELEMENT_H__

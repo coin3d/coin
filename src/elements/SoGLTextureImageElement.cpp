@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -86,7 +86,7 @@ SoGLTextureImageElement::getClassStackIndex(void)
 //$ END TEMPLATE ElementSource
 
 /*!
-  This static method initializes static data in the 
+  This static method initializes static data in the
   SoGLTextureImageElement class.
 */
 
@@ -141,11 +141,23 @@ SoGLTextureImageElement::init(SoState * state)
   this->glimage = NULL;
 }
 
+//! FIXME: write doc
+void
+SoGLTextureImageElement::push(SoState * state)
+{
+  inherited::push(state);
+  SoGLTextureImageElement * const element =
+    (SoGLTextureImageElement *)this->next;
+
+  // remember previous glimage
+  element->glimage = this->glimage;
+}
+
 //! FIXME: write doc.
 
 void
 SoGLTextureImageElement::pop(SoState * state,
-			     const SoElement * prevTopElement)
+                             const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
   SoGLTextureImageElement *prev = (SoGLTextureImageElement*)
@@ -157,41 +169,37 @@ SoGLTextureImageElement::pop(SoState * state,
 
 //! FIXME: write doc.
 
-void 
+void
 SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
-			     SoGLImage *glimage, const Model model,
-			     const SbColor &blendColor)
+                             SoGLImage *glimage, const Model model,
+                             const SbColor &blendColor)
 {
   SoGLTextureImageElement *elem = (SoGLTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (glimage) {
-    // enable GL texturing if not enabled
-    if (elem->glimage == NULL) glEnable(GL_TEXTURE_2D);
     const SoImageInterface *image = glimage->getImage();
     // keep SoTextureImageElement "up-to-date"
     inherited::set(state, node,
-		   image->getSize(),
-		   image->getNumComponents(),
-		   image->getDataPtr(),
-		   glimage->shouldClampS() ? 
-		   SoTextureImageElement::CLAMP : 
-		   SoTextureImageElement::REPEAT,
-		   glimage->shouldClampT() ?
-		   SoTextureImageElement::CLAMP :
-		   SoTextureImageElement::REPEAT,
-		   model,
-		   blendColor);
+                   image->getSize(),
+                   image->getNumComponents(),
+                   image->getDataPtr(),
+                   glimage->shouldClampS() ?
+                   SoTextureImageElement::CLAMP :
+                   SoTextureImageElement::REPEAT,
+                   glimage->shouldClampT() ?
+                   SoTextureImageElement::CLAMP :
+                   SoTextureImageElement::REPEAT,
+                   model,
+                   blendColor);
 
-    // got to check this in case textures are shared between nodes.
-    // yes, we think people (or programs) who create .wrl|iv files 
-    // are stupid :)
+    // test if glimage already is current glimage
     if (elem->glimage != glimage) {
       elem->glimage = glimage;
       glimage->apply();
     }
   }
   else {
-    // not much to do, is there...
+    elem->glimage = NULL;
+    inherited::setDefault(state, node);
   }
 }
-

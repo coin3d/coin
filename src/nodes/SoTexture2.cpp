@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -126,7 +126,7 @@ SoTexture2::SoTexture2()
 
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, REPEAT);
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP);
-  
+
   SO_NODE_SET_SF_ENUM_TYPE(wrapS, Wrap);
   SO_NODE_SET_SF_ENUM_TYPE(wrapT, Wrap);
 
@@ -135,6 +135,7 @@ SoTexture2::SoTexture2()
   SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
 
+  this->imageData = NULL;
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   this->glImage = NULL;
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
@@ -145,6 +146,7 @@ SoTexture2::SoTexture2()
 */
 SoTexture2::~SoTexture2()
 {
+  if (this->imageData) this->imageData->unref();
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   if (this->glImage) this->glImage->unref();
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
@@ -164,7 +166,7 @@ SoTexture2::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLTextureEnabledElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-  
+
   SO_ENABLE(SoCallbackAction, SoTextureImageElement);
 }
 
@@ -179,11 +181,7 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
 
   SbBool readOK = inherited::readInstance(in, flags);
 
-  if (readOK && ! filename.isDefault()) {
-    if (! readImage())
-      readOK = FALSE;
-    image.setDefault(TRUE);
-  }
+  if (readOK && ! filename.isDefault()) readImage();
   return readOK;
 }
 
@@ -193,33 +191,36 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
 SbBool
 SoTexture2::readImage(void)
 {
-  //  assert(0 && "FIXME: not implemented yet");
-
-  // will be loaded in GLRender
-  return TRUE;
+  this->getImage();
+  if (this->imageData) return this->imageData->load();
+  return FALSE;
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoTexture2::GLRender(SoGLRenderAction * action)
 {
-  SoTexture2::doAction(action);
-  
+  // FIXME: context check, pederb
+
+  if (this->glImage == NULL && this->imageData) {
+    this->glImage =
+      SoGLImage::findOrCreateGLImage(this->imageData, NULL);
+
+  }
+
   if (this->glImage && !this->glImage->isInitialized()) {
     this->glImage->init(this->wrapS.getValue() == CLAMP,
-			this->wrapT.getValue() == CLAMP);
+                        this->wrapT.getValue() == CLAMP);
   }
-  if (this->glImage) {
-    SoGLTextureImageElement::set(action->getState(), this,
-				 this->glImage, 
-				 (SoTextureImageElement::Model) model.getValue(),
-				 this->blendColor.getValue());
-  }
-  SoGLTextureEnabledElement::set(action->getState(), 
-				 this, this->glImage != NULL);
+  SoGLTextureImageElement::set(action->getState(), this,
+                               this->glImage,
+                               (SoTextureImageElement::Model) model.getValue(),
+                               this->blendColor.getValue());
+  SoGLTextureEnabledElement::set(action->getState(),
+                                 this, this->glImage != NULL);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -229,24 +230,27 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoTexture2::doAction(SoAction * /*action*/)
+SoTexture2::doAction(SoAction *action)
 {
-  if (this->glImage == NULL) {
-    // try to create a new one
-    SbVec2s size;
-    int nc;
-    const unsigned char * bytes = this->image.getValue(size, nc);
-
-    if (bytes && size[0] > 0 && size[1] > 0 && nc > 0) {
-      this->glImage = new SoGLImage(size, nc, bytes);
-    }
-    else { // try to load file
-      if (this->filename.getValue().getLength()) {
-	this->glImage = 
-	  SoGLImage::getGLImage(this->filename.getValue().getString(),
-				NULL); // FIXME: provide context
-      }    
-    }
+  if (this->imageData) {
+    SoTextureImageElement::set(action->getState(), this,
+                               imageData->getSize(),
+                               imageData->getNumComponents(),
+                               imageData->getDataPtr(),
+                               (int)this->wrapT.getValue(),
+                               (int)this->wrapS.getValue(),
+                               (SoTextureImageElement::Model) model.getValue(),
+                               this->blendColor.getValue());
+  }
+  else {
+    SoTextureImageElement::set(action->getState(), this,
+                               SbVec2s(0,0),
+                               0,
+                               NULL,
+                               (int)this->wrapT.getValue(),
+                               (int)this->wrapS.getValue(),
+                               (SoTextureImageElement::Model) model.getValue(),
+                               this->blendColor.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION
@@ -258,19 +262,7 @@ SoTexture2::doAction(SoAction * /*action*/)
 void
 SoTexture2::callback(SoCallbackAction *action)
 {
-  // FIXME: we have a design flaw in SoGLImage. Will fix soon pederb, 19991116
   SoTexture2::doAction(action);
-  if (this->glImage) {
-    const SoImageInterface *image = this->glImage->getImage();
-    SoTextureImageElement::set(action->getState(), this,
-			       image->getSize(), 
-			       image->getNumComponents(),
-			       image->getDataPtr(),
-			       (int)this->wrapT.getValue(),
-			       (int)this->wrapS.getValue(),
-			       (SoTextureImageElement::Model) model.getValue(),
-			       this->blendColor.getValue());
-  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -279,8 +271,8 @@ SoTexture2::callback(SoCallbackAction *action)
  */
 SbBool
 SoTexture2::readImage(const SbString & /* fname */,
-		      int & /* w */, int & /* h */, int & /* nc */,
-		      unsigned char *& /* bytes */)
+                      int & /* w */, int & /* h */, int & /* nc */,
+                      unsigned char *& /* bytes */)
 {
   //  assert(0 && "FIXME: not implemented");
   return TRUE;
@@ -303,4 +295,25 @@ void
 SoTexture2::setReadStatus(int /* s */)
 {
   assert(0 && "FIXME: not implemented");
+}
+
+void
+SoTexture2::getImage()
+{
+  if (this->imageData) return;
+
+  SbVec2s size;
+  int nc;
+  const unsigned char * bytes = this->image.getValue(size, nc);
+
+  if (bytes && size[0] > 0 && size[1] > 0 && nc > 0) {
+    this->imageData = new SoImageInterface(size, nc, bytes);
+  }
+  else {
+    if (this->filename.getValue().getLength()) {
+      this->imageData =
+        SoImageInterface::findOrCreateImage(this->filename.
+                                            getValue().getString());
+    }
+  }
 }

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -185,27 +185,47 @@ void
 SoTextureImageElement::init(SoState * state)
 {
   inherited::init(state);
-  this->bytes = getDefault(this->size, this->numComponents); 
+  this->setDefaultValues();
+}
+
+//
+// private
+//
+void
+SoTextureImageElement::setDefaultValues()
+{
+  this->bytes = getDefault(this->size, this->numComponents);
   this->wrapS = REPEAT;
   this->wrapT = REPEAT;
   this->model = MODULATE;
   this->blendColor.setValue(0.0f, 0.0f, 0.0f);
 }
 
-//! FIXME: write doc.
-
-void 
-SoTextureImageElement::set(SoState * const state, SoNode * const node,
-			   const SbVec2s & size, const int numComponents,
-			   const unsigned char * bytes, 
-			   const Wrap wrapS, const Wrap wrapT,
-			   const Model model, const SbColor & blendColor)
+/*!
+  Resets this element to its original values.
+*/
+void
+SoTextureImageElement::setDefault(SoState * const state, SoNode * const node)
 {
   SoTextureImageElement *elem = (SoTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  
+  elem->setDefaultValues();
+}
+
+//! FIXME: write doc.
+
+void
+SoTextureImageElement::set(SoState * const state, SoNode * const node,
+                           const SbVec2s & size, const int numComponents,
+                           const unsigned char * bytes,
+                           const Wrap wrapS, const Wrap wrapT,
+                           const Model model, const SbColor & blendColor)
+{
+  SoTextureImageElement *elem = (SoTextureImageElement*)
+    SoReplacedElement::getElement(state, classStackIndex, node);
+
   elem->setElt(size, numComponents, bytes, wrapS, wrapT,
-	       model, blendColor);
+               model, blendColor);
 }
 
 /*!
@@ -213,10 +233,10 @@ SoTextureImageElement::set(SoState * const state, SoNode * const node,
 */
 
 void SoTextureImageElement::set(SoState * const state, SoNode * const node,
-				const SbVec2s & size, const int numComponents,
-				const unsigned char * bytes, const int wrapS,
-				const int wrapT, const int model,
-				const SbColor & blendColor)
+                                const SbVec2s & size, const int numComponents,
+                                const unsigned char * bytes, const int wrapS,
+                                const int wrapT, const int model,
+                                const SbColor & blendColor)
 {
   SoTextureImageElement::set(state, node, size, numComponents, bytes,
                              (SoTextureImageElement::Wrap &)wrapS,
@@ -229,16 +249,16 @@ void SoTextureImageElement::set(SoState * const state, SoNode * const node,
 
 const unsigned char *
 SoTextureImageElement::get(SoState * const state,
-			   SbVec2s & size, 
-			   int & numComponents, 
-			   Wrap & wrapS, 
-			   Wrap & wrapT,
-			   Model & model, 
-			   SbColor &blendColor)
+                           SbVec2s & size,
+                           int & numComponents,
+                           Wrap & wrapS,
+                           Wrap & wrapT,
+                           Model & model,
+                           SbColor &blendColor)
 {
   SoTextureImageElement *elem = (SoTextureImageElement*)
     SoElement::getConstElement(state, classStackIndex);
-  
+
   size = elem->size;
   numComponents = elem->numComponents;
   wrapS = elem->wrapS;
@@ -254,19 +274,19 @@ SoTextureImageElement::get(SoState * const state,
 
 const unsigned char *
 SoTextureImageElement::get(SoState * const state, SbVec2s & size,
-			   int & numComponents, int & wrapS,
-			   int & wrapT, int & model, SbColor & blendColor)
+                           int & numComponents, int & wrapS,
+                           int & wrapT, int & model, SbColor & blendColor)
 {
   return SoTextureImageElement::get(state, size, numComponents,
-				    (SoTextureImageElement::Wrap &)wrapS,
-				    (SoTextureImageElement::Wrap &)wrapT,
-				    (SoTextureImageElement::Model &)model,
-				    blendColor); 
+                                    (SoTextureImageElement::Wrap &)wrapS,
+                                    (SoTextureImageElement::Wrap &)wrapT,
+                                    (SoTextureImageElement::Model &)model,
+                                    blendColor);
 }
 
 //! FIXME: write doc.
 
-SbBool 
+SbBool
 SoTextureImageElement::containsTransparency(SoState * const state)
 {
   const SoTextureImageElement *elem = (SoTextureImageElement*)
@@ -289,11 +309,11 @@ SoTextureImageElement::getDefault(SbVec2s &size, int &numComponents)
 
 //! FIXME: write doc.
 
-void 
+void
 SoTextureImageElement::setElt(const SbVec2s &size, const int numComponents,
-			      const unsigned char *bytes, const Wrap wrapS, 
-			      const Wrap wrapT, const Model model, 
-			      const SbColor &blendColor)
+                              const unsigned char *bytes, const Wrap wrapS,
+                              const Wrap wrapT, const Model model,
+                              const SbColor &blendColor)
 {
   this->size = size;
   this->numComponents = numComponents;
@@ -314,8 +334,8 @@ SoTextureImageElement::getBlendColor(SoState * const state)
 
 const unsigned char *
 SoTextureImageElement::getImage(SoState * const state,
-				SbVec2s &size,
-				int &numComponents)
+                                SbVec2s &size,
+                                int &numComponents)
 {
   SoTextureImageElement *elem = (SoTextureImageElement*)
     SoElement::getConstElement(state, classStackIndex);
@@ -340,11 +360,10 @@ SoTextureImageElement::getWrapT(SoState * const state)
   return elem->wrapS;
 }
 
-SoTextureImageElement::Model 
+SoTextureImageElement::Model
 SoTextureImageElement::getModel(SoState * const state)
 {
   SoTextureImageElement *elem = (SoTextureImageElement*)
     SoElement::getConstElement(state, classStackIndex);
   return elem->model;
 }
-

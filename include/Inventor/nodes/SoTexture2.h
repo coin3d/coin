@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -44,7 +44,7 @@ public:
 
 
   SbBool readImage();
-  
+
   // Definition must match 100% with the enum in SoTextureImageElement.
   enum Model {
     MODULATE,
@@ -57,12 +57,12 @@ public:
     REPEAT,
     CLAMP
   };
-  
-  SoSFString filename; 
-  SoSFImage image; 
+
+  SoSFString filename;
+  SoSFImage image;
   SoSFEnum wrapS;
   SoSFEnum wrapT;
-  SoSFEnum model; 
+  SoSFEnum model;
   SoSFColor blendColor;
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -76,7 +76,7 @@ public:
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
   static SbBool readImage(const SbString & fname, int & w, int & h, int & nc,
-			  unsigned char *& bytes);
+                          unsigned char *& bytes);
 
 protected:
   virtual ~SoTexture2();
@@ -86,6 +86,8 @@ protected:
   void setReadStatus(int s);
 
 private:
+  void getImage();
+  class SoImageInterface *imageData;
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   class SoGLImage * glImage;
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION

@@ -19,6 +19,7 @@
 
 #include <Inventor/SoImageInterface.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
 #include <stdlib.h>
 #include <stddef.h>
 
@@ -50,9 +51,11 @@
   This class uses the CoinImage library for loading images.
 */
 
+
 /*!
   Constructor with \a file_name specifying the path and name of the
-  image file.
+  image file. This constructor is private. Use
+  SoImageInterface::findOrCreateImage
 */
 SoImageInterface::SoImageInterface(const char * const file_name)
   : filename(file_name),
@@ -81,9 +84,9 @@ SoImageInterface::SoImageInterface(const SbVec2s size,
   this->orgSize = this->size = size;
   this->orgNumComponents = this->numComponents = numComponents;
   this->dataPtr = (unsigned char*)data;
-  this->didAlloc = 0; // do not delete this data!
-  this->refCount = 0;
-  this->hasTried = 1; // data is loaded, kind of...
+  this->didAlloc = 0;  // do not delete this data!
+  this->refCount = -1; // image cannot be reused
+  this->hasTried = 1;  // data is loaded, kind of...
 }
 
 /*!
@@ -99,9 +102,11 @@ SoImageInterface::~SoImageInterface()
   Increases the reference count for this image.
   \sa SoImageInterface::unref()
 */
-void SoImageInterface::ref()
+void
+SoImageInterface::ref()
 {
-  refCount++;
+  // nonreusable images have negative refcount
+  if (refCount >= 0) refCount++;
 }
 
 /*!
@@ -109,16 +114,13 @@ void SoImageInterface::ref()
   count equals zero after decreasing, the image is destructed.
   \sa SoImageInterface::ref()
 */
-void SoImageInterface::unref()
+void
+SoImageInterface::unref()
 {
-  if (--refCount == 0) {
-#if COIN_DEBUG
-    if (filename.getLength())
-      SoDebugError::postInfo("SoImageInterface::unref",
-                             "deleting image: %s\n", filename.getString());
-#endif // COIN_DEBUG
-    delete this;
-  }
+  // nonreusable images have negative refcount, and it is
+  // safe to delete these.
+  if (this->refCount < 0) delete this;
+  else SoImageInterface::unrefImage(this);
 }
 
 /*!
@@ -131,7 +133,7 @@ SoImageInterface::resize(const SbVec2s newsize)
   if (newsize != size) {
 #if COIN_DEBUG
     SoDebugError::postInfo("SoImageInterface::resize",
-                           "(%d): %d %d --> %d %d\n",
+                           "(%d): %d %d --> %d %d",
                            numComponents,
                            size[0], size[1], newsize[0], newsize[1]);
 #endif // COIN_DEBUG
@@ -270,4 +272,130 @@ SbVec2s
 SoImageInterface::getOriginalSize() const
 {
   return this->orgSize;
+}
+
+class so_image_data {
+public:
+  so_image_data(const char * const orgname = NULL,
+                SoImageInterface *image = NULL) {
+    this->orgname = NULL;
+    if (orgname) {
+      this->orgname = new char[strlen(orgname)+1];
+      strcpy(this->orgname, orgname);
+    }
+    this->image = image;
+  }
+  ~so_image_data() {
+    delete [] this->orgname;
+  }
+public:
+  char *orgname;
+  SoImageInterface *image;
+};
+
+/****** static methods used to enable image reuse **************/
+
+#define MAXPATHLEN 4096 // FIXME: get this properly. 19981024 mortene.
+
+#define TEST_FILE(x) \
+   SoDebugError::postInfo("TEST_FILE", "texture search: %s", x); \
+   fp = fopen(x, "rb"); \
+   if (fp != NULL) { \
+     fclose(fp); \
+     return x;}
+
+
+static const char *
+searchForImage(const char * const orgname,
+               char * const namebuf)
+{
+
+#if defined(_WIN32)
+  char dirsplit = '\\';
+#else
+  char dirsplit = '/';
+#endif
+
+  FILE *fp;
+  strcpy(namebuf, orgname);
+  TEST_FILE(namebuf);
+
+  // FIXME: implement platform-independent version
+#ifdef _WIN32
+  strcpy(basename, orgname);
+#else // !_WIN32
+  char basename[MAXPATHLEN];
+  const char *ptr =  strrchr(orgname, '/');
+  if (ptr == NULL) ptr = orgname;
+  else {
+    ptr++;
+  }
+  strcpy(basename, ptr);
+#endif // !_WIN32
+
+  strcpy(namebuf, basename);
+  TEST_FILE(namebuf);
+
+  sprintf(namebuf,"textures%c%s", dirsplit, basename);
+  TEST_FILE(namebuf);
+
+  sprintf(namebuf,"texture%c%s", dirsplit, basename);
+  TEST_FILE(namebuf);
+
+  // FIXME: search more paths. Most important is probably the
+  // model path.
+
+  return namebuf; // not found, return org name
+}
+
+#undef TEST_FILE
+
+static SbList <so_image_data*> loadedFiles;
+
+/*!
+  Should be called by a image holder to enable reusage of images.
+
+ */
+SoImageInterface *
+SoImageInterface::findOrCreateImage(const char * const filename)
+{
+  int n = loadedFiles.getLength();
+  for (int i = 0; i < n; i++) {
+    if (loadedFiles[i]->image->filename == filename) {
+      loadedFiles[i]->image->ref();
+      return loadedFiles[i]->image;
+    }
+  }
+
+  char buf[MAXPATHLEN];
+  const char *fullname = searchForImage(filename, buf);
+  if (fullname) {
+    SoImageInterface *image = new SoImageInterface(fullname);
+    loadedFiles.append(new so_image_data(filename, image));
+    image->ref();
+    return image;
+  }
+  return NULL;
+}
+
+/*!
+  Should be called by image holder when the image is no longer
+  needed (typically in destructor).
+
+  \sa SoImageInterface::findOrCreateImage()
+*/
+void
+SoImageInterface::unrefImage(SoImageInterface * const image)
+{
+  int i, n = loadedFiles.getLength();
+  for (i = 0; i < n; i++) {
+    if (loadedFiles[i]->image == image) break;
+  }
+  assert(i < n);
+  if (image->refCount == 1) {
+    delete image;
+    delete loadedFiles[i];
+    loadedFiles.removeFast(i);
+  }
+  else image->refCount--;
 }

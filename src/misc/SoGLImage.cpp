@@ -32,47 +32,13 @@
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
-#include <Inventor/lists/SbPList.h>
-
-#define MAXPATHLEN 4096 // FIXME: get this properly. 19981024 mortene.
-
-//
-// will probably rip out this stupid class later
-//
-class SoTexHandler {
-public:
-  static void SetNotfoundImage(SoImageInterface * const image);
-  static SoImageInterface *GetNotfoundImage();
-  static SoGLImage *GetTexture(const char *texname, void *context);
-  static void UnrefTexture(SoGLImage *image);
-  static void RegisterModelFilename(const char *filename);
-  static void GetTextureImages(SbPList & images, void *context);
-  static SbBool ReplaceTexture(const char * const orgname,
-                               const char * const newpath,
-                               void *context);
-
-  static SoImageInterface *GetImage(const char * const orgname,
-                                        void *context);
-
-private:
-  static char modelPath[MAXPATHLEN+1];
-  static SbPList texArray;
-  static SoImageInterface *notFoundImage;
-
-  static char *SearchForTexture(const char *orgname, char *namebuf);
-  static void SearchForReuse(SoGLImage *&teximage, SoImageInterface *&image,
-                             const char *realname, void *context);
-};
-
-
+#include <Inventor/lists/SbList.h>
 
 //
 // private constructor
 //
 SoGLImage::SoGLImage(SoImageInterface * const img,
-                     const char * const fname,
-                     const char * const org_name,
-                     void * const ctx)
+                     void * const context)
 {
   this->image = img;
   this->handle = 0;
@@ -80,34 +46,8 @@ SoGLImage::SoGLImage(SoImageInterface * const img,
   this->clampS = 0;
   this->clampT = 0;
   this->refCount = 0;
-  this->context = ctx;
-  this->filename = NULL;
-  this->orgname = NULL;
+  this->context = context;
   if (this->image) this->image->ref();
-  this->filename = fname; // SbString will handle NULL pointers
-  this->orgname = org_name;
-}
-
-/*!
-  A constuctor. This constructor should be used if the image data
-  is present in memory (not loaded from file).
-*/
-SoGLImage::SoGLImage(const SbVec2s size,
-                     const int numComponents,
-                     const unsigned char * bytes)
-{
-  SoImageInterface *img =
-    new SoImageInterface(size, numComponents, bytes);
-  this->image = img;
-  this->image->ref(); // ref to enable destructor to work correctly
-  this->handle = 0;
-  this->alpha = 0;
-  this->clampS = 0;
-  this->clampT = 0;
-  this->refCount = -1;  // mark this as not reuseable
-  this->context = NULL;
-  this->filename = NULL;
-  this->orgname = NULL;
 }
 
 //
@@ -117,26 +57,6 @@ SoGLImage::~SoGLImage()
 {
   if (this->handle) sogl_free_texture(this->handle);
   if (this->image) this->image->unref();
-}
-
-/*!
-  This method is used to replace the image data for this GLImage.
-  Make sure you have called makeCurrent() for the GL context before
-  calling this function.
-*/
-void
-SoGLImage::replaceImage(SoImageInterface *const newimage,
-                        const char * const fname,
-                        const char * const oname)
-{
-  if (this->handle) sogl_free_texture(this->handle);
-  this->handle = 0;
-  if (this->image) this->image->unref();
-  this->image = NULL;
-  this->filename = fname;
-  this->orgname = oname;
-  this->image = newimage;
-  if (this->image) this->image->ref();
 }
 
 /*!
@@ -247,10 +167,7 @@ SoGLImage::checkResize()
 void
 SoGLImage::unref()
 {
-  // not reusable textures are not stored in the texhandler
-  // check for this and delete if so
-  if (this->refCount < 0) delete this;
-  else SoTexHandler::UnrefTexture(this);
+  SoGLImage::unrefGLImage(this);
 }
 
 /*!
@@ -312,6 +229,10 @@ SoGLImage::getImage() const
   return this->image;
 }
 
+/**** some static methods needed to reuse GL images *********/
+
+static SbList <SoGLImage *> storedImages;
+
 /*!
   Searches the texture database and returns a texture object
   that matches \a texname and \a context. If no such texture
@@ -321,261 +242,38 @@ SoGLImage::getImage() const
   contexts, but this will be implemented at a later stage.
 */
 SoGLImage *
-SoGLImage::getGLImage(const char * const texname,
-                      void * const context)
+SoGLImage::findOrCreateGLImage(SoImageInterface * const image,
+                               void * const context)
 {
-  return SoTexHandler::GetTexture(texname, context);
-}
-
-
-//
-// SoTexHandler is a convenience class used by SoGLImage.
-//
-
-
-SbPList SoTexHandler::texArray;
-char SoTexHandler::modelPath[MAXPATHLEN+1];
-SoImageInterface *SoTexHandler::notFoundImage = NULL;
-
-
-SoGLImage *
-SoTexHandler::GetTexture(const char *texname, void *context)
-{
-  char realname[MAXPATHLEN*2+1];
-  SoImageInterface *image;
-  SoGLImage *teximage;
-
-  SearchForReuse(teximage, image, texname, context);
-  if (image && !teximage) { //found file, but not in same context
-#if COIN_DEBUG
-    SoDebugError::post("SoTexHandler::GetTexture",
-                       "reusing texture file: %s, not GL texture\n",
-                       texname);
-#endif
-    teximage = new SoGLImage(image, realname, texname, context);
-    teximage->refCount++;
-    texArray.append(teximage);
-    return teximage;
+  int i, n = storedImages.getLength();
+  for (i = 0; i < n; i++) {
+    SoGLImage *glimage = storedImages[i];
+    if (glimage->image == image && glimage->context == context) break;
   }
-  else if (teximage) {
-#if COIN_DEBUG
-    if (!image) SoDebugError::post("SoTexHandler::GetTexture",
-                                   "texture '%s' still does not exist\n",
-                                   texname);
-    else SoDebugError::post("SoTexHandler::GetTexture",
-                            "reusing texture %s, _and_ GL texture!\n",
-                            texname);
-#endif
-    teximage->refCount++;
-    return teximage;
+  if (i < n) {
+    storedImages[i]->refCount++;
+    return storedImages[i];
   }
   else {
-    // search for texture on disk(s)
-    SearchForTexture(texname, realname);
-    image = new SoImageInterface(realname);
-
-    if (image) {
-      teximage = new SoGLImage(image, realname, texname, context);
-    }
-    else {
-      image = notFoundImage;
-      teximage = new SoGLImage(image, NULL, texname, context);
-    }
-    teximage->refCount++;
-    texArray.append(teximage);
-    return teximage;
+    SoGLImage *glimage = new SoGLImage(image, context);
+    glimage->refCount++;
+    storedImages.append(glimage);
+    return glimage;
   }
 }
-
-void
-SoTexHandler::UnrefTexture(SoGLImage *image)
-{
-  if (image) {
-    image->refCount--;
-    if (image->refCount == 0) {
-      int i, n = texArray.getLength();
-      for (i = 0; i < n; i++) {
-        if (image == texArray[i]) break;
-      }
-      if (i < n) texArray.removeFast(i);
-      delete image;
-    }
-  }
-}
-
-void
-SoTexHandler::RegisterModelFilename(const char * /* filename */)
-{
-  // FIXME: "refix" without using any common/XPlatform.cpp
-  // code. 19981024 mortene.
-#if 0
-  XP_getpath(filename, modelPath);
-#else
-  strcpy(modelPath, "");
-#endif
-}
-
-
-#define TEST_FILE(x) \
-   SoDebugError::postInfo("TEST_FILE", "texture search: %s\n", x); \
-   fp = fopen(x, "rb"); \
-   if (fp != NULL) { \
-     fclose(fp); \
-     return x;}
-
-
-char *
-SoTexHandler::SearchForTexture(const char *orgname, char *namebuf)
-{
-#if defined(_WIN32)
-  char dirsplit = '\\';
-#else
-  char dirsplit = '/';
-#endif
-
-  FILE *fp;
-  strcpy(namebuf, orgname);
-  TEST_FILE(namebuf);
-
-  char basename[MAXPATHLEN+1];
-  // FIXME: "refix" without using any common/XPlatform.cpp
-  // code. 19981024 mortene.
-#if 0
-  XP_getbasename(orgname, basename);
-#else
-  strcpy(basename, orgname);
-#endif
-
-#ifndef _WIN32
-  // quick fix to handle m$-doze-filenames under UNIX
-  if (strcmp(basename, orgname) == 0) {
-    char *ptr = strrchr(orgname, '\\');
-    if (ptr) { // this is a m$-dos filename
-      strcpy(basename, ptr+1);
-    }
-  }
-#endif
-  strcpy(namebuf, basename);
-  TEST_FILE(namebuf);
-
-  sprintf(namebuf,"textures%c%s", dirsplit, basename);
-  TEST_FILE(namebuf);
-
-  sprintf(namebuf,"%s%s", modelPath, basename);
-  TEST_FILE(namebuf);
-
-  sprintf(namebuf,"%stextures%c%s", modelPath, dirsplit, basename);
-  TEST_FILE(namebuf);
-
-  sprintf(namebuf,"%s..%cmaps%c%s", modelPath, dirsplit, dirsplit, basename);
-  TEST_FILE(namebuf);
-
-  sprintf(namebuf,"%s..%ctextures%c%s", modelPath, dirsplit, dirsplit, basename);
-  TEST_FILE(namebuf);
-
-#ifdef _WIN32_
-  sprintf(namebuf, "\\3dsmax\\maps\\%s", basename);
-  TEST_FILE(namebuf);
-
-  sprintf(namebuf, "\\3dsmax2\\maps\\%s", basename);
-  TEST_FILE(namebuf);
-
-  sprintf(namebuf, "\\3ds\\materials\\%s", basename);
-  TEST_FILE(namebuf);
-#endif
-  return namebuf;
-}
-
-#undef TEST_FILE
 
 
 void
-SoTexHandler::SearchForReuse(SoGLImage *&teximage,
-                             SoImageInterface *&image,
-                             const char *texname, void *context)
+SoGLImage::unrefGLImage(SoGLImage * const image)
 {
-  teximage = NULL;
-  image = NULL;
-
-  SoGLImage *t = NULL;
-
-  int i, n = texArray.getLength();
+  int i, n = storedImages.getLength();
   for (i = 0; i < n; i++) {
-    t = (SoGLImage*)texArray[i];
-    if (!strcmp(t->orgname.getString(), texname)) {
-      image = t->image;
-      if (t->context == context) {
-        teximage = t;
-        return; // found one, just return
-      }
-    }
-  }
-}
-
-void
-SoTexHandler::GetTextureImages(SbPList &images, void *context)
-{
-  SoGLImage *t = NULL;
-  int i, n = texArray.getLength();
-  for (i = 0; i < n; i++) {
-    t = (SoGLImage*)texArray[i];
-    if (t->context == context)
-      images.append(t);
-  }
-}
-
-SoImageInterface *
-SoTexHandler::GetImage(const char * const orgname, void *context)
-{
-  SoGLImage *t = NULL;
-  int i, n = texArray.getLength();
-  for (i = 0; i < n; i++) {
-    t = (SoGLImage*)texArray[i];
-    if (t->context == context && !strcmp(t->orgname.getString(), orgname))
-      return t->image;
-  }
-  return NULL;
-}
-
-
-SbBool
-SoTexHandler::ReplaceTexture(const char * const orgname,
-                             const char * const newpath,
-                             void *context)
-{
-  SoGLImage *t = NULL;
-  int i, n = texArray.getLength();
-  for (i = 0; i < n; i++) {
-    t = (SoGLImage*)texArray[i];
-    if (t->context == context && !strcmp(t->orgname.getString(), orgname))
-      break;
+    if (storedImages[i] == image) break;
   }
   assert(i < n);
-
-  SoGLImage *dummy = NULL;
-  SoImageInterface *image = NULL;
-  SearchForReuse(dummy, image, newpath, context);
-  if (image == NULL) {
-    char realname[MAXPATHLEN*2+1];
-    SearchForTexture(newpath, realname);
-    image = new SoImageInterface(realname);
+  if (image->refCount == 1) {
+    storedImages.removeFast(i);
+    delete image;
   }
-  if (image) {
-    t->replaceImage(image, image->getFilename(), newpath);
-    return TRUE;
-  }
-  return FALSE;
-}
-
-void
-SoTexHandler::SetNotfoundImage(SoImageInterface * const image)
-{
-  notFoundImage = image;
-}
-
-
-SoImageInterface *
-SoTexHandler::GetNotfoundImage()
-{
-  return notFoundImage;
+  else image->refCount--;
 }

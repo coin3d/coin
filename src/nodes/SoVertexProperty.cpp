@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -68,10 +68,10 @@
 #endif // !COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
 #if !defined(COIN_EXCLUDE_SODIFFUSECOLORELEMENT)
 #include <Inventor/elements/SoDiffuseColorElement.h>
-#endif 
+#endif
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif 
+#endif
 #if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
 #endif
@@ -219,12 +219,12 @@ SoVertexProperty::initClass()
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoVertexProperty::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   if (vertex.getNum() > 0) {
     SoCoordinateElement::set3(action->getState(), this,
-			      vertex.getNum(), vertex.getValues(0));
+                              vertex.getNum(), vertex.getValues(0));
   }
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
@@ -233,17 +233,22 @@ SoVertexProperty::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoVertexProperty::GLRender(SoGLRenderAction * action)
 {
+  if (texCoord.getNum() > 0) {
+    SoGLTextureCoordinateElement::setTexGen(action->getState(),
+                                            this, NULL);
+  }
+
   SoVertexProperty::doAction((SoAction*)action);
 #if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   SoState *state = action->getState();
   if (!normalBinding.isIgnored()) {
     Binding binding = (Binding)normalBinding.getValue();
     SoGLShadeModelElement::setNormal(state,
-				     binding == PER_VERTEX ||
-				     binding == PER_VERTEX_INDEXED);
+                                     binding == PER_VERTEX ||
+                                     binding == PER_VERTEX_INDEXED);
   }
   if (!materialBinding.isIgnored()
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
@@ -252,10 +257,10 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
       ) {
     Binding binding = (Binding)materialBinding.getValue();
     SoGLShadeModelElement::setMaterial(state,
-				       binding == PER_VERTEX ||
-				       binding == PER_VERTEX_INDEXED);
-    
-    
+                                       binding == PER_VERTEX ||
+                                       binding == PER_VERTEX_INDEXED);
+
+
   }
 #endif // !COIN_EXCLUDE_SOGLSHADEMODELELEMENT
 }
@@ -270,23 +275,23 @@ void
 SoVertexProperty::doAction(SoAction *action)
 {
   SoState * state = action->getState();
-  if (vertex.getNum() > 0) 
+  if (vertex.getNum() > 0)
     SoCoordinateElement::set3(state, this, vertex.getNum(),
-			      vertex.getValues(0));
-  
+                              vertex.getValues(0));
+
   if (texCoord.getNum() > 0) {
     SoTextureCoordinateElement::set2(state, this, texCoord.getNum(),
-				     texCoord.getValues(0));
+                                     texCoord.getValues(0));
   }
   if (normal.getNum() > 0) {
     SoNormalElement::set(state, this, normal.getNum(),
-			 normal.getValues(0));
+                         normal.getValues(0));
   }
   if (!normalBinding.isIgnored()
       ) {
     SoNormalBindingElement::set(state, this,
-				(SoNormalBindingElement::Binding)
-				normalBinding.getValue());
+                                (SoNormalBindingElement::Binding)
+                                normalBinding.getValue());
   }
   if (orderedRGBA.getNum() > 0
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
@@ -294,16 +299,16 @@ SoVertexProperty::doAction(SoAction *action)
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
       ) {
     SoDiffuseColorElement::set(state, this, orderedRGBA.getNum(),
-			       orderedRGBA.getValues(0));
+                               orderedRGBA.getValues(0));
   }
   if (!materialBinding.isIgnored()
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
       && !SoOverrideElement::getMaterialBindingOverride(state)
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
       ) {
-    SoMaterialBindingElement::set(state, this, 
-				  (SoMaterialBindingElement::Binding)
-				  materialBinding.getValue());
+    SoMaterialBindingElement::set(state, this,
+                                  (SoMaterialBindingElement::Binding)
+                                  materialBinding.getValue());
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION
