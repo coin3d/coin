@@ -43,6 +43,8 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -190,6 +192,12 @@ SoIndexedNurbsSurface::GLRender(SoGLRenderAction * action)
   glEnable(GL_AUTO_NORMAL);
   this->doNurbs(action, TRUE);
   glDisable(GL_AUTO_NORMAL);
+
+  SoState * state = action->getState();
+  if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) {
+    SoGLCacheContextElement::shouldAutoCache(state,
+                                             SoGLCacheContextElement::DO_AUTO_CACHE);
+  }
 }
 
 // Doc in superclass.

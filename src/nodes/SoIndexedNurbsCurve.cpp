@@ -50,6 +50,8 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -176,6 +178,10 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
   glDisable(GL_AUTO_NORMAL);
 
   state->pop();
+  if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) {
+    SoGLCacheContextElement::shouldAutoCache(state,
+                                             SoGLCacheContextElement::DO_AUTO_CACHE);
+  }
 }
 
 // doc from parent
