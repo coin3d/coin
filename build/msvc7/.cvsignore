@@ -1,4 +1,5 @@
 Debug
+Release
 src
 man
 html
@@ -8,6 +9,11 @@ libtool
 config.status
 config.log
 vc70.pdb
+coin3.dsw
+coin3.dsp
+coin3.ncb
+coin3.suo
+coin3.dll
 Info.plist
 version.plist
 coin-default.cfg
