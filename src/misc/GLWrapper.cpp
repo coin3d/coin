@@ -21,12 +21,18 @@
  *
 \**************************************************************************/
 
-//FIXME: temporary fix awaiting configure-check for this feature (kintel 20011125)
+#include "GLWrapper.h"
+
+#ifdef HAVE_AGL
+#include <AGL/AGL.h>
+#endif /* HAVE_AGL */
+
+// FIXME: temporary fix awaiting configure-check for this feature
+// (kintel 20011125)
 #ifndef __APPLE__
 #define COIN_OPENGL_DYNAMIC_BINDING
 #endif
 
-#include "GLWrapper.h"
 #include <Inventor/SbDict.h>
 
 #include <../tidbits.h> // coin_atexit()
@@ -124,7 +130,7 @@ GLWrapper_getProcAddressMethod(GLWrapper_t *gi)
 #endif
 }
 
-/* FIXME: support HP-UX? (Doesn't have dlopen().) 20010626 mortene. */
+/* FIXME: support HP-UX 10.x? (Doesn't have dlopen().) 20010626 mortene. */
 
 static GLWrapper_t * GL_instance = NULL;
 static SbDict * gldict = NULL;
@@ -216,9 +222,9 @@ GLWrapper_set_glxVersion(GLWrapper_t * gi)
 
 int
 GLWrapper_glVersionMatchesAtLeast(const GLWrapper_t * w,
-                                unsigned int major,
-                                unsigned int minor,
-                                unsigned int revision)
+                                  unsigned int major,
+                                  unsigned int minor,
+                                  unsigned int revision)
 {
   if (w->glVersion.major < major) return 0;
   else if (w->glVersion.major > major) return 1;
