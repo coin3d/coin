@@ -1550,10 +1550,7 @@ SoInput::getPathname(const char * const filename)
   // SbFile class of filesystem abstractions to hide system
   // differences. 20011021 mortene.
 
-  // FIXME: checking for system instead of feature is bad coding
-  // style.  Use a configure check instead. 20011021 mortene.
-
-#ifdef _WIN32
+#ifdef HAVE__SPLITPATH
 
   char drive[_MAX_DRIVE];
   char dir[_MAX_DIR];
@@ -1596,9 +1593,7 @@ SoInput::getBasename(const char * const filename)
   // SbFile class of filesystem abstractions to hide system
   // differences. 20011021 mortene.
 
-  // FIXME: checking for system instead of feature is bad coding
-  // style.  Use a configure check instead. 20011021 mortene.
-#ifdef _WIN32
+#ifdef HAVE__SPLITPATH
 
   char fname[_MAX_FNAME];
   char ext[_MAX_EXT];
