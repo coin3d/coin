@@ -249,6 +249,8 @@ RegularSources = \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp \
 	SoBBoxModelMatrixElement.cpp \
+	SoBumpMapElement.cpp \
+	SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp \
 	SoClipPlaneElement.cpp \
 	SoComplexityElement.cpp \
@@ -333,6 +335,8 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
 	../../include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
 	../../include/Inventor/elements/SoBBoxModelMatrixElement.h \
+	../../include/Inventor/elements/SoBumpMapElement.h \
+	../../include/Inventor/elements/SoBumpMappingPropertyElement.h \
 	../../include/Inventor/elements/SoCacheElement.h \
 	../../include/Inventor/elements/SoClipPlaneElement.h \
 	../../include/Inventor/elements/SoComplexityElement.h \
@@ -473,6 +477,7 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
+	SoBumpMapElement.cpp SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp SoClipPlaneElement.cpp \
 	SoComplexityElement.cpp SoComplexityTypeElement.cpp \
 	SoCoordinateElement.cpp SoCreaseAngleElement.cpp \
@@ -517,7 +522,8 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoAnnoText3CharOrientElement.$(OBJEXT) \
 	SoAnnoText3FontSizeHintElement.$(OBJEXT) \
 	SoAnnoText3RenderPrintElement.$(OBJEXT) \
-	SoBBoxModelMatrixElement.$(OBJEXT) SoCacheElement.$(OBJEXT) \
+	SoBBoxModelMatrixElement.$(OBJEXT) SoBumpMapElement.$(OBJEXT) \
+	SoBumpMappingPropertyElement.$(OBJEXT) SoCacheElement.$(OBJEXT) \
 	SoClipPlaneElement.$(OBJEXT) SoComplexityElement.$(OBJEXT) \
 	SoComplexityTypeElement.$(OBJEXT) SoCoordinateElement.$(OBJEXT) \
 	SoCreaseAngleElement.$(OBJEXT) SoCullElement.$(OBJEXT) \
@@ -576,6 +582,8 @@ am__EXTRA_elements_lst_SOURCES_DIST = \
 	../../include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
 	../../include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
 	../../include/Inventor/elements/SoBBoxModelMatrixElement.h \
+	../../include/Inventor/elements/SoBumpMapElement.h \
+	../../include/Inventor/elements/SoBumpMappingPropertyElement.h \
 	../../include/Inventor/elements/SoCacheElement.h \
 	../../include/Inventor/elements/SoClipPlaneElement.h \
 	../../include/Inventor/elements/SoComplexityElement.h \
@@ -652,6 +660,7 @@ am__EXTRA_elements_lst_SOURCES_DIST = \
 	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
+	SoBumpMapElement.cpp SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp SoClipPlaneElement.cpp \
 	SoComplexityElement.cpp SoComplexityTypeElement.cpp \
 	SoCoordinateElement.cpp SoCreaseAngleElement.cpp \
@@ -698,6 +707,7 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
+	SoBumpMapElement.cpp SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp SoClipPlaneElement.cpp \
 	SoComplexityElement.cpp SoComplexityTypeElement.cpp \
 	SoCoordinateElement.cpp SoCreaseAngleElement.cpp \
@@ -741,6 +751,7 @@ am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoAnnoText3CharOrientElement.lo \
 	SoAnnoText3FontSizeHintElement.lo \
 	SoAnnoText3RenderPrintElement.lo SoBBoxModelMatrixElement.lo \
+	SoBumpMapElement.lo SoBumpMappingPropertyElement.lo \
 	SoCacheElement.lo SoClipPlaneElement.lo SoComplexityElement.lo \
 	SoComplexityTypeElement.lo SoCoordinateElement.lo \
 	SoCreaseAngleElement.lo SoCullElement.lo \
@@ -787,6 +798,8 @@ am__EXTRA_libelements_la_SOURCES_DIST = \
 	../../include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
 	../../include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
 	../../include/Inventor/elements/SoBBoxModelMatrixElement.h \
+	../../include/Inventor/elements/SoBumpMapElement.h \
+	../../include/Inventor/elements/SoBumpMappingPropertyElement.h \
 	../../include/Inventor/elements/SoCacheElement.h \
 	../../include/Inventor/elements/SoClipPlaneElement.h \
 	../../include/Inventor/elements/SoComplexityElement.h \
@@ -863,6 +876,7 @@ am__EXTRA_libelements_la_SOURCES_DIST = \
 	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
+	SoBumpMapElement.cpp SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp SoClipPlaneElement.cpp \
 	SoComplexityElement.cpp SoComplexityTypeElement.cpp \
 	SoCoordinateElement.cpp SoCreaseAngleElement.cpp \
@@ -908,6 +922,7 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
+	SoBumpMapElement.cpp SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp SoClipPlaneElement.cpp \
 	SoComplexityElement.cpp SoComplexityTypeElement.cpp \
 	SoCoordinateElement.cpp SoCreaseAngleElement.cpp \
@@ -956,6 +971,8 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
 	../../include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
 	../../include/Inventor/elements/SoBBoxModelMatrixElement.h \
+	../../include/Inventor/elements/SoBumpMapElement.h \
+	../../include/Inventor/elements/SoBumpMappingPropertyElement.h \
 	../../include/Inventor/elements/SoCacheElement.h \
 	../../include/Inventor/elements/SoClipPlaneElement.h \
 	../../include/Inventor/elements/SoComplexityElement.h \
@@ -1032,6 +1049,7 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
+	SoBumpMapElement.cpp SoBumpMappingPropertyElement.cpp \
 	SoCacheElement.cpp SoClipPlaneElement.cpp \
 	SoComplexityElement.cpp SoComplexityTypeElement.cpp \
 	SoCoordinateElement.cpp SoCreaseAngleElement.cpp \
@@ -1085,6 +1103,10 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoAnnoText3RenderPrintElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoBBoxModelMatrixElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoBBoxModelMatrixElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBumpMapElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBumpMapElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBumpMappingPropertyElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBumpMappingPropertyElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCacheElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCacheElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoClipPlaneElement.Plo \
@@ -1333,6 +1355,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAnnoText3RenderPrintElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBBoxModelMatrixElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBBoxModelMatrixElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMapElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMapElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMappingPropertyElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMappingPropertyElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCacheElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCacheElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoClipPlaneElement.Plo@am__quote@

@@ -7,6 +7,7 @@ RegularSources = \
 	SoArray.cpp \
 	SoBaseColor.cpp \
 	SoBlinker.cpp \
+	SoBumpMap.cpp \
 	SoBumpMappingProperty.cpp \
 	SoCallback.cpp \
 	SoCamera.cpp \
@@ -97,6 +98,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoArray.h \
 	../../include/Inventor/nodes/SoBaseColor.h \
 	../../include/Inventor/nodes/SoBlinker.h \
+	../../include/Inventor/nodes/SoBumpMap.h \
 	../../include/Inventor/nodes/SoBumpMappingProperty.h \
 	../../include/Inventor/nodes/SoCallback.h \
 	../../include/Inventor/nodes/SoCamera.h \

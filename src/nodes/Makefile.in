@@ -246,6 +246,8 @@ RegularSources = \
 	SoArray.cpp \
 	SoBaseColor.cpp \
 	SoBlinker.cpp \
+	SoBumpMap.cpp \
+	SoBumpMappingProperty.cpp \
 	SoCallback.cpp \
 	SoCamera.cpp \
 	SoClipPlane.cpp \
@@ -337,6 +339,8 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoArray.h \
 	../../include/Inventor/nodes/SoBaseColor.h \
 	../../include/Inventor/nodes/SoBlinker.h \
+	../../include/Inventor/nodes/SoBumpMap.h \
+	../../include/Inventor/nodes/SoBumpMappingProperty.h \
 	../../include/Inventor/nodes/SoCallback.h \
 	../../include/Inventor/nodes/SoCamera.h \
 	../../include/Inventor/nodes/SoClipPlane.h \
@@ -485,8 +489,9 @@ LIBRARIES = $(noinst_LIBRARIES)
 nodes_lst_AR = $(AR) cru
 nodes_lst_LIBADD =
 am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
-	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoCallback.cpp \
-	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
+	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
+	SoBumpMappingProperty.cpp SoCallback.cpp SoCamera.cpp \
+	SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
 	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
 	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
@@ -516,6 +521,7 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 am__objects_1 = all-nodes-cpp.$(OBJEXT)
 am__objects_2 = SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 	SoArray.$(OBJEXT) SoBaseColor.$(OBJEXT) SoBlinker.$(OBJEXT) \
+	SoBumpMap.$(OBJEXT) SoBumpMappingProperty.$(OBJEXT) \
 	SoCallback.$(OBJEXT) SoCamera.$(OBJEXT) SoClipPlane.$(OBJEXT) \
 	SoColorIndex.$(OBJEXT) SoComplexity.$(OBJEXT) \
 	SoCoordinate3.$(OBJEXT) SoCoordinate4.$(OBJEXT) \
@@ -565,6 +571,8 @@ am__EXTRA_nodes_lst_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoArray.h \
 	../../include/Inventor/nodes/SoBaseColor.h \
 	../../include/Inventor/nodes/SoBlinker.h \
+	../../include/Inventor/nodes/SoBumpMap.h \
+	../../include/Inventor/nodes/SoBumpMappingProperty.h \
 	../../include/Inventor/nodes/SoCallback.h \
 	../../include/Inventor/nodes/SoCamera.h \
 	../../include/Inventor/nodes/SoClipPlane.h \
@@ -650,11 +658,12 @@ am__EXTRA_nodes_lst_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoUnknownNode.h \
 	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
-	SoCallback.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
-	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoBumpMap.cpp SoBumpMappingProperty.cpp SoCallback.cpp \
+	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
+	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
+	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
+	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
 	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
@@ -683,8 +692,9 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 libnodes_la_LDFLAGS =
 libnodes_la_LIBADD =
 am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
-	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoCallback.cpp \
-	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
+	SoArray.cpp SoBaseColor.cpp SoBlinker.cpp SoBumpMap.cpp \
+	SoBumpMappingProperty.cpp SoCallback.cpp SoCamera.cpp \
+	SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
 	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
 	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
 	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
@@ -713,7 +723,8 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoWWWInline.cpp all-nodes-cpp.cpp
 am__objects_6 = all-nodes-cpp.lo
 am__objects_7 = SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
-	SoBaseColor.lo SoBlinker.lo SoCallback.lo SoCamera.lo \
+	SoBaseColor.lo SoBlinker.lo SoBumpMap.lo \
+	SoBumpMappingProperty.lo SoCallback.lo SoCamera.lo \
 	SoClipPlane.lo SoColorIndex.lo SoComplexity.lo SoCoordinate3.lo \
 	SoCoordinate4.lo SoDirectionalLight.lo SoDrawStyle.lo \
 	SoEnvironment.lo SoEventCallback.lo SoExtSelection.lo SoFile.lo \
@@ -750,6 +761,8 @@ am__EXTRA_libnodes_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoArray.h \
 	../../include/Inventor/nodes/SoBaseColor.h \
 	../../include/Inventor/nodes/SoBlinker.h \
+	../../include/Inventor/nodes/SoBumpMap.h \
+	../../include/Inventor/nodes/SoBumpMappingProperty.h \
 	../../include/Inventor/nodes/SoCallback.h \
 	../../include/Inventor/nodes/SoCamera.h \
 	../../include/Inventor/nodes/SoClipPlane.h \
@@ -835,11 +848,12 @@ am__EXTRA_libnodes_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoUnknownNode.h \
 	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
-	SoCallback.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
-	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoBumpMap.cpp SoBumpMappingProperty.cpp SoCallback.cpp \
+	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
+	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
+	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
+	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
 	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
@@ -867,11 +881,12 @@ libnodes@SUFFIX@LINKHACK_la_LDFLAGS =
 libnodes@SUFFIX@LINKHACK_la_LIBADD =
 am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
-	SoCallback.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
-	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoBumpMap.cpp SoBumpMappingProperty.cpp SoCallback.cpp \
+	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
+	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
+	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
+	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
 	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
@@ -903,6 +918,8 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoArray.h \
 	../../include/Inventor/nodes/SoBaseColor.h \
 	../../include/Inventor/nodes/SoBlinker.h \
+	../../include/Inventor/nodes/SoBumpMap.h \
+	../../include/Inventor/nodes/SoBumpMappingProperty.h \
 	../../include/Inventor/nodes/SoCallback.h \
 	../../include/Inventor/nodes/SoCamera.h \
 	../../include/Inventor/nodes/SoClipPlane.h \
@@ -988,11 +1005,12 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/nodes/SoUnknownNode.h \
 	SoSoundElementHelper.h all-nodes-cpp.cpp SoAnnotation.cpp \
 	SoAntiSquish.cpp SoArray.cpp SoBaseColor.cpp SoBlinker.cpp \
-	SoCallback.cpp SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp \
-	SoComplexity.cpp SoCoordinate3.cpp SoCoordinate4.cpp \
-	SoDirectionalLight.cpp SoDrawStyle.cpp SoEnvironment.cpp \
-	SoEventCallback.cpp SoExtSelection.cpp SoFile.cpp SoFont.cpp \
-	SoFontStyle.cpp SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
+	SoBumpMap.cpp SoBumpMappingProperty.cpp SoCallback.cpp \
+	SoCamera.cpp SoClipPlane.cpp SoColorIndex.cpp SoComplexity.cpp \
+	SoCoordinate3.cpp SoCoordinate4.cpp SoDirectionalLight.cpp \
+	SoDrawStyle.cpp SoEnvironment.cpp SoEventCallback.cpp \
+	SoExtSelection.cpp SoFile.cpp SoFont.cpp SoFontStyle.cpp \
+	SoGroup.cpp SoInfo.cpp SoLOD.cpp SoLabel.cpp \
 	SoLevelOfDetail.cpp SoLight.cpp SoLightModel.cpp \
 	SoLinearProfile.cpp SoListener.cpp SoLocateHighlight.cpp \
 	SoMaterial.cpp SoMaterialBinding.cpp SoMatrixTransform.cpp \
@@ -1026,6 +1044,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoArray.Po ./$(DEPDIR)/SoBaseColor.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoBaseColor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoBlinker.Plo ./$(DEPDIR)/SoBlinker.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBumpMap.Plo ./$(DEPDIR)/SoBumpMap.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBumpMappingProperty.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoBumpMappingProperty.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCallback.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCallback.Po ./$(DEPDIR)/SoCamera.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoCamera.Po ./$(DEPDIR)/SoClipPlane.Plo \
@@ -1265,6 +1286,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBaseColor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBlinker.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBlinker.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMap.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMap.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMappingProperty.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBumpMappingProperty.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCallback.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCallback.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCamera.Plo@am__quote@

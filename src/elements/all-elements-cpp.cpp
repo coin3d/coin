@@ -27,6 +27,7 @@
 #include "SoAnnoText3FontSizeHintElement.cpp"
 #include "SoAnnoText3RenderPrintElement.cpp"
 #include "SoBBoxModelMatrixElement.cpp"
+#include "SoBumpMapElement.cpp"
 #include "SoBumpMappingPropertyElement.cpp"
 #include "SoCacheElement.cpp"
 #include "SoClipPlaneElement.cpp"
