@@ -21,6 +21,7 @@
 #define COIN_SOCALLBACKACTION_H
 
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoSubAction.h>
 
 #include <Inventor/nodes/SoComplexity.h>
 #include <Inventor/nodes/SoShapeHints.h>
@@ -64,30 +65,13 @@ typedef void SoPointCB(void * userData, SoCallbackAction * action,
 class SoCallbackAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoCallbackAction)
-private:
-  static SoType classTypeId;
-
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
-
-  static void initClass(void);
-
-  virtual ~SoCallbackAction();
-//$ END TEMPLATE ActionHeader
+  SO_ACTION_HEADER(SoCallbackAction);
 
 public:
   SoCallbackAction(void);
+  virtual ~SoCallbackAction();
+
+  static void initClass(void);
 
   enum Response {
     CONTINUE,

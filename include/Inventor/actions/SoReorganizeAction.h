@@ -26,34 +26,16 @@
 class SoReorganizeAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoReorganizeAction)
-private:
-  static SoType classTypeId;
-
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
-
-  static void initClass(void);
-
-  virtual ~SoReorganizeAction();
-//$ END TEMPLATE ActionHeader
+  SO_ACTION_HEADER(SoReorganizeAction);
 
 public:
   SoReorganizeAction(void);
+  virtual ~SoReorganizeAction();
+
+  static void initClass(void);
 
 protected:
   virtual void beginTraversal(SoNode * node);
-
 };
 
 #endif // !COIN_SOREORGANIZEACTION_H

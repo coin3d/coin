@@ -28,101 +28,16 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <coindefs.h> // COIN_STUB()
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoGlobalSimplifyAction)
+SO_ACTION_SOURCE(SoGlobalSimplifyAction);
 
-SoType SoGlobalSimplifyAction::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoGlobalSimplifyAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoGlobalSimplifyAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-// static variables
-SoEnabledElementsList * SoGlobalSimplifyAction::enabledElements;
-SoActionMethodList * SoGlobalSimplifyAction::methods;
-
-/*!
-  \fn SoGlobalSimplifyAction::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoGlobalSimplifyAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoGlobalSimplifyAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoGlobalSimplifyAction::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoGlobalSimplifyAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method initializes the static data for the
-  SoGlobalSimplifyAction class.
-*/
-
+// Override from parent class.
 void
 SoGlobalSimplifyAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoGlobalSimplifyAction)
-  assert(SoGlobalSimplifyAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGlobalSimplifyAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoGlobalSimplifyAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoGlobalSimplifyAction, SoSimplifyAction);
 }
 
-// *************************************************************************
 
 /*!
   A constructor.

@@ -24,10 +24,11 @@
 #include <Inventor/SoType.h>
 #include <Inventor/misc/SoTempPath.h>
 
-// Include instead of using a forward declaration to be compatible
-// with Open Inventor (and besides, all the other action class
-// definitions needs to know about the SoActionMethodList).
+// Include instead of using forward declarations to be compatible with
+// Open Inventor (and besides, all the other action class definitions
+// needs to know about these lists).
 #include <Inventor/lists/SoActionMethodList.h>
+#include <Inventor/lists/SoEnabledElementsList.h>
 
 
 // Avoid problem with HPUX 10.20 C library API headers, which defines
@@ -67,7 +68,7 @@ public:
 
   static void initClass(void);
   static void initClasses(void);
-  
+
   static SoType getClassTypeId(void);
   virtual SoType getTypeId(void) const = 0;
   virtual SbBool isOfType(SoType type) const;
@@ -88,7 +89,7 @@ public:
 
   SbBool isLastPathListAppliedTo(void) const;
 
-  PathCode getPathCode(int & numIndices, const int * & indices);
+  PathCode getPathCode(int & numindices, const int * & indices);
   void traverse(SoNode * const node);
 
   SbBool hasTerminated(void) const;
@@ -98,13 +99,13 @@ public:
 
   PathCode getCurPathCode(void) const;
 
-  void pushCurPath(const int childIndex);
-  void popCurPath(const PathCode prevPathCode);
+  void pushCurPath(const int childindex);
+  void popCurPath(const PathCode prevpathcode);
   virtual SoNode * getCurPathTail(void);
-  void usePathCode(int & numIndices, const int * & indices);
+  void usePathCode(int & numindices, const int * & indices);
   void pushCurPath(void);
 
-  void popPushCurPath(const int childIndex);
+  void popPushCurPath(const int childindex);
   void popCurPath(void);
 
   void switchToPathTraversal(SoPath * path);

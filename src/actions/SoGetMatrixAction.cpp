@@ -18,127 +18,43 @@
 \**************************************************************************/
 
 /*!
-  \class SoGetMatrixAction Inventor/actions/SoGetMatrixAction.h
-  \brief The SoGetMatrixAction class is an action for getting the
-  transformation matrix for a subgraph.
+  \class SoGetMatrixAction SoGetMatrixAction.h Inventor/actions/SoGetMatrixAction.h
+  \brief The SoGetMatrixAction class is an action for accumulating the transformation matrix of a subgraph.
+  \ingroup actions
 
-  FIXME: doc
+  This action makes it easy to calculate and convert back and from the
+  global coordinate system and local coordinates in a hierarchical
+  model.
 */
 
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoSubAction.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-
-// *************************************************************************
-
-//$ BEGIN TEMPLATE ActionSource(SoGetMatrixAction)
-
-SoType SoGetMatrixAction::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoGetMatrixAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoGetMatrixAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
 #include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-// static variables
-SoEnabledElementsList * SoGetMatrixAction::enabledElements;
-SoActionMethodList * SoGetMatrixAction::methods;
 
-/*!
-  \fn SoGetMatrixAction::enabledElements
-  FIXME: write doc.
-*/
+SO_ACTION_SOURCE(SoGetMatrixAction);
 
-/*!
-  \fn SoGetMatrixAction::methods
-  FIXME: write doc.
-*/
 
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoGetMatrixAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
+// Overridden from parent.
 void
-SoGetMatrixAction::addMethod(const SoType type, SoActionMethod method)
+SoGetMatrixAction::initClass(void)
 {
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoGetMatrixAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method initializes all the static data for the
-  SoGetMatrixAction class.
-*/
-
-void
-SoGetMatrixAction::initClass()
-{
-//$ BEGIN TEMPLATE InitActionSource(SoGetMatrixAction)
-  assert(SoGetMatrixAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGetMatrixAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoGetMatrixAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoGetMatrixAction, SoAction);
 
   SO_ENABLE(SoGetMatrixAction, SoViewportRegionElement);
-  //FIXME: enable other elements (check with Toolmaker p.13->) (kintel 1990616)
 }
 
-// *************************************************************************
 
 /*!
-  A constructor.
+  Constructor.
 */
-
-SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion &newRegion)
+SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion & region)
+  : viewportregion(region)
 {
   SO_ACTION_CONSTRUCTOR(SoGetMatrixAction);
 
@@ -148,8 +64,6 @@ SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion &newRegion)
     SO_ACTION_ADD_METHOD(SoNode, SoNode::getMatrixS);
   }
   methods->setUp();
-
-  this->viewportRegion = newRegion;
 }
 
 /*!
@@ -165,9 +79,9 @@ SoGetMatrixAction::~SoGetMatrixAction()
 */
 
 void
-SoGetMatrixAction::setViewportRegion(const SbViewportRegion &newRegion)
+SoGetMatrixAction::setViewportRegion(const SbViewportRegion & region)
 {
-  this->viewportRegion=newRegion;
+  this->viewportregion = region;
 }
 
 /*!
@@ -175,18 +89,16 @@ SoGetMatrixAction::setViewportRegion(const SbViewportRegion &newRegion)
 */
 
 const SbViewportRegion &
-SoGetMatrixAction::getViewportRegion() const
+SoGetMatrixAction::getViewportRegion(void) const
 {
-  return this->viewportRegion;
+  return this->viewportregion;
 }
 
 /*!
   This method returns the transformation matrix.
 */
-
-//$ EXPORT INLINE
 SbMatrix &
-SoGetMatrixAction::getMatrix()
+SoGetMatrixAction::getMatrix(void)
 {
   return this->matrix;
 }
@@ -194,48 +106,42 @@ SoGetMatrixAction::getMatrix()
 /*!
   This method returns the inverse matrix.
 */
-
-//$ EXPORT INLINE
 SbMatrix &
-SoGetMatrixAction::getInverse()
+SoGetMatrixAction::getInverse(void)
 {
-  return this->invMatrix;
+  return this->invmatrix;
 }
 
 /*!
   This method returns the texture matrix.
 */
-
-//$ EXPORT INLINE
 SbMatrix &
-SoGetMatrixAction::getTextureMatrix()
+SoGetMatrixAction::getTextureMatrix(void)
 {
-  return this->texMatrix;
+  return this->texmatrix;
 }
 
 /*!
   This method returns the inverse texture matrix.
 */
-
-//$ EXPORT INLINE
 SbMatrix &
-SoGetMatrixAction::getTextureInverse()
+SoGetMatrixAction::getTextureInverse(void)
 {
-  return this->invTexMatrix;
+  return this->invtexmatrix;
 }
 
 /*!
   This method makes sure the graph is not traversed like it normally would.
  */
 void
-SoGetMatrixAction::beginTraversal(SoNode *node)
+SoGetMatrixAction::beginTraversal(SoNode * node)
 {
   assert(this->traversalMethods);
 
   this->matrix.makeIdentity();
-  this->invMatrix.makeIdentity();
-  this->texMatrix.makeIdentity();
-  this->invTexMatrix.makeIdentity();
+  this->invmatrix.makeIdentity();
+  this->texmatrix.makeIdentity();
+  this->invtexmatrix.makeIdentity();
 
   this->traverse(node);
 }
@@ -250,7 +156,7 @@ void
 SoGetMatrixAction::mult(const SbMatrix &matrix)
 {
   this->matrix.multLeft(matrix);
-  this->invMatrix = this->matrix.inverse();
+  this->invmatrix = this->matrix.inverse();
 }
 
 /*!
@@ -264,7 +170,7 @@ SoGetMatrixAction::translateBy(const SbVec3f &vec)
   mat.setTranslate(vec);
   this->matrix.multLeft(mat);
   mat.setTranslate(-vec);
-  this->invMatrix.multRight(mat);
+  this->invmatrix.multRight(mat);
 }
 
 /*!
@@ -278,7 +184,7 @@ SoGetMatrixAction::rotateBy(const SbRotation &rot)
   mat.setRotate(rot);
   this->matrix.multLeft(mat);
   mat.setRotate(rot.inverse());
-  this->invMatrix.multRight(mat);
+  this->invmatrix.multRight(mat);
 }
 
 /*!
@@ -302,5 +208,5 @@ SoGetMatrixAction::scaleBy(const SbVec3f &scaleFactor)
   invScale[1] = 1.0f / scaleFactor[1];
   invScale[2] = 1.0f / scaleFactor[2];
   mat.setScale(invScale);
-  this->invMatrix.multRight(mat);
+  this->invmatrix.multRight(mat);
 }

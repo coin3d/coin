@@ -20,10 +20,70 @@
 #ifndef COIN_SOSUBACTION_H
 #define COIN_SOSUBACTION_H
 
-#define SO_ACTION_ADD_METHOD(nodeClass, method)                               \
-    addMethod(nodeClass::getClassTypeId(), (SoActionMethod)method)
 
-#define SO_ACTION_CONSTRUCTOR(className)                                      \
-    traversalMethods = methods
+
+#define SO_ACTION_ADD_METHOD(nodeclass, method) \
+  do { \
+    addMethod(nodeclass::getClassTypeId(), (SoActionMethod)method); \
+  } while (0)
+
+
+#define SO_ACTION_CONSTRUCTOR(classname) \
+  do { \
+    classname::traversalMethods = this->methods; \
+  } while (0)
+
+
+#define SO_ACTION_HEADER(classname) \
+public: \
+  virtual SoType getTypeId(void) const; \
+  static SoType getClassTypeId(void); \
+  static void addMethod(const SoType type, SoActionMethod method); \
+  static void enableElement(const SoType type, const int stackindex); \
+ \
+protected: \
+  virtual const SoEnabledElementsList & getEnabledElements(void) const; \
+  static SoEnabledElementsList * enabledElements; \
+  static SoActionMethodList * methods; \
+ \
+private: \
+  static SoType classTypeId
+
+
+#define SO_ACTION_SOURCE(classname) \
+SoEnabledElementsList * classname::enabledElements; \
+SoActionMethodList * classname::methods; \
+SoType classname::classTypeId = SoType::badType(); \
+SoType classname::getClassTypeId(void) { return classname::classTypeId; } \
+SoType classname::getTypeId(void) const { return classname::classTypeId; } \
+const SoEnabledElementsList & classname::getEnabledElements(void) const \
+{ \
+  assert(classname::enabledElements); \
+  return *classname::enabledElements; \
+} \
+void \
+classname::addMethod(const SoType type, SoActionMethod method) \
+{ \
+  assert(classname::methods); \
+  classname::methods->addMethod(type, method); \
+} \
+void \
+classname::enableElement(const SoType type, const int stackindex) \
+{ \
+  assert(classname::enabledElements); \
+  classname::enabledElements->enable(type, stackindex); \
+}
+
+
+#define SO_ACTION_INIT_CLASS(classname, parentclassname) \
+  do { \
+    assert(classname::getClassTypeId() == SoType::badType()); \
+    assert(parentclassname::getClassTypeId() != SoType::badType()); \
+    classname::classTypeId = SoType::createType(parentclassname::getClassTypeId(), SO__QUOTE(classname)); \
+    classname::enabledElements = new SoEnabledElementsList(parentclassname::enabledElements); \
+    classname::methods = new SoActionMethodList(parentclassname::methods); \
+  } while (0)
+
+
 
 #endif // !COIN_SOSUBACTION_H

@@ -43,101 +43,16 @@
 #include <Inventor/misc/SoState.h>
 #include <assert.h>
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoLineHighlightRenderAction)
+SO_ACTION_SOURCE(SoLineHighlightRenderAction);
 
-SoType SoLineHighlightRenderAction::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoLineHighlightRenderAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoLineHighlightRenderAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-// static variables
-SoEnabledElementsList * SoLineHighlightRenderAction::enabledElements;
-SoActionMethodList * SoLineHighlightRenderAction::methods;
-
-/*!
-  \fn SoLineHighlightRenderAction::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoLineHighlightRenderAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoLineHighlightRenderAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoLineHighlightRenderAction::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoLineHighlightRenderAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method initializes the static data for the
-  SoLineHighlightRenderAction class.
-*/
-
+// Override from parent class.
 void
 SoLineHighlightRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoLineHighlightRenderAction)
-  assert(SoLineHighlightRenderAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLineHighlightRenderAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoLineHighlightRenderAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoLineHighlightRenderAction, SoGLRenderAction);
 }
 
-// *************************************************************************
 
 /*!
   A constructor.
@@ -202,7 +117,7 @@ SoLineHighlightRenderAction::apply(SoNode *node)
       SoSelection *selection = (SoSelection*)
         this->searchAction->getPath()->getTail();
       assert(selection->getTypeId().
-             isDerivedFrom(SoSelection::getClassTypeId()));      
+             isDerivedFrom(SoSelection::getClassTypeId()));
 
       if (selection->getNumSelected()) {
         this->drawBoxes(this->searchAction->getPath(), selection->getList());
@@ -283,7 +198,7 @@ SoLineHighlightRenderAction::getLineWidth() const
   return this->linewidth;
 }
 
-void 
+void
 SoLineHighlightRenderAction::drawBoxes(SoPath *pathtothis, const SoPathList *pathlist)
 {
   int i;
@@ -296,7 +211,7 @@ SoLineHighlightRenderAction::drawBoxes(SoPath *pathtothis, const SoPathList *pat
 
   SoState *state = this->getState();
   state->push();
-  
+
   SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
   SoDiffuseColorElement::set(state, NULL, 1, &color);
   SoLineWidthElement::set(state, this->linewidth);
@@ -310,14 +225,14 @@ SoLineHighlightRenderAction::drawBoxes(SoPath *pathtothis, const SoPathList *pat
   SoOverrideElement::setLinePatternOverride(state, NULL, TRUE);
   SoOverrideElement::setPolygonOffsetOverride(state, NULL, TRUE);
   SoTextureOverrideElement::setQualityOverride(state, TRUE);
-  
+
   for (i = 0; i < pathlist->getLength(); i++) {
     SoFullPath *path = (SoFullPath*)(*pathlist)[i];
 
     for (int j = 0; j < path->getLength(); j++) {
       temppath.append(path->getNode(j));
     }
-    
+
     SoGLRenderAction::apply(&temppath);
     temppath.truncate(thispos);
   }

@@ -21,6 +21,7 @@
 #define COIN_SOGETMATRIXACTION_H
 
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoSubAction.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbMatrix.h>
@@ -30,34 +31,16 @@
 class SoGetMatrixAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoGetMatrixAction)
-private:
-  static SoType classTypeId;
+  SO_ACTION_HEADER(SoGetMatrixAction);
 
 public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
+  SoGetMatrixAction(const SbViewportRegion & region);
+  virtual ~SoGetMatrixAction();
 
   static void initClass(void);
 
-  virtual ~SoGetMatrixAction();
-//$ END TEMPLATE ActionHeader
-
-public:
-
-  SoGetMatrixAction(const SbViewportRegion &newRegion);
-
-  void setViewportRegion(const SbViewportRegion &newRegion);
-  const SbViewportRegion &getViewportRegion() const;
+  void setViewportRegion(const SbViewportRegion & region);
+  const SbViewportRegion & getViewportRegion(void) const;
 
   SbMatrix & getMatrix(void);
   SbMatrix & getInverse(void);
@@ -66,20 +49,20 @@ public:
 
   // these four functions are not in the original Inventor API
   //FIXME: Remove og tag them as non-standard in some way? (kintel 19990615)
-  void mult(const SbMatrix &matrix);
-  void translateBy(const SbVec3f &vec);
-  void rotateBy(const SbRotation &rot);
-  void scaleBy(const SbVec3f &scaleFactor);
+  void mult(const SbMatrix & matrix);
+  void translateBy(const SbVec3f & vec);
+  void rotateBy(const SbRotation & rot);
+  void scaleBy(const SbVec3f & scaleFactor);
 
 protected:
-  virtual void beginTraversal(SoNode *node);
+  virtual void beginTraversal(SoNode * node);
 
 private:
   SbMatrix matrix;
-  SbMatrix invMatrix;
-  SbMatrix texMatrix;
-  SbMatrix invTexMatrix;
-  SbViewportRegion viewportRegion;
+  SbMatrix invmatrix;
+  SbMatrix texmatrix;
+  SbMatrix invtexmatrix;
+  SbViewportRegion viewportregion;
 };
 
 #endif // !COIN_SOGETMATRIXACTION_H

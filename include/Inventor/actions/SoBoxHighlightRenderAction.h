@@ -29,31 +29,14 @@ class SoPathList;
 class SoBoxHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoBoxHighlightRenderAction)
-private:
-  static SoType classTypeId;
-
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
-
-  static void initClass(void);
-
-  virtual ~SoBoxHighlightRenderAction();
-//$ END TEMPLATE ActionHeader
+  SO_ACTION_HEADER(SoBoxHighlightRenderAction);
 
 public:
   SoBoxHighlightRenderAction(void);
   SoBoxHighlightRenderAction(const SbViewportRegion & viewportRegion);
+  virtual ~SoBoxHighlightRenderAction();
+
+  static void initClass(void);
 
   virtual void apply(SoNode *node);
   void setVisible(const SbBool visible);
@@ -71,11 +54,11 @@ protected:
 
   // Some protected members are missing compared to OIV here.
   // I doubt that anyone will use them though, since it looked
-  // like they should have been private. We chose to implement this 
+  // like they should have been private. We chose to implement this
   // action in a differnet manner. But, if you need the protected members
   // provided by OIV here, contact us any we'll consider reimplementing
   // the action to conform more to OIV. pederb, 20000222
-  
+
 private:
   class SoSearchAction *searchAction;
   void init();

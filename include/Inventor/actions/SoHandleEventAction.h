@@ -21,6 +21,7 @@
 #define COIN_SOHANDLEEVENTACTION_H
 
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoSubAction.h>
 #include <Inventor/SbViewportRegion.h>
 
 class SoEvent;
@@ -28,33 +29,16 @@ class SoPickedPoint;
 class SoPickedPointList;
 class SoRayPickAction;
 
+
 class SoHandleEventAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoHandleEventAction)
-private:
-  static SoType classTypeId;
-
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
-
-  static void initClass(void);
-
-  virtual ~SoHandleEventAction();
-//$ END TEMPLATE ActionHeader
+  SO_ACTION_HEADER(SoHandleEventAction);
 
 public:
   SoHandleEventAction(const SbViewportRegion & viewportRegion);
+  virtual ~SoHandleEventAction();
+  static void initClass(void);
 
   void setViewportRegion(const SbViewportRegion & newRegion);
   const SbViewportRegion & getViewportRegion(void) const;

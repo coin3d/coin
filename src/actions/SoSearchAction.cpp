@@ -52,101 +52,17 @@
   FIXME: write doc.
 */
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoSearchAction)
 
-SoType SoSearchAction::classTypeId = SoType::badType();
+SO_ACTION_SOURCE(SoSearchAction);
 
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoSearchAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoSearchAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-// static variables
-SoEnabledElementsList * SoSearchAction::enabledElements;
-SoActionMethodList * SoSearchAction::methods;
-
-/*!
-  \fn SoSearchAction::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoSearchAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoSearchAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoSearchAction::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoSearchAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method is for initializing the static data for the
-  SoSearchAction class.
-*/
-
+// Overridden from parent class.
 void
 SoSearchAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoSearchAction)
-  assert(SoSearchAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSearchAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoSearchAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoSearchAction, SoAction);
 }
 
-// *************************************************************************
 
 /*!
   The constructor.  Initializes all the internals with default values.

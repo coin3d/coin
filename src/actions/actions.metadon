@@ -3,40 +3,38 @@
 # CONFIG "The Action Classes"
 #
 # FLAGS
-# C = made 100% API conform with Open Inventor [0.1]
 # I = implementation complete, or nearly so [1.0]
-# R = made robust [0.2]
-# D = fully documented for Doxygen generation of html/man [0.4]
+# D = fully documented for Doxygen generation of html/man [0.5]
 #
 # values:
-# - = not applicable
+# - = ignored
 # ! = method inherited from parent
 # 
 ############################################################################
 #
-# CIRD
-# ====
+# ID
+# ==
 # HIERARCHY
-# ci d  SoAction
-# CI            SoCallbackAction
-# ci            SoGLRenderAction
-# ci                    SoBoxHighlightRenderAction
-# c                     SoLineHighlightRenderAction
-# ci            SoGetBoundingBoxAction
-# CI            SoGetMatrixAction
-# CI            SoGetPrimitiveCountAction
-# ci            SoHandleEventAction
-#               SoIntersectionDetectionAction
-# CI            SoPickAction
-# ci                    SoRayPickAction
-# ci d          SoSearchAction
-# c             SoSimplifyAction
-# c                     SoGlobalSimplifyAction
-# c                     SoReorganizeAction
-# c                     SoShapeSimplifyAction
-# c             SoToVRMLAction
-# c                     SoToVRML2Action
-# C             SoWriteAction
+# ID  SoAction
+# I       SoCallbackAction
+# i       SoGLRenderAction
+# i           SoBoxHighlightRenderAction
+#             SoLineHighlightRenderAction
+# i       SoGetBoundingBoxAction
+# I       SoGetMatrixAction
+# I       SoGetPrimitiveCountAction
+# i       SoHandleEventAction
+#         SoIntersectionDetectionAction
+# I       SoPickAction
+# i           SoRayPickAction
+# id      SoSearchAction
+#         SoSimplifyAction
+#             SoGlobalSimplifyAction
+#             SoReorganizeAction
+#             SoShapeSimplifyAction
+#         SoToVRMLAction
+#             SoToVRML2Action
+#         SoWriteAction
 # 
 #########################################################################
 #

@@ -48,77 +48,21 @@
   FIXME: write doc.
 */
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoGetBoundingBoxAction)
-
-SoType SoGetBoundingBoxAction::classTypeId = SoType::badType();
+SO_ACTION_SOURCE(SoGetBoundingBoxAction);
 
 /*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoGetBoundingBoxAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoGetBoundingBoxAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-// static variables
-SoEnabledElementsList * SoGetBoundingBoxAction::enabledElements;
-SoActionMethodList * SoGetBoundingBoxAction::methods;
-
-/*!
-  \fn SoGetBoundingBoxAction::enabledElements
-  FIXME: write doc.
+  This static method initializes all the static data for the
+  SoGetBoundingBoxAction class.
 */
 
-/*!
-  \fn SoGetBoundingBoxAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoGetBoundingBoxAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
 void
-SoGetBoundingBoxAction::addMethod(const SoType type, SoActionMethod method)
+SoGetBoundingBoxAction::initClass(void)
 {
-  assert(methods);
-  methods->addMethod(type, method);
-}
+  SO_ACTION_INIT_CLASS(SoGetBoundingBoxAction, SoAction);
 
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoGetBoundingBoxAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
+  SO_ENABLE(SoGetBoundingBoxAction, SoViewportRegionElement);
 }
-//$ END TEMPLATE ActionSource
 
 /*!
   A constructor.
@@ -150,28 +94,6 @@ SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion &
 
 SoGetBoundingBoxAction::~SoGetBoundingBoxAction()
 {
-}
-
-/*!
-  This static method initializes all the static data for the
-  SoGetBoundingBoxAction class.
-*/
-
-void
-SoGetBoundingBoxAction::initClass(void)
-{
-//$ BEGIN TEMPLATE InitActionSource(SoGetBoundingBoxAction)
-  assert(SoGetBoundingBoxAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGetBoundingBoxAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoGetBoundingBoxAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
-
-  SO_ENABLE(SoGetBoundingBoxAction, SoViewportRegionElement);
 }
 
 // *************************************************************************

@@ -40,80 +40,8 @@
 #include <Inventor/misc/SoState.h>
 #include <assert.h>
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoBoxHighlightRenderAction)
-
-SoType SoBoxHighlightRenderAction::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoBoxHighlightRenderAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoBoxHighlightRenderAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-
-// static variables
-SoEnabledElementsList * SoBoxHighlightRenderAction::enabledElements;
-SoActionMethodList * SoBoxHighlightRenderAction::methods;
-
-/*!
-  \fn SoBoxHighlightRenderAction::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoBoxHighlightRenderAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoBoxHighlightRenderAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoBoxHighlightRenderAction::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoBoxHighlightRenderAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
+SO_ACTION_SOURCE(SoBoxHighlightRenderAction);
 
 /*!
   This method initializes static data for the SoBoxHightlightRenderAction
@@ -123,19 +51,9 @@ SoBoxHighlightRenderAction::enableElement(const SoType type, const int stackInde
 void
 SoBoxHighlightRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoBoxHighlightRenderAction)
-  assert(SoBoxHighlightRenderAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoBoxHighlightRenderAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoBoxHighlightRenderAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoBoxHighlightRenderAction, SoGLRenderAction);
 }
 
-// *************************************************************************
 
 /*!
   A constructor.
@@ -202,7 +120,7 @@ SoBoxHighlightRenderAction::apply(SoNode *node)
       SoSelection *selection = (SoSelection*)
         this->searchAction->getPath()->getTail();
       assert(selection->getTypeId().
-             isDerivedFrom(SoSelection::getClassTypeId()));      
+             isDerivedFrom(SoSelection::getClassTypeId()));
 
       if (selection->getNumSelected()) {
         this->drawBoxes(this->searchAction->getPath(), selection->getList());
@@ -283,7 +201,7 @@ SoBoxHighlightRenderAction::getLineWidth() const
   return this->linewidth;
 }
 
-void 
+void
 SoBoxHighlightRenderAction::drawBoxes(SoPath *pathtothis, const SoPathList *pathlist)
 {
   int i;
@@ -310,17 +228,16 @@ SoBoxHighlightRenderAction::drawBoxes(SoPath *pathtothis, const SoPathList *path
   SoOverrideElement::setLinePatternOverride(state, NULL, TRUE);
   SoOverrideElement::setComplexityTypeOverride(state, NULL, TRUE);
   SoTextureOverrideElement::setQualityOverride(state, TRUE);
-  
+
   for (i = 0; i < pathlist->getLength(); i++) {
     SoFullPath *path = (SoFullPath*)(*pathlist)[i];
 
     for (int j = 0; j < path->getLength(); j++) {
       temppath.append(path->getNode(j));
     }
-    
+
     SoGLRenderAction::apply(&temppath);
     temppath.truncate(thispos);
   }
   state->pop();
 }
-

@@ -30,31 +30,14 @@ class SoPathList;
 class SoLineHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoLineHighlightRenderAction)
-private:
-  static SoType classTypeId;
-
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
-
-  static void initClass(void);
-
-  virtual ~SoLineHighlightRenderAction();
-//$ END TEMPLATE ActionHeader
+  SO_ACTION_HEADER(SoLineHighlightRenderAction);
 
 public:
   SoLineHighlightRenderAction(void);
   SoLineHighlightRenderAction(const SbViewportRegion & viewportRegion);
+  virtual ~SoLineHighlightRenderAction();
+
+  static void initClass(void);
 
   virtual void apply(SoNode *node);
   void setVisible(const SbBool visible);
@@ -71,7 +54,7 @@ protected:
   SbBool hlVisible;
   // Some protected members are missing compared to OIV here.
   // I doubt that anyone will use them though, since it looked
-  // like they should have been private. We chose to implement this 
+  // like they should have been private. We chose to implement this
   // action in a different manner. But, if you need the protected members
   // provided by OIV here, contact us any we'll consider reimplementing
   // the action to conform more to OIV. pederb, 20000222

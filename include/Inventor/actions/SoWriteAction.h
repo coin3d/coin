@@ -21,6 +21,7 @@
 #define COIN_SOWRITEACTION_H
 
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoSubAction.h>
 
 class SoVRMLPROTODef;
 class SoVRMLEXTERNPROTODef;
@@ -29,32 +30,14 @@ class SoVRMLEXTERNPROTODef;
 class SoWriteAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoWriteAction)
-private:
-  static SoType classTypeId;
-
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
-
-  static void initClass(void);
-
-  virtual ~SoWriteAction();
-//$ END TEMPLATE ActionHeader
+  SO_ACTION_HEADER(SoWriteAction);
 
 public:
   SoWriteAction(void);
-
   SoWriteAction(SoOutput * out);
+  virtual ~SoWriteAction();
+
+  static void initClass(void);
 
   SoOutput * getOutput(void) const;
 

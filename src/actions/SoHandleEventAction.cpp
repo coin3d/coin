@@ -40,102 +40,14 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/misc/SoState.h>
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoHandleEventAction)
+SO_ACTION_SOURCE(SoHandleEventAction);
 
-SoType SoHandleEventAction::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoHandleEventAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoHandleEventAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
-// static variables
-SoEnabledElementsList * SoHandleEventAction::enabledElements;
-SoActionMethodList * SoHandleEventAction::methods;
-
-/*!
-  \fn SoHandleEventAction::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoHandleEventAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoHandleEventAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoHandleEventAction::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoHandleEventAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method initializes the static data for the
-  SoHandleEventAction class.
-*/
-
+// Override from parent class.
 void
 SoHandleEventAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoHandleEventAction)
-  assert(SoHandleEventAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoHandleEventAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoHandleEventAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoHandleEventAction, SoAction);
 
   // FIXME: aren't these supposed to be enabled from node classes?
   // 19990214 mortene.

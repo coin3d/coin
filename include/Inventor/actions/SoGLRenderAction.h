@@ -21,6 +21,7 @@
 #define COIN_SOGLRENDERACTION_H
 
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoSubAction.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/system/inttypes.h>
@@ -31,27 +32,7 @@
 class SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoGLRenderAction)
-private:
-  static SoType classTypeId;
-
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
-
-  static void initClass(void);
-
-  virtual ~SoGLRenderAction();
-//$ END TEMPLATE ActionHeader
+  SO_ACTION_HEADER(SoGLRenderAction);
 
 public:
 
@@ -78,6 +59,10 @@ public:
 
 public:
   SoGLRenderAction(const SbViewportRegion &viewportRegion);
+  virtual ~SoGLRenderAction();
+
+  static void initClass(void);
+
   void setViewportRegion(const SbViewportRegion &newRegion);
   const SbViewportRegion &getViewportRegion() const;
   void setUpdateArea(const SbVec2f &origin, const SbVec2f &size);

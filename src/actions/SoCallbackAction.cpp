@@ -18,9 +18,8 @@
 \**************************************************************************/
 
 /*!
-  \class SoCallbackAction Inventor/actions/SoCallbackAction.h
-  \brief The SoCallbackAction class is a traversal action that calls
-  callbacks at specific nodes.
+  \class SoCallbackAction SoCallbackAction.h Inventor/actions/SoCallbackAction.h
+  \brief The SoCallbackAction class is a traversal action that invokes callbacks at specific nodes.
 */
 
 #include <Inventor/actions/SoCallbackAction.h>
@@ -116,98 +115,14 @@ public:
 };
 
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoCallbackAction)
+SO_ACTION_SOURCE(SoCallbackAction);
 
-SoType SoCallbackAction::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoCallbackAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoCallbackAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-// static variables
-SoEnabledElementsList * SoCallbackAction::enabledElements;
-SoActionMethodList * SoCallbackAction::methods;
-
-/*!
-  \fn SoCallbackAction::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoCallbackAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoCallbackAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoCallbackAction::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoCallbackAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method initializes all the static data for the SoCallbackAction
-  class.
-*/
-
+// Override from parent class.
 void
 SoCallbackAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoCallbackAction)
-  assert(SoCallbackAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoCallbackAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoCallbackAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoCallbackAction, SoAction);
 
   SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
   SO_ENABLE(SoCallbackAction, SoDecimationTypeElement);
@@ -218,7 +133,6 @@ SoCallbackAction::initClass(void)
   SO_ENABLE(SoCallbackAction, SoLazyElement);
 }
 
-// *************************************************************************
 
 /*!
   A constructor.

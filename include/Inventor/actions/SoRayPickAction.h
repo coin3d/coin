@@ -37,30 +37,12 @@ class SoPickedPoint;
 class SoRayPickAction : public SoPickAction {
   typedef SoPickAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoRayPickAction)
-private:
-  static SoType classTypeId;
-
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
-
-  static void initClass(void);
-
-  virtual ~SoRayPickAction();
-//$ END TEMPLATE ActionHeader
+  SO_ACTION_HEADER(SoRayPickAction);
 
 public:
   SoRayPickAction(const SbViewportRegion & viewportRegion);
+  virtual ~SoRayPickAction();
+  static void initClass(void);
 
   void setPoint(const SbVec2s & viewportPoint);
   void setNormalizedPoint(const SbVec2f & normPoint);

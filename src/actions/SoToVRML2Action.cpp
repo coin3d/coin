@@ -28,101 +28,16 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <coindefs.h> // COIN_STUB()
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoToVRML2Action)
+SO_ACTION_SOURCE(SoToVRML2Action);
 
-SoType SoToVRML2Action::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoToVRML2Action::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoToVRML2Action::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-// static variables
-SoEnabledElementsList * SoToVRML2Action::enabledElements;
-SoActionMethodList * SoToVRML2Action::methods;
-
-/*!
-  \fn SoToVRML2Action::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoToVRML2Action::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoToVRML2Action::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoToVRML2Action::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoToVRML2Action::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method initializes static data for the
-  SoToVRML2Action class.
-*/
-
+// Overridden from parent class.
 void
 SoToVRML2Action::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoToVRML2Action)
-  assert(SoToVRML2Action::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoToVRML2Action::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoToVRML2Action");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoToVRML2Action, SoToVRMLAction);
 }
 
-// *************************************************************************
 
 /*!
   A constructor.

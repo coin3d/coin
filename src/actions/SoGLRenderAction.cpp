@@ -88,98 +88,15 @@
 
   FIXME: write doc.
 */
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoGLRenderAction)
 
-SoType SoGLRenderAction::classTypeId = SoType::badType();
+SO_ACTION_SOURCE(SoGLRenderAction);
 
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoGLRenderAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoGLRenderAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-// static variables
-SoEnabledElementsList * SoGLRenderAction::enabledElements;
-SoActionMethodList * SoGLRenderAction::methods;
-
-/*!
-  \fn SoGLRenderAction::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoGLRenderAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoGLRenderAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoGLRenderAction::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoGLRenderAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method initializes the static data for the SoGLRenderAction
-  class.
-*/
-
+// Override from parent class.
 void
 SoGLRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoGLRenderAction)
-  assert(SoGLRenderAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoGLRenderAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoGLRenderAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoGLRenderAction, SoAction);
 
   SO_ENABLE(SoGLRenderAction, SoViewportRegionElement);
   SO_ENABLE(SoGLRenderAction, SoGLRenderPassElement);

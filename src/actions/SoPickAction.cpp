@@ -33,98 +33,15 @@
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoPickAction)
 
-SoType SoPickAction::classTypeId = SoType::badType();
+SO_ACTION_SOURCE(SoPickAction);
 
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoPickAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoPickAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-// static variables
-SoEnabledElementsList * SoPickAction::enabledElements;
-SoActionMethodList * SoPickAction::methods;
-
-/*!
-  \fn SoPickAction::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoPickAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoPickAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoPickAction::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoPickAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method is for initializing static data for the
-  SoPickAction class.
-*/
-
+// Override from parent class.
 void
 SoPickAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoPickAction)
-  assert(SoPickAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoPickAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoPickAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoPickAction, SoAction);
 
   SO_ENABLE(SoPickAction, SoViewportRegionElement);
   SO_ENABLE(SoPickAction, SoDecimationTypeElement);
@@ -132,7 +49,6 @@ SoPickAction::initClass(void)
   SO_ENABLE(SoPickAction, SoLazyElement);
 }
 
-// *************************************************************************
 
 /*!
   A constructor.

@@ -21,35 +21,19 @@
 #define COIN_SOSIMPLIFYACTION_H
 
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoSubAction.h>
 
 
 class SoSimplifyAction : public SoAction {
   typedef SoAction inherited;
 
-//$ BEGIN TEMPLATE ActionHeader(SoSimplifyAction)
-private:
-  static SoType classTypeId;
-
-public:
-  virtual SoType getTypeId(void) const;
-  static SoType getClassTypeId(void);
-
-protected:
-  virtual const SoEnabledElementsList & getEnabledElements(void) const;
-  static SoEnabledElementsList * enabledElements;
-  static SoActionMethodList * methods;
-
-public:
-  static void addMethod(const SoType type, SoActionMethod method);
-  static void enableElement(const SoType type, const int stackIndex);
-
-  static void initClass(void);
-
-  virtual ~SoSimplifyAction();
-//$ END TEMPLATE ActionHeader
+  SO_ACTION_HEADER(SoSimplifyAction);
 
 public:
   SoSimplifyAction(void);
+  virtual ~SoSimplifyAction();
+
+  static void initClass(void);
 
 protected:
   virtual void beginTraversal(SoNode * node);

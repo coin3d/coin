@@ -62,105 +62,20 @@
 #define FLAG_EXTRA_MATRIX     0x0040  // is extra matrix supplied in ::setObjectSpace
 
 
-// *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoRayPickAction)
+SO_ACTION_SOURCE(SoRayPickAction);
 
-SoType SoRayPickAction::classTypeId = SoType::badType();
-
-/*!
-  Returns the unique type identifier for the classname class.
-*/
-SoType
-SoRayPickAction::getClassTypeId(void)
-{
-  return classTypeId;
-}
-
-/*!
-  Returns type identifier for an object.
-*/
-SoType
-SoRayPickAction::getTypeId(void) const
-{
-  return classTypeId;
-}
-
-#include <assert.h>
-
-// static variables
-SoEnabledElementsList * SoRayPickAction::enabledElements;
-SoActionMethodList * SoRayPickAction::methods;
-
-/*!
-  \fn SoRayPickAction::enabledElements
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoRayPickAction::methods
-  FIXME: write doc.
-*/
-
-/*!
-  This method returns the list of enabled elements for the given action class.
-*/
-const SoEnabledElementsList &
-SoRayPickAction::getEnabledElements(void) const
-{
-  assert(enabledElements);
-  return *enabledElements;
-}
-
-/*!
-  This method adds a method to be perfomed by the action class on the given
-  node type.
-*/
-void
-SoRayPickAction::addMethod(const SoType type, SoActionMethod method)
-{
-  assert(methods);
-  methods->addMethod(type, method);
-}
-
-/*!
-  This method enables an element in the state stack for the action class.
-*/
-void
-SoRayPickAction::enableElement(const SoType type, const int stackIndex)
-{
-  assert(enabledElements);
-  enabledElements->enable(type, stackIndex);
-}
-//$ END TEMPLATE ActionSource
-
-// *************************************************************************
-
-/*!
-  This static method is for initializing static data for the
-  SoRayPickAction class.
-*/
-
+// Override from parent class.
 void
 SoRayPickAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoRayPickAction)
-  assert(SoRayPickAction::getClassTypeId() == SoType::badType());
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoRayPickAction::classTypeId =
-      SoType::createType(inherited::getClassTypeId(),
-                         "SoRayPickAction");
-  enabledElements = new SoEnabledElementsList(inherited::enabledElements);
-  methods = new SoActionMethodList(inherited::methods);
-//$ END TEMPLATE InitActionSource
+  SO_ACTION_INIT_CLASS(SoRayPickAction, SoPickAction);
 
   SO_ENABLE(SoRayPickAction, SoPickRayElement);
   SO_ENABLE(SoRayPickAction, SoViewportRegionElement);
   SO_ENABLE(SoRayPickAction, SoOverrideElement);
 }
 
-// *************************************************************************
 
 /*!
   A constructor.
