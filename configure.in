@@ -290,7 +290,7 @@ SIM_AC_CHECK_VAR_FUNCTIONNAME
 
 
 ## Headers we might want to use. #########################################
-AC_CHECK_HEADERS([unistd.h sys/types.h sys/param.h io.h windows.h winsock2.h])
+AC_CHECK_HEADERS([unistd.h sys/types.h stdint.h sys/param.h io.h windows.h winsock2.h])
 
 AC_CHECK_HEADERS(
   [sys/unistd.h],
@@ -339,9 +339,15 @@ if $sim_cv_netinet_in_h; then
     [Define if you have the <netinet/in.h> header file.])
 fi
 
-# For Inventor/system/inttypes.h.in.  Note: this assumes
-# AC_CHECK_HEADERS(sys/types.h) has been done.
+# For Inventor/system/inttypes.h.in.
+#
+# Note: this assumes AC_CHECK_HEADERS(sys/types.h stdint.h) has been done.
+#
+# FIXME: the header file checking should be AC_REQUIREd, if possible.
+# 20010711 mortene.
+
 SIM_AC_DEFINE_BYTESIZE_TYPES
+
 
 # Test for ntohl() etc.
 SIM_AC_BYTEORDER_CONVERSION(

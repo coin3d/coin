@@ -99,6 +99,9 @@
 /* define if snprintf() is available */
 #undef HAVE_SNPRINTF
 
+/* Define if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
 /* Define if you have the <sys/param.h> header file. */
 #undef HAVE_SYS_PARAM_H
 
