@@ -148,11 +148,8 @@ protected:
 
 
 #ifdef HAVE_AGL
-#include <AGL/agl.h>  // should of course be included via config.h
+#include <AGL/agl.h>  
 #include <Carbon/Carbon.h>  // for quickdraw functions
-
-// FIXME: The Apple Menu bar is not displayed correctly when using this.
-// kyrah 20020223
 
 class SoOffscreenAGLData : public SoOffscreenInternalData {
 public:
@@ -198,6 +195,9 @@ public:
   }
 
   virtual void setBufferSize(const SbVec2s & size) {
+    CGrafPtr savedport;
+    GDHandle savedgdh;
+
     SoOffscreenInternalData::setBufferSize(size);
 
     delete[] this->buffer;
@@ -205,6 +205,11 @@ public:
       new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
 
     SetRect(&bounds, 0, 0, size[0], size[1]);
+
+    // We have to save (and later restore) the old graphics port and 
+    // GHandle, since this function will probably called before the
+    // Mac OS X viewer is fully set up.
+    GetGWorld(&savedport, &savedgdh); 
 
     QDErr e = NewGWorld(&drawable, 32, &bounds, NULL /* cTable */, 
               NULL /*aGDevice */, 0);
@@ -216,7 +221,7 @@ public:
       SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
                                 "Couldn't create AGL drawable.");
     }
-    SetGWorld(drawable, NULL);
+    SetGWorld(savedport, savedgdh);
   }
 
   virtual SbBool makeContextCurrent(void) {
