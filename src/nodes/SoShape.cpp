@@ -1153,7 +1153,8 @@ SoShape::notify(SoNotList * nl)
 const SoBoundingBoxCache * 
 SoShape::getBoundingBoxCache(void) const
 {
-  return THIS->bboxcache;
+  if (THIS) return THIS->bboxcache;
+  return NULL;
 }
 
 // return the bbox for this shape, using the cache if valid,
