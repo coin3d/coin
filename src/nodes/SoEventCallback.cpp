@@ -82,6 +82,12 @@ SoEventCallback::setPath(SoPath * path)
     this->path = NULL;
   }
   if (path) {
+#if COIN_DEBUG
+    if (path->getRefCount() == 0) {
+      SoDebugError::postWarning("SoEventCallback::setPath",
+                                "input path has reference count equal to zero");
+    }
+#endif // COIN_DEBUG
     this->path = path->copy();
     this->path->ref();
   }
@@ -261,7 +267,7 @@ SoEventCallback::handleEvent(SoHandleEventAction * action)
   // check if correct path is picked
   if (this->path) {
     const SoPickedPoint * pp = action->getPickedPoint();
-    if (pp && pp->getPath()->containsPath(this->path)) return;
+    if (!pp || !pp->getPath()->containsPath(this->path)) return;
   }
 
   // Make it possible to access the action object from the callback
