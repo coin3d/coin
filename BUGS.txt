@@ -1360,6 +1360,58 @@
     This behaviour is also defined and documented thoroughly in
     Flip. Still working on a good fix though. 20021028 rolvs
 
+
+    UPDATE: A 'cure the syptom' fix is to apply the following patch,
+    created with `cvs diff -u SoBaseKit.cpp`.
+    
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    Index: SoBaseKit.cpp
+    ===================================================================
+    RCS file: /export/cvsroot/Coin/src/nodekits/SoBaseKit.cpp,v
+    retrieving revision 1.94
+    diff -u -r1.94 SoBaseKit.cpp
+    --- SoBaseKit.cpp	19 Oct 2002 15:21:09 -0000	1.94
+    +++ SoBaseKit.cpp	29 Oct 2002 16:08:27 -0000
+    @@ -1919,9 +1919,21 @@
+    // is there any way to make sure this code is only run once, and in
+    // the top level constructor. pederb, 2000-01-06
+    //
+    -  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
+    +  SoNodekitCatalog * catalog = (SoNodekitCatalog*)this->getNodekitCatalog();
+    // only do this if the catalog has been created
+    if (catalog) {
+    +    // Added 'sanity check'
+    +    for( int i = catalog->getNumEntries()-1;
+    +         i > 0; 
+    +       --i ){
+    +      if( !catalog->isNullByDefault( i ) ){
+    +        SbName parent = catalog->getParentName( i );
+    +        if( catalog->isNullByDefault( parent ) ){
+    +          catalog->setNullByDefault( parent, FALSE );
+    +        }
+    +      }
+    +   }
+    +    
+    for (int i = 1; i < THIS->instancelist.getLength(); i++) {
+      if (THIS->instancelist[i]->getValue() == NULL && !catalog->isNullByDefault(i)) {
+         this->makePart(i);
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    
+    This is as allready stated a 'cure the symptom' fix, that performs
+    a sanity-check of the parent-child relations in the catalog. It
+    takes care of the problem for all cases without actually fixing
+    the cause of the bug. Also it violates constness of the
+    SoNodekitCatalog. The real problem is in creation of the
+    SoNodekitCatalog, where the state of the parent-child
+    relationships should be taken care of while adding parts. 
+
+    Hopefully the fix is coming after a minor rewrite of some of the
+    SoNodekitCatalog internals. Note that Flip now contains tests for
+    this behaviour for all nodekits, as well as a test for
+    SoNodekitCatalog that fails as long as this bug is present. 
+
+    20021029 rolvs
+
 =====================================================================
 
 043 We're writing invalid VRML97 files.
