@@ -876,14 +876,31 @@ SoInput::read(SbString & s)
   SbBool quoted = (c == '\"');
   if (!quoted) fi->putBack(c);
 
+  // FIXME: the following code could have been much cleaner if we'd
+  // used SbString::operator+=(char) for each char instead of going
+  // through the tmp buffer. SbString::operator+=(char) uses strlen()
+  // for each invocation, though, so that'd give us rather nasty
+  // algorithm-time on the SoInput::read(SbString) operations. The
+  // correct fix is to first avoid the strlen() invocations in
+  // SbString, then simplify this code. 20020506 mortene.
+
   char bufStore[256];
   int bytesLeft;
+  unsigned int totallen = 0;
   do {
     char * buf = bufStore;
     bytesLeft = sizeof(bufStore) - 1;
 
     while (bytesLeft > 0) {
-      if (!fi->get(*buf)) return FALSE;
+      if (!fi->get(*buf)) {
+        if ((totallen == 0) || quoted) {
+          if (quoted) {
+            SoReadError::post(this, "Missing terminating quote-character (\")");
+          }
+          return FALSE;
+        }
+        break;
+      }
 
       if (quoted) {
         if (*buf == '\"') break;
@@ -907,7 +924,7 @@ SoInput::read(SbString & s)
         break;
       }
 
-      buf++;
+      buf++; totallen++;
       bytesLeft--;
     }
 
@@ -1310,6 +1327,12 @@ SoInput::removeReference(const SbName & name)
   Finds an SoBase derived object which has been mapped to \a name earlier
   during the import process.
 
+  The Coin library will by default only search through the previously
+  loaded nodes from the \e same file. By setting the environment
+  variable \c COIN_SOINPUT_SEARCH_GLOBAL_DICT to "1", you can force
+  the import process to search for USE-references through \e all nodes
+  that has been loaded or otherwise instantiated.
+
   \sa addReference(), removeReference()
  */
 SoBase *
@@ -1330,7 +1353,7 @@ SoInput::findReference(const SbName & name) const
       const char * env = coin_getenv("COIN_SOINPUT_SEARCH_GLOBAL_DICT");
       if (env) COIN_SOINPUT_SEARCH_GLOBAL_DICT = atoi(env);
       else COIN_SOINPUT_SEARCH_GLOBAL_DICT = 0;
-  }
+    }
 
     if (COIN_SOINPUT_SEARCH_GLOBAL_DICT) {
       return SoBase::getNamedBase(name, SoNode::getClassTypeId());

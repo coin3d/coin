@@ -1380,6 +1380,7 @@ SoField::read(SoInput * in, const SbName & name)
     // Check for the ignored flag first, as it is valid to let the
     // field data be just the ignored flag and nothing else.
     READ_VAL(c);
+
     if (c == IGNOREDCHAR) this->setIgnored(TRUE);
     else {
       in->putBack(c);
@@ -1391,17 +1392,15 @@ SoField::read(SoInput * in, const SbName & name)
         return FALSE;
       }
 
-      if (!in->eof()) {  // Can happen for memory buffers with SoField::set().
-        // Check again for ignored flag.
-        READ_VAL(c);
+      // Check again for ignored flag.
+      if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
         if (c == IGNOREDCHAR) this->setIgnored(TRUE);
         else in->putBack(c);
       }
     }
 
-    if (!in->eof()) {  // Can happen for memory buffers with SoField::set().
-      // Check if there's a field-to-field connection here.
-      READ_VAL(c);
+    // Check if there's a field-to-field connection here.
+    if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
       if (c == CONNECTIONCHAR) { if (!this->readConnection(in)) return FALSE; }
       else in->putBack(c);
     }
@@ -1425,7 +1424,8 @@ SoField::read(SoInput * in, const SbName & name)
     if (flags & ~SoField::ALLFILEFLAGS) {
       SoDebugError::postWarning("SoField::read",
                                 "unknown field flags (0x%x) -- ",
-                                "please report to coin-bugs@sim.no", flags);
+                                "please report to coin-support@coin3d.org",
+                                flags);
     }
 #endif // COIN_DEBUG
   }
