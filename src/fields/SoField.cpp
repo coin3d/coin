@@ -1826,7 +1826,6 @@ void
 SoField::evaluateConnection(void) const
 {
   // FIXME: should we evaluate from all masters in turn? 19990623 mortene.
-
   if (this->isConnectedFromField()) {
     int idx = this->storage->masterfields.getLength() - 1;
     SoField * master = this->storage->masterfields[idx];
@@ -1835,8 +1834,11 @@ SoField::evaluateConnection(void) const
       if (converter) converter->evaluateWrapper();
       else {
         SoField * that = (SoField *)this; // cast away const
-        // Copy data.
+        // Copy data. Disable notification first since notification
+        // has already been sent from the master.
+        SbBool oldnotify = that->enableNotify(FALSE);
         that->copyFrom(*master);
+        (void) that->enableNotify(oldnotify);
       }
     }
   }
