@@ -64,7 +64,6 @@
   assert(! element::getClassTypeId().isBad()); \
   enableElement(element::getClassTypeId(), element::getClassStackIndex())
 
-class SoActionMethodList;
 class SoCompactPathList;
 class SoEnabledElementsList;
 class SoNode;
