@@ -62,8 +62,6 @@
 #include <Inventor/system/gl.h>
 #include <../misc/GLUWrapper.h>
 
-
-
 /*!
   \var SoSFInt32 SoNurbsCurve::numControlPoints
   Number of control points to use in this NURBS curve.
@@ -72,6 +70,41 @@
   \var SoMFFloat SoNurbsCurve::knotVector
   The knot vector.
 */
+
+// *************************************************************************
+
+class SoNurbsCurveP {
+public:
+  SoNurbsCurveP(SoNurbsCurve * m)
+  {
+    this->owner = m;
+    this->nurbsrenderer = NULL;
+  }
+
+  ~SoNurbsCurveP()
+  {
+    if (this->nurbsrenderer) {
+      GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
+    }
+  }
+
+  void * nurbsrenderer;
+  void doNurbs(SoAction * action, const SbBool glrender, const SbBool drawaspoints);
+
+  static void APIENTRY tessBegin(int type, void * data);
+  static void APIENTRY tessTexCoord(float * texcoord, void * data);
+  static void APIENTRY tessNormal(float * normal, void * data);
+  static void APIENTRY tessVertex(float * vertex, void * data);
+  static void APIENTRY tessEnd(void * data);
+
+private:
+  SoNurbsCurve * owner;
+};
+
+#undef PRIVATE
+#define PRIVATE(p) (p->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) (p->owner)
 
 // *************************************************************************
 
@@ -87,7 +120,7 @@ SoNurbsCurve::SoNurbsCurve(void)
   SO_NODE_ADD_FIELD(numControlPoints, (0));
   SO_NODE_ADD_FIELD(knotVector, (0));
 
-  this->nurbsrenderer = NULL;
+  PRIVATE(this) = new SoNurbsCurveP(this);
 }
 
 /*!
@@ -95,9 +128,7 @@ SoNurbsCurve::SoNurbsCurve(void)
 */
 SoNurbsCurve::~SoNurbsCurve()
 {
-  if (this->nurbsrenderer) {
-    GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
-  }
+  delete PRIVATE(this);
 }
 
 // Doc from parent class.
@@ -130,7 +161,7 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
 
   // Create lazy element for GL_AUTO_NORMAL ?
   glEnable(GL_AUTO_NORMAL);
-  this->doNurbs(action, TRUE, SoDrawStyleElement::get(action->getState()) == SoDrawStyleElement::POINTS);
+  PRIVATE(this)->doNurbs(action, TRUE, SoDrawStyleElement::get(action->getState()) == SoDrawStyleElement::POINTS);
   glDisable(GL_AUTO_NORMAL);
 
   state->pop();
@@ -238,7 +269,7 @@ SoNurbsCurve::sendPrimitive(SoAction * a, SoPrimitiveVertex * p)
 void
 SoNurbsCurve::generatePrimitives(SoAction * action)
 {
-  this->doNurbs(action, FALSE, FALSE);
+  PRIVATE(this)->doNurbs(action, FALSE, FALSE);
 }
 
 // Documented in superclass.
@@ -261,7 +292,8 @@ typedef struct {
 } coin_nc_cbdata;
 
 void
-SoNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbBool drawaspoints)
+SoNurbsCurveP::doNurbs(SoAction * action,
+                       const SbBool glrender, const SbBool drawaspoints)
 {
   if (GLUWrapper()->available == 0 || !GLUWrapper()->gluNewNurbsRenderer) {
 #if COIN_DEBUG
@@ -294,31 +326,34 @@ SoNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbBool dra
   coin_nc_cbdata cbdata;
 
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-    if (!glrender) {
-      GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
+    if (glrender) {
+      GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, NULL);
+    }
+    else {
       cbdata.action = action;
-      cbdata.thisp = this;
+      cbdata.thisp = PUBLIC(this);
       cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
       cbdata.vertex.setMaterialIndex(0);
       cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));
       cbdata.vertex.setPoint(SbVec3f(0.0f, 0.0f, 0.0f));
       cbdata.vertex.setDetail(NULL);
+      GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
     }
   }
 
-  sogl_render_nurbs_curve(action, this, this->nurbsrenderer,
-                          this->numControlPoints.getValue(),
-                          this->knotVector.getValues(0),
-                          this->knotVector.getNum(),
+  sogl_render_nurbs_curve(action, PUBLIC(this), this->nurbsrenderer,
+                          PUBLIC(this)->numControlPoints.getValue(),
+                          PUBLIC(this)->knotVector.getValues(0),
+                          PUBLIC(this)->knotVector.getNum(),
                           glrender,
                           drawaspoints);
 }
 
-void
-SoNurbsCurve::tessBegin(int type, void * data)
+void APIENTRY
+SoNurbsCurveP::tessBegin(int type, void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
-  TriangleShape shapetype;
+  SoNurbsCurve::TriangleShape shapetype;
   switch (type) {
   case GL_LINES:
     shapetype = SoShape::LINES;
@@ -339,7 +374,7 @@ SoNurbsCurve::tessBegin(int type, void * data)
     //COIN_STUB();
 
 #if COIN_DEBUG
-    SoDebugError::postWarning("SoNurbsCurve::tessBegin",
+    SoDebugError::postWarning("SoNurbsCurveP::tessBegin",
                               "LINE_LOOP is not supported yet");
 #endif // COIN_DEBUG
     break;
@@ -352,7 +387,7 @@ SoNurbsCurve::tessBegin(int type, void * data)
     // something which is out of our control, like a possible future
     // feature of the GLU tessellator?  20010909 mortene.
 #if COIN_DEBUG && 1 // debug
-    SoDebugError::postWarning("SoNurbsCurve::tessBegin",
+    SoDebugError::postWarning("SoNurbsCurveP::tessBegin",
                               "unsupported GL enum: 0x%x", type);
 #endif // debug
     break;
@@ -362,30 +397,30 @@ SoNurbsCurve::tessBegin(int type, void * data)
   }
 }
 
-void
-SoNurbsCurve::tessTexCoord(float * texcoord, void * data)
+void APIENTRY
+SoNurbsCurveP::tessTexCoord(float * texcoord, void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   cbdata->vertex.setTextureCoords(SbVec4f(texcoord[0], texcoord[1], texcoord[2], texcoord[3]));
 }
 
-void
-SoNurbsCurve::tessNormal(float * normal, void * data)
+void APIENTRY
+SoNurbsCurveP::tessNormal(float * normal, void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
 }
 
-void
-SoNurbsCurve::tessVertex(float * vertex, void * data)
+void APIENTRY
+SoNurbsCurveP::tessVertex(float * vertex, void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));
   cbdata->thisp->shapeVertex(&cbdata->vertex);
 }
 
-void
-SoNurbsCurve::tessEnd(void * data)
+void APIENTRY
+SoNurbsCurveP::tessEnd(void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   cbdata->thisp->endShape();

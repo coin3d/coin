@@ -57,14 +57,8 @@ protected:
                                              const SoPrimitiveVertex * v2,
                                              SoPickedPoint * pp);
 private:
-  void * nurbsrenderer;
-  void doNurbs(SoAction * action, const SbBool glrender, const SbBool drawaspoints);
-
-  static void tessBegin(int type, void * data);
-  static void tessTexCoord(float * texcoord, void * data);
-  static void tessNormal(float * normal, void * data);
-  static void tessVertex(float * vertex, void * data);
-  static void tessEnd(void * data);
+  class SoNurbsCurveP * pimpl;
+  friend class SoNurbsCurveP;
 };
 
 #endif // !COIN_SONURBSCURVE_H
