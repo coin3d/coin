@@ -287,6 +287,10 @@ sogl_render_cone(const float radius,
                 SoComplexityTypeElement::OBJECT_SPACE)) {
     // encourage auto caching for object space
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+    SoGLCacheContextElement::incNumShapes(state);
+  }
+  else {
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
   }
 }
 
@@ -457,6 +461,10 @@ sogl_render_cylinder(const float radius,
                 SoComplexityTypeElement::OBJECT_SPACE)) {
     // encourage auto caching for object space
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+    SoGLCacheContextElement::incNumShapes(state);
+  }
+  else {
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
   }
 }
 
@@ -708,6 +716,10 @@ sogl_render_sphere(const float radius,
                 SoComplexityTypeElement::OBJECT_SPACE)) {
     // encourage auto caching for object space
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+    SoGLCacheContextElement::incNumShapes(state);
+  }
+  else {
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
   }
 }
 
@@ -830,6 +842,7 @@ sogl_render_cube(const float width,
   if (state) {
     // always encourage auto caching for cubes
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
+    SoGLCacheContextElement::incNumShapes(state);
   }
 }
 
@@ -4286,6 +4299,7 @@ sogl_autocache_update(SoState * state, const int numprimitives)
   else if (numprimitives >= maxval) {
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
   }
+  SoGLCacheContextElement::incNumShapes(state);
 }
 
 // **************************************************************************
