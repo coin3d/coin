@@ -69,6 +69,7 @@
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
+#include <Inventor/threads/SbStorage.h>
 #endif // COIN_THREADSAFE
 
 #if COIN_DEBUG
@@ -153,16 +154,84 @@ int SoSeparator::numrendercaches = 2;
   See documentation for SoSeparator::renderCulling.
 */
 
+#ifdef COIN_THREADSAFE
+// when doing threadsafe rendering, each thread needs its own
+// glcachelist
+typedef struct {
+  SoGLCacheList * glcachelist;
+} soseparator_storage;
+
+static void
+soseparator_storage_construct(void * data)
+{
+  soseparator_storage * ptr = (soseparator_storage*) data;
+  ptr->glcachelist = NULL;
+}
+
+static void 
+soseparator_storage_destruct(void * data)
+{
+  soseparator_storage * ptr = (soseparator_storage*) data;
+  delete ptr->glcachelist;
+}
+#endif // COIN_THREADSAFE
+
 #ifndef DOXYGEN_SKIP_THIS
 
 class SoSeparatorP {
 public:
-  class SoBoundingBoxCache * bboxcache;
-  class SoGLCacheList * glcachelist;
+  // lots of ifdefs here but it can't be helped...
+  SoSeparatorP(void) {
+#ifdef COIN_THREADSAFE
+    this->glcachestorage = 
+      new SbStorage(sizeof(soseparator_storage),
+                    soseparator_storage_construct,
+                    soseparator_storage_destruct);
+#else // COIN_THREADSAFE
+    this->glcachelist = NULL;
+#endif // !COIN_THREADSAFE
+  }
+  ~SoSeparatorP() {
+#ifdef COIN_THREADSAFE
+    delete this->glcachestorage;
+#else // COIN_THREADSAFE
+    delete this->glcachelist;
+#endif // COIN_THREADSAFE
+  }
+  SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
   SbMutex bboxmutex;
-#endif // COIN_THREADSAFE
+  SbStorage * glcachestorage;
+#else // COIN_THREADSAFE
+  SoGLCacheList * glcachelist;
+#endif // !COIN_THREADSAFE
+
+public:
+  SoGLCacheList * getGLCacheList(SbBool createifnull);
 };
+
+#ifdef COIN_THREADSAFE
+SoGLCacheList *
+SoSeparatorP::getGLCacheList(const SbBool createifnull)
+{
+  soseparator_storage * ptr = 
+    (soseparator_storage*) this->glcachestorage->get();
+  if (createifnull && ptr->glcachelist == NULL) {
+    ptr->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
+  }
+  return ptr->glcachelist;
+}
+#else // COIN_THREADSAFE
+SoGLCacheList *
+SoSeparatorP::getGLCacheList(const SbBool createifnull)
+{
+  if (createifnull && this->glcachelist == NULL) {
+    this->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
+  }
+  return this->glcachelist;
+}
+#endif // !COIN_THREADSAFE
+
 #endif // DOXYGEN_SKIP_THIS
 
 #undef THIS
@@ -179,7 +248,6 @@ public:
 #define LOCK_BBOX(_thisp_)
 #define UNLOCK_BBOX(_thisp_)
 #endif // COIN_THREADSAFE
-
 
 SO_NODE_SOURCE(SoSeparator);
 
@@ -241,13 +309,6 @@ SoSeparator::commonConstructor(void)
   }
 
   THIS->bboxcache = NULL;
-  THIS->glcachelist = NULL;
-#ifdef COIN_THREADSAFE
-  // SoGLCacheList should be thread safe, but we need to create the
-  // instance in the constructor to avoid a race condition when
-  // creating the cache list
-  THIS->glcachelist = new SoGLCacheList;
-#endif // COIN_THREADSAFE
 
   // This environment variable used for local stability / robustness /
   // correctness testing of the render caching. If set >= 1,
@@ -269,7 +330,6 @@ SoSeparator::commonConstructor(void)
 SoSeparator::~SoSeparator()
 {
   if (THIS->bboxcache) THIS->bboxcache->unref();
-  delete THIS->glcachelist;
   delete THIS;
 }
 
@@ -460,25 +520,21 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
         return;
       }
     }
-    if (!THIS->glcachelist) {
-      THIS->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
-    }
-    else {      
-      if (THIS->glcachelist->call(action)) {
+    SoGLCacheList * glcachelist = THIS->getGLCacheList(TRUE);
+    if (glcachelist->call(action)) {
 #if GLCACHE_DEBUG && 1 // debug
-        SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
-                               "Executing GL cache: %p", this);
+      SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+                             "Executing GL cache: %p", this);
 #endif // debug
-        state->pop();
-        return;
-      }
+      state->pop();
+      return;
     }
     if (!SoCacheElement::anyOpen(state)) {
 #if GLCACHE_DEBUG // debug
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                              "Creating GL cache: %p", this);
 #endif // debug
-      createcache = THIS->glcachelist;
+      createcache = glcachelist;
     }
   }
 
@@ -690,12 +746,13 @@ SoSeparator::notify(SoNotList * nl)
   inherited::notify(nl);
 
   if (THIS->bboxcache) THIS->bboxcache->invalidate();
-  if (THIS->glcachelist) {
+  SoGLCacheList * glcachelist = THIS->getGLCacheList(FALSE);
+  if (glcachelist) {
 #if GLCACHE_DEBUG && 0 // debug
     SoDebugError::postInfo("SoSeparator::notify",
                            "Invalidating GL cache: %p", this);
 #endif // debug
-    THIS->glcachelist->invalidateAll();
+    glcachelist->invalidateAll();
   }
 }
 

@@ -111,6 +111,29 @@
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
+#ifdef COIN_THREADSAFE
+// when doing threadsafe rendering, each thread needs its own
+// glcachelist
+typedef struct {
+  SoGLCacheList * glcachelist;
+} sovrmlgroup_storage;
+
+static void
+sovrmlgroup_storage_construct(void * data)
+{
+  sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) data;
+  ptr->glcachelist = NULL;
+}
+
+static void 
+sovrmlgroup_storage_destruct(void * data)
+{
+  sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) data;
+  delete ptr->glcachelist;
+}
 #endif // COIN_THREADSAFE
 
 int SoVRMLGroup::numRenderCaches = 2;
@@ -119,12 +142,59 @@ int SoVRMLGroup::numRenderCaches = 2;
 
 class SoVRMLGroupP {
 public:
+  // lots of ifdefs here but it can't be helped...
+  SoVRMLGroupP(void) {
+#ifdef COIN_THREADSAFE
+    this->glcachestorage = 
+      new SbStorage(sizeof(sovrmlgroup_storage),
+                    sovrmlgroup_storage_construct,
+                    sovrmlgroup_storage_destruct);
+#else // COIN_THREADSAFE
+    this->glcachelist = NULL;
+#endif // !COIN_THREADSAFE
+  }
+  ~SoVRMLGroupP() {
+#ifdef COIN_THREADSAFE
+    delete this->glcachestorage;
+#else // COIN_THREADSAFE
+    delete this->glcachelist;
+#endif // COIN_THREADSAFE
+  }
+
   SoBoundingBoxCache * bboxcache;
-  SoGLCacheList * glcachelist;
 #ifdef COIN_THREADSAFE
   SbMutex bboxmutex;
-#endif // COIN_THREADSAFE
+  SbStorage * glcachestorage;
+#else // COIN_THREADSAFE
+private:
+  SoGLCacheList * glcachelist;
+#endif // !COIN_THREADSAFE
+
+public:
+  SoGLCacheList * getGLCacheList(const SbBool createifnull);
 };
+
+#ifdef COIN_THREADSAFE
+SoGLCacheList *
+SoVRMLGroupP::getGLCacheList(const SbBool createifnull)
+{
+  sovrmlgroup_storage * ptr = 
+    (sovrmlgroup_storage*) this->glcachestorage->get();
+  if (createifnull && ptr->glcachelist == NULL) {
+    ptr->glcachelist = new SoGLCacheList(SoVRMLGroup::getNumRenderCaches());
+  }
+  return ptr->glcachelist;
+}
+#else // COIN_THREADSAFE
+SoGLCacheList *
+SoVRMLGroupP::getGLCacheList(const SbBool createifnull)
+{
+  if (createifnull && this->glcachelist == NULL) {
+    this->glcachelist = new SoGLCacheList(SoVRMLGroup::getNumRenderCaches());
+  }
+  return this->glcachelist;
+}
+#endif // !COIN_THREADSAFE
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -194,14 +264,6 @@ SoVRMLGroup::commonConstructor(void)
   SO_NODE_SET_SF_ENUM_TYPE(boundingBoxCaching, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(renderCulling, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
-
-  THIS->glcachelist = NULL;
-#ifdef COIN_THREADSAFE
-  // SoGLCacheList should be thread safe, but we need to create the
-  // instance in the constructor to avoid a race condition when
-  // creating the cache list
-  THIS->glcachelist = new SoGLCacheList;
-#endif // COIN_THREADSAFE
 }
 
 /*!
@@ -210,7 +272,6 @@ SoVRMLGroup::commonConstructor(void)
 SoVRMLGroup::~SoVRMLGroup()
 {
   if (THIS->bboxcache) THIS->bboxcache->unref();
-  delete THIS->glcachelist;
   delete THIS;
 }
 
@@ -454,26 +515,22 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
         return;
       }
     }
-      
-    if (!THIS->glcachelist) {
-      THIS->glcachelist = new SoGLCacheList(SoVRMLGroup::getNumRenderCaches());
-    }
-    else {
-      if (THIS->glcachelist->call(action)) {
+    
+    SoGLCacheList * glcachelist = THIS->getGLCacheList(TRUE);
+    if (glcachelist->call(action)) {
 #if GLCACHE_DEBUG && 1 // debug
-        SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
-                               "Executing GL cache: %p", this);
+      SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+                             "Executing GL cache: %p", this);
 #endif // debug
-        state->pop();
-        return;
-      }
+      state->pop();
+      return;
     }
     if (!SoCacheElement::anyOpen(state)) {
 #if GLCACHE_DEBUG // debug
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                              "Creating GL cache: %p", this);
 #endif // debug
-      createcache = THIS->glcachelist;
+      createcache = glcachelist;
     }
   }
 
@@ -581,12 +638,13 @@ SoVRMLGroup::notify(SoNotList * list)
   inherited::notify(list);
 
   if (THIS->bboxcache) THIS->bboxcache->invalidate();
-  if (THIS->glcachelist) {
+  SoGLCacheList * glcachelist = THIS->getGLCacheList(FALSE);
+  if (glcachelist) {
 #if GLCACHE_DEBUG && 0 // debug
     SoDebugError::postInfo("SoVRMLGroup::notify",
                            "Invalidating GL cache: %p", this);
 #endif // debug
-    THIS->glcachelist->invalidateAll();
+    glcachelist->invalidateAll();
   }
 }
 
