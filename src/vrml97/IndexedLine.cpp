@@ -21,6 +21,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoVRMLIndexedLine SoVRMLIndexedLine.h Inventor/VRMLnodes/SoVRMLIndexedLine.h
+  \brief The SoVRMLIndexedLine class is an abstract superclass for lines specified with indices.
+  \ingroup VRMLnodes
+
+  \COININTERNAL
+*/
+
 #include <Inventor/VRMLnodes/SoVRMLIndexedLine.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLCoordinate.h>
@@ -29,6 +37,7 @@
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLIndexedLine);
 
+// Doc in superclass.
 void
 SoVRMLIndexedLine::initClass(void) // static
 {
@@ -47,6 +56,7 @@ SoVRMLIndexedLine::~SoVRMLIndexedLine() // virtual, protected
 {
 }
 
+// Doc in superclass.
 void
 SoVRMLIndexedLine::computeBBox(SoAction * action,
                                SbBox3f & box,
@@ -72,22 +82,30 @@ SoVRMLIndexedLine::computeBBox(SoAction * action,
 int
 SoVRMLIndexedLine::getNumVerts(int startcoord)
 {
+  // FIXME: why is there just a dummy implementation of this method?
+  // Please document special cases like this.  20030603 mortene.
   return 0;
 }
 
 void
 SoVRMLIndexedLine::setupIndices(int numFaces)
 {
+  // FIXME: why is there just a dummy implementation of this method?
+  // Please document special cases like this.  20030603 mortene.
 }
 
 const int32_t *
 SoVRMLIndexedLine::getColorIndices(void) // protected
 {
+  // FIXME: why is there just a dummy implementation of this method?
+  // Please document special cases like this.  20030603 mortene.
   return NULL;
 }
 
 void
 SoVRMLIndexedLine::notify(SoNotList * list)
 {
+  // FIXME: why is there just a dummy implementation of this method?
+  // Please document special cases like this.  20030603 mortene.
   inherited::notify(list);
 }
