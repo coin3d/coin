@@ -99,17 +99,23 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
 EXTRA_DIST = \
              data/draggerDefaults/translate1Dragger.iv \
-             data/draggerDefaults/translate2Dragger.iv
+             data/draggerDefaults/translate2Dragger.iv \
+             data/draggerDefaults/dragPointDragger.iv \
+             data/draggerDefaults/pointLightDragger.iv
 
 
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
 draggerdefdata_DATA = translate1Dragger.iv \
-			translate2Dragger.iv
+			translate2Dragger.iv \
+			dragPointDragger.iv \
+			pointLightDragger.iv
 
 
 BUILT_SOURCES = \
 	translate1Dragger.h \
-	translate2Dragger.h
+	translate2Dragger.h \
+	dragPointDragger.h \
+	pointLightDragger.h
 
 subdir = data/draggerDefaults
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -118,7 +124,7 @@ CONFIG_CLEAN_FILES =
 DIST_SOURCES = 
 DATA =  $(draggerdefdata_DATA)
 
-DIST_COMMON =  $(draggerdefdata_DATA) Makefile.am Makefile.in
+DIST_COMMON =  README $(draggerdefdata_DATA) Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -240,6 +246,12 @@ translate1Dragger.h: $(top_srcdir)/data/draggerDefaults/translate1Dragger.iv
 
 translate2Dragger.h: $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv
 	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/translate2Dragger.iv > translate2Dragger.h
+
+dragPointDragger.h: $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/dragPointDragger.iv > dragPointDragger.h
+
+pointLightDragger.h: $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv
+	$(top_srcdir)/data/draggerDefaults/iv2h.sh $(top_srcdir)/data/draggerDefaults/pointLightDragger.iv > pointLightDragger.h
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

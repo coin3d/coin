@@ -1,0 +1,35 @@
+#Inventor V2.1 ascii
+
+
+# Definitions for materials and geometry used multiple times.
+
+DEF POINTLIGHT_INACTIVE_MATERIAL Material { diffuseColor 0 0 0.4  emissiveColor 0 0 0.4 }
+DEF POINTLIGHT_ACTIVE_MATERIAL Material { diffuseColor 0 0.4 0  emissiveColor 0 0.4 0 }
+DEF POINTLIGHT_AXIS_TRANSLATOR Cube { width 4  height 0.5  depth 0.5 }
+DEF POINTLIGHT_PLANE_TRANSLATOR Sphere { radius 1.0 }
+
+
+# The actual SoPointLightDragger part definitions.
+
+DEF pointLightOverallMaterial Group {
+   USE POINTLIGHT_INACTIVE_MATERIAL
+}
+
+DEF pointLightTranslatorLineTranslator Separator {
+   USE POINTLIGHT_INACTIVE_MATERIAL
+   USE POINTLIGHT_AXIS_TRANSLATOR
+}
+
+DEF pointLightTranslatorLineTranslatorActive Separator {
+   USE POINTLIGHT_ACTIVE_MATERIAL
+   USE POINTLIGHT_AXIS_TRANSLATOR
+}
+
+DEF pointLightTranslatorPlaneTranslator Separator {
+   USE POINTLIGHT_PLANE_TRANSLATOR
+}
+
+DEF pointLightTranslatorPlaneTranslatorActive Separator {
+   USE POINTLIGHT_ACTIVE_MATERIAL
+   USE POINTLIGHT_PLANE_TRANSLATOR
+}
