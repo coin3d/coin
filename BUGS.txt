@@ -3709,7 +3709,7 @@ main(int argc, char* argv[])
 
 132 SoExtSelection::select()
 
-    Apparently doesn't work as expected.  One should be able to
+    This function hasn't been implemented.  One should be able to
     programmatically manage the selection through e.g. this piece of
     code:
 
@@ -3724,6 +3724,8 @@ main(int argc, char* argv[])
       m_pSel->setPointFilterCallback(  0, this );
       m_pSel->removeChild( pNode );
       m_pSel->enableNotify( true );
+
+    We should at least stub it for the next minor release...
 
     20040831 larsa.
 
