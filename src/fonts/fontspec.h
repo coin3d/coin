@@ -7,7 +7,6 @@
 typedef struct cc_font_specification {
   float size;
   cc_string * name;
-  cc_string * family;
   cc_string * style;
 } cc_font_specification;
 
