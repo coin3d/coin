@@ -40,6 +40,9 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_STUB()
+#include <Inventor/lists/SoPathList.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoChildList.h>
 
 #include <stdlib.h>
 
@@ -47,33 +50,53 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-SbList <SoNode*> * SoInteractionKit::defaultdraggerparts = NULL;
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoInteractionKitP {
+public:
+  SoInteractionKitP(SoInteractionKit * kit) : kit(kit) { }
+
+  SoInteractionKit * kit;
+  SoFieldSensor * fieldsensor;
+  SoSeparator * connectedseparator;
+
+  void connectFields(const SbBool onoff);
+  void attachSensor(const SbBool onoff);
+
+  static void sensorCB(void *, SoSensor *);
+
+  SoPathList surrogatepathlist;
+  SbList <SbName> surrogatenamelist;
+
+  void addSurrogatePath(SoPath * path, const SbName & name);
+  void removeSurrogatePath(const SbName & partname);
+  void removeSurrogatePath(const int idx);
+  int findSurrogateIndex(const SbName & partname) const;
+  int findSurrogateInPath(const SoPath * path);
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
+
+static SbList <SoNode*> * defaultdraggerparts = NULL;
 
 //
 // atexit callback. To delete default dragger parts files.
 //
-void
-SoInteractionKit::clean(void)
+static void
+interactionkit_cleanup(void)
 {
-  int n = SoInteractionKit::defaultdraggerparts->getLength();
+  int n = defaultdraggerparts->getLength();
   for (int i = 0; i < n; i++) {
-    (*SoInteractionKit::defaultdraggerparts)[i]->unref();
+    (*defaultdraggerparts)[i]->unref();
   }
-
-  delete SoInteractionKit::defaultdraggerparts;
+  
+  delete defaultdraggerparts;
 }
 
-void
-SoInteractionKit::sensorCB(void * data, SoSensor *)
-{
-  SoInteractionKit * thisp = (SoInteractionKit *) data;
-  SoSeparator * sep = (SoSeparator *)thisp->topSeparator.getValue();
-  if (thisp->oldTopSeparator != sep) {
-    thisp->connectSeparator(thisp->oldTopSeparator, FALSE);
-    thisp->connectSeparator(sep, TRUE);
-    thisp->oldTopSeparator = sep;
-  }
-}
+#undef THIS
+#define THIS this->pimpl
 
 SO_KIT_SOURCE(SoInteractionKit);
 
@@ -83,6 +106,7 @@ SO_KIT_SOURCE(SoInteractionKit);
 */
 SoInteractionKit::SoInteractionKit(void)
 {
+  THIS = new SoInteractionKitP(this);
   SO_KIT_INTERNAL_CONSTRUCTOR(SoInteractionKit);
 
   SO_KIT_ADD_FIELD(renderCaching, (SoInteractionKit::AUTO));
@@ -107,16 +131,11 @@ SoInteractionKit::SoInteractionKit(void)
 
   SO_KIT_INIT_INSTANCE();
 
-  this->oldTopSeparator = NULL;
-  this->topSeparatorSensor = new SoFieldSensor(SoInteractionKit::sensorCB, this);
-  this->topSeparatorSensor->setPriority(0);
+  THIS->connectedseparator = NULL;
+  THIS->fieldsensor = new SoFieldSensor(SoInteractionKitP::sensorCB, THIS);
+  THIS->fieldsensor->setPriority(0);
 
-  // setup
-  SoInteractionKit::sensorCB(this, this->topSeparatorSensor);
-
-  // FIXME: investigate whether setUpConnections should be called here,
-  // or if that always will be handled by the subclass dragger.
-  // pederb, 2000-01-13
+  this->setUpConnections(TRUE, TRUE);
 }
 
 /*!
@@ -124,8 +143,9 @@ SoInteractionKit::SoInteractionKit(void)
 */
 SoInteractionKit::~SoInteractionKit()
 {
-  this->connectSeparator(this->oldTopSeparator, FALSE); // disconnect fields
-  delete this->topSeparatorSensor;
+  THIS->connectFields(FALSE);
+  delete THIS->fieldsensor;
+  delete THIS;
 }
 
 /*!
@@ -136,7 +156,8 @@ SoInteractionKit::~SoInteractionKit()
 void
 SoInteractionKit::initClass(void)
 {
-  SoInteractionKit::defaultdraggerparts = new SbList <SoNode*>;
+  defaultdraggerparts = new SbList <SoNode*>;
+  atexit(interactionkit_cleanup);
 
   SO_KIT_INTERNAL_INIT_CLASS(SoInteractionKit);
 }
@@ -201,12 +222,12 @@ SoInteractionKit::isPathSurrogateInMySubgraph(const SoPath * path,
                                               SoPath *& surrogatepath,
                                               SbBool fillargs)
 {
-  int idx = this->findSurrogateInPath(path);
+  int idx = THIS->findSurrogateInPath(path);
   if (idx >= 0) {
     if (fillargs) {
       pathToOwner = new SoPath(this); // a very short path
-      surrogatename = this->surrogateNames[idx];
-      surrogatepath = this->surrogatePaths[idx];
+      surrogatename = THIS->surrogatenamelist[idx];
+      surrogatepath = THIS->surrogatepathlist[idx];
     }
     return TRUE;
   }
@@ -220,12 +241,12 @@ SoInteractionKit::isPathSurrogateInMySubgraph(const SoPath * path,
     for (int i = 0; i < pathlist.getLength(); i++) {
       SoInteractionKit * kit = (SoInteractionKit *)pathlist[i]->getTail();
       assert(kit->isOfType(SoInteractionKit::getClassTypeId()));
-      int idx = kit->findSurrogateInPath(path);
+      int idx = kit->pimpl->findSurrogateInPath(path);
       if (idx >= 0) {
         if (fillargs) {
           pathToOwner = pathlist[i]->copy();
-          surrogatename = kit->surrogateNames[idx];
-          surrogatepath = kit->surrogatePaths[idx];
+          surrogatename = kit->pimpl->surrogatenamelist[idx];
+          surrogatepath = kit->pimpl->surrogatepathlist[idx];
         }
         return TRUE;
       }
@@ -270,24 +291,19 @@ void
 SoInteractionKit::copyContents(const SoFieldContainer * fromFC,
                                SbBool copyConnections)
 {
+  int i;
   inherited::copyContents(fromFC, copyConnections);
 
   assert(fromFC->isOfType(SoInteractionKit::getClassTypeId()));
   SoInteractionKit * kit = (SoInteractionKit *) fromFC;
-
-  this->surrogateNames.truncate(0);
-  this->surrogateNames.truncate(0);
-
-  int i, n = kit->surrogateNames.getLength();
+  
+  THIS->surrogatenamelist.truncate(0);
+  THIS->surrogatepathlist.truncate(0);
+  
+  const int n = kit->pimpl->surrogatenamelist.getLength();
   for (i = 0; i < n; i++) {
-    this->surrogateNames.append(kit->surrogateNames[i]);
-    this->surrogateNames.append(kit->surrogateNames[i]);
-  }
-
-  if (copyConnections) {
-    // FIXME: copy connections also (if that applies to this node?)
-    // pederb, 2000-01-13
-    COIN_STUB();
+    THIS->surrogatenamelist.append(kit->pimpl->surrogatenamelist[i]);
+    THIS->surrogatepathlist.append(kit->pimpl->surrogatepathlist[i]);
   }
 }
 
@@ -299,8 +315,19 @@ SoInteractionKit::readInstance(SoInput * in, unsigned short flags)
 {
   SbBool ret = inherited::readInstance(in, flags); // will handle fields
   if (ret) {
-    // update connections, if necessary
-    SoInteractionKit::sensorCB(this, NULL);
+    // remove surrogate paths where part != NULL and not an empty group or separator
+    int n = THIS->surrogatenamelist.getLength();
+    for (int i = 0; i < n; i++) {
+      SbName name = THIS->surrogatenamelist[i];
+      SoNode * node = this->getAnyPart(name, FALSE, FALSE, FALSE);
+      if (node && ((node->getTypeId() != SoGroup::getClassTypeId() &&
+                    node->getTypeId() != SoSeparator::getClassTypeId()) ||
+                   node->getChildren()->getLength())) {
+        n--; // don't forget this!
+        THIS->surrogatenamelist.remove(i);
+        THIS->surrogatepathlist.remove(i);
+      }
+    }
   }
   return ret;
 }
@@ -368,10 +395,7 @@ SoInteractionKit::readDefaultParts(const char * fileName,
   }
   else {
     node->ref(); // this node is unref'ed at exit
-    SoInteractionKit::defaultdraggerparts->append(node);
-    if (SoInteractionKit::defaultdraggerparts->getLength() == 1) {
-      atexit(SoInteractionKit::clean);
-    }
+    defaultdraggerparts->append(node);
   }
 }
 
@@ -508,7 +532,7 @@ SoInteractionKit::setAnySurrogatePath(const SbName & partname,
       kit->setPart(partNum, NULL);
     }
     // add the path
-    ((SoInteractionKit *)kit)->addSurrogatePath(path, catalog->getName(partNum));
+    ((SoInteractionKit *)kit)->pimpl->addSurrogatePath(path, catalog->getName(partNum));
     return TRUE;
   }
 #if COIN_DEBUG && 1 // debug
@@ -526,21 +550,20 @@ SoInteractionKit::setAnySurrogatePath(const SbName & partname,
 SbBool
 SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  if (!doitalways && this->connectionsSetUp == onoff)
+  if (onoff == this->connectionsSetUp && !doitalways)
     return onoff;
 
-  SoSeparator * sep = (SoSeparator *)this->topSeparator.getValue();
-
   if (onoff) {
-    inherited::setUpConnections(onoff, doitalways);
-    this->connectSeparator(sep, TRUE);
+    inherited::setUpConnections(onoff, FALSE);
+    THIS->connectFields(TRUE);
+    THIS->attachSensor(TRUE);
   }
   else {
-    this->connectSeparator(sep, FALSE);
-    inherited::setUpConnections(onoff, doitalways);
+    THIS->attachSensor(FALSE);
+    THIS->connectFields(FALSE);
+    inherited::setUpConnections(onoff, FALSE);
   }
-  this->connectionsSetUp = onoff;
-  return !onoff;
+  return !(this->connectionsSetUp = onoff);
 }
 
 /*!
@@ -550,7 +573,7 @@ SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
 SbBool
 SoInteractionKit::setPart(const int partNum, SoNode * node)
 {
-  this->removeSurrogatePath(this->getNodekitCatalog()->getName(partNum));
+  THIS->removeSurrogatePath(this->getNodekitCatalog()->getName(partNum));
   return inherited::setPart(partNum, node);
 }
 
@@ -590,90 +613,6 @@ SoInteractionKit::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-//
-// checks if partname is in surrogate list. Returns index, -1 if not found.
-//
-int
-SoInteractionKit::findSurrogateIndex(const SbName & partname) const
-{
-  int i, n = this->surrogateNames.getLength();
-  for (i = 0; i < n; i++) {
-    if (this->surrogateNames[i] == partname) return i;
-  }
-  return -1;
-}
-
-//
-// removes surrogate path with name 'partname'
-//
-void
-SoInteractionKit::removeSurrogatePath(const SbName & partname)
-{
-  int idx = this->findSurrogateIndex(partname);
-  if (idx >= 0) this->removeSurrogatePath(idx);
-}
-
-//
-// removes a specified surrogate path
-//
-void
-SoInteractionKit::removeSurrogatePath(const int idx)
-{
-  assert(idx >= 0 && idx < this->surrogateNames.getLength());
-  this->surrogateNames.remove(idx);
-  this->surrogatePaths.remove(idx);
-}
-
-//
-// return index of surrogate path that is contained within path,
-// or -1 if none found.
-//
-int
-SoInteractionKit::findSurrogateInPath(const SoPath * path)
-{
-  int n = this->surrogatePaths.getLength();
-  for (int i = 0; i < n; i++) {
-    if (path->containsPath(this->surrogatePaths[i])) return i;
-  }
-  return -1;
-}
-
-//
-// adds or replaces a surrogate path
-//
-void
-SoInteractionKit::addSurrogatePath(SoPath * path, const SbName & name)
-{
-  int idx = this->findSurrogateIndex(name);
-  if (idx >= 0) {
-    this->surrogatePaths.remove(idx);
-    this->surrogateNames.remove(idx);
-  }
-  this->surrogatePaths.append(path);
-  this->surrogateNames.append(name);
-}
-
-//
-// private method for connecting/disconnecting to topSeparator
-//
-void
-SoInteractionKit::connectSeparator(SoSeparator * sep, const SbBool onOff)
-{
-  if (sep == NULL) return;
-  if (onOff) {
-    sep->renderCaching.connectFrom(&this->renderCaching);
-    sep->boundingBoxCaching.connectFrom(&this->renderCaching);
-    sep->pickCulling.connectFrom(&this->renderCaching);
-    sep->renderCulling.connectFrom(&this->renderCaching);
-  }
-  else {
-    sep->renderCaching.disconnect();
-    sep->boundingBoxCaching.disconnect();
-    sep->pickCulling.disconnect();
-    sep->renderCulling.disconnect();
-  }
-}
-
 /*!
   Overloaded only to fool the incredible stupid gcc 2.95.2
   compiler, who couldn't figure out I wanted to call this function in
@@ -684,4 +623,126 @@ SbBool
 SoInteractionKit::setPart(const SbName & partname, SoNode * from)
 {
   return inherited::setPart(partname, from);
+}
+
+#undef THIS
+// methods for SoInteractionKitP are below
+
+//
+// checks if partname is in surrogate list. Returns index, -1 if not found.
+//
+int
+SoInteractionKitP::findSurrogateIndex(const SbName & partname) const
+{
+  int i, n = this->surrogatenamelist.getLength();
+  for (i = 0; i < n; i++) {
+    if (this->surrogatenamelist[i] == partname) return i;
+  }
+  return -1;
+}
+
+//
+// removes surrogate path with name 'partname'
+//
+void
+SoInteractionKitP::removeSurrogatePath(const SbName & partname)
+{
+  int idx = this->findSurrogateIndex(partname);
+  if (idx >= 0) this->removeSurrogatePath(idx);
+}
+
+//
+// removes a specified surrogate path
+//
+void
+SoInteractionKitP::removeSurrogatePath(const int idx)
+{
+  assert(idx >= 0 && idx < this->surrogatenamelist.getLength());
+  this->surrogatenamelist.remove(idx);
+  this->surrogatepathlist.remove(idx);
+}
+
+//
+// return index of surrogate path that is contained within path,
+// or -1 if none found.
+//
+int
+SoInteractionKitP::findSurrogateInPath(const SoPath * path)
+{
+  int n = this->surrogatepathlist.getLength();
+  for (int i = 0; i < n; i++) {
+    if (path->containsPath(this->surrogatepathlist[i])) return i;
+  }
+  return -1;
+}
+
+//
+// adds or replaces a surrogate path
+//
+void
+SoInteractionKitP::addSurrogatePath(SoPath * path, const SbName & name)
+{
+  int idx = this->findSurrogateIndex(name);
+  if (idx >= 0) {
+    this->surrogatepathlist.remove(idx);
+    this->surrogatenamelist.remove(idx);
+  }
+  this->surrogatepathlist.append(path);
+  this->surrogatenamelist.append(name);
+}
+
+
+//
+// connect fields in topSeparator to the fields in this node.
+//
+void
+SoInteractionKitP::connectFields(const SbBool onoff)
+{
+  if (this->connectedseparator) { // always disconnect
+    this->connectedseparator->renderCaching.disconnect();
+    this->connectedseparator->boundingBoxCaching.disconnect();
+    this->connectedseparator->renderCulling.disconnect();
+    this->connectedseparator->pickCulling.disconnect();
+    this->connectedseparator->unref();
+    this->connectedseparator = NULL;
+  }
+  if (onoff) {
+    SoSeparator * sep = (SoSeparator*) this->kit->topSeparator.getValue();
+    if (sep) {
+      this->connectedseparator = sep;
+      this->connectedseparator->ref(); // ref to make sure pointer is legal
+      sep->renderCaching.connectFrom(&this->kit->renderCaching);
+      sep->boundingBoxCaching.connectFrom(&this->kit->boundingBoxCaching);
+      sep->renderCulling.connectFrom(&this->kit->renderCulling);
+      sep->pickCulling.connectFrom(&this->kit->pickCulling);
+    }
+  }
+}
+
+//
+// attach sensor to topSeparator if onoff, detach otherwise
+//
+void
+SoInteractionKitP::attachSensor(const SbBool onoff)
+{
+  if (onoff) {
+    if (this->fieldsensor->getAttachedField() != &this->kit->topSeparator) {
+      this->fieldsensor->attach(&this->kit->topSeparator);
+    }
+  }
+  else {
+    if (this->fieldsensor->getAttachedField()) this->fieldsensor->detach();
+  }
+}
+
+//
+// callback from field sensor connected to topSeparator
+//
+void
+SoInteractionKitP::sensorCB(void * data, SoSensor *)
+{
+  SoInteractionKitP * thisp = (SoInteractionKitP*) data;
+  if (thisp->connectedseparator != thisp->kit->topSeparator.getValue()) {
+    thisp->connectFields(TRUE);
+  }
 }

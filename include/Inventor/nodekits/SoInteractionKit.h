@@ -22,8 +22,6 @@
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/lists/SoPathList.h>
 #include <Inventor/fields/SoSFEnum.h>
 
 #ifdef COIN_INTERNAL
@@ -106,22 +104,8 @@ protected:
   void connectSeparatorFields( SoSeparator *dest, SbBool onOff );
 
 private:
-  SoPathList surrogatePaths;
-  SbList <SbName> surrogateNames;
-
-  void addSurrogatePath(SoPath *path, const SbName &name);
-  void removeSurrogatePath(const SbName &partname);
-  void removeSurrogatePath(const int idx);
-  int findSurrogateIndex(const SbName &partname) const;
-  int findSurrogateInPath(const SoPath *path);
-
-  static SbList <SoNode*> * defaultdraggerparts;
-  static void clean(void);
-
-  SoFieldSensor *topSeparatorSensor;
-  static void sensorCB(void *, SoSensor*);
-  SoSeparator *oldTopSeparator;
-  void connectSeparator(SoSeparator *sep, const SbBool onOff);
+  class SoInteractionKitP * pimpl;
+  friend class SoInteractionKitP;
 };
 
 #endif // !COIN_SOINTERACTIONKIT_H
