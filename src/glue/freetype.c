@@ -122,7 +122,7 @@ ftglue_init(void)
     cc_ftglue_t * fi = (cc_ftglue_t *)malloc(sizeof(cc_ftglue_t));
     (void)coin_atexit((coin_atexit_f *)ftglue_cleanup, 0);
 
-    /* The common case is that zlib is either available from the
+    /* The common case is that FreeType is either available from the
        linking process or we're successfully going to link it in. */
     fi->available = 1;
 
@@ -169,7 +169,7 @@ ftglue_init(void)
 #define FTGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
     fi->_funcname_ = NULL
 
-#endif /* !ZLIBGLUE_ASSUME_ZLIB */
+#endif /* !FREETYPEGLUE_ASSUME_FREETYPE */
 
     FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Init_FreeType_t, FT_Init_FreeType);
     FTGLUE_REGISTER_FUNC(cc_ftglue_FT_Library_Version_t, FT_Library_Version);

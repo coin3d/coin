@@ -36,14 +36,55 @@
   the "tools" the application programmer uses when making the layout
   of the scene graph.
 
+  An often asked question about SoGroup nodes is: "Why is there no
+  SoGroup::getParent() method?" The answer to this is that nodes in
+  the scene graph can have multiple parents, so a simple getParent()
+  method wouldn't work. If you have a node pointer (or other node
+  identification) of a node that you want to remove from the scene
+  graph, what you need to do is to use an SoSearchAction to find all
+  paths down to the node, and then invoke SoGroup::removeChild() from
+  all found parents of the node.
 
-  An important note about SoGroup nodes: you should not change the
-  scene graph layout during any action traversal, as that is not
-  allowed by the internal Coin code. I.e. do not use addChild(),
-  removeChild(), insertChild() or replaceChild() from any callback
-  that is triggered directly or indirectly from an action
-  traversal. The most common way of getting hit by this error, would
-  be something like the following (simplified) example:
+  The function would look something like this:
+
+  \code
+  void getParents(SoNode * node, SoNode * root, SoPathList & parents)
+  {
+    SoSearchAction sa;
+    sa.setNode(node);
+    sa.setInterest(SoSearchAction::ALL);
+    sa.apply(root);
+    parents = sa.getPaths();
+  }
+  \endcode
+
+  Or if you \e know that your node of interest has only a single
+  parent:
+
+  \code
+  SoGroup * getParent(SoNode * node, SoNode * root)
+  {
+    SoSearchAction sa;
+    sa.setNode(node);
+    sa.setInterest(SoSearchAction::FIRST);
+    sa.apply(root);
+    SoPath * p = sa.getPath();
+    assert(p && "not found");
+    if (p->getLength() < 2) { return NULL; } // no parent
+    return (SoGroup *)p->getNodeFromTail(1);
+  }
+  \endcode
+
+
+  An important note about a potential problem using SoGroup nodes
+  which it is not common to stumble on, but which makes hard to find
+  bugs when one does: you should not change the scene graph layout
+  during any action traversal, as that is not allowed by the internal
+  Coin code. I.e. do not use addChild(), removeChild(), insertChild()
+  or replaceChild() from any callback that is triggered directly or
+  indirectly from an action traversal. The most common way of getting
+  hit by this error, would be something like the following
+  (simplified) example:
 
   \code
   #include <Inventor/Qt/SoQt.h>

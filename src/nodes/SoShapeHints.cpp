@@ -157,6 +157,10 @@
 
   Subsequent faces are all convex, so turn off the check for and
   tessellation of inconvex faces.
+
+  Subsequent polygons from faceset-type nodes (like SoFaceSet and
+  SoIndexedFaceSet) will be sent unmodified to OpenGL, thereby
+  assuming that the polygons are in a form handled by OpenGL.
 */
 
 

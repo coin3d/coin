@@ -261,3 +261,10 @@ THE LINKS
 
 * Vertex shader integrated with Inventor API:
          http://www.csit.fsu.edu/~blanco/Cg/Cg_projects.htm
+
+* GLIBC memory handling debugging:
+
+        http://sdb.suse.de/en/sdb/html/aj_debug.html
+
+  (very short version: set MALLOC_CHECK_ to "1" to get error messages
+  about problems on stderr)

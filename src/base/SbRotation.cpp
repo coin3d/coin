@@ -134,9 +134,34 @@ SbRotation::SbRotation(const SbMatrix & m)
 }
 
 /*!
-  Construct a rotation which is the minimum rotation necessary to make vector
-  \a rotateFrom point in the direction of vector \a rotateTo.
- */
+  Construct a rotation which is the minimum rotation necessary to make
+  vector \a rotateFrom point in the direction of vector \a rotateTo.
+
+  Example:
+
+  \code
+  #include <Inventor/SbRotation.h>
+  #include <Inventor/SbVec3f.h>
+  #include <stdio.h>
+  
+  int
+  main(void)
+  {
+    SbVec3f from(10, 0, 0);
+    SbVec3f to(0, 10, 0);
+  
+    SbRotation rot(from, to);
+  
+    SbVec3f axis;
+    float angle;
+    rot.getValue(axis, angle);
+    axis.print(stdout);
+    printf("  angle==%f\n", angle);
+  
+    return 0;
+  }
+  \endcode
+*/
 SbRotation::SbRotation(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
 {
   // Parameters are checked in setValue().
@@ -393,10 +418,13 @@ SbRotation::setValue(const SbVec3f & axis, const float radians)
 }
 
 /*!
-  Construct a rotation which is the minimum rotation necessary to make vector
-  \a rotateFrom point in the direction of vector \a rotateTo.
+  Construct a rotation which is the minimum rotation necessary to make
+  vector \a rotateFrom point in the direction of vector \a rotateTo.
 
   Returns reference to self.
+
+  See SbRotation constructor with corresponding input arguments for a
+  simple code example.
 
   \sa getValue().
  */
