@@ -1443,8 +1443,10 @@ SoExtSelectionP::triangleCB(void * userData,
 
   thisp->drawcallbackcounter++;
 
-  thisp->addTriangleToOffscreenBuffer(action, v1, v2, v3, TRUE);
-  
+  if (!thisp->applyonlyonselectedtriangles) {
+    thisp->addTriangleToOffscreenBuffer(action, v1, v2, v3, TRUE);
+  }
+
   // Shall we skip a certain amount of triangles before we start processing?
   if(!thisp->primcbdata.allshapes){
     if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
@@ -1580,6 +1582,7 @@ SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
 					      const SoPrimitiveVertex * v3,
 					      SbBool renderAsBlack)
 {
+  assert(!this->applyonlyonselectedtriangles);
 
   if(primcbdata.allshapes)
     return;
@@ -1648,7 +1651,10 @@ SoExtSelectionP::lineSegmentCB(void *userData,
 {
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
   thisp->drawcallbackcounter++;
-  thisp->addLineToOffscreenBuffer(action, v1, v2, TRUE);
+
+  if (!thisp->applyonlyonselectedtriangles) {
+    thisp->addLineToOffscreenBuffer(action, v1, v2, TRUE);
+  }
 
   // Shall we skip a certain amount of lines before we start processing?
   if(!thisp->primcbdata.allshapes){
@@ -1764,6 +1770,7 @@ SoExtSelectionP::addLineToOffscreenBuffer(SoCallbackAction * action,
                                           const SoPrimitiveVertex * v2,
                                           SbBool renderAsBlack)
 {
+  assert(!this->applyonlyonselectedtriangles);
 
   if(primcbdata.allshapes)
     return;
@@ -1810,9 +1817,10 @@ SoExtSelectionP::pointCB(void *userData,
 
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
   thisp->drawcallbackcounter++;
-  
-  thisp->addPointToOffscreenBuffer(action, v, TRUE);
-  
+
+  if (!thisp->applyonlyonselectedtriangles) {
+    thisp->addPointToOffscreenBuffer(action, v, TRUE);
+  }
   // Shall we skip a certain amount of lines before we start processing?
   if(!thisp->primcbdata.allshapes){
     if(thisp->offscreenskipcounter < (thisp->maximumcolorcounter*thisp->offscreencolorcounterpasses-1)){
@@ -1907,6 +1915,7 @@ SoExtSelectionP::addPointToOffscreenBuffer(SoCallbackAction * action,
                                            const SoPrimitiveVertex * v1,
                                            SbBool renderAsBlack)
 {
+  assert(!this->applyonlyonselectedtriangles);
 
   if(primcbdata.allshapes)
     return;
