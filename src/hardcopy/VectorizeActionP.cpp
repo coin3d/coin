@@ -25,7 +25,7 @@
 // Private class for SoVectorizeAction. Does most of the work.
 //
 
-#include <HardCopy/SoVectorizeActionP.h>
+#include "VectorizeActionP.h"
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>

@@ -45,7 +45,8 @@ endif
 SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
 	engines errors events fields glue manips misc lists nodekits nodes \
-	shapenodes projectors sensors upgraders 3ds $(THREADSDIR) $(VRML97DIR) .
+	shapenodes projectors sensors upgraders 3ds \
+	hardcopy $(THREADSDIR) $(VRML97DIR) .
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 
@@ -73,6 +74,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	projectors/libprojectors.la sensors/libsensors.la \
 	details/libdetails.la draggers/libdraggers.la manips/libmanips.la \
 	upgraders/libupgraders.la 3ds/libformat3ds.la \
+	hardcopy/libhardcopy.la \
 	$(THREADSLIBADD) $(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
@@ -90,6 +92,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	projectors/projectors.lst sensors/sensors.lst \
 	details/details.lst draggers/draggers.lst manips/manips.lst \
 	upgraders/upgraders.lst 3ds/format3ds.lst \
+	hardcopy/hardcopy.lst \
 	$(THREADSLSTADD) $(VRML97LSTADD) $(SUPERGLULSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
@@ -268,6 +271,7 @@ uninstall-local:
 	  "$$baseincdir/events" \
 	  "$$baseincdir/fields" \
 	  "$$baseincdir/glue" \
+	  "$$baseincdir/hardcopy" \
 	  "$$baseincdir/lists" \
 	  "$$baseincdir/lock" \
 	  "$$baseincdir/manips" \

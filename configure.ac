@@ -1296,7 +1296,7 @@ if test x"$enable_hacking" = x"yes"; then
     base actions bundles caches details draggers elements \
     elements/GL:glelements engines errors events fields glue \
     manips misc lists nodekits nodes shapenodes projectors \
-    sensors upgraders 3ds:format3ds; \
+    sensors upgraders hardcopy 3ds:format3ds; \
   do
     case $dir in
     *:* )
@@ -1342,7 +1342,7 @@ AC_SUBST([coin_w32_src_dir])
 # **************************************************************************
 # Remove redundant options from certain option lists.
 
-SIM_AC_UNIQIFY_OPTION_LIST(COIN_EXTRA_CPPFLAGS, -I$includedir $COIN_EXTRA_CPPFLAGS)
+SIM_AC_UNIQIFY_OPTION_LIST(COIN_EXTRA_CPPFLAGS, -I$includedir -I$includedir/Inventor/annex $COIN_EXTRA_CPPFLAGS)
 SIM_AC_UNIQIFY_OPTION_LIST(COIN_EXTRA_LDFLAGS, -L$libdir $COIN_EXTRA_LDFLAGS)
 SIM_AC_UNIQIFY_OPTION_LIST(COIN_EXTRA_LIBS, $COIN_EXTRA_LIBS)
 SIM_AC_UNIQIFY_OPTION_LIST(CPPFLAGS, $CPPFLAGS)
@@ -1599,6 +1599,7 @@ AC_CONFIG_FILES([
         src/threads/Makefile
         src/extensions/Makefile
         src/vrml97/Makefile
+	src/hardcopy/Makefile
 ])
 
 AC_OUTPUT

@@ -29,7 +29,7 @@
 
 
 #include <HardCopy/SoVectorizePSAction.h>
-#include <HardCopy/SoVectorizeActionP.h>
+#include "VectorizeActionP.h"
 #include <stdio.h>
 
 /* helper function for ascii85 handling. Will use from Coin tidbits when moved */

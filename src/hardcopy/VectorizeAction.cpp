@@ -202,7 +202,7 @@
 */
 
 #include <HardCopy/SoVectorizeAction.h>
-#include <HardCopy/SoVectorizeActionP.h>
+#include "VectorizeActionP.h"
 
 #include <Inventor/SbViewportRegion.h>
 
