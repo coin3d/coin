@@ -1,6 +1,6 @@
 .libs
 .deps
 Makefile
-libnodekits.la
-libnodekitsLINKHACK.la
-SoNodeKit.lo
+*.la
+*.lo
+ii_files

@@ -1,13 +1,6 @@
 .libs
 .deps
 Makefile
-libmisc.la
-libmiscLINKHACK.la
-SoBase.lo
-SoChildList.lo
-SoGL.lo
-SoGLImage.lo
-SoNormalGenerator.lo
-SoNotification.lo
-SoState.lo
-SoTessellator.lo
+*.la
+*.lo
+ii_files

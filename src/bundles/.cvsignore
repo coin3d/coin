@@ -1,8 +1,6 @@
 .libs
 .deps
 Makefile
-libbundles.la
-libbundlesLINKHACK.la
-SoBundle.lo
-SoMaterialBundle.lo
-SoTextureCoordinateBundle.lo
+*.la
+*.lo
+ii_files

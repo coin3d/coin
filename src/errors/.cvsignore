@@ -1,9 +1,6 @@
 .libs
 .deps
 Makefile
-liberrors.la
-liberrorsLINKHACK.la
-SoDebugError.lo
-SoError.lo
-SoMemoryError.lo
-SoReadError.lo
+*.la
+*.lo
+ii_files

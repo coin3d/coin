@@ -2,14 +2,4 @@
 .deps
 Makefile
 libCoin.la
-SoDB.lo
-SoFullPath.lo
-SoImageInterface.lo
-SoInput.lo
-SoInteraction.lo
-SoOutput.lo
-SoPath.lo
-SoPickedPoint.lo
-SoPrimitiveVertex.lo
-SoSceneManager.lo
-SoType.lo
+*.lo

@@ -1,12 +1,6 @@
 .libs
 .deps
 Makefile
-libevents.la
-libeventsLINKHACK.la
-SoButtonEvent.lo
-SoEvent.lo
-SoKeyboardEvent.lo
-SoLocation2Event.lo
-SoMotion3Event.lo
-SoMouseButtonEvent.lo
-SoSpaceballButtonEvent.lo
+*.la
+*.lo
+ii_files

@@ -1,10 +1,6 @@
 .libs
 .deps
 Makefile
-libcaches.la
-libcachesLINKHACK.la
-SoBoundingBoxCache.lo
-SoCache.lo
-SoConvexDataCache.lo
-SoNormalCache.lo
-SoTextureCoordinateCache.lo
+*.la
+*.lo
+ii_files
