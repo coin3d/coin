@@ -21,6 +21,7 @@
  *
 \**************************************************************************/
 
+
 #include <assert.h>
 
 #include "soshape_bumprender.h"
@@ -35,6 +36,7 @@
 #include <Inventor/elements/SoGLDisplayList.h>
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
@@ -213,6 +215,8 @@ static const char * normalrenderingvpprogram =
 "END\n";
 
 // *************************************************************************
+
+SbBool bumphack = TRUE;
 
 struct soshape_bumprender_spec_programidx {
   const cc_glglue * glue;
@@ -440,17 +444,16 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   const SbMatrix & oldtexture2matrix = SoMultiTextureMatrixElement::get(state, 2);
   const SbMatrix & bumpmapmatrix = SoBumpMapMatrixElement::get(state);
 
-  int i, lastenabled = -1;
-  const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
+  int lastenabled;
+  const SbBool * enabled = 
+    SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled); 
 
-  // disable texture units 1-n
-  for (i = 1; i <= lastenabled; i++) {
-    if (enabled[i]) {
-      cc_glglue_glActiveTexture(glue, GL_TEXTURE0+i);
-      glDisable(GL_TEXTURE_2D);
-    }
-  }
+  state->push();
+  SoGLTexture3EnabledElement::set(state, NULL, FALSE);
+  SoMultiTextureEnabledElement::disableAll(state);
   SoGLImage * bumpimage = SoBumpMapElement::get(state);
+
+
   assert(bumpimage);
 
   // set up textures
@@ -462,7 +465,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
     glMatrixMode(GL_MODELVIEW);
   }
 
-  glEnable(GL_TEXTURE_2D);
+  SoGLTextureEnabledElement::set(state, NULL, TRUE); // enable GL_TEXTURE_2D
   bumpimage->getGLDisplayList(state)->call(state);
 
 
@@ -557,15 +560,6 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
   glDisable(GL_VERTEX_PROGRAM_ARB);
   glDisable(GL_TEXTURE_CUBE_MAP); // unit 1
 
-
-  // reenable texture units 1-n if enabled
-  for (i = 1; i <= lastenabled; i++) {
-    if (enabled[i]) {
-      cc_glglue_glActiveTexture(glue, GL_TEXTURE0+i);
-      glEnable(GL_TEXTURE_2D);
-    }
-  }
-
   if (lastenabled >= 1 && enabled[1]) {
     // restore blend mode for texture unit 1
     SoGLMultiTextureImageElement::restore(state, 1);
@@ -594,8 +588,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
     glMatrixMode(GL_MODELVIEW);
   }
 
-  // disable texturing for unit 0 if not enabled
-  if (!SoGLTextureEnabledElement::get(state)) glDisable(GL_TEXTURE_2D);
+  state->pop();
 }
 
 
@@ -610,17 +603,14 @@ soshape_bumprender::renderBump(SoState * state,
   const SbMatrix & oldtexture0matrix = SoTextureMatrixElement::get(state);
   const SbMatrix & oldtexture1matrix = SoMultiTextureMatrixElement::get(state, 1);
   const SbMatrix & bumpmapmatrix = SoBumpMapMatrixElement::get(state);
+  
+  int lastenabled;
+  const SbBool * enabled = 
+    SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled); 
 
-  int i, lastenabled = -1;
-  const SbBool * enabled = SoMultiTextureEnabledElement::getEnabledUnits(state, lastenabled);
-
-  // disable texture units 1-n
-  for (i = 1; i <= lastenabled; i++) {
-    if (enabled[i]) {
-      cc_glglue_glActiveTexture(glue, GL_TEXTURE0+i);
-      glDisable(GL_TEXTURE_2D);
-    }
-  }
+  state->push();
+  SoGLTexture3EnabledElement::set(state, NULL, FALSE);
+  SoMultiTextureEnabledElement::disableAll(state);
 
   // only use vertex program if two texture units (or less) are used
   // (only two units supported in the vertex program)
@@ -649,7 +639,7 @@ soshape_bumprender::renderBump(SoState * state,
     glMatrixMode(GL_MODELVIEW);
   }
 
-  glEnable(GL_TEXTURE_2D);
+  SoGLTextureEnabledElement::set(state, NULL, TRUE); // enable GL_TEXTURE_2D
   bumpimage->getGLDisplayList(state)->call(state);
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
   glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_TEXTURE);
@@ -726,14 +716,6 @@ soshape_bumprender::renderBump(SoState * state,
 
   glDisable(GL_TEXTURE_CUBE_MAP); // unit 1
 
-  // reenable texture units 1-n if enabled
-  for (i = 1; i <= lastenabled; i++) {
-    if (enabled[i]) {
-      cc_glglue_glActiveTexture(glue, GL_TEXTURE0+i);
-      glEnable(GL_TEXTURE_2D);
-    }
-  }
-
   if (lastenabled >= 1 && enabled[1]) {
     // restore blend mode for texture unit 1
     SoGLMultiTextureImageElement::restore(state, 1);
@@ -753,8 +735,7 @@ soshape_bumprender::renderBump(SoState * state,
     glLoadMatrixf(oldtexture0matrix[0]);
     glMatrixMode(GL_MODELVIEW);
   }
-  // disable texturing for unit 0 if not enabled
-  if (!SoGLTextureEnabledElement::get(state)) glDisable(GL_TEXTURE_2D);
+  state->pop();
 }
 
 void
@@ -859,7 +840,7 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
 #if 0 // FIXME: I don't think it's necessary to do this test. pederb, 2003-11-20
     SbVec3f tcross = tTangent.cross(sTangent);
     if (tcross.dot(normals[i]) < 0.0f) {
-      tlightvec = -tlightvec;
+      tlightvec = -tlightvec;      
     }
 #endif // disabled, probably not necessary
     this->cubemaplist.append(SbVec3f(sTangent.dot(tlightvec),
