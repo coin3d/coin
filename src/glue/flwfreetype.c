@@ -49,17 +49,17 @@ cc_freetype_debug(void)
 }
 
 SbBool
-flwftInitialize(void)
+cc_flwftInitialize(void)
 {
   FT_Error error = FT_Init_FreeType(&library);
   if (error) {
-    cc_debugerror_post("flwftInitialize", "error %d", error);
+    cc_debugerror_post("cc_flwftInitialize", "error %d", error);
     library = NULL;
   }
   else if (cc_freetype_debug()) {
     FT_Int major, minor, patch;
     FT_Library_Version(library, &major, &minor, &patch);
-    cc_debugerror_postinfo("flwftInitialize",
+    cc_debugerror_postinfo("cc_flwftInitialize",
                            "FreeType library version is %d.%d.%d",
                            major, minor, patch);
   }
@@ -68,27 +68,27 @@ flwftInitialize(void)
 }
 
 void
-flwftExit(void)
+cc_flwftExit(void)
 {
   FT_Done_FreeType(library);
 }
 
 FLWfont
-flwftGetFont(const char * fontname)
+cc_flwftGetFont(const char * fontname)
 {
   FT_Error error;
   FT_Face face;
   error = FT_New_Face(library, fontname, 0, &face);
   if (error) {
     if (cc_freetype_debug()) {
-      cc_debugerror_postwarning("flwftGetFont", "error %d for fontname '%s'",
+      cc_debugerror_postwarning("cc_flwftGetFont", "error %d for fontname '%s'",
                                 error, fontname);
     }
     return NULL;
   }
 
   if (cc_freetype_debug()) {
-    cc_debugerror_postinfo("flwftGetFont",
+    cc_debugerror_postinfo("cc_flwftGetFont",
                            "FT_New_Face(..., \"%s\", ...) => family \"%s\" and style \"%s\"",
                            fontname, face->family_name, face->style_name);
   }
@@ -96,7 +96,7 @@ flwftGetFont(const char * fontname)
 }
 
 int
-flwftGetFontName(FLWfont font, char * buffer, int bufsize)
+cc_flwftGetFontName(FLWfont font, char * buffer, int bufsize)
 {
   FT_Face face;
   if (font) {
@@ -113,7 +113,7 @@ flwftGetFontName(FLWfont font, char * buffer, int bufsize)
 }
 
 int
-flwftGetFontStyle(FLWfont font, char * buffer, int bufsize)
+cc_flwftGetFontStyle(FLWfont font, char * buffer, int bufsize)
 {
   FT_Face face;
   if (font) {
@@ -127,7 +127,7 @@ flwftGetFontStyle(FLWfont font, char * buffer, int bufsize)
 }
 
 void
-flwftDoneFont(FLWfont font)
+cc_flwftDoneFont(FLWfont font)
 {
   FT_Error error;
   FT_Face face;
@@ -135,13 +135,13 @@ flwftDoneFont(FLWfont font)
     face = (FT_Face)font;
     error = FT_Done_Face(face);
     if ( error ) {
-      fprintf(stderr,"flwftDoneFont error %d\n", error);
+      fprintf(stderr,"cc_flwftDoneFont error %d\n", error);
     }
   }
 }
 
 int
-flwftGetNumCharmaps(FLWfont font)
+cc_flwftGetNumCharmaps(FLWfont font)
 {
   if (font)
     return ((FT_Face)font)->num_charmaps;
@@ -150,7 +150,7 @@ flwftGetNumCharmaps(FLWfont font)
 }
 
 int
-flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
+cc_flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
 {
   FT_Face face;
   char * name = "unknown";
@@ -194,7 +194,7 @@ flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
         name = "apple_roman"; break;
       default:
         if (cc_freetype_debug()) {
-          cc_debugerror_postwarning("flwftGetCharmapName",
+          cc_debugerror_postwarning("cc_flwftGetCharmapName",
                                     "unknown encoding: 0x%x",
                                     face->charmaps[charmap]->encoding);
         }
@@ -212,7 +212,7 @@ flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
 }
 
 int
-flwftSetCharmap(FLWfont font, int charmap)
+cc_flwftSetCharmap(FLWfont font, int charmap)
 {
   FT_Error error;
   FT_Face face;
@@ -221,7 +221,7 @@ flwftSetCharmap(FLWfont font, int charmap)
     if ( charmap < face->num_charmaps) {
       error = FT_Select_Charmap(face, face->charmaps[charmap]->encoding);
       if (error)
-        fprintf(stderr,"flwftSetCharmap ERROR: set charmap %d returned error %d\n", charmap, error);
+        fprintf(stderr,"cc_flwftSetCharmap ERROR: set charmap %d returned error %d\n", charmap, error);
       return error;
     }
   }
@@ -229,7 +229,7 @@ flwftSetCharmap(FLWfont font, int charmap)
 }
 
 int
-flwftSetCharSize(FLWfont font, int width, int height)
+cc_flwftSetCharSize(FLWfont font, int width, int height)
 {
   FT_Error error;
   FT_Face face;
@@ -237,14 +237,14 @@ flwftSetCharSize(FLWfont font, int width, int height)
     face = (FT_Face)font;
     error = FT_Set_Char_Size(face, width << 6, height << 6, 72, 72);
     if (error)
-      fprintf(stderr,"flwftSetCharSize ERROR %d\n", error);
+      fprintf(stderr,"cc_flwftSetCharSize ERROR %d\n", error);
     return error;
   } else
     return -1;
 }
 
 int
-flwftSetFontRotation(FLWfont font, float angle)
+cc_flwftSetFontRotation(FLWfont font, float angle)
 {
   FT_Matrix matrix;
   FT_Face face;
@@ -265,7 +265,7 @@ flwftSetFontRotation(FLWfont font, float angle)
   0.
 */
 FLWglyph
-flwftGetGlyph(FLWfont font, unsigned int charidx)
+cc_flwftGetGlyph(FLWfont font, unsigned int charidx)
 {
   FT_Face face = (FT_Face)font;
 
@@ -284,7 +284,7 @@ flwftGetGlyph(FLWfont font, unsigned int charidx)
 }
 
 int
-flwftGetAdvance(FLWfont font, FLWglyph glyph, float *x, float *y)
+cc_flwftGetAdvance(FLWfont font, FLWglyph glyph, float *x, float *y)
 {
   FT_Error error;
   FT_Face face;
@@ -293,20 +293,20 @@ flwftGetAdvance(FLWfont font, FLWglyph glyph, float *x, float *y)
     face = (FT_Face)font;
     error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
     if (error) {
-      fprintf(stderr,"flwftGetAdvance ERROR %d\n", error);
+      fprintf(stderr,"cc_flwftGetAdvance ERROR %d\n", error);
       return error;
     }
     tmp = face->glyph->advance.x;
-    x[0] = tmp / 64.0;
+    x[0] = tmp / (float)64.0;
     tmp = face->glyph->advance.y;
-    y[0] = tmp / 64.0;
+    y[0] = tmp / (float)64.0;
     return 0;
   } else
     return -1;
 }
 
 int
-flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float *y)
+cc_flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float *y)
 {
   FT_Error error;
   FT_Vector kerning;
@@ -316,11 +316,11 @@ flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float 
     if ( FT_HAS_KERNING(face) ) {
       error = FT_Get_Kerning(face, glyph1, glyph2, ft_kerning_default, &kerning);
       if (error) {
-        fprintf(stderr,"flwftGetKerning ERROR %d\n", error);
+        fprintf(stderr,"cc_flwftGetKerning ERROR %d\n", error);
         return error;
       }
-      *x = kerning.x / 64.0;
-      *y = kerning.y / 64.0;
+      *x = kerning.x / (float)64.0;
+      *y = kerning.y / (float)64.0;
       return 0;
     } else {
       *x = 0.0;
@@ -332,13 +332,13 @@ flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float 
 }
 
 void
-flwftDoneGlyph(FLWfont font, FLWglyph glyph)
+cc_flwftDoneGlyph(FLWfont font, FLWglyph glyph)
 {
   /* No action, since an FLWglyph is just an index. */
 }
 
 FLWbitmap *
-flwftGetBitmap(FLWfont font, FLWglyph glyph)
+cc_flwftGetBitmap(FLWfont font, FLWglyph glyph)
 {
   FT_Error error;
   FLWbitmap * bm;
@@ -354,45 +354,29 @@ flwftGetBitmap(FLWfont font, FLWglyph glyph)
     face = (FT_Face)font;
     error = FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
     if (error) {
-      fprintf(stderr,"flwftGetBitmap ERROR in FT_Load_Glyph %d\n", error);
+      fprintf(stderr,"cc_flwftGetBitmap ERROR in FT_Load_Glyph %d\n", error);
       return NULL;
     }
     error = FT_Get_Glyph(face->glyph, &g);
     if (error) {
-      fprintf(stderr,"flwftGetBitmap ERROR in FT_Get_Glyph %d\n", error);
+      fprintf(stderr,"cc_flwftGetBitmap ERROR in FT_Get_Glyph %d\n", error);
       return NULL;
     }
-    /*
-      angle = 3.14159;
-      matrix.xx = (FT_Fixed)( cos(angle)*0x10000);
-      matrix.xy = (FT_Fixed)(-sin(angle)*0x10000);
-      matrix.yx = (FT_Fixed)( sin(angle)*0x10000);
-      matrix.yy = (FT_Fixed)( cos(angle)*0x10000);
-      vec.x = 14;
-      vec.y = 14;
-      error = FT_Glyph_Transform(g, &matrix, &vec);
-      if (error) {
-      fprintf(stderr,"flwftGetBitmap ERROR in FT_Glyph_Transform %d\n", error);
-      return NULL;
-      }
-      FT_Glyph_Get_CBox(g, ft_glyph_bbox_pixels, &bb );
-      printf("flwftGetBitmap: bb = %ld %ld - %ld %ld\n", bb.xMin, bb.yMin, bb.xMax, bb.yMax);
-    */
     error = FT_Glyph_To_Bitmap(&g, ft_render_mode_mono, 0, 1);
     if (error) {
-      fprintf(stderr,"flwftGetBitmap ERROR in FT_Glyph_To_Bitmap %d\n", error);
+      fprintf(stderr,"cc_flwftGetBitmap ERROR in FT_Glyph_To_Bitmap %d\n", error);
       return NULL;
     }
     tfbmg = (FT_BitmapGlyph)g;
     tfbm = &tfbmg->bitmap;
     bm = (FLWbitmap *)malloc(sizeof(FLWbitmap));
     if (!bm) {
-      fprintf(stderr,"flwftGetBitmap ERROR in malloc %d bytes\n", sizeof(FLWbitmap));
+      fprintf(stderr,"cc_flwftGetBitmap ERROR in malloc %d bytes\n", sizeof(FLWbitmap));
       return NULL;
     }
     bm->buffer = (unsigned char *)malloc(tfbm->rows * tfbm->pitch);
     if (!bm->buffer) {
-      fprintf(stderr,"flwftGetBitmap ERROR in malloc %d bytes\n", tfbm->rows * tfbm->pitch);
+      fprintf(stderr,"cc_flwftGetBitmap ERROR in malloc %d bytes\n", tfbm->rows * tfbm->pitch);
       return NULL;
     }
     bm->bearingX = tfbmg->left;
@@ -410,9 +394,9 @@ flwftGetBitmap(FLWfont font, FLWglyph glyph)
 }
 
 int
-flwftGetOutline(FLWfont font, FLWglyph glyph)
+cc_flwftGetOutline(FLWfont font, FLWglyph glyph)
 {
   /* FIXME: implement. */
-  fprintf(stderr,"flwftGetOutline has not been implemented yet.\n");
+  fprintf(stderr,"cc_flwftGetOutline has not been implemented yet.\n");
   return 0;
 }

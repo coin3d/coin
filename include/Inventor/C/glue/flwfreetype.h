@@ -38,28 +38,28 @@ extern "C" {
     the FreeType font library.
   */
   
-  SbBool flwftInitialize(void);
-  void flwftExit(void);
+  SbBool cc_flwftInitialize(void);
+  void cc_flwftExit(void);
 
-  FLWfont flwftGetFont(const char * fontname);
-  int flwftGetFontName(FLWfont font, char * buffer, int bufsize);
-  int flwftGetFontStyle(FLWfont font, char * buffer, int bufsize);
-  void flwftDoneFont(FLWfont font);
+  FLWfont cc_flwftGetFont(const char * fontname);
+  int cc_flwftGetFontName(FLWfont font, char * buffer, int bufsize);
+  int cc_flwftGetFontStyle(FLWfont font, char * buffer, int bufsize);
+  void cc_flwftDoneFont(FLWfont font);
 
-  int flwftGetNumCharmaps(FLWfont font);
-  int flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize);
-  int flwftSetCharmap(FLWfont font, int charmap);
+  int cc_flwftGetNumCharmaps(FLWfont font);
+  int cc_flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize);
+  int cc_flwftSetCharmap(FLWfont font, int charmap);
 
-  int flwftSetCharSize(FLWfont font, int width, int height);
-  int flwftSetFontRotation(FLWfont font, float angle);
+  int cc_flwftSetCharSize(FLWfont font, int width, int height);
+  int cc_flwftSetFontRotation(FLWfont font, float angle);
 
-  FLWglyph flwftGetGlyph(FLWfont font, unsigned int charidx);
-  int flwftGetAdvance(FLWfont font, FLWglyph glyph, float *x, float *y);
-  int flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float *y);
-  void flwftDoneGlyph(FLWfont font, FLWglyph glyph);
+  FLWglyph cc_flwftGetGlyph(FLWfont font, unsigned int charidx);
+  int cc_flwftGetAdvance(FLWfont font, FLWglyph glyph, float *x, float *y);
+  int cc_flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float *y);
+  void cc_flwftDoneGlyph(FLWfont font, FLWglyph glyph);
 
-  FLWbitmap * flwftGetBitmap(FLWfont font, FLWglyph glyph);
-  int flwftGetOutline(FLWfont font, FLWglyph glyph);
+  FLWbitmap * cc_flwftGetBitmap(FLWfont font, FLWglyph glyph);
+  int cc_flwftGetOutline(FLWfont font, FLWglyph glyph);
 
 #ifdef __cplusplus
 }
