@@ -1,0 +1,421 @@
+OK, first of all, this is a 20% solution that KindOfWorksForMe [TM].
+It is not cleaned up yet, but I have commited it because I won't have
+much time to work on improving it right now, and since it already
+works someone else might want to pick up where this patch leaves off.
+
+Cleanups Needed:
+* #ifdef wrap all dlopen() related calls (make/use? our own dlopen wrapper?)
+* and ensure there's autoconf tests for finding libdl etc. and wrap #includes
+
+Implementation Needed:
+* more name mangling schemes in src/misc/cppmangle.icc
+* check for a symbol in coin to determine correct name mangling scheme
+* multi-level extensions
+* let extension nodes be located through $COIN_LOAD_PATH or something
+  similar - adding everything to $prefix/lib can be kind of messy
+* coin-config --build-module
+
+I have racked my brain in trying to get multi-level extensions working,
+but I have not yet succeeded.  if they are instantiated one level at a
+time, it works, but if an Inventor file uses a second-level extension
+wihtout using the parent-level extension first, the module does not load.
+RTLD_LAZY ought to fix this, but doesn't.  This is why i've rewritten
+the SO_NODE_INIT_CLASS() macro to not use any parent-node symbols directly.
+I've also tried a lot of different things when it comes to the linking
+of the modules to make dlopen() open dependent modules at the same time,
+but never got that working.
+
+Anyways, to sum up: This patch is currently a hack written for Linux/gcc.
+
+The API/ABI changes currently do not break backwards compatibility, so
+this patch can be backportet to Coin-1.
+
+  Lars J  2002-02-17
+
+
+Index: include/Inventor/SoType.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/SoType.h,v
+retrieving revision 1.20
+diff -u -r1.20 SoType.h
+--- include/Inventor/SoType.h	22 Jan 2002 17:10:57 -0000	1.20
++++ include/Inventor/SoType.h	17 Feb 2002 12:38:04 -0000
+@@ -31,6 +31,7 @@
+ class SbName;
+ class SoTypedObject;
+ class SoTypeList;
++class SoFieldData;
+ struct SoTypeData;
+ template <class Type> class SbList;
+ 
+@@ -79,6 +80,9 @@
+ 
+   instantiationMethod getInstantiationMethod(void) const;
+ 
++  static void setFieldDataPtr(SoType type, const SoFieldData ** ptr);
++  static const SoFieldData ** getFieldDataPtr(SoType type);
++
+ private:
+   static void clean(void);
+ 
+@@ -87,6 +91,7 @@
+   static SoTypeList * typelist;
+   static SbList<SoTypeData *> * typedatalist;
+   static SbDict * typedict;
++  static SbDict * moduledict;
+ };
+ 
+ /* inline methods ************************************************/
+Index: include/Inventor/nodes/SoSubNode.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/nodes/SoSubNode.h,v
+retrieving revision 1.26
+diff -u -r1.26 SoSubNode.h
+--- include/Inventor/nodes/SoSubNode.h	26 Nov 2001 13:27:58 -0000	1.26
++++ include/Inventor/nodes/SoSubNode.h	17 Feb 2002 12:38:04 -0000
+@@ -29,6 +29,9 @@
+ #include <Inventor/fields/SoFieldData.h>
+ #include <Inventor/nodes/SoNode.h>
+ 
++#ifndef NDEBUG
++#include <string.h> /* strcmp used in assert() */
++#endif
+ 
+ #define PRIVATE_NODE_TYPESYSTEM_HEADER( ) \
+ public: \
+@@ -123,23 +126,34 @@
+   } while (0)
+ 
+ 
++// FIXME: create-type with get-next and inc-next must be an atomic step in an MT
++// environment  20020216 larsa
++// FIXME: you can not use the _parentclass_ argument directly as a class specifier
++// in initClass because such usage causes dynamic loading to fail when trying to
++// invoke the initClass method in the case where _parentclass_ also has to be
++// dynamically loaded.  that is the reason for this roundabout way of getting the
++// parent class type.  20020216 larsa
++
+ #define PRIVATE_COMMON_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
+   do { \
+     /* Make sure we only initialize once. */ \
+     assert(_class_::classTypeId == SoType::badType() && "don't init() twice!"); \
+     /* Make sure superclass gets initialized before subclass. */ \
+-    assert(_parentclass_::getClassTypeId() != SoType::badType() && "you forgot init() on parentclass!"); \
++    assert(strcmp(SO__QUOTE(_parentclass_), "inherited")); \
++    SoType parentType(SoType::fromName(SO__QUOTE(_parentclass_))); \
++    assert(parentType != SoType::badType() && "you forgot init() on parentclass!"); \
+  \
+     /* Set up entry in the type system. */ \
+     _class_::classTypeId = \
+-      SoType::createType(_parentclass_::getClassTypeId(), \
++      SoType::createType(parentType, \
+                          _classname_, \
+                          _createfunc_, \
+                          SoNode::getNextActionMethodIndex()); \
+     SoNode::incNextActionMethodIndex(); \
+  \
+     /* Store parent's fielddata pointer for later use in the constructor. */ \
+-    _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
++    _class_::parentFieldData = SoType::getFieldDataPtr(parentType); \
++    SoType::setFieldDataPtr(_class_::classTypeId, (const SoFieldData **) &_class_::fieldData); \
+   } while (0)
+ 
+ 
+Index: include/Inventor/nodes/SoSubNodeP.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/nodes/SoSubNodeP.h,v
+retrieving revision 1.6
+diff -u -r1.6 SoSubNodeP.h
+--- include/Inventor/nodes/SoSubNodeP.h	26 Nov 2001 13:27:58 -0000	1.6
++++ include/Inventor/nodes/SoSubNodeP.h	17 Feb 2002 12:38:04 -0000
+@@ -37,6 +37,27 @@
+ #endif // !COIN_INTERNAL
+ 
+ 
++// only internal nodes can use this macro and pass "inherited" as arg #4
++#define PRIVATE_INTERNAL_COMMON_INIT_CODE(_class_, _classname_, _createfunc_, _parentclass_) \
++  do { \
++    /* Make sure we only initialize once. */ \
++    assert(_class_::classTypeId == SoType::badType() && "don't init() twice!"); \
++    /* Make sure superclass gets initialized before subclass. */ \
++    assert(_parentclass_::getClassTypeId() != SoType::badType() && "you forgot init() on parentclass!"); \
++ \
++    /* Set up entry in the type system. */ \
++    _class_::classTypeId = \
++      SoType::createType(_parentclass_::getClassTypeId(), \
++                         _classname_, \
++                         _createfunc_, \
++                         SoNode::getNextActionMethodIndex()); \
++    SoNode::incNextActionMethodIndex(); \
++ \
++    /* Store parent's fielddata pointer for later use in the constructor. */ \
++    _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
++    SoType::setFieldDataPtr(_class_::classTypeId, (const SoFieldData **) &_class_::fieldData); \
++  } while (0)
++
+ #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \
+   do { \
+     SO_NODE_CONSTRUCTOR(_class_); \
+@@ -49,14 +70,14 @@
+ #define SO_NODE_INTERNAL_INIT_CLASS(_class_) \
+   do { \
+     const char * classname = SO__QUOTE(_class_); \
+-    PRIVATE_COMMON_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
++    PRIVATE_INTERNAL_COMMON_INIT_CODE(_class_, &classname[2], &_class_::createInstance, inherited); \
+   } while (0)
+ 
+ 
+ #define SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
+   do { \
+     const char * classname = SO__QUOTE(_class_); \
+-    PRIVATE_COMMON_INIT_CODE(_class_, &classname[2], NULL, inherited); \
++    PRIVATE_INTERNAL_COMMON_INIT_CODE(_class_, &classname[2], NULL, inherited); \
+   } while (0)
+ 
+ #endif // !COIN_SOSUBNODEP_H
+Index: src/misc/SoType.cpp
+===================================================================
+RCS file: /export/cvsroot/Coin/src/misc/SoType.cpp,v
+retrieving revision 1.25
+diff -u -r1.25 SoType.cpp
+--- src/misc/SoType.cpp	24 Jan 2002 11:39:01 -0000	1.25
++++ src/misc/SoType.cpp	17 Feb 2002 12:38:04 -0000
+@@ -74,6 +74,9 @@
+ #include <assert.h>
+ #include <stdlib.h> // NULL
+ #include <string.h> // strcmp()
++#include <dlfcn.h>
++
++#include <cppmangle.icc>
+ 
+ struct SoTypeData {
+   SoTypeData(const SbName theName,
+@@ -82,13 +85,14 @@
+              const SoType theParent = SoType::badType(),
+              const SoType::instantiationMethod createMethod = NULL)
+     : name(theName), isPublic(ispublic), data(theData),
+-      parent(theParent), method(createMethod) { };
++      parent(theParent), method(createMethod), fielddata(NULL) { };
+ 
+   SbName name;
+   SbBool isPublic;
+   uint16_t data;
+   SoType parent;
+   SoType::instantiationMethod method;
++  const SoFieldData ** fielddata;
+ };
+ 
+ // OBSOLETED: this code was only active for GCC 2.7.x, and I don't
+@@ -105,6 +109,7 @@
+ SoTypeList * SoType::typelist = NULL;
+ SbList<SoTypeData *> * SoType::typedatalist = NULL;
+ SbDict * SoType::typedict = NULL;
++SbDict * SoType::moduledict = NULL;
+ 
+ /*!
+   \typedef SoType::instantiationMethod
+@@ -222,6 +227,13 @@
+ // far-reaching consequences for the whole SoType class implementation.
+ // 2002-01-24 larsa
+ 
++// FIXME: wrap the below dlopen-dependent code in ifdefs.  20020216 larsa
++// FIXME: this implementation currently only works for single-level inheritance
++// from builtin nodes - I have not yet been able to load modules that are
++// derived from other modules.  This might be related to my module-building 
++// parameters though, and not this code, so maybe it works if I could build
++// the modules correctly...  20020216 larsa
++
+ /*!
+   This static method returns the SoType object associated with name \a name.
+   If no known type matches the given name, SoType::badType() is returned.
+@@ -239,15 +251,91 @@
+   SbName noprefixname(tmp);
+ 
+   void * temp = NULL;
+-  if (SoType::typedict->find((unsigned long)name.getString(), temp) ||
+-      SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
+-    const int index = (int)temp;
+-    assert(index >= 0 && index < SoType::typelist->getLength());
+-    assert(((*SoType::typedatalist)[index]->name == name) ||
+-           ((*SoType::typedatalist)[index]->name == noprefixname));
+-    return (*SoType::typelist)[index];
++  if (!SoType::typedict->find((unsigned long)name.getString(), temp) &&
++      !SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
++    mangleFunc * manglefunc = getManglingFunction();
++    if ( manglefunc == NULL ) {
++      // dynamic loading is not yet supported for this compiler/architecture
++      static long first = 1;
++      if ( first ) {
++        SoDebugError::post("SoType::fromName", "unable to figure out the C++ name mangling scheme");
++        first = 0;
++      }
++      return SoType::badType();
++    }
++    SbString mangled = manglefunc(name.getString());
++    // FIXME: try dlopen on node.so, and find and invoke initClass()
++    // FIXME: use ltdl library?
++    SbString modulenamestring(name.getString());
++    modulenamestring += ".so";
++    SbName modulename(modulenamestring.getString());
++    // FIXME: modules are currently only searched for in the default locations
++    // (which are indicated with LD_LIBRARY_PATH.  It would be better to have the
++    // modules installed in a separate directory [hierarchy] which we locate
++    // automatically in one way or another.  20020216 larsa
++#if 0
++    void (*initClass)() = (void (*)()) dlsym(NULL, mangled.getString());
++    if ( initClass != NULL ) {
++      // FIXME: to avoid infinite recursion (from the SoType::createType() invokation in
++      // SO_NODE_INIT_CLASS(), one must test wether the given module has already been
++      // loaded.  It is incorrect to just check if the symbol is available by doing a
++      // lookup with handle = NULL (might not work on lots of systems, and the symbol may
++      // actually be present in the application without being the symbol that should be
++      // called.  What should be done is to implement bookkeeping (a lookup table) for
++      // getting module handle from the module name.  If the module is in the table, it is
++      // already loaded so we should return SoType::badType().  This bookeeping may also
++      // be useful in case we should ever unload modules again, although that is not so
++      // likely.  20020216 larsa
++      SoDebugError::postWarning("SoType::fromName", "module %s already loaded", modulename.getString());
++      return SoType::badType();
++    }
++#endif
++    if ( !SoType::moduledict ) {
++      SoType::moduledict = new SbDict;
++    } else {
++      void * idx = NULL;
++      if ( SoType::moduledict->find((unsigned long) modulename.getString(), idx) ) {
++        // module has ben loaded, but type is not yet finished initializing.
++        // and badType() is expected to be returned.
++        // SoDebugError::postWarning("SoType::fromName", "module is loaded and being initialized");
++        return SoType::badType();
++      } else {
++        // SoDebugError::postWarning("SoType::fromName", "module is not loaded yet");
++      }
++    }
++
++    // FIXME: this fails on multi-level extensions (where the parent extension has not been
++    // loaded yet) for some reason I haven't been able to figure out yet.  20020217 larsa
++    void * handle = dlopen(modulename.getString(), RTLD_GLOBAL | RTLD_LAZY);
++    if ( handle == NULL ) {
++      // SoDebugError::postWarning("SoType::fromName", "module %s could not be opened", modulename.getString());
++      return SoType::badType();
++    } else {
++#if COIN_DEBUG && 1
++      SoDebugError::post("SoType::fromName", "loading module %s", modulename.getString());
++#endif
++      // need to register module so we don't recurse infinitely in initClass
++      // which calls SoType::fromName() on itself and expects badType()
++      SoType::moduledict->enter((unsigned long)modulename.getString(), handle);
++    }
++    void (*initClass)() = (void (*)()) dlsym(handle, mangled.getString());
++    if ( initClass == NULL ) {
++      SoDebugError::postWarning("SoType::fromName", "mangled symbol %s not found in module %d.  it might be compiled with the wrong compiler/compiler settings or something similar.", mangled.getString(), modulename.getString());
++      dlclose(handle);
++      return SoType::badType();
++    }
++    initClass();
++    // running these tests to get the index into temp pointer
++    if (!SoType::typedict->find((unsigned long)name.getString(), temp) &&
++        !SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
++      return SoType::badType();
++    }
+   }
+-  return SoType::badType();
++  const int index = (int) temp;
++  assert(index >= 0 && index < SoType::typelist->getLength());
++  assert(((*SoType::typedatalist)[index]->name == name) ||
++         ((*SoType::typedatalist)[index]->name == noprefixname));
++  return (*SoType::typelist)[index];
+ }
+ 
+ /*!
+@@ -436,6 +524,32 @@
+ SoType::getInstantiationMethod(void) const
+ {
+   return (*SoType::typedatalist)[(int)this->getKey()]->method;
++}
++
++/*!
++  Registers the field data pointer for a class type.
++  This function is for internal use only.
++
++  \since 2002-02-16
++*/
++
++void
++SoType::setFieldDataPtr(SoType type, const SoFieldData ** ptr) // static
++{
++  (*SoType::typedatalist)[(int)type.getKey()]->fielddata = ptr;
++}
++
++/*!
++  Returns the field data pointer for a class type.
++  This function is for internal use only.
++
++  \since 2002-02-16
++*/
++
++const SoFieldData **
++SoType::getFieldDataPtr(SoType type) // static
++{
++  return (*SoType::typedatalist)[(int)type.getKey()]->fielddata;
+ }
+ 
+ /*!
+Index: src/misc/cppmangle.icc
+===================================================================
+RCS file: src/misc/cppmangle.icc
+diff -N src/misc/cppmangle.icc
+--- /dev/null	1 Jan 1970 00:00:00 -0000
++++ src/misc/cppmangle.icc	17 Feb 2002 12:38:04 -0000
+@@ -0,0 +1,34 @@
++
++typedef SbString mangleFunc(const char *);
++
++/*
++  This function mangles the classname::initClass() signature
++  a certain way.
++*/
++
++SbString
++gcc_initClassMangling(const char * classname)
++{
++  assert(classname != NULL);
++  int len = strlen(classname);
++  SbString mangling;
++  mangling.sprintf("initClass__%d%s", len, classname);
++  return mangling;
++}
++
++/*
++  return the correct name mangling function, or NULL in case none seem
++  appropriate
++*/
++
++mangleFunc *
++getManglingFunction(void)
++{
++  static mangleFunc * manglefunc = NULL;
++  if ( !manglefunc ) {
++    // FIXME: successful lookup of "initClass__6SoBase" => gcc mangling
++    manglefunc = gcc_initClassMangling;
++  }
++  return manglefunc;
++}
++
+Index: src/misc/Makefile.am
+===================================================================
+RCS file: /export/cvsroot/Coin/src/misc/Makefile.am,v
+retrieving revision 1.45
+diff -u -r1.45 Makefile.am
+--- src/misc/Makefile.am	29 Nov 2001 12:49:28 -0000	1.45
++++ src/misc/Makefile.am	17 Feb 2002 12:38:04 -0000
+@@ -72,7 +72,8 @@
+ 	SoGLindexedLineSetTemplate.cpp \
+ 	SoGLnonindexedFaceSetTemplate.cpp \
+ 	SoGLnonindexedTristripSetTemplate.cpp \
+-	SoGLqmeshTemplate.cpp
++	SoGLqmeshTemplate.cpp \
++	cppmangle.icc
+ 
+ ##$ BEGIN TEMPLATE Make-Common(misc)
+ 
