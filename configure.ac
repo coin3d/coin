@@ -366,6 +366,9 @@ if $sim_cv_netinet_in_h; then
     [Define if you have the <netinet/in.h> header file.])
 fi
 
+# headers used on Mac OS X
+AC_CHECK_HEADERS([AGL/agl.h Carbon/Carbon.h])
+
 # For Inventor/system/inttypes.h.in.
 #
 # Note: this assumes AC_CHECK_HEADERS(sys/types.h stdint.h) has been done.
@@ -784,6 +787,11 @@ SIM_AC_CHECK_OPENGL([
 
 if test x"$sim_ac_gl_avail" = xyes; then
 
+  SIM_AC_CHECK_HEADER_GLEXT([
+    CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glext_cppflags"
+  ])
+
   # *******************************************************************
   # ** Check what OpenGL->windowsystem bindings are available.
   # *******************************************************************
@@ -801,6 +809,11 @@ if test x"$sim_ac_gl_avail" = xyes; then
     LIBS="$LIBS $sim_ac_wgl_libs"
     COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_wgl_libs"])
 
+  SIM_AC_HAVE_AGL_IFELSE([
+    AC_DEFINE([HAVE_AGL], 1, [define if you have AGL OpenGL bindings])
+    LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+  ])
 
   if $enable_superglu; then
     SIM_AC_CONFIGURATION_SETTING([GLU linkage], [superglu])

@@ -63,6 +63,15 @@
 #endif
 #endif
 
+/* At least necessary to include this header explicitly on Mac OS X. */
+#ifdef HAVE_GL_GLEXT_H
+#include <GL/glext.h>
+#else
+#ifdef HAVE_OPENGL_GLEXT_H
+#include <OpenGL/glext.h>
+#endif /* HAVE_OPENGL_GLEXT_H */
+#endif /* !HAVE_GL_GLEXT_H */
+
 /**********************************************************************/
 
 /*
