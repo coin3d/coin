@@ -78,6 +78,7 @@
 #include "SoRotationXYZ.cpp"
 #include "SoRotor.cpp"
 #include "SoScale.cpp"
+#include "SoSceneTexture2.cpp"
 #include "SoSelection.cpp"
 #include "SoSeparator.cpp"
 #include "SoShapeHints.cpp"
