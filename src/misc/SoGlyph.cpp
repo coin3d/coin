@@ -343,8 +343,8 @@ public:
   unsigned int character;
   float size;
   SbName font;
-  float angle;
   SoGlyph *glyph;
+  float angle;
 };
 
 static SbList <coin_glyph_info> *activeGlyphs = NULL;
