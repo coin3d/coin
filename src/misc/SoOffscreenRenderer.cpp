@@ -159,7 +159,6 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 
 /*!
   \enum SoOffscreenRenderer::Components
@@ -557,6 +556,8 @@ pre_render_cb(void * userdata, SoGLRenderAction * action)
 {
   glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
   action->removePreRenderCallback(pre_render_cb, userdata);
+
+  action->setRenderingIsRemote(FALSE);
 }
 
 
