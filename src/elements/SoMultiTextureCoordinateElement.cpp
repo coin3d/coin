@@ -27,6 +27,10 @@
   \ingroup elements
 
   FIXME: write doc.
+
+  \COIN_CLASS_EXTENSION
+
+  \since Coin 2.2
 */
 
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
@@ -143,10 +147,6 @@ SoMultiTextureCoordinateElement::set2(SoState * const state,
 
 /*!
   FIXME: write doc.
-
-  \COIN_FUNCTION_EXTENSION
-
-  \since Coin 2.0
 */
 void
 SoMultiTextureCoordinateElement::set3(SoState * const state,
@@ -259,9 +259,6 @@ SoMultiTextureCoordinateElement::get2(const int unit, const int index) const
 /*!
   FIXME: write doc.
 
-  \COIN_FUNCTION_EXTENSION
-
-  \since Coin 2.0
 */
 const SbVec3f &
 SoMultiTextureCoordinateElement::get3(const int unit, const int index) const
@@ -395,13 +392,9 @@ SoMultiTextureCoordinateElement::is2D(const int unit) const
   return (ud.coordsDimension==2);
 }
 
-/*! FIXME: write doc.
-
-  \COIN_FUNCTION_EXTENSION
-
-  \since Coin 2.0
+/*! 
+  FIXME: write doc.
 */
-//$ EXPORT INLINE
 int32_t
 SoMultiTextureCoordinateElement::getDimension(const int unit) const
 {
@@ -425,9 +418,6 @@ SoMultiTextureCoordinateElement::getArrayPtr2(const int unit) const
 /*!
   Returns a pointer to the 3D texture coordinate array.
 
-  \COIN_FUNCTION_EXTENSION
-
-  \since Coin 2.0
 */
 const SbVec3f *
 SoMultiTextureCoordinateElement::getArrayPtr3(const int unit) const
