@@ -28,19 +28,17 @@ Index
       disallowed by the GNU LGPL?
 
 1: Extensions and Ports
-  Q1: Are there any free extensions for doing volume rendering with Coin?
+  Q1: Are there plans for making Coin multi-thread safe?
 
-  Q2: Are there plans for making Coin multi-thread safe?
+  Q2: Can Coin do multi-pipe rendering?
 
-  Q3: Can Coin do multi-pipe rendering?
+  Q3: Can I do volume rendering with Coin?
 
-  Q4: Can I do volume rendering with Coin?
+  Q4: Does Coin support VRML97?
 
-  Q5: Does Coin support VRML97?
+  Q5: Is there an MS Visual C++ project I can use to build Coin?
 
-  Q6: Is there an MS Visual C++ project I can use to build Coin?
-
-  Q7: Is there a Coin port for Mac OS X/Darwin?
+  Q6: Is there a Coin port for Mac OS X/Darwin?
 
 2: Common Problems
   Q1: <Node>::classTypeId != SoType::badType() && "You forgot init()"?
@@ -164,29 +162,19 @@ A:    Systems in Motion can do this dual licensing "trick" with Coin
 Section 1. Extensions and Ports
 ===============================
 
-Q1.1:   Are there any free extensions for doing volume rendering with Coin?
-
-A:      There are no free Open Inventor extensions for doing volume
-        rendering that we know of.
-
-        Implementing such an extension is high on our list of things
-        we want to do, but there is not yet any schedule for when it
-        will happen.
-
-
-Q1.2:   Are there plans for making Coin multi-thread safe?
+Q1.1:   Are there plans for making Coin multi-thread safe?
 
 A:      Yes.  The wheels are in motion on this one.  
 
 
-Q1.3:   Can Coin do multi-pipe rendering?
+Q1.2:   Can Coin do multi-pipe rendering?
 
 A:      Not yet.  We certainly want to support this.  Note that this
         feature depends on having achieved multi-thread safety for
         Coin first.
 
 
-Q1.4:   Can I do volume rendering with Coin?
+Q1.3:   Can I do volume rendering with Coin?
 
 A:      There are no volume rendering extensions for Coin yet.  Support for
         3D textures, which is a prerequisite for proper volume rendering
@@ -199,14 +187,14 @@ A:      There are no volume rendering extensions for Coin yet.  Support for
         no concrete plans for putting resources on this currently.
 
 
-Q1.5:   Does Coin support VRML97?
+Q1.4:   Does Coin support VRML97?
 
 A:      Coin does not support VRML97 currently, but support is planned for
         Coin v2.0.  The development repository for Coin will probably contain
         VRML97 support code in not too long.
 
 
-Q1.6:   Is there an MS Visual C++ project I can use to build Coin?
+Q1.5:   Is there an MS Visual C++ project I can use to build Coin?
 
 A:      Not currently.  We will probably support this sometime in the
         future, but it will only happen when we can have the project
@@ -234,7 +222,7 @@ A:      Not currently.  We will probably support this sometime in the
         <URL:http://auto.coin3d.org/coin-discuss/>.
 
 
-Q1.7:   Is there a Coin port for Mac OS X/Darwin?
+Q1.6:   Is there a Coin port for Mac OS X/Darwin?
 
 A:      Coin configures and compiles on Mac OS X, but there is currently no
         SoMac library available.
