@@ -229,6 +229,7 @@ SoDataSensor::notify(SoNotList * l)
       }
     }
   }
+  this->schedule();
 }
 
 /*!

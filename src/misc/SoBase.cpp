@@ -1959,8 +1959,9 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
       SoDebugError::postInfo("SoAuditorList::notify",
                              "notify and schedule sensor: %p", obj);
 #endif // debug
+      // don't schedule the sensor here. The sensor instance will do
+      // that in notify() (it might also choose _not_ to schedule),
       obj->notify(l);
-      obj->schedule();
     }
     break;
 
