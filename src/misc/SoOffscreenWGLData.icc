@@ -36,14 +36,11 @@ public:
   virtual SbBool makeContextCurrent(uint32_t contextid);
   virtual unsigned char * getBuffer(void);
   virtual void postRender(void);
-  static SbVec2s getMaxDimensions(void);
 
   void cleanupWGL(void);
   void initWGL(void);
 
 private:
-  virtual SbVec2s getMax(void);
-
   unsigned char * buffer;
   HGLRC context;
   HDC devicecontext;
@@ -148,14 +145,6 @@ SoOffscreenWGLData::postRender(void)
   }
 }
 
-SbVec2s 
-SoOffscreenWGLData::getMaxDimensions(void) 
-{
-  // FIXME: where can we get hold of the _real_ max values for
-  // Pixmap and/or GLXPixmap? 20000417 mortene.
-  return SbVec2s(32767, 32767);
-}
-
 void 
 SoOffscreenWGLData::cleanupWGL(void) 
 {
@@ -258,7 +247,7 @@ SoOffscreenWGLData::initWGL(void)
   }
   
   // make that the pixel format of the device context
-  bool ret = SetPixelFormat(this->devicecontext, iPixelFormat, &pfd);
+  BOOL ret = SetPixelFormat(this->devicecontext, iPixelFormat, &pfd);
   if (!ret) {
     DWORD dwError = GetLastError();
     SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
@@ -294,10 +283,3 @@ SoOffscreenWGLData::initWGL(void)
     return;
   }
 }
-
-SbVec2s 
-SoOffscreenWGLData::getMax(void) 
-{
-  return SoOffscreenWGLData::getMaxDimensions();
-}
-

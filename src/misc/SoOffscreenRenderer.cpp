@@ -139,11 +139,11 @@
 //        1) first, try to get hold of a p-buffer with destination
 //        alpha (p-buffers are faster to render into, as they can take
 //        advantage of hardware acceleration)
-// 
+//
 //        2) failing that, try to make WGL (or GLX or AGL on
 //        non-MSWindows platforms) set up a buffer with destination
 //        alpha
-// 
+//
 //        3) failing that, get hold of either a p-buffer or a straight
 //        WGL buffer with only RGB (no destination alpha -- this
 //        should never fail), and do post-processing on the rendered
@@ -167,9 +167,10 @@
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <../glue/simage_wrapper.h>
 #include <math.h> // for ceil()
+#include <limits.h> // SHRT_MAX
 
-#include <Inventor/nodes/SoCamera.h> 
-#include <Inventor/nodes/SoCallback.h> 
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoCallback.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/SbViewportRegion.h>
@@ -197,6 +198,8 @@ public:
   SoOffscreenRendererP(SoOffscreenRenderer * master) {
     this->master = master;
   };
+
+  static SbVec2s getMaxTileSize(void);
 
   SoOffscreenRenderer * master;
 
@@ -227,7 +230,6 @@ public:
 
   SbVec2s lastsubscreensize;
   SbVec2s maxres;
-
 };
 
 
@@ -248,24 +250,12 @@ public:
   virtual unsigned char * getBuffer(void) = 0;
 
   virtual void setBufferSize(const SbVec2s & size) {
-    SbVec2s maxsize = this->getMax();
-    
 #if COIN_DEBUG
-    if (size[0] > maxsize[0]) {
-      SoDebugError::postWarning("SoOffscreenInternalData::setBufferSize",
-                                "can't set width to %d, maximum is %d",
-                                size[0], maxsize[0]);
-    }
-    else if (size[0] <= 0) {
+    if (size[0] <= 0) {
       SoDebugError::postWarning("SoOffscreenInternalData::setBufferSize",
                                 "can't set negative width %d", size[0]);
     }
-    if (size[1] > maxsize[1]) {
-      SoDebugError::postWarning("SoOffscreenInternalData::setBufferSize",
-                                "can't set height to %d, maximum is %d",
-                                size[1], maxsize[1]);
-    }
-    else if (size[1] <= 0) {
+    if (size[1] <= 0) {
       SoDebugError::postWarning("SoOffscreenInternalData::setBufferSize",
                                 "can't set negative height %d", size[1]);
     }
@@ -275,13 +265,9 @@ public:
     // The explicit casts are done to humour the HPUX aCC compiler,
     // which will otherwise say ``Template deduction failed to find a
     // match for the call to 'SbMin'''. mortene.
-    
-    this->buffersize[0] = SbMax((short)1,
-                                SbMin((short)size[0], (short)maxsize[0]));
-    this->buffersize[1] = SbMax((short)1,
-                                SbMin((short)size[1], (short)maxsize[1]));
-    
 
+    this->buffersize[0] = SbMax((short)1, (short)size[0]);
+    this->buffersize[1] = SbMax((short)1, (short)size[1]);
   }
 
   SbVec2s getSize(void) const {
@@ -294,12 +280,6 @@ public:
 
 protected:
   SbVec2s buffersize;
-
-  // Note: should _really_ be overridden by subclasses.
-  virtual SbVec2s getMax(void) { 
-    SbVec2s maxres = SoOffscreenRenderer::getMaximumResolution();
-    return(maxres);
-  }
 };
 
 
@@ -426,66 +406,42 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
 }
 
 
-static void getMaxCB(void *ptr, SoAction *action)
+static void
+getMaxCB(void * ptr, SoAction * action)
 {
 
-  GLint *size = (GLint *) ptr; 
+  GLint * size = (GLint *)ptr;
   glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
 
-  
   const char * vendor = (const char *)glGetString(GL_VENDOR);
   if (strcmp(vendor, "NVIDIA Corporation") == 0) {
 
     // FIXME: Here we need to add a version check if NVIDIA fixes this
     // bug in the future (20021023 handegar)
-    
+
     // FIXME: Due to a possible NVIDIA bug, max render size is limited
     // by desktop resolution, not the texturesize returned by
     // OpenGL. This is fixed temporarily by limiting max size to the
     // lowend resolution for desktop monitors. (20021023 handegar)
-    
+
     size[0] = 800;
     size[1] = 600;
-    
   }
-
 }
 
 
 /*!
   Get maximum dimensions (width, height) of the offscreen buffer.
+
+  Note that from Coin version 2 onwards, the returned value will
+  always be (SHRT_MAX, SHRT_MAX), as the SoOffscreenRenderer can in
+  principle generate unlimited size offscreen canvases by tiling
+  together multiple renderings of the same scene.
 */
 SbVec2s
 SoOffscreenRenderer::getMaximumResolution(void)
 {
-  // FIXME: this measures the maximum resolution allowed by OpenGL,
-  // which is wrong from Coin v2 onwards, as we can now make offscreen
-  // renderings of any size. Can't just change the return value,
-  // though, as there's internal code in the SoOffscreenRenderer that
-  // uses this method to check for the maximum "tile size". 200302113 mortene.
-
-  static SbBool isvisited = FALSE;
-  static short dims[2] = {128, 128};
-
-  if (!isvisited){
-    isvisited = TRUE;
-    SoOffscreenRenderer * osr = new SoOffscreenRenderer(SbViewportRegion(128,128));
-    SoCallback *cb = new SoCallback();
-    cb->ref();
-    
-    GLint temp[2];
-    cb->setCallback(getMaxCB,temp);
-    
-    osr->render(cb);
-    
-    delete osr;
-    cb->unref();
-    
-    dims[0] = (short) temp[0];
-    dims[1] = (short) temp[1];
-  } 
-  return SbVec2s(dims[0], dims[1]);
-
+  return SbVec2s(SHRT_MAX, SHRT_MAX);
 }
 
 
@@ -541,43 +497,41 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
   // As the current context is destructed and a new one is set up
   // below, it can be a major optimization to just return when there
   // is no real change.
-  if(PRIVATE(this)->viewport == region) { return; }  
+  if(PRIVATE(this)->viewport == region) { return; }
   PRIVATE(this)->viewport = region;
-  
+
 
   // Adjust rendering canvas size if needed.
   SbVec2s size = PRIVATE(this)->viewport.getViewportSizePixels();
-  SbVec2s maxsize = this->getMaximumResolution();
-  
-  PRIVATE(this)->requestedsize = PRIVATE(this)->viewport.getViewportSizePixels();  
-  PRIVATE(this)->mustusesubscreens = (size[0] > maxsize[0]) || (size[1] > maxsize[1]);
+  SbVec2s tilesize = SoOffscreenRendererP::getMaxTileSize();
+
+  PRIVATE(this)->requestedsize = PRIVATE(this)->viewport.getViewportSizePixels();
+  PRIVATE(this)->mustusesubscreens = (size[0] > tilesize[0]) || (size[1] > tilesize[1]);
 
   if (PRIVATE(this)->mustusesubscreens) {
     PRIVATE(this)->setupSubscreens(size);
 
     PRIVATE(this)->currentsubscreen = 0;
-    PRIVATE(this)->subviewport = SbViewportRegion(maxsize);
+    PRIVATE(this)->subviewport = SbViewportRegion(tilesize);
   }
-    
 
-  if(!PRIVATE(this)->mustusesubscreens){
 
-    if(PRIVATE(this)->renderaction) 
+  if (!PRIVATE(this)->mustusesubscreens) {
+    if (PRIVATE(this)->renderaction) {
       PRIVATE(this)->renderaction->setViewportRegion(PRIVATE(this)->viewport);
+    }
     PRIVATE(this)->internaldata->setBufferSize(size);
-
-  } else {
-    
-    if(PRIVATE(this)->renderaction) 
+  }
+  else {
+    if(PRIVATE(this)->renderaction) {
       PRIVATE(this)->renderaction->setViewportRegion(PRIVATE(this)->subviewport);
-    PRIVATE(this)->internaldata->setBufferSize(maxsize);
+    }
+    PRIVATE(this)->internaldata->setBufferSize(tilesize);
 
   }
-
 
   if(!PRIVATE(this)->buffer)
     delete [] PRIVATE(this)->buffer;
-
 }
 
 
@@ -653,7 +607,7 @@ pre_render_cb(void * userdata, SoGLRenderAction * action)
 
 
 // Callback when rendering scenegraph to subscreens. Searching for cameras.
-SoGLRenderAction::AbortCode 
+SoGLRenderAction::AbortCode
 SoOffscreenRendererP::subscreenAbortCallback(void *userData)
 {
 
@@ -666,14 +620,14 @@ SoOffscreenRendererP::subscreenAbortCallback(void *userData)
     thisp->lastnodewasacamera=FALSE;
     return SoGLRenderAction::CONTINUE;
   }
- 
+
   if(node != NULL){
     if(node->isOfType(SoCamera::getClassTypeId())){
       thisp->visitedcamera = (SoCamera *) node;
       thisp->lastnodewasacamera=TRUE;
     }
   }
- 
+
   return SoGLRenderAction::CONTINUE;
 }
 
@@ -715,17 +669,17 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                          "[%d, %d, %d, %d]",
                          colbits[0], colbits[1], colbits[2], colbits[3]);
 #endif // debug
-  
+
   glEnable(GL_DEPTH_TEST);
   glClearColor(this->backgroundcolor[0],
                this->backgroundcolor[1],
                this->backgroundcolor[2],
                0.0f);
-  
+
   if (!this->didallocaction) {
     this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   }
- 
+
   // Allocate target buffer
   this->buffer = new unsigned char[this->requestedsize[0] * this->requestedsize[1] * master->getComponents()];
 
@@ -733,12 +687,12 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   if(this->mustusesubscreens){
 
     //Allocate memory for subscreen
-    subscreen = new unsigned char [(maxres[0]*maxres[1]*this->master->getComponents())];
+    subscreen = new unsigned char [(this->maxres[0]*this->maxres[1]*this->master->getComponents())];
 
     // We have to grab cameras using this callback during rendering
-    this->renderaction->setAbortCallback(&subscreenAbortCallback,this);    
+    this->renderaction->setAbortCallback(&subscreenAbortCallback,this);
     this->currentsubscreen = 0;
-    
+
     // Render entire scenegraph for each subscreen.
     for(int i=0;i<(this->numsubscreens[0]*this->numsubscreens[1]);++i){
 
@@ -747,7 +701,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
                                   "could not set up a current OpenGL context.");
         return FALSE;
       }
-   
+
       this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
 
       if(base->isOfType(SoNode::getClassTypeId()))
@@ -755,7 +709,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
       else if (base->isOfType(SoPath::getClassTypeId()))
         this->renderaction->apply((SoPath *)base);
       else assert(FALSE && "impossible");
-      
+
       this->internaldata->postRender();
       this->convertSubscreenBuffer();
       this->pasteSubscreen(this->currentsubscreen);
@@ -778,13 +732,13 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     this->internaldata->postRender();
     this->convertBuffer();
- 
+
   }
-  
+
   if (!this->didallocaction) {
     this->renderaction->setCacheContext(oldcontext);
   }
-  
+
 
   return TRUE;
 }
@@ -796,7 +750,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 void
 SoOffscreenRendererP::convertSubscreenBuffer(void)
 {
-  int pixels = maxres[0]*maxres[1];
+  int pixels = this->maxres[0]*this->maxres[1];
   int depth = PUBLIC(this)->getComponents();
 
   unsigned char * local = this->subscreen;
@@ -857,7 +811,7 @@ SoOffscreenRendererP::convertBuffer(void)
 
   unsigned char * native = this->internaldata->getBuffer();
   unsigned char * local = this->buffer;
- 
+
   switch (depth) {
   case SoOffscreenRenderer::RGB_TRANSPARENCY:
     memcpy(local, native, pixels * depth);
@@ -997,7 +951,7 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
   // FIXME: errorchecking when writing! 20010625 mortene.
 
   if (PRIVATE(this)->internaldata) {
-    
+
     SbVec2s size = PRIVATE(this)->internaldata->getSize();
     if(PRIVATE(this)->mustusesubscreens){
       size[0] = PRIVATE(this)->requestedsize[0];
@@ -1547,60 +1501,55 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
 void
 SoOffscreenRendererP::setupSubscreens(SbVec2s totalsize)
 {
+  this->maxres = SoOffscreenRendererP::getMaxTileSize();
 
-  this->maxres = this->master->getMaximumResolution();
+  assert((this->maxres[0] <= totalsize[0]) &&
+         (this->maxres[1] <= totalsize[1]));
 
-  numsubscreens[0] = 0;
-  numsubscreens[1] = 0;
- 
-  // Was this really called for?
-  if((maxres[0] > totalsize[0]) &&
-     (maxres[1] > totalsize[1])){
-    this->mustusesubscreens = FALSE;  // False alarm, DONT use subscreens...
-    return;
-  }
-  
+  this->numsubscreens[0] = 0;
+  this->numsubscreens[1] = 0;
+
   // Find number of horizontal subscreens
   short size = totalsize[0];
   while(size > 0){
-    size -= maxres[0];
-    ++numsubscreens[0];
+    size -= this->maxres[0];
+    ++this->numsubscreens[0];
   }
 
   // Find number of vertical subscreens
   size = totalsize[1];
   while(size > 0){
-    size -= maxres[1];
-    ++numsubscreens[1];
+    size -= this->maxres[1];
+    ++this->numsubscreens[1];
   }
 
-  lastsubscreensize[0] = 0;
-  lastsubscreensize[1] = 0;
-  if(maxres[0] < totalsize[0])
-    lastsubscreensize[0] = maxres[0] - ((maxres[0]*numsubscreens[0]) - totalsize[0]);
-  if(maxres[1] < totalsize[1])
-    lastsubscreensize[1] = maxres[1] - ((maxres[1]*numsubscreens[1]) - totalsize[1]);
+  this->lastsubscreensize[0] = 0;
+  this->lastsubscreensize[1] = 0;
+  if(this->maxres[0] < totalsize[0])
+    this->lastsubscreensize[0] = this->maxres[0] - ((this->maxres[0]*this->numsubscreens[0]) - totalsize[0]);
+  if(this->maxres[1] < totalsize[1])
+    this->lastsubscreensize[1] = this->maxres[1] - ((this->maxres[1]*this->numsubscreens[1]) - totalsize[1]);
 
-  // Last check... 
-  if(lastsubscreensize[0] == maxres[0])
-    lastsubscreensize[0] = 0;
-  if(lastsubscreensize[1] == maxres[1])
-    lastsubscreensize[1] = 0;
+  // Last check...
+  if(this->lastsubscreensize[0] == this->maxres[0])
+    this->lastsubscreensize[0] = 0;
+  if(this->lastsubscreensize[1] == this->maxres[1])
+    this->lastsubscreensize[1] = 0;
 
   return;
 }
 
 
-void 
+void
 SoOffscreenRendererP::setSubscreenCameraPosition(int renderpass, SoCamera * cam)
 {
- 
+
   int subscreenposx = 0;
   int subscreenposy = 0;
 
-  if(renderpass >= numsubscreens[0]*numsubscreens[1]){
-    subscreenposx = numsubscreens[0]-1;
-    subscreenposy = numsubscreens[1]-1;
+  if(renderpass >= this->numsubscreens[0]*this->numsubscreens[1]){
+    subscreenposx = this->numsubscreens[0]-1;
+    subscreenposy = this->numsubscreens[1]-1;
     SoDebugError::post("setSubscreenCameraPosition",
                        "ERROR: Internal error. Not enough subscreens allocated for offscreenrendering.\n"
                        "Rendering to last allocated subscreen.");
@@ -1636,69 +1585,98 @@ SoOffscreenRendererP::setSubscreenCameraPosition(int renderpass, SoCamera * cam)
   }
 
   float left =   ((float) (subscreenposx*this->maxres[0])) / (float)requestedsize[0];
-  float bottom = ((float) ((numsubscreens[1]-subscreenposy-1)*this->maxres[1])) / (float)requestedsize[1];
+  float bottom = ((float) ((this->numsubscreens[1]-subscreenposy-1)*this->maxres[1])) / (float)requestedsize[1];
   float right =  ((float) ((subscreenposx + 1)*this->maxres[0])) / (float)requestedsize[0];
-  float top =    ((float) ((numsubscreens[1] - subscreenposy)*this->maxres[1])) / (float)requestedsize[1];
+  float top =    ((float) ((this->numsubscreens[1] - subscreenposy)*this->maxres[1])) / (float)requestedsize[1];
 
   // Reshape view volume
   vv = vv.narrow(left, bottom, right, top);
 
-  SbMatrix proj, affine;  
+  SbMatrix proj, affine;
   vv.getMatrices(affine, proj);
-  
+
   // Support antialiasing if renderpasses > 1
   if(renderaction->getNumPasses() > 1){
     SbVec3f jittervec;
     SbMatrix m;
-    const int vpsize[2] = { maxres[0], maxres[1] };
-    coin_viewvolume_jitter(renderaction->getNumPasses(), renderaction->getCurPass(), 
+    const int vpsize[2] = { this->maxres[0], this->maxres[1] };
+    coin_viewvolume_jitter(renderaction->getNumPasses(), renderaction->getCurPass(),
                            vpsize, (float *)jittervec.getValue());
     m.setTranslate(jittervec);
     proj.multRight(m);
   }
-  
+
   SoCullElement::setViewVolume(state, vv);
   SoViewVolumeElement::set(state, cam, vv);
   SoProjectionMatrixElement::set(state, cam, proj);
   SoViewingMatrixElement::set(state, cam, affine);
-    
+
 }
 
 
-void 
+void
 SoOffscreenRendererP::pasteSubscreen(int renderpass)
 {
-  
+
   int depth = this->master->getComponents();
   int subscreenposy = renderpass / this->numsubscreens[0]; // Exploiting integer division loss
   int subscreenposx = renderpass - subscreenposy*this->numsubscreens[0];
 
   int suboffset = 0;
   int suboffsetinc = this->maxres[0]*depth;
-  
-  int offset = ((this->numsubscreens[1] - subscreenposy - 1)*this->requestedsize[0]*maxres[1] + subscreenposx*maxres[0])*depth;
+
+  int offset = ((this->numsubscreens[1] - subscreenposy - 1)*this->requestedsize[0]*this->maxres[1] + subscreenposx*this->maxres[0])*depth;
   int offsetinc = this->requestedsize[0]*depth;
 
   int linelen = this->maxres[0]*depth;
-  if(subscreenposx == numsubscreens[0]-1){
+  if(subscreenposx == this->numsubscreens[0]-1){
     if(this->lastsubscreensize[0] != 0)
       linelen = this->lastsubscreensize[0]*depth;
   }
 
   int lines = this->maxres[1];
-  
+
   if(subscreenposy == 0){
     if(this->lastsubscreensize[1] != 0){
       lines = this->lastsubscreensize[1];
-      offset = (this->requestedsize[0]*(this->requestedsize[1] - lines) + subscreenposx*maxres[0])*depth;
+      offset = (this->requestedsize[0]*(this->requestedsize[1] - lines) + subscreenposx*this->maxres[0])*depth;
     }
   }
-   
+
   // Do the pasting
-  for(int j=0;j<lines;++j){ 
-    memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);        
+  for(int j=0;j<lines;++j){
+    memcpy((unsigned char *) this->buffer+offset,(unsigned char *) this->subscreen + suboffset, linelen);
     offset += offsetinc;
     suboffset += suboffsetinc;
-  }     
- 
+  }
+
+}
+
+SbVec2s
+SoOffscreenRendererP::getMaxTileSize(void)
+{
+  static SbBool isvisited = FALSE;
+  static short dims[2] = {128, 128};
+
+  if (!isvisited){
+    isvisited = TRUE;
+    // FIXME: should refactor this code out into a general "call a
+    // function in an OpenGL context" utility function common for the
+    // library. 20030213 mortene.
+    SoOffscreenRenderer * osr = new SoOffscreenRenderer(SbViewportRegion(128,128));
+    SoCallback *cb = new SoCallback();
+    cb->ref();
+
+    GLint temp[2];
+    cb->setCallback(getMaxCB, temp);
+
+    osr->render(cb);
+
+    delete osr;
+    cb->unref();
+
+    dims[0] = SbMin((short)temp[0], (short)SHRT_MAX);
+    dims[1] = SbMin((short)temp[1], (short)SHRT_MAX);
+  }
+  return SbVec2s(dims[0], dims[1]);
 }

@@ -38,11 +38,8 @@ public:
   virtual SbBool makeContextCurrent(uint32_t contextid);
   virtual unsigned char * getBuffer(void);
   virtual void postRender(void);
-  static SbVec2s getMaxDimensions(void);
 
 private:
-  virtual SbVec2s getMax(void);
-
   unsigned char * buffer;
   AGLDrawable drawable;
   AGLContext context;
@@ -182,17 +179,4 @@ SoOffscreenAGLData::postRender(void)
       aglSetCurrentContext(storedcontext);
     }
   }
-}
-
-SbVec2s 
-SoOffscreenAGLData::getMaxDimensions(void) 
-{
-  // FIXME: make sure we return the real limitations. 20020225 mortene.
-  return SbVec2s(32767, 32767);
-}
-
-SbVec2s 
-SoOffscreenAGLData::getMax(void) 
-{
-  return SoOffscreenAGLData::getMaxDimensions();
 }

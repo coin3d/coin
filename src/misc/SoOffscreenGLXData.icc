@@ -47,9 +47,8 @@ public:
   static SbVec2f getResolution(void);
 
   virtual void postRender(void);
-  static SbVec2s getMaxDimensions(void);
+
 private:
-  virtual SbVec2s getMax(void);
   static Display * getDisplay(void);
 
   unsigned char * buffer;
@@ -338,32 +337,4 @@ SoOffscreenGLXData::postRender(void)
                             this->storedcontext);
     }
   }
-}
-
-SbVec2s
-SoOffscreenGLXData::getMaxDimensions(void)
-{
-
-  /*
-    FIXME: Here we have to have access to a valid GL context
-    if we want this to work... (handegar)
-  */
-
-  /*
-    GLint maxdims[2];
-    glGetIntegerv(GL_MAX_VIEWPORT_DIMS, maxdims);
-    // FIXME: clamp GLint to be within the size of SbVec2s. 20020809 mortene.
-  */
-
-#if 1
-  return SbVec2s(2048,2048);
-#else // Shrink the offscreen capacity for testing and debugging (handegar)
-  return SbVec2s(640/2+3,480/7+11); 
-#endif
-}
-
-SbVec2s
-SoOffscreenGLXData::getMax(void)
-{
-  return SoOffscreenRenderer::getMaximumResolution();
 }
