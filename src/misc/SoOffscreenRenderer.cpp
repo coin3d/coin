@@ -535,7 +535,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   if (forcetiled == -1) {
     const char * env = coin_getenv("COIN_FORCE_TILED_OFFSCREENRENDERING");
     forcetiled = (env && (atoi(env) > 0)) ? 1 : 0;
-    if (SoOffscreenRendererP::debug()) {
+    if (SoOffscreenRendererP::debug() && forcetiled) {
       SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
                              "Forcing tiled rendering.");
     }
