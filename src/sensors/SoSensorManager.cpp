@@ -354,28 +354,27 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   THIS->processingdelayqueue = TRUE;
 
   // Sensors with higher priorities are triggered first.
-  while (THIS->delayqueue.getLength()) {
+  int len = THIS->delayqueue.getLength();
+  while (len) {
 #if DEBUG_DELAY_SENSORHANDLING // debug
     SoDebugError::postInfo("SoSensorManager::processDelayQueue",
                            "treat element with pri %d",
-                           THIS->delayqueue[i]->getPriority());
+                           THIS->delayqueue[len-1]->getPriority());
 #endif // debug
 
-    if (!isidle && THIS->delayqueue[0]->isIdleOnly()) {
-      // Remove from current queue without using unschedule().
-      SoDelayQueueSensor * tmpptr = THIS->delayqueue[0];
-      THIS->delayqueue.remove(0);
+    SoDelayQueueSensor * sensor = THIS->delayqueue[len-1];
+    THIS->delayqueue.removeFast(len-1);
 
+    if (!isidle && sensor->isIdleOnly()) {
       // Will automatically put sensor in "processing wait-queue", and
       // merge back into the "real" queue after processing has
       // completed and queue has been emptied.
-      this->insertDelaySensor(tmpptr);
+      this->insertDelaySensor(sensor);
     }
     else {
-      SoSensor * sensor = THIS->delayqueue[0];
-      THIS->delayqueue.remove(0);
-      sensor->trigger();
+      ((SoSensor*)sensor)->trigger();
     }
+    len = THIS->delayqueue.getLength();
   }
 
   THIS->processingdelayqueue = FALSE;
