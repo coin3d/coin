@@ -21,6 +21,7 @@
 #define COIN_SOGLYPH_H
 
 #include <Inventor/SbBasic.h>
+#include <Inventor/SbBox2f.h>
 
 class SbVec2f;
 class SbName;
@@ -31,34 +32,39 @@ public:
   static const SoGlyph *getGlyph(const char character, const SbName &font);
   void unref() const;
 
-  const SbVec2f *getCoords(void) const;
-  const int *getFaceIndices(void) const;
-  const int *getEdgeIndices(void) const;
+  const SbVec2f * getCoords(void) const;
+  const int * getFaceIndices(void) const;
+  const int * getEdgeIndices(void) const;
+
   float getWidth(void) const;
+  const SbBox2f & getBoundingBox(void) const;
 
 protected:
   SoGlyph();
   ~SoGlyph();
 
-  void setCoords(SbVec2f *coords, int numcoords = -1);
-  void setFaceIndices(int *indices, int numindices = -1);
-  void setEdgeIndices(int *indices, int numindices = -1);
+  void setCoords(SbVec2f * coords, int numcoords = -1);
+  void setFaceIndices(int * indices, int numindices = -1);
+  void setEdgeIndices(int * indices, int numindices = -1);
 
 private:
 
-  static SoGlyph *createSystemGlyph(const char character, const SbName &font);
-  static void unrefGlyph(SoGlyph *glyph);
+  static SoGlyph *createSystemGlyph(const char character, const SbName & font);
+  static void unrefGlyph(SoGlyph * glyph);
 
-  SbVec2f *coords;
-  int *faceidx;
-  int *edgeidx;
+  SbVec2f * coords;
+  SbBox2f bbox;
+  int * faceidx;
+  int * edgeidx;
   int refcount;
   float width;
+  float ymin, ymax;
 
   struct {
     unsigned int didalloccoords : 1;
     unsigned int didallocfaceidx : 1;
     unsigned int didallocedgeidx : 1;
+    unsigned int didcalcbbox : 1;
   } flags;
 };
 

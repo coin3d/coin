@@ -48,10 +48,13 @@ SoGlyph::SoGlyph()
   this->flags.didalloccoords = 0;
   this->flags.didallocfaceidx  = 0;
   this->flags.didallocedgeidx = 0;
+  this->flags.didcalcbbox = 0;
   this->coords = NULL;
   this->faceidx = NULL;
   this->edgeidx = NULL;
   this->width = 0.0f;
+  this->ymin = 0.0f;
+  this->ymax = 0.0f;
 }
 
 /*!
@@ -102,23 +105,34 @@ SoGlyph::getEdgeIndices(void) const
 }
 
 /*!
-  Returns the width of the glyph.
+  Convenience method which returns the width of the glyph.
 */
 float
 SoGlyph::getWidth(void) const
 {
-  if (this->width > 0.0f) return this->width;
-  int *ptr = this->edgeidx;
-  int idx = *ptr++;
-  float maxval = 0.0f;
-  while (idx >= 0) {
-    SbVec2f v = this->coords[idx];
-    if (v[0] > maxval) maxval = v[0];
-    idx = *ptr++;
+  const SbBox2f & box = this->getBoundingBox();
+  return box.getMax()[0] - box.getMin()[0];
+}
+
+/*!
+  Returns the bounding box of this glyph. This value is cached for performance.
+*/
+const SbBox2f &
+SoGlyph::getBoundingBox(void) const
+{
+  // this method needs to be const, so cast away constness
+  SoGlyph * thisp = (SoGlyph*) this;
+  if (!this->flags.didcalcbbox) {
+    thisp->flags.didcalcbbox = 1;
+    thisp->bbox.makeEmpty();
+    int *ptr = this->edgeidx;
+    int idx = *ptr++;
+    while (idx >= 0) {
+      thisp->bbox.extendBy(this->coords[idx]);
+      idx = *ptr++;
+    }
   }
-  maxval += 0.05f; // need some space between letters
-  ((SoGlyph*)this)->width = maxval;
-  return maxval;
+  return this->bbox;
 }
 
 /*!
