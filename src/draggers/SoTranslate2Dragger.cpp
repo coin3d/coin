@@ -123,6 +123,7 @@ SoTranslate2Dragger::~SoTranslate2Dragger()
   delete this->fieldSensor;
 }
 
+// doc in superclass
 SbBool
 SoTranslate2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -149,6 +150,9 @@ SoTranslate2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
+/*!
+  \internal
+*/
 void
 SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * s)
 {
@@ -162,6 +166,9 @@ SoTranslate2Dragger::fieldSensorCB(void * d, SoSensor * s)
   thisp->setMotionMatrix(matrix);
 }
 
+/*!
+  \internal
+*/
 void
 SoTranslate2Dragger::valueChangedCB(void *, SoDragger * d)
 {

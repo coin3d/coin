@@ -23,7 +23,7 @@
   \ingroup draggers
 
   This dragger is well suited to use for setting up the fields of a
-  SoDirectionLight node, as it provides geometry for the end-user to
+  SoDirectionalLight node, as it provides geometry for the end-user to
   interact with a directional vector.
 
   For convenience, this dragger also by default contains interaction
@@ -77,13 +77,11 @@
 */
 
 /*!
-  \var
-  SoFieldSensor * SoDirectionalLightDragger::rotFieldSensor
+  \var SoFieldSensor * SoDirectionalLightDragger::rotFieldSensor
   \internal
 */
 /*!
-  \var
-  SoFieldSensor * SoDirectionalLightDragger::translFieldSensor
+  \var SoFieldSensor * SoDirectionalLightDragger::translFieldSensor
   \internal
 */
 

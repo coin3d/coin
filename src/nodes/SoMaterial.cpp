@@ -54,8 +54,7 @@
 
   The transparency values will always be treated normally.
 
-  \sa SoMaterialBinding 
-
+  \sa SoMaterialBinding, SoPackedColor
 */
 
 #include <Inventor/nodes/SoMaterial.h>

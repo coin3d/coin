@@ -102,7 +102,7 @@
 */
 
 /*!
-  \var SoGLRenderAction::TransparencyType
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::DELAYED_ADD
 
   SoGLRenderAction::DELAYED_ADD Transparent objects are rendered using
   additive alpha blending, in a second rendering pass with depth
@@ -111,7 +111,7 @@
 */
 
 /*!
-  \var SoGLRenderAction::TransparencyType
+  \var SoGLRenderAction::TransparencyType SoGLRenderAction::SORTED_OBJECT_ADD
 
   SoGLRenderAction::SORTED_OBJECT_ADD Transparent objects are rendered
   using additive alpha blending.  Opaque objects are rendered first,
@@ -198,7 +198,7 @@
   rendering.
 
   Use this transparency type when you have one (or more) transparent
-  object where you know triangles might overlap inside the object.
+  object(s) where you know triangles might overlap inside the object.
   This transparency type might be very slow if you have an object with
   lots of triangles, since all triangles have to be sorted before
   rendering, and an unoptimized rendering loop is used when rendering.

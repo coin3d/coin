@@ -39,23 +39,40 @@
 */
 // FIXME: Should include a diagram of the catalog structure in the
 // class documentation. Plus an URL-link to the default geometry-file?
-// Plus snapshot of how the dragger looks (and behaves?).
-// 20010909 mortene.
+// Plus snapshot of how the dragger looks (and behaves?).  Plus a
+// small usage example.  20010909 mortene.
 
 #include <Inventor/draggers/SoDragPointDragger.h>
-#include <Inventor/nodekits/SoSubKitP.h>
+
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
 #include <Inventor/draggers/SoTranslate1Dragger.h>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTranslation.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/events/SoKeyboardEvent.h>
 
 #include <data/draggerDefaults/dragPointDragger.h>
+
+/*!
+  \var SoSFVec3f SoDragPointDragger::translation
+
+  Continuously updated to contain the current translation from the
+  dragger's local origo position.
+
+  The application programmer applying this dragger in his code should
+  connect the relevant node fields in the scene to this field to make
+  it follow the dragger.
+*/
+
+/*!
+  \var SoFieldSensor * SoDragPointDragger::fieldSensor
+  \internal
+*/
 
 
 SO_KIT_SOURCE(SoDragPointDragger);
@@ -271,6 +288,7 @@ SoDragPointDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoDragPointDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -280,6 +298,7 @@ SoDragPointDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoDragPointDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -298,18 +317,43 @@ SoDragPointDragger::valueChangedCB(void *, SoDragger * d)
   thisp->fieldSensor->attach(&thisp->translation);
 }
 
+/*!
+  The dragger plane jump limit is ignored in Coin, as we use a
+  continuous moving plane.
+
+  This method still included for API compatibility with the original
+  SGI Inventor API.
+ */
 void
 SoDragPointDragger::setJumpLimit(const float limit)
 {
+  // FIXME: should we use it? I'm a bit partial to the visual
+  // appearance of the SGI strategy myself, so... 20011024 mortene.
   this->jumpLimit = limit;
 }
 
+/*!
+  The dragger plane jump limit is ignored in Coin, as we use a
+  continuous moving plane.
+
+  This method still included for API compatibility with the original
+  SGI Inventor API.
+ */
 float
 SoDragPointDragger::getJumpLimit(void) const
 {
+  // FIXME: should we use it? I'm a bit partial to the visual
+  // appearance of the SGI strategy myself, so... 20011024 mortene.
   return this->jumpLimit;
 }
 
+/*!
+  Circulate the dragger's three different sets of geometry, to
+  circulate the orientation of the translation axis and translation
+  plane through the three principal axes.
+
+  This function is triggered when the user taps the \c CTRL key.
+ */
 void
 SoDragPointDragger::showNextDraggerSet(void)
 {
@@ -317,6 +361,7 @@ SoDragPointDragger::showNextDraggerSet(void)
   this->updateSwitchNodes();
 }
 
+/*! \internal */
 void
 SoDragPointDragger::dragStart(void)
 {
@@ -348,12 +393,14 @@ SoDragPointDragger::dragStart(void)
   }
 }
 
+/*! \internal */
 void
 SoDragPointDragger::drag(void)
 {
   // FIXME: update feedback information, pederb 20000202
 }
 
+/*! \internal */
 void
 SoDragPointDragger::dragFinish(void)
 {
@@ -368,6 +415,7 @@ SoDragPointDragger::dragFinish(void)
   SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
 }
 
+/*! \internal */
 void
 SoDragPointDragger::startCB(void *d, SoDragger *)
 {
@@ -375,6 +423,7 @@ SoDragPointDragger::startCB(void *d, SoDragger *)
   thisp->dragStart();
 }
 
+/*! \internal */
 void
 SoDragPointDragger::motionCB(void *d, SoDragger *)
 {
@@ -382,6 +431,7 @@ SoDragPointDragger::motionCB(void *d, SoDragger *)
   thisp->drag();
 }
 
+/*! \internal */
 void
 SoDragPointDragger::finishCB(void *d, SoDragger *)
 {
@@ -389,6 +439,7 @@ SoDragPointDragger::finishCB(void *d, SoDragger *)
   thisp->dragFinish();
 }
 
+/*! \internal */
 void
 SoDragPointDragger::metaKeyChangeCB(void * d, SoDragger *)
 {
