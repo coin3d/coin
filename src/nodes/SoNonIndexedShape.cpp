@@ -106,16 +106,28 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
   // FIXME: handle assertion more gracefully. 19990327 mortene.
   assert(lastidx < numCoords);
 
-  const SbVec3f * coords = vpvtx ?
-    vp->vertex.getValues(0) :
-    coordelem->getArrayPtr3();
-
   center.setValue(0.0f, 0.0f, 0.0f);
-  for (int i = startidx; i <= lastidx; i++) {
-    box.extendBy(coords[i]);
-    center += coords[i];
+  
+  if (vpvtx || coordelem->is3D()) {
+    const SbVec3f * coords = vpvtx ?
+      vp->vertex.getValues(0) :
+      coordelem->getArrayPtr3();
+    
+    for (int i = startidx; i <= lastidx; i++) {
+      box.extendBy(coords[i]);
+      center += coords[i];
+    }
   }
-
+  else { // 4D
+    const SbVec4f * coords = coordelem->getArrayPtr4();
+    for (int i = startidx; i <= lastidx; i++) {
+      SbVec4f h = coords[i];
+      float mul = 1.0f / h[3];
+      SbVec3f c(h[0]*mul, h[1]*mul, h[2]*mul);
+      box.extendBy(c);
+      center += c;
+    }
+  }
   center /= float(lastidx + 1 - startidx);
 }
 
