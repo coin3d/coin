@@ -679,6 +679,7 @@ if $BUILD_WITH_MSVC; then
   CXXFLAGS="/Fd$debugfile $CXXFLAGS"
 
   if $COIN_STATIC; then
+    SIM_AC_CONFIGURATION_SETTING([Coin build type], [static .lib])
     LIBFLAGS="-LIB"
     LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.lib"
     COIN_EXTRA_CPPFLAGS="-I$includedir"
@@ -686,11 +687,15 @@ if $BUILD_WITH_MSVC; then
     COIN_EXTRA_LIBS=
   else
     LIBFLAGS="-DLL /INCREMENTAL:NO"
-    case $enable_debug in
+    case $enable_symbols in
     no | false)
+      SIM_AC_CONFIGURATION_SETTING([Coin build type],
+                                   [dynamic .dll, no symbols])
       LIBFLAGS="$LIBFLAGS /RELEASE"
       ;;
     *)
+      SIM_AC_CONFIGURATION_SETTING([Coin build type],
+                                   [dynamic .dll + .pdb])
       LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
       ;;
     esac

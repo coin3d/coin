@@ -565,34 +565,66 @@ all-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 
 install-exec-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
-	if test -s "$$basename.dll"; then \
-	  $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
-	  echo " $(INSTALL_PROGRAM)" "$$basename.dll" "$(DESTDIR)$(bindir)/$$basename.dll"; \
-	  $(INSTALL_PROGRAM) "$$basename.dll" "$(DESTDIR)$(bindir)/$$basename.dll"; \
-	fi
+	for ext in dll pdb; do \
+	  file="$$basename.$$ext"; \
+	  if test -s "$$file"; then \
+	    $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
+	    echo " $(INSTALL_PROGRAM)" "$$file" "$(DESTDIR)$(bindir)/$$file"; \
+	    $(INSTALL_PROGRAM) "$$file" "$(DESTDIR)$(bindir)/$$file"; \
+	  fi \
+	done
 
 install-data-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
-	for ext in lib pdb; do \
+	for ext in lib; do \
 	  file="$$basename.$$ext"; \
 	  if test -s "$$file"; then \
 	    $(mkinstalldirs) "$(DESTDIR)$(libdir)"; \
 	    echo " $(INSTALL_DATA)" "$$file" "$(DESTDIR)$(libdir)/$$file"; \
 	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(libdir)/$$file"; \
 	  fi \
-	done
+	done;
 
 uninstall-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	for file in \
 	  "$(DESTDIR)$(bindir)/$$basename.dll" \
-	  "$(DESTDIR)$(libdir)/$$basename.pdb" \
+	  "$(DESTDIR)$(bindir)/$$basename.pdb" \
 	  "$(DESTDIR)$(libdir)/$$basename.lib"; do \
 	  if test -f "$$file"; then \
 	    echo " rm -f" "$$file"; \
 	    rm -f "$$file"; \
 	  fi \
-	done
+	done; \
+	baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
+	for dir in \
+	  "$$baseincdir/VRMLNodes" \
+	  "$$baseincdir/actions" \
+	  "$$baseincdir/base" \
+	  "$$baseincdir/bundles" \
+	  "$$baseincdir/caches" \
+	  "$$baseincdir/details" \
+	  "$$baseincdir/draggers" \
+	  "$$baseincdir/elements" \
+	  "$$baseincdir/engines" \
+	  "$$baseincdir/errors" \
+	  "$$baseincdir/events" \
+	  "$$baseincdir/fields" \
+	  "$$baseincdir/lists" \
+	  "$$baseincdir/lock" \
+	  "$$baseincdir/manips" \
+	  "$$baseincdir/misc" \
+	  "$$baseincdir/nodekits" \
+	  "$$baseincdir/nodes" \
+	  "$$baseincdir/projectors" \
+	  "$$baseincdir/sensors" \
+	  "$$baseincdir/system" \
+	  "$$baseincdir"; do \
+	  if test -d "$$dir"; then \
+	    echo " rmdir" "$$dir"; \
+	    rmdir "$$dir"; \
+	  fi \
+	done;
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
