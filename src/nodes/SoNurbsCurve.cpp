@@ -271,7 +271,7 @@ void
 SoNurbsCurve::generatePrimitives(SoAction * action)
 {
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-    // HACK WARNING: pederb, 2002-01-30
+    // HACK WARNING: pederb, 2003-01-30
     //
     // call doNurbsWrapper() instead of doNurbs(). doNurbsWrapper()
     // will use sogl_offscreencontext_callback() to call
@@ -446,12 +446,12 @@ typedef struct {
 
 static void call_donurbs(void * userdata, SoAction * action)
 {
-  sonurbscurve_call_donurbs_data * data = 
+  sonurbscurve_call_donurbs_data * data =
     (sonurbscurve_call_donurbs_data*) userdata;
   data->thisp->doNurbs(data->action, FALSE, data->drawaspoints);
 }
 
-void 
+void
 SoNurbsCurveP::doNurbsWrapper(SoAction * action, const SbBool drawaspoints)
 {
   sonurbscurve_call_donurbs_data data;

@@ -276,7 +276,7 @@ void
 SoIndexedNurbsCurve::generatePrimitives(SoAction * action)
 {
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-    // HACK WARNING: pederb, 2002-01-30
+    // HACK WARNING: pederb, 2003-01-30
     //
     // call doNurbsWrapper() instead of doNurbs(). doNurbsWrapper()
     // will use sogl_offscreencontext_callback() to call
