@@ -79,7 +79,7 @@ DEF dragPointZFeedback Separator {
 DEF DRAGPOINT_FEEDBACK_PLANE Group {
    Coordinate3 { point [ -10 0 -10, -10 0 10, 10 0 10, 10 0 -10, -10 0 -10 ] }
    FaceSet { }
-   Scale { scaleFactor 1.05 0 1.05 }
+   Scale { scaleFactor 1.05 1 1.05 }
    LineSet { }
 }
 
