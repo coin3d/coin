@@ -25,23 +25,26 @@
 class SoPath;
 class SoAction;
 
+
 class SoChildList : public SoNodeList {
   typedef SoNodeList inherited;
+
 public:
   SoChildList(SoNode * const parent);
   SoChildList(SoNode * const parent, const int size);
-  SoChildList(SoNode * const parent, const SoChildList & list);
-  ~SoChildList(void);
+  SoChildList(SoNode * const parent, const SoChildList & cl);
+  ~SoChildList();
 
   void append(SoNode * const node);
-  void insert(SoNode * const ptr, const int addBefore);
+  void insert(SoNode * const ptr, const int addbefore);
   void remove(const int index);
   void truncate(const int length);
-  void copy(const SoChildList & list);
+  void copy(const SoChildList & cl);
   void set(const int index, SoNode * const node);
 
   void traverse(SoAction * const action);
   void traverse(SoAction * const action, const int index);
+  void traverse(SoAction * const action, SoNode * node);
   void traverse(SoAction * const action, const int first, const int last);
 
   void addPathAuditor(SoPath * const path);
@@ -49,10 +52,7 @@ public:
 
 private:
   SoNode * parent;
-  // should not ref() paths...
-  SbPList auditors;
+  SbList<SoPath *> auditors;
 };
-
-//$ IMPORT INLINE ../../../src/misc/SoChildList.cpp
 
 #endif // !COIN_SOCHILDLIST_H

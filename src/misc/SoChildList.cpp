@@ -18,22 +18,28 @@
 \**************************************************************************/
 
 /*!
-  \class SoChildList Inventor/misc/SoChildList.h
-  \brief The SoChildList class is yet to be documented.
+  \class SoChildList SoChildList.h Inventor/misc/SoChildList.h
+  \brief The SoChildList class is a container for node children.
+  \ingroup general
 
-  FIXME: write doc.
+  This class does automatic notification on the parent nodes upon
+  adding or removing children.
+
+  Methods for action traversal of the children are also provided.
 */
 
 #include <Inventor/misc/SoChildList.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/nodes/SoNode.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+
 /*!
-  A constructor.
+  Default constructor, sets parent container and initializes a minimal
+  list.
 */
 SoChildList::SoChildList(SoNode * const parent)
   : SoNodeList()
@@ -42,7 +48,9 @@ SoChildList::SoChildList(SoNode * const parent)
 }
 
 /*!
-  A constructor.
+  Constructor with hint about list size.
+
+  \sa SoNodeList::SoNodeList(const int)
 */
 SoChildList::SoChildList(SoNode * const parent, const int size)
   : SoNodeList(size)
@@ -51,17 +59,19 @@ SoChildList::SoChildList(SoNode * const parent, const int size)
 }
 
 /*!
-  A constructor.
+  Copy constructor.
+
+  \sa SoNodeList::SoNodeList(const SoNodeList &)
 */
-SoChildList::SoChildList(SoNode * const parent, const SoChildList & list)
-  : SoNodeList(0)
+SoChildList::SoChildList(SoNode * const parent, const SoChildList & cl)
+  : SoNodeList()
 {
   this->parent = parent;
-  this->copy(list);
+  this->copy(cl);
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
 SoChildList::~SoChildList()
 {
@@ -69,98 +79,133 @@ SoChildList::~SoChildList()
 }
 
 /*!
-  FIXME: write doc.
+  Append a new \a node instance as a child of our parent container.
+
+  Automatically notifies parent node and any SoPath instances auditing
+  paths with nodes from this list.
 */
 void
 SoChildList::append(SoNode * const node)
 {
   node->addAuditor(this->parent, SoNotRec::PARENT);
   SoNodeList::append(node);
+
   this->parent->startNotify();
+  // Doesn't need to notify SoPath auditors.
 }
 
 /*!
-  FIXME: write doc.
+  Insert a new \a node instance as a child of our parent container at
+  position \a addbefore.
+
+  Automatically notifies parent node and any SoPath instances auditing
+  paths with nodes from this list.
 */
 void
-SoChildList::insert(SoNode * const node, const int addBefore)
+SoChildList::insert(SoNode * const node, const int addbefore)
 {
-  assert(addBefore <= this->getLength());
+  assert(addbefore <= this->getLength());
   node->addAuditor(this->parent, SoNotRec::PARENT);
-  SoNodeList::insert(node, addBefore);
+  SoNodeList::insert(node, addbefore);
+
   this->parent->startNotify();
+  for (int i=0; i < this->auditors.getLength(); i++)
+    this->auditors[i]->insertIndex(this->parent, addbefore);
 }
 
 /*!
-  FIXME: write doc.
+  Remove the child node pointer at \a index.
+
+  Automatically notifies parent node and any SoPath instances auditing
+  paths with nodes from this list.
 */
 void
 SoChildList::remove(const int index)
 {
   assert(index >= 0 && index < this->getLength());
-  (*this)[index]->removeAuditor(this->parent, SoNotRec::PARENT);
+  SoNodeList::operator[](index)->removeAuditor(this->parent, SoNotRec::PARENT);
   SoNodeList::remove(index);
+
   this->parent->startNotify();
+  for (int i=0; i < this->auditors.getLength(); i++)
+    this->auditors[i]->removeIndex(this->parent, index);
 }
 
 /*!
-  FIXME: write doc.
+  Overloaded from superclass to handle notification.
 */
 void
 SoChildList::truncate(const int length)
 {
   const int n = this->getLength();
+  assert(length >= 0 && length <= n);
+
   if (length != n) {
-    for (int i = length; i < n; i++) {
-      (*this)[i]->removeAuditor(this->parent, SoNotRec::PARENT);
-    }
+    for (int i = length; i < n; i++)
+      SoNodeList::operator[](i)->removeAuditor(this->parent, SoNotRec::PARENT);
+
     SoNodeList::truncate(length);
+
     this->parent->startNotify();
+    for (int k=0; k < this->auditors.getLength(); k++) {
+      for (int j=length; j < n; j++) {
+        this->auditors[k]->removeIndex(this->parent, j);
+      }
+    }
   }
 }
 
 /*!
-  FIXME: write doc.
+  Copy contents of \a cl into this list. Overloaded from superclass to
+  handle notification.
+
+  \sa SoBaseList::copy(const SoBaseList &)
 */
 void
-SoChildList::copy(const SoChildList & list)
+SoChildList::copy(const SoChildList & cl)
 {
-  if (this == &list) return;
+  if (this == &cl) return;
+
+  // Call truncate() explicitly here to get the path notification.
   this->truncate(0);
-  const int n = list.getLength();
-  for (int i = 0; i < n; i++) {
-    this->append((SoNode *) list.get(i));
-  }
-  this->auditors = list.auditors;
+  SoBaseList::copy(cl);
+  this->auditors = cl.auditors;
+
   this->parent->startNotify();
 }
 
 /*!
-  FIXME: write doc.
+  Set the child \a node pointer at \a index in the list. Overloaded
+  from superclass to handle notification.
 */
 void
 SoChildList::set(const int index, SoNode * const node)
 {
-  assert(index < this->getLength());
-  (*this)[index]->removeAuditor(this->parent, SoNotRec::PARENT);
-  node->addAuditor(this->parent, SoNotRec::PARENT);
+  assert(index >= 0 && index < this->getLength());
+  SoNodeList::operator[](index)->removeAuditor(this->parent, SoNotRec::PARENT);
   SoBaseList::set(index, (SoBase *)node);
+  node->addAuditor(this->parent, SoNotRec::PARENT);
+
   this->parent->startNotify();
+  for (int i=0; i < this->auditors.getLength(); i++)
+    this->auditors[i]->replaceIndex(this->parent, index, node);
 }
 
 /*!
-  FIXME: write doc.
+  Traverse child nodes in the list from index \a first up to and
+  including index \a last, or until the SoAction::hasTerminated() flag
+  of \a action has been set.
 */
 void
 SoChildList::traverse(SoAction * const action, const int first, const int last)
 {
-  for (int i = first; i <= last && !action->hasTerminated(); i++) {
-    action->traverse((SoNode *)this->get(i));
-  }
+  for (int i = first; i <= last && !action->hasTerminated(); i++)
+    action->traverse(SoNodeList::operator[](i));
 }
 
 /*!
-  FIXME: write doc.
+  Traverse all nodes in the list, invoking their methods for the given
+  \a action.
 */
 void
 SoChildList::traverse(SoAction * const action)
@@ -169,7 +214,8 @@ SoChildList::traverse(SoAction * const action)
 }
 
 /*!
-  FIXME: write doc.
+  Traverse the node at \a index (and possibly its children, if its a
+  group node), applying the nodes' method for the given \a action.
 */
 void
 SoChildList::traverse(SoAction * const action, const int index)
@@ -178,7 +224,19 @@ SoChildList::traverse(SoAction * const action, const int index)
 }
 
 /*!
-  FIXME: write doc.
+  Traverse the \a node (and possibly its children, if its a group
+  node), applying the nodes' method for the given \a action.
+*/
+void
+SoChildList::traverse(SoAction * const action, SoNode * node)
+{
+  int idx = this->find(node);
+  assert(idx != -1);
+  this->traverse(action, idx);
+}
+
+/*!
+  Notify \a path whenever this list of node children changes.
 */
 void
 SoChildList::addPathAuditor(SoPath * const path)
@@ -187,11 +245,12 @@ SoChildList::addPathAuditor(SoPath * const path)
 }
 
 /*!
-  FIXME: write doc.
+  Remove \a path as an auditor for our list of node children.
 */
 void
 SoChildList::removePathAuditor(SoPath * const path)
 {
   const int index = this->auditors.find(path);
-  if (index >= 0) this->auditors.remove(index);
+  assert(index != -1);
+  this->auditors.remove(index);
 }
