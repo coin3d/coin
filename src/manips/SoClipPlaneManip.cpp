@@ -49,6 +49,66 @@
   v2.1 API.  In addition to being a Coin extension, it is also present
   in TGS' Inventor implementation (with the same API).
 
+  Please not that this manipulator is a bit different than the other
+  manipulators, since it will not automatically scale and translate 
+  the dragger to surround the geometry. The setValue() function must
+  be used to initialize the manipulator/dragger. Below you'll find some
+  example code that loads an Inventor file and adds a clip plane 
+  manipulator.
+
+  \code
+
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/SoDB.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/actions/SoGetBoundingBoxAction.h>
+  #include <Inventor/SoInput.h>
+  #include <Inventor/manips/SoClipPlaneManip.h>
+  #include <assert.h>
+  
+  // *************************************************************************
+  
+  int
+  main(int argc, char ** argv)
+  {
+    assert(argc >= 2);
+    QWidget * window = SoQt::init(argv[0]);
+    SoQtExaminerViewer * ex = new SoQtExaminerViewer( window );
+    ex->setBackgroundColor(SbColor(0.1f, 0.3f, 0.5f));
+  
+    SoInput input;
+    SbBool ok = input.openFile(argv[1]);
+    if (!ok) {
+      fprintf(stderr,"Unable to open file.\n");
+      return -1;
+    }
+
+    SoSeparator * root = SoDB::readAll(&input); 
+    if (!root) {
+      fprintf(stderr,"Unable to read file.\n");
+      return -1;
+    }
+    root->ref();
+    SoGetBoundingBoxAction ba(ex->getViewportRegion());
+    ba.apply(root);
+
+    SbBox3f box = ba.getBoundingBox();
+    SoClipPlaneManip * manip = new SoClipPlaneManip;
+    manip->setValue(box, SbVec3f(1.0f, 0.0f, 0.0f), 1.02f);
+    root->insertChild(manip, 0);
+
+    ex->setSceneGraph(root);
+    ex->show();
+    SoQt::show( window );
+    SoQt::mainLoop();
+    delete ex;
+    root->unref();
+    return 0;
+  }
+
+  \endcode
+
   \since TGS Inventor 2.5
   \since Coin 1.0
 */
@@ -69,6 +129,9 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/SoNodeKitPath.h>
+#include <Inventor/nodes/SoAntiSquish.h>
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -129,13 +192,8 @@ SoClipPlaneManip::SoClipPlaneManip(void)
     new SoFieldSensor(SoClipPlaneManip::fieldSensorCB, this);
   this->draggerPosFieldSensor->setPriority(0);
 
-
   SoJackDragger * dragger = new SoJackDragger;
   this->setDragger(dragger);
-
-  SoSurroundScale * ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
-  ss->numNodesUpToContainer = 4;
-  ss->numNodesUpToReset = 3;
 }
 
 /*!
@@ -165,12 +223,7 @@ SoClipPlaneManip::setDragger(SoDragger * newdragger)
     this->children->remove(0);
   }
   if (newdragger != NULL) {
-    if (this->children->getLength() > 0) {
-      this->children->set(0, newdragger);
-    }
-    else {
-      this->children->append(newdragger);
-    }
+    this->children->append(newdragger);
     SoClipPlaneManip::fieldSensorCB(this, NULL);
     newdragger->addValueChangedCallback(SoClipPlaneManip::valueChangedCB, this);
   }
@@ -182,7 +235,7 @@ SoClipPlaneManip::setDragger(SoDragger * newdragger)
 SoDragger *
 SoClipPlaneManip::getDragger(void)
 {
-  if (this->children->getLength() > 0) {
+  if (this->children->getLength()) {
     SoNode *node = (*children)[0];
     if (node->isOfType(SoDragger::getClassTypeId()))
       return (SoDragger*)node;
@@ -217,20 +270,24 @@ SoClipPlaneManip::setValue(const SbBox3f & box, const SbVec3f & planenormal, flo
   this->attachSensors(FALSE);
   SbPlane newplane(planenormal, box.getCenter());
   this->plane = newplane;
+  this->draggerPosition = box.getCenter();
 
   float dx, dy, dz;
   box.getSize(dx, dy, dz);
+  dx = SbMax(dx, SbMax(dy, dz));
+  dx *= 0.5f;
 
-  // FIXME: investigate how dragger should be scaled (pederb, 20000606)
-#if COIN_DEBUG
-  if ((dx != 1.0f) || (dy != 1.0f) || (dz != 1.0f)) {
-    SoDebugError::postWarning("SoClipPlaneManip::setValue",
-                              "scaling with the \"box\" argument is not supported yet");
-  }
-#endif // COIN_DEBUG
+  SoDragger * dragger = this->getDragger();
+  SbVec3f s;
+  s[0] = s[1] = s[2] = dx * draggerscalefactor;
 
+  SbMatrix matrix;
+  matrix.setScale(s);
+  SbBool oldvalue = dragger->enableValueChangedCallbacks(FALSE);
+  dragger->setMotionMatrix(matrix);
+  (void) dragger->enableValueChangedCallbacks(oldvalue);
   this->attachSensors(TRUE);
-  SoClipPlaneManip::fieldSensorCB(this, NULL);
+  SoClipPlaneManip::fieldSensorCB(this, this->planeFieldSensor);
 }
 
 /*!
@@ -260,7 +317,7 @@ SoClipPlaneManip::replaceNode(SoPath * path)
         this->attachSensors(FALSE);
         this->transferFieldValues(oldpart, this);
         this->attachSensors(TRUE);
-        SoClipPlaneManip::fieldSensorCB(this, NULL);
+        SoClipPlaneManip::fieldSensorCB(this, this->planeFieldSensor);
         kit->setPart(partname, this);
         return TRUE;
       }
@@ -288,7 +345,7 @@ SoClipPlaneManip::replaceNode(SoPath * path)
   this->attachSensors(FALSE);
   this->transferFieldValues((SoClipPlane*)fulltail, this);
   this->attachSensors(TRUE);
-  SoClipPlaneManip::fieldSensorCB(this, NULL);
+  SoClipPlaneManip::fieldSensorCB(this, this->planeFieldSensor);
 
   ((SoGroup*)parent)->replaceChild(fulltail, this);
   this->unrefNoDelete();
@@ -426,11 +483,14 @@ SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
   SoClipPlaneManip * thisp = (SoClipPlaneManip*)m;
 
   SbMatrix matrix = dragger->getMotionMatrix();
+
   SbPlane plane(SbVec3f(0.0f, 1.0f, 0.0f), 0.0f);
   // transform plane so that it matches the dragger geometry
   plane.transform(matrix);
   // extract the translation-part of the matrix
-  SbVec3f t = SbVec3f(matrix[3][0], matrix[3][2], matrix[3][3]);
+  SbVec3f t = SbVec3f(matrix[3][0], matrix[3][1], matrix[3][2]);
+
+  SbVec3f n = plane.getNormal();
 
   thisp->attachSensors(FALSE);
   if (thisp->plane.getValue() != plane) {
@@ -447,21 +507,32 @@ SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
   Called whenever one of the fields changes value.
 */
 void
-SoClipPlaneManip::fieldSensorCB(void * m, SoSensor * d)
+SoClipPlaneManip::fieldSensorCB(void * m, SoSensor * s)
 {
   SoClipPlaneManip *thisp = (SoClipPlaneManip*)m;
-  SoDragger *dragger = thisp->getDragger();
+
+  if (s == thisp->onFieldSensor) return; // FIXME: should we care? pederb, 2003-02-28
+
+  SoDragger * dragger = thisp->getDragger();
   if (dragger != NULL) {
-    SbPlane plane = thisp->plane.getValue();
-    SbVec3f normal = plane.getNormal();
-    float dist = plane.getDistanceFromOrigin();
     SbMatrix matrix = dragger->getMotionMatrix();
+
+    SbVec3f planept;
+    SbVec3f n = thisp->plane.getValue().getNormal();
+    planept = thisp->draggerPosition.getValue();
+
+    if (s == thisp->planeFieldSensor) {
+      float dist = thisp->plane.getValue().getDistance(planept);
+      planept += n * dist;
+    }
+
     SbVec3f t, s;
     SbRotation r, so;
     matrix.getTransform(t, r, s, so);
-    r.setValue(SbVec3f(0.0f, 1.0f, 0.0f), normal);
-    t = normal*dist;
+    r.setValue(SbVec3f(0.0f, 1.0f, 0.0f), n);
+    t = planept;
     matrix.setTransform(t, r, s, so);
+
     dragger->setMotionMatrix(matrix);
 
     // make sure draggerPosition field is up-to-date
