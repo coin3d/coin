@@ -48,7 +48,7 @@
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
@@ -216,7 +216,7 @@ SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoNurbsCurve::sendPrimitive(SoAction *,  SoPrimitiveVertex *)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 // Doc from parent class.

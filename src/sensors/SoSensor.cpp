@@ -49,7 +49,7 @@
 
 #include <Inventor/sensors/SoSensor.h>
 #include <stdlib.h> // NULL
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 
 /*!
   \var SoSensorCB * SoSensor::func
@@ -186,7 +186,7 @@ SoSensor::trigger(void)
 void
 SoSensor::setNextInQueue(SoSensor * next)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
@@ -196,7 +196,7 @@ SoSensor::setNextInQueue(SoSensor * next)
 SoSensor *
 SoSensor::getNextInQueue(void) const
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return NULL;
 }
 

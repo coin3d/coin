@@ -1367,6 +1367,9 @@ SoDragger::eventHandled(const SoEvent * event, SoHandleEventAction * action)
   THIS->eventaction = action;
 }
 
+/*!
+  \internal
+*/
 void
 SoDragger::updateDraggerCache(const SoPath * path)
 {

@@ -23,7 +23,7 @@
 */
 
 #include <Inventor/misc/SoNormalGenerator.h>
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 #include <stdio.h>
 
 /*!
@@ -302,7 +302,7 @@ SoNormalGenerator::getNumNormals(void) const
 void
 SoNormalGenerator::setNumNormals(const int /* num */)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
@@ -340,7 +340,7 @@ void
 SoNormalGenerator::setNormal(const int32_t /* index */,
                              const SbVec3f & /* normal */)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 //

@@ -29,7 +29,6 @@
 #include <Inventor/nodes/SoTransformSeparator.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -85,9 +84,10 @@ SoTransformSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 /*!
   FIXME: write doc
  */
-SoTransformSeparator::SoTransformSeparator(int /* nChildren */)
+SoTransformSeparator::SoTransformSeparator(int nChildren)
+  : inherited(nChildren)
 {
-  COIN_STUB();
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformSeparator);
 }
 
 /*!

@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/elements/SoTextureMatrixElement.h>
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 
 /*!
   \fn SoTextureMatrixElement::textureMatrix
@@ -258,5 +258,5 @@ SoTextureMatrixElement::push(SoState * state)
 void
 SoTextureMatrixElement::emptyMatrix(SoState * const /* state */)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }

@@ -31,7 +31,7 @@
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 #include <assert.h>
 
 #define FLAG_LIGHTING     0x0001
@@ -273,9 +273,9 @@ SoShapeStyleElement::needTexCoords() const
   Not implemented in Coin. It is used by SoVertexProperty in SGI OIV.
 */
 int
-SoShapeStyleElement::getRenderCaseMask() const
+SoShapeStyleElement::getRenderCaseMask(void) const
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return 0;
 }
 

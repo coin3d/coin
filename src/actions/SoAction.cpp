@@ -46,14 +46,14 @@
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/misc/SoState.h>
-#include <coindefs.h> // COIN_STUB()
-
 
 #include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#include <coindefs.h> // COIN_OBSOLETED
 
 // *************************************************************************
 
@@ -430,8 +430,10 @@ SoAction::getOriginalPathListAppliedTo(void) const
 SbBool
 SoAction::isLastPathListAppliedTo(void) const
 {
-  COIN_STUB(); // FIXME
-  return FALSE;
+  // FIXME: path list traversal is not really supported yet. We just
+  // apply the paths one by one, so technically it should be correct
+  // to return TRUE here...
+  return TRUE;
 }
 
 /*!
@@ -600,7 +602,7 @@ SoAction::usePathCode(int & numindices, const int * & indices)
 void
 SoAction::pushCurPath(void)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
@@ -610,7 +612,7 @@ SoAction::pushCurPath(void)
 void
 SoAction::popPushCurPath(const int childindex)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
@@ -620,7 +622,7 @@ SoAction::popPushCurPath(const int childindex)
 void
 SoAction::popCurPath(void)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 // *************************************************************************

@@ -49,7 +49,7 @@
 #include <GL/gl.h>
 #include <src/misc/GLUWrapper.h>
 
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 
 /*!
   \var SoSFInt32 SoIndexedNurbsSurface::numUControlPoints
@@ -241,7 +241,7 @@ SoIndexedNurbsSurface::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoIndexedNurbsSurface::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 // doc from parent

@@ -35,10 +35,11 @@
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoGLColorIndexElement.h>
 #include <Inventor/misc/SoState.h>
 
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <coindefs.h> // COIN_STUB
+#include <coindefs.h> // COIN_OBSOLETED
 #include <assert.h>
 
 SO_ELEMENT_SOURCE(SoGLLazyElement);
@@ -143,8 +144,7 @@ SoGLLazyElement::sendDiffuseByIndex(int index) const
 SbBool
 SoGLLazyElement::isColorIndex(SoState *state)
 {
-  COIN_STUB();
-  return FALSE;
+  return SoGLColorIndexElement::isColorIndexMode(state);
 }
 
 //! FIXME: write doc
@@ -202,7 +202,7 @@ SbBool
 SoGLLazyElement::lazyMatches(uint32_t /*checkGLFlag*/, uint32_t /*checkIVFlag*/,
                              const SoGLLazyElement * /*eltInState*/)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return TRUE;
 }
 
@@ -211,7 +211,7 @@ SoGLLazyElement::lazyMatches(uint32_t /*checkGLFlag*/, uint32_t /*checkIVFlag*/,
 SoGLLazyElement *
 SoGLLazyElement::copyLazyMatchInfo(SoState* /*state*/)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return NULL;
 }
 
@@ -221,7 +221,7 @@ void
 SoGLLazyElement::getCopyGL(SoGLLazyElement * /*cacheLazyElement*/,
                            SoGLLazyElement::GLLazyState & /*cacheGLState*/)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 //! FIXME: write doc
@@ -230,7 +230,7 @@ void
 SoGLLazyElement::copyBackGL(SoGLLazyElement * /*cacheLazyElement*/,
                             SoGLLazyElement::GLLazyState & /*cacheGLState*/)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 //! FIXME: write doc
@@ -242,5 +242,5 @@ SoGLLazyElement::mergeCacheInfo(SoGLRenderCache * /*childCache*/,
                                 uint32_t /*checkIVFlag*/,
                                 uint32_t /*checkGLFlag*/)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }

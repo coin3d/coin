@@ -51,7 +51,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <ctype.h>
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -1363,12 +1363,12 @@ SoBaseKit::getCatalogInstances(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  Not supported in Coin.
 */
 void
 SoBaseKit::catalogError(void)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!

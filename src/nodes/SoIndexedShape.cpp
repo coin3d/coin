@@ -29,7 +29,7 @@
 
 #include <Inventor/nodes/SoIndexedShape.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
@@ -174,7 +174,7 @@ SoIndexedShape::setupIndices(const int /* numParts */,
                              const SbBool /* needNormals */,
                              const SbBool /* needTexCoords */)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
@@ -184,7 +184,7 @@ SoIndexedShape::setupIndices(const int /* numParts */,
 const int32_t *
 SoIndexedShape::getNormalIndices()
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return NULL;
 }
 
@@ -195,7 +195,7 @@ SoIndexedShape::getNormalIndices()
 const int32_t *
 SoIndexedShape::getColorIndices()
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return NULL;
 }
 
@@ -206,7 +206,7 @@ SoIndexedShape::getColorIndices()
 const int32_t *
 SoIndexedShape::getTexCoordIndices()
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return NULL;
 }
 

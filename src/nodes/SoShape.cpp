@@ -36,7 +36,7 @@
 
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -64,14 +64,17 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 #include <string.h>
-
-#include <Inventor/elements/SoComplexityElement.h>
 
 /*!
   \enum SoShape::TriangleShape
@@ -117,7 +120,7 @@ public:
     this->shape = shape;
     this->action = action;
     this->shapetype = shapetype;
-    // this is a trick. Only one of these will be used, and the
+    // this is a hack. Only one of these will be used, and the
     // other one is an illegal cast.
     this->faceDetail = (SoFaceDetail *)detail;
     this->lineDetail = (SoLineDetail *)detail;
@@ -1023,23 +1026,22 @@ SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 /*!
-  \internal
+  Not implemented in Coin. Should probably have been private in TGS Inventor.
  */
 float
 SoShape::getDecimatedComplexity(SoState * state, float complexity)
 {
-  COIN_STUB();
-  // FIXME: get real value from decimation state element. 20000312 mortene.
+  COIN_OBSOLETED();
   return 1.0f * complexity;
 }
 
 /*!
-  \internal
- */
+  Not implemented in Coin. Should probably have been private in OIV.
+*/
 void
 SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
 {
-  COIN_STUB(); // FIXME
+  COIN_OBSOLETED();
 }
 
 /*!

@@ -29,7 +29,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/misc/SoChildList.h>
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_OBSOLETED()
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -332,13 +332,13 @@ SoSwitch::write(SoWriteAction * action)
 {
   // to keep child numbering, always write out all children for a
   // switch
-  
+
   SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
     // Only increase number of writereferences to the top level node
     // in a tree which is used multiple times.
-    if (!this->hasMultipleWriteRefs()) this->getChildren()->traverse(action); 
+    if (!this->hasMultipleWriteRefs()) this->getChildren()->traverse(action);
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;
@@ -360,10 +360,10 @@ SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 }
 
 /*!
-  FIXME: write doc
+  Not supported in Coin. Should probably have been private in OIV.
 */
 void
 SoSwitch::traverseChildren(SoAction * action)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
