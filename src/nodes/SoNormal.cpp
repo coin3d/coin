@@ -42,6 +42,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
 
 /*!
   \var SoMFVec3f SoNormal::vector
@@ -97,8 +98,15 @@ SoNormal::GLRender(SoGLRenderAction * action)
 void
 SoNormal::doAction(SoAction * action)
 {
-  SoNormalElement::set(action->getState(), this,
-                       this->vector.getNum(), this->vector.getValues(0));
+  SoState * state = action->getState();
+  if (!this->vector.isIgnored() &&
+      !SoOverrideElement::getNormalVectorOverride(state)) {
+    SoNormalElement::set(state, this,
+                         this->vector.getNum(), this->vector.getValues(0));
+    if (this->isOverride()) {
+      SoOverrideElement::setNormalVectorOverride(state, this, TRUE);
+    }
+  }
 }
 
 // Doc in superclass.
