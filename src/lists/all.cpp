@@ -35,4 +35,3 @@
 #include "SoPathList.cpp"
 #include "SoPickedPointList.cpp"
 #include "SoTypeList.cpp"
-#include "SoVRMLInterpOutputList.cpp"
