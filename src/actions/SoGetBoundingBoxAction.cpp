@@ -26,13 +26,22 @@
   \brief The SoGetBoundingBoxAction class calculates bounding boxes for nodes and subgraphs.
   \ingroup actions
 
+  If this action is applied to a path or scene graph root, it will
+  calculate the bounding box and the center point of the geometry
+  contained within the scene.
+
+  You don't have to apply an SoGetBoundingBoxAction to the \e root of
+  a scene. When using the action, you will get the bounding box of the
+  node you are applying it to and that node's sub-tree in the scene
+  graph (if any).
+
+  The calculated bounding box will be in the local coordinates of that
+  sub-tree. If applying it to a scene graph root node, the calculated
+  bounding box will be in global coordinates.
+
   The use of bounding boxes is ubiquitous within the Coin library. It
   is needed for the correct execution of and for performance
   enhancements during rendering, picking, caching, culling, etc.
-
-  Apply this action to a path or scene graph root to calculate the
-  bounding box and the center point of the geometry contained within
-  the scene.
 
 
   SoSeparator nodes are aggressively caching the results of bounding
