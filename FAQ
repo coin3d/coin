@@ -205,12 +205,14 @@ Q2.4:   I try to change the SoText2/SoText3 font, but nothing happens.
         Why, oh why?
 
 A:      The font support prior to Coin 2.1 was limited to a hardcoded font
-        for both Text2 and Text3. Later versions of Coin has full
-        TrueType support for both 2D and 3D text.
+        for both Text2 and Text3. TrueType 2D fonts support were
+        implemented in Coin 2.1 and 3D fonts in Coin 2.2.
 
-        The font system supports the FreeType library. Native
-        Win32 calls are also supported when running on a Windows
-        platform.
+        On Windows platforms, TrueType fonts are imported by utilizing
+        the native support for this in the operating system. No such
+        native TrueType support exists on UNIX and UNIX-like systems,
+        so these platforms will use the FreeType library
+        <URL:http://www.freetype.org>.
 
         If your requested font could not be found, try to set the
         environment variable COIN_DEBUG_FONTSUPPORT to 1. Extensive
@@ -220,13 +222,14 @@ A:      The font support prior to Coin 2.1 was limited to a hardcoded font
         looked.
 
         When using the FreeType library, requested fonts will first be
-        searched for in the local working directory. The path
-        specified by the COIN_FONT_PATH environment variable will then
-        be searched. It is not possible to explicitly specify a font
-        file when using the Win32 library as all font handeling must be done
-        through the operating system. 
+        searched for in the working directory. The path specified by
+        the COIN_FONT_PATH environment variable will then be
+        searched. It is not possible to explicitly specify a font file
+        when using the Win32 library as all font handeling must be
+        done through the operating system.
 
         For more information, please read the API documention on SoFont.
+        <URL:http://doc.coin3d.org/Coin/classSoFont.html>
 
 
 Q2.5:   Where does the SoGuiExamples module install the programs?
