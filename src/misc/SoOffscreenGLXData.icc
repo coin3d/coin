@@ -39,6 +39,7 @@ public:
   virtual void setBufferSize(const SbVec2s & size);
   virtual SbBool makeContextCurrent(uint32_t contextid);
   virtual unsigned char * getBuffer(void);
+  static SbVec2f getResolution(void);
 
   virtual void postRender(void);
   static SbVec2s getMaxDimensions(void);
@@ -120,6 +121,26 @@ SoOffscreenGLXData::~SoOffscreenGLXData()
   if (this->display) XCloseDisplay(this->display);
   
   delete[] this->buffer;
+}
+
+// Pixels-pr-mm.
+SbVec2f
+SoOffscreenGLXData::getResolution(void)
+{
+  Display * d = XOpenDisplay(NULL);
+  if (!d) {
+    SoDebugError::postWarning("SoOffscreenGLXData::getResolution",
+                              "Couldn't connect to X11 DISPLAY.");
+    return SbVec2f(72.0f / 25.4f, 72.0f / 25.4f); // fall back to 72dpi
+  }
+
+  int s = DefaultScreen(d);
+  SbVec2f r(float(DisplayWidth(d, s)) /  float(DisplayWidthMM(d, s)),
+            float(DisplayHeight(d, s)) / float(DisplayHeightMM(d, s)));
+
+  XCloseDisplay(d);
+
+  return r;
 }
 
 // NOTE: the strategy applied here for iterating through OpenGL

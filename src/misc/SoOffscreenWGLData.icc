@@ -30,6 +30,7 @@ public:
   SoOffscreenWGLData(void);
   virtual ~SoOffscreenWGLData(); 
 
+  static SbVec2f getResolution(void);
   virtual void setBufferSize(const SbVec2s & size);
 
   virtual SbBool makeContextCurrent(uint32_t contextid);
@@ -67,6 +68,15 @@ SoOffscreenWGLData::~SoOffscreenWGLData()
 {
   this->cleanupWGL();
   delete[] this->buffer;
+}
+
+// Pixels-pr-mm.
+SbVec2f
+SoOffscreenWGLData::getResolution(void)
+{
+  // FIXME: use Win32 API method GetDeviceCaps(). 20020524 mortene.
+  COIN_STUB();
+  return SbVec2f(72.0f / 25.4f, 72.0f / 25.4f); // fall back to 72dpi
 }
 
 void 

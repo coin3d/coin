@@ -250,10 +250,20 @@ SoOffscreenRenderer::~SoOffscreenRenderer()
 float
 SoOffscreenRenderer::getScreenPixelsPerInch(void)
 {
-  // FIXME: implement me, goddammit. (Ugly, as we need X11-, Win32-
-  // and MacOSX-specific code.) 20020308 mortene.
-  COIN_STUB();
-  return 72.0f; // default value
+#ifdef HAVE_GLX
+  SbVec2f pixmmres = SoOffscreenGLXData::getResolution();
+#elif defined(HAVE_WGL)
+  SbVec2f pixmmres = SoOffscreenWGLData::getResolution();
+#elif defined(HAVE_AGL)
+  SbVec2f pixmmres = SoOffscreenAGLData::getResolution();
+#endif // HAVE_AGL
+
+  // The API-signature of this method is not what it should be: it
+  // assumes the same resolution in the vertical and horizontal
+  // directions.
+  float pixprmm = (pixmmres[0] + pixmmres[1]) / 2.0f; // find average
+
+  return pixprmm * 25.4f; // an inch is 25.4 mm.
 }
 
 /*!
@@ -956,8 +966,8 @@ SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
   See SoOffscreenRenderer::isWriteSupported() for information about
   which file formats you can expect to be present.
 
-  Note that the two built-in export formats (SGI RGB and Adobe
-  Postscript) are not counted.
+  Note that the two built-in export formats, SGI RGB and Adobe
+  Postscript, are not counted.
 
   This method is an extension versus the original SGI Open Inventor
   API.

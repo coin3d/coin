@@ -33,6 +33,7 @@ public:
   SoOffscreenAGLData(void);
   virtual ~SoOffscreenAGLData();
 
+  static SbVec2f getResolution(void);
   virtual void setBufferSize(const SbVec2s & size);
   virtual SbBool makeContextCurrent(uint32_t contextid);
   virtual unsigned char * getBuffer(void);
@@ -89,6 +90,14 @@ SoOffscreenAGLData::~SoOffscreenAGLData()
   if (this->context) aglDestroyContext(context);
   if (this->pixformat) aglDestroyPixelFormat(pixformat);
   delete[] this->buffer;
+}
+
+SbVec2f
+SoOffscreenAGLData::getResolution(void)
+{
+  // FIXME: implement proper check. 20020524 mortene.
+  COIN_STUB();
+  return SbVec2f(72.0f / 25.4f, 72.0f / 25.4f); // fall back to 72dpi
 }
 
 void 
