@@ -183,3 +183,14 @@ STUFF TO FIX IN COIN
   All this should _absolutely_ be done before we close up on the v2
   release, as after v2 it will likely be a while until we get the
   chance to do larger API / design changes again.
+
+
+* Font specification
+  2001-11-28  Morten Eriksen  <mortene@sim.no>
+
+  There's really no good mechanism in the API for setting detailed,
+  OS-portable font information. The API of the SoFont and SoFontStyle
+  nodes is pretty lousy.
+
+  We should re-design and layer the old API / classes on top of our
+  new and improved design.
