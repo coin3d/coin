@@ -302,6 +302,23 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
 
 #endif // !X_DISPLAY_MISSING
 
+static void
+string_dimensions(void * fontdata, const char * s,
+                  float & strwidth, float & strheight)
+{
+#if !defined(X_DISPLAY_MISSING)
+  int direction, ascent, descent;
+  XCharStruct cs;
+  XTextExtents((XFontStruct *)fontdata, s, strlen(s),
+               &direction, &ascent, &descent, &cs);
+  strwidth = cs.width;
+  strheight = ascent + descent;
+  return;
+#endif // !X_DISPLAY_MISSING
+
+  strwidth = strheight = 0.0f;
+}
+
 
 extern unsigned char coin_default2dfont[][12];
 
@@ -312,17 +329,16 @@ void
 SoText2::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
-#if !defined(X_DISPLAY_MISSING)
 
   SoState * state = action->getState();
-  XFontStruct * fontstruct;
-
-#if 0 // FIXME: crashes on freya.sim.no? 20000905 mortene.
-  unsigned int fontlistbase = getGLList(action, fontstruct);
-#else
-  // FIXME: hack. 20000905 skei.
+  // Default to no available GL displaylist with font bitmaps.
   unsigned int fontlistbase = NOT_AVAILABLE;
-#endif
+  void * fontdata = NULL;
+
+#if !defined(X_DISPLAY_MISSING)
+  // FIXME: crashes on freya.sim.no? 20000905 mortene.
+//    fontlistbase = getGLList(action, (XFontStruct *)fontdata);
+#endif // !X_DISPLAY_MISSING
 
   if (fontlistbase != NOT_AVAILABLE) {
     SoMaterialBundle mb(action);
@@ -377,10 +393,8 @@ SoText2::GLRender(SoGLRenderAction * action)
       const char * s = this->string[i].getString();
 
       // Find text field dimensions.
-      int direction, ascent, descent;
-      XCharStruct cs;
-      XTextExtents(fontstruct, s, strlen(s),
-                   &direction, &ascent, &descent, &cs);
+      float strwidth, strheight;
+      string_dimensions(fontdata, s, strwidth, strheight);
 
       float xpos = 0.0; // init unnecessary, but kills a compiler warning.
       switch (this->justification.getValue()) {
@@ -388,10 +402,10 @@ SoText2::GLRender(SoGLRenderAction * action)
         xpos = nilpoint[0];
         break;
       case SoText2::RIGHT:
-        xpos = nilpoint[0] - cs.width;
+        xpos = nilpoint[0] - strwidth;
         break;
       case SoText2::CENTER:
-        xpos = nilpoint[0] - cs.width/2;
+        xpos = nilpoint[0] - strwidth/2;
         break;
 #if COIN_DEBUG
       default:
@@ -401,10 +415,9 @@ SoText2::GLRender(SoGLRenderAction * action)
 #endif // COIN_DEBUG
       }
 
-      float textheight = float(ascent + descent);
-      glRasterPos3f(xpos, linepos - textheight/2.0f, -nilpoint[2]);
+      glRasterPos3f(xpos, linepos - strheight/2.0f, -nilpoint[2]);
       glCallLists(strlen(s), GL_UNSIGNED_BYTE, (GLubyte *)s);
-      linepos -= textheight * this->spacing.getValue();
+      linepos -= strheight * this->spacing.getValue();
     }
 
     // Pop old GL state.
@@ -478,8 +491,6 @@ SoText2::GLRender(SoGLRenderAction * action)
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
   }
-
-#endif // !X_DISPLAY_MISSING
 }
 
 // **************************************************************************
