@@ -146,20 +146,28 @@ SoTextureCoordinatePlane::handleTexgen(void *data)
   SoTextureCoordinatePlane *thisp = (SoTextureCoordinatePlane*)data;
   glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
   glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+  glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+  glTexGeni(GL_Q, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 
   float plane[4];
   plane[3] = 0.0f;
-  const SbVec3f &s = thisp->directionS.getValue();
+  const SbVec3f & s = thisp->directionS.getValue();
   plane[0] = s[0];
   plane[1] = s[1];
   plane[2] = s[2];
   glTexGenfv(GL_S, GL_OBJECT_PLANE, plane);
-  const SbVec3f &t = thisp->directionT.getValue();
+  const SbVec3f & t = thisp->directionT.getValue();
   plane[0] = t[0];
   plane[1] = t[1];
   plane[2] = t[2];
   glTexGenfv(GL_T, GL_OBJECT_PLANE, plane);
 
-  glEnable(GL_TEXTURE_GEN_S);
-  glEnable(GL_TEXTURE_GEN_T);
+  // supply dummy plane for R and Q so that texture generation works
+  // properly
+  plane[0] = 0.0f;
+  plane[1] = 0.0f;
+  plane[2] = 0.0f;
+  plane[3] = 1.0f;
+  glTexGenfv(GL_R, GL_OBJECT_PLANE, plane);
+  glTexGenfv(GL_Q, GL_OBJECT_PLANE, plane);
 }
