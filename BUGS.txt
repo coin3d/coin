@@ -1613,3 +1613,15 @@
     20030404 mortene. Reported by Wouter Bosma.
 
 =====================================================================
+
+065 libtool.m4 needs upgrading
+
+    http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=190223
+
+    The current version we use doesn't support MIPS shared libs.
+    The current version of libtool.m4 contains some Coin-specific
+    tweaks though (Mac OS X stuff amongst others) that we need to
+    inspect and check if are still needed before replacing libtool.m4
+
+    20030424 larsa. Reported through Steve Robbins by Ryan Murray.
+
