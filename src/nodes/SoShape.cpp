@@ -280,11 +280,11 @@ public:
 	this->shape->invokeTriangleCallbacks(this->action,
 					     &vertsArray[0],
 					     &vertsArray[1],
-					     &vertsArray[2]);
+					     &vertsArray[3]);
 	this->shape->invokeTriangleCallbacks(this->action,
 					     &vertsArray[0],
-					     &vertsArray[2],
-					     &vertsArray[3]);
+					     &vertsArray[3],
+					     &vertsArray[2]);
 	this->vertsArray[0] = this->vertsArray[2];
 	this->vertsArray[1] = this->vertsArray[3];
 	this->counter = 2;
