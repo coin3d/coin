@@ -151,7 +151,7 @@ do
 ], [
       /* establish that type '$1' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      $1 variable = 0;
+      $sim_ac_type variable = 0;
 ], [
       AC_TRY_COMPILE([
 #include <stdio.h>
@@ -169,7 +169,7 @@ do
       int switchval = 0;
       /* trick compiler to abort with error if sizeof($1) equals $2 */
       switch ( switchval ) {
-      case sizeof($1): break;
+      case sizeof($sim_ac_type): break;
       case $2: break;
       }
 ], [

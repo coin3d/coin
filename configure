@@ -21096,7 +21096,7 @@ main ()
 
       /* establish that type 'int8_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      int8_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -21142,7 +21142,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(int8_t) equals 1 */
       switch ( switchval ) {
-      case sizeof(int8_t): break;
+      case sizeof($sim_ac_type): break;
       case 1: break;
       }
 
@@ -21243,7 +21243,7 @@ main ()
 
       /* establish that type 'uint8_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      uint8_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -21289,7 +21289,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(uint8_t) equals 1 */
       switch ( switchval ) {
-      case sizeof(uint8_t): break;
+      case sizeof($sim_ac_type): break;
       case 1: break;
       }
 
@@ -21391,7 +21391,7 @@ main ()
 
       /* establish that type 'int16_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      int16_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -21437,7 +21437,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(int16_t) equals 2 */
       switch ( switchval ) {
-      case sizeof(int16_t): break;
+      case sizeof($sim_ac_type): break;
       case 2: break;
       }
 
@@ -21538,7 +21538,7 @@ main ()
 
       /* establish that type 'uint16_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      uint16_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -21584,7 +21584,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(uint16_t) equals 2 */
       switch ( switchval ) {
-      case sizeof(uint16_t): break;
+      case sizeof($sim_ac_type): break;
       case 2: break;
       }
 
@@ -21686,7 +21686,7 @@ main ()
 
       /* establish that type 'int32_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      int32_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -21732,7 +21732,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(int32_t) equals 4 */
       switch ( switchval ) {
-      case sizeof(int32_t): break;
+      case sizeof($sim_ac_type): break;
       case 4: break;
       }
 
@@ -21833,7 +21833,7 @@ main ()
 
       /* establish that type 'uint32_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      uint32_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -21879,7 +21879,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(uint32_t) equals 4 */
       switch ( switchval ) {
-      case sizeof(uint32_t): break;
+      case sizeof($sim_ac_type): break;
       case 4: break;
       }
 
@@ -21981,7 +21981,7 @@ main ()
 
       /* establish that type 'int64_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      int64_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -22027,7 +22027,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(int64_t) equals 8 */
       switch ( switchval ) {
-      case sizeof(int64_t): break;
+      case sizeof($sim_ac_type): break;
       case 8: break;
       }
 
@@ -22127,7 +22127,7 @@ main ()
 
       /* establish that type 'uint64_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      uint64_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -22173,7 +22173,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(uint64_t) equals 8 */
       switch ( switchval ) {
-      case sizeof(uint64_t): break;
+      case sizeof($sim_ac_type): break;
       case 8: break;
       }
 
@@ -22274,7 +22274,7 @@ main ()
 
       /* establish that type 'intptr_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      intptr_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -22320,7 +22320,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(intptr_t) equals sizeof(void *) */
       switch ( switchval ) {
-      case sizeof(intptr_t): break;
+      case sizeof($sim_ac_type): break;
       case sizeof(void *): break;
       }
 
@@ -22420,7 +22420,7 @@ main ()
 
       /* establish that type 'uintptr_t' is actually usable before trying to
          make a failure-dependend compilation test case using it. */
-      uintptr_t variable = 0;
+      $sim_ac_type variable = 0;
 
   ;
   return 0;
@@ -22466,7 +22466,7 @@ main ()
       int switchval = 0;
       /* trick compiler to abort with error if sizeof(uintptr_t) equals sizeof(void *) */
       switch ( switchval ) {
-      case sizeof(uintptr_t): break;
+      case sizeof($sim_ac_type): break;
       case sizeof(void *): break;
       }
 
