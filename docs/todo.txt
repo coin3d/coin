@@ -960,6 +960,69 @@ STUFF TO FIX IN COIN
     be made available through an SoReorganizeAction.
 
 
+040 Add built-in version numbers to win32 DLLs.
+    2003-09-11 Barbara Langmüller <barbara@sim.no>
+    
+    win32 DLLs should have built-in version tags to be able to extract
+    from which minor version the DLL was built from to avoid possible
+    incompatibility issues.
+    
+    Version information is stored in resource files (.res)
+    and is (as the source code) compiled and linked to the DLL.
+ 
+    How to set it up manually in Visual Studio:
+    
+    1. open the workspace file from which you will build the DLL
+    2. File - new - resource script
+    3. In the workspace panel there is now a new tab 'ResourceView',
+       open it
+    4. Right click its entry and choose 'insert'
+    5. Choose 'Version' and click 'New'
+    6. Build the project and you will get a DLL with version information
+    
+    A resource file typically looks like this (not MSVC generated):
+    ------------ begin resource file -------------------
+    1 VERSIONINFO
+    FILEVERSION 1,0,0,1
+    PRODUCTVERSION 1,0,0,1
+    FILEOS 0x40004
+    FILETYPE 0x2
+    {
+    BLOCK "StringFileInfo"
+    {
+    	BLOCK "041404b0"
+    	{
+    		VALUE "Comments", ""
+    		VALUE "CompanyName", "Systems in Motion AS"
+    		VALUE "FileDescription", "coin2d"
+    		VALUE "FileVersion", "1, 0, 0, 1"
+    		VALUE "InternalName", "coin2d"
+    		VALUE "LegalCopyright", "Copyright © 2003"
+    		VALUE "LegalTrademarks", ""
+    		VALUE "OriginalFilename", "coin2d.dll"
+    		VALUE "PrivateBuild", ""
+    		VALUE "ProductName", "Systems in Motion AS coin2d"
+    		VALUE "ProductVersion", "1, 0, 0, 1"
+    		VALUE "SpecialBuild", ""
+    	}
+    }
+    
+    BLOCK "VarFileInfo"
+    {
+    	VALUE "Translation", 0x0414 0x04B0
+    }
+    }
+    ------------ end resource file -------------------
+    
+    A free utility to view and edit DLL resources can be found at
+    http://www.users.on.net/johnson/resourcehacker/
+    
+    As for the integration with the NSI installer, I would like to
+    point to the NSI documentation (Function GetDllVersion) and the
+    following interesting post on the NSI forum on winamp.com:
+    <a href="http://forums.winamp.com/showthread.php?s=&
+    threadid=113541&highlight=GetDllVersion" />
+
 
 OTHER COIN-RELATED STUFF TO FIX
 ===============================
