@@ -33,27 +33,84 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/gl_glx.h>
 
-static void * glxglue_display = NULL;
+#ifndef HAVE_GLX
+
+void glxglue_init(cc_glglue * w) {
+  w->glx.version.major = -1;
+  w->glx.version.minor = 0;
+  w->glx.isdirect = 1;
+
+  w->glx.serverversion = NULL;
+  w->glx.servervendor = NULL;
+  w->glx.serverextensions = NULL;
+  w->glx.clientversion = NULL;
+  w->glx.clientvendor = NULL;
+  w->glx.clientextensions = NULL;
+  w->glx.glxextensions = NULL;
+}
+
+void * glxglue_getprocaddress(const char * fname) { return NULL; }
+int glxglue_ext_supported(const cc_glglue * w, const char * extension) { return 0; }
+
+void * glxglue_context_create_offscreen(unsigned int width, unsigned int height) { assert(FALSE); }
+SbBool glxglue_context_make_current(const cc_glglue * glw, void * ctx) { assert(FALSE); return FALSE; }
+void glxglue_context_reinstate_previous(void * ctx) { assert(FALSE); }
+void glxglue_context_destruct(void * ctx) { assert(FALSE); }
+
+#else /* HAVE_GLX */
+
 static int glxglue_screen = -1;
 typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESS)(const GLubyte *);
 static COIN_PFNGLXGETPROCADDRESS glxglue_glXGetProcAddress = NULL;
 static SbBool tried_bind_glXGetProcAddress = FALSE;
 
+/* This function works in a "Singleton-like" manner. */
+static Display *
+glxglue_get_display(void)
+{
+  /* The Display resource is never deallocated explicitly (but of
+   * course implicitly by the system on application close down). This
+   * to work around some strange problems with the NVidia-driver 29.60
+   * on XFree86 v4 when using XCloseDisplay() -- like doublebuffered
+   * visuals coming up just blank.
+   *
+   *   XCloseDisplay(glxglue_display);
+   */
+
+  static SbBool failed = FALSE;
+  static Display * glxglue_display = NULL;
+  if ((glxglue_display == NULL) && !failed) {
+    /* FIXME: should use the real display-setting. :-(  20020926 mortene. */
+    glxglue_display = XOpenDisplay(NULL);
+    if (glxglue_display == NULL) {
+      cc_debugerror_post("glxglue_init",
+                         "Couldn't open NULL display.");
+      failed = TRUE;
+    }
+    else {
+      /* FIXME: should use the real screen number. :-(  20020926 mortene. */
+      glxglue_screen = XDefaultScreen(glxglue_display);
+
+      if (coin_glglue_debug()) {
+        cc_debugerror_postinfo("glxglue_get_display", "got Display*==%p",
+                               glxglue_display);
+      }
+    }
+  }
+  return glxglue_display;
+}
 
 static void
 glxglue_set_version(int * major, int * minor)
 {
-#ifdef HAVE_GLX
   Bool ok = False;
-#endif /* HAVE_GLX */
 
   *major = -1;
   *minor = 0;
 
-  if (glxglue_display == NULL) { return; }
+  if (glxglue_get_display() == NULL) { return; }
 
-#ifdef HAVE_GLX
-  ok = glXQueryVersion((Display *)glxglue_display, major, minor);
+  ok = glXQueryVersion(glxglue_get_display(), major, minor);
 
   if (!ok) {
     cc_debugerror_post("glxglue_version",
@@ -64,7 +121,6 @@ glxglue_set_version(int * major, int * minor)
     cc_debugerror_postinfo("glxglue_version",
                            "GLX version: %d.%d", *major, *minor);
   }
-#endif /* HAVE_GLX */
 }
 
 void *
@@ -117,7 +173,6 @@ glxglue_getprocaddress(const char * fname)
 static SbBool
 glxglue_isdirect(cc_glglue * w)
 {
-#ifdef HAVE_GLX
   GLXContext ctx = glXGetCurrentContext();
 
   if (!ctx) {
@@ -126,11 +181,8 @@ glxglue_isdirect(cc_glglue * w)
     return TRUE;
   }
 
-  if (!glxglue_display) return TRUE;
-  return glXIsDirect((Display *)glxglue_display, ctx) ? TRUE : FALSE;
-#else /* ! HAVE_GLX */
-  return TRUE;
-#endif /* ! HAVE_GLX */
+  if (!glxglue_get_display()) return TRUE;
+  return glXIsDirect(glxglue_get_display(), ctx) ? TRUE : FALSE;
 }
 
 int
@@ -144,30 +196,6 @@ glxglue_ext_supported(const cc_glglue * w, const char * extension)
 void
 glxglue_init(cc_glglue * w)
 {
-#ifdef HAVE_GLX
-  if (glxglue_display == NULL) {
-    /* FIXME: should use the real display-setting. :-(  20020926 mortene. */
-    glxglue_display = XOpenDisplay(NULL);
-    if (glxglue_display == NULL) {
-      cc_debugerror_post("glxglue_init",
-                         "Couldn't open NULL display.");
-    }
-    else {
-      /* FIXME: should use the real screen number. :-(  20020926 mortene. */
-      glxglue_screen = XDefaultScreen((Display *)glxglue_display);
-    }
-  }
-#endif /* HAVE_GLX */
-
-  /* The Display resource is never deallocated explicitly (but of
-   * course implicitly by the system on application close down). This
-   * to work around some strange problems with the NVidia-driver 29.60
-   * on XFree86 v4 when using XCloseDisplay() -- like doublebuffered
-   * visuals coming up just blank.
-   *
-   *   XCloseDisplay((Display *)glxglue_display);
-   */
-
   glxglue_set_version(&w->glx.version.major, &w->glx.version.minor);
   w->glx.isdirect = glxglue_isdirect(w);
 
@@ -179,15 +207,15 @@ glxglue_init(cc_glglue * w)
   w->glx.clientvendor = NULL;
   w->glx.clientextensions = NULL;
   w->glx.glxextensions = NULL;
-#ifdef HAVE_GLX
-  if (glxglue_display) {
+
+  if (glxglue_get_display()) {
 
     /* Note: be aware that glXQueryServerString(),
        glXGetClientString() and glXQueryExtensionsString() are all
        from GLX 1.1 -- just in case there are ever compile-time,
        link-time or run-time problems with this.  */
 
-    Display * d = (Display *)glxglue_display;
+    Display * d = glxglue_get_display();
     w->glx.serverversion = glXQueryServerString(d, glxglue_screen, GLX_VERSION);
     w->glx.servervendor = glXQueryServerString(d, glxglue_screen, GLX_VENDOR);
     w->glx.serverextensions = glXQueryServerString(d, glxglue_screen, GLX_EXTENSIONS);
@@ -224,18 +252,10 @@ glxglue_init(cc_glglue * w)
                              w->glx.glxextensions);
     }
   }
-#endif /* HAVE_GLX */
 }
 
 
 /*** GLX offscreen contexts **************************************************/
-
-#ifndef HAVE_GLX
-void * glxglue_context_create_offscreen(unsigned int width, unsigned int height) { assert(FALSE); }
-SbBool glxglue_context_make_current(const cc_glglue * glw, void * ctx) { assert(FALSE); return FALSE; }
-void glxglue_context_reinstate_previous(void * ctx) { assert(FALSE); }
-void glxglue_context_destruct(void * ctx) { assert(FALSE); }
-#else /* HAVE_GLX */
 
 struct glxglue_contextdata {
   XVisualInfo * visinfo;
@@ -265,9 +285,9 @@ glxglue_contextdata_init(struct glxglue_contextdata * c)
 static void
 glxglue_contextdata_cleanup(struct glxglue_contextdata * c)
 {
-  if (c->glxcontext) glXDestroyContext(glxglue_display, c->glxcontext);
-  if (c->glxpixmap) glXDestroyGLXPixmap(glxglue_display, c->glxpixmap);
-  if (c->pixmap) XFreePixmap(glxglue_display, c->pixmap);
+  if (c->glxcontext) glXDestroyContext(glxglue_get_display(), c->glxcontext);
+  if (c->glxpixmap) glXDestroyGLXPixmap(glxglue_get_display(), c->glxpixmap);
+  if (c->pixmap) XFreePixmap(glxglue_get_display(), c->pixmap);
   if (c->visinfo) XFree(c->visinfo);
 }
 
@@ -317,12 +337,12 @@ glxglue_find_gl_visual(void)
   int attrs[ARRAYSIZE];
   XVisualInfo * visinfo = NULL;
 
-  if (glxglue_display == NULL) { return NULL; }
+  if (glxglue_get_display() == NULL) { return NULL; }
 
   while (visinfo == NULL && trynum < 8) {
     int arraysize = glxglue_build_GL_attrs(attrs, trynum);
     assert(arraysize < ARRAYSIZE);
-    visinfo = glXChooseVisual(glxglue_display, DefaultScreen(glxglue_display),
+    visinfo = glXChooseVisual(glxglue_get_display(), DefaultScreen(glxglue_get_display()),
                               attrs);
     trynum++;
   }
@@ -361,7 +381,7 @@ glxglue_context_create_offscreen(unsigned int width, unsigned int height)
     
      Rendering to a GLX pixmap is of course exactly what we want to be
      able to do. */
-  context.glxcontext = glXCreateContext(glxglue_display, context.visinfo, 0,
+  context.glxcontext = glXCreateContext(glxglue_get_display(), context.visinfo, 0,
                                         False);
   if (context.glxcontext == NULL) {
     cc_debugerror_postwarning("glxglue_create_offscreen_context",
@@ -376,8 +396,8 @@ glxglue_context_create_offscreen(unsigned int width, unsigned int height)
                            context.glxcontext);
   }
 
-  context.pixmap = XCreatePixmap(glxglue_display,
-                                 DefaultRootWindow(glxglue_display),
+  context.pixmap = XCreatePixmap(glxglue_get_display(),
+                                 DefaultRootWindow(glxglue_get_display()),
                                  width, height, context.visinfo->depth);
   if (context.pixmap == 0) {
     cc_debugerror_postwarning("glxglue_create_offscreen_context",
@@ -387,7 +407,7 @@ glxglue_context_create_offscreen(unsigned int width, unsigned int height)
     return NULL;
   }
 
-  context.glxpixmap = glXCreateGLXPixmap(glxglue_display,
+  context.glxpixmap = glXCreateGLXPixmap(glxglue_get_display(),
                                          context.visinfo, context.pixmap);
   if (context.glxpixmap == 0) {
     cc_debugerror_postwarning("glxglue_create_offscreen_context",
@@ -402,13 +422,17 @@ glxglue_context_create_offscreen(unsigned int width, unsigned int height)
 }
 
 SbBool
-glxglue_context_make_current(const cc_glglue * glw, void * ctx)
+glxglue_context_make_current(void * ctx)
 {
   struct glxglue_contextdata * context = (struct glxglue_contextdata *)ctx;
   Bool r;
 
   context->storedcontext = glXGetCurrentContext();
   if (context->storedcontext) {
+    /* Must know for sure that there's a current context before
+       instantiating a glglue, or we'll get a crash due to the OpenGL
+       calls within GLWrapper(). */
+    const cc_glglue * glw = cc_glglue_instance_from_context_ptr(context->storedcontext);
     context->storeddisplay = (Display *)cc_glglue_glXGetCurrentDisplay(glw);
     context->storeddrawable = glXGetCurrentDrawable();
   }
@@ -422,7 +446,7 @@ glxglue_context_make_current(const cc_glglue * glw, void * ctx)
                            context->storeddisplay);
   }
 
-  r = glXMakeCurrent(glxglue_display, context->glxpixmap, context->glxcontext);
+  r = glXMakeCurrent(glxglue_get_display(), context->glxpixmap, context->glxcontext);
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_make_context_current",
@@ -443,7 +467,7 @@ glxglue_context_reinstate_previous(void * ctx)
                            "releasing context (glxMakeCurrent(d, None, NULL))");
   }
 
-  (void)glXMakeCurrent(glxglue_display, None, NULL); /* release */
+  (void)glXMakeCurrent(glxglue_get_display(), None, NULL); /* release */
     
   /* The previous context is stored and reset to make it possible to
      use an SoOffscreenRenderer from for instance an SoCallback node
@@ -484,4 +508,5 @@ glxglue_context_destruct(void * ctx)
   glxglue_contextdata_cleanup(context);
   free(context);
 }
+
 #endif /* HAVE_GLX */
