@@ -223,8 +223,6 @@
 #include <AL/altypes.h>
 #endif
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoVRMLSoundP
 {
 public:
@@ -281,7 +279,6 @@ public:
 #undef ITHIS
 #define ITHIS this->ifacep
 
-#endif // !DOXYGEN_SKIP_THIS
 
 // fixme 20021006 thammer: should really do individual synchronization instead of global
 SbMutex *SoVRMLSoundP::syncmutex = NULL;
@@ -354,7 +351,7 @@ SoVRMLSound::SoVRMLSound(void)
   THIS->audioBuffer = NULL;
 
   this->setBufferingProperties(SoVRMLSoundP::defaultBufferLength, SoVRMLSoundP::defaultNumBuffers,
-    SoVRMLSoundP::defaultSleepTime);
+                               SoVRMLSoundP::defaultSleepTime);
 }
 
 /*!
@@ -419,12 +416,11 @@ void SoVRMLSound::getBufferingProperties(int &bufferLength, int &numBuffers, SbT
 }
 
 #ifdef HAVE_SOUND
-#ifndef DOXYGEN_SKIP_THIS
-inline void SbVec3f2ALfloat3(ALfloat *dest, const SbVec3f &source)
+static inline
+void SbVec3f2ALfloat3(ALfloat *dest, const SbVec3f &source)
 {
   source.getValue(dest[0], dest[1], dest[2]);
 }
-#endif // DOXYGEN_SKIP_THIS
 #endif // HAVE_SOUND
 
 void SoVRMLSound::audioRender(SoAudioRenderAction *action)
@@ -517,9 +513,8 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 #endif // HAVE_SOUND
 }
 
-#ifndef DOXYGEN_SKIP_THIS
-
-void mono2stereo(short int *buffer, int length) 
+static void
+mono2stereo(short int *buffer, int length) 
 {
   // assumes that buffersize = length * sizeof(short int) * 2
   for (int i=length-1; i>=0; i--) {
@@ -527,7 +522,8 @@ void mono2stereo(short int *buffer, int length)
   }
 }
 
-void stereo2mono(short int *buffer, int length) 
+static void
+stereo2mono(short int *buffer, int length) 
 {
   // assumes that buffersize = length * sizeof(short int) * 2
   for (int i=0; i<length; i++) {
@@ -536,7 +532,8 @@ void stereo2mono(short int *buffer, int length)
 }
 
 #ifdef HAVE_SOUND
-ALenum getALSampleFormat(int channels, int bitspersample)
+static ALenum
+getALSampleFormat(int channels, int bitspersample)
 {
   ALenum  alformat = 0;;
 
@@ -1072,5 +1069,3 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
   }
 
 }
-
-#endif // !DOXYGEN_SKIP_THIN
