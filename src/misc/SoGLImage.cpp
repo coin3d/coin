@@ -1041,7 +1041,7 @@ SoGLImageP::unrefOldDL(SoState * state, const uint32_t maxage)
 
   while (i < n) {
     dldata & data = this->dlists[i];
-    if (data.age > maxage) {
+    if (data.age >= maxage) {
 #if COIN_DEBUG && 0 // debug
       SoDebugError::postInfo("SoGLImageP::unrefOldDL",
                              "DL killed because of old age: %p",
@@ -1184,6 +1184,25 @@ SoGLImage::endFrame(SoState * state)
       img->pimpl->unrefOldDL(state, glimage_maxage);
     }
   }
+}
+
+/*!
+  Free all GL images currently used. This can be used to help the
+  operating system and/or OpenGL driver's resource handling.  If you
+  know you're not going to render for a while, maybe you're switching
+  to a different application or something, calling this method could
+  be a good idea since it will release all the texture memory used by
+  your application.
+*/
+void 
+SoGLImage::freeAllImages(SoState * state)
+{
+  int oldmax = glimage_maxage;
+  glimage_maxage = 0;
+  // call begin/end with maxage 0 to free all images
+  SoGLImage::beginFrame(state);
+  SoGLImage::endFrame(state);
+  glimage_maxage = oldmax;
 }
 
 /*!

@@ -23,6 +23,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SoType.h>
+#include <stddef.h>
 
 class SoGLDisplayList;
 class SoState;
@@ -42,7 +43,7 @@ public:
     CLAMP,
     CLAMP_TO_EDGE
   };
-  
+
   void applyQuality(SoGLDisplayList * dl, const float quality);
   virtual void setData(const unsigned char * bytes,
                        const SbVec2s size,
@@ -67,7 +68,7 @@ public:
     FORCE_TRANSPARENCY_FALSE  = 0x0040,
     FORCE_ALPHA_TEST_TRUE     = 0x0080,
     FORCE_ALPHA_TEST_FALSE    = 0x0100,
-    
+
     INVINCIBLE                = 0x0200, // never die of old age
     // use quality value to decide mipmap, filtering and scaling. This
     // is the default.
@@ -102,6 +103,7 @@ public:
   static void tagImage(SoState * state, SoGLImage * image);
   static void endFrame(SoState * state);
   static void setDisplayListMaxAge(const uint32_t maxage);
+  static void freeAllImages(SoState * state = NULL);
 
 private:
   static void registerImage(SoGLImage * image);
