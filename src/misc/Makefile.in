@@ -181,7 +181,8 @@ RegularSources = \
 	default3dfont.cpp \
 	default2dfont.cpp \
 	SoAudioDevice.cpp \
-	AudioTools.cpp
+	AudioTools.cpp \
+        SoFontLib.cpp
 
 LinkHackSources = \
 	all-cpp.cpp \
@@ -227,7 +228,8 @@ PrivateHeaders = \
 	SoOffscreenAGLData.icc \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc \
-	cppmangle.icc
+	cppmangle.icc \
+	../../include/Inventor/misc/SoFontLib.h
 
 
 
@@ -326,7 +328,8 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	default3dfont.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoAudioDevice.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	AudioTools.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	AudioTools.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoFontLib.$(OBJEXT)
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -352,7 +355,7 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo SoAudioDevice.lo \
-@HACKING_COMPACT_BUILD_FALSE@	AudioTools.lo
+@HACKING_COMPACT_BUILD_FALSE@	AudioTools.lo SoFontLib.lo
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
 libmisc@SUFFIX@LINKHACK_la_LIBADD =
@@ -377,7 +380,7 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo SoAudioDevice.lo \
-@HACKING_COMPACT_BUILD_FALSE@	AudioTools.lo
+@HACKING_COMPACT_BUILD_FALSE@	AudioTools.lo SoFontLib.lo
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -393,7 +396,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoChildList.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoContextHandler.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoContextHandler.Po $(DEPDIR)/SoDB.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoDB.Po $(DEPDIR)/SoFullPath.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoDB.Po $(DEPDIR)/SoFontLib.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoFontLib.Po $(DEPDIR)/SoFullPath.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoFullPath.Po $(DEPDIR)/SoGL.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGL.Po $(DEPDIR)/SoGLBigImage.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLBigImage.Po $(DEPDIR)/SoGLImage.Plo \
@@ -534,6 +538,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoContextHandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoDB.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoDB.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFontLib.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFontLib.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFullPath.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFullPath.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGL.Plo@am__quote@

@@ -88,6 +88,12 @@
 /* define if the Mac OS X dyld can be used for runtime binding */
 #undef HAVE_DYLD_RUNTIME_BINDING
 
+/* define if you have the freetype library */
+#undef HAVE_FREETYPE
+
+/* define that the FreeType header is available */
+#undef HAVE_FREETYPE_H
+
 /* Define to use GetEnvironmentVariable() instead of getenv() */
 #undef HAVE_GETENVIRONMENTVARIABLE
 

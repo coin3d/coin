@@ -1077,6 +1077,7 @@ Optional Packages:
                           [default=yes]
   --with-simage=DIR       use simage for loading texture files
   --with-openal=PATH      enable/disable OpenAL support
+  --with-freetype=PATH    enable/disable Freetype support
   --with-x                use the X Window System
   --with-mesa             prefer MesaGL (if found) over OpenGL [default=yes]
   --with-opengl=DIR       OpenGL/Mesa installation directory
@@ -4713,7 +4714,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4716 "configure"' > conftest.$ac_ext
+  echo '#line 4717 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5249,7 +5250,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5252: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5253: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7043,7 +7044,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7046 "configure"
+#line 7047 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7141,7 +7142,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7144 "configure"
+#line 7145 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -17253,6 +17254,277 @@ else
   BUILD_WITH_SOUND_FALSE=
 fi
 
+# *******************************************************************
+# * Set us up for using the FreeType font library (if wanted, and if
+# * available).
+# *******************************************************************
+
+: ${sim_ac_have_freetype=false}
+
+# Check whether --with-freetype or --without-freetype was given.
+if test "${with_freetype+set}" = set; then
+  withval="$with_freetype"
+  case $withval in
+  yes | "") sim_ac_want_freetype=true ;;
+  no)       sim_ac_want_freetype=false ;;
+  *)        sim_ac_want_freetype=true
+            sim_ac_freetype_path=$withval ;;
+  esac
+else
+  sim_ac_want_freetype=true
+fi;
+case $sim_ac_want_freetype in
+true)
+  $sim_ac_have_freetype && break
+  sim_ac_freetype_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_freetype_save_LDFLAGS=$LDFLAGS
+  sim_ac_freetype_save_LIBS=$LIBS
+
+case $host_os in
+*)
+  sim_ac_freetype_debug=false
+  test -n "`echo -- $CPPFLAGS $CFLAGS $CXXFLAGS | grep -- '-g\\>'`" &&
+    sim_ac_freetype_debug=true
+  # test -z "$sim_ac_freetype_path" -a x"$prefix" != xNONE &&
+  #   sim_ac_freetype_path=$prefix
+  sim_ac_freetype_name=freetype
+  sim_ac_freetype_libs="-l$sim_ac_freetype_name"
+  if test -n "$sim_ac_freetype_path"; then
+    for sim_ac_freetype_candidate in \
+      `( ls $sim_ac_freetype_path/lib/freetype*.lib;
+         ls $sim_ac_freetype_path/lib/freetype*d.lib;
+         ls $sim_ac_freetype_path/lib/libfreetype*.lib;
+         ls $sim_ac_freetype_path/lib/libfreetype*d.lib ) 2>/dev/null`
+    do
+      case $sim_ac_freetype_candidate in
+      *d.lib)
+        $sim_ac_freetype_debug &&
+          sim_ac_freetype_name=`basename $sim_ac_freetype_candidate .lib` ;;
+      *.lib)
+        sim_ac_freetype_name=`basename $sim_ac_freetype_candidate .lib` ;;
+      esac
+    done
+    sim_ac_freetype_cppflags="-I$sim_ac_freetype_path/include"
+    CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+    sim_ac_freetype_ldflags="-L$sim_ac_freetype_path/lib"
+    LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
+    sim_ac_freetype_libs="-l$sim_ac_freetype_name"
+    # unset sim_ac_freetype_candidate
+    # unset sim_ac_freetype_path
+  fi
+;;
+esac
+
+  sim_ac_freetype_header_avail=false
+echo "$as_me:$LINENO: checking how to include ft2build.h" >&5
+echo $ECHO_N "checking how to include ft2build.h... $ECHO_C" >&6
+if test x"$with_freetype" != x"no"; then
+  sim_ac_freetype_save_CPPFLAGS=$CPPFLAGS
+  sim_ac_freetype_cppflags=
+
+  if test x"$with_freetype" != xyes && test x"$with_freetype" != x""; then
+    sim_ac_freetype_cppflags="-I${with_freetype}/include"
+  fi
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+
+
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <ft2build.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  egrep -v '^ *\+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_cxx_preproc_warn_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_cv_header_ft2build_h=yes
+else
+  echo "$as_me: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  ac_cv_header_ft2build_h=no
+fi
+rm -f conftest.err conftest.$ac_ext
+if test $ac_cv_header_ft2build_h = yes; then
+
+    sim_ac_freetype_header_avail=true
+    sim_ac_freetype_header=ft2build.h
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_FREETYPE_H 1
+_ACEOF
+
+
+fi
+
+
+
+
+  CPPFLAGS="$sim_ac_freetype_save_CPPFLAGS"
+  if $sim_ac_freetype_header_avail; then
+    if test x"$sim_ac_freetype_cppflags" = x""; then
+      echo "$as_me:$LINENO: result: #include <$sim_ac_freetype_header>" >&5
+echo "${ECHO_T}#include <$sim_ac_freetype_header>" >&6
+    else
+      echo "$as_me:$LINENO: result: $sim_ac_freetype_cppflags, #include <$sim_ac_freetype_header>" >&5
+echo "${ECHO_T}$sim_ac_freetype_cppflags, #include <$sim_ac_freetype_header>" >&6
+    fi
+    CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+  else
+    echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6
+    { echo "$as_me:$LINENO: WARNING: could not find ft2build.h" >&5
+echo "$as_me: WARNING: could not find ft2build.h" >&2;}
+  fi
+else
+  echo "$as_me:$LINENO: result: disabled" >&5
+echo "${ECHO_T}disabled" >&6
+  { echo "$as_me:$LINENO: WARNING: could not find ft2build.h" >&5
+echo "$as_me: WARNING: could not find ft2build.h" >&2;}
+fi
+
+
+  echo "$as_me:$LINENO: checking for FreeType" >&5
+echo $ECHO_N "checking for FreeType... $ECHO_C" >&6
+  LIBS="$sim_ac_freetype_libs $LIBS"
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include <ft2build.h>
+     #include FT_FREETYPE_H
+#ifdef F77_DUMMY_MAIN
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+   int F77_DUMMY_MAIN() { return 1; }
+#endif
+int
+main ()
+{
+FT_Library lib;
+     FT_Init_FreeType(&lib);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_have_freetype=true
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+
+  CPPFLAGS=$sim_ac_freetype_save_CPPFLAGS
+  LDFLAGS=$sim_ac_freetype_save_LDFLAGS
+  LIBS=$sim_ac_freetype_save_LIBS
+  # unset sim_ac_freetype_debug
+  # unset sim_ac_freetype_name
+  # unset sim_ac_freetype_save_CPPFLAGS
+  # unset sim_ac_freetype_save_LDFLAGS
+  # unset sim_ac_freetype_save_LIBS
+  ;;
+esac
+if $sim_ac_want_freetype; then
+  if $sim_ac_have_freetype; then
+    echo "$as_me:$LINENO: result: success ($sim_ac_freetype_libs)" >&5
+echo "${ECHO_T}success ($sim_ac_freetype_libs)" >&6
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_FREETYPE 1
+_ACEOF
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
+  LIBS="$sim_ac_freetype_libs $LIBS"
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
+  COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:$sim_ac_freetype_path"
+else
+  sim_ac_configuration_settings="FreeType support:$sim_ac_freetype_path"
+fi
+
+
+  else
+    echo "$as_me:$LINENO: result: failure" >&5
+echo "${ECHO_T}failure" >&6
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_FREETYPE 0
+_ACEOF
+
+  if $sim_ac_freetype_desired; then
+    { echo "$as_me:$LINENO: WARNING: freetype development system not found" >&5
+echo "$as_me: WARNING: freetype development system not found" >&2;};
+  fi
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:No"
+else
+  sim_ac_configuration_settings="FreeType support:No"
+fi
+
+
+  fi
+else
+  echo "$as_me:$LINENO: result: disabled" >&5
+echo "${ECHO_T}disabled" >&6
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_FREETYPE 0
+_ACEOF
+
+  if $sim_ac_freetype_desired; then
+    { echo "$as_me:$LINENO: WARNING: freetype development system not found" >&5
+echo "$as_me: WARNING: freetype development system not found" >&2;};
+  fi
+  if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|FreeType support:No"
+else
+  sim_ac_configuration_settings="FreeType support:No"
+fi
+
+
+fi
+# unset sim_ac_want_freetype
+
+
+
+if $sim_ac_have_freetype; then
+  HAVE_FREETYPE_TRUE=
+  HAVE_FREETYPE_FALSE='#'
+else
+  HAVE_FREETYPE_TRUE='#'
+  HAVE_FREETYPE_FALSE=
+fi
 
 # *******************************************************************
 # * Mathlib stuff.
@@ -21297,10 +21569,6 @@ fi
     # adjust for the Think Different factor
     COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lobjc"
   fi
-  # Mac OS X 10.2 needs some additional tweaks (see also src/Makefile.am)
-  if $sim_ac_macosx_10_2; then
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -Wl,-prebind"
-  fi
 
   case "$sim_ac_framework:$sim_ac_make_dsp" in
   true:* | *:true )
@@ -22164,6 +22432,8 @@ s,@sim_ac_simage_configcmd@,$sim_ac_simage_configcmd,;t t
 s,@HAVE_SOUND@,$HAVE_SOUND,;t t
 s,@BUILD_WITH_SOUND_TRUE@,$BUILD_WITH_SOUND_TRUE,;t t
 s,@BUILD_WITH_SOUND_FALSE@,$BUILD_WITH_SOUND_FALSE,;t t
+s,@HAVE_FREETYPE_TRUE@,$HAVE_FREETYPE_TRUE,;t t
+s,@HAVE_FREETYPE_FALSE@,$HAVE_FREETYPE_FALSE,;t t
 s,@X_CFLAGS@,$X_CFLAGS,;t t
 s,@X_PRE_LIBS@,$X_PRE_LIBS,;t t
 s,@X_LIBS@,$X_LIBS,;t t
