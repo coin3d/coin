@@ -198,7 +198,7 @@ public:
   static void pointCB(void *userData,
                       SoCallbackAction *action,
                       const SoPrimitiveVertex *v);
-  
+
   void performSelection(SoHandleEventAction * action);
 
   // Note: Microsoft Visual C++ 6.0 needs to have a type definition
@@ -249,7 +249,7 @@ line_line_intersect(const SbVec2s &p00, const SbVec2s & p01,
   /* and most other machine arithmetic.                                */
 #define SAME_SIGNS( a, b ) \
 	(((int) ((unsigned int) a ^ (unsigned int) b)) >= 0 )
-  
+
 #define DONT_INTERSECT FALSE
 #define COLINEAR TRUE
 #define DO_INTERSECT TRUE
@@ -266,39 +266,39 @@ line_line_intersect(const SbVec2s &p00, const SbVec2s & p01,
 
   int Ax,Bx,Cx,Ay,By,Cy,d,e,f;
   int x1lo,x1hi,y1lo,y1hi;
-  
+
   Ax = x2-x1;
   Bx = x3-x4;
 
   if(Ax < 0) {						/* X bound box test*/
     x1lo = x2; x1hi = x1;
-  } 
+  }
   else {
     x1hi = x2; x1lo = x1;
   }
   if(Bx > 0) {
     if(x1hi < x4 || x3 < x1lo) return DONT_INTERSECT;
-  } 
+  }
   else {
     if(x1hi < x3 || x4 < x1lo) return DONT_INTERSECT;
   }
-  
+
   Ay = y2-y1;
   By = y3-y4;
 
   if (Ay < 0) {						/* Y bound box test*/
     y1lo = y2; y1hi = y1;
-  } 
+  }
   else {
     y1hi = y2; y1lo = y1;
   }
   if (By > 0) {
     if (y1hi < y4 || y3 < y1lo) return DONT_INTERSECT;
-  } 
+  }
   else {
     if (y1hi < y3 || y4 < y1lo) return DONT_INTERSECT;
   }
-  
+
   Cx = x1-x3;
   Cy = y1-y3;
   d = By*Cx - Bx*Cy;					/* alpha numerator*/
@@ -306,19 +306,19 @@ line_line_intersect(const SbVec2s &p00, const SbVec2s & p01,
 
   if (f > 0) {						/* alpha tests*/
     if (d < 0 || d > f) return DONT_INTERSECT;
-  } 
+  }
   else {
     if (d > 0 || d < f) return DONT_INTERSECT;
   }
-  
+
   e = Ax*Cy - Ay*Cx;					/* beta numerator*/
   if (f > 0) {						/* beta tests*/
     if (e < 0 || e > f) return DONT_INTERSECT;
-  } 
+  }
   else {
     if (e > 0 || e < f) return DONT_INTERSECT;
   }
-  
+
   /*compute intersection coordinates*/
   if (f == 0) return COLINEAR;
 #if 0 // we don't need the intersection point, disabled
@@ -327,12 +327,12 @@ line_line_intersect(const SbVec2s &p00, const SbVec2s & p01,
   num = d*Ax;						/* numerator */
   offset = SAME_SIGNS(num,f) ? f/2 : -f/2;		/* round direction*/
   x = x1 + (num+offset) / f;				/* intersection x */
-  
+
   num = d*Ay;
   offset = SAME_SIGNS(num,f) ? f/2 : -f/2;
   y = y1 + (num+offset) / f;				/* intersection y */
-#endif // disabled code  
-  
+#endif // disabled code
+
   return DO_INTERSECT;
 #undef COLINEAR
 #undef DONT_INTERSECT
@@ -1190,7 +1190,7 @@ SoExtSelectionP::triangleCB(void * userData,
 {
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
   if (thisp->primcbdata.abort) return;
-  
+
   if (!thisp->triangleFilterCB && thisp->primcbdata.fulltest &&
       !thisp->primcbdata.allhit) {
     thisp->primcbdata.abort = TRUE;
@@ -1208,7 +1208,7 @@ SoExtSelectionP::triangleCB(void * userData,
     thisp->primcbdata.allhit = FALSE;
     return;
   }
-  
+
   SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
   if (!thisp->primcbdata.lassorect.intersect(p1) || !point_in_poly(thisp->coords, p1)) {
@@ -1221,23 +1221,23 @@ SoExtSelectionP::triangleCB(void * userData,
     thisp->primcbdata.allhit = FALSE;
     return;
   }
-  
+
   if (poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
     thisp->primcbdata.allhit = FALSE;
-    return;    
+    return;
   }
   if (poly_line_intersect(thisp->coords, p1, p2, FALSE)) {
     thisp->primcbdata.allhit = FALSE;
-    return;    
+    return;
   }
   if (poly_line_intersect(thisp->coords, p2, p0, FALSE)) {
     thisp->primcbdata.allhit = FALSE;
     return;
-  }  
-  
+  }
+
   // triangle is surrounded by the lasso
   thisp->primcbdata.hit = TRUE;
-  
+
   if (thisp->triangleFilterCB) {
     if (thisp->triangleFilterCB(thisp->triangleFilterCBData,
                                 action, v1, v2, v3)) {
@@ -1258,7 +1258,7 @@ SoExtSelectionP::lineSegmentCB(void *userData,
 {
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
   if (thisp->primcbdata.abort) return;
-  
+
   if (!thisp->lineFilterCB && thisp->primcbdata.fulltest &&
       !thisp->primcbdata.allhit) {
     thisp->primcbdata.abort = TRUE;
@@ -1276,22 +1276,22 @@ SoExtSelectionP::lineSegmentCB(void *userData,
     thisp->primcbdata.allhit = FALSE;
     return;
   }
-  
+
   SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
   if (!thisp->primcbdata.lassorect.intersect(p1) || !point_in_poly(thisp->coords, p1)) {
     thisp->primcbdata.allhit = FALSE;
     return;
   }
-  
+
   if (poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
     thisp->primcbdata.allhit = FALSE;
-    return;    
+    return;
   }
 
   // line segment is surrounded by the lasso
   thisp->primcbdata.hit = TRUE;
-  
+
   if (thisp->lineFilterCB) {
     if (thisp->lineFilterCB(thisp->lineFilterCBData,
                             action, v1, v2)) {
@@ -1311,7 +1311,7 @@ SoExtSelectionP::pointCB(void *userData,
 {
   SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
   if (thisp->primcbdata.abort) return;
-  
+
   if (!thisp->pointFilterCB && thisp->primcbdata.fulltest &&
       !thisp->primcbdata.allhit) {
     thisp->primcbdata.abort = TRUE;
@@ -1329,10 +1329,10 @@ SoExtSelectionP::pointCB(void *userData,
     thisp->primcbdata.allhit = FALSE;
     return;
   }
-  
+
   // line segment is surrounded by the lasso
   thisp->primcbdata.hit = TRUE;
-  
+
   if (thisp->pointFilterCB) {
     if (thisp->pointFilterCB(thisp->pointFilterCBData,
                              action, v)) {
@@ -1357,9 +1357,7 @@ SoExtSelectionP::doSelect(const SoPath * path)
 
   if (newpath != path) newpath->ref();
 
-  this->master->startCBList->invokeCallbacks(this->master);
   this->master->invokeSelectionPolicy(newpath, TRUE);
-  this->master->finishCBList->invokeCallbacks(this->master);
 
   if (newpath != path) newpath->unref();
 }
@@ -1369,7 +1367,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 {
   this->curvp = SoViewportRegionElement::get(action->getState());
   this->cbaction->setViewportRegion(this->curvp);
-  
+
   this->wasshiftdown = action->getEvent()->wasShiftDown();
   switch (this->master->policy.getValue()) {
   case SoSelection::SINGLE:
@@ -1381,7 +1379,9 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
   default:
     break;
   }
+  this->master->startCBList->invokeCallbacks(this->master);
   this->cbaction->apply(action->getCurPath()->getHead());
+  this->master->finishCBList->invokeCallbacks(this->master);
   this->master->touch();
 }
 
