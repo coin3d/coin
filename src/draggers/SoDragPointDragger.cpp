@@ -320,8 +320,22 @@ SoDragPointDragger::showNextDraggerSet(void)
 void
 SoDragPointDragger::dragStart(void)
 {
-  SoSwitch *sw;
-  if (this->getActiveChildDragger()->isOfType(SoTranslate2Dragger::getClassTypeId())) {
+  SoDragger * activechild = this->getActiveChildDragger();
+
+  // FIXME: the assert below will hit upon first attempt at
+  // interaction if one tries to set up replacements for some of the
+  // draggers, for instance like this:
+  //
+  // SoDragPointDragger * dpd = new SoDragPointDragger;
+  // dpd->setPart("xTranslator", node->copy());
+  // dpd->setPart("yTranslator", node->copy());
+  // dpd->setPart("zTranslator", node->copy());
+  //
+  // Nasty, nasty. 20010914 mortene.
+  assert(activechild != NULL);
+
+  SoSwitch * sw;
+  if (activechild->isOfType(SoTranslate2Dragger::getClassTypeId())) {
     sw = SO_GET_ANY_PART(this, "planeFeedbackSwitch", SoSwitch);
     SoInteractionKit::setSwitchValue(sw, this->currAxis);
   }
