@@ -539,3 +539,24 @@
     20020904 mortene.
 
 =====================================================================
+
+024 This scenegraph causes a nasty bounding box calculation error:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+    
+    Separator {
+       Translation { translation 2 0 0 }
+       Separator {
+          TransformSeparator {
+             Translation { translation 0 0.25 0 }
+             Translation { translation 0 -0.25 0 }
+          }
+          Sphere {  }
+       }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    20020910 mortene.
+
+=====================================================================
