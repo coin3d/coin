@@ -18,17 +18,17 @@
 # ====
 # HIERARCHY
 # ci d  SoAction
-# ci            SoCallbackAction
+# CI            SoCallbackAction
 # ci            SoGLRenderAction
-# c                     SoBoxHighlightRenderAction
+# ci                    SoBoxHighlightRenderAction
 # c                     SoLineHighlightRenderAction
 # ci            SoGetBoundingBoxAction
-# ci            SoGetMatrixAction
-# c             SoGetPrimitiveCountAction
+# CI            SoGetMatrixAction
+# CI            SoGetPrimitiveCountAction
 # ci            SoHandleEventAction
 #               SoIntersectionDetectionAction
-# c             SoPickAction
-# c                     SoRayPickAction
+# CI            SoPickAction
+# ci                    SoRayPickAction
 # ci d          SoSearchAction
 # c             SoSimplifyAction
 # c                     SoGlobalSimplifyAction

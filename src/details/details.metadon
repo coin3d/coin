@@ -1,17 +1,21 @@
 #
 # CONFIG "The Detail Classes"
 # FLAGS
-# C - Source File Creation [0.1]
+# C = Source File Creation [0.1]
+# I = implementation complete, or nearly so [1.0]
+# D = fully documented for Doxygen generation of html/man [0.1]
 #
+# CID
+# ===
 # HIERARCHY
-#       SoDetail
-#               SoConeDetail
-#               SoCubeDetail
-#               SoCylinderDetail
-#               SoFaceDetail
-#               SoLineDetail
+# CI    SoDetail
+# CI            SoConeDetail
+# CI            SoCubeDetail
+# CI            SoCylinderDetail
+# CI            SoFaceDetail
+# CI            SoLineDetail
 #               SoNodeKitDetail
-#               SoPointDetail
-#               SoTextDetail
+# CI            SoPointDetail
+# CI            SoTextDetail
 #
 ############################################################################
