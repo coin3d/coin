@@ -196,54 +196,7 @@ SbMatrix::makeIdentity(void)
 void
 SbMatrix::setRotate(const SbRotation & q)
 {
-  SbVec3f u;
-  float t, cost, sint;
-
-  q.getValue(u, t);
-  cost = (float)cos(t);
-  sint = (float)sin(t);
-
-  // pederb, 19990423
-  // added tests for special cases ==> quite a lot faster
-  // since most rotations are around one of the axes
-  // FIXME: I think I have seen a faster way to do these
-  // tests somewhere...
-  if (u == SbVec3f(1.0f, 0.0f, 0.0f)) {
-    this->makeIdentity();
-    this->matrix[1][1] = cost;
-    this->matrix[2][1] = -sint;
-    this->matrix[1][2] = sint;
-    this->matrix[2][2] = cost;
-  }
-  else if (u == SbVec3f(0.0f, 1.0f, 0.0f)) {
-    this->makeIdentity();
-    this->matrix[0][0] = cost;
-    this->matrix[2][0] = sint;
-    this->matrix[0][2] = -sint;
-    this->matrix[2][2] = cost;
-  }
-  else if (u == SbVec3f(0.0f, 0.0f, 1.0f)) {
-    this->makeIdentity();
-    this->matrix[0][0] = cost;
-    this->matrix[1][0] = -sint;
-    this->matrix[0][1] = sint;
-    this->matrix[1][1] = cost;
-  }
-  else {
-    this->matrix[3][0]=this->matrix[3][1]=this->matrix[3][2]=
-      this->matrix[0][3]=this->matrix[1][3]=this->matrix[2][3]=0.0f;
-    this->matrix[3][3]=1.0f;
-
-    this->matrix[0][0] = u[0]*u[0]+cost*(1-u[0]*u[0]);
-    this->matrix[1][0] = u[0]*u[1]*(1-cost)-u[2]*sint;
-    this->matrix[2][0] = u[2]*u[0]*(1-cost)+u[1]*sint;
-    this->matrix[0][1] = u[0]*u[1]*(1-cost)+u[2]*sint;
-    this->matrix[1][1] = u[1]*u[1]+cost*(1-u[1]*u[1]);
-    this->matrix[2][1] = u[1]*u[2]*(1-cost)-u[0]*sint;
-    this->matrix[0][2] = u[2]*u[0]*(1-cost)-u[1]*sint;
-    this->matrix[1][2] = u[1]*u[2]*(1-cost)+u[0]*sint;
-    this->matrix[2][2] = u[2]*u[2]+cost*(1-u[2]*u[2]);
-  }
+  q.getValue(*this);
 }
 
 /*!
