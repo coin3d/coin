@@ -35,6 +35,10 @@
 #include <unistd.h> // dup()
 #endif // HAVE_UNISTD_H
 
+#ifdef HAVE_IO_H
+#include <io.h> // Win32 dup()
+#endif // HAVE_IO_H
+
 //
 // abstract interface class
 //

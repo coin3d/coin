@@ -34,6 +34,10 @@
 #include <unistd.h> // dup()
 #endif // HAVE_UNISTD_H
 
+#ifdef HAVE_IO_H
+#include <io.h> // Win32 dup()
+#endif // HAVE_IO_H
+
 //
 // abstract class
 //
@@ -63,7 +67,7 @@ SoInput_Reader::getFilePointer(void)
 // examine the file header). If fullname is empty, it's assumed that
 // file FILE pointer is passed from the user, and that we cannot
 // necessarily find the file handle.
-SoInput_Reader * 
+SoInput_Reader *
 SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
 {
   SoInput_Reader * reader = NULL;
@@ -88,7 +92,7 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
     int fd = fileno(fp);
     // need to use dup() if we didn't open the file since gzdclose
     // will close it
-    if (fd >= 0 && fullname.getLength() && fullname != "<stdin>") fd = dup(fd); 
+    if (fd >= 0 && fullname.getLength() && fullname != "<stdin>") fd = dup(fd);
     if (fd >= 0) {
       gzFile gzfp = gzdopen(fd, "rb");
       if (gzfp) {
@@ -96,7 +100,7 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
       }
     }
     else {
-      SoDebugError::postWarning("SoInput_Reader::createReader", 
+      SoDebugError::postWarning("SoInput_Reader::createReader",
                                 "Unable to create file descriptor from stream.");
     }
   }
@@ -215,7 +219,7 @@ SoInput_GZFileReader::getType(void) const
 int
 SoInput_GZFileReader::readBuffer(char * buf, const size_t readlen)
 {
-  return gzread(this->gzfp, (void*) buf, readlen); 
+  return gzread(this->gzfp, (void*) buf, readlen);
 }
 
 const SbString &
@@ -275,5 +279,3 @@ SoInput_BZ2FileReader::getFilename(void)
 }
 
 #endif // HAVE_BZIP2
-
-
