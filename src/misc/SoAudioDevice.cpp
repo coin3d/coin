@@ -86,7 +86,6 @@ public:
   COIN_ALCPROCESSCONTEXT alcProcessContext;
   COIN_ALCSUSPENDCONTEXT alcSuspendContext;
 #endif // HAVE_SOUND
-  SoAudioRenderAction *audioRenderAction;
 
   SbBool enabled;
   SbBool initOK;
@@ -122,7 +121,6 @@ SoAudioDevice::SoAudioDevice()
 {
   PRIVATE(this) = new SoAudioDeviceP(this);
   PRIVATE(this)->context = NULL;
-  PRIVATE(this)->audioRenderAction = NULL;
   PRIVATE(this)->enabled = FALSE;
   PRIVATE(this)->initOK = FALSE;
   PRIVATE(this)->lastGain = 1.0f;
@@ -140,8 +138,6 @@ SoAudioDevice::SoAudioDevice()
   PRIVATE(this)->alcProcessContext = (COIN_ALCPROCESSCONTEXT)alcProcessContext;
   PRIVATE(this)->alcSuspendContext = (COIN_ALCSUSPENDCONTEXT)alcSuspendContext;
 #endif // HAVE_SOUND
-
-  PRIVATE(this)->audioRenderAction = new SoAudioRenderAction();
 }
 
 /*!
@@ -221,7 +217,7 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   // moving sounds instead of moving the listener. 2002-11-13 thammer.
   ALint error;
   ALfloat alfloat3[3] = { 0.0f, 0.0f, 0.0f };
-  ALfloat alfloat6[6] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+  ALfloat alfloat6[6] = { 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f };
   float gain = 1.0f;
 
   alListenerfv(AL_POSITION, alfloat3);
@@ -271,10 +267,6 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
 void SoAudioDevice::cleanup()
 {
   this->disable();
-
-  if (PRIVATE(this)->audioRenderAction != NULL)
-    delete PRIVATE(this)->audioRenderAction;
-  PRIVATE(this)->audioRenderAction = NULL;
 
 #ifdef HAVE_SOUND
   if (PRIVATE(this)->context != NULL)
