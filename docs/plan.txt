@@ -39,6 +39,10 @@ State of library when milestone is met:
 * import code should load all Open Inventor scene graph files, in the
   open ASCII format aswell as the proprietary binary format.
 
+  This does not include the functionality needed to read iv-format
+  files with user extensions in the form of new, non-standard nodes,
+  nodekits, fields etc.  This will be done at a later milestone.
+
 * all basic geometry and utility classes implemented: SbBox*, SbColor,
   SbCylinder, SbDict, SbLine, SbMatrix, SbName and SbString, SbPlane,
   SbRotation, SbSphere, SbTime, SbVec*, SbViewVolume,
@@ -48,11 +52,11 @@ State of library when milestone is met:
 
 	- the actions for rendering functionality:
           SoGetBoundingBoxAction, SoBoxHighlightRenderAction,
-          SoGLRenderAction, SoLineHighlightRenderAction
+          SoGLRenderAction, SoLineHighlightRenderAction.
 
 	- actions for event handling, including interaction through
           "picking": SoHandleEventAction, SoPickAction,
-          SoRayPickAction
+          SoRayPickAction.
 
 	- scene graph export: SoWriteAction. The code belonging to
           this action can export Open Inventor scene graphs in ASCII
@@ -62,8 +66,8 @@ State of library when milestone is met:
 	  SoCallbackAction, SoGetMatrixAction, SoSearchAction,
 	  SoGetPrimitiveCountAction.
 
-* complete support for image textures on all 3D objects which should
-  support them.
+* complete support for image textures on all 3D objects which are
+  supposed support them.
 
 * all engine classes fully implemented according to what Open Inventor
   provides.
@@ -124,9 +128,8 @@ State of library when milestone is met:
 * a few simple example programs will accompany the library.
 	
 * platform availability:
-	- supported: Linux, BeOS
-	- additional: MSWindows (with Troll Tech's Qt), most UNIX
-          platforms (ditto)
+	- fully supported: Linux, MSWindows (with Troll Tech's Qt), BeOS
+	- additional: most UNIX platforms (with Troll Tech's Qt)
 
 
 
@@ -192,7 +195,7 @@ Additional development necessary versus milestone 2:
 
 * implement support for automatic dynamic loading of user-extension
   nodes, nodekits, etc (through dlopen() on UNIX systems and
-  LoadLibrary() (?) on MSWin)
+  LoadLibrary() on MSWin).
 
 * make sure the APIs for bundles, caches, details and element classes
   cover the API calls offered by SGI Open Inventor 2.1 so even
