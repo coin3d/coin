@@ -3435,3 +3435,133 @@ end
     20040805 mortene.
 
 =====================================================================
+
+129 Dragger bugs. This is a collection of bugs mostly related to
+    scaling of draggers.
+
+    JackDragger: Scale down as much as possible. Use viewAll to keep
+    the geometry in focus. When a certain limit has been reached, it
+    is no longer possible to click on the drag tabs. Might be because
+    JackDragger uses childdraggers to do it's job, and child draggers
+    currently do not have a good enough minimum scale restriction.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    JackDragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    Scale2Dragger: Scale down alot, and you will have problems with
+    viewAll. Also had problems with grabbing the dragger. The geometry
+    of the dragger does not get scaled properly. Some of these
+    problems are probably related to the lack of a minimum scale
+    restriction when using child draggers. Others are problems
+    relating to the way the dragger geometry/tabs are scaled.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    Scale2Dragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    SoTabBoxDragger: Lack of minimum scale restriction because it uses
+    child draggers (SoTabPlaneDraggers). The dragger geometry does not
+    look correct with extremely small scale.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    TabBoxDragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    SoTransformerDragger: Geometry does not look correct when having
+    non-uniform scale in the scenegraph. Load the following file into
+    examinerviewer and click on the rotation tab on one of the sides, 
+    and you should see the problem.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    TransformerManip {}
+    Text3 { 
+      string "b"
+      parts ALL 
+    }
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+    Also, free rotation (holding shift while rotating) does not behave
+    100% as expected when the locater position goes outside of the
+    projection sphere. Using the same scenegraph, press shift and
+    rotate the center tab, and you will see the problem. This problem
+    happens when having non-uniform scale.
+
+    
+    SoTransformBoxDragger: Unable to grab hold of the dragger tabs
+    when scale is small. This is probably also realted to the lack of
+    minimum scale restriction when using child draggers.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    TransformBoxDragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    Scale1Dragger: Impossible to grab hold of dragger tabs again after
+    scaling as small as possible. Tabs should have a certain dimension
+    even though the dragger has been scaled down.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    Scale1Dragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    Scale2Dragger: Difficult to repick dragger tabs when scale gets low.
+    viewAll does not work properly.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    Scale2Dragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+    
+    Scale2UniformDragger: viewAll does not work as expected when scaling
+    down alot. Also the geometry of the dragger gets strange when having
+    low scale.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    Scale2UniformDragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+    
+
+    General observations:
+     A general problem is that it is difficult to separate and click on
+     a tab of choice when scale is small. This should be fixed for
+     easier use. It would be nice if the tabs are spaced so that it is
+     possible to see which is which. Dragger geometries should also be
+     fixed so that they are intuitive and easy to use even when scale
+     is small/big, etc.
+
+     OIV does not have a restriction on the scale when using child
+     draggers, but we should since without there will be trouble.
+
+     viewAll does not always work as expected, not zooming in enough on
+     some draggers under certain circumstances. This should be checked.
+
+   
+    Priorities:
+     1) Fix minimum scale restriction when using child draggers
+     2) Fix scaling/positioning of dragger geometries so that 
+        they are intuitive and easy to use at any scale
+     3) See if the viewAll works after these bugs have been fixed. 
+        If not, find out what's wrong and fix it.
+     4) Roam all the draggers, have fun with them and look for 
+        problems to fix
+     5) Fix all other dragger bugs in this list :)
+     6) Fix the rest of the bugs in this list (:
+
+
+     20040810 jornskaa
+
+=====================================================================
+
