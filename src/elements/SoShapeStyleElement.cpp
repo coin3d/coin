@@ -315,9 +315,9 @@ SoShapeStyleElement::needNormals() const
 */
 
 SbBool
-SoShapeStyleElement::needTexCoords() const
+SoShapeStyleElement::needTexCoords(void) const
 {
-  return (this->flags&(FLAG_TEXENABLED|FLAG_TEX3ENABLED));
+  return (this->flags&(FLAG_TEXENABLED|FLAG_TEX3ENABLED)) != 0;
 }
 
 /*!
@@ -328,6 +328,15 @@ SoShapeStyleElement::getRenderCaseMask(void) const
 {
   COIN_OBSOLETED();
   return 0;
+}
+
+/*!
+  Returns if texture function is currently enabled.
+*/
+SbBool 
+SoShapeStyleElement::isTextureFunction(void) const
+{
+  return (this->flags&FLAG_TEXFUNC) != 0;
 }
 
 /*!
