@@ -358,6 +358,8 @@ SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
         cnt = 0;
       }
     }
+    // in case index array wasn't terminated by a -1
+    if (cnt >= 2) add += cnt-1;
     action->addNumLines(add);
   }
 }

@@ -557,6 +557,8 @@ SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
         cnt = 0;
       }
     }
+    // in case index array wasn't terminated with a -1
+    if (cnt >= 3) add += cnt-2;
     action->addNumTriangles(add);
   }
 }

@@ -201,7 +201,7 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
     // enable flat shading before calling shouldGLRender()
     SoGLShadeModelElement::set(state, TRUE);
   }
-  
+
   if (!this->shouldGLRender(action)) {
     if (didpush) {
       state->pop();
@@ -228,7 +228,7 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   dotextures = tb.needCoordinates();
-  
+
   if (dotextures) {
     if (tb.isFunction()) {
       tindices = NULL;
@@ -372,6 +372,11 @@ SoIndexedTriangleStripSet::countPrimitives(int & strips, int & tris)
       tris += tmpcnt - 2;
       tmpcnt = 0;
     }
+  }
+  // in case array wasn't terminated by a -1
+  if (tmpcnt >= 3) {
+    strips++;
+    tris += tmpcnt-2;
   }
 }
 
