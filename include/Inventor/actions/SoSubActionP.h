@@ -34,8 +34,6 @@
 
 #define SO_ACTION_ADD_METHOD_INTERNAL(nodeclass, method) \
   do { \
-    static int hasbeencalled = FALSE; \
-    hasbeencalled = TRUE; \
     SO_ACTION_ADD_METHOD(nodeclass, method); \
   } while (0)
 
