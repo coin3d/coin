@@ -185,6 +185,42 @@ STUFF TO FIX IN COIN
     warnings in debug mode if the scene graph to be written contains
     non-compatible nodes).
 
+    Update 2003-03-14 kyrah, based on input from mortene: While we are
+    at it, we should definitely sort out what file formats in what
+    versions we support, and handle the cases where somebody tries to
+    read an unsupported file.
+
+    What we should do is to classify files into no less than 5
+    different categories:
+       
+    0) Fully supported file formats. (Examples: Inventor 2.0 and
+       Inventor 2.1 (both of these in both ascii and binary), VRML97,
+       VRML 1.0.)
+
+    1) File formats that we are likely, but not guaranteed, to read
+       without problems. (Examples: any TGS Inventor format from
+       versions (2.5?) where they have added nodes that we don't
+       support yet.)  
+       [how should we handle these? try to load, but spit out a
+       warning that there might be problems?]
+
+    2) File formats we know about, but don't support. (Examples:
+       Inventor 1.0 ascii & binary. We could also add in all sorts of
+       3D file formats here, like Maya, OBJ, etc etc.)
+       [refuse to load, with a message that this format is
+       unsupported]
+ 
+    3) File formats we know about but only support in the correct           
+       library configuration. (Example: 3DS.)
+       [refuse to load, explain that the current configuration of Coin
+       does not support the format, explain how to build Coin with
+       support for that file format]
+
+    4) Unknown file formats.
+       [refuse to load]
+
+    Morten estimates that it will probably be "a few days work to get 
+    this into lines of code".                         
 
 004 Re-design the public API for handling textures
     2001-11-28  Peder Blekken  <pederb@sim.no>, write-down by mortene@sim.no
