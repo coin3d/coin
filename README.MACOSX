@@ -7,12 +7,19 @@ Building Coin
 =============
 
 Building Coin should be straightforward: ./configure && make && sudo
-make install.  See the file INSTALL for details. If any of these
-stages fails, it's a bug in Coin. Please let us know about this, and
-we will be glad to fix it.
+make install. See the file INSTALL for details. If any of these stages
+fails, it's a bug in Coin. Please let us know about this, and we will
+be glad to fix it.
 
 Please make sure that you have the latest version of Apple's developer
 tools installed before building Coin.
+
+
+Binary SDKs
+===========
+
+Precompiled binaries of the Coin framework for Mac OS 10.2 (Jaguar)
+and 10.3 (Panther) can be found on our ftp server[0].
 
 
 Using Coin
@@ -31,21 +38,17 @@ At the moment you have four basic options for this:
   2. Use X11 for Mac OS X, and Qt/X11. See the README.MAC file in
      the SoQt source code repository for instructions.
 
-  3. Create your own OpenGL canvas, and use this for rendering. This
-     is not the easiest way to do, since it involves quite some
-     programmatic overhead. The "Coin in a Cocoanut Shell" application 
-     (distributed with the Coin/Mac binary SDK, and available from our 
-     ftp server[2]) is an example of how to do this using Objective-C. You 
-     can also use e.g. the GL utility toolkit ("GLUT"), like is done in 
-     the glutiv.cpp example (see [3]).
-                                         
+  3. Create your own OpenGL canvas and use this for rendering. This is
+     not the easiest way to go, since it involves quite some
+     programmatic overhead. The glutiv.cpp example (see [3]) shows how
+     this can be done using the GL utility toolkit ("GLUT").
 
 
 Mac OS X version specific notes
-==============================
+===============================
 
 Mac OS 10.0.x
---------------
+-------------
 
 Mac OS 10.0.x is not supported. Mac OS 10.0.x contained several grave
 problems and should be considered more like a "public beta". If you
@@ -61,10 +64,10 @@ read (and fully understood) Apple's Release Note concerning two-level
 namespace executables[4].
 
 
-Switching from Mac OS 10.1 to Mac OS 10.2
------------------------------------------
+Switching to Mac OS 10.2 (Jaguar)
+---------------------------------
 
-If you are upgrading from Mac OS 10.1 to 10.2, you must recompile your
+If you are upgrading to Mac OS 10.2 (Jaguar), you must recompile your
 Coin library. This is due to the fact that the developer tools for Mac
 OS 10.2 are based on gcc.3.1, as opposed to gcc-2.95 in 10.1. These
 two compilers are not ABI compatible - meaning that you have to
@@ -73,6 +76,15 @@ rebuild _all_ your C++ libraries.
 Note that there are several bugs in the developer tools that came with
 the original Mac OS 10.2 CDs, so you should install the most current
 version of the developer tools (available on the ADC website).
+
+Switching to Mac OS 10.3 (Panther)
+----------------------------------
+
+If you are upgrading to Mac OS 10.3 (Panther), you should (again)
+recompile your Coin library. Apple changed the default compiler to
+from gcc-3.1 in 10.2 to gcc-3.3 in 10.3 These two compilers are not
+ABI compatible - meaning that you have to rebuild _all_ your C++
+libraries. Consult the Coin/Mac FAQ [2] for details.
 
 
 The Inventor framework
@@ -85,7 +97,7 @@ documentation. You can link against a framework by using the "-framework"
 compiler option. Please refer to the Apple developer documentation [5] for 
 more information about frameworks.
 
-Since Coin is an OpenInventor implementation, the framework is named
+Since Coin is an Open Inventor implementation, the framework is named
 "Inventor", not Coin. Following Apple's recommendation for 3rd-party
 frameworks, the Inventor.framework is installed in /Library/Frameworks.
 
@@ -112,14 +124,14 @@ only. You do not need it when you build Coin/Mac as a framework (the
 default).
 
 
-Project Builder IDE support
-===========================
+Project Builder/Xcode support
+=============================
 
 You can use the Inventor.framework like any of Apple's frameworks in
-Project Builder by just drag+and+dropping it into your target settings.
-Please note that you will (of course) also need several other frameworks,
-at least the OpenGL framework and (depending on your application) 
-Carbon/Cocoa/GLUT.
+Project Builder or Xcode by just drag+and+dropping it into your target
+settings. Please note that you will (of course) also need several
+other frameworks, at least the OpenGL framework and (depending on your
+application) Carbon/Cocoa/GLUT.
 
 (Mac OS 10.2 users: See also the problem note on  __Znwm below.)
 
@@ -128,8 +140,7 @@ Common problems (and solutions)
 ===============================
 
 The following is a list of problem related to building Coin. For issues 
-related to Coin/Mac usage, please refer to the FAQ at 
-http://www.coin3d.org/mac/faq.html.
+related to Coin/Mac usage, please refer to the FAQ [2].
 
 
 o Conflicting installations of Inventor framework and library
@@ -158,7 +169,7 @@ having any spaces in the path leading to Coin.
 
 
 o "Undefined symbol: __Znwm"
- --------------------------
+  --------------------------
 
 (Note: This is not relevant for versions of Coin >= 2.0.1 , but is
 kept here for reference. 
@@ -199,13 +210,12 @@ on Mac OS X, please let us know.
 
 References:
 
-[0] ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-2.0.0.dmg.gz
+[0] ftp://ftp.coin3d.org/pub/coin/bin/macosx/
 [1] http://www.trolltech.com/download/qt/mac.html
-[2] ftp://ftp.sim.no/pub/coin/bin/macosx/coin-in-a-cocoa-nutshell.sit
+[2] http://www.coin3d.org/mac/faq.html
 [3] http://source.coin3d.org/Coin/examples/bindings/glutiv.cpp
-[4] http://developer.apple.com/techpubs/macosx/ReleaseNotes/TwoLevelNamespaces.html
+[4] http://developer.apple.com/documentation/ReleaseNotes/DeveloperTools/TwoLevelNamespaces.html
 [5] http://developer.apple.com/techpubs/macosx/Essentials/SystemOverview/Frameworks 
-[6] http://developer.apple.com/technotes/tn2002/tn2064.html
 
 --
 Karin Kosina (vka kyrah)
