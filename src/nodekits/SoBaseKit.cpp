@@ -126,9 +126,9 @@
   int
   main(int argc, char ** argv)
   {
-    QWidget * window = SoQt::init( argv[0] );
+    QWidget * window = SoQt::init(argv[0]);
   
-    SoQtExaminerViewer * viewer = new SoQtExaminerViewer( window );
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
   
     // Instantiating a shape kit, by default creating a simple sphere.
     SoShapeKit * shapekit = new SoShapeKit;
@@ -150,7 +150,7 @@
     viewer->setSceneGraph(newroot);
     
     viewer->show();
-    SoQt::show( window );
+    SoQt::show(window);
     
     SoQt::mainLoop();
     delete viewer;
@@ -441,7 +441,7 @@
   }
 
   void
-  show_instructions( void )
+  show_instructions(void)
   {
     (void)fprintf(stdout, 
       "\nThis example program demonstrates the use of the ShapeScale nodekit.\n"
@@ -459,10 +459,10 @@
       return -1;
     }
 
-    QWidget * window = SoQt::init( argv[0] );
+    QWidget * window = SoQt::init(argv[0]);
     ShapeScale::initClass(); // init our extension nodekit
 
-    SoQtExaminerViewer * ex1 = new SoQtExaminerViewer( window );
+    SoQtExaminerViewer * ex1 = new SoQtExaminerViewer(window);
   
     SoInput input;
     SbBool ok = input.openFile(argv[1]);
@@ -498,7 +498,7 @@
     ex1->setViewing(FALSE);
     
     ex1->show();
-    SoQt::show( window );
+    SoQt::show(window);
 
     SoQt::mainLoop();
     delete ex1;
@@ -543,8 +543,12 @@ public:
 
   SoBaseKit * kit;
   SoFieldData * writedata;
-  SbList<SoSFNode*> instancelist;
   SbBool didcount;
+
+  // This array is a 1-1 mapping of the fields corresponding to the
+  // catalog parts. Catalog indices will therefore also be used as
+  // indices into this array.
+  SbList<SoSFNode*> instancelist;
 
   void addKitDetail(SoFullPath * path, SoPickedPoint * pp);
   void createWriteData(void);
@@ -1068,9 +1072,8 @@ SoBaseKit::search(SoSearchAction * action)
 // Test if node has all fields set to default and if the fields
 // contains the default values. If so, we don't need to write it.
 static SbBool
-is_default_node(SoNode * node, const SoType & typecheck)
+is_default_node(SoNode * node)
 {
-  if (node->getTypeId() != typecheck) return FALSE;
   if (node->getChildren() && node->getChildren()->getLength()) return FALSE;
 
   SoNode * definstance = NULL;
@@ -1081,7 +1084,7 @@ is_default_node(SoNode * node, const SoType & typecheck)
     if (!field->isDefault()) break;
     if (field->isConnectionEnabled() && field->isConnected()) break;
     if (definstance == NULL) {
-      definstance = (SoNode*) typecheck.createInstance();
+      definstance = (SoNode *)node->getTypeId().createInstance();
       definstance->ref();
     }
     if (!field->isSame(*fielddata->getField(definstance, i))) break;
@@ -1101,6 +1104,7 @@ SoBaseKit::write(SoWriteAction * action)
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, FALSE, FALSE)) return; // no more to write
+    // FIXME: shouldn't this if() rather be an assert? 20030523 mortene.
     if (PRIVATE(this)->writedata) {
       PRIVATE(this)->writedata->write(out, this);
       // we don't need it any more
@@ -1129,16 +1133,23 @@ SoBaseKit::addWriteReference(SoOutput * out, SbBool isfromfield)
 }
 
 /*!
-  Reference count connections to nodes in the catalog.
+  Reference count the write connections to nodes in the catalog.
 */
 void
 SoBaseKit::countMyFields(SoOutput * out)
 {
-  if (out->getStage() != SoOutput::COUNT_REFS)
-    return;
+  assert(out->getStage() == SoOutput::COUNT_REFS);
 
   // already created?
+  //
+  // FIXME: could this ever be TRUE without that being an error
+  // situation? I have a feeling this should rather be an
+  // assert(). Investigate. 20030523 mortene.
   if (PRIVATE(this)->writedata) return;
+
+  // Initialize isDefault() flag on fields that should not be
+  // written. This is a virtual method.
+  this->setDefaultOnNonWritingFields();
 
   const SoNodekitCatalog * catalog = this->getNodekitCatalog();
 
@@ -1146,9 +1157,25 @@ SoBaseKit::countMyFields(SoOutput * out)
   int i, n = PRIVATE(this)->instancelist.getLength();
   for (i = 1; i < n; i++) {
     SoSFNode * field = PRIVATE(this)->instancelist[i];
+
+#if COIN_DEBUG && 0 // debug
+    SoNode * n = field->getValue();
+    SoDebugError::postInfo("SoBaseKit::countMyFields",
+                           "SoSFNode field %p isDefault==%d, getValue node==%p, node->shouldWrite()==%s, catalog->isNullByDefault(%d)==%d",
+                           field, field->isDefault(), n, n ? (n->shouldWrite() ? "TRUE" : "FALSE") : "<n/a>", i, catalog->isNullByDefault(i));
+#endif // debug
+
     if (field->isDefault()) {
       SoNode * node = field->getValue();
-      if (node == NULL && ! catalog->isNullByDefault(i)) {
+      if ((node == NULL && !catalog->isNullByDefault(i)) ||
+          (node != NULL && catalog->isNullByDefault(i)) ||
+          (node && node->shouldWrite())) {
+
+#if COIN_DEBUG && 0 // debug
+        SoDebugError::postInfo("SoBaseKit::countMyFields",
+                               "set field %p non-default");
+#endif // debug
+
         field->setDefault(FALSE);
       }
     }
@@ -1156,13 +1183,10 @@ SoBaseKit::countMyFields(SoOutput * out)
 
   // PRIVATE(this)->writedata contains a sorted list of fields.
   //
-  // FIXME: this is not multithread-safe wrt multiple SoWriteAction
-  // instances working in parallel over the same scene. 20030521 mortene.
+  // FIXME: the pimpl->writedata scheme doesn't look multithread-safe
+  // wrt multiple SoWriteAction instances working in parallel over the
+  // same scene. 20030521 mortene.
   PRIVATE(this)->createWriteData();
-
-  // sets fields that should not be written to default, this
-  // is a virtual methods, so subkits can do some work when needed.
-  this->setDefaultOnNonWritingFields();
 
   // test if parent of parts is writing. Then we must write part anyway.
   PRIVATE(this)->testParentWrite();
@@ -1212,9 +1236,9 @@ SoBaseKit::countMyFields(SoOutput * out)
   extensions, see the information in the SoBaseKit class
   documentation.)
 
-  A virtual method that should call SoField::setDefault() with
-  argument \c TRUE on part fields that should not be written upon
-  scenegraph export operations.
+  This is a virtual method, and the code in it should call
+  SoField::setDefault() with argument \c TRUE on part fields that
+  should not be written upon scenegraph export operations.
 
   This is typically done when:
 
@@ -1224,7 +1248,7 @@ SoBaseKit::countMyFields(SoOutput * out)
 
   <LI> it is a leaf SoGroup or SoSeparator node with no children </LI>
 
-  <LI> it is a leaf listpart with no children and a SoGroup or
+  <LI> it is a leaf listpart with no children and an SoGroup or
   SoSeparator container </LI>
 
   <LI> it is a non-leaf part and it's of SoGroup type and all fields
@@ -1243,41 +1267,41 @@ SoBaseKit::setDefaultOnNonWritingFields(void)
   int n = PRIVATE(this)->instancelist.getLength();
   for (int i = 1; i < n; i++) {
     SoSFNode * field = PRIVATE(this)->instancelist[i];
-    if (!field->isDefault()) {
-      SoNode * node = field->getValue();
-      // first test
-      if (node == NULL && catalog->isNullByDefault(i)) {
+    if (field->isDefault()) { continue; }
+
+    SoNode * node = field->getValue();
+
+    if (node == NULL) {
+      // first test listed in API doc above
+      if (catalog->isNullByDefault(i)) { field->setDefault(TRUE); }
+      continue;
+    }
+
+    const SbBool leaf = catalog->isLeaf(i);
+    const SoType type = node->getTypeId();
+
+    if (leaf) {
+      // second test
+      if ((type == SoGroup::getClassTypeId() ||
+           type == SoSeparator::getClassTypeId()) &&
+          ((SoGroup*)node)->getNumChildren() == 0) {
         field->setDefault(TRUE);
       }
-      else if (node) {
-        SbBool leaf = catalog->isLeaf(i);
-        SoType type = node->getTypeId();
-
-        if (leaf) {
-          // second test
-          if ((type == SoGroup::getClassTypeId() ||
-               type == SoSeparator::getClassTypeId()) &&
-              ((SoGroup*)node)->getNumChildren() == 0) {
-            field->setDefault(TRUE);
-          }
-          // third test
-          else if (type == SoNodeKitListPart::getClassTypeId()) {
-            SoNodeKitListPart * list = (SoNodeKitListPart*) node;
-            SoNode * container = list->getContainerNode();
-            if (list->getNumChildren() == 0 && container &&
-                (container->getTypeId() == SoSeparator::getClassTypeId() ||
-                 container->getTypeId() == SoGroup::getClassTypeId())) {
-              field->setDefault(TRUE);
-            }
-          }
+      // third test
+      else if (type == SoNodeKitListPart::getClassTypeId()) {
+        SoNodeKitListPart * list = (SoNodeKitListPart*) node;
+        const SoNode * container = list->getContainerNode();
+        if (list->getNumChildren() == 0 && container &&
+            (container->getTypeId() == SoSeparator::getClassTypeId() ||
+             container->getTypeId() == SoGroup::getClassTypeId())) {
+          field->setDefault(TRUE);
         }
-        else { // not leaf
-          // fourth test
-          if (node->isOfType(SoGroup::getClassTypeId()) &&
-              is_default_node(node, node->getTypeId())) {
-            field->setDefault(TRUE);
-          }
-        }
+      }
+    }
+    else { // not leaf
+      // fourth test
+      if (node->isOfType(SoGroup::getClassTypeId()) && is_default_node(node)) {
+        field->setDefault(TRUE);
       }
     }
   }
@@ -1481,7 +1505,10 @@ SoBaseKit::printTable(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the value of the flag indicating whether or not the kit
+  parts are searched during SoSearchAction traversal.
+
+  \sa SoBaseKit::setSearchingChildren()
 */
 SbBool
 SoBaseKit::isSearchingChildren(void)
@@ -1490,7 +1517,8 @@ SoBaseKit::isSearchingChildren(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Set whether or not the kit parts should be searched during
+  SoSearchAction traversal. The default value is \c FALSE.
 */
 void
 SoBaseKit::setSearchingChildren(const SbBool newval)
