@@ -79,11 +79,11 @@ SoCache::ref(void)
 void
 SoCache::unref(SoState *state)
 {
+  assert(this->refcount > 0);
   if (--this->refcount == 0) {
     this->destroy(state);
     delete this;
   }
-  assert(this->refcount > 0);
 }
 
 /*!
@@ -97,6 +97,11 @@ SoCache::addElement(const SoElement * const elem)
     int flag = 0x1 << (idx & 0x7);
     idx >>= 3; // get byte number
     if (!(this->elementflags[idx] & flag)) {
+#if COIN_DEBUG && 0 // debug
+      SoDebugError::postInfo("SoCache::addElement",
+                             "elem: %s",
+                             elem->getTypeId().getName().getString());
+#endif // debug
       SoElement * copy = elem->copyMatchInfo();
       if (copy) this->elements.append(copy);
       this->elementflags[idx] |= flag;
