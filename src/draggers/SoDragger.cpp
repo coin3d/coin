@@ -1399,7 +1399,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDragger::transferMotion(SoDragger * child)
@@ -1442,7 +1442,7 @@ SoDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDragger::setActiveChildDragger(SoDragger * childdragger)
@@ -1451,7 +1451,7 @@ SoDragger::setActiveChildDragger(SoDragger * childdragger)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SoDragger *
 SoDragger::getActiveChildDragger(void) const
@@ -1489,7 +1489,7 @@ SoDragger::setDefaultOnNonWritingFields(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDragger::childTransferMotionAndValueChangedCB(void * data, SoDragger * child)
@@ -1501,7 +1501,7 @@ SoDragger::childTransferMotionAndValueChangedCB(void * data, SoDragger * child)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDragger::childValueChangedCB(void * data, SoDragger * child)
@@ -1511,7 +1511,7 @@ SoDragger::childValueChangedCB(void * data, SoDragger * child)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDragger::childStartCB(void * data, SoDragger * child)
@@ -1523,7 +1523,7 @@ SoDragger::childStartCB(void * data, SoDragger * child)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDragger::childMotionCB(void * data, SoDragger * child)
@@ -1533,7 +1533,7 @@ SoDragger::childMotionCB(void * data, SoDragger * child)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDragger::childFinishCB(void * data, SoDragger * child)
@@ -1544,7 +1544,7 @@ SoDragger::childFinishCB(void * data, SoDragger * child)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDragger::childOtherEventCB(void * data, SoDragger * child)
@@ -1582,7 +1582,7 @@ SoDragger::eventHandled(const SoEvent * event, SoHandleEventAction * action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDragger::updateDraggerCache(const SoPath * path)

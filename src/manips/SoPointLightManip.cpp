@@ -34,17 +34,17 @@
 
 /*!
   \var SoFieldSensor * SoPointLightManip::locationFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoFieldSensor * SoPointLightManip::colorFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoChildList * SoPointLightManip::children
-  \internal
+  \COININTERNAL
 */
 
 #include <Inventor/manips/SoPointLightManip.h>
@@ -338,7 +338,7 @@ SoPointLightManip::getChildren(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoPointLightManip::valueChangedCB(void * m, SoDragger * dragger)
@@ -356,7 +356,7 @@ SoPointLightManip::valueChangedCB(void * m, SoDragger * dragger)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoPointLightManip::fieldSensorCB(void * m, SoSensor *)
@@ -395,7 +395,7 @@ SoPointLightManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconn
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Copies field values.
 */
 void

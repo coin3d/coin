@@ -50,7 +50,7 @@
 
 /*!
   \var uint32_t SoReplacedElement::nodeId
-  \internal
+  \COININTERNAL
 */
 
 

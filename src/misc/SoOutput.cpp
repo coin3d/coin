@@ -219,7 +219,7 @@ SoOutput::SoOutput(SoOutput * dictOut)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Common constructor actions.
  */
 void
@@ -964,7 +964,7 @@ SoOutput::makeRoomInBuf(size_t bytes)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Write the given number of bytes from the array, pad with zeroes to get
   on a 4-byte boundary if file format is binary.
@@ -989,7 +989,7 @@ SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   If the file header hasn't been written yet, write it out now.
 */
@@ -1118,7 +1118,7 @@ SoOutput::removeDEFNode(SbName name)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   FIXME: try to find a better/nicer way to handle PROTO export without
   adding new methods in SoOutput. For instance, is it possible to
@@ -1135,7 +1135,7 @@ SoOutput::pushProto(SoProto * proto)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   FIXME: try to find a better/nicer way to handle PROTO export without
   adding new methods in SoOutput. For instance, is it possible to
@@ -1153,7 +1153,7 @@ SoOutput::getCurrentProto(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   FIXME: try to find a better/nicer way to handle PROTO export without
   adding new methods in SoOutput. For instance, is it possible to
@@ -1171,7 +1171,7 @@ SoOutput::popProto(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   FIXME: try to find a better/nicer way to handle ROUTE export without
   adding new methods in SoOutput. For instance, is it possible to
@@ -1195,7 +1195,7 @@ SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   FIXME: try to find a better/nicer way to handle ROUTE export without
   adding new methods in SoOutput. For instance, is it possible to

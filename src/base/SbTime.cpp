@@ -893,7 +893,7 @@ SbTime::operator >=(const SbTime & tm) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Concatenate a string representation of \a val to \a str, ignoring
   any decimals.

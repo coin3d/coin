@@ -90,7 +90,7 @@ SoEvent::initClass(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Initialize all known subclasses.
  */

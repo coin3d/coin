@@ -134,7 +134,7 @@ SbDict::operator=(const SbDict & from)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Callback for copying values from one SbDict to another.
 */
 void

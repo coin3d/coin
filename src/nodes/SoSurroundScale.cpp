@@ -80,23 +80,23 @@
 
 /*!
   \var SoSurroundScale::cachedScale
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoSurroundScale::cachedInvScale
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoSurroundScale::cachedTranslation
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoSurroundScale::cacheOK
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoSurroundScale::doTranslations
-  \internal
+  \COININTERNAL
 */
 
 

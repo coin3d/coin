@@ -34,27 +34,27 @@
 
 /*!
   \var SoFieldSensor * SoSpotLightManip::locationFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoFieldSensor * SoSpotLightManip::directionFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoFieldSensor * SoSpotLightManip::angleFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoFieldSensor * SoSpotLightManip::colorFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoChildList * SoSpotLightManip::children
-  \internal
+  \COININTERNAL
 */
 
 #include <Inventor/manips/SoSpotLightManip.h>
@@ -346,7 +346,7 @@ SoSpotLightManip::search(SoSearchAction * action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Returns the children of this node. This node only has the dragger as
   a child.
 */
@@ -357,7 +357,7 @@ SoSpotLightManip::getChildren(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Updates the fields when the motion matrix changes.
 */
 void
@@ -390,7 +390,7 @@ SoSpotLightManip::valueChangedCB(void * m, SoDragger * dragger)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Updates the dragger whenever a field is modified.
 */
 void
@@ -437,7 +437,7 @@ SoSpotLightManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconne
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Copies field values.
 */
 void

@@ -64,11 +64,11 @@
 
 /*!
   \var SoFieldSensor * SoRotateDiscDragger::fieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbPlaneProjector * SoRotateDiscDragger::planeProj
-  \internal
+  \COININTERNAL
 */
 
 
@@ -175,7 +175,7 @@ SoRotateDiscDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateDiscDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -192,7 +192,7 @@ SoRotateDiscDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateDiscDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -208,7 +208,7 @@ SoRotateDiscDragger::valueChangedCB(void *, SoDragger * d)
   thisp->fieldSensor->attach(&thisp->rotation);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateDiscDragger::startCB(void *, SoDragger * d)
 {
@@ -216,7 +216,7 @@ SoRotateDiscDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateDiscDragger::motionCB(void *, SoDragger * d)
 {
@@ -224,7 +224,7 @@ SoRotateDiscDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateDiscDragger::doneCB(void * f, SoDragger * d)
 {
@@ -232,7 +232,7 @@ SoRotateDiscDragger::doneCB(void * f, SoDragger * d)
   thisp->dragFinish();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when dragger is selected (picked) by the user.
 */
 void
@@ -249,7 +249,7 @@ SoRotateDiscDragger::dragStart(void)
                                     hitPt));
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when user drags the mouse after picking the dragger.
 */
 void
@@ -278,7 +278,7 @@ SoRotateDiscDragger::drag(void)
                                              SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when mouse button is released after picking and interacting
   with the dragger.
 */

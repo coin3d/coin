@@ -112,7 +112,7 @@ SoTriangleStripSet::computeBBox(SoAction * action,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SoTriangleStripSet::Binding
 SoTriangleStripSet::findMaterialBinding(SoState * const state) const
@@ -149,7 +149,7 @@ SoTriangleStripSet::findMaterialBinding(SoState * const state) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SoTriangleStripSet::Binding
 SoTriangleStripSet::findNormalBinding(SoState * const state) const

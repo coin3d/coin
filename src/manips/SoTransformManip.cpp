@@ -37,32 +37,32 @@
 
 /*!
   \var SoFieldSensor * SoTransformManip::rotateFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoFieldSensor * SoTransformManip::translFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoFieldSensor * SoTransformManip::scaleFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoFieldSensor * SoTransformManip::centerFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoFieldSensor * SoTransformManip::scaleOrientFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoChildList * SoTransformManip::children
-  \internal
+  \COININTERNAL
 */
 
 #include <Inventor/manips/SoTransformManip.h>
@@ -398,7 +398,7 @@ SoTransformManip::getChildren(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Callback to update field values when motion matrix changes.
 */
 void
@@ -441,7 +441,7 @@ SoTransformManip::valueChangedCB(void * m, SoDragger * dragger)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Callback to update motion matrix when a field is modified.
 */
 void
@@ -483,7 +483,7 @@ SoTransformManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconne
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Copies field values from one node to the other.
 */
 void

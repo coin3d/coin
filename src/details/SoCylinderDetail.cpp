@@ -38,7 +38,7 @@
 
 /*!
   \var int SoCylinderDetail::part
-  \internal
+  \COININTERNAL
 */
 
 

@@ -184,7 +184,7 @@ SoSensor::trigger(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Open Inventor function not implemented in Coin.
  */
 void
@@ -194,7 +194,7 @@ SoSensor::setNextInQueue(SoSensor * next)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Open Inventor function not implemented in Coin.
  */
 SoSensor *

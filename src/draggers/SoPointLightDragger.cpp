@@ -175,7 +175,7 @@ SoPointLightDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoPointLightDragger::fieldSensorCB(void *d, SoSensor *)
 {
@@ -185,7 +185,7 @@ SoPointLightDragger::fieldSensorCB(void *d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoPointLightDragger::valueChangedCB(void *, SoDragger * d)
 {

@@ -433,7 +433,7 @@ SoRayPickAction::getPickedPoint(const int index) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 void
 SoRayPickAction::computeWorldSpaceRay(void)
@@ -511,7 +511,7 @@ SoRayPickAction::computeWorldSpaceRay(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SbBool
 SoRayPickAction::hasWorldSpaceRay(void) const
@@ -520,7 +520,7 @@ SoRayPickAction::hasWorldSpaceRay(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 void
 SoRayPickAction::setObjectSpace(void)
@@ -530,7 +530,7 @@ SoRayPickAction::setObjectSpace(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 void
 SoRayPickAction::setObjectSpace(const SbMatrix & matrix)
@@ -541,7 +541,7 @@ SoRayPickAction::setObjectSpace(const SbMatrix & matrix)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SbBool
 SoRayPickAction::intersect(const SbVec3f & v0,
@@ -606,7 +606,7 @@ SoRayPickAction::intersect(const SbVec3f & v0,
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SbBool
 SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
@@ -656,7 +656,7 @@ SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SbBool
 SoRayPickAction::intersect(const SbVec3f & point) const
@@ -745,7 +745,7 @@ dist_to_quad(const float xmin, const float ymin,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SbBool
 SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
@@ -846,7 +846,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
 
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SbBool
 SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
@@ -856,7 +856,7 @@ SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 const SbViewVolume &
 SoRayPickAction::getViewVolume(void)
@@ -879,7 +879,7 @@ SoRayPickAction::getViewVolume(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 const SbLine &
 SoRayPickAction::getLine(void)
@@ -888,7 +888,7 @@ SoRayPickAction::getLine(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SbBool
 SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection) const
@@ -900,7 +900,7 @@ SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SoPickedPoint *
 SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint)

@@ -238,7 +238,7 @@ SoGLDisplayList::getContext(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   \since 2001-11-27
 */

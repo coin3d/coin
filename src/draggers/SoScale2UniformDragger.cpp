@@ -64,11 +64,11 @@
 
 /*!
   \var SoFieldSensor * SoScale2UniformDragger::fieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbLineProjector * SoScale2UniformDragger::lineProj
-  \internal
+  \COININTERNAL
 */
 
 
@@ -176,7 +176,7 @@ SoScale2UniformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoScale2UniformDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -193,7 +193,7 @@ SoScale2UniformDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoScale2UniformDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -209,7 +209,7 @@ SoScale2UniformDragger::valueChangedCB(void *, SoDragger * d)
   thisp->fieldSensor->attach(&thisp->scaleFactor);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoScale2UniformDragger::startCB(void *, SoDragger * d)
 {
@@ -217,7 +217,7 @@ SoScale2UniformDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoScale2UniformDragger::motionCB(void *, SoDragger * d)
 {
@@ -225,7 +225,7 @@ SoScale2UniformDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoScale2UniformDragger::finishCB(void *, SoDragger * d)
 {
@@ -233,7 +233,7 @@ SoScale2UniformDragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when dragger is selected (picked) by the user.
 */
 void
@@ -250,7 +250,7 @@ SoScale2UniformDragger::dragStart(void)
   this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), startPt));
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when user drags the mouse after picking the dragger.
 */
 void
@@ -276,7 +276,7 @@ SoScale2UniformDragger::drag(void)
                                           SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when mouse button is released after picking and interacting
   with the dragger.
 */

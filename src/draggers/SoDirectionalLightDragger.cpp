@@ -82,11 +82,11 @@
 
 /*!
   \var SoFieldSensor * SoDirectionalLightDragger::rotFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoDirectionalLightDragger::translFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 SO_KIT_SOURCE(SoDirectionalLightDragger);
@@ -233,7 +233,7 @@ SoDirectionalLightDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoDirectionalLightDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -243,7 +243,7 @@ SoDirectionalLightDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoDirectionalLightDragger::valueChangedCB(void *, SoDragger * d)
 {

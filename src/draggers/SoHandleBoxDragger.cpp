@@ -76,11 +76,11 @@
 
 /*!
   \var SoFieldSensor * SoHandleBoxDragger::translFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoHandleBoxDragger::scaleFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 #define WHATKIND_NONE       0
@@ -344,7 +344,7 @@ SoHandleBoxDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoHandleBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -354,7 +354,7 @@ SoHandleBoxDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoHandleBoxDragger::valueChangedCB(void * f, SoDragger * d)
 {
@@ -375,7 +375,7 @@ SoHandleBoxDragger::valueChangedCB(void * f, SoDragger * d)
   thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoHandleBoxDragger::startCB(void *, SoDragger * d)
 {
@@ -383,7 +383,7 @@ SoHandleBoxDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoHandleBoxDragger::motionCB(void *, SoDragger * d)
 {
@@ -391,7 +391,7 @@ SoHandleBoxDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoHandleBoxDragger::finishCB(void *, SoDragger * d)
 {
@@ -399,7 +399,7 @@ SoHandleBoxDragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
 {
@@ -432,7 +432,7 @@ SoHandleBoxDragger_invalidate_surroundscale(SoBaseKit * kit)
   if (ss) ss->invalidate();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when dragger is selected (picked) by the user.
 */
 void
@@ -533,7 +533,7 @@ SoHandleBoxDragger::dragStart(void)
   this->updateSwitches();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when user drags the mouse after picking the dragger.
 */
 void
@@ -627,7 +627,7 @@ SoHandleBoxDragger::drag(void)
   }
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when mouse button is released after picking and interacting
   with the dragger.
 */

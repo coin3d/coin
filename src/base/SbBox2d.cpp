@@ -493,7 +493,7 @@ SbBox2d::getAspectRatio(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 double
 SbBox2d::width(void) const
@@ -502,7 +502,7 @@ SbBox2d::width(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 double
 SbBox2d::height(void) const

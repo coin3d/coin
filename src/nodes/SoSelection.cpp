@@ -149,47 +149,47 @@
 
 /*!
   \var SoPathList SoSelection::selectionList
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoCallbackList * SoSelection::selCBList
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoCallbackList * SoSelection::deselCBList
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoCallbackList * SoSelection::startCBList
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoCallbackList * SoSelection::finishCBList
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoSelectionPickCB * SoSelection::pickCBFunc
-  \internal
+  \COININTERNAL
 */
 /*!
   \var void * SoSelection::pickCBData
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbBool SoSelection::callPickCBOnlyIfSelectable
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoCallbackList * SoSelection::changeCBList
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoPath * SoSelection::mouseDownPickPath
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbBool SoSelection::pickMatching
-  \internal
+  \COININTERNAL
 */
 
 
@@ -600,7 +600,7 @@ SoSelection::getPickMatching(void) const
 }
 
 /*!
-  \internal.
+  \COININTERNAL.
   Used by render area to receive notification when the selection list changes.
 */
 void
@@ -610,7 +610,7 @@ SoSelection::addChangeCallback(SoSelectionClassCB * f, void * userData)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Used by render area to receive notification when the selection list changes.
 */
 void
@@ -620,7 +620,7 @@ SoSelection::removeChangeCallback(SoSelectionClassCB * f, void * userData)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoSelection::invokeSelectionPolicy(SoPath * path,
@@ -636,7 +636,7 @@ SoSelection::invokeSelectionPolicy(SoPath * path,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoSelection::performSingleSelection(SoPath * path)
@@ -648,7 +648,7 @@ SoSelection::performSingleSelection(SoPath * path)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoSelection::performToggleSelection(SoPath * path)
@@ -665,7 +665,7 @@ SoSelection::performToggleSelection(SoPath * path)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SoPath *
 SoSelection::copyFromThis(const SoPath * path) const
@@ -681,7 +681,7 @@ SoSelection::copyFromThis(const SoPath * path) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoSelection::addPath(SoPath * path)
@@ -692,7 +692,7 @@ SoSelection::addPath(SoPath * path)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoSelection::removePath(const int which)
@@ -706,7 +706,7 @@ SoSelection::removePath(const int which)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 int
 SoSelection::findPath(const SoPath * path) const

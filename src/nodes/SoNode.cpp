@@ -186,15 +186,15 @@
 
 /*!
   \var uint32_t SoNode::uniqueId
-  \internal
+  \COININTERNAL
 */
 /*!
   \var uint32_t SoNode::nextUniqueId
-  \internal
+  \COININTERNAL
 */
 /*!
   \var int SoNode::nextActionMethodIndex
-  \internal
+  \COININTERNAL
 */
 
 /*!
@@ -395,7 +395,7 @@ SoNode::notify(SoNotList * l)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 int
 SoNode::getActionMethodIndex(const SoType type)
@@ -404,7 +404,7 @@ SoNode::getActionMethodIndex(const SoType type)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Only in TGS Inventor on Win32 -- to avoid needing to export the
   nextActionMethodIndex member, see SoNode.h for more info.
@@ -416,7 +416,7 @@ SoNode::setNextActionMethodIndex(int index)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Only in TGS Inventor on Win32 -- to avoid needing to export the
   nextActionMethodIndex member, see SoNode.h for more info.
@@ -428,7 +428,7 @@ SoNode::getNextActionMethodIndex(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Only in TGS Inventor on Win32 -- to avoid needing to export the
   nextActionMethodIndex member, see SoNode.h for more info.
@@ -1268,7 +1268,7 @@ SoNode::getNextNodeId(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 const SoFieldData **
 SoNode::getFieldDataPtr(void)

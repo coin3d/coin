@@ -482,7 +482,7 @@ SoVRMLImageTexture::getImage(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoVRMLImageTexture::setImageDataMaxAge(const uint32_t maxage)

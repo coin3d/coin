@@ -476,7 +476,7 @@ SoFieldContainer::notify(SoNotList * l)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   I can't make head or tails of this method, it seems to return TRUE
   no matter what the arguments are.
  */
@@ -604,7 +604,7 @@ static SbList<SbDict*> * contentscopiedstack = NULL;
 
 
 /*!
-  \internal
+  \COININTERNAL
 
   Initialize a dictionary hash storing pointers for original
   fieldcontainer instances and their copies during scene graph copy
@@ -741,7 +741,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Clean up the dictionary hash.
 

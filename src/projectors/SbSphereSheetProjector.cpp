@@ -54,7 +54,7 @@
 */
 /*!
   \var SbSphereSheetProjector::planeDist
-  \internal
+  \COININTERNAL
 
   FIXME: not used, probably not needed until sheet code is in
   place. 20000308 mortene.

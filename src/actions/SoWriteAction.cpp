@@ -162,7 +162,7 @@ SoWriteAction::beginTraversal(SoNode * node)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Compact path lists are not implemented in Coin (yet), but if they
   are, SoWriteAction should return \c FALSE here -- it would only be

@@ -1107,7 +1107,7 @@ SoDB::isInitialized(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 void
 SoDB::startNotify(void)
@@ -1117,7 +1117,7 @@ SoDB::startNotify(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SbBool
 SoDB::isNotifying(void)
@@ -1127,7 +1127,7 @@ SoDB::isNotifying(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 void
 SoDB::endNotify(void)

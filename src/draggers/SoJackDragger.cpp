@@ -89,15 +89,15 @@
 
 /*!
   \var SoFieldSensor * SoJackDragger::translFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoJackDragger::rotFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoJackDragger::scaleFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 
@@ -260,7 +260,7 @@ SoJackDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoJackDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -270,7 +270,7 @@ SoJackDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoJackDragger::valueChangedCB(void *, SoDragger * d)
 {

@@ -38,7 +38,7 @@
 
 /*!
   \var int SoCubeDetail::part
-  \internal
+  \COININTERNAL
 */
 
 #include <Inventor/details/SoCubeDetail.h>

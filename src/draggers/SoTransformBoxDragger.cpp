@@ -79,15 +79,15 @@
 
 /*!
   \var SoFieldSensor * SoTransformBoxDragger::rotFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoTransformBoxDragger::translFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoTransformBoxDragger::scaleFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 
@@ -320,7 +320,7 @@ SoTransformBoxDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTransformBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -330,7 +330,7 @@ SoTransformBoxDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTransformBoxDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -375,7 +375,7 @@ SoTransformBoxDragger::removeChildDragger(SoDragger * child)
   this->unregisterChildDragger(child);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTransformBoxDragger::invalidateSurroundScaleCB(void *, SoDragger * d)
 {

@@ -53,11 +53,11 @@
 // FIXME: document these properly. 20000405 mortene.
 /*!
   \fn const SoEngineOutputData * SoNodeEngine::getOutputData(void) const
-  \internal
+  \COININTERNAL
 */
 /*!
   \fn void SoNodeEngine::evaluate(void)
-  \internal
+  \COININTERNAL
 */
 
 

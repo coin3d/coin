@@ -64,11 +64,11 @@
 
 /*!
   \var SoFieldSensor * SoTabBoxDragger::translFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoTabBoxDragger::scaleFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 SO_KIT_SOURCE(SoTabBoxDragger);
@@ -221,7 +221,7 @@ SoTabBoxDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTabBoxDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -231,7 +231,7 @@ SoTabBoxDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTabBoxDragger::valueChangedCB(void *, SoDragger *d)
 {

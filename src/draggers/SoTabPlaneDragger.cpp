@@ -243,7 +243,7 @@ SoTabPlaneDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTabPlaneDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -253,7 +253,7 @@ SoTabPlaneDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTabPlaneDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -418,7 +418,7 @@ SoTabPlaneDragger::getXYScreenLengths(SbVec2f & lengths,
   COIN_STUB();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when dragger is selected (picked) by the user.
 */
 void
@@ -476,7 +476,7 @@ SoTabPlaneDragger::dragStart(void)
   }
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when user drags the mouse after picking the dragger.
 */
 void
@@ -573,7 +573,7 @@ SoTabPlaneDragger::drag(void)
   }
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when mouse button is released after picking and interacting
   with the dragger.
 */
@@ -583,7 +583,7 @@ SoTabPlaneDragger::dragFinish(void)
   this->whatkind = WHATKIND_NONE;
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTabPlaneDragger::startCB(void *, SoDragger * d)
 {
@@ -591,7 +591,7 @@ SoTabPlaneDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTabPlaneDragger::motionCB(void *, SoDragger * d)
 {
@@ -599,7 +599,7 @@ SoTabPlaneDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTabPlaneDragger::finishCB(void *, SoDragger * d)
 {
@@ -607,7 +607,7 @@ SoTabPlaneDragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTabPlaneDragger::metaKeyChangeCB(void *, SoDragger * d)
 {

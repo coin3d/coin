@@ -116,7 +116,7 @@ SoGLPointSizeElement::pop(SoState * state,
   inherited::pop(state, prevTopElement);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoGLPointSizeElement::setElt(float val)
 {

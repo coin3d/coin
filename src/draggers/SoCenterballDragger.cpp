@@ -70,11 +70,11 @@
 
 /*!
   \var SoFieldSensor * SoCenterballDragger::rotFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoCenterballDragger::centerFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 SO_KIT_SOURCE(SoCenterballDragger);
@@ -380,7 +380,7 @@ SoCenterballDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoCenterballDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -390,7 +390,7 @@ SoCenterballDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoCenterballDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -409,7 +409,7 @@ SoCenterballDragger::valueChangedCB(void *, SoDragger * d)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Needed to activate some feedback.
 */
 void
@@ -424,7 +424,7 @@ SoCenterballDragger::kidStartCB(void * d , SoDragger * child)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Needed to deactive some feedback.
 */
 void

@@ -123,11 +123,11 @@ SO_KIT_SOURCE(SoBaseKit);
 
 /*!
   \var SoChildList * SoBaseKit::children
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbBool SoBaseKit::connectionsSetUp
-  \internal
+  \COININTERNAL
 */
 
 // macro for accessing private data
@@ -1406,7 +1406,7 @@ SoBaseKit::getNodekitPartsList(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 const SbList<SoSFNode*> &
 SoBaseKit::getCatalogInstances(void) const

@@ -289,7 +289,7 @@ SoInput::SoInput(SoInput * dictIn)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Do common tasks for the constructors.
 */
 void
@@ -1392,7 +1392,7 @@ SoInput::addDirectoryLast(const char * dirName)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Add a directory to the search list at the specified index value. An index
   of -1 means append.
@@ -1451,7 +1451,7 @@ SoInput::addEnvDirectoriesLast(const char * envVarName,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Add environment variable directory list, starting at index \a startidx.
  */
@@ -2342,7 +2342,7 @@ SoInput::setDirectories(SbStringList * dirs)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Return the currently active stream.
 */

@@ -74,42 +74,42 @@
 
 /*!
   \var SbDPViewVolume::ProjectionType SbDPViewVolume::type
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SbVec3d SbDPViewVolume::projPoint
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SbVec3d SbDPViewVolume::projDir
-  \internal
+  \COININTERNAL
 */
 
 /*!  
   \var double SbDPViewVolume::nearDist
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var double SbDPViewVolume::nearToFar
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SbVec3d SbDPViewVolume::llf
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SbVec3d SbDPViewVolume::lrf
-  \internal
+  \COININTERNAL
 */
 
 /*! 
   \var SbVec3d SbDPViewVolume::ulf
-  \internal
+  \COININTERNAL
 */
 
 //

@@ -58,15 +58,15 @@ SO_NODE_SOURCE(SoDirectionalLightManip);
 
 /*!
   \var SoFieldSensor * SoDirectionalLightManip::directionFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoDirectionalLightManip::colorFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoChildList * SoDirectionalLightManip::children
-  \internal
+  \COININTERNAL
 */
 
 
@@ -337,7 +337,7 @@ SoDirectionalLightManip::getChildren(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Convert from matrix to direction.
 */
 void
@@ -358,7 +358,7 @@ SoDirectionalLightManip::valueChangedCB(void * m, SoDragger * dragger)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoDirectionalLightManip::fieldSensorCB(void * m, SoSensor *)

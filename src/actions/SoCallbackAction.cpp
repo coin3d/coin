@@ -1027,7 +1027,7 @@ SoCallbackAction::getSwitch(void) const
 /************************************************************************************/
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SoCallbackAction::Response
 SoCallbackAction::getCurrentResponse(void) const
@@ -1036,7 +1036,7 @@ SoCallbackAction::getCurrentResponse(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Invoke all "pre traversal" callbacks.
  */
@@ -1069,7 +1069,7 @@ SoCallbackAction::invokePreCallbacks(const SoNode * const node)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Invoke all "post traversal" callbacks.
  */
@@ -1101,7 +1101,7 @@ SoCallbackAction::invokePostCallbacks(const SoNode * const node)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Invoke all "triangle generation" callbacks.
  */
@@ -1117,7 +1117,7 @@ SoCallbackAction::invokeTriangleCallbacks(const SoShape * const shape,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Invoke all "line segment generation" callbacks.
  */
@@ -1132,7 +1132,7 @@ SoCallbackAction::invokeLineSegmentCallbacks(const SoShape * const shape,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Invoke all "point" callbacks.
  */
@@ -1146,7 +1146,7 @@ SoCallbackAction::invokePointCallbacks(const SoShape * const shape,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Check from the shape nodes whether or not to generate primitives
   from the complex shapes. If there are no callbacks attached to the

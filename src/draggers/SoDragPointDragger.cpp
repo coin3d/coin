@@ -75,7 +75,7 @@
 
 /*!
   \var SoFieldSensor * SoDragPointDragger::fieldSensor
-  \internal
+  \COININTERNAL
 */
 
 
@@ -292,7 +292,7 @@ SoDragPointDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoDragPointDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -302,7 +302,7 @@ SoDragPointDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoDragPointDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -365,7 +365,7 @@ SoDragPointDragger::showNextDraggerSet(void)
   this->updateSwitchNodes();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when dragger is selected (picked) by the user.
 */
 void
@@ -399,7 +399,7 @@ SoDragPointDragger::dragStart(void)
   }
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when user drags the mouse after picking the dragger.
 */
 void
@@ -408,7 +408,7 @@ SoDragPointDragger::drag(void)
   // FIXME: update feedback information, pederb 20000202
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when mouse button is released after picking and interacting
   with the dragger.
 */
@@ -426,7 +426,7 @@ SoDragPointDragger::dragFinish(void)
   SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoDragPointDragger::startCB(void *d, SoDragger *)
 {
@@ -434,7 +434,7 @@ SoDragPointDragger::startCB(void *d, SoDragger *)
   thisp->dragStart();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoDragPointDragger::motionCB(void *d, SoDragger *)
 {
@@ -442,7 +442,7 @@ SoDragPointDragger::motionCB(void *d, SoDragger *)
   thisp->drag();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoDragPointDragger::finishCB(void *d, SoDragger *)
 {
@@ -450,7 +450,7 @@ SoDragPointDragger::finishCB(void *d, SoDragger *)
   thisp->dragFinish();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoDragPointDragger::metaKeyChangeCB(void * d, SoDragger *)
 {

@@ -903,7 +903,7 @@ SoAction::getCurPath(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SoNode *
 SoAction::getCurPathTail(void)
@@ -912,7 +912,7 @@ SoAction::getCurPathTail(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoAction::usePathCode(int & numindices, const int * & indices)
@@ -1014,7 +1014,7 @@ SoAction::getEnabledElements(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   This method not available in the original OIV API, see SoSubAction.h
   for explanation.
@@ -1026,7 +1026,7 @@ SoAction::getClassEnabledElements(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   This method not available in the original OIV API, see SoSubAction.h
   for explanation.
@@ -1083,7 +1083,7 @@ SoAction::setTerminated(const SbBool flag)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SbBool
 SoAction::shouldCompactPathList(void) const

@@ -57,23 +57,23 @@
 
 /*!
   \var SoFieldSensor * SoRotateSphericalDragger::fieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbSphereProjector * SoRotateSphericalDragger::sphereProj
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbBool SoRotateSphericalDragger::userProj
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbMatrix SoRotateSphericalDragger::prevMotionMatrix
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbVec3f SoRotateSphericalDragger::prevWorldHitPt
-  \internal
+  \COININTERNAL
 */
 
 SO_KIT_SOURCE(SoRotateSphericalDragger);
@@ -180,7 +180,7 @@ SoRotateSphericalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateSphericalDragger::fieldSensorCB(void *d, SoSensor *)
 {
@@ -194,7 +194,7 @@ SoRotateSphericalDragger::fieldSensorCB(void *d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateSphericalDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -260,7 +260,7 @@ SoRotateSphericalDragger::copyContents(const SoFieldContainer * fromfc,
   this->userProj = FALSE;
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateSphericalDragger::startCB(void *, SoDragger * d)
 {
@@ -268,7 +268,7 @@ SoRotateSphericalDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateSphericalDragger::motionCB(void *, SoDragger * d)
 {
@@ -276,7 +276,7 @@ SoRotateSphericalDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateSphericalDragger::doneCB(void * f, SoDragger * d)
 {
@@ -284,7 +284,7 @@ SoRotateSphericalDragger::doneCB(void * f, SoDragger * d)
   thisp->dragFinish();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when dragger is selected (picked) by the user.
 */
 void
@@ -321,7 +321,7 @@ SoRotateSphericalDragger::dragStart(void)
   this->prevMotionMatrix = this->getMotionMatrix();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when user drags the mouse after picking the dragger.
 */
 void
@@ -342,7 +342,7 @@ SoRotateSphericalDragger::drag(void)
   this->setMotionMatrix(this->prevMotionMatrix);
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when mouse button is released after picking and interacting
   with the dragger.
 */

@@ -64,7 +64,7 @@
 
 /*!
   \enum SoGetBoundingBoxAction::ResetType
-  \internal
+  \COININTERNAL
 */
 
 
@@ -286,7 +286,7 @@ SoGetBoundingBoxAction::getWhatReset(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Called before node traversal of each node (from SoNode action method).
 */
 void
@@ -310,7 +310,7 @@ SoGetBoundingBoxAction::checkResetBefore(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Called after node traversal of each node (from SoNode action method).
 */
 void
@@ -381,7 +381,7 @@ SoGetBoundingBoxAction::extendBy(const SbXfBox3f & box)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Set a new center point during traversal.
 */
 void
@@ -413,7 +413,7 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f & center,
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Query about the center point during traversal.
 */
 SbBool
@@ -423,7 +423,7 @@ SoGetBoundingBoxAction::isCenterSet(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Reset the scene center point during traversal.
 */
 void

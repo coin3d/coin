@@ -84,42 +84,42 @@
 
 /*!
   \var SbViewVolume::ProjectionType SbViewVolume::type
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SbVec3f SbViewVolume::projPoint
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SbVec3f SbViewVolume::projDir
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var float SbViewVolume::nearDist
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var float SbViewVolume::nearToFar
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SbVec3f SbViewVolume::llf
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SbVec3f SbViewVolume::lrf
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SbVec3f SbViewVolume::ulf
-  \internal
+  \COININTERNAL
 */
 
 

@@ -77,7 +77,7 @@
 
 /*!
   \var SoFieldSensor * SoTranslate1Dragger::fieldSensor
-  \internal
+  \COININTERNAL
 */
 
 
@@ -185,7 +185,7 @@ SoTranslate1Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTranslate1Dragger::fieldSensorCB(void *d, SoSensor *)
 {
@@ -199,7 +199,7 @@ SoTranslate1Dragger::fieldSensorCB(void *d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTranslate1Dragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -228,7 +228,7 @@ SoTranslate1Dragger::valueChangedCB(void *, SoDragger * d)
 #endif
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTranslate1Dragger::startCB(void *, SoDragger * d)
 {
@@ -236,7 +236,7 @@ SoTranslate1Dragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTranslate1Dragger::motionCB(void *, SoDragger * d)
 {
@@ -244,7 +244,7 @@ SoTranslate1Dragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTranslate1Dragger::finishCB(void *, SoDragger * d)
 {
@@ -252,7 +252,7 @@ SoTranslate1Dragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when dragger is selected (picked) by the user.
 */
 void
@@ -268,7 +268,7 @@ SoTranslate1Dragger::dragStart(void)
   this->lineProj->setLine(SbLine(hitPt, hitPt + SbVec3f(1.0f, 0.0f, 0.0f)));
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when user drags the mouse after picking the dragger.
 */
 void
@@ -283,7 +283,7 @@ SoTranslate1Dragger::drag(void)
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when mouse button is released after picking and interacting
   with the dragger.
 */

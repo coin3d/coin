@@ -58,15 +58,15 @@ SO_KIT_SOURCE(SoRotateCylindricalDragger);
 
 /*!
   \var SoFieldSensor * SoRotateCylindricalDragger::fieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbCylinderProjector * SoRotateCylindricalDragger::cylinderProj
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SbBool SoRotateCylindricalDragger::userProj
-  \internal
+  \COININTERNAL
 */
 
 
@@ -171,7 +171,7 @@ SoRotateCylindricalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return oldval;
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateCylindricalDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -188,7 +188,7 @@ SoRotateCylindricalDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateCylindricalDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -257,7 +257,7 @@ SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc,
   this->userProj = FALSE;
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateCylindricalDragger::startCB(void * f, SoDragger * d)
 {
@@ -265,7 +265,7 @@ SoRotateCylindricalDragger::startCB(void * f, SoDragger * d)
   thisp->dragStart();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateCylindricalDragger::motionCB(void * f, SoDragger * d)
 {
@@ -273,7 +273,7 @@ SoRotateCylindricalDragger::motionCB(void * f, SoDragger * d)
   thisp->drag();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoRotateCylindricalDragger::doneCB(void * f, SoDragger * d)
 {
@@ -281,7 +281,7 @@ SoRotateCylindricalDragger::doneCB(void * f, SoDragger * d)
   thisp->dragFinish();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when dragger is selected (picked) by the user.
 */
 void
@@ -316,7 +316,7 @@ SoRotateCylindricalDragger::dragStart(void)
 
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when user drags the mouse after picking the dragger.
 */
 void
@@ -334,7 +334,7 @@ SoRotateCylindricalDragger::drag(void)
                                              rot, SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when mouse button is released after picking and interacting
   with the dragger.
 */

@@ -88,11 +88,11 @@
 
 /*!
   \var SoFieldSensor * SoTrackballDragger::rotFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoTrackballDragger::scaleFieldSensor
-  \internal
+  \COININTERNAL
 */
 
 // don't change these values!
@@ -313,7 +313,7 @@ SoTrackballDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTrackballDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -323,7 +323,7 @@ SoTrackballDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTrackballDragger::valueChangedCB(void *, SoDragger * d)
 {
@@ -385,7 +385,7 @@ SoTrackballDragger_invalidate_surroundscale(SoBaseKit * kit)
   if (ss) ss->invalidate();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when dragger is selected (picked) by the user.
 */
 void
@@ -503,7 +503,7 @@ SoTrackballDragger::dragStart(void)
   THIS->hasDragged = FALSE;
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when user drags the mouse after picking the dragger.
 */
 void
@@ -576,7 +576,7 @@ SoTrackballDragger::drag(void)
   THIS->prevMousePos = this->getNormalizedLocaterPosition();
 }
 
-/*! \internal
+/*! \COININTERNAL
   Called when mouse button is released after picking and interacting
   with the dragger.
 */
@@ -665,7 +665,7 @@ SoTrackballDragger::setAllPartsActive(SbBool onoroff)
   SoInteractionKit::setSwitchValue(sw, val);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTrackballDragger::startCB(void *, SoDragger * d)
 {
@@ -673,7 +673,7 @@ SoTrackballDragger::startCB(void *, SoDragger * d)
   thisp->dragStart();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTrackballDragger::motionCB(void *, SoDragger * d)
 {
@@ -681,7 +681,7 @@ SoTrackballDragger::motionCB(void *, SoDragger * d)
   thisp->drag();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTrackballDragger::finishCB(void *, SoDragger * d)
 {
@@ -689,7 +689,7 @@ SoTrackballDragger::finishCB(void *, SoDragger * d)
   thisp->dragFinish();
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoTrackballDragger::metaKeyChangeCB(void *, SoDragger *)
 {

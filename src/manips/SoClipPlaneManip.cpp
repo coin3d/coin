@@ -68,24 +68,24 @@ SO_NODE_SOURCE(SoClipPlaneManip);
 
 /*!
   \var SoSFVec3f * SoClipPlaneManip::draggerPosition
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \var SoFieldSensor * SoClipPlaneManip::planeFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoClipPlaneManip::onFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoFieldSensor * SoClipPlaneManip::draggerPosFieldSensor
-  \internal
+  \COININTERNAL
 */
 /*!
   \var SoChildList * SoClipPlaneManip::children
-  \internal
+  \COININTERNAL
 */
 
 
@@ -390,7 +390,7 @@ SoClipPlaneManip::getChildren(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Called whenever dragger is touched.
 */
 void
@@ -419,7 +419,7 @@ SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Called whenever one of the fields changes value.
 */
 void

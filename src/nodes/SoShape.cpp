@@ -98,19 +98,19 @@
 
 /*!
   \enum SoShape::TriangleShape
-  \internal
+  \COININTERNAL
 */
 
 /*!
   \fn void SoShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
-  \internal
+  \COININTERNAL
 */
 
 // FIXME: should be documented properly. See also FIXME above
 // beingShape() doc. 20020523 mortene.
 /*!
   \fn void SoShape::generatePrimitives(SoAction * action)
-  \internal
+  \COININTERNAL
 */
 
 // *************************************************************************
@@ -418,7 +418,7 @@ SoShape::getComplexityValue(SoAction * action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SbBool
 SoShape::shouldGLRender(SoGLRenderAction * action)
@@ -569,7 +569,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SbBool
 SoShape::shouldRayPick(SoRayPickAction * const action)
@@ -589,7 +589,7 @@ SoShape::shouldRayPick(SoRayPickAction * const action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoShape::beginSolidShape(SoGLRenderAction * action)
@@ -604,7 +604,7 @@ SoShape::beginSolidShape(SoGLRenderAction * action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoShape::endSolidShape(SoGLRenderAction * action)
@@ -613,7 +613,7 @@ SoShape::endSolidShape(SoGLRenderAction * action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoShape::computeObjectSpaceRay(SoRayPickAction * const action)
@@ -622,7 +622,7 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
@@ -722,7 +722,7 @@ SoShape::createPointDetail(SoRayPickAction * /* action */,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoShape::invokeTriangleCallbacks(SoAction * const action,
@@ -818,7 +818,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoShape::invokeLineSegmentCallbacks(SoAction * const action,
@@ -887,7 +887,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoShape::invokePointCallbacks(SoAction * const action,
@@ -951,7 +951,7 @@ SoShape::beginShape(SoAction * const action, const TriangleShape shapetype,
 
 
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoShape::shapeVertex(const SoPrimitiveVertex * const v)
@@ -963,7 +963,7 @@ SoShape::shapeVertex(const SoPrimitiveVertex * const v)
 // programmers extending the library with new SoShape-derived
 // nodes. 20020523 mortene.
 /*!
-  \internal
+  \COININTERNAL
 */
 void
 SoShape::endShape(void)
@@ -1069,7 +1069,7 @@ SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
 }
 
 /*!
-  \internal
+  \COININTERNAL
  */
 SbBool
 SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * action)

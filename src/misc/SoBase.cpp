@@ -130,7 +130,7 @@
 
 /*!
   \enum SoBase::BaseFlags
-  \internal
+  \COININTERNAL
 */
 
 
@@ -867,7 +867,7 @@ SoBase::shouldWrite(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Don't know what this is good for.
 */
 void
@@ -877,7 +877,7 @@ SoBase::incrementCurrentWriteCounter(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Don't know what this is good for.
  */
 void
@@ -1377,7 +1377,7 @@ SoBase::getFileFormatName(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
   Don't know what this is good for.
  */
 uint32_t

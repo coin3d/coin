@@ -689,7 +689,7 @@ SoInteractionKit::setPart(const SbName & partname, SoNode * from)
   return inherited::setPart(partname, from);
 }
 
-/*! \internal */
+/*! \COININTERNAL */
 void
 SoInteractionKit::fieldSensorCB(void * d, SoSensor * s)
 {

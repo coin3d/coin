@@ -305,7 +305,7 @@ operator !=(const SbBox3s & b1, const SbBox3s & b2)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 short
 SbBox3s::width(void) const
@@ -314,7 +314,7 @@ SbBox3s::width(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 short
 SbBox3s::height(void) const
@@ -323,7 +323,7 @@ SbBox3s::height(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 */
 short
 SbBox3s::depth(void) const
@@ -333,7 +333,7 @@ SbBox3s::depth(void) const
 
 
 /*!
-  \internal
+  \COININTERNAL
 */
 SbBool
 SbBox3s::hasArea(void) const

@@ -327,7 +327,7 @@ SoSearchAction::reset(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Marks the SoSearchAction instance as terminated.
 */
@@ -338,7 +338,7 @@ SoSearchAction::setFound(void)
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Returns whether the search action was terminated.
 
@@ -352,7 +352,7 @@ SoSearchAction::isFound(void) const
 }
 
 /*!
-  \internal
+  \COININTERNAL
 
   Sets the path, or adds the path to the path list, depending on the
   interest configuration.  The path is not copied, so it can not be

@@ -35,7 +35,7 @@
 
 /*!
   \var int SoConeDetail::part
-  \internal
+  \COININTERNAL
 */
 
 #include <Inventor/details/SoConeDetail.h>

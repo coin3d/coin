@@ -56,7 +56,7 @@
 
 /*!
   \var SoChildList * SoNodeKitListPart::children
-  \internal
+  \COININTERNAL
 */
 
 SO_NODE_SOURCE(SoNodeKitListPart);
