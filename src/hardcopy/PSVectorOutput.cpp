@@ -45,6 +45,8 @@ public:
 */
 SoPSVectorOutput::SoPSVectorOutput()
 {
+  PRIVATE(this) = new SoPSVectorOutputP;
+  PRIVATE(this)->colored = TRUE;
 }
 
 /*!
@@ -52,6 +54,7 @@ SoPSVectorOutput::SoPSVectorOutput()
 */
 SoPSVectorOutput::~SoPSVectorOutput()
 {
+  delete PRIVATE(this);
 }
 
 /*!

@@ -23,6 +23,7 @@
 
 #include <HardCopy/SoVectorOutput.h>
 #include <Inventor/SbBasic.h>
+#include <Inventor/C/tidbitsp.h>
 
 // *************************************************************************
 
@@ -57,7 +58,7 @@ public:
 SoVectorOutput::SoVectorOutput(void)
 {
   PRIVATE(this) = new SoVectorOutputP;
-  PRIVATE(this)->fp = stdout; // FIXME: use coin_get_stdout() when moved to Coin
+  PRIVATE(this)->fp = coin_get_stdout();
   PRIVATE(this)->didopen = FALSE;
 }
 
