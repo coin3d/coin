@@ -22,8 +22,7 @@
   \brief The SoVRMLAnchor class is used for linking to other URL resources.
   \ingroup VRMLnodes
 
-  The following documentation is copyright The Web3D Consortium, and
-  is used by permission of the Consortium.
+  \WEB3DCOPYRIGHT
 
   \verbatim
   Anchor {
