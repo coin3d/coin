@@ -22,8 +22,10 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/lists/SoTypeList.h>
 
 class SoGroup;
+
 
 class SoNodeKitListPart : public SoNode
 {
@@ -74,6 +76,11 @@ protected:
                             SbBool copyConnections);
 
   SoChildList * children;
+
+private:
+  SoGroup * root;
+  SoTypeList allowedtypes;
+  SbBool typelistlocked;
 };
 
 #endif // !__SONODEKITLISTPART_H__

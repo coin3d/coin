@@ -19,16 +19,38 @@
 
 /*!
   \class SoNodeKitListPart SoNodeKitListPart.h Inventor/nodekits/SoNodeKitListPart.h
-  \brief The SoNodeKitListPart class ...
+  \brief The SoNodeKitListPart class is a container node.
   \ingroup nodekits
 
-  FIXME: write class doc
-*/
+  This node is basically just a container node with these differences versus
+  the other group nodes:
+
+  1. It is possible to make a list of which node class types are
+  allowed as children.
+
+  2. You can freely select which kind of group node behaviour you want
+  this container to have. Default is to act like an SoGroup node, but
+  by using SoNodeKitListPart::setContainerType(), you can change the
+  behaviour to be like a separator, a switch or whatever else you have
+  of node types inheriting SoGroup.
+
+  \sa SoGroup, SoSeparator, SoSwitch
+ */
+
+/*¡
+  Import, export and copy functionality is missing.
+ */
 
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SoTypeList.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodes/SoGroup.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 SO_NODE_SOURCE(SoNodeKitListPart);
 
@@ -39,6 +61,11 @@ SO_NODE_SOURCE(SoNodeKitListPart);
 SoNodeKitListPart::SoNodeKitListPart()
 {
   SO_NODE_CONSTRUCTOR(SoNodeKitListPart);
+
+  this->root = new SoGroup;
+  this->root->ref();
+
+  this->typelistlocked = FALSE;
 }
 
 /*!
@@ -46,6 +73,7 @@ SoNodeKitListPart::SoNodeKitListPart()
 */
 SoNodeKitListPart::~SoNodeKitListPart()
 {
+  this->root->unref();
 }
 
 /*!
@@ -60,285 +88,381 @@ SoNodeKitListPart::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Return type id for the list container. Default is SoGroup.
 */
 SoType
 SoNodeKitListPart::getContainerType(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return SoType::badType();
+  return this->root->getTypeId();
 }
 
 /*!
-  FIXME: write function documentation
+  Change the behaviour of this container node. \a newContainerType
+  must be derived from SoGroup.
 */
 void
-SoNodeKitListPart::setContainerType(SoType /*newContainerType*/)
+SoNodeKitListPart::setContainerType(SoType newContainerType)
 {
-  assert(0 && "FIXME: not implemented yet");
+  if (this->typelistlocked) {
+#if COIN_DEBUG
+    SoDebugError::post("SoNodeKitListPart::setContainerType",
+                       "type list has been locked");
+#endif // COIN_DEBUG
+    return;
+  }
+
+#if COIN_DEBUG
+  if (!newContainerType.isDerivedFrom(SoGroup::getClassTypeId())) {
+    SoDebugError::postInfo("SoNodeKitListPart::setContainerType",
+                           "'%s' is not a group node class type",
+                           newContainerType.getName().getString());
+    return;
+  }
+#endif // debug
+
+  SoGroup * newroot = (SoGroup *) newContainerType.createInstance();
+  newroot->ref();
+
+  SoChildList * children = this->getChildren();
+  for (int i=0; i < children->getLength(); i++) {
+    newroot->addChild((*children)[i]);
+  }
+
+  this->root->unref();
+  this->root = newroot;
 }
 
 /*!
-  FIXME: write function documentation
+  Return a list of all types which are allowed as children of this node.
+  Default is to allow all nodetypes.
 */
 const SoTypeList &
 SoNodeKitListPart::getChildTypes(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  static SoTypeList tl;
-  return tl;
+  if (this->allowedtypes.getLength()) return this->allowedtypes;
+
+  static SoTypeList deflist;
+  if (deflist.getLength() == 0) deflist.append(SoNode::getClassTypeId());
+  return deflist;
 }
 
 /*!
-  FIXME: write function documentation
+  Add one more node class type which should be allowed to be used in the
+  node list.
+
+  Note: the default single SoNode type in the list will be removed
+  upon the first call to this method.
 */
 void
-SoNodeKitListPart::addChildType(SoType /*typeToAdd*/)
+SoNodeKitListPart::addChildType(SoType typeToAdd)
 {
-  assert(0 && "FIXME: not implemented yet");
+  if (this->typelistlocked) {
+#if COIN_DEBUG
+    SoDebugError::post("SoNodeKitListPart::addChildType",
+                       "type list has been locked");
+#endif // COIN_DEBUG
+    return;
+  }
+
+  for (int i=0; i < this->allowedtypes.getLength(); i++) {
+    if (this->allowedtypes[i] == typeToAdd) {
+#if COIN_DEBUG
+      SoDebugError::post("SoNodeKitListPart::addChildType",
+                         "type '%s' already present in the list",
+                         typeToAdd.getName().getString());
+#endif // COIN_DEBUG
+      return;
+    }
+  }
+  this->allowedtypes.append(typeToAdd);
 }
 
 /*!
-  FIXME: write function documentation
+  Return \c TRUE if nodes of the \a typeToCheck class type can be added
+  to the list.
 */
 SbBool
-SoNodeKitListPart::isTypePermitted(SoType /*typeToCheck*/) const
+SoNodeKitListPart::isTypePermitted(SoType typeToCheck) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  int numtypes = this->allowedtypes.getLength();
+
+  if ((numtypes == 0) && typeToCheck.isDerivedFrom(SoNode::getClassTypeId()))
+    return TRUE;
+
+  for (int i=0; i < numtypes; i++) {
+    if (typeToCheck.isDerivedFrom(this->allowedtypes[i])) return TRUE;
+  }
   return FALSE;
 }
 
 /*!
-  FIXME: write function documentation
+  Return \c TRUE if \a child has a class type which is permitted to be
+  in the list.
 */
 SbBool
-SoNodeKitListPart::isChildPermitted(const SoNode * /*child*/) const
+SoNodeKitListPart::isChildPermitted(const SoNode * child) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+  return this->isTypePermitted(child->getTypeId());
 }
 
 /*!
-  FIXME: write function documentation
+  Calls set() on the container node with \a fieldDataString.
 */
 void
-SoNodeKitListPart::containerSet(const char * /*fieldDataString*/)
+SoNodeKitListPart::containerSet(const char * fieldDataString)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->set(fieldDataString);
 }
 
 /*!
-  FIXME: write function documentation
+  Lock type list so no more node class types can be added by using
+  addChildType(), and locks container type so it no longer can be
+  changed by setContainerType().
 */
 void
 SoNodeKitListPart::lockTypes(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->typelistlocked = TRUE;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if the list of allowable node types and the container
+  type have both been locked.
 */
 SbBool
 SoNodeKitListPart::isTypeLocked(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+  return this->typelistlocked;
 }
 
 /*!
-  FIXME: write function documentation
+  Adds \a child to the internal list of children, if it is of a
+  type permitted to be added.
 */
 void
-SoNodeKitListPart::addChild(SoNode * /*child*/)
+SoNodeKitListPart::addChild(SoNode * child)
 {
-  assert(0 && "FIXME: not implemented yet");
+  if (!this->isChildPermitted(child)) {
+#if COIN_DEBUG
+    SoDebugError::post("SoNodeKitListPart::addChild",
+                       "can't add child of type '%s'",
+                       child->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+    return;
+  }
+
+  this->root->addChild(child);
 }
 
 /*!
-  FIXME: write function documentation
+  Inserts \a child in the internal list of children at position
+  \c childIndex, if it is of a type permitted to be added.
 */
 void
-SoNodeKitListPart::insertChild(SoNode * /*child*/, int /*childIndex*/)
+SoNodeKitListPart::insertChild(SoNode * child, int childIndex)
 {
-  assert(0 && "FIXME: not implemented yet");
+  if (!this->isChildPermitted(child)) {
+#if COIN_DEBUG
+    SoDebugError::post("SoNodeKitListPart::insertChild",
+                       "can't insert child of type '%s'",
+                       child->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+    return;
+  }
+
+  this->root->insertChild(child, childIndex);
 }
 
 /*!
-  FIXME: write function documentation
+  Return child node at position \a index.
 */
 SoNode *
-SoNodeKitListPart::getChild(int /*index*/) const
+SoNodeKitListPart::getChild(int index) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
+  return this->root->getChild(index);
 }
 
 /*!
-  FIXME: write function documentation
+  Return position index of \a child in list of children.
 */
 int
-SoNodeKitListPart::findChild(SoNode * /*child*/) const
+SoNodeKitListPart::findChild(SoNode * child) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return -1;
+  return this->root->findChild(child);
 }
 
 /*!
-  FIXME: write function documentation
+  Return number of children.
 */
 int
 SoNodeKitListPart::getNumChildren(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return -1;
+  return this->root->getNumChildren();
 }
 
 /*!
-  FIXME: write function documentation
+  Remove child at position \a index.
 */
 void
-SoNodeKitListPart::removeChild(int /*index*/)
+SoNodeKitListPart::removeChild(int index)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->removeChild(index);
 }
 
 /*!
-  FIXME: write function documentation
+  Remove \a child from list of children.
 */
 void
-SoNodeKitListPart::removeChild(SoNode * /*child*/)
+SoNodeKitListPart::removeChild(SoNode * child)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->removeChild(child);
 }
 
 /*!
-  FIXME: write function documentation
+  Replace child at \a index with \a newChild, if \a newChild is of a
+  permitted type.
 */
 void
-SoNodeKitListPart::replaceChild(int /*index*/, SoNode * /*newChild*/)
+SoNodeKitListPart::replaceChild(int index, SoNode * newChild)
 {
-  assert(0 && "FIXME: not implemented yet");
+  if (!this->isChildPermitted(newChild)) {
+#if COIN_DEBUG
+    SoDebugError::post("SoNodeKitListPart::replaceChild",
+                       "can't replace with child of type '%s'",
+                       newChild->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+    return;
+  }
+
+  this->root->replaceChild(index, newChild);
 }
 
 /*!
-  FIXME: write function documentation
+  Replace \a oldChild with \a newChild, if \a newChild is of a
+  permitted type.
 */
 void
-SoNodeKitListPart::replaceChild(SoNode * /*oldChild*/, SoNode * /*newChild*/)
+SoNodeKitListPart::replaceChild(SoNode * oldChild, SoNode * newChild)
 {
-  assert(0 && "FIXME: not implemented yet");
+  if (!this->isChildPermitted(newChild)) {
+#if COIN_DEBUG
+    SoDebugError::post("SoNodeKitListPart::replaceChild",
+                       "can't replace with child of type '%s'",
+                       newChild->getTypeId().getName().getString());
+#endif // COIN_DEBUG
+    return;
+  }
+
+  this->root->replaceChild(oldChild, newChild);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 SbBool
 SoNodeKitListPart::affectsState(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+  return this->root->affectsState();
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 void
-SoNodeKitListPart::doAction(SoAction * /*action*/)
+SoNodeKitListPart::doAction(SoAction * action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->doAction(action);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 void
-SoNodeKitListPart::callback(SoCallbackAction * /*action*/)
+SoNodeKitListPart::callback(SoCallbackAction * action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->callback(action);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 void
-SoNodeKitListPart::GLRender(SoGLRenderAction * /*action*/)
+SoNodeKitListPart::GLRender(SoGLRenderAction * action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->GLRender(action);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 void
-SoNodeKitListPart::getBoundingBox(SoGetBoundingBoxAction * /*action*/)
+SoNodeKitListPart::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->getBoundingBox(action);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 void
-SoNodeKitListPart::getMatrix(SoGetMatrixAction * /*action*/)
+SoNodeKitListPart::getMatrix(SoGetMatrixAction * action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->getMatrix(action);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 void
-SoNodeKitListPart::handleEvent(SoHandleEventAction * /*action*/)
+SoNodeKitListPart::handleEvent(SoHandleEventAction * action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->handleEvent(action);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 void
-SoNodeKitListPart::pick(SoPickAction * /*action*/)
+SoNodeKitListPart::pick(SoPickAction * action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->pick(action);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 void
-SoNodeKitListPart::search(SoSearchAction * /*action*/)
+SoNodeKitListPart::search(SoSearchAction * action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->search(action);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 void
-SoNodeKitListPart::getPrimitiveCount(SoGetPrimitiveCountAction * /*action*/)
+SoNodeKitListPart::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->root->getPrimitiveCount(action);
 }
 
 /*!
-  FIXME: write function documentation
+  This just "forwards" the call to the same method at the container node.
 */
 SoChildList *
 SoNodeKitListPart::getChildren(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
+  return this->root->getChildren();
 }
 
 /*!
-  FIXME: write function documentation
+  Return the SoGroup container which is the parent of all the children
+  which has been added.
 */
 SoGroup *
 SoNodeKitListPart::getContainerNode(void)
 {
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
+  return this->root;
 }
 
 /*!
