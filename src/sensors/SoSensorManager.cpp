@@ -225,9 +225,12 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
   // sort them based on SoSensor::isBefore(), but just use a FIFO
   // strategy.
   if (newentry->getPriority() == 0) {
+    LOCK_IMMEDIATE_QUEUE(this);
     THIS->immediatequeue.append(newentry);
+    UNLOCK_IMMEDIATE_QUEUE(this);
   }
   else {
+    LOCK_DELAY_QUEUE(this);
     SbList <SoDelayQueueSensor *> & delayqueue = THIS->delayqueue;
     
     int pos = 0;
@@ -236,8 +239,10 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
       pos++;
     }
     delayqueue.insert(newentry, pos);
+    UNLOCK_DELAY_QUEUE(this);
     this->notifyChanged();
   }
+
 #if DEBUG_DELAY_SENSORHANDLING // debug
   SoDebugError::postInfo("SoSensorManager::insertDelaySensor",
                          "inserted delay sensor #%d -- %p -- "
