@@ -49,7 +49,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
-# ADD LIB32 /nologo
+# ADD LIB32 "C:@libdir@\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" /nologo /out:"C:@libdir@\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" /out:
 
 !ELSEIF  "$(CFG)" == "coin - Win32 Debug"
 
@@ -72,7 +72,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
-# ADD LIB32 /nologo /out:"C:@libdir@\coind.lib"
+# ADD LIB32 /nologo /out:"C:@libdir@\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib"
 
 !ENDIF 
 

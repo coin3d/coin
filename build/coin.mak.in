@@ -33,7 +33,7 @@ INTDIR=.\Release
 OutDir=C:@libdir@
 # End Custom Macros
 
-ALL : "$(OUTDIR)\coin.lib"
+ALL : "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib"
 
 
 CLEAN :
@@ -517,7 +517,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoWWWAnchor.obj"
 	-@erase "$(INTDIR)\SoWWWInline.obj"
 	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(OUTDIR)\coin.lib"
+	-@erase "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -564,7 +564,7 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin.bsc"
 BSC32_SBRS= \
 	
 LIB32=link.exe -lib
-LIB32_FLAGS=/nologo /out:"$(OUTDIR)\coin.lib" 
+LIB32_FLAGS="C:@libdir@\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" /nologo /out:"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" /out: 
 LIB32_OBJS= \
 	"$(INTDIR)\commoncode.obj" \
 	"$(INTDIR)\default2dfont.obj" \
@@ -1046,7 +1046,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoWWWAnchor.obj" \
 	"$(INTDIR)\SoWWWInline.obj"
 
-"$(OUTDIR)\coin.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -1059,7 +1059,7 @@ INTDIR=.\Debug
 OutDir=C:@libdir@
 # End Custom Macros
 
-ALL : "$(OUTDIR)\coind.lib"
+ALL : "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib"
 
 
 CLEAN :
@@ -1544,7 +1544,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoWWWInline.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\vc60.pdb"
-	-@erase "$(OUTDIR)\coind.lib"
+	-@erase "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -1591,7 +1591,7 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin.bsc"
 BSC32_SBRS= \
 	
 LIB32=link.exe -lib
-LIB32_FLAGS=/nologo /out:"$(OUTDIR)\coind.lib" 
+LIB32_FLAGS=/nologo /out:"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib" 
 LIB32_OBJS= \
 	"$(INTDIR)\commoncode.obj" \
 	"$(INTDIR)\default2dfont.obj" \
@@ -2073,7 +2073,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoWWWAnchor.obj" \
 	"$(INTDIR)\SoWWWInline.obj"
 
-"$(OUTDIR)\coind.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
