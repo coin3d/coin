@@ -51,6 +51,10 @@
 #include <GL/gl.h>
 #include <assert.h>
 
+// defines for the flags member
+#define FLAG_RGBMODE 0x0001
+#define FLAG_ACTIVE  0x0002
+#define FLAG_SENDVP  0x0004
 
 /*!
   \typedef SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr)
@@ -81,8 +85,8 @@ SoSceneManager::SoSceneManager(void)
 
   this->backgroundindex = 0;
   this->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
-  this->rgbmode = TRUE;
-  this->active = FALSE;
+  // rgbmode by default, and send vp to GL on first render
+  this->flags = FLAG_RGBMODE|FLAG_SENDVP;
   this->redrawpri = SoSceneManager::getDefaultRedrawPriority();
 
   this->rendercb = NULL;
@@ -115,15 +119,35 @@ SoSceneManager::~SoSceneManager()
 void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
-  glClearColor(this->backgroundcolor[0],
-               this->backgroundcolor[1],
-               this->backgroundcolor[2],
-               0.0f);
-
   GLbitfield mask = 0;
   if (clearwindow) mask |= GL_COLOR_BUFFER_BIT;
   if (clearzbuffer) mask |= GL_DEPTH_BUFFER_BIT;
-  glClear(mask);
+
+  if (mask) {
+    if (this->flags & FLAG_RGBMODE) {
+      glClearColor(this->backgroundcolor[0],
+                   this->backgroundcolor[1],
+                   this->backgroundcolor[2],
+                   0.0f);
+    }
+    else {
+      glClearIndex(backgroundindex);
+    }
+    // some (most) GL drivers need to have the viewport set correctly
+    // before clearing. If the window size changes, the
+    // SoGLViewportRegionElement will not set the GL viewport until the
+    // glaction is applied, which is too late.  FIXME: bad design
+    if (this->flags & FLAG_SENDVP) {
+      this->flags &= ~FLAG_SENDVP;
+      const SbViewportRegion & vp = this->getViewportRegion();
+      SbVec2s origin = vp.getViewportOriginPixels();
+      SbVec2s size = vp.getViewportSizePixels();
+      glViewport((GLint) origin[0], (GLint) origin[1],
+                 (GLint) size[0], (GLint) size[1]);
+    }
+    glClear(mask);
+  }
+
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -174,8 +198,10 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoSceneManager::render", "before glrender->apply()");
 #endif // debug
+
   // Apply the SoGLRenderAction to the scenegraph root.
   if (this->scene) this->glaction->apply(this->scene);
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoSceneManager::render", "after glrender->apply()");
 #endif // debug
@@ -214,7 +240,7 @@ SoSceneManager::reinitialize(void)
 void
 SoSceneManager::scheduleRedraw(void)
 {
-  if (this->active && this->rendercb) {
+  if ((this->flags & FLAG_ACTIVE) && this->rendercb) {
     if (!this->redrawshot) {
       this->redrawshot =
         new SoOneShotSensor(SoSceneManager::redrawshotTriggeredCB, this);
@@ -236,7 +262,7 @@ SoSceneManager::scheduleRedraw(void)
 int
 SoSceneManager::isActive(void) const
 {
-  return this->active;
+  return (this->flags & FLAG_ACTIVE) != 0;
 }
 
 /*!
@@ -347,6 +373,7 @@ SoSceneManager::setWindowSize(const SbVec2s & newsize)
   region = this->handleeventaction->getViewportRegion();
   region.setWindowSize(newsize[0], newsize[1]);
   this->handleeventaction->setViewportRegion(region);
+  this->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -379,6 +406,7 @@ SoSceneManager::setSize(const SbVec2s & newsize)
   origin = region.getViewportOriginPixels();
   region.setViewportPixels(origin, newsize);
   this->handleeventaction->setViewportRegion(region);
+  this->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -406,6 +434,7 @@ SoSceneManager::setOrigin(const SbVec2s & newOrigin)
   size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
   this->handleeventaction->setViewportRegion(region);
+  this->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -425,6 +454,7 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 {
   this->glaction->setViewportRegion(newregion);
   this->handleeventaction->setViewportRegion(newregion);
+  this->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -486,7 +516,12 @@ SoSceneManager::getBackgroundIndex(void) const
 void
 SoSceneManager::setRGBMode(const SbBool flag)
 {
-  this->rgbmode = flag;
+  if (flag) {
+    this->flags |= FLAG_RGBMODE;
+  }
+  else {
+    this->flags &= ~FLAG_RGBMODE;
+  }
 }
 
 /*!
@@ -495,7 +530,7 @@ SoSceneManager::setRGBMode(const SbBool flag)
 SbBool
 SoSceneManager::isRGBMode(void) const
 {
-  return this->rgbmode;
+  return (this->flags & FLAG_RGBMODE) != 0;
 }
 
 /*!
@@ -504,7 +539,7 @@ SoSceneManager::isRGBMode(void) const
 void
 SoSceneManager::activate(void)
 {
-  this->active = TRUE;
+  this->flags |= FLAG_ACTIVE;
 }
 
 /*!
@@ -513,7 +548,7 @@ SoSceneManager::activate(void)
 void
 SoSceneManager::deactivate(void)
 {
-  this->active = FALSE;
+  this->flags &= ~FLAG_ACTIVE;
 }
 
 /*!
@@ -677,3 +712,8 @@ SoSceneManager::isRealTimeUpdateEnabled(void)
 {
   return SoSceneManager::touchtimer;
 }
+
+#undef FLAG_RGBMODE
+#undef FLAG_ACTIVE
+#undef FLAG_SENDVP
+

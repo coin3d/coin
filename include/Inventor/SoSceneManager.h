@@ -101,8 +101,7 @@ private:
 
   SbColor backgroundcolor;
   int backgroundindex;
-  SbBool rgbmode;
-  SbBool active;
+  uint32_t flags;
   static SbBool touchtimer;
 
   uint32_t redrawpri;
