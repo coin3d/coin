@@ -81,6 +81,10 @@ public:
     draggerToWorld(SbMatrix::identity()),
     worldToDragger(SbMatrix::identity())
   {
+    // Avoid warning due to zero refcount when applying the
+    // SoGetMatrixAction (NB: don't unref() in destructor as that
+    // would call delete on a stack item).
+    this->path.ref();
   }
 
   ~SoDraggerCache() {
