@@ -17,9 +17,6 @@ Separator {
 
    Complexity { textureQuality 0.1 }
 
-   Cube { width 10 height 10 depth 10 }
-
-
    IndexedFaceSet {
       vertexProperty VertexProperty {
          vertex [ 
@@ -58,5 +55,4 @@ Separator {
        32,33,34,35, -1
       ]
    }
-}
 }
