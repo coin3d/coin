@@ -504,6 +504,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_VERSION_1_2 1
 #define GL_VERSION_1_3 1
 #define GL_VERSION_1_4 1
+#define GL_VERSION_1_5 1
 #define GL_EXT_polygon_offset 1
 #define GL_EXT_texture_object 1
 #define GL_EXT_subtexture 1
@@ -518,6 +519,8 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_SGI_color_table 1
 #define GL_SGI_texture_color_table 1
 #define GL_ARB_vertex_buffer_object 1
+#define GL_EXT_multi_draw_arrays 1
+#define GL_NV_vertex_array_range 1
 
 #else /* static binding */
 
@@ -828,19 +831,21 @@ glglue_resolve_symbols(cc_glglue * w)
   /* Appeared in OpenGL v1.4 (but also in GL_EXT_multi_draw_array extension */
   w->glMultiDrawArrays = NULL;
   w->glMultiDrawElements = NULL;
-#if defined(GL_VERSION_1_4) || defined(GL_EXT_multi_draw_arrays)
+#if defined(GL_VERSION_1_4) 
   if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
     w->glMultiDrawArrays = (COIN_PFNGLMULTIDRAWARRAYSPROC) PROC(glMultiDrawArrays);
     w->glMultiDrawElements = (COIN_PFNGLMULTIDRAWELEMENTSPROC) PROC(glMultiDrawElements);
   }
-  else if (cc_glglue_glext_supported(w, "GL_EXT_multi_draw_arrays")) {
+#endif /* GL_VERSION_1_4 */
+#if defined(GL_EXT_multi_draw_arrays)
+  if ((w->glMultiDrawArrays == NULL) && cc_glglue_glext_supported(w, "GL_EXT_multi_draw_arrays")) {
     w->glMultiDrawArrays = (COIN_PFNGLMULTIDRAWARRAYSPROC) PROC(glMultiDrawArraysEXT);
     w->glMultiDrawElements = (COIN_PFNGLMULTIDRAWELEMENTSPROC) PROC(glMultiDrawElementsEXT);    
   }
-#endif /* GL_VERSION_1_4 || GL_EXT_multi_draw_arrays */
+#endif /* GL_EXT_multi_draw_arrays */
 
   w->glBindBuffer = NULL; /* so that cc_glglue_has_vertex_buffer_objects() works  */
-#if defined(GL_ARB_vertex_buffer_object) || defined(GL_VERSION_1_5) 
+#if defined(GL_VERSION_1_5) 
   if (cc_glglue_glversion_matches_at_least(w, 1, 5, 0)) {
     w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(glBindBuffer);
     w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(glDeleteBuffers);
@@ -854,7 +859,10 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glGetBufferParameteriv = (COIN_PFNGLGETBUFFERPARAMETERIVPROC) PROC(glGetBufferParameteriv);
     w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(glGetBufferPointerv);    
   }
-  else if (cc_glglue_glext_supported(w, "GL_ARB_vertex_buffer_object")) {
+#endif /* GL_VERSION_1_5 */
+
+#if defined(GL_ARB_vertex_buffer_object)
+  if ((w->glBindBuffer == NULL) && cc_glglue_glext_supported(w, "GL_ARB_vertex_buffer_object")) {
     w->glBindBuffer = (COIN_PFNGLBINDBUFFERPROC) PROC(glBindBufferARB);
     w->glDeleteBuffers = (COIN_PFNGLDELETEBUFFERSPROC) PROC(glDeleteBuffersARB);
     w->glGenBuffers = (COIN_PFNGLGENBUFFERSPROC) PROC(glGenBuffersARB);
@@ -867,6 +875,8 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glGetBufferParameteriv = (COIN_PFNGLGETBUFFERPARAMETERIVPROC) PROC(glGetBufferParameterivARB);
     w->glGetBufferPointerv = (COIN_PFNGLGETBUFFERPOINTERVPROC) PROC(glGetBufferPointervARB);
   }
+#endif /* GL_ARB_vertex_buffer_object */
+
   if (w->glBindBuffer) {
     if (!w->glDeleteBuffers ||
         !w->glGenBuffers ||
@@ -884,10 +894,9 @@ glglue_resolve_symbols(cc_glglue * w)
                                 "vertex buffer object functions were not found");
     }
   }
-#endif /* GL_ARB_vertex_buffer_object || GL_VERSION_1_5 */
   
   w->glVertexArrayRangeNV = NULL;
-#if defined(HAVE_GLX) || defined(HAVE_WGL)
+#if defined(GL_NV_vertex_array_range) && (defined(HAVE_GLX) || defined(HAVE_WGL))
   if (cc_glglue_glext_supported(w, "GL_NV_vertex_array_range")) {
     w->glVertexArrayRangeNV = (COIN_PFNGLVERTEXARRAYRANGENVPROC) PROC(glVertexArrayRangeNV);
     w->glFlushVertexArrayRangeNV = (COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC) PROC(glFlushVertexArrayRangeNV);
@@ -899,7 +908,6 @@ glglue_resolve_symbols(cc_glglue * w)
     w->glAllocateMemoryNV = (COIN_PFNGLALLOCATEMEMORYNVPROC) PROC(wglAllocateMemoryNV);
     w->glFreeMemoryNV = (COIN_PFNGLFREEMEMORYNVPROC) PROC(wglFreeMemoryNV);
 #endif /* HAVE_WGL */
-
     if (w->glVertexArrayRangeNV) {
       if (!w->glFlushVertexArrayRangeNV ||
           !w->glAllocateMemoryNV ||
