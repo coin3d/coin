@@ -1,0 +1,122 @@
+# CONFIG "The Engine Classes"
+# factors: [work in progress / no work done]
+# FLAGS [0.8 0.6]
+# C = made 100% API conform with Open Inventor
+# I = implementation complete, or nearly so
+# R = made robust
+# D = fully documented for Doxygen generation of html/man
+#
+# VALUES
+# - = not applicable
+# ! = method inherited from parent
+# 
+# ************************************************************************
+# CIRD
+# ====
+# HIERARCHY
+# ci    SoEngine
+# CI            SoBoolOperation
+#               SoCalculator
+# CI            SoComposeVec2f
+# CI            SoComposeVec3f
+# CI            SoComposeVec4f
+# CI            SoDecomposeVec2f
+# CI            SoDecomposeVec3f
+# CI            SoDecomposeVec4f
+# CI            SoComposeRotation
+#               SoComposeRotationFromTo
+# CI            SoDecomposeRotation
+# CI            SoComposeMatrix
+# CI            SoDecomposeMatrix
+#               SoComputeBoundingBox
+# CI            SoConcatenate
+# CI            SoCounter
+# CI            SoElapsedTime
+#               SoFieldConverter
+#                       SoConvertAll
+# CI            SoGate
+# CI            SoInterpolate
+# CI                    SoInterpolateFloat
+# CI                    SoInterpolateRotation
+# CI                    SoInterpolateVec2f
+# CI                    SoInterpolateVec3f
+# CI                    SoInterpolateVec4f
+# CI            SoOnOff
+# ci            SoOneShot
+# CI            SoSelectOne
+#               SoTimeCounter
+#               SoTransformVec3f
+# CI            SoTriggerAny
+# ci    SoEngineOutput
+#
+#############################################################################
+#
+# COMMENTS
+#
+# Field converters we need to make (integrate this information in the class
+# inheritance hierarchy):
+# <UL>
+# <LI>Any to String</LI>
+# <LI>String to Any</LI>
+# <LI>Scalars</LI>
+# <LI>Color <=> Vec3f</LI>
+# <LI>Float <=> Time</LI>
+# <LI>Matrix <=> Rotation</LI>
+# <LI>Name <=> Enum</LI>
+# <LI>Rotation <=> Vec4f (quaternion)</LI>
+# <LI>MF <=> SF</LI>
+# </UL>
+#
+# Miscellaneous tasks:
+# <UL>
+# <LI>the SoConvertAll class is not part of OIV, check with Kintel
+#     the reason why we're using it</LI>
+# <LI>Set dirty-bits and check it during notify to prevent redundant
+#     notifying</LI>
+# <LI>evaluate</LI>
+# <LI>Create and send SoNotList-parameters</LI>
+# <LI>Handle loops</LI>
+# </UL>
+# END COMMENTS
+#
+#############################################################################
+
+bool 'Disable engines' COIN_EXCLUDE_SOENGINE
+if [ "$COIN_EXCLUDE_SOENGINE" = "n" ]; then
+  bool '   Exclude SoBoolOperation' COIN_EXCLUDE_SOBOOLOPERATION
+  bool '   Exclude SoCalculator' COIN_EXCLUDE_SOCALCULATOR
+  bool '   Exclude SoComposeVec2f' COIN_EXCLUDE_SOCOMPOSEVEC2F
+  bool '   Exclude SoComposeVec3f' COIN_EXCLUDE_SOCOMPOSEVEC3F
+  bool '   Exclude SoComposeVec4f' COIN_EXCLUDE_SOCOMPOSEVEC4F
+  bool '   Exclude SoDecomposeVec2f' COIN_EXCLUDE_SODECOMPOSEVEC2F
+  bool '   Exclude SoDecomposeVec3f' COIN_EXCLUDE_SODECOMPOSEVEC3F
+  bool '   Exclude SoDecomposeVec4f' COIN_EXCLUDE_SODECOMPOSEVEC4F
+  bool '   Exclude SoComposeRotation' COIN_EXCLUDE_SOCOMPOSEROTATION
+  bool '   Exclude SoComposeRotationFromTo' COIN_EXCLUDE_SOCOMPOSEROTATIONFROMTO
+  bool '   Exclude SoDecomposeRotation' COIN_EXCLUDE_SODECOMPOSEROTATION
+  bool '   Exclude SoComposeMatrix' COIN_EXCLUDE_SOCOMPOSEMATRIX
+  bool '   Exclude SoDecomposeMatrix' COIN_EXCLUDE_SODECOMPOSEMATRIX
+  bool '   Exclude SoComputeBoundingBox' COIN_EXCLUDE_SOCOMPUTEBOUNDINGBOX
+  bool '   Exclude SoConcatenate' COIN_EXCLUDE_SOCONCATENATE
+  bool '   Exclude SoCounter' COIN_EXCLUDE_SOCOUNTER
+  bool '   Exclude SoElapsedTime' COIN_EXCLUDE_SOELAPSEDTIME
+  bool '   Exclude SoFieldConverter' COIN_EXCLUDE_SOFIELDCONVERTER
+    if [ "$COIN_EXCLUDE_SOFIELDCONVERTER" = "n" ]; then
+      bool '      Exclude SoConvertAll' COIN_EXCLUDE_SOCONVERTALL
+    fi
+  bool '   Exclude SoGate' COIN_EXCLUDE_SOGATE
+  bool '   Exclude SoInterpolate' COIN_EXCLUDE_SOINTERPOLATE
+    if [ "$COIN_EXCLUDE_SOINTERPOLATE" = "n" ]; then
+      bool '      Exclude SoInterpolateFloat' COIN_EXCLUDE_SOINTERPOLATEFLOAT
+      bool '      Exclude SoInterpolateRotation' COIN_EXCLUDE_SOINTERPOLATEROTATION
+      bool '      Exclude SoInterpolateVec2f' COIN_EXCLUDE_SOINTERPOLATEVEC2F
+      bool '      Exclude SoInterpolateVec3f' COIN_EXCLUDE_SOINTERPOLATEVEC3F
+      bool '      Exclude SoInterpolateVec4f' COIN_EXCLUDE_SOINTERPOLATEVEC4F
+    fi
+  bool '   Exclude SoOnOff' COIN_EXCLUDE_SOONOFF
+  bool '   Exclude SoOneShot' COIN_EXCLUDE_SOONESHOT
+  bool '   Exclude SoSelectOne' COIN_EXCLUDE_SOSELECTONE
+  bool '   Exclude SoTimeCounter' COIN_EXCLUDE_SOTIMECOUNTER
+  bool '   Exclude SoTransformVec3f' COIN_EXCLUDE_SOTRANSFORMVEC3F
+  bool '   Exclude SoTriggerAny' COIN_EXCLUDE_SOTRIGGERANY
+fi

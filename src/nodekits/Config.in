@@ -1,0 +1,19 @@
+#
+# CONFIG "The Node Kits"
+# FLAGS
+# C - Source File Created [0.1]
+#
+# HIERARCHY
+# c     SoNodeKit
+#       SoBaseKit
+#               SoAppearanceKit
+#               SoCameraKit
+#               SoInteractionKit
+#               SoLightKit
+#               SoSceneKit
+#               SoSeparatorKit
+#                       SoShapeKit
+#                       SoWrapperKit
+#       SoNodeKitListPart
+#
+############################################################################

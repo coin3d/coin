@@ -1,0 +1,17 @@
+#
+# CONFIG "The Detail Classes"
+# FLAGS
+# C - Source File Creation [0.1]
+#
+# HIERARCHY
+#       SoDetail
+#               SoConeDetail
+#               SoCubeDetail
+#               SoCylinderDetail
+#               SoFaceDetail
+#               SoLineDetail
+#               SoNodeKitDetail
+#               SoPointDetail
+#               SoTextDetail
+#
+############################################################################

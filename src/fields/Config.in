@@ -1,0 +1,95 @@
+# CONFIG "The Field Data Classes"
+# factors: [work in progress / no work done]
+# FLAGS [0.8 0.6]
+# C = made 100% API conform with Open Inventor
+# I = implementation complete, or nearly so
+# R = made robust
+# D = fully documented for Doxygen generation of html/man
+#
+# VALUES
+# - = not applicable
+# ! = method inherited from parent
+# 
+# ************************************************************************
+# CIRD
+# ====
+# HIERARCHY
+# Cird SoField
+# C        SoSField
+# Ci           SoSFBool
+# Ci           SoSFColor
+# C            SoSFEngine
+# Ci           SoSFEnum
+# Ci               SoSFBitMask
+# Ci           SoSFFloat
+# Ci           SoSFImage
+# Ci           SoSFInt32
+# Ci           SoSFMatrix
+# Ci           SoSFName
+# C            SoSFNode
+# C            SoSFPath
+# Ci           SoSFPlane
+# Ci           SoSFRotation
+# Ci           SoSFShort
+# Ci           SoSFString
+# Ci           SoSFTime
+# C            SoSFTrigger
+# Ci           SoSFUInt32
+# Ci           SoSFUShort
+# Ci           SoSFVec2f
+# Ci           SoSFVec3f
+# Ci           SoSFVec4f
+# C        SoMField
+# Ci           SoMFBool
+# Ci           SoMFColor
+# C            SoMFEngine
+# Ci           SoMFEnum
+# Ci               SoMFBitMask
+# Ci           SoMFFloat
+# Ci           SoMFInt32
+# Ci           SoMFMatrix
+# Ci           SoMFName
+# C            SoMFNode
+# C            SoMFPath
+# Ci           SoMFPlane
+# Ci           SoMFRotation
+# Ci           SoMFShort
+# Ci           SoMFString
+# Ci           SoMFTime
+# Ci           SoMFUInt32
+# Ci           SoMFUShort
+# Ci           SoMFVec2f
+# Ci           SoMFVec3f
+# Ci           SoMFVec4f
+# Ci d SoFieldContainer
+# ci   SoFieldData
+#
+############################################################################
+#
+# COMMENTS
+#
+# Common stuff missing from implementation:
+# <UL>
+# <LI>reading</LI>
+# <LI>binary format write</LI>
+# </UL>
+# 
+# Check:
+# <UL>
+# <LI>what's the difference between findEnumValue() in So[S|M]FEnum
+#     vs So[S|M]FBitMask?</LI>
+# <LI>valueChanged() called from everywhere it should be called?</LI>
+# </UL>
+# 
+# Write test code:
+# <UL>
+# <LI>Test set() and get() (same as readValue() and writeValue())</LI>
+# </UL>
+#
+# These classes has been obsoleted: SoSFLong, SoSFULong, SoMFLong, SoMFULong.
+# This should be documented, best place for this would be in the SoField class
+# documentation.
+#
+# END COMMENTS
+# 
+############################################################################

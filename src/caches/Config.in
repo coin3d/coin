@@ -1,0 +1,11 @@
+# CONFIG "The Cache Classes"
+# FLAGS
+#
+# HIERARCHY
+#       SoCache.cpp
+#               SoBoundingBoxCache.cpp
+#               SoConvexDataCache.cpp
+#               SoNormalCache.cpp
+#               SoTextureCoordinateCache.cpp
+#
+############################################################################

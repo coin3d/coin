@@ -1,0 +1,28 @@
+NAME
+Coin
+
+BRIEF
+A retained mode 3D graphics library with an API cloned from Open Inventor.
+
+FULL
+Coin is an open-source clone library of Open Inventor.  It is released
+publicly under the GNU General Public License v2 for developers of
+free software and is also available for commercial use under a non-GPL
+license.
+
+STATUS
+mid-development
+
+DEVELOPERS
+Morten Eriksen <mortene@sim.no>
+Peder Blekken <pederb@sim.no>
+Marius Kintel <kintel@sim.no>
+Lars J. Aas <larsa@sim.no>
+
+NOTES
+<blockquote>
+Development status can be found <a href=../coin/>here</a>.<br>
+Files can be inspected <a href=Coin-files.html>here</a>.<br>
+
+</blockquote>
+

@@ -1,0 +1,32 @@
+############################################################################
+#
+# CONFIG "The Projector Classes"
+#
+# FLAGS
+# C = made 100% API conform with Open Inventor
+# I = implementation complete, or nearly so
+# R = made robust
+# D = fully documented for Doxygen generation of html/man
+#
+# values:
+# - = not applicable
+# ! = method inherited from parent
+# 
+############################################################################
+#
+# CIRD
+# ====
+# HIERARCHY
+# CI d  SbProjector
+# Ci        SbCylinderProjector
+# C             SbCylinderSectionProjector
+# C                 SbCylinderPlaneProjector
+# C             SbCylinderSheetProjector
+# CI d      SbLineProjector
+# Ci d      SbPlaneProjector
+# Ci        SbSphereProjector
+# C             SbSphereSectionProjector
+# C                 SbSpherePlaneProjector
+# Ci            SbSphereSheetProjector
+#
+############################################################################

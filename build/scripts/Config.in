@@ -1,0 +1,20 @@
+#
+# For a description of the syntax of this configuration file,
+# see the Configure script in the Linux kernel src distribution.
+#
+mainmenu_name "Coin Development Configuration"
+
+mainmenu_option next_comment
+comment 'Engines subsystem'
+source ../src/engines/Config.in
+endmenu
+
+mainmenu_option next_comment
+comment 'Nodes subsystem'
+source ../src/nodes/Config.in
+endmenu
+
+mainmenu_option next_comment
+comment 'Actions subsystem'
+source ../src/actions/Config.in
+endmenu

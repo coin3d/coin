@@ -1,0 +1,39 @@
+$C /* attributed grammar for the SoCalculator expression parser */
+
+COMPILER Calculator
+
+CHARACTERS
+    letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" .
+    digit  = "0123456789" .
+    sign   = "+-" | "" .
+    white  = CHR(9) + CHR(10) + CHR(13) + " " .
+
+TOKENS
+    number = digit {digit}{.{digit}}{"e"|"E"}{sign}{
+    
+IGNORE white
+
+PRODUCTIONS
+    Calculator = ExpressionList .
+    ExpressionList = Expression { ";" Expression } .
+    Expression = LHS "=" RHS .
+    LHS = Variable .
+    RHS = Float .
+    Float = Literal | Variable | FloatExpression .
+    Literal = digit { "." digit {digit} } .
+    Variable = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" |
+               "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" |
+               "ta" | "tb" | "tc" | "td" | "te" | "tf" | "tg" | "th" |
+               "tA" | "tB" | "tC" | "tD" | "tE" | "tF" | "tG" | "tH" |
+               "oa" | "ob" | "oc" | "od" |
+               "oA" | "oB" | "oC" | "oD" .
+    FloatExpression = MathExpression | MathFunction .
+    MathExpression = Float "+" Float |
+                     Float "-" Float |
+                     Float "*" Float |
+                     Float "/" Float .
+    MathFunction = "sin" "(" Float ")" |
+                   "cos" "(" Float ")" .
+
+END Calculator.
+

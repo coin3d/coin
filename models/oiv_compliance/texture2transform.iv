@@ -1,0 +1,213 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoTexture2Transform.
+#
+# 19990503 mortene
+
+Separator {
+   Texture2 {
+      image 8 6 3
+      0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+      0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+      0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+      0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+      0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+      0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+   }
+   Complexity { textureQuality 0.1 }
+
+   # (ROW 0) Test translation, rotation and scaling by themselves
+   Separator {
+      Texture2Transform { }
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Texture2Transform { translation 0.5 0.25 }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Texture2Transform { rotation 0.39269908169872414 } # 45°
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Texture2Transform { scaleFactor 0.3 0.3 }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Texture2Transform { scaleFactor 1 0.1 }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Texture2Transform { scaleFactor 1 10 }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Texture2Transform { scaleFactor -2 -2 }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+   }
+
+
+   # (ROW 1) Test translation, rotation and scaling with centerpoint set
+   Translation { translation 0 +4 0 }
+   Separator {
+      Separator {
+	 Texture2Transform {
+	    center 0.25 0.75
+	    translation 0.5 0.5
+	 }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Texture2Transform {
+	    center 0.25 0.75
+	    rotation 0.39269908169872414      # 45°
+	 }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Texture2Transform {
+	    center 0.25 0.75
+	    scaleFactor 0.25 0.75
+	 }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+   }
+
+   # (ROW 2) Test translation, rotation and scaling in combination
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2Transform {
+	 center 0.25 0.75
+	 translation 0.5 0.5
+	 rotation 0.39269908169872414      # 45°
+	 scaleFactor 1.25 1.75
+      }
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+   }
+
+   # (ROW 3) Test ignored flags
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2Transform {
+	 center 0.25 0.75 ~
+	 translation 0.5 0.5 ~
+	 rotation 0.39269908169872414 ~      # 45°
+	 scaleFactor 1.25 1.75 ~
+      }
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+   }
+}

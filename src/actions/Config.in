@@ -1,0 +1,87 @@
+############################################################################
+#
+# CONFIG "The Action Classes"
+#
+# FLAGS
+# C = made 100% API conform with Open Inventor [0.1]
+# I = implementation complete, or nearly so [1.0]
+# R = made robust [0.2]
+# D = fully documented for Doxygen generation of html/man [0.4]
+#
+# values:
+# - = not applicable
+# ! = method inherited from parent
+# 
+############################################################################
+#
+# CIRD
+# ====
+# HIERARCHY
+# ci d  SoAction
+# ci            SoCallbackAction
+# ci            SoGLRenderAction
+# c                     SoBoxHighlightRenderAction
+# c                     SoLineHighlightRenderAction
+# ci            SoGetBoundingBoxAction
+# ci            SoGetMatrixAction
+# c             SoGetPrimitiveCountAction
+# ci            SoHandleEventAction
+#               SoIntersectionDetectionAction
+# c             SoPickAction
+# c                     SoRayPickAction
+# ci d          SoSearchAction
+# c             SoSimplifyAction
+# c                     SoGlobalSimplifyAction
+# c                     SoReorganizeAction
+# c                     SoShapeSimplifyAction
+# c             SoToVRMLAction
+# c                     SoToVRML2Action
+# C             SoWriteAction
+# 
+#########################################################################
+#
+# COMMENTS
+#
+# What about these old SIM-specific buggers?:
+# <UL>
+# <LI>SoGenerateNormalsAction (really necessary? move outside into
+#     app-land?)</LI>
+# <LI>SoGraphVerifyAction (don't use action? move out of Coin in app-land?
+#    Call it SoVerifyAction?)</LI>
+# <LI>SoURLImportAction (integrate within SoWWWInline and -Anchor?)</LI>
+# </UL>
+#
+# END COMMENTS
+#
+#########################################################################
+
+bool 'Disable actions' COIN_EXCLUDE_SOACTION
+if [ "$COIN_EXCLUDE_SOACTION" = "n" ]; then
+  bool '   Exclude SoCallbackAction' COIN_EXCLUDE_SOCALLBACKACTION
+  bool '   Exclude SoGLRenderAction' COIN_EXCLUDE_SOGLRENDERACTION
+  if [ "$COIN_EXCLUDE_SOGLRENDERACTION" = "n" ]; then
+    bool '      Exclude SoBoxHighlightRenderAction' COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION
+    bool '      Exclude SoLineHighlightRenderAction' COIN_EXCLUDE_SOLINEHIGHLIGHTRENDERACTION
+  fi
+  bool '   Exclude SoGetBoundingBoxAction' COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
+  bool '   Exclude SoGetMatrixAction' COIN_EXCLUDE_SOGETMATRIXACTION
+  bool '   Exclude SoGetPrimitiveCountAction' COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+  bool '   Exclude SoHandleEventAction' COIN_EXCLUDE_SOHANDLEEVENTACTION
+  bool '   Exclude SoIntersectionDetectonAction' COIN_EXCLUDE_SOINTERSECTIONDETECTONACTION
+  bool '   Exclude SoPickAction' COIN_EXCLUDE_SOPICKACTION
+  if [ "$COIN_EXCLUDE_SOPICKACTION" = "n" ]; then
+    bool '      Exclude SoRayPickAction' COIN_EXCLUDE_SORAYPICKACTION
+  fi
+  bool '   Exclude SoSearchAction' COIN_EXCLUDE_SOSEARCHACTION
+  bool '   Exclude SoSimplifyAction' COIN_EXCLUDE_SOSIMPLIFYACTION
+  if [ "$COIN_EXCLUDE_SOSIMPLIFYACTION" = "n" ]; then
+    bool '      Exclude SoGlobalSimplifyAction' COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION
+    bool '      Exclude SoReorganizeAction' COIN_EXCLUDE_SOREORGANIZEACTION
+    bool '      Exclude SoShapeSimplifyAction' COIN_EXCLUDE_SOSHAPESIMPLIFYACTION
+  fi
+  bool '   Exclude SoToVRMLAction' COIN_EXCLUDE_SOTOVRMLACTION
+  if [ "$COIN_EXCLUDE_SOTOVRMLACTION" = "n" ]; then
+    bool '      Exclude SoToVRML2Action' COIN_EXCLUDE_SOTOVRML2ACTION
+  fi
+  bool '   Exclude SoWriteAction' COIN_EXCLUDE_SOWRITEACTION
+fi

@@ -1,0 +1,12 @@
+# CONFIG "The Bundle Classes"
+#
+# FLAGS
+# C - Source File Created [0.1]
+# 
+# HIERARCHY
+# C     SoBundle
+# C             SoMaterialBundle
+#               SoNormalBundle
+# C             SoTextureCoordinateBundle
+#
+############################################################################

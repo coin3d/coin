@@ -1,0 +1,29 @@
+# CONFIG "The Sensor Classes"
+# factors: [work in progress / no work done]
+# FLAGS [0.8 0.6]
+# C = made 100% API conform with Open Inventor
+# I = implementation complete, or nearly so
+# R = made robust
+# D = fully documented for Doxygen generation of html/man
+#
+# VALUES
+# - = not applicable
+# ! = method inherited from parent
+# 
+# ************************************************************************
+# CIRD
+# ====
+# HIERARCHY
+# CI d  SoSensor
+# CIRd          SoTimerQueueSensor
+# CIRd                  SoAlarmSensor
+# CIRd                  SoTimerSensor
+# CIRd          SoDelayQueueSensor
+# Ci d                  SoDataSensor
+# CIRd                          SoFieldSensor
+# CIRd                          SoNodeSensor
+# CIRd                          SoPathSensor
+# Ci-d                  SoIdleSensor
+# CIRd                  SoOneShotSensor
+#
+############################################################################

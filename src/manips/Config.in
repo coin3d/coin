@@ -1,0 +1,18 @@
+# CONFIG "The Manipulators"
+# FLAGS
+# C - Source File Created [0.1]
+#
+# HIERARCHY
+#       SoTransformManip
+#               SoCenterballManip
+#               SoHandleBoxManip
+#               SoJackManip
+#               SoTabBoxManip
+#               SoTrackballManip
+#               SoTransformBoxManip
+#               SoTransformerManip
+#       SoPointLightManip
+#       SoSpotLightManip
+#       SoDirectionalLightManip
+#
+############################################################################

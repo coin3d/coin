@@ -1,0 +1,29 @@
+# CONFIG "The Draggers"
+# FLAGS
+# C - Source File Created [0.1]
+#
+# HIERARCHY
+#       SoDragger
+#               SoCenterballDragger
+#               SoDirectionalLightDragger
+#               SoDragPointDragger
+#               SoHandleBoxDragger
+#               SoJackDragger
+#               SoPointLightDragger
+#               SoRotateCylindricalDragger
+#               SoRotateDiscDragger
+#               SoRotateSphericalDragger
+#               SoScale1Dragger
+#               SoScale2Dragger
+#               SoScale2UniformDragger
+#               SoScaleUniformDragger
+#               SoSpotLightDragger
+#               SoTabBoxDragger
+#               SoTabPlaneDragger
+#               SoTrackballDragger
+#               SoTransformBoxDragger
+#               SoTransformerDragger
+#               SoTranslate1Dragger
+#               SoTranslate2Dragger
+#
+############################################################################

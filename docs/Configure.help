@@ -1,0 +1,29 @@
+# Format of this file: description<nl>variable<nl>help text<nl><nl>.
+#
+# The help texts must not contain empty lines. No variable should
+# occur twice; if it does, only the first occurrence will be used by
+# Configure. The lines in a help text should be indented two
+# positions. Lines starting with `#' are ignored. To be nice to
+# menuconfig, limit your lines to 70 characters. Use emacs' kfill.el
+# to edit this file or you lose.
+#
+#
+# This file was originally the Documentation/Configure.help file from the
+# Linux kernel distribution, maintained by Axel Boldt (boldt@math.ucsb.edu).
+# The text displayed above is under the GPL.
+
+Exclude support for engines
+COIN_EXCLUDE_SOENGINE
+  Engines is a mechanism in Coin (and Open Inventor) used to automate
+  animation and field-to-field connection updates, among other things.
+  See the Coin documentation on SoEngine for a complete explanation on
+  the purpose of engines.
+  Setting this option will automatically disable all the engine classes,
+  leaving it off will provide you with the ability to selectively choose
+  individual engine classes for inclusion or exclusion.
+
+# need an empty line after last entry, for sed script in Configure.
+
+# For ispell.el:
+#
+# LocalWords:  SoEngine sed CONFIG Boldt GPL menuconfig kfill nl

@@ -1,0 +1,53 @@
+############################################################################
+#
+# CONFIG "The Base Classes"
+#
+# FLAGS
+# C = made 100% API conform with Open Inventor [0.1]
+# I = implementation complete, or nearly so [1.0]
+# R = made robust [0.2]
+# D = fully documented for Doxygen generation of html/man [0.4]
+#
+# values:
+# - = not applicable
+# ! = method inherited from parent
+# 
+############################################################################
+#
+# CIRD
+# ====
+# HIERARCHY
+# -I    SbArray
+# C--D  SbBool
+# CIRD  SbBox2f
+# CIRD  SbBox2s
+# CIRD  SbBox3f
+# CIRd      SbXfBox3f
+# -I    SbBSPTree
+# -IRD  SbColor4f
+# CIRD  SbCylinder
+# -I    SbIntArray
+# CIRD  SbLine
+# CirD  SbMatrix
+# Cird  SbName
+# CIRD  SbPlane
+# CIRD  SbRotation
+# CIRD  SbSphere
+# CIRD  SbString
+# CIRD  SbTime
+# CIRD  SbVec2f
+# CIRD  SbVec2s
+# CIRD  SbVec3f
+# CIRD      SbColor
+# CIRD  SbVec4f
+# Cird  SbViewVolume
+# CIRD  SbViewportRegion
+#
+############################################################################
+#
+# COMMENTS
+#
+#
+# END COMMENTS
+# 
+############################################################################

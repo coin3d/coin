@@ -1,0 +1,23 @@
+#Inventor V2.5 ascii
+
+Group {
+   Array {
+      numElements1 4
+      numElements2 4
+      numElements3 4
+      separation1 4 0 0
+      separation2 0 4 0
+      separation3 0 0 4
+      origin CENTER
+      
+      Cube {
+      }
+   }
+
+   Rotation {
+      rotation 0 1 0   0.785
+   }
+
+   Cube {
+   }
+}

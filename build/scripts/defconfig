@@ -1,0 +1,14 @@
+#
+# Engines subsystem
+#
+# COIN_EXCLUDE_SOENGINE is not set
+
+#
+# Nodes subsystem
+#
+# COIN_EXCLUDE_SONODE is not set
+
+#
+# Actions subsystem
+#
+# COIN_EXCLUDE_SOACTION is not set
