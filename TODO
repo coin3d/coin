@@ -63,12 +63,14 @@ TODO:
 
 * [mortene:19990917] clean up the .h-files before installation: remove
   "//$ BEGIN TEMPLATE" and "//$ END TEMPLATE". Remove
-  "#if.*(COIN_EXCLUDE_.*)" blocks?
+  "#if.*(COIN_EXCLUDE_.*)" blocks? Remove stuff between
+  __SOLIB_INTERNAL__.
 
 * [mortene:19990926] remove compiler warnings when configuring with
   --disable-debug.
 
-* [mortene:1999????] make Coin build under MSWindows.
+* [mortene:1999????] make Coin build under MSWindows with the Cygwin
+  tools.
 
 
 *** GENERIC ITEMS ***
