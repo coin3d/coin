@@ -335,7 +335,10 @@ SbTime::getMsecValue(void) const
   %i - remaining milliseconds after subtracting the total number of seconds.<BR>
   %U - number of microseconds.<BR>
   %u - remaining microseconds after subtracting the total number of mseconds.<BR>
-
+  
+  The result shows UTC time, not corrected for local time zone
+  nor daylight savings time.
+  
   \sa formatDate().
  */
 SbString
@@ -463,6 +466,9 @@ SbTime::format(const char * const fmt) const
 
   The value of SbTime will be interpreted as seconds since 00:00:00
   1970-01-01.
+  
+  The result shows local time, according to local time zone and
+  daylight savings time (if and when applicable).
 
   \sa format().
 */
