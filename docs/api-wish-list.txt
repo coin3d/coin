@@ -365,3 +365,14 @@ THE WISH LIST
 
     Are there any alternatives better than Unicode UTF-8 for this?
 
+* SbBool SbMatrix::inversePossible(void) const
+  1001-07-02  Peder Blekken <pederb@sim.no>
+
+  It would be useful to have a method to test if it is possible to
+  calculate the inverse of a matrix. Right now we check if det4() is
+  equal or very close to zero, but I've seen algorithms in GGems
+  that use the floating point precision constant (FLT_EPSILON) to 
+  determine if it's possible to calculate the inverse. 
+
+Peder
+
