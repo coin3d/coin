@@ -97,7 +97,7 @@ SoGLDisplayList::~SoGLDisplayList()
     GLuint tmpindex = (GLuint) this->firstindex;
     const GLWrapper_t * glw = GLWrapper(this->context);
     if (glw->glDeleteTextures)
-      glDeleteTextures(1, &tmpindex);
+      glw->glDeleteTextures(1, &tmpindex);
   }
 }
 
