@@ -1084,12 +1084,21 @@ AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test x"$enable_hacking" = x"yes")
 
 if test x"$enable_hacking" = x"yes"; then
   for dir in \
-    base actions bundles caches details draggers elements engines \
+    base actions bundles caches details draggers elements elements/GL:glelements engines \
     errors events fields glue manips misc lists nodekits nodes projectors \
-    sensors upgraders 3ds; \
+    sensors upgraders 3ds:format3ds; \
   do
+    case $dir in
+    *:* )
+      lib=`echo $dir | cut -d: -f2`
+      dir=`echo $dir | cut -d: -f1`
+      ;;
+    * )
+      lib=$dir
+      ;;
+    esac
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/$dir/.libs"
-    EXTRA_LIBS="$EXTRA_LIBS -l$dir${SUFFIX}LINKHACK"                  
+    EXTRA_LIBS="$EXTRA_LIBS -l$lib${SUFFIX}LINKHACK"                  
   done
   if $sim_ac_enable_vrml97; then
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/vrml97/.libs"
