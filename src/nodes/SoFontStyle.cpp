@@ -35,9 +35,14 @@
   consider SoFontStyle nodes as nodes giving \e hints about font
   settings, as you are \e not guaranteed to get exactly what you want.
 
-  \e NB! This node is provided for reasons of compatibility with Open Inventor 2.1
-  but will in most cases result in the default font being rendered. It is highly
-  recommended to use the SoFont node instead.
+  Please note that this node is inheriting \e SoFont. Previous font
+  settings in a branch will therefore be overwritten with the default
+  values of \e SoFont if an empty \e SoFontStyle node is inserted in
+  the branch.
+
+  \e NB! This node is provided for reasons of compatibility with Open
+  Inventor 2.1 but will in most cases result in the default font being
+  rendered. It is highly recommended to use the SoFont node instead.
 
   \since Inventor 2.1
   \sa SoFont, SoText2, SoText3, SoAsciiText, SoGlyph
