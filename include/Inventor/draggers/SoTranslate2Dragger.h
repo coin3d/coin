@@ -75,6 +75,9 @@ protected:
 
 private:
   int constraintState;
+
+  SbVec3f lastmotion;
+  SbVec3f extramotion;
 };
 
 #endif // !COIN_SOTRANSLATE2DRAGGER_H
