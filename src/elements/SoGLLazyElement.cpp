@@ -29,13 +29,6 @@
   This is just a wrap-around implementation for compatibility. It should
   (hopefully) work in the same way as the Inventor class though.
 */
-
-#ifdef COIN_DEBUG
-// #define GLLAZY_DEBUG(_x_) (fprintf(stderr,"%s\n", _x_))
-#define GLLAZY_DEBUG(x)
-#else
-#define GLLAZY_DEBUG(x)
-#endif
                      
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
@@ -48,11 +41,19 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <coindefs.h> // COIN_OBSOLETED
 #include <assert.h>
 #include <Inventor/errors/SoDebugError.h>
+
+#ifdef COIN_DEBUG
+// #define GLLAZY_DEBUG(_x_) (SoDebugError::postInfo(COIN_STUB_FUNC, _x_))
+#define GLLAZY_DEBUG(x)
+#else
+#define GLLAZY_DEBUG(x)
+#endif
 
 #if HAVE_CONFIG_H
 #include <config.h>
