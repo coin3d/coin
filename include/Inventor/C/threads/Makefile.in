@@ -157,6 +157,7 @@ threadsinc_HEADERS = \
 
 
 EXTRA_DIST = \
+	threadsutilp.h \
 	threadp.h \
 	mutexp.h \
 	condvarp.h \

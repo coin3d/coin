@@ -16,6 +16,7 @@ threadsinc_HEADERS = \
 
 ## These headers are not installed - they are internal to Coin...
 EXTRA_DIST = \
+	threadsutilp.h \
 	threadp.h \
 	mutexp.h \
 	condvarp.h \
