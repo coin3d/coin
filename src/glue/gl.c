@@ -2565,6 +2565,7 @@ cc_glglue_glGetBufferPointerv(const cc_glglue * glue,
   glue->glGetBufferPointerv(target, pname, params);
 }
 
+
 SbBool
 cc_glglue_can_do_bumpmapping(const cc_glglue * glue)
 {
@@ -2579,10 +2580,12 @@ cc_glglue_can_do_sortedlayersblend(const cc_glglue * glue)
   return glue->can_do_sortedlayersblend;
 }
 
+
 /* GL_NV_register_combiners functions */
 SbBool
 cc_glglue_has_nv_register_combiners(const cc_glglue * glue)
 {  
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_nv_register_combiners;
 }
 
@@ -2722,6 +2725,7 @@ cc_glglue_glGetFinalCombinerInputParameterivNV(const cc_glglue * glue,
 SbBool 
 cc_glglue_has_nv_texture_rectangle(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_nv_texture_rectangle;
 }
 
@@ -2729,6 +2733,7 @@ cc_glglue_has_nv_texture_rectangle(const cc_glglue * glue)
 SbBool 
 cc_glglue_has_ext_texture_rectangle(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_ext_texture_rectangle;
 }
 
@@ -2736,6 +2741,7 @@ cc_glglue_has_ext_texture_rectangle(const cc_glglue * glue)
 SbBool
 cc_glglue_has_nv_texture_shader(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_nv_texture_shader;
 }
 
@@ -2743,6 +2749,7 @@ cc_glglue_has_nv_texture_shader(const cc_glglue * glue)
 SbBool 
 cc_glglue_has_arb_shadow(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_arb_shadow;
 }
 
@@ -2750,6 +2757,7 @@ cc_glglue_has_arb_shadow(const cc_glglue * glue)
 SbBool
 cc_glglue_has_arb_depth_texture(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_arb_depth_texture;
 }
 
@@ -2757,9 +2765,9 @@ cc_glglue_has_arb_depth_texture(const cc_glglue * glue)
 SbBool
 cc_glglue_has_arb_fragment_program(const cc_glglue * glue)
 {
+  if (!glglue_allow_newer_opengl(glue)) return FALSE;
   return glue->has_arb_fragment_program;
 }
-
 
 
 /*!
