@@ -51,6 +51,24 @@
   node in the traversal. Default value of the field is 0.
 */
 
+/*!
+  \var SoSFEnum SoTextureUnit::mappingMethod
+
+  The mapping method for this unit. Default is IMAGE_MAPPING.
+*/
+
+
+/*!
+  \var SoTextureUnit::MappingMethod SoTextureUnit::IMAGE_MAPPING
+
+  Normal image mapping is used.
+*/
+
+/*!
+  \var SoTextureUnit::MappingMethod SoTextureUnit::IMAGE_MAPPING
+
+  Bump mapping is used.
+*/
 
 // *************************************************************************
 
@@ -62,8 +80,14 @@ SO_NODE_SOURCE(SoTextureUnit);
 SoTextureUnit::SoTextureUnit(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureUnit);
-
+  
   SO_NODE_ADD_FIELD(unit, (0));
+  SO_NODE_ADD_FIELD(mappingMethod, (IMAGE_MAPPING));
+  
+  SO_NODE_DEFINE_ENUM_VALUE(MappingMethod, IMAGE_MAPPING);
+  SO_NODE_DEFINE_ENUM_VALUE(MappingMethod, BUMP_MAPPING);
+  
+  SO_NODE_SET_SF_ENUM_TYPE(mappingMethod, MappingMethod);
 }
 
 /*!
@@ -130,4 +154,24 @@ SoTextureUnit::pick(SoPickAction * action)
   // may never support multiple texture units for SoPickAction, but we
   // reimplement the method just in case
   inherited::pick(action);
+}
+
+/*!
+
+  Returns the maximum number of texture units for the current GL
+  context.  Do not call this method if you don't have a current active
+  GL context. You should also know that your OpenGL driver supports
+  multi-texturing.
+
+  This function is provided only to be compatible with TGS Inventor.
+  It's better to use cc_glglue_max_texture_units() if you're using
+  Coin (declared in Inventor/C/glue/gl.h).
+*/
+uint32_t 
+SoTextureUnit::getMaxTextureUnit(void)
+{
+  GLint tmp;
+  glGetIntegerv(GL_MAX_TEXTURE_UNITS, &tmp);
+  
+  return (uint32_t) tmp;
 }

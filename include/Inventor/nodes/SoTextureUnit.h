@@ -26,6 +26,7 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFInt32.h>
+#include <Inventor/fields/SoSFEnum.h>
 
 class COIN_DLL_API SoTextureUnit : public SoNode {
   typedef SoNode inherited;
@@ -36,13 +37,20 @@ public:
   static void initClass(void);
   SoTextureUnit(void);
 
+  enum MappingMethod {
+    BUMP_MAPPING,
+    IMAGE_MAPPING
+  };
+  
   SoSFInt32 unit;
+  SoSFEnum mappingMethod;
 
   virtual void doAction(SoAction * action);
   virtual void callback(SoCallbackAction * action);
   virtual void GLRender(SoGLRenderAction * action);
   virtual void pick(SoPickAction * action);
 
+  static uint32_t getMaxTextureUnit(void);
 protected:
   virtual ~SoTextureUnit();
 };
