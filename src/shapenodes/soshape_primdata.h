@@ -54,6 +54,8 @@ public:
 
   void shapeVertex(const SoPrimitiveVertex * const v);
 
+  int getPointDetailIndex(const SoPrimitiveVertex * v) const;
+
 private:
   void copyVertex(const int src, const int dest);
   void setVertex(const int idx, const SoPrimitiveVertex * const v);

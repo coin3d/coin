@@ -278,6 +278,12 @@ soshape_primdata::handleLineDetail(void)
   }
 }
 
+int 
+soshape_primdata::getPointDetailIndex(const SoPrimitiveVertex * v) const
+{
+  return v - this->vertsArray;
+}
+
 SoDetail *
 soshape_primdata::createPickDetail(void)
 {
