@@ -69,8 +69,44 @@
   The value should be either \c SO_SWITCH_NONE (for traversing no
   children, like it was an empty SoGroup node), \c SO_SWITCH_ALL (for
   traversing like if we were an SoGroup node), \c SO_SWITCH_INHERIT
-  (for traversing the same child as the last SoSwitch node to parent
-  this in the graph), or an index value for a child.
+  (for traversing the same child as the last SoSwitch node), or an
+  index value for a child.
+
+  When using \c SO_SWITCH_INHERIT, it is important to understand how
+  the SoSwitch-node is affected by other SoSwitch-nodes. If you have
+  several switches in the scenegraph, the last switch with it's \c
+  whichChild field set to anything but \c SO_SWITCH_INHERIT will be
+  used. The switch does not only inherit from it's parent switch node,
+  but also from it's siblings, located anywhere before it in the
+  scenegraph. An example will help clarify this:
+
+  \verbatim
+  #Inventor V2.1 ascii
+
+  Separator {
+    Switch {
+      whichChild 0
+  
+      Group {
+        Switch {
+          whichChild 1
+          BaseColor { rgb 1 0 0 } # red
+          BaseColor { rgb 1 1 0 } # yellow
+        }
+        Switch {
+          whichChild -2 # SO_SWITCH_INHERIT
+          BaseColor { rgb 0 1 0 } # green
+          BaseColor { rgb 0 0 1 } # blue
+        }
+        Cube { }
+      }
+    }
+  }
+  \endverbatim
+
+  This results in a blue cube on the screen. The reason being that the
+  value of the previous \c whichChild field was inherited by the final
+  switch, making it select child 1 - the blue BaseColor.
 
   When constructing ascii Inventor files, the integer values for the
   keywords must be used instead of their names.  They are -1 for
