@@ -196,8 +196,10 @@ SoAuditorList::notify(SoNotList * l)
       default:
         assert(0 && "Unknown auditor type");
       }
-
       notified.append(auditor);
     }
+    // make sure no auditors are removed during the notification loop.
+    // This is not (currently) supported. pederb, 2001-11-06
+    assert(num == this->getLength());
   }
 }
