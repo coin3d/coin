@@ -64,7 +64,7 @@ SoTextureMatrixElement::makeIdentity(SoState * const state,
 }
 
 /*!
-  Sets the current texture matrix to \a matrix. 
+  Sets the current texture matrix to \a matrix.
 
   This method is an extension versus the Open Inventor API.
 */
@@ -179,7 +179,7 @@ SoTextureMatrixElement::setElt(const SbMatrix & matrix)
 void
 SoTextureMatrixElement::multElt(const SbMatrix & matrix)
 {
-  this->textureMatrix.multRight(matrix);
+  this->textureMatrix.multLeft(matrix);
 }
 
 /*!
@@ -191,7 +191,7 @@ SoTextureMatrixElement::translateEltBy(const SbVec3f & translation)
 {
   SbMatrix matrix = SbMatrix::identity();
   matrix.setTranslate(translation);
-  this->textureMatrix.multRight(matrix);
+  this->textureMatrix.multLeft(matrix);
 }
 
 /*!
@@ -203,7 +203,7 @@ SoTextureMatrixElement::rotateEltBy(const SbRotation & rotation)
 {
   SbMatrix matrix = SbMatrix::identity();
   matrix.setRotate(rotation);
-  this->textureMatrix.multRight(matrix);
+  this->textureMatrix.multLeft(matrix);
 }
 
 /*!
@@ -215,7 +215,7 @@ SoTextureMatrixElement::scaleEltBy(const SbVec3f & scaleFactor)
 {
   SbMatrix matrix = SbMatrix::identity();
   matrix.setScale(scaleFactor);
-  this->textureMatrix.multRight(matrix);
+  this->textureMatrix.multLeft(matrix);
 }
 
 /*!
