@@ -212,7 +212,14 @@ coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 
   19991221 mortene. Thanks to larsa for the idea.
 
- */
+  20040203 larsa: Finally solved a strange problem of having files
+  popping up in the root directory (on windows computers, and on the
+  current drive) with names like "s3n4" and "s25o" etc. with just a
+  few characters of text in them.  It turned out to be this fallback
+  that created them, and I had forgotten to use the SIM_AC_CHECK_NPRINTF
+  macro in the configure script.  The fallback is in other words not
+  entirely "safe", since it pollutes the filesystem on windows computers.
+*/
 
 /*
   FIXME: could perhaps grab a decent snprintf() implementation (with a
