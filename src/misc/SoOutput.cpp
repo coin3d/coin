@@ -142,6 +142,11 @@ SoOutput::~SoOutput(void)
 /*!
   Set up a new file pointer which we will write to.
 
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
+
   \sa openFile(), setBuffer(), getFilePointer()
  */
 void
@@ -152,8 +157,13 @@ SoOutput::setFilePointer(FILE * newFP)
 }
 
 /*!
-  Returns the current filepointer. If we're writing to a memory buffer,
-  \a NULL is returned.
+  Returns the current filepointer. If we're writing to a memory
+  buffer, \c NULL is returned.
+
+  Important note: do \e not use this method when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
 
   \sa setFilePointer()
  */

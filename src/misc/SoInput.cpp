@@ -52,19 +52,27 @@
   }
   \endcode
 
+
+  Important note: there are several public and protected methods which
+  makes it possible to pass in or get returned FILE* structures in
+  this class. Do \e not use these methods when the Coin library has
+  been compiled as an MSWindows DLL, as passing FILE* instances back
+  or forth to DLLs is dangerous and will most likely cause a
+  crash. This is an intrinsic limitation for MSWindows DLLs.
+
+
   This class supports one environment variable called
-  COIN_SOINPUT_SEARCH_GLOBAL_DICT.  When set to "1", the global dictionary
-  is searched after the current file dictionary when resolving USE
-  keywords. This makes it possible to reference nodes in other
-  files. The reason for introducing this feature is that the SoFile
-  node reareads the file whenever the name field changes.  The first
-  time the file is read, it's possible to reference nodes in the
+  COIN_SOINPUT_SEARCH_GLOBAL_DICT.  When set to "1", the global
+  dictionary is searched after the current file dictionary when
+  resolving USE keywords. This makes it possible to reference nodes in
+  other files. The reason for introducing this feature is that the
+  SoFile node rereads the file whenever the name field changes.  The
+  first time the file is read, it's possible to reference nodes in the
   parent file, using the USE keyword. But, when the file is reread
-  this is no longer possible, since the reading now starts at the File
-  node, with an empty dictionary.
+  this is no longer possible, since the reading now starts at the
+  SoFile node, with an empty dictionary.
 
   \sa SoOutput, SoDB 
-
 */
 
 #include <Inventor/SoInput.h>
