@@ -201,6 +201,7 @@ SoIndexedFaceSet::notify(SoNotList * list)
 void
 SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 {
+  if (this->coordIndex.getNum() < 3) return;
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -238,7 +239,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   this->getVertexData(state, coords, normals, cindices,
                       nindices, tindices, mindices, numindices,
                       sendNormals, normalCacheUsed);
-  
+
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
@@ -336,6 +337,8 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 void
 SoIndexedFaceSet::generatePrimitives(SoAction *action)
 {
+  if (this->coordIndex.getNum() < 3) return;
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -520,7 +523,7 @@ SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   if (!this->shouldPrimitiveCount(action)) return;
 
   int n = this->coordIndex.getNum();
-  if (n == 1 && this->coordIndex[0] == -1) return;
+  if (n < 3) return;
 
   if (action->canApproximateCount()) {
     action->addNumTriangles(n/4);
@@ -577,12 +580,12 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
 
   // need to send matrix if we have some weird transformation
   SbMatrix modelmatrix = SoModelMatrixElement::get(state);
-  if (modelmatrix[3][0] == 0.0f && 
-      modelmatrix[3][1] == 0.0f && 
+  if (modelmatrix[3][0] == 0.0f &&
+      modelmatrix[3][1] == 0.0f &&
       modelmatrix[3][2] == 0.0f &&
       modelmatrix[3][3] == 1.0f) modelmatrix = SbMatrix::identity();
 
-  // push to create cache dependencies    
+  // push to create cache dependencies
   state->push();
   this->convexCache = new SoConvexDataCache(state);
   this->convexCache->ref();
