@@ -23,6 +23,14 @@
 #include <Inventor/events/SoButtonEvent.h>
 
 
+// Avoid problem with Microsoft Win32 API headers (yes, they actually
+// #define DELETE somewhere in their header files).
+#if defined(DELETE)
+#define SOKEYBOARDEVENT_STORE_DELETE_DEF DELETE
+#undef DELETE
+#endif /* DELETE */
+
+
 #define SO_KEY_PRESS_EVENT(EVENT, KEY) \
  (SoKeyboardEvent::isKeyPressEvent(EVENT, SoKeyboardEvent::KEY))
 
@@ -90,5 +98,13 @@ public:
 private:
   Key key;
 };
+
+
+// Avoid problem with Microsoft Win32 API headers (see above).
+#if defined(SOKEYBOARDEVENT_STORE_DELETE_DEF)
+#define DELETE SOKEYBOARDEVENT_STORE_DELETE_DEF
+#undef SOKEYBOARDEVENT_STORE_DELETE_DEF
+#endif /* SOKEYBOARDEVENT_STORE_DELETE_DEF */
+
 
 #endif // !COIN_SOKEYBOARDEVENT_H
