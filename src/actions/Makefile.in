@@ -285,21 +285,21 @@ RegularSources = \
 DISTCLEANFILES = \
 	ii_files/*.ii
 
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
-@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
-@HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
 @HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
 
 @BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = actions.lst
 @BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libactions@SUFFIX@LINKHACK.la
 @BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libactions.la
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
-@MAC_FRAMEWORK_FALSE@libactionsincdir = $(includedir)/Inventor/actions
 
 # header installation
 @MAC_FRAMEWORK_TRUE@libactionsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/actions
+@MAC_FRAMEWORK_FALSE@libactionsincdir = $(includedir)/Inventor/actions
 # hack to change libdir value when installing Mac OS X compiler framework
 @MAC_FRAMEWORK_TRUE@lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
 libactionsinc_HEADERS = $(PublicHeaders)
@@ -327,14 +327,14 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 actions_lst_AR = $(AR) cru
 actions_lst_LIBADD =
-am__actions_lst_SOURCES_DIST = all-actions-cpp.cpp SoAction.cpp \
+am__actions_lst_SOURCES_DIST = SoAction.cpp \
 	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
 	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
 	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
 	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
 	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
-	SoAudioRenderAction.cpp
+	SoAudioRenderAction.cpp all-actions-cpp.cpp
 am__objects_1 = all-actions-cpp.$(OBJEXT)
 am__objects_2 = SoAction.$(OBJEXT) SoBoxHighlightRenderAction.$(OBJEXT) \
 	SoCallbackAction.$(OBJEXT) SoGLRenderAction.$(OBJEXT) \
@@ -348,20 +348,7 @@ am__objects_2 = SoAction.$(OBJEXT) SoBoxHighlightRenderAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_actions_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_actions_lst_SOURCES_DIST = SoAction.cpp \
-	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
-	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
-	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
-	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
-	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
-	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
-	SoAudioRenderAction.cpp all-actions-cpp.cpp
-actions_lst_OBJECTS = $(am_actions_lst_OBJECTS)
-LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
-
-libactions_la_LDFLAGS =
-libactions_la_LIBADD =
-am__libactions_la_SOURCES_DIST = all-actions-cpp.cpp SoAction.cpp \
+am__EXTRA_actions_lst_SOURCES_DIST = all-actions-cpp.cpp SoAction.cpp \
 	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
 	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
 	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
@@ -369,6 +356,19 @@ am__libactions_la_SOURCES_DIST = all-actions-cpp.cpp SoAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
 	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
 	SoAudioRenderAction.cpp
+actions_lst_OBJECTS = $(am_actions_lst_OBJECTS)
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
+libactions_la_LDFLAGS =
+libactions_la_LIBADD =
+am__libactions_la_SOURCES_DIST = SoAction.cpp \
+	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
+	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
+	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
+	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
+	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
+	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
+	SoAudioRenderAction.cpp all-actions-cpp.cpp
 am__objects_6 = all-actions-cpp.lo
 am__objects_7 = SoAction.lo SoBoxHighlightRenderAction.lo \
 	SoCallbackAction.lo SoGLRenderAction.lo \
@@ -380,7 +380,18 @@ am__objects_7 = SoAction.lo SoBoxHighlightRenderAction.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libactions_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libactions_la_SOURCES_DIST = SoAction.cpp \
+am__EXTRA_libactions_la_SOURCES_DIST = all-actions-cpp.cpp SoAction.cpp \
+	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
+	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
+	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
+	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
+	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
+	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
+	SoAudioRenderAction.cpp
+libactions_la_OBJECTS = $(am_libactions_la_OBJECTS)
+libactions@SUFFIX@LINKHACK_la_LDFLAGS =
+libactions@SUFFIX@LINKHACK_la_LIBADD =
+am__libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAction.cpp \
 	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
 	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
 	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
@@ -388,26 +399,15 @@ am__EXTRA_libactions_la_SOURCES_DIST = SoAction.cpp \
 	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
 	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
 	SoAudioRenderAction.cpp all-actions-cpp.cpp
-libactions_la_OBJECTS = $(am_libactions_la_OBJECTS)
-libactions@SUFFIX@LINKHACK_la_LDFLAGS =
-libactions@SUFFIX@LINKHACK_la_LIBADD =
-am__libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = all-actions-cpp.cpp \
-	SoAction.cpp SoBoxHighlightRenderAction.cpp \
+am_libactions@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
+am__EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = \
+	all-actions-cpp.cpp SoAction.cpp SoBoxHighlightRenderAction.cpp \
 	SoCallbackAction.cpp SoGLRenderAction.cpp \
 	SoGetBoundingBoxAction.cpp SoGetMatrixAction.cpp \
 	SoGetPrimitiveCountAction.cpp SoHandleEventAction.cpp \
 	SoLineHighlightRenderAction.cpp SoPickAction.cpp \
 	SoRayPickAction.cpp SoSearchAction.cpp SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp SoWriteAction.cpp SoAudioRenderAction.cpp
-am_libactions@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAction.cpp \
-	SoBoxHighlightRenderAction.cpp SoCallbackAction.cpp \
-	SoGLRenderAction.cpp SoGetBoundingBoxAction.cpp \
-	SoGetMatrixAction.cpp SoGetPrimitiveCountAction.cpp \
-	SoHandleEventAction.cpp SoLineHighlightRenderAction.cpp \
-	SoPickAction.cpp SoRayPickAction.cpp SoSearchAction.cpp \
-	SoToVRMLAction.cpp SoToVRML2Action.cpp SoWriteAction.cpp \
-	SoAudioRenderAction.cpp all-actions-cpp.cpp
 libactions@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libactions@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp

@@ -75,6 +75,7 @@ RegularSources = \
 	SoTextureCoordinate2.cpp \
 	SoTextureCoordinate3.cpp \
 	SoTextureCoordinateBinding.cpp \
+	SoTextureCoordinateCube.cpp \
 	SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp \

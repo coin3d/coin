@@ -94,6 +94,7 @@
 #include "SoTextureCoordinate2.cpp"
 #include "SoTextureCoordinate3.cpp"
 #include "SoTextureCoordinateBinding.cpp"
+#include "SoTextureCoordinateCube.cpp"
 #include "SoTextureCoordinateDefault.cpp"
 #include "SoTextureCoordinateEnvironment.cpp"
 #include "SoTextureCoordinateFunction.cpp"

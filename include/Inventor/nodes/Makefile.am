@@ -100,6 +100,7 @@ PublicHeaders = \
 	SoTextureCoordinate2.h \
 	SoTextureCoordinate3.h \
 	SoTextureCoordinateBinding.h \
+	SoTextureCoordinateCube.h \
 	SoTextureCoordinateDefault.h \
 	SoTextureCoordinateEnvironment.h \
 	SoTextureCoordinateFunction.h \
