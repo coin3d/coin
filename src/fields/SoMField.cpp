@@ -496,7 +496,7 @@ SoMField::allocValues(int newnum)
   assert(newnum >= 0);
 
   if (newnum == 0) {
-    delete (unsigned char *) this->valuesPtr();
+    delete[] (unsigned char *) this->valuesPtr();
     this->setValuesPtr(NULL);
     this->maxNum = 0;
   }
@@ -527,7 +527,7 @@ SoMField::allocValues(int newnum)
       (void)memcpy(newblock, this->valuesPtr(),
                    fsize * SbMin(this->num, newnum));
 
-      delete (unsigned char *) this->valuesPtr();
+      delete[] (unsigned char *) this->valuesPtr();
       this->setValuesPtr(newblock);
     }
     else {
