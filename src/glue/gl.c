@@ -2725,12 +2725,12 @@ cc_glglue_glGetFinalCombinerInputParameterivNV(const cc_glglue * glue,
 }
 
 
-/* GL_NV_texture_rectangle */
+/* GL_NV_texture_rectangle (identical to GL_EXT_texture_rectangle) */
 SbBool 
 cc_glglue_has_nv_texture_rectangle(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->has_nv_texture_rectangle || glue->has_ext_texture_rectangle;
+  return glue->has_ext_texture_rectangle;
 }
 
 /* GL_EXT_texture_rectangle */
@@ -2738,7 +2738,7 @@ SbBool
 cc_glglue_has_ext_texture_rectangle(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
-  return glue->has_ext_texture_rectangle || glue->has_nv_texture_rectangle;
+  return glue->has_ext_texture_rectangle;
 }
 
 /* GL_NV_texture_shader */
