@@ -374,6 +374,9 @@ THE WISH LIST
   that use the floating point precision constant (FLT_EPSILON) to 
   determine if it's possible to calculate the inverse. 
 
+  Update 2001-07-03 mortene: just want to mention that
+  SbMatrix::invertible() would be a somewhat smoother name. :-)
+
 * SbList::setEqTester()
   2001-07-03  Marius Bugge Monsen <mariusbu@sim.no>
   (write-up by mortene)
