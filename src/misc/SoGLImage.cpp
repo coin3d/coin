@@ -242,6 +242,25 @@ glimage_get_buffer(const int buffersize, const SbBool mipmap)
       delete[] buf->buffer;
       buf->buffer = new unsigned char[buffersize];
       buf->buffersize = buffersize;
+      // FIXME: this is an extremely lame workaround for a Purify UMR
+      // reported by Tore Kristiansen of HitecO.
+      //
+      // An UMR is reported from buf->buffer (when disabling the
+      // memset() workaround below) from somewhere within the
+      // fast_mipmap() method. Purify doesn't go far enough down the
+      // call-stack (probably because fast_mipmap() is a local static
+      // method?)  for us to easily see where the exact error happens,
+      // though.
+      //
+      // My guess is that the mipmap-buffer isn't completely "filled
+      // out", and so the glTex[Sub]Image2D() call asks for more
+      // pixels than was generated.
+      //
+      // Should try to get this problem reproduced locally before
+      // attempting to fix it.
+      //
+      // 20030514 mortene.
+      (void)memset(buf->buffer, 0x55, buf->buffersize);
     }
     return buf->buffer;
   }
@@ -375,9 +394,6 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
   int level = compute_log(height);
   if (level > levels) levels = level;
 
-  int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*nc;
-  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
-
   if (useglsubimage) {
     if (cc_glglue_has_texsubimage(glw)) {
       cc_glglue_glTexSubImage2D(glw, GL_TEXTURE_2D, 0, 0, 0,
@@ -389,6 +405,9 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
     glTexImage2D(GL_TEXTURE_2D, 0, nc, width, height, 0, format,
                  GL_UNSIGNED_BYTE, data);
   }
+
+  int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*nc;
+  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
 
   for (level = 1; level <= levels; level++) {
     halve_image(width, height, nc, data, mipmap_buffer);
@@ -419,9 +438,6 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   const cc_glglue * glw = sogl_glue_instance(state);
   int levels = compute_log(SbMax(SbMax(width, height), depth));
 
-  int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
-  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
-
   // Send level 0 (original image) to OpenGL
   if (useglsubimage) {
     if (cc_glglue_has_3d_textures(glw)) {
@@ -436,6 +452,9 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
                              0, format, GL_UNSIGNED_BYTE, data);
     }
   }
+
+  int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
+  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
 
   for (int level = 1; level <= levels; level++) {
     halve_image(width, height, depth, nc, data, mipmap_buffer);
