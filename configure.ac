@@ -419,6 +419,7 @@ SIM_AC_DEFINE_BYTESIZE_TYPES
 
 # Test for ntohl() etc.
 # disabled after converting from htonl to coin_hton_*() in src/tidbits.c
+# - need this for select() on win32 unfortunately
 SIM_AC_BYTEORDER_CONVERSION(
   [COIN_EXTRA_LIBS="$sim_ac_byteorder_conversion_libs $COIN_EXTRA_LIBS"],
   [SIM_AC_ERROR([no-network-conversion])])
@@ -1007,14 +1008,14 @@ AC_SUBST([LIBFLAGS], [])
 # **************************************************************************
 # setup for <Inventor/system/gl.h>
 
-/* include windows.h? */
+# include windows.h?
 if test x"$ac_cv_header_windows_h" = x"yes"; then
   sim_include_windows_h="#include <windows.h>"
 else
   sim_include_windows_h="/* #include <windows.h> - not needed on system */"
 fi
 
-/* how to include gl.h */
+# how to include gl.h
 if test x"$ac_cv_header_GL_gl_h" = x"yes"; then
   sim_include_gl_h="#include <GL/gl.h>"
 else
