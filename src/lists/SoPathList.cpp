@@ -187,7 +187,7 @@ SoPathList::uniquify()
   int i, n = this->getLength();
 
   // remove identical paths
-  for (int i = 0; i < n-1; i++) {
+  for (i = 0; i < n-1; i++) {
     int j = i+1;
     while (compare_paths(this->get(i), this->get(j)) == 0 && j < n) {
       this->remove(j); 
