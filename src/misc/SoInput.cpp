@@ -259,6 +259,11 @@ SoInput::~SoInput(void)
   Adds a ROUTE from /a fromnode's \fromfield, to \a tonode's
   tofield. This makes it possible to defines ROUTEs in files
   before the \a fromnode or \a tonode is parsed.
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-12
 */
 void
 SoInput::addRoute(const SbName & fromnode, const SbName & fromfield,
