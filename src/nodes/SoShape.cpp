@@ -289,8 +289,32 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     else {
       const SoTransparencyElement * trans =
         SoTransparencyElement::getInstance(state);
-      transparent = trans->getNum() > 1 ||
-        trans->get(0) > 0.0f;
+      // Earlier we had the following code here, which might have been
+      // a bit faster than the current version:
+      //
+      //   transparent = trans->getNum() > 1 || trans->get(0) > 0.0f;
+      //
+      // The assumption was that if more than one transparency value
+      // was supplied, at least one of them should be != 0.0,
+      // otherwise there wouldn't be any point in having more than one
+      // value. But, since we'll break out of the loop below when the
+      // first transparent value is found, it should be just as fast
+      // in most cases.               pederb, 2001-10-23
+
+      // NB: this transparency test is not guaranteed to be correct,
+      // since there's no way that we can figure out if the
+      // transparent values are actually used by the shape. Maybe a
+      // new virtual function SoShape::hasTransparency(SoState*) would
+      // be a good idea?             pederb, 2001-10-23
+
+      const int n = trans->getNum();
+      const float * tarr = trans->getArrayPtr();
+      for (int i = 0; i < n; i++) {
+        if (tarr[i] != 0.0f) {
+          transparent = TRUE;
+          break;
+        }
+      }
     }
   }
 
