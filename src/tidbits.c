@@ -976,8 +976,7 @@ atexit_qsort_cb(const void * q0, const void * q1)
 }
 
 /* 
-   atexit callback that calls all atexit functions. Call this from
-   SoDB::cleanup() if you like.
+   Calls all atexit functions. Invoked from SoDB::cleanup().
 */
 void
 coin_atexit_cleanup(void)
@@ -999,9 +998,23 @@ coin_atexit_cleanup(void)
   atexit_list = NULL;
 }
 
-/* This little atexit() wrapper is used throughout the sourcecode to
-   make the OSF1/cxx compiler accept C++ functions as it's input
-   argument. Problem reported by Guy Barrand. */
+/*
+  This replacement for the C library's atexit() function is used for
+  two reasons: first, we want to control the internal order of when
+  clean-up callbacks are invoked (as can be done by setting the
+  priority argument accordingly), second, we want to be able to do a
+  controlled clean-up in advance of the C library's shutdown, to make
+  sure that we get cleaned up before any DLLs we are using are thrown
+  out of the process.
+
+  Callbacks with higher priority will be called first. On equal
+  priority callbacks will be made last-in-first-out ("LIFO").
+
+  Functions passed to this method should be cast to the apropriate
+  method signature (coin_atexit_f), so the OSF1/cxx compiler can
+  accept a C++ function as it's input argument. (Problem reported by
+  Guy Barrand.)
+*/
 
 void
 coin_atexit(coin_atexit_f * f, uint32_t priority)
