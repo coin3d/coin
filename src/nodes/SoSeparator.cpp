@@ -60,9 +60,9 @@
 #include <Inventor/elements/SoCullElement.h>
 #include <stdlib.h> // for getenv()
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 
 #ifdef HAVE_WINDOWS_H
 #include <windows.h> // needed for gl.h
@@ -268,7 +268,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     assert(0 && "unknown path code");
     break;
   }
-  
+
   SbBool validcache = this->bboxcache && this->bboxcache->isValid(state);
 
   // FIXME: there needs to be some extra magic here to make caching
