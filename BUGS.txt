@@ -1457,3 +1457,68 @@
     20021217 mortene.
 
 =====================================================================
+
+047 SoRotateDiscDragger makes Coin spit out warnings.
+
+    Load this simple file into a viewer, then drag any part of the
+    dragger around a bit:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    #Inventor V2.1 ascii
+    
+    RotateDiscDragger { }
+    Cone { }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    There will be heaps of these warnings:
+
+        Coin warning in SbVec4f::normalize(): The length of the vector should be > 0.0f to be able to normalize.
+
+    Here's the relevant part of the backtrace:
+
+    #6  0x406a2d19 in SbVec4f::normalize (this=0xbfffecec)
+        at /home/sigma/mortene/code/coin-head/src/base/SbVec4f.cpp:197
+    #7  0x4069ae5e in SbRotation::setValue (this=0xbfffecec, q0=nan(0x400000), 
+        q1=nan(0x400000), q2=nan(0x400000), q3=nan(0x400000))
+        at /home/sigma/mortene/code/coin-head/src/base/SbRotation.cpp:157
+    #8  0x4069bc5c in SbRotation::operator*= (this=0xbfffecec, q=@0xbfffefb8)
+        at /home/sigma/mortene/code/coin-head/src/base/SbRotation.cpp:448
+    #9  0x4069bd59 in operator* (q1=@0xbfffee4c, q2=@0xbfffefb8)
+        at /home/sigma/mortene/code/coin-head/src/base/SbRotation.cpp:511
+    #10 0x40698496 in decomp_affine (A=0xbfffef58, parts=0xbfffef98)
+        at /home/sigma/mortene/code/coin-head/src/base/SbMatrix.cpp:1632
+    #11 0x40695935 in SbMatrix::getTransform (this=0x80ff994, t=@0xbffff054, 
+        r=@0xbffff044, s=@0xbffff060, so=@0xbffff034)
+        at /home/sigma/mortene/code/coin-head/src/base/SbMatrix.cpp:812
+    #12 0x40a5190c in SoCamera::audioRender (this=0x80df208, action=0x80ad8e0)
+        at /home/sigma/mortene/code/coin-head/src/nodes/SoCamera.cpp:584
+    #13 0x40a803ee in SoNode::audioRenderS (action=0x80ad8e0, node=0x80df208)
+        at /home/sigma/mortene/code/coin-head/src/nodes/SoNode.cpp:1132
+    #14 0x406d44ef in SoAction::traverse (this=0x80ad8e0, node=0x80df208)
+        at /home/sigma/mortene/code/coin-head/src/actions/SoAction.cpp:785
+    #15 0x409347f2 in SoChildList::traverse (this=0x80afad0, action=0x80ad8e0, 
+        first=0, last=4)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:289
+    #16 0x409348e2 in SoChildList::traverse (this=0x80afad0, action=0x80ad8e0)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:321
+    #17 0x40a66571 in SoGroup::doAction (this=0x80afa10, action=0x80ad8e0)
+        at /home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:314
+    #18 0x40a66ac5 in SoGroup::audioRender (this=0x80afa10, action=0x80ad8e0)
+        at /home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:452
+    #19 0x40a803ee in SoNode::audioRenderS (action=0x80ad8e0, node=0x80afa10)
+        at /home/sigma/mortene/code/coin-head/src/nodes/SoNode.cpp:1132
+    #20 0x406d44ef in SoAction::traverse (this=0x80ad8e0, node=0x80afa10)
+        at /home/sigma/mortene/code/coin-head/src/actions/SoAction.cpp:785
+    #21 0x406eb405 in SoAudioRenderAction::beginTraversal (this=0x80ad8e0, 
+        node=0x80afa10)
+        at /home/sigma/mortene/code/coin-head/src/actions/SoAudioRenderAction.cpp:88
+    #22 0x406d3d75 in SoAction::apply (this=0x80ad8e0, root=0x80afa10)
+        at /home/sigma/mortene/code/coin-head/src/actions/SoAction.cpp:505
+    #23 0x4097e85b in SoSceneManager::render (this=0x80ad668, clearwindow=1, 
+        clearzbuffer=1)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoSceneManager.cpp:186
+
+
+    20021217 mortene.
+
+=====================================================================
