@@ -207,20 +207,19 @@ coin_LocalFree(HLOCAL hMem) /* handle to local memory object */
 const struct cc_win32_api *
 cc_win32(void)
 {
-  static struct cc_win32_api * instance = NULL;
+  static BOOL init = FALSE;
+  static struct cc_win32_api instance;
 
-  if (instance) { return instance; }
+  if (!init) {
+    init = TRUE;
 
-  /* FIXME: one-time mem leak, clean up at exit. 20030530 mortene. */
-  instance = (struct cc_win32_api *)malloc(sizeof(struct cc_win32_api));
-  assert(instance != NULL);
+    /* set up all function pointers */
+    instance.GetTextFace = coin_GetTextFace;
+    instance.LocalFree = coin_LocalFree;
+    instance.GetVersionEx = coin_GetVersionEx;
+  }
 
-  /* set up all function pointers */
-  instance->GetTextFace = coin_GetTextFace;
-  instance->LocalFree = coin_LocalFree;
-  instance->GetVersionEx = coin_GetVersionEx;
-
-  return instance;
+  return &instance;
 }
 
 /* ********************************************************************** */
