@@ -42,18 +42,18 @@ public:
     CLAMP,
     CLAMP_TO_EDGE
   };
-
+  
+  void applyQuality(SoGLDisplayList * dl, const float quality);
   virtual void setData(const unsigned char * bytes,
                        const SbVec2s size,
                        const int nc,
-                       const Wrap wraps,
-                       const Wrap wrapt,
+                       const Wrap wraps = REPEAT,
+                       const Wrap wrapt = REPEAT,
                        const float quality = 0.5f,
                        const int border = 0,
                        SoState * createinstate = NULL);
 
-  // these flags can be used to override using textureQuality to
-  // decide some texture properties.
+  // these flags can be used to set texture properties.
   enum Flags {
     // mipmap, scaling and filtering settings
     SCALE_DOWN =                0x0001,
@@ -67,7 +67,8 @@ public:
     FORCE_TRANSPARENCY_FALSE  = 0x0040,
     FORCE_ALPHA_TEST_TRUE     = 0x0080,
     FORCE_ALPHA_TEST_FALSE    = 0x0100,
-
+    
+    INVINCIBLE                = 0x0200, // never die of old age
     // use quality value to decide mipmap, filtering and scaling. This
     // is the default.
     USE_QUALITY_VALUE         = 0X8000
@@ -75,11 +76,11 @@ public:
 
   void setFlags(const uint32_t flags);
   uint32_t getFlags(void) const;
-  
+
   const unsigned char * getDataPtr(void) const;
   SbVec2s getSize(void) const;
   int getNumComponents(void) const;
-  
+
   virtual SoGLDisplayList * getGLDisplayList(SoState * state);
   SbBool hasTransparency(void) const;
   SbBool useAlphaTest(void) const;
@@ -89,7 +90,7 @@ public:
 protected:
 
   virtual ~SoGLImage();
-  
+
 private:
 
   class SoGLImageP * pimpl;
