@@ -39,6 +39,7 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 
 #include <Inventor/nodes/SoShape.h>
@@ -60,6 +61,7 @@
 #define FLAG_DEFAULT            0x04
 #define FLAG_DIDPUSH            0x08
 #define FLAG_3DTEXTURES         0x10
+#define FLAG_DIDINITDEFAULT     0x20
 
 /*!
   Constructor with \a action being the action applied to the node.
@@ -90,7 +92,6 @@ SoTextureCoordinateBundle(SoAction * const action,
   }
   
   if (!needinit && !multienabled) return;
-  SbBool didinitdefault = FALSE;
 
   // It is safe to assume that shapenode is of type SoShape, so we
   // cast to SoShape before doing any operations on the node.
@@ -100,7 +101,6 @@ SoTextureCoordinateBundle(SoAction * const action,
   switch (this->coordElt->getType()) {
   case SoTextureCoordinateElement::DEFAULT:
     this->initDefault(action, forRendering);
-    didinitdefault = TRUE;
     break;
   case SoTextureCoordinateElement::EXPLICIT:
     if (this->coordElt->getNum() > 0) {
@@ -108,7 +108,6 @@ SoTextureCoordinateBundle(SoAction * const action,
     }
     else {
       this->initDefault(action, forRendering);
-      didinitdefault = TRUE;
     }
     break;
   case SoTextureCoordinateElement::FUNCTION:
@@ -132,13 +131,21 @@ SoTextureCoordinateBundle(SoAction * const action,
 
   this->glElt = NULL;
   if (forRendering) {
-    this->glElt = (SoGLTextureCoordinateElement*) this->coordElt;
-    this->glElt->initMulti(action->getState());
     if (multienabled) {
-      for (int i = 1; i < multimax; i++) { 
-        // FIXME: setup default for units if texture coordinates are missing
+      const SoMultiTextureCoordinateElement * melem =
+        SoMultiTextureCoordinateElement::getInstance(state);
+      for (int i = 1; i <= multimax; i++) { 
+        if (multienabled[i]) {
+          if ((melem->getType(i) == SoTextureCoordinateElement::DEFAULT) ||
+              ((melem->getType(state, i) == SoTextureCoordinateElement::EXPLICIT) &&
+               (melem->getNum(i) == 0))) {
+            this->initDefaultMulti(action, i);
+          }
+        }
       }
     }
+    this->glElt = (SoGLTextureCoordinateElement*) this->coordElt;
+    this->glElt->initMulti(action->getState());
   }
   if ((this->flags & FLAG_DEFAULT) && !setUpDefault) {
     // FIXME: I couldn't be bothered to support this yet. It is for picking
@@ -226,6 +233,9 @@ SoTextureCoordinateBundle::get(const int index)
 */
 
 
+//
+// initialize default texture coordinates for unit 0
+//
 void
 SoTextureCoordinateBundle::initDefault(SoAction * const action,
                                        const SbBool forRendering)
@@ -245,6 +255,75 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
                                           this);
   this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
 
+  if (!(this->flags & FLAG_DIDINITDEFAULT)) {
+    this->initDefaultCallback(action);
+  }
+}
+
+//
+// initialize default texture coordinates for unit > 0
+//
+void 
+SoTextureCoordinateBundle::initDefaultMulti(SoAction * action, const int unit)
+{
+  this->flags |= FLAG_NEEDCOORDS;
+  this->flags |= FLAG_FUNCTION;
+
+  if (!(this->flags & FLAG_DIDPUSH)) {
+    this->state->push();
+    this->flags |= FLAG_DIDPUSH;
+  }
+  SoMultiTextureCoordinateElement::setFunction(this->state, this->shapenode, unit,
+                                               SoTextureCoordinateBundle::defaultCBMulti,
+                                               this);
+  if (!(this->flags & FLAG_DIDINITDEFAULT)) {
+    this->initDefaultCallback(action);
+  }
+}
+
+//
+// callback for default texture coordinates (for texture unit 0)
+//
+const SbVec4f &
+SoTextureCoordinateBundle::defaultCB(void * userdata,
+                                     const SbVec3f & point,
+                                     const SbVec3f & normal)
+{
+  return ((SoTextureCoordinateBundle*)userdata)->get(point, normal);
+}
+
+//
+// callback for default texture coordinates (for texture units > 0)
+//
+const SbVec4f &
+SoTextureCoordinateBundle:: defaultCBMulti(void * userdata,
+                                           const SbVec3f & point,
+                                           const SbVec3f & normal)
+{
+  SoTextureCoordinateBundle * thisp = (SoTextureCoordinateBundle*) userdata;
+
+  SbVec3f pt;
+  if (thisp->flags & FLAG_3DTEXTURES) {
+    pt = point - thisp->defaultorigo;
+    thisp->dummyInstance[2] = pt[2]/thisp->defaultsize[2];
+  }
+  else {
+    pt.setValue(point[thisp->defaultdim0]-thisp->defaultorigo[0],
+                point[thisp->defaultdim1]-thisp->defaultorigo[1],
+                0.0f);
+  }
+  thisp->dummyInstance[0] = pt[0]/thisp->defaultsize[0];
+  thisp->dummyInstance[1] = pt[1]/thisp->defaultsize[1];
+  return thisp->dummyInstance;
+}
+
+//
+// Set up stuff needed for default texture coordinate mapping callback
+// 
+void 
+SoTextureCoordinateBundle::initDefaultCallback(SoAction * action)
+{
+  this->flags |= FLAG_DIDINITDEFAULT;
   //
   // calculate needed stuff for default mapping
   //
@@ -346,10 +425,3 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   assert(this->defaultsize[1] > 0.0f);
 }
 
-const SbVec4f &
-SoTextureCoordinateBundle::defaultCB(void * userdata,
-                                     const SbVec3f & point,
-                                     const SbVec3f & normal)
-{
-  return ((SoTextureCoordinateBundle*)userdata)->get(point, normal);
-}

@@ -65,15 +65,21 @@ private:
   unsigned int flags;
 
   // misc stuff for default texture coordinate mappping
-  static const SbVec4f &defaultCB(void * userdata,
-                                  const SbVec3f & point,
-                                  const SbVec3f & normal);
+  static const SbVec4f & defaultCB(void * userdata,
+                                   const SbVec3f & point,
+                                   const SbVec3f & normal);
+  static const SbVec4f & defaultCBMulti(void * userdata,
+                                        const SbVec3f & point,
+                                        const SbVec3f & normal);
   SoShape * shapenode;
   SbVec3f defaultorigo;
   SbVec3f defaultsize;
   SbVec4f dummyInstance;
   int defaultdim0, defaultdim1;
+  void initDefaultCallback(SoAction * action);
   void initDefault(SoAction * const action, const SbBool forRendering);
+  void initDefaultMulti(SoAction * action, const int unit);
 };
+
 
 #endif // !COIN_SOTEXTURECOORDINATEBUNDLE_H
