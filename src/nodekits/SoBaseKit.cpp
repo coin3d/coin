@@ -702,12 +702,11 @@ SoBaseKit::getAnyPart(const SbName &partname, SbBool makeifneeded, SbBool leafch
             return list->getChild(listIdx);
           }
           else {
-#if COIN_DEBUG && 1 // debug
-            SoDebugError::postInfo("SoBaseKit::getAnyPart",
-                                   "index %d out of bounds for part: %s",
-                                   listIdx, partname.getString());
-#endif // debug
-
+#if COIN_DEBUG
+            SoDebugError::postWarning("SoBaseKit::getAnyPart",
+                                      "index %d out of bounds for part: %s",
+                                      listIdx, partname.getString());
+#endif // COIN_DEBUG
           }
         }
         else {
