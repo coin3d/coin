@@ -5000,6 +5000,7 @@ if test x"$with_pthread" != xno; then
     sim_ac_pthread_cppflags="-I${with_pthread}/include"
     sim_ac_pthread_ldflags="-L${with_pthread}/lib"
   fi
+  sim_ac_pthread_cppflags="-D_REENTRANT ${sim_ac_pthread_cppflags}"
   sim_ac_pthread_libs="-lpthread"
 
   sim_ac_save_cppflags=$CPPFLAGS
@@ -5028,8 +5029,7 @@ if test x"$with_pthread" != xno; then
     $2
   fi
 fi
-])
-
+]) # SIM_AC_CHECK_PTHREAD
 
 
 # Usage:
