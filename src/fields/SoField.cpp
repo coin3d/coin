@@ -320,7 +320,9 @@ public:
 
 /*!
   \fn void SoField::copyFrom(const SoField & f)
-  Copy value(s) from \a f into this field.
+
+  Copy value(s) from \a f into this field. \a f must be of the same
+  type as this field.
 */
 
 /*!

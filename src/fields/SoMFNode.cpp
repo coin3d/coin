@@ -230,6 +230,9 @@ SoMFNode::operator==(const SoMFNode & field) const
   return TRUE;
 }
 
+/*!
+  \copydoc SoMFFloat::deleteAllValues()
+*/
 void
 SoMFNode::deleteAllValues(void)
 {
@@ -290,8 +293,9 @@ SoMFNode::insertSpace(int start, int num)
   if (notificstate) this->valueChanged();
 }
 
-// This is the "memmove replacement" to use copy constructors where
-// they are defined.
+/*!
+  \copydoc SoMFFloat::copyValue()
+*/
 void
 SoMFNode::copyValue(int to, int from)
 {
