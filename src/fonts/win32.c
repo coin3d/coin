@@ -458,8 +458,8 @@ cc_flww32_get_bitmap_advance(void * font, int glyph, int * x, int * y)
      non-existent glyph. 20030610 mortene. */
 #else /* tmp enabled */
   if (glyphstruct == NULL) {
-    *x = 10.0f;
-    *y = 0.0f;
+    *x = 10;
+    *y = 0;
     return;
   }
 #endif
@@ -538,7 +538,19 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
 /* Returns kerning, in x and y input arguments, for a pair of
    glyphs. */
 void
-cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y)
+cc_flww32_get_bitmap_kerning(void * font, int glyph1, int glyph2, int * x, int * y)
+{
+  /* FIXME: unimplemented. (Note that setting these values to <0,0>
+     simply means that the kerning will have no effect (kerning is
+     specified as an offset)). 20030515 mortene. */
+  *x = 0;
+  *y = 0;
+}
+
+/* Returns kerning, in x and y input arguments, for a pair of
+   glyphs. */
+void
+cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, float * y)
 {
   /* FIXME: unimplemented. (Note that setting these values to <0,0>
      simply means that the kerning will have no effect (kerning is
@@ -546,6 +558,7 @@ cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y)
   *x = 0.0f;
   *y = 0.0f;
 }
+
 
 /* Client should use this to indicate it's done with a glyph, so the
    resources associated with it can be deallocated. */

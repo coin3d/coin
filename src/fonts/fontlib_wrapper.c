@@ -685,7 +685,7 @@ cc_flw_get_bitmap_advance(unsigned int font, unsigned int glyph, int * x, int * 
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
 
-  *x = *y = 0.0f;
+  *x = *y = 0;
 
   if (fs->defaultfont || gs->fromdefaultfont) {
     *x = 7;
@@ -738,7 +738,7 @@ cc_flw_get_bitmap_kerning(unsigned int font, unsigned int glyph1, unsigned int g
   gs1 = flw_glyphidx2glyphptr(fs, glyph1);
   gs2 = flw_glyphidx2glyphptr(fs, glyph2);
 
-  *x = *y = 0.0f;
+  *x = *y = 0;
 
   if (fs->defaultfont == FALSE) {
     if (win32api) {
