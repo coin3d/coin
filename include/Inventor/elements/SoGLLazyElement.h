@@ -120,12 +120,13 @@ public:
   virtual void setGLImageIdElt(uint32_t glimageid, SbBool alphatest);
   virtual void setAlphaTestElt(SbBool onoff);
 
-  static void beginCaching(SoState * state, GLState * prestate,
-                           GLState * poststate);
+  static void beginCaching(SoState * state,
+                           SoGLLazyElement::GLState * prestate,
+                           SoGLLazyElement::GLState * poststate);
   static void endCaching(SoState * state);
 
-  static SbBool preCacheCall(SoState * state, GLState * prestate);
-  static void postCacheCall(SoState * state, GLState * poststate);
+  static SbBool preCacheCall(SoState * state, SoGLLazyElement::GLState * prestate);
+  static void postCacheCall(SoState * state, SoGLLazyElement::GLState * poststate);
 
 protected:
   virtual void lazyDidSet(uint32_t mask);
