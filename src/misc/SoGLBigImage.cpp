@@ -293,7 +293,7 @@ SoGLBigImage::initSubImages(SoState * state,
   const unsigned char * bytes = this->getImage() ?
     this->getImage()->getValue(size, nc) : NULL;
 
-  int numbytes = size[0] * size[1] * nc;
+  int numbytes = subimagesize[0] * subimagesize[1] * nc;
   THIS->averagebuf = 
     new unsigned int[numbytes ? numbytes : 1];
 
