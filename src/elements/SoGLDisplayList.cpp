@@ -61,8 +61,14 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
     mipmap(mipmaptexobj)
 {
   if (type == TEXTURE_OBJECT) {
+    // it is only possible to create one texture object at a time
+    assert(allocnum == 1);
 #if GL_VERSION_1_1
-    glGenTextures(allocnum, &this->firstindex);
+    // use temporary variable, in case GLuint is typedef'ed to
+    // something other than unsigned int
+    GLuint tmpindex; 
+    glGenTextures(1, &tmpindex);
+    this->firstindex = (unsigned int )tmpindex;
 #elif GL_EXT_texture_object
     static int sogldl_texobj_ext = -1;
     if (sogldl_texobj_ext == -1) {
@@ -70,19 +76,21 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
         SoGLCacheContextElement::getExtID("GL_EXT_texture_object");
     }
     if (SoGLCacheContextElement::extSupported(state, sogldl_texobj_ext)) {
-      glGenTexturesEXT(allocnum, &this->firstindex);
+      GLuint tmpindex;
+      glGenTexturesEXT(1, &tmpindex);
+      this->firstindex = (unsigned int) tmpindex;
     }
     else {
       // fall back to display list
       this->type = DISPLAY_LIST;
-      this->firstindex = glGenLists(allocnum);
+      this->firstindex = (unsigned int) glGenLists(allocnum);
     }
 #else // GL_EXT_texture_object
-    this->firstindex = glGenLists(allocnum);
+    this->firstindex = (unsigned int) glGenLists(allocnum);
 #endif // ! GL_EXT_texture_object
   }
   else {
-    this->firstindex = glGenLists(allocnum);
+    this->firstindex = (unsigned int) glGenLists(allocnum);
   }
 }
 
@@ -90,13 +98,17 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
 SoGLDisplayList::~SoGLDisplayList()
 {
   if (this->type == DISPLAY_LIST) {
-    glDeleteLists(this->firstindex, this->numalloc);
+    glDeleteLists((GLuint) this->firstindex, this->numalloc);
   }
   else {
+    // use temporary variable in case GLUint != unsigned int. It is
+    // only possible to create one texture objects at a time, so it's
+    // safe just to copy and delete the first index.
+    GLuint tmpindex = (GLuint) this->firstindex;
 #if GL_VERSION_1_1
-    glDeleteTextures(this->numalloc, &this->firstindex);
+    glDeleteTextures(1, &tmpindex);
 #elif GL_EXT_texture_object
-    glDeleteTexturesEXT(this->numalloc, &this->firstindex);
+    glDeleteTexturesEXT(1, &tmpindex);
 #endif // GL_EXT_texture_object
   }
 }
@@ -131,13 +143,14 @@ void
 SoGLDisplayList::open(SoState * state, int index)
 {
   if (type == DISPLAY_LIST) {
-    glNewList(this->firstindex+index, GL_COMPILE_AND_EXECUTE);
+    glNewList((GLuint) (this->firstindex+index), GL_COMPILE_AND_EXECUTE);
   }
   else {
+    assert(index == 0);
 #if GL_VERSION_1_1
-    glBindTexture(GL_TEXTURE_2D, this->firstindex+index);
+    glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
 #elif GL_EXT_texture_object
-    glBindTextureEXT(GL_TEXTURE_2D, this->firstindex+index);
+    glBindTextureEXT(GL_TEXTURE_2D, (GLuint) this->firstindex);
 #endif // GL_EXT_texture_object
   }
 }
@@ -160,13 +173,14 @@ void
 SoGLDisplayList::call(SoState * state, int index)
 {
   if (this->type == DISPLAY_LIST) {
-    glCallList(this->firstindex + index);
+    glCallList((GLuint) (this->firstindex + index));
   }
   else {
+    assert(index == 0);
 #if GL_VERSION_1_1
-    glBindTexture(GL_TEXTURE_2D, this->firstindex+index);
+    glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
 #elif GL_EXT_texture_object
-    glBindTextureEXT(GL_TEXTURE_2D, this->firstindex+index);
+    glBindTextureEXT(GL_TEXTURE_2D, (GLuint) this->firstindex+index);
 #endif // GL_EXT_texture_object
   }
   this->addDependency(state);
@@ -186,7 +200,7 @@ SoGLDisplayList::addDependency(SoState * state)
 }
 
 /*!
-  Returns whether the texture object stored in this instance 
+  Returns whether the texture object stored in this instance
   was created with mipmap data. This method is an extension
   versus the Open Inventor API.
 */
@@ -217,7 +231,7 @@ SoGLDisplayList::getNumAllocated(void) const
 /*!
   Return first GL index for this display list.
 */
-GLuint
+unsigned int
 SoGLDisplayList::getFirstIndex(void) const
 {
   return this->firstindex;
