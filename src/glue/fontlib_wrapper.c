@@ -318,7 +318,7 @@ flwInitialize()
 #else
   result = 0;
 #endif
-  flwCreateFont("defaultFont", dummy, 80);
+  flwCreateFont("defaultFont", dummy, 80, 12, 12);
 }
 
 void

@@ -44,7 +44,7 @@ extern "C" {
   flwExit();
   
   int 
-  flwCreateFont(const char * fontname, char * outname, const int outnamelen);
+  flwCreateFont(const char * fontname, char * outname, const int outnamelen, const int sizex, const int sizey);
   
   int 
   flwGetFont(const char * fontname, const int sizex, const int ysizey);
