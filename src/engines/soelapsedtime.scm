@@ -31,8 +31,8 @@
 (-> viewer-copy 'setscenegraph (-> (-> viewer 'getscenegraph) 'copy 1))
 (-> viewer-copy 'show)
 
-;; FIXME: *bug!* this will also stop the engine in the copied scene
-;; graph.  20000926 mortene.
+;; This used to trigger a bug; also stoping the engine in the copied
+;; scene graph (Bugzilla #206).
 (-> (-> elapsedtime 'on) 'setvalue 0)
 
 ;; Export scenegraph with engine.
@@ -40,7 +40,7 @@
 (-> writeaction 'apply (-> viewer 'getscenegraph))
 
 ;; Read scenegraph with engine in it.
-(let ((buffer "#Inventor V2.1 ascii\n\n Text3 { string \"\" = ElapsedTime { } . timeOut }")
+(let ((buffer "#Inventor V2.1 ascii\n\n Text3 { string \"\" = ElapsedTime { speed 1000.0 } . timeOut }")
       (input (new-soinput)))
   (-> input 'setbuffer (void-cast buffer) (string-length buffer))
   (let ((sceneroot (sodb::readall input)))
