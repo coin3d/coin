@@ -34,7 +34,7 @@
   which are missing.
 
   One more thing missing: detect cases where we should instantiate
-  SoUnknownEngine in addition to the SoUnknownNode cases.
+  SoUnknownEngine instead of SoUnknownNode.
 */
 
 #include <Inventor/misc/SoBase.h>
@@ -949,19 +949,8 @@ SoBase::createInstance(SoInput * in, const SbName & className)
   SoBase * instance = NULL;
 
   if (type == SoType::badType()) {
-
-    // FIXME: I think this code is plain wrong. There are flags to
-    // check to see if we have an SoUnknownEngine on our hands (or a
-    // group-type SoUnknownNode). 20000102 mortene.
-#if 0
-    SbString unknownString;
-    if (!in->read(unknownString) || unknownString != "fields") {
-      // FIXME: check for unknown engine class aswell? 19991229 mortene.
-      SoReadError::post(in, "Unknown class \"%s\"", className.getString());
-      return NULL;
-    }
-#endif
-    // Default to SoUnknownNode for now..
+    // Default to SoUnknownNode for now.. FIXME: what if we're dealing
+    // with an unknown engine? 20000105 mortene.
     SoUnknownNode * unknownnode = new SoUnknownNode;
     unknownnode->setNodeClassName(className);
     instance = unknownnode;
