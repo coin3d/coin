@@ -121,6 +121,9 @@ SoToVRML2Action::initClass(void)
 
   Set the flag deciding if appearance nodes should be reused if possible.
   The default is FALSE.
+
+  Please note that support for reusing Appearance nodes is not implemented
+  yet.
 */
 
 /*!
@@ -128,6 +131,9 @@ SoToVRML2Action::initClass(void)
 
   Get the flag deciding if appearance nodes should be reused if possible.
   The default is FALSE.
+
+  Please note that support for reusing Appearance nodes is not implemented
+  yet, so this method will always return FALSE.
 */
 
 /*!
@@ -149,6 +155,9 @@ SoToVRML2Action::initClass(void)
 
   Set the flag deciding if geometry nodes should be reused if possible.
   The default is FALSE.
+
+  Please note that support for reusing Geometry nodes is not implemented
+  yet.
 */
 
 /*!
@@ -156,6 +165,9 @@ SoToVRML2Action::initClass(void)
 
   Get the flag deciding if geometry nodes should be reused if possible.
   The default is FALSE.
+
+  Please note that support for reusing Geometry nodes is not implemented
+  yet, so this function will always return FALSE.
 */
 
 
