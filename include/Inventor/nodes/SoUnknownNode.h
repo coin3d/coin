@@ -28,7 +28,7 @@
 
 class SoUnknownNodeP;
 
-class COIN_DLL_API SoUnknownNode : public SoNode {
+class SoUnknownNode : public SoNode {
   typedef SoNode inherited;
 
   // The following definitions are used instead of SO_NODE_HEADER() to
