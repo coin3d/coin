@@ -430,18 +430,13 @@ SoDragger::updateElements(SoState * state)
                              SoShapeHintsElement::SOLID,
                              SoShapeHintsElement::CONVEX);
   }
-  if (state->isElementEnabled(SoGLTextureImageElement::getClassStackIndex())) {
-    // clear texture data
-    SoGLTextureImageElement::set(state, this, NULL, SoTextureImageElement::MODULATE,
-                                 SbColor(0.0f, 0.0f, 0.0f));
-  }
-  if (state->isElementEnabled(SoGLTextureEnabledElement::getClassStackIndex())) {
+  if (state->isElementEnabled(SoTextureEnabledElement::getClassStackIndex())) {
     // disable 2D texture
-    SoGLTextureEnabledElement::set(state, this, FALSE);
+    SoTextureEnabledElement::set(state, this, FALSE);
   }
-  if (state->isElementEnabled(SoGLTexture3EnabledElement::getClassStackIndex())) {
+  if (state->isElementEnabled(SoTexture3EnabledElement::getClassStackIndex())) {
     // disable 3D texture
-    SoGLTexture3EnabledElement::set(state, this, FALSE);
+    SoTexture3EnabledElement::set(state, this, FALSE);
   }
   if (state->isElementEnabled(SoNormalBindingElement::getClassStackIndex())) {
     // make default
