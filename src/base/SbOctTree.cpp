@@ -22,7 +22,6 @@
 #include <Inventor/SbPlane.h>
 #include <float.h>
 #include <stddef.h>
-#include <coindefs.h> // COIN_STUB()
 
 /*!
   \class SbOctTree SbOctTree.h Inventor/SbOctTree.h
@@ -39,7 +38,7 @@
 
   The only function that must be set is the \e bboxfunc. The other functions
   must be set if you intend to use the corresponding find methods in
-  SbOctTree.  
+  SbOctTree.
 */
 
 /*!
@@ -475,9 +474,9 @@ SbOctTree::addItem(void * const item)
                          this->boundingbox);
 }
 
-/*!  
+/*!
   Removes the item from the octtree. The octtree will not be
-  modified/simplified even when all items are removed.  
+  modified/simplified even when all items are removed.
 */
 void
 SbOctTree::removeItem(void * const item)
@@ -486,10 +485,10 @@ SbOctTree::removeItem(void * const item)
                             this->boundingbox);
 }
 
-/*! 
+/*!
   Finds all items which contains the point \a pos. Items are
   returned in \a destarray.
-  
+
   If \a removeduplicates is TRUE (the default), \a destarray will not
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
@@ -546,7 +545,7 @@ SbOctTree::findItems(const SbSphere & sphere,
                            removeduplicates);
 }
 
-/*!  
+/*!
   Finds all items inside \a planes. The method
   SbPlane::isInHalfSpace() should be used, and only items which are
   (partly) inside \e all planes are returned. Items are returned in \a
@@ -555,7 +554,7 @@ SbOctTree::findItems(const SbSphere & sphere,
   If \a removeduplicates is TRUE (the default), \a destarray will not
   contain duplicate items. This is not an optimized process, so if
   you're looking for speed you should set this to FALSE and do
-  your own postprocessing of the array of returned items.  
+  your own postprocessing of the array of returned items.
 */
 void
 SbOctTree::findItems(const SbPlane * const planes,
@@ -569,10 +568,10 @@ SbOctTree::findItems(const SbPlane * const planes,
                            removeduplicates);
 }
 
-/*!  
+/*!
   Returns a bounding box enclosing all the elements in the tree.
   This is just the same bounding box which was supplied to the
-  constructor.  
+  constructor.
 */
 const SbBox3f &
 SbOctTree::getBoundingBox(void) const
