@@ -607,7 +607,6 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     forcetiled || (fullsize[0] > tilesize[0]) || (fullsize[1] > tilesize[1]);
 
   this->internaldata->setBufferSize(tiledrendering ? tilesize : regionsize);
-  //if (!tiledrendering) { this->renderaction->setViewportRegion(this->viewport); }
 
   // contextid is the id used when rendering
   uint32_t contextid = this->renderaction->getCacheContext();
