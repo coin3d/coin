@@ -29,3 +29,14 @@ THE WISH LIST
   +   int getEnum( int idx, SbName & name ); // returns enum value
 
 
+* missing base class fields
+  2000-12-05  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  The following base classes have no corresponding fields:
+    SbBox2f, SbBox2s, SbBox3f, SbColor4f, SbCylinder, SbLine, SbSphere,
+    SbVec2s, SbXfBox3f
+
+  Probably not that many are worth implementing...
+
+
