@@ -26,6 +26,10 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 
+#define SO_VRMLNODE_INTERNAL_CONSTRUCTOR(_class_) \
+  SO_NODE_INTERNAL_CONSTRUCTOR(_class_); \
+  this->setNodeType(SoNode::VRML2);
+
 #define SO_VRMLNODE_ADD_EVENT_IN(_field_) \
   do { \
     this->_field_.setFieldType(SoField::EVENTIN_FIELD); \
