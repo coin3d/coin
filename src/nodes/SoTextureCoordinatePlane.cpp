@@ -161,6 +161,15 @@ SoTextureCoordinatePlane::generate(void * userdata,
 void
 SoTextureCoordinatePlane::doAction(SoAction * action)
 {
+  this->gencache.s = this->directionS.getValue();
+  this->gencache.t = this->directionT.getValue();
+  float lens = this->gencache.s.length();
+  float lent = this->gencache.t.length();
+  this->gencache.mul_s = 1.0f / lens;
+  this->gencache.mul_t = 1.0f / lent;
+  this->gencache.s /= lens;
+  this->gencache.t /= lent;
+
   SoTextureCoordinateElement::setFunction(action->getState(), this,
                                           SoTextureCoordinatePlane::generate,
                                           this);
@@ -171,16 +180,6 @@ void
 SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
 {
   SoTextureCoordinatePlane::doAction((SoAction *)action);
-
-  this->gencache.s = this->directionS.getValue();
-  this->gencache.t = this->directionT.getValue();
-  float lens = this->gencache.s.length();
-  float lent = this->gencache.t.length();
-  this->gencache.mul_s = 1.0f / lens;
-  this->gencache.mul_t = 1.0f / lent;
-  this->gencache.s /= lens;
-  this->gencache.t /= lent;
-
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
                                           this,
                                           SoTextureCoordinatePlane::handleTexgen,
