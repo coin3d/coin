@@ -34,16 +34,9 @@ Private = \
 	SoGLShaderProgram.h \
 	SoGLShaderTypes.h
 
-if BUILD_SHADERS
 RegularSources = $(Regular)
 LinkHackSources = $(Regular)
 PrivateHeaders = $(Private)
-else
-RegularSources = shaders-dummy.cpp
-LinkHackSources = shaders-dummy.cpp
-# for 'make dist'
-PrivateHeaders = $(Regular) $(Private)
-endif
 
 PublicHeaders = 
 ObsoleteHeaders =

@@ -1,4 +1,3 @@
-if BUILD_SHADERS
 PublicHeaders = \
 	SoAnnotation.h \
 	SoAnnoText3.h \
@@ -132,137 +131,11 @@ PublicHeaders = \
 	SoShaders.h \
 	SoVertexShader.h \
 	SoGLShaderTypes.h
-else
-PublicHeaders = \
-	SoAnnotation.h \
-	SoAnnoText3.h \
-	SoAnnoText3Property.h \
-	SoAntiSquish.h \
-	SoArray.h \
-	SoAsciiText.h \
-	SoBaseColor.h \
-	SoBlinker.h \
-	SoBumpMap.h \
-	SoBumpMapCoordinate.h \
-	SoBumpMapTransform.h \
-	SoCacheHint.h \
-	SoCallback.h \
-	SoCamera.h \
-	SoClipPlane.h \
-	SoColorIndex.h \
-	SoComplexity.h \
-	SoCone.h \
-	SoCoordinate3.h \
-	SoCoordinate4.h \
-	SoCube.h \
-	SoCylinder.h \
-	SoDirectionalLight.h \
-	SoDrawStyle.h \
-	SoEnvironment.h \
-	SoEventCallback.h \
-	SoExtSelection.h \
-	SoFaceSet.h \
-	SoFaceSet.h \
-	SoFile.h \
-	SoFont.h \
-	SoFontStyle.h \
-	SoGroup.h \
-	SoImage.h \
-	SoIndexedFaceSet.h \
-	SoIndexedLineSet.h \
-	SoIndexedNurbsCurve.h \
-	SoIndexedNurbsSurface.h \
-	SoIndexedShape.h \
-	SoIndexedTriangleStripSet.h \
-	SoInfo.h \
-	SoLOD.h \
-	SoLabel.h \
-	SoLevelOfDetail.h \
-	SoLight.h \
-	SoLightModel.h \
-	SoLineSet.h \
-	SoLineSet.h \
-	SoLinearProfile.h \
-	SoListener.h \
-	SoLocateHighlight.h \
-	SoMarkerSet.h \
-	SoMarkerSet.h \
-	SoMaterial.h \
-	SoMaterialBinding.h \
-	SoMatrixTransform.h \
-	SoMultipleCopy.h \
-	SoNode.h \
-	SoNodes.h \
-	SoNonIndexedShape.h \
-	SoNormal.h \
-	SoNormalBinding.h \
-	SoNurbsCurve.h \
-	SoNurbsProfile.h \
-	SoNurbsSurface.h \
-	SoOrthographicCamera.h \
-	SoPackedColor.h \
-	SoPathSwitch.h \
-	SoPattern.h \
-	SoPendulum.h \
-	SoPerspectiveCamera.h \
-	SoPickStyle.h \
-	SoPointLight.h \
-	SoPointSet.h \
-	SoPolygonOffset.h \
-	SoProfile.h \
-	SoProfileCoordinate2.h \
-	SoProfileCoordinate3.h \
-	SoQuadMesh.h \
-	SoResetTransform.h \
-	SoRotation.h \
-	SoRotationXYZ.h \
-	SoRotor.h \
-	SoScale.h \
-	SoSceneTexture2.h \
-	SoSelection.h \
-	SoSeparator.h \
-	SoShape.h \
-	SoShapeHints.h \
-	SoShuttle.h \
-	SoSphere.h \
-	SoSpotLight.h \
-	SoSubNode.h \
-	SoSurroundScale.h \
-	SoSwitch.h \
-	SoText2.h \
-	SoText3.h \
-	SoTexture2.h \
-	SoTexture2Transform.h \
-	SoTexture3.h \
-	SoTexture3Transform.h \
-	SoTextureCombine.h \
-	SoTextureCoordinate2.h \
-	SoTextureCoordinate3.h \
-	SoTextureCoordinateBinding.h \
-	SoTextureCoordinateCube.h \
-	SoTextureCoordinateCylinder.h \
-	SoTextureCoordinateSphere.h \
-	SoTextureCoordinateDefault.h \
-	SoTextureCoordinateEnvironment.h \
-	SoTextureCoordinateFunction.h \
-	SoTextureCoordinatePlane.h \
-	SoTextureScalePolicy.h \
-	SoTextureUnit.h \
-	SoTransform.h \
-	SoTransformSeparator.h \
-	SoTransformation.h \
-	SoTranslation.h \
-	SoTransparencyType.h \
-	SoTriangleStripSet.h \
-	SoUnits.h \
-	SoVertexProperty.h \
-	SoVertexShape.h \
-	SoWWWAnchor.h \
-	SoWWWInline.h
-endif
+
 PrivateHeaders = \
 	SoSubNodeP.h \
 	SoUnknownNode.h
+
 ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(nodes, nodes)

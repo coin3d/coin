@@ -352,9 +352,7 @@
 
 #include <coindefs.h> // COIN_STUB()
 
-#ifdef HAVE_SHADERS
 #include <Inventor/nodes/SoShaders.h>
-#endif
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>
@@ -575,9 +573,7 @@ SoDB::init(void)
 
   SoHardCopy::init();
 
-#ifdef HAVE_SHADERS
   SoShaders::init();
-#endif
 
 #ifdef HAVE_VRML97
   so_vrml_init();
@@ -587,15 +583,11 @@ SoDB::init(void)
 
 #if defined(HAVE_SOUND) && defined(HAVE_VRML97)
 
-  // FIXME: default disabled, as sound support through OpenAL caused
-  // crashes under Linux.
-  //
-  // Nobody bothered to document what was crashing, and how and why
-  // and how to solve it, though. *grumpf*
-  //
-  // 20030507 mortene.
-
+  // Default disabled, as sound support through OpenAL caused crashes
+  // under Linux.
   SbBool initaudio = FALSE;
+  // FIXME: nobody bothered to document what was crashing, and how and
+  // why and how to solve it, though. *grumpf*. 20030507 mortene.
 
 #ifdef HAVE_WIN32_API
   initaudio = TRUE;

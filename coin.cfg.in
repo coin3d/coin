@@ -16,7 +16,6 @@ htmldir="@htmldir@"
 compiler="@COIN_COMPILER@"
 objext="@OBJEXT@"
 have_3ds_import=@HAVE_3DS_IMPORT_CAPABILITIES@
-have_shaders=@HAVE_SHADERS@
 have_vrml97=@HAVE_VRML97@
 have_sound=@HAVE_SOUND@
 have_superglu=@HAVE_SUPERGLU@
