@@ -91,6 +91,9 @@
 /* define if preprocessor can quote arguments with apostophes */
 #undef HAVE_APOSTROPHES_QUOTING
 
+/* Define if assert() uses __builtin_expect() */
+#undef HAVE_ASSERT_WITH_BUILTIN_EXPECT
+
 /* Define to use bzip2 */
 #undef HAVE_BZIP2
 

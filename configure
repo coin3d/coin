@@ -19261,6 +19261,7 @@ sed 's/^/| /' conftest.$ac_ext >&5
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
 
+sim_ac_assert_uses_builtin_expect=false
 if $sim_ac_builtin_expect; then
   echo "$as_me:$LINENO: result: found" >&5
 echo "${ECHO_T}found" >&6
@@ -19269,10 +19270,43 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE___BUILTIN_EXPECT 1
 _ACEOF
 
+
+  echo "$as_me:$LINENO: checking if assert() uses __builtin_expect()" >&5
+echo $ECHO_N "checking if assert() uses __builtin_expect()... $ECHO_C" >&6
+  cat <<EOF > conftest.c
+#include <assert.h>
+
+int main(int argc, char ** argv) {
+  assert(argv);
+}
+EOF
+  if test x"$CPP" = x; then
+    { { echo "$as_me:$LINENO: error: cpp not detected - aborting.  notify maintainer at coin-support@coin3d.org." >&5
+echo "$as_me: error: cpp not detected - aborting.  notify maintainer at coin-support@coin3d.org." >&2;}
+   { (exit 1); exit 1; }; }
+  fi
+  echo "$CPP $CPPFLAGS conftest.c" >&5
+  sim_ac_builtin_expect_line=`$CPP $CPPFLAGS conftest.c 2>&5 | grep "__builtin_expect"`
+  if test x"$sim_ac_builtin_expect_line" = x""; then
+    echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+  else
+    sim_ac_assert_uses_builtin_expect=true
+    echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_ASSERT_WITH_BUILTIN_EXPECT 1
+_ACEOF
+
+  fi
 else
   echo "$as_me:$LINENO: result: not found" >&5
 echo "${ECHO_T}not found" >&6
 fi
+
+
+
 
 
 

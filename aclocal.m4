@@ -7613,12 +7613,37 @@ AC_TRY_COMPILE([
   }
 ], [sim_ac_builtin_expect=true])
 
+sim_ac_assert_uses_builtin_expect=false
 if $sim_ac_builtin_expect; then
   AC_MSG_RESULT([found])
   AC_DEFINE([HAVE___BUILTIN_EXPECT], 1, [Define if compiler has __builtin_expect() macro])
+
+  AC_MSG_CHECKING([if assert() uses __builtin_expect()])
+  cat <<EOF > conftest.c
+#include <assert.h>
+
+int main(int argc, char ** argv) {
+  assert(argv);
+}
+EOF
+  if test x"$CPP" = x; then
+    AC_MSG_ERROR([cpp not detected - aborting.  notify maintainer at coin-support@coin3d.org.])
+  fi
+  echo "$CPP $CPPFLAGS conftest.c" >&AS_MESSAGE_LOG_FD
+  sim_ac_builtin_expect_line=`$CPP $CPPFLAGS conftest.c 2>&AS_MESSAGE_LOG_FD | grep "__builtin_expect"`
+  if test x"$sim_ac_builtin_expect_line" = x""; then
+    AC_MSG_RESULT([no])
+  else
+    sim_ac_assert_uses_builtin_expect=true
+    AC_MSG_RESULT([yes])
+    AC_DEFINE([HAVE_ASSERT_WITH_BUILTIN_EXPECT], 1, [Define if assert() uses __builtin_expect()])
+  fi
 else
   AC_MSG_RESULT([not found])
 fi
+
+
+
 ]) # SIM_AC_COMPILER_BUILTIN_EXPECT
 
 
