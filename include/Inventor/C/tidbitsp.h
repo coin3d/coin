@@ -28,10 +28,16 @@
 
 #include <stdio.h>
 #include <Inventor/C/basic.h>
+#include <Inventor/C/base/string.h>
+
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* __cplusplus */
+
+#if 0 /* to get proper auto-indentation in emacs */
+}
+#endif /* emacs indentation */
 
 /* ********************************************************************** */
 
@@ -45,6 +51,33 @@ typedef void coin_atexit_f(void);
 void coin_atexit(coin_atexit_f *, uint32_t priority);
 
 void coin_atexit_cleanup(void);
+
+/* ********************************************************************** */
+
+/*
+  We're using these to ensure portable import and export even when the
+  application sets a locale with different thousands separator and
+  decimal point than the default "C" locale.
+
+  Use these functions to wrap locale-aware functions where
+  necessary:
+
+  \code
+  cc_string storedlocale;
+  SbBool changed = coin_locale_set_portable(&storedlocale);
+
+  // [code with locale-aware functions]
+
+  if (changed) { coin_locale_reset(&storedlocale); }
+  \endcode
+
+  Possibly locale-aware functions includes at least atof(), atoi(),
+  atol(), strtol(), strtoul(), strtod(), strtof(), strtold(), and all
+  the *printf() functions.
+*/
+
+SbBool coin_locale_set_portable(cc_string * storeold);
+void coin_locale_reset(cc_string * storedold);
 
 /* ********************************************************************** */
 
