@@ -51,15 +51,20 @@
 #define COIN_STUB_LINE 0
 #endif
 
-#if defined(HAVE_VAR___PRETTY_FUNCTION__)
-#define COIN_STUB_FUNC __PRETTY_FUNCTION__
-#elif defined(HAVE_VAR___FUNCTION__)
-#define COIN_STUB_FUNC __FUNCTION__
-#elif defined(HAVE_VAR___func__)
-#define COIN_STUB_FUNC __func__
+#ifdef __cplusplus
+#ifdef HAVE_CPP_COMPILER_FUNCTION_NAME_VAR
+#define COIN_STUB_FUNC HAVE_CPP_COMPILER_FUNCTION_NAME_VAR
 #else
 #define COIN_STUB_FUNC ((const char *)0L)
 #endif
+#else /* !__cplusplus */
+#ifdef HAVE_C_COMPILER_FUNCTION_NAME_VAR
+#define COIN_STUB_FUNC HAVE_C_COMPILER_FUNCTION_NAME_VAR
+#else
+#define COIN_STUB_FUNC ((const char *)0L)
+#endif
+#endif /* !__cplusplus */
+
 
 /*
   COIN_STUB(): this is the method which prints out stub
