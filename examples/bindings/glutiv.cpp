@@ -189,6 +189,8 @@ main(int argc, char ** argv)
   // initialize Coin and glut libraries
 
   SoDB::init();
+  SoNodeKit::init();
+  SoInteraction::init();
 
 #ifdef _WIN32
   int argc = 1;
