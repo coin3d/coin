@@ -32,9 +32,6 @@
 
 #include <data/draggerDefaults/handleBoxDragger.h>
 
-#include <coindefs.h> // COIN_STUB()
-
-
 #define WHATKIND_NONE       0
 #define WHATKIND_TRANSLATOR 1
 #define WHATKIND_EXTRUDER   2

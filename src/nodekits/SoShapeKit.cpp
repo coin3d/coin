@@ -43,7 +43,6 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoCube.h>
 #include <Inventor/nodes/SoProfile.h>
-#include <coindefs.h> // COIN_STUB
 
 
 SO_KIT_SOURCE(SoShapeKit);

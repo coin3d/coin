@@ -24,7 +24,6 @@
 */
 
 #include <Inventor/caches/SoBoundingBoxCache.h>
-#include <coindefs.h> // COIN_STUB()
 
 /*!
   Constructor with \a state being the current state.

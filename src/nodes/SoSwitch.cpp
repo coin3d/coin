@@ -312,9 +312,14 @@ SoSwitch::handleEvent(SoHandleEventAction *action)
 void
 SoSwitch::getMatrix(SoGetMatrixAction *action)
 {
-  // FIXME: is this correct? SoGetMatrixAction should normally not
-  // traverse below the node it has been applied to. 20000302 mortene.
-  SoSwitch::doAction((SoAction*)action);
+  switch (action->getCurPathCode()) {
+  case SoAction::OFF_PATH:
+  case SoAction::IN_PATH:
+    SoSwitch::doAction((SoAction*)action);
+    break;
+  default:
+    break;
+  }
 }
 
 /*!

@@ -39,7 +39,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoChildList.h>

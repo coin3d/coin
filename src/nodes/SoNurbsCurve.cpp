@@ -196,7 +196,8 @@ SoNurbsCurve::rayPick(SoRayPickAction * action)
 void
 SoNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  COIN_STUB();
+  // for now, just generate primitives to count. Very slow, of course.
+  SoShape::getPrimitiveCount(action);
 }
 
 /*!

@@ -33,7 +33,6 @@
 #include <Inventor/nodekits/SoNodeKitListPart.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
-#include <coindefs.h> // COIN_STUB
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -39,8 +39,12 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGLRenderAction.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H

@@ -27,7 +27,6 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
-#include <coindefs.h> // COIN_STUB
 #include <string.h>
 #include <stdlib.h>
 

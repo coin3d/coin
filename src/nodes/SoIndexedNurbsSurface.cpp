@@ -229,9 +229,10 @@ typedef struct {
 
 // doc from parent
 void
-SoIndexedNurbsSurface::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoIndexedNurbsSurface::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  COIN_STUB();
+  // for now, just generate primitives to count. Very slow, of course.
+  SoShape::getPrimitiveCount(action);
 }
 
 /*!
