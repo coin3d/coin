@@ -1,0 +1,749 @@
+# Makefile.in generated automatically by automake 1.5 from Makefile.am.
+
+# Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
+# Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+@SET_MAKE@
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+top_builddir = ../../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+INSTALL_HEADER = $(INSTALL_DATA)
+transform = @program_transform_name@
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+AMTAR = @AMTAR@
+AS = @AS@
+AWK = @AWK@
+BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
+CC = @CC@
+COIN_BETA_VERSION = @COIN_BETA_VERSION@
+COIN_COMPILER = @COIN_COMPILER@
+COIN_DOC_HTML = @COIN_DOC_HTML@
+COIN_DOC_MAN = @COIN_DOC_MAN@
+COIN_EXTRA_CFLAGS = @COIN_EXTRA_CFLAGS@
+COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
+COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
+COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
+COIN_EXTRA_LIBS = @COIN_EXTRA_LIBS@
+COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
+COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
+COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
+COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
+COIN_MSVC_LIBC = @COIN_MSVC_LIBC@
+COIN_VERSION = @COIN_VERSION@
+CONFIG = @CONFIG@
+CXX = @CXX@
+DEPDIR = @DEPDIR@
+DLLTOOL = @DLLTOOL@
+DSUFFIX = @DSUFFIX@
+ECHO = @ECHO@
+EXEEXT = @EXEEXT@
+HAVE_3DS_IMPORT_CAPABILITIES = @HAVE_3DS_IMPORT_CAPABILITIES@
+HAVE_SOUND = @HAVE_SOUND@
+HAVE_SUPERGLU = @HAVE_SUPERGLU@
+HAVE_THREADS = @HAVE_THREADS@
+HAVE_THREADSAFE = @HAVE_THREADSAFE@
+HAVE_VRML97 = @HAVE_VRML97@
+INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+LIBFLAGS = @LIBFLAGS@
+LIBTOOL = @LIBTOOL@
+LN_S = @LN_S@
+LT_AGE = @LT_AGE@
+LT_CURRENT = @LT_CURRENT@
+LT_REVISION = @LT_REVISION@
+MAC_FRAMEWORK = @MAC_FRAMEWORK@
+MAC_FRAMEWORK_NAME = @MAC_FRAMEWORK_NAME@
+MAC_FRAMEWORK_PREFIX = @MAC_FRAMEWORK_PREFIX@
+MAC_FRAMEWORK_VERSION = @MAC_FRAMEWORK_VERSION@
+MAINT = @MAINT@
+OBJDUMP = @OBJDUMP@
+OBJEXT = @OBJEXT@
+PACKAGE = @PACKAGE@
+RANLIB = @RANLIB@
+RFC822_DATE = @RFC822_DATE@
+SIM_INCLUDE_GLEXT_H = @SIM_INCLUDE_GLEXT_H@
+SIM_INCLUDE_GLU_H = @SIM_INCLUDE_GLU_H@
+SIM_INCLUDE_GL_H = @SIM_INCLUDE_GL_H@
+SIM_INCLUDE_WINDOWS_H = @SIM_INCLUDE_WINDOWS_H@
+STRIP = @STRIP@
+SUFFIX = @SUFFIX@
+SUPERGLUPREFIX = @SUPERGLUPREFIX@
+VERSION = @VERSION@
+X_CFLAGS = @X_CFLAGS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_LIBS = @X_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+am__include = @am__include@
+am__quote = @am__quote@
+coin_build_dir = @coin_build_dir@
+coin_configure_date = @coin_configure_date@
+coin_html_dir = @coin_html_dir@
+coin_man_dir = @coin_man_dir@
+coin_src_dir = @coin_src_dir@
+htmldir = @htmldir@
+install_sh = @install_sh@
+nop = @nop@
+path_tag = @path_tag@
+sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
+sim_ac_dpkg_buildpackage_exe = @sim_ac_dpkg_buildpackage_exe@
+sim_ac_makensis_exe = @sim_ac_makensis_exe@
+sim_ac_perl_exe = @sim_ac_perl_exe@
+sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
+
+RegularSources = \
+	SoGLCacheContextElement.cpp \
+	SoGLClipPlaneElement.cpp \
+	SoGLColorIndexElement.cpp \
+	SoGLCoordinateElement.cpp \
+	SoGLDrawStyleElement.cpp \
+	SoGLEnvironmentElement.cpp \
+	SoGLLazyElement.cpp \
+	SoGLLightIdElement.cpp \
+	SoGLLinePatternElement.cpp \
+	SoGLLineWidthElement.cpp \
+	SoGLModelMatrixElement.cpp \
+	SoGLNormalElement.cpp \
+	SoGLPointSizeElement.cpp \
+	SoGLPolygonOffsetElement.cpp \
+	SoGLProjectionMatrixElement.cpp \
+	SoGLRenderPassElement.cpp \
+	SoGLShapeHintsElement.cpp \
+	SoGLTextureCoordinateElement.cpp \
+	SoGLTextureEnabledElement.cpp \
+	SoGLTexture3EnabledElement.cpp \
+	SoGLTextureImageElement.cpp \
+	SoGLTextureMatrixElement.cpp \
+	SoGLUpdateAreaElement.cpp \
+	SoGLViewingMatrixElement.cpp \
+	SoGLViewportRegionElement.cpp \
+	SoGLDisplayList.cpp
+
+LinkHackSources = \
+	all-cpp.cpp
+
+PublicHeaders = \
+	../../../include/Inventor/elements/SoGLCacheContextElement.h \
+	../../../include/Inventor/elements/SoGLClipPlaneElement.h \
+	../../../include/Inventor/elements/SoGLColorIndexElement.h \
+	../../../include/Inventor/elements/SoGLCoordinateElement.h \
+	../../../include/Inventor/elements/SoGLDrawStyleElement.h \
+	../../../include/Inventor/elements/SoGLEnvironmentElement.h \
+	../../../include/Inventor/elements/SoGLLazyElement.h \
+	../../../include/Inventor/elements/SoGLLightIdElement.h \
+	../../../include/Inventor/elements/SoGLLinePatternElement.h \
+	../../../include/Inventor/elements/SoGLLineWidthElement.h \
+	../../../include/Inventor/elements/SoGLModelMatrixElement.h \
+	../../../include/Inventor/elements/SoGLNormalElement.h \
+	../../../include/Inventor/elements/SoGLNormalizeElement.h \
+	../../../include/Inventor/elements/SoGLPointSizeElement.h \
+	../../../include/Inventor/elements/SoGLPolygonOffsetElement.h \
+	../../../include/Inventor/elements/SoGLProjectionMatrixElement.h \
+	../../../include/Inventor/elements/SoGLRenderPassElement.h \
+	../../../include/Inventor/elements/SoGLShapeHintsElement.h \
+	../../../include/Inventor/elements/SoGLShadeModelElement.h \
+	../../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
+	../../../include/Inventor/elements/SoGLTextureEnabledElement.h \
+	../../../include/Inventor/elements/SoGLTexture3EnabledElement.h \
+	../../../include/Inventor/elements/SoGLTextureImageElement.h \
+	../../../include/Inventor/elements/SoGLTextureMatrixElement.h \
+	../../../include/Inventor/elements/SoGLUpdateAreaElement.h \
+	../../../include/Inventor/elements/SoGLViewingMatrixElement.h \
+	../../../include/Inventor/elements/SoGLViewportRegionElement.h
+
+PrivateHeaders = 
+ObsoletedHeaders = 
+
+
+# **************************************************************************
+# This template depends on the following variables having been set up before
+# its invokation.
+#
+# PublicHeaders    - header files that should be installed
+# PrivateHeaders   - source files that should be distributed, but not
+#                    installed - including source-included source files.
+# RegularSources   - source files compiled in this directory
+# LinkHackSources  - alternative source files used on -enable-compact compilation
+# ObsoletedHeaders - header files that should be removed upon installation
+
+# Everything below is autogenerated from a macro, so don't modify
+# within the Makefile.am itself. 19991201 mortene.
+@HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
+@HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
+
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = elements.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libelements@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libelements.la
+
+# Remove any linklibraries detected by configure, as they are not
+# needed in the submodules -- only in the toplevel libCoin build.
+LIBS = 
+
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
+
+libelements_la_SOURCES = $(BuildSources)
+EXTRA_libelements_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
+libelements@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+
+libelementsincdir = $(includedir)/Inventor/elements
+libelementsinc_HEADERS = $(PublicHeaders)
+
+elements_lst_SOURCES = $(BuildSources)
+EXTRA_elements_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+
+subdir = src/elements/GL
+mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
+CONFIG_HEADER = $(top_builddir)/include/config.h
+CONFIG_CLEAN_FILES =
+LIBRARIES = $(noinst_LIBRARIES)
+
+elements_lst_AR = $(AR) cru
+elements_lst_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_elements_lst_OBJECTS = all-cpp.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_elements_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.$(OBJEXT)
+elements_lst_OBJECTS = $(am_elements_lst_OBJECTS)
+LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
+
+libelements_la_LDFLAGS =
+libelements_la_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_libelements_la_OBJECTS = all-cpp.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libelements_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo
+libelements_la_OBJECTS = $(am_libelements_la_OBJECTS)
+libelements@SUFFIX@LINKHACK_la_LDFLAGS =
+libelements@SUFFIX@LINKHACK_la_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_libelements@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_TRUE@	all-cpp.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libelements@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLCacheContextElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTexture3EnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo
+libelements@SUFFIX@LINKHACK_la_OBJECTS = \
+	$(am_libelements@SUFFIX@LINKHACK_la_OBJECTS)
+
+DEFS = @DEFS@
+DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/include
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/SoGLCacheContextElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLCacheContextElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLClipPlaneElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLClipPlaneElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLColorIndexElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLColorIndexElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLCoordinateElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLCoordinateElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLDisplayList.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLDisplayList.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLDrawStyleElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLDrawStyleElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLEnvironmentElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLEnvironmentElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLLazyElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLLazyElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLLightIdElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLLightIdElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLLinePatternElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLLinePatternElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLLineWidthElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLLineWidthElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLModelMatrixElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLModelMatrixElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLNormalElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLNormalElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLPointSizeElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLPointSizeElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLPolygonOffsetElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLPolygonOffsetElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLProjectionMatrixElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLProjectionMatrixElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLRenderPassElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLRenderPassElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLShapeHintsElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLShapeHintsElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTexture3EnabledElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTexture3EnabledElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureCoordinateElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureCoordinateElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureEnabledElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureEnabledElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureImageElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureImageElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureMatrixElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLTextureMatrixElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLUpdateAreaElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLUpdateAreaElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLViewingMatrixElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLViewingMatrixElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLViewportRegionElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLViewportRegionElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/all-cpp.Plo $(DEPDIR)/all-cpp.Po
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
+	$(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	$(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CXXFLAGS = @CXXFLAGS@
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+DIST_SOURCES = $(elements_lst_SOURCES) $(EXTRA_elements_lst_SOURCES) \
+	$(libelements_la_SOURCES) $(EXTRA_libelements_la_SOURCES) \
+	$(libelements@SUFFIX@LINKHACK_la_SOURCES) \
+	$(EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES)
+HEADERS = $(libelementsinc_HEADERS)
+
+DIST_COMMON = $(libelementsinc_HEADERS) Makefile.am Makefile.in
+SOURCES = $(elements_lst_SOURCES) $(EXTRA_elements_lst_SOURCES) $(libelements_la_SOURCES) $(EXTRA_libelements_la_SOURCES) $(libelements@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES)
+
+all: all-am
+
+.SUFFIXES:
+.SUFFIXES: .cpp .lo .o .obj
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+	-rm -f libtool
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
+	cd $(top_srcdir) && \
+	  $(AUTOMAKE) --gnu  src/elements/GL/Makefile
+Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) && \
+	  CONFIG_HEADERS= CONFIG_LINKS= \
+	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
+
+AR = ar
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo " $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p"; \
+	  $(LIBTOOL) --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+clean-noinstLTLIBRARIES:
+	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+libelements.la: $(libelements_la_OBJECTS) $(libelements_la_DEPENDENCIES) 
+	$(CXXLINK)  $(libelements_la_LDFLAGS) $(libelements_la_OBJECTS) $(libelements_la_LIBADD) $(LIBS)
+libelements@SUFFIX@LINKHACK.la: $(libelements@SUFFIX@LINKHACK_la_OBJECTS) $(libelements@SUFFIX@LINKHACK_la_DEPENDENCIES) 
+	$(CXXLINK) -rpath $(libdir) $(libelements@SUFFIX@LINKHACK_la_LDFLAGS) $(libelements@SUFFIX@LINKHACK_la_OBJECTS) $(libelements@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
+
+mostlyclean-compile:
+	-rm -f *.$(OBJEXT) core *.core
+
+distclean-compile:
+	-rm -f *.tab.c
+
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCacheContextElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCacheContextElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLClipPlaneElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLClipPlaneElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLColorIndexElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLColorIndexElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCoordinateElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLCoordinateElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDisplayList.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDisplayList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDrawStyleElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLDrawStyleElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLEnvironmentElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLEnvironmentElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLazyElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLazyElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLightIdElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLightIdElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLinePatternElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLinePatternElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLineWidthElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLineWidthElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLModelMatrixElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLModelMatrixElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLNormalElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLNormalElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPointSizeElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPointSizeElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPolygonOffsetElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPolygonOffsetElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLProjectionMatrixElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLProjectionMatrixElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLRenderPassElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLRenderPassElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShapeHintsElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShapeHintsElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTexture3EnabledElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTexture3EnabledElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureCoordinateElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureCoordinateElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureEnabledElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureEnabledElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureImageElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureImageElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureMatrixElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTextureMatrixElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLUpdateAreaElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLUpdateAreaElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLViewingMatrixElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLViewingMatrixElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLViewportRegionElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLViewportRegionElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Po@am__quote@
+
+distclean-depend:
+	-rm -rf $(DEPDIR)
+
+.cpp.o:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+
+.cpp.obj:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(CXXCOMPILE) -c -o $@ `( test -f $< || echo -n '$(srcdir)/'; echo -n $< ) | xargs cygpath -w`
+
+.cpp.lo:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCXXCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+CXXDEPMODE = @CXXDEPMODE@
+uninstall-info-am:
+
+uninstall-libelementsincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libelementsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libelementsincdir)/$$f; \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	mkid -fID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
+
+GTAGS:
+	here=`CDPATH=: && cd $(top_builddir) && pwd` \
+	  && cd $(top_srcdir) \
+	  && gtags -i $(GTAGS_ARGS) $$here
+
+distclean-tags:
+	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH
+
+DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+
+top_distdir = ../../..
+distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
+
+distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/../../../include/Inventor/elements
+	@for file in $(DISTFILES); do \
+	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
+	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
+	  if test "$$dir" != "$$file" && test "$$dir" != "."; then \
+	    $(mkinstalldirs) "$(distdir)/$$dir"; \
+	  fi; \
+	  if test -d $$d/$$file; then \
+	    cp -pR $$d/$$file $(distdir) \
+	    || exit 1; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || cp -p $$d/$$file $(distdir)/$$file \
+	    || exit 1; \
+	  fi; \
+	done
+check-am: all-am
+check: check-am
+all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
+
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libelementsincdir)
+
+install: install-am
+install-exec: install-exec-am
+install-data: install-data-am
+uninstall: uninstall-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+
+installcheck: installcheck-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+	  `test -z '$(STRIP)' || \
+	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES) stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+	@echo "This command is intended for maintainers to use"
+	@echo "it deletes files that may require special tools to rebuild."
+clean: clean-am
+
+clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+	clean-noinstLIBRARIES clean-noinstLTLIBRARIES mostlyclean-am
+
+distclean: distclean-am
+
+distclean-am: clean-am distclean-compile distclean-depend \
+	distclean-generic distclean-libtool distclean-tags
+
+dvi: dvi-am
+
+dvi-am:
+
+info: info-am
+
+info-am:
+
+install-data-am: install-libelementsincHEADERS
+
+install-exec-am: install-libLTLIBRARIES
+
+install-info: install-info-am
+
+install-man:
+
+installcheck-am:
+
+maintainer-clean: maintainer-clean-am
+
+maintainer-clean-am: distclean-am maintainer-clean-generic
+
+mostlyclean: mostlyclean-am
+
+mostlyclean-am: mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool
+
+uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libelementsincHEADERS
+
+.PHONY: GTAGS all all-am check check-am clean clean-generic \
+	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
+	clean-noinstLTLIBRARIES distclean distclean-compile \
+	distclean-depend distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am info info-am install \
+	install-am install-data install-data-am install-exec \
+	install-exec-am install-info install-info-am \
+	install-libLTLIBRARIES install-libelementsincHEADERS \
+	install-man install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool tags uninstall uninstall-am \
+	uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libelementsincHEADERS
+
+
+# this rule causes a make warning, so we remove it when it is not in use
+elements.lst: Makefile $(elements_lst_OBJECTS)
+	@echo "Linking elements.lst..."; \
+	rm -f $@; touch $@; \
+	for i in $(elements_lst_OBJECTS); do echo $$i >>$@; done
+
+install-libelementsincHEADERS: $(libelementsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libelementsincdir)
+	@list='$(libelementsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libelementsincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
+	@list='$(ObsoletedHeaders)'; for f in $$list; do \
+	  file="$(DESTDIR)$(libelementsincdir)/$$f"; \
+	  if test -x "$$file"; then \
+	    echo " rm -f $$file"; \
+	    rm -f "$$file"; \
+	  fi \
+	done
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
