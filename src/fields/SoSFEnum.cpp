@@ -217,7 +217,19 @@ SoSFEnum::writeValue(SoOutput * out) const
   }
 
 #if COIN_DEBUG
-  SoDebugError::post("SoSFEnum::writeValue", "Illegal value (%d) in field", val);
+  // An unknown enumeration value will usually be an indication of a
+  // more serious bug, so we elaborate a bit on the error to aid early
+  // debugging.  mortene.
+
+  SbName name;
+  const SoFieldContainer * container = this->getContainer();
+  const SbBool fname = container && container->getFieldName(this, name);
+  SbString s("");
+  if (fname) { s.sprintf(" \"%s\"", name.getString()); }
+  
+  SoDebugError::post("SoSFEnum::writeValue",
+                     "Illegal enumeration value %d in field%s",
+                     val, s.getString());
 #endif // COIN_DEBUG
 }
 

@@ -138,6 +138,7 @@ SoMFEnum::read1Value(SoInput * in, int idx)
   return TRUE;
 }
 
+// FIXME: this should share code with SoSFEnum::writeValue(). 20031205 mortene.
 void
 SoMFEnum::write1Value(SoOutput * out, int idx) const
 {
