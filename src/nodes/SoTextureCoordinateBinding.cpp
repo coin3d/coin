@@ -23,10 +23,11 @@
 
 /*!
   \class SoTextureCoordinateBinding SoTextureCoordinateBinding.h Inventor/nodes/SoTextureCoordinateBinding.h
-  \brief The SoTextureCoordinateBinding class ...
+  \brief The SoTextureCoordinateBinding class says how texture coordinates should be bound to shapes.
   \ingroup nodes
 
-  FIXME: write class doc
+  SoTextureCoordinateBinding binds current coordinates to subsequent
+  shapes by using either per vertex or per indexed vertex binding.
 */
 
 
@@ -44,11 +45,19 @@
 */
 /*!
   \var SoTextureCoordinateBinding::Binding SoTextureCoordinateBinding::PER_VERTEX
-  FIXME: write documentation for enum definition
+  Get a new texture coordinate from the pool of texture coordinates for
+  each vertex of the shape.
+
+  Texture Coordinates are fetched from index 0 and onwards, incrementing
+  the index into the texture coordinates pool by 1 for each new vertex
+  of the shape node.
 */
 /*!
   \var SoTextureCoordinateBinding::Binding SoTextureCoordinateBinding::PER_VERTEX_INDEXED
-  FIXME: write documentation for enum definition
+  Get a new texture coordinate from the pool of texture coordinates for
+  each vertex of the shape.
+
+  Texture coordinates are fetched by the index value settings of the shape.
 */
 
 
