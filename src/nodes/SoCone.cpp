@@ -191,10 +191,6 @@ SoCone::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 void
 SoCone::GLRender(SoGLRenderAction * action)
 {
-#if COIN_DEBUG && 1 // debug
-  SoDebugError::postInfo("SoCone::GLRender", "start");
-#endif // debug
-
   if (!shouldGLRender(action)) return;
 
   SoState * state = action->getState();
