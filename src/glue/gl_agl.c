@@ -47,6 +47,15 @@
 
 #ifndef HAVE_AGL
 
+
+SbBool aglglue_context_is_using_pbuffer(void * ctx)
+{
+  // FIXME: Not sure how to handle this -- I think we should never get
+  // here in the first place if we don't have AGL at all. kyrah 20031123
+  return FALSE;
+}
+
+
 void * aglglue_getprocaddress(const char * fname)
 {
   return NULL;
@@ -141,7 +150,7 @@ aglglue_resolve_symbols()
 
 
 static SbBool
-aglglue_has_pbuffer_support(void)
+aglglue_get_pbuffer_enable(void)
 {
   /* Make it possible to turn off pBuffer support completely.
      Mostly relevant for debugging purposes. */
@@ -166,6 +175,7 @@ struct aglglue_contextdata {
   GDHandle savedgdh;
   AGLPbuffer aglpbuffer;
   unsigned int width, height; 
+  SbBool pbufferisbound;
 };
 
 
@@ -185,7 +195,7 @@ aglglue_contextdata_init(unsigned int width, unsigned int height)
   ctx->aglpbuffer = NULL; 
   ctx->width = width;
   ctx->height = height;
-
+  ctx->pbufferisbound = FALSE;
   return ctx;
 }
 
@@ -344,7 +354,7 @@ aglglue_context_create_offscreen(unsigned int width, unsigned int height)
   }
 
   /* ... but the first time around, we have to figure out. */
-  pbuffer = aglglue_has_pbuffer_support();
+  pbuffer = aglglue_get_pbuffer_enable();
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("aglglue_context_create_offscreen",
@@ -481,6 +491,42 @@ aglglue_context_destruct(void * ctx)
                            "Destroying context %p", context->aglcontext);
   }
   aglglue_contextdata_cleanup(context);
+}
+
+void 
+aglglue_context_bind_pbuffer(void * ctx)
+{
+
+  GLenum error = aglGetError();  
+  if (error != AGL_NO_ERROR) {    
+    cc_debugerror_post("aglglue_context_bind_pbuffer()"                       
+                       "before binding pbuffer: %s",                        
+                       (char *)aglErrorString(error)); 
+  }
+
+  struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
+  aglglue_context_reinstate_previous(context);
+  aglTexImagePBuffer (context->storedcontext, context->aglpbuffer, GL_FRONT);
+  context->pbufferisbound = TRUE;
+  error = aglGetError();  
+  if (error != AGL_NO_ERROR) {    
+    cc_debugerror_post("aglglue_context_bind_pbuffer()"                       
+                       "after binding pbuffer: %s",                        
+                       (char *)aglErrorString(error)); 
+  }
+}
+
+void 
+aglglue_context_release_pbuffer(void * ctx)
+{
+  // FIXME: implement, pederb 2003-11-25
+}
+
+SbBool 
+aglglue_context_pbuffer_is_bound(void * ctx)
+{
+  struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
+  return (context->pbufferisbound);
 }
 
 #endif /* HAVE_AGL */
