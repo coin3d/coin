@@ -41,6 +41,7 @@
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/lists/SbList.h>
@@ -4070,5 +4071,36 @@ sogl_glerror_string(int err)
   }
   return errorstring;
 }
+
+/*!  
+  When fewer than this amount of primitives in a shape, turn on
+  auto caching.  
+*/
+int 
+sogl_autocache_get_min_limit(SoState * state)
+{
+  // FIXME: make it possible to configure these numbers using
+  // environment variables (or a rendering performance test?).
+  // pederb, 2002-09-18
+  if (SoGLCacheContextElement::getIsRemoteRendering(state))
+    return 500;
+  return 100;
+}
+
+/*!  
+  When more than this number of triangles in a shape, turn off auto
+  caching.  
+*/
+int 
+sogl_autocache_get_max_limit(SoState * state)
+{
+  // FIXME: make it possible to configure these numbers using
+  // environment variables (or a rendering performance test?).
+  // pederb, 2002-09-18
+  if (SoGLCacheContextElement::getIsRemoteRendering(state))
+    return 5000;
+  return 1000;
+}
+
 
 // **************************************************************************

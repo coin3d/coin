@@ -166,4 +166,7 @@ sogl_render_pointset(const SoGLCoordinateElement * coords,
 SbBool sogl_glerror_debugging(void);
 SbString sogl_glerror_string(int err);
 
+int sogl_autocache_get_min_limit(SoState * state);
+int sogl_autocache_get_max_limit(SoState * state);
+
 #endif // !COIN_SOGL_H
