@@ -149,16 +149,19 @@ public:
   SoShapeP() {
     this->bboxcache = NULL;
     this->pvcache = NULL;
+    this->bumprender = NULL;
     this->shouldcache = FALSE;
   }
   ~SoShapeP() {
     if (this->bboxcache) { this->bboxcache->unref(); }
     if (this->pvcache) { this->pvcache->unref(); }
+    delete this->bumprender;
   }
   static void calibrateBBoxCache(void);
   static double bboxcachetimelimit;
   SoBoundingBoxCache * bboxcache;
   SoPrimitiveVertexCache * pvcache;
+  soshape_bumprender * bumprender;
   SbBool shouldcache;
 #ifdef COIN_THREADSAFE
   SbMutex mutex;
@@ -194,8 +197,6 @@ typedef struct {
   // used in generatePrimitives() callbacks to set correct material
   SoMaterialBundle * currentbundle;
 
-  soshape_bumprender * bumprender;
-
   // need these in invokeTriangleCallbacks()
   SbBool is_doing_sorted_rendering;
   SbBool is_doing_bigtexture_rendering;
@@ -225,7 +226,6 @@ soshape_construct_staticdata(void * closure)
   data->bigtexturecontext = new SbList <uint32_t>;
   data->primdata = new soshape_primdata();
   data->trianglesort = new soshape_trianglesort();
-  data->bumprender = NULL;
   data->is_doing_sorted_rendering = FALSE;
   data->is_doing_bigtexture_rendering = FALSE;
   data->is_doing_pvcache_rendering = FALSE;
@@ -238,7 +238,6 @@ soshape_destruct_staticdata(void * closure)
   for (int i = 0; i < data->bigtexturelist->getLength(); i++) {
     delete (*(data->bigtexturelist))[i];
   }
-  delete data->bumprender;
   delete data->bigtexturelist;
   delete data->bigtexturecontext;
   delete data->primdata;
@@ -565,10 +564,11 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     const SoNodeList & lights = SoLightElement::getLights(state);
     if (lights.getLength()) {
       soshape_staticdata * shapedata = soshape_get_staticdata();
-      if (shapedata->bumprender == NULL) {
-        shapedata->bumprender = new soshape_bumprender;
-      }
+      // lock mutex since bumprender and pvcache is shared among all threads
       PRIVATE(this)->lock();
+      if (PRIVATE(this)->bumprender == NULL) {
+        PRIVATE(this)->bumprender = new soshape_bumprender;
+      }
       if (PRIVATE(this)->pvcache == NULL ||
           !PRIVATE(this)->pvcache->isValid(state)) {
         if (PRIVATE(this)->pvcache) {
@@ -580,14 +580,13 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
         PRIVATE(this)->pvcache->ref();
         SoCacheElement::set(state, PRIVATE(this)->pvcache);
-        shapedata->bumprender->init(state);
+        PRIVATE(this)->bumprender->init(state);
         shapedata->is_doing_pvcache_rendering = TRUE;
         this->generatePrimitives(action);
         shapedata->is_doing_pvcache_rendering = FALSE;
         state->pop();
         SoCacheElement::setInvalid(storedinvalid);
       }
-      PRIVATE(this)->unlock();
 
       // FIXME: disable multi-texture units 2-n (if active)
       
@@ -606,8 +605,12 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       m = m.inverse();
       m.multLeft(lm);
 
-      shapedata->bumprender->renderBump(PRIVATE(this)->pvcache, (SoLight*)lights[0], m);
-      
+      // bumprender is shared among all threads, so the mutex needs to
+      // be locked when we get here since some internal arrays are
+      // used while rendering
+      PRIVATE(this)->bumprender->renderBump(PRIVATE(this)->pvcache, (SoLight*)lights[0], m);
+      PRIVATE(this)->unlock();
+
       SoGLLazyElement::getInstance(state)->reset(state, 
                                                  SoLazyElement::DIFFUSE_MASK|
                                                  SoLazyElement::GLIMAGE_MASK);
@@ -621,7 +624,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       if (SoGLTextureEnabledElement::get(state)) glEnable(GL_TEXTURE_2D);
       // FIXME: enable multi-texture units 1-n (if active)
       
-      shapedata->bumprender->renderNormal(PRIVATE(this)->pvcache);
+      PRIVATE(this)->bumprender->renderNormal(PRIVATE(this)->pvcache);
       glPopAttrib();
       glDisable(GL_BLEND); // FIXME: temporary for FPS-counter
       
