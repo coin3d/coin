@@ -23,10 +23,20 @@
 
 /*!
   \class SoArray SoArray.h Inventor/nodes/SoArray.h
-  \brief The SoArray class ...
+  \brief The SoArray class is a group node for setting up regular arrays of subgraphs.
   \ingroup nodes
 
-  FIXME: write class doc
+  SoArray presents a convenient way of duplicating a node (typically a
+  shape node) or a complete subgraph in 1 to 3 dimensions.
+
+  The child node or subgraph can only be translated by regular offsets
+  for all dimensions.
+
+  For more flexible functionality for duplication of geometry, see the
+  SoMultipleCopy group node, which can do general transformations
+  (including rotation and scaling) for it's child.
+
+  \sa SoMultipleCopy
 */
 
 
@@ -34,59 +44,59 @@
 #include <Inventor/nodes/SoArray.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-
-#include <Inventor/misc/SoState.h>
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/misc/SoState.h>
 
 /*!
   \enum SoArray::Origin
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoArray::Origin SoArray::FIRST
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoArray::Origin SoArray::CENTER
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoArray::Origin SoArray::LAST
-  FIXME: write documentation for enum definition
+
+  The possible settings for the SoArray::origin field.
 */
 
 
 /*!
   \var SoSFEnum SoArray::origin
-  FIXME: write documentation for field
+
+  Where the origin of the array should be set, ie how the array
+  elements will be distributed from the local origo.
+
+  Default value is SoArray::FIRST.
 */
+
 /*!
   \var SoSFShort SoArray::numElements1
-  FIXME: write documentation for field
+  Number of duplicates for each X axis row. Default 1.
 */
 /*!
   \var SoSFShort SoArray::numElements2
-  FIXME: write documentation for field
+  Number of duplicates for each Y axis row. Default 1.
 */
 /*!
   \var SoSFShort SoArray::numElements3
-  FIXME: write documentation for field
+  Number of duplicates for each Z axis row. Default 1.
 */
+
 /*!
   \var SoSFVec3f SoArray::separation1
-  FIXME: write documentation for field
+
+  Distance in current units between the center point of each element
+  along the X axis. Default [1.0, 0.0, 0.0].
 */
 /*!
   \var SoSFVec3f SoArray::separation2
-  FIXME: write documentation for field
+
+  Distance in current units between the center point of each element
+  along the Y axis. Default [0.0, 1.0, 0.0].
 */
 /*!
   \var SoSFVec3f SoArray::separation3
-  FIXME: write documentation for field
+
+  Distance in current units between the center point of each element
+  along the Z axis. Default [0.0, 0.0, 1.0].
 */
 
 // *************************************************************************
@@ -96,7 +106,7 @@ SO_NODE_SOURCE(SoArray);
 /*!
   Constructor.
 */
-SoArray::SoArray()
+SoArray::SoArray(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoArray);
 
@@ -122,20 +132,18 @@ SoArray::~SoArray()
 {
 }
 
-// doc in super
+// Doc in superclass.
 void
 SoArray::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoArray);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-#if 0 // mortene's old (buggy ?) code (removed 19990423, pederb)
+#if 0 // OBSOLETED: mortene's old (buggy ?) code (removed 19990423, pederb)
   // store incoming modelmatrix
   SbMatrix mat = SoModelMatrixElement::get(action->getState());
 
@@ -305,27 +313,21 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
 #endif // end of new code by pederb
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoArray::GLRender(SoGLRenderAction * action)
 {
   SoArray::doAction(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 SbBool
 SoArray::affectsState(void) const
 {
   return FALSE; // state is pushed/popped for each traversal
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoArray::doAction(SoAction *action)
 {
@@ -375,34 +377,33 @@ SoArray::doAction(SoAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoArray::callback(SoCallbackAction *action)
 {
   SoArray::doAction((SoAction*)action);
 }
 
-/*!
-  We came across what we think is a bug in TGS/SGI OIV when
-  implementing picking for this node. The SoPickedPoint class can
-  return the object space point, normal and texture
-  coordinates. TGS/SGI OIV do not consider the translation inside this
-  node before returning the object space data from SoPickedPoint,
-  since the path in SoPickedPoint does not say anything about on which
-  copy the pick occured. We solved this simply by storing both world
-  space and object space data in SoPickedPoint.
-*/
+// Doc in superclass.
 void
 SoArray::pick(SoPickAction *action)
 {
+  // We came across what we think is a bug in TGS/SGI OIV when
+  // implementing picking for this node and testing against the
+  // original Inventor library. The SoPickedPoint class can return the
+  // object space point, normal and texture coordinates. TGS/SGI OIV
+  // do not consider the translation inside this node before returning
+  // the object space data from SoPickedPoint, since the path in
+  // SoPickedPoint does not say anything about on which copy the pick
+  // occured.
+  //
+  // We solved this simply by extending SoPickedPoint for storing both
+  // world space and object space data.
+
   SoArray::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoArray::handleEvent(SoHandleEventAction *action)
 {
@@ -410,9 +411,7 @@ SoArray::handleEvent(SoHandleEventAction *action)
   inherited::handleEvent(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoArray::getMatrix(SoGetMatrixAction *action)
 {
@@ -420,9 +419,7 @@ SoArray::getMatrix(SoGetMatrixAction *action)
   inherited::getMatrix(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoArray::search(SoSearchAction * action)
 {
@@ -430,9 +427,7 @@ SoArray::search(SoSearchAction * action)
   inherited::search(action);
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
 SoArray::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
