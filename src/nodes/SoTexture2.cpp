@@ -106,12 +106,12 @@ SoTexture2::SoTexture2()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture2);
 
-  SO_NODE_ADD_FIELD(filename,(""));
-  SO_NODE_ADD_FIELD(image,(SbVec2s(0,0), 0, NULL));
-  SO_NODE_ADD_FIELD(wrapS,(REPEAT));
-  SO_NODE_ADD_FIELD(wrapT,(REPEAT));
-  SO_NODE_ADD_FIELD(model,(MODULATE));
-  SO_NODE_ADD_FIELD(blendColor,(0.0f, 0.0f, 0.0f));
+  SO_NODE_ADD_FIELD(filename, (""));
+  SO_NODE_ADD_FIELD(image, (SbVec2s(0, 0), 0, NULL));
+  SO_NODE_ADD_FIELD(wrapS, (REPEAT));
+  SO_NODE_ADD_FIELD(wrapT, (REPEAT));
+  SO_NODE_ADD_FIELD(model, (MODULATE));
+  SO_NODE_ADD_FIELD(blendColor, (0.0f, 0.0f, 0.0f));
 
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, REPEAT);
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP);
@@ -124,8 +124,8 @@ SoTexture2::SoTexture2()
   SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
 
-  this->imageData = NULL;
-  this->glImage = NULL;
+  this->imagedata = NULL;
+  this->glimage = NULL;
 }
 
 /*!
@@ -133,8 +133,8 @@ SoTexture2::SoTexture2()
 */
 SoTexture2::~SoTexture2()
 {
-  if (this->imageData) this->imageData->unref();
-  if (this->glImage) this->glImage->unref();
+  if (this->imagedata) this->imagedata->unref();
+  if (this->glimage) this->glimage->unref();
 }
 
 /*!
@@ -179,7 +179,7 @@ SbBool
 SoTexture2::readImage(void)
 {
   this->getImage();
-  if (this->imageData) return this->imageData->load();
+  if (this->imagedata) return this->imagedata->load();
   return FALSE;
 }
 
@@ -190,33 +190,33 @@ void
 SoTexture2::GLRender(SoGLRenderAction * action)
 {
   // FIXME: consider context, pederb
-  SoState *state = action->getState();
-  
+  SoState * state = action->getState();
+
   if (!this->getImage()) return;
-  
+
   float quality = SoTextureQualityElement::get(state);
-  if (this->imageData) {    
+  if (this->imagedata) {
     SbBool clamps = this->wrapS.getValue() == SoTexture2::CLAMP;
     SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
-    
-    if (this->glImage && !this->glImage->matches(clamps, clampt)) {
-      this->glImage->unref();
-      this->glImage = NULL;
+
+    if (this->glimage && !this->glimage->matches(clamps, clampt)) {
+      this->glimage->unref();
+      this->glimage = NULL;
     }
-    
-    if (this->glImage == NULL) {
-      this->glImage =
-        SoGLImage::findOrCreateGLImage(this->imageData,
+
+    if (this->glimage == NULL) {
+      this->glimage =
+        SoGLImage::findOrCreateGLImage(this->imagedata,
                                        clamps, clampt, quality, NULL);
     }
   }
   SoGLTextureImageElement::set(state, this,
-                               this->glImage,
+                               this->glimage,
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
   SoGLTextureEnabledElement::set(state,
-                                 this, this->glImage != NULL && quality > 0.0f);
-  
+                                 this, this->glimage != NULL && quality > 0.0f);
+
   if (this->isOverride()) {
     SoTextureOverrideElement::setImageOverride(state, TRUE);
   }
@@ -226,20 +226,20 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoTexture2::doAction(SoAction *action)
+SoTexture2::doAction(SoAction * action)
 {
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
   if (SoTextureOverrideElement::getImageOverride(state))
     return;
 
   if (!this->getImage()) return;
 
-  if (this->imageData) {
+  if (this->imagedata) {
     SoTextureImageElement::set(state, this,
-                               imageData->getSize(),
-                               imageData->getNumComponents(),
-                               imageData->getDataPtr(),
+                               this->imagedata->getSize(),
+                               this->imagedata->getNumComponents(),
+                               this->imagedata->getDataPtr(),
                                (int)this->wrapT.getValue(),
                                (int)this->wrapS.getValue(),
                                (SoTextureImageElement::Model) model.getValue(),
@@ -254,7 +254,7 @@ SoTexture2::doAction(SoAction *action)
   FIXME: write doc
  */
 void
-SoTexture2::callback(SoCallbackAction *action)
+SoTexture2::callback(SoCallbackAction * action)
 {
   SoTexture2::doAction(action);
 }
@@ -303,32 +303,32 @@ SoTexture2::getImage(void)
 {
   if (this->filename.isIgnored() && this->image.isIgnored())
     return FALSE;
-  
+
   SbVec2s size;
   int nc;
   const unsigned char * bytes = this->image.getValue(size, nc);
   SbBool validinline =
-    (!this->image.isIgnored()) && 
-    (bytes != NULL) && 
-    (size[0] > 0) && 
+    (!this->image.isIgnored()) &&
+    (bytes != NULL) &&
+    (size[0] > 0) &&
     (size[1] > 0) &&
     (nc > 0 && nc <= 4);
-  
-  // FIXME: investigate when to return TRUE or FALSE 
+
+  // FIXME: investigate when to return TRUE or FALSE
   if (this->filename.isIgnored() && !validinline) return FALSE;
-  
+
   // FIXME: set up field sensors to detect when texture change
-  if (this->imageData) return TRUE;
-  
+  if (this->imagedata) return TRUE;
+
   if (validinline) {
-    this->imageData = new SoImageInterface(size, nc, bytes);
-    this->imageData->ref();
+    this->imagedata = new SoImageInterface(size, nc, bytes);
+    this->imagedata->ref();
   }
   else {
     if (!this->filename.isIgnored() && this->filename.getValue().getLength()) {
       const SbStringList & dirlist = SoInput::getDirectories();
       const char * texname = this->filename.getValue().getString();
-      this->imageData = SoImageInterface::findOrCreateImage(texname, dirlist);
+      this->imagedata = SoImageInterface::findOrCreateImage(texname, dirlist);
     }
   }
   return TRUE;

@@ -39,7 +39,7 @@ public:
   SoTexture2(void);
 
 
-  SbBool readImage();
+  SbBool readImage(void);
 
   enum Model {
     MODULATE = SoTextureImageElement::MODULATE,
@@ -74,9 +74,9 @@ protected:
   void setReadStatus(int s);
 
 private:
-  SbBool getImage();
-  class SoImageInterface *imageData;
-  class SoGLImage * glImage;
+  SbBool getImage(void);
+  class SoImageInterface * imagedata;
+  class SoGLImage * glimage;
 };
 
 #endif // !COIN_SOTEXTURE2_H
