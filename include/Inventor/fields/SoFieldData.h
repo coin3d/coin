@@ -30,7 +30,7 @@ class SoInput;
 class SoOutput;
 
 class SoEnumEntry;
-struct SoFieldEntry;
+class SoFieldEntry;
 
 class SoFieldData {
 public:
