@@ -648,19 +648,40 @@ glglue_resolve_symbols(cc_glglue * w)
   /* Appeared in OpenGL v1.3. */
   w->glActiveTexture = NULL;
   w->glMultiTexCoord2f = NULL;
+  w->glMultiTexCoord2fv = NULL;
+  w->glMultiTexCoord3fv = NULL;
+  w->glMultiTexCoord4fv = NULL;
 #ifdef GL_VERSION_1_3
   if (cc_glglue_glversion_matches_at_least(w, 1, 3, 0)) {
     w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glActiveTexture);
     w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2f);
+    w->glMultiTexCoord2fv = (COIN_PFNGLMULTITEXCOORD2FVPROC)PROC(glMultiTexCoord2fv);
+    w->glMultiTexCoord3fv = (COIN_PFNGLMULTITEXCOORD3FVPROC)PROC(glMultiTexCoord3fv);
+    w->glMultiTexCoord4fv = (COIN_PFNGLMULTITEXCOORD4FVPROC)PROC(glMultiTexCoord4fv);
   }
 #endif /* GL_VERSION_1_3 */
 #ifdef GL_ARB_multitexture
   if (!w->glActiveTexture && cc_glglue_glext_supported(w, "GL_ARB_multitexture")) {
     w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glActiveTextureARB);
     w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2fARB);
+    w->glMultiTexCoord2fv = (COIN_PFNGLMULTITEXCOORD2FVPROC)PROC(glMultiTexCoord2fvARB);
+    w->glMultiTexCoord3fv = (COIN_PFNGLMULTITEXCOORD3FVPROC)PROC(glMultiTexCoord3fvARB);
+    w->glMultiTexCoord4fv = (COIN_PFNGLMULTITEXCOORD4FVPROC)PROC(glMultiTexCoord4fvARB);
   }
 #endif /* GL_ARB_multitexture */
 
+  if (w->glActiveTexture) {
+    if (!w->glMultiTexCoord2f ||
+        !w->glMultiTexCoord2fv ||
+        !w->glMultiTexCoord3fv ||
+        !w->glMultiTexCoord4fv) {
+      w->glActiveTexture = NULL; /* cc_glglue_has_multitexture() will return FALSE */
+      cc_debugerror_postwarning("glglue_init",
+                                "glActiveTexture found, but one or more of the other "
+                                "multitexture functions were not found");
+    }
+  }
+  
   w->glCompressedTexImage1D = NULL;
   w->glCompressedTexImage2D = NULL;
   w->glCompressedTexImage3D = NULL;
@@ -1587,8 +1608,7 @@ SbBool
 cc_glglue_has_multitexture(const cc_glglue * w)
 {
   if (!glglue_allow_newer_opengl(w)) return FALSE;
-
-  return w->glMultiTexCoord2f && w->glActiveTexture;
+  return w->glActiveTexture != NULL;
 }
 
 void
@@ -1672,6 +1692,32 @@ cc_glglue_glMultiTexCoord2f(const cc_glglue * w,
   w->glMultiTexCoord2f(target, s, t);
 }
 
+void
+cc_glglue_glMultiTexCoord2fv(const cc_glglue * w,
+                             GLenum target,
+                             const GLfloat * v)
+{
+  assert(w->glMultiTexCoord2fv);
+  w->glMultiTexCoord2fv(target, v);
+}
+
+void
+cc_glglue_glMultiTexCoord3fv(const cc_glglue * w,
+                             GLenum target,
+                             const GLfloat * v)
+{
+  assert(w->glMultiTexCoord3fv);
+  w->glMultiTexCoord3fv(target, v);
+}
+
+void
+cc_glglue_glMultiTexCoord4fv(const cc_glglue * w,
+                             GLenum target,
+                             const GLfloat * v)
+{
+  assert(w->glMultiTexCoord4fv);
+  w->glMultiTexCoord4fv(target, v);
+}
 
 SbBool
 cc_glue_has_texture_compression(const cc_glglue * glue)
