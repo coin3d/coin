@@ -37,6 +37,7 @@
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/misc/SoProtoInstance.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -243,7 +244,14 @@ SoEngineOutput::addConnection(SoField * f)
 
   // An engine's reference count increases with the number of
   // connections it has.
-  this->getFieldContainer()->ref();
+  
+  // SoProtoInstance has some special memory handling. Don't ref
+  // and unref if the connection is to an SoProtoInstance
+  SoFieldContainer * fc = f->getContainer();
+
+  if (fc && !fc->isOfType(SoProtoInstance::getClassTypeId())) {
+    this->getFieldContainer()->ref();
+  }
 
   // Trigger re-evaluation of engine.
   if (!this->isNodeEngineOutput()) {
@@ -273,7 +281,14 @@ SoEngineOutput::removeConnection(SoField * f)
   }
 #endif // COIN_DEBUG
   this->slaves.remove(i);
-  this->getFieldContainer()->unref();
+
+  // SoProtoInstance has some special memory handling. Don't ref
+  // and unref if the connection is to an SoProtoInstance
+  SoFieldContainer * fc = f->getContainer();
+
+  if (fc && !fc->isOfType(SoProtoInstance::getClassTypeId())) {
+    this->getFieldContainer()->unref();
+  }
 }
 
 /*!
