@@ -81,13 +81,16 @@ public:
     int32_t flatshading;
     int32_t glimageid;
     int32_t alphatest;
+    uint32_t diffusenodeid;
+    uint32_t transpnodeid;
+    uint32_t reserved[4];
   } GLState;
 
   uint32_t didsetbitmask;
   uint32_t didntsetbitmask;
   uint32_t cachebitmask;
-  
-  SbBool forcediffuse;
+  uint32_t opencacheflags;
+
   GLState glstate;
   GLState * postcachestate;
   GLState * precachestate;

@@ -215,6 +215,7 @@ protected:
     SoGLImage * glimage;
     SbBool alphatest;
     SbBool glimageusealphatest;
+    uint32_t reserved[4];
   } coinstate;
 
 protected:

@@ -48,6 +48,9 @@
 #include <assert.h>
 #include <Inventor/errors/SoDebugError.h>
 
+#define FLAG_FORCE_DIFFUSE      0x0001
+#define FLAG_DIFFUSE_DEPENDENCY 0x0002
+
 #if COIN_DEBUG
 // #define GLLAZY_DEBUG(_x_) (SoDebugError::postInfo(COIN_STUB_FUNC, _x_))
 #define GLLAZY_DEBUG(x)
@@ -405,12 +408,14 @@ SoGLLazyElement::init(SoState * state)
   this->glstate.glimageid = -1;
   this->glstate.alphatest = -1;
   this->glstate.diffuse = 0xccccccff;
+  this->glstate.diffusenodeid = 0;
+  this->glstate.transpnodeid = 0;
   this->packedpointer = NULL;
   this->transpmask = 0xff;
   this->colorpacker = NULL;
   this->precachestate = NULL;
   this->postcachestate = NULL;
-  this->forcediffuse = FALSE;
+  this->opencacheflags = 0;
 
   // initialize this here to avoid UMR reports from
   // Purify. cachebitmask is updated even when there are no open
@@ -443,7 +448,7 @@ SoGLLazyElement::push(SoState * state)
   this->didsetbitmask = prev->didsetbitmask;
   this->didntsetbitmask = prev->didntsetbitmask;
   this->cachebitmask = prev->cachebitmask;
-  this->forcediffuse = prev->forcediffuse;
+  this->opencacheflags = prev->opencacheflags;
 }
 
 void
@@ -456,7 +461,7 @@ SoGLLazyElement::pop(SoState *state, const SoElement * prevtopelement)
   this->didsetbitmask = prev->didsetbitmask;
   this->didntsetbitmask = prev->didntsetbitmask;
   this->cachebitmask = prev->cachebitmask;
-  this->forcediffuse = prev->forcediffuse;
+  this->opencacheflags = prev->opencacheflags;
 }
 
 //! FIXME: write doc
@@ -554,7 +559,15 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
         }
         break;
       case DIFFUSE_CASE:
-        if (this->forcediffuse) {
+        if (this->precachestate) {
+          // we are currently building a cache. Check if we're using
+          // colors from a material node outside the cache.
+          if ((this->precachestate->diffusenodeid == this->coinstate.diffusenodeid) ||
+              (this->precachestate->transpnodeid == this->coinstate.transpnodeid)) {
+            ((SoGLLazyElement*)this)->opencacheflags |= FLAG_DIFFUSE_DEPENDENCY;
+          }
+        }
+        if (this->opencacheflags & FLAG_FORCE_DIFFUSE) {
           // we always send the first diffuse color for the first
           // material in an open cache
           if (this->colorindex) {
@@ -563,6 +576,7 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
           else {
             this->sendPackedDiffuse(this->packedpointer[0]|this->transpmask);
           }
+          ((SoGLLazyElement*)this)->opencacheflags &= ~FLAG_FORCE_DIFFUSE;
         }
         else {
           this->sendDiffuseByIndex(0);
@@ -976,6 +990,8 @@ SoGLLazyElement::beginCaching(SoState * state, GLState * prestate,
   SoGLLazyElement * elem = getInstance(state);
   elem->send(state, ALL_MASK); // send lazy state before starting to build cache
   *prestate = elem->glstate; // copy current GL state
+  prestate->diffusenodeid = elem->coinstate.diffusenodeid;
+  prestate->transpnodeid = elem->coinstate.transpnodeid;
   elem->precachestate = prestate;
   elem->postcachestate = poststate;
   elem->precachestate->cachebitmask = 0;
@@ -983,19 +999,30 @@ SoGLLazyElement::beginCaching(SoState * state, GLState * prestate,
   elem->didsetbitmask = 0;
   elem->didntsetbitmask = 0;
   elem->cachebitmask = 0;
-  elem->forcediffuse = FALSE;
+  elem->opencacheflags = 0;
 }
 
 void
 SoGLLazyElement::endCaching(SoState * state)
 {
   SoGLLazyElement * elem = getInstance(state);
+
   *elem->postcachestate = elem->glstate;
   elem->postcachestate->cachebitmask = elem->cachebitmask;
   elem->precachestate->cachebitmask = elem->didntsetbitmask;
+
+  // unset diffuse mask since it's used by the dependency test
+  elem->precachestate->cachebitmask &= ~DIFFUSE_MASK;
+
+  // set diffuse mask if this cache depends on a material outside the
+  // cache.
+  if (elem->opencacheflags & FLAG_DIFFUSE_DEPENDENCY) {
+    elem->precachestate->cachebitmask |= DIFFUSE_MASK;
+  } 
+
   elem->precachestate = NULL;
   elem->postcachestate = NULL;
-  elem->forcediffuse = FALSE;
+  elem->opencacheflags = 0;
 }
 
 void
@@ -1074,8 +1101,13 @@ SoGLLazyElement::preCacheCall(SoState * state, GLState * prestate)
         }
         break;
       case DIFFUSE_CASE:
-        // diffuse color is handled by always sending the first
-        // diffuse color for the first material set inside a cache.
+        // this is a special case, since we can have multiple diffuse
+        // and transparency values. Check the node ids.
+        if ((prestate->diffusenodeid != curr.diffusenodeid) ||
+            (prestate->transpnodeid != curr.transpnodeid)) {
+          GLLAZY_DEBUG("material dependency failed");
+          return FALSE;
+        }
         break;
       case AMBIENT_CASE:
         if (curr.ambient != prestate->ambient) {
@@ -1169,7 +1201,7 @@ SoGLLazyElement::lazyDidSet(uint32_t mask)
   if (mask & DIFFUSE_MASK) {
     if (!(this->didsetbitmask & DIFFUSE_MASK)) {
       // to be safe, always send first diffuse when a cache is open
-      this->forcediffuse = TRUE;
+      this->opencacheflags |= FLAG_FORCE_DIFFUSE;
     }
   }
   this->didsetbitmask |= mask;
@@ -1182,8 +1214,11 @@ SoGLLazyElement::lazyDidntSet(uint32_t mask)
     if (!(this->didsetbitmask & DIFFUSE_MASK)) {
       // to be safe, always send first diffuse when a cache is open
       this->didsetbitmask |= DIFFUSE_MASK;
-      this->forcediffuse = TRUE;
+      this->opencacheflags = FLAG_FORCE_DIFFUSE;
     }
   }
   this->didntsetbitmask |= mask&(~this->didsetbitmask);
 }
+
+#undef FLAG_FORCE_DIFFUSE
+#undef FLAG_DIFFUSE_DEPENDENCY
