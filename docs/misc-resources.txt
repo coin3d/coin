@@ -106,3 +106,10 @@ THE LINKS
 * Miscellaneous C++ libraries: <URL:http://www.boost.org>. If the
   licenses are liberal, we might be able to avoid re-inventing wheels
   for some of the libraries provided.
+
+* List of API changes from SGI Inventor v2.0 to v2.1:
+
+   <URL:http://wwwinfo.cern.ch/asd/lhc++/OpenInventor/pro/porting/chapter2.html>.
+
+  Contains lots of information about obsoleted features and field
+  value limitations that we need to check that we heed.
