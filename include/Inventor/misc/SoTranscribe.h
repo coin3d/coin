@@ -20,6 +20,10 @@
 #ifndef COIN_SOTRANSCRIBE_H
 #define COIN_SOTRANSCRIBE_H
 
+#ifdef COIN_INTERNAL
+#error Do not include this file in internal code.
+#endif // COIN_INTERNAL
+
 // This file is only present for "compile-time" Inventor
 // compatibility, the class definitions are found in the following
 // header files:
