@@ -108,7 +108,12 @@ cc_recmutex_lock(cc_recmutex * recmutex)
   }
   else {
     recmutex->waiters++;
-    cc_condvar_wait(&recmutex->condvar, &recmutex->mutex);
+    /* wait in loop, since some thread might snatch the mutex before 
+       us when we receive a signal */
+    do {
+      cc_condvar_wait(&recmutex->condvar, &recmutex->mutex);
+    } while (recmutex->level > 0);
+    
     assert(recmutex->level == 0);
     recmutex->waiters--;
     recmutex->threadid = id;
