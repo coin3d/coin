@@ -116,7 +116,7 @@ SoVRMLVertexShape::SoVRMLVertexShape(void)
   THIS = new SoVRMLVertexShapeP;
   THIS->normalcache = NULL;
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLVertexShape);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLVertexShape);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(coord, (NULL));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(texCoord, (NULL));

@@ -65,7 +65,7 @@ SoVRMLCoordinate::initClass(void) // static
 */
 SoVRMLCoordinate::SoVRMLCoordinate(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLCoordinate);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLCoordinate);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(point);
 }

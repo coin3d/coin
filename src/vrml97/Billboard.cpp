@@ -150,7 +150,7 @@ SoVRMLBillboard::initClass(void)
 */
 SoVRMLBillboard::SoVRMLBillboard(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLBillboard);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLBillboard);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(axisOfRotation, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));

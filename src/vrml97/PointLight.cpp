@@ -115,7 +115,7 @@ SoVRMLPointLight::initClass(void)
 */
 SoVRMLPointLight::SoVRMLPointLight(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLPointLight);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLPointLight);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(location, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(radius, (100.0f));

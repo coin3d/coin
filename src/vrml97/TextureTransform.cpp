@@ -130,7 +130,7 @@ SoVRMLTextureTransform::initClass(void)
 */
 SoVRMLTextureTransform::SoVRMLTextureTransform(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLTextureTransform);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLTextureTransform);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(translation, (0.0f, 0.0f));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(rotation, (0.0f));

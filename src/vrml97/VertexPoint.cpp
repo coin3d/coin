@@ -57,7 +57,7 @@ SoVRMLVertexPoint::initClass(void)
 */
 SoVRMLVertexPoint::SoVRMLVertexPoint(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLVertexPoint);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLVertexPoint);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(coord, (NULL));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(color, (NULL));

@@ -74,7 +74,7 @@ SoVRMLWorldInfo::initClass(void)
 */
 SoVRMLWorldInfo::SoVRMLWorldInfo(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLWorldInfo);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLWorldInfo);
 
   SO_VRMLNODE_ADD_FIELD(title, (""));
   SO_VRMLNODE_ADD_EMPTY_MFIELD(info);

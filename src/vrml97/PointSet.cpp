@@ -122,7 +122,7 @@ SoVRMLPointSet::initClass(void)
 */
 SoVRMLPointSet::SoVRMLPointSet(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLPointSet);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLPointSet);
 }
 
 /*!

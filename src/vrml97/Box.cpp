@@ -99,7 +99,7 @@ SoVRMLBox::initClass(void) // static
 */
 SoVRMLBox::SoVRMLBox(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLBox);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLBox);
 
   SO_VRMLNODE_ADD_FIELD(size, (2.0f, 2.0f, 2.0f));
 }

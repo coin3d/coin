@@ -304,7 +304,7 @@ SoVRMLViewpoint::initClass(void)
 */
 SoVRMLViewpoint::SoVRMLViewpoint(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLViewpoint);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLViewpoint);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(position, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(orientation, (SbRotation::identity()));

@@ -133,7 +133,7 @@ SoVRMLAppearance::SoVRMLAppearance(void)
   PRIVATE(this)->childlist = new SoChildList(this);
   PRIVATE(this)->childlistvalid = FALSE;
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLAppearance);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLAppearance);
   
   SO_VRMLNODE_ADD_EXPOSED_FIELD(material, (NULL));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(texture, (NULL));

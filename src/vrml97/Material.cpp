@@ -149,7 +149,7 @@ SoVRMLMaterial::SoVRMLMaterial(void)
 {
   THIS = new SoVRMLMaterialP;
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLMaterial);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLMaterial);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(diffuseColor, (0.8f, 0.8f, 0.8f));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(ambientIntensity, (0.2f));

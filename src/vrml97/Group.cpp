@@ -246,7 +246,7 @@ SoVRMLGroup::commonConstructor(void)
   THIS = new SoVRMLGroupP;
   THIS->bboxcache = NULL;
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLGroup);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLGroup);
 
   SO_VRMLNODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_FIELD(bboxSize, (-1.0f, -1.0f, -1.0f));

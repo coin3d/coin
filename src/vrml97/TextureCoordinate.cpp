@@ -94,7 +94,7 @@ SoVRMLTextureCoordinate::initClass(void)
 */
 SoVRMLTextureCoordinate::SoVRMLTextureCoordinate(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLTextureCoordinate);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLTextureCoordinate);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(point);
 }

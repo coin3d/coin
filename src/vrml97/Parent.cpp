@@ -119,7 +119,7 @@ SoVRMLParent::commonConstructor(void)
   PRIVATE(this) = new SoVRMLParentP;
   PRIVATE(this)->childlistvalid = FALSE;
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLParent);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLParent);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(children);
   SO_VRMLNODE_ADD_EVENT_IN(addChildren);

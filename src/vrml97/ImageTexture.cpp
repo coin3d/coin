@@ -190,7 +190,7 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
 {
   PRIVATE(this) = new SoVRMLImageTextureP;
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLImageTexture);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLImageTexture);
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
 
   PRIVATE(this)->glimage = NULL;

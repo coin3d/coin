@@ -210,7 +210,7 @@ SoVRMLTouchSensor::initClass(void)
 */
 SoVRMLTouchSensor::SoVRMLTouchSensor(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLTouchSensor);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLTouchSensor);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(enabled, (TRUE));
 

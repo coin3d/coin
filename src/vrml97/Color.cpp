@@ -90,7 +90,7 @@ SoVRMLColor::initClass(void) // static
 SoVRMLColor::SoVRMLColor(void)
 {
   THIS = new SoVRMLColorP;
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLColor);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLColor);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(color);
 }

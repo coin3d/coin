@@ -64,7 +64,7 @@ SoVRMLLight::initClass(void)
 */
 SoVRMLLight::SoVRMLLight(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLLight);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLLight);
 
   SO_VRMLNODE_ADD_FIELD(on, (TRUE));
   SO_VRMLNODE_ADD_FIELD(intensity, (1.0f));

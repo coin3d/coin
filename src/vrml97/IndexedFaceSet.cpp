@@ -299,7 +299,7 @@ SoVRMLIndexedFaceSet::SoVRMLIndexedFaceSet(void)
   THIS->convexCache = NULL;
   THIS->concavestatus = STATUS_UNKNOWN;
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedFaceSet);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedFaceSet);
 
   SO_VRMLNODE_ADD_FIELD(ccw, (TRUE));
   SO_VRMLNODE_ADD_FIELD(solid, (TRUE));

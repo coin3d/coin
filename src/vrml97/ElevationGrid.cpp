@@ -344,7 +344,7 @@ SoVRMLElevationGrid::SoVRMLElevationGrid(void)
 {
   THIS = new SoVRMLElevationGridP;
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLElevationGrid);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLElevationGrid);
 
   SO_VRMLNODE_ADD_FIELD(ccw, (TRUE));
   SO_VRMLNODE_ADD_FIELD(solid, (TRUE));

@@ -54,7 +54,7 @@ SoVRMLTexture::initClass(void)
 */
 SoVRMLTexture::SoVRMLTexture(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLTexture);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLTexture);
 
   SO_VRMLNODE_ADD_FIELD(repeatS, (TRUE));
   SO_VRMLNODE_ADD_FIELD(repeatT, (TRUE));

@@ -204,7 +204,7 @@ SoVRMLSpotLight::initClass(void)
 */
 SoVRMLSpotLight::SoVRMLSpotLight(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLSpotLight);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLSpotLight);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(location, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(direction,(0.0f, 0.0f, -1.0f));

@@ -142,7 +142,7 @@ SoVRMLSphereSensor::initClass(void)
 */
 SoVRMLSphereSensor::SoVRMLSphereSensor(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLSphereSensor);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLSphereSensor);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(offset, (0.0f, 1.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_EVENT_OUT(rotation_changed);

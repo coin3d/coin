@@ -154,7 +154,7 @@ SoVRMLVisibilitySensor::initClass(void)
 */
 SoVRMLVisibilitySensor::SoVRMLVisibilitySensor(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLVisibilitySensor);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLVisibilitySensor);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(center, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(size, (0.0f, 0.0f, 0.0f));

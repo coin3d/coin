@@ -95,7 +95,7 @@ SoVRMLFontStyle::initClass(void) // static
 */
 SoVRMLFontStyle::SoVRMLFontStyle(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLFontStyle);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLFontStyle);
 
   SO_VRMLNODE_ADD_FIELD(size, (1.0f));
   SO_VRMLNODE_ADD_FIELD(family, ("SERIF"));

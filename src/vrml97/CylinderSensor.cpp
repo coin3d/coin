@@ -188,7 +188,7 @@ SoVRMLCylinderSensor::initClass(void)
 */
 SoVRMLCylinderSensor::SoVRMLCylinderSensor(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLCylinderSensor);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLCylinderSensor);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(diskAngle, (0.262f));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(maxAngle, (-1.0f));

@@ -170,7 +170,7 @@ SoVRMLCollision::SoVRMLCollision(int numchildren)
 void
 SoVRMLCollision::commonConstructor(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLCollision);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLCollision);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(collide, (TRUE));
   SO_VRMLNODE_ADD_FIELD(proxy, (NULL));

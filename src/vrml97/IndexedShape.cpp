@@ -68,7 +68,7 @@ SoVRMLIndexedShape::initClass(void)
 */
 SoVRMLIndexedShape::SoVRMLIndexedShape(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedShape);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedShape);
 
   SO_VRMLNODE_ADD_EMPTY_MFIELD(coordIndex);
   SO_VRMLNODE_ADD_EMPTY_MFIELD(colorIndex);

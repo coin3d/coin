@@ -126,7 +126,7 @@ SoVRMLCone::initClass(void) // static
 */
 SoVRMLCone::SoVRMLCone(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLCone);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLCone);
 
   SO_VRMLNODE_ADD_FIELD(bottomRadius, (1.0f));
   SO_VRMLNODE_ADD_FIELD(height, (2.0f));

@@ -96,7 +96,7 @@ SoVRMLDirectionalLight::initClass(void) // static
 */
 SoVRMLDirectionalLight::SoVRMLDirectionalLight(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLDirectionalLight);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLDirectionalLight);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(direction, (0.0f, 0.0f, -1.0f));
 }

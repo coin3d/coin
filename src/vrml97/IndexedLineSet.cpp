@@ -150,7 +150,7 @@ SoVRMLIndexedLineSet::initClass(void) // static
 
 SoVRMLIndexedLineSet::SoVRMLIndexedLineSet(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedLineSet);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedLineSet);
 }
 
 SoVRMLIndexedLineSet::~SoVRMLIndexedLineSet()

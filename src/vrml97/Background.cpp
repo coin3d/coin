@@ -237,7 +237,7 @@ SoVRMLBackground::initClass(void) // static
 */
 SoVRMLBackground::SoVRMLBackground(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLBackground);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLBackground);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(groundColor);
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(skyColor);

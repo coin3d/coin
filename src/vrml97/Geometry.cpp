@@ -83,7 +83,7 @@ SoVRMLGeometry::SoVRMLGeometry(void)
   PRIVATE(this) = new SoVRMLGeometryP;
   PRIVATE(this)->childlist = new SoChildList(this);
   PRIVATE(this)->childlistvalid = FALSE;
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLGeometry);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLGeometry);
 }
 
 /*!

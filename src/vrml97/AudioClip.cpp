@@ -157,7 +157,7 @@ SoVRMLAudioClip::initClass(void) // static
 */
 SoVRMLAudioClip::SoVRMLAudioClip(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLAudioClip);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLAudioClip);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(description, (""));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(loop, (FALSE));

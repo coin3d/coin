@@ -424,7 +424,7 @@ SoVRMLExtrusion::SoVRMLExtrusion(void)
 {
   THIS = new SoVRMLExtrusionP(this);
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLExtrusion);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLExtrusion);
 
   SO_VRMLNODE_ADD_FIELD(beginCap, (TRUE));
   SO_VRMLNODE_ADD_FIELD(endCap, (TRUE));

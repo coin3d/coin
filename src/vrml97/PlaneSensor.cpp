@@ -169,7 +169,7 @@ SoVRMLPlaneSensor::initClass(void)
 */
 SoVRMLPlaneSensor::SoVRMLPlaneSensor(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLPlaneSensor);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLPlaneSensor);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(minPosition, (0.0f, 0.0f));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(maxPosition, (-1.0f, -1.0f));

@@ -142,7 +142,7 @@ SoVRMLPixelTexture::SoVRMLPixelTexture(void)
 {
   THIS = new SoVRMLPixelTextureP;
 
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLPixelTexture);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLPixelTexture);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(image, (SbVec2s(0,0), 0, NULL));
 

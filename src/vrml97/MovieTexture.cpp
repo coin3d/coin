@@ -173,7 +173,7 @@ SoVRMLMovieTexture::initClass(void)
 */
 SoVRMLMovieTexture::SoVRMLMovieTexture(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLMovieTexture);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLMovieTexture);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(loop, (FALSE));
   SO_VRMLNODE_ADD_EXPOSED_FIELD(speed, (1.0f));

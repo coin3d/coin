@@ -37,7 +37,7 @@ SoVRMLIndexedLine::initClass(void) // static
 
 SoVRMLIndexedLine::SoVRMLIndexedLine(void) // protected
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedLine);
+  SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLIndexedLine);
 
   SO_VRMLNODE_ADD_EMPTY_MFIELD(coordIndex);
   SO_VRMLNODE_ADD_EMPTY_MFIELD(colorIndex);
