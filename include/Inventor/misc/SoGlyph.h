@@ -80,7 +80,7 @@ private:
   void setFontType(Fonttype type) const;
 
 
-  friend SoGlyphP;
+  friend class SoGlyphP;
   SoGlyphP * pimpl;
 };
 
