@@ -658,7 +658,20 @@ SoCamera::getView(SoAction * action, SbViewVolume & resultvv, SbViewportRegion &
 {
   SoState * state = action->getState();
 
-  resultvp = SoViewportRegionElement::get(state);
+  // need to test if vp element is enabled. SoGetPrimitiveCountAction
+  // does not enable this element, although I think it should (to get
+  // correct SCREEN_SPACE complexity handling).  pederb, 2001-10-31
+  SbBool usevpelement = 
+    state->isElementEnabled(SoViewportRegionElement::getClassStackIndex());
+  
+  if (usevpelement) {
+    resultvp = SoViewportRegionElement::get(state);
+  }
+  else {
+    // just set it to some value. It's not important as the current
+    // action does not support viewports.
+    resultvp = SbViewportRegion(256, 256);
+  }
   float aspectratio = resultvp.getViewportAspectRatio();
   int vpm = this->viewportMapping.getValue();
 
@@ -702,7 +715,9 @@ SoCamera::getView(SoAction * action, SbViewVolume & resultvv, SbViewportRegion &
       if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
         this->drawCroppedFrame((SoGLRenderAction*)action, vpm, oldvp, resultvp);
       }
-      SoViewportRegionElement::set(action->getState(), resultvp);
+      if (usevpelement) {
+        SoViewportRegionElement::set(action->getState(), resultvp);
+      }
     }
   }
 }
