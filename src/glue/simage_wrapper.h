@@ -31,51 +31,50 @@
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 
-/* Under Win32, we need to make sure we use the correct calling method
-   by using the APIENTRY define for the function signature types (or
-   else we'll get weird stack errors). On other platforms, just define
-   APIENTRY empty. */
-#ifndef APIENTRY
-#define APIENTRY
-#endif /* !APIENTRY */
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/* Typedefinitions of function signatures for simage calls we use. We
-   need these for casting from the void-pointer return of dlsym().*/
+  /* Typedefinitions of function signatures for simage calls we
+     use. We need these for casting from the void-pointer return of
+     dlsym().
 
-  typedef void (APIENTRY *simage_version_t)(int *, int *, int *);
-  typedef int (APIENTRY *simage_check_supported_t)(const char * filename);
-  typedef unsigned char * (APIENTRY *simage_read_image_t)(const char * filename,
+     Note specifically for MSWindows that we do _not_ use the APIENTRY
+     keyword in the function typedefs, as that would set them up with
+     the __stdcall calling convention -- and simage functions are
+     built with the __cdecl calling convention.
+  */
+
+  typedef void (*simage_version_t)(int *, int *, int *);
+  typedef int (*simage_check_supported_t)(const char * filename);
+  typedef unsigned char * (*simage_read_image_t)(const char * filename,
                                                           int * w, int * h,
                                                           int * numcomponents);
-  typedef int (APIENTRY *simage_check_save_supported_t)(const char * filenameextension);
-  typedef int (APIENTRY *simage_save_image_t)(const char * filename,
+  typedef int (*simage_check_save_supported_t)(const char * filenameextension);
+  typedef int (*simage_save_image_t)(const char * filename,
                                               const unsigned char * bytes,
                                               int w, int h, int numcomponents,
                                               const char * filenameextension);
-  typedef const char * (APIENTRY *simage_get_last_error_t)(void);
-  typedef unsigned char * (APIENTRY *simage_resize_t)(unsigned char * imagedata,
+  typedef const char * (*simage_get_last_error_t)(void);
+  typedef unsigned char * (*simage_resize_t)(unsigned char * imagedata,
                                                       int width, int height,
                                                       int numcomponents,
                                                       int newwidth, int newheight);
-  typedef unsigned char * (APIENTRY *simage_resize3d_t)(unsigned char * imagedata,
+  typedef unsigned char * (*simage_resize3d_t)(unsigned char * imagedata,
                                                         int width, int height,
                                                         int numcomponents,
                                                         int layers,
                                                         int newwidth, 
                                                         int newheight,
                                                         int newlayers);
-  typedef void (APIENTRY *simage_free_image_t)(unsigned char * imagedata);
-  typedef int (APIENTRY *simage_next_power_of_two_t)(int val);
+  typedef void (*simage_free_image_t)(unsigned char * imagedata);
+  typedef int (*simage_next_power_of_two_t)(int val);
 
-  typedef int (APIENTRY *simage_get_num_savers_t)(void);
-  typedef void * (APIENTRY *simage_get_saver_handle_t)(int idx);
-  typedef const char * (APIENTRY *simage_get_saver_extensions_t)(void * handle);
-  typedef const char * (APIENTRY *simage_get_saver_fullname_t)(void * handle);
-  typedef const char * (APIENTRY *simage_get_saver_description_t)(void * handle);
+  typedef int (*simage_get_num_savers_t)(void);
+  typedef void * (*simage_get_saver_handle_t)(int idx);
+  typedef const char * (*simage_get_saver_extensions_t)(void * handle);
+  typedef const char * (*simage_get_saver_fullname_t)(void * handle);
+  typedef const char * (*simage_get_saver_description_t)(void * handle);
 
   /* This define is set up in the simage_wrapper.c file, according to
      whether or not we link static at compile-time or dynamic at
@@ -98,18 +97,18 @@ extern "C" {
   typedef struct simage_stream_s s_stream;
 #endif
 
-  typedef void (APIENTRY *s_params_set_t)(s_params * params, ...);
-  typedef int (APIENTRY *s_params_get_t)(s_params * params, ...);
+  typedef void (*s_params_set_t)(s_params * params, ...);
+  typedef int (*s_params_get_t)(s_params * params, ...);
 
-  typedef s_stream * (APIENTRY *s_stream_open_t)(const char * filename, 
+  typedef s_stream * (*s_stream_open_t)(const char * filename, 
                                           s_params * params /* | NULL */);
-  typedef void * (APIENTRY *s_stream_get_buffer_t)(s_stream * stream, 
+  typedef void * (*s_stream_get_buffer_t)(s_stream * stream, 
                                            void * prealloc /* | NULL */,
                                            int *size /* | NULL */,
                                            s_params * params /* | NULL */);
-  typedef void (APIENTRY *s_stream_close_t)(s_stream * stream);
-  typedef void (APIENTRY *s_stream_destroy_t)(s_stream * stream);
-  typedef s_params * (APIENTRY *s_stream_params_t)(s_stream * stream);
+  typedef void (*s_stream_close_t)(s_stream * stream);
+  typedef void (*s_stream_destroy_t)(s_stream * stream);
+  typedef s_params * (*s_stream_params_t)(s_stream * stream);
 
   typedef struct {
     /* Is the simage library at all available? */

@@ -24,6 +24,8 @@
 #include <Inventor/C/basic.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/errors/debugerror.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -78,25 +80,25 @@ simage_wrapper_versionMatchesAtLeast(int major, int minor, int micro)
   return 1;
 }
 
-static int APIENTRY
+static int
 simage_wrapper_get_num_savers(void)
 {
   return 0;
 }
 
-static void * APIENTRY
+static void *
 simage_wrapper_get_saver_handle(int jada)
 {
   return NULL;
 }
 
-static int APIENTRY
+static int
 simage_wrapper_check_save_supported(const char * jada)
 {
   return 0;
 }
 
-static int APIENTRY
+static int
 simage_wrapper_save_image(const char * jada,
                           const unsigned char * jada2,
                           int jada3, int jada4, int jada5,
@@ -105,25 +107,25 @@ simage_wrapper_save_image(const char * jada,
   return 0;
 }
 
-const char * APIENTRY
+const char *
 simage_wrapper_get_saver_extensions(void * handle)
 {
   return "";
 }
 
-const char * APIENTRY
+const char *
 simage_wrapper_get_saver_fullname(void * handle)
 {
   return NULL;
 }
 
-const char * APIENTRY
+const char *
 simage_wrapper_get_saver_description(void * handle)
 {
   return NULL;
 }
 
-unsigned char * APIENTRY
+unsigned char *
 simage_wrapper_resize3d(unsigned char * imagedata,
                         int width, int height,
                         int numcomponents,
@@ -135,33 +137,33 @@ simage_wrapper_resize3d(unsigned char * imagedata,
   return NULL;
 }
 
-void APIENTRY
+void
 simage_wrapper_s_params_set(s_params * params, ...)
 {
   return;
 }
 
-int APIENTRY
+int
 simage_wrapper_s_params_get(s_params * params, ...)
 {
   return 0;
 }
 
-s_stream * APIENTRY
+s_stream *
 simage_wrapper_s_stream_open(const char * filename,
               s_params * params /* | NULL */)
 {
   return NULL;
 }
 
-s_stream * APIENTRY
+s_stream *
 simage_wrapper_s_stream_create(const char * filename,
                 s_params * params /* | NULL */)
 {
   return NULL;
 }
 
-void * APIENTRY
+void *
 simage_wrapper_s_stream_get_buffer(s_stream * stream,
                     void * prealloc /* | NULL */,
                     int *size /* | NULL */,
@@ -170,26 +172,26 @@ simage_wrapper_s_stream_get_buffer(s_stream * stream,
   return NULL;
 }
 
-int APIENTRY
+int
 simage_wrapper_s_stream_put_buffer(s_stream * stream, void * buffer,
                     int size, s_params * params /* | NULL */)
 {
   return 0;
 }
 
-void APIENTRY
+void
 simage_wrapper_s_stream_close(s_stream * stream)
 {
   return;
 }
 
-void APIENTRY
+void
 simage_wrapper_s_stream_destroy(s_stream * stream)
 {
   return;
 }
 
-s_params * APIENTRY
+s_params *
 simage_wrapper_s_stream_params(s_stream * stream)
 {
   return NULL;
@@ -210,7 +212,7 @@ simage_wrapper(void)
 
     /* First invocation, do initializations. */
     simage_wrapper_t * si = (simage_wrapper_t *)malloc(sizeof(simage_wrapper_t));
-    (void)atexit(simage_wrapper_cleanup);
+    (void)coin_atexit((coin_atexit_f *)simage_wrapper_cleanup);
 
     /* Detect recursive calls. */
     {
@@ -277,6 +279,9 @@ simage_wrapper(void)
 
     if (si->available && !si->simage_version) {
       /* something is seriously wrong */
+      cc_debugerror_post("simage_wrapper",
+                         "Loaded simage DLL ok, but couldn't resolve symbol "
+                         "simage_version().");
       si->available = 0;
       simage_failed_to_load = 1;
 
