@@ -165,6 +165,7 @@ PublicHeaders = \
 	../../include/Inventor/nodes/SoTextureCoordinateEnvironment.h \
 	../../include/Inventor/nodes/SoTextureCoordinateFunction.h \
 	../../include/Inventor/nodes/SoTextureCoordinatePlane.h \
+	../../include/Inventor/nodes/SoTextureScalePolicy.h \
 	../../include/Inventor/nodes/SoTransform.h \
 	../../include/Inventor/nodes/SoTransparencyType.h \
 	../../include/Inventor/nodes/SoTransformSeparator.h \
@@ -177,7 +178,6 @@ PublicHeaders = \
 PrivateHeaders = \
 	../../include/Inventor/nodes/SoSubNodeP.h \
 	../../include/Inventor/nodes/SoUnknownNode.h \
-	../../include/Inventor/nodes/SoTextureScalePolicy.h \
 	SoSoundElementHelper.h
 
 
