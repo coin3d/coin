@@ -156,8 +156,13 @@ inline Type SbSqr(const Type val) {
  * SO__CONCAT(str1,str2) - use the preprocessor to concatenate two strings.
  */
 
+/* The following two #undefs will be updated to either a #define or
+   commented out when running ``configure'' -- according to compiler
+   characteristics. Most compilers should have "hash quoting" as it is
+   part of the ANSI standard. */
 #undef HAVE_HASH_QUOTING
 #undef HAVE_APOSTROPHES_QUOTING
+
 
 #if HAVE_HASH_QUOTING
 #define SO__QUOTE(str)           #str
