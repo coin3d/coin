@@ -3591,28 +3591,31 @@ fi
 if test "x$want_simage" = "xyes"; then
   echo $ac_n "checking for simage header file""... $ac_c" 1>&6
 echo "configure:3594: checking for simage header file" >&5
-
+if eval "test \"`echo '$''{'ac_cv_macro_SIMAGE_HEADER'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  
     cat > conftest.$ac_ext <<EOF
-#line 3597 "configure"
+#line 3600 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3602: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3605: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
-  simage_dev=yes
+  ac_cv_macro_SIMAGE_HEADER=yes
 else
   echo "$ac_err" >&5
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -rf conftest*
-  simage_dev=no
+  ac_cv_macro_SIMAGE_HEADER=no
 fi
 rm -f conftest*
 
-        if test "x$simage_dev" = "xno"; then
+        if test $ac_cv_macro_SIMAGE_HEADER = no; then
     _COINPREFIX=$prefix
     test "x$_COINPREFIX" = xNONE && _COINPREFIX=$ac_default_prefix
     _COINEPREFIX=$exec_prefix
@@ -3620,36 +3623,42 @@ rm -f conftest*
     _SAVECPPFLAGS=$CPPFLAGS
     CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
     cat > conftest.$ac_ext <<EOF
-#line 3624 "configure"
+#line 3627 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3629: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3632: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
-  simage_dev=yes
+  ac_cv_macro_SIMAGE_HEADER=coin
 else
   echo "$ac_err" >&5
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -rf conftest*
-  simage_dev=no
+  ac_cv_macro_SIMAGE_HEADER=no
 fi
 rm -f conftest*
     CPPFLAGS=$_SAVECPPFLAGS
-    if test "x$simage_dev" = "xyes"; then
-      CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
-      LDFLAGS="-L$_COINEPREFIX/lib $LDFLAGS"
-    fi
+  fi
+fi
+
+echo "$ac_t""$ac_cv_macro_SIMAGE_HEADER" 1>&6
+
+  if test $ac_cv_macro_SIMAGE_HEADER = coin; then
+    _COINPREFIX=$prefix
+    test "x$_COINPREFIX" = xNONE && _COINPREFIX=$ac_default_prefix
+    _COINEPREFIX=$exec_prefix
+    test "x$_COINEPREFIX" = xNONE && _COINEPREFIX=$_COINPREFIX
+    CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
+    LDFLAGS="-L$_COINEPREFIX/lib $LDFLAGS"
   fi
 
-  echo "$ac_t""$simage_dev" 1>&6
-
-  if test "x$simage_dev" = "xyes"; then
-    echo $ac_n "checking for simage_read_image in -lsimage""... $ac_c" 1>&6
-echo "configure:3653: checking for simage_read_image in -lsimage" >&5
+  if test $ac_cv_macro_SIMAGE_HEADER = yes; then
+      echo $ac_n "checking for simage_read_image in -lsimage""... $ac_c" 1>&6
+echo "configure:3662: checking for simage_read_image in -lsimage" >&5
 ac_lib_var=`echo simage'_'simage_read_image | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -3657,7 +3666,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lsimage -lz $MATHLIB $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 3661 "configure"
+#line 3670 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 #ifdef __cplusplus
@@ -3671,7 +3680,7 @@ int main() {
 simage_read_image()
 ; return 0; }
 EOF
-if { (eval echo configure:3675: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3684: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -3686,21 +3695,14 @@ LIBS="$ac_save_LIBS"
 fi
 if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
   echo "$ac_t""yes" 1>&6
-    ac_tr_lib=HAVE_LIB`echo simage | sed -e 's/[^a-zA-Z0-9_]/_/g' \
-    -e 'y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/'`
-  cat >> confdefs.h <<EOF
-#define $ac_tr_lib 1
-EOF
-
-  LIBS="-lsimage $LIBS"
-
+  ac_cv_macro_SIMAGE_LIBRARY=yes
 else
   echo "$ac_t""no" 1>&6
-simage_dev=no
+ac_cv_macro_SIMAGE_LIBRARY=no
 fi
 
   fi
-  if test "$simage_dev" = no; then
+  if test $ac_cv_macro_SIMAGE_HEADER = no || test $ac_cv_macro_SIMAGE_LIBRARY = no; then
     echo "configure: warning: libsimage development system not found" 1>&2
   fi
 fi
