@@ -27,6 +27,8 @@
  */
 
 #include <Inventor/C/base/rbptree.h>
+#include <Inventor/C/base/string.h>
+#include <Inventor/C/errors/debugerror.h>
 #include <assert.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -557,24 +559,23 @@ static void
 rbptree_debug(const cc_rbptree_node * x, const int idx)
 {
   int i;
-  for (i = 0; i < idx; i++) {
-    printf(" ");
-  }
-  printf("level %d ", idx/2);
-  if (x->parent == &rbptree_sentinel) {
-    printf("(head)");
-  }
-  else if (x->parent->left == x) {
-    printf("(left)");
-  }
-  else {
-    printf("(right)");
-  }
-  printf(": %d ==> %s\n", (int)x->pointer,
-         x->color == RBPTREE_BLACK ? "black" : "red");
+  cc_string str;
+
+  cc_string_construct(&str);
+
+  for (i = 0; i < idx; i++) { cc_string_append_text(&str, " "); }
+  cc_string_sprintf(&str, "level %d ", idx/2);
+  if (x->parent == &rbptree_sentinel) { cc_string_append_text(&str, "(head)"); }
+  else if (x->parent->left == x) { cc_string_append_text(&str, "(left)"); }
+  else { cc_string_append_text(&str, "(right)"); }
+
+  cc_debugerror_postinfo("rbptree_debug", ": %d ==> %s\n", (int)x->pointer,
+                         x->color == RBPTREE_BLACK ? "black" : "red");
 
   if (x->left != &rbptree_sentinel) rbptree_debug(x->left, idx + 2);
   if (x->right != &rbptree_sentinel) rbptree_debug(x->right, idx + 2);
+
+  cc_string_clean(&str);
 }
 
 /*!

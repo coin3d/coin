@@ -21,6 +21,7 @@
 
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
+#include <Inventor/C/errors/debugerror.h>
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -261,7 +262,8 @@ cc_hash_apply(cc_hash * ht, cc_hash_apply_func * func, void * closure)
 }
 
 /*!
-  For debugging only. Prints some information on stdout.
+  For debugging only. Prints information about hash with
+  cc_debugerror.
 */
 void
 cc_hash_print_stat(cc_hash * ht)
@@ -279,6 +281,9 @@ cc_hash_print_stat(cc_hash * ht)
       if (chain_l > max_chain_l) max_chain_l = chain_l;
     }
   }
-  printf("Used buckets %u of %u (%u elements), avg chain length: %.2f, max chain length: %u\n",
-         used_buckets, ht->size, ht->elements, (float)ht->elements / used_buckets, max_chain_l);
+  cc_debugerror_postinfo("cc_hash_print_stat",
+                         "Used buckets %u of %u (%u elements), "
+                         "avg chain length: %.2f, max chain length: %u\n",
+                         used_buckets, ht->size, ht->elements,
+                         (float)ht->elements / used_buckets, max_chain_l);
 }
