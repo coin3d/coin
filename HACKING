@@ -283,6 +283,21 @@ When making releases, we follow these rules:
   at all, keep COIN_MAJOR_VERSION and COIN_MINOR_VERSION unchanged
   and COIN_MICRO_VERSION += 1.
 
+
+# Footnotes
+# =========
+#
+# ¹ Application Binary Interface. This covers any publicly exposed
+#   functions, function signatures, structures (and classes for C++
+#   code). If any functions has been removed or changed, or if any
+#   structures/classes has been modified in any way, the ABI has
+#   most likely been made incompatible with earlier releases.
+#
+# ² Application Programmer's Interface. This is the functions and data
+#   structures/classes exposed to the application programmer for
+#   interaction with the library.
+
+
 Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
 the idea of library versioning applied by Libtool. According to Libtool,
 libraries should be versioned according to a CURRENT.AGE.REVISION scheme.
