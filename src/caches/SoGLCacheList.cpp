@@ -463,7 +463,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     }
   }
 
-  if (shouldcreate) {
+  if (shouldcreate && autocache) {
     // determine if we really should create a new cache, based on numused and numdiscarded
     double docreate = (double) (THIS->numframesok + THIS->numused);
     double dontcreate = (THIS->numdiscarded);
