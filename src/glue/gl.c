@@ -2440,8 +2440,13 @@ cc_glglue_glGetCompressedTexImage(const cc_glglue * glue,
 SbBool
 cc_glglue_has_paletted_textures(const cc_glglue * glue)
 {
-  if (!glglue_allow_newer_opengl(glue)) return FALSE;
+  static int disable = -1;
+  if (disable == -1) {
+    disable = glglue_resolve_envvar("COIN_GLGLUE_DISABLE_PALETTED_TEXTURE");
+  }
+  if (disable) { return FALSE; }
 
+  if (!glglue_allow_newer_opengl(glue)) { return FALSE; }
   return glue->supportsPalettedTextures;
 }
 
