@@ -34,7 +34,16 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoPickStyleElement.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/elements/SoGLLightModelElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/errors/SoDebugError.h>
+
 #include <coindefs.h> // COIN_STUB()
 #ifdef _WIN32
 #include <windows.h>
@@ -42,13 +51,18 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+
 /*!
   \var SoSFInt32 SoNurbsCurve::numControlPoints
-  FIXME: write documentation for field
+  Number of control points to use in this NURBS curve.
 */
 /*!
   \var SoMFFloat SoNurbsCurve::knotVector
-  FIXME: write documentation for field
+  The knot vector.
 */
 
 // *************************************************************************
@@ -73,7 +87,11 @@ SoNurbsCurve::SoNurbsCurve(void)
 */
 SoNurbsCurve::~SoNurbsCurve()
 {
-  if (this->nurbsrenderer) gluDeleteNurbsRenderer(this->nurbsrenderer);
+  if (this->nurbsrenderer) {
+#ifdef HAVE_GLU_NURBSOBJECT
+    gluDeleteNurbsRenderer((HAVE_GLU_NURBSOBJECT *)this->nurbsrenderer);
+#endif // HAVE_GLU_NURBSOBJECT
+  }
 }
 
 // Doc from parent class.
@@ -87,91 +105,91 @@ SoNurbsCurve::initClass(void)
 void
 SoNurbsCurve::GLRender(SoGLRenderAction * action)
 {
-  //
-  // this is just a quick hack. See comment in SoNurbsSurface::GLRender
-  //
-
-
   if (!this->shouldGLRender(action)) return;
-
-  if (this->nurbsrenderer == NULL) this->nurbsrenderer = gluNewNurbsRenderer();
 
   SoState * state = action->getState();
 
-  const SoCoordinateElement * coords =
-    SoCoordinateElement::getInstance(state);
-
-//    SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
-//    doTextures = tb.needCoordinates();
-
+  // initialize current material
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
+  // disable lighting
+  const SoGLLightModelElement * lm = (const SoGLLightModelElement *)
+    state->getConstElement(SoGLLightModelElement::getClassStackIndex());
+  lm->forceSend(SoLightModelElement::BASE_COLOR);
+
+  // disable texturing
+  const SoGLTextureEnabledElement * te = (const SoGLTextureEnabledElement *)
+    state->getConstElement(SoGLTextureEnabledElement::getClassStackIndex());
+  te->forceSend(FALSE);
+
+  // Create lazy element for GL_AUTO_NORMAL ?
   glEnable(GL_AUTO_NORMAL);
-
-  int dim = coords->is3D() ? 3 : 4;
-
-  const SoCoordinateElement * coordelem =
-    SoCoordinateElement::getInstance(state);
-
-  GLfloat * ptr = coords->is3D() ?
-    (GLfloat *)coordelem->getArrayPtr3() :
-    (GLfloat *)coordelem->getArrayPtr4();
-
-
-  gluBeginCurve(this->nurbsrenderer);
-  gluNurbsCurve(this->nurbsrenderer,
-                this->knotVector.getNum(),
-                (GLfloat *)this->knotVector.getValues(0),
-                dim,
-                ptr,
-                this->knotVector.getNum() - this->numControlPoints.getValue(),
-                (GLenum)(dim == 3 ? GL_MAP1_VERTEX_3 : GL_MAP1_VERTEX_4));
-
-  gluEndCurve(this->nurbsrenderer);
+  this->doNurbs(action, TRUE, SoDrawStyleElement::get(action->getState()) == SoDrawStyleElement::POINTS);
   glDisable(GL_AUTO_NORMAL);
 }
 
-// Doc from parent class.
+/*!
+  Calculates the bounding box of all control points, and sets the
+  center to the average of these points.
+*/
 void
 SoNurbsCurve::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
-  // FIXME: this is just a quick approximation
-
   SoState * state = action->getState();
   const SoCoordinateElement * coordelem =
     SoCoordinateElement::getInstance(state);
-
 
   int numCoords = coordelem->getNum();
   int num = this->numControlPoints.getValue();
 
   assert(num <= numCoords);
 
+  SbVec3f acccenter(0.0f, 0.0f, 0.0f);
+  box.makeEmpty();
   if (coordelem->is3D()) {
     const SbVec3f * coords = coordelem->getArrayPtr3();
     assert(coords);
-    box.makeEmpty();
-    for (int i = 0; i < num; i++) box.extendBy(coords[i]);
+    for (int i = 0; i < num; i++) {
+      box.extendBy(coords[i]);
+      acccenter += coords[i];
+    }
   }
   else {
     const SbVec4f * coords = coordelem->getArrayPtr4();
     assert(coords);
     for (int i = 0; i < num; i++) {
       SbVec4f tmp = coords[i];
-      // FIXME: shouldn't we "normalize" with the fourth element of
-      // each coordinate vector? 20000424 mortene.
-      box.extendBy(SbVec3f(tmp[0], tmp[1], tmp[2]));
+      float mul = (tmp[3] != 0.0f) ? 1.0f / tmp[3] : 1.0f;
+      SbVec3f tmp3D(tmp[0]*mul, tmp[1]*mul, tmp[2]*mul);
+      box.extendBy(tmp3D);
+      acccenter += tmp3D;
     }
   }
-  center = box.getCenter();
+  if (num) center = acccenter / float(num);
 }
 
 // Doc from parent class.
 void
 SoNurbsCurve::rayPick(SoRayPickAction * action)
 {
-  COIN_STUB();
+#if GLU_VERSION_1_3
+  SoShape::rayPick(action); // do normal generatePrimitives() pick
+#else // ! GLU_VERSION_1_3
+  if (!this->shouldRayPick(action)) return;
+  static SbBool firstpick = TRUE;
+  if (firstpick) {
+    firstpick = FALSE;
+    SoDebugError::postWarning("SoNurbsCurve::rayPick",
+                              "Proper NURBS picking requires\n"
+                              "GLU version 1.3. Picking will be done on bounding box.");
+  }
+  SoState * state = action->getState();
+  state->push();
+  SoPickStyleElement::set(state, this, SoPickStyleElement::BOUNDING_BOX);
+  (void)this->shouldRayPick(action); // this will cause a pick on bbox
+  state->pop();
+#endif // ! GLU_VERSION_1_3
 }
 
 // Doc from parent class.
@@ -181,7 +199,9 @@ SoNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * action)
   COIN_STUB();
 }
 
-// Doc from parent class.
+/*!
+  Redefined to notify open caches that this shape contains lines.
+*/
 void
 SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -190,8 +210,8 @@ SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * action)
 }
 
 /*!
-  FIXME: write doc
- */
+  Not implemented in Coin. Should probably have been private in OIV.
+*/
 void
 SoNurbsCurve::sendPrimitive(SoAction *,  SoPrimitiveVertex *)
 {
@@ -202,5 +222,142 @@ SoNurbsCurve::sendPrimitive(SoAction *,  SoPrimitiveVertex *)
 void
 SoNurbsCurve::generatePrimitives(SoAction * action)
 {
-  COIN_STUB();
+  this->doNurbs(action, FALSE, FALSE);
+}
+
+/*!
+  Overloaded to return NULL.
+*/
+SoDetail *
+SoNurbsCurve::createLineSegmentDetail(SoRayPickAction * /* action */,
+                                      const SoPrimitiveVertex * /* v1 */,
+                                      const SoPrimitiveVertex * /* v2 */,
+                                      SoPickedPoint * /* pp */)
+{
+  return NULL;
+}
+
+//
+// used only for GLU callbacks
+//
+typedef struct {
+  SoAction * action;
+  SoNurbsCurve * thisp;
+  SoPrimitiveVertex vertex;
+} coin_nc_cbdata;
+
+void
+SoNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbBool drawaspoints)
+{
+#ifdef HAVE_GLU_NURBSOBJECT
+  HAVE_GLU_NURBSOBJECT * nurbsobj;
+  if (this->nurbsrenderer == NULL) {
+    nurbsobj = gluNewNurbsRenderer();
+    this->nurbsrenderer = (void*) nurbsobj;
+
+#if GLU_VERSION_1_3
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_BEGIN_DATA, (void (*)(...))tessBegin);
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (void (*)(...))tessTexCoord);
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_NORMAL_DATA, (void (*)(...))tessNormal);
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_VERTEX_DATA, (void (*)(...))tessVertex);
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_END_DATA, (void (*)(...))tessEnd);
+#endif // GLU_VERSION_1_3
+  }
+  nurbsobj = (HAVE_GLU_NURBSOBJECT*) this->nurbsrenderer;
+
+#if GLU_VERSION_1_3
+  coin_nc_cbdata cbdata;
+  if (!glrender) {
+    gluNurbsCallbackData(nurbsobj, &cbdata);
+    cbdata.action = action;
+    cbdata.thisp = this;
+    cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
+    cbdata.vertex.setMaterialIndex(0);
+    cbdata.vertex.setTextureCoords(SbVec4f(0.0f, 0.0f, 0.0f, 1.0f));
+    cbdata.vertex.setPoint(SbVec3f(0.0f, 0.0f, 0.0f));
+    cbdata.vertex.setDetail(NULL);
+  }
+#endif // GLU_VERSION_1_3
+
+  sogl_render_nurbs_curve(action, this, this->nurbsrenderer,
+                          this->numControlPoints.getValue(),
+                          this->knotVector.getValues(0),
+                          this->knotVector.getNum(),
+                          glrender,
+                          drawaspoints);
+#else // !HAVE_GLU_NURBSOBJECT
+#if COIN_DEBUG
+  static int first = 1;
+  if (first) {
+    SoDebugError::postInfo("SoNurbsCurve::doNurbs",
+                           "Looks like your GLU library doesn't have NURBS "
+                           "functionality");
+    first = 0;
+  }
+#endif // COIN_DEBUG
+#endif // !HAVE_GLU_NURBSOBJECT
+}
+
+void
+SoNurbsCurve::tessBegin(int type, void * data)
+{
+  coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
+  TriangleShape shapetype;
+  switch ((int)type) {
+  case GL_LINES:
+    shapetype = SoShape::LINES;
+    break;
+  case GL_LINE_STRIP:
+    shapetype = SoShape::LINE_STRIP;
+    break;
+  case GL_LINE_LOOP:
+    shapetype = SoShape::LINE_STRIP; // will not be closed...
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoNurbsCurve::tessBegin",
+                           "LINE_LOOP is not supported yet");
+#endif // debug
+    break;
+  case GL_POINTS:
+    shapetype = SoShape::POINTS;
+    break;
+  default:
+    shapetype = SoShape::POLYGON; // illegal value
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postInfo("SoNurbsCurve::tessBegin",
+                           "unsupported GL enum: 0x%x", type);
+#endif // debug
+    break;
+  }
+  if (shapetype != SoShape::POINTS) {
+    cbdata->thisp->beginShape(cbdata->action, shapetype, NULL);
+  }
+}
+
+void
+SoNurbsCurve::tessTexCoord(GLfloat * texcoord, void * data)
+{
+  coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
+  cbdata->vertex.setTextureCoords(SbVec4f(texcoord[0], texcoord[1], texcoord[2], texcoord[3]));
+}
+
+void
+SoNurbsCurve::tessNormal(GLfloat * normal, void * data)
+{
+  coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
+  cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
+}
+
+void
+SoNurbsCurve::tessVertex(GLfloat * vertex, void * data)
+{
+  coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
+  cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));
+  cbdata->thisp->shapeVertex(&cbdata->vertex);
+}
+
+void
+SoNurbsCurve::tessEnd(void * data)
+{
+  coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
+  cbdata->thisp->endShape();
 }
