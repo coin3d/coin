@@ -58,29 +58,25 @@ General guidelines:
 Concrete tasks:
 ===============
 
-        * implement a framerate counter in the So*ExaminerViewer, to
+        * Implement a framerate counter in the So*ExaminerViewer, to
           make it easier to get a "feeling" on which scenes / shapes /
-          whatever that have bad rendering performance
+          whatever that have bad rendering performance.
 
-        * SoSeparator is missing these caching and exclusion
-          mechanisms:
+        * SoSeparator is missing the rendercaching (with OpenGL
+          renderlists) mechanisms.
 
-                - rendercaching (with OpenGL renderlists)
-                - viewfrustum culling when rendering
-                - viewfrustum culling when picking
-
-          ..and in addition we've not yet implemented any heuristics
-          on the "AUTO" setting for caching (so far, we only do
+        * We've not yet implemented any heuristics on the "AUTO"
+          setting for caching in SoSeparator (so far, we only do
           bounding box caching) -- we just default to "ON", which can
           be _very_ lousy behaviour with regards to performance.
 
-        * from a quick peek at the code, it looks like
+        * From a quick peek at the code, it looks like
           SoMField-derived classes calls (or may call) valueChanged()
-          multiple times from certain functions
+          multiple times from certain functions.
 
-        * trace the notification mechanisms to see if we send
+        * Trace the notification mechanisms to see if we send
           superfluous notification messages (field->field,
-          field->node, node->node, ...)
+          field->node, node->node, ...).
 
         * SoTabBoxDragger rendering seems particularly slow on my PII
           266MHZ laptop -- why? The dragger geometry looks simple
