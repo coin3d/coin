@@ -643,9 +643,8 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
 
   SoType mastertype = master->getTypeId();
   SoType thistype = this->getTypeId();
-  SoType containertype = this->getContainer()->getTypeId();
-  SbBool containerisconverter =
-    containertype.isDerivedFrom(SoFieldConverter::getClassTypeId());
+  SbBool containerisconverter = this->getContainer() &&
+    this->getContainer()->getTypeId().isDerivedFrom(SoFieldConverter::getClassTypeId());
 
 
   // Set up all links.  ///////////////////////////////////////////
@@ -836,9 +835,8 @@ SoField::disconnect(SoField * master)
 
   this->evaluate();
 
-  SoType containertype = this->getContainer()->getTypeId();
-  SbBool containerisconverter =
-    containertype.isDerivedFrom(SoFieldConverter::getClassTypeId());
+  SbBool containerisconverter = this->getContainer() &&
+    this->getContainer()->getTypeId().isDerivedFrom(SoFieldConverter::getClassTypeId());
 
 
   // Decouple links. ///////////////////////////////////////////////////
