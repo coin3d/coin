@@ -55,6 +55,23 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <coindefs.h> // COIN_STUB()
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/C/threads/sync.h>
+#endif // COIN_THREADSAFE
+
+#ifdef COIN_THREADSAFE
+#define LOCK_ENGINE(obj) cc_sync_begin(obj)
+#define UNLOCK_ENGINE(id) cc_sync_end(id)
+#else
+#define LOCK_ENGINE(obj) NULL
+#define UNLOCK_ENGINE(id)
+#endif
+
+
 // FIXME: document these properly. 20000405 mortene.
 /*!
   \fn const SoEngineOutputData * SoEngine::getOutputData(void) const
@@ -86,6 +103,11 @@ SoEngine::~SoEngine()
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoEngine::~SoEngine", "%p", this);
 #endif // debug
+
+#ifdef COIN_THREADSAFE
+  // needed to free sync-items used in notify() and evaluateWrapper()
+  cc_sync_free((void*) this);
+#endif // COIN_THREADSAFE}
 }
 
 // Overrides SoBase::destroy().
@@ -276,6 +298,8 @@ SoEngine::notify(SoNotList * nl)
 
   // Avoid recursive notification calls.
   if (this->isNotifying()) return;
+
+  void * lockid = LOCK_ENGINE(this);
   this->flags |= FLAG_ISNOTIFYING;
 
   // The notification invocation could stem from a value change in
@@ -304,6 +328,7 @@ SoEngine::notify(SoNotList * nl)
   SoDebugError::postInfo("SoEngine::notify", "%p - %s, done",
                          this, this->getTypeId().getName().getString());
 #endif // debug
+  UNLOCK_ENGINE(lockid);
 }
 
 /*!
@@ -323,6 +348,8 @@ SoEngine::evaluateWrapper(void)
   if (!outputs) { return; }
 
   if(!(this->flags & FLAG_ISDIRTY)) { return; }
+
+  void * lockid = LOCK_ENGINE(this);
   this->flags &= ~FLAG_ISDIRTY;
 
   int i, n = outputs->getNumOutputs();
@@ -333,6 +360,7 @@ SoEngine::evaluateWrapper(void)
   for (i = 0; i < n; i++) {
     outputs->getOutput(this, i)->doneWriting();
   }
+  UNLOCK_ENGINE(lockid);
 }
 
 /*!
@@ -496,3 +524,7 @@ SoEngine::setDirty(void)
 {
   this->flags |= FLAG_ISDIRTY;
 }
+
+#undef LOCK_ENGINE
+#undef UNLOCK_ENGINE
+
