@@ -31,6 +31,8 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFTime.h>
+#include <Inventor/lists/SbStringList.h>
+#include <Inventor/SbTime.h>
 
 class COIN_DLL_API SoVRMLAudioClip : public SoNode
 {
@@ -38,6 +40,10 @@ class COIN_DLL_API SoVRMLAudioClip : public SoNode
   SO_NODE_HEADER(SoVRMLAudioClip);
 
 public:
+  typedef void *FillBufferCallback(int frameoffset, void *buffer, 
+                                   int numframes, int &channels, 
+                                   void * userdataptr);
+
   static void initClass(void);
   SoVRMLAudioClip(void);
 
@@ -48,13 +54,29 @@ public:
   SoSFTime stopTime;
   SoMFString url;
 
-  virtual void GLRender( SoGLRenderAction * action );
+  static void  setSubdirectories(const SbList<SbString> &subdirectories);
+  static const SbStringList & getSubdirectories();
+  static void setDefaultPauseBetweenTracks(SbTime pause);
+  static void setDefaultIntroPause(SbTime pause);
+  static void setDefaultSampleRate(int samplerate);
+
+  int getSampleRate();
+  int getCurrentFrameOffset();
+  void *fillBuffer(int frameoffset, void *buffer, int numframes, 
+                   int &channels);
+
+  void setFillBufferCallback(FillBufferCallback *callback, 
+                             void *userdata=NULL);
+
+  virtual void audioRender(class SoAudioRenderAction *action);
 
 protected:
   virtual ~SoVRMLAudioClip();
   SoSFTime duration_changed; // eventOut
   SoSFBool isActive;         // eventOut
 
+  class SoVRMLAudioClipP *sovrmlaudioclip_impl;
+  friend class SoVRMLAudioClipP;
 }; // class SoVRMLAudioClip
 
 #endif // ! COIN_SOVRMLAUDIOCLIP_H

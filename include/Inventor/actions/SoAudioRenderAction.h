@@ -1,5 +1,5 @@
-#ifndef COIN_SOACTIONS_H
-#define COIN_SOACTIONS_H
+#ifndef COIN_SOAUDIORENDERACTION_H
+#define COIN_SOAUDIORENDERACTION_H
 
 /**************************************************************************\
  *
@@ -24,18 +24,25 @@
  *
 \**************************************************************************/
 
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoBoxHighlightRenderAction.h>
-#include <Inventor/actions/SoLineHighlightRenderAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/actions/SoAudioRenderAction.h>
+#include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoSubAction.h>
 
-#endif // !COIN_SOACTIONS_H
+class COIN_DLL_API SoAudioRenderAction : public SoAction {
+  typedef SoAction inherited;
+
+  SO_ACTION_HEADER(SoAudioRenderAction);
+
+public:
+  static void initClass();
+  SoAudioRenderAction();
+  virtual ~SoAudioRenderAction();
+
+  static void callDoAction(SoAction *action, SoNode *node);
+  static void callAudioRender(SoAction *action, SoNode *node);
+
+protected:
+  virtual void beginTraversal(SoNode *node);
+
+};
+
+#endif // !COIN_SOAUDIORENDERACTION_H

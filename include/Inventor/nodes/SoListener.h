@@ -1,3 +1,6 @@
+#ifndef COIN_SOLISTENER_H
+#define COIN_SOLISTENER_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,49 +24,29 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SOVRMLSOUND_H
-#define COIN_SOVRMLSOUND_H
-
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFVec3f.h>
-#include <Inventor/SbTime.h>
+#include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFFloat.h>
 
-class COIN_DLL_API SoVRMLSound : public SoNode
-{
+class COIN_DLL_API SoListener : public SoNode {
   typedef SoNode inherited;
-  SO_NODE_HEADER(SoVRMLSound);
+
+  SO_NODE_HEADER(SoListener);
+  friend class SoAudioRenderAction;
 
 public:
-  static void initClass(void);
-  SoVRMLSound(void);
+  static void initClass();
+  SoListener();
 
-  SoSFNode source;
-  SoSFFloat intensity;
-  SoSFFloat priority;
-  SoSFVec3f location;
-  SoSFVec3f direction;
-  SoSFFloat minFront;
-  SoSFFloat maxFront;
-  SoSFFloat minBack;
-  SoSFFloat maxBack;
-  SoSFBool spatialize;
-
-  static void setDefaultBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime);
-  void setBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime);
-  void getBufferingProperties(int &bufferLength, int &numBuffers, SbTime &sleepTime);
-
-  virtual void audioRender(SoAudioRenderAction *action);
+  SoSFVec3f position;
+  SoSFRotation orientation;
+  SoSFVec3f velocity;
+  SoSFFloat gain;
 
 protected:
-  virtual ~SoVRMLSound(void);
+  virtual void audioRender(class SoAudioRenderAction *action);
+  virtual ~SoListener();
+};
 
-  class SoVRMLSoundP *sovrmlsound_impl;
-  friend class SoVRMLSoundP;
-
-
-}; // class SoVRMLSound
-
-#endif // ! COIN_SOVRMLSOUND_H
+#endif // COIN_SOLISTENER_H

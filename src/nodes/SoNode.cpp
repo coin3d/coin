@@ -166,6 +166,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
+#include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/misc/SoProtoInstance.h>
@@ -179,7 +180,6 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h> // glGetError
-
 
 /*!
   \var uint32_t SoNode::uniqueId
@@ -570,6 +570,7 @@ SoNode::initClasses(void)
   SoUnknownNode::initClass();
   SoVertexProperty::initClass();
   SoWWWInline::initClass();
+  SoListener::initClass();  
 
   SoTransparencyType::initClass();
 
@@ -1117,6 +1118,32 @@ SoNode::write(SoWriteAction * action)
   else assert(0 && "unknown stage");
 }
 
+/*!
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::audioRender() virtual method which does the \e
+  real work.
+*/
+void
+SoNode::audioRenderS(SoAction * action, SoNode * node)
+{
+  assert(action && node);
+  assert(action->getTypeId().isDerivedFrom(SoAudioRenderAction::getClassTypeId()));
+  SoAudioRenderAction * const ara = (SoAudioRenderAction *)(action);
+  node->audioRender(ara);
+}
+
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
+/*!
+  Action method for SoAudioRenderAction.
+
+  Does common processing for SoAudioRenderAction \a action instances.
+*/
+void
+SoNode::audioRender(SoAudioRenderAction * action)
+{
+}
+
 // Note that this documentation will also be used for all subclasses
 // which reimplements the method, so keep the doc "generic enough".
 /*!
@@ -1367,4 +1394,21 @@ init_action_methods(void)
 
   SoSearchAction::addMethod(SoNode::getClassTypeId(), SoNode::searchS);
   SoWriteAction::addMethod(SoNode::getClassTypeId(), SoNode::writeS);
+
+  SoAudioRenderAction::addMethod(SoNode::getClassTypeId(),
+                                 SoAction::nullAction);
+  SoAudioRenderAction::addMethod(SoListener::getClassTypeId(),       
+                                 SoNode::audioRenderS);
+  // Note: SoAudioRenderAction::addMethod is called for SoVRMLSound, 
+  // SoVRMLAudioClip and SoVRMLInline in these nodes' .cpp-files
+  SoAudioRenderAction::addMethod(SoGroup::getClassTypeId(),          
+                                 SoAudioRenderAction::callDoAction);
+  SoAudioRenderAction::addMethod(SoWWWInline::getClassTypeId(),         
+                                 SoAudioRenderAction::callDoAction);
+  SoAudioRenderAction::addMethod(SoFile::getClassTypeId(),           
+                                 SoAudioRenderAction::callDoAction);
+  SoAudioRenderAction::addMethod(SoTransformation::getClassTypeId(), 
+                                 SoAudioRenderAction::callDoAction);
+  SoAudioRenderAction::addMethod(SoBaseKit::getClassTypeId(),        
+                                 SoAudioRenderAction::callDoAction);
 }

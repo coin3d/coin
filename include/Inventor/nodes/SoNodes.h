@@ -129,5 +129,6 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoTransparencyType.h>
+#include <Inventor/nodes/SoListener.h>
 
 #endif // !COIN_SONODES_H
