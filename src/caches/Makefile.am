@@ -8,7 +8,8 @@ RegularSources = \
 	SoGLCacheList.cpp \
 	SoGLRenderCache.cpp \
 	SoNormalCache.cpp \
-	SoTextureCoordinateCache.cpp
+	SoTextureCoordinateCache.cpp \
+	SoPrimitiveVertexCache.cpp
 LinkHackSources = \
 	all-caches-cpp.cpp
 PublicHeaders = \
@@ -18,7 +19,8 @@ PublicHeaders = \
 	../../include/Inventor/caches/SoGLCacheList.h \
 	../../include/Inventor/caches/SoGLRenderCache.h \
 	../../include/Inventor/caches/SoNormalCache.h \
-	../../include/Inventor/caches/SoTextureCoordinateCache.h
+	../../include/Inventor/caches/SoTextureCoordinateCache.h \
+	../../include/Inventor/caches/SoPrimitiveVertexCache.h
 PrivateHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(caches, caches)
