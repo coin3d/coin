@@ -55,9 +55,9 @@ Code based on the standard Emacs WHAT-LINE function."
   "Convert filename to a string suitable for C/C++ define checking."
   (if (not (equal (substring filename (- (length filename) 2)) ".h"))
       (message "Error: ``%s'' is not a valid filename" filename)
-    (concat "__"
+    (concat "COIN_"
 	    (upcase (substring filename 0 (- (length filename) 2)))
-	    "_H__")))
+	    "_H")))
 
 
 (defun coin-remove-header-definecheck ()
