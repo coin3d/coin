@@ -471,14 +471,14 @@ static void free_marker_images(void);
 
 static void free_marker_images(void)
 {
-	delete markerimages;
+  delete[] markerimages;
   if ( markerlist->getLength() > 90 ) {    // markers have been added.. free marker->data
-  	for (int i=90; i<markerlist->getLength(); i++) {
+    for (int i=90; i<markerlist->getLength(); i++) {
       marker * tmp = &(*markerlist)[i];
       if (tmp->deletedata) delete tmp->data;
     }
   }
-	delete markerlist;
+  delete markerlist;
 }
 
 /*!
