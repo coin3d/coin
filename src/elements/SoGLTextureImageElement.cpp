@@ -150,7 +150,7 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    0,
                    NULL,
                    translateWrap(image->getWrapS()),
-                   translateWrap(image->getWrapS()),
+                   translateWrap(image->getWrapT()),
                    model,
                    blendColor);
     elem->quality = -1.0f;
