@@ -216,14 +216,14 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   else
     glyph->vectorglyph = NULL;
 
-  /* Setup buildin default font if no character was found */
+  /* Setup builtin default font if no character was found */
   if (glyph->vectorglyph == NULL) {
     glyph->vectorglyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
     glyph->didallocvectorglyph = TRUE;
   
     if (character <= 32 || character >= 127) {
 
-      /* FIXME: Charachers other than space, should be replaced with
+      /* FIXME: Characters other than space, should be replaced with
          squares. (20030910 handegar) */
 
       /* treat all these characters as spaces*/
