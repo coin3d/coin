@@ -196,6 +196,9 @@
 /* Define to use timeGetTime() */
 #undef HAVE_TIMEGETTIME
 
+/* Define to 1 if you have the <tlhelp32.h> header file. */
+#undef HAVE_TLHELP32_H
+
 /* define this if the type is available on the system */
 #undef HAVE_UINT16_T
 

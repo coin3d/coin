@@ -5605,15 +5605,16 @@ fi
 # Author: Morten Eriksen, <mortene@sim.no>.
 
 AC_DEFUN([SIM_AC_CHECK_LOADLIBRARY], [
-AC_ARG_WITH(
+AC_ARG_ENABLE(
   [loadlibrary],
-  [AC_HELP_STRING(
-    [--with-loadlibrary],
-    [always use run-time link bindings under Win32 [default=yes]])],
-  [],
-  [with_loadlibrary=yes])
+  [AC_HELP_STRING([--disable-loadlibrary], [don't use run-time link bindings under Win32])],
+  [case $enableval in
+  yes | true ) sim_ac_win32_loadlibrary=true ;;
+  *) sim_ac_win32_loadlibrary=false ;;
+  esac],
+  [sim_ac_win32_loadlibrary=true])
 
-if test x"$with_loadlibrary" != xno; then
+if $sim_ac_win32_loadlibrary; then
   # Use SIM_AC_CHECK_HEADERS instead of .._HEADER to get the
   # HAVE_DLFCN_H symbol set up in config.h automatically.
   AC_CHECK_HEADERS([windows.h])
