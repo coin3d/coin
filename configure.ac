@@ -207,8 +207,6 @@ esac
 #  in tests. The configure script will automatically terminate if
 #  it doesn't find a C++ compiler.
 AC_PROG_CC
-AC_PROG_CXX
-AC_LANG_CPLUSPLUS
 
 # AC_OBJEXT
 # AC_EXEEXT
@@ -250,6 +248,25 @@ fi
 
 #  Initialize libtool
 AC_PROG_LIBTOOL
+
+# **************************************************************************
+#  Locate C++ compiler and set C++ as the default language to use
+#  in tests. The configure script will automatically terminate if
+#  it doesn't find a C++ compiler.
+#
+#  Note that due to bugs in the libtool.m4 set of checks (of libtool v1.4.2)
+#  that makes AC_PROG_LIBTOOL dependent on the current compiler being a C
+#  compiler, we don't activate the C++ compiler until _after_ running
+#  AC_PROG_LIBTOOL.
+# 
+#  (The specific checks we know not to work are the checks for "-c -o"
+#  compatibility, where only CFLAGS is set up (and not CXXFLAGS) before the
+#  check is run).
+
+AC_PROG_CXX
+AC_LANG_CPLUSPLUS
+
+# **************************************************************************
 
 case $host_os in
 darwin6.* ) sim_ac_macosx_10_2=true ;;
