@@ -28,12 +28,10 @@
 
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/misc/SoGLImage.h>
-#include <Inventor/misc/SoImageInterface.h>
 
 #ifdef _WIN32
 #include <windows.h>
 #endif // !_WIN32
-
 #include <GL/gl.h>
 
 SO_ELEMENT_SOURCE(SoGLTextureImageElement);
@@ -118,15 +116,14 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                              SoGLImage *image, const Model model,
                              const SbColor &blendColor)
 {
-  SoGLTextureImageElement *elem = (SoGLTextureImageElement*)
+  SoGLTextureImageElement * elem = (SoGLTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
   if (image) {
-    const SoImageInterface *imagedata = image->getImage();
     // keep SoTextureImageElement "up-to-date"
     inherited::set(state, node,
-                   imagedata->getSize(),
-                   imagedata->getNumComponents(),
-                   imagedata->getDataPtr(),
+                   image->getSize(),
+                   image->getNumComponents(),
+                   image->getDataPtr(),
                    image->shouldClampS() ?
                    SoTextureImageElement::CLAMP :
                    SoTextureImageElement::REPEAT,
@@ -137,7 +134,7 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    blendColor);
     elem->image = image;
     elem->quality = SoTextureQualityElement::get(state);
-    elem->alphatest = image->getImage()->needAlphaTest();
+    elem->alphatest = image->needAlphaTest();
   }
   else {
     elem->image = NULL;
@@ -169,7 +166,7 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
   SoGLTextureImageElement *elem = (SoGLTextureImageElement*) this;
 
   if (enabled && elem->image) {
-    if (elem->image != elem->glimage) {
+    if (elem->image != elem->glimage || !elem->image->isValid()) {
       elem->glimage = elem->image;
       elem->glquality = elem->quality;
       elem->image->apply(elem->quality);

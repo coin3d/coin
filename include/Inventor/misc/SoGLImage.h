@@ -21,53 +21,43 @@
 #define COIN_SOGLIMAGE_H
 
 #include <Inventor/SbBasic.h>
-#include <Inventor/SbString.h>
 #include <Inventor/SbVec2s.h>
-
-class SoImageInterface;
-
 
 class COIN_DLL_EXPORT SoGLImage {
 public:
 
-  static SoGLImage *findOrCreateGLImage(SoImageInterface * const image,
-                                        const SbBool clamps,
-                                        const SbBool clampt,
-                                        const float quality,
-                                        void * const context);
+  SoGLImage();
+  ~SoGLImage();
 
-  void unref(); // use this to delete
+  void setData(const unsigned char * bytes,
+               const SbVec2s size,
+               const int nc,
+               const SbBool clamps,
+               const SbBool clampt,
+               const float quality,
+               void * context);
 
-  SbBool matches(const SbBool clamps, const SbBool clampt) const;
+  const unsigned char * getDataPtr(void) const;
+  SbVec2s getSize(void) const;
+  int getNumComponents(void) const;
 
-  void apply(const float quality) const;
-  int getHandle() const;
-  SbBool hasTransparency() const;
-  const SoImageInterface *getImage() const;
+  void apply(const float quality);
+  SbBool hasTransparency(void) const;
+  SbBool needAlphaTest(void) const;
   SbBool shouldClampS() const;
   SbBool shouldClampT() const;
   float getQuality() const;
+  SbBool isValid(void) const;
 
 private:
-  friend class dummyClass; // avoid warnings on stupid compilers
+  int createHandle(void);
+  void checkTransparency(void);
 
-  SoGLImage(SoImageInterface * const img,
-            const SbBool clamps,
-            const SbBool clampt,
-            const float quality,
-            void * const context);
-  ~SoGLImage();
-
-  static void unrefGLImage(SoGLImage * const image);
-  void checkResize();
-  SbBool GLinit();
-
-  SoImageInterface *image;
-
-  SbBool clampS;
-  SbBool clampT;
-  void *context;
-  int refCount;
+  const unsigned char * bytes;
+  SbVec2s size;
+  int numcomponents;
+  unsigned int flags;
+  void * context;
   int handle;
   float quality;
 };

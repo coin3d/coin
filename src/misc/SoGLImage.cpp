@@ -19,11 +19,10 @@
 
 /*!
   \class SoGLImage include/Inventor/misc/SoGLImage.h
-  \brief The SoGLImage class is used to control OpenGL textures.
+  \brief The SoGLImage class is used to handle OpenGL textures.
 */
 
 #include <Inventor/misc/SoGLImage.h>
-#include <Inventor/misc/SoImageInterface.h>
 #include <Inventor/misc/SoGL.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,77 +31,119 @@
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
+#include <GL/glu.h>
 #include <Inventor/lists/SbList.h>
 
+// if textureQuality is equal or greater than this, use linear filtering
+#define LINEAR_LIMIT 0.2f
 // if textureQuality is equal or greater than this, create mipmap
 #define MIPMAP_LIMIT 0.5f
+// if textureQulaity is equal or greater than this, always scale up
+#define QUALITY_SCALELIMIT 0.7f
 
-//
-// private constructor
-//
-SoGLImage::SoGLImage(SoImageInterface * const img,
-                     const SbBool clamps,
-                     const SbBool clampt,
-                     const float quality,
-                     void * const context)
+
+#define FLAG_CLAMPS               0x01
+#define FLAG_CLAMPT               0x02
+#define FLAG_TRANSPARENCY         0x04
+#define FLAG_ALPHATEST            0x08
+#define FLAG_INVALIDHANDLE        0x10
+#define FLAG_NEEDTRANSPARENCYTEST 0x20
+
+/*!
+  Constructor.
+*/
+SoGLImage::SoGLImage(void)
+  : bytes(NULL),
+    size(0,0),
+    numcomponents(0),
+    flags(0),
+    context(NULL),
+    handle(0),
+    quality(0.0f)
 {
-  this->image = img;
-  this->handle = 0;
-  this->clampS = clamps;
-  this->clampT = clampt;
-  this->quality = quality;
-  this->refCount = 0;
-  this->context = context;
-  if (this->image) this->image->ref();
 }
 
-//
-// private destructor
-//
+/*!
+  Sets the data for this GL image. Should only be called
+  when one of the parameters have changed, since this
+  will cause the GL texture object to be recreated.
+*/
+void
+SoGLImage::setData(const unsigned char * bytes,
+                   const SbVec2s size,
+                   const int nc,
+                   const SbBool clamps,
+                   const SbBool clampt,
+                   const float quality,
+                   void * context)
+{
+  this->bytes = bytes;
+  this->size = size;
+  this->numcomponents = nc;
+  this->flags = 0;
+  if (clamps) this->flags |= FLAG_CLAMPS;
+  if (clampt) this->flags |= FLAG_CLAMPT;
+  if (nc == 2 || nc == 4) this->flags |= FLAG_NEEDTRANSPARENCYTEST;
+  this->flags |= FLAG_INVALIDHANDLE;
+  this->quality = quality;
+  this->context = context;
+}
+
+/*!
+  Destructor.
+*/
 SoGLImage::~SoGLImage()
 {
   if (this->handle) sogl_free_texture(this->handle);
-  if (this->image) this->image->unref();
 }
 
 /*!
-  Checks whether the GL object matches the parameters. If not, you'll
-  have to unref this GLImage and create a new one.
-
-  This will rarely happen, since this is the kind of variables
-  that should not change very often.
+  Returns a pointer to the image data.
 */
-SbBool
-SoGLImage::matches(const SbBool clamps, const SbBool clampt) const
+const unsigned char *
+SoGLImage::getDataPtr(void) const
 {
-  return
-    this->clampS == clamps &&
-    this->clampT == clampt;
+  return this->bytes;
 }
 
 /*!
-  Unreferences the texture. Make sure the OpenGL context using
-  this texture is the current GL context.
+  Returns the size of the texture, in pixels.
+*/
+SbVec2s
+SoGLImage::getSize(void) const
+{
+  return this->size;
+}
 
-  An object using a GL image should call this method when the
-  object is not going to use the texture ant more. The reference
-  counting will make sure a GL image is not freed until all
-  objects using the image has called this method.
+/*!
+  Returns the number of image components.
+*/
+int
+SoGLImage::getNumComponents(void) const
+{
+  return this->numcomponents;
+}
+
+
+/*!
+  Makes this texture the current OpenGL texture. \a quality
+  is the current textureQuality value found from the
+  Complexity node.
 */
 void
-SoGLImage::unref()
+SoGLImage::apply(const float quality)
 {
-  SoGLImage::unrefGLImage(this);
-}
-
-/*!
-  Makes this texture the current OpenGL texture.
-*/
-void
-SoGLImage::apply(const float quality) const
-{
+  if (this->handle && (this->flags & FLAG_INVALIDHANDLE)) {
+    sogl_free_texture(this->handle);
+    this->handle = 0;
+    this->flags &= ~FLAG_INVALIDHANDLE;
+  }
+  if (this->handle == 0) {
+    this->handle = this->createHandle();
+    this->flags &= ~FLAG_INVALIDHANDLE;
+  }
   sogl_apply_texture(this->handle);
-  if (quality < 0.1f) {
+  if (quality < LINEAR_LIMIT) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   }
@@ -121,24 +162,30 @@ SoGLImage::apply(const float quality) const
 }
 
 /*!
-  Returns the OpenGL handle for this texture. An OpenGL handle
-  will either be an OpenGL texture object or a displat list
-  for old OpenGL implementations.
-*/
-int
-SoGLImage::getHandle() const
-{
-  return this->handle;
-}
-
-/*!
   Returns \e TRUE if this texture has some pixels with alpha != 255
 */
 SbBool
-SoGLImage::hasTransparency() const
+SoGLImage::hasTransparency(void) const
 {
-  assert(this->image);
-  return this->image->hasTransparency();
+  if (this->flags & FLAG_NEEDTRANSPARENCYTEST) {
+    ((SoGLImage*)this)->checkTransparency();
+  }
+  return (this->flags & FLAG_TRANSPARENCY) != 0;
+}
+
+/*!
+  Returns TRUE if this image has some alpha value != 255, and all
+  these values are 0. If this is the case, alpha test can be used
+  to render this texture instead of for instance blending, which
+  is usually slower and might yield z-buffer artifacts.
+*/
+SbBool
+SoGLImage::needAlphaTest(void) const
+{
+  if (this->flags & FLAG_NEEDTRANSPARENCYTEST) {
+    ((SoGLImage*)this)->checkTransparency();
+  }
+  return (this->flags & FLAG_ALPHATEST) != 0;
 }
 
 /*!
@@ -146,9 +193,9 @@ SoGLImage::hasTransparency() const
   the s-direction.
 */
 SbBool
-SoGLImage::shouldClampS() const
+SoGLImage::shouldClampS(void) const
 {
-  return this->clampS;
+  return (this->flags & FLAG_CLAMPS) !=0;
 }
 
 /*!
@@ -156,18 +203,9 @@ SoGLImage::shouldClampS() const
   the t-direction.
 */
 SbBool
-SoGLImage::shouldClampT() const
+SoGLImage::shouldClampT(void) const
 {
-  return this->clampT;
-}
-
-/*!
-  Returns the image data for this OpenGL texture.
-*/
-const SoImageInterface *
-SoGLImage::getImage() const
-{
-  return this->image;
+  return (this->flags & FLAG_CLAMPT) !=0;
 }
 
 /*!
@@ -180,36 +218,24 @@ SoGLImage::getImage() const
   be created with a texture quality greater than 0.5.
 */
 float
-SoGLImage::getQuality() const
+SoGLImage::getQuality(void) const
 {
   return this->quality;
 }
 
-//
-// private method that initializes the GL texture object/display list.
-//
+/*!
+  Returns TRUE if the GL handle inside this instance is valid.
+*/
 SbBool
-SoGLImage::GLinit()
+SoGLImage::isValid(void) const
 {
-  if (this->handle) return TRUE;
-  if (this->image && this->image->load()) {
-    this->checkResize(); // resize if necessary
-    SbVec2s size = image->getSize();
-    int format = image->getNumComponents();
-    this->handle = sogl_create_texture(this->clampS, this->clampT,
-                                       this->image->getDataPtr(),
-                                       format, size[0], size[1],
-                                       this->quality >= MIPMAP_LIMIT);
-    return this->handle != 0;
-  }
-  return FALSE;
+  return (this->flags & FLAG_INVALIDHANDLE) == 0;
 }
 
-//
-// some helpful functions
-//
+// returns the number of bits set, and ets highbit to
+// the highest bit set.
 static int
-cnt_bits(unsigned long val, int &highbit)
+cnt_bits(unsigned long val, int & highbit)
 {
   int cnt = 0;
   highbit = 0;
@@ -221,8 +247,9 @@ cnt_bits(unsigned long val, int &highbit)
   return cnt;
 }
 
+// returns the next power of two greater or equal to val
 static unsigned long
-nearest_binary(unsigned long val)
+nearest_power_of_two(unsigned long val)
 {
   int highbit;
   if (cnt_bits(val, highbit) > 1) {
@@ -231,115 +258,99 @@ nearest_binary(unsigned long val)
   return val;
 }
 
+// static data used to temporarily store image when resizing
+static unsigned char * glimage_tmpimagebuffer = NULL;
+static int glimage_tmpimagebuffersize = 0;
+
+void cleanup_tmpimage(void)
+{
+  delete [] glimage_tmpimagebuffer;
+}
+
 //
 // private method that tests the size of the image, and
-// performs an resize if the size is not "binary".
+// performs an resize if the size is not a power of two.
 //
-void
-SoGLImage::checkResize()
+int
+SoGLImage::createHandle(void)
 {
-  SbVec2s size = this->image->getSize();
-  int xsize = size[0];
-  int ysize = size[1];
-  unsigned long newx = nearest_binary(xsize);
-  unsigned long newy = nearest_binary(ysize);
+  int xsize = this->size[0];
+  int ysize = this->size[1];
+  int newx = (int)nearest_power_of_two(xsize);
+  int newy = (int)nearest_power_of_two(ysize);
 
-  // if >= 256, don't scale up unless size is close to an above binary
-  // this saves a lot of texture memory
-  if (newx >= 256) {
-    if ((newx - xsize) > (newx>>3)) newx >>= 1;
+  // if >= 256 and low quality, don't scale up unless size is
+  // close to an above power of two. This saves a lot of texture memory
+  if (this->quality < 0.7f) {
+    if (newx >= 256) {
+      if ((newx - xsize) > (newx>>3)) newx >>= 1;
+    }
+    if (newy >= 256) {
+      if ((newy - ysize) > (newy>>3)) newy >>= 1;
+    }
   }
-  if (newy >= 256) {
-    if ((newy - ysize) > (newy>>3)) newy >>= 1;
-  }
 
-  // downscale until legal GL size (implementation dependant)
-  // e.g. old 3dfx hardware only allows up to 256x256 textures.
-
+  // downscale to legal GL size (implementation dependant)
   unsigned long maxsize = sogl_max_texture_size();
   while (newx > maxsize) newx >>= 1;
   while (newy > maxsize) newy >>= 1;
 
+  // these might change if image is resized
+  const unsigned char * imageptr = this->bytes;
+
   if (newx != (unsigned long) xsize || newy != (unsigned long) ysize) {
-    this->image->resize(SbVec2s((short)newx, (short)newy));
+    int numbytes = newx * newy * this->numcomponents;
+    if (numbytes > glimage_tmpimagebuffersize) {
+      delete [] glimage_tmpimagebuffer;
+      glimage_tmpimagebuffer = new unsigned char[numbytes];
+      glimage_tmpimagebuffersize = numbytes;
+    }
+    GLenum format;
+    switch (this->numcomponents) {
+    default: // avoid compiler warnings
+    case 1: format = GL_LUMINANCE; break;
+    case 2: format = GL_LUMINANCE_ALPHA; break;
+    case 3: format = GL_RGB; break;
+    case 4: format = GL_RGBA; break;
+    }
+    gluScaleImage(format, this->size[0], this->size[1],
+                  GL_UNSIGNED_BYTE, (void*) this->bytes,
+                  newx, newy, GL_UNSIGNED_BYTE,
+                  (void*)glimage_tmpimagebuffer);
+    imageptr = glimage_tmpimagebuffer;
   }
+
+  return sogl_create_texture(this->shouldClampS(),
+                             this->shouldClampT(),
+                             imageptr,
+                             this->numcomponents,
+                             newx, newy,
+                             this->quality >= MIPMAP_LIMIT);
 }
 
-/**** some static methods needed to reuse GL images *********/
-
-
-static SbList <SoGLImage *> *storedImages = NULL;
-
-// atexit-function
-static void SoGLImage_cleanup(void)
-{
-  delete storedImages;
-}
-
-/*!
-  Searches the texture database and returns a texture object that
-  matches all parameters. If no such texture is found, a new texture
-  object is created and returned.
-
-  It is currently not possible to share textures between contexts, but
-  this will be implemented at a later stage.
-
-  \a clamps and \a clampt specifies whether texture coordininates
-  should be clamped outside 0 and 1. \a qualiy specifies the
-  texture quality. A value of 0 means use lowest quality texture, a
-  value of 1 means use maximum quality possible. Exactly what this
-  means might vary from platform to platform. Returns \e TRUE on
-  success.
-
-  The OpenGL context that is going to use this texture must
-  be the current GL context when calling this method.
-*/
-SoGLImage *
-SoGLImage::findOrCreateGLImage(SoImageInterface * const image,
-                               const SbBool clamps,
-                               const SbBool clampt,
-                               const float quality,
-                               void * const context)
-{
-  if (storedImages == NULL) {
-    storedImages = new SbList <SoGLImage*>;
-    atexit(SoGLImage_cleanup);
-  }
-  int i, n = storedImages->getLength();
-  for (i = 0; i < n; i++) {
-    SoGLImage *glimage = (*storedImages)[i];
-    if (glimage->image == image &&
-        glimage->context == context &&
-        glimage->clampS == clamps &&
-        glimage->clampT == clampt &&
-        glimage->quality == quality) break;
-  }
-  if (i < n) {
-    (*storedImages)[i]->refCount++;
-    return (*storedImages)[i];
-  }
-  else {
-    SoGLImage *glimage = new SoGLImage(image, clamps, clampt, quality, context);
-    glimage->GLinit();
-    glimage->refCount++;
-    storedImages->append(glimage);
-    return glimage;
-  }
-}
-
-
+// test image data for transparency
 void
-SoGLImage::unrefGLImage(SoGLImage * const image)
+SoGLImage::checkTransparency(void)
 {
-  assert(storedImages != NULL);
-  int i, n = storedImages->getLength();
-  for (i = 0; i < n; i++) {
-    if ((*storedImages)[i] == image) break;
+  if (this->numcomponents == 2 || this->numcomponents == 4) {
+    int n = this->size[0] * this->size[1];
+    int nc = this->numcomponents;
+    unsigned char * ptr = (unsigned char *) this->bytes + nc - 1;
+
+    while (n) {
+      if (*ptr != 255 && *ptr != 0) break;
+      if (*ptr == 0) this->flags |= FLAG_ALPHATEST;
+      ptr += nc;
+      n--;
+    }
+    if (n > 0) {
+      this->flags |= FLAG_TRANSPARENCY;
+      this->flags &= ~FLAG_ALPHATEST;
+    }
+    else this->flags &= ~FLAG_TRANSPARENCY;
   }
-  assert(i < n);
-  if (image->refCount == 1) {
-    storedImages->removeFast(i);
-    delete image;
-  }
-  else image->refCount--;
+  else this->flags &= ~(FLAG_TRANSPARENCY|FLAG_ALPHATEST);
+
+  // clear test flag before returning
+  this->flags &= ~FLAG_NEEDTRANSPARENCYTEST;
 }
