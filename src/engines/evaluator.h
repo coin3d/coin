@@ -79,7 +79,7 @@ extern "C" {
 
   /* returns current error message, or NULL if none.
      check this after calling so_eval_parse() */
-  const char *so_eval_error(void); /* defined in epsilon.y */
+  char * so_eval_error(void); /* defined in epsilon.y */
 
   /* methods to create misc nodes */
   so_eval_node *so_eval_create_unary(int id, so_eval_node *topnode);

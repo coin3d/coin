@@ -19,7 +19,7 @@
 \**************************************************************************/
 
 /*
- * Lexical scanner for SoCalculator
+ * Lexical scanner for SoCalculator. Compile with flex -L evaluator.l
  */
 
 #include <Inventor/SbBasic.h>

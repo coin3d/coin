@@ -91,10 +91,10 @@ ALLINSTHEADERS = \
 
 
 $(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
-	flex -o$(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.l
+	flex -o$(top_srcdir)/src/engines/lex.so_eval.c -L $(top_srcdir)/src/engines/evaluator.l
 
 $(top_srcdir)/src/engines/evaluator.tab.c: $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.y
-	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator.tab.c $(top_srcdir)/src/engines/evaluator.y
+	bison -p so_eval -o $(top_srcdir)/src/engines/evaluator.tab.c -l $(top_srcdir)/src/engines/evaluator.y
 
 
 
