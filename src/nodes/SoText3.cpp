@@ -97,33 +97,33 @@
 */
 /*!
   \var SoText3::Justification SoText3::LEFT
-  Left edges of strings are aligned at x = 0
+  Left edges of strings are aligned.
 */
 /*!
   \var SoText3::Justification SoText3::RIGHT
-  Right edges of strings are aligned at x = 0.
+  Right edges of strings are aligned.
 */
 /*!
   \var SoText3::Justification SoText3::CENTER
-  Strings are centered at x = 0
+  Strings are centered.
 */
 
 
 /*!
   \var SoMFString SoText3::string
-  The strings.
+  The strings. Defaults to empty set.
 */
 /*!
   \var SoSFFloat SoText3::spacing
-  Vertical spacing. A value of 1.0 is the normal spacing.
+  Vertical spacing. 1.0 is the default spacing.
 */
 /*!
   \var SoSFEnum SoText3::justification
-  Horizontal justification.
+  Horizontal justification. Default is alignment at the left border.
 */
 /*!
   \var SoSFBitMask SoText3::parts
-  Character parts.
+  Character parts. Default is to show only the front-facing part.
 */
 
 // FIXME: missing features, pederb 20000224
