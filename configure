@@ -3285,6 +3285,13 @@ if test x"$with_opengl" != xno; then
   if test x"$with_opengl" != xyes; then
     sim_ac_gl_cppflags="-I${with_opengl}/include"
     sim_ac_gl_ldflags="-L${with_opengl}/lib"
+  else
+    case "$host_os" in
+      hpux*)
+        # This is a common location for the OpenGL libraries on HPUX.
+        sim_ac_gl_cppflags="-I/opt/graphics/OpenGL/include"
+        sim_ac_gl_ldflags="-L/opt/graphics/OpenGL/lib" ;;
+    esac
   fi
 
   sim_ac_save_cppflags=$CPPFLAGS
@@ -3298,12 +3305,12 @@ if test x"$with_opengl" != xno; then
   LIBS="$sim_ac_gl_libs $LIBS"
 
   echo $ac_n "checking whether OpenGL libraries with the Mesa prefix are available... $ac_c" 1>&6
-echo "configure:3302: checking whether OpenGL libraries with the Mesa prefix are available" 1>&5
+echo "configure:3309: checking whether OpenGL libraries with the Mesa prefix are available" 1>&5
 if test "${sim_cv_lib_mesa_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3307 "configure"
+#line 3314 "configure"
 #include "confdefs.h"
 #include <GL/gl.h>
                   #include <GL/glu.h>
@@ -3311,7 +3318,7 @@ int main() {
 glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);
 ; return 0; }
 EOF
-if { (eval echo configure:3315: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3322: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_mesa_avail=yes
 else
@@ -3332,12 +3339,12 @@ echo "$ac_t""$sim_cv_lib_mesa_avail" 1>&6
     LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
 
     echo $ac_n "checking whether OpenGL libraries are available... $ac_c" 1>&6
-echo "configure:3336: checking whether OpenGL libraries are available" 1>&5
+echo "configure:3343: checking whether OpenGL libraries are available" 1>&5
 if test "${sim_cv_lib_gl_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3341 "configure"
+#line 3348 "configure"
 #include "confdefs.h"
 #include <GL/gl.h>
                     #include <GL/glu.h>
@@ -3345,7 +3352,7 @@ int main() {
 glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);
 ; return 0; }
 EOF
-if { (eval echo configure:3349: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3356: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_gl_avail=yes
 else
@@ -3361,12 +3368,12 @@ echo "$ac_t""$sim_cv_lib_gl_avail" 1>&6
     if test x"$sim_cv_lib_gl_avail" = xyes; then
       sim_ac_gl_avail=yes
       echo $ac_n "checking whether OpenGL libraries actually are the Mesa libraries... $ac_c" 1>&6
-echo "configure:3365: checking whether OpenGL libraries actually are the Mesa libraries" 1>&5
+echo "configure:3372: checking whether OpenGL libraries actually are the Mesa libraries" 1>&5
 if test "${sim_cv_lib_gl_ismesa+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3370 "configure"
+#line 3377 "configure"
 #include "confdefs.h"
 #include <GL/gl.h>
                       #include <GL/glu.h>
@@ -3376,7 +3383,7 @@ int main() {
                       #endif
 ; return 0; }
 EOF
-if { (eval echo configure:3380: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3387: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_lib_gl_ismesa=yes
 else
@@ -3417,19 +3424,19 @@ fi
 
 if test x"$sim_ac_gl_is_mesa" = xyes; then
   echo $ac_n "checking whether Mesa offscreen rendering is available... $ac_c" 1>&6
-echo "configure:3421: checking whether Mesa offscreen rendering is available" 1>&5
+echo "configure:3428: checking whether Mesa offscreen rendering is available" 1>&5
 if test "${sim_cv_func_osmesacreatecontext_avail+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3426 "configure"
+#line 3433 "configure"
 #include "confdefs.h"
 #include <GL/osmesa.h>
 int main() {
 (void)OSMesaCreateContext(OSMESA_RGB, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:3433: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3440: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func_osmesacreatecontext_avail=yes
 else
@@ -3548,18 +3555,18 @@ if test "x$enable_exceptions" = "xno"; then
         
 
 echo $ac_n "checking whether $CXX accepts -fno-exceptions... $ac_c" 1>&6
-echo "configure:3552: checking whether $CXX accepts -fno-exceptions" 1>&5
+echo "configure:3559: checking whether $CXX accepts -fno-exceptions" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -fno-exceptions"
 cat >conftest.$ac_ext <<EOF
-#line 3556 "configure"
+#line 3563 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:3563: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:3570: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _exception_flag=-fno-exceptions
 else
@@ -3577,18 +3584,18 @@ unset _accept_result _save_cxxflags
             
 
 echo $ac_n "checking whether $CXX accepts -fno-handle-exceptions... $ac_c" 1>&6
-echo "configure:3581: checking whether $CXX accepts -fno-handle-exceptions" 1>&5
+echo "configure:3588: checking whether $CXX accepts -fno-handle-exceptions" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -fno-handle-exceptions"
 cat >conftest.$ac_ext <<EOF
-#line 3585 "configure"
+#line 3592 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:3592: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:3599: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _exception_flag=-fno-handle-exceptions
 else
@@ -3660,18 +3667,18 @@ if test x"$enable_warnings" = xyes; then
     
 
 echo $ac_n "checking whether $CXX accepts -Wno-multichar... $ac_c" 1>&6
-echo "configure:3664: checking whether $CXX accepts -Wno-multichar" 1>&5
+echo "configure:3671: checking whether $CXX accepts -Wno-multichar" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -Wno-multichar"
 cat >conftest.$ac_ext <<EOF
-#line 3668 "configure"
+#line 3675 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:3675: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:3682: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _warn_flags=-Wno-multichar
 else
@@ -3698,18 +3705,18 @@ unset _accept_result _save_cxxflags
         
 
 echo $ac_n "checking whether $CXX accepts -fullwarn... $ac_c" 1>&6
-echo "configure:3702: checking whether $CXX accepts -fullwarn" 1>&5
+echo "configure:3709: checking whether $CXX accepts -fullwarn" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -fullwarn"
 cat >conftest.$ac_ext <<EOF
-#line 3706 "configure"
+#line 3713 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:3713: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:3720: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _warn_flags="$_warn_flags -fullwarn"
 else
@@ -3727,18 +3734,18 @@ unset _accept_result _save_cxxflags
         
 
 echo $ac_n "checking whether $CXX accepts -woff 3262... $ac_c" 1>&6
-echo "configure:3731: checking whether $CXX accepts -woff 3262" 1>&5
+echo "configure:3738: checking whether $CXX accepts -woff 3262" 1>&5
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS -woff 3262"
 cat >conftest.$ac_ext <<EOF
-#line 3735 "configure"
+#line 3742 "configure"
 #include "confdefs.h"
 
 int main() {
 
 ; return 0; }
 EOF
-if { (eval echo configure:3742: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:3749: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   _accept_result=yes _warn_flags="$_warn_flags -woff 3262"
 else
@@ -3773,17 +3780,17 @@ for ac_header in unistd.h io.h
 do
 ac_ac_Header=`echo "ac_cv_header_$ac_header" | $ac_tr_sh`
 echo $ac_n "checking for $ac_header... $ac_c" 1>&6
-echo "configure:3777: checking for $ac_header" 1>&5
+echo "configure:3784: checking for $ac_header" 1>&5
 if eval "test \"\${$ac_ac_Header+set}\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3782 "configure"
+#line 3789 "configure"
 #include "confdefs.h"
 #include <$ac_header>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3787: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3794: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3815,19 +3822,19 @@ sim_ac_vsnprintf_avail=no
 sim_ac__vsnprintf_avail=no
 
 echo $ac_n "checking whether snprintf() is available... $ac_c" 1>&6
-echo "configure:3819: checking whether snprintf() is available" 1>&5
+echo "configure:3826: checking whether snprintf() is available" 1>&5
 if test "${sim_cv_func_snprintf+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3824 "configure"
+#line 3831 "configure"
 #include "confdefs.h"
 #include <stdio.h>
 int main() {
 (void)snprintf(0L, 0, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:3831: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3838: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func_snprintf=yes
 else
@@ -3844,19 +3851,19 @@ sim_ac_snprintf_avail=$sim_cv_func_snprintf
 
 
 echo $ac_n "checking whether vsnprintf() is available... $ac_c" 1>&6
-echo "configure:3848: checking whether vsnprintf() is available" 1>&5
+echo "configure:3855: checking whether vsnprintf() is available" 1>&5
 if test "${sim_cv_func_vsnprintf+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3853 "configure"
+#line 3860 "configure"
 #include "confdefs.h"
 #include <stdio.h>
 int main() {
 (void)vsnprintf(0L, 0, 0L, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:3860: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3867: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func_vsnprintf=yes
 else
@@ -3874,19 +3881,19 @@ sim_ac_vsnprintf_avail=$sim_cv_func_vsnprintf
 # We're not interested in _snprintf() unless snprintf() is unavailable.
 if test x"$sim_ac_snprintf_avail" = xno; then
   echo $ac_n "checking whether _snprintf() is available... $ac_c" 1>&6
-echo "configure:3878: checking whether _snprintf() is available" 1>&5
+echo "configure:3885: checking whether _snprintf() is available" 1>&5
 if test "${sim_cv_func__snprintf+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3883 "configure"
+#line 3890 "configure"
 #include "confdefs.h"
 #include <stdio.h>
 int main() {
 (void)_snprintf(0L, 0, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:3890: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3897: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func__snprintf=yes
 else
@@ -3905,19 +3912,19 @@ fi
 # We're not interested in _vsnprintf() unless vsnprintf() is unavailable.
 if test x"$sim_ac_vsnprintf_avail" = xno; then
   echo $ac_n "checking whether _vsnprintf() is available... $ac_c" 1>&6
-echo "configure:3909: checking whether _vsnprintf() is available" 1>&5
+echo "configure:3916: checking whether _vsnprintf() is available" 1>&5
 if test "${sim_cv_func__vsnprintf+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat >conftest.$ac_ext <<EOF
-#line 3914 "configure"
+#line 3921 "configure"
 #include "confdefs.h"
 #include <stdio.h>
 int main() {
 (void)_vsnprintf(0L, 0, 0L);
 ; return 0; }
 EOF
-if { (eval echo configure:3921: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3928: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   sim_cv_func__vsnprintf=yes
 else
@@ -4665,5 +4672,69 @@ trap 'exit 1' 1 2 15
 test "$no_create" = yes || $SHELL $CONFIG_STATUS || exit 1
 
 
+
+
+
+ac_coin_unknown_platform=yes
+
+case "$host_os" in
+  irix6.2)
+    if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi ;;
+
+  hpux10.20)
+    if test "$CXX" = aCC; then ac_coin_unknown_platform=no; fi ;;
+
+  linux-gnu)
+    case "$host_cpu" in
+      i?86)
+        ac_coin_unknown_platform=no;;
+    esac ;;
+esac
+
+if test $ac_coin_unknown_platform = yes; then
+  echo "************************* WARNING ****************************"
+  echo "*"
+  echo "* We have not tested Coin on the $host_os $host_cpu"
+  echo "* platform with the $CXX C++ compiler. Please report"
+  echo "* back to us at <coin-support@sim.no> how it works out."
+  echo "*"
+  echo "**************************************************************"
+fi
+
+
+case "$host_os" in
+  irix*)
+    echo
+    echo "Detected SGI IRIX. A couple of hints regarding this platform:"
+    echo
+    echo "  1 if linking fails due to problems with an error message about"
+    echo "    \"Argument list too long\", you need to increase the kernel"
+    echo "    setting of memory allocated to argument parsing in the shells."
+    echo
+    echo "    Log in as root, or do this through your sysadmin:"
+    echo
+    echo "      # systune -i"
+    echo "      > ncargs 40960"
+    echo "      > quit"
+    echo
+    echo "    To make the changes survive a reboot, copy the new kernel over"
+    echo "    the old one:"
+    echo
+    echo "      # mv /unix.install /unix"
+    echo
+    echo "  2 if linking fails with the error messages:"
+    echo
+    echo "      ld: ERROR 48: Cannot access registry file .libs/so_locations ..."
+    echo "      ld: FATAL 51: Can't assign virtual addresses for ..."
+    echo
+    echo "    ..you're typically trying to link over NFS, which the SGI linker"
+    echo "    is not too fond of in certain situations. If this happens to you,"
+    echo "    try compiling and linking on a local disk instead."
+    echo ;;
+esac
+
+
+
+echo
 echo "Now, run 'make install' to build and install Coin."
 

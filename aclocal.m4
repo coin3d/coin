@@ -1178,6 +1178,13 @@ if test x"$with_opengl" != xno; then
   if test x"$with_opengl" != xyes; then
     sim_ac_gl_cppflags="-I${with_opengl}/include"
     sim_ac_gl_ldflags="-L${with_opengl}/lib"
+  else
+    case "$host_os" in
+      hpux*)
+        # This is a common location for the OpenGL libraries on HPUX.
+        sim_ac_gl_cppflags="-I/opt/graphics/OpenGL/include"
+        sim_ac_gl_ldflags="-L/opt/graphics/OpenGL/lib" ;;
+    esac
   fi
 
   sim_ac_save_cppflags=$CPPFLAGS
