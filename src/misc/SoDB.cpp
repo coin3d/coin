@@ -762,11 +762,9 @@ const char *
 SoDB::getVersion(void)
 {
   if (coin_versionstring == NULL) {
-    coin_versionstring = new SbString;
+    coin_versionstring = new SbString("SIM Coin " COIN_VERSION);
     coin_atexit((coin_atexit_f *)cleanup_func, 0);
   }
-  *coin_versionstring = "SIM Coin ";
-  *coin_versionstring += COIN_VERSION;
   return coin_versionstring->getString();
 }
 
