@@ -281,6 +281,11 @@ SoEngine::notify(SoNotList * nl)
   if (this->isNotifying()) return;
   this->stateflags.isnotifying = 1;
 
+  // FIXME: we don't add ourselves to the notification list. This
+  // should probably be done, but I've postponed it until we see the
+  // need to fix all interaction with the notification list. 20000911 mortene.
+
+
   // Let engine know that a field changed, so we can recalculate
   // internal variables, if necessary.
   this->inputChanged(nl->getLastField());

@@ -28,6 +28,10 @@
 (-> (-> timecounter 'step) 'setValue 1)
 (-> (-> timecounter 'syncIn) 'setValue) ; trigger restart at min value
 
+;; FIXME: should have code for playing around with the
+;; SoTimeCounter::duty field. 20000911 mortene.
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Confirmed and potential bugs. ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
