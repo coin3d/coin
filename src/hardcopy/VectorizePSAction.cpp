@@ -32,7 +32,6 @@
 #include <Inventor/C/tidbitsp.h>
 #include <stdio.h>
 
-
 // *************************************************************************
 
 class SoVectorizePSActionP {
@@ -44,6 +43,7 @@ public:
 
     this->fontname = "";
     this->fontsize = -1.0f;
+    this->dummycnt = 0;
   }
 
   double gouraudeps;
@@ -53,6 +53,10 @@ public:
 
   SbString fontname;
   float fontsize;
+  
+  // used for gouraud shading workaround
+  int dummycnt;
+
 private:
   SoVectorizePSAction * publ;
 };
@@ -97,8 +101,13 @@ SoVectorizePSAction::~SoVectorizePSAction()
 
 /*!
   Sets the Gouraud shading threshold. A threshold of 0.0 will disable
-  Gouraud shading. Default is 0.0, since we've seen strange artifacts
-  for some models when Gouraud shading is enabled..
+  Gouraud shading. A smaller value will yield more accurate Gouraud
+  shading. Default is 0.1.
+
+  Since the postscript language has no support for Gouraud shaded
+  triangles, each triangle will be split into subtriangles
+  approximately of size \a eps postscript units. One postscript unit
+  is approximately 1/72 inch.
 */
 void
 SoVectorizePSAction::setGouraudThreshold(const double eps)
@@ -260,6 +269,9 @@ SoVectorizePSAction::printHeader(void) const
     fprintf(file, "90 rotate\n");
     fprintf(file, "%g %g translate\n\n", -(psize[1]+porg[1]), -(psize[0]+porg[1]));
   }
+  
+  // used for gouraud shading workaround
+  PRIVATE(this)->dummycnt = 0;
 }
 
 // doc in parent
@@ -504,13 +516,21 @@ SoVectorizePSAction::printPoint(const SoVectorizePoint * item) const
 void
 SoVectorizePSAction::printTriangle(const SbVec3f * v, const SbColor * c) const
 {
+  if (v[0] == v[1] || v[1] == v[2] || v[0] == v[2]) return;
+  int i;
+
   FILE * file = this->getOutput()->getFilePointer();
 
-  if ((PRIVATE(this)->gouraudeps == 0.0f) ||
-      ((c[0] == c[1]) && (c[1] == c[2]))) {
+  SbBool flatshade = 
+    (PRIVATE(this)->gouraudeps == 0.0f) ||
+    ((c[0] == c[1]) && (c[1] == c[2]));
+  
+  if (flatshade || PRIVATE(this)->dummycnt == 0) {
+    SbColor a = (c[0] + c[1] + c[2]) / 3.0f;
+    
     // flatshaded
     fprintf(file, "%g %g %g %g %g %g %g %g %g flatshadetriangle\n",
-            c[0][0], c[0][1], c[0][2],
+            a[0], a[1], a[2],
             v[2][0], v[2][1],
             v[1][0], v[1][1],
             v[0][0], v[0][1]);
@@ -524,6 +544,16 @@ SoVectorizePSAction::printTriangle(const SbVec3f * v, const SbColor * c) const
             c[0][0], c[0][1], c[0][2],
             c[1][0], c[1][1], c[1][2],
             c[2][0], c[2][1], c[2][2]);
+  }
+  PRIVATE(this)->dummycnt++;
+
+  // FIXME: For some reason the gouraud-triangle macro fails if it's
+  // the first triangle that is drawn. We work around this by always
+  // rendering the first triangle as a flatshaded triangle, and then
+  // overwriting it again with the gouraud version... Really strange,
+  // pederb, 2003-06-30
+  if (PRIVATE(this)->dummycnt == 1 && !flatshade) {
+    this->printTriangle(v, c);
   }
 }
 
