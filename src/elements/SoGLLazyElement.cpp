@@ -174,7 +174,7 @@ SoGLLazyElement::~SoGLLazyElement()
 }
 
 //! FIXME: write doc
-inline SoGLLazyElement *
+SoGLLazyElement *
 SoGLLazyElement::getInstance(const SoState *state)
 {
   return (SoGLLazyElement*)
@@ -210,9 +210,6 @@ SoGLLazyElement::sendFlatshading(const SbBool onoff) const
 void
 SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
 {
-  SoGLImage * glimage = NULL;
-  SbBool alphatest = FALSE;
-
   if (glimageid != 0) {
     SoTextureImageElement::Model model;
     SbColor blendcolor;
@@ -1124,7 +1121,6 @@ SoGLLazyElement::lazyDidntSet(uint32_t mask)
       this->forcediffuse = TRUE;
     }
   }
-  uint32_t pre = this->didntsetbitmask;
   this->didntsetbitmask |= mask&(~this->didsetbitmask);
 }
 
