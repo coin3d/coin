@@ -50,7 +50,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoCullElement.h>
-#include "../snprintf.h" // coin_getenv()
+#include "../tidbits.h" // coin_getenv()
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

@@ -49,7 +49,7 @@
 #include <coindefs.h>
 
 #include <stdlib.h>
-#include "../snprintf.h" // coin_getenv()
+#include "../tidbits.h" // coin_getenv()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

@@ -97,7 +97,7 @@
 #include <Inventor/system/gl.h>
 #include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
-#include "../snprintf.h" // coin_getenv()
+#include "../tidbits.h" // coin_getenv()
 
 #include <simage_wrapper.h>
 

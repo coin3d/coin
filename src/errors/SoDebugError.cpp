@@ -61,7 +61,7 @@
 #include <Inventor/SoType.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SbList.h>
-#include "../snprintf.h" // coin_getenv()
+#include "../tidbits.h" // coin_getenv()
 
 #include <stdarg.h>
 #include <stdio.h>

@@ -36,7 +36,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include "../snprintf.h" // coin_getenv()
+#include "../tidbits.h" // coin_getenv()
 
 #define SO_GET_OVERRIDE(flag) \
 const SoOverrideElement * const element = \
