@@ -41,7 +41,8 @@
   SoSFInt32, SoSFUInt32, SoMFInt32 and SoMFUInt32.
 
 
-  \sa SoFieldContainer, SoFieldData */
+  \sa SoFieldContainer, SoFieldData
+*/
 
 
 // Metadon doc:
@@ -63,6 +64,7 @@
 #include <Inventor/VRMLnodes/SoVRMLInterpOutput.h>
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/engines/SoFieldConverter.h>
@@ -521,9 +523,8 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
     return TRUE;
   }
 
-  SoFieldConverter * conv = NULL;
-  if (this->createConverter(mastertype, slavetype, conv)) {
-    assert(conv);
+  SoFieldConverter * conv = this->createConverter(mastertype);
+  if (conv) {
     conv->getInput(mastertype)->doConnect(master, !notnotify);
     if (!append) this->disconnect();
     this->doConnect(conv->getOutput(slavetype), !notnotify);
@@ -565,10 +566,8 @@ SoField::connectFrom(SoVRMLInterpOutput * master,
     return TRUE;
   }
 
-  SoFieldConverter * conv=NULL;
-  SbBool OK=this->createConverter(mastertype, slavetype, conv);
-  if (OK) {
-    assert(conv);
+  SoFieldConverter * conv = this->createConverter(mastertype);
+  if (conv) {
     conv->getInput(mastertype)->doConnect(master, !notnotify);
     if (!append) this->disconnect();
     this->doConnect(conv->getOutput(slavetype), !notnotify);
@@ -611,10 +610,8 @@ SoField::connectFrom(SoEngineOutput * master,
     return TRUE;
   }
 
-  SoFieldConverter * conv=NULL;
-  SbBool OK=this->createConverter(mastertype, slavetype, conv);
-  if (OK) {
-    assert(conv);
+  SoFieldConverter * conv = this->createConverter(mastertype);
+  if (conv) {
     conv->getInput(mastertype)->doConnect(master, !notnotify);
     if (!append) this->disconnect();
     this->doConnect(conv->getOutput(slavetype), !notnotify);
@@ -1400,15 +1397,22 @@ SoField::appendConnection(SoVRMLInterpOutput * master, SbBool notnotify)
   return this->connectFrom(master, notnotify, TRUE);
 }
 
-// Make a converter between the two given field types.
-SbBool
-SoField::createConverter(SoType from, SoType to, SoFieldConverter *& conv)
+// Make a converter from value(s) of the given field type and the
+// value(s) of this type. Returns NULL if no value conversion between
+// types is possible.
+SoFieldConverter *
+SoField::createConverter(SoType from) const
 {
-  if (from == to) return TRUE;
+  assert(from != this->getTypeId());
+  SoType convtype = SoDB::getConverter(from, this->getTypeId());
+  if (convtype == SoType::badType()) return NULL;
 
-  conv = SoDB::createConverter(from, to);
-  if (conv) return TRUE;
-  else return FALSE;
+  // FIXME: is it really wise to treat the SoConvertAll field
+  // converters as a special case? 20000217 mortene.
+  if (convtype == SoConvertAll::getClassTypeId())
+    return new SoConvertAll(from, this->getTypeId());
+
+  return (SoFieldConverter *)convtype.createInstance();
 }
 
 // Connect us to the master source.

@@ -144,7 +144,7 @@ private:
   void doConnect(SoField * master, SbBool notify);
   void doConnect(SoVRMLInterpOutput * master, SbBool notify);
   void doConnect(SoEngineOutput * master, SbBool notify);
-  SbBool createConverter(SoType from, SoType to, SoFieldConverter *& conv);
+  SoFieldConverter * createConverter(SoType from) const;
   SoFieldContainer * resolveWriteConnection(SbName & mastername) const;
 
   void notifyAuditors(SoNotList * l);

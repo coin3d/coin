@@ -30,23 +30,16 @@ class SoFieldConverter : public SoEngine {
   SO_ENGINE_ABSTRACT_HEADER(SoFieldConverter);
 
 public:
-
-  SoFieldConverter();
-  static void initClass();
-  static void initConverters();
+  static void initClass(void);
+  static void initClasses(void);
   virtual SoField * getInput(SoType type) = 0;
   virtual SoEngineOutput * getOutput(SoType type) = 0;
-  virtual SoField * getConnectedInput();
-  virtual void setConnectedInput(SoField * input);
+  virtual SoField * getConnectedInput(void);
+  int getForwardConnections(SoFieldList & l) const;
+
 protected:
-  // FIXME: made this protected instead of private to avoid compilation
-  // problem (on egcs 1.0.2). Is this correct? 19981102 mortene.
-  // It looks correct; the methods are overloaded in subclasses (kintel 19990610)
-protected:
+  SoFieldConverter(void);
   virtual ~SoFieldConverter();
-  virtual void evaluate() = 0;
-private:
-  SoField * connectedInput;
 };
 
 #endif // !COIN_SOFIELDCONVERTER_H

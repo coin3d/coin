@@ -90,7 +90,7 @@ public:
                       fd_set * exceptfds, struct timeval * usertimeout);
 
   static void addConverter(SoType from, SoType to, SoType converter);
-  static SoFieldConverter * createConverter(SoType from, SoType to);
+  static SoType getConverter(SoType from, SoType to);
 
   static SbBool isInitialized(void);
 

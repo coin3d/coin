@@ -41,7 +41,6 @@
 #include <Inventor/engines/SoCounter.h>
 #include <Inventor/engines/SoElapsedTime.h>
 #include <Inventor/engines/SoFieldConverter.h>
-#include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/engines/SoGate.h>
 // FIXME: why not SoInterpolate.h? 19990407 mortene.
 #include <Inventor/engines/SoInterpolateAbs.h>

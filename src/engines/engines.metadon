@@ -1,54 +1,52 @@
 # CONFIG "The Engine Classes"
 # factors: [work in progress / no work done]
 # FLAGS [0.8 0.6]
-# C = made 100% API conform with Open Inventor
 # I = implementation complete, or nearly so
-# R = made robust
-# D = fully documented for Doxygen generation of html/man
+# D = documented for Doxygen generation of html/man [0.5]
 #
 # VALUES
 # - = not applicable
 # ! = method inherited from parent
 # 
 # ************************************************************************
-# CIRD
-# ====
+# ID
+# ==
 # HIERARCHY
-# ci    SoEngine
-# CI            SoBoolOperation
-#               SoCalculator
-# CI            SoComposeVec2f
-# CI            SoComposeVec3f
-# CI            SoComposeVec4f
-# CI            SoDecomposeVec2f
-# CI            SoDecomposeVec3f
-# CI            SoDecomposeVec4f
-# CI            SoComposeRotation
-#               SoComposeRotationFromTo
-# CI            SoDecomposeRotation
-# CI            SoComposeMatrix
-# CI            SoDecomposeMatrix
-#               SoComputeBoundingBox
-# CI            SoConcatenate
-# CI            SoCounter
-# CI            SoElapsedTime
-#               SoFieldConverter
-#                       SoConvertAll
-# CI            SoGate
-# CI            SoInterpolate
-# CI                    SoInterpolateFloat
-# CI                    SoInterpolateRotation
-# CI                    SoInterpolateVec2f
-# CI                    SoInterpolateVec3f
-# CI                    SoInterpolateVec4f
-# CI            SoOnOff
-# ci            SoOneShot
-# CI            SoSelectOne
-#               SoTimeCounter
-#               SoTransformVec3f
-# CI            SoTriggerAny
-# ci    SoEngineOutput
-#       SoUnknownEngine
+# i   SoEngine
+# I       SoBoolOperation
+#         SoCalculator
+# I       SoComposeVec2f
+# I       SoComposeVec3f
+# I       SoComposeVec4f
+# I       SoDecomposeVec2f
+# I       SoDecomposeVec3f
+# I       SoDecomposeVec4f
+# I       SoComposeRotation
+#         SoComposeRotationFromTo
+# I       SoDecomposeRotation
+# I       SoComposeMatrix
+# I       SoDecomposeMatrix
+#         SoComputeBoundingBox
+# I       SoConcatenate
+# I       SoCounter
+# I       SoElapsedTime
+# i       SoFieldConverter
+# i           SoConvertAll
+# I       SoGate
+# I       SoInterpolate
+# I           SoInterpolateFloat
+# I           SoInterpolateRotation
+# I           SoInterpolateVec2f
+# I           SoInterpolateVec3f
+# I           SoInterpolateVec4f
+# I       SoOnOff
+# i       SoOneShot
+# I       SoSelectOne
+#         SoTimeCounter
+#         SoTransformVec3f
+# I       SoTriggerAny
+# i   SoEngineOutput
+#     SoUnknownEngine
 #
 #############################################################################
 #

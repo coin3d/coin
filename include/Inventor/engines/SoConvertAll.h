@@ -21,7 +21,6 @@
 #define COIN_SOCONVERTALL_H
 
 #include <Inventor/engines/SoFieldConverter.h>
-#include <Inventor/SbDict.h>
 #include <Inventor/engines/SoEngineOutput.h>
 
 

@@ -17,6 +17,14 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoEngine SoEngine.h Inventor/engines/SoEngine.h
+  \brief SoEngine is the base class for Coin engines.
+  \ingroup engines
+
+  
+ */
+
 #include <Inventor/engines/SoEngine.h>
 
 #include <coindefs.h> // COIN_STUB()
@@ -27,17 +35,65 @@
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/lists/SoFieldList.h>
 
-SoType SoEngine::classTypeId;
+SoType SoEngine::classTypeId = SoType::badType();
 
+void
+SoEngine::initClass(void)
+{
+  SoEngine::classTypeId =
+    SoType::createType(SoFieldContainer::getClassTypeId(), SbName("Engine"));
+
+  SoEngine::initEngines();
+}
+
+void
+SoEngine::initEngines(void)
+{
+  SoBoolOperation::initClass();
+  // FIXME: not implemented yet. 19990406 mortene.
+//    SoCalculator::initClass();
+  SoComposeVec2f::initClass();
+  SoComposeVec3f::initClass();
+  SoComposeVec4f::initClass();
+  SoDecomposeVec2f::initClass();
+  SoDecomposeVec3f::initClass();
+  SoDecomposeVec4f::initClass();
+  SoComposeRotation::initClass();
+  // FIXME: not implemented yet. 19990406 mortene.
+//    SoComposeRotationFromTo::initClass();
+  SoDecomposeRotation::initClass();
+  SoComposeMatrix::initClass();
+  SoDecomposeMatrix::initClass();
+  // FIXME: not implemented yet. 19990406 mortene.
+//    SoComputeBoundingBox::initClass();
+  SoConcatenate::initClass();
+  SoCounter::initClass();
+  SoElapsedTime::initClass();
+  SoFieldConverter::initClass();
+  SoGate::initClass();
+  SoInterpolate::initClass();
+    SoInterpolateFloat::initClass();
+    SoInterpolateRotation::initClass();
+    SoInterpolateVec2f::initClass();
+    SoInterpolateVec3f::initClass();
+    SoInterpolateVec4f::initClass();
+  SoOnOff::initClass();
+  SoOneShot::initClass();
+  SoSelectOne::initClass();
+  // FIXME: not implemented yet. 19990406 mortene.
+//    SoTimeCounter::initClass();
+  // FIXME: not implemented yet. 19990406 mortene.
+//    SoTransformVec3f::initClass();
+  SoTriggerAny::initClass();
+}
+
+// Override from parent class.
 SoType
 SoEngine::getClassTypeId(void)
 {
   return SoEngine::classTypeId;
 }
 
-/*!
-  FIXME: document. 19990925 mortene.
- */
 int
 SoEngine::getOutputs(SoEngineOutputList & list) const
 {
@@ -80,56 +136,6 @@ SoEngine::getByName(const SbName & /* name */, SoEngineList & /* list */)
 {
   COIN_STUB();
   return -1;
-}
-
-void
-SoEngine::initClass()
-{
-  SoEngine::classTypeId =
-    SoType::createType(SoFieldContainer::getClassTypeId(), SbName("Engine"));
-
-  SoEngine::initEngines();
-}
-
-void
-SoEngine::initEngines()
-{
-  SoBoolOperation::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
-//    SoCalculator::initClass();
-  SoComposeVec2f::initClass();
-  SoComposeVec3f::initClass();
-  SoComposeVec4f::initClass();
-  SoDecomposeVec2f::initClass();
-  SoDecomposeVec3f::initClass();
-  SoDecomposeVec4f::initClass();
-  SoComposeRotation::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
-//    SoComposeRotationFromTo::initClass();
-  SoDecomposeRotation::initClass();
-  SoComposeMatrix::initClass();
-  SoDecomposeMatrix::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
-//    SoComputeBoundingBox::initClass();
-  SoConcatenate::initClass();
-  SoCounter::initClass();
-  SoElapsedTime::initClass();
-  SoFieldConverter::initClass();
-  SoGate::initClass();
-  SoInterpolate::initClass();
-    SoInterpolateFloat::initClass();
-    SoInterpolateRotation::initClass();
-    SoInterpolateVec2f::initClass();
-    SoInterpolateVec3f::initClass();
-    SoInterpolateVec4f::initClass();
-  SoOnOff::initClass();
-  SoOneShot::initClass();
-  SoSelectOne::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
-//    SoTimeCounter::initClass();
-  // FIXME: not implemented yet. 19990406 mortene.
-//    SoTransformVec3f::initClass();
-  SoTriggerAny::initClass();
 }
 
 void

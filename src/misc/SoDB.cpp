@@ -42,7 +42,6 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/elements/SoElement.h>
-#include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoFieldConverter.h>
 #include <Inventor/errors/SoReadError.h>
@@ -754,8 +753,8 @@ SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
   SoField type to the \a to SoField type, by connecting them with an
   instance of the \a converter SoFieldConverter type.
 
-  By doing this, SoDB::createConverter() will later be able to
-  automatically make an instance of the correct conversion class when
+  By doing this, SoDB::getConverter() will later be able to
+  automatically return the type of the correct conversion class when
   requested.
 
   Coin internally provides conversion between most field types, so
@@ -784,29 +783,23 @@ SoDB::addConverter(SoType from, SoType to, SoType converter)
 }
 
 /*!
-  Return an instance of an SoFieldConverter class which is able to
+  Return the type of an SoFieldConverter class which is able to
   convert data between fields of type \a from to the data field(s) of
   field type \a to.
 
   If no conversion between the given field types is possible, returns
-  \c NULL.
+  SoType::badType().
 
   \sa addConverter()
  */
-SoFieldConverter *
-SoDB::createConverter(SoType from, SoType to)
+SoType
+SoDB::getConverter(SoType from, SoType to)
 {
   void * key;
   uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
   // FIXME: ugly, need a better dict/hash class. 20000216 mortene.
-  if (SoDB::converters->find(val, key)) {
-    uint16_t convkey = (uint16_t)((uint32_t)key);
-    if (SoType::fromKey(convkey) == SoConvertAll::getClassTypeId())
-      return new SoConvertAll(from, to);
-    else
-      return (SoFieldConverter *)SoType::fromKey(convkey).createInstance();
-  }
-  return NULL;
+  if (!SoDB::converters->find(val, key)) return SoType::badType();
+  return SoType::fromKey((uint16_t)((uint32_t)key));
 }
 
 /*!

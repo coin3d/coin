@@ -31,8 +31,9 @@ class SoEngine : public SoFieldContainer {
   typedef SoFieldContainer inherited;
 
 public:
-  static SoType getClassTypeId();
-  virtual int getOutputs(SoEngineOutputList & list) const;
+  static SoType getClassTypeId(void);
+  virtual int getOutputs(SoEngineOutputList & l) const;
+
   SoEngineOutput * getOutput(const SbName & outputName) const;
   SbBool getOutputName(const SoEngineOutput * output, SbName & outputName) const;
   SoEngine * copy(void) const;
