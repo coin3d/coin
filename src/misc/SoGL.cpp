@@ -1797,11 +1797,13 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                                 numuknot - numuctrlpts, numvknot - numvctrlpts,
                                 (dim == 3) ? GL_MAP2_VERTEX_3 : GL_MAP2_VERTEX_4);
 
-  if (!glrender || SoGLTextureEnabledElement::get(state)) {
+  if (!glrender || SoGLTextureEnabledElement::get(state) || 
+      SoGLTexture3EnabledElement::get(state)) {
     const SoTextureCoordinateElement * tc =
       SoTextureCoordinateElement::getInstance(state);
     if (numsctrlpts && numtctrlpts && numsknot && numtknot &&
-        (tc->getType() == SoTextureCoordinateElement::EXPLICIT) && tc->getNum()) {
+        (tc->getType() == SoTextureCoordinateElement::EXPLICIT) && 
+        tc->getNum()) {
       int texdim = tc->is2D() ? 2 : 4;
       GLfloat * texptr = tc->is2D() ?
         (GLfloat*) tc->getArrayPtr2() :
@@ -1832,6 +1834,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     }
     else if ((tc->getType() == SoTextureCoordinateElement::DEFAULT) ||
              (tc->getType() == SoTextureCoordinateElement::EXPLICIT)) {
+      //FIXME: 3D texture coordinate generation (kintel 20020202)
       static float defaulttex[] = {
         0.0f, 0.0f,
         1.0f, 0.0f,
