@@ -26,9 +26,16 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/fields/SoSFEnum.h>
 
+#ifdef COIN_INTERNAL
 class SoFieldSensor;
+#else // !COIN_INTERNAL
+// Include this header file for better Open Inventor compatibility.
+#include <Inventor/sensors/SoFieldSensor.h>
+#endif // !COIN_INTERNAL
+
 class SoSensor;
 class SoSeparator;
+
 
 class SoInteractionKit : public SoBaseKit
 {
