@@ -24,6 +24,7 @@
 #include <simage_wrapper.h>
 #include <Inventor/C/basic.h>
 #include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/glue/dl.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -34,9 +35,6 @@
 #else /* No config.h? Hmm. Assume the simage library is available for linking. */
 #define SIMAGEWRAPPER_ASSUME_SIMAGE 1
 #endif /* !HAVE_CONFIG_H */
-#if HAVE_DLFCN_H
-#include <dlfcn.h>
-#endif /* HAVE_DLFCN_H */
 
 #ifdef HAVE_LIBSIMAGE /* In case we're _not_ doing runtime linking. */
 #define SIMAGEWRAPPER_ASSUME_SIMAGE 1
@@ -46,48 +44,8 @@
 #include <simage.h>
 #endif /* SIMAGEWRAPPER_ASSUME_SIMAGE */
 
-
-#ifdef HAVE_DL_LIB
-
-  /* This should work on Linux and IRIX platforms, at least. Probably
-     some other UNIX-based systems aswell. */
-
-  #define LIBHANDLE_T void*
-  #define OPEN_RUNTIME_BINDING(LIBNAME) dlopen(LIBNAME, RTLD_LAZY)
-  #define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)dlclose(RBHANDLE)
-  #define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) dlsym(RBHANDLE, FUNCNAME)
-
-#elif defined (HAVE_WINDLL_RUNTIME_BINDING)
-
-  /* This should work on all MSWindows systems. */
-
-  #define LIBHANDLE_T HINSTANCE
-  #define OPEN_RUNTIME_BINDING(LIBNAME) LoadLibrary(LIBNAME)
-  #define CLOSE_RUNTIME_BINDING(RBHANDLE)  (void)FreeLibrary(RBHANDLE)
-  #define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) GetProcAddress(RBHANDLE, FUNCNAME)
-
-#else /* static binding */
-
-  /* To avoid compiler error on the LIBHANDLE_T type. */
-  #define LIBHANDLE_T void*
-
-#endif  /* static binding */
-
-/* FIXME: support HP-UX shn_load()?
-
-   Some versions of HP-UX have dlopen(). Although according to a
-   discussion on the libtool mailinglist it has been buggy in an
-   official release, needing a patch to function properly. This is of
-   course a good reason to try to use shn_load() *first*, then
-   dlopen() on HP-UX.
-
-   Note also that it looks like dlopen() might reside in a library
-   "svld" instead of "ld".
-
-   20010626 mortene. */
-
 static simage_wrapper_t * simage_instance = NULL;
-static LIBHANDLE_T simage_libhandle = NULL;
+static cc_libhandle simage_libhandle = NULL;
 static int simage_failed_to_load = 0;
 
 
@@ -96,7 +54,7 @@ static void
 simage_wrapper_cleanup(void)
 {
 #ifdef SIMAGE_RUNTIME_LINKING
-  if (simage_libhandle) { CLOSE_RUNTIME_BINDING(simage_libhandle); }
+  if (simage_libhandle) { cc_dl_close(simage_libhandle); }
 #endif /* SIMAGE_RUNTIME_LINKING */
 
   assert(simage_instance);
@@ -225,12 +183,7 @@ simage_wrapper(void)
 
       int idx = 0;
       while (!simage_libhandle && possiblelibnames[idx]) {
-        /*
-         *  FIXME: Purify complains about Bad Function Parameter here
-         *  for dlopen().  Everything seems to work ok though?
-         *  pederb, 2001-02-07
-         */
-        simage_libhandle = OPEN_RUNTIME_BINDING(possiblelibnames[idx]);
+        simage_libhandle = cc_dl_open(possiblelibnames[idx]);
         idx++;
       }
 
@@ -242,7 +195,7 @@ simage_wrapper(void)
     /* Define SIMAGEWRAPPER_REGISTER_FUNC macro. Casting the type is
        necessary for this file to be compatible with C++ compilers. */
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
-    si->_funcname_ = (_funcsig_)GET_RUNTIME_SYMBOL(simage_libhandle, SO__QUOTE(_funcname_))
+    si->_funcname_ = (_funcsig_)cc_dl_sym(simage_libhandle, SO__QUOTE(_funcname_))
 
 #elif defined(SIMAGEWRAPPER_ASSUME_SIMAGE) /* !SIMAGE_RUNTIME_LINKING */
 
