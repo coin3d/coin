@@ -23,6 +23,7 @@
 
 #include <Inventor/SbDict.h>
 #include <Inventor/lists/SbPList.h>
+#include <Inventor/C/base/memalloc.h>
 #include <assert.h>
 
 /*!
@@ -45,6 +46,10 @@ private:
     this->value = value;
   }
 private:
+  void * operator new(size_t, cc_memalloc * allocator) {
+    return cc_memalloc_allocate(allocator);
+  }
+
   unsigned long key;
   void * value;
   SbDictEntry * next;
@@ -61,6 +66,11 @@ default_hashfunc(const unsigned long key)
   return key;
 }
 
+// Macro to return the memory allocator for an instance. See FIXME in
+// constructor and copy operator.
+#define GET_MEMALLOC(instance) \
+  (cc_memalloc*) ((instance)->buckets[instance->tablesize])
+
 // *************************************************************************
 
 /*!
@@ -72,7 +82,14 @@ SbDict::SbDict(const int entries)
 {
   assert(entries > 0);
   this->tablesize = entries;
-  this->buckets = new SbDictEntry *[this->tablesize];
+  // allocate one extra item to store the memory allocator 
+  // 
+  // FIXME: when it's safe to change the ABI, create a private member
+  // to store the cc_memalloc pointer instead of using the buckets
+  // array. pederb, 2002-01-30
+  this->buckets = new SbDictEntry *[this->tablesize+1];
+  this->buckets[this->tablesize] = (SbDictEntry*)
+    cc_memalloc_construct(sizeof(SbDictEntry));
   this->hashfunc = default_hashfunc;
   for (int i = 0; i < this->tablesize; i++) this->buckets[i] = NULL;
 }
@@ -91,7 +108,8 @@ SbDict::SbDict(const SbDict & from)
 SbDict::~SbDict()
 {
   this->clear();
-  delete [] buckets;
+  cc_memalloc_destruct(GET_MEMALLOC(this));
+  delete[] buckets;
 }
 
 /*!
@@ -102,7 +120,14 @@ SbDict::operator=(const SbDict & from)
 {
   this->tablesize = from.tablesize;
   this->hashfunc = from.hashfunc;
-  this->buckets = new SbDictEntry *[this->tablesize];
+  // allocate one extra to store the memory allocator
+  // 
+  // FIXME: when it's safe to change the ABI, create a private member
+  // to store the cc_memalloc pointer instead of using the buckets
+  // array. pederb, 2002-01-30
+  this->buckets = new SbDictEntry *[this->tablesize+1];
+  this->buckets[this->tablesize] = (SbDictEntry*)
+    cc_memalloc_construct(sizeof(SbDictEntry));
   for (int i = 0; i < this->tablesize; i++) this->buckets[i] = NULL;
   from.applyToAll(copyval, this);
   return *this;
@@ -127,14 +152,18 @@ SbDict::clear(void)
 {
   int i;
   SbDictEntry * entry, * nextEntry;
+  
+  cc_memalloc * allocator = GET_MEMALLOC(this);
 
   for (i = 0; i < this->tablesize; i++) {
     for (entry = buckets[i]; entry != NULL; entry = nextEntry) {
       nextEntry = entry->next;
-      delete entry;
+      cc_memalloc_deallocate(allocator, (void*) entry);
     }
     buckets[i] = NULL;
   }
+  // FIXME: consider calling cc_memalloc_clear(). But, it will be
+  // faster not to do this, of course. pederb, 2002-01-30
 }
 
 /*!
@@ -150,8 +179,9 @@ SbDict::enter(const unsigned long key, void * const value)
 {
   const unsigned long bucketnum = this->hashfunc(key) % this->tablesize;
   SbDictEntry *entry = findEntry(key, bucketnum);
+
   if (entry == NULL) {
-    entry = new SbDictEntry(key, value);
+    entry = new (GET_MEMALLOC(this)) SbDictEntry(key, value);
     entry->next = this->buckets[bucketnum];
     this->buckets[bucketnum] = entry;
     return TRUE;
@@ -201,7 +231,7 @@ SbDict::remove(const unsigned long key)
     else {
       this->buckets[bucketnum] = entry->next;
     }
-    delete entry;
+    cc_memalloc_deallocate(GET_MEMALLOC(this), (void*) entry);
     return TRUE;
   }
 }
@@ -291,6 +321,7 @@ SbDict::setHashingFunction(unsigned long (*func)(const unsigned long key))
 {
   this->hashfunc = func;
 }
+
 
 
 /*
