@@ -53,7 +53,7 @@ normalcache_set_num_coords_hack(const SoNormalCache * n, unsigned int nr)
   CC_GLOBAL_LOCK;
   if (!numcoordshash_hack) {
     numcoordshash_hack = new SbDict;
-    coin_atexit(numcoords_hack_cleanup, 0);
+    coin_atexit((coin_atexit_f*) numcoords_hack_cleanup, 0);
   }
   numcoordshash_hack->enter((unsigned long)n, (void *)nr);
   CC_GLOBAL_UNLOCK;
