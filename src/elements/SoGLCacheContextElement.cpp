@@ -175,6 +175,7 @@ SoGLCacheContextElement::set(SoState * state, int context,
   elem->twopass = twopasstransparency;
   elem->remote = remoterendering;
   elem->autocachebits = 0;
+  elem->context = context;
   if (remoterendering) elem->autocachebits = DO_AUTO_CACHE;
 
   int i = 0;
@@ -324,7 +325,7 @@ SoGLCacheContextElement::shouldAutoCache(SoState * state, int bits)
 void
 SoGLCacheContextElement::setAutoCacheBits(SoState * state, int bits)
 {
-  SoGLCacheContextElement * elem = (SoGLCacheContextElement*) 
+  SoGLCacheContextElement * elem = (SoGLCacheContextElement*)
     state->getElementNoPush(classStackIndex);
 
   elem->autocachebits = bits;
