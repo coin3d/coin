@@ -138,7 +138,7 @@ cc_internal_ftime(cc_time * t)
 cc_time
 cc_time_gettimeofday(void)
 {
-  cc_time t;
+  cc_time t = 0.0;
   if (cc_internal_queryperformancecounter(&t)) { return t; }
   if (cc_internal_gettimeofday(&t)) { return t; }
   if (cc_internal_ftime(&t)) { return t; }
