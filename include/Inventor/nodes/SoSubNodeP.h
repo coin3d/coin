@@ -88,6 +88,8 @@
   } while (0)
 
 
+// *************************************************************************
+
 // Convenience defines to use for the second parameter of the
 // SO_NODE_INTERNAL_INIT_CLASS() macro (for internal node classes).
 //
@@ -111,8 +113,16 @@
 #define SO_FROM_COIN_1_0 \
   (SoNode::COIN_1_0|SO_FROM_COIN_2_0)
 
+// *************************************************************************
+
+#define SO_FROM_INVENTOR_5_0 \
+  (SoNode::INVENTOR_5_0)
+
+// Several releases missing in-between here, but we don't seem to have
+// any nodes from those yet...  -mortene.
+
 #define SO_FROM_INVENTOR_2_6 \
-  (SoNode::INVENTOR_2_6)
+  (SoNode::INVENTOR_2_6|SO_FROM_INVENTOR_5_0)
 
 #define SO_FROM_INVENTOR_2_5 \
   (SoNode::INVENTOR_2_5|SO_FROM_INVENTOR_2_6)
@@ -126,5 +136,6 @@
 #define SO_FROM_INVENTOR_1 \
   (SoNode::INVENTOR_1|SO_FROM_INVENTOR_2_0)
 
+// *************************************************************************
 
 #endif // !COIN_SOSUBNODEP_H
