@@ -68,23 +68,32 @@
        specularColor 1 1 1
      }
      Text3 {
-       string ["Coin"]
+       string ["Coin3D"]
        parts ALL
      } 
    } 
   \endverbatim
 
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/nodes/text3.png">
+  </center>
+
+
   if SoText3::Part is set to SIDES or ALL and no profile is provided, a
-  flat, one unit long profile is created. 
+  flat, one unit long profile will be created. 
+
+  Separate colors can be assigned to the front, sides and back of the
+  glyphs by adding a preceding SoMaterialBinding node.  Set the \e value 
+  field to PER_PART (default is OVERALL). The front, side and back of
+  the glyphs will then be colored according to diffuse color 0, 1 and 2
+  found on the stack.
 
   Beware that using a lot of SoText3 text characters in a scene will
   usually have severe impact on the rendering performance, as each and
-  every character of the text contributes a lot of polygon primitives
-  to the rendering system.
-
-  Due to the above mentioned fact, SoText3 nodes are best used in
-  situations where you need just one or a few characters to be placed
-  in your scene, than to visualize e.g. complete sentences.
+  every character of the text increases the polygon-count a lot. This
+  makes SoText3 nodes most suitable in situations where you just need
+  a few characters to be placed in your scene, rather than to
+  visualize complete sentences.
 
   \sa SoText2, SoAsciiText, SoProfile
 */
@@ -101,6 +110,7 @@
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
@@ -407,7 +417,7 @@ SoText3::getCharacterBounds(SoState * state, int stringindex, int charindex)
 void
 SoText3::GLRender(SoGLRenderAction * action)
 {
-
+  
   if (!this->shouldGLRender(action)) 
     return;
 
@@ -420,25 +430,27 @@ SoText3::GLRender(SoGLRenderAction * action)
 
   PRIVATE(this)->setUpGlyphs(state, &fontspec, this);
 
-  SoMaterialBindingElement::Binding binding =
-    SoMaterialBindingElement::get(state);
-
-  SbBool matperpart = (binding != SoMaterialBindingElement::OVERALL);
-
+  SoMaterialBindingElement::Binding binding = SoMaterialBindingElement::get(state);
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  unsigned int prts = this->parts.getValue();
+  const unsigned int prts = this->parts.getValue();
+  SoLazyElement * lazyelement = SoLazyElement::getWInstance(state);
+  const int numdiffuse = lazyelement->getNumDiffuse();
 
+  SbBool matperpart = (binding != SoMaterialBindingElement::OVERALL);
+  
   if (prts & SoText3::FRONT) {
     PRIVATE(this)->render(state, &fontspec, SoText3::FRONT);
   }
   if (prts & SoText3::SIDES) {
-    if (matperpart) mb.send(1, FALSE);
+    if (matperpart && (numdiffuse > 1)) 
+        mb.send(1, FALSE);    
     PRIVATE(this)->render(state, &fontspec, SoText3::SIDES);
   }
   if (prts & SoText3::BACK) {
-    if (matperpart) mb.send(2, FALSE);
+    if (matperpart && (numdiffuse > 2)) 
+      mb.send(2, FALSE);    
     PRIVATE(this)->render(state, &fontspec, SoText3::BACK);
   }
   
@@ -603,7 +615,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
       if (part != SoText3::SIDES) {  // FRONT & BACK
         const int * ptr = cc_glyph3d_getfaceindices(glyph);
         glBegin(GL_TRIANGLES);
-       
+    
         while (*ptr >= 0) {
           SbVec2f v0, v1, v2;
           float zval;
@@ -648,6 +660,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
           int counter = 0;
 
           glBegin(GL_QUADS);
+ 
           while (*ptr >= 0) {            
 
             v0 = coords[*ptr++];
@@ -834,7 +847,8 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
           // compilator. (Tested on MSVC 6 and GCC 2.95.4) (20031010
           // handegar).
 
-          glBegin(GL_TRIANGLES);         
+          glBegin(GL_TRIANGLES);   
+     
           for (int z = 0;z < size;z += 3) {
 
             // FIXME: Add proper texturing for profile
@@ -871,9 +885,6 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
     ypos -= fontspec->size * PUBLIC(this)->spacing.getValue();
   }
 
-
-
-
 }
 
 // render text geometry
@@ -895,19 +906,23 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
                    unsigned int part)
 {
   SoState * state = action->getState();
-
-  int matidx = 0;
-  if (SoMaterialBindingElement::get(state) != 
-      SoMaterialBindingElement::OVERALL) {
-    if (part == SoText3::SIDES) matidx = 1;
-    else if (part == SoText3::BACK) matidx = 2;
-  }
-
+  
   SoPrimitiveVertex vertex;
   SoTextDetail detail;
   detail.setPart(part);
   vertex.setDetail(&detail);
-  vertex.setMaterialIndex(matidx);
+
+  if (SoMaterialBindingElement::get(state) != 
+      SoMaterialBindingElement::OVERALL) {
+
+    SoLazyElement * lazyelement = SoLazyElement::getWInstance(state);
+    const int numdiffuse = lazyelement->getNumDiffuse();    
+
+    if (part == SoText3::SIDES && (numdiffuse > 1)) 
+      vertex.setMaterialIndex(1);    
+    else if (part == SoText3::BACK && (numdiffuse > 2)) 
+      vertex.setMaterialIndex(2);    
+  }
 
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
