@@ -43,6 +43,8 @@
   documentation of SoNode for more information.
 */
 
+// *************************************************************************
+
 // FIXME: There's a lot of methods in SoBase used to implement VRML
 // support which are missing.
 //
@@ -50,6 +52,8 @@
 
 // FIXME: One more thing missing: detect cases where we should
 // instantiate SoUnknownEngine instead of SoUnknownNode.
+
+// *************************************************************************
 
 #include <assert.h>
 #include <string.h>
@@ -78,6 +82,8 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+// *************************************************************************
 
 // Note: the following documentation for getTypeId() will also be
 // visible for subclasses, so keep it general.
@@ -147,6 +153,56 @@
 
 // *************************************************************************
 
+class SoBaseP {
+public:
+  static SbDict * auditordict;
+  static void * mutex;
+  static void * name2obj_mutex;
+  static void * obj2name_mutex;
+  static void * auditor_mutex;
+  static void * global_mutex;
+
+  static void auditordict_cb(unsigned long key, void * value);
+  static void cleanup_auditordict(void);
+
+  static SbBool trackbaseobjects;
+  static void * allbaseobj_mutex;
+  static SbDict * allbaseobj; // maps from SoBase * to NULL
+};
+
+SbDict * SoBaseP::auditordict = NULL;
+void * SoBaseP::mutex = NULL;
+void * SoBaseP::name2obj_mutex = NULL;
+void * SoBaseP::obj2name_mutex = NULL;
+void * SoBaseP::auditor_mutex = NULL;
+void * SoBaseP::global_mutex = NULL;
+
+// This is used for debugging purposes: it stores a pointer to all
+// SoBase-derived objects that have been allocated and not
+// deallocated.
+SbBool SoBaseP::trackbaseobjects = FALSE;
+void * SoBaseP::allbaseobj_mutex = NULL;
+SbDict * SoBaseP::allbaseobj = NULL; // maps from SoBase * to NULL
+
+void
+SoBaseP::auditordict_cb(unsigned long key, void * value)
+{
+  SoAuditorList * l = (SoAuditorList*) value;
+  delete l;
+}
+
+void
+SoBaseP::cleanup_auditordict(void)
+{
+  if (SoBaseP::auditordict) {
+    SoBaseP::auditordict->applyToAll(SoBaseP::auditordict_cb);
+    delete SoBaseP::auditordict;
+    SoBaseP::auditordict = NULL;
+  }
+}
+
+// *************************************************************************
+
 // Strings and character tokens used in parsing.
 static const char OPEN_BRACE = '{';
 static const char CLOSE_BRACE = '}';
@@ -164,30 +220,6 @@ static const int REFID_FIRSTWRITE = -1;
 // Reference id if we don't need to add a suffix to the node name
 static const int REFID_NOSUFFIX = -2;
 
-static SbDict * sobase_auditordict = NULL;
-static void * sobase_mutex = NULL;
-static void * sobase_name2obj_mutex = NULL;
-static void * sobase_obj2name_mutex = NULL;
-static void * sobase_auditor_mutex = NULL;
-static void * sobase_global_mutex = NULL;
-
-static void
-sobase_auditordict_cb(unsigned long key, void * value)
-{
-  SoAuditorList * l = (SoAuditorList*) value;
-  delete l;
-}
-
-static void
-sobase_cleanup_auditordict(void)
-{
-  if (sobase_auditordict) {
-    sobase_auditordict->applyToAll(sobase_auditordict_cb);
-    delete sobase_auditordict;
-    sobase_auditordict = NULL;
-  }
-}
-
 // Only a small number of SoBase derived objects will under usual
 // conditions have designated names, so we use a couple of static
 // SbDict objects to keep track of them. Since we avoid storing a
@@ -196,13 +228,6 @@ sobase_cleanup_auditordict(void)
 // possible, as any dead weight is brought along in a lot of objects).
 SbDict * SoBase::name2obj; // maps from char * to SbPList(SoBase)
 SbDict * SoBase::obj2name; // maps from SoBase * to char *
-
-// This is used for debugging purposes: it stores a pointer to all
-// SoBase-derived objects that have been allocated and not
-// deallocated.
-static SbBool sobase_trackbaseobjects = FALSE;
-static void * sobase_allbaseobj_mutex = NULL;
-static SbDict * sobase_allbaseobj = NULL; // maps from SoBase * to NULL
 
 SbString * SoBase::refwriteprefix = NULL;
 
@@ -355,11 +380,11 @@ SoBase::SoBase(void)
 
   // For debugging, store a pointer to all SoBase-instances.
 #if COIN_DEBUG
-  CC_MUTEX_LOCK(sobase_allbaseobj_mutex);
+  CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
   void * dummy;
-  assert(!sobase_allbaseobj->find((unsigned long)this, dummy));
-  sobase_allbaseobj->enter((unsigned long)this, NULL);
-  CC_MUTEX_UNLOCK(sobase_allbaseobj_mutex);
+  assert(!SoBaseP::allbaseobj->find((unsigned long)this, dummy));
+  SoBaseP::allbaseobj->enter((unsigned long)this, NULL);
+  CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
 #endif // COIN_DEBUG
 }
 
@@ -380,19 +405,19 @@ SoBase::~SoBase()
   // used to check that we are still alive.
   this->objdata.alive = (~ALIVE_PATTERN) & 0xf;
 
-  if (sobase_auditordict) {
+  if (SoBaseP::auditordict) {
     void * tmp;
-    if (sobase_auditordict->find((unsigned long) this, tmp)) {
+    if (SoBaseP::auditordict->find((unsigned long) this, tmp)) {
       delete ((SoAuditorList*) tmp);
-      sobase_auditordict->remove((unsigned long) this);
+      SoBaseP::auditordict->remove((unsigned long) this);
     }
   }
   cc_rbptree_clean(&this->auditortree);
 
 #if COIN_DEBUG
-  CC_MUTEX_LOCK(sobase_allbaseobj_mutex);
-  const SbBool ok = sobase_allbaseobj->remove((unsigned long)this);
-  CC_MUTEX_UNLOCK(sobase_allbaseobj_mutex);
+  CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
+  const SbBool ok = SoBaseP::allbaseobj->remove((unsigned long)this);
+  CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
 #endif // COIN_DEBUG
 }
 
@@ -495,18 +520,18 @@ SoBase::initClass(void)
   SoBase::name2obj = new SbDict;
   SoBase::obj2name = new SbDict;
   SoBase::refwriteprefix = new SbString("+");
-  sobase_allbaseobj = new SbDict;
+  SoBaseP::allbaseobj = new SbDict;
 
-  CC_MUTEX_CONSTRUCT(sobase_mutex);
-  CC_MUTEX_CONSTRUCT(sobase_obj2name_mutex);
-  CC_MUTEX_CONSTRUCT(sobase_name2obj_mutex);
-  CC_MUTEX_CONSTRUCT(sobase_allbaseobj_mutex);
-  CC_MUTEX_CONSTRUCT(sobase_auditor_mutex);
-  CC_MUTEX_CONSTRUCT(sobase_global_mutex);
+  CC_MUTEX_CONSTRUCT(SoBaseP::mutex);
+  CC_MUTEX_CONSTRUCT(SoBaseP::obj2name_mutex);
+  CC_MUTEX_CONSTRUCT(SoBaseP::name2obj_mutex);
+  CC_MUTEX_CONSTRUCT(SoBaseP::allbaseobj_mutex);
+  CC_MUTEX_CONSTRUCT(SoBaseP::auditor_mutex);
+  CC_MUTEX_CONSTRUCT(SoBaseP::global_mutex);
 
   // debug
   const char * str = coin_getenv("COIN_DEBUG_TRACK_SOBASE_INSTANCES");
-  sobase_trackbaseobjects = str && atoi(str) > 0;
+  SoBaseP::trackbaseobjects = str && atoi(str) > 0;
 }
 
 // Clean up all commonly allocated resources before application
@@ -515,9 +540,9 @@ void
 SoBase::cleanClass(void)
 {
 #if COIN_DEBUG
-  if (sobase_trackbaseobjects) {
+  if (SoBaseP::trackbaseobjects) {
     SbPList keys, values;
-    sobase_allbaseobj->makePList(keys, values);
+    SoBaseP::allbaseobj->makePList(keys, values);
     const unsigned int len = keys.getLength();
     if (len > 0) {
       // Use printf()s, in case SoDebugError has been made defunct by
@@ -542,7 +567,7 @@ SoBase::cleanClass(void)
   // Delete the SbPLists in the dictionaries.
   SoBase::name2obj->applyToAll(SoBase::freeLists);
 
-  delete sobase_allbaseobj; sobase_allbaseobj = NULL;
+  delete SoBaseP::allbaseobj; SoBaseP::allbaseobj = NULL;
 
   delete SoBase::name2obj; SoBase::name2obj = NULL;
   delete SoBase::obj2name; SoBase::obj2name = NULL;
@@ -550,12 +575,12 @@ SoBase::cleanClass(void)
   delete writerefs;
   delete SoBase::refwriteprefix;
 
-  CC_MUTEX_DESTRUCT(sobase_mutex);
-  CC_MUTEX_DESTRUCT(sobase_obj2name_mutex);
-  CC_MUTEX_DESTRUCT(sobase_allbaseobj_mutex);
-  CC_MUTEX_DESTRUCT(sobase_name2obj_mutex);
-  CC_MUTEX_DESTRUCT(sobase_auditor_mutex);
-  CC_MUTEX_DESTRUCT(sobase_global_mutex);
+  CC_MUTEX_DESTRUCT(SoBaseP::mutex);
+  CC_MUTEX_DESTRUCT(SoBaseP::obj2name_mutex);
+  CC_MUTEX_DESTRUCT(SoBaseP::allbaseobj_mutex);
+  CC_MUTEX_DESTRUCT(SoBaseP::name2obj_mutex);
+  CC_MUTEX_DESTRUCT(SoBaseP::auditor_mutex);
+  CC_MUTEX_DESTRUCT(SoBaseP::global_mutex);
 }
 
 /*!
@@ -616,9 +641,9 @@ SoBase::ref(void) const
   int32_t currentrefcount = base->objdata.referencecount;
 #endif // COIN_DEBUG
 
-  CC_MUTEX_LOCK(sobase_mutex);
+  CC_MUTEX_LOCK(SoBaseP::mutex);
   base->objdata.referencecount++;
-  CC_MUTEX_UNLOCK(sobase_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::mutex);
 
 #if COIN_DEBUG
   if (base->objdata.referencecount < currentrefcount) {
@@ -665,9 +690,9 @@ SoBase::unref(void) const
 
   // Cast away constness.
   SoBase * base = (SoBase *)this;
-  CC_MUTEX_LOCK(sobase_mutex);
+  CC_MUTEX_LOCK(SoBaseP::mutex);
   base->objdata.referencecount--;
-  CC_MUTEX_UNLOCK(sobase_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::mutex);
 
 #if COIN_DEBUG
   if (SoBase::tracerefs) {
@@ -767,9 +792,9 @@ SoBase::getName(void) const
   assert(SoBase::obj2name);
 
   void * value;
-  CC_MUTEX_LOCK(sobase_obj2name_mutex);
+  CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
   SbBool found = SoBase::obj2name->find((unsigned long)this, value);
-  CC_MUTEX_UNLOCK(sobase_obj2name_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
   return found ? SbName((const char *)value) : SbName();
 }
 
@@ -840,7 +865,7 @@ SoBase::addName(SoBase * const b, const char * const name)
 {
   SbPList * l;
   void * t;
-  CC_MUTEX_LOCK(sobase_name2obj_mutex);
+  CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
   if (!SoBase::name2obj->find((unsigned long)name, t)) {
     // name not used before, create new list
     l = new SbPList;
@@ -852,12 +877,12 @@ SoBase::addName(SoBase * const b, const char * const name)
   }
   // append this to the list
   l->append(b);
-  CC_MUTEX_UNLOCK(sobase_name2obj_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
 
-  CC_MUTEX_LOCK(sobase_obj2name_mutex);
+  CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
   // set name of object. SbDict::enter() will overwrite old name
   SoBase::obj2name->enter((unsigned long)b, (void *)name);
-  CC_MUTEX_UNLOCK(sobase_obj2name_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
 }
 
 /*!
@@ -866,7 +891,7 @@ SoBase::addName(SoBase * const b, const char * const name)
 void
 SoBase::removeName(SoBase * const b, const char * const name)
 {
-  CC_MUTEX_LOCK(sobase_name2obj_mutex);
+  CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
   void * t;
   SbBool found = SoBase::name2obj->find((unsigned long)name, t);
   assert(found);
@@ -876,11 +901,11 @@ SoBase::removeName(SoBase * const b, const char * const name)
   assert(i >= 0);
   list->remove(i);
 
-  CC_MUTEX_UNLOCK(sobase_name2obj_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
 
-  CC_MUTEX_LOCK(sobase_obj2name_mutex);
+  CC_MUTEX_LOCK(SoBaseP::obj2name_mutex);
   SoBase::obj2name->remove((unsigned long)b);
-  CC_MUTEX_UNLOCK(sobase_obj2name_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::obj2name_mutex);
 }
 
 /*!
@@ -1002,16 +1027,16 @@ sobase_audlist_add(void * pointer, void * type, void * closure)
 const SoAuditorList &
 SoBase::getAuditors(void) const
 {
-  CC_MUTEX_LOCK(sobase_auditor_mutex);
+  CC_MUTEX_LOCK(SoBaseP::auditor_mutex);
 
-  if (sobase_auditordict == NULL) {
-    sobase_auditordict = new SbDict();
-    coin_atexit((coin_atexit_f*)sobase_cleanup_auditordict, 0);
+  if (SoBaseP::auditordict == NULL) {
+    SoBaseP::auditordict = new SbDict();
+    coin_atexit((coin_atexit_f*)SoBaseP::cleanup_auditordict, 0);
   }
 
   SoAuditorList * list = NULL;
   void * tmp;
-  if (sobase_auditordict->find((unsigned long) this, tmp)) {
+  if (SoBaseP::auditordict->find((unsigned long) this, tmp)) {
     list = (SoAuditorList*) tmp;
     // empty list before copying in new values
     for (int i = 0; i < list->getLength(); i++) {
@@ -1020,11 +1045,11 @@ SoBase::getAuditors(void) const
   }
   else {
     list = new SoAuditorList;
-    sobase_auditordict->enter((unsigned long) this, (void*) list);
+    SoBaseP::auditordict->enter((unsigned long) this, (void*) list);
   }
   cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, (void*) list);
   
-  CC_MUTEX_UNLOCK(sobase_auditor_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::auditor_mutex);
   
   return *list;
 }
@@ -1105,19 +1130,19 @@ SoBase::decrementCurrentWriteCounter(void)
 SoBase *
 SoBase::getNamedBase(const SbName & name, SoType type)
 {
-  CC_MUTEX_LOCK(sobase_name2obj_mutex);
+  CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
   void * t;
   if (SoBase::name2obj->find((unsigned long)((const char *)name), t)) {
     SbPList * l = (SbPList *)t;
     if (l->getLength()) {
       SoBase * b = (SoBase *)((*l)[l->getLength() - 1]);
       if (b->isOfType(type)) {
-        CC_MUTEX_UNLOCK(sobase_name2obj_mutex);
+        CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
         return b;
       }
     }
   }
-  CC_MUTEX_UNLOCK(sobase_name2obj_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
   return NULL;
 }
 
@@ -1130,7 +1155,7 @@ SoBase::getNamedBase(const SbName & name, SoType type)
 int
 SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 {
-  CC_MUTEX_LOCK(sobase_name2obj_mutex);
+  CC_MUTEX_LOCK(SoBaseP::name2obj_mutex);
 
   int matches = 0;
 
@@ -1145,7 +1170,7 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
       }
     }
   }
-  CC_MUTEX_UNLOCK(sobase_name2obj_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::name2obj_mutex);
 
   return matches;
 }
@@ -2241,7 +2266,7 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
 void 
 SoBase::staticDataLock(void)
 {
-  CC_MUTEX_LOCK(sobase_global_mutex);
+  CC_MUTEX_LOCK(SoBaseP::global_mutex);
 }
 
 /*!
@@ -2251,6 +2276,6 @@ SoBase::staticDataLock(void)
 void 
 SoBase::staticDataUnlock(void)
 {
-  CC_MUTEX_UNLOCK(sobase_global_mutex);
+  CC_MUTEX_UNLOCK(SoBaseP::global_mutex);
 }
 
