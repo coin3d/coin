@@ -1,29 +1,26 @@
-You should be able to build the Coin library if you have these
+You should be able to build the simage library if you have these
 components installed on your system:
 
         * Cygwin[1], latest release
-
         * Microsoft Visual C++ v6.x
-
 
 Configure and build the same way as you would on UNIX-based systems,
 i.e.
 
-        $ [srcdir]/configure --enable-dependency-tracking
+        $ [srcdir]/configure
         $ make install
 
 
-(Notice the explicit activation of dependency tracking. Dependency
-tracking is default added to the build process by configure only if it
-can be done as a side effect by the compiler when actually
-compiling. The cl.exe compiler of Microsoft Visual C++ has no public
-way of getting dependencies without using the preprocessor.)
-
 Note that if you encounter any problems when trying to build on
 MSWindows, it is expected that you are able to do a minimum of
-troubleshooting yourself before contacting us. If you are confident
-that configure and/or build fails due to a mistake on our part, we
-will be happy to assist.
+troubleshooting yourself before contacting us.  (If this is not an
+option, please consider using the pre-built binary installation
+packages we provide. Follow the download link from
+<URL:http://www.coin3d.org>.)
+
+If you are confident that configure and/or build fails due to a
+mistake on our part, or you otherwise feel completely stuck, we will
+be happy to assist.
 
 ---
 [1] <URL:http://www.cygwin.com>
