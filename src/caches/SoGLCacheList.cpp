@@ -239,8 +239,6 @@ SoGLCacheList::close(SoGLRenderAction * action)
     THIS->opencache = NULL;
   }
 
-  THIS->opencache = NULL;
-
   int bits = SoGLCacheContextElement::resetAutoCacheBits(state);
   SoGLCacheContextElement::setAutoCacheBits(state, bits|THIS->autocachebits);
   THIS->autocachebits = bits;
