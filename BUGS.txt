@@ -3735,3 +3735,65 @@ Separator {
     20040625 mortene.
 
 =====================================================================
+
+120 SoMaterialBinding::PER_FACE is buggy for at least some shapes.
+
+    According to documentation (see SoMaterialBinding::PER_FACE, which
+    is written according to information in the Inventor Mentor),
+    coloring should wrap around if too few colors are supplied for
+    PER_FACE material binding.
+
+    In Coin, this doesn't happen for at least SoCube (debug msg on
+    console, colors clamped to last one):
+
+--------8<------------- [snip] --------------8<------------- [snip]
+#Inventor V2.1 ascii
+
+Material { diffuseColor [ 1 0 0, 1 1 0 ] }
+MaterialBinding { value PER_PART }
+Cube { }
+--------8<------------- [snip] --------------8<------------- [snip]
+
+    ..or SoText3 (no debug msg, colors clamped to last):
+
+--------8<------------- [snip] --------------8<------------- [snip]
+#Inventor V2.1 ascii
+
+Material { diffuseColor [ 1 0 0, 1 1 0 ] }
+MaterialBinding { value PER_PART }
+Text3 { parts ALL  string "hepp" }
+--------8<------------- [snip] --------------8<------------- [snip]
+
+    ..and the behavior is probably not according to spec for many or
+    all the other shapes neither.
+
+    Needs to be audited and properly fixed.
+
+    20040702 mortene.
+
+=====================================================================
+
+121 Coloring goes bananas with Inventor Mentor example 06.2.Simple3DText.
+
+    There is currently something very strange going on with the above
+    mentioned example. It has worked fine before, but now something
+    strange happens with coloring of the scene, from the second frame
+    rendered and onwards.
+
+    It seems like the last color on the SoText3 "sticks" over
+    subsequent rendering frames, for some reason. I guess e.g. a bug
+    with the lazy evaluation in SoGLLazyElement could cause this..?
+
+    Bug seen on Linux-box with NVidia drivers v41.91 and GeForce3,
+    plus another similar Linux-box with NVidia v53.36 / GeForce4MX. No
+    other systems tested.
+
+    I initially thought this had something to do with bug #120 (buggy
+    handling of SoMaterialBinding::PER_FACE with too few colors), but
+    the problem is still present no matter how many colors the
+    myMaterial SoMaterial node contains. Changing binding to
+    SoMaterialBinding::OVERALL causes the problem to go away, though.
+
+    20040702 mortene.
+
+=====================================================================
