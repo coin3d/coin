@@ -242,8 +242,8 @@ SoFile::readNamedFile(SoInput * in)
       static uint32_t fileerrors_termination = 0;
 
       SbString dummy;
-      while (in->read(dummy) && dummy.getLength() > 0) { 
-        if (fileerrors_termination < 1) {
+      while (in->read(dummy)) { 
+        if (dummy.getLength() > 0 && fileerrors_termination < 1) {
           SoReadError::post(in, "Erroneous character(s) after end of scenegraph: \"%s\". "
                             "This message will only be shown once for this file, "
                             "but more errors might be present", dummy.getString());
