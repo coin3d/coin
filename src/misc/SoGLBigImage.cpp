@@ -477,6 +477,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   assert(dl);
   tls->glimageage[idx] = 0;
   SoGLImage::tagImage(state, tls->glimagearray[idx]);
+  this->resetAge();
   dl->call(state);
 }
 
