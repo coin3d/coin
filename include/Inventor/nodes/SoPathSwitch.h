@@ -32,7 +32,9 @@ class COIN_DLL_EXPORT SoPathSwitch : public SoGroup {
 
 public:
   static void initClass(void);
+
   SoPathSwitch(void);
+  SoPathSwitch(int numchildren);
 
   SoSFPath path;
 
@@ -47,6 +49,9 @@ public:
 
 protected:
   virtual ~SoPathSwitch();
+
+private:
+  void commonConstructor(void);
 };
 
 #endif // !COIN_SOPATHSWITCH_H

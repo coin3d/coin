@@ -41,12 +41,28 @@
 SO_NODE_SOURCE(SoPathSwitch);
 
 /*!
-  Constructor.
+  Default constructor.
 */
-SoPathSwitch::SoPathSwitch()
+SoPathSwitch::SoPathSwitch(void)
+{
+  this->commonConstructor();
+}
+
+/*!
+  Specify the expected number of children this node will have, to make
+  it possible to do more efficient resource allocation.
+*/
+SoPathSwitch::SoPathSwitch(int numchildren)
+  : inherited(numchildren)
+{
+  this->commonConstructor();
+}
+
+// private
+void
+SoPathSwitch::commonConstructor(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPathSwitch);
-
   SO_NODE_ADD_FIELD(path, (NULL));
 }
 

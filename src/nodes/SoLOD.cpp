@@ -50,9 +50,26 @@
 SO_NODE_SOURCE(SoLOD);
 
 /*!
-  Constructor.
+  Default constructor.
 */
-SoLOD::SoLOD()
+SoLOD::SoLOD(void)
+{
+  this->commonConstructor();
+}
+
+/*!
+  Specify the expected number of children this node will have, to make
+  it possible to do more efficient resource allocation.
+*/
+SoLOD::SoLOD(int numchildren)
+  : inherited(numchildren)
+{
+  this->commonConstructor();
+}
+
+// private
+void
+SoLOD::commonConstructor(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLOD);
 

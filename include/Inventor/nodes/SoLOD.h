@@ -32,8 +32,10 @@ class COIN_DLL_EXPORT SoLOD : public SoGroup {
   SO_NODE_HEADER(SoLOD);
 
 public:
-  static void initClass(void);
   SoLOD(void);
+  SoLOD(int numchildren);
+
+  static void initClass(void);
 
   SoMFFloat range;
   SoSFVec3f center;
@@ -52,6 +54,9 @@ protected:
   virtual ~SoLOD();
 
   virtual int whichToTraverse(SoAction *);
+
+private:
+  void commonConstructor(void);
 };
 
 #endif // !COIN_SOLOD_H

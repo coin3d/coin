@@ -50,9 +50,26 @@ static SoGetBoundingBoxAction *bboxAction = NULL;
 SO_NODE_SOURCE(SoLevelOfDetail);
 
 /*!
-  Constructor.
+  Default constructor.
 */
-SoLevelOfDetail::SoLevelOfDetail()
+SoLevelOfDetail::SoLevelOfDetail(void)
+{
+  this->commonConstructor();
+}
+
+/*!
+  Specify the expected number of children this node will have, to make
+  it possible to do more efficient resource allocation.
+*/
+SoLevelOfDetail::SoLevelOfDetail(int numchildren)
+  : inherited(numchildren)
+{
+  this->commonConstructor();
+}
+
+// private
+void
+SoLevelOfDetail::commonConstructor(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoLevelOfDetail);
 

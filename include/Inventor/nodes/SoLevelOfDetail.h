@@ -32,7 +32,9 @@ class COIN_DLL_EXPORT SoLevelOfDetail : public SoGroup {
 
 public:
   static void initClass(void);
+
   SoLevelOfDetail(void);
+  SoLevelOfDetail(int numchildren);
 
   SoMFFloat screenArea;
 
@@ -43,6 +45,9 @@ public:
 
 protected:
   virtual ~SoLevelOfDetail();
+
+private:
+  void commonConstructor(void);
 };
 
 #endif // !COIN_SOLEVELOFDETAIL_H
