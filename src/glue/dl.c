@@ -119,7 +119,9 @@
 #include <stdlib.h> // atoi() 
 #include <string.h> // strlen, strcpy
 #include <stdio.h>  // snprintf
+#ifdef HAVE_LIBGEN_H
 #include <libgen.h> // dirname
+#endif /* HAVE_LIBGEN_H */
 #include <sys/param.h> // PATH_MAX
 #include <sys/stat.h>  // stat
 
