@@ -16,7 +16,11 @@
 *  http://www.sim.no/ sales@sim.no Voice: +47 22114160 Fax: +47 67172912
 *
 \**************************************************************************/
-#if !defined(COIN_NO_DEFAULT_3DFONT)
+
+// FIXME: #define check doesn't seem to work with GCC
+// 2.95.2. Temporary de-activated. 20000324 mortene.
+
+//  #if !defined(COIN_NO_DEFAULT_3DFONT)
 static float defaultfont_coords_33[] = {
 0.00111111,0.631111,
 0.00444445,0.593333,
@@ -12899,4 +12903,4 @@ defaultfont_edgeidx_124,
 defaultfont_edgeidx_125,
 defaultfont_edgeidx_126
 };
-#endif // COIN_NO_DEFAULT_3DFONT
+//  #endif // COIN_NO_DEFAULT_3DFONT
