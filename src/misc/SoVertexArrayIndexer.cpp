@@ -1,14 +1,37 @@
-#include "SoVAIndexer.h"
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org/> for more information.
+ *
+ *  Systems in Motion, Postboks 1283, Pirsenteret, 7462 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no/>.
+ *
+\**************************************************************************/
+
+#include "SoVertexArrayIndexer.h"
 #include <assert.h>
 #include <string.h>
 
-SoVAIndexer::SoVAIndexer(GLenum targetin)
+SoVertexArrayIndexer::SoVertexArrayIndexer(GLenum targetin)
   : target(targetin),
     next(NULL)
 {
 }
 
-SoVAIndexer::~SoVAIndexer() 
+SoVertexArrayIndexer::~SoVertexArrayIndexer() 
 {
   for (int i = 0; i < this->ciarray.getLength(); i++) {
     delete[] this->ciarray[i];
@@ -17,27 +40,27 @@ SoVAIndexer::~SoVAIndexer()
 }
   
 GLenum 
-SoVAIndexer::getTarget(void) const
+SoVertexArrayIndexer::getTarget(void) const
 {
   return this->target;
 }
 
 void 
-SoVAIndexer::setNext(SoVAIndexer * nextin)
+SoVertexArrayIndexer::setNext(SoVertexArrayIndexer * nextin)
 {
   this->next = nextin;
 }
 
-SoVAIndexer * 
-SoVAIndexer::getNext(void) const
+SoVertexArrayIndexer * 
+SoVertexArrayIndexer::getNext(void) const
 {
   return this->next;
 }
 
 void 
-SoVAIndexer::addTriangle(const int32_t v0,
-                         const int32_t v1,
-                         const int32_t v2)
+SoVertexArrayIndexer::addTriangle(const int32_t v0,
+                                  const int32_t v1,
+                                  const int32_t v2)
 {
   assert(this->target == GL_TRIANGLES);
   this->indexarray.append(v0);
@@ -46,10 +69,10 @@ SoVAIndexer::addTriangle(const int32_t v0,
 }
 
 void 
-SoVAIndexer::addQuad(const int32_t v0,
-                     const int32_t v1,
-                     const int32_t v2,
-                     const int32_t v3)
+SoVertexArrayIndexer::addQuad(const int32_t v0,
+                              const int32_t v1,
+                              const int32_t v2,
+                              const int32_t v3)
 {
   assert(this->target == GL_QUADS);
   this->indexarray.append(v0);
@@ -58,26 +81,26 @@ SoVAIndexer::addQuad(const int32_t v0,
 }
   
 void 
-SoVAIndexer::beginTarget(void)
+SoVertexArrayIndexer::beginTarget(void)
 {
   this->targetcounter = 0;
 }
  
 void 
-SoVAIndexer::targetVertex(const int32_t v)
+SoVertexArrayIndexer::targetVertex(const int32_t v)
 {
   this->targetcounter++;
   this->indexarray.append(v);
 }
 
 void 
-SoVAIndexer::endTarget(void)
+SoVertexArrayIndexer::endTarget(void)
 {
   this->countarray.append(this->targetcounter);
 }
 
 void 
-SoVAIndexer::close(void)
+SoVertexArrayIndexer::close(void)
 {
   this->indexarray.fit();
   this->countarray.fit();
@@ -90,7 +113,7 @@ SoVAIndexer::close(void)
 }
 
 void 
-SoVAIndexer::render(const cc_glglue * glue)
+SoVertexArrayIndexer::render(const cc_glglue * glue)
 {
   switch (this->target) {
   case GL_TRIANGLES:
