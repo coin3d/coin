@@ -27,34 +27,66 @@
   \ingroup nodes
 
   Triangle strips are specified using the numVertices field.
-  Coordinates, normals, materials and texture coordinates are fetched
-  in order from the current state or from the vertexProperty node if
-  set. For example, if numVertices is set to [3, 4, 5, 3], this node
-  would specify a triangle from coordinates 0, 1 and 2, a triangle
-  strip from coordinates 3, 4, 5 and 6, a triangle strip from
-  coordinates 7, 8, 9, 10 and 11 and finally a triangle from
-  coordinates 12, 13, 14.
+
+  Coordinates, normals, materials and texture coordinates are all
+  fetched in order from the current state or from the vertexProperty
+  node if set. (To render triangle strips from vertex indices, use the
+  SoIndexedTriangleStripSet node.)
+
+  The numVertices field may be used for multiple strips, coordinates
+  will be fetched with a monotonically increasing index from the
+  coordinates on the traversal state stack (i.e. typically from the
+  last SoCoordinate3 node encountered during traversal).
+
+  For example, if numVertices is set to [3, 4, 5, 3], this node would
+  specify a triangle from coordinates 0, 1 and 2, a triangle strip
+  from coordinates 3, 4, 5 and 6, a triangle strip from coordinates 7,
+  8, 9, 10 and 11 and finally a triangle from coordinates 12, 13, 14.
 
   Or to put it another way: in a tristrip there will always be two
   vertices more than there are triangles.  Realize that you are
   handling data on the vertex level (not polygon-level), and that the
   triangles are laid out like this, given 5 vertices:
 
-  \verbose
+  \verbatim
 
   1-----3-----5
    \   / \   /
     \ /   \ /
      2-----4
 
-  \endverbose
+  \endverbatim
+
+  The above figure in scene graph file format:
+
+  \verbatim
+  #Inventor V2.1 ascii
+
+  Separator {
+    Coordinate3 {
+      point [ -2 1 0, -1 -1 0, 0 1 0, 1 -1 0, 2 1 0 ]
+    }
+
+    TriangleStripSet {
+      numVertices [ 5 ]
+    }
+  }
+  \endverbatim
+
+  The scene graph above in a viewer:
+
+  <center><img src="http://doc.coin3d.org/images/[PATH]/[FILENAME]"></center>
+
 
   Strips are converted into triangles the way OpenGL does it, of
-  course.
+  course, so for the dirty details, check out the documentation of
+  OpenGL's \c GL_TRIANGLE_STRIP primitive rendering type.
 
   Binding PER_PART (per strip), PER_VERTEX, PER_FACE or OVERALL can be
   set for material, and normals. The default material binding is
   OVERALL. The default normal binding is PER_VERTEX.
+
+  \sa SoIndexedTriangleStripSet
 */
 
 #include <Inventor/nodes/SoTriangleStripSet.h>

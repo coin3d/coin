@@ -30,11 +30,33 @@
   which are strung together.
 
   For more information, see the documentation of the
-  SoTriangleStripSet node, and for the dirty details: the \c
-  GL_TRIANGLE_STRIP primitive rendering type in OpenGL.
+  SoTriangleStripSet node.
 
-  For more information about indexed shapes, see documentation in
-  SoIndexedShape and SoIndexedFaceSet.
+  To render several strips within the same node, just separate the
+  coordinate indices with -1.  For more information about indexed
+  shapes, see documentation in SoIndexedShape and SoIndexedFaceSet.
+
+  Example scene graph:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Coordinate3 {
+        point [
+         -2 1 0, -1 -1 0, 0 1 0, 1 -1 0, 2 1 0, # first strip, z==0
+         -2 1 5, -1 -1 5, 0 1 5, 1 -1 5, 2 1 5  # second strip, z==5
+        ]
+     }
+  
+     IndexedTriangleStripSet {
+        coordIndex [
+         0, 1, 2, 3, 4, -1,
+         5, 6, 7, 8, 9, -1
+        ]
+     }
+  }
+  \endverbatim
 */
 
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
