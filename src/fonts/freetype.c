@@ -938,7 +938,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
 }
 
 struct cc_flw_vector_glyph * 
-cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
+cc_flwft_get_vector_glyph(void * font, unsigned int glyphindex, float complexity)
 { 
   struct cc_flw_vector_glyph * new_vector_glyph;
   FT_Outline_Funcs outline_funcs;
@@ -947,7 +947,6 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   FT_OutlineGlyph g;
   FT_Glyph tmp;
   FT_Outline outline;
-  int glyphindex;
   struct cc_flwft_glyph * gs;
   cc_hash * glyphhash;
   SbBool unused;
@@ -985,8 +984,6 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
        made... (handegar). */
     return NULL;
   }
-
-  glyphindex = cc_ftglue_FT_Get_Char_Index(face, glyph);
 
   error = cc_ftglue_FT_Load_Glyph(face, glyphindex, FT_LOAD_DEFAULT );
   if (error != 0) {
@@ -1078,7 +1075,7 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   gs->vector = new_vector_glyph;
   
   glyphhash = ft_get_glyph_hash(font);
-  unused = cc_hash_put(glyphhash, (unsigned long)glyph, gs);
+  unused = cc_hash_put(glyphhash, (unsigned long)glyphindex, gs);
   assert(unused);
   
   /* clean up glyph in Freetype */

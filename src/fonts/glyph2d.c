@@ -33,6 +33,7 @@
 #include <Inventor/C/base/hashp.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbitsp.h>
 
 #include "fontlib_wrapper.h"
 #include "freetype.h"
@@ -82,6 +83,15 @@ static void * glyph2d_fonthash_lock = NULL;
 #endif
 
 static void
+cc_glyph2d_cleanup(void)
+{
+  CC_MUTEX_DESTRUCT(glyph2d_fonthash_lock);
+  glyph2d_fonthash_lock = NULL;
+  cc_hash_destruct(glyph2d_fonthash);
+  glyph2d_fonthash = NULL;
+}
+
+static void
 cc_glyph2d_initialize()
 {
 
@@ -96,7 +106,8 @@ cc_glyph2d_initialize()
   initialized = TRUE;
   
   glyph2d_fonthash = cc_hash_construct(15, 0.75);
-
+  coin_atexit((coin_atexit_f*) cc_glyph2d_cleanup, 0);
+  
   GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
 }
 
@@ -171,6 +182,7 @@ cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float ang
   
   fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size), 
                                angle, -1.0f);
+
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 
@@ -210,6 +222,7 @@ cc_glyph2d_unref(cc_glyph2d * glyph)
 {
   glyph->refcount--;
   if (glyph->refcount == 0) {
+  
     cc_list * glyphlist;
     int ret;
     void * tmp;

@@ -27,11 +27,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/base/list.h>
-  
+
   /*
     FLW is a Font Library Wrapper designed to allow any number of
     underlying font libraries to be used through the same
@@ -44,8 +44,8 @@ extern "C" {
     See http://www.freetype.org for more information about the
     FreeType font library.
   */
-  
-  
+
+
   typedef struct cc_flw_bitmap {
     int bearingX; /* left side of bitmap relative to pen */
     int bearingY; /* top of bitmap relative to pen */
@@ -56,7 +56,7 @@ extern "C" {
     int advanceY;
     unsigned char * buffer; /* bitmap data */
   } cc_flw_bitmap;
-  
+
   typedef struct cc_flw_vector_glyph {
     float * vertices;
     int * faceindices;
@@ -66,8 +66,8 @@ extern "C" {
 
   void cc_flw_ref_font(int fontid);
   void cc_flw_unref_font(int fontid);
-  
-  int cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey, 
+
+  int cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey,
                          const float angle, const float complexity);
   const char * cc_flw_get_font_name(int fontid);
   void * cc_flw_get_font_handle(int fontid);
@@ -86,7 +86,7 @@ extern "C" {
   const int * cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
   const int * cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
 
-  SbBool cc_flw_debug(void);       
+  SbBool cc_flw_debug(void);
 
 #ifdef __cplusplus
 }

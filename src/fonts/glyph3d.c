@@ -39,6 +39,7 @@
 #include <Inventor/C/threads/threadsutilp.h>
 
 #include <Inventor/C/glue/freetype.h>
+#include <Inventor/C/tidbitsp.h>
 
 #include "fontlib_wrapper.h"
 #include "freetype.h"
@@ -94,6 +95,15 @@ static unsigned int glyph3d_standardfontsize = 50;
 #endif
 
 static void
+cc_glyph3d_cleanup(void)
+{
+  CC_MUTEX_DESTRUCT(glyph3d_fonthash_lock);
+  glyph3d_fonthash_lock = NULL;
+  cc_hash_destruct(glyph3d_fonthash);
+  glyph3d_fonthash = NULL;
+}
+
+static void
 cc_glyph3d_initialize()
 {
 
@@ -109,6 +119,7 @@ cc_glyph3d_initialize()
   
   glyph3d_fonthash = cc_hash_construct(15, 0.75);
 
+  coin_atexit((coin_atexit_f*) cc_glyph3d_cleanup, 0);
   GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);  
 }
 
@@ -201,7 +212,7 @@ cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
   glyph->didallocvectorglyph = FALSE;
 
   if (fontidx != 0) 
-    glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, character, newspec->complexity);
+    glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, glyphidx, newspec->complexity);
   else
     glyph->vectorglyph = NULL;
 

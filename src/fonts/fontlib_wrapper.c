@@ -215,14 +215,6 @@ fontstruct_set_angle(struct cc_flw_font * fs, const float angle)
 }
 
 
-static void
-flw_done_bitmap(struct cc_flw_bitmap * bitmap)
-{
-  assert(bitmap);
-  if (bitmap->buffer) { free(bitmap->buffer); }
-  free(bitmap);
-}
-
 static struct cc_flw_glyph *
 flw_glyphidx2glyphptr(struct cc_flw_font * fs, unsigned int glyphidx)
 {
@@ -242,10 +234,13 @@ static void
 fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph, int removefromdict)
 {
   struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, glyph);
-  if (gs->bitmap) { /* might be NULL for 3D fonts */
-    /* workaround so that flw_done_bitmap() doesn't free our static data */
-    if (gs->fromdefaultfont) gs->bitmap->buffer = NULL;
-    flw_done_bitmap(gs->bitmap);
+  assert(gs);
+
+  /* HACK Warning: Handle special case where default 2D font is
+     used. For other cases the memory will be deallocated in the
+     freetype or Win32 font modules. pederb, 2004-06-16  */ 
+  if (gs->bitmap && gs->fromdefaultfont) {
+    free(gs->bitmap); 
   }
   free(gs);
 
@@ -797,13 +792,15 @@ cc_flw_done_glyph(int font, unsigned int glyph)
   FLW_MUTEX_LOCK(flw_global_lock);
 
   fs = flw_fontidx2fontptr(font);
+  assert(fs);
   gs = flw_glyphidx2glyphptr(fs, glyph);
+  assert(gs);
 
-  if (win32api && !fs->defaultfont) {
-    cc_flww32_done_glyph(fs->font, gs->charidx);
+  if (win32api && !fs->defaultfont && !gs->fromdefaultfont) {
+    cc_flww32_done_glyph(fs->font, gs->glyph);
   }
-  else if (freetypelib && !fs->defaultfont) {
-    cc_flwft_done_glyph(fs->font, gs->charidx);
+  else if (freetypelib && !fs->defaultfont && !gs->fromdefaultfont) {
+    cc_flwft_done_glyph(fs->font, gs->glyph);
   }
 
   fontstruct_rmglyph(fs, glyph, 1);
@@ -824,11 +821,8 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
 
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
-
-  if (gs->bitmap) {
-    bm = gs->bitmap;
-    goto done;
-  }
+  
+  assert(gs->bitmap == NULL);
 
   if (win32api && !fs->defaultfont && !gs->fromdefaultfont) {
     bm = cc_flww32_get_bitmap(fs->font, gs->glyph);
@@ -855,7 +849,6 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
   }
 
   gs->bitmap = bm;
- done:
   FLW_MUTEX_UNLOCK(flw_global_lock);
   return bm;
 }
@@ -863,19 +856,20 @@ cc_flw_get_bitmap(int font, unsigned int glyph)
 struct cc_flw_vector_glyph *
 cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
 {
-
   struct cc_flw_vector_glyph * vector_glyph = NULL;
   struct cc_flw_font * fs;
+  struct cc_flw_glyph * gs;
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
   fs = flw_fontidx2fontptr(font);
+  gs = flw_glyphidx2glyphptr(fs, glyph);
 
   if (freetypelib) {
-    vector_glyph = cc_flwft_get_vector_glyph(fs->font, glyph, complexity);
+    vector_glyph = cc_flwft_get_vector_glyph(fs->font, gs->glyph, complexity);
   }
   else if (win32api) {
-    vector_glyph = cc_flww32_get_vector_glyph(fs->font, glyph, complexity);		
+    vector_glyph = cc_flww32_get_vector_glyph(fs->font, gs->glyph, complexity);		
   }
   else {
     vector_glyph = NULL;
