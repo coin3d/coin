@@ -945,8 +945,20 @@ SoConvertAll::evaluate(void)
   if (this->output.isEnabled()) {
     for (int i = 0 ; i < this->output.getNumConnections(); i++) {
       SoField * f = this->output[i];
-      if (!f->isReadOnly())
-        this->convertvalue(this->input, f);
+      if (!f->isReadOnly()) {
+        // Convert directly from the "real" master field if possible,
+        // to behave properly on enum fields (the this->input instance
+        // doesn't contain the name<->value mappings in the case that
+        // the master field is of type So[SM]FEnum or So[SM]FBitMask).
+        SoField * masterfield = NULL;
+        if (this->input->getConnectedField(masterfield))
+          this->convertvalue(masterfield, f);
+        // Couldn't get master field, this means we are connected to
+        // an engine output (at least we _should_ be, could probably
+        // do with an assert here).
+        else
+          this->convertvalue(this->input, f);
+      }
     }
   }
 }
