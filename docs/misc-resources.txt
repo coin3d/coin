@@ -77,3 +77,7 @@ THE LINKS
 
   <URL:http://java.sun.com/docs/books/tutorial/native1.1/index.html>
 
+* SoXt-like GLUT component
+
+  http://www.stud.fee.vutbr.cz/~xpeciv00/OIV/SoGlut/
+
