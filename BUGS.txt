@@ -220,6 +220,18 @@ Now, for the list of known bugs in the core Coin library:
 
     mortene 20020813.
 
+    UPDATE 20040804 mortene: about the problem with a missing lower
+    boundary mentioned above; I have an idea for how to solve this
+    better than to just clamp to low float epsilon values: don't scale
+    any further when the dragger (and thereby also the geometry it is
+    enclosing) is so small that its bounding box fits inside a
+    projected screen rectangle of a certain size (1x1 or 2x2,
+    perhaps?).
+
+    Note that this problem is probably present for _all_ draggers that
+    can be used for scaling operations, and should be fixed for all of
+    them.
+
 =====================================================================
 
 019 When using the CTRL key while doing scaling with
@@ -557,6 +569,9 @@ Now, for the list of known bugs in the core Coin library:
     global fields.
 
     20020930 mortene.
+
+    UPDATE 20040804 mortene: my idea mentioned above for a fix had a
+    fatal flaw, so this problem is still unresolved.
 
 =====================================================================
 
