@@ -87,9 +87,21 @@ MIPSpro_CC_initClassMangling(const char * classname)
   return mangling;
 }
 
+static
+SbString
+HPUX_aCC_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  int len = strlen(classname);
+  SbString mangling;
+  mangling.sprintf("initClass__%d%sSFv", len, classname);
+  return mangling;
+}
+
 /* ********************************************************************** */
 
 static mangleFunc * manglefunctions[] = {
+  HPUX_aCC_initClassMangling,
   gcc2_initClassMangling,
   gcc3_initClassMangling,
   msvc6_initClassMangling,
@@ -117,7 +129,6 @@ getManglingFunction(void)
       mangleFunc * attempt = manglefunctions[i];
       SbString symbol(attempt("SoBase"));
       if ( cc_dl_sym(handle, symbol.getString()) ) {
-        // SoDebugError::postInfo("getManglingFunction", "chose mangling scheme %d", i);
         manglefunc = manglefunctions[i];
       }
     }
