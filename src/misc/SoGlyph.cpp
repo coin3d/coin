@@ -68,10 +68,7 @@
 #ifndef DOXYGEN_SKIP_THIS
 
 #if !defined(COIN_NO_DEFAULT_3DFONT)
-// our default font (misc/default3dfont.cpp)
-extern float * coin_defaultfont_coords[];
-extern int * coin_defaultfont_faceidx[];
-extern int * coin_defaultfont_edgeidx[];
+#include "../misc/defaultfonts.h"
 #endif // COIN_NO_DEFAULT_3DFONT
 
 #undef THIS
@@ -416,9 +413,10 @@ SoGlyph::getGlyph(const char character, const SbName & font)
       glyph->pimpl->flags.didcalcbbox = 1;
     }
     else {
-      glyph->setCoords((SbVec2f*)coin_defaultfont_coords[character-33]);
-      glyph->setFaceIndices(coin_defaultfont_faceidx[character-33]);
-      glyph->setEdgeIndices(coin_defaultfont_edgeidx[character-33]);
+      const int idx = character-33;
+      glyph->setCoords((SbVec2f*)coin_default3dfont_get_coords()[idx]);
+      glyph->setFaceIndices((int*)coin_default3dfont_get_faceidx()[idx]);
+      glyph->setEdgeIndices((int*)coin_default3dfont_get_edgeidx()[idx]);
     }
 #endif // COIN_NO_DEFAULT_3DFONT
   }

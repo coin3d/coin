@@ -26,7 +26,9 @@
 // FIXME: add iso-latin-1 characters (and characters from other
 // character sets?). 20010823 mortene.
 
-unsigned char coin_default2dfont[][12] = {
+#include "defaultfonts.h"
+
+static const unsigned char coin_default2dfont[][12] = {
   {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
   {  0,  0, 12, 12,  0,  8, 12, 12, 12, 12, 12,  0 }, // !
   {  0,  0,  0,  0,  0,  0,  0,  0,  0, 20, 20, 20 }, // "
@@ -132,7 +134,7 @@ unsigned char coin_default2dfont[][12] = {
 };
 
 // map from iso-latin1 to font data array index
-int coin_default2dfont_isolatin1_mapping[] = {
+static const int coin_default2dfont_isolatin1_mapping[] = {
     0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   0,   0,   0,   0,   0,
     0,   0,   0,   0,   0,   0,   0,   0,
@@ -166,3 +168,23 @@ int coin_default2dfont_isolatin1_mapping[] = {
     0,   0,   0,   0,   0,   0,   0,   0,
    96,   0,   0,   0,   0,   0,   0,   0
 };
+
+const int * 
+coin_default2dfont_get_isolatin1_mapping(void)
+{
+  return coin_default2dfont_isolatin1_mapping;
+}
+
+const unsigned char * 
+coin_default2dfont_get_data(void)
+{
+  return (const unsigned char *) coin_default2dfont;
+}
+
+int 
+coin_default2dfont_get_size(void)
+{
+  return 12;
+}
+
+

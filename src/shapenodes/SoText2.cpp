@@ -227,9 +227,6 @@ SoText2::initClass(void)
 
 // **************************************************************************
 
-extern unsigned char coin_default2dfont[][12];
-extern int coin_default2dfont_isolatin1_mapping[];
-
 // doc in super
 void
 SoText2::GLRender(SoGLRenderAction * action)

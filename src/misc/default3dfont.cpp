@@ -20,6 +20,9 @@
  *  <URL:http://www.sim.no>.
  *
 \**************************************************************************/
+
+#include "defaultfonts.h"
+
 static float defaultfont_coords_33[] = {
 0.00111111f,0.631111f,
 0.00444445f,0.593333f,
@@ -12379,7 +12382,7 @@ static int defaultfont_edgeidx_126[] = {
 18,16,
 20, 18, -1
 };
-float *coin_defaultfont_coords[] = {
+static const float *coin_defaultfont_coords[] = {
 defaultfont_coords_33,
 defaultfont_coords_34,
 defaultfont_coords_35,
@@ -12475,7 +12478,7 @@ defaultfont_coords_124,
 defaultfont_coords_125,
 defaultfont_coords_126
 };
-int *coin_defaultfont_faceidx[] = {
+static const int *coin_defaultfont_faceidx[] = {
 defaultfont_faceidx_33,
 defaultfont_faceidx_34,
 defaultfont_faceidx_35,
@@ -12571,7 +12574,7 @@ defaultfont_faceidx_124,
 defaultfont_faceidx_125,
 defaultfont_faceidx_126
 };
-int *coin_defaultfont_edgeidx[] = {
+static const int *coin_defaultfont_edgeidx[] = {
 defaultfont_edgeidx_33,
 defaultfont_edgeidx_34,
 defaultfont_edgeidx_35,
@@ -12667,3 +12670,22 @@ defaultfont_edgeidx_124,
 defaultfont_edgeidx_125,
 defaultfont_edgeidx_126
 };
+
+const float ** 
+coin_default3dfont_get_coords(void)
+{
+  return coin_defaultfont_coords;
+}
+
+const int ** 
+coin_default3dfont_get_faceidx(void)
+{
+  return coin_defaultfont_faceidx;
+}
+
+const int ** 
+coin_default3dfont_get_edgeidx(void)
+{
+  return coin_defaultfont_edgeidx; 
+}
+

@@ -37,6 +37,7 @@
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
+#include "../misc/defaultfonts.h"
 
 #ifdef HAVE_FREETYPE
 #include <Inventor/C/glue/flwfreetype.h>
@@ -64,9 +65,6 @@ static int fontcnt;
 static int fontmax = 0;
 static SbBool wrapper_initialized = FALSE;
   
-  /* The default bitmap font, as a fallback. */
-#include "../misc/default2dfont.ic"
-
 #define NOGLYPH -1
 
 /*
@@ -78,11 +76,16 @@ get_default_bitmap(unsigned int character)
 {
   cc_FLWbitmap * bm;
   if (character < 256) {
+    const int fontsize = coin_default2dfont_get_size();
+    const int * isomapping = coin_default2dfont_get_isolatin1_mapping();
+    const unsigned char * fontdata = coin_default2dfont_get_data();
+
     bm = (cc_FLWbitmap *)malloc(sizeof(cc_FLWbitmap));
-    bm->buffer = (unsigned char *)coin_default2dfont + 12 * coin_default2dfont_isolatin1_mapping[character];
+    bm->buffer = (unsigned char *) fontdata + 
+      fontsize * isomapping[character];
     bm->bearingX = 0;
-    bm->bearingY = 12;
-    bm->rows = 12;
+    bm->bearingY = fontsize;
+    bm->rows = fontsize;
     bm->width = 8;
     bm->pitch = 1;
     return bm;
