@@ -7,8 +7,8 @@
 # ID
 # ==
 # HIERARCHY
-#       SoClipPlaneManip
-# I     SoTransformManip
+# ID    SoClipPlaneManip
+# ID    SoTransformManip
 # i             SoCenterballManip
 # I             SoHandleBoxManip
 # I             SoJackManip
@@ -16,8 +16,8 @@
 # I             SoTrackballManip
 # i             SoTransformBoxManip
 # i             SoTransformerManip
-# Id    SoPointLightManip
-# Id    SoSpotLightManip
-# Id    SoDirectionalLightManip
+# ID    SoPointLightManip
+# ID    SoSpotLightManip
+# ID    SoDirectionalLightManip
 #
 ############################################################################

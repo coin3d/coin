@@ -17,6 +17,17 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTransformManip SoTransformManip.h Inventor/manips/SoTransformManip.h
+  \brief The SoTransformManip class is used to manipulate transformations.
+  \ingroup manips
+
+  A manipulator is used by replacing the node you want to edit in the
+  graph with the manipulator. Draggers are used to to manipulate the
+  node. When manipulation is finished, the node is put back into the
+  graph, replacing the manipulator.
+*/
+
 #include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/draggers/SoDragger.h>
@@ -39,6 +50,7 @@
 SO_NODE_SOURCE(SoTransformManip);
 
 
+// Documented in superclass
 void
 SoTransformManip::initClass(void)
 {
@@ -87,7 +99,8 @@ SoTransformManip::~SoTransformManip()
 }
 
 /*!
-  Sets a dragger for this manipulator. The default dragger is a SoTransformerDragger.
+  Sets a dragger for this manipulator. The default dragger is a
+  SoTransformerDragger.
 */
 void
 SoTransformManip::setDragger(SoDragger * newdragger)
@@ -193,8 +206,7 @@ SoTransformManip::replaceNode(SoPath * path)
   return TRUE;
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoTransformManip::doAction(SoAction * action)
 {
@@ -208,6 +220,7 @@ SoTransformManip::doAction(SoAction * action)
   }
 }
 
+// Documented in superclass
 void
 SoTransformManip::callback(SoCallbackAction * action)
 {
@@ -215,8 +228,7 @@ SoTransformManip::callback(SoCallbackAction * action)
   SoTransform::callback(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoTransformManip::GLRender(SoGLRenderAction * action)
 {
@@ -224,8 +236,7 @@ SoTransformManip::GLRender(SoGLRenderAction * action)
   SoTransform::GLRender(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoTransformManip::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -260,8 +271,7 @@ SoTransformManip::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoTransformManip::getMatrix(SoGetMatrixAction * action)
 {
@@ -283,8 +293,7 @@ SoTransformManip::getMatrix(SoGetMatrixAction * action)
   }
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoTransformManip::handleEvent(SoHandleEventAction * action)
 {
@@ -292,8 +301,7 @@ SoTransformManip::handleEvent(SoHandleEventAction * action)
   SoTransform::handleEvent(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoTransformManip::pick(SoPickAction * action)
 {
@@ -301,8 +309,7 @@ SoTransformManip::pick(SoPickAction * action)
   SoTransform::pick(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoTransformManip::search(SoSearchAction * action)
 {
@@ -322,6 +329,7 @@ SoTransformManip::getChildren(void) const
 }
 
 /*!
+  \internal
   Callback to update field values when motion matrix changes.
 */
 void
@@ -355,7 +363,8 @@ SoTransformManip::valueChangedCB(void * m, SoDragger * dragger)
 }
 
 /*!
-  CAllback to update motion matrix when a field is modified.
+  \internal
+  Callback to update motion matrix when a field is modified.
 */
 void
 SoTransformManip::fieldSensorCB(void * m, SoSensor *)
@@ -374,6 +383,7 @@ SoTransformManip::fieldSensorCB(void * m, SoSensor *)
 }
 
 /*!
+  \internal
   Overloaded to copy the dragger.
 */
 void
@@ -386,6 +396,7 @@ SoTransformManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconne
 }
 
 /*!
+  \internal
   Copies field values from one node to the other.
 */
 void

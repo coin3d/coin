@@ -22,9 +22,10 @@
   \brief The SoPointLightManip class is used to manipulate point light nodes.
   \ingroup manips
 
-  A manipulator is used by replacing the node you want to edit in the graph with
-  the manipulator. Draggers are used to to manipulate the node. When manipulation
-  is finished, the node is put back into the graph, replacing the manipulator.
+  A manipulator is used by replacing the node you want to edit in the
+  graph with the manipulator. Draggers are used to to manipulate the
+  node. When manipulation is finished, the node is put back into the
+  graph, replacing the manipulator.
 */
 
 #include <Inventor/manips/SoPointLightManip.h>
@@ -50,6 +51,7 @@
 SO_NODE_SOURCE(SoPointLightManip);
 
 
+// Documented in superclass
 void
 SoPointLightManip::initClass(void)
 {
@@ -194,8 +196,7 @@ SoPointLightManip::replaceNode(SoPath * path)
   return TRUE;
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoPointLightManip::doAction(SoAction * action)
 {
@@ -209,8 +210,7 @@ SoPointLightManip::doAction(SoAction * action)
   }
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoPointLightManip::callback(SoCallbackAction * action)
 {
@@ -218,8 +218,7 @@ SoPointLightManip::callback(SoCallbackAction * action)
   SoPointLight::callback(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoPointLightManip::GLRender(SoGLRenderAction * action)
 {
@@ -227,8 +226,7 @@ SoPointLightManip::GLRender(SoGLRenderAction * action)
   SoPointLight::GLRender(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoPointLightManip::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -263,8 +261,7 @@ SoPointLightManip::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoPointLightManip::getMatrix(SoGetMatrixAction * action)
 {
@@ -286,8 +283,7 @@ SoPointLightManip::getMatrix(SoGetMatrixAction * action)
   }
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoPointLightManip::handleEvent(SoHandleEventAction * action)
 {
@@ -295,8 +291,7 @@ SoPointLightManip::handleEvent(SoHandleEventAction * action)
   SoPointLight::handleEvent(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoPointLightManip::pick(SoPickAction * action)
 {
@@ -304,8 +299,7 @@ SoPointLightManip::pick(SoPickAction * action)
   SoPointLight::pick(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoPointLightManip::search(SoSearchAction * action)
 {
@@ -324,6 +318,9 @@ SoPointLightManip::getChildren(void) const
   return this->children;
 }
 
+/*!
+  \internal
+*/
 void
 SoPointLightManip::valueChangedCB(void * m, SoDragger * dragger)
 {
@@ -339,6 +336,9 @@ SoPointLightManip::valueChangedCB(void * m, SoDragger * dragger)
   thisp->attachSensors(TRUE);
 }
 
+/*!
+  \internal
+*/
 void
 SoPointLightManip::fieldSensorCB(void * m, SoSensor *)
 {
@@ -367,6 +367,7 @@ SoPointLightManip::fieldSensorCB(void * m, SoSensor *)
 }
 
 /*!
+  \internal
   Overloaded to copy the dragger.
 */
 void
@@ -378,6 +379,7 @@ SoPointLightManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconn
 }
 
 /*!
+  \internal
   Copies field values.
 */
 void

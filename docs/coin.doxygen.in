@@ -760,6 +760,8 @@ INPUT                 = @coin_build_dir@/include/Inventor/SbBasic.h \
                         @coin_src_dir@/include/Inventor/engines/SoEngineOutput.h \
                         @coin_src_dir@/src/engines/SoBoolOperation.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoBoolOperation.h \
+                        @coin_src_dir@/src/engines/SoConcatenate.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoConcatenate.h \
                         @coin_src_dir@/src/engines/SoGate.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoGate.h \
                         @coin_src_dir@/src/engines/SoSelectOne.cpp \
@@ -772,7 +774,15 @@ INPUT                 = @coin_build_dir@/include/Inventor/SbBasic.h \
                         @coin_src_dir@/include/Inventor/draggers/SoDragger.h \
                         @coin_src_dir@/src/manips/commoncode.cpp \
                         @coin_src_dir@/src/manips/SoDirectionalLightManip.cpp \
-                        @coin_src_dir@/include/Inventor/manips/SoDirectionalLightManip.h
+                        @coin_src_dir@/include/Inventor/manips/SoDirectionalLightManip.h \
+                        @coin_src_dir@/src/manips/SoPointLightManip.cpp \
+                        @coin_src_dir@/include/Inventor/manips/SoPointLightManip.h \
+                        @coin_src_dir@/src/manips/SoSpotLightManip.cpp \
+                        @coin_src_dir@/include/Inventor/manips/SoSpotLightManip.h \
+                        @coin_src_dir@/src/manips/SoTransformManip.cpp \
+                        @coin_src_dir@/include/Inventor/manips/SoTransformManip.h \
+                        @coin_src_dir@/src/manips/SoClipPlaneManip.cpp \
+                        @coin_src_dir@/include/Inventor/manips/SoClipPlaneManip.h
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 

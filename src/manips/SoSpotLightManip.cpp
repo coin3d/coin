@@ -22,9 +22,10 @@
   \brief The SoSpotLightManip class is used to manipulate spot light nodes.
   \ingroup manips
 
-  A manipulator is used by replacing the node you want to edit in the graph with
-  the manipulator. Draggers are used to to manipulate the node. When manipulation
-  is finished, the node is put back into the graph, replacing the manipulator.
+  A manipulator is used by replacing the node you want to edit in the
+  graph with the manipulator. Draggers are used to to manipulate the
+  node. When manipulation is finished, the node is put back into the
+  graph, replacing the manipulator.
 */
 
 #include <Inventor/manips/SoSpotLightManip.h>
@@ -50,12 +51,17 @@
 SO_NODE_SOURCE(SoSpotLightManip);
 
 
+// Documented in superclass
 void
 SoSpotLightManip::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoSpotLightManip);
 }
 
+/*!
+  The constructor sets up the internal SoSpotLightDragger used for
+  manipulation.
+ */
 SoSpotLightManip::SoSpotLightManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSpotLightManip);
@@ -78,7 +84,9 @@ SoSpotLightManip::SoSpotLightManip(void)
   this->setDragger(new SoSpotLightDragger);
 }
 
-
+/*!
+  Destructor.
+ */
 SoSpotLightManip::~SoSpotLightManip()
 {
   this->setDragger(NULL);
@@ -91,6 +99,9 @@ SoSpotLightManip::~SoSpotLightManip()
   delete this->children;
 }
 
+/*!
+  Set dragger to use for user interaction.
+ */
 void
 SoSpotLightManip::setDragger(SoDragger * newdragger)
 {
@@ -111,6 +122,9 @@ SoSpotLightManip::setDragger(SoDragger * newdragger)
   }
 }
 
+/*!
+  Returns pointer to internal dragger.
+ */
 SoDragger *
 SoSpotLightManip::getDragger(void)
 {
@@ -190,8 +204,7 @@ SoSpotLightManip::replaceNode(SoPath * path)
   return TRUE;
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoSpotLightManip::doAction(SoAction * action)
 {
@@ -205,8 +218,7 @@ SoSpotLightManip::doAction(SoAction * action)
   }
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoSpotLightManip::callback(SoCallbackAction * action)
 {
@@ -214,8 +226,7 @@ SoSpotLightManip::callback(SoCallbackAction * action)
   SoSpotLight::callback(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoSpotLightManip::GLRender(SoGLRenderAction * action)
 {
@@ -223,8 +234,7 @@ SoSpotLightManip::GLRender(SoGLRenderAction * action)
   SoSpotLight::GLRender(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoSpotLightManip::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -259,8 +269,7 @@ SoSpotLightManip::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoSpotLightManip::getMatrix(SoGetMatrixAction * action)
 {
@@ -282,8 +291,7 @@ SoSpotLightManip::getMatrix(SoGetMatrixAction * action)
   }
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoSpotLightManip::handleEvent(SoHandleEventAction * action)
 {
@@ -291,8 +299,7 @@ SoSpotLightManip::handleEvent(SoHandleEventAction * action)
   SoSpotLight::handleEvent(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoSpotLightManip::pick(SoPickAction * action)
 {
@@ -300,8 +307,7 @@ SoSpotLightManip::pick(SoPickAction * action)
   SoSpotLight::pick(action);
 }
 
-/*!
- */
+// Documented in superclass
 void
 SoSpotLightManip::search(SoSearchAction * action)
 {
@@ -311,8 +317,9 @@ SoSpotLightManip::search(SoSearchAction * action)
 }
 
 /*!
-  Returns the children of this node. This node only has the dragger
-  as a child.
+  \internal
+  Returns the children of this node. This node only has the dragger as
+  a child.
 */
 SoChildList *
 SoSpotLightManip::getChildren(void) const
@@ -321,6 +328,7 @@ SoSpotLightManip::getChildren(void) const
 }
 
 /*!
+  \internal
   Updates the fields when the motion matrix changes.
 */
 void
@@ -353,6 +361,7 @@ SoSpotLightManip::valueChangedCB(void * m, SoDragger * dragger)
 }
 
 /*!
+  \internal
   Updates the dragger whenever a field is modified.
 */
 void
@@ -381,6 +390,7 @@ SoSpotLightManip::fieldSensorCB(void * m, SoSensor *)
 }
 
 /*!
+  \internal
   Overloaded to copy the dragger.
 */
 void
@@ -393,6 +403,7 @@ SoSpotLightManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconne
 }
 
 /*!
+  \internal
   Copies field values.
 */
 void

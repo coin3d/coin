@@ -22,9 +22,10 @@
   \brief The SoClipPlaneManip class is used to manipulate clip planes.
   \ingroup manips
 
-  A manipulator is used by replacing the node you want to edit in the graph with
-  the manipulator. Draggers are used to manipulate the node. When manipulation
-  is finished, the node is put back into the graph, replacing the manipulator.
+  A manipulator is used by replacing the node you want to edit in the
+  graph with the manipulator. Draggers are used to manipulate the
+  node. When manipulation is finished, the node is put back into the
+  graph, replacing the manipulator.
 */
 
 
@@ -50,13 +51,17 @@
 
 SO_NODE_SOURCE(SoClipPlaneManip);
 
-
+// Documented in superclass
 void
 SoClipPlaneManip::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoClipPlaneManip);
 }
 
+/*!
+  An SoJackDragger is the default dragger used to manipulate
+  SoClipPlane nodes.
+ */
 SoClipPlaneManip::SoClipPlaneManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoClipPlaneManip);
@@ -79,7 +84,9 @@ SoClipPlaneManip::SoClipPlaneManip(void)
   this->setDragger(new SoJackDragger);
 }
 
-
+/*!
+  Destructor.
+ */
 SoClipPlaneManip::~SoClipPlaneManip()
 {
   this->setDragger(NULL);
@@ -91,6 +98,10 @@ SoClipPlaneManip::~SoClipPlaneManip()
   delete this->children;
 }
 
+/*!
+  Sets a dragger to use for this manipulator. The default dragger is
+  an SoJackDragger.
+ */
 void
 SoClipPlaneManip::setDragger(SoDragger * newdragger)
 {
@@ -111,6 +122,9 @@ SoClipPlaneManip::setDragger(SoDragger * newdragger)
   }
 }
 
+/*!
+  Returns pointer to dragger used for interaction.
+ */
 SoDragger *
 SoClipPlaneManip::getDragger(void)
 {
@@ -129,6 +143,7 @@ SoClipPlaneManip::getDragger(void)
 }
 
 /*!
+  \internal
   Overloaded to copy the dragger.
 */
 void
@@ -155,7 +170,11 @@ SoClipPlaneManip::setValue(const SbBox3f & box, const SbVec3f & planenormal, flo
   SoClipPlaneManip::fieldSensorCB(this, NULL);
 }
 
-// doc from parent
+/*!
+  Replaces the node specified by \a path with this manipulator.
+  The manipulator will copy the field data from the node, to make
+  it affect the state in the same way as the node.
+*/
 SbBool
 SoClipPlaneManip::replaceNode(SoPath * path)
 {
@@ -334,9 +353,10 @@ SoClipPlaneManip::getChildren(void) const
   return this->children;
 }
 
-//
-// called whenever dragger is touched.
-//
+/*!
+  \internal
+  Called whenever dragger is touched.
+*/
 void
 SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
 {
@@ -362,9 +382,10 @@ SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
   thisp->attachSensors(TRUE);
 }
 
-//
-// called whenever one of the fields changes value
-//
+/*!
+  \internal
+  Called whenever one of the fields changes value.
+*/
 void
 SoClipPlaneManip::fieldSensorCB(void * m, SoSensor * d)
 {
@@ -392,9 +413,7 @@ SoClipPlaneManip::fieldSensorCB(void * m, SoSensor * d)
   }
 }
 
-/*!
-  Convenience method used to attach and detach field sensors.
-*/
+// Convenience method used to attach and detach field sensors.
 void
 SoClipPlaneManip::attachSensors(const SbBool onoff)
 {
@@ -411,7 +430,7 @@ SoClipPlaneManip::attachSensors(const SbBool onoff)
 }
 
 /*!
-  Copies field values from one clip plane to another.
+  Copies field values from one clip plane node to another.
 */
 void
 SoClipPlaneManip::transferFieldValues(const SoClipPlane * from, SoClipPlane * to)
