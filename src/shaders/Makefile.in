@@ -253,32 +253,69 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
+@BUILD_SHADERS_FALSE@RegularSources = shaders-dummy.cpp
+@BUILD_SHADERS_TRUE@RegularSources = \
+@BUILD_SHADERS_TRUE@	SoFragmentShader.cpp \
+@BUILD_SHADERS_TRUE@	SoGLARBShader.cpp \
+@BUILD_SHADERS_TRUE@	SoGLCgShader.cpp \
+@BUILD_SHADERS_TRUE@	SoGLSLShader.cpp \
+@BUILD_SHADERS_TRUE@	SoGLShaderObject.cpp \
+@BUILD_SHADERS_TRUE@	SoGLShaderParameter.cpp \
+@BUILD_SHADERS_TRUE@	SoGLShaderProgram.cpp \
+@BUILD_SHADERS_TRUE@	SoGLShaderProgramElement.cpp \
+@BUILD_SHADERS_TRUE@	SoShaderObject.cpp \
+@BUILD_SHADERS_TRUE@	SoShaderParameter.cpp \
+@BUILD_SHADERS_TRUE@	SoShaderProgram.cpp \
+@BUILD_SHADERS_TRUE@	SoShaders.cpp \
+@BUILD_SHADERS_TRUE@	SoVertexShader.cpp
 
-RegularSources = \
-	SbList.cpp \
-	SbPList.cpp \
-	SbIntList.cpp \
-	SbVec3fList.cpp \
-	SbStringList.cpp \
-	SoActionMethodList.cpp \
-	SoAuditorList.cpp \
-	SoBaseList.cpp \
-	SoCallbackList.cpp \
-	SoDetailList.cpp \
-	SoEnabledElementsList.cpp \
-	SoEngineList.cpp \
-	SoEngineOutputList.cpp \
-	SoFieldList.cpp \
-	SoNodeList.cpp \
-	SoPathList.cpp \
-	SoPickedPointList.cpp \
-	SoTypeList.cpp
+@BUILD_SHADERS_FALSE@LinkHackSources = shaders-dummy.cpp
+@BUILD_SHADERS_TRUE@LinkHackSources = \
+@BUILD_SHADERS_TRUE@	SoFragmentShader.cpp \
+@BUILD_SHADERS_TRUE@	SoGLARBShader.cpp \
+@BUILD_SHADERS_TRUE@	SoGLCgShader.cpp \
+@BUILD_SHADERS_TRUE@	SoGLSLShader.cpp \
+@BUILD_SHADERS_TRUE@	SoGLShaderObject.cpp \
+@BUILD_SHADERS_TRUE@	SoGLShaderParameter.cpp \
+@BUILD_SHADERS_TRUE@	SoGLShaderProgram.cpp \
+@BUILD_SHADERS_TRUE@	SoGLShaderProgramElement.cpp \
+@BUILD_SHADERS_TRUE@	SoShaderObject.cpp \
+@BUILD_SHADERS_TRUE@	SoShaderParameter.cpp \
+@BUILD_SHADERS_TRUE@	SoShaderProgram.cpp \
+@BUILD_SHADERS_TRUE@	SoShaders.cpp \
+@BUILD_SHADERS_TRUE@	SoVertexShader.cpp
 
-LinkHackSources = \
-	all-lists-cpp.cpp
+# for 'make dist'
+@BUILD_SHADERS_FALSE@PrivateHeaders = \
+@BUILD_SHADERS_FALSE@	SoFragmentShader.cpp \
+@BUILD_SHADERS_FALSE@	SoGLARBShader.cpp \
+@BUILD_SHADERS_FALSE@	SoGLCgShader.cpp \
+@BUILD_SHADERS_FALSE@	SoGLSLShader.cpp \
+@BUILD_SHADERS_FALSE@	SoGLShaderObject.cpp \
+@BUILD_SHADERS_FALSE@	SoGLShaderParameter.cpp \
+@BUILD_SHADERS_FALSE@	SoGLShaderProgram.cpp \
+@BUILD_SHADERS_FALSE@	SoGLShaderProgramElement.cpp \
+@BUILD_SHADERS_FALSE@	SoShaderObject.cpp \
+@BUILD_SHADERS_FALSE@	SoShaderParameter.cpp \
+@BUILD_SHADERS_FALSE@	SoShaderProgram.cpp \
+@BUILD_SHADERS_FALSE@	SoShaders.cpp \
+@BUILD_SHADERS_FALSE@	SoVertexShader.cpp \
+@BUILD_SHADERS_FALSE@	SoGLARBShader.h \
+@BUILD_SHADERS_FALSE@	SoGLCgShader.h \
+@BUILD_SHADERS_FALSE@	SoGLSLShader.h \
+@BUILD_SHADERS_FALSE@	SoGLShaderObject.h \
+@BUILD_SHADERS_FALSE@	SoGLShaderParameter.h \
+@BUILD_SHADERS_FALSE@	SoGLShaderProgram.h \
+@BUILD_SHADERS_FALSE@	SoGLShaderTypes.h
+
+@BUILD_SHADERS_TRUE@PrivateHeaders = \
+@BUILD_SHADERS_TRUE@	SoGLARBShader.h \
+@BUILD_SHADERS_TRUE@	SoGLCgShader.h \
+@BUILD_SHADERS_TRUE@	SoGLSLShader.h \
+@BUILD_SHADERS_TRUE@	SoGLShaderObject.h 
+
 
 PublicHeaders = 
-PrivateHeaders = 
 ObsoleteHeaders = 
 
 
@@ -304,154 +341,153 @@ DISTCLEANFILES = \
 @HACKING_COMPACT_BUILD_FALSE@ExtraSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_TRUE@ExtraSources = $(RegularSources)
 
-@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = lists.lst
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = liblists@SUFFIX@LINKHACK.la
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = liblists.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = shaders.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libshaders@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libshaders.la
 
 DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
 
 # header installation
-@MAC_FRAMEWORK_TRUE@liblistsincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/lists
-@MAC_FRAMEWORK_FALSE@liblistsincdir = $(includedir)/Inventor/lists
+@MAC_FRAMEWORK_TRUE@libshadersincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/shaders
+@MAC_FRAMEWORK_FALSE@libshadersincdir = $(includedir)/Inventor/shaders
 # hack to change libdir value when installing Mac OS X compiler framework
 @MAC_FRAMEWORK_TRUE@lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
-liblistsinc_HEADERS = $(PublicHeaders)
+libshadersinc_HEADERS = $(PublicHeaders)
 
-liblists_la_SOURCES = $(BuildSources)
-EXTRA_liblists_la_SOURCES = \
+libshaders_la_SOURCES = $(BuildSources)
+EXTRA_libshaders_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-liblists@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
-EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES = \
+libshaders@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libshaders@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
 
-lists_lst_SOURCES = $(BuildSources)
-EXTRA_lists_lst_SOURCES = \
+shaders_lst_SOURCES = $(BuildSources)
+EXTRA_shaders_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(ExtraSources)
 
-subdir = src/lists
+subdir = src/shaders
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 
-lists_lst_AR = $(AR) cru
-lists_lst_LIBADD =
-am__lists_lst_SOURCES_DIST = SbList.cpp SbPList.cpp SbIntList.cpp \
-	SbVec3fList.cpp SbStringList.cpp SoActionMethodList.cpp \
-	SoAuditorList.cpp SoBaseList.cpp SoCallbackList.cpp \
-	SoDetailList.cpp SoEnabledElementsList.cpp SoEngineList.cpp \
-	SoEngineOutputList.cpp SoFieldList.cpp SoNodeList.cpp \
-	SoPathList.cpp SoPickedPointList.cpp SoTypeList.cpp \
-	all-lists-cpp.cpp
-am__objects_1 = all-lists-cpp.$(OBJEXT)
-am__objects_2 = SbList.$(OBJEXT) SbPList.$(OBJEXT) SbIntList.$(OBJEXT) \
-	SbVec3fList.$(OBJEXT) SbStringList.$(OBJEXT) \
-	SoActionMethodList.$(OBJEXT) SoAuditorList.$(OBJEXT) \
-	SoBaseList.$(OBJEXT) SoCallbackList.$(OBJEXT) \
-	SoDetailList.$(OBJEXT) SoEnabledElementsList.$(OBJEXT) \
-	SoEngineList.$(OBJEXT) SoEngineOutputList.$(OBJEXT) \
-	SoFieldList.$(OBJEXT) SoNodeList.$(OBJEXT) SoPathList.$(OBJEXT) \
-	SoPickedPointList.$(OBJEXT) SoTypeList.$(OBJEXT)
-@HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
-am_lists_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_lists_lst_SOURCES_DIST = all-lists-cpp.cpp SbList.cpp \
-	SbPList.cpp SbIntList.cpp SbVec3fList.cpp SbStringList.cpp \
-	SoActionMethodList.cpp SoAuditorList.cpp SoBaseList.cpp \
-	SoCallbackList.cpp SoDetailList.cpp SoEnabledElementsList.cpp \
-	SoEngineList.cpp SoEngineOutputList.cpp SoFieldList.cpp \
-	SoNodeList.cpp SoPathList.cpp SoPickedPointList.cpp \
-	SoTypeList.cpp
-lists_lst_OBJECTS = $(am_lists_lst_OBJECTS)
+shaders_lst_AR = $(AR) cru
+shaders_lst_LIBADD =
+am__shaders_lst_SOURCES_DIST = shaders-dummy.cpp SoFragmentShader.cpp \
+	SoGLARBShader.cpp SoGLCgShader.cpp SoGLSLShader.cpp \
+	SoGLShaderObject.cpp SoGLShaderParameter.cpp \
+	SoGLShaderProgram.cpp SoGLShaderProgramElement.cpp \
+	SoShaderObject.cpp SoShaderParameter.cpp SoShaderProgram.cpp \
+	SoShaders.cpp SoVertexShader.cpp
+@BUILD_SHADERS_TRUE@am__objects_1 = SoFragmentShader.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoGLARBShader.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoGLCgShader.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoGLSLShader.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoGLShaderObject.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoGLShaderParameter.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoGLShaderProgram.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoGLShaderProgramElement.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoShaderObject.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoShaderParameter.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoShaderProgram.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoShaders.$(OBJEXT) \
+@BUILD_SHADERS_TRUE@	SoVertexShader.$(OBJEXT)
+@BUILD_SHADERS_FALSE@am__objects_1 = shaders-dummy.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am__objects_2 = $(am__objects_1)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_2 = $(am__objects_1)
+am_shaders_lst_OBJECTS = $(am__objects_2)
+am__EXTRA_shaders_lst_SOURCES_DIST = SoFragmentShader.cpp \
+	SoGLARBShader.cpp SoGLCgShader.cpp SoGLSLShader.cpp \
+	SoGLShaderObject.cpp SoGLShaderParameter.cpp \
+	SoGLShaderProgram.cpp SoGLShaderProgramElement.cpp \
+	SoShaderObject.cpp SoShaderParameter.cpp SoShaderProgram.cpp \
+	SoShaders.cpp SoVertexShader.cpp SoGLARBShader.h SoGLCgShader.h \
+	SoGLSLShader.h SoGLShaderObject.h SoGLShaderParameter.h \
+	SoGLShaderProgram.h SoGLShaderTypes.h shaders-dummy.cpp
+shaders_lst_OBJECTS = $(am_shaders_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
-liblists_la_LDFLAGS =
-liblists_la_LIBADD =
-am__liblists_la_SOURCES_DIST = SbList.cpp SbPList.cpp SbIntList.cpp \
-	SbVec3fList.cpp SbStringList.cpp SoActionMethodList.cpp \
-	SoAuditorList.cpp SoBaseList.cpp SoCallbackList.cpp \
-	SoDetailList.cpp SoEnabledElementsList.cpp SoEngineList.cpp \
-	SoEngineOutputList.cpp SoFieldList.cpp SoNodeList.cpp \
-	SoPathList.cpp SoPickedPointList.cpp SoTypeList.cpp \
-	all-lists-cpp.cpp
-am__objects_6 = all-lists-cpp.lo
-am__objects_7 = SbList.lo SbPList.lo SbIntList.lo SbVec3fList.lo \
-	SbStringList.lo SoActionMethodList.lo SoAuditorList.lo \
-	SoBaseList.lo SoCallbackList.lo SoDetailList.lo \
-	SoEnabledElementsList.lo SoEngineList.lo SoEngineOutputList.lo \
-	SoFieldList.lo SoNodeList.lo SoPathList.lo SoPickedPointList.lo \
-	SoTypeList.lo
-@HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
-@HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
-am_liblists_la_OBJECTS = $(am__objects_8)
-am__EXTRA_liblists_la_SOURCES_DIST = all-lists-cpp.cpp SbList.cpp \
-	SbPList.cpp SbIntList.cpp SbVec3fList.cpp SbStringList.cpp \
-	SoActionMethodList.cpp SoAuditorList.cpp SoBaseList.cpp \
-	SoCallbackList.cpp SoDetailList.cpp SoEnabledElementsList.cpp \
-	SoEngineList.cpp SoEngineOutputList.cpp SoFieldList.cpp \
-	SoNodeList.cpp SoPathList.cpp SoPickedPointList.cpp \
-	SoTypeList.cpp
-liblists_la_OBJECTS = $(am_liblists_la_OBJECTS)
-liblists@SUFFIX@LINKHACK_la_LDFLAGS =
-liblists@SUFFIX@LINKHACK_la_LIBADD =
-am__liblists@SUFFIX@LINKHACK_la_SOURCES_DIST = SbList.cpp SbPList.cpp \
-	SbIntList.cpp SbVec3fList.cpp SbStringList.cpp \
-	SoActionMethodList.cpp SoAuditorList.cpp SoBaseList.cpp \
-	SoCallbackList.cpp SoDetailList.cpp SoEnabledElementsList.cpp \
-	SoEngineList.cpp SoEngineOutputList.cpp SoFieldList.cpp \
-	SoNodeList.cpp SoPathList.cpp SoPickedPointList.cpp \
-	SoTypeList.cpp all-lists-cpp.cpp
-am_liblists@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES_DIST = all-lists-cpp.cpp \
-	SbList.cpp SbPList.cpp SbIntList.cpp SbVec3fList.cpp \
-	SbStringList.cpp SoActionMethodList.cpp SoAuditorList.cpp \
-	SoBaseList.cpp SoCallbackList.cpp SoDetailList.cpp \
-	SoEnabledElementsList.cpp SoEngineList.cpp \
-	SoEngineOutputList.cpp SoFieldList.cpp SoNodeList.cpp \
-	SoPathList.cpp SoPickedPointList.cpp SoTypeList.cpp
-liblists@SUFFIX@LINKHACK_la_OBJECTS = \
-	$(am_liblists@SUFFIX@LINKHACK_la_OBJECTS)
+libshaders_la_LDFLAGS =
+libshaders_la_LIBADD =
+am__libshaders_la_SOURCES_DIST = shaders-dummy.cpp SoFragmentShader.cpp \
+	SoGLARBShader.cpp SoGLCgShader.cpp SoGLSLShader.cpp \
+	SoGLShaderObject.cpp SoGLShaderParameter.cpp \
+	SoGLShaderProgram.cpp SoGLShaderProgramElement.cpp \
+	SoShaderObject.cpp SoShaderParameter.cpp SoShaderProgram.cpp \
+	SoShaders.cpp SoVertexShader.cpp
+@BUILD_SHADERS_TRUE@am__objects_5 = SoFragmentShader.lo SoGLARBShader.lo \
+@BUILD_SHADERS_TRUE@	SoGLCgShader.lo SoGLSLShader.lo \
+@BUILD_SHADERS_TRUE@	SoGLShaderObject.lo SoGLShaderParameter.lo \
+@BUILD_SHADERS_TRUE@	SoGLShaderProgram.lo \
+@BUILD_SHADERS_TRUE@	SoGLShaderProgramElement.lo \
+@BUILD_SHADERS_TRUE@	SoShaderObject.lo SoShaderParameter.lo \
+@BUILD_SHADERS_TRUE@	SoShaderProgram.lo SoShaders.lo \
+@BUILD_SHADERS_TRUE@	SoVertexShader.lo
+@BUILD_SHADERS_FALSE@am__objects_5 = shaders-dummy.lo
+@HACKING_COMPACT_BUILD_TRUE@am__objects_6 = $(am__objects_5)
+@HACKING_COMPACT_BUILD_FALSE@am__objects_6 = $(am__objects_5)
+am_libshaders_la_OBJECTS = $(am__objects_6)
+am__EXTRA_libshaders_la_SOURCES_DIST = SoFragmentShader.cpp \
+	SoGLARBShader.cpp SoGLCgShader.cpp SoGLSLShader.cpp \
+	SoGLShaderObject.cpp SoGLShaderParameter.cpp \
+	SoGLShaderProgram.cpp SoGLShaderProgramElement.cpp \
+	SoShaderObject.cpp SoShaderParameter.cpp SoShaderProgram.cpp \
+	SoShaders.cpp SoVertexShader.cpp SoGLARBShader.h SoGLCgShader.h \
+	SoGLSLShader.h SoGLShaderObject.h SoGLShaderParameter.h \
+	SoGLShaderProgram.h SoGLShaderTypes.h shaders-dummy.cpp
+libshaders_la_OBJECTS = $(am_libshaders_la_OBJECTS)
+libshaders@SUFFIX@LINKHACK_la_LDFLAGS =
+libshaders@SUFFIX@LINKHACK_la_LIBADD =
+am__libshaders@SUFFIX@LINKHACK_la_SOURCES_DIST = shaders-dummy.cpp \
+	SoFragmentShader.cpp SoGLARBShader.cpp SoGLCgShader.cpp \
+	SoGLSLShader.cpp SoGLShaderObject.cpp SoGLShaderParameter.cpp \
+	SoGLShaderProgram.cpp SoGLShaderProgramElement.cpp \
+	SoShaderObject.cpp SoShaderParameter.cpp SoShaderProgram.cpp \
+	SoShaders.cpp SoVertexShader.cpp
+am_libshaders@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_6)
+am__EXTRA_libshaders@SUFFIX@LINKHACK_la_SOURCES_DIST = \
+	SoFragmentShader.cpp SoGLARBShader.cpp SoGLCgShader.cpp \
+	SoGLSLShader.cpp SoGLShaderObject.cpp SoGLShaderParameter.cpp \
+	SoGLShaderProgram.cpp SoGLShaderProgramElement.cpp \
+	SoShaderObject.cpp SoShaderParameter.cpp SoShaderProgram.cpp \
+	SoShaders.cpp SoVertexShader.cpp SoGLARBShader.h SoGLCgShader.h \
+	SoGLSLShader.h SoGLShaderObject.h SoGLShaderParameter.h \
+	SoGLShaderProgram.h SoGLShaderTypes.h shaders-dummy.cpp
+libshaders@SUFFIX@LINKHACK_la_OBJECTS = \
+	$(am_libshaders@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SbIntList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbIntList.Po ./$(DEPDIR)/SbList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbList.Po ./$(DEPDIR)/SbPList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbPList.Po ./$(DEPDIR)/SbStringList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbStringList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SbVec3fList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SbVec3fList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoActionMethodList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoActionMethodList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoAuditorList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoAuditorList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoBaseList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoBaseList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoCallbackList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoCallbackList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoDetailList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoDetailList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEnabledElementsList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEnabledElementsList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEngineList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEngineList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEngineOutputList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoEngineOutputList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoFieldList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoFieldList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoNodeList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoNodeList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPathList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPathList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPickedPointList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoPickedPointList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTypeList.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/SoTypeList.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/all-lists-cpp.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/all-lists-cpp.Po
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/SoFragmentShader.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoFragmentShader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLARBShader.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLARBShader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShader.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLCgShader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLSLShader.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLSLShader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLShaderObject.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLShaderObject.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLShaderParameter.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLShaderParameter.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLShaderProgram.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLShaderProgram.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLShaderProgramElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLShaderProgramElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShaderObject.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShaderObject.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShaderParameter.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShaderParameter.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShaderProgram.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShaderProgram.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoShaders.Plo ./$(DEPDIR)/SoShaders.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexShader.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoVertexShader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/shaders-dummy.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/shaders-dummy.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -460,16 +496,23 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-DIST_SOURCES = $(am__lists_lst_SOURCES_DIST) \
-	$(am__EXTRA_lists_lst_SOURCES_DIST) \
-	$(am__liblists_la_SOURCES_DIST) \
-	$(am__EXTRA_liblists_la_SOURCES_DIST) \
-	$(am__liblists@SUFFIX@LINKHACK_la_SOURCES_DIST) \
-	$(am__EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES_DIST)
-HEADERS = $(liblistsinc_HEADERS)
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+DIST_SOURCES = $(am__shaders_lst_SOURCES_DIST) \
+	$(am__EXTRA_shaders_lst_SOURCES_DIST) \
+	$(am__libshaders_la_SOURCES_DIST) \
+	$(am__EXTRA_libshaders_la_SOURCES_DIST) \
+	$(am__libshaders@SUFFIX@LINKHACK_la_SOURCES_DIST) \
+	$(am__EXTRA_libshaders@SUFFIX@LINKHACK_la_SOURCES_DIST)
+HEADERS = $(libshadersinc_HEADERS)
 
-DIST_COMMON = $(liblistsinc_HEADERS) Makefile.am Makefile.in
-SOURCES = $(lists_lst_SOURCES) $(EXTRA_lists_lst_SOURCES) $(liblists_la_SOURCES) $(EXTRA_liblists_la_SOURCES) $(liblists@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES)
+DIST_COMMON = $(libshadersinc_HEADERS) Makefile.am Makefile.in
+SOURCES = $(shaders_lst_SOURCES) $(EXTRA_shaders_lst_SOURCES) $(libshaders_la_SOURCES) $(EXTRA_libshaders_la_SOURCES) $(libshaders@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libshaders@SUFFIX@LINKHACK_la_SOURCES)
 
 all: all-am
 
@@ -477,7 +520,7 @@ all: all-am
 .SUFFIXES: .cpp .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  src/lists/Makefile
+	  $(AUTOMAKE) --gnu  src/shaders/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 
@@ -520,10 +563,10 @@ clean-noinstLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-liblists.la: $(liblists_la_OBJECTS) $(liblists_la_DEPENDENCIES) 
-	$(CXXLINK)  $(liblists_la_LDFLAGS) $(liblists_la_OBJECTS) $(liblists_la_LIBADD) $(LIBS)
-liblists@SUFFIX@LINKHACK.la: $(liblists@SUFFIX@LINKHACK_la_OBJECTS) $(liblists@SUFFIX@LINKHACK_la_DEPENDENCIES) 
-	$(CXXLINK) -rpath $(libdir) $(liblists@SUFFIX@LINKHACK_la_LDFLAGS) $(liblists@SUFFIX@LINKHACK_la_OBJECTS) $(liblists@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
+libshaders.la: $(libshaders_la_OBJECTS) $(libshaders_la_DEPENDENCIES) 
+	$(CXXLINK)  $(libshaders_la_LDFLAGS) $(libshaders_la_OBJECTS) $(libshaders_la_LIBADD) $(LIBS)
+libshaders@SUFFIX@LINKHACK.la: $(libshaders@SUFFIX@LINKHACK_la_OBJECTS) $(libshaders@SUFFIX@LINKHACK_la_DEPENDENCIES) 
+	$(CXXLINK) -rpath $(libdir) $(libshaders@SUFFIX@LINKHACK_la_LDFLAGS) $(libshaders@SUFFIX@LINKHACK_la_OBJECTS) $(libshaders@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -531,44 +574,34 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbIntList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbIntList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbPList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbPList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbStringList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbStringList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec3fList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SbVec3fList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoActionMethodList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoActionMethodList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAuditorList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoAuditorList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBaseList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoBaseList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCallbackList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoCallbackList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDetailList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoDetailList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEnabledElementsList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEnabledElementsList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineOutputList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoEngineOutputList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFieldList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFieldList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNodeList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPathList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPathList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPickedPointList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoPickedPointList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTypeList.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTypeList.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-lists-cpp.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-lists-cpp.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFragmentShader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoFragmentShader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLARBShader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLARBShader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLCgShader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLSLShader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLSLShader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShaderObject.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShaderObject.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShaderParameter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShaderParameter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShaderProgram.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShaderProgram.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShaderProgramElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLShaderProgramElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaderObject.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaderObject.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaderParameter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaderParameter.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaderProgram.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaderProgram.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaders.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoShaders.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexShader.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoVertexShader.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shaders-dummy.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shaders-dummy.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -615,14 +648,14 @@ clean-libtool:
 distclean-libtool:
 	-rm -f libtool
 uninstall-info-am:
-liblistsincHEADERS_INSTALL = $(INSTALL_HEADER)
+libshadersincHEADERS_INSTALL = $(INSTALL_HEADER)
 
-uninstall-liblistsincHEADERS:
+uninstall-libshadersincHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
+	@list='$(libshadersinc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(liblistsincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(liblistsincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libshadersincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libshadersincdir)/$$f; \
 	done
 
 ETAGS = etags
@@ -715,7 +748,7 @@ check: check-am
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(liblistsincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libshadersincdir)
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -759,7 +792,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-liblistsincHEADERS
+install-data-am: install-libshadersincHEADERS
 
 install-exec-am: install-libLTLIBRARIES
 
@@ -787,7 +820,7 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-liblistsincHEADERS
+	uninstall-libshadersincHEADERS
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
@@ -796,37 +829,37 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	distclean-tags distdir dvi dvi-am info info-am install \
 	install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am \
-	install-libLTLIBRARIES install-liblistsincHEADERS install-man \
+	install-libLTLIBRARIES install-libshadersincHEADERS install-man \
 	install-strip installcheck installcheck-am installdirs \
 	maintainer-clean maintainer-clean-generic mostlyclean \
 	mostlyclean-compile mostlyclean-generic mostlyclean-libtool pdf \
 	pdf-am ps ps-am tags uninstall uninstall-am uninstall-info-am \
-	uninstall-libLTLIBRARIES uninstall-liblistsincHEADERS
+	uninstall-libLTLIBRARIES uninstall-libshadersincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-lists.lst: Makefile $(lists_lst_OBJECTS)
-	@echo "Linking lists.lst..."; \
+shaders.lst: Makefile $(shaders_lst_OBJECTS)
+	@echo "Linking shaders.lst..."; \
 	rm -f $@; touch $@; \
-	for i in $(lists_lst_OBJECTS); do echo $$i >>$@; done
+	for i in $(shaders_lst_OBJECTS); do echo $$i >>$@; done
 
-install-liblistsincHEADERS: $(liblistsinc_HEADERS)
+install-libshadersincHEADERS: $(libshadersinc_HEADERS)
 	@$(NORMAL_INSTALL)
-	@if test x"$(liblistsinc_HEADERS)" = x""; then :; else \
-	  echo " $(mkinstalldirs) $(DESTDIR)$(liblistsincdir)"; \
-	  $(mkinstalldirs) $(DESTDIR)$(liblistsincdir); \
+	@if test x"$(libshadersinc_HEADERS)" = x""; then :; else \
+	  echo " $(mkinstalldirs) $(DESTDIR)$(libshadersincdir)"; \
+	  $(mkinstalldirs) $(DESTDIR)$(libshadersincdir); \
 	fi
-	@list='$(liblistsinc_HEADERS)'; for p in $$list; do \
+	@list='$(libshadersinc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(liblistsincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libshadersincdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst" || exit 1; \
 	  fi \
 	done
 	@list='$(ObsoletedHeaders)'; for f in $$list; do \
-	  file="$(DESTDIR)$(liblistsincdir)/$$f"; \
+	  file="$(DESTDIR)$(libshadersincdir)/$$f"; \
 	  if test -x "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
