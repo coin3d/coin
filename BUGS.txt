@@ -1768,28 +1768,75 @@
 
     20030513 mortene, reported by Leopold Avellaneda.
 
-=====================================================================
+    UPDATE 20030514 mortene: Leopold Avellaneda posted an updated,
+    slightly changed version of the above code which does not exhibit
+    the bug:
 
-068 Calling SoFieldContainer::set() on an SoSFNode field with a "DEF"
-    leads to a crash.
-
-    This causes a segfault:
-
-    ------8<----- [snip] ----------------8<----- [snip] ----------
-    #include <Inventor/nodes/SoIndexedFaceSet.h>
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #include <Inventor/SoInput.h>
+    #include <Inventor/SoOutput.h>
+    #include <Inventor/actions/SoWriteAction.h>
+    #include <Inventor/nodes/SoCone.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    
+    #include <iostream>
+    
+    using namespace std;
+    
+    
+    void * reallocCB(void * ptr, size_t newsize)
+    {
+      return realloc(ptr, newsize);
+    }
     
     int
     main(int argc, char ** argv)
     {
       SoDB::init();
     
-      SoIndexedFaceSet * ifs = new SoIndexedFaceSet;
-      ifs->set("vertexProperty DEF MyVP VertexProperty { }");
+      SoSeparator * root = new SoSeparator;
+      root->ref();
+      root->addChild(new SoCone);
+    
+      char * buf = (char*)malloc(1024);
+      SoOutput out;
+      out.setBuffer(buf, 1024, reallocCB);
+      //out.setBinary(TRUE);
+    
+      SoWriteAction wa1(&out);
+      wa1.apply(root);
+    
+      size_t size = out.getBufferSize();
+    
+      char *buffer = new char[size+1];
+    
+      out.setBuffer(buffer, size, reallocCB);
+    
+      buffer[size] = '\0';
+    
+      SoWriteAction wa2(&out);
+      wa2.apply(root);
+    
+      cout << "The first buffer " << endl;
+      cout << buffer << endl;
+      cout << "size=" << size << endl;
+    
+      SoInput input;
+      input.setBuffer(buffer, size);
+    
+      SoNode * node = SoDB::readAll(&input);
+      node->ref();
+    
+      cout << "The second buffer " << endl; 
+      SoWriteAction wa3;
+      wa3.apply(node);
+    
+    
+      root->unref();
+      node->unref();
     
       return 0;
     }
-    ------8<----- [snip] ----------------8<----- [snip] ----------
-
-    20030513 mortene, reported by Tamer Fahmy.
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
 =====================================================================
