@@ -105,12 +105,22 @@ SoCallbackList::getNumCallbacks(void) const
 /*!
   Invoke all callback functions, passing the userdata and the \a
   callbackdata as the first and second argument, respectively.
+
+  All callbacks registered when the method is invoked will be
+  triggered, even though if the code in one callback removes another
+  callback.
+
+  It is safe for a callback to remove itself or any other callbacks
+  during execution.
 */
 void
 SoCallbackList::invokeCallbacks(void * callbackdata)
 {
-  for (int idx=0; idx < this->getNumCallbacks(); idx++) {
-    SoCallbackListCB * func = (SoCallbackListCB *)(this->funclist[idx]);
-    func(this->datalist[idx], callbackdata);
+  SbList<SoCallbackListCB *> flcopy(this->funclist);
+  SbPList dlcopy(this->datalist);
+
+  for (int idx=0; idx < flcopy.getLength(); idx++) {
+    SoCallbackListCB * func = flcopy.operator[](idx);
+    func(dlcopy.operator[](idx), callbackdata);
   }
 }
