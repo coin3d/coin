@@ -157,10 +157,11 @@ SbVec2f::normalize(void)
 {
   float len = this->length();
 #if COIN_DEBUG
-  if(!(len > 0.0f))
-    SoDebugError::postWarning("SbVec3f::normalize",
+  if(!(len > 0.0f)) {
+    SoDebugError::postWarning("SbVec2f::normalize",
                               "The length of the vector should be > 0.0f "
                               "to be able to normalize.");
+  }
 #endif // COIN_DEBUG
 
   if (len > 0.0f) operator/=(len);
