@@ -605,7 +605,7 @@ STUFF TO FIX IN COIN
 
         - OpenWatcom (<URL:http://www.openwatcom.org>)
         - Cygwin GCC (<URL:http://www.cygwin.com>)
-        - MingW (URL?)
+        - MingW (<URL:http://www.mingw.org>)
         - Borland's C++ compiler
         - Digital Mars C/C++ compiler (<URL:http://www.digitalmars.com>)
           (note: only "free", not "Free" -- not even with source code)
