@@ -227,8 +227,8 @@ AC_SUBST(COIN_EXTRA_LIBS)
 # false negatives when running under Cygwin, using the Microsoft
 # VisualC++ compiler (the configure script will pick the GCC
 # preprocessor, and AC_CHECK_HEADERS uses AC_TRY_CPP).
-
-SIM_AC_CHECK_HEADERS(unistd.h io.h windows.h winsock2.h netinet/in.h)
+#
+SIM_AC_CHECK_HEADERS([unistd.h netinet/in.h sys/param.h io.h windows.h winsock2.h])
 
 # Test for ntohl() etc.
 SIM_AC_BYTEORDER_CONVERSION(

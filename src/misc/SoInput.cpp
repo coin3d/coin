@@ -77,11 +77,14 @@
 #include <unistd.h>
 #endif // HAVE_UNISTD_H
 #if HAVE_WINSOCK2_H
-#include <winsock2.h> // ntohl(), ntohs()
+#include <winsock2.h> // ntohl(), ntohs() etc on MSWindows
 #endif // HAVE_WINSOCK2_H
 #if HAVE_NETINET_IN_H
-#include <netinet/in.h> // ntohl(), ntohs()
+#include <netinet/in.h> // ntohl(), ntohs() etc on Linux boxen
 #endif // HAVE_NETINET_IN_H
+#if HAVE_SYS_PARAM_H
+#include <sys/param.h> // ntohl(), ntohs() etc on FreeBSD
+#endif // HAVE_SYS_PARAM_H
 #include <ctype.h>
 
 

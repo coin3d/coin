@@ -13,6 +13,7 @@
 #undef HAVE_IO_H
 #undef HAVE_WINDOWS_H
 #undef HAVE_WINSOCK2_H
+#undef HAVE_SYS_PARAM_H
 #undef HAVE_NETINET_IN_H
 #undef HAVE_DLFCN_H
 #undef HAVE_DL_LIB
