@@ -154,7 +154,7 @@ public:
   void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                SbVec3f & v2, SbVec3f & v3);
   void flushGlyphCache(const SbBool unrefglyphs);
-  int buildGlyphCache(SoState * state);
+  void buildGlyphCache(SoState * state);
   SbBool shouldBuildGlyphCache(SoState * state);
   void dumpGlyphCache();
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
@@ -232,93 +232,93 @@ SoText2::GLRender(SoGLRenderAction * action)
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   
   // Render using SoGlyphs
-  if (PRIVATE(this)->buildGlyphCache(state) == 0) {
-    // Render only if bbox not outside cull planes.
-    SbBox3f box;
-    SbVec3f center;
-    this->computeBBox(action, box, center);
-    if (!SoCullElement::cullTest(state, box, TRUE)) {
-      SoMaterialBundle mb(action);
-      mb.sendFirst();
-      SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
-      const SbMatrix & mat = SoModelMatrixElement::get(state);
-      mat.multVecMatrix(nilpoint, nilpoint);
-      const SbViewVolume & vv = SoViewVolumeElement::get(state);
-      // this function will also modify the z-value of nilpoint
-      // according to the view matrix
-      vv.projectToScreen(nilpoint, nilpoint);
-      // change z-range from [0,1] to [-1,1]
-      nilpoint[2] *= 2.0f;
-      nilpoint[2] -= 1.0f;
+  PRIVATE(this)->buildGlyphCache(state);
 
-      const SbViewportRegion & vp = SoViewportRegionElement::get(state);
-      SbVec2s vpsize = vp.getViewportSizePixels();
-      nilpoint[0] = nilpoint[0] * float(vpsize[0]);
-      nilpoint[1] = nilpoint[1] * float(vpsize[1]);
-      // Set new state.
-      glMatrixMode(GL_MODELVIEW);
-      glPushMatrix();
-      glLoadIdentity();
-      glMatrixMode(GL_PROJECTION);
-      glPushMatrix();
-      glLoadIdentity();
-      glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
-      glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+  // Render only if bbox not outside cull planes.
+  SbBox3f box;
+  SbVec3f center;
+  this->computeBBox(action, box, center);
+  if (!SoCullElement::cullTest(state, box, TRUE)) {
+    SoMaterialBundle mb(action);
+    mb.sendFirst();
+    SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
+    const SbMatrix & mat = SoModelMatrixElement::get(state);
+    mat.multVecMatrix(nilpoint, nilpoint);
+    const SbViewVolume & vv = SoViewVolumeElement::get(state);
+    // this function will also modify the z-value of nilpoint
+    // according to the view matrix
+    vv.projectToScreen(nilpoint, nilpoint);
+    // change z-range from [0,1] to [-1,1]
+    nilpoint[2] *= 2.0f;
+    nilpoint[2] -= 1.0f;
 
-      float xpos = nilpoint[0];      // to get rid of compiler warning..
-      float ypos = nilpoint[1];
-      float fx, fy, rasterx, rastery, rpx, rpy, offsetx, offsety;
-      int ix, iy, charcnt, offvp;
-      SbVec2s thispos;
-      SbVec2s position;
-      SbVec2s thissize;
-      unsigned char * buffer;
-      const int nrlines = PRIVATE(this)->glyphs.getLength();
-      for (int i = 0; i < nrlines; i++) {
-        switch (this->justification.getValue()) {
-        case SoText2::LEFT:
-          xpos = nilpoint[0];
-          break;
-        case SoText2::RIGHT:
-          xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i];
-          break;
-        case SoText2::CENTER:
-          xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i]/2.0f;
-          break;
-        }
-        charcnt = PRIVATE(this)->laststring[i].getLength();
-        for (int i2 = 0; i2 < charcnt; i2++) {
-          buffer = PRIVATE(this)->glyphs[i][i2]->getBitmap(thissize, thispos, FALSE);
-          ix = thissize[0];
-          iy = thissize[1];
-          position = PRIVATE(this)->positions[i][i2];
-          fx = (float)position[0];
-          fy = (float)position[1];
-          
-          rasterx = xpos + fx;
-          rpx = rasterx >= 0 ? rasterx : 0;
-          offvp = rasterx < 0 ? 1 : 0;
-          offsetx = rasterx >= 0 ? 0 : rasterx;
-          
-          rastery = ypos + fy;
-          rpy = rastery >= 0 ? rastery : 0;
-          offvp = offvp || rastery < 0 ? 1 : 0;
-          offsety = rastery >= 0 ? 0 : rastery;
-          
-          glRasterPos3f(rpx, rpy, -nilpoint[2]);
-          if (offvp)
-            glBitmap(0,0,0,0,offsetx,offsety,NULL);
-          glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
-        }
+    const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+    SbVec2s vpsize = vp.getViewportSizePixels();
+    nilpoint[0] = nilpoint[0] * float(vpsize[0]);
+    nilpoint[1] = nilpoint[1] * float(vpsize[1]);
+    // Set new state.
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+
+    float xpos = nilpoint[0];      // to get rid of compiler warning..
+    float ypos = nilpoint[1];
+    float fx, fy, rasterx, rastery, rpx, rpy, offsetx, offsety;
+    int ix, iy, charcnt, offvp;
+    SbVec2s thispos;
+    SbVec2s position;
+    SbVec2s thissize;
+    unsigned char * buffer;
+    const int nrlines = PRIVATE(this)->glyphs.getLength();
+    for (int i = 0; i < nrlines; i++) {
+      switch (this->justification.getValue()) {
+      case SoText2::LEFT:
+        xpos = nilpoint[0];
+        break;
+      case SoText2::RIGHT:
+        xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i];
+        break;
+      case SoText2::CENTER:
+        xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i]/2.0f;
+        break;
       }
-      
-      glPixelStorei(GL_UNPACK_ALIGNMENT,4);
-      // Pop old GL state.
-      glMatrixMode(GL_PROJECTION);
-      glPopMatrix();
-      glMatrixMode(GL_MODELVIEW);
-      glPopMatrix();
+      charcnt = PRIVATE(this)->laststring[i].getLength();
+      for (int i2 = 0; i2 < charcnt; i2++) {
+        buffer = PRIVATE(this)->glyphs[i][i2]->getBitmap(thissize, thispos, FALSE);
+        ix = thissize[0];
+        iy = thissize[1];
+        position = PRIVATE(this)->positions[i][i2];
+        fx = (float)position[0];
+        fy = (float)position[1];
+          
+        rasterx = xpos + fx;
+        rpx = rasterx >= 0 ? rasterx : 0;
+        offvp = rasterx < 0 ? 1 : 0;
+        offsetx = rasterx >= 0 ? 0 : rasterx;
+          
+        rastery = ypos + fy;
+        rpy = rastery >= 0 ? rastery : 0;
+        offvp = offvp || rastery < 0 ? 1 : 0;
+        offsety = rastery >= 0 ? 0 : rastery;
+          
+        glRasterPos3f(rpx, rpy, -nilpoint[2]);
+        if (offvp)
+          glBitmap(0,0,0,0,offsetx,offsety,NULL);
+        glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
+      }
     }
+      
+    glPixelStorei(GL_UNPACK_ALIGNMENT,4);
+    // Pop old GL state.
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
   }
   
   state->pop();
@@ -608,53 +608,52 @@ SoText2P::shouldBuildGlyphCache(SoState * state)
   return FALSE;
 }
 
-int
+void
 SoText2P::buildGlyphCache(SoState * state)
 {
-  if (this->shouldBuildGlyphCache(state)) {
-    this->prevfontname = SoFontNameElement::get(state);
-    this->prevfontsize = SoFontSizeElement::get(state);
-    this->flushGlyphCache(FALSE);
-    const int nrlines = PUBLIC(this)->string.getNum();
+  if (!this->shouldBuildGlyphCache(state)) { return; }
 
-    SbVec2s penpos(0, 0);
+  this->prevfontname = SoFontNameElement::get(state);
+  this->prevfontsize = SoFontSizeElement::get(state);
+  this->flushGlyphCache(FALSE);
+  const int nrlines = PUBLIC(this)->string.getNum();
 
-    for (int i=0; i < nrlines; i++) {
-      this->glyphs.append(SbList<const SoGlyph *>());
-      this->positions.append(SbList<SbVec2s>());
+  SbVec2s penpos(0, 0);
 
-      const int strlength = PUBLIC(this)->string[i].getLength();
-      this->laststring.append(SbString(PUBLIC(this)->string[i]));
+  for (int i=0; i < nrlines; i++) {
+    this->glyphs.append(SbList<const SoGlyph *>());
+    this->positions.append(SbList<SbVec2s>());
 
-      SbVec2s thissize;
-      SbVec2s kerning(0, 0);
-      SbVec2s advance(0, 0);
+    const int strlength = PUBLIC(this)->string[i].getLength();
+    this->laststring.append(SbString(PUBLIC(this)->string[i]));
 
-      for (int j = 0; j < strlength; j++) {
-        const unsigned int idx = this->laststring[i][j];
-        this->glyphs[i].append(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
-        // Should _always_ be able to get hold of a glyph -- if no
-        // glyph is available for a specific character, a default
-        // empty rectangle should be used.  -mortene.
-        assert(this->glyphs[i][j]);
+    SbVec2s thissize;
+    SbVec2s kerning(0, 0);
+    SbVec2s advance(0, 0);
 
-        SbVec2s thispos;
-        this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
+    for (int j = 0; j < strlength; j++) {
+      const unsigned int idx = this->laststring[i][j];
+      this->glyphs[i].append(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
+      // Should _always_ be able to get hold of a glyph -- if no
+      // glyph is available for a specific character, a default
+      // empty rectangle should be used.  -mortene.
+      assert(this->glyphs[i][j]);
 
-        if (j > 0) {
-          kerning = this->glyphs[i][j-1]->getKerning(*this->glyphs[i][j]);
-          advance = this->glyphs[i][j-1]->getAdvance();
-        }
+      SbVec2s thispos;
+      this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
 
-        penpos = penpos + advance + kerning;
-        this->positions[i].append(penpos + thispos + SbVec2s(0, -thissize[1]));
-        this->bbox.extendBy(this->positions[i][j]);
-        this->bbox.extendBy(this->positions[i][j] + SbVec2s(thissize[0], -thissize[1]));
+      if (j > 0) {
+        kerning = this->glyphs[i][j-1]->getKerning(*this->glyphs[i][j]);
+        advance = this->glyphs[i][j-1]->getAdvance();
       }
 
-      this->stringwidth.append(this->positions[i][strlength - 1][0] + thissize[0]);
-      penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * PUBLIC(this)->spacing.getValue()));
+      penpos = penpos + advance + kerning;
+      this->positions[i].append(penpos + thispos + SbVec2s(0, -thissize[1]));
+      this->bbox.extendBy(this->positions[i][j]);
+      this->bbox.extendBy(this->positions[i][j] + SbVec2s(thissize[0], -thissize[1]));
     }
+
+    this->stringwidth.append(this->positions[i][strlength - 1][0] + thissize[0]);
+    penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * PUBLIC(this)->spacing.getValue()));
   }
-  return 0;
 }
