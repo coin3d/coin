@@ -608,6 +608,12 @@ SoPath::copy(const int startfromnodeindex, int numnodes) const
 #endif // COIN_DEBUG
 
   SoPath * newpath = new SoPath(numnodes);
+  // Note: it is not by oversight that we're not copying the
+  // isauditing flag -- this is the way copy() is supposed to work. If
+  // we change this behavior, we get problems when the ``this''
+  // pointer is an SoTempPath and the newly created SoPath _is_
+  // supposed to audit its path for changes.
+
   const int max = startfromnodeindex + numnodes;
   for (int i = startfromnodeindex; i < max; i++) {
     newpath->append(this->nodes[i], this->indices[i]);
