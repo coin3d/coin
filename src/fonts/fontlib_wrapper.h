@@ -64,17 +64,10 @@ extern "C" {
   } cc_flw_vector_glyph;
 
 
-  int cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned int sizey);
-  int cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int ysizey);
+  int cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle);
+  int cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int ysizey, const float angle);
   void cc_flw_done_font(unsigned int font);
-
-  unsigned int cc_flw_get_num_charmaps(unsigned int font);
-  const char * cc_flw_get_charmap_name(unsigned int font, unsigned int charmap);
-  void cc_flw_set_charmap(unsigned int font, unsigned int charmap);
-
-  void cc_flw_set_char_size(unsigned int font, unsigned int width, unsigned int height);
   const char * cc_flw_get_font_name(unsigned int font);
-  void cc_flw_set_font_rotation(unsigned int font, float angle);
 
   unsigned int cc_flw_get_glyph(unsigned int font, unsigned int charidx);
   void cc_flw_get_bitmap_advance(unsigned int font, unsigned int glyph, int * x, int * y);

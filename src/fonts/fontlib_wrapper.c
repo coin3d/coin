@@ -106,6 +106,7 @@ struct cc_flw_font {
   cc_string * requestname;
   cc_dynarray * glypharray;
   unsigned int sizex, sizey;
+  float angle;
   SbBool defaultfont;
 };
 
@@ -166,6 +167,7 @@ fontstruct_new(void * font)
   fs->requestname = NULL;
   fs->sizex = 0;
   fs->sizey = 0;
+  fs->angle = 0.0f;
   fs->defaultfont = FALSE;
   fs->glypharray = cc_dynarray_new();
   return fs;
@@ -196,6 +198,14 @@ fontstruct_set_size(struct cc_flw_font * fs, const int x, const int y)
   fs->sizex = x;
   fs->sizey = y;
 }
+
+static void
+fontstruct_set_angle(struct cc_flw_font * fs, const float angle)
+{
+  assert(fs);
+  fs->angle = angle;
+}
+
 
 static void
 flw_done_bitmap(struct cc_flw_bitmap * bitmap)
@@ -268,6 +278,7 @@ flw_map_fontname_to_defaultfont(const char * reqname)
   fontstruct_set_requestname(fs, reqname);
   fontstruct_set_fontname(fs, "defaultFont");
   fontstruct_set_size(fs, 0, 0);
+  fontstruct_set_angle(fs, 0.0f);
   fs->defaultfont = TRUE;
 
   cc_dynarray_append(fontarray, fs);
@@ -383,13 +394,14 @@ cc_flw_debug(void)
   needing any error checking on behalf of the client code.
 */
 int
-cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned int sizey)
+cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle)
 {
   void * font;
   int idx;
+
   /* Don't create font if one has already been created for this name
      and size. */
-  idx = cc_flw_find_font(fontname, sizex, sizey);
+  idx = cc_flw_find_font(fontname, sizex, sizey, angle);
 
   if (idx != -1) { return idx; }
 
@@ -397,8 +409,11 @@ cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned 
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
-  if (win32api) { font = cc_flww32_get_font(fontname, sizex, sizey); }
-  else if (freetypelib) { font = cc_flwft_get_font(fontname); }
+  if (win32api) { 
+    font = cc_flww32_get_font(fontname, sizex, sizey, angle);
+  } else if (freetypelib) { 
+    font = cc_flwft_get_font(fontname);    
+  }
 
 
   if (font) {
@@ -409,6 +424,7 @@ cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned 
     fs = fontstruct_new(font);
     fontstruct_set_requestname(fs, fontname);
     fontstruct_set_size(fs, sizex, sizey);
+    fontstruct_set_angle(fs, angle);
 
     if (win32api) {
       cc_flww32_get_font_name(font, &realname);
@@ -416,7 +432,7 @@ cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned 
     }
     else if (freetypelib) {
       cc_flwft_set_char_size(font, sizex, sizey);
-
+      cc_flwft_set_font_rotation(font, angle);
       cc_flwft_get_font_name(font, &realname);
       fontstruct_set_fontname(fs, cc_string_get_text(&realname));
     }
@@ -458,7 +474,7 @@ cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned 
   yet.
 */
 int
-cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int sizey)
+cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle)
 {
   unsigned int i, n;
 
@@ -479,7 +495,8 @@ cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned
   for (i = 0; i < n; i++) {
     struct cc_flw_font * fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
     if ((fs->defaultfont || (fs->sizex == sizex && fs->sizey == sizey)) &&
-        (strcmp(fontname, cc_string_get_text(fs->requestname))==0)) {
+        (strcmp(fontname, cc_string_get_text(fs->requestname))==0) &&
+        (fs->angle == angle)) {
       break;
     }
   }
@@ -508,44 +525,6 @@ cc_flw_done_font(unsigned int font)
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
-unsigned int
-cc_flw_get_num_charmaps(unsigned int font)
-{
-  int num = 0;
-  struct cc_flw_font * fs;
-
-  FLW_MUTEX_LOCK(flw_global_lock);
-
-  fs = flw_fontidx2fontptr(font);
-
-  if (win32api && !fs->defaultfont)
-    num = cc_flww32_get_num_charmaps(fs->font);
-  else if (freetypelib && !fs->defaultfont)
-    num = cc_flwft_get_num_charmaps(fs->font);
-
-  FLW_MUTEX_UNLOCK(flw_global_lock);
-  return num;
-}
-
-const char *
-cc_flw_get_charmap_name(unsigned int font, unsigned int charmap)
-{
-  const char * name = NULL;
-  struct cc_flw_font * fs;
-
-  FLW_MUTEX_LOCK(flw_global_lock);
-
-  fs = flw_fontidx2fontptr(font);
-
-  if (win32api && !fs->defaultfont)
-    name = cc_flww32_get_charmap_name(fs->font, charmap);
-  else if (freetypelib && !fs->defaultfont)
-    name = cc_flwft_get_charmap_name(fs->font, charmap);
-
-  FLW_MUTEX_UNLOCK(flw_global_lock);
-  return name;
-}
-
 
 const char *
 cc_flw_get_font_name(unsigned int font)
@@ -562,59 +541,6 @@ cc_flw_get_font_name(unsigned int font)
   return name;
 }
 
-void
-cc_flw_set_charmap(unsigned int font, unsigned int charmap)
-{
-  struct cc_flw_font * fs;
-
-  FLW_MUTEX_LOCK(flw_global_lock);
-
-  fs = flw_fontidx2fontptr(font);
-
-  if (win32api && !fs->defaultfont)
-    cc_flww32_set_charmap(fs->font, charmap);
-  else if (freetypelib && !fs->defaultfont)
-    cc_flwft_set_charmap(fs->font, charmap);
-
-  FLW_MUTEX_UNLOCK(flw_global_lock);
-}
-
-void
-cc_flw_set_char_size(unsigned int font, unsigned int width, unsigned int height)
-{
-  struct cc_flw_font * fs;
-
-  FLW_MUTEX_LOCK(flw_global_lock);
-
-  fs = flw_fontidx2fontptr(font);
-
-  fs->sizex = width;
-  fs->sizey = height;
-
-  if (win32api && !fs->defaultfont)
-    cc_flww32_set_char_size(fs->font, width, height);
-  else if (freetypelib && !fs->defaultfont)
-    cc_flwft_set_char_size(fs->font, width, height);
-
-  FLW_MUTEX_UNLOCK(flw_global_lock);
-}
-
-void
-cc_flw_set_font_rotation(unsigned int font, float angle)
-{
-  struct cc_flw_font * fs;
-
-  FLW_MUTEX_LOCK(flw_global_lock);
-
-  fs = flw_fontidx2fontptr(font);
-
-  if (win32api && !fs->defaultfont)
-    cc_flww32_set_font_rotation(fs->font, angle);
-  else if (freetypelib && !fs->defaultfont)
-    cc_flwft_set_font_rotation(fs->font, angle);
-
-  FLW_MUTEX_UNLOCK(flw_global_lock);
-}
 
 unsigned int
 cc_flw_get_glyph(unsigned int font, unsigned int charidx)
