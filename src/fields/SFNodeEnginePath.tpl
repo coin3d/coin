@@ -50,6 +50,9 @@ SoSF_Typename_::initClass(void)
 SoSF_Typename_::SoSF_Typename_(void)
 {
   this->value = NULL;
+#ifdef COIN_SOSFPATH_H
+  this->head = NULL;
+#endif // COIN_SOSFPATH_H
 }
 
 /* Destructor, dereferences the current _typename_ pointer if necessary. */
@@ -78,11 +81,28 @@ SoSF_Typename_::setValue(So_Typename_ * newval)
   if (oldptr) {
     oldptr->removeAuditor(this, SoNotRec::FIELD);
     oldptr->unref();
+#ifdef COIN_SOSFPATH_H
+    SoNode * h = oldptr->getHead();
+    // The path should be audited by us at all times. So don't use
+    // SoSFPath to wrap SoTempPath or SoLightPath, for instance.
+    assert(h==this->head && "Path head changed without notification!");
+    if (h) {
+      h->removeAuditor(this, SoNotRec::FIELD);
+      h->unref();
+    }
+#endif // COIN_SOSFPATH_H
   }
 
   if (newval) {
     newval->addAuditor(this, SoNotRec::FIELD);
     newval->ref();
+#ifdef COIN_SOSFPATH_H
+    this->head = newval->getHead();
+    if (this->head) {
+      this->head->addAuditor(this, SoNotRec::FIELD);
+      this->head->ref();
+    }
+#endif // COIN_SOSFPATH_H
   }
 
   this->value = newval;

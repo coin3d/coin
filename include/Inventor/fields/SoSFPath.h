@@ -25,6 +25,7 @@
 
 class SoPath;
 class SoNotList;
+class SoNode;
 
 
 class COIN_DLL_EXPORT SoSFPath : public SoSField {
@@ -41,6 +42,7 @@ public:
 
 private:
   virtual void countWriteRefs(SoOutput * out) const;
+  SoNode * head;
 };
 
 #endif // !COIN_SOSFPATH_H

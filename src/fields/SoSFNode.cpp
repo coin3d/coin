@@ -75,6 +75,9 @@ SoSFNode::initClass(void)
 SoSFNode::SoSFNode(void)
 {
   this->value = NULL;
+#ifdef COIN_SOSFPATH_H
+  this->head = NULL;
+#endif // COIN_SOSFPATH_H
 }
 
 /* Destructor, dereferences the current node pointer if necessary. */
@@ -103,11 +106,28 @@ SoSFNode::setValue(SoNode * newval)
   if (oldptr) {
     oldptr->removeAuditor(this, SoNotRec::FIELD);
     oldptr->unref();
+#ifdef COIN_SOSFPATH_H
+    SoNode * h = oldptr->getHead();
+    // The path should be audited by us at all times. So don't use
+    // SoSFPath to wrap SoTempPath or SoLightPath, for instance.
+    assert(h==this->head && "Path head changed without notification!");
+    if (h) {
+      h->removeAuditor(this, SoNotRec::FIELD);
+      h->unref();
+    }
+#endif // COIN_SOSFPATH_H
   }
 
   if (newval) {
     newval->addAuditor(this, SoNotRec::FIELD);
     newval->ref();
+#ifdef COIN_SOSFPATH_H
+    this->head = newval->getHead();
+    if (this->head) {
+      this->head->addAuditor(this, SoNotRec::FIELD);
+      this->head->ref();
+    }
+#endif // COIN_SOSFPATH_H
   }
 
   this->value = newval;
