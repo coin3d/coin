@@ -230,13 +230,17 @@ AC_ARG_ENABLE([threads],
 if $sim_ac_enable_threads; then
   AC_DEFINE([HAVE_THREADS],, [*EXPERIMENTAL* to use the threads extension])
   HAVE_THREADS=1
-  # FIXME!!! don't use pthreads on windows
+  # FIXME: this is not how it should work. There should first be a test for
+  # any platform-native thread API we support (currently only Win32),
+  # then for POSIX threads. 20011127 mortene.
   if test x"$enable_w32thread" = x"yes"; then
     AC_DEFINE([USE_W32THREAD], , [define to use the Win32 threads API])
-    # LIBS="$LIBS"
+    # FIXME: test for feature availability. 20011127 mortene.
   else
-    AC_DEFINE([USE_PTHREAD], , [define to use the POSIX threads API])
-    LIBS="$LIBS -lpthread"
+    SIM_AC_CHECK_PTHREAD(
+      [AC_DEFINE([USE_PTHREAD], , [define to use the POSIX threads API])],
+      [HAVE_THREADS=0]
+    )
   fi
 else
   HAVE_THREADS=0

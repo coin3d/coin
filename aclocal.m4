@@ -737,10 +737,7 @@ fi
 
 AC_DEFUN([AM_AUX_DIR_EXPAND], [
 # expand $ac_aux_dir to an absolute path
-if test "${CDPATH+set}" = set; then
-  CDPATH=${ZSH_VERSION+.}:   # as recommended in autoconf.texi
-fi
-am_aux_dir=`cd $ac_aux_dir && pwd`
+am_aux_dir=`CDPATH=:; cd $ac_aux_dir && pwd`
 ])
 
 # AM_PROG_INSTALL_SH
@@ -4887,6 +4884,71 @@ AC_LANG_RESTORE
 ])
 
 # Usage:
+#  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the PTHREAD development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_pthread_cppflags (extra flags the compiler needs for pthread)
+#    $sim_ac_pthread_ldflags  (extra flags the linker needs for pthread)
+#    $sim_ac_pthread_libs     (link libraries the linker needs for pthread)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_pthread_avail is set to "yes" if the
+#  pthread development system is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_PTHREAD], [
+
+AC_ARG_WITH(
+  [pthread],
+  AC_HELP_STRING([--with-pthread=DIR],
+                 [pthread installation directory]),
+  [],
+  [with_pthread=yes])
+
+sim_ac_pthread_avail=no
+
+if test x"$with_pthread" != xno; then
+  if test x"$with_pthread" != xyes; then
+    sim_ac_pthread_cppflags="-I${with_pthread}/include"
+    sim_ac_pthread_ldflags="-L${with_pthread}/lib"
+  fi
+  sim_ac_pthread_libs="-lpthread"
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_pthread_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_pthread_ldflags"
+  LIBS="$sim_ac_pthread_libs $LIBS"
+
+  AC_CACHE_CHECK(
+    [whether the pthread development system is available],
+    sim_cv_lib_pthread_avail,
+    [AC_TRY_LINK([#include <pthread.h>],
+                 [(void)pthread_create(0L, 0L, 0L, 0L);],
+                 [sim_cv_lib_pthread_avail=yes],
+                 [sim_cv_lib_pthread_avail=no])])
+
+  if test x"$sim_cv_lib_pthread_avail" = xyes; then
+    sim_ac_pthread_avail=yes
+    $1
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    $2
+  fi
+fi
+])
+
+
+
+# Usage:
 #  SIM_AC_BYTEORDER_CONVERSION([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 # Description:
@@ -6757,71 +6819,6 @@ else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_HAVE_WGL_IFELSE()
-
-# Usage:
-#  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-#
-#  Try to find the PTHREAD development system. If it is found, these
-#  shell variables are set:
-#
-#    $sim_ac_pthread_cppflags (extra flags the compiler needs for pthread)
-#    $sim_ac_pthread_ldflags  (extra flags the linker needs for pthread)
-#    $sim_ac_pthread_libs     (link libraries the linker needs for pthread)
-#
-#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-#  In addition, the variable $sim_ac_pthread_avail is set to "yes" if the
-#  pthread development system is found.
-#
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-
-AC_DEFUN([SIM_AC_CHECK_PTHREAD], [
-
-AC_ARG_WITH(
-  [pthread],
-  AC_HELP_STRING([--with-pthread=DIR],
-                 [pthread installation directory]),
-  [],
-  [with_pthread=yes])
-
-sim_ac_pthread_avail=no
-
-if test x"$with_pthread" != xno; then
-  if test x"$with_pthread" != xyes; then
-    sim_ac_pthread_cppflags="-I${with_pthread}/include"
-    sim_ac_pthread_ldflags="-L${with_pthread}/lib"
-  fi
-  sim_ac_pthread_libs="-lpthread"
-
-  sim_ac_save_cppflags=$CPPFLAGS
-  sim_ac_save_ldflags=$LDFLAGS
-  sim_ac_save_libs=$LIBS
-
-  CPPFLAGS="$CPPFLAGS $sim_ac_pthread_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_pthread_ldflags"
-  LIBS="$sim_ac_pthread_libs $LIBS"
-
-  AC_CACHE_CHECK(
-    [whether the pthread development system is available],
-    sim_cv_lib_pthread_avail,
-    [AC_TRY_LINK([#include <pthread.h>],
-                 [(void)pthread_create(0L, 0L, 0L, 0L);],
-                 [sim_cv_lib_pthread_avail=yes],
-                 [sim_cv_lib_pthread_avail=no])])
-
-  if test x"$sim_cv_lib_pthread_avail" = xyes; then
-    sim_ac_pthread_avail=yes
-    $1
-  else
-    CPPFLAGS=$sim_ac_save_cppflags
-    LDFLAGS=$sim_ac_save_ldflags
-    LIBS=$sim_ac_save_libs
-    $2
-  fi
-fi
-])
-
-
 
 # **************************************************************************
 # SIM_AC_UNIQIFY_LIST( VARIABLE, LIST )
