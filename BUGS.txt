@@ -760,7 +760,8 @@
 
     UPDATE 20021121 larsa:  I think Øystein has fixed the skewing
     problem now - don't know if he has been instructed to update this
-    file when fixing bugs?  Anyways, he has other problems.
+    file when fixing bugs?  Anyways, he has other problems with the
+    offscreen renderer he is working on.
 
 =====================================================================
 
