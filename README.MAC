@@ -125,6 +125,17 @@ Carbon/Cocoa/GLUT.
 Common problems (and solutions)
 ===============================
 
+o Conflicting installations of Inventor framework and library
+  -----------------------------------------------------------
+
+If you get strange errors concerning missing or conflicting
+declarations in header files, make sure you do not have an old
+installation of Inventor on your system, with the header files being
+installed somewhere in gcc's search paths, such as
+/usr/include/Inventor/. Unfortunately, gcc searches its default
+include path _before_ trying to use the headers that come with the
+framework. Removing the old header files should solve the problem.
+                                                         
 
 o MACOSX_DEPLOYMENT_TARGET warning
   --------------------------------
