@@ -22,7 +22,9 @@
   \brief The SoTimeCounter class is an integer counter engine.
   \ingroup engines
 
-  FIXME: more doc
+  The SoTimeCounter engine is by default connected to the realTime
+  global field, and does stepwise updates on the SoTimeCounter::output
+  field according to the field settings.
 */
 
 /*!

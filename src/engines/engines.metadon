@@ -43,7 +43,7 @@
 # Id      SoOnOff
 # id      SoOneShot
 # Id      SoSelectOne
-#  d      SoTimeCounter
+# ID      SoTimeCounter
 #         SoTransformVec3f
 # Id      SoTriggerAny
 # id  SoEngineOutput

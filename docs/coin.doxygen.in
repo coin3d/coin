@@ -757,7 +757,9 @@ INPUT                 = @coin_build_dir@/include/Inventor/SbBasic.h \
                         @coin_src_dir@/src/engines/SoEngine.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoEngine.h \
                         @coin_src_dir@/src/engines/SoEngineOutput.cpp \
-                        @coin_src_dir@/include/Inventor/engines/SoEngineOutput.h
+                        @coin_src_dir@/include/Inventor/engines/SoEngineOutput.h \
+                        @coin_src_dir@/src/engines/SoTimeCounter.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoTimeCounter.h
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
