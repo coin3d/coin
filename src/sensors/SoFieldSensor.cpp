@@ -102,7 +102,8 @@ SoFieldSensor::getAttachedField(void) const
 void
 SoFieldSensor::trigger(void)
 {
-  COIN_STUB();
+  this->convict->evaluate();
+  inherited::trigger();
 }
 
 /*!
