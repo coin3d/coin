@@ -68,6 +68,7 @@
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoLightElement.h>
+#include <Inventor/nodes/SoLight.h>
 
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGLBigImage.h>
@@ -609,7 +610,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       // bumprender is shared among all threads, so the mutex needs to
       // be locked when we get here since some internal arrays are
       // used while rendering
-      PRIVATE(this)->bumprender->renderBump(state, PRIVATE(this)->pvcache, (SoLight*)lights[0], m);
+      PRIVATE(this)->bumprender->renderBump(state, PRIVATE(this)->pvcache, 
+                                            (SoLight*) lights[0], m);
       PRIVATE(this)->unlock();
 
       SoGLLazyElement::getInstance(state)->reset(state, 
