@@ -58,6 +58,10 @@ SoGetMatrixAction::getTypeId(void) const
 
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 // static variables
 SoEnabledElementsList * SoGetMatrixAction::enabledElements;
 SoActionMethodList * SoGetMatrixAction::methods;
@@ -288,6 +292,16 @@ SoGetMatrixAction::scaleBy(const SbVec3f &scaleFactor)
   SbMatrix mat;
   mat.setScale(scaleFactor);
   this->matrix.multLeft(mat);
-  mat.setScale(-scaleFactor);
+#if COIN_DEBUG && 1 // debug
+  if (scaleFactor[0] == 0.0f || scaleFactor[1] == 0.0f || scaleFactor[2] == 0.0f) {
+    SoDebugError::postInfo("SoGetMatrixAction::scaleBy",
+                           "Zero scale detected!");
+  }
+#endif // debug
+  SbVec3f invScale;
+  invScale[0] = 1.0f / scaleFactor[0];
+  invScale[1] = 1.0f / scaleFactor[1];
+  invScale[2] = 1.0f / scaleFactor[2];
+  mat.setScale(invScale);
   this->invMatrix.multRight(mat);
 }
