@@ -259,17 +259,7 @@ LinkHackSources = \
 	all-threads-c.c \
 	threads-dummy.cpp
 
-PublicHeaders = \
-	../../include/Inventor/threads/SbThread.h \
-	../../include/Inventor/threads/SbMutex.h \
-	../../include/Inventor/threads/SbRWMutex.h \
-	../../include/Inventor/threads/SbCondVar.h \
-	../../include/Inventor/threads/SbStorage.h \
-	../../include/Inventor/threads/SbTypedStorage.h \
-	../../include/Inventor/threads/SbFifo.h \
-	../../include/Inventor/threads/SbBarrier.h \
-	../../include/Inventor/threads/SbThreadAutoLock.h
-
+PublicHeaders = 
 PrivateHeaders = \
 	condvar_pthread.ic \
 	condvar_win32.ic \
@@ -278,20 +268,9 @@ PrivateHeaders = \
 	mutex_win32mutex.ic \
 	thread_pthread.ic \
 	thread_win32.ic \
-	wrappers.cpp \
-	../../include/Inventor/C/threads/barrierp.h \
-	../../include/Inventor/C/threads/condvarp.h \
-	../../include/Inventor/C/threads/fifop.h \
-	../../include/Inventor/C/threads/mutexp.h \
-	../../include/Inventor/C/threads/rwmutexp.h \
-	../../include/Inventor/C/threads/schedp.h \
-	../../include/Inventor/C/threads/storagep.h \
-	../../include/Inventor/C/threads/syncp.h \
-	../../include/Inventor/C/threads/threadp.h \
-	../../include/Inventor/C/threads/threadsutilp.h \
-	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h
+	wrappers.cpp
 
+ObsoleteHeaders = 
 
 
 # win32 isn't able to link wrappers without including all dependencies
@@ -370,31 +349,9 @@ am__objects_2 = common.$(OBJEXT) thread.$(OBJEXT) mutex.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_threads_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_threads_lst_SOURCES_DIST = \
-	../../include/Inventor/threads/SbThread.h \
-	../../include/Inventor/threads/SbMutex.h \
-	../../include/Inventor/threads/SbRWMutex.h \
-	../../include/Inventor/threads/SbCondVar.h \
-	../../include/Inventor/threads/SbStorage.h \
-	../../include/Inventor/threads/SbTypedStorage.h \
-	../../include/Inventor/threads/SbFifo.h \
-	../../include/Inventor/threads/SbBarrier.h \
-	../../include/Inventor/threads/SbThreadAutoLock.h \
-	condvar_pthread.ic condvar_win32.ic mutex_pthread.ic \
-	mutex_win32cs.ic mutex_win32mutex.ic thread_pthread.ic \
-	thread_win32.ic wrappers.cpp \
-	../../include/Inventor/C/threads/barrierp.h \
-	../../include/Inventor/C/threads/condvarp.h \
-	../../include/Inventor/C/threads/fifop.h \
-	../../include/Inventor/C/threads/mutexp.h \
-	../../include/Inventor/C/threads/rwmutexp.h \
-	../../include/Inventor/C/threads/schedp.h \
-	../../include/Inventor/C/threads/storagep.h \
-	../../include/Inventor/C/threads/syncp.h \
-	../../include/Inventor/C/threads/threadp.h \
-	../../include/Inventor/C/threads/threadsutilp.h \
-	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h all-threads-c.c \
+am__EXTRA_threads_lst_SOURCES_DIST = condvar_pthread.ic condvar_win32.ic \
+	mutex_pthread.ic mutex_win32cs.ic mutex_win32mutex.ic \
+	thread_pthread.ic thread_win32.ic wrappers.cpp all-threads-c.c \
 	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
 	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
 threads_lst_OBJECTS = $(am_threads_lst_OBJECTS)
@@ -412,33 +369,12 @@ am__objects_8 = common.lo thread.lo mutex.lo rwmutex.lo storage.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
 am_libthreads_la_OBJECTS = $(am__objects_9)
-am__EXTRA_libthreads_la_SOURCES_DIST = \
-	../../include/Inventor/threads/SbThread.h \
-	../../include/Inventor/threads/SbMutex.h \
-	../../include/Inventor/threads/SbRWMutex.h \
-	../../include/Inventor/threads/SbCondVar.h \
-	../../include/Inventor/threads/SbStorage.h \
-	../../include/Inventor/threads/SbTypedStorage.h \
-	../../include/Inventor/threads/SbFifo.h \
-	../../include/Inventor/threads/SbBarrier.h \
-	../../include/Inventor/threads/SbThreadAutoLock.h \
-	condvar_pthread.ic condvar_win32.ic mutex_pthread.ic \
-	mutex_win32cs.ic mutex_win32mutex.ic thread_pthread.ic \
-	thread_win32.ic wrappers.cpp \
-	../../include/Inventor/C/threads/barrierp.h \
-	../../include/Inventor/C/threads/condvarp.h \
-	../../include/Inventor/C/threads/fifop.h \
-	../../include/Inventor/C/threads/mutexp.h \
-	../../include/Inventor/C/threads/rwmutexp.h \
-	../../include/Inventor/C/threads/schedp.h \
-	../../include/Inventor/C/threads/storagep.h \
-	../../include/Inventor/C/threads/syncp.h \
-	../../include/Inventor/C/threads/threadp.h \
-	../../include/Inventor/C/threads/threadsutilp.h \
-	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h all-threads-c.c \
-	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
-	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
+am__EXTRA_libthreads_la_SOURCES_DIST = condvar_pthread.ic \
+	condvar_win32.ic mutex_pthread.ic mutex_win32cs.ic \
+	mutex_win32mutex.ic thread_pthread.ic thread_win32.ic \
+	wrappers.cpp all-threads-c.c threads-dummy.cpp common.c \
+	thread.c mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c \
+	sched.c sync.c fifo.c barrier.c
 libthreads_la_OBJECTS = $(am_libthreads_la_OBJECTS)
 libthreads@SUFFIX@LINKHACK_la_LDFLAGS =
 libthreads@SUFFIX@LINKHACK_la_LIBADD =
@@ -447,32 +383,11 @@ am__libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = common.c thread.c \
 	sync.c fifo.c barrier.c threads-dummy.cpp all-threads-c.c
 am_libthreads@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/threads/SbThread.h \
-	../../include/Inventor/threads/SbMutex.h \
-	../../include/Inventor/threads/SbRWMutex.h \
-	../../include/Inventor/threads/SbCondVar.h \
-	../../include/Inventor/threads/SbStorage.h \
-	../../include/Inventor/threads/SbTypedStorage.h \
-	../../include/Inventor/threads/SbFifo.h \
-	../../include/Inventor/threads/SbBarrier.h \
-	../../include/Inventor/threads/SbThreadAutoLock.h \
 	condvar_pthread.ic condvar_win32.ic mutex_pthread.ic \
 	mutex_win32cs.ic mutex_win32mutex.ic thread_pthread.ic \
-	thread_win32.ic wrappers.cpp \
-	../../include/Inventor/C/threads/barrierp.h \
-	../../include/Inventor/C/threads/condvarp.h \
-	../../include/Inventor/C/threads/fifop.h \
-	../../include/Inventor/C/threads/mutexp.h \
-	../../include/Inventor/C/threads/rwmutexp.h \
-	../../include/Inventor/C/threads/schedp.h \
-	../../include/Inventor/C/threads/storagep.h \
-	../../include/Inventor/C/threads/syncp.h \
-	../../include/Inventor/C/threads/threadp.h \
-	../../include/Inventor/C/threads/threadsutilp.h \
-	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h all-threads-c.c \
-	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
-	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
+	thread_win32.ic wrappers.cpp all-threads-c.c threads-dummy.cpp \
+	common.c thread.c mutex.c rwmutex.c storage.c condvar.c \
+	worker.c wpool.c sched.c sync.c fifo.c barrier.c
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -758,7 +673,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/threads
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

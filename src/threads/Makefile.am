@@ -16,16 +16,7 @@ RegularSources = \
 LinkHackSources = \
 	all-threads-c.c \
 	threads-dummy.cpp
-PublicHeaders = \
-	../../include/Inventor/threads/SbThread.h \
-	../../include/Inventor/threads/SbMutex.h \
-	../../include/Inventor/threads/SbRWMutex.h \
-	../../include/Inventor/threads/SbCondVar.h \
-	../../include/Inventor/threads/SbStorage.h \
-	../../include/Inventor/threads/SbTypedStorage.h \
-	../../include/Inventor/threads/SbFifo.h \
-	../../include/Inventor/threads/SbBarrier.h \
-	../../include/Inventor/threads/SbThreadAutoLock.h
+PublicHeaders =
 PrivateHeaders = \
 	condvar_pthread.ic \
 	condvar_win32.ic \
@@ -34,21 +25,8 @@ PrivateHeaders = \
 	mutex_win32mutex.ic \
 	thread_pthread.ic \
 	thread_win32.ic \
-	wrappers.cpp \
-	../../include/Inventor/C/threads/barrierp.h \
-	../../include/Inventor/C/threads/condvarp.h \
-	../../include/Inventor/C/threads/fifop.h \
-	../../include/Inventor/C/threads/mutexp.h \
-	../../include/Inventor/C/threads/rwmutexp.h \
-	../../include/Inventor/C/threads/schedp.h \
-	../../include/Inventor/C/threads/storagep.h \
-	../../include/Inventor/C/threads/syncp.h \
-	../../include/Inventor/C/threads/threadp.h \
-	../../include/Inventor/C/threads/threadsutilp.h \
-	../../include/Inventor/C/threads/workerp.h \
-	../../include/Inventor/C/threads/wpoolp.h
-
-
+	wrappers.cpp
+ObsoleteHeaders =
 
 if BUILD_WITH_MSVC
 # win32 isn't able to link wrappers without including all dependencies

@@ -1,27 +1,10 @@
-## Process this file with automake to generate Makefile.in.
-## 19990904 mortene.
 
-PublicHeaders = \
-	../../include/Inventor/actions/SoSubAction.h \
-	../../include/Inventor/actions/SoActions.h \
-	../../include/Inventor/actions/SoAction.h \
-	../../include/Inventor/actions/SoBoxHighlightRenderAction.h \
-	../../include/Inventor/actions/SoCallbackAction.h \
-	../../include/Inventor/actions/SoGLRenderAction.h \
-	../../include/Inventor/actions/SoGetBoundingBoxAction.h \
-	../../include/Inventor/actions/SoGetMatrixAction.h \
-	../../include/Inventor/actions/SoGetPrimitiveCountAction.h \
-	../../include/Inventor/actions/SoHandleEventAction.h \
-	../../include/Inventor/actions/SoLineHighlightRenderAction.h \
-	../../include/Inventor/actions/SoPickAction.h \
-	../../include/Inventor/actions/SoRayPickAction.h \
-	../../include/Inventor/actions/SoSearchAction.h \
-	../../include/Inventor/actions/SoToVRMLAction.h \
-	../../include/Inventor/actions/SoToVRML2Action.h \
-	../../include/Inventor/actions/SoWriteAction.h \
-	../../include/Inventor/actions/SoAudioRenderAction.h
-PrivateHeaders = \
-	../../include/Inventor/actions/SoSubActionP.h
+PublicHeaders =
+PrivateHeaders =
+ObsoleteHeaders =
+
+LinkHackSources = \
+	all-actions-cpp.cpp
 RegularSources = \
 	SoAction.cpp \
 	SoBoxHighlightRenderAction.cpp \
@@ -39,8 +22,7 @@ RegularSources = \
 	SoToVRML2Action.cpp \
 	SoWriteAction.cpp \
 	SoAudioRenderAction.cpp
-LinkHackSources = \
-	all-actions-cpp.cpp
+
 
 ##$ BEGIN TEMPLATE Make-Common(actions, actions)
 # **************************************************************************

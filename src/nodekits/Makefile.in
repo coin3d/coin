@@ -258,24 +258,9 @@ RegularSources = \
 LinkHackSources = \
 	all-nodekits-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/nodekits/SoSubKit.h \
-	../../include/Inventor/nodekits/SoNodeKit.h \
-	../../include/Inventor/nodekits/SoNodeKitListPart.h \
-	../../include/Inventor/nodekits/SoNodekitCatalog.h \
-	../../include/Inventor/nodekits/SoBaseKit.h \
-	../../include/Inventor/nodekits/SoAppearanceKit.h \
-	../../include/Inventor/nodekits/SoCameraKit.h \
-	../../include/Inventor/nodekits/SoInteractionKit.h \
-	../../include/Inventor/nodekits/SoLightKit.h \
-	../../include/Inventor/nodekits/SoSceneKit.h \
-	../../include/Inventor/nodekits/SoSeparatorKit.h \
-	../../include/Inventor/nodekits/SoShapeKit.h \
-	../../include/Inventor/nodekits/SoWrapperKit.h
-
-PrivateHeaders = \
-	../../include/Inventor/nodekits/SoSubKitP.h
-
+PublicHeaders = 
+PrivateHeaders = 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -352,26 +337,11 @@ am__objects_2 = SoNodeKit.$(OBJEXT) SoNodeKitPath.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_nodekits_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_nodekits_lst_SOURCES_DIST = \
-	../../include/Inventor/nodekits/SoSubKit.h \
-	../../include/Inventor/nodekits/SoNodeKit.h \
-	../../include/Inventor/nodekits/SoNodeKitListPart.h \
-	../../include/Inventor/nodekits/SoNodekitCatalog.h \
-	../../include/Inventor/nodekits/SoBaseKit.h \
-	../../include/Inventor/nodekits/SoAppearanceKit.h \
-	../../include/Inventor/nodekits/SoCameraKit.h \
-	../../include/Inventor/nodekits/SoInteractionKit.h \
-	../../include/Inventor/nodekits/SoLightKit.h \
-	../../include/Inventor/nodekits/SoSceneKit.h \
-	../../include/Inventor/nodekits/SoSeparatorKit.h \
-	../../include/Inventor/nodekits/SoShapeKit.h \
-	../../include/Inventor/nodekits/SoWrapperKit.h \
-	../../include/Inventor/nodekits/SoSubKitP.h \
-	all-nodekits-cpp.cpp SoNodeKit.cpp SoNodeKitPath.cpp \
-	SoNodeKitListPart.cpp SoNodekitCatalog.cpp SoBaseKit.cpp \
-	SoAppearanceKit.cpp SoCameraKit.cpp SoInteractionKit.cpp \
-	SoLightKit.cpp SoSceneKit.cpp SoSeparatorKit.cpp SoShapeKit.cpp \
-	SoWrapperKit.cpp
+am__EXTRA_nodekits_lst_SOURCES_DIST = all-nodekits-cpp.cpp SoNodeKit.cpp \
+	SoNodeKitPath.cpp SoNodeKitListPart.cpp SoNodekitCatalog.cpp \
+	SoBaseKit.cpp SoAppearanceKit.cpp SoCameraKit.cpp \
+	SoInteractionKit.cpp SoLightKit.cpp SoSceneKit.cpp \
+	SoSeparatorKit.cpp SoShapeKit.cpp SoWrapperKit.cpp
 nodekits_lst_OBJECTS = $(am_nodekits_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -390,25 +360,11 @@ am__objects_7 = SoNodeKit.lo SoNodeKitPath.lo SoNodeKitListPart.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libnodekits_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libnodekits_la_SOURCES_DIST = \
-	../../include/Inventor/nodekits/SoSubKit.h \
-	../../include/Inventor/nodekits/SoNodeKit.h \
-	../../include/Inventor/nodekits/SoNodeKitListPart.h \
-	../../include/Inventor/nodekits/SoNodekitCatalog.h \
-	../../include/Inventor/nodekits/SoBaseKit.h \
-	../../include/Inventor/nodekits/SoAppearanceKit.h \
-	../../include/Inventor/nodekits/SoCameraKit.h \
-	../../include/Inventor/nodekits/SoInteractionKit.h \
-	../../include/Inventor/nodekits/SoLightKit.h \
-	../../include/Inventor/nodekits/SoSceneKit.h \
-	../../include/Inventor/nodekits/SoSeparatorKit.h \
-	../../include/Inventor/nodekits/SoShapeKit.h \
-	../../include/Inventor/nodekits/SoWrapperKit.h \
-	../../include/Inventor/nodekits/SoSubKitP.h \
-	all-nodekits-cpp.cpp SoNodeKit.cpp SoNodeKitPath.cpp \
-	SoNodeKitListPart.cpp SoNodekitCatalog.cpp SoBaseKit.cpp \
-	SoAppearanceKit.cpp SoCameraKit.cpp SoInteractionKit.cpp \
-	SoLightKit.cpp SoSceneKit.cpp SoSeparatorKit.cpp SoShapeKit.cpp \
+am__EXTRA_libnodekits_la_SOURCES_DIST = all-nodekits-cpp.cpp \
+	SoNodeKit.cpp SoNodeKitPath.cpp SoNodeKitListPart.cpp \
+	SoNodekitCatalog.cpp SoBaseKit.cpp SoAppearanceKit.cpp \
+	SoCameraKit.cpp SoInteractionKit.cpp SoLightKit.cpp \
+	SoSceneKit.cpp SoSeparatorKit.cpp SoShapeKit.cpp \
 	SoWrapperKit.cpp
 libnodekits_la_OBJECTS = $(am_libnodekits_la_OBJECTS)
 libnodekits@SUFFIX@LINKHACK_la_LDFLAGS =
@@ -421,20 +377,6 @@ am__libnodekits@SUFFIX@LINKHACK_la_SOURCES_DIST = SoNodeKit.cpp \
 	all-nodekits-cpp.cpp
 am_libnodekits@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/nodekits/SoSubKit.h \
-	../../include/Inventor/nodekits/SoNodeKit.h \
-	../../include/Inventor/nodekits/SoNodeKitListPart.h \
-	../../include/Inventor/nodekits/SoNodekitCatalog.h \
-	../../include/Inventor/nodekits/SoBaseKit.h \
-	../../include/Inventor/nodekits/SoAppearanceKit.h \
-	../../include/Inventor/nodekits/SoCameraKit.h \
-	../../include/Inventor/nodekits/SoInteractionKit.h \
-	../../include/Inventor/nodekits/SoLightKit.h \
-	../../include/Inventor/nodekits/SoSceneKit.h \
-	../../include/Inventor/nodekits/SoSeparatorKit.h \
-	../../include/Inventor/nodekits/SoShapeKit.h \
-	../../include/Inventor/nodekits/SoWrapperKit.h \
-	../../include/Inventor/nodekits/SoSubKitP.h \
 	all-nodekits-cpp.cpp SoNodeKit.cpp SoNodeKitPath.cpp \
 	SoNodeKitListPart.cpp SoNodekitCatalog.cpp SoBaseKit.cpp \
 	SoAppearanceKit.cpp SoCameraKit.cpp SoInteractionKit.cpp \
@@ -477,13 +419,6 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__nodekits_lst_SOURCES_DIST) \
 	$(am__EXTRA_nodekits_lst_SOURCES_DIST) \
@@ -699,7 +634,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/nodekits
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

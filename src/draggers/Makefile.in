@@ -267,31 +267,9 @@ RegularSources = \
 LinkHackSources = \
 	all-draggers-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/draggers/SoDragger.h \
-	../../include/Inventor/draggers/SoCenterballDragger.h \
-	../../include/Inventor/draggers/SoDirectionalLightDragger.h \
-	../../include/Inventor/draggers/SoDragPointDragger.h \
-	../../include/Inventor/draggers/SoHandleBoxDragger.h \
-	../../include/Inventor/draggers/SoJackDragger.h \
-	../../include/Inventor/draggers/SoPointLightDragger.h \
-	../../include/Inventor/draggers/SoRotateCylindricalDragger.h \
-	../../include/Inventor/draggers/SoRotateDiscDragger.h \
-	../../include/Inventor/draggers/SoRotateSphericalDragger.h \
-	../../include/Inventor/draggers/SoScale1Dragger.h \
-	../../include/Inventor/draggers/SoScale2Dragger.h \
-	../../include/Inventor/draggers/SoScale2UniformDragger.h \
-	../../include/Inventor/draggers/SoScaleUniformDragger.h \
-	../../include/Inventor/draggers/SoSpotLightDragger.h \
-	../../include/Inventor/draggers/SoTabBoxDragger.h \
-	../../include/Inventor/draggers/SoTabPlaneDragger.h \
-	../../include/Inventor/draggers/SoTrackballDragger.h \
-	../../include/Inventor/draggers/SoTransformBoxDragger.h \
-	../../include/Inventor/draggers/SoTransformerDragger.h \
-	../../include/Inventor/draggers/SoTranslate1Dragger.h \
-	../../include/Inventor/draggers/SoTranslate2Dragger.h
-
+PublicHeaders = 
 PrivateHeaders = 
+ObsoleteHeaders = 
 
 ExtraIncludeDirs = -I$(top_builddir)
 
@@ -383,32 +361,9 @@ am__objects_2 = SoDragger.$(OBJEXT) SoCenterballDragger.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_draggers_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_draggers_lst_SOURCES_DIST = \
-	../../include/Inventor/draggers/SoDragger.h \
-	../../include/Inventor/draggers/SoCenterballDragger.h \
-	../../include/Inventor/draggers/SoDirectionalLightDragger.h \
-	../../include/Inventor/draggers/SoDragPointDragger.h \
-	../../include/Inventor/draggers/SoHandleBoxDragger.h \
-	../../include/Inventor/draggers/SoJackDragger.h \
-	../../include/Inventor/draggers/SoPointLightDragger.h \
-	../../include/Inventor/draggers/SoRotateCylindricalDragger.h \
-	../../include/Inventor/draggers/SoRotateDiscDragger.h \
-	../../include/Inventor/draggers/SoRotateSphericalDragger.h \
-	../../include/Inventor/draggers/SoScale1Dragger.h \
-	../../include/Inventor/draggers/SoScale2Dragger.h \
-	../../include/Inventor/draggers/SoScale2UniformDragger.h \
-	../../include/Inventor/draggers/SoScaleUniformDragger.h \
-	../../include/Inventor/draggers/SoSpotLightDragger.h \
-	../../include/Inventor/draggers/SoTabBoxDragger.h \
-	../../include/Inventor/draggers/SoTabPlaneDragger.h \
-	../../include/Inventor/draggers/SoTrackballDragger.h \
-	../../include/Inventor/draggers/SoTransformBoxDragger.h \
-	../../include/Inventor/draggers/SoTransformerDragger.h \
-	../../include/Inventor/draggers/SoTranslate1Dragger.h \
-	../../include/Inventor/draggers/SoTranslate2Dragger.h \
-	all-draggers-cpp.cpp SoDragger.cpp SoCenterballDragger.cpp \
-	SoDirectionalLightDragger.cpp SoDragPointDragger.cpp \
-	SoHandleBoxDragger.cpp SoJackDragger.cpp \
+am__EXTRA_draggers_lst_SOURCES_DIST = all-draggers-cpp.cpp SoDragger.cpp \
+	SoCenterballDragger.cpp SoDirectionalLightDragger.cpp \
+	SoDragPointDragger.cpp SoHandleBoxDragger.cpp SoJackDragger.cpp \
 	SoPointLightDragger.cpp SoRotateCylindricalDragger.cpp \
 	SoRotateDiscDragger.cpp SoRotateSphericalDragger.cpp \
 	SoScale1Dragger.cpp SoScale2Dragger.cpp \
@@ -448,30 +403,8 @@ am__objects_7 = SoDragger.lo SoCenterballDragger.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libdraggers_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libdraggers_la_SOURCES_DIST = \
-	../../include/Inventor/draggers/SoDragger.h \
-	../../include/Inventor/draggers/SoCenterballDragger.h \
-	../../include/Inventor/draggers/SoDirectionalLightDragger.h \
-	../../include/Inventor/draggers/SoDragPointDragger.h \
-	../../include/Inventor/draggers/SoHandleBoxDragger.h \
-	../../include/Inventor/draggers/SoJackDragger.h \
-	../../include/Inventor/draggers/SoPointLightDragger.h \
-	../../include/Inventor/draggers/SoRotateCylindricalDragger.h \
-	../../include/Inventor/draggers/SoRotateDiscDragger.h \
-	../../include/Inventor/draggers/SoRotateSphericalDragger.h \
-	../../include/Inventor/draggers/SoScale1Dragger.h \
-	../../include/Inventor/draggers/SoScale2Dragger.h \
-	../../include/Inventor/draggers/SoScale2UniformDragger.h \
-	../../include/Inventor/draggers/SoScaleUniformDragger.h \
-	../../include/Inventor/draggers/SoSpotLightDragger.h \
-	../../include/Inventor/draggers/SoTabBoxDragger.h \
-	../../include/Inventor/draggers/SoTabPlaneDragger.h \
-	../../include/Inventor/draggers/SoTrackballDragger.h \
-	../../include/Inventor/draggers/SoTransformBoxDragger.h \
-	../../include/Inventor/draggers/SoTransformerDragger.h \
-	../../include/Inventor/draggers/SoTranslate1Dragger.h \
-	../../include/Inventor/draggers/SoTranslate2Dragger.h \
-	all-draggers-cpp.cpp SoDragger.cpp SoCenterballDragger.cpp \
+am__EXTRA_libdraggers_la_SOURCES_DIST = all-draggers-cpp.cpp \
+	SoDragger.cpp SoCenterballDragger.cpp \
 	SoDirectionalLightDragger.cpp SoDragPointDragger.cpp \
 	SoHandleBoxDragger.cpp SoJackDragger.cpp \
 	SoPointLightDragger.cpp SoRotateCylindricalDragger.cpp \
@@ -499,28 +432,6 @@ am__libdraggers@SUFFIX@LINKHACK_la_SOURCES_DIST = SoDragger.cpp \
 	all-draggers-cpp.cpp
 am_libdraggers@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/draggers/SoDragger.h \
-	../../include/Inventor/draggers/SoCenterballDragger.h \
-	../../include/Inventor/draggers/SoDirectionalLightDragger.h \
-	../../include/Inventor/draggers/SoDragPointDragger.h \
-	../../include/Inventor/draggers/SoHandleBoxDragger.h \
-	../../include/Inventor/draggers/SoJackDragger.h \
-	../../include/Inventor/draggers/SoPointLightDragger.h \
-	../../include/Inventor/draggers/SoRotateCylindricalDragger.h \
-	../../include/Inventor/draggers/SoRotateDiscDragger.h \
-	../../include/Inventor/draggers/SoRotateSphericalDragger.h \
-	../../include/Inventor/draggers/SoScale1Dragger.h \
-	../../include/Inventor/draggers/SoScale2Dragger.h \
-	../../include/Inventor/draggers/SoScale2UniformDragger.h \
-	../../include/Inventor/draggers/SoScaleUniformDragger.h \
-	../../include/Inventor/draggers/SoSpotLightDragger.h \
-	../../include/Inventor/draggers/SoTabBoxDragger.h \
-	../../include/Inventor/draggers/SoTabPlaneDragger.h \
-	../../include/Inventor/draggers/SoTrackballDragger.h \
-	../../include/Inventor/draggers/SoTransformBoxDragger.h \
-	../../include/Inventor/draggers/SoTransformerDragger.h \
-	../../include/Inventor/draggers/SoTranslate1Dragger.h \
-	../../include/Inventor/draggers/SoTranslate2Dragger.h \
 	all-draggers-cpp.cpp SoDragger.cpp SoCenterballDragger.cpp \
 	SoDirectionalLightDragger.cpp SoDragPointDragger.cpp \
 	SoHandleBoxDragger.cpp SoJackDragger.cpp \
@@ -588,13 +499,6 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__draggers_lst_SOURCES_DIST) \
 	$(am__EXTRA_draggers_lst_SOURCES_DIST) \
@@ -828,7 +732,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/draggers
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

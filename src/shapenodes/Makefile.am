@@ -33,37 +33,13 @@ RegularSources = \
 	soshape_bumprender.cpp
 LinkHackSources = \
 	all-shapenodes-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/nodes/SoAsciiText.h \
-	../../include/Inventor/nodes/SoCone.h \
-	../../include/Inventor/nodes/SoCube.h \
-	../../include/Inventor/nodes/SoCylinder.h \
-	../../include/Inventor/nodes/SoFaceSet.h \
-	../../include/Inventor/nodes/SoImage.h \
-	../../include/Inventor/nodes/SoIndexedFaceSet.h \
-	../../include/Inventor/nodes/SoIndexedLineSet.h \
-	../../include/Inventor/nodes/SoIndexedNurbsCurve.h \
-	../../include/Inventor/nodes/SoIndexedNurbsSurface.h \
-	../../include/Inventor/nodes/SoIndexedShape.h \
-	../../include/Inventor/nodes/SoIndexedTriangleStripSet.h \
-	../../include/Inventor/nodes/SoLineSet.h \
-	../../include/Inventor/nodes/SoMarkerSet.h \
-	../../include/Inventor/nodes/SoNonIndexedShape.h \
-	../../include/Inventor/nodes/SoNurbsCurve.h \
-	../../include/Inventor/nodes/SoNurbsSurface.h \
-	../../include/Inventor/nodes/SoPointSet.h \
-	../../include/Inventor/nodes/SoQuadMesh.h \
-	../../include/Inventor/nodes/SoShape.h \
-	../../include/Inventor/nodes/SoSphere.h \
-	../../include/Inventor/nodes/SoText2.h \
-	../../include/Inventor/nodes/SoText3.h \
-	../../include/Inventor/nodes/SoTriangleStripSet.h \
-	../../include/Inventor/nodes/SoVertexShape.h
+PublicHeaders =
 PrivateHeaders = \
 	soshape_primdata.h \
 	soshape_trianglesort.h \
 	soshape_bigtexture.h \
 	soshape_bumprender.h
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(shapenodes, nodes)
 # **************************************************************************

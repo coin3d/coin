@@ -34,38 +34,7 @@ RegularSources = \
 	SoGLDisplayList.cpp
 LinkHackSources = \
 	all-glelements-cpp.cpp
-PublicHeaders = \
-	../../../include/Inventor/elements/SoGLCacheContextElement.h \
-	../../../include/Inventor/elements/SoGLClipPlaneElement.h \
-	../../../include/Inventor/elements/SoGLColorIndexElement.h \
-	../../../include/Inventor/elements/SoGLCoordinateElement.h \
-	../../../include/Inventor/elements/SoGLDrawStyleElement.h \
-	../../../include/Inventor/elements/SoGLEnvironmentElement.h \
-	../../../include/Inventor/elements/SoGLLazyElement.h \
-	../../../include/Inventor/elements/SoGLLightIdElement.h \
-	../../../include/Inventor/elements/SoGLLinePatternElement.h \
-	../../../include/Inventor/elements/SoGLLineWidthElement.h \
-	../../../include/Inventor/elements/SoGLModelMatrixElement.h \
-	../../../include/Inventor/elements/SoGLMultiTextureCoordinateElement.h \
-	../../../include/Inventor/elements/SoGLMultiTextureEnabledElement.h \
-	../../../include/Inventor/elements/SoGLMultiTextureMatrixElement.h \
-	../../../include/Inventor/elements/SoGLMultiTextureImageElement.h \
-	../../../include/Inventor/elements/SoGLNormalElement.h \
-	../../../include/Inventor/elements/SoGLNormalizeElement.h \
-	../../../include/Inventor/elements/SoGLPointSizeElement.h \
-	../../../include/Inventor/elements/SoGLPolygonOffsetElement.h \
-	../../../include/Inventor/elements/SoGLProjectionMatrixElement.h \
-	../../../include/Inventor/elements/SoGLRenderPassElement.h \
-	../../../include/Inventor/elements/SoGLShapeHintsElement.h \
-	../../../include/Inventor/elements/SoGLShadeModelElement.h \
-	../../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
-	../../../include/Inventor/elements/SoGLTextureEnabledElement.h \
-	../../../include/Inventor/elements/SoGLTexture3EnabledElement.h \
-	../../../include/Inventor/elements/SoGLTextureImageElement.h \
-	../../../include/Inventor/elements/SoGLTextureMatrixElement.h \
-	../../../include/Inventor/elements/SoGLUpdateAreaElement.h \
-	../../../include/Inventor/elements/SoGLViewingMatrixElement.h \
-	../../../include/Inventor/elements/SoGLViewportRegionElement.h
+PublicHeaders =
 PrivateHeaders =
 ObsoletedHeaders =
 

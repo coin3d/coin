@@ -259,22 +259,9 @@ LinkHackSources = \
 	glue-dummy.cpp
 
 
-# Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders = 
-PrivateHeaders = \
-	../../include/Inventor/C/glue/dlp.h \
-	../../include/Inventor/C/glue/glp.h \
-	../../include/Inventor/C/glue/gl_wgl.h \
-	../../include/Inventor/C/glue/gl_glx.h \
-	../../include/Inventor/C/glue/gl_agl.h \
-	../../include/Inventor/C/glue/GLUWrapper.h \
-	../../include/Inventor/C/glue/simage_wrapper.h \
-	../../include/Inventor/C/glue/openal_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h \
-	../../include/Inventor/C/glue/zlib.h \
-	../../include/Inventor/C/glue/bzip2.h \
-	../../include/Inventor/C/glue/freetype.h
-
+PrivateHeaders = 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -349,21 +336,10 @@ am__objects_2 = dl.$(OBJEXT) gl.$(OBJEXT) gl_wgl.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_glue_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_glue_lst_SOURCES_DIST = ../../include/Inventor/C/glue/dlp.h \
-	../../include/Inventor/C/glue/glp.h \
-	../../include/Inventor/C/glue/gl_wgl.h \
-	../../include/Inventor/C/glue/gl_glx.h \
-	../../include/Inventor/C/glue/gl_agl.h \
-	../../include/Inventor/C/glue/GLUWrapper.h \
-	../../include/Inventor/C/glue/simage_wrapper.h \
-	../../include/Inventor/C/glue/openal_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h \
-	../../include/Inventor/C/glue/zlib.h \
-	../../include/Inventor/C/glue/bzip2.h \
-	../../include/Inventor/C/glue/freetype.h all-glue-c.c \
-	glue-dummy.cpp dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c simage_wrapper.c openal_wrapper.c win32api.c \
-	zlib.c bzip2.c freetype.c normalization_cubemap.c
+am__EXTRA_glue_lst_SOURCES_DIST = all-glue-c.c glue-dummy.cpp dl.c gl.c \
+	gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
+	openal_wrapper.c win32api.c zlib.c bzip2.c freetype.c \
+	normalization_cubemap.c
 glue_lst_OBJECTS = $(am_glue_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -380,21 +356,10 @@ am__objects_7 = dl.lo gl.lo gl_wgl.lo gl_agl.lo gl_glx.lo GLUWrapper.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libglue_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libglue_la_SOURCES_DIST = ../../include/Inventor/C/glue/dlp.h \
-	../../include/Inventor/C/glue/glp.h \
-	../../include/Inventor/C/glue/gl_wgl.h \
-	../../include/Inventor/C/glue/gl_glx.h \
-	../../include/Inventor/C/glue/gl_agl.h \
-	../../include/Inventor/C/glue/GLUWrapper.h \
-	../../include/Inventor/C/glue/simage_wrapper.h \
-	../../include/Inventor/C/glue/openal_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h \
-	../../include/Inventor/C/glue/zlib.h \
-	../../include/Inventor/C/glue/bzip2.h \
-	../../include/Inventor/C/glue/freetype.h all-glue-c.c \
-	glue-dummy.cpp dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
-	GLUWrapper.c simage_wrapper.c openal_wrapper.c win32api.c \
-	zlib.c bzip2.c freetype.c normalization_cubemap.c
+am__EXTRA_libglue_la_SOURCES_DIST = all-glue-c.c glue-dummy.cpp dl.c \
+	gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
+	openal_wrapper.c win32api.c zlib.c bzip2.c freetype.c \
+	normalization_cubemap.c
 libglue_la_OBJECTS = $(am_libglue_la_OBJECTS)
 libglue@SUFFIX@LINKHACK_la_LDFLAGS =
 libglue@SUFFIX@LINKHACK_la_LIBADD =
@@ -403,19 +368,7 @@ am__libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = dl.c gl.c gl_wgl.c \
 	openal_wrapper.c win32api.c zlib.c bzip2.c freetype.c \
 	glue-dummy.cpp normalization_cubemap.c all-glue-c.c
 am_libglue@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/C/glue/dlp.h \
-	../../include/Inventor/C/glue/glp.h \
-	../../include/Inventor/C/glue/gl_wgl.h \
-	../../include/Inventor/C/glue/gl_glx.h \
-	../../include/Inventor/C/glue/gl_agl.h \
-	../../include/Inventor/C/glue/GLUWrapper.h \
-	../../include/Inventor/C/glue/simage_wrapper.h \
-	../../include/Inventor/C/glue/openal_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h \
-	../../include/Inventor/C/glue/zlib.h \
-	../../include/Inventor/C/glue/bzip2.h \
-	../../include/Inventor/C/glue/freetype.h all-glue-c.c \
+am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = all-glue-c.c \
 	glue-dummy.cpp dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c simage_wrapper.c openal_wrapper.c win32api.c \
 	zlib.c bzip2.c freetype.c normalization_cubemap.c

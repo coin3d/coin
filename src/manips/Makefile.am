@@ -17,20 +17,9 @@ RegularSources = \
 	commoncode.cpp
 LinkHackSources = \
 	all-manips-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/manips/SoClipPlaneManip.h \
-	../../include/Inventor/manips/SoDirectionalLightManip.h \
-	../../include/Inventor/manips/SoPointLightManip.h \
-	../../include/Inventor/manips/SoSpotLightManip.h \
-	../../include/Inventor/manips/SoTransformManip.h \
-	../../include/Inventor/manips/SoCenterballManip.h \
-	../../include/Inventor/manips/SoHandleBoxManip.h \
-	../../include/Inventor/manips/SoJackManip.h \
-	../../include/Inventor/manips/SoTabBoxManip.h \
-	../../include/Inventor/manips/SoTrackballManip.h \
-	../../include/Inventor/manips/SoTransformBoxManip.h \
-	../../include/Inventor/manips/SoTransformerManip.h
+PublicHeaders =
 PrivateHeaders =
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(manips, manips)
 # **************************************************************************

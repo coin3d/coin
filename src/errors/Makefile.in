@@ -252,14 +252,9 @@ LinkHackSources = \
 	all-errors-c.c \
 	all-errors-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/errors/SoErrors.h \
-	../../include/Inventor/errors/SoDebugError.h \
-	../../include/Inventor/errors/SoError.h \
-	../../include/Inventor/errors/SoMemoryError.h \
-	../../include/Inventor/errors/SoReadError.h
-
+PublicHeaders = 
 PrivateHeaders = 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -330,14 +325,9 @@ am__objects_2 = error.$(OBJEXT) debugerror.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_errors_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_errors_lst_SOURCES_DIST = \
-	../../include/Inventor/errors/SoErrors.h \
-	../../include/Inventor/errors/SoDebugError.h \
-	../../include/Inventor/errors/SoError.h \
-	../../include/Inventor/errors/SoMemoryError.h \
-	../../include/Inventor/errors/SoReadError.h all-errors-c.c \
-	all-errors-cpp.cpp error.c debugerror.c SoDebugError.cpp \
-	SoError.cpp SoMemoryError.cpp SoReadError.cpp
+am__EXTRA_errors_lst_SOURCES_DIST = all-errors-c.c all-errors-cpp.cpp \
+	error.c debugerror.c SoDebugError.cpp SoError.cpp \
+	SoMemoryError.cpp SoReadError.cpp
 errors_lst_OBJECTS = $(am_errors_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -352,14 +342,9 @@ am__objects_7 = error.lo debugerror.lo SoDebugError.lo SoError.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_liberrors_la_OBJECTS = $(am__objects_8)
-am__EXTRA_liberrors_la_SOURCES_DIST = \
-	../../include/Inventor/errors/SoErrors.h \
-	../../include/Inventor/errors/SoDebugError.h \
-	../../include/Inventor/errors/SoError.h \
-	../../include/Inventor/errors/SoMemoryError.h \
-	../../include/Inventor/errors/SoReadError.h all-errors-c.c \
-	all-errors-cpp.cpp error.c debugerror.c SoDebugError.cpp \
-	SoError.cpp SoMemoryError.cpp SoReadError.cpp
+am__EXTRA_liberrors_la_SOURCES_DIST = all-errors-c.c all-errors-cpp.cpp \
+	error.c debugerror.c SoDebugError.cpp SoError.cpp \
+	SoMemoryError.cpp SoReadError.cpp
 liberrors_la_OBJECTS = $(am_liberrors_la_OBJECTS)
 liberrors@SUFFIX@LINKHACK_la_LDFLAGS =
 liberrors@SUFFIX@LINKHACK_la_LIBADD =
@@ -367,12 +352,7 @@ am__liberrors@SUFFIX@LINKHACK_la_SOURCES_DIST = error.c debugerror.c \
 	SoDebugError.cpp SoError.cpp SoMemoryError.cpp SoReadError.cpp \
 	all-errors-c.c all-errors-cpp.cpp
 am_liberrors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_liberrors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/errors/SoErrors.h \
-	../../include/Inventor/errors/SoDebugError.h \
-	../../include/Inventor/errors/SoError.h \
-	../../include/Inventor/errors/SoMemoryError.h \
-	../../include/Inventor/errors/SoReadError.h all-errors-c.c \
+am__EXTRA_liberrors@SUFFIX@LINKHACK_la_SOURCES_DIST = all-errors-c.c \
 	all-errors-cpp.cpp error.c debugerror.c SoDebugError.cpp \
 	SoError.cpp SoMemoryError.cpp SoReadError.cpp
 liberrors@SUFFIX@LINKHACK_la_OBJECTS = \
@@ -643,7 +623,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/errors
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

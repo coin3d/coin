@@ -252,18 +252,9 @@ RegularSources = \
 LinkHackSources = \
 	all-events-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/events/SoSubEvent.h \
-	../../include/Inventor/events/SoButtonEvent.h \
-	../../include/Inventor/events/SoEvent.h \
-	../../include/Inventor/events/SoEvents.h \
-	../../include/Inventor/events/SoKeyboardEvent.h \
-	../../include/Inventor/events/SoLocation2Event.h \
-	../../include/Inventor/events/SoMotion3Event.h \
-	../../include/Inventor/events/SoMouseButtonEvent.h \
-	../../include/Inventor/events/SoSpaceballButtonEvent.h
-
+PublicHeaders = 
 PrivateHeaders = 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -336,19 +327,10 @@ am__objects_2 = SoButtonEvent.$(OBJEXT) SoEvent.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_events_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_events_lst_SOURCES_DIST = \
-	../../include/Inventor/events/SoSubEvent.h \
-	../../include/Inventor/events/SoButtonEvent.h \
-	../../include/Inventor/events/SoEvent.h \
-	../../include/Inventor/events/SoEvents.h \
-	../../include/Inventor/events/SoKeyboardEvent.h \
-	../../include/Inventor/events/SoLocation2Event.h \
-	../../include/Inventor/events/SoMotion3Event.h \
-	../../include/Inventor/events/SoMouseButtonEvent.h \
-	../../include/Inventor/events/SoSpaceballButtonEvent.h \
-	all-events-cpp.cpp SoButtonEvent.cpp SoEvent.cpp \
-	SoKeyboardEvent.cpp SoLocation2Event.cpp SoMotion3Event.cpp \
-	SoMouseButtonEvent.cpp SoSpaceballButtonEvent.cpp
+am__EXTRA_events_lst_SOURCES_DIST = all-events-cpp.cpp SoButtonEvent.cpp \
+	SoEvent.cpp SoKeyboardEvent.cpp SoLocation2Event.cpp \
+	SoMotion3Event.cpp SoMouseButtonEvent.cpp \
+	SoSpaceballButtonEvent.cpp
 events_lst_OBJECTS = $(am_events_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -365,19 +347,10 @@ am__objects_7 = SoButtonEvent.lo SoEvent.lo SoKeyboardEvent.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libevents_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libevents_la_SOURCES_DIST = \
-	../../include/Inventor/events/SoSubEvent.h \
-	../../include/Inventor/events/SoButtonEvent.h \
-	../../include/Inventor/events/SoEvent.h \
-	../../include/Inventor/events/SoEvents.h \
-	../../include/Inventor/events/SoKeyboardEvent.h \
-	../../include/Inventor/events/SoLocation2Event.h \
-	../../include/Inventor/events/SoMotion3Event.h \
-	../../include/Inventor/events/SoMouseButtonEvent.h \
-	../../include/Inventor/events/SoSpaceballButtonEvent.h \
-	all-events-cpp.cpp SoButtonEvent.cpp SoEvent.cpp \
-	SoKeyboardEvent.cpp SoLocation2Event.cpp SoMotion3Event.cpp \
-	SoMouseButtonEvent.cpp SoSpaceballButtonEvent.cpp
+am__EXTRA_libevents_la_SOURCES_DIST = all-events-cpp.cpp \
+	SoButtonEvent.cpp SoEvent.cpp SoKeyboardEvent.cpp \
+	SoLocation2Event.cpp SoMotion3Event.cpp SoMouseButtonEvent.cpp \
+	SoSpaceballButtonEvent.cpp
 libevents_la_OBJECTS = $(am_libevents_la_OBJECTS)
 libevents@SUFFIX@LINKHACK_la_LDFLAGS =
 libevents@SUFFIX@LINKHACK_la_LIBADD =
@@ -386,19 +359,10 @@ am__libevents@SUFFIX@LINKHACK_la_SOURCES_DIST = SoButtonEvent.cpp \
 	SoMotion3Event.cpp SoMouseButtonEvent.cpp \
 	SoSpaceballButtonEvent.cpp all-events-cpp.cpp
 am_libevents@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libevents@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/events/SoSubEvent.h \
-	../../include/Inventor/events/SoButtonEvent.h \
-	../../include/Inventor/events/SoEvent.h \
-	../../include/Inventor/events/SoEvents.h \
-	../../include/Inventor/events/SoKeyboardEvent.h \
-	../../include/Inventor/events/SoLocation2Event.h \
-	../../include/Inventor/events/SoMotion3Event.h \
-	../../include/Inventor/events/SoMouseButtonEvent.h \
-	../../include/Inventor/events/SoSpaceballButtonEvent.h \
-	all-events-cpp.cpp SoButtonEvent.cpp SoEvent.cpp \
-	SoKeyboardEvent.cpp SoLocation2Event.cpp SoMotion3Event.cpp \
-	SoMouseButtonEvent.cpp SoSpaceballButtonEvent.cpp
+am__EXTRA_libevents@SUFFIX@LINKHACK_la_SOURCES_DIST = all-events-cpp.cpp \
+	SoButtonEvent.cpp SoEvent.cpp SoKeyboardEvent.cpp \
+	SoLocation2Event.cpp SoMotion3Event.cpp SoMouseButtonEvent.cpp \
+	SoSpaceballButtonEvent.cpp
 libevents@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libevents@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -425,13 +389,6 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__events_lst_SOURCES_DIST) \
 	$(am__EXTRA_events_lst_SOURCES_DIST) \
@@ -635,7 +592,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/events
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

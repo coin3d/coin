@@ -16,21 +16,9 @@ LinkHackSources = \
 	all-glue-c.c \
 	glue-dummy.cpp
 
-# Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders =
-PrivateHeaders = \
-	../../include/Inventor/C/glue/dlp.h \
-	../../include/Inventor/C/glue/glp.h \
-	../../include/Inventor/C/glue/gl_wgl.h \
-	../../include/Inventor/C/glue/gl_glx.h \
-	../../include/Inventor/C/glue/gl_agl.h \
-	../../include/Inventor/C/glue/GLUWrapper.h \
-	../../include/Inventor/C/glue/simage_wrapper.h \
-	../../include/Inventor/C/glue/openal_wrapper.h \
-	../../include/Inventor/C/glue/win32api.h \
-	../../include/Inventor/C/glue/zlib.h \
-	../../include/Inventor/C/glue/bzip2.h \
-	../../include/Inventor/C/glue/freetype.h
+PrivateHeaders =
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(glue, glue)
 # **************************************************************************

@@ -1750,8 +1750,30 @@ AC_CONFIG_FILES([
         include/Inventor/C/errors/Makefile
         include/Inventor/C/glue/Makefile
         include/Inventor/C/threads/Makefile
+        include/Inventor/VRMLnodes/Makefile
+        include/Inventor/actions/Makefile
+        include/Inventor/annex/Makefile
+        include/Inventor/annex/HardCopy/Makefile
+        include/Inventor/bundles/Makefile
+        include/Inventor/caches/Makefile
+        include/Inventor/collision/Makefile
+        include/Inventor/details/Makefile
+        include/Inventor/draggers/Makefile
+        include/Inventor/elements/Makefile
+        include/Inventor/engines/Makefile
+        include/Inventor/errors/Makefile
+        include/Inventor/events/Makefile
+        include/Inventor/fields/Makefile
+        include/Inventor/lists/Makefile
         include/Inventor/lock/Makefile
+        include/Inventor/manips/Makefile
+        include/Inventor/misc/Makefile
+        include/Inventor/nodekits/Makefile
+        include/Inventor/nodes/Makefile
+        include/Inventor/projectors/Makefile
+        include/Inventor/sensors/Makefile
         include/Inventor/system/Makefile
+        include/Inventor/threads/Makefile
         data/Makefile
         data/draggerDefaults/Makefile
         man/Makefile

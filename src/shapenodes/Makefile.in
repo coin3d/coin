@@ -274,39 +274,14 @@ RegularSources = \
 LinkHackSources = \
 	all-shapenodes-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/nodes/SoAsciiText.h \
-	../../include/Inventor/nodes/SoCone.h \
-	../../include/Inventor/nodes/SoCube.h \
-	../../include/Inventor/nodes/SoCylinder.h \
-	../../include/Inventor/nodes/SoFaceSet.h \
-	../../include/Inventor/nodes/SoImage.h \
-	../../include/Inventor/nodes/SoIndexedFaceSet.h \
-	../../include/Inventor/nodes/SoIndexedLineSet.h \
-	../../include/Inventor/nodes/SoIndexedNurbsCurve.h \
-	../../include/Inventor/nodes/SoIndexedNurbsSurface.h \
-	../../include/Inventor/nodes/SoIndexedShape.h \
-	../../include/Inventor/nodes/SoIndexedTriangleStripSet.h \
-	../../include/Inventor/nodes/SoLineSet.h \
-	../../include/Inventor/nodes/SoMarkerSet.h \
-	../../include/Inventor/nodes/SoNonIndexedShape.h \
-	../../include/Inventor/nodes/SoNurbsCurve.h \
-	../../include/Inventor/nodes/SoNurbsSurface.h \
-	../../include/Inventor/nodes/SoPointSet.h \
-	../../include/Inventor/nodes/SoQuadMesh.h \
-	../../include/Inventor/nodes/SoShape.h \
-	../../include/Inventor/nodes/SoSphere.h \
-	../../include/Inventor/nodes/SoText2.h \
-	../../include/Inventor/nodes/SoText3.h \
-	../../include/Inventor/nodes/SoTriangleStripSet.h \
-	../../include/Inventor/nodes/SoVertexShape.h
-
+PublicHeaders = 
 PrivateHeaders = \
 	soshape_primdata.h \
 	soshape_trianglesort.h \
 	soshape_bigtexture.h \
 	soshape_bumprender.h
 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -395,32 +370,7 @@ am__objects_2 = SoAsciiText.$(OBJEXT) SoCone.$(OBJEXT) SoCube.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_shapenodes_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_shapenodes_lst_SOURCES_DIST = \
-	../../include/Inventor/nodes/SoAsciiText.h \
-	../../include/Inventor/nodes/SoCone.h \
-	../../include/Inventor/nodes/SoCube.h \
-	../../include/Inventor/nodes/SoCylinder.h \
-	../../include/Inventor/nodes/SoFaceSet.h \
-	../../include/Inventor/nodes/SoImage.h \
-	../../include/Inventor/nodes/SoIndexedFaceSet.h \
-	../../include/Inventor/nodes/SoIndexedLineSet.h \
-	../../include/Inventor/nodes/SoIndexedNurbsCurve.h \
-	../../include/Inventor/nodes/SoIndexedNurbsSurface.h \
-	../../include/Inventor/nodes/SoIndexedShape.h \
-	../../include/Inventor/nodes/SoIndexedTriangleStripSet.h \
-	../../include/Inventor/nodes/SoLineSet.h \
-	../../include/Inventor/nodes/SoMarkerSet.h \
-	../../include/Inventor/nodes/SoNonIndexedShape.h \
-	../../include/Inventor/nodes/SoNurbsCurve.h \
-	../../include/Inventor/nodes/SoNurbsSurface.h \
-	../../include/Inventor/nodes/SoPointSet.h \
-	../../include/Inventor/nodes/SoQuadMesh.h \
-	../../include/Inventor/nodes/SoShape.h \
-	../../include/Inventor/nodes/SoSphere.h \
-	../../include/Inventor/nodes/SoText2.h \
-	../../include/Inventor/nodes/SoText3.h \
-	../../include/Inventor/nodes/SoTriangleStripSet.h \
-	../../include/Inventor/nodes/SoVertexShape.h soshape_primdata.h \
+am__EXTRA_shapenodes_lst_SOURCES_DIST = soshape_primdata.h \
 	soshape_trianglesort.h soshape_bigtexture.h \
 	soshape_bumprender.h all-shapenodes-cpp.cpp SoAsciiText.cpp \
 	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
@@ -461,32 +411,7 @@ am__objects_7 = SoAsciiText.lo SoCone.lo SoCube.lo SoCylinder.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libshapenodes_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libshapenodes_la_SOURCES_DIST = \
-	../../include/Inventor/nodes/SoAsciiText.h \
-	../../include/Inventor/nodes/SoCone.h \
-	../../include/Inventor/nodes/SoCube.h \
-	../../include/Inventor/nodes/SoCylinder.h \
-	../../include/Inventor/nodes/SoFaceSet.h \
-	../../include/Inventor/nodes/SoImage.h \
-	../../include/Inventor/nodes/SoIndexedFaceSet.h \
-	../../include/Inventor/nodes/SoIndexedLineSet.h \
-	../../include/Inventor/nodes/SoIndexedNurbsCurve.h \
-	../../include/Inventor/nodes/SoIndexedNurbsSurface.h \
-	../../include/Inventor/nodes/SoIndexedShape.h \
-	../../include/Inventor/nodes/SoIndexedTriangleStripSet.h \
-	../../include/Inventor/nodes/SoLineSet.h \
-	../../include/Inventor/nodes/SoMarkerSet.h \
-	../../include/Inventor/nodes/SoNonIndexedShape.h \
-	../../include/Inventor/nodes/SoNurbsCurve.h \
-	../../include/Inventor/nodes/SoNurbsSurface.h \
-	../../include/Inventor/nodes/SoPointSet.h \
-	../../include/Inventor/nodes/SoQuadMesh.h \
-	../../include/Inventor/nodes/SoShape.h \
-	../../include/Inventor/nodes/SoSphere.h \
-	../../include/Inventor/nodes/SoText2.h \
-	../../include/Inventor/nodes/SoText3.h \
-	../../include/Inventor/nodes/SoTriangleStripSet.h \
-	../../include/Inventor/nodes/SoVertexShape.h soshape_primdata.h \
+am__EXTRA_libshapenodes_la_SOURCES_DIST = soshape_primdata.h \
 	soshape_trianglesort.h soshape_bigtexture.h \
 	soshape_bumprender.h all-shapenodes-cpp.cpp SoAsciiText.cpp \
 	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
@@ -514,32 +439,7 @@ am__libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAsciiText.cpp \
 	all-shapenodes-cpp.cpp
 am_libshapenodes@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libshapenodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/nodes/SoAsciiText.h \
-	../../include/Inventor/nodes/SoCone.h \
-	../../include/Inventor/nodes/SoCube.h \
-	../../include/Inventor/nodes/SoCylinder.h \
-	../../include/Inventor/nodes/SoFaceSet.h \
-	../../include/Inventor/nodes/SoImage.h \
-	../../include/Inventor/nodes/SoIndexedFaceSet.h \
-	../../include/Inventor/nodes/SoIndexedLineSet.h \
-	../../include/Inventor/nodes/SoIndexedNurbsCurve.h \
-	../../include/Inventor/nodes/SoIndexedNurbsSurface.h \
-	../../include/Inventor/nodes/SoIndexedShape.h \
-	../../include/Inventor/nodes/SoIndexedTriangleStripSet.h \
-	../../include/Inventor/nodes/SoLineSet.h \
-	../../include/Inventor/nodes/SoMarkerSet.h \
-	../../include/Inventor/nodes/SoNonIndexedShape.h \
-	../../include/Inventor/nodes/SoNurbsCurve.h \
-	../../include/Inventor/nodes/SoNurbsSurface.h \
-	../../include/Inventor/nodes/SoPointSet.h \
-	../../include/Inventor/nodes/SoQuadMesh.h \
-	../../include/Inventor/nodes/SoShape.h \
-	../../include/Inventor/nodes/SoSphere.h \
-	../../include/Inventor/nodes/SoText2.h \
-	../../include/Inventor/nodes/SoText3.h \
-	../../include/Inventor/nodes/SoTriangleStripSet.h \
-	../../include/Inventor/nodes/SoVertexShape.h soshape_primdata.h \
-	soshape_trianglesort.h soshape_bigtexture.h \
+	soshape_primdata.h soshape_trianglesort.h soshape_bigtexture.h \
 	soshape_bumprender.h all-shapenodes-cpp.cpp SoAsciiText.cpp \
 	SoCone.cpp SoCube.cpp SoCylinder.cpp SoFaceSet.cpp SoImage.cpp \
 	SoIndexedFaceSet.cpp SoIndexedLineSet.cpp \
@@ -865,7 +765,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/nodes
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

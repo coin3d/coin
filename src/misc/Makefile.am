@@ -33,34 +33,8 @@ RegularSources = \
 	AudioTools.cpp
 LinkHackSources = \
 	all-misc-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/misc/SoAuditorList.h \
-	../../include/Inventor/misc/SoBase.h \
-	../../include/Inventor/misc/SoBasic.h \
-	../../include/Inventor/misc/SoByteStream.h \
-	../../include/Inventor/misc/SoCallbackList.h \
-	../../include/Inventor/misc/SoChildList.h \
-	../../include/Inventor/misc/SoContextHandler.h \
-	../../include/Inventor/misc/SoGLImage.h \
-	../../include/Inventor/misc/SoGLBigImage.h \
-	../../include/Inventor/misc/SoNormalGenerator.h \
-	../../include/Inventor/misc/SoNotification.h \
-	../../include/Inventor/misc/SoNotRec.h \
-	../../include/Inventor/misc/SoProto.h \
-	../../include/Inventor/misc/SoProtoInstance.h \
-	../../include/Inventor/misc/SoTranReceiver.h \
-	../../include/Inventor/misc/SoState.h \
-	../../include/Inventor/misc/SoTranscribe.h \
-	../../include/Inventor/misc/SoTranSender.h \
-	../../include/Inventor/misc/SoLightPath.h \
-	../../include/Inventor/misc/SoTempPath.h \
-	../../include/Inventor/misc/SoGlyph.h \
-	../../include/Inventor/misc/SoAudioDevice.h
+PublicHeaders =
 PrivateHeaders = \
-	../../include/Inventor/misc/SbHash.h \
-	../../include/Inventor/misc/SoGL.h \
-	../../include/Inventor/misc/SoGenerate.h \
-	../../include/Inventor/misc/SoPick.h \
 	AudioTools.h \
 	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \
@@ -75,6 +49,7 @@ PrivateHeaders = \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
 	cppmangle.icc
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)
 # **************************************************************************

@@ -17,22 +17,9 @@ RegularSources = \
 	SoWrapperKit.cpp
 LinkHackSources = \
 	all-nodekits-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/nodekits/SoSubKit.h \
-	../../include/Inventor/nodekits/SoNodeKit.h \
-	../../include/Inventor/nodekits/SoNodeKitListPart.h \
-	../../include/Inventor/nodekits/SoNodekitCatalog.h \
-	../../include/Inventor/nodekits/SoBaseKit.h \
-	../../include/Inventor/nodekits/SoAppearanceKit.h \
-	../../include/Inventor/nodekits/SoCameraKit.h \
-	../../include/Inventor/nodekits/SoInteractionKit.h \
-	../../include/Inventor/nodekits/SoLightKit.h \
-	../../include/Inventor/nodekits/SoSceneKit.h \
-	../../include/Inventor/nodekits/SoSeparatorKit.h \
-	../../include/Inventor/nodekits/SoShapeKit.h \
-	../../include/Inventor/nodekits/SoWrapperKit.h
-PrivateHeaders = \
-	../../include/Inventor/nodekits/SoSubKitP.h
+PublicHeaders =
+PrivateHeaders =
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(nodekits, nodekits)
 # **************************************************************************

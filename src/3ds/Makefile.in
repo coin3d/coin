@@ -243,6 +243,7 @@ target_vendor = @target_vendor@
 @BUILD_3DS_CAPABILITIES_TRUE@	3dsLoader.cpp \
 @BUILD_3DS_CAPABILITIES_TRUE@	SoStream.cpp
 
+
 # dummy included for 'make dist'
 @BUILD_3DS_CAPABILITIES_FALSE@RegularSources = 3ds-dummy.cpp
 @BUILD_3DS_CAPABILITIES_TRUE@LinkHackSources = \
@@ -257,7 +258,9 @@ target_vendor = @target_vendor@
 
 # for 'make dist'
 @BUILD_3DS_CAPABILITIES_FALSE@PrivateHeaders = 3dsLoader.cpp 3dsLoader.h SoStream.cpp SoStream.h
+
 PublicHeaders = 
+ObsoleteHeaders = 
 
 
 # Automake wasn't too supportive of having variables starting with numbers,

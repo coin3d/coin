@@ -327,93 +327,8 @@ RegularSources = \
 LinkHackSources = \
 	all-elements-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/elements/SoSubElement.h \
-	../../include/Inventor/elements/SoElements.h \
-	../../include/Inventor/elements/SoAccumulatedElement.h \
-	../../include/Inventor/elements/SoAmbientColorElement.h \
-	../../include/Inventor/elements/SoAnnoText3CharOrientElement.h \
-	../../include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
-	../../include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
-	../../include/Inventor/elements/SoBBoxModelMatrixElement.h \
-	../../include/Inventor/elements/SoBumpMapElement.h \
-	../../include/Inventor/elements/SoBumpMapCoordinateElement.h \
-	../../include/Inventor/elements/SoBumpMappingPropertyElement.h \
-	../../include/Inventor/elements/SoCacheElement.h \
-	../../include/Inventor/elements/SoClipPlaneElement.h \
-	../../include/Inventor/elements/SoComplexityElement.h \
-	../../include/Inventor/elements/SoComplexityTypeElement.h \
-	../../include/Inventor/elements/SoCoordinateElement.h \
-	../../include/Inventor/elements/SoCreaseAngleElement.h \
-	../../include/Inventor/elements/SoCullElement.h \
-	../../include/Inventor/elements/SoDecimationPercentageElement.h \
-	../../include/Inventor/elements/SoDecimationTypeElement.h \
-	../../include/Inventor/elements/SoDiffuseColorElement.h \
-	../../include/Inventor/elements/SoDrawStyleElement.h \
-	../../include/Inventor/elements/SoElement.h \
-	../../include/Inventor/elements/SoEmissiveColorElement.h \
-	../../include/Inventor/elements/SoEnvironmentElement.h \
-	../../include/Inventor/elements/SoFloatElement.h \
-	../../include/Inventor/elements/SoFocalDistanceElement.h \
-	../../include/Inventor/elements/SoFontNameElement.h \
-	../../include/Inventor/elements/SoFontSizeElement.h \
-	../../include/Inventor/elements/SoInt32Element.h \
-	../../include/Inventor/elements/SoLazyElement.h \
-	../../include/Inventor/elements/SoLightAttenuationElement.h \
-	../../include/Inventor/elements/SoLightElement.h \
-	../../include/Inventor/elements/SoLightModelElement.h \
-	../../include/Inventor/elements/SoLinePatternElement.h \
-	../../include/Inventor/elements/SoLineWidthElement.h \
-	../../include/Inventor/elements/SoLocalBBoxMatrixElement.h \
-	../../include/Inventor/elements/SoLongElement.h \
-	../../include/Inventor/elements/SoMaterialBindingElement.h \
-	../../include/Inventor/elements/SoModelMatrixElement.h \
-	../../include/Inventor/elements/SoMultiTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoMultiTextureEnabledElement.h \
-	../../include/Inventor/elements/SoMultiTextureMatrixElement.h \
-	../../include/Inventor/elements/SoMultiTextureImageElement.h \
-	../../include/Inventor/elements/SoNormalBindingElement.h \
-	../../include/Inventor/elements/SoNormalElement.h \
-	../../include/Inventor/elements/SoOverrideElement.h \
-	../../include/Inventor/elements/SoPickRayElement.h \
-	../../include/Inventor/elements/SoPickStyleElement.h \
-	../../include/Inventor/elements/SoPointSizeElement.h \
-	../../include/Inventor/elements/SoPolygonOffsetElement.h \
-	../../include/Inventor/elements/SoProfileCoordinateElement.h \
-	../../include/Inventor/elements/SoProfileElement.h \
-	../../include/Inventor/elements/SoProjectionMatrixElement.h \
-	../../include/Inventor/elements/SoReplacedElement.h \
-	../../include/Inventor/elements/SoShapeHintsElement.h \
-	../../include/Inventor/elements/SoShapeStyleElement.h \
-	../../include/Inventor/elements/SoShininessElement.h \
-	../../include/Inventor/elements/SoSpecularColorElement.h \
-	../../include/Inventor/elements/SoSwitchElement.h \
-	../../include/Inventor/elements/SoTextOutlineEnabledElement.h \
-	../../include/Inventor/elements/SoTextureCoordinateBindingElement.h \
-	../../include/Inventor/elements/SoTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoTextureEnabledElement.h \
-	../../include/Inventor/elements/SoTexture3EnabledElement.h \
-	../../include/Inventor/elements/SoTextureImageElement.h \
-	../../include/Inventor/elements/SoTextureMatrixElement.h \
-	../../include/Inventor/elements/SoTextureOverrideElement.h \
-	../../include/Inventor/elements/SoTextureQualityElement.h \
-	../../include/Inventor/elements/SoTextureUnitElement.h \
-	../../include/Inventor/elements/SoTransparencyElement.h \
-	../../include/Inventor/elements/SoUnitsElement.h \
-	../../include/Inventor/elements/SoViewVolumeElement.h \
-	../../include/Inventor/elements/SoViewingMatrixElement.h \
-	../../include/Inventor/elements/SoViewportRegionElement.h \
-	../../include/Inventor/elements/SoWindowElement.h \
-	../../include/Inventor/elements/SoListenerPositionElement.h \
-	../../include/Inventor/elements/SoListenerOrientationElement.h \
-	../../include/Inventor/elements/SoListenerGainElement.h \
-	../../include/Inventor/elements/SoListenerDopplerElement.h \
-	../../include/Inventor/elements/SoSoundElement.h
-
-PrivateHeaders = \
-	../../include/Inventor/elements/SoTextureScalePolicyElement.h \
-	../../include/Inventor/elements/SoTextureScaleQualityElement.h
-
+PublicHeaders = 
+PrivateHeaders = 
 ObsoletedHeaders = 
 
 
@@ -576,92 +491,9 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_elements_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_elements_lst_SOURCES_DIST = \
-	../../include/Inventor/elements/SoSubElement.h \
-	../../include/Inventor/elements/SoElements.h \
-	../../include/Inventor/elements/SoAccumulatedElement.h \
-	../../include/Inventor/elements/SoAmbientColorElement.h \
-	../../include/Inventor/elements/SoAnnoText3CharOrientElement.h \
-	../../include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
-	../../include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
-	../../include/Inventor/elements/SoBBoxModelMatrixElement.h \
-	../../include/Inventor/elements/SoBumpMapElement.h \
-	../../include/Inventor/elements/SoBumpMapCoordinateElement.h \
-	../../include/Inventor/elements/SoBumpMappingPropertyElement.h \
-	../../include/Inventor/elements/SoCacheElement.h \
-	../../include/Inventor/elements/SoClipPlaneElement.h \
-	../../include/Inventor/elements/SoComplexityElement.h \
-	../../include/Inventor/elements/SoComplexityTypeElement.h \
-	../../include/Inventor/elements/SoCoordinateElement.h \
-	../../include/Inventor/elements/SoCreaseAngleElement.h \
-	../../include/Inventor/elements/SoCullElement.h \
-	../../include/Inventor/elements/SoDecimationPercentageElement.h \
-	../../include/Inventor/elements/SoDecimationTypeElement.h \
-	../../include/Inventor/elements/SoDiffuseColorElement.h \
-	../../include/Inventor/elements/SoDrawStyleElement.h \
-	../../include/Inventor/elements/SoElement.h \
-	../../include/Inventor/elements/SoEmissiveColorElement.h \
-	../../include/Inventor/elements/SoEnvironmentElement.h \
-	../../include/Inventor/elements/SoFloatElement.h \
-	../../include/Inventor/elements/SoFocalDistanceElement.h \
-	../../include/Inventor/elements/SoFontNameElement.h \
-	../../include/Inventor/elements/SoFontSizeElement.h \
-	../../include/Inventor/elements/SoInt32Element.h \
-	../../include/Inventor/elements/SoLazyElement.h \
-	../../include/Inventor/elements/SoLightAttenuationElement.h \
-	../../include/Inventor/elements/SoLightElement.h \
-	../../include/Inventor/elements/SoLightModelElement.h \
-	../../include/Inventor/elements/SoLinePatternElement.h \
-	../../include/Inventor/elements/SoLineWidthElement.h \
-	../../include/Inventor/elements/SoLocalBBoxMatrixElement.h \
-	../../include/Inventor/elements/SoLongElement.h \
-	../../include/Inventor/elements/SoMaterialBindingElement.h \
-	../../include/Inventor/elements/SoModelMatrixElement.h \
-	../../include/Inventor/elements/SoMultiTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoMultiTextureEnabledElement.h \
-	../../include/Inventor/elements/SoMultiTextureMatrixElement.h \
-	../../include/Inventor/elements/SoMultiTextureImageElement.h \
-	../../include/Inventor/elements/SoNormalBindingElement.h \
-	../../include/Inventor/elements/SoNormalElement.h \
-	../../include/Inventor/elements/SoOverrideElement.h \
-	../../include/Inventor/elements/SoPickRayElement.h \
-	../../include/Inventor/elements/SoPickStyleElement.h \
-	../../include/Inventor/elements/SoPointSizeElement.h \
-	../../include/Inventor/elements/SoPolygonOffsetElement.h \
-	../../include/Inventor/elements/SoProfileCoordinateElement.h \
-	../../include/Inventor/elements/SoProfileElement.h \
-	../../include/Inventor/elements/SoProjectionMatrixElement.h \
-	../../include/Inventor/elements/SoReplacedElement.h \
-	../../include/Inventor/elements/SoShapeHintsElement.h \
-	../../include/Inventor/elements/SoShapeStyleElement.h \
-	../../include/Inventor/elements/SoShininessElement.h \
-	../../include/Inventor/elements/SoSpecularColorElement.h \
-	../../include/Inventor/elements/SoSwitchElement.h \
-	../../include/Inventor/elements/SoTextOutlineEnabledElement.h \
-	../../include/Inventor/elements/SoTextureCoordinateBindingElement.h \
-	../../include/Inventor/elements/SoTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoTextureEnabledElement.h \
-	../../include/Inventor/elements/SoTexture3EnabledElement.h \
-	../../include/Inventor/elements/SoTextureImageElement.h \
-	../../include/Inventor/elements/SoTextureMatrixElement.h \
-	../../include/Inventor/elements/SoTextureOverrideElement.h \
-	../../include/Inventor/elements/SoTextureQualityElement.h \
-	../../include/Inventor/elements/SoTextureUnitElement.h \
-	../../include/Inventor/elements/SoTransparencyElement.h \
-	../../include/Inventor/elements/SoUnitsElement.h \
-	../../include/Inventor/elements/SoViewVolumeElement.h \
-	../../include/Inventor/elements/SoViewingMatrixElement.h \
-	../../include/Inventor/elements/SoViewportRegionElement.h \
-	../../include/Inventor/elements/SoWindowElement.h \
-	../../include/Inventor/elements/SoListenerPositionElement.h \
-	../../include/Inventor/elements/SoListenerOrientationElement.h \
-	../../include/Inventor/elements/SoListenerGainElement.h \
-	../../include/Inventor/elements/SoListenerDopplerElement.h \
-	../../include/Inventor/elements/SoSoundElement.h \
-	../../include/Inventor/elements/SoTextureScalePolicyElement.h \
-	../../include/Inventor/elements/SoTextureScaleQualityElement.h \
-	all-elements-cpp.cpp SoAccumulatedElement.cpp \
-	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
+am__EXTRA_elements_lst_SOURCES_DIST = all-elements-cpp.cpp \
+	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
+	SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoBumpMapElement.cpp SoBumpMapCoordinateElement.cpp \
@@ -794,92 +626,9 @@ am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libelements_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libelements_la_SOURCES_DIST = \
-	../../include/Inventor/elements/SoSubElement.h \
-	../../include/Inventor/elements/SoElements.h \
-	../../include/Inventor/elements/SoAccumulatedElement.h \
-	../../include/Inventor/elements/SoAmbientColorElement.h \
-	../../include/Inventor/elements/SoAnnoText3CharOrientElement.h \
-	../../include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
-	../../include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
-	../../include/Inventor/elements/SoBBoxModelMatrixElement.h \
-	../../include/Inventor/elements/SoBumpMapElement.h \
-	../../include/Inventor/elements/SoBumpMapCoordinateElement.h \
-	../../include/Inventor/elements/SoBumpMappingPropertyElement.h \
-	../../include/Inventor/elements/SoCacheElement.h \
-	../../include/Inventor/elements/SoClipPlaneElement.h \
-	../../include/Inventor/elements/SoComplexityElement.h \
-	../../include/Inventor/elements/SoComplexityTypeElement.h \
-	../../include/Inventor/elements/SoCoordinateElement.h \
-	../../include/Inventor/elements/SoCreaseAngleElement.h \
-	../../include/Inventor/elements/SoCullElement.h \
-	../../include/Inventor/elements/SoDecimationPercentageElement.h \
-	../../include/Inventor/elements/SoDecimationTypeElement.h \
-	../../include/Inventor/elements/SoDiffuseColorElement.h \
-	../../include/Inventor/elements/SoDrawStyleElement.h \
-	../../include/Inventor/elements/SoElement.h \
-	../../include/Inventor/elements/SoEmissiveColorElement.h \
-	../../include/Inventor/elements/SoEnvironmentElement.h \
-	../../include/Inventor/elements/SoFloatElement.h \
-	../../include/Inventor/elements/SoFocalDistanceElement.h \
-	../../include/Inventor/elements/SoFontNameElement.h \
-	../../include/Inventor/elements/SoFontSizeElement.h \
-	../../include/Inventor/elements/SoInt32Element.h \
-	../../include/Inventor/elements/SoLazyElement.h \
-	../../include/Inventor/elements/SoLightAttenuationElement.h \
-	../../include/Inventor/elements/SoLightElement.h \
-	../../include/Inventor/elements/SoLightModelElement.h \
-	../../include/Inventor/elements/SoLinePatternElement.h \
-	../../include/Inventor/elements/SoLineWidthElement.h \
-	../../include/Inventor/elements/SoLocalBBoxMatrixElement.h \
-	../../include/Inventor/elements/SoLongElement.h \
-	../../include/Inventor/elements/SoMaterialBindingElement.h \
-	../../include/Inventor/elements/SoModelMatrixElement.h \
-	../../include/Inventor/elements/SoMultiTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoMultiTextureEnabledElement.h \
-	../../include/Inventor/elements/SoMultiTextureMatrixElement.h \
-	../../include/Inventor/elements/SoMultiTextureImageElement.h \
-	../../include/Inventor/elements/SoNormalBindingElement.h \
-	../../include/Inventor/elements/SoNormalElement.h \
-	../../include/Inventor/elements/SoOverrideElement.h \
-	../../include/Inventor/elements/SoPickRayElement.h \
-	../../include/Inventor/elements/SoPickStyleElement.h \
-	../../include/Inventor/elements/SoPointSizeElement.h \
-	../../include/Inventor/elements/SoPolygonOffsetElement.h \
-	../../include/Inventor/elements/SoProfileCoordinateElement.h \
-	../../include/Inventor/elements/SoProfileElement.h \
-	../../include/Inventor/elements/SoProjectionMatrixElement.h \
-	../../include/Inventor/elements/SoReplacedElement.h \
-	../../include/Inventor/elements/SoShapeHintsElement.h \
-	../../include/Inventor/elements/SoShapeStyleElement.h \
-	../../include/Inventor/elements/SoShininessElement.h \
-	../../include/Inventor/elements/SoSpecularColorElement.h \
-	../../include/Inventor/elements/SoSwitchElement.h \
-	../../include/Inventor/elements/SoTextOutlineEnabledElement.h \
-	../../include/Inventor/elements/SoTextureCoordinateBindingElement.h \
-	../../include/Inventor/elements/SoTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoTextureEnabledElement.h \
-	../../include/Inventor/elements/SoTexture3EnabledElement.h \
-	../../include/Inventor/elements/SoTextureImageElement.h \
-	../../include/Inventor/elements/SoTextureMatrixElement.h \
-	../../include/Inventor/elements/SoTextureOverrideElement.h \
-	../../include/Inventor/elements/SoTextureQualityElement.h \
-	../../include/Inventor/elements/SoTextureUnitElement.h \
-	../../include/Inventor/elements/SoTransparencyElement.h \
-	../../include/Inventor/elements/SoUnitsElement.h \
-	../../include/Inventor/elements/SoViewVolumeElement.h \
-	../../include/Inventor/elements/SoViewingMatrixElement.h \
-	../../include/Inventor/elements/SoViewportRegionElement.h \
-	../../include/Inventor/elements/SoWindowElement.h \
-	../../include/Inventor/elements/SoListenerPositionElement.h \
-	../../include/Inventor/elements/SoListenerOrientationElement.h \
-	../../include/Inventor/elements/SoListenerGainElement.h \
-	../../include/Inventor/elements/SoListenerDopplerElement.h \
-	../../include/Inventor/elements/SoSoundElement.h \
-	../../include/Inventor/elements/SoTextureScalePolicyElement.h \
-	../../include/Inventor/elements/SoTextureScaleQualityElement.h \
-	all-elements-cpp.cpp SoAccumulatedElement.cpp \
-	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
+am__EXTRA_libelements_la_SOURCES_DIST = all-elements-cpp.cpp \
+	SoAccumulatedElement.cpp SoAmbientColorElement.cpp \
+	SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
 	SoAnnoText3RenderPrintElement.cpp SoBBoxModelMatrixElement.cpp \
 	SoBumpMapElement.cpp SoBumpMapCoordinateElement.cpp \
@@ -969,89 +718,6 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	all-elements-cpp.cpp
 am_libelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/elements/SoSubElement.h \
-	../../include/Inventor/elements/SoElements.h \
-	../../include/Inventor/elements/SoAccumulatedElement.h \
-	../../include/Inventor/elements/SoAmbientColorElement.h \
-	../../include/Inventor/elements/SoAnnoText3CharOrientElement.h \
-	../../include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
-	../../include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
-	../../include/Inventor/elements/SoBBoxModelMatrixElement.h \
-	../../include/Inventor/elements/SoBumpMapElement.h \
-	../../include/Inventor/elements/SoBumpMapCoordinateElement.h \
-	../../include/Inventor/elements/SoBumpMappingPropertyElement.h \
-	../../include/Inventor/elements/SoCacheElement.h \
-	../../include/Inventor/elements/SoClipPlaneElement.h \
-	../../include/Inventor/elements/SoComplexityElement.h \
-	../../include/Inventor/elements/SoComplexityTypeElement.h \
-	../../include/Inventor/elements/SoCoordinateElement.h \
-	../../include/Inventor/elements/SoCreaseAngleElement.h \
-	../../include/Inventor/elements/SoCullElement.h \
-	../../include/Inventor/elements/SoDecimationPercentageElement.h \
-	../../include/Inventor/elements/SoDecimationTypeElement.h \
-	../../include/Inventor/elements/SoDiffuseColorElement.h \
-	../../include/Inventor/elements/SoDrawStyleElement.h \
-	../../include/Inventor/elements/SoElement.h \
-	../../include/Inventor/elements/SoEmissiveColorElement.h \
-	../../include/Inventor/elements/SoEnvironmentElement.h \
-	../../include/Inventor/elements/SoFloatElement.h \
-	../../include/Inventor/elements/SoFocalDistanceElement.h \
-	../../include/Inventor/elements/SoFontNameElement.h \
-	../../include/Inventor/elements/SoFontSizeElement.h \
-	../../include/Inventor/elements/SoInt32Element.h \
-	../../include/Inventor/elements/SoLazyElement.h \
-	../../include/Inventor/elements/SoLightAttenuationElement.h \
-	../../include/Inventor/elements/SoLightElement.h \
-	../../include/Inventor/elements/SoLightModelElement.h \
-	../../include/Inventor/elements/SoLinePatternElement.h \
-	../../include/Inventor/elements/SoLineWidthElement.h \
-	../../include/Inventor/elements/SoLocalBBoxMatrixElement.h \
-	../../include/Inventor/elements/SoLongElement.h \
-	../../include/Inventor/elements/SoMaterialBindingElement.h \
-	../../include/Inventor/elements/SoModelMatrixElement.h \
-	../../include/Inventor/elements/SoMultiTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoMultiTextureEnabledElement.h \
-	../../include/Inventor/elements/SoMultiTextureMatrixElement.h \
-	../../include/Inventor/elements/SoMultiTextureImageElement.h \
-	../../include/Inventor/elements/SoNormalBindingElement.h \
-	../../include/Inventor/elements/SoNormalElement.h \
-	../../include/Inventor/elements/SoOverrideElement.h \
-	../../include/Inventor/elements/SoPickRayElement.h \
-	../../include/Inventor/elements/SoPickStyleElement.h \
-	../../include/Inventor/elements/SoPointSizeElement.h \
-	../../include/Inventor/elements/SoPolygonOffsetElement.h \
-	../../include/Inventor/elements/SoProfileCoordinateElement.h \
-	../../include/Inventor/elements/SoProfileElement.h \
-	../../include/Inventor/elements/SoProjectionMatrixElement.h \
-	../../include/Inventor/elements/SoReplacedElement.h \
-	../../include/Inventor/elements/SoShapeHintsElement.h \
-	../../include/Inventor/elements/SoShapeStyleElement.h \
-	../../include/Inventor/elements/SoShininessElement.h \
-	../../include/Inventor/elements/SoSpecularColorElement.h \
-	../../include/Inventor/elements/SoSwitchElement.h \
-	../../include/Inventor/elements/SoTextOutlineEnabledElement.h \
-	../../include/Inventor/elements/SoTextureCoordinateBindingElement.h \
-	../../include/Inventor/elements/SoTextureCoordinateElement.h \
-	../../include/Inventor/elements/SoTextureEnabledElement.h \
-	../../include/Inventor/elements/SoTexture3EnabledElement.h \
-	../../include/Inventor/elements/SoTextureImageElement.h \
-	../../include/Inventor/elements/SoTextureMatrixElement.h \
-	../../include/Inventor/elements/SoTextureOverrideElement.h \
-	../../include/Inventor/elements/SoTextureQualityElement.h \
-	../../include/Inventor/elements/SoTextureUnitElement.h \
-	../../include/Inventor/elements/SoTransparencyElement.h \
-	../../include/Inventor/elements/SoUnitsElement.h \
-	../../include/Inventor/elements/SoViewVolumeElement.h \
-	../../include/Inventor/elements/SoViewingMatrixElement.h \
-	../../include/Inventor/elements/SoViewportRegionElement.h \
-	../../include/Inventor/elements/SoWindowElement.h \
-	../../include/Inventor/elements/SoListenerPositionElement.h \
-	../../include/Inventor/elements/SoListenerOrientationElement.h \
-	../../include/Inventor/elements/SoListenerGainElement.h \
-	../../include/Inventor/elements/SoListenerDopplerElement.h \
-	../../include/Inventor/elements/SoSoundElement.h \
-	../../include/Inventor/elements/SoTextureScalePolicyElement.h \
-	../../include/Inventor/elements/SoTextureScaleQualityElement.h \
 	all-elements-cpp.cpp SoAccumulatedElement.cpp \
 	SoAmbientColorElement.cpp SoAnnoText3CharOrientElement.cpp \
 	SoAnnoText3FontSizeHintElement.cpp \
@@ -1266,13 +932,6 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__elements_lst_SOURCES_DIST) \
 	$(am__EXTRA_elements_lst_SOURCES_DIST) \
@@ -1699,7 +1358,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/elements
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

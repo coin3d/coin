@@ -252,15 +252,12 @@ RegularSources = \
 LinkHackSources = \
 	all-hardcopy-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/annex/HardCopy/SoHardCopy.h \
-	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h
+PublicHeaders = 
+PrivateHeaders = \
+	VectorizeActionP.h \
+	VectorizeItems.h
 
-
-PrivateHeaders = VectorizeActionP.h VectorizeItems.h
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -331,15 +328,10 @@ am__objects_2 = HardCopy.$(OBJEXT) PSVectorOutput.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_hardcopy_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_hardcopy_lst_SOURCES_DIST = \
-	../../include/Inventor/annex/HardCopy/SoHardCopy.h \
-	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
-	VectorizeActionP.h VectorizeItems.h all-hardcopy-cpp.cpp \
-	HardCopy.cpp PSVectorOutput.cpp VectorOutput.cpp \
-	VectorizeAction.cpp VectorizeActionP.cpp VectorizePSAction.cpp
+am__EXTRA_hardcopy_lst_SOURCES_DIST = VectorizeActionP.h \
+	VectorizeItems.h all-hardcopy-cpp.cpp HardCopy.cpp \
+	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
+	VectorizeActionP.cpp VectorizePSAction.cpp
 hardcopy_lst_OBJECTS = $(am_hardcopy_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -354,15 +346,10 @@ am__objects_7 = HardCopy.lo PSVectorOutput.lo VectorOutput.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libhardcopy_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libhardcopy_la_SOURCES_DIST = \
-	../../include/Inventor/annex/HardCopy/SoHardCopy.h \
-	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
-	VectorizeActionP.h VectorizeItems.h all-hardcopy-cpp.cpp \
-	HardCopy.cpp PSVectorOutput.cpp VectorOutput.cpp \
-	VectorizeAction.cpp VectorizeActionP.cpp VectorizePSAction.cpp
+am__EXTRA_libhardcopy_la_SOURCES_DIST = VectorizeActionP.h \
+	VectorizeItems.h all-hardcopy-cpp.cpp HardCopy.cpp \
+	PSVectorOutput.cpp VectorOutput.cpp VectorizeAction.cpp \
+	VectorizeActionP.cpp VectorizePSAction.cpp
 libhardcopy_la_OBJECTS = $(am_libhardcopy_la_OBJECTS)
 libhardcopy@SUFFIX@LINKHACK_la_LDFLAGS =
 libhardcopy@SUFFIX@LINKHACK_la_LIBADD =
@@ -371,11 +358,6 @@ am__libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = HardCopy.cpp \
 	VectorizeActionP.cpp VectorizePSAction.cpp all-hardcopy-cpp.cpp
 am_libhardcopy@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libhardcopy@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/annex/HardCopy/SoHardCopy.h \
-	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
 	VectorizeActionP.h VectorizeItems.h all-hardcopy-cpp.cpp \
 	HardCopy.cpp PSVectorOutput.cpp VectorOutput.cpp \
 	VectorizeAction.cpp VectorizeActionP.cpp VectorizePSAction.cpp
@@ -611,7 +593,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/annex/HardCopy
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

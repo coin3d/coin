@@ -22,26 +22,9 @@ RegularSources = \
 	SoTypeList.cpp
 LinkHackSources = \
 	all-lists-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/lists/SbList.h \
-	../../include/Inventor/lists/SbPList.h \
-	../../include/Inventor/lists/SbIntList.h \
-	../../include/Inventor/lists/SbVec3fList.h \
-	../../include/Inventor/lists/SbStringList.h \
-	../../include/Inventor/lists/SoActionMethodList.h \
-	../../include/Inventor/lists/SoAuditorList.h \
-	../../include/Inventor/lists/SoBaseList.h \
-	../../include/Inventor/lists/SoCallbackList.h \
-	../../include/Inventor/lists/SoDetailList.h \
-	../../include/Inventor/lists/SoEnabledElementsList.h \
-	../../include/Inventor/lists/SoEngineList.h \
-	../../include/Inventor/lists/SoEngineOutputList.h \
-	../../include/Inventor/lists/SoFieldList.h \
-	../../include/Inventor/lists/SoNodeList.h \
-	../../include/Inventor/lists/SoPathList.h \
-	../../include/Inventor/lists/SoPickedPointList.h \
-	../../include/Inventor/lists/SoTypeList.h
+PublicHeaders =
 PrivateHeaders =
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(lists, lists)
 # **************************************************************************

@@ -257,13 +257,13 @@ LinkHackSources = \
 
 
 PublicHeaders = 
-
 PrivateHeaders = \
 	SoInput_FileInfo.h \
 	SoInput_Reader.h \
 	SoOutput_Writer.h \
 	gzmemio.h
 
+ObsoleteHeaders = 
 
 
 # **************************************************************************

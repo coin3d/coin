@@ -11,13 +11,9 @@ RegularSources = \
 LinkHackSources = \
 	all-errors-c.c \
 	all-errors-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/errors/SoErrors.h \
-	../../include/Inventor/errors/SoDebugError.h \
-	../../include/Inventor/errors/SoError.h \
-	../../include/Inventor/errors/SoMemoryError.h \
-	../../include/Inventor/errors/SoReadError.h
+PublicHeaders =
 PrivateHeaders =
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(errors, errors)
 # **************************************************************************

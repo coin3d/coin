@@ -240,84 +240,6 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 
-PublicHeaders = \
-	../../include/Inventor/VRMLnodes/SoVRML.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAnchor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAppearance.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAudioClip.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBackground.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBillboard.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBox.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCollision.h \
-	../../include/Inventor/VRMLnodes/SoVRMLColor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLColorInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCone.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCoordinate.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCylinder.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCylinderSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLDirectionalLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLDragSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLElevationGrid.h \
-	../../include/Inventor/VRMLnodes/SoVRMLExtrusion.h \
-	../../include/Inventor/VRMLnodes/SoVRMLFog.h \
-	../../include/Inventor/VRMLnodes/SoVRMLFontStyle.h \
-	../../include/Inventor/VRMLnodes/SoVRMLGeometry.h \
-	../../include/Inventor/VRMLnodes/SoVRMLGroup.h \
-	../../include/Inventor/VRMLnodes/SoVRMLImageTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedLine.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedLineSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLInline.h \
-	../../include/Inventor/VRMLnodes/SoVRMLInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLLOD.h \
-	../../include/Inventor/VRMLnodes/SoVRMLLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMacros.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMaterial.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMovieTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNavigationInfo.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNodes.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNormal.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLParent.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPointLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPointSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPositionInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLProximitySensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLScalarInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLScript.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSound.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSphere.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSphereSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSpotLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSwitch.h \
-	../../include/Inventor/VRMLnodes/SoVRMLText.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTextureCoordinate.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTextureTransform.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTimeSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTouchSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTransform.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexLine.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexPoint.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h
-
-PrivateHeaders = \
-	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h
-
-LinkHackSources = \
-	all-vrml97-cpp.cpp
-
 RegularSources = \
 	Anchor.cpp \
 	Appearance.cpp \
@@ -387,6 +309,14 @@ RegularSources = \
 	VisibilitySensor.cpp \
 	WorldInfo.cpp
 
+
+LinkHackSources = \
+	all-vrml97-cpp.cpp
+
+
+PublicHeaders = 
+PrivateHeaders = 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -496,87 +426,15 @@ am__objects_2 = Anchor.$(OBJEXT) Appearance.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_vrml97_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_vrml97_lst_SOURCES_DIST = \
-	../../include/Inventor/VRMLnodes/SoVRML.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAnchor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAppearance.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAudioClip.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBackground.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBillboard.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBox.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCollision.h \
-	../../include/Inventor/VRMLnodes/SoVRMLColor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLColorInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCone.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCoordinate.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCylinder.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCylinderSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLDirectionalLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLDragSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLElevationGrid.h \
-	../../include/Inventor/VRMLnodes/SoVRMLExtrusion.h \
-	../../include/Inventor/VRMLnodes/SoVRMLFog.h \
-	../../include/Inventor/VRMLnodes/SoVRMLFontStyle.h \
-	../../include/Inventor/VRMLnodes/SoVRMLGeometry.h \
-	../../include/Inventor/VRMLnodes/SoVRMLGroup.h \
-	../../include/Inventor/VRMLnodes/SoVRMLImageTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedLine.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedLineSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLInline.h \
-	../../include/Inventor/VRMLnodes/SoVRMLInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLLOD.h \
-	../../include/Inventor/VRMLnodes/SoVRMLLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMacros.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMaterial.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMovieTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNavigationInfo.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNodes.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNormal.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLParent.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPointLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPointSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPositionInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLProximitySensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLScalarInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLScript.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSound.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSphere.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSphereSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSpotLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSwitch.h \
-	../../include/Inventor/VRMLnodes/SoVRMLText.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTextureCoordinate.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTextureTransform.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTimeSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTouchSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTransform.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexLine.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexPoint.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h \
-	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
-	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
-	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
-	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
-	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
-	Extrusion.cpp Fog.cpp FontStyle.cpp Geometry.cpp Group.cpp \
-	ImageTexture.cpp IndexedFaceSet.cpp IndexedLine.cpp \
-	IndexedLineSet.cpp IndexedShape.cpp Init.cpp Inline.cpp \
-	Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
+am__EXTRA_vrml97_lst_SOURCES_DIST = all-vrml97-cpp.cpp Anchor.cpp \
+	Appearance.cpp AudioClip.cpp Background.cpp Billboard.cpp \
+	Box.cpp Collision.cpp Color.cpp ColorInterpolator.cpp Cone.cpp \
+	Coordinate.cpp CoordinateInterpolator.cpp Cylinder.cpp \
+	CylinderSensor.cpp DirectionalLight.cpp DragSensor.cpp \
+	ElevationGrid.cpp Extrusion.cpp Fog.cpp FontStyle.cpp \
+	Geometry.cpp Group.cpp ImageTexture.cpp IndexedFaceSet.cpp \
+	IndexedLine.cpp IndexedLineSet.cpp IndexedShape.cpp Init.cpp \
+	Inline.cpp Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
 	MovieTexture.cpp NavigationInfo.cpp Normal.cpp \
 	NormalInterpolator.cpp OrientationInterpolator.cpp Parent.cpp \
 	PixelTexture.cpp PlaneSensor.cpp PointLight.cpp PointSet.cpp \
@@ -633,87 +491,15 @@ am__objects_7 = Anchor.lo Appearance.lo AudioClip.lo Background.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libvrml97_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libvrml97_la_SOURCES_DIST = \
-	../../include/Inventor/VRMLnodes/SoVRML.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAnchor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAppearance.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAudioClip.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBackground.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBillboard.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBox.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCollision.h \
-	../../include/Inventor/VRMLnodes/SoVRMLColor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLColorInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCone.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCoordinate.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCylinder.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCylinderSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLDirectionalLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLDragSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLElevationGrid.h \
-	../../include/Inventor/VRMLnodes/SoVRMLExtrusion.h \
-	../../include/Inventor/VRMLnodes/SoVRMLFog.h \
-	../../include/Inventor/VRMLnodes/SoVRMLFontStyle.h \
-	../../include/Inventor/VRMLnodes/SoVRMLGeometry.h \
-	../../include/Inventor/VRMLnodes/SoVRMLGroup.h \
-	../../include/Inventor/VRMLnodes/SoVRMLImageTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedLine.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedLineSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLInline.h \
-	../../include/Inventor/VRMLnodes/SoVRMLInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLLOD.h \
-	../../include/Inventor/VRMLnodes/SoVRMLLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMacros.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMaterial.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMovieTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNavigationInfo.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNodes.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNormal.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLParent.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPointLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPointSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPositionInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLProximitySensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLScalarInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLScript.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSound.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSphere.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSphereSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSpotLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSwitch.h \
-	../../include/Inventor/VRMLnodes/SoVRMLText.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTextureCoordinate.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTextureTransform.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTimeSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTouchSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTransform.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexLine.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexPoint.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h \
-	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
-	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
-	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
-	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
-	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
-	Extrusion.cpp Fog.cpp FontStyle.cpp Geometry.cpp Group.cpp \
-	ImageTexture.cpp IndexedFaceSet.cpp IndexedLine.cpp \
-	IndexedLineSet.cpp IndexedShape.cpp Init.cpp Inline.cpp \
-	Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
+am__EXTRA_libvrml97_la_SOURCES_DIST = all-vrml97-cpp.cpp Anchor.cpp \
+	Appearance.cpp AudioClip.cpp Background.cpp Billboard.cpp \
+	Box.cpp Collision.cpp Color.cpp ColorInterpolator.cpp Cone.cpp \
+	Coordinate.cpp CoordinateInterpolator.cpp Cylinder.cpp \
+	CylinderSensor.cpp DirectionalLight.cpp DragSensor.cpp \
+	ElevationGrid.cpp Extrusion.cpp Fog.cpp FontStyle.cpp \
+	Geometry.cpp Group.cpp ImageTexture.cpp IndexedFaceSet.cpp \
+	IndexedLine.cpp IndexedLineSet.cpp IndexedShape.cpp Init.cpp \
+	Inline.cpp Interpolator.cpp LOD.cpp Light.cpp Material.cpp \
 	MovieTexture.cpp NavigationInfo.cpp Normal.cpp \
 	NormalInterpolator.cpp OrientationInterpolator.cpp Parent.cpp \
 	PixelTexture.cpp PlaneSensor.cpp PointLight.cpp PointSet.cpp \
@@ -747,80 +533,9 @@ am__libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = Anchor.cpp \
 	VertexPoint.cpp VertexShape.cpp Viewpoint.cpp \
 	VisibilitySensor.cpp WorldInfo.cpp all-vrml97-cpp.cpp
 am_libvrml97@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/VRMLnodes/SoVRML.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAnchor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAppearance.h \
-	../../include/Inventor/VRMLnodes/SoVRMLAudioClip.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBackground.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBillboard.h \
-	../../include/Inventor/VRMLnodes/SoVRMLBox.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCollision.h \
-	../../include/Inventor/VRMLnodes/SoVRMLColor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLColorInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCone.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCoordinate.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCylinder.h \
-	../../include/Inventor/VRMLnodes/SoVRMLCylinderSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLDirectionalLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLDragSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLElevationGrid.h \
-	../../include/Inventor/VRMLnodes/SoVRMLExtrusion.h \
-	../../include/Inventor/VRMLnodes/SoVRMLFog.h \
-	../../include/Inventor/VRMLnodes/SoVRMLFontStyle.h \
-	../../include/Inventor/VRMLnodes/SoVRMLGeometry.h \
-	../../include/Inventor/VRMLnodes/SoVRMLGroup.h \
-	../../include/Inventor/VRMLnodes/SoVRMLImageTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedLine.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedLineSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLIndexedShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLInline.h \
-	../../include/Inventor/VRMLnodes/SoVRMLInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLLOD.h \
-	../../include/Inventor/VRMLnodes/SoVRMLLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMacros.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMaterial.h \
-	../../include/Inventor/VRMLnodes/SoVRMLMovieTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNavigationInfo.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNodes.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNormal.h \
-	../../include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLParent.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPointLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPointSet.h \
-	../../include/Inventor/VRMLnodes/SoVRMLPositionInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLProximitySensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLScalarInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLScript.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSound.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSphere.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSphereSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSpotLight.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolator.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSwitch.h \
-	../../include/Inventor/VRMLnodes/SoVRMLText.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTexture.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTextureCoordinate.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTextureTransform.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTimeSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTouchSensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLTransform.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexLine.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexPoint.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVertexShape.h \
-	../../include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
-	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
-	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
-	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h \
-	all-vrml97-cpp.cpp Anchor.cpp Appearance.cpp AudioClip.cpp \
-	Background.cpp Billboard.cpp Box.cpp Collision.cpp Color.cpp \
+am__EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES_DIST = all-vrml97-cpp.cpp \
+	Anchor.cpp Appearance.cpp AudioClip.cpp Background.cpp \
+	Billboard.cpp Box.cpp Collision.cpp Color.cpp \
 	ColorInterpolator.cpp Cone.cpp Coordinate.cpp \
 	CoordinateInterpolator.cpp Cylinder.cpp CylinderSensor.cpp \
 	DirectionalLight.cpp DragSensor.cpp ElevationGrid.cpp \
@@ -950,13 +665,6 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__vrml97_lst_SOURCES_DIST) \
 	$(am__EXTRA_vrml97_lst_SOURCES_DIST) \
@@ -1280,7 +988,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/VRMLnodes
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

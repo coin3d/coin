@@ -258,21 +258,9 @@ RegularSources = \
 LinkHackSources = \
 	all-manips-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/manips/SoClipPlaneManip.h \
-	../../include/Inventor/manips/SoDirectionalLightManip.h \
-	../../include/Inventor/manips/SoPointLightManip.h \
-	../../include/Inventor/manips/SoSpotLightManip.h \
-	../../include/Inventor/manips/SoTransformManip.h \
-	../../include/Inventor/manips/SoCenterballManip.h \
-	../../include/Inventor/manips/SoHandleBoxManip.h \
-	../../include/Inventor/manips/SoJackManip.h \
-	../../include/Inventor/manips/SoTabBoxManip.h \
-	../../include/Inventor/manips/SoTrackballManip.h \
-	../../include/Inventor/manips/SoTransformBoxManip.h \
-	../../include/Inventor/manips/SoTransformerManip.h
-
+PublicHeaders = 
 PrivateHeaders = 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -350,24 +338,11 @@ am__objects_2 = SoClipPlaneManip.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_manips_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_manips_lst_SOURCES_DIST = \
-	../../include/Inventor/manips/SoClipPlaneManip.h \
-	../../include/Inventor/manips/SoDirectionalLightManip.h \
-	../../include/Inventor/manips/SoPointLightManip.h \
-	../../include/Inventor/manips/SoSpotLightManip.h \
-	../../include/Inventor/manips/SoTransformManip.h \
-	../../include/Inventor/manips/SoCenterballManip.h \
-	../../include/Inventor/manips/SoHandleBoxManip.h \
-	../../include/Inventor/manips/SoJackManip.h \
-	../../include/Inventor/manips/SoTabBoxManip.h \
-	../../include/Inventor/manips/SoTrackballManip.h \
-	../../include/Inventor/manips/SoTransformBoxManip.h \
-	../../include/Inventor/manips/SoTransformerManip.h \
-	all-manips-cpp.cpp SoClipPlaneManip.cpp \
-	SoDirectionalLightManip.cpp SoPointLightManip.cpp \
-	SoSpotLightManip.cpp SoTransformManip.cpp SoCenterballManip.cpp \
-	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
-	SoTrackballManip.cpp SoTransformBoxManip.cpp \
+am__EXTRA_manips_lst_SOURCES_DIST = all-manips-cpp.cpp \
+	SoClipPlaneManip.cpp SoDirectionalLightManip.cpp \
+	SoPointLightManip.cpp SoSpotLightManip.cpp SoTransformManip.cpp \
+	SoCenterballManip.cpp SoHandleBoxManip.cpp SoJackManip.cpp \
+	SoTabBoxManip.cpp SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp
 manips_lst_OBJECTS = $(am_manips_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -389,24 +364,11 @@ am__objects_7 = SoClipPlaneManip.lo SoDirectionalLightManip.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libmanips_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libmanips_la_SOURCES_DIST = \
-	../../include/Inventor/manips/SoClipPlaneManip.h \
-	../../include/Inventor/manips/SoDirectionalLightManip.h \
-	../../include/Inventor/manips/SoPointLightManip.h \
-	../../include/Inventor/manips/SoSpotLightManip.h \
-	../../include/Inventor/manips/SoTransformManip.h \
-	../../include/Inventor/manips/SoCenterballManip.h \
-	../../include/Inventor/manips/SoHandleBoxManip.h \
-	../../include/Inventor/manips/SoJackManip.h \
-	../../include/Inventor/manips/SoTabBoxManip.h \
-	../../include/Inventor/manips/SoTrackballManip.h \
-	../../include/Inventor/manips/SoTransformBoxManip.h \
-	../../include/Inventor/manips/SoTransformerManip.h \
-	all-manips-cpp.cpp SoClipPlaneManip.cpp \
-	SoDirectionalLightManip.cpp SoPointLightManip.cpp \
-	SoSpotLightManip.cpp SoTransformManip.cpp SoCenterballManip.cpp \
-	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
-	SoTrackballManip.cpp SoTransformBoxManip.cpp \
+am__EXTRA_libmanips_la_SOURCES_DIST = all-manips-cpp.cpp \
+	SoClipPlaneManip.cpp SoDirectionalLightManip.cpp \
+	SoPointLightManip.cpp SoSpotLightManip.cpp SoTransformManip.cpp \
+	SoCenterballManip.cpp SoHandleBoxManip.cpp SoJackManip.cpp \
+	SoTabBoxManip.cpp SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp
 libmanips_la_OBJECTS = $(am_libmanips_la_OBJECTS)
 libmanips@SUFFIX@LINKHACK_la_LDFLAGS =
@@ -418,24 +380,11 @@ am__libmanips@SUFFIX@LINKHACK_la_SOURCES_DIST = SoClipPlaneManip.cpp \
 	SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp all-manips-cpp.cpp
 am_libmanips@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/manips/SoClipPlaneManip.h \
-	../../include/Inventor/manips/SoDirectionalLightManip.h \
-	../../include/Inventor/manips/SoPointLightManip.h \
-	../../include/Inventor/manips/SoSpotLightManip.h \
-	../../include/Inventor/manips/SoTransformManip.h \
-	../../include/Inventor/manips/SoCenterballManip.h \
-	../../include/Inventor/manips/SoHandleBoxManip.h \
-	../../include/Inventor/manips/SoJackManip.h \
-	../../include/Inventor/manips/SoTabBoxManip.h \
-	../../include/Inventor/manips/SoTrackballManip.h \
-	../../include/Inventor/manips/SoTransformBoxManip.h \
-	../../include/Inventor/manips/SoTransformerManip.h \
-	all-manips-cpp.cpp SoClipPlaneManip.cpp \
-	SoDirectionalLightManip.cpp SoPointLightManip.cpp \
-	SoSpotLightManip.cpp SoTransformManip.cpp SoCenterballManip.cpp \
-	SoHandleBoxManip.cpp SoJackManip.cpp SoTabBoxManip.cpp \
-	SoTrackballManip.cpp SoTransformBoxManip.cpp \
+am__EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES_DIST = all-manips-cpp.cpp \
+	SoClipPlaneManip.cpp SoDirectionalLightManip.cpp \
+	SoPointLightManip.cpp SoSpotLightManip.cpp SoTransformManip.cpp \
+	SoCenterballManip.cpp SoHandleBoxManip.cpp SoJackManip.cpp \
+	SoTabBoxManip.cpp SoTrackballManip.cpp SoTransformBoxManip.cpp \
 	SoTransformerManip.cpp commoncode.cpp
 libmanips@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmanips@SUFFIX@LINKHACK_la_OBJECTS)
@@ -476,13 +425,6 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__manips_lst_SOURCES_DIST) \
 	$(am__EXTRA_manips_lst_SOURCES_DIST) \
@@ -698,7 +640,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/manips
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

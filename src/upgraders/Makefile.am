@@ -10,6 +10,7 @@ PublicHeaders =
 PrivateHeaders = \
         SoUpgrader.h \
         SoPackedColorV20.h
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(upgraders, upgraders)
 # **************************************************************************

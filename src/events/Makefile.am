@@ -11,17 +11,9 @@ RegularSources = \
 	SoSpaceballButtonEvent.cpp
 LinkHackSources = \
 	all-events-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/events/SoSubEvent.h \
-	../../include/Inventor/events/SoButtonEvent.h \
-	../../include/Inventor/events/SoEvent.h \
-	../../include/Inventor/events/SoEvents.h \
-	../../include/Inventor/events/SoKeyboardEvent.h \
-	../../include/Inventor/events/SoLocation2Event.h \
-	../../include/Inventor/events/SoMotion3Event.h \
-	../../include/Inventor/events/SoMouseButtonEvent.h \
-	../../include/Inventor/events/SoSpaceballButtonEvent.h
+PublicHeaders =
 PrivateHeaders =
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(events, events)
 # **************************************************************************

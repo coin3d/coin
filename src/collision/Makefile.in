@@ -247,12 +247,11 @@ RegularSources = \
 LinkHackSources = \
 	all-collision-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h
-
+PublicHeaders = 
 PrivateHeaders = \
 	SbTri3f.h
 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -321,10 +320,8 @@ am__objects_2 = SbTri3f.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_collision_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_collision_lst_SOURCES_DIST = \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
-	SbTri3f.h all-collision-cpp.cpp SbTri3f.cpp \
-	SoIntersectionDetectionAction.cpp
+am__EXTRA_collision_lst_SOURCES_DIST = SbTri3f.h all-collision-cpp.cpp \
+	SbTri3f.cpp SoIntersectionDetectionAction.cpp
 collision_lst_OBJECTS = $(am_collision_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -337,19 +334,16 @@ am__objects_7 = SbTri3f.lo SoIntersectionDetectionAction.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libcollision_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libcollision_la_SOURCES_DIST = \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
-	SbTri3f.h all-collision-cpp.cpp SbTri3f.cpp \
-	SoIntersectionDetectionAction.cpp
+am__EXTRA_libcollision_la_SOURCES_DIST = SbTri3f.h all-collision-cpp.cpp \
+	SbTri3f.cpp SoIntersectionDetectionAction.cpp
 libcollision_la_OBJECTS = $(am_libcollision_la_OBJECTS)
 libcollision@SUFFIX@LINKHACK_la_LDFLAGS =
 libcollision@SUFFIX@LINKHACK_la_LIBADD =
 am__libcollision@SUFFIX@LINKHACK_la_SOURCES_DIST = SbTri3f.cpp \
 	SoIntersectionDetectionAction.cpp all-collision-cpp.cpp
 am_libcollision@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libcollision@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h \
-	SbTri3f.h all-collision-cpp.cpp SbTri3f.cpp \
+am__EXTRA_libcollision@SUFFIX@LINKHACK_la_SOURCES_DIST = SbTri3f.h \
+	all-collision-cpp.cpp SbTri3f.cpp \
 	SoIntersectionDetectionAction.cpp
 libcollision@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libcollision@SUFFIX@LINKHACK_la_OBJECTS)
@@ -567,7 +561,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/collision
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

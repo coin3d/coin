@@ -43,52 +43,11 @@ RegularSources = \
 LinkHackSources = \
 	all-engines-cpp.cpp \
 	all-engines-c.c
-PublicHeaders = \
-	../../include/Inventor/engines/SoSubEngine.h \
-	../../include/Inventor/engines/SoSubNodeEngine.h \
-	../../include/Inventor/engines/SoEngines.h \
-	../../include/Inventor/engines/SoBoolOperation.h \
-	../../include/Inventor/engines/SoCalculator.h \
-	../../include/Inventor/engines/SoCompose.h \
-	../../include/Inventor/engines/SoComposeMatrix.h \
-	../../include/Inventor/engines/SoComposeRotation.h \
-	../../include/Inventor/engines/SoComposeRotationFromTo.h \
-	../../include/Inventor/engines/SoComposeVec2f.h \
-	../../include/Inventor/engines/SoComposeVec3f.h \
-	../../include/Inventor/engines/SoComposeVec4f.h \
-	../../include/Inventor/engines/SoComputeBoundingBox.h \
-	../../include/Inventor/engines/SoConcatenate.h \
-	../../include/Inventor/engines/SoCounter.h \
-	../../include/Inventor/engines/SoDecomposeMatrix.h \
-	../../include/Inventor/engines/SoDecomposeRotation.h \
-	../../include/Inventor/engines/SoDecomposeVec2f.h \
-	../../include/Inventor/engines/SoDecomposeVec3f.h \
-	../../include/Inventor/engines/SoDecomposeVec4f.h \
-	../../include/Inventor/engines/SoElapsedTime.h \
-	../../include/Inventor/engines/SoEngine.h \
-	../../include/Inventor/engines/SoEngineOutput.h \
-	../../include/Inventor/engines/SoFieldConverter.h \
-	../../include/Inventor/engines/SoGate.h \
-	../../include/Inventor/engines/SoInterpolate.h \
-	../../include/Inventor/engines/SoInterpolateFloat.h \
-	../../include/Inventor/engines/SoInterpolateRotation.h \
-	../../include/Inventor/engines/SoInterpolateVec2f.h \
-	../../include/Inventor/engines/SoInterpolateVec3f.h \
-	../../include/Inventor/engines/SoInterpolateVec4f.h \
-	../../include/Inventor/engines/SoNodeEngine.h \
-	../../include/Inventor/engines/SoOnOff.h \
-	../../include/Inventor/engines/SoOneShot.h \
-	../../include/Inventor/engines/SoOutputData.h \
-	../../include/Inventor/engines/SoSelectOne.h \
-	../../include/Inventor/engines/SoTimeCounter.h \
-	../../include/Inventor/engines/SoTransformVec3f.h \
-	../../include/Inventor/engines/SoTriggerAny.h
+PublicHeaders =
 PrivateHeaders = \
-	../../include/Inventor/engines/SoSubEngineP.h \
-	../../include/Inventor/engines/SoConvertAll.h \
-	../../include/Inventor/engines/SoSubNodeEngineP.h \
 	evaluator.h \
 	so_eval.ic
+ObsoleteHeaders =
 
 EXTRA_DIST = \
 	evaluator.l \

@@ -9,14 +9,11 @@ RegularSources = \
 
 LinkHackSources = \
 	all-hardcopy-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/annex/HardCopy/SoHardCopy.h \
-	../../include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorOutput.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizeAction.h \
-	../../include/Inventor/annex/HardCopy/SoVectorizePSAction.h
-
-PrivateHeaders = VectorizeActionP.h VectorizeItems.h
+PublicHeaders =
+PrivateHeaders = \
+	VectorizeActionP.h \
+	VectorizeItems.h
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(hardcopy, annex/HardCopy)
 # **************************************************************************

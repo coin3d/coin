@@ -249,13 +249,9 @@ RegularSources = \
 LinkHackSources = \
 	all-bundles-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/bundles/SoBundle.h \
-	../../include/Inventor/bundles/SoMaterialBundle.h \
-	../../include/Inventor/bundles/SoNormalBundle.h \
-	../../include/Inventor/bundles/SoTextureCoordinateBundle.h
-
+PublicHeaders = 
 PrivateHeaders = 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -325,13 +321,9 @@ am__objects_2 = SoBundle.$(OBJEXT) SoMaterialBundle.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_bundles_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_bundles_lst_SOURCES_DIST = \
-	../../include/Inventor/bundles/SoBundle.h \
-	../../include/Inventor/bundles/SoMaterialBundle.h \
-	../../include/Inventor/bundles/SoNormalBundle.h \
-	../../include/Inventor/bundles/SoTextureCoordinateBundle.h \
-	all-bundles-cpp.cpp SoBundle.cpp SoMaterialBundle.cpp \
-	SoNormalBundle.cpp SoTextureCoordinateBundle.cpp
+am__EXTRA_bundles_lst_SOURCES_DIST = all-bundles-cpp.cpp SoBundle.cpp \
+	SoMaterialBundle.cpp SoNormalBundle.cpp \
+	SoTextureCoordinateBundle.cpp
 bundles_lst_OBJECTS = $(am_bundles_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -346,13 +338,9 @@ am__objects_7 = SoBundle.lo SoMaterialBundle.lo SoNormalBundle.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libbundles_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libbundles_la_SOURCES_DIST = \
-	../../include/Inventor/bundles/SoBundle.h \
-	../../include/Inventor/bundles/SoMaterialBundle.h \
-	../../include/Inventor/bundles/SoNormalBundle.h \
-	../../include/Inventor/bundles/SoTextureCoordinateBundle.h \
-	all-bundles-cpp.cpp SoBundle.cpp SoMaterialBundle.cpp \
-	SoNormalBundle.cpp SoTextureCoordinateBundle.cpp
+am__EXTRA_libbundles_la_SOURCES_DIST = all-bundles-cpp.cpp SoBundle.cpp \
+	SoMaterialBundle.cpp SoNormalBundle.cpp \
+	SoTextureCoordinateBundle.cpp
 libbundles_la_OBJECTS = $(am_libbundles_la_OBJECTS)
 libbundles@SUFFIX@LINKHACK_la_LDFLAGS =
 libbundles@SUFFIX@LINKHACK_la_LIBADD =
@@ -361,10 +349,6 @@ am__libbundles@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBundle.cpp \
 	SoTextureCoordinateBundle.cpp all-bundles-cpp.cpp
 am_libbundles@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libbundles@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/bundles/SoBundle.h \
-	../../include/Inventor/bundles/SoMaterialBundle.h \
-	../../include/Inventor/bundles/SoNormalBundle.h \
-	../../include/Inventor/bundles/SoTextureCoordinateBundle.h \
 	all-bundles-cpp.cpp SoBundle.cpp SoMaterialBundle.cpp \
 	SoNormalBundle.cpp SoTextureCoordinateBundle.cpp
 libbundles@SUFFIX@LINKHACK_la_OBJECTS = \
@@ -387,13 +371,6 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__bundles_lst_SOURCES_DIST) \
 	$(am__EXTRA_bundles_lst_SOURCES_DIST) \
@@ -591,7 +568,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/bundles
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

@@ -12,17 +12,9 @@ RegularSources = \
 	SoPrimitiveVertexCache.cpp
 LinkHackSources = \
 	all-caches-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/caches/SoBoundingBoxCache.h \
-	../../include/Inventor/caches/SoCache.h \
-	../../include/Inventor/caches/SoConvexDataCache.h \
-	../../include/Inventor/caches/SoGLCacheList.h \
-	../../include/Inventor/caches/SoGLRenderCache.h \
-	../../include/Inventor/caches/SoNormalCache.h \
-	../../include/Inventor/caches/SoTextureCoordinateCache.h
-
-PrivateHeaders = \
-	../../include/Inventor/caches/SoPrimitiveVertexCache.h
+PublicHeaders =
+PrivateHeaders =
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(caches, caches)
 # **************************************************************************

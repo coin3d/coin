@@ -6,10 +6,10 @@ RegularSources = \
 	SoIntersectionDetectionAction.cpp
 LinkHackSources = \
 	all-collision-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/collision/SoIntersectionDetectionAction.h
+PublicHeaders = 
 PrivateHeaders =  \
 	SbTri3f.h
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(collision, collision)
 # **************************************************************************

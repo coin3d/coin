@@ -284,54 +284,12 @@ LinkHackSources = \
 	all-engines-cpp.cpp \
 	all-engines-c.c
 
-PublicHeaders = \
-	../../include/Inventor/engines/SoSubEngine.h \
-	../../include/Inventor/engines/SoSubNodeEngine.h \
-	../../include/Inventor/engines/SoEngines.h \
-	../../include/Inventor/engines/SoBoolOperation.h \
-	../../include/Inventor/engines/SoCalculator.h \
-	../../include/Inventor/engines/SoCompose.h \
-	../../include/Inventor/engines/SoComposeMatrix.h \
-	../../include/Inventor/engines/SoComposeRotation.h \
-	../../include/Inventor/engines/SoComposeRotationFromTo.h \
-	../../include/Inventor/engines/SoComposeVec2f.h \
-	../../include/Inventor/engines/SoComposeVec3f.h \
-	../../include/Inventor/engines/SoComposeVec4f.h \
-	../../include/Inventor/engines/SoComputeBoundingBox.h \
-	../../include/Inventor/engines/SoConcatenate.h \
-	../../include/Inventor/engines/SoCounter.h \
-	../../include/Inventor/engines/SoDecomposeMatrix.h \
-	../../include/Inventor/engines/SoDecomposeRotation.h \
-	../../include/Inventor/engines/SoDecomposeVec2f.h \
-	../../include/Inventor/engines/SoDecomposeVec3f.h \
-	../../include/Inventor/engines/SoDecomposeVec4f.h \
-	../../include/Inventor/engines/SoElapsedTime.h \
-	../../include/Inventor/engines/SoEngine.h \
-	../../include/Inventor/engines/SoEngineOutput.h \
-	../../include/Inventor/engines/SoFieldConverter.h \
-	../../include/Inventor/engines/SoGate.h \
-	../../include/Inventor/engines/SoInterpolate.h \
-	../../include/Inventor/engines/SoInterpolateFloat.h \
-	../../include/Inventor/engines/SoInterpolateRotation.h \
-	../../include/Inventor/engines/SoInterpolateVec2f.h \
-	../../include/Inventor/engines/SoInterpolateVec3f.h \
-	../../include/Inventor/engines/SoInterpolateVec4f.h \
-	../../include/Inventor/engines/SoNodeEngine.h \
-	../../include/Inventor/engines/SoOnOff.h \
-	../../include/Inventor/engines/SoOneShot.h \
-	../../include/Inventor/engines/SoOutputData.h \
-	../../include/Inventor/engines/SoSelectOne.h \
-	../../include/Inventor/engines/SoTimeCounter.h \
-	../../include/Inventor/engines/SoTransformVec3f.h \
-	../../include/Inventor/engines/SoTriggerAny.h
-
+PublicHeaders = 
 PrivateHeaders = \
-	../../include/Inventor/engines/SoSubEngineP.h \
-	../../include/Inventor/engines/SoConvertAll.h \
-	../../include/Inventor/engines/SoSubNodeEngineP.h \
 	evaluator.h \
 	so_eval.ic
 
+ObsoleteHeaders = 
 
 EXTRA_DIST = \
 	evaluator.l \
@@ -447,55 +405,13 @@ am__objects_2 = SoBoolOperation.$(OBJEXT) SoCalculator.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_engines_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_engines_lst_SOURCES_DIST = \
-	../../include/Inventor/engines/SoSubEngine.h \
-	../../include/Inventor/engines/SoSubNodeEngine.h \
-	../../include/Inventor/engines/SoEngines.h \
-	../../include/Inventor/engines/SoBoolOperation.h \
-	../../include/Inventor/engines/SoCalculator.h \
-	../../include/Inventor/engines/SoCompose.h \
-	../../include/Inventor/engines/SoComposeMatrix.h \
-	../../include/Inventor/engines/SoComposeRotation.h \
-	../../include/Inventor/engines/SoComposeRotationFromTo.h \
-	../../include/Inventor/engines/SoComposeVec2f.h \
-	../../include/Inventor/engines/SoComposeVec3f.h \
-	../../include/Inventor/engines/SoComposeVec4f.h \
-	../../include/Inventor/engines/SoComputeBoundingBox.h \
-	../../include/Inventor/engines/SoConcatenate.h \
-	../../include/Inventor/engines/SoCounter.h \
-	../../include/Inventor/engines/SoDecomposeMatrix.h \
-	../../include/Inventor/engines/SoDecomposeRotation.h \
-	../../include/Inventor/engines/SoDecomposeVec2f.h \
-	../../include/Inventor/engines/SoDecomposeVec3f.h \
-	../../include/Inventor/engines/SoDecomposeVec4f.h \
-	../../include/Inventor/engines/SoElapsedTime.h \
-	../../include/Inventor/engines/SoEngine.h \
-	../../include/Inventor/engines/SoEngineOutput.h \
-	../../include/Inventor/engines/SoFieldConverter.h \
-	../../include/Inventor/engines/SoGate.h \
-	../../include/Inventor/engines/SoInterpolate.h \
-	../../include/Inventor/engines/SoInterpolateFloat.h \
-	../../include/Inventor/engines/SoInterpolateRotation.h \
-	../../include/Inventor/engines/SoInterpolateVec2f.h \
-	../../include/Inventor/engines/SoInterpolateVec3f.h \
-	../../include/Inventor/engines/SoInterpolateVec4f.h \
-	../../include/Inventor/engines/SoNodeEngine.h \
-	../../include/Inventor/engines/SoOnOff.h \
-	../../include/Inventor/engines/SoOneShot.h \
-	../../include/Inventor/engines/SoOutputData.h \
-	../../include/Inventor/engines/SoSelectOne.h \
-	../../include/Inventor/engines/SoTimeCounter.h \
-	../../include/Inventor/engines/SoTransformVec3f.h \
-	../../include/Inventor/engines/SoTriggerAny.h \
-	../../include/Inventor/engines/SoSubEngineP.h \
-	../../include/Inventor/engines/SoConvertAll.h \
-	../../include/Inventor/engines/SoSubNodeEngineP.h evaluator.h \
-	so_eval.ic all-engines-cpp.cpp all-engines-c.c \
-	SoBoolOperation.cpp SoCalculator.cpp SoComposeMatrix.cpp \
-	SoComposeRotation.cpp SoComposeRotationFromTo.cpp \
-	SoComposeVec2f.cpp SoComposeVec3f.cpp SoComposeVec4f.cpp \
-	SoComputeBoundingBox.cpp SoConcatenate.cpp SoConvertAll.cpp \
-	SoCounter.cpp SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
+am__EXTRA_engines_lst_SOURCES_DIST = evaluator.h so_eval.ic \
+	all-engines-cpp.cpp all-engines-c.c SoBoolOperation.cpp \
+	SoCalculator.cpp SoComposeMatrix.cpp SoComposeRotation.cpp \
+	SoComposeRotationFromTo.cpp SoComposeVec2f.cpp \
+	SoComposeVec3f.cpp SoComposeVec4f.cpp SoComputeBoundingBox.cpp \
+	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
+	SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
 	SoDecomposeVec2f.cpp SoDecomposeVec3f.cpp SoDecomposeVec4f.cpp \
 	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp \
 	SoFieldConverter.cpp SoGate.cpp SoInterpolate.cpp \
@@ -543,55 +459,13 @@ am__objects_7 = SoBoolOperation.lo SoCalculator.lo SoComposeMatrix.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libengines_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libengines_la_SOURCES_DIST = \
-	../../include/Inventor/engines/SoSubEngine.h \
-	../../include/Inventor/engines/SoSubNodeEngine.h \
-	../../include/Inventor/engines/SoEngines.h \
-	../../include/Inventor/engines/SoBoolOperation.h \
-	../../include/Inventor/engines/SoCalculator.h \
-	../../include/Inventor/engines/SoCompose.h \
-	../../include/Inventor/engines/SoComposeMatrix.h \
-	../../include/Inventor/engines/SoComposeRotation.h \
-	../../include/Inventor/engines/SoComposeRotationFromTo.h \
-	../../include/Inventor/engines/SoComposeVec2f.h \
-	../../include/Inventor/engines/SoComposeVec3f.h \
-	../../include/Inventor/engines/SoComposeVec4f.h \
-	../../include/Inventor/engines/SoComputeBoundingBox.h \
-	../../include/Inventor/engines/SoConcatenate.h \
-	../../include/Inventor/engines/SoCounter.h \
-	../../include/Inventor/engines/SoDecomposeMatrix.h \
-	../../include/Inventor/engines/SoDecomposeRotation.h \
-	../../include/Inventor/engines/SoDecomposeVec2f.h \
-	../../include/Inventor/engines/SoDecomposeVec3f.h \
-	../../include/Inventor/engines/SoDecomposeVec4f.h \
-	../../include/Inventor/engines/SoElapsedTime.h \
-	../../include/Inventor/engines/SoEngine.h \
-	../../include/Inventor/engines/SoEngineOutput.h \
-	../../include/Inventor/engines/SoFieldConverter.h \
-	../../include/Inventor/engines/SoGate.h \
-	../../include/Inventor/engines/SoInterpolate.h \
-	../../include/Inventor/engines/SoInterpolateFloat.h \
-	../../include/Inventor/engines/SoInterpolateRotation.h \
-	../../include/Inventor/engines/SoInterpolateVec2f.h \
-	../../include/Inventor/engines/SoInterpolateVec3f.h \
-	../../include/Inventor/engines/SoInterpolateVec4f.h \
-	../../include/Inventor/engines/SoNodeEngine.h \
-	../../include/Inventor/engines/SoOnOff.h \
-	../../include/Inventor/engines/SoOneShot.h \
-	../../include/Inventor/engines/SoOutputData.h \
-	../../include/Inventor/engines/SoSelectOne.h \
-	../../include/Inventor/engines/SoTimeCounter.h \
-	../../include/Inventor/engines/SoTransformVec3f.h \
-	../../include/Inventor/engines/SoTriggerAny.h \
-	../../include/Inventor/engines/SoSubEngineP.h \
-	../../include/Inventor/engines/SoConvertAll.h \
-	../../include/Inventor/engines/SoSubNodeEngineP.h evaluator.h \
-	so_eval.ic all-engines-cpp.cpp all-engines-c.c \
-	SoBoolOperation.cpp SoCalculator.cpp SoComposeMatrix.cpp \
-	SoComposeRotation.cpp SoComposeRotationFromTo.cpp \
-	SoComposeVec2f.cpp SoComposeVec3f.cpp SoComposeVec4f.cpp \
-	SoComputeBoundingBox.cpp SoConcatenate.cpp SoConvertAll.cpp \
-	SoCounter.cpp SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
+am__EXTRA_libengines_la_SOURCES_DIST = evaluator.h so_eval.ic \
+	all-engines-cpp.cpp all-engines-c.c SoBoolOperation.cpp \
+	SoCalculator.cpp SoComposeMatrix.cpp SoComposeRotation.cpp \
+	SoComposeRotationFromTo.cpp SoComposeVec2f.cpp \
+	SoComposeVec3f.cpp SoComposeVec4f.cpp SoComputeBoundingBox.cpp \
+	SoConcatenate.cpp SoConvertAll.cpp SoCounter.cpp \
+	SoDecomposeMatrix.cpp SoDecomposeRotation.cpp \
 	SoDecomposeVec2f.cpp SoDecomposeVec3f.cpp SoDecomposeVec4f.cpp \
 	SoElapsedTime.cpp SoEngine.cpp SoEngineOutput.cpp \
 	SoFieldConverter.cpp SoGate.cpp SoInterpolate.cpp \
@@ -620,49 +494,7 @@ am__libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBoolOperation.cpp \
 	SoTimeCounter.cpp SoTransformVec3f.cpp SoTriggerAny.cpp \
 	evaluator.c evaluator_tab.c all-engines-cpp.cpp all-engines-c.c
 am_libengines@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/engines/SoSubEngine.h \
-	../../include/Inventor/engines/SoSubNodeEngine.h \
-	../../include/Inventor/engines/SoEngines.h \
-	../../include/Inventor/engines/SoBoolOperation.h \
-	../../include/Inventor/engines/SoCalculator.h \
-	../../include/Inventor/engines/SoCompose.h \
-	../../include/Inventor/engines/SoComposeMatrix.h \
-	../../include/Inventor/engines/SoComposeRotation.h \
-	../../include/Inventor/engines/SoComposeRotationFromTo.h \
-	../../include/Inventor/engines/SoComposeVec2f.h \
-	../../include/Inventor/engines/SoComposeVec3f.h \
-	../../include/Inventor/engines/SoComposeVec4f.h \
-	../../include/Inventor/engines/SoComputeBoundingBox.h \
-	../../include/Inventor/engines/SoConcatenate.h \
-	../../include/Inventor/engines/SoCounter.h \
-	../../include/Inventor/engines/SoDecomposeMatrix.h \
-	../../include/Inventor/engines/SoDecomposeRotation.h \
-	../../include/Inventor/engines/SoDecomposeVec2f.h \
-	../../include/Inventor/engines/SoDecomposeVec3f.h \
-	../../include/Inventor/engines/SoDecomposeVec4f.h \
-	../../include/Inventor/engines/SoElapsedTime.h \
-	../../include/Inventor/engines/SoEngine.h \
-	../../include/Inventor/engines/SoEngineOutput.h \
-	../../include/Inventor/engines/SoFieldConverter.h \
-	../../include/Inventor/engines/SoGate.h \
-	../../include/Inventor/engines/SoInterpolate.h \
-	../../include/Inventor/engines/SoInterpolateFloat.h \
-	../../include/Inventor/engines/SoInterpolateRotation.h \
-	../../include/Inventor/engines/SoInterpolateVec2f.h \
-	../../include/Inventor/engines/SoInterpolateVec3f.h \
-	../../include/Inventor/engines/SoInterpolateVec4f.h \
-	../../include/Inventor/engines/SoNodeEngine.h \
-	../../include/Inventor/engines/SoOnOff.h \
-	../../include/Inventor/engines/SoOneShot.h \
-	../../include/Inventor/engines/SoOutputData.h \
-	../../include/Inventor/engines/SoSelectOne.h \
-	../../include/Inventor/engines/SoTimeCounter.h \
-	../../include/Inventor/engines/SoTransformVec3f.h \
-	../../include/Inventor/engines/SoTriggerAny.h \
-	../../include/Inventor/engines/SoSubEngineP.h \
-	../../include/Inventor/engines/SoConvertAll.h \
-	../../include/Inventor/engines/SoSubNodeEngineP.h evaluator.h \
+am__EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES_DIST = evaluator.h \
 	so_eval.ic all-engines-cpp.cpp all-engines-c.c \
 	SoBoolOperation.cpp SoCalculator.cpp SoComposeMatrix.cpp \
 	SoComposeRotation.cpp SoComposeRotationFromTo.cpp \
@@ -1070,7 +902,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/engines
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

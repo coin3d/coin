@@ -8,12 +8,9 @@ RegularSources = \
 	SoTextureCoordinateBundle.cpp
 LinkHackSources = \
 	all-bundles-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/bundles/SoBundle.h \
-	../../include/Inventor/bundles/SoMaterialBundle.h \
-	../../include/Inventor/bundles/SoNormalBundle.h \
-	../../include/Inventor/bundles/SoTextureCoordinateBundle.h
+PublicHeaders =
 PrivateHeaders =
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(bundles, bundles)
 # **************************************************************************

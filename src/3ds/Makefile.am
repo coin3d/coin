@@ -9,6 +9,7 @@ PrivateHeaders = \
 	3dsLoader.h \
 	SoStream.h \
 	3ds-dummy.cpp
+
 # dummy included for 'make dist'
 else
 RegularSources = 3ds-dummy.cpp
@@ -16,7 +17,9 @@ LinkHackSources = 3ds-dummy.cpp
 # for 'make dist'
 PrivateHeaders = 3dsLoader.cpp 3dsLoader.h SoStream.cpp SoStream.h
 endif
+
 PublicHeaders = 
+ObsoleteHeaders =
 
 # Automake wasn't too supportive of having variables starting with numbers,
 # so "format" was prefixed here.  20030217 larsa

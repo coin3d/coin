@@ -16,21 +16,9 @@ RegularSources = \
 	SoTimerSensor.cpp
 LinkHackSources = \
 	all-sensors-cpp.cpp
-PublicHeaders = \
-	../../include/Inventor/sensors/SoSensors.h \
-	../../include/Inventor/sensors/SoAlarmSensor.h \
-	../../include/Inventor/sensors/SoDataSensor.h \
-	../../include/Inventor/sensors/SoDelayQueueSensor.h \
-	../../include/Inventor/sensors/SoFieldSensor.h \
-	../../include/Inventor/sensors/SoIdleSensor.h \
-	../../include/Inventor/sensors/SoNodeSensor.h \
-	../../include/Inventor/sensors/SoOneShotSensor.h \
-	../../include/Inventor/sensors/SoPathSensor.h \
-	../../include/Inventor/sensors/SoSensor.h \
-	../../include/Inventor/sensors/SoSensorManager.h \
-	../../include/Inventor/sensors/SoTimerQueueSensor.h \
-	../../include/Inventor/sensors/SoTimerSensor.h
+PublicHeaders =
 PrivateHeaders =
+ObsoleteHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(sensors, sensors)
 # **************************************************************************

@@ -276,35 +276,8 @@ RegularSources = \
 LinkHackSources = \
 	all-misc-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/misc/SoAuditorList.h \
-	../../include/Inventor/misc/SoBase.h \
-	../../include/Inventor/misc/SoBasic.h \
-	../../include/Inventor/misc/SoByteStream.h \
-	../../include/Inventor/misc/SoCallbackList.h \
-	../../include/Inventor/misc/SoChildList.h \
-	../../include/Inventor/misc/SoContextHandler.h \
-	../../include/Inventor/misc/SoGLImage.h \
-	../../include/Inventor/misc/SoGLBigImage.h \
-	../../include/Inventor/misc/SoNormalGenerator.h \
-	../../include/Inventor/misc/SoNotification.h \
-	../../include/Inventor/misc/SoNotRec.h \
-	../../include/Inventor/misc/SoProto.h \
-	../../include/Inventor/misc/SoProtoInstance.h \
-	../../include/Inventor/misc/SoTranReceiver.h \
-	../../include/Inventor/misc/SoState.h \
-	../../include/Inventor/misc/SoTranscribe.h \
-	../../include/Inventor/misc/SoTranSender.h \
-	../../include/Inventor/misc/SoLightPath.h \
-	../../include/Inventor/misc/SoTempPath.h \
-	../../include/Inventor/misc/SoGlyph.h \
-	../../include/Inventor/misc/SoAudioDevice.h
-
+PublicHeaders = 
 PrivateHeaders = \
-	../../include/Inventor/misc/SbHash.h \
-	../../include/Inventor/misc/SoGL.h \
-	../../include/Inventor/misc/SoGenerate.h \
-	../../include/Inventor/misc/SoPick.h \
 	AudioTools.h \
 	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \
@@ -320,6 +293,7 @@ PrivateHeaders = \
 	SoOffscreenWGLData.h \
 	cppmangle.icc
 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -409,35 +383,9 @@ am__objects_2 = SoBase.$(OBJEXT) SoChildList.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_misc_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_misc_lst_SOURCES_DIST = \
-	../../include/Inventor/misc/SoAuditorList.h \
-	../../include/Inventor/misc/SoBase.h \
-	../../include/Inventor/misc/SoBasic.h \
-	../../include/Inventor/misc/SoByteStream.h \
-	../../include/Inventor/misc/SoCallbackList.h \
-	../../include/Inventor/misc/SoChildList.h \
-	../../include/Inventor/misc/SoContextHandler.h \
-	../../include/Inventor/misc/SoGLImage.h \
-	../../include/Inventor/misc/SoGLBigImage.h \
-	../../include/Inventor/misc/SoNormalGenerator.h \
-	../../include/Inventor/misc/SoNotification.h \
-	../../include/Inventor/misc/SoNotRec.h \
-	../../include/Inventor/misc/SoProto.h \
-	../../include/Inventor/misc/SoProtoInstance.h \
-	../../include/Inventor/misc/SoTranReceiver.h \
-	../../include/Inventor/misc/SoState.h \
-	../../include/Inventor/misc/SoTranscribe.h \
-	../../include/Inventor/misc/SoTranSender.h \
-	../../include/Inventor/misc/SoLightPath.h \
-	../../include/Inventor/misc/SoTempPath.h \
-	../../include/Inventor/misc/SoGlyph.h \
-	../../include/Inventor/misc/SoAudioDevice.h \
-	../../include/Inventor/misc/SbHash.h \
-	../../include/Inventor/misc/SoGL.h \
-	../../include/Inventor/misc/SoGenerate.h \
-	../../include/Inventor/misc/SoPick.h AudioTools.h \
-	SoGLFaceSetTemplate.icc SoGLLineSetTemplate.icc \
-	SoGLTristripTemplate.icc SoGLindexedLineSetTemplate.icc \
+am__EXTRA_misc_lst_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
+	SoGLLineSetTemplate.icc SoGLTristripTemplate.icc \
+	SoGLindexedLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
@@ -481,35 +429,9 @@ am__objects_7 = SoBase.lo SoChildList.lo SoContextHandler.lo SoGL.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libmisc_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libmisc_la_SOURCES_DIST = \
-	../../include/Inventor/misc/SoAuditorList.h \
-	../../include/Inventor/misc/SoBase.h \
-	../../include/Inventor/misc/SoBasic.h \
-	../../include/Inventor/misc/SoByteStream.h \
-	../../include/Inventor/misc/SoCallbackList.h \
-	../../include/Inventor/misc/SoChildList.h \
-	../../include/Inventor/misc/SoContextHandler.h \
-	../../include/Inventor/misc/SoGLImage.h \
-	../../include/Inventor/misc/SoGLBigImage.h \
-	../../include/Inventor/misc/SoNormalGenerator.h \
-	../../include/Inventor/misc/SoNotification.h \
-	../../include/Inventor/misc/SoNotRec.h \
-	../../include/Inventor/misc/SoProto.h \
-	../../include/Inventor/misc/SoProtoInstance.h \
-	../../include/Inventor/misc/SoTranReceiver.h \
-	../../include/Inventor/misc/SoState.h \
-	../../include/Inventor/misc/SoTranscribe.h \
-	../../include/Inventor/misc/SoTranSender.h \
-	../../include/Inventor/misc/SoLightPath.h \
-	../../include/Inventor/misc/SoTempPath.h \
-	../../include/Inventor/misc/SoGlyph.h \
-	../../include/Inventor/misc/SoAudioDevice.h \
-	../../include/Inventor/misc/SbHash.h \
-	../../include/Inventor/misc/SoGL.h \
-	../../include/Inventor/misc/SoGenerate.h \
-	../../include/Inventor/misc/SoPick.h AudioTools.h \
-	SoGLFaceSetTemplate.icc SoGLLineSetTemplate.icc \
-	SoGLTristripTemplate.icc SoGLindexedLineSetTemplate.icc \
+am__EXTRA_libmisc_la_SOURCES_DIST = AudioTools.h SoGLFaceSetTemplate.icc \
+	SoGLLineSetTemplate.icc SoGLTristripTemplate.icc \
+	SoGLindexedLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc SoOffscreenInternalData.h \
@@ -539,33 +461,7 @@ am__libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = SoBase.cpp SoChildList.cpp \
 	SoLockManager.cpp SoAudioDevice.cpp AudioTools.cpp \
 	all-misc-cpp.cpp
 am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/misc/SoAuditorList.h \
-	../../include/Inventor/misc/SoBase.h \
-	../../include/Inventor/misc/SoBasic.h \
-	../../include/Inventor/misc/SoByteStream.h \
-	../../include/Inventor/misc/SoCallbackList.h \
-	../../include/Inventor/misc/SoChildList.h \
-	../../include/Inventor/misc/SoContextHandler.h \
-	../../include/Inventor/misc/SoGLImage.h \
-	../../include/Inventor/misc/SoGLBigImage.h \
-	../../include/Inventor/misc/SoNormalGenerator.h \
-	../../include/Inventor/misc/SoNotification.h \
-	../../include/Inventor/misc/SoNotRec.h \
-	../../include/Inventor/misc/SoProto.h \
-	../../include/Inventor/misc/SoProtoInstance.h \
-	../../include/Inventor/misc/SoTranReceiver.h \
-	../../include/Inventor/misc/SoState.h \
-	../../include/Inventor/misc/SoTranscribe.h \
-	../../include/Inventor/misc/SoTranSender.h \
-	../../include/Inventor/misc/SoLightPath.h \
-	../../include/Inventor/misc/SoTempPath.h \
-	../../include/Inventor/misc/SoGlyph.h \
-	../../include/Inventor/misc/SoAudioDevice.h \
-	../../include/Inventor/misc/SbHash.h \
-	../../include/Inventor/misc/SoGL.h \
-	../../include/Inventor/misc/SoGenerate.h \
-	../../include/Inventor/misc/SoPick.h AudioTools.h \
+am__EXTRA_libmisc@SUFFIX@LINKHACK_la_SOURCES_DIST = AudioTools.h \
 	SoGLFaceSetTemplate.icc SoGLLineSetTemplate.icc \
 	SoGLTristripTemplate.icc SoGLindexedLineSetTemplate.icc \
 	SoGLnonindexedFaceSetTemplate.icc \
@@ -905,7 +801,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/misc
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

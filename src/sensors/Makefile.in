@@ -257,22 +257,9 @@ RegularSources = \
 LinkHackSources = \
 	all-sensors-cpp.cpp
 
-PublicHeaders = \
-	../../include/Inventor/sensors/SoSensors.h \
-	../../include/Inventor/sensors/SoAlarmSensor.h \
-	../../include/Inventor/sensors/SoDataSensor.h \
-	../../include/Inventor/sensors/SoDelayQueueSensor.h \
-	../../include/Inventor/sensors/SoFieldSensor.h \
-	../../include/Inventor/sensors/SoIdleSensor.h \
-	../../include/Inventor/sensors/SoNodeSensor.h \
-	../../include/Inventor/sensors/SoOneShotSensor.h \
-	../../include/Inventor/sensors/SoPathSensor.h \
-	../../include/Inventor/sensors/SoSensor.h \
-	../../include/Inventor/sensors/SoSensorManager.h \
-	../../include/Inventor/sensors/SoTimerQueueSensor.h \
-	../../include/Inventor/sensors/SoTimerSensor.h
-
+PublicHeaders = 
 PrivateHeaders = 
+ObsoleteHeaders = 
 
 
 # **************************************************************************
@@ -348,25 +335,11 @@ am__objects_2 = SoAlarmSensor.$(OBJEXT) SoDataSensor.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_sensors_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_sensors_lst_SOURCES_DIST = \
-	../../include/Inventor/sensors/SoSensors.h \
-	../../include/Inventor/sensors/SoAlarmSensor.h \
-	../../include/Inventor/sensors/SoDataSensor.h \
-	../../include/Inventor/sensors/SoDelayQueueSensor.h \
-	../../include/Inventor/sensors/SoFieldSensor.h \
-	../../include/Inventor/sensors/SoIdleSensor.h \
-	../../include/Inventor/sensors/SoNodeSensor.h \
-	../../include/Inventor/sensors/SoOneShotSensor.h \
-	../../include/Inventor/sensors/SoPathSensor.h \
-	../../include/Inventor/sensors/SoSensor.h \
-	../../include/Inventor/sensors/SoSensorManager.h \
-	../../include/Inventor/sensors/SoTimerQueueSensor.h \
-	../../include/Inventor/sensors/SoTimerSensor.h \
-	all-sensors-cpp.cpp SoAlarmSensor.cpp SoDataSensor.cpp \
-	SoDelayQueueSensor.cpp SoFieldSensor.cpp SoIdleSensor.cpp \
-	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
-	SoSensor.cpp SoSensorManager.cpp SoTimerQueueSensor.cpp \
-	SoTimerSensor.cpp
+am__EXTRA_sensors_lst_SOURCES_DIST = all-sensors-cpp.cpp \
+	SoAlarmSensor.cpp SoDataSensor.cpp SoDelayQueueSensor.cpp \
+	SoFieldSensor.cpp SoIdleSensor.cpp SoNodeSensor.cpp \
+	SoOneShotSensor.cpp SoPathSensor.cpp SoSensor.cpp \
+	SoSensorManager.cpp SoTimerQueueSensor.cpp SoTimerSensor.cpp
 sensors_lst_OBJECTS = $(am_sensors_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -385,25 +358,11 @@ am__objects_7 = SoAlarmSensor.lo SoDataSensor.lo SoDelayQueueSensor.lo \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libsensors_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libsensors_la_SOURCES_DIST = \
-	../../include/Inventor/sensors/SoSensors.h \
-	../../include/Inventor/sensors/SoAlarmSensor.h \
-	../../include/Inventor/sensors/SoDataSensor.h \
-	../../include/Inventor/sensors/SoDelayQueueSensor.h \
-	../../include/Inventor/sensors/SoFieldSensor.h \
-	../../include/Inventor/sensors/SoIdleSensor.h \
-	../../include/Inventor/sensors/SoNodeSensor.h \
-	../../include/Inventor/sensors/SoOneShotSensor.h \
-	../../include/Inventor/sensors/SoPathSensor.h \
-	../../include/Inventor/sensors/SoSensor.h \
-	../../include/Inventor/sensors/SoSensorManager.h \
-	../../include/Inventor/sensors/SoTimerQueueSensor.h \
-	../../include/Inventor/sensors/SoTimerSensor.h \
-	all-sensors-cpp.cpp SoAlarmSensor.cpp SoDataSensor.cpp \
-	SoDelayQueueSensor.cpp SoFieldSensor.cpp SoIdleSensor.cpp \
-	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
-	SoSensor.cpp SoSensorManager.cpp SoTimerQueueSensor.cpp \
-	SoTimerSensor.cpp
+am__EXTRA_libsensors_la_SOURCES_DIST = all-sensors-cpp.cpp \
+	SoAlarmSensor.cpp SoDataSensor.cpp SoDelayQueueSensor.cpp \
+	SoFieldSensor.cpp SoIdleSensor.cpp SoNodeSensor.cpp \
+	SoOneShotSensor.cpp SoPathSensor.cpp SoSensor.cpp \
+	SoSensorManager.cpp SoTimerQueueSensor.cpp SoTimerSensor.cpp
 libsensors_la_OBJECTS = $(am_libsensors_la_OBJECTS)
 libsensors@SUFFIX@LINKHACK_la_LDFLAGS =
 libsensors@SUFFIX@LINKHACK_la_LIBADD =
@@ -414,19 +373,6 @@ am__libsensors@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAlarmSensor.cpp \
 	SoTimerQueueSensor.cpp SoTimerSensor.cpp all-sensors-cpp.cpp
 am_libsensors@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES_DIST = \
-	../../include/Inventor/sensors/SoSensors.h \
-	../../include/Inventor/sensors/SoAlarmSensor.h \
-	../../include/Inventor/sensors/SoDataSensor.h \
-	../../include/Inventor/sensors/SoDelayQueueSensor.h \
-	../../include/Inventor/sensors/SoFieldSensor.h \
-	../../include/Inventor/sensors/SoIdleSensor.h \
-	../../include/Inventor/sensors/SoNodeSensor.h \
-	../../include/Inventor/sensors/SoOneShotSensor.h \
-	../../include/Inventor/sensors/SoPathSensor.h \
-	../../include/Inventor/sensors/SoSensor.h \
-	../../include/Inventor/sensors/SoSensorManager.h \
-	../../include/Inventor/sensors/SoTimerQueueSensor.h \
-	../../include/Inventor/sensors/SoTimerSensor.h \
 	all-sensors-cpp.cpp SoAlarmSensor.cpp SoDataSensor.cpp \
 	SoDelayQueueSensor.cpp SoFieldSensor.cpp SoIdleSensor.cpp \
 	SoNodeSensor.cpp SoOneShotSensor.cpp SoPathSensor.cpp \
@@ -468,13 +414,6 @@ LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
 	$(AM_CXXFLAGS) $(CXXFLAGS)
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(am__sensors_lst_SOURCES_DIST) \
 	$(am__EXTRA_sensors_lst_SOURCES_DIST) \
@@ -688,7 +627,6 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
-	$(mkinstalldirs) $(distdir)/../../include/Inventor/sensors
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
