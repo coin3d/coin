@@ -34,6 +34,86 @@
   Available methods include inquiries and manipulation in both
   normalized coordinates and pixel coordinates.
 
+  Below is a small example showing how the viewport of a viewer class
+  can be modified, within a "proper" Coin and window system
+  context. Hit 'D' or 'U' to move the viewport region 40 pixels down
+  or up, respectively. Click 'Esc' and zoom with left + middle mouse
+  buttons, to see how the region is defined, where no 3D geometry will
+  be visible outside it. Click 'Esc' again to use 'U' and 'D'.
+
+  \code
+  // Copyright (C) 2000-2003 by Systems in Motion. All rights reserved.
+  
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/nodes/SoEventCallback.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoCone.h>
+  #include <Inventor/events/SoKeyboardEvent.h>
+  
+  // ************************************************************
+  
+  static void
+  keypresscbfunc(void * userdata, SoEventCallback * keyboardcb)
+  {
+    SoQtExaminerViewer * viewer = (SoQtExaminerViewer *)userdata;
+  
+    const SoEvent * event = keyboardcb->getEvent();
+    
+    int shift = 0;
+  
+    if (SO_KEY_PRESS_EVENT(event, U)) {
+      shift = 40;
+      keyboardcb->setHandled();
+    }
+    else if (SO_KEY_PRESS_EVENT(event, D)) {
+      shift = -40;
+      keyboardcb->setHandled();
+    }
+  
+    if (keyboardcb->isHandled()) {
+      SbViewportRegion vpr = viewer->getViewportRegion();
+      SbVec2s size = vpr.getViewportSizePixels();
+      SbVec2s origin = vpr.getViewportOriginPixels();
+      origin[1] -= shift;
+      vpr.setViewportPixels(origin, size);
+      viewer->setViewportRegion(vpr);
+    }
+  }
+  
+  // ************************************************************
+  
+  int
+  main(int argc, char ** argv)
+  {
+    QWidget * window = SoQt::init(argv[0]);
+  
+    SoSeparator * root = new SoSeparator;
+    root->ref();
+  
+    root->addChild(new SoCone);
+  
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
+  
+    SoEventCallback * eventcb = new SoEventCallback;
+    eventcb->addEventCallback(SoKeyboardEvent::getClassTypeId(),
+                              keypresscbfunc, viewer);
+    root->insertChild(eventcb, 0);
+  
+    viewer->setViewing(FALSE);
+    viewer->setDecoration(FALSE);
+    viewer->setSceneGraph(root);
+    viewer->show();
+    SoQt::show(window);
+  
+    SoQt::mainLoop();
+  
+    delete viewer;
+    root->unref();
+    return 0;
+  }
+  \endcode
+
   \sa SbViewVolume
 */
 // FIXME: should do a simple illustration in the class documentation
@@ -42,9 +122,7 @@
 
 #include <assert.h>
 #include <Inventor/SbViewportRegion.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   The default SbViewportRegion constructor initializes the viewport to

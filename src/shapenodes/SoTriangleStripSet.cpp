@@ -26,14 +26,28 @@
   \brief The SoTriangleStripSet class is used to render and control non-indexed triangle strips.
   \ingroup nodes
 
-  Triangle strips are specified using the numVertices
-  field. Coordinates, normals, materials and texture coordinates are
-  fetched in order from the current state or from the vertexProperty
-  node if set. For example, if numVertices is set to [3, 4, 5, 3],
-  this node would specify a triangle from coordinates 0, 1 and 2, a
-  triangle strip from coordinates 3, 4, 5 and 6, a triangle strip from
+  Triangle strips are specified using the numVertices field.
+  Coordinates, normals, materials and texture coordinates are fetched
+  in order from the current state or from the vertexProperty node if
+  set. For example, if numVertices is set to [3, 4, 5, 3], this node
+  would specify a triangle from coordinates 0, 1 and 2, a triangle
+  strip from coordinates 3, 4, 5 and 6, a triangle strip from
   coordinates 7, 8, 9, 10 and 11 and finally a triangle from
   coordinates 12, 13, 14.
+
+  Or to put it another way: in a tristrip there will always be two
+  vertices more than there are triangles.  Realize that you are
+  handling data on the vertex level (not polygon-level), and that the
+  triangles are laid out like this, given 5 vertices:
+
+  \verbose
+
+  1-----3-----5
+   \   / \   /
+    \ /   \ /
+     2-----4
+
+  \endverbose
 
   Strips are converted into triangles the way OpenGL does it, of
   course.

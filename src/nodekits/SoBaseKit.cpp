@@ -702,7 +702,8 @@ SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the full path name to a catalog part, given the part's
+  current item pointer.
 */
 SbString
 SoBaseKit::getPartString(const SoBase * part)
@@ -773,7 +774,11 @@ SoBaseKit::getPartString(const SoBase * part)
 }
 
 /*!
-  FIXME: write function documentation
+  Calls SoBaseKit::createPathToAnyPart() with \a leafcheck \c FALSE,
+  and \a publiccheck \c FALSE (and other arguments as given to this
+  function).
+
+  See SoBaseKit::createPathToAnyPart() for documentation.
 */
 SoNodeKitPath *
 SoBaseKit::createPathToPart(const SbName & partname, SbBool makeifneeded, const SoPath * pathtoextend)
@@ -782,7 +787,7 @@ SoBaseKit::createPathToPart(const SbName & partname, SbBool makeifneeded, const 
 }
 
 /*!
-  FIXME: write function documentation
+  Sets the catalog part given by \a partname to the \a from node pointer.
 */
 SbBool
 SoBaseKit::setPart(const SbName & partname, SoNode * from)
@@ -815,7 +820,6 @@ find_partname_length(const char * ptr)
 }
 
 /*!
-
   Sets nodekit part field values. The input argument string is of the
   format:
 
@@ -840,7 +844,7 @@ find_partname_length(const char * ptr)
   SoCameraKit instance:
 
   \code
-  camera { heightAngle 0.3927  nearDistance 1.1  farDistance 999.9 }
+  kit->set("camera { heightAngle 0.3927  nearDistance 1.1  farDistance 999.9 }");
   \endcode
 */
 SbBool
@@ -923,7 +927,10 @@ SoBaseKit::set(const char * namevaluepairliststring)
 }
 
 /*!
-  FIXME: write function documentation
+  This just overloads the other SoBaseKit::set() method, and provides
+  a way to set a part value by using a separate input argument for the
+  name of the part and the name of the field (i.e. parameter)
+  settings.
 */
 SbBool
 SoBaseKit::set(const char * partnamestring, const char * parameterstring)
@@ -1531,10 +1538,14 @@ SoBaseKit::setSearchingChildren(const SbBool newval)
 }
 
 /*!
-  FIXME: write function documentation
+  \COININTERNAL
+
+  This is a private method in the original SGI Inventor 2.1
+  API. Consider it obsolete -- it will be removed from Coin v3.0.
 */
 SoNode *
-SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & parttype, SoNode * node)
+SoBaseKit::typeCheck(const SbName & partname, const SoType & parttype,
+                     SoNode * node)
 {
   if (node == NULL) {
 #if COIN_DEBUG
@@ -1643,7 +1654,12 @@ SoBaseKit::copyContents(const SoFieldContainer * fromfc,
 }
 
 /*!
-  FIXME: write function documentation
+  Returns a pointer to the group node above an SoNodeKitListPart in
+  the catalog given by \a listname.
+
+  If the list part (and its container) was not yet constructed, they
+  will be so if \a makeifneeded is \c TRUE (otherwise, \c NULL will be
+  returned).
 */
 SoGroup *
 SoBaseKit::getContainerNode(const SbName & listname, SbBool makeifneeded)
@@ -1664,10 +1680,23 @@ SoBaseKit::getContainerNode(const SbName & listname, SbBool makeifneeded)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns catalog part of the given \a partname.
+
+  If the part has not yet been made, the function will either
+  construct the part (if \a makeifneeded is \c TRUE) or just return \c
+  NULL (if \a makeifneeded is \c FALSE).
+
+  If \a leafcheck is \c TRUE, a pointer to the part will only be
+  returned if it's a leaf in the catalog (otherwise \c NULL is
+  returned).
+
+  If \a publiccheck is \c TRUE, a pointer to the part will only be
+  returned if it's a public catalog part (otherwise \c NULL is
+  returned).
 */
 SoNode *
-SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded, SbBool leafcheck, SbBool publiccheck)
+SoBaseKit::getAnyPart(const SbName & partname, SbBool makeifneeded,
+                      SbBool leafcheck, SbBool publiccheck)
 {
 
   SoBaseKit * kit = this;
@@ -1834,7 +1863,7 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
 }
 
 /*!
-  FIXME: write function documentation
+  \COININTERNAL
 */
 SbBool
 SoBaseKit::setAnyPart(const SbName & partname, SoNode * from, SbBool anypart)
@@ -1922,7 +1951,7 @@ SoBaseKit::createFieldList(void)
 }
 
 /*!
-  FIXME: write function documentation
+  \COININTERNAL
 */
 void
 SoBaseKit::createDefaultParts(void)

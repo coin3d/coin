@@ -29,7 +29,8 @@
   Use nodes of this type as an effective way of drawing triangles
   which are strung together.
 
-  For more information, see the documentation of the \c
+  For more information, see the documentation of the
+  SoTriangleStripSet node, and for the dirty details: the \c
   GL_TRIANGLE_STRIP primitive rendering type in OpenGL.
 
   For more information about indexed shapes, see documentation in
