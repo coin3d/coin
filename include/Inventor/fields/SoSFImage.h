@@ -35,17 +35,34 @@ class COIN_DLL_API SoSFImage : public SoSField {
   SO_SFIELD_REQUIRED_HEADER(SoSFImage);
 
 public:
+  enum CopyPolicy {
+    COPY,
+    NO_COPY,
+    NO_COPY_AND_DELETE,
+    NO_COPY_AND_FREE
+  };
+
   static void initClass(void);
 
   const unsigned char * getValue(SbVec2s & size, int & nc) const;
   void setValue(const SbVec2s & size, const int nc,
-                const unsigned char * bytes);
+                const unsigned char * pixels, CopyPolicy copypolicy = COPY);
 
   int operator==(const SoSFImage & field) const;
   int operator!=(const SoSFImage & field) const { return ! operator == (field); }
 
   unsigned char * startEditing(SbVec2s & size, int & nc);
   void finishEditing(void);
+
+  void setSubValue(const SbVec2s & dims, const SbVec2s & offset, unsigned char * pixels);
+  void setSubValues(const SbVec2s * dims, const SbVec2s * offsets, int num, unsigned char ** pixelblocks);
+  unsigned char * getSubTexture(int idx, SbVec2s & dims, SbVec2s & offset) const;
+  SbBool hasSubTextures(int & numsubtextures);
+
+  void setNeverWrite(SbBool flag);
+  SbBool isNeverWrite(void) const;
+
+  SbBool hasTransparency(void) const;
 
 private:
   virtual SbBool readValue(SoInput * in);

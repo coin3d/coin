@@ -108,6 +108,7 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SbImage.h>
+#include <Inventor/errors/SoDebugError.h>
 
 
 PRIVATE_TYPEID_SOURCE(SoSFImage);
@@ -301,8 +302,8 @@ SoSFImage::getValue(SbVec2s & size, int & nc) const
 /*!
   Initialize this field to \a size and \a nc.
 
-  If \a bytes is not \c NULL, the image data is copied from \a bytes
-  into this field.  If \a bytes is \c NULL, the image data is cleared
+  If \a pixels is not \c NULL, the image data is copied from \a pixels
+  into this field.  If \a pixels is \c NULL, the image data is cleared
   by setting all bytes to 0 (note that the behavior on passing a \c
   NULL pointer is specific for Coin, Open Inventor will crash if you
   try it).
@@ -310,12 +311,27 @@ SoSFImage::getValue(SbVec2s & size, int & nc) const
   The image dimensions is given by the \a size argument, and the \a nc
   argument specifies the number of bytes-pr-pixel. A 24-bit RGB image
   would for instance have an \a nc equal to 3.
+
+  The \a copypolicy argument makes it possible to share image data
+  with SoSFImage without the data being copied (thereby using less
+  memory resources). The default is to copy image data from the \a
+  pixels source into an internal copy.
+
+  \since The CopyPolicy argument was added in Coin 2.0.
+  \since CopyPolicy was added to TGS Inventor 3.0.
 */
 void
 SoSFImage::setValue(const SbVec2s & size, const int nc,
-                    const unsigned char * bytes)
+                    const unsigned char * pixels,
+                    SoSFImage::CopyPolicy copypolicy)
 {
-  this->image->setValue(size, nc, bytes);
+  if (copypolicy != SoSFImage::COPY) {
+    SoDebugError::postWarning("SoSFImage::setValue",
+                              "The only CopyPolicy supported yet is COPY. "
+                              "If you need this functionality, get in touch.");
+  }
+
+  this->image->setValue(size, nc, pixels);
   this->valueChanged();
 }
 
@@ -340,4 +356,121 @@ void
 SoSFImage::finishEditing(void)
 {
   this->valueChanged();
+}
+
+/*!
+  Not yet implemented for Coin. Get in touch if you need this method.
+
+  \since Coin 2.0
+  \since TGS Inventor 3.0
+ */
+void
+SoSFImage::setSubValue(const SbVec2s & dims, const SbVec2s & offset, unsigned char * pixels)
+{
+  // FIXME: unimplemented yet. 20030226 mortene.
+  SoDebugError::postWarning("SoSFImage::setSubValue",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
+}
+
+/*!
+  Not yet implemented for Coin. Get in touch if you need this method.
+
+  \since Coin 2.0
+  \since TGS Inventor 3.0
+ */
+void
+SoSFImage::setSubValues(const SbVec2s * dims, const SbVec2s * offsets, int num, unsigned char ** pixelblocks)
+{
+  // FIXME: unimplemented yet. 20030226 mortene.
+  SoDebugError::postWarning("SoSFImage::setSubValues",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
+}
+
+/*!
+  Not yet implemented for Coin. Get in touch if you need this method.
+
+  \since Coin 2.0
+  \since TGS Inventor 3.0
+ */
+unsigned char *
+SoSFImage::getSubTexture(int idx, SbVec2s & dims, SbVec2s & offset) const
+{
+  // FIXME: unimplemented yet. 20030226 mortene.
+  SoDebugError::postWarning("SoSFImage::getSubTexture",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
+  return NULL;
+}
+
+/*!
+  Returns whether or not sub textures was set up for this field.
+
+  If \c TRUE is returned, the \a numsubtextures argument will be set
+  to the number of sub textures in this image. This number can be used
+  for iterating over all textures with the SoSFImage::getSubTextures()
+  method.
+
+  \since Coin 2.0
+  \since TGS Inventor 3.0
+ */
+SbBool
+SoSFImage::hasSubTextures(int & numsubtextures)
+{
+  // FIXME: unimplemented yet. 20030226 mortene.
+  numsubtextures = 0;
+  return FALSE;
+}
+
+/*!
+  Set this flag to true to avoid writing out the texture to file. This
+  can save a lot on file size.
+
+  Default value is \c FALSE (i.e. write texture data to file.)
+
+  (Note: yet unimplemented for Coin.)
+
+  \since Coin 2.0
+  \since TGS Inventor ?.?
+ */
+void
+SoSFImage::setNeverWrite(SbBool flag)
+{
+  // FIXME: unimplemented yet. 20030226 mortene.
+  SoDebugError::postWarning("SoSFImage::setNeverWrite",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
+}
+
+/*!
+  Returns value of "never write texture data" flag.
+
+  \sa SoSFImage::setNeverWrite()
+
+  \since Coin 2.0
+  \since TGS Inventor ?.?
+ */
+SbBool
+SoSFImage::isNeverWrite(void) const
+{
+  // FIXME: unimplemented yet. 20030226 mortene.
+  return FALSE;
+}
+
+/*!
+  Returns \c TRUE if at least one pixel of the image in this field is
+  not completely opaque, otherwise \c FALSE.
+
+  \since Coin 2.0
+  \since TGS Inventor ?.?
+ */
+SbBool
+SoSFImage::hasTransparency(void) const
+{
+  // FIXME: unimplemented yet. 20030226 mortene.
+  SoDebugError::postWarning("SoSFImage::hasTransparency",
+                            "Not yet implemented for Coin. "
+                            "Get in touch if you need this functionality.");
+  return TRUE;
 }
