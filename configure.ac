@@ -784,20 +784,12 @@ SIM_AC_CHECK_X11_READY([AC_DEFINE([HAVE_X11_AVAILABLE],1,
 # *******************************************************************
 
 SIM_AC_CHECK_OPENGL([
-  AC_DEFINE([HAVE_OPENGL],1, [define if you have OpenGL])
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
-  COIN_EXTRA_CFLAGS="$COIN_EXTRA_CFLAGS $sim_ac_gl_cflags"
-  COIN_EXTRA_CXXFLAGS="$COIN_EXTRA_CXXFLAGS $sim_ac_gl_cxxflags"
-  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_gl_ldflags"
-  COIN_EXTRA_LIBS="$sim_ac_gl_libs $COIN_EXTRA_LIBS"
-  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
-  CFLAGS="$CFLAGS $sim_ac_gl_cflags"
-  CXXFLAGS="$CXXFLAGS $sim_ac_gl_cxxflags"
-  LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
-  LIBS="$sim_ac_gl_libs $LIBS"
-])
 
-if test x"$sim_ac_gl_avail" = xyes; then
+  AC_DEFINE([HAVE_OPENGL],1, [define if you have OpenGL])
+
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_ogl_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_ogl_ldflags"
+  COIN_EXTRA_LIBS="$sim_ac_ogl_libs $COIN_EXTRA_LIBS"
 
   SIM_AC_CHECK_HEADER_GLEXT([
     CPPFLAGS="$CPPFLAGS $sim_ac_glext_cppflags"
@@ -877,8 +869,8 @@ config.log.])
       ])
     fi
   fi
-
-else # couldn't link with OpenGL
+  ], # OpenGL-linkage ok, end of block
+  [ # Couldn't link with OpenGL:
   # Don't stop the configure process if we seem to be configuring to build
   # the documentation (I don't care to install an OpenGL development system
   # on our webserver). 20000703 mortene.
@@ -890,7 +882,7 @@ else # couldn't link with OpenGL
   else
     SIM_AC_ERROR([no-opengl])
   fi
-fi
+])
 
 # *******************************************************************
 # * Provide this nasty hack to help building Coin on platforms
