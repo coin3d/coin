@@ -155,8 +155,6 @@
 
 #include <../misc/simage_wrapper.h>
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoVRMLAudioClipP 
 {
 public:
@@ -233,7 +231,6 @@ SbTime SoVRMLAudioClipP::pauseBetweenTracks = 2.0f;
 SbTime SoVRMLAudioClipP::introPause = 0.0f;
 int SoVRMLAudioClipP::defaultSampleRate = 44100;
 
-#endif // DOXYGEN_SKIP_THIS
 
 #undef THIS
 #define THIS this->sovrmlaudioclip_impl
@@ -434,8 +431,6 @@ void SoVRMLAudioClip::audioRender(SoAudioRenderAction *action)
       THIS->startPlaying();
   }
 }
-
-#ifndef DOXYGEN_SKIP_THIS
 
 void SoVRMLAudioClipP::startPlaying()
 {
@@ -759,5 +754,3 @@ void SoVRMLAudioClipP::closeFile()
     this->stream = NULL;
   }
 }
-
-#endif // !DOXYGEN_SKIP_THIS
