@@ -255,8 +255,8 @@ SoGLCacheContextElement::getOpenGLVersion(SoState * state,
 {
   int currcontext = SoGLCacheContextElement::get(state);
   const GLWrapper_t * w = GLWrapper(currcontext);
-  major = w->version.major;
-  minor = w->version.minor;
+  major = w->glVersion.major;
+  minor = w->glVersion.minor;
 }
 
 /*!
