@@ -70,7 +70,7 @@ SbXfBox3f_get_scaled_span_vec(const SbXfBox3f & xfbox)
 /*!
   The default constructor makes an empty box and identity matrix.
  */
-SbXfBox3f::SbXfBox3f()
+SbXfBox3f::SbXfBox3f(void)
 {
   this->matrix.makeIdentity();
   this->invertedmatrix.makeIdentity();
@@ -82,8 +82,8 @@ SbXfBox3f::SbXfBox3f()
   The coordinates of \a min should be less than the coordinates of
   \a max if you want to make a valid box.
  */
-SbXfBox3f::SbXfBox3f(const SbVec3f &_min, const SbVec3f &_max):
-  SbBox3f(_min,_max)
+SbXfBox3f::SbXfBox3f(const SbVec3f & boxmin, const SbVec3f & boxmax):
+  SbBox3f(boxmin, boxmax)
 {
   this->matrix.makeIdentity();
   this->invertedmatrix.makeIdentity();
@@ -94,7 +94,7 @@ SbXfBox3f::SbXfBox3f(const SbVec3f &_min, const SbVec3f &_max):
 
   The transformation is set to the identity matrix.
  */
-SbXfBox3f::SbXfBox3f(const SbBox3f &box):
+SbXfBox3f::SbXfBox3f(const SbBox3f & box):
   SbBox3f(box)
 {
   this->matrix.makeIdentity();
@@ -122,7 +122,7 @@ SbXfBox3f::transform(const SbMatrix & m)
   Sets the transformation to the given SbMatrix.
 */
 void
-SbXfBox3f::setTransform(const SbMatrix &m)
+SbXfBox3f::setTransform(const SbMatrix & m)
 {
   this->matrix = m;
   this->makeInvInvalid(); // invalidate current inverse
@@ -132,7 +132,7 @@ SbXfBox3f::setTransform(const SbMatrix &m)
   Returns the current transformation matrix.
 */
 const SbMatrix &
-SbXfBox3f::getTransform() const
+SbXfBox3f::getTransform(void) const
 {
   return this->matrix;
 }
@@ -141,7 +141,7 @@ SbXfBox3f::getTransform() const
   Returns the inverse of the current transformation matrix.
 */
 const SbMatrix &
-SbXfBox3f::getInverse() const
+SbXfBox3f::getInverse(void) const
 {
   this->calcInverse();
   return this->invertedmatrix;
@@ -151,7 +151,7 @@ SbXfBox3f::getInverse() const
   Return the transformed center point of the box.
  */
 SbVec3f
-SbXfBox3f::getCenter() const
+SbXfBox3f::getCenter(void) const
 {
   SbVec3f orgcenter = SbBox3f::getCenter();
   SbVec3f transcenter;
@@ -166,7 +166,7 @@ SbXfBox3f::getCenter() const
   The point is assumed to be in transformed space.
 */
 void
-SbXfBox3f::extendBy(const SbVec3f &pt)
+SbXfBox3f::extendBy(const SbVec3f & pt)
 {
   if (this->isEmpty()) {
     this->matrix.makeIdentity();
@@ -189,7 +189,7 @@ SbXfBox3f::extendBy(const SbVec3f &pt)
   it's combined with \a bb.
 */
 void
-SbXfBox3f::extendBy(const SbBox3f &bb)
+SbXfBox3f::extendBy(const SbBox3f & bb)
 {
 #if COIN_DEBUG
   if (bb.isEmpty()) {
@@ -428,7 +428,7 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
   The point is assumed to be in transformed space.
 */
 SbBool
-SbXfBox3f::intersect(const SbVec3f &pt) const
+SbXfBox3f::intersect(const SbVec3f & pt) const
 {
   this->calcInverse();
   SbVec3f trans;
@@ -441,8 +441,8 @@ SbXfBox3f::intersect(const SbVec3f &pt) const
 // 12 edges defined by the 8 points in the 'points' array.
 //
 static
-SbBool intersect_box_edges(const SbVec3f &min,
-                           const SbVec3f &max,
+SbBool intersect_box_edges(const SbVec3f & min,
+                           const SbVec3f & max,
                            const SbVec3f * const points)
 {
   // lookup table for edges in the cube.
@@ -526,12 +526,12 @@ SbBool intersect_box_edges(const SbVec3f &min,
 // Use this function twice to cover all intersection cases.
 //
 static SbBool
-intersect_box_box(const SbVec3f &min,
-                  const SbVec3f &max,
-                  const SbVec3f &boxmin,
-                  const SbVec3f &boxmax,
-                  const SbMatrix &matrix,
-                  SbBool &alignedIntersect)
+intersect_box_box(const SbVec3f & min,
+                  const SbVec3f & max,
+                  const SbVec3f & boxmin,
+                  const SbVec3f & boxmax,
+                  const SbMatrix & matrix,
+                  SbBool & alignedIntersect)
 {
   SbVec3f transpoints[8];
   SbBox3f alignedBox;
@@ -572,7 +572,7 @@ intersect_box_box(const SbVec3f &min,
   The given box is assumed to be in transformed space.
 */
 SbBool
-SbXfBox3f::intersect(const SbBox3f &bb) const
+SbXfBox3f::intersect(const SbBox3f & bb) const
 {
   if (this->isEmpty() || bb.isEmpty()) {
 #if COIN_DEBUG
@@ -610,7 +610,7 @@ SbXfBox3f::intersect(const SbBox3f &bb) const
 */
 
 SbBool
-SbXfBox3f::intersect(const SbXfBox3f &xfbb) const
+SbXfBox3f::intersect(const SbXfBox3f & xfbb) const
 {
   const SbBox3f & bbr = xfbb;
   SbBox3f bb(bbr);
@@ -628,7 +628,7 @@ SbXfBox3f::intersect(const SbXfBox3f &xfbb) const
   corners. The difference between these values gives the span.
 */
 void
-SbXfBox3f::getSpan(const SbVec3f &direction, float &dMin, float &dMax) const
+SbXfBox3f::getSpan(const SbVec3f & direction, float & dMin, float & dMax) const
 {
   this->project().getSpan(direction, dMin, dMax);
 }
@@ -653,7 +653,7 @@ SbXfBox3f::project(void) const
   component by component comparison.
 */
 int
-operator ==(const SbXfBox3f &b1, const SbXfBox3f &b2)
+operator ==(const SbXfBox3f & b1, const SbXfBox3f & b2)
 {
   return
     (b1.getMin() == b2.getMin()) &&
@@ -666,7 +666,7 @@ operator ==(const SbXfBox3f &b1, const SbXfBox3f &b2)
   or 1 if they are unequal. See the note on operator==().
  */
 int
-operator !=(const SbXfBox3f &b1, const SbXfBox3f &b2)
+operator !=(const SbXfBox3f & b1, const SbXfBox3f & b2)
 {
   return !(b1 == b2);
 }

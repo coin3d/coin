@@ -66,9 +66,9 @@ SbBox2s::SbBox2s(short xmin, short ymin, short xmax, short ymax)
   The coordinates of \a min should be less than the coordinates of
   \a max if you want to make a valid box.
  */
-SbBox2s::SbBox2s(const SbVec2s& _min, const SbVec2s& _max)
+SbBox2s::SbBox2s(const SbVec2s & boxmin, const SbVec2s & boxmax)
 {
-  this->setBounds(_min, _max);
+  this->setBounds(boxmin, boxmax);
 }
 
 /*!
@@ -119,7 +119,7 @@ SbBox2s::getMax(void) const
   point fit inside the box if it isn't already within it.
  */
 void
-SbBox2s::extendBy(const SbVec2s& point)
+SbBox2s::extendBy(const SbVec2s & point)
 {
   // The explicit casts are done to humour the HPUX aCC compiler,
   // which will otherwise say ``Template deduction failed to find a
@@ -135,7 +135,7 @@ SbBox2s::extendBy(const SbVec2s& point)
   is equal to calling extendBy() twice with the corner points.
  */
 void
-SbBox2s::extendBy(const SbBox2s& box)
+SbBox2s::extendBy(const SbBox2s & box)
 {
 #if COIN_DEBUG
   if (box.minpt[0] > box.maxpt[0] || box.minpt[1] > box.maxpt[1])
@@ -151,7 +151,7 @@ SbBox2s::extendBy(const SbBox2s& box)
   Check if the given point lies within the boundaries of this box.
  */
 SbBool
-SbBox2s::intersect(const SbVec2s& point) const
+SbBox2s::intersect(const SbVec2s & point) const
 {
   if((point[0] >= this->minpt[0]) && (point[0] <= this->maxpt[0]) &&
      (point[1] >= this->minpt[1]) && (point[1] <= this->maxpt[1])) return TRUE;
@@ -163,7 +163,7 @@ SbBox2s::intersect(const SbVec2s& point) const
   of this box.
  */
 SbBool
-SbBox2s::intersect(const SbBox2s& box) const
+SbBox2s::intersect(const SbBox2s & box) const
 {
   if((box.getMax()[0] < this->getMin()[0]) ||
      (box.getMax()[1] < this->getMin()[1]) ||
@@ -201,15 +201,15 @@ SbBox2s::setBounds(short xmin, short ymin, short xmax, short ymax)
   \sa getBounds().
  */
 void
-SbBox2s::setBounds(const SbVec2s& _min, const SbVec2s& _max)
+SbBox2s::setBounds(const SbVec2s & boxmin, const SbVec2s & boxmax)
 {
 #if COIN_DEBUG
-  if(!(_min[0]<=_max[0] && _min[1]<=_max[1]))
+  if(!(boxmin[0]<=boxmax[0] && boxmin[1]<=boxmax[1]))
     SoDebugError::postWarning("SbBox2s::setBounds",
                               "The bounds will give the box negative area.");
 #endif // COIN_DEBUG
-  this->minpt = _min;
-  this->maxpt = _max;
+  this->minpt = boxmin;
+  this->maxpt = boxmax;
 }
 
 /*!
@@ -218,7 +218,7 @@ SbBox2s::setBounds(const SbVec2s& _min, const SbVec2s& _max)
   \sa setBounds(), getMin(), getMax().
 */
 void
-SbBox2s::getBounds(short& xmin, short& ymin, short& xmax, short& ymax) const
+SbBox2s::getBounds(short & xmin, short & ymin, short & xmax, short & ymax) const
 {
   xmin = this->minpt[0];
   ymin = this->minpt[1];
@@ -232,10 +232,10 @@ SbBox2s::getBounds(short& xmin, short& ymin, short& xmax, short& ymax) const
   \sa setBounds(), getMin(), getMax().
 */
 void
-SbBox2s::getBounds(SbVec2s& _min, SbVec2s& _max) const
+SbBox2s::getBounds(SbVec2s & boxmin, SbVec2s & boxmax) const
 {
-  _min = this->minpt;
-  _max = this->maxpt;
+  boxmin = this->minpt;
+  boxmax = this->maxpt;
 }
 
 /*!
@@ -244,7 +244,7 @@ SbBox2s::getBounds(SbVec2s& _min, SbVec2s& _max) const
   \sa getMin().
 */
 void
-SbBox2s::getOrigin(short& originX, short& originY) const
+SbBox2s::getOrigin(short & originX, short & originY) const
 {
   originX = this->minpt[0];
   originY = this->minpt[1];
@@ -254,7 +254,7 @@ SbBox2s::getOrigin(short& originX, short& originY) const
   Returns width and height of box.
  */
 void
-SbBox2s::getSize(short& sizeX, short& sizeY) const
+SbBox2s::getSize(short & sizeX, short & sizeY) const
 {
 #if COIN_DEBUG
   if(!(minpt[0]<=maxpt[0] && minpt[1]<=maxpt[1]))
@@ -289,7 +289,7 @@ SbBox2s::getAspectRatio(void) const
   Check \a b1 and \a b2 for equality.
 */
 int
-operator ==(const SbBox2s& b1, const SbBox2s& b2)
+operator ==(const SbBox2s & b1, const SbBox2s & b2)
 {
   return b1.getMin()==b2.getMin() && b1.getMax()==b2.getMax();
 }
@@ -300,7 +300,7 @@ operator ==(const SbBox2s& b1, const SbBox2s& b2)
   Check \a b1 and \a b2 for inequality.
 */
 int
-operator !=(const SbBox2s& b1, const SbBox2s& b2)
+operator !=(const SbBox2s & b1, const SbBox2s & b2)
 {
   return !(b1==b2);
 }

@@ -31,25 +31,25 @@ class COIN_DLL_API SbBox2s {
 public:
   SbBox2s(void);
   SbBox2s(short xmin, short ymin, short xmax, short ymax);
-  SbBox2s(const SbVec2s& _min, const SbVec2s& _max);
+  SbBox2s(const SbVec2s & boxmin, const SbVec2s & boxmax);
   ~SbBox2s(void);
 
-  const SbVec2s& getMin(void) const;
-  const SbVec2s& getMax(void) const;
-  void extendBy(const SbVec2s& point);
-  void extendBy(const SbBox2s& box);
-  SbBool intersect(const SbVec2s& point) const;
-  SbBool intersect(const SbBox2s& box) const;
+  const SbVec2s & getMin(void) const;
+  const SbVec2s & getMax(void) const;
+  void extendBy(const SbVec2s & point);
+  void extendBy(const SbBox2s & box);
+  SbBool intersect(const SbVec2s & point) const;
+  SbBool intersect(const SbBox2s & box) const;
   void setBounds(short xmin, short ymin, short xmax, short ymax);
-  void setBounds(const SbVec2s& _min, const SbVec2s& _max);
-  void getBounds(short& xmin, short& ymin, short& xmax, short& ymax) const;
-  void getBounds(SbVec2s& _min, SbVec2s& _max) const;
-  void getOrigin(short& originX, short& originY) const;
-  void getSize(short& sizeX, short& sizeY) const;
+  void setBounds(const SbVec2s & boxmin, const SbVec2s & boxmax);
+  void getBounds(short & xmin, short & ymin, short & xmax, short & ymax) const;
+  void getBounds(SbVec2s & boxmin, SbVec2s & boxmax) const;
+  void getOrigin(short & originX, short & originY) const;
+  void getSize(short & sizeX, short & sizeY) const;
   float getAspectRatio(void) const;
   void makeEmpty(void);
-  friend COIN_DLL_API int operator ==(const SbBox2s& b1, const SbBox2s& b2);
-  friend COIN_DLL_API int operator !=(const SbBox2s& b1, const SbBox2s& b2);
+  friend COIN_DLL_API int operator ==(const SbBox2s & b1, const SbBox2s & b2);
+  friend COIN_DLL_API int operator !=(const SbBox2s & b1, const SbBox2s & b2);
 
 private:
   SbVec2s minpt, maxpt;
@@ -59,7 +59,7 @@ private:
   SbBool hasArea(void) const;
 };
 
-COIN_DLL_API int operator ==(const SbBox2s& b1, const SbBox2s& b2);
-COIN_DLL_API int operator !=(const SbBox2s& b1, const SbBox2s& b2);
+COIN_DLL_API int operator ==(const SbBox2s & b1, const SbBox2s & b2);
+COIN_DLL_API int operator !=(const SbBox2s & b1, const SbBox2s & b2);
 
 #endif // !COIN_SBBOX2S_H
