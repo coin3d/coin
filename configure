@@ -5835,7 +5835,7 @@ else
 fi
 
 sim_ac_searching=true
-for sim_ac_type in int64_t long int "long long"
+for sim_ac_type in int64_t long int "long long" __int64
 do
   if $sim_ac_searching; then
 
@@ -6123,7 +6123,7 @@ else
 fi
 
 sim_ac_searching=true
-for sim_ac_type in uint64_t u_int64_t "unsigned long" "unsigned int" "unsigned long long"
+for sim_ac_type in uint64_t u_int64_t "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64"
 do
   if $sim_ac_searching; then
 

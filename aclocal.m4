@@ -1368,8 +1368,8 @@ SIM_AC_BYTESIZE_TYPE(uint16_t, 2, [u_int16_t "unsigned short" "unsigned int"], [
 SIM_AC_BYTESIZE_TYPE(int32_t, 4, [int long], [], AC_MSG_ERROR([could not find 32-bit type]))
 SIM_AC_BYTESIZE_TYPE(uint32_t, 4, [u_int32_t "unsigned int" "unsigned long"], [], AC_MSG_ERROR([could not find unsigned 32-bit type]))
 
-SIM_AC_BYTESIZE_TYPE(int64_t, 8, [long int "long long"], [], AC_MSG_WARN([could not find 64-bit type]))
-SIM_AC_BYTESIZE_TYPE(uint64_t, 8, [u_int64_t "unsigned long" "unsigned int" "unsigned long long"], [], AC_MSG_WARN([could not find unsigned 64-bit type]))
+SIM_AC_BYTESIZE_TYPE(int64_t, 8, [long int "long long" __int64], [], AC_MSG_WARN([could not find 64-bit type]))
+SIM_AC_BYTESIZE_TYPE(uint64_t, 8, [u_int64_t "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64"], [], AC_MSG_WARN([could not find unsigned 64-bit type]))
 ])# SIM_AC_DEFINE_BYTESIZE_TYPES
 
 # Usage:
