@@ -204,6 +204,19 @@ STUFF TO FIX IN COIN
   chance to do larger API / design changes again.
 
 
+* Support compressed textures
+  2002-01-03  Thomas Hammer  <thammer@sim.no>, writeup by <mortene@sim.no>
+
+  The S3TC extension is widely supported on many common graphics cards
+  from a wide range of vendors (NVidia, S3 (duh!), ATI, 3dfx, more?),
+  so we should implement support for it to aid more efficient resource
+  handling with regard to texturemaps.
+
+  See <URL:http://www.pseudonymz.demon.co.uk/s3tcoglext.htm> for more
+  information (note: there is probably more elaborate descriptions
+  available elsewhere).
+
+
 * Font specification
   2001-11-28  Morten Eriksen  <mortene@sim.no>
 
