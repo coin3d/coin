@@ -73,11 +73,14 @@ SoRotor::SoRotor(void)
   this->oneshotsensor = new SoOneShotSensor(SoRotor::oneshotSensorCB, this);
   this->oneshotsensor->setPriority(1);
   this->onfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
+  this->onfieldsensor->setPriority(0);
   this->onfieldsensor->attach(&this->on);
   this->speedfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
+  this->speedfieldsensor->setPriority(0);
   this->speedfieldsensor->attach(&this->speed);
   this->rotfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
   this->rotfieldsensor->attach(&this->rotation);
+  this->rotfieldsensor->setPriority(0);
 
   this->starttime = SbTime::zero();
   this->rotation.getValue(this->startaxis, this->startangle);
@@ -136,9 +139,12 @@ void
 SoRotor::oneshotSensorCB(void * d, SoSensor *)
 {
   SoRotor * thisp = (SoRotor *) d;
-  assert(thisp->on.getValue() == TRUE);
-  thisp->setRotation();
-  thisp->oneshotsensor->schedule();
+  // got to check value of on field here in case oneshotsensor
+  // triggers before onfieldsensor.
+  if (thisp->on.getValue()) {
+    thisp->setRotation();
+    thisp->oneshotsensor->schedule();
+  }
 }
 
 // sets rotation based on time passed from starttime
