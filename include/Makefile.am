@@ -1,6 +1,6 @@
 ## Process this file with automake to generate Makefile.in.
 
-SUBDIRS = Inventor
+SUBDIRS = Coin Inventor
 
 noinst_HEADERS = \
 	coindefs.h \

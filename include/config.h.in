@@ -34,9 +34,6 @@
 /* define this to the libCoin minor version number */
 #undef COIN_MINOR_VERSION
 
-/* *EXPERIMENTAL* to enable multithread support code */
-#undef COIN_MT
-
 /* define this to a type of the indicated bitwidth */
 #undef COIN_UINT16_T
 
@@ -142,6 +139,9 @@
 /* Define if you have the <sys/param.h> header file. */
 #undef HAVE_SYS_PARAM_H
 
+/* Define if you have the <sys/time.h> header file. */
+#undef HAVE_SYS_TIME_H
+
 /* Define if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
@@ -216,6 +216,12 @@
 
 /* define for runtime linking with simage */
 #undef SIMAGE_RUNTIME_LINKING
+
+/* define to use the POSIX threads API */
+#undef USE_PTHREAD
+
+/* define to use the Win32 threads API */
+#undef USE_W32THREAD
 
 /* Version number of package */
 #undef VERSION

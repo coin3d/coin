@@ -25,26 +25,14 @@ SUPERGLULIBADD =
 SUPERGLULSTADD =
 endif
 
-if BUILD_WITH_THREADS
-THREADSDIR = extensions/threads
-THREADSLIBADD = $(THREADSDIR)/libthreads.la
-THREADSLSTADD = $(THREADSDIR)/threads.lst
-THREADSINCLUDES = -I$(top_srcdir)/$(THREADSDIR)
-else
-THREADSDIR =
-THREADSLIBADD =
-THREADSLSTADD =
-THREADSINCLUDES =
-endif
-
 # **************************************************************************
 
 SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors $(VRML97DIR) .
+	projectors sensors threads $(VRML97DIR) .
 
-INCLUDES = -I$(top_srcdir)/include $(THREADSINCLUDES)
+INCLUDES = -I$(top_srcdir)/include
 
 if BUILD_WITH_MSVC
 lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
@@ -62,7 +50,8 @@ libCoin@SUFFIX@_la_LIBADD = \
 	fields/libfields.la misc/libmisc.la lists/liblists.la \
 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-	manips/libmanips.la $(VRML97LIBADD) $(SUPERGLULIBADD) $(THREADSLIBADD)
+	manips/libmanips.la threads/libthreads.la \
+	$(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
 libCoin@SUFFIX@_la_SOURCES = \
@@ -75,7 +64,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	fields/fields.lst misc/misc.lst lists/lists.lst \
 	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
 	sensors/sensors.lst details/details.lst draggers/draggers.lst \
-	manips/manips.lst $(VRML97LSTADD) $(SUPERGLULSTADD) $(THREADSLSTADD)
+	manips/manips.lst threads/threads.lst \
+	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 	tidbits.c tidbits.h
@@ -224,6 +214,7 @@ uninstall-local:
 	  "$$baseincdir/projectors" \
 	  "$$baseincdir/sensors" \
 	  "$$baseincdir/system" \
+	  "$$baseincdir/threads" \
 	  "$$baseincdir"; do \
 	  if test -d "$$dir"; then \
 	    echo " rmdir" "$$dir"; \

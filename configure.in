@@ -215,14 +215,26 @@ AM_CONDITIONAL(BUILD_WITH_SUPERGLU, $enable_superglu)
 
 # *******************************************************************
 
-sim_ac_enable_threads=false
-if test -f ${srcdir}/src/extensions/threads/configure; then
-  sim_ac_enable_threads=true
+AC_ARG_ENABLE([threads],
+  [AC_HELP_STRING([--disable-threads], [disable multithreading support])],
+  [case $enableval in
+  yes | true ) sim_ac_enable_threads=true ;;
+  no | false ) sim_ac_enable_threads=false ;;
+  *) AC_MSG_ERROR([invalid arg "$enableval" for --enable-threads option]) ;;
+  esac],
+  [sim_ac_enable_threads=true])
+
+if $sim_ac_enable_threads; then
   AC_DEFINE([HAVE_THREADS],, [*EXPERIMENTAL* to use the threads extension])
   HAVE_THREADS=1
-  CPPFLAGS="$CPPFLAGS -I${srcdir}/src/extensions/threads"
-  # FIXME: get thread library setup from project...
-  LIBS="$LIBS -lpthread"
+  # FIXME!!! don't use pthreads on windows
+  if test x"$enable_w32thread" = x"yes"; then
+    AC_DEFINE([USE_W32THREAD], , [define to use the Win32 threads API])
+    # LIBS="$LIBS"
+  else
+    AC_DEFINE([USE_PTHREAD], , [define to use the POSIX threads API])
+    LIBS="$LIBS -lpthread"
+  fi
 else
   HAVE_THREADS=0
 fi
@@ -233,7 +245,7 @@ AM_CONDITIONAL([BUILD_WITH_THREADS], [$sim_ac_enable_threads])
 # *******************************************************************
 # Headers we might want to use
 
-AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h io.h windows.h winsock2.h])
+AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h io.h windows.h winsock2.h])
 
 AC_CHECK_HEADERS(
   [sys/unistd.h],
@@ -815,8 +827,8 @@ if test x"$enable_hacking" = x"yes"; then
     EXTRA_LIBS="$EXTRA_LIBS -l${SUPERGLUPREFIX}GLU"
   fi
   if $sim_ac_enable_threads; then
-    HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/extensions/threads/.libs"
-    EXTRA_LIBS="$EXTRA_LIBS -lthreads"
+    HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/threads/.libs"
+    EXTRA_LIBS="$EXTRA_LIBS -lthreads${SUFFIX}LINKHACK"
   fi
   COIN_HACKING_LIBDIRS="$HACKING_LIBDIRS"
   COIN_EXTRA_LIBS="$EXTRA_LIBS $COIN_EXTRA_LIBS"
@@ -824,22 +836,12 @@ fi
 
 AC_SUBST(COIN_HACKING_LIBDIRS)
 
-if test x"$enable_threadsupport" = x"yes"; then
-  AC_DEFINE([COIN_MT],, [*EXPERIMENTAL*  to enable multithread support code])
-  sim_ac_want_mt=true
-else
-  sim_ac_want_mt=false
-fi
-
-AM_CONDITIONAL([COIN_MT], [$sim_ac_want_mt])
-
 fi
 
 # *******************************************************************
 # * For exposing various build, src and installation paths to
 # * misc configuration files under the $top_src_dir/build/ directory.
 # *******************************************************************
-
 
 AC_SUBST([coin_build_dir], [`pwd`])
 AC_SUBST([coin_src_dir], [`cd $srcdir; pwd`])
@@ -979,6 +981,9 @@ AM_CONFIG_HEADER(include/config.h)
 AC_CONFIG_FILES([
         Makefile
         include/Makefile
+	include/Coin/Makefile
+	include/Coin/base/Makefile
+	include/Coin/threads/Makefile
         include/Inventor/Makefile
         include/Inventor/lock/Makefile
         include/Inventor/system/Makefile
@@ -1007,13 +1012,10 @@ AC_CONFIG_FILES([
         src/nodes/Makefile
         src/projectors/Makefile
         src/sensors/Makefile
+        src/threads/Makefile
         src/extensions/Makefile
         docs/coin.doxygen
 ])
-
-if $sim_ac_enable_threads; then
-  AC_CONFIG_SUBDIRS([src/extensions/threads])
-fi
 
 AC_OUTPUT
 
