@@ -189,7 +189,9 @@ else
 fi
 AC_SUBST(HAVE_VRML97)
 
-AM_CONDITIONAL(BUILD_VRML97, $enable_vrml97)
+AM_CONDITIONAL([BUILD_VRML97], [$enable_vrml97])
+
+AM_CONDITIONAL([MAC_FRAMEWORK], [false])
 
 # *******************************************************************
 # Search for the "local GLU" extension
@@ -980,6 +982,7 @@ AM_CONFIG_HEADER(include/config.h)
 
 AC_CONFIG_FILES([
         Makefile
+	bin/Makefile
         include/Makefile
         include/Inventor/Makefile
 	include/Inventor/C/Makefile

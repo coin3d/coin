@@ -21,6 +21,10 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #include "SbBSPTree.cpp"
 #include "SbBox2f.cpp"
 #include "SbBox2s.cpp"
@@ -50,6 +54,10 @@
 #include "SbViewVolume.cpp"
 #include "SbViewportRegion.cpp"
 #include "SbXfBox3f.cpp"
+
+#ifdef HAVE_THREADS
 #include "base.c"
 #include "debug.c"
 #include "time.c"
+#endif
+

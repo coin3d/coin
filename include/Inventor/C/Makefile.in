@@ -124,7 +124,12 @@ sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-SUBDIRS = base threads
+@BUILD_WITH_THREADS_TRUE@BASEDIR = base
+@BUILD_WITH_THREADS_FALSE@BASEDIR = 
+@BUILD_WITH_THREADS_TRUE@THREADSDIR = threads
+@BUILD_WITH_THREADS_FALSE@THREADSDIR = 
+
+SUBDIRS = $(BASEDIR) $(THREADSDIR)
 subdir = include/Inventor/C
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
@@ -136,7 +141,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = Makefile.am Makefile.in
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = base threads
 all: all-recursive
 
 .SUFFIXES:
@@ -271,7 +276,7 @@ distdir: $(DISTFILES)
 	    || exit 1; \
 	  fi; \
 	done
-	for subdir in $(SUBDIRS); do \
+	for subdir in $(DIST_SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \

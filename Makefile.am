@@ -11,12 +11,15 @@ else
 HTMLDIRS =
 endif
 
-SUBDIRS = . include $(SRCDIRS) man $(HTMLDIRS)
-
-if BUILD_LIBRARY
-dist_bin_SCRIPTS = \
-	coin-config
+if MAC_FRAMEWORK
+BINDIR =
+MANDIR =
+else
+BINDIR = bin
+MANDIR = man
 endif
+
+SUBDIRS = . $(BINDIR) include $(SRCDIRS) $(MANDIR) $(HTMLDIRS)
 
 BUILT_SOURCES = \
 	include/Inventor/SbBasic.h \
@@ -38,7 +41,6 @@ EXTRA_DIST = \
 	ChangeLog.1999 \
 	ChangeLog.2000 \
 	LICENSE.GPL \
-	LICENSE.LGPL \
 	README.AIX \
 	README.IRIX \
 	README.MAC \

@@ -25,12 +25,22 @@ SUPERGLULIBADD =
 SUPERGLULSTADD =
 endif
 
+if BUILD_WITH_THREADS
+THREADSDIR = threads
+THREADSLIBADD = threads/libthreads.lib
+THREADSLSTADD = threads/threads.lst
+else
+THREADSDIR =
+THREADSLIBADD =
+THREADSLSTADD =
+endif
+
 # **************************************************************************
 
 SUBDIRS = \
 	extensions actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
-	projectors sensors threads $(VRML97DIR) .
+	projectors sensors $(THREADSDIR) $(VRML97DIR) .
 
 INCLUDES = -I$(top_srcdir)/include
 
@@ -50,7 +60,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 	fields/libfields.la misc/libmisc.la lists/liblists.la \
 	nodekits/libnodekits.la nodes/libnodes.la projectors/libprojectors.la \
 	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
-	manips/libmanips.la threads/libthreads.la \
+	manips/libmanips.la $(THREADSLIBADD) \
 	$(VRML97LIBADD) $(SUPERGLULIBADD)
 endif
 
@@ -64,7 +74,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	fields/fields.lst misc/misc.lst lists/lists.lst \
 	nodekits/nodekits.lst nodes/nodes.lst projectors/projectors.lst \
 	sensors/sensors.lst details/details.lst draggers/draggers.lst \
-	manips/manips.lst threads/threads.lst \
+	manips/manips.lst $(THREADSLSTADD) \
 	$(VRML97LSTADD) $(SUPERGLULSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \

@@ -1,6 +1,15 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if BUILD_WITH_THREADS
+ThreadsDependentSources = \
+	base.c \
+	debug.c \
+	time.c
+else
+ThreadsDependentSources =
+endif
+
 RegularSources = \
 	SbBSPTree.cpp \
 	SbBox2f.cpp \
@@ -32,9 +41,7 @@ RegularSources = \
 	SbViewVolume.cpp \
 	SbViewportRegion.cpp \
 	SbXfBox3f.cpp \
-	base.c \
-	debug.c \
-	time.c
+	$(ThreadsDependentSources)
 LinkHackSources = \
 	all.cpp
 PublicHeaders =
