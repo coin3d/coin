@@ -41,6 +41,14 @@
 #include <errno.h>
 #include <math.h>
 
+#ifdef HAVE_TIME_H
+#include <time.h> // struct timeval (Linux)
+#endif // HAVE_TIME_H
+
+#ifdef HAVE_SYS_TIME_H
+#include <sys/time.h> // struct timeval (IRIX)
+#endif // HAVE_SYS_TIME_H
+
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
