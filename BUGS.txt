@@ -456,34 +456,6 @@ Now, for the list of known bugs in the core Coin library:
 
 =====================================================================
 
-032 The following lineset will render in SGI Inventor, but asserts
-    in Coin (don't know what happens in non-debug builds).
-
-    #Inventor V2.1 ascii
-
-    Separator {
-      Coordinate3 {
-        point [ 0 0 0, 1 0 0, 2 0 0, 3 0 0 ]
-      }
-      IndexedLineSet {
-        coordIndex [
-          0, 1, -1,
-          -1, # the offending empty line segment
-          2, 3, -1
-        ]
-      }
-    }
-
-    In the long term, an optimized and a robust rendering method for
-    this and related shapes should be implemented, and selected at
-    run-time by the robust rendering method.
-
-    20020927 larsa.
-
-    UPDATE 20021010 mortene: fixed now?
-
-=====================================================================
-
 033 Some of the default geometry files for dragger geometries uses an
     SoDrawStyle::lineWidth > 1.0. This can be outside the legal range
     of the OpenGL implementation, which only guarantees that 1.0 can
