@@ -131,7 +131,28 @@
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/sensors/SoOneShotSensor.h>
 #include <assert.h>
+
+static SoVRMLScriptEvaluateCB * sovrmlscript_eval_cb = NULL;
+static void * sovrmlscript_eval_closure = NULL;
+
+class SoVRMLScriptP {
+public:
+  SoVRMLScriptP(SoVRMLScript * master) {
+    this->oneshotsensor = new SoOneShotSensor(SoVRMLScript::eval_cb,
+                                              master);
+    this->isreading = FALSE;
+  }
+  ~SoVRMLScriptP() {
+    delete this->oneshotsensor;
+  }
+
+  SbBool isreading;
+  SoOneShotSensor * oneshotsensor;
+};
+
+#define PRIVATE(_this_) (_this_)->pimpl
 
 SoType SoVRMLScript::classTypeId;
 
@@ -149,6 +170,8 @@ SoVRMLScript::initClass(void) // static
 SoVRMLScript::SoVRMLScript(void)
   : fielddata(NULL)
 {
+  PRIVATE(this) = new SoVRMLScriptP(this);
+
   this->isBuiltIn = TRUE;
   assert(SoVRMLScript::classTypeId != SoType::badType());
 
@@ -166,6 +189,8 @@ SoVRMLScript::SoVRMLScript(void)
 
 SoVRMLScript::~SoVRMLScript() // virtual, protected
 {
+  delete PRIVATE(this);
+
   const int n = this->fielddata->getNumFields();
   for (int i = 0; i < n; i++) {
     SoField * f = this->fielddata->getField(this, i);
@@ -191,6 +216,18 @@ SoVRMLScript::getTypeId(void) const
   return SoVRMLScript::classTypeId;
 }
 
+/*!  
+  Sets the callback that will be called when the script needs to be
+  evaluated.  
+*/
+void 
+SoVRMLScript::setScriptEvaluateCB(SoVRMLScriptEvaluateCB * cb,
+                                  void * closure)
+{
+  sovrmlscript_eval_cb = cb;
+  sovrmlscript_eval_closure = closure;
+}
+
 // Doc in parent
 void
 SoVRMLScript::doAction(SoAction * action)
@@ -201,30 +238,35 @@ SoVRMLScript::doAction(SoAction * action)
 void
 SoVRMLScript::callback(SoCallbackAction * action)
 {
+  SoVRMLScript::doAction((SoAction*) action);
 }
 
 // Doc in parent
 void
 SoVRMLScript::GLRender(SoGLRenderAction * action)
 {
+  SoVRMLScript::doAction((SoAction*) action);
 }
 
 // Doc in parent
 void
 SoVRMLScript::getBoundingBox(SoGetBoundingBoxAction * action)
 {
+  SoVRMLScript::doAction((SoAction*) action);
 }
 
 // Doc in parent
 void
 SoVRMLScript::pick(SoPickAction * action)
 {
+  SoVRMLScript::doAction((SoAction*) action);
 }
 
 // Doc in parent
 void
 SoVRMLScript::handleEvent(SoHandleEventAction * action)
 {
+  SoVRMLScript::doAction((SoAction*) action);
 }
 
 // Doc in parent
@@ -312,6 +354,24 @@ SoVRMLScript::copyContents(const SoFieldContainer * from,
 }
 
 // Doc in parent
+void 
+SoVRMLScript::notify(SoNotList * list)
+{
+  if (!PRIVATE(this)->isreading) {
+    SoField * f = list->getLastField();
+    if (f == &this->mustEvaluate) {
+      int pri = this->mustEvaluate.getValue() ? 0 : 
+        SoDelayQueueSensor::getDefaultPriority();
+      PRIVATE(this)->oneshotsensor->setPriority(pri);
+    }
+    else {
+      PRIVATE(this)->oneshotsensor->schedule();
+    }
+  }
+  inherited::notify(list);
+}
+
+// Doc in parent
 void *
 SoVRMLScript::createInstance(void)
 {
@@ -329,6 +389,9 @@ SoVRMLScript::getFieldData(void) const
 SbBool
 SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
 {
+  // avoid triggering the eval cb while reading the file.
+  PRIVATE(this)->isreading = TRUE;
+
   // FIXME: error messages
   SbName name("");
   SbBool ok;
@@ -396,12 +459,14 @@ SoVRMLScript::readInstance(SoInput * in, unsigned short flags)
     }
     else ok = FALSE;
   }
+  PRIVATE(this)->isreading = FALSE;
+  
   if (!err) {
     if (name != "") in->putBack(name.getString());
-    //    return inherited::readInstance(in, flags);
-    return TRUE;
+    // evaluate script
+    PRIVATE(this)->oneshotsensor->schedule();
   }
-  return FALSE;
+  return !err;
 }
 
 //
@@ -417,3 +482,16 @@ SoVRMLScript::initFieldData(void)
   this->fielddata->addField(this, "directOutput", &this->directOutput);
   this->fielddata->addField(this, "mustEvaluate", &this->mustEvaluate);
 }
+
+// callback for oneshotsensor
+void 
+SoVRMLScript::eval_cb(void * data, SoSensor *)
+{
+  SoVRMLScript * thisp = (SoVRMLScript*) data;
+  if (sovrmlscript_eval_cb) {
+    sovrmlscript_eval_cb(sovrmlscript_eval_closure, thisp);
+  }
+}
+
+
+#undef PRIVATE

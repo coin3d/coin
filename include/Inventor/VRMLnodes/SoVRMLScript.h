@@ -28,6 +28,12 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoMFString.h>
 
+class SoVRMLScript;
+class SoVRMLScriptP;
+class SoSensor;
+
+typedef void SoVRMLScriptEvaluateCB(void * closure, SoVRMLScript * node);
+
 class COIN_DLL_API SoVRMLScript : public SoNode
 {
   typedef SoNode inherited;
@@ -43,18 +49,21 @@ public:
   SoSFBool directOutput;
   SoSFBool mustEvaluate;
 
-  virtual void doAction( SoAction * action );
-  virtual void callback( SoCallbackAction * action );
-  virtual void GLRender( SoGLRenderAction * action );
-  virtual void getBoundingBox( SoGetBoundingBoxAction * action );
-  virtual void pick( SoPickAction * action );
-  virtual void handleEvent( SoHandleEventAction * action );
-  virtual void write( SoWriteAction * action );
+  virtual void doAction(SoAction * action);
+  virtual void callback(SoCallbackAction * action);
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+  virtual void pick(SoPickAction * action);
+  virtual void handleEvent(SoHandleEventAction * action);
+  virtual void write(SoWriteAction * action);
+
+  static void setScriptEvaluateCB(SoVRMLScriptEvaluateCB * cb,
+                                  void * closure);
 
 protected:
   virtual ~SoVRMLScript();
-  virtual void copyContents( const SoFieldContainer * from, SbBool copyConn );
-
+  virtual void copyContents(const SoFieldContainer * from, SbBool copyconn);
+  virtual void notify(SoNotList * list);
 private:
   static SoType classTypeId;
   static void * createInstance(void);
@@ -63,9 +72,11 @@ private:
 
 private:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  
+
+  static void eval_cb(void * data, SoSensor *);
   void initFieldData(void);
-  class SoVRMLScriptP * pimpl;
+  SoVRMLScriptP * pimpl;
+  friend class SoVRMLScriptP;
 }; // class SoVRMLScript
 
 #endif // ! COIN_SOVRMLSCRIPT_H
