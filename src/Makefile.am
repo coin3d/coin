@@ -3,9 +3,8 @@
 lib_LTLIBRARIES = libCoin.la
 
 if HACKING_DYNAMIC_MODULES
-TESTLIBDIR = coindev
 libCoin_la_LIBADD = 
-#libCoin_la_LIBADD = -lcoindevLINKHACK \
+#libCoin_la_LIBADD = \
 #	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbaseLINKHACK \
 #	-lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK \
 #	-ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
@@ -13,7 +12,6 @@ libCoin_la_LIBADD =
 #	-lmanipsLINKHACK -lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
 #	-lprojectorsLINKHACK -lsensorsLINKHACK
 else
-TESTLIBDIR = 
 libCoin_la_LIBADD = \
 	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
 	bundles/libbundles.la caches/libcaches.la elements/libelements.la \
@@ -25,7 +23,7 @@ libCoin_la_LIBADD = \
 endif
 
 
-SUBDIRS = $(TESTLIBDIR) \
+SUBDIRS = \
 	VRMLnodes actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
 	projectors sensors system .

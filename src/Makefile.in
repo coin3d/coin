@@ -98,15 +98,13 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
 
 lib_LTLIBRARIES = libCoin.la
-#libCoin_la_LIBADD = -lcoindevLINKHACK \
+#libCoin_la_LIBADD = \
 #	-lVRMLnodesLINKHACK -lactionsLINKHACK -lbaseLINKHACK \
 #	-lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK \
 #	-ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK \
 #	-lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -llistsLINKHACK \
 #	-lmanipsLINKHACK -lmiscLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK \
 #	-lprojectorsLINKHACK -lsensorsLINKHACK
-@HACKING_DYNAMIC_MODULES_TRUE@TESTLIBDIR = @HACKING_DYNAMIC_MODULES_TRUE@coindev
-@HACKING_DYNAMIC_MODULES_FALSE@TESTLIBDIR = 
 @HACKING_DYNAMIC_MODULES_TRUE@libCoin_la_LIBADD = 
 @HACKING_DYNAMIC_MODULES_FALSE@libCoin_la_LIBADD = @HACKING_DYNAMIC_MODULES_FALSE@\
 @HACKING_DYNAMIC_MODULES_FALSE@	VRMLnodes/libVRMLnodes.la actions/libactions.la base/libbase.la \
@@ -117,7 +115,7 @@ lib_LTLIBRARIES = libCoin.la
 @HACKING_DYNAMIC_MODULES_FALSE@	sensors/libsensors.la details/libdetails.la draggers/libdraggers.la \
 @HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la
 
-SUBDIRS = $(TESTLIBDIR) \
+SUBDIRS = \
 	VRMLnodes actions base bundles caches details draggers elements \
 	engines errors events fields manips misc lists nodekits nodes \
 	projectors sensors system .
@@ -230,9 +228,6 @@ DIST_COMMON =  $(libCoininc_HEADERS) Makefile.am Makefile.in
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 
 GZIP_ENV = --best
-DIST_SUBDIRS =  coindev VRMLnodes actions base bundles caches details \
-draggers elements engines errors events fields manips misc lists \
-nodekits nodes projectors sensors system .
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/snprintf.Plo
 SOURCES = $(libCoin_la_SOURCES)
@@ -412,7 +407,7 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-	for subdir in $(DIST_SUBDIRS); do \
+	for subdir in $(SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \

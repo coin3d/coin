@@ -4087,9 +4087,9 @@ fi
 COIN_HACKING_LIBDIRS=
 if test x"$enable_hacking" = x"yes"; then
   coin_build_dir=`pwd`
-  COIN_HACKING_LIBDIRS="-L${coin_build_dir}/src/coindev/.libs -L${coin_build_dir}/src/base/.libs -L${coin_build_dir}/src/VRMLnodes/.libs -L${coin_build_dir}/src/actions/.libs -L${coin_build_dir}/src/bundles/.libs -L${coin_build_dir}/src/caches/.libs -L${coin_build_dir}/src/details/.libs -L${coin_build_dir}/src/draggers/.libs -L${coin_build_dir}/src/elements/.libs -L${coin_build_dir}/src/engines/.libs -L${coin_build_dir}/src/errors/.libs -L${coin_build_dir}/src/events/.libs -L${coin_build_dir}/src/fields/.libs -L${coin_build_dir}/src/manips/.libs -L${coin_build_dir}/src/misc/.libs -L${coin_build_dir}/src/lists/.libs -L${coin_build_dir}/src/nodekits/.libs -L${coin_build_dir}/src/nodes/.libs -L${coin_build_dir}/src/projectors/.libs -L${coin_build_dir}/src/sensors/.libs"
+  COIN_HACKING_LIBDIRS="-L${coin_build_dir}/src/base/.libs -L${coin_build_dir}/src/VRMLnodes/.libs -L${coin_build_dir}/src/actions/.libs -L${coin_build_dir}/src/bundles/.libs -L${coin_build_dir}/src/caches/.libs -L${coin_build_dir}/src/details/.libs -L${coin_build_dir}/src/draggers/.libs -L${coin_build_dir}/src/elements/.libs -L${coin_build_dir}/src/engines/.libs -L${coin_build_dir}/src/errors/.libs -L${coin_build_dir}/src/events/.libs -L${coin_build_dir}/src/fields/.libs -L${coin_build_dir}/src/manips/.libs -L${coin_build_dir}/src/misc/.libs -L${coin_build_dir}/src/lists/.libs -L${coin_build_dir}/src/nodekits/.libs -L${coin_build_dir}/src/nodes/.libs -L${coin_build_dir}/src/projectors/.libs -L${coin_build_dir}/src/sensors/.libs"
   unset coin_build_dir
-  COIN_EXTRA_LIBS="-lcoindevLINKHACK -lbaseLINKHACK -lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
+  COIN_EXTRA_LIBS="-lbaseLINKHACK -lVRMLnodesLINKHACK -lactionsLINKHACK -lbundlesLINKHACK -lcachesLINKHACK -ldetailsLINKHACK -ldraggersLINKHACK -lelementsLINKHACK -lenginesLINKHACK -lerrorsLINKHACK -leventsLINKHACK -lfieldsLINKHACK -lmanipsLINKHACK -lmiscLINKHACK -llistsLINKHACK -lnodekitsLINKHACK -lnodesLINKHACK -lprojectorsLINKHACK -lsensorsLINKHACK $COIN_EXTRA_LIBS"
 fi
 
 
@@ -4240,14 +4240,14 @@ cat >$CONFIG_STATUS <<EOF
 # Files that config.status was made for.
 config_files="\\
     coin-config Makefile data/Makefile data/draggerDefaults/Makefile
-    src/Makefile src/coindev/Makefile src/base/Makefile src/VRMLnodes/Makefile
-    src/actions/Makefile src/bundles/Makefile src/caches/Makefile
-    src/details/Makefile src/draggers/Makefile src/elements/Makefile
-    src/engines/Makefile src/errors/Makefile src/events/Makefile
-    src/fields/Makefile src/manips/Makefile src/misc/Makefile
-    src/lists/Makefile src/nodekits/Makefile src/nodes/Makefile
-    src/projectors/Makefile src/sensors/Makefile src/system/Makefile
-    tools/Makefile tools/ivcat/Makefile tools/ivhierarchy/Makefile
+    src/Makefile src/base/Makefile src/VRMLnodes/Makefile src/actions/Makefile
+    src/bundles/Makefile src/caches/Makefile src/details/Makefile
+    src/draggers/Makefile src/elements/Makefile src/engines/Makefile
+    src/errors/Makefile src/events/Makefile src/fields/Makefile
+    src/manips/Makefile src/misc/Makefile src/lists/Makefile
+    src/nodekits/Makefile src/nodes/Makefile src/projectors/Makefile
+    src/sensors/Makefile src/system/Makefile tools/Makefile
+    tools/ivcat/Makefile tools/ivhierarchy/Makefile
     tools/ivNodeKitStructure/Makefile tools/renderos/Makefile
     examples/Makefile examples/advanced/Makefile
     examples/advanced/elements/Makefile"
@@ -4299,7 +4299,6 @@ do
   'data/Makefile' ) CONFIG_FILES="\$CONFIG_FILES data/Makefile" ;;
   'data/draggerDefaults/Makefile' ) CONFIG_FILES="\$CONFIG_FILES data/draggerDefaults/Makefile" ;;
   'src/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/Makefile" ;;
-  'src/coindev/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/coindev/Makefile" ;;
   'src/base/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/base/Makefile" ;;
   'src/VRMLnodes/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/VRMLnodes/Makefile" ;;
   'src/actions/Makefile' ) CONFIG_FILES="\$CONFIG_FILES src/actions/Makefile" ;;

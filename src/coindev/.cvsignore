@@ -1,6 +1,0 @@
-.libs
-.deps
-Makefile
-coindev.lo
-coindev.o
-libcoindevLINKHACK.la
