@@ -52,6 +52,9 @@ private:
   SbBool enabled;
   SoEngine * container;
   SoFieldList slaves;
+
+  // FIXME: kill for Coin v2 (can't break ABI compatibility for Coin
+  // v1.x.y releases).  20010910 mortene.
   SbDict notifyflags;
 };
 

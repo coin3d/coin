@@ -37,6 +37,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+// FIXME: part of the "store-list-in-dict" hack to keep ABI
+// compatibility.  20010910 mortene.
+static const unsigned long SOENGINEOUTPUT_MAGICNUMBER = 0xdeadbeef;
+
 /*!
   Constructor. The SoEngineOutput will initially not be contained
   within an SoEngine nor will it have any slave fields attached.
@@ -47,6 +51,9 @@ SoEngineOutput::SoEngineOutput(void)
 {
   this->enabled = TRUE;
   this->container = NULL;
+
+  SbList<SbBool> * fieldnotiflist = new SbList<SbBool>;
+  this->notifyflags.enter(SOENGINEOUTPUT_MAGICNUMBER, fieldnotiflist);
 }
 
 /*!
@@ -57,6 +64,14 @@ SoEngineOutput::~SoEngineOutput()
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoEngineOutput::~SoEngineOutput", "start %p", this);
 #endif // debug
+
+  // FIXME: the "list-in-dict" hack to keep ABI
+  // compatibility. 20010910 mortene.
+  void * vval;
+  SbBool r = this->notifyflags.find(SOENGINEOUTPUT_MAGICNUMBER, vval);
+  assert(r);
+  SbList<SbBool> * notiflist = (SbList<SbBool> *)vval;
+  delete notiflist;
 
   // Avoids evaluation from the fields in SoField::disconnect() (which
   // would again lead to problems with the pure virtual
@@ -230,36 +245,53 @@ SoEngineOutput::operator[](int i) const
 void
 SoEngineOutput::prepareToWrite(void) const
 {
-  // Cast away constness for working with the SbDict instance.
-  SoEngineOutput * that = (SoEngineOutput *)this;
-  that->notifyflags.clear();
+  // FIXME: the "list-in-dict" hack to keep ABI
+  // compatibility. 20010910 mortene.
+  void * vval;
+  SbBool r = this->notifyflags.find(SOENGINEOUTPUT_MAGICNUMBER, vval);
+  assert(r);
+  SbList<SbBool> * notiflist = (SbList<SbBool> *)vval;
+
+  notiflist->truncate(0);
 
   int n = this->slaves.getLength();
   for (int i = 0; i < n; i++) {
-    that->notifyflags.enter((unsigned long)(this->slaves[i]),
-                            (void *)(this->slaves[i]->isNotifyEnabled()));
-    this->slaves[i]->enableNotify(FALSE);
+    SoField * f = this->slaves[i];
+    notiflist->append(f->isNotifyEnabled());
+    f->enableNotify(FALSE);
   }
 }
 
-// Restore the slave fields' "notification enabled" flags after
-// SoEngine::evaluate().
-static void
-restore_notifyflags(unsigned long fieldptr, void * enabledflag)
-{
-  ((SoField *)fieldptr)->enableNotify((SbBool)enabledflag);
-}
-
 /*!
-  Enables notification on fields connected to this output.  Use this
-  method to restore the notification flags after evaluating.
+  Restores the notification flags on fields connected to this output
+  after evaluating.
 
   \sa prepareToWrite()
 */
 void
 SoEngineOutput::doneWriting(void) const
 {
-  this->notifyflags.applyToAll(restore_notifyflags);
+  // FIXME: the "list-in-dict" hack to keep ABI
+  // compatibility. 20010910 mortene.
+  void * vval;
+  SbBool r = this->notifyflags.find(SOENGINEOUTPUT_MAGICNUMBER, vval);
+  assert(r);
+  SbList<SbBool> * notiflist = (SbList<SbBool> *)vval;
+
+  // We should have the exact same set of slave fields now as on entry
+  // to prepareToWrite(), as the field writing is supposed be a
+  // "closed" operation.  (All notifications on the fields are
+  // disabled, so no application code should be able to intervene in
+  // SoEngine evaluation.)
+
+  int n = this->slaves.getLength();
+  assert(n == notiflist->getLength());
+
+  const SbBool * notifs = notiflist->getArrayPtr();
+
+  for (int i = 0; i < n; i++) {
+    this->slaves[i]->enableNotify(notifs[i]);
+  }
 }
 
 /*!
