@@ -460,8 +460,8 @@ SoGlyph::getGlyph(SoState * state,
                   const SbVec2s & size,
                   const float angle)
 {
-  if (!state)
-    return NULL;
+  assert(state);
+
   SbName state_name = SoFontNameElement::get(state);
   float state_size = SoFontSizeElement::get(state);
   if (!state_name || state_name == SbName("")) {
@@ -499,26 +499,31 @@ SoGlyph::getGlyph(SoState * state,
 
   // FIXME: use font style in addition to font name. preng 2003-03-03
   SbString fontname = state_name.getString();
-  int font = SoFontLib::getFont( fontname, fontsize);
-  if (font >= 0) {
-    SoFontLib::setFontRotation(font, angle);
-    int glyphidx = SoFontLib::getGlyph(font, character);
-    if (glyphidx >= 0) {
-      SoGlyph * g = new SoGlyph();
-      g->pimpl->fontidx = font;
-      g->pimpl->glyphidx = glyphidx;
-      g->pimpl->size = fontsize;
-      g->pimpl->angle = angle;
-      g->pimpl->character = character;
-      coin_glyph_info info(character, fontsize[0], state_name, g, angle);
-      g->pimpl->refcount++;
-      activeGlyphs->append(info);
-      CC_MUTEX_UNLOCK(SoGlyph_mutex);
-      return g;
-    }
-  }
+  const int font = SoFontLib::getFont( fontname, fontsize);
+  // Should _always_ be able to get hold of a font, as we have an
+  // embedded default font to use if nothing is found in the
+  // environment.  -mortene.
+  assert(font >= 0);
+
+  SoFontLib::setFontRotation(font, angle);
+  const int glyphidx = SoFontLib::getGlyph(font, character);
+  // Should _always_ be able to get hold of a glyph -- if no glyph is
+  // available for a specific character, a default empty rectangle
+  // should be used.  -mortene.
+  assert(glyphidx >= 0);
+
+  SoGlyph * g = new SoGlyph();
+  g->pimpl->fontidx = font;
+  g->pimpl->glyphidx = glyphidx;
+  g->pimpl->size = fontsize;
+  g->pimpl->angle = angle;
+  g->pimpl->character = character;
+  coin_glyph_info info(character, fontsize[0], state_name, g, angle);
+  g->pimpl->refcount++;
+  activeGlyphs->append(info);
+
   CC_MUTEX_UNLOCK(SoGlyph_mutex);
-  return NULL;
+  return g;
 }
 
 // Pixel advance for this glyph.
