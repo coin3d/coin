@@ -94,9 +94,6 @@
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif // HAVE_UNISTD_H
-#if HAVE_WINSOCK2_H
-#include <winsock2.h> // ntohl(), ntohs() etc on MSWindows
-#endif // HAVE_WINSOCK2_H
 #if HAVE_SYS_TYPES_H
 /* According to Coin user Ralf Corsepius, at least SunOS4 needs to
    include sys/types.h before netinet/in.h. There have also been a
@@ -104,14 +101,8 @@
    dependency exists on that platform aswell. */
 #include <sys/types.h>
 #endif // HAVE_SYS_TYPES_H
-#if HAVE_NETINET_IN_H
-#include <netinet/in.h> // ntohl(), ntohs() etc on Linux boxen
-#endif // HAVE_NETINET_IN_H
-#if HAVE_SYS_PARAM_H
-#include <sys/param.h> // ntohl(), ntohs() etc on FreeBSD
-#endif // HAVE_SYS_PARAM_H
 #include <ctype.h>
-#include "../snprintf.h" // coin_getenv()
+#include "../tidbits.h" // coin_getenv() & coin_ntoh*()
 
 // This (POSIX-compliant) macro is missing from the Win32 API header
 // files for MSVC++ 6.0.
@@ -1847,7 +1838,7 @@ void
 SoInput::convertShort(char * from, short * s)
 {
   // Convert MSB -> LSB, if necessary. Ugly hack.
-  *s = (short)ntohs(*((unsigned short int *)from));
+  *s = (short) coin_ntoh_uint16(*((uint16_t *)from));
 }
 
 /*!
@@ -1859,8 +1850,8 @@ void
 SoInput::convertInt32(char * from, int32_t * l)
 {
   // Convert MSB -> LSB, if necessary. Ugly hack.
-  assert(sizeof(int32_t) == sizeof(unsigned long int)); // Fails on 64-bit archs?
-  *l = (int32_t)ntohl(*((unsigned long int *)from));
+  // assert(sizeof(int32_t) == sizeof(unsigned long int)); // Fails on 64-bit archs?
+  *l = (int32_t)coin_ntoh_uint32(*((uint32_t *)from));
 }
 
 /*!
@@ -1874,8 +1865,8 @@ SoInput::convertFloat(char * from, float * f)
   // Jesus H. Christ -- this unbelievably ugly hack actually kinda
   // works. Probably because the bitpatterns of the parts of float
   // numbers are standardized according to IEEE 754 (?).
-  assert(sizeof(unsigned long int) == sizeof(float));
-  unsigned long int fbitval = ntohl(*((unsigned long int *)from));
+  assert(sizeof(uint32_t) == sizeof(float));
+  uint32_t fbitval = coin_ntoh_uint32(*((uint32_t *)from));
   memcpy(f, &fbitval, sizeof(float));
 }
 
@@ -1889,10 +1880,10 @@ SoInput::convertDouble(char * from, double * d)
 {
   // This is so ugly it makes Madeleine Albright appear as Miss
   // Universe, but hey -- it works for me. I think.
-  assert(sizeof(unsigned int) * 2 == sizeof(double));
+  assert(sizeof(uint32_t) * 2 == sizeof(double));
   unsigned long int dbitvals[2] = {
-    ntohl(*((unsigned long int *)from)),
-    ntohl(*((unsigned long int *)(from + sizeof(double)/2))),
+    coin_ntoh_uint32(*((uint32_t *)from)),
+    coin_ntoh_uint32(*((uint32_t *)(from + sizeof(double)/2))),
   };
   memcpy(d, dbitvals, sizeof(double));
 }

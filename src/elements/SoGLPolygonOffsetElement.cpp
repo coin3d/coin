@@ -36,7 +36,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
-#include "../snprintf.h"
+#include "../tidbits.h"
 
 SO_ELEMENT_SOURCE(SoGLPolygonOffsetElement);
 

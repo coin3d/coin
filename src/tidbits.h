@@ -17,13 +17,14 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SNPRINTF_H
-#define COIN_SNPRINTF_H
+#ifndef COIN_TIDBITS_H
+#define COIN_TIDBITS_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+/* ********************************************************************** */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -49,8 +50,17 @@ int vsnprintf(char * target, size_t n, const char * formatstr, va_list args);
 
 const char * coin_getenv(const char *);
 
+int coin_host_is_bigendian(void);
+
+uint16_t coin_hton_uint16(uint16_t value);
+uint16_t coin_ntoh_uint16(uint16_t value);
+uint32_t coin_hton_uint32(uint32_t value);
+uint32_t coin_ntoh_uint32(uint32_t value);
+
+/* ********************************************************************** */
+
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* COIN_SNPRINTF_H */
+#endif /* COIN_TIDBITS_H */

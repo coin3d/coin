@@ -38,7 +38,7 @@ libCoin@SUFFIX@_la_LIBADD = \
 endif
 
 libCoin@SUFFIX@_la_SOURCES = \
-	snprintf.c snprintf.h
+	tidbits.c tidbits.h
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	VRMLnodes/VRMLnodes.lst actions/actions.lst base/base.lst \
@@ -50,7 +50,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 	manips/manips.lst $(VRML97LSTADD)
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
-	snprintf.c snprintf.h
+	tidbits.c tidbits.h
 
 ## Installation information.
 

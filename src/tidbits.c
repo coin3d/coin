@@ -18,17 +18,16 @@
 \**************************************************************************/
 
 /*
-  This file containes replacement code for snprintf() and vsnprintf()
-  on systems where these extension functions are not available.
+  This file containes various miniscule code fragments that don't really
+  belong anywhere in Coin, but which is included to make it easier to keep
+  Coin portable.
 */
-
-/* FIXME: now also with portable abstraction coin_getenv() for reading
-   system environment variables. Should therefore rename this
-   file accordingly. 20010821 mortene. */
 
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
+
+#include <Inventor/system/inttypes.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,7 +35,7 @@
 #include <windows.h> /* GetEnvironmentVariable() */
 #endif /* HAVE_WINDOWS_H */
 
-#include <snprintf.h>
+#include <tidbits.h>
 
 #ifndef HAVE_VSNPRINTF
 
@@ -167,12 +166,6 @@ snprintf(char * target, size_t n, const char * formatstr, ...)
 
 /**************************************************************************/
 
-#ifdef _WIN32 /* FIXME: use configure check to test for GetEnvironmentVariable(). 20010821 mortene. */
-#define HAVE_GETENVIRONMENTVARIABLE 1
-#endif /* _WIN32 */
-
-/**************************************************************************/
-
 /*** Singlelinked list for the environment variables. *********************/
 
 /* FIXME: should implement a generic (macro-based) singlelinked list
@@ -289,23 +282,62 @@ coin_getenv(const char * envname)
 
 /**************************************************************************/
 
-#if ENABLE_TESTCODE
-
-#define BUFSIZE 256
+#include <assert.h>
 
 int
-main(void)
+coin_host_is_bigendian(void)
 {
-  char strbuff[BUFSIZE];
-  int nr = snprintf(strbuff, BUFSIZE,
-                    "This code written by %s %s, %04d-%02d-%02d",
-                    "Morten", "Eriksen", 1999, 12, 21);
-
-  if (nr != -1)
-    (void)fprintf(stdout, "string: ``%s''\nstringlength: %d\n", strbuff, nr);
-  else
-    (void)fprintf(stderr, "buffer too small\n");
-
+  char buffer[4];
+  buffer[0] = 0x00;
+  buffer[1] = 0x01;
+  buffer[2] = 0x02;
+  buffer[3] = 0x03;
+  switch ( *((uint32_t *) buffer) ) {
+  case 0x00010203:
+    return 1;
+  case 0x03020100:
+    return 0;
+  default:
+    assert("system has unknown endianness");
+    exit(1);
+  }
   return 0;
 }
-#endif /* ENABLE_TESTCODE */
+
+static int coin_bigendian = -1;
+
+uint16_t
+coin_hton_uint16(uint16_t value)
+{
+  if ( coin_bigendian == -1 ) coin_bigendian = coin_host_is_bigendian();
+  if ( coin_bigendian ) return value;
+  return ((value << 8) & 0xff00) | ((value >> 8) & 0x00ff);
+}
+
+uint16_t
+coin_ntoh_uint16(uint16_t value)
+{
+  if ( coin_bigendian == -1 ) coin_bigendian = coin_host_is_bigendian();
+  if ( coin_bigendian ) return value;
+  return ((value << 8) & 0xff00) | ((value >> 8) & 0x00ff);
+}
+
+uint32_t
+coin_hton_uint32(uint32_t value)
+{
+  if ( coin_bigendian == -1 ) coin_bigendian = coin_host_is_bigendian();
+  if ( coin_bigendian ) return value;
+  value = ((value >> 16) & 0x0000ffff) | ((value << 16) & 0xffff0000);
+  return  ((value >>  8) & 0x00ff00ff) | ((value <<  8) & 0xff00ff00);
+}
+
+uint32_t
+coin_ntoh_uint32(uint32_t value)
+{
+  if ( coin_bigendian == -1 ) coin_bigendian = coin_host_is_bigendian();
+  if ( coin_bigendian ) return value;
+  value = ((value >> 16) & 0x0000ffff) | ((value << 16) & 0xffff0000);
+  return  ((value >>  8) & 0x00ff00ff) | ((value <<  8) & 0xff00ff00);
+}
+
+/**************************************************************************/

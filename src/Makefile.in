@@ -153,7 +153,7 @@ INCLUDES = -I$(top_srcdir)/include
 
 
 libCoin@SUFFIX@_la_SOURCES = \
-	snprintf.c snprintf.h
+	tidbits.c tidbits.h
 
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
@@ -167,7 +167,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_LIBADD = \
 
 
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
-	snprintf.c snprintf.h
+	tidbits.c tidbits.h
 
 
 libCoin@SUFFIX@_la_LDFLAGS = \
@@ -254,7 +254,7 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_AR = $(AR) cru
 @BUILD_VRML97_FALSE@	projectors/projectors.lst \
 @BUILD_VRML97_FALSE@	sensors/sensors.lst details/details.lst \
 @BUILD_VRML97_FALSE@	draggers/draggers.lst manips/manips.lst
-am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = snprintf.$(OBJEXT)
+am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = tidbits.$(OBJEXT)
 coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS = \
 	$(am_coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES)
@@ -302,7 +302,7 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 @BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	draggers/libdraggers.la \
 @BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	manips/libmanips.la \
 @BUILD_VRML97_TRUE@@HACKING_DYNAMIC_MODULES_FALSE@	$(VRML97DIR)/libvrml97.la
-am_libCoin@SUFFIX@_la_OBJECTS = snprintf.lo
+am_libCoin@SUFFIX@_la_OBJECTS = tidbits.lo
 libCoin@SUFFIX@_la_OBJECTS = $(am_libCoin@SUFFIX@_la_OBJECTS)
 
 DEFS = @DEFS@
@@ -311,7 +311,7 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/snprintf.Plo $(DEPDIR)/snprintf.Po
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/tidbits.Plo $(DEPDIR)/tidbits.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -411,8 +411,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/snprintf.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/snprintf.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/tidbits.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/tidbits.Po@am__quote@
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

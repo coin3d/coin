@@ -178,6 +178,7 @@ SIM_AC_COMPILER_SWITCH_IN_VIRTUAL_DESTRUCTOR([], [SIM_AC_ERROR([c--vdest])])
 ## See which way the compiler knows the name of the current function. ####
 SIM_AC_CHECK_VAR_FUNCTIONNAME
 
+SIM_AC_MAC_CPP_ADJUSTMENTS
 
 ## Headers we might want to use. #########################################
 AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h io.h windows.h winsock2.h])
@@ -240,9 +241,10 @@ SIM_AC_DEFINE_BYTESIZE_TYPES
 
 
 # Test for ntohl() etc.
-SIM_AC_BYTEORDER_CONVERSION(
-  [COIN_EXTRA_LIBS="$sim_ac_byteorder_conversion_libs $COIN_EXTRA_LIBS"],
-  [SIM_AC_ERROR([no-network-conversion])])
+# disabled after converting from htonl to coin_hton_*() in src/tidbits.c
+# SIM_AC_BYTEORDER_CONVERSION(
+#   [COIN_EXTRA_LIBS="$sim_ac_byteorder_conversion_libs $COIN_EXTRA_LIBS"],
+#   [SIM_AC_ERROR([no-network-conversion])])
 
 # *******************************************************************
 
@@ -405,6 +407,21 @@ fi
 
 
 if $sim_ac_build_library; then
+
+  # instead of getenv() on most Win32 platforms (not Windows CE)
+  AC_MSG_CHECKING([GetEnvironmentVariable() function])
+  AC_TRY_LINK([
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+  ], [
+    (void)GetEnvironmentVariable("FOOBAR", NULL, 0);
+  ], [
+    AC_MSG_RESULT([yes])
+    AC_DEFINE([HAVE_GETENVIRONMENTVARIABLE],, [Define to use GetEnvironmentVariable() instead of getenv()])
+  ], [
+    AC_MSG_RESULT([no])
+  ])
 
 # *******************************************************************
 # * Test to see if dynamic linking through either the (Linux/IRIX/...)
@@ -606,7 +623,7 @@ AC_ARG_ENABLE([vrml97],
 
 AM_CONDITIONAL(BUILD_VRML97, $enable_vrml97)
 if $enable_vrml97; then
-  AC_DEFINE(HAVE_VRML97,, [define this when the VRML97 module is built])
+  AC_DEFINE(HAVE_VRML97,, [*EXPERIMENTAL*  to enable vrml97 support code])
   HAVE_VRML97=1
 else
   HAVE_VRML97=0
@@ -661,6 +678,15 @@ if test x"$enable_hacking" = x"yes"; then
 fi
 
 AC_SUBST(COIN_HACKING_LIBDIRS)
+
+if test x"$enable_threadsupport" = x"yes"; then
+  AC_DEFINE([COIN_MT],, [*EXPERIMENTAL*  to enable multithread support code])
+  sim_ac_want_mt=true
+else
+  sim_ac_want_mt=false
+fi
+
+AM_CONDITIONAL([COIN_MT], [$sim_ac_want_mt])
 
 fi
 

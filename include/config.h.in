@@ -34,6 +34,9 @@
 /* define this to the libCoin minor version number */
 #undef COIN_MINOR_VERSION
 
+/* *EXPERIMENTAL* to enable multithread support code */
+#undef COIN_MT
+
 /* define this to a type of the indicated bitwidth */
 #undef COIN_UINT16_T
 
@@ -63,6 +66,9 @@
 
 /* define if you have the dl library */
 #undef HAVE_DL_LIB
+
+/* Define to use GetEnvironmentVariable() instead of getenv() */
+#undef HAVE_GETENVIRONMENTVARIABLE
 
 /* define if you have GLU */
 #undef HAVE_GLU
@@ -151,7 +157,7 @@
    name */
 #undef HAVE_VAR___func__
 
-/* define this when the VRML97 module is built */
+/* *EXPERIMENTAL* to enable vrml97 support code */
 #undef HAVE_VRML97
 
 /* define if vsnprintf() is available */

@@ -4586,67 +4586,71 @@ fi
 ])
 
 
+# **************************************************************************
+# SIM_AC_MAC_CPP_ADJUSTMENTS
+#
+# Add --no-cpp-precomp if necessary.
+
+AC_DEFUN([SIM_AC_MAC_CPP_ADJUSTMENTS],
+[
+case $host_os in
+darwin*)
+  if test x"$GCC" = x"yes"; then
+    SIM_AC_CC_COMPILER_OPTION([-no-cpp-precomp], [CFLAGS="$CFLAGS -no-cpp-precomp"])
+    SIM_AC_CXX_COMPILER_OPTION([-no-cpp-precomp], [CXXFLAGS="$CXXFLAGS -no-cpp-precomp"])
+  fi
+  ;;
+esac
+]) # SIM_AC_MAC_CPP_ADJUSTMENTS
+
+
+#   Use this file to store miscellaneous macros related to checking
+#   compiler features.
+
 # Usage:
-#  SIM_AC_BYTEORDER_CONVERSION([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
 #
 # Description:
 #
-#   Set variable sim_ac_byteorder_conversion_libs to the lib(s) we
-#   need to link with to get at the network byteorder conversion
-#   functions htonl(), htons(), ntohl() and ntohs(). The libs are also
-#   added to the LIBS variable.
+#   Check whether the current C or C++ compiler can handle a
+#   particular command-line option.
 #
-#   If the functions are found, sim_ac_byteorder_conversion is also
-#   set to ``true'', otherwise it is set to ``false''.
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
+#
+#   * [mortene:19991218] improve macros by catching and analyzing
+#     stderr (at least to see if there was any output there)?
+#
 
-AC_DEFUN(SIM_AC_BYTEORDER_CONVERSION, [
-sim_ac_save_libs=$LIBS
-AC_CACHE_CHECK(
-  [network byteorder conversion],
-  sim_cv_byteorder_conversion_libs,
-  [sim_cv_byteorder_conversion_libs=UNRESOLVED
-  for sim_ac_byc_libcheck in "" -lwsock32; do
-    if test "x$sim_cv_byteorder_conversion_libs" = "xUNRESOLVED"; then
-      LIBS="$sim_ac_byc_libcheck $sim_ac_save_libs"
-      AC_TRY_LINK([
-#if HAVE_WINSOCK2_H
-#include <winsock2.h> /* MSWindows htonl() etc */
-#endif /* HAVE_WINSOCK2_H */
-#if HAVE_SYS_PARAM_H
-#include <sys/param.h> /* FreeBSD htonl() etc */
-#endif /* HAVE_SYS_PARAM_H */
-#if HAVE_SYS_TYPES_H
-/* According to Coin user Ralf Corsepius, at least SunOS4 needs
-   to include sys/types.h before netinet/in.h. There have also
-   been a problem report for FreeBSD which seems to indicate
-   the same dependency on that platform aswell. */
-#include <sys/types.h>
-#endif /* HAVE_SYS_TYPES_H */
-#if HAVE_NETINET_IN_H
-#include <netinet/in.h> /* Linux htonl() etc */
-#endif /* HAVE_NETINET_IN_H */
-],
-                  [
-(void)htonl(0x42); (void)htons(0x42); (void)ntohl(0x42); (void)ntohs(0x42);
-],
-                  [sim_cv_byteorder_conversion_libs="$sim_ac_byc_libcheck"])
-    fi
-  done
+AC_DEFUN([SIM_AC_COMPILER_OPTION], [
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS $1"
+AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
+AC_MSG_RESULT([$sim_ac_accept_result])
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in $2 or $3.
+if test $sim_ac_accept_result = yes; then
+  ifelse($2, , :, $2)
+else
+  ifelse($3, , :, $3)
+fi
 ])
 
-LIBS=$sim_ac_save_libs
+AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG_C
+AC_MSG_CHECKING([whether $CC accepts $1])
+SIM_AC_COMPILER_OPTION($1, $2, $3)
+AC_LANG_RESTORE
+])
 
-if test "x$sim_cv_byteorder_conversion_libs" != "xUNRESOLVED"; then
-  sim_ac_byteorder_conversion_libs="$sim_cv_byteorder_conversion_libs"
-  LIBS="$sim_ac_byteorder_conversion_libs $LIBS"
-  sim_ac_byteorder_conversion=true
-  $1
-else
-  sim_ac_byteorder_conversion=false
-  $2
-fi
+AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
+AC_LANG_SAVE
+AC_LANG_CPLUSPLUS
+AC_MSG_CHECKING([whether $CXX accepts $1])
+SIM_AC_COMPILER_OPTION($1, $2, $3)
+AC_LANG_RESTORE
 ])
 
 # Usage:
@@ -4851,55 +4855,6 @@ else
 fi
 ])
 
-
-#   Use this file to store miscellaneous macros related to checking
-#   compiler features.
-
-# Usage:
-#   SIM_AC_CC_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-#   SIM_AC_CXX_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-#
-# Description:
-#
-#   Check whether the current C or C++ compiler can handle a
-#   particular command-line option.
-#
-#
-# Author: Morten Eriksen, <mortene@sim.no>.
-#
-#   * [mortene:19991218] improve macros by catching and analyzing
-#     stderr (at least to see if there was any output there)?
-#
-
-AC_DEFUN([SIM_AC_COMPILER_OPTION], [
-sim_ac_save_cppflags=$CPPFLAGS
-CPPFLAGS="$CPPFLAGS $1"
-AC_TRY_COMPILE([], [], [sim_ac_accept_result=yes], [sim_ac_accept_result=no])
-AC_MSG_RESULT([$sim_ac_accept_result])
-CPPFLAGS=$sim_ac_save_cppflags
-# This need to go last, in case CPPFLAGS is modified in $2 or $3.
-if test $sim_ac_accept_result = yes; then
-  ifelse($2, , :, $2)
-else
-  ifelse($3, , :, $3)
-fi
-])
-
-AC_DEFUN([SIM_AC_CC_COMPILER_OPTION], [
-AC_LANG_SAVE
-AC_LANG_C
-AC_MSG_CHECKING([whether $CC accepts $1])
-SIM_AC_COMPILER_OPTION($1, $2, $3)
-AC_LANG_RESTORE
-])
-
-AC_DEFUN([SIM_AC_CXX_COMPILER_OPTION], [
-AC_LANG_SAVE
-AC_LANG_CPLUSPLUS
-AC_MSG_CHECKING([whether $CXX accepts $1])
-SIM_AC_COMPILER_OPTION($1, $2, $3)
-AC_LANG_RESTORE
-])
 
 # Usage:
 #   SIM_PROFILING_SUPPORT
@@ -6145,6 +6100,8 @@ if test x"$with_glu" != xno; then
 #include <OpenGL/gl.h>
 #endif
 #endif
+/* FIXME: is this correct for Mac OS X?  Seems unlikely, should
+   probably be OpenGL/glu.h? 20010915 mortene. */
 #include <GL/glu.h>
 ],
                     [

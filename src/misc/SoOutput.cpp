@@ -38,13 +38,11 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include "../tidbits.h"
+
 #if HAVE_WINDOWS_H
 #include <windows.h>
 #endif // HAVE_WINDOWS_H
-
-#if HAVE_NETINET_IN_H
-#include <netinet/in.h> // htons() & htonl() definitions
-#endif // HAVE_NETINET_IN_H
 
 /*! \enum SoOutput::Stage
   Enumerates the possible stages of a write operation (writing needs to be
@@ -944,8 +942,8 @@ SoOutput::convertShort(short s, char * to)
 {
   // Convert LSB -> MSB order, if necessary.
   // FIXME: ugly hack, can we do better? 19990627 mortene.
-  assert(sizeof(s) == sizeof(unsigned short int));
-  *((unsigned short int *)to) = htons(*((unsigned short int *)&s));
+  assert(sizeof(s) == sizeof(uint16_t));
+  *((uint16_t *)to) = coin_hton_uint16((uint16_t) s);
 }
 
 /*!
@@ -959,8 +957,8 @@ SoOutput::convertInt32(int32_t l, char * to)
 {
   // FIXME: ugly hack, probably breaks on 64-bit architectures --
   // lame. 19990627 mortene.
-  assert(sizeof(l) == sizeof(unsigned long int));
-  *((unsigned long int *)to) = htonl(*((unsigned long int *)&l));
+  assert(sizeof(l) == sizeof(uint32_t));
+  *((uint32_t *)to) = coin_hton_uint32(l);
 }
 
 /*!
@@ -978,8 +976,8 @@ SoOutput::convertFloat(float f, char * to)
   // numbers are standardized according to IEEE <something>, so we
   // just need to flip the bytes to make them be in MSB
   // format. 19990627 mortene.
-  assert(sizeof(f) == sizeof(unsigned long int));
-  *((unsigned long int *)to) = htonl(*((unsigned long int *)&f));
+  assert(sizeof(f) == sizeof(uint32_t));
+  *((uint32_t *)to) = coin_hton_uint32(*((uint32_t *)&f));
 }
 
 /*!
