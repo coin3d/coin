@@ -78,7 +78,7 @@
 // the number of subtextures that can be changed (resized) each frame.
 // By keeping this number small, we avoid slow updates when zooming in
 // on an image, as only few textures are changed each frame.
-#define CHANGELIMIT 4
+static int CHANGELIMIT = 4;
 
 // the texturequality limit when linear filtering will be used
 #define LINEAR_LIMIT 0.1f
@@ -94,10 +94,10 @@ typedef struct {
   unsigned char * tmpbuf;
   int tmpbufsize;
   SoGLImage ** glimagearray;
+  SbImage ** imagearray;
   int * glimagediv;
   uint32_t * glimageage;
   int changecnt;
-  SbImage * myimage;
   unsigned int * averagebuf;
 } SoGLBigImageTls;
 
@@ -173,10 +173,10 @@ soglbigimagetls_construct(void * closure)
   storage->tmpbuf = NULL;
   storage->tmpbufsize = 0;
   storage->glimagearray = NULL;
+  storage->imagearray = NULL;
   storage->glimagediv = NULL;
   storage->glimageage = NULL;
   storage->averagebuf = NULL;
-  storage->myimage = new SbImage;
 }
 
 static void
@@ -186,7 +186,6 @@ soglbigimagetls_destruct(void * closure)
   SoGLBigImageP::reset(tls, NULL);
 
   // these are not destructed in reset()
-  delete tls->myimage;
   delete[] tls->tmpbuf;
   delete[] tls->averagebuf;
 }
@@ -369,9 +368,11 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
 
     tls->glimagediv = new int[numimages];
     tls->glimagearray = new SoGLImage*[numimages];
+    tls->imagearray = new SbImage*[numimages];
     tls->glimageage = new uint32_t[numimages];
     for (int i = 0; i < numimages; i++) {
       tls->glimagearray[i] = NULL;
+      tls->imagearray[i] = NULL;
       tls->glimagediv[i] = 1;
       tls->glimageage[i] = 0;
     }
@@ -402,6 +403,9 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
 
     if (tls->glimagearray[idx] == NULL) {
       tls->glimagearray[idx] = new SoGLImage();
+      if (tls->imagearray[idx] == NULL) {
+        tls->imagearray[idx] = new SbImage;
+      }
     }
     else {
       tls->changecnt++;
@@ -446,13 +450,13 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
                                  tls->tmpbuf,
                                  actualsize);
       }
-      tls->myimage->setValuePtr(actualsize, numcomponents, tls->tmpbuf);
+      tls->imagearray[idx]->setValue(actualsize, numcomponents, tls->tmpbuf);
     }
-    else tls->myimage->setValuePtr(SbVec2s(0,0), 0, NULL);
-
+    else tls->imagearray[idx]->setValuePtr(SbVec2s(0,0), 0, NULL);
+    
     // do not create-in-state, since the same thread might be used to
     // render into more than one context
-    tls->glimagearray[idx]->setData(tls->myimage,
+    tls->glimagearray[idx]->setData(tls->imagearray[idx],
                                     SoGLImage::CLAMP_TO_EDGE,
                                     SoGLImage::CLAMP_TO_EDGE,
                                     quality,
@@ -471,11 +475,27 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   To avoid doing too much work in one frame, there is a limit on the
   number of subtextures that can be changed each frame. If this limit
   is exceeded, this function will return TRUE, otherwise FALSE.
+
+  \sa setChangeLimit()
 */
 SbBool
 SoGLBigImage::exceededChangeLimit(void)
 {
   return PRIVATE(this)->getTls()->changecnt >= CHANGELIMIT;
+}
+
+/*!
+  Sets the change limit. Returns the old limit.
+  
+  \sa exceededChangeLimit()
+  \since Coin 2.3
+*/
+int
+SoGLBigImage::setChangeLimit(const int limit)
+{
+  int old = CHANGELIMIT;
+  CHANGELIMIT = limit;
+  return old;
 }
 
 // needed for cc_storage_apply_to_all() callback
@@ -869,12 +889,18 @@ SoGLBigImageP::reset(SoGLBigImageTls * tls, SoState * state)
       tls->glimagearray[i]->unref(state);
       tls->glimagearray[i] = NULL;
     }
+    if (tls->imagearray[i]) {
+      delete tls->imagearray[i];
+      tls->imagearray[i] = NULL;
+    }
   }
   delete[] tls->glimagearray;
+  delete[] tls->imagearray;
   delete[] tls->glimageage;
   delete[] tls->glimagediv;
   delete[] tls->averagebuf;
   tls->glimagearray = NULL;
+  tls->imagearray = NULL;
   tls->glimageage = NULL;
   tls->glimagediv = NULL;
   tls->averagebuf = NULL;
@@ -920,7 +946,6 @@ SoGLBigImageP::resetAllTls(SoState * state)
 
 #endif // DOXYGEN_SKIP_THIS
 
-#undef CHANGELIMIT
 #undef LINEAR_LIMIT
 
 
