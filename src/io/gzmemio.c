@@ -76,6 +76,15 @@ typedef struct {
   unsigned long reserved;   /* reserved for future use */
 } z_stream;
 
+/*
+  Needed for inflateInit2().
+*/
+int 
+cc_gzm_sizeof_z_stream(void)
+{
+  return sizeof(z_stream);
+}
+
 #define Z_BUFSIZE 16384
 #define Z_NO_DEFLATE 1
 
@@ -179,7 +188,7 @@ void * cc_gzm_open(const uint8_t * buffer, uint32_t len)
     s->memfile->currpos = 0;
 
     s->stream.next_in  = s->inbuf = (uint8_t*)Z_ALLOC(Z_BUFSIZE);
-
+    
     err = cc_zlibglue_inflateInit2(&(s->stream), -MAX_WBITS);
     /* windowBits is passed < 0 to tell that there is no zlib header.
      * Note that in this case inflate *requires* an extra "dummy" byte

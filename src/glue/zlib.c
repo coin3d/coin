@@ -45,6 +45,7 @@
 #include <Inventor/C/glue/zlib.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
+#include "../io/gzmemio.h"
 
 /* workarounds for hacks in the zlib header file. inflateInit2
    and deflateInit2 are not functions but defines. The real
@@ -78,7 +79,9 @@ typedef int (*cc_zlibglue_deflateInit2_t)(void * stream,
                                         int strategy);
 
 typedef int (*cc_zlibglue_inflateInit2_t)(void * stream,
-                                        int windowbits);
+                                          int windowbits,
+                                          const char * version,
+                                          int stream_size);
 
 typedef int (*cc_zlibglue_deflateEnd_t)(void * stream);
 typedef int (*cc_zlibglue_inflateEnd_t)(void * stream);
@@ -297,7 +300,9 @@ cc_zlibglue_inflateInit2(void * stream,
 {
   zlibglue_init();
   return zlib_instance->inflateInit2(stream,
-                                     windowbits);
+                                     windowbits,
+                                     zlib_instance->zlibVersion(),
+                                     cc_gzm_sizeof_z_stream());
 }
 
 int 

@@ -43,6 +43,8 @@ extern "C" {
   off_t cc_gzm_tell(void * file);
   int cc_gzm_eof(void * file);
   int cc_gzm_close(void * file);
+  int cc_gzm_sizeof_z_stream(void);
+  
 
   /*
     the following functions are not implemented yet (writing to a
