@@ -791,6 +791,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
                          @path_tag@@coin_src_dir@/src/actions/SoAction.cpp \
+                         @path_tag@@coin_src_dir@/src/actions/SoAudioRenderAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoBoxHighlightRenderAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoCallbackAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoGLRenderAction.cpp \
@@ -870,6 +871,10 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/elements/SoGLLineWidthElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoGLPointSizeElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoLineWidthElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoListenerPositionElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoListenerOrientationElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoListenerGainElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoListenerVelocityElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoPointSizeElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoReplacedElement.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoBoolOperation.cpp \
@@ -997,6 +1002,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/manips/SoTransformManip.cpp \
                          @path_tag@@coin_src_dir@/src/manips/SoTransformerManip.cpp \
                          @path_tag@@coin_src_dir@/src/manips/commoncode.cpp \
+                         @path_tag@@coin_src_dir@/src/misc/SoAudioDevice.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoBase.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoChildList.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoDB.cpp \
@@ -1067,6 +1073,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoLightModel.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLineSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLinearProfile.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoListener.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoLocateHighlight.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMarkerSet.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoMaterial.cpp \
