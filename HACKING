@@ -390,8 +390,9 @@ build.
 
 To be able to bootstrap the Coin repository (or any other SIM code
 repository), you need to check out the "simacros" modules from Coin's
-CVS master repository. Then, in a UNIX shell, ''cd'' to the Coin source
-code directory and run ''<simacrosdir>/bin/bootstrap''.
+CVS master repository. Then, in a UNIX shell, ''cd'' to the base 
+directory of the Coin module (where the source code for Coin is located)
+and run ''<simacrosdir>/bin/bootstrap''.
 
 Note that bootstrapping before committing changes to
 Autotools-generated files should _always_ happen on the internal
