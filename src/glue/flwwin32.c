@@ -132,6 +132,7 @@ cc_flww32_done_font(void * font)
 
 /* Returns the number of character mappings available for the given
    font. A character mapping can e.g. be "unicode" or "latin_1". */
+int
 cc_flww32_get_num_charmaps(void * font)
 {
   /* FIXME: unimplemented. 20030515 mortene. */
