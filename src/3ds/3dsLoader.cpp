@@ -492,10 +492,10 @@ bool read3dsFile(SoInput *in, SoSeparator *&root,
 
 
 bool read3dsFile(SoStream *in, SoSeparator *&root,
-                 int appendNormals = 2, float creaseAngle = 25.f/180.f*M_PI,
-                 bool loadMaterials = true, bool loadTextures = true,
-                 bool loadObjNames = false, bool indexedTriSet = false,
-                 bool centerModel = true, float modelSize = 10.f)
+                 int appendNormals, float creaseAngle,
+                 bool loadMaterials, bool loadTextures,
+                 bool loadObjNames, bool indexedTriSet,
+                 bool centerModel, float modelSize)
 {
   // read the stream header
   uint16_t header;
