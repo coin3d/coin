@@ -42,8 +42,8 @@
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/errors/debugerror.h>
-
 #include <Inventor/C/glue/simage_wrapper.h>
+#include <Inventor/C/tidbits.h>
 
 static simage_wrapper_t * simage_instance = NULL;
 static cc_libhandle simage_libhandle = NULL;
@@ -239,11 +239,13 @@ simage_wrapper(void)
 
 #ifdef SIMAGE_RUNTIME_LINKING
     {
+      int idx;
       /* FIXME: should we get the system shared library name from an
          Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
+        NULL, /* is set below */ 
         "simage", "libsimage", "libsimage.so",
-        "libsimage.dylib", 
+        "libsimage.dylib",
         /* MSWindows DLL names for the simage library */
         /* FIXME: a bit of a hack this, but it looks difficult to find
            a better strategy. Perhaps it'd be a good idea to use an
@@ -255,7 +257,9 @@ simage_wrapper(void)
         NULL
       };
 
-      int idx = 0;
+      possiblelibnames[0] = coin_getenv("COIN_SIMAGE_LIBNAME");
+      idx = possiblelibnames[0] ? 0 : 1;
+
       while (!simage_libhandle && possiblelibnames[idx]) {
         simage_libhandle = cc_dl_open(possiblelibnames[idx]);
         idx++;

@@ -43,6 +43,7 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/bzip2.h>
+#include <Inventor/C/tidbits.h>
 
 typedef const char * (*cc_bzglue_BZ2_bzlibVersion_t)(void);
 
@@ -116,15 +117,18 @@ bzglue_init(void)
 
 #ifdef LIBBZIP2_RUNTIME_LINKING
     {
+      int idx;
       /* FIXME: should we get the system shared library name from an
          Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
+        NULL, /* is set below */ 
         "bz2", "libbz2", "libbz2.so",
         "libbz2.dylib", 
         NULL
       };
 
-      int idx = 0;
+      possiblelibnames[0] = coin_getenv("COIN_BZIP2_LIBNAME");
+      idx = possiblelibnames[0] ? 0 : 1;
       while (!bzlib_libhandle && possiblelibnames[idx]) {
         bzlib_libhandle = cc_dl_open(possiblelibnames[idx]);
         idx++;

@@ -225,6 +225,7 @@ GLUWrapper(void)
 #ifndef GLU_IS_PART_OF_GL
 
   {
+    int idx;
 
     /* On Mac OS X, the glu* functions are part of the OpenGL framework,
        which at this point is already loaded, so no need to try and open
@@ -233,6 +234,7 @@ GLUWrapper(void)
     /* FIXME: should we get the system shared library name from an
        Autoconf check? 20000930 mortene. */
     const char * possiblelibnames[] = {
+      NULL, /* is set below */
       /* MSWindows DLL name for the GLU library */
       "glu32",
 
@@ -242,8 +244,9 @@ GLUWrapper(void)
       "libGLU.so", "libMesaGLU.so",
       NULL
     };
+    possiblelibnames[0] = coin_getenv("COIN_GLU_LIBNAME");
+    idx = possiblelibnames[0] ? 0 : 1;
 
-    int idx = 0;   
     while (!GLU_libhandle && possiblelibnames[idx]) {
       GLU_libhandle = cc_dl_open(possiblelibnames[idx]);
       idx++;

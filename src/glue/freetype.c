@@ -56,6 +56,7 @@
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/freetype.h>
 
@@ -123,15 +124,17 @@ ftglue_init(void)
 
 #ifdef FREETYPE_RUNTIME_LINKING
     {
+      int idx;
       /* FIXME: should we get the system shared library name from an
          Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
+        NULL, /* is set below */
         "freetype", "libfreetype", "libfreetype.so",
         "libfreetype.dylib",
         NULL
       };
-
-      int idx = 0;
+      possiblelibnames[0] = coin_getenv("COIN_FREETYPE_LIBNAME");
+      idx = possiblelibnames[0] ? 0 : 1;
       while (!freetype_libhandle && possiblelibnames[idx]) {
         freetype_libhandle = cc_dl_open(possiblelibnames[idx]);
         idx++;

@@ -36,6 +36,7 @@
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 
 #ifdef HAVE_OPENAL /* In case we're _not_ doing runtime linking. */
@@ -49,7 +50,7 @@
 #elif defined HAVE_OPENAL_AL_H
 #include <OpenAL/al.h>
 #include <OpenAL/alc.h>
-#endif 
+#endif
 #endif /* OPENALWRAPPER_ASSUME_OPENAL */
 
 #include <Inventor/C/glue/openal_wrapper.h>
@@ -98,12 +99,16 @@ openal_wrapper(void)
 
 #ifdef OPENAL_RUNTIME_LINKING
     {
+      int idx;
       const char * possiblelibnames[] = {
+        NULL, /* is set below */
         "openal", "openal32", "libopenal.so",
         NULL
       };
 
-      int idx = 0;
+      possiblelibnames[0] = coin_getenv("COIN_OPENAL_LIBNAME");
+      idx = possiblelibnames[0] ? 0 : 1;
+
       while (!openal_libhandle && possiblelibnames[idx]) {
         openal_libhandle = cc_dl_open(possiblelibnames[idx]);
         idx++;

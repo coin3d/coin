@@ -43,7 +43,7 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/zlib.h>
-
+#include <Inventor/C/tidbits.h>
 
 /* workarounds for hacks in the zlib header file. inflateInit2
    and deflateInit2 are not functions but defines. The real
@@ -154,15 +154,19 @@ zlibglue_init(void)
 
 #ifdef ZLIB_RUNTIME_LINKING
     {
+      int idx;
       /* FIXME: should we get the system shared library name from an
          Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
+        NULL, /* is set below */
         "zlib", "libz", "libz.so",
         "libz.dylib", 
         NULL
       };
 
-      int idx = 0;
+      possiblelibnames[0] = coin_getenv("COIN_ZLIB_LIBNAME");
+      idx = possiblelibnames[0] ? 0 : 1;
+
       while (!zlib_libhandle && possiblelibnames[idx]) {
         zlib_libhandle = cc_dl_open(possiblelibnames[idx]);
         idx++;
