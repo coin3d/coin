@@ -89,7 +89,13 @@ include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in config.statu
 	@./config.status --header=$@
 
 include/Inventor/system/gl.h: $(srcdir)/include/Inventor/system/gl.h.in config.status
-	@./config.status --file=$@
+	@./config.status --file=include/Inventor/system/gl.h.new:include/Inventor/system/gl.h.in; \
+	if cmp -s include/Inventor/system/gl.h include/Inventor/system/gl.h.new; then \
+	  echo "include/Inventor/system/gl.h is unchanged"; \
+	  rm -f include/Inventor/system/gl.h.new; \
+	else \
+	  mv include/Inventor/system/gl.h.new include/Inventor/system/gl.h; \
+	fi
 
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in config.status
 	@./config.status --header=$@

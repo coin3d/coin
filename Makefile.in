@@ -216,10 +216,11 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = README $(dist_m4data_DATA) AUTHORS COPYING ChangeLog \
-	INSTALL Makefile.am Makefile.in NEWS THANKS aclocal.m4 \
+	INSTALL Makefile.am Makefile.in NEWS THANKS TODO aclocal.m4 \
 	cfg/config.guess cfg/config.sub cfg/depcomp cfg/install-sh \
 	cfg/ltconfig cfg/ltmain.sh cfg/missing cfg/mkinstalldirs \
-	cfg/texinfo.tex configure configure.ac
+	cfg/texinfo.tex config.guess config.sub configure configure.ac \
+	ltmain.sh
 DIST_SUBDIRS = . bin include data src man html
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -566,7 +567,13 @@ include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in config.statu
 	@./config.status --header=$@
 
 include/Inventor/system/gl.h: $(srcdir)/include/Inventor/system/gl.h.in config.status
-	@./config.status --file=$@
+	@./config.status --file=include/Inventor/system/gl.h.new:include/Inventor/system/gl.h.in; \
+	if cmp -s include/Inventor/system/gl.h include/Inventor/system/gl.h.new; then \
+	  echo "include/Inventor/system/gl.h is unchanged"; \
+	  rm -f include/Inventor/system/gl.h.new; \
+	else \
+	  mv include/Inventor/system/gl.h.new include/Inventor/system/gl.h; \
+	fi
 
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in config.status
 	@./config.status --header=$@
