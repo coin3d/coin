@@ -35,8 +35,8 @@ COIN_DLL_API cc_fifo * cc_fifo_new(void);
 COIN_DLL_API void cc_fifo_delete(cc_fifo * fifo);
 
 COIN_DLL_API void cc_fifo_assign(cc_fifo * fifo, void * ptr, uint32_t type);
-COIN_DLL_API void cc_fifo_retreive(cc_fifo * fifo, void ** ptr, uint32_t * type);
-COIN_DLL_API SbBool cc_fifo_try_retreive(cc_fifo * fifo, void ** ptr, uint32_t * type);
+COIN_DLL_API void cc_fifo_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type);
+COIN_DLL_API SbBool cc_fifo_try_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type);
 
 COIN_DLL_API unsigned int cc_fifo_size(cc_fifo * fifo);
 

@@ -143,7 +143,7 @@ cc_fifo_assign(cc_fifo * fifo, void * ptr, uint32_t type)
 */
 
 void
-cc_fifo_retreive(cc_fifo * fifo, void ** ptr, uint32_t * type)
+cc_fifo_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
 {
   cc_fifo_item * item;
   assert(fifo != NULL && ptr != NULL);
@@ -170,7 +170,7 @@ cc_fifo_retreive(cc_fifo * fifo, void ** ptr, uint32_t * type)
       return;
     }
   }
-} /* cc_fifo_retreive() */
+} /* cc_fifo_retrieve() */
 
 /*!
   tries to read a pointer from the fifo.  if no data can be read, FALSE is
@@ -179,7 +179,7 @@ cc_fifo_retreive(cc_fifo * fifo, void ** ptr, uint32_t * type)
 */
 
 SbBool
-cc_fifo_try_retreive(cc_fifo * fifo, void ** ptr, uint32_t * type)
+cc_fifo_try_retrieve(cc_fifo * fifo, void ** ptr, uint32_t * type)
 {
   cc_fifo_item * item;
   assert(fifo != NULL && ptr != NULL);
@@ -198,7 +198,7 @@ cc_fifo_try_retreive(cc_fifo * fifo, void ** ptr, uint32_t * type)
   cc_condvar_wake_one(&fifo->sleep);
   cc_mutex_unlock(&fifo->access);
   return TRUE;
-} /* cc_fifo_try_retreive() */
+} /* cc_fifo_try_retrieve() */
 
 /* ********************************************************************** */
 
