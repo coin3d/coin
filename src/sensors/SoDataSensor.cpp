@@ -212,6 +212,9 @@ SoDataSensor::notify(SoNotList * l)
     this->triggerpath->unref();
     this->triggerpath = NULL;
   }
+  this->triggerfield = NULL;
+  this->triggernode = NULL;
+
   if (this->getPriority() == 0) {
     this->triggerfield = l->getLastField();
     SoNotRec * record = l->getFirstRecAtNode();
