@@ -200,7 +200,7 @@ SoSFNode::countWriteRefs(SoOutput * out) const
   inherited::countWriteRefs(out);
 
   SoNode * n = this->getValue();
-  // Set the "from field" flag as FALSE, is that flag is meant to be
+  // Set the "from field" flag as FALSE, as that flag is meant to be
   // used for references through field-to-field connections.
   if (n) n->addWriteReference(out, FALSE);
 #ifdef COIN_SOSFPATH_H
