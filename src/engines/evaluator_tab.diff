@@ -1,0 +1,27 @@
+It is necessary to patch the evaluator_tab.c file so Microsoft Visual
+C++ 6.0 can grok it.
+
+For some (probably fabulously clever) reason, the MSVC++ compiler
+doesn't set __STDC__ when it's running in "C mode", which will then
+"undefine" the "const" keyword, which again leads to all kinds of
+trouble.
+
+        -- mortene
+
+
+--- old-evaluator_tab.c	Wed Jun 28 13:39:43 2000
++++ evaluator_tab.c	Wed Jun 28 13:39:45 2000
+@@ -72,13 +72,6 @@
+   int so_evallex(void);
+ #include <stdio.h>
+ 
+-#ifndef __cplusplus
+-#ifndef __STDC__
+-#define const
+-#endif
+-#endif
+-
+-
+ 
+ #define	YYFINAL		149
+ #define	YYFLAG		-32768

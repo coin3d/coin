@@ -1,7 +1,17 @@
 %{
 /*
  * Syntax analyzer for SoCalculator expressions.
- * compile with 'bison -p so_eval -o evaluator_tab.c -l evaluator.y
+ *
+ * Compile with
+ *
+ *         bison -p so_eval -o evaluator_tab.c -l evaluator.y
+ *
+ * ..with GNU bison version 1.27 (which is what we have on nfs.sim.no)
+ * then patch the resulting evaluator_tab.c file with
+ *
+ *         patch -p0 < evaluator_tab.diff
+ *
+ * The patch is explained at the top of the diff file.
  */
 
 #include <Inventor/SbBasic.h>

@@ -1,5 +1,5 @@
 
-/*  A Bison parser, made from /home/sigma/mortene/code/Coin/src/engines/evaluator.y
+/*  A Bison parser, made from evaluator.y
  by  GNU Bison version 1.27
   */
 
@@ -38,7 +38,17 @@
 
 /*
  * Syntax analyzer for SoCalculator expressions.
- * compile with 'bison -p so_eval -l evaluator.y'
+ *
+ * Compile with
+ *
+ *         bison -p so_eval -o evaluator_tab.c -l evaluator.y
+ *
+ * ..with GNU bison version 1.27 (which is what we have on nfs.sim.no)
+ * then patch the resulting evaluator_tab.c file with
+ *
+ *         patch -p0 < evaluator_tab.diff
+ *
+ * The patch is explained at the top of the diff file.
  */
 
 #include <Inventor/SbBasic.h>
@@ -61,13 +71,6 @@ typedef union
   int so_evalerror(char *);
   int so_evallex(void);
 #include <stdio.h>
-
-#ifndef __cplusplus
-#ifndef __STDC__
-#define const
-#endif
-#endif
-
 
 
 #define	YYFINAL		149
@@ -148,12 +151,12 @@ static const short yyrhs[] = {    40,
 
 #if YYDEBUG != 0
 static const short yyrline[] = { 0,
-    72,    74,    77,    78,    81,    82,    83,    85,    89,    90,
-    93,    95,    97,   100,   101,   102,   103,   104,   105,   107,
-   110,   111,   112,   113,   114,   116,   117,   118,   119,   121,
-   123,   125,   129,   131,   133,   136,   137,   138,   139,   140,
-   141,   144,   145,   146,   149,   150,   151,   152,   156,   157,
-   158,   159,   160,   161,   162,   163,   164
+    82,    84,    87,    88,    91,    92,    93,    95,    99,   100,
+   103,   105,   107,   110,   111,   112,   113,   114,   115,   117,
+   120,   121,   122,   123,   124,   126,   127,   128,   129,   131,
+   133,   135,   139,   141,   143,   146,   147,   148,   149,   150,
+   151,   154,   155,   156,   159,   160,   161,   162,   166,   167,
+   168,   169,   170,   171,   172,   173,   174
 };
 #endif
 
