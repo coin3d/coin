@@ -31,6 +31,9 @@
 #include <Inventor/SbColor.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/SbPlane.h>
+
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -70,6 +73,8 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 
 // FIXME: see comment on SoGLViewportRegionElement::set in
 // beginTraversel() below. 19990228 mortene.
@@ -114,8 +119,7 @@
 */
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource( SoGLRenderAction )
-//$ BEGIN TEMPLATE ActionClassTypeSource( SoGLRenderAction )
+//$ BEGIN TEMPLATE ActionSource(SoGLRenderAction)
 
 SoType SoGLRenderAction::classTypeId = SoType::badType();
 
@@ -136,7 +140,6 @@ SoGLRenderAction::getTypeId(void) const
 {
   return classTypeId;
 }
-//$ END TEMPLATE ActionClassTypeSource
 
 #include <assert.h>
 
@@ -196,7 +199,7 @@ SoGLRenderAction::enableElement(const SoType type, const int stackIndex)
 void
 SoGLRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource( SoGLRenderAction )
+//$ BEGIN TEMPLATE InitActionSource(SoGLRenderAction)
   assert(SoGLRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -260,9 +263,12 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportRegion)
   this->smoothing = FALSE;
   this->numPasses = 1;
 
-  this->transType = SoGLRenderAction::SCREEN_DOOR;
+  this->transType = SoGLRenderAction::DELAYED_BLEND;
   this->firstRender = TRUE;
   this->delayedRender = FALSE;
+  this->sortRender = FALSE;
+  this->isBlendEnabled = FALSE;
+  this->bboxAction = NULL;
 }
 
 /*!
@@ -271,6 +277,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportRegion)
 
 SoGLRenderAction::~SoGLRenderAction()
 {
+  delete this->bboxAction;
 }
 
 /*!
@@ -343,16 +350,7 @@ SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
 void
 SoGLRenderAction::setTransparencyType(const TransparencyType type)
 {
-  if (type != SCREEN_DOOR && type != DELAYED_BLEND) {
-#if COIN_DEBUG
-    SoDebugError::postWarning("SoGLRenderAction::setTransType",
-                              "FIXME: Unsupported transparency type: %d\n",
-                              type);
-#endif
-    this->transType = DELAYED_BLEND;
-  }
-  else
-    this->transType = type;
+  this->transType = type;
 }
 
 /*!
@@ -469,6 +467,11 @@ SoGLRenderAction::getCacheContext() const
 void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {
+  if (this->sortRender || this->delayedRender) {
+    inherited::beginTraversal(node);
+    return;
+  }
+
   static int first = 1;
   if (first) {
     first = 0;
@@ -571,15 +574,25 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    this->disableBlend(TRUE);
   }
 
   // FIXME: should we really push() and pop() here? Perhaps in the
   // SoAction class instead? 19990303 mortene.
 
-  this->transType = DELAYED_BLEND; // FIXME, just testing
-
   this->currentPass = 0;
   this->didHaveTransparent = FALSE;
+  this->disableBlend(); // just in case
+
+  if (this->transType == BLEND || this->transType == DELAYED_BLEND ||
+      this->transType == SORTED_OBJECT_BLEND) {
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  }
+  else if (this->transType == ADD || this->transType == DELAYED_ADD ||
+           this->transType == SORTED_OBJECT_ADD) {
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+  }
   this->getState()->push();
 
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
@@ -601,35 +614,26 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   inherited::beginTraversal(node);
   this->getState()->pop();
 
-  // FIXME: temporary code
-  if (transType == DELAYED_BLEND && didHaveTransparent) {
-    this->currentPass = 1;
-    this->getState()->push();
-
-    SoGLViewportRegionElement::set(this->getState(), this->viewport);
-
-    // FIXME: is this the correct place to set these elements? 19990314 mortene.
-    SoDecimationPercentageElement::set(this->getState(), 1.0f);
-    SoDecimationTypeElement::set(this->getState(),
-                                 SoDecimationTypeElement::AUTOMATIC);
-
-    // FIXME: use these as they're supposed to be used. 19990314 mortene.
-    SoGLRenderPassElement::set(this->getState(), 1);
-    SoGLUpdateAreaElement::set(this->getState(),
-                               SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
-
-
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
-    glDepthMask(GL_FALSE);
-
-    inherited::beginTraversal(node);
-
-    glDisable(GL_BLEND);
-    glDepthMask(GL_TRUE);
-
-    this->getState()->pop();
+  if (this->didHaveTransparent && !this->sortRender) {
+    if (this->transType == DELAYED_BLEND ||
+        this->transType == DELAYED_ADD) {
+      this->currentPass = 1;
+      SoGLRenderPassElement::set(this->getState(), 1);
+      this->enableBlend();
+      inherited::beginTraversal(node);
+      this->disableBlend();
+    }
+    else if (this->transType == SORTED_OBJECT_BLEND ||
+             this->transType == SORTED_OBJECT_ADD) {
+      this->sortRender = TRUE;
+      this->doPathSort();
+      this->enableBlend();
+      this->apply(this->transpObjPaths, TRUE);
+      this->disableBlend();
+    }
   }
+
+  this->disableBlend();
 
   if (this->delayedPaths.getLength()) {
     if (!this->delayedRender) {
@@ -647,11 +651,12 @@ SoGLRenderAction::endTraversal(SoNode *)
 {
   if (this->delayedPaths.getLength() && this->delayedRender) {
     this->delayedRender = FALSE;
-    int n = this->delayedPaths.getLength();
-    for (int i = 0; i < n; i++) {
-      this->delayedPaths[i]->unref();
-    }
     this->delayedPaths.truncate(0);
+  }
+  if (this->transpObjPaths.getLength() && this->sortRender) {
+    this->sortRender = FALSE;
+    this->transpObjPaths.truncate(0);
+    this->transpObjDistances.truncate(0);
   }
 }
 
@@ -662,9 +667,36 @@ SoGLRenderAction::endTraversal(SoNode *)
 SbBool
 SoGLRenderAction::handleTransparency(SbBool isTransparent)
 {
+  if (this->delayedRender) { // special case when rendering delayed paths
+    if (!isTransparent) {
+      this->disableBlend();
+    }
+    else {
+      if (this->transType != SCREEN_DOOR) this->enableBlend();
+      this->disableBlend();
+    }
+    return FALSE; // always render
+  }
+
+  // normal case
   if (isTransparent) this->didHaveTransparent = TRUE;
-  return isTransparent && currentPass == 0 &&
-    (transType == DELAYED_BLEND || transType == DELAYED_ADD);
+  if (this->transType == DELAYED_ADD || this->transType == DELAYED_BLEND) {
+    if (this->currentPass == 0) return isTransparent;
+    else return !isTransparent;
+  }
+  else if (this->transType == SORTED_OBJECT_ADD ||
+           this->transType == SORTED_OBJECT_BLEND) {
+    if (this->sortRender || !isTransparent) return FALSE;
+    this->addTransPath(this->getCurPath()->copy());
+    return TRUE;
+  }
+  else if (this->transType == ADD || this->transType == BLEND) {
+    if (isTransparent) this->enableBlend();
+    else this->disableBlend();
+    return FALSE; // node should always render
+  }
+  else
+    return FALSE; // polygon stipple used to render
 }
 
 /*!
@@ -695,13 +727,77 @@ SoGLRenderAction::addDelayedPath(SoPath * path)
 {
   assert(!this->delayedRender);
   SoPath * copy = path->copy();
-  copy->ref();
   this->delayedPaths.append(copy);
 }
 #endif // ! COIN_EXCLUDE_SOPATH
+
+void
+SoGLRenderAction::addTransPath(SoPath *path)
+{
+  if (this->bboxAction == NULL) {
+    this->bboxAction =
+      new SoGetBoundingBoxAction(SoViewportRegionElement::get(this->state));
+  }
+  this->bboxAction->setViewportRegion(SoViewportRegionElement::get(this->state));
+  this->bboxAction->apply(path);
+  SbVec3f center = this->bboxAction->getBoundingBox().getCenter();
+  SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
+  float dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
+  this->transpObjPaths.append(path);
+  this->transpObjDistances.append(dist);
+}
 
 SbBool
 SoGLRenderAction::isRenderingDelayedPaths() const
 {
   return this->delayedRender;
+}
+
+void
+SoGLRenderAction::disableBlend(const SbBool force)
+{
+  if (force || this->isBlendEnabled) {
+    glDisable(GL_BLEND);
+    glDepthMask(GL_TRUE);
+    this->isBlendEnabled = FALSE;
+  }
+}
+
+void
+SoGLRenderAction::enableBlend(const SbBool force)
+{
+  if (force || !this->isBlendEnabled) {
+    glEnable(GL_BLEND);
+    glDepthMask(GL_FALSE);
+    this->isBlendEnabled = TRUE;
+  }
+}
+
+void
+SoGLRenderAction::doPathSort()
+{
+  // need to cast to SbPList to avoid ref/unref problems
+  SbPList *plist = (SbPList*) &this->transpObjPaths;
+  float *darray = this->transpObjDistances.arrayPointer();
+
+  int i, j, distance, n = this->transpObjDistances.getLength();
+  void *ptmp;
+  float dtmp;
+
+  // shell sort algorithm (O(nlog(n))
+  for (distance = 1; distance <= n/9; distance = 3*distance + 1);
+  for (; distance > 0; distance /= 3) {
+    for (i = distance; i < n; i++) {
+      dtmp = darray[i];
+      ptmp = plist->get(i);
+      j = i;
+      while (j >= distance && darray[j-distance] > dtmp) {
+        darray[j] = darray[j-distance];
+        plist->set(j, plist->get(j-distance));
+        j -= distance;
+      }
+      darray[j] = dtmp;
+      plist->set(j, ptmp);
+    }
+  }
 }

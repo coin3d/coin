@@ -33,8 +33,7 @@
 #if !defined(COIN_EXCLUDE_SOPATH)
 #include <Inventor/lists/SoPathList.h>
 #endif // !COIN_EXCLUDE_SOPATH
-
-
+#include <Inventor/lists/SbList.h>
 
 class SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
@@ -132,12 +131,21 @@ private:
   SbBool firstRender;
   int currentPass;
   SbBool didHaveTransparent;
+  SbBool isBlendEnabled;
+  void disableBlend(const SbBool force = FALSE);
+  void enableBlend(const SbBool force = FALSE);
 
 #if !defined(COIN_EXCLUDE_SOPATH)
   SoPathList delayedPaths;
 #endif // !COIN_EXCLUDE_SOPATH
   SbBool delayedRender;
-
+  
+  SbBool sortRender;
+  SoPathList transpObjPaths;
+  SbList <float> transpObjDistances;
+  class SoGetBoundingBoxAction *bboxAction;
+  void addTransPath(SoPath *path);
+  void doPathSort();
 };
 
 #endif // !__SOGLRENDERACTION_H__
