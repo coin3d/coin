@@ -3960,7 +3960,8 @@ sogl_glerror_debugging(void)
 {
   static int COIN_GLERROR_DEBUGGING = -1;
   if (COIN_GLERROR_DEBUGGING == -1) {
-    COIN_GLERROR_DEBUGGING = atoi(coin_getenv("COIN_GLERROR_DEBUGGING"));
+    const char * str = coin_getenv("COIN_GLERROR_DEBUGGING");
+    COIN_GLERROR_DEBUGGING = str ? atoi(str) : 0;
   }
   return (COIN_GLERROR_DEBUGGING == 0) ? FALSE : TRUE;
 }
