@@ -88,18 +88,22 @@ static const char * directionallightvpprogram =
 "ATTRIB v24 = vertex.texcoord[0];\n"
 "ATTRIB v18 = vertex.normal;\n"
 "ATTRIB v16 = vertex.position;\n"
-"PARAM c1 = program.env[1];\n" // Light direction
-"PARAM c0 = program.env[0];\n" // Eye position
+"PARAM c1 = program.env[1];\n"
+"PARAM c0 = program.env[0];\n"
+"PARAM c6[4] = { state.matrix.texture[0] };\n"
 "PARAM c2[4] = { state.matrix.mvp };\n"
-" MOV result.texcoord[0].xy, v24;\n"
 " DPH result.position.x, v16.xyzz, c2[0];\n"
 " DPH result.position.y, v16.xyzz, c2[1];\n"
 " DPH result.position.z, v16.xyzz, c2[2];\n"
 " DPH result.position.w, v16.xyzz, c2[3];\n"
+" MUL R0.xy, c6[0].xyxx, v24.xyxx;\n"
+" ADD result.texcoord[0].x, R0.x, R0.y;\n"
+" MUL R0.xy, c6[1].xyxx, v24.xyxx;\n"
+" ADD result.texcoord[0].y, R0.x, R0.y;\n"
 " DP3 result.texcoord[1].x, v25.xyzx, c0.xyzx;\n"
 " DP3 result.texcoord[1].y, v26.xyzx, c0.xyzx;\n"
 " DP3 result.texcoord[1].z, v18.xyzx, c0.xyzx;\n"
-" ADD R0.yzw, -v16.xxyz, c1.xxyz;\n"
+" ADD R0.yzw, c1.xxyz, -v16.xxyz;\n"
 " DP3 R0.x, R0.yzwy, R0.yzwy;\n"
 " RSQ R0.x, R0.x;\n"
 " MUL R0.xyz, R0.x, R0.yzwy;\n"
@@ -107,6 +111,7 @@ static const char * directionallightvpprogram =
 " DP3 result.texcoord[2].y, v26.xyzx, R0.xyzx;\n"
 " DP3 result.texcoord[2].z, v18.xyzx, R0.xyzx;\n"
 "END\n";
+
 
 // Vertex program for point lights
 static const char * pointlightvpprogram =
@@ -120,11 +125,15 @@ static const char * pointlightvpprogram =
 "PARAM c1 = program.env[1];\n" // Light position
 "PARAM c0 = program.env[0];\n" // Eye position
 "PARAM c2[4] = { state.matrix.mvp };\n"
-" MOV result.texcoord[0].xy, v24;\n"
+"PARAM c6[4] = { state.matrix.texture[0] };\n"
 " DPH result.position.x, v16.xyzz, c2[0];\n"
 " DPH result.position.y, v16.xyzz, c2[1];\n"
 " DPH result.position.z, v16.xyzz, c2[2];\n"
 " DPH result.position.w, v16.xyzz, c2[3];\n"
+" MUL R0.xy, c6[0].xyxx, v24.xyxx;\n"
+" ADD result.texcoord[0].x, R0.x, R0.y;\n"
+" MUL R0.xy, c6[1].xyxx, v24.xyxx;\n"
+" ADD result.texcoord[0].y, R0.x, R0.y;\n"
 " ADD R0.yzw, c0.xxyz, -v16.xxyz;\n"
 " DP3 R0.x, R0.yzwy, R0.yzwy;\n"
 " RSQ R0.x, R0.x;\n"
@@ -154,7 +163,11 @@ static const char * diffusebumpdirlightvpprogram =
 "ATTRIB v16 = vertex.position;\n"
 "PARAM c0 = program.env[0];\n"
 "PARAM c1[4] = { state.matrix.mvp };\n"
-" MOV result.texcoord[0].xy, v24;\n"
+"PARAM c6[4] = { state.matrix.texture[0] };\n"
+" MUL R0.xy, c6[0].xyxx, v24.xyxx;\n"
+" ADD result.texcoord[0].x, R0.x, R0.y;\n"
+" MUL R0.xy, c6[1].xyxx, v24.xyxx;\n"
+" ADD result.texcoord[0].y, R0.x, R0.y;\n"
 " MOV result.color, color;\n"
 " DPH result.position.x, v16.xyzz, c1[0];\n"
 " DPH result.position.y, v16.xyzz, c1[1];\n"
@@ -319,6 +332,7 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
 
   const SbMatrix & oldtexture0matrix = SoTextureMatrixElement::get(state);
   const SbMatrix & oldtexture1matrix = SoMultiTextureMatrixElement::get(state, 1);
+  const SbMatrix & oldtexture2matrix = SoMultiTextureMatrixElement::get(state, 2);
   const SbMatrix & bumpmapmatrix = SoBumpMapMatrixElement::get(state);
 
   int i, lastenabled = -1;
@@ -381,6 +395,13 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
                                      eyepos[1],
                                      eyepos[2], 1);
 
+
+  cc_glglue_glActiveTexture(glue, GL_TEXTURE2);
+  if (oldtexture2matrix != SbMatrix::identity()) {
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity(); // load identity texture matrix
+    glMatrixMode(GL_MODELVIEW);
+  }
 
   cc_glglue_glActiveTexture(glue, GL_TEXTURE1);
   if (oldtexture1matrix != SbMatrix::identity()) {
@@ -446,6 +467,13 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
     SoGLMultiTextureImageElement::restore(state, 1);
   }
 
+  cc_glglue_glActiveTexture(glue, GL_TEXTURE2);
+  if (oldtexture2matrix != SbMatrix::identity()) {
+    glMatrixMode(GL_TEXTURE);
+    glLoadMatrixf(oldtexture2matrix[0]);
+    glMatrixMode(GL_MODELVIEW);
+  }
+
   if (oldtexture1matrix != SbMatrix::identity()) {
     cc_glglue_glActiveTexture(glue, GL_TEXTURE1);
     glMatrixMode(GL_TEXTURE);
@@ -460,7 +488,6 @@ soshape_bumprender::renderBumpSpecular(SoState * state,
     glLoadMatrixf(oldtexture0matrix[0]);
     glMatrixMode(GL_MODELVIEW);
   }
-
 
   // disable texturing for unit 0 if not enabled
   if (!SoGLTextureEnabledElement::get(state)) glDisable(GL_TEXTURE_2D);
