@@ -47,7 +47,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/misc/SoState.h>
 
@@ -211,7 +211,7 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
         box.setTransform(SbMatrix::identity());
 
         // set local matrix to identity
-        SoModelMatrixElement::set(action->getState(), this, mat);
+        SoBBoxModelMatrixElement::set(action->getState(), this, mat);
 
         // traverse all children, calculate the local bbox
         inherited::getBoundingBox(action);
@@ -287,7 +287,7 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
         action->getState()->push();
 
         // translate bbox matrix
-        SoModelMatrixElement::translateBy(action->getState(),
+        SoBBoxModelMatrixElement::translateBy(action->getState(),
                                               this, instance_pos);
         SoSwitchElement::set(action->getState(),++N);
 

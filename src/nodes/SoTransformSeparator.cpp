@@ -90,9 +90,14 @@ SoTransformSeparator::initClass(void)
 void
 SoTransformSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SbMatrix matrix = SoModelMatrixElement::pushMatrix( action->getState());
+  SbMatrix matrix, localMatrix;
+  SoBBoxModelMatrixElement::pushMatrix(action->getState(),
+                                       matrix,
+                                       localMatrix);
   inherited::getBoundingBox(action);
-  SoModelMatrixElement::popMatrix( action->getState(), matrix );
+  SoBBoxModelMatrixElement::popMatrix(action->getState(),
+                                      matrix,
+                                      localMatrix);
 }
 
 // Documented in superclass.

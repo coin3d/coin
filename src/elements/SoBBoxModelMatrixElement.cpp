@@ -176,7 +176,8 @@ SoBBoxModelMatrixElement::scaleEltBy(const SbVec3f &scaleFactor)
 SbMatrix
 SoBBoxModelMatrixElement::pushMatrixElt()
 {
-  return inherited::pushMatrixElt();
+  assert(0 && "Should never be called!");
+  return SbMatrix::identity();
 }
 
 /*!
@@ -184,7 +185,7 @@ SoBBoxModelMatrixElement::pushMatrixElt()
 */
 
 void
-SoBBoxModelMatrixElement::popMatrixElt(const SbMatrix &mt)
+SoBBoxModelMatrixElement::popMatrixElt(const SbMatrix &)
 {
-  inherited::popMatrixElt( mt );
+  assert(0 && "Should never be called!");
 }
