@@ -205,6 +205,10 @@
   TRUE is sound should be spatialized with respect to the viewer. Default value is TRUE.
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -221,19 +225,14 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/lists/SbList.h>
-#include <Inventor/threads/SbMutex.h>
-#include <Inventor/threads/SbCondVar.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbTime.h>
 #include <stddef.h>
 
 #include "../misc/AudioTools.h"
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #ifdef HAVE_THREADS
+#include <Inventor/threads/SbCondVar.h>
 #include <Inventor/threads/SbMutex.h>
 #include <Inventor/threads/SbThreadAutoLock.h>
 #include <Inventor/C/threads/thread.h>
@@ -284,12 +283,11 @@ public:
 #ifdef HAVE_THREADS
   cc_thread *workerThread;
   SbMutex syncmutex;
-#endif
-  volatile SbBool exitthread;
   SbMutex exitthreadmutex;
   SbCondVar exitthreadcondvar;
+#endif
+  volatile SbBool exitthread;
   volatile SbBool errorInThread;
-
 
   int16_t *audioBuffer;
   int channels;
