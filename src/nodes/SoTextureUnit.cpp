@@ -26,7 +26,7 @@
   \brief The SoTextureUnit class is a node for setting the active texture unit.
   \ingroup nodes
 
-  \since 2003-10-27
+  \since Coin 2.2
 */
 
 #include <Inventor/nodes/SoTextureUnit.h>
@@ -65,7 +65,7 @@
 */
 
 /*!
-  \var SoTextureUnit::MappingMethod SoTextureUnit::IMAGE_MAPPING
+  \var SoTextureUnit::MappingMethod SoTextureUnit::BUMP_MAPPING
 
   Bump mapping is used.
 */
