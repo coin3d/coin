@@ -22,6 +22,7 @@ RegularSources = \
 	SoInput_Reader.cpp \
 	SoInteraction.cpp \
 	SoOutput.cpp \
+	SoOutput_Writer.cpp \
 	SoPath.cpp \
 	SoPick.cpp \
 	SoPickedPoint.cpp \
@@ -85,6 +86,7 @@ PrivateHeaders = \
 	SoOffscreenAGLData.icc \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc \
+	SoOutput_Writer.h \
 	cppmangle.icc \
 	defaultfonts.h \
 	../../include/Inventor/misc/SoFontLib.h

@@ -167,6 +167,7 @@ RegularSources = \
 	SoInput_Reader.cpp \
 	SoInteraction.cpp \
 	SoOutput.cpp \
+	SoOutput_Writer.cpp \
 	SoPath.cpp \
 	SoPick.cpp \
 	SoPickedPoint.cpp \
@@ -233,6 +234,7 @@ PrivateHeaders = \
 	SoOffscreenAGLData.icc \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc \
+	SoOutput_Writer.h \
 	cppmangle.icc \
 	defaultfonts.h \
 	../../include/Inventor/misc/SoFontLib.h
@@ -320,6 +322,7 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoInput_Reader.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoInteraction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoOutput.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoOutput_Writer.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPath.$(OBJEXT) SoPick.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.$(OBJEXT) \
@@ -354,7 +357,8 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.lo SoLightPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInput_FileInfo.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput_Reader.lo SoInteraction.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoOutput_Writer.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoPath.lo SoPick.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo SoProto.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoProtoInstance.lo \
@@ -380,7 +384,8 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.lo SoLightPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput.lo SoInput_FileInfo.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoInput_Reader.lo SoInteraction.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoPath.lo SoPick.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoOutput.lo SoOutput_Writer.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoPath.lo SoPick.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.lo SoProto.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoProtoInstance.lo \
@@ -431,9 +436,10 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoOffscreenRenderer.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoOffscreenRenderer.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoOutput.Plo $(DEPDIR)/SoOutput.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoPath.Plo $(DEPDIR)/SoPath.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoPick.Plo $(DEPDIR)/SoPick.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoPickedPoint.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoOutput_Writer.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoOutput_Writer.Po $(DEPDIR)/SoPath.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoPath.Po $(DEPDIR)/SoPick.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoPick.Po $(DEPDIR)/SoPickedPoint.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoPickedPoint.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPrimitiveVertex.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoPrimitiveVertex.Po \
@@ -588,6 +594,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOffscreenRenderer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOutput.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOutput.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOutput_Writer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoOutput_Writer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPath.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPath.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPick.Plo@am__quote@
