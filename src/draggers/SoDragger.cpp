@@ -144,6 +144,7 @@ SoDragger::SoDragger(void)
   this->pickedPath = NULL;
   this->draggerCache = NULL;
   this->isGrabbing = FALSE;
+  this->activeChildDragger = NULL;
 }
 
 /*!
