@@ -31829,6 +31829,10 @@ cat >>confdefs.h <<\_ACEOF
 _ACEOF
 
           LDFLAGS="$LDFLAGS $sim_ac_agl_ldflags"
+          # indirect linking is not supported in static libs
+          if $COIN_STATIC; then
+            COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+          fi
 
   echo "$as_me:$LINENO: checking whether we can use AGL pBuffers" >&5
 echo $ECHO_N "checking whether we can use AGL pBuffers... $ECHO_C" >&6
@@ -33474,9 +33478,9 @@ fi
     esac
   done
 
-  CC=$coin_src_dir/cfg/gendsp.sh
-  CXX=$coin_src_dir/cfg/gendsp.sh
-  CXXLD=$coin_src_dir/cfg/gendsp.sh
+  CC=$coin_build_dir/cfg/gendsp.sh
+  CXX=$coin_build_dir/cfg/gendsp.sh
+  CXXLD=$coin_build_dir/cfg/gendsp.sh
   # Yes, this is totally bogus stuff, but don't worry about it.  As long
   # as gendsp.sh recognizes it...  20030219 larsa
   CPPFLAGS="$CPPFLAGS -Ddspfile=$coin_build_dir/coin$COIN_MAJOR_VERSION.dsp"
@@ -33485,8 +33489,8 @@ fi
 
   # this can't be set up at the point the libtool script is generated
   mv libtool libtool.bak
-  sed -e "s%^CC=\"gcc\"%CC=\"$coin_src_dir/cfg/gendsp.sh\"%" \
-      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$coin_src_dir/cfg/gendsp.sh\"%" \
+  sed -e "s%^CC=\"gcc\"%CC=\"$coin_build_dir/cfg/gendsp.sh\"%" \
+      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$coin_build_dir/cfg/gendsp.sh\"%" \
       <libtool.bak >libtool
   rm -f libtool.bak
   chmod 755 libtool

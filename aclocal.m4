@@ -363,9 +363,9 @@ if $sim_ac_make_dsp; then
     esac
   done
 
-  CC=[$]$3_src_dir/cfg/gendsp.sh
-  CXX=[$]$3_src_dir/cfg/gendsp.sh
-  CXXLD=[$]$3_src_dir/cfg/gendsp.sh
+  CC=[$]$3_build_dir/cfg/gendsp.sh
+  CXX=[$]$3_build_dir/cfg/gendsp.sh
+  CXXLD=[$]$3_build_dir/cfg/gendsp.sh
   # Yes, this is totally bogus stuff, but don't worry about it.  As long
   # as gendsp.sh recognizes it...  20030219 larsa
   CPPFLAGS="$CPPFLAGS -Ddspfile=[$]$3_build_dir/$3[$]$1_MAJOR_VERSION.dsp"
@@ -374,8 +374,8 @@ if $sim_ac_make_dsp; then
 
   # this can't be set up at the point the libtool script is generated
   mv libtool libtool.bak
-  sed -e "s%^CC=\"gcc\"%CC=\"[$]$3_src_dir/cfg/gendsp.sh\"%" \
-      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"[$]$3_src_dir/cfg/gendsp.sh\"%" \
+  sed -e "s%^CC=\"gcc\"%CC=\"[$]$3_build_dir/cfg/gendsp.sh\"%" \
+      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"[$]$3_build_dir/cfg/gendsp.sh\"%" \
       <libtool.bak >libtool
   rm -f libtool.bak
   chmod 755 libtool
