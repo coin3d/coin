@@ -93,6 +93,7 @@
 
 #include <Inventor/SoOffscreenRenderer.h> 
 #include <Inventor/SbTesselator.h> 
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 
 #ifdef HAVE_CONFIG_H
@@ -1354,8 +1355,15 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
 {
   SbBox3f bbox;
   SbVec3f center;
-  ((SoShape *)shape)->computeBBox(action, bbox, center);
-
+  const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
+  if (bboxcache && bboxcache->isValid(action->getState())) {
+    bbox = bboxcache->getProjectedBox();
+    if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
+    else center = bbox.getCenter();
+  }
+  else {
+    ((SoShape *)shape)->computeBBox(action, bbox, center);
+  }
   SbVec3f mincorner = bbox.getMin();
   SbVec3f maxcorner = bbox.getMax();
 

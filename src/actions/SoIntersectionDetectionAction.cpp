@@ -35,6 +35,7 @@
 #include <Inventor/manips/SoSpotLightManip.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/collision/SoIntersectionDetectionAction.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include "SbTri3f.ih"
 #include "SbTri3f.icc"
@@ -558,7 +559,16 @@ SoIntersectionDetectionActionP::shape(SoCallbackAction * action,
 {
   SbBox3f bbox;
   SbVec3f center;
-  shape->computeBBox(action, bbox, center);
+
+  const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
+  if (bboxcache && bboxcache->isValid(action->getState())) {
+    bbox = bboxcache->getProjectedBox();
+    if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
+    else center = bbox.getCenter();
+  }
+  else {
+    shape->computeBBox(action, bbox, center);
+  }
   ShapeData * data = new ShapeData;
   data->path = new SoPath(*(action->getCurPath()));
   data->path->ref();

@@ -72,6 +72,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/lists/SoCallbackList.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -909,22 +910,26 @@ SoGLRenderAction::addTransPath(SoPath * path)
   SoNode * tail = ((SoFullPath*)path)->getTail();
   float dist;
 
-  // test if we can calculate bbox using SoShape::computeBBox. This is
-  // the common case, and quite a lot faster than using an
-  // SoGetBoundingBoxAction. We only do this if no cache is currently
-  // open, to avoid cache dependencies on model matrix and view
-  // volume, which would be very bad for cache performance.
+  // test if we can find the bbox using SoShape::getBoundingBoxCache()
+  // or SoShape::computeBBox. This is the common case, and quite a lot
+  // faster than using an SoGetBoundingBoxAction. We only do this if
+  // no cache is currently open, to avoid cache dependencies on model
+  // matrix and view volume, which would be very bad for cache
+  // performance.
   if (!this->state->isCacheOpen() &&
       tail->isOfType(SoShape::getClassTypeId())) { // common case
-    SbBox3f dummy;
+    SoShape * tailshape = (SoShape*) tail;
+    const SoBoundingBoxCache * bboxcache = tailshape->getBoundingBoxCache();
     SbVec3f center;
-    // FIXME: We've now introduced bounding box caching in
-    // shapes. However, computeBBox() will not use this cache, since
-    // the cache is controlled by SoShape. Consider adding a method in
-    // SoShape to gain access to this cache. I'm a unsure if this is
-    // so important though, since transparent shapes usually have few
-    // triangles.    pederb, 2002-06-12
-    ((SoShape*)tail)->computeBBox(this, dummy, center);
+    
+    if (bboxcache && bboxcache->isValid(this->state)) {
+      if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
+      center = bboxcache->getProjectedBox().getCenter();
+    }
+    else {
+      SbBox3f dummy;
+      tailshape->computeBBox(this, dummy, center);
+    }
     SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
     dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
   }

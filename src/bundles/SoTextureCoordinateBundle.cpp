@@ -44,6 +44,7 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -237,10 +238,18 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   // texture coordinate mapping shouldn't be used. We might optimize this
   // by using a SoTextureCoordinateCache soon though. pederb, 20000218
 
-
   // just in case, cast to SoShape since it's not guaranteed that
   // shapenode is of type SoVertexShape.
-  ((SoShape*)this->shapenode)->computeBBox(action, box, center);
+  SoShape * shape = (SoShape*) this->shapenode;
+  const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();
+  if (bboxcache && bboxcache->isValid(action->getState())) {
+    box = bboxcache->getProjectedBox();
+    if (bboxcache->isCenterSet()) center = bboxcache->getCenter();
+    else center = box.getCenter();
+  }
+  else {
+    shape->computeBBox(action, box, center);
+  }
 
   // just use som default values if the shape bbox is empty
   SbVec3f size(1.0f, 1.0f, 1.0f);
