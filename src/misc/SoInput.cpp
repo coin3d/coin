@@ -1635,7 +1635,7 @@ SoInput::getPathname(const char * const filename)
   s += dir;
   return s;
 
-#else // UNIX systems
+#else // HAVE__SPLITPATH
 
   const char * ptr = strrchr(filename, '/');
   if (ptr == NULL) return SbString("");
@@ -1643,7 +1643,7 @@ SoInput::getPathname(const char * const filename)
   SbString s = filename;
   return s.getSubString(0, ptr-filename);
 
-#endif // UNIX
+#endif // !HAVE__SPLITPATH
 }
 
 /*!
