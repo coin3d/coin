@@ -4,12 +4,14 @@
 RegularSources = \
 	SoBundle.cpp \
 	SoMaterialBundle.cpp \
+	SoNormalBundle.cpp \
 	SoTextureCoordinateBundle.cpp
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
 	../../include/Inventor/bundles/SoBundle.h \
 	../../include/Inventor/bundles/SoMaterialBundle.h \
+	../../include/Inventor/bundles/SoNormalBundle.h \
 	../../include/Inventor/bundles/SoTextureCoordinateBundle.h
 PrivateHeaders =
 

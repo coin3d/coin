@@ -138,6 +138,7 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 RegularSources = \
 	SoBundle.cpp \
 	SoMaterialBundle.cpp \
+	SoNormalBundle.cpp \
 	SoTextureCoordinateBundle.cpp
 
 LinkHackSources = \
@@ -146,6 +147,7 @@ LinkHackSources = \
 PublicHeaders = \
 	../../include/Inventor/bundles/SoBundle.h \
 	../../include/Inventor/bundles/SoMaterialBundle.h \
+	../../include/Inventor/bundles/SoNormalBundle.h \
 	../../include/Inventor/bundles/SoTextureCoordinateBundle.h
 
 PrivateHeaders = 
@@ -205,6 +207,7 @@ bundles_lst_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_bundles_lst_OBJECTS = all.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am_bundles_lst_OBJECTS = SoBundle.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoMaterialBundle.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormalBundle.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBundle.$(OBJEXT)
 bundles_lst_OBJECTS = $(am_bundles_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -214,6 +217,7 @@ libbundles_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libbundles_la_OBJECTS = all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libbundles_la_OBJECTS = SoBundle.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMaterialBundle.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormalBundle.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBundle.lo
 libbundles_la_OBJECTS = $(am_libbundles_la_OBJECTS)
 libbundles@SUFFIX@LINKHACK_la_LDFLAGS =
@@ -222,6 +226,7 @@ libbundles@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@	all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libbundles@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	SoBundle.lo SoMaterialBundle.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormalBundle.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBundle.lo
 libbundles@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libbundles@SUFFIX@LINKHACK_la_OBJECTS)
@@ -234,6 +239,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/SoBundle.Plo $(DEPDIR)/SoBundle.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoMaterialBundle.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoMaterialBundle.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoNormalBundle.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoNormalBundle.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinateBundle.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTextureCoordinateBundle.Po \
 @AMDEP_TRUE@	$(DEPDIR)/all.Plo $(DEPDIR)/all.Po
@@ -325,6 +332,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBundle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMaterialBundle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMaterialBundle.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNormalBundle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoNormalBundle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinateBundle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTextureCoordinateBundle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Plo@am__quote@
