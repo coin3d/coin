@@ -133,12 +133,12 @@ are using is a symlink pointing to the one in your build directory, so
 no re-installation need to happen.
 
 
-One caveat emptor: if any of the class-definitions change in a non-ABI
-compatible way[*] in any of the corresponding .h files, you need to
-recompile and relink _all_ sourcecode depending on this class, not
-just the class itself. Or core dumps will happen.
+One caveat emptor: if any of the class-definitions change in a
+non-ABI[1] compatible way in any of the corresponding .h files, you
+need to recompile and relink _all_ sourcecode depending on this class,
+not just the class itself. Or core dumps will happen.
 
-[*] There are many, many ways to break ABI compatiblity in C++:
+There are many, many ways to break ABI[1] compatiblity in C++:
 
   - variables being added or removed from / to a class, making it's
     sizeof() change
@@ -146,8 +146,9 @@ just the class itself. Or core dumps will happen.
   - functions made virtual or "un-made" from virtual
   - function signatures changed in general
 
-  ... etc. But as long as you're only changing the .cpp files, you
-  should be home free.
+  ...etc. See footnote [1] at the end of this document for more
+  discussion on the issue. Anyway, as long as you're only changing the
+  .cpp files, you should be home free.
 
 
 Right after we implemented this scheme, there was an article called
@@ -157,6 +158,7 @@ article is available at
     <URL:http://www.ddj.com/articles/1999/9910/9910d/9910d.htm>
 
 and explains the principles applied fairly well.
+
 
 3 Debugging Tricks
 ==================
@@ -266,7 +268,7 @@ Library versioning
 
 When making releases, we follow these rules:
 
-* if there has been made any incompatible changes to the ABI¹:
+* if there has been made any incompatible changes to the ABI[1]:
     COIN_MAJOR_VERSION += 1,
     COIN_MINOR_VERSION = 0,
     COIN_MICRO_VERSION = 0.
@@ -275,35 +277,13 @@ When making releases, we follow these rules:
    release is binary incompatible with the last ABI, you shouldn't
    be making releases.)
 
-* if there has been made additions to the API², but the ABI
+* if there has been made additions to the API[2], but the ABI
   is still backwards compatible: COIN_MAJOR_VERSION unchanged,
   COIN_MINOR_VERSION += 1, COIN_MICRO_VERSION = 0.
 
 * for bugfix releases and other changes which do not change the interface
   at all, keep COIN_MAJOR_VERSION and COIN_MINOR_VERSION unchanged
   and COIN_MICRO_VERSION += 1.
-
-
-=== Footnotes =======
-
-¹ Application Binary Interface. This covers any publicly exposed
-  functions, function signatures, structures (and classes for C++
-  code). If any functions has been removed or changed, or if any
-  structures/classes has been modified in any way, the ABI has most
-  likely been made incompatible with earlier releases.
-
-  For a more comprehensive list of what breaks ABI compatibility under
-  C++, see the technical FAQ for Troll Tech' Qt library. Last seen
-  here: <URL:http://www.trolltech.com/developer/faqs/technical.html>.
-  (It's the "You frequently say that you cannot add this or that
-  feature because it would break binary compatibility. What does this
-  mean, really?" question.)
-
-² Application Programmer's Interface. This is the functions and data
-  structures/classes exposed to the application programmer for
-  interaction with the library.
-
-=== Footnotes end ===
 
 
 Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
@@ -394,6 +374,36 @@ created from the source release tarball.
 
 Coin Code Standard
 ==================
+
+The main goal is of course to write good, bugfree, portable C++ code,
+in a way that clearly expresses the intent of what is attempted
+accomplished.
+
+Some specific remarks about portability: this is very far from being a
+trivial matter with C++, as not only is system portability difficult
+(due to differences in core libraries for various platforms), but
+_compiler_ portability is also a big issue with C++. The main reason
+behind this is that the ISO C++ standard evolved gradually and slowly,
+and many C++ compilers that are still around on much used platforms
+were written before the standard was complete. And even today, it is
+actually doubtful if any C++ compiler around implements the full
+standard, as it is so huge and complex.
+
+To keep everything as portable as possible, we basically use the C++
+language as more or less a "C with classes".
+
+For the full monty on C++ portability, please read the C++ portability
+guide written for the Mozilla browser project:
+
+        <URL:http://www.mozilla.org/hacking/portable-cpp.html>
+
+We consider this a must read for any internal resources writing
+production C++ code.
+
+
+Enough about the larger issues, now for the mucky details that has
+been written down to guide the Coin programmers in being consistent
+versus the code "layout" (to make it more easily readable):
 
 * If the code you write is not 100% complete;
 
@@ -528,14 +538,21 @@ Coin Code Standard
 Footnotes
 =========
 
-¹ Application Binary Interface. This covers any publicly exposed
-  functions, function signatures, structures (and classes for C++
-  code). If any functions has been removed or changed, or if any
-  structures/classes has been modified in any way, the ABI has most
-  likely been made incompatible with earlier releases.
+[1] Application Binary Interface. This covers any publicly exposed
+    functions, function signatures, structures (and classes for C++
+    code). If any functions has been removed or changed, or if any
+    structures/classes has been modified in any way, the ABI has most
+    likely been made incompatible with earlier releases.
 
-² Application Programmer's Interface. This is the functions and data
-  structures/classes exposed to the application programmer for
-  interaction with the library.
+    For a more comprehensive list of what breaks ABI compatibility
+    under C++, see the technical FAQ for Troll Tech' Qt library. Last
+    seen here: <URL:http://www.trolltech.com/developer/faqs/technical.html>.
+    (It's the "You frequently say that you cannot add this or that
+    feature because it would break binary compatibility. What does
+    this mean, really?" question.)
+
+[2] Application Programmer's Interface. This is the functions and data
+    structures/classes exposed to the application programmer for
+    interaction with the library.
 
 ==============================================================================
