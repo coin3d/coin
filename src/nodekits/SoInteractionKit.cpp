@@ -659,3 +659,17 @@ SoInteractionKit::connectSeparator(SoSeparator *sep, const SbBool onOff)
     sep->renderCulling.disconnect();
   }
 }
+
+/*!  
+  Overloaded only to fool the incredible stupid gcc 2.95.2
+  compiler, who couldn't figure out I wanted to call this function in
+  SoBaseKit, but instead insisted that I tried to call
+  SoInteractionKit::setPart(int, SoNode*). Cheeessss.
+*/
+SbBool 
+SoInteractionKit::setPart(const SbName & partname, SoNode * from)
+{
+  return inherited::setPart(partname, from);
+}
+
+

@@ -66,6 +66,7 @@ public:
                                      SbBool fillargs = TRUE);
   SbBool isPathSurrogateInMySubgraph(const SoPath *path);
   static void setSwitchValue(SoNode *node, const int newVal);
+  virtual SbBool setPart(const SbName & partname, SoNode * from);
 
 protected:
   virtual ~SoInteractionKit();
