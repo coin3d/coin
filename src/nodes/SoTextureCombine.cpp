@@ -41,8 +41,49 @@
   It's possible to specify both a color and an alpha operation.
 
   This node has many fields, but usually it is sufficient to set only
-  one or very few fields. FIXME: more doc, pederb, 2004-01-27
+  one or very few fields. The selected operation decides which
+  values you need to set. One common example is to add a light map
+  to textured geometry. A lightmap can look like this:
+  
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/nodes/lightmap.jpg">
+  </center>
+  
+  The example below just shows how to apply the lightmap to a cube,
+  with one light source on each side of the cube. Usually the texture
+  coordinates are calculated so that a spot light or a point light is
+  simulated.
 
+  \verbatim
+
+  Texture2 { filename "wood.jpg" }
+  
+  Switch {
+    whichChild -3   # use to toggle lightmap on/off
+    TextureUnit {
+      unit 1
+    }
+    TextureCombine {
+      rgbOperation ADD_SIGNED
+      rgbSource [PREVIOUS, TEXTURE]
+      rgbOperand [SRC_COLOR, SRC_COLOR ]
+      alphaOperation REPLACE
+      alphaSource [TEXTURE]
+      alphaOperand [SRC_ALPHA]
+    }
+    Texture2 { filename "lightmap.jpg" }
+    TextureUnit { unit 0 }
+  }
+  Cube { }
+
+  \endverbatim
+
+  The scene above in a viewer:
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/nodes/lightmap_screenshot.png">
+  </center>
+  
   In addition to the functions you can set in rgbOperation (or
   alphaOperation), it's possible to create more complex texture
   functions by combining two textures that have already been
