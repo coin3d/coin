@@ -2,16 +2,13 @@ This document contains a list of ideas for interns' or student's
 projects:
 
 * A "gl-attack" application stressing many different aspects of
-  OpenGL-drivers.
+  OpenGL-drivers to try to make them crash or exhibit bugs.
 
-* Java-binding. See the misc-resources.txt file.
+* A good viewer GUI framework.
+
+* Java-binding to the Coin API. See the misc-resources.txt file.
 
 * Python-binding. See the misc-resources.txt file.
-
-* A regression test system for the classes under Coin/src/base.
-
-* Profiling and optimalization of the base classes. Should depend on a
-  good regression test suite having been implemented first.
 
 * Work with the documentation to improve it (add example code
   snippets, screenshots, elaborate on the important parts, ...).
@@ -40,6 +37,12 @@ projects:
 
 * Do the work needed for being compatible with 64-bit systems.
 
+* Implement heuristics for doing rendercaching.
+
 * Profiling and optimalization of rendering and other action
-  traversals. Implement rendercaching and render- and pickculling, for
-  instance.
+  traversals.
+
+* A regression test system for the classes under Coin/src/base.
+
+* Profiling and optimalization of the base classes. Should depend on a
+  good regression test suite having been implemented first.
