@@ -1217,54 +1217,29 @@ if test x"$enable_warnings" = x"yes"; then
         _warn_flags=
         _woffs=""
         ### Turn on all warnings ######################################
-        SIM_AC_CC_COMPILER_OPTION([-fullwarn],
-                            [_warn_flags="$_warn_flags -fullwarn"])
-
+        SIM_AC_CC_COMPILER_OPTION([-fullwarn], [CPPFLAGS="$CPPFLAGS -fullwarn"])
 
         ### Turn off specific (bogus) warnings ########################
 
-        ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
+        ## SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
+        # 3115: ``type qualifiers are meaningless in this declaration''.
+        # 3262: unused variables.
+        ## SGI MipsPro v7.30 #########################################
+	# 1174: "The function was declared but never referenced."
+        # 1209: "The controlling expression is constant." (kill warning on
+        #       if (0), assert(FALSE), etc).
+        # 1355: Kill warnings on extra semicolons (which happens with some
+        #       of the Coin macros).
+        # 1375: Non-virtual destructors in base classes.
+        # 3201: Unused argument to a function.
+        # 3303: "Meaningless type qualifier on return type" (happens with the
+        #       SoField macros in Coin because of use of const in the macros).
+        # 1110: "Statement is not reachable" (the Lex/Flex generated code in
+        #       Coin/src/engines has lots of shitty code which needs this).
 
-        # Turn off ``type qualifiers are meaningless in this declaration''
-        # warnings.
-        SIM_AC_CC_COMPILER_OPTION([-woff 3115], [_woffs="$_woffs 3115"])
-        # Turn off warnings on unused variables.
-        SIM_AC_CC_COMPILER_OPTION([-woff 3262], [_woffs="$_woffs 3262"])
-
-        ### SGI MipsPro v7.30 #########################################
-
-	# "The function was declared but never referenced."
-        SIM_AC_CC_COMPILER_OPTION([-woff 1174], [_woffs="$_woffs 1174"])
-        # "The controlling expression is constant." (kill warning on
-        # if (0), assert(FALSE), etc).
-        SIM_AC_CC_COMPILER_OPTION([-woff 1209], [_woffs="$_woffs 1209"])
-        # Kill warnings on extra semicolons (which happens with some
-        # of the Coin macros).
-        SIM_AC_CC_COMPILER_OPTION([-woff 1355], [_woffs="$_woffs 1355"])
-        # Non-virtual destructors in base classes.
-        SIM_AC_CC_COMPILER_OPTION([-woff 1375], [_woffs="$_woffs 1375"])
-        # Unused argument to a function.
-        SIM_AC_CC_COMPILER_OPTION([-woff 3201], [_woffs="$_woffs 3201"])
-        # Meaningless type qualifier on return type (happens with the
-        # SoField macros in Coin).
-        SIM_AC_CC_COMPILER_OPTION([-woff 3303], [_woffs="$_woffs 3303"])
-        # Statement is not reachable (the Lex/Flex generated code in
-        # Coin/src/engines makes lots of shitty code which needs this).
-        SIM_AC_CC_COMPILER_OPTION([-woff 1110], [_woffs="$_woffs 1110"])
-
-        ###############################################################
-
-        # Convert to a comma-separated list behind the "-woff" option.
-        if test x"$_woffs" != x; then
-                _woffs=`echo $_woffs | sed "s%^ %%"`
-                _woffs=`echo $_woffs | sed "s% %,%g"`
-                _woffs=`echo $_woffs | sed "s%^%\-woff %"`
-                _warn_flags="$_warn_flags $_woffs"
-        fi
-
-        ###############################################################
-
-        CPPFLAGS="$CPPFLAGS $_warn_flags"
+        sim_ac_bogus_warnings="-woff 3115,3262,1174,1209,1355,1375,3201,3303,1110"
+        SIM_AC_CC_COMPILER_OPTION([$sim_ac_bogus_warnings],
+                                  [CPPFLAGS="$CPPFLAGS $sim_ac_bogus_warnings"])
       fi
     ;;
     esac
