@@ -31,15 +31,18 @@
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLPolygonOffsetElement.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGLPOLYGONOFFSETELEMENT)
-#include <Inventor/elements/SoGLPolygonOffsetElement.h>
+#if !defined(COIN_EXCLUDE_SOPOLYGONOFFSETELEMENT)
+#include <Inventor/elements/SoPolygonOffsetElement.h>
 #endif // !COIN_EXCLUDE_SOGLPOLYGONOFFSETELEMENT
 
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+
+#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \enum SoPolygonOffset::Style
@@ -119,6 +122,8 @@ SoPolygonOffset::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLPolygonOffsetElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+  SO_ENABLE(SoCallbackAction, SoPolygonOffsetElement);
 }
 
 
@@ -134,7 +139,7 @@ SoPolygonOffset::doAction(SoAction * action)
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
   if (SoOverrideElement::getPolygonOffsetOverride(state)) return;
 #endif
-
+  
   float _factor, _units;
   SoPolygonOffsetElement::Style _styles;
   SbBool _on;

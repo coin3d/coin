@@ -49,6 +49,8 @@
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 /*!
   \enum SoProfile::Profile
   FIXME: write documentation for enum
@@ -134,6 +136,9 @@ SoProfile::initClass(void)
   SO_ENABLE(SoPickAction, SoProfileElement);
   SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+  SO_ENABLE(SoCallbackAction, SoProfileElement);
+  SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -164,9 +169,9 @@ SoProfile::doAction(SoAction *action)
   FIXME: write doc
  */
 void
-SoProfile::callback(SoCallbackAction * /* action */)
+SoProfile::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoProfile::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

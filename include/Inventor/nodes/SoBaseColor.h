@@ -50,7 +50,7 @@ public:
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
-
+  virtual void pick(SoPickAction * action);
 protected:
   virtual ~SoBaseColor();
 };

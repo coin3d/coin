@@ -95,6 +95,7 @@
 
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/SbTesselator.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -168,9 +169,11 @@ public:
     this->shape = NULL;
     this->arraySize = 4;
     this->vertsArray = new SoPrimitiveVertex[this->arraySize];
+    this->tess = new SbTesselator();
   }
   ~shapePrimitiveData() {
     delete [] this->vertsArray;
+    delete this->tess;
   }
 
   void beginShape(SoShape *shape, SoAction *action,
@@ -182,11 +185,22 @@ public:
   }
   void endShape() {
     if (this->shapeType == SoShape::POLYGON) {
-      for (int i = 1; i < counter-1; i++) {
-	this->shape->invokeTriangleCallbacks(this->action,
-					     &vertsArray[0],
-					     &vertsArray[i],
-					     &vertsArray[i+1]);
+      if (SoShapeHintsElement::getFaceType(action->getState()) ==
+	  SoShapeHintsElement::CONVEX) {
+	for (int i = 1; i < counter-1; i++) {
+	  this->shape->invokeTriangleCallbacks(this->action,
+					       &vertsArray[0],
+					       &vertsArray[i],
+					       &vertsArray[i+1]);
+	}
+      }
+      else {
+	this->tess->setCallback(shapePrimitiveData::tess_callback, this);
+	this->tess->beginPolygon(TRUE);
+	for (int i = 0; i < counter; i++) {
+	  this->tess->addVertex(vertsArray[i].getPoint(), &vertsArray[i]);
+	}
+	this->tess->endPolygon();
       }
     }
   }
@@ -310,6 +324,15 @@ public:
   SoPrimitiveVertex *vertsArray;
   int arraySize;
   int counter;
+  SbTesselator *tess;
+
+  static void tess_callback(void *v0, void *v1, void *v2, void *data) {
+    shapePrimitiveData *thisp = (shapePrimitiveData*) data;
+    thisp->shape->invokeTriangleCallbacks(thisp->action,
+					  (SoPrimitiveVertex*)v0,
+					  (SoPrimitiveVertex*)v1,
+					  (SoPrimitiveVertex*)v2); 
+  }
 };
 
 static shapePrimitiveData *primData = NULL;
@@ -370,7 +393,9 @@ SoShape::GLRender(SoGLRenderAction * /* action */)
 void 
 SoShape::callback(SoCallbackAction * action)
 {
-  this->generatePrimitives(action); 
+  if (action->shouldGeneratePrimitives(this)) {
+    this->generatePrimitives(action); 
+  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -703,6 +728,11 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
       }
     }
   }
+  else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
+    SoCallbackAction *ca = (SoCallbackAction*) action;
+    
+    ca->invokeTriangleCallbacks(this, v1, v2, v3);
+  }
   else {
     assert(0 && "FIXME: not implemented");
   }
@@ -728,6 +758,10 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
 	}   
       }
     }
+  }
+  else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
+    SoCallbackAction *ca = (SoCallbackAction*) action;
+    ca->invokeLineSegmentCallbacks(this, v1, v2);
   }
   else {
     assert(0 && "FIXME: not implemented");
@@ -755,10 +789,13 @@ SoShape::invokePointCallbacks(SoAction * const action,
       }
     }
   }
+  else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
+    SoCallbackAction *ca = (SoCallbackAction*) action;
+    ca->invokePointCallbacks(this, v);
+  }
   else {
     assert(0 && "FIXME: not implemented");
   }
-
 }
 
 /*!

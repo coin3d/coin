@@ -53,6 +53,8 @@
 #include <Inventor/elements/SoSwitchElement.h>
 #endif // !COIN_EXCLUDE_SOSWITCHELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 /*!
   \var SoSFInt32 SoSwitch::whichChild
   FIXME: write documentation for field
@@ -104,6 +106,8 @@ SoSwitch::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoSwitchElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+  SO_ENABLE(SoCallbackAction, SoSwitchElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -267,9 +271,9 @@ SoSwitch::affectsState(void) const
   FIXME: write doc
  */
 void
-SoSwitch::callback(SoCallbackAction * /* action */)
+SoSwitch::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoSwitch::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

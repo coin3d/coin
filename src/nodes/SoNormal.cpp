@@ -36,12 +36,11 @@
 #include <Inventor/actions/SoPickAction.h>
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLNORMALELEMENT)
-#include <Inventor/elements/SoGLNormalElement.h>
-#endif // !COIN_EXCLUDE_SOGLNORMALELEMENT
 #if !defined(COIN_EXCLUDE_SONORMALELEMENT)
 #include <Inventor/elements/SoNormalElement.h>
 #endif // !COIN_EXCLUDE_SONORMALELEMENT
+
+#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \var SoMFVec3f SoNormal::vector
@@ -80,12 +79,14 @@ SoNormal::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoNormal);
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-  SO_ENABLE(SoGLRenderAction, SoGLNormalElement);
+  SO_ENABLE(SoGLRenderAction, SoNormalElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoNormalElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+  SO_ENABLE(SoCallbackAction, SoNormalElement);
 }
 
 // FIXME: enable this for 10%++ performance gain (no need to enable
@@ -146,9 +147,9 @@ SoNormal::doAction(SoAction *action)
   FIXME: write doc
  */
 void
-SoNormal::callback(SoCallbackAction * /* action */)
+SoNormal::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoNormal::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

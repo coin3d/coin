@@ -39,6 +39,8 @@
 #include <Inventor/actions/SoPickAction.h>
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 #if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
@@ -94,6 +96,8 @@ SoCoordinate4::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+  SO_ENABLE(SoCallbackAction, SoCoordinateElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -136,9 +140,9 @@ SoCoordinate4::GLRender(SoGLRenderAction *action)
   FIXME: write doc
 */
 void
-SoCoordinate4::callback(SoCallbackAction * /* action */)
+SoCoordinate4::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCoordinate4::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

@@ -676,10 +676,22 @@ SoNode::callbackS(SoAction * const action,
 		  SoNode * const node)
 {
   assert(action && node);
-  assert(action->getTypeId() == SoCallbackAction::getClassTypeId());
-  SoCallbackAction * const callbackAction =
+  SoCallbackAction * const cbAction =
     (SoCallbackAction *)(action);
-  node->callback(callbackAction);
+  cbAction->setCurrentNode(node);
+  
+  if (node->getChildren() == NULL) {
+    cbAction->invokePreCallbacks(node);
+    if (cbAction->getCurrentResponse() == SoCallbackAction::CONTINUE) {
+      node->callback(cbAction);
+      cbAction->invokePostCallbacks(node);
+    }
+  }
+  else { 
+    // group node handles callbacks themselves
+    // Separator needs to push state before calling the callbacks
+    node->callback(cbAction);
+  }
 }
 
 /*!

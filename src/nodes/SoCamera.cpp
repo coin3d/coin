@@ -39,6 +39,8 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 #if !defined(COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT)
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
 #endif // !COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT
@@ -199,6 +201,13 @@ SoCamera::initClass(void)
   SO_ENABLE(SoRayPickAction, SoViewVolumeElement);
   SO_ENABLE(SoRayPickAction, SoViewingMatrixElement);
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
+
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+  SO_ENABLE(SoCallbackAction, SoFocalDistanceElement);
+  SO_ENABLE(SoCallbackAction, SoProjectionMatrixElement);
+  SO_ENABLE(SoCallbackAction, SoViewVolumeElement);
+  SO_ENABLE(SoCallbackAction, SoViewingMatrixElement);
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
 /*!
@@ -398,10 +407,6 @@ SoCamera::doAction(SoAction *action)
   vv.getMatrices(affine, proj);
   SoProjectionMatrixElement::set(action->getState(), this, proj);
   SoViewingMatrixElement::set(action->getState(), this, affine);
-#if 0 // debug
-  SoDebugError::postInfo("SoCamera::getBoundingBox", "viewingmatrix:");
-  affine.print(stdout);
-#endif // debug
 }
 #endif // !COIN_EXCLUDE_DOACTION
 
@@ -410,9 +415,9 @@ SoCamera::doAction(SoAction *action)
   FIXME: write doc
 */
 void
-SoCamera::callback(SoCallbackAction * /* action */)
+SoCamera::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCamera::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

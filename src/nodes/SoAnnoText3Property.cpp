@@ -43,6 +43,9 @@
 #include <Inventor/elements/SoAnnoText3RenderPrintElement.h>
 #endif // !COIN_EXCLUDE_SOANNOTEXT3RENDERPRINTELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoPickAction.h>
+
 /*!
   \enum SoAnnoText3Property::RenderPrintType
   FIXME: write documentation for enum
@@ -140,6 +143,14 @@ SoAnnoText3Property::initClass(void)
   SO_ENABLE(SoGetBoundingBoxAction, SoAnnoText3FontSizeHintElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoAnnoText3RenderPrintElement);
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
+
+
+  SO_ENABLE(SoCallbackAction, SoAnnoText3FontSizeHintElement);
+  SO_ENABLE(SoCallbackAction, SoAnnoText3RenderPrintElement);
+
+  SO_ENABLE(SoPickAction, SoAnnoText3FontSizeHintElement);
+  SO_ENABLE(SoPickAction, SoAnnoText3RenderPrintElement);
+
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -148,6 +159,18 @@ SoAnnoText3Property::initClass(void)
 */
 void 
 SoAnnoText3Property::getBoundingBox(SoGetBoundingBoxAction * action)
+{
+  SoAnnoText3Property::doAction(action);
+}
+#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
+
+
+#if !defined(COIN_EXCLUDE_SOACTION)
+/*!
+  FIXME: write doc
+*/
+void
+SoAnnoText3Property::doAction(SoAction *action)
 {
   SoState * state = action->getState();
 
@@ -183,18 +206,6 @@ SoAnnoText3Property::getBoundingBox(SoGetBoundingBoxAction * action)
   SoAnnoText3FontSizeHintElement::set(state, hint);
   SoAnnoText3RenderPrintElement::set(state, print);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
-/*!
-  FIXME: write doc
-*/
-void
-SoAnnoText3Property::doAction(SoAction * /* action */)
-{
-  assert(0 && "FIXME: not implemented");
-}
 #endif // !COIN_EXCLUDE_SOACTION
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -202,9 +213,9 @@ SoAnnoText3Property::doAction(SoAction * /* action */)
   FIXME: write doc
 */
 void
-SoAnnoText3Property::GLRender(SoGLRenderAction * /* action */)
+SoAnnoText3Property::GLRender(SoGLRenderAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoAnnoText3Property::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -213,9 +224,9 @@ SoAnnoText3Property::GLRender(SoGLRenderAction * /* action */)
   FIXME: write doc
 */
 void
-SoAnnoText3Property::callback(SoCallbackAction * /* action */)
+SoAnnoText3Property::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoAnnoText3Property::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -224,9 +235,9 @@ SoAnnoText3Property::callback(SoCallbackAction * /* action */)
   FIXME: write doc
 */
 void
-SoAnnoText3Property::pick(SoPickAction * /* action */)
+SoAnnoText3Property::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoAnnoText3Property::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

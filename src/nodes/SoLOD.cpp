@@ -92,9 +92,10 @@ SoLOD::initClass(void)
   FIXME: write doc
  */
 void
-SoLOD::doAction(SoAction * /* action */)
+SoLOD::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  int idx = this->whichToTraverse(action);;
+  if (idx >= 0) this->children->traverse(action, idx);
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -103,9 +104,9 @@ SoLOD::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoLOD::callback(SoCallbackAction * /* action */)
+SoLOD::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoLOD::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -164,9 +165,9 @@ SoLOD::GLRenderOffPath(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoLOD::rayPick(SoRayPickAction * /* action */)
+SoLOD::rayPick(SoRayPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoLOD::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 

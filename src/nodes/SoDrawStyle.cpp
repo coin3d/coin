@@ -147,23 +147,21 @@ SoDrawStyle::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLPointSizeElement);
   SO_ENABLE(SoGLRenderAction, SoGLPolygonStippleElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+  SO_ENABLE(SoCallbackAction, SoDrawStyleElement);
+  SO_ENABLE(SoCallbackAction, SoShapeStyleElement);
+  SO_ENABLE(SoCallbackAction, SoLinePatternElement);
+  SO_ENABLE(SoCallbackAction, SoLineWidthElement);
+  SO_ENABLE(SoCallbackAction, SoPointSizeElement);
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
 /*!
   FIXME: write function documentation
 */
 void 
-SoDrawStyle::doAction(SoAction * /* action */)
-{
-  assert(0 && "FIXME: not implemented yet");
-}
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
-/*!
-  FIXME: write function documentation
-*/
-void 
-SoDrawStyle::GLRender(SoGLRenderAction * action)
+SoDrawStyle::doAction(SoAction *action)
 {
   SoState * state = action->getState();
 
@@ -188,6 +186,17 @@ SoDrawStyle::GLRender(SoGLRenderAction * action)
     SoPointSizeElement::set(state, this, pointSize.getValue());
   }
 #undef TEST_OVERRIDE
+
+}
+
+#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
+/*!
+  FIXME: write function documentation
+*/
+void 
+SoDrawStyle::GLRender(SoGLRenderAction * action)
+{
+  SoDrawStyle::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -197,8 +206,8 @@ SoDrawStyle::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoDrawStyle::callback(SoCallbackAction * /* action */)
+SoDrawStyle::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoDrawStyle::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION

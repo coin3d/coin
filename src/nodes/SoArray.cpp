@@ -398,7 +398,7 @@ SoArray::GLRender(SoGLRenderAction * action)
 SbBool
 SoArray::affectsState(void) const
 {
-  return inherited::affectsState();
+  return FALSE; // state is pushed/popped for each traversal
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -498,7 +498,7 @@ SoArray::handleEvent(SoHandleEventAction *action)
 void
 SoArray::getMatrix(SoGetMatrixAction *action)
 {
-  SoArray::doAction((SoAction*)action);
+  assert(0 && "FIXME: not implemented");
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 

@@ -35,10 +35,14 @@
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT
+#endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SODIFFUSECOLORELEMENT)
+#include <Inventor/elements/SoDiffuseColorElement.h>
+#endif // !COIN_EXCLUDE_SODIFFUSECOLORELEMENT
+
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \var SoMFUInt32 SoPackedColor::orderedRGBA
@@ -79,6 +83,8 @@ SoPackedColor::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+  SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -88,12 +94,7 @@ SoPackedColor::initClass(void)
 void 
 SoPackedColor::GLRender(SoGLRenderAction * action)
 {
-  if (!orderedRGBA.isIgnored()) {
-    SoDiffuseColorElement::set(action->getState(),
-			       this,
-			       orderedRGBA.getNum(),
-			       orderedRGBA.getValues(0));
-  }
+  SoPackedColor::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -103,9 +104,16 @@ SoPackedColor::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoPackedColor::doAction(SoAction * /* action */)
+SoPackedColor::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState *state = action->getState();
+  if (!orderedRGBA.isIgnored() && 
+      !SoOverrideElement::getDiffuseColorOverride(state)) {
+    SoDiffuseColorElement::set(state,
+			       this,
+			       orderedRGBA.getNum(),
+			       orderedRGBA.getValues(0));
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -114,9 +122,9 @@ SoPackedColor::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoPackedColor::callback(SoCallbackAction * /* action */)
+SoPackedColor::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoPackedColor::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

@@ -31,10 +31,14 @@
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#if !defined(COIN_EXCLUDE_SOGLENVIRONMENTELEMENT)
 #include <Inventor/elements/SoGLEnvironmentElement.h>
-#endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
 #endif // ! COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
+#include <Inventor/elements/SoEnvironmentElement.h>
+#endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
+
+#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \enum SoEnvironment::FogType
@@ -130,6 +134,7 @@ SoEnvironment::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLEnvironmentElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+  SO_ENABLE(SoCallbackAction, SoEnvironmentElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -155,8 +160,15 @@ SoEnvironment::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoEnvironment::callback(SoCallbackAction * /* action */)
+SoEnvironment::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoEnvironmentElement::set(action->getState(),
+			    this,
+			    ambientIntensity.getValue(),
+			    ambientColor.getValue(),
+			    attenuation.getValue(),
+			    (int32_t)fogType.getValue(),
+			    fogColor.getValue(),
+			    fogVisibility.getValue());
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION

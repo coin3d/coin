@@ -250,7 +250,9 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 void 
 SoSeparator::callback(SoCallbackAction * action)
 {
-  SoSeparator::doAction((SoAction *)action);
+  action->getState()->push();
+  SoGroup::callback(action);
+  action->getState()->pop();
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

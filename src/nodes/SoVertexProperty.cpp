@@ -207,6 +207,12 @@ SoVertexProperty::initClass()
   SO_ENABLE(SoPickAction, SoNormalElement);
   SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+  SO_ENABLE(SoCallbackAction, SoCoordinateElement);
+  SO_ENABLE(SoCallbackAction, SoMaterialBindingElement);
+  SO_ENABLE(SoCallbackAction, SoNormalBindingElement);
+  SO_ENABLE(SoCallbackAction, SoNormalElement);
+  SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)

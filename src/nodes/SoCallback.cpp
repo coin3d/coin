@@ -93,7 +93,7 @@ SoCallback::doAction(SoAction * action)
 void
 SoCallback::callback(SoCallbackAction * action)
 {
-  this->doAction(action);
+  SoCallback::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -104,7 +104,7 @@ SoCallback::callback(SoCallbackAction * action)
 void
 SoCallback::GLRender(SoGLRenderAction * action)
 {
-  this->doAction(action);
+  SoCallback::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -115,7 +115,7 @@ SoCallback::GLRender(SoGLRenderAction * action)
 void
 SoCallback::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  this->doAction(action);
+  SoCallback::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -126,7 +126,7 @@ SoCallback::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoCallback::getMatrix(SoGetMatrixAction * action)
 {
-  this->doAction(action);
+  SoCallback::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -137,7 +137,7 @@ SoCallback::getMatrix(SoGetMatrixAction * action)
 void
 SoCallback::handleEvent(SoHandleEventAction * action)
 {
-  this->doAction(action);
+  SoCallback::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
@@ -148,7 +148,7 @@ SoCallback::handleEvent(SoHandleEventAction * action)
 void
 SoCallback::pick(SoPickAction * action)
 {
-  this->doAction(action);
+  SoCallback::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
@@ -159,7 +159,7 @@ SoCallback::pick(SoPickAction * action)
 void
 SoCallback::search(SoSearchAction * action)
 {
-  this->doAction(action);
+  SoCallback::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOSEARCHACTION
 
@@ -170,7 +170,7 @@ SoCallback::search(SoSearchAction * action)
 void
 SoCallback::write(SoWriteAction * action)
 {
-  this->doAction(action);
+  SoCallback::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOWRITEACTION
 
@@ -181,7 +181,7 @@ SoCallback::write(SoWriteAction * action)
 void
 SoCallback::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  this->doAction(action);
+  SoCallback::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

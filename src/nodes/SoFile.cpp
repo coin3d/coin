@@ -33,7 +33,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/misc/SoChildList.h>
-
+#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \var SoSFString SoFile::name
@@ -169,7 +169,11 @@ SoFile::doAction(SoAction *action)
 void
 SoFile::callback(SoCallbackAction *action)
 {
-  SoFile::doAction((SoAction*)action);
+  action->invokePreCallbacks(this);
+  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
+    SoFile::doAction((SoAction *)action);
+    action->invokePostCallbacks(this);
+  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

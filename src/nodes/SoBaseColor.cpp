@@ -35,10 +35,15 @@
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT
+#endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SODIFFUSECOLORELEMENT)
+#include <Inventor/elements/SoDiffuseColorElement.h>
+#endif // !COIN_EXCLUDE_SODIFFUSECOLORELEMENT
+
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoPickAction.h>
+
 
 /*!
   \var SoMFColor SoBaseColor::rgb
@@ -79,6 +84,10 @@ SoBaseColor::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+  SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
+  SO_ENABLE(SoPickAction, SoDiffuseColorElement);
+  SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -88,12 +97,7 @@ SoBaseColor::initClass(void)
 void 
 SoBaseColor::GLRender(SoGLRenderAction * action)
 {
-  if (!rgb.isIgnored()) {
-    SoGLDiffuseColorElement::set(action->getState(),
-				 this,
-				 rgb.getNum(),
-				 rgb.getValues(0));
-  }
+  SoBaseColor::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -102,9 +106,14 @@ SoBaseColor::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoBaseColor::doAction(SoAction * /* action */)
+SoBaseColor::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!rgb.isIgnored()) {
+    SoDiffuseColorElement::set(action->getState(),
+			       this,
+			       rgb.getNum(),
+			       rgb.getValues(0));
+  }
 }
 #endif // !COIN_EXCLUDE_DOACTION
 
@@ -113,8 +122,15 @@ SoBaseColor::doAction(SoAction * /* action */)
   FIXME: write doc
 */
 void
-SoBaseColor::callback(SoCallbackAction * /* action */)
+SoBaseColor::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoBaseColor::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
+void
+SoBaseColor::pick(SoPickAction *action)
+{
+  SoBaseColor::doAction(action);
+}
+

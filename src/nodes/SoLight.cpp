@@ -39,6 +39,10 @@
 #include <Inventor/elements/SoGLLightIdElement.h>
 #endif // !COIN_EXCLUDE_SOGLLIGHTIDELEMENT
 
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoLightElement.h>
+#include <Inventor/actions/SoCallbackAction.h>
+
 /*!
   \var SoSFBool SoLight::on
   FIXME: write documentation for field
@@ -84,11 +88,14 @@ void
 SoLight::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoLight);
-
+  
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoLightAttenuationElement);
   SO_ENABLE(SoGLRenderAction, SoGLLightIdElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+  
+  SO_ENABLE(SoCallbackAction, SoLightAttenuationElement);
+  SO_ENABLE(SoCallbackAction, SoLightElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
@@ -96,8 +103,10 @@ SoLight::initClass(void)
   FIXME: write doc
  */
 void
-SoLight::callback(SoCallbackAction * /* action */)
+SoLight::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState *state = action->getState();
+  SoLightElement::add(state, this, 
+		      SoModelMatrixElement::get(state));
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION

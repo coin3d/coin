@@ -93,6 +93,14 @@ public:
 				  int & model, 
 				  SbColor & blendColor);
 
+  static const SbColor &getBlendColor(SoState * const state);
+  static const unsigned char *getImage(SoState * const state,
+				       SbVec2s &size,
+				       int &numComponents);
+  static Model getModel(SoState * const state);
+  static Wrap getWrapS(SoState * const state);
+  static Wrap getWrapT(SoState * const state);
+
   static SbBool containsTransparency(SoState * const state);
 
   static const unsigned char *getDefault(SbVec2s & size, int & numComponents);

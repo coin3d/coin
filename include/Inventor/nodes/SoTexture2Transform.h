@@ -66,8 +66,6 @@ public:
 protected:
   virtual ~SoTexture2Transform();
 
-private:
-  void calcMatrix(SbMatrix &mat);
 };
 
 

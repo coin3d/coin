@@ -47,6 +47,9 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #endif
 
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoPickAction.h>
+
 // *************************************************************************
 
 SO_NODE_SOURCE(SoTransformSeparator);
@@ -112,9 +115,11 @@ SoTransformSeparator::SoTransformSeparator(int /* nChildren */)
   FIXME: write doc
  */
 void
-SoTransformSeparator::doAction(SoAction * /* action */)
-{
-  assert(0 && "FIXME: not implemented");
+SoTransformSeparator::doAction(SoAction *action)
+{  
+  SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
+  inherited::doAction(action);
+  SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -123,9 +128,11 @@ SoTransformSeparator::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoTransformSeparator::callback(SoCallbackAction * /* action */)
+SoTransformSeparator::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
+  inherited::callback(action);
+  SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -136,13 +143,9 @@ SoTransformSeparator::callback(SoCallbackAction * /* action */)
 void
 SoTransformSeparator::GLRender(SoGLRenderAction * action)
 {
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
   SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
-#endif
   inherited::GLRender(action);
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
-#endif
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -151,9 +154,11 @@ SoTransformSeparator::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoTransformSeparator::pick(SoPickAction * /* action */)
+SoTransformSeparator::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SbMatrix matrix = SoModelMatrixElement::pushMatrix(action->getState());
+  inherited::pick(action);
+  SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

@@ -52,6 +52,8 @@
 #endif // !COIN_EXCLUDE_SOWRITEACTION
 #include <Inventor/errors/SoReadError.h>
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -369,7 +371,11 @@ SoGroup::GLRender(SoGLRenderAction * action)
 void 
 SoGroup::callback(SoCallbackAction * action)
 {
-  SoGroup::doAction((SoAction *)action);
+  action->invokePreCallbacks(this);
+  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
+    SoGroup::doAction((SoAction *)action);
+    action->invokePostCallbacks(this);
+  }
 }
 #endif // COIN_EXCLUDE_SOCALLBACKACTION
 

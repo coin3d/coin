@@ -31,14 +31,17 @@
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLLightModelElement.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
-#include <Inventor/elements/SoGLLightModelElement.h>
+#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
+#include <Inventor/elements/SoLightModelElement.h>
 #endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+
+#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \enum SoLightModel::Model
@@ -96,6 +99,8 @@ SoLightModel::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLLightModelElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+  SO_ENABLE(SoCallbackAction, SoLightModelElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -104,6 +109,18 @@ SoLightModel::initClass(void)
 */
 void 
 SoLightModel::GLRender(SoGLRenderAction * action)
+{
+  SoLightModel::doAction(action);
+}
+#endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+
+#if !defined(COIN_EXCLUDE_SOACTION)
+/*!
+  FIXME: write doc
+ */
+void
+SoLightModel::doAction(SoAction *action)
 {
   if (!model.isIgnored()
 #if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
@@ -114,18 +131,6 @@ SoLightModel::GLRender(SoGLRenderAction * action)
 			     (SoLightModelElement::Model)model.getValue());
   }
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
-/*!
-  FIXME: write doc
- */
-void
-SoLightModel::doAction(SoAction * /* action */)
-{
-  assert(0 && "FIXME: not implemented");
-}
 #endif // !COIN_EXCLUDE_SOACTION
 
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
@@ -133,8 +138,8 @@ SoLightModel::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoLightModel::callback(SoCallbackAction * /* action */)
+SoLightModel::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoLightModel::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION

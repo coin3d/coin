@@ -170,6 +170,7 @@ SoState::getElement(const int stackIndex)
 const SoElement *
 SoState::getConstElement(const int stackIndex) const
 {
+  assert(stack[stackIndex]);
   return stack[stackIndex];
 }
 

@@ -43,6 +43,8 @@
 #include <Inventor/elements/SoProfileCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 /*!
   \var SoMFVec2f SoProfileCoordinate2::point
   FIXME: write documentation for field
@@ -88,6 +90,8 @@ SoProfileCoordinate2::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+  SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -130,9 +134,9 @@ SoProfileCoordinate2::GLRender(SoGLRenderAction *action)
   FIXME: write doc
  */
 void
-SoProfileCoordinate2::callback(SoCallbackAction * /* action */)
+SoProfileCoordinate2::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoProfileCoordinate2::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

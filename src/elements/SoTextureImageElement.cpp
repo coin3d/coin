@@ -304,3 +304,47 @@ SoTextureImageElement::setElt(const SbVec2s &size, const int numComponents,
   this->blendColor = blendColor;
 }
 
+const SbColor &
+SoTextureImageElement::getBlendColor(SoState * const state)
+{
+  SoTextureImageElement *elem = (SoTextureImageElement*)
+    SoElement::getConstElement(state, classStackIndex);
+  return elem->blendColor;
+}
+
+const unsigned char *
+SoTextureImageElement::getImage(SoState * const state,
+				SbVec2s &size,
+				int &numComponents)
+{
+  SoTextureImageElement *elem = (SoTextureImageElement*)
+    SoElement::getConstElement(state, classStackIndex);
+  size = elem->size;
+  numComponents = elem->numComponents;
+  return elem->bytes;
+}
+
+SoTextureImageElement::Wrap
+SoTextureImageElement::getWrapS(SoState * const state)
+{
+  SoTextureImageElement *elem = (SoTextureImageElement*)
+    SoElement::getConstElement(state, classStackIndex);
+  return elem->wrapT;
+}
+
+SoTextureImageElement::Wrap
+SoTextureImageElement::getWrapT(SoState * const state)
+{
+  SoTextureImageElement *elem = (SoTextureImageElement*)
+    SoElement::getConstElement(state, classStackIndex);
+  return elem->wrapS;
+}
+
+SoTextureImageElement::Model 
+SoTextureImageElement::getModel(SoState * const state)
+{
+  SoTextureImageElement *elem = (SoTextureImageElement*)
+    SoElement::getConstElement(state, classStackIndex);
+  return elem->model;
+}
+

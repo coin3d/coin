@@ -42,6 +42,8 @@
 #include <Inventor/actions/SoPickAction.h>
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 #if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
@@ -98,6 +100,8 @@ SoCoordinate3::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+  SO_ENABLE(SoCallbackAction, SoCoordinateElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

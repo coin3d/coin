@@ -38,6 +38,7 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \enum SoPickStyle::Style
@@ -101,6 +102,8 @@ SoPickStyle::initClass(void)
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoPickStyleElement);
 #endif // ! COIN_EXCLUDE_SOPICKACTION
+
+  SO_ENABLE(SoCallbackAction, SoPickStyleElement);
 }
 
 
@@ -127,9 +130,9 @@ SoPickStyle::doAction(SoAction *action)
   FIXME: write doc
  */
 void
-SoPickStyle::callback(SoCallbackAction * /* action */)
+SoPickStyle::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoPickStyle::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

@@ -52,6 +52,8 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 /*!
   \enum SoShapeHints::VertexOrdering
   FIXME: write documentation for enum
@@ -176,6 +178,9 @@ SoShapeHints::initClass(void)
   SO_ENABLE(SoPickAction, SoShapeHintsElement);
   SO_ENABLE(SoPickAction, SoCreaseAngleElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+  SO_ENABLE(SoCallbackAction, SoShapeHintsElement);
+  SO_ENABLE(SoCallbackAction, SoCreaseAngleElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

@@ -47,6 +47,10 @@
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #endif // ! COIN_EXCLUDE_SOGLRENDERACTION
 
+
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
+
 /*!
   \var SoMFVec2f SoTextureCoordinate2::point
   FIXME: write documentation for field
@@ -85,6 +89,8 @@ SoTextureCoordinate2::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+  SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

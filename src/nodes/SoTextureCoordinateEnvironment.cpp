@@ -26,8 +26,9 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
-
-
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec3f.h>
 
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
@@ -44,6 +45,9 @@
 #endif // _WIN32
 #include <GL/gl.h>
 #endif // ! COIN_EXCLUDE_SOGLRENDERACTION
+
+#include <math.h>
+#include <float.h>
 
 // *************************************************************************
 
@@ -79,13 +83,38 @@ SoTextureCoordinateEnvironment::initClass(void)
   FIXME: write function documentation
 */
 const SbVec4f &
-SoTextureCoordinateEnvironment::generate(void * /* userdata */,
+SoTextureCoordinateEnvironment::generate(void *userdata,
 					 const SbVec3f & /* p */,
-					 const SbVec3f & /* n */)
+					 const SbVec3f &n)
 {
-  assert(0 && "FIXME: not implemented yet");
-  static SbVec4f s(0,0,0,1);
-  return s;
+  //
+  // from formula in the Red Book
+  //
+  
+  SoState *state = (SoState*)userdata;
+  SbVec3f wn; // normal in world (eye) coordinates
+  SoModelMatrixElement::get(state).multDirMatrix(n, wn);
+  SbVec3f u = n;
+
+  u.normalize();
+  wn.normalize();
+  
+  // reflection vector
+  SbVec3f r = u - SbVec3f(2.0f*wn[0]*wn[0]*u[0],
+			  2.0f*wn[1]*wn[1]*u[1],
+			  2.0f*wn[2]*wn[2]*u[2]);
+  r.normalize();
+  
+  float tmp = 1.0f + r[2];
+  float m = 2.0f * (float)sqrt(r[0]*r[0] + r[1]*r[1] + tmp*tmp); 
+
+  // in case an empty normal was supplied
+  if (fabs(m) <= FLT_EPSILON) m = 1.0f;
+  
+  static SbVec4f texcoords(0,0,0,1); // needed to return a reference
+  texcoords[0] = r[0] / m + 0.5f;
+  texcoords[1] = r[1] / m + 0.5f;
+  return texcoords;
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -97,7 +126,7 @@ SoTextureCoordinateEnvironment::doAction(SoAction * action)
 {
   SoTextureCoordinateElement::setFunction(action->getState(), this,
 					  generate,
-					  this);
+					  action->getState());
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

@@ -44,6 +44,10 @@
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/SoImageInterface.h>
+
 #include <assert.h>
 
 /*!
@@ -160,6 +164,8 @@ SoTexture2::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLTextureEnabledElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+  
+  SO_ENABLE(SoCallbackAction, SoTextureImageElement);
 }
 
 
@@ -200,39 +206,11 @@ SoTexture2::readImage(void)
 void 
 SoTexture2::GLRender(SoGLRenderAction * action)
 {
-  if (this->glImage == NULL) {
-    // try to create a new one
-    SbVec2s size;
-    int nc;
-    const unsigned char * bytes = this->image.getValue(size, nc);
-
-    if (bytes && size[0] > 0 && size[1] > 0 && nc > 0) {
-      this->glImage = new SoGLImage(size, nc, bytes);
-#if 0 // debug
-      SoDebugError::postInfo("SoTexture2::GLRender",
-			     "create image from data: %d %d %d",
-			     size[0], size[1], nc);
-#endif // debug
-
-    }
-    else { // try to load file
-      if (this->filename.getValue().getLength()) {
-	this->glImage = 
-	  SoGLImage::getGLImage(this->filename.getValue().getString(),
-				NULL); // FIXME: provide context
-      }    
-    }
-  }
+  SoTexture2::doAction(action);
   
   if (this->glImage && !this->glImage->isInitialized()) {
     this->glImage->init(this->wrapS.getValue() == CLAMP,
 			this->wrapT.getValue() == CLAMP);
-
-#if 0 // debug
-    SoDebugError::postInfo("SoTexture2::GLRender",
-			   "initTexture");
-#endif // debug
-
   }
   if (this->glImage) {
     SoGLTextureImageElement::set(action->getState(), this,
@@ -251,9 +229,25 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoTexture2::doAction(SoAction * /* action */)
+SoTexture2::doAction(SoAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented");
+  if (this->glImage == NULL) {
+    // try to create a new one
+    SbVec2s size;
+    int nc;
+    const unsigned char * bytes = this->image.getValue(size, nc);
+
+    if (bytes && size[0] > 0 && size[1] > 0 && nc > 0) {
+      this->glImage = new SoGLImage(size, nc, bytes);
+    }
+    else { // try to load file
+      if (this->filename.getValue().getLength()) {
+	this->glImage = 
+	  SoGLImage::getGLImage(this->filename.getValue().getString(),
+				NULL); // FIXME: provide context
+      }    
+    }
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -262,9 +256,21 @@ SoTexture2::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoTexture2::callback(SoCallbackAction * /* action */)
+SoTexture2::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  // FIXME: we have a design flaw in SoGLImage. Will fix soon pederb, 19991116
+  SoTexture2::doAction(action);
+  if (this->glImage) {
+    const SoImageInterface *image = this->glImage->getImage();
+    SoTextureImageElement::set(action->getState(), this,
+			       image->getSize(), 
+			       image->getNumComponents(),
+			       image->getDataPtr(),
+			       (int)this->wrapT.getValue(),
+			       (int)this->wrapS.getValue(),
+			       (SoTextureImageElement::Model) model.getValue(),
+			       this->blendColor.getValue());
+  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

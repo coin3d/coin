@@ -27,6 +27,71 @@
 
 #include <Inventor/actions/SoAction.h>
 
+#include <Inventor/nodes/SoComplexity.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormalBinding.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoUnits.h>
+#include <Inventor/nodes/SoTextureCoordinateBinding.h>
+#include <Inventor/lists/SbList.h>
+#include <stddef.h> // for NULL
+
+class SbViewVolume;
+class SbMatrix;
+class SbVec2f;
+class SbVec3f;
+class SbVec4f;
+class SoCallbackAction;
+class SoPrimitiveVertex;
+class SbColor;
+class SoShape;
+class SbVec2s;
+
+typedef void SoTriangleCB(void *userData,
+                          SoCallbackAction *action,
+                          const SoPrimitiveVertex *v1,
+                          const SoPrimitiveVertex *v2,
+                          const SoPrimitiveVertex *v3);
+
+typedef void SoLineSegmentCB(void *userData, SoCallbackAction *action,
+                             const SoPrimitiveVertex *v1,
+                             const SoPrimitiveVertex *v2);
+
+typedef void SoPointCB(void *userData, SoCallbackAction *action,
+                       const SoPrimitiveVertex *v);
+
+
+
+class SoCallbackData { //internal class
+public:
+  SoCallbackData(void *cbfunc = NULL, void *userdata = NULL)
+    : func(cbfunc), data(userdata) {}
+  
+  SbBool hasCallback() const {return this->func != NULL;}
+  
+  int doNodeCallback(SoCallbackAction *action, 
+		     const SoNode *node);
+  void doTriangleCallback(SoCallbackAction *action, 
+			  const SoPrimitiveVertex * const v1,
+			  const SoPrimitiveVertex * const v2,
+			  const SoPrimitiveVertex * const v3);
+  
+  void doLineSegmentCallback(SoCallbackAction *action,
+			     const SoPrimitiveVertex * const v1,
+			     const SoPrimitiveVertex * const v2);
+  void doPointCallback(SoCallbackAction *action,
+		       const SoPrimitiveVertex *v);
+  
+public:
+  void *func;
+  void *data;
+};
+
+
 class SoCallbackAction : public SoAction {
   typedef SoAction inherited;
 
@@ -55,6 +120,131 @@ public:
 public:
   SoCallbackAction(void);
 
+  enum Response {
+    CONTINUE,
+    ABORT,
+    PRUNE
+  };
+
+  typedef Response SoCallbackActionCB(void *userData,
+				      SoCallbackAction *action,
+				      const SoNode *node);
+  
+  // setting callbacks
+  void addPreCallback(const SoType type, 
+		      const SoCallbackActionCB *cb, 
+		      void *userdata);
+  void addPostCallback(const SoType type, 
+		       const SoCallbackActionCB *cb, 
+		       void *userdata);
+
+  void addPreTailCallback(const SoType type, 
+			  const SoCallbackActionCB *cb, 
+			  void *userdata);
+  void addPostTailCallback(const SoType type, 
+			   const SoCallbackActionCB *cb, 
+			   void *userdata);
+
+  void addTriangleCallback(const SoType type, 
+			   const SoTriangleCB *cb, 
+			   void *userdata);
+  void addLineSegmentCallback(const SoType type, 
+			      const SoLineSegmentCB *cb, 
+			      void *userdata);
+  void addPointCallback(const SoType type, 
+			const SoPointCB *cb, 
+			void *userdata);
+
+  // access elements
+  float getComplexity() const;
+  SoComplexity::Type getComplexityType() const;
+  int32_t getNumCoordinates() const;
+  const SbVec3f &getCoordinate3(const int index) const;
+  const SbVec4f &getCoordinate4(const int index) const;
+  SoDrawStyle::Style getDrawStyle() const;
+  unsigned short getLinePattern() const;
+  float getLineWidth() const;
+  float getPointSize() const;
+  SbName getFontName() const;
+  float getFontSize() const;
+  SoLightModel::Model getLightModel() const;
+  const SbVec3f &getLightAttenuation() const;
+  void getMaterial(SbColor &ambient, SbColor &diffuse, 
+		   SbColor &specular, SbColor &emission, 
+		   float &shininess, float
+		   &transparency, const int index = 0) const;
+  SoMaterialBinding::Binding getMaterialBinding() const;
+  long getNumNormals() const;
+  const SbVec3f &getNormal(const int index) const;
+  SoNormalBinding::Binding getNormalBinding() const;
+  int32_t getNumProfileCoordinates() const;
+  const SbVec2f &getProfileCoordinate2(const int index) const;
+  const SbVec3f &getProfileCoordinate3(const int index) const;
+  const SoNodeList &getProfile() const;
+  SoShapeHints::VertexOrdering getVertexOrdering() const;
+  SoShapeHints::ShapeType getShapeType() const;
+  SoShapeHints::FaceType getFaceType() const;
+  float getCreaseAngle() const;
+  int32_t getNumTextureCoordinates() const;
+  const SbVec2f &getTextureCoordinate2(const int index) const;
+  const SbVec4f &getTextureCoordinate4(const int index) const;
+  SoTextureCoordinateBinding::Binding getTextureCoordinateBinding() const;
+  const SbColor &getTextureBlendColor() const;
+  const unsigned char *getTextureImage(SbVec2s &size, int &numComps) const;
+  const SbMatrix &getTextureMatrix() const;
+  SoTexture2::Model getTextureModel() const;
+  SoTexture2::Wrap getTextureWrapS() const;
+  SoTexture2::Wrap getTextureWrapT() const;
+  const SbMatrix &getModelMatrix() const;
+  SoUnits::Units getUnits() const;
+  float getFocalDistance() const;
+  const SbMatrix &getProjectionMatrix() const;
+  const SbMatrix &getViewingMatrix() const;
+  const SbViewVolume &getViewVolume() const;
+  SoPickStyle::Style getPickStyle() const;
+  int32_t getSwitch() const;
+
+
+public: // extender
+
+  Response getCurrentResponse(void) const;
+  void invokePreCallbacks(const SoNode * const node);
+  void invokePostCallbacks(const SoNode * const node);
+  void invokeTriangleCallbacks(const SoShape * const shape,
+			       const SoPrimitiveVertex * const v1,
+			       const SoPrimitiveVertex * const v2,
+			       const SoPrimitiveVertex * const v3);
+  void invokeLineSegmentCallbacks(const SoShape * const shape,
+				  const SoPrimitiveVertex * const v1,
+				  const SoPrimitiveVertex * const v2);
+  void invokePointCallbacks(const SoShape * const shape,
+			    const SoPrimitiveVertex * const v);
+  SbBool      shouldGeneratePrimitives(const SoShape *shape) const;
+
+public: // internal
+  virtual SoNode *getCurPathTail();
+  void setCurrentNode(SoNode * const node);
+
+protected:
+  virtual void beginTraversal(SoNode *node);
+
+
+private:
+  
+  Response response;
+  SoNode *currentNode;
+  
+  SbList <SoCallbackData> preCB;
+  SbList <SoCallbackData> postCB;
+  
+  SbList <SoCallbackData> preTailCB;
+  SbList <SoCallbackData> postTailCB;
+  
+  SbList <SoCallbackData> triangleCB;
+  SbList <SoCallbackData> lineSegmentCB;
+  SbList <SoCallbackData> pointCB;
 };
+
+
 
 #endif // !__SOCALLBACKACTION_H__

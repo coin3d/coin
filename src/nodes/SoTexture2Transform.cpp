@@ -38,6 +38,10 @@
 #include <Inventor/elements/SoGLTextureMatrixElement.h>
 #endif // !COIN_EXCLUDE_SOGLTEXTUREMATRIXELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/elements/SoTextureMatrixElement.h>
+
+
 /*!
   \var SoSFVec2f SoTexture2Transform::translation
   FIXME: write documentation for field
@@ -93,6 +97,8 @@ SoTexture2Transform::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+  SO_ENABLE(SoCallbackAction, SoTextureMatrixElement);
 }
 
 
@@ -103,11 +109,24 @@ SoTexture2Transform::initClass(void)
 void 
 SoTexture2Transform::GLRender(SoGLRenderAction * action)
 {
+  SoTexture2Transform::doAction(action);
+}
+#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
+
+
+
+#if !defined(COIN_EXCLUDE_SOACTION)
+/*!
+  FIXME: write doc
+ */
+void
+SoTexture2Transform::doAction(SoAction *action)
+{
   SbMatrix mat, tmp;
   SbVec2f c = center.isIgnored() ? 
     SbVec2f(0.0f, 0.0f) :
     center.getValue();
-
+  
   mat.makeIdentity();
   mat[3][0] = -c[0];
   mat[3][1] = -c[1];
@@ -142,19 +161,6 @@ SoTexture2Transform::GLRender(SoGLRenderAction * action)
   SoTextureMatrixElement::mult(action->getState(), this,
 			       mat);
 }
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
-
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
-/*!
-  FIXME: write doc
- */
-void
-SoTexture2Transform::doAction(SoAction * /* action */)
-{
-  assert(0 && "FIXME: not implemented");
-}
 #endif // !COIN_EXCLUDE_SOACTION
 
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
@@ -162,9 +168,9 @@ SoTexture2Transform::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoTexture2Transform::callback(SoCallbackAction * /* action */)
+SoTexture2Transform::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoTexture2Transform::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -189,44 +195,4 @@ SoTexture2Transform::pick(SoPickAction * /* action */)
   assert(0 && "FIXME: not implemented");
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
-
-void 
-SoTexture2Transform::calcMatrix(SbMatrix &mat)
-{
-  SbMatrix tmp;
-  SbVec2f c = center.isIgnored() ? 
-    SbVec2f(0.0f, 0.0f) :
-    center.getValue();
-
-  mat.makeIdentity();
-  mat[3][0] = -c[0];
-  mat[3][1] = -c[1];
-  
-  SbVec2f scale = scaleFactor.getValue();
-  if (!scaleFactor.isIgnored() && 
-      scale != SbVec2f(1.0f, 1.0f)) {
-    tmp.makeIdentity();
-    tmp[0][0] = scale[0];
-    tmp[1][1] = scale[1];
-    mat.multRight(tmp);
-  }
-  if (!rotation.isIgnored() && rotation.getValue() != 0.0f) {
-    float cosa = (float)cos(rotation.getValue());
-    float sina = (float)sin(rotation.getValue());
-    tmp.makeIdentity();
-    tmp[0][0] = cosa;
-    tmp[1][0] = -sina;
-    tmp[0][1] = sina;
-    tmp[1][1] = cosa;
-    mat.multRight(tmp);
-  }
-  c += translation.getValue();
-  if (!translation.isIgnored() && 
-      c != SbVec2f(0.0f, 0.0f)) {
-    tmp.makeIdentity();
-    tmp[3][0] = c[0];
-    tmp[3][1] = c[1];
-    mat.multRight(tmp);
-  }
-}
 
