@@ -43,21 +43,10 @@
 
 soshape_bumprender::soshape_bumprender(void)
 {
-  this->state = NULL;
-  this->glglue = NULL;
-  this->bumpimage = NULL;
 }
 
 soshape_bumprender::~soshape_bumprender()
 {
-}
-
-void
-soshape_bumprender::init(SoState * state)
-{
-  this->state = state;
-  this->glglue = sogl_glue_instance(state);
-  this->bumpimage = SoBumpMapElement::get(state);
 }
 
 // to avoid warnings from SbVec3f::normalize()
@@ -73,16 +62,21 @@ inline void NORMALIZE(SbVec3f &v)
 }
 
 void
-soshape_bumprender::renderBump(const SoPrimitiveVertexCache * cache, 
+soshape_bumprender::renderBump(SoState * state,
+                               const SoPrimitiveVertexCache * cache, 
                                SoLight * light, const SbMatrix & toobjectspace)
 {
   this->initLight(light, toobjectspace);
   this->calcTSBCoords(cache, light);
-  const cc_glglue * glue = this->glglue;
+
+  const cc_glglue * glue = sogl_glue_instance(state);
+
+  SoGLImage * bumpimage = SoBumpMapElement::get(state);
+  assert(bumpimage);
 
   // set up textures
   glEnable(GL_TEXTURE_2D);
-  this->bumpimage->getGLDisplayList(state)->call(state);
+  bumpimage->getGLDisplayList(state)->call(state);
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
   glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_TEXTURE);
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
@@ -103,7 +97,7 @@ soshape_bumprender::renderBump(const SoPrimitiveVertexCache * cache,
 
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
                             (GLvoid*) &vptr->vertex);
-  cc_glglue_glEnableClientState(this->glglue, GL_VERTEX_ARRAY);
+  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
   cc_glglue_glTexCoordPointer(glue, 2, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
                               (GLvoid*) &vptr->bumpcoord);
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
@@ -127,16 +121,17 @@ soshape_bumprender::renderBump(const SoPrimitiveVertexCache * cache,
 }
 
 void
-soshape_bumprender::renderNormal(const SoPrimitiveVertexCache * cache)
+soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache * cache)
 {
-  const cc_glglue * glue = this->glglue;
+  const cc_glglue * glue = sogl_glue_instance(state);
+
   const SoPrimitiveVertexCache::Vertex * vptr = 
     cache->getVertices();
   const int n = cache->getNumIndices();
 
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
                             (GLvoid*) &vptr->vertex);
-  cc_glglue_glEnableClientState(this->glglue, GL_VERTEX_ARRAY);
+  cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
 
   cc_glglue_glNormalPointer(glue, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
                             (GLvoid*) &vptr->normal);
@@ -156,28 +151,25 @@ soshape_bumprender::renderNormal(const SoPrimitiveVertexCache * cache)
 }
 
 void
-soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light)
+soshape_bumprender::calcTangentSpace(const SoPrimitiveVertexCache * cache)
 {
   const SoPrimitiveVertexCache::Vertex * vptr = 
     cache->getVertices();
   int i;
+
   const int numv = cache->getNumVertices();
   const int32_t * idxptr = cache->getIndices();
   
-  this->cubemaplist.truncate(0);
   this->tangentlist.truncate(0);
 
   for (i = 0; i < numv; i++) {
     this->tangentlist.append(SbVec3f(0.0f, 0.0f, 0.0f));
     this->tangentlist.append(SbVec3f(0.0f, 0.0f, 0.0f));
   }
-
   const int numi = cache->getNumIndices();
 
   SbVec3f sTangent;
   SbVec3f tTangent;
-  SbVec3f lightvec;
-  SbVec3f tlightvec;
 
   int idx[3];
 
@@ -201,19 +193,33 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
     float deltaS1 = v2.bumpcoord[0] - v0.bumpcoord[0];
     tTangent = deltaS1 * side0 - deltaS0 * side1;
     NORMALIZE(tTangent);    
-
+    
     for (int j = 0; j < 3; j++) {
       this->tangentlist[idx[j]*2] += sTangent;
       this->tangentlist[idx[j]*2+1] += tTangent;
     }
   }
   for (i = 0; i < numv; i++) {
-    const SoPrimitiveVertexCache::Vertex & v = vptr[i];
+    this->tangentlist[i*2].normalize();
+    this->tangentlist[i*2+1].normalize();
+  }
+}
 
+void
+soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light)
+{
+  SbVec3f lightvec;
+  SbVec3f tlightvec;
+
+  const SoPrimitiveVertexCache::Vertex * vptr = 
+    cache->getVertices();
+  const int numv = cache->getNumVertices();
+
+  this->cubemaplist.truncate(0);
+  for (int i = 0; i < numv; i++) {
+    const SoPrimitiveVertexCache::Vertex & v = vptr[i];
     SbVec3f sTangent = this->tangentlist[i*2];
     SbVec3f tTangent = this->tangentlist[i*2+1];
-    NORMALIZE(sTangent);
-    NORMALIZE(tTangent);
     lightvec = this->getLightVec(v.vertex);
     tlightvec = lightvec;
 #if 0 // FIXME: I don't think it's necessary to do this test. pederb, 2003-11-20

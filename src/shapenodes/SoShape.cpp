@@ -580,10 +580,11 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         PRIVATE(this)->pvcache = new SoPrimitiveVertexCache(state);
         PRIVATE(this)->pvcache->ref();
         SoCacheElement::set(state, PRIVATE(this)->pvcache);
-        PRIVATE(this)->bumprender->init(state);
         shapedata->is_doing_pvcache_rendering = TRUE;
         this->generatePrimitives(action);
         shapedata->is_doing_pvcache_rendering = FALSE;
+        // this _must_ be called after creating the pvcache
+        PRIVATE(this)->bumprender->calcTangentSpace(PRIVATE(this)->pvcache);
         state->pop();
         SoCacheElement::setInvalid(storedinvalid);
       }
@@ -608,7 +609,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       // bumprender is shared among all threads, so the mutex needs to
       // be locked when we get here since some internal arrays are
       // used while rendering
-      PRIVATE(this)->bumprender->renderBump(PRIVATE(this)->pvcache, (SoLight*)lights[0], m);
+      PRIVATE(this)->bumprender->renderBump(state, PRIVATE(this)->pvcache, (SoLight*)lights[0], m);
       PRIVATE(this)->unlock();
 
       SoGLLazyElement::getInstance(state)->reset(state, 
@@ -624,7 +625,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       if (SoGLTextureEnabledElement::get(state)) glEnable(GL_TEXTURE_2D);
       // FIXME: enable multi-texture units 1-n (if active)
       
-      PRIVATE(this)->bumprender->renderNormal(PRIVATE(this)->pvcache);
+      PRIVATE(this)->bumprender->renderNormal(state, PRIVATE(this)->pvcache);
       glPopAttrib();
       glDisable(GL_BLEND); // FIXME: temporary for FPS-counter
       

@@ -6,7 +6,6 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/C/glue/gl.h>
 #include <Inventor/misc/SbHash.h>
 
 class SoState;
@@ -22,14 +21,13 @@ public:
   soshape_bumprender(void);
   ~soshape_bumprender();
 
-  void init(SoState * state);
-  void renderBump(const SoPrimitiveVertexCache * cache,
+  void calcTangentSpace(const SoPrimitiveVertexCache * cache);
+  void renderBump(SoState * state,
+                  const SoPrimitiveVertexCache * cache,
                   SoLight * light, const SbMatrix & toobjectspace);
-  void renderNormal(const SoPrimitiveVertexCache * cache);
+  void renderNormal(SoState * state, const SoPrimitiveVertexCache * cache);
 
 private:
-  SoState * state;
-  const cc_glglue * glglue;
 
   void initLight(SoLight * light, const SbMatrix & m);
   void calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light);
@@ -38,7 +36,6 @@ private:
   SbList <SbVec3f> cubemaplist;
   SbList <SbVec3f> tangentlist;
 
-  SoGLImage * bumpimage;
   SbVec3f lightvec;
   SbBool ispointlight;
 };
