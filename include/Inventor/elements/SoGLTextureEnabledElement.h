@@ -38,20 +38,18 @@ public:
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
-  virtual void evaluate() const;
-
+  virtual void evaluate(void) const;
+  virtual void forceSend(const SbBool onoff) const;
   static  void set(SoState * const state, SoNode * const node,
                    const SbBool enabled);
   static  void set(SoState * const state, const SbBool enabled);
 
-  static  SbBool get(SoState * const state);
-  static  SbBool getDefault();
-
-  virtual void setElt(int32_t value);
+  static SbBool get(SoState * const state);
+  static SbBool getDefault(void);
 
 private:
   int32_t glstate;
-  void updategl();
+  void updategl(void);
 
 };
 

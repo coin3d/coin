@@ -19,13 +19,16 @@
 
 /*!
   \class SoGLTextureEnabledElement Inventor/elements/SoGLTextureEnabledElement.h
-  \brief The SoGLTextureEnabledElement class is yet to be documented.
+  \brief The SoGLTextureEnabledElement class is a lazy element which controls whether texturing is enabled or not.
 
-  FIXME: write doc.
+  This element is evaluated in SoShape::shouldGLRender() so you'll normally not
+  have to worry about this being a lazy element. However, if you implement your
+  own shape and need to disable texturing while rendering, use the
+  forceSend() method to change the GL state without changing the state of
+  the element.
 */
 
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-
 #include <Inventor/elements/SoShapeStyleElement.h>
 
 
@@ -34,15 +37,10 @@
 #endif // !_WIN32
 
 #include <GL/gl.h>
-#include <assert.h>
 
 SO_ELEMENT_SOURCE(SoGLTextureEnabledElement);
 
-/*!
-  This static method initializes static data for the
-  SoGLTextureEnabledElement class.
-*/
-
+// doc from parent
 void
 SoGLTextureEnabledElement::initClass(void)
 {
@@ -52,13 +50,13 @@ SoGLTextureEnabledElement::initClass(void)
 /*!
   The destructor.
 */
-
 SoGLTextureEnabledElement::~SoGLTextureEnabledElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets the state of this element.
+*/
 void
 SoGLTextureEnabledElement::set(SoState * const state,
                                SoNode * const node,
@@ -68,19 +66,20 @@ SoGLTextureEnabledElement::set(SoState * const state,
   SoShapeStyleElement::setTextureEnabled(state, enabled);
 }
 
-//! FIXME: write doc.
 
+// doc from parent
 void
 SoGLTextureEnabledElement::init(SoState * state)
 {
   inherited::init(state);
-  this->data = getDefault();
+  this->data = SoGLTextureEnabledElement::getDefault();
   this->glstate = 0;
   glDisable(GL_TEXTURE_2D);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Overloaded to track GL state.
+*/
 void
 SoGLTextureEnabledElement::push(SoState * state)
 {
@@ -89,8 +88,9 @@ SoGLTextureEnabledElement::push(SoState * state)
   ((SoGLTextureEnabledElement*)this->next)->glstate = this->glstate;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Overloaded to track GL state.
+*/
 void
 SoGLTextureEnabledElement::pop(SoState * state,
                                const SoElement * prevTopElement)
@@ -99,55 +99,66 @@ SoGLTextureEnabledElement::pop(SoState * state,
   inherited::pop(state, prevTopElement);
 }
 
+/*!
+  Evaluates the element. After this call the GL state will be the same
+  as the state of the element.
+*/
 void
 SoGLTextureEnabledElement::evaluate() const
 {
   ((SoGLTextureEnabledElement*)this)->updategl();
 }
 
-//! FIXME: write doc.
+/*!
+  Updates the GL state without changing the state of the element. If GL
+  state already is the same as \a onoff, nothing will happen.
+*/
+void
+SoGLTextureEnabledElement::forceSend(const SbBool onoff) const
+{
+  if (this->glstate != onoff) {
+    ((SoGLTextureEnabledElement*)this)->glstate = onoff;
+    if (onoff) glEnable(GL_TEXTURE_2D);
+    else glDisable(GL_TEXTURE_2D);
+  }
+}
 
-//$ EXPORT INLINE
+
+/*!
+  Sets the state of the element.
+*/
 void
 SoGLTextureEnabledElement::set(SoState * const state, const SbBool enabled)
 {
-  set(state, NULL, enabled);
+  SoGLTextureEnabledElement::set(state, NULL, enabled);
 }
 
-//! FIXME: write doc.
 
-//$ EXPORT INLINE
+/*!
+  Return current state of this element. This is not the same as the
+  current GL state, since this is a lazy element.
+*/
 SbBool
 SoGLTextureEnabledElement::get(SoState * const state)
 {
   return (SbBool) SoInt32Element::get(classStackIndex, state);
 }
 
-//! FIXME: write doc.
 
-//$ EXPORT INLINE
+/*!
+  Returns default state of this element (FALSE).
+*/
 SbBool
 SoGLTextureEnabledElement::getDefault()
 {
   return FALSE;
 }
 
-//! FIXME: write doc.
-
+//
+// updates GL state if needed
+//
 void
-SoGLTextureEnabledElement::setElt(int32_t value)
-{
-  if (this->data != value) {
-    inherited::setElt(value);
-    this->data = value;
-    updategl();
-  }
-}
-
-//! FIXME: write doc.
-
-void
-SoGLTextureEnabledElement::updategl()
+SoGLTextureEnabledElement::updategl(void)
 {
   if (this->data != this->glstate) {
     this->glstate = this->data;
