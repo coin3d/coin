@@ -1,4 +1,4 @@
-# aclocal.m4 generated automatically by aclocal 1.4a
+# aclocal.m4 generated automatically by aclocal 1.4c
 
 # Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000
 # Free Software Foundation, Inc.
@@ -230,6 +230,9 @@ AC_SUBST([$1]DEPMODE)
 AC_DEFUN([AM_SET_DEPDIR],[
 if test -d .deps || mkdir .deps 2> /dev/null || test -d .deps; then
   DEPDIR=.deps
+  # We redirect because .deps might already exist and be populated.
+  # In this situation we don't want to see an error.
+  rmdir .deps > /dev/null 2>&1
 else
   DEPDIR=_deps
 fi
