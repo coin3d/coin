@@ -444,9 +444,16 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
   }
   else { // ASCII format.
     SbBool firstidentifier = TRUE;
+    SbName ROUTE_KEYWORD("ROUTE");
     while (TRUE) {
       SbName fieldname;
       if (!in->read(fieldname, TRUE)) return TRUE; // Terminates loop on "}"
+      
+      // test for the VRML97 ROUTE keyword
+      if (in->isFileVRML2() && fieldname == ROUTE_KEYWORD) {
+        if (!SoBase::readRoute(in)) return FALSE;
+        continue; // skip to next field/route
+      }
 
       SbBool readok;
       if (in->checkISReference(object, fieldname, readok)) {
