@@ -89,11 +89,19 @@ void
 SoSFNode::setValue(SoNode * newval)
 {
   SoNode * oldptr = this->getValue();
-  if (oldptr) oldptr->unref();
+  if (oldptr == newval) return;
+
+  if (oldptr) {
+    oldptr->removeAuditor(this, SoNotRec::FIELD);
+    oldptr->unref();
+  }
+
+  if (newval) {
+    newval->addAuditor(this, SoNotRec::FIELD);
+    newval->ref();
+  }
 
   this->value = newval;
-  if (this->value) this->value->ref();
-
   this->valueChanged();
 }
 
@@ -155,8 +163,7 @@ SoSFNode::countWriteRefs(SoOutput * out) const
   if (n) n->addWriteReference(out, FALSE);
 }
 
-// Override from parent to update our node pointer reference, if
-// necessary.
+// Override from parent to update our node pointer reference.
 void
 SoSFNode::fixCopy(SbBool copyconnections)
 {
@@ -164,6 +171,7 @@ SoSFNode::fixCopy(SbBool copyconnections)
   if (!n) return;
 
   SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
+  this->setValue(NULL); // Fool the set-as-same-value detection.
   this->setValue((SoNode *)fc);
 }
 
