@@ -303,6 +303,42 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
+install-libbaseLINKHACKincHEADERS: $(libbaseLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libbaseLINKHACKincdir)
+	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libbaseLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; \
+	done
+
+install-libbaseincHEADERS: $(libbaseinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
+	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; \
+	done
+
+uninstall-libbaseincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libbaseincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libbaseincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -536,48 +572,6 @@ libbase.la: $(libbase_la_OBJECTS) $(libbase_la_DEPENDENCIES)
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm -f .deps/$(*F).pp
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libbaseincHEADERS: $(libbaseinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libbaseincdir)
-	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; then :; else echo "Installing $(libbaseincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseincdir)/$$f; fi \
-	done
-
-uninstall-libbaseincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libbaseinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libbaseincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libbaseincdir)/$$f; \
-	done
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libbaseLINKHACKincHEADERS: $(libbaseLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libbaseLINKHACKincdir)
-	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; then :; else echo "Installing $(libbaseLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; fi \
-	done
-
-uninstall-libbaseLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libbaseLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libbaseLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libbaseLINKHACKincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -287,6 +287,42 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
+install-libprojectorsLINKHACKincHEADERS: $(libprojectorsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libprojectorsLINKHACKincdir)
+	@list='$(libprojectorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libprojectorsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libprojectorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; \
+	done
+
+install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libprojectorsincdir)
+	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; \
+	done
+
+uninstall-libprojectorsincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libprojectorsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libprojectorsincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -507,48 +543,6 @@ libprojectors.la: $(libprojectors_la_OBJECTS) $(libprojectors_la_DEPENDENCIES)
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm -f .deps/$(*F).pp
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libprojectorsincHEADERS: $(libprojectorsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libprojectorsincdir)
-	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; then :; else echo "Installing $(libprojectorsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsincdir)/$$f; fi \
-	done
-
-uninstall-libprojectorsincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libprojectorsinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libprojectorsincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libprojectorsincdir)/$$f; \
-	done
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libprojectorsLINKHACKincHEADERS: $(libprojectorsLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libprojectorsLINKHACKincdir)
-	@list='$(libprojectorsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; then :; else echo "Installing $(libprojectorsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; fi \
-	done
-
-uninstall-libprojectorsLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libprojectorsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libprojectorsLINKHACKincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

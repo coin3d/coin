@@ -311,6 +311,24 @@ maintainer-clean-libtool:
 libCoin.la: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
 	$(LINK) -rpath $(libdir) $(libCoin_la_LDFLAGS) $(libCoin_la_OBJECTS) $(libCoin_la_LIBADD) $(LIBS)
 
+install-libCoinincHEADERS: $(libCoininc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
+	done
+
+uninstall-libCoinincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libCoinincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libCoinincdir)/$$f; \
+	done
+
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
 # To change the values of `make' variables: instead of editing Makefiles,
@@ -557,27 +575,6 @@ maintainer-clean-generic clean mostlyclean distclean maintainer-clean
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm -f .deps/$(*F).pp
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libCoinincHEADERS: $(libCoininc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then :; else echo "Installing $(libCoinincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; fi \
-	done
-
-uninstall-libCoinincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libCoinincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libCoinincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

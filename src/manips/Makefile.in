@@ -266,6 +266,42 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
+install-libmanipsLINKHACKincHEADERS: $(libmanipsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libmanipsLINKHACKincdir)
+	@list='$(libmanipsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libmanipsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libmanipsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f; \
+	done
+
+install-libmanipsincHEADERS: $(libmanipsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libmanipsincdir)
+	@list='$(libmanipsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f; \
+	done
+
+uninstall-libmanipsincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libmanipsinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libmanipsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libmanipsincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -493,48 +529,6 @@ libmanips.la: $(libmanips_la_OBJECTS) $(libmanips_la_DEPENDENCIES)
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm -f .deps/$(*F).pp
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libmanipsincHEADERS: $(libmanipsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libmanipsincdir)
-	@list='$(libmanipsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f; then :; else echo "Installing $(libmanipsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsincdir)/$$f; fi \
-	done
-
-uninstall-libmanipsincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libmanipsinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libmanipsincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libmanipsincdir)/$$f; \
-	done
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libmanipsLINKHACKincHEADERS: $(libmanipsLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libmanipsLINKHACKincdir)
-	@list='$(libmanipsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f; then :; else echo "Installing $(libmanipsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f; fi \
-	done
-
-uninstall-libmanipsLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libmanipsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libmanipsLINKHACKincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

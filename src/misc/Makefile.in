@@ -278,6 +278,42 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
+install-libmiscLINKHACKincHEADERS: $(libmiscLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libmiscLINKHACKincdir)
+	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libmiscLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; \
+	done
+
+install-libmiscincHEADERS: $(libmiscinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libmiscincdir)
+	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; \
+	done
+
+uninstall-libmiscincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libmiscincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libmiscincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -506,48 +542,6 @@ libmisc.la: $(libmisc_la_OBJECTS) $(libmisc_la_DEPENDENCIES)
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm -f .deps/$(*F).pp
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libmiscincHEADERS: $(libmiscinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libmiscincdir)
-	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; then :; else echo "Installing $(libmiscincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscincdir)/$$f; fi \
-	done
-
-uninstall-libmiscincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libmiscinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libmiscincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libmiscincdir)/$$f; \
-	done
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libmiscLINKHACKincHEADERS: $(libmiscLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libmiscLINKHACKincdir)
-	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; then :; else echo "Installing $(libmiscLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; fi \
-	done
-
-uninstall-libmiscLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libmiscLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libmiscLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libmiscLINKHACKincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

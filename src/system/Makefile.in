@@ -121,6 +121,24 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)
 	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
 
 
+install-systemincHEADERS: $(systeminc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(systemincdir)
+	@list='$(systeminc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(systemincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(systemincdir)/$$f; \
+	done
+
+uninstall-systemincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(systeminc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(systemincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(systemincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -234,27 +252,6 @@ install-strip installdirs mostlyclean-generic distclean-generic \
 clean-generic maintainer-clean-generic clean mostlyclean distclean \
 maintainer-clean
 
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-systemincHEADERS: $(systeminc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(systemincdir)
-	@list='$(systeminc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(systemincdir)/$$f; then :; else echo "Installing $(systemincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(systemincdir)/$$f; fi \
-	done
-
-uninstall-systemincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(systeminc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(systemincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(systemincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -254,6 +254,42 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
+install-libcachesLINKHACKincHEADERS: $(libcachesLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libcachesLINKHACKincdir)
+	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libcachesLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
+	done
+
+install-libcachesincHEADERS: $(libcachesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libcachesincdir)
+	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesincdir)/$$f; \
+	done
+
+uninstall-libcachesincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libcachesincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libcachesincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -467,48 +503,6 @@ libcaches.la: $(libcaches_la_OBJECTS) $(libcaches_la_DEPENDENCIES)
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm -f .deps/$(*F).pp
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libcachesincHEADERS: $(libcachesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libcachesincdir)
-	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libcachesincdir)/$$f; then :; else echo "Installing $(libcachesincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesincdir)/$$f; fi \
-	done
-
-uninstall-libcachesincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libcachesinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libcachesincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libcachesincdir)/$$f; \
-	done
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libcachesLINKHACKincHEADERS: $(libcachesLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libcachesLINKHACKincdir)
-	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; then :; else echo "Installing $(libcachesLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; fi \
-	done
-
-uninstall-libcachesLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libcachesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libcachesLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libcachesLINKHACKincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -755,6 +755,9 @@ dnl  variable $MATHLIB to the necessary linker flags and libraries.
 dnl
 dnl  Author: Lars Jørgen Aas, <larsa@sim.no>.
 dnl
+dnl Note: this macro duplicates the effort of AC_CHECK_LIBM from the libtool
+dnl distribution.
+dnl
 dnl  TODO:
 dnl    * [mortene:19991114] cache result for subsequent runs
 dnl    * [mortene:19991114] make this work on MSWin (with Cygwin installation)

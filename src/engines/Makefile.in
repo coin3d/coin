@@ -365,6 +365,42 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
+install-libenginesLINKHACKincHEADERS: $(libenginesLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libenginesLINKHACKincdir)
+	@list='$(libenginesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libenginesLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libenginesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libenginesLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libenginesLINKHACKincdir)/$$f; \
+	done
+
+install-libenginesincHEADERS: $(libenginesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libenginesincdir)
+	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; \
+	done
+
+uninstall-libenginesincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libenginesincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libenginesincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -604,48 +640,6 @@ libengines.la: $(libengines_la_OBJECTS) $(libengines_la_DEPENDENCIES)
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm -f .deps/$(*F).pp
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libenginesincHEADERS: $(libenginesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libenginesincdir)
-	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; then :; else echo "Installing $(libenginesincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesincdir)/$$f; fi \
-	done
-
-uninstall-libenginesincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libenginesinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libenginesincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libenginesincdir)/$$f; \
-	done
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libenginesLINKHACKincHEADERS: $(libenginesLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libenginesLINKHACKincdir)
-	@list='$(libenginesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libenginesLINKHACKincdir)/$$f; then :; else echo "Installing $(libenginesLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libenginesLINKHACKincdir)/$$f; fi \
-	done
-
-uninstall-libenginesLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libenginesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libenginesLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libenginesLINKHACKincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

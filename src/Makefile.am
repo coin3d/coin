@@ -133,29 +133,3 @@ libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SbViewVolume.h \
 	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
-
-
-##$ BEGIN TEMPLATE Make-Install(libCoin)
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libCoinincHEADERS: $(libCoininc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; then :; else echo "Installing $(libCoinincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; fi \
-	done
-
-uninstall-libCoinincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libCoinincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libCoinincdir)/$$f; \
-	done
-
-##$ END TEMPLATE Make-Install

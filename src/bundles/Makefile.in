@@ -248,6 +248,42 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
+install-libbundlesLINKHACKincHEADERS: $(libbundlesLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libbundlesLINKHACKincdir)
+	@list='$(libbundlesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libbundlesLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libbundlesLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; \
+	done
+
+install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
+	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; \
+	done
+
+uninstall-libbundlesincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libbundlesincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libbundlesincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -459,48 +495,6 @@ libbundles.la: $(libbundles_la_OBJECTS) $(libbundles_la_DEPENDENCIES)
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm -f .deps/$(*F).pp
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libbundlesincHEADERS: $(libbundlesinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libbundlesincdir)
-	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; then :; else echo "Installing $(libbundlesincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesincdir)/$$f; fi \
-	done
-
-uninstall-libbundlesincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libbundlesinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libbundlesincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libbundlesincdir)/$$f; \
-	done
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libbundlesLINKHACKincHEADERS: $(libbundlesLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libbundlesLINKHACKincdir)
-	@list='$(libbundlesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; then :; else echo "Installing $(libbundlesLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; fi \
-	done
-
-uninstall-libbundlesLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libbundlesLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libbundlesLINKHACKincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

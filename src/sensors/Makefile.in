@@ -285,6 +285,42 @@ distclean-libtool:
 
 maintainer-clean-libtool:
 
+install-libsensorsLINKHACKincHEADERS: $(libsensorsLINKHACKinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libsensorsLINKHACKincdir)
+	@list='$(libsensorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; \
+	done
+
+uninstall-libsensorsLINKHACKincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libsensorsLINKHACKinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; \
+	done
+
+install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)
+	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; \
+	done
+
+uninstall-libsensorsincHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  echo " rm -f $(DESTDIR)$(libsensorsincdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libsensorsincdir)/$$f; \
+	done
+
 tags: TAGS
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
@@ -505,48 +541,6 @@ libsensors.la: $(libsensors_la_OBJECTS) $(libsensors_la_DEPENDENCIES)
 	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
 	    >> .deps/$(*F).P; \
 	rm -f .deps/$(*F).pp
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libsensorsincHEADERS: $(libsensorsinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libsensorsincdir)
-	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; then :; else echo "Installing $(libsensorsincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsincdir)/$$f; fi \
-	done
-
-uninstall-libsensorsincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libsensorsinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libsensorsincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libsensorsincdir)/$$f; \
-	done
-
-# FIXME: this is a temporary workaround for a bug in Automake. The
-# bug is fixed in the latest Automake CVS, but not in any "official"
-# release (?). Last checked with Automake 1.4a. 19990912 mortene.
-
-install-libsensorsLINKHACKincHEADERS: $(libsensorsLINKHACKinc_HEADERS)
-	@$(NORMAL_INSTALL)
-	@$(mkinstalldirs) $(DESTDIR)$(libsensorsLINKHACKincdir)
-	@list='$(libsensorsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  if cmp -s $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; then :; else echo "Installing $(libsensorsLINKHACKincdir)/$$f"; $(INSTALL_DATA) $$d$$p $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; fi \
-	done
-
-uninstall-libsensorsLINKHACKincHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(libsensorsLINKHACKinc_HEADERS)'; for p in $$list; do \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo "Uninstalling $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libsensorsLINKHACKincdir)/$$f; \
-	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
