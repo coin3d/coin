@@ -608,23 +608,24 @@ SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
 SbBool
 SoText2P::shouldBuildGlyphCache(SoState * state)
 {
-  if (!this->hasbuiltglyphcache)
-    return TRUE;
-  if (!this->useglyphcache)
-    return FALSE;
-  SbName curfontname = SoFontNameElement::get(state);
-  float curfontsize = SoFontSizeElement::get(state);
-  SbBool fonthaschanged = (this->prevfontname != curfontname 
-                           || this->prevfontsize != curfontsize);
-  if (fonthaschanged)
-    return fonthaschanged;
-  // FIXME: Use notify() mechanism to detect field changes. For Coin3. preng, 2003-03-10.
-  if (this->linecnt != this->textnode->string.getNum())
-    return TRUE;
+  if (!this->hasbuiltglyphcache) { return TRUE; }
+  if (!this->useglyphcache) { return FALSE; }
+
+  const SbName curfontname = SoFontNameElement::get(state);
+  const float curfontsize = SoFontSizeElement::get(state);
+
+  if (this->prevfontname != curfontname ||
+      this->prevfontsize != curfontsize) { return TRUE; }
+
+  // FIXME: Use notify() mechanism to detect field changes. For
+  // Coin3. preng, 2003-03-10.
+
+  if (this->linecnt != this->textnode->string.getNum()) { return TRUE; }
+
   for (int i=0; i<this->linecnt; i++) {
-    if (strcmp(laststring[i]->getString(), this->textnode->string[i].getString()) != 0)
-      return TRUE;
+    if (*(this->laststring[i]) != this->textnode->string[i]) return TRUE;
   }
+
   return FALSE;
 }
 
