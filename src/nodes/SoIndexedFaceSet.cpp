@@ -574,17 +574,13 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   TriangleShape newmode;
   const int32_t *viptr = cindices;
   const int32_t *viendptr = viptr + numindices;
-  int32_t v1, v2, v3, v4, v5;
+  int32_t v1, v2, v3, v4, v5 = 0; // v5 init unnecessary, but kills a compiler warning.
 
   SoPrimitiveVertex vertex;
   SoPointDetail pointDetail;
   SoFaceDetail faceDetail;
 
   vertex.setDetail(&pointDetail);
-
-#ifndef NDEBUG
-  v5 = 0; // to avoid warnings
-#endif
 
   SbVec3f dummynormal(0,0,1);
   const SbVec3f *currnormal = &dummynormal;

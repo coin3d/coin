@@ -188,7 +188,7 @@ SoImage::computeBBox(SoAction *action,
   }
   SbVec3f v0, v1, v2, v3;
   this->getQuad(action->getState(), v0, v1, v2, v3);
-  
+
   box.makeEmpty();
   box.extendBy(v0);
   box.extendBy(v1);
@@ -216,11 +216,11 @@ SoImage::GLRender(SoGLRenderAction *action)
 
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   SbVec2s vpsize = vp.getViewportSizePixels();
-    
+
   SbVec3f nilpoint = SoImage::getNilpoint(state);
   SbVec2s size = this->imageData->getSize();
-  
-  float xpos;
+
+  float xpos = 0.0; // init unnecessary, but kills a compiler warning.
   switch (this->horAlignment.getValue()) {
   case SoImage::LEFT:
     xpos = nilpoint[0];
@@ -235,12 +235,11 @@ SoImage::GLRender(SoGLRenderAction *action)
   default:
     SoDebugError::post("SoImage::GLRender",
                        "value of horAlign field is invalid");
-    xpos = nilpoint[0];
     break;
 #endif // COIN_DEBUG
   }
-  
-  float ypos;
+
+  float ypos = 0.0; // init unnecessary, but kills a compiler warning.
   switch (this->vertAlignment.getValue()) {
   case SoImage::TOP:
     ypos = nilpoint[1] - (float)size[1];
@@ -255,12 +254,11 @@ SoImage::GLRender(SoGLRenderAction *action)
   default:
     SoDebugError::post("SoImage::GLRender",
                        "value of vertAlign field is invalid");
-    ypos = nilpoint[1];
     break;
 #endif // COIN_DEBUG
   }
-  
-  GLenum format;
+
+  GLenum format = GL_LUMINANCE; // init unnecessary, but kills a compiler warning.
   switch (this->imageData->getNumComponents()) {
   case 1:
     format = GL_LUMINANCE;
@@ -277,7 +275,6 @@ SoImage::GLRender(SoGLRenderAction *action)
 #if COIN_DEBUG
   default:
     assert(0 && "illegal numComponents");
-    format = GL_LUMINANCE;
     break;
 #endif
   }
@@ -288,16 +285,16 @@ SoImage::GLRender(SoGLRenderAction *action)
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
- 
+
   // FIXME: push raster state?
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
   glRasterPos3f(xpos, ypos, -nilpoint[2]);
   glPixelStorei(GL_UNPACK_ROW_LENGTH, size[0]);
   glPixelStorei(GL_PACK_ROW_LENGTH, vpsize[0]); // needed?
 
-  glDrawPixels(size[0], size[1], format, GL_UNSIGNED_BYTE, 
+  glDrawPixels(size[0], size[1], format, GL_UNSIGNED_BYTE,
                (const GLvoid*)this->imageData->getDataPtr());
-  
+
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
@@ -306,13 +303,13 @@ SoImage::GLRender(SoGLRenderAction *action)
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #if !defined(COIN_EXCLUDE_SORAYPICKACTION)
-void 
+void
 SoImage::rayPick(SoRayPickAction * action)
 {
   if (this->shouldRayPick(action)) {
     if (!this->getImage()) return;
     this->computeObjectSpaceRay(action);
-    
+
     SbVec3f intersection;
     SbVec3f barycentric;
     SbBool front;
@@ -321,14 +318,14 @@ SoImage::rayPick(SoRayPickAction * action)
 
     if (action->intersect(v0, v1, v2,
                           intersection, barycentric, front)) {
-      
-      if (action->isBetweenPlanes(intersection)) 
+
+      if (action->isBetweenPlanes(intersection))
         action->addIntersection(intersection);
     }
     else if (action->intersect(v0, v2, v3,
                                intersection, barycentric, front)) {
-      
-      if (action->isBetweenPlanes(intersection)) 
+
+      if (action->isBetweenPlanes(intersection))
         action->addIntersection(intersection);
     }
   }
@@ -355,49 +352,49 @@ void
 SoImage::generatePrimitives(SoAction *action)
 {
   if (!this->getImage()) return;
-  
+
   SoState *state = action->getState();
   state->push();
-  
+
   // not quite sure if I should do this, but this will enable
   // SoCallbackAction to get all data it needs to render
   // this quad correctly. pederb 19991131
-  SoTextureImageElement::set(state, this, 
+  SoTextureImageElement::set(state, this,
                              this->imageData->getSize(),
                              this->imageData->getNumComponents(),
                              this->imageData->getDataPtr(),
                              SoTextureImageElement::CLAMP,
                              SoTextureImageElement::CLAMP,
                              SoTextureImageElement::DECAL,
-                             SbVec3f(0,0,0));  
+                             SbVec3f(0,0,0));
   SbVec3f v0, v1, v2, v3;
   this->getQuad(action->getState(), v0, v1, v2, v3);
-  
+
   SbVec3f n = (v1-v0).cross(v2-v0);
   n.normalize();
-  
+
   this->beginShape(action, SoShape::QUADS);
   SoPrimitiveVertex vertex;
   vertex.setNormal(n);
-  
+
   vertex.setTextureCoords(SbVec2f(0,0));
   vertex.setPoint(v0);
   this->shapeVertex(&vertex);
-  
+
   vertex.setTextureCoords(SbVec2f(1,0));
   vertex.setPoint(v1);
   this->shapeVertex(&vertex);
-  
+
   vertex.setTextureCoords(SbVec2f(1,1));
   vertex.setPoint(v2);
   this->shapeVertex(&vertex);
-  
+
   vertex.setTextureCoords(SbVec2f(0,1));
   vertex.setPoint(v3);
   this->shapeVertex(&vertex);
-  
+
   this->endShape();
-  
+
   state->pop();
 }
 #endif // !COIN_EXCLUDE_SOACTION
@@ -434,19 +431,19 @@ SoImage::setReadStatus(SbBool /* flag */)
 SbBool
 SoImage::getImage()
 {
-  if (this->imageData && (this->imageData->getSize() == this->getSize())) 
+  if (this->imageData && (this->imageData->getSize() == this->getSize()))
     return TRUE;
-  
+
   if (this->imageData) {
     this->imageData->unref();
     this->imageData = NULL;
   }
-  
+
   if (this->orgImageData == NULL) { // load if not loaded
     SbVec2s size;
     int nc;
     const unsigned char * bytes = this->image.getValue(size, nc);
-    
+
     if (bytes && size[0] > 0 && size[1] > 0 && nc > 0) {
       this->orgImageData = new SoImageInterface(size, nc, bytes);
       this->orgImageData->ref();
@@ -456,13 +453,13 @@ SoImage::getImage()
         SoImageInterface::findOrCreateImage(this->filename.
                                             getValue().getString());
       this->orgImageData->load();
-    }    
+    }
   }
-  
+
   if (this->orgImageData && this->orgImageData->isLoaded()) {
     SbVec2s orgsize = this->orgImageData->getSize();
-    SbVec2s size = this->getSize();    
-    
+    SbVec2s size = this->getSize();
+
     if (orgsize != size) {
       this->imageData = this->orgImageData->imageCopy();
       this->imageData->ref();
@@ -481,7 +478,7 @@ SoImage::getImage()
   Returns the screen coordinates for the point in (0,0,0) projected
   onto the screen. The z-value is stored in the third (z) coordinate.
 */
-SbVec3f 
+SbVec3f
 SoImage::getNilpoint(SoState *state)
 {
   SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
@@ -489,7 +486,7 @@ SoImage::getNilpoint(SoState *state)
   mat.multVecMatrix(nilpoint, nilpoint);
 
   const SbViewVolume &vv = SoViewVolumeElement::get(state);
-  
+
   // this function will also modify the z-value of nilpoint
   // according to the view matrix
   vv.projectToScreen(nilpoint, nilpoint);
@@ -502,7 +499,7 @@ SoImage::getNilpoint(SoState *state)
   return nilpoint;
 }
 
-void 
+void
 SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
                  SbVec3f &v2, SbVec3f &v3)
 {
@@ -512,13 +509,13 @@ SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
   mat.multVecMatrix(nilpoint, nilpoint);
 
   const SbViewVolume &vv = SoViewVolumeElement::get(state);
-  
+
   SbVec3f screenpoint;
   vv.projectToScreen(nilpoint, screenpoint);
-  
+
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   SbVec2s vpsize = vp.getViewportSizePixels();
-  
+
   // find normalized width and height of image
   float nw = (float)this->imageData->getSize()[0];
   nw /= (float)vpsize[0];
@@ -535,7 +532,7 @@ SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
   n1 = SbVec2f(screenpoint[0]+nw, screenpoint[1]-nh);
   n2 = SbVec2f(screenpoint[0]+nw, screenpoint[1]+nh);
   n3 = SbVec2f(screenpoint[0]-nw, screenpoint[1]+nh);
-  
+
   switch (this->horAlignment.getValue()) {
   case SoImage::LEFT:
     n0[0] += nw;
@@ -555,7 +552,7 @@ SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
     assert(0 && "unknown alignment");
     break;
   }
-  
+
   switch (this->vertAlignment.getValue()) {
   case SoImage::TOP:
     n0[1] -= nh;
@@ -575,10 +572,10 @@ SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
     assert(0 && "unknown alignment");
     break;
   }
-  
+
   // get distance from nilpoint to camera plane
   float dist = -vv.getPlane(0.0f).getDistance(nilpoint);
-  
+
   // find the four image points in the plane
   v0 = vv.getPlanePoint(dist, n0);
   v1 = vv.getPlanePoint(dist, n1);
@@ -593,13 +590,13 @@ SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
   inv.multVecMatrix(v3, v3);
 }
 
-SbVec2s 
+SbVec2s
 SoImage::getSize() const
 {
   assert(this->orgImageData);
-  
+
   SbVec2s size = this->orgImageData->getSize();
-  
+
   if (this->width.getValue() > 0) {
     size[0] = this->width.getValue();
   }
@@ -608,4 +605,3 @@ SoImage::getSize() const
   }
   return size;
 }
-

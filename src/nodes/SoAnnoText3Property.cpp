@@ -187,6 +187,8 @@ SoAnnoText3Property::doAction(SoAction *action)
     break;
   default:
     assert(0); // FIXME: do something a bit more elegant here. 19990315 mortene.
+    // Unnecessary, but kills a compiler warning.
+    hint = SoAnnoText3FontSizeHintElement::ANNOTATION;
     break;
   }
 
@@ -203,6 +205,8 @@ SoAnnoText3Property::doAction(SoAction *action)
     break;
   default:
     assert(0); // FIXME: do something a bit more elegant here. 19990315 mortene.
+    // Unnecessary, but kills a compiler warning.
+    print = SoAnnoText3RenderPrintElement::RENDER3D_PRINT_VECTOR;
     break;
   }
 

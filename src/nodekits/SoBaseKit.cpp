@@ -162,7 +162,7 @@ SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
         assert(0 && "list handling in nodekits missing");
       }
       else {
-#if 1 // debug
+#if 0 // debug
         SoDebugError::postInfo("SoBaseKit::getPart",
                                "hit: ``%s''", n.getString());
 #endif // debug
@@ -174,7 +174,7 @@ SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
         if (!ptr && makeifneeded) {
           // Recursively allocate parents.
           this->getPart(thiscat->getParentName(nr), TRUE);
-          
+
           SoType nodetype = thiscat->getDefaultType(nr);
           assert(nodetype.canCreateInstance());
           ptr = (SoNode *) nodetype.createInstance();

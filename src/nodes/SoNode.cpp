@@ -635,9 +635,8 @@ SoNode::GLRenderS(SoAction * const action,
     SoDebugError::postInfo("SoNode::GLRenderS",
                            "error: 0x%x, node: %s",
                            err, node->getTypeId().getName().getString());
-#endif // COIN_DEBUG
-    
   }
+#endif // COIN_DEBUG
 }
 
 /*!

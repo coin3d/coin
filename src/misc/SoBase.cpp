@@ -858,10 +858,10 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
   }
 
   if (ret) {
-    SbBool gotChar;
+    SbBool gotchar = FALSE; // Unnecessary, but kills a compiler warning.
     char c;
-    if (!in->isBinary() && (!(gotChar = in->read(c)) || c != OPEN_BRACE)) {
-      if (gotChar)
+    if (!in->isBinary() && (!(gotchar = in->read(c)) || c != OPEN_BRACE)) {
+      if (gotchar)
         SoReadError::post(in, "Expected '%c'; got '%c'", OPEN_BRACE, c);
       else
         SoReadError::post(in, "Expected '%c'; got EOF", OPEN_BRACE);
@@ -874,8 +874,8 @@ SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
         if (!ret) {
           flush = TRUE;
         }
-        else if (!(gotChar = in->read(c)) || c != CLOSE_BRACE) {
-          if (gotChar)
+        else if (!(gotchar = in->read(c)) || c != CLOSE_BRACE) {
+          if (gotchar)
             SoReadError::post(in, "Expected '%c'; got '%c'", CLOSE_BRACE, c);
           else
             SoReadError::post(in, "Expected '%c'; got EOF", CLOSE_BRACE);

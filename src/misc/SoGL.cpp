@@ -730,6 +730,7 @@ really_create_texture(const int wrapS, const int wrapT,
     break;
   default:
     assert(0);
+    glformat = GL_RGB; // Unnecessary, but kills a compiler warning.
   }
 
   if (quality < 0.5f) {

@@ -364,7 +364,7 @@ SoText2::GLRender(SoGLRenderAction * action)
       XTextExtents(fontstruct, s, strlen(s),
                    &direction, &ascent, &descent, &cs);
 
-      float xpos;
+      float xpos = 0.0; // init unnecessary, but kills a compiler warning.
       switch (this->justification.getValue()) {
       case SoText2::LEFT:
         xpos = nilpoint[0];
@@ -379,7 +379,6 @@ SoText2::GLRender(SoGLRenderAction * action)
       default:
         SoDebugError::post("SoText2::GLRender",
                            "value of justification field is invalid");
-        xpos = nilpoint[0];
         break;
 #endif // COIN_DEBUG
       }

@@ -115,6 +115,7 @@ SoBoolOperation::evaluate()
     default:
       //FIXME: ERROR!
       assert(0);
+      val=FALSE; // Unnecessary, but kills a compiler warning.
       break;
     }
 
