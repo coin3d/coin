@@ -959,7 +959,7 @@ SoGLLazyElement::setGLImageIdElt(uint32_t glimageid, SbBool alphatest)
 }
 
 void
-SoGLLazyElement::setAlphaTestElt(const SbBool onoff)
+SoGLLazyElement::setAlphaTestElt(SbBool onoff)
 {
   inherited::setAlphaTestElt(onoff);
 }
