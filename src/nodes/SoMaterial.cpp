@@ -373,7 +373,7 @@ SoMaterial::callback(SoCallbackAction * action)
     SoState * state = action->getState();
     if (one_black_color == NULL) {
       one_black_color = new SbColor(0.0f, 0.0f, 0.0f);
-      coin_atexit(material_cleanup);
+      coin_atexit((coin_atexit_f *)material_cleanup);
     }
     static float one_shininess[1] = {0.0f};
 

@@ -68,7 +68,7 @@ SoAmbientColorElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoAmbientColorElement, inherited);
   defaultambientcolor = new SbColor;
   defaultambientcolor->setValue(0.2f, 0.2f, 0.2f);
-  coin_atexit(SoAmbientColorElement_cleanup_func);
+  coin_atexit((coin_atexit_f *)SoAmbientColorElement_cleanup_func);
 }
 
 //! FIXME: write doc.

@@ -48,7 +48,8 @@ uint32_t coin_ntoh_uint32(uint32_t value);
 
 int coin_isascii(int c);
 
-void coin_atexit(void *);
+typedef void coin_atexit_f(void);
+void coin_atexit(coin_atexit_f *);
 
 /* ********************************************************************** */
 

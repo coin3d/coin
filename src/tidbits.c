@@ -427,7 +427,7 @@ coin_isascii(int c)
 typedef void(*atexit_func_type)(void);
 
 void
-coin_atexit(void * f)
+coin_atexit(coin_atexit_f * f)
 {
   (void)atexit((atexit_func_type)f);
 }

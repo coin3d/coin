@@ -202,7 +202,7 @@ void
 SoInteractionKit::initClass(void)
 {
   defaultdraggerparts = new SbList <SoNode*>;
-  coin_atexit(interactionkit_cleanup);
+  coin_atexit((coin_atexit_f *)interactionkit_cleanup);
 
   SO_KIT_INTERNAL_INIT_CLASS(SoInteractionKit);
 }

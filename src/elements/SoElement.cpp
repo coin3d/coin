@@ -257,7 +257,7 @@ SoElement::initClass(void)
   SoElement::initElements();
 
   // cleanup at exit
-  coin_atexit(SoElement::cleanup);
+  coin_atexit((coin_atexit_f *)SoElement::cleanup);
 }
 
 // atexit callback

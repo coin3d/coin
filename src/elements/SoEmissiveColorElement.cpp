@@ -70,7 +70,7 @@ SoEmissiveColorElement::initClass()
   SO_ELEMENT_INIT_CLASS(SoEmissiveColorElement, inherited);
   defaultemissivecolor = new SbColor;
   defaultemissivecolor->setValue(0.0f, 0.0f, 0.0f);
-  coin_atexit(SoEmissiveColorElement_cleanup_func);
+  coin_atexit((coin_atexit_f *)SoEmissiveColorElement_cleanup_func);
 }
 
 /*!

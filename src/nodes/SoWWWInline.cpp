@@ -160,7 +160,7 @@ get_private_data(const SoWWWInline * thisp)
 {
   if (private_data_dict == NULL) {
     private_data_dict = new SbDict;
-    coin_atexit(private_data_cleanup);
+    coin_atexit((coin_atexit_f *)private_data_cleanup);
   }
   void * pimpl;
   if (!private_data_dict->find((unsigned long) thisp, pimpl)) {
@@ -199,7 +199,7 @@ SoWWWInline::SoWWWInline()
   // systemloaders that hate static constructors in C++ libraries.
   if (SoWWWInline::bboxcolor == NULL) {
     SoWWWInline::bboxcolor = new SbColor(0.8f, 0.8f, 0.8f);
-    coin_atexit(SoWWWInline::cleanup);
+    coin_atexit((coin_atexit_f *)SoWWWInline::cleanup);
   }
 }
 

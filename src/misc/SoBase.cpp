@@ -265,7 +265,7 @@ SoBase::destroy(void)
 void
 SoBase::initClass(void)
 {
-  coin_atexit(SoBase::cleanClass);
+  coin_atexit((coin_atexit_f *)SoBase::cleanClass);
 
   // Avoid multiple attempts at initialization.
   assert(SoBase::classTypeId == SoType::badType());

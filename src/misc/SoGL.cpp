@@ -1730,7 +1730,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   if (numcoordindex && coordindex) {
     if (tmpcoordlist == NULL) {
       tmpcoordlist = new SbList <float>;
-      coin_atexit(nurbs_coord_cleanup);
+      coin_atexit((coin_atexit_f *)nurbs_coord_cleanup);
     }
     tmpcoordlist->truncate(0);
     for (int i = 0; i < numcoordindex; i++) {
@@ -1824,7 +1824,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       if (numtexcoordindex && texcoordindex) {
         if (tmptexcoordlist == NULL) {
           tmptexcoordlist = new SbList <float>;
-          coin_atexit(nurbs_texcoord_cleanup);
+          coin_atexit((coin_atexit_f *)nurbs_texcoord_cleanup);
         }
         tmptexcoordlist->truncate(0);
         for (int i = 0; i < numtexcoordindex; i++) {
@@ -2001,7 +2001,7 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
   if (numcoordindex && coordindex) {
     if (tmpcoordlist == NULL) {
       tmpcoordlist = new SbList <float>;
-      coin_atexit(nurbs_coord_cleanup);
+      coin_atexit((coin_atexit_f *)nurbs_coord_cleanup);
     }
     tmpcoordlist->truncate(0);
     for (int i = 0; i < numcoordindex; i++) {

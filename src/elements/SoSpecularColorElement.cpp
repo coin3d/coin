@@ -70,7 +70,7 @@ SoSpecularColorElement::initClass()
   SO_ELEMENT_INIT_CLASS(SoSpecularColorElement, inherited);
   defaultspecularcolor = new SbColor;
   defaultspecularcolor->setValue(0.0f, 0.0f, 0.0f);
-  coin_atexit(SoSpecularColorElement_cleanup_func);
+  coin_atexit((coin_atexit_f *)SoSpecularColorElement_cleanup_func);
 }
 
 /*!

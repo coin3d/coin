@@ -145,7 +145,7 @@ SoMarkerSet::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoMarkerSet);
   markerimages = new GLubyte[NUM_MARKERS*9*4]; // hardcoded markers, 32x9 bitmaps (9x9 used), dword alignment
   markerlist = new SbList<so_marker>;
-  coin_atexit(free_marker_images);
+  coin_atexit((coin_atexit_f *)free_marker_images);
   convert_bitmaps();
   so_marker temp;
   for (int i = 0; i < NUM_MARKERS; i++) {

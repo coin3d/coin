@@ -300,7 +300,7 @@ SoGlyph::getGlyph(const char character, const SbName &font)
 
   if (activeGlyphs == NULL) {
     activeGlyphs = new SbList <coin_glyph_info>;
-    coin_atexit(SoGlyph_cleanup);
+    coin_atexit((coin_atexit_f *)SoGlyph_cleanup);
   }
   int i, n = activeGlyphs->getLength();
   for (i = 0; i < n; i++) {

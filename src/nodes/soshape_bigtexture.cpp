@@ -123,7 +123,7 @@ bigtexture_begin_shape(SoState * state,
     bt_pvlist = new SbList <SoPrimitiveVertex*>;
     bt_regions = new bt_region[num];
     bt_numallocregions = num;
-    coin_atexit(cleanup_bigtexture);
+    coin_atexit((coin_atexit_f *)cleanup_bigtexture);
   }
   if (num > bt_numallocregions) {
     delete[] bt_regions;

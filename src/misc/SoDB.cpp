@@ -390,7 +390,7 @@ SoDB::init(void)
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage. This needs to be done last in init(), so we get
   // called _before_ clean() methods in other classes.
-  coin_atexit(SoDB::clean);
+  coin_atexit((coin_atexit_f *)SoDB::clean);
 #endif // COIN_DEBUG
 }
 
@@ -434,7 +434,7 @@ SoDB::getVersion(void)
 {
   if (coin_versionstring == NULL) {
     coin_versionstring = new SbString;
-    coin_atexit(cleanup_func);
+    coin_atexit((coin_atexit_f *)cleanup_func);
   }
   *coin_versionstring = "SIM Coin ";
   *coin_versionstring += COIN_VERSION;

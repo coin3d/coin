@@ -64,7 +64,7 @@ trisort_begin_shape(SoState *)
   if (transparencybuffer == NULL) {
     transparencybuffer = new SbList <SoPrimitiveVertex>;
     sorted_triangle_list = new SbList <sorted_triangle>;
-    coin_atexit(cleanup_transparencybuffer);
+    coin_atexit((coin_atexit_f *)cleanup_transparencybuffer);
   }
   transparencybuffer->truncate(0);
 }

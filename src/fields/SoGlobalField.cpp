@@ -115,7 +115,7 @@ SoGlobalField::initClass(void)
   SoGlobalField::allcontainers = new SoBaseList;
 
 #if COIN_DEBUG
-  coin_atexit(SoGlobalField::clean);
+  coin_atexit((coin_atexit_f *)SoGlobalField::clean);
 #endif // COIN_DEBUG
 }
 

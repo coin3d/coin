@@ -1008,7 +1008,7 @@ SoField::get(SbString & valuestring)
   if (field_buffer_size < STARTSIZE) {
     field_buffer = malloc(STARTSIZE);
     field_buffer_size = STARTSIZE;
-    coin_atexit(field_buffer_cleanup);
+    coin_atexit((coin_atexit_f *)field_buffer_cleanup);
   }
 
   out.setBuffer(field_buffer, field_buffer_size,

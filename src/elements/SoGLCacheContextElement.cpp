@@ -114,7 +114,7 @@ SoGLCacheContextElement::initClass(void)
 
   extsupportlist = new SbList <so_glext_info *>;
   scheduledeletelist = new SbList <SoGLDisplayList*>;
-  coin_atexit(soglcachecontext_cleanup);
+  coin_atexit((coin_atexit_f *)soglcachecontext_cleanup);
 }
 
 /*!

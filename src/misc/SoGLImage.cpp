@@ -265,7 +265,7 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
   int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*nc;
   if (memreq > mipmap_buffer_size) {
     if (mipmap_buffer == NULL) {
-      coin_atexit(fast_mipmap_cleanup);
+      coin_atexit((coin_atexit_f *)fast_mipmap_cleanup);
     }
     else delete [] mipmap_buffer;
     mipmap_buffer = new unsigned char[memreq];
@@ -1047,7 +1047,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
       (newz != (unsigned long) zsize)) { // We need to resize
     int numbytes = newx * newy * ((newz==0)?1:newz) * numcomponents;
     if (numbytes > glimage_tmpimagebuffersize) {
-      if (glimage_tmpimagebuffer == NULL) coin_atexit(cleanup_tmpimage);
+      if (glimage_tmpimagebuffer == NULL) coin_atexit((coin_atexit_f *)cleanup_tmpimage);
       else delete [] glimage_tmpimagebuffer;
       glimage_tmpimagebuffer = new unsigned char[numbytes];
       glimage_tmpimagebuffersize = numbytes;
@@ -1594,7 +1594,7 @@ SoGLImage::registerImage(SoGLImage *image)
 {
   if (glimage_reglist == NULL) {
     glimage_reglist = new SbList<SoGLImage*>;
-    coin_atexit(regimage_cleanup);
+    coin_atexit((coin_atexit_f *)regimage_cleanup);
   }
   assert(glimage_reglist->find(image) < 0);
   glimage_reglist->append(image);

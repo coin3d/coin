@@ -310,7 +310,7 @@ SoMField::get1(const int index, SbString & valuestring)
   if (mfield_buffer_size < STARTSIZE) {
     mfield_buffer = malloc(STARTSIZE);
     mfield_buffer_size = STARTSIZE;
-    coin_atexit(mfield_buffer_cleanup);
+    coin_atexit((coin_atexit_f *)mfield_buffer_cleanup);
   }
 
   out.setBuffer(mfield_buffer, mfield_buffer_size,

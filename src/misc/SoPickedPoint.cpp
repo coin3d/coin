@@ -372,7 +372,7 @@ SoPickedPoint::getMatrixAction() const
 {
   if (matrixAction == NULL) {
     matrixAction = new SoGetMatrixAction(this->viewport);
-    coin_atexit(clean_class);
+    coin_atexit((coin_atexit_f *)clean_class);
   }
   else {
     matrixAction->setViewportRegion(this->viewport);

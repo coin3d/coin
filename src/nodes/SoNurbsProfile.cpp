@@ -104,7 +104,7 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
 {
   if (coordListNurbsProfile == NULL) {
     coordListNurbsProfile = new SbList <float>;
-    coin_atexit(cleanupNurbsProfile);
+    coin_atexit((coin_atexit_f *)cleanupNurbsProfile);
   }
   numknots = this->knotVector.getNum();
   if (numknots) knotvector = (float *)(this->knotVector.getValues(0));
@@ -163,7 +163,7 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
 
   if (coordListNurbsProfile == NULL) {
     coordListNurbsProfile = new SbList <float>;
-    coin_atexit(cleanupNurbsProfile);
+    coin_atexit((coin_atexit_f *)cleanupNurbsProfile);
   }
   if (nurbsProfileTempList == NULL) {
     nurbsProfileTempList = new SbList <float>;

@@ -79,7 +79,7 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
 {
   if (coordListLinearProfile == NULL) {
     coordListLinearProfile = new SbList <float>;
-    coin_atexit(cleanupLinearProfile);
+    coin_atexit((coin_atexit_f *)cleanupLinearProfile);
   }
   numknots = 0;
   const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
@@ -113,7 +113,7 @@ SoLinearProfile::getVertices(SoState * state, int32_t & numvertices,
 {
   if (coordListLinearProfile == NULL) {
     coordListLinearProfile = new SbList <float>;
-    coin_atexit(cleanupLinearProfile);
+    coin_atexit((coin_atexit_f *)cleanupLinearProfile);
   }
   const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
     SoProfileCoordinateElement::getInstance(state);

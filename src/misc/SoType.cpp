@@ -130,7 +130,7 @@ SoType::init(void)
 #if COIN_DEBUG
   // Debugging for memory leaks will be easier if we can clean up the
   // resource usage.
-  coin_atexit(SoType::clean);
+  coin_atexit((coin_atexit_f *)SoType::clean);
 #endif // COIN_DEBUG
 
   // If any of these assert fails, it is probably because

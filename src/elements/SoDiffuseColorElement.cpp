@@ -76,7 +76,7 @@ SoDiffuseColorElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoDiffuseColorElement, inherited);
   defaultdiffusecolor = new SbColor;
   defaultdiffusecolor->setValue(0.8f, 0.8f, 0.8f);
-  coin_atexit(SoDiffuseColorElement_cleanup_func);
+  coin_atexit((coin_atexit_f *)SoDiffuseColorElement_cleanup_func);
 }
 
 //! FIXME: write doc.
