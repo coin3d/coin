@@ -58,7 +58,7 @@ SoMFString::initClass(void)
 #ifndef DOXYGEN_SKIP_THIS
 
 // This is implemented in the SoSFString class.
-extern void sosfstring_write_value(SoOutput * out, const SbString & val);
+extern void sosfstring_write_value(const SoField * f, SoOutput * out, const SbString & val);
 
 SbBool
 SoMFString::read1Value(SoInput * in, int idx)
@@ -70,7 +70,7 @@ SoMFString::read1Value(SoInput * in, int idx)
 void
 SoMFString::write1Value(SoOutput * out, int idx) const
 {
-  sosfstring_write_value(out, (*this)[idx]);
+  sosfstring_write_value(this, out, (*this)[idx]);
 }
 
 #endif // DOXYGEN_SKIP_THIS

@@ -765,12 +765,19 @@ SoOutput::write(const char * s)
 void
 SoOutput::write(const SbString & s)
 {
-  // FIXME: Verify correctness for !VRML97 formats (kintel 20030430)
-
   if (this->isBinary()) {
     this->write(s.getString());
   }
   else {
+    // Backslash-quote all apostrophe-characters, i.e. " -> \".
+    //
+    // Note that VRML97 also needs backslashes themselves to be
+    // backslash-quoted (like in e.g. C strings), but this is taken
+    // care of upstream (in SoSFString's write method), since we can't
+    // know here whether or not we're writing a VRML97 node.
+    //
+    // FIXME: SbString should have had a replaceAll() method, so we
+    // wouldn't have to spell out the iteration loop below. 20040614 mortene.
     SbString ws("\"");
     for (int i=0;i<s.getLength();i++) {
       if (s[i] == '"') ws += "\\";
