@@ -47,10 +47,7 @@
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-#ifdef HAVE_WINDOWS_H
-#include <windows.h> // Needed to include gl.h.
-#endif // HAVE_WINDOWS_H
-#include <GL/gl.h>
+#include <Inventor/system/gl.h>
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoLightModelElement.h>
@@ -61,7 +58,6 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#include <GL/gl.h>
 
 #include <Inventor/details/SoFaceDetail.h>
 

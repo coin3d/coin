@@ -33,10 +33,8 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#if HAVE_WINDOWS_H
-#include <windows.h>
-#endif
-#include <GL/gl.h>
+
+#include <Inventor/system/gl.h>
 
 typedef struct {
   int idx : 31;

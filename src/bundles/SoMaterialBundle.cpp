@@ -39,13 +39,12 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLColorIndexElement.h>
 #include <Inventor/misc/SoState.h>
+
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-#if HAVE_WINDOWS_H
-#include <windows.h> /* needed for gl.h */
-#endif // HAVE_WINDOWS_H
-#include <GL/gl.h>
+
+#include <Inventor/system/gl.h>
 
 /*!
   Constructor with \a action being the action applied to the

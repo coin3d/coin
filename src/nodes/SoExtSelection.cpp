@@ -73,11 +73,7 @@
 #include <config.h>
 #endif
 
-#ifdef HAVE_WINDOWS_H
-#include <windows.h>
-#endif
-
-#include <GL/gl.h>
+#include <Inventor/system/gl.h>
 #include <float.h>
 
 

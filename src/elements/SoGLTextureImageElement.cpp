@@ -33,10 +33,8 @@
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-#if HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
-#include <GL/gl.h>
+
+#include <Inventor/system/gl.h>
 
 SO_ELEMENT_SOURCE(SoGLTextureImageElement);
 

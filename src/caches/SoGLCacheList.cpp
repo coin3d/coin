@@ -41,10 +41,7 @@
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-#if HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
-#include <GL/gl.h>
+#include <Inventor/system/gl.h>
 
 // if we render once without any child nodes invalidating the cache,
 // this flag is set and we will try to create a cache.

@@ -48,10 +48,7 @@
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
-#ifdef HAVE_WINDOWS_H
-#include <windows.h> // Needed for stuff that GL/gl.h depends on.
-#endif // HAVE_WINDOWS_H
-#include <GL/gl.h>
+#include <Inventor/system/gl.h>
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 

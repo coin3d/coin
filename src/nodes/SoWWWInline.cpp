@@ -56,10 +56,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#ifdef HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
-#include <GL/gl.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
+#include <Inventor/system/gl.h>
 
 /*!
   \enum SoWWWInline::BboxVisibility

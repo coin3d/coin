@@ -56,10 +56,7 @@
 #endif // HAVE_CONFIG_H
 
 #if COIN_DEBUG
-#ifdef HAVE_WINDOWS_H
-#include <windows.h> // gl.h needs this
-#endif // HAVE_WINDOWS_H
-#include <GL/gl.h> // glGetError
+#include <Inventor/system/gl.h> // glGetError
 #endif // COIN_DEBUG
 
 /*!

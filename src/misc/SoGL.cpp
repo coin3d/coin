@@ -46,10 +46,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#if HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
-#include <GL/gl.h>
+#include <Inventor/system/gl.h>
 #include <GLUWrapper.h>
 
 #if GL_VERSION_1_1

@@ -56,10 +56,6 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#if HAVE_WINDOWS_H
-#include <windows.h>
-#endif // HAVE_WINDOWS_H
-
 #if !defined(X_DISPLAY_MISSING)
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
@@ -69,7 +65,7 @@
 #include <GL/glx.h>
 #endif // HAVE_GLX
 
-#include <GL/gl.h>
+#include <Inventor/system/gl.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
