@@ -183,7 +183,9 @@ private:
     { return this->statusflags.extstorage; }
 };
 
-#if !defined(COIN_INTERNAL)
+
+#ifndef COIN_INTERNAL
+// Added to be Inventor compliant.
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/fields/SoMField.h>
 #endif // !COIN_INTERNAL

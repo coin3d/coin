@@ -30,6 +30,7 @@
 */
 
 #include <Inventor/fields/SoMFVec2f.h>
+#include <SoSubFieldPrivate.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

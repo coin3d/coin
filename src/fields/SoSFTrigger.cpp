@@ -34,6 +34,7 @@
 */
 
 #include <Inventor/fields/SoSFTrigger.h>
+#include <SoSubFieldPrivate.h>
 
 
 SO_SFIELD_CONSTRUCTOR_SOURCE(SoSFTrigger);

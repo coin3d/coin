@@ -33,6 +33,7 @@
 */
 
 #include <Inventor/fields/SoSFColor.h>
+#include <SoSubFieldPrivate.h>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>

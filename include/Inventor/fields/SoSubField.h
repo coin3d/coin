@@ -23,8 +23,10 @@
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h> // SoType::createType() needs to know SbName.
 #include <assert.h>
+
 #ifndef COIN_INTERNAL
-// Added for Inventor compliance
+// Added to be Inventor compliant.
+#include <Inventor/fields/SoField.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #endif // !COIN_INTERNAL
@@ -118,14 +120,6 @@ public: \
   do { \
     const char * classname = SO__QUOTE(_class_); \
     PRIVATE_FIELD_INIT_CLASS(_class_, classname, _parent_, &_class_::createInstance); \
-  } while (0)
-
-
-
-#define SO_SFIELD_INTERNAL_INIT_CLASS(_class_) \
-  do { \
-    const char * classname = SO__QUOTE(_class_); \
-    PRIVATE_FIELD_INIT_CLASS(_class_, &classname[2], inherited, &_class_::createInstance); \
   } while (0)
 
 
@@ -270,11 +264,6 @@ public: \
 
 #define SO_MFIELD_INIT_CLASS(_class_, _parent_) \
   SO_SFIELD_INIT_CLASS(_class_, _parent_)
-
-
-
-#define SO_MFIELD_INTERNAL_INIT_CLASS(_class_) \
-  SO_SFIELD_INTERNAL_INIT_CLASS(_class_)
 
 
 

@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/fields/SoSFPath.h>
+#include <SoSubFieldPrivate.h>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>

@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/fields/SoSFEngine.h>
+#include <SoSubFieldPrivate.h>
 #include <Inventor/engines/SoEngine.h>
 #include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG

@@ -29,6 +29,7 @@
 */
 
 #include <Inventor/fields/SoSFUInt32.h>
+#include <SoSubFieldPrivate.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>

@@ -34,6 +34,7 @@
 */
 
 #include <Inventor/fields/SoMFNode.h>
+#include <SoSubFieldPrivate.h>
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/nodes/SoNode.h>
 #if COIN_DEBUG

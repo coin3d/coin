@@ -33,6 +33,7 @@
 */
 
 #include <Inventor/fields/SoSFString.h>
+#include <SoSubFieldPrivate.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
