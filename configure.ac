@@ -13,6 +13,11 @@ m4_define([COIN_ABI_CURRENT], [m4_eval((COIN_MAJOR*20)+COIN_MINOR)])
 m4_define([COIN_ABI_REVISION], [COIN_MICRO])
 m4_define([COIN_ABI_AGE], [COIN_MINOR])
 
+# For Mac OS X Compiler Frameworks:
+m4_define([MAC_FRAMEWORK_NAME_DEFAULT], [Inventor])
+m4_define([MAC_FRAMEWORK_PREFIX_DEFAULT], [/Library/Frameworks])
+m4_define([MAC_FRAMEWORK_VERSION_DEFAULT], [B])
+
 # **************************************************************************
 
 AC_PREREQ(2.50)
@@ -69,6 +74,22 @@ if $sim_ac_try_msvc; then
   ])
 fi
 
+# **************************************************************************
+# Mac OS X: gcc
+
+sim_ac_framework=false
+sim_ac_framework_name="MAC_FRAMEWORK_NAME_DEFAULT"
+sim_ac_framework_prefix="MAC_FRAMEWORK_PREFIX_DEFAULT"
+sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"
+
+AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
+
+AC_SUBST([MAC_FRAMEWORK], [$sim_ac_framework])
+AC_SUBST([MAC_FRAMEWORK_NAME], [$sim_ac_framework_name])
+AC_SUBST([MAC_FRAMEWORK_PREFIX], [$sim_ac_framework_prefix])
+AC_SUBST([MAC_FRAMEWORK_VERSION], [$sim_ac_framework_version])
+
+AC_SUBST([nop], [])
 
 # **************************************************************************
 
