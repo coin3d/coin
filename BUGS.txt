@@ -1049,6 +1049,12 @@
 
     20021209 rolvs
 
+    UPDATE 20030408 mortene: there is also a second bug here; the
+    scene bounding box is not calculated correctly, as can be seen by
+    loading this into e.g. the ExaminerViewer. The near clip plane
+    will clip part of the manip's geometry, something which should
+    never happen.
+
 =====================================================================
 
 046 Should interrupt attempts at 3D-texturing early when OpenGL can't
@@ -1554,5 +1560,56 @@
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
     20030404 mortene.
+
+=====================================================================
+
+064 SoCenterballDragger translation bug.
+
+    Load the scene below into e.g. the ExaminerViewer, and first
+    rotate, then translate the dragger. The translation after a
+    rotation does not seem to update the center field in the correct
+    manner.
+    
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+    
+    Separator {
+       Separator {
+    
+          Translation {
+             translation -4 0 0
+          }
+          DEF +0 CenterballDragger {
+          }
+       }
+       TransformSeparator {
+    
+          Translation {
+             translation 0 0 0 =
+             USE +0			. center
+          }
+          Rotation {
+             rotation 0 0 1  0 =
+             USE +0			. rotation
+          }
+    
+          Cube {
+             width 10
+             height 10
+             depth 0.25
+          }
+       }
+       Separator {
+    
+          Material {
+             diffuseColor 1 1 0
+          }
+          Cube {
+          }
+       }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    20030404 mortene. Reported by Wouter Bosma.
 
 =====================================================================
