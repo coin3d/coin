@@ -5,8 +5,6 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoAnnoText3.cpp SoAnnoText3.h \
-	SoAnnoText3Property.cpp SoAnnoText3Property.h \
 	SoAnnotation.cpp SoAnnotation.h \
 	SoAntiSquish.cpp SoAntiSquish.h \
 	SoArray.cpp SoArray.h \
@@ -44,7 +42,6 @@ ALLSOURCES = \
 	SoLOD.cpp SoLOD.h \
 	SoLabel.cpp SoLabel.h \
 	SoLevelOfDetail.cpp SoLevelOfDetail.h \
-	SoLevelOfSimplification.cpp SoLevelOfSimplification.h \
 	SoLight.cpp SoLight.h \
 	SoLightModel.cpp SoLightModel.h \
 	SoLineSet.cpp SoLineSet.h \
@@ -116,8 +113,6 @@ endif
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h \
 	$(top_srcdir)/include/Inventor/nodes/SoNodes.h \
-	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
-	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAntiSquish.h \
 	$(top_srcdir)/include/Inventor/nodes/SoArray.h \
@@ -155,7 +150,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoLOD.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLabel.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLevelOfDetail.h \
-	$(top_srcdir)/include/Inventor/nodes/SoLevelOfSimplification.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLight.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLightModel.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLineSet.h \

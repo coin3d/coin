@@ -277,7 +277,6 @@ SoNode::initClasses(void)
   SoPerspectiveCamera::initClass();
   SoOrthographicCamera::initClass();
   SoShape::initClass();
-  SoAnnoText3::initClass();
   SoAsciiText::initClass();
   SoCone::initClass();
   SoCube::initClass();
@@ -302,7 +301,6 @@ SoNode::initClasses(void)
   SoSphere::initClass();
   SoText2::initClass();
   SoText3::initClass();
-  SoAnnoText3Property::initClass();
   SoGroup::initClass();
   SoSeparator::initClass();
   SoAnnotation::initClass();
@@ -312,7 +310,6 @@ SoNode::initClasses(void)
   SoSwitch::initClass();
   SoBlinker::initClass();
   SoLOD::initClass();
-  SoLevelOfSimplification::initClass();
   SoLevelOfDetail::initClass();
   SoMultipleCopy::initClass();
   SoPathSwitch::initClass();
@@ -393,7 +390,7 @@ SoNode::setOverride(const SbBool state)
     // This change affects caches in the tree, so we must change our id
     // setting, so the caches are regenerated.
     this->uniqueId = SoNode::nextUniqueId++;
-    
+
     if (state) this->setStateFlags(FLAG_OVERRIDE);
     else this->clearStateFlags(FLAG_OVERRIDE);
   }
@@ -412,7 +409,7 @@ SoNode::isOverride(void) const
 
 /*!
   Sets the node type for this node to \a type. Since some nodes
-  should be handled differently in VRML1 vs. Inventor, this 
+  should be handled differently in VRML1 vs. Inventor, this
   should be used to get correct behavior for those cases.
   The default node type is INVENTOR.
 
@@ -420,7 +417,7 @@ SoNode::isOverride(void) const
 
   \sa getNodeType()
 */
-void 
+void
 SoNode::setNodeType(const NodeType type)
 {
   // make sure we have enogh bits to store this type
@@ -428,17 +425,17 @@ SoNode::setNodeType(const NodeType type)
   // clear old type
   this->clearStateFlags(FLAG_TYPEMASK);
   // set new type
-  this->setStateFlags((uint32_t) type);  
+  this->setStateFlags((uint32_t) type);
 }
 
 /*!
   Returns the node type set for this node.
-  
+
   This method is an extension versus the Open Inventor API.
 
   \sa setNodeType()
 */
-SoNode::NodeType 
+SoNode::NodeType
 SoNode::getNodeType(void) const
 {
   uint32_t type = this->stateflags & FLAG_TYPEMASK;
@@ -1004,7 +1001,7 @@ SoNode::getFieldDataPtr(void)
 /*!
   Overloaded to set node type.
 */
-SbBool 
+SbBool
 SoNode::readInstance(SoInput * in, unsigned short flags)
 {
   SbBool ret = inherited::readInstance(in, flags);

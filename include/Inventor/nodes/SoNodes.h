@@ -25,7 +25,6 @@
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/nodes/SoAnnoText3.h>
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoCube.h>
@@ -50,7 +49,6 @@
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoText3.h>
-#include <Inventor/nodes/SoAnnoText3Property.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoAnnotation.h>
@@ -62,7 +60,6 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoBlinker.h>
 #include <Inventor/nodes/SoLOD.h>
-#include <Inventor/nodes/SoLevelOfSimplification.h>
 #include <Inventor/nodes/SoLevelOfDetail.h>
 #include <Inventor/nodes/SoMultipleCopy.h>
 #include <Inventor/nodes/SoPathSwitch.h>

@@ -17,8 +17,6 @@
  *
 \**************************************************************************/
 
-#include "SoAnnoText3.cpp"
-#include "SoAnnoText3Property.cpp"
 #include "SoAnnotation.cpp"
 #include "SoAntiSquish.cpp"
 #include "SoArray.cpp"
@@ -56,7 +54,6 @@
 #include "SoLOD.cpp"
 #include "SoLabel.cpp"
 #include "SoLevelOfDetail.cpp"
-#include "SoLevelOfSimplification.cpp"
 #include "SoLight.cpp"
 #include "SoLightModel.cpp"
 #include "SoLineSet.cpp"

@@ -115,8 +115,6 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
-@HACKING_COMPACT_BUILD_FALSE@	SoAnnoText3.cpp SoAnnoText3.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoAnnoText3Property.cpp SoAnnoText3Property.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoAnnotation.cpp SoAnnotation.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoAntiSquish.cpp SoAntiSquish.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoArray.cpp SoArray.h \
@@ -154,7 +152,6 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoLOD.cpp SoLOD.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoLabel.cpp SoLabel.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoLevelOfDetail.cpp SoLevelOfDetail.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoLevelOfSimplification.cpp SoLevelOfSimplification.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoLight.cpp SoLight.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoLightModel.cpp SoLightModel.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoLineSet.cpp SoLineSet.h \
@@ -225,8 +222,6 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h \
 	$(top_srcdir)/include/Inventor/nodes/SoNodes.h \
-	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
-	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAntiSquish.h \
 	$(top_srcdir)/include/Inventor/nodes/SoArray.h \
@@ -264,7 +259,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoLOD.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLabel.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLevelOfDetail.h \
-	$(top_srcdir)/include/Inventor/nodes/SoLevelOfSimplification.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLight.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLightModel.h \
 	$(top_srcdir)/include/Inventor/nodes/SoLineSet.h \
@@ -364,8 +358,7 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libnodes_la_LDFLAGS = 
 libnodes_la_LIBADD = 
-@HACKING_COMPACT_BUILD_FALSE@am_libnodes_la_OBJECTS =  SoAnnoText3.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3Property.lo SoAnnotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@am_libnodes_la_OBJECTS =  SoAnnotation.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoAntiSquish.lo SoArray.lo SoAsciiText.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoBaseColor.lo SoBlinker.lo SoCallback.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoCamera.lo SoClipPlane.lo SoColorIndex.lo \
@@ -380,8 +373,7 @@ libnodes_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoIndexedNurbsSurface.lo SoIndexedShape.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoIndexedTriangleStripSet.lo SoInfo.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLevelOfSimplification.lo SoLight.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLightModel.lo SoLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLight.lo SoLightModel.lo SoLineSet.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoLinearProfile.lo SoLocateHighlight.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoMarkerSet.lo SoMaterial.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoMaterialBinding.lo SoMatrixTransform.lo \
@@ -420,7 +412,6 @@ libnodes_la_OBJECTS =  $(am_libnodes_la_OBJECTS)
 libnodes@SUFFIX@LINKHACK_la_LDFLAGS = 
 libnodes@SUFFIX@LINKHACK_la_LIBADD = 
 @HACKING_COMPACT_BUILD_FALSE@am_libnodes@SUFFIX@LINKHACK_la_OBJECTS =  \
-@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3.lo SoAnnoText3Property.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoAsciiText.lo SoBaseColor.lo SoBlinker.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoCallback.lo SoCamera.lo SoClipPlane.lo \
@@ -436,8 +427,7 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoIndexedNurbsSurface.lo SoIndexedShape.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoIndexedTriangleStripSet.lo SoInfo.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLevelOfSimplification.lo SoLight.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoLightModel.lo SoLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLight.lo SoLightModel.lo SoLineSet.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoLinearProfile.lo SoLocateHighlight.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoMarkerSet.lo SoMaterial.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoMaterialBinding.lo SoMatrixTransform.lo \
@@ -490,8 +480,7 @@ $(libnodes@SUFFIX@LINKHACK_la_SOURCES)
 HEADERS =  $(libnodesinc_HEADERS)
 
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP@DEP_FILES =  $(DEPDIR)/SoAnnoText3.Plo \
-@AMDEP@$(DEPDIR)/SoAnnoText3Property.Plo $(DEPDIR)/SoAnnotation.Plo \
+@AMDEP@DEP_FILES =  $(DEPDIR)/SoAnnotation.Plo \
 @AMDEP@$(DEPDIR)/SoAntiSquish.Plo $(DEPDIR)/SoArray.Plo \
 @AMDEP@$(DEPDIR)/SoAsciiText.Plo $(DEPDIR)/SoBaseColor.Plo \
 @AMDEP@$(DEPDIR)/SoBlinker.Plo $(DEPDIR)/SoCallback.Plo \
@@ -510,8 +499,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@$(DEPDIR)/SoIndexedNurbsSurface.Plo $(DEPDIR)/SoIndexedShape.Plo \
 @AMDEP@$(DEPDIR)/SoIndexedTriangleStripSet.Plo $(DEPDIR)/SoInfo.Plo \
 @AMDEP@$(DEPDIR)/SoLOD.Plo $(DEPDIR)/SoLabel.Plo \
-@AMDEP@$(DEPDIR)/SoLevelOfDetail.Plo \
-@AMDEP@$(DEPDIR)/SoLevelOfSimplification.Plo $(DEPDIR)/SoLight.Plo \
+@AMDEP@$(DEPDIR)/SoLevelOfDetail.Plo $(DEPDIR)/SoLight.Plo \
 @AMDEP@$(DEPDIR)/SoLightModel.Plo $(DEPDIR)/SoLineSet.Plo \
 @AMDEP@$(DEPDIR)/SoLinearProfile.Plo $(DEPDIR)/SoLocateHighlight.Plo \
 @AMDEP@$(DEPDIR)/SoMarkerSet.Plo $(DEPDIR)/SoMaterial.Plo \
@@ -674,8 +662,6 @@ GTAGS:
 distclean-tags:
 	-rm -f TAGS ID
 
-@AMDEP@@_am_include@ $(DEPDIR)/SoAnnoText3.Plo
-@AMDEP@@_am_include@ $(DEPDIR)/SoAnnoText3Property.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoAnnotation.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoAntiSquish.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoArray.Plo
@@ -713,7 +699,6 @@ distclean-tags:
 @AMDEP@@_am_include@ $(DEPDIR)/SoLOD.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoLabel.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoLevelOfDetail.Plo
-@AMDEP@@_am_include@ $(DEPDIR)/SoLevelOfSimplification.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoLight.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoLightModel.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoLineSet.Plo

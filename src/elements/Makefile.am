@@ -75,7 +75,6 @@ ALLSOURCES = \
 	SoNormalBindingElement.cpp SoNormalBindingElement.h \
 	SoNormalElement.cpp SoNormalElement.h \
 	SoOverrideElement.cpp SoOverrideElement.h \
-	SoPROTOElement.cpp SoPROTOElement.h \
 	SoPickRayElement.cpp SoPickRayElement.h \
 	SoPickStyleElement.cpp SoPickStyleElement.h \
 	SoPointSizeElement.cpp SoPointSizeElement.h \
@@ -180,7 +179,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoNormalBindingElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoNormalElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoOverrideElement.h \
-	$(top_srcdir)/include/Inventor/elements/SoPROTOElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoPickRayElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoPickStyleElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoPointSizeElement.h \

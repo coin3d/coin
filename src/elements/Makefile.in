@@ -185,7 +185,6 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoNormalBindingElement.cpp SoNormalBindingElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoNormalElement.cpp SoNormalElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoOverrideElement.cpp SoOverrideElement.h \
-@HACKING_COMPACT_BUILD_FALSE@	SoPROTOElement.cpp SoPROTOElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickRayElement.cpp SoPickRayElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoPickStyleElement.cpp SoPickStyleElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoPointSizeElement.cpp SoPointSizeElement.h \
@@ -289,7 +288,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoNormalBindingElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoNormalElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoOverrideElement.h \
-	$(top_srcdir)/include/Inventor/elements/SoPROTOElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoPickRayElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoPickStyleElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoPointSizeElement.h \
@@ -413,8 +411,7 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoModelMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoNormalBindingElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoNormalElement.lo SoOverrideElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPROTOElement.lo SoPickRayElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPickStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickRayElement.lo SoPickStyleElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoPointSizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoPolygonOffsetElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinateElement.lo \
@@ -504,8 +501,7 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoModelMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoNormalBindingElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoNormalElement.lo SoOverrideElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPROTOElement.lo SoPickRayElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@SoPickStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickRayElement.lo SoPickStyleElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoPointSizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoPolygonOffsetElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinateElement.lo \
@@ -609,8 +605,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@$(DEPDIR)/SoModelMatrixElement.Plo \
 @AMDEP@$(DEPDIR)/SoNormalBindingElement.Plo \
 @AMDEP@$(DEPDIR)/SoNormalElement.Plo $(DEPDIR)/SoOverrideElement.Plo \
-@AMDEP@$(DEPDIR)/SoPROTOElement.Plo $(DEPDIR)/SoPickRayElement.Plo \
-@AMDEP@$(DEPDIR)/SoPickStyleElement.Plo \
+@AMDEP@$(DEPDIR)/SoPickRayElement.Plo $(DEPDIR)/SoPickStyleElement.Plo \
 @AMDEP@$(DEPDIR)/SoPointSizeElement.Plo \
 @AMDEP@$(DEPDIR)/SoPolygonOffsetElement.Plo \
 @AMDEP@$(DEPDIR)/SoProfileCoordinateElement.Plo \
@@ -831,7 +826,6 @@ distclean-tags:
 @AMDEP@@_am_include@ $(DEPDIR)/SoNormalBindingElement.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoNormalElement.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoOverrideElement.Plo
-@AMDEP@@_am_include@ $(DEPDIR)/SoPROTOElement.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoPickRayElement.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoPickStyleElement.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoPointSizeElement.Plo

@@ -85,7 +85,6 @@
 #include "SoNormalBindingElement.cpp"
 #include "SoNormalElement.cpp"
 #include "SoOverrideElement.cpp"
-#include "SoPROTOElement.cpp"
 #include "SoPickRayElement.cpp"
 #include "SoPickStyleElement.cpp"
 #include "SoPointSizeElement.cpp"
