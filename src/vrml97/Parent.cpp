@@ -35,6 +35,8 @@
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/nodes/SoInfo.h>
+#include <Inventor/C/tidbitsp.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -84,6 +86,14 @@ public:
 
 #endif // DOXYGEN_SKIP_PRIVATE(this)
 
+static SoInfo * vrmlparent_nullnode = NULL;
+
+static void
+vrmlparent_cleanup(void)
+{
+  vrmlparent_nullnode->unref();
+  vrmlparent_nullnode = NULL;
+}
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLParent);
 
@@ -92,6 +102,10 @@ void
 SoVRMLParent::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVRMLParent, SO_VRML97_NODE_TYPE);
+  // used when the 'children' field contains NULL-nodes
+  vrmlparent_nullnode = new SoInfo;
+  vrmlparent_nullnode->ref();
+  coin_atexit((coin_atexit_f*) vrmlparent_cleanup, 0);
 }
 
 #define PRIVATE(thisp) ((thisp)->pimpl)
@@ -356,7 +370,15 @@ SoVRMLParent::updateChildList(const SoNode * const * nodes,
   if (numnodes == cl.getLength()) {
     const SoNode ** clarr = (const SoNode**) cl.getArrayPtr();
     for (i = 0; i < numnodes; i++) {
-      if (clarr[i] != nodes[i]) break;
+      // if the MFNode contains NULL values, we insert a dummy node
+      // (of type SoInfo). This is to simplify the traversal code, and
+      // to make it easier to check if the SoChildList is up-to-date
+      if (clarr[i] == NULL) {
+        if (nodes[i] != vrmlparent_nullnode) break;
+      }
+      else {        
+        if (clarr[i] != nodes[i]) break;
+      }
     }
     if (i == numnodes) needcopy = FALSE;
   }
@@ -365,6 +387,10 @@ SoVRMLParent::updateChildList(const SoNode * const * nodes,
     for (i = 0; i < numnodes; i++) {
       if (nodes[i]) {
         cl.append((SoNode*) nodes[i]);
+      }
+      else {
+        // insert a dummy SoInfo node
+        cl.append(vrmlparent_nullnode);
       }
     }
   }

@@ -309,9 +309,7 @@ SoMFNode::read1Value(SoInput * in, int index)
   SoSFNode sfnode;
   SbBool result = sfnode.readValue(in);
   if (result) {
-    result = sfnode.getValue() != NULL;
-    if (result) this->set1Value(index, sfnode.getValue());
-    else SoReadError::post(in, "NULL values in MFNode not allowed");
+    this->set1Value(index, sfnode.getValue());
   }
   return result;
 }
