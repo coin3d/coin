@@ -85,7 +85,7 @@ public:
   SoNode * getNodeAppliedTo(void) const;
   SoPath * getPathAppliedTo(void) const;
   const SoPathList * getPathListAppliedTo(void) const;
-  const SoPathList * getOriginalPathListAppliedto(void) const;
+  const SoPathList * getOriginalPathListAppliedTo(void) const;
 
   SbBool isLastPathListAppliedTo(void) const;
 

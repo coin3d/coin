@@ -407,7 +407,7 @@ SoAction::getPathListAppliedTo(void) const
 */
 
 const SoPathList *
-SoAction::getOriginalPathListAppliedto(void) const
+SoAction::getOriginalPathListAppliedTo(void) const
 {
   return this->appliedcode == SoAction::PATH_LIST ?
     this->applieddata.pathlistdata.origpathlist : NULL;
