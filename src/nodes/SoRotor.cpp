@@ -200,6 +200,9 @@ SoRotor::setRotation(void)
 
   float angle = PRIVATE(this)->startangle + diffangle;
 
+  if (angle < 0.0f) {
+    angle = (float) (2.0 * M_PI - fmod((double)-angle, M_PI*2.0));
+  }
   if (angle > M_PI * 2.0f) {
     angle = (float) fmod((double)angle, M_PI * 2.0);
   }
