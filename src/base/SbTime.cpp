@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -37,6 +37,7 @@
 #include <string.h>
 #include <limits.h>
 #include <errno.h>
+#include <math.h>
 #include "../tidbits.h" // coin_strncasecmp()
 
 #ifdef HAVE_CONFIG_H
@@ -141,6 +142,8 @@ SbTime::maxTime(void)
 }
 
 
+// FIXME: get rid of this ugly (not-really-)platform-check #if.
+// 20020307 mortene.
 #ifndef _WIN32
 /*!
   Returns an SbTime instance representing the maximum representable
@@ -249,12 +252,59 @@ SbTime::getValue(struct timeval * tv) const
 /*!
   Return number of milliseconds which the SbTime instance represents.
 
-  \sa setMsecValue().
+  Important note: you should in general avoid using this function, as
+  it has an inherent API design flaw (from the original SGI Open
+  Inventor design). The problem is that an unsigned long wraps around
+  in a fairly short time when used for counting milliseconds: in less
+  than 50 days. (And since SbTime instances are often initialized to
+  be the time since the start of the epoch (ie 1970-01-01 00:00), the
+  value will have wrapped around many, many times.)
+
+  You are probably better off using the getValue() method which
+  returns a double for the number of seconds, then multiply by 1000.0
+  if you need to know the current number of milliseconds of the SbTime
+  instance.
+
+  \sa setMsecValue()
  */
 unsigned long
 SbTime::getMsecValue(void) const
 {
-  return (unsigned long)(this->dtime * 1000.0);
+  double d = this->dtime * 1000.0;
+
+  // Check for overflow in the double->ulong cast at return.
+  if (d > (double)ULONG_MAX) {
+#if COIN_DEBUG
+    static SbBool first = TRUE;
+    if (first) {
+      SoDebugError::postWarning("SbTime::getMsecValue",
+                                "timer overflow -- consider using "
+                                "SbTime::getValue() instead");
+      first = FALSE;
+    }
+#endif // COIN_DEBUG
+
+    // Wrap the value. This actually happens automatically on x86
+    // Linux, MIPS IRIX, x86 MSWin etc when casting from a too large
+    // double to an unsigned long -- but not on for instance Mac OS X
+    // when the endianness is most significant byte first. And indeed,
+    // Kernighan & Ritchie's "The C Programming Language", 2nd edition
+    // says: "[...] if the resulting value [of a conversion from a
+    // floating type to an integral type] cannot be represented in the
+    // integral type, the behavior is undefined."
+    //
+    // So we do the modulo explicitly to be guaranteed to get the same
+    // behavior on every platform. (And the reason we do a modulo
+    // instead of for instance a clamp or just ignore the problem and
+    // return garbage, is that it is likely that there is application
+    // code already written for Coin / SGI/TGS Inventor which depends
+    // on the modulo behavior.)
+
+    d = fmod(d, ULONG_MAX);
+  }
+
+
+  return (unsigned long)d;
 }
 
 /*!
