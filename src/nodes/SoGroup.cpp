@@ -305,7 +305,7 @@ SoGroup::doAction(SoAction * action)
   const int * indices;
   switch(action->getPathCode(numIndices, indices)) {
   case SoAction::IN_PATH: 
-    // FIXME: not necessary to traverse children which do no
+    // FIXME: not necessary to traverse children which do not
     // affect state and is not in indices[] ?
     // But, traversal will stop pretty soon anyway, so it might
     // be slower to include a check here. pederb, 990618
@@ -442,6 +442,7 @@ SoGroup::write(SoWriteAction * action)
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;
     this->writeInstance(out);
+    if (out->isBinary()) out->write(this->getNumChildren());
     SoGroup::doAction((SoAction *)action);
     this->writeFooter(out);
   }

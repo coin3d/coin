@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SO_BASIC_H_
-#define _SO_BASIC_H_
+#ifndef __SOBASIC_H__
+#define __SOBASIC_H__
 
 #include <Inventor/SbBasic.h>
 
@@ -34,4 +34,4 @@
 #define SO__CONCAT(str1, str2)   str1/**/str2
 #endif // Non-ANSI C
 
-#endif // ! _SO_BASIC_H_
+#endif // !__SOBASIC_H__

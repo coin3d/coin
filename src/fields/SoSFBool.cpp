@@ -208,7 +208,7 @@ SoSFBool::cleanClass(void)
 SbBool
 SoSFBool::readValue(SoInput * in)
 {
-  // FIXME: read binary format. 19990621 mortene.
+  assert(!in->isBinary() && "FIXME: read binary format. 19990621 mortene");
 
   // accept 0 or 1
   if (in->read(value)) {

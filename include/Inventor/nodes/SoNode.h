@@ -34,8 +34,8 @@
 // Trigger setting of action dependencies.
 #include <Inventor/actions/SoAction.h>
 
-// Remove all nodes, except the abstract SoNode base class, SoInfo and
-// SoGroup (all used for testing purposes).
+// Remove all nodes, except the abstract SoNode base class and the
+// ones commented out below.
 #define COIN_EXCLUDE_SOANNOTATION 1
 #define COIN_EXCLUDE_SOANNOTEXT3 1
 #define COIN_EXCLUDE_SOANNOTEXT3PROPERTY 1
@@ -63,6 +63,7 @@
 #define COIN_EXCLUDE_SOFILE 1
 #define COIN_EXCLUDE_SOFONT 1
 #define COIN_EXCLUDE_SOFONTSTYLE 1
+//  #define COIN_EXCLUDE_SOGROUP 1
 #define COIN_EXCLUDE_SOIMAGE 1
 #define COIN_EXCLUDE_SOINDEXEDFACESET 1
 #define COIN_EXCLUDE_SOINDEXEDLINESET 1
@@ -70,6 +71,7 @@
 #define COIN_EXCLUDE_SOINDEXEDNURBSSURFACE 1
 #define COIN_EXCLUDE_SOINDEXEDSHAPE 1
 #define COIN_EXCLUDE_SOINDEXEDTRIANGLESTRIPSET 1
+//  #define COIN_EXCLUDE_SOINFO 1
 #define COIN_EXCLUDE_SOLABEL 1
 #define COIN_EXCLUDE_SOLEVELOFDETAIL 1
 #define COIN_EXCLUDE_SOLEVELOFSIMPLIFICATION 1

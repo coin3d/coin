@@ -315,8 +315,8 @@ SoSwitch::affectsState(void) const
   if (idx == SO_SWITCH_NONE) return FALSE;
   if (idx >= this->getNumChildren()) return FALSE;
   if (idx >= 0 && !this->getChild(idx)->affectsState()) return FALSE;
-  
-  // inherited or all
+  // FIXME: cover SO_SWITCH_INHERIT and SO_SWITCH_ALL.
+
   return TRUE;
 }
 

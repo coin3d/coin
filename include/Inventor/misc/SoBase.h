@@ -99,7 +99,8 @@ private:
   struct {
     int16_t referencecount  : 15;
     uint16_t writerefcount  : 15;
-    unsigned int multiwrite :  1;
+    unsigned int multirefs  :  1;
+    unsigned int ingraph    :  1;
   } objdata;
 
   // Don't convert this to a pointer reference, as practically

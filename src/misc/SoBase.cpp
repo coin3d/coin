@@ -103,7 +103,8 @@ SoBase::SoBase(void)
 {
   this->objdata.referencecount = 0;
   this->objdata.writerefcount = 0;
-  this->objdata.multiwrite = FALSE;
+  this->objdata.multirefs = FALSE;
+  this->objdata.ingraph = FALSE;
 }
 
 /*!
@@ -457,19 +458,30 @@ SoBase::getAuditors(void) const
 void
 SoBase::addWriteReference(SoOutput * out, SbBool isFromField)
 {
-  if (this->objdata.writerefcount == 0) this->objdata.multiwrite = FALSE;
+  assert(out->getStage() == SoOutput::COUNT_REFS);
+
   this->objdata.writerefcount++;
-  if (this->objdata.writerefcount > 1) this->objdata.multiwrite = TRUE;
+  if (this->objdata.writerefcount > 1) this->objdata.multirefs = TRUE;
+  if (!isFromField) this->objdata.ingraph = TRUE;
 }
 
 /*!
-  FIXME: write doc
+  Returns \a TRUE if this object should be written out during a write action.
+  Will return \a FALSE if no references to this object has been made in the
+  scene graph.
+
+  Note that connections from the fields of fieldcontainer objects is not
+  alone a valid reason for writing out the object -- there must also be at
+  least one reference directly from another SoBase (like a parent/child
+  relationship, for instance).
+
+  This method will return a valid result only during the second pass of
+  write actions.
  */
 SbBool
 SoBase::shouldWrite(void)
 {
-  assert(0 && "FIXME: not implemented");
-  return TRUE;
+  return (this->objdata.ingraph == TRUE);
 }
 
 /*!
@@ -549,6 +561,8 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
 SbBool
 SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
 {
+  assert(!in->isBinary() && "FIXME: can't handle binary input");
+
   assert(expectedType != SoType::badType());
   base = NULL;
 
@@ -627,13 +641,13 @@ SoBase::getTraceRefs(void)
 
 /*!
   Returns \a TRUE if this object will be written more than once upon
-  export. Note that the result from this method is only valid during a
-  write action.
+  export. Note that the result from this method is only valid during the
+  second pass of a write action.
  */
 SbBool
 SoBase::hasMultipleWriteRefs(void) const
 {
-  return this->objdata.multiwrite != FALSE;
+  return this->objdata.multirefs;
 }
 
 /*!
@@ -657,24 +671,27 @@ SoBase::hasMultipleWriteRefs(void) const
 SbBool
 SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
 {
-  // FIXME: doesn't handle binary mode writes. 19990610 mortene.
-  assert(!out->isBinary());
   // FIXME: doesn't handle groups. 19990629 mortene.
 //    assert(!isGroup);
   // FIXME: doesn't handle engines. 19990629 mortene.
   assert(!isEngine);
 
-  out->write(END_OF_LINE);
-  out->indent();
+  if (!out->isBinary()) {
+    out->write(END_OF_LINE);
+    out->indent();
+  }
 
   SbName name = this->getName();
   int refid = out->findReference(this);
   SbBool firstwrite = refid == -1;
-  SbBool multiwrite = this->hasMultipleWriteRefs();
+  SbBool multiref = this->hasMultipleWriteRefs();
 
-  if (multiwrite && firstwrite) refid = out->addReference(this);
+  if (multiref && firstwrite) refid = out->addReference(this);
 
-  if (multiwrite && !firstwrite) {
+  if (!firstwrite) {
+    // FIXME: doesn't handle binary mode writes. 19990610 mortene.
+    assert(!out->isBinary());
+
     out->write(REFERENCE_KEYWORD);
     out->write(' ');
     out->write(name.getString());
@@ -682,11 +699,14 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
     out->write(refid);
   }
   else {
-    if (name.getLength() || multiwrite) {
+    if (name.getLength() || multiref) {
+      // FIXME: doesn't handle binary mode writes. 19990610 mortene.
+      assert(!out->isBinary());
+
       out->write(DEFINITION_KEYWORD);
       out->write(' ');
       out->write(name.getString());
-      if (multiwrite) {
+      if (multiref) {
 	out->write(SoBase::refwriteprefix.getString());
 	out->write(refid);
       }
@@ -694,14 +714,31 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
     }
 
     out->write(this->getFileFormatName());
-    out->write(" {");
-    out->write(END_OF_LINE);
-  
-    out->incrementIndent();
+    if (out->isBinary()) {
+      // Not too sure about the correctness of this bitflag integer..
+      uint32_t flags = 0x0;
+      if (isGroup) flags |= 0x2;
+      if (isEngine) assert(0 && "FIXME: not implemented yet");
+      out->write(flags);
+    }
+    else {
+      out->write(" {");
+      out->write(END_OF_LINE);
+      out->incrementIndent();
+    }
   }
 
-  ((SoBase *)this)->objdata.writerefcount--;
-  return (multiwrite && !firstwrite);
+  SoBase * thisp = (SoBase *)this;
+  thisp->objdata.writerefcount--;
+  if (this->objdata.writerefcount == 0) {
+    // Make ready for next inital write action pass.
+    thisp->objdata.ingraph = FALSE;
+    thisp->objdata.multirefs = FALSE;
+  }
+
+  // Don't need to write out the rest if we are writing anything but
+  // the first instance.
+  return (firstwrite == FALSE);
 }
 
 /*!
@@ -711,12 +748,14 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
 void
 SoBase::writeFooter(SoOutput * out) const
 {
-  // FIXME: doesn't handle binary mode writes. 19990610 mortene.
-  assert(!out->isBinary());
-
-  out->decrementIndent();
-  out->indent();
-  out->write('}');
+  if (!out->isBinary()) {
+    out->decrementIndent();
+    out->indent();
+    out->write('}');
+  }
+  else {
+    // FIXME: sumpin' needed here? 19990707 mortene.
+  }
 }
 
 /*!
@@ -754,6 +793,8 @@ SoBase::freeLists(unsigned long, void * value)
 SbBool
 SoBase::readReference(SoInput * in, SoBase *& base)
 {
+  assert(!in->isBinary() && "FIXME: can't handle binary input");
+
   SoBase * baseptr = NULL;
 
   SbName refName;
@@ -777,6 +818,8 @@ SoBase::readReference(SoInput * in, SoBase *& base)
 SbBool
 SoBase::readBase(SoInput * in, SbName & className, SoBase *& base)
 {
+  assert(!in->isBinary() && "FIXME: can't handle binary input");
+
 #if 0 // debug
   SoDebugError::postInfo("SoBase::readBase", "className: '%s'",
 			 className.getString());
@@ -846,6 +889,8 @@ SbBool
 SoBase::readBaseInstance(SoInput * in, const SbName & className,
 			 const SbName & refName, SoBase *& base)
 {
+  assert(!in->isBinary() && "FIXME: can't handle binary input");
+
   SbBool retval = FALSE, protoparsing = FALSE;
 
   if (base = SoBase::createInstance(in, className)) {

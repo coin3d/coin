@@ -177,6 +177,3 @@ private:
 };
 
 #endif // !__SOACTION_H__
-
-
-

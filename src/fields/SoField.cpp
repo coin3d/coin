@@ -61,6 +61,9 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/engines/SoFieldConverter.h>
 #endif // !COIN_EXCLUDE_SOFIELDCONVERTER
+#if !defined(COIN_EXCLUDE_SOWRITEACTION)
+#include <Inventor/actions/SoWriteAction.h>
+#endif // !COIN_EXCLUDE_SOWRITEACTION
 
 static const char IGNOREDCHAR = '~';
 // FIXME: '\n' not correct on win32/mac? 19980910 mortene.
@@ -1175,6 +1178,8 @@ SoField::read(SoInput * in, const SbName & name)
 void
 SoField::write(SoOutput * out, const SbName & name) const
 {
+#if !defined(COIN_EXCLUDE_SOWRITEACTION)
+
   // ASCII write.
   if (!out->isBinary()) {
     if(!this->shouldWrite()) return;
@@ -1190,10 +1195,10 @@ SoField::write(SoOutput * out, const SbName & name) const
       out->write(' ');
       out->write(IGNOREDCHAR);
     }
-    out->write(EOLSTR);
+    
+    if (this->isConnected()) this->writeConnection(out);
 
-    assert(!this->isConnected() &&
-	   "FIXME: ascii export of connections not implemented yet");
+    out->write(EOLSTR);
   }
   // Binary write.
   else {
@@ -1210,6 +1215,10 @@ SoField::write(SoOutput * out, const SbName & name) const
     assert(!this->isConnected() &&
 	   "FIXME: binary export of connections not implemented yet");
   }
+
+#else // COIN_EXCLUDE_SOWRITEACTION
+  assert(0); // write() should never be called but from within an write action
+#endif // COIN_EXCLUDE_SOWRITEACTION
 }
 
 /*!
@@ -1406,12 +1415,71 @@ SoField::readConnection(SoInput * in)
 }
 
 /*!
-  FIXME: write function documentation
+  Write out information about this field's connection.
 */
 void
 SoField::writeConnection(SoOutput * out) const
 {
-  assert(0 && "FIXME: not implemented yet");
+#if !defined(COIN_EXCLUDE_SOWRITEACTION)
+
+  SoField * fieldmaster;
+  SoFieldContainer * fieldcont = NULL;
+  SoEngineOutput * enginemaster;
+  SoEngine * engine = NULL;
+  SoVRMLInterpOutput * interpmaster;
+  SoVRMLInterpolator * interpolator = NULL;
+  SbName name;
+
+  if (this->getConnectedField(fieldmaster)) {
+    fieldcont = fieldmaster->getContainer();
+    // FIXME: won't this fail with global fields? Check and
+    // fix. 19990707 mortene.
+    assert(fieldcont);
+
+    // This will trigger if the field container is not in the
+    // graph. If this is the case, we just discards the connection
+    // (the master's value will be fetched and written, though).
+    if (!fieldcont->shouldWrite()) return;
+
+    SbBool ok = fieldcont->getFieldName(fieldmaster, name);
+    assert(ok);
+  }
+  else if (this->getConnectedEngine(enginemaster)) {
+    engine = enginemaster->getContainer();
+    assert(engine);
+    SbBool ok = engine->getOutputName(enginemaster, name);
+    assert(ok);
+  }
+  else if (this->getConnectedVRMLInterp(interpmaster)) {
+    interpolator = interpmaster->getContainer();
+    assert(interpolator);
+    SbBool ok = interpolator->getOutputName(interpmaster, name);
+    assert(ok);
+  }
+  else assert(0);
+
+  out->write(" =");
+  
+  if (fieldcont) {
+    SoWriteAction wa(out);
+    wa.continueToApply((SoNode *)fieldcont);
+  }
+  else if (engine) {
+    assert(0 && "FIXME: not implemented");
+  }
+  else if (interpolator) {
+    assert(0 && "FIXME: not implemented");
+  }
+  else assert(0);
+
+  out->indent();
+  out->write(". ");
+
+  out->write(name.getString());
+
+#else // COIN_EXCLUDE_SOWRITEACTION
+  assert(0); // write() should never be called but from within an write action
+#endif // COIN_EXCLUDE_SOWRITEACTION
 }
 
 /*!

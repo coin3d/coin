@@ -205,12 +205,13 @@ SoWriteAction::writeAllPROTO(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Applies the write method at \a node with the current SoOutput
+  instance.
 */
 void
 SoWriteAction::continueToApply(SoNode * node)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->traverse(node);
 }
 
 /*!

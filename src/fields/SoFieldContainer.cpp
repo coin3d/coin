@@ -36,6 +36,7 @@
 
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
 #include <Inventor/VRMLnodes/SoVRMLInterpOutput.h>
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
 #include <Inventor/engines/SoEngine.h>
@@ -375,6 +376,9 @@ SoFieldContainer::addWriteReference(SoOutput * out, SbBool isFromField)
   inherited::addWriteReference(out, isFromField);
   if (isFromField) return;
 
+  // FIXME: move this into SoField::write(), and generally fix up the
+  // write reference counting, so the program flow is about the same
+  // during the first write pass as the second. 19990707 mortene.
   const SoFieldData * fd = this->getFieldData();
   for (int i=0; i < fd->getNumFields(); i++) {
     SoField * fieldmaster;
@@ -397,12 +401,16 @@ void
 SoFieldContainer::writeInstance(SoOutput * out)
 {
   const SoFieldData * fd = this->getFieldData();
-  for (int i=0; i < fd->getNumFields(); i++)
+  const int n = fd->getNumFields();
+  if (out->isBinary()) out->write(n);
+  for (int i=0; i < n; i++)
     fd->getField(this, i)->write(out, fd->getFieldName(i));
 }
 
 /*! 
-  FIXME: write doc
+  Returns \a TRUE if this object is instantiated from one of the native
+  Coin classes, \a FALSE if the object's class is outside the standard
+  Coin library.
  */
 SbBool
 SoFieldContainer::getIsBuiltIn(void) const

@@ -63,7 +63,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField( SoSFFloat, const float )
+//$ BEGIN TEMPLATE SField(SoSFFloat, const float)
 
 SoType SoSFFloat::classTypeId = SoType::badType();
 
@@ -186,7 +186,7 @@ SoSFFloat::operator == (const SoSFFloat & field) const
 void
 SoSFFloat::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass( SFFloat )
+//$ BEGIN TEMPLATE FieldInitClass(SFFloat)
   // Make sure we only initialize once.
   assert(SoSFFloat::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -207,26 +207,20 @@ SoSFFloat::cleanClass(void)
 {
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
-SoSFFloat::readValue(SoInput *in)
+SoSFFloat::readValue(SoInput * in)
 {
   return in->read(value);
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
-SoSFFloat::writeValue( SoOutput * out ) const
+SoSFFloat::writeValue(SoOutput * out) const
 {
   out->write(this->value);
 }
 
 void
-SoSFFloat::convertTo(SoField *dest) const
+SoSFFloat::convertTo(SoField * dest) const
 {
   if (0);
 #if !defined(COIN_EXCLUDE_SOSFBOOL)

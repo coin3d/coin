@@ -25,7 +25,7 @@
 class SoVRMLInterpolator : public SoNode {
   typedef SoNode inherited;
 
-//$ BEGIN TEMPLATE NodeAbstractHeader( SoVRMLInterpolator )
+//$ BEGIN TEMPLATE NodeAbstractHeader(SoVRMLInterpolator)
 private:
   static SoType classTypeId;
 
@@ -40,6 +40,10 @@ protected:
   SoVRMLInterpolator(void);
   virtual ~SoVRMLInterpolator();
 //$ END TEMPLATE NodeAbstractHeader
+
+public:
+  SbBool getOutputName(const SoVRMLInterpOutput * output,
+		       SbName & outputName) const;
 };
 
 #endif // !__SOVRMLINTERPOLATOR_H__
