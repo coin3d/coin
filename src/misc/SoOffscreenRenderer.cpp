@@ -248,7 +248,7 @@ public:
     SetGWorld(savedport, savedgdh);
   }
 
-  virtual SbBool makeContextCurrent(void) {
+  virtual SbBool makeContextCurrent(uint32_t contextid) {
     assert(this->buffer);
     if (this->context && this->drawable) {
       PixMapHandle pixmap = GetGWorldPixMap((GWorldPtr)drawable);
