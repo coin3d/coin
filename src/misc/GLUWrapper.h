@@ -28,6 +28,10 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#if HAVE_WINDOWS_H
+#include <windows.h> /* to pick up the APIENTRY define */
+#endif /* HAVE_WINDOWS_H */
+
 #include <Inventor/system/gl.h>
 
 /* Under Win32, we need to make sure we use the correct calling method
@@ -43,7 +47,7 @@ extern "C" {
 #endif /* __cplusplus */
 
 /* Callback func type. */
-typedef void (*gluNurbsCallback_cb_t)(void *, ...);
+typedef void (APIENTRY* gluNurbsCallback_cb_t)(void *, ...);
 
 /* Typedefinitions of function signatures for GLU calls we use. We
    need these for casting from the void-pointer return of dlsym().*/
