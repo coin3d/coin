@@ -1,31 +1,44 @@
 NAME
+
 Coin
 
+
 BRIEF DESCRIPTION
-An open source retained mode 3D graphics library with an API based on 
-Open Inventor (tm).
+
+An open source retained mode 3D graphics library with an API based on
+Open Inventor[1].
+
 
 HOMEPAGE
+
 www.coin3d.org
 
-LICENSE
-Coin is released publicly under the Q Public License (QPL) for developers
-of free software (see LICENSE.QPL) and is also available for commercial use 
-under a Professional Edition license. Read the QPL carefully to decide
-whether or not your use of Coin is compatible with this free, open source
-license. 
 
-The GPL is attached for reference (see LICENSE.GPL).
+LICENSE
+
+Coin is released publicly under the Q Public License (QPL) for
+developers of free software (see LICENSE.QPL) and is also available
+for commercial use under a Professional Edition license. Read the QPL
+carefully to decide whether or not your use of Coin is compatible with
+this free, open source license.
+
+There are files in the distribution used in the build process which is
+covered under the GPL (see LICENSE.GPL).
+
 
 STATUS
-Beta as of 2000.06.28.
-Note: So* GUI libraries still in Alpha as of 2000.06.28.
 
-DEVELOPERS
+Beta as of 2000-06-28.  Note: So* GUI libraries still in alpha as of
+2000-06-28.
+
+
+MAIN DEVELOPERS
+
 Morten Eriksen <mortene@sim.no>
 Peder Blekken <pederb@sim.no>
 Marius Kintel <kintel@sim.no>
 Lars J. Aas <larsa@sim.no>
 
 
-Open Inventor is a trademark of SGI Inc. 
+-- 
+[1] Open Inventor is a trademark of SGI Inc. 
