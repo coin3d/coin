@@ -298,6 +298,7 @@ RegularSources = \
 	SoRotationXYZ.cpp \
 	SoRotor.cpp \
 	SoScale.cpp \
+	SoSceneTexture2.cpp \
 	SoSelection.cpp \
 	SoSeparator.cpp \
 	SoShapeHints.cpp \
@@ -415,8 +416,8 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
 	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSelection.cpp SoSeparator.cpp \
-	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
+	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
+	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
@@ -454,10 +455,11 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAntiSquish.$(OBJEXT) \
 	SoProfileCoordinate2.$(OBJEXT) SoProfileCoordinate3.$(OBJEXT) \
 	SoResetTransform.$(OBJEXT) SoRotation.$(OBJEXT) \
 	SoRotationXYZ.$(OBJEXT) SoRotor.$(OBJEXT) SoScale.$(OBJEXT) \
-	SoSelection.$(OBJEXT) SoSeparator.$(OBJEXT) \
-	SoShapeHints.$(OBJEXT) SoShuttle.$(OBJEXT) \
-	SoSpotLight.$(OBJEXT) SoSurroundScale.$(OBJEXT) \
-	SoSwitch.$(OBJEXT) SoTexture2.$(OBJEXT) SoTexture3.$(OBJEXT) \
+	SoSceneTexture2.$(OBJEXT) SoSelection.$(OBJEXT) \
+	SoSeparator.$(OBJEXT) SoShapeHints.$(OBJEXT) \
+	SoShuttle.$(OBJEXT) SoSpotLight.$(OBJEXT) \
+	SoSurroundScale.$(OBJEXT) SoSwitch.$(OBJEXT) \
+	SoTexture2.$(OBJEXT) SoTexture3.$(OBJEXT) \
 	SoTexture2Transform.$(OBJEXT) SoTexture3Transform.$(OBJEXT) \
 	SoTextureCoordinate2.$(OBJEXT) SoTextureCoordinate3.$(OBJEXT) \
 	SoTextureCoordinateBinding.$(OBJEXT) \
@@ -492,8 +494,8 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSoundElementHelper.h \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
 	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSelection.cpp SoSeparator.cpp \
-	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
+	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
+	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
@@ -527,8 +529,8 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAntiSquish.cpp \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
 	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSelection.cpp SoSeparator.cpp \
-	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
+	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
+	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
@@ -557,9 +559,9 @@ am__objects_7 = SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
 	SoPickStyle.lo SoPointLight.lo SoPolygonOffset.lo SoProfile.lo \
 	SoProfileCoordinate2.lo SoProfileCoordinate3.lo \
 	SoResetTransform.lo SoRotation.lo SoRotationXYZ.lo SoRotor.lo \
-	SoScale.lo SoSelection.lo SoSeparator.lo SoShapeHints.lo \
-	SoShuttle.lo SoSpotLight.lo SoSurroundScale.lo SoSwitch.lo \
-	SoTexture2.lo SoTexture3.lo SoTexture2Transform.lo \
+	SoScale.lo SoSceneTexture2.lo SoSelection.lo SoSeparator.lo \
+	SoShapeHints.lo SoShuttle.lo SoSpotLight.lo SoSurroundScale.lo \
+	SoSwitch.lo SoTexture2.lo SoTexture3.lo SoTexture2Transform.lo \
 	SoTexture3Transform.lo SoTextureCoordinate2.lo \
 	SoTextureCoordinate3.lo SoTextureCoordinateBinding.lo \
 	SoTextureCoordinateDefault.lo SoTextureCoordinateEnvironment.lo \
@@ -590,8 +592,8 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSoundElementHelper.h \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
 	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSelection.cpp SoSeparator.cpp \
-	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
+	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
+	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
@@ -623,8 +625,8 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
 	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSelection.cpp SoSeparator.cpp \
-	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
+	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
+	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
@@ -655,8 +657,8 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoPickStyle.cpp SoPointLight.cpp SoPolygonOffset.cpp \
 	SoProfile.cpp SoProfileCoordinate2.cpp SoProfileCoordinate3.cpp \
 	SoResetTransform.cpp SoRotation.cpp SoRotationXYZ.cpp \
-	SoRotor.cpp SoScale.cpp SoSelection.cpp SoSeparator.cpp \
-	SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
+	SoRotor.cpp SoScale.cpp SoSceneTexture2.cpp SoSelection.cpp \
+	SoSeparator.cpp SoShapeHints.cpp SoShuttle.cpp SoSpotLight.cpp \
 	SoSurroundScale.cpp SoSwitch.cpp SoTexture2.cpp SoTexture3.cpp \
 	SoTexture2Transform.cpp SoTexture3Transform.cpp \
 	SoTextureCoordinate2.cpp SoTextureCoordinate3.cpp \
@@ -768,6 +770,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoRotationXYZ.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoRotor.Plo ./$(DEPDIR)/SoRotor.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoScale.Plo ./$(DEPDIR)/SoScale.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSceneTexture2.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoSceneTexture2.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSelection.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSelection.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoSeparator.Plo \
@@ -1027,6 +1031,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoRotor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScale.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoScale.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSceneTexture2.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSceneTexture2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSelection.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSelection.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoSeparator.Plo@am__quote@

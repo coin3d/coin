@@ -79,6 +79,7 @@ PublicHeaders = \
 	SoRotationXYZ.h \
 	SoRotor.h \
 	SoScale.h \
+	SoSceneTexture2.h \
 	SoSelection.h \
 	SoSeparator.h \
 	SoShape.h \

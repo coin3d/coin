@@ -59,6 +59,7 @@ RegularSources = \
 	SoRotationXYZ.cpp \
 	SoRotor.cpp \
 	SoScale.cpp \
+	SoSceneTexture2.cpp \
 	SoSelection.cpp \
 	SoSeparator.cpp \
 	SoShapeHints.cpp \
