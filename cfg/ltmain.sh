@@ -2842,7 +2842,15 @@ EOF
 
 	if test -n "$convenience"; then
 	  if test -n "$whole_archive_flag_spec"; then
-	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
+            eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
+# 20021217 kyrah:
+#   Hack to fix a libtool bug - remove redundant convenience libraries 
+#   on Darwin. (Same as larsa's hack for Coin-1.)
+            case $host in
+            *-*-darwin*)
+              deplibs=`echo " $deplibs" | sed -e 's/ [0-9A-Za-z_.][0-9A-Za-z_\/.-]*\.al//g'`
+              ;;
+            esac
 	  else
 	    gentop="$output_objdir/${outputname}x"
 	    $show "${rm}r $gentop"
