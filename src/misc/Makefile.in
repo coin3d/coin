@@ -210,11 +210,11 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoTranSender.h \
 	../../include/Inventor/misc/SoLightPath.h \
 	../../include/Inventor/misc/SoTempPath.h \
+	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoAudioDevice.h
 
 PrivateHeaders = \
 	../../include/Inventor/misc/SoGL.h \
-	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \
 	AudioTools.h \
