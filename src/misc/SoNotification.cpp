@@ -37,11 +37,16 @@
 #include <assert.h>
 #include <time.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/misc/SoBase.h>
+#endif // COIN_DEBUG
+
 /*!
   Constructor. Initializes the record with \a notifbase pointer.
 */
 SoNotRec::SoNotRec(SoBase * const notifbase)
-  : base(notifbase), prev(NULL)
+  : type((SoNotRec::Type)-1), base(notifbase), prev(NULL)
 {
 }
 
@@ -79,7 +84,9 @@ SoNotRec::getType(void) const
 const SoNotRec *
 SoNotRec::getPrevious(void) const
 {
-  assert(this != prev);
+#if 0 // OBSOLETED: see comment on setPrevious(). 20000304 mortene.
+  assert(this != this->prev);
+#endif // OBSOLETED
   return this->prev;
 }
 
@@ -89,7 +96,11 @@ SoNotRec::getPrevious(void) const
 void
 SoNotRec::setPrevious(const SoNotRec * const prev)
 {
+#if 0 // OBSOLETED: looks like this can be allowed (and need to be
+      // allowed under the current circumstances, as it hits under certain
+      // conditions). 20000304 mortene
   assert(this != prev);
+#endif // OBSOLETED
   this->prev = prev;
 }
 
@@ -100,7 +111,7 @@ void
 SoNotRec::print(FILE * const file) const
 {
 #if COIN_DEBUG
-  (void)fprintf(file, "SoNotRec %p {\n  type = ", this);
+  (void)fprintf(file, "\tSoNotRec %p: type ", this);
   switch (this->type) {
   case CONTAINER:  (void)fprintf(file, "CONTAINER"); break;
   case PARENT:     (void)fprintf(file, "PARENT"); break;
@@ -108,10 +119,11 @@ SoNotRec::print(FILE * const file) const
   case FIELD:      (void)fprintf(file, "FIELD"); break;
   case ENGINE:     (void)fprintf(file, "ENGINE"); break;
   case INTERP:     (void)fprintf(file, "INTERP"); break;
-  default:         (void)fprintf(file, "???"); break;
+  default:         (void)fprintf(file, "UNSET"); break;
   }
-  (void)fprintf(file, ", \n  base = %p, \n  previous = %p\n}\n",
-                this->base, this->prev);
+  (void)fprintf(file, ", base %p (type %s, \"%s\")\n",
+                this->base, this->base->getTypeId().getName().getString(),
+                this->base->getName().getString());
 #endif // COIN_DEBUG
 }
 
@@ -152,6 +164,13 @@ SoNotList::SoNotList(const SoNotList * nl)
 void
 SoNotList::append(SoNotRec * const rec)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoNotList::append", "%p - %p (base: %p %s \"%s\")",
+                         this, rec, rec->getBase(),
+                         rec->getBase()->getTypeId().getName().getString(),
+                         rec->getBase()->getName().getString());
+#endif // debug
+
   // Link into list.
   rec->setPrevious(this->tail);
   this->tail = rec;
@@ -168,6 +187,9 @@ SoNotList::append(SoNotRec * const rec)
 void
 SoNotList::append(SoNotRec * const rec, SoField * const field)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoNotList::append", "field %p", field);
+#endif // debug
   assert(field);
   this->lastfield = field;
   this->append(rec);
@@ -207,7 +229,7 @@ SoNotList::setLastType(const SoNotRec::Type type)
 {
   assert(this->tail);
   this->tail->setType(type);
-#if 0 // OBSOLETE: this looks wrong. 19990623 mortene.
+
   switch (type) {
   case SoNotRec::FIELD:
   case SoNotRec::ENGINE:
@@ -216,7 +238,6 @@ SoNotList::setLastType(const SoNotRec::Type type)
   default:
     break;
   }
-#endif // OBSOLETE
 }
 
 /*!
@@ -291,12 +312,13 @@ void
 SoNotList::print(FILE * const file) const
 {
 #if COIN_DEBUG
-  (void)fprintf(file, "SoNotList {\n");
+  (void)fprintf(file, "SoNotList: %p\n", this);
   const SoNotRec * ptr = this->tail;
   while (ptr) {
     ptr->print(file);
     ptr = ptr->getPrevious();
   }
-  (void)fprintf(file, "}\n");
+  (void)fprintf(file, "\tfirstAtNode = %p, lastField = %p\n",
+                this->getFirstRecAtNode(), this->getLastField());
 #endif // COIN_DEBUG
 }

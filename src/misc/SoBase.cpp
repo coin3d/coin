@@ -410,6 +410,11 @@ SoBase::removeName(SoBase * const b, const char * const name)
 void
 SoBase::startNotify(void)
 {
+  SoNotList l;
+  SoNotRec rec(this);
+  l.append(&rec);
+  l.setLastType(SoNotRec::CONTAINER);
+  this->notify(&l);
 }
 
 /*!
@@ -418,6 +423,9 @@ SoBase::startNotify(void)
 void
 SoBase::notify(SoNotList * l)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoBase::notify", "base %p, list %p", this, l);
+#endif // debug
   this->auditors.notify(l);
 }
 

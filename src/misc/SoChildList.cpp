@@ -88,7 +88,9 @@ SoChildList::append(SoNode * const node)
   SoNodeList::append(node);
 
   this->parent->startNotify();
-  // Doesn't need to notify SoPath auditors.
+
+  // Doesn't need to notify SoPath auditors, as adding a new node at
+  // _the end_ won't affect any path "passing through" this childlist.
 }
 
 /*!

@@ -141,8 +141,7 @@ SoNode::copy(SbBool copyconnections) const
 void
 SoNode::startNotify(void)
 {
-  SoNotList l; // FIXME: what should be added to this list? pederb, 19991214
-  this->notify(&l);
+  inherited::startNotify();
 }
 
 /*!
@@ -151,7 +150,11 @@ SoNode::startNotify(void)
 void
 SoNode::notify(SoNotList * l)
 {
-  // FIXME: should put ourselves in the list, I think. 19990701 mortene.
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoNode::notify", "node %p (%s \"%s\"), list %p",
+                         this, this->getTypeId().getName().getString(),
+                         this->getName().getString(), l);
+#endif // debug
   inherited::notify(l);
 }
 

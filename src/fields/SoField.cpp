@@ -941,7 +941,14 @@ void
 SoField::startNotify(void)
 {
   SoNotList l;
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoField::startNotify", "field %p (%s), list %p",
+                         this, this->getTypeId().getName().getString(), &l);
+#endif // debug
   this->notify(&l);
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoField::startNotify", "DONE");
+#endif // debug
 }
 
 /*!
@@ -962,8 +969,13 @@ SoField::notify(SoNotList * nlist)
   if (this->isNotifyEnabled()) {
     SoNotRec rec(this->getContainer());
     nlist->append(&rec, this);
-    nlist->setLastType(SoNotRec::CONTAINER);
+    nlist->setLastType(SoNotRec::CONTAINER); // FIXME: Not sure about this. 20000304 mortene.
 
+#if COIN_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoField::notify",
+                           "field %p, list %p", this, nlist);
+#endif // debug
+    if (this->getContainer()) this->getContainer()->notify(nlist);
     this->notifyAuditors(nlist);
   }
 }
@@ -1666,7 +1678,10 @@ SoField::valueChanged(SbBool resetdefault)
 void
 SoField::notifyAuditors(SoNotList * l)
 {
-  if (this->getContainer()) this->getContainer()->notify(l);
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoField::notifyAuditors",
+                         "field %p, list %p", this, l);
+#endif // debug
   if (this->hasExtendedStorage() && this->storage->getNumAuditors())
     this->storage->getAuditors().notify(l);
 }

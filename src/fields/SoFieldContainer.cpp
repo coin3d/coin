@@ -444,9 +444,20 @@ SoFieldContainer::get(SbString & fielddata, SoOutput * out)
 void
 SoFieldContainer::notify(SoNotList * l)
 {
-  // FIXME: not sure if this is all we should do. 20000115 mortene.
+#if COIN_DEBUG && 0 // debug
+  char c;
+  SoDebugError::postInfo("SoFieldContainer::notify", "fc %p, list %p, stack %p", this, l, &c);
+#endif // debug
 
-  if (this->donotify) inherited::notify(l);
+  if (this->donotify) {
+    SoNotRec rec(this);
+    l->append(&rec);
+    inherited::notify(l);
+  }
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoFieldContainer::notify", "DONE");
+#endif // debug
 }
 
 /*!

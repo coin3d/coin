@@ -31,6 +31,10 @@
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/sensors/SoDataSensor.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 
 /*!
   Default constructor.
@@ -151,9 +155,6 @@ SoAuditorList::notify(SoNotList * l)
     case SoNotRec::PARENT:
       {
         SoFieldContainer * obj = (SoFieldContainer *)auditor;
-        SoNotRec rec(obj);
-        l->append(&rec);
-        l->setLastType(type);
         obj->notify(l);
       }
       break;
