@@ -1,0 +1,248 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  version 2 as published by the Free Software Foundation.  See the
+ *  file LICENSE.GPL at the root directory of this source distribution
+ *  for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.  See <URL:http://www.coin3d.org> for
+ *  more information.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  <URL:http://www.sim.no>, <mailto:support@sim.no>
+ *
+\**************************************************************************/
+
+//
+// This file can only be included from inside SoOffscreenRenderer
+//
+
+#include <GL/glx.h>
+
+class SoOffscreenGLXData : public SoOffscreenInternalData {
+public:
+  SoOffscreenGLXData(void);
+  virtual ~SoOffscreenGLXData();
+  static int buildGLAttrs(int * attrs, int trynum);
+  virtual void setBufferSize(const SbVec2s & size);
+  virtual SbBool makeContextCurrent(uint32_t contextid);
+  virtual unsigned char * getBuffer(void);
+
+  virtual void postRender(void);
+  static SbVec2s getMaxDimensions(void);
+private:
+  virtual SbVec2s getMax(void);
+
+  unsigned char * buffer;
+  Display * display;
+  XVisualInfo * visinfo;
+  GLXContext context;
+  Pixmap pixmap;
+  GLXPixmap glxpixmap;
+
+  Display * storeddisplay;
+  GLXDrawable storeddrawable;
+  GLXContext storedcontext;
+};
+
+
+SoOffscreenGLXData::SoOffscreenGLXData(void)
+  // set everything to NULL first to gracefully handle error conditions
+  : display(NULL), visinfo(NULL), context(NULL), pixmap(0), glxpixmap(0),
+    storedcontext(NULL)
+{
+  this->buffer = NULL;
+  
+  this->display = XOpenDisplay(NULL);
+  if (!this->display) {
+    SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                              "Couldn't connect to X11 DISPLAY.");
+    return;
+  }
+  
+  int trynum = 0;
+  const int ARRAYSIZE = 32;
+  int attrs[ARRAYSIZE];
+  while (this->visinfo == NULL && trynum < 8) {
+    int arraysize = SoOffscreenGLXData::buildGLAttrs(attrs, trynum);
+    assert(arraysize < ARRAYSIZE);
+    this->visinfo = glXChooseVisual(this->display,
+                                    DefaultScreen(this->display),
+                                    attrs);
+    trynum++;
+  }
+  
+  if (!this->visinfo) {
+    SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                              "Couldn't get RGBA X11 visual.");
+    return;
+  }
+  
+  this->context = glXCreateContext(this->display, this->visinfo,
+                                   0, GL_FALSE);
+  if (!this->context) {
+    SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                              "Couldn't create GLX context.");
+  }
+}
+
+SoOffscreenGLXData::~SoOffscreenGLXData() 
+{
+  if (this->context) glXDestroyContext(this->display, this->context);
+  if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
+  if (this->pixmap) XFreePixmap(this->display, this->pixmap);
+  if (this->visinfo) XFree(this->visinfo);
+  // The following XCloseDisplay() call has been known to crash the
+  // application when running remotely from some old Mesa version on
+  // Red Hat Linux 6.2 onto an IRIX6.5 display. It seems likely that
+  // this was caused by a bug in that particular old Mesa
+  // version. Since the leak caused by _not_ freeing up the Display
+  // resource is a showstopper for applications doing lots of
+  // offscreen rendering, we leave this in.
+  //
+  // If you see crashes, feel free to report the particulars about
+    // your system to us (OpenGL implementation & version, X11 server
+  // and client implementations and versions, etc).
+  //
+  // mortene@sim.no
+  if (this->display) XCloseDisplay(this->display);
+  
+  delete[] this->buffer;
+}
+
+// NOTE: the strategy applied here for iterating through OpenGL
+// canvas settings is exactly the same as the one applied in
+// SoXt/src/Inventor/Xt/SoXtGLWidget.cpp. So if you make any fixes
+// or other improvements here, migrate your changes.
+int 
+SoOffscreenGLXData::buildGLAttrs(int * attrs, int trynum) 
+{
+  int pos = 0;
+  attrs[pos++] = GLX_RGBA;
+  attrs[pos++] = GLX_DEPTH_SIZE;
+  attrs[pos++] = 1;
+  if (! (trynum & 0x04)) {
+    attrs[pos++] = GLX_STENCIL_SIZE;
+    attrs[pos++] = 1;
+  }
+  if (! (trynum & 0x02)) {
+    attrs[pos++] = GLX_DOUBLEBUFFER;
+  }
+  if (! (trynum & 0x01)) {
+    attrs[pos++] = GLX_RED_SIZE;
+    attrs[pos++] = 4;
+    attrs[pos++] = GLX_GREEN_SIZE;
+    attrs[pos++] = 4;
+    attrs[pos++] = GLX_BLUE_SIZE;
+    attrs[pos++] = 4;
+  }
+  attrs[pos++] = None;
+  return pos;
+}
+
+void 
+SoOffscreenGLXData::setBufferSize(const SbVec2s & size) 
+{
+  SoOffscreenInternalData::setBufferSize(size);
+  
+  delete[] this->buffer;
+  this->buffer =
+    new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
+  
+  if (this->pixmap) XFreePixmap(this->display, this->pixmap);
+  if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
+  
+  if (this->context) {
+    this->pixmap = XCreatePixmap(this->display,
+                                 DefaultRootWindow(this->display),
+                                 size[0], size[1],
+                                 this->visinfo->depth);
+    if (!this->pixmap) {
+      SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                                "Couldn't create %dx%dx%d Pixmap.");
+    }
+    else {
+      this->glxpixmap = glXCreateGLXPixmap(this->display, this->visinfo,
+                                           this->pixmap);
+      if (!this->glxpixmap) {
+        SoDebugError::postWarning("SoOffscreenGLXData::SoOffscreenGLXData",
+                                  "Couldn't create GLX Pixmap.");
+      }
+    }
+    
+  }
+}
+
+SbBool 
+SoOffscreenGLXData::makeContextCurrent(uint32_t contextid) 
+{
+  assert(this->buffer);
+  if (this->context && this->glxpixmap) {
+    this->storedcontext = glXGetCurrentContext();
+    if (this->storedcontext) {
+      // Must know for sure that there's a current context before
+      // instantiating a GLWrapper, or we'll get a crash due to the
+        // OpenGL calls within GLWrapper().
+      const GLWrapper_t * glw = GLWrapper(contextid);
+      if (glw->glXGetCurrentDisplay) { this->storeddisplay = glw->glXGetCurrentDisplay(); }
+      this->storeddrawable = glXGetCurrentDrawable();
+    }
+    
+    Bool r = glXMakeCurrent(this->display, this->glxpixmap, this->context);
+    return (r == True) ? TRUE : FALSE;
+  }
+  return FALSE;
+}
+
+unsigned char * 
+SoOffscreenGLXData::getBuffer(void) 
+{
+  return this->buffer;
+}
+
+void 
+SoOffscreenGLXData::postRender(void) 
+{
+  SbVec2s size = this->getSize();
+  
+  if (this->context && this->buffer) {
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
+                 this->buffer);
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    (void) glXMakeCurrent(this->display, None, NULL); // release
+    
+    // The previous context is stored and reset to make it possible
+    // to use an SoOffscreenRenderer from for instance an SoCallback
+    // node callback during SoGLRenderAction traversal, without the
+    // need for any extra book-keeping on the application side.
+    
+    if (this->storedcontext && this->storeddrawable && this->storeddisplay) {
+      (void) glXMakeCurrent(this->storeddisplay, this->storeddrawable,
+                            this->storedcontext);
+    }
+  }
+}
+
+SbVec2s 
+SoOffscreenGLXData::getMaxDimensions(void) 
+{
+  // FIXME: where can we get hold of the _real_ max values for
+  // Pixmap and/or GLXPixmap? 20000417 mortene.
+  return SbVec2s(32767, 32767);
+}
+
+SbVec2s 
+SoOffscreenGLXData::getMax(void) 
+{
+  return SoOffscreenGLXData::getMaxDimensions();
+}
+

@@ -1,0 +1,176 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  version 2 as published by the Free Software Foundation.  See the
+ *  file LICENSE.GPL at the root directory of this source distribution
+ *  for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.  See <URL:http://www.coin3d.org> for
+ *  more information.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  <URL:http://www.sim.no>, <mailto:support@sim.no>
+ *
+\**************************************************************************/
+
+//
+// This file can only be included from inside SoOffscreenRenderer.
+//
+
+#include <AGL/agl.h>  
+#include <Carbon/Carbon.h>  // for quickdraw functions
+
+class SoOffscreenAGLData : public SoOffscreenInternalData {
+public:
+  SoOffscreenAGLData(void);
+  virtual ~SoOffscreenAGLData();
+
+  virtual void setBufferSize(const SbVec2s & size);
+  virtual SbBool makeContextCurrent(uint32_t contextid);
+  virtual unsigned char * getBuffer(void);
+  virtual void postRender(void);
+  static SbVec2s getMaxDimensions(void);
+
+private:
+  virtual SbVec2s getMax(void);
+
+  unsigned char * buffer;
+  AGLDrawable drawable;
+  AGLContext context;
+  AGLPixelFormat pixformat;
+  Rect bounds;
+};
+
+SoOffscreenAGLData::SoOffscreenAGLData(void)
+  : drawable(NULL), context(NULL), pixformat(NULL)
+{
+  this->buffer = NULL;
+  
+  // FIXME: not 100% sure which attributes are best, got to check
+  // kyrah 20020223
+  
+  GLint attrib[] = {
+    AGL_OFFSCREEN,
+    AGL_RGBA,
+    AGL_NO_RECOVERY,
+    AGL_RED_SIZE, 8,
+    AGL_GREEN_SIZE, 8,
+    AGL_BLUE_SIZE, 8,
+    AGL_DEPTH_SIZE, 32,
+    AGL_STENCIL_SIZE, 1,
+    AGL_NONE
+  };
+  
+  this->pixformat = aglChoosePixelFormat( NULL, 0, attrib );
+  if (!this->pixformat) {
+    SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
+                              "Couldn't get RGBA AGL pixelformat.");
+    return;
+  }
+  
+  this->context = aglCreateContext( pixformat, NULL );
+  if (!this->context) {
+    SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
+                              "Couldn't create AGL context.");
+  }
+}
+
+SoOffscreenAGLData::~SoOffscreenAGLData() 
+{
+  if (this->drawable) DisposeGWorld((GWorldPtr) drawable);
+  if (this->context) aglDestroyContext(context);
+  if (this->pixformat) aglDestroyPixelFormat(pixformat);
+  delete[] this->buffer;
+}
+
+void 
+SoOffscreenAGLData::setBufferSize(const SbVec2s & size) 
+{
+  CGrafPtr savedport;
+  GDHandle savedgdh;
+  
+  SoOffscreenInternalData::setBufferSize(size);
+  
+  delete[] this->buffer;
+  this->buffer =
+    new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
+  
+  SetRect(&bounds, 0, 0, size[0], size[1]);
+
+  // We have to save (and later restore) the old graphics port and 
+  // GHandle, since this function will probably called before the
+  // Mac OS X viewer is fully set up.
+  GetGWorld(&savedport, &savedgdh); 
+
+  QDErr e = NewGWorld(&drawable, 32, &bounds, NULL /* cTable */, 
+                      NULL /*aGDevice */, 0);
+  if(e != noErr) {
+      SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
+                                "Error creating GWorld: %d", e);
+  }
+  if (!this->drawable) {
+    SoDebugError::postWarning("SoOffscreenAGLData::SoOffscreenAGLData",
+                              "Couldn't create AGL drawable.");
+  }
+  SetGWorld(savedport, savedgdh);
+}
+
+SbBool 
+SoOffscreenAGLData::makeContextCurrent(uint32_t contextid) 
+{
+  assert(this->buffer);
+  if (this->context && this->drawable) {
+    PixMapHandle pixmap = GetGWorldPixMap((GWorldPtr)drawable);
+    aglSetOffScreen(context, bounds.right-bounds.left, 
+                    bounds.bottom-bounds.top,
+                    GetPixRowBytes(pixmap), GetPixBaseAddr(pixmap));     
+    aglSetCurrentContext(context);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+unsigned char * 
+SoOffscreenAGLData::getBuffer(void) 
+{
+  return this->buffer;
+}
+
+void 
+SoOffscreenAGLData::postRender(void) 
+{
+  SbVec2s size = this->getSize();
+  
+  if (this->context && this->buffer) {
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
+                 this->buffer);
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    
+    // FIXME: GLX version saves old context and drawable, and
+    // restores it after use, should i do that as well? kyrah
+    // 20020223 UPDATE: yes, see comment above the GLX version of
+    // postRender(). 20020401 mortene.
+  }
+}
+
+SbVec2s 
+SoOffscreenAGLData::getMaxDimensions(void) 
+{
+  // FIXME: make sure we return the real limitations. 20020225 mortene.
+  return SbVec2s(32767, 32767);
+}
+
+SbVec2s 
+SoOffscreenAGLData::getMax(void) 
+{
+  return SoOffscreenAGLData::getMaxDimensions();
+}

@@ -1,0 +1,279 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  version 2 as published by the Free Software Foundation.  See the
+ *  file LICENSE.GPL at the root directory of this source distribution
+ *  for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.  See <URL:http://www.coin3d.org> for
+ *  more information.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  <URL:http://www.sim.no>, <mailto:support@sim.no>
+ *
+\**************************************************************************/
+
+//
+// This file can only be included from inside SoOffscreenRenderer
+//
+
+class SoOffscreenWGLData : public SoOffscreenInternalData {
+public:
+  SoOffscreenWGLData(void);
+  virtual ~SoOffscreenWGLData(); 
+
+  virtual void setBufferSize(const SbVec2s & size);
+
+  virtual SbBool makeContextCurrent(uint32_t contextid);
+  virtual unsigned char * getBuffer(void);
+  virtual void postRender(void);
+  static SbVec2s getMaxDimensions(void);
+
+  void cleanupWGL(void);
+  void initWGL(void);
+
+private:
+  virtual SbVec2s getMax(void);
+
+  unsigned char * buffer;
+  HGLRC context;
+  HDC devicecontext;
+  HBITMAP bitmap;
+  HBITMAP oldbitmap;
+
+  HGLRC storedcontext;
+  HDC storeddc;
+};
+
+SoOffscreenWGLData::SoOffscreenWGLData(void)
+{
+  this->buffer = NULL;
+  this->context = NULL;
+  this->devicecontext = NULL;
+  this->bitmap = NULL;
+  this->oldbitmap = NULL;
+  this->storedcontext = NULL;
+}
+
+SoOffscreenWGLData::~SoOffscreenWGLData() 
+{
+  this->cleanupWGL();
+  delete[] this->buffer;
+}
+
+void 
+SoOffscreenWGLData::setBufferSize(const SbVec2s & size) 
+{
+  SoOffscreenInternalData::setBufferSize(size);
+  
+  delete[] this->buffer;
+  this->buffer =
+    new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
+  
+  this->initWGL();
+}
+
+SbBool 
+SoOffscreenWGLData::makeContextCurrent(uint32_t contextid) 
+{
+  assert(this->buffer);
+  if (this->context && this->bitmap) {
+    this->storedcontext = wglGetCurrentContext();
+    if (this->storedcontext) {
+      this->storeddc = wglGetCurrentDC();
+    }
+    wglMakeCurrent(this->devicecontext, this->context);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+unsigned char * 
+SoOffscreenWGLData::getBuffer(void) 
+{
+  return this->buffer;
+}
+
+void 
+SoOffscreenWGLData::postRender(void) 
+{
+  SbVec2s size = this->getSize();
+  
+  if (this->context && this->buffer) {
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
+                 this->buffer);
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    
+    // The previous context is stored and reset to make it possible
+    // to use an SoOffscreenRenderer from for instance an SoCallback
+    // node callback during SoGLRenderAction traversal, without the
+    // need for any extra book-keeping on the application side.
+
+    if (this->storedcontext && this->storeddc) {
+      wglMakeCurrent(this->storeddc, this->storedcontext);
+      this->storedcontext = NULL;
+    }
+    else {
+      wglMakeCurrent(NULL, NULL);
+    }
+  }
+}
+
+SbVec2s 
+SoOffscreenWGLData::getMaxDimensions(void) 
+{
+  // FIXME: where can we get hold of the _real_ max values for
+  // Pixmap and/or GLXPixmap? 20000417 mortene.
+  return SbVec2s(32767, 32767);
+}
+
+void 
+SoOffscreenWGLData::cleanupWGL(void) 
+{
+  // cleanup member variabler
+  if(this->devicecontext != NULL) {
+    if(this->oldbitmap != NULL) {
+      SelectObject(this->devicecontext, this->oldbitmap);
+      this->oldbitmap = NULL;
+    }
+    if(this->bitmap != NULL) {
+      DeleteObject(this->bitmap);
+      this->bitmap = NULL;
+    }
+    DeleteDC(this->devicecontext);
+    this->devicecontext = NULL;
+  }
+}
+
+void 
+SoOffscreenWGLData::initWGL(void) 
+{
+  // initialization of member variables
+  
+  this->cleanupWGL();
+  
+  this->devicecontext = CreateCompatibleDC(NULL);
+  if (this->devicecontext == NULL) {
+    DWORD dwError = GetLastError();
+    SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
+                              "Couldn't create DC. CreateCompatibleDC() failed with error code %d.", dwError);
+    return;
+  }
+  
+  BITMAPINFO bmi;
+  bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+  bmi.bmiHeader.biWidth = this->buffersize[0];
+  bmi.bmiHeader.biHeight = this->buffersize[1];
+  bmi.bmiHeader.biPlanes = 1;
+  bmi.bmiHeader.biBitCount = 24;
+  bmi.bmiHeader.biCompression = BI_RGB;
+  bmi.bmiHeader.biSizeImage = 0;
+  bmi.bmiHeader.biXPelsPerMeter = 0;
+  bmi.bmiHeader.biYPelsPerMeter = 0;
+  bmi.bmiHeader.biClrUsed  = 0;
+  bmi.bmiHeader.biClrImportant = 0;
+  bmi.bmiColors[0].rgbBlue = 0;
+  bmi.bmiColors[0].rgbGreen;
+  bmi.bmiColors[0].rgbRed;
+  bmi.bmiColors[0].rgbReserved;
+  
+  // make a bitmap to draw to
+  void *pvBits;
+  this->bitmap = CreateDIBSection(this->devicecontext, &bmi, DIB_RGB_COLORS, &pvBits, NULL, 0);
+  if (this->bitmap == NULL) {
+    DWORD dwError = GetLastError();
+    SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
+                              "Couldn't create DIB. CreateDIBSection() failed with error code %d.", dwError);
+    return;
+  }
+  
+  this->oldbitmap = (HBITMAP) SelectObject(this->devicecontext, this->bitmap);
+  if (this->oldbitmap == NULL) {
+    DWORD dwError = GetLastError();
+    SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
+                              "Couldn't select bitmap into device context. SelectObject() failed with error code %d.", dwError);
+  }
+  
+  PIXELFORMATDESCRIPTOR pfd = {
+    sizeof(PIXELFORMATDESCRIPTOR),   // size of this pfd
+    1,                     // version number
+    PFD_DRAW_TO_BITMAP |   // support bitmap
+    PFD_SUPPORT_OPENGL,    // support OpenGL
+    PFD_TYPE_RGBA,         // RGBA type
+    24,                    // 24-bit color depth
+    0, 0, 0, 0, 0, 0,      // color bits ignored
+    0,                     // no alpha buffer
+    0,                     // shift bit ignored
+    0,                     // no accumulation buffer
+    0, 0, 0, 0,            // accum bits ignored
+    32,                    // 32-bit z-buffer
+    0,                     // no stencil buffer
+    0,                     // no auxiliary buffer
+    PFD_MAIN_PLANE,        // main layer
+    0,                     // reserved
+    0, 0, 0                // layer masks ignored
+  };
+  
+  int iPixelFormat;
+  
+  // get the best available match of pixel format for the device context
+  iPixelFormat = ChoosePixelFormat(this->devicecontext, &pfd);
+  if (iPixelFormat == 0) {
+    DWORD dwError = GetLastError();
+      SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
+                                "ChoosePixelFormat failed with error code %d.", dwError);
+  }
+  
+  // make that the pixel format of the device context
+  bool ret = SetPixelFormat(this->devicecontext, iPixelFormat, &pfd);
+  if (!ret) {
+    DWORD dwError = GetLastError();
+    SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
+                              "SetPixelFormat failed with error code %d.", dwError);
+  }
+  
+  // verify that the pixel format of the device context supports OpenGL
+  iPixelFormat = GetPixelFormat(this->devicecontext);
+  if (iPixelFormat == 0) {
+    DWORD dwError = GetLastError();
+    SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
+                              "GetPixelFormat failed with error code %d.", dwError);
+    }
+  
+  iPixelFormat = DescribePixelFormat(this->devicecontext, iPixelFormat,  sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+  if (iPixelFormat == 0) {
+    DWORD dwError = GetLastError();
+    SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
+                              "DescribePixelFormat failed with error code %d.", dwError);
+  }
+  
+  if (!(pfd.dwFlags & PFD_SUPPORT_OPENGL)) {
+    SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
+                              "Device Context doesn't support OpenGL, according to DescribePixelFormat.");
+  }
+  
+  // Create WGL context
+  this->context = wglCreateContext(this->devicecontext);
+  if (this->context == NULL) {
+    DWORD dwError = GetLastError();
+    SoDebugError::postWarning("SoOffscreenWGLData::initWGL",
+                              "wglCreateContext failed with error code %d.", dwError);
+    return;
+  }
+}
+
+SbVec2s 
+SoOffscreenWGLData::getMax(void) 
+{
+  return SoOffscreenWGLData::getMaxDimensions();
+}
+
