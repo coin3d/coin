@@ -147,25 +147,32 @@ SoGate::~SoGate()
 void
 SoGate::evaluate(void)
 {
-  SbString valueString;
+  // Force update of slave fields.
+  this->output->enable(TRUE);
 
-  this->input->get(valueString);
-  SO_ENGINE_OUTPUT((*output),SoField,set(valueString.getString()));
+  SbString valuestring;
+  this->input->get(valuestring);
+  SO_ENGINE_OUTPUT((*output), SoField, set(valuestring.getString()));
+
+  // No more updates until either the SoGate::enable field or the
+  // SoGate::trigger field is touched.
+  if (!this->enable.getValue()) this->output->enable(FALSE);
 }
 
 // doc from parent
 void
-SoGate::inputChanged(SoField *which)
+SoGate::inputChanged(SoField * which)
 {
   if (which == &this->enable) {
-    this->output->enable(this->enable.getValue());
-    if (this->enable.getValue()) this->evaluate();
+    SbBool enableval = this->enable.getValue();
+    if (this->output->isEnabled() != enableval)
+      this->output->enable(enableval);
   }
   else if (which == &this->trigger) {
     this->output->enable(TRUE);
-    this->evaluate();
-    this->output->enable(FALSE);
   }
+  // Changes to the input field are handled automatically according to
+  // the value of the SoGate::enable field.
 }
 
 /*!

@@ -760,6 +760,8 @@ INPUT                 = @coin_build_dir@/include/Inventor/SbBasic.h \
                         @coin_src_dir@/include/Inventor/engines/SoEngineOutput.h \
                         @coin_src_dir@/src/engines/SoBoolOperation.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoBoolOperation.h \
+                        @coin_src_dir@/src/engines/SoGate.cpp \
+                        @coin_src_dir@/include/Inventor/engines/SoGate.h \
                         @coin_src_dir@/src/engines/SoSelectOne.cpp \
                         @coin_src_dir@/include/Inventor/engines/SoSelectOne.h \
                         @coin_src_dir@/src/engines/SoTimeCounter.cpp \
