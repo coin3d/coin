@@ -31,6 +31,8 @@
  #include <Inventor/nodes/SoVertexProperty.h>
 #endif // !COIN_INTERNAL
 
+#define SO_END_STRIP_INDEX (-1)
+
 class COIN_DLL_API SoIndexedTriangleStripSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
 
