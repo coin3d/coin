@@ -198,7 +198,7 @@ SoInput::constructorsCommon(void)
   if (data->instancecount == 0) {
     const SbStringList & dir = *SoInput::dirsearchlist;
     for (int i = 0; i < dir.getLength(); i++) {
-      data->searchlist->append(new SbString(dir[i]->getString()));;
+      data->searchlist->append(new SbString(dir[i]->getString()));
     }
   }
   data->instancecount++;
@@ -486,10 +486,6 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
 SbBool
 SoInput::pushFile(const char * filename)
 {
-  // Get rid of default stdin filepointer.
-  if (this->filestack.getLength() == 1 &&
-      this->filestack[0]->ivFilePointer() == coin_get_stdin()) this->closeFile();
-
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);
   if (fp) {
@@ -660,6 +656,7 @@ SoInput::setStringArray(const char * strings[])
   }
   this->setBuffer(buf, bufsize);
   SoInput_FileInfo * info = this->getTopOfStack();
+  assert(info);
   info->setDeleteBuffer(buf);
 }
 
@@ -711,7 +708,9 @@ SoInput::setBuffer(void * bufpointer, size_t bufsize)
 size_t
 SoInput::getNumBytesRead(void) const
 {
-  return this->getTopOfStack()->getNumBytesParsedSoFar();
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+  return fi->getNumBytesParsedSoFar();
 }
 
 /*!
@@ -720,8 +719,12 @@ SoInput::getNumBytesRead(void) const
 SbString
 SoInput::getHeader(void)
 {
-  this->checkHeader();
-  return this->getTopOfStack()->ivHeader();
+  if (this->checkHeader()) {
+    return this->getTopOfStack()->ivHeader();
+  }
+  else {
+    return SbString("");
+  }
 }
 
 /*!
@@ -1410,7 +1413,9 @@ SoInput::getLocationString(SbString & str) const
 void
 SoInput::putBack(const char c)
 {
-  this->getTopOfStack()->putBack(c);
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+  fi->putBack(c);
 }
 
 /*!
@@ -1419,7 +1424,9 @@ SoInput::putBack(const char c)
 void
 SoInput::putBack(const char * str)
 {
-  this->getTopOfStack()->putBack(str);
+  SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
+  fi->putBack(str);
 }
 
 /*!
@@ -2216,6 +2223,7 @@ SoInput::readDigits(char * str)
   assert(!this->isBinary());
 
   SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
 
   char c, * s = str;
 
@@ -2267,6 +2275,7 @@ int
 SoInput::readChar(char * s, char charToRead)
 {
   SoInput_FileInfo * fi = this->getTopOfStack();
+  assert(fi);
 
   int ret = 0;
   char c;
