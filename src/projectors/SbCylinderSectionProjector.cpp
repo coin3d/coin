@@ -219,7 +219,7 @@ SbCylinderSectionProjector::setupTolerance(void)
     this->planeDir = -this->planeDir;
   }
   // distance from plane to cylinder axis
-  this->planeDist = sqrt(radius * radius - this->tolDist * this->tolDist);
+  this->planeDist = (float)sqrt(radius * radius - this->tolDist * this->tolDist);
 
   // create line parallel to axis, but in plane
   SbVec3f linept = axis.getPosition()+this->planeDir * this->planeDist;

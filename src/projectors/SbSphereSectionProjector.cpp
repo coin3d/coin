@@ -218,7 +218,7 @@ SbSphereSectionProjector::setupTolerance(void)
   float radius = this->sphere.getRadius();
   this->tolDist = this->tolerance * radius;
   this->sqrtoldist = this->tolDist * this->tolDist;
-  this->planeDist = sqrt(radius * radius - this->tolDist * this->tolDist);
+  this->planeDist = (float)sqrt(radius * radius - this->tolDist * this->tolDist);
   this->planePoint = this->sphere.getCenter() +
     this->planeDir * this->planeDist;
   this->tolPlane = SbPlane(this->planeDir, this->planePoint);

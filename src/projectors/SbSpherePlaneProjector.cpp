@@ -142,7 +142,7 @@ SbSpherePlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
     if (cosval > 1.0f) cosval = 1.0f;
     else if (cosval < -1.0f) cosval = -1.0f;
     // rotation on sphere
-    angle = acos(cosval);
+    angle = (float)acos(cosval);
     // rotation caused by dragging plane
     angle += (tolpt-planePt).length() / this->sphere.getRadius();
   }
