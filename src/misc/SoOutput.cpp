@@ -141,6 +141,7 @@ SoOutput::constructorCommon(void)
 SoOutput::~SoOutput(void)
 {
   this->reset();
+  delete this->headerstring;
 }
 
 /*!
@@ -478,6 +479,7 @@ void
 SoOutput::write(const int i)
 {
   if (!this->isBinary()) {
+    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
     char buffer[128];
     sprintf(buffer, "%d", i);
     this->writeBytesWithPadding(buffer, strlen(buffer));
@@ -499,6 +501,7 @@ void
 SoOutput::write(const unsigned int i)
 {
   if (!this->isBinary()) {
+    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
     char buffer[128];
     sprintf(buffer, "0x%x", i);
     this->writeBytesWithPadding(buffer, strlen(buffer));
@@ -519,6 +522,7 @@ void
 SoOutput::write(const short s)
 {
   if (!this->isBinary()) {
+    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
     char buffer[128];
     sprintf(buffer, "%hd", s);
     this->writeBytesWithPadding(buffer, strlen(buffer));
@@ -537,6 +541,7 @@ void
 SoOutput::write(const unsigned short s)
 {
   if (!this->isBinary()) {
+    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
     char buffer[128];
     sprintf(buffer, "0x%hx", s);
     this->writeBytesWithPadding(buffer, strlen(buffer));
@@ -554,6 +559,7 @@ SoOutput::write(const float f)
 {
   if (!this->isBinary()) {
     // FIXME: precision stuff doesn't work. 19980910 mortene.
+    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
     char buffer[128];
 //     char formatstr[32];
 //     sprintf(formatstr, "%%.%df", this->precision);
@@ -576,6 +582,7 @@ SoOutput::write(const double d)
 {
   if (!this->isBinary()) {
     // FIXME: precision stuff not implemented. 19980910 mortene.
+    // FIXME: use buffer which can dynamically resize. 20000205 mortene.
     char buffer[128];
     sprintf(buffer, "%f", d);
     this->writeBytesWithPadding(buffer, strlen(buffer));
