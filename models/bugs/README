@@ -1,9 +1,0 @@
-This directory is here for storing model files which somehow discloses
-a bug in Coin. The bug could be in the rendering code, the import
-code, the export code or any other area of the library.
-
-Look inside the file for more information, or if a file is in binary
-format, it should be accompanied by a text file with a description of
-the bug.
-
-mortene.
