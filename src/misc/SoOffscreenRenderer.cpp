@@ -206,9 +206,8 @@ public:
   SbBool lastnodewasacamera;
   SoCamera * visitedcamera;
 
-  bool mustaddonepixel;
-  bool mustaddoneline;
-
+  SbBool mustaddonepixel;
+  SbBool mustaddoneline;
 };
 
 
@@ -324,8 +323,8 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
   PRIVATE(this)->internaldata = new SoOffscreenAGLData();
 #endif // HAVE_AGL
 
-  PRIVATE(this)->mustaddonepixel = false;
-  PRIVATE(this)->mustaddoneline = false;
+  PRIVATE(this)->mustaddonepixel = FALSE;
+  PRIVATE(this)->mustaddoneline = FALSE;
   
   PRIVATE(this)->internaldata->master = PRIVATE(this);
   PRIVATE(this)->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
@@ -537,12 +536,12 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
     if(size[0] > PRIVATE(this)->numsubscreens[0]*PRIVATE(this)->subscreensize[0]){
       size[0] = PRIVATE(this)->numsubscreens[0]*PRIVATE(this)->subscreensize[0];
       // Due to rounding error we have to add one pixel for each horizontal line
-      PRIVATE(this)->mustaddonepixel = true;
+      PRIVATE(this)->mustaddonepixel = TRUE;
     }
     if(size[1] > PRIVATE(this)->numsubscreens[1]*PRIVATE(this)->subscreensize[1]){
       size[1] = PRIVATE(this)->numsubscreens[1]*PRIVATE(this)->subscreensize[1];
       // Due to rounding error we have to add one line to buffer
-      PRIVATE(this)->mustaddoneline = true;
+      PRIVATE(this)->mustaddoneline = TRUE;
     }
 
     PRIVATE(this)->currentsubscreen = 0;
