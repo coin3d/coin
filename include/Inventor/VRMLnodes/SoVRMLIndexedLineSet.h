@@ -46,11 +46,11 @@ protected:
 private:
 
   enum Binding {
-    OVERALL,
-    PER_LINE,
-    PER_LINE_INDEXED,
-    PER_VERTEX,
-    PER_VERTEX_INDEXED
+    OVERALL = 0,
+    PER_LINE = 3,
+    PER_LINE_INDEXED = 4,
+    PER_VERTEX = 5 ,
+    PER_VERTEX_INDEXED = 6
   };
 
   Binding findMaterialBinding(void) const;
