@@ -103,13 +103,13 @@
 #include <AGL/AGL.h>
 #endif /* HAVE_AGL_AGL_H */
 
-/* FIXME: temporary fix awaiting configure-check for this feature
-   (kintel 20011125)
-
-   UPDATE: fetch the define from include/Inventor/C/glue/dl.h (or
-   dlp.h). 20020919 mortene.
+/*
+  FIXME: should make it possible to fetch a single common define from
+  include/Inventor/C/glue/dl.h (or dlp.h). 20020919 mortene.
 */
+#if defined(HAVE_DL_LIB) || defined(HAVE_WINDLL_RUNTIME_BINDING) || defined(__APPLE__)
 #define COIN_OPENGL_DYNAMIC_BINDING
+#endif /* dynamic binding */
 
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/threads/threadsutilp.h>
@@ -407,6 +407,7 @@ coin_glglue_extension_available(const char * extensions, const char * ext)
 {
   const char * start;
   int extlen;
+  SbBool found = FALSE;
 
   assert(ext && "NULL string");
   assert((ext[0] != '\0') && "empty string");
@@ -417,16 +418,27 @@ coin_glglue_extension_available(const char * extensions, const char * ext)
 
   while (1) {
     const char * where = strstr(start, ext);
-    if (!where) break;
+    if (!where) goto done;
 
     if (where == start || *(where - 1) == ' ') {
       const char * terminator = where + extlen;
-      if (*terminator == ' ' || *terminator == '\0') { return 1; }
+      if (*terminator == ' ' || *terminator == '\0') {
+        found = TRUE;
+        goto done;
+      }
     }
 
     start = where + extlen;
   }
-  return 0;
+
+done:
+  if (coin_glglue_debug()) {
+    cc_debugerror_postinfo("coin_glglue_extension_available",
+                           "extension '%s' is%s present",
+                           ext, found ? "" : " NOT");
+  }
+
+  return found ? 1 : 0;
 }
 
 int
@@ -461,6 +473,9 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_EXT_paletted_texture 1
 #define GL_ARB_imaging 1
 #define GL_EXT_blend_minmax 1
+#define GL_EXT_color_table 1
+#define GL_SGI_color_table 1
+#define GL_SGI_texture_color_table 1
 
 #define GLX_VERSION_1_1 1
 #define GLX_VERSION_1_2 1
@@ -511,7 +526,7 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_VERSION_1_1 */
 #ifdef GL_EXT_texture_object
-  if (!w->glGenTextures && cc_glglue_glext_supported(w,"GL_EXT_texture_object")) {
+  if (!w->glGenTextures && cc_glglue_glext_supported(w, "GL_EXT_texture_object")) {
     w->glGenTextures = (COIN_PFNGLGENTEXTURESPROC)PROC(glGenTexturesEXT);
     w->glBindTexture = (COIN_PFNGLBINDTEXTUREPROC)PROC(glBindTextureEXT);
     w->glDeleteTextures = (COIN_PFNGLDELETETEXTURESPROC)PROC(glDeleteTexturesEXT);
@@ -526,7 +541,7 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_VERSION_1_1 */
 #ifdef GL_EXT_subtexture
-  if (!w->glTexSubImage2D && cc_glglue_glext_supported(w,"GL_EXT_subtexture")) {
+  if (!w->glTexSubImage2D && cc_glglue_glext_supported(w, "GL_EXT_subtexture")) {
     w->glTexSubImage2D = (COIN_PFNGLTEXSUBIMAGE2DPROC)PROC(glTexSubImage2DEXT);
   }
 #endif /* GL_EXT_subtexture */
@@ -543,7 +558,7 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_VERSION_1_2 */
 #ifdef GL_EXT_texture3D
-  if (!w->glTexImage3D && cc_glglue_glext_supported(w,"GL_EXT_texture3D")) {
+  if (!w->glTexImage3D && cc_glglue_glext_supported(w, "GL_EXT_texture3D")) {
     w->glTexImage3D = (COIN_PFNGLTEXIMAGE3DPROC)PROC(glTexImage3DEXT);
     /* These are implicitly given if GL_EXT_texture3D is defined. */
     w->glCopyTexSubImage3D = (COIN_PFNGLCOPYTEXSUBIMAGE3DPROC)PROC(glCopyTexSubImage3DEXT);
@@ -562,7 +577,7 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_VERSION_1_3 */
 #ifdef GL_ARB_multitexture
-  if (!w->glActiveTexture && cc_glglue_glext_supported(w,"GL_ARB_multitexture")) {
+  if (!w->glActiveTexture && cc_glglue_glext_supported(w, "GL_ARB_multitexture")) {
     w->glActiveTexture = (COIN_PFNGLACTIVETEXTUREPROC)PROC(glActiveTextureARB);
     w->glMultiTexCoord2f = (COIN_PFNGLMULTITEXCOORD2FPROC)PROC(glMultiTexCoord2fARB);
   }
@@ -586,14 +601,22 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GLX_EXT_import_context */
 
+  w->glCompressedTexImage1D = NULL;
+  w->glCompressedTexImage2D = NULL;
+  w->glCompressedTexImage3D = NULL;
+  w->glCompressedTexSubImage1D = NULL;
+  w->glCompressedTexSubImage2D = NULL;
+  w->glCompressedTexSubImage3D = NULL;
+  w->glGetCompressedTexImage = NULL;
+
 #ifdef GL_VERSION_1_3
   if (cc_glglue_glversion_matches_at_least(w, 1, 3, 0)) {
-    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(glCompressedTexImage3D);
-    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(glCompressedTexImage2D);
     w->glCompressedTexImage1D = (COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)PROC(glCompressedTexImage1D);
-    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(glCompressedTexSubImage3D);
-    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(glCompressedTexSubImage2D);
+    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(glCompressedTexImage2D);
+    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(glCompressedTexImage3D);
     w->glCompressedTexSubImage1D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)PROC(glCompressedTexSubImage1D);
+    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(glCompressedTexSubImage2D);
+    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(glCompressedTexSubImage3D);
     w->glGetCompressedTexImage = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)PROC(glGetCompressedTexImage);
   }
 #endif /* GL_VERSION_1_3 */
@@ -601,15 +624,20 @@ glglue_resolve_symbols(cc_glglue * w)
 #ifdef GL_ARB_texture_compression
   if ((w->glCompressedTexImage1D == NULL) && 
       cc_glglue_glext_supported(w, "GL_ARB_texture_compression")) {
-    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(glCompressedTexImage3DARB);
-    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(glCompressedTexImage2DARB);
     w->glCompressedTexImage1D = (COIN_PFNGLCOMPRESSEDTEXIMAGE1DPROC)PROC(glCompressedTexImage1DARB);
-    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(glCompressedTexSubImage3DARB);
-    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(glCompressedTexSubImage2DARB);
+    w->glCompressedTexImage2D = (COIN_PFNGLCOMPRESSEDTEXIMAGE2DPROC)PROC(glCompressedTexImage2DARB);
+    w->glCompressedTexImage3D = (COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)PROC(glCompressedTexImage3DARB);
     w->glCompressedTexSubImage1D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE1DPROC)PROC(glCompressedTexSubImage1DARB);
+    w->glCompressedTexSubImage2D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE2DPROC)PROC(glCompressedTexSubImage2DARB);
+    w->glCompressedTexSubImage3D = (COIN_PFNGLCOMPRESSEDTEXSUBIMAGE3DPROC)PROC(glCompressedTexSubImage3DARB);
     w->glGetCompressedTexImage = (COIN_PFNGLGETCOMPRESSEDTEXIMAGEPROC)PROC(glGetCompressedTexImageARB);
   }
 #endif /* GL_ARB_texture_compression */
+
+  w->glColorTable = NULL;
+  w->glGetColorTable = NULL;
+  w->glGetColorTableParameteriv = NULL;
+  w->glGetColorTableParameterfv = NULL;
 
 #if defined(GL_VERSION_1_2) && defined(GL_ARB_imaging)
   if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0) &&
@@ -621,20 +649,60 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_VERSION_1_2 && GL_ARB_imaging */
 
-#ifdef GL_EXT_paletted_texture
-  /* FIXME: I don't think this is sufficient, we should also check for
-     EXT_color_table and/or SGI_texture_color_table and/or
-     SGI_color_table. 20030121 mortene. */
+#if defined(GL_EXT_color_table)
   if ((w->glColorTable == NULL) &&
-      /* FIXME: is this at all the correct extension to check for?
-         20030123 mortene. */
-      cc_glglue_glext_supported(w,"GL_EXT_paletted_texture")) {
+      cc_glglue_glext_supported(w, "GL_EXT_color_table")) {
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableEXT);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableEXT);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivEXT);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvEXT);
+  }
+#endif /* GL_EXT_color_table */
+
+#if defined(GL_SGI_color_table)
+  if ((w->glColorTable == NULL) &&
+      cc_glglue_glext_supported(w, "GL_SGI_color_table")) {
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableSGI);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableSGI);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivSGI);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvSGI);
+  }
+#endif /* GL_SGI_color_table */
+
+  w->supportsPalettedTextures =
+    cc_glglue_glext_supported(w, "GL_EXT_paletted_texture") ||
+    cc_glglue_glext_supported(w, "GL_SGI_texture_color_table");
+
+#ifdef GL_EXT_paletted_texture
+  /* Note that EXT_paletted_texture defines glColorTableEXT et al
+     "on it's own", i.e. it doesn't need the presence of
+     EXT_color_table / SGI_color_table / OGL1.2+ + ARB_imaging. It
+     only defines a *subset* of what EXT_color_table etc defines,
+     though. */
+  if ((w->glColorTable == NULL) && 
+      cc_glglue_glext_supported(w, "GL_EXT_paletted_texture")) {
     w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableEXT);
     w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableEXT);
     w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivEXT);
     w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvEXT);
   }
 #endif /* GL_EXT_paletted_texture */
+
+#ifdef GL_SGI_texture_color_table
+  /* Note that SGI_texture_color_table defines glColorTableEXT et al
+     "on it's own", i.e. it doesn't need the presence of
+     EXT_color_table / SGI_color_table / OGL1.2+ + ARB_imaging. It
+     only defines a *subset* of what EXT_color_table etc defines,
+     though. */
+  if ((w->glColorTable == NULL) &&
+      cc_glglue_glext_supported(w, "SGI_texture_color_table")) {
+    w->glColorTable = (COIN_PFNGLCOLORTABLEPROC)PROC(glColorTableSGI);
+    w->glGetColorTable = (COIN_PFNGLGETCOLORTABLEPROC)PROC(glGetColorTableSGI);
+    w->glGetColorTableParameteriv = (COIN_PFNGLGETCOLORTABLEPARAMETERIVPROC)PROC(glGetColorTableParameterivSGI);
+    w->glGetColorTableParameterfv = (COIN_PFNGLGETCOLORTABLEPARAMETERFVPROC)PROC(glGetColorTableParameterfvSGI);
+  }
+#endif /* GL_SGI_texture_color_table */
+
 
 #if defined(GL_VERSION_1_4)
   if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
@@ -1477,21 +1545,17 @@ cc_glglue_has_paletted_textures(const cc_glglue * glue)
 {
   if (!glglue_allow_newer_opengl(glue)) return FALSE;
 
-  return 
-    glue->glColorTable &&
-    glue->glGetColorTable && 
-    glue->glGetColorTableParameteriv &&
-    glue->glGetColorTableParameterfv;
+  return glue->supportsPalettedTextures;
 }
 
 void
-cc_glglue_glColorTableEXT(const cc_glglue * glue,
-                          GLenum target,
-                          GLenum internalFormat,
-                          GLsizei width,
-                          GLenum format,
-                          GLenum type,
-                          const GLvoid *table)
+cc_glglue_glColorTable(const cc_glglue * glue,
+                       GLenum target,
+                       GLenum internalFormat,
+                       GLsizei width,
+                       GLenum format,
+                       GLenum type,
+                       const GLvoid *table)
 {
   assert(glue->glColorTable);
   glue->glColorTable(target,
