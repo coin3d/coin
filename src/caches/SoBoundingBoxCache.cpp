@@ -80,7 +80,7 @@ SoBoundingBoxCache::set(const SbXfBox3f & boundingbox,
   PRIVATE(this)->bbox = boundingbox;
   PRIVATE(this)->localbbox = boundingbox.project();
   PRIVATE(this)->centerset = centerset ? 1 : 0;
-  PRIVATE(this)->centerpoint = centerpoint;
+  if (centerset) { PRIVATE(this)->centerpoint = centerpoint; }
 }
 
 /*!
