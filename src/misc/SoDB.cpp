@@ -349,7 +349,10 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
 SoSeparator *
 SoDB::readAll(SoInput * in)
 {
-  if (!in->isValidFile()) return NULL;
+  if (!in->isValidFile()) {
+    SoReadError::post(in, "Not a valid Inventor file.");
+    return NULL;
+  }
 
 #if COIN_DEBUG // See comments below in next COIN_DEBUG block.
   int stackdepth = in->filestack.getLength();
