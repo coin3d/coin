@@ -29,9 +29,7 @@
 /*!
   Constructor with \a isccw indicating if polygons are specified
   in counter clockwise order. The \a approxVertices can be used
-  to optimize normal generation. The \a free flag specifies
-  whether normals should be free when this instance is
-  destructed.
+  to optimize normal generation.
 */
 SoNormalGenerator::SoNormalGenerator(const SbBool isccw,
                                      const int approxVertices)
@@ -40,7 +38,8 @@ SoNormalGenerator::SoNormalGenerator(const SbBool isccw,
     vertexFace(approxVertices),
     faceNormals(approxVertices / 4),
     vertexNormals(approxVertices),
-    ccw(isccw)
+    ccw(isccw),
+    perVertex(TRUE)
 {
 }
 
@@ -58,9 +57,9 @@ SoNormalGenerator::~SoNormalGenerator()
   \sa SoNormalGenerator::endPolygon()
 */
 void
-SoNormalGenerator::beginPolygon()
+SoNormalGenerator::beginPolygon(void)
 {
-  this->currFaceStart = vertexList.getLength();
+  this->currFaceStart = this->vertexList.getLength();
 }
 
 /*!
@@ -71,7 +70,7 @@ SoNormalGenerator::beginPolygon()
 void
 SoNormalGenerator::polygonVertex(const SbVec3f &v)
 {
-  this->vertexList.append(bsp.addPoint(v));
+  this->vertexList.append(this->bsp.addPoint(v));
   this->vertexFace.append(this->faceNormals.getLength());
 }
 
@@ -81,7 +80,7 @@ SoNormalGenerator::polygonVertex(const SbVec3f &v)
   \sa SoNormalGenerator::polygonVertex()
 */
 void
-SoNormalGenerator::endPolygon()
+SoNormalGenerator::endPolygon(void)
 {
   SbVec3f n = this->calcFaceNormal();
   this->faceNormals.append(n);
@@ -129,7 +128,7 @@ calc_normal_vec(const SbVec3f *facenormals, const int facenum,
                 SbVec3f &vertnormal)
 {
   // start with face normal vector
-  const SbVec3f *facenormal = &facenormals[facenum];
+  const SbVec3f * facenormal = &facenormals[facenum];
   vertnormal = *facenormal;
 
   int n = faceArray.getLength();
@@ -163,7 +162,7 @@ SoNormalGenerator::generate(const float creaseAngle,
   int i;
 
   // for each vertex, store all faceindices the vertex is a part of
-  SbList <int32_t> *vertexFaceArray = new SbList<int32_t>[bsp.numPoints()];
+  SbList <int32_t> * vertexFaceArray = new SbList<int32_t>[bsp.numPoints()];
 
   int numvi = this->vertexList.getLength();
 
@@ -223,19 +222,57 @@ SoNormalGenerator::generate(const float creaseAngle,
   this->faceNormals.truncate(0, TRUE);
   this->bsp.clear();
   this->vertexNormals.fit();
+
+  // return vertex normals
+  this->perVertex = TRUE;
+}
+
+/*!
+  Generates the normals per face. Use this when PER_FACE normal
+  binding is needed. This method is not part of the OIV API.
+*/
+void
+SoNormalGenerator::generatePerFace(void)
+{
+  // face normals have already been generated. Just set flag.
+  this->perVertex = FALSE;
+}
+
+/*!
+  Generates one overall normal by averaging all face
+  normals. Use when normal binding is OVERALL. This method
+  is not part of the OIV API.
+*/
+void
+SoNormalGenerator::generateOverall(void)
+{
+  const int n = this->faceNormals.getLength();
+  const SbVec3f * normals = this->faceNormals.getArrayPtr();
+  SbVec3f acc(0.0f, 0.0f, 0.0f);
+  for (int i = 0; i < n; i++) acc += normals[i];
+  acc.normalize();
+  this->faceNormals.truncate(0, TRUE);
+  this->faceNormals.append(acc);
+
+  // normals are not per vertex
+  this->perVertex = FALSE;
 }
 
 /*!
   Returns the number of normals generated.
 */
 int
-SoNormalGenerator::getNumNormals() const
+SoNormalGenerator::getNumNormals(void) const
 {
+  if (!this->perVertex) {
+    return this->faceNormals.getLength();
+  }
   return this->vertexNormals.getLength();
 }
 
 /*!
-  Sets the number of generated normals.
+  Sets the number of generated normals. This method is not supported
+  in Coin, and is provided for API compatibility only.
 */
 void
 SoNormalGenerator::setNumNormals(const int /* num */)
@@ -247,9 +284,13 @@ SoNormalGenerator::setNumNormals(const int /* num */)
   Returns a pointer to the generated normals.
 */
 const SbVec3f *
-SoNormalGenerator::getNormals() const
+SoNormalGenerator::getNormals(void) const
 {
-  if (this->vertexNormals.getLength()) 
+  if (!this->perVertex) {
+    if (this->faceNormals.getLength()) return this->faceNormals.getArrayPtr();
+    return NULL;
+  }
+  if (this->vertexNormals.getLength())
     return this->vertexNormals.getArrayPtr();
   return NULL;
 }
@@ -261,12 +302,18 @@ SoNormalGenerator::getNormals() const
 const SbVec3f &
 SoNormalGenerator::getNormal(const int32_t i) const
 {
+  if (!this->perVertex) {
+    assert(i >= 0 && i < this->faceNormals.getLength());
+    return this->faceNormals[i];
+  }
   assert(i >= 0 && i < this->vertexNormals.getLength());
-  return this->getNormals()[i];
+  return this->vertexNormals[i];
 }
 
 /*!
-  Sets the normal at index \a index to \a normal.
+  Sets the normal at index \a index to \a normal. This method
+  is not supported in Coin, and is provided for API compatibility
+  only.
 */
 void
 SoNormalGenerator::setNormal(const int32_t /* index */,
@@ -281,10 +328,10 @@ SoNormalGenerator::setNormal(const int32_t /* index */,
 SbVec3f
 SoNormalGenerator::calcFaceNormal()
 {
-  int num = vertexList.getLength() - currFaceStart;
+  int num = this->vertexList.getLength() - this->currFaceStart;
   assert(num >= 3);
-  const int * cind = (const int *)vertexList.getArrayPtr() + currFaceStart;
-  const SbVec3f *coords = bsp.getPointsArrayPtr();
+  const int * cind = (const int *) this->vertexList.getArrayPtr() + this->currFaceStart;
+  const SbVec3f * coords = this->bsp.getPointsArrayPtr();
   SbVec3f ret;
 
   if (num == 3) { // triangle

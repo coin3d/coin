@@ -47,6 +47,9 @@ public:
                 const int32_t * striplens = NULL,
                 const int numstrips = 0);
 
+  void generatePerFace(void);
+  void generateOverall(void);
+
   // call these only after generate
   int getNumNormals() const;
   void setNumNormals(const int num);
@@ -62,6 +65,7 @@ private:
   SbList <SbVec3f> vertexNormals;
 
   SbBool ccw;
+  SbBool perVertex;
   int currFaceStart;
 
   SbVec3f calcFaceNormal();
