@@ -17,7 +17,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SoImageInterface.h>
+#include <Inventor/misc/SoImageInterface.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbList.h>
 #include <stdlib.h>
@@ -103,7 +103,7 @@ SoImageInterface::~SoImageInterface()
 }
 
 /*!
-  Increases the reference count for this image. 
+  Increases the reference count for this image.
 
   \sa SoImageInterface::unref()
 */
@@ -166,13 +166,13 @@ SoImageInterface::resize(const SbVec2s newsize)
       }
       sy += dy;
     }
-    
+
     this->size = newsize;
     if (this->didAlloc && this->dataPtr) free(this->dataPtr);
     this->dataPtr = dest;
     this->didAlloc = TRUE; // we did alloc this data
   }
-  
+
   return TRUE;
 }
 
@@ -284,7 +284,7 @@ SoImageInterface::getOriginalSize() const
   Returns TRUE if at least one pixel has alpha != 255. This value
   is cached, of course.
 */
-SbBool 
+SbBool
 SoImageInterface::hasTransparency() const
 {
   return this->transparency;
@@ -293,14 +293,14 @@ SoImageInterface::hasTransparency() const
 //
 // private method that checks data for transparency
 //
-void 
+void
 SoImageInterface::checkTransparency()
 {
   if (this->numComponents == 2 || this->numComponents == 4) {
     int n = this->size[0] * this->size[1];
     int nc = this->numComponents;
     unsigned char *ptr = (unsigned char *) this->dataPtr + nc - 1;
-    
+
     while (n--) {
       if (*ptr != 255) break;
       ptr += nc;

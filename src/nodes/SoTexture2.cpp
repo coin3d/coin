@@ -47,7 +47,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/SoImageInterface.h>
+#include <Inventor/misc/SoImageInterface.h>
 
 #include <assert.h>
 
@@ -207,26 +207,26 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   // FIXME: consider context, pederb
   SoState *state = action->getState();
   this->getImage();
-  
+
   if (this->imageData) {
     float quality = SoTextureQualityElement::get(state);
     SbBool clamps = this->wrapS.getValue() == SoTexture2::CLAMP;
     SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
-    
+
     if (this->glImage && !this->glImage->matches(clamps, clampt, quality)) {
       this->imageData->ref();
       this->glImage->unref();
       this->glImage = NULL;
     }
-    
+
     if (this->glImage == NULL) {
       this->glImage =
-        SoGLImage::findOrCreateGLImage(this->imageData, 
+        SoGLImage::findOrCreateGLImage(this->imageData,
                                        clamps, clampt, quality, NULL);
-      
+
     }
   }
-  
+
   SoGLTextureImageElement::set(state, this,
                                this->glImage,
                                (SoTextureImageElement::Model) model.getValue(),

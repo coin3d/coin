@@ -23,7 +23,7 @@
 */
 
 #include <Inventor/misc/SoGLImage.h>
-#include <Inventor/SoImageInterface.h>
+#include <Inventor/misc/SoImageInterface.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <stdio.h>
@@ -65,15 +65,15 @@ SoGLImage::~SoGLImage()
 /*!
   Checks whether the GL object matches the parameters. If not, you'll
   have to unref this GLImage and create a new one.
-  
+
   This will rarely happen, since this is the kind of variables
   that should not change very often.
-*/  
-SbBool 
+*/
+SbBool
 SoGLImage::matches(const SbBool clamps, const SbBool clampt,
                    const float quality) const
 {
-  return 
+  return
     this->clampS == clamps &&
     this->clampT == clampt &&
     this->quality == quality;
@@ -157,7 +157,7 @@ SoGLImage::getImage() const
 /*!
   Returns texture quality for this GL image.
 */
-float 
+float
 SoGLImage::getQuality() const
 {
   return this->quality;
@@ -177,7 +177,7 @@ SoGLImage::GLinit()
     this->handle = sogl_create_texture(this->clampS, this->clampT,
                                        this->quality,
                                        this->image->getDataPtr(),
-                                       format, size[0], size[1]);    
+                                       format, size[0], size[1]);
     return this->handle != 0;
   }
   return FALSE;
@@ -247,11 +247,11 @@ SoGLImage::checkResize()
 
 static SbList <SoGLImage *> storedImages;
 
-/*!  
+/*!
   Searches the texture database and returns a texture object that
-  matches all parameters. If no such texture is found, a new texture 
+  matches all parameters. If no such texture is found, a new texture
   object is created and returned.
-  
+
   It is currently not possible to share textures between contexts, but
   this will be implemented at a later stage.
 
@@ -275,7 +275,7 @@ SoGLImage::findOrCreateGLImage(SoImageInterface * const image,
   int i, n = storedImages.getLength();
   for (i = 0; i < n; i++) {
     SoGLImage *glimage = storedImages[i];
-    if (glimage->image == image && 
+    if (glimage->image == image &&
         glimage->context == context &&
         glimage->clampS == clamps &&
         glimage->clampT == clampt &&

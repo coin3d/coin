@@ -52,7 +52,6 @@ libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SoDB.h \
 	$(top_srcdir)/include/Inventor/SoFullPath.h \
 	$(top_srcdir)/include/Inventor/SoNodeKitPath.h \
-	$(top_srcdir)/include/Inventor/SoImageInterface.h \
 	$(top_srcdir)/include/Inventor/SoInput.h \
 	$(top_srcdir)/include/Inventor/SoInteraction.h \
 	$(top_srcdir)/include/Inventor/SoOutput.h \

@@ -28,7 +28,7 @@
 
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoGLImage.h>
-#include <Inventor/SoImageInterface.h>
+#include <Inventor/misc/SoImageInterface.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -154,7 +154,7 @@ SoGLTextureImageElement::pop(SoState * state,
   inherited::pop(state, prevTopElement);
   SoGLTextureImageElement *prev = (SoGLTextureImageElement*)
     prevTopElement;
-  
+
   if (prev->glimage != NULL) {
     prev->glimage->apply();
     if (prev->model == DECAL) {
