@@ -27,7 +27,7 @@
 */
 
 #include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/SoOutput.h>
@@ -67,11 +67,8 @@ SoWriteAction::commonConstructor(SoOutput * out)
 {
   SO_ACTION_CONSTRUCTOR(SoWriteAction);
 
-  static SbBool first = TRUE;
-  if (first) {
-    first = FALSE;
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::writeS);
-  }
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::writeS);
+
   methods->setUp(); // FIXME: not sure if this should be called here...
 
   this->outobj = out;

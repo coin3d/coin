@@ -29,7 +29,7 @@
 */
 
 #include <Inventor/actions/SoHandleEventAction.h>
-#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/elements/SoSwitchElement.h>
@@ -75,11 +75,8 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion &viewportRegion)
 {
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::handleEventS);
-  }
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::handleEventS);
+
   methods->setUp(); // FIXME: not sure if this should be called here...
 }
 

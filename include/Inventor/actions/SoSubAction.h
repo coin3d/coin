@@ -51,8 +51,8 @@ private: \
 
 
 #define SO_ACTION_SOURCE(classname) \
-SoEnabledElementsList * classname::enabledElements; \
-SoActionMethodList * classname::methods; \
+SoEnabledElementsList * classname::enabledElements = NULL; \
+SoActionMethodList * classname::methods = NULL; \
 SoType classname::classTypeId = SoType::badType(); \
 SoType classname::getClassTypeId(void) { return classname::classTypeId; } \
 SoType classname::getTypeId(void) const { return classname::classTypeId; } \

@@ -27,7 +27,7 @@
 
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
@@ -88,16 +88,12 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportRegion)
 {
   SO_ACTION_CONSTRUCTOR(SoRayPickAction);
 
-  static int first = 1;
-  if (first) {
-    first = 0;
-    // most methods are inherited from SoPickAction
-    SO_ACTION_ADD_METHOD(SoCamera, SoNode::rayPickS);
-    SO_ACTION_ADD_METHOD(SoSeparator, SoNode::rayPickS);
-    SO_ACTION_ADD_METHOD(SoLOD, SoNode::rayPickS);
-    SO_ACTION_ADD_METHOD(SoLevelOfDetail, SoNode::rayPickS);
-    SO_ACTION_ADD_METHOD(SoShape, SoNode::rayPickS);
-  }
+  // most methods are inherited from SoPickAction
+  SO_ACTION_ADD_METHOD_INTERNAL(SoCamera, SoNode::rayPickS);
+  SO_ACTION_ADD_METHOD_INTERNAL(SoSeparator, SoNode::rayPickS);
+  SO_ACTION_ADD_METHOD_INTERNAL(SoLOD, SoNode::rayPickS);
+  SO_ACTION_ADD_METHOD_INTERNAL(SoLevelOfDetail, SoNode::rayPickS);
+  SO_ACTION_ADD_METHOD_INTERNAL(SoShape, SoNode::rayPickS);
 
   methods->setUp(); // FIXME: not sure if this should be called here...
 }

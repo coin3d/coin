@@ -23,7 +23,7 @@
 */
 
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
@@ -142,11 +142,8 @@ SoCallbackAction::SoCallbackAction(void)
 {
   SO_ACTION_CONSTRUCTOR(SoCallbackAction);
 
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::callbackS);
-  }
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::callbackS);
+
   methods->setUp(); // FIXME: not sure if this should be called here...
 
   this->preTailCB = NULL;

@@ -26,7 +26,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
-#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoGL.h>
@@ -128,12 +128,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportRegion)
 {
   SO_ACTION_CONSTRUCTOR(SoGLRenderAction);
 
-  static int first = 1;
-  if (first) {
-    // cannot be set in initClass, since nodes are not initialized yet
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::GLRenderS);
-    first = 0;
-  }
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::GLRenderS);
 
   methods->setUp(); // FIXME: not sure if this should be called here...
 

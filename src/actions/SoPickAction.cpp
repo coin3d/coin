@@ -23,7 +23,7 @@
 */
 
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
@@ -60,10 +60,7 @@ SoPickAction::SoPickAction(const SbViewportRegion & viewportRegion)
 {
   SO_ACTION_CONSTRUCTOR(SoPickAction);
 
-  static int first = 1;
-  if (first) {
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::pickS);
-  }
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::pickS);
 }
 
 /*!

@@ -24,7 +24,7 @@
 */
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
@@ -77,13 +77,7 @@ SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion &
 {
   SO_ACTION_CONSTRUCTOR(SoGetBoundingBoxAction);
 
-  static int first = 1;
-  if (first) {
-    // FIXME: only enable action methods for nodes that can affect the
-    // bouding box calculations... No big deal, though.
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::getBoundingBoxS);
-    first = 0;
-  }
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getBoundingBoxS);
 
   methods->setUp(); // FIXME: not sure if this should be called here...
 }

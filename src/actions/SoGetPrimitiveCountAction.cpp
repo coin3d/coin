@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/SbName.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
@@ -50,11 +50,8 @@ SoGetPrimitiveCountAction::SoGetPrimitiveCountAction(void)
 {
   SO_ACTION_CONSTRUCTOR(SoGetPrimitiveCountAction);
 
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::getPrimitiveCountS);
-  }
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getPrimitiveCountS);
+
   SoGetPrimitiveCountAction::methods->setUp();
 
   this->textAsTris = TRUE;

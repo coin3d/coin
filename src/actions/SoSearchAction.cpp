@@ -30,7 +30,7 @@
 */
 
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/actions/SoSubActionP.h>
 
 //#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoNode.h>
@@ -75,13 +75,8 @@ SoSearchAction::SoSearchAction(void)
 {
   SO_ACTION_CONSTRUCTOR(SoSearchAction);
 
-  static int first = 1;
-  if (first) {
-    first = 0;
-    // with so few methods - this could be removed from the SoNode interface
-    // and it's virtual table...
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::searchS);
-  }
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::searchS);
+
   methods->setUp(); // FIXME: not sure if this should be called here...
 }
 

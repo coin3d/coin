@@ -28,8 +28,9 @@
 */
 
 #include <Inventor/actions/SoGetMatrixAction.h>
-#include <Inventor/nodes/SoNode.h>
+#include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
 #if COIN_DEBUG
@@ -58,11 +59,8 @@ SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion & region)
 {
   SO_ACTION_CONSTRUCTOR(SoGetMatrixAction);
 
-  static int first = 1;
-  if (first) {
-    first = 0;
-    SO_ACTION_ADD_METHOD(SoNode, SoNode::getMatrixS);
-  }
+  SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getMatrixS);
+
   methods->setUp();
 }
 
