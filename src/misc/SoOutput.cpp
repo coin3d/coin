@@ -1032,8 +1032,10 @@ SoOutput::pushProto(SoProto * proto)
 SoProto * 
 SoOutput::getCurrentProto(void) const
 {
-  assert(THIS->protostack.getLength());
-  return THIS->protostack[THIS->protostack.getLength()-1];
+  if (THIS->protostack.getLength()) {
+    return THIS->protostack[THIS->protostack.getLength()-1];
+  }
+  return NULL;
 }
 
 /*!
