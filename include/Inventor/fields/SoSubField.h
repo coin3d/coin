@@ -21,6 +21,7 @@
 #define COIN_SOSUBFIELD_H
 
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
+#include <Inventor/SbName.h> // SoType::createType() needs to know SbName.
 #include <assert.h>
 #ifndef COIN_INTERNAL
 // Added for Inventor compliance
