@@ -133,8 +133,8 @@ extern "C" {
 static int
 compare_paths(const void * v0, const void * v1)
 {
-  SoPath * p0 = *((SoPath**)v0);
-  SoPath * p1 = *((SoPath**)v1);
+  SoFullPath * p0 = *((SoFullPath**)v0);
+  SoFullPath * p1 = *((SoFullPath**)v1);
 
   int diff = (char *)p0->getHead() - (char *)p1->getHead();
   if (diff != 0) return diff;
