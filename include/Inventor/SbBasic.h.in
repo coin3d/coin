@@ -262,10 +262,19 @@ inline Type SbSqr(const Type val) {
 
 /* *********************************************************************** */
 
-/* Precaution to avoid an error easily made by the application programmer. */
+/* Precaution to avoid an some errors easily made by the application
+   programmer. */
 #ifdef COIN_DLL_API
 # error Leave the internal COIN_DLL_API define alone.
 #endif /* COIN_DLL_API */
+#ifdef COIN_INTERNAL
+# ifdef COIN_NOT_DLL
+#  error The COIN_NOT_DLL define is not supposed to be used when building the library, only when building Win32 applications.
+# endif /* COIN_INTERNAL && COIN_NOT_DLL */
+# ifdef COIN_DLL
+#  error The COIN_DLL define is not supposed to be used when building the library, only when building Win32 applications.
+# endif /* COIN_INTERNAL && COIN_DLL */
+#endif /* COIN_INTERNAL */
 
 /*
   On MSWindows platforms, one of these defines must always be set when
