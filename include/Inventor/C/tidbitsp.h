@@ -79,6 +79,12 @@ void coin_atexit_cleanup(void);
 SbBool coin_locale_set_portable(cc_string * storeold);
 void coin_locale_reset(cc_string * storedold);
 
+/*
+  Portable atof() function, which will not cause any trouble due to
+  underlying locale's decimal point setting.
+*/
+double coin_atof(const char * ptr);
+
 /* ********************************************************************** */
 
 #ifdef __cplusplus

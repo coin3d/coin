@@ -36,7 +36,7 @@
 #include <string.h> /* strncasecmp() */
 #include <stdio.h>
 #include <ctype.h> /* tolower() */
-#include <stdlib.h> /* atexit(), putenv(), qsort() */
+#include <stdlib.h> /* atexit(), putenv(), qsort(), atof() */
 #ifdef HAVE_WINDOWS_H
 #include <windows.h> /* GetEnvironmentVariable() */
 #endif /* HAVE_WINDOWS_H */
@@ -1139,6 +1139,21 @@ coin_locale_reset(cc_string * storedold)
   const char * l = setlocale(LC_NUMERIC, cc_string_get_text(storedold));
   assert(l != NULL && "could not reset locale");
   cc_string_clean(storedold);
+}
+
+double
+coin_atof(const char * ptr)
+{
+  /* Avoid trying to read decimal point as ",", and reading with
+     thousands separator, as defined for some locales, influencing the
+     atof() call. */
+
+  double v;
+  cc_string storedlocale;
+  SbBool changed = coin_locale_set_portable(&storedlocale);
+  v = atof(ptr);
+  if (changed) { coin_locale_reset(&storedlocale); }
+  return v;
 }
 
 /**************************************************************************/
