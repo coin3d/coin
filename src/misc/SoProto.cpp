@@ -34,6 +34,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/fields/SoMFString.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -57,6 +58,7 @@ public:
   SbList <SbName> isnamelist;
   SbDict refdict;
   SbList <SbName> routelist;
+  SoMFString * externurl;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -86,9 +88,13 @@ SoProto::initClass(void)
 #undef THIS
 #define THIS this->pimpl
 
-SoProto::SoProto(void)
+SoProto::SoProto(const SbBool externproto)
 {
   THIS = new SoProtoP;
+  THIS->externurl = NULL;
+  if (externproto) {
+    THIS->externurl = new SoMFString;
+  }
   THIS->fielddata = new SoFieldData;
   THIS->defroot = new SoGroup;
   THIS->defroot->ref();
@@ -103,6 +109,7 @@ SoProto::~SoProto()
     delete THIS->fielddata->getField(NULL, i);
   }
   THIS->defroot->unref();
+  delete THIS->externurl;
   delete THIS;
 }
 
@@ -156,9 +163,15 @@ SoProto::readInstance(SoInput * in, unsigned short flags)
   if (!ok) {
     SoReadError::post(in, "Error parsing PROTO interface.");
   }
-  else {
+  else if (!THIS->externurl) {
     ok = in->read(c) && c == '{';
     if (ok) ok = this->readDefinition(in);
+  }
+  else {
+    ok = THIS->externurl->read(in, SbName("EXTERNPROTO URL"));
+    if (ok) {
+    }
+    // FIXME: fetch URL data.
   }
   return ok;
 }
@@ -224,8 +237,8 @@ SoProto::addRoute(const SbName & fromnode, const SbName & fromfield,
 SbBool
 SoProto::readInterface(SoInput * in)
 {
-  return THIS->fielddata->readFieldDescriptions(in, NULL, 4);
-
+  return THIS->fielddata->readFieldDescriptions(in, NULL, 4, THIS->externurl == NULL);
+  
   const SbName EVENTIN("eventIn");
   const SbName EVENTOUT("eventOut");
   const SbName FIELD("field");
@@ -258,11 +271,15 @@ SoProto::readInterface(SoInput * in)
     }
     else if (itype == FIELD) {
       f->setFieldType(SoField::NORMAL_FIELD);
-      ok = f->read(in, fname);
+      if (!THIS->externurl) {
+        ok = f->read(in, fname);
+      }
     }
     else if (itype == EXPOSEDFIELD) {
       f->setFieldType(SoField::EXPOSED_FIELD);
-      ok = f->read(in, fname);
+      if (!THIS->externurl) {
+        ok = f->read(in, fname);
+      }
     }
     if (ok) ok = in->read(itype, FALSE);
   }
@@ -315,6 +332,12 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
 void
 SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 {
+  if (THIS->externurl) {
+    SoDebugError::postWarning("SoProto::connectISRefs",
+                              "EXTERNPROTO URL fetching is not yet supported.");
+    return;
+  }
+
   const int n = THIS->isfieldlist.getLength();
 
   SoSearchAction sa;
@@ -346,7 +369,13 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
     sa.setSearchingAll(TRUE);
     sa.apply(src);
     SoFullPath * path = (SoFullPath*) sa.getPath();
-    assert(path);
+    if (!path) {
+      SoDebugError::postWarning("SoProto::connectISRefs",
+                                "Unable to resolve '%s' from '%s' in '%s' PROTO",
+                                fieldname.getString(), iname.getString(), THIS->name.getString());
+                                
+      continue;
+    }
     node = dst;
 
     // browse path to find the correct (copied) node.

@@ -33,7 +33,7 @@ class SoProtoInstance;
 // into the scene graph.
 class COIN_DLL_API SoProto : public SoNode {
 public:
-  SoProto(void);
+  SoProto(const SbBool externproto = FALSE);
 
   virtual SoType getTypeId(void) const;
   static SoType getClassTypeId(void);
@@ -70,6 +70,7 @@ private:
   SbBool readDefinition(SoInput * in);
 
   class SoProtoP * pimpl;
+
   SoNode * createInstanceRoot(SoProtoInstance * inst) const;
   void connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const;
 };
