@@ -21,11 +21,11 @@
 #define __SBBOX3F_H__
 
 #include <float.h>
+#include <stdio.h>
+
 #include <Inventor/SbVec3f.h>
 
-class ostream;
 class SbMatrix;
-
 
 class SbBox3f {
 public:
@@ -64,7 +64,7 @@ public:
   void transform(const SbMatrix& matrix);
   float getVolume(void) const;
 
-  void print(ostream & file) const;
+  void print(FILE * file) const;
 
 private:
   SbVec3f min, max;

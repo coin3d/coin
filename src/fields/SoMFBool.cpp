@@ -38,14 +38,6 @@
 #include <malloc.h>
 #include <assert.h>
 
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
-
-
 SO_MFIELD_SOURCE_MALLOC(SoMFBool, SbBool, SbBool);
 
 
@@ -94,16 +86,14 @@ SoMFBool::convertTo(SoField * dest) const
       ((SoSFBool *)dest)->setValue((*this)[0]);
   }
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    const int num=this->getNum();
-    ostrstream ostr;
-    if (num!=1) ostr << "[ ";
-    for (int i=0;i<num;i++) {
-      ostr << ((*this)[i]?"TRUE":"FALSE");
-      if (i<num-1) ostr << ", ";
-    }
-    if (num!=1) ostr << " ]";
-    ostr << ends;
-    ((SoSFString *)dest)->setValue(ostr.str());
+    const int num=this->getNum() - 1;
+    SbString ostr( "" );
+    if ( num != 0 ) ostr += "[ ";
+    for ( int i = 0; i < num; i++ )
+      ostr += ((*this)[i]) ? "TRUE, " : "FALSE, ";
+    ostr += ((*this)[num]) ? "TRUE" : "FALSE";
+    if ( num != 0 ) ostr += " ]";
+    ((SoSFString *)dest)->setValue( ostr.getString() );
   }
 #if COIN_DEBUG
   else {

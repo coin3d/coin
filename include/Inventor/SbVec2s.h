@@ -20,10 +20,9 @@
 #ifndef __SBVEC2S_H__
 #define __SBVEC2S_H__
 
+#include <stdio.h>
+
 #include <Inventor/system/inttypes.h>
-
-class ostream;
-
 
 class SbVec2s {
 public:
@@ -56,7 +55,7 @@ public:
   friend int operator ==(const SbVec2s& v1, const SbVec2s& v2);
   friend int operator !=(const SbVec2s& v1, const SbVec2s& v2);
 
-  void print(ostream & file) const;
+  void print(FILE * fp) const;
 
 private:
   short vec[2];

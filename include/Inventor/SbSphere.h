@@ -20,12 +20,11 @@
 #ifndef __SBSPHERE_H__
 #define __SBSPHERE_H__
 
+#include <stdio.h>
 #include <Inventor/SbVec3f.h>
 
 class SbLine;
 class SbBox3f;
-class ostream;
-
 
 class SbSphere {
 public:
@@ -41,7 +40,7 @@ public:
   SbBool intersect(const SbLine & l, SbVec3f & enter, SbVec3f & exit) const;
   SbBool pointInside(const SbVec3f & p) const;
 
-  void print(ostream & file) const;
+  void print(FILE * file) const;
 
 private:
   SbVec3f center;

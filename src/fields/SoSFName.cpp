@@ -36,13 +36,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
-
 
 SO_SFIELD_SOURCE(SoSFName, SbName, const SbName);
 
@@ -86,9 +79,11 @@ SoSFName::convertTo(SoField * dest) const
     ((SoMFName *)dest)->setValue(this->getValue());
   }
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
-    ostr << '"' << this->getValue().getString() << '"';
-    ((SoSFString *)dest)->setValue(ostr.str());
+    SbString ostr;
+    ostr = "\"";
+    ostr += this->getValue().getString();
+    ostr += "\"";
+    ((SoSFString *)dest)->setValue(ostr.getString());
   }
 #if COIN_DEBUG
   else {

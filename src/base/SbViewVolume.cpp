@@ -48,7 +48,6 @@ These methods need better documentation:
 
 #include <math.h>
 #include <assert.h>
-#include <iostream.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbLine.h>
@@ -59,7 +58,6 @@ These methods need better documentation:
 #include <Inventor/SbBox3f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 /*!
@@ -1021,19 +1019,28 @@ SbViewVolume::getPerspectiveProjection(const float left, const float right,
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbViewVolume::print(ostream & file) const
+SbViewVolume::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  file << "  projtype: " << (int)this->getProjectionType() << endl;
-  file << "  projpt:   "; this->getProjectionPoint().print(file); file << endl;
-  file << "  projdir:  "; this->getProjectionDirection().print(file);
-  file << endl;
-  file << "  neardist: " << this->getNearDist() << endl;
-  file << "  width:    " << this->getWidth() << endl;
-  file << "  height:   " << this->getHeight() << endl;
-  file << "  depth:    " << this->getDepth() << endl;
-  file << "    llf:    "; this->lowerleftfrust.print(file); file << endl;
-  file << "    lrf:    "; this->lowerrightfrust.print(file); file << endl;
-  file << "    ulf:    "; this->upperleftfrust.print(file); file << endl;
+  fprintf( fp, "  projtype: %d\n", (int) this->getProjectionType() );
+  fprintf( fp, "  projpt:   " );
+  this->getProjectionPoint().print(fp);
+  fprintf( fp, "\n" );
+  fprintf( fp, "  projdir:  " );
+  this->getProjectionDirection().print(fp);
+  fprintf( fp, "\n" );
+  fprintf( fp, "  neardist: %f\n", this->getNearDist() );
+  fprintf( fp, "  width:    %f\n", this->getWidth() );
+  fprintf( fp, "  height:   %f\n", this->getHeight() );
+  fprintf( fp, "  depth:    %f\n", this->getDepth() );
+  fprintf( fp, "    llf:    " );
+  this->lowerleftfrust.print(fp);
+  fprintf( fp, "\n" );
+  fprintf( fp, "    lrf:    " );
+  this->lowerrightfrust.print(fp);
+  fprintf( fp, "\n" );
+  fprintf( fp, "    ulf:    " );
+  this->upperleftfrust.print(fp);
+  fprintf( fp, "\n" );
 #endif // COIN_DEBUG
 }

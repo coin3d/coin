@@ -71,8 +71,7 @@ public:
   void setLastElement(void * const item);
   void fit();
 
-  void print(FILE * const file = stdout) const;
-  void print(class ostream & file) const;
+  void print(FILE * file = stdout) const;
 
 protected:
   void makeRoom(int newSize);

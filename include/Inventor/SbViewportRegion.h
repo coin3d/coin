@@ -20,11 +20,9 @@
 #ifndef __SBVIEWPORTREGION_H__
 #define __SBVIEWPORTREGION_H__
 
+#include <stdio.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec2f.h>
-
-class ostream;
-
 
 class SbViewportRegion {
 public:
@@ -55,7 +53,7 @@ public:
   friend int operator ==(const SbViewportRegion & reg1,
                          const SbViewportRegion & reg2);
 
-  void print(ostream & file) const;
+  void print(FILE * file) const;
 
 private:
   SbVec2s winsize;

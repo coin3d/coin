@@ -30,12 +30,10 @@
 */
 
 #include <math.h>
-#include <iostream.h>
 #include <assert.h>
 #include <Inventor/SbVec2f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality
 #endif // COIN_DEBUG
 
 // *************************************************************************
@@ -406,9 +404,9 @@ operator !=(const SbVec2f& v1, const SbVec2f& v2)
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbVec2f::print(ostream & file) const
+SbVec2f::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  file << "<" << this->vec[0] << ", " << this->vec[1] << ">";
+  fprintf( fp, "<%f, %f>", this->vec[0], this->vec[1] );
 #endif // COIN_DEBUG
 }

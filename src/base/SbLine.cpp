@@ -31,12 +31,10 @@
 
 
 #include <assert.h>
-#include <iostream.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbVec3f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 /*!
@@ -265,12 +263,12 @@ SbLine::getDirection(void) const
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbLine::print(ostream & file) const
+SbLine::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  file << "p: ";
-  this->getPosition().print(file);
-  file << "d: ";
-  this->getDirection().print(file);
+  fprintf( fp, "p: " );
+  this->getPosition().print(fp);
+  fprintf( fp, "d: " );
+  this->getDirection().print(fp);
 #endif // COIN_DEBUG
 }

@@ -37,12 +37,6 @@
 #include <assert.h>
 
 #include <Inventor/fields/SoSFString.h>
-#ifdef _WIN32
-#include <strstrea.h>
-#else
-#include <strstream.h>
-#endif
-
 
 
 SO_MFIELD_SOURCE_MALLOC(SoMFName, SbName, SbName);
@@ -108,16 +102,17 @@ SoMFName::convertTo(SoField * dest) const
       ((SoSFName *)dest)->setValue((*this)[0]);
   }
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
+    SbString ostr;
     const int num=this->getNum();
-    if (num>1) ostr << "[ ";
+    if (num>1) ostr += "[ ";
     for (int i=0;i<num;i++) {
-      ostr << '"' << (*this)[i].getString() << '"';
-      if (i<num-1) ostr << ", ";
+      ostr += "\"";
+      ostr += (*this)[i].getString();
+      ostr += "\"";
+      if (i<num-1) ostr += ", ";
     }
-    if (num>1) ostr << " ]";
-    ostr << ends;
-    ((SoSFString *)dest)->setValue(ostr.str());
+    if (num>1) ostr += " ]";
+    ((SoSFString *)dest)->setValue(ostr.getString());
   }
 #if COIN_DEBUG
   else {

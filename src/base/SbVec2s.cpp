@@ -31,12 +31,10 @@
 
 
 #include <assert.h>
-#include <iostream.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality
 #endif // COIN_DEBUG
 
 /*!
@@ -399,9 +397,9 @@ operator !=(const SbVec2s& v1, const SbVec2s& v2)
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbVec2s::print(ostream & file) const
+SbVec2s::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  file << "<" << this->vec[0] << ", " << this->vec[1] << ">";
+  fprintf( fp, "<%d, %d>", this->vec[0], this->vec[1] );
 #endif // COIN_DEBUG
 }

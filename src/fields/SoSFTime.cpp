@@ -38,12 +38,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
 
 
 SO_SFIELD_SOURCE(SoSFTime, SbTime, const SbTime &);

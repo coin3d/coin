@@ -36,12 +36,10 @@
 #include <Inventor/SbMatrix.h>
 #include <math.h>
 #include <assert.h>
-#include <iostream.h>
 #include <float.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 /*!
@@ -594,9 +592,9 @@ SbRotation::identity(void)
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbRotation::print(ostream & file) const
+SbRotation::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  this->quat.print(file);
+  this->quat.print(fp);
 #endif // COIN_DEBUG
 }

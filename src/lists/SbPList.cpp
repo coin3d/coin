@@ -509,11 +509,16 @@ SbPList::fit()
 */
 
 void
-SbPList::print(FILE * const file) const
+SbPList::print(FILE * fp) const
 {
-  fprintf(file, "void * - %p: (%d/%d) - itemSize = %d\n",
+  fprintf(fp, "void * - %p: (%d/%d) - itemSize = %d\n",
            this->itemBuffer, this->numItems, this->itemBufferSize,
            sizeof(void *));
+#if COIN_DEBUG
+  for (int i=0; i < this->getLength();i++)
+    fprintf( fp, "%p ", (*this)[i] );
+  fprintf( fp, "\n" );
+#endif // COIN_DEBUG
 }
 
 //
@@ -553,16 +558,3 @@ SbPList::makeDefaultRoom(int newSize) const
   thisobj->numItems=newSize;
 }
 
-/*!
-  Dump the state of this object to the \c file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
-*/
-
-void
-SbPList::print(class ostream & file) const
-{
-#if COIN_DEBUG
-  for (int i=0; i < this->getLength();i++) file << (*this)[i] << " ";
-  file << endl;
-#endif // COIN_DEBUG
-}

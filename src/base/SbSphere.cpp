@@ -34,7 +34,6 @@
 #include <Inventor/SbLine.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 /*!
@@ -240,11 +239,11 @@ SbSphere::pointInside(const SbVec3f &p) const
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbSphere::print(ostream & file) const
+SbSphere::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  file << "center: ";
-  this->getCenter().print(file);
-  file << "  radius: " << this->getRadius() << " ";
+  fprintf( fp, "center: " );
+  this->getCenter().print(fp);
+  fprintf( fp, "  radius: %f ", this->getRadius() );
 #endif // COIN_DEBUG
 }

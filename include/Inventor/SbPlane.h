@@ -20,11 +20,12 @@
 #ifndef __SBPLANE_H__
 #define __SBPLANE_H__
 
+#include <stdio.h>
+
 #include <Inventor/SbVec3f.h>
 
 class SbLine;
 class SbMatrix;
-class ostream;
 
 class SbPlane {
 public:
@@ -43,7 +44,7 @@ public:
   friend int operator ==(const SbPlane& p1, const SbPlane& p2);
   friend int operator !=(const SbPlane& p1, const SbPlane& p2);
 
-  void print(ostream & file) const;
+  void print(FILE * file) const;
 
 private:
   SbVec3f normal;

@@ -20,11 +20,10 @@
 #ifndef __SBCYLINDER_H__
 #define __SBCYLINDER_H__
 
+#include <stdio.h>
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbLine.h>
-
-class ostream;
-
 
 class SbCylinder {
 public:
@@ -38,7 +37,7 @@ public:
   SbBool intersect(const SbLine& l, SbVec3f& intersection) const;
   SbBool intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const;
 
-  void print(ostream & file) const;
+  void print(FILE * file) const;
 
 private:
   SbLine axis;

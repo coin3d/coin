@@ -24,18 +24,17 @@
 #include <time.h>
 #include <sys/timeb.h>
 
-
 struct timeval;
 
 #else // ! WIN32
 #include <sys/time.h>
 #endif // ! WIN32
 
+#include <stdio.h>
+
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
-
-class ostream;
 
 
 class SbTime {
@@ -84,7 +83,7 @@ public:
   SbBool operator <=(const SbTime& tm) const;
   SbBool operator >=(const SbTime& tm) const;
 
-  void print(ostream & file) const;
+  void print(FILE * fp) const;
 
 private:
   double dtime;

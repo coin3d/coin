@@ -20,11 +20,10 @@
 #ifndef __SBLINE_H__
 #define __SBLINE_H__
 
+#include <stdio.h>
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec3f.h>
-
-class ostream;
-
 
 class SbLine {
 public:
@@ -37,7 +36,7 @@ public:
   const SbVec3f& getPosition(void) const;
   const SbVec3f& getDirection(void) const;
 
-  void print(ostream & file) const;
+  void print(FILE * file) const;
 
 private:
   SbVec3f pos, dir;

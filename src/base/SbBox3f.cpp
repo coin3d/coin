@@ -33,11 +33,9 @@
 
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbMatrix.h>
-#include <iostream.h>
 #include <assert.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 /*!
@@ -429,11 +427,13 @@ SbBox3f::transform(const SbMatrix& matrix)
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbBox3f::print(ostream & file) const
+SbBox3f::print(FILE * fp) const
 {
 #if COIN_DEBUG
   SbVec3f minv, maxv;
   this->getBounds(minv, maxv);
-  minv.print(file); cout << " "; maxv.print(file);
+  minv.print(fp);
+  fprintf(fp, " ");
+  maxv.print(fp);
 #endif // COIN_DEBUG
 }

@@ -27,10 +27,8 @@ class SbLine;
 class SbRotation;
 class SbVec3f;
 class SbVec4f;
-class ostream;
 
 typedef float SbMat[4][4];
-
 
 class SbMatrix {
 public:
@@ -98,7 +96,6 @@ public:
   void multVecMatrix(const SbVec4f &src, SbVec4f &dst) const;
 
   void print(FILE * fp) const;
-  void print(ostream & file) const;
 
 private:
   float matrix[4][4];

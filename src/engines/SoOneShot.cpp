@@ -99,14 +99,13 @@ SoOneShot::inputChanged(SoField *which)
 {
   if (which==&this->trigger) {
 #if 0 // FIXME: doesn't compile. 19990620 mortene.
-      cout << "(trigger): " <<
-        this->flags.getValue() << endl;
+      fprintf( stdout, "(trigger): %x\n", this->flags.getValue() );
 #endif // disabled
     if ((!this->running ||
          this->flags.getValue()&SoOneShot::RETRIGGERABLE) &&
         !this->disable.getValue()) {
 #if 0 // FIXME: doesn't compile. 19990620 mortene.
-      cout << "XXX Retrigger XXX" << endl;
+      fprintf( stdout, "XXX Retrigger XXX\n" );
 #endif // disabled
       this->startTime=this->timeIn.getValue();
       this->running=TRUE;

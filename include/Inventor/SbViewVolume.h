@@ -20,6 +20,8 @@
 #ifndef __SBVIEWVOLUME_H__
 #define __SBVIEWVOLUME_H__
 
+#include <stdio.h>
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec3f.h>
 
@@ -30,8 +32,6 @@ class SbPlane;
 class SbRotation;
 class SbVec2f;
 class SbVec3f;
-class ostream;
-
 
 class SbViewVolume {
 public:
@@ -77,7 +77,8 @@ public:
   float getWidth(void) const;
   float getHeight(void) const;
   float getDepth(void) const;
-  void print(ostream & file) const;
+
+  void print(FILE * fp) const;
 
 private:
   ProjectionType type;

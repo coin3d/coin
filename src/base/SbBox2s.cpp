@@ -32,7 +32,6 @@
 
 #include <assert.h>
 #include <limits.h>
-#include <iostream.h>
 #include <Inventor/SbBox2s.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

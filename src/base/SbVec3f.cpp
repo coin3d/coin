@@ -31,13 +31,11 @@
 
 #include <math.h>
 #include <assert.h>
-#include <iostream.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbPlane.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 /*!
@@ -559,10 +557,9 @@ operator !=(const SbVec3f& v1, const SbVec3f& v2)
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbVec3f::print(ostream & file) const
+SbVec3f::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  file << "<" << this->vec[0] << ", " << this->vec[1]
-       << ", " << this->vec[2] << ">";
+  fprintf( fp, "<%f, %f, %f>", this->vec[0], this->vec[1], this->vec[2] );
 #endif // COIN_DEBUG
 }

@@ -32,12 +32,10 @@
 
 #include <Inventor/SbXfBox3f.h>
 #include <float.h>
-#include <iostream.h>
 #include <math.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 /*!
@@ -619,24 +617,36 @@ SbXfBox3f::getVolume(void) const
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbXfBox3f::print(ostream & file) const
+SbXfBox3f::print(FILE * fp) const
 {
 #if COIN_DEBUG
   SbVec3f minv, maxv;
   this->getBounds(minv, maxv);
-  file << "  bounds "; minv.print(file);
-  file << " "; maxv.print(file); file << endl;
+  fprintf( fp, "  bounds " );
+  minv.print(fp);
+  fprintf( fp, " " );
+  maxv.print(fp);
+  fprintf( fp, "\n" );
 
-  file << "  center "; this->getCenter().print(file); file << endl;
+  fprintf( fp, "  center " );
+  this->getCenter().print(fp);
+  fprintf( fp, "\n" );
   float x, y, z;
   this->getOrigin(x, y, z);
-  file << "  origin "; SbVec3f(x, y, z).print(file); file << endl;
+  fprintf( fp, "  origin " );
+  SbVec3f(x, y, z).print(fp);
+  fprintf( fp, "\n" );
   this->getSize(x, y, z);
-  file << "  size "; SbVec3f(x, y, z).print(file); file << endl;
-  file << "  volume " << this->getVolume() << endl;
-  this->getTransform().print(file);
+  fprintf( fp, "  size " );
+  SbVec3f(x, y, z).print(fp);
+ 
+  fprintf( fp, "\n" );
+  fprintf( fp, "  volume %f\n", this->getVolume() );
+  this->getTransform().print(fp);
 
-  file << "  project "; this->project().print(file); file << endl;
+  fprintf( fp, "  project " );
+  this->project().print(fp);
+  fprintf( fp, "\n" );
 #endif // COIN_DEBUG
 }
 

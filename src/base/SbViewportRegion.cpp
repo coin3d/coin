@@ -32,11 +32,9 @@
 
 #include <assert.h>
 #include <math.h>
-#include <iostream.h>
 #include <Inventor/SbViewportRegion.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 /*!
@@ -486,19 +484,26 @@ operator ==(const SbViewportRegion& reg1, const SbViewportRegion& reg2)
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbViewportRegion::print(ostream & file) const
+SbViewportRegion::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  file << "  winsize:     "; this->getWindowSize().print(file); file << endl;
-  file << "  vporigin:    "; this->getViewportOrigin().print(file);
-  file << endl;
-  file << "  vporiginpix: "; this->getViewportOriginPixels().print(file);
-  file << endl;
-  file << "  vpsize:      "; this->getViewportSize().print(file); file << endl;
-  file << "  vpsizepix:   "; this->getViewportSizePixels().print(file);
-  file << endl;
-  file << "  aspectratio: " << this->getViewportAspectRatio() << endl;
-  file << "  ppi:         " << this->getPixelsPerInch() << endl;
-  file << "  ppp:         " << this->getPixelsPerPoint() << endl;
+  fprintf( fp, "  winsize:     " );
+  this->getWindowSize().print(fp);
+  fprintf( fp, "\n" );
+  fprintf( fp, "  vporigin:    " );
+  this->getViewportOrigin().print(fp);
+  fprintf( fp, "\n" );
+  fprintf( fp, "  vporiginpix: " );
+  this->getViewportOriginPixels().print(fp);
+  fprintf( fp, "\n" );
+  fprintf( fp, "  vpsize:      " );
+  this->getViewportSize().print(fp);
+  fprintf( fp, "\n" );
+  fprintf( fp, "  vpsizepix:   " );
+  this->getViewportSizePixels().print(fp);
+  fprintf( fp, "\n" );
+  fprintf( fp, "  aspectratio: %f\n", this->getViewportAspectRatio() );
+  fprintf( fp, "  ppi:         %f\n", this->getPixelsPerInch() );
+  fprintf( fp, "  ppp:         %f\n", this->getPixelsPerPoint() );
 #endif // COIN_DEBUG
 }

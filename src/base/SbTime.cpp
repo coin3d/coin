@@ -38,7 +38,6 @@
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 
@@ -895,13 +894,13 @@ SbTime::addToString(SbString & str, const double v) const
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbTime::print(ostream & file) const
+SbTime::print(FILE * fp) const
 {
 #if COIN_DEBUG
   struct timeval tm;
   this->getValue(&tm);
   SbString str = this->formatDate("   %A %D %T %Z");
-  file << str.getString()
-       << ", secs: " << tm.tv_sec << ", msecs: " << tm.tv_usec << endl;
+  fprintf( fp, "%s", str.getString() );
+  fprintf( fp, ", secs: %d, msecs: %d\n", tm.tv_sec, tm.tv_usec );
 #endif // COIN_DEBUG
 }

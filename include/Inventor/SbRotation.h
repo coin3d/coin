@@ -20,11 +20,11 @@
 #ifndef __SBROTATION_H__
 #define __SBROTATION_H__
 
+#include <stdio.h>
 #include <Inventor/SbVec4f.h>
 
 class SbMatrix;
 class SbVec3f;
-class ostream;
 
 class SbRotation {
 public:
@@ -58,7 +58,7 @@ public:
                           float t);
   static SbRotation identity(void);
 
-  void print(ostream & file) const;
+  void print(FILE * fp) const;
 
 private:
   SbVec4f quat;

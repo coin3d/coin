@@ -34,7 +34,6 @@
 #include <Inventor/SbCylinder.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 /*!
@@ -250,11 +249,11 @@ SbCylinder::intersect(const SbLine& l, SbVec3f& enter, SbVec3f& exit) const
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbCylinder::print(ostream & file) const
+SbCylinder::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  file << "axis: ";
-  this->getAxis().print(file);
-  file << "  radius: " << this->getRadius() << " ";
+  fprintf( fp, "axis: " );
+  this->getAxis().print(fp);
+  fprintf( fp, "  radius: %f ", this->getRadius() );
 #endif // COIN_DEBUG
 }

@@ -52,7 +52,6 @@
 #include <math.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print(ostream)
 #endif // COIN_DEBUG
 
 /*
@@ -1230,22 +1229,6 @@ SbMatrix::print(FILE * fp) const
             this->matrix[i][2], this->matrix[i][3]);
   }
 }
-
-/*!
-  Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
- */
-void
-SbMatrix::print(ostream & file) const
-{
-#if COIN_DEBUG
-  for (int i=0; i < 4; i++) {
-    file << "\t" << this->matrix[i][0] << "\t" << this->matrix[i][1] << "\t"
-         << this->matrix[i][2] << "\t" << this->matrix[i][3] << endl;
-  }
-#endif // COIN_DEBUG
-}
-
 
 /***********************************************************************
    below is the polar_decomp implementation by Ken Shoemake

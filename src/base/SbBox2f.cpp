@@ -33,7 +33,6 @@
 
 #include <Inventor/SbBox2f.h>
 #include <assert.h>
-#include <iostream.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

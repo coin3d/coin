@@ -20,11 +20,9 @@
 #ifndef __SBXFBOX3F_H__
 #define __SBXFBOX3F_H__
 
+#include <stdio.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbMatrix.h>
-
-class ostream;
-
 
 class SbXfBox3f : public SbBox3f
 {
@@ -56,7 +54,7 @@ public:
   // Overloaded from SbBox3f
   float getVolume(void) const;
 
-  void print(ostream & file) const;
+  void print(FILE * file) const;
 
 private:
   // incorrect for SbXfBox3f. Hide them

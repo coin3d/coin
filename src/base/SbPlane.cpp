@@ -29,14 +29,12 @@
 
 #include <assert.h>
 #include <stdio.h>
-#include <iostream.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbLine.h>
 #include <Inventor/SbMatrix.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#include <iostream.h> // For print() functionality.
 #endif // COIN_DEBUG
 
 
@@ -278,10 +276,10 @@ operator !=(const SbPlane& p1, const SbPlane& p2)
   debug version of library, method does nothing in an optimized compile.
  */
 void
-SbPlane::print(ostream & file) const
+SbPlane::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  this->getNormal().print(file);
-  file << "  " << this->getDistanceFromOrigin();
+  this->getNormal().print(fp);
+  fprintf( fp, "  %f", this->getDistanceFromOrigin() );
 #endif // COIN_DEBUG
 }
