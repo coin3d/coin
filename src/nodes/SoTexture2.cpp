@@ -35,6 +35,72 @@
 
   For a simple usage example, see the class documentation for SoSFImage.
 
+  One common flaw with many programs that has support for exporting
+  VRML or Inventor files, is that the same texture file is exported
+  several times, but as different nodes. This can cause excessive
+  texture memory usage and slow rendering. Below is an example program
+  that fixes this by replacing all instances of the same texture with
+  a pointer to the first node:
+
+  \code
+
+  #include <Inventor/actions/SoSearchAction.h>
+  #include <Inventor/actions/SoWriteAction.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoTexture2.h>
+  #include <Inventor/SoDB.h>
+  #include <Inventor/SoInput.h>
+  #include <Inventor/SoOutput.h>
+
+  int main(int argc, char ** argv)
+  {
+    if (argc < 2) return -1;
+    SoDB::init();
+  
+    SoInput in;
+    if (!in.openFile(argv[1])) return -1;
+
+    SoSeparator * root = SoDB::readAll(&in);
+    if (!root) return -1;
+    root->ref();
+  
+    SoSearchAction sa;
+    sa.setType(SoTexture2::getClassTypeId());
+    sa.setInterest(SoSearchAction::ALL);
+    sa.setSearchingAll(TRUE);
+    sa.apply(root);
+    SoPathList & pl = sa.getPaths();
+    SbDict namedict;
+     
+    for (int i = 0; i < pl.getLength(); i++) {
+      SoFullPath * p = (SoFullPath*) pl[i];
+      if (p->getTail()->isOfType(SoTexture2::getClassTypeId())) {
+        SoTexture2 * tex = (SoTexture2*) p->getTail();
+        if (tex->filename.getValue().getLength()) {
+          SbName name = tex->filename.getValue().getString();
+          unsigned long key = (unsigned long) ((void*) name.getString());
+          void * tmp;
+          if (!namedict.find(key, tmp)) {
+            // new texture. just insert into list
+            (void) namedict.enter(key, tex);
+          }
+          else if (tmp != (void*) tex) { // replace with node found in dict
+            SoGroup * parent = (SoGroup*) p->getNodeFromTail(1);
+            int idx = p->getIndexFromTail(0);
+            parent->replaceChild(idx, (SoNode*) tmp);
+          }
+        }
+      }
+    }
+    sa.reset();
+
+    // output fixed scene to stdout
+    SoOutput out;
+    SoWriteAction wa(&out);
+    wa.apply(root);
+    root->unref();
+  }
+  \endcode
 
   When working with Inventor files, one often wants to embed external
   texture image files into the Inventor files themselves. Here's a
