@@ -114,7 +114,8 @@ SoOverrideElement::matches(const SoElement *element) const
 SoElement *
 SoOverrideElement::copyMatchInfo(void) const
 {
-  SoOverrideElement *elem = new SoOverrideElement;
+  SoOverrideElement *elem = (SoOverrideElement*)
+    this->getTypeId().createInstance();
   elem->flags = this->flags;
   return elem;
 }
