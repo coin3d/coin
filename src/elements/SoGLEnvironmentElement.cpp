@@ -74,7 +74,7 @@ void
 SoGLEnvironmentElement::pop(SoState * state,
                            const SoElement * prevTopElement)
 {
-  ((SoGLEnvironmentElement*)prevTopElement)->updategl(state);
+  this->updategl(state);
   inherited::pop(state, prevTopElement);
 }
 
@@ -86,10 +86,11 @@ SoGLEnvironmentElement::setElt(SoState * const state,
                                const SbVec3f & attenuation,
                                const int32_t fogType,
                                const SbColor & fogColor,
-                               const float fogVisibility)
+                               const float fogVisibility,
+                               const float fogStart)
 {
   inherited::setElt(state, ambientIntensity, ambientColor, attenuation,
-                    fogType, fogColor, fogVisibility);
+                    fogType, fogColor, fogVisibility, fogStart);
   this->updategl(state);
 }
 
@@ -105,8 +106,6 @@ SoGLEnvironmentElement::updategl(SoState * const state)
   ambient[2] = ambientColor[2] * ambientIntensity;
   ambient[3] = 1.0f;
 
-  // FIXME: not 100% sure if I should do this here...
-  // the ambientColor might be only for ligths, pederb 990630
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
 
   if (fogType == (int)NONE) {
@@ -127,7 +126,7 @@ SoGLEnvironmentElement::updategl(SoState * const state)
   switch (fogType) {
   case HAZE:
     glFogi(GL_FOG_MODE, GL_LINEAR);
-    glFogf(GL_FOG_START, 0.0f);
+    glFogf(GL_FOG_START, this->fogStart);
     glFogf(GL_FOG_END, farval);
     break;
   case FOG:

@@ -45,7 +45,8 @@ protected:
                       const SbVec3f & attenuation,
                       const int32_t fogType,
                       const SbColor & fogColor,
-                      const float fogVisibility);
+                      const float fogVisibility,
+                      const float fogStart);
 private:
   void updategl(SoState * const state);
 };

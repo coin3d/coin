@@ -47,11 +47,13 @@ public:
   static  void set(SoState * const state, SoNode * const node,
                    const float ambientIntensity, const SbColor & ambientColor,
                    const SbVec3f & attenuation, const int32_t fogType,
-                   const SbColor & fogColor, const float fogVisibility);
+                   const SbColor & fogColor, const float fogVisibility,
+                   const float fogStart = 0.0f);
   static  void get(SoState * const state,
                    float & ambientIntensity, SbColor & ambientColor,
                    SbVec3f & attenuation, int32_t & fogType,
-                   SbColor & fogColor, float & fogVisibility);
+                   SbColor & fogColor, float & fogVisibility,
+                   float & fogStart);
 
   static float getAmbientIntensity(SoState * const state);
   static float getFogVisibility(SoState * const state);
@@ -63,7 +65,7 @@ public:
   static void getDefault(float & ambientIntensity,
                          SbColor & ambientColor, SbVec3f & attenuation,
                          int32_t & fogType, SbColor & fogColor,
-                         float & fogVisibility);
+                         float & fogVisibility, float & fogNear);
 
   virtual void print(FILE * file) const;
 
@@ -75,7 +77,8 @@ protected:
                       const SbVec3f & attenuation,
                       const int32_t fogType,
                       const SbColor & fogColor,
-                      const float fogVisibility);
+                      const float fogVisibility,
+                      const float fogNear);
 
   float ambientIntensity;
   SbColor ambientColor;
@@ -83,7 +86,7 @@ protected:
   int32_t fogType;
   SbColor fogColor;
   float fogVisibility;
-
+  float fogStart;
 };
 
 #endif // !COIN_SOENVIRONMENTELEMENT_H

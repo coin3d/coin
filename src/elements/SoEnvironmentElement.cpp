@@ -71,6 +71,12 @@
   FIXME: write doc.
 */
 
+/*!
+  \fn SoEnvironmentElement::fogStart
+
+  FIXME: write doc.
+*/
+
 SO_ELEMENT_SOURCE(SoEnvironmentElement);
 
 /*!
@@ -102,12 +108,13 @@ SoEnvironmentElement::set(SoState * const state,
                           const SbVec3f & attenuation,
                           const int32_t fogType,
                           const SbColor & fogColor,
-                          const float fogVisibility)
+                          const float fogVisibility,
+                          const float fogStart)
 {
   SoEnvironmentElement * element = (SoEnvironmentElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   element->setElt(state, ambientIntensity, ambientColor, attenuation,
-                  fogType, fogColor, fogVisibility);
+                  fogType, fogColor, fogVisibility, fogStart);
 }
 
 //! FIXME: write doc.
@@ -119,7 +126,8 @@ SoEnvironmentElement::get(SoState * const state,
                           SbVec3f & attenuation,
                           int32_t & fogType,
                           SbColor & fogColor,
-                          float & fogVisibility)
+                          float & fogVisibility,
+                          float & fogStart)
 {
   SoEnvironmentElement *element = (SoEnvironmentElement *)
     SoElement::getConstElement(state, classStackIndex);
@@ -129,6 +137,7 @@ SoEnvironmentElement::get(SoState * const state,
   fogType = element->fogType;
   fogColor = element->fogColor;
   fogVisibility = element->fogVisibility;
+  fogStart = element->fogStart;
 }
 
 //! FIXME: write doc.
@@ -139,7 +148,8 @@ SoEnvironmentElement::getDefault(float & ambientIntensity,
                                  SbVec3f & attenuation,
                                  int32_t & fogType,
                                  SbColor & fogColor,
-                                 float & fogVisibility)
+                                 float & fogVisibility,
+                                 float & fogStart)
 {
   ambientIntensity = 0.2f;
   ambientColor = SbColor(1.0f, 1.0f, 1.0f);
@@ -147,6 +157,7 @@ SoEnvironmentElement::getDefault(float & ambientIntensity,
   fogType = NONE;
   fogColor = SbColor(1.0f, 1.0f, 1.0f);
   fogVisibility = 0.0f;
+  fogStart = 0.0f;
 }
 
 //! FIXME: write doc.
@@ -223,8 +234,8 @@ void
 SoEnvironmentElement::init(SoState * state)
 {
   inherited::init(state);
-  this->getDefault(ambientIntensity, ambientColor, attenuation,
-                   fogType, fogColor, fogVisibility);
+  this->getDefault(this->ambientIntensity, this->ambientColor, this->attenuation,
+                   fogType, fogColor, fogVisibility, fogStart);
 }
 
 //! FIXME: doc
@@ -235,7 +246,8 @@ SoEnvironmentElement::setElt(SoState * const,
                              const SbVec3f & attenuation,
                              const int32_t fogType,
                              const SbColor & fogColor,
-                             const float fogVisibility)
+                             const float fogVisibility,
+                             const float fogStart)
 {
   this->ambientIntensity = ambientIntensity;
   this->ambientColor = ambientColor;
@@ -243,4 +255,5 @@ SoEnvironmentElement::setElt(SoState * const,
   this->fogType = fogType;
   this->fogColor = fogColor;
   this->fogVisibility = fogVisibility;
+  this->fogStart = fogStart;
 }
