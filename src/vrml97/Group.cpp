@@ -513,39 +513,6 @@ SoVRMLGroup::audioRender(SoAudioRenderAction * action)
       SoVRMLGroup::doAction((SoAction*)action);
     }
   }
-
-  /* fixme: remove. 2003-02-04 thammer.
-
-  int numindices;
-  const int * indices;
-  SoState * state = action->getState();
-  if (THIS->hassoundchild != SoVRMLGroupP::NO) {
-    if (action->getPathCode(numindices, indices) != SoAction::IN_PATH) {
-      SbBool oldhassound, newhassound, oldactive;
-      oldactive = SoSoundElement::isPartOfActiveSceneGraph(state);
-      
-      action->getState()->push();
-    
-      SoSoundElement::setSceneGraphHasSoundNode(state, this, FALSE);
-      SoSoundElement::setIsPartOfActiveSceneGraph(state, this, oldactive);
-
-      inherited::doAction(action);
-
-      newhassound = SoSoundElement::sceneGraphHasSoundNode(state);
-     
-      action->getState()->pop();
-
-      oldhassound = SoSoundElement::sceneGraphHasSoundNode(state);
-      SoSoundElement::setSceneGraphHasSoundNode(state, this, oldhassound || newhassound);
-
-    
-      THIS->hassoundchild = newhassound ? SoVRMLGroupP::YES : 
-        SoVRMLGroupP::NO;
-    } else {
-      SoVRMLGroup::doAction((SoAction*)action);
-    }
-  }
-  */
 }
 
 // Doc in parent
