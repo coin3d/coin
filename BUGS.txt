@@ -896,6 +896,13 @@
 
     20021008 mortene.
 
+    UPDATE: Performing a rotation changes only the 3x3 rotation matrix
+    (i in [0,3], j in [0,3]). Are there any descriptions of how Julien
+    produced this error in the first place? I have not reproduced the
+    full interaction loop, only a simple
+    'rotate-translate-rotate-translate' directly on the manip and
+    verified that the results are healthy. 20021111 rolvs
+
 =====================================================================
 
 036 This program will hit an assert if we interact with the
@@ -1316,146 +1323,6 @@
     consider this bug fairly low-priority to fix.
 
     20021016 mortene.
-
-=====================================================================
-
-042 Assert crash when copying a dragger.
-
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-    #include <Inventor/SoDB.h>
-    #include <Inventor/SoInteraction.h>
-    #include <Inventor/nodes/SoSeparator.h>
-    #include <Inventor/draggers/SoTranslate1Dragger.h>
-    
-    int main(int argc, char *argv[])
-    {
-      SoDB::init();
-      SoInteraction::init();
-      
-      SoNode * src = new SoTranslate1Dragger;
-      src->ref();
-      SoNode * dst = src->copy();
-      dst->ref();
-      dst->unref();
-      src->unref();
-      
-      return 0;
-    }
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-
-    This will cause an assert in SoBase (with Coin-2) because of a
-    dangling reference. Here's the back-trace:
-
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-    #5  0x402c2121 in SoBase::assertAlive (this=0x807c7e0)
-        at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:466
-    #6  0x402c2149 in SoBase::ref (this=0x807c7e0)
-        at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:481
-    #7  0x40352aa4 in SoBaseList::append (this=0x807c6f8, ptr=0x807c7e0)
-        at /home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:94
-    #8  0x40353815 in SoNodeList::append (this=0x807c6f8, ptr=0x807c7e0)
-        at /home/sigma/mortene/code/coin-head/src/lists/SoNodeList.cpp:82
-    #9  0x402c5433 in SoChildList::append (this=0x807c6f8, node=0x807c7e0)
-        at /home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:97
-    #10 0x403f19bc in SoGroup::addChild (this=0x807c638, node=0x807c7e0)
-        at /home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:238
-    #11 0x403f193b in SoGroup::copyContents (this=0x807c638, from=0x8076bb0, 
-        copyconnections=0)
-        at /home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:223
-    #12 0x40375266 in SoBaseKitP::copyParts (this=0x8077f70, srckit=0x8075dc8, 
-        partlist=@0xbffff990, copyconnections=0)
-        at /home/sigma/mortene/code/coin-head/src/nodekits/SoBaseKit.cpp:2414
-    #13 0x403727ef in SoBaseKit::copyContents (this=0x807a6f8, fromfc=0x8075dc8, 
-        copyconnections=0)
-        at /home/sigma/mortene/code/coin-head/src/nodekits/SoBaseKit.cpp:1599
-    #14 0x40377fd8 in SoInteractionKit::copyContents (this=0x807a6f8, 
-        fromFC=0x8075dc8, copyConnections=0)
-        at /home/sigma/mortene/code/coin-head/src/nodekits/SoInteractionKit.cpp:374
-    #15 0x4024ff99 in SoFieldContainer::findCopy (orig=0x8075dc8, 
-        copyconnections=0)
-        at /home/sigma/mortene/code/coin-head/src/fields/SoFieldContainer.cpp:756
-    #16 0x4040a179 in SoNode::copy (this=0x8075dc8, copyconnections=0)
-        at /home/sigma/mortene/code/coin-head/src/nodes/SoNode.cpp:363
-    #17 0x08048a45 in main (argc=1, argv=0xbffffb34) at copybug.cpp:13
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-
-    This is a real ugly bug and should be considered high
-    priority.
-
-    Problem found by kintel, minimal code to reproduce it done by
-    pederb.
-
-    20021018 mortene.
-
-    UPDATE: Minimal code, and a NoOp dragger that isolates the error
-    to SoDragger is added to Flip. 20021025 rolvs
-    
-    UPDATE: This bug is isolated to copying of malformed
-    NodeKit's. The erroneous behaviour is seen when a NodeKit adds a
-    catalog entry that is not null by default, as a child to a catalog
-    entry that /is/ null by default. e.g. in NodeKit constructor: 
-
-    SO_KIT_ADD_CATALOG_ENTRY( transformGroup, SoTransformSeparator, 
-                              TRUE, this,"",TRUE );
-    SO_KIT_ADD_CATALOG_ENTRY( cube, SoCube, 
-                              FALSE, transformGroup,"", TRUE );
-    
-    This behaviour is also defined and documented thoroughly in
-    Flip. Still working on a good fix though. 20021028 rolvs
-
-
-    UPDATE: A 'cure the syptom' fix is to apply the following patch,
-    created with `cvs diff -u SoBaseKit.cpp`.
-    
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-    Index: SoBaseKit.cpp
-    ===================================================================
-    RCS file: /export/cvsroot/Coin/src/nodekits/SoBaseKit.cpp,v
-    retrieving revision 1.94
-    diff -u -r1.94 SoBaseKit.cpp
-    --- SoBaseKit.cpp	19 Oct 2002 15:21:09 -0000	1.94
-    +++ SoBaseKit.cpp	29 Oct 2002 16:08:27 -0000
-    @@ -1919,9 +1919,21 @@
-    // is there any way to make sure this code is only run once, and in
-    // the top level constructor. pederb, 2000-01-06
-    //
-    -  const SoNodekitCatalog * catalog = this->getNodekitCatalog();
-    +  SoNodekitCatalog * catalog = (SoNodekitCatalog*)this->getNodekitCatalog();
-    // only do this if the catalog has been created
-    if (catalog) {
-    +    // Added 'sanity check'
-    +    for( int i = catalog->getNumEntries()-1;
-    +         i > 0; 
-    +       --i ){
-    +      if( !catalog->isNullByDefault( i ) ){
-    +        SbName parent = catalog->getParentName( i );
-    +        if( catalog->isNullByDefault( parent ) ){
-    +          catalog->setNullByDefault( parent, FALSE );
-    +        }
-    +      }
-    +   }
-    +    
-    for (int i = 1; i < THIS->instancelist.getLength(); i++) {
-      if (THIS->instancelist[i]->getValue() == NULL && !catalog->isNullByDefault(i)) {
-         this->makePart(i);
-    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
-    
-    This is as allready stated a 'cure the symptom' fix, that performs
-    a sanity-check of the parent-child relations in the catalog. It
-    takes care of the problem for all cases without actually fixing
-    the cause of the bug. Also it violates constness of the
-    SoNodekitCatalog. The real problem is in creation of the
-    SoNodekitCatalog, where the state of the parent-child
-    relationships should be taken care of while adding parts. 
-
-    Hopefully the fix is coming after a minor rewrite of some of the
-    SoNodekitCatalog internals. Note that Flip now contains tests for
-    this behaviour for all nodekits, as well as a test for
-    SoNodekitCatalog that fails as long as this bug is present. 
-
-    20021029 rolvs
-    
-    UPDATE: Fixed. 20021030 rolvs
 
 =====================================================================
 
