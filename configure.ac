@@ -352,7 +352,7 @@ if test -x ${srcdir}/src/extensions/superglu/configure; then
   AC_DEFINE(HAVE_SUPERGLU,1, [*EXPERIMENTAL* to use the GLU we've "appropriated" from SGI])
   HAVE_SUPERGLU=1
   AC_CONFIG_SUBDIRS([src/extensions/superglu])
-  CPPFLAGS="$CPPFLAGS -I$coin_build_dir/src/extensions"
+  CPPFLAGS="-I$coin_build_dir/src/extensions/superglu/include -I$coin_src_dir/src/extensions/superglu/include $CPPFLAGS"
 else
   enable_superglu=false
   HAVE_SUPERGLU=0

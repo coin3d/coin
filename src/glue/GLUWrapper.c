@@ -37,6 +37,9 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
+#ifdef HAVE_SUPERGLU
+#include <superglu.h>
+#endif /* HAVE_SUPERGLU */
 #include <Inventor/C/glue/GLUWrapper.h>
 
 #ifdef HAVE_GLU /* In case we're _not_ doing runtime linking. */
