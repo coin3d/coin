@@ -371,10 +371,10 @@ glyph3d_specmatch(const cc_font_specification * spec1,
   if (c2 > 1.0f) c2 = 1.0f;
   if (c2 < 0.0f) c2 = 0.0f;
 
-  temp = (int) c1 * 10;
-  c1 = ((float) temp / 10);
-  temp = (int) c2 * 10;
-  c2 = ((float) temp / 10);
+  temp = (int) (c1 * 10.0f);
+  c1 = ((float) temp / 10.0f);
+  temp = (int) (c2 * 10.0f);
+  c2 = ((float) temp / 10.0f);
 
   if ((!cc_string_compare(&spec1->name, &spec2->name)) &&
       (!cc_string_compare(&spec1->style, &spec2->style)) &&
