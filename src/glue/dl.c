@@ -795,27 +795,29 @@ cc_dl_coin_handle(void)
 
   cc_libhandle hnd = cc_dl_open(COIN_SYSTEM_LIBRARY_NAME);
   if (hnd) {
-    /* for comparing with the known value, to make sure we e.g. don't
+    /* For comparing with the known value, to make sure we e.g. don't
        get a different Coin DLL loaded from disk: */
-    void * func = cc_dl_sym(hnd, "cc_dl_coin_handle");
+    void * func = cc_dl_sym(hnd, "cc_dl_open");
+    /* (instead of "cc_dl_open", we could use any other function in
+       the public API) */
 
     if (func == NULL) {
       /* in case we're using the --enable-linkhack dev hack */
       cc_libhandle gluehnd = cc_dl_open("libglueLINKHACK" DYNAMIC_LIBRARY_EXTENSION);
       if (gluehnd) {
-        func = cc_dl_sym(gluehnd, "cc_dl_coin_handle");
+        func = cc_dl_sym(gluehnd, "cc_dl_open");
         cc_dl_close(gluehnd);
       }
     }
 
     if (func) {
-      if (func == cc_dl_coin_handle) { return hnd; }
+      if (func == cc_dl_open) { return hnd; }
 
       if (cc_dl_debugging()) {
         cc_debugerror_post("cc_dl_coin_handle",
                            "function ptr from opened Coin image, %p, "
                            "does not match expected value from current "
-                           "image; %p", func, cc_dl_coin_handle);
+                           "image; %p", func, cc_dl_open);
       }
     }
     else if (cc_dl_debugging()) {
