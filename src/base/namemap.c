@@ -32,6 +32,21 @@
 
 /* ************************************************************************* */
 
+/*
+  Implementation note: we can not use the cc_hash ADT to simplify this
+  implementation, as cc_hash requires all keys in the hash to be
+  unique. That is not necessarily true for a set of strings, as two
+  strings can map to the same key (even though the probability is low
+  (with a good hash routine)).
+
+  So it is indeed necessary to use our own string hash, where equality
+  is tested for with first hash value and then string compare.
+
+  mortene.
+*/
+
+/* ************************************************************************* */
+
 #define CHUNK_SIZE (65536-32)
 static const unsigned int NAME_TABLE_SIZE = 1999;
 
