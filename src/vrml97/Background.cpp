@@ -495,6 +495,12 @@ SoVRMLBackgroundP::buildGeometry(void)
   // just set camera pointer for easy lookup in GLRender()
   this->camera = cam;
 
+  // Camera orientation will be changed each time GLRender() is
+  // executed -- to match actual scene graph camera -- so we disable
+  // notification from the camera to avoid non-stop continuous
+  // redraws.
+  (void)this->camera->enableNotify(FALSE);
+
   SoLightModel * lightmodel = new SoLightModel;
   lightmodel->model.setValue(SoLightModel::BASE_COLOR);
   this->rootnode->addChild(lightmodel);

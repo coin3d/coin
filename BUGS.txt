@@ -3855,21 +3855,6 @@ main(int argc, char ** argv)
 
 =====================================================================
 
-107 Use of SoVRMLBackground causes continuous re-rendering.
-
-    Even if no interaction with the camera is done, this scene will
-    not stop re-rendering in an examinerviewer:
-
-    ------8<------ [snip] --------------------------------------
-    #VRML V2.0 utf8
-    
-    Background { backUrl "image.jpg" }
-    ------8<------ [snip] --------------------------------------
-
-    20040427 mortene.
-
-=====================================================================
-
 108 SoVRMLBackground (and SoVRMLImageTexture?) texturing doesn't work
     with SoOffscreenRenderer.
 
