@@ -94,7 +94,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/C/tidbits.h>
-#include "../tidbitsp.h"
+#include <Inventor/C/tidbitsp.h>
 
 #include <stdlib.h>
 #include <string.h>

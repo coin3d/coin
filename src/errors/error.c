@@ -38,7 +38,7 @@
 #include <unistd.h> /* STDERR_FILENO */
 #endif /* HAVE_UNISTD_H */
 
-#include "../tidbitsp.h"
+#include <Inventor/C/tidbitsp.h>
 
 static cc_mutex * cc_error_mutex = NULL;
 

@@ -39,6 +39,7 @@
 #include <Inventor/SoOutput.h>
 
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbDict.h>
 #include <Inventor/SbName.h>
@@ -47,7 +48,6 @@
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoField.h>
-#include "../tidbitsp.h"
 
 #include <assert.h>
 #include <string.h>

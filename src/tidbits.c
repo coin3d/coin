@@ -41,7 +41,7 @@
 #endif /* HAVE_WINDOWS_H */
 
 #include <Inventor/C/tidbits.h>
-#include "tidbitsp.h"
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/base/list.h>
 

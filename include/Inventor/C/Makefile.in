@@ -159,7 +159,8 @@ DISTCLEANFILES = \
 
 
 EXTRA_DIST = \
-	basic.h.in
+	basic.h.in \
+	tidbitsp.h
 
 
 @BUILD_LIBRARY_TRUE@@MAC_FRAMEWORK_TRUE@ccoinincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers/C

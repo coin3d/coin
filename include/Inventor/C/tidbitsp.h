@@ -20,6 +20,10 @@
 #ifndef COIN_TIDBITSP_H
 #define COIN_TIDBITSP_H
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

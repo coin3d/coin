@@ -14,7 +14,8 @@ DISTCLEANFILES = \
 	basic.h
 
 EXTRA_DIST = \
-	basic.h.in
+	basic.h.in \
+	tidbitsp.h
 
 basic.h: $(srcdir)/basic.h.in
 	@( cd $(top_builddir); $(MAKE) built-sources )
