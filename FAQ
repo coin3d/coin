@@ -1,12 +1,31 @@
 
 Frequently Asked Questions for Coin
+===================================
 
 Last Updated:
 Tue, 11 Sep 2001 12:36:30 +0200
 
-
 For answers to common Open Inventor programming issues not covered in this
 FAQ, take a look at the FAQs directory in the SoGuiExamples archive.
+
+
+Index
+=====
+
+1: Extensions and Ports
+  Q1: Are there any free extensions for doing volume rendering with Coin?
+  Q2: Are there plans for making Coin multi-thread safe?
+  Q3: Can Coin do multi-pipe rendering?
+  Q4: Is there a Coin port for Mac OS X/Darwin?
+
+2: Common Problems
+  Q1: Why doesn't it work properly to render the same scene graph in two
+      different windows?
+  Q2: Why does my Visual C++ program using Coin work for debug builds but
+      not for release builds?
+  Q3: I try to change the SoText2/SoText3 font, but nothing happens.
+      Why, oh why?
+  Q4: Where does the SoGuiExamples module install the programs?
 
 
 Section 1. Extensions and Ports
@@ -35,8 +54,12 @@ A:      Not yet.  We certainly want to support this.  Note that this feature
 Q1.4:   Is there a Coin port for Mac OS X/Darwin?
 
 A:      Coin configures and compiles on Mac OS X, but there is currently no
-        SoMac library available.  For a window binding, use Coin with
-        GLUT or manage the GL context manually.
+        SoMac library available.
+
+        For a window binding, there are still at least three options:
+        1) use Coin with GLUT, 2) manage the GL context manually, 3)
+        use the port of the Qt multiplatform library -- see
+        <URL:http://www.trolltech.com>.
 
 
 Section 2. Common Problems
@@ -97,3 +120,5 @@ Q2.4:   Where does the SoGuiExamples module install the programs?
 A:      They are not installed.  The programs are just examples, and do not
         belong with the installed executables on a system.  They are built
         in the build dir, and are intended to be run from there.
+
+--
