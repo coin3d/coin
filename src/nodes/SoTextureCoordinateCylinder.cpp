@@ -37,13 +37,43 @@
 #include <Inventor/SoFullPath.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
 /*!
   \class SoTextureCoordinateCylinder include/Inventor/nodes/SoTextureCoordinateCylinder.h
   \brief The SoTextureCoordinateCylinder class autogenerates cylinder mapped texture coordinated for shapes.
   \ingroup bundles
 */
-
 // FIXME: Add a better class description (20040123 handegar)
+
+typedef struct {
+  SbVec3f origo;
+  SbBox3f boundingbox;
+  SoNode * currentshape;
+  SoState * currentstate;
+  SbVec4f texcoordreturn;
+} so_texcoordcylinder_data;
+
+static void
+so_texcoordcylinder_construct_data(void * closure)
+{
+  so_texcoordcylinder_data * data = (so_texcoordcylinder_data *) closure;
+  data->currentshape = NULL;
+  data->currentstate = NULL;
+  data->origo = SbVec3f(0,0,0);
+}
+
+static void
+so_texcoordcylinder_destruct_data(void * closure)
+{ 
+}
+
 
 SO_NODE_SOURCE(SoTextureCoordinateCylinder);
 
@@ -52,14 +82,26 @@ class SoTextureCoordinateCylinderP {
 public:
   SoTextureCoordinateCylinderP(SoTextureCoordinateCylinder * texturenode) 
     : master(texturenode) { }
-
-  SbVec3f origo;
-  SbBox3f boundingbox;
-  SoNode * currentshape;
-  SoState * currentstate;
   
   SbVec4f calculateTextureCoordinate(SbVec3f point, SbVec3f n);
   
+  so_texcoordcylinder_data * so_texcoord_get_data() {
+    so_texcoordcylinder_data * data = NULL;
+#ifdef COIN_THREADSAFE
+    data = (so_texcoordcylinder_data *) this->so_texcoord_storage->get();
+    assert(data && "Error retrieving thread data.");
+#else // COIN_THREADSAFE
+    data = this->so_texcoord_single_data;
+#endif // ! COIN_THREADSAFE    
+    return data;
+  }
+    
+#ifdef COIN_THREADSAFE
+  SbStorage * so_texcoord_storage;
+#else // COIN_THREADSAFE
+  so_texcoordcylinder_data * so_texcoord_single_data;
+#endif // ! COIN_THREADSAFE
+
 private:
   SoTextureCoordinateCylinder * master;
 };
@@ -80,12 +122,16 @@ SoTextureCoordinateCylinder::SoTextureCoordinateCylinder(void)
 {
 
   PRIVATE(this) = new SoTextureCoordinateCylinderP(this);
-
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateCylinder);
 
-  PRIVATE(this)->currentshape = NULL;
-  PRIVATE(this)->currentstate = NULL;
-  PRIVATE(this)->origo = SbVec3f(0,0,0);
+#ifdef COIN_THREADSAFE
+  pimpl->so_texcoord_storage = new SbStorage(sizeof(so_texcoordcylinder_data),
+                                             so_texcoordcylinder_construct_data, 
+                                             so_texcoordcylinder_destruct_data);
+#else // COIN_THREADSAFE
+  pimpl->so_texcoord_single_data = new so_texcoordcylinder_data;
+  so_texcoordcylinder_construct_data((void*) pimpl->so_texcoord_single_data);
+#endif // COIN_THREADSAFE
 
 }
 
@@ -116,8 +162,9 @@ textureCoordinateCylinderCallback(void * userdata,
 {
   
   SoTextureCoordinateCylinderP * pimpl = (SoTextureCoordinateCylinderP *) userdata;
-  
-  SoState * state = pimpl->currentstate;
+  so_texcoordcylinder_data * data = pimpl->so_texcoord_get_data();
+ 
+  SoState * state = data->currentstate;
   SoFullPath * path = (SoFullPath *) state->getAction()->getCurPath();
   SoNode * node = path->getTail();
 
@@ -129,22 +176,24 @@ textureCoordinateCylinderCallback(void * userdata,
   // Cast the node into a shape
   SoShape * shape = (SoShape *) node;
 
-  if (shape != pimpl->currentshape) {       
-    pimpl->boundingbox.makeEmpty();
+  if (shape != data->currentshape) {       
+    data->boundingbox.makeEmpty();
     const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();    
     if (bboxcache && bboxcache->isValid(state)) {
-      pimpl->boundingbox = bboxcache->getProjectedBox();
-      pimpl->origo = pimpl->boundingbox.getCenter();
+      data->boundingbox = bboxcache->getProjectedBox();
+      data->origo = data->boundingbox.getCenter();
     }
     else {
-      shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
-      pimpl->origo = pimpl->boundingbox.getCenter();
+      shape->computeBBox(state->getAction(), data->boundingbox, data->origo);
+      data->origo = data->boundingbox.getCenter();
     }
-    pimpl->currentshape = shape;
+    data->currentshape = shape;
   }
 
   const SbVec4f & ret = pimpl->calculateTextureCoordinate(point, normal);
-  return ret;
+
+  data->texcoordreturn = ret;
+  return data->texcoordreturn;
   
 }
 
@@ -159,9 +208,10 @@ SoTextureCoordinateCylinderP::calculateTextureCoordinate(SbVec3f point, SbVec3f 
   // transition. (20040127 handegar)
  
   SbVec4f tc;
- 
-  const SbVec3f bmax = this->boundingbox.getMax();
-  const SbVec3f bmin = this->boundingbox.getMin();
+  so_texcoordcylinder_data * data = this->so_texcoord_get_data();
+
+  const SbVec3f bmax = data->boundingbox.getMax();
+  const SbVec3f bmin = data->boundingbox.getMin();
 
   double maxv = fabs(n[0]);
   int maxi = 0;
@@ -207,9 +257,11 @@ void
 SoTextureCoordinateCylinder::GLRender(SoGLRenderAction * action)
 {
   
-  PRIVATE(this)->currentstate = action->getState();      
-  PRIVATE(this)->currentshape = NULL;  
-  SoTextureCoordinateElement::setFunction(PRIVATE(this)->currentstate, 
+  so_texcoordcylinder_data * data = pimpl->so_texcoord_get_data();
+
+  data->currentstate = action->getState();      
+  data->currentshape = NULL;  
+  SoTextureCoordinateElement::setFunction(data->currentstate, 
                                           this, textureCoordinateCylinderCallback, 
                                           PRIVATE(this));
 }

@@ -37,6 +37,14 @@
 #include <Inventor/SoFullPath.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
 /*!
   \class SoTextureCoordinateCube include/Inventor/nodes/SoTextureCoordinateCube.h
   \brief The SoTextureCoordinateCube class autogenerates cubemapped texture coordinated for shapes.
@@ -44,8 +52,30 @@
 
   The cube used for reference when mapping is the boundingbox for the shape.
 */
-
 // FIXME: Add a better class description (20040123 handegar)
+
+
+typedef struct {
+  SbVec3f origo;
+  SbBox3f boundingbox;
+  SoNode * currentshape;
+  SoState * currentstate;
+  SbVec4f texcoordreturn;
+} so_texcoordcube_data;
+
+static void
+so_texcoordcube_construct_data(void * closure)
+{
+  so_texcoordcube_data * data = (so_texcoordcube_data *) closure;
+  data->currentshape = NULL;
+  data->currentstate = NULL;
+  data->origo = SbVec3f(0,0,0);
+}
+
+static void
+so_texcoordcube_destruct_data(void * closure)
+{ 
+}
 
 SO_NODE_SOURCE(SoTextureCoordinateCube);
 
@@ -54,16 +84,29 @@ class SoTextureCoordinateCubeP {
 public:
   SoTextureCoordinateCubeP(SoTextureCoordinateCube * texturenode) 
     : master(texturenode) { }
-
-  SbVec3f origo;
-  SbBox3f boundingbox;
-  SoNode * currentshape;
-  SoState * currentstate;
   
   SbVec4f calculateTextureCoordinate(SbVec3f point, SbVec3f n);
-  
+
+  so_texcoordcube_data * so_texcoord_get_data() {
+    so_texcoordcube_data * data = NULL;
+#ifdef COIN_THREADSAFE
+    data = (so_texcoordcube_data *) this->so_texcoord_storage->get();
+    assert(data && "Error retrieving thread data.");
+#else // COIN_THREADSAFE
+    data = this->so_texcoord_single_data;
+#endif // ! COIN_THREADSAFE    
+    return data;
+  }
+    
+#ifdef COIN_THREADSAFE
+  SbStorage * so_texcoord_storage;
+#else // COIN_THREADSAFE
+  so_texcoordcube_data * so_texcoord_single_data;
+#endif // ! COIN_THREADSAFE
+
 private:
   SoTextureCoordinateCube * master;
+
 };
 
 
@@ -80,15 +123,17 @@ static const SbVec4f & textureCoordinateCubeCallback(void * userdata, const SbVe
 */
 SoTextureCoordinateCube::SoTextureCoordinateCube(void)
 {
-
   PRIVATE(this) = new SoTextureCoordinateCubeP(this);
-
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateCube);
 
-  PRIVATE(this)->currentshape = NULL;
-  PRIVATE(this)->currentstate = NULL;
-  PRIVATE(this)->origo = SbVec3f(0,0,0);
-
+#ifdef COIN_THREADSAFE
+  pimpl->so_texcoord_storage = new SbStorage(sizeof(so_texcoordcube_data),
+                                             so_texcoordcube_construct_data, 
+                                             so_texcoordcube_destruct_data);
+#else // COIN_THREADSAFE
+  pimpl->so_texcoord_single_data = new so_texcoordcube_data;
+  so_texcoordcube_construct_data((void*) pimpl->so_texcoord_single_data);
+#endif // COIN_THREADSAFE
 }
 
 /*!
@@ -118,8 +163,9 @@ textureCoordinateCubeCallback(void * userdata,
 {
   
   SoTextureCoordinateCubeP * pimpl = (SoTextureCoordinateCubeP *) userdata;
+  so_texcoordcube_data * data = pimpl->so_texcoord_get_data();
   
-  SoState * state = pimpl->currentstate;
+  SoState * state = data->currentstate;
   SoFullPath * path = (SoFullPath *) state->getAction()->getCurPath();
   SoNode * node = path->getTail();
 
@@ -132,38 +178,42 @@ textureCoordinateCubeCallback(void * userdata,
   // Cast the node into a shape
   SoShape * shape = (SoShape *) node;
 
-  if (shape != pimpl->currentshape) { 
-    pimpl->boundingbox.makeEmpty();
+  if (shape != data->currentshape) { 
+    data->boundingbox.makeEmpty();
     const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();    
     if (bboxcache && bboxcache->isValid(state)) {
-      pimpl->boundingbox = bboxcache->getProjectedBox();
-      pimpl->origo = pimpl->boundingbox.getCenter();
+      data->boundingbox = bboxcache->getProjectedBox();
+      data->origo = data->boundingbox.getCenter();
     }
     else {
-      shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
-      pimpl->origo = pimpl->boundingbox.getCenter();
+      shape->computeBBox(state->getAction(), data->boundingbox, data->origo);
+      data->origo = data->boundingbox.getCenter();
     }
-    pimpl->currentshape = shape;
+    data->currentshape = shape;
 
     // Expanding the bbox making it cube shaped
     float sx, sy, sz;
-    pimpl->boundingbox.getSize(sx, sy, sz);
+    data->boundingbox.getSize(sx, sy, sz);
     if (sy > sx) sx = sy;
     if (sz > sx) sx = sz;
     sx *= 0.5f;
-    const SbVec3f c = pimpl->origo;
-    pimpl->boundingbox.setBounds(c[0] - sx, c[1] - sx, c[2] - sx,
-                                 c[0] + sx, c[1] + sx, c[2] + sx);
+    const SbVec3f c = data->origo;
+    data->boundingbox.setBounds(c[0] - sx, c[1] - sx, c[2] - sx,
+                                c[0] + sx, c[1] + sx, c[2] + sx);
   }
 
   const SbVec4f & ret = pimpl->calculateTextureCoordinate(point, normal);
-  return ret;
+
+  data->texcoordreturn = ret;
+  return data->texcoordreturn;
   
 }
 
 SbVec4f
 SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
 {
+
+  so_texcoordcube_data * data = this->so_texcoord_get_data();
 
   double maxv = fabs(n[0]);
   int maxi = 0;
@@ -174,8 +224,8 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
   int i0 = (maxi + 1) % 3;
   int i1 = (maxi + 2) % 3;
 
-  const SbVec3f bmax = this->boundingbox.getMax();
-  const SbVec3f bmin = this->boundingbox.getMin();
+  const SbVec3f bmax = data->boundingbox.getMax();
+  const SbVec3f bmin = data->boundingbox.getMin();
   float d0 = bmax[i0] - bmin[i0];
   float d1 = bmax[i1] - bmin[i1];
 
@@ -220,9 +270,11 @@ void
 SoTextureCoordinateCube::GLRender(SoGLRenderAction * action)
 {
   
-  PRIVATE(this)->currentstate = action->getState();    
-  PRIVATE(this)->currentshape = NULL;  
-  SoTextureCoordinateElement::setFunction(PRIVATE(this)->currentstate, 
+  so_texcoordcube_data * data = pimpl->so_texcoord_get_data();
+
+  data->currentstate = action->getState();    
+  data->currentshape = NULL;  
+  SoTextureCoordinateElement::setFunction(data->currentstate, 
                                           this, textureCoordinateCubeCallback,
                                           PRIVATE(this));
 }

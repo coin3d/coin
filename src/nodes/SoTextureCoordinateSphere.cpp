@@ -37,13 +37,42 @@
 #include <Inventor/SoFullPath.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
 /*!
   \class SoTextureCoordinateSphere include/Inventor/nodes/SoTextureCoordinateSphere.h
   \brief The SoTextureCoordinateSphere class autogenerates spheremapped texture coordinated for shapes.
   \ingroup bundles
 */
-
 // FIXME: Add a better class description (20040123 handegar)
+
+typedef struct {
+  SbVec3f origo;
+  SbBox3f boundingbox;
+  SoNode * currentshape;
+  SoState * currentstate;
+  SbVec4f texcoordreturn;
+} so_texcoordsphere_data;
+
+static void
+so_texcoordsphere_construct_data(void * closure)
+{
+  so_texcoordsphere_data * data = (so_texcoordsphere_data *) closure;
+  data->currentshape = NULL;
+  data->currentstate = NULL;
+  data->origo = SbVec3f(0,0,0);
+}
+
+static void
+so_texcoordsphere_destruct_data(void * closure)
+{ 
+}
 
 SO_NODE_SOURCE(SoTextureCoordinateSphere);
 
@@ -53,12 +82,24 @@ public:
   SoTextureCoordinateSphereP(SoTextureCoordinateSphere * texturenode) 
     : master(texturenode) { }
 
-  SbVec3f origo;
-  SbBox3f boundingbox;
-  SoNode * currentshape;
-  SoState * currentstate;
-  
   SbVec4f calculateTextureCoordinate(SbVec3f point, SbVec3f n);
+
+  so_texcoordsphere_data * so_texcoord_get_data() {
+    so_texcoordsphere_data * data = NULL;
+#ifdef COIN_THREADSAFE
+    data = (so_texcoordsphere_data *) this->so_texcoord_storage->get();
+    assert(data && "Error retrieving thread data.");
+#else // COIN_THREADSAFE
+    data = this->so_texcoord_single_data;
+#endif // ! COIN_THREADSAFE    
+    return data;
+  }
+
+#ifdef COIN_THREADSAFE
+  SbStorage * so_texcoord_storage;
+#else // COIN_THREADSAFE
+  so_texcoordsphere_data * so_texcoord_single_data;
+#endif // ! COIN_THREADSAFE
   
 private:
   SoTextureCoordinateSphere * master;
@@ -83,9 +124,14 @@ SoTextureCoordinateSphere::SoTextureCoordinateSphere(void)
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateSphere);
 
-  PRIVATE(this)->currentshape = NULL;
-  PRIVATE(this)->currentstate = NULL;
-  PRIVATE(this)->origo = SbVec3f(0,0,0);
+#ifdef COIN_THREADSAFE
+  pimpl->so_texcoord_storage = new SbStorage(sizeof(so_texcoordsphere_data),
+                                             so_texcoordsphere_construct_data, 
+                                             so_texcoordsphere_destruct_data);
+#else // COIN_THREADSAFE
+  pimpl->so_texcoord_single_data = new so_texcoordsphere_data;
+  so_texcoordsphere_construct_data((void*) pimpl->so_texcoordsphere_single_data);
+#endif // COIN_THREADSAFE
 
 }
 
@@ -116,8 +162,9 @@ textureCoordinateSphereCallback(void * userdata,
 {
   
   SoTextureCoordinateSphereP * pimpl = (SoTextureCoordinateSphereP *) userdata;
-  
-  SoState * state = pimpl->currentstate;
+  so_texcoordsphere_data * data = pimpl->so_texcoord_get_data();  
+
+  SoState * state = data->currentstate;
   SoFullPath * path = (SoFullPath *) state->getAction()->getCurPath();
   SoNode * node = path->getTail();
 
@@ -130,22 +177,24 @@ textureCoordinateSphereCallback(void * userdata,
   // Cast the node into a shape
   SoShape * shape = (SoShape *) node;
 
-  if (shape != pimpl->currentshape) {  
-    pimpl->boundingbox.makeEmpty();  
+  if (shape != data->currentshape) {  
+    data->boundingbox.makeEmpty();  
     const SoBoundingBoxCache * bboxcache = shape->getBoundingBoxCache();    
     if (bboxcache && bboxcache->isValid(state)) {
-      pimpl->boundingbox = bboxcache->getProjectedBox();
-      pimpl->origo = pimpl->boundingbox.getCenter();
+      data->boundingbox = bboxcache->getProjectedBox();
+      data->origo = data->boundingbox.getCenter();
     }
     else {
-      shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
-      pimpl->origo = pimpl->boundingbox.getCenter();
+      shape->computeBBox(state->getAction(), data->boundingbox, data->origo);
+      data->origo = data->boundingbox.getCenter();
     }
-    pimpl->currentshape = shape;
+    data->currentshape = shape;
   }
 
   const SbVec4f & ret = pimpl->calculateTextureCoordinate(point, normal);
-  return ret;
+
+  data->texcoordreturn = ret;
+  return data->texcoordreturn;
   
 }
 
@@ -179,9 +228,11 @@ void
 SoTextureCoordinateSphere::GLRender(SoGLRenderAction * action)
 {
   
-  PRIVATE(this)->currentstate = action->getState();    
-  PRIVATE(this)->currentshape = NULL;  
-  SoTextureCoordinateElement::setFunction(PRIVATE(this)->currentstate, 
+  so_texcoordsphere_data * data = pimpl->so_texcoord_get_data();
+ 
+  data->currentstate = action->getState();    
+  data->currentshape = NULL;  
+  SoTextureCoordinateElement::setFunction(data->currentstate, 
                                           this, textureCoordinateSphereCallback, 
                                           PRIVATE(this));
 }
