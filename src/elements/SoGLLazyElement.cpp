@@ -67,13 +67,13 @@ SoGLLazyElement::sendAllMaterial(SoState *state)
 {
   // code adapted from SoMaterialBundle::reallySend
 
-  SoGLDiffuseColorElement * diffuseElt = 
+  SoGLDiffuseColorElement * diffuseElt =
     (SoGLDiffuseColorElement*) SoDiffuseColorElement::getInstance(state);
   if (SoShapeStyleElement::isScreenDoor(state)) {
     diffuseElt->send(0);
   }
   else {
-    SoTransparencyElement *transparencyElt = (SoTransparencyElement*) 
+    SoTransparencyElement *transparencyElt = (SoTransparencyElement*)
       SoTransparencyElement::getInstance(state);
     if (!diffuseElt->isPacked()) {
       float trans = transparencyElt->get(0);
@@ -83,7 +83,7 @@ SoGLLazyElement::sendAllMaterial(SoState *state)
       diffuseElt->send(0);
     }
   }
-  
+
   if (SoLightModelElement::get(state) !=
       SoLightModelElement::BASE_COLOR) {
 
@@ -103,9 +103,9 @@ SoGLLazyElement::sendAllMaterial(SoState *state)
       SoShininessElement::getInstance(state);
     shininessElt->send(0);
   }
-  
+
   // just to make sure polygon stipple is up-to-date
-  const SoGLPolygonStippleElement *stippleElt = (const SoGLPolygonStippleElement*) 
+  const SoGLPolygonStippleElement *stippleElt = (const SoGLPolygonStippleElement*)
     SoElement::getConstElement(state, SoGLPolygonStippleElement::getClassStackIndex());
   stippleElt->evaluate();
 }
@@ -123,7 +123,7 @@ SoGLLazyElement::sendNoMaterial(SoState *state)
 void
 SoGLLazyElement::sendOnlyDiffuseColor(SoState * state)
 {
-  SoGLDiffuseColorElement * diffuseElt = 
+  SoGLDiffuseColorElement * diffuseElt =
     (SoGLDiffuseColorElement*) SoDiffuseColorElement::getInstance(state);
   diffuseElt->send(0);
 }
@@ -171,7 +171,7 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
                    AMBIENT_MASK |
                    EMISSIVE_MASK |
                    SPECULAR_MASK |
-                   SHININESS_MASK | 
+                   SHININESS_MASK |
                    TRANSPARENCY_MASK)) {
     SoGLLazyElement::sendAllMaterial((SoState*)state);
   }

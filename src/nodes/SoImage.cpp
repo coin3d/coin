@@ -22,12 +22,12 @@
   \brief The SoImage class draws a 2D image on the viewport.
   \ingroup nodes
 
-  An image can be specified either by using the image field, or by 
+  An image can be specified either by using the image field, or by
   specifying a filename. If width and or height is specified, the
   image will be resized to match those values before it is displayed.
-  
+
   The current modelview matrix will be used to find the viewport
-  position, and the image is rendered in that position, with 
+  position, and the image is rendered in that position, with
   z-buffer testing activated.
 */
 
@@ -47,7 +47,6 @@
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/SbBasic.h>
 
 #ifdef _WIN32
 #include <windows.h> // sigh...
@@ -86,7 +85,7 @@
 */
 /*!
   \var SoImage::HorAlignment SoImage::LEFT
-  Horizontal alignment at left border. 
+  Horizontal alignment at left border.
 */
 /*!
   \var SoImage::HorAlignment SoImage::CENTER
@@ -312,13 +311,13 @@ SoImage::GLRender(SoGLRenderAction *action)
   glLoadIdentity();
   // FIXME: push raster state? pederb, 20000509
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
-  
+
   glRasterPos3f((float)xpos, (float)ypos, -nilpoint[2]);
   glPixelStorei(GL_UNPACK_ROW_LENGTH, size[0]);
   glPixelStorei(GL_UNPACK_SKIP_PIXELS, skipx);
   glPixelStorei(GL_UNPACK_SKIP_ROWS, skipy);
   glPixelStorei(GL_PACK_ROW_LENGTH, vpsize[0]);
-  
+
   glDrawPixels(srcw, srch, format, GL_UNSIGNED_BYTE,
                (const GLvoid*) this->imageData->getDataPtr());
   glMatrixMode(GL_PROJECTION);
@@ -614,7 +613,7 @@ SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
   inv.multVecMatrix(v3, v3);
 }
 
-// returns requested on-screen size 
+// returns requested on-screen size
 SbVec2s
 SoImage::getSize() const
 {

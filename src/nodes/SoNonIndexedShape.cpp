@@ -146,7 +146,7 @@ SoNonIndexedShape::fixNumVerticesPointers(SoState *state, const int32_t *&start,
     const int numCoords = vpvtx ?
       vp->vertex.getNum() :
       coordelem->getNum();
-    
+
     dummyarray[0] = numCoords - startIndex.getValue();
     start = dummyarray;
     end = numCoords > 1 ? start + 1 : start;

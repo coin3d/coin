@@ -302,7 +302,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
       if (s[1] <= 0.0f) this->cachedScale[1] = min;
       if (s[2] <= 0.0f) this->cachedScale[2] = min;
     }
-    
+
     this->cachedScale *= 0.5f;
     this->cachedInvScale[0] = 1.0f / this->cachedScale[0];
     this->cachedInvScale[1] = 1.0f / this->cachedScale[1];

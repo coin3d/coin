@@ -303,16 +303,16 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 
   SoNormalGenerator * gen =
     new SoNormalGenerator(ccw, this->numVertices.getNum() * 3);
-  
+
   int32_t idx = startIndex.getValue();
   int32_t dummyarray[1];
   const int32_t *ptr = this->numVertices.getValues(0);
   const int32_t *end = ptr + this->numVertices.getNum();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
-  
+
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
-  
+
   while (ptr < end) {
     int num = *ptr++;
     assert(num >= 3);

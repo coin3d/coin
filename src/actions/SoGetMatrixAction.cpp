@@ -104,7 +104,7 @@ SoGetMatrixAction::getViewportRegion(void) const
 
 /*!
   Returns the accumulated transformation matrix.
-  
+
   Note: don't modify the returned matrix. This should only be done if
   you are implementing your own transformation type node
   extensions. This advice is also valid for the other matrix access

@@ -37,7 +37,7 @@
   outside the view frustum. The assumption is that the view frustum is
   small compared to the world model. The element simply records all
   planes to be culled against, and the graph is not culled until it is
-  completely outside one of the planes.  
+  completely outside one of the planes.
 */
 
 #include <Inventor/elements/SoCullElement.h>
@@ -101,7 +101,7 @@ SoCullElement::addPlanes(SoState * state, const SbPlane * planes, const int nump
 #endif // COIN_DEBUG
     return;
   }
-  
+
   for (int i = 0; i < numplanes; i++) elem->plane[i+elem->numplanes] = planes[i];
   elem->numplanes += numplanes;
 }
@@ -119,14 +119,14 @@ SoCullElement::cullBox(SoState * state, const SbBox3f & box, const SbBool transf
   return SoCullElement::docull(state, box, transform, TRUE);
 }
 
-/*!  
+/*!
   Cull against \a box. If \a transform is \c TRUE, the box is
   assumed to be in object space, and will be transformed into world
   space using the model matrix.  Returns \c TRUE if box is outside one
   of the planes. This method will not update the element state, just
   perform a cull test against active planes.
 */
-SbBool 
+SbBool
 SoCullElement::cullTest(SoState * state, const SbBox3f & box, const SbBool transform)
 {
   return SoCullElement::docull(state, box, transform, FALSE);
@@ -170,8 +170,8 @@ SoCullElement::copyMatchInfo(void) const
 //
 // private method which does the actual culling
 //
-SbBool 
-SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transform, 
+SbBool
+SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transform,
                       const SbBool updateelem)
 {
   // try to avoid a push if possible, get const element first

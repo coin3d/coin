@@ -412,7 +412,7 @@ SbRotation::setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
     this->setValue(crossvec[0], crossvec[1], crossvec[2],
                    (float)sqrt(0.5 * fabs(1.0 + dot)));
   }
-  
+
   return *this;
 }
 

@@ -270,7 +270,7 @@ SoRayPickAction::computeWorldSpaceRay(void)
                            this->rayradiusdelta);
 #endif // debug
 
-    this->nearplane = SbPlane(vv.getProjectionDirection(), this->raystart);    
+    this->nearplane = SbPlane(vv.getProjectionDirection(), this->raystart);
     this->setFlag(SoRayPickAction::WS_RAY_COMPUTED);
   }
 }
@@ -436,7 +436,7 @@ SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
   bounds[1] = box.getMax();
 
   for (int j = 0; j < 2; j++) {
-    for (int i = 0; i < 3; i++) { 
+    for (int i = 0; i < 3; i++) {
       SbVec3f norm(0, 0, 0);
       norm[i] = 1.0f;
       SbVec3f isect;
@@ -472,7 +472,7 @@ SoRayPickAction::getLine(void)
   return this->osline;
 }
 
-SbBool 
+SbBool
 SoRayPickAction::isBetweenPlanesWS(const SbVec3f & intersection) const
 {
   float dist = this->nearplane.getDistance(intersection);

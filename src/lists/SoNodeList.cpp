@@ -90,7 +90,7 @@ SoNodeList::operator[](const int i) const
 }
 
 /*!
-  Copy contents of list \a nl to this list. 
+  Copy contents of list \a nl to this list.
 
   \sa SoBaseList::operator=()
 */

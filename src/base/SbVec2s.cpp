@@ -32,7 +32,6 @@
 
 #include <assert.h>
 #include <Inventor/SbVec2s.h>
-#include <Inventor/SbBasic.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

@@ -65,7 +65,7 @@ SoCacheElement::init(SoState * state)
 }
 
 /*!
-  Overloaded to unref the cache, since the cache is ref'ed in set(). 
+  Overloaded to unref the cache, since the cache is ref'ed in set().
 */
 void
 SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
@@ -134,7 +134,7 @@ SoCacheElement::matches(const SoElement * /* element */) const
 /*!
   SoCacheElement objects should not be "copied" because you obviously don't
   cache them in the cache.
-  
+
   \sa SbBool SoCacheElement::matches(const SoElement * element) const
 */
 
@@ -149,7 +149,7 @@ SoCacheElement::copyMatchInfo(void) const
 }
 
 /*!
-  This method returns the next cache element. That is the next cache 
+  This method returns the next cache element. That is the next cache
   element pointing towards the bottom of the state. In Coin we call
   this the previous element.
 */

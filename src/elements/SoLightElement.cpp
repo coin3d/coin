@@ -33,9 +33,9 @@
   List of current light nodes.
 */
 
-/*!  
-  \fn SoLightElement::matrixlist 
-  
+/*!
+  \fn SoLightElement::matrixlist
+
   List of matrices to map from world coordinates to view reference
   coordinates. To avoid getting a hugs element (sizeof), this
   list is only allocated in the bottom element, and the pointer
@@ -60,19 +60,19 @@ SoLightElement::~SoLightElement(void)
   if (this->didalloc.state) delete this->matrixlist;
 }
 
- 
+
 /*!
   Adds \a light to the list of active lights. \a matrix should
-  transform the light from the world coordinate system to 
+  transform the light from the world coordinate system to
   the view reference coordinate system.
 */
 void
 SoLightElement::add(SoState * const state, SoLight * const light,
                     const SbMatrix & matrix)
-{ 
-  SoLightElement * elem = (SoLightElement*) 
+{
+  SoLightElement * elem = (SoLightElement*)
     SoElement::getElement(state, classStackIndex);
-  
+
   int i = elem->lights.getLength();
   elem->lights.append(light);
   elem->addNodeId(light);
@@ -93,9 +93,9 @@ SoLightElement::getLights(SoState * const state)
   return elem->lights;
 }
 
-/*!  
+/*!
   Get matrix which transforms light \a index from the world
-  coordinate system to the view reference system.  
+  coordinate system to the view reference system.
 */
 const SbMatrix &
 SoLightElement::getMatrix(SoState * const state, const int index)
@@ -116,14 +116,14 @@ SoLightElement::init(SoState * state)
 }
 
 /*!
-  Overloaded to copy lights to the new top of stack. Also 
+  Overloaded to copy lights to the new top of stack. Also
   copies node ids.
 */
 void
 SoLightElement::push(SoState * state)
 {
   inherited::push(state);
-  
+
   SoLightElement * const element =
     (SoLightElement *)(this->next);
   element->lights.truncate(0);

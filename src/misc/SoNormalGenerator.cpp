@@ -230,7 +230,7 @@ SoNormalGenerator::generate(const float creaseAngle,
 /*!
   Generates one normal per strip by averaging face normals.
 */
-void 
+void
 SoNormalGenerator::generatePerStrip(const int32_t * striplens,
                                     const int numstrips)
 {
@@ -248,7 +248,7 @@ SoNormalGenerator::generatePerStrip(const int32_t * striplens,
   }
   // strip normals can now be found in faceNormals array
   this->faceNormals.truncate(numstrips, TRUE);
-  this->perVertex = FALSE; 
+  this->perVertex = FALSE;
 }
 
 /*!

@@ -191,7 +191,7 @@ SoRotateDiscDragger::drag(void)
 
   SbVec3f projPt = planeProj->project(this->getNormalizedLocaterPosition());
   SbVec3f startPt = this->getLocalStartingPoint();
-  
+
   SbPlane plane(SbVec3f(0.0f, 0.0f, 1.0f), startPt);
   SbLine line(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 1.0f));
   SbVec3f center;
@@ -203,9 +203,9 @@ SoRotateDiscDragger::drag(void)
   SbVec3f dir = startPt.cross(projPt);
   float angle = acos(SbClamp(startPt.dot(projPt), -1.0f, 1.0f));
   if (dir[2] < 0.0f) angle = -angle;
-  
+
   this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),
-                                             SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), angle), 
+                                             SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), angle),
                                              SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 

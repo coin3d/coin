@@ -466,17 +466,17 @@ SoSeparator::readInstance(SoInput * in, unsigned short flags)
   return inherited::readInstance(in, flags);
 }
 
-/*!  
+/*!
   Internal method which do view frustum culling. For now, view
   frustum culling is performed if the renderCulling field is AUTO or
   ON, and the bounding box cache is valid. Returns TRUE if this
-  separator is outside view frustum, FALSE if inside.  
+  separator is outside view frustum, FALSE if inside.
 */
-SbBool 
+SbBool
 SoSeparator::cullTest(SoState * state)
 {
   if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
-  if (!this->bboxcache || 
+  if (!this->bboxcache ||
       !this->bboxcache->isValid(state) ||
       this->bboxcache->getProjectedBox().isEmpty()) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;

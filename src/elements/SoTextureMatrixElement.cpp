@@ -21,7 +21,7 @@
   \class SoTextureMatrixElement Inventor/elements/SoTextureMatrixElement.h
   \brief The SoTextureMatrixElement class is used to manage the texture matrix stack.
 
-  The texture matrix is used to transform texture coordinates before 
+  The texture matrix is used to transform texture coordinates before
   being used to map textures onto polygons.
 */
 
@@ -30,7 +30,7 @@
 
 /*!
   \fn SoTextureMatrixElement::textureMatrix
-  
+
   The matrix.
 */
 
@@ -215,7 +215,7 @@ void
 SoTextureMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-  
+
   SoTextureMatrixElement * const element =
     (SoTextureMatrixElement *)(this->next);
   element->textureMatrix = this->textureMatrix;

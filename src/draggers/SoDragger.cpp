@@ -74,8 +74,8 @@
 
 class SoDraggerCache {
 public:
-  SoDraggerCache(SoDragger *parent) : 
-    path(4), 
+  SoDraggerCache(SoDragger *parent) :
+    path(4),
     dragger(parent),
     matrixAction(new SoGetMatrixAction(dragger->getViewportRegion())),
     draggerToWorld(SbMatrix::identity()),
@@ -93,7 +93,7 @@ public:
     this->draggerToWorld = this->matrixAction->getMatrix();
     this->worldToDragger = this->matrixAction->getInverse();
   }
-  
+
   void update(const SoFullPath *newpath, const int draggeridx) {
     this->path.setHead(newpath->getHead());
     for (int i = 1; i <= draggeridx; i++) {
@@ -101,7 +101,7 @@ public:
     }
     this->updateMatrix();
   }
-  
+
   SoTempPath path;                 // use temp path to avoid auditor overhead
   SoDragger *dragger;              // pointer to cache owner
   SoGetMatrixAction *matrixAction; // avoid reallocating this action each frame

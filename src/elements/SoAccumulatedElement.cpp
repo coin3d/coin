@@ -23,7 +23,7 @@
 
   It stores node ids for all nodes accumulating the current
   state. These ids are used to quickly determine when to invalidate
-  caches. 
+  caches.
 */
 
 #include <Inventor/elements/SoAccumulatedElement.h>
@@ -63,7 +63,7 @@ SoAccumulatedElement::~SoAccumulatedElement(void)
 SbBool
 SoAccumulatedElement::matches(const SoElement * element) const
 {
-  const SoAccumulatedElement * elem = 
+  const SoAccumulatedElement * elem =
     (SoAccumulatedElement*) element;
   if (elem->checksum != this->checksum) return FALSE;
   const int n = this->nodeids.getLength();
@@ -130,11 +130,11 @@ SoAccumulatedElement::copyMatchInfo() const
   return element;
 }
 
-/*!  
+/*!
   Convenience method which copies the node ids from \a copyfrom to
-  this element. This method is not part of the OIV API.  
+  this element. This method is not part of the OIV API.
 */
-void 
+void
 SoAccumulatedElement::copyNodeIds(const SoAccumulatedElement * copyfrom)
 {
   this->checksum = 0;
@@ -156,4 +156,3 @@ SoAccumulatedElement::captureThis(SoState * state) const
   // FIXME: not quite sure what is needed here. pederb, 20000608
   inherited::captureThis(state);
 }
-

@@ -109,7 +109,7 @@ void
 SoProfileElement::push(SoState * state)
 {
   inherited::push(state);
-    
+
   SoProfileElement * const element =
     (SoProfileElement *)(this->next);
   element->profiles.truncate(0);
@@ -118,4 +118,3 @@ SoProfileElement::push(SoState * state)
     element->profiles.append(this->profiles[ i ]);
   element->copyNodeIds(this);
 }
-

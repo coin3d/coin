@@ -1095,11 +1095,11 @@ SbViewVolume::getViewVolumePlanes(SbPlane planes[6]) const
   planes[5] = SbPlane(far_ll, far_lr, far_ur); // far
 }
 
-void 
+void
 SbViewVolume::transform(const SbMatrix &matrix)
 {
   matrix.multDirMatrix(this->projectiondir, this->projectiondir);
-  
+
   if(this->type == SbViewVolume::ORTHOGRAPHIC) {
     matrix.multVecMatrix(this->lowerleftfrust, this->lowerleftfrust);
     matrix.multVecMatrix(this->lowerrightfrust, this->lowerrightfrust);
@@ -1114,24 +1114,23 @@ SbViewVolume::transform(const SbMatrix &matrix)
     matrix.multDirMatrix(this->upperleftfrust - this->projectionpt,
                          this->upperleftfrust);
     matrix.multVecMatrix(this->projectionpt, this->projectionpt);
-    
+
     this->lowerleftfrust += this->projectionpt;
     this->lowerrightfrust += this->projectionpt;
     this->upperleftfrust += this->projectionpt;
   }
 }
 
-/*!  
+/*!
   Returns the view up vector for this view volume. It's a vector
   which is perpendicular to the projection direction, and parallel and
   oriented in the same direction as the vector from the lower left
-  corner to the upper left corner of the near plane.  
+  corner to the upper left corner of the near plane.
 */
-SbVec3f 
+SbVec3f
 SbViewVolume::getViewUp(void) const
 {
   SbVec3f v = this->upperleftfrust - this->lowerleftfrust;
   v.normalize();
   return v;
 }
-

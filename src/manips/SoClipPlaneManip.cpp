@@ -63,16 +63,16 @@ SoClipPlaneManip::SoClipPlaneManip(void)
   SO_NODE_ADD_FIELD(draggerPosition, (0.0f, 0.0f, 0.0f));
 
   this->children = new SoChildList(this);
-  
-  this->planeFieldSensor = 
+
+  this->planeFieldSensor =
     new SoFieldSensor(SoClipPlaneManip::fieldSensorCB, this);
   this->planeFieldSensor->setPriority(0);
 
-  this->onFieldSensor = 
+  this->onFieldSensor =
     new SoFieldSensor(SoClipPlaneManip::fieldSensorCB, this);
   this->onFieldSensor->setPriority(0);
-  
-  this->draggerPosFieldSensor = 
+
+  this->draggerPosFieldSensor =
     new SoFieldSensor(SoClipPlaneManip::fieldSensorCB, this);
   this->draggerPosFieldSensor->setPriority(0);
 
@@ -149,8 +149,8 @@ SoClipPlaneManip::setValue(const SbBox3f & box, const SbVec3f & planenormal, flo
 {
   this->attachSensors(FALSE);
   SbPlane newplane(planenormal, box.getCenter());
-  this->plane = newplane;  
-  // FIXME: investigate how dragger should be scaled (pederb, 20000606) 
+  this->plane = newplane;
+  // FIXME: investigate how dragger should be scaled (pederb, 20000606)
   this->attachSensors(TRUE);
   SoClipPlaneManip::fieldSensorCB(this, NULL);
 }
@@ -326,7 +326,7 @@ SoClipPlaneManip::search(SoSearchAction * action)
 }
 
 /*!
-  Returns the children of this node. 
+  Returns the children of this node.
 */
 SoChildList *
 SoClipPlaneManip::getChildren(void) const
@@ -341,12 +341,12 @@ void
 SoClipPlaneManip::valueChangedCB(void * m, SoDragger * dragger)
 {
   SoClipPlaneManip * thisp = (SoClipPlaneManip*)m;
-  
+
   SbMatrix matrix = dragger->getMotionMatrix();
   SbVec3f t, s;
   SbRotation r, so;
   matrix.getTransform(t, r, s, so);
-  
+
   SbVec3f direction(0.0f, 1.0f, 0.0f);
   r.multVec(direction, direction);
   direction.normalize();
@@ -381,7 +381,7 @@ SoClipPlaneManip::fieldSensorCB(void * m, SoSensor * d)
     r.setValue(SbVec3f(0.0f, 1.0f, 0.0f), normal);
     t = normal*dist;
     matrix.setTransform(t, r, s, so);
-    dragger->setMotionMatrix(matrix);    
+    dragger->setMotionMatrix(matrix);
 
     // make sure draggerPosition field is up-to-date
     thisp->attachSensors(FALSE);
@@ -395,7 +395,7 @@ SoClipPlaneManip::fieldSensorCB(void * m, SoSensor * d)
 /*!
   Convenience method used to attach and detach field sensors.
 */
-void 
+void
 SoClipPlaneManip::attachSensors(const SbBool onoff)
 {
   if (onoff) {
@@ -419,4 +419,3 @@ SoClipPlaneManip::transferFieldValues(const SoClipPlane * from, SoClipPlane * to
   to->plane = from->plane;
   to->on = from->on;
 }
-

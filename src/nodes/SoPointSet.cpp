@@ -22,7 +22,7 @@
   \brief The SoPointSet class is used to handle a set of points.
   \ingroup nodes
 
-  This node uses the coordinates currently on the state (or in the 
+  This node uses the coordinates currently on the state (or in the
   vertexProperty field) in order. The numPoints field specifies the
   number of points in the set.
 */
@@ -64,7 +64,7 @@
 */
 /*!
   \var SoPointSet::Binding SoPointSet::PER_VERTEX
-  Specifies binding per vertex. 
+  Specifies binding per vertex.
 */
 
 /*!
@@ -113,7 +113,7 @@ SoPointSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 }
 
 /*!
-  Internal method which translates the current material binding 
+  Internal method which translates the current material binding
   found on the state to a material binding for this node.
   PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
   are translated to PER_VERTEX binding. OVERALL means overall
@@ -130,7 +130,7 @@ SoPointSet::findMaterialBinding(SoState * const state) const
 }
 
 /*!
-  Internal method which translates the current normal binding 
+  Internal method which translates the current normal binding
   found on the state to a normal binding for this node.
   PER_PART, PER_FACE, PER_VERTEX and their indexed counterparts
   are translated to PER_VERTEX binding. OVERALL means overall
@@ -200,11 +200,11 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
-  
+
   int32_t idx = this->startIndex.getValue();
-  int32_t numpts = this->numPoints.getValue(); 
+  int32_t numpts = this->numPoints.getValue();
   if (numpts < 0) numpts = coords->getNum() - idx;
- 
+
   int matnr = 0;
   int texnr = 0;
 

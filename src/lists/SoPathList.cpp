@@ -93,7 +93,7 @@ SoPathList::operator[](const int i) const
 }
 
 /*!
-  Copy contents of list \a pl to this list. 
+  Copy contents of list \a pl to this list.
 
   \sa SoBaseList::operator=()
 */
@@ -124,7 +124,7 @@ compare_paths(const void * v0, const void * v1)
 {
   SoPath * p0 = *((SoPath**)v0);
   SoPath * p1 = *((SoPath**)v1);
-  
+
   int diff = (char *)p0->getHead() - (char *)p1->getHead();
   if (diff != 0) return diff;
 

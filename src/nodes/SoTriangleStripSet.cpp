@@ -276,7 +276,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
     assert(n > 0);
 
     glBegin(GL_TRIANGLE_STRIP);
-    
+
     if ((nbind == PER_VERTEX) || (nbind == PER_STRIP)) {
       currnormal = normals++;
       glNormal3fv((const GLfloat *)currnormal);
@@ -284,7 +284,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
     if ((mbind == PER_STRIP) || (mbind == PER_VERTEX)) mb.send(matnr++, TRUE);
     if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
     coords->send(idx++);
-    
+
     if (nbind == PER_VERTEX) {
       currnormal = normals++;
       glNormal3fv((const GLfloat *)currnormal);
@@ -321,17 +321,17 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
   assert(coords);
-  
+
   SoNormalGenerator * gen =
     new SoNormalGenerator(ccw, this->numVertices.getNum()*3);
-  
+
   int32_t idx = startIndex.getValue();
   int32_t dummyarray[1];
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * start = ptr;
   const int32_t * end = ptr + numVertices.getNum();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
-  
+
   while (ptr < end) {
     int num = *ptr++ - 3;
     assert(num >= 0);
@@ -349,7 +349,7 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
       gen->triangle(striptri[0], striptri[1], striptri[2]);
     }
   }
-  
+
   switch (this->findNormalBinding(state)) {
   case OVERALL:
     gen->generateOverall();

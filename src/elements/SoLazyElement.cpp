@@ -23,7 +23,7 @@
 
   This is just a wrap-around implementation for compatibility. It
   should (hopefully) work in the same way as the Inventor class
-  though.  
+  though.
 */
 
 #include <Inventor/elements/SoLazyElement.h>
@@ -499,7 +499,7 @@ SoLazyElement::getWInstance(SoState *state)
 {
   // don't use SoElement::getConstElement() as this will cause
   // cache dependencies.
-  return (SoLazyElement*) 
+  return (SoLazyElement*)
     state->getElement(classStackIndex);
 }
 

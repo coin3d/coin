@@ -35,4 +35,3 @@ SoTempPath::SoTempPath(const int approxlength)
 {
   this->auditPath(FALSE);
 }
-

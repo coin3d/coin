@@ -20,7 +20,7 @@
 /*!
   \class SoModelMatrixElement Inventor/elements/SoModelMatrixElement.h
   \brief The SoModelMatrixElement class is used to manage the current transformation.
-  
+
   FIXME: write doc.
 */
 
@@ -88,7 +88,7 @@ SbBool
 SoModelMatrixElement::matches(const SoElement * element) const
 {
   // FIXME: should invalidate cache on certain cull conditions.
-  // we are using a different culling scheme, so I don't know 
+  // we are using a different culling scheme, so I don't know
   // if this will ever apply to us... pederb, 20000608
   return inherited::matches(element);
 }
@@ -218,7 +218,7 @@ SoModelMatrixElement::pushMatrix(SoState * const state)
 /*!
   Used by SoTransformSeparator to store and restore model matrix.
   Don't use it for any other reason.
-*/  
+*/
 void
 SoModelMatrixElement::popMatrix(SoState * const state,
                                 const SbMatrix & matrix)
@@ -277,7 +277,7 @@ SoModelMatrixElement::get(SoState * const state,
 }
 
 /*!
-  virtual method which is called from the static method 
+  virtual method which is called from the static method
   makeIdentity(). Sets element model matrix to identity.
 */
 void
@@ -288,7 +288,7 @@ SoModelMatrixElement::makeEltIdentity(void)
 }
 
 /*!
-  virtual method which is called from the static method 
+  virtual method which is called from the static method
   set(). Sets element model matrix to \a matrix.
 */
 void
@@ -299,7 +299,7 @@ SoModelMatrixElement::setElt(const SbMatrix & matrix)
 }
 
 /*!
-  virtual method which is called from the static method 
+  virtual method which is called from the static method
   mult(). Multiplies \a matrix into element model matrix.
 */
 void
@@ -310,7 +310,7 @@ SoModelMatrixElement::multElt(const SbMatrix & matrix)
 }
 
 /*!
-  virtual method which is called from the static method 
+  virtual method which is called from the static method
   translateBy(). Appends \a translation to element model matrix.
 */
 void
@@ -323,7 +323,7 @@ SoModelMatrixElement::translateEltBy(const SbVec3f & translation)
 }
 
 /*!
-  virtual method which is called from the static method 
+  virtual method which is called from the static method
   rotateBy(). Appends \a rotation to element model matrix.
 */
 void
@@ -336,7 +336,7 @@ SoModelMatrixElement::rotateEltBy(const SbRotation & rotation)
 }
 
 /*!
-  virtual method which is called from the static method 
+  virtual method which is called from the static method
   scaleBy(). Appends \a scaleFactor to element model matrix.
 */
 void
@@ -349,7 +349,7 @@ SoModelMatrixElement::scaleEltBy(const SbVec3f & scaleFactor)
 }
 
 /*!
-  virtual method which is called from the static method 
+  virtual method which is called from the static method
   pushMatrix(). Returns current model matrix.
 */
 SbMatrix
@@ -358,10 +358,10 @@ SoModelMatrixElement::pushMatrixElt()
   return this->modelMatrix;
 }
 
-/*!  
+/*!
   virtual method which is called from the static method
   popMatrix(). Retores model matrix to the matrix returned from
-  pushMatrix().  
+  pushMatrix().
 */
 void
 SoModelMatrixElement::popMatrixElt(const SbMatrix & matrix)
@@ -395,9 +395,7 @@ SoModelMatrixElement::push(SoState * state)
     element->cullMatrix = this->cullMatrix;
   if (this->flags & FLG_COMBINED)
     element->combinedMatrix = this->combinedMatrix;
-  
+
   // make sure node ids are accumulated properly
   element->copyNodeIds(this);
 }
-
-

@@ -117,7 +117,7 @@ public:
     delete [] this->pointDetails;
     delete this->tess;
   }
-  
+
   void beginShape(SoShape * shape, SoAction * action,
                   SoShape::TriangleShape shapetype,
                   SoDetail * detail) {
@@ -448,7 +448,7 @@ SoShape::GLRender(SoGLRenderAction * action)
   // generatePrimitives should therefore be used to render the
   // shape. This is probably painfully slow, so if you want speed,
   // implement the GLRender() method.  pederb, 20000612
-  
+
   if (!this->shouldGLRender(action)) return;
   SoMaterialBundle mb(action);
   mb.sendFirst();
@@ -861,7 +861,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
     glTexCoord4fv(v3->getTextureCoords().getValue());
     glNormal3fv(v3->getNormal().getValue());
     currentBundle->send(v3->getMaterialIndex(), TRUE);
-    glVertex3fv(v3->getPoint().getValue());    
+    glVertex3fv(v3->getPoint().getValue());
     glEnd();
   }
 }

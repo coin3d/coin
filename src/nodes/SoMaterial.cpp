@@ -150,7 +150,7 @@ SoMaterial::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   if (SoShapeStyleElement::isScreenDoor(state) &&
-      ! this->transparency.isIgnored() && 
+      ! this->transparency.isIgnored() &&
       ! SoOverrideElement::getTransparencyOverride(state)) {
     float t = this->transparency[0];
     SoGLPolygonStippleElement::setTransparency(state, t);

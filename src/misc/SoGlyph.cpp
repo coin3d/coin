@@ -36,7 +36,7 @@
 // our default font (misc/default3dfont.cpp)
 extern float * coin_defaultfont_coords[];
 extern int * coin_defaultfont_faceidx[];
-extern int * coin_defaultfont_edgeidx[]; 
+extern int * coin_defaultfont_edgeidx[];
 #endif // COIN_NO_DEFAULT_3DFONT
 
 /*!
@@ -68,14 +68,14 @@ SoGlyph::~SoGlyph()
   Should be called when a node no longer will use a glyph. Will
   free memory used by this glyph when it is no longer used by any node.
 */
-void 
+void
 SoGlyph::unref() const
 {
   SoGlyph::unrefGlyph((SoGlyph*)this);
 }
 
 /*!
-  Returns coordinates for this glyph. 
+  Returns coordinates for this glyph.
 */
 const SbVec2f *
 SoGlyph::getCoords(void) const
@@ -84,7 +84,7 @@ SoGlyph::getCoords(void) const
 }
 
 /*!
-  Returns face indices for this glyph. 
+  Returns face indices for this glyph.
 */
 const int *
 SoGlyph::getFaceIndices(void) const
@@ -93,7 +93,7 @@ SoGlyph::getFaceIndices(void) const
 }
 
 /*!
-  Returns edge indices for this glyph. 
+  Returns edge indices for this glyph.
 */
 const int *
 SoGlyph::getEdgeIndices(void) const
@@ -107,7 +107,7 @@ SoGlyph::getEdgeIndices(void) const
 float
 SoGlyph::getWidth(void) const
 {
-  if (this->width > 0.0f) return this->width;  
+  if (this->width > 0.0f) return this->width;
   int *ptr = this->edgeidx;
   int idx = *ptr++;
   float maxval = 0.0f;
@@ -126,7 +126,7 @@ SoGlyph::getWidth(void) const
   will be copied before returing. If \a numcoords <= 0, \a coords will
   be used directly.
 */
-void 
+void
 SoGlyph::setCoords(SbVec2f *coords, int numcoords)
 {
   if (this->flags.didalloccoords) delete [] this->coords;
@@ -146,7 +146,7 @@ SoGlyph::setCoords(SbVec2f *coords, int numcoords)
   data will be copied before returning. If \a numcoords <= 0,
   \a indices will be used directly.
 */
-void 
+void
 SoGlyph::setFaceIndices(int *indices, int numindices)
 {
   if (this->flags.didallocfaceidx) delete [] this->faceidx;
@@ -166,7 +166,7 @@ SoGlyph::setFaceIndices(int *indices, int numindices)
   data will be copied before returning. If \a numcoords <= 0,
   \a indices will be used directly.
 */
-void 
+void
 SoGlyph::setEdgeIndices(int *indices, int numindices)
 {
   if (this->flags.didallocedgeidx) delete [] this->edgeidx;
@@ -180,7 +180,7 @@ SoGlyph::setEdgeIndices(int *indices, int numindices)
     this->flags.didallocedgeidx = 0;
   }
 }
-  
+
 
 
 //
@@ -195,9 +195,9 @@ public:
     this->character = 0;
     this->glyph = NULL;
   }
-  coin_glyph_info(const char character, const SbName &font, SoGlyph *glyph) 
+  coin_glyph_info(const char character, const SbName &font, SoGlyph *glyph)
     : character(character), font(font), glyph(glyph) {}
-  
+
   SbBool matches(const char character, const SbName font) {
     return (this->character == character) && (this->font == font);
   }
@@ -245,7 +245,7 @@ SoGlyph::getGlyph(const char character, const SbName &font)
   for (i = 0; i < n; i++) {
     if ((*activeGlyphs)[i].matches(character, font)) break;
   }
-  if (i < n) { 
+  if (i < n) {
     SoGlyph *glyph = (*activeGlyphs)[i].glyph;
     glyph->refcount++;
     return glyph;
@@ -294,7 +294,7 @@ SoGlyph::createSystemGlyph(const char character, const SbName &font)
 }
 
 // private method that removed glyph from active list when deleted
-void 
+void
 SoGlyph::unrefGlyph(SoGlyph *glyph)
 {
   assert(activeGlyphs);
@@ -310,4 +310,3 @@ SoGlyph::unrefGlyph(SoGlyph *glyph)
     delete glyph;
   }
 }
-

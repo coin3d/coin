@@ -79,7 +79,7 @@ SoMaterialBundle::sendFirst(void)
   this->setupElements(FALSE);
   this->reallySend(0, FALSE);
   if (this->stippleElt) this->stippleElt->evaluate();
-  
+
   // a small optimization to avoid unnecessary material
   // testing (it is most common to only have multiple diffuse values)
   if (!this->diffuseOnly) { // diffuseOnly is TRUE when lightModel == BASE_COLOR
@@ -134,7 +134,7 @@ SoMaterialBundle::isColorOnly(void) const
 //
 void
 SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
-{  
+{
   if (this->doStipple) {
     this->diffuseElt->send(index);
   }
@@ -145,7 +145,7 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
   else { // packed or stipple
     this->diffuseElt->send(index);
   }
-  
+
   if (!this->diffuseOnly) {
     this->ambientElt->send(index);
     this->emissiveElt->send(index);
@@ -167,17 +167,17 @@ SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
   this->diffuseOnly = this->colorOnly =
     SoLightModelElement::get(this->state) ==
     SoLightModelElement::BASE_COLOR;
-  
+
   this->diffuseElt = (SoGLDiffuseColorElement*)
     state->getConstElement(SoGLDiffuseColorElement::getClassStackIndex());
   this->diffusePacked = this->diffuseElt->isPacked();
-  
+
   if (!this->diffusePacked) {
     this->transparencyElt = (SoTransparencyElement*)
       state->getConstElement(SoTransparencyElement::getClassStackIndex());
     // if there are fewer transparency values than diffuse, use only
     // the first transparency value
-    this->multiTrans = 
+    this->multiTrans =
       (this->transparencyElt->getNum() >= this->diffuseElt->getNum());
   }
 

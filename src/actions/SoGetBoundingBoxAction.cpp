@@ -368,7 +368,7 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f & center,
 }
 
 /*!
-  \internal 
+  \internal
   Query about the center point during traversal.
 */
 SbBool

@@ -90,13 +90,13 @@ SoPackedColor::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
   if (SoShapeStyleElement::isScreenDoor(state) &&
-      ! this->orderedRGBA.isIgnored() && 
+      ! this->orderedRGBA.isIgnored() &&
       ! SoOverrideElement::getTransparencyOverride(state)) {
     float t = (255 - (this->orderedRGBA[0] & 0xff)) / 255.0f;
     SoGLPolygonStippleElement::setTransparency(state, t);
     SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
   }
-  
+
   SoPackedColor::doAction(action);
 }
 

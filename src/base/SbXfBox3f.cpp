@@ -656,7 +656,7 @@ SbXfBox3f::print(FILE * fp) const
   this->getSize(x, y, z);
   fprintf( fp, "  size " );
   SbVec3f(x, y, z).print(fp);
- 
+
   fprintf( fp, "\n" );
   fprintf( fp, "  volume %f\n", this->getVolume() );
   this->getTransform().print(fp);

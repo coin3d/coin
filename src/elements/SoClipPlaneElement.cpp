@@ -129,17 +129,17 @@ SoClipPlaneElement::init(SoState * state)
 }
 
 /*!
-  Overloaded to copy planes into the new top of stack, since 
+  Overloaded to copy planes into the new top of stack, since
   planes are accumulated. Also copies accumulated node ids.
 */
 void
 SoClipPlaneElement::push(SoState * state)
 {
   inherited::push(state);
-  
+
   SoClipPlaneElement * const element =
     (SoClipPlaneElement *)(this->next);
-  
+
   element->planes.truncate(0);
   for (int i = 0; i < this->planes.getLength(); i++) {
     element->planes.append(this->planes[i]);

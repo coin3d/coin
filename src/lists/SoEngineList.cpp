@@ -90,7 +90,7 @@ SoEngineList::operator[](const int i) const
 }
 
 /*!
-  Copy contents of list \a el to this list. 
+  Copy contents of list \a el to this list.
 
   \sa SoBaseList::operator=()
 */

@@ -237,7 +237,7 @@ SoSearchAction::isSearchingAll(void) const
 
   Note that if \c ALL matches are of interest, the result of a search
   action must be fetched through SoSearchAction::getPaths().
-  
+
 */
 SoPath *
 SoSearchAction::getPath(void) const
