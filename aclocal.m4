@@ -6125,6 +6125,7 @@ fi
 # SIM_AC_GLU_READY_IFELSE( [ACTION-IF-TRUE], [ACTION-IF-FALSE] )
 
 AC_DEFUN([SIM_AC_GLU_READY_IFELSE], [
+AC_CHECK_HEADERS([GL/glu.h OpenGL/glu.h])
 AC_CACHE_CHECK(
   [if GLU is available as part of GL library],
   [sim_cv_glu_ready],
