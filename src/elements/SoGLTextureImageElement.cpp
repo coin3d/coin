@@ -72,6 +72,8 @@ SoGLTextureImageElement::init(SoState * state)
   this->glmodel = -1;
   this->glquality = -1.0f;
   this->glblendcolor.setValue(-1.0f, -1.0f, -1.0f);
+  this->glalphatest = FALSE;
+  glDisable(GL_ALPHA_TEST);
 }
 
 
@@ -196,7 +198,7 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
   }
 
   // if transparent or !enabled, disable alpha test
-  if (transparency || !enabled) { 
+  if (transparency || !enabled) {
     if (elem->glalphatest) {
       glDisable(GL_ALPHA_TEST);
       elem->glalphatest = FALSE;
