@@ -78,6 +78,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoShape.h>
@@ -236,6 +237,7 @@ SoCallbackAction::initClass(void)
   SO_ENABLE(SoCallbackAction, SoTextureOverrideElement);
   SO_ENABLE(SoCallbackAction, SoViewportRegionElement);
   SO_ENABLE(SoCallbackAction, SoLazyElement);
+  SO_ENABLE(SoCallbackAction, SoCacheElement);
 }
 
 
