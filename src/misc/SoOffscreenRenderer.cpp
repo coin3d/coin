@@ -256,6 +256,7 @@ public:
       glPixelStorei(GL_PACK_ALIGNMENT, 1);
       glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
                    this->buffer);
+      glPixelStorei(GL_PACK_ALIGNMENT, 4);
     }
   }
 

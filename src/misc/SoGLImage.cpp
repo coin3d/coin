@@ -90,7 +90,7 @@ SoGLImage::SoGLImage(void)
 
   If \a border != 0, the OpenGL texture will be created with this
   border size. Be aware that this might be extremely slow on most
-  PC hardware. 
+  PC hardware.
 
   Normally, the OpenGL texture object isn't created until the first
   time it is needed, but if \a createinstate is != NULL, the texture
@@ -380,6 +380,8 @@ SoGLImage::createGLDisplayList(SoState * state, const float quality)
                                       newx, newy, GL_UNSIGNED_BYTE,
                                       (void*)glimage_tmpimagebuffer);
     imageptr = glimage_tmpimagebuffer;
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
   }
 
   SoGLDisplayList * dl =
@@ -413,7 +415,7 @@ SoGLImage::checkTransparency(void)
       int n = this->size[0] * this->size[1];
       int nc = this->numcomponents;
       unsigned char * ptr = (unsigned char *) this->bytes + nc - 1;
-      
+
       while (n) {
         if (*ptr != 255 && *ptr != 0) break;
         if (*ptr == 0) this->flags |= FLAG_ALPHATEST;
@@ -427,7 +429,7 @@ SoGLImage::checkTransparency(void)
       else this->flags &= ~FLAG_TRANSPARENCY;
     }
     else this->flags &= ~(FLAG_TRANSPARENCY|FLAG_ALPHATEST);
-    
+
     // clear test flag before returning
     this->flags &= ~FLAG_NEEDTRANSPARENCYTEST;
   }
@@ -507,6 +509,7 @@ SoGLImage::reallyCreateTexture(SoState * state,
     (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, w, h,
                                           glformat, GL_UNSIGNED_BYTE, texture);
   }
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 }
 
 //
