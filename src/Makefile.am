@@ -93,18 +93,14 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 
 ## Installation information.
 
-if !MACOSX
-LibtoolLinkArgs = -no-undefined 
-else
-# On Mac OS X, pad the install_name to make it possible to change it
-# later (e.g. to include the library in an app bundle).On Mac OS 10.2
-# or later, also create two-level namespace binaries and use prebinding.
+# On Mac OS 10.2 or later, create two-level namespace binaries and use
+# prebinding. Also pad the install_name to make it possible to change it
+# later (e.g. to include the library in an app bundle).
 if MACOSX_10_2FF
-LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
+LibtoolLinkArgs = -no-undefined -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -Wl,-headerpad_max_install_names 
 else
-LibtoolLinkArgs = 
+LibtoolLinkArgs = -no-undefined
 endif
-endif 
 
 
 libCoin@SUFFIX@_la_LDFLAGS = \

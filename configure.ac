@@ -257,6 +257,7 @@ darwin8.* )
 darwin* )
   sim_ac_macosx=true
   sim_ac_macosx_10_2ff=false
+  sim_ac_macosx_name=""
   ;;
 * )
   sim_ac_macosx=false
@@ -1855,11 +1856,6 @@ COIN_COMPILER="$CXX"
   # ***********************************************************
   # Mac OS X tweaks
   #
-
-  if test x"$sim_ac_macosx_10_2ff" = x"true"; then
-    # No undefined symbols allowed in two-level namespace shared libs.
-    LDFLAGS="$LDFLAGS -no-undefined"
-  fi
 
   if $sim_ac_framework; then
     SIM_AC_CONFIGURATION_SETTING([Coin build type], [Mac OS X framework])
