@@ -69,7 +69,8 @@ public:
                 const SoFieldContainer * c2) const;
 
   SbBool readFieldDescriptions(SoInput * in, SoFieldContainer * object,
-                               int numdescriptionsexpected) const;
+                               int numdescriptionsexpected,
+                               const SbBool readfieldvalues = TRUE) const;
   void writeFieldDescriptions(SoOutput * out,
                               const SoFieldContainer * object) const;
 

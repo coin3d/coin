@@ -644,10 +644,14 @@ SoFieldData::isSame(const SoFieldContainer * c1,
   \a numdescriptionsexpected is used for binary format import to know
   how many descriptions should be parsed.
 
- */
+  If \a readfieldvalues is \e TRUE (the default), the field initial value
+  is expected after the field name in the SoInput stream.
+  
+*/
 SbBool
 SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
-                                   int numdescriptionsexpected) const
+                                   int numdescriptionsexpected,
+                                   const SbBool readfieldvalues) const
 {
   // These two macros are convenient for reading with error detection.
 #define READ_CHAR(c) \
@@ -757,7 +761,7 @@ SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
       if (fieldtype == EXPOSEDFIELD) {
         newfield->setFieldType(SoField::EXPOSED_FIELD);
       }
-      if (!newfield->read(in, fieldname)) {
+      if (readfieldvalues && !newfield->read(in, fieldname)) {
         SoReadError::post(in, "Unable to read value for field '%s'",
                           fieldname.getString());
         return FALSE;
