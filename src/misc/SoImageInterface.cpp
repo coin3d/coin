@@ -22,6 +22,7 @@
 #include <Inventor/lists/SbList.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 
 #include <config.h> // HAVE_LIBSIMAGE define
 
@@ -290,6 +291,28 @@ SoImageInterface::hasTransparency() const
   return this->transparency;
 }
 
+/*!
+  Convenience method that creates an SoImageInterface which is a copy 
+  of this image. Only the image data will be copied, not attributes
+  like filename.
+  
+  You should call ref() on the copied image after receiving it, and
+  unref() to delete it.
+*/
+SoImageInterface *
+SoImageInterface::imageCopy() const
+{
+  SbVec2s size = this->getSize();
+  int nc = this->getNumComponents();
+  const unsigned char *src = this->getDataPtr();
+  assert(src != NULL);
+  unsigned char *dest = (unsigned char *) malloc(size[0]*size[1]*nc);
+  memcpy(dest, src, size[0]*size[1]*nc);
+  SoImageInterface *copy = new SoImageInterface(size, nc, dest);
+  copy->didAlloc = TRUE;
+  return copy;
+}
+
 //
 // private method that checks data for transparency
 //
@@ -309,6 +332,7 @@ SoImageInterface::checkTransparency()
   }
   else this->transparency = FALSE;
 }
+
 
 class so_image_data {
 public:

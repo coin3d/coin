@@ -44,6 +44,7 @@ public:
   void ref();
   void unref(); // use this to delete
 
+  SoImageInterface *imageCopy() const;
   static SoImageInterface *findOrCreateImage(const char * const filename);
 
 private:

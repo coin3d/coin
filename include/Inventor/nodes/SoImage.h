@@ -84,6 +84,15 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   int getReadStatus(void);
   void setReadStatus(SbBool flag);
+
+protected:
+  SbVec2s getSize() const;
+  static SbVec3f getNilpoint(SoState *state);
+  class SoImageInterface *imageData;
+  class SoImageInterface *orgImageData;
+  SbBool getImage();
+  void getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
+               SbVec3f &v2, SbVec3f &v3);
 };
 
 #endif // !__SOIMAGE_H__
