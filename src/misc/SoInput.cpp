@@ -82,9 +82,7 @@
 #if HAVE_NETINET_IN_H
 #include <netinet/in.h> // ntohl(), ntohs()
 #endif // HAVE_NETINET_IN_H
-#if HAVE_CTYPE_H
 #include <ctype.h>
-#endif // HAVE_CTYPE_H
 
 
 // This (POSIX-compliant) macro is missing from the Win32 API header
