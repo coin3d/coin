@@ -595,7 +595,7 @@ SoNode::initClasses(void)
   SoUnknownNode::initClass();
   SoVertexProperty::initClass();
   SoWWWInline::initClass();
-  SoListener::initClass();  
+  SoListener::initClass();
 
   SoTransparencyType::initClass();
   SoTextureScalePolicy::initClass();
@@ -1277,7 +1277,7 @@ SoNode::addToCopyDict(void) const
       SoProtoInstance * newinst = proto->createProtoInstance();
       if (inst->getName().getLength()) newinst->setName(inst->getName());
       cp = newinst->getRootNode();
-      assert(cp);      
+      assert(cp);
       // We have to call addCopy() before calling copyContents() since
       // the proto instance might have a field that has a pointer to
       // the root node. pederb, 2002-09-04
@@ -1324,12 +1324,17 @@ SoNode::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 SoFieldContainer *
 SoNode::copyThroughConnection(void) const
 {
-  // Important note: _don't_ switch checkCopy() here with findCopy(),
-  // as we're not supposed to create copies of containers "outside"
-  // the part of the scene graph which is involved in the copy
-  // operation.
+  // Important note: _don't_ try to optimize by skipping the
+  // checkCopy() call, as we're not supposed to create copies of
+  // containers "outside" the part of the scene graph which is
+  // involved in the copy operation.
   SoFieldContainer * connfc = SoFieldContainer::checkCopy(this);
-  return connfc ? connfc : (SoFieldContainer *)this;
+  // if a copy has been made, return the findCopy instance (findCopy
+  // will run copyContents() the first time it's called on an
+  // instance).
+  if (connfc) return SoFieldContainer::findCopy(this, TRUE);
+  // if no copy has been made, just return self
+  return (SoFieldContainer*) this;
 }
 
 /*!
@@ -1379,7 +1384,7 @@ SoNode::readInstance(SoInput * in, unsigned short flags)
 
   \since Coin 2.0
 */
-uint32_t 
+uint32_t
 SoNode::getCompatibilityTypes(const SoType & nodetype)
 {
   assert(SoNode::compatibilitydict);
@@ -1397,11 +1402,11 @@ SoNode::getCompatibilityTypes(const SoType & nodetype)
   specifies for which file formats the node is supported.
 
   \COIN_FUNCTION_EXTENSION
-  
+
   \sa getCompatibilityMode()
   \since Coin 2.0
 */
-void 
+void
 SoNode::setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask)
 {
   assert(SoNode::compatibilitydict);
@@ -1412,7 +1417,7 @@ SoNode::setCompatibilityTypes(const SoType & nodetype, const uint32_t bitmask)
 //
 // called by atexit()
 //
-void 
+void
 SoNode::cleanupClass(void)
 {
   delete SoNode::compatibilitydict;
@@ -1452,19 +1457,19 @@ init_action_methods(void)
 
   SoAudioRenderAction::addMethod(SoNode::getClassTypeId(),
                                  SoAction::nullAction);
-  SoAudioRenderAction::addMethod(SoListener::getClassTypeId(),       
+  SoAudioRenderAction::addMethod(SoListener::getClassTypeId(),
                                  SoNode::audioRenderS);
-  SoAudioRenderAction::addMethod(SoCamera::getClassTypeId(),       
+  SoAudioRenderAction::addMethod(SoCamera::getClassTypeId(),
                                  SoNode::audioRenderS);
   SoAudioRenderAction::addMethod(SoGroup::getClassTypeId(),
                                  SoNode::audioRenderS);
-  SoAudioRenderAction::addMethod(SoWWWInline::getClassTypeId(),         
+  SoAudioRenderAction::addMethod(SoWWWInline::getClassTypeId(),
                                  SoNode::audioRenderS);
-  SoAudioRenderAction::addMethod(SoFile::getClassTypeId(),           
+  SoAudioRenderAction::addMethod(SoFile::getClassTypeId(),
                                  SoNode::audioRenderS);
   // just call doAction() for all transformation nodes. This will make
   // sound nodes work even for extension nodes that implements the
   // doAction() method
-  SoAudioRenderAction::addMethod(SoTransformation::getClassTypeId(), 
+  SoAudioRenderAction::addMethod(SoTransformation::getClassTypeId(),
                                  SoAudioRenderAction::callDoAction);
 }
