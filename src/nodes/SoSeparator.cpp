@@ -190,7 +190,7 @@ SoSeparator::commonConstructor(void)
 */
 SoSeparator::~SoSeparator()
 {
-  delete this->bboxcache;
+  if (this->bboxcache) this->bboxcache->unref();
 }
 
 // Doc from superclass.
@@ -259,8 +259,9 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     if (iscaching) {
       // FIXME: continuous new & delete during traversal is probably a
       // performance killer.. fix. 19990422 mortene.
-      delete this->bboxcache;
+      if (this->bboxcache) this->bboxcache->unref();
       this->bboxcache = new SoBoundingBoxCache(state);
+      this->bboxcache->ref();
       this->bboxcache->set(childrenbbox, childrencenterset, childrencenter);
     }
   }
@@ -318,7 +319,7 @@ SoSeparator::GLRender(SoGLRenderAction * action)
 */
 void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
-{  
+{
   SoState * state = action->getState();
   if (!this->cullTest(state)) {
     state->push();
@@ -340,7 +341,7 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
   int numIndices;
   const int * indices;
   action->getPathCode(numIndices, indices);
-  
+
   action->getState()->push();
   this->children->traverse(action, 0, indices[numIndices-1]);
   action->getState()->pop();
