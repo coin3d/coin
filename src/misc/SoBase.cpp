@@ -46,12 +46,14 @@
 #include <Inventor/SbDict.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoBaseList.h>
+#include <Inventor/lists/SoFieldList.h>
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/engines/SoNodeEngine.h>
+#include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/errors/SoDebugError.h>
 
@@ -1759,7 +1761,8 @@ find_field(SoNode * node, const SbName & fieldname)
   \since 2001-10-12
 */
 SbBool
-SoBase::connectRoute(const SbName & fromnodename, const SbName & fromfieldname,
+SoBase::connectRoute(SoInput * in,
+                     const SbName & fromnodename, const SbName & fromfieldname,
                      const SbName & tonodename, const SbName & tofieldname)
 {
   SoNode * fromnode = SoNode::getByName(fromnodename);
@@ -1779,10 +1782,46 @@ SoBase::connectRoute(const SbName & fromnodename, const SbName & fromfieldname,
         notnotify = TRUE;
       }
       if (to->getFieldType() == SoField::EVENTIN_FIELD) append = TRUE;
-      if (from) 
-        to->connectFrom(from, notnotify, append);
-      else
-        to->connectFrom(output, notnotify, append);
+
+      // Check if we're already connected.
+      SoFieldList fl;
+      if (from) from->getForwardConnections(fl);
+      else output->getForwardConnections(fl);
+      int idx = fl.find(to);
+      if (idx != -1) {
+        SoReadError::post(in,
+                          "Tried to connect a ROUTE multiple times "
+                          "(from %s.%s to %s.%s)",
+                          fromnodename.getString(), fromfieldname.getString(),
+                          tonodename.getString(), tofieldname.getString());
+        return FALSE;
+      }
+
+      // Check that there exists a field converter, if one is needed.
+      SoType totype = to->getTypeId();
+      SoType fromtype = from ? from->getTypeId() : output->getConnectionType();
+      if (totype != fromtype) {
+        SoType convtype = SoDB::getConverter(fromtype, totype);
+        if (convtype != SoType::badType()) {
+          SoReadError::post(in,
+                            "Tried to connect a ROUTE between entities "
+                            "that can not be connected (due to lack of "
+                            "field type converter): %s.%s is of type "
+                            "%s, and %s.%s is of type %s",
+                            fromnodename.getString(), fromfieldname.getString(),
+                            fromtype.getName().getString(),
+                            tonodename.getString(), tofieldname.getString(),
+                            totype.getName().getString());
+          return FALSE;
+        }
+      }
+      
+      SbBool ok;
+      if (from) ok = to->connectFrom(from, notnotify, append);
+      else ok = to->connectFrom(output, notnotify, append);
+      // Both known possible failure points are caught above.
+      assert(ok && "unexpected connection error");
+
       return TRUE;
     }
   }
@@ -1852,15 +1891,21 @@ SoBase::readRoute(SoInput * in)
     if (proto) {
       proto->addRoute(fromnodename, fromfieldname, tonodename, tofieldname);
     }
-    else if (!SoBase::connectRoute(fromnodename, fromfieldname,
-                                   tonodename, tofieldname)) {
-      SoReadError::post(in, "Unable to create route from %s.%s to %s.%s. Delaying.",
-                        fromnodename.getString(),
-                        fromfieldname.getString(),
-                        tonodename.getString(),
-                        tofieldname.getString());
-      in->addRoute(fromnodename, fromfieldname,
-                   tonodename, tofieldname);
+    else {
+      SoNode * fromnode = SoNode::getByName(fromnodename);
+      SoNode * tonode = SoNode::getByName(tonodename);
+
+      if (!fromnode || !tonode) {
+        SoReadError::post(in,
+                          "Unable to create ROUTE from %s.%s to %s.%s. "
+                          "Delaying.",
+                          fromnodename.getString(), fromfieldname.getString(),
+                          tonodename.getString(), tofieldname.getString());
+        in->addRoute(fromnodename, fromfieldname, tonodename, tofieldname);
+      }
+
+      (void)SoBase::connectRoute(in, fromnodename, fromfieldname,
+                                 tonodename, tofieldname);
     }
   }
   return ok;

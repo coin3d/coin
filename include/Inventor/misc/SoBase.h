@@ -78,7 +78,8 @@ public:
   static void setTraceRefs(SbBool trace);
   static SbBool getTraceRefs(void);
 
-  static SbBool connectRoute(const SbName & fromnodename, const SbName & fromfieldname,
+  static SbBool connectRoute(SoInput * in,
+                             const SbName & fromnodename, const SbName & fromfieldname,
                              const SbName & tonodename, const SbName & tofieldname);
   
   void assertAlive(void) const;

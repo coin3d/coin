@@ -233,7 +233,7 @@ public:
     return coin_isspace(c) || (this->vrml2file && c == ',');
   }
 
-  void connectRoutes(void);
+  void connectRoutes(class SoInput * in);
   void unrefProtos(void);
 
 private:
@@ -1865,7 +1865,7 @@ SoInput::popFile(void)
   SoInput_FileInfo * topofstack = this->getTopOfStack();
 
   // connect routes before applying post callbacks
-  topofstack->connectRoutes();
+  topofstack->connectRoutes(this);
 
   // unreference Proto definitions
   topofstack->unrefProtos();
@@ -2718,22 +2718,29 @@ SoInput_FileInfo::readHeader(SoInput * soinput)
 }
 
 void
-SoInput_FileInfo::connectRoutes(void)
+SoInput_FileInfo::connectRoutes(SoInput * in)
 {
   const SbName * routeptr = this->routelist.getArrayPtr();
   const int n = this->routelist.getLength();
   for (int i = 0; i < n; i += 4) {
-    if (!SoBase::connectRoute(routeptr[i],
-                              routeptr[i+1],
-                              routeptr[i+2],
-                              routeptr[i+3])) {
-      SoDebugError::postWarning("SoInput_FileInfo::connectRoutes",
-                                "Unable to create route from %s.%s to %s.%s",
-                                routeptr[i].getString(),
-                                routeptr[i+1].getString(),
-                                routeptr[i+2].getString(),
-                                routeptr[i+3].getString());
+    SbName fromnodename = routeptr[i];
+    SbName fromfieldname = routeptr[i+1];
+    SbName tonodename = routeptr[i+2];
+    SbName tofieldname = routeptr[i+3];
 
+    SoNode * fromnode = SoNode::getByName(fromnodename);
+    SoNode * tonode = SoNode::getByName(tonodename);
+
+    if (!fromnode || !tonode) {
+      SoReadError::post(in,
+                        "Unable to create ROUTE from %s.%s to %s.%s. "
+                        "Couldn't find both node references.",
+                        fromnodename.getString(), fromfieldname.getString(),
+                        tonodename.getString(), tofieldname.getString());
+    }
+    else {
+      (void)SoBase::connectRoute(in, fromnodename, fromfieldname,
+                                 tonodename, tofieldname);
     }
   }
 }
