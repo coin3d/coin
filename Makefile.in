@@ -104,6 +104,7 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
+win_srcdir = @win_srcdir@
 
 
 SUBDIRS = include data src build
@@ -486,6 +487,12 @@ coin-config: coin-config.in
 
 doxygen-doc:
 	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+
+coin-installer.exe: build/coin.nsi
+	@sed 's,$$,
+,' <$(srcdir)/COPYING >COPYING.DOS; \
+	makensis build\\coin.nsi; \
+	rm COPYING.DOS
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

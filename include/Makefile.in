@@ -104,6 +104,7 @@ install_sh = @install_sh@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
+win_srcdir = @win_srcdir@
 
 
 SUBDIRS = Inventor

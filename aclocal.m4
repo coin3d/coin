@@ -148,6 +148,9 @@ AC_DEFUN([SIM_AC_MSVC_SUPPORT], [
 BUILD_WITH_MSVC=false
 sim_ac_msvccc=`cd $srcdir; pwd`/cfg/m4/msvccc
 if test -z "$CC" && test -z "$CXX" && $sim_ac_msvccc >/dev/null 2>&1; then
+  m4_ifdef([SIM_AC_MSVC_SUPPORT_VISITED],
+    [AC_FATAL([Macro SIM_AC_MSVC_SUPPORT invoked multiple times])])
+  m4_define([SIM_AC_MSVC_SUPPORT_VISITED], 1)
   CC=$sim_ac_msvccc
   CXX=$sim_ac_msvccc
   export CC CXX
