@@ -31,6 +31,18 @@
   how the file format is.
 */
 
+/*!
+  \fn void SoPath::push(const int childindex)
+
+  This method pushes the child at \a childindex on the tail on the
+  path.
+*/
+
+/*!
+  \fn void SoPath::pop(void)
+
+  This method pops the tail off the path.
+*/
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -76,7 +88,7 @@ SoType SoPath::classTypeId;
 */
 SoPath::SoPath(const int approxlength)
   : nodes(approxlength), indices(approxlength),
-    isauditing(TRUE), firsthidden(-1)
+    isauditing(TRUE), firsthidden(-1), firsthiddendirty(FALSE)
 {
 }
 
@@ -85,7 +97,7 @@ SoPath::SoPath(const int approxlength)
   the path.
 */
 SoPath::SoPath(SoNode * const head)
-  : isauditing(TRUE), firsthidden(-1)
+  : isauditing(TRUE), firsthidden(-1), firsthiddendirty(FALSE)
 {
   this->setHead(head);
 }
@@ -107,6 +119,7 @@ SoPath &
 SoPath::operator=(const SoPath & rhs)
 {
   this->firsthidden = rhs.firsthidden;
+  this->firsthiddendirty = rhs.firsthiddendirty;
   this->isauditing = rhs.isauditing;
   this->nodes = rhs.nodes;
   this->indices = rhs.indices;
@@ -119,7 +132,7 @@ SoPath::operator=(const SoPath & rhs)
     }
   }
 
-  this->startNotify();
+  if (isauditing) this->startNotify();
 
   return *this;
 }
@@ -146,6 +159,7 @@ SoPath::setHead(SoNode * const node)
 {
   this->truncate(0);
   this->firsthidden = -1;
+  this->firsthiddendirty = FALSE;
   this->append(node, 0);
 }
 
@@ -177,7 +191,9 @@ SoPath::append(const int childindex)
 
   SoChildList * children =
     this->nodes[this->getFullLength() - 1]->getChildren();
+#ifdef COIN_EXTRA_DEBUG
   assert(children);
+#endif // COIN_EXTRA_DEBUG
 
 #if COIN_DEBUG
   if (childindex >= children->getLength()) {
@@ -206,7 +222,9 @@ SoPath::append(SoNode * const node)
 
   SoChildList * children =
     this->nodes[this->getFullLength() - 1]->getChildren();
+#ifdef COIN_EXTRA_DEBUG
   assert(children);
+#endif // COIN_EXTRA_DEBUG
 
   const int idx = children->find((void *)node);
 #if COIN_DEBUG
@@ -243,8 +261,10 @@ SoPath::append(const SoPath * const frompath)
     for (int i = 1; i < length; i++) {
       this->append((SoNode *)frompath->nodes[i], frompath->indices[i]);
     }
-    if (this->firsthidden == -1 && frompath->firsthidden >= 0) {
-      this->setFirstHidden();
+
+    if (!this->firsthiddendirty && this->firsthidden == -1 &&
+        (frompath->firsthiddendirty || frompath->firsthidden >= 0)) {
+      this->firsthiddendirty = TRUE;
     }
     return;
   }
@@ -270,8 +290,9 @@ SoPath::append(const SoPath * const frompath)
       for (int i = 1; i < length; i++) {
         this->append((SoNode *)frompath->nodes[i], frompath->indices[i]);
       }
-      if (this->firsthidden == -1 && frompath->firsthidden >= 0) {
-        this->setFirstHidden();
+      if (!this->firsthiddendirty && this->firsthidden == -1 &&
+          (frompath->firsthiddendirty || frompath->firsthidden >= 0)) {
+        this->firsthiddendirty = TRUE;
       }
       return;
     }
@@ -283,14 +304,30 @@ SoPath::append(const SoPath * const frompath)
   return;
 }
 
+
+//
+// convenience method that tests if a node has hidden
+// children.  It would probably be a good idea to move this method to
+// SoNode.
+//
+inline SbBool
+has_hidden_children(SoNode * node)
+{
+  return (node->getChildren() != NULL) &&
+    !node->isOfType(SoGroup::getClassTypeId());
+}
+
+
 // This method appends a node to the path, assuming the information is
 // correct.
 void
 SoPath::append(SoNode * const node, const int index)
 {
-  if (this->firsthidden < 0) {
-    if (this->hasHiddenChildren(node))
+  if (!this->firsthiddendirty && this->firsthidden < 0) {
+    if (has_hidden_children(node)) {
       this->firsthidden = this->getFullLength();
+      this->firsthiddendirty = FALSE;
+    }
   }
   this->nodes.append(node);
   this->indices.append(index);
@@ -301,26 +338,7 @@ SoPath::append(SoNode * const node, const int index)
     if (cl) cl->addPathAuditor(this);
   }
 
-  this->startNotify();
-}
-
-/*!
-  This method pushes the child at \a childindex on the tail on the
-  path.
-*/
-void
-SoPath::push(const int childindex)
-{
-  this->append(childindex);
-}
-
-/*!
-  This method pops the tail off the path.
-*/
-void
-SoPath::pop(void)
-{
-  this->truncate(this->getFullLength() - 1);
+  if (this->isauditing) this->startNotify();
 }
 
 /*!
@@ -428,18 +446,15 @@ SoPath::getIndexFromTail(const int index) const
 int
 SoPath::getLength(void) const
 {
+  if (this->firsthiddendirty) {
+    ((SoPath*)this)->setFirstHidden();
+  }
   if (this->firsthidden >= 0) {
+#ifdef COIN_EXTRA_DEBUG
     assert(this->firsthidden < this->nodes.getLength());
+#endif // COIN_EXTRA_DEBUG
     return this->firsthidden + 1;
   }
-  return this->nodes.getLength();
-}
-
-// This method returns the number of nodes in the path, including
-// hidden nodes.
-int
-SoPath::getFullLength(void) const
-{
   return this->nodes.getLength();
 }
 
@@ -484,9 +499,10 @@ SoPath::truncate(const int length, const SbBool donotify)
   this->nodes.truncate(length);
   this->indices.truncate(length);
 
-  if (length <= this->firsthidden) this->setFirstHidden();
+  if (!this->firsthiddendirty && length <= this->firsthidden)
+    this->firsthiddendirty = TRUE;
 
-  if (donotify) this->startNotify();
+  if (donotify && this->isauditing) this->startNotify();
 }
 
 // *************************************************************************
@@ -620,7 +636,7 @@ SoPath::copy(const int startfromnodeindex, int numnodes) const
   for (int i = startfromnodeindex; i < max; i++) {
     newpath->append(this->nodes[i], this->indices[i]);
   }
-  newpath->setFirstHidden();
+  newpath->firsthiddendirty = TRUE;
   return newpath;
 }
 
@@ -676,7 +692,9 @@ SoPath::insertIndex(SoNode * const parent, const int newindex)
   if (parent == this->nodes[this->getFullLength() - 1]) return;
 
   int pos = this->findNode(parent);
+#ifdef COIN_EXTRA_DEBUG
   assert(pos != -1); // shouldn't be notified if parent is not in path
+#endif // COIN_EXTRA_DEBUG
   pos++;
 
   if (newindex <= this->indices[pos]) this->indices[pos]++;
@@ -744,7 +762,9 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
   if (parent == this->nodes[this->getFullLength() - 1]) return;
 
   int pos = this->findNode(parent);
+#ifdef COIN_EXTRA_DEBUG
   assert(pos != -1); // shouldn't be notified if parent is not in path
+#endif // COIN_EXTRA_DEBUG
   pos++;
 
   if (index == this->indices[pos]) {
@@ -979,18 +999,6 @@ SoPath::readInstance(SoInput * in, unsigned short flags)
 }
 
 //
-// Private convenience method that tests if a node has hidden
-// children.  It would probably be a good idea to move this method to
-// SoNode.
-//
-SbBool
-SoPath::hasHiddenChildren(SoNode * node) const
-{
-  return (node->getChildren() != NULL) &&
-    !node->isOfType(SoGroup::getClassTypeId());
-}
-
-//
 // Private method that scans the nodes and finds the first (if any)
 // node with hidden children. If a node with hidden children is found,
 // getLength() will return this as the length of the path. This also
@@ -1002,9 +1010,10 @@ SoPath::setFirstHidden(void)
   this->firsthidden = -1;
   int n = this->nodes.getLength();
   for (int i = 0; i < n; i++) {
-    if (this->hasHiddenChildren(this->nodes[i])) {
+    if (has_hidden_children(this->nodes[i])) {
       this->firsthidden = i;
-      return;
+      break;
     }
   }
+  this->firsthiddendirty = FALSE;
 }

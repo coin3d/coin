@@ -94,13 +94,13 @@ private:
   int getFullLength(void) const;
   void truncate(const int length, const SbBool donotify);
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
-  SbBool hasHiddenChildren(SoNode * node) const;
   void setFirstHidden(void);
 
   SoNodeList nodes;
   SbList<int> indices;
   SbBool isauditing;
   int firsthidden;
+  SbBool firsthiddendirty;
   static SoType classTypeId;
 
   friend class SoFullPath;
@@ -115,5 +115,27 @@ private:
 #ifndef COIN_INTERNAL
 #include <Inventor/misc/SoLightPath.h>
 #endif // COIN_INTERNAL
+
+// inline methods
+
+inline int
+SoPath::getFullLength(void) const
+{
+  return this->nodes.getLength();
+}
+
+inline void
+SoPath::push(const int childindex)
+{
+  this->append(childindex);
+}
+
+inline void
+SoPath::pop(void)
+{
+  this->truncate(this->getFullLength() - 1);
+}
+
+
 
 #endif // !COIN_SOPATH_H
