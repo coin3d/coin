@@ -80,8 +80,6 @@ soshape_bumprender::renderBump(const SoPrimitiveVertexCache * cache,
   this->calcTSBCoords(cache, light);
   const cc_glglue * glue = this->glglue;
 
-  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
   // set up textures
   glEnable(GL_TEXTURE_2D);
   this->bumpimage->getGLDisplayList(state)->call(state);
@@ -218,10 +216,12 @@ soshape_bumprender::calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight 
     NORMALIZE(tTangent);
     lightvec = this->getLightVec(v.vertex);
     tlightvec = lightvec;
-//     SbVec3f tcross = tTangent.cross(sTangent);
-//     if (tcross.dot(v.normal) < 0.0f) {
-//       tlightvec = -tlightvec;
-//     }
+#if 0 // FIXME: I don't think it's necessary to do this test. pederb, 2003-11-20
+    SbVec3f tcross = tTangent.cross(sTangent);
+    if (tcross.dot(v.normal) < 0.0f) {
+      tlightvec = -tlightvec;
+    }
+#endif // disabled, probably not necessary
     this->cubemaplist.append(SbVec3f(sTangent.dot(tlightvec),
                                      tTangent.dot(tlightvec),
                                      v.normal.dot(lightvec)));
@@ -262,7 +262,6 @@ soshape_bumprender::initLight(SoLight * light, const SbMatrix & m)
 SbVec3f
 soshape_bumprender::getLightVec(const SbVec3f & v) const
 {
-  //  return SbVec3f(0.0f, 0.0f, 1.0f);
   if (this->ispointlight) {
     SbVec3f tmp = lightvec - v;
     NORMALIZE(tmp);
