@@ -26,6 +26,8 @@
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#include <data/draggerDefaults/scaleUniformDragger.h>
+
 SO_KIT_SOURCE(SoScaleUniformDragger);
 
 
@@ -47,7 +49,9 @@ SoScaleUniformDragger::SoScaleUniformDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("scaleUniformDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("scaleUniformDragger.iv",
+                                       SCALEUNIFORMDRAGGER_draggergeometry,
+                                       sizeof(SCALEUNIFORMDRAGGER_draggergeometry));
   }
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
