@@ -45,6 +45,10 @@
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 
+#ifdef HAVE_FONTCONFIG
+#include <fontconfig/fontconfig.h>
+#endif
+
 #ifdef HAVE_FREETYPE /* In case we're _not_ doing runtime linking. */
 #define FREETYPEGLUE_ASSUME_FREETYPE 1
 #include <ft2build.h>
@@ -61,6 +65,27 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/freetype.h>
 
+typedef int (*cc_fcglue_FcGetVersion_t)(void);
+typedef FcPattern * (*cc_fcglue_FcNameParse_t)(const unsigned char * name);
+typedef int (*cc_fcglue_FcConfigSubstitute_t)(void * config, FcPattern * p, FcMatchKind kind);
+typedef void (*cc_fcglue_FcDefaultSubstitute_t)(FcPattern *pattern);
+typedef FcPattern * (*cc_fcglue_FcFontMatch_t)(void * config, FcPattern * p, FcResult * result);
+typedef FcResult (*cc_fcglue_FcPatternGetString_t)(const FcPattern * p, const char * object, int n, unsigned char ** s);
+typedef void (*cc_fcglue_FcPatternDestroy_t)(FcPattern * p);
+typedef void (*cc_fcglue_FcPatternPrint_t)(const FcPattern * p);
+
+typedef struct {
+  int available;
+  cc_fcglue_FcGetVersion_t FcGetVersion;
+  cc_fcglue_FcNameParse_t FcNameParse;
+  cc_fcglue_FcConfigSubstitute_t FcConfigSubstitute;
+  cc_fcglue_FcDefaultSubstitute_t FcDefaultSubstitute;
+  cc_fcglue_FcFontMatch_t FcFontMatch;
+  cc_fcglue_FcPatternGetString_t FcPatternGetString;
+  cc_fcglue_FcPatternDestroy_t FcPatternDestroy;
+  cc_fcglue_FcPatternPrint_t FcPatternPrint;
+} cc_fcglue_t;
+
 typedef FT_Error (*cc_ftglue_FT_Init_FreeType_t)(FT_Library * library);
 typedef void (*cc_ftglue_FT_Library_Version_t)(void * library, int * major, int * minor, int * patch);
 typedef void (*cc_ftglue_FT_Done_FreeType_t)(void * library);
@@ -76,7 +101,7 @@ typedef FT_Error (*cc_ftglue_FT_Get_Glyph_t)(void * glyphslot, FT_Glyph * glyph)
 typedef FT_Error (*cc_ftglue_FT_Glyph_To_Bitmap_t)(FT_Glyph * glyph, int rendermode, FT_Vector * origin, int destroy);
 typedef void (*cc_ftglue_FT_Done_Glyph_t)(FT_Glyph glyph);
 typedef FT_Error (*cc_ftglue_FT_Outline_Decompose_t)(FT_Outline * outline, const FT_Outline_Funcs * func_interface, void * user);
-
+typedef FT_Error (*cc_ftglue_FT_Render_Glyph_t)(void * glyphslot, int rendermode);
 
 typedef struct {
   int available;
@@ -97,11 +122,182 @@ typedef struct {
   cc_ftglue_FT_Outline_Decompose_t FT_Outline_Decompose;
 } cc_ftglue_t;
 
+static cc_fcglue_t * fontconfig_instance = NULL;
+static cc_libhandle fontconfig_libhandle = NULL;
+static int fontconfig_failed_to_load = 0;
+
 static cc_ftglue_t * freetype_instance = NULL;
 static cc_libhandle freetype_libhandle = NULL;
 static int freetype_failed_to_load = 0;
 
-/* Cleans up at exit. */
+/* Cleans up fontconfig at exit. */
+static void
+fcglue_cleanup(void)
+{
+#ifdef FONTCONFIG_RUNTIME_LINKING
+  if (fontconfig_libhandle) { cc_dl_close(fontconfig_libhandle); }
+#endif /* FREETYPE_RUNTIME_LINKING */
+  assert(fontconfig_instance);
+  free(fontconfig_instance);
+}
+
+static const cc_fcglue_t *
+fcglue_init(void)
+{
+  CC_SYNC_BEGIN(fcglue_init);
+
+  if (!fontconfig_instance && !fontconfig_failed_to_load) {
+    /* First invocation, do initializations. */
+    cc_fcglue_t * fi = (cc_fcglue_t *)malloc(sizeof(cc_fcglue_t));
+    (void)coin_atexit((coin_atexit_f *)fcglue_cleanup, 0);
+
+    /* The common case is that fontconfig is either available from the
+       linking process or we're successfully going to link it in. */
+    fi->available = 1;
+
+#ifdef FONTCONFIG_RUNTIME_LINKING
+    {
+      int idx;
+      /* FIXME: should we get the system shared library name from an
+         Autoconf check? 20000930 mortene. */
+      const char * possiblelibnames[] = {
+        NULL, /* is set below */
+        "fontconfig", "libfontconfig", "libfontconfig.so",
+        "libfontconfig.dylib",
+        NULL
+      };
+      possiblelibnames[0] = coin_getenv("COIN_FONTCONFIG_LIBNAME");
+      idx = possiblelibnames[0] ? 0 : 1;
+      while (!fontconfig_libhandle && possiblelibnames[idx]) {
+        fontconfig_libhandle = cc_dl_open(possiblelibnames[idx]);
+        idx++;
+      }
+
+      if (!fontconfig_libhandle) {
+        fi->available = 0;
+        fontconfig_failed_to_load = 1;
+      }
+    }
+    /* Define FCGLUE_REGISTER_FUNC macro. Casting the type is
+       necessary for this file to be compatible with C++ compilers. */
+#define FCGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
+    do { \
+      fi->_funcname_ = (_funcsig_)cc_dl_sym(fontconfig_libhandle, SO__QUOTE(_funcname_)); \
+      if (fi->_funcname_ == NULL) fi->available = 0; \
+    } while (0)
+
+#elif defined(FONTCONFIGGLUE_ASSUME_FONTCONFIG) /* !FONTCONFIG_RUNTIME_LINKING */
+
+    /* Define FCGLUE_REGISTER_FUNC macro. */
+#define FCGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
+    fi->_funcname_ = (_funcsig_)_funcname_
+
+#else /* !FONTCONFIGGLUE_ASSUME_FONTCONFIG */
+    fi->available = 0;
+    /* Define FCGLUE_REGISTER_FUNC macro. */
+#define FCGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
+    fi->_funcname_ = NULL
+
+#endif /* !FONTCONFIGGLUE_ASSUME_FONTCONFIG */
+
+    FCGLUE_REGISTER_FUNC(cc_fcglue_FcGetVersion_t, FcGetVersion);
+
+    if (fi->available && (!fi->FcGetVersion)) {
+      /* something is seriously wrong */
+      cc_debugerror_post("fontconfig glue",
+                         "Loaded fontconfig DLL ok, but couldn't resolve some symbols.");
+      fi->available = 0;
+      fontconfig_failed_to_load = 1;
+      fontconfig_instance = fi;
+    }
+    else {
+      FCGLUE_REGISTER_FUNC(cc_fcglue_FcNameParse_t, FcNameParse);
+      FCGLUE_REGISTER_FUNC(cc_fcglue_FcConfigSubstitute_t, FcConfigSubstitute);
+      FCGLUE_REGISTER_FUNC(cc_fcglue_FcDefaultSubstitute_t, FcDefaultSubstitute); 
+      FCGLUE_REGISTER_FUNC(cc_fcglue_FcFontMatch_t, FcFontMatch);
+      FCGLUE_REGISTER_FUNC(cc_fcglue_FcPatternGetString_t, FcPatternGetString);
+      FCGLUE_REGISTER_FUNC(cc_fcglue_FcPatternDestroy_t, FcPatternDestroy);
+      FCGLUE_REGISTER_FUNC(cc_fcglue_FcPatternPrint_t, FcPatternPrint);
+
+      /* Do this late, so we can detect recursive calls to this function. */
+      fontconfig_instance = fi;
+
+      if (!fi->available) {
+        cc_debugerror_post("fcglue_init",
+                           "Failed to initialize fontconfig glue.");
+      }
+    }
+  }
+  CC_SYNC_END(fcglue_init);
+  return fontconfig_instance;
+}
+
+
+int
+cc_fcglue_FcGetVersion(void)
+{
+  assert(fontconfig_instance && fontconfig_instance->available);
+  return fontconfig_instance->FcGetVersion();
+}
+
+FcPattern * 
+cc_fcglue_FcNameParse(const unsigned char * name)
+{
+  assert(fontconfig_instance && fontconfig_instance->available);
+  return fontconfig_instance->FcNameParse(name);
+}
+
+int
+cc_fcglue_FcConfigSubstitute(void * config, FcPattern * pattern, FcMatchKind kind)
+{
+  assert(fontconfig_instance && fontconfig_instance->available);
+  return fontconfig_instance->FcConfigSubstitute(config, pattern, kind);
+}
+
+void
+cc_fcglue_FcDefaultSubstitute(FcPattern *pattern)
+{
+  assert(fontconfig_instance && fontconfig_instance->available);
+  return fontconfig_instance->FcDefaultSubstitute(pattern);
+}
+
+FcPattern *
+cc_fcglue_FcFontMatch(void * config, FcPattern * pattern, FcResult * result)
+{
+  assert(fontconfig_instance && fontconfig_instance->available);
+  return fontconfig_instance->FcFontMatch(config, pattern, result);
+}
+
+FcResult
+cc_fcglue_FcPatternGetString(const FcPattern * pattern, const char * object, int n, unsigned char ** s)
+{
+  assert(fontconfig_instance && fontconfig_instance->available);
+  return fontconfig_instance->FcPatternGetString(pattern, object, n, s);
+}
+
+void
+cc_fcglue_FcPatternDestroy(FcPattern * pattern)
+{
+  assert(fontconfig_instance && fontconfig_instance->available);
+  return fontconfig_instance->FcPatternDestroy(pattern);
+}
+
+void
+cc_fcglue_FcPatternPrint(const FcPattern * pattern)
+{
+  assert(fontconfig_instance && fontconfig_instance->available);
+  return fontconfig_instance->FcPatternPrint(pattern);
+}
+
+int
+cc_fcglue_available(void)
+{
+  fcglue_init();
+  return freetype_instance && freetype_instance->available;
+}
+
+
+/* Cleans up freetype at exit. */
 static void
 ftglue_cleanup(void)
 {
@@ -320,4 +516,3 @@ cc_ftglue_FT_Outline_Decompose(FT_Outline * outline, const FT_Outline_Funcs * fu
   assert(freetype_instance && freetype_instance->available);
   return freetype_instance->FT_Outline_Decompose(outline, func_interface, user);
 }
-
