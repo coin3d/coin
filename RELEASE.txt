@@ -2,6 +2,17 @@ This document describes the process of making a new release of the Coin
 library.
 
 
+IMPORTANT CHANGES
+=================
+
+20041214 larsa:
+
+  Punting now includes generating and commiting the Windows build files
+  after the version information has been updated, but before the source
+  repository is tagged for release.  This dramatically increases the
+  punting time.
+
+
 CODE AUDITING
 =============
 
@@ -158,6 +169,13 @@ anything.
   INSTALL
 
   Rerun bootstrap.  Commit.
+
+* Generate Windows Build Files:
+
+  Use an MSVC6.0 Windows box and run build/msvc6/generate.sh on it to get
+  the build files generated for MSVC6.0.  Commit changes.
+  Use an MSVC7.1 Windows box and run build/msvc7/generate.sh on it to get
+  the build files generated for MSVC7.1.  Commit changes.
 
 * Generate up-to-date ChangeLog file for this release.
 
