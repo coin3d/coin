@@ -83,8 +83,8 @@ SoGLTexture3EnabledElement::init(SoState * state)
   this->state = state;
   this->data = SoGLTexture3EnabledElement::getDefault();
   this->glstate = 0;
-  const GLWrapper_t * glw = GLWrapper(SoGLCacheContextElement::get(state));
-  if (glw->COIN_GL_TEXTURE_3D) glDisable(glw->COIN_GL_TEXTURE_3D);
+//    const GLWrapper_t * glw = GLWrapper(SoGLCacheContextElement::get(state));
+//    if (glw->COIN_GL_TEXTURE_3D) glDisable(glw->COIN_GL_TEXTURE_3D);
 }
 
 /*!
