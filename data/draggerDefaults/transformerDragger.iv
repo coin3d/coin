@@ -129,6 +129,7 @@ DEF TRANSFORMER_SINGLE_AXIS Group {
 
    Translation { translation 0 -1 0 }
    Rotation { rotation 0 0 1  3.14 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_AXIS_MARKER
 }
 
@@ -178,36 +179,42 @@ DEF TRANSFORMER_ROTATOR_PART1 Group {
    USE TRANSFORMER_ROTATOR_COORDS
    IndexedLineSet { coordIndex [ 0, 3, -1 ] }
    Translation { translation 0 1.5 0 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_ROTATOR_MARKER
 }
 DEF TRANSFORMER_ROTATOR_PART2 Group {
    USE TRANSFORMER_ROTATOR_COORDS
    IndexedLineSet { coordIndex [ 0, 4, -1 ] }
    Translation { translation 0 -1.5 0 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_ROTATOR_MARKER
 }
 DEF TRANSFORMER_ROTATOR_PART3 Group {
    USE TRANSFORMER_ROTATOR_COORDS
    IndexedLineSet { coordIndex [ 0, 2, -1 ] }
    Translation { translation -1.5 0 0 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_ROTATOR_MARKER
 }
 DEF TRANSFORMER_ROTATOR_PART4 Group {
    USE TRANSFORMER_ROTATOR_COORDS
    IndexedLineSet { coordIndex [ 0, 1, -1 ] }
    Translation { translation 1.5 0 0 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_ROTATOR_MARKER
 }
 DEF TRANSFORMER_ROTATOR_PART5 Group {
    USE TRANSFORMER_ROTATOR_COORDS
    IndexedLineSet { coordIndex [ 0, 5, -1 ] }
    Translation { translation 0 0 1.5 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_ROTATOR_MARKER
 }
 DEF TRANSFORMER_ROTATOR_PART6 Group {
    USE TRANSFORMER_ROTATOR_COORDS
    IndexedLineSet { coordIndex [ 0, 6, -1 ] }
    Translation { translation 0 0 -1.5 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_ROTATOR_MARKER
 }
 
@@ -323,6 +330,7 @@ DEF TRANSFORMER_SCALE_MARKER Cube { width 0.1  height 0.1  depth 0.1 }
 
 DEF transformerScale1 Separator {
    Translation { translation 1 1 1 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_SCALE_MARKER
 }
 DEF transformerScale1Active Separator {
@@ -332,6 +340,7 @@ DEF transformerScale1Active Separator {
 
 DEF transformerScale2 Separator {
    Translation { translation 1 1 -1 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_SCALE_MARKER
 }
 DEF transformerScale2Active Separator {
@@ -341,6 +350,7 @@ DEF transformerScale2Active Separator {
 
 DEF transformerScale3 Separator {
    Translation { translation 1 -1 1 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_SCALE_MARKER
 }
 DEF transformerScale3Active Separator {
@@ -350,6 +360,7 @@ DEF transformerScale3Active Separator {
 
 DEF transformerScale4 Separator {
    Translation { translation 1 -1 -1 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_SCALE_MARKER
 }
 DEF transformerScale4Active Separator {
@@ -359,6 +370,7 @@ DEF transformerScale4Active Separator {
 
 DEF transformerScale5 Separator {
    Translation { translation -1 1 1 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_SCALE_MARKER
 }
 DEF transformerScale5Active Separator {
@@ -368,6 +380,7 @@ DEF transformerScale5Active Separator {
 
 DEF transformerScale6 Separator {
    Translation { translation -1 1 -1 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_SCALE_MARKER
 }
 DEF transformerScale6Active Separator {
@@ -377,6 +390,7 @@ DEF transformerScale6Active Separator {
 
 DEF transformerScale7 Separator {
    Translation { translation -1 -1 1 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_SCALE_MARKER
 }
 DEF transformerScale7Active Separator {
@@ -386,6 +400,7 @@ DEF transformerScale7Active Separator {
 
 DEF transformerScale8 Separator {
    Translation { translation -1 -1 -1 }
+   AntiSquish { recalcAlways FALSE }
    USE TRANSFORMER_SCALE_MARKER
 }
 DEF transformerScale8Active Separator {
