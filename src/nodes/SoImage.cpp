@@ -52,6 +52,7 @@
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbStringList.h>
@@ -352,6 +353,10 @@ SoImage::GLRender(SoGLRenderAction * action)
   glPixelStorei(GL_PACK_ROW_LENGTH, 0);
   glPixelStorei(GL_PACK_ALIGNMENT, 4);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+
+  // don't auto cache Image nodes.
+  SoGLCacheContextElement::shouldAutoCache(action->getState(),
+                                           SoGLCacheContextElement::DONT_AUTO_CACHE);
 }
 
 // doc from parent

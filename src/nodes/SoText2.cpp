@@ -82,6 +82,7 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -522,6 +523,10 @@ SoText2::GLRender(SoGLRenderAction * action)
   }
   
   state->pop();
+
+  // don't auto cache SoText2 nodes.
+  SoGLCacheContextElement::shouldAutoCache(action->getState(),
+                                           SoGLCacheContextElement::DONT_AUTO_CACHE);
 }
 
 // **************************************************************************

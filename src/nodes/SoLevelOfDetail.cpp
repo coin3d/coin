@@ -139,11 +139,13 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoState.h>
@@ -394,6 +396,9 @@ void
 SoLevelOfDetail::GLRender(SoGLRenderAction *action)
 {
   SoLevelOfDetail::doAction((SoAction*)action);
+  // don't auto cache LevelOfDetail nodes.
+  SoGLCacheContextElement::shouldAutoCache(action->getState(),
+                                           SoGLCacheContextElement::DONT_AUTO_CACHE);
 }
 
 // Documented in superclass.
