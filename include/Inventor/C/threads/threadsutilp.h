@@ -67,14 +67,14 @@
 
 #else /* HAVE_THREADS */
 
-#define CC_MUTEX_CONSTRUCT(_mymutex_)
-#define CC_MUTEX_DESTRUCT(_mymutex_)
-#define CC_MUTEX_LOCK(_mymutex_)
-#define CC_MUTEX_UNLOCK(_mymutex_)
-#define CC_SYNC_BEGIN(_myid_)
-#define CC_SYNC_END(_myid_)
-#define CC_GLOBAL_LOCK
-#define CC_GLOBAL_UNLOCK
+#define CC_MUTEX_CONSTRUCT(_mymutex_)  do { } while (0)
+#define CC_MUTEX_DESTRUCT(_mymutex_)  do { } while (0)
+#define CC_MUTEX_LOCK(_mymutex_)  do { } while (0)
+#define CC_MUTEX_UNLOCK(_mymutex_)  do { } while (0)
+#define CC_SYNC_BEGIN(_myid_)  do { } while (0)
+#define CC_SYNC_END(_myid_)  do { } while (0)
+#define CC_GLOBAL_LOCK  do { } while (0)
+#define CC_GLOBAL_UNLOCK  do { } while (0)
 
 #endif /* ! HAVE_THREADS */
 
