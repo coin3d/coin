@@ -217,6 +217,14 @@ SoGroup::addChild(SoNode * const node)
 void
 SoGroup::insertChild(SoNode * const child, const int newchildindex)
 {
+#if COIN_DEBUG
+  if (newchildindex < 0 || newchildindex > this->getNumChildren()) {
+    SoDebugError::post("SoGroup::insertChild",
+                       "idx %d is out of bounds (groupnode # children == %d)",
+                       newchildindex, this->getNumChildren());
+    return;
+  }
+#endif // COIN_DEBUG
   this->children->insert(child, newchildindex);
 }
 
@@ -226,6 +234,14 @@ SoGroup::insertChild(SoNode * const child, const int newchildindex)
 void
 SoGroup::removeChild(const int childindex)
 {
+#if COIN_DEBUG
+  if (childindex < 0 || childindex >= this->getNumChildren()) {
+    SoDebugError::post("SoGroup::removeChild",
+                       "idx %d is out of bounds (groupnode # children == %d)",
+                       childindex, this->getNumChildren());
+    return;
+  }
+#endif // COIN_DEBUG
   this->children->remove(childindex);
 }
 
@@ -293,7 +309,7 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH)
     lastchildindex = indices[numindices-1];
   else
-    lastchildindex = getNumChildren() - 1;
+    lastchildindex = this->getNumChildren() - 1;
 
   // Initialize accumulation variables.
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
