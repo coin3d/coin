@@ -212,14 +212,6 @@ SoTabBoxDragger::SoTabBoxDragger(void)
   this->scaleFieldSensor = new SoFieldSensor(SoTabBoxDragger::fieldSensorCB, this);
   this->translFieldSensor = new SoFieldSensor(SoTabBoxDragger::fieldSensorCB, this);
   this->setUpConnections(TRUE, TRUE);
-
- //  this->tabPlane1.setDefault(TRUE);
-//   this->tabPlane2.setDefault(TRUE);
-//   this->tabPlane3.setDefault(TRUE);
-//   this->tabPlane4.setDefault(TRUE);
-//   this->tabPlane5.setDefault(TRUE);
-//   this->tabPlane6.setDefault(TRUE);
-// 
 }
 
 
