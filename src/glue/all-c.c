@@ -24,7 +24,7 @@
 #include "gl.c"
 #include "gl_wgl.c"
 #include "gl_glx.c"
-#include "gl_nsgl.c"
+#include "gl_agl.c"
 
 #include "dl.c"
 
