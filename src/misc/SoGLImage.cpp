@@ -88,35 +88,30 @@
 */
 
 #include <Inventor/misc/SoGLImage.h>
-#include <Inventor/SbImage.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/elements/SoGLTextureImageElement.h>
-#include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLTexture3EnabledElement.h>
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <GLUWrapper.h>
-#include <Inventor/lists/SbList.h>
 #include "../tidbits.h" // coin_getenv(), coin_atexit()
-
-#include <simage_wrapper.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
+#include <GLUWrapper.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 #include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/SbImage.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/misc/SoGL.h>
+#include <assert.h>
+#include <simage_wrapper.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
@@ -1136,13 +1131,13 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
     if (newz > (unsigned int)zsize && newz > 16) newz >>= 1;
   }
 
-  // downscale to legal GL size (implementation dependant)
+  // downscale to legal GL size (implementation dependent)
   SoGLTextureImageElement * elem = (SoGLTextureImageElement *)
     state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
   SbBool sizeok = FALSE;
 #if COIN_DEBUG
   SbVec3s orgsize(newx, newy, newz);
-#endif
+#endif // COIN_DEBUG
   while (!sizeok) {
     sizeok = elem->isTextureSizeLegal(newx, newy, newz, numcomponents);
     if (!sizeok) {
@@ -1151,7 +1146,16 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
       else if (max==newy) newy >>= 1;
       else newx >>= 1;
     }
+
+    if (newy == 0) { // Avoid endless loop in a buggy driver environment.
+      SoDebugError::post("SoGLImageP::resizeImage",
+                         "There is something seriously wrong with OpenGL on "
+                         "this system -- can't find *any* valid texture "
+                         "size! Expect further problems.");
+      break;
+    }
   }
+
 #if COIN_DEBUG
   if ((unsigned int) orgsize[0] != newx ||
       (unsigned int) orgsize[1] != newy ||
