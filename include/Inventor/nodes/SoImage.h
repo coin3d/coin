@@ -27,6 +27,9 @@
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSFString.h>
 
+class SoSensor;
+class SoFieldSensor;
+class SbImage;
 
 class COIN_DLL_EXPORT SoImage : public SoShape {
   typedef SoShape inherited;
@@ -67,20 +70,27 @@ protected:
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  virtual void notify(SoNotList * list);
   int getReadStatus(void);
   void setReadStatus(SbBool flag);
 
 protected:
-  SbVec2s getSize() const;
+  SbVec2s getSize(void) const;
   static SbVec3f getNilpoint(SoState *state);
-  class SoImageInterface *imageData;
-  class SoImageInterface *orgImageData;
-  SbBool getImage();
   void getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
                SbVec3f &v2, SbVec3f &v3);
 
 private:
+  const unsigned char * getImage(SbVec2s & size, int & nc);
+  SbBool loadFilename(void);
   SbBool readstatus;
+  SbImage * resizedimage;
+  SbBool resizedimagevalid;
+  class SoFieldSensor * filenamesensor;
+  SbBool transparency;
+  SbBool testtransparency;
+  void testTransparency(void);
+  static void filenameSensorCB(void *, SoSensor *);
 };
 
 #endif // !COIN_SOIMAGE_H

@@ -33,11 +33,9 @@
 
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/misc/SoImageInterface.h>
 #include <Inventor/SoInput.h>
 
 #include <Inventor/elements/SoViewVolumeElement.h>
@@ -47,21 +45,17 @@
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/SbImage.h>
+#include <Inventor/lists/SbStringList.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #ifdef _WIN32
 #include <windows.h> // sigh...
 #endif // !_WIN32
 #include <GL/gl.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
-// Metadon FIXME
-/*¡
-  What happens if the node contains an image and the user modifies
-  the width and/or height and/or numcomponents values? 20000217 mortene.
- */
+#include <GL/glu.h> // for gluImageScale
 
 /*!
   \enum SoImage::VertAlignment
@@ -99,11 +93,11 @@
 
 /*!
   \var SoSFInt32 SoImage::width
-  If bigger than 0, resize image to this width.
+  If bigger than 0, resize image to this width before rendering.
 */
 /*!
   \var SoSFInt32 SoImage::height
-  if bigger than 0, resize image to this height.
+  if bigger than 0, resize image to this height before rendering.
 */
 /*!
   \var SoSFEnum SoImage::vertAlignment
@@ -130,7 +124,7 @@ SO_NODE_SOURCE(SoImage);
 /*!
   Constructor.
 */
-SoImage::SoImage()
+SoImage::SoImage(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoImage);
 
@@ -153,9 +147,18 @@ SoImage::SoImage()
   SO_NODE_DEFINE_ENUM_VALUE(HorAlignment, RIGHT);
   SO_NODE_SET_SF_ENUM_TYPE(horAlignment, HorAlignment);
 
-  this->imageData = NULL;
-  this->orgImageData = NULL;
   this->readstatus = TRUE;
+  this->transparency = FALSE;
+  this->testtransparency = FALSE;
+  
+  // use field sensor for filename since we will load an image if
+  // filename changes. This is a time-consuming task which should
+  // not be done in notify().
+  this->filenamesensor = new SoFieldSensor(filenameSensorCB, this);
+  this->filenamesensor->setPriority(0);
+  this->filenamesensor->attach(&this->filename);
+  this->resizedimage = new SbImage;
+  this->resizedimagevalid = FALSE;
 }
 
 /*!
@@ -163,8 +166,7 @@ SoImage::SoImage()
 */
 SoImage::~SoImage()
 {
-  if (this->imageData) this->imageData->unref();
-  if (this->orgImageData) this->orgImageData->unref();
+  delete this->resizedimage;
 }
 
 // doc from parent
@@ -176,17 +178,12 @@ SoImage::initClass(void)
 
 // doc from parent
 void
-SoImage::computeBBox(SoAction *action,
-                     SbBox3f &box, SbVec3f &center)
+SoImage::computeBBox(SoAction * action,
+                     SbBox3f & box, SbVec3f & center)
 {
   // FIXME: pederb, 20000509
   // need to invalidate the bbox-cache for this to work 100%,
   // since bbox changes position each time modelmatrix has changed.
-  if (!this->getImage()) {
-    box.setBounds(0,0,0,0,0,0);
-    center = SbVec3f(0,0,0);
-    return;
-  }
   SbVec3f v0, v1, v2, v3;
   this->getQuad(action->getState(), v0, v1, v2, v3);
 
@@ -200,21 +197,21 @@ SoImage::computeBBox(SoAction *action,
 
 // doc from parent
 void
-SoImage::GLRender(SoGLRenderAction *action)
+SoImage::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
   SoState *state = action->getState();
-
-  if (!this->getImage()) return;
-
-  if (action->handleTransparency(this->imageData->hasTransparency())) return;
-
+  this->testTransparency();
+  if (action->handleTransparency(this->transparency)) return;
+  
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   SbVec2s vpsize = vp.getViewportSizePixels();
 
   SbVec3f nilpoint = SoImage::getNilpoint(state);
-  SbVec2s size = this->imageData->getSize();
+  SbVec2s size;
+  int nc;
+  const unsigned char * dataptr = this->getImage(size, nc);
 
   int xpos = 0;
   switch (this->horAlignment.getValue()) {
@@ -255,7 +252,7 @@ SoImage::GLRender(SoGLRenderAction *action)
   }
 
   GLenum format = GL_LUMINANCE; // init unnecessary, but kills a compiler warning.
-  switch (this->imageData->getNumComponents()) {
+  switch (nc) {
   case 1:
     format = GL_LUMINANCE;
     break;
@@ -319,7 +316,7 @@ SoImage::GLRender(SoGLRenderAction *action)
   glPixelStorei(GL_PACK_ROW_LENGTH, vpsize[0]);
 
   glDrawPixels(srcw, srch, format, GL_UNSIGNED_BYTE,
-               (const GLvoid*) this->imageData->getDataPtr());
+               (const GLvoid*) dataptr);
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
@@ -331,7 +328,6 @@ void
 SoImage::rayPick(SoRayPickAction * action)
 {
   if (this->shouldRayPick(action)) {
-    if (!this->getImage()) return;
     this->computeObjectSpaceRay(action);
 
     SbVec3f intersection;
@@ -357,7 +353,7 @@ SoImage::rayPick(SoRayPickAction * action)
 
 // doc from parent
 void
-SoImage::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoImage::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (this->shouldPrimitiveCount(action)) action->incNumImage();
 }
@@ -366,20 +362,22 @@ SoImage::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   Will generate a textured quad, representing the image in 3D.
 */
 void
-SoImage::generatePrimitives(SoAction *action)
+SoImage::generatePrimitives(SoAction * action)
 {
-  if (!this->getImage()) return;
-
   SoState *state = action->getState();
   state->push();
 
   // not quite sure if I should do this, but this will enable
   // SoCallbackAction to get all data it needs to render
   // this quad correctly. pederb 19991131
+  
+  SbVec2s size;
+  int nc;
+  const unsigned char * dataptr = this->getImage(size, nc);
+
+
   SoTextureImageElement::set(state, this,
-                             this->imageData->getSize(),
-                             this->imageData->getNumComponents(),
-                             this->imageData->getDataPtr(),
+                             size, nc, dataptr,
                              SoTextureImageElement::CLAMP,
                              SoTextureImageElement::CLAMP,
                              SoTextureImageElement::DECAL,
@@ -421,11 +419,36 @@ SoImage::generatePrimitives(SoAction *action)
 SbBool
 SoImage::readInstance(SoInput * in, unsigned short flags)
 {
-  this->readstatus = FALSE;
-  if (inherited::readInstance(in, flags)) {
-    this->readstatus = this->getImage();
+  this->filenamesensor->detach();
+  SbBool readOK = inherited::readInstance(in, flags);
+  this->setReadStatus(readOK);
+  if (readOK && !filename.isDefault()) {
+    if (!this->loadFilename()) {
+      SoReadError::post(in, "Could not read texture file %s",
+                        filename.getValue().getString());
+      this->setReadStatus(FALSE);
+    }
   }
-  return this->readstatus;
+  this->filenamesensor->attach(&this->filename);
+  return readOK;
+}
+
+/*!
+  Overloaded to detect when fields change.
+*/
+void
+SoImage::notify(SoNotList * list)
+{
+  SoField *f = list->getLastField();
+  if (f == &this->image) {
+    this->filename.setDefault(TRUE); // write image, not filename
+    this->testtransparency = TRUE;
+    this->resizedimagevalid = FALSE;
+  }
+  else if (f == &this->width || f == &this->height) {
+    this->resizedimagevalid = FALSE;
+  }
+  SoNode::notify(list);
 }
 
 /*!
@@ -434,7 +457,7 @@ SoImage::readInstance(SoInput * in, unsigned short flags)
 int
 SoImage::getReadStatus(void)
 {
-  return this->readstatus;
+  return (int) this->readstatus;
 }
 
 /*!
@@ -446,60 +469,12 @@ SoImage::setReadStatus(SbBool flag)
   this->readstatus = flag;
 }
 
-// loads and resizes image
-SbBool
-SoImage::getImage()
-{
-  if (this->imageData && (this->imageData->getSize() == this->getSize()))
-    return TRUE;
-
-  if (this->imageData) {
-    this->imageData->unref();
-    this->imageData = NULL;
-  }
-
-  if (this->orgImageData == NULL) { // load if not loaded
-    SbVec2s size;
-    int nc;
-    const unsigned char * bytes = this->image.getValue(size, nc);
-
-    if (bytes && size[0] > 0 && size[1] > 0 && nc > 0) {
-      this->orgImageData = new SoImageInterface(size, nc, bytes);
-      this->orgImageData->ref();
-    }
-    else if (this->filename.getValue().getLength()) {
-      const SbStringList & dirlist = SoInput::getDirectories();
-      const char * imgname = this->filename. getValue().getString();
-      this->orgImageData =
-        SoImageInterface::findOrCreateImage(imgname, dirlist);
-      if (this->orgImageData) this->orgImageData->load();
-    }
-  }
-
-  if (this->orgImageData && this->orgImageData->isLoaded()) {
-    SbVec2s orgsize = this->orgImageData->getSize();
-    SbVec2s size = this->getSize();
-
-    if (orgsize != size) {
-      this->imageData = this->orgImageData->imageCopy();
-      this->imageData->ref();
-      this->imageData->resize(size);
-    }
-    else {
-      // safe to reuse image, don't forget to ref() though
-      this->imageData = this->orgImageData;
-      this->imageData->ref();
-    }
-  }
-  return this->imageData != NULL;
-}
-
 /*!
   Returns the screen coordinates for the point in (0,0,0) projected
   onto the screen. The z-value is stored in the third (z) coordinate.
 */
 SbVec3f
-SoImage::getNilpoint(SoState *state)
+SoImage::getNilpoint(SoState * state)
 {
   SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
   const SbMatrix & mat = SoModelMatrixElement::get(state);
@@ -523,10 +498,9 @@ SoImage::getNilpoint(SoState *state)
 // calculates the quad in 3D
 //
 void
-SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
-                 SbVec3f &v2, SbVec3f &v3)
+SoImage::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
+                 SbVec3f & v2, SbVec3f & v3)
 {
-  assert(this->imageData);
   SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
   const SbMatrix & mat = SoModelMatrixElement::get(state);
   mat.multVecMatrix(nilpoint, nilpoint);
@@ -540,9 +514,9 @@ SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
   SbVec2s vpsize = vp.getViewportSizePixels();
 
   // find normalized width and height of image
-  float nw = (float)this->imageData->getSize()[0];
+  float nw = (float)this->getSize()[0];
   nw /= (float)vpsize[0];
-  float nh = (float)this->imageData->getSize()[1];
+  float nh = (float)this->getSize()[1];
   nh /= (float)vpsize[1];
 
   // need only half the width
@@ -615,11 +589,11 @@ SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
 
 // returns requested on-screen size
 SbVec2s
-SoImage::getSize() const
+SoImage::getSize(void) const
 {
-  assert(this->orgImageData);
-
-  SbVec2s size = this->orgImageData->getSize();
+  SbVec2s size;
+  int nc;
+  (void) this->image.getValue(size, nc);
 
   if (this->width.getValue() > 0) {
     size[0] = this->width.getValue();
@@ -628,4 +602,99 @@ SoImage::getSize() const
     size[1] = this->height.getValue();
   }
   return size;
+}
+
+const unsigned char *
+SoImage::getImage(SbVec2s & size, int & nc)
+{
+  if (this->width.getValue() >= 0 || this->height.getValue() >= 0) {
+    if (!this->resizedimagevalid) {
+      SbVec2s orgsize;
+      const unsigned char * orgdata = this->image.getValue(orgsize, nc);
+      SbVec2s newsize = this->getSize();
+      this->resizedimage->setValue(newsize, nc, NULL);
+      const unsigned char * rezdata = this->resizedimage->getValue(newsize, nc); 
+      GLenum format;
+      switch (nc) {
+      default: // avoid compiler warnings
+      case 1: format = GL_LUMINANCE; break;
+      case 2: format = GL_LUMINANCE_ALPHA; break;
+      case 3: format = GL_RGB; break;
+      case 4: format = GL_RGBA; break;
+      }
+      gluScaleImage(format, orgsize[0], orgsize[1],
+                    GL_UNSIGNED_BYTE, (void*) orgdata,
+                    newsize[0], newsize[1], GL_UNSIGNED_BYTE,
+                    (void*) rezdata);
+      this->resizedimagevalid = TRUE;
+    }
+    return this->resizedimage->getValue(size, nc);
+  }
+  return this->image.getValue(size, nc);
+}
+
+//
+// check image data for transparency
+// 
+void 
+SoImage::testTransparency(void)
+{
+  if (!this->testtransparency) return;
+  this->testtransparency = FALSE;
+  this->transparency = FALSE;
+  SbVec2s size;
+  int nc;
+  const unsigned char * data = this->image.getValue(size, nc);
+  
+  if (nc == 2 || nc == 4) {
+    int n = size[0] * size[1];
+    const unsigned char * ptr = (unsigned char *) data + nc - 1;
+    
+    while (n) {
+      if (*ptr != 255) break;
+      ptr += nc;
+      n--;
+    }
+    this->transparency = n > 0;
+  }
+}
+
+//
+// Called from readInstance() or when user changes the
+// filename field.
+//
+SbBool 
+SoImage::loadFilename(void)
+{
+  SbBool retval = FALSE;
+  if (this->filename.getValue().getLength()) {
+    SbImage tmpimage;
+    const SbStringList & sl = SoInput::getDirectories();
+    if (tmpimage.readFile(this->filename.getValue(),
+                          sl.getArrayPtr(), sl.getLength())) {
+      int nc;
+      SbVec2s size;
+      const unsigned char * bytes = tmpimage.getValue(size, nc);
+      this->image.setValue(size, nc, bytes);
+      retval = TRUE;
+    }
+  }
+  this->image.setDefault(TRUE); // write filename, not image
+  return retval;
+}
+
+//
+// called when filename changes
+//
+void
+SoImage::filenameSensorCB(void * data, SoSensor *)
+{
+  SoImage * thisp = (SoImage*) data;
+  thisp->setReadStatus(TRUE);
+  if (!thisp->loadFilename()) {
+    SoDebugError::postWarning("SoImage::filenameSensorCB",
+                              "Image file could not be read: %s",
+                              thisp->filename.getValue().getString());
+    thisp->setReadStatus(FALSE);
+  }
 }
