@@ -215,6 +215,10 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     this->vertexProperty.getValue()->GLRender(action);
   }
 
+  SoShape::GLRender(action);
+  if (didpush) state->pop();
+  return;
+
   // If the coordIndex field is invalid by not including the
   // terminating -1, fix the field by adding it.
   //
@@ -454,7 +458,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
 
     this->beginShape(action, SoShape::LINES, &lineDetail);
 
-    while (cindices < end) {
+    while (cindices + 1 < end) { // need at least two vertices
       previ = *cindices++;
 
       if (matPerPolyline || mbind >= PER_VERTEX) {
@@ -483,8 +487,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
         }
       }
 
-      i = *cindices++;
-      while (i >= 0) {
+      while (cindices < end && (i = *cindices++) >= 0) {
         if (mbind == PER_SEGMENT || mbind == PER_SEGMENT_INDEXED) {
           if (matindices) vertex.setMaterialIndex(*matindices++);
           else vertex.setMaterialIndex(matnr++);
@@ -535,7 +538,6 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
         this->shapeVertex(&vertex);
         lineDetail.incPartIndex();
         previ = i;
-        i = *cindices++;
       }
       lineDetail.incLineIndex();
       if (mbind == PER_VERTEX_INDEXED) matindices++;
@@ -546,7 +548,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     return;
   }
 
-  while (cindices < end) {
+  while (cindices + 1 < end) { // need at least two vertices
     this->beginShape(action, LINE_STRIP, &lineDetail);
     i = *cindices++;
     assert(i >= 0);
@@ -612,8 +614,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     this->shapeVertex(&vertex);
     lineDetail.incPartIndex();
 
-    i = *cindices++;
-    while (i >= 0) {
+    while (cindices < end && (i = *cindices++) >= 0) {
       assert(cindices <= end);
       if (mbind >= PER_VERTEX) {
         if (matindices) vertex.setMaterialIndex(*matindices++);
@@ -644,7 +645,6 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
       vertex.setPoint(coords->get3(i));
       this->shapeVertex(&vertex);
       lineDetail.incPartIndex();
-      i = *cindices++;
     }
     this->endShape(); // end of line strip
     if (mbind == PER_VERTEX_INDEXED) matindices++;
