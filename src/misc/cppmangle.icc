@@ -87,12 +87,10 @@ getManglingFunction(void)
   static SbBool initialized = FALSE;
   static mangleFunc * manglefunc = NULL;
   if ( !initialized ) {
+    initialized = TRUE;
     int i;
     cc_libhandle handle = cc_dl_open(NULL);
-    if ( handle == NULL ) {
-      initialized = TRUE;
-      return NULL;
-    }
+    if ( handle == NULL ) goto failure;
     for ( i = 0; (manglefunctions[i] != NULL) && (manglefunc == NULL); i++ ) {
       mangleFunc * attempt = manglefunctions[i];
       SbString symbol(attempt("SoBase"));
@@ -102,13 +100,15 @@ getManglingFunction(void)
       }
     }
     cc_dl_close(handle);
-#ifdef _MSC_VER
-    if ( manglefunc == NULL )
-      // dang, dlopen(NULL) on win32 didn't work, so we fall back to this...
-      manglefunc = msvc6_initClassMangling;
-#endif
-    initialized = TRUE;
+    if ( manglefunc == NULL ) goto failure;
   }
+  return manglefunc;
+failure:
+#ifdef _MSC_VER
+  // LoadLibrary(NULL) doesn't work, so we fall-back on the MSVC++ mangling
+  // scheme on MS Windows.
+  manglefunc = msvc6_initClassMangling;
+#endif
   return manglefunc;
 }
 
