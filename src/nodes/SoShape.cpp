@@ -832,7 +832,38 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
       if (ra->isBetweenPlanes(intersection)) {
         SoPickedPoint * pp = ra->addIntersection(intersection);
         if (pp) {
-          pp->setDetail(this->createTriangleDetail(ra, v1, v2, v3, pp), this);
+          pp->setDetail(this->createTriangleDetail(ra, v1, v2, v3, pp), this);          
+          // calculate normal at picked point
+          SbVec3f n = 
+            v1->getNormal() * barycentric[0] + 
+            v2->getNormal() * barycentric[1] + 
+            v3->getNormal() * barycentric[2];
+          n.normalize();
+          pp->setObjectNormal(n);
+          
+          // calculate texture coordinate at picked point
+          SbVec4f tc = 
+            v1->getTextureCoords() * barycentric[0] +
+            v2->getTextureCoords() * barycentric[1] +
+            v3->getTextureCoords() * barycentric[2];
+          pp->setObjectTextureCoords(tc);
+
+          // material index need to be approximated, since there is no
+          // way to average material indices :( This makes it
+          // impossible to fully support color per vertex. An
+          // extension to the OIV API would perhaps be a good idea
+          // here? Maybe calculate the rgba value for diffuse and
+          // transparency and set it in SoPickedPoint?
+          float maxval = barycentric[0];
+          const SoPrimitiveVertex * maxv = v1;
+          if (barycentric[1] > maxval) {
+            maxv = v2;
+            maxval = barycentric[1];
+          }
+          if (barycentric[2] > maxval) {
+            maxv = v3;
+          }
+          pp->setMaterialIndex(maxv->getMaterialIndex());
         }
       }
     }
@@ -882,6 +913,27 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
         SoPickedPoint * pp = ra->addIntersection(intersection);
         if (pp) {
           pp->setDetail(this->createLineSegmentDetail(ra, v1, v2, pp), this);
+          float total = (v2->getPoint()-v1->getPoint()).length();
+          float len1 = (intersection-v1->getPoint()).length();
+          float len2 = (intersection-v2->getPoint()).length();
+          if (total > 0.0f) {
+            len1 /= total;
+            len2 /= total;
+          }
+          SbVec3f n = 
+            v1->getNormal() * len1 +
+            v2->getNormal() * len2;
+          n.normalize();
+          pp->setObjectNormal(n);
+          
+          SbVec4f tc = 
+            v1->getTextureCoords() * len1 +
+            v2->getTextureCoords() * len2;
+          pp->setObjectTextureCoords(tc);
+          pp->setMaterialIndex(len1 >= len2 ? 
+                               v1->getMaterialIndex() :
+                               v2->getMaterialIndex());
+          
         }
       }
     }
@@ -925,6 +977,9 @@ SoShape::invokePointCallbacks(SoAction * const action,
         SoPickedPoint * pp = ra->addIntersection(intersection);
         if (pp) {
           pp->setDetail(this->createPointDetail(ra, v, pp), this);
+          pp->setObjectNormal(v->getNormal());
+          pp->setObjectTextureCoords(v->getTextureCoords());
+          pp->setMaterialIndex(v->getMaterialIndex());
         }
       }
     }
