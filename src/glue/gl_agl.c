@@ -76,35 +76,32 @@ void aglglue_context_destruct(void * ctx)
 
 #else /* HAVE_AGL */
 
-#ifndef HAVE_AGL_PBUFFER
+#ifndef HAVE_AGL_PBUFFER 
 
-/* Dummy implementations of the pBuffer related functions. */
-
-/* FIXME: This is a temporary hack to make things compile under
-   both Mac OS 10.3 (which has pBuffer support) and Mac OS 10.2
-   and earlier (which hasn't). We should rather use the GL wrapper
-   infrastructure for run-time lookup of these functions.
-   kyrah 20031031 
+/* pBuffer functions are picked up at runtime, so the only thing
+ * we need from the AGL headers is the AGLPBuffer type, which is
+ * void* anyways...  
  */
-
-typedef void * AGLPbuffer;
-
-GLboolean aglCreatePBuffer (GLint width, GLint height, GLenum target, GLenum 
-  internalFormat, long max_level, AGLPbuffer *pbuffer) { 
-  return FALSE; 
-} 
-
-GLboolean aglDestroyPBuffer (AGLPbuffer pbuffer) { 
-  return FALSE; 
-} 
-
-GLboolean aglSetPBuffer (AGLContext ctx, AGLPbuffer pbuffer, GLint 
-  face, GLint level, GLint screen) { 
-  return FALSE; 
-}
+typedef void * AGLPbuffer;  
 
 #endif /* !HAVE_AGL_PBUFFER */
 
+typedef GLboolean (* COIN_AGLCREATEPBUFFER) (GLint width, 
+                                             GLint height, 
+                                             GLenum target, 
+                                             GLenum internalFormat, 
+                                             long max_level, 
+                                             AGLPbuffer *pbuffer);
+typedef GLboolean (* COIN_AGLDESTROYPBUFFER) (AGLPbuffer pbuffer);
+typedef GLboolean (* COIN_AGLSETPBUFFER) (AGLContext ctx, 
+                                          AGLPbuffer pbuffer, 
+                                          GLint face, 
+                                          GLint level, 
+                                          GLint screen);
+
+static COIN_AGLCREATEPBUFFER aglglue_aglCreatePBuffer = NULL;
+static COIN_AGLDESTROYPBUFFER aglglue_aglDestroyPBuffer = NULL;
+static COIN_AGLSETPBUFFER aglglue_aglSetPBuffer = NULL;
 
 struct aglglue_contextdata {
   AGLDrawable drawable;
@@ -119,7 +116,7 @@ struct aglglue_contextdata {
 };
 
 static SbBool
-aglglue_has_pbuffer_support(void)
+aglglue_use_pbuffer(void)
 {
   /* Make it possible to turn off pBuffer support completely.
   Mostly relevant for debugging purposes. */
@@ -149,6 +146,19 @@ aglglue_contextdata_cleanup(struct aglglue_contextdata * c)
   if (c->pixformat) aglDestroyPixelFormat(c->pixformat);
 }
 
+static SbBool
+aglglue_resolve_symbols()
+{
+  // Resolve symbols only once...
+  if (aglglue_aglCreatePBuffer && aglglue_aglDestroyPBuffer &&
+      aglglue_aglSetPBuffer) return TRUE; 
+
+  aglglue_aglCreatePBuffer = (COIN_AGLCREATEPBUFFER)coin_agl_getprocaddress("aglCreatePBuffer");
+  aglglue_aglDestroyPBuffer = (COIN_AGLDESTROYPBUFFER)coin_agl_getprocaddress("aglDestroyPBuffer");
+  aglglue_aglSetPBuffer = (COIN_AGLSETPBUFFER)coin_agl_getprocaddress("aglSetPBuffer");
+  return (aglglue_aglCreatePBuffer && aglglue_aglDestroyPBuffer && aglglue_aglSetPBuffer);
+}
+
 void *
 aglglue_context_create_offscreen(unsigned int width, unsigned int height) 
 {
@@ -157,7 +167,7 @@ aglglue_context_create_offscreen(unsigned int width, unsigned int height)
     (struct aglglue_contextdata *)malloc(sizeof(struct aglglue_contextdata));
   aglglue_contextdata_init(context);
 
-  if (!aglglue_has_pbuffer_support()) {
+  if (!aglglue_use_pbuffer()) {
 
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("aglglue_context_create_offscreen",
@@ -219,9 +229,16 @@ aglglue_context_create_offscreen(unsigned int width, unsigned int height)
     SetGWorld(context->savedport, context->savedgdh);
  
   } else { /* pBuffer support available */
+
+    SbBool pbuffer = aglglue_resolve_symbols();
     if (coin_glglue_debug()) {
-      cc_debugerror_postinfo("aglglue_context_create_offscreen",
-                              "Using pBuffer.");
+       cc_debugerror_postinfo("aglglue_context_create_offscreen",
+                              "PBuffer offscreen rendering is %ssupported "
+                              "by the OpenGL driver", pbuffer ? "" : "NOT ");
+    }
+    if (!pbuffer) {
+      aglglue_contextdata_cleanup(context);
+      return FALSE;
     }
 
     GLint attribs[] = { 
@@ -256,7 +273,7 @@ aglglue_context_create_offscreen(unsigned int width, unsigned int height)
     }
 
     if (context->aglcontext) {
-      if (!aglCreatePBuffer (width, height, GL_TEXTURE_2D, 
+      if (!aglglue_aglCreatePBuffer (width, height, GL_TEXTURE_2D, 
         GL_RGBA, 0, &context->aglpbuffer)) {
           GLenum error = aglGetError();
         if (error != AGL_NO_ERROR) {
@@ -322,7 +339,7 @@ aglglue_context_make_current(void * ctx)
     }
 
      GLint vs = aglGetVirtualScreen (context->aglcontext);
-    if (!aglSetPBuffer (context->aglcontext, context->aglpbuffer, 0, 0, vs)) {
+    if (!aglglue_aglSetPBuffer (context->aglcontext, context->aglpbuffer, 0, 0, vs)) {
       GLenum error = aglGetError();
       if (error != AGL_NO_ERROR) {
         cc_debugerror_post("aglglue_context_make_current",
@@ -381,7 +398,7 @@ aglglue_context_destruct(void * ctx)
                            "Destroying context %p", context->aglcontext);
   }
   if (context->aglpbuffer) {
-    aglDestroyPBuffer(context->aglpbuffer);
+    aglglue_aglDestroyPBuffer(context->aglpbuffer);
   }
   aglglue_contextdata_cleanup(context);
   free(context);
