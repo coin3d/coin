@@ -419,9 +419,34 @@ SoNode::GLRenderS(SoAction * const action,
 #if COIN_DEBUG
   int err = glGetError();
   if (err != GL_NO_ERROR) {
+    const char *errorstring;
+    switch(err) {
+    case GL_INVALID_VALUE:
+      errorstring = "GL_INVALID_VALUE";
+      break;
+    case GL_INVALID_ENUM:
+      errorstring = "GL_INVALID_ENUM";
+      break;
+    case GL_INVALID_OPERATION:
+      errorstring = "GL_INVALID_OPERATION";
+      break;
+    case GL_STACK_OVERFLOW:
+      errorstring = "GL_STACK_OVERFLOW";
+      break;
+    case GL_STACK_UNDERFLOW:
+      errorstring = "GL_STACK_UNDERFLOW";
+      break;
+    case GL_OUT_OF_MEMORY:
+      errorstring = "GL_OUT_OF_MEMORY";
+      break;
+    default:
+      errorstring = "Unknown GL error";
+      break;
+    }
     SoDebugError::postInfo("SoNode::GLRenderS",
-                           "error: 0x%x, node: %s",
-                           err, node->getTypeId().getName().getString());
+                           "GL error: %s, nodetype: %s",
+                           errorstring,
+                           node->getTypeId().getName().getString());
   }
 #endif // COIN_DEBUG
 }
