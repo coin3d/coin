@@ -41,7 +41,6 @@ public:
   SoClipPlaneManip(void);
 
   SoDragger * getDragger(void);
-  virtual SoNode * copy(SbBool copyconnections = FALSE) const;
   void setValue(const SbBox3f & box, const SbVec3f & planenormal,
                 float draggerscalefactor);
   SbBool replaceNode(SoPath * p);
@@ -65,13 +64,19 @@ protected:
 
   void setDragger(SoDragger * newdragger);
 
+  virtual void copyContents(const SoFieldContainer * fromfc, SbBool copyconnections);
   static void valueChangedCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * d);
+  static void transferFieldValues(const SoClipPlane * from, SoClipPlane * to);
 
   SoFieldSensor * planeFieldSensor;
   SoFieldSensor * onFieldSensor;
   SoFieldSensor * draggerPosFieldSensor;
   SoChildList * children;
+
+private:
+  void attachSensors(const SbBool onoff);
+
 };
 
 #endif // !COIN_SOCLIPPLANEMANIP_H

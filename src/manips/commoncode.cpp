@@ -27,6 +27,7 @@
 #include <Inventor/manips/SoDirectionalLightManip.h>
 #include <Inventor/manips/SoSpotLightManip.h>
 #include <Inventor/manips/SoPointLightManip.h>
+#include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/SoNodeKitPath.h>
@@ -145,3 +146,4 @@ SOMANIP_REPLACEMANIPBODY(SoTransformManip, SoTransform)
 SOMANIP_REPLACEMANIPBODY(SoDirectionalLightManip, SoDirectionalLight)
 SOMANIP_REPLACEMANIPBODY(SoSpotLightManip, SoSpotLight)
 SOMANIP_REPLACEMANIPBODY(SoPointLightManip, SoPointLight)
+SOMANIP_REPLACEMANIPBODY(SoClipPlaneManip, SoClipPlane)
