@@ -492,8 +492,10 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
       currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
-    else if (nbind == PER_VERTEX || nbind == PER_TRIANGLE || nbind == PER_STRIP) {
-      pointdetail.setNormalIndex(*nindices++);
+    else if (nbind == PER_VERTEX_INDEXED || 
+             nbind == PER_TRIANGLE_INDEXED || 
+             nbind == PER_STRIP_INDEXED) {
+      pointdetail.setNormalIndex(*nindices);
       currnormal = &normals[*nindices++];
       vertex.setNormal(*currnormal);
     }
@@ -616,11 +618,6 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
     }
     this->endShape();
     facedetail.incPartIndex();
-
-    //
-    // PER_TRIANGLE binding for strips is really stupid, so I'm not quite
-    // sure what to do here. I guess nobody uses PER_TRIANGLE anyway.
-    //
 
     if (mbind == PER_VERTEX_INDEXED || mbind == PER_TRIANGLE_INDEXED)
       mindices++;
