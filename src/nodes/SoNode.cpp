@@ -844,8 +844,10 @@ SoNode::writeInstance(SoOutput * out)
 }
 
 /*!
-  Add this node and (recursively) all children to the copy dictionary
-  of SoFieldContainer. Used internally during copy operations.
+  Add a copy of this node and (recursively) all children to the copy
+  dictionary of SoFieldContainer if this has not already been done.
+
+  Used internally during copy operations.
 */
 SoNode *
 SoNode::addToCopyDict(void) const
