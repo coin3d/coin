@@ -501,7 +501,7 @@ SoType::fromName(const SbName name)
       assert(0 && "how did this happen?");
     }
   }
-  const int index = (int) temp;
+  const intptr_t index = (intptr_t) temp;
   assert(index >= 0 && index < SoType::typedatalist->getLength());
   assert(((*SoType::typedatalist)[index]->name == name) ||
          ((*SoType::typedatalist)[index]->name == noprefixname));
