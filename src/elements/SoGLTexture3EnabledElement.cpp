@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -23,7 +23,7 @@
 
 /*!
   \class SoGLTexture3EnabledElement Inventor/elements/SoGLTexture3EnabledElement.h
-  \brief The SoGLTexture3EnabledElement class is a lazy element which controls 
+  \brief The SoGLTexture3EnabledElement class is a lazy element which controls
   whether 3D texturing is enabled or not.
   \ingroup elements
 
@@ -71,7 +71,9 @@ SoGLTexture3EnabledElement::set(SoState * const state,
                                const SbBool enabled)
 {
   SoInt32Element::set(classStackIndex, state, node, (int32_t) enabled);
-  SoShapeStyleElement::setTexture3Enabled(state, enabled);
+#if 0 // FIXME: obsoleted 2001-11-26, pederb. Code seems to be missing in SoShapeStyleElement
+  //  SoShapeStyleElement::setTexture3Enabled(state, enabled);
+#endif // obsoleted
 }
 
 
@@ -80,6 +82,7 @@ void
 SoGLTexture3EnabledElement::init(SoState * state)
 {
   inherited::init(state);
+  this->state = state;
   this->data = SoGLTexture3EnabledElement::getDefault();
   this->glstate = 0;
   const GLWrapper_t * glw = GLWrapper(SoGLCacheContextElement::get(state));
@@ -93,8 +96,9 @@ void
 SoGLTexture3EnabledElement::push(SoState * state)
 {
   inherited::push(state);
-  this->glstate = 
+  this->glstate =
     ((SoGLTexture3EnabledElement*)this->getNextInStack())->glstate;
+  this->state = state;
 }
 
 /*!
@@ -185,7 +189,7 @@ void
 SoGLTexture3EnabledElement::updategl(void)
 {
   this->glstate = this->data;
-  const GLWrapper_t * glw = GLWrapper(SoGLCacheContextElement::get(state));
+  const GLWrapper_t * glw = GLWrapper(SoGLCacheContextElement::get(this->state));
   if (glw->COIN_GL_TEXTURE_3D) {
     if (this->data) glEnable(glw->COIN_GL_TEXTURE_3D);
     else glDisable(glw->COIN_GL_TEXTURE_3D);
