@@ -42,6 +42,12 @@
 
 static int winid;
 
+static float
+normrand(void)
+{
+  return (float)rand() / RAND_MAX;
+}
+
 static void
 send_triangle(void)
 {
@@ -77,16 +83,11 @@ expose_cb(void)
   glGenTextures(2,textures);
 
   glBindTexture(GL_TEXTURE_2D,textures[0]);
-  glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_LINEAR);
+
   GLvoid * pixels = malloc(256*256*4);
   (void)memset(pixels, 0x55, 256*256*4);
   glTexImage2D(GL_TEXTURE_2D,0,0x0003,2,2,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
   glTexImage2D(GL_TEXTURE_2D,1,0x0003,1,1,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
-  glPixelStorei(GL_UNPACK_ALIGNMENT,4);
   glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,8448);
 
   glBindTexture(GL_TEXTURE_2D,textures[0]);
@@ -101,11 +102,6 @@ expose_cb(void)
   glEnd();
 
   glBindTexture(GL_TEXTURE_2D,textures[1]);
-  glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_LINEAR);
   glTexImage2D(GL_TEXTURE_2D,0,0x0003,256,256,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
   glTexImage2D(GL_TEXTURE_2D,1,0x0003,128,128,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
   glTexImage2D(GL_TEXTURE_2D,2,0x0003,64,64,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
@@ -117,10 +113,6 @@ expose_cb(void)
   glTexImage2D(GL_TEXTURE_2D,8,0x0003,1,1,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
 
   // *************************************************************************
-  glutSwapBuffers();
-  // *************************************************************************
-
-  glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
   GLuint gllist = glGenLists(1);
   glNewList(gllist,GL_COMPILE_AND_EXECUTE);
@@ -153,14 +145,12 @@ expose_cb(void)
 
   glBegin(GL_TRIANGLES);
   for (i=0; i < 16; i++) { send_triangle(); }
-  glColor4ub(0,0,255,255);
+  glColor4f(normrand(), normrand(), normrand(), 1);
   for (i=0; i < 2; i++) { send_triangle(); }
   glEnd();
 
   glEndList();
 
-  // *************************************************************************
-  glutSwapBuffers();
   // *************************************************************************
 
   glMatrixMode(GL_PROJECTION);
@@ -177,11 +167,8 @@ expose_cb(void)
 // *************************************************************************
 
 int
-WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,
-        int nCmdShow)
+main(int argc, char ** argv)
 {
-  int argc = 1;
-  char * argv[] = { "glutiv.exe", (char *) NULL };
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
