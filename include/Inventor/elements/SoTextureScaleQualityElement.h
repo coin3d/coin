@@ -1,5 +1,5 @@
-#ifndef COIN_SOTEXTURESCALEPOLICYELEMENT_H
-#define COIN_SOTEXTURESCALEPOLICYELEMENT_H
+#ifndef COIN_SOTEXTURESCALEQUALITYELEMENT_H
+#define COIN_SOTEXTURESCALEQUALITYELEMENT_H
 
 /**************************************************************************\
  *
