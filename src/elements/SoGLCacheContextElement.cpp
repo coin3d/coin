@@ -73,12 +73,12 @@ static SbList <SoGLDisplayList*> *scheduledeletelist;
 
 static void soglcachecontext_cleanup(void)
 {
-  int n = extsupportlist->getLength();
-  for (int i = 0; i < n; i++) {
+  int i,n = extsupportlist->getLength();
+  for (i = 0; i < n; i++) {
     delete (*extsupportlist)[i];
   }
   n = glwrapperlist->getLength();
-  for (int i = 0; i < n; i++) {
+  for (i = 0; i < n; i++) {
     delete (*glwrapperlist)[i].wrapper;
   }
   delete extsupportlist;
