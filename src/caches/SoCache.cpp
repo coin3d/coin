@@ -30,7 +30,48 @@
   instances. It also organizes a list of elements that will affect the
   cache. If any of the elements have changed since the cache was
   created, the cache is invalid.
+
+  There are some steps you have to do when creating a cache to make
+  the cache dependencies work. Basically you have to do it like this:
+  
+  \begin verbatim
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+  state->push();
+  SoMyCache * cache = new SoMyCache(state);
+  cache->ref();
+  SoCacheElement::set(state, cache);
+  buildMyCache();
+  state->pop();
+  SoCacheElement::setInvalid(storedinvalid);
+  \end verbatim
+  
+  First you reset and store the old value of the cache
+  invalid-flag. Then you push the state so that the cache can detect
+  when something outside the cache is changed (and to be able to
+  change the cache element).  Next, you create the cache - don't
+  forget to ref it. Finally, set the current cache in the cache
+  element and build the cache. After building the cache, you pop the
+  state and restore the invalid-cache flag.
+  
+  When building the cache, all elements that are read will be copied
+  into the cache (using SoElement::copyMatchInfo()), and these
+  copied elements are used to test the validity of the cache
+  (in SoCache::isValid()).
+  
+  You don't have to manually add element dependencies. They will
+  automatically be picked up when creating the cache. This is
+  handled in SoElement::getConstElement().
+  
+  If you want the cache to be invalidated when some field inside your
+  node is changed, it's common to overload the notify()-method, and
+  call SoCache::invalidate() whenever the notify()-method for your
+  node is called. See for instance SoShape::notify().
+
+  Also, don't delete the cache in your notify() method. Wait until the
+  next time the cache is needed before unref-ing the old cache.
 */
+
+
 // FIXME: this really needs a usage example, preferably with source
 // code for when using an extension cache. 20040722 mortene.
 
