@@ -37,10 +37,21 @@
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/tidbitsp.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+static void * soengineoutput_mutex = NULL;
+
+static void
+soengineoutput_cleanup(void)
+{
+  CC_MUTEX_DESTRUCT(soengineoutput_mutex);
+  soengineoutput_mutex = NULL;
+}
 
 /*!
   Constructor. The SoEngineOutput will initially not be contained
@@ -52,6 +63,18 @@ SoEngineOutput::SoEngineOutput(void)
 {
   this->enabled = TRUE;
   this->container = NULL;
+
+  // this macro will only create the mutex once
+  CC_MUTEX_CONSTRUCT(soengineoutput_mutex);
+
+  // make sure the atexit callback is added only once
+  CC_GLOBAL_LOCK;
+  static int first = 1;
+  if (first) {
+    coin_atexit((coin_atexit_f*) soengineoutput_cleanup, 0);
+    first = 0;
+  }
+  CC_GLOBAL_UNLOCK;
 }
 
 /*!
@@ -106,8 +129,10 @@ SoEngineOutput::getConnectionType(void) const
 int
 SoEngineOutput::getForwardConnections(SoFieldList & fl) const
 {
+  CC_MUTEX_LOCK(soengineoutput_mutex);
   int n = this->slaves.getLength();
   for (int i = 0; i < n; i++) fl.append(this->slaves[i]);
+  CC_MUTEX_UNLOCK(soengineoutput_mutex);
   return n;
 }
 
@@ -231,15 +256,18 @@ SoEngineOutput::setNodeContainer(SoNodeEngine * nodeengine)
 void
 SoEngineOutput::addConnection(SoField * f)
 {
+  CC_MUTEX_LOCK(soengineoutput_mutex);
 #if COIN_DEBUG
   if (this->slaves.find(f) != -1) {
     SoDebugError::postWarning("SoEngineOutput::addConnection",
                               "connection from %p already made", f);
+    CC_MUTEX_UNLOCK(soengineoutput_mutex);
     return;
   }
 #endif // COIN_DEBUG
-
+  
   this->slaves.append(f);
+  CC_MUTEX_UNLOCK(soengineoutput_mutex);
 
   // An engine's reference count increases with the number of
   // connections it has.
@@ -264,15 +292,18 @@ SoEngineOutput::addConnection(SoField * f)
 void
 SoEngineOutput::removeConnection(SoField * f)
 {
+  CC_MUTEX_LOCK(soengineoutput_mutex);  
   int i = this->slaves.find(f);
 #if COIN_DEBUG
   if (i == -1) {
     SoDebugError::postWarning("SoEngineOutput::removeConnection",
                               "no connection from %p present", f);
+    CC_MUTEX_UNLOCK(soengineoutput_mutex);  
     return;
   }
 #endif // COIN_DEBUG
   this->slaves.remove(i);
+  CC_MUTEX_UNLOCK(soengineoutput_mutex);  
   this->getFieldContainer()->unref();
 }
 
