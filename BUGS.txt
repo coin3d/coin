@@ -4575,3 +4575,179 @@ end
     20041105 mortene, found by sit.
 
 =====================================================================
+
+166 Mem-leak when using PROTO with PositionInterpolator.
+
+    To reproduce, set the envvar COIN_DEBUG_TRACK_SOBASE_INSTANCES=1,
+    then run the examinerviewer example of SoGuiExamples on the
+    following wrl-file:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#VRML V2.0 utf8
+
+PROTO a [ eventOut SFVec3f o ] {
+   PositionInterpolator {
+      value_changed IS o
+   }
+}
+
+a { }
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    As can be seen from the debug output on application exit, various
+    PROTO-related VRML-stuff is not cleaned up.
+
+    Note that when switching the PositionInterpolator for e.g. a
+    Sphere, there is no longer a mem-leak.
+
+    After fixing this bug, try the same steps with
+    ~pederb/store/vrml97/sony_cam.wrl, and see if all leaks are gone,
+    or if there are other, similar bugs.
+
+    20041105 mortene.
+
+=====================================================================
+
+167 Memory read error for PROTO-based data in VRML97 scene.
+
+    Valgrind reports
+
+        Use of uninitialised value of size 4
+
+    for the local WRL file ~pederb/store/vrml97/sony_cam.wrl. The
+    callstack backtrace at the point of the error is:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+==31646== Use of uninitialised value of size 4
+==31646==    at 0x4065FB28: SoSFFloat::operator=(SoSFFloat const &) (/home/sigma/mortene/code/coin-head/include/Inventor/fields/SoSFFloat.h:33)
+==31646==    by 0x4065FA44: SoSFFloat::copyFrom(SoField const &) (/home/sigma/mortene/code/coin-head/src/fields/SoSFFloat.cpp:45)
+==31646==    by 0x40643D57: SoField::evaluateConnection(void) const (/home/sigma/mortene/code/coin-head/src/fields/SoField.cpp:2255)
+==31646==    by 0x406434D9: SoField::evaluateField(void) const (/home/sigma/mortene/code/coin-head/src/fields/SoField.cpp:1966)
+==31646==    by 0x4074731D: SoProto::connectISRefs(SoProtoInstance *, SoNode *, SoNode *) const (/home/sigma/mortene/code/coin-head/include/Inventor/fields/SoField.h:132)
+==31646==    by 0x4074679D: SoProto::createInstanceRoot(SoProtoInstance *) const (/home/sigma/mortene/code/coin-head/src/misc/SoProto.cpp:781)
+==31646==    by 0x407476B8: SoProto::createProtoInstance(void) (/home/sigma/mortene/code/coin-head/src/misc/SoProto.cpp:316)
+==31646==    by 0x406FFA81: SoBase::createInstance(SoInput *, SbName const &) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:1808)
+==31646==    by 0x406FF5CC: SoBase::readBaseInstance(SoInput *, SbName const &, SbName const &, SoBase *&) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:1727)
+==31646==    by 0x406FF471: SoBase::readBase(SoInput *, SbName &, SoBase *&) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:1691)
+==31646==    by 0x406FE2E5: SoBase::read(SoInput *, SoBase *&, SoType) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:1155)
+==31646==    by 0x40662DBB: SoSFNode::readValue(SoInput *) (/home/sigma/mortene/code/coin-head/src/fields/SoSFNode.cpp:166)
+==31646==    by 0x4064FFCD: SoMFNode::read1Value(SoInput *, int) (/home/sigma/mortene/code/coin-head/src/fields/SoMFNode.cpp:313)
+==31646==    by 0x4065B64E: SoMField::readValue(SoInput *) (/home/sigma/mortene/code/coin-head/src/fields/SoMField.cpp:474)
+==31646==    by 0x40642B30: SoField::read(SoInput *, SbName const &) (/home/sigma/mortene/code/coin-head/src/fields/SoField.cpp:1713)
+==31646==    by 0x4064907E: SoFieldData::read(SoInput *, SoFieldContainer *, SbName const &, int &) const (/home/sigma/mortene/code/coin-head/src/fields/SoFieldData.cpp:551)
+==31646==    by 0x4064703E: SoFieldData::read(SoInput *, SoFieldContainer *, int, int &) const (/home/sigma/mortene/code/coin-head/src/fields/SoFieldData.cpp:501)
+==31646==    by 0x40646247: SoFieldContainer::readInstance(SoInput *, unsigned short) (/home/sigma/mortene/code/coin-head/src/fields/SoFieldContainer.cpp:941)
+==31646==    by 0x407F22C1: SoNode::readInstance(SoInput *, unsigned short) (/home/sigma/mortene/code/coin-head/src/nodes/SoNode.cpp:1395)
+==31646==    by 0x4094A417: SoVRMLParent::readInstance(SoInput *, unsigned short) (/home/sigma/mortene/code/coin-head/src/vrml97/Parent.cpp:337)
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    20041105 mortene.
+
+=====================================================================
+
+168 Memory read/write errors for VRML97 Group / Parent / Switch nodes.
+
+    Valgrind reports
+
+        Invalid read of size 4
+        Invalid write of size 4
+
+    for the local WRL file ~pederb/store/vrml97/sony_cam.wrl upon exit
+    of the viewer it has been loaded into. The callstack backtraces at
+    the point of the errors are:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+==31646== Invalid read of size 4
+==31646==    at 0x408BCA83: SoNodeSensor::dyingReference(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:102)
+==31646==    by 0x406FD3E7: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:436)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40949F72: SoVRMLParent::~SoVRMLParent(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Parent.cpp:165)
+==31646==    by 0x4093CAD1: SoVRMLGroup::~SoVRMLGroup(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Group.cpp:291)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    Address 0x45436CEC is 44 bytes inside a block of size 48 free'd
+==31646==    at 0x4002CDAD: __builtin_delete (vg_replace_malloc.c:244)
+==31646==    by 0x408BD037: SoSensor::~SoSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoSensor.cpp:128)
+==31646==    by 0x408BC3A7: SoDelayQueueSensor::~SoDelayQueueSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDelayQueueSensor.cpp:80)
+==31646==    by 0x408BC1B2: SoDataSensor::~SoDataSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDataSensor.cpp:87)
+==31646==    by 0x408BC9B5: SoNodeSensor::~SoNodeSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:66)
+==31646==    by 0x40747E0F: SoProtoInstance::~SoProtoInstance(void) (/home/sigma/mortene/code/coin-head/src/misc/SoProtoInstance.cpp:130)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40748372: SoProtoInstance::sensorCB(void *, SoSensor *) (/home/sigma/mortene/code/coin-head/src/misc/SoProtoInstance.cpp:271)
+==31646==    by 0x408BC285: SoDataSensor::invokeDeleteCallback(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDataSensor.cpp:248)
+==31646==    by 0x408BCA7F: SoNodeSensor::dyingReference(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:121)
+==31646==    by 0x406FD3E7: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:436)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646== 
+
+and
+
+==31646== Invalid write of size 4
+==31646==    at 0x408BCA96: SoNodeSensor::dyingReference(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:103)
+==31646==    by 0x406FD3E7: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:436)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40949F72: SoVRMLParent::~SoVRMLParent(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Parent.cpp:165)
+==31646==    by 0x4093CAD1: SoVRMLGroup::~SoVRMLGroup(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Group.cpp:291)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    Address 0x45436CEC is 44 bytes inside a block of size 48 free'd
+==31646==    at 0x4002CDAD: __builtin_delete (vg_replace_malloc.c:244)
+==31646==    by 0x408BD037: SoSensor::~SoSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoSensor.cpp:128)
+==31646==    by 0x408BC3A7: SoDelayQueueSensor::~SoDelayQueueSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDelayQueueSensor.cpp:80)
+==31646==    by 0x408BC1B2: SoDataSensor::~SoDataSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDataSensor.cpp:87)
+==31646==    by 0x408BC9B5: SoNodeSensor::~SoNodeSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:66)
+==31646==    by 0x40747E0F: SoProtoInstance::~SoProtoInstance(void) (/home/sigma/mortene/code/coin-head/src/misc/SoProtoInstance.cpp:130)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40748372: SoProtoInstance::sensorCB(void *, SoSensor *) (/home/sigma/mortene/code/coin-head/src/misc/SoProtoInstance.cpp:271)
+==31646==    by 0x408BC285: SoDataSensor::invokeDeleteCallback(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDataSensor.cpp:248)
+==31646==    by 0x408BCA7F: SoNodeSensor::dyingReference(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:121)
+==31646==    by 0x406FD3E7: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:436)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646== 
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    20041105 mortene.
+
+=====================================================================
