@@ -208,7 +208,7 @@
   myapp->updateCoordinate(mycoords);
   SoCoordinate3 * mynode = myapp->getCoordinateNode();
   mynode->point.touch(); // this will notify Coin that field has changed
-  
+
   \endcode
 
   You can use SoMField::enableDeleteValues() to make Coin delete the
@@ -261,7 +261,7 @@
 /*!
   \var SbBool SoMField::userDataIsUsed
   Is \c TRUE if data has been set through a setValuesPointer() call
-  and set to \c FALSE through a enableDeleteValues() call. 
+  and set to \c FALSE through a enableDeleteValues() call.
 */
 
 // Don't set value explicitly to SoType::badType(), to avoid a bug in
@@ -469,15 +469,17 @@ SoMField::readValue(SoInput * in)
         if (!this->read1Value(in, currentidx++)) return FALSE;
 
         READ_VAL(c);
-        if (c == ',') {
-          READ_VAL(c);
-          if (c == ']') break;
-          else in->putBack(c);
+        if (c == ',') { READ_VAL(c); } // Treat trailing comma as whitespace.
+
+        // That was the last array element, we're done.
+        if (c == ']') { break; }
+
+        if (c == '}') {
+          SoReadError::post(in, "Premature end of array, got '%c'", c);
+          return FALSE;
         }
-        else if (c == ']')
-          break;
-        else
-          in->putBack(c);
+
+        in->putBack(c);
       }
     }
 
@@ -651,7 +653,7 @@ SoMField::deleteValues(int start, int num)
   supported only for compatibility. We suggest that you don't use it
   since it can lead to hard-to-find bugs.
 
-  \since 2002-02-08 
+  \since 2002-02-08
 */
 void
 SoMField::enableDeleteValues(void)
@@ -668,7 +670,7 @@ SoMField::enableDeleteValues(void)
   supported only for compatibility. We suggest that you don't use it
   since it can lead to hard-to-find bugs.
 
-  \since 2002-02-08 
+  \since 2002-02-08
 */
 SbBool
 SoMField::isDeleteValuesEnabled(void)
