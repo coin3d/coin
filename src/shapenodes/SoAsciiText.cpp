@@ -360,7 +360,7 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   float maxwidth = 0.0f;
   for (i = 0;i<PRIVATE(this)->stringwidths.getLength();++i) 
     longeststring = SbMax(longeststring, PRIVATE(this)->stringwidths[i]);
-  for (i = 0;i<(this->width.getNum() || n);++i)  
+  for (i = 0;(i<this->width.getNum()) && (i < n);++i)  
     maxwidth = SbMax(maxwidth, this->width[i]);
   
   float maxy, miny;
