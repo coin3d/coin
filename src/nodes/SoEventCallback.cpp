@@ -121,7 +121,7 @@ SoEventCallback::setPath(SoPath * pathptr)
   }
   if (pathptr) {
 #if COIN_DEBUG
-    if (path->getRefCount() == 0) {
+    if (pathptr->getRefCount() == 0) {
       SoDebugError::postWarning("SoEventCallback::setPath",
                                 "input path has reference count equal to zero");
     }
