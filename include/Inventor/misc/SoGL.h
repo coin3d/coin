@@ -159,4 +159,7 @@ sogl_render_pointset(const SoGLCoordinateElement * coords,
                      int32_t numpts,
                      int32_t idx);
 
+SbBool sogl_glerror_debugging(void);
+const SbString sogl_glerror_string(int err);
+
 #endif // !COIN_SOGL_H

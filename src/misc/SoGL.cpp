@@ -1926,6 +1926,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   GLUWrapper()->gluEndSurface(nurbsrenderer);
   
   // clear GL error(s) if parametric error value is out of range.
+  // FIXME: man, this is ugly! 20020530 mortene.
   while (glGetError() == GL_INVALID_VALUE);
 }
 
@@ -3952,6 +3953,47 @@ sogl_render_pointset(const SoGLCoordinateElement * coords,
       idx);
 }
 
+// Used by library code to decide whether or not to add extra
+// debugging checks for glGetError().
+SbBool
+sogl_glerror_debugging(void)
+{
+  static int COIN_GLERROR_DEBUGGING = -1;
+  if (COIN_GLERROR_DEBUGGING == -1) {
+    COIN_GLERROR_DEBUGGING = atoi(coin_getenv("COIN_GLERROR_DEBUGGING"));
+  }
+  return (COIN_GLERROR_DEBUGGING == 0) ? FALSE : TRUE;
+}
 
+// Convert an OpenGL enum error code to a textual representation.
+const SbString
+sogl_glerror_string(int err)
+{
+  SbString errorstring;
+  switch (err) {
+  case GL_INVALID_VALUE:
+    errorstring = "GL_INVALID_VALUE";
+    break;
+  case GL_INVALID_ENUM:
+    errorstring = "GL_INVALID_ENUM";
+    break;
+  case GL_INVALID_OPERATION:
+    errorstring = "GL_INVALID_OPERATION";
+    break;
+  case GL_STACK_OVERFLOW:
+    errorstring = "GL_STACK_OVERFLOW";
+    break;
+  case GL_STACK_UNDERFLOW:
+    errorstring = "GL_STACK_UNDERFLOW";
+    break;
+  case GL_OUT_OF_MEMORY:
+    errorstring = "GL_OUT_OF_MEMORY";
+    break;
+  default:
+    errorstring = "Unknown GL error";
+    break;
+  }
+  return errorstring;
+}
 
 // **************************************************************************

@@ -157,6 +157,7 @@
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/misc/SoGL.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoUnknownNode.h>
@@ -752,44 +753,19 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
     // but they are default disabled -- even when COIN_DEBUG=1 (due to
     // performance reasons).
     //
-    // If you're seeing notifications about GL-errors from here, the
-    // first thing to do is to enable those debugging checks too.  You
-    // might get lucky and have it pinpointed for you right away. Then
-    // again, you might not...
-
-    // FIXME: factorize the code here which is common for all the
-    // spots where we test for OpenGL errors into a SoGL
-    // function. 20011115 mortene.
+    // If you're seeing notifications about GL-errors from this place,
+    // the first thing to do is to enable those debugging checks too
+    // by setting COIN_GLERROR_DEBUGGING to "1".
     int err = glGetError();
     if (err != GL_NO_ERROR) {
-      const char * errorstring;
-      switch (err) {
-      case GL_INVALID_VALUE:
-        errorstring = "GL_INVALID_VALUE";
-        break;
-      case GL_INVALID_ENUM:
-        errorstring = "GL_INVALID_ENUM";
-        break;
-      case GL_INVALID_OPERATION:
-        errorstring = "GL_INVALID_OPERATION";
-        break;
-      case GL_STACK_OVERFLOW:
-        errorstring = "GL_STACK_OVERFLOW";
-        break;
-      case GL_STACK_UNDERFLOW:
-        errorstring = "GL_STACK_UNDERFLOW";
-        break;
-      case GL_OUT_OF_MEMORY:
-        errorstring = "GL_OUT_OF_MEMORY";
-        break;
-      default:
-        errorstring = "Unknown GL error";
-        break;
-      }
+      SbBool extradebug = sogl_glerror_debugging();
       SoDebugError::postWarning("SoNode::GLRenderS",
-                                "GL error: %s, nodetype: %s",
-                                errorstring,
-                                node->getTypeId().getName().getString());
+                                "GL error: %s, nodetype: %s %s",
+                                sogl_glerror_string(err).getString(),
+                                node->getTypeId().getName().getString(),
+                                extradebug ? "" :
+                                "(set envvar COIN_GLERROR_DEBUGGING=1 "
+                                "and re-run to get more information)");
     }
   }
 }

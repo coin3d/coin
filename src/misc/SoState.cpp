@@ -51,6 +51,7 @@
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoTypeList.h>
+#include <Inventor/misc/SoGL.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -356,43 +357,22 @@ SoState::lazyEvaluate(void) const
     SoElement * elm = this->stack[THIS->lazylist[i]];
     elm->lazyEvaluate();
 
-    // The GL error test is disabled for this optimized path.  If you
-    // get a GL error during rendering, enable this code (flip "FALSE"
-    // to "TRUE") and it might be able to pinpoint the exact error
-    // location.
-    if (COIN_DEBUG && FALSE) {
+    // The GL error test is default disabled for this optimized path.
+    // If you get a GL error during rendering, enable this code by
+    // setting the environment variable COIN_GLERROR_DEBUGGING to "1",
+    // and it might be able to pinpoint the exact error location.
+#if COIN_DEBUG
+    static SbBool chkglerr = sogl_glerror_debugging();
+    if (chkglerr) {
       int err = glGetError();
       if (err != GL_NO_ERROR) {
-        const char * errorstring;
-        switch (err) {
-        case GL_INVALID_VALUE:
-          errorstring = "GL_INVALID_VALUE";
-          break;
-        case GL_INVALID_ENUM:
-          errorstring = "GL_INVALID_ENUM";
-          break;
-        case GL_INVALID_OPERATION:
-          errorstring = "GL_INVALID_OPERATION";
-          break;
-        case GL_STACK_OVERFLOW:
-          errorstring = "GL_STACK_OVERFLOW";
-          break;
-        case GL_STACK_UNDERFLOW:
-          errorstring = "GL_STACK_UNDERFLOW";
-          break;
-        case GL_OUT_OF_MEMORY:
-          errorstring = "GL_OUT_OF_MEMORY";
-          break;
-        default:
-          errorstring = "Unknown GL error";
-          break;
-        }
         SoDebugError::postInfo("SoState::lazyEvaluate",
                                "GL error: %s, elementtype: %s",
-                               errorstring,
+                               sogl_glerror_string(err).getString(),
                                elm->getTypeId().getName().getString());
       }
     }
+#endif // COIN_DEBUG
   }
 }
 
