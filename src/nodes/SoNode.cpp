@@ -860,18 +860,11 @@ SoNode::addToCopyDict(void) const
     cp = (SoNode *)this->getTypeId().createInstance();
     assert(cp);
     SoFieldContainer::addCopy(this, cp);
+
+    SoChildList * l = this->getChildren();
+    for (int i=0; l && (i < l->getLength()); i++)
+      (void)(*l)[i]->addToCopyDict();
   }
-
-  SoChildList * l = this->getChildren();
-
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoNode::addToCopyDict",
-                         "adding %d children from %s node",
-                         l ? l->getLength() : 0,
-                         this->getTypeId().getName().getString());
-#endif // debug
-
-  for (int i=0; l && (i < l->getLength()); i++) (void)(*l)[i]->addToCopyDict();
 
   return cp;
 }
