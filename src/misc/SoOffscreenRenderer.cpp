@@ -47,7 +47,7 @@
 #include <string.h> // memset(), memcpy()
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
-
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <src/misc/simage_wrapper.h>
 
 
@@ -319,7 +319,7 @@ public:
                    this->buffer);
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
       (void) glXMakeCurrent(this->display, 0, 0);
-      
+
       if (this->storedcontext && this->storeddrawable && this->storeddisplay) {
         (void) glXMakeCurrent(this->storeddisplay, this->storeddrawable,
                               this->storedcontext);
@@ -595,6 +595,7 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
   this->internaldata = new SoOffscreenWGLData();
 #endif // HAVE_WGL
 
+  this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   this->setViewportRegion(viewportregion);
 }
 
@@ -775,6 +776,10 @@ SoOffscreenRenderer::renderFromBase(SoBase * base)
     // needed to clear viewport after glViewport is called
     this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
 
+    uint32_t oldcontext = this->renderaction->getCacheContext();
+    if (!this->didallocaction) {
+      this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
+    }
     if (base->isOfType(SoNode::getClassTypeId()))
       this->renderaction->apply((SoNode *)base);
     else if (base->isOfType(SoPath::getClassTypeId()))
@@ -783,6 +788,10 @@ SoOffscreenRenderer::renderFromBase(SoBase * base)
 
     this->internaldata->postRender();
     this->convertBuffer();
+
+    if (!this->didallocaction) {
+      this->renderaction->setCacheContext(oldcontext);
+    }
     return TRUE;
   }
   return FALSE;
