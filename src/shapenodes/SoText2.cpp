@@ -353,13 +353,7 @@ SoText2::GLRender(SoGLRenderAction * action)
         if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
         if (buffer) { glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer); }
 
-        // Select the longest if the font requires it.
-        if(charwidth < advancex)
-          charwidth = advancex;
-        
-        if (charwidth != 0) xpos += (charwidth + kerningx) + 1;  // +1 so that TTFont letters dont get too close to each other...
-        else xpos += (int) spacesize;
-        
+        xpos += (advancex + kerningx);
         prevglyph = glyph;
 
       }
@@ -709,11 +703,7 @@ SoText2P::buildGlyphCache(SoState * state)
       // glyph is available for a specific character, a default
       // empty rectangle should be used.  -mortene.
       assert(glyph);
-      
-      glyphwidth = (int) cc_glyph2d_getwidth(glyph);
-      if (glyphwidth == 0) // SPACE width is always returned 0, set to standardwidth/3.
-        glyphwidth = (int) SoFontSizeElement::get(state) / 3;
-        
+
       // Must fetch special modifiers so that heights for chars like
       // 'q' and 'g' will be taken into account when creating a
       // boundingbox.
@@ -725,18 +715,15 @@ SoText2P::buildGlyphCache(SoState * state)
       cc_glyph2d_getadvance(glyph, &advancex, &advancey);           
       SbVec2s kerning((short) kerningx, (short) kerningy);
       SbVec2s advance((short) advancex, (short) advancey);
-
-      if(glyphwidth < advancex)
-        glyphwidth = advancex;
-
+  
       SbVec2s pos = penpos + SbVec2s((short) bitmappos[0], (short) bitmappos[1]) + SbVec2s(0, (short) -bitmapsize[1]);
       this->bbox.extendBy(pos);
-      this->bbox.extendBy(pos + SbVec2s(glyphwidth + kerning[0], bitmapsize[1]));
+      this->bbox.extendBy(pos + SbVec2s(advancex + kerning[0], bitmapsize[1]));
       this->positions[i].append(pos);
 
-      actuallength += (glyphwidth + kerningx + 1);
+      actuallength += (advancex + kerningx);
 
-      penpos += kerning + SbVec2s(glyphwidth + 1, 0);
+      penpos += kerning + SbVec2s(advancex,0);
       prevglyph = glyph;
 
     }
