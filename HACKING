@@ -814,7 +814,15 @@ versus the code "layout" (to make it more easily readable):
 
  5) Don't use any variablename, classname, define, functionname or any
     other identifier that starts with an underscore. That namespace is
-    per the C and C++ specs fully reserved for the compiler.
+    per the C and C++ specs fully reserved for the compiler
+    implementation.
+
+    Identifier names with double underscores anywhere in the name is
+    also reserved.
+
+    For more information about this than you really want to know, see
+    Section 17.4.3.1 "Reserved names" and its subsections in the C++
+    language spec.
 
  6) Prefix with the "this" keyword for dynamic functions and member
     variables, prefix with the classname for static functions and
