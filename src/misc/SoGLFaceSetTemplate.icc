@@ -70,9 +70,6 @@
     v2 = *viptr++;
     v3 = *viptr++;
 
-    // #define COIN_BOUNDS_CHECK
-
-#ifdef COIN_BOUNDS_CHECK
     // Variable used for counting errors and make sure not a
     // bunch of errormessages flood the screen.
     static uint32_t current_errors = 0;
@@ -91,13 +88,9 @@
       current_errors++;
       break;
     }
-#endif // COIN_BOUNDS_CHECK
-
     v4 = viptr < viendptr ? *viptr++ : -1;
     if (v4  < 0) newmode = GL_TRIANGLES;
     // This test for numverts is for robustness upon buggy data sets
-
-#ifdef COIN_BOUNDS_CHECK
     else if (v4 >= numverts) {
       newmode = GL_TRIANGLES;
 
@@ -110,12 +103,10 @@
       }
       current_errors++;
     }
-#endif // COIN_BOUNDS_CHECK
     else {
       v5 = viptr < viendptr ? *viptr++ : -1;
       if (v5 < 0) newmode = GL_QUADS;
       // This test for numverts is for robustness upon buggy data sets
-#ifdef COIN_BOUNDS_CHECK
       else if (v5 >= numverts) {
         newmode = GL_QUADS;
 
@@ -128,7 +119,6 @@
         }
         current_errors++;
       }
-#endif  // COIN_BOUNDS_CHECK
       else newmode = GL_POLYGON;
     }
     if (newmode != mode) {
@@ -274,7 +264,6 @@
         v1 = viptr < viendptr ? *viptr++ : -1;
         while (v1 >= 0) {
           // For robustness upon buggy data sets
-#ifdef COIN_BOUNDS_CHECK
           if (v1 >= numverts) {
             if (current_errors < 1) {
               SoDebugError::postWarning("[faceset]::GLRender", "Erroneous polygon detected. "
@@ -286,7 +275,6 @@
             current_errors++;
             break;
           }
-#endif // COIN_BOUNDS_CHECK
 
       /* vertex 6-n (polygon) *****************************************/
 #if MBINDING==PER_VERTEX
@@ -335,4 +323,3 @@
 }
 
 #undef SEND_VERTEX
-#undef COIN_BOUNDS_CHECK

@@ -79,10 +79,6 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoCullElement.h>
-#include <Inventor/elements/SoPointSizeElement.h> 
-#include <Inventor/elements/SoWindowElement.h> 
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h> 
 #include <Inventor/events/SoEvent.h>
@@ -230,10 +226,6 @@ public:
   float lassowidth;
   SbBool lassopatternanimate;
   unsigned short lassopattern;
-  
-  void * lassowindow;
-  void * lassoscreen;
-  void * lassocontext;
   
   enum SelectionState {
     NONE,
@@ -729,9 +721,6 @@ SoExtSelection::SoExtSelection(void)
   PRIVATE(this)->lassowidth = 1.0f;
   PRIVATE(this)->lassopatternanimate = TRUE;
   PRIVATE(this)->lassopattern = 0xf0f0;
-  PRIVATE(this)->lassowindow = NULL;
-  PRIVATE(this)->lassoscreen = NULL;
-  PRIVATE(this)->lassocontext = NULL;
 
   PRIVATE(this)->selectionstate = SoExtSelectionP::NONE;
   PRIVATE(this)->isDragging = FALSE;
@@ -929,21 +918,10 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
   const SoEvent * event = action->getEvent();
   const SbVec2s mousecoords = event->getPosition();
 
-  void * windowid = NULL;
-  void * contextid = NULL;
-  void * screenid = NULL;
-  SoGLRenderAction * dummy;
-  
-  SoState * state = action->getState();
-  const int stackidx = SoWindowElement::getClassStackIndex();
-  if (state->isElementEnabled(stackidx)) {
-    SoWindowElement::get(state, windowid, contextid, screenid, dummy);
-  }
-
   switch (this->lassoType.getValue()) {
 
     // ---------- NO LASSO ----------
-    
+
   case SoExtSelection::NOLASSO:
     // nothing to do here..
     break;

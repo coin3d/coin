@@ -128,6 +128,21 @@ static const char EOLSTR[] = "\n";
 // 19990627 mortene.
 static const int HOSTWORDSIZE = 4;
 
+// helper classes for storing ROUTEs
+class SoOutputROUTE {
+public:
+  SoFieldContainer * from, * to;
+  SbName fromfield, tofield;
+};
+
+class SoOutputROUTEList : public SbList<SoOutputROUTE> {
+public:
+  SoOutputROUTEList(void) : SbList<SoOutputROUTE>() { }
+  SoOutputROUTEList(const int sizehint) : SbList<SoOutputROUTE>(sizehint) { }
+  SoOutputROUTEList(const SoOutputROUTEList & l) : SbList<SoOutputROUTE>(l) { }
+
+  void set(const int index, SoOutputROUTE item) { (*this)[index] = item; }
+};
 
 class SoOutputP {
 public:
@@ -148,10 +163,67 @@ public:
   SbString * headerstring;
   SoOutput::Stage stage;
   uint32_t annotationbits;
+  SbList <SoProto*> protostack;
+  SbList <SbDict*> defstack;
+  SbList <SoOutputROUTEList *> routestack;
   SoWriterefCounter * counter;
 
   SbName compmethod;
   float complevel;
+
+  void pushRoutes(const SbBool copyprev) {
+    const int oldidx = this->routestack.getLength() - 1;
+    assert(oldidx >= 0);
+    SoOutputROUTEList * newlist;
+    SoOutputROUTEList * oldlist = this->routestack[oldidx];
+    if (copyprev && oldlist && oldlist->getLength()) {
+      newlist = new SoOutputROUTEList(*oldlist);
+    }
+    else newlist = new SoOutputROUTEList;
+    this->routestack.push(newlist);
+  }
+  SoOutputROUTEList * getCurrentRoutes(const SbBool createifnull) {
+    const int n = this->routestack.getLength();
+    assert(n);
+    SoOutputROUTEList * list = this->routestack[n-1];
+    if (list == NULL && createifnull) {
+      list = new SoOutputROUTEList;
+      this->routestack[n-1] = list;
+    }
+    return list;
+  }
+
+  void popRoutes(void) {
+    const int idx = this->routestack.getLength()-1;
+    assert(idx >= 0);
+    delete this->routestack[idx];
+    this->routestack.remove(idx);
+  }
+
+  void pushDefNames(const SbBool copyprev) {
+    const int n = this->defstack.getLength();
+    assert(n);
+    SbDict * prev = this->defstack[n-1];
+    if (copyprev && prev) {
+      this->defstack.append(new SbDict(*prev));
+    }
+    else this->defstack.append(NULL);
+  }
+  void popDefNames(void) {
+    assert(this->defstack.getLength());
+    delete this->defstack[this->defstack.getLength()-1];
+    this->defstack.pop();
+  }
+  SbDict * getCurrentDefNames(const SbBool createifnull) {
+    const int idx = this->defstack.getLength() - 1;
+    assert(idx >= 0);
+    SbDict * dict = this->defstack[idx];
+    if (createifnull && dict == NULL) {
+      dict = new SbDict;
+      this->defstack[idx] = dict;
+    }
+    return dict;
+  }
 
   SoOutput_Writer * getWriter(void) {
     if (this->writer == NULL) {
@@ -204,6 +276,7 @@ SoOutput_compression_list_init(void)
 SoOutput::SoOutput(void)
 {
   this->constructorCommon();
+  PRIVATE(this)->defstack.append(NULL);
 
   SoWriterefCounter::create(this, NULL);
   PRIVATE(this)->counter = SoWriterefCounter::instance(this);
@@ -217,6 +290,9 @@ SoOutput::SoOutput(SoOutput * dictOut)
 {
   assert(dictOut != NULL);
   this->constructorCommon();
+
+  SbDict * olddef = dictOut->pimpl->getCurrentDefNames(FALSE);
+  PRIVATE(this)->defstack.append(olddef ? new SbDict(*olddef) : NULL);
 
   SoWriterefCounter::create(this, dictOut);
   PRIVATE(this)->counter = SoWriterefCounter::instance(this);
@@ -241,6 +317,7 @@ SoOutput::constructorCommon(void)
   PRIVATE(this)->headerstring = NULL;
   PRIVATE(this)->indentlevel = 0;
   PRIVATE(this)->annotationbits = 0x00;
+  PRIVATE(this)->routestack.append(NULL);
 
   PRIVATE(this)->compmethod = SbName("NONE");
   PRIVATE(this)->complevel = 0.0f;;
@@ -251,8 +328,8 @@ SoOutput::constructorCommon(void)
 */
 SoOutput::~SoOutput(void)
 {
-  this->reset();
   SoWriterefCounter::destruct(this);
+  this->reset();
   delete PRIVATE(this)->headerstring;
   delete PRIVATE(this);
 }
@@ -1016,7 +1093,19 @@ void
 SoOutput::reset(void)
 {
   this->closeFile();
-  PRIVATE(this)->counter->reset();
+
+  while (PRIVATE(this)->routestack.getLength()) {
+    delete PRIVATE(this)->routestack[0];
+    PRIVATE(this)->routestack.removeFast(0);
+  }
+  PRIVATE(this)->routestack.append(NULL);
+
+  PRIVATE(this)->protostack.truncate(0);
+  while (PRIVATE(this)->defstack.getLength()) {
+    delete PRIVATE(this)->defstack[0];
+    PRIVATE(this)->defstack.removeFast(0);
+  }
+  PRIVATE(this)->defstack.append(NULL);
 
   PRIVATE(this)->disabledwriting = FALSE;
   this->wroteHeader = FALSE;
@@ -1220,7 +1309,9 @@ SoOutput::setReference(const SoBase * base, int refid)
 void
 SoOutput::addDEFNode(SbName name)
 {
-  PRIVATE(this)->counter->addDEFNode(name);
+  void * value = NULL;
+  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
+  defnames->enter((unsigned long)name.getString(), value);
 }
 
 /*!
@@ -1230,7 +1321,9 @@ SoOutput::addDEFNode(SbName name)
 SbBool
 SoOutput::lookupDEFNode(SbName name)
 {
-  return PRIVATE(this)->counter->lookupDEFNode(name);
+  void * value;
+  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(TRUE);
+  return defnames->find((unsigned long)name.getString(), value);
 }
 
 /*!
@@ -1241,7 +1334,14 @@ SoOutput::lookupDEFNode(SbName name)
 void
 SoOutput::removeDEFNode(SbName name)
 {
-  PRIVATE(this)->counter->removeDEFNode(name);
+  SbDict * defnames = PRIVATE(this)->getCurrentDefNames(FALSE);
+  assert(defnames);
+#ifndef NDEBUG
+  SbBool ret = defnames->remove((unsigned long)name.getString());
+  assert(ret && "Tried to remove nonexisting DEFnode");
+#else
+  (void) defnames->remove((unsigned long)name.getString());
+#endif
 }
 
 /*!
@@ -1254,7 +1354,13 @@ SoOutput::removeDEFNode(SbName name)
 void
 SoOutput::pushProto(SoProto * proto)
 {
-  PRIVATE(this)->counter->pushProto(proto);
+  // FIXME: try to find a better/nicer way to handle PROTO export without
+  // adding new methods in SoOutput. For instance, is it possible to
+  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
+  PRIVATE(this)->pushRoutes(FALSE);
+  PRIVATE(this)->protostack.push(proto);
+  PRIVATE(this)->pushDefNames(FALSE);
 }
 
 /*!
@@ -1267,7 +1373,14 @@ SoOutput::pushProto(SoProto * proto)
 SoProto *
 SoOutput::getCurrentProto(void) const
 {
-  return PRIVATE(this)->counter->getCurrentProto();
+  // FIXME: try to find a better/nicer way to handle PROTO export without
+  // adding new methods in SoOutput. For instance, is it possible to
+  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
+  if (PRIVATE(this)->protostack.getLength()) {
+    return PRIVATE(this)->protostack[PRIVATE(this)->protostack.getLength()-1];
+  }
+  return NULL;
 }
 
 /*!
@@ -1280,7 +1393,14 @@ SoOutput::getCurrentProto(void) const
 void
 SoOutput::popProto(void)
 {
-  PRIVATE(this)->counter->popProto();
+  // FIXME: try to find a better/nicer way to handle PROTO export without
+  // adding new methods in SoOutput. For instance, is it possible to
+  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
+  assert(PRIVATE(this)->protostack.getLength());
+  PRIVATE(this)->protostack.pop();
+  PRIVATE(this)->popDefNames();
+  PRIVATE(this)->popRoutes();
 }
 
 /*!
@@ -1295,7 +1415,14 @@ void
 SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
                    SoFieldContainer * to, const SbName & tofield)
 {
-  PRIVATE(this)->counter->addRoute(from, fromfield, to, tofield);
+  SoOutputROUTEList * list = PRIVATE(this)->getCurrentRoutes(TRUE);
+  assert(list);
+  SoOutputROUTE r;
+  r.from = from;
+  r.fromfield = fromfield;
+  r.to = to;
+  r.tofield = tofield;
+  list->append(r);
 }
 
 /*!
@@ -1308,7 +1435,39 @@ SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
 void
 SoOutput::resolveRoutes(void)
 {
-  PRIVATE(this)->counter->resolveRoutes();
+  // FIXME: try to find a better/nicer way to handle ROUTE export without
+  // adding new methods in SoOutput. For instance, is it possible to
+  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
+  SoOutputROUTEList * list = PRIVATE(this)->getCurrentRoutes(FALSE);
+  if (list && list->getLength()) {
+    const int n = list->getLength();
+    for (int i = 0; i < n; i++) {
+      SoOutputROUTE r = (*list)[i];
+
+      SoFieldContainer * fromc = r.from;
+      SoFieldContainer * toc = r.to;
+
+      SbName fromname = r.fromfield;
+      SbName toname = r.tofield;
+
+      this->indent();
+      this->write("ROUTE ");
+      this->write(PRIVATE(this)->counter->getWriteName(fromc).getString());
+      this->write('.');
+      this->write(fromname.getString());
+      this->write(" TO ");
+      this->write(PRIVATE(this)->counter->getWriteName(toc).getString());
+      this->write('.');
+      this->write(toname.getString());
+      this->write("\n");
+
+      // remove write references again
+      PRIVATE(this)->counter->decrementWriteref(fromc);
+      PRIVATE(this)->counter->decrementWriteref(toc);
+    }
+    list->truncate(0);
+  }
 }
 
 /*!

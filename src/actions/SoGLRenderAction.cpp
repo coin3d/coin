@@ -99,8 +99,6 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoShapeHints.h>
-#include <Inventor/C/tidbits.h>
-#include <stdlib.h>
 
 // *************************************************************************
 
@@ -494,10 +492,6 @@ public:
 
 SO_ACTION_SOURCE(SoGLRenderAction);
 
-
-static int COIN_GLBBOX = -1;
-
-
 // Override from parent class.
 void
 SoGLRenderAction::initClass(void)
@@ -515,14 +509,6 @@ SoGLRenderAction::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoWindowElement);
   SO_ENABLE(SoGLRenderAction, SoGLViewportRegionElement);
   SO_ENABLE(SoGLRenderAction, SoGLCacheContextElement);
-
-  const char * env = coin_getenv("COIN_GLBBOX");
-  if (env) {
-    COIN_GLBBOX = atoi(env);
-  }
-  else {
-    COIN_GLBBOX = 1;
-  }
 }
 
 // *************************************************************************
@@ -576,7 +562,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->transparencyrender = FALSE;
   THIS->isrendering = FALSE;
   THIS->passupdate = FALSE;
-  THIS->bboxaction = new SoGetBoundingBoxAction(viewportregion);
+  THIS->bboxaction = NULL;
   THIS->updateorigin.setValue(0.0f, 0.0f);
   THIS->updatesize.setValue(1.0f, 1.0f);
   THIS->rendering = SoGLRenderActionP::RENDERING_UNSET;
@@ -590,6 +576,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->sortedlayersblendinitialized = FALSE;
   THIS->sortedlayersblendcounter = 0;
   THIS->usenvidiaregistercombiners = FALSE;
+
 }
 
 /*!
@@ -609,7 +596,7 @@ void
 SoGLRenderAction::setViewportRegion(const SbViewportRegion & newregion)
 {
   THIS->viewport = newregion;
-  THIS->bboxaction->setViewportRegion(newregion);
+
   // The SoViewportRegionElement is not set here, as it is always
   // initialized before redraw in beginTraversal().
 }
@@ -861,11 +848,6 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     return;
   }
 
-  // always apply a bboxaction right before rendering to have valid
-  // bbox caches in the separators
-  if (COIN_GLBBOX) {
-    THIS->bboxaction->apply(node);
-  }
   int err_before_init = glGetError();
 
   if (THIS->needglinit) {
@@ -1242,6 +1224,10 @@ SoGLRenderActionP::addSortTransPath(SoPath * path)
     dist = SoViewVolumeElement::get(action->state).getPlane(0.0f).getDistance(center);
   }
   else {
+    if (this->bboxaction == NULL) {
+      this->bboxaction =
+        new SoGetBoundingBoxAction(SoViewportRegionElement::get(action->state));
+    }
     this->bboxaction->setViewportRegion(SoViewportRegionElement::get(action->state));
     this->bboxaction->apply(path);
     SbVec3f center = this->bboxaction->getBoundingBox().getCenter();
