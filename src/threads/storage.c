@@ -1,0 +1,240 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.  See the file LICENSE.GPL
+ *  at the root directory of this source distribution for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  www.sim.no, support@sim.no, Voice: +47 22114160, Fax: +47 22207097
+ *
+\**************************************************************************/
+
+#include <Coin/threads/storage.h>
+#include <Coin/threads/storagep.h>
+
+#include <stdlib.h>
+#include <assert.h>
+
+/* ********************************************************************** */
+
+/* the header - used for internal destructor management - can't be sure
+   the cc_storage object still exists... */
+
+typedef
+struct cc_storage_env {
+  unsigned int type;
+  void (*destructor)(void *);
+  /* userdata follows here */
+} cc_storage_env;
+
+static void cc_storage_internal_destructor(void * env);
+
+/*
+ * implement user-settable constructor and destructor if possible on
+ * non-pthread platforms (must be)
+ */
+
+/* ********************************************************************** */
+
+/*
+*/
+
+void
+cc_storage_struct_init(cc_storage * storage_struct, unsigned int size,
+                        void (*constr)(void *), void (*destr)(void *))
+{
+  assert(storage_struct != NULL && storage_struct->type == CC_INVALID_TYPE);
+
+  storage_struct->size = size;
+  storage_struct->constructor = constr;
+  storage_struct->destructor = destr;
+#ifdef USE_PTHREAD
+  if ( pthread_key_create(&(storage_struct->pthread.key),
+                          cc_storage_internal_destructor) != 0 ) {
+    goto error;
+  }
+#endif /* USE_PTHREAD */
+  storage_struct->type == CC_STORAGE_TYPE;
+  return;
+
+error:
+  storage_struct->type == CC_INVALID_TYPE;
+} /* cc_storage_struct_init() */
+
+/*
+*/
+
+void
+cc_storage_struct_clean(cc_storage * storage_struct)
+{
+  assert(storage_struct != NULL && storage_struct->type == CC_STORAGE_TYPE);
+
+  storage_struct->type = CC_INVALID_TYPE;
+} /* cc_storage_struct_clean() */
+
+/* ********************************************************************** */
+
+/*
+*/
+
+cc_storage *
+cc_storage_construct(unsigned int size)
+{
+  cc_storage * storage = (cc_storage *) malloc(sizeof(cc_storage));
+  assert(storage != NULL);
+  storage->type = CC_INVALID_TYPE;
+  cc_storage_struct_init(storage, size, NULL, NULL);
+  if ( storage->type != CC_STORAGE_TYPE ) goto error;
+  return storage;
+
+error:
+  free(storage);
+  return NULL;
+} /* cc_storage_construct() */
+
+cc_storage *
+cc_storage_construct_etc(
+  unsigned int size,
+  void (*constructor)(void *),
+  void (*destructor)(void *) )
+{
+  cc_storage * storage = (cc_storage *) malloc(sizeof(cc_storage));
+  assert(storage != NULL);
+  storage->type = CC_INVALID_TYPE;
+  cc_storage_struct_init(storage, size, constructor, destructor);
+  if ( storage->type != CC_STORAGE_TYPE ) goto error;
+  return storage;
+
+error:
+  free(storage);
+  return NULL;
+} /* cc_storage_construct() */
+/*
+*/
+
+void
+cc_storage_destruct(
+  cc_storage * storage )
+{
+  assert((storage != NULL) && (storage->type == CC_STORAGE_TYPE));
+
+#ifdef USE_PTHREAD
+  if ( pthread_key_delete(storage->pthread.key) != 0 ) {
+  }
+#endif /* USE_PTHREAD */
+
+  storage->type = CC_INVALID_TYPE;
+  free(storage);
+} /* cc_storage_destruct() */
+
+/* ********************************************************************** */
+
+/*
+*/
+
+void *
+cc_storage_get(
+  cc_storage * storage )
+{
+  cc_storage_env * envelope;
+  void * user;
+  assert((storage != NULL) && (storage->type == CC_STORAGE_TYPE));
+
+#ifdef USE_PTHREAD
+  envelope = (cc_storage_env *) pthread_getspecific(storage->pthread.key);
+  if ( envelope == NULL ) {
+    envelope =
+      (cc_storage_env *) malloc(sizeof(cc_storage_env)+storage->size);
+    assert( envelope != NULL );
+    envelope->type = CC_STORAGE_ENV_TYPE;
+    envelope->destructor = storage->destructor;
+    pthread_setspecific(storage->pthread.key, envelope);
+    user = (void *) (((char *) envelope) + sizeof(cc_storage_env));
+    if ( storage->constructor != NULL )
+      (*storage->constructor)(user);
+  }
+#endif /* USE_PTHREAD */
+
+  return (void *) (((char *) envelope) + sizeof(cc_storage_env));
+} /* cc_storage_get() */
+
+/* ********************************************************************** */
+
+/*
+*/
+
+void
+cc_storage_set_constructor(
+  cc_storage * storage,
+  void (*constructor)(void *) )
+{
+  assert((storage != NULL) && (storage->type == CC_STORAGE_TYPE));
+  storage->constructor = constructor;
+} /* cc_storage_set_destructor() */
+
+/*
+*/
+
+void
+cc_storage_set_destructor(
+  cc_storage * storage,
+  void (*destructor)(void *) )
+{
+  assert((storage != NULL) && (storage->type == CC_STORAGE_TYPE));
+  storage->destructor = destructor;
+} /* cc_storage_set_destructor() */
+
+/* ********************************************************************** */
+
+/*
+*/
+
+void
+cc_storage_internal_destructor(
+  void * env )
+{
+  cc_storage_env * envelope;
+  void * user;
+  envelope = (cc_storage_env *) env;
+  assert((envelope != NULL) && (envelope->type == CC_STORAGE_ENV_TYPE));
+  if ( envelope->destructor != NULL ) {
+    user = (void *) (((char *) envelope) + sizeof(cc_storage_env));
+    (*envelope->destructor)(user);
+  }
+  free(env);
+} /* cc_storage_internal_destructor() */
+
+/* ********************************************************************** */
+
+/*!
+  \class SbStorage Inventor/threads/SbStorage.h
+  \ingroup multi-threading
+*/
+
+/*!
+  \fn SbStorage::SbStorage(unsigned int size)
+*/
+
+/*!
+  \fn SbStorage::SbStorage(unsigned int size, void (*constr)(void *), void (*destr)(void *))
+*/
+
+/*!
+  \fn SbStorage::~SbStorage(void)
+*/
+
+/*!
+  \fn void * SbStorage::get(void)
+*/
+
+/* ********************************************************************** */
