@@ -33,6 +33,11 @@
   \ingroup VRMLnodes
   \ingroup sound
 
+  Audio data is loaded using the simage library, so make sure you have
+  built the simage library with support for the audio file formats you
+  intend to use (libogg, libvorbis and libvorbisfile for OggVorbis,
+  libsndfile for WAV and several other formats).
+
   \WEB3DCOPYRIGHT
 
   \verbatim
