@@ -102,6 +102,37 @@ hit by the problem:
    the GNU Bourne Again Shell. See above.
 
 
+ 6 Problems with object code formats. Will typically manifest itself
+   when trying to build code on top of Coin, for instance one of the
+   So* libraries. A typical error message you will get is like this
+   (example is from an SoQt configure run):
+
+     configure:12022: checking whether libCoin is available
+     configure:12058: g++ -o conftest -g -O2   -I/coin-instdir/include -O2 -D_REENTRANT -O2 -L/coin-instdir/lib -O2 conftest.cc -lCoin -lGL -lXext -lSM -lICE -lX11 -ldl -lpthread -lm  >&5
+     ld32: FATAL 12: Expecting n32 objects: 
+     /coin-instdir/lib/libCoin.so is o32.
+
+   This is a rather classical IRIX problem, not really related
+   specifically to Coin: IRIX has 3 different types of executables /
+   shared libraries / object code formats. You can compile code in
+   "old 32 bits" mode ("o32"), "new 32 bits" mode ("n32") or "new 64
+   bits" mode ("n64"), and these are *not* interchangeable. This means
+   that if you want to build an "n32" executable, _all_ the libraries
+   it depends on must also be in this format.
+
+   What the linker is complaining about in this case is that one or
+   more (or probably all) of the _other_ libraries on the link line is
+   in "n32" format, while libCoin.so was built as an "o32" library.
+
+   You will either have to tell the compiler and linker to use
+   exclusively "o32" libraries, or better: to rebuild the libCoin.so
+   library in "n32" format.
+
+   This is very likely a local configuration issue with the compiler
+   and / or linker set-up, which you should get your local IRIX-guru
+   to investigate.
+
+
 The above is a complete list of the problems we are aware of on SGI
 IRIX platforms when trying to configure and build Coin. If you bump
 into any other problems, please let us know.
