@@ -435,7 +435,6 @@ SoEngine::copy(void) const
   // don't have children).
 
   SoFieldContainer::initCopyDict();
-
   // This snippet is the same as SoNode::addToCopyDict().
   SoEngine * cp = (SoEngine *)SoFieldContainer::checkCopy(this);
   if (!cp) {
@@ -443,12 +442,16 @@ SoEngine::copy(void) const
     assert(cp);
     SoFieldContainer::addCopy(this, cp);
   }
+  // ref() to make sure the copy is not destructed while copying
+  cp->ref();
 
   // Call findCopy() to have copyContents() run once.
   SoEngine * dummy = (SoEngine *)SoFieldContainer::findCopy(this, TRUE);
   assert(dummy == cp);
-
+  
   SoFieldContainer::copyDone();
+  // unrefNoDelete() so that we return a copy with reference count 0
+  cp->unrefNoDelete();
   return cp;
 }
 
