@@ -353,3 +353,14 @@ STUFF TO FIX IN COIN
   It is now tesselated to quads, in a way that makes the visual
   quality not as good as it should be.  SGI / TGS Inventor's SoSphere
   is (at least partly) triangulated, and looks better.
+
+* Implement an alternative to using macros for specifying nodekit parts.
+  2002-02-20  Peder Blekken  <pederb@sim.no>
+
+  The SO_KIT_ADD_CATALOG_ENTRY macro(s) is quite large and complex, and
+  when expanded for all draggers and nodekits it probably adds several
+  100 KBytes to the Coin library. A good solution would probably be to
+  specify the node kit parts using text strings, and implement one 
+  function that will interpret the strings and initialize the node kit 
+  parts without using macros.
+
