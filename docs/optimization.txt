@@ -83,4 +83,22 @@ Concrete tasks:
           enough, and draggers with more complex geometries seems to
           render with far better performance.
 
+        * Optimize SoState and element handling, for better traversal
+          performance in general. Some ideas:
+
+           - create our own memory allocator for allocating
+             SoElement-derived classes, freeing them all at once in
+             the destructor.
+
+           - SoElement::copyMatchInfo() would then need to use a
+             separate memory allocator, probably handled by the cache
+             copying the element.
+
+           - consider adding SoState::popElements(const SbList
+             <SoType> &list), to make it possible to pop only selected
+             elements (dangerous stuff. Ask pederb why he needs this).
+
+          (Note: should investigate a bit (i.e. do profiling) before
+          deciding if this is really worth the effort.)
+
 ============================================================================

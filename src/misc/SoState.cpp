@@ -26,16 +26,6 @@
   manages the state data as stacks of elements derived from SoElement.
 */
 
-/*¡
-<ul>
-<lh>TODO / NOTES
-<li>optimize getElement() to avoid multilevel pushing...
-<li>SoType to stackIndex conversion
-<li>create own memory allocator for allocating SoElement-derived classes,
-    freeing them all at once in the destructor.
-</ul>
-*/
-
 #include <Inventor/misc/SoState.h>
 #include <coindefs.h> // COIN_STUB()
 
