@@ -80,8 +80,6 @@ SO_ACTION_SOURCE(SoToVRMLAction);
 
 // *************************************************************************
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoToVRMLActionP {
 public:
   SoToVRMLActionP(SoToVRMLAction * master)
@@ -189,7 +187,6 @@ public:
 #endif // HAVE_VRML97
 };
 
-#endif // DOXYGEN_SKIP_THIS
 
 
 #undef PRIVATE
