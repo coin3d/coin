@@ -30,6 +30,7 @@ RegularSources = \
 	SoMField.cpp \
 	SoSFBitMask.cpp \
 	SoSFBool.cpp \
+	SoSFBox3s.cpp \
 	SoSFColor.cpp \
 	SoSFEngine.cpp \
 	SoSFEnum.cpp \
@@ -92,6 +93,7 @@ PublicHeaders = \
 	../../include/Inventor/fields/SoMField.h \
 	../../include/Inventor/fields/SoSFBitMask.h \
 	../../include/Inventor/fields/SoSFBool.h \
+	../../include/Inventor/fields/SoSFBox3s.h \
 	../../include/Inventor/fields/SoSFColor.h \
 	../../include/Inventor/fields/SoSFEngine.h \
 	../../include/Inventor/fields/SoSFEnum.h \
