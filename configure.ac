@@ -471,7 +471,7 @@ AC_SUBST([HAVE_THREADSAFE])
 # *******************************************************************
 # Headers we might want to use
 
-AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h io.h windows.h winsock2.h tlhelp32.h])
+AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h winsock2.h tlhelp32.h])
 
 AC_CHECK_HEADERS(
   [sys/unistd.h],
@@ -678,7 +678,20 @@ SIM_AC_COMPILE_DEBUG([
     CPPFLAGS="$CPPFLAGS -fno-builtin";    # no auto string.h-functions
     CXXFLAGS="$CXXFLAGS -fno-for-scope";  # disallow non-standard scoping of for()-variables
     CPPFLAGS="$CPPFLAGS -Wreturn-type";   # warn on missing return-value
-    CPPFLAGS="$CPPFLAGS -Werror";         # don't let the developer get away with warnings
+    if test x"COIN_BETA" = x""; then :; else
+      # don't let people get away with warnings, except for in
+      # source code releases.
+      CPPFLAGS="$CPPFLAGS -Werror";
+    fi
+  # FIXME: enable this code after releasing 2.0.0   20030226 larsa
+  # else
+  #   case $CXX in
+  #   *wrapmsvc* )
+  #     if test x"COIN_BETA" = x""; then :; else
+  #       CPPFLAGS="$CPPFLAGS /noBool /W2 /WX"
+  #     fi
+  #     ;;
+  #   esac
   fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 ], [
@@ -1417,7 +1430,7 @@ if $sim_ac_build_library; then
   true:* | *:true )
     ;;
   * )
-    SIM_AC_CONFIGURATION_SETTING([Install prefix], [$prefix])
+    SIM_AC_CONFIGURATION_SETTING([Installation prefix], [$prefix])
     ;;
   esac
 else
@@ -1437,7 +1450,7 @@ COIN_DSP_DEFS=
 if $sim_ac_make_dsp; then
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [msvc .dsp])
 
-  for arg in $CPPFLAGS $DEFS $LDFLAGS $LIBS; do
+  for arg in -DHAVE_CONFIG_H $CPPFLAGS $LDFLAGS $LIBS; do
     case $arg in
     -L* )
       # libdir=`echo $arg | cut -c3-`
