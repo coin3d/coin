@@ -271,12 +271,6 @@ AM_CONDITIONAL([MACOSX], [$sim_ac_macosx])
 AC_SUBST([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
 AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
 
-if test x"$sim_ac_macosx_10_2ff" = x"true"; then
-  # In libtool.m4, undefined symbols are handled depending on 
-  # this envvar. We are building as two-level namespace lib, so...
-  LD_TWOLEVEL_NAMESPACE=1
-fi
-
 # **************************************************************************
 #  Locate C++ compiler and set C++ as the default language to use
 #  in tests. The configure script will automatically terminate if
@@ -1855,6 +1849,16 @@ COIN_COMPILER="$CXX"
     ( IFS=:; for dir in $PATH; do
         test x"$dir" = x"${bindir}" && exit 0;
       done; exit 1 ) && sim_ac_path_problem=false
+  fi
+
+
+  # ***********************************************************
+  # Mac OS X tweaks
+  #
+
+  if test x"$sim_ac_macosx_10_2ff" = x"true"; then
+    # No undefined symbols allowed in two-level namespace shared libs.
+    LDFLAGS="$LDFLAGS -no-undefined"
   fi
 
   if $sim_ac_framework; then
