@@ -29,25 +29,7 @@ class SbDictEntry;
 
 class SbDict {
 public:
-  // The "entries" argument of the second constructor listed below has
-  // a default value under Open Inventor, but that doesn't work with
-  // the SGI MIPS CC v6.2 compiler (and I also have vague memories of
-  // a bug report for the Sun C++ compiler on this exact case).
-  //
-  // What happens is that dictionary definitions like "SbDict mydict;"
-  // tries to call the implicit default no-argument constructor, and
-  // _not_ the constructor taking an integer argument with its default
-  // value. This spells disaster, as none of the object variables will
-  // be initialized.
-  //
-  // So to work around this compiler bug and still keep API
-  // compatibility with Open Inventor, I've added an explicit default
-  // constructor.
-  //
-  // mortene.
-
-  SbDict(void);
-  SbDict(const int entries);
+  SbDict(const int entries = 251);
   SbDict(const SbDict & from);
   ~SbDict();
 
@@ -66,7 +48,6 @@ public:
   void setHashingFunction(unsigned long (*func)(const unsigned long key));
 
 private:
-  void commonConstructor(const int entries);
   unsigned long (*hashfunc)(const unsigned long key);
   int tablesize;
   SbDictEntry ** buckets;

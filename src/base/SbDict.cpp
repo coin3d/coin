@@ -58,14 +58,6 @@ default_hashfunc(const unsigned long key)
 // *************************************************************************
 
 /*!
-  Default constructor.
- */
-SbDict::SbDict(void)
-{
-  this->commonConstructor(251);
-}
-
-/*!
   Constructor with \a entries specifying the number of buckets
   in the hash list -- so it need to be larger than 0. For best
   performance during dictionary look-ups, \a entries should be a prime.
@@ -73,13 +65,6 @@ SbDict::SbDict(void)
 SbDict::SbDict(const int entries)
 {
   assert(entries > 0);
-  this->commonConstructor(entries);
-}
-
-// Execute common operations of the public constructors.
-void
-SbDict::commonConstructor(const int entries)
-{
   this->tablesize = entries;
   this->buckets = new SbDictEntry *[this->tablesize];
   this->hashfunc = default_hashfunc;
