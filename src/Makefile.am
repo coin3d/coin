@@ -3,7 +3,9 @@
 # **************************************************************************
 
 CLEANFILES = \
-  coin@COIN_MAJOR_VERSION@@SUFFIX@.pdb coin@COIN_MAJOR_VERSION@@SUFFIX@.dll
+  coin@COIN_MAJOR_VERSION@@SUFFIX@.pdb \
+  coin@COIN_MAJOR_VERSION@@SUFFIX@.dll \
+  coin@COIN_MAJOR_VERSION@@SUFFIX@.exp
 
 # **************************************************************************
 # Extensions which might be present.
@@ -190,7 +192,7 @@ install-exec-local:
 	  file="$$basename.$$ext"; \
 	  if test -f "$$file"; then \
 	    $(mkinstalldirs) "$(DESTDIR)$(bindir)"; \
-	    echo " $(INSTALL_PROGRAM)" "$$file" "$(DESTDIR)$(bindir)/$$file"; \
+	    echo " $(INSTALL_PROGRAM) $$file $(DESTDIR)$(bindir)/$$file"; \
 	    $(INSTALL_PROGRAM) "$$file" "$(DESTDIR)$(bindir)/$$file"; \
 	  fi \
 	done
@@ -201,7 +203,7 @@ install-data-local:
 	  file="$$basename.$$ext"; \
 	  if test -f "$$file"; then \
 	    $(mkinstalldirs) "$(DESTDIR)$(libdir)"; \
-	    echo " $(INSTALL_DATA)" "$$file" "$(DESTDIR)$(libdir)/$$file"; \
+	    echo " $(INSTALL_DATA) $$file $(DESTDIR)$(libdir)/$$file"; \
 	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(libdir)/$$file"; \
 	  fi \
 	done;
@@ -211,7 +213,12 @@ uninstall-local:
 	for ext in dll pdb lib; do \
 	  file="$(DESTDIR)$(bindir)/$$basename.$$ext"; \
 	  if test -f "$$file"; then \
-	    echo " rm -f" "$$file"; \
+	    echo " rm -f $$file"; \
+	    rm -f "$$file"; \
+	  fi \
+	  file="$(DESTDIR)$(libdir)/$$basename.$$ext"; \
+	  if test -f "$$file"; then \
+	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
 	  fi \
 	done; \
@@ -239,9 +246,14 @@ uninstall-local:
 	  "$$baseincdir/system" \
 	  "$$baseincdir/threads" \
 	  "$$baseincdir/VRMLnodes" \
+	  "$$baseincdir/C/base" \
+	  "$$baseincdir/C/errors" \
+	  "$$baseincdir/C/glue" \
+	  "$$baseincdir/C/threads" \
+	  "$$baseincdir/C" \
 	  "$$baseincdir"; do \
 	  if test -d "$$dir"; then \
-	    echo " rmdir" "$$dir"; \
+	    echo " rmdir $$dir"; \
 	    rmdir "$$dir"; \
 	  fi \
 	done; \
