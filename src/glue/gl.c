@@ -120,7 +120,7 @@ glglue_resolve_envvar(const char * txt)
 }
 
 /* Return value of COIN_GLGLUE_NO_RADEON_WARNING environment variable. */
-int
+static int
 coin_glglue_radeon_warning(void)
 {
   static int d = -1;
