@@ -1281,8 +1281,8 @@
 
     Notice how the cone is a tiny dot in the lower left corner of the
     image at first. Then click view all (the eye icon) and see how the
-    camera is then position where it should be. Correct behavior would
-    be for the camera to be position there from the start.
+    camera is then positioned where it should be. Correct behavior
+    would be for the camera to be positioned there from the start.
 
     20030103 mortene.
 
@@ -1321,5 +1321,28 @@
     SoTransformerDragger.
 
     20030123 mortene.
+
+=====================================================================
+
+054 SoComputeBoundingBox engine probably fails with viewport-dependent
+    geometry.
+
+    The SoGuiExamples/engines/computexfbbox example fails with a small
+    scene with an SoText2 in it:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    #Inventor V2.1 ascii
+
+    Cube { }
+    Translation { translation 10 0 0 }
+    Text2 { string [ "hepp", "tjo-bing", "hupp" ] }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    ..and pederb tracked this down to a failure of the engine's
+    evaluate() to be called again when the camera position changes.
+
+    Note that this bug is probably rather hard to fix properly.
+
+    20030128 mortene.
 
 =====================================================================
