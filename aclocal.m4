@@ -9549,6 +9549,7 @@ if test x"$with_opengl" != xno; then
     # hopefully, this is the default behavior and not needed. 20011005 larsa
     # sim_ac_ogl_cppflags="-F/System/Library/Frameworks/OpenGL.framework/"
     sim_ac_ogl_ldflags="-Wl,-framework,OpenGL"
+    sim_ac_ogl_lib=OpenGL
   fi
 
   sim_ac_save_cppflags=$CPPFLAGS
@@ -9598,8 +9599,11 @@ if test x"$with_opengl" != xno; then
             [glPointSize(1.0f);],
             [
              sim_ac_glchk_hit=true
-             sim_ac_ogl_lib=$sim_ac_ogl_libcheck
-             sim_ac_ogl_libs="-l${sim_ac_ogl_libcheck} $sim_ac_oglchk_pthreadslib"
+             sim_ac_ogl_libs=$sim_ac_oglchk_pthreadslib
+             if test -n "${sim_ac_ogl_libcheck}"; then
+               sim_ac_ogl_lib=$sim_ac_ogl_libcheck
+               sim_ac_ogl_libs="-l${sim_ac_ogl_libcheck} $sim_ac_oglchk_pthreadslib"
+             fi
             ]
           )
         fi
