@@ -45,6 +45,7 @@ public:
   static Model get(SoState * const state);
   static Model getDefault();
 
+  static const SoLightModelElement *getInstance(SoState *state);
 };
 
 #endif // !__SOLIGHTMODELELEMENT_H__

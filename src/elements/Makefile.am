@@ -56,6 +56,7 @@ ALLSOURCES = \
 	SoGLViewingMatrixElement.cpp SoGLViewingMatrixElement.h \
 	SoGLViewportRegionElement.cpp SoGLViewportRegionElement.h \
 	SoInt32Element.cpp SoInt32Element.h \
+	SoLazyElement.cpp SoLazyElement.h \
 	SoLightAttenuationElement.cpp SoLightAttenuationElement.h \
 	SoLightElement.cpp SoLightElement.h \
 	SoLightModelElement.cpp SoLightModelElement.h \
@@ -151,6 +152,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoGLViewingMatrixElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLViewportRegionElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoInt32Element.h \
+	$(top_srcdir)/include/Inventor/elements/SoLazyElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoLightAttenuationElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoLightElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoLightModelElement.h \

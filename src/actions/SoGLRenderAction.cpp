@@ -50,6 +50,7 @@
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -196,7 +197,7 @@ SoGLRenderAction::initClass(void)
   ENABLE_ELEMENT(SoGLNormalizeElement);
 
   ENABLE_ELEMENT(SoOverrideElement);
-
+  ENABLE_ELEMENT(SoLazyElement);
 
   // FIXME: see comment on SoGLViewportRegionElement::set in
   // beginTraversel() below. 19990228 mortene.
@@ -566,6 +567,9 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   SoShapeStyleElement::setTransparencyType(this->getState(), this->transType);
 
   SoGLViewportRegionElement::set(this->getState(), this->viewport);
+  SoLazyElement::setTransparencyType(this->getState(), (int32_t)this->transType);
+  SoLazyElement::setBlending(this->getState(), FALSE);
+  SoLazyElement::setColorMaterial(this->getState(), TRUE);
 
   // FIXME: is this the correct place to set these elements? 19990314 mortene.
   SoDecimationPercentageElement::set(this->getState(), 1.0f);

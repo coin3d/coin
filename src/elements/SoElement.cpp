@@ -181,6 +181,7 @@ SoElement::initElements(void)
 
   SoGLShadeModelElement::initClass();
   SoGLNormalizeElement::initClass();
+  SoLazyElement::initClass();
 }
 
 /*!

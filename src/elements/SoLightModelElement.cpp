@@ -113,3 +113,12 @@ SoLightModelElement::getDefault()
 {
   return PHONG;
 }
+
+//! FIXME: write doc
+
+const SoLightModelElement *
+SoLightModelElement::getInstance(SoState *state)
+{
+  return (const SoLightModelElement *)
+    SoElement::getConstElement(state, classStackIndex);
+}

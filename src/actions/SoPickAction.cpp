@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 
 // *************************************************************************
 
@@ -129,6 +130,7 @@ SoPickAction::initClass(void)
   ENABLE_ELEMENT(SoViewportRegionElement);
   ENABLE_ELEMENT(SoDecimationTypeElement);
   ENABLE_ELEMENT(SoDecimationPercentageElement);
+  ENABLE_ELEMENT(SoLazyElement);
 }
 
 // *************************************************************************

@@ -152,6 +152,7 @@ ALLSOURCES = \
 	SoGLViewingMatrixElement.cpp SoGLViewingMatrixElement.h \
 	SoGLViewportRegionElement.cpp SoGLViewportRegionElement.h \
 	SoInt32Element.cpp SoInt32Element.h \
+	SoLazyElement.cpp SoLazyElement.h \
 	SoLightAttenuationElement.cpp SoLightAttenuationElement.h \
 	SoLightElement.cpp SoLightElement.h \
 	SoLightModelElement.cpp SoLightModelElement.h \
@@ -248,6 +249,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoGLViewingMatrixElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoGLViewportRegionElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoInt32Element.h \
+	$(top_srcdir)/include/Inventor/elements/SoLazyElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoLightAttenuationElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoLightElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoLightModelElement.h \
@@ -346,7 +348,7 @@ SoGLShininessElement.lo SoGLSpecularColorElement.lo \
 SoGLTextureCoordinateElement.lo SoGLTextureEnabledElement.lo \
 SoGLTextureImageElement.lo SoGLTextureMatrixElement.lo \
 SoGLUpdateAreaElement.lo SoGLViewingMatrixElement.lo \
-SoGLViewportRegionElement.lo SoInt32Element.lo \
+SoGLViewportRegionElement.lo SoInt32Element.lo SoLazyElement.lo \
 SoLightAttenuationElement.lo SoLightElement.lo SoLightModelElement.lo \
 SoLinePatternElement.lo SoLineWidthElement.lo \
 SoLocalBBoxMatrixElement.lo SoMaterialBindingElement.lo \
@@ -389,7 +391,7 @@ SoGLShininessElement.lo SoGLSpecularColorElement.lo \
 SoGLTextureCoordinateElement.lo SoGLTextureEnabledElement.lo \
 SoGLTextureImageElement.lo SoGLTextureMatrixElement.lo \
 SoGLUpdateAreaElement.lo SoGLViewingMatrixElement.lo \
-SoGLViewportRegionElement.lo SoInt32Element.lo \
+SoGLViewportRegionElement.lo SoInt32Element.lo SoLazyElement.lo \
 SoLightAttenuationElement.lo SoLightElement.lo SoLightModelElement.lo \
 SoLinePatternElement.lo SoLineWidthElement.lo \
 SoLocalBBoxMatrixElement.lo SoMaterialBindingElement.lo \
@@ -465,9 +467,10 @@ $(DEPDIR)/SoGLTextureMatrixElement.Plo \
 $(DEPDIR)/SoGLUpdateAreaElement.Plo \
 $(DEPDIR)/SoGLViewingMatrixElement.Plo \
 $(DEPDIR)/SoGLViewportRegionElement.Plo $(DEPDIR)/SoInt32Element.Plo \
-$(DEPDIR)/SoLightAttenuationElement.Plo $(DEPDIR)/SoLightElement.Plo \
-$(DEPDIR)/SoLightModelElement.Plo $(DEPDIR)/SoLinePatternElement.Plo \
-$(DEPDIR)/SoLineWidthElement.Plo $(DEPDIR)/SoLocalBBoxMatrixElement.Plo \
+$(DEPDIR)/SoLazyElement.Plo $(DEPDIR)/SoLightAttenuationElement.Plo \
+$(DEPDIR)/SoLightElement.Plo $(DEPDIR)/SoLightModelElement.Plo \
+$(DEPDIR)/SoLinePatternElement.Plo $(DEPDIR)/SoLineWidthElement.Plo \
+$(DEPDIR)/SoLocalBBoxMatrixElement.Plo \
 $(DEPDIR)/SoMaterialBindingElement.Plo \
 $(DEPDIR)/SoModelMatrixElement.Plo $(DEPDIR)/SoNormalBindingElement.Plo \
 $(DEPDIR)/SoNormalElement.Plo $(DEPDIR)/SoOverrideElement.Plo \
@@ -672,6 +675,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoGLViewingMatrixElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLViewportRegionElement.Plo
 @AMDEP@include $(DEPDIR)/SoInt32Element.Plo
+@AMDEP@include $(DEPDIR)/SoLazyElement.Plo
 @AMDEP@include $(DEPDIR)/SoLightAttenuationElement.Plo
 @AMDEP@include $(DEPDIR)/SoLightElement.Plo
 @AMDEP@include $(DEPDIR)/SoLightModelElement.Plo
