@@ -13,8 +13,9 @@ endif
 RegularSources = \
 	memalloc.c \
 	SbBSPTree.cpp \
-	SbBox2f.cpp \
 	SbBox2s.cpp \
+	SbBox2f.cpp \
+	SbBox2d.cpp \
 	SbBox3f.cpp \
 	SbClip.cpp \
 	SbColor.cpp \

@@ -109,8 +109,9 @@ libCoininc_HEADERS = \
 	../include/Inventor/SbLinear.h \
 	../include/Inventor/SbDPLinear.h \
 	../include/Inventor/SoLists.h \
-	../include/Inventor/SbBox2f.h \
 	../include/Inventor/SbBox2s.h \
+	../include/Inventor/SbBox2f.h \
+	../include/Inventor/SbBox2d.h \
 	../include/Inventor/SbBox3f.h \
 	../include/Inventor/SbClip.h \
 	../include/Inventor/SbColor.h \
