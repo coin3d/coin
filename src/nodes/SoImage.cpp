@@ -620,6 +620,15 @@ SoImage::getImage(SbVec2s & size, int & nc)
       case 3: format = GL_RGB; break;
       case 4: format = GL_RGBA; break;
       }
+      glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+      glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+      glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+      glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+      glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+      glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+      glPixelStorei(GL_PACK_ALIGNMENT, 1);
+
       gluScaleImage(format, orgsize[0], orgsize[1],
                     GL_UNSIGNED_BYTE, (void*) orgdata,
                     newsize[0], newsize[1], GL_UNSIGNED_BYTE,

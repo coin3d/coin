@@ -313,7 +313,17 @@ SoGLImage::createHandle(void)
     case 3: format = GL_RGB; break;
     case 4: format = GL_RGBA; break;
     }
-    gluScaleImage(format, this->size[0], this->size[1],
+
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+    glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+    glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    
+    gluScaleImage(format, xsize, ysize,
                   GL_UNSIGNED_BYTE, (void*) this->bytes,
                   newx, newy, GL_UNSIGNED_BYTE,
                   (void*)glimage_tmpimagebuffer);
