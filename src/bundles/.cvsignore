@@ -1,0 +1,7 @@
+.libs
+.deps
+Makefile
+libbundles.la
+SoBundle.lo
+SoMaterialBundle.lo
+SoTextureCoordinateBundle.lo

@@ -17,6 +17,13 @@
  *
 \**************************************************************************/
 
+/*
+  NOTE: SbBasic.h is automatically generated from
+  SbBasic.h.in.  _Don't_ edit SbBasic.h.
+
+  19990913 mortene.
+*/
+
 #ifndef __SBBASIC_H__
 #define __SBBASIC_H__
 
@@ -70,7 +77,9 @@
 
 typedef int SbBool;
 
-#ifdef _WIN32 // FIXME: this should be a HAVE_M_PI_DEFINITION check. 19990808 mortene.
+// FIXME: this should be a HAVE_M_PI_DEFINITION check.
+// 19990808 mortene.
+#ifdef _WIN32
 #define M_PI 3.14159265358979323846
 #endif // _WIN32
 
@@ -86,7 +95,7 @@ typedef int SbBool;
 //   SbClamp( Val, Min, Max )  - returns clamped value
 //   SbSwap( Val1, Val2 )      - swaps the two values (no return value)
 //
-// FIXME: make Doxygen doc for these methods. 19990425 mortene.
+// FIXME: write Doxygen doc for these methods. 19990425 mortene.
 
 template <class Type>
 inline Type SbAbs( Type Val ) {
@@ -118,6 +127,10 @@ inline void SbSwap( Type & A, Type & B ) {
 // Make sure we don't compile in the assert() code in the release
 // version. Note: no direct testing on the NDEBUG flag should be made
 // in the Coin library, use the COIN_DEBUG flag instead.
+
+// FIXME: move this into the configure scheme, as it it only used
+// during compilation and should not be visible from any header
+// file. 19990913 mortene.
 #ifndef COIN_DEBUG
 #define NDEBUG 1
 #endif // !COIN_DEBUG
@@ -129,10 +142,12 @@ inline void SbSwap( Type & A, Type & B ) {
 #define __COIN__
 
 // These are available for adding or omitting features based on Coin
-// verson numbers in "client" sources.
-#define COIN_VERSION_MAJOR 0
-#define COIN_VERSION_MINOR 9
-#define COIN_VERSION_MICRO 0
-#define COIN_VERSION_STR "0.9.0"
+// verson numbers in "client" sources. NB: they are automatically
+// synchronized with the settings in configure.in when configure is
+// run.
+#define COIN_VERSION_MAJOR @COIN_MAJOR_VERSION@
+#define COIN_VERSION_MINOR @COIN_MINOR_VERSION@
+#define COIN_VERSION_MICRO @COIN_MICRO_VERSION@
+#define COIN_VERSION_STR "@COIN_VERSION@"
 
 #endif // !__SBBASIC_H__

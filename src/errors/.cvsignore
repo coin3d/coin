@@ -1,0 +1,8 @@
+.libs
+.deps
+Makefile
+liberrors.la
+SoDebugError.lo
+SoError.lo
+SoMemoryError.lo
+SoReadError.lo

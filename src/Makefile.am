@@ -100,7 +100,6 @@ libCoin_la_LDFLAGS = \
 libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/soconfig.h \
 	$(top_srcdir)/include/Inventor/confdep.h \
-	$(top_srcdir)/include/Inventor/SbBasic.h \
 	$(top_srcdir)/include/Inventor/SbBox.h \
 	$(top_srcdir)/include/Inventor/SbLinear.h \
 	$(top_srcdir)/include/Inventor/SoLists.h \

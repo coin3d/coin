@@ -1,0 +1,5 @@
+.libs
+.deps
+Makefile
+libnodekits.la
+SoNodeKit.lo

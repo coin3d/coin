@@ -1,0 +1,9 @@
+.libs
+.deps
+Makefile
+libcaches.la
+SoBoundingBoxCache.lo
+SoCache.lo
+SoConvexDataCache.lo
+SoNormalCache.lo
+SoTextureCoordinateCache.lo

@@ -1,0 +1,6 @@
+.libs
+.deps
+Makefile
+libVRMLnodes.la
+SoVRMLInterpOutput.lo
+SoVRMLInterpolator.lo

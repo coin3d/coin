@@ -1,0 +1,12 @@
+.libs
+.deps
+Makefile
+libmisc.la
+SoBase.lo
+SoChildList.lo
+SoGL.lo
+SoGLImage.lo
+SoNormalGenerator.lo
+SoNotification.lo
+SoState.lo
+SoTessellator.lo

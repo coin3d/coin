@@ -466,7 +466,7 @@ echo > confdefs.h
 
 # A filename unique to this package, relative to the directory that
 # configure is in, which we can look for to find out if srcdir is correct.
-ac_unique_file=include/Inventor/SbBasic.h
+ac_unique_file=src/SoDB.cpp
 
 # Find the source files, if location was not specified.
 if test -z "$srcdir"; then
@@ -2320,7 +2320,9 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "Makefile src/Makefile \
+trap 'rm -fr `echo "include/Makefile include/Inventor/Makefile \
+	include/Inventor/SbBasic.h \
+	Makefile src/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \
@@ -2444,7 +2446,9 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"Makefile src/Makefile \
+CONFIG_FILES=\${CONFIG_FILES-"include/Makefile include/Inventor/Makefile \
+	include/Inventor/SbBasic.h \
+	Makefile src/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \

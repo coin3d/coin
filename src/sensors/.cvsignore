@@ -1,0 +1,16 @@
+libsensors.la
+.libs
+.deps
+Makefile
+SoAlarmSensor.lo
+SoDataSensor.lo
+SoDelayQueueSensor.lo
+SoFieldSensor.lo
+SoIdleSensor.lo
+SoNodeSensor.lo
+SoOneShotSensor.lo
+SoPathSensor.lo
+SoSensor.lo
+SoSensorManager.lo
+SoTimerQueueSensor.lo
+SoTimerSensor.lo

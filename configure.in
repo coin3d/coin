@@ -1,5 +1,5 @@
 dnl  This can be any file in the package.
-AC_INIT(include/Inventor/SbBasic.h)
+AC_INIT(src/SoDB.cpp)
 
 dnl  Locate C++ compiler.
 AC_PROG_CXX
@@ -99,7 +99,9 @@ dnl *******************************************************************
 dnl * List all files configure shall generate.
 dnl *******************************************************************
 
-AC_OUTPUT(Makefile src/Makefile \
+AC_OUTPUT(include/Makefile include/Inventor/Makefile \
+	include/Inventor/SbBasic.h \
+	Makefile src/Makefile \
 	src/VRMLnodes/Makefile src/actions/Makefile src/bundles/Makefile \
 	src/caches/Makefile src/elements/Makefile src/engines/Makefile \
 	src/errors/Makefile src/events/Makefile src/fields/Makefile \

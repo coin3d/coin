@@ -1,0 +1,15 @@
+.libs
+.deps
+Makefile
+libprojectors.la
+SbCylinderPlaneProjector.lo
+SbCylinderProjector.lo
+SbCylinderSectionProjector.lo
+SbCylinderSheetProjector.lo
+SbLineProjector.lo
+SbPlaneProjector.lo
+SbProjector.lo
+SbSpherePlaneProjector.lo
+SbSphereProjector.lo
+SbSphereSectionProjector.lo
+SbSphereSheetProjector.lo
