@@ -20,16 +20,14 @@ software in the scientific and engineering community.
 Release 2.0.0
 =============
 
-Release 2.0.0 is a figment of your imagination.  It is the next major
-release and is months / years away from a release.  This is the
-experimental development sources that will eventually lead to the next
-major version of Coin.
+Release 2.0.0 is a major release, meaning it is not compatible with
+Coin 1.x.
 
 See the file NEWS for the summary of changes, and the file ChangeLog for
 the detailed list.
 
-The section on source code and binary compatibility is not relevant (very
-likely misinformation) for the development up to Coin 2.0.0.
+See the file INSTALL for installation instructions, and the README.*
+files for platform-specific notes.
 
 
 Source Code and Binary Compatibility
