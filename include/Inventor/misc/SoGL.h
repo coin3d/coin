@@ -48,6 +48,7 @@ class SbVec2f;
 #define SOGL_MATERIAL_PER_PART 0x08
 #define SOGL_NEED_NORMALS      0x10
 #define SOGL_NEED_TEXCOORDS    0x20
+#define SOGL_NEED_3DTEXCOORDS  0x40
 
 // render
 void sogl_render_cone(const float bottomRadius,
