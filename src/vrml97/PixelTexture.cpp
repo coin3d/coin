@@ -21,7 +21,7 @@
   \class SoVRMLPixelTexture SoVRMLPixelTexture.h Inventor/VRMLnodes/SoVRMLPixelTexture.h
   \brief The SoVRMLPixelTexture class is used for mapping a texture image onto geometry..
   \ingroup VRMLnodes
-  
+
   \WEB3DCOPYRIGHT
 
   \verbatim
@@ -31,7 +31,7 @@
     field        SFBool   repeatT    TRUE
   }
   \endverbatim
-  
+
   The PixelTexture node defines a 2D image-based texture map as an
   explicit array of pixel values (image field) and parameters
   controlling tiling repetition of the texture onto geometry.  Texture
@@ -44,11 +44,11 @@
   See 4.6.11, Texture maps
   (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.11),
   for a general description of texture
-  maps. Figure 6.13 depicts an example PixelTexture.  
+  maps. Figure 6.13 depicts an example PixelTexture.
 
   <center>
   <img src="http://www.web3d.org/technicalinfo/specifications/vrml97/Images/PixelTexture.gif">
-  Figure 6.13 -- PixelTexture node 
+  Figure 6.13 -- PixelTexture node
   </center>
 
   See 4.14, Lighting model
@@ -89,6 +89,17 @@
 #include <assert.h>
 #include <stddef.h>
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoVRMLPixelTextureP {
+public:
+  SoGLImage * glimage;
+  SbBool glimagevalid;
+  int readstatus;
+};
+
+#endif // DOXYGEN_SKIP_THIS
+
 SO_NODE_SOURCE(SoVRMLPixelTexture);
 
 // Doc in parent
@@ -98,18 +109,23 @@ SoVRMLPixelTexture::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLPixelTexture, SO_VRML97_NODE_TYPE);
 }
 
+#undef THIS
+#define THIS this->pimpl
+
 /*!
   Constructor.
 */
 SoVRMLPixelTexture::SoVRMLPixelTexture(void)
 {
+  THIS = new SoVRMLPixelTextureP;
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLPixelTexture);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(image, (SbVec2s(0,0), 0, NULL));
 
-  this->glimage = NULL;
-  this->glimagevalid = FALSE;
-  this->readstatus = 1;
+  THIS->glimage = NULL;
+  THIS->glimagevalid = FALSE;
+  THIS->readstatus = 1;
 }
 
 /*!
@@ -117,7 +133,8 @@ SoVRMLPixelTexture::SoVRMLPixelTexture(void)
 */
 SoVRMLPixelTexture::~SoVRMLPixelTexture()
 {
-  if (this->glimage) this->glimage->unref(NULL);
+  if (THIS->glimage) THIS->glimage->unref(NULL);
+  delete THIS;
 }
 
 // Doc in parent
@@ -144,7 +161,7 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
     return;
 
   float quality = SoTextureQualityElement::get(state);
-  if (!this->glimagevalid) {
+  if (!THIS->glimagevalid) {
     int nc;
     SbVec2s size;
     const unsigned char * bytes =
@@ -154,34 +171,34 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
       SoTextureScalePolicyElement::DONT_SCALE;
 
     if (needbig &&
-        (this->glimage == NULL ||
-         this->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
-      if (this->glimage) this->glimage->unref(state);
-      this->glimage = new SoGLBigImage();
+        (THIS->glimage == NULL ||
+         THIS->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
+      if (THIS->glimage) THIS->glimage->unref(state);
+      THIS->glimage = new SoGLBigImage();
     }
     else if (!needbig &&
-             (this->glimage == NULL ||
-              this->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
-      if (this->glimage) this->glimage->unref(state);
-      this->glimage = new SoGLImage();
+             (THIS->glimage == NULL ||
+              THIS->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
+      if (THIS->glimage) THIS->glimage->unref(state);
+      THIS->glimage = new SoGLImage();
     }
 
     if (bytes && size != SbVec2s(0,0)) {
-      this->glimage->setData(bytes, size, nc,
+      THIS->glimage->setData(bytes, size, nc,
                              translateWrap(this->repeatS.getValue()),
                              translateWrap(this->repeatT.getValue()),
                              quality);
-      this->glimagevalid = TRUE;
+      THIS->glimagevalid = TRUE;
     }
   }
 
   SoGLTextureImageElement::set(state, this,
-                               this->glimagevalid ? this->glimage : NULL,
+                               THIS->glimagevalid ? THIS->glimage : NULL,
                                SoTextureImageElement::MODULATE,
                                SbColor(1.0f, 1.0f, 1.0f));
 
   SoGLTextureEnabledElement::set(state,
-                                 this, this->glimagevalid &&
+                                 this, THIS->glimagevalid &&
                                  quality > 0.0f);
 
   if (this->isOverride()) {
@@ -200,7 +217,7 @@ SbBool
 SoVRMLPixelTexture::readInstance(SoInput * in,
                                  unsigned short flags)
 {
-  this->glimagevalid = FALSE;
+  THIS->glimagevalid = FALSE;
   return inherited::readInstance(in, flags);
 }
 
@@ -210,6 +227,6 @@ SoVRMLPixelTexture::readInstance(SoInput * in,
 void
 SoVRMLPixelTexture::notify(SoNotList * list)
 {
-  this->glimagevalid = FALSE;
+  THIS->glimagevalid = FALSE;
   SoNode::notify(list);
 }

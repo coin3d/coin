@@ -24,7 +24,7 @@
 #include <Inventor/VRMLnodes/SoVRMLTexture.h>
 #include <Inventor/fields/SoSFImage.h>
 
-class SoGLImage;
+class SoVRMLPixelTextureP;
 
 class COIN_DLL_API SoVRMLPixelTexture : public SoVRMLTexture
 {
@@ -49,9 +49,7 @@ protected:
 
 
 private:
-  SoGLImage * glimage;
-  SbBool glimagevalid;
-  int readstatus;
+  SoVRMLPixelTextureP * pimpl;
 }; // class SoVRMLPixelTexture
 
 #endif // ! COIN_SOVRMLPIXELTEXTURE_H
