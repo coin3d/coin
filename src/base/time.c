@@ -27,13 +27,15 @@
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 
-#ifdef HAVE_SYS_TIMEB_H
-#include <sys/timeb.h> /* struct _timeb */
-#endif /* HAVE_SYS_TIMEB_H */
-
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h> /* gettimeofday() */
 #endif /* HAVE_SYS_TIME_H */
+
+/* On Mac OS X / Darwin, timeb.h uses time_t from time.h, so the order
+   of these two includes needs to be preserved. */
+#ifdef HAVE_SYS_TIMEB_H
+#include <sys/timeb.h> /* struct _timeb */
+#endif /* HAVE_SYS_TIMEB_H */
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> /* gettimeofday() */
