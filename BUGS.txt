@@ -1,4 +1,4 @@
-=====================================================================
+ =====================================================================
 
 002 Trying to parse this file causes an assert failure / crash (which
     should _never_ happen, of course, no matter how wrong the file
@@ -1411,6 +1411,8 @@
     SoNodekitCatalog that fails as long as this bug is present. 
 
     20021029 rolvs
+    
+    UPDATE: Fixed. 20021030 rolvs
 
 =====================================================================
 
