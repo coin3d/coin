@@ -74,6 +74,7 @@
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbClip.h>
+#include <Inventor/SbTime.h>
 #include "../tidbits.h"
 
 // SoShape.cpp grew too big, so I had to move some code into
@@ -131,28 +132,25 @@
 
 // *************************************************************************
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoShapeP {
 public:
   SoShapeP() {
     this->bboxcache = NULL;
-    this->invalidcounter = 0;
-    this->readcounter = 0;
+    this->shouldcache = FALSE;
   }
-
   ~SoShapeP() {
     if (this->bboxcache) { this->bboxcache->unref(); }
   }
+  static void calibrateBBoxCache(void);
+  static double bboxcachetimelimit;
   SoBoundingBoxCache * bboxcache;
-  int invalidcounter;
-  int readcounter;
+  SbBool shouldcache;
 #ifdef COIN_THREADSAFE
   SbMutex bboxmutex;
 #endif // COIN_THREADSAFE
 };
 
-#endif // DOXYGEN_SKIP_THIS
+double SoShapeP::bboxcachetimelimit;
 
 #ifdef COIN_THREADSAFE
 #define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
@@ -162,8 +160,8 @@ public:
 #define UNLOCK_BBOX(_thisp_)
 #endif // COIN_THREADSAFE
 
-#undef THIS
-#define THIS this->pimpl
+#undef PRIVATE
+#define PRIVATE(_thisp_) ((_thisp_)->pimpl)
 
 // *************************************************************************
 // code/structures to handle static and/or thread safe data
@@ -263,9 +261,7 @@ SO_NODE_ABSTRACT_SOURCE(SoShape);
 SoShape::SoShape(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoShape);
-
-  // don't allocate private data until we need it
-  THIS = NULL;
+  PRIVATE(this) = new SoShapeP;
 }
 
 /*!
@@ -273,7 +269,7 @@ SoShape::SoShape(void)
 */
 SoShape::~SoShape()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 // Doc in parent.
@@ -292,6 +288,7 @@ SoShape::initClass(void)
   soshape_construct_staticdata((void*) soshape_single_staticdata);
 #endif // ! COIN_THREADSAFE
 
+  SoShapeP::calibrateBBoxCache();
   coin_atexit((coin_atexit_f*) soshape_cleanup);
 }
 
@@ -352,20 +349,18 @@ SoShape::rayPick(SoRayPickAction * action)
 {
   if (this->shouldRayPick(action)) {
     this->computeObjectSpaceRay(action);
-
-    if (THIS) {
-      LOCK_BBOX(this);
-      if (!THIS->bboxcache ||
-          !THIS->bboxcache->isValid(action->getState()) ||
-          soshape_ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
-        UNLOCK_BBOX(this); // unlock as soon as possible
-        this->generatePrimitives(action);
-        return;
-      }
-      UNLOCK_BBOX(this);
+    
+    LOCK_BBOX(this);
+    if (!PRIVATE(this)->bboxcache ||
+        !PRIVATE(this)->bboxcache->isValid(action->getState()) ||
+        soshape_ray_intersect(action, PRIVATE(this)->bboxcache->getProjectedBox())) {
+      UNLOCK_BBOX(this); // unlock as soon as possible
+      this->generatePrimitives(action);
     }
     else {
-      this->generatePrimitives(action);
+      // if we get here, the ray didn't intersect the bbox in the
+      // cache and we don't need to generate the primitives.
+      UNLOCK_BBOX(this);
     }
   }
 }
@@ -465,24 +460,17 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   if (SoDrawStyleElement::get(state) == SoDrawStyleElement::INVISIBLE)
     return FALSE;
-
-  // if we have a valid bbox cache, do a view volume cull test here.
-  // FIXME: enable again when we have better logic for when to create
-  // the bbox cache (based on the number of primitives in the shape)
-  // pederb, 2002-09-11
-
-//    if (!state->isCacheOpen() && THIS) {
-//      LOCK_BBOX(this);
-//      if (THIS->bboxcache && THIS->bboxcache->isValid(state)) {
-//        if (!SoCullElement::completelyInside(state)) {
-//          if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
-//            UNLOCK_BBOX(this);
-//            return FALSE;
-//          }
-//        }
-//      }
-//      UNLOCK_BBOX(this);
-//    }
+  
+  if (!state->isCacheOpen() && !SoCullElement::completelyInside(state)) {
+    LOCK_BBOX(this);
+    if (PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state)) {
+      if (SoCullElement::cullTest(state, PRIVATE(this)->bboxcache->getProjectedBox())) {
+        UNLOCK_BBOX(this);
+        return FALSE;
+      }
+    }
+    UNLOCK_BBOX(this);
+  }
   
   SbBool transparent = SoTextureImageElement::containsTransparency(state);
   if (!transparent) {
@@ -1137,9 +1125,12 @@ void
 SoShape::notify(SoNotList * nl)
 {
   inherited::notify(nl);
-  if (THIS && THIS->bboxcache) {
-    THIS->bboxcache->invalidate();
+  LOCK_BBOX(this);
+  if (PRIVATE(this)->bboxcache) {
+    PRIVATE(this)->bboxcache->invalidate();
   }
+  PRIVATE(this)->shouldcache = FALSE;
+  UNLOCK_BBOX(this);
 }
 
 /*!
@@ -1153,8 +1144,7 @@ SoShape::notify(SoNotList * nl)
 const SoBoundingBoxCache * 
 SoShape::getBoundingBoxCache(void) const
 {
-  if (THIS) return THIS->bboxcache;
-  return NULL;
+  return PRIVATE(this)->bboxcache;
 }
 
 // return the bbox for this shape, using the cache if valid,
@@ -1162,57 +1152,92 @@ SoShape::getBoundingBoxCache(void) const
 void
 SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
-  SbBool isvalid = FALSE;
-  SbBool shouldcache = FALSE;
-
-  if (this->isOfType(SoVertexShape::getClassTypeId())) {
-    CC_GLOBAL_LOCK;
-    if (THIS == NULL) {
-      THIS = new SoShapeP;
-    }
-    CC_GLOBAL_UNLOCK;
-    
-    LOCK_BBOX(this);
-
-    if (THIS->bboxcache && THIS->bboxcache->isValid(action->getState())) {
-      isvalid = TRUE;
-    }
-    else {
-      shouldcache = TRUE;
-    }
-  }
-
+  SoState * state = action->getState();
+  LOCK_BBOX(this);
+  SbBool isvalid = PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
   if (isvalid) {
-    box = THIS->bboxcache->getProjectedBox();
+    box = PRIVATE(this)->bboxcache->getProjectedBox();
     // we know center will be set, so just fetch it from the cache
-    center = THIS->bboxcache->getCenter();
-    UNLOCK_BBOX(this);
+    center = PRIVATE(this)->bboxcache->getCenter();
   }
-  else {
-    SoState * state = action->getState();
-    SbBool storedinvalid = FALSE;
-    if (shouldcache) {
-      // must push state to make cache dependencies work
+  if (isvalid) {
+    UNLOCK_BBOX(this);
+    return;
+  }
+
+  // destroy the old cache if we have one
+  if (PRIVATE(this)->bboxcache) {
+    PRIVATE(this)->bboxcache->unref();
+    PRIVATE(this)->bboxcache = NULL;
+  }
+  
+  SbBool shouldcache = PRIVATE(this)->shouldcache;
+  SbBool storedinvalid = FALSE;
+  if (shouldcache) {
+    // must push state to make cache dependencies work
+    state->push();
+    storedinvalid = SoCacheElement::setInvalid(FALSE);
+    assert(PRIVATE(this)->bboxcache == NULL);
+    PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
+    PRIVATE(this)->bboxcache->ref();
+    SoCacheElement::set(state, PRIVATE(this)->bboxcache);
+  }
+  SbTime begin = SbTime::getTimeOfDay();
+  this->computeBBox(action, box, center);
+  SbTime end = SbTime::getTimeOfDay();
+  if (shouldcache) {
+    PRIVATE(this)->bboxcache->set(box, TRUE, center);
+    // pop state since we pushed it
+    state->pop();
+    SoCacheElement::setInvalid(storedinvalid);
+  }
+  // only create cache if calculating it took longer than the limit
+  else if ((end.getValue() - begin.getValue()) >= SoShapeP::bboxcachetimelimit) {
+    PRIVATE(this)->shouldcache = TRUE;
+    if (action->isOfType(SoGetBoundingBoxAction::getClassTypeId())) {
+      // just recalculate the bbox so that the cache is created at
+      // once. SoGLRenderAction and SoRayPickAction might need it.
       state->push();
       storedinvalid = SoCacheElement::setInvalid(FALSE);
-      if (THIS->bboxcache) THIS->bboxcache->unref();
-      THIS->bboxcache = new SoBoundingBoxCache(state);
-      THIS->bboxcache->ref();
-      SoCacheElement::set(state, THIS->bboxcache);
-    }
-    this->computeBBox(action, box, center);
-    if (shouldcache) {
-      THIS->bboxcache->set(box, TRUE, center);
+      assert(PRIVATE(this)->bboxcache == NULL);
+      PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
+      PRIVATE(this)->bboxcache->ref();
+      SoCacheElement::set(state, PRIVATE(this)->bboxcache);
+      box.makeEmpty();
+      this->computeBBox(action, box, center);
+      PRIVATE(this)->bboxcache->set(box, TRUE, center);
       // pop state since we pushed it
       state->pop();
       SoCacheElement::setInvalid(storedinvalid);
-      UNLOCK_BBOX(this);
     }
   }
+  UNLOCK_BBOX(this);
 }
 
+void 
+SoShapeP::calibrateBBoxCache(void)
+{
+  int i;
+  const int ARRAYSIZE = 100;
 
-#undef THIS
+  // just create 100 random vertices
+  SbVec3f vecarray[ARRAYSIZE];
+  for (i = 0; i < ARRAYSIZE; i++) {
+    for (int j = 0; j < 3; j++) {
+      vecarray[i][j] = ((float) rand()) / ((float) RAND_MAX);
+    }
+  }
+  SbTime begin = SbTime::getTimeOfDay();
+  SbBox3f bbox;
+  bbox.makeEmpty();
+  for (i = 0; i < ARRAYSIZE; i++) {
+    bbox.extendBy(vecarray[i]);
+  }
+  SbTime end = SbTime::getTimeOfDay();
+  SoShapeP::bboxcachetimelimit = end.getValue() - begin.getValue();
+}
+
+#undef PRIVATE
 #undef LOCK_BBOX
 #undef UNLOCK_BBOX
 
