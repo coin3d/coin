@@ -18,9 +18,10 @@ hit by the problem:
 
       # mv /unix.install /unix
 
-   An alternative fix for this (if you don't have root access to the
-   system, for instance) is to re-run ``configure'' with the
-   "--enable-compact" option.
+   An alternative fix for this (for instance if you don't have root
+   access to the system, or don't want to lose your uptime count, or
+   don't have the balls to make and install a new kernel) is to re-run
+   ``configure'' with the "--enable-compact" option.
 
 
  2 If linking fails with the error messages:
