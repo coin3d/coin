@@ -71,6 +71,11 @@ sosfrotation_read_value(SoInput * in, SbRotation & r)
     return FALSE;
   }
 
+  // vrml97 identity rotations are often specified with a null vector.
+  // test for this and just set to z-axis.
+  if (axis == SbVec3f(0.0f, 0.0f, 0.0f) && angle == 0.0f) {
+    axis = SbVec3f(0.0f, 0.0f, 1.0f);
+  }
   r.setValue(axis, angle);
   return TRUE;
 }
