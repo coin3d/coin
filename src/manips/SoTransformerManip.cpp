@@ -79,7 +79,7 @@ SoTransformerManip::~SoTransformerManip()
 
 /*!
   Convenience function to use the
-  SoTransformDragger::isLocateHighlighting() method of the embedded
+  SoTransformerDragger::isLocateHighlighting() method of the embedded
   dragger. See documentation of that method.
 */
 SbBool
@@ -98,7 +98,7 @@ SoTransformerManip::isLocateHighlighting(void)
 
 /*!
   Convenience function to use the
-  SoTransformDragger::setLocateHighlighting() method of the embedded
+  SoTransformerDragger::setLocateHighlighting() method of the embedded
   dragger. See documentation of that method.
 */
 void
@@ -117,7 +117,7 @@ SoTransformerManip::setLocateHighlighting(SbBool onoff)
 }
 
 /*!
-  Convenience function to use the SoTransformDragger::unsquishKnobs()
+  Convenience function to use the SoTransformerDragger::unsquishKnobs()
   method of the embedded dragger. See documentation of that method.
 */
 void

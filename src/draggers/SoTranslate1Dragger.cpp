@@ -23,10 +23,15 @@
 
 /*!
   \class SoTranslate1Dragger SoTranslate1Dragger.h Inventor/draggers/SoTranslate1Dragger.h
-  \brief The SoTranslate1Dragger class is (FIXME: doc)
+  \brief The SoTranslate1Dragger class provides a mechanism for the end-user to translate along an axis.
   \ingroup draggers
 
-  FIXME: document class
+  Use this dragger to allow the end-user of your application to
+  translate along the X-axis and the Y-axis at the same time, ie
+  freely inside a 3D plane. (Use a transformation node in front of the
+  dragger to position it and re-orient it to translate in any plane.)
+
+  \sa SoTranslate2Dragger, SoDragPointDragger
 */
 
 #include <Inventor/draggers/SoTranslate1Dragger.h>
@@ -45,6 +50,30 @@
 #endif // COIN_DEBUG
 
 #include <data/draggerDefaults/translate1Dragger.h>
+
+/*!
+  \var SoSFVec3f SoTranslate1Dragger::translation
+
+  Continuously updated to contain the current translation from the
+  dragger's local origo position. Only the first component (the X
+  value) can be changed by the end-user.
+
+  The application programmer applying this dragger in his code should
+  connect the relevant node fields in the scene to this field to make
+  it follow the dragger.
+*/
+
+/*!
+  \var SbLineProjector * SoTranslate1Dragger::lineProj
+
+  The SbLineProjector instance used for projecting from 2D mouse
+  cursor positions to 3D points.
+*/
+
+/*!
+  \var SoFieldSensor * SoTranslate1Dragger::fieldSensor
+  \internal
+*/
 
 
 SO_KIT_SOURCE(SoTranslate1Dragger);

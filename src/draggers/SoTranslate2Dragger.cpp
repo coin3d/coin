@@ -23,10 +23,18 @@
 
 /*!
   \class SoTranslate2Dragger SoTranslate2Dragger.h Inventor/draggers/SoTranslate2Dragger.h
-  \brief The SoTranslate2Dragger class is (FIXME: doc)
+  \brief The SoTranslate2Dragger class provides a mechanism for the end-user to translate in a plane.
   \ingroup draggers
 
-  FIXME: document class
+  Use this dragger to allow the end-user of your application to
+  translate along the X-axis and the Y-axis at the same time, ie
+  freely inside a 3D plane. (Use a transformation node in front of the
+  dragger to position it and re-orient it to translate in any plane.)
+
+  By holding down a \c SHIFT key, the end-user can temporarily
+  constrain the dragger to a single one of the two axes.
+
+  \sa SoTranslate1Dragger, SoDragPointDragger
 */
 
 #include <Inventor/draggers/SoTranslate2Dragger.h>
@@ -44,7 +52,36 @@
 #define CONSTRAINT_X    2
 #define CONSTRAINT_Y    3
 
+/*!
+  \var SoSFVec3f SoTranslate2Dragger::translation
+
+  Continuously updated to contain the current translation from the
+  dragger's local origo position. Only the first two components (the X
+  and Y values) can be changed by the end-user.
+
+  The application programmer applying this dragger in his code should
+  connect the relevant node fields in the scene to this field to make
+  it follow the dragger.
+*/
+
+/*!
+  \var SbPlaneProjector * SoTranslate2Dragger::planeProj
+
+  The SbPlaneProjector instance used for projecting from 2D mouse
+  cursor positions to 3D points.
+*/
+
+/*!
+  \var SoFieldSensor * SoTranslate2Dragger::fieldSensor
+  \internal
+*/
+/*!
+  \var SbVec3f SoTranslate2Dragger::worldRestartPt
+  \internal
+*/
+
 SO_KIT_SOURCE(SoTranslate2Dragger);
+
 
 // doc in superclass
 void
