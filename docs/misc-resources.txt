@@ -241,3 +241,8 @@ THE LINKS
 
 * Binary native Win32 packages for misc image libraries used by simage:
   <URL:http://gnuwin32.sourceforge.net>
+
+* MSVC++ run-time array bounds (and other) checking (but probably only
+  for VC.NET?):
+
+  <URL:http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccore/html/vcrefRTCRuntimeChecks.asp>
