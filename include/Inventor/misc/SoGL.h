@@ -17,26 +17,25 @@
  *
 \**************************************************************************/
 
-#ifndef _sogl_h_
-#define _sogl_h_
+#ifndef COIN_SOGL_H
+#define COIN_SOGL_H
 
 //
-// this file containes some useful (and necessary) GL wraparounds.
-// The sogl_global_init() function _must_ be called once before
-// any OpenGL rendering can occur.
-//
-// Mainly this file has functions for checking limits and which
-// extensions are available for the GL implementation.
+// This file contains GL code which is shared between two or more nodes.
 //
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
 
+class SoShape;
+class SoState;
+class SoAction;
 class SoMaterialBundle;
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 class SbVec3f;
 class SbVec2f;
+
 
 void sogl_global_init();
 
@@ -98,6 +97,18 @@ unsigned int sogl_create_texture(const int wrapS, const int wrapT,
 void sogl_apply_texture(const unsigned int handle);
 void sogl_free_texture(unsigned int handle);
 
+// nurbs rendering and tesselation
+void sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
+                               void * nurbsrenderer, 
+                               const int numuctrlpts, const int numvctrlpts,
+                               const float * uknotvec, const float * vknotvec,
+                               const int numuknot, const int numvknot,
+                               const int numsctrlpts, const int numtctrlpts,
+                               const float * sknotvec, const float * tknotvec,
+                               const int numsknot, const int numtknot,
+                               const int32_t * coordindex, const int32_t * texcoordindex,
+                               const SbBool glrender);
+
 //
 // optimized faceset rendering functions.
 // the functions are automagically generated based on a template function.
@@ -151,4 +162,4 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
                     const int texture,
                     const int drawAsPoints);
 
-#endif // _sogl_h_
+#endif // COIN_SOGL_H

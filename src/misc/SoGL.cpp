@@ -19,9 +19,23 @@
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/actions/SoAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
+#include <Inventor/elements/SoProfileElement.h>
+#include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/nodes/SoShape.h>
+#include <Inventor/nodes/SoProfile.h>
+
 #include <assert.h>
 #include <stdio.h>
 
@@ -31,8 +45,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <string.h>
-
-
 
 #if !GL_VERSION_1_1 && (GL_EXT_polygon_offset || GL_EXT_texture_object || GL_EXT_vertex_array)
 // Function used to check if an extension is supported. (Wrapped in
@@ -688,7 +700,7 @@ really_create_texture(const int wrapS, const int wrapT,
                   wrapT ? GL_CLAMP : GL_REPEAT);
 
   // set filtering to legal values for non mipmapped texture
-  if (!dlist && !mipmap) { 
+  if (!dlist && !mipmap) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   }
@@ -999,6 +1011,185 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
 
 #endif // !NO_LINESET_RENDER
 
+
+void
+sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
+                          void * nurbsrenderer, 
+                          const int numuctrlpts, const int numvctrlpts,
+                          const float * uknotvec, const float * vknotvec,
+                          const int numuknot, const int numvknot,
+                          const int numsctrlpts, const int numtctrlpts,
+                          const float * sknotvec, const float * tknotvec,
+                          const int numsknot, const int numtknot,
+                          const int32_t * coordindex, const int32_t * texcoordindex,
+                          const SbBool glrender)
+{
+#if !GLU_VERSION_1_3
+  if (!glrender) {
+#if COIN_DEBUG && 1 // debug
+    static int first = 1;
+    if (first) {
+      SoDebugError::postInfo("sogl_render_nurbs_surface",
+                             "NURBS tessellator requires GLU 1.3.");
+      first = 0;
+    }
+#endif // debug
+    return;
+  }
+#endif // !GLU_VERSION_1_3
+
+  GLUnurbs * nurbsobj = (GLUnurbs*) nurbsrenderer;
+  SoState * state = action->getState();
+
+  const SoCoordinateElement * coords =
+    SoCoordinateElement::getInstance(state);
+
+  switch (SoComplexityTypeElement::get(state)) {
+  case SoComplexityTypeElement::SCREEN_SPACE:
+    {
+      SbBox3f box;
+      SbVec3f center;
+      shape->computeBBox(action, box, center);
+      SbVec2s size;
+      SoShape::getScreenSize(state, box, size);
+      float maxpix = (float) SbMax(size[0], size[1]);
+      if (maxpix < 1.0f) maxpix = 1.0f;
+      float complexity = SoComplexityElement::get(state);
+      complexity = SbMin(200.0f, complexity * maxpix);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, complexity);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, complexity);
+      break;
+    }
+  case SoComplexityTypeElement::OBJECT_SPACE:
+    {
+      float complexity = SoComplexityElement::get(state);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, 200.0f * complexity);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, 200.0f * complexity);
+      break;
+    }
+  case SoComplexityTypeElement::BOUNDING_BOX:
+    assert(0 && "should never get here");
+    break;
+  default:
+    assert(0 && "unknown complexity type");
+    break;
+  }
+
+  gluNurbsProperty(nurbsobj, (GLenum) GLU_DISPLAY_MODE, GLU_FILL);
+#if GLU_VERSION_1_3
+  gluNurbsProperty(nurbsobj, (GLenum) GLU_NURBS_MODE,
+                   glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR);
+#endif // GLU_VERSION_1_3
+  // need to load sampling matrices?
+  gluNurbsProperty(nurbsobj, (GLenum) GLU_AUTO_LOAD_MATRIX, glrender);
+
+  if (!glrender) { // supply the sampling matrices
+    SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);
+    glmodelmatrix.multLeft(SoModelMatrixElement::get(state));
+    SbVec2s origin = SoViewportRegionElement::get(state).getViewportOriginPixels();
+    SbVec2s size = SoViewportRegionElement::get(state).getViewportSizePixels();
+    GLint viewport[4];
+    viewport[0] = origin[0];
+    viewport[1] = origin[1];
+    viewport[2] = size[0];
+    viewport[3] = size[1];
+    gluLoadSamplingMatrices(nurbsobj,
+                            (float*)glmodelmatrix,
+                            SoProjectionMatrixElement::get(state)[0],
+                            viewport);
+  }
+
+  int dim = coords->is3D() ? 3 : 4;
+
+  const SoCoordinateElement * coordelem =
+    SoCoordinateElement::getInstance(state);
+
+  GLfloat * ptr = coords->is3D() ?
+    (GLfloat *)coordelem->getArrayPtr3() :
+    (GLfloat *)coordelem->getArrayPtr4();
+
+  gluBeginSurface(nurbsobj);
+  gluNurbsSurface(nurbsobj,
+                  numuknot, (GLfloat*) uknotvec,
+                  numvknot, (GLfloat*) vknotvec,
+                  dim, dim * numuctrlpts,
+                  ptr, numuknot - numuctrlpts, numvknot - numvctrlpts,
+                  (dim == 3) ? GL_MAP2_VERTEX_3 : GL_MAP2_VERTEX_4);
+
+  const SoTextureCoordinateElement * tc =
+    SoTextureCoordinateElement::getInstance(state);
+  if ((tc->getType() == SoTextureCoordinateElement::EXPLICIT) &&
+      tc->getNum()) {
+    int texdim = tc->is2D() ? 2 : 4;
+    GLfloat * texptr = tc->is2D() ?
+      (GLfloat*) tc->getArrayPtr2() :
+      (GLfloat*) tc->getArrayPtr4();
+    gluNurbsSurface(nurbsobj,
+                    numsknot, (GLfloat*) sknotvec,
+                    numtknot, (GLfloat*) tknotvec,
+                    texdim, texdim * numsctrlpts,
+                    texptr, numsknot - numsctrlpts, numtknot - numtctrlpts,
+                    (texdim == 2) ? GL_MAP2_TEXTURE_COORD_2 : GL_MAP2_TEXTURE_COORD_4);
+
+  }
+  else if ((tc->getType() == SoTextureCoordinateElement::DEFAULT) ||
+           (tc->getType() == SoTextureCoordinateElement::EXPLICIT)) {
+    static float defaulttex[] = {
+      0.0f, 0.0f,
+      1.0f, 0.0f,
+      0.0f, 1.0f,
+      1.0f, 1.0f
+    };
+    static GLfloat defaulttexknot[] = {0.0f, 0.0f, 1.0f, 1.0f};
+    gluNurbsSurface(nurbsobj, 4, defaulttexknot, 4, defaulttexknot,
+                    2, 2*2, defaulttex, 4-2, 4-2,
+                    GL_MAP2_TEXTURE_COORD_2);
+  }
+  const SoNodeList & profilelist = SoProfileElement::get(state);
+  int i, n = profilelist.getLength();
+  SbBool istrimming = FALSE;
+
+  if (n) {
+    for (i = 0; i < n; i++) {
+      float * points;
+      int numpoints;
+      int floatspervec;
+      int numknots;
+      float * knotvector;
+
+      SoProfile * profile = (SoProfile*) profilelist[i];
+
+      if (istrimming && (profile->linkage.getValue() != SoProfileElement::ADD_TO_CURRENT)) {
+        istrimming = FALSE;
+        gluEndTrim(nurbsobj);
+      }
+      if (!istrimming) {
+        gluBeginTrim(nurbsobj);
+        istrimming = TRUE;
+      }
+      profile->getTrimCurve(state, numpoints,
+                            points, floatspervec,
+                            numknots, knotvector);
+
+      if (numknots) {
+        gluNurbsCurve(nurbsobj, numknots, knotvector, floatspervec,
+                      points, numknots-numpoints, floatspervec == 2 ?
+                      (GLenum) GLU_MAP1_TRIM_2 : (GLenum) GLU_MAP1_TRIM_3);
+        
+      }
+      
+      else {
+        gluPwlCurve(nurbsobj, numpoints, points, floatspervec,
+                    floatspervec == 2 ?
+                    (GLenum) GLU_MAP1_TRIM_2 : (GLenum) GLU_MAP1_TRIM_3 );
+      }
+    }
+    if (istrimming) gluEndTrim(nurbsobj);
+  }
+  gluEndSurface(nurbsobj);
+}
 
 
 // **************************************************************************
