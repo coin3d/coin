@@ -202,6 +202,7 @@ SoWriterefCounter::initClass(void)
 void 
 SoWriterefCounter::debugCleanup(void)
 {
+  PRIVATE(this)->sobase2id->clear();
   PRIVATE(this)->outputdata->debugCleanup();
 }
 
@@ -231,6 +232,7 @@ SoWriterefCounter::instance(SoOutput * out)
   else {
     assert(0 && "no instance");
   }
+  SoWriterefCounterP::current = inst;
   CC_MUTEX_UNLOCK(SoWriterefCounterP::mutex);
   return inst;
 }
