@@ -5,104 +5,200 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoAccumulatedElement.cpp SoAccumulatedElement.h \
-	SoAmbientColorElement.cpp SoAmbientColorElement.h \
-	SoAnnoText3CharOrientElement.cpp SoAnnoText3CharOrientElement.h \
-	SoAnnoText3FontSizeHintElement.cpp SoAnnoText3FontSizeHintElement.h \
-	SoAnnoText3RenderPrintElement.cpp SoAnnoText3RenderPrintElement.h \
-	SoBBoxModelMatrixElement.cpp SoBBoxModelMatrixElement.h \
-	SoCacheElement.cpp SoCacheElement.h \
-	SoClipPlaneElement.cpp SoClipPlaneElement.h \
-	SoComplexityElement.cpp SoComplexityElement.h \
-	SoComplexityTypeElement.cpp SoComplexityTypeElement.h \
-	SoCoordinateElement.cpp SoCoordinateElement.h \
-	SoCreaseAngleElement.cpp SoCreaseAngleElement.h \
-	SoCullElement.cpp SoCullElement.h \
-	SoGLColorIndexElement.cpp SoGLColorIndexElement.h \
-	SoDecimationPercentageElement.cpp SoDecimationPercentageElement.h \
-	SoDecimationTypeElement.cpp SoDecimationTypeElement.h \
-	SoDiffuseColorElement.cpp SoDiffuseColorElement.h \
-	SoDrawStyleElement.cpp SoDrawStyleElement.h \
-	SoElement.cpp SoElement.h \
-	SoEmissiveColorElement.cpp SoEmissiveColorElement.h \
-	SoEnvironmentElement.cpp SoEnvironmentElement.h \
-	SoFloatElement.cpp SoFloatElement.h \
-	SoFocalDistanceElement.cpp SoFocalDistanceElement.h \
-	SoFontNameElement.cpp SoFontNameElement.h \
-	SoFontSizeElement.cpp SoFontSizeElement.h \
-	SoGLAmbientColorElement.cpp SoGLAmbientColorElement.h \
-	SoGLCacheContextElement.cpp SoGLCacheContextElement.h \
-	SoGLClipPlaneElement.cpp SoGLClipPlaneElement.h \
-	SoGLCoordinateElement.cpp SoGLCoordinateElement.h \
-	SoGLDiffuseColorElement.cpp SoGLDiffuseColorElement.h \
-	SoGLDrawStyleElement.cpp SoGLDrawStyleElement.h \
-	SoGLEmissiveColorElement.cpp SoGLEmissiveColorElement.h \
-	SoGLEnvironmentElement.cpp SoGLEnvironmentElement.h \
-	SoGLLazyElement.cpp SoGLLazyElement.h \
-	SoGLLightIdElement.cpp SoGLLightIdElement.h \
-	SoGLLightModelElement.cpp SoGLLightModelElement.h \
-	SoGLLinePatternElement.cpp SoGLLinePatternElement.h \
-	SoGLLineWidthElement.cpp SoGLLineWidthElement.h \
-	SoGLModelMatrixElement.cpp SoGLModelMatrixElement.h \
-	SoGLNormalElement.cpp SoGLNormalElement.h \
-	SoGLNormalizeElement.cpp SoGLNormalizeElement.h \
-	SoGLPointSizeElement.cpp SoGLPointSizeElement.h \
-	SoGLPolygonOffsetElement.cpp SoGLPolygonOffsetElement.h \
-	SoGLPolygonStippleElement.cpp SoGLPolygonStippleElement.h \
-	SoGLProjectionMatrixElement.cpp SoGLProjectionMatrixElement.h \
-	SoGLRenderPassElement.cpp SoGLRenderPassElement.h \
-	SoGLShadeModelElement.cpp SoGLShadeModelElement.h \
-	SoGLShapeHintsElement.cpp SoGLShapeHintsElement.h \
-	SoGLShininessElement.cpp SoGLShininessElement.h \
-	SoGLSpecularColorElement.cpp SoGLSpecularColorElement.h \
-	SoGLTextureCoordinateElement.cpp SoGLTextureCoordinateElement.h \
-	SoGLTextureEnabledElement.cpp SoGLTextureEnabledElement.h \
-	SoGLTextureImageElement.cpp SoGLTextureImageElement.h \
-	SoGLTextureMatrixElement.cpp SoGLTextureMatrixElement.h \
-	SoGLUpdateAreaElement.cpp SoGLUpdateAreaElement.h \
-	SoGLViewingMatrixElement.cpp SoGLViewingMatrixElement.h \
-	SoGLViewportRegionElement.cpp SoGLViewportRegionElement.h \
-	SoInt32Element.cpp SoInt32Element.h \
-	SoLazyElement.cpp SoLazyElement.h \
-	SoLightAttenuationElement.cpp SoLightAttenuationElement.h \
-	SoLightElement.cpp SoLightElement.h \
-	SoLightModelElement.cpp SoLightModelElement.h \
-	SoLinePatternElement.cpp SoLinePatternElement.h \
-	SoLineWidthElement.cpp SoLineWidthElement.h \
-	SoLocalBBoxMatrixElement.cpp SoLocalBBoxMatrixElement.h \
-	SoMaterialBindingElement.cpp SoMaterialBindingElement.h \
-	SoModelMatrixElement.cpp SoModelMatrixElement.h \
-	SoNormalBindingElement.cpp SoNormalBindingElement.h \
-	SoNormalElement.cpp SoNormalElement.h \
-	SoOverrideElement.cpp SoOverrideElement.h \
-	SoPickRayElement.cpp SoPickRayElement.h \
-	SoPickStyleElement.cpp SoPickStyleElement.h \
-	SoPointSizeElement.cpp SoPointSizeElement.h \
-	SoPolygonOffsetElement.cpp SoPolygonOffsetElement.h \
-	SoProfileCoordinateElement.cpp SoProfileCoordinateElement.h \
-	SoProfileElement.cpp SoProfileElement.h \
-	SoProjectionMatrixElement.cpp SoProjectionMatrixElement.h \
-	SoReplacedElement.cpp SoReplacedElement.h \
-	SoShapeHintsElement.cpp SoShapeHintsElement.h \
-	SoShapeStyleElement.cpp SoShapeStyleElement.h \
-	SoShininessElement.cpp SoShininessElement.h \
-	SoSpecularColorElement.cpp SoSpecularColorElement.h \
-	SoSwitchElement.cpp SoSwitchElement.h \
-	SoTextOutlineEnabledElement.cpp SoTextOutlineEnabledElement.h \
-	SoTextureCoordinateBindingElement.cpp SoTextureCoordinateBindingElement.h \
-	SoTextureCoordinateElement.cpp SoTextureCoordinateElement.h \
-	SoTextureImageElement.cpp SoTextureImageElement.h \
-	SoTextureMatrixElement.cpp SoTextureMatrixElement.h \
-	SoTextureOverrideElement.cpp SoTextureOverrideElement.h \
-	SoTextureQualityElement.cpp SoTextureQualityElement.h \
-	SoTransparencyElement.cpp SoTransparencyElement.h \
-	SoUnitsElement.cpp SoUnitsElement.h \
-	SoViewVolumeElement.cpp SoViewVolumeElement.h \
-	SoViewingMatrixElement.cpp SoViewingMatrixElement.h \
-	SoViewportRegionElement.cpp SoViewportRegionElement.h \
-	SoWindowElement.cpp SoWindowElement.h \
+	SoAccumulatedElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoAccumulatedElement.h \
+	SoAmbientColorElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoAmbientColorElement.h \
+	SoAnnoText3CharOrientElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoAnnoText3CharOrientElement.h \
+	SoAnnoText3FontSizeHintElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoAnnoText3FontSizeHintElement.h \
+	SoAnnoText3RenderPrintElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoAnnoText3RenderPrintElement.h \
+	SoBBoxModelMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoBBoxModelMatrixElement.h \
+	SoCacheElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoCacheElement.h \
+	SoClipPlaneElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoClipPlaneElement.h \
+	SoComplexityElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoComplexityElement.h \
+	SoComplexityTypeElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoComplexityTypeElement.h \
+	SoCoordinateElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoCoordinateElement.h \
+	SoCreaseAngleElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoCreaseAngleElement.h \
+	SoCullElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoCullElement.h \
+	SoGLColorIndexElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLColorIndexElement.h \
+	SoDecimationPercentageElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoDecimationPercentageElement.h \
+	SoDecimationTypeElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoDecimationTypeElement.h \
+	SoDiffuseColorElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoDiffuseColorElement.h \
+	SoDrawStyleElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoDrawStyleElement.h \
+	SoElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoElement.h \
+	SoEmissiveColorElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoEmissiveColorElement.h \
+	SoEnvironmentElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoEnvironmentElement.h \
+	SoFloatElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoFloatElement.h \
+	SoFocalDistanceElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoFocalDistanceElement.h \
+	SoFontNameElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoFontNameElement.h \
+	SoFontSizeElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoFontSizeElement.h \
+	SoGLAmbientColorElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLAmbientColorElement.h \
+	SoGLCacheContextElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLCacheContextElement.h \
+	SoGLClipPlaneElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLClipPlaneElement.h \
+	SoGLCoordinateElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLCoordinateElement.h \
+	SoGLDiffuseColorElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLDiffuseColorElement.h \
+	SoGLDrawStyleElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLDrawStyleElement.h \
+	SoGLEmissiveColorElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLEmissiveColorElement.h \
+	SoGLEnvironmentElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLEnvironmentElement.h \
+	SoGLLazyElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLLazyElement.h \
+	SoGLLightIdElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLLightIdElement.h \
+	SoGLLightModelElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLLightModelElement.h \
+	SoGLLinePatternElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLLinePatternElement.h \
+	SoGLLineWidthElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLLineWidthElement.h \
+	SoGLModelMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLModelMatrixElement.h \
+	SoGLNormalElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLNormalElement.h \
+	SoGLNormalizeElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLNormalizeElement.h \
+	SoGLPointSizeElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLPointSizeElement.h \
+	SoGLPolygonOffsetElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLPolygonOffsetElement.h \
+	SoGLPolygonStippleElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLPolygonStippleElement.h \
+	SoGLProjectionMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLProjectionMatrixElement.h \
+	SoGLRenderPassElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLRenderPassElement.h \
+	SoGLShadeModelElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLShadeModelElement.h \
+	SoGLShapeHintsElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLShapeHintsElement.h \
+	SoGLShininessElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLShininessElement.h \
+	SoGLSpecularColorElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLSpecularColorElement.h \
+	SoGLTextureCoordinateElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLTextureCoordinateElement.h \
+	SoGLTextureEnabledElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLTextureEnabledElement.h \
+	SoGLTextureImageElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLTextureImageElement.h \
+	SoGLTextureMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLTextureMatrixElement.h \
+	SoGLUpdateAreaElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLUpdateAreaElement.h \
+	SoGLViewingMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLViewingMatrixElement.h \
+	SoGLViewportRegionElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoGLViewportRegionElement.h \
+	SoInt32Element.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoInt32Element.h \
+	SoLazyElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoLazyElement.h \
+	SoLightAttenuationElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoLightAttenuationElement.h \
+	SoLightElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoLightElement.h \
+	SoLightModelElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoLightModelElement.h \
+	SoLinePatternElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoLinePatternElement.h \
+	SoLineWidthElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoLineWidthElement.h \
+	SoLocalBBoxMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoLocalBBoxMatrixElement.h \
+	SoMaterialBindingElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoMaterialBindingElement.h \
+	SoModelMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoModelMatrixElement.h \
+	SoNormalBindingElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoNormalBindingElement.h \
+	SoNormalElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoNormalElement.h \
+	SoOverrideElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoOverrideElement.h \
+	SoPickRayElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoPickRayElement.h \
+	SoPickStyleElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoPickStyleElement.h \
+	SoPointSizeElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoPointSizeElement.h \
+	SoPolygonOffsetElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoPolygonOffsetElement.h \
+	SoProfileCoordinateElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoProfileCoordinateElement.h \
+	SoProfileElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoProfileElement.h \
+	SoProjectionMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoProjectionMatrixElement.h \
+	SoReplacedElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoReplacedElement.h \
+	SoShapeHintsElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoShapeHintsElement.h \
+	SoShapeStyleElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoShapeStyleElement.h \
+	SoShininessElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoShininessElement.h \
+	SoSpecularColorElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoSpecularColorElement.h \
+	SoSwitchElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoSwitchElement.h \
+	SoTextOutlineEnabledElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoTextOutlineEnabledElement.h \
+	SoTextureCoordinateBindingElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoTextureCoordinateBindingElement.h \
+	SoTextureCoordinateElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoTextureCoordinateElement.h \
+	SoTextureImageElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoTextureImageElement.h \
+	SoTextureMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoTextureMatrixElement.h \
+	SoTextureOverrideElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoTextureOverrideElement.h \
+	SoTextureQualityElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoTextureQualityElement.h \
+	SoTransparencyElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoTransparencyElement.h \
+	SoUnitsElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoUnitsElement.h \
+	SoViewVolumeElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoViewVolumeElement.h \
+	SoViewingMatrixElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoViewingMatrixElement.h \
+	SoViewportRegionElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoViewportRegionElement.h \
+	SoWindowElement.cpp \
+	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h \
 	SoGLDisplayList.cpp \
-	SoSubElement.h
+	$(top_srcdir)/include/Inventor/elements/SoSubElement.h
 endif
 
 ALLINSTHEADERS = \

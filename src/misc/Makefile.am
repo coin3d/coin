@@ -5,32 +5,58 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoBase.cpp SoBase.h \
-	SoChildList.cpp SoChildList.h \
-	SoGL.cpp SoGL.h \
-	SoGLImage.cpp SoGLImage.h \
-	SoGlyph.cpp SoGlyph.h \
-	SoNormalGenerator.cpp SoNormalGenerator.h \
-	SoNotification.cpp SoNotification.h \
-	SoState.cpp SoState.h \
-	SoDB.cpp SoDB.h \
-	SoFullPath.cpp SoFullPath.h \
-	SoTempPath.cpp SoTempPath.h \
-	SoLightPath.cpp SoLightPath.h \
-	SoInput.cpp SoInput.h \
-	SoInteraction.cpp SoInteraction.h \
-	SoOutput.cpp SoOutput.h \
-	SoPath.cpp SoPath.h \
-	SoPickedPoint.cpp SoPickedPoint.h \
-	SoPrimitiveVertex.cpp SoPrimitiveVertex.h \
-	SoSceneManager.cpp SoSceneManager.h \
-	SoType.cpp SoType.h \
-	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
-	SoGenerate.cpp SoGenerate.h \
-	SoLockManager.cpp SoLockMgr.h \
-	SoByteStream.cpp SoByteStream.h \
-	SoTranSender.cpp SoTranSender.h \
-	SoTranReceiver.cpp SoTranReceiver.h \
+	SoBase.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoBase.h \
+	SoChildList.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
+	SoGL.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoGL.h \
+	SoGLImage.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoGLImage.h \
+	SoGlyph.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoGlyph.h \
+	SoNormalGenerator.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoNormalGenerator.h \
+	SoNotification.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
+	SoState.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoState.h \
+	SoDB.cpp \
+	$(top_srcdir)/include/Inventor/SoDB.h \
+	SoFullPath.cpp \
+	$(top_srcdir)/include/Inventor/SoFullPath.h \
+	SoTempPath.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoTempPath.h \
+	SoLightPath.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoLightPath.h \
+	SoInput.cpp \
+	$(top_srcdir)/include/Inventor/SoInput.h \
+	SoInteraction.cpp \
+	$(top_srcdir)/include/Inventor/SoInteraction.h \
+	SoOutput.cpp \
+	$(top_srcdir)/include/Inventor/SoOutput.h \
+	SoPath.cpp \
+	$(top_srcdir)/include/Inventor/SoPath.h \
+	SoPickedPoint.cpp \
+	$(top_srcdir)/include/Inventor/SoPickedPoint.h \
+	SoPrimitiveVertex.cpp \
+	$(top_srcdir)/include/Inventor/SoPrimitiveVertex.h \
+	SoSceneManager.cpp \
+	$(top_srcdir)/include/Inventor/SoSceneManager.h \
+	SoType.cpp \
+	$(top_srcdir)/include/Inventor/SoType.h \
+	SoOffscreenRenderer.cpp \
+	$(top_srcdir)/include/Inventor/SoOffscreenRenderer.h \
+	SoGenerate.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoGenerate.h \
+	SoLockManager.cpp \
+	$(top_srcdir)/include/Inventor/lock/SoLockMgr.h \
+	SoByteStream.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoByteStream.h \
+	SoTranSender.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoTranSender.h \
+	SoTranReceiver.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoTranReceiver.h \
 	default3dfont.cpp \
 	default2dfont.cpp \
 	GLUWrapper.c \

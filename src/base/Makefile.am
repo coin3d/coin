@@ -5,33 +5,60 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SbBSPTree.cpp SbBSPTree.h \
-	SbBox2f.cpp SbBox2f.h \
-	SbBox2s.cpp SbBox2s.h \
-	SbBox3f.cpp SbBox3f.h \
-	SbColor.cpp SbColor.h \
-	SbColor4f.cpp SbColor4f.h \
-	SbCylinder.cpp SbCylinder.h \
-	SbDict.cpp SbDict.h \
-	SbHeap.cpp SbHeap.h \
-	SbImage.cpp SbImage.h \
-	SbLine.cpp SbLine.h \
-	SbMatrix.cpp SbMatrix.h \
-	SbName.cpp SbName.h \
-	SbOctTree.cpp SbOctTree.h \
-	SbPlane.cpp SbPlane.h \
-	SbRotation.cpp SbRotation.h \
-	SbSphere.cpp SbSphere.h \
-	SbString.cpp SbString.h \
-	SbTesselator.cpp SbTesselator.h \
-	SbTime.cpp SbTime.h \
-	SbVec2f.cpp SbVec2f.h \
-	SbVec2s.cpp SbVec2s.h \
-	SbVec3f.cpp SbVec3f.h \
-	SbVec4f.cpp SbVec4f.h \
-	SbViewVolume.cpp SbViewVolume.h \
-	SbViewportRegion.cpp SbViewportRegion.h \
-	SbXfBox3f.cpp SbXfBox3f.h
+	SbBSPTree.cpp \
+	$(top_srcdir)/include/Inventor/SbBSPTree.h \
+	SbBox2f.cpp \
+	$(top_srcdir)/include/Inventor/SbBox2f.h \
+	SbBox2s.cpp \
+	$(top_srcdir)/include/Inventor/SbBox2s.h \
+	SbBox3f.cpp \
+	$(top_srcdir)/include/Inventor/SbBox3f.h \
+	SbColor.cpp \
+	$(top_srcdir)/include/Inventor/SbColor.h \
+	SbColor4f.cpp \
+	$(top_srcdir)/include/Inventor/SbColor4f.h \
+	SbCylinder.cpp \
+	$(top_srcdir)/include/Inventor/SbCylinder.h \
+	SbDict.cpp \
+	$(top_srcdir)/include/Inventor/SbDict.h \
+	SbHeap.cpp \
+	$(top_srcdir)/include/Inventor/SbHeap.h \
+	SbImage.cpp \
+	$(top_srcdir)/include/Inventor/SbImage.h \
+	SbLine.cpp \
+	$(top_srcdir)/include/Inventor/SbLine.h \
+	SbMatrix.cpp \
+	$(top_srcdir)/include/Inventor/SbMatrix.h \
+	SbName.cpp \
+	$(top_srcdir)/include/Inventor/SbName.h \
+	SbOctTree.cpp \
+	$(top_srcdir)/include/Inventor/SbOctTree.h \
+	SbPlane.cpp \
+	$(top_srcdir)/include/Inventor/SbPlane.h \
+	SbRotation.cpp \
+	$(top_srcdir)/include/Inventor/SbRotation.h \
+	SbSphere.cpp \
+	$(top_srcdir)/include/Inventor/SbSphere.h \
+	SbString.cpp \
+	$(top_srcdir)/include/Inventor/SbString.h \
+	SbTesselator.cpp \
+	$(top_srcdir)/include/Inventor/SbTesselator.h \
+	SbTime.cpp \
+	$(top_srcdir)/include/Inventor/SbTime.h \
+	SbVec2f.cpp \
+	$(top_srcdir)/include/Inventor/SbVec2f.h \
+	SbVec2s.cpp \
+	$(top_srcdir)/include/Inventor/SbVec2s.h \
+	SbVec3f.cpp \
+	$(top_srcdir)/include/Inventor/SbVec3f.h \
+	SbVec4f.cpp \
+	$(top_srcdir)/include/Inventor/SbVec4f.h \
+	SbViewVolume.cpp \
+	$(top_srcdir)/include/Inventor/SbViewVolume.h \
+	SbViewportRegion.cpp \
+	$(top_srcdir)/include/Inventor/SbViewportRegion.h \
+	SbXfBox3f.cpp \
+	$(top_srcdir)/include/Inventor/SbXfBox3f.h
 endif
 
 ALLINSTHEADERS = 

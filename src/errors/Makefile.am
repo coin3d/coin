@@ -6,13 +6,13 @@ ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
 	SoDebugError.cpp \
-	SoDebugError.h \
+	$(top_srcdir)/include/Inventor/errors/SoDebugError.h \
 	SoError.cpp \
-	SoError.h \
+	$(top_srcdir)/include/Inventor/errors/SoError.h \
 	SoMemoryError.cpp \
-	SoMemoryError.h \
+	$(top_srcdir)/include/Inventor/errors/SoMemoryError.h \
 	SoReadError.cpp \
-	SoReadError.h
+	$(top_srcdir)/include/Inventor/errors/SoReadError.h
 endif
 
 ALLINSTHEADERS = \

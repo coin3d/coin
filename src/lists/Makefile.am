@@ -5,25 +5,44 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SbList.cpp SbList.h \
-	SbPList.cpp SbPList.h \
-	SbIntList.cpp SbIntList.h \
-	SbVec3fList.cpp SbVec3fList.h \
-	SbStringList.cpp SbStringList.h \
-	SoActionMethodList.cpp SoActionMethodList.h \
-	SoAuditorList.cpp SoAuditorList.h \
-	SoBaseList.cpp SoBaseList.h \
-	SoCallbackList.cpp SoCallbackList.h \
-	SoDetailList.cpp SoDetailList.h \
-	SoEnabledElementsList.cpp SoEnabledElementsList.h \
-	SoEngineList.cpp SoEngineList.h \
-	SoEngineOutputList.cpp SoEngineOutputList.h \
-	SoFieldList.cpp SoFieldList.h \
-	SoNodeList.cpp SoNodeList.h \
-	SoPathList.cpp SoPathList.h \
-	SoPickedPointList.cpp SoPickedPointList.h \
-	SoTypeList.cpp SoTypeList.h \
-	SoVRMLInterpOutputList.cpp SoVRMLInterpOutputList.h
+	SbList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SbList.h \
+	SbPList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SbPList.h \
+	SbIntList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SbIntList.h \
+	SbVec3fList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SbVec3fList.h \
+	SbStringList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SbStringList.h \
+	SoActionMethodList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoActionMethodList.h \
+	SoAuditorList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoAuditorList.h \
+	SoBaseList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoBaseList.h \
+	SoCallbackList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoCallbackList.h \
+	SoDetailList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoDetailList.h \
+	SoEnabledElementsList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoEnabledElementsList.h \
+	SoEngineList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoEngineList.h \
+	SoEngineOutputList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoEngineOutputList.h \
+	SoFieldList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoFieldList.h \
+	SoNodeList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoNodeList.h \
+	SoPathList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoPathList.h \
+	SoPickedPointList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoPickedPointList.h \
+	SoTypeList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoTypeList.h \
+	SoVRMLInterpOutputList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoVRMLInterpOutputList.h
 endif
 
 ALLINSTHEADERS = \

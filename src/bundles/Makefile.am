@@ -6,11 +6,11 @@ ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
 	SoBundle.cpp \
-	SoBundle.h \
+	$(top_srcdir)/include/Inventor/bundles/SoBundle.h \
 	SoMaterialBundle.cpp \
-	SoMaterialBundle.h \
+	$(top_srcdir)/include/Inventor/bundles/SoMaterialBundle.h \
 	SoTextureCoordinateBundle.cpp \
-	SoTextureCoordinateBundle.h
+	$(top_srcdir)/include/Inventor/bundles/SoTextureCoordinateBundle.h
 endif
 
 ALLINSTHEADERS = \

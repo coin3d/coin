@@ -5,13 +5,20 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoButtonEvent.cpp SoButtonEvent.h \
-	SoEvent.cpp SoEvent.h \
-	SoKeyboardEvent.cpp SoKeyboardEvent.h \
-	SoLocation2Event.cpp SoLocation2Event.h \
-	SoMotion3Event.cpp SoMotion3Event.h \
-	SoMouseButtonEvent.cpp SoMouseButtonEvent.h \
-	SoSpaceballButtonEvent.cpp SoSpaceballButtonEvent.h
+	SoButtonEvent.cpp \
+	$(top_srcdir)/include/Inventor/events/SoButtonEvent.h \
+	SoEvent.cpp \
+	$(top_srcdir)/include/Inventor/events/SoEvent.h \
+	SoKeyboardEvent.cpp \
+	$(top_srcdir)/include/Inventor/events/SoKeyboardEvent.h \
+	SoLocation2Event.cpp \
+	$(top_srcdir)/include/Inventor/events/SoLocation2Event.h \
+	SoMotion3Event.cpp \
+	$(top_srcdir)/include/Inventor/events/SoMotion3Event.h \
+	SoMouseButtonEvent.cpp \
+	$(top_srcdir)/include/Inventor/events/SoMouseButtonEvent.h \
+	SoSpaceballButtonEvent.cpp \
+	$(top_srcdir)/include/Inventor/events/SoSpaceballButtonEvent.h
 endif
 
 ALLINSTHEADERS = \

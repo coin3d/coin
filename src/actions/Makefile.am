@@ -5,20 +5,34 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoAction.cpp SoAction.h \
-	SoBoxHighlightRenderAction.cpp SoBoxHighlightRenderAction.h \
-	SoCallbackAction.cpp SoCallbackAction.h \
-	SoGLRenderAction.cpp SoGLRenderAction.h \
-	SoGetBoundingBoxAction.cpp SoGetBoundingBoxAction.h \
-	SoGetMatrixAction.cpp SoGetMatrixAction.h \
-	SoGetPrimitiveCountAction.cpp SoGetPrimitiveCountAction.h \
-	SoHandleEventAction.cpp SoHandleEventAction.h \
-	SoLineHighlightRenderAction.cpp SoLineHighlightRenderAction.h \
-	SoPickAction.cpp SoPickAction.h \
-	SoRayPickAction.cpp SoRayPickAction.h \
-	SoSearchAction.cpp SoSearchAction.h \
-	SoWriteAction.cpp SoWriteAction.h \
-	SoSubAction.h SoSubActionP.h
+	SoAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoAction.h \
+	SoBoxHighlightRenderAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoBoxHighlightRenderAction.h \
+	SoCallbackAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoCallbackAction.h \
+	SoGLRenderAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoGLRenderAction.h \
+	SoGetBoundingBoxAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoGetBoundingBoxAction.h \
+	SoGetMatrixAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoGetMatrixAction.h \
+	SoGetPrimitiveCountAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoGetPrimitiveCountAction.h \
+	SoHandleEventAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoHandleEventAction.h \
+	SoLineHighlightRenderAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoLineHighlightRenderAction.h \
+	SoPickAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoPickAction.h \
+	SoRayPickAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoRayPickAction.h \
+	SoSearchAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoSearchAction.h \
+	SoWriteAction.cpp \
+	$(top_srcdir)/include/Inventor/actions/SoWriteAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoSubAction.h \
+	$(top_srcdir)/include/Inventor/actions/SoSubActionP.h
 endif
 
 ALLINSTHEADERS = \

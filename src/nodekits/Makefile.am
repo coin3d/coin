@@ -5,20 +5,34 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoNodeKit.cpp SoNodeKit.h \
-	SoNodeKitPath.cpp SoNodeKitPath.h \
-	SoNodeKitListPart.cpp SoNodeKitListPart.h \
-	SoNodekitCatalog.cpp SoNodekitCatalog.h \
-	SoBaseKit.cpp SoBaseKit.h \
-	SoAppearanceKit.cpp SoAppearanceKit.h \
-	SoCameraKit.cpp SoCameraKit.h \
-	SoInteractionKit.cpp SoInteractionKit.h \
-	SoLightKit.cpp SoLightKit.h \
-	SoSceneKit.cpp SoSceneKit.h \
-	SoSeparatorKit.cpp SoSeparatorKit.h \
-	SoShapeKit.cpp SoShapeKit.h \
-	SoWrapperKit.cpp SoWrapperKit.h \
-	SoSubKit.h SoSubKitP.h
+	SoNodeKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoNodeKit.h \
+	SoNodeKitPath.cpp \
+	$(top_srcdir)/include/Inventor/SoNodeKitPath.h \
+	SoNodeKitListPart.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoNodeKitListPart.h \
+	SoNodekitCatalog.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoNodekitCatalog.h \
+	SoBaseKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoBaseKit.h \
+	SoAppearanceKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoAppearanceKit.h \
+	SoCameraKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoCameraKit.h \
+	SoInteractionKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoInteractionKit.h \
+	SoLightKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoLightKit.h \
+	SoSceneKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoSceneKit.h \
+	SoSeparatorKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoSeparatorKit.h \
+	SoShapeKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoShapeKit.h \
+	SoWrapperKit.cpp \
+	$(top_srcdir)/include/Inventor/nodekits/SoWrapperKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoSubKit.h \
+	$(top_srcdir)/include/Inventor/nodekits/SoSubKitP.h
 endif
 
 ALLINSTHEADERS = \

@@ -6,25 +6,25 @@ ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
 	SoDetail.cpp \
-	SoDetail.h \
-	SoSubDetail.h \
-	SoDetails.h \
+	$(top_srcdir)/include/Inventor/details/SoDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoSubDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoDetails.h \
 	SoConeDetail.cpp \
-	SoConeDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoConeDetail.h \
 	SoCubeDetail.cpp \
-	SoCubeDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoCubeDetail.h \
 	SoCylinderDetail.cpp \
-	SoCylinderDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoCylinderDetail.h \
 	SoFaceDetail.cpp \
-	SoFaceDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoFaceDetail.h \
 	SoLineDetail.cpp \
-	SoLineDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoLineDetail.h \
 	SoNodeKitDetail.cpp \
-	SoNodeKitDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoNodeKitDetail.h \
 	SoPointDetail.cpp \
-	SoPointDetail.h \
+	$(top_srcdir)/include/Inventor/details/SoPointDetail.h \
 	SoTextDetail.cpp \
-	SoTextDetail.h
+	$(top_srcdir)/include/Inventor/details/SoTextDetail.h
 endif
 
 ALLINSTHEADERS = \

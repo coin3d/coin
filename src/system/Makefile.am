@@ -13,3 +13,4 @@ systemincdir = $(includedir)/Inventor/system
 
 systeminc_HEADERS = \
 	$(top_srcdir)/include/Inventor/system/inttypes.h
+

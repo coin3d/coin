@@ -5,18 +5,30 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoAlarmSensor.cpp SoAlarmSensor.h \
-	SoDataSensor.cpp SoDataSensor.h \
-	SoDelayQueueSensor.cpp SoDelayQueueSensor.h \
-	SoFieldSensor.cpp SoFieldSensor.h \
-	SoIdleSensor.cpp SoIdleSensor.h \
-	SoNodeSensor.cpp SoNodeSensor.h \
-	SoOneShotSensor.cpp SoOneShotSensor.h \
-	SoPathSensor.cpp SoPathSensor.h \
-	SoSensor.cpp SoSensor.h \
-	SoSensorManager.cpp SoSensorManager.h \
-	SoTimerQueueSensor.cpp SoTimerQueueSensor.h \
-	SoTimerSensor.cpp SoTimerSensor.h
+	SoAlarmSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h \
+	SoDataSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoDataSensor.h \
+	SoDelayQueueSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h \
+	SoFieldSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoFieldSensor.h \
+	SoIdleSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoIdleSensor.h \
+	SoNodeSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoNodeSensor.h \
+	SoOneShotSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoOneShotSensor.h \
+	SoPathSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoPathSensor.h \
+	SoSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoSensor.h \
+	SoSensorManager.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoSensorManager.h \
+	SoTimerQueueSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoTimerQueueSensor.h \
+	SoTimerSensor.cpp \
+	$(top_srcdir)/include/Inventor/sensors/SoTimerSensor.h
 endif
 
 ALLINSTHEADERS = \

@@ -5,13 +5,20 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoBoundingBoxCache.cpp SoBoundingBoxCache.h \
-	SoCache.cpp SoCache.h \
-	SoConvexDataCache.cpp SoConvexDataCache.h \
-	SoGLCacheList.cpp SoGLCacheList.h \
-	SoGLRenderCache.cpp SoGLRenderCache.h \
-	SoNormalCache.cpp SoNormalCache.h \
-	SoTextureCoordinateCache.cpp SoTextureCoordinateCache.h
+	SoBoundingBoxCache.cpp \
+	$(top_srcdir)/include/Inventor/caches/SoBoundingBoxCache.h \
+	SoCache.cpp \
+	$(top_srcdir)/include/Inventor/caches/SoCache.h \
+	SoConvexDataCache.cpp \
+	$(top_srcdir)/include/Inventor/caches/SoConvexDataCache.h \
+	SoGLCacheList.cpp \
+	$(top_srcdir)/include/Inventor/caches/SoGLCacheList.h \
+	SoGLRenderCache.cpp \
+	$(top_srcdir)/include/Inventor/caches/SoGLRenderCache.h \
+	SoNormalCache.cpp \
+	$(top_srcdir)/include/Inventor/caches/SoNormalCache.h \
+	SoTextureCoordinateCache.cpp \
+	$(top_srcdir)/include/Inventor/caches/SoTextureCoordinateCache.h
 endif
 
 ALLINSTHEADERS = \
@@ -42,6 +49,9 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libcaches_la_SOURCES = $(ALLSOURCES)
 libcaches@SUFFIX@LINKHACK_la_SOURCES = $(ALLSOURCES)
+
+EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES = \
+	all.cpp
 
 libcachesincdir = $(includedir)/Inventor/caches
 libcachesinc_HEADERS = $(ALLINSTHEADERS)

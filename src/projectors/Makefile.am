@@ -6,27 +6,27 @@ ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
 	SbCylinderPlaneProjector.cpp \
-	SbCylinderPlaneProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbCylinderPlaneProjector.h \
 	SbCylinderProjector.cpp \
-	SbCylinderProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbCylinderProjector.h \
 	SbCylinderSectionProjector.cpp \
-	SbCylinderSectionProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbCylinderSectionProjector.h \
 	SbCylinderSheetProjector.cpp \
-	SbCylinderSheetProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbCylinderSheetProjector.h \
 	SbLineProjector.cpp \
-	SbLineProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbLineProjector.h \
 	SbPlaneProjector.cpp \
-	SbPlaneProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbPlaneProjector.h \
 	SbProjector.cpp \
-	SbProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbProjector.h \
 	SbSpherePlaneProjector.cpp \
-	SbSpherePlaneProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbSpherePlaneProjector.h \
 	SbSphereProjector.cpp \
-	SbSphereProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbSphereProjector.h \
 	SbSphereSectionProjector.cpp \
-	SbSphereSectionProjector.h \
+	$(top_srcdir)/include/Inventor/projectors/SbSphereSectionProjector.h \
 	SbSphereSheetProjector.cpp \
-	SbSphereSheetProjector.h
+	$(top_srcdir)/include/Inventor/projectors/SbSphereSheetProjector.h
 endif
 
 ALLINSTHEADERS = \

@@ -5,18 +5,30 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoClipPlaneManip.cpp SoClipPlaneManip.h \
-	SoDirectionalLightManip.cpp SoDirectionalLightManip.h \
-	SoPointLightManip.cpp SoPointLightManip.h \
-	SoSpotLightManip.cpp SoSpotLightManip.h \
-	SoTransformManip.cpp SoTransformManip.h \
-	SoCenterballManip.cpp SoCenterballManip.h \
-	SoHandleBoxManip.cpp SoHandleBoxManip.h \
-	SoJackManip.cpp SoJackManip.h \
-	SoTabBoxManip.cpp SoTabBoxManip.h \
-	SoTrackballManip.cpp SoTrackballManip.h \
-	SoTransformBoxManip.cpp SoTransformBoxManip.h \
-	SoTransformerManip.cpp SoTransformerManip.h \
+	SoClipPlaneManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoClipPlaneManip.h \
+	SoDirectionalLightManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoDirectionalLightManip.h \
+	SoPointLightManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoPointLightManip.h \
+	SoSpotLightManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoSpotLightManip.h \
+	SoTransformManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoTransformManip.h \
+	SoCenterballManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoCenterballManip.h \
+	SoHandleBoxManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoHandleBoxManip.h \
+	SoJackManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoJackManip.h \
+	SoTabBoxManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoTabBoxManip.h \
+	SoTrackballManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoTrackballManip.h \
+	SoTransformBoxManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoTransformBoxManip.h \
+	SoTransformerManip.cpp \
+	$(top_srcdir)/include/Inventor/manips/SoTransformerManip.h \
 	commoncode.cpp
 endif
 

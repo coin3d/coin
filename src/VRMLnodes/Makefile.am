@@ -8,9 +8,9 @@ ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
 	SoVRMLInterpOutput.cpp \
-	SoVRMLInterpOutput.h \
+	$(top_srcdir)/include/Inventor/VRMLNodes/SoVRMLInterpOutput.h \
 	SoVRMLInterpolator.cpp \
-	SoVRMLInterpolator.h
+	$(top_srcdir)/include/Inventor/VRMLNodes/SoVRMLInterpolator.h
 endif
 
 ALLINSTHEADERS = \

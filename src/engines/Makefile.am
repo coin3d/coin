@@ -5,43 +5,80 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoBoolOperation.cpp SoBoolOperation.h \
-	SoCalculator.cpp SoCalculator.h \
-	SoComposeMatrix.cpp SoComposeMatrix.h \
-	SoComposeRotation.cpp SoComposeRotation.h \
-	SoComposeRotationFromTo.cpp SoComposeRotationFromTo.h \
-	SoComposeVec2f.cpp SoComposeVec2f.h \
-	SoComposeVec3f.cpp SoComposeVec3f.h \
-	SoComposeVec4f.cpp SoComposeVec4f.h \
-	SoComputeBoundingBox.cpp SoComputeBoundingBox.h \
-	SoConcatenate.cpp SoConcatenate.h \
-	SoConvertAll.cpp SoConvertAll.h \
-	SoCounter.cpp SoCounter.h \
-	SoDecomposeMatrix.cpp SoDecomposeMatrix.h \
-	SoDecomposeRotation.cpp SoDecomposeRotation.h \
-	SoDecomposeVec2f.cpp SoDecomposeVec2f.h \
-	SoDecomposeVec3f.cpp SoDecomposeVec3f.h \
-	SoDecomposeVec4f.cpp SoDecomposeVec4f.h \
-	SoElapsedTime.cpp SoElapsedTime.h \
-	SoEngine.cpp SoEngine.h \
-	SoEngineOutput.cpp SoEngineOutput.h \
-	SoFieldConverter.cpp SoFieldConverter.h \
-	SoGate.cpp SoGate.h \
-	SoInterpolate.cpp SoInterpolate.h \
-	SoInterpolateFloat.cpp SoInterpolateFloat.h \
-	SoInterpolateRotation.cpp SoInterpolateRotation.h \
-	SoInterpolateVec2f.cpp SoInterpolateVec2f.h \
-	SoInterpolateVec3f.cpp SoInterpolateVec3f.h \
-	SoInterpolateVec4f.cpp SoInterpolateVec4f.h \
-	SoOnOff.cpp SoOnOff.h \
-	SoOneShot.cpp SoOneShot.h \
-        SoOutputData.cpp SoOutputData.h \
-	SoSelectOne.cpp SoSelectOne.h \
-	SoTimeCounter.cpp SoTimeCounter.h \
-	SoTransformVec3f.cpp SoTransformVec3f.h \
-	SoTriggerAny.cpp SoTriggerAny.h \
-	SoSubEngine.h SoSubEngineP.h \
-	evaluator.c evaluator.h \
+	SoBoolOperation.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoBoolOperation.h \
+	SoCalculator.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoCalculator.h \
+	SoComposeMatrix.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoComposeMatrix.h \
+	SoComposeRotation.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoComposeRotation.h \
+	SoComposeRotationFromTo.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoComposeRotationFromTo.h \
+	SoComposeVec2f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoComposeVec2f.h \
+	SoComposeVec3f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoComposeVec3f.h \
+	SoComposeVec4f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoComposeVec4f.h \
+	SoComputeBoundingBox.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoComputeBoundingBox.h \
+	SoConcatenate.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoConcatenate.h \
+	SoConvertAll.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoConvertAll.h \
+	SoCounter.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoCounter.h \
+	SoDecomposeMatrix.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoDecomposeMatrix.h \
+	SoDecomposeRotation.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoDecomposeRotation.h \
+	SoDecomposeVec2f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoDecomposeVec2f.h \
+	SoDecomposeVec3f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoDecomposeVec3f.h \
+	SoDecomposeVec4f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoDecomposeVec4f.h \
+	SoElapsedTime.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoElapsedTime.h \
+	SoEngine.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoEngine.h \
+	SoEngineOutput.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoEngineOutput.h \
+	SoFieldConverter.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoFieldConverter.h \
+	SoGate.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoGate.h \
+	SoInterpolate.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoInterpolate.h \
+	SoInterpolateFloat.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoInterpolateFloat.h \
+	SoInterpolateRotation.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoInterpolateRotation.h \
+	SoInterpolateVec2f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec2f.h \
+	SoInterpolateVec3f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec3f.h \
+	SoInterpolateVec4f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoInterpolateVec4f.h \
+	SoOnOff.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoOnOff.h \
+	SoOneShot.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoOneShot.h \
+        SoOutputData.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoOutputData.h \
+	SoSelectOne.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoSelectOne.h \
+	SoTimeCounter.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoTimeCounter.h \
+	SoTransformVec3f.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoTransformVec3f.h \
+	SoTriggerAny.cpp \
+	$(top_srcdir)/include/Inventor/engines/SoTriggerAny.h \
+	$(top_srcdir)/include/Inventor/engines/SoSubEngine.h \
+	$(top_srcdir)/include/Inventor/engines/SoSubEngineP.h \
+	evaluator.c \
+	evaluator.h \
 	evaluator_tab.c
 endif
 

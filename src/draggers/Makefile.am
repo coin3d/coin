@@ -5,28 +5,50 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoDragger.cpp SoDragger.h \
-	SoCenterballDragger.cpp SoCenterballDragger.h \
-	SoDirectionalLightDragger.cpp SoDirectionalLightDragger.h \
-	SoDragPointDragger.cpp SoDragPointDragger.h \
-	SoHandleBoxDragger.cpp SoHandleBoxDragger.h \
-	SoJackDragger.cpp SoJackDragger.h \
-	SoPointLightDragger.cpp SoPointLightDragger.h \
-	SoRotateCylindricalDragger.cpp SoRotateCylindricalDragger.h \
-	SoRotateDiscDragger.cpp SoRotateDiscDragger.h \
-	SoRotateSphericalDragger.cpp SoRotateSphericalDragger.h \
-	SoScale1Dragger.cpp SoScale1Dragger.h \
-	SoScale2Dragger.cpp SoScale2Dragger.h \
-	SoScale2UniformDragger.cpp SoScale2UniformDragger.h \
-	SoScaleUniformDragger.cpp SoScaleUniformDragger.h \
-	SoSpotLightDragger.cpp SoSpotLightDragger.h \
-	SoTabBoxDragger.cpp SoTabBoxDragger.h \
-	SoTabPlaneDragger.cpp SoTabPlaneDragger.h \
-	SoTrackballDragger.cpp SoTrackballDragger.h \
-	SoTransformBoxDragger.cpp SoTransformBoxDragger.h \
-	SoTransformerDragger.cpp SoTransformerDragger.h \
-	SoTranslate1Dragger.cpp SoTranslate1Dragger.h \
-	SoTranslate2Dragger.cpp SoTranslate2Dragger.h
+	SoDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoDragger.h \
+	SoCenterballDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoCenterballDragger.h \
+	SoDirectionalLightDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoDirectionalLightDragger.h \
+	SoDragPointDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoDragPointDragger.h \
+	SoHandleBoxDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoHandleBoxDragger.h \
+	SoJackDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoJackDragger.h \
+	SoPointLightDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoPointLightDragger.h \
+	SoRotateCylindricalDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoRotateCylindricalDragger.h \
+	SoRotateDiscDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoRotateDiscDragger.h \
+	SoRotateSphericalDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoRotateSphericalDragger.h \
+	SoScale1Dragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoScale1Dragger.h \
+	SoScale2Dragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoScale2Dragger.h \
+	SoScale2UniformDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoScale2UniformDragger.h \
+	SoScaleUniformDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoScaleUniformDragger.h \
+	SoSpotLightDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoSpotLightDragger.h \
+	SoTabBoxDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoTabBoxDragger.h \
+	SoTabPlaneDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoTabPlaneDragger.h \
+	SoTrackballDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoTrackballDragger.h \
+	SoTransformBoxDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoTransformBoxDragger.h \
+	SoTransformerDragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoTransformerDragger.h \
+	SoTranslate1Dragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoTranslate1Dragger.h \
+	SoTranslate2Dragger.cpp \
+	$(top_srcdir)/include/Inventor/draggers/SoTranslate2Dragger.h
 endif
 
 ALLINSTHEADERS = \

@@ -30,28 +30,27 @@ BUILT_SOURCES = \
 noinst_HEADERS = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
-             data/draggerDefaults/translate1Dragger.iv \
-             data/draggerDefaults/translate2Dragger.iv \
-             data/draggerDefaults/centerballDragger.iv \
-             data/draggerDefaults/tabPlaneDragger.iv \
-             data/draggerDefaults/tabBoxDragger.iv \
-             data/draggerDefaults/dragPointDragger.iv \
-             data/draggerDefaults/pointLightDragger.iv \
-             data/draggerDefaults/directionalLightDragger.iv \
-             data/draggerDefaults/spotLightDragger.iv \
-             data/draggerDefaults/handleBoxDragger.iv \
-             data/draggerDefaults/jackDragger.iv \
-             data/draggerDefaults/trackballDragger.iv \
-             data/draggerDefaults/scaleUniformDragger.iv \
-             data/draggerDefaults/scale2UniformDragger.iv \
-             data/draggerDefaults/scale1Dragger.iv \
-             data/draggerDefaults/scale2Dragger.iv \
-             data/draggerDefaults/rotateCylindricalDragger.iv \
-             data/draggerDefaults/rotateSphericalDragger.iv \
-             data/draggerDefaults/rotateDiscDragger.iv \
-             data/draggerDefaults/transformerDragger.iv \
-             data/draggerDefaults/transformBoxDragger.iv
-
+	translate1Dragger.iv \
+	translate2Dragger.iv \
+	centerballDragger.iv \
+	tabPlaneDragger.iv \
+	tabBoxDragger.iv \
+	dragPointDragger.iv \
+	pointLightDragger.iv \
+	directionalLightDragger.iv \
+	spotLightDragger.iv \
+	handleBoxDragger.iv \
+	jackDragger.iv \
+	trackballDragger.iv \
+	scaleUniformDragger.iv \
+	scale2UniformDragger.iv \
+	scale1Dragger.iv \
+	scale2Dragger.iv \
+	rotateCylindricalDragger.iv \
+	rotateSphericalDragger.iv \
+	rotateDiscDragger.iv \
+	transformerDragger.iv \
+	transformBoxDragger.iv
 
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
 

@@ -5,57 +5,108 @@ if HACKING_COMPACT_BUILD
 ALLSOURCES = all.cpp
 else
 ALLSOURCES = \
-	SoField.cpp SoField.h \
-	SoFieldContainer.cpp SoFieldContainer.h \
-	SoFieldData.cpp SoFieldData.h \
-	SoMFBitMask.cpp SoMFBitMask.h \
-	SoMFBool.cpp SoMFBool.h \
-	SoMFColor.cpp SoMFColor.h \
-	SoMFEngine.cpp SoMFEngine.h \
-	SoMFEnum.cpp SoMFEnum.h \
-	SoMFFloat.cpp SoMFFloat.h \
-	SoMFInt32.cpp SoMFInt32.h \
-	SoMFMatrix.cpp SoMFMatrix.h \
-	SoMFName.cpp SoMFName.h \
-	SoMFNode.cpp SoMFNode.h \
-	SoMFPath.cpp SoMFPath.h \
-	SoMFPlane.cpp SoMFPlane.h \
-	SoMFRotation.cpp SoMFRotation.h \
-	SoMFShort.cpp SoMFShort.h \
-	SoMFString.cpp SoMFString.h \
-	SoMFTime.cpp SoMFTime.h \
-	SoMFUInt32.cpp SoMFUInt32.h \
-	SoMFUShort.cpp SoMFUShort.h \
-	SoMFVec2f.cpp SoMFVec2f.h \
-	SoMFVec3f.cpp SoMFVec3f.h \
-	SoMFVec4f.cpp SoMFVec4f.h \
-	SoMField.cpp SoMField.h \
-	SoSFBitMask.cpp SoSFBitMask.h \
-	SoSFBool.cpp SoSFBool.h \
-	SoSFColor.cpp SoSFColor.h \
-	SoSFEngine.cpp SoSFEngine.h \
-	SoSFEnum.cpp SoSFEnum.h \
-	SoSFFloat.cpp SoSFFloat.h \
-	SoSFImage.cpp SoSFImage.h \
-	SoSFInt32.cpp SoSFInt32.h \
-	SoSFMatrix.cpp SoSFMatrix.h \
-	SoSFName.cpp SoSFName.h \
-	SoSFNode.cpp SoSFNode.h \
-	SoSFPath.cpp SoSFPath.h \
-	SoSFPlane.cpp SoSFPlane.h \
-	SoSFRotation.cpp SoSFRotation.h \
-	SoSFShort.cpp SoSFShort.h \
-	SoSFString.cpp SoSFString.h \
-	SoSFTime.cpp SoSFTime.h \
-	SoSFTrigger.cpp SoSFTrigger.h \
-	SoSFUInt32.cpp SoSFUInt32.h \
-	SoSFUShort.cpp SoSFUShort.h \
-	SoSFVec2f.cpp SoSFVec2f.h \
-	SoSFVec3f.cpp SoSFVec3f.h \
-	SoSFVec4f.cpp SoSFVec4f.h \
-	SoSField.cpp SoSField.h \
-	SoGlobalField.cpp SoGlobalField.h \
-	SoSubField.h SoSubFieldP.h
+	SoField.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoField.h \
+	SoFieldContainer.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
+	SoFieldData.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoFieldData.h \
+	SoMFBitMask.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFBitMask.h \
+	SoMFBool.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFBool.h \
+	SoMFColor.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFColor.h \
+	SoMFEngine.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFEngine.h \
+	SoMFEnum.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFEnum.h \
+	SoMFFloat.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFFloat.h \
+	SoMFInt32.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFInt32.h \
+	SoMFMatrix.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFMatrix.h \
+	SoMFName.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFName.h \
+	SoMFNode.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFNode.h \
+	SoMFPath.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFPath.h \
+	SoMFPlane.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFPlane.h \
+	SoMFRotation.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFRotation.h \
+	SoMFShort.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFShort.h \
+	SoMFString.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFString.h \
+	SoMFTime.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFTime.h \
+	SoMFUInt32.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFUInt32.h \
+	SoMFUShort.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFUShort.h \
+	SoMFVec2f.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFVec2f.h \
+	SoMFVec3f.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFVec3f.h \
+	SoMFVec4f.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMFVec4f.h \
+	SoMField.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoMField.h \
+	SoSFBitMask.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFBitMask.h \
+	SoSFBool.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFBool.h \
+	SoSFColor.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFColor.h \
+	SoSFEngine.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFEngine.h \
+	SoSFEnum.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFEnum.h \
+	SoSFFloat.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFFloat.h \
+	SoSFImage.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFImage.h \
+	SoSFInt32.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFInt32.h \
+	SoSFMatrix.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFMatrix.h \
+	SoSFName.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFName.h \
+	SoSFNode.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFNode.h \
+	SoSFPath.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFPath.h \
+	SoSFPlane.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFPlane.h \
+	SoSFRotation.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFRotation.h \
+	SoSFShort.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFShort.h \
+	SoSFString.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFString.h \
+	SoSFTime.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFTime.h \
+	SoSFTrigger.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFTrigger.h \
+	SoSFUInt32.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFUInt32.h \
+	SoSFUShort.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFUShort.h \
+	SoSFVec2f.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFVec2f.h \
+	SoSFVec3f.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFVec3f.h \
+	SoSFVec4f.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSFVec4f.h \
+	SoSField.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoSField.h \
+	SoGlobalField.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoGlobalField.h \
+	$(top_srcdir)/include/Inventor/fields/SoSubField.h \
+	$(top_srcdir)/include/Inventor/fields/SoSubFieldP.h
 endif
 
 ALLINSTHEADERS = \
