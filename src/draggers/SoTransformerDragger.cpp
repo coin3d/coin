@@ -1432,23 +1432,9 @@ SoTransformerDragger::isColinear(SbVec2f a1[2], SbVec2f a2[2], int pixels)
 }
 
 void
-SoTransformerDragger::getSurroundScaleMatrices(SbMatrix &mat, SbMatrix &inv)
+SoTransformerDragger::getSurroundScaleMatrices(SbMatrix & mat, SbMatrix & inv)
 {
-  //
-  // FIXME: implement a getMatrices() method in SoSurroundScale to avoid
-  // creating an SoGetMatrixAction here. pederb, 20000224
-  //
-  SoSurroundScale *ss = SO_CHECK_ANY_PART(this, "surroundScale", SoSurroundScale);
-  if (ss) {
-    SoGetMatrixAction ma(this->getViewportRegion());
-    ma.apply(ss);
-    mat = ma.getMatrix();
-    inv = ma.getInverse();
-  }
-  else {
-    mat = SbMatrix::identity();
-    inv = SbMatrix::identity();
-  }
+  this->getPartToLocalMatrix("surroundScale", mat, inv);
 }
 
 SoNode *
