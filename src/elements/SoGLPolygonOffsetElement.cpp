@@ -181,12 +181,24 @@ SoGLPolygonOffsetElement::updategl(void)
   if (this->active) {
 #if GL_VERSION_1_1
     if (!COIN_SGI_USE_GLPOLYGONOFFSETEXT) {
-      if ((this->style & FILLED) && !(this->currentstyles & FILLED))
+      if ((this->style & FILLED) && !(this->currentstyles & FILLED)) {
         glEnable(GL_POLYGON_OFFSET_FILL);
-      if ((this->style & LINES) && !(this->currentstyles & LINES))
+      }
+      else if (!(this->style & FILLED) && (this->currentstyles & FILLED)) {
+        glDisable(GL_POLYGON_OFFSET_FILL);
+      }
+      if ((this->style & LINES) && !(this->currentstyles & LINES)) {
         glEnable(GL_POLYGON_OFFSET_LINE);
-      if ((this->style & POINTS) && !(this->currentstyles & POINTS))
+      }
+      else if (!(this->style & LINES) && (this->currentstyles & LINES)) {
+        glDisable(GL_POLYGON_OFFSET_LINE);        
+      }
+      if ((this->style & POINTS) && !(this->currentstyles & POINTS)) {
         glEnable(GL_POLYGON_OFFSET_POINT);
+      }
+      else if (!(this->style & POINTS) && (this->currentstyles & POINTS)) {
+        glDisable(GL_POLYGON_OFFSET_POINT);
+      }
       glPolygonOffset(this->offsetfactor,
                       this->offsetunits);
     }
@@ -205,6 +217,9 @@ SoGLPolygonOffsetElement::updategl(void)
       if ((this->style & FILLED) && !(this->currentstyles & FILLED)) {
         glEnable(GL_POLYGON_OFFSET_EXT);
       }
+      else if (!(this->style & FILLED) && (this->currentstyles & FILLED)) {
+        glDisable(GL_POLYGON_OFFSET_EXT);
+      }
     }
 #endif // GL_EXT_polygon_offset && (!GL_VERSION_1_1 || defined(__sgi)
     this->currentstyles = this->style;
@@ -212,20 +227,24 @@ SoGLPolygonOffsetElement::updategl(void)
   else { // ! active
 #if GL_VERSION_1_1
     if (!COIN_SGI_USE_GLPOLYGONOFFSETEXT) {
-      if (this->currentstyles & FILLED)
+      if (this->currentstyles & FILLED) {
         glDisable(GL_POLYGON_OFFSET_FILL);
-      if (this->currentstyles & LINES)
+      }
+      if (this->currentstyles & LINES) {
         glDisable(GL_POLYGON_OFFSET_LINE);
-      if (this->currentstyles & POINTS)
+      }
+      if (this->currentstyles & POINTS) {
         glDisable(GL_POLYGON_OFFSET_POINT);
+      }
     }
 #endif // GL_VERSION_1_1
 
 #if GL_EXT_polygon_offset && (!GL_VERSION_1_1 || defined(__sgi))
     if (COIN_SGI_USE_GLPOLYGONOFFSETEXT &&
         SoGLCacheContextElement::extSupported(this->state, polygon_offset_ext_id)) {
-      if (this->currentstyles & FILLED)
+      if (this->currentstyles & FILLED) {
         glDisable(GL_POLYGON_OFFSET_EXT);
+      }
     }
 #endif // GL_EXT_polygon_offset && (!GL_VERSION_1_1 || defined(__sgi))
     this->currentstyles = (Style) 0;
