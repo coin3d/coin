@@ -40,6 +40,7 @@
 #include <Inventor/elements/SoWindowElement.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/misc/SoState.h>
 
 // *************************************************************************
 
@@ -351,13 +352,16 @@ SoHandleEventAction::beginTraversal(SoNode * node)
   this->pickValid = FALSE;
   this->applyNode = node;
 
+  this->getState()->push();
+  SoViewportRegionElement::set(this->getState(), this->viewport);
   if (this->grabber) {
     // ?? is this correct ?? pederb, 19991214
     this->traverse(this->grabber);
   }
   else {
-    this->traverse(node);
+    inherited::beginTraversal(node);
   }
+  this->getState()->pop();
 }
 
 SoRayPickAction *
