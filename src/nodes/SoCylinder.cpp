@@ -70,6 +70,8 @@
 #include <Inventor/elements/SoComplexityElement.h>
 #endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
 
+#include <math.h> // fabs()
+
 /*!
   \enum SoCylinder::Part
   FIXME: write documentation for enum
