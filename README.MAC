@@ -125,6 +125,25 @@ Carbon/Cocoa/GLUT.
 Common problems (and solutions)
 ===============================
 
+
+o MACOSX_DEPLOYMENT_TARGET warning
+  --------------------------------
+
+You might get the following warning when building your application:
+
+ld: warning dynamic shared library:
+/System/Library/Frameworks/AGL.framework/AGL not made a weak library
+in output with MACOSX_DEPLOYMENT_TARGET environment variable set to:
+10.1
+
+This has nothing to do with Coin, but is rather a peculiarity of the
+Mac OS X "December 2002" developer tools. The warning is totally
+harmless. You can ignore it, or you can set the environment variable
+MACOSX_DEPLOYMENT_TARGET="10.2". (FYI, it essentially has to do with
+how missing symbols at startup are handled. I recommend you read the
+relevant TechNote[6] if you are interested in background information.)
+
+
 o Directory names with spaces
   ----------------------------
 
@@ -212,6 +231,7 @@ References:
 [3] http://developer.apple.com/techpubs/macosx/ReleaseNotes/TwoLevelNamespaces.html
 [4] ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-2.0.0.dmg.gz
 [5] http://developer.apple.com/techpubs/macosx/Essentials/SystemOverview/Frameworks 
+[6] http://developer.apple.com/technotes/tn2002/tn2064.html
 
 --
 Karin Kosina (vka kyrah)
