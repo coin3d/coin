@@ -318,7 +318,19 @@ SbImage::readFile(const SbString & filename,
 
 #if SIMAGE_RUNTIME_LINKING
     if (!SIMAGE_read_image && !SIMAGE_failed_to_load) {
-      SIMAGE_libhandle = dlopen("libsimage.so", RTLD_NOW);
+      /* libsimage's name changes depending on it's version/purpose */
+      SIMAGE_libhandle = NULL;
+      static const char * libnames[] = {
+#if COIN_DEBUG
+        "libsimage_g.so",
+        "libsimage.so",
+#else
+        "libsimage.so",
+        "libsimage_g.so",
+#endif
+        NULL };
+      for ( int lib = 0; libnames[lib] && ! SIMAGE_libhandle; lib++ )
+        SIMAGE_libhandle = dlopen( libnames[lib], RTLD_NOW );
       if (!SIMAGE_libhandle) {
         SIMAGE_failed_to_load = TRUE;
 #if COIN_DEBUG
