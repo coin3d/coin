@@ -270,11 +270,7 @@ SoRayPickAction::computeWorldSpaceRay(void)
                            this->rayradiusdelta);
 #endif // debug
 
-
-    // shortest distance from origin to plane
-    const float D = this->raydirection.dot(this->raystart);
-    this->nearplane = SbPlane(this->raydirection, D);
-
+    this->nearplane = SbPlane(vv.getProjectionDirection(), this->raystart);    
     this->setFlag(SoRayPickAction::WS_RAY_COMPUTED);
   }
 }
@@ -450,8 +446,7 @@ SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
         int i1 = (i+1) % 3;
         int i2 = (i+2) % 3;
         if (isect[i1] >= bounds[0][i1] && isect[i1] <= bounds[1][i1] &&
-            isect[i2] >= bounds[0][i2] && isect[i2] <= bounds[1][i2] &&
-            this->isBetweenPlanesWS(isect)) return TRUE;
+            isect[i2] >= bounds[0][i2] && isect[i2] <= bounds[1][i2]) return TRUE;
       }
     }
   }
