@@ -435,7 +435,7 @@ typedef struct {
   SbBool drawaspoints;
 } soidxnurbscurve_call_donurbs_data;
 
-static void call_donurbs(void * userdata, SoAction * action)
+static void SoIndexedNurbsCurve_call_donurbs(void * userdata, SoAction * action)
 {
   soidxnurbscurve_call_donurbs_data * data = 
     (soidxnurbscurve_call_donurbs_data*) userdata;
@@ -449,5 +449,5 @@ SoIndexedNurbsCurveP::doNurbsWrapper(SoAction * action, const SbBool drawaspoint
   data.thisp = this;
   data.action = action;
   data.drawaspoints = drawaspoints;
-  sogl_offscreencontext_callback(call_donurbs, &data);
+  sogl_offscreencontext_callback(SoIndexedNurbsCurve_call_donurbs, &data);
 }

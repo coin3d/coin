@@ -470,7 +470,7 @@ typedef struct {
   SoAction * action;
 } sonurbssurface_call_donurbs_data;
 
-static void call_donurbs(void * userdata, SoAction * action)
+static void SoNurbsSurface_call_donurbs(void * userdata, SoAction * action)
 {
   sonurbssurface_call_donurbs_data * data = 
     (sonurbssurface_call_donurbs_data*) userdata;
@@ -483,6 +483,6 @@ SoNurbsSurfaceP::doNurbsWrapper(SoAction * action)
   sonurbssurface_call_donurbs_data data;
   data.thisp = this;
   data.action = action;
-  sogl_offscreencontext_callback(call_donurbs, &data);
+  sogl_offscreencontext_callback(SoNurbsSurface_call_donurbs, &data);
 }
 

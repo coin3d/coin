@@ -70,7 +70,6 @@
 #include "SoProfile.cpp"
 #include "SoProfileCoordinate2.cpp"
 #include "SoProfileCoordinate3.cpp"
-#include "SoQuadMesh.cpp"
 #include "SoResetTransform.cpp"
 #include "SoRotation.cpp"
 #include "SoRotationXYZ.cpp"

@@ -444,7 +444,7 @@ typedef struct {
   SbBool drawaspoints;
 } sonurbscurve_call_donurbs_data;
 
-static void call_donurbs(void * userdata, SoAction * action)
+static void SoNurbsCurve_call_donurbs(void * userdata, SoAction * action)
 {
   sonurbscurve_call_donurbs_data * data =
     (sonurbscurve_call_donurbs_data*) userdata;
@@ -458,5 +458,5 @@ SoNurbsCurveP::doNurbsWrapper(SoAction * action, const SbBool drawaspoints)
   data.thisp = this;
   data.action = action;
   data.drawaspoints = drawaspoints;
-  sogl_offscreencontext_callback(call_donurbs, &data);
+  sogl_offscreencontext_callback(SoNurbsCurve_call_donurbs, &data);
 }
