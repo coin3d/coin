@@ -74,6 +74,7 @@
 #include <Inventor/SbTime.h>
 #include <Inventor/SbDict.h>
 #include <coindefs.h> // COIN_STUB()
+#include <Inventor/errors/SoDebugError.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -82,10 +83,6 @@
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
 #endif // HAVE_THREADS
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <assert.h>
 
@@ -159,14 +156,12 @@ void
 SoSensorManagerP::assertAlive(SoSensorManagerP * that)
 {
   if (that->alive != ALIVE_PATTERN) {
-#if COIN_DEBUG
     SoDebugError::post("SoSensorManagerP::assertAlive",
                        "Detected an attempt to access SoSensorManager "
                        "instance after it was destructed!  "
                        "This is most likely to be the result of some grave "
                        "programming error in the internal library code. "
                        "Please report this problem");
-#endif // COIN_DEBUG
     assert(FALSE && "SoSensorManager-object no longer alive!");
   }
 }
