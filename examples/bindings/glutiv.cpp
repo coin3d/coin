@@ -37,7 +37,9 @@
 //    in production code.
 
 #include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
 #include <Inventor/SoSceneManager.h>
+#include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodes/SoCylinder.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
 #include <Inventor/nodes/SoDrawStyle.h>
@@ -48,7 +50,11 @@
 #include <Inventor/nodes/SoShuttle.h>
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTransform.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
 #include <GL/glut.h>
+#endif 
 
 // ----------------------------------------------------------------------
 
