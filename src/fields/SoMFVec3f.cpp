@@ -81,10 +81,11 @@ SoMFVec3f::write1Value(SoOutput * out, int idx) const
 void
 SoMFVec3f::setValues(const int start, const int num, const float xyz[][3])
 {
-  if(start+num > this->maxNum) this->allocValues(start+num);
-  else if(start+num > this->num) this->num = start+num;
+  if (start+num > this->maxNum) this->allocValues(start+num);
+  else if (start+num > this->num) this->num = start+num;
 
-  for(int i=0; i < num; i++) this->set1Value(start+i, SbVec3f(xyz[i]));
+  for(int i=0; i < num; i++) this->values[start+i] = SbVec3f(xyz[i]);
+  this->valueChanged();
 }
 
 /*!
@@ -123,6 +124,6 @@ SoMFVec3f::setValue(const float x, const float y, const float z)
 void
 SoMFVec3f::setValue(const float xyz[3])
 {
-  if (xyz == NULL) this->allocValues(0);
+  if (xyz == NULL) this->setNum(0);
   else this->setValue(SbVec3f(xyz));
 }

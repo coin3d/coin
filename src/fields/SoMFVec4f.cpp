@@ -124,6 +124,6 @@ SoMFVec4f::setValue(const float x, const float y,
 void
 SoMFVec4f::setValue(const float xyzw[4])
 {
-  if (xyzw == NULL) this->allocValues(0);
+  if (xyzw == NULL) this->setNum(0);
   else this->setValue(SbVec4f(xyzw));
 }

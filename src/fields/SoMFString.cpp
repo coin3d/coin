@@ -79,10 +79,10 @@ SoMFString::write1Value(SoOutput * out, int idx) const
 void
 SoMFString::setValues(const int start, const int num, const char * strings[])
 {
-  if(start+num > this->maxNum) this->allocValues(start+num);
-  else if(start+num > this->num) this->num = start+num;
+  if (start+num > this->maxNum) this->allocValues(start+num);
+  else if (start+num > this->num) this->num = start+num;
 
-  for (int i=0;i<num;i++) this->set1Value(i+start,SbString(strings[i]));
+  for (int i=0; i < num; i++) this->values[i+start] = SbString(strings[i]);
   this->valueChanged();
 }
 
