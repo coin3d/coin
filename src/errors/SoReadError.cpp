@@ -49,7 +49,7 @@ size_t SoReadError::strbuffersize = 0;
 static const size_t buffer_inc = 512;
 
 
-// Documented for parent class. 
+// Documented for parent class.
 void
 SoReadError::initClass(void)
 {
@@ -71,21 +71,21 @@ SoReadError::cleanClass(void)
   delete SoReadError::strbuffer;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoType
 SoReadError::getClassTypeId(void)
 {
   return SoReadError::classTypeId;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoType
 SoReadError::getTypeId(void) const
 {
   return SoReadError::classTypeId;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 void
 SoReadError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
@@ -93,14 +93,14 @@ SoReadError::setHandlerCallback(SoErrorCB * const function, void * const data)
   SoReadError::callbackData = data;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoErrorCB *
 SoReadError::getHandlerCallback(void)
 {
   return SoReadError::callback;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 void *
 SoReadError::getHandlerData(void)
 {
@@ -140,7 +140,7 @@ SoReadError::post(const SoInput * const in, const char * const format, ...)
   error.handleError();
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoErrorCB *
 SoReadError::getHandler(void * & data) const
 {

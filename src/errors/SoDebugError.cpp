@@ -71,7 +71,7 @@ static const size_t buffer_inc = 512;
 */
 
 
-// Documented for parent class. 
+// Documented for parent class.
 void
 SoDebugError::initClass(void)
 {
@@ -91,7 +91,7 @@ SoDebugError::cleanClass(void)
   delete SoDebugError::strbuffer;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 void
 SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
@@ -99,28 +99,28 @@ SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
   SoDebugError::callbackData = data;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoErrorCB *
 SoDebugError::getHandlerCallback(void)
 {
   return SoDebugError::callback;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 void *
 SoDebugError::getHandlerData(void)
 {
   return SoDebugError::callbackData;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoType
 SoDebugError::getClassTypeId(void)
 {
   return SoDebugError::classTypeId;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoType
 SoDebugError::getTypeId(void) const
 {
@@ -199,7 +199,7 @@ SoDebugError::postInfo(const char * const source, const char * const format, ...
   SODEBUGERROR_POST(INFO, "info");
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoErrorCB *
 SoDebugError::getHandler(void * & data) const
 {

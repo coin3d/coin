@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoMemoryError SoMemoryError.h Inventor/elements/SoMemoryError.h
+  \class SoMemoryError SoMemoryError.h Inventor/errors/SoMemoryError.h
   \brief The SoMemoryError class is used to inform of problems with
   memory allocation.
 
@@ -63,7 +63,7 @@ SoErrorCB * SoMemoryError::callback = SoError::defaultHandlerCB;
 void * SoMemoryError::callbackData = NULL;
 
 
-// Documented for parent class. 
+// Documented for parent class.
 void
 SoMemoryError::initClass(void)
 {
@@ -73,21 +73,21 @@ SoMemoryError::initClass(void)
     SoType::createType(SoError::getClassTypeId(), "MemoryError");
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoType
 SoMemoryError::getClassTypeId(void)
 {
   return SoMemoryError::classTypeId;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoType
 SoMemoryError::getTypeId(void) const
 {
   return SoMemoryError::classTypeId;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 void
 SoMemoryError::setHandlerCallback(SoErrorCB * const function,
                                   void * const data)
@@ -96,14 +96,14 @@ SoMemoryError::setHandlerCallback(SoErrorCB * const function,
   SoMemoryError::callbackData = data;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoErrorCB *
 SoMemoryError::getHandlerCallback(void)
 {
   return SoMemoryError::callback;
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 void *
 SoMemoryError::getHandlerData(void)
 {
@@ -124,7 +124,7 @@ SoMemoryError::post(const char * const whatWasAllocated)
   error.handleError();
 }
 
-// Documented for parent class. 
+// Documented for parent class.
 SoErrorCB * SoMemoryError::getHandler(void * & data) const
 {
   data = SoMemoryError::callbackData;
