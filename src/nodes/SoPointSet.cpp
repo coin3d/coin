@@ -143,17 +143,18 @@ void sogl_render_pointset_m0n0t0(const SoGLCoordinateElement * coords,
 				 int32_t numpts,
 				 int32_t idx)
 {
+  int i;
   const int unroll = numpts >> 2;
   const int rest = numpts & 3;
 
   glBegin(GL_POINTS);
-  for (int i = 0; i < unroll; i++) {
+  for (i = 0; i < unroll; i++) {
     coords->send(idx++);
     coords->send(idx++);
     coords->send(idx++);
     coords->send(idx++);
   }
-  for (int i = 0; i < rest; i++) {
+  for (i = 0; i < rest; i++) {
     coords->send(idx++);
   }
   glEnd();
@@ -218,12 +219,13 @@ void sogl_render_pointset_m1n0t0(const SoGLCoordinateElement * coords,
 				 int32_t numpts,
 				 int32_t idx)
 {
+  int i;
   int matnr = 0;
   const int unroll = numpts >> 2;
   const int rest = numpts & 3;
 
   glBegin(GL_POINTS);
-  for (int i = 0; i < unroll; i++) {
+  for (i = 0; i < unroll; i++) {
     mb->send(matnr++, TRUE);
     coords->send(idx++);
     mb->send(matnr++, TRUE);
@@ -233,7 +235,7 @@ void sogl_render_pointset_m1n0t0(const SoGLCoordinateElement * coords,
     mb->send(matnr++, TRUE);
     coords->send(idx++);
   }
-  for (int i = 0; i < rest; i++) {
+  for (i = 0; i < rest; i++) {
     mb->send(matnr++, TRUE);
     coords->send(idx++);
   }
@@ -367,10 +369,10 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   doTextures = tb.needCoordinates();
 
   Binding mbind = this->findMaterialBinding(action->getState());
-  
+
   Binding nbind = OVERALL;
   if (needNormals) nbind = this->findNormalBinding(action->getState());
-  
+
   if (nbind == OVERALL && needNormals) {
     if (normals) glNormal3fv((const GLfloat *)normals);
     else glNormal3f(0.0f, 0.0f, 1.0f);
