@@ -84,6 +84,20 @@
 #include <ctype.h>
 #endif // ! _WIN32
 
+
+// This (POSIX-compliant) macro is missing from the Win32 API header
+// files for MSVC++ 6.0.
+#ifndef S_ISDIR
+ // The _S_IFDIR bitpattern is not in the POSIX standard, but MSVC++
+ // header files has it.
+ #ifdef _S_IFDIR
+ #define S_ISDIR(s) s & _S_IFDIR
+ #else // Ai.
+ #error Can neither find nor make an S_ISDIR macro to test stat structures.
+ #endif // !_S_IFDIR
+#endif // !S_ISDIR
+
+
 const unsigned int READBUFSIZE = 65536;
 
 // *************************************************************************
