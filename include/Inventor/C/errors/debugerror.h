@@ -50,39 +50,21 @@ typedef struct cc_debugerror {
 /* FIXME: missing stuff from SoDebugError: type-system,
    COIN_DEBUG_BREAK handling, ... 20020524 mortene. */
 
+/* ********************************************************************** */
+
+void cc_debugerror_post(const char * source, const char * format, ...);
+void cc_debugerror_postwarning(const char * source, const char * format, ...);
+void cc_debugerror_postinfo(const char * source, const char * format, ...);
+
+
 void cc_debugerror_init(cc_debugerror * me);
 void cc_debugerror_clean(cc_debugerror * me);
 
-//   SoDebugError::Severity getSeverity(void) const;
 CC_DEBUGERROR_SEVERITY cc_debugerror_get_severity(const cc_debugerror * me);
 
-//   static void setHandlerCallback(SoErrorCB * const function,
-//                                  void * const data);
-
 void cc_debugerror_set_handler_callback(cc_error_cb * function, void * data);
-
-//   static SoErrorCB * getHandlerCallback(void);
-
 cc_error_cb * cc_debugerror_get_handler_callback(void);
-
-//   static void * getHandlerData(void);
-
 void * cc_debugerror_get_handler_data(void);
-
-//   static void post(const char * const source, const char * const format, ...);
-
-void cc_debugerror_post(const char * source, const char * format, ...);
-
-//   static void postWarning(const char * const source, const char * const format, ...);
-
-void cc_debugerror_postwarning(const char * source, const char * format, ...);
-
-//   static void postInfo(const char * const source, const char * const format, ...);
-
-void cc_debugerror_postinfo(const char * source, const char * format, ...);
-
-// protected:
-//   virtual SoErrorCB * getHandler(void * & data) const;
 
 cc_error_cb * cc_debugerror_get_handler(void ** data);
 
