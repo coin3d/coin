@@ -228,10 +228,6 @@ SoVRMLIndexedLineSet::GLRender(SoGLRenderAction * action)
   // nodes using coordinate index fields, of course. 20010104
   // mortene.)
 
-  if (this->coordIndex.getNum() && this->coordIndex[this->coordIndex.getNum()-1] >= 0) {
-    this->coordIndex.set1Value(coordIndex.getNum(), -1);
-  }
-
   const SoCoordinateElement * coords;
   const int32_t * cindices;
   int32_t numindices;
@@ -369,7 +365,7 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
   SoLineDetail lineDetail;
   vertex.setDetail(&pointDetail);
 
-  while (cindices < end) {
+  while (cindices + 1 < end) {
     this->beginShape(action, LINE_STRIP, &lineDetail);
     i = *cindices++;
     assert(i >= 0);
@@ -397,9 +393,8 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
     this->shapeVertex(&vertex);
     lineDetail.incPartIndex();
 
-    i = *cindices++;
+    i = cindices < end ? *cindices++ : -1;
     while (i >= 0) {
-      assert(cindices <= end);
       if (mbind >= PER_VERTEX) {
         if (matindices) vertex.setMaterialIndex(*matindices++);
         else vertex.setMaterialIndex(matnr++);
@@ -409,7 +404,7 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
       vertex.setPoint(coords->get3(i));
       this->shapeVertex(&vertex);
       lineDetail.incPartIndex();
-      i = *cindices++;
+      i = cindices < end ? *cindices++ : -1;
     }
     this->endShape(); // end of line strip
     if (mbind == PER_VERTEX_INDEXED) matindices++;
