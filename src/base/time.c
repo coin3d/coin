@@ -40,7 +40,7 @@
 /* On Mac OS X / Darwin, timeb.h uses time_t from time.h, so the order
    of these two includes needs to be preserved. */
 #ifdef HAVE_SYS_TIMEB_H
-#include <sys/timeb.h> /* struct _timeb */
+#include <sys/timeb.h> /* struct _timeb or struct timeb */
 #endif /* HAVE_SYS_TIMEB_H */
 
 #ifdef HAVE_UNISTD_H
@@ -122,9 +122,14 @@ cc_internal_ftime(cc_time * t)
   /* FIXME: should use timezone field of struct _timeb aswell. 20011023 mortene. */
   *t = (double)timebuffer.time + (double)timebuffer.millitm / 1000.0;
   return TRUE;
-#else /* !HAVE__FTIME */
+#elif defined(HAVE_FTIME)
+  struct timeb timebuffer;
+  /* FIXME: should use timezone field of struct _timeb aswell. 20011023 mortene. */
+  *t = (double)timebuffer.time + (double)timebuffer.millitm / 1000.0;  
+  return TRUE;
+#else /* HAVE_FTIME */
   return FALSE;
-#endif /* !HAVE__FTIME */
+#endif /* !HAVE_FTIME */
 }
 
 /* ********************************************************************** */
