@@ -28,6 +28,7 @@ RegularSources = \
 	SoOffscreenAGLData.cpp \
 	SoOffscreenGLXData.cpp \
 	SoOffscreenWGLData.cpp \
+	SoVertexArrayIndexer.cpp \
 	SoGenerate.cpp \
 	SoLockManager.cpp \
 	SoAudioDevice.cpp \
@@ -46,6 +47,7 @@ PrivateHeaders = \
 	SoGLqmeshTemplate.icc \
 	SoGLqmeshpreciselightingTemplate.icc \
 	SoOffscreenInternalData.h \
+	SoVertexArrayIndexer.h \
 	SoOffscreenAGLData.h \
 	SoOffscreenGLXData.h \
 	SoOffscreenWGLData.h \
