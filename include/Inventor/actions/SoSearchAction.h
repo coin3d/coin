@@ -63,6 +63,10 @@ public:
   SbBool isFound(void) const;
   void addPath(SoPath * const path);
 
+  // Obsoleted global flag, only present for compatibility reasons
+  // with old SGI / TGS Inventor application code.
+  static SbBool duringSearchAll;
+
 protected:
   virtual void beginTraversal(SoNode * node);
 

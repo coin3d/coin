@@ -74,8 +74,25 @@
   first one found, the last one or all of them.
 */
 
+/*!
+  \var SbBool SoSearchAction::duringSearchAll
+
+  Obsoleted global flag, only present for compatibility reasons
+  with old SGI / TGS Inventor application code.
+
+  It's set to \c TRUE when an SoSearchAction traversal with
+  SoSearchAction::isSearchingAll() equal to \c TRUE is started, and is
+  reset to \c FALSE again after traversal has finished.
+
+  (The flag is used by SGI / TGS Inventor in SoSwitch::affectsState()
+  to know when SoSwitch::whichChild should behave as
+  SoSwitch::SO_SWITCH_ALL. We have a better solution for this problem
+  in Coin.)
+*/
 
 SO_ACTION_SOURCE(SoSearchAction);
+
+SbBool SoSearchAction::duringSearchAll = FALSE;
 
 
 // Overridden from parent class.
@@ -365,6 +382,11 @@ SoSearchAction::beginTraversal(SoNode * node)
   if (this->path) this->path->unref();
   this->path = NULL;
 
-  // begin traversal at root node
-  this->traverse(node);
+  // For compatibility with older application code which is using this
+  // flag.
+  SoSearchAction::duringSearchAll = this->isSearchingAll();
+
+  this->traverse(node); // begin traversal at root node
+
+  SoSearchAction::duringSearchAll = FALSE;
 }
