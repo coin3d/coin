@@ -25,8 +25,8 @@
 #include <Inventor/C/threads/workerp.h>
 #include <Inventor/C/threads/thread.h>
 #include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/mutexp.h>
 #include <Inventor/C/threads/condvar.h>
-
 #include <Inventor/C/errors/debugerror.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -44,8 +44,10 @@ static void
 worker_thread_loop(cc_worker * worker)
 {
   cc_mutex_lock(worker->mutex);
-  /* signal master that we've got into the scheduling loop */
+  cc_mutex_lock(worker->beginmutex);
+  /* signal master that we've entered the scheduling loop */
   cc_condvar_wake_one(worker->begincond);
+  cc_mutex_unlock(worker->beginmutex);
 
   while (!worker->shutdown) {
     /* wait for job */
@@ -73,19 +75,6 @@ static void *
 worker_thread_entry(void * data)
 {
   cc_worker * worker = (cc_worker*) data;
-  /* FIXME, FIXME, FIXME!!!!!  John Ivar Haugland reported problems
-   * with the worker code after updating from IRIX 6.5.15 to
-   * 6.5.18. What happened was that the new thread somehow managed to
-   * send the begincond signal (in worker_thread_loop()) before the
-   * main thread got around to waiting for it. This should be
-   * impossible, since the main thread locks a mutex before starting
-   * the new thread (in worker_start_thread(), and the new thread also
-   * locks this mutex before sending the begincond signal. Very
-   * strange. A beer to the person who finds the flaw in my logic
-   * here.  pederb, 2002-12-18 */
-
-  /* This sleep is only a workaround for the bug described above */
-  cc_sleep(2.0f); 
   worker_thread_loop(worker);
   return NULL;
 }
@@ -96,10 +85,19 @@ static void
 worker_start_thread(cc_worker * worker)
 {
   if (!worker->threadisrunning) {
+    cc_mutex_lock(worker->beginmutex);
+    /* Unlock worker mutex before starting thread. The new thread will use
+       mutex and beginmutex  to synchronize */
+    cc_mutex_unlock(worker->mutex);
     worker->thread = cc_thread_construct(worker_thread_entry, worker);
     
-    /* wait for thread to get to the main loop */
-    cc_condvar_wait(worker->begincond, worker->mutex);
+    /* Wait for thread to get to the main loop. The new thread will
+     have worker->mutex locked when this signal arrives */
+    cc_condvar_wait(worker->begincond, worker->beginmutex);
+    
+    /* lock thread again so that we know the new thread is waiting for
+       a signal before we return */
+    cc_mutex_lock(worker->mutex);
     worker->threadisrunning = 1;
   }
 }
@@ -136,6 +134,7 @@ cc_worker_construct(void)
   worker->mutex = cc_mutex_construct();
   worker->cond = cc_condvar_construct();
   worker->begincond = cc_condvar_construct();
+  worker->beginmutex = cc_mutex_construct();
   worker->thread = NULL; /* delay creating thread */
   worker->threadisrunning = FALSE;
   worker->shutdown = FALSE;
@@ -143,7 +142,6 @@ cc_worker_construct(void)
   worker->workclosure = NULL;
   worker->idlecb = NULL;
   worker->idleclosure = NULL;
-
   return worker;
 }
 
@@ -157,6 +155,7 @@ cc_worker_destruct(cc_worker * worker)
   cc_mutex_destruct(worker->mutex);
   cc_condvar_destruct(worker->cond);
   cc_condvar_destruct(worker->begincond);
+  cc_mutex_destruct(worker->beginmutex);
   free(worker);
 }
 
@@ -165,9 +164,7 @@ cc_worker_start(cc_worker * worker, cc_worker_f * workfunc, void * closure)
 {
   assert(workfunc);
 
-  cc_mutex_lock(worker->mutex);
-  
-  /* no need to lock, thread is idle or not running */
+  cc_mutex_lock(worker->mutex);  
   worker->workfunc = workfunc;
   worker->workclosure = closure;
 
