@@ -152,6 +152,10 @@ AC_DEFINE_UNQUOTED([COIN_MICRO_VERSION], [$COIN_MICRO_VERSION],
   [define this to the libCoin release version number])
 AC_DEFINE_UNQUOTED([COIN_VERSION], ["$COIN_VERSION"],
   [define this to the full libCoin major.minor.micro version number])
+if test x"$COIN_BETA_VERSION" = x""; then :; else
+  AC_DEFINE_UNQUOTED([COIN_BETA_VERSION], [$COIN_BETA_VERSION],
+    [define this to the libCoin beta version letter])
+fi
 
 # *******************************************************************
 # Miscellaneous options and initializations.
