@@ -139,7 +139,8 @@ win_srcdir = @win_srcdir@
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.cpp SoTranReceiver.h \
 @HACKING_COMPACT_BUILD_FALSE@	default3dfont.cpp \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.cpp \
-@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.c
+@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.c \
+@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.c
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h \
@@ -203,7 +204,8 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoGenerate.lo SoLockManager.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoTranReceiver.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@default2dfont.lo GLUWrapper.lo
+@HACKING_COMPACT_BUILD_FALSE@default2dfont.lo GLUWrapper.lo \
+@HACKING_COMPACT_BUILD_FALSE@simage_wrapper.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS =  all.lo
 libmisc_la_OBJECTS =  $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS = 
@@ -221,7 +223,7 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoLockManager.lo SoByteStream.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoTranSender.lo SoTranReceiver.lo \
 @HACKING_COMPACT_BUILD_FALSE@default3dfont.lo default2dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@GLUWrapper.lo
+@HACKING_COMPACT_BUILD_FALSE@GLUWrapper.lo simage_wrapper.lo
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc@SUFFIX@LINKHACK_la_OBJECTS =  \
 @HACKING_COMPACT_BUILD_TRUE@all.lo
 libmisc@SUFFIX@LINKHACK_la_OBJECTS =  \
@@ -255,7 +257,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@$(DEPDIR)/SoTempPath.Plo $(DEPDIR)/SoTranReceiver.Plo \
 @AMDEP@$(DEPDIR)/SoTranSender.Plo $(DEPDIR)/SoType.Plo \
 @AMDEP@$(DEPDIR)/all.Plo $(DEPDIR)/default2dfont.Plo \
-@AMDEP@$(DEPDIR)/default3dfont.Plo
+@AMDEP@$(DEPDIR)/default3dfont.Plo $(DEPDIR)/simage_wrapper.Plo
 DIST_COMMON =  $(libmiscinc_HEADERS) Makefile.am Makefile.in
 
 
@@ -421,6 +423,7 @@ distclean-tags:
 @AMDEP@@AM_INCLUDE@ $(DEPDIR)/all.Plo
 @AMDEP@@AM_INCLUDE@ $(DEPDIR)/default2dfont.Plo
 @AMDEP@@AM_INCLUDE@ $(DEPDIR)/default3dfont.Plo
+@AMDEP@@AM_INCLUDE@ $(DEPDIR)/simage_wrapper.Plo
 
 distclean-depend:
 	-rm -rf $(DEPDIR)

@@ -36,43 +36,13 @@
 #include <Inventor/SbString.h>
 #include <string.h>
 #include <stdlib.h>
-#if HAVE_CONFIG_H
-#include <config.h> // HAVE_LIBSIMAGE, SIMAGE_RUNTIME_LINKING etc
-#endif // HAVE_CONFIG_H
-#if HAVE_LIBSIMAGE
-#include <simage.h>
-#endif // HAVE_LIBSIMAGE
-#if HAVE_DLFCN_H
-#include <dlfcn.h>
-#endif // HAVE_DLFCN_H
-#include <assert.h>
+#include <src/misc/simage_wrapper.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-
-/// Data for libsimage interface. ////////////////////////////////////////
-
-static SbBool SIMAGE_failed_to_load = FALSE;
-static void * SIMAGE_libhandle = NULL;
-typedef unsigned char * (*SIMAGE_read_image_t)(const char *, int *, int *, int *);
-static SIMAGE_read_image_t SIMAGE_read_image;
-typedef const char * (*SIMAGE_get_last_error_t)(void);
-static SIMAGE_get_last_error_t SIMAGE_get_last_error;
-typedef void (*SIMAGE_free_image_t)(unsigned char *);
-static SIMAGE_free_image_t SIMAGE_free_image;
-
-static void SIMAGE_cleanup(void)
-{
-#if SIMAGE_RUNTIME_LINKING
-  assert(SIMAGE_libhandle);
-  (void)dlclose(SIMAGE_libhandle);
-#endif // SIMAGE_RUNTIME_LINKING
-}
-
 //////////////////////////////////////////////////////////////////////////
-
 
 /*!
   Default constructor.
@@ -305,75 +275,30 @@ SbImage::readFile(const SbString & filename,
   if (finalname.getLength()) {
     int w, h, nc;
     unsigned char * simagedata = NULL;
-
-#if HAVE_LIBSIMAGE
-    // Function symbol simage_read_image() from libsimage is already
-    // set up by the system loader.
-    if (!SIMAGE_read_image) {
-      SIMAGE_read_image = simage_read_image;
-      SIMAGE_free_image = simage_free_image;
-      SIMAGE_get_last_error = simage_get_last_error;
-    }
-#endif // HAVE_LIBSIMAGE
-
-#if SIMAGE_RUNTIME_LINKING
-    if (!SIMAGE_read_image && !SIMAGE_failed_to_load) {
-      /* libsimage's name changes depending on it's version/purpose */
-      SIMAGE_libhandle = NULL;
-      static const char * libnames[] = {
-#if COIN_DEBUG
-        "libsimage_g.so",
-        "libsimage.so",
-#else
-        "libsimage.so",
-        "libsimage_g.so",
-#endif
-        NULL };
-      for ( int lib = 0; libnames[lib] && ! SIMAGE_libhandle; lib++ )
-        SIMAGE_libhandle = dlopen( libnames[lib], RTLD_NOW );
-      if (!SIMAGE_libhandle) {
-        SIMAGE_failed_to_load = TRUE;
-#if COIN_DEBUG
-        SoDebugError::post("SbImage::readFile",
-                           "couldn't open libsimage.so; '%s'",
-                           dlerror());
-#endif // COIN_DEBUG
-      }
-      else {
-        (void)atexit(SIMAGE_cleanup);
-
-        SIMAGE_read_image =
-          (SIMAGE_read_image_t)dlsym(SIMAGE_libhandle, "simage_read_image");
-        SIMAGE_free_image =
-          (SIMAGE_free_image_t)dlsym(SIMAGE_libhandle, "simage_free_image");
-        SIMAGE_get_last_error =
-          (SIMAGE_get_last_error_t)dlsym(SIMAGE_libhandle, "simage_get_last_error");
-
-        if (!SIMAGE_read_image) {
-          SIMAGE_failed_to_load = TRUE;
-#if COIN_DEBUG
-          SoDebugError::post("SbImage::readFile",
-                             "couldn't find function pointer "
-                             "simage_read_image; '%s'",
-                             dlerror());
-#endif // COIN_DEBUG
-        }
-      }
-    }
-#endif // SIMAGE_RUNTIME_LINKING
-
-    if (SIMAGE_read_image) {
-      simagedata = SIMAGE_read_image(finalname.getString(), &w, &h, &nc);
+    
+    if (simage_wrapper()->available && simage_wrapper()->simage_read_image) {
+      simagedata = simage_wrapper()->simage_read_image(finalname.getString(), &w, &h, &nc);
 #if COIN_DEBUG
       if (!simagedata) {
-        SoDebugError::post("SbImage::readFile", "%s", SIMAGE_get_last_error());
+        SoDebugError::post("SbImage::readFile", "%s", 
+                           simage_wrapper()->simage_get_last_error ?
+                           simage_wrapper()->simage_get_last_error() :
+                           "Unknown error");
       }
 #endif // COIN_DEBUG
     }
 
     if (simagedata) {
       this->setValue(SbVec2s((short)w, (short)h), nc, simagedata);
-      SIMAGE_free_image(simagedata);
+      if (simage_wrapper()->simage_free_image) {
+        simage_wrapper()->simage_free_image(simagedata);
+      }
+#if COIN_DEBUG && 1 // debug
+      else {
+        SoDebugError::postInfo("SbImage::readFile",
+                               "Couldn't free image.");
+      }
+#endif // debug
       return TRUE;
     }
   }
