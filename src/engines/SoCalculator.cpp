@@ -34,6 +34,7 @@
 #include "evaluator.h"
 #include <assert.h>
 #include <Inventor/engines/SoSubEngineP.h>
+#include <Inventor/SbDict.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -140,6 +141,62 @@
   (SoMFVec3f) Output value with result from the calculations.
 */
 
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoCalculatorP {
+public:
+  SoCalculatorP() : maxnum(-1), useddict(NULL) { }
+
+  static void delete_dict_item(unsigned long, void * value) {
+    char * data = (char*) value;
+    delete[] data;
+  }
+
+  void deleteDict(void) {
+    if (this->useddict) {
+      this->useddict->applyToAll(delete_dict_item);
+      delete this->useddict;
+      this->useddict = NULL;
+    }
+  }
+  ~SoCalculatorP() {
+    this->deleteDict();
+  }
+
+  char inusedall[16];
+  char outusedall[8];
+  int maxnum;
+  SbDict * useddict;
+};
+
+
+// FIXME: remove the private_data_dict for Coin v2.0, and add the
+// private data pointer as a private data member. pederb, 2001-10-12
+static SbDict * private_data_dict = NULL;
+
+static void
+socalculator_private_data_cleanup(void)
+{
+  delete private_data_dict;
+  private_data_dict = NULL;
+}
+
+static SoCalculatorP *
+get_private_data(const SoCalculator * thisp)
+{
+  if (private_data_dict == NULL) {
+    private_data_dict = new SbDict;
+    atexit(socalculator_private_data_cleanup);
+  }
+  void * pimpl;
+  if (!private_data_dict->find((unsigned long) thisp, pimpl)) {
+    pimpl = (void*) new SoCalculatorP;
+    (void) private_data_dict->enter((unsigned long) thisp, pimpl);
+  }
+  return (SoCalculatorP*) pimpl;
+}
+
+#endif
 
 SO_ENGINE_SOURCE(SoCalculator);
 
@@ -193,6 +250,7 @@ SoCalculator::~SoCalculator(void)
   for (int i = 0; i < this->evaluatorList.getLength(); i++) {
     so_eval_delete(this->evaluatorList[i]);
   }
+  delete get_private_data(this);
 }
 
 // overloaded from parent
@@ -211,60 +269,71 @@ SoCalculator::evaluate(void)
   if (this->expression.getNum() == 0 ||
       this->expression[0].getLength() == 0) return;
 
+  SoCalculatorP * private_data = get_private_data(this);
+  char * inusedall = private_data->inusedall;
+  char * outusedall = private_data->outusedall;
+
   if (this->evaluatorList.getLength() == 0) {
+    for (i = 0; i < 16; i++) inusedall[i] = 0;
+    for (i = 0; i < 8; i++) outusedall[i] = 0;
+    private_data->deleteDict();
+    private_data->useddict = new SbDict(this->expression.getNum());
+
     for (i = 0; i < this->expression.getNum(); i++) {
       const SbString &s = this->expression[i];
       if (s.getLength()) {
-        this->evaluatorList.append(so_eval_parse(s.getString()));
+        struct so_eval_node *node = so_eval_parse(s.getString());
+        this->evaluatorList.append(node);
 #if COIN_DEBUG
         if (so_eval_error()) {
           SoDebugError::postWarning("SoCalculator::evaluateExpression",
                                     "%s", so_eval_error());
         }
 #endif // COIN_DEBUG
+        if (node)  {
+          char * useddata = new char[16+8];
+          for (j = 0; j < 16+8; j++) useddata[j] = 0;
+          char * inused = useddata;
+          char * outused = useddata + 16;
+          this->findUsed(node, inused, outused);
+          private_data->useddict->enter((unsigned long) node, useddata);
+          for (j = 0; j < 16; j++) inusedall[j] |= inused[j];
+          for (j = 0; j < 8; j++) outusedall[j] |= outused[j];
+        }
       }
       else this->evaluatorList.append(NULL);
-    }
+    }    
   }
-
-
-  // find all fields used in all expressions
-  int maxnum = 0;
-  char inused[16]; /* a-h and A-H */
-  char outused[8]; /* a-d and A-D */
-  for (i = 0; i < 16; i++) inused[i] = 0;
-  for (i = 0; i < 8; i++) outused[i] = 0;
-
-  for (i = 0; i < this->evaluatorList.getLength(); i++) {
-    this->findUsed(this->evaluatorList[i], inused, outused);
-  }
-
+  
   // find max number of values in used input fields
-  char fieldname[2];
-  fieldname[1] = 0;
-  for (i = 0; i < 16; i++) {
-    if (inused[i]) {
-      if (i < 8) {
-        fieldname[0] = 'a' + i;
+  int maxnum = private_data->maxnum;
+  if (maxnum < 0) {
+    char fieldname[2];
+    fieldname[1] = 0;
+    for (i = 0; i < 16; i++) {
+      if (inusedall[i]) {
+        if (i < 8) {
+          fieldname[0] = 'a' + i;
+        }
+        else {
+          fieldname[0] = 'A' + (i-8);
+        }
+        SoMField *field = (SoMField*)this->getField(fieldname);
+        maxnum = SbMax(maxnum, field->getNum());
       }
-      else {
-        fieldname[0] = 'A' + (i-8);
-      }
-      SoMField *field = (SoMField*)this->getField(fieldname);
-      maxnum = SbMax(maxnum, field->getNum());
     }
+    if (maxnum == 0) maxnum = 1; // in case only temporary registers were used
+    private_data->maxnum = maxnum;
   }
-  if (maxnum == 0) maxnum = 1; // in case only temporary registers were used
+  if (outusedall[0]) { SO_ENGINE_OUTPUT(oa, SoMFFloat, setNum(maxnum)); }
+  if (outusedall[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, setNum(maxnum)); }
+  if (outusedall[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, setNum(maxnum)); }
+  if (outusedall[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, setNum(maxnum)); }
 
-  if (outused[0]) { SO_ENGINE_OUTPUT(oa, SoMFFloat, setNum(maxnum)); }
-  if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, setNum(maxnum)); }
-  if (outused[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, setNum(maxnum)); }
-  if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, setNum(maxnum)); }
-
-  if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, setNum(maxnum)); }
-  if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, setNum(maxnum)); }
-  if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, setNum(maxnum)); }
-  if (outused[7]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, setNum(maxnum)); }
+  if (outusedall[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, setNum(maxnum)); }
+  if (outusedall[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, setNum(maxnum)); }
+  if (outusedall[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, setNum(maxnum)); }
+  if (outusedall[7]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, setNum(maxnum)); }
 
   // loop through all fieldindices and evaluate
   for (i = 0; i < maxnum; i++) {
@@ -296,18 +365,19 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
 
   char fieldname[2];
   fieldname[1] = 0;
-  char inused[16]; /* a-h and A-H */
-  char outused[8]; /* oa-od and oA-oD */
+
+  void * tmp = NULL;
+  SbBool ok = get_private_data(this)->useddict->find((unsigned long) node, tmp);
+  assert(ok);
+  char * useddata = (char*) tmp;
+
+  char * inused = useddata;
+  char * outused = useddata + 16;
 
   so_eval_cbdata cbdata;
   cbdata.readfieldcb = SoCalculator::readfieldcb;
   cbdata.writefieldcb = SoCalculator::writefieldcb;
   cbdata.userdata = this;
-
-  for (i = 0; i < 16; i++) inused[i] = 0;
-  for (i = 0; i < 8; i++) outused[i] = 0;
-
-  this->findUsed(node, inused, outused);
 
   // copy values from fields to temporary "registers" while evaluating
   for (i = 0; i < 8; i++) {
@@ -404,6 +474,9 @@ SoCalculator::inputChanged(SoField *which)
       so_eval_delete(this->evaluatorList[i]);
     }
     this->evaluatorList.truncate(0);
+  }
+  else {
+    get_private_data(this)->maxnum = -1;
   }
 }
 
