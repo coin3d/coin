@@ -184,15 +184,6 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 uninstall-info-am:
-install-nodist_libCoinincHEADERS: $(nodist_libCoininc_HEADERS)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(nodist_libCoininc_HEADERS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f"; \
-	  $(INSTALL_HEADER) $$d$$p $(DESTDIR)$(libCoinincdir)/$$f; \
-	done
 
 uninstall-nodist_libCoinincHEADERS:
 	@$(NORMAL_UNINSTALL)
@@ -419,6 +410,19 @@ uninstall-info: uninstall-info-recursive
 
 SbBasic.h: $(srcdir)/SbBasic.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(MAKE) include/Inventor/SbBasic.h )
+
+install-nodist_libCoinincHEADERS: $(libCoininc_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
+	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libCoinincdir)/$$f"; \
+	  if cmp -s "$$src" "$$dst"; then :; else \
+	    echo " $(INSTALL_HEADER) $$src $$dst"; \
+	    $(INSTALL_HEADER) "$$src" "$$dst"; \
+	  fi \
+	done
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
