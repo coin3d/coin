@@ -92,7 +92,14 @@ cc_debugerror_internal_post(const char * source, cc_string * msg,
   cc_error_append_to_debug_string((cc_error *)&deberr, source);
   cc_error_append_to_debug_string((cc_error *)&deberr, "(): ");
   cc_error_append_to_debug_string((cc_error *)&deberr, cc_string_get_text(msg));
-  cc_error_handle((cc_error *)&deberr);
+
+  if (dbgerr_callback != (cc_debugerror_cb *)cc_error_default_handler_cb) {
+    dbgerr_callback(&deberr, dbgerr_callback_data);
+  }
+  else {
+    cc_error_handle((cc_error *)&deberr);
+  }
+
   /* FIXME: port to C. 20020524 mortene. */
   /* check_breakpoints(source);*/
 
