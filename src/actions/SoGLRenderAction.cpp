@@ -66,6 +66,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoShape.h>
+#include <Inventor/lists/SoCallbackList.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -273,6 +274,8 @@ public:
   SbBool renderingremote;
   SbBool needglinit;
   SbBool isrendering;
+  SoCallbackList precblist;
+
 public:
   void disableBlend(const SbBool force = FALSE);
   void enableBlend(const SbBool force = FALSE);
@@ -821,6 +824,39 @@ SoGLRenderAction::doPathSort(void)
   }
 }
 
+/*!
+  Adds a callback which is invoked right before the scene graph traversal
+  starts. All necessary GL initialization is then done (e.g. the viewport
+  is correctly set), and this callback can be useful to, for instance,
+  clear the viewport before rendering, or draw a bitmap in the background
+  before rendering etc.
+  
+  The callback is only invoked once (before the first rendering pass)
+  when multi pass rendering is enabled.
+
+  This method is an extension versus the Open Inventor API.
+
+  \sa removePreRenderCallback().  
+*/
+void 
+SoGLRenderAction::addPreRenderCallback(SoGLPreRenderCB * func, void * userdata)
+{
+  THIS->precblist.addCallback((SoCallbackListCB*) func, userdata);
+}
+
+/*!
+  Removed a callback added with the addPreRenderCallback() method.
+
+  This method is an extension versus the Open Inventor API.
+
+  \sa addPreRenderCallback()
+*/
+void 
+SoGLRenderAction::removePreRenderCallback(SoGLPreRenderCB * func, void * userdata)
+{
+  THIS->precblist.removeCallback((SoCallbackListCB*) func, userdata);
+}
+
 #undef THIS
 
 // methods in SoGLRenderActionP
@@ -889,6 +925,9 @@ SoGLRenderActionP::render(SoNode * node)
 
   SoGLCacheContextElement::set(state, this->cachecontext,
                                FALSE, this->renderingremote);
+  SoGLRenderPassElement::set(state, 0);
+
+  this->precblist.invokeCallbacks((void*) this->action);
 
   if (this->action->getNumPasses() > 1) {
     this->renderMulti(node);

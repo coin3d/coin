@@ -56,7 +56,6 @@
 // defines for the flags member
 #define FLAG_RGBMODE 0x0001
 #define FLAG_ACTIVE  0x0002
-#define FLAG_SENDVP  0x0004
 
 class SoSceneManagerP {
 public:
@@ -81,6 +80,9 @@ public:
   static SbBool touchtimer;
 
   uint32_t redrawpri;
+
+  GLenum clearmask;
+  static void prerendercb(void * userdata, SoGLRenderAction * action);
 };
 
 SbBool SoSceneManagerP::touchtimer = TRUE;
@@ -117,8 +119,8 @@ SoSceneManager::SoSceneManager(void)
 
   THIS->backgroundindex = 0;
   THIS->backgroundcolor.setValue(0.0f, 0.0f, 0.0f);
-  // rgbmode by default, and send vp to GL on first render
-  THIS->flags = FLAG_RGBMODE|FLAG_SENDVP;
+  // rgbmode by default
+  THIS->flags = FLAG_RGBMODE;
   THIS->redrawpri = SoSceneManager::getDefaultRedrawPriority();
 
   THIS->rendercb = NULL;
@@ -167,21 +169,13 @@ SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
     else {
       glClearIndex(THIS->backgroundindex);
     }
-    // some (most) GL drivers need to have the viewport set correctly
-    // before clearing. If the window size changes, the
-    // SoGLViewportRegionElement will not set the GL viewport until the
-    // glaction is applied, which is too late.  FIXME: bad design
-    if (THIS->flags & FLAG_SENDVP) {
-      THIS->flags &= ~FLAG_SENDVP;
-      const SbViewportRegion & vp = this->getViewportRegion();
-      SbVec2s origin = vp.getViewportOriginPixels();
-      SbVec2s size = vp.getViewportSizePixels();
-      glViewport((GLint) origin[0], (GLint) origin[1],
-                 (GLint) size[0], (GLint) size[1]);
-    }
-    glClear(mask);
+    THIS->clearmask = mask;
+    // Registering a callback is needed since the correct GL viewport
+    // is set by SoGLRenderAction before rendering.  It might not be
+    // correct when we get here.
+    // This callback is removed again in the prerendercb function
+    THIS->glaction->addPreRenderCallback(THIS->prerendercb, THIS);
   }
-
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -345,7 +339,6 @@ SoSceneManager::setWindowSize(const SbVec2s & newsize)
   region = THIS->handleeventaction->getViewportRegion();
   region.setWindowSize(newsize[0], newsize[1]);
   THIS->handleeventaction->setViewportRegion(region);
-  THIS->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -378,7 +371,6 @@ SoSceneManager::setSize(const SbVec2s & newsize)
   origin = region.getViewportOriginPixels();
   region.setViewportPixels(origin, newsize);
   THIS->handleeventaction->setViewportRegion(region);
-  THIS->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -406,7 +398,6 @@ SoSceneManager::setOrigin(const SbVec2s & newOrigin)
   size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
   THIS->handleeventaction->setViewportRegion(region);
-  THIS->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -426,7 +417,6 @@ SoSceneManager::setViewportRegion(const SbViewportRegion & newregion)
 {
   THIS->glaction->setViewportRegion(newregion);
   THIS->handleeventaction->setViewportRegion(newregion);
-  THIS->flags |= FLAG_SENDVP;
 }
 
 /*!
@@ -688,7 +678,6 @@ SoSceneManager::isRealTimeUpdateEnabled(void)
 #undef THIS
 #undef FLAG_RGBMODE
 #undef FLAG_ACTIVE
-#undef FLAG_SENDVP
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -716,6 +705,16 @@ SoSceneManagerP::nodesensorCB(void * data, SoSensor * /* sensor */)
                          "detected change in scene graph");
 #endif // debug
   ((SoSceneManager *)data)->scheduleRedraw();
+}
+
+void 
+SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
+{
+  // remove callback again
+  action->removePreRenderCallback(prerendercb, userdata);
+
+  // clear the viewport
+  glClear(((SoSceneManagerP*)userdata)->clearmask);
 }
 
 #endif // DOXYGEN_SKIP_THIS

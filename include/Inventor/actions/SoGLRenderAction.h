@@ -29,7 +29,7 @@
 #include <Inventor/lists/SbList.h>
 
 typedef void SoGLRenderPassCB(void * userdata);
-
+typedef void SoGLPreRenderCB(void * userdata, class SoGLRenderAction * action);
 
 class COIN_DLL_API SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
@@ -85,6 +85,9 @@ public:
   SbBool getRenderingIsRemote(void) const;
 
   virtual void invalidateState(void);
+
+  void addPreRenderCallback(SoGLPreRenderCB * func, void * userdata);
+  void removePreRenderCallback(SoGLPreRenderCB * func, void * userdata);
 
 protected:
   virtual void beginTraversal(SoNode * node);
