@@ -46,9 +46,9 @@
   actual value is unspecified, and you should not depend on it.
 */
 SbRotation::SbRotation(void)
-{
   // This translates to zero rotation around the positive Z axis.
-  this->quat[0] = this->quat[1] = this->quat[2] = this->quat[3] = 0.0f;
+  : quat(0.0f, 0.0f, 0.0f, 1.0f)
+{
 }
 
 /*!
