@@ -144,23 +144,18 @@ static const unsigned int NOT_AVAILABLE = UINT_MAX;
 
 class SoText2P {
 public:
-  SoText2P(SoText2 * textnode) : textnode(textnode) {}
+  SoText2P(SoText2 * textnode) : master(textnode)
+  {
+    this->laststring = NULL;
+    this->linecnt = 0;
+    this->stringwidth = NULL;
+    this->bbox.makeEmpty();
+    this->useglyphcache = TRUE;
+    this->prevfontname = SbName("");
+    this->prevfontsize = 0.0;
+    this->hasbuiltglyphcache = FALSE;
+  }
 
-  SoText2 * textnode;
-  
-  SbBool useglyphcache;
-  SbList< SbList<const SoGlyph*> * > glyphs;
-  SbList< SbList<SbVec2s> * > positions;
-  // FIXME: use notify() to handle changes, not comparison with last value.
-  SbString ** laststring;
-  int * stringwidth;
-  SbBox2s bbox;
-  int linecnt;
-  SbName prevfontname;
-  float prevfontsize;
-  SbBool hasbuiltglyphcache;
-  
-public:
   void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                SbVec3f & v2, SbVec3f & v3);
   void flushGlyphCache(const SbBool unrefglyphs);
@@ -168,13 +163,30 @@ public:
   SbBool shouldBuildGlyphCache(SoState * state);
   void dumpGlyphCache();
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
+
+  // FIXME: use notify() to handle changes, not comparison with last value.
+
+  SbBool useglyphcache;
+  SbList< SbList<const SoGlyph*> * > glyphs;
+  SbList< SbList<SbVec2s> * > positions;
+  SbString ** laststring;
+  int * stringwidth;
+  SbBox2s bbox;
+  int linecnt;
+  SbName prevfontname;
+  float prevfontsize;
+  SbBool hasbuiltglyphcache;
+
+private:
+  SoText2 * master;
 };
 
-// *************************************************************************
+#undef PRIVATE
+#undef PUBLIC
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->master)
 
-// FIXME: use PRIVATE() and PUBLIC() macros. 20030408 mortene.
-#undef THIS
-#define THIS (this->pimpl)
+// *************************************************************************
 
 SO_NODE_SOURCE(SoText2);
 
@@ -183,16 +195,8 @@ SO_NODE_SOURCE(SoText2);
 */
 SoText2::SoText2(void)
 {
-  THIS = new SoText2P(this);
-  THIS->laststring = NULL;
-  THIS->linecnt = 0;
-  THIS->stringwidth = NULL;
-  THIS->bbox.makeEmpty();
-  THIS->useglyphcache = TRUE;
-  THIS->prevfontname = SbName("");
-  THIS->prevfontsize = 0.0;
-  THIS->hasbuiltglyphcache = FALSE;
-  
+  PRIVATE(this) = new SoText2P(this);
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoText2);
 
   SO_NODE_ADD_FIELD(string, (""));
@@ -210,8 +214,8 @@ SoText2::SoText2(void)
 */
 SoText2::~SoText2()
 {
-  THIS->flushGlyphCache(TRUE);
-  delete THIS;
+  PRIVATE(this)->flushGlyphCache(TRUE);
+  delete PRIVATE(this);
 }
 
 // doc in super
@@ -236,7 +240,7 @@ SoText2::GLRender(SoGLRenderAction * action)
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   
   // Render using SoGlyphs
-  if (THIS->buildGlyphCache(state) == 0) {
+  if (PRIVATE(this)->buildGlyphCache(state) == 0) {
     // Render only if bbox not outside cull planes.
     SbBox3f box;
     SbVec3f center;
@@ -277,24 +281,24 @@ SoText2::GLRender(SoGLRenderAction * action)
       SbVec2s position;
       SbVec2s thissize;
       unsigned char * buffer;
-      for (int i = 0; i < THIS->linecnt; i++) {
+      for (int i = 0; i < PRIVATE(this)->linecnt; i++) {
         switch (this->justification.getValue()) {
         case SoText2::LEFT:
           xpos = nilpoint[0];
           break;
         case SoText2::RIGHT:
-          xpos = nilpoint[0] - THIS->stringwidth[i];
+          xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i];
           break;
         case SoText2::CENTER:
-          xpos = nilpoint[0] - THIS->stringwidth[i]/2.0f;
+          xpos = nilpoint[0] - PRIVATE(this)->stringwidth[i]/2.0f;
           break;
         }
-        charcnt = THIS->laststring[i]->getLength();
+        charcnt = PRIVATE(this)->laststring[i]->getLength();
         for (int i2 = 0; i2 < charcnt; i2++) {
-          buffer = (*THIS->glyphs[i])[i2]->getBitmap(thissize, thispos, FALSE);
+          buffer = (*PRIVATE(this)->glyphs[i])[i2]->getBitmap(thissize, thispos, FALSE);
           ix = thissize[0];
           iy = thissize[1];
-          position = (*THIS->positions[i])[i2];
+          position = (*PRIVATE(this)->positions[i])[i2];
           fx = (float)position[0];
           fy = (float)position[1];
           
@@ -341,7 +345,7 @@ SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   SbVec3f v0, v1, v2, v3;
   // this will cause a cache dependency on the view volume,
   // model matrix and viewport.
-  THIS->getQuad(action->getState(), v0, v1, v2, v3);
+  PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3);
 
   box.makeEmpty();
   box.extendBy(v0);
@@ -356,10 +360,10 @@ void
 SoText2::rayPick(SoRayPickAction * action)
 {
   if (!this->shouldRayPick(action)) return;
-  THIS->buildGlyphCache(action->getState());
+  PRIVATE(this)->buildGlyphCache(action->getState());
   action->setObjectSpace();
   SbVec3f v0, v1, v2, v3;
-  THIS->getQuad(action->getState(), v0, v1, v2, v3);
+  PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3);
   if (v0 == v1 || v0 == v3) return; // empty
 
   SbVec3f isect;
@@ -396,21 +400,21 @@ SoText2::rayPick(SoRayPickAction * action)
     int charidx = -1;
     int strlength = this->string[stringidx].getLength();
     short minx, miny, maxx, maxy;
-    THIS->bbox.getBounds(minx, miny, maxx, maxy);
+    PRIVATE(this)->bbox.getBounds(minx, miny, maxx, maxy);
     float bbleft = minx;
     float bbwidth = (float)(maxx - minx);
-    float strleft = (bbwidth - THIS->stringwidth[stringidx]) / bbwidth;
+    float strleft = (bbwidth - PRIVATE(this)->stringwidth[stringidx]) / bbwidth;
     float strright = 1.0;
     switch (this->justification.getValue()) {
     case LEFT:
       strleft = 0.0;
-      strright = THIS->stringwidth[stringidx] / bbwidth;
+      strright = PRIVATE(this)->stringwidth[stringidx] / bbwidth;
       break;
     case RIGHT:
       break;
     case CENTER:
       strleft /= 2.0;
-      strright = (float)1.0 - strleft;
+      strright = 1.0f - strleft;
       break;
     default:
       assert(0 && "SoText2::rayPick: unknown justification");
@@ -418,8 +422,8 @@ SoText2::rayPick(SoRayPickAction * action)
     
     float charleft, charright;
     for (i=0; i<strlength; i++) {
-      charleft = strleft + (*THIS->positions[stringidx])[i][0] / bbwidth;
-      charright = (i==strlength-1 ? strright : strleft + ((*THIS->positions[stringidx])[i+1][0] / bbwidth));
+      charleft = strleft + (*PRIVATE(this)->positions[stringidx])[i][0] / bbwidth;
+      charright = (i==strlength-1 ? strright : strleft + ((*PRIVATE(this)->positions[stringidx])[i+1][0] / bbwidth));
       if (hdist >= charleft && hdist <= charright) {
         charidx = i;
         i = strlength;
@@ -453,12 +457,11 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 void
 SoText2::generatePrimitives(SoAction * action)
 {
-  // This is supposed to be empty. There are no primitives.
+  // this is supposed to be empty. There are no primitives.
 }
 
 
 // SoText2P methods below
-#undef THIS
 
 void
 SoText2P::flushGlyphCache(const SbBool unrefglyphs)
@@ -526,7 +529,7 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   short xmin, ymin, xmax, ymax;
   float minx, miny, maxx, maxy;
   this->bbox.getBounds(xmin, ymin, xmax, ymax);
-  center = SbVec2f( (float)(xmin+xmax)/(float)2.0, (float)(ymin+ymax)/(float)2.0);
+  center = SbVec2f( (float)(xmin+xmax)/2.0f, (float)(ymin+ymax)/2.0f);
   minx = (xmin - center[0]) / vpsize[0];
   miny = (ymin - center[1]) / vpsize[1];
   maxx = (xmax - center[0]) / vpsize[0];
@@ -536,8 +539,8 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   n2 = SbVec2f(screenpoint[0] + maxx, screenpoint[1] + maxy);
   n3 = SbVec2f(screenpoint[0] + minx, screenpoint[1] + maxy);
   
-  float halfw = (maxx - minx) / (float)2.0;
-  switch (this->textnode->justification.getValue()) {
+  float halfw = (maxx - minx) / 2.0f;
+  switch (PUBLIC(this)->justification.getValue()) {
   case SoText2::LEFT:
     n0[0] += halfw;
     n1[0] += halfw;
@@ -610,12 +613,12 @@ SoText2P::shouldBuildGlyphCache(SoState * state)
   // FIXME: Use notify() mechanism to detect field changes. For
   // Coin3. preng, 2003-03-10.
 
-  if (this->linecnt != this->textnode->string.getNum()) { return TRUE; }
+  if (this->linecnt != PUBLIC(this)->string.getNum()) { return TRUE; }
 
   assert(this->laststring != NULL);
   for (int i=0; i<this->linecnt; i++) {
     assert(this->laststring[i] != NULL);
-    if (*(this->laststring[i]) != this->textnode->string[i]) return TRUE;
+    if (*(this->laststring[i]) != PUBLIC(this)->string[i]) return TRUE;
   }
 
   return FALSE;
@@ -625,16 +628,13 @@ int
 SoText2P::buildGlyphCache(SoState * state)
 {
   if (this->shouldBuildGlyphCache(state)) {
-    // FIXME: use PUBLIC() macro. 20030408 mortene.
-    SoText2 * t = this->textnode;
-
     const SbName curfontname = SoFontNameElement::get(state);
     const float curfontsize = SoFontSizeElement::get(state);
     this->prevfontname = curfontname;
     this->prevfontsize = curfontsize;
     this->flushGlyphCache(FALSE);
     this->hasbuiltglyphcache = TRUE;
-    this->linecnt = t->string.getNum();
+    this->linecnt = PUBLIC(this)->string.getNum();
 
     // FIXME: this is buggy as hell -- linecnt can be 0. And another
     // thing: use new and delete, not malloc and free. 20030408 mortene.
@@ -656,8 +656,8 @@ SoText2P::buildGlyphCache(SoState * state)
       this->glyphs.append(new SbList<const SoGlyph *>);
       this->positions.append(new SbList<SbVec2s>);
 
-      const int strlength = t->string[i].getLength();
-      this->laststring[i] = new SbString(t->string[i]);
+      const int strlength = PUBLIC(this)->string[i].getLength();
+      this->laststring[i] = new SbString(PUBLIC(this)->string[i]);
 
       SbVec2s thissize;
 
@@ -686,7 +686,7 @@ SoText2P::buildGlyphCache(SoState * state)
       }
 
       this->stringwidth[i] = (*this->positions[i])[strlength - 1][0] + thissize[0];
-      penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * t->spacing.getValue()));
+      penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * PUBLIC(this)->spacing.getValue()));
     }
   }
   return 0;
