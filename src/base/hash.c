@@ -132,7 +132,28 @@ cc_hash_destruct(cc_hash * ht)
 void
 cc_hash_clear(cc_hash * ht)
 {
+  // cc_memalloc_clear() will free memory used by internal
+  // structures. To avoid continuous memory allocation/deallocation
+  // that could be bad for performance (cc_hash is used in
+  // SoSensorManager) we manually free all entries from cc_memalloc
+  // instead.
+#if 0 // disabled
   cc_memalloc_clear(ht->memalloc); /* free all memory used by all entries */
+#else // new version that will not trigger any malloc()/free() calls
+  unsigned int i;
+  cc_hash_entry * entry;
+  cc_hash_entry * next;
+  for (i = 0; i < ht->size; i++) {
+    entry = ht->buckets[i];
+    while (entry) {
+      next = entry->next;
+      cc_memalloc_deallocate(ht->memalloc, (void*) entry);
+      entry = next;
+    }
+  }
+#endif // new version
+
+  // all memory has been freed. Just clear buckets
   memset(ht->buckets, 0, ht->size * sizeof(cc_hash_entry*));
   ht->elements = 0;
 }
