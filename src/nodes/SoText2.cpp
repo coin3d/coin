@@ -92,33 +92,32 @@ static const unsigned int NOT_AVAILABLE = UINT_MAX;
 
 /*!
   \enum SoText2::Justification
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoText2::Justification SoText2::LEFT
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoText2::Justification SoText2::RIGHT
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoText2::Justification SoText2::CENTER
-  FIXME: write documentation for enum definition
+
+  Enum contains the various options for how the horizontal text layout
+  text should be done.
 */
 
 
 /*!
   \var SoMFString SoText2::string
-  FIXME: write documentation for field
+
+  The set of strings to render.  Each string in the multiple value
+  field will be rendered on it's own line.
+
+  The default value of the field is a single empty string.
 */
 /*!
   \var SoSFFloat SoText2::spacing
-  FIXME: write documentation for field
+
+  Spacing between each consecutive vertical line.  Default value is
+  1.0, which means that the space between the uppermost line of each
+  rendered string will equal the vertical size of the highest
+  character in the bitmap alphabet.
 */
 /*!
   \var SoSFEnum SoText2::justification
-  FIXME: write documentation for field
+
+  Decides how the horizontal layout of the text strings is done.
 */
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -335,9 +334,7 @@ string_dimensions(void * fontdata, const char * s,
 
 extern unsigned char coin_default2dfont[][12];
 
-/*!
-  FIXME: write function documentation
-*/
+// doc in super
 void
 SoText2::GLRender(SoGLRenderAction * action)
 {
@@ -508,9 +505,7 @@ SoText2::GLRender(SoGLRenderAction * action)
 // **************************************************************************
 
 
-/*!
-  FIXME: write function documentation
-*/
+// doc in super
 void
 SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
@@ -527,9 +522,7 @@ SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   center = box.getCenter();
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in super
 void
 SoText2::rayPick(SoRayPickAction * action)
 {
@@ -606,9 +599,7 @@ SoText2::rayPick(SoRayPickAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in super
 void
 SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -617,13 +608,11 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   action->addNumText(this->string.getNum());
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in super
 void
-SoText2::generatePrimitives(SoAction * /* action */)
+SoText2::generatePrimitives(SoAction * action)
 {
-  // this is supposed to be empty. There are not primitives.
+  // This is supposed to be empty. There are no primitives.
 }
 
 

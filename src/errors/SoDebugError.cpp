@@ -24,7 +24,7 @@
 
   This class basically serves two purposes:
 
-  1) it is the message interface through which error and warning
+  1) It is the message interface through which error and warning
   conditions are passed to the programmer which is using the Coin
   library API for building applications.  These messages are generated
   when API methods are used in an incorrect manner, or if actions on
@@ -41,14 +41,19 @@
   within their own code as a convenient way of debugging application
   code, replacing the usual cascades of fprintf() calls.
 
-  Coin supports an environment varaible to set conditional
+
+  Coin supports an environment variable to set conditional
   breakpoints.  The COIN_DEBUG_BREAK environment variable can be set
-  to any number of functions (separated by a comma or a space), and if
-  a debug message is posted from one of those functions, your program
-  will be stopped (using assert(0)). This can be useful if you want to
-  get core-dumps whenever for instance a warning is posted from some
-  function (e.g. SbVec3f::normalize). This feature is only enabled in
-  the debug version of Coin.  
+  to any number of functions in the form of a list separated by commas
+  or spaces.  The functionnames must be given as
+  "classname::functioname" (ie without return type, parenthesis or
+  argument types or names).  If a debug message is posted from one of
+  those functions, your program will be stopped (using assert(0)).
+
+  This can be useful if you want to get core-dumps or enter a debugger
+  whenever for instance a warning or an error is posted from some
+  function (e.g. "SbVec3f::normalize"). This feature is only enabled
+  in the debug version of Coin.
 */
 
 #include <Inventor/errors/SoDebugError.h>

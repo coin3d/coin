@@ -328,8 +328,11 @@ SoBase::getRefCount(void) const
 }
 
 /*!
-  Force an update, in the sense that all objects connected to this will
-  have to re-check the values of their inter-dependent data.
+  Force an update, in the sense that all objects connected to this
+  will have to re-check the values of their inter-dependent data.
+
+  This is often used as an effective way of manually triggering a
+  redraw by application programmers.
  */
 void
 SoBase::touch(void)
