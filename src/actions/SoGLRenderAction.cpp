@@ -1404,12 +1404,13 @@ SoGLRenderActionP::renderSingle(SoNode * node)
     // All paths in the sorttranspobjpaths should be sorted
     // back-to-front and rendered
     this->action->doPathSort();
-    for (int i  = 0; i < this->sorttranspobjpaths.getLength(); i++) {
+    int i;
+    for (i = 0; i < this->sorttranspobjpaths.getLength(); i++) {
       this->action->apply(this->sorttranspobjpaths[i]);
     }
 
     // Render all transparent paths that should not be sorted
-    for (int i  = 0; i < this->transpobjpaths.getLength(); i++) {
+    for (i = 0; i < this->transpobjpaths.getLength(); i++) {
       this->action->apply(this->transpobjpaths[i]);
     }
 
