@@ -186,7 +186,7 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	  fi \
 	done
 
-install-exec-local:
+install-exec-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 	for ext in dll pdb; do \
 	  file="$$basename.$$ext"; \
