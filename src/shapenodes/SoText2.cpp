@@ -108,6 +108,10 @@
 #include <Inventor/caches/SoGlyphCache.h>
 #include <Inventor/elements/SoCacheElement.h>
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 // The "lean and mean" define is a workaround for a Cygwin bug: when
 // windows.h is included _after_ one of the X11 or GLX headers above
 // (as it is indirectly from Inventor/system/gl.h), compilation of
@@ -162,6 +166,7 @@ static const unsigned int NOT_AVAILABLE = UINT_MAX;
   Decides how the horizontal layout of the text strings is done.
 */
 
+
 class SoText2P {
 public:
   SoText2P(SoText2 * textnode) : master(textnode)
@@ -175,6 +180,8 @@ public:
   void buildGlyphCache(SoState * state);
   SbBool shouldBuildGlyphCache(SoState * state);
   void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
+  void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
+
 
   SbList <int> stringwidth;
   SbList< SbList<SbVec2s> > positions;
@@ -186,10 +193,24 @@ public:
 
   static void sensor_cb(void * userdata, SoSensor * s) {
     SoText2P * thisp = (SoText2P*) userdata;
+    thisp->lock();
     if (thisp->cache) thisp->cache->invalidate();
+    thisp->unlock();
   }
-
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
+  }
 private:
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
   SoText2 * master;
 };
 
@@ -263,6 +284,8 @@ SoText2::GLRender(SoGLRenderAction * action)
   state->push();
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
   // Render using SoGlyphs
+
+  PRIVATE(this)->lock();
   PRIVATE(this)->buildGlyphCache(state);
   SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
 
@@ -271,7 +294,7 @@ SoText2::GLRender(SoGLRenderAction * action)
   // Render only if bbox not outside cull planes.
   SbBox3f box;
   SbVec3f center;
-  this->computeBBox(action, box, center);
+  PRIVATE(this)->computeBBox(action, box, center);
   if (!SoCullElement::cullTest(state, box, TRUE)) {
     SoMaterialBundle mb(action);
     mb.sendFirst();
@@ -391,6 +414,8 @@ SoText2::GLRender(SoGLRenderAction * action)
     glPopMatrix();
   }
   
+  PRIVATE(this)->unlock();
+
   state->pop();
 
   // don't auto cache SoText2 nodes.
@@ -405,36 +430,27 @@ SoText2::GLRender(SoGLRenderAction * action)
 void
 SoText2::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
-  SbVec3f v0, v1, v2, v3;
-  // this will cause a cache dependency on the view volume,
-  // model matrix and viewport.
-  if (!PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3))
-    return; // empty
-  
-  box.makeEmpty();
-
-  box.extendBy(v0);
-  box.extendBy(v1);
-  box.extendBy(v2);
-  box.extendBy(v3);
-
-  center = box.getCenter();
-
+  PRIVATE(this)->lock();
+  PRIVATE(this)->computeBBox(action, box, center);
   SoCacheElement::addCacheDependency(action->getState(), PRIVATE(this)->cache);
+  PRIVATE(this)->unlock();
 }
 
 // doc in super
 void
 SoText2::rayPick(SoRayPickAction * action)
 {
-  
   if (!this->shouldRayPick(action)) return;
+
+  PRIVATE(this)->lock();
   PRIVATE(this)->buildGlyphCache(action->getState());
   action->setObjectSpace();
-
+  
   SbVec3f v0, v1, v2, v3;
-  if (!PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3))
+  if (!PRIVATE(this)->getQuad(action->getState(), v0, v1, v2, v3)) {
+    PRIVATE(this)->unlock();
     return; // empty
+  }
 
   SbVec3f isect;
   SbVec3f bary;
@@ -515,6 +531,7 @@ SoText2::rayPick(SoRayPickAction * action)
       }
     }
   }
+  PRIVATE(this)->unlock();
 }
 
 // doc in super
@@ -670,7 +687,9 @@ SoText2P::shouldBuildGlyphCache(SoState * state)
 void
 SoText2P::buildGlyphCache(SoState * state)
 {
-  if (!this->shouldBuildGlyphCache(state)) { return; }
+  if (!this->shouldBuildGlyphCache(state)) { 
+    return; 
+  }
   
   this->flushGlyphCache();
 
@@ -756,4 +775,23 @@ SoText2P::buildGlyphCache(SoState * state)
   SoCacheElement::setInvalid(storedinvalid);
 
   if (oldcache) oldcache->unref();
+}
+
+void
+SoText2P::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
+{
+  SbVec3f v0, v1, v2, v3;
+  // this will cause a cache dependency on the view volume,
+  // model matrix and viewport.
+  if (!this->getQuad(action->getState(), v0, v1, v2, v3)) {
+    return; // empty
+  }
+  box.makeEmpty();
+  
+  box.extendBy(v0);
+  box.extendBy(v1);
+  box.extendBy(v2);
+  box.extendBy(v3);
+
+  center = box.getCenter();
 }

@@ -137,6 +137,10 @@
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -219,7 +223,20 @@ public:
 
   SoGlyphCache * cache;
 
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
+  }
 private:
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
   SoText3 * master;
 };
 
@@ -279,21 +296,24 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   SoState * state = action->getState();
 
+  PRIVATE(this)->lock();
   PRIVATE(this)->setUpGlyphs(state, this);
   SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
 
   const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
   int i, n = PRIVATE(this)->widths.getLength();
-  if (n == 0) return; // empty bbox
-
+  if (n == 0) {
+    PRIVATE(this)->unlock();
+    return; // empty bbox
+  }
   float maxw = FLT_MIN;
-  for (i = 0; i < n; i++) 
+  for (i = 0; i < n; i++) {
     maxw = SbMax(maxw, PRIVATE(this)->widths[i]); 
-  
-  if(maxw == FLT_MIN) { // There is no text to bound. Returning.
-    box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
-    center = SbVec3f(0,0,0);
+  }
+
+  if (maxw == FLT_MIN) { // There is no text to bound. Returning.
+    PRIVATE(this)->unlock();
     return; 
   }
 
@@ -388,6 +408,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.extendBy(SbVec3f(box.getMin()[0] - profsize, box.getMin()[1] - profsize, 0));
     
   center = box.getCenter();
+  PRIVATE(this)->unlock();
 }
 
 
@@ -408,6 +429,8 @@ SoText3::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) 
     return;
+
+  PRIVATE(this)->lock();
 
   SoState * state = action->getState();
 
@@ -442,7 +465,8 @@ SoText3::GLRender(SoGLRenderAction * action)
   
   if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
-    
+
+  PRIVATE(this)->unlock();
 }
 
 // doc in parent
@@ -465,6 +489,8 @@ SoText3::generatePrimitives(SoAction * action)
 {
   SoState * state = action->getState();
 
+  PRIVATE(this)->lock();
+
   PRIVATE(this)->setUpGlyphs(state, this);
 
   const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
@@ -480,6 +506,7 @@ SoText3::generatePrimitives(SoAction * action)
   if (prts & SoText3::BACK) {
     PRIVATE(this)->generate(action, fontspec, SoText3::BACK);
   }
+  PRIVATE(this)->unlock();
 }
 
 // doc in parent
@@ -1318,10 +1345,12 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 void 
 SoText3::notify(SoNotList * list)
 {
+  PRIVATE(this)->lock();
   if (PRIVATE(this)->cache) {
     SoField * f = list->getLastField();
     if (f == &this->string) PRIVATE(this)->cache->invalidate();
   }
+  PRIVATE(this)->unlock();
   inherited::notify(list);
 }
 

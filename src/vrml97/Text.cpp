@@ -134,6 +134,12 @@
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/caches/SoGlyphCache.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoComplexityTypeElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
 
 #include "../fonts/glyph3d.h"
 
@@ -163,6 +169,21 @@ public:
   SbBox3f maxglyphbbox;
   int fontfamily;
   int fontstyle;
+
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
+  }
+private:
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
 };
 
 #define PRIVATE(obj) (obj->pimpl)
@@ -180,7 +201,9 @@ static void
 fontstylechangeCB(void * data, SoSensor * sensor)
 {
   SoVRMLTextP * pimpl = (SoVRMLTextP *) data;
+  pimpl->lock();
   if (pimpl->cache) pimpl->cache->invalidate();
+  pimpl->unlock();
 }
 
 /*!
@@ -243,6 +266,7 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
 
+  PRIVATE(this)->lock();
   SoState * state = action->getState();
   PRIVATE(this)->setUpGlyphs(state, this);
   SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
@@ -461,6 +485,10 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
     }
   }
   glEnd();
+  PRIVATE(this)->unlock();
+
+  if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
+    SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
 }
 
 
@@ -468,15 +496,16 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
 void
 SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  PRIVATE(this)->setUpGlyphs(action->getState(), this);
-  const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
-
   if (action->is3DTextCountedAsTriangles()) {        
+    PRIVATE(this)->lock();
+    
+    PRIVATE(this)->setUpGlyphs(action->getState(), this);
+    const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
     const int lines = this->string.getNum();
     int numtris = 0;      
-
+    
     for (int i = 0;i < lines; ++i) {
-
+      
       const unsigned int len = this->string[i].getLength();
       for (unsigned int strcharidx = 0; strcharidx < len; strcharidx++) {
 
@@ -498,6 +527,7 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
       }
     }
     action->addNumTriangles(numtris);
+    PRIVATE(this)->unlock();
   }
   else {
     action->addNumText(this->string.getNum());
@@ -510,10 +540,12 @@ SoVRMLText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoVRMLText::notify(SoNotList * list)
 {
+  PRIVATE(this)->lock();
   if (PRIVATE(this)->cache) {
     SoField * f = list->getLastField();
     if (f == &this->string) PRIVATE(this)->cache->invalidate();
   }
+  PRIVATE(this)->unlock();
   inherited::notify(list);
 }
 
@@ -531,6 +563,8 @@ SoVRMLText::computeBBox(SoAction * action,
                         SbBox3f & box,
                         SbVec3f & center)
 {
+  PRIVATE(this)->lock();
+
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
   SoCacheElement::addCacheDependency(action->getState(), PRIVATE(this)->cache);
 
@@ -546,10 +580,10 @@ SoVRMLText::computeBBox(SoAction * action,
   }
 
   if (maxw == FLT_MIN) { // There is no text to bound. Returning.
+    PRIVATE(this)->unlock();
     return; 
   }
   
-
   float maxglyphsize = PRIVATE(this)->maxglyphheight;  
   float maxlength = 0.0f;
 
@@ -686,12 +720,15 @@ SoVRMLText::computeBBox(SoAction * action,
     box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*PRIVATE(this)->textsize*PRIVATE(this)->textspacing, 0));
 
   center = box.getCenter();
+  PRIVATE(this)->unlock();
 }
 
 // Doc in parent
 void
 SoVRMLText::generatePrimitives(SoAction * action)
 {
+  PRIVATE(this)->lock();
+
   PRIVATE(this)->setUpGlyphs(action->getState(), this);
   const cc_font_specification * fontspec = PRIVATE(this)->cache->getCachedFontspec();
 
@@ -912,6 +949,7 @@ SoVRMLText::generatePrimitives(SoAction * action)
   }
 
   this->endShape();
+  PRIVATE(this)->unlock();
 }
 
 #undef PRIVATE

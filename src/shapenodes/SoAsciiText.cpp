@@ -67,6 +67,10 @@
 #endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 #include "../fonts/glyph3d.h"
 
 
@@ -109,6 +113,21 @@ public:
   SbBox3f maxglyphbbox;
 
   SoGlyphCache * cache;
+
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
+  }
+private:
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -163,6 +182,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   if (!this->shouldGLRender(action)) 
     return;
 
+  PRIVATE(this)->lock();
   SoState * state = action->getState();
   PRIVATE(this)->setUpGlyphs(state, this);
   SoCacheElement::addCacheDependency(state, PRIVATE(this)->cache);
@@ -280,6 +300,8 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   }
   glEnd();
 
+  PRIVATE(this)->unlock();
+
   if (SoComplexityTypeElement::get(state) == SoComplexityTypeElement::OBJECT_SPACE) 
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DO_AUTO_CACHE);
   
@@ -290,6 +312,7 @@ void
 SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (action->is3DTextCountedAsTriangles()) {        
+    PRIVATE(this)->lock();
     SoState * state = action->getState();
     PRIVATE(this)->setUpGlyphs(state, this);
 
@@ -320,6 +343,7 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
       }
     }
     action->addNumTriangles(numtris);
+    PRIVATE(this)->unlock();
   }
   else {
     action->addNumText(this->string.getNum());
@@ -331,6 +355,7 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
+  PRIVATE(this)->lock();
   SoState * state = action->getState();
 
   PRIVATE(this)->setUpGlyphs(state, this);
@@ -347,6 +372,7 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     maxw = SbMax(maxw, PRIVATE(this)->stringwidths[i]);
   
   if (maxw == FLT_MIN) { // There is no text to bound. Returning.
+    PRIVATE(this)->unlock();
     return; 
   }
 
@@ -387,12 +413,14 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   box.extendBy(SbVec3f(0,PRIVATE(this)->maxglyphbbox.getMin()[1] - (n-1)*fontspec->size, 0));  
   box.extendBy(PRIVATE(this)->maxglyphbbox);
   center = box.getCenter();
+  PRIVATE(this)->unlock();
 }
 
 // Doc in parent.
 void
 SoAsciiText::generatePrimitives(SoAction * action)
 {
+  PRIVATE(this)->lock();
 
   SoState * state = action->getState();
   PRIVATE(this)->setUpGlyphs(state, this);
@@ -514,7 +542,7 @@ SoAsciiText::generatePrimitives(SoAction * action)
     }
   }
   this->endShape();
-
+  PRIVATE(this)->unlock();
 }
 
 // doc in parent
@@ -534,12 +562,14 @@ SoAsciiText::createTriangleDetail(SoRayPickAction * action,
 void 
 SoAsciiText::notify(SoNotList * list)
 {
+  PRIVATE(this)->lock();
   if (PRIVATE(this)->cache) {
     SoField * f = list->getLastField();
     if (f == &this->string) {
       PRIVATE(this)->cache->invalidate();
     }
   }
+  PRIVATE(this)->unlock();
   inherited::notify(list);
 }
 
