@@ -29,6 +29,7 @@
 #include <Inventor/nodes/SoLevelOfDetail.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -158,7 +159,11 @@ SoLevelOfDetail::doAction(SoAction *action)
 void
 SoLevelOfDetail::callback(SoCallbackAction *action)
 {
-  SoLevelOfDetail::doAction((SoAction*)action);
+  action->invokePreCallbacks(this);
+  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
+    SoLevelOfDetail::doAction((SoAction*)action);
+    action->invokePostCallbacks(this);
+  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

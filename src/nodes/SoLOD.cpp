@@ -36,6 +36,8 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #endif // ! COIN_EXCLUDE_SOGLRENDERACTION
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
@@ -106,7 +108,11 @@ SoLOD::doAction(SoAction *action)
 void
 SoLOD::callback(SoCallbackAction *action)
 {
-  SoLOD::doAction((SoAction*)action);
+  action->invokePreCallbacks(this);
+  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
+    SoLOD::doAction((SoAction*)action);
+    action->invokePostCallbacks(this);
+  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

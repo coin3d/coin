@@ -53,6 +53,8 @@
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 #endif // !COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT
 
+#include <Inventor/actions/SoCallbackAction.h>
+
 /*!
   \var SoMFMatrix SoMultipleCopy::matrix
   FIXME: write documentation for field
@@ -195,7 +197,11 @@ SoMultipleCopy::doAction(SoAction *action)
 void
 SoMultipleCopy::callback(SoCallbackAction *action)
 {
-  SoMultipleCopy::doAction((SoAction*)action);
+  action->invokePreCallbacks(this);
+  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {  
+    SoMultipleCopy::doAction((SoAction*)action);
+    action->invokePostCallbacks(this);
+  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

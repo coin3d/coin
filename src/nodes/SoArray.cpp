@@ -55,6 +55,7 @@
 #endif // !COIN_EXCLUDE_SOSWITCHELEMENT
 
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/misc/SoChildList.h>
 
 /*!
@@ -411,7 +412,11 @@ SoArray::doAction(SoAction *action)
 void
 SoArray::callback(SoCallbackAction *action)
 {
-  SoArray::doAction((SoAction*)action);
+  action->invokePreCallbacks(this);
+  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {  
+    SoArray::doAction((SoAction*)action);
+    action->invokePostCallbacks(this);
+  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 

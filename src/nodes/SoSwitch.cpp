@@ -275,7 +275,11 @@ SoSwitch::affectsState(void) const
 void
 SoSwitch::callback(SoCallbackAction *action)
 {
-  SoSwitch::doAction(action);
+  action->invokePreCallbacks(this);
+  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
+    SoSwitch::doAction(action);
+    action->invokePostCallbacks(this);
+  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
