@@ -6,11 +6,6 @@ TODO:
 
 *** RENDERING ITEMS ***
 
-* [mortene:1999????] make a library with the necessary functionality
-  for doing nurbs curves and nurbs surfaces. Could perhaps start off
-  with the code in Brian Paul's MIT-relicensed Mesa (if MesaGLU is
-  part of that)?
-
 * [mortene:1999????] support the SoRenderList and SoOctTreeOrdering
   stuff. Should at least provide a dummy implementation.
 
@@ -24,10 +19,6 @@ TODO:
 * [pederb:19991217] demand at least version 2.8 when trying to compile
   with GCC (g++).
 
-* [mortene:19991113] is it possible to get the make process to print
-  out which dependency causes recompilation of a file? That would be a
-  nice feature.
-
 * [mortene:19991107] example programs and tools shouldn't be compiled
   with the COIN_INTERNAL define set.
 
@@ -37,23 +28,7 @@ TODO:
   Update: a related item is part of the OpenSSH TODO list as of
   release 1.2.2, and there's some code in configure.in.
 
-* [mortene:19990912] add options in configure for compiling slimmed
-  versions of Coin (--without-coin-engines etc). Or perhaps make a
-  single --compile-basesystem option instead?
-
-* [mortene:19991127] use the PETI_WITH_DMALLOC macro from the autoconf
-  macro archives to optionally make with dmalloc
-  (<http://www.dmalloc.com>).
-
 *** GENERIC ITEMS ***
-
-* [mortene:19991130] names containing (note: not only "beginning
-  with") __ (double underscore) or beginning with _[A-Z] (single
-  underscore immediately followed by an uppercase letter) are reserved
-  in C++ for the implementation.
-
-* [mortene:19991128] code restructuring: convert internal use of lists
-  to SbList wherever possible.
 
 * [mortene:19991124] write documentation for the tools (ivcat,
   ivhierarchy, ...)

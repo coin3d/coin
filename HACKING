@@ -3,7 +3,9 @@ development. 19990926 mortene.
 
 ==============================================================================
 
-* Building Coin for development
+* How to use CVS
+
+* Building Coin for development (UNIX)
 	- discuss common C++ large project problems
 	- solutions applied in Coin
 		o using multiply configure'd build directories
@@ -17,6 +19,10 @@ development. 19990926 mortene.
                 o make *-am
 		o explain mechanisms for overloading methods in
                   dynamic libraries
+
+* Differences, MSWin
+
+* Build hacking, autogen.sh/Autoconf/Automake/Libtool
 
 * Styleguide for code
 	- rip out the text from Metadon.conf
