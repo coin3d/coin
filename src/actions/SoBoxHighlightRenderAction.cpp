@@ -269,15 +269,18 @@ SoBoxHighlightRenderAction::apply(SoNode * node)
       PRIVATE(this)->searchaction = new SoSearchAction;
     }
     PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
-    PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
+    PRIVATE(this)->searchaction->setInterest(SoSearchAction::ALL);
     PRIVATE(this)->searchaction->apply(node);
-    if (PRIVATE(this)->searchaction->getPath()) {
-      SoSelection * selection =
-        (SoSelection *)PRIVATE(this)->searchaction->getPath()->getTail();
-      assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
-
-      if (selection->getNumSelected()) {
-        this->drawBoxes(PRIVATE(this)->searchaction->getPath(), selection->getList());
+    const SoPathList & pathlist = PRIVATE(this)->searchaction->getPaths();
+    if ( pathlist.getLength() > 0 ) {
+      int i;
+      for ( i = 0; i < pathlist.getLength(); i++ ) {
+        SoPath * path = pathlist[i];
+        assert(path);
+        SoSelection * selection = (SoSelection *) path->getTail();
+        assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
+        if ( selection->getNumSelected() > 0 )
+          this->drawBoxes(path, selection->getList());
       }
     }
     PRIVATE(this)->searchaction->reset();
