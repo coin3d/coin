@@ -539,7 +539,10 @@ AC_ARG_ENABLE(
   [build],
   [AC_HELP_STRING([--disable-build], [disable configuration for library build])],
   [case $enableval in
-  no | false) sim_ac_build_library=false ;;
+  no | false)
+   sim_ac_build_library=false
+   SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
+   ;;
   esac])
 
 AM_CONDITIONAL(BUILD_LIBRARY, $sim_ac_build_library)
@@ -727,9 +730,6 @@ else
       [define if preprocessor can quote arguments with apostophes])
   fi
 fi
-
-
-if $sim_ac_build_library; then
 
 # *******************************************************************
 # Instead of getenv() on most Win32 platforms (not Windows CE).
@@ -1311,7 +1311,6 @@ fi
 
 AC_SUBST(COIN_HACKING_LIBDIRS)
 
-fi
 
 # *******************************************************************
 # * For exposing various build, src and installation paths to
@@ -1408,7 +1407,6 @@ AM_CONDITIONAL(BUILD_WITH_MSVC, $BUILD_WITH_MSVC)
 
 COIN_COMPILER="$CXX"
 
-if $sim_ac_build_library; then
   if $BUILD_WITH_MSVC; then
     rm -f vc60.pdb
     LIBFLAGS="$LIBFLAGS $sim_ac_msvcrt_LIBLDFLAGS"
@@ -1527,9 +1525,6 @@ if $sim_ac_build_library; then
     SIM_AC_CONFIGURATION_SETTING([Installation prefix], [$prefix])
     ;;
   esac
-else
-  SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
-fi
 
 AC_SUBST([COIN_COMPILER])
 AC_SUBST([ac_compiler_gnu])
@@ -1716,6 +1711,15 @@ if $sim_ac_build_library; then
     ;;
   esac
 fi
+
+# FIXME: these would be nice to show, but they puck up the configuration
+# summary formatting. 20030509 mortene.
+#
+#SIM_AC_CONFIGURATION_SETTING([CPPFLAGS], [$CPPFLAGS])
+#SIM_AC_CONFIGURATION_SETTING([CFLAGS], [$CFLAGS])
+#SIM_AC_CONFIGURATION_SETTING([CXXFLAGS], [$CXXFLAGS])
+#SIM_AC_CONFIGURATION_SETTING([LDFLAGS], [$LDFLAGS])
+#SIM_AC_CONFIGURATION_SETTING([LIBS], [$LIBS])
 
 SIM_AC_CONFIGURATION_SUMMARY
 
