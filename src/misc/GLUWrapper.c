@@ -268,17 +268,12 @@ GLUWrapper(void)
     GLUWRAPPER_REGISTER_FUNC(gluNurbsCurve, gluNurbsCurve_t);
     GLUWRAPPER_REGISTER_FUNC(gluPwlCurve, gluPwlCurve_t);
     GLUWRAPPER_REGISTER_FUNC(gluNurbsCallback, gluNurbsCallback_t);
+#if defined(GLU_VERSION_1_3) || defined(GLU_RUNTIME_LINKING)
+    GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
+#else /* !gluNurbsCallbackData */
+    GLU_instance->gluNurbsCallbackData = NULL;
+#endif /* !gluNurbsCallbackData */
 
-    /* Parse the version string once and expose the version numbers
-       through the GLUWrapper API. */
-    GLUWrapper_set_version(GLU_instance->gluGetString(GLU_W_VERSION));
-
-    if (GLU_instance->versionMatchesAtLeast(1,3,0)) {
-      GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
-    }
-    else {
-      GLU_instance->gluNurbsCallbackData = NULL;
-    }
     /* "Backup" functions, makes it easier to be robust even when no
        GLU library can be loaded. */
     if (GLU_instance->gluScaleImage == NULL)
@@ -317,6 +312,10 @@ GLUWrapper(void)
                   GLU_instance->version.release);
     (void)fflush(stdout);
 #endif /* debug */
+
+    /* Parse the version string once and expose the version numbers
+       through the GLUWrapper API. */
+    GLUWrapper_set_version(GLU_instance->gluGetString(GLU_W_VERSION));
   }
 
   return GLU_instance;
