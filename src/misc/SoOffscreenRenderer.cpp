@@ -160,6 +160,32 @@
 
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
+#define PRIVATE(p) (p->pimpl)
+#define PUBLIC(p) (p->master)
+
+class SoOffscreenRendererP {
+public:
+  SoOffscreenRendererP(SoOffscreenRenderer * master) {
+    this->master = master;
+  };
+
+  SoOffscreenRenderer * master;
+
+
+  SbBool renderFromBase(SoBase * base);
+  void convertBuffer(void);
+  
+  SbViewportRegion viewport;
+  SbColor backgroundcolor;
+  SoOffscreenRenderer::Components components;
+  SoGLRenderAction * renderaction;
+  SbBool didallocaction;
+  class SoOffscreenInternalData * internaldata;
+  unsigned char * buffer;
+  
+};
+
+
 class SoOffscreenInternalData {
 public:
   SoOffscreenInternalData(void) {
@@ -242,22 +268,26 @@ protected:
   rendering. An internal SoGLRenderAction will be constructed.
 */
 SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion)
-  : backgroundcolor(0.0f, 0.0f, 0.0f),
-    components(RGB),
-    renderaction(new SoGLRenderAction(viewportregion)),
-    didallocaction(TRUE),
-    buffer(NULL)
 {
-  this->internaldata = NULL;
+  PRIVATE(this) = new SoOffscreenRendererP(this);
+
+  PRIVATE(this)->backgroundcolor.setValue(0,0,0);
+  PRIVATE(this)->components = RGB;
+  PRIVATE(this)->didallocaction = TRUE;
+  PRIVATE(this)->buffer = NULL;
+  PRIVATE(this)->renderaction = new SoGLRenderAction(viewportregion);
+
+
+  PRIVATE(this)->internaldata = NULL;
 #ifdef HAVE_GLX
-  this->internaldata = new SoOffscreenGLXData();
+  PRIVATE(this)->internaldata = new SoOffscreenGLXData();
 #elif defined(HAVE_WGL)
-  this->internaldata = new SoOffscreenWGLData();
+  PRIVATE(this)->internaldata = new SoOffscreenWGLData();
 #elif defined(HAVE_AGL)
-  this->internaldata = new SoOffscreenAGLData();
+  PRIVATE(this)->internaldata = new SoOffscreenAGLData();
 #endif // HAVE_AGL
 
-  this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
+  PRIVATE(this)->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   this->setViewportRegion(viewportregion);
 }
 
@@ -267,20 +297,23 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
   viewport is extracted from the \a action.
 */
 SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
-  : viewport(256, 256),
-    backgroundcolor(0.0f, 0.0f, 0.0f),
-    components(RGB),
-    renderaction(action),
-    didallocaction(FALSE),
-    buffer(NULL)
 {
-  this->internaldata = NULL;
+  PRIVATE(this) = new SoOffscreenRendererP(this);
+
+  PRIVATE(this)->viewport.setWindowSize(256,256);
+  PRIVATE(this)->backgroundcolor.setValue(0,0,0);
+  PRIVATE(this)->components = RGB;
+  PRIVATE(this)->didallocaction = TRUE;
+  PRIVATE(this)->buffer = NULL;
+  PRIVATE(this)->renderaction = action;
+
+  PRIVATE(this)->internaldata = NULL;
 #ifdef HAVE_GLX
-  this->internaldata = new SoOffscreenGLXData();
+  PRIVATE(this)->internaldata = new SoOffscreenGLXData();
 #elif defined(HAVE_WGL)
-  this->internaldata = new SoOffscreenWGLData();
+  PRIVATE(this)->internaldata = new SoOffscreenWGLData();
 #elif defined(HAVE_AGL)
-  this->internaldata = new SoOffscreenAGLData();
+  PRIVATE(this)->internaldata = new SoOffscreenAGLData();
 #endif // HAVE_AGL
   assert(action);
   this->setViewportRegion(action->getViewportRegion());
@@ -291,9 +324,9 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 */
 SoOffscreenRenderer::~SoOffscreenRenderer()
 {
-  delete[] this->buffer;
-  delete this->internaldata;
-  if (this->didallocaction) delete this->renderaction;
+  delete[] PRIVATE(this)->buffer;
+  delete PRIVATE(this)->internaldata;
+  if (PRIVATE(this)->didallocaction) delete PRIVATE(this)->renderaction;
 }
 
 /*!
@@ -353,12 +386,12 @@ SoOffscreenRenderer::getMaximumResolution(void)
 void
 SoOffscreenRenderer::setComponents(const Components components)
 {
-  this->components = components;
+  PRIVATE(this)->components = components;
 
   SbVec2s dims = this->getViewportRegion().getViewportSizePixels();
 
-  delete[] this->buffer;
-  this->buffer = new unsigned char[dims[0] * dims[1] * this->components];
+  delete[] PRIVATE(this)->buffer;
+  PRIVATE(this)->buffer = new unsigned char[dims[0] * dims[1] * PRIVATE(this)->components];
 }
 
 /*!
@@ -369,7 +402,8 @@ SoOffscreenRenderer::setComponents(const Components components)
 SoOffscreenRenderer::Components
 SoOffscreenRenderer::getComponents(void) const
 {
-  return this->components;
+  return PRIVATE(this)->components;
+
 }
 
 /*!
@@ -385,18 +419,18 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
   // As the current context is destructed and a new one is set up
   // below, it can be a major optimization to just return when there
   // is no real change.
-  if (this->viewport == region) { return; }
-
-  this->viewport = region;
-
-  if (this->renderaction)
-    this->renderaction->setViewportRegion(region);
-
+  if (PRIVATE(this)->viewport == region) { return; }
+  
+  PRIVATE(this)->viewport = region;
+  
+  if (PRIVATE(this)->renderaction)
+    PRIVATE(this)->renderaction->setViewportRegion(region);
+  
   SbVec2s dims = region.getViewportSizePixels();
-  if (this->internaldata) this->internaldata->setBufferSize(dims);
-
-  delete[] this->buffer;
-  this->buffer = new unsigned char[dims[0] * dims[1] * this->getComponents()];
+  if (PRIVATE(this)->internaldata) PRIVATE(this)->internaldata->setBufferSize(dims);
+  
+  delete[] PRIVATE(this)->buffer;
+  PRIVATE(this)->buffer = new unsigned char[dims[0] * dims[1] * this->getComponents()];
 }
 
 /*!
@@ -405,7 +439,7 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
 const SbViewportRegion &
 SoOffscreenRenderer::getViewportRegion(void) const
 {
-  return this->viewport;
+  return PRIVATE(this)->viewport;
 }
 
 /*!
@@ -415,7 +449,7 @@ SoOffscreenRenderer::getViewportRegion(void) const
 void
 SoOffscreenRenderer::setBackgroundColor(const SbColor & color)
 {
-  this->backgroundcolor = color;
+  PRIVATE(this)->backgroundcolor = color;
 }
 
 /*!
@@ -424,7 +458,7 @@ SoOffscreenRenderer::setBackgroundColor(const SbColor & color)
 const SbColor &
 SoOffscreenRenderer::getBackgroundColor(void) const
 {
-  return this->backgroundcolor;
+  return PRIVATE(this)->backgroundcolor;
 }
 
 /*!
@@ -433,9 +467,9 @@ SoOffscreenRenderer::getBackgroundColor(void) const
 void
 SoOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
 {
-  if (this->didallocaction) delete this->renderaction;
-  this->renderaction = action;
-  this->didallocaction = FALSE;
+  if (PRIVATE(this)->didallocaction) delete PRIVATE(this)->renderaction;
+  PRIVATE(this)->renderaction = action;
+  PRIVATE(this)->didallocaction = FALSE;
 }
 
 /*!
@@ -444,7 +478,7 @@ SoOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
 SoGLRenderAction *
 SoOffscreenRenderer::getGLRenderAction(void) const
 {
-  return this->renderaction;
+  return PRIVATE(this)->renderaction;
 }
 
 static void
@@ -456,7 +490,7 @@ pre_render_cb(void * userdata, SoGLRenderAction * action)
 
 // Collects common code from the two render() functions.
 SbBool
-SoOffscreenRenderer::renderFromBase(SoBase * base)
+SoOffscreenRendererP::renderFromBase(SoBase * base)
 {
   if (!this->internaldata) {
     static SbBool first = TRUE;
@@ -519,14 +553,14 @@ SoOffscreenRenderer::renderFromBase(SoBase * base)
 // Convert from RGBA format to the application programmer's requested
 // format.
 void
-SoOffscreenRenderer::convertBuffer(void)
+SoOffscreenRendererP::convertBuffer(void)
 {
-  SbVec2s dims = this->getViewportRegion().getViewportSizePixels();
+  SbVec2s dims = PUBLIC(this)->getViewportRegion().getViewportSizePixels();
   int pixels = dims[0] * dims[1];
-  int depth = this->getComponents();
+  int depth = PUBLIC(this)->getComponents();
   unsigned char * nativebuffer = this->internaldata->getBuffer();
 
-  switch (this->getComponents()) {
+  switch (master->getComponents()) {
   case SoOffscreenRenderer::RGB_TRANSPARENCY:
     memcpy(this->buffer, nativebuffer, pixels * depth);
     break;
@@ -612,7 +646,7 @@ SoOffscreenRenderer::convertBuffer(void)
 SbBool
 SoOffscreenRenderer::render(SoNode * scene)
 {
-  return this->renderFromBase(scene);
+  return PRIVATE(this)->renderFromBase(scene);
 }
 
 /*!
@@ -621,7 +655,7 @@ SoOffscreenRenderer::render(SoNode * scene)
 SbBool
 SoOffscreenRenderer::render(SoPath * scene)
 {
-  return this->renderFromBase(scene);
+  return PRIVATE(this)->renderFromBase(scene);
 }
 
 /*!
@@ -630,7 +664,7 @@ SoOffscreenRenderer::render(SoPath * scene)
 unsigned char *
 SoOffscreenRenderer::getBuffer(void) const
 {
-  return this->buffer;
+  return PRIVATE(this)->buffer;
 }
 
 //
@@ -660,8 +694,8 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
   // FIXME: add code to rle rows, pederb 2000-01-10
   // FIXME: errorchecking when writing! 20010625 mortene.
 
-  if (this->internaldata) {
-    SbVec2s size = this->internaldata->getSize();
+  if (PRIVATE(this)->internaldata) {
+    SbVec2s size = PRIVATE(this)->internaldata->getSize();
     write_short(fp, 0x01da); // imagic
     write_short(fp, 0x0001); // raw (no rle yet)
 
@@ -683,7 +717,7 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
 
     unsigned char * tmpbuf = new unsigned char[size[0]];
 
-    unsigned char * ptr = this->buffer;
+    unsigned char * ptr = PRIVATE(this)->buffer;
     for (int c = 0; c < comp; c++) {
       for (int y = 0; y < size[1]; y++) {
         for (int x = 0; x < size[0]; x++) {
@@ -850,15 +884,15 @@ SbBool
 SoOffscreenRenderer::writeToPostScript(FILE * fp,
                                        const SbVec2f & printsize) const
 {
-  if (this->internaldata) {
-    const SbVec2s size = this->internaldata->getSize();
+  if (PRIVATE(this)->internaldata) {
+    const SbVec2s size = PRIVATE(this)->internaldata->getSize();
     const int nc = this->getComponents();
     const float defaultdpi = 72.0f; // we scale against this value
     const float dpi = this->getScreenPixelsPerInch();
     const SbVec2s pixelsize((short)(printsize[0]*defaultdpi),
                             (short)(printsize[1]*defaultdpi));
 
-    const unsigned char * src = this->buffer;
+    const unsigned char * src = PRIVATE(this)->buffer;
     const int chan = nc <= 2 ? 1 : 3;
     const SbVec2s scaledsize((short) ceil(size[0]*defaultdpi/dpi),
                              (short) ceil(size[1]*defaultdpi/dpi));
@@ -1165,10 +1199,10 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
     return FALSE;
   }
-  if (this->internaldata) {
-    SbVec2s size = this->internaldata->getSize();
+  if (PRIVATE(this)->internaldata) {
+    SbVec2s size = PRIVATE(this)->internaldata->getSize();
     int comp = (int) this->getComponents();
-    unsigned char * bytes = this->buffer;
+    unsigned char * bytes = PRIVATE(this)->buffer;
     int ret = simage_wrapper()->simage_save_image(filename.getString(),
                                                   bytes,
                                                   int(size[0]), int(size[1]), comp,
