@@ -719,20 +719,24 @@ SoInput::read(SbString & s)
   ////////////////////
 
   if (this->isBinary()) {
-    // FIXME: guess at a sensible limit. 19990711 mortene.
+    // This is just a guess at a sensible limit, to help detect
+    // corrupted files and to avoid those leading to attempts at
+    // allocating gigabytes of memory.
     const unsigned int MAXSTRLEN = 10 * 1024;
-    unsigned int slen;
 
-    if (!this->read(slen)) return FALSE;
+    unsigned int slen;
+    if (!this->read(slen)) { return FALSE; }
+    if (slen == 0) { s = ""; return TRUE; }
+
     // Sanity check
     if (slen > MAXSTRLEN) {
-      SoReadError::post(this, "String too long (%d characters)", slen);
+      SoReadError::post(this, "String too long (%u characters) -- "
+                        "file probably corrupt.", slen);
       return FALSE;
     }
 
     char buffer[MAXSTRLEN+4+1];
-    if (slen && !fi->getChunkOfBytes((unsigned char *)buffer, ((slen+3)/4)*4))
-      return FALSE;
+    if (!fi->getChunkOfBytes((unsigned char *)buffer, ((slen+3)/4)*4)) { return FALSE; }
     buffer[slen] = '\0';
     s = buffer;
     return TRUE;
