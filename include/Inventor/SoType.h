@@ -22,7 +22,6 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbDict.h>
-#include <Inventor/system/inttypes.h>
 #include <stdlib.h> // For NULL definition.
 
 class SbName;

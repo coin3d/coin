@@ -125,7 +125,7 @@ protected:
 };
 
 
-#if HAVE_GLX
+#ifdef HAVE_GLX
 #include <GL/glx.h>
 
 class SoOffscreenGLXData : public SoOffscreenInternalData {
@@ -301,7 +301,7 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
     internaldata(NULL),
     buffer(NULL)
 {
-#if HAVE_GLX
+#ifdef HAVE_GLX
   this->internaldata = new SoOffscreenGLXData();
 #endif // HAVE_GLX
   this->setViewportRegion(viewportregion);
@@ -321,7 +321,7 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
     internaldata(NULL),
     buffer(NULL)
 {
-#if HAVE_GLX
+#ifdef HAVE_GLX
   this->internaldata = new SoOffscreenGLXData();
 #endif // HAVE_GLX
   assert(action);
@@ -354,7 +354,7 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
 SbVec2s
 SoOffscreenRenderer::getMaximumResolution(void)
 {
-#if HAVE_GLX
+#ifdef HAVE_GLX
   SoOffscreenGLXData::getMaxDimensions();
 #endif // HAVE_GLX
   return SbVec2s(0, 0);

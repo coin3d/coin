@@ -49,7 +49,7 @@ static int GLU_failed_to_load = 0;
 static void
 GLUWrapper_cleanup(void)
 {
-#if GLU_RUNTIME_LINKING
+#ifdef GLU_RUNTIME_LINKING
   if (GLU_libhandle) (void)dlclose(GLU_libhandle);
 #endif /* GLU_RUNTIME_LINKING */
 
@@ -185,7 +185,7 @@ GLUWrapper(void)
        linking process or we're successfully going to link it in. */
     GLU_instance->available = 1;
 
-#if GLU_RUNTIME_LINKING
+#ifdef GLU_RUNTIME_LINKING
     {
       const char * possiblelibnames[] = {
         /* FIXME: should we get the system shared library name from an
@@ -225,17 +225,17 @@ GLUWrapper(void)
 
     /* Define GLUWRAPPER_REGISTER_FUNC macro. Casting the type is
        necessary for this file to be compatible with C++ compilers. */
-#if HAVE_HASH_QUOTING
+#ifdef HAVE_HASH_QUOTING
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
     GLU_instance->_funcname_ = (_funcsig_)dlsym(GLU_libhandle, #_funcname_)
-#elif HAVE_APOSTROPHES_QUOTING
+#elif defined(HAVE_APOSTROPHES_QUOTING)
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
     GLU_instance->_funcname_ = (_funcsig_)dlsym(GLU_libhandle, "_funcname_")
 #else
 #error Unknown quoting.
 #endif
 
-#elif GLUWRAPPER_ASSUME_GLU /* !GLU_RUNTIME_LINKING */
+#elif defined(GLUWRAPPER_ASSUME_GLU) /* !GLU_RUNTIME_LINKING */
 
     /* Define GLUWRAPPER_REGISTER_FUNC macro. */
 #define GLUWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
@@ -266,7 +266,7 @@ GLUWrapper(void)
     GLUWRAPPER_REGISTER_FUNC(gluNurbsCurve, gluNurbsCurve_t);
     GLUWRAPPER_REGISTER_FUNC(gluPwlCurve, gluPwlCurve_t);
     GLUWRAPPER_REGISTER_FUNC(gluNurbsCallback, gluNurbsCallback_t);
-#if GLU_VERSION_1_3 || GLU_RUNTIME_LINKING
+#if defined(GLU_VERSION_1_3) || defined(GLU_RUNTIME_LINKING)
     GLUWRAPPER_REGISTER_FUNC(gluNurbsCallbackData, gluNurbsCallbackData_t);
 #else /* !gluNurbsCallbackData */
     GLU_instance->gluNurbsCallbackData = NULL;

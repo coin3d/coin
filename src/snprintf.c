@@ -30,9 +30,9 @@
 #include <stdio.h>
 
 
-#if !HAVE_VSNPRINTF
+#ifndef HAVE_VSNPRINTF
 
-#if HAVE__VSNPRINTF
+#ifdef HAVE__VSNPRINTF
 
 /* This is how it is defined in MSVC++ 5.0. */
 #define vsnprintf _vsnprintf
@@ -125,9 +125,9 @@ vsnprintf(char * target, size_t n, const char * formatstr, va_list args)
 
 /**************************************************************************/
 
-#if !HAVE_SNPRINTF
+#ifndef HAVE_SNPRINTF
 
-#if HAVE__SNPRINTF
+#ifdef HAVE__SNPRINTF
 
 /* This is how it is defined in MSVC++ 5.0. */
 #define snprintf _snprintf

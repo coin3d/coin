@@ -1,20 +1,4 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
-#undef HAVE_LIBSIMAGE
-#undef HAVE_OPENGL
-#undef HAVE_GLX
-#undef HAVE_GLU
-#undef HAVE_SNPRINTF
-#undef HAVE_VSNPRINTF
-#undef HAVE__SNPRINTF
-#undef HAVE__VSNPRINTF
-#undef HAVE_HASH_QUOTING
-#undef HAVE_APOSTROPHES_QUOTING
-#undef HAVE_SINGLEPRECISION_MATH
-#undef HAVE_DLFCN_H
-#undef HAVE_DL_LIB
-
-#undef SIMAGE_RUNTIME_LINKING
-#undef GLU_RUNTIME_LINKING
 
 /* define this to the libCoin major version number */
 #undef COIN_MAJOR_VERSION
@@ -28,14 +12,44 @@
 /* define this to the full libCoin major.minor.micro version number */
 #undef COIN_VERSION
 
+/* define for runtime linking with GLU */
+#undef GLU_RUNTIME_LINKING
+
+/* define if preprocessor can quote arguments with apostophes */
+#undef HAVE_APOSTROPHES_QUOTING
+
 /* Define if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
+
+/* define if you have the dl library */
+#undef HAVE_DL_LIB
+
+/* define if you have GLU */
+#undef HAVE_GLU
+
+/* define if you have GLX */
+#undef HAVE_GLX
+
+/* define if preprocessor can quote arguments with the hash symbol */
+#undef HAVE_HASH_QUOTING
 
 /* Define if you have the <io.h> header file. */
 #undef HAVE_IO_H
 
+/* define if you have the simage library */
+#undef HAVE_LIBSIMAGE
+
 /* Define if you have the <netinet/in.h> header file. */
 #undef HAVE_NETINET_IN_H
+
+/* define if you have OpenGL */
+#undef HAVE_OPENGL
+
+/* define if single-precision math functions are avialable */
+#undef HAVE_SINGLEPRECISION_MATH
+
+/* define if snprintf() is available */
+#undef HAVE_SNPRINTF
 
 /* Define if you have the <sys/param.h> header file. */
 #undef HAVE_SYS_PARAM_H
@@ -58,14 +72,26 @@
    name */
 #undef HAVE_VAR___func__
 
+/* define if vsnprintf() is available */
+#undef HAVE_VSNPRINTF
+
 /* Define if you have the <windows.h> header file. */
 #undef HAVE_WINDOWS_H
 
 /* Define if you have the <winsock2.h> header file. */
 #undef HAVE_WINSOCK2_H
 
+/* define if _snprintf() is available */
+#undef HAVE__SNPRINTF
+
+/* define if _vsnprintf() is available */
+#undef HAVE__VSNPRINTF
+
 /* Name of package */
 #undef PACKAGE
+
+/* define for runtime linking with simage */
+#undef SIMAGE_RUNTIME_LINKING
 
 /* Version number of package */
 #undef VERSION

@@ -65,7 +65,7 @@
 #include <X11/Xatom.h>
 #endif // !X_DISPLAY_MISSING
 
-#if HAVE_GLX
+#ifdef HAVE_GLX
 #include <GL/glx.h>
 #endif // HAVE_GLX
 
@@ -298,7 +298,7 @@ getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
     unsigned int base = NOT_AVAILABLE;
     if ((fontstruct = setFont(fontname, fontsize))) {
       base = glGenLists(256);
-#if HAVE_GLX
+#ifdef HAVE_GLX
       glXUseXFont(fontstruct->fid, 0, 256, base);
 #endif // HAVE_GLX
     }

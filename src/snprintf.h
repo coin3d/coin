@@ -25,12 +25,12 @@ extern "C" {
 #endif
 
 
-#if HAVE_CONFIG_H
+#ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#if !HAVE_SNPRINTF
-#if HAVE__SNPRINTF
+#ifndef HAVE_SNPRINTF
+#ifdef HAVE__SNPRINTF
 /* This is how it is defined in MSVC++ 5.0. */
 #define snprintf _snprintf
 #else /* !HAVE__SNPRINTF */
@@ -38,8 +38,8 @@ extern int snprintf(char * target, size_t n, const char * formatstr, ...);
 #endif /* !HAVE__SNPRINTF */
 #endif /* !HAVE_SNPRINTF */
 
-#if !HAVE_VSNPRINTF
-#if HAVE__VSNPRINTF
+#ifndef HAVE_VSNPRINTF
+#ifdef HAVE__VSNPRINTF
 /* This is how it is defined in MSVC++ 5.0. */
 #define vsnprintf _vsnprintf
 #else /* !HAVE__VSNPRINTF */

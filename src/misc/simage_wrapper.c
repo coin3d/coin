@@ -49,7 +49,7 @@ static int simage_failed_to_load = 0;
 static void
 simage_wrapper_cleanup(void)
 {
-#if SIMAGE_RUNTIME_LINKING
+#ifdef SIMAGE_RUNTIME_LINKING
   if (simage_libhandle) (void)dlclose(simage_libhandle);
 #endif /* SIMAGE_RUNTIME_LINKING */
 
@@ -131,7 +131,7 @@ simage_wrapper(void)
        linking process or we're successfully going to link it in. */
     simage_instance->available = 1;
 
-#if SIMAGE_RUNTIME_LINKING
+#ifdef SIMAGE_RUNTIME_LINKING
     {
       const char * possiblelibnames[] = {
         /* FIXME: should we get the system shared library name from an
@@ -168,17 +168,17 @@ simage_wrapper(void)
     }
     /* Define SIMAGEWRAPPER_REGISTER_FUNC macro. Casting the type is
        necessary for this file to be compatible with C++ compilers. */
-#if HAVE_HASH_QUOTING
+#ifdef HAVE_HASH_QUOTING
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
     simage_instance->_funcname_ = (_funcsig_)dlsym(simage_libhandle, #_funcname_)
-#elif HAVE_APOSTROPHES_QUOTING
+#elif defined(HAVE_APOSTROPHES_QUOTING)
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
     simage_instance->_funcname_ = (_funcsig_)dlsym(simage_libhandle, "_funcname_")
 #else
 #error Unknown quoting.
 #endif
 
-#elif SIMAGEWRAPPER_ASSUME_SIMAGE /* !SIMAGE_RUNTIME_LINKING */
+#elif defined(SIMAGEWRAPPER_ASSUME_SIMAGE) /* !SIMAGE_RUNTIME_LINKING */
 
     /* Define SIMAGEWRAPPER_REGISTER_FUNC macro. */
 #define SIMAGEWRAPPER_REGISTER_FUNC(_funcname_, _funcsig_) \
