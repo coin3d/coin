@@ -694,6 +694,13 @@
     drift. It is possible to both remove the drift and simplify the
     code. (in an upcoming patch). 20021122 rolvs
 
+    UPDATE: Don't try to interpret anything on your own - we have a
+    reference implementation called SGI Inventor to be compatible
+    with.  1)  The first chime should come after two seconds, as is
+    done in SGI Inventor.  2)  When basetime is not set, the timer
+    should drift as a side-effect of being rescheduled first after the
+    timer trigger callback has been executed.  20021122 larsa
+
 =====================================================================
 
 028 So[SM]FString I/O problem
