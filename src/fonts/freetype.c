@@ -56,7 +56,7 @@ extern "C" {
 SbBool cc_flwft_initialize(void) { return FALSE; }
 void cc_flwft_exit(void) { }
 
-void * cc_flwft_get_font(const char * fontname) { assert(FALSE); return NULL; }
+  void * cc_flwft_get_font(const char * fontname, const unsigned int pixelsize) { assert(FALSE); return NULL; }
 void cc_flwft_get_font_name(void * font, cc_string * str) { assert(FALSE); }
 void cc_flwft_done_font(void * font) { assert(FALSE); }
 
@@ -499,7 +499,7 @@ cc_flwft_exit(void)
 }
 
 static const char *
-find_font_file(const char * fontname)
+find_font_file(const char * fontname, unsigned int pixelsize)
 {
   const char * foundfile = NULL;
 
@@ -518,6 +518,14 @@ find_font_file(const char * fontname)
       return NULL;
     }
     
+    /* add the requested size to the pattern in order to pick up the correct font
+       in case of bitmap fonts */
+    if (!cc_fcglue_FcPatternAddDouble(font_pattern, FC_PIXEL_SIZE, pixelsize)) {
+      cc_debugerror_postinfo("find_font_file",
+                             "cc_fcglue_FcPatternAddDouble failed");
+      return NULL;
+    }
+
     /* next two steps mandatory for fontconfig's FcFontMatch call
      * otherwise results will not be correct by either the pattern
      * being underspecified or the pattern modification operations
@@ -636,10 +644,10 @@ find_font_file(const char * fontname)
 }
 
 void *
-cc_flwft_get_font(const char * fontname)
+cc_flwft_get_font(const char * fontname, const unsigned int pixelsize)
 {
   FT_Face face;
-  const char * fontfilename = find_font_file(fontname);
+  const char * fontfilename = find_font_file(fontname, pixelsize);
   FT_Error error;
   cc_hash * glyphhash;
 
