@@ -929,6 +929,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoElement.h \
                          @path_tag@@coin_src_dir@/src/elements/SoFloatElement.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoFloatElement.h \
+                         @path_tag@@coin_src_dir@/src/elements/SoPointSizeElement.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoPointSizeElement.h \
                          @path_tag@@coin_src_dir@/src/elements/SoGLPointSizeElement.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLPointSizeElement.h \
                          @path_tag@@coin_src_dir@/src/elements/SoLineWidthElement.cpp \

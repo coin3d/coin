@@ -19,10 +19,15 @@
 
 /*!
   \class SoPointSizeElement Inventor/elements/SoPointSizeElement.h
-  \brief The SoPointSizeElement class is yet to be documented.
+  \brief The SoPointSizeElement changes the pointsize setting of the render state.
   \ingroup elements
 
-  FIXME: write doc.
+  Requests from the scenegraph to change the pointsize when rendering
+  point primitives will be made through this element.
+
+  The SoPointSizeElement class itself is just a generic abstraction
+  for the underlying So*PointSizeElement classes with code specific
+  for each supported immediate mode rendering library.
 */
 
 #include <Inventor/elements/SoPointSizeElement.h>
@@ -32,10 +37,7 @@
 
 SO_ELEMENT_SOURCE(SoPointSizeElement);
 
-/*!
-  This static method initializes static data for the SoPointSizeElement class.
-*/
-
+// Doc in super.
 void
 SoPointSizeElement::initClass(void)
 {
@@ -43,53 +45,56 @@ SoPointSizeElement::initClass(void)
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
-SoPointSizeElement::~SoPointSizeElement(// virtual protected
-    void)
+SoPointSizeElement::~SoPointSizeElement(void)
 {
 }
 
-//! FIXME: write doc.
-
+// Doc in super.
 void
 SoPointSizeElement::init(SoState * state)
 {
   inherited::init(state);
-  this->data = getDefault();
+  this->data = SoPointSizeElement::getDefault();
 }
 
-//! FIXME: write doc.
-
+/*!
+  Static method for setting the current \a pointSize value in the
+  given traversal \a state.
+*/
 void
-SoPointSizeElement::set(SoState * const state,
-                        SoNode * const node,
+SoPointSizeElement::set(SoState * const state, SoNode * const node,
                         const float pointSize)
 {
-  SoFloatElement::set(classStackIndex,state, node, pointSize);
+  inherited::set(SoPointSizeElement::classStackIndex, state, node, pointSize);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Static method for setting the current \a pointSize value in the
+  given traversal \a state.
+*/
 void
 SoPointSizeElement::set(SoState * const state, const float pointSize)
 {
-  set(state, NULL, pointSize);
+  SoPointSizeElement::set(state, NULL, pointSize);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Static method for returning the current pointsize setting in the
+  given traversal \a state.
+*/
 float
 SoPointSizeElement::get(SoState * const state)
 {
-  return SoFloatElement::get(classStackIndex, state);
+  return inherited::get(SoPointSizeElement::classStackIndex, state);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Returns default pointsize setting.
+*/
 float
-SoPointSizeElement::getDefault()
+SoPointSizeElement::getDefault(void)
 {
   return 0.0f;
 }

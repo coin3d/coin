@@ -28,6 +28,11 @@
 
 SO_ELEMENT_ABSTRACT_SOURCE(SoFloatElement);
 
+/*!
+  \var float SoFloatElement::data
+  The element's value.
+*/
+
 // doc in super
 void
 SoFloatElement::initClass(void)

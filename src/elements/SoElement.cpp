@@ -79,25 +79,23 @@
   \sa const SoElement * SoElement::getConstElement(SoState * const state, const int stackIndex)
 */
 
-#if 0 // DISABLED so we get an error from the Doxygen generation. 20011027 mortene.
 /*!
-  \fn SoElement::typeId
-
-  FIXME: write doc.
+  \var SoType SoElement::typeId
+  The element's unique SoType type identification.
 */
 
 /*!
-  \fn SoElement::stackIndex
-
-  FIXME: write doc.
+  \var int SoElement::stackIndex
+  The index in the state stack for this particular element instance.
 */
 
 /*!
-  \fn SoElement::depth
-
-  FIXME: write doc.
+  \var int SoElement::depth
+  The depth of the element instance in the state stack.
 */
-#endif // tmp DISABLED
+
+/*! Provides mapping from state stack indices to element types. */
+SoTypeList * SoElement::stackToType;
 
 
 /*!
@@ -357,7 +355,7 @@ SoElement::matches(const SoElement * element) const
   Returns the number of allocated element stack index slots.
 */
 int
-SoElement::getNumStackIndices()
+SoElement::getNumStackIndices(void)
 {
   return SoElement::stackToType->getLength();
 }
@@ -423,7 +421,9 @@ SoElement::getConstElement(SoState * const state,
   return element;
 }
 
-// FIXME: doc
+/*!
+  Adds the element to the cache.
+*/
 void
 SoElement::captureThis(SoState * state) const
 {
@@ -451,7 +451,7 @@ SoElement::setTypeId(const SoType typeId)
   functionality, see the documentation of SoBase::getTypeId().
 */
 const SoType
-SoElement::getTypeId() const
+SoElement::getTypeId(void) const
 {
   return this->typeId;
 }
@@ -474,9 +474,6 @@ SoElement::setStackIndex(const int stackIndex)
 {
   this->stackIndex = stackIndex;
 }
-
-// FIXME: write doc.
-SoTypeList * SoElement::stackToType;
 
 /*!
   Returns the value of a new available stack index.
