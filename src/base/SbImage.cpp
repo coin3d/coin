@@ -37,6 +37,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <src/misc/simage_wrapper.h>
+#include <Inventor/SoInput.h> // for SoInput::searchForFile()
+#include <Inventor/lists/SbStringList.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -125,28 +127,6 @@ SbImage::getValue(SbVec2s & size, int & bytesperpixel) const
   return this->bytes;
 }
 
-//
-// The TRY_FILE macro is used to immediately return from the
-// SbImage::searchForFile() function when a file can be opened.
-//
-
-#if COIN_DEBUG && 0 // flip 1<->0 to turn texture search trace on or off
-#define TRY_FILE_DEBUG(x, result) \
-  SoDebugError::postInfo("TRY_FILE", "texture search: %s (%s)", (x), (result))
-#else // !COIN_DEBUG
-#define TRY_FILE_DEBUG(x, result)
-#endif // !COIN_DEBUG
-
-#define TRY_FILE(x) \
-  do { \
-    FILE * fp = fopen(x.getString(), "rb"); \
-    TRY_FILE_DEBUG(x.getString(), fp ? "hit!" : "miss"); \
-    if (fp != NULL) { \
-      fclose(fp); \
-      return x; \
-    } \
-  } while (0)
-
 /*!
   Given a \a basename for a file and and array of directories to
   search (in \a dirlist, of length \a numdirs), returns the full name
@@ -163,96 +143,25 @@ SbString
 SbImage::searchForFile(const SbString & basename,
                        const SbString * const * dirlist, const int numdirs)
 {
-  // FIXME: this method could be abstracted further and stuffed into
-  // SoDB or SoInput. 20001026 mortene.
-
   int i;
-
-  TRY_FILE(basename);
-
-  SbString fullname = basename;
-
-  SbBool trypath = TRUE;
-  const char * strptr = basename.getString();
-  const char * lastunixdelim = strrchr(strptr, '/');
-  const char * lastdosdelim = strrchr(strptr, '\\');
-  if (!lastdosdelim) {
-    lastdosdelim = strrchr(strptr, ':');
-    if (lastdosdelim) trypath = FALSE;
-  }
-  const char * lastdelim = SbMax(lastunixdelim, lastdosdelim);
-
-  if (lastdelim && trypath) {
-    SbString tmpstring;
-    for (i = 0; i < numdirs; i++) {
-      SbString dirname = *(dirlist[i]);
-      int dirlen = dirname.getLength();
-
-      if (dirlen > 0 &&
-          dirname[dirlen-1] != '/' &&
-          dirname[dirlen-1] != '\\' &&
-          dirname[dirlen-1] != ':') {
-        dirname += "/";
-      }
-
-      tmpstring.sprintf("%s%s", dirname.getString(),
-                        fullname.getString());
-      TRY_FILE(tmpstring);
-    }
-  }
-
-  SbString base = lastdelim ?
-    basename.getSubString(lastdelim-strptr + 1, -1) :
-    basename;
-
+  SbStringList directories;
+  SbStringList subdirectories;
+  
   for (i = 0; i < numdirs; i++) {
-    SbString dirname = *(dirlist[i]);
-    int dirlen = dirname.getLength();
-
-    if (dirlen > 0 &&
-        dirname[dirlen-1] != '/' &&
-        dirname[dirlen-1] != '\\' &&
-        dirname[dirlen-1] != ':') {
-      dirname += "/";
-    }
-
-    fullname.sprintf("%s%s", dirname.getString(),
-                     base.getString());
-    TRY_FILE(fullname);
-
-    // also try come common texture/picture subdirectories
-    fullname.sprintf("%stexture/%s", dirname.getString(),
-                     base.getString());
-    TRY_FILE(fullname);
-
-    fullname.sprintf("%stextures/%s",
-                     dirname.getString(),
-                     base.getString());
-    TRY_FILE(fullname);
-
-    fullname.sprintf("%simages/%s",
-                     dirname.getString(),
-                     base.getString());
-    TRY_FILE(fullname);
-
-    fullname.sprintf("%spics/%s",
-                     dirname.getString(),
-                     base.getString());
-    TRY_FILE(fullname);
-
-    fullname.sprintf("%spictures/%s",
-                     dirname.getString(),
-                     base.getString());
-    TRY_FILE(fullname);
+    directories.append((SbString*) dirlist[i]);
   }
-
-  // none found
-  return SbString("");
+  subdirectories.append(new SbString("texture"));
+  subdirectories.append(new SbString("textures"));
+  subdirectories.append(new SbString("images"));
+  subdirectories.append(new SbString("pics"));
+  subdirectories.append(new SbString("pictures"));
+  
+  SbString ret = SoInput::searchForFile(basename, directories, subdirectories);
+  for (i = 0; i < subdirectories.getLength(); i++) {
+    delete subdirectories[i];
+  }
+  return ret;
 }
-
-#undef TRY_FILE_DEBUG
-#undef TRY_FILE
-
 
 /*!
   Reads image data from \a filename. In Coin, simage is used to
@@ -275,12 +184,12 @@ SbImage::readFile(const SbString & filename,
   if (finalname.getLength()) {
     int w, h, nc;
     unsigned char * simagedata = NULL;
-    
+
     if (simage_wrapper()->available && simage_wrapper()->simage_read_image) {
       simagedata = simage_wrapper()->simage_read_image(finalname.getString(), &w, &h, &nc);
 #if COIN_DEBUG
       if (!simagedata) {
-        SoDebugError::post("SbImage::readFile", "%s", 
+        SoDebugError::post("SbImage::readFile", "%s",
                            simage_wrapper()->simage_get_last_error ?
                            simage_wrapper()->simage_get_last_error() :
                            "Unknown error");
