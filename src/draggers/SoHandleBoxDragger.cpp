@@ -398,7 +398,6 @@ SoHandleBoxDragger::dragStart(void)
   if (!found) return;
 
   SbVec3f startPt = this->getLocalStartingPoint();
-  SoSwitch *sw;
 
   switch(this->whatkind) {
   case WHATKIND_TRANSLATOR:
