@@ -50,6 +50,7 @@
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -2003,7 +2004,16 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   
   // clear GL error(s) if parametric error value is out of range.
   // FIXME: man, this is ugly! 20020530 mortene.
-  if (glrender) { while (glGetError() == GL_INVALID_VALUE); }
+  if (glrender) {
+    SbBool err = FALSE;
+    while (glGetError() == GL_INVALID_VALUE) err = TRUE; 
+    if (err) {
+      // this is even uglier. Don't cache if there's an error. I
+      // haven't got time to fix this properly right now.
+      // pederb, 2003-07-10
+      SoCacheElement::invalidate(state);
+    }
+  }
 }
 
 void
