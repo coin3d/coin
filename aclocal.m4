@@ -1541,17 +1541,22 @@ fi
 # as we can get false positives and/or false negatives when running under
 # Cygwin, using the Microsoft Visual C++ compiler (the configure script will
 # pick the GCC preprocessor).
-AC_DEFUN([SIM_AC_CHECK_HEADER],
-[AC_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])dnl
-AC_ARG_VAR([CPPFLAGS], [C/C++ preprocessor flags, e.g. -I<include dir> if you ha
-ve headers in a nonstandard directory <include dir>])
-AC_CACHE_CHECK([for $1], ac_Header,
-[AC_TRY_COMPILE([#include <$1>
-], [],
-AC_VAR_SET(ac_Header, yes), AC_VAR_SET(ac_Header, no))])
-AC_SHELL_IFELSE([test AC_VAR_GET(ac_Header) = yes],
-                [$2], [$3])dnl
-AC_VAR_POPDEF([ac_Header])dnl
+
+AC_DEFUN([SIM_AC_CHECK_HEADER], [
+AC_VAR_PUSHDEF([ac_Header], [ac_cv_header_$1])
+AC_ARG_VAR([CPPFLAGS], [C/C++ preprocessor flags, e.g. -I<include dir> if you have headers in a nonstandard directory <include dir>])
+AC_CACHE_CHECK(
+  [for $1],
+  ac_Header,
+  [AC_TRY_COMPILE([#include <$1>],
+  [],
+  [AC_VAR_SET(ac_Header, yes)],
+  [AC_VAR_SET(ac_Header, no)])])
+AS_IFELSE(
+  [test AC_VAR_GET(ac_Header) = yes],
+  [$2],
+  [$3])
+AC_VAR_POPDEF([ac_Header])
 ])# SIM_AC_CHECK_HEADER
 
 
@@ -1561,9 +1566,10 @@ AC_VAR_POPDEF([ac_Header])dnl
 AC_DEFUN([SIM_AC_CHECK_HEADERS],
 [for ac_header in $1
 do
-SIM_AC_CHECK_HEADER($ac_header,
-                    [AC_DEFINE_UNQUOTED(AC_TR_CPP(HAVE_$ac_header)) $2],
-                    [$3])dnl
+SIM_AC_CHECK_HEADER(
+  [$ac_header],
+  [AC_DEFINE_UNQUOTED(AC_TR_CPP(HAVE_$ac_header)) $2],
+  [$3])
 done
 ])# SIM_AC_CHECK_HEADERS
 
@@ -1772,7 +1778,7 @@ fi
 
 
 # Usage:
-#  SIM_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the X11 development system. If it is found, these
 #  shell variables are set:
@@ -1788,11 +1794,10 @@ fi
 #
 # Author: Morten Eriksen, <mortene@sim.no>.
 
-AC_DEFUN([SIM_CHECK_X11], [
+AC_DEFUN([SIM_AC_CHECK_X11], [
+AC_REQUIRE([AC_PATH_XTRA])
 
 sim_ac_x11_avail=no
-
-AC_PATH_XTRA
 
 if test x"$no_x" != xyes; then
   #  *** DEBUG ***
@@ -1842,7 +1847,7 @@ fi
 ])
 
 # Usage:
-#  SIM_CHECK_X11SHMEM([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X11SHMEM([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the X11 shared memory extension. If it is found, this
 #  shell variable is set:
@@ -1861,8 +1866,7 @@ fi
 #      Cygwin installation)
 #
 
-AC_DEFUN([SIM_CHECK_X11SHMEM], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_X11SHMEM], [
 
 sim_ac_x11shmem_avail=no
 sim_ac_x11shmem_libs="-lXext"
@@ -1888,7 +1892,7 @@ fi
 ])
 
 # Usage:
-#  SIM_CHECK_X11MU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X11MU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the X11 miscellaneous utilities extension. If it is
 #  found, this shell variable is set:
@@ -1906,8 +1910,7 @@ fi
 #      Cygwin installation)
 #
 
-AC_DEFUN([SIM_CHECK_X11MU], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_X11MU], [
 
 sim_ac_x11mu_avail=no
 sim_ac_x11mu_libs="-lXmu"
@@ -1934,7 +1937,7 @@ fi
 ])
 
 # Usage:
-#  SIM_CHECK_X11XID([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X11XID([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the X11 extension device library. Sets this
 #  shell variable:
@@ -1952,8 +1955,7 @@ fi
 #      Cygwin installation)
 #
 
-AC_DEFUN([SIM_CHECK_X11XID], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_X11XID], [
 
 sim_ac_x11xid_avail=no
 sim_ac_x11xid_libs="-lXi"
@@ -1978,7 +1980,7 @@ fi
 ])
 
 # Usage:
-#  SIM_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#  SIM_AC_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
 #  Try to find the Xt intrinsic library. Sets this shell variable:
 #
@@ -1991,8 +1993,7 @@ fi
 # Author: Morten Eriksen, <mortene@sim.no>.
 #
 
-AC_DEFUN([SIM_CHECK_X_INTRINSIC], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_X_INTRINSIC], [
 
 sim_ac_xt_avail=no
 sim_ac_xt_libs="-lXt"
@@ -2017,7 +2018,7 @@ fi
 ])
 
 # Usage:
-#   SIM_CHECK_LIBXPM( [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND] )
+#   SIM_AC_CHECK_LIBXPM( [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND] )
 #
 # Description:
 #   This macro checks for libXpm.
@@ -2030,8 +2031,7 @@ fi
 #   Lars J. Aas <larsa@sim.no>
 #
 
-AC_DEFUN([SIM_CHECK_LIBXPM], [
-AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_AC_CHECK_LIBXPM], [
 
 sim_ac_xpm_avail=no
 sim_ac_xpm_libs="-lXpm"
@@ -2495,6 +2495,29 @@ else
   $1
 fi
 ])
+
+# **************************************************************************
+# SIM_AC_HAVE_GLX_IFELSE( IF-FOUND, IF-NOT-FOUND )
+#
+# Check whether GLX is on the system.
+
+AC_DEFUN([SIM_AC_HAVE_GLX_IFELSE], [
+AC_CACHE_CHECK(
+  [whether GLX is on the system],
+  sim_cv_have_glx,
+  AC_TRY_LINK(
+    [#include <GL/glx.h>],
+    [(void)glXChooseVisual(0L, 0, 0L);],
+    [sim_cv_have_glx=true],
+    [sim_cv_have_glx=false]))
+
+if ${sim_cv_have_glx=false}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_HAVE_GLX_IFELSE()
+
 
 # Usage:
 #  SIM_AC_CHECK_PTHREAD([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])

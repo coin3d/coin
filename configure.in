@@ -414,14 +414,14 @@ $sim_cv_func_singleprec_avail && AC_DEFINE(HAVE_SINGLEPRECISION_MATH)
 # * Handle the detection and inclusion of X11 libraries.
 # *******************************************************************
 
-SIM_CHECK_X11([COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
-               COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
-               COIN_EXTRA_LIBS="$sim_ac_x11_libs $COIN_EXTRA_LIBS"])
+SIM_AC_CHECK_X11([COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_x11_cppflags"
+                  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_x11_ldflags"
+                  COIN_EXTRA_LIBS="$sim_ac_x11_libs $COIN_EXTRA_LIBS"])
 
 if test x"$sim_ac_x11_avail" = xyes; then
   #  If the X11 shared memory extension is available, include it as
   #  the Mesa library has probably been linked against it.
-  SIM_CHECK_X11SHMEM(COIN_EXTRA_LIBS="$sim_ac_x11shmem_libs $COIN_EXTRA_LIBS")
+  SIM_AC_CHECK_X11SHMEM(COIN_EXTRA_LIBS="$sim_ac_x11shmem_libs $COIN_EXTRA_LIBS")
 fi
 
 
@@ -586,6 +586,7 @@ if $BUILD_WITH_MSVC; then
   # list all libs used upon `coin-config --libs`, as we can then
   # also use them from "parent" code (remember that their interfaces
   # is not exposed from the DLL) without any fuss.
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
   COIN_EXTRA_LIBS="-lcoin$COIN_MAJOR_VERSION $COIN_EXTRA_LIBS"
 
 else
