@@ -926,9 +926,14 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
-  if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
-  else if (SoGLTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
-
+  
+  // not all actions have these elements enabled
+  // (for instance SoGetPrimitiveCountAction)
+  if (state->isElementEnabled(SoTextureEnabledElement::getClassStackIndex()) &&
+      state->isElementEnabled(SoTexture3EnabledElement::getClassStackIndex())) {
+    if (SoTextureEnabledElement::get(state)) do2Dtextures = TRUE;
+    else if (SoTexture3EnabledElement::get(state)) do3Dtextures = TRUE;
+  }
   // FIXME: implement proper support for 3D-texturing, and get rid of
   // this. (20031010 handegar)
   if (do3Dtextures) {
