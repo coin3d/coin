@@ -114,12 +114,12 @@ SoOffscreenGLXData::~SoOffscreenGLXData()
   // offscreen rendering, we leave this in.
   //
   // If you see crashes, feel free to report the particulars about
-    // your system to us (OpenGL implementation & version, X11 server
+  // your system to us (OpenGL implementation & version, X11 server
   // and client implementations and versions, etc).
   //
   // mortene@sim.no
   if (this->display) XCloseDisplay(this->display);
-  
+
   delete[] this->buffer;
 }
 
@@ -184,8 +184,8 @@ SoOffscreenGLXData::setBufferSize(const SbVec2s & size)
   this->buffer =
     new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
   
-  if (this->pixmap) XFreePixmap(this->display, this->pixmap);
   if (this->glxpixmap) glXDestroyGLXPixmap(this->display, this->glxpixmap);
+  if (this->pixmap) XFreePixmap(this->display, this->pixmap);
   
   if (this->context) {
     this->pixmap = XCreatePixmap(this->display,
