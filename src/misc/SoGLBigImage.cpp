@@ -185,6 +185,7 @@ SoGLBigImage::SoGLBigImage(void)
 SoGLBigImage::~SoGLBigImage()
 {
   THIS->reset(NULL);
+  THIS->resetCache();
   delete THIS;
 }
 
@@ -227,6 +228,8 @@ SoGLBigImage::setData(const SbImage * image,
   }
   THIS->reset(NULL);
   THIS->resetCache();
+  THIS->imagesize.setValue(0,0);
+  THIS->dim.setValue(0,0);
   inherited::setData(image, wraps, wrapt, quality, border, NULL);
 }
 
@@ -245,6 +248,8 @@ SoGLBigImage::setData(const SbImage * image,
   }
   THIS->reset(NULL);
   THIS->resetCache();
+  THIS->imagesize.setValue(0,0);
+  THIS->dim.setValue(0,0);
   inherited::setData(image, wraps, wrapt, wrapr, quality, border, NULL);
 }
 
