@@ -20,6 +20,8 @@
 #ifndef COIN_INTTYPES_H
 #define COIN_INTTYPES_H
 
+/* ALERT: This is also a C header file, so don't use C++ comments!  larsa */
+
 #include <sys/types.h>
 
 /*
@@ -31,17 +33,17 @@
 #if defined(__GLIBC__) && !defined(__BEOS__)
   typedef u_int32_t uint32_t;
   typedef u_int16_t uint16_t;
-#else // ! __GLIBC__
+#else /* ! __GLIBC__ */
 
-  // FIXME: this doesn't look very portable - 990610 larsa
+  /* FIXME: this doesn't look very portable - 990610 larsa */
   typedef unsigned short uint16_t;
   typedef unsigned int uint32_t;
 #if ! defined(linux) || ! defined(__BIT_TYPES_DEFINED__)
   typedef short int16_t;
   typedef int int32_t;
-#endif // ! defined(linux) || ! defined(__BIT_TYPES_DEFINED__)
+#endif /* ! defined(linux) || ! defined(__BIT_TYPES_DEFINED__) */
 
-#endif // ! __GLIBC__
+#endif /* ! __GLIBC__ */
 
 
-#endif // ! COIN_INTTYPES_H
+#endif /* ! COIN_INTTYPES_H */
