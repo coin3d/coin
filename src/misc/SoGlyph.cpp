@@ -95,8 +95,6 @@ public:
 
   static SoGlyph * createSystemGlyph(const char character, const SbName & font);
   static SoGlyph * createSystemGlyph(const unsigned int character, SoState * state) {return NULL;};
-  
-  // static SoGlyph *getGlyph(const SbName &font, const SbName &style, const SbVec2s &size, const float angle);
 };
 
 #undef PRIVATE
@@ -341,11 +339,11 @@ public:
   unsigned int character;
   float size;
   SbName font;
-  SoGlyph *glyph;
+  SoGlyph * glyph;
   float angle;
 };
 
-static SbList <coin_glyph_info> *activeGlyphs = NULL;
+static SbList <coin_glyph_info> * activeGlyphs = NULL;
 static void * SoGlyph_mutex = NULL;
 
 void SoGlyph_cleanup(void)
@@ -367,10 +365,10 @@ SoGlyph::getGlyph(const char character, const SbName & font)
   }
 
   // FIXME: it would probably be a good idea to have a small LRU-type
-  // glyph cache to avoid freeing glyphs too early. If for instance the user
-  // creates a single SoText3 node which is used several times in a
-  // graph with differnet fonts, glyphs will be freed and recreated
-  // all the time. pederb, 20000324
+  // glyph cache to avoid freeing glyphs too early. If for instance
+  // the user creates a single SoText3 node which is used several
+  // times in a graph with different fonts, glyphs will be freed and
+  // recreated all the time. pederb, 20000324
 
   CC_MUTEX_LOCK(SoGlyph_mutex);
 
@@ -391,7 +389,12 @@ SoGlyph::getGlyph(const char character, const SbName & font)
     return glyph;
   }
 
-  SoGlyph *glyph = SoGlyphP::createSystemGlyph(character, font);
+  SoGlyph * glyph = SoGlyphP::createSystemGlyph(character, font);
+
+  // FIXME: don't think this is necessary, we should _always_ get a
+  // glyph. If none exist in the font, we should eventually fall back
+  // on making a square in the code we're calling into. Move the code
+  // below to handle this deeper down into the call-stack. 20030527 mortene.
   if (glyph == NULL) { // no system font could be loaded
 #if defined(COIN_NO_DEFAULT_3DFONT)
     // just create a square to render something

@@ -140,9 +140,12 @@ SoFontLib::initialize(void)
   cc_flw_initialize();
     
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
-  // Create default font
-  SoFontLib::createFont(SbName("defaultFont"), SbName(""), SbVec2s(12, 12));
 
+  // Create default font.
+  //
+  // FIXME: this is a hack, I don't like it. The default font should
+  // be set up in cc_flw_initialize(), methinks. 20030527 mortene.
+  SoFontLib::createFont(SbName("defaultFont"), SbName(""), SbVec2s(12, 12));
 }
 
 void
@@ -184,12 +187,18 @@ SoFontLib::createFont(const SbName & fontname, const SbName & stylename,
   int font = -1;
 
   // Check if we already know the requestname for this fontname
+  //
+  // FIXME: this seems like an unnecessary optimization -- remove it
+  // to simplify code? 20030527 mortene.
   if (SoFontLibP::openfonts->find((unsigned long)fontname.getString(), (void *&)strptr)) {
     path = *strptr;
     font = cc_flw_create_font(path.getString(), size[0], size[1]);
   } 
   else {
     // Check if we know the font file for this font name
+
+    // FIXME: use a dict for this to clean up the code. 20030527 mortene.
+
     i = 0;
     listlen = SoFontLibP::fontfiles->getLength();
     done = FALSE;
@@ -237,27 +246,23 @@ SoFontLib::createFont(const SbName & fontname, const SbName & stylename,
 
     font = cc_flw_create_font(path.getString(), size[0], size[1]);
 
+    // 'font' should _always_ be >= 0, due to our fall-back on the
+    // default font.
+    assert((font >= 0) && "could not create font");
+
 #if COIN_DEBUG
     if (cc_flw_debug()) {
-      const char * createdfontname = NULL;
-      if (font >=0) { createdfontname = cc_flw_get_font_name(font); }
+      const char * createdfontname = cc_flw_get_font_name(font);
       SoDebugError::postInfo("SoFontLib::createFont",
-                             "attempt at creating font from '%s' %s, "
+                             "attempt at creating font from '%s', "
                              "actual font name is '%s'",
-                             path.getString(),
-                             font >= 0 ? "succeeded" : "failed",
-                             createdfontname ? createdfontname : "<n/a>");
+                             path.getString(), createdfontname);
     }
 #endif // COIN_DEBUG
-    
-    // Add font to openfonts dict.
-    //
-    // FIXME: won't 'font' _always_ be >= 0, due to our fall-back on
-    // the default font? 20030526 mortene.
-    if (font >= 0) {
-      SbString * newfont = new SbString(path);
-      SoFontLibP::openfonts->enter((unsigned long)fontname.getString(), newfont);
-    }
+
+    // Add font to openfonts cache dict.
+    SbString * newfont = new SbString(path);
+    SoFontLibP::openfonts->enter((unsigned long)fontname.getString(), newfont);
   }
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
   SoFontLib::setDefaultCharmap(font);
@@ -316,8 +321,8 @@ void
 SoFontLib::setCharmap(const int font, const int charmap)
 {
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
-  if (font >= 0)
-    cc_flw_set_charmap(font, charmap);
+  assert(font >= 0);
+  cc_flw_set_charmap(font, charmap);
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
@@ -368,7 +373,8 @@ SoFontLib::setDefaultCharmap(const int font)
                              charmap, name);
     }
 #endif
-  } else {
+  }
+  else {
 #if COIN_DEBUG
     if (cc_flw_debug()) {
       SoDebugError::postWarning("SoFontLib::setDefaultCharmap", "no default charmap for font '%s'", 
@@ -383,8 +389,8 @@ void
 SoFontLib::setCharSize(const int font, const SbVec2s &size)
 {
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
-  if (font >= 0)
-    cc_flw_set_char_size(font, (int)size[0], (int)size[1]);
+  assert(font >= 0);
+  cc_flw_set_char_size(font, (int)size[0], (int)size[1]);
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
@@ -392,8 +398,8 @@ void
 SoFontLib::setFontRotation(const int font, const float angle)
 {
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
-  if (font >= 0)
-    cc_flw_set_font_rotation(font, angle);
+  assert(font >= 0);
+  cc_flw_set_font_rotation(font, angle);
   CC_MUTEX_UNLOCK(SoFontLibP::apimutex);
 }
 
@@ -458,7 +464,7 @@ SoFontLib::getBitmap(const int font, const int glyph, SbVec2s &size, SbVec2s &po
   CC_MUTEX_LOCK(SoFontLibP::apimutex);
   unsigned char * retval = NULL;
   if (font >= 0 && glyph >= 0) {
-    cc_FLWbitmap * bm = cc_flw_get_bitmap(font, glyph);
+    struct cc_flw_bitmap * bm = cc_flw_get_bitmap(font, glyph);
     if (bm) {
       size[0] = bm->pitch * 8;
       size[1] = bm->rows;
