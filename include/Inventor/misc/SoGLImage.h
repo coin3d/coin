@@ -133,7 +133,8 @@ public:
   Wrap getWrapS(void) const;
   Wrap getWrapT(void) const;
   Wrap getWrapR(void) const;
-  
+
+  float getQuality(void) const;
   uint32_t getGLImageId(void) const;
   
 protected:

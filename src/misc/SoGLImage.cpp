@@ -162,6 +162,7 @@
 #include <Inventor/system/gl.h>
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/misc/SoGLCubeMapImage.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -734,6 +735,8 @@ SoGLImage::initClass(void)
                                         glimage_buffer_construct, glimage_buffer_destruct);
 
   cc_coin_atexit((coin_atexit_f*)SoGLImage::cleanupClass);
+
+  SoGLCubeMapImage::initClass();
 }
 
 //
@@ -1202,6 +1205,17 @@ SoGLImage::getWrapR(void) const
   return PRIVATE(this)->wrapr;
 }
 
+/*!
+  Returns the texture quality for this texture image.
+
+  \since 2005-02-19
+*/
+float 
+SoGLImage::getQuality(void) const
+{
+  return PRIVATE(this)->quality;
+}
+
 /*!  
   Returns an unique if for this GL image. This id can be used to
   test for changes in an SoGLImage's internal data.  
@@ -1451,6 +1465,16 @@ SoGLImageP::createGLDisplayList(SoState *state)
                                             SoGLDisplayList::TEXTURE_OBJECT,
                                             1, mipmap);
   dl->ref();
+
+  SbBool is3D = (size[2]==0)?FALSE:TRUE;
+  if (is3D) {
+    dl->setTextureTarget((int) GL_TEXTURE_3D);
+  }
+  else {
+    dl->setTextureTarget((int) (this->flags & SoGLImage::RECTANGLE ?
+                                GL_TEXTURE_RECTANGLE_EXT : GL_TEXTURE_2D));
+  }
+
   dl->open(state);
 
 
