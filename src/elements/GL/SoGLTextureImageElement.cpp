@@ -240,7 +240,7 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
   else { // 3D textures
     if (cc_glglue_has_3d_textures(glw)) {
       cc_glglue_glTexImage3D(glw,
-                             GL_PROXY_TEXTURE_3D, 0, bytespertexel,
+                             GL_PROXY_TEXTURE_3D, 0, (GLenum) bytespertexel,
                              xsize, ysize, zsize, 0,
                              GL_RGBA, GL_UNSIGNED_BYTE,
                              NULL);
