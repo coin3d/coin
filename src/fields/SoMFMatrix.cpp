@@ -296,7 +296,11 @@ SoMFMatrix::write1Value(SoOutput * out, int idx) const
 {
   SoSFMatrix sfmatrix;
   sfmatrix.setValue((*this)[idx]);
+  out->incrementIndent();
+  if (idx == 0) out->incrementIndent();
   sfmatrix.writeValue(out);
+  if (idx == 0) out->decrementIndent();
+  out->decrementIndent();
 }
 
 /*!
