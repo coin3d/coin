@@ -354,7 +354,6 @@ SoVRMLScript::copyContents(const SoFieldContainer * from,
                            SbBool copyConn)
 {
   assert(from->isOfType(SoVRMLScript::getClassTypeId()));
-  this->initFieldData();
 
   const SoVRMLScript * fromnode = (SoVRMLScript*) from;
 
@@ -366,6 +365,7 @@ SoVRMLScript::copyContents(const SoFieldContainer * from,
         f != &fromnode->url &&
         f != &fromnode->mustEvaluate) {
       SoField * cp = (SoField*) f->getTypeId().createInstance();
+      cp->setFieldType(f->getFieldType());
       cp->setContainer(this);
       this->fielddata->addField(this, src->getFieldName(i), cp);
     }
