@@ -432,7 +432,8 @@ AC_ARG_ENABLE([dl-simage],
   AC_HELP_STRING([--enable-dl-simage],
                  [use runtime dynamic linking for libsimage if possible [[default=yes]]]),
   [case "${enableval}" in
-    yes | no) enable_dl_simage=${enableval} ;;
+    yes | true) enable_dl_simage=yes ;;
+    no | false) enable_dl_simage=no ;;
     *) AC_MSG_ERROR(bad value "${enableval}" for --enable-dl-simage) ;;
   esac],
   [enable_dl_simage=yes])
@@ -535,7 +536,8 @@ if test x"$sim_ac_gl_avail" = xyes; then
     AC_HELP_STRING([--enable-dl-glu],
                    [use runtime dynamic linking for GLU if possible [[default=yes]]]),
     [case "${enableval}" in
-      yes | no) enable_dl_glu=${enableval} ;;
+      yes | true) enable_dl_glu=yes ;;
+      no | false) enable_dl_glu=no ;;
       *) AC_MSG_ERROR(bad value "${enableval}" for --enable-dl-glu) ;;
     esac],
     [enable_dl_glu=yes])
@@ -591,8 +593,8 @@ fi
 AC_ARG_ENABLE(compact,
   AC_HELP_STRING([--enable-compact], [enable hack for compact compilation [[default=no]]]),
   [case "${enableval}" in
-    yes) enable_compact=yes ;;
-    no)  enable_compact=no ;;
+    yes | true)  enable_compact=yes ;;
+    no | false)  enable_compact=no ;;
     *) AC_MSG_ERROR(bad value "${enableval}" for --enable-compact) ;;
   esac],
   enable_compact=no)
@@ -607,8 +609,8 @@ AM_CONDITIONAL(HACKING_COMPACT_BUILD, test x"$enable_compact" = x"yes")
 AC_ARG_ENABLE(hacking,
   AC_HELP_STRING([--enable-hacking], [enable hacks for quick turn-around cycles during development [[default=no]]]),
   [case "${enableval}" in
-    yes) enable_hacking=yes ;;
-    no)  enable_hacking=no ;;
+    yes | true)  enable_hacking=yes ;;
+    no | false)  enable_hacking=no ;;
     *) AC_MSG_ERROR(bad value "${enableval}" for --enable-hacking) ;;
   esac],
   enable_hacking=no)
@@ -644,13 +646,13 @@ SIM_AC_UNIQIFY_LIST(LDFLAGS, $LDFLAGS)
 SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
 
 case $enable_static in
-yes) COIN_STATIC=true;;
-*)   COIN_STATIC=false;;
+yes | true)  COIN_STATIC=true;;
+*)           COIN_STATIC=false;;
 esac
 
 case $enable_shared in
-yes) COIN_SHARED=true;;
-*)   COIN_SHARED=false;;
+yes | true)  COIN_SHARED=true;;
+*)           COIN_SHARED=false;;
 esac
 
 LIBFLAGS=
@@ -684,11 +686,14 @@ if $BUILD_WITH_MSVC; then
     COIN_EXTRA_LIBS=
   else
     LIBFLAGS="-DLL /INCREMENTAL:NO"
-    if test x"$enable_debug" = xno; then
+    case $enable_debug in
+    no | false)
       LIBFLAGS="$LIBFLAGS /RELEASE"
-    else
-      LIBFLAGS="$LIBFLAGS /DEBUG /PDB:$debugfile"
-    fi
+      ;;
+    *)
+      LIBFLAGS="$LIBFLAGS /DEBUG /PDB:coin$COIN_MAJOR_VERSION$SUFFIX.pdb"
+      ;;
+    esac
     LIBFLAGS="$LIBFLAGS /OUT:coin$COIN_MAJOR_VERSION$SUFFIX.dll"
   fi
 
