@@ -1064,6 +1064,8 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
 
+  float maxctrl = SbMax(numuctrlpts, numvctrlpts);
+
   switch (SoComplexityTypeElement::get(state)) {
   case SoComplexityTypeElement::SCREEN_SPACE:
     {
@@ -1075,7 +1077,7 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
       float maxpix = (float) SbMax(size[0], size[1]);
       if (maxpix < 1.0f) maxpix = 1.0f;
       float complexity = SoComplexityElement::get(state);
-      complexity = SbMin(200.0f, complexity * maxpix);
+      complexity = SbMin(100.0f, (float)sqrt(complexity * maxpix) * maxctrl);
       gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
       gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, complexity);
       gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, complexity);
@@ -1084,9 +1086,12 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
   case SoComplexityTypeElement::OBJECT_SPACE:
     {
       float complexity = SoComplexityElement::get(state);
+      // add and cube value to give higher complexity values more boost
+      complexity += 1.0f;
+      complexity = (float) pow(complexity, 3.0);
       gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, 200.0f * complexity);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, 200.0f * complexity);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, complexity * maxctrl);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, complexity * maxctrl);
       break;
     }
   case SoComplexityTypeElement::BOUNDING_BOX:
@@ -1097,7 +1102,6 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     break;
   }
 
-  gluNurbsProperty(nurbsobj, (GLenum) GLU_DISPLAY_MODE, GLU_FILL);
 #if GLU_VERSION_1_3
   gluNurbsProperty(nurbsobj, (GLenum) GLU_NURBS_MODE,
                    glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR);
@@ -1228,15 +1232,6 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
                             points, floatspervec,
                             numknots, knotvector);
 
-      // FIXME: for some reason, when trimming is done, our sampling
-      // method provides far too many triangles. I do this to avoid
-      // the problem, but we should figure out why this happens,
-      // and fix it properly.                      pederb, 20000630
-      float complexity = SoComplexityElement::get(state);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, 20.0f * complexity);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, 20.0f * complexity);
-
       if (numknots) {
         gluNurbsCurve(nurbsobj, numknots, knotvector, floatspervec,
                       points, numknots-numpoints, floatspervec == 2 ?
@@ -1303,7 +1298,7 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
       float maxpix = (float) SbMax(size[0], size[1]);
       if (maxpix < 1.0f) maxpix = 1.0f;
       float complexity = SoComplexityElement::get(state);
-      complexity = SbMin(200.0f, complexity * maxpix);
+      complexity = SbMin(100.0f, (float)sqrt(complexity * maxpix) * numctrlpts);
       gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
       gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, complexity);
       gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, complexity);
@@ -1312,9 +1307,12 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
   case SoComplexityTypeElement::OBJECT_SPACE:
     {
       float complexity = SoComplexityElement::get(state);
+      // add and cube value to give higher complexity values more boost
+      complexity += 1.0f;
+      complexity = (float) pow(complexity, 3.0);
       gluNurbsProperty(nurbsobj, (GLenum) GLU_SAMPLING_METHOD, GLU_DOMAIN_DISTANCE);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, 200.0f * complexity);
-      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, 200.0f * complexity);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, complexity * numctrlpts);
+      gluNurbsProperty(nurbsobj, (GLenum) GLU_V_STEP, complexity * numctrlpts);
       break;
     }
   case SoComplexityTypeElement::BOUNDING_BOX:
