@@ -1,0 +1,21 @@
+Unsupported features
+====================
+
+- AudioClip
+- MovieTexture
+- EXTERNPROTO (passthrough)
+- bindable nodes (Fog, Background, Viewpoint etc).
+- Heed min/maxAngle in CylinderSensor
+- FontStyle node.
+- Caching/culling in SoVRMLGroup
+- prequalify callback in ImageTexture
+- The MovieTexture node
+- The NavigationInfo node (should be supported by viewer mostly though).
+- PixelTexture SoCallbackAction support.
+- ProximitySensor
+- Script (currently only passthrough).
+- Sound
+- Radius in PointLight is not supported
+- Radius or beamWidth in SpotLight is not supported.
+- The Text node
+

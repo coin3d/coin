@@ -1,0 +1,208 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 2001 by Systems in Motion. All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public License
+ *  version 2.1 as published by the Free Software Foundation. See the
+ *  file LICENSE.LGPL at the root directory of the distribution for
+ *  more details.
+ *
+ *  If you want to use Coin for applications not compatible with the
+ *  LGPL, please contact SIM to acquire a Professional Edition license.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097
+ *
+\**************************************************************************/
+
+/*!
+  \class SoVRMLTouchSensor SoVRMLTouchSensor.h Inventor/VRMLnodes/SoVRMLTouchSensor.h
+  \brief The SoVRMLTouchSensor class tracks to pointer position and sends events based on user interaction.
+*/
+
+/*!
+  \var SoSFBool SoVRMLTouchSensor::enabled
+  TRUE is enabled. Default value is TRUE.
+*/
+
+/*!
+  \var SoSFVec3f SoVRMLTouchSensor::hitNormal_changed
+
+  An eventOut that is sent when the pointer is over some child
+  geometry. Contains the object space normal.
+
+*/
+
+/*!
+  \var SoSFVec3f SoVRMLTouchSensor::hitPoint_changed
+
+  An eventOut that is sent when the pointer is over some child
+  geometry. Contains the object space point.
+
+*/
+
+/*!
+  \var SoSFVec2f SoVRMLTouchSensor::hitTexCoord_changed
+
+  An eventOut that is sent when the pointer is over some child
+  geometry. Contains the object space texture coordinates.
+
+*/
+
+/*!
+  \var SoSFBool SoVRMLTouchSensor::isActive
+
+  An event out that is sent when the active state changes. The sensor
+  goes active when the user clicks on some child, and is inactive
+  again when the mouse button is release.
+
+*/
+
+/*!
+  \var SoSFBool SoVRMLTouchSensor::isOver
+  
+  An event out that is sent when the pointer is moved onto or away from
+  a child object.
+
+*/
+
+/*!
+  \var SoSFTime SoVRMLTouchSensor::touchTime
+  
+  An event out that is generated when the sensor is active and is
+  currently pointing on some child geometry.
+*/
+
+
+
+#include <Inventor/VRMLnodes/SoVRMLTouchSensor.h>
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/fields/SoSFTime.h>
+#include <Inventor/SbMatrix.h>
+
+//
+// returns the current time. First tries the realTime field, then
+// SbTime::getTimeOfDay() if field is not found.
+//
+static SbTime
+touchsensor_get_current_time(void)
+{
+  SoField * realtime = SoDB::getGlobalField("realTime");
+  if (realtime && realtime->isOfType(SoSFTime::getClassTypeId())) {
+    return ((SoSFTime*)realtime)->getValue();
+  }
+  return SbTime::getTimeOfDay();
+}
+
+SO_NODE_SOURCE(SoVRMLTouchSensor);
+
+// Doc in parent
+void
+SoVRMLTouchSensor::initClass(void)
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoVRMLTouchSensor, SO_VRML97_NODE_TYPE);
+}
+
+/*!
+  Constructor.
+*/
+SoVRMLTouchSensor::SoVRMLTouchSensor(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLTouchSensor);
+
+  SO_VRMLNODE_ADD_EXPOSED_FIELD(enabled, (TRUE));
+
+  SO_VRMLNODE_ADD_EVENT_OUT(hitNormal_changed);
+  SO_VRMLNODE_ADD_EVENT_OUT(hitPoint_changed);
+  SO_VRMLNODE_ADD_EVENT_OUT(hitTexCoord_changed);
+  SO_VRMLNODE_ADD_EVENT_OUT(isActive);
+  SO_VRMLNODE_ADD_EVENT_OUT(isOver);
+  SO_VRMLNODE_ADD_EVENT_OUT(touchTime);
+
+  this->isactive = FALSE;
+}
+
+/*!
+  Destructor.
+*/
+SoVRMLTouchSensor::~SoVRMLTouchSensor()
+{
+}
+
+// Doc in parent
+SbBool
+SoVRMLTouchSensor::affectsState(void) const // virtual
+{
+  return TRUE;
+}
+
+// Doc in parent
+void
+SoVRMLTouchSensor::handleEvent(SoHandleEventAction * action)
+{
+  const SoEvent * event = action->getEvent();
+  
+  SbBool buttondown = SO_MOUSE_PRESS_EVENT(event, BUTTON1);
+  SbBool buttonup = SO_MOUSE_RELEASE_EVENT(event, BUTTON1);
+  SbBool mousemove = event->isOfType(SoLocation2Event::getClassTypeId());
+  
+  if (mousemove || buttondown || buttonup) {
+    SbBool isover = FALSE;
+    const SoPickedPoint * pp = action->getPickedPoint();
+    SoNode * parentnode = NULL;
+    if (pp) {
+      const SoFullPath * currpath = (const SoFullPath*) action->getCurPath();
+      SoFullPath * parentpath = (SoFullPath*) currpath->copy(0, currpath->getLength()-1);
+      parentnode = parentpath->getTail();
+      parentpath->ref();
+      isover = pp->getPath()->containsPath(parentpath);
+      parentpath->unref();
+    }
+    SbBool active = this->isactive;
+    if (active && buttonup) {
+      this->isActive.setValue(FALSE);
+      this->isactive = FALSE;
+    }
+    if (!active && buttondown && isover) {
+      this->isActive.setValue(TRUE);
+      this->isactive = TRUE;
+      active = TRUE;
+    }
+    if (isover) {
+      this->isOver.setValue(TRUE);
+      if (active) {
+          this->touchTime.setValue(touchsensor_get_current_time());
+      }
+      SbMatrix transform = pp->getWorldToObject(parentnode);
+      SbVec3f normal = pp->getNormal();
+      transform.multDirMatrix(normal, normal);
+      this->hitNormal_changed = normal;
+      SbVec3f pt = pp->getPoint();
+      transform.multVecMatrix(pt, pt);
+      this->hitPoint_changed = pt;
+      
+      transform = pp->getImageToObject(parentnode);
+      SbVec4f tc = pp->getTextureCoords();
+      transform.multVecMatrix(tc, tc);
+      float div = tc[3] ? 1.0f / tc[3] : 1.0f;
+      SbVec2f tc2(tc[0] * div, tc[1] * div);
+      this->hitTexCoord_changed = tc2;
+    }
+  }
+  inherited::handleEvent(action);
+}
+
+// Doc in parent
+void
+SoVRMLTouchSensor::notify(SoNotList * list)
+{
+  inherited::notify(list);
+}

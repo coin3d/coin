@@ -66,9 +66,11 @@ AS = @AS@
 AWK = @AWK@
 BUILD_WITH_MSVC = @BUILD_WITH_MSVC@
 CC = @CC@
+COIN_BETA_VERSION = @COIN_BETA_VERSION@
 COIN_COMPILER = @COIN_COMPILER@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
+COIN_EXTRA_CFLAGS = @COIN_EXTRA_CFLAGS@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
 COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
 COIN_EXTRA_LDFLAGS = @COIN_EXTRA_LDFLAGS@
@@ -77,6 +79,7 @@ COIN_HACKING_LIBDIRS = @COIN_HACKING_LIBDIRS@
 COIN_MAJOR_VERSION = @COIN_MAJOR_VERSION@
 COIN_MICRO_VERSION = @COIN_MICRO_VERSION@
 COIN_MINOR_VERSION = @COIN_MINOR_VERSION@
+COIN_MSVC_LIBC = @COIN_MSVC_LIBC@
 COIN_VERSION = @COIN_VERSION@
 CONFIG = @CONFIG@
 CXX = @CXX@
@@ -85,6 +88,8 @@ DLLTOOL = @DLLTOOL@
 DSUFFIX = @DSUFFIX@
 ECHO = @ECHO@
 EXEEXT = @EXEEXT@
+HAVE_SUPERGLU = @HAVE_SUPERGLU@
+HAVE_THREADS = @HAVE_THREADS@
 HAVE_VRML97 = @HAVE_VRML97@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LIBFLAGS = @LIBFLAGS@
@@ -93,6 +98,10 @@ LN_S = @LN_S@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
 LT_REVISION = @LT_REVISION@
+MAC_FRAMEWORK = @MAC_FRAMEWORK@
+MAC_FRAMEWORK_NAME = @MAC_FRAMEWORK_NAME@
+MAC_FRAMEWORK_PREFIX = @MAC_FRAMEWORK_PREFIX@
+MAC_FRAMEWORK_VERSION = @MAC_FRAMEWORK_VERSION@
 MAINT = @MAINT@
 OBJDUMP = @OBJDUMP@
 OBJEXT = @OBJEXT@
@@ -101,6 +110,7 @@ RANLIB = @RANLIB@
 RFC822_DATE = @RFC822_DATE@
 STRIP = @STRIP@
 SUFFIX = @SUFFIX@
+SUPERGLUPREFIX = @SUPERGLUPREFIX@
 VERSION = @VERSION@
 X_CFLAGS = @X_CFLAGS@
 X_EXTRA_LIBS = @X_EXTRA_LIBS@
@@ -115,21 +125,159 @@ coin_man_dir = @coin_man_dir@
 coin_src_dir = @coin_src_dir@
 htmldir = @htmldir@
 install_sh = @install_sh@
+nop = @nop@
 path_tag = @path_tag@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
-@BUILD_VRML97_TRUE@PublicHeaders = 
-@BUILD_VRML97_FALSE@PublicHeaders = 
-@BUILD_VRML97_TRUE@PrivateHeaders = 
-@BUILD_VRML97_FALSE@PrivateHeaders = 
-@BUILD_VRML97_TRUE@LinkHackSources = \
-@BUILD_VRML97_TRUE@	all.cpp
+PublicHeaders = \
+	../../include/Inventor/VRMLnodes/SoVRML.h \
+	../../include/Inventor/VRMLnodes/SoVRMLAnchor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLAppearance.h \
+	../../include/Inventor/VRMLnodes/SoVRMLAudioClip.h \
+	../../include/Inventor/VRMLnodes/SoVRMLBackground.h \
+	../../include/Inventor/VRMLnodes/SoVRMLBillboard.h \
+	../../include/Inventor/VRMLnodes/SoVRMLBox.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCollision.h \
+	../../include/Inventor/VRMLnodes/SoVRMLColor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLColorInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCone.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCoordinate.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCylinder.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCylinderSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLDirectionalLight.h \
+	../../include/Inventor/VRMLnodes/SoVRMLDragSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLElevationGrid.h \
+	../../include/Inventor/VRMLnodes/SoVRMLExtrusion.h \
+	../../include/Inventor/VRMLnodes/SoVRMLFog.h \
+	../../include/Inventor/VRMLnodes/SoVRMLFontStyle.h \
+	../../include/Inventor/VRMLnodes/SoVRMLGeometry.h \
+	../../include/Inventor/VRMLnodes/SoVRMLGroup.h \
+	../../include/Inventor/VRMLnodes/SoVRMLImageTexture.h \
+	../../include/Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h \
+	../../include/Inventor/VRMLnodes/SoVRMLIndexedLine.h \
+	../../include/Inventor/VRMLnodes/SoVRMLIndexedLineSet.h \
+	../../include/Inventor/VRMLnodes/SoVRMLIndexedShape.h \
+	../../include/Inventor/VRMLnodes/SoVRMLInline.h \
+	../../include/Inventor/VRMLnodes/SoVRMLInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLLOD.h \
+	../../include/Inventor/VRMLnodes/SoVRMLLight.h \
+	../../include/Inventor/VRMLnodes/SoVRMLMacros.h \
+	../../include/Inventor/VRMLnodes/SoVRMLMaterial.h \
+	../../include/Inventor/VRMLnodes/SoVRMLMovieTexture.h \
+	../../include/Inventor/VRMLnodes/SoVRMLNavigationInfo.h \
+	../../include/Inventor/VRMLnodes/SoVRMLNodes.h \
+	../../include/Inventor/VRMLnodes/SoVRMLNormal.h \
+	../../include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLOutputData.h \
+	../../include/Inventor/VRMLnodes/SoVRMLParent.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPointLight.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPointSet.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPositionInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLProximitySensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLScalarInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLScript.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLShape.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSound.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSphere.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSphereSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSpotLight.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSwitch.h \
+	../../include/Inventor/VRMLnodes/SoVRMLText.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTexture.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTextureCoordinate.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTextureTransform.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTimeSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTouchSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTransform.h \
+	../../include/Inventor/VRMLnodes/SoVRMLVertexLine.h \
+	../../include/Inventor/VRMLnodes/SoVRMLVertexPoint.h \
+	../../include/Inventor/VRMLnodes/SoVRMLVertexShape.h \
+	../../include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
+	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h
 
-@BUILD_VRML97_FALSE@LinkHackSources = 
-@BUILD_VRML97_TRUE@RegularSources = 
-@BUILD_VRML97_FALSE@RegularSources = 
+
+PrivateHeaders = 
+LinkHackSources = \
+	all.cpp
+
+RegularSources = \
+	Anchor.cpp \
+	Appearance.cpp \
+	AudioClip.cpp \
+	Background.cpp \
+	Billboard.cpp \
+	Box.cpp \
+	Collision.cpp \
+	Color.cpp \
+	ColorInterpolator.cpp \
+	Cone.cpp \
+	Coordinate.cpp \
+	CoordinateInterpolator.cpp \
+	Cylinder.cpp \
+	CylinderSensor.cpp \
+	DirectionalLight.cpp \
+	DragSensor.cpp \
+	ElevationGrid.cpp \
+	Extrusion.cpp \
+	Fog.cpp \
+	FontStyle.cpp \
+	Geometry.cpp \
+	Group.cpp \
+	ImageTexture.cpp \
+	IndexedFaceSet.cpp \
+	IndexedLine.cpp \
+	IndexedLineSet.cpp \
+	IndexedShape.cpp \
+	Init.cpp \
+	Inline.cpp \
+	Interpolator.cpp \
+	LOD.cpp \
+	Light.cpp \
+	Material.cpp \
+	MovieTexture.cpp \
+	NavigationInfo.cpp \
+	Normal.cpp \
+	NormalInterpolator.cpp \
+	OrientationInterpolator.cpp \
+	OutputData.cpp \
+	Parent.cpp \
+	PixelTexture.cpp \
+	PlaneSensor.cpp \
+	PointLight.cpp \
+	PointSet.cpp \
+	PositionInterpolator.cpp \
+	ProximitySensor.cpp \
+	ScalarInterpolator.cpp \
+	Script.cpp \
+	Sensor.cpp \
+	Shape.cpp \
+	Sound.cpp \
+	Sphere.cpp \
+	SphereSensor.cpp \
+	SpotLight.cpp \
+	Switch.cpp \
+	Text.cpp \
+	Texture.cpp \
+	TextureCoordinate.cpp \
+	TextureTransform.cpp \
+	TimeSensor.cpp \
+	TouchSensor.cpp \
+	Transform.cpp \
+	VertexLine.cpp \
+	VertexPoint.cpp \
+	VertexShape.cpp \
+	Viewpoint.cpp \
+	VisibilitySensor.cpp \
+	WorldInfo.cpp
+
 
 
 # Everything below is autogenerated from a macro, so don't modify
@@ -137,31 +285,31 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
-@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = VRMLnodes.lst
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libVRMLnodes@SUFFIX@LINKHACK.la
-@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libVRMLnodes.la
+@BUILD_WITH_MSVC_TRUE@noinst_LIBRARIES = vrml97.lst
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_TRUE@lib_LTLIBRARIES = libvrml97@SUFFIX@LINKHACK.la
+@BUILD_WITH_MSVC_FALSE@@HACKING_DYNAMIC_MODULES_FALSE@noinst_LTLIBRARIES = libvrml97.la
 
 # Remove any linklibraries detected by configure, as they are not
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include
+INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
 
-libVRMLnodes_la_SOURCES = $(BuildSources)
-EXTRA_libVRMLnodes_la_SOURCES = \
+libvrml97_la_SOURCES = $(BuildSources)
+EXTRA_libvrml97_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
-EXTRA_libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = \
+libvrml97@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 
-libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
-libVRMLnodesinc_HEADERS = $(PublicHeaders)
+libvrml97incdir = $(includedir)/Inventor/vrml97
+libvrml97inc_HEADERS = $(PublicHeaders)
 
-VRMLnodes_lst_SOURCES = $(BuildSources)
-EXTRA_VRMLnodes_lst_SOURCES = \
+vrml97_lst_SOURCES = $(BuildSources)
+EXTRA_vrml97_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/vrml97
@@ -170,40 +318,244 @@ CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 LIBRARIES = $(noinst_LIBRARIES)
 
-VRMLnodes_lst_AR = $(AR) cru
-VRMLnodes_lst_LIBADD =
-@BUILD_VRML97_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_VRMLnodes_lst_OBJECTS =
-@BUILD_VRML97_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_VRMLnodes_lst_OBJECTS =
-@BUILD_VRML97_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_VRMLnodes_lst_OBJECTS = \
-@BUILD_VRML97_TRUE@@HACKING_COMPACT_BUILD_TRUE@	all.$(OBJEXT)
-@BUILD_VRML97_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_VRMLnodes_lst_OBJECTS =
-VRMLnodes_lst_OBJECTS = $(am_VRMLnodes_lst_OBJECTS)
+vrml97_lst_AR = $(AR) cru
+vrml97_lst_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_vrml97_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_vrml97_lst_OBJECTS = Anchor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Appearance.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	AudioClip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Background.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Billboard.$(OBJEXT) Box.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Collision.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Color.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	ColorInterpolator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Cone.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Coordinate.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	CoordinateInterpolator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Cylinder.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	CylinderSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	DirectionalLight.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	DragSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	ElevationGrid.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Extrusion.$(OBJEXT) Fog.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	FontStyle.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Geometry.$(OBJEXT) Group.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	ImageTexture.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	IndexedFaceSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	IndexedLine.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	IndexedLineSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	IndexedShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Init.$(OBJEXT) Inline.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Interpolator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	LOD.$(OBJEXT) Light.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Material.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	MovieTexture.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	NavigationInfo.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Normal.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	NormalInterpolator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	OrientationInterpolator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	OutputData.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Parent.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	PixelTexture.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	PlaneSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	PointLight.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	PointSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	PositionInterpolator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	ProximitySensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	ScalarInterpolator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Script.$(OBJEXT) Sensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Shape.$(OBJEXT) Sound.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Sphere.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SphereSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SpotLight.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Switch.$(OBJEXT) Text.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Texture.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	TextureCoordinate.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	TextureTransform.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	TimeSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	TouchSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Transform.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	VertexLine.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	VertexPoint.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	VertexShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	Viewpoint.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	VisibilitySensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	WorldInfo.$(OBJEXT)
+vrml97_lst_OBJECTS = $(am_vrml97_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
-libVRMLnodes_la_LDFLAGS =
-libVRMLnodes_la_LIBADD =
-@BUILD_VRML97_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_libVRMLnodes_la_OBJECTS =
-@BUILD_VRML97_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_libVRMLnodes_la_OBJECTS =
-@BUILD_VRML97_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_libVRMLnodes_la_OBJECTS = \
-@BUILD_VRML97_TRUE@@HACKING_COMPACT_BUILD_TRUE@	all.lo
-@BUILD_VRML97_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_libVRMLnodes_la_OBJECTS =
-libVRMLnodes_la_OBJECTS = $(am_libVRMLnodes_la_OBJECTS)
-libVRMLnodes@SUFFIX@LINKHACK_la_LDFLAGS =
-libVRMLnodes@SUFFIX@LINKHACK_la_LIBADD =
-@BUILD_VRML97_FALSE@@HACKING_COMPACT_BUILD_TRUE@am_libVRMLnodes@SUFFIX@LINKHACK_la_OBJECTS =
-@BUILD_VRML97_FALSE@@HACKING_COMPACT_BUILD_FALSE@am_libVRMLnodes@SUFFIX@LINKHACK_la_OBJECTS =
-@BUILD_VRML97_TRUE@@HACKING_COMPACT_BUILD_TRUE@am_libVRMLnodes@SUFFIX@LINKHACK_la_OBJECTS = \
-@BUILD_VRML97_TRUE@@HACKING_COMPACT_BUILD_TRUE@	all.lo
-@BUILD_VRML97_TRUE@@HACKING_COMPACT_BUILD_FALSE@am_libVRMLnodes@SUFFIX@LINKHACK_la_OBJECTS =
-libVRMLnodes@SUFFIX@LINKHACK_la_OBJECTS = \
-	$(am_libVRMLnodes@SUFFIX@LINKHACK_la_OBJECTS)
+libvrml97_la_LDFLAGS =
+libvrml97_la_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_libvrml97_la_OBJECTS = all.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libvrml97_la_OBJECTS = Anchor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Appearance.lo AudioClip.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Background.lo Billboard.lo Box.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Collision.lo Color.lo \
+@HACKING_COMPACT_BUILD_FALSE@	ColorInterpolator.lo Cone.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Coordinate.lo \
+@HACKING_COMPACT_BUILD_FALSE@	CoordinateInterpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Cylinder.lo CylinderSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	DirectionalLight.lo DragSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	ElevationGrid.lo Extrusion.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Fog.lo FontStyle.lo Geometry.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Group.lo ImageTexture.lo \
+@HACKING_COMPACT_BUILD_FALSE@	IndexedFaceSet.lo IndexedLine.lo \
+@HACKING_COMPACT_BUILD_FALSE@	IndexedLineSet.lo IndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Init.lo Inline.lo Interpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	LOD.lo Light.lo Material.lo \
+@HACKING_COMPACT_BUILD_FALSE@	MovieTexture.lo NavigationInfo.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Normal.lo NormalInterpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	OrientationInterpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	OutputData.lo Parent.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PixelTexture.lo PlaneSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PointLight.lo PointSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PositionInterpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	ProximitySensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	ScalarInterpolator.lo Script.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Sensor.lo Shape.lo Sound.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Sphere.lo SphereSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SpotLight.lo Switch.lo Text.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Texture.lo TextureCoordinate.lo \
+@HACKING_COMPACT_BUILD_FALSE@	TextureTransform.lo TimeSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	TouchSensor.lo Transform.lo \
+@HACKING_COMPACT_BUILD_FALSE@	VertexLine.lo VertexPoint.lo \
+@HACKING_COMPACT_BUILD_FALSE@	VertexShape.lo Viewpoint.lo \
+@HACKING_COMPACT_BUILD_FALSE@	VisibilitySensor.lo WorldInfo.lo
+libvrml97_la_OBJECTS = $(am_libvrml97_la_OBJECTS)
+libvrml97@SUFFIX@LINKHACK_la_LDFLAGS =
+libvrml97@SUFFIX@LINKHACK_la_LIBADD =
+@HACKING_COMPACT_BUILD_TRUE@am_libvrml97@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_TRUE@	all.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libvrml97@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@	Anchor.lo Appearance.lo \
+@HACKING_COMPACT_BUILD_FALSE@	AudioClip.lo Background.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Billboard.lo Box.lo Collision.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Color.lo ColorInterpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Cone.lo Coordinate.lo \
+@HACKING_COMPACT_BUILD_FALSE@	CoordinateInterpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Cylinder.lo CylinderSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	DirectionalLight.lo DragSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	ElevationGrid.lo Extrusion.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Fog.lo FontStyle.lo Geometry.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Group.lo ImageTexture.lo \
+@HACKING_COMPACT_BUILD_FALSE@	IndexedFaceSet.lo IndexedLine.lo \
+@HACKING_COMPACT_BUILD_FALSE@	IndexedLineSet.lo IndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Init.lo Inline.lo Interpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	LOD.lo Light.lo Material.lo \
+@HACKING_COMPACT_BUILD_FALSE@	MovieTexture.lo NavigationInfo.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Normal.lo NormalInterpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	OrientationInterpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	OutputData.lo Parent.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PixelTexture.lo PlaneSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PointLight.lo PointSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@	PositionInterpolator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	ProximitySensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	ScalarInterpolator.lo Script.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Sensor.lo Shape.lo Sound.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Sphere.lo SphereSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SpotLight.lo Switch.lo Text.lo \
+@HACKING_COMPACT_BUILD_FALSE@	Texture.lo TextureCoordinate.lo \
+@HACKING_COMPACT_BUILD_FALSE@	TextureTransform.lo TimeSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@	TouchSensor.lo Transform.lo \
+@HACKING_COMPACT_BUILD_FALSE@	VertexLine.lo VertexPoint.lo \
+@HACKING_COMPACT_BUILD_FALSE@	VertexShape.lo Viewpoint.lo \
+@HACKING_COMPACT_BUILD_FALSE@	VisibilitySensor.lo WorldInfo.lo
+libvrml97@SUFFIX@LINKHACK_la_OBJECTS = \
+	$(am_libvrml97@SUFFIX@LINKHACK_la_OBJECTS)
 
 DEFS = @DEFS@
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)/include
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
-@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/all.Plo $(DEPDIR)/all.Po
+@AMDEP_TRUE@DEP_FILES = $(DEPDIR)/Anchor.Plo $(DEPDIR)/Anchor.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Appearance.Plo $(DEPDIR)/Appearance.Po \
+@AMDEP_TRUE@	$(DEPDIR)/AudioClip.Plo $(DEPDIR)/AudioClip.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Background.Plo $(DEPDIR)/Background.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Billboard.Plo $(DEPDIR)/Billboard.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Box.Plo $(DEPDIR)/Box.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Collision.Plo $(DEPDIR)/Collision.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Color.Plo $(DEPDIR)/Color.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ColorInterpolator.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/ColorInterpolator.Po $(DEPDIR)/Cone.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Cone.Po $(DEPDIR)/Coordinate.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Coordinate.Po \
+@AMDEP_TRUE@	$(DEPDIR)/CoordinateInterpolator.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/CoordinateInterpolator.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Cylinder.Plo $(DEPDIR)/Cylinder.Po \
+@AMDEP_TRUE@	$(DEPDIR)/CylinderSensor.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/CylinderSensor.Po \
+@AMDEP_TRUE@	$(DEPDIR)/DirectionalLight.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/DirectionalLight.Po \
+@AMDEP_TRUE@	$(DEPDIR)/DragSensor.Plo $(DEPDIR)/DragSensor.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ElevationGrid.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/ElevationGrid.Po $(DEPDIR)/Extrusion.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Extrusion.Po $(DEPDIR)/Fog.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Fog.Po $(DEPDIR)/FontStyle.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/FontStyle.Po $(DEPDIR)/Geometry.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Geometry.Po $(DEPDIR)/Group.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Group.Po $(DEPDIR)/ImageTexture.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/ImageTexture.Po \
+@AMDEP_TRUE@	$(DEPDIR)/IndexedFaceSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/IndexedFaceSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/IndexedLine.Plo $(DEPDIR)/IndexedLine.Po \
+@AMDEP_TRUE@	$(DEPDIR)/IndexedLineSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/IndexedLineSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/IndexedShape.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/IndexedShape.Po $(DEPDIR)/Init.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Init.Po $(DEPDIR)/Inline.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Inline.Po $(DEPDIR)/Interpolator.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Interpolator.Po $(DEPDIR)/LOD.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/LOD.Po $(DEPDIR)/Light.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Light.Po $(DEPDIR)/Material.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Material.Po $(DEPDIR)/MovieTexture.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/MovieTexture.Po \
+@AMDEP_TRUE@	$(DEPDIR)/NavigationInfo.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/NavigationInfo.Po $(DEPDIR)/Normal.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Normal.Po \
+@AMDEP_TRUE@	$(DEPDIR)/NormalInterpolator.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/NormalInterpolator.Po \
+@AMDEP_TRUE@	$(DEPDIR)/OrientationInterpolator.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/OrientationInterpolator.Po \
+@AMDEP_TRUE@	$(DEPDIR)/OutputData.Plo $(DEPDIR)/OutputData.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Parent.Plo $(DEPDIR)/Parent.Po \
+@AMDEP_TRUE@	$(DEPDIR)/PixelTexture.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/PixelTexture.Po $(DEPDIR)/PlaneSensor.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/PlaneSensor.Po $(DEPDIR)/PointLight.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/PointLight.Po $(DEPDIR)/PointSet.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/PointSet.Po \
+@AMDEP_TRUE@	$(DEPDIR)/PositionInterpolator.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/PositionInterpolator.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ProximitySensor.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/ProximitySensor.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ScalarInterpolator.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/ScalarInterpolator.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Script.Plo $(DEPDIR)/Script.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Sensor.Plo $(DEPDIR)/Sensor.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Shape.Plo $(DEPDIR)/Shape.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Sound.Plo $(DEPDIR)/Sound.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Sphere.Plo $(DEPDIR)/Sphere.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SphereSensor.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SphereSensor.Po $(DEPDIR)/SpotLight.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SpotLight.Po $(DEPDIR)/Switch.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Switch.Po $(DEPDIR)/Text.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Text.Po $(DEPDIR)/Texture.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/Texture.Po \
+@AMDEP_TRUE@	$(DEPDIR)/TextureCoordinate.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/TextureCoordinate.Po \
+@AMDEP_TRUE@	$(DEPDIR)/TextureTransform.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/TextureTransform.Po \
+@AMDEP_TRUE@	$(DEPDIR)/TimeSensor.Plo $(DEPDIR)/TimeSensor.Po \
+@AMDEP_TRUE@	$(DEPDIR)/TouchSensor.Plo $(DEPDIR)/TouchSensor.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Transform.Plo $(DEPDIR)/Transform.Po \
+@AMDEP_TRUE@	$(DEPDIR)/VertexLine.Plo $(DEPDIR)/VertexLine.Po \
+@AMDEP_TRUE@	$(DEPDIR)/VertexPoint.Plo $(DEPDIR)/VertexPoint.Po \
+@AMDEP_TRUE@	$(DEPDIR)/VertexShape.Plo $(DEPDIR)/VertexShape.Po \
+@AMDEP_TRUE@	$(DEPDIR)/Viewpoint.Plo $(DEPDIR)/Viewpoint.Po \
+@AMDEP_TRUE@	$(DEPDIR)/VisibilitySensor.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/VisibilitySensor.Po \
+@AMDEP_TRUE@	$(DEPDIR)/WorldInfo.Plo $(DEPDIR)/WorldInfo.Po \
+@AMDEP_TRUE@	$(DEPDIR)/all.Plo $(DEPDIR)/all.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -213,14 +565,22 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CXXFLAGS = @CXXFLAGS@
-DIST_SOURCES = $(VRMLnodes_lst_SOURCES) $(EXTRA_VRMLnodes_lst_SOURCES) \
-	$(libVRMLnodes_la_SOURCES) $(EXTRA_libVRMLnodes_la_SOURCES) \
-	$(libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES) \
-	$(EXTRA_libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES)
-HEADERS = $(libVRMLnodesinc_HEADERS)
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+DIST_SOURCES = $(vrml97_lst_SOURCES) $(EXTRA_vrml97_lst_SOURCES) \
+	$(libvrml97_la_SOURCES) $(EXTRA_libvrml97_la_SOURCES) \
+	$(libvrml97@SUFFIX@LINKHACK_la_SOURCES) \
+	$(EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES)
+HEADERS = $(libvrml97inc_HEADERS)
 
-DIST_COMMON = $(libVRMLnodesinc_HEADERS) Makefile.am Makefile.in
-SOURCES = $(VRMLnodes_lst_SOURCES) $(EXTRA_VRMLnodes_lst_SOURCES) $(libVRMLnodes_la_SOURCES) $(EXTRA_libVRMLnodes_la_SOURCES) $(libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES)
+DIST_COMMON = $(libvrml97inc_HEADERS) Makefile.am Makefile.in
+SOURCES = $(vrml97_lst_SOURCES) $(EXTRA_vrml97_lst_SOURCES) $(libvrml97_la_SOURCES) $(EXTRA_libvrml97_la_SOURCES) $(libvrml97@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES)
 
 all: all-am
 
@@ -235,7 +595,7 @@ clean-libtool:
 
 distclean-libtool:
 	-rm -f libtool
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.ac $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --gnu  src/vrml97/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
@@ -269,10 +629,10 @@ clean-libLTLIBRARIES:
 
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-libVRMLnodes.la: $(libVRMLnodes_la_OBJECTS) $(libVRMLnodes_la_DEPENDENCIES) 
-	$(CXXLINK)  $(libVRMLnodes_la_LDFLAGS) $(libVRMLnodes_la_OBJECTS) $(libVRMLnodes_la_LIBADD) $(LIBS)
-libVRMLnodes@SUFFIX@LINKHACK.la: $(libVRMLnodes@SUFFIX@LINKHACK_la_OBJECTS) $(libVRMLnodes@SUFFIX@LINKHACK_la_DEPENDENCIES) 
-	$(CXXLINK) -rpath $(libdir) $(libVRMLnodes@SUFFIX@LINKHACK_la_LDFLAGS) $(libVRMLnodes@SUFFIX@LINKHACK_la_OBJECTS) $(libVRMLnodes@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
+libvrml97.la: $(libvrml97_la_OBJECTS) $(libvrml97_la_DEPENDENCIES) 
+	$(CXXLINK)  $(libvrml97_la_LDFLAGS) $(libvrml97_la_OBJECTS) $(libvrml97_la_LIBADD) $(LIBS)
+libvrml97@SUFFIX@LINKHACK.la: $(libvrml97@SUFFIX@LINKHACK_la_OBJECTS) $(libvrml97@SUFFIX@LINKHACK_la_DEPENDENCIES) 
+	$(CXXLINK) -rpath $(libdir) $(libvrml97@SUFFIX@LINKHACK_la_LDFLAGS) $(libvrml97@SUFFIX@LINKHACK_la_OBJECTS) $(libvrml97@SUFFIX@LINKHACK_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -280,6 +640,142 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Anchor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Anchor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Appearance.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Appearance.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/AudioClip.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/AudioClip.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Background.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Background.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Billboard.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Billboard.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Box.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Box.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Collision.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Collision.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Color.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Color.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ColorInterpolator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ColorInterpolator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Cone.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Cone.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Coordinate.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Coordinate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/CoordinateInterpolator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/CoordinateInterpolator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Cylinder.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Cylinder.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/CylinderSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/CylinderSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/DirectionalLight.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/DirectionalLight.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/DragSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/DragSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ElevationGrid.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ElevationGrid.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Extrusion.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Extrusion.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Fog.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Fog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/FontStyle.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/FontStyle.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Geometry.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Geometry.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Group.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Group.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ImageTexture.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ImageTexture.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/IndexedFaceSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/IndexedFaceSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/IndexedLine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/IndexedLine.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/IndexedLineSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/IndexedLineSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/IndexedShape.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/IndexedShape.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Init.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Init.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Inline.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Inline.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Interpolator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Interpolator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/LOD.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/LOD.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Light.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Light.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Material.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Material.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/MovieTexture.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/MovieTexture.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/NavigationInfo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/NavigationInfo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Normal.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Normal.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/NormalInterpolator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/NormalInterpolator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/OrientationInterpolator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/OrientationInterpolator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/OutputData.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/OutputData.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Parent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Parent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PixelTexture.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PixelTexture.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PlaneSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PlaneSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PointLight.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PointLight.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PointSet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PointSet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PositionInterpolator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/PositionInterpolator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ProximitySensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ProximitySensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ScalarInterpolator.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ScalarInterpolator.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Script.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Script.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Sensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Sensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Shape.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Shape.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Sound.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Sound.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Sphere.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Sphere.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SphereSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SphereSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SpotLight.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SpotLight.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Switch.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Switch.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Text.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Text.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Texture.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Texture.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/TextureCoordinate.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/TextureCoordinate.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/TextureTransform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/TextureTransform.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/TimeSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/TimeSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/TouchSensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/TouchSensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Transform.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Transform.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/VertexLine.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/VertexLine.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/VertexPoint.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/VertexPoint.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/VertexShape.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/VertexShape.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Viewpoint.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/Viewpoint.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/VisibilitySensor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/VisibilitySensor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/WorldInfo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/WorldInfo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Po@am__quote@
 
@@ -306,12 +802,12 @@ distclean-depend:
 CXXDEPMODE = @CXXDEPMODE@
 uninstall-info-am:
 
-uninstall-libVRMLnodesincHEADERS:
+uninstall-libvrml97incHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libVRMLnodesinc_HEADERS)'; for p in $$list; do \
+	@list='$(libvrml97inc_HEADERS)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " rm -f $(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
-	  rm -f $(DESTDIR)$(libVRMLnodesincdir)/$$f; \
+	  echo " rm -f $(DESTDIR)$(libvrml97incdir)/$$f"; \
+	  rm -f $(DESTDIR)$(libvrml97incdir)/$$f; \
 	done
 
 tags: TAGS
@@ -352,6 +848,7 @@ top_distdir = ../..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/../../include/Inventor/VRMLnodes
 	@for file in $(DISTFILES); do \
 	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
@@ -372,7 +869,7 @@ check: check-am
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(HEADERS)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libVRMLnodesincdir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir) $(DESTDIR)$(libvrml97incdir)
 
 install: install-am
 install-exec: install-exec-am
@@ -415,7 +912,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libVRMLnodesincHEADERS
+install-data-am: install-libvrml97incHEADERS
 
 install-exec-am: install-libLTLIBRARIES
 
@@ -435,7 +932,7 @@ mostlyclean-am: mostlyclean-compile mostlyclean-generic \
 	mostlyclean-libtool
 
 uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-libVRMLnodesincHEADERS
+	uninstall-libvrml97incHEADERS
 
 .PHONY: GTAGS all all-am check check-am clean clean-generic \
 	clean-libLTLIBRARIES clean-libtool clean-noinstLIBRARIES \
@@ -444,28 +941,27 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	distclean-tags distdir dvi dvi-am info info-am install \
 	install-am install-data install-data-am install-exec \
 	install-exec-am install-info install-info-am \
-	install-libLTLIBRARIES install-libVRMLnodesincHEADERS \
-	install-man install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool tags uninstall uninstall-am \
-	uninstall-info-am uninstall-libLTLIBRARIES \
-	uninstall-libVRMLnodesincHEADERS
+	install-libLTLIBRARIES install-libvrml97incHEADERS install-man \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	tags uninstall uninstall-am uninstall-info-am \
+	uninstall-libLTLIBRARIES uninstall-libvrml97incHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-VRMLnodes.lst: Makefile $(VRMLnodes_lst_OBJECTS)
-	@echo "Linking VRMLnodes.lst..."; \
+vrml97.lst: Makefile $(vrml97_lst_OBJECTS)
+	@echo "Linking vrml97.lst..."; \
 	rm -f $@; \
-	for i in $(VRMLnodes_lst_OBJECTS); do echo $$i >>$@; done
+	for i in $(vrml97_lst_OBJECTS); do echo $$i >>$@; done
 
-install-libVRMLnodesincHEADERS: $(libVRMLnodesinc_HEADERS)
+install-libvrml97incHEADERS: $(libvrml97inc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libVRMLnodesincdir)
-	@list='$(libVRMLnodesinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libvrml97incdir)
+	@list='$(libvrml97inc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libvrml97incdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \

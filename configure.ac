@@ -210,21 +210,28 @@ SIM_AC_MAC_CPP_ADJUSTMENTS
 # *******************************************************************
 # Search for the vrml97 extension
 
-enable_vrml97=false
+sim_ac_enable_vrml97=false
 
-if test -d ${srcdir}/src/extensions/vrml97; then
-  enable_vrml97=true
-  AC_DEFINE(HAVE_VRML97,, [*EXPERIMENTAL* to enable vrml97 support code])
+AC_ARG_ENABLE(
+  [vrml97],
+  AC_HELP_STRING([--enable-vrml97], [enable VRML97 support]), [
+  case $enableval in
+    yes) sim_ac_enable_vrml97=true ;;
+    *) ;;
+  esac])
+
+if $sim_ac_enable_vrml97 ; then
   HAVE_VRML97=1
-  VRML97MAKEFILE=src/extensions/vrml97/src/Makefile
+  VRML97MAKEFILE=src/vrml97/Makefile
+  SIM_AC_CONFIGURATION_SETTING([VRML97 support], [Yes])
 else
-  enable_vrml97=false
   HAVE_VRML97=0
   VRML97MAKEFILE=
+  SIM_AC_CONFIGURATION_SETTING([VRML97 support], [No])
 fi
 AC_SUBST(HAVE_VRML97)
 
-AM_CONDITIONAL([BUILD_VRML97], [$enable_vrml97])
+AM_CONDITIONAL([BUILD_VRML97], [$sim_ac_enable_vrml97])
 
 AM_CONDITIONAL([MAC_FRAMEWORK], [false])
 
@@ -917,8 +924,8 @@ if test x"$enable_hacking" = x"yes"; then
     HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/$dir/.libs"
     EXTRA_LIBS="$EXTRA_LIBS -l$dir${SUFFIX}LINKHACK"                  
   done
-  if $enable_vrml97; then
-    HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/extensions/vrml97/src/.libs"
+  if $sim_ac_enable_vrml97; then
+    HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/vrml97/.libs"
     EXTRA_LIBS="$EXTRA_LIBS -lvrml97${SUFFIX}LINKHACK"
   fi
   if $enable_superglu; then
@@ -1062,8 +1069,8 @@ AM_CONFIG_HEADER(include/config.h)
 # Autoconf is run for a second time.  Make sure the bootstrap process works
 # without any error messages before you commit changes to this part.
 
-vrml97makefile=src/extensions/vrml97/src/Makefile
-if test -f $srcdir/${vrml97makefile}.in; then :; else
+vrml97makefile=src/vrml97/Makefile
+if $sim_ac_enable_vrml97; then :; else
   vrml97makefile=
 fi
 
@@ -1106,7 +1113,7 @@ AC_CONFIG_FILES([
         src/upgraders/Makefile
         src/threads/Makefile
         src/extensions/Makefile
-        src/extensions/vrml97/src/Makefile
+        src/vrml97/Makefile
         docs/coin.doxygen
 ])
 

@@ -1,0 +1,140 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 2001 by Systems in Motion. All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public License
+ *  version 2.1 as published by the Free Software Foundation. See the
+ *  file LICENSE.LGPL at the root directory of the distribution for
+ *  more details.
+ *
+ *  If you want to use Coin for applications not compatible with the
+ *  LGPL, please contact SIM to acquire a Professional Edition license.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097
+ *
+\**************************************************************************/
+
+/*!
+  \class SoVRMLVisibilitySensor SoVRMLVisibilitySensor.h Inventor/VRMLnodes/SoVRMLVisibilitySensor.h
+  \brief The SoVRMLVisibilitySensor class will generate events based on visibility.
+*/
+
+/*!
+  \var SoSFVec3f SoVRMLVisibilitySensor::center
+  Visibility area center. Default value is (0, 0, 0).
+*/
+
+/*!
+  \var SoSFVec3f SoVRMLVisibilitySensor::size
+  Visibility area size. Default value is (0, 0, 0).
+*/
+
+/*!
+  \var SoSFBool SoVRMLVisibilitySensor::enabled
+  Enable/disable sensor. Default value is TRUE.
+*/
+
+/*!
+  \var SoSFTime SoVRMLVisibilitySensor::enterTime
+  An event out that is triggered when the region becomes visible.
+*/
+
+/*!
+  \var SoSFTime SoVRMLVisibilitySensor::exitTime
+  An event out that is triggered when the region becomes not visible.
+*/
+
+/*!
+  \var SoSFBool SoVRMLVisibilitySensor::isActive
+  An event out that is generated when the visibility state changes.
+*/
+
+#include <Inventor/VRMLnodes/SoVRMLVisibilitySensor.h>
+#include <Inventor/VRMLnodes/SoVRMLMacros.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/SbBox3f.h>
+#include <Inventor/fields/SoSFTime.h>
+
+SO_NODE_SOURCE(SoVRMLVisibilitySensor);
+
+//
+// returns the current time. First tries the realTime field, then
+// SbTime::getTimeOfDay() if field is not found.
+//
+static SbTime
+visibilitysensor_get_current_time(void)
+{
+  SoField * realtime = SoDB::getGlobalField("realTime");
+  if (realtime && realtime->isOfType(SoSFTime::getClassTypeId())) {
+    return ((SoSFTime*)realtime)->getValue();
+  }
+  return SbTime::getTimeOfDay();
+}
+
+// Doc in parent
+void
+SoVRMLVisibilitySensor::initClass(void)
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoVRMLVisibilitySensor, SO_VRML97_NODE_TYPE);
+}
+
+/*!
+  Constructor.
+*/
+SoVRMLVisibilitySensor::SoVRMLVisibilitySensor(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLVisibilitySensor);
+
+  SO_VRMLNODE_ADD_EXPOSED_FIELD(center, (0.0f, 0.0f, 0.0f));
+  SO_VRMLNODE_ADD_EXPOSED_FIELD(size, (0.0f, 0.0f, 0.0f));
+  SO_VRMLNODE_ADD_EXPOSED_FIELD(enabled, (TRUE));
+
+  SO_VRMLNODE_ADD_EVENT_OUT(enterTime);
+  SO_VRMLNODE_ADD_EVENT_OUT(exitTime);
+  SO_VRMLNODE_ADD_EVENT_OUT(isActive);
+  this->isActive = FALSE;
+}
+
+/*!
+  Destructor.
+*/
+SoVRMLVisibilitySensor::~SoVRMLVisibilitySensor()
+{
+}
+
+// Doc in parent
+void
+SoVRMLVisibilitySensor::GLRender(SoGLRenderAction * action)
+{
+  SbVec3f c = this->center.getValue();
+  SbVec3f s = this->size.getValue();
+
+  SbBool wasvisible = this->isActive.getValue();
+  SbBool visible = FALSE;
+
+  if (s != SbVec3f(0.0f, 0.0f, 0.0f)) {
+    SbBox3f box(c[0]-s[0], c[1]-s[1], c[2]-s[2],
+                c[0]+s[0], c[1]+s[1], c[2]+s[2]);
+    if (!SoCullElement::cullTest(action->getState(), box, TRUE)) {
+      // FIXME: the SoCullElement cull test only tests if box is outside
+      // one of the planes, and the box might not be culled even if it's
+      // not visible for some cases. pederb, 2002-05-16
+      visible = TRUE;
+    }
+  }
+  if (visible && !wasvisible) {
+    this->enterTime = visibilitysensor_get_current_time();
+    this->isActive = TRUE;
+  }
+  else if (!visible && wasvisible) {
+    this->exitTime = visibilitysensor_get_current_time();
+    this->isActive = FALSE;
+  }
+}
+

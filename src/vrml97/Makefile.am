@@ -3,20 +3,152 @@
 
 ## Sources and installation headers.
 
-if BUILD_VRML97
-PublicHeaders =
+PublicHeaders = \
+	../../include/Inventor/VRMLnodes/SoVRML.h \
+	../../include/Inventor/VRMLnodes/SoVRMLAnchor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLAppearance.h \
+	../../include/Inventor/VRMLnodes/SoVRMLAudioClip.h \
+	../../include/Inventor/VRMLnodes/SoVRMLBackground.h \
+	../../include/Inventor/VRMLnodes/SoVRMLBillboard.h \
+	../../include/Inventor/VRMLnodes/SoVRMLBox.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCollision.h \
+	../../include/Inventor/VRMLnodes/SoVRMLColor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLColorInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCone.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCoordinate.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCylinder.h \
+	../../include/Inventor/VRMLnodes/SoVRMLCylinderSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLDirectionalLight.h \
+	../../include/Inventor/VRMLnodes/SoVRMLDragSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLElevationGrid.h \
+	../../include/Inventor/VRMLnodes/SoVRMLExtrusion.h \
+	../../include/Inventor/VRMLnodes/SoVRMLFog.h \
+	../../include/Inventor/VRMLnodes/SoVRMLFontStyle.h \
+	../../include/Inventor/VRMLnodes/SoVRMLGeometry.h \
+	../../include/Inventor/VRMLnodes/SoVRMLGroup.h \
+	../../include/Inventor/VRMLnodes/SoVRMLImageTexture.h \
+	../../include/Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h \
+	../../include/Inventor/VRMLnodes/SoVRMLIndexedLine.h \
+	../../include/Inventor/VRMLnodes/SoVRMLIndexedLineSet.h \
+	../../include/Inventor/VRMLnodes/SoVRMLIndexedShape.h \
+	../../include/Inventor/VRMLnodes/SoVRMLInline.h \
+	../../include/Inventor/VRMLnodes/SoVRMLInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLLOD.h \
+	../../include/Inventor/VRMLnodes/SoVRMLLight.h \
+	../../include/Inventor/VRMLnodes/SoVRMLMacros.h \
+	../../include/Inventor/VRMLnodes/SoVRMLMaterial.h \
+	../../include/Inventor/VRMLnodes/SoVRMLMovieTexture.h \
+	../../include/Inventor/VRMLnodes/SoVRMLNavigationInfo.h \
+	../../include/Inventor/VRMLnodes/SoVRMLNodes.h \
+	../../include/Inventor/VRMLnodes/SoVRMLNormal.h \
+	../../include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLOutputData.h \
+	../../include/Inventor/VRMLnodes/SoVRMLParent.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPixelTexture.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPointLight.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPointSet.h \
+	../../include/Inventor/VRMLnodes/SoVRMLPositionInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLProximitySensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLScalarInterpolator.h \
+	../../include/Inventor/VRMLnodes/SoVRMLScript.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLShape.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSound.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSphere.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSphereSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSpotLight.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSwitch.h \
+	../../include/Inventor/VRMLnodes/SoVRMLText.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTexture.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTextureCoordinate.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTextureTransform.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTimeSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTouchSensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLTransform.h \
+	../../include/Inventor/VRMLnodes/SoVRMLVertexLine.h \
+	../../include/Inventor/VRMLnodes/SoVRMLVertexPoint.h \
+	../../include/Inventor/VRMLnodes/SoVRMLVertexShape.h \
+	../../include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
+	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
+	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h
+
 PrivateHeaders =
 LinkHackSources = \
 	all.cpp
-RegularSources =
-else
-PublicHeaders =
-PrivateHeaders =
-LinkHackSources =
-RegularSources =
-endif
+RegularSources = \
+	Anchor.cpp \
+	Appearance.cpp \
+	AudioClip.cpp \
+	Background.cpp \
+	Billboard.cpp \
+	Box.cpp \
+	Collision.cpp \
+	Color.cpp \
+	ColorInterpolator.cpp \
+	Cone.cpp \
+	Coordinate.cpp \
+	CoordinateInterpolator.cpp \
+	Cylinder.cpp \
+	CylinderSensor.cpp \
+	DirectionalLight.cpp \
+	DragSensor.cpp \
+	ElevationGrid.cpp \
+	Extrusion.cpp \
+	Fog.cpp \
+	FontStyle.cpp \
+	Geometry.cpp \
+	Group.cpp \
+	ImageTexture.cpp \
+	IndexedFaceSet.cpp \
+	IndexedLine.cpp \
+	IndexedLineSet.cpp \
+	IndexedShape.cpp \
+	Init.cpp \
+	Inline.cpp \
+	Interpolator.cpp \
+	LOD.cpp \
+	Light.cpp \
+	Material.cpp \
+	MovieTexture.cpp \
+	NavigationInfo.cpp \
+	Normal.cpp \
+	NormalInterpolator.cpp \
+	OrientationInterpolator.cpp \
+	OutputData.cpp \
+	Parent.cpp \
+	PixelTexture.cpp \
+	PlaneSensor.cpp \
+	PointLight.cpp \
+	PointSet.cpp \
+	PositionInterpolator.cpp \
+	ProximitySensor.cpp \
+	ScalarInterpolator.cpp \
+	Script.cpp \
+	Sensor.cpp \
+	Shape.cpp \
+	Sound.cpp \
+	Sphere.cpp \
+	SphereSensor.cpp \
+	SpotLight.cpp \
+	Switch.cpp \
+	Text.cpp \
+	Texture.cpp \
+	TextureCoordinate.cpp \
+	TextureTransform.cpp \
+	TimeSensor.cpp \
+	TouchSensor.cpp \
+	Transform.cpp \
+	VertexLine.cpp \
+	VertexPoint.cpp \
+	VertexShape.cpp \
+	Viewpoint.cpp \
+	VisibilitySensor.cpp \
+	WorldInfo.cpp
 
-##$ BEGIN TEMPLATE Make-Common(VRMLnodes)
+##$ BEGIN TEMPLATE Make-Common(vrml97)
 
 # Everything below is autogenerated from a macro, so don't modify
 # within the Makefile.am itself. 19991201 mortene.
@@ -28,12 +160,12 @@ BuildSources = $(RegularSources)
 endif
 
 if BUILD_WITH_MSVC
-noinst_LIBRARIES = VRMLnodes.lst
+noinst_LIBRARIES = vrml97.lst
 else
 if HACKING_DYNAMIC_MODULES
-lib_LTLIBRARIES = libVRMLnodes@SUFFIX@LINKHACK.la
+lib_LTLIBRARIES = libvrml97@SUFFIX@LINKHACK.la
 else
-noinst_LTLIBRARIES = libVRMLnodes.la
+noinst_LTLIBRARIES = libvrml97.la
 endif
 endif
 
@@ -43,34 +175,34 @@ LIBS =
 
 INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
 
-libVRMLnodes_la_SOURCES = $(BuildSources)
-EXTRA_libVRMLnodes_la_SOURCES = \
+libvrml97_la_SOURCES = $(BuildSources)
+EXTRA_libvrml97_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
-EXTRA_libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = \
+libvrml97@SUFFIX@LINKHACK_la_SOURCES = $(BuildSources)
+EXTRA_libvrml97@SUFFIX@LINKHACK_la_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
-libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
-libVRMLnodesinc_HEADERS = $(PublicHeaders)
+libvrml97incdir = $(includedir)/Inventor/vrml97
+libvrml97inc_HEADERS = $(PublicHeaders)
 
-VRMLnodes_lst_SOURCES = $(BuildSources)
-EXTRA_VRMLnodes_lst_SOURCES = \
+vrml97_lst_SOURCES = $(BuildSources)
+EXTRA_vrml97_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 # this rule causes a make warning, so we remove it when it is not in use
-VRMLnodes.lst: Makefile $(VRMLnodes_lst_OBJECTS)
-	@echo "Linking VRMLnodes.lst..."; \
+vrml97.lst: Makefile $(vrml97_lst_OBJECTS)
+	@echo "Linking vrml97.lst..."; \
 	rm -f $@; \
-	for i in $(VRMLnodes_lst_OBJECTS); do echo $$i >>$@; done
+	for i in $(vrml97_lst_OBJECTS); do echo $$i >>$@; done
 
-install-libVRMLnodesincHEADERS: $(libVRMLnodesinc_HEADERS)
+install-libvrml97incHEADERS: $(libvrml97inc_HEADERS)
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(libVRMLnodesincdir)
-	@list='$(libVRMLnodesinc_HEADERS)'; for p in $$list; do \
+	$(mkinstalldirs) $(DESTDIR)$(libvrml97incdir)
+	@list='$(libvrml97inc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  src="$$d$$p"; dst="$(DESTDIR)$(libVRMLnodesincdir)/$$f"; \
+	  src="$$d$$p"; dst="$(DESTDIR)$(libvrml97incdir)/$$f"; \
 	  if cmp -s "$$src" "$$dst"; then :; else \
 	    echo " $(INSTALL_HEADER) $$src $$dst"; \
 	    $(INSTALL_HEADER) "$$src" "$$dst"; \

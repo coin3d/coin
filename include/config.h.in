@@ -220,9 +220,6 @@
    name */
 #undef HAVE_VAR___func__
 
-/* *EXPERIMENTAL* to enable vrml97 support code */
-#undef HAVE_VRML97
-
 /* define if vsnprintf() is available */
 #undef HAVE_VSNPRINTF
 

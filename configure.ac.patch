@@ -4,7 +4,7 @@
          src/sensors/Makefile
          src/threads/Makefile
          src/extensions/Makefile
--        src/extensions/vrml97/src/Makefile
+-        src/vrml97/Makefile
 +        $vrml97makefile
          docs/coin.doxygen
  ])
