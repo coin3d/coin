@@ -204,21 +204,10 @@ AM_DISABLE_STATIC
 #  Turn off default maintainer make-rules -- use ./bootstrap instead.
 AM_MAINTAINER_MODE
 
-# Fix bogus $AR setting in libtool 1.3.5 on the IRIX platform.
-# case "$host_os" in
-#   irix*)
-#     sim_ac_need_ar_patch=false
-#     if test x"${AR+set}" != x"set"; then
-#       # FIXME: should test that it is actually SGI IRIX Mipspro CC which
-#       # is used for the build, and not for instance GNU g++. 20010110 mortene.
-#       sim_ac_need_ar_patch=true
-#       AR="CC -ar"
-#       export AR
-#       echo "adjusting libtool setting for \`\$AR' (new value is \`CC -ar')"
-#     fi
-#     ;;
-#   *) ;;
-# esac
+if $BUILD_WITH_MSVC; then
+  RANLIB=true
+  export RANLIB
+fi
 
 #  Initialize libtool
 AC_PROG_LIBTOOL
@@ -601,6 +590,12 @@ SIM_AC_UNIQIFY_LIST(LIBS, $LIBS)
 
 if $BUILD_WITH_MSVC; then
   CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
+  DLLFLAGS="/dll"
+  debugfile="`pwd`/src/coin$COIN_MAJOR_VERSION.pdb"
+  debugfile=`cygpath -w "$debugfile" | sed 's,\\\\,\\\\\\\\,g'`
+  CPPFLAGS="/Fd$debugfile $CPPFLAGS"
+  DLLFLAGS="$DLLFLAGS /PDB:$debugfile"
+  AC_SUBST(DLLFLAGS)
 
   # We use a version suffix on the .dll-file, so several incompatible
   # (major) versions can be installed on a system.
