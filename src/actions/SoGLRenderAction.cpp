@@ -397,7 +397,7 @@ public:
   void setupSortedLayersBlendTextures();
   void setupNVRegisterCombiners();
   void renderSortedLayers(SoState * state);
-  void renderOneBlendLayer(SoState * state, bool shadow, bool update_ztex, SoNode * node);
+  void renderOneBlendLayer(SoState * state, SbBool shadow, SbBool update_ztex, SoNode * node);
   void texgenEnable(SbBool enable);
   void eyeLinearTexgen();
 
@@ -1541,7 +1541,7 @@ SoGLRenderActionP::setupNVRegisterCombiners()
 
 void
 SoGLRenderActionP::renderOneBlendLayer(SoState * state,
-                                       bool peel, bool updatedepthtexture, SoNode * node)
+                                       SbBool peel, SbBool updatedepthtexture, SoNode * node)
 {
 
   // Setup clearcolor alpha value to 1.0f. Must do this every time to
