@@ -506,11 +506,6 @@ cc_flww32_get_bitmap(void * font, int glyph)
                    bm->pitch);
     }
   }
-  else {
-    /* FIXME: hack, fix API. 20030610 mortene. */
-    bm->buffer = (unsigned char *)malloc(1);
-    bm->buffer[0] = 0;
-  }
 
   glyphhash = get_glyph_hash(font);
   glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));

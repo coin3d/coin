@@ -552,10 +552,13 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
   return SbVec2s((short)x, (short)y);
 }
 
-// Bitmap for glyph. size and pos are return parameters.
-// antialiased -> 8 bits per pixel
-// !antialiased -> 1 bit per pixel.
-// FIXME: Only 1bpp currently supported. preng 2003-03-03.
+/*!
+  Bitmap for glyph. \a size and \a pos are return parameters.
+  Antialiased bitmap graphics not yet supported.
+
+  Note that this function may return \c NULL if the glyph has no
+  visible pixels (like the space character).
+*/
 unsigned char *
 SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const
 {

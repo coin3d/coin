@@ -671,12 +671,12 @@ cc_flw_get_bitmap(int font, int glyph)
   unsigned char * buf;
   struct cc_fontstruct * fs;
   struct cc_flw_bitmap * bm;
-  int i, defaultglyph;
-  defaultglyph = 0;
+  unsigned int i;
+  int defaultglyph = 0;
   bm = NULL;
   assert(font >= 0 && font < fontcnt && fonts[font]);
   fs = fonts[font];
-  if (glyph<fs->glyphcnt && fs->glyphs[glyph].glyph != NOGLYPH) {
+  if ((glyph < fs->glyphcnt) && (fs->glyphs[glyph].glyph != NOGLYPH)) {
     if (fs->glyphs[glyph].bitmap) {
       return fs->glyphs[glyph].bitmap;
     }
@@ -689,20 +689,23 @@ cc_flw_get_bitmap(int font, int glyph)
     }
 
     if (!bm) {
-      /* glyph handle == char value in default font. &255 to avoid index out of range. */
+      /* glyph handle == char value in default font. &255 to avoid
+         index out of range. */
       bm = get_default_bitmap(fs->glyphs[glyph].glyph & 0xff);
       defaultglyph = 1;
     }
-    if (bm) {
-      if (!defaultglyph) {
-        buf = (unsigned char *)malloc(bm->pitch * bm->rows);
-        /* Copy & reverse buffer to OpenGL "up" direction. */
-        for (i=0; i<(int)bm->rows; i++)
-          memcpy(buf + i*bm->pitch, bm->buffer + (bm->rows-i-1)*bm->pitch, bm->pitch);
-        free(bm->buffer);
-        bm->buffer = buf;
+    if (bm && bm->buffer && !defaultglyph) {
+      buf = (unsigned char *)malloc(bm->pitch * bm->rows);
+      /* Copy & reverse buffer to OpenGL "up" direction. */
+      for (i = 0; i < bm->rows; i++) {
+        (void)memcpy(buf + i*bm->pitch,
+                     bm->buffer + (bm->rows-i-1) * bm->pitch,
+                     bm->pitch);
       }
+      free(bm->buffer);
+      bm->buffer = buf;
     }
+
     fonts[font]->glyphs[glyph].bitmap = bm;
     return bm;
   }

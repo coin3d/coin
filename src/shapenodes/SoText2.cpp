@@ -314,9 +314,8 @@ SoText2::GLRender(SoGLRenderAction * action)
         offsety = rastery >= 0 ? 0 : rastery;
           
         glRasterPos3f(rpx, rpy, -nilpoint[2]);
-        if (offvp)
-          glBitmap(0,0,0,0,offsetx,offsety,NULL);
-        glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
+        if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
+        if (buffer) { glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer); }
       }
     }
       
@@ -656,7 +655,7 @@ SoText2P::buildGlyphCache(SoState * state)
       assert(this->glyphs[i][j]);
 
       SbVec2s thispos;
-      this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
+      (void)this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
 
       if (j > 0) {
         kerning = this->glyphs[i][j-1]->getKerning(*this->glyphs[i][j]);
