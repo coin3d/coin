@@ -116,12 +116,9 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
   // create a line to project projections onto. This will make
   // the below calculations much simpler.
   SbLine horizline;
-  {
-    SbVec3f dir = this->cylinder.getAxis().getDirection().cross(this->planeDir);
-    horizline = SbLine(this->planeLine.getPosition(),
-                       this->planeLine.getPosition() + dir);
-  }
-
+  SbVec3f dir = this->cylinder.getAxis().getDirection().cross(this->planeDir);
+  horizline = SbLine(this->planeLine.getPosition(),
+                     this->planeLine.getPosition() + dir);
   //
   // pt1 is the point projected onto horizline. pt1_tol is different from
   // pt1 if tol1==FALSE. pt1_tol will then be on the edge of the cylinder
@@ -164,23 +161,41 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
   SbVec3f axis;
   float angle;
   rot.getValue(axis, angle);
+
+  if (axis.dot(this->cylinder.getAxis().getDirection()) > 0.0f) {
+    axis = -axis;
+    angle = -angle;
+  }
   float len = 0.0f;
 
   // both pts on same side of cylinder ?
   if (!tol1 && !tol2 && (pt1_tol == pt2_tol)) {
-    len += (pt1-pt2).length();
+    if ((pt1-pt2).dot(dir) < 0.0f) {
+      len += (pt1-pt2).length();
+    }
+    else {
+      len -= (pt1-pt2).length();
+    }
   }
   else {
     if (!tol1) {
-      len += (pt1_tol-pt1).length();
+      if ((pt1_tol-pt1).dot(dir) < 0.0f) {
+        len -= (pt1_tol-pt1).length();
+      }
+      else {
+        len += (pt1_tol-pt1).length();
+      }
     }
     if (!tol2) {
-      len += (pt2_tol-pt2).length();
+      if ((pt2_tol-pt2).dot(dir) < 0.0f) {
+        len += (pt2_tol-pt2).length();
+      }
+      else {
+        len -= (pt2_tol-pt2).length();
+      }
     }
   }
   angle += len / this->cylinder.getRadius();
 
-  if (axis.dot(this->cylinder.getAxis().getDirection()) > 0.0f)
-    return SbRotation(this->cylinder.getAxis().getDirection(), angle);
-  return SbRotation(this->cylinder.getAxis().getDirection(), -angle);
+  return SbRotation(this->cylinder.getAxis().getDirection(), angle);
 }
