@@ -46,6 +46,7 @@ class SoCallbackAction;
 class SoCallbackData;
 class SoPrimitiveVertex;
 class SoShape;
+class SbViewportRegion;
 
 typedef void SoTriangleCB(void * userdata, SoCallbackAction * action,
                           const SoPrimitiveVertex * v1,
@@ -67,6 +68,8 @@ class COIN_DLL_API SoCallbackAction : public SoAction {
 
 public:
   SoCallbackAction(void);
+  SoCallbackAction(const SbViewportRegion & vp);
+  
   virtual ~SoCallbackAction();
 
   static void initClass(void);
@@ -134,6 +137,7 @@ public:
   const SbMatrix & getProjectionMatrix(void) const;
   const SbMatrix & getViewingMatrix(void) const;
   const SbViewVolume & getViewVolume(void) const;
+  const SbViewportRegion & getViewportRegion(void) const;
   SoPickStyle::Style getPickStyle(void) const;
   int32_t getSwitch(void) const;
 
@@ -159,18 +163,9 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  Response response;
-  SoNode * currentnode;
-
-  SbList<SoCallbackData *> precallback;
-  SbList<SoCallbackData *> postcallback;
-
-  SoCallbackData * pretailcallback;
-  SoCallbackData * posttailcallback;
-
-  SbList<SoCallbackData *> trianglecallback;
-  SbList<SoCallbackData *> linecallback;
-  SbList<SoCallbackData *> pointcallback;
+  void commonConstructor(void);
+  class SoCallbackActionP * pimpl;
+  friend class SoCallbackActionP;
 };
 
 

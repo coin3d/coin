@@ -79,10 +79,11 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoShape.h>
-
+#include <Inventor/SbViewportRegion.h>
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -188,6 +189,24 @@ SoCallbackData::doPointCallbacks(SoCallbackAction * action,
   }
 }
 
+// class to hold private, hidden data
+class SoCallbackActionP {
+public:
+  SbViewportRegion viewport;
+  SoCallbackAction::Response response;
+  SoNode * currentnode;
+
+  SbList <SoCallbackData *> precallback;
+  SbList <SoCallbackData *> postcallback;
+
+  SoCallbackData * pretailcallback;
+  SoCallbackData * posttailcallback;
+
+  SbList <SoCallbackData *> trianglecallback;
+  SbList <SoCallbackData *> linecallback;
+  SbList <SoCallbackData *> pointcallback;
+};
+
 #endif // !DOXYGEN_SKIP_THIS
 
 
@@ -239,18 +258,40 @@ SoCallbackAction::initClass(void)
   SO_ENABLE(SoCallbackAction, SoCacheElement);
 }
 
+#undef THIS
+#define THIS this->pimpl
 
 /*!
-  Constructor.
+  Default constructor. Will set the viewport to a standard
+  viewport with size 640x512.
 */
 SoCallbackAction::SoCallbackAction(void)
+{
+  this->commonConstructor();
+  THIS->viewport = SbViewportRegion(640, 512);
+}
+
+/*!
+  Constructor which lets you specify the viewport.
+
+  This constructor is an extension versus the Open Inventor API.
+*/
+SoCallbackAction::SoCallbackAction(const SbViewportRegion & vp)
+{
+  this->commonConstructor();
+  THIS->viewport = vp;
+}
+
+void
+SoCallbackAction::commonConstructor(void)
 {
   SO_ACTION_CONSTRUCTOR(SoCallbackAction);
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::callbackS);
 
-  this->pretailcallback = NULL;
-  this->posttailcallback = NULL;
+  THIS = new SoCallbackActionP;
+  THIS->pretailcallback = NULL;
+  THIS->posttailcallback = NULL;
 }
 
 static void
@@ -265,14 +306,19 @@ delete_list_elements(SbList<SoCallbackData *> & cl)
 */
 SoCallbackAction::~SoCallbackAction()
 {
-  delete_list_elements(this->precallback);
-  delete_list_elements(this->postcallback);
-  delete_list_elements(this->trianglecallback);
-  delete_list_elements(this->linecallback);
-  delete_list_elements(this->pointcallback);
+  delete_list_elements(THIS->precallback);
+  delete_list_elements(THIS->postcallback);
+  delete_list_elements(THIS->trianglecallback);
+  delete_list_elements(THIS->linecallback);
+  delete_list_elements(THIS->pointcallback);
 
-  this->pretailcallback->deleteAll();
-  this->posttailcallback->deleteAll();
+  if (THIS->pretailcallback) {
+    THIS->pretailcallback->deleteAll();
+  }
+  if (THIS->posttailcallback) {
+    THIS->posttailcallback->deleteAll();
+  }
+  delete THIS;
 }
 
 //
@@ -311,7 +357,7 @@ void
 SoCallbackAction::addPreCallback(const SoType type, SoCallbackActionCB * cb,
                                  void * userdata)
 {
-  set_callback_data(this->precallback, type, (void *)cb, userdata);
+  set_callback_data(THIS->precallback, type, (void *)cb, userdata);
 }
 
 /*!
@@ -322,7 +368,7 @@ void
 SoCallbackAction::addPostCallback(const SoType type, SoCallbackActionCB * cb,
                                   void * userdata)
 {
-  set_callback_data(this->postcallback, type, (void *) cb, userdata);
+  set_callback_data(THIS->postcallback, type, (void *) cb, userdata);
 }
 
 /*!
@@ -332,10 +378,10 @@ SoCallbackAction::addPostCallback(const SoType type, SoCallbackActionCB * cb,
 void
 SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb, void * userdata)
 {
-  if (this->pretailcallback == NULL)
-    this->pretailcallback = new SoCallbackData((void *)cb, userdata);
+  if (THIS->pretailcallback == NULL)
+    THIS->pretailcallback = new SoCallbackData((void *)cb, userdata);
   else
-    this->pretailcallback->append(new SoCallbackData((void *)cb, userdata));
+    THIS->pretailcallback->append(new SoCallbackData((void *)cb, userdata));
 }
 
 /*!
@@ -345,10 +391,10 @@ SoCallbackAction::addPreTailCallback(SoCallbackActionCB * cb, void * userdata)
 void
 SoCallbackAction::addPostTailCallback(SoCallbackActionCB * cb, void * userdata)
 {
-  if (this->posttailcallback == NULL)
-    this->posttailcallback = new SoCallbackData((void *)cb, userdata);
+  if (THIS->posttailcallback == NULL)
+    THIS->posttailcallback = new SoCallbackData((void *)cb, userdata);
   else
-    this->posttailcallback->append(new SoCallbackData((void *)cb, userdata));
+    THIS->posttailcallback->append(new SoCallbackData((void *)cb, userdata));
 }
 
 /*!
@@ -360,7 +406,7 @@ void
 SoCallbackAction::addTriangleCallback(const SoType type, SoTriangleCB * cb,
                                       void * userdata)
 {
-  set_callback_data(this->trianglecallback, type, (void *) cb, userdata);
+  set_callback_data(THIS->trianglecallback, type, (void *) cb, userdata);
 }
 
 /*!
@@ -372,7 +418,7 @@ void
 SoCallbackAction::addLineSegmentCallback(const SoType type, SoLineSegmentCB * cb,
                                          void * userdata)
 {
-  set_callback_data(this->linecallback, type, (void *) cb, userdata);
+  set_callback_data(THIS->linecallback, type, (void *) cb, userdata);
 }
 
 /*!
@@ -384,7 +430,7 @@ void
 SoCallbackAction::addPointCallback(const SoType type, SoPointCB * cb,
                                    void * userdata)
 {
-  set_callback_data(this->pointcallback, type, (void *) cb, userdata);
+  set_callback_data(THIS->pointcallback, type, (void *) cb, userdata);
 }
 
 /************************************************************************************/
@@ -806,6 +852,17 @@ SoCallbackAction::getViewVolume(void) const
 }
 
 /*!
+  Returns current viewport region setting.
+
+  This method is an extension versus the Open Inventor API.
+*/
+const SbViewportRegion &
+SoCallbackAction::getViewportRegion(void) const
+{
+  return SoViewportRegionElement::get(this->getState());
+}
+
+/*!
   Returns current pickstyle setting.
 */
 SoPickStyle::Style
@@ -831,7 +888,7 @@ SoCallbackAction::getSwitch(void) const
 SoCallbackAction::Response
 SoCallbackAction::getCurrentResponse(void) const
 {
-  return this->response;
+  return THIS->response;
 }
 
 /*!
@@ -843,22 +900,22 @@ void
 SoCallbackAction::invokePreCallbacks(const SoNode * const node)
 {
   // reset response if previous node was pruned
-  if (this->response == PRUNE) this->response = CONTINUE;
-  
+  if (THIS->response == PRUNE) THIS->response = CONTINUE;
+
   int idx = (int) node->getTypeId().getData();
-  
-  if (idx < this->precallback.getLength() && this->precallback[idx] != NULL) {
-    this->response = this->precallback[idx]->doNodeCallbacks(this, node);
-    if (this->response == SoCallbackAction::ABORT) {
+
+  if (idx < THIS->precallback.getLength() && THIS->precallback[idx] != NULL) {
+    THIS->response = THIS->precallback[idx]->doNodeCallbacks(this, node);
+    if (THIS->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
     }
   }
 
   if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && this->pretailcallback != NULL) {
-    this->response = this->pretailcallback->doNodeCallbacks(this, node);
-    if (this->response == SoCallbackAction::ABORT) {
+      this->getPathAppliedTo()->getTail() == node && THIS->pretailcallback != NULL) {
+    THIS->response = THIS->pretailcallback->doNodeCallbacks(this, node);
+    if (THIS->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
     }
@@ -876,21 +933,21 @@ void
 SoCallbackAction::invokePostCallbacks(const SoNode * const node)
 {
   // reset response if previous node was pruned
-  if (this->response == PRUNE) this->response = CONTINUE;
+  if (THIS->response == PRUNE) THIS->response = CONTINUE;
 
   int idx = (int) node->getTypeId().getData();
-  if (idx < this->postcallback.getLength() && this->postcallback[idx] != NULL) {
-    this->response = (Response) this->postcallback[idx]->doNodeCallbacks(this, node);
-    if (this->response == SoCallbackAction::ABORT) {
+  if (idx < THIS->postcallback.getLength() && THIS->postcallback[idx] != NULL) {
+    THIS->response = (Response) THIS->postcallback[idx]->doNodeCallbacks(this, node);
+    if (THIS->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
     }
   }
 
   if (this->getWhatAppliedTo() == SoAction::PATH &&
-      this->getPathAppliedTo()->getTail() == node && this->posttailcallback) {
-    this->response = this->posttailcallback->doNodeCallbacks(this, node);
-    if (this->response == SoCallbackAction::ABORT) {
+      this->getPathAppliedTo()->getTail() == node && THIS->posttailcallback) {
+    THIS->response = THIS->posttailcallback->doNodeCallbacks(this, node);
+    if (THIS->response == SoCallbackAction::ABORT) {
       this->setTerminated(TRUE);
       return;
     }
@@ -911,8 +968,8 @@ SoCallbackAction::invokeTriangleCallbacks(const SoShape * const shape,
                                           const SoPrimitiveVertex * const v3)
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < this->trianglecallback.getLength() && this->trianglecallback[idx] != NULL)
-    this->trianglecallback[idx]->doTriangleCallbacks(this, v1, v2, v3);
+  if (idx < THIS->trianglecallback.getLength() && THIS->trianglecallback[idx] != NULL)
+    THIS->trianglecallback[idx]->doTriangleCallbacks(this, v1, v2, v3);
 }
 
 /*!
@@ -926,8 +983,8 @@ SoCallbackAction::invokeLineSegmentCallbacks(const SoShape * const shape,
                                              const SoPrimitiveVertex * const v2)
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < this->linecallback.getLength() && this->linecallback[idx] != NULL)
-    this->linecallback[idx]->doLineSegmentCallbacks(this, v1, v2);
+  if (idx < THIS->linecallback.getLength() && THIS->linecallback[idx] != NULL)
+    THIS->linecallback[idx]->doLineSegmentCallbacks(this, v1, v2);
 }
 
 /*!
@@ -940,8 +997,8 @@ SoCallbackAction::invokePointCallbacks(const SoShape * const shape,
                                        const SoPrimitiveVertex * const v)
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < this->pointcallback.getLength() && this->pointcallback[idx] != NULL)
-    this->pointcallback[idx]->doPointCallbacks(this, v);
+  if (idx < THIS->pointcallback.getLength() && THIS->pointcallback[idx] != NULL)
+    THIS->pointcallback[idx]->doPointCallbacks(this, v);
 }
 
 /*!
@@ -955,11 +1012,11 @@ SbBool
 SoCallbackAction::shouldGeneratePrimitives(const SoShape * shape) const
 {
   int idx = (int) shape->getTypeId().getData();
-  if (idx < this->trianglecallback.getLength() && this->trianglecallback[idx])
+  if (idx < THIS->trianglecallback.getLength() && THIS->trianglecallback[idx])
     return TRUE;
-  if (idx < this->linecallback.getLength() && this->linecallback[idx])
+  if (idx < THIS->linecallback.getLength() && THIS->linecallback[idx])
     return TRUE;
-  if (idx < this->pointcallback.getLength() && this->pointcallback[idx])
+  if (idx < THIS->pointcallback.getLength() && THIS->pointcallback[idx])
     return TRUE;
   return FALSE;
 }
@@ -971,7 +1028,7 @@ SoCallbackAction::shouldGeneratePrimitives(const SoShape * shape) const
 SoNode *
 SoCallbackAction::getCurPathTail(void)
 {
-  return this->currentnode;
+  return THIS->currentnode;
 }
 
 /*!
@@ -981,7 +1038,7 @@ SoCallbackAction::getCurPathTail(void)
 void
 SoCallbackAction::setCurrentNode(SoNode * const node)
 {
-  this->currentnode = node;
+  THIS->currentnode = node;
 }
 
 /*!
@@ -991,6 +1048,13 @@ SoCallbackAction::setCurrentNode(SoNode * const node)
 void
 SoCallbackAction::beginTraversal(SoNode * node)
 {
-  this->response = SoCallbackAction::CONTINUE;
+  THIS->response = SoCallbackAction::CONTINUE;
+  // we set the viewport region element here. This element is not enabled
+  // for SoCallbackAction in Inventor, bu we think it should be.
+  // It makes it possible to calculate screen space stuff in
+  // the callback action callbacks.
+  SoViewportRegionElement::set(this->getState(), THIS->viewport);
   this->traverse(node);
 }
+
+#undef THIS
