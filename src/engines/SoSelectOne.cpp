@@ -39,6 +39,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+// Don't try to document the "internals" of SO_ENGINE_SOURCE.
+#ifndef DOXYGEN_SKIP_THIS
+
 /*** SO_ENGINE_SOURCE replacement start *************************************/
 
 // Can not use the standard SO_ENGINE_SOURCE macro, as SoSelectOne
@@ -85,6 +88,7 @@ SoSelectOne::createInstance(void)
 
 /*** SO_ENGINE_SOURCE replacement end ***************************************/
 
+#endif // DOXYGEN_SKIP_THIS
 
 
 /*!
