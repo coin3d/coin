@@ -142,7 +142,38 @@ SoHandleEventAction::setViewportRegion(const SbViewportRegion & newregion)
 
 /*!
   Returns the viewport region this action instance is using.
+
+  Advanced Usage:
+
+  You can also get the viewport region by accessing it through its element
+  on the traversal state.  You do that the following way:
+
+  \code
+  #include <Inventor/elements/SoViewportRegionElement.h>
+
+    SoState * state = action->getState();
+    SbViewportRegion vp = SoViewportRegionElement::get(state);
+  \endcode
+
+  The reason for explaining this is that you can use this generic technique
+  when you need access to state information when you can't seem to find the
+  accessor function you need in the action implementation.  You can use
+  it to for instance retrieve the view volume information, for which there
+  are no accessor methods:
+
+  \code
+  #include <Inventor/elements/SoViewVolumeElement.h>
+
+    SoState * state = action->getState();
+    SbViewVolume vv = SoViewVolumeElement::get(state);
+  \endcode
+
+  When you do this on arbitrary action instances, you need to make sure
+  that the given element is enabled for the action before you try to use it.
+  The relevant functions for this are SoState::isElementEnabled() and
+  SoElement::getClassStackIndex().
 */
+
 const SbViewportRegion &
 SoHandleEventAction::getViewportRegion(void) const
 {
