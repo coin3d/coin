@@ -428,8 +428,10 @@ SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
   // FIXME: detect and heed SoClipPlane's element settings.
   // 19990421 mortene.
 
-  action->extendBy(box);
-  action->setCenter(center, TRUE);
+  if (!box.isEmpty()) {
+    action->extendBy(box);
+    action->setCenter(center, TRUE);
+  }
 }
 
 // Doc in parent.

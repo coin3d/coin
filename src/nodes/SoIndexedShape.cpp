@@ -145,7 +145,8 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
       }
     }
   }
-  center = box.getCenter();
+
+  if (!box.isEmpty()) center = box.getCenter();
 }
 
 /*!
