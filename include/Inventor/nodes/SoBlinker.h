@@ -46,16 +46,10 @@ public:
 
 protected:
   virtual ~SoBlinker();
-  virtual void notify(SoNotList *list);
+  virtual void notify(SoNotList * nl);
 
 private:
-  void setCounterLimits(void);
-  SoOneShotSensor *childrenSensor;
-  SoOneShotSensor *whichSensor;
-  SoTimeCounter *counter;
-
-  static void childrenCB(void *d, SoSensor *s);
-  static void whichCB(void *d, SoSensor *s);
+  SoTimeCounter * counter;
 };
 
 #endif // !COIN_SOBLINKER_H

@@ -37,6 +37,10 @@
 
 #include <coindefs.h> // COIN_STUB()
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \var SoSFFloat SoBlinker::speed
   Number of cycles per second.
@@ -61,13 +65,10 @@ SoBlinker::SoBlinker(void)
   SO_NODE_ADD_FIELD(speed, (1));
   SO_NODE_ADD_FIELD(on, (TRUE));
 
-  // OneShot sensors needed to avoid recursive notify
-  this->childrenSensor = new SoOneShotSensor(SoBlinker::childrenCB, this);
-  this->whichSensor = new SoOneShotSensor(SoBlinker::whichCB, this);
-
   this->counter = new SoTimeCounter;
   this->counter->ref();
-  this->setCounterLimits();
+  this->counter->min = SO_SWITCH_NONE;
+  this->counter->max = SO_SWITCH_NONE;
   this->counter->frequency.connectFrom(&this->speed);
   this->counter->on.connectFrom(&this->on);
   this->whichChild.connectFrom(&this->counter->output);
@@ -78,8 +79,6 @@ SoBlinker::SoBlinker(void)
 */
 SoBlinker::~SoBlinker()
 {
-  delete this->childrenSensor;
-  delete this->whichSensor;
   this->counter->unref();
 }
 
@@ -126,39 +125,28 @@ SoBlinker::write(SoWriteAction * action)
 }
 
 /*!
-  Overloaded to detect field/children changes.
+  Overloaded to detect "external" changes (i.e. not caused by the
+  internal timer engine).
 */
 void
 SoBlinker::notify(SoNotList * nl)
 {
-  SoField * f = nl->getLastField();
-  if (f == &this->whichChild) {
-    if (nl->getFirstRec()->getBase() == this) this->whichSensor->schedule();
+  // See if the whichChild field was "manually" set.
+  short counterval = ((SoSFShort *)(this->counter->output)[0])->getValue();
+  if (this->whichChild.getValue() != counterval) {
+    this->counter->enableNotify(FALSE); // Wrap to avoid recursive invocation.
+    this->counter->reset.setValue(this->whichChild.getValue());
+    this->counter->enableNotify(TRUE);
   }
-  else this->childrenSensor->schedule();
-  SoNode::notify(nl);
-}
 
-// sets the counter min/max values
-void
-SoBlinker::setCounterLimits(void)
-{
-  int lastchild = this->getChildren()->getLength() - 1;
-  this->counter->max.setValue(lastchild);
-  this->counter->min.setValue(lastchild > 0 ? 0 : -1);
-}
+  // Check if a child was added or removed.
+  int lastchildidx = this->getChildren()->getLength() - 1;
+  if (this->counter->max.getValue() != lastchildidx) {
+    this->counter->enableNotify(FALSE); // Wrap to avoid recursive invocation.
+    this->counter->min.setValue(lastchildidx >= 0 ? 0 : SO_SWITCH_NONE);
+    this->counter->max.setValue(lastchildidx >= 0 ? lastchildidx : SO_SWITCH_NONE);
+    this->counter->enableNotify(TRUE);
+  }
 
-// OneShot callback when children change
-void
-SoBlinker::childrenCB(void * d, SoSensor * s)
-{
-  ((SoBlinker *)d)->setCounterLimits();
-}
-
-// OneShot callback when whichChild is manually set
-void
-SoBlinker::whichCB(void * d, SoSensor * s)
-{
-  SoBlinker * thisp = (SoBlinker *)d;
-  thisp->counter->reset.setValue(thisp->whichChild.getValue());
+  inherited::notify(nl);
 }
