@@ -49,23 +49,23 @@
 
   \verbatim
   #Inventor V2.1 ascii
-  
+
   Separator {
-  
+
      # The dragger, offset a little bit against the geometry to clip,
      # so as to not mess up the user interface.
      Separator {
         Translation { translation -4 0 0 }
         DEF cbdragger CenterballDragger { }
      }
-  
+
      # The clipping plane sub-graph.
      TransformSeparator {
 
         # Connect transformations to those of the dragger.
         Rotation { rotation 0 0 1 0 = USE cbdragger . rotation }
         Translation { translation 0 0 0 = USE cbdragger . center }
-  
+
         # Use a simple lineset-based indicator to show how the
         # clipping plane is situated in space.
         Coordinate3 {
@@ -77,10 +77,10 @@
          ]
         }
         LineSet { numVertices [ 2, 2, 2, 2 ] }
-        
+
         ClipPlane { }
      }
-  
+
      # Then follows the geometry that gets clipped. For this
      # example, we use a simple sphere.
 
@@ -181,31 +181,31 @@ SoCenterballDragger::initClass(void)
 
   \verbatim
   CLASS SoCenterballDragger
-  PVT   "this",  SoCenterballDragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-        "translateToCenter",  SoMatrixTransform  --- 
-        "surroundScale",  SoSurroundScale  --- 
-        "antiSquish",  SoAntiSquish  --- 
-        "lightModel",  SoLightModel  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
-        "rotator",  SoRotateSphericalDragger  --- 
-        "YRotator",  SoRotateCylindricalDragger  --- 
-        "ZCenterChanger",  SoTranslate2Dragger  --- 
-  PVT   "rotX90",  SoRotation  --- 
-        "ZRotator",  SoRotateCylindricalDragger  --- 
-        "YCenterChanger",  SoTranslate2Dragger  --- 
-  PVT   "rotY90",  SoRotation  --- 
-        "XCenterChanger",  SoTranslate2Dragger  --- 
-  PVT   "rot2X90",  SoRotation  --- 
-  PVT   "XAxisSwitch",  SoSwitch  --- 
-        "XAxis",  SoSeparator  --- 
-  PVT   "YAxisSwitch",  SoSwitch  --- 
-        "YAxis",  SoSeparator  --- 
-  PVT   "ZAxisSwitch",  SoSwitch  --- 
-        "ZAxis",  SoSeparator  --- 
-        "XRotator",  SoRotateCylindricalDragger  --- 
+  PVT   "this",  SoCenterballDragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+        "translateToCenter",  SoMatrixTransform  ---
+        "surroundScale",  SoSurroundScale  ---
+        "antiSquish",  SoAntiSquish  ---
+        "lightModel",  SoLightModel  ---
+  PVT   "geomSeparator",  SoSeparator  ---
+        "rotator",  SoRotateSphericalDragger  ---
+        "YRotator",  SoRotateCylindricalDragger  ---
+        "ZCenterChanger",  SoTranslate2Dragger  ---
+  PVT   "rotX90",  SoRotation  ---
+        "ZRotator",  SoRotateCylindricalDragger  ---
+        "YCenterChanger",  SoTranslate2Dragger  ---
+  PVT   "rotY90",  SoRotation  ---
+        "XCenterChanger",  SoTranslate2Dragger  ---
+  PVT   "rot2X90",  SoRotation  ---
+  PVT   "XAxisSwitch",  SoSwitch  ---
+        "XAxis",  SoSeparator  ---
+  PVT   "YAxisSwitch",  SoSwitch  ---
+        "YAxis",  SoSeparator  ---
+  PVT   "ZAxisSwitch",  SoSwitch  ---
+        "ZAxis",  SoSeparator  ---
+        "XRotator",  SoRotateCylindricalDragger  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -310,7 +310,6 @@ SoCenterballDragger::saveStartParameters(void)
   this->savedtransl[0] = m[3][0];
   this->savedtransl[1] = m[3][1];
   this->savedtransl[2] = m[3][2];
-  this->savedcenter = this->center.getValue();
 }
 
 /*!
@@ -456,6 +455,9 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
       this->addChildDragger(child);
     }
 
+    // Update dragger in case fields have changed values before connection
+    SoCenterballDragger::fieldSensorCB(this, NULL);
+
     if (this->rotFieldSensor->getAttachedField() != &this->rotation) {
       this->rotFieldSensor->attach(&this->rotation);
     }
@@ -498,7 +500,7 @@ SoCenterballDragger::setDefaultOnNonWritingFields(void)
   this->surroundScale.setDefault(TRUE);
   this->antiSquish.setDefault(TRUE);
   this->translateToCenter.setDefault(TRUE);
-  
+
   inherited::setDefaultOnNonWritingFields();
 }
 
@@ -507,6 +509,15 @@ void
 SoCenterballDragger::fieldSensorCB(void * d, SoSensor *)
 {
   SoCenterballDragger *thisp = (SoCenterballDragger*)d;
+
+  // Save center variable and translate dragger to correct position
+  thisp->savedcenter = thisp->center.getValue();
+  SbMatrix centermat;
+  centermat.setTranslate(thisp->savedcenter);
+  SoMatrixTransform * mt =
+    SO_GET_ANY_PART(thisp, "translateToCenter", SoMatrixTransform);
+  mt->matrix = centermat;
+
   SbMatrix matrix = thisp->getMotionMatrix();
   thisp->workFieldsIntoTransform(matrix);
   thisp->setMotionMatrix(matrix);
@@ -520,14 +531,37 @@ SoCenterballDragger::valueChangedCB(void *, SoDragger * d)
   SbMatrix matrix = thisp->getMotionMatrix();
   SbVec3f t, s;
   SbRotation r, so;
-  matrix.getTransform(t, r, s, so, thisp->center.getValue());
+
+  // Eliminate center variable of matrix
+  if (thisp->savedcenter != SbVec3f(0.0f, 0.0f, 0.0f)) {
+    SbMatrix trans;
+    trans.setTranslate(thisp->savedcenter);
+    matrix.multLeft(trans);
+    trans.setTranslate(-(thisp->savedcenter));
+    matrix.multRight(trans);
+  }
+
+  // Do an inverse rotation, using matrix with center eliminated
+  // to obtain correct translation
+  matrix.getTransform(t, r, s, so);
+  SbMatrix rotmat;
+  rotmat.setRotate(r);
+  //SbMatrix tmp = matrix;
+  matrix.multLeft(rotmat.inverse());
+
+  // Update center of object if dragger has translated
+  SbVec3f difftrans(matrix[3][0], matrix[3][1], matrix[3][2]);
+  if (difftrans != SbVec3f(0.0f, 0.0f, 0.0f)) {
+    thisp->centerFieldSensor->detach();
+    thisp->center.setValue(thisp->savedcenter + difftrans);
+    thisp->centerFieldSensor->attach(&thisp->center);
+  }
 
   thisp->rotFieldSensor->detach();
   if (thisp->rotation.getValue() != r) {
     thisp->rotation = r;
   }
   thisp->rotFieldSensor->attach(&thisp->rotation);
-  thisp->transferCenterDraggerMotion(thisp->getActiveChildDragger());
 }
 
 /*!
@@ -583,7 +617,7 @@ SoCenterballDragger::removeChildDragger(const char *childname)
 }
 
 // Doc in superclass.
-void 
+void
 SoCenterballDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoSurroundScale * scale = (SoSurroundScale*)
@@ -598,7 +632,7 @@ SoCenterballDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 }
 
 // Doc in superclass.
-void 
+void
 SoCenterballDragger::getMatrix(SoGetMatrixAction * action)
 {
   SoSurroundScale * scale = (SoSurroundScale*)
