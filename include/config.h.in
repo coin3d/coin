@@ -70,6 +70,9 @@
 /* define this to the full libCoin major.minor.micro version number */
 #undef COIN_VERSION
 
+/* define this to the dynamic library extension suffix on this system */
+#undef DYNAMIC_LIBRARY_EXTENSION
+
 /* define for runtime linking with fontconfig */
 #undef FONTCONFIG_RUNTIME_LINKING
 

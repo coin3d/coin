@@ -32738,6 +32738,12 @@ echo "$as_me:$LINENO: result: $sim_ac_shlibext" >&5
 echo "${ECHO_T}$sim_ac_shlibext" >&6
 
 
+
+cat >>confdefs.h <<_ACEOF
+#define DYNAMIC_LIBRARY_EXTENSION "$sim_ac_shlibext"
+_ACEOF
+
+
 sim_ac_opengl_dll_name=$sim_ac_ogl_lib
 if test "$sim_ac_ogl_lib" = "opengl32"; then :; else
   sim_ac_opengl_dll_name="lib${sim_ac_opengl_dll_name}"
@@ -32746,7 +32752,7 @@ sim_ac_opengl_dll_name="${sim_ac_opengl_dll_name}${sim_ac_shlibext}"
 
 
 cat >>confdefs.h <<_ACEOF
-#define OPENGL_SYSTEM_LIBRARY_NAME $sim_ac_opengl_dll_name
+#define OPENGL_SYSTEM_LIBRARY_NAME "$sim_ac_opengl_dll_name"
 _ACEOF
 
 
@@ -33325,7 +33331,7 @@ fi
 
 
 cat >>confdefs.h <<_ACEOF
-#define COIN_SYSTEM_LIBRARY_NAME $sim_ac_coin_dll_name
+#define COIN_SYSTEM_LIBRARY_NAME "$sim_ac_coin_dll_name"
 _ACEOF
 
 
