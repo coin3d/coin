@@ -564,8 +564,6 @@ INPUT                  = @coin_build_dir@/include/Inventor/SbBasic.h \
                          @coin_src_dir@/include/Inventor/lists/SoTypeList.h \
                          @coin_src_dir@/src/lists/SoEngineOutputList.cpp \
                          @coin_src_dir@/include/Inventor/lists/SoEngineOutputList.h \
-                         @coin_src_dir@/src/lists/SoVRMLInterpOutputList.cpp \
-                         @coin_src_dir@/include/Inventor/lists/SoVRMLInterpOutputList.h \
                          @coin_src_dir@/src/lists/SoCallbackList.cpp \
                          @coin_src_dir@/include/Inventor/lists/SoCallbackList.h \
                          @coin_src_dir@/src/lists/SoEnabledElementsList.cpp \
