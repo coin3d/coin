@@ -111,7 +111,7 @@ SO_NODE_SOURCE(SoSceneTexture2);
 void
 SoSceneTexture2::initClass(void)
 {
-  SO_NODE_INIT_CLASS(SoSceneTexture2, SoNode, "Node");
+  SO_NODE_INTERNAL_INIT_CLASS(SoSceneTexture2, SO_FROM_COIN_2_2);
 
   SO_ENABLE(SoGLRenderAction, SoGLTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLTextureEnabledElement);
@@ -137,7 +137,7 @@ SoSceneTexture2::SoSceneTexture2(void)
 {
   this->pimpl = new SoSceneTexture2P(this);
 
-  SO_NODE_CONSTRUCTOR(SoSceneTexture2);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSceneTexture2);
   SO_NODE_ADD_FIELD(size, (256, 256));
   SO_NODE_ADD_FIELD(scene, (NULL));
 
