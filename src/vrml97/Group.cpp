@@ -166,10 +166,6 @@ SoVRMLGroup::commonConstructor(void)
   SO_VRMLNODE_ADD_FIELD(renderCulling, (AUTO));
   SO_VRMLNODE_ADD_FIELD(pickCulling, (AUTO));
 
-  // part of SoVRMLParent, but added here for nicer export (the
-  // "children" field is written last)
-  SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(children);
-
   SO_NODE_DEFINE_ENUM_VALUE(CacheEnabled, ON);
   SO_NODE_DEFINE_ENUM_VALUE(CacheEnabled, OFF);
   SO_NODE_DEFINE_ENUM_VALUE(CacheEnabled, AUTO);

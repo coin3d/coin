@@ -53,7 +53,7 @@
 
   If there are no Collision nodes specified in a VRML file, browsers
   shall detect collisions between the avatar and all objects during
-  navigation.  
+  navigation.
 
   Subclause 4.6.5, Grouping and children nodes
   (http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.5),
@@ -65,7 +65,7 @@
   descendants of the Collision node shall not be checked for
   collision, even though they are drawn. This includes any descendent
   Collision nodes that have collide set to TRUE (i.e., setting collide
-  to FALSE turns collision off for every node below it). 
+  to FALSE turns collision off for every node below it).
 
   Collision nodes with the collide field set to TRUE detect the
   nearest collision with their descendent geometry (or proxies). When
@@ -76,7 +76,7 @@
   collision has occurred, both send a collideTime event at the same
   time. A collideTime event shall be generated if the avatar is
   colliding with collidable geometry when the Collision node is read
-  from a VRML file or inserted into the transformation hierarchy.  
+  from a VRML file or inserted into the transformation hierarchy.
 
   The bboxCenter and bboxSize fields specify a bounding box that
   encloses the Collision node's children. This is a hint that may be
@@ -102,7 +102,7 @@
   children is empty, collide is TRUE, and proxy is specified,
   collision detection is performed against the proxy but nothing is
   displayed. In this manner, invisible collision objects may be
-  supported.  
+  supported.
 
   The collideTime eventOut generates an event specifying the time when
   the avatar (see SoVRMLNavigationInfo) makes contact with the
@@ -125,7 +125,7 @@
 
 /*!
   \var SoSFTime SoVRMLCollision::collideTime
-  
+
   An eventOut sent for each collision that occurs.
 */
 
@@ -151,19 +151,27 @@ SoVRMLCollision::initClass(void) // static
 */
 SoVRMLCollision::SoVRMLCollision(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLCollision);
-
-  SO_VRMLNODE_ADD_EXPOSED_FIELD(collide, (TRUE));
-  SO_VRMLNODE_ADD_FIELD(proxy, (NULL));
-
-  SO_VRMLNODE_ADD_EVENT_OUT(collideTime);
+  this->commonConstructor();
 }
 
 /*!
   Constructor. \a numchildren is the expected number of children.
 */
 SoVRMLCollision::SoVRMLCollision(int numchildren)
+  : inherited(numchildren)
 {
+  this->commonConstructor();
+}
+
+void
+SoVRMLCollision::commonConstructor(void)
+{
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLCollision);
+
+  SO_VRMLNODE_ADD_EXPOSED_FIELD(collide, (TRUE));
+  SO_VRMLNODE_ADD_FIELD(proxy, (NULL));
+
+  SO_VRMLNODE_ADD_EVENT_OUT(collideTime);
 }
 
 /*!

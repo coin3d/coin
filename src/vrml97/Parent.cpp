@@ -95,6 +95,7 @@ SoVRMLParent::commonConstructor(void)
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLParent);
 
+  SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(children);
   SO_VRMLNODE_ADD_EVENT_IN(addChildren);
   SO_VRMLNODE_ADD_EVENT_IN(removeChildren);
 
@@ -356,7 +357,7 @@ SoVRMLParent::processRemoveChildren(void)
 }
 
 // callback from the addChildren/removeChildren sensors
-void 
+void
 SoVRMLParent::field_sensor_cb(void * data, SoSensor * sensor)
 {
   SoVRMLParent * thisp = (SoVRMLParent*) data;
@@ -371,5 +372,3 @@ SoVRMLParent::field_sensor_cb(void * data, SoSensor * sensor)
 
 #undef THIS
 #undef THISP
-
-

@@ -143,9 +143,6 @@ SoVRMLBillboard::SoVRMLBillboard(void)
   SO_VRMLNODE_ADD_EXPOSED_FIELD(axisOfRotation, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));
   SO_VRMLNODE_ADD_FIELD(bboxSize, (-1.0f, -1.0f, -1.0f));
-  // part of SoVRMLParent, but added here for nicer export (the
-  // "children" field is written last)
-  SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(children);
 }
 
 /*!

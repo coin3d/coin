@@ -34,18 +34,21 @@ class COIN_DLL_API SoVRMLCollision : public SoVRMLGroup
 public:
   static void initClass(void);
   SoVRMLCollision(void);
-  SoVRMLCollision( int numChildren );
+  SoVRMLCollision(int numchildren);
 
   SoSFBool collide;
   SoSFNode proxy;
   SoSFTime collideTime;
 
-  virtual void GLRender( SoGLRenderAction * action );
+  virtual void GLRender(SoGLRenderAction * action);
 
-  virtual void notify( SoNotList * list );
+  virtual void notify(SoNotList * list);
 
 protected:
   virtual ~SoVRMLCollision();
+
+private:
+  void commonConstructor(void);
 
 }; // class SoVRMLCollision
 
