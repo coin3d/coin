@@ -250,7 +250,6 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
-
 PublicHeaders = \
 	gl.h \
 	dl.h
@@ -259,6 +258,7 @@ PublicHeaders = \
 PrivateHeaders = \
 	GLUWrapper.h \
 	bzip2.h \
+	cg.h \
 	dlp.h \
 	freetype.h \
 	gl_agl.h \

@@ -254,6 +254,7 @@ target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
 RegularSources = \
+	cg.c \
 	dl.c \
 	gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c \
@@ -336,12 +337,12 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 glue_lst_AR = $(AR) cru
 glue_lst_LIBADD =
-am__glue_lst_SOURCES_DIST = dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
+am__glue_lst_SOURCES_DIST = cg.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c simage_wrapper.c openal_wrapper.c win32api.c \
 	zlib.c bzip2.c freetype.c glue-dummy.cpp \
 	normalization_cubemap.c all-glue-c.c
 am__objects_1 = all-glue-c.$(OBJEXT) glue-dummy.$(OBJEXT)
-am__objects_2 = dl.$(OBJEXT) gl.$(OBJEXT) gl_wgl.$(OBJEXT) \
+am__objects_2 = cg.$(OBJEXT) dl.$(OBJEXT) gl.$(OBJEXT) gl_wgl.$(OBJEXT) \
 	gl_agl.$(OBJEXT) gl_glx.$(OBJEXT) GLUWrapper.$(OBJEXT) \
 	simage_wrapper.$(OBJEXT) openal_wrapper.$(OBJEXT) \
 	win32api.$(OBJEXT) zlib.$(OBJEXT) bzip2.$(OBJEXT) \
@@ -350,8 +351,8 @@ am__objects_2 = dl.$(OBJEXT) gl.$(OBJEXT) gl_wgl.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_glue_lst_OBJECTS = $(am__objects_3)
-am__EXTRA_glue_lst_SOURCES_DIST = all-glue-c.c glue-dummy.cpp dl.c gl.c \
-	gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
+am__EXTRA_glue_lst_SOURCES_DIST = all-glue-c.c glue-dummy.cpp cg.c dl.c \
+	gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
 	openal_wrapper.c win32api.c zlib.c bzip2.c freetype.c \
 	normalization_cubemap.c
 glue_lst_OBJECTS = $(am_glue_lst_OBJECTS)
@@ -359,31 +360,32 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libglue_la_LDFLAGS =
 libglue_la_LIBADD =
-am__libglue_la_SOURCES_DIST = dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
+am__libglue_la_SOURCES_DIST = cg.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c simage_wrapper.c openal_wrapper.c win32api.c \
 	zlib.c bzip2.c freetype.c glue-dummy.cpp \
 	normalization_cubemap.c all-glue-c.c
 am__objects_6 = all-glue-c.lo glue-dummy.lo
-am__objects_7 = dl.lo gl.lo gl_wgl.lo gl_agl.lo gl_glx.lo GLUWrapper.lo \
-	simage_wrapper.lo openal_wrapper.lo win32api.lo zlib.lo \
-	bzip2.lo freetype.lo glue-dummy.lo normalization_cubemap.lo
+am__objects_7 = cg.lo dl.lo gl.lo gl_wgl.lo gl_agl.lo gl_glx.lo \
+	GLUWrapper.lo simage_wrapper.lo openal_wrapper.lo win32api.lo \
+	zlib.lo bzip2.lo freetype.lo glue-dummy.lo \
+	normalization_cubemap.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libglue_la_OBJECTS = $(am__objects_8)
-am__EXTRA_libglue_la_SOURCES_DIST = all-glue-c.c glue-dummy.cpp dl.c \
-	gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
-	openal_wrapper.c win32api.c zlib.c bzip2.c freetype.c \
-	normalization_cubemap.c
+am__EXTRA_libglue_la_SOURCES_DIST = all-glue-c.c glue-dummy.cpp cg.c \
+	dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c GLUWrapper.c \
+	simage_wrapper.c openal_wrapper.c win32api.c zlib.c bzip2.c \
+	freetype.c normalization_cubemap.c
 libglue_la_OBJECTS = $(am_libglue_la_OBJECTS)
 libglue@SUFFIX@LINKHACK_la_LDFLAGS =
 libglue@SUFFIX@LINKHACK_la_LIBADD =
-am__libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = dl.c gl.c gl_wgl.c \
+am__libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = cg.c dl.c gl.c gl_wgl.c \
 	gl_agl.c gl_glx.c GLUWrapper.c simage_wrapper.c \
 	openal_wrapper.c win32api.c zlib.c bzip2.c freetype.c \
 	glue-dummy.cpp normalization_cubemap.c all-glue-c.c
 am_libglue@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libglue@SUFFIX@LINKHACK_la_SOURCES_DIST = all-glue-c.c \
-	glue-dummy.cpp dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
+	glue-dummy.cpp cg.c dl.c gl.c gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c simage_wrapper.c openal_wrapper.c win32api.c \
 	zlib.c bzip2.c freetype.c normalization_cubemap.c
 libglue@SUFFIX@LINKHACK_la_OBJECTS = \
@@ -394,7 +396,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/GLUWrapper.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-glue-c.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-glue-c.Po ./$(DEPDIR)/bzip2.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/bzip2.Po ./$(DEPDIR)/dl.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/bzip2.Po ./$(DEPDIR)/cg.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/cg.Po ./$(DEPDIR)/dl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/dl.Po ./$(DEPDIR)/freetype.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/freetype.Po ./$(DEPDIR)/gl.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/gl.Po ./$(DEPDIR)/gl_agl.Plo \
@@ -502,6 +505,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-glue-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bzip2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bzip2.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cg.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cg.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dl.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/freetype.Plo@am__quote@
