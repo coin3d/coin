@@ -325,18 +325,6 @@ SoText2::GLRender(SoGLRenderAction * action)
         ix = thissize[0];
         iy = thissize[1];
         
-        int charwidth = (int) cc_glyph2d_getwidth(glyph);
-      
-        rasterx = xpos + thispos[0]; 
-        rpx = rasterx >= 0 ? rasterx : 0;
-        offvp = rasterx < 0 ? 1 : 0;
-        offsetx = rasterx >= 0 ? 0 : rasterx;
-          
-        rastery = ypos + (thispos[1] - thissize[1]);
-        rpy = rastery>= 0 ? rastery : 0;
-        offvp = offvp || rastery < 0 ? 1 : 0;
-        offsety = rastery >= 0 ? 0 : rastery;
-
         int advancex, advancey;
         cc_glyph2d_getadvance(glyph, &advancex, &advancey);
 
@@ -347,7 +335,17 @@ SoText2::GLRender(SoGLRenderAction * action)
           kerningx = 0;
           kerningy = 0;          
         }
-				
+
+        rasterx = xpos + kerningx + thispos[0]; 
+        rpx = rasterx >= 0 ? rasterx : 0;
+        offvp = rasterx < 0 ? 1 : 0;
+        offsetx = rasterx >= 0 ? 0 : rasterx;
+          
+        rastery = ypos + (thispos[1] - thissize[1]);
+        rpy = rastery>= 0 ? rastery : 0;
+        offvp = offvp || rastery < 0 ? 1 : 0;
+        offsety = rastery >= 0 ? 0 : rastery;
+       				
         glRasterPos3f(rpx, rpy, -nilpoint[2]);
 	
         if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
