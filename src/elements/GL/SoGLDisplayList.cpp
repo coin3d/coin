@@ -62,6 +62,10 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
     refcount(0),
     mipmap(mipmaptexobj)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoGLDisplayList::SoGLDisplayList", "%p", this);
+#endif // debug
+
   // Check for known buggy OpenGL driver.
   const char * versionstr = (const char *)glGetString(GL_VERSION);
   if (strcmp(versionstr, "1.3.1 NVIDIA 28.02") == 0) {
@@ -127,18 +131,12 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
       cc_glglue_glGenTextures(glw, 1, &tmpindex);
       this->firstindex = (unsigned int )tmpindex;
     }
-    else { // Fall back to display list
+    else { // Fall back to display list, allocation happens further down below.
       this->type = DISPLAY_LIST;
-      this->firstindex = (unsigned int) glGenLists(allocnum);
-      if (this->firstindex == 0) {
-        SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
-                           "Could not reserve %d displaylist%s. "
-                           "Expect flawed rendering.",
-                           allocnum, allocnum==1 ? "" : "s");
-      }
     }
   }
-  else {
+
+  if (this->type == DISPLAY_LIST) {
     this->firstindex = (unsigned int) glGenLists(allocnum);
     if (this->firstindex == 0) {
       SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
@@ -158,18 +156,24 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
 // private destructor. Use ref()/unref()
 SoGLDisplayList::~SoGLDisplayList()
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoGLDisplayList::~SoGLDisplayList", "%p", this);
+#endif // debug
+
   if (this->type == DISPLAY_LIST) {
     glDeleteLists((GLuint) this->firstindex, this->numalloc);
   }
   else {
-    // use temporary variable in case GLUint != unsigned int. It is
-    // only possible to create one texture objects at a time, so it's
-    // safe just to copy and delete the first index.
-    GLuint tmpindex = (GLuint) this->firstindex;
+    assert(this->type == TEXTURE_OBJECT);
+
     const cc_glglue * glw = cc_glglue_instance(this->context);
-    if (cc_glglue_has_texture_objects(glw)) {
-      cc_glglue_glDeleteTextures(glw, 1, &tmpindex);
-    }
+    assert(cc_glglue_has_texture_objects(glw));
+
+    // Use temporary variable in case GLUint != unsigned int.
+    GLuint tmpindex = (GLuint) this->firstindex;
+    // It is only possible to create one texture object at a time, so
+    // there's only one index to delete.
+    cc_glglue_glDeleteTextures(glw, 1, &tmpindex);
   }
 }
 
@@ -206,6 +210,7 @@ SoGLDisplayList::open(SoState * state, int index)
     glNewList((GLuint) (this->firstindex+index), GL_COMPILE_AND_EXECUTE);
   }
   else {
+    assert(type == TEXTURE_OBJECT);
     assert(index == 0);
     this->bindTexture(state);
   }
@@ -238,6 +243,7 @@ SoGLDisplayList::call(SoState * state, int index)
     glCallList((GLuint) (this->firstindex + index));
   }
   else {
+    assert(type == TEXTURE_OBJECT);
     assert(index == 0);
     this->bindTexture(state);
   }
@@ -315,15 +321,14 @@ void
 SoGLDisplayList::bindTexture(SoState *state)
 {
   const cc_glglue * glw = cc_glglue_instance(this->context);
-  if (cc_glglue_has_texture_objects(glw)) {
-    if (SoGLTexture3EnabledElement::get(state)) {
-      // FIXME: shouldn't this rather be an assert()? 20020918 mortene.
-      if (cc_glglue_has_3d_textures(glw)) {
-        cc_glglue_glBindTexture(glw, GL_TEXTURE_3D, (GLuint)this->firstindex);
-      }
-    }
-    else {
-      cc_glglue_glBindTexture(glw, GL_TEXTURE_2D, (GLuint)this->firstindex);
-    }
+  assert(cc_glglue_has_texture_objects(glw));
+
+  GLenum target = GL_TEXTURE_2D;
+
+  if (SoGLTexture3EnabledElement::get(state)) {
+    assert(cc_glglue_has_3d_textures(glw));
+    target = GL_TEXTURE_3D;
   }
+
+  cc_glglue_glBindTexture(glw, GL_TEXTURE_2D, (GLuint)this->firstindex);
 }
