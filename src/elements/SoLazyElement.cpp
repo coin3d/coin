@@ -991,7 +991,7 @@ SoLazyElement::setGLImageIdElt(uint32_t glimageid, SbBool alphatest)
 }
 
 void 
-SoLazyElement::setAlphaTestElt(const SbBool onoff)
+SoLazyElement::setAlphaTestElt(SbBool onoff)
 {
   this->coinstate.alphatest = onoff;
 }

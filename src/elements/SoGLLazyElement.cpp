@@ -459,7 +459,7 @@ SoGLLazyElement::sendOnlyDiffuseColor(SoState * state)
 //! FIXME: write doc
 
 void
-SoGLLazyElement::sendDiffuseByIndex(int index) const
+SoGLLazyElement::sendDiffuseByIndex(const int index) const
 {
 #if COIN_DEBUG
   if (index < 0 || index >= this->coinstate.numdiffuse) {
@@ -707,7 +707,7 @@ SoGLLazyElement::sendLightModel(SoState * state, const int32_t model)
 }
 
 void 
-SoGLLazyElement::sendFlatshading(SoState * state, SbBool onoff)
+SoGLLazyElement::sendFlatshading(SoState * state, const SbBool onoff)
 {
   SbBool cacheopen = state->isCacheOpen();
   SoGLLazyElement * elem = getInstance(state);
