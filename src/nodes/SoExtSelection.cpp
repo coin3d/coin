@@ -97,6 +97,7 @@
 #include <config.h>
 #endif
 
+#include <../tidbits.h> // coin_getenv()
 #include "../misc/GLWrapper.h"
 #include <float.h>
 #include <math.h>
@@ -163,11 +164,19 @@
 
 #ifndef DOXYGEN_SKIP_THIS
 
+/*
+  KNOWN BUGS:
+  ===========
+
+  
+
+*/
+
+
 // Debug defines... Used to force lower color resolution for testing purposes (handegar)
 //#define BITCOLOR3 1
 //#define BITCOLOR6 1
 //#define BITCOLOR9 1
-
 
 #define PRIVATE(p) (p->pimpl)
 #define PUBLIC(p) (p->master)
@@ -910,6 +919,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
 	if (PRIVATE(this)->timersensor->isScheduled()) PRIVATE(this)->timersensor->unschedule();
         PRIVATE(this)->previousmousecoords = SbVec2s(32767, 32767);
 	if (PRIVATE(this)->selectionstate == SoExtSelectionP::LASSO) {
+          PRIVATE(this)->coords.append(mousecoords);
           PRIVATE(this)->performSelection(action);
 	}
 	PRIVATE(this)->isDragging = FALSE;
@@ -2115,7 +2125,6 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
   int flag = 0;
   SbBool hitflag = FALSE;
 
-
   // Clear entire 'visibletrianglesbitarray' table
   for(int i=0;i<((this->maximumcolorcounter >> 3)+1);i++)
     this->visibletrianglesbitarray[i] = 0;
@@ -2261,8 +2270,11 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       this->renderer->render(cbnode);
 
 
-      // Used to save offscreen to disk for debugging purposes. (handegar)
-      //this->renderer->writeToRGB("renderdump1.rgb");
+      // This environment variable used for debuggin. If variable is
+      // found, the content for the offscreen is stored to disk for
+      // easy access.
+      const char * env = coin_getenv("COIN_EXTSELECTION_SAVE_OFFSCREENBUFFER");
+      if(env) this->renderer->writeToRGB(env);
 
 
       // Scan buffer marking visible colors in the 'visibletrianglesbitarray' array.
