@@ -43,8 +43,6 @@ public:
   virtual void lazyEvaluate(void) const;
   virtual SbBool isLazy(void) const;
 
-  static SbVec2f getValidRange(void);
-
 protected:
   virtual void setElt(float size);
 

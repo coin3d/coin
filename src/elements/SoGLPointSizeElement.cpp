@@ -25,7 +25,33 @@
   Requests from the scenegraph to change the pointsize when rendering
   point primitives will be made through this element, which forwards
   it to the appropriate native OpenGL call.
+
+  The Coin library does not place any bounds on the values of the
+  pointsize, but be aware that the range and granularity of what is
+  valid pointsizes depends on the underlying OpenGL
+  implementation. Application programmers using point primitives
+  (typically through the SoPointSet node) should heed these boundary
+  values. They can be acquired by running the following code from
+  within a valid OpenGL context:
+
+  \code
+    GLfloat bounds[2];
+    glGetFloatv(GL_POINT_SIZE_RANGE, bounds);
+    GLfloat granularity[1];
+    glGetFloatv(GL_POINT_SIZE_GRANULARITY, granularity);
+  \endcode
+
+  For the next version of Coin, we expect to add a query function in
+  the Coin API which the application programmer can use to get hold of
+  these values without resorting to using direct OpenGL calls.
 */
+
+// FIXME: the API extension mentioned at the end of the classdoc above
+// seems best suited to be placed in the API of the So*-libraries -- I
+// believe that's the only way for us to make it possible to guarantee
+// a valid OpenGL context. (One problem with this: we don't _really_
+// want more OpenGL code than absolutely necessary inside the So*
+// libraries.) 20011019 mortene.
 
 #include <Inventor/elements/SoGLPointSizeElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -118,40 +144,41 @@ void
 SoGLPointSizeElement::updategl()
 {
   if (SoGLPointSizeElement::sizerange[0] == RANGE_NOT_CHECKED) {
-    SbVec2f vals = SoGLPointSizeElement::getValidRange();
+    GLfloat vals[2];
+    glGetFloatv(GL_POINT_SIZE_RANGE, vals);
 
     // Matthias Koenig reported on coin-discuss that the OpenGL
     // implementation on SGI Onyx 2 InfiniteReality returns 0 for the
     // lowest pointsize, but it will still set the return value of
     // glGetError() to GL_INVALID_VALUE if this size is attempted
-    // used. This is a workaround for what looks like an OpenGL
-    // implementation bug.
+    // used. So the boundary range fix in the next line of code is a
+    // workaround for that OpenGL implementation bug.
     //
-    // On the other hand, I'm not sure this is the correct
-    // fix.. shouldn't it in general be possible to specify pointsizes
-    // in the range <0.0f, 1.0f>?  (0.0f and lower values are
-    // explicitly disallowed, according to the OpenGL 1.3
-    // specification, Chapter 3.3.)
-    //
-    // The 99% correct fix would probably be to check the OpenGL
-    // vendor / version string at run-time and then conditionally
-    // activate this fix if we are running the particular
-    // implementation(s) we know contains the bug.  (I call it only a
-    // 99% correct fix because I think that scheme will not work
-    // either if the client application does remote rendering (over
-    // GLX) -- but that should be investigated).
-    //
-    //                     mortene@coin3d.org
-    //
+    // 0.0f and lower values are explicitly disallowed, according to
+    // the OpenGL 1.3 specification, Chapter 3.3.
+
     if (vals[0] <= 0.0f) { vals[0] = SbMin(1.0f, vals[1]); }
 
     SoGLPointSizeElement::sizerange[0] = vals[0];
     SoGLPointSizeElement::sizerange[1] = vals[1];
+
+    // FIXME: we should make the range values available for the
+    // app-programmer with a public API on this class (or somewhere
+    // else?). Along with the range we should also grab the value of
+    // GL_POINT_SIZE_GRANULARITY and make that available
+    // aswell. 20011019 mortene.
   }
 
   float useval = this->current;
 
-  // Range check.
+  // 0.0f is used as a "dummy" default value by our superclass and by
+  // SoDrawStyle::pointSize, so handle that case outside of the
+  // rangecheck below.
+
+  if (this->current == 0.0f) { useval = 1.0f; }
+
+
+  // Range checks.
 
   if (useval < SoGLPointSizeElement::sizerange[0]) {
     useval = SoGLPointSizeElement::sizerange[0];
@@ -159,6 +186,7 @@ SoGLPointSizeElement::updategl()
   if (useval > SoGLPointSizeElement::sizerange[1]) {
     useval = SoGLPointSizeElement::sizerange[1];
   }
+
 
 #if COIN_DEBUG
   // Detect invalid values and warn the application programmer.  (0.0f
@@ -175,10 +203,10 @@ SoGLPointSizeElement::updategl()
       SoDebugError::postWarning("SoGLPointSizeElement::updategl",
                                 "%f is outside the legal range of [%f, %f] "
                                 "for this OpenGL implementation's "
-                                "glPointSize() settings. It was now clamped.\n"
-                                "Note that the method SoGLPointSizeElement::getValidRange() "
-                                "is available for the application program for "
-                                "acquiring the boundary values for the legal "
+                                "glPointSize() settings. It was now clamped.\n\n"
+                                "See the documentation of SoGLPointSizeElement for "
+                                "information on how to the application programmer may "
+                                "acquire the boundary values for the legal "
                                 "range.",
                                 this->current,
                                 SoGLPointSizeElement::sizerange[0],
@@ -190,24 +218,4 @@ SoGLPointSizeElement::updategl()
   // Forward to OpenGL state.
 
   glPointSize(useval);
-}
-
-/*!
-  Does a run-time check against the OpenGL implementation and returns
-  the valid range of point sizes.
-
-  The OpenGL specification does not demand a particular valid range,
-  so different implementations are free to decide this on their own.
-  This method should be used to detect which values are safe to use,
-  for instance for SoDrawStyle::pointSize.
-
-  This method is not part of the original SGI Open Inventor v2.1 API,
-  but is an extension specific for the Coin library.
- */
-SbVec2f
-SoGLPointSizeElement::getValidRange(void)
-{
-  GLfloat vals[2];
-  glGetFloatv(GL_POINT_SIZE_RANGE, vals);
-  return SbVec2f(vals[0], vals[1]);
 }

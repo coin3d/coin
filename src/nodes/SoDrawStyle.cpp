@@ -77,10 +77,12 @@
 
   The valid range of pointsize settings varies according to which
   OpenGL implementation is used. For the purpose of not trying to set
-  illegal values, the application programmer should at run-time use
-  SoGLPointSizeElement::getValidRange() to find the valid range.
+  illegal values, the application programmer should at run-time check
+  the valid range. How this can be accomplished is described in the
+  class documentation of SoGLPointSizeElement.
 
-  Default value is 0.
+  Default value is 0.0f, which is a "tag" value which tells the
+  rendering library to use the default setting.
 */
 // FIXME: default value 0? Weird -- shouldn't that mean that no points
 // were drawn? Test what SGI Inventor does in that case. 20010823 mortene.
@@ -92,7 +94,14 @@
   also of geometry border lines if setting the SoDrawStyle::style to
   SoDrawStyle::LINES.
 
-  Default value is 0.
+  The valid range of linewidth settings varies according to which
+  OpenGL implementation is used. For the purpose of not trying to set
+  illegal values, the application programmer should at run-time check
+  the valid range. How this can be accomplished is described in the
+  class documentation of SoGLLineWidthElement.
+
+  Default value is 0.0f, which is a "tag" value which tells the
+  rendering library to use the default setting.
 */
 /*!
   \var SoSFUShort SoDrawStyle::linePattern

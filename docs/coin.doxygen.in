@@ -924,7 +924,11 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/src/details/SoPointDetail.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/details/SoPointDetail.h \
                          @path_tag@@coin_src_dir@/src/details/SoTextDetail.cpp \
-                         @path_tag@@coin_src_dir@/include/Inventor/details/SoTextDetail.h
+                         @path_tag@@coin_src_dir@/include/Inventor/details/SoTextDetail.h \
+                         @path_tag@@coin_src_dir@/src/elements/SoGLPointSizeElement.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLPointSizeElement.h \
+                         @path_tag@@coin_src_dir@/src/elements/SoGLLineWidthElement.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoGLLineWidthElement.h
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
