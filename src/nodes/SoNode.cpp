@@ -994,7 +994,7 @@ SoNode::addToCopyDict(void) const
   return cp;
 }
 
-// Overloaded from parent class.
+// Doc in superclass.
 void
 SoNode::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {

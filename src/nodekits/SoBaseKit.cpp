@@ -1003,11 +1003,10 @@ SoBaseKit::addToCopyDict(void) const
   return cp;
 }
 
-/*!
-  Overloaded to copy parts correctly.
-*/
+// (Doc in superclass.) Overloaded to copy parts correctly.
 void
-SoBaseKit::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
+SoBaseKit::copyContents(const SoFieldContainer * fromfc,
+                        SbBool copyconnections)
 {
   int i;
 

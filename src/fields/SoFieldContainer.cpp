@@ -534,9 +534,14 @@ SoFieldContainer::getFieldData(void) const
 }
 
 
+// Note: the following documentation is used for all subclasses of
+// SoFieldContainer (all the way down to nodekits, draggers and
+// manipulators, for instance), so keep it general.
 /*!
-  Copy field values and name of \a from into this instance.
- */
+  Makes a deep copy of all data of \a from into this instance, \e
+  except external scenegraph references if \a copyconnections is \c
+  FALSE.
+*/
 void
 SoFieldContainer::copyContents(const SoFieldContainer * from,
                                SbBool copyconnections)
