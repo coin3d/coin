@@ -45,17 +45,11 @@ extern "C" {
 /* #define CC_BARRIER_VALID 0xdbcafe */
 
 struct cc_barrier {
-  int threshold;
-  int counter;
-  int cycle;
-  cc_mutex mutex;
-  cc_condvar condvar;
+  unsigned int numthreads;
+  unsigned int counter;
+  cc_mutex * mutex;
+  cc_condvar * condvar;
 };
-
-/* ********************************************************************** */
-
-void cc_barrier_struct_init(cc_barrier * barrier_struct, unsigned int count);
-void cc_barrier_struct_clean(cc_barrier * barrier_struct);
 
 /* ********************************************************************** */
 

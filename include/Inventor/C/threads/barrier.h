@@ -33,7 +33,7 @@ extern "C" {
 
 /* ********************************************************************** */
 
-COIN_DLL_API cc_barrier * cc_barrier_construct(unsigned int count);
+COIN_DLL_API cc_barrier * cc_barrier_construct(unsigned int numthreads);
 COIN_DLL_API void cc_barrier_destruct(cc_barrier * barrier);
 
 COIN_DLL_API int cc_barrier_enter(cc_barrier * barrier);
@@ -45,3 +45,8 @@ COIN_DLL_API int cc_barrier_enter(cc_barrier * barrier);
 #endif /* __cplusplus */
 
 #endif /* ! CC_BARRIER_H */
+
+
+
+
+

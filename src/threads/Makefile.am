@@ -10,8 +10,8 @@ RegularSources = \
 	wpool.c \
 	sched.c \
 	sync.c \
-	fifo.c
-#	barrier.c
+	fifo.c \
+	barrier.c
 LinkHackSources = \
 	all-c.c
 PublicHeaders = \
@@ -21,8 +21,8 @@ PublicHeaders = \
 	../../include/Inventor/threads/SbCondVar.h \
 	../../include/Inventor/threads/SbStorage.h \
 	../../include/Inventor/threads/SbTypedStorage.h \
-	../../include/Inventor/threads/SbFifo.h
-#	../../include/Inventor/threads/SbBarrier.h
+	../../include/Inventor/threads/SbFifo.h \
+	../../include/Inventor/threads/SbBarrier.h
 PrivateHeaders = \
 	wrappers.cpp # for checking validity of inline C++ wrapper headers
 

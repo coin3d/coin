@@ -147,10 +147,10 @@ threadsinc_HEADERS = \
 	wpool.h \
 	sched.h \
 	sync.h \
-	fifo.h
+	fifo.h \
+	barrier.h
 
 
-#	barrier.h
 EXTRA_DIST = \
 	threadp.h \
 	mutexp.h \
@@ -161,7 +161,8 @@ EXTRA_DIST = \
 	wpoolp.h \
 	schedp.h \
 	syncp.h \
-	fifop.h
+	fifop.h \
+	barrierp.h
 
 subdir = include/Inventor/C/threads
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -331,7 +332,6 @@ uninstall-am: uninstall-info-am uninstall-threadsincHEADERS
 	mostlyclean-libtool tags uninstall uninstall-am \
 	uninstall-info-am uninstall-threadsincHEADERS
 
-#	barrierp.h
 
 install-threadsincHEADERS: $(threadsinc_HEADERS)
 	@$(NORMAL_INSTALL)

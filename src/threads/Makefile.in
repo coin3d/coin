@@ -146,9 +146,9 @@ RegularSources = \
 	wpool.c \
 	sched.c \
 	sync.c \
-	fifo.c
+	fifo.c \
+	barrier.c
 
-#	barrier.c
 LinkHackSources = \
 	all-c.c
 
@@ -159,9 +159,9 @@ PublicHeaders = \
 	../../include/Inventor/threads/SbCondVar.h \
 	../../include/Inventor/threads/SbStorage.h \
 	../../include/Inventor/threads/SbTypedStorage.h \
-	../../include/Inventor/threads/SbFifo.h
+	../../include/Inventor/threads/SbFifo.h \
+	../../include/Inventor/threads/SbBarrier.h
 
-#	../../include/Inventor/threads/SbBarrier.h
 PrivateHeaders = \
 	wrappers.cpp # for checking validity of inline C++ wrapper headers
 
@@ -232,7 +232,8 @@ threads_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	storage.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	condvar.$(OBJEXT) worker.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	wpool.$(OBJEXT) sched.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	sync.$(OBJEXT) fifo.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	sync.$(OBJEXT) fifo.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	barrier.$(OBJEXT)
 threads_lst_OBJECTS = $(am_threads_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -242,7 +243,8 @@ libthreads_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@am_libthreads_la_OBJECTS = common.lo \
 @HACKING_COMPACT_BUILD_FALSE@	thread.lo mutex.lo rwmutex.lo \
 @HACKING_COMPACT_BUILD_FALSE@	storage.lo condvar.lo worker.lo \
-@HACKING_COMPACT_BUILD_FALSE@	wpool.lo sched.lo sync.lo fifo.lo
+@HACKING_COMPACT_BUILD_FALSE@	wpool.lo sched.lo sync.lo fifo.lo \
+@HACKING_COMPACT_BUILD_FALSE@	barrier.lo
 libthreads_la_OBJECTS = $(am_libthreads_la_OBJECTS)
 libthreads@SUFFIX@LINKHACK_la_LDFLAGS =
 libthreads@SUFFIX@LINKHACK_la_LIBADD =
@@ -252,7 +254,7 @@ libthreads@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	common.lo thread.lo mutex.lo \
 @HACKING_COMPACT_BUILD_FALSE@	rwmutex.lo storage.lo condvar.lo \
 @HACKING_COMPACT_BUILD_FALSE@	worker.lo wpool.lo sched.lo \
-@HACKING_COMPACT_BUILD_FALSE@	sync.lo fifo.lo
+@HACKING_COMPACT_BUILD_FALSE@	sync.lo fifo.lo barrier.lo
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -262,6 +264,7 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/all-c.Plo $(DEPDIR)/all-c.Po \
+@AMDEP_TRUE@	$(DEPDIR)/barrier.Plo $(DEPDIR)/barrier.Po \
 @AMDEP_TRUE@	$(DEPDIR)/common.Plo $(DEPDIR)/common.Po \
 @AMDEP_TRUE@	$(DEPDIR)/condvar.Plo $(DEPDIR)/condvar.Po \
 @AMDEP_TRUE@	$(DEPDIR)/fifo.Plo $(DEPDIR)/fifo.Po \
@@ -360,6 +363,8 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/barrier.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/barrier.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/common.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/condvar.Plo@am__quote@

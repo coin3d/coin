@@ -23,48 +23,12 @@
 
 #include <Inventor/C/threads/barrier.h>
 #include <Inventor/C/threads/barrierp.h>
+#include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/condvar.h>
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-
-/* ********************************************************************** */
-
-/*
-  \internal
-*/
-
-void
-cc_barrier_struct_init(cc_barrier * barrier_struct, unsigned int count)
-{
-  assert(barrier_struct != NULL && barrier_struct->type == CC_INVALID_TYPE);
-
-  barrier_struct->threshold = count;
-  barrier_struct->counter = count;
-  barrier_struct->cycle = 0;
-  barrier_struct->valid = CC_BARRIER_VALID;
-
-  barrier_struct->mutex.type = CC_INVALID_TYPE;
-  (void) cc_mutex_struct_init(&barrier_struct->mutex);
-  barrier_struct->condvar.type = CC_INVALID_TYPE;
-  (void) cc_condvar_struct_init(&barrier_struct->condvar);
-
-  barrier_struct->type = CC_BARRIER_TYPE;
-  return;
-} /* cc_barrier_struct_init() */
-
-/*
-  \internal
-*/
-
-void
-cc_barrier_struct_clean(cc_barrier * barrier_struct)
-{
-  assert(barrier_struct != NULL && barrier_struct->type == CC_BARRIER_TYPE);
-  cc_mutex_struct_clean(&barrier_struct->mutex);
-  cc_condvar_struct_clean(&barrier_struct->condvar);
-  barrier_struct->type = CC_INVALID_TYPE;
-} /* cc_barrier_struct_clean() */
 
 /* ********************************************************************** */
 
@@ -76,15 +40,12 @@ cc_barrier_construct(unsigned int count)
 {
   cc_barrier * barrier;
   barrier = (cc_barrier *) malloc(sizeof(cc_barrier));
-  barrier->type = CC_INVALID_TYPE;
-  cc_barrier_struct_init(barrier, count);
-
-  if (barrier->type != CC_BARRIER_TYPE) {
-    free(barrier);
-    barrier = NULL;
-  }
+  barrier->numthreads = count;
+  barrier->counter = 0;
+  barrier->mutex = cc_mutex_construct();
+  barrier->condvar = cc_condvar_construct();
   return barrier;
-} /* cc_barrier_construct() */
+}
 
 /*
 */
@@ -92,10 +53,13 @@ cc_barrier_construct(unsigned int count)
 void
 cc_barrier_destruct(cc_barrier * barrier)
 {
-  assert((barrier != NULL) && (barrier->type == CC_BARRIER_TYPE));
-  cc_barrier_struct_clean(barrier);
+  assert(barrier != NULL);
+         
+  cc_condvar_wake_all(barrier->condvar);
+  cc_condvar_destruct(barrier->condvar);
+  cc_mutex_destruct(barrier->mutex);
   free(barrier);
-} /* cc_barrier_destruct() */
+}
 
 /*
 */
@@ -103,48 +67,20 @@ cc_barrier_destruct(cc_barrier * barrier)
 int
 cc_barrier_enter(cc_barrier * barrier)
 {
-  int status, cycle, cancel, tmp;
-  assert((barrier != NULL) && (barrier->type == CC_BARRIER_TYPE));
-
-  status = cc_mutex_lock(&barrier->mutex);
-/*
-  if ( status != CC_OK )
-    return FALSE;
-*/
-
-  cycle = barrier->cycle;
-  if (--barrier->counter == 0) {
-    barrier->cycle++;
-    barrier->counter = barrier->threshold;
-    cc_condvar_wake_all(&barrier->condvar);
-    cc_mutex_unlock(&barrier->mutex);
-/*
-    status = pthread_cond_broadcast(&(barrier->pthread.condvar));
-    pthread_mutex_unlock(&(barrier->pthread.mutex));
-    if ( status != 0 )
-      return CC_ERROR;
-*/
-  } else {
-#ifdef USE_PTHREAD
-    pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &cancel);
-#endif /* USE_PTHREAD */
-/*
-    while ( cycle == barrier->cycle ) {
-      cc_condvar_wait(
-      status = pthread_cond_wait(&(barrier->pthread.condvar),
-                                 &(barrier->pthread.mutex));
-      if ( status != 0 ) break;
-    }
-*/
-#ifdef USE_PTHREAD
-    pthread_setcancelstate(cancel, &tmp);
-#endif /* USE_PTHREAD */
-    cc__mutex_unlock(&barrier->mutex);
-    if ( status != 0 ) return CC_ERROR;
+  assert(barrier != NULL);
+  cc_mutex_lock(barrier->mutex);
+  barrier->counter++;
+  if (barrier->counter == barrier->numthreads) {
+    barrier->counter = 0;
+    cc_mutex_unlock(barrier->mutex);
+    cc_condvar_wake_all(barrier->condvar);
+    return 1;
   }
-
-  return CC_OK;
-} /* cc_barrier_enter() */
+  else {
+    cc_condvar_wait(barrier->condvar, barrier->mutex);
+  }
+  return 0;
+}
 
 /* ********************************************************************** */
 
@@ -176,7 +112,9 @@ cc_barrier_enter(cc_barrier * barrier)
   \fn int SbBarrier::enter(void)
 
   This method blocks the calling thread on this barrier.  It returns
-  when the given number of threads have been blocked.
+  when the given number of threads have been blocked. 1 is
+  returned if the caller was the last thread to enter the barrier,
+  0 otherwise.
 */
 
 /* ********************************************************************** */
