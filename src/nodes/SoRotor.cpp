@@ -44,6 +44,8 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/fields/SoSFTime.h>
 #include <coindefs.h>
 
 #if COIN_DEBUG
@@ -61,6 +63,21 @@
 */
 
 // *************************************************************************
+
+//
+// returns the current time. First tries the realTime field, then
+// SbTime::getTimeOfDay() if field is not found.
+//
+static SbTime
+get_current_time(void)
+{
+  SoField * realtime = SoDB::getGlobalField("realTime");
+  if (realtime && realtime->isOfType(SoSFTime::getClassTypeId())) {
+    return ((SoSFTime*)realtime)->getValue();
+  }
+  return SbTime::getTimeOfDay();
+}
+
 
 SO_NODE_SOURCE(SoRotor);
 
@@ -123,18 +140,18 @@ SoRotor::fieldSensorCB(void * d, SoSensor * s)
     }
     else {
       thisp->rotation.getValue(thisp->startaxis, thisp->startangle);
-      thisp->starttime = SbTime::getTimeOfDay();
+      thisp->starttime = get_current_time();
       if (!thisp->oneshotsensor->isScheduled())
         thisp->oneshotsensor->schedule();
     }
   }
   else if (s == thisp->speedfieldsensor) {
     thisp->rotation.getValue(thisp->startaxis, thisp->startangle);
-    thisp->starttime = SbTime::getTimeOfDay();
+    thisp->starttime = get_current_time();
   }
   else if (s == thisp->rotfieldsensor) {
     thisp->rotation.getValue(thisp->startaxis, thisp->startangle);
-    thisp->starttime = SbTime::getTimeOfDay();
+    thisp->starttime = get_current_time();
   }
 }
 
@@ -157,10 +174,10 @@ SoRotor::setRotation(void)
 {
   if (this->starttime == SbTime::zero()) {
     // don't do anything first time we get here
-    this->starttime = SbTime::getTimeOfDay();
+    this->starttime = get_current_time();
     return;
   }
-  SbTime difftime = SbTime::getTimeOfDay() - this->starttime;
+  SbTime difftime = get_current_time() - this->starttime;
 
   float diffangle = (float)
     (difftime.getValue() *

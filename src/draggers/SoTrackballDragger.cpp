@@ -66,6 +66,8 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/misc/SoTempPath.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/fields/SoSFTime.h>
 
 #include <data/draggerDefaults/trackballDragger.h>
 
@@ -132,6 +134,21 @@ public:
 };
 
 #endif // DOXYGEN_SKIP_THIS
+
+//
+// returns the current time. First tries the realTime field, then
+// SbTime::getTimeOfDay().
+//
+static SbTime
+get_current_time(void)
+{
+  SoField * realtime = SoDB::getGlobalField("realTime");
+  if (realtime && realtime->isOfType(SoSFTime::getClassTypeId())) {
+    return ((SoSFTime*)realtime)->getValue();
+  }
+  return SbTime::getTimeOfDay();
+}
+
 
 SO_KIT_SOURCE(SoTrackballDragger);
 
@@ -481,7 +498,7 @@ SoTrackballDragger::dragStart(void)
   else if (THIS->whatkind == WHATKIND_SCALE) {
     THIS->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), hitPt));
   }
-  THIS->prevTime = SbTime::getTimeOfDay();
+  THIS->prevTime = get_current_time();
   THIS->prevMousePos = this->getNormalizedLocaterPosition();
   THIS->hasDragged = FALSE;
 }
@@ -555,7 +572,7 @@ SoTrackballDragger::drag(void)
                                             SbVec3f(0.0f, 0.0f, 0.0f),
                                             &wk2loc));
   }
-  THIS->prevTime = SbTime::getTimeOfDay();
+  THIS->prevTime = get_current_time();
   THIS->prevMousePos = this->getNormalizedLocaterPosition();
 }
 
@@ -583,7 +600,7 @@ SoTrackballDragger::dragFinish(void)
     // drag(). Will test more later, pederb, 20000210
     //
 
-    SbTime currtime = SbTime::getTimeOfDay();
+    SbTime currtime = get_current_time();
     THIS->animTime = currtime - THIS->prevTime;
 
     if (THIS->whatkind == WHATKIND_ROTATOR) {
@@ -602,7 +619,7 @@ SoTrackballDragger::dragFinish(void)
     }
     this->saveStartParameters(); // store new startMotionMatrix
     SoTrackballDragger::timerSensorCB(this, NULL);
-    THIS->prevTime = SbTime::getTimeOfDay();
+    THIS->prevTime = get_current_time();
     THIS->timerSensor->setBaseTime(THIS->prevTime);
     // FIXME: get animation frame rate from somewhere?
     // pederb, 20000210
@@ -618,7 +635,7 @@ SoTrackballDragger::timerSensorCB(void *d, SoSensor *)
 {
   SoTrackballDragger *thisp = (SoTrackballDragger*)d;
 
-  SbTime currtime = SbTime::getTimeOfDay();
+  SbTime currtime = get_current_time();
   SbTime difftime = currtime - THISP->prevTime;
   THISP->prevTime = currtime;
   float angle = THISP->animAngle * float(difftime.getValue()/THISP->animTime.getValue());
