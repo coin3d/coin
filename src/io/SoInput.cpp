@@ -840,6 +840,7 @@ SoInput::read(char & c, SbBool skip)
   return (ok && fi->get(c));
 }
 
+
 /*!
   Skips whitespace and extracts string. A string can be placed
   within quotes, in which case we will return all characters between
@@ -848,7 +849,7 @@ SoInput::read(char & c, SbBool skip)
   by a ``\'' character.
 
   A string not contained in quotes is terminated by the first following
-  whitespace character or left or right bracket (i.e. ``['' or ``]'').
+  whitespace character.
 
   Returns \c FALSE upon encountering end of file before the string is
   fully parsed, or any other error.
@@ -950,6 +951,14 @@ SoInput::read(SbString & s)
         fi->putBack(*buf);
         break;
       }
+
+#if 0
+      // FIXME: This code was commented away because of incompatibility
+      // with Open Inventor. If further testing shows that this code
+      // is not needed, it can be removed.
+      //
+      // 20040618 jornskaa
+
       else if (*buf == '[') {
         fi->putBack(*buf);
         break;
@@ -958,6 +967,7 @@ SoInput::read(SbString & s)
         fi->putBack(*buf);
         break;
       }
+#endif
 
       buf++; totallen++;
       bytesLeft--;
@@ -1052,6 +1062,7 @@ SoInput::read(SbName & n, SbBool validIdent)
   if (this->isBinary()) {
     SbString s;
     if (!this->read(s)) return FALSE;
+
     n = s;
 
     if (validIdent && s.getLength() > 0) {
@@ -1070,6 +1081,15 @@ SoInput::read(SbName & n, SbBool validIdent)
       SbString s;
       if (!this->read(s)) return FALSE;
 
+#if 0
+      // FIXME: This code was commented away because of incompatibility
+      // with Open Inventor. If further testing shows that this code
+      // is not needed, it can be removed. To remove trailing brackets
+      // from the end of a name seems strange since it is a valid 
+      // character if validIdent==FALSE.
+      //
+      // 20040618 jornskaa
+      
       // Strip off any "{" or "}" characters.
       const char * cstr = s.getString();
       int idx = s.getLength()-1;
@@ -1077,7 +1097,7 @@ SoInput::read(SbName & n, SbBool validIdent)
         assert(cstr && strlen(cstr) == (size_t)s.getLength());
         while (((cstr[idx] == '{') || (cstr[idx] == '}')) && (idx > 0)) idx--;
       }
-
+      
       if (idx == s.getLength()-1) {
         // No trailing '{' or '}'.
         n = s;
@@ -1088,6 +1108,14 @@ SoInput::read(SbName & n, SbBool validIdent)
         n = s.getSubString(0, idx);
         fi->putBack(&cstr[idx+1]);
       }
+#else
+      // FIXME: if the code above is reinserted, this block should be 
+      // removed/commented.
+      //
+      // 20040618 jornskaa
+      n = s;
+#endif
+
     }
     else {
       SbString s;

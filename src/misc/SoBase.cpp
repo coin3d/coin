@@ -1,3 +1,4 @@
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -1597,23 +1598,26 @@ SoBase::readReference(SoInput * in, SoBase *& base)
     return FALSE;
   }
 
-  // This is a pretty ugly hack to handle cases where the USE ref name
-  // is immediately followed by a "." and a fieldname, as can occur
+  // This code to handles cases where USE ref name is 
+  // immediately followed by a "." and a fieldname, as can occur
   // when reading field-to-field connections.
-  //
-  // A proper fix would have to clean up the small mess of how the
-  // SoInput::read(SbName name, SbBool validident) method is
-  // implemented and used.
-  //
-  // 20000129 mortene.
   if (!in->isBinary()) {
-    const char * refptr = refname.getString();
-    const char * dotptr = strrchr(refptr, '.');
-    if (dotptr && dotptr != refptr) {
-      SbString s = refname.getString();
-      refname = s.getSubString(0, (dotptr - refptr - 1));
-      in->putBack(dotptr);
-    }
+    SbString refstr = refname.getString();
+
+    // NOTE:
+    // If the name ends with a }. E.g.
+    //
+    // USE mesh+0}
+    // 
+    // then we are in trouble, but so is Open Inventor.
+    // This is due to the ability for "}" to be a character
+    // in the name of a node.
+    size_t index = strcspn(refstr.getString(), ".");
+    SbString startstr = refstr.getSubString(0, index-1);
+    SbString endstr = refstr.getSubString(index);
+    in->putBack(endstr.getString());
+
+    refname = startstr;
   }
 
   if ((base = in->findReference(refname)) == NULL) {

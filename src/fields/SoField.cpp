@@ -2133,11 +2133,10 @@ SoField::readConnection(SoInput * in)
 
   // Read name of master field.
   SbName mastername;
-  if (!in->read(mastername)) {
+  if (!in->read(mastername, TRUE)) {
     SoReadError::post(in, "premature EOF");
     return FALSE;
   }
-
 
   // Get pointer to master field or engine output and connect.
 
