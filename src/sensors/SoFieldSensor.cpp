@@ -124,6 +124,6 @@ SoFieldSensor::notify(SoNotList * l)
 void
 SoFieldSensor::dyingReference(void)
 {
-  inherited::dyingReference();
+  this->invokeDeleteCallback();
   this->detach();
 }

@@ -107,6 +107,6 @@ SoNodeSensor::getAttachedNode(void) const
 void
 SoNodeSensor::dyingReference(void)
 {
-  inherited::dyingReference();
+  this->invokeDeleteCallback();
   this->detach();
 }
