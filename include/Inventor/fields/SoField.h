@@ -174,6 +174,7 @@ private:
     unsigned int isevaluating   : 1;
     unsigned int type           : 3; // Needs to hold values in range [0-5]
     unsigned int readonly       : 1;
+    unsigned int donotify       : 1;
   } statusflags;
 
   union {
@@ -184,8 +185,6 @@ private:
 
   SbBool hasExtendedStorage(void) const
     { return this->statusflags.extstorage; }
-
-  SbBool donotify;
 };
 
 #if !defined(COIN_INTERNAL)

@@ -314,8 +314,10 @@ SoType SoField::classTypeId = SoType::badType();
   doing the common parts of data initialization in fields.
  */
 SoField::SoField(void)
-  : donotify(TRUE), container(NULL)
+  : container(NULL)
 {
+  this->statusflags.donotify = TRUE;
+
   this->statusflags.ignore = FALSE;
   this->statusflags.isdefault = TRUE;
   this->statusflags.extstorage = FALSE;
@@ -983,8 +985,8 @@ SoField::notify(SoNotList * nlist)
 SbBool
 SoField::enableNotify(SbBool on)
 {
-  const SbBool old = this->donotify;
-  this->donotify = on;
+  const SbBool old = this->statusflags.donotify;
+  this->statusflags.donotify = on;
   return old;
 }
 
@@ -997,7 +999,7 @@ SoField::enableNotify(SbBool on)
 SbBool
 SoField::isNotifyEnabled(void) const
 {
-  return this->donotify;
+  return this->statusflags.donotify;
 }
 
 /*!
