@@ -176,30 +176,35 @@ STUFF TO FIX IN COIN
     different categories:
        
     0) Fully supported file formats. (Examples: Inventor 2.0 and
-       Inventor 2.1 (both of these in both ascii and binary), VRML97,
+       Inventor 2.1 (both of these in both ascii and binary),
        VRML 1.0.)
 
     1) File formats that we are likely, but not guaranteed, to read
        without problems. (Examples: any TGS Inventor format from
-       versions (2.5?) where they have added nodes that we don't
+       versions (>= 2.5?) where they have added nodes that we don't
        support yet.)  
-       [how should we handle these? try to load, but spit out a
+       
+       [How should we handle these? Try to load, but spit out a
        warning that there might be problems?]
 
-    2) File formats we know about, but don't support. (Examples:
+    2) File formats we know about, but only support in the correct           
+       library configuration. (Example: VRML97, 3DS.)
+
+       [Refuse to load if the current configuration of Coin does not
+       support the format, explain why, and how to build Coin with
+       support for that file format.]
+
+    3) File formats we know about, but don't support. (Examples:
        Inventor 1.0 ascii & binary. We could also add in all sorts of
        3D file formats here, like Maya, OBJ, etc etc.)
-       [refuse to load, with a message that this format is
-       unsupported]
- 
-    3) File formats we know about but only support in the correct           
-       library configuration. (Example: 3DS.)
-       [refuse to load, explain that the current configuration of Coin
-       does not support the format, explain how to build Coin with
-       support for that file format]
+       
+       [Refuse to load, with a message that this format is
+       unsupported.]
 
     4) Unknown file formats.
-       [refuse to load]
+       
+       [Refuse to load, with a message that this format is 
+       unknown.]
 
     Morten estimates that it will probably be "a few days work to get 
     this into lines of code".                         
