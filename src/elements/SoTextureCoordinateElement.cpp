@@ -264,12 +264,15 @@ SoTextureCoordinateElement::get2(const int index) const
 {
   assert(index >= 0 && index < this->numCoords);
   assert(this->whatKind == EXPLICIT);
-  if (this->coordsDimension==2)
+  if (this->coordsDimension==2) {
     return this->coords2[index];
+  }
   else {
-    ((SoTextureCoordinateElement*)
-     this)->convert2.setValue(this->coords4[index][0],
-                              this->coords4[index][1]);
+    // need an instance we can write to
+    SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
+    
+    elem->convert2.setValue(this->coords4[index][0],
+                            this->coords4[index][1]);
     return this->convert2;
   }
 }
@@ -284,19 +287,21 @@ SoTextureCoordinateElement::get3(const int index) const
 {
   assert(index >= 0 && index < this->numCoords);
   assert(this->whatKind == EXPLICIT);
-  if (this->coordsDimension==3)
+  if (this->coordsDimension==3) {
     return this->coords3[index];
+  }
   else {
-    if (this->coordsDimension==2)
-      ((SoTextureCoordinateElement*)
-       this)->convert3.setValue(this->coords2[index][0],
-                                this->coords2[index][1],
-                                0.0f);
-    else // this->coordsDimension==4
-      ((SoTextureCoordinateElement*)
-       this)->convert3.setValue(this->coords4[index][0],
-                                this->coords4[index][1],
-                                this->coords4[index][2]);
+    // need an instance we can write to
+    SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
+
+    if (this->coordsDimension==2) {
+      elem->convert3.setValue(this->coords2[index][0],
+                              this->coords2[index][1],
+                              0.0f);
+    }
+    else { // this->coordsDimension==4
+      this->coords4[index].getReal(elem->convert3);
+    }
     return this->convert3;
   }
 }
@@ -308,21 +313,24 @@ SoTextureCoordinateElement::get4(const int index) const
 {
   assert(index >= 0 && index < this->numCoords);
   assert(this->whatKind == EXPLICIT);
-  if (this->coordsDimension==4)
+  if (this->coordsDimension==4) {
     return this->coords4[index];
+  }
   else {
-    if (this->coordsDimension==2)
-      ((SoTextureCoordinateElement*)
-       this)->convert4.setValue(this->coords2[index][0],
-                                this->coords2[index][1],
-                                0.0f,
-                                1.0f);
-    else // this->coordsDimension==3
-      ((SoTextureCoordinateElement*)
-       this)->convert4.setValue(this->coords3[index][0],
-                                this->coords3[index][1],
-                                this->coords3[index][2],
-                                1.0f);
+    // need an instance we can write to
+    SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
+    if (this->coordsDimension==2) {
+      elem->convert4.setValue(this->coords2[index][0],
+                              this->coords2[index][1],
+                              0.0f,
+                              1.0f);
+    }
+    else { // this->coordsDimension==3
+      elem->convert4.setValue(this->coords3[index][0],
+                              this->coords3[index][1],
+                              this->coords3[index][2],
+                              1.0f);
+    }
     return this->convert4;
   }
 }
