@@ -23,10 +23,25 @@
 
 /*!
   \class SoSpotLightDragger SoSpotLightDragger.h Inventor/draggers/SoSpotLightDragger.h
-  \brief The SoSpotLightDragger class is (FIXME: doc)
+  \brief The SoSpotLightDragger class provides interactive geometry for manipulating a spotlight.
   \ingroup draggers
 
-  FIXME: document class
+  This dragger is well suited for setting up the fields of a
+  SoSpotLight node, as it provides geometry for the end-user to
+  interact with a directional vector for the spotlight, to set up it's
+  position and to control the cut-off angle for the "lampshade" around
+  the lightsource.
+
+  Note that there is one aspect of SoSpotLight nodes that can not be
+  controlled with this dragger: the SoSpotLight::dropOffRate field.
+
+  The Coin library includes a manipulator class, SoSpotLightManip,
+  which wraps the functionality provided by this class inside the
+  necessary mechanisms for connecting it to SoSpotLight node instances
+  in a scenegraph.
+
+  \sa SoSpotLightManip, SoSpotLight
+  \sa SoDirectionalLightDragger, SoPointLightDragger
 */
 
 #include <Inventor/draggers/SoSpotLightDragger.h>
@@ -44,6 +59,53 @@
 #include <math.h>
 
 #include <data/draggerDefaults/spotLightDragger.h>
+
+
+/*!
+  \var SoSFRotation SoSpotLightDragger::rotation
+
+  This field is continuously updated to contain the rotation of the
+  current direction vector. The application programmer will typically
+  connect this to the rotation field of a SoSpotLight node (unless
+  using the SoSpotLightManip class, where this is taken care of
+  automatically).
+
+  It may also of course be connected to any other rotation field
+  controlling the direction of scenegraph geometry, it does not have
+  to part of a SoSpotLight node specifically.
+*/
+
+/*!
+  \var SoSFVec3f SoSpotLightDragger::translation
+
+  Continuously updated to contain the current translation from the
+  dragger's local origo position.
+*/
+
+/*!
+  \var SoSFFloat SoSpotLightDragger::angle
+
+  The cut-off angle for the "lampshade" around the lightsource.
+
+  Typically connected to a SoSpotLight::cutOffAngle field.
+*/
+
+/*!
+  \var SoFieldSensor * SoSpotLightDragger::rotFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoSpotLightDragger::translFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoSpotLightDragger::angleFieldSensor
+  \internal
+*/
+/*!
+  \var SbPlaneProjector * SoSpotLightDragger::planeProj
+  \internal
+*/
 
 SO_KIT_SOURCE(SoSpotLightDragger);
 
@@ -329,6 +391,10 @@ SoSpotLightDragger::dragFinish(void)
   SoInteractionKit::setSwitchValue(sw, 0);
 }
 
+/*!
+  Scales the geometry representing the "lampshade" around the
+  lightsource to represent the given \a beamangle.
+ */
 void
 SoSpotLightDragger::setBeamScaleFromAngle(float beamangle)
 {
