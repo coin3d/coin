@@ -60,6 +60,8 @@ protected:
   virtual SoErrorCB * getHandler(void * & data) const;
 
 private:
+  static void callbackForwarder(const class cc_debugerror * error, void * data);
+
   static SoType classTypeId;
   static SoErrorCB * callback;
   static void * callbackData;

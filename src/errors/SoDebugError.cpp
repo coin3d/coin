@@ -65,6 +65,7 @@
 #include <Inventor/SoType.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/C/errors/debugerror.h>
 #include "../tidbits.h" // coin_getenv(), coin_atexit()
 
 #include <stdarg.h>
@@ -155,10 +156,46 @@ SoDebugError::initClass(void)
 #endif // COIN_DEBUG
 }
 
+void
+SoDebugError::callbackForwarder(const cc_debugerror * error, void * data)
+{
+  SoDebugError wrappederr;
+
+  switch (cc_debugerror_get_severity(error)) {
+  case CC_DEBUGERROR_ERROR:
+    wrappederr.severity = SoDebugError::ERROR;
+    break;
+  case CC_DEBUGERROR_WARNING:
+    wrappederr.severity = SoDebugError::WARNING;
+    break;
+  case CC_DEBUGERROR_INFO:
+    wrappederr.severity = SoDebugError::INFO;
+    break;
+  default:
+    assert(FALSE);
+    break;
+  }
+
+  const cc_string * dbgstr = cc_error_get_debug_string((const cc_error *)error);
+  const char * dbgstrc = cc_string_get_text(dbgstr);
+  wrappederr.setDebugString(dbgstrc);
+
+  assert(SoDebugError::callback != NULL);
+  (*SoDebugError::callback)(&wrappederr, SoDebugError::callbackData);
+}
+
 // Documented for parent class.
 void
 SoDebugError::setHandlerCallback(SoErrorCB * const function, void * const data)
 {
+  if (SoDebugError::callback == SoError::defaultHandlerCB) {
+    // The user is overriding the default handler, so set up a
+    // "converter" callback function that makes an SoDebugError out of
+    // an cc_debugerror and forwards control to the callback function
+    // given as an argument to setHandlerCallback().
+    cc_debugerror_set_handler_callback(SoDebugError::callbackForwarder, NULL);
+  }
+
   SoDebugError::callback = function;
   SoDebugError::callbackData = data;
 }

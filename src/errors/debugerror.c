@@ -28,7 +28,7 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <stdlib.h>
 
-static cc_error_cb * dbgerr_callback = cc_error_default_handler_cb;
+static cc_debugerror_cb * dbgerr_callback = (cc_debugerror_cb *)cc_error_default_handler_cb;
 static void * dbgerr_callback_data = NULL;
 
 
@@ -52,13 +52,13 @@ cc_debugerror_get_severity(const cc_debugerror * me)
 }
 
 void
-cc_debugerror_set_handler_callback(cc_error_cb * function, void * data)
+cc_debugerror_set_handler_callback(cc_debugerror_cb * function, void * data)
 {
   dbgerr_callback = function;
   dbgerr_callback_data = data;
 }
 
-cc_error_cb *
+cc_debugerror_cb *
 cc_debugerror_get_handler_callback(void)
 {
   return dbgerr_callback;
@@ -70,7 +70,7 @@ cc_debugerror_get_handler_data(void)
   return dbgerr_callback_data;
 }
 
-cc_error_cb *
+cc_debugerror_cb *
 cc_debugerror_get_handler(void ** data)
 {
   *data = dbgerr_callback_data;

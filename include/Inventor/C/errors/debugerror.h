@@ -47,6 +47,8 @@ typedef struct cc_debugerror {
   CC_DEBUGERROR_SEVERITY severity;
 } cc_debugerror;
 
+typedef void cc_debugerror_cb(const cc_debugerror * err, void * data);
+
 /* ********************************************************************** */
 
 /* FIXME: missing stuff from SoDebugError: type-system,
@@ -64,11 +66,11 @@ void cc_debugerror_clean(cc_debugerror * me);
 
 CC_DEBUGERROR_SEVERITY cc_debugerror_get_severity(const cc_debugerror * me);
 
-void cc_debugerror_set_handler_callback(cc_error_cb * function, void * data);
-cc_error_cb * cc_debugerror_get_handler_callback(void);
+void cc_debugerror_set_handler_callback(cc_debugerror_cb * function, void * data);
+cc_debugerror_cb * cc_debugerror_get_handler_callback(void);
 void * cc_debugerror_get_handler_data(void);
 
-cc_error_cb * cc_debugerror_get_handler(void ** data);
+cc_debugerror_cb * cc_debugerror_get_handler(void ** data);
 
 /* ********************************************************************** */
 
