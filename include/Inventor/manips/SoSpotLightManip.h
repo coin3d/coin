@@ -70,6 +70,9 @@ protected:
   SoFieldSensor * angleFieldSensor;
   SoFieldSensor * colorFieldSensor;
   SoChildList * children;
+
+private:
+  void attachSensors(const SbBool onoff);
 };
 
 #endif // !COIN_SOSPOTLIGHTMANIP_H

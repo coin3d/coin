@@ -17,7 +17,7 @@
 #               SoTransformBoxManip
 #               SoTransformerManip
 # Id    SoPointLightManip
-#       SoSpotLightManip
+# Id    SoSpotLightManip
 # Id    SoDirectionalLightManip
 #
 ############################################################################

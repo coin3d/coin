@@ -17,8 +17,37 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoSpotLightManip SoSpotLightManip.h Inventor/manips/SoSpotLightManip.h
+  \brief The SoSpotLightManip class is used to manipulate spot light nodes.
+  \ingroup manips
+
+  A manipulator is used by replacing the node you want to edit in the graph with
+  the manipulator. Draggers are used to to manipulate the node. When manipulation
+  is finished, the node is put back into the graph, replacing the manipulator.
+*/
+
 #include <Inventor/manips/SoSpotLightManip.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/draggers/SoSpotLightDragger.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/SoNodeKitPath.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 SO_NODE_SOURCE(SoSpotLightManip);
 
@@ -33,119 +62,412 @@ SoSpotLightManip::SoSpotLightManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSpotLightManip);
 
-  // FIXME: stuff missing? 20000108 mortene.
+  this->children = new SoChildList(this);
 
-  COIN_STUB();
+  this->locationFieldSensor = new SoFieldSensor(SoSpotLightManip::fieldSensorCB, this);
+  this->locationFieldSensor->setPriority(0);
+
+  this->colorFieldSensor = new SoFieldSensor(SoSpotLightManip::fieldSensorCB, this);
+  this->colorFieldSensor->setPriority(0);
+
+  this->directionFieldSensor = new SoFieldSensor(SoSpotLightManip::fieldSensorCB, this);
+  this->directionFieldSensor->setPriority(0);
+  
+  this->angleFieldSensor = new SoFieldSensor(SoSpotLightManip::fieldSensorCB, this);
+  this->angleFieldSensor->setPriority(0);
+  
+  this->attachSensors(TRUE);
+  this->setDragger(new SoSpotLightDragger);
 }
 
 
 SoSpotLightManip::~SoSpotLightManip()
 {
-  COIN_STUB();
+  this->setDragger(NULL);
+
+  delete this->colorFieldSensor;
+  delete this->locationFieldSensor;
+  delete this->directionFieldSensor;
+  delete this->angleFieldSensor;
+  
+  delete this->children;
 }
 
 void
 SoSpotLightManip::setDragger(SoDragger * newdragger)
 {
-  COIN_STUB();
+  SoDragger *olddragger = this->getDragger();
+  if (olddragger) {
+    olddragger->removeValueChangedCallback(SoSpotLightManip::valueChangedCB, this);
+    this->children->remove(0);
+  }
+  if (newdragger != NULL) {
+    if (this->children->getLength() > 0) {
+      this->children->set(0, newdragger);
+    }
+    else {
+      this->children->append(newdragger);
+      SoSpotLightManip::fieldSensorCB(this, NULL);
+      newdragger->addValueChangedCallback(SoSpotLightManip::valueChangedCB, this);
+    } 
+  }
 }
 
 SoDragger *
 SoSpotLightManip::getDragger(void)
 {
-  COIN_STUB();
+  if (this->children->getLength() > 0) {
+    SoNode *node = (*children)[0];
+    if (node->isOfType(SoDragger::getClassTypeId()))
+      return (SoDragger*)node;
+    else {
+#if COIN_DEBUG
+      SoDebugError::post("SoSpotLightManip::getDragger",
+                         "Child is not a dragger!");
+#endif // debug
+    }
+  }
   return NULL;
 }
 
+/*!
+  Replaces the node specified by \a path with this manipulator. 
+  The manipulator will copy the field data from the node, to make
+  it affect the state in the same way as the node.
+*/
 SbBool
-SoSpotLightManip::replaceNode(SoPath * p)
+SoSpotLightManip::replaceNode(SoPath * path)
 {
-  COIN_STUB();
-  return FALSE;
+  SoFullPath *fullpath = (SoFullPath*)path;
+  SoNode *fulltail = fullpath->getTail();
+  if (!fulltail->isOfType(SoSpotLight::getClassTypeId())) {
+#if COIN_DEBUG
+    SoDebugError::post("SoSpotLightManip::replaceNode",
+                       "End of path is not an SoSpotLight");
+#endif // debug
+    return FALSE;
+  }
+  SoNode *tail = path->getTail();
+  if (tail->isOfType(SoBaseKit::getClassTypeId())) {
+    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SbString partname = kit->getPartString(path);
+    if (partname != "") {
+      SoSpotLight *oldpart = (SoSpotLight*) kit->getPart(partname, TRUE);
+      if (oldpart != NULL) {
+        this->attachSensors(FALSE);
+        this->transferFieldValues(oldpart, this);
+        this->attachSensors(TRUE);
+        SoSpotLightManip::fieldSensorCB(this, NULL);
+        kit->setPart(partname, this);
+        return TRUE;
+      }
+      else {
+        return FALSE;
+      }
+    }
+  }
+  if (fullpath->getLength() < 2) {
+#if COIN_DEBUG
+    SoDebugError::post("SoSpotLightManip::replaceNode",
+                       "Path is too short");
+#endif // debug
+    return FALSE;
+  }
+  SoNode *parent = fullpath->getNodeFromTail(1);
+  if (!parent->isOfType(SoGroup::getClassTypeId())) {
+#if COIN_DEBUG
+    SoDebugError::post("SoSpotLightManip::replaceNode",
+                       "Parent node is not a group");
+#endif // debug
+    return FALSE;
+  }
+  this->ref();
+  this->attachSensors(FALSE);
+  this->transferFieldValues((SoSpotLight*)fulltail, this);
+  this->attachSensors(TRUE);
+  SoSpotLightManip::fieldSensorCB(this, NULL);
+  
+  ((SoGroup*)parent)->replaceChild(fulltail, this);
+  this->unrefNoDelete();
+  return TRUE;
 }
 
+/*!
+  Replaces this manipulator specified by \a path with \a newnode. If
+  \a newnode is \e NULL, a SoPointLight will be created for you.
+*/
 SbBool
-SoSpotLightManip::replaceManip(SoPath * p, SoSpotLight * newone) const
+SoSpotLightManip::replaceManip(SoPath * path, SoSpotLight * newone) const
 {
-  COIN_STUB();
-  return FALSE;
+  SoFullPath *fullpath = (SoFullPath*) path;
+  SoNode *fulltail = fullpath->getTail();
+  if (fulltail != (SoNode*)this) {
+#if COIN_DEBUG
+    SoDebugError::post("SoSpotLightManip::replaceManip",
+                       "Child to replace is not this manip");
+#endif // debug
+  }
+  SoNode *tail = path->getTail();
+  if (tail->isOfType(SoBaseKit::getClassTypeId())) {
+    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SbString partname = kit->getPartString(path);
+    if (partname != "") {
+      if (newone != NULL) {
+        this->transferFieldValues(this, newone);
+      }
+      kit->setPart(partname, newone);
+      return TRUE;
+    }
+  }
+  if (fullpath->getLength() < 2) {
+#if COIN_DEBUG
+    SoDebugError::post("SoSpotLightManip::replaceManip",
+                       "Path is too short");
+#endif // debug
+    return FALSE;
+  }
+  SoNode *parent = fullpath->getNodeFromTail(1);
+  if (!parent->isOfType(SoGroup::getClassTypeId())) {
+#if COIN_DEBUG
+    SoDebugError::post("SoSpotLightManip::replaceManip",
+                       "Parent node is not a group");
+#endif // debug
+    return FALSE;
+  }
+  if (newone == NULL) newone = new SoSpotLight;
+  newone->ref();
+  this->transferFieldValues(this, newone);
+  ((SoGroup*)parent)->replaceChild((SoNode*)this, newone);
+  newone->unrefNoDelete();
+  return TRUE;
 }
 
+/*!
+ */
 void
 SoSpotLightManip::doAction(SoAction * action)
 {
-  COIN_STUB();
+  int numindices;
+  const int *indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->children->traverse(action, 0, indices[numindices-1]);
+  }
+  else {
+    this->children->traverse(action);
+  }
 }
 
+/*!
+ */
 void
 SoSpotLightManip::callback(SoCallbackAction * action)
 {
-  COIN_STUB();
+  SoSpotLightManip::doAction(action);
+  SoSpotLight::callback(action);
 }
 
+/*!
+ */
 void
 SoSpotLightManip::GLRender(SoGLRenderAction * action)
 {
-  COIN_STUB();
+  SoSpotLightManip::doAction(action);
+  SoSpotLight::GLRender(action);  
 }
 
+/*!
+ */
 void
 SoSpotLightManip::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  COIN_STUB();
+  int numindices;
+  const int *indices;
+  int lastchild;
+  SbVec3f center(0.0f, 0.0f, 0.0f);
+  int numcenters = 0;
+  
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    lastchild  = indices[numindices-1];
+  }
+  else {
+    lastchild = this->children->getLength() - 1;
+  }
+  for (int i = 0; i <= lastchild; i++) {
+    this->children->traverse(action, i, i);
+    if (action->isCenterSet()) {
+      center += action->getCenter();
+      numcenters++;
+      action->resetCenter();
+    }
+  }
+  SoSpotLight::getBoundingBox(action);
+  if (action->isCenterSet()) {
+    center += action->getCenter();
+    numcenters++;
+    action->resetCenter();
+  }
+  if (numcenters != 0) {
+    action->setCenter(center / numcenters, FALSE);
+  }
 }
 
+/*!
+ */
 void
 SoSpotLightManip::getMatrix(SoGetMatrixAction * action)
 {
-  COIN_STUB();
+  int numindices;
+  const int *indices;
+  switch (action->getPathCode(numindices, indices)) {
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:
+    break;
+  case SoAction::IN_PATH:
+    this->children->traverse(action, 0, indices[numindices-1]);
+    break;
+  case SoAction::OFF_PATH:
+    this->children->traverse(action);
+    break;
+  default:
+    assert(0 && "unknown path code");
+    break;
+  }
 }
 
+/*!
+ */
 void
 SoSpotLightManip::handleEvent(SoHandleEventAction * action)
 {
-  COIN_STUB();
+  SoSpotLightManip::doAction(action);
+  SoSpotLight::handleEvent(action);  
 }
 
+/*!
+ */
 void
 SoSpotLightManip::pick(SoPickAction * action)
 {
-  COIN_STUB();
+  SoSpotLightManip::doAction(action);
+  SoSpotLight::pick(action);  
 }
 
+/*!
+ */
 void
 SoSpotLightManip::search(SoSearchAction * action)
 {
-  COIN_STUB();
+  inherited::search(action);
+  if (action->isFound()) return;
+  SoSpotLightManip::doAction(action);
 }
 
+/*!
+  Returns the children of this node. This node only has the dragger 
+  as a child.
+*/ 
 SoChildList *
 SoSpotLightManip::getChildren(void) const
 {
-  COIN_STUB();
-  return NULL;
+  return this->children;
 }
 
+/*!
+  Updates the fields when the motion matrix changes.
+*/
 void
-SoSpotLightManip::valueChangedCB(void * f, SoDragger * d)
+SoSpotLightManip::valueChangedCB(void * m, SoDragger * dragger)
 {
-  COIN_STUB();
+  SoSpotLightManip * thisp = (SoSpotLightManip*)m;
+  
+  SbMatrix matrix = dragger->getMotionMatrix();
+  SbVec3f t, s;
+  SbRotation r, so;
+  matrix.getTransform(t, r, s, so);
+  
+  SbVec3f direction(0.0f, 0.0f, -1.0f);
+  matrix.multDirMatrix(direction, direction);
+  direction.normalize();
+
+  thisp->attachSensors(FALSE);
+  if (thisp->location.getValue() != t) {
+    thisp->location = t;
+  }
+  if (thisp->direction.getValue() != direction) {
+    thisp->direction = direction;
+  }
+  if (dragger->isOfType(SoSpotLightDragger::getClassTypeId())) {
+    if (thisp->cutOffAngle.getValue() != ((SoSpotLightDragger*)dragger)->angle.getValue()) {
+      thisp->cutOffAngle = ((SoSpotLightDragger*)dragger)->angle.getValue();
+    }
+  }
+  thisp->attachSensors(TRUE);
 }
 
+/*!
+  Updates the dragger whenever a field is modified.
+*/
 void
-SoSpotLightManip::fieldSensorCB(void * f, SoSensor * d)
+SoSpotLightManip::fieldSensorCB(void * m, SoSensor *)
 {
-  COIN_STUB();
+  SoSpotLightManip *thisp = (SoSpotLightManip*)m;
+  SoDragger *dragger = thisp->getDragger();
+  if (dragger != NULL) {
+    SbVec3f direction = thisp->direction.getValue();
+    SbMatrix matrix = dragger->getMotionMatrix();
+    SbVec3f t, s;
+    SbRotation r, so;
+    matrix.getTransform(t, r, s, so);
+    r.setValue(SbVec3f(0.0f, 0.0f, -1.0f), direction);
+    t = thisp->location.getValue();
+    
+    matrix.setTransform(t, r, s, so);
+    if (dragger->isOfType(SoSpotLightDragger::getClassTypeId()))
+      ((SoSpotLightDragger*)dragger)->angle = thisp->cutOffAngle.getValue();
+    dragger->setMotionMatrix(matrix);
+    
+    SoMaterial *material = (SoMaterial*)dragger->getPart("material", TRUE);
+    material->diffuseColor = thisp->color.getValue();
+  }
 }
 
+/*!
+  Overloaded to copy the dragger.
+*/
 void
 SoSpotLightManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {
-  COIN_STUB();
+  assert(fromfc->isOfType(SoSpotLightManip::getClassTypeId()));
+  SoDragger * dragger = ((SoSpotLightManip*)fromfc)->getDragger();
+  this->setDragger(dragger ? (SoDragger*)dragger->copy() : NULL);
+  inherited::copyContents(fromfc, copyconnections);
 }
 
+/*!
+  Copies field values.
+*/
 void
 SoSpotLightManip::transferFieldValues(const SoSpotLight * from, SoSpotLight * to)
 {
-  COIN_STUB();
+  to->location = from->location;
+  to->color = from->color;
+  to->direction = from->direction;
+  to->cutOffAngle = from->cutOffAngle;
+}
+
+void
+SoSpotLightManip::attachSensors(const SbBool onoff)
+{
+  if (onoff) {
+    this->locationFieldSensor->attach(&this->location);
+    this->colorFieldSensor->attach(&this->color);
+    this->directionFieldSensor->attach(&this->direction);
+    this->angleFieldSensor->attach(&this->cutOffAngle);
+  }
+  else {
+    this->locationFieldSensor->detach();
+    this->colorFieldSensor->detach();
+    this->directionFieldSensor->detach();
+    this->angleFieldSensor->detach();
+  }
 }
