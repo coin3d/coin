@@ -28,8 +28,10 @@
 
 #include <Inventor/C/base/debug.h>
 
+#include "../tidbits.h" /* coin_atexit() */
 #include <stdlib.h>
 #include <assert.h>
+#include <stddef.h>
 #include <errno.h>
 #include <Inventor/C/base/basep.h> /* needed for cc_internal_w32_getlasterrorstring */
 
@@ -142,6 +144,42 @@ cc_mutex_unlock(cc_mutex * mutex)
   ok = internal_unlock(mutex);
   assert(ok == CC_OK);
   return ok;
+}
+
+static cc_mutex * cc_global_mutex = NULL;
+
+static void
+cc_mutex_cleanup(void)
+{
+  cc_mutex_destruct(cc_global_mutex);
+  cc_global_mutex = NULL;
+}
+
+void
+cc_mutex_init(void)
+{
+  if (cc_global_mutex == NULL) {
+    cc_global_mutex = cc_mutex_construct();
+    coin_atexit((coin_atexit_f*) cc_mutex_cleanup);
+  }
+}
+
+void 
+cc_mutex_global_lock(void)
+{
+  /* Do this test in case a mutex is needed before cc_mutex_init() is
+     called (called from SoDB::init()). This is safe, since the
+     application should not be multithreaded before SoDB::init() is
+     called */
+  if (cc_global_mutex == NULL) cc_mutex_init();
+  
+  (void) cc_mutex_lock(cc_global_mutex);
+}
+
+void 
+cc_mutex_global_unlock(void)
+{
+  (void) cc_mutex_unlock(cc_global_mutex);
 }
 
 /* ********************************************************************** */

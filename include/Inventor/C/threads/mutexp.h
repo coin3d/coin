@@ -77,6 +77,9 @@ struct cc_mutex {
 
 /* ********************************************************************** */
 
+void cc_mutex_init(void);
+void cc_mutex_global_lock(void);
+void cc_mutex_global_unlock(void);
 void cc_mutex_struct_init(cc_mutex * mutex_struct);
 void cc_mutex_struct_clean(cc_mutex * mutex_struct);
 
