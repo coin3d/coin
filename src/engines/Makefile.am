@@ -106,7 +106,11 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
+if COIN_DEBUG_BUILD
+lib_LTLIBRARIES = libengines_gLINKHACK.la
+else
 lib_LTLIBRARIES = libenginesLINKHACK.la
+endif
 else
 noinst_LTLIBRARIES = libengines.la
 endif
@@ -119,9 +123,9 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libengines_la_SOURCES = $(ALLSOURCES)
 libenginesLINKHACK_la_SOURCES = $(ALLSOURCES)
+libengines_gLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libenginesincdir = $(includedir)/Inventor/engines
-
 libenginesinc_HEADERS = $(ALLINSTHEADERS)
 
 ##$ END TEMPLATE Make-Common

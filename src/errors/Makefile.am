@@ -28,7 +28,11 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
+if COIN_DEBUG_BUILD
+lib_LTLIBRARIES = liberrors_gLINKHACK.la
+else
 lib_LTLIBRARIES = liberrorsLINKHACK.la
+endif
 else
 noinst_LTLIBRARIES = liberrors.la
 endif
@@ -41,9 +45,9 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 liberrors_la_SOURCES = $(ALLSOURCES)
 liberrorsLINKHACK_la_SOURCES = $(ALLSOURCES)
+liberrors_gLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 liberrorsincdir = $(includedir)/Inventor/errors
-
 liberrorsinc_HEADERS = $(ALLINSTHEADERS)
 
 ##$ END TEMPLATE Make-Common

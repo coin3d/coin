@@ -59,7 +59,11 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
+if COIN_DEBUG_BUILD
+lib_LTLIBRARIES = libdraggers_gLINKHACK.la
+else
 lib_LTLIBRARIES = libdraggersLINKHACK.la
+endif
 else
 noinst_LTLIBRARIES = libdraggers.la
 endif
@@ -72,9 +76,9 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libdraggers_la_SOURCES = $(ALLSOURCES)
 libdraggersLINKHACK_la_SOURCES = $(ALLSOURCES)
+libdraggers_gLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libdraggersincdir = $(includedir)/Inventor/draggers
-
 libdraggersinc_HEADERS = $(ALLINSTHEADERS)
 
 ##$ END TEMPLATE Make-Common

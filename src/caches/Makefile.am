@@ -29,7 +29,11 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
+if COIN_DEBUG_BUILD
+lib_LTLIBRARIES = libcaches_gLINKHACK.la
+else
 lib_LTLIBRARIES = libcachesLINKHACK.la
+endif
 else
 noinst_LTLIBRARIES = libcaches.la
 endif
@@ -42,9 +46,9 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libcaches_la_SOURCES = $(ALLSOURCES)
 libcachesLINKHACK_la_SOURCES = $(ALLSOURCES)
+libcaches_gLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libcachesincdir = $(includedir)/Inventor/caches
-
 libcachesinc_HEADERS = $(ALLINSTHEADERS)
 
 ##$ END TEMPLATE Make-Common

@@ -31,7 +31,11 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
+if COIN_DEBUG_BUILD
+lib_LTLIBRARIES = libevents_gLINKHACK.la
+else
 lib_LTLIBRARIES = libeventsLINKHACK.la
+endif
 else
 noinst_LTLIBRARIES = libevents.la
 endif
@@ -44,9 +48,9 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libevents_la_SOURCES = $(ALLSOURCES)
 libeventsLINKHACK_la_SOURCES = $(ALLSOURCES)
+libevents_gLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libeventsincdir = $(includedir)/Inventor/events
-
 libeventsinc_HEADERS = $(ALLINSTHEADERS)
 
 ##$ END TEMPLATE Make-Common

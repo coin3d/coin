@@ -24,7 +24,11 @@ ALLINSTHEADERS = \
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
+if COIN_DEBUG_BUILD
+lib_LTLIBRARIES = libVRMLnodes_gLINKHACK.la
+else
 lib_LTLIBRARIES = libVRMLnodesLINKHACK.la
+endif
 else
 noinst_LTLIBRARIES = libVRMLnodes.la
 endif
@@ -37,9 +41,9 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libVRMLnodes_la_SOURCES = $(ALLSOURCES)
 libVRMLnodesLINKHACK_la_SOURCES = $(ALLSOURCES)
+libVRMLnodes_gLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
-
 libVRMLnodesinc_HEADERS = $(ALLINSTHEADERS)
 
 ##$ END TEMPLATE Make-Common

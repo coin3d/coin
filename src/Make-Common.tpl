@@ -4,7 +4,11 @@
 # within the Makefile.am itself. 19991201 mortene.
 
 if HACKING_DYNAMIC_MODULES
+if COIN_DEBUG_BUILD
+lib_LTLIBRARIES = lib-xxx-_gLINKHACK.la
+else
 lib_LTLIBRARIES = lib-xxx-LINKHACK.la
+endif
 else
 noinst_LTLIBRARIES = lib-xxx-.la
 endif
@@ -17,8 +21,8 @@ INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 lib-xxx-_la_SOURCES = $(ALLSOURCES)
 lib-xxx-LINKHACK_la_SOURCES = $(ALLSOURCES)
+lib-xxx-_gLINKHACK_la_SOURCES = $(ALLSOURCES)
 
 lib-xxx-incdir = $(includedir)/Inventor/-xxx-
-
 lib-xxx-inc_HEADERS = $(ALLINSTHEADERS)
 
