@@ -31,7 +31,14 @@
 #include <Inventor/nodes/SoPointLight.h>
 #include <Inventor/nodes/SoSpotLight.h>
 #include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbMatrix.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#include <Inventor/C/glue/glp.h>
 
 soshape_bumprender::soshape_bumprender(void)
 {
@@ -108,7 +115,7 @@ soshape_bumprender::renderBump(SoLight * light, const SbMatrix & toobjectspace)
   glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE);
 
   cc_glglue_glActiveTexture(glue, GL_TEXTURE1);
-  soshape_apply_normalization_cube_map(glue, 32);
+  coin_apply_normalization_cube_map(glue);
   glDisable(GL_TEXTURE_2D);
   glEnable(GL_TEXTURE_CUBE_MAP);
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);

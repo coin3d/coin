@@ -22,9 +22,16 @@
 \**************************************************************************/
 
 #include <Inventor/system/gl.h>
-#include <Inventor/system/glp.h>
+#include <Inventor/C/glue/gl.h>
 #include <stdlib.h>
 #include <math.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
+#include <Inventor/C/glue/glp.h>
+
 
 #define COIN_CUBEMAP_SIZE 32
 
