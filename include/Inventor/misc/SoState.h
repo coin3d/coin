@@ -26,6 +26,7 @@
 
 #include <Inventor/SbBasic.h>
 #include <stdio.h>
+#include <assert.h>
 
 class SoAction;
 class SoTypeList;
@@ -65,9 +66,16 @@ private:
 
 // these methods are used very often, and is therefore inlined
 
+inline SbBool
+SoState::isElementEnabled(const int stackindex) const
+{
+  return (stackindex < this->numstacks) && (this->stack[stackindex] != NULL);
+}
+
 inline const SoElement *
 SoState::getConstElement(const int stackindex) const
 {
+  assert(this->isElementEnabled(stackindex));
   return this->stack[stackindex];
 }
 
@@ -77,15 +85,10 @@ SoState::isCacheOpen(void) const
   return this->cacheopen;
 }
 
-inline SbBool
-SoState::isElementEnabled(const int stackindex) const
-{
-  return (stackindex < this->numstacks) && (this->stack[stackindex] != NULL);
-}
-
 inline SoElement *
 SoState::getElementNoPush(const int stackindex) const
 {
+  assert(this->isElementEnabled(stackindex));
   return this->stack[stackindex];
 }
 
