@@ -895,7 +895,7 @@ write_short(FILE * fp, unsigned short val)
 
 /*!
   Writes the buffer in SGI RGB format by appending it to the already
-  open file.
+  open file. Returns \c FALSE if writing fails.
 
   Important note: do \e not use this method when the Coin library has
   been compiled as an MSWindows DLL, as passing FILE* instances back
@@ -905,9 +905,9 @@ write_short(FILE * fp, unsigned short val)
 SbBool
 SoOffscreenRenderer::writeToRGB(FILE * fp) const
 {
-  //
   // FIXME: add code to rle rows, pederb 2000-01-10
-  //
+  // FIXME: errorchecking when writing! 20010625 mortene.
+
   if (this->internaldata) {
     SbVec2s size = this->internaldata->getSize();
     write_short(fp, 0x01da); // imagic
@@ -969,7 +969,7 @@ SoOffscreenRenderer::writeToRGB(const char * filename) const
 
 /*!
   Writes the buffer in Postscript format by appending it to the
-  already open file.
+  already open file. Returns \c FALSE if writing fails.
 
   Important note: do \e not use this method when the Coin library has
   been compiled as an MSWindows DLL, as passing FILE* instances back
