@@ -30,14 +30,28 @@
 
 // We usually implement inline functions below the class definition,
 // since we think that makes the file more readable. However, this is
-// not done for this class, since Visual C++ is not too happy about
-// having functions declared as inline for a template class.
-// pederb, 2001-10-12
+// not done for this class, since Microsoft Visual C++ is not too
+// happy about having functions declared as inline for a template
+// class.
 
-// FIXME: this is just a quick hack to avoid heaps of irritating
-// warning messages from the compiler for client code compiled under
-// MSVC++. Should try to find the real reason for the warnings and fix
-// the cause of the problem instead. 20020730 mortene.
+// FIXME: the #pragmas below is just a quick hack to avoid heaps of
+// irritating warning messages from the compiler for client code
+// compiled under MSVC++. Should try to find the real reason for the
+// warnings and fix the cause of the problem instead. 20020730 mortene.
+//
+// UPDATE 20030617 mortene: there is a Microsoft Knowledge Base
+// article at <URL:http://support.microsoft.com> which is related to
+// this problem. It's article number KB168958.
+//
+// In short, the general solution is that classes that exposes usage
+// of SbList<type> needs to declare the specific template instance
+// with "extern" and __declspec(dllimport/export).
+//
+// That is a lot of work to change, tho'. Another possibility which
+// might be better is to simply avoid using (exposing) SbList from any
+// of the other public classes. Judging from a quick look, this seems
+// feasible, and just a couple of hours or so of work.
+//
 #ifdef _MSC_VER // Microsoft Visual C++
 #pragma warning(disable:4251)
 #pragma warning(disable:4275)
