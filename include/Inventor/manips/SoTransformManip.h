@@ -21,6 +21,9 @@
 #define COIN_SOTRANSFORMMANIP_H
 
 #include <Inventor/nodes/SoTransform.h>
+#ifndef COIN_INTERNAL
+#include <Inventor/draggers/SoDragger.h>
+#endif
 
 class SoChildList;
 class SoDragger;

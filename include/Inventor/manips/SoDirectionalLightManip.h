@@ -21,6 +21,9 @@
 #define COIN_SODIRECTIONALLIGHTMANIP_H
 
 #include <Inventor/nodes/SoDirectionalLight.h>
+#ifndef COIN_INTERNAL
+#include <Inventor/draggers/SoDragger.h>
+#endif
 
 class SoChildList;
 class SoDragger;

@@ -21,6 +21,9 @@
 #define COIN_SOPOINTLIGHTMANIP_H
 
 #include <Inventor/nodes/SoPointLight.h>
+#ifndef COIN_INTERNAL
+#include <Inventor/draggers/SoDragger.h>
+#endif
 
 class SoChildList;
 class SoDragger;
