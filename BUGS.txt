@@ -4359,3 +4359,17 @@ TransformBoxManip { }
     20041102 mortene.
 
 =====================================================================
+
+161 Bug in RotateDiscDragger when SoWriteAction is applied
+    Coin read error: Premature end of file
+    Coin/src/nodes/SoGroup.cpp:374: void SoGroup::addChild(SoNode *):
+    Assertion `node != __null' failed.
+    Aborted
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#Inventor V2.1 ascii
+
+RotateDiscDragger { }
+----8<----- [snip] --------------------8<----- [snip] ----------------  
+
+    20041104 sit.
