@@ -58,26 +58,6 @@ General guidelines:
 Concrete tasks:
 ===============
 
-        * Implement a framerate counter in the So*ExaminerViewer, to
-          make it easier to get a "feeling" on which scenes / shapes /
-          whatever that have bad rendering performance.
-
-          Update on this task: code for showing a FPS counter is now
-          in place in SoGuiViewer.cpp.in, but it is just a hack so far
-          and needs to be enabled by an environment variable. See
-          comments in the sourcecode file about what should be done to
-          include it properly in the public API of the
-          So[Qt|Gtk|Xt|Win|...]Viewer class.
-
-        * SoSeparator rendercaching (with OpenGL renderlists)
-          mechanisms is not default activated yet. (At least I think
-          so, ask pederb about this.)
-
-        * We've not yet implemented any heuristics on the "AUTO"
-          setting for caching in SoSeparator (so far, we only do
-          bounding box caching) -- we just default to "ON", which can
-          be _very_ lousy behaviour with regards to performance.
-
         * From a quick peek at the code, it looks like
           SoMField-derived classes calls (or may call) valueChanged()
           multiple times from certain functions.
