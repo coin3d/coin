@@ -209,14 +209,14 @@ SoNode::copy(SbBool copyconnections) const
 }
 
 
-// Overloaded from parent.
+// Overridden from parent.
 void
 SoNode::startNotify(void)
 {
   inherited::startNotify();
 }
 
-// Overloaded from parent.
+// Overridden from parent.
 void
 SoNode::notify(SoNotList * l)
 {
@@ -520,6 +520,8 @@ SoNode::doAction(SoAction * action)
 {
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Returns \c TRUE if the node could have any effect on the state
   during traversal.
@@ -556,6 +558,8 @@ SoNode::getBoundingBoxS(SoAction * action, SoNode * node)
   bboxaction->checkResetAfter();
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for the SoGetBoundingBoxAction.
 
@@ -565,7 +569,7 @@ SoNode::getBoundingBoxS(SoAction * action, SoNode * node)
   one for this node.
 
   Nodes influencing how geometry nodes calculates their bounding box
-  also overloads this method to change the relevant state variables.
+  also overrides this method to change the relevant state variables.
 */
 void
 SoNode::getBoundingBox(SoGetBoundingBoxAction * action)
@@ -584,6 +588,8 @@ SoNode::getPrimitiveCountS(SoAction * action, SoNode * node)
   node->getPrimitiveCount((SoGetPrimitiveCountAction *)action);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for the SoGetPrimitiveCountAction.
 
@@ -591,7 +597,7 @@ SoNode::getPrimitiveCountS(SoAction * action, SoNode * node)
   for the node and adds these to the counters of the \a action.
 
   Nodes influencing how geometry nodes calculates their primitive
-  count also overloads this method to change the relevant state
+  count also overrides this method to change the relevant state
   variables.
 */
 void
@@ -662,18 +668,22 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
   }
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for the SoGLRenderAction.
 
   This is called during rendering traversals. Nodes influencing the
   rendering state in any way or who wants to throw geometry primitives
-  at OpenGL overloads this method.
+  at OpenGL overrides this method.
 */
 void
 SoNode::GLRender(SoGLRenderAction * action)
 {
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Implements the SoAction::BELOW_PATH traversal method for the
   rendering action.
@@ -684,6 +694,8 @@ SoNode::GLRenderBelowPath(SoGLRenderAction * action)
   this->GLRender(action);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Implements the SoAction::IN_PATH traversal method for the rendering
   action.
@@ -694,6 +706,8 @@ SoNode::GLRenderInPath(SoGLRenderAction * action)
   this->GLRender(action);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Implements the SoAction::OFF_PATH traversal method for the rendering
   action.
@@ -724,6 +738,8 @@ SoNode::callbackS(SoAction * action, SoNode * node)
   cbAction->invokePostCallbacks(node);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for SoCallbackAction.
 
@@ -750,6 +766,8 @@ SoNode::getMatrixS(SoAction * action, SoNode * node)
   node->getMatrix(getMatrixAction);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for SoGetMatrixAction.
 
@@ -775,6 +793,8 @@ SoNode::handleEventS(SoAction * action, SoNode * node)
   node->handleEvent(handleEventAction);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for SoHandleEventAction.
 
@@ -782,7 +802,7 @@ SoNode::handleEventS(SoAction * action, SoNode * node)
   something which this node should react to.
 
   Nodes influencing relevant state variables for how event handling is
-  done also overloads this method.
+  done also overrides this method.
 */
 void
 SoNode::handleEvent(SoHandleEventAction * action)
@@ -803,6 +823,8 @@ SoNode::pickS(SoAction * action, SoNode * node)
   node->pick(pickAction);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for SoPickAction.
 
@@ -827,6 +849,8 @@ SoNode::rayPickS(SoAction * action, SoNode * node)
   node->rayPick(rayPickAction);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for SoRayPickAction.
 
@@ -834,7 +858,7 @@ SoNode::rayPickS(SoAction * action, SoNode * node)
   intersection with the data of the node.
 
   Nodes influencing relevant state variables for how picking is done
-  also overloads this method.
+  also overrides this method.
 */
 void
 SoNode::rayPick(SoRayPickAction * action)
@@ -857,6 +881,8 @@ SoNode::searchS(SoAction * action, SoNode * node)
   node->search(searchAction);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for SoSearchAction.
 
@@ -921,6 +947,8 @@ SoNode::writeS(SoAction * action, SoNode * node)
   node->write(writeAction);
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Action method for SoWriteAction.
 
@@ -942,6 +970,8 @@ SoNode::write(SoWriteAction * action)
   else assert(0 && "unknown stage");
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   Returns list of children for this node.
 */
@@ -978,6 +1008,8 @@ SoNode::getNodeId(void) const
   return this->uniqueId;
 }
 
+// Note that this documentation will also be used for all subclasses
+// which reimplements the method, so keep the doc "generic enough".
 /*!
   This method is called from write() if the actual writing pass of the
   write action is taking place. It dumps the node to the given \a out
@@ -1028,7 +1060,7 @@ SoNode::copyContents(const SoFieldContainer * from, SbBool copyconnections)
   this->stateflags = src->stateflags;
 }
 
-// Overloaded from parent class.
+// Overridden from parent class.
 SoFieldContainer *
 SoNode::copyThroughConnection(void) const
 {

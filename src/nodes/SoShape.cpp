@@ -483,17 +483,17 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
 /*!
   Will create triangle detail for a SoPickedPoint. This method will
   only be called internally, when generatePrimitives() is used for
-  picking (SoShape::rayPick() is not overloaded).
+  picking (SoShape::rayPick() is not overridden).
 
   This method returns \c NULL in Open Inventor, and subclasses will
-  need to overload this method to create details for a SoPickedPoint.
+  need to override this method to create details for a SoPickedPoint.
 
   This is not necessary with Coin. Of course, if you choose to
-  overload it, it will work in the same way as Open Inventor.
+  override it, it will work in the same way as Open Inventor.
 
   For this to work, you must supply a face or line detail when
   generating primitives. If you supply \c NULL for the detail argument in
-  SoShape::beginShape(), you'll have to overload this method.
+  SoShape::beginShape(), you'll have to override this method.
 */
 SoDetail *
 SoShape::createTriangleDetail(SoRayPickAction * action,
@@ -515,17 +515,17 @@ SoShape::createTriangleDetail(SoRayPickAction * action,
 /*!
   Will create line detail for a SoPickedPoint. This method will only
   be called internally, when generatePrimitives() is used for picking
-  (SoShape::rayPick() is not overloaded).
+  (SoShape::rayPick() is not overridden).
 
   This method returns \c NULL in Open Inventor, and subclasses will
-  need to overload this method to create details for a SoPickedPoint.
+  need to override this method to create details for a SoPickedPoint.
 
   This is not necessary with Coin. Of course, if you choose to
-  overload it, it will work in the same way as Open Inventor.
+  override it, it will work in the same way as Open Inventor.
 
   For this to work, you must supply a face or line detail when
   generating primitives. If you supply \c NULL for the detail argument in
-  SoShape::beginShape(), you'll have to overload this method.
+  SoShape::beginShape(), you'll have to override this method.
 */
 SoDetail *
 SoShape::createLineSegmentDetail(SoRayPickAction * action,
@@ -546,13 +546,13 @@ SoShape::createLineSegmentDetail(SoRayPickAction * action,
 /*!
   Will create point detail for a SoPickedPoint. This method will only
   be called internally, when generatePrimitives() is used for picking
-  (SoShape::rayPick() is not overloaded).
+  (SoShape::rayPick() is not overridden).
 
   This method returns \c NULL in Open Inventor, and subclasses will
-  need to overload this method to create details for a SoPickedPoint.
+  need to override this method to create details for a SoPickedPoint.
 
   This is not necessary with Coin. Of course, if you choose to
-  overload it, it will work in the same way as Open Inventor.
+  override it, it will work in the same way as Open Inventor.
 
   For this to work, you must supply a point detail in the
   SoPrimitiveVertex in generatePrimitives().
@@ -850,7 +850,7 @@ SoShape::generateVertex(SoPrimitiveVertex * const pv,
 SbBool
 SoShape::affectsState(void) const
 {
-  // Overloaded from default setting in SoNode to return FALSE instead
+  // Overridden from default setting in SoNode to return FALSE instead
   // of TRUE, as we know for certain that no node classes derived from
   // SoShape will affect the rendering state.
   return FALSE;

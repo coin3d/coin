@@ -104,9 +104,7 @@ SoSceneKit::setCameraNumber(int camnum)
   sw->whichChild = camnum;
 }
 
-/*!
-  Overloaded to return \e TRUE.
-*/
+// Documented in superclass.
 SbBool
 SoSceneKit::affectsState(void) const
 {

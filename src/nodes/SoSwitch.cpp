@@ -123,32 +123,28 @@ SoSwitch::initClass(void)
   SO_ENABLE(SoHandleEventAction, SoSwitchElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoSwitch::GLRender(SoGLRenderAction * action)
 {
   this->doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoSwitch::doAction(action);
 }
 
-/*!
-  This method must be overridden in SoSwitch nodes to take into account
-  if the search involves every single node, or just the nodes involved in
-  normal graph traversal.
-*/
+// Documented in superclass.
 void
 SoSwitch::search(SoSearchAction * action)
 {
+  // This method must be overridden in SoSwitch nodes to take into
+  // account if the search involves every single node, or just the
+  // nodes involved in normal graph traversal.
+
   // Include this node in the search.
   SoNode::search(action);
   if (action->isFound()) return;
@@ -161,9 +157,7 @@ SoSwitch::search(SoSearchAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoSwitch::doAction(SoAction * action)
 {
@@ -244,9 +238,7 @@ SoSwitch::doAction(SoAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 SbBool
 SoSwitch::affectsState(void) const
 {
@@ -270,36 +262,28 @@ SoSwitch::affectsState(void) const
   return TRUE;
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoSwitch::callback(SoCallbackAction *action)
 {
   SoSwitch::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoSwitch::pick(SoPickAction *action)
 {
   SoSwitch::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoSwitch::handleEvent(SoHandleEventAction *action)
 {
   SoSwitch::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoSwitch::getMatrix(SoGetMatrixAction *action)
 {
@@ -313,9 +297,7 @@ SoSwitch::getMatrix(SoGetMatrixAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoSwitch::write(SoWriteAction * action)
 {
@@ -339,9 +321,7 @@ SoSwitch::write(SoWriteAction * action)
   else assert(0 && "unknown stage");
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -349,7 +329,9 @@ SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 }
 
 /*!
-  Not supported in Coin. Should probably have been private in OIV.
+  This function was part of the original SGI Inventor API, but it is
+  not supported in Coin, as it looks like it should probably have been
+  private in Inventor.
 */
 void
 SoSwitch::traverseChildren(SoAction * action)

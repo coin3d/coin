@@ -379,12 +379,12 @@ SoNodeKitListPart::replaceChild(SoNode * oldChild, SoNode * newChild)
   ((SoGroup *) this->containerNode.getValue())->replaceChild(oldChild, newChild);
 }
 
-/*!
-  This just "forwards" the call to the same method at the container node.
-*/
+// Documented in superclass.
 SbBool
 SoNodeKitListPart::affectsState(void) const
 {
+  // Just "forwards" the call to the same method at the container
+  // node.
   return this->containerNode.getValue()->affectsState();
 }
 
