@@ -111,11 +111,14 @@ typedef GLboolean (* COIN_AGLSETPBUFFER) (AGLContext ctx,
                                           GLint face, 
                                           GLint level, 
                                           GLint screen);
+typedef GLboolean (* COIN_AGLTEXIMAGEPBUFFER) (AGLContext ctx, 
+                                               AGLPbuffer pbuffer, 
+                                               GLint source);
 
 static COIN_AGLCREATEPBUFFER aglglue_aglCreatePBuffer = NULL;
 static COIN_AGLDESTROYPBUFFER aglglue_aglDestroyPBuffer = NULL;
 static COIN_AGLSETPBUFFER aglglue_aglSetPBuffer = NULL;
-
+static COIN_AGLTEXIMAGEPBUFFER aglglue_aglTexImagePBuffer = NULL;
 
 struct aglglue_contextdata;
 static SbBool (* aglglue_context_create)(struct aglglue_contextdata * ctx) = NULL;
@@ -141,11 +144,12 @@ aglglue_resolve_symbols()
 
   /* Resolve symbols only once... */
   if (aglglue_aglCreatePBuffer && aglglue_aglDestroyPBuffer &&
-      aglglue_aglSetPBuffer) return; 
+      aglglue_aglSetPBuffer && aglglue_aglTexImagePBuffer) return; 
 
   aglglue_aglCreatePBuffer = (COIN_AGLCREATEPBUFFER)aglglue_getprocaddress("aglCreatePBuffer");
   aglglue_aglDestroyPBuffer = (COIN_AGLDESTROYPBUFFER)aglglue_getprocaddress("aglDestroyPBuffer");
   aglglue_aglSetPBuffer = (COIN_AGLSETPBUFFER)aglglue_getprocaddress("aglSetPBuffer");
+  aglglue_aglTexImagePBuffer = (COIN_AGLTEXIMAGEPBUFFER)aglglue_getprocaddress("aglTexImagePBuffer");
 }
 
 
@@ -159,7 +163,8 @@ aglglue_get_pbuffer_enable(void)
     return FALSE; 
   } else { 
     aglglue_resolve_symbols();
-    return (aglglue_aglCreatePBuffer && aglglue_aglDestroyPBuffer && aglglue_aglSetPBuffer);
+    return (aglglue_aglCreatePBuffer && aglglue_aglDestroyPBuffer && 
+            aglglue_aglSetPBuffer && aglglue_aglTexImagePBuffer);
   }
 }
 
@@ -509,7 +514,7 @@ aglglue_context_bind_pbuffer(void * ctx)
   /* FIXME: I don't think this needs to be here. pederb, 2003-11-27 */ 
   /* aglglue_context_reinstate_previous(context); */
 
-  aglTexImagePBuffer (context->storedcontext, context->aglpbuffer, GL_FRONT);
+  aglglue_aglTexImagePBuffer (context->storedcontext, context->aglpbuffer, GL_FRONT);
   context->pbufferisbound = TRUE;
   error = aglGetError();  
   if (error != AGL_NO_ERROR) {    
