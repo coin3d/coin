@@ -65,14 +65,27 @@ SoCacheElement::init(SoState * state)
 }
 
 /*!
+  Overloaded to initialize element.
+*/
+void 
+SoCacheElement::push(SoState * state)
+{
+  inherited::push(state);
+  SoCacheElement * elem = (SoCacheElement*) this->next;
+  elem->cache = NULL;
+}
+
+/*!
   Overloaded to unref the cache, since the cache is ref'ed in set().
 */
 void
 SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 {
+  if (this->cache) {
+    this->cache->unref();
+    this->cache = NULL;
+  }
   inherited::pop(state, prevTopElement);
-  SoCacheElement * prev = (SoCacheElement*) prevTopElement;
-  if (prev->cache) prev->cache->unref();
   if (!this->anyOpen(state)) state->setCacheOpen(FALSE);
 }
 
@@ -85,6 +98,8 @@ SoCacheElement::set(SoState * const state, SoCache * const cache)
 {
   SoCacheElement * elem = (SoCacheElement*)
     SoElement::getElement(state, classStackIndex);
+
+  if (elem->cache) elem->cache->unref();
   elem->cache = cache;
   if (elem->cache) {
     elem->cache->ref();
@@ -118,13 +133,17 @@ SoCacheElement::anyOpen(SoState * const state)
   return FALSE;
 }
 
-/*!  
+/*!
   This method invalidates open caches. It should be called by
-  uncacheable nodes. 
+  uncacheable nodes.
 */
 void
 SoCacheElement::invalidate(SoState * const state)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoCacheElement::invalidate",
+                         "Invalidate all caches");
+#endif // debug
   SoCacheElement::invalidated = TRUE;
   SoCacheElement * elem = (SoCacheElement*)
     state->getElementNoPush(classStackIndex);
