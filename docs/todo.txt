@@ -472,3 +472,15 @@ STUFF TO FIX IN COIN
     shrink the implementations of the leaf viewers to the absolute minimum.
 
 
+020 SoSub*.h improvements.
+    2002-10-08  Morten Eriksen  <mortene@sim.no>
+
+    I'm sure many of the macros in these files could be made into
+    inline functions, simple template functions, or just better laid
+    out macros. They should be audited with this in mind.
+
+    One particular complaint we've had from a Coin user is that the
+    current macros are in general not compatible with template-based
+    extensions classes (at least not for nodes, haven't really
+    investigated the rest).
+
