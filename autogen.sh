@@ -16,7 +16,7 @@ fi
 
 DIE=false
 
-AUTOCONF_VER=2.14a  # Autoconf from CVS
+AUTOCONF_VER=2.49a  # Autoconf from CVS
 AUTOMAKE_VER=1.4a   # Automake from CVS
 LIBTOOL_VER=1.3.5
 
