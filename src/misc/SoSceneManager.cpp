@@ -322,7 +322,9 @@ void
 SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 {
   if (this->rootsensor) this->rootsensor->detach();
-  if (this->scene) this->scene->unref();
+  // Don't unref() until after we've set up the new root, in case the
+  // old root == the new sceneroot. (Just to be that bit more robust.)
+  SoNode * oldroot = this->scene;
 
   this->scene = sceneroot;
 
@@ -334,6 +336,8 @@ SoSceneManager::setSceneGraph(SoNode * const sceneroot)
 
     this->rootsensor->attach(sceneroot);
   }
+
+  if (oldroot) oldroot->unref();
 }
 
 /*!
