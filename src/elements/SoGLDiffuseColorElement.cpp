@@ -171,3 +171,16 @@ SoGLDiffuseColorElement::sendOnePacked(const uint32_t packedcol)
     this->updategl(packedcol);
   }
 }
+
+void 
+SoGLDiffuseColorElement::sendOneColor(const SbVec4f & color)
+{
+  if (this->currentispacked) {
+    this->currentispacked = FALSE;
+    this->updategl(color);
+  }
+  else {
+    if (this->current != color) this->updategl(color);    
+  }
+}
+

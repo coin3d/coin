@@ -41,6 +41,7 @@ public:
   void send(const int index, const float alpha);
   void send(const int index);
   void sendOnePacked(const uint32_t packedcol);
+  void sendOneColor(const SbVec4f & color);
 
 protected:
 
