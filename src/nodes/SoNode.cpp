@@ -493,9 +493,10 @@ SoNode::doAction(SoAction * action)
   If it returns \c FALSE, no data in the traversal-state will change
   from the pre-traversal state to the post-traversal state. The
   SoSeparator node will for instance return \c FALSE, as it pushes and
-  pops the state before and after traversal of its children. All shape
-  nodes will also return \c FALSE, as just pushing out geometry data
-  to the rendering engine won't affect the actual rendering state.
+  pops the state before and after traversal of its children. All
+  SoShape nodes will also return \c FALSE, as just pushing out
+  geometry data to the rendering engine won't affect the actual
+  rendering state.
 
   The default method returns \c TRUE, on a "better safe than sorry"
   philosophy.
@@ -815,43 +816,46 @@ SoNode::searchS(SoAction * action, SoNode * node)
   Action method for SoSearchAction.
 
   Compares the search criteria from the \a action to see if this node
-  is a match.
+  is a match. Searching is done by matching up \e all criteria set up
+  in the SoSearchAction -- if \e any of the requested criteria is a
+  miss, the search is not deemed successful for the node.
+
+  \sa SoSearchAction
 */
 void
 SoNode::search(SoSearchAction * action)
 {
-  if (action->isFound())
-    return;
+  if (action->isFound()) { return; }
 
-  int lookFor = action->getFind();
-  SbBool flag;
+  int lookfor = action->getFind();
+  SbBool hit = FALSE;
 
-  if ((lookFor & SoSearchAction::NODE) &&
-       (this == action->getNode())) {
-    action->addPath(action->getCurPath()->copy());
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoNode::search", "NODE match found.\n");
-#endif // debug
-  } else if ((lookFor & SoSearchAction::NAME) &&
-      (this->getName() == action->getName())) {
-    action->addPath(action->getCurPath()->copy());
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoNode::search", "NAME match found.\n");
-#endif // debug
-  } else if ((lookFor & SoSearchAction::TYPE) &&
-      ((this->getTypeId() == action->getType(flag)) ||
-      (flag && this->getTypeId().isDerivedFrom(action->getType(flag))))) {
-    action->addPath(action->getCurPath()->copy());
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoNode::search", "TYPE match found.\n");
-#endif // debug
+  // Coin v1.0.0 was released with a bug where just one hit out of the
+  // criteria would make the search operation on the node successful.
+  // Since this doesn't match neither the behavior of SGI Inventor nor
+  // the documentation for SoSearchAction, we corrected the behavior
+  // for Coin v1.0.1 even though this is on the borderline of what is
+  // acceptable for fixing in a minor patch-release update.
+
+  if (lookfor & SoSearchAction::NODE) {
+    hit = this == action->getNode();
+    if (!hit) { return; }
   }
-#if COIN_DEBUG && 0 // debug
-  else {
-    SoDebugError::postInfo("SoNode::search", "no match for %p (type '%s').",
-                           this, this->getTypeId().getName().getString());
+
+  if (lookfor & SoSearchAction::NAME) {
+    hit = this->getName() == action->getName();
+    if (!hit) { return; }
   }
-#endif // debug
+
+  if (lookfor & SoSearchAction::TYPE) {
+    SbBool chkderived;
+    SoType searchtype = action->getType(chkderived);
+    hit = (this->getTypeId() == searchtype) ||
+      (chkderived && this->getTypeId().isDerivedFrom(searchtype));
+    if (!hit) { return; }
+  }
+
+  if (hit) { action->addPath(action->getCurPath()->copy()); }
 }
 
 /*!
