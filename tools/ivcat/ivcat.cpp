@@ -26,10 +26,11 @@
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-// FIXME: do a proper check for this through configure.
+// FIXME: do proper checks for these through configure.
 // 19991206 mortene.
 #ifndef _WIN32
 #define HAVE_GETOPT 1
+#define HAVE_ISATTY 1
 #endif // !_WIN32
 
 #if HAVE_GETOPT
@@ -63,6 +64,22 @@ usage(const char * argv_0)
           "  Use ``-'' or no input files to read from stdin.\n\n");
 }
 #endif // !HAVE_GETOPT
+
+
+#if HAVE_ISATTY
+#define CHECK_TTY(fileptr) \
+  do { \
+    if (isatty(fileno(fileptr))) { \
+      usage(argv[0]); \
+      fprintf(stderr, "Trying to read from standard input, but standard " \
+              "input is a tty!\n\n"); \
+      exit(1); \
+    } \
+  } while (0)
+#else // !HAVE_ISATTY
+#define CHECK_TTY(fileptr) do { } while (0)
+#endif // !HAVE_ISATTY
+
 
 
 int
@@ -118,9 +135,13 @@ main(int argc, char * argv[])
   SoSeparator * root = new SoSeparator;
 
   if (i >= argc) {
+    CHECK_TTY(stdin);
     /* No files specified, read from stdin only. */
     SoSeparator * tmp = SoDB::readAll(&stdinp);
     if (tmp) root->addChild(tmp);
+    else {
+      fprintf(stderr, "Error: not a valid file on stdin.\n");
+    }
   }
   else {
     SoInput fileinp;
@@ -128,9 +149,16 @@ main(int argc, char * argv[])
     for (; i < argc; i++) {
       SoInput * inp = NULL;
 
-      if (strcmp("-", argv[i]) == 0) inp = &stdinp;
-      else if (fileinp.openFile(argv[i])) inp = &fileinp;
-      else fprintf(stderr, "Couldn't open file '%s' -- skipping.\n", argv[i]);
+      if (strcmp("-", argv[i]) == 0) {
+        CHECK_TTY(stdinp.getCurFile());
+        inp = &stdinp;
+      }
+      else if (fileinp.openFile(argv[i])) {
+        inp = &fileinp;
+      }
+      else {
+        fprintf(stderr, "Couldn't open file '%s' -- skipping.\n", argv[i]);
+      }
 
       if (inp) {
         SoSeparator * tmproot = SoDB::readAll(inp);
