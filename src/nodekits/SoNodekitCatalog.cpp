@@ -72,9 +72,10 @@ SoNodekitCatalog::SoNodekitCatalog(void)
 */
 SoNodekitCatalog::~SoNodekitCatalog()
 {
-  for (int i=0; i < this->items.getLength(); i++)
+  int i;
+  for (i=0; i < this->items.getLength(); i++)
     delete this->items[i];
-  for (int i=0; i < this->delayeditems.getLength(); i++)
+  for (i=0; i < this->delayeditems.getLength(); i++)
     delete this->delayeditems[i];
 }
 
@@ -743,7 +744,7 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 #endif // debug
     }
   }
-        
+
   return TRUE;
 }
 
