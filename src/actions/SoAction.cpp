@@ -48,6 +48,7 @@
 #include <Inventor/misc/SoState.h>
 
 #include <assert.h>
+#include <stdlib.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -273,7 +274,8 @@ SoAction::apply(SoPath * path)
   // So the path is not deallocated during traversal.
   path->ref();
 
-  this->currentpathcode = SoAction::IN_PATH;
+  this->currentpathcode =
+    path->getFullLength() > 1 ? SoAction::IN_PATH : SoAction::BELOW_PATH;
   this->applieddata.path = path;
   this->appliedcode = SoAction::PATH;
 
@@ -311,33 +313,63 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   this->traversalMethods->setUp();
   if (pathlist.getLength() == 0) return;
 
-  // FIXME: doesn't check obeysrules. 20000301 mortene.
-
   this->terminated = FALSE;
-
-  // FIXME: temporary code until proper pathlist traversal is implemented
-  assert(pathlist[0]->getNode(0));
-
-  int n = pathlist.getLength();
 
   // make sure state is created before traversing
   (void) this->getState();
 
-  for (int i = 0; i < n; i++) {
-    SoPath * path = pathlist[i];
-    this->currentpathcode = IN_PATH;
-    this->applieddata.path = path;
-    this->appliedcode = PATH;
-    this->state->push();
-    this->currentpath.setHead(path->getNode(0));
-    if (i == 0) {
-      this->beginTraversal(path->getNode(0));
-    }
-    else this->traverse(path->getNode(0));
-    this->state->pop();
-    this->applieddata.node = NULL;
+  this->applieddata.pathlistdata.origpathlist = &pathlist;
+  this->applieddata.pathlistdata.pathlist = &pathlist;
+  this->appliedcode = PATH_LIST;
+  this->currentpathcode = pathlist[0]->getFullLength() > 1 ?
+    SoAction::IN_PATH : SoAction::BELOW_PATH;
+
+  if (obeysrules) {
+    // GoGoGo
+    this->currentpath.setHead(pathlist[0]->getHead());
+    this->beginTraversal(pathlist[0]->getHead());
+    this->endTraversal(pathlist[0]->getHead());
   }
-  this->endTraversal(pathlist[0]->getNode(0));
+  else {
+    // make copy of path list and make sure it obeys rules
+    SoPathList sortedlist(pathlist);
+    // sort
+    sortedlist.sort();
+    // remove unnecessary paths
+    sortedlist.uniquify();
+    int num = sortedlist.getLength();
+    
+    // if all head nodes are the same we can traverse in one go
+    if (sortedlist[0]->getHead() == sortedlist[num-1]->getHead()) {
+      this->currentpath.setHead(sortedlist[0]->getHead());
+      this->applieddata.pathlistdata.pathlist = &sortedlist;
+      this->beginTraversal(sortedlist[0]->getHead());
+      this->endTraversal(sortedlist[0]->getHead());
+    }
+    else {
+      // make one pass per head node. sortedlist is sorted on
+      // different head nodes first, so this is very easy
+      SoNode * head;
+      SoPathList templist;
+      int i = 0;
+      while (i < num && !this->hasTerminated()) {
+        head = sortedlist[i]->getHead();
+        templist.append(sortedlist[i]);
+        i++;
+        while (i < num && sortedlist[i]->getHead() == head) {
+          templist.append(sortedlist[i]);
+          i++;
+        }
+        this->applieddata.pathlistdata.pathlist = &templist;
+        this->appliedcode = PATH_LIST;
+        this->currentpathcode = templist[0]->getFullLength() > 1 ?
+          SoAction::IN_PATH : SoAction::BELOW_PATH;
+        this->currentpath.setHead(templist[0]->getHead());
+        this->beginTraversal(templist[0]->getHead());
+        templist.truncate(0); 
+      }
+    }
+  }
 }
 
 /*!
@@ -485,6 +517,14 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
   int curlen = this->currentpath.getFullLength();
 
   if (this->currentpathcode == IN_PATH) {
+    // optimization. if node has no children, we know
+    // it is at end of path, and we don't need to do
+    // further tests.
+    if (node && node->getChildren() == NULL) {
+      this->currentpathcode = BELOW_PATH;
+      return;
+    }
+
     if (this->getWhatAppliedTo() == PATH) {
       if (curlen == this->applieddata.path->getFullLength()) {
         this->currentpathcode = BELOW_PATH;
@@ -495,18 +535,31 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
       }
     }
     else {
-      // FIXME: not finished. Fix when PAYH_LIST rendering
-      // is properly supported.
-      assert(this->getWhatAppliedTo() == PATH_LIST);
+      // test for below path by testing for one path that contains
+      // current path, and is longer than current.  at the same time,
+      // test for off path by testing if there is no paths that
+      // contains current path.  this is a lame and slow way to do it,
+      // but I don't think path list traversal is used that often,
+      // and not for a huge amount of paths. If I'm wrong, we'll just
+      // have to optimize this, for instance by implementing 
+      // the SGI's SoCompactPathList class. 
+      //                                       pederb, 2001-03-28
       const SoPathList * pl = this->applieddata.pathlistdata.pathlist;
-      int n = pl->getLength();
-      for (int i = 0; i < n; i++) {
+      int i, n = pl->getLength();
+
+      for (i = 0; i < n; i++) {
         const SoPath * path = (*pl)[i];
-        if (path->getFullLength() > curlen) {
-          this->currentpathcode = BELOW_PATH;
-          break;
+        int len = path->getFullLength();
+        // small optimization, no use testing if path is shorter
+        if (len >= curlen) {
+          if (path->containsPath(&this->currentpath)) {
+            if (len == curlen) this->currentpathcode = BELOW_PATH;
+            break;
+          }
         }
       }
+      // if no path is found, we're off path
+      if (i == n) this->currentpathcode = OFF_PATH;
     }
   }
 }
@@ -576,18 +629,24 @@ SoAction::usePathCode(int & numindices, const int * & indices)
   myarray->truncate(0);
 
   if (this->getWhatAppliedTo() == PATH_LIST) {
+    // this might be very slow if the list contains a lot of
+    // paths. See comment in pushCurPath(int, SoNode*) about this.
     const SoPathList * pl = this->applieddata.pathlistdata.pathlist;
     int n = pl->getLength();
-    int cnt = 0;
+    int previdx = -1;
     myarray->truncate(0);
     for (int i = 0; i < n; i++) {
       const SoPath * path = (*pl)[i];
-      if (path->getFullLength() > curlen) {
-        myarray->append(path->getIndex(curlen));
-        cnt++;
-      }
+      if (path->getFullLength() > curlen &&
+          path->containsPath(&this->currentpath)) {
+        int idx = path->getIndex(curlen);
+        if (idx != previdx) {
+          myarray->append(idx);
+          previdx = idx;
+        }
+      }      
     }
-    numindices = cnt;
+    numindices = myarray->getLength();
     indices = myarray->getArrayPtr();
   }
   else {
