@@ -44,7 +44,7 @@ cc_libhandle
 cc_dl_open(const char * filename)
 {
 #ifdef HAVE_DL_LIB
-  cc_libhandle h = malloc(sizeof(struct cc_libhandle_struct));
+  cc_libhandle h = (cc_libhandle) malloc(sizeof(struct cc_libhandle_struct));
   /* if (!h), FIXME: error handling. 20020906 mortene. */
   h->nativehnd = dlopen(filename, RTLD_LAZY);
   /* if (!h) FIXME: Error handling (kintel 20011121) */
