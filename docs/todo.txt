@@ -95,3 +95,18 @@ STUFF TO FIX IN COIN
   One possible "gotcha": the OS-specific cpu-time functions must have
   a resolution high enough to time even very short intervals for this
   to be useful, I would assume.
+
+
+* Heed the SoBoundingBoxCache::hasLinesOrPoints() settings
+  2001-11-27  Morten Eriksen  <mortene@sim.no>
+
+  We should add a slack value to bounding boxes with lines and/or
+  points in them, to avoid clipping artifacts when anti-aliasing is
+  used.
+
+  (This concerns both client code in the Coin library and in the So*
+  libraries which calculates and renders bounding boxes.)
+
+  As part of this, we should audit to check that all relevant
+  shape-type nodes uses the SoBoundingBoxCaches::setHasLinesOrPoints()
+  method.
