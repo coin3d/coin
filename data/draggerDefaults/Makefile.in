@@ -219,15 +219,6 @@ Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.s
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
 uninstall-info-am:
-install-dist_draggerdefdataDATA: $(dist_draggerdefdata_DATA)
-	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(draggerdefdatadir)
-	@list='$(dist_draggerdefdata_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
-	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(draggerdefdatadir)/$$f"; \
-	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(draggerdefdatadir)/$$f; \
-	done
 
 uninstall-dist_draggerdefdataDATA:
 	@$(NORMAL_UNINSTALL)
@@ -407,6 +398,20 @@ transformerDragger.h: $(srcdir)/transformerDragger.iv $(srcdir)/iv2h.sh
 
 transformBoxDragger.h: $(srcdir)/transformBoxDragger.iv $(srcdir)/iv2h.sh
 	$(srcdir)/iv2h.sh $(srcdir)/transformBoxDragger.iv > transformBoxDragger.h
+
+# **************************************************************************
+
+install-dist_draggerdefdataDATA: $(dist_draggerdefdata_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(draggerdefdatadir)
+	@list='$(dist_draggerdefdata_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if cmp -s "$$d$$p" "$(DESTDIR)$(draggerdefdatadir)/$$f"; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(draggerdefdatadir)/$$f"; \
+	    $(INSTALL_DATA) "$$d$$p" "$(DESTDIR)$(draggerdefdatadir)/$$f"; \
+	  fi \
+	done
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

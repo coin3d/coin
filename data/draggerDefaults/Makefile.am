@@ -128,3 +128,17 @@ transformerDragger.h: $(srcdir)/transformerDragger.iv $(srcdir)/iv2h.sh
 transformBoxDragger.h: $(srcdir)/transformBoxDragger.iv $(srcdir)/iv2h.sh
 	$(srcdir)/iv2h.sh $(srcdir)/transformBoxDragger.iv > transformBoxDragger.h
 
+# **************************************************************************
+
+install-dist_draggerdefdataDATA: $(dist_draggerdefdata_DATA)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(draggerdefdatadir)
+	@list='$(dist_draggerdefdata_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if cmp -s "$$d$$p" "$(DESTDIR)$(draggerdefdatadir)/$$f"; then :; else \
+	    echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(draggerdefdatadir)/$$f"; \
+	    $(INSTALL_DATA) "$$d$$p" "$(DESTDIR)$(draggerdefdatadir)/$$f"; \
+	  fi \
+	done
+
