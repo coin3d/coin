@@ -112,9 +112,9 @@ public:
     CLIP_FAR =          0x0020, // clip ray at far plane?
     EXTRA_MATRIX =      0x0040, // is extra matrix supplied in setObjectSpace()
     PPLIST_IS_SORTED =  0x0080, // did we sort pickedpointslist ?
-    OSVOLUME_DIRTY =    0x0100  // did we calculate osvolume? 
+    OSVOLUME_DIRTY =    0x0100  // did we calculate osvolume?
   };
-  
+
 private:
   SoRayPickAction * owner;
 };
@@ -258,7 +258,7 @@ SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
 
   THIS->setFlag(SoRayPickActionP::WS_RAY_SET);
 
-  // We use a real cone for picking, but keep pick view volume in sync to be 
+  // We use a real cone for picking, but keep pick view volume in sync to be
   // compatible with OIV
   THIS->wsvolume.perspective(0.0, 1.0, neardistance, fardistance);
   THIS->wsvolume.translateCamera(start);
@@ -359,13 +359,10 @@ SoRayPickAction::computeWorldSpaceRay(void)
     const SbViewportRegion & vp = SoViewportRegionElement::get(this->state);
 
     if (!THIS->isFlagSet(SoRayPickActionP::NORM_POINT)) {
-
       SbVec2s pt = THIS->vppoint - vp.getViewportOriginPixels();
       SbVec2s size = vp.getViewportSizePixels();
       THIS->normvppoint.setValue(float(pt[0]) / float(size[0]),
                                  float(pt[1]) / float(size[1]));
-      THIS->setFlag(SoRayPickActionP::NORM_POINT);
-
     }
 
 #if COIN_DEBUG
@@ -405,11 +402,11 @@ SoRayPickAction::computeWorldSpaceRay(void)
     THIS->nearplane = SbPlane(vv.getProjectionDirection(), THIS->raystart);
     THIS->setFlag(SoRayPickActionP::WS_RAY_COMPUTED);
 
-    // we pick on a real cone, but keep pick view volume in sync to be 
+    // we pick on a real cone, but keep pick view volume in sync to be
     // compatible with OIV.
-    float normradius = float(THIS->radiusinpixels) / 
+    float normradius = float(THIS->radiusinpixels) /
       float(SbMin(vp.getViewportSizePixels()[0], vp.getViewportSizePixels()[1]));
-    
+
     THIS->wsvolume = vv.narrow(THIS->normvppoint[0] - normradius,
                                THIS->normvppoint[1] - normradius,
                                THIS->normvppoint[0] + normradius,
@@ -580,7 +577,7 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
 
   SbVec3f ptonray, ptonbox;
   float mindist = FLT_MAX;
-  
+
   SbBool conepick = usefullviewvolume && !THIS->isFlagSet(SoRayPickActionP::WS_RAY_SET);
 
   for (int j = 0; j < 2; j++) {
