@@ -467,3 +467,11 @@ THE WISH LIST
   pixel instead of the texture border color when texture coordinates are
   outside the [0,1] range.
 
+* SoFocusEvent
+  2001-08-15  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  Derived from SoEvent, this event class would notify the scene when the
+  renderarea/viewer has input (event) focus and not.  FOCUS_IN and FOCUS_OUT
+  would be the focus change event values.
+
