@@ -22,10 +22,10 @@
   \brief The SbMatrix class is a 4x4 dimensional representation of a matrix.
   \ingroup base
 
-  SbMatrix is used by many other classes in Coin.
-  It provides storage for a 4x4 matrix in row-major mode. Many common
-  geometrical operations which involves matrix calculations are implemented
-  as methods on this class.
+  SbMatrix is used by many other classes in Coin.  It provides storage
+  for a 4x4 matrix in row-major mode. Many common geometrical
+  operations which involves matrix calculations are implemented as
+  methods on this class.
 */
 
 // Metadon doc:
@@ -554,12 +554,15 @@ SbMatrix::setTranslate(const SbVec3f & t)
 }
 
 /*!
-  Set translation, rotation and scaling all at once. The resulting matrix
-  gets calculated like this:
+  Set translation, rotation and scaling all at once. The resulting
+  matrix gets calculated like this:
 
-  M = S * R * T,
+  \code
+  M = S * R * T
+  \endcode
 
-  where \a S, \a R and \a T is scaling, rotation and translation matrices.
+  where \a S, \a R and \a T is scaling, rotation and translation
+  matrices.
 
   \sa setTranslate(), setRotate(), setScale() and getTransform().
  */
@@ -581,7 +584,9 @@ SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & 
   Set translation, rotation and scaling all at once with a specified
   scale orientation. The resulting matrix gets calculated like this:
 
-  M = Ro-¹ * S * Ro * R * T,
+  \code
+  M = Ro-¹ * S * Ro * R * T
+  \endcode
 
   where \a Ro is the scale orientation, and \a S, \a R
   and \a T is scaling, rotation and translation.
@@ -589,8 +594,8 @@ SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & 
   \sa setTranslate(), setRotate(), setScale() and getTransform().
  */
 void
-SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & s,
-                       const SbRotation & so)
+SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r,
+                       const SbVec3f & s, const SbRotation & so)
 {
   SbMatrix tmp;
 
@@ -611,13 +616,15 @@ SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & 
 
 /*!
   Set translation, rotation and scaling all at once with a specified
-  scale orientation and center point. The resulting matrix gets calculated
-  like this:
+  scale orientation and center point. The resulting matrix gets
+  calculated like this:
 
-  M = -Tc * Ro-¹ * S * Ro * R * T * Tc,
+  \code
+  M = -Tc * Ro-¹ * S * Ro * R * T * Tc
+  \endcode
 
-  where \a Tc is the center point, \a Ro the scale orientation, \a S, \a R
-  and \a T is scaling, rotation and translation.
+  where \a Tc is the center point, \a Ro the scale orientation, \a S,
+  \a R and \a T is scaling, rotation and translation.
 
   \sa setTranslate(), setRotate(), setScale() and getTransform().
  */
@@ -890,7 +897,7 @@ SbMatrix::transpose(void) const
 }
 
 /*!
-  Let this matrix to be right-multiplied by \a m. Returns reference to
+  Let this matrix be right-multiplied by \a m. Returns reference to
   self.
 
   \sa multLeft()
@@ -898,76 +905,38 @@ SbMatrix::transpose(void) const
 SbMatrix &
 SbMatrix::multRight(const SbMatrix & m)
 {
-  SbMatrix tmp;
-  const float * m0 = m[0];
-  const float * m1 = m[1];
-  const float * m2 = m[2];
-  const float * m3 = m[3];
-  const float * t0 = (*this)[0];
-  const float * t1 = (*this)[1];
-  const float * t2 = (*this)[2];
-  const float * t3 = (*this)[3];
-
-  // FIXME: replace with 2 for loops to increase readability. 20010114 mortene.
-  tmp[0][0]=m0[0]*t0[0]+m1[0]*t0[1]+m2[0]*t0[2]+m3[0]*t0[3];
-  tmp[0][1]=m0[1]*t0[0]+m1[1]*t0[1]+m2[1]*t0[2]+m3[1]*t0[3];
-  tmp[0][2]=m0[2]*t0[0]+m1[2]*t0[1]+m2[2]*t0[2]+m3[2]*t0[3];
-  tmp[0][3]=m0[3]*t0[0]+m1[3]*t0[1]+m2[3]*t0[2]+m3[3]*t0[3];
-  tmp[1][0]=m0[0]*t1[0]+m1[0]*t1[1]+m2[0]*t1[2]+m3[0]*t1[3];
-  tmp[1][1]=m0[1]*t1[0]+m1[1]*t1[1]+m2[1]*t1[2]+m3[1]*t1[3];
-  tmp[1][2]=m0[2]*t1[0]+m1[2]*t1[1]+m2[2]*t1[2]+m3[2]*t1[3];
-  tmp[1][3]=m0[3]*t1[0]+m1[3]*t1[1]+m2[3]*t1[2]+m3[3]*t1[3];
-  tmp[2][0]=m0[0]*t2[0]+m1[0]*t2[1]+m2[0]*t2[2]+m3[0]*t2[3];
-  tmp[2][1]=m0[1]*t2[0]+m1[1]*t2[1]+m2[1]*t2[2]+m3[1]*t2[3];
-  tmp[2][2]=m0[2]*t2[0]+m1[2]*t2[1]+m2[2]*t2[2]+m3[2]*t2[3];
-  tmp[2][3]=m0[3]*t2[0]+m1[3]*t2[1]+m2[3]*t2[2]+m3[3]*t2[3];
-  tmp[3][0]=m0[0]*t3[0]+m1[0]*t3[1]+m2[0]*t3[2]+m3[0]*t3[3];
-  tmp[3][1]=m0[1]*t3[0]+m1[1]*t3[1]+m2[1]*t3[2]+m3[1]*t3[3];
-  tmp[3][2]=m0[2]*t3[0]+m1[2]*t3[1]+m2[2]*t3[2]+m3[2]*t3[3];
-  tmp[3][3]=m0[3]*t3[0]+m1[3]*t3[1]+m2[3]*t3[2]+m3[3]*t3[3];
-
-  (void)memcpy(this->matrix, tmp.matrix, sizeof(float)*4*4);
+  SbMatrix tmp(*this);
+  for (int i=0; i < 4; i++) {
+    for (int j=0; j < 4; j++) {
+      (*this)[i][j] =
+        tmp[i][0] * m[0][j] +
+        tmp[i][1] * m[1][j] +
+        tmp[i][2] * m[2][j] +
+        tmp[i][3] * m[3][j];
+    }
+  }
   return *this;
 }
 
 /*!
-  Let this matrix to be left-multiplied by \a m. Returns reference
-  to self.
+  Let this matrix be left-multiplied by \a m. Returns reference to
+  self.
 
-  \sa multRight().
+  \sa multRight()
 */
 SbMatrix&
 SbMatrix::multLeft(const SbMatrix & m)
 {
-  SbMatrix tmp;
-  const float * m0 = m[0];
-  const float * m1 = m[1];
-  const float * m2 = m[2];
-  const float * m3 = m[3];
-  const float * t0 = (*this)[0];
-  const float * t1 = (*this)[1];
-  const float * t2 = (*this)[2];
-  const float * t3 = (*this)[3];
-
-  // FIXME: replace with 2 for loops to increase readability. 20010114 mortene.
-  tmp[0][0]=m0[0]*t0[0]+m0[1]*t1[0]+m0[2]*t2[0]+m0[3]*t3[0];
-  tmp[0][1]=m0[0]*t0[1]+m0[1]*t1[1]+m0[2]*t2[1]+m0[3]*t3[1];
-  tmp[0][2]=m0[0]*t0[2]+m0[1]*t1[2]+m0[2]*t2[2]+m0[3]*t3[2];
-  tmp[0][3]=m0[0]*t0[3]+m0[1]*t1[3]+m0[2]*t2[3]+m0[3]*t3[3];
-  tmp[1][0]=m1[0]*t0[0]+m1[1]*t1[0]+m1[2]*t2[0]+m1[3]*t3[0];
-  tmp[1][1]=m1[0]*t0[1]+m1[1]*t1[1]+m1[2]*t2[1]+m1[3]*t3[1];
-  tmp[1][2]=m1[0]*t0[2]+m1[1]*t1[2]+m1[2]*t2[2]+m1[3]*t3[2];
-  tmp[1][3]=m1[0]*t0[3]+m1[1]*t1[3]+m1[2]*t2[3]+m1[3]*t3[3];
-  tmp[2][0]=m2[0]*t0[0]+m2[1]*t1[0]+m2[2]*t2[0]+m2[3]*t3[0];
-  tmp[2][1]=m2[0]*t0[1]+m2[1]*t1[1]+m2[2]*t2[1]+m2[3]*t3[1];
-  tmp[2][2]=m2[0]*t0[2]+m2[1]*t1[2]+m2[2]*t2[2]+m2[3]*t3[2];
-  tmp[2][3]=m2[0]*t0[3]+m2[1]*t1[3]+m2[2]*t2[3]+m2[3]*t3[3];
-  tmp[3][0]=m3[0]*t0[0]+m3[1]*t1[0]+m3[2]*t2[0]+m3[3]*t3[0];
-  tmp[3][1]=m3[0]*t0[1]+m3[1]*t1[1]+m3[2]*t2[1]+m3[3]*t3[1];
-  tmp[3][2]=m3[0]*t0[2]+m3[1]*t1[2]+m3[2]*t2[2]+m3[3]*t3[2];
-  tmp[3][3]=m3[0]*t0[3]+m3[1]*t1[3]+m3[2]*t2[3]+m3[3]*t3[3];
-
-  (void)memcpy(this->matrix, tmp.matrix, sizeof(float)*4*4);
+  SbMatrix tmp(*this);
+  for (int i=0; i < 4; i++) {
+    for (int j=0; j < 4; j++) {
+      (*this)[i][j] =
+        tmp[0][j] * m[i][0] +
+        tmp[1][j] * m[i][1] +
+        tmp[2][j] * m[i][2] +
+        tmp[3][j] * m[i][3];
+    }
+  }
   return *this;
 }
 
