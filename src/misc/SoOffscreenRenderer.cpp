@@ -428,31 +428,15 @@ public:
   virtual SbBool makeContextCurrent(uint32_t contextid) {
     assert(this->buffer);
     if (this->context && this->glxpixmap) {
-#if 0 // TMP DISABLED
-      // FIXME: the next call causes a crash if no OpenGL context has
-      // yet been set up, because the GLWrapper initialization code
-      // executes several GL / GLX calls. The bug is reproducible by
-      // running for instance the IvExamples/Mentor/09.2.Texture
-      // example.
-      //
-      // Should investigate if it's really necessary to store the old
-      // context-data for resetting, or whether it's enough to just
-      // release the context after we're done by doing
-      // glXMakeCurrent(...,None,NULL).  If we actually do have to
-      // store the context-data, this problem needs to be resolved
-      // somehow.
-      //
-      // 20020325 mortene.
-      const GLWrapper_t * glw = GLWrapper(contextid);
-
-      if (glw->glXGetCurrentDisplay) {
-        this->storedcontext = glXGetCurrentContext();
-        if (this->storedcontext) {
-          this->storeddrawable = glXGetCurrentDrawable();
-          this->storeddisplay = glw->glXGetCurrentDisplay();
-        }
+      this->storedcontext = glXGetCurrentContext();
+      if (this->storedcontext) {
+        // Must know for sure that there's a current context before
+        // instantiating a GLWrapper, or we'll get a crash due to the
+        // OpenGL calls within GLWrapper().
+        const GLWrapper_t * glw = GLWrapper(contextid);
+        if (glw->glXGetCurrentDisplay) { this->storeddisplay = glw->glXGetCurrentDisplay(); }
+        this->storeddrawable = glXGetCurrentDrawable();
       }
-#endif // TMP DISABLED
 
       Bool r = glXMakeCurrent(this->display, this->glxpixmap, this->context);
       return (r == True) ? TRUE : FALSE;
