@@ -178,6 +178,9 @@ SoOffscreenGLXData::buildGLAttrs(int * attrs, int trynum)
 void 
 SoOffscreenGLXData::setBufferSize(const SbVec2s & size) 
 {
+  // Avoid costly operations below if not really necessary.
+  if (this->buffersize == size) { return; }
+
   SoOffscreenInternalData::setBufferSize(size);
   
   delete[] this->buffer;

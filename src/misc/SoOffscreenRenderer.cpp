@@ -382,6 +382,11 @@ SoOffscreenRenderer::getComponents(void) const
 void
 SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
 {
+  // As the current context is destructed and a new one is set up
+  // below, it can be a major optimization to just return when there
+  // is no real change.
+  if (this->viewport == region) { return; }
+
   this->viewport = region;
 
   if (this->renderaction)
