@@ -341,21 +341,21 @@ SoIndexedNurbsCurve::tessBegin(int type, void * data)
 }
 
 void
-SoIndexedNurbsCurve::tessTexCoord(GLfloat * texcoord, void * data)
+SoIndexedNurbsCurve::tessTexCoord(float * texcoord, void * data)
 {
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->vertex.setTextureCoords(SbVec4f(texcoord[0], texcoord[1], texcoord[2], texcoord[3]));
 }
 
 void
-SoIndexedNurbsCurve::tessNormal(GLfloat * normal, void * data)
+SoIndexedNurbsCurve::tessNormal(float * normal, void * data)
 {
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
 }
 
 void
-SoIndexedNurbsCurve::tessVertex(GLfloat * vertex, void * data)
+SoIndexedNurbsCurve::tessVertex(float * vertex, void * data)
 {
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));

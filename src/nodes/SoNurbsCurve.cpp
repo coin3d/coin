@@ -335,21 +335,21 @@ SoNurbsCurve::tessBegin(int type, void * data)
 }
 
 void
-SoNurbsCurve::tessTexCoord(GLfloat * texcoord, void * data)
+SoNurbsCurve::tessTexCoord(float * texcoord, void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   cbdata->vertex.setTextureCoords(SbVec4f(texcoord[0], texcoord[1], texcoord[2], texcoord[3]));
 }
 
 void
-SoNurbsCurve::tessNormal(GLfloat * normal, void * data)
+SoNurbsCurve::tessNormal(float * normal, void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
 }
 
 void
-SoNurbsCurve::tessVertex(GLfloat * vertex, void * data)
+SoNurbsCurve::tessVertex(float * vertex, void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));

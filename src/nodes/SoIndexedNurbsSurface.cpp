@@ -392,21 +392,21 @@ SoIndexedNurbsSurface::tessBegin(int type, void * data)
 }
 
 void
-SoIndexedNurbsSurface::tessTexCoord(GLfloat * texcoord, void * data)
+SoIndexedNurbsSurface::tessTexCoord(float * texcoord, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->vertex.setTextureCoords(SbVec2f(texcoord[0], texcoord[1]));
 }
 
 void
-SoIndexedNurbsSurface::tessNormal(GLfloat * normal, void * data)
+SoIndexedNurbsSurface::tessNormal(float * normal, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
 }
 
 void
-SoIndexedNurbsSurface::tessVertex(GLfloat * vertex, void * data)
+SoIndexedNurbsSurface::tessVertex(float * vertex, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));
