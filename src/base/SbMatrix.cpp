@@ -80,7 +80,7 @@ public:
   static SbVec4f spect_decomp(SbMatrixP::HMatrix S, SbMatrixP::HMatrix U);
   static float polar_decomp(SbMatrixP::HMatrix M, SbMatrixP::HMatrix Q, SbMatrixP::HMatrix S);
 
-  static SbMat IDENTITYMATRIX;
+  static const SbMat IDENTITYMATRIX;
 
   static SbBool isIdentity(const float fm[][4]) {
 #if 0 // I would assume that the memcmp() version is faster..? Should run some profile checks.
@@ -118,7 +118,7 @@ private:
   static void do_rank2(SbMatrixP::HMatrix M, SbMatrixP::HMatrix MadjT, SbMatrixP::HMatrix Q);
 };
 
-SbMat SbMatrixP::IDENTITYMATRIX = {
+const SbMat SbMatrixP::IDENTITYMATRIX = {
   { 1.0f, 0.0f, 0.0f, 0.0f },
   { 0.0f, 1.0f, 0.0f, 0.0f },
   { 0.0f, 0.0f, 1.0f, 0.0f },
