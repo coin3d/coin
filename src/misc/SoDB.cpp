@@ -159,13 +159,14 @@
 
 #ifdef HAVE_VRML97
 #include <Inventor/VRMLnodes/SoVRML.h>
-#endif // HAVE_VRML97
 
 #ifdef HAVE_SOUND
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #endif // HAVE_SOUND
+
+#endif // HAVE_VRML97
 
 #ifdef HAVE_THREADS
 #include <Inventor/C/threads/threadp.h>
@@ -389,7 +390,7 @@ SoDB::init(void)
 
   const char * env;
 
-#if defined(HAVE_SOUND) && 0 // disabled 2002-01-29 pederb. Crashes under Linux
+#if defined(HAVE_SOUND) && defined(HAVE_VRML97) && 0 // disabled 2002-01-29 pederb. Crashes under Linux
   SoAudioDevice * audioDevice;
   audioDevice = SoAudioDevice::instance();
   env = coin_getenv("COIN_SOUND_DRIVER_NAME");
