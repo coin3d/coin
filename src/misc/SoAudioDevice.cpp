@@ -178,19 +178,6 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   }
 
   if (!openal_wrapper()->available) {
-    SoDebugError::postWarning("SoAudioDevice::init", 
-                           "OpenAL linking failed. "
-                           "Attempted to use %s linking. "
-                           "Sound will not be available.", 
-                           openal_wrapper()->runtime ? "run-time" : 
-                           "link-time");
-    if (openal_wrapper()->runtime) {
-      SoDebugError::postInfo("SoAudioDevice::init",
-                             "To get more debug information, "
-                             "set the environment variable "
-                             "COIN_DEBUG_DL=1 and run the "
-                             "application again");
-    }
     PRIVATE(this)->enabled = FALSE;
     PRIVATE(this)->initOK = FALSE;
     return FALSE;

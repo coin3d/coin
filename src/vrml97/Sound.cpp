@@ -379,6 +379,32 @@ SoVRMLSound::SoVRMLSound(void)
   PRIVATE(this)->sourceId = 0;
 
   PRIVATE(this)->cliphandle = NULL;
+
+  static SbBool warningprintedonce = FALSE;
+  if ( (!openal_wrapper()->available) && (!warningprintedonce)) {
+    SoDebugError::postWarning("SoVRMLSound::SoVRMLSound", 
+     "OpenAL linking failed. Attempted to use %s linking.\n"
+     "Sound will not be available.\n"
+     "The probable reason for this is that the OpenAL library,\n"
+     "needed for rendering 3D audio, is not installed correctly on your\n"
+     "system. If you'd like to use sounds in Coin, download the latest \n"
+     "version of OpenAL from www.openal.org [all platforms],\n" 
+     "ftp://opensource.creative.com/pub/sdk/ (OpenALWEAX.exe or \n"
+     "OpenALWEAX2.exe) [Windows platform only], or ask the manufacturer of\n"
+     "your soundcard for a native OpenAL driver (several soundcard\n"
+     "manufacturers offer this).", 
+                              openal_wrapper()->runtime ? "run-time" : 
+                              "link-time");
+    if (openal_wrapper()->runtime) {
+      SoDebugError::postInfo("SoVRMLSound::SoVRMLSound",
+                             "To get more debug information, "
+                             "set the environment variable "
+                             "COIN_DEBUG_DL=1 and run the "
+                             "application again");
+    }
+    warningprintedonce = TRUE;
+  }
+
 }
 
 /*!
