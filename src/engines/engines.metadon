@@ -29,10 +29,10 @@
 # ID      SoComputeBoundingBox
 # ID      SoConcatenate
 # ID      SoCounter
-# Id      SoElapsedTime
+# ID      SoElapsedTime
 # ID      SoEngineOutputData
-# id      SoFieldConverter
-# i           SoConvertAll
+# ID      SoFieldConverter
+# I-          SoConvertAll
 # ID      SoGate
 # ID      SoInterpolate
 # ID          SoInterpolateFloat
