@@ -37,6 +37,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
 #include <Inventor/nodes/SoVertexShape.h>
@@ -74,13 +75,15 @@ SoTextureCoordinateBundle(SoAction * const action,
   //
   // return immediately if there is no texture
   //
-  if (forRendering && !SoGLTextureEnabledElement::get(this->state))
+  if (forRendering && 
+      !SoGLTextureEnabledElement::get(this->state) &&
+      !SoGLTexture3EnabledElement::get(this->state))
     return;
   if (!forRendering) {
     // test if element is enabled for this action.
     int stackidx = SoTextureImageElement::getClassStackIndex();
     if (this->state->isElementEnabled(stackidx)) {
-      SbVec2s dummysize;
+      SbVec3s dummysize;
       int dummynum;
       if (!SoTextureImageElement::getImage(this->state, dummysize, dummynum))
         return;
@@ -145,7 +148,7 @@ SoTextureCoordinateBundle::~SoTextureCoordinateBundle()
 }
 
 /*!
-  Returns \e TRUE if texture coordinates is needed dureing rendering.
+  Returns \e TRUE if texture coordinates is needed during rendering.
 */
 SbBool
 SoTextureCoordinateBundle::needCoordinates() const
@@ -275,6 +278,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
     // clear on this point (surprise), but the VRML specification states
     // that if the two dimensions are equal, the ordering X>Y>Z should
     // be used.
+    // FIXME: What about 3D textures? (kintel 20011115)
 #if 0 // the correct way to do it
     if (this->defaultdim0 > this->defaultdim1) {
       SbSwap(this->defaultdim0, this->defaultdim1);
@@ -301,7 +305,6 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   assert(this->defaultsize[0] > 0.0f);
   assert(this->defaultsize[1] > 0.0f);
 }
-
 
 const SbVec4f &
 SoTextureCoordinateBundle::defaultCB(void * userdata,
