@@ -34,6 +34,7 @@
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/SbVec2s.h>
 
 #ifdef _WIN32
@@ -73,12 +74,28 @@ SoTextureCoordinateBundle(SoAction * const action,
   if (forRendering && !SoGLTextureEnabledElement::get(this->state))
     return;
   if (!forRendering) {
+
+    if (action->getTypeId().isDerivedFrom(SoPickAction::getClassTypeId())) {
+      // FIXME: this is a temporary fix. Since SoTextureImageElement is not
+      // enabled for SoPickAction or SoRayPickAction (I think it perhaps 
+      // should be) it's not possible to detect if there's an active 
+      // texture in the state; if texture coordinates are needed. Since it would 
+      // be a _big_ waste of CPU-time to simply generate default texture
+      // coordinates even if a shape isn't textured (most shapes use 
+      // SoShape::generatePrimitives() for picking), we should find a solution 
+      // to this. For now, I just disable texture coordinates when picking.
+      // I haven't implemented proper support for calculating them when picking
+      // anyway.
+      // pederb, 20000218
+      return;
+    }
+    
     SbVec2s dummysize;
     int dummynum;
     if (!SoTextureImageElement::getImage(this->state, dummysize, dummynum))
       return;
   }
- 
+  
   assert(action->getCurPathTail()->isOfType(SoVertexShape::getClassTypeId()));
   this->shapenode = (SoVertexShape*)action->getCurPathTail();
   
