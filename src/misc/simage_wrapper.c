@@ -31,7 +31,7 @@
 #if HAVE_DLFCN_H
 #include <dlfcn.h>
 #endif /* HAVE_DLFCN_H */
-#if HAVE_LIBSIMAGE /* In case we're _not_ doing runtime linking. */
+#ifdef HAVE_LIBSIMAGE /* In case we're _not_ doing runtime linking. */
 #define SIMAGEWRAPPER_ASSUME_SIMAGE 1
 #endif /* HAVE_LIBSIMAGE */
 
