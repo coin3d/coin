@@ -25,6 +25,10 @@
 #include <Inventor/SbDict.h>
 #include <Inventor/lists/SbList.h>
 #include <stdio.h> // FILE
+#ifndef COIN_INTERNAL
+ // For Open Inventor compatibility.
+ #include <Inventor/SoDB.h>
+#endif // COIN_INTERNAL
 
 class SoBase;
 class SbString;
