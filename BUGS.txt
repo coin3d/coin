@@ -3708,3 +3708,13 @@ main(int argc, char ** argv)
     20040130 mortene.
 
 =====================================================================
+
+102 Lack of control over OffscreenRenderer context setup
+
+    There is currently no way to enable stencil-buffer and other GL
+    features when creating the SoOffscreenRenderer context.  There
+    should be a way to control offscreen renderer features in some
+    way.  Requested by Josh Flowers.
+
+    20040203 larsa.
+
