@@ -87,6 +87,15 @@ SoGlobalField::SoGlobalField(const SbName & name, SoField * field)
 // Destructor.
 SoGlobalField::~SoGlobalField()
 {
+#if COIN_DEBUG && 0 // debug
+  SoField * field = this->classfielddata->getField(this, 0);
+  SoDebugError::postInfo("SoGlobalField::~SoGlobalField",
+                         "name=='%s', field==%p(%s)",
+                         this->getName().getString(),
+                         field,
+                         field ? field->getTypeId().getName().getString() : "");
+#endif // debug
+
   if (this->classfielddata) delete this->classfielddata->getField(this, 0);
   delete this->classfielddata;
 }
@@ -112,10 +121,7 @@ SoGlobalField::initClass(void)
                        SoGlobalField::createInstance);
 
   SoGlobalField::allcontainers = new SoBaseList;
-
-#if COIN_DEBUG
   coin_atexit((coin_atexit_f *)SoGlobalField::clean, 0);
-#endif // COIN_DEBUG
 }
 
 // Free up resources.
@@ -138,10 +144,10 @@ SoGlobalField::clean(void)
                               gf->getName().getString());
   }
 
+#endif // COIN_DEBUG
+
   delete SoGlobalField::allcontainers;
   SoGlobalField::allcontainers = NULL;
-
-#endif // COIN_DEBUG
 }
 
 // Return index in list of global fields of the global field with the
@@ -162,12 +168,15 @@ SoGlobalField::addGlobalFieldContainer(SoGlobalField * fieldcontainer)
   SoGlobalField::allcontainers->append(fieldcontainer);
 }
 
-// Remove the given global field.
+// Remove the given global field from the internal list.
+//
+// Note that this will decrease the reference count of the
+// SoGlobalField node, causing it to be destructed unless it has been
+// ref()'ed outside of this class.
 void
 SoGlobalField::removeGlobalFieldContainer(SoGlobalField * fieldcontainer)
 {
   SoGlobalField::allcontainers->removeItem(fieldcontainer);
-  return;
 }
 
 // Returns SoGlobalField instance with the given name.
@@ -268,14 +277,13 @@ SoGlobalField::readInstance(SoInput * in, unsigned short flags)
   }
 
   if (in->isBinary()) {
-    int dummy;
-    READ_VAL(dummy); // Nr of fields. This should always be 1.
-#if COIN_DEBUG
-    if (dummy != 1) {
-      SoDebugError::postWarning("SoGlobalField::readInstance",
-                                "%d fields (should be 1)", dummy);
+    int nrfields;
+    READ_VAL(nrfields);
+    if (nrfields != 1) {
+      SoReadError::post(in, "%d fields for a globalfield node (should "
+                        "always be 1)", nrfields);
+      return FALSE;
     }
-#endif // COIN_DEBUG
   }
 
   SbName fieldname;
