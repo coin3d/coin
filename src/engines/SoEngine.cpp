@@ -399,7 +399,8 @@ SoEngine::writeInstance(SoOutput * out)
 }
 
 /*!
-  FIXME: doc
+  Writes the types of engine outputs for extension engines
+  (i.e. engines not built in to Coin).
 */
 void
 SoEngine::writeOutputTypes(SoOutput * out)
