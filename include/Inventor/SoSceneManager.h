@@ -32,11 +32,12 @@ class SoNodeSensor;
 class SoOneShotSensor;
 class SoSensor;
 
+class SoSceneManager;
+typedef void SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr);
+
 
 class COIN_DLL_EXPORT SoSceneManager {
 public:
-  typedef void SoSceneManagerRenderCB(void * userdata, SoSceneManager * mgr);
-
   SoSceneManager(void);
   virtual ~SoSceneManager();
   virtual void render(const SbBool clearwindow = TRUE,
