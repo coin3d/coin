@@ -187,10 +187,6 @@ SbXfBox3f::extendBy(const SbVec3f & pt)
   bounding box always has the smallest possible volume. To accomplish this,
   the transformation on this SbXfBox3f will sometimes be flattened before
   it's combined with \a bb.
-
-  Note: is not guaranteed to give an optimal result if used for bbox
-  calculation since the transformation matrix might change. See
-  documentation in SoGetBoundingBoxAction for more details.
 */
 void
 SbXfBox3f::extendBy(const SbBox3f & bb)
@@ -294,6 +290,10 @@ SbXfBox3f::extendBy(const SbBox3f & bb)
   Extend the boundaries of the box by the given \a bb parameter.
 
   The given box is assumed to be in transformed space.
+
+  Note: is not guaranteed to give an optimal result if used for bbox
+  calculation since the transformation matrix might change. See
+  documentation in SoGetBoundingBoxAction for more details.
 */
 void
 SbXfBox3f::extendBy(const SbXfBox3f & bb)
