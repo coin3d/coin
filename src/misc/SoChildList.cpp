@@ -168,7 +168,9 @@ SoChildList::copy(const SoChildList & cl)
   // Call truncate() explicitly here to get the path notification.
   this->truncate(0);
   SoBaseList::copy(cl);
-  this->auditors = cl.auditors;
+
+  // Note: we are not copying the path auditor list. This is the
+  // correct behavior, so don't try to "fix" it.
 
   this->parent->startNotify();
 }
