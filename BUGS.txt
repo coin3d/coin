@@ -4209,41 +4209,6 @@ PointSet { }
 
 =====================================================================
 
-160 Mem-leak when using SoTransformBoxManip.
-
-    To reproduce, set the envvar COIN_DEBUG_TRACK_SOBASE_INSTANCES=1,
-    then run the examinerviewer example of SoGuiExamples on the
-    following iv-file, click and drag the box, then let go and exit
-    the app:
-
-----8<----- [snip] --------------------8<----- [snip] ----------------
-#Inventor V2.1 ascii
-
-TransformBoxManip { }
-----8<----- [snip] --------------------8<----- [snip] ----------------
-
-    As can be seen from the debug output on application exit, an
-    SoPath is not cleaned up.
-
-    The bug does not show up when the dragger has not been interacted
-    with. It also seems that this is /not/ a one-off mem-leak, as more
-    un-allocated SoPath-instances shows up in the dump at exit when
-    doing more interaction operations.
-
-    I haven't investigated further -- it could e.g. be that this is a
-    general bug with draggers.
-
-    20041102 mortene.
-
-    UPDATE 20041105 mortene: I'm seeing the same error with
-    SoScale1Dragger and SoScale2Dragger, at least, so this is probably
-    a general dragger problem.
-
-    UPDATE 20041220 mortene: see also item #183.
-
-=====================================================================
-
-
 162 Inconsistent traversal behavior upon traversal of VRML97-nodes
     with SoSFNode and/or SoMFNode fields.
 
@@ -4759,5 +4724,5 @@ SpotLightDragger
     safe signature, then deprecate the use of the original ones.
 
     20041221 mortene.
- 
+
 =====================================================================

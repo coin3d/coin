@@ -138,11 +138,11 @@
 
   \verbatim
   CLASS SoDragger
-  PVT   "this",  SoDragger  --- 
-        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ] 
-  PVT   "topSeparator",  SoSeparator  --- 
-  PVT   "motionMatrix",  SoMatrixTransform  --- 
-  PVT   "geomSeparator",  SoSeparator  --- 
+  PVT   "this",  SoDragger  ---
+        "callbackList",  SoNodeKitListPart [ SoCallback, SoEventCallback ]
+  PVT   "topSeparator",  SoSeparator  ---
+  PVT   "motionMatrix",  SoMatrixTransform  ---
+  PVT   "geomSeparator",  SoSeparator  ---
   \endverbatim
 
   \NODEKIT_POST_TABLE
@@ -372,6 +372,7 @@ SoDragger::~SoDragger()
   if (THIS->surrogateownerpath) THIS->surrogateownerpath->unref();
   if (THIS->surrogatepath) THIS->surrogatepath->unref();
   delete THIS->draggercache;
+  delete THIS->cbaction;
   delete this->pimpl;
 }
 
@@ -1275,7 +1276,7 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
   clampedscale[2] = SbMax((float)scale[2], SoDragger::minscale);
 
   SbMatrix transform, tmp;
-  // Calculate the scaled matrix without doing any testing if the 
+  // Calculate the scaled matrix without doing any testing if the
   // scale of the resulting matrix is above SoDragger::minscale.
   transform.setTranslate(-scalecenter);
   tmp.setScale(clampedscale);
@@ -1321,14 +1322,14 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
     // matrices to calculate the required scale vector.
     //
     // The scale matrix is found by the following equality:
-    // 
+    //
     // M = C^-1 * P^-1 * S * P * C * Mold
     //
     // By having the scale on one side and moving all other matrices
     // to the other side, we end up with this equation:
     //
     // S = P * C * M * Mold^-1 * C^-1 * P^-1
-    // 
+    //
     // Where S is the scale matrix which has a diagonal containing
     // the required scale vector.
 
@@ -1361,7 +1362,7 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
     transform.multRight(tmp);
     tmp.setTranslate(scalecenter);
     transform.multRight(tmp);
-    
+
     if (conversion) {
       transform.multRight(*conversion);
       transform.multLeft(conversion->inverse());
@@ -1497,7 +1498,7 @@ typedef struct {
   SbViewVolume vv;
 } sodragger_vv_data;
 
-static SoCallbackAction::Response 
+static SoCallbackAction::Response
 sodragger_vv_cb(void * userdata, SoCallbackAction * action, const SoNode * node)
 {
   sodragger_vv_data * data = (sodragger_vv_data*) userdata;
@@ -1539,7 +1540,7 @@ void
 SoDragger::handleEvent(SoHandleEventAction * action)
 {
   const SoEvent * event = action->getEvent();
-  
+
   if (this->isActive.getValue() || this->getActiveChildDragger()) {
     if (!action->getGrabber())
       this->updateDraggerCache(action->getCurPath());
