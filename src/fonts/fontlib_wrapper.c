@@ -60,13 +60,13 @@ static void * flw_global_lock = NULL;
 
 #define FLW_MUTEX_LOCK(m) \
   do { \
-    fprintf(stderr, "mutex lock in %s\n", __func__); \
+    (void)fprintf(stderr, "mutex lock in %s\n", __func__); \
     CC_MUTEX_LOCK(m); \
   } while (0)
 
 #define FLW_MUTEX_UNLOCK(m) \
   do { \
-    fprintf(stderr, "mutex unlock in %s\n", __func__); \
+    (void)fprintf(stderr, "mutex unlock in %s\n", __func__); \
     CC_MUTEX_UNLOCK(m); \
   } while (0)
 
@@ -667,13 +667,6 @@ cc_flw_get_advance(unsigned int font, unsigned int glyph, float * x, float * y)
 
   FLW_MUTEX_LOCK(flw_global_lock);
   
-  if (font == 0) {
-    *x = 0;
-    *y = 0;
-    return;
-  }
-
-
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
 
