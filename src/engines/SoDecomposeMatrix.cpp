@@ -31,6 +31,33 @@
 
 SO_ENGINE_SOURCE(SoDecomposeMatrix);
 
+/*!
+  \var SoMFMatrix SoDecomposeMatrix::matrix
+  Set of transformation matrices to decompose into their
+  translation/rotation/scale parts.
+*/
+/*!
+  \var SoMFVec3f SoDecomposeMatrix::center
+  Center points of transform matrices.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeMatrix::translation
+  (SoMFVec3f) Translation parts of input matrices.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeMatrix::rotation
+  (SoMFRotation) Rotation parts of input matrices.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeMatrix::scaleFactor
+  (SoMFVec3f) Scale vectors of input matrices.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeMatrix::scaleOrientation
+  (SoMFRotation) Scale orientation values of the input matrices.
+*/
+
+
 #ifndef DOXYGEN_SKIP_THIS // No need to document these.
 
 // Default constructor.

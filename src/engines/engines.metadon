@@ -23,10 +23,10 @@
 # ID      SoDecomposeVec4f
 # ID      SoComposeRotation
 # ID      SoComposeRotationFromTo
-# Id      SoDecomposeRotation
+# ID      SoDecomposeRotation
 # ID      SoComposeMatrix
-# Id      SoDecomposeMatrix
-#         SoComputeBoundingBox
+# ID      SoDecomposeMatrix
+# ID      SoComputeBoundingBox
 # ID      SoConcatenate
 # Id      SoCounter
 # Id      SoElapsedTime

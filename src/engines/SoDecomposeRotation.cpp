@@ -31,6 +31,19 @@
 
 SO_ENGINE_SOURCE(SoDecomposeRotation);
 
+/*!
+  \var SoMFRotation SoDecomposeRotation::rotation
+  Input rotations to decompose into axis + angle values.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeRotation::axis
+  (SoMFVec3f) The axis settings of the input rotations.
+*/
+/*!
+  \var SoEngineOutput SoDecomposeRotation::angle
+  (SoMFFloat) The angle values of the input rotations.
+*/
+
 #ifndef DOXYGEN_SKIP_THIS // No need to document these.
 
 // Default constructor.
