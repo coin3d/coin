@@ -31,8 +31,8 @@
   node. When manipulation is finished, the node is put back into the
   graph, replacing the manipulator.
 
-  An SoJackDragger is used by instances this manipulator class as the
-  default dragger when manipulating SoClipPlane nodes. See the
+  An SoJackDragger is used by instances of this manipulator class as
+  the default dragger when manipulating SoClipPlane nodes. See the
   documentation of SoJackDragger for details about how to control the
   manipulator.
 

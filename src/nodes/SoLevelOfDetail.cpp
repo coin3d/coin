@@ -37,8 +37,8 @@
   should be taken to mean more or less detailed in the number of
   polygons / shapes used for rendering it).
 
-  The run-time rendering system then, upon scenegraph traversal,
-  calculates on-the-fly either the distance from the camera to the
+  The run-time rendering system then, upon scenegraph traversal, will
+  on-the-fly calculate either the distance from the camera to the
   3D-model in question, or the number of pixels in the screen
   projection of the 3D-model. This value is then used to decide which
   version of the model to actually render: as the model is moved
@@ -56,7 +56,7 @@
   and less detailed versions of a 3D model from the original is often
   not a trivial task to do properly. The process is often assisted by
   software like what Systems in Motion offers in their <a
-  href="http://www.rational-reducer.com>Rational Reducer</a>package.
+  href="http://www.rational-reducer.com>Rational Reducer</a> package.
 
 
   The SoLevelOfDetail node implements the "projected size" variety
@@ -70,23 +70,25 @@
   Along with this set of models of the same shape, a specification of
   when to switch between them is also provided.
 
-  \code
-LevelOfDetail {
-   screenArea [ 2000, 500, 50 ]
+  Example scenegraph layout:
 
-   DEF version-0 Separator {
-     # most complex / detailed / heavy version of subgraph
-   }
-   DEF version-1 Separator {
-     # less complex version of subgraph
-   }
-   DEF version-2 Separator {
-     # even less complex version of subgraph
-   }
-   DEF version-3 Separator {
-     # simplest / "lightest" version of subgraph
-   }
-}
+  \code
+  LevelOfDetail {
+     screenArea [ 2000, 500, 50 ]
+
+     DEF version-0 Separator {
+       # most complex / detailed / heavy version of subgraph
+     }
+     DEF version-1 Separator {
+       # less complex version of subgraph
+     }
+     DEF version-2 Separator {
+       # even less complex version of subgraph
+     }
+     DEF version-3 Separator {
+       # simplest / "lightest" version of subgraph
+     }
+  }
   \endcode
 
   The way the above sub-scenegraph would work would be the following:
@@ -95,7 +97,7 @@ LevelOfDetail {
   to the camera), the most complex version of the model (\c version-0)
   would be traversed (and rendered, of course). If the projected area
   would be \e between 500 and 2000 pixels, the \c version-1 model
-  would be used. Ditto if the projected area was between 100 and 500
+  would be used. Ditto if the projected area was between 50 and 500
   pixels, the \c version-2 version of the model would be
   used. Finally, if the projected bounding box area would be \e less
   than 50 square pixels, the presumably least detailed version of the
@@ -110,10 +112,10 @@ LevelOfDetail {
   Note that the SoLevelOfDetail::screenArea vector will be influenced
   by preceding SoComplexity nodes in the following way: if
   SoComplexity::value is set from 0.0 up to 0.5, lower detail levels
-  than normal will be shown. If SoComplexity::value is above 0.5,
-  higher level details than normal will be shown. An
+  than normal will be selected for traversal. If SoComplexity::value
+  is above 0.5, higher level details than normal will be used. An
   SoComplexity::value equal to 1.0 will cause the first child of
-  SoLevelOfDetail to always be shown.
+  SoLevelOfDetail to always be used.
 
 
   As mentioned above, there is one other level-of-detail node in the
