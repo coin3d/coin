@@ -284,9 +284,7 @@ SoNodeEngine::readInstance(SoInput * in, unsigned short flags)
 void
 SoNodeEngine::writeInstance(SoOutput * out)
 {
-  if (this->writeHeader(out, FALSE, TRUE)) return;
   inherited::writeInstance(out);
-  this->writeFooter(out);
 }
 
 /*!
