@@ -55,19 +55,12 @@ protected:
   virtual void generatePrimitives(SoAction * action);
 
 private:
-  int findNumFaces() const;
+  SbBool useConvexCache(SoAction * action);
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
   virtual void notify(SoNotList * list);
-
-  SbBool countPrimitives();
-
-  int numTriangles;
-  int numQuads;
-  int numPolygons;
-
   SoConvexDataCache * convexCache;
-
+  int concavestatus;
 };
 
 #endif // !COIN_SOINDEXEDFACESET_H

@@ -19,15 +19,14 @@
 
 /*!
   \class SoIndexedFaceSet SoIndexedFaceSet.h Inventor/nodes/SoIndexedFaceSet.h
-  \brief The SoIndexedFaceSet class ...
+  \brief The SoIndexedFaceSet class is used to handle generic facesets.
   \ingroup nodes
 
-  FIXME: write class doc
+  FIXME: more doc.
 */
 
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoConvexDataCache.h>
 #include <Inventor/misc/SoState.h>
@@ -56,33 +55,37 @@
 
 /*!
    \enum SoIndexedFaceSet::Binding
-  FIXME: write documentation for enum
+   Enum used to specify normal, material and texture coordinate binding.
 */
 /*!
   \var SoIndexedFaceSet::Binding SoIndexedFaceSet::OVERALL
-  FIXME: write documentation for enum definition
+  Specifies overall binding.
 */
 /*!
   \var SoIndexedFaceSet::Binding SoIndexedFaceSet::PER_FACE
-  FIXME: write documentation for enum definition
+  Specifies per face binding.
 */
 /*!
   \var SoIndexedFaceSet::Binding SoIndexedFaceSet::PER_FACE_INDEXED
-  FIXME: write documentation for enum definition
+  Specifies per face indexed binding.
 */
 /*!
   \var SoIndexedFaceSet::Binding SoIndexedFaceSet::PER_VERTEX
-  FIXME: write documentation for enum definition
+  Specifies per vertex binding.
 */
 /*!
   \var SoIndexedFaceSet::Binding SoIndexedFaceSet::PER_VERTEX_INDEXED
-  FIXME: write documentation for enum definition
+  Specifies per vertex indexed binding.
 */
 /*!
   \var SoIndexedFaceSet::Binding SoIndexedFaceSet::NONE
-  FIXME: write documentation for enum definition
+  Specifies no binding. Normals, materials or texcoords should not be used.
 */
 
+// for concavestatus
+#define STATUS_UNKNOWN 0
+#define STATUS_CONVEX  1
+#define STATUS_CONCAVE 2
 
 
 // *************************************************************************
@@ -95,9 +98,8 @@ SO_NODE_SOURCE(SoIndexedFaceSet);
 SoIndexedFaceSet::SoIndexedFaceSet()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedFaceSet);
-
-  this->numQuads = this->numTriangles = this->numPolygons = -1;
   this->convexCache = NULL;
+  this->concavestatus = STATUS_UNKNOWN;
 }
 
 
@@ -109,73 +111,11 @@ SoIndexedFaceSet::~SoIndexedFaceSet()
   delete this->convexCache;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoIndexedFaceSet class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoIndexedFaceSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoIndexedFaceSet);
-}
-
-/*!
-  \internal
-*/
-int
-SoIndexedFaceSet::findNumFaces() const
-{
-  const int32_t * ptr = coordIndex.getValues(0);
-  const int32_t * endptr = ptr + coordIndex.getNum();
-  int cnt = 0;
-  while (ptr < endptr) {
-    if (*ptr++ < 0) cnt++;
-  }
-  return cnt;
-}
-
-/*
-  Counts the triangles, quads and polygons in the face set, while at
-  the same time checking if the index array is valid. Updates the
-  count variables, and returns true if index array is ok.
-*/
-SbBool
-SoIndexedFaceSet::countPrimitives(void)
-{
-  this->numTriangles = -1;
-  this->numQuads = -1;
-  this->numPolygons = -1;
-
-  int numt, numq, nump;
-  numt = numq = nump = 0;
-
-  const int32_t * ptr = coordIndex.getValues(0);
-  const int32_t * endptr = ptr + coordIndex.getNum();
-  int cnt = 0;
-  while (ptr < endptr) {
-    if (*ptr++ >= 0) cnt++;
-    else {
-      if (cnt < 3) {
-#if COIN_DEBUG
-        SoDebugError::postWarning("SoIndexedFaceSet::countPrimitives",
-                                  "coordIndex field not valid (polygon with %d"
-                                  " vertices)", cnt);
-#endif // COIN_DEBUG
-        // FIXME: shouldn't this be handled a bit more gracefully --
-        // like just ignoring the offending polygon? 19990405 mortene.
-        return FALSE;
-      }
-      else if (cnt == 3) numt++;
-      else if (cnt == 4) numq++;
-      else nump++;
-      cnt = 0;
-    }
-  }
-  this->numTriangles = numt;
-  this->numQuads = numq;
-  this->numPolygons = nump;
-  return TRUE;
 }
 
 /*!
@@ -256,19 +196,21 @@ SoIndexedFaceSet::findNormalBinding(SoState * const state) const
 }
 
 /*!
-  FIXME: write function documentation
+  Overloaded to invalidate convex cache.
 */
 void
-SoIndexedFaceSet::notify(SoNotList * /* list */)
+SoIndexedFaceSet::notify(SoNotList * list)
 {
-  // FIXME: implement what's necessary here (cache
-  // destruction?). 19990405 mortene.
+  if (this->convexCache) {
+    delete this->convexCache;
+    this->convexCache = NULL;
+  }
+  SoField *f = list->getLastField();
+  if (f == &this->coordIndex) this->concavestatus = STATUS_UNKNOWN;
+  SoNode::notify(list);
 }
 
-
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 {
@@ -291,14 +233,6 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
 
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
-
-  // FIXME: what the puck? 19990405 mortene.
-  if (this->numTriangles == -1 &&
-      this->numQuads == -1 &&
-      this->numPolygons == -1) {
-    SbBool ok = this->countPrimitives();
-    assert(ok);
-  }
 
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
@@ -343,18 +277,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     }
   }
 
-  if (this->numPolygons > 0 &&
-      SoShapeHintsElement::getFaceType(state) !=
-      SoShapeHintsElement::CONVEX) {
-    if (this->convexCache == NULL) {
-      this->convexCache = new SoConvexDataCache(state);
-      this->convexCache->generate(coords, cindices, numindices,
-                                  mindices, nindices, tindices,
-                                  (SoConvexDataCache::Binding)mbind,
-                                  (SoConvexDataCache::Binding)nbind,
-                                  (SoConvexDataCache::Binding)tbind);
-
-    }
+  if (this->useConvexCache(action)) {
     cindices = this->convexCache->getCoordIndices();
     numindices = this->convexCache->getNumCoordIndices();
     mindices = this->convexCache->getMaterialIndices();
@@ -422,9 +345,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   pointDetail.setCoordinateIndex(idx);      \
   this->shapeVertex(&vertex);
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoIndexedFaceSet::generatePrimitives(SoAction *action)
 {
@@ -441,14 +362,6 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
 
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
-
-  // FIXME: what the puck? 19990405 mortene.
-  if (this->numTriangles == -1 &&
-      this->numQuads == -1 &&
-      this->numPolygons == -1) {
-    SbBool ok = this->countPrimitives();
-    assert(ok);
-  }
 
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
@@ -495,18 +408,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
     mindices = cindices;
   }
 
-  if (this->numPolygons > 0 &&
-      SoShapeHintsElement::getFaceType(state) !=
-      SoShapeHintsElement::CONVEX) {
-    if (this->convexCache == NULL) {
-      this->convexCache = new SoConvexDataCache(state);
-      this->convexCache->generate(coords, cindices, numindices,
-                                  mindices, nindices, tindices,
-                                  (SoConvexDataCache::Binding)mbind,
-                                  (SoConvexDataCache::Binding)nbind,
-                                  (SoConvexDataCache::Binding)tbind);
-
-    }
+  if (this->useConvexCache(action)) {
     cindices = this->convexCache->getCoordIndices();
     numindices = this->convexCache->getNumCoordIndices();
     mindices = this->convexCache->getMaterialIndices();
@@ -624,9 +526,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
 }
 #undef DO_VERTEX
 
-/*!
-  FIXME: write doc
-*/
+// doc from parent
 void
 SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -652,4 +552,89 @@ SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     }
     action->addNumTriangles(add);
   }
+}
+
+//
+// internal method which checks if convex cache needs to be
+// used or (re)created. Returns TRUE if convex cache must be
+// used. this->convexCache is then guaranteed to be != NULL.
+//
+SbBool
+SoIndexedFaceSet::useConvexCache(SoAction * action)
+{
+  SoState * state = action->getState();
+  if (SoShapeHintsElement::getFaceType(state) == SoShapeHintsElement::CONVEX)
+    return FALSE;
+
+  if (this->concavestatus == STATUS_UNKNOWN) {
+    const int32_t * ptr = this->coordIndex.getValues(0);
+    const int32_t * endptr = ptr + this->coordIndex.getNum();
+    int cnt = 0;
+    while (ptr < endptr) {
+      if (*ptr++ >= 0) cnt++;
+      else {
+        if (cnt > 3) break; // found a quad or polygon
+        cnt = 0;
+      }
+    }
+    if (ptr < endptr) concavestatus = STATUS_CONCAVE;
+    else concavestatus = STATUS_CONVEX;
+  }
+  if (this->concavestatus == STATUS_CONVEX) return FALSE;
+
+  if (this->convexCache && this->convexCache->isValid(state))
+    return TRUE;
+
+  delete this->convexCache;
+
+  // push to create cache dependencies
+  state->push();
+  if (this->vertexProperty.getValue()) this->vertexProperty.getValue()->doAction(action);
+  const SoCoordinateElement * coords;
+  const SbVec3f * normals;
+  const int32_t * cindices;
+  int32_t numindices;
+  const int32_t * nindices;
+  const int32_t * tindices;
+  const int32_t * mindices;
+  SbBool doTextures;
+  SbBool normalCacheUsed;
+  SbBool sendNormals = TRUE;
+
+  this->getVertexData(state, coords, normals, cindices,
+                      nindices, tindices, mindices, numindices,
+                      sendNormals, normalCacheUsed);
+
+  Binding mbind = this->findMaterialBinding(state);
+  Binding nbind = this->findNormalBinding(state);
+
+  if (normalCacheUsed && nbind == PER_VERTEX) {
+    nbind = PER_VERTEX_INDEXED;
+  }
+
+  Binding tbind = NONE;
+  if (SoTextureCoordinateBindingElement::get(state) ==
+      SoTextureCoordinateBindingElement::PER_VERTEX) {
+    tbind = PER_VERTEX;
+  }
+  else {
+    tbind = PER_VERTEX_INDEXED;
+    if (tindices == NULL) tindices = cindices;
+  }
+
+  if (nbind == PER_VERTEX_INDEXED && nindices == NULL) {
+    nindices = cindices;
+  }
+  if (mbind == PER_VERTEX_INDEXED && mindices == NULL) {
+    mindices = cindices;
+  }
+  this->convexCache = new SoConvexDataCache(state);
+  this->convexCache->generate(coords, cindices, numindices,
+                              mindices, nindices, tindices,
+                              (SoConvexDataCache::Binding)mbind,
+                              (SoConvexDataCache::Binding)nbind,
+                              (SoConvexDataCache::Binding)tbind);
+
+  state->pop();
+  return TRUE;
 }
