@@ -1457,17 +1457,36 @@ fi
 
 AC_DEFUN(SIM_AC_CHECK_OPENGL, [
 
+unset sim_ac_gl_cppflags
+unset sim_ac_gl_ldflags
+unset sim_ac_gl_libs
+sim_ac_gl_avail=no
+
+AC_ARG_WITH(
+  [mesa],
+  AC_HELP_STRING([--with-mesa],
+                 [prefer MesaGL (if found) over OpenGL [default=yes]]),
+  [],
+  [with_mesa=yes])
+
+if test "x$with_mesa" = "xyes"; then
+  sim_ac_gl_first_gl=-lMesaGL
+  sim_ac_gl_first_glu=-lMesaGLU
+  sim_ac_gl_second_gl=-lGL
+  sim_ac_gl_second_glu=-lGLU
+else
+  sim_ac_gl_first_gl=-lGL
+  sim_ac_gl_first_glu=-lGLU
+  sim_ac_gl_second_gl=-lMesaGL
+  sim_ac_gl_second_glu=-lMesaGLU
+fi
+
 AC_ARG_WITH(
   [opengl],
   AC_HELP_STRING([--with-opengl=DIR],
                  [OpenGL/Mesa installation directory]),
   [],
   [with_opengl=yes])
-
-unset sim_ac_gl_cppflags
-unset sim_ac_gl_ldflags
-unset sim_ac_gl_libs
-sim_ac_gl_avail=no
 
 if test x"$with_opengl" != xno; then
   if test x"$with_opengl" != xyes; then
@@ -1493,8 +1512,11 @@ if test x"$with_opengl" != xno; then
     [whether OpenGL libraries are available],
     sim_cv_lib_gl,
     [sim_cv_lib_gl=UNRESOLVED
-    # Some platforms (like BeOS) have the GLU functionality in the GL library.
-    for sim_ac_gl_libcheck in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
+
+    # Some platforms (like BeOS) have the GLU functionality in the GL
+    # library (and no GLU library present), so the check is first done
+    # against -lGL or -lMesaGL alone.
+    for sim_ac_gl_libcheck in $sim_ac_gl_first_gl "$sim_ac_gl_first_gl $sim_ac_gl_first_glu"  $sim_ac_gl_second_gl "$sim_ac_gl_second_gl $sim_ac_gl_second_glu"; do
       if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
         LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
         AC_TRY_LINK([#include <GL/gl.h>
@@ -1523,8 +1545,11 @@ if test x"$with_opengl" != xno; then
         [whether OpenGL libraries can be linked with pthread library],
         sim_cv_lib_gl_pthread,
         [sim_cv_lib_gl_pthread=UNRESOLVED
-        # Some platforms (like BeOS) have the GLU functionality in the GL library.
-        for sim_ac_gl_libcheck in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
+
+        # Some platforms (like BeOS) have the GLU functionality in the GL
+        # library (and no GLU library present), so the check is first done
+        # against -lGL or -lMesaGL alone.
+        for sim_ac_gl_libcheck in $sim_ac_gl_first_gl "$sim_ac_gl_first_gl $sim_ac_gl_first_glu"  $sim_ac_gl_second_gl "$sim_ac_gl_second_gl $sim_ac_gl_second_glu"; do
           if test "x$sim_cv_lib_gl_pthread" = "xUNRESOLVED"; then
             LIBS="$sim_ac_gl_libcheck $sim_ac_pthread_libs $sim_ac_save_libs"
             AC_TRY_LINK([#include <GL/gl.h>
@@ -1731,7 +1756,7 @@ AC_DEFUN([SIM_RTTI_SUPPORT], [
 AC_PREREQ([2.13])
 AC_ARG_ENABLE(
   [rtti],
-  AC_HELP_STRING([enable-rtti], [(g++ only) compile with RTTI [default=no]]),
+  AC_HELP_STRING([--enable-rtti], [(g++ only) compile with RTTI [default=no]]),
   [case "${enableval}" in
     yes) enable_rtti=yes ;;
     no)  enable_rtti=no ;;
@@ -1772,7 +1797,7 @@ AC_DEFUN([SIM_EXCEPTION_HANDLING], [
 AC_PREREQ([2.13])
 AC_ARG_ENABLE(
   [exceptions],
-  AC_HELP_STRING([enable-exceptions],
+  AC_HELP_STRING([--enable-exceptions],
                  [(g++ only) compile with exceptions [default=no]]),
   [case "${enableval}" in
     yes) enable_exceptions=yes ;;
@@ -1856,7 +1881,7 @@ AC_DEFUN([SIM_PROFILING_SUPPORT], [
 AC_PREREQ([2.13])
 AC_ARG_ENABLE(
   [profile],
-  AC_HELP_STRING([enable-profile],
+  AC_HELP_STRING([--enable-profile],
                  [(GCC only) turn on inclusion of profiling code [default=no]]),
   [case "${enableval}" in
     yes) enable_profile=yes ;;
