@@ -35,6 +35,10 @@ class SoFieldSensor;
 class SoSensor;
 class SoTextureCubeMapP;
 
+// NB: the API for this node will probably change to be compatible
+// with TGS Inventor 5.0.
+
+
 class COIN_DLL_API SoTextureCubeMap : public SoNode {
   typedef SoNode inherited;
 
