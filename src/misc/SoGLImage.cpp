@@ -103,6 +103,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
 #include "GLWrapper.h"
 #include <GLUWrapper.h>
 #include <Inventor/lists/SbList.h>
@@ -113,6 +114,11 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
+
 
 static float DEFAULT_LINEAR_LIMIT = 0.2f;
 static float DEFAULT_MIPMAP_LIMIT = 0.5f;
@@ -125,6 +131,89 @@ static float COIN_TEX2_LINEAR_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
 static int COIN_TEX2_USE_GLTEXSUBIMAGE = -1;
 static int COIN_TEX2_BUILD_MIPMAP_FAST = -1;
+
+typedef struct {
+  unsigned char * buffer;
+  int buffersize;
+  unsigned char * mipmapbuffer;
+  int mipmapbuffersize;
+} soglimage_buffer;
+
+static void
+glimage_buffer_construct(void * buffer)
+{
+  soglimage_buffer * buf = (soglimage_buffer*) buffer;
+  buf->buffer = NULL;
+  buf->buffersize = 0;
+  buf->mipmapbuffer = NULL;
+  buf->mipmapbuffersize = 0;
+}
+
+static void
+glimage_buffer_destruct(void * buffer)
+{
+  soglimage_buffer * buf = (soglimage_buffer*) buffer;
+  delete[] buf->buffer;
+  delete[] buf->mipmapbuffer;
+}
+
+
+#ifdef COIN_THREADSAFE
+static SbStorage * glimage_bufferstorage = NULL;
+#else // COIN_THREADSAFE
+static soglimage_buffer * glimage_buffer = NULL;
+#endif // ! COIN_THREADSAFE
+
+static void
+glimage_buffer_cleanup(void)
+{
+#ifdef COIN_THREADSAFE
+  delete glimage_bufferstorage;
+  glimage_bufferstorage = NULL;
+#else // COIN_THREADSAFE
+  glimage_buffer_destruct((void*) glimage_buffer);
+  delete glimage_buffer;
+  glimage_buffer = NULL;
+#endif // ! COIN_THREADSAFE
+}
+
+static unsigned char *
+glimage_get_buffer(const int buffersize, const SbBool mipmap)
+{
+  soglimage_buffer * buf = NULL;
+#ifdef COIN_THREADSAFE
+  if (glimage_bufferstorage == NULL) {
+    coin_atexit((coin_atexit_f*) glimage_buffer_cleanup);
+    glimage_bufferstorage = new SbStorage(sizeof(soglimage_buffer),
+                                          glimage_buffer_construct, glimage_buffer_destruct);
+  }
+  buf = (soglimage_buffer*) 
+    glimage_bufferstorage->get();
+#else // COIN_THREADSAFE
+  if (glimage_buffer == NULL) {
+    glimage_buffer = new soglimage_buffer;
+    glimage_buffer_construct((void*) glimage_buffer);
+    coin_atexit((coin_atexit_f*) glimage_buffer_cleanup);
+  }
+  buf = glimage_buffer;
+#endif // ! COIN_THREADSAFE
+  if (mipmap) {
+    if (buf->mipmapbuffersize < buffersize) {
+      delete[] buf->mipmapbuffer;
+      buf->mipmapbuffer = new unsigned char[buffersize];
+      buf->mipmapbuffersize = buffersize;
+    }
+    return buf->mipmapbuffer;
+  }
+  else {
+    if (buf->buffersize < buffersize) {
+      delete[] buf->buffer;
+      buf->buffer = new unsigned char[buffersize];
+      buf->buffersize = buffersize;
+    }
+    return buf->buffer;
+  }
+}
 
 static int
 compute_log(int value)
@@ -242,14 +331,6 @@ halve_image(const int width, const int height, const int depth, const int nc,
   }
 }
 
-static unsigned char *mipmap_buffer = NULL;
-static int mipmap_buffer_size = 0;
-
-static void
-fast_mipmap_cleanup(void)
-{
-  delete [] mipmap_buffer;
-}
 
 // fast mipmap creation. no repeated memory allocations.
 static void
@@ -263,14 +344,8 @@ fast_mipmap(SoState * state, int width, int height, const int nc,
   if (level > levels) levels = level;
 
   int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*nc;
-  if (memreq > mipmap_buffer_size) {
-    if (mipmap_buffer == NULL) {
-      coin_atexit((coin_atexit_f *)fast_mipmap_cleanup);
-    }
-    else delete [] mipmap_buffer;
-    mipmap_buffer = new unsigned char[memreq];
-  }
-
+  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
+  
   if (useglsubimage) {
     if (glw->glTexSubImage2D)
       glw->glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
@@ -311,14 +386,8 @@ fast_mipmap(SoState * state, int width, int height, int depth, const int nc,
   int levels = compute_log(SbMax(SbMax(width, height), depth));
 
   int memreq = (SbMax(width>>1,1))*(SbMax(height>>1,1))*(SbMax(depth>>1,1))*nc;
-  if (memreq > mipmap_buffer_size) {
-    if (mipmap_buffer == NULL) {
-      coin_atexit((coin_atexit_f *)fast_mipmap_cleanup);
-    }
-    else delete [] mipmap_buffer;
-    mipmap_buffer = new unsigned char[memreq];
-  }
-
+  unsigned char * mipmap_buffer = glimage_get_buffer(memreq, TRUE);
+  
   // Send level 0 (original image) to OpenGL
   if (useglsubimage) {
     if (glw->glTexSubImage3D)
@@ -451,6 +520,8 @@ public:
 
   void init(void);
 };
+
+
 SoType SoGLImageP::classTypeId;
 
 #endif // DOXYGEN_SKIP_THIS
@@ -988,15 +1059,6 @@ nearest_power_of_two(unsigned long val)
   return val;
 }
 
-// static data used to temporarily store image when resizing
-static unsigned char *glimage_tmpimagebuffer = NULL;
-static int glimage_tmpimagebuffersize = 0;
-
-static void cleanup_tmpimage(void)
-{
-  delete [] glimage_tmpimagebuffer;
-}
-
 //
 // resize image if necessary. Returns pointer to temporary
 // buffer if that happens, and the new size in xsize, ysize.
@@ -1080,12 +1142,8 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
       (newy != (unsigned long) ysize) ||
       (newz != (unsigned long) zsize)) { // We need to resize
     int numbytes = newx * newy * ((newz==0)?1:newz) * numcomponents;
-    if (numbytes > glimage_tmpimagebuffersize) {
-      if (glimage_tmpimagebuffer == NULL) coin_atexit((coin_atexit_f *)cleanup_tmpimage);
-      else delete [] glimage_tmpimagebuffer;
-      glimage_tmpimagebuffer = new unsigned char[numbytes];
-      glimage_tmpimagebuffersize = numbytes;
-    }
+    unsigned char * glimage_tmpimagebuffer = glimage_get_buffer(numbytes, FALSE);
+
     // simage version 1.1.1 has a pretty high quality resize
     // function. We prefer to use that to avoid using GLU, since
     // there are lots of buggy GLU libraries out there.
