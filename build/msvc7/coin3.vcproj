@@ -54,7 +54,8 @@
 				TypeLibraryName=".\Debug/coin3.tlb"
 				HeaderFileName=""/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="coininstall $(ProjectName)"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -1107,30 +1108,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\src\fonts\freetype.c">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						BasicRuntimeChecks="3"
-						ObjectFile=".\Debug\fonts/"
-						ProgramDataBaseFileName="Debug\fonts/"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="1"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
-						ObjectFile=".\Release\fonts/"
-						ProgramDataBaseFileName="Release\fonts/"/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\src\glue\freetype.c">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1152,6 +1129,30 @@
 						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
 						ObjectFile=".\Release\glue/"
 						ProgramDataBaseFileName="Release\glue/"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\src\fonts\freetype.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;COIN_DEBUG=1;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						ObjectFile=".\Debug\fonts/"
+						ProgramDataBaseFileName="Debug\fonts/"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;COIN_DEBUG=0;HAVE_CONFIG_H;COIN_MAKE_DLL;COIN_INTERNAL;$(NoInherit)"
+						ObjectFile=".\Release\fonts/"
+						ProgramDataBaseFileName="Release\fonts/"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -16735,10 +16736,10 @@
 				RelativePath="..\..\include\Inventor\C\threads\fifo.h">
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\C\glue\gl.h">
+				RelativePath="include\Inventor\system\gl.h">
 			</File>
 			<File
-				RelativePath="include\Inventor\system\gl.h">
+				RelativePath="..\..\include\Inventor\C\glue\gl.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\C\base\hash.h">
@@ -17179,10 +17180,10 @@
 				RelativePath="..\..\include\Inventor\actions\SoAudioRenderAction.h">
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\lists\SoAuditorList.h">
+				RelativePath="..\..\include\Inventor\misc\SoAuditorList.h">
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\misc\SoAuditorList.h">
+				RelativePath="..\..\include\Inventor\lists\SoAuditorList.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\misc\SoBase.h">
@@ -17263,10 +17264,10 @@
 				RelativePath="..\..\include\Inventor\actions\SoCallbackAction.h">
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\misc\SoCallbackList.h">
+				RelativePath="..\..\include\Inventor\lists\SoCallbackList.h">
 			</File>
 			<File
-				RelativePath="..\..\include\Inventor\lists\SoCallbackList.h">
+				RelativePath="..\..\include\Inventor\misc\SoCallbackList.h">
 			</File>
 			<File
 				RelativePath="..\..\include\Inventor\nodes\SoCamera.h">

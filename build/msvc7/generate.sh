@@ -4,7 +4,7 @@
 #
 # 20041214 larsa
 
-rm -rf coin3.dsp coin3.dsw src
+rm -rf coin3.dsp coin3.dsw src installcoinheaders.bat
 
 ../../configure --enable-msvcdsp --with-msvcrt=mt
 make
