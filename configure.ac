@@ -1546,7 +1546,7 @@ COIN_COMPILER="$CXX"
 AC_SUBST([COIN_COMPILER])
 AC_SUBST([ac_compiler_gnu])
 
-SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin], [-I$coin_build_dir -I$coin_build_dir/include -I$coin_src_dir/include])
+SIM_AC_MSVC_DSP_SETUP([COIN], [Coin], [coin], [-I$coin_build_dir -I$coin_build_dir/include -I$coin_src_dir/include -I$coin_src_dir/include/Inventor/annex])
 
 # **************************************************************************
 
