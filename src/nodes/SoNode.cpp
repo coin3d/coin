@@ -1337,7 +1337,7 @@ SoNode::getCompatibilityTypes(const SoType & nodetype)
 
   void * tmp;
   if (SoNode::compatibilitydict->find((unsigned long) nodetype.getKey(), tmp)) {
-    return (uint32_t) tmp;
+    return (uint32_t)((long)tmp);
   }
   return SoNode::EXTENSION;
 }

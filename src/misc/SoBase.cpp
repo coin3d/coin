@@ -229,7 +229,7 @@ get_current_writeref(const SoBase * base)
   void * val;
   SbBool found = writerefs->find((unsigned long)base, val);
   int refcount = 0;
-  if (found) { refcount = (int)val; }
+  if (found) { refcount = (int)((long)val); }
   return refcount;
 }
 
@@ -317,7 +317,7 @@ sobase_sensor_add_cb(void * auditor, void * type, void * closure)
 
   // use a temporary variable, since some compilers can't cast
   // directly from void * to SoNotRec::Type
-  uint32_t tmp = (int) type;
+  uint32_t tmp = (int)((long)type);
   switch ((SoNotRec::Type) tmp) {
   case SoNotRec::SENSOR:
     auditingsensors->append((SoDataSensor *)auditor);
@@ -781,7 +781,7 @@ SoBase::rbptree_notify_cb(void * auditor, void * type, void * closure)
   data->cnt--;
 
   // gcc will not allow direct cast from void * to SoNotRec::Type
-  uint32_t tmptype = (uint32_t) type;
+  uint32_t tmptype = (uint32_t)((long)type);
 
   if (data->notified.find(auditor) < 0) {
     if (data->cnt == 0) {
@@ -847,7 +847,7 @@ static void
 sobase_audlist_add(void * pointer, void * type, void * closure)
 {
   SoAuditorList * list = (SoAuditorList*) closure;
-  uint32_t tmp = (uint32_t) type;
+  uint32_t tmp = (uint32_t)((long)type);
 
 
   list->append(pointer, (SoNotRec::Type) tmp);

@@ -837,7 +837,7 @@ SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
 {
   // remove callback again
   action->removePreRenderCallback(prerendercb, userdata);
-  GLbitfield mask = (GLbitfield) userdata;
+  GLbitfield mask = (GLbitfield)((long)userdata);
 
 #if COIN_DEBUG && 0 // debug
   GLint view[4];
