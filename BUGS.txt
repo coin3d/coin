@@ -548,18 +548,6 @@
 
 =====================================================================
 
-023 SoToVRML2Action doesn't set the node type(s) of the new scenegraph
-    to VRML2/VRML97, so when written it will become an invalid VRML
-    file.
-
-    Problem found by kintel.
-
-    20020904 mortene.
-
-    UPDATE 20021010 mortene: kristian has started working on this.
-
-=====================================================================
-
 024 This scenegraph causes a nasty bounding box calculation error:
 
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
