@@ -159,9 +159,15 @@ SoHandleEventAction::isHandled(void) const
 void
 SoHandleEventAction::setGrabber(SoNode * node)
 {
-  this->releaseGrabber();
-  this->grabber = node;
-  if (node) node->grabEventsSetup();
+  // Check for inequality before executing code is not only good for
+  // performance, but is also necessary to remove the potential for
+  // infinite recursion. See comment in releaseGrabber().
+
+  if (node != this->grabber) {
+    this->releaseGrabber();
+    this->grabber = node;
+    if (node) node->grabEventsSetup();
+  }
 }
 
 /*!
@@ -173,8 +179,14 @@ SoHandleEventAction::setGrabber(SoNode * node)
 void
 SoHandleEventAction::releaseGrabber(void)
 {
-  if (this->grabber) this->grabber->grabEventsCleanup();
-  this->setGrabber(NULL);
+  // Store old grabber node and set current node to NULL before
+  // calling SoNode::grabEventsCleanup(), to avoid being vulnerable to
+  // recursive calls from grabEventsCleanup() back to this method
+  // (which happens from dragger classes).
+
+  SoNode * old = this->grabber;
+  this->grabber = NULL;
+  if (old) old->grabEventsCleanup();
 }
 
 /*!
