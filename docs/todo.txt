@@ -55,6 +55,9 @@ STUFF TO FIX IN COIN
   than 1000 coordinate indices or something. If this suggestion is a
   good idea is yet to be decided.
 
+  Update 2002-06-17 mortene: there may be a few FIXMEs left, but this
+  item has now been fixed for Coin-2. It was taken care of by pederb.
+
 
 * Improve error reporting on texture loading
   2001-11-24  Morten Eriksen  <mortene@sim.no>
@@ -81,6 +84,10 @@ STUFF TO FIX IN COIN
   The place to start is SbImage, but SbImage's "clients" might also
   needs changes. We will probably also have to fix libsimage to make
   more specific error reports.
+
+  Update 2002-06-17 mortene: I've made a few improvements (for both
+  Coin-1 and Coin-dev), so one will now at least get better reporting
+  if simage is missing.
 
 
 * A "stopwatch" for built-in profiling support
@@ -178,6 +185,11 @@ STUFF TO FIX IN COIN
   alternate SoPackedColorV20 node-class, which would be instantiated
   during read, and then converted to an >= Inventor v2.1 format
   SoPackedColor node.
+
+  Update 2002-06-17 mortene: pederb has laid out the foundations
+  necessary by setting up bitmasks and API methods on
+  SoNode. Inventor2.0 import should be ok. Export "compability
+  detection" has not been done yet, though.
 
 
 * Re-design the public API for handling textures
@@ -407,31 +419,3 @@ STUFF TO FIX IN COIN
 
   See also the comments about this in the technical ``FAQ'' file on
   the root of the sourcecode archive.
-
-
-* Rewrite non-member/friend operator methods for the base classes.
-  2002-06-05  Kristian Eide, write-up by <mortene@sim.no>
-
-  This:
-
-    friend SbMatrix operator *(const SbMatrix &m1, const SbMatrix &m2);
-
-  can for instance be rewritten as this, with the exact same
-  semantics:
-
-    SbMatrix SbMatrix::operator*(const SbMatrix &m);
-
-  Rewriting these should be done for two reasons: 1) the member
-  operator-functions can be made more efficient, as they can access
-  the private data of the class-instances directly, 2) it looks
-  cleaner.
-
-  Note that not *all* of them can be converted, like for instance this
-  one, which has a native type on the left side of the binary
-  *-operator:
-
-    friend SbVec3f operator *(float d, const SbVec3f &v);
-
-
-  Note also that these changes would break the ABI, so this would have
-  to be done for the next major release.

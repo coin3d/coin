@@ -16,6 +16,9 @@ Java
     Maintainer is no longer Arno Schaefer <schaefer@jobpilot.com>, but
     Volker Luckas <luckas@igd.fhg.de>.
 
+  Update 2002-06-17: Kristian Eide and Morten Vold have more or less
+  completed this task during a spring 2002 student project.
+
 ========================================================================
 
 Python
@@ -27,6 +30,7 @@ Python
   * SIP is a SWIG-like thing specially tuned for Python bindings, more
     information here: <URL:http://www.thekompany.com/projects/pykde/>.
 
+  Update 2002-06-17: check Tamer Fahmy's "pivy". Mission accomplished?
 
 ========================================================================
 

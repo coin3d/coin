@@ -742,3 +742,32 @@ THE WISH LIST
   Requested by Matt Verona on comp.graphics.api.inventor. Matt
   suggests using the tokenizer classes from the Boost freeware class
   library (see the Coin/docs/misc-resources.txt file).
+
+
+* Rewrite non-member/friend operator methods for the base classes.
+  2002-06-05  Kristian Eide, write-up by <mortene@sim.no>
+  [breaks ABI, but API-compatible in both directions]
+
+  This:
+
+    friend SbMatrix operator *(const SbMatrix &m1, const SbMatrix &m2);
+
+  can for instance be rewritten as this, with the exact same
+  semantics:
+
+    SbMatrix SbMatrix::operator*(const SbMatrix &m);
+
+  Rewriting these should be done for two reasons: 1) the member
+  operator-functions can be made more efficient, as they can access
+  the private data of the class-instances directly, 2) it looks
+  cleaner.
+
+  Note that not *all* of them can be converted, like for instance this
+  one, which has a native type on the left side of the binary
+  *-operator:
+
+    friend SbVec3f operator *(float d, const SbVec3f &v);
+
+
+  Note also that these changes would break the ABI, so this would have
+  to be done for the next major release.
