@@ -154,7 +154,8 @@ PublicHeaders = \
 	../../include/Inventor/actions/SoToVRMLAction.h \
 	../../include/Inventor/actions/SoToVRML2Action.h \
 	../../include/Inventor/actions/SoWriteAction.h \
-	../../include/Inventor/actions/SoAudioRenderAction.h
+	../../include/Inventor/actions/SoAudioRenderAction.h \
+	../../include/Inventor/actions/SoIntersectionDetectionAction.h
 
 PrivateHeaders = \
 	../../include/Inventor/actions/SoSubActionP.h
@@ -178,7 +179,8 @@ RegularSources = \
 	SoToVRMLAction.cpp \
 	SoToVRML2Action.cpp \
 	SoWriteAction.cpp \
-	SoAudioRenderAction.cpp
+	SoAudioRenderAction.cpp \
+	SoIntersectionDetectionAction.cpp
 
 
 
@@ -249,7 +251,8 @@ actions_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRMLAction.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRML2Action.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoAudioRenderAction.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	SoAudioRenderAction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoIntersectionDetectionAction.$(OBJEXT)
 actions_lst_OBJECTS = $(am_actions_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -270,7 +273,8 @@ libactions_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRMLAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRML2Action.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoAudioRenderAction.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoAudioRenderAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIntersectionDetectionAction.lo
 libactions_la_OBJECTS = $(am_libactions_la_OBJECTS)
 libactions@SUFFIX@LINKHACK_la_LDFLAGS =
 libactions@SUFFIX@LINKHACK_la_LIBADD =
@@ -291,7 +295,8 @@ libactions@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRMLAction.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoToVRML2Action.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoAudioRenderAction.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoAudioRenderAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoIntersectionDetectionAction.lo
 libactions@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libactions@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -317,6 +322,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoGetPrimitiveCountAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoHandleEventAction.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoHandleEventAction.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoIntersectionDetectionAction.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoIntersectionDetectionAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLineHighlightRenderAction.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLineHighlightRenderAction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoPickAction.Plo \
@@ -434,6 +441,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGetPrimitiveCountAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoHandleEventAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoHandleEventAction.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIntersectionDetectionAction.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoIntersectionDetectionAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineHighlightRenderAction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineHighlightRenderAction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoPickAction.Plo@am__quote@
