@@ -3636,29 +3636,6 @@ Cube {
 
 =====================================================================
 
-098 iv-import parse error.
-
-    The following causes a false parse error:
-
------8<------ [snip] ------------8<------ [snip] -------
-#Inventor V2.1 ascii
-
-DEF R1 Translation { translation 5 0 0 }
-
-Cube {
-   width = DecomposeVec3f { vector = USE R1.translation}.x
-}
------8<------ [snip] ------------8<------ [snip] -------
-
-    (Insert a space after "USE R1.translation" and before the "}", and
-    the parsing works ok.)
-
-    SGI Inventor handles this properly.
-
-    20031210 mortene, reported by Volker Enderlein on coin-discuss.
-
-=====================================================================
-
 099 View frustum culling is not done unless there are cached bounding
     boxes available.
 
