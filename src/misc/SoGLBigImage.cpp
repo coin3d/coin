@@ -79,12 +79,13 @@ public:
     imagesize(0,0),
     remain(0,0),
     dim(0,0),
+    currentdim(0, 0),
     tmpbuf(NULL),
     tmpbufsize(0),
     glimagearray(NULL),
     glimagediv(NULL),
     glimageage(NULL),
-    averagebuf(NULL) {}
+    averagebuf(NULL)  { }
 
   ~SoGLBigImageP() {
     assert(this->glimagearray == NULL);
@@ -97,13 +98,15 @@ public:
   SbVec2s imagesize;
   SbVec2s glimagesize;
   SbVec2s remain;
+  SbVec2f tcmul;
   SbVec2s dim;
+  SbVec2s currentdim;
+
   unsigned char * tmpbuf;
   int tmpbufsize;
   SoGLImage ** glimagearray;
   int * glimagediv;
   uint32_t * glimageage;
-  SbVec2f tcmul;
   int changecnt;
   SbImage myimage;
   unsigned int * averagebuf;
@@ -124,7 +127,7 @@ public:
 
 
   void reset(SoState * state = NULL) {
-    const int n = this->dim[0] * this->dim[1];
+    const int n = this->currentdim[0] * this->currentdim[1];
     for (int i = 0; i < n; i++) {
       if (this->glimagearray[i]) {
         this->glimagearray[i]->unref(state);
@@ -139,10 +142,7 @@ public:
     this->glimageage = NULL;
     this->glimagediv = NULL;
     this->averagebuf = NULL;
-    this->imagesize.setValue(0,0);
-    this->glimagesize.setValue(0,0);
-    this->remain.setValue(0,0);
-    this->dim.setValue(0,0);
+    this->currentdim.setValue(0,0);
   }
 };
 
@@ -269,8 +269,6 @@ SoGLBigImage::initSubImages(SoState * state,
   if (subimagesize == THIS->imagesize &&
       THIS->dim[0] > 0) return THIS->dim[0] * THIS->dim[1];
 
-  THIS->reset(state);
-
   THIS->imagesize = subimagesize;
   THIS->glimagesize[0] = bi_next_power_of_two(THIS->imagesize[0]);
   THIS->glimagesize[1] = bi_next_power_of_two(THIS->imagesize[1]);
@@ -293,10 +291,6 @@ SoGLBigImage::initSubImages(SoState * state,
   const unsigned char * bytes = this->getImage() ?
     this->getImage()->getValue(size, nc) : NULL;
 
-  int numbytes = subimagesize[0] * subimagesize[1] * nc;
-  THIS->averagebuf = 
-    new unsigned int[numbytes ? numbytes : 1];
-
   THIS->dim[0] = size[0] / subimagesize[0];
   THIS->dim[1] = size[1] / subimagesize[1];
 
@@ -305,20 +299,8 @@ SoGLBigImage::initSubImages(SoState * state,
   THIS->remain[1] = size[1] % subimagesize[1];
   if (THIS->remain[1]) THIS->dim[1] += 1;
 
-  const int numimages = THIS->dim[0] * THIS->dim[1];
-
-  THIS->glimagediv = new int[numimages];
-  THIS->glimagearray = new SoGLImage*[numimages];
-  THIS->glimageage = new uint32_t[numimages];
-  for (int i = 0; i < numimages; i++) {
-    THIS->glimagearray[i] = NULL;
-    THIS->glimagediv[i] = 1;
-    THIS->glimageage[i] = 0;
-  }
-
   THIS->tcmul[0] = float(THIS->dim[0] * subimagesize[0]) / float(size[0]);
   THIS->tcmul[1] = float(THIS->dim[1] * subimagesize[1]) / float(size[1]);
-
   return THIS->dim[0] * THIS->dim[1];
 }
 
@@ -346,15 +328,43 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
                             const float quality,
                             const SbVec2s & projsize)
 {
+  SbVec2s size;
+  int numcomponents;
+  unsigned char * bytes = this->getImage() ?
+    this->getImage()->getValue(size, numcomponents) : NULL;
+
+  if (THIS->currentdim != THIS->dim) {
+    THIS->reset(state);
+    THIS->currentdim = THIS->dim;
+    const int numimages = THIS->dim[0] * THIS->dim[1];
+    
+    THIS->glimagediv = new int[numimages];
+    THIS->glimagearray = new SoGLImage*[numimages];
+    THIS->glimageage = new uint32_t[numimages];
+    for (int i = 0; i < numimages; i++) {
+      THIS->glimagearray[i] = NULL;
+      THIS->glimagediv[i] = 1;
+      THIS->glimageage[i] = 0;
+    }
+    
+    int numbytes = THIS->imagesize[0] * THIS->imagesize[1] * numcomponents;
+    THIS->averagebuf = 
+      new unsigned int[numbytes ? numbytes : 1];
+  }
+
   int div = 2;
   while ((THIS->imagesize[0]/div > projsize[0]) &&
          (THIS->imagesize[1]/div > projsize[1])) div <<= 1;
   div >>= 1;
-
+  
   if (THIS->glimagearray[idx] == NULL ||
-      (THIS->glimagediv[idx] != div && THIS->changecnt++ < CHANGELIMIT)) {
+      (THIS->glimagediv[idx] != div && THIS->changecnt < CHANGELIMIT)) {
+    
     if (THIS->glimagearray[idx] == NULL) {
       THIS->glimagearray[idx] = new SoGLImage();
+    }
+    else {
+      THIS->changecnt++;
     }
     THIS->glimagediv[idx] = div;
 
@@ -371,10 +381,6 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
 
     SbVec2s actualsize(THIS->glimagesize[0]/div,
                        THIS->glimagesize[1]/div);
-    SbVec2s size;
-    int numcomponents;
-    unsigned char * bytes = this->getImage() ?
-      this->getImage()->getValue(size, numcomponents) : NULL;
     if (bytes) {
       int numbytes = actualsize[0]*actualsize[1]*numcomponents;
       if (numbytes > THIS->tmpbufsize) {
