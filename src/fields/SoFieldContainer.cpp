@@ -151,6 +151,7 @@ sofieldcontainer_copydict_cleanup(void)
 #ifdef COIN_THREADSAFE
   delete sofieldcontainer_copydictstorage; 
 #else // COIN_THREADSAFE
+  sofieldcontainer_destruct_copydict((void*)sofieldcontainer_staticcopydict);
   delete sofieldcontainer_staticcopydict;
 #endif // ! COIN_THREADSAFE
 }
