@@ -6,6 +6,15 @@
 
 # Author: Morten Eriksen, <mortene@sim.no>.
 
+# Makes it possible to run autogen.sh from location.
+directory=`echo "$0" | sed -e 's/[^\/]*$//g'`;
+cd $directory
+if ! test -f ./autogen.sh; then
+  echo "unexpected problem with your shell - bailing out"
+  exit 1
+fi
+
+
 DIE=false
 
 PROJECT=Coin
