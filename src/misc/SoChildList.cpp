@@ -32,6 +32,10 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/nodes/SoNode.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 
 
 /*!
@@ -182,6 +186,12 @@ SoChildList::copy(const SoChildList & cl)
 void
 SoChildList::set(const int index, SoNode * const node)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoChildList::set",
+                         "(%p) index=%d, node=%p, oldnode=%p",
+                         this, index, node, (*this)[index]);
+#endif // debug
+
   assert(index >= 0 && index < this->getLength());
   SoNodeList::operator[](index)->removeAuditor(this->parent, SoNotRec::PARENT);
   SoBaseList::set(index, (SoBase *)node);
@@ -242,6 +252,11 @@ SoChildList::traverse(SoAction * const action, SoNode * node)
 void
 SoChildList::addPathAuditor(SoPath * const path)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoChildList::addPathAuditor",
+                         "add SoPath auditor %p to list %p", path, this);
+#endif // debug
+
   this->auditors.append(path);
 }
 
@@ -251,7 +266,22 @@ SoChildList::addPathAuditor(SoPath * const path)
 void
 SoChildList::removePathAuditor(SoPath * const path)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoChildList::removePathAuditor",
+                         "remove SoPath auditor %p from list %p", path, this);
+#endif // debug
+
   const int index = this->auditors.find(path);
-  assert(index != -1);
+#if COIN_DEBUG
+  if (index == -1) {
+    SoDebugError::post("SoChildList::removePathAuditor",
+                       "no SoPath %p is auditing list %p! (of parent %p (%s))",
+                       path,
+                       this,
+                       this->parent,
+                       this->parent->getTypeId().getName().getString());
+    return;
+  }
+#endif // COIN_DEBUG
   this->auditors.remove(index);
 }
