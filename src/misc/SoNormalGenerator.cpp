@@ -40,7 +40,7 @@
 */
 SoNormalGenerator::SoNormalGenerator(const SbBool isccw,
                                      const int approxVertices)
-  : bsp(approxVertices),
+  : bsp(128, approxVertices),
     vertexList(approxVertices),
     vertexFace(approxVertices),
     faceNormals(approxVertices / 4),
@@ -381,6 +381,7 @@ SbVec3f
 SoNormalGenerator::calcFaceNormal()
 {
   int num = this->vertexList.getLength() - this->currFaceStart;
+
   assert(num >= 3);
   const int * cind = (const int *) this->vertexList.getArrayPtr() + this->currFaceStart;
   const SbVec3f * coords = this->bsp.getPointsArrayPtr();
