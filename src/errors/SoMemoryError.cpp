@@ -24,18 +24,14 @@
   FIXME: write doc.
 */
 
+/*¡
+  potensial buffer overflow errors detected, should be fixed - 990610 larsa
+*/
+
 #include <Inventor/errors/SoMemoryError.h>
 
 #include <Inventor/SoType.h>
 #include <Inventor/SbName.h>
-
-// FIXME: use configure tests (and check for <strstream> first,
-// BTW). 19991215 mortene.
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
 
 #include <stdio.h>
 
@@ -135,10 +131,10 @@ SoMemoryError::getHandlerData(void)
 void
 SoMemoryError::post(const char * const whatWasAllocated)
 {
-  ostrstream msg;
-  msg << "ERROR allocating '" << whatWasAllocated << "'.";
+  char buffer[ 128 ]; // FIXME: possible overflow, 990610 larsa
+  sprintf(buffer, "ERROR allocating '%s'.", whatWasAllocated);
   SoMemoryError error;
-  error.setDebugString(msg.str());
+  error.setDebugString(buffer);
   error.handleError();
 }
 

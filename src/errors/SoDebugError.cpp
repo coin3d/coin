@@ -37,14 +37,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-// FIXME: use configure tests (and check for <strstream> first,
-// BTW). 19991215 mortene.
-#ifdef _WIN32
-#include <strstrea.h>
-#else // ! _WIN32
-#include <strstream.h>
-#endif // ! _WIN32
-
 /*!
   \var SoDebugError::classTypeId
 
@@ -161,15 +153,14 @@ SoDebugError::post(const char * const methodName,
 {
   va_list args;
   va_start(args, formatString);
-  ostrstream msg;
-  msg.vform(formatString, args);
+  char buffer[ 512 ]; // FIXME: possible overflow, 990610 larsa
+  vsprintf(buffer, formatString, args);
   va_end(args);
-
-  ostrstream oss;
-  oss << "Coin error in " << methodName << "(): " << msg.str();
+  char string[ 512 ]; // FIXME: possible overflow, 990610 larsa
+  sprintf(string, "Coin error in %s(): %s", methodName, buffer);
   SoDebugError error;
   error.severity = ERROR;
-  error.setDebugString(oss.str());
+  error.setDebugString(string);
   error.handleError();
 }
 
@@ -184,15 +175,14 @@ SoDebugError::postWarning(const char * const methodName,
 {
   va_list args;
   va_start(args, formatString);
-  ostrstream msg;
-  msg.vform(formatString, args);
+  char buffer[ 512 ]; // FIXME: possible overflow?  990610 larsa
+  vsprintf(buffer, formatString, args);
   va_end(args);
-
-  ostrstream oss;
-  oss << "Coin warning in " << methodName << "(): " << msg.str();
+  char string[ 512 ]; // FIXME: possible overflow?  990610 larsa
+  sprintf(string, "Coin warning in %s(): %s", methodName, buffer);
   SoDebugError error;
   error.severity = WARNING;
-  error.setDebugString(oss.str());
+  error.setDebugString(string);
   error.handleError();
 }
 
@@ -207,15 +197,14 @@ SoDebugError::postInfo(const char * const methodName,
 {
   va_list args;
   va_start(args, formatString);
-  ostrstream msg;
-  msg.vform(formatString, args);
+  char buffer[ 512 ]; // FIXME: possible overflow?  990610 larsa
+  vsprintf(buffer, formatString, args);
   va_end(args);
-
-  ostrstream oss;
-  oss << "Coin info in " << methodName << "(): " << msg.str();
+  char string[ 512 ]; // FIXME: possible overflow?  990610 larsa
+  sprintf(string, "Coin info from %s(): %s", methodName, buffer);
   SoDebugError error;
   error.severity = INFO;
-  error.setDebugString(oss.str());
+  error.setDebugString(string);
   error.handleError();
 }
 
