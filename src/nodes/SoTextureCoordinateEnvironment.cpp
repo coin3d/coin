@@ -86,6 +86,9 @@ void
 SoTextureCoordinateEnvironment::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateEnvironment, SO_FROM_INVENTOR_1);
+
+  SoTextureCoordinateEnvironmentP::dummy_texcoords = new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
+  coin_atexit((coin_atexit_f *)SoTextureCoordinateEnvironmentP::cleanup_func);
 }
 
 /*!
@@ -120,11 +123,6 @@ SoTextureCoordinateEnvironment::generate(void *userdata,
   // in case an empty normal was supplied
   if (fabs(m) <= FLT_EPSILON) m = 1.0f;
 
-  if (SoTextureCoordinateEnvironmentP::dummy_texcoords == NULL) {
-    SoTextureCoordinateEnvironmentP::dummy_texcoords =
-      new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
-    coin_atexit((coin_atexit_f *)SoTextureCoordinateEnvironmentP::cleanup_func);
-  }
   (*SoTextureCoordinateEnvironmentP::dummy_texcoords)[0] = r[0] / m + 0.5f;
   (*SoTextureCoordinateEnvironmentP::dummy_texcoords)[1] = r[1] / m + 0.5f;
   return *SoTextureCoordinateEnvironmentP::dummy_texcoords;
