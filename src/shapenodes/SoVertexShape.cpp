@@ -129,11 +129,17 @@ SoVertexShape::notify(SoNotList * nl)
   inherited::notify(nl);
 }
 
+// This documentation block has a copy in vrml97/VertexShape.cpp.
 /*!
+  \COININTERNAL
+
   Subclasses should override this method to generate default normals
   using the SoNormalBundle class. \c TRUE should be returned if
-  normals were generated, \c FALSE otherwise.  Default method returns
-  \c FALSE.
+  normals were generated, \c FALSE otherwise.
+
+  Default method returns \c FALSE.
+
+  \COIN_FUNCTION_EXTENSION
 */
 SbBool
 SoVertexShape::generateDefaultNormals(SoState *, SoNormalBundle *)
@@ -141,14 +147,18 @@ SoVertexShape::generateDefaultNormals(SoState *, SoNormalBundle *)
   return FALSE;
 }
 
-
+// This documentation block has a copy in vrml97/VertexShape.cpp.
 /*!
+  \COININTERNAL
+
   Subclasses should override this method to generate default normals
   using the SoNormalCache class. This is more effective than using
   SoNormalGenerator. Return \c TRUE if normals were generated, \c
-  FALSE otherwise. Default method just returns \c FALSE.
+  FALSE otherwise.
 
-  This method is not part of the original SGI Open Inventor API.
+  Default method just returns \c FALSE.
+
+  \COIN_FUNCTION_EXTENSION
 */
 SbBool
 SoVertexShape::generateDefaultNormals(SoState * /* state */,

@@ -135,7 +135,18 @@ SoVRMLVertexShape::~SoVRMLVertexShape()
   delete THIS;
 }
 
-// Doc in parent
+// This documentation block has a copy in shapenodes/VertexShape.cpp.
+/*!
+  \COININTERNAL
+
+  Subclasses should override this method to generate default normals
+  using the SoNormalBundle class. \c TRUE should be returned if
+  normals were generated, \c FALSE otherwise.
+
+  Default method returns \c FALSE.
+
+  \COIN_FUNCTION_EXTENSION
+*/
 SbBool
 SoVRMLVertexShape::generateDefaultNormals(SoState * ,
                                           SoNormalBundle *)
@@ -144,7 +155,19 @@ SoVRMLVertexShape::generateDefaultNormals(SoState * ,
 }
 
 
-// Doc in parent
+// This documentation block has a copy in shapenodes/VertexShape.cpp.
+/*!
+  \COININTERNAL
+
+  Subclasses should override this method to generate default normals
+  using the SoNormalCache class. This is more effective than using
+  SoNormalGenerator. Return \c TRUE if normals were generated, \c
+  FALSE otherwise.
+
+  Default method just returns \c FALSE.
+
+  \COIN_FUNCTION_EXTENSION
+*/
 SbBool
 SoVRMLVertexShape::generateDefaultNormals(SoState * /* state */,
                                           SoNormalCache * /* nc */)
