@@ -185,9 +185,9 @@ public:
         if (this->counter & 1) this->copyVertex(2, 0);
         else this->copyVertex(2, 1);
       }
-      this->setVertex(this->counter%3, v);
+      this->setVertex(SbMin(this->counter, 2), v);
       this->counter++;
-      if (this->counter >= 3) {
+      if (this->counter >= 3) {        
         this->shape->invokeTriangleCallbacks(this->action,
                                              &vertsArray[0],
                                              &vertsArray[1],
@@ -824,7 +824,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
 
     if (ra->intersect(v1->getPoint(), v2->getPoint(), v3->getPoint(),
                       intersection, barycentric, front)) {
-
+      
       if (ra->isBetweenPlanes(intersection)) {
         SoPickedPoint * pp = ra->addIntersection(intersection);
         if (pp) {

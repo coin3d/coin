@@ -451,8 +451,10 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   }
 
   int32_t idx = startIndex.getValue();
+  int32_t dummyarray[1];
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
+  this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
 
   int matnr = 0;
   int texnr = 0;
@@ -538,7 +540,7 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
         }
       }
       pointDetail.setCoordinateIndex(idx);
-      vertex.setPoint(coords->get3(idx));
+      vertex.setPoint(coords->get3(idx++));
       this->shapeVertex(&vertex);
       faceDetail.incFaceIndex();
     }
