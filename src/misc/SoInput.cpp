@@ -2064,7 +2064,11 @@ SoInput::readReal(double & d)
 
   *s = '\0';
 
-  d = atof(str);
+  // FIXME: using the wrapped atof() call like this might have serious
+  // consequences for performance upon import of large
+  // iv/wrl-files. This should be checked. 20030407 mortene.
+
+  d = coin_atof(str);
 
   return TRUE;
 }
@@ -2232,7 +2236,7 @@ SoInput::convertFloat(char * from, float * f)
   // FIXME: we now have coin_ntoh_float() and coin_hton_float()
   // functions in tidbits.c. 20021121 mortene.
   uint32_t fbitval = coin_ntoh_uint32(*((uint32_t *)from));
-  memcpy(f, &fbitval, sizeof(float));
+  (void)memcpy(f, &fbitval, sizeof(float));
 }
 
 /*!
@@ -2252,7 +2256,7 @@ SoInput::convertDouble(char * from, double * d)
     coin_ntoh_uint32(*((uint32_t *)from)),
     coin_ntoh_uint32(*((uint32_t *)(from + sizeof(double)/2))),
   };
-  memcpy(d, dbitvals, sizeof(double));
+  (void)memcpy(d, dbitvals, sizeof(double));
 }
 
 /*!

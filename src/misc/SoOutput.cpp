@@ -484,8 +484,8 @@ SoOutput::getDefaultBinaryHeader(void)
 void
 SoOutput::setFloatPrecision(const int precision)
 {
-  int fltnum = SbClamp(precision, 0, 8);
-  int dblnum = precision * 2;
+  const int fltnum = SbClamp(precision, 0, 8);
+  const int dblnum = precision * 2;
   
   THIS->fltprecision.sprintf("%%.%dg", fltnum);
   THIS->dblprecision.sprintf("%%.%dlg", dblnum);
@@ -607,9 +607,16 @@ void
 SoOutput::write(const int i)
 {
   if (!this->isBinary()) {
+    // Use portable locale, to make sure we don't write thousands
+    // separators for integers.
+    cc_string storedlocale;
+    SbBool changed = coin_locale_set_portable(&storedlocale);
+
     SbString s;
     s.sprintf("%d", i);
     this->writeBytesWithPadding(s.getString(), s.getLength());
+
+    if (changed) { coin_locale_reset(&storedlocale); }
   }
   else {
     // FIXME: breaks on 64-bit architectures, which is pretty
@@ -648,9 +655,16 @@ void
 SoOutput::write(const short s)
 {
   if (!this->isBinary()) {
+    // Use portable locale, to make sure we don't write thousands
+    // separators for integers.
+    cc_string storedlocale;
+    SbBool changed = coin_locale_set_portable(&storedlocale);
+
     SbString str;
     str.sprintf("%hd", s);
     this->writeBytesWithPadding(str.getString(), str.getLength());
+
+    if (changed) { coin_locale_reset(&storedlocale); }
   }
   else {
     this->write((int)s);
@@ -682,9 +696,16 @@ void
 SoOutput::write(const float f)
 {
   if (!this->isBinary()) {
+    // Use portable locale, to make sure we don't write thousands
+    // separators for integers.
+    cc_string storedlocale;
+    SbBool changed = coin_locale_set_portable(&storedlocale);
+
     SbString s;
     s.sprintf(THIS->fltprecision.getString(), f);
     this->writeBytesWithPadding(s.getString(), s.getLength());
+
+    if (changed) { coin_locale_reset(&storedlocale); }
   }
   else {
     char buff[sizeof(f)];
@@ -700,10 +721,16 @@ void
 SoOutput::write(const double d)
 {
   if (!this->isBinary()) {
-    // FIXME: precision stuff not implemented. 19980910 mortene.
+    // Use portable locale, to make sure we don't write thousands
+    // separators for integers.
+    cc_string storedlocale;
+    SbBool changed = coin_locale_set_portable(&storedlocale);
+
     SbString s;
     s.sprintf(THIS->dblprecision.getString(), d);
     this->writeBytesWithPadding(s.getString(), s.getLength());
+
+    if (changed) { coin_locale_reset(&storedlocale); }
   }
   else {
     char buff[sizeof(d)];

@@ -28,18 +28,17 @@
 // programmer -- so the API class definition header file is not
 // installed.
 
-#include <Inventor/engines/SoConvertAll.h>
+#include <assert.h>
+
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/engines/SoConvertAll.h>
 #include <Inventor/engines/SoSubEngineP.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/lists/SoTypeList.h>
-#include <assert.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // FIXME: should perhaps use SbTime::parseDate() for So[SM]FString ->
 // So[SM]FTime conversion? 20000331 mortene.
@@ -455,7 +454,13 @@ static void time2string(const SbTime & t, SbString & s)
 {
   // Value is less than a year, assume we're counting seconds. Use
   // resolution at millisecond accuracy.
-  if (t.getValue() < (60.0*60.0*24.0*365.0)) s.sprintf("%.3f", t.getValue());
+  if (t.getValue() < (60.0*60.0*24.0*365.0)) {
+    cc_string storedlocale;
+    SbBool changed = coin_locale_set_portable(&storedlocale);
+    s.sprintf("%.3f", t.getValue());
+    if (changed) { coin_locale_reset(&storedlocale); }
+  }
+
   // Value is more than a year, assume we're interested in the date
   // and time.
 #if 0 // Don't default to ISO 8601 conformant string, ...
