@@ -370,6 +370,43 @@ Virtual methods is one of the biggest problems with regards to this.
   they register the overriding function.
 
 
+9 Include Files
+===============
+
+A few points about include files.
+
+* Include as few files as possible in header files, but not so few
+  that the header file depends on other headers having been included
+  before it.  Including a header on it's own should not produce
+  syntax errors.
+
+  The techniques used to do that is mainly to pre-declare class types,
+  and to hide class internals with the Cheshire Cat / Bridge pattern.
+
+* When setting up which include files to include in source files,
+  keep the order structured.  Follow this pattern:
+
+  <config.h>, if included, should be the first header.
+
+  Start with the most basic / standard libraries, and work your way
+  down through non-standard external libraries and optional libraries
+  (and do it library by library), before finally including headers
+  internal in the current project.
+
+  * libc/CRT includes first
+  * other ANSI / POSIX libraries (pthreads++)
+  * X libraries (or other GUI stuff)
+  * optional libraries (for instance audio)
+  * Open Inventor *core* headers
+  * Open Inventor toolkit headers
+  * Open Inventor exensions headers
+  * internal headers
+  * "inline" source files
+
+  If for some reason you can't follow this ordering, it's most likely
+  a design problem on your behalf, which you should fix sooner, rather
+  than later...
+
 =======================================================================
 XXX FIXME: complete doc. XXX
 
