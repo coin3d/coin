@@ -427,8 +427,8 @@ SoGetBoundingBoxAction::isCenterSet(void) const
 void
 SoGetBoundingBoxAction::resetCenter(void)
 {
-#if COIN_DEBUG && 1
-  SoDebugError::postInfo("SoGetBoundingBoxAction::resetCenter", "dtdt" );
+#if COIN_DEBUG && 0
+  SoDebugError::postInfo("SoGetBoundingBoxAction::resetCenter", "" );
 #endif
 
   this->flags &= ~SoGetBoundingBoxAction::CENTER_SET;
