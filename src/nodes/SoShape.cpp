@@ -742,12 +742,14 @@ SoShape::createTriangleDetail(SoRayPickAction * action,
                               const SoPrimitiveVertex * /*v3*/,
                               SoPickedPoint * pp)
 {
-  assert(primData);
-  assert(primData->faceDetail);
-  assert(primData->shape == this);
-  assert(primData->action == (SoAction *) action);
-
-  return primData->createPickDetail();
+  if (primData && primData->faceDetail) {
+    return primData->createPickDetail();
+  }
+#if COIN_DEBUG
+  SoDebugError::postInfo("SoShape::createTriangleDetail",
+                         "Unable to create triangle detail.");
+#endif // COIN_DEBUG
+  return NULL;
 }
 
 /*!
@@ -771,12 +773,14 @@ SoShape::createLineSegmentDetail(SoRayPickAction * action,
                                  const SoPrimitiveVertex * /* v2 */,
                                  SoPickedPoint * pp)
 {
-  assert(primData);
-  assert(primData->lineDetail);
-  assert(primData->shape == this);
-  assert(primData->action == (SoAction *) action);
-
-  return primData->createPickDetail();
+  if (primData && primData->lineDetail) {
+    return primData->createPickDetail();
+  }
+#if COIN_DEBUG
+  SoDebugError::postInfo("SoShape::createLineSegmentDetail",
+                         "Unable to create line segment detail.");
+#endif // COIN_DEBUG
+  return NULL;
 }
 
 /*!
