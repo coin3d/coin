@@ -463,7 +463,7 @@ void
 SoVRMLAudioClipP::startPlaying()
 {
 #if COIN_DEBUG && DEBUG_AUDIO
-  fprintf(stderr, "ac:start\n");
+  SoDebugError::postInfo("SoVRMLAudioClipP::startPlaying", "start");
 #endif // debug 
 #ifdef HAVE_THREADS
   this->syncmutex.lock();
@@ -483,7 +483,7 @@ void
 SoVRMLAudioClipP::stopPlaying()
 {
 #if COIN_DEBUG && DEBUG_AUDIO
-  fprintf(stderr, "ac:stop\n");
+  SoDebugError::postInfo("SoVRMLAudioClipP::stopPlaying", "stop");
 #endif // debug
   PUBLIC(this)->isActive.setValue(FALSE);
 #ifdef HAVE_THREADS
@@ -541,9 +541,6 @@ SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int numframe
     channels=1;
     return NULL;
   }
-#if COIN_DEBUG && DEBUG_AUDIO
-  fprintf(stderr, "ac:f<");
-#endif // debug
 
   if (buffer == NULL) {
     /* Note: The SoVRMLSound node has signalled that it has received an eof previously
@@ -554,9 +551,6 @@ SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int numframe
     this->soundHasFinishedPlaying = TRUE;
     return NULL;
   }
-#if COIN_DEBUG && DEBUG_AUDIO
-  fprintf(stderr, ">");
-#endif // debug
 
   assert (!this->soundHasFinishedPlaying);
 
@@ -787,7 +781,7 @@ SoVRMLAudioClipP::timerCB(SoSensor *)
 #endif // debug
 
 #if COIN_DEBUG && DEBUG_AUDIO
-  fprintf(stderr, "(ac:timerCB)");
+  SoDebugError::postInfo("SoVRMLAudioClipP::timerCB", "(timerCB)");
 #endif // debug
 
   if (((now>=stop) && (stop>start)) ||
@@ -805,7 +799,7 @@ SoVRMLAudioClipP::timerCB(SoSensor *)
     if  (PUBLIC(this)->isActive.getValue()) {
       // FIXME: perhaps add some additional slack, the size of one buffer? 20021008 thammer.
 #if COIN_DEBUG && DEBUG_AUDIO
-      fprintf(stderr, "clip::timerCB, soundHasFinishedPlaying\n");
+      SoDebugError::postInfo("SoVRMLAudioClipP::timerCB", "soundHasFinishedPlaying");
 #endif // debug
       this->stopPlaying(); 
     }
@@ -861,7 +855,8 @@ SoVRMLAudioClipP::openFile(const char *filename)
   }
 
 #if COIN_DEBUG && DEBUG_AUDIO
-  fprintf(stderr, "Wave file '%s' opened successfully\n", filename);
+  SoDebugError::postInfo("SoVRMLAudioClipP::openFile", 
+                         "Wave file '%s' opened successfully\n", filename);
 #endif // debug
 
   return TRUE; // OK
