@@ -85,6 +85,8 @@
 #include <Inventor/SbClip.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
 
 // SoShape.cpp grew too big, so I had to move some code into new
 // files. pederb, 2001-07-18
@@ -592,13 +594,14 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
       }
 
       SoGLLazyElement::getInstance(state)->send(state, SoLazyElement::ALL_MASK);
-      
+
       glPushAttrib(GL_DEPTH_BUFFER_BIT);
       glDepthFunc(GL_LEQUAL);
       glDisable(GL_LIGHTING);
+      
       glColor3f(1.0f, 1.0f, 1.0f);
-
-      int numlights = lights.getLength();
+      
+      const int numlights = lights.getLength();      
       for (int i = 0; i < numlights; i++) {      
         // fetch matrix that convert the light from its object space
         // to the OpenGL world space
@@ -609,6 +612,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
           SoViewingMatrixElement::get(state);
         m = m.inverse();
         m.multLeft(lm);
+
 
         // bumprender is shared among all threads, so the mutex needs to
         // be locked when we get here since some internal arrays are
@@ -624,16 +628,40 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
           glBlendFunc(GL_ONE, GL_ONE);
         }
       }
-      PRIVATE(this)->unlock();
-
+      
+      
       SoGLLazyElement::getInstance(state)->reset(state, 
                                                  SoLazyElement::DIFFUSE_MASK|
                                                  SoLazyElement::GLIMAGE_MASK);
-
       SoMaterialBundle mb(action);
-      mb.sendFirst();
-      
+      mb.sendFirst();      
       PRIVATE(this)->bumprender->renderNormal(state, PRIVATE(this)->pvcache);
+      
+     
+      // Can the hardware do specular bump maps?
+      const cc_glglue * glue = sogl_glue_instance(state);
+      if (glue->has_arb_fragment_program && 
+          glue->has_arb_vertex_program) {
+        
+        SoGLLazyElement::getInstance(state)->reset(state, 
+                                                   SoLazyElement::DIFFUSE_MASK|
+                                                   SoLazyElement::GLIMAGE_MASK);     
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_ONE, GL_ONE);
+        
+        for (int i = 0; i < numlights; i++) {      
+          SbMatrix lm = SoLightElement::getMatrix(state, i);
+          SbMatrix m = SoModelMatrixElement::get(state) *
+            SoViewingMatrixElement::get(state);
+          m = m.inverse();
+          m.multLeft(lm);                   
+          PRIVATE(this)->bumprender->renderBumpSpecular(state, PRIVATE(this)->pvcache, 
+                                                        (SoLight*) lights[i], m);          
+        }
+      }
+      
+      PRIVATE(this)->unlock();
+      
       glPopAttrib();
       glDisable(GL_BLEND); // FIXME: temporary for FPS-counter
       

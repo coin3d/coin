@@ -7,6 +7,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SbHash.h>
+#include <Inventor/C/glue/gl.h>
 
 class SoState;
 class SoLight;
@@ -25,6 +26,9 @@ public:
   void renderBump(SoState * state,
                   const SoPrimitiveVertexCache * cache,
                   SoLight * light, const SbMatrix & toobjectspace);
+  void renderBumpSpecular(SoState * state,
+                          const SoPrimitiveVertexCache * cache,
+                          SoLight * light, const SbMatrix & toobjectspace);
   void renderNormal(SoState * state, const SoPrimitiveVertexCache * cache);
 
 private:
@@ -32,12 +36,18 @@ private:
   void initLight(SoLight * light, const SbMatrix & m);
   void calcTSBCoords(const SoPrimitiveVertexCache * cache, SoLight * light);
   SbVec3f getLightVec(const SbVec3f & v) const;
-
+  void initPrograms(const cc_glglue * glue);
   SbList <SbVec3f> cubemaplist;
   SbList <SbVec3f> tangentlist;
 
   SbVec3f lightvec;
   SbBool ispointlight;
+
+  GLuint fragmentprogramid;
+  GLuint dirlightvertexprogramid;
+  GLuint pointlightvertexprogramid;
+  SbBool programsinitialized;
+
 };
 
 #endif // COIN_SOSHAPE_BUMPRENDER
