@@ -114,7 +114,7 @@ internal_join(cc_thread * thread,
       cc_internal_w32_freelasterrorstring(errstr);
     }
   }
-  else {
+  else if (retvalptr) {
     *retvalptr = (void *)exitcode;
   }
   /* termination could be forced with TerminateThread() - but this
