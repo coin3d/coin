@@ -134,6 +134,8 @@ THE LINKS
   Also in the proceedings of the ACM Symposium on Virtual Reality
   Software and Technology (VRST'99), pp. 74-81, 1999.
 
+  Student project: <URL:http://www.stud.fee.vutbr.cz/~xpeciv00/>
+
 * There's supposedly a shadow demo on www.opengl.org, with source
   code, which demonstrates how to do shadows on all kinds of (NVidia)
   gfx cards, from TNT (sw shadow volumes) to GeForce 3 (hardware
@@ -185,6 +187,9 @@ THE LINKS
   work with Coin. Note: they are using some of our pixmap graphics on
   the viewer buttons, with no copyright information about this as far
   as I can see. Get in touch with them.  (mortene)
+
+* SDL and GLUT bindings (So*RenderArea):
+  <URL:http://www.stud.fee.vutbr.cz/~xpeciv00/> (Jan Peciva)
 
 * Check out "Valgrind", a Purify-like (?) memory debugger tool:
   <URL:http://devel-home.kde.org/~sewardj/> (or
