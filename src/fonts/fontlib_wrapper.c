@@ -686,7 +686,8 @@ cc_flw_get_advance(unsigned int font, unsigned int glyph, float * x, float * y)
   gs = flw_glyphidx2glyphptr(fs, glyph);
 
   if (fs->defaultfont || gs->fromdefaultfont) {
-    *x = 0;
+    /* FIXME: This is not good enough. Temporarily hack. 20030923 handegar */
+    *x = 0.5f;
     *y = 0;
   }
   else {
@@ -803,7 +804,6 @@ cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph, float complexity)
 
   struct cc_flw_vector_glyph * vector_glyph = NULL;
   struct cc_flw_font * fs;
-  int temp;
 
   FLW_MUTEX_LOCK(flw_global_lock);
 

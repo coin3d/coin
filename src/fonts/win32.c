@@ -284,7 +284,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
   /* FIXME: an idea about sizex / width specification for fonts: let
      sizex==0 indicate "don't care". Should update API and API doc
      upstream to that effect. 20030911 mortene.
-   */
+  */
   cc_hash * glyphhash;
 
   HFONT wfont = CreateFont(-sizey, /* Using a negative
@@ -445,24 +445,65 @@ cc_flww32_get_glyph(void * font, unsigned int charidx)
 void
 cc_flww32_get_advance(void * font, int glyph, float * x, float * y)
 {
-  struct cc_flww32_glyph * glyphstruct = get_glyph_struct(font, glyph);
-#if 0
-  /* FIXME: is this too strict? Could make it on demand. Fix if we
-     ever run into this assert. 20030610 mortene. */
-  assert(glyphstruct && "glyph was not made yet");
-  /* UPDATE: assert hits if glyph does not exist. Re-enable assert
-     after we have set up the code for making an empty rectangle on
-     non-existent glyph. 20030610 mortene. */
-#else /* tmp enabled */
-  if (glyphstruct == NULL) {
-    *x = 10.0f;
-    *y = 0.0f;
+
+  LOGFONT lfont;
+  GLYPHMETRICS gm;
+  static const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
+                                       { 0, 0 }, { 0, 1 } };
+  DWORD ret;
+  DWORD size = 0;
+  HFONT previousfont;
+
+  /* Connect device context to font. */
+  previousfont = SelectObject(cc_flww32_globals.devctx, (HFONT)font);
+  if (previousfont == NULL) {
+    cc_win32_print_error("cc_flww32_get_font", "SelectObject()", GetLastError());
     return;
   }
-#endif
 
-  *x = (float) glyphstruct->bitmap->advanceX;
-  *y = (float) glyphstruct->bitmap->advanceY;
+  /* The GetGlyphOutline function retrieves the outline or bitmap for
+     a character in the TrueType font that is selected into the
+     specified device context. */
+  ret = GetGlyphOutline(cc_flww32_globals.devctx,
+                        glyph, /* character to query */
+                        GGO_METRICS, /* format of data to return */
+                        &gm, /* metrics */
+                        0, /* size of buffer for data */
+                        NULL, /* buffer for data */
+                        &identitymatrix /* transformation matrix */
+                        );
+
+  /* As of now, GetGlyphOutline() should have no known reason to
+     fail.
+     FIXME: We should eventually allow non-TT fonts to be loaded
+     aswell, by changing the "precision" setting in the call to
+     CreateFont() to also allow raster fonts (see FIXME comment where
+     CreateFont() is called). Then, when GetGlyphOutline() fails, use
+     TextOut() and GetDIBits() to grab a font glyph's bitmap.
+     20030610 mortene.
+  */
+  if (ret == GDI_ERROR) {
+    cc_string str;
+    cc_string_construct(&str);
+    cc_string_sprintf(&str,
+                      "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_BITMAP, "
+                      "<metricsstruct>, 0, NULL, <idmatrix>)",
+                      cc_flww32_globals.devctx, glyph, (unsigned char)glyph);
+    cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
+    cc_string_clean(&str);
+    return;
+  }
+ 
+  ret = GetObject((HFONT) font,sizeof(lfont), (LPVOID) &lfont);
+  size = -lfont.lfHeight;
+  if(ret == 0) {
+    cc_win32_print_error("cc_flww32_get_advance", "GetObject()", GetLastError());
+    size = 1;
+  }
+  
+  *x = (float) gm.gmCellIncX / ((float) size);
+  *y = (float) gm.gmCellIncY / ((float) size);
+
 }
 
 /* Returns kerning, in x and y input arguments, for a pair of
@@ -739,39 +780,39 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 
 
   /* 
-	If NULL is returned due to an error, glyph3d.c will load the default font instead. 
+     If NULL is returned due to an error, glyph3d.c will load the default font instead. 
   */
 
   memdc = CreateCompatibleDC(NULL);
   if (memdc == NULL) {
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling CreateCompatibleDC(). "
-						 "Cannot vectorize font.", GetLastError());
+                         "Cannot vectorize font.", GetLastError());
     return NULL;
   }
 
   screendc = GetDC(NULL);
   if (screendc == NULL) {
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling GetDC(). "
-						 "Cannot vectorize font.", GetLastError());
+                         "Cannot vectorize font.", GetLastError());
     return NULL;
   }
 
   membmp = CreateCompatibleBitmap(screendc, 300, 300);
   if (membmp == NULL) {
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling CreateCompatibleBitmap(). "
-						 "Cannot vectorize font.", GetLastError());
+                         "Cannot vectorize font.", GetLastError());
     return NULL;
   }
 
   if(SelectObject(memdc, membmp) == NULL) {
     cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling SelectObject(). "
-						 "Cannot vectorize font.", GetLastError());
+                         "Cannot vectorize font.", GetLastError());
     return NULL;
   }
 
   if (SelectObject(memdc, font) == NULL) {
-	cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling SelectObject(). "
-						 "Cannot vectorize font.", GetLastError());
+    cc_win32_print_error("cc_flww32_get_vector_glyph","Error calling SelectObject(). "
+                         "Cannot vectorize font.", GetLastError());
     return NULL;
   }
   
