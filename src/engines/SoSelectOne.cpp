@@ -119,7 +119,7 @@ SoSelectOne::SoSelectOne(SoType inputtype)
   }
 #endif // COIN_DEBUG
 
-  (void)this->initialize(inputtype);
+  this->initialize(inputtype);
 }
 
 // Default constructor. Leaves engine in invalid state. Should only be
@@ -135,7 +135,7 @@ SoSelectOne::SoSelectOne(void)
 // Set up the input and output fields of the engine. This is done from
 // either the non-default constructor or the readInstance() import
 // code.
-SbBool
+void
 SoSelectOne::initialize(const SoType inputfieldtype)
 {
   assert(this->input == NULL);
@@ -171,8 +171,6 @@ SoSelectOne::initialize(const SoType inputfieldtype)
   this->dynamicoutput = new SoEngineOutputData(SoSelectOne::outputdata);
   this->dynamicoutput->addOutput(this, "output", this->output, outputtype);
   this->output->setContainer(this);
-
-  return TRUE;
 }
 
 // Documented in superclass.
@@ -243,7 +241,7 @@ SoSelectOne::readInstance(SoInput * in, unsigned short flags)
     return FALSE;
   }
 
-  (void)this->initialize(inputtype);
+  this->initialize(inputtype);
   return SoEngine::readInstance(in, flags);
 }
 
@@ -275,6 +273,6 @@ SoSelectOne::copyContents(const SoFieldContainer * from,
                           SbBool copyconnections)
 {
   SoSelectOne * selectonesrc = (SoSelectOne *)from;
-  if (selectonesrc->input) { (void)this->initialize(selectonesrc->input->getTypeId()); }
+  if (selectonesrc->input) { this->initialize(selectonesrc->input->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }

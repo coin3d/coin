@@ -54,7 +54,7 @@ private:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   virtual void writeInstance(SoOutput * out);
 
-  SbBool initialize(const SoType inputfieldtype);
+  void initialize(const SoType inputfieldtype);
 
   virtual void copyContents(const SoFieldContainer * from,
                             SbBool copyconnections);

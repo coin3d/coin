@@ -137,7 +137,7 @@ SoGate::SoGate(SoType type)
   }
 #endif // COIN_DEBUG
 
-  (void)this->initialize(type);
+  this->initialize(type);
 }
 
 
@@ -151,7 +151,7 @@ SoGate::initClass(void)
 // Set up the input and output fields of the engine. This is done from
 // either the non-default constructor or the readInstance() import
 // code.
-SbBool
+void
 SoGate::initialize(const SoType inputfieldtype)
 {
   assert(this->input == NULL);
@@ -173,8 +173,6 @@ SoGate::initialize(const SoType inputfieldtype)
   this->dynamicoutput = new SoEngineOutputData(SoGate::outputdata);
   this->dynamicoutput->addOutput(this, "output", this->output, inputfieldtype);
   this->output->setContainer(this);
-
-  return TRUE;
 }
 
 /*!
@@ -251,7 +249,7 @@ SoGate::readInstance(SoInput * in, unsigned short flags)
     return FALSE;
   }
 
-  (void)this->initialize(inputtype);
+  this->initialize(inputtype);
   return SoEngine::readInstance(in, flags);
 }
 
@@ -282,6 +280,6 @@ void
 SoGate::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
   SoGate * gatesrc = (SoGate *)from;
-  if (gatesrc->input) { (void)this->initialize(gatesrc->input->getTypeId()); }
+  if (gatesrc->input) { this->initialize(gatesrc->input->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }

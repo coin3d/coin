@@ -126,7 +126,7 @@ SoConcatenate::SoConcatenate(SoType type)
   }
 #endif // COIN_DEBUG
 
-  (void)this->initialize(type);
+  this->initialize(type);
 }
 
 
@@ -140,7 +140,7 @@ SoConcatenate::initClass(void)
 // Set up the input and output fields of the engine. This is done from
 // either the non-default constructor or the readInstance() import
 // code.
-SbBool
+void
 SoConcatenate::initialize(const SoType inputfieldtype)
 {
   assert(this->input[0] == NULL);
@@ -164,8 +164,6 @@ SoConcatenate::initialize(const SoType inputfieldtype)
   this->dynamicoutput = new SoEngineOutputData(SoConcatenate::outputdata);
   this->dynamicoutput->addOutput(this, "output", this->output, inputfieldtype);
   this->output->setContainer(this);
-
-  return TRUE;
 }
 
 /*!
@@ -209,8 +207,7 @@ SoConcatenate::readInstance(SoInput * in, unsigned short flags)
     return FALSE;
   }
 
-  (void)this->initialize(inputtype);
-
+  this->initialize(inputtype);
   return SoEngine::readInstance(in, flags);
 }
 
@@ -242,7 +239,7 @@ SoConcatenate::copyContents(const SoFieldContainer * from,
                             SbBool copyconnections)
 {
   SoConcatenate * concatenatesrc = (SoConcatenate *)from;
-  if (concatenatesrc->input[0]) { (void)this->initialize(concatenatesrc->input[0]->getTypeId()); }
+  if (concatenatesrc->input[0]) { this->initialize(concatenatesrc->input[0]->getTypeId()); }
   inherited::copyContents(from, copyconnections);
 }
 
