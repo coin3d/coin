@@ -591,3 +591,37 @@
     20020915 mortene.
 
 =====================================================================
+
+027 Timer queue management is incorrect
+    This example should start chiming in once every fourth second
+    after a delay of two seconds.  The first timer callback at 
+    baseTime is not executed.
+
+    #include <Inventor/SoDB.h>
+    #include <Inventor/sensors/SoTimerSensor.h>
+    #include <Inventor/Qt/SoQt.h>
+    #include <stdio.h>
+
+    void
+    sensorCB(void * data, SoSensor * sensor) {
+      printf("timer callback: %s\n", SbTime::getTimeOfDay().format().getString());
+    }
+
+    int
+    main(int argc, char ** argv)
+    { 
+      SoQt::init("test");
+      printf("init: %s\n", SbTime::getTimeOfDay().format().getString());
+      SoTimerSensor * sensor = new SoTimerSensor(sensorCB, NULL);
+      sensor->setInterval(2.0);
+      sensor->setBaseTime(SbTime::getTimeOfDay() + SbTime(4.0));
+      sensor->schedule();
+      SoQt::mainLoop();
+    }
+
+    The "obvious" fix you'll find in in SoTimerSensor::reschedule()
+    doesn't solve the problem, so it hasn't been applied.
+
+    20020916 larsa.
+
+=====================================================================
