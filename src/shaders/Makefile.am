@@ -1,11 +1,12 @@
-if BUILD_SHADERS
-RegularSources = \
+Regular = \
 	SoFragmentShader.cpp \
 	SoGLARBShaderParameter.cpp \
 	SoGLARBShaderObject.cpp \
 	SoGLARBShaderProgram.cpp \
 	SoGLCgShader.cpp \
-	SoGLSLShader.cpp \
+	SoGLSLShaderParameter.cpp \
+	SoGLSLShaderObject.cpp \
+	SoGLSLShaderProgram.cpp \
 	SoGLShaderObject.cpp \
 	SoGLShaderParameter.cpp \
 	SoGLShaderProgram.cpp \
@@ -15,58 +16,29 @@ RegularSources = \
 	SoShaderProgram.cpp \
 	SoShaders.cpp \
 	SoVertexShader.cpp
-LinkHackSources = \
-	SoFragmentShader.cpp \
-	SoGLARBShaderParameter.cpp \
-	SoGLARBShaderObject.cpp \
-	SoGLARBShaderProgram.cpp \
-	SoGLCgShader.cpp \
-	SoGLSLShader.cpp \
-	SoGLShaderObject.cpp \
-	SoGLShaderParameter.cpp \
-	SoGLShaderProgram.cpp \
-	SoGLShaderProgramElement.cpp \
-	SoShaderObject.cpp \
-	SoShaderParameter.cpp \
-	SoShaderProgram.cpp \
-	SoShaders.cpp \
-	SoVertexShader.cpp
-PrivateHeaders = \
+
+Private = \
 	SoGLARBShaderParameter.h \
 	SoGLARBShaderObject.h \
 	SoGLARBShaderProgram.h \
 	SoGLCgShader.h \
-	SoGLSLShader.h \
-	SoGLShaderObject.h 
+	SoGLSLShaderParameter.h \
+	SoGLSLShaderObject.h \
+	SoGLSLShaderProgram.h \
+	SoGLShaderParameter.h \
+	SoGLShaderObject.h \
+	SoGLShaderProgram.h \
+	SoGLShaderTypes.h
+
+if BUILD_SHADERS
+RegularSources = $(Regular)
+LinkHackSources = $(Regular)
+PrivateHeaders = $(Private)
 else
 RegularSources = shaders-dummy.cpp
 LinkHackSources = shaders-dummy.cpp
 # for 'make dist'
-PrivateHeaders = \
-	SoFragmentShader.cpp \
-	SoGLARBShaderParameter.cpp \
-	SoGLARBShaderObject.cpp \
-	SoGLARBShaderProgram.cpp \
-	SoGLCgShader.cpp \
-	SoGLSLShader.cpp \
-	SoGLShaderObject.cpp \
-	SoGLShaderParameter.cpp \
-	SoGLShaderProgram.cpp \
-	SoGLShaderProgramElement.cpp \
-	SoShaderObject.cpp \
-	SoShaderParameter.cpp \
-	SoShaderProgram.cpp \
-	SoShaders.cpp \
-	SoVertexShader.cpp \
-	SoGLARBShaderParameter.h \
-	SoGLARBShaderObject.h \
-	SoGLARBShaderProgram.h \
-	SoGLCgShader.h \
-	SoGLSLShader.h \
-	SoGLShaderObject.h \
-	SoGLShaderParameter.h \
-	SoGLShaderProgram.h \
-	SoGLShaderTypes.h
+PrivateHeaders = $(Regular) $(Private)
 endif
 
 PublicHeaders = 

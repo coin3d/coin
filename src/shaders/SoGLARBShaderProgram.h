@@ -31,7 +31,6 @@
 // *************************************************************************
 
 #include <Inventor/C/glue/gl.h>
-#include <Inventor/nodes/SoGLShaderParameter.h>
 
 class SoGLARBShaderObject;
 

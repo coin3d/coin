@@ -126,13 +126,11 @@ PublicHeaders = \
 	SoWWWAnchor.h \
 	SoWWWInline.h \
 	SoFragmentShader.h \
-	SoGLShaderProgram.h \
 	SoShaderObject.h \
 	SoShaderParameter.h \
 	SoShaderProgram.h \
 	SoShaders.h \
 	SoVertexShader.h \
-	SoGLShaderParameter.h \
 	SoGLShaderTypes.h
 else
 PublicHeaders = \

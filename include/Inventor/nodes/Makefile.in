@@ -504,13 +504,11 @@ target_vendor = @target_vendor@
 @BUILD_SHADERS_TRUE@	SoWWWAnchor.h \
 @BUILD_SHADERS_TRUE@	SoWWWInline.h \
 @BUILD_SHADERS_TRUE@	SoFragmentShader.h \
-@BUILD_SHADERS_TRUE@	SoGLShaderProgram.h \
 @BUILD_SHADERS_TRUE@	SoShaderObject.h \
 @BUILD_SHADERS_TRUE@	SoShaderParameter.h \
 @BUILD_SHADERS_TRUE@	SoShaderProgram.h \
 @BUILD_SHADERS_TRUE@	SoShaders.h \
 @BUILD_SHADERS_TRUE@	SoVertexShader.h \
-@BUILD_SHADERS_TRUE@	SoGLShaderParameter.h \
 @BUILD_SHADERS_TRUE@	SoGLShaderTypes.h
 
 PrivateHeaders = \

@@ -1,5 +1,5 @@
-#ifndef COIN_SOGLSHADERPROGRAM_H
-#define COIN_SOGLSHADERPROGRAM_H
+#ifndef COIN_SOGLSLSHADERPROGRAM_H
+#define COIN_SOGLSLSHADERPROGRAM_H
 
 /**************************************************************************\
  *
@@ -24,37 +24,39 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_INTERNAL
-#error this is a private header file
-#endif
+#include <Inventor/lists/SbList.h>
+#include <Inventor/C/glue/glp.h>
+
+class SoGLSLShaderObject;
 
 // *************************************************************************
 
-#include <Inventor/SbString.h>
-
-class SoGLShaderObject;
-
-// *************************************************************************
-
-class SoGLShaderProgram
+class SoGLSLShaderProgram
 {
 public:
-  SoGLShaderProgram(void);
-  ~SoGLShaderProgram();
-  void addShaderObject(SoGLShaderObject * shaderObject);
-  void removeShaderObject(SoGLShaderObject * shaderObject);
-  void enable(void);
-  void disable(void);
+  void addShaderObject(SoGLSLShaderObject *shaderObject);
+  void removeShaderObject(SoGLSLShaderObject *shaderObject);
+  void enable(const cc_glglue * g);
+  void disable(const cc_glglue * g);
   void postShouldLink(void);
 
-#if defined(SOURCE_HINT) // FIXME: what's this? 20050120 mortene.
-  SbString getSourceHint(void);
+#if defined(SOURCE_HINT)
+  SbString getSourceHint(void) const;
 #endif
-  
-private:
-  class SoGLARBShaderProgram * arbShaderProgram;
-  class SoGLCgShaderProgram  * cgShaderProgram;
-  class SoGLSLShaderProgram  * glslShaderProgram;
+
+public:
+  SoGLSLShaderProgram(void);
+  ~SoGLSLShaderProgram();
+
+protected:
+  SbList<SoGLSLShaderObject *> shaderObjects;
+  COIN_GLhandle programHandle;
+  SbBool shouldLink;
+  SbBool isExecutable;
+
+  int indexOfShaderObject(SoGLSLShaderObject *shaderObject);
+  void ensureLinking(const cc_glglue * g);
+  void ensureProgramHandle(const cc_glglue * g);
 };
 
-#endif /* ! COIN_SOGLSHADERPROGRAM_H */
+#endif /* ! COIN_SOGLSLSHADERPROGRAM_H */

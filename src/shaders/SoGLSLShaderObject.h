@@ -1,5 +1,5 @@
-#ifndef COIN_SOGLARBSHADERPARAMETER_H
-#define COIN_SOGLARBSHADERPARAMETER_H
+#ifndef COIN_SOGLSLSHADEROBJECT_H
+#define COIN_SOGLSLSHADEROBJECT_H
 
 /**************************************************************************\
  *
@@ -24,35 +24,37 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_INTERNAL
-#error this is a private header file
-#endif
+#include <Inventor/C/glue/glp.h>
+
+#include "SoGLShaderObject.h"
 
 // *************************************************************************
 
-#include "SoGLShaderParameter.h"
-
-// *************************************************************************
-
-class SoGLARBShaderParameter : public SoGLShaderParameter
+class SoGLSLShaderObject : public SoGLShaderObject
 {
- public: // satisfy SoGLShaderParameter protocol interface
-  virtual inline SbBool isReferenced() { return FALSE; }
-
-  virtual SoGLShader::ShaderType shaderType() const;
-
-  virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id);
-  virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
-
 public:
-  SoGLARBShaderParameter(GLenum target, GLuint index);
-  virtual ~SoGLARBShaderParameter();
+  SoGLSLShaderObject(const cc_glglue * g);
+  virtual ~SoGLSLShaderObject();
+
+  virtual SoGLShader::ShaderType shaderType(void) const;
+
+  virtual SoGLShaderParameter * getParameter(int index, const char * name,
+                                             SoGLShader::ValueType type);
+
+  virtual SbBool isLoaded(void) const;
+  virtual void load(const char * sourceString);
+  virtual void unload(void);
+
+  void attach(COIN_GLhandle programHandle);
+  void detach(void);
+
+  // objType 0: program 1: vertexShader 2: fragmentShader
+  static SbBool didOpenGLErrorOccur(int objType);
+  static void printInfoLog(const cc_glglue * g, COIN_GLhandle handle, int objType);
 
 private:
-  GLenum target;
-  GLuint identifier;
+  COIN_GLhandle programHandle;
+  COIN_GLhandle shaderHandle;
 };
 
-#endif /* ! COIN_SOGLARBSHADERPARAMETER_H */
+#endif /* ! COIN_SOGLSLSHADEROBJECT_H */

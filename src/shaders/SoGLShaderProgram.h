@@ -1,5 +1,5 @@
-#ifndef COIN_SOGLARBSHADERPARAMETER_H
-#define COIN_SOGLARBSHADERPARAMETER_H
+#ifndef COIN_SOGLSHADERPROGRAM_H
+#define COIN_SOGLSHADERPROGRAM_H
 
 /**************************************************************************\
  *
@@ -30,29 +30,32 @@
 
 // *************************************************************************
 
-#include "SoGLShaderParameter.h"
+#include <Inventor/SbString.h>
+#include <Inventor/C/glue/gl.h>
+
+class SoGLShaderObject;
 
 // *************************************************************************
 
-class SoGLARBShaderParameter : public SoGLShaderParameter
+class SoGLShaderProgram
 {
- public: // satisfy SoGLShaderParameter protocol interface
-  virtual inline SbBool isReferenced() { return FALSE; }
-
-  virtual SoGLShader::ShaderType shaderType() const;
-
-  virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id);
-  virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
-  virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
-
 public:
-  SoGLARBShaderParameter(GLenum target, GLuint index);
-  virtual ~SoGLARBShaderParameter();
+  SoGLShaderProgram(void);
+  ~SoGLShaderProgram();
+  void addShaderObject(SoGLShaderObject * shaderObject);
+  void removeShaderObject(SoGLShaderObject * shaderObject);
+  void enable(const cc_glglue * g);
+  void disable(const cc_glglue * g);
+  void postShouldLink(void);
 
+#if defined(SOURCE_HINT) // FIXME: what's this? 20050120 mortene.
+  SbString getSourceHint(void);
+#endif
+  
 private:
-  GLenum target;
-  GLuint identifier;
+  class SoGLARBShaderProgram * arbShaderProgram;
+  class SoGLCgShaderProgram  * cgShaderProgram;
+  class SoGLSLShaderProgram  * glslShaderProgram;
 };
 
-#endif /* ! COIN_SOGLARBSHADERPARAMETER_H */
+#endif /* ! COIN_SOGLSHADERPROGRAM_H */

@@ -21,13 +21,13 @@
  *
 \**************************************************************************/
 
-#include <Inventor/nodes/SoGLShaderParameter.h>
+#include "SoGLShaderParameter.h"
 
 #include <assert.h>
 
 #include "SoGLARBShaderParameter.h"
 #include "SoGLCgShader.h"
-#include "SoGLSLShader.h"
+#include "SoGLSLShaderParameter.h"
 
 // *************************************************************************
 
@@ -64,10 +64,8 @@ void SoGLShaderParameter::operator delete(void *obj)
   case SoGLShader::CG_SHADER:
     ::delete (SoGLCgShaderParameter *)obj; break;
 #endif
-#if defined(SO_GLSL_SHADER_SUPPORT)
   case SoGLShader::GLSL_SHADER: 
     ::delete (SoGLSLShaderParameter *)obj; break;
-#endif
   default: assert(FALSE && "shaderType unknown!");
   }
 }
@@ -81,10 +79,8 @@ void SoGLShaderParameter::operator delete[](void *obj)
   case SoGLShader::CG_SHADER:
     ::delete [] (SoGLCgShaderParameter *)obj; break;
 #endif
-#if defined(SO_GLSL_SHADER_SUPPORT)
   case SoGLShader::GLSL_SHADER:
     ::delete [] (SoGLSLShaderParameter *)obj; break;
-#endif
   default: assert(FALSE && "shaderType unknown!");
   }
 }

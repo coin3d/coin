@@ -30,15 +30,14 @@
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoFragmentShader.h>
-#include <Inventor/nodes/SoGLShaderProgram.h>
 #include <Inventor/nodes/SoShaderParameter.h>
 #include <Inventor/nodes/SoVertexShader.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 
 #include "SoGLARBShaderObject.h"
 #include "SoGLCgShader.h"
-#include "SoGLSLShader.h"
-#include "SoGLShaderObject.h"
+#include "SoGLSLShaderObject.h"
+#include "SoGLShaderProgram.h"
 
 // *************************************************************************
 
@@ -271,11 +270,9 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
         this->glShaderObject = (SoGLShaderObject*) new SoGLCgShaderObject;
         break;
 #endif
-#if defined(SO_GLSL_SHADER_SUPPORT)
       case SoShaderObject::GLSL_PROGRAM:
-        this->glShaderObject = (SoGLShaderObject*) new SoGLSLShaderObject;
+        this->glShaderObject = (SoGLShaderObject*) new SoGLSLShaderObject(glue);
         break;
-#endif
       default:
         assert(FALSE && "This shouldn't happen!");
       }

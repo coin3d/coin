@@ -29,7 +29,8 @@ SO_NODE_SOURCE(SoFragmentShader);
 
 // *************************************************************************
 
-void SoFragmentShader::initClass(void)
+void
+SoFragmentShader::initClass(void)
 {
   SO_NODE_INIT_CLASS(SoFragmentShader, SoShaderObject, "SoShaderObject");
 }
@@ -43,7 +44,8 @@ SoFragmentShader::~SoFragmentShader()
 {  
 }
 
-SbBool SoFragmentShader::isVertexShader(void) const
+SbBool
+SoFragmentShader::isVertexShader(void) const
 {
   return FALSE;
 }
@@ -51,18 +53,17 @@ SbBool SoFragmentShader::isVertexShader(void) const
 SbBool
 SoFragmentShader::isSupported(SourceType sourceType)
 {
-  // FIXME: return a correct value, based on the capabilities of the
-  // GL driver. (But first check whether this is part of the TGS
-  // Inventor API -- it's not very well designed, as we really need a
-  // guaranteed GL context for this.) 20050120 mortene.
+  // FIXME: return correct values, based on checking the actual
+  // capabilities of the GL driver. (But first investigate whether
+  // this is part of the TGS Inventor API -- the function signature is
+  // not very well designed, as we really need a guaranteed GL context
+  // for this.)  20050120 mortene.
   if (sourceType == ARB_PROGRAM) return TRUE;
+  if (sourceType == GLSL_PROGRAM) return TRUE;
 
   // FIXME: 20041001 martin
 #if !defined(SO_CG_SHADER_SUPPORT)
   if (sourceType == CG_PROGRAM) return FALSE;
-#endif
-#if !defined(SO_GLSL_SHADER_SUPPORT)
-  if (sourceType == GLSL_PROGRAM) return FALSE;
 #endif
 
   return TRUE;

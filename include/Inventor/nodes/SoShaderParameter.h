@@ -53,8 +53,11 @@
 #include <Inventor/fields/SoMFVec4i32.h>
 #endif
 
-#include "SoGLShaderParameter.h"
+// FIXME: check to see if we can get rid of this as a public header..?
+// 20050124 mortene.
+#include <Inventor/nodes/SoGLShaderTypes.h>
 
+class SoGLShaderParameter;
 class SoGLShaderObject;
 
 // *************************************************************************
@@ -62,47 +65,47 @@ class SoGLShaderObject;
 // FIXME: split to one header file for each class. 20050120 mortene.
 
 /* **************************************************************************
- * ***                             SoShaderParameter                      ***
+ * *** SoShaderParameter ***
  * **************************************************************************/
 
 class SoUniformShaderParameter;
 
 class COIN_DLL_API SoShaderParameter : public SoNode {
-  
+
   SO_NODE_ABSTRACT_HEADER(SoShaderParameter);
-  
+
 public:
   SoSFString name;
   SoSFInt32 identifier;
 
-SoINTERNAL public:
-  static void initClass();  
+  SoINTERNAL public:
+  static void initClass(); 
 
 protected:
   SoShaderParameter();
-  virtual ~SoShaderParameter();  
+  virtual ~SoShaderParameter(); 
 };
 
 /* **************************************************************************
- * ***                         SoUniformShaderParameter                   ***
+ * *** SoUniformShaderParameter ***
  * **************************************************************************/
 
 class COIN_DLL_API SoUniformShaderParameter : public SoShaderParameter {
-  
+
   SO_NODE_ABSTRACT_HEADER(SoUniformShaderParameter);
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject) = 0;
   SbBool isRegularBehavior() const { return isRegularBehaviorFlag; }
 
-  virtual void reset(); // FIXME: Coin extension vs TGS Inventor? Investigate. 20050120 mortene.
+  virtual void reset(); // FIXME: Coin extension vs TGS Inventor? Investigate. 20050120 mortene. 
 
 protected:
   SoUniformShaderParameter();
   virtual ~SoUniformShaderParameter();
 
-  SbBool                isRegularBehaviorFlag;  
+  SbBool isRegularBehaviorFlag; 
   SoGLShaderParameter * parameter;
 
 protected:
@@ -110,18 +113,18 @@ protected:
 };
 
 /* **************************************************************************
- * ***                           SoShaderParameter1f                      ***
+ * *** SoShaderParameter1f ***
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameter1f : public SoUniformShaderParameter {
-  
+
   SO_NODE_HEADER(SoShaderParameter1f);
-  
+
 public:
   SoSFFloat value;
   SoShaderParameter1f();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
  
@@ -130,147 +133,147 @@ protected:
 };
 
 /* **************************************************************************
- * ***                           SoShaderParameter1i                      ***
+ * *** SoShaderParameter1i ***
  * **************************************************************************/
 
-class SoShaderParameter1i : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameter1i : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameter1i);
-  
+
 public:
   SoSFInt32 value;
   SoShaderParameter1i();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameter1i();
 };
 
 /* **************************************************************************
- * ***                           SoShaderParameter2f                      ***
+ * *** SoShaderParameter2f ***
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameter2f : public SoUniformShaderParameter {
-  
+
   SO_NODE_HEADER(SoShaderParameter2f);
-  
+
 public:
   SoSFVec2f value;
   SoShaderParameter2f();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameter2f();
 };
 
 /* **************************************************************************
- * ***                           SoShaderParameter2i                      ***
+ * *** SoShaderParameter2i ***
  * **************************************************************************/
 
 #if VEC_I32_SUPPORT
-class SoShaderParameter2i : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameter2i : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameter2i);
-  
+
 public:
   SoSFVec2i32 value;
   SoShaderParameter2i();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameter2i();
 };
 #endif
 
 /* **************************************************************************
- * ***                           SoShaderParameter3f                      ***
+ * *** SoShaderParameter3f ***
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameter3f : public SoUniformShaderParameter {
-  
+
   SO_NODE_HEADER(SoShaderParameter3f);
-  
+
 public:
   SoSFVec3f value;
 
   SoShaderParameter3f();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameter3f();
 };
 
 /* **************************************************************************
- * ***                           SoShaderParameter3i                      ***
+ * *** SoShaderParameter3i ***
  * **************************************************************************/
 
 #if VEC_I32_SUPPORT
-class SoShaderParameter3i : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameter3i : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameter3i);
-  
+
 public:
   SoSFVec3i32 value;
 
   SoShaderParameter3i();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameter3i();
 };
 #endif
 
 /* **************************************************************************
- * ***                           SoShaderParameter4f                      ***
+ * *** SoShaderParameter4f ***
  * **************************************************************************/
 
 class COIN_DLL_API SoShaderParameter4f : public SoUniformShaderParameter {
-  
+
   SO_NODE_HEADER(SoShaderParameter4f);
-  
+
 public:
   SoSFVec4f value;
 
   SoShaderParameter4f();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameter4f();
 };
 
 /* **************************************************************************
- * ***                           SoShaderParameter4i                      ***
+ * *** SoShaderParameter4i ***
  * **************************************************************************/
 
 #if VEC_I32_SUPPORT
-class SoShaderParameter4i : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameter4i : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameter4i);
-  
+
 public:
   SoSFVec4i32 value;
 
   SoShaderParameter4i();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
 
@@ -280,232 +283,233 @@ protected:
 #endif
 
 /* **************************************************************************
- * ***                       SoShaderParameterArray1f                     ***
+ * *** SoShaderParameterArray1f ***
  * **************************************************************************/
 
-class SoShaderParameterArray1f : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterArray1f : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterArray1f);
-  
+
 public:
   SoMFFloat value;
 
   SoShaderParameterArray1f();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterArray1f();
 };
 
 /* **************************************************************************
- * ***                       SoShaderParameterArray1i                     ***
+ * *** SoShaderParameterArray1i ***
  * **************************************************************************/
 
-class SoShaderParameterArray1i : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterArray1i : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterArray1i);
-  
+
 public:
   SoMFInt32 value;
 
   SoShaderParameterArray1i();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterArray1i();
 };
 
 /* **************************************************************************
- * ***                       SoShaderParameterArray2f                     ***
+ * *** SoShaderParameterArray2f ***
  * **************************************************************************/
 
-class SoShaderParameterArray2f : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterArray2f : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterArray2f);
-  
+
 public:
   SoMFVec2f value;
 
   SoShaderParameterArray2f();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterArray2f();
 };
 
 /* **************************************************************************
- * ***                       SoShaderParameterArray2i                     ***
+ * *** SoShaderParameterArray2i ***
  * **************************************************************************/
 
 #if VEC_I32_SUPPORT
-class SoShaderParameterArray2i : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterArray2i : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterArray2i);
-  
+
 public:
   SoMFVec2i32 value;
 
   SoShaderParameterArray2i();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterArray2i();
 };
 #endif
 
 /* **************************************************************************
- * ***                       SoShaderParameterArray3f                     ***
+ * *** SoShaderParameterArray3f ***
  * **************************************************************************/
 
-class SoShaderParameterArray3f : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterArray3f : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterArray3f);
-  
+
 public:
   SoMFVec3f value;
 
   SoShaderParameterArray3f();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterArray3f();
 };
 
 /* **************************************************************************
- * ***                       SoShaderParameterArray3i                     ***
+ * *** SoShaderParameterArray3i ***
  * **************************************************************************/
 
 #if VEC_I32_SUPPORT
-class SoShaderParameterArray3i : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterArray3i : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterArray3i);
-  
+
 public:
   SoMFVec3i32 value;
 
   SoShaderParameterArray3i();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterArray3i();
 };
 #endif
 
 /* **************************************************************************
- * ***                       SoShaderParameterArray4f                     ***
+ * *** SoShaderParameterArray4f ***
  * **************************************************************************/
 
-class SoShaderParameterArray4f : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterArray4f : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterArray4f);
-  
+
 public:
   SoMFVec4f value;
 
   SoShaderParameterArray4f();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterArray4f();
-  
+
 };
 
 /* **************************************************************************
- * ***                       SoShaderParameterArray4i                     ***
+ * *** SoShaderParameterArray4i ***
  * **************************************************************************/
 
 #if VEC_I32_SUPPORT
-class SoShaderParameterArray4i : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterArray4i : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterArray4i);
-  
+
 public:
   SoMFVec4i32 value;
 
   SoShaderParameterArray4i();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterArray4i();
 };
 #endif
 
 /* **************************************************************************
- * ***                       SoShaderParameterMatrix                      ***
+ * *** SoShaderParameterMatrix ***
  * **************************************************************************/
 
-class SoShaderParameterMatrix : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterMatrix : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterMatrix);
-  
+
 public:
   SoSFMatrix value;
 
   SoShaderParameterMatrix();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterMatrix();
 };
 
 /* **************************************************************************
- * ***                    SoShaderParameterMatrixArray                    ***
+ * *** SoShaderParameterMatrixArray ***
  * **************************************************************************/
 
-class SoShaderParameterMatrixArray : public SoUniformShaderParameter {
-  
+class COIN_DLL_API SoShaderParameterMatrixArray : public SoUniformShaderParameter {
+
   SO_NODE_HEADER(SoShaderParameterMatrixArray);
-  
+
 public:
   SoMFMatrix value;
 
   SoShaderParameterMatrixArray();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterMatrixArray();
 };
 
 /* **************************************************************************
- * ***                    SoShaderStateMatrixParameter                    ***
+ * *** SoShaderStateMatrixParameter ***
  * **************************************************************************/
 
+// FIXME: get rid of this. 20050124 mortene.
 #if defined(SO_CG_SHADER_SUPPORT)
 #include <Cg/cgGL.h>
 class COIN_DLL_API SoShaderStateMatrixParameter : public SoUniformShaderParameter {
-  
+
   SO_NODE_HEADER(SoShaderStateMatrixParameter);
-  
+
 public:
 
   enum MatrixType { 
@@ -515,20 +519,20 @@ public:
     MODELVIEW_PROJECTION
   };
 
-   enum MatrixTransform{ 
+  enum MatrixTransform{ 
     IDENTITY,
     TRANSPOSE,
     INVERSE,
     INVERSE_TRANSPOSE
   };
-  
+
   SoSFEnum matrixType;
   SoSFEnum matrixTransform;
 
   SoShaderStateMatrixParameter();
   virtual ~SoShaderStateMatrixParameter();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
 
@@ -539,23 +543,23 @@ protected:
 #endif /* SO_CG_SHADER_SUPPORT */
 
 /* **************************************************************************
- * ***                      SoShaderParameterSampler2D                    ***
+ * *** SoShaderParameterSampler2D ***
  * **************************************************************************/
 
 class SoShaderParameterSampler2D : public SoUniformShaderParameter {
-  
+
   SO_NODE_HEADER(SoShaderParameterSampler2D);
-  
+
 public:
   SoSFString filename;
-  SoSFImage  image;
+  SoSFImage image;
 
   SoShaderParameterSampler2D();
-  
-SoINTERNAL public:
+
+  SoINTERNAL public:
   static void initClass();
   virtual void updateParameter(SoGLShaderObject *shaderObject);
-  
+
 protected:
   virtual ~SoShaderParameterSampler2D();
 };

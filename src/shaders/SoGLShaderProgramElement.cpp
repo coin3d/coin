@@ -26,7 +26,7 @@
 #include <assert.h>
 
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/nodes/SoGLShaderProgram.h>
+#include "SoGLShaderProgram.h"
 
 // *************************************************************************
 
@@ -72,20 +72,26 @@ SoGLShaderProgramElement::get(SoState *state)
 void
 SoGLShaderProgramElement::push(SoState * state)
 {
+  const cc_glglue * glctx =
+    cc_glglue_instance(SoGLCacheContextElement::get(state));
+
   inherited::push(state);
 
   SoGLShaderProgramElement *last=(SoGLShaderProgramElement *)getNextInStack();
   assert(last);
 
-  if (last->shaderProgram) last->shaderProgram->disable();
+  if (last->shaderProgram) last->shaderProgram->disable(glctx);
 }
 
 void
 SoGLShaderProgramElement::pop(SoState * state, const SoElement *prev)
 {
+  const cc_glglue * glctx =
+    cc_glglue_instance(SoGLCacheContextElement::get(state));
+
   SoGLShaderProgramElement *elem = (SoGLShaderProgramElement *)prev;
-  if (elem->shaderProgram) elem->shaderProgram->disable();
-  if (this->shaderProgram) this->shaderProgram->enable();
+  if (elem->shaderProgram) elem->shaderProgram->disable(glctx);
+  if (this->shaderProgram) this->shaderProgram->enable(glctx);
 
   inherited::pop(state, prev);
 }

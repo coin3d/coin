@@ -29,41 +29,40 @@ SO_NODE_SOURCE(SoVertexShader);
 
 // *************************************************************************
 
-void SoVertexShader::initClass()
+void
+SoVertexShader::initClass(void)
 {
   SO_NODE_INIT_CLASS(SoVertexShader, SoShaderObject, "SoShaderObject");
 }
 
-SoVertexShader::SoVertexShader()
+SoVertexShader::SoVertexShader(void)
 {
   SO_NODE_CONSTRUCTOR(SoVertexShader);
 }
 
 SoVertexShader::~SoVertexShader()
 {
-  
 }
 
-SbBool SoVertexShader::isVertexShader() const
+SbBool
+SoVertexShader::isVertexShader(void) const
 {
   return TRUE;
 }
 
-SbBool SoVertexShader::isSupported(SourceType sourceType)
+SbBool
+SoVertexShader::isSupported(SourceType sourceType)
 {
   // FIXME: return a correct value, based on the capabilities of the
   // GL driver. (But first check whether this is part of the TGS
   // Inventor API -- it's not very well designed, as we really need a
   // guaranteed GL context for this.) 20050120 mortene.
   if (sourceType == ARB_PROGRAM) return TRUE;
+  if (sourceType == GLSL_PROGRAM) return TRUE;
 
   // FIXME: Martin
 #if !defined(SO_CG_SHADER_SUPPORT)
   if (sourceType == CG_PROGRAM) return FALSE;
 #endif
-#if !defined(SO_GLSL_SHADER_SUPPORT)
-  if (sourceType == GLSL_PROGRAM) return FALSE;
-#endif
   return TRUE;
 }
-

@@ -27,11 +27,13 @@
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLShaderProgramElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/nodes/SoGLShaderProgram.h>
 #include <Inventor/nodes/SoShaderObject.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+
+#include "SoGLShaderProgram.h"
 
 // *************************************************************************
 
@@ -126,8 +128,11 @@ void SoShaderProgramP::GLRender(SoGLRenderAction *action)
   // FIXME: (Martin 2004-09-21) find an alternative to invalidating the cache
   SoCacheElement::invalidate(state);
 
+  const cc_glglue * glctx =
+    cc_glglue_instance(SoGLCacheContextElement::get(state));
+
   SoGLShaderProgram* oldProgram = SoGLShaderProgramElement::get(state);
-  if (oldProgram) oldProgram->disable();
+  if (oldProgram) oldProgram->disable(glctx);
   
   SoGLShaderProgramElement::set(state, this->owner, &this->glShaderProgram);
 
@@ -155,7 +160,7 @@ void SoShaderProgramP::GLRender(SoGLRenderAction *action)
   }
 
   // enable shader
-  this->glShaderProgram.enable();
+  this->glShaderProgram.enable(glctx);
 
   // update shader object parameters
   if (this->shouldTraverseShaderObjects) {

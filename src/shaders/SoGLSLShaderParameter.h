@@ -1,5 +1,5 @@
-#ifndef COIN_SOGLARBSHADERPARAMETER_H
-#define COIN_SOGLARBSHADERPARAMETER_H
+#ifndef COIN_SOGLSLSHADERPARAMETER_H
+#define COIN_SOGLSLSHADERPARAMETER_H
 
 /**************************************************************************\
  *
@@ -24,35 +24,37 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_INTERNAL
-#error this is a private header file
-#endif
-
-// *************************************************************************
+#include <Inventor/SbString.h>
+#include <Inventor/C/glue/glp.h>
 
 #include "SoGLShaderParameter.h"
 
 // *************************************************************************
 
-class SoGLARBShaderParameter : public SoGLShaderParameter
+class SoGLSLShaderParameter : public SoGLShaderParameter
 {
- public: // satisfy SoGLShaderParameter protocol interface
-  virtual inline SbBool isReferenced() { return FALSE; }
+public:
+  SoGLSLShaderParameter(const cc_glglue * g,
+                        COIN_GLhandle program, 
+                        const char* name, 
+                        SoGLShader::ValueType type);
+  virtual ~SoGLSLShaderParameter();
 
-  virtual SoGLShader::ShaderType shaderType() const;
+  virtual inline SbBool isTexture(void) { return FALSE; }
+  virtual inline SbBool isReferenced(void) { return (this->location >= 0); }
 
   virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id);
   virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id);
   virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
   virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
 
-public:
-  SoGLARBShaderParameter(GLenum target, GLuint index);
-  virtual ~SoGLARBShaderParameter();
+  virtual SoGLShader::ShaderType shaderType(void) const;
 
 private:
-  GLenum target;
-  GLuint identifier;
+  GLint location;
+  SbString name;
+
+  static SoGLShader::ValueType getParameterTypeFor(GLenum type);
 };
 
-#endif /* ! COIN_SOGLARBSHADERPARAMETER_H */
+#endif /* ! COIN_SOGLSLSHADERPARAMETER_H */

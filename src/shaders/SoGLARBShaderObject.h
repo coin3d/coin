@@ -30,8 +30,9 @@
 
 // *************************************************************************
 
-#include <Inventor/nodes/SoGLShaderParameter.h>
 #include "SoGLShaderObject.h"
+
+class SoGLShaderParameter;
 
 // *************************************************************************
 

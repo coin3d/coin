@@ -27,6 +27,7 @@
 
 #include "SoGLShaderObject.h"
 #include "SoGLCgShader.h"
+#include "SoGLShaderParameter.h"
 
 /* **************************************************************************
  * *** SoShaderParameter ***
