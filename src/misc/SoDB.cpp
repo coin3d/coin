@@ -18,6 +18,28 @@
 \**************************************************************************/
 
 /*!
+  \mainpage
+
+  Coin is an OpenGL based, retained mode 3D graphics rendering
+  library. It is implemented in C++ and publicly released with the
+  source code open for your perusal. The application programmer's
+  interface (API) is based on (and will eventually be fully compatible
+  with) the API of Open Inventor, the \e de \e facto standard 3D
+  graphics library for complex visualization applications.
+
+  Systems in Motion are working on providing libraries for interfacing
+  Coin with a wide range of windowing systems and GUI toolkits. The
+  library for interfacing against X11 through Xt/Motif is nearing
+  completion, and the SoQt library for interfacing to X11 or MSWin
+  systems through the Qt toolkit is also fully usable. Other libraries
+  in development includes SoWin (interfacing Coin directly with the
+  Win32 API), SoGtk (gkt+) and SoBe (BeOS).
+
+  See <http://www.coin3d.org> for more information about Coin and the
+  SoXt, SoQt and other GUI glue libraries.
+ */
+
+/*!
   \class SoDB SoDB.h Inventor/SoDB.h
   \brief The SoDB class keeps track of internal global data.
   \ingroup general
