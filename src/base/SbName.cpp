@@ -76,7 +76,6 @@ public:
   static void cleanup(void);
 
 private:
-  static void * mutex;
   static int nameTableSize;
   static SbNameEntry ** nameTable;
   static struct SbNameChunk * chunk;
@@ -107,8 +106,6 @@ SbNameEntry::cleanup(void)
     }
   }
   delete[] SbNameEntry::nameTable;
-
-  CC_MUTEX_DESTRUCT(SbNameEntry::mutex);
 }
 
 
@@ -121,8 +118,6 @@ SbNameEntry::initClass(void)
   SbNameEntry::nameTable = new SbNameEntry * [ SbNameEntry::nameTableSize ];
   for (int i = 0; i < SbNameEntry::nameTableSize; i++) { SbNameEntry::nameTable[i] = NULL; }
   SbNameEntry::chunk = NULL;
-
-  CC_MUTEX_CONSTRUCT(SbNameEntry::mutex);
 
   coin_atexit((coin_atexit_f*) SbNameEntry::cleanup);
 }
@@ -171,7 +166,7 @@ SbNameEntry::findStringAddress(const char * s)
 const SbNameEntry *
 SbNameEntry::insert(const char * const str)
 {
-  CC_MUTEX_LOCK(SbNameEntry::mutex);
+  CC_SYNC_BEGIN(SbNameEntry::insert);
   if (nameTableSize == 0) { initClass(); }
 
   unsigned long h = SbString::hash(str);
@@ -190,7 +185,7 @@ SbNameEntry::insert(const char * const str)
     nameTable[i] = entry;
   }
 
-  CC_MUTEX_UNLOCK(SbNameEntry::mutex);
+  CC_SYNC_END(SbNameEntry::insert);
   return entry;
 }
 
