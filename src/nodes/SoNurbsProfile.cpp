@@ -183,7 +183,7 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
   HAVE_GLU_NURBSOBJECT * nurbsobj = (HAVE_GLU_NURBSOBJECT *) this->nurbsrenderer;
   if (nurbsobj == NULL) {
     nurbsobj = gluNewNurbsRenderer();
-    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_VERTEX, 
+    gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_VERTEX,
                      (void (*)())nurbsprofile_tess_vertex);
     gluNurbsProperty(nurbsobj, (GLenum) GLU_NURBS_MODE, GLU_NURBS_TESSELLATOR);
     gluNurbsProperty(nurbsobj, (GLenum) GLU_AUTO_LOAD_MATRIX, FALSE);
@@ -197,8 +197,8 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
   cmplx += 1.0f;
   cmplx = cmplx * cmplx * cmplx;
   gluNurbsProperty(nurbsobj, (GLenum) GLU_U_STEP, float(numpoints)*cmplx);
-  
-  // these values are not important as we're not using screen-space 
+
+  // these values are not important as we're not using screen-space
   // complexity (yet)
   SbMatrix modelmatrix = SbMatrix::identity();
   SbMatrix affine, proj;
@@ -227,8 +227,8 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
                 numknots - numpoints,
                 GL_MAP1_VERTEX_3);
   gluEndCurve(nurbsobj);
-  
-  // when we get here, the GLU callback should have added the 
+
+  // when we get here, the GLU callback should have added the
   // points to the list
   numvertices = coordListNurbsProfile->getLength() / 2;
   vertices = (SbVec2f*) coordListNurbsProfile->getArrayPtr();

@@ -43,8 +43,10 @@ public:
                            SbVec2f *& vertices);
 
 protected:
-  void * nurbsrenderer;
   virtual ~SoNurbsProfile();
+
+private:
+  void * nurbsrenderer;
 };
 
 #endif // !COIN_SONURBSPROFILE_H
