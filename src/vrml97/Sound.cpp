@@ -150,9 +150,12 @@
 */
 
 /*!  
-  \var SoSFNode SoVRMLSound::source The audio stream. Either an
-  SoVRMLAudioClip or an SoVRMLMovieTexture. Coin only supports
-  playback of audio from SoVRMLAudioClip, not from SoVRMLMovieTexture.  */
+  \var SoSFNode SoVRMLSound::source
+
+  The audio stream. Either an SoVRMLAudioClip or an
+  SoVRMLMovieTexture. Coin only supports playback of audio from
+  SoVRMLAudioClip, not from SoVRMLMovieTexture.
+*/
 
 /*!
   \var SoSFFloat SoVRMLSound::intensity
