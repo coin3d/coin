@@ -1022,11 +1022,11 @@ SoGLRenderActionP::renderSingle(SoNode * node)
                                  TRUE, this->renderingremote);
     this->enableBlend();
 
-    // test if paths should rendered back-to-front
+    // test if paths should be rendered back-to-front
     if (this->transparencytype == SoGLRenderAction::SORTED_OBJECT_BLEND ||
         this->transparencytype == SoGLRenderAction::SORTED_OBJECT_ADD ||
         this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND ||
-        this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND) {
+        this->transparencytype == SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_ADD) {
       this->action->doPathSort();
       int n = this->transpobjpaths.getLength();
       for (int i  = 0; i < n; i++) {
