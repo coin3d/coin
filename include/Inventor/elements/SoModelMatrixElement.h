@@ -61,6 +61,8 @@ public:
   static const SbMatrix & getInverse(SoState * const state);
   static const SbMatrix & getInverse(SoState * const state, SbBool & isIdentity);
 
+  const SbMatrix & getModelMatrix(void) const;
+
 protected:
   virtual void makeEltIdentity(void);
   virtual void setElt(const SbMatrix & matrix);

@@ -388,7 +388,7 @@ SoModelMatrixElement::push(SoState * state)
   inherited::push(state);
   SoModelMatrixElement * prev =
     (SoModelMatrixElement *) this->getNextInStack();
-  
+
   this->modelMatrix = prev->modelMatrix;
   this->flags = prev->flags;
   // only copy when needed
@@ -399,4 +399,10 @@ SoModelMatrixElement::push(SoState * state)
 
   // make sure node ids are accumulated properly
   this->copyNodeIds(prev);
+}
+
+const SbMatrix & 
+SoModelMatrixElement::getModelMatrix(void) const
+{
+  return this->modelMatrix;
 }
