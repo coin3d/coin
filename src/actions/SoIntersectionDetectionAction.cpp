@@ -92,7 +92,8 @@
   }
   \endcode
 
-  \since 20021022
+  \since Coin 2.1
+  \since TGS Inventor 2.4
 */
 
 // FIXME: intersection with lines not implemented yet. 20030507 mortene.
