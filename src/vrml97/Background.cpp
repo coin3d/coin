@@ -233,6 +233,7 @@
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoScale.h>
 #include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/VRMLnodes/SoVRMLImageTexture.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -444,41 +445,11 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
 
-  // push state since we're going to modify the view volume and the
-  // model matrix
+  // push state since we're going to modify the model matrix
   state->push();
-
-  SbViewVolume vv = SoViewVolumeElement::get(state);
-
-  // create a new view volume to render the Background into. Just use
-  // orientation from the old view volume.
-  SbMatrix m = SbMatrix::identity();
-  SbVec3f Z = -vv.getProjectionDirection();
-  SbVec3f Y = vv.getViewUp();
-  SbVec3f X = Y.cross(Z);
   
-  m[0][0] = X[0];
-  m[0][1] = X[1];
-  m[0][2] = X[2];
-  m[1][0] = Y[0];
-  m[1][1] = Y[1];
-  m[1][2] = Y[2];
-  m[2][0] = Z[0];
-  m[2][1] = Z[1];
-  m[2][2] = Z[2];
-  
-  SoModelMatrixElement::makeIdentity(state, this);
-  
-  float aspect = SoViewportRegionElement::get(state).getViewportAspectRatio();
-  vv.perspective(0.785398f, aspect, 0.5f, 10.0f);
-  if (aspect < 1.0f) vv.scale(1.0f / aspect);
-    
-  vv.rotateCamera(SbRotation(m));
-  SbMatrix affine, proj;
-  SoViewVolumeElement::set(state, this, vv);
-  vv.getMatrices(affine, proj);
-  SoProjectionMatrixElement::set(state, this, proj);
-  SoViewingMatrixElement::set(state, this, affine);
+  // set to identity before rendering subgraph
+  SoModelMatrixElement::makeIdentity(state, this);  
 
   SbBool depthtest = glIsEnabled(GL_DEPTH_TEST);
   glDisable(GL_DEPTH_TEST);
@@ -493,7 +464,8 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   }
   if (depthtest)
     glEnable(GL_DEPTH_TEST);
-  // pop back to the old view volume and model matrix
+
+  // pop back to the old model matrix
   state->pop();
 }
 
@@ -509,11 +481,14 @@ SoVRMLBackgroundP::buildGeometry()
   this->rootnode = new SoSeparator;
   this->rootnode->ref();
 
+  // just insert a default perspective camera that is used when
+  // rendering the background
+  SoPerspectiveCamera * cam = new SoPerspectiveCamera;
+  this->rootnode->addChild(cam);
+
   SoLightModel * lightmodel = new SoLightModel;
   lightmodel->model.setValue(SoLightModel::BASE_COLOR);
   this->rootnode->addChild(lightmodel);
-
-  
   
   //
   // Sky sphere
