@@ -340,6 +340,7 @@ RegularSources = \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp \
 	SoTextureCoordinatePlane.cpp \
+	SoTextureCubeMap.cpp \
 	SoTextureScalePolicy.cpp \
 	SoTextureUnit.cpp \
 	SoTransform.cpp \
@@ -451,8 +452,8 @@ am__nodes_lst_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
+	SoTextureCubeMap.cpp SoTextureScalePolicy.cpp SoTextureUnit.cpp \
+	SoTransform.cpp SoTransparencyType.cpp SoTransformSeparator.cpp \
 	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
 	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
 	SoWWWInline.cpp all-nodes-cpp.cpp
@@ -499,7 +500,7 @@ am__objects_2 = SoAnnotation.$(OBJEXT) SoAnnoText3.$(OBJEXT) \
 	SoTextureCoordinateDefault.$(OBJEXT) \
 	SoTextureCoordinateEnvironment.$(OBJEXT) \
 	SoTextureCoordinateFunction.$(OBJEXT) \
-	SoTextureCoordinatePlane.$(OBJEXT) \
+	SoTextureCoordinatePlane.$(OBJEXT) SoTextureCubeMap.$(OBJEXT) \
 	SoTextureScalePolicy.$(OBJEXT) SoTextureUnit.$(OBJEXT) \
 	SoTransform.$(OBJEXT) SoTransparencyType.$(OBJEXT) \
 	SoTransformSeparator.$(OBJEXT) SoTransformation.$(OBJEXT) \
@@ -539,8 +540,8 @@ am__EXTRA_nodes_lst_SOURCES_DIST = SoSoundElementHelper.h \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
+	SoTextureCubeMap.cpp SoTextureScalePolicy.cpp SoTextureUnit.cpp \
+	SoTransform.cpp SoTransparencyType.cpp SoTransformSeparator.cpp \
 	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
 	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
 	SoWWWInline.cpp
@@ -578,8 +579,8 @@ am__libnodes_la_SOURCES_DIST = SoAnnotation.cpp SoAnnoText3.cpp \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
+	SoTextureCubeMap.cpp SoTextureScalePolicy.cpp SoTextureUnit.cpp \
+	SoTransform.cpp SoTransparencyType.cpp SoTransformSeparator.cpp \
 	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
 	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
 	SoWWWInline.cpp all-nodes-cpp.cpp
@@ -611,8 +612,8 @@ am__objects_7 = SoAnnotation.lo SoAnnoText3.lo SoAnnoText3Property.lo \
 	SoTextureCoordinateSphere.lo SoTextureCoordinateDefault.lo \
 	SoTextureCoordinateEnvironment.lo \
 	SoTextureCoordinateFunction.lo SoTextureCoordinatePlane.lo \
-	SoTextureScalePolicy.lo SoTextureUnit.lo SoTransform.lo \
-	SoTransparencyType.lo SoTransformSeparator.lo \
+	SoTextureCubeMap.lo SoTextureScalePolicy.lo SoTextureUnit.lo \
+	SoTransform.lo SoTransparencyType.lo SoTransformSeparator.lo \
 	SoTransformation.lo SoTranslation.lo SoUnits.lo \
 	SoUnknownNode.lo SoVertexProperty.lo SoWWWAnchor.lo \
 	SoWWWInline.lo
@@ -649,8 +650,8 @@ am__EXTRA_libnodes_la_SOURCES_DIST = SoSoundElementHelper.h \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
+	SoTextureCubeMap.cpp SoTextureScalePolicy.cpp SoTextureUnit.cpp \
+	SoTransform.cpp SoTransparencyType.cpp SoTransformSeparator.cpp \
 	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
 	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
 	SoWWWInline.cpp
@@ -686,8 +687,8 @@ am__libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = SoAnnotation.cpp \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
+	SoTextureCubeMap.cpp SoTextureScalePolicy.cpp SoTextureUnit.cpp \
+	SoTransform.cpp SoTransparencyType.cpp SoTransformSeparator.cpp \
 	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
 	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
 	SoWWWInline.cpp all-nodes-cpp.cpp
@@ -722,8 +723,8 @@ am__EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoTextureCoordinateSphere.cpp SoTextureCoordinateDefault.cpp \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp SoTextureCoordinatePlane.cpp \
-	SoTextureScalePolicy.cpp SoTextureUnit.cpp SoTransform.cpp \
-	SoTransparencyType.cpp SoTransformSeparator.cpp \
+	SoTextureCubeMap.cpp SoTextureScalePolicy.cpp SoTextureUnit.cpp \
+	SoTransform.cpp SoTransparencyType.cpp SoTransformSeparator.cpp \
 	SoTransformation.cpp SoTranslation.cpp SoUnits.cpp \
 	SoUnknownNode.cpp SoVertexProperty.cpp SoWWWAnchor.cpp \
 	SoWWWInline.cpp
@@ -880,6 +881,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinatePlane.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateSphere.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureCoordinateSphere.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCubeMap.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureCubeMap.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureScalePolicy.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureScalePolicy.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureUnit.Plo \
@@ -1161,6 +1164,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinatePlane.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateSphere.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCoordinateSphere.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCubeMap.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureCubeMap.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureScalePolicy.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureScalePolicy.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureUnit.Plo@am__quote@

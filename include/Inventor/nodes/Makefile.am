@@ -111,6 +111,7 @@ PublicHeaders = \
 	SoTextureCoordinateEnvironment.h \
 	SoTextureCoordinateFunction.h \
 	SoTextureCoordinatePlane.h \
+	SoTextureCubeMap.h \
 	SoTextureScalePolicy.h \
 	SoTextureUnit.h \
 	SoTransform.h \
