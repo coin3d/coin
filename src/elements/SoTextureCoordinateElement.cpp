@@ -71,6 +71,12 @@
 */
 
 /*!
+  \fn SoTextureCoordinateElement::coords3
+
+  FIXME: write doc.
+*/
+
+/*!
   \fn SoTextureCoordinateElement::coords4
 
   FIXME: write doc.
@@ -83,13 +89,19 @@
 */
 
 /*!
+  \fn SoTextureCoordinateElement::convert3
+
+  FIXME: write doc.
+*/
+
+/*!
   \fn SoTextureCoordinateElement::convert4
 
   FIXME: write doc.
 */
 
 /*!
-  \fn SoTextureCoordinateElement::coordsAre2D
+  \fn SoTextureCoordinateElement::coordsDimension
 
   FIXME: write doc.
 */
@@ -141,6 +153,7 @@ SoTextureCoordinateElement::setFunction(SoState * const state,
   element->funcCBData = userdata;
   element->whatKind = FUNCTION;
   element->coords2 = NULL;
+  element->coords3 = NULL;
   element->coords4 = NULL;
   element->numCoords = 0;
 }
@@ -155,9 +168,28 @@ SoTextureCoordinateElement::set2(SoState * const state,
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->coordsAre2D = TRUE;
-  element->coords2 = coords;
+  element->coordsDimension = 2;
   element->numCoords = numCoords;
+  element->coords2 = coords;
+  element->coords3 = NULL;
+  element->coords4 = NULL;
+  element->whatKind = EXPLICIT;
+}
+
+//! FIXME: write doc.
+
+void
+SoTextureCoordinateElement::set3(SoState * const state,
+                                 SoNode * const node,
+                                 const int32_t numCoords,
+                                 const SbVec3f * const coords)
+{
+  SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
+    SoReplacedElement::getElement(state, classStackIndex, node);
+  element->coordsDimension = 3;
+  element->numCoords = numCoords;
+  element->coords2 = NULL;
+  element->coords3 = coords;
   element->coords4 = NULL;
   element->whatKind = EXPLICIT;
 }
@@ -172,9 +204,10 @@ SoTextureCoordinateElement::set4(SoState * const state,
 {
   SoTextureCoordinateElement * element = (SoTextureCoordinateElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
-  element->coordsAre2D = FALSE;
+  element->coordsDimension = 4;
   element->numCoords = numCoords;
   element->coords2 = NULL;
+  element->coords3 = NULL;
   element->coords4 = coords;
   element->whatKind = EXPLICIT;
 }
@@ -190,9 +223,9 @@ SoTextureCoordinateElement::getInstance(SoState * const state)
 
 /*!
   This method returns texture coordinate for the given point and normal.
-  The coordinate is returned as a 4D vector, but the r and q coordinates
-  will always be 0 and 1 respecively until 3D texture coordinates is
-  supported in OpenGL.
+  The coordinate is returned as a 4D vector where the r and q coordinates
+  may be set to 0 and 1 respecively depending on what texture coordinate
+  dimension we're using.
 
   This method should only be used if the CoordType is FUNCTION.
 */
@@ -212,13 +245,37 @@ SoTextureCoordinateElement::get2(const int index) const
 {
   assert(index >= 0 && index < this->numCoords);
   assert(this->whatKind == EXPLICIT);
-  if (this->coordsAre2D)
+  if (this->coordsDimension==2)
     return this->coords2[index];
   else {
     ((SoTextureCoordinateElement*)
      this)->convert2.setValue(this->coords4[index][0],
                               this->coords4[index][1]);
     return this->convert2;
+  }
+}
+
+//! FIXME: write doc.
+
+const SbVec3f &
+SoTextureCoordinateElement::get3(const int index) const
+{
+  assert(index >= 0 && index < this->numCoords);
+  assert(this->whatKind == EXPLICIT);
+  if (this->coordsDimension==3)
+    return this->coords3[index];
+  else {
+    if (this->coordsDimension==2)
+      ((SoTextureCoordinateElement*)
+       this)->convert3.setValue(this->coords2[index][0],
+                                this->coords2[index][1],
+                                0.0f);
+    else // this->coordsDimension==4
+      ((SoTextureCoordinateElement*)
+       this)->convert3.setValue(this->coords4[index][0],
+                                this->coords4[index][1],
+                                this->coords4[index][2]);
+    return this->convert3;
   }
 }
 
@@ -229,14 +286,21 @@ SoTextureCoordinateElement::get4(const int index) const
 {
   assert(index >= 0 && index < this->numCoords);
   assert(this->whatKind == EXPLICIT);
-  if (!this->coordsAre2D)
+  if (!this->coordsDimension==4)
     return this->coords4[index];
   else {
-    ((SoTextureCoordinateElement*)
-     this)->convert4.setValue(this->coords2[index][0],
-                              this->coords2[index][1],
-                              0.0f,
-                              1.0f);
+    if (this->coordsDimension==2)
+      ((SoTextureCoordinateElement*)
+       this)->convert4.setValue(this->coords2[index][0],
+                                this->coords2[index][1],
+                                0.0f,
+                                1.0f);
+    else // this->coordsDimension==3
+      ((SoTextureCoordinateElement*)
+       this)->convert4.setValue(this->coords3[index][0],
+                                this->coords3[index][1],
+                                this->coords3[index][2],
+                                1.0f);
     return this->convert4;
   }
 }
@@ -247,7 +311,7 @@ SoTextureCoordinateElement::get4(const int index) const
   DEFAULT means that the shapes should generate their own texture coordinates.
 
   EXPLICIT means that discrete texture coordinates are stored, and should be
-  fetched with get2() or get4().
+  fetched with get2(), get3() or get4().
 
   FUNCTION means that get(point, normal) must be used to generate texture
   coordinates.
@@ -281,8 +345,9 @@ SoTextureCoordinateElement::init(SoState * state)
   funcCBData = NULL;
   numCoords = 0;
   coords2 = NULL;
+  coords3 = NULL;
   coords4 = NULL;
-  coordsAre2D = TRUE;
+  coordsDimension = 2; //Initialize to 2D as before
 }
 
 //! FIXME: write doc.
@@ -294,13 +359,22 @@ SoTextureCoordinateElement::getNum() const
   return this->numCoords;
 }
 
-//! FIXME: write doc.
+//! FIXME: write doc. (for backwards compability. Use getDimension() instead).
 
 //$ EXPORT INLINE
 SbBool
 SoTextureCoordinateElement::is2D() const
 {
-  return this->coordsAre2D;
+  return (this->coordsDimension==2);
+}
+
+//! FIXME: write doc.
+
+//$ EXPORT INLINE
+int32_t
+SoTextureCoordinateElement::getDimension() const
+{
+  return this->coordsDimension;
 }
 
 /*!
@@ -311,6 +385,16 @@ const SbVec2f *
 SoTextureCoordinateElement::getArrayPtr2() const
 {
   return this->coords2;
+}
+
+/*!
+  Returns a pointer to the 3D texture coordinate array. This method is not
+  part of the OIV API.
+*/
+const SbVec3f *
+SoTextureCoordinateElement::getArrayPtr3() const
+{
+  return this->coords3;
 }
 
 /*!

@@ -45,8 +45,9 @@ public:
 
   void setPoint(const SbVec3f & point);
   void setNormal(const SbVec3f & normal);
-  void setTextureCoords(const SbVec4f & texcoords);
   void setTextureCoords(const SbVec2f & texcoords);
+  void setTextureCoords(const SbVec3f & texcoords);
+  void setTextureCoords(const SbVec4f & texcoords);
 
   void setMaterialIndex(const int index);
   void setDetail(SoDetail * const detail);

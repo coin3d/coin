@@ -26,6 +26,7 @@
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec2f.h>
+#include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
 
 /*
@@ -65,24 +66,29 @@ public:
 
   static void set2(SoState * const state, SoNode * const node,
                    const int32_t numCoords, const SbVec2f * const coords);
+  static void set3(SoState * const state, SoNode * const node,
+                   const int32_t numCoords, const SbVec3f * const coords);
   static void set4(SoState * const state, SoNode * const node,
                    const int32_t numCoords, const SbVec4f * const coords);
 
   static CoordType getType(SoState * const state);
-  virtual CoordType getType() const;
+  virtual CoordType getType(void) const;
 
   static const SoTextureCoordinateElement *getInstance(SoState * const state);
 
   const SbVec4f &get(const SbVec3f & point,
                      const SbVec3f & normal) const;
-  int32_t getNum() const;
-  SbBool is2D() const;
+  int32_t getNum(void) const;
+  SbBool is2D(void) const;
+  int32_t getDimension(void) const;
 
   const SbVec2f &get2(const int index) const;
+  const SbVec3f &get3(const int index) const;
   const SbVec4f &get4(const int index) const;
 
-  const SbVec2f *getArrayPtr2() const;
-  const SbVec4f *getArrayPtr4() const;
+  const SbVec2f *getArrayPtr2(void) const;
+  const SbVec3f *getArrayPtr3(void) const;
+  const SbVec4f *getArrayPtr4(void) const;
 
 protected:
   CoordType whatKind;
@@ -90,11 +96,12 @@ protected:
   void *funcCBData;
   int32_t numCoords;
   const SbVec2f *coords2;
+  const SbVec3f *coords3;
   const SbVec4f *coords4;
-  SbBool coordsAre2D;
+  SbBool coordsDimension;
   SbVec2f convert2;
+  SbVec3f convert3;
   SbVec4f convert4;
-
 };
 
 #endif // !COIN_SOTEXTURECOORDINATEELEMENT_H
