@@ -287,6 +287,7 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 void
 SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
+
   //PRIVATE(this)->setUpGlyphs(action->getState(), this);
 
   if (action->is3DTextCountedAsTriangles()) {        
@@ -566,6 +567,9 @@ SoAsciiTextP::setUpGlyphs(SoState * state, const cc_font_specification * fontspe
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[0] * fontspec->size, 0));
       this->maxglyphbbox.extendBy(SbVec3f(0, maxbbox[1] * fontspec->size, 0));
 
+      // FIXME: Shouldn't it be the 'advance' value be stored in this
+      // list?  This data is only accessed via the public 'getWidth()'
+      // method. (20031002 handegar)
       this->glyphwidths.append(cc_glyph3d_getwidth(glyph));
    
       if (strcharidx > 0) 
