@@ -404,6 +404,28 @@ SoVRMLSound::~SoVRMLSound(void)
   delete PRIVATE(this);
 }
 
+void 
+SoVRMLSound::setDopplerVelocity(float velocity)
+{
+}
+
+float 
+SoVRMLSound::getDopplerVelocity()
+{
+  return 0.0f;
+}
+
+void 
+SoVRMLSound::setDopplerFactor(float factor)
+{
+}
+
+float 
+SoVRMLSound::getDopplerFactor()
+{
+  return 0.0f;
+}
+
 /*
   FIXME: Calling setDefaultBufferingProperties or
   setBufferingProperties while a sound was playing might mess up quite
@@ -1151,7 +1173,7 @@ void SoVRMLSoundP::fillBuffers()
                              "alSourceUnqueueBuffers failed. "
                              "Queued: %d, Processed: %d."
                              "OpenAL error: %s.",
-                             queued, processed,
+                             queued, processed, 
                              coin_get_openal_error(error));
           this->errorInThread = TRUE;
           return;

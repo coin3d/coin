@@ -44,9 +44,18 @@ public:
   SoSFVec3f velocity;
   SoSFFloat gain;
 
+  void setDopplerVelocity(float velocity);
+  float getDopplerVelocity();
+  void setDopplerFactor(float factor);
+  float getDopplerFactor();
+
 protected:
   virtual void audioRender(class SoAudioRenderAction *action);
   virtual ~SoListener();
+
+private:
+  class SoListenerP *pimpl;
+  friend class SoListenerP;
 };
 
 #endif // COIN_SOLISTENER_H

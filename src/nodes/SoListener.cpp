@@ -62,6 +62,29 @@ SoListener::~SoListener()
 {
 }
 
+
+void 
+SoListener::setDopplerVelocity(float velocity)
+{
+}
+
+float 
+SoListener::getDopplerVelocity()
+{
+  return 0.0f;
+}
+
+void 
+SoListener::setDopplerFactor(float factor)
+{
+}
+
+float 
+SoListener::getDopplerFactor()
+{
+  return 0.0f;
+}
+
 void
 SoListener::audioRender(SoAudioRenderAction *action)
 {

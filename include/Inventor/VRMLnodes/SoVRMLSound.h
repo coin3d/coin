@@ -51,9 +51,17 @@ public:
   SoSFFloat maxBack;
   SoSFBool spatialize;
 
-  static void setDefaultBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime);
-  void setBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime);
-  void getBufferingProperties(int &bufferLength, int &numBuffers, SbTime &sleepTime);
+  void setDopplerVelocity(float velocity);
+  float getDopplerVelocity();
+  void setDopplerFactor(float factor);
+  float getDopplerFactor();
+
+  static void setDefaultBufferingProperties(int bufferLength, int numBuffers, 
+                                            SbTime sleepTime);
+  void setBufferingProperties(int bufferLength, int numBuffers, 
+                              SbTime sleepTime);
+  void getBufferingProperties(int &bufferLength, int &numBuffers, 
+                              SbTime &sleepTime);
 
   virtual void audioRender(SoAudioRenderAction *action);
 
@@ -62,6 +70,7 @@ protected:
 
 private:
   class SoVRMLSoundP *pimpl;
+  friend class SoVRMLSoundP;
 };
 
 #endif // ! COIN_SOVRMLSOUND_H
