@@ -75,8 +75,9 @@ static float cornertab_lookup[] = {
   -1.0f, 1.0f
 };
 
-#define Z_OFFSET 0.0000001       // dummy offset for tabs to get correct picking
-#define TABSIZE 10.0f            // size (in pixels when projected to screen) of tabs
+// FIXME: find a better solution than this lame Z_OFFSET hack, pederb 20000301
+#define Z_OFFSET 0.01        // dummy offset for tabs to get "correct" picking
+#define TABSIZE 10.0f        // size (in pixels when projected to screen) of tabs
 
 SO_KIT_SOURCE(SoTabPlaneDragger);
 
@@ -286,7 +287,12 @@ SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
     sizex = sizey = 
       vv.getWorldToScreenScale(center, TABSIZE/float(vp.getViewportSizePixels()[0]));
     
-    SbVec3f scale = this->scaleFactor.getValue();
+    SbVec3f scale;
+    {
+      SbRotation r, so;
+      SbVec3f t;
+      toworld.getTransform(t, r, scale, so);
+    }
     sizex /= scale[0];
     sizey /= scale[1];
   }
