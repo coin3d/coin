@@ -74,12 +74,10 @@ do
         $compiler \
           $CPPFLAGS $cppflags \
           $CXXFLAGS $cxxflags \
-          -c $1
-        test $? -ne 0 && exit $?
+          -c $1 || exit $?
       else
         for arg in $@; do
-          $program --alternate="$alternate" --compile $arg
-          test $? -ne 0 && exit $?
+          $program --alternate="$alternate" --compile $arg || exit $?
         done
       fi
       exit 0
@@ -93,8 +91,7 @@ do
       $compiler \
         $LDFLAGS $ldflags \
         -o $progname $@ \
-        $libs $LIBS
-      test $? -ne 0 && exit $?
+        $libs $LIBS || exit $?
       exit 0
       ;;
     --build)
@@ -108,8 +105,7 @@ do
         case $arg in
           *.c | *.cpp | *.cxx | *.cc | *.c++)
             basename=`echo "$arg" | sed -e 's/\.[^\.]*$//'`
-            $program --alternate="$alternate" --compile $arg
-            test $? -ne 0 && exit $?
+            $program --alternate="$alternate" --compile $arg || exit $?
             objfile=`ls $basename.o $basename.obj 2>/dev/null`
             objs="$objs $objfile"
             ;;
@@ -129,8 +125,7 @@ do
         $CXXFLAGS $cxxflags \
         $LDFLAGS $ldflags $extraldflags \
         -o $progname $objs \
-        $extralibs $libs $LIBS
-      test $? -ne 0 && exit $?
+        $extralibs $libs $LIBS || exit $?
       exit 0
       ;;
   # ignore some options
