@@ -86,7 +86,7 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * readerptr)
 SoInput_FileInfo::~SoInput_FileInfo()
 {
 #if defined(HAVE_THREADS) && defined(SOINPUT_ASYNC_IO)
-  cc_sched_wait_all(this->sched);
+  cc_sched_destruct(this->sched);
   cc_condvar_destruct(this->condvar);
   cc_mutex_destruct(this->mutex);
   delete[] this->threadbuf[0];
