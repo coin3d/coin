@@ -30,6 +30,8 @@
 #include <stddef.h> // NULL
 
 class SbColor;
+class SbVec3f;
+class SbViewportRegion;
 class SoPrimitiveVertex;
 
 // This shouldn't strictly be necessary, but the OSF1/cxx compiler
@@ -98,6 +100,9 @@ public:
 
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
+
+  void select(SoNode * root, int numcoords, SbVec3f * lasso,
+              const SbViewportRegion & vp, SbBool shiftkeypolicy);
 
   void setLassoFilterCallback(SoLassoSelectionFilterCB * f, void * userdata = NULL,
                               const SbBool callonlyifselectable = TRUE);

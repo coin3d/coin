@@ -219,7 +219,7 @@
 class SoExtSelectionP {
 public:
   SoExtSelectionP(SoExtSelection * masterptr) {
-    this->master = masterptr;
+    PUBLIC(this) = masterptr;
   }
   
   SbColor lassocolor;
@@ -1130,6 +1130,22 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 }
 
 /*!
+  Simulate lasso selection programmatically.
+
+  This function is currently just stubbed.
+*/
+
+void
+SoExtSelection::select(SoNode * root, int numcoords, SbVec3f * lasso, const SbViewportRegion & vp, SbBool shiftpolicy)
+{
+  // FIXME: Implement this for TGS compatibility...
+#ifndef COIN_BETA_VERSION
+#error start including this function only at the point of a minor release.
+#endif
+  COIN_STUB_ONCE();
+}
+
+/*!
 
   The lasso selection filter callback is called when a node is about
   to be selected, and enables the application programmer to return a
@@ -1570,7 +1586,7 @@ SoExtSelectionP::triangleCB(void * userData,
  
   if(thisp->primcbdata.fulltest) { // entire triangle must be inside lasso
     
-    if(thisp->master->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only
+    if(PUBLIC(thisp)->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only
       if (!thisp->primcbdata.lassorect.intersect(p0) || (!point_in_poly(thisp->coords, p0))) {
         thisp->primcbdata.allhit = FALSE;
         return;
@@ -1784,7 +1800,7 @@ SoExtSelectionP::lineSegmentCB(void *userData,
   if (thisp->primcbdata.fulltest) {
 
 
-    if(thisp->master->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only  
+    if(PUBLIC(thisp)->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only  
       if (!thisp->primcbdata.lassorect.intersect(p0) || (!point_in_poly(thisp->coords, p0))) {
         thisp->primcbdata.allhit = FALSE;
         return;
@@ -1945,7 +1961,7 @@ SoExtSelectionP::pointCB(void *userData,
   SbVec2s p = project_pt(thisp->primcbdata.projmatrix, v->getPoint(),
                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
   
-  if(thisp->master->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only  
+  if(PUBLIC(thisp)->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only  
     
     SbBool onlyrect = thisp->primcbdata.onlyrect;
     if (!thisp->primcbdata.lassorect.intersect(p) || (onlyrect || !point_in_poly(thisp->coords, p))) {
@@ -2230,7 +2246,7 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
 
   // --- Render all tris to offscreen buffer.
   pimpl->cbaction->apply(pimpl->offscreenheadnode);
-  pimpl->master->touch();
+  PUBLIC(pimpl)->touch();
 
 
   // Restore all OpenGL States
@@ -2369,7 +2385,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     // Is this actually a rectangle and not just a point or line?
     if (((p0[0] == p1[0]) && (p0[1] == p1[0])) ||
-        ((p0[0] == p1[0]) || (p0[1] == p1[1]))){
+        ((p0[0] == p1[0]) || (p0[1] == p1[1]))) {
       master->touch();
       return;
     }
@@ -2426,7 +2442,11 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     // Ai, ai. OpenGL context can not be used with VISIBLE_SHAPE
     // selection.  We'll spit out informative error messages within
     // checkOffscreenRendererCapabilities().
-    if (!setupok) { return; }
+    if (!setupok) {
+      // start/finish should be paired up
+      PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));
+      return;
+    }
 
     this->visibletrianglesbitarray =
       new unsigned char[(this->maximumcolorcounter + 7) / 8];
