@@ -59,6 +59,10 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/caches/SoConvexDataCache.h>
+#include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
 
 /*!
   \var SoMFInt32 SoFaceSet::numVertices
@@ -66,6 +70,12 @@
   in a face. The coordinates are taken in order from the state or from
   the vertexProperty node.
 */
+
+// for concavestatus
+#define STATUS_UNKNOWN 0
+#define STATUS_CONVEX  1
+#define STATUS_CONCAVE 2
+
 
 SO_NODE_SOURCE(SoFaceSet);
 
@@ -77,6 +87,8 @@ SoFaceSet::SoFaceSet()
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFaceSet);
 
   SO_NODE_ADD_FIELD(numVertices, (-1));
+  this->convexCache = NULL;
+  this->concavestatus = STATUS_UNKNOWN;
 }
 
 /*!
@@ -84,6 +96,7 @@ SoFaceSet::SoFaceSet()
 */
 SoFaceSet::~SoFaceSet()
 {
+  if (this->convexCache) this->convexCache->unref();
 }
 
 // doc from parent
@@ -151,17 +164,17 @@ SoFaceSet::findNormalBinding(SoState * const state) const
 
   Binding binding;
   switch (normbind) {
-  case SoMaterialBindingElement::OVERALL:
+  case SoNormalBindingElement::OVERALL:
     binding = OVERALL;
     break;
-  case SoMaterialBindingElement::PER_VERTEX:
-  case SoMaterialBindingElement::PER_VERTEX_INDEXED:
+  case SoNormalBindingElement::PER_VERTEX:
+  case SoNormalBindingElement::PER_VERTEX_INDEXED:
     binding = PER_VERTEX;
     break;
-  case SoMaterialBindingElement::PER_PART:
-  case SoMaterialBindingElement::PER_PART_INDEXED:
-  case SoMaterialBindingElement::PER_FACE:
-  case SoMaterialBindingElement::PER_FACE_INDEXED:
+  case SoNormalBindingElement::PER_PART:
+  case SoNormalBindingElement::PER_PART_INDEXED:
+  case SoNormalBindingElement::PER_FACE:
+  case SoNormalBindingElement::PER_FACE_INDEXED:
     binding = PER_FACE;
     break;
   default:
@@ -363,10 +376,6 @@ static void sogl_nifs_m2_n2_t1
 void
 SoFaceSet::GLRender(SoGLRenderAction * action)
 {
-  // FIXME:
-  // 1) check for concave polygons, and use SbTesselator to draw triangles.
-  //    Or use SoConvexDataCache (much faster).
-
   static int first = 1;
   if (first) {
     first = 0;
@@ -393,6 +402,8 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   }
 
   SoState * state = action->getState();
+  SbBool storedinvalid = SoCacheElement::setInvalid(FALSE);
+  state->push(); // for convex cache
 
   if (this->vertexProperty.getValue()) {
     state->push();
@@ -400,57 +411,63 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   }
 
   if (!this->shouldGLRender(action)) {
-    if (this->vertexProperty.getValue())
+    if (this->vertexProperty.getValue()) {
       state->pop();
+    }
+    // for convex cache
+    (void) SoCacheElement::setInvalid(storedinvalid);
+    state->pop();
     return;
   }
 
-  const SoCoordinateElement * tmp;
-  const SbVec3f * normals;
-  SbBool doTextures;
-  SbBool needNormals =
-    (SoLightModelElement::get(state) !=
-     SoLightModelElement::BASE_COLOR);
+  if (!this->useConvexCache(action)) {
+    // render normally
+    const SoCoordinateElement * tmp;
+    const SbVec3f * normals;
+    SbBool doTextures;
+    SbBool needNormals =
+      (SoLightModelElement::get(state) !=
+       SoLightModelElement::BASE_COLOR);
 
-  SoVertexShape::getVertexData(state, tmp, normals,
-                               needNormals);
+    SoVertexShape::getVertexData(state, tmp, normals,
+                                 needNormals);
 
-  const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
+    const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
-  doTextures = tb.needCoordinates();
+    SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
+    doTextures = tb.needCoordinates();
 
-  Binding mbind = this->findMaterialBinding(state);
-  Binding nbind = this->findNormalBinding(state);
+    Binding mbind = this->findMaterialBinding(state);
+    Binding nbind = this->findNormalBinding(state);
 
-  if (!needNormals) nbind = OVERALL;
+    if (!needNormals) nbind = OVERALL;
 
-  if (needNormals && normals == NULL) {
-    normals = this->getNormalCache()->getNormals();
+    if (needNormals && normals == NULL) {
+      normals = this->getNormalCache()->getNormals();
+    }
+
+    SoMaterialBundle mb(action);
+    mb.sendFirst(); // make sure we have the correct material
+
+    int32_t idx = this->startIndex.getValue();
+    int32_t dummyarray[1];
+    const int32_t *ptr = this->numVertices.getValues(0);
+    const int32_t *end = ptr + this->numVertices.getNum();
+    this->fixNumVerticesPointers(state, ptr, end, dummyarray);
+
+    sofaceset_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
+      ( coords,
+        normals,
+        &mb,
+        &tb,
+        nbind,
+        mbind,
+        doTextures,
+        idx,
+        ptr,
+        end,
+        needNormals);
   }
-
-  SoMaterialBundle mb(action);
-  mb.sendFirst(); // make sure we have the correct material
-
-  int32_t idx = startIndex.getValue();
-  int32_t dummyarray[1];
-  const int32_t *ptr = this->numVertices.getValues(0);
-  const int32_t *end = ptr + this->numVertices.getNum();
-  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
-
-  sofaceset_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
-    ( coords,
-      normals,
-      &mb,
-      &tb,
-      nbind,
-      mbind,
-      doTextures,
-      idx,
-      ptr,
-      end,
-      needNormals);
-
 #if 0 // obsoleted 2000-12-18, skei
 
   int matnr = 0;
@@ -500,6 +517,10 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
 
   if (this->vertexProperty.getValue())
     state->pop();
+
+  // needed for convex cache
+  (void) SoCacheElement::setInvalid(storedinvalid);
+  state->pop();
 }
 
 // doc from parent
@@ -702,4 +723,180 @@ SoFaceSet::generatePrimitives(SoAction *action)
   if (mode != POLYGON) this->endShape();
   if (this->vertexProperty.getValue())
     state->pop();
+}
+
+/*!
+  Overloaded to invalidate convex cache.
+*/
+void
+SoFaceSet::notify(SoNotList * list)
+{
+  if (this->convexCache) this->convexCache->invalidate();
+  SoField *f = list->getLastField();
+  if (f == &this->numVertices) this->concavestatus = STATUS_UNKNOWN;
+  SoNode::notify(list);
+}
+
+//
+// internal method which checks if convex cache needs to be
+// used or (re)created. Renders the shape if convex cache needs to be used.
+//
+SbBool
+SoFaceSet::useConvexCache(SoAction * action)
+{
+  SoState * state = action->getState();
+  if (SoShapeHintsElement::getFaceType(state) == SoShapeHintsElement::CONVEX)
+    return FALSE;
+
+  int32_t idx = this->startIndex.getValue();
+  const int32_t * ptr = this->numVertices.getValues(0);;
+  const int32_t * end = ptr + this->numVertices.getNum();
+  int32_t dummyarray[1];
+  this->fixNumVerticesPointers(state, ptr, end, dummyarray);
+
+  if (this->concavestatus == STATUS_UNKNOWN) {
+    const int32_t * tst = ptr;
+    while (tst < end) {
+      if (*tst > 3) break;
+      tst++;
+    }
+    if (tst < end) this->concavestatus = STATUS_CONCAVE;
+    else this->concavestatus = STATUS_CONVEX;
+  }
+  if (this->concavestatus == STATUS_CONVEX) {
+    return FALSE;
+  }
+
+  SbBool isvalid = this->convexCache && this->convexCache->isValid(state);
+
+  SbMatrix modelmatrix;
+  if (!isvalid) {
+    // use nopush to avoid cache dependencies.
+    SoModelMatrixElement * nopushelem = (SoModelMatrixElement*)
+      state->getElementNoPush(SoModelMatrixElement::getClassStackIndex());
+
+    // need to send matrix if we have some weird transformation
+    modelmatrix = nopushelem->getModelMatrix();
+    if (modelmatrix[3][0] == 0.0f &&
+        modelmatrix[3][1] == 0.0f &&
+        modelmatrix[3][2] == 0.0f &&
+        modelmatrix[3][3] == 1.0f) modelmatrix = SbMatrix::identity();
+
+    this->convexCache = new SoConvexDataCache(state);
+    this->convexCache->ref();
+    SoCacheElement::set(state, this->convexCache);
+  }
+
+  const SoCoordinateElement * tmp;
+  const SbVec3f * normals;
+  SbBool doTextures;
+  SbBool needNormals =
+    (SoLightModelElement::get(state) !=
+     SoLightModelElement::BASE_COLOR);
+
+  SoVertexShape::getVertexData(state, tmp, normals,
+                               needNormals);
+
+  const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
+
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+  doTextures = tb.needCoordinates();
+
+  SoConvexDataCache::Binding mbind;
+
+  switch (this->findMaterialBinding(state)) {
+  case OVERALL:
+    mbind = SoConvexDataCache::NONE;
+    break;
+  case PER_VERTEX:
+    mbind = SoConvexDataCache::PER_VERTEX;
+  case PER_FACE:
+    mbind = SoConvexDataCache::PER_FACE;
+    break;
+  default:
+    mbind = SoConvexDataCache::NONE;
+    break;
+  }
+
+  SoConvexDataCache::Binding nbind;
+  switch (this->findNormalBinding(state)) {
+  case OVERALL:
+    nbind = SoConvexDataCache::NONE;
+    break;
+  case PER_VERTEX:
+    nbind = SoConvexDataCache::PER_VERTEX;
+  case PER_FACE:
+    nbind = SoConvexDataCache::PER_FACE;
+    break;
+  default:
+    nbind = SoConvexDataCache::NONE;
+    break;
+  }
+
+  if (needNormals && normals == NULL) {
+    normals = this->getNormalCache()->getNormals();
+  }
+  else if (!needNormals) {
+    nbind = SoConvexDataCache::NONE;
+  }
+  if (nbind == SoConvexDataCache::NONE && normals == NULL) {
+    static SbVec3f dummynormal;
+    dummynormal.setValue(0.0f, 0.0f, 1.0f);
+    normals = &dummynormal;
+  }
+
+  SoConvexDataCache::Binding tbind = SoConvexDataCache::NONE;
+  if (tb.needCoordinates()) tbind = SoConvexDataCache::PER_VERTEX;
+
+  if (!isvalid) {
+    SoCacheElement::set(state, NULL); // close cache
+    // create an index table to be able to use convex cache.
+    // should be fast compared to the tessellation
+    SbList <int32_t> dummyidx((end-ptr)*4);
+    const int32_t * tptr = ptr;
+    while (tptr < end) {
+      int num = *tptr++;
+      while (num--) {
+        dummyidx.append(idx++);
+      }
+      dummyidx.append(-1);
+    }
+    this->convexCache->generate(coords, modelmatrix,
+                                dummyidx.getArrayPtr(), dummyidx.getLength(),
+                                NULL, NULL, NULL,
+                                mbind,
+                                nbind,
+                                tbind);
+  }
+
+  SoMaterialBundle mb(action);
+
+  mb.sendFirst(); // make sure we have the correct material
+
+  // the convex data cache will change PER_VERTEX binding
+  // to PER_VERTEX_INDEXED. We must do so also.
+  int realmbind = (int) mbind;
+  int realnbind = (int) nbind;
+
+  // hack warning. We rely on PER_VERTEX_INDEXED == PER_VERTEX+1
+  // and PER_FACE_INDEXED == PER_FACE+1 in SoGL.cpp
+  if (mbind == SoConvexDataCache::PER_VERTEX ||
+      mbind == SoConvexDataCache::PER_FACE) realmbind++;
+  if (nbind == SoConvexDataCache::PER_VERTEX ||
+      nbind == SoConvexDataCache::PER_FACE) realnbind++;
+
+  // use the IndededFaceSet rendering method.
+  sogl_render_faceset(coords,
+                      this->convexCache->getCoordIndices(),
+                      this->convexCache->getNumCoordIndices(),
+                      normals,
+                      this->convexCache->getNormalIndices(),
+                      &mb,
+                      this->convexCache->getMaterialIndices(),
+                      &tb,
+                      this->convexCache->getTexIndices(),
+                      realnbind,
+                      realmbind,
+                      doTextures?1:0);
+  return TRUE;
 }

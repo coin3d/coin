@@ -56,6 +56,10 @@ private:
 
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
+  SbBool useConvexCache(SoAction * action);
+  virtual void notify(SoNotList * list);
+  class SoConvexDataCache * convexCache;
+  int concavestatus;
 };
 
 #endif // !COIN_SOFACESET_H
