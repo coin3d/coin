@@ -417,10 +417,11 @@ SoGLBigImageP::copySubImage(const int idx,
   const int h = this->imagesize[1];
 
   for (int y = 0; y < h; y += div) {
+    int tmpyadd = fullsize[0] * (origin[1]+y);
     for (int x = 0; x < w; x += div) {
       if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
         const unsigned char * srcptr =
-          src + nc * (fullsize[0] * (origin[1]+y) + origin[0]+x);
+          src + nc * (tmpyadd + origin[0]+x);
         for (int c = 0; c < nc; c++) {
           *dst++ = srcptr[c];
         }
@@ -456,8 +457,9 @@ SoGLBigImageP::copyResizeSubImage(const int idx,
 
   for (int y = 0; y < h; y++) {
     int addx = 0;
+    int tmpaddy = ((addy>>8)+origin[1])*fullsize[0]*nc;
     for (int x  = 0; x < w; x++) {
-      const unsigned char * ptr = src + ((addy>>8)+origin[1])*fullsize[0]*nc + ((addx>>8)+origin[0]) * nc;
+      const unsigned char * ptr = src + tmpaddy + ((addx>>8)+origin[0]) * nc;
       for (int c = 0; c < nc; c++) {
         *dst++ = *ptr++; 
       }
