@@ -76,6 +76,9 @@
 /* define if you have GLX X11 OpenGL bindings */
 #undef HAVE_GLX
 
+/* define if glXGetProcAddressARB() is available */
+#undef HAVE_GLXGETPROCADDRESSARB
+
 /* define if the GLU header should be included as GL/glu.h */
 #undef HAVE_GL_GLU_H
 
