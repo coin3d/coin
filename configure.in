@@ -8,6 +8,8 @@ AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 
 SIM_COMPILER_INLINE_FOR(, AC_MSG_ERROR(the \"$CXX\" C++ compiler is not capable of compiling Coin))
+SIM_AC_CHECK_VAR_FUNCTIONNAME
+
 
 dnl *******************************************************************
 dnl * Library version control.

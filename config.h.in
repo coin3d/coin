@@ -48,6 +48,14 @@
 /* Define if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define this to true if the __FUNCTION__ variable contains the current
+   function name */
+#undef HAVE_VAR___FUNCTION__
+
+/* Define this to true if the __PRETTY_FUNCTION__ variable contains the
+   current function name */
+#undef HAVE_VAR___PRETTY_FUNCTION__
+
 /* Name of package */
 #undef PACKAGE
 

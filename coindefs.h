@@ -20,6 +20,16 @@
 #ifndef COIN_DEFS_H
 #define COIN_DEFS_H
 
+// This file contains definitions which should _only_ be used during
+// library build. It is not installed for use by the application
+// programmer.
+#ifndef COIN_INTERNAL
+#error Only for internal use during library build.
+#endif // !COIN_INTERNAL
+
+#include <config.h> // for HAVE_* defines
+
+
 #ifdef __FILE__
 #define COIN_STUB_FILE __FILE__
 #else
@@ -32,8 +42,10 @@
 #define COIN_STUB_LINE 0
 #endif
 
-#ifdef __PRETTY_FUNCTION__
+#if HAVE_VAR___PRETTY_FUNCTION__
 #define COIN_STUB_FUNC __PRETTY_FUNCTION__
+#elif HAVE_VAR___FUNCTION__
+#define COIN_STUB_FUNC __FUNCTION__
 #else
 #define COIN_STUB_FUNC ((const char *)0L)
 #endif

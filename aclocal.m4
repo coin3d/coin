@@ -10,26 +10,23 @@ dnl but WITHOUT ANY WARRANTY, to the extent permitted by law; without
 dnl even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 dnl PARTICULAR PURPOSE.
 
-dnl  Macros for checking various compiler capabilities.
-dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
+# Usage:
+#   SIM_COMPILER_INLINE_FOR( [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND ]])
+#
+# Description:
+#   See if the compiler supports for(;;){} loops inside inlined
+#   constructors.
+#
+#   This smokes out the useless HPUX 10.20 CC compiler.
+#
 
-
-dnl SIM_COMPILER_INLINE_FOR([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl See if the compiler supports for(;;){} loops inside inlined
-dnl constructors.
-dnl
-dnl This smokes out the useless HPUX 10.20 CC compiler.
-dnl
-AC_DEFUN(SIM_COMPILER_INLINE_FOR,
-[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_COMPILER_INLINE_FOR], [
 AC_PREREQ([2.14])
 
-AC_CACHE_CHECK([whether the C++ compiler handles inlined loops],
-               sim_cv_c_inlinefor,
-               [cat > sim_ac_test.h <<EOF
+AC_CACHE_CHECK(
+  [whether the C++ compiler handles inlined loops],
+  sim_cv_c_inlinefor,
+  [cat > sim_ac_test.h <<EOF
 class TestClass {
 public:
   TestClass(int);
@@ -37,20 +34,61 @@ public:
 
 inline TestClass::TestClass(int) { for (int i=0; i<1; i++) i=0; }
 EOF
-               AC_TRY_COMPILE([#include "sim_ac_test.h"],
-                              [TestClass t(0);],
-                              sim_cv_c_inlinefor=yes,
-                              sim_cv_c_inlinefor=no)
+  AC_TRY_COMPILE([#include "sim_ac_test.h"],
+                 [TestClass t(0);],
+                 [sim_cv_c_inlinefor=yes],
+                 [sim_cv_c_inlinefor=no])
 ])
 
 rm -rf sim_ac_test.h
 
-if test x"$sim_cv_c_inlinefor" = xyes; then
-  ifelse($1, , :, $1)
+if test x"$sim_cv_c_inlinefor" = x"yes"; then
+  ifelse([$1], , :, [$1])
 else
-  ifelse($2, , :, $2)
+  ifelse([$2], , :, [$2])
 fi
 ])
+
+
+# Usage:
+#   SIM_AC_CHECK_VAR_FUNCTIONNAME
+#
+# Side-Effects:
+#   config.h:
+#     HAVE_VAR___PRETTY_FUNCTION__   (1 if exists)
+#     HAVE_VAR___FUNCTION__          (always 0 if __PRETTY_FUNCTION__ exists)
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+#
+
+AC_DEFUN([SIM_AC_CHECK_VAR_FUNCTIONNAME], [
+AC_CACHE_CHECK([for function name variable],
+  sim_cv_var_functionname, [
+  AC_TRY_COMPILE(
+    [#include <stdio.h>],
+    [(void)printf("%s\n",__PRETTY_FUNCTION__)],
+    [sim_cv_var_functionname=__PRETTY_FUNCTION__],
+    [sim_cv_var_functionname=none])
+  if test x"$sim_cv_pretty_function" = x"none"; then
+    AC_TRY_COMPILE(
+      [#include <stdio.h>],
+      [(void)printf("%s\n",__FUNCTION__)],
+      [sim_cv_var_functionname=__FUNCTION__],
+      [sim_cv_var_functionname=none])
+  fi])
+
+if test x"$sim_cv_var_functionname" = x"__PRETTY_FUNCTION__"; then
+  AC_DEFINE([HAVE_VAR___PRETTY_FUNCTION__], 1,
+    [Define this to true if the __PRETTY_FUNCTION__ variable contains the current function name])
+fi
+
+if test x"$sim_cv_var_functionname" = x"__FUNCTION__"; then
+  AC_DEFINE([HAVE_VAR___FUNCTION__], 1,
+    [Define this to true if the __FUNCTION__ variable contains the current function name])
+fi
+])
+
 
 # Do all the work for Automake.  This macro actually does too much --
 # some checks are only needed if your package does certain things.
@@ -792,63 +830,65 @@ else
   $1_FALSE=
 fi])
 
-dnl Usage:
-dnl  SIM_CHECK_MACRO_QUOTE([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl Find out how to quote strings within macros.
-dnl
-dnl The variable sim_ac_quote_hash will be set to "yes" if we
-dnl can do ANSI C string quoting within macros using the hash
-dnl symbol.
-dnl
-dnl The variable sim_ac_quote_apostrophes will be set to "yes"
-dnl if we can do string quoting within macros using apostrophes.
-dnl Note that the string quoting check with apostrophes will
-dnl not be performed if the hash quoting works.
-dnl
-dnl ACTION-IF-FOUND will be performed if any method works,
-dnl otherwise ACTION-IF-NOT-FOUND will be run.
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
+# Usage:
+#   SIM_CHECK_MACRO_QUOTE([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+# Description:
+#   Find out how to quote strings within macros.
+#
+#   The variable sim_ac_quote_hash will be set to "yes" if we
+#   can do ANSI C string quoting within macros using the hash
+#   symbol.
+#
+#   The variable sim_ac_quote_apostrophes will be set to "yes"
+#   if we can do string quoting within macros using apostrophes.
+#   Note that the string quoting check with apostrophes will
+#   not be performed if the hash quoting works.
+#
+#   ACTION-IF-FOUND will be performed if any method works,
+#   otherwise ACTION-IF-NOT-FOUND will be run.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
 
-AC_DEFUN(SIM_CHECK_MACRO_QUOTE,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_CHECK_MACRO_QUOTE], [
 AC_PREREQ([2.14])
 
 sim_ac_quote_hash=no
 sim_ac_quote_apostrophes=
-AC_CACHE_CHECK([whether quoting in macros can be done with hash symbol],
+AC_CACHE_CHECK(
+  [whether quoting in macros can be done with hash symbol],
   sim_cv_quote_hash,
   [AC_TRY_RUN([#include <string.h>
                #define TEST_QUOTE(str) #str
                int main(void) { return strcmp("sim", TEST_QUOTE(sim)); }],
-              sim_cv_quote_hash=yes,
-              sim_cv_quote_hash=no,
-              AC_MSG_WARN(can't check macroquoting when crosscompiling, assumes ANSI C)
-              sim_cv_quote_hash=yes)])
+              [sim_cv_quote_hash=yes],
+              [sim_cv_quote_hash=no],
+              [AC_MSG_WARN([can't check macroquoting when crosscompiling, assumes ANSI C])
+              sim_cv_quote_hash=yes])])
 
-if test x"$sim_cv_quote_hash" = xyes; then
+if test x"$sim_cv_quote_hash" = x"yes"; then
   sim_ac_quote_hash=yes
-  ifelse($1, , :, $1)
+  ifelse([$1], , :, [$1])
 else
-  AC_CACHE_CHECK([whether quoting in macros can be done with apostrophes],
+  AC_CACHE_CHECK(
+    [whether quoting in macros can be done with apostrophes],
     sim_cv_quote_apostrophes,
     [AC_TRY_RUN([#include <string.h>
                  #define TEST_QUOTE(str) "str"
                  int main(void) { return strcmp("sim", TEST_QUOTE(sim)); }],
-                sim_cv_quote_apostrophes=yes,
-                sim_cv_quote_apostrophes=no,
-                : )])
-  if test x"$sim_cv_quote_apostrophes" = xyes; then
+                [sim_cv_quote_apostrophes=yes],
+                [sim_cv_quote_apostrophes=no])])
+  if test x"$sim_cv_quote_apostrophes" = x"yes"; then
     sim_ac_quote_apostrophes=yes
-    ifelse($1, , :, $1)
+    $1
   else
     sim_ac_quote_apostrophes=no
-    ifelse($2, , :, $2)
+    $2
   fi
 fi
 ])
+
 
 # Usage:
 #   SIM_CHECK_SIMAGE( ACTION-IF-FOUND, ACTION-IF-NOT-FOUND, ATTRIBUTE-LIST )
@@ -1106,30 +1146,29 @@ AC_DEFUN([SIM_PARSE_MODIFIER_LIST],
         [$5])])
 
 
-dnl Usage:
-dnl  SIM_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Try to find the X11 development system. If it is found, these
-dnl  shell variables are set:
-dnl
-dnl    $sim_ac_x11_cppflags (extra flags the compiler needs for X11)
-dnl    $sim_ac_x11_ldflags  (extra flags the linker needs for X11)
-dnl    $sim_ac_x11_libs     (link libraries the linker needs for X11)
-dnl
-dnl  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
-dnl  In addition, the variable $sim_ac_x11_avail is set to "yes" if
-dnl  the X11 development system is found.
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl TODO:
-dnl    * [mortene:20000122] make sure this work on MSWin (with
-dnl      Cygwin installation)
-dnl
+# Usage:
+#  SIM_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the X11 development system. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_x11_cppflags (extra flags the compiler needs for X11)
+#    $sim_ac_x11_ldflags  (extra flags the linker needs for X11)
+#    $sim_ac_x11_libs     (link libraries the linker needs for X11)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_x11_avail is set to "yes" if
+#  the X11 development system is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#    * [mortene:20000122] make sure this work on MSWin (with
+#      Cygwin installation)
+#
 
-AC_DEFUN(SIM_CHECK_X11,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_CHECK_X11], [
 AC_PREREQ([2.14.1])
 
 sim_ac_x11_avail=no
@@ -1163,48 +1202,47 @@ if test x"$no_x" != xyes; then
   LDFLAGS="$LDFLAGS $sim_ac_x11_ldflags"
   LIBS="$sim_ac_x11_libs $LIBS"
 
-  AC_CACHE_CHECK([whether we can link against X11],
+  AC_CACHE_CHECK(
+    [whether we can link against X11],
     sim_cv_lib_x11_avail,
     [AC_TRY_LINK([#include <X11/Xlib.h>],
                  [(void)XOpenDisplay(0L);],
-                 sim_cv_lib_x11_avail=yes,
-                 sim_cv_lib_x11_avail=no)])
+                 [sim_cv_lib_x11_avail=yes],
+                 [sim_cv_lib_x11_avail=no])])
 
-  if test x"$sim_cv_lib_x11_avail" = xyes; then
+  if test x"$sim_cv_lib_x11_avail" = x"yes"; then
     sim_ac_x11_avail=yes
-    ifelse($1, , :, $1)
+    $1
   else
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
-    ifelse($2, , :, $2)
+    $2
   fi
 fi
 ])
 
+# Usage:
+#  SIM_CHECK_X11SHMEM([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the X11 shared memory extension. If it is found, this
+#  shell variable is set:
+#
+#    $sim_ac_x11shmem_libs   (link libraries the linker needs for X11 Shm)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_x11shmem_avail is set to "yes" if the X11 shared
+#  memory extension is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#    * [mortene:20000122] make sure this work on MSWin (with
+#      Cygwin installation)
+#
 
-dnl Usage:
-dnl  SIM_CHECK_X11SHMEM([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Try to find the X11 shared memory extension. If it is found, this
-dnl  shell variable is set:
-dnl
-dnl    $sim_ac_x11shmem_libs   (link libraries the linker needs for X11 Shm)
-dnl
-dnl  The LIBS flag will also be modified accordingly. In addition, the
-dnl  variable $sim_ac_x11shmem_avail is set to "yes" if the X11 shared
-dnl  memory extension is found.
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl TODO:
-dnl    * [mortene:20000122] make sure this work on MSWin (with
-dnl      Cygwin installation)
-dnl
-
-AC_DEFUN(SIM_CHECK_X11SHMEM,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_CHECK_X11SHMEM], [
 AC_PREREQ([2.14.1])
 
 sim_ac_x11shmem_avail=no
@@ -1212,48 +1250,44 @@ sim_ac_x11shmem_libs="-lXext"
 sim_ac_save_libs=$LIBS
 LIBS="$sim_ac_x11shmem_libs $LIBS"
 
-AC_CACHE_CHECK([whether the X11 shared memory extension is available],
+AC_CACHE_CHECK(
+  [whether the X11 shared memory extension is available],
   sim_cv_lib_x11shmem_avail,
   [AC_TRY_LINK([#include <X11/Xlib.h>
-                #include <X11/extensions/XShm.h>],
+               #include <X11/extensions/XShm.h>],
                [(void)XShmQueryVersion(0L, 0L, 0L, 0L);],
-               sim_cv_lib_x11shmem_avail=yes,
-               sim_cv_lib_x11shmem_avail=no)])
+               [sim_cv_lib_x11shmem_avail=yes],
+               [sim_cv_lib_x11shmem_avail=no])])
 
 if test x"$sim_cv_lib_x11shmem_avail" = xyes; then
   sim_ac_x11shmem_avail=yes
-  ifelse($1, , :, $1)
+  $1
 else
   LIBS=$sim_ac_save_libs
-  ifelse($2, , :, $2)
+  $2
 fi
 ])
 
+# Usage:
+#  SIM_CHECK_X11MU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the X11 miscellaneous utilities extension. If it is
+#  found, this shell variable is set:
+#
+#    $sim_ac_x11mu_libs   (link libraries the linker needs for X11 MU)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_x11mu_avail is set to "yes" if the X11 miscellaneous
+#  utilities extension is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#    * [mortene:20000122] make sure this work on MSWin (with
+#      Cygwin installation)
+#
 
-
-
-dnl Usage:
-dnl  SIM_CHECK_X11MU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Try to find the X11 miscellaneous utilities extension. If it is
-dnl  found, this shell variable is set:
-dnl
-dnl    $sim_ac_x11mu_libs   (link libraries the linker needs for X11 MU)
-dnl
-dnl  The LIBS flag will also be modified accordingly. In addition, the
-dnl  variable $sim_ac_x11mu_avail is set to "yes" if the X11 miscellaneous
-dnl  utilities extension is found.
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl TODO:
-dnl    * [mortene:20000122] make sure this work on MSWin (with
-dnl      Cygwin installation)
-dnl
-
-AC_DEFUN(SIM_CHECK_X11MU,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_CHECK_X11MU], [
 AC_PREREQ([2.14.1])
 
 sim_ac_x11mu_avail=no
@@ -1261,48 +1295,45 @@ sim_ac_x11mu_libs="-lXmu"
 sim_ac_save_libs=$LIBS
 LIBS="$sim_ac_x11mu_libs $LIBS"
 
-AC_CACHE_CHECK([whether the X11 miscellaneous utilities is available],
+AC_CACHE_CHECK(
+  [whether the X11 miscellaneous utilities is available],
   sim_cv_lib_x11mu_avail,
   [AC_TRY_LINK([#include <X11/Xlib.h>
                 #include <X11/Xmu/Xmu.h>
                 #include <X11/Xmu/StdCmap.h>],
                [(void)XmuAllStandardColormaps(0L);],
-               sim_cv_lib_x11mu_avail=yes,
-               sim_cv_lib_x11mu_avail=no)])
+               [sim_cv_lib_x11mu_avail=yes],
+               [sim_cv_lib_x11mu_avail=no])])
 
 if test x"$sim_cv_lib_x11mu_avail" = xyes; then
   sim_ac_x11mu_avail=yes
-  ifelse($1, , :, $1)
+  $1
 else
   LIBS=$sim_ac_save_libs
-  ifelse($2, , :, $2)
+  $2
 fi
 ])
 
+# Usage:
+#  SIM_CHECK_X11XID([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the X11 extension device library. Sets this
+#  shell variable:
+#
+#    $sim_ac_x11xid_libs   (link libraries the linker needs for X11 XID)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_x11xid_avail is set to "yes" if the X11 extension
+#  device library is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#    * [mortene:20000122] make sure this work on MSWin (with
+#      Cygwin installation)
+#
 
-
-dnl Usage:
-dnl  SIM_CHECK_X11XID([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Try to find the X11 extension device library. Sets this
-dnl  shell variable:
-dnl
-dnl    $sim_ac_x11xid_libs   (link libraries the linker needs for X11 XID)
-dnl
-dnl  The LIBS flag will also be modified accordingly. In addition, the
-dnl  variable $sim_ac_x11xid_avail is set to "yes" if the X11 extension
-dnl  device library is found.
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl TODO:
-dnl    * [mortene:20000122] make sure this work on MSWin (with
-dnl      Cygwin installation)
-dnl
-
-AC_DEFUN(SIM_CHECK_X11XID,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_CHECK_X11XID], [
 AC_PREREQ([2.14.1])
 
 sim_ac_x11xid_avail=no
@@ -1310,39 +1341,38 @@ sim_ac_x11xid_libs="-lXi"
 sim_ac_save_libs=$LIBS
 LIBS="$sim_ac_x11xid_libs $LIBS"
 
-AC_CACHE_CHECK([whether the X11 extension device library is available],
+AC_CACHE_CHECK(
+  [whether the X11 extension device library is available],
   sim_cv_lib_x11xid_avail,
   [AC_TRY_LINK([#include <X11/extensions/XInput.h>],
                [(void)XOpenDevice(0L, 0);],
-               sim_cv_lib_x11xid_avail=yes,
-               sim_cv_lib_x11xid_avail=no)])
+               [sim_cv_lib_x11xid_avail=yes],
+               [sim_cv_lib_x11xid_avail=no])])
 
 if test x"$sim_cv_lib_x11xid_avail" = xyes; then
   sim_ac_x11xid_avail=yes
-  ifelse($1, , :, $1)
+  $1
 else
   LIBS=$sim_ac_save_libs
-  ifelse($2, , :, $2)
+  $2
 fi
 ])
 
-dnl Usage:
-dnl  SIM_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl
-dnl  Try to find the Xt intrinsic library. Sets this shell variable:
-dnl
-dnl    $sim_ac_xt_libs   (link library the linker needs for X Intrinsic)
-dnl
-dnl  The LIBS flag will also be modified accordingly. In addition, the
-dnl  variable $sim_ac_xt_avail is set to "yes" if the X11 Intrinsic
-dnl  library is found.
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
+# Usage:
+#  SIM_CHECK_X_INTRINSIC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the Xt intrinsic library. Sets this shell variable:
+#
+#    $sim_ac_xt_libs   (link library the linker needs for X Intrinsic)
+#
+#  The LIBS flag will also be modified accordingly. In addition, the
+#  variable $sim_ac_xt_avail is set to "yes" if the X11 Intrinsic
+#  library is found.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
 
-AC_DEFUN(SIM_CHECK_X_INTRINSIC,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_CHECK_X_INTRINSIC], [
 AC_PREREQ([2.14.1])
 
 sim_ac_xt_avail=no
@@ -1350,49 +1380,58 @@ sim_ac_xt_libs="-lXt"
 sim_ac_save_libs=$LIBS
 LIBS="$sim_ac_xt_libs $LIBS"
 
-AC_CACHE_CHECK([whether the X11 Intrinsic library is available],
+AC_CACHE_CHECK(
+  [whether the X11 Intrinsic library is available],
   sim_cv_lib_xt_avail,
   [AC_TRY_LINK([#include <X11/Intrinsic.h>],
                [(void)XtVaCreateWidget("", 0L, 0L);],
-               sim_cv_lib_xt_avail=yes,
-               sim_cv_lib_xt_avail=no)])
+               [sim_cv_lib_xt_avail=yes],
+               [sim_cv_lib_xt_avail=no])])
 
 if test x"$sim_cv_lib_xt_avail" = xyes; then
   sim_ac_xt_avail=yes
-  ifelse($1, , :, $1)
+  $1
 else
   LIBS=$sim_ac_save_libs
-  ifelse($2, , :, $2)
+  $2
 fi
 ])
 
-dnl ************************************************************************
-dnl SIM_CHECK_LIBXPM( IF-FOUND, IF-NOT-FOUND )
-dnl
-dnl Authors:
-dnl   Lars J. Aas <larsa@sim.no>
+# Usage:
+#   SIM_CHECK_LIBXPM( [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND] )
+#
+# Description:
+#   This macro checks for libXpm.
+#
+# Variables:
+#   $sim_ac_xpm_avail      yes | no
+#   $sim_ac_xpm_libs       [link-line libraries]
+#
+# Authors:
+#   Lars J. Aas <larsa@sim.no>
+#
 
-AC_DEFUN(SIM_CHECK_LIBXPM,
-[AC_PREREQ([2.14.1])
+AC_DEFUN([SIM_CHECK_LIBXPM], [
+AC_PREREQ([2.14.1])
 
 sim_ac_xpm_avail=no
 sim_ac_xpm_libs="-lXpm"
 
-AC_CACHE_CHECK([whether libXpm is available],
+AC_CACHE_CHECK(
+  [whether libXpm is available],
   sim_cv_lib_xpm_avail,
   [sim_ac_save_libs=$LIBS
   LIBS="$sim_ac_xpm_libs $LIBS"
   AC_TRY_LINK([#include <X11/xpm.h>],
               [(void)XpmLibraryVersion();],
-              sim_cv_lib_xpm_avail=yes,
-              sim_cv_lib_xpm_avail=no)
-  LIBS="$sim_ac_save_libs"
-  ])
+              [sim_cv_lib_xpm_avail=yes],
+              [sim_cv_lib_xpm_avail=no])
+  LIBS="$sim_ac_save_libs"])
 
-if test x"$sim_cv_lib_xpm_avail" = xyes; then
+if test x"$sim_cv_lib_xpm_avail" = x"yes"; then
   sim_ac_xpm_avail=yes
   LIBS="$sim_ac_xpm_libs $LIBS"
-  ifelse([$1], , :, [$1])
+  $1
 else
   ifelse([$2], , :, [$2])
 fi
@@ -1422,9 +1461,14 @@ fi
 #      Cygwin installation)
 #
 
-AC_DEFUN(SIM_CHECK_OPENGL,[
+AC_DEFUN(SIM_CHECK_OPENGL, [
 
-AC_ARG_WITH(opengl, AC_HELP_STRING([--with-opengl=DIR], [OpenGL/Mesa installation directory]), , [with_opengl=yes])
+AC_ARG_WITH(
+  [opengl],
+  AC_HELP_STRING([--with-opengl=DIR],
+                 [OpenGL/Mesa installation directory]),
+  [],
+  [with_opengl=yes])
 
 sim_ac_gl_avail=no
 
@@ -1449,16 +1493,19 @@ if test x"$with_opengl" != xno; then
 
   sim_ac_save_libs=$LIBS
 
-  AC_CACHE_CHECK([whether OpenGL libraries are available], sim_cv_lib_gl, [
-    sim_cv_lib_gl=UNRESOLVED
+  AC_CACHE_CHECK(
+    [whether OpenGL libraries are available],
+    sim_cv_lib_gl,
+    [sim_cv_lib_gl=UNRESOLVED
     # Some platforms (like BeOS) have the GLU functionality in the GL library.
     for sim_ac_gl_libcheck in -lMesaGL -lGL "-lMesaGLU -lMesaGL" "-lGLU -lGL"; do
       if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
         LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
         AC_TRY_LINK([#include <GL/gl.h>
-                     #include <GL/glu.h>],
-                    [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
-                    sim_cv_lib_gl="$sim_ac_gl_libcheck")
+                    #include <GL/glu.h>],
+                    [glPointSize(1.0f);
+                    gluSphere(0L, 1.0, 1, 1);],
+                    [sim_cv_lib_gl="$sim_ac_gl_libcheck"])
       fi
     done
   ])
@@ -1478,275 +1525,297 @@ if test x"$with_opengl" != xno; then
 fi
 ])
 
-dnl ************************************************************************
-dnl Usage:
-dnl   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
-dnl
-dnl Description:
-dnl   Let the user decide if compilation should be done in "debug mode".
-dnl   If compilation is not done in debug mode, all assert()'s in the code
-dnl   will be disabled.
-dnl
-dnl   Also sets enable_debug variable to either "yes" or "no", so the
-dnl   configure.in writer can add package-specific actions. Default is "yes".
-dnl   This was also extended to enable the developer to set up the two first
-dnl   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
-dnl   concept.
-dnl
-dnl   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-dnl   in the configure.in script.
-dnl
-dnl Authors:
-dnl   Morten Eriksen, <mortene@sim.no>
-dnl   Lars J. Aas, <larsa@sim.no>
-dnl
-dnl TODO:
-dnl * [larsa:20000220] Set up ATTRIBUTE-LIST for developer-configurable
-dnl   default-value.
-dnl
 
-AC_DEFUN(SIM_COMPILE_DEBUG,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+# Usage:
+#   SIM_COMPILE_DEBUG( ACTION-IF-DEBUG, ACTION-IF-NOT-DEBUG )
+#
+# Description:
+#   Let the user decide if compilation should be done in "debug mode".
+#   If compilation is not done in debug mode, all assert()'s in the code
+#   will be disabled.
+#
+#   Also sets enable_debug variable to either "yes" or "no", so the
+#   configure.in writer can add package-specific actions. Default is "yes".
+#   This was also extended to enable the developer to set up the two first
+#   macro arguments following the well-known ACTION-IF / ACTION-IF-NOT
+#   concept.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>
+#   Lars J. Aas, <larsa@sim.no>
+#
+# TODO:
+# * [larsa:20000220] Set up ATTRIBUTE-LIST for developer-configurable
+#   default-value.
+#
+
+AC_DEFUN([SIM_COMPILE_DEBUG], [
 AC_PREREQ([2.13])
 
-AC_ARG_ENABLE(debug,
+AC_ARG_ENABLE(
+  [debug],
   AC_HELP_STRING([--enable-debug], [compile in debug mode [default=yes]]),
   [case "${enableval}" in
     yes) enable_debug=yes ;;
     no)  enable_debug=no ;;
     *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-debug) ;;
   esac],
-  enable_debug=yes)
+  [enable_debug=yes])
 
-if test "x$enable_debug" = "xyes"; then
-  ifelse($1, , :, $1)
+if test x"$enable_debug" = x"yes"; then
+  ifelse([$1], , :, [$1])
 else
   CFLAGS="$CFLAGS -DNDEBUG"
   CXXFLAGS="$CXXFLAGS -DNDEBUG"
-  ifelse($2, , :, $2)
+  $2
 fi
 ])
 
 
-dnl  Let the user decide if debug symbol information should be compiled
-dnl  in. The compiled libraries/executables will use a lot less space
-dnl  if stripped for their symbol information.
-dnl
-dnl  Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-dnl  in the configure.in script.
-dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl  TODO:
-dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
-dnl
+# Usage:
+#   SIM_DEBUGSYMBOLS
+#
+# Description:
+#   Let the user decide if debug symbol information should be compiled
+#   in. The compiled libraries/executables will use a lot less space
+#   if stripped for their symbol information.
+# 
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+# 
+# Author: Morten Eriksen, <mortene@sim.no>.
+# 
+# TODO:
+#   * [mortene:19991114] make this work with compilers other than gcc/g++
+# 
 
-AC_DEFUN(SIM_DEBUGSYMBOLS,
-[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_DEBUGSYMBOLS], [
 AC_PREREQ([2.13])
-AC_ARG_ENABLE(symbols,
-  [  --enable-symbols        (GCC only) include symbol debug information
-                          [default=yes]],
+AC_ARG_ENABLE(
+  [symbols],
+  AC_HELP_STRING([--enable-symbols],
+                 [(GCC only) include symbol debug information [default=yes]]),
   [case "${enableval}" in
     yes) enable_symbols=yes ;;
     no)  enable_symbols=no ;;
     *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-symbols) ;;
   esac],
-  enable_symbols=yes)
+  [enable_symbols=yes])
 
-if test "x$enable_symbols" = "xno"; then
-  if test "x$GXX" = "xyes" || "x$GCC" = "xyes"; then
+if test x"$enable_symbols" = x"no"; then
+  if test x"$GXX" = x"yes" || x"$GCC" = x"yes"; then
     CFLAGS="`echo $CFLAGS | sed 's/-g//'`"
     CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
   else
-    AC_MSG_WARN(--disable-symbols only has effect when using GNU gcc or g++)
+    AC_MSG_WARN([--disable-symbols only has effect when using GNU gcc or g++])
   fi
 fi
 ])
 
-dnl  Let the user decide if RTTI should be compiled in. The compiled
-dnl  libraries/executables will use a lot less space if they don't
-dnl  contain RTTI.
-dnl
-dnl  Note: this macro must be placed after AC_PROG_CXX in the
-dnl  configure.in script.
-dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl  TODO:
-dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
-dnl
 
-AC_DEFUN(SIM_RTTI_SUPPORT,
-[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+# Usage:
+#   SIM_RTTI_SUPPORT
+#
+# Description:
+#   Let the user decide if RTTI should be compiled in. The compiled
+#   libraries/executables will use a lot less space if they don't
+#   contain RTTI.
+# 
+#   Note: this macro must be placed after AC_PROG_CXX in the
+#   configure.in script.
+# 
+# Author: Morten Eriksen, <mortene@sim.no>.
+# 
+# TODO:
+#   * [mortene:19991114] make this work with compilers other than gcc/g++
+# 
+
+AC_DEFUN([SIM_RTTI_SUPPORT], [
 AC_PREREQ([2.13])
-AC_ARG_ENABLE(rtti,
-  [  --enable-rtti           (g++ only) compile with RTTI [default=no]],
+AC_ARG_ENABLE(
+  [rtti],
+  AC_HELP_STRING([enable-rtti], [(g++ only) compile with RTTI [default=no]]),
   [case "${enableval}" in
     yes) enable_rtti=yes ;;
     no)  enable_rtti=no ;;
     *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-rtti) ;;
   esac],
-  enable_rtti=no)
+  [enable_rtti=no])
 
-if test "x$enable_rtti" = "xno"; then
-  if test "x$GXX" = "xyes"; then
+if test x"$enable_rtti" = x"no"; then
+  if test x"$GXX" = x"yes"; then
     CXXFLAGS="$CXXFLAGS -fno-rtti"
   fi
 else
-  if test "x$GXX" != "xyes"; then
-    AC_MSG_WARN(--enable-rtti only has effect when using GNU g++)
+  if test x"$GXX" != x"yes"; then
+    AC_MSG_WARN([--enable-rtti only has effect when using GNU g++])
   fi
 fi
 ])
 
-dnl  Let the user decide if C++ exception handling should be compiled
-dnl  in. The compiled libraries/executables will use a lot less space
-dnl  if they have exception handling support.
-dnl
-dnl  Note: this macro must be placed after AC_PROG_CXX in the
-dnl  configure.in script.
-dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl  TODO:
-dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
-dnl
 
-AC_DEFUN(SIM_EXCEPTION_HANDLING,
-[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+# Usage:
+#   SIM_CHECK_EXCEPTION_HANDLING
+#
+# Description:
+#   Let the user decide if C++ exception handling should be compiled
+#   in. The compiled libraries/executables will use a lot less space
+#   if they have exception handling support.
+#
+#   Note: this macro must be placed after AC_PROG_CXX in the
+#   configure.in script.
+#
+#   Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#   * [mortene:19991114] make this work with compilers other than gcc/g++
+#
+
+AC_DEFUN([SIM_EXCEPTION_HANDLING], [
 AC_PREREQ([2.13])
-AC_ARG_ENABLE(exceptions,
-  [  --enable-exceptions     (g++ only) compile with exceptions [default=no]],
+AC_ARG_ENABLE(
+  [exceptions],
+  AC_HELP_STRING([enable-exceptions],
+                 [(g++ only) compile with exceptions [default=no]]),
   [case "${enableval}" in
     yes) enable_exceptions=yes ;;
     no)  enable_exceptions=no ;;
     *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-exceptions) ;;
   esac],
-  enable_exceptions=no)
+  [enable_exceptions=no])
 
-if test "x$enable_exceptions" = "xno"; then
+if test x"$enable_exceptions" = x"no"; then
   if test "x$GXX" = "xyes"; then
     unset _exception_flag
     dnl This is for GCC >= 2.8
-    SIM_COMPILER_OPTION(-fno-exceptions, _exception_flag=-fno-exceptions)
-    if test "x$_exception_flag" = "x"; then
+    SIM_COMPILER_OPTION([-fno-exceptions], [_exception_flag=-fno-exceptions])
+    if test x"${_exception_flag+set}" != x"set"; then
       dnl For GCC versions < 2.8
-      SIM_COMPILER_OPTION(-fno-handle-exceptions, _exception_flag=-fno-handle-exceptions)
+      SIM_COMPILER_OPTION([-fno-handle-exceptions],
+                          [_exception_flag=-fno-handle-exceptions])
     fi
-    if test "x$_exception_flag" = "x"; then
-      AC_MSG_WARN(couldn't find a valid option for avoiding exception handling)
+    if test x"${_exception_flag+set}" != x"set"; then
+      AC_MSG_WARN([couldn't find a valid option for avoiding exception handling])
     else
       CXXFLAGS="$CXXFLAGS $_exception_flag"
     fi
   fi
 else
-  if test "x$GXX" != "xyes"; then
-    AC_MSG_WARN(--enable-exceptions only has effect when using GNU g++)
+  if test x"$GXX" != x"yes"; then
+    AC_MSG_WARN([--enable-exceptions only has effect when using GNU g++])
   fi
 fi
 ])
 
-dnl  Use this file to store miscellaneous macros related to checking
-dnl  compiler features.
-dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl  TODO:
-dnl
-dnl    * [mortene:19991125] make SIM_COMPILER_OPTION work with C compilers.
-dnl
-dnl    * [mortene:19991218] improve SIM_COMPILER_OPTION by catching
-dnl      and analyzing stderr (at least to see if there was any output
-dnl      there.)
-dnl
 
+# Usage:
+#   SIM_COMPILER_OPTION( OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+#
+# Description:
+#   Use this file to store miscellaneous macros related to checking
+#   compiler features.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#   * [mortene:19991125] make SIM_COMPILER_OPTION work with C compilers.
+#
+#   * [mortene:19991218] improve SIM_COMPILER_OPTION by catching
+#     and analyzing stderr (at least to see if there was any output
+#     there.)
+#
 
-dnl SIM_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
-AC_DEFUN(SIM_COMPILER_OPTION,
-[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_DEFUN([SIM_COMPILER_OPTION], [
 AC_PREREQ([2.13])
-AC_MSG_CHECKING(whether $CXX accepts [$1])
+AC_MSG_CHECKING([whether $CXX accepts $1])
 _save_cxxflags=$CXXFLAGS
 CXXFLAGS="$CXXFLAGS [$1]"
-AC_TRY_COMPILE( , , _accept_result=yes [$2], _accept_result=no [$3])
-AC_MSG_RESULT($_accept_result)
+AC_TRY_COMPILE( [], [], [_accept_result=yes $2], [_accept_result=no $3])
+AC_MSG_RESULT([$_accept_result])
 CXXFLAGS=$_save_cxxflags
 unset _accept_result _save_cxxflags
 ])
 
-dnl  Let the user decide if profiling code should be compiled
-dnl  in. The compiled libraries/executables will use a lot less space
-dnl  if they don't contain profiling code information, and they will also
-dnl  execute faster.
-dnl
-dnl  Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-dnl  in the configure.in script.
-dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl  TODO:
-dnl    * [mortene:19991114] make this work with compilers other than gcc/g++
-dnl
 
-AC_DEFUN(SIM_PROFILING_SUPPORT,
-[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+# Usage:
+#   SIM_PROFILING_SUPPORT
+#
+# Description:
+#   Let the user decide if profiling code should be compiled
+#   in. The compiled libraries/executables will use a lot less space
+#   if they don't contain profiling code information, and they will also
+#   execute faster.
+#
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+#
+# TODO:
+#   * [mortene:19991114] make this work with compilers other than gcc/g++
+#
+
+AC_DEFUN([SIM_PROFILING_SUPPORT], [
 AC_PREREQ([2.13])
-AC_ARG_ENABLE(profile,
-  [  --enable-profile        (GCC only) turn on inclusion of profiling code
-                          [default=no]],
+AC_ARG_ENABLE(
+  [profile],
+  AC_HELP_STRING([enable-profile],
+                 [(GCC only) turn on inclusion of profiling code [default=no]]),
   [case "${enableval}" in
     yes) enable_profile=yes ;;
     no)  enable_profile=no ;;
     *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-profile) ;;
   esac],
-  enable_profile=no)
+  [enable_profile=no])
 
-if test "x$enable_profile" = "xyes"; then
-  if test "x$GXX" = "xyes" || test "x$GCC" = "xyes"; then
+if test x"$enable_profile" = x"yes"; then
+  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
     CFLAGS="$CFLAGS -pg"
     CXXFLAGS="$CXXFLAGS -pg"
     LDFLAGS="$LDFLAGS -pg"
   else
-    AC_MSG_WARN(--enable-profile only has effect when using GNU gcc or g++)
+    AC_MSG_WARN([--enable-profile only has effect when using GNU gcc or g++])
   fi
 fi
 ])
 
-dnl  Take care of making a sensible selection of warning messages
-dnl  to turn on or off.
-dnl
-dnl  Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
-dnl  in the configure.in script.
-dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
-dnl
-dnl  TODO:
-dnl    * [mortene:19991114] find out how to get GCC's
-dnl      -Werror-implicit-function-declaration option to work as expected
-dnl
 
-AC_DEFUN(SIM_COMPILER_WARNINGS,
-[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+# Usage:
+#   SIM_COMPILER_WARNINGS
+#
+# Description:
+#   Take care of making a sensible selection of warning messages
+#   to turn on or off.
+# 
+#   Note: this macro must be placed after either AC_PROG_CC or AC_PROG_CXX
+#   in the configure.in script.
+# 
+# Author: Morten Eriksen, <mortene@sim.no>.
+# 
+# TODO:
+#   * [mortene:19991114] find out how to get GCC's
+#     -Werror-implicit-function-declaration option to work as expected
+# 
+
+AC_DEFUN([SIM_COMPILER_WARNINGS], [
 AC_PREREQ([2.14])
-AC_ARG_ENABLE(warnings,
-  AC_HELP_STRING([--enable-warnings], [turn on warnings when compiling [default=yes]]),
+AC_ARG_ENABLE(
+  [warnings],
+  AC_HELP_STRING([--enable-warnings],
+                 [turn on warnings when compiling [default=yes]]),
   [case "${enableval}" in
     yes) enable_warnings=yes ;;
     no)  enable_warnings=no ;;
     *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-warnings) ;;
   esac],
-  enable_warnings=yes)
+  [enable_warnings=yes])
 
-if test x"$enable_warnings" = xyes; then
-  if test x"$GXX" = xyes || test x"$GCC" = xyes; then
-    SIM_COMPILER_OPTION(-Wno-multichar, _warn_flags=-Wno-multichar)
+if test x"$enable_warnings" = x"yes"; then
+  if test x"$GXX" = x"yes" || test x"$GCC" = x"yes"; then
+    SIM_COMPILER_OPTION([-Wno-multichar], [_warn_flags=-Wno-multichar])
     _warn_flags="-W -Wall -Wno-unused $_warn_flags"
 
     CFLAGS="$CFLAGS $_warn_flags"
@@ -1757,12 +1826,15 @@ if test x"$enable_warnings" = xyes; then
       if test x"$CC" = xcc || test x"$CXX" = xCC; then
         _warn_flags=
         # Turn on all warnings.
-        SIM_COMPILER_OPTION(-fullwarn, _warn_flags="$_warn_flags -fullwarn")
+        SIM_COMPILER_OPTION([-fullwarn],
+                            [_warn_flags="$_warn_flags -fullwarn"])
         # Turn off ``type qualifiers are meaningless in this declaration''
         # warnings.
-        SIM_COMPILER_OPTION(-woff 3115, _warn_flags="$_warn_flags -woff 3115")
+        SIM_COMPILER_OPTION([-woff 3115],
+                            [_warn_flags="$_warn_flags -woff 3115"])
         # Turn off warnings on unused variables.
-        SIM_COMPILER_OPTION(-woff 3262, _warn_flags="$_warn_flags -woff 3262")
+        SIM_COMPILER_OPTION([-woff 3262],
+                            [_warn_flags="$_warn_flags -woff 3262"])
 
         CFLAGS="$CFLAGS $_warn_flags"
         CXXFLAGS="$CXXFLAGS $_warn_flags"
@@ -1771,30 +1843,31 @@ if test x"$enable_warnings" = xyes; then
     esac
   fi
 else
-  if test x"$GXX" != xyes && test x"$GCC" != xyes; then
-    AC_MSG_WARN(--enable-warnings only has effect when using GNU gcc or g++)
+  if test x"$GXX" != x"yes" && test x"$GCC" != x"yes"; then
+    AC_MSG_WARN([--enable-warnings only has effect when using GNU gcc or g++])
   fi
 fi
 ])
 
-dnl Usage:
-dnl  SIM_CHECK_SNPRINTF
-dnl
-dnl Find out which of these "safe" and non-standard functions are
-dnl available on the system: snprintf(), vsnprintf(), _snprintf()
-dnl and _vsnprintf().
-dnl
-dnl The variables sim_ac_snprintf_avail, sim_ac_vsnprintf_avail,
-dnl sim_ac__snprintf_avail and sim_ac__vsnprintf_avail are set to either
-dnl "yes" or "no" according to their availability, and HAVE_SNPRINTF
-dnl etc will be defined properly.
-dnl
-dnl
-dnl Author: Morten Eriksen, <mortene@sim.no>.
-dnl
 
-AC_DEFUN(SIM_CHECK_NPRINTF,[
-dnl Autoconf is a developer tool, so don't bother to support older versions.
+# Usage:
+#  SIM_CHECK_SNPRINTF
+#
+# Description:
+#   Find out which of these "safe" and non-standard functions are
+#   available on the system: snprintf(), vsnprintf(), _snprintf()
+#   and _vsnprintf().
+#
+#   The variables sim_ac_snprintf_avail, sim_ac_vsnprintf_avail,
+#   sim_ac__snprintf_avail and sim_ac__vsnprintf_avail are set to either
+#   "yes" or "no" according to their availability, and HAVE_SNPRINTF
+#   etc will be defined properly.
+#
+# Authors:
+#   Morten Eriksen, <mortene@sim.no>.
+#
+
+AC_DEFUN([SIM_CHECK_NPRINTF], [
 AC_PREREQ([2.14])
 
 sim_ac_snprintf_avail=no
@@ -1802,66 +1875,73 @@ sim_ac__snprintf_avail=no
 sim_ac_vsnprintf_avail=no
 sim_ac__vsnprintf_avail=no
 
-AC_CACHE_CHECK([whether snprintf() is available],
+AC_CACHE_CHECK(
+  [whether snprintf() is available],
   sim_cv_func_snprintf,
   [AC_TRY_LINK([#include <stdio.h>],
                [(void)snprintf(0L, 0, 0L);],
-               sim_cv_func_snprintf=yes,
-               sim_cv_func_snprintf=no)])
+               [sim_cv_func_snprintf=yes],
+               [sim_cv_func_snprintf=no])])
 
 sim_ac_snprintf_avail=$sim_cv_func_snprintf
 
 
-AC_CACHE_CHECK([whether vsnprintf() is available],
+AC_CACHE_CHECK(
+  [whether vsnprintf() is available],
   sim_cv_func_vsnprintf,
   [AC_TRY_LINK([#include <stdio.h>],
                [(void)vsnprintf(0L, 0, 0L, 0L);],
-               sim_cv_func_vsnprintf=yes,
-               sim_cv_func_vsnprintf=no)])
+               [sim_cv_func_vsnprintf=yes],
+               [sim_cv_func_vsnprintf=no])])
 
 sim_ac_vsnprintf_avail=$sim_cv_func_vsnprintf
 
 # We're not interested in _snprintf() unless snprintf() is unavailable.
-if test x"$sim_ac_snprintf_avail" = xno; then
-  AC_CACHE_CHECK([whether _snprintf() is available],
+if test x"$sim_ac_snprintf_avail" = x"no"; then
+  AC_CACHE_CHECK(
+    [whether _snprintf() is available],
     sim_cv_func__snprintf,
     [AC_TRY_LINK([#include <stdio.h>],
                  [(void)_snprintf(0L, 0, 0L);],
-                 sim_cv_func__snprintf=yes,
-                 sim_cv_func__snprintf=no)])
-
+                 [sim_cv_func__snprintf=yes],
+                 [sim_cv_func__snprintf=no])])
   sim_ac__snprintf_avail=$sim_cv_func__snprintf
 fi
 
 # We're not interested in _vsnprintf() unless vsnprintf() is unavailable.
 if test x"$sim_ac_vsnprintf_avail" = xno; then
-  AC_CACHE_CHECK([whether _vsnprintf() is available],
+  AC_CACHE_CHECK(
+    [whether _vsnprintf() is available],
     sim_cv_func__vsnprintf,
     [AC_TRY_LINK([#include <stdio.h>],
                  [(void)_vsnprintf(0L, 0, 0L);],
-                 sim_cv_func__vsnprintf=yes,
-                 sim_cv_func__vsnprintf=no)])
-
+                 [sim_cv_func__vsnprintf=yes],
+                 [sim_cv_func__vsnprintf=no])])
   sim_ac__vsnprintf_avail=$sim_cv_func__vsnprintf
 fi
 
-test x"$sim_ac_snprintf_avail" = xyes && AC_DEFINE(HAVE_SNPRINTF)
-test x"$sim_ac_vsnprintf_avail" = xyes && AC_DEFINE(HAVE_VSNPRINTF)
-test x"$sim_ac__snprintf_avail" = xyes && AC_DEFINE(HAVE__SNPRINTF)
-test x"$sim_ac__vsnprintf_avail" = xyes && AC_DEFINE(HAVE__VSNPRINTF)
+test x"$sim_ac_snprintf_avail" = x"yes" && AC_DEFINE(HAVE_SNPRINTF)
+test x"$sim_ac_vsnprintf_avail" = x"yes" && AC_DEFINE(HAVE_VSNPRINTF)
+test x"$sim_ac__snprintf_avail" = x"yes" && AC_DEFINE(HAVE__SNPRINTF)
+test x"$sim_ac__vsnprintf_avail" = x"yes" && AC_DEFINE(HAVE__VSNPRINTF)
 ])
 
-dnl  Expand these variables into their correct full directory paths:
-dnl   $prefix  $exec_prefix  $includedir  $libdir
-dnl
-dnl  Author: Morten Eriksen, <mortene@sim.no>.
-dnl
 
-AC_DEFUN(SIM_EXPAND_DIR_VARS,
-[
-test "x$prefix" = xNONE && prefix=$ac_default_prefix
-test "x$exec_prefix" = xNONE && exec_prefix=${prefix}
-includedir=`eval echo $includedir`
-libdir=`eval echo $libdir`
+# Usage:
+#   SIM_EXPAND_DIR_VARS
+#
+# Description:
+#   Expand these variables into their correct full directory paths:
+#    $prefix  $exec_prefix  $includedir  $libdir
+# 
+# Author: Morten Eriksen, <mortene@sim.no>.
+# 
+
+AC_DEFUN([SIM_EXPAND_DIR_VARS], [
+test x"$prefix" = x"NONE" && prefix="$ac_default_prefix"
+test x"$exec_prefix" = x"NONE" && exec_prefix="${prefix}"
+includedir="`eval echo $includedir`"
+libdir="`eval echo $libdir`"
 ])
+
 
