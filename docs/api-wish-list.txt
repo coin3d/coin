@@ -696,4 +696,9 @@ THE WISH LIST
   In this example I just used parentheses to signal begin/end expression.
   I'm not sure if this is the best solution though.
 
+* SoGLTeaPot
+  2002-04-01  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  A node that will render the commonly used tea pot shape.
 
