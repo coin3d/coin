@@ -274,7 +274,8 @@ soshape_bumprender::initPrograms(const cc_glglue * glue)
   if (err) {
     glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
     SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in vertex program! (byte pos: %d) '%s'.\n",
+                              "Error in directional light vertex program! "
+                              "(byte pos: %d) '%s'.\n",
                               errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
 
   }
@@ -288,7 +289,7 @@ soshape_bumprender::initPrograms(const cc_glglue * glue)
   if (err) {
     glGetIntegerv(GL_PROGRAM_ERROR_POSITION_ARB, &errorPos);
     SoDebugError::postWarning("soshape_bumpspecrender::initPrograms",
-                              "Error in vertex program! (byte pos: %d) '%s'.\n",
+                              "Error in point light vertex program! (byte pos: %d) '%s'.\n",
                               errorPos, glGetString(GL_PROGRAM_ERROR_STRING_ARB));
 
   }
@@ -648,6 +649,8 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
     if (!this->diffuseprogramsinitialized) {
       this->initDiffusePrograms(glue);
     }
+    glEnable(GL_VERTEX_PROGRAM_ARB);
+    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);   
   }
 
   SbBool colorpervertex = cache->colorPerVertex();
@@ -655,9 +658,7 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
   cc_glglue_glVertexPointer(glue, 3, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
                             (GLvoid*) &vptr->vertex);
   cc_glglue_glEnableClientState(glue, GL_VERTEX_ARRAY);
-
-  cc_glglue_glEnableClientState(glue, GL_NORMAL_ARRAY);
-
+  
   cc_glglue_glTexCoordPointer(glue, 4, GL_FLOAT, sizeof(SoPrimitiveVertexCache::Vertex),
                               (GLvoid*) &vptr->texcoord0);
   cc_glglue_glEnableClientState(glue, GL_TEXTURE_COORD_ARRAY);
@@ -679,11 +680,7 @@ soshape_bumprender::renderNormal(SoState * state, const SoPrimitiveVertexCache *
     }
   }
 
-  if (use_vertex_program) {
-    glEnable(GL_VERTEX_PROGRAM_ARB);
-    glue->glBindProgramARB(GL_VERTEX_PROGRAM_ARB, normalrenderingvertexprogramid);
-  }
-
+  
   cc_glglue_glDrawElements(glue, GL_TRIANGLES, n, GL_UNSIGNED_INT,
                            (const GLvoid*) cache->getIndices());
 
