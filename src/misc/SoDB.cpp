@@ -642,6 +642,10 @@ void
 SoDB::cleanup(void)
 {
   coin_atexit_cleanup();
+#ifdef COIN_THREADSAFE
+  delete sodb_notificationcounter_storage;
+  sodb_notificationcounter_storage = NULL;
+#endif // COIN_THREADSAFE
 }
 
 /*!

@@ -204,8 +204,11 @@ SoType::clean(void)
   const int num = SoType::typedatalist->getLength();
   for (int i = 0; i < num; i++) delete (*SoType::typedatalist)[i];
   delete SoType::typedatalist;
-
+  SoType::typedatalist = NULL;
   delete SoType::typedict;
+  SoType::typedict = NULL;
+  delete SoType::moduledict;
+  SoType::moduledict = NULL;
 #endif // COIN_DEBUG
 }
 
@@ -467,8 +470,6 @@ SoType::fromName(const SbName name)
 
     if ( SoType::moduledict == NULL ) {
       SoType::moduledict = new SbDict;
-      // FIXME: this is a one-off memory leak - add cleanup
-      // code to coin_atexit()
     }
 
     // FIXME: should we search the application code for the initClass()
