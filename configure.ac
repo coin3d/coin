@@ -1719,7 +1719,7 @@ if $sim_ac_build_library; then
 
 Warning: You are now building the development version of the Coin library.
   Unless you are working on development of Coin, you will probably want to
-  build the sources from the Coin-1.* release branch instead.  This
+  build the sources from the Coin-2.* release branch instead.  This
   development branch may become ABI-incompatible with itself from time
   to time, with all the headaches that follow...
 
