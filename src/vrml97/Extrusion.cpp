@@ -359,12 +359,12 @@ public:
      tcoord(32),
      idx(32),
      gen(TRUE),
-     tess(tess_callback, this),
 #ifdef COIN_THREADSAFE
      rwmutex(SbRWMutex::READ_PRECEDENCE),
 #endif // COIN_THREADSAFE
      dirty(TRUE)
   {
+    this->tess.setCallback(tess_callback, this);
   }
 
   SoVRMLExtrusion * master;
