@@ -147,7 +147,7 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 RegularSources = \
-        flwfreetype.c \
+        flwfreetype.c flwwin32.c \
 	dl.c \
 	gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c \
@@ -165,6 +165,7 @@ LinkHackSources = \
 PublicHeaders = 
 PrivateHeaders = \
         ../../include/Inventor/C/glue/flwfreetype.h \
+        ../../include/Inventor/C/glue/flwwin32.h \
 	../../include/Inventor/C/glue/glp.h \
 	../../include/Inventor/C/glue/gl_wgl.h \
 	../../include/Inventor/C/glue/gl_glx.h \
@@ -239,9 +240,9 @@ glue_lst_AR = $(AR) cru
 glue_lst_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_glue_lst_OBJECTS = all-c.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am_glue_lst_OBJECTS = flwfreetype.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	dl.$(OBJEXT) gl.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	gl_wgl.$(OBJEXT) gl_agl.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	gl_glx.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	flwwin32.$(OBJEXT) dl.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	gl.$(OBJEXT) gl_wgl.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	gl_agl.$(OBJEXT) gl_glx.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	openal_wrapper.$(OBJEXT) \
@@ -253,8 +254,8 @@ libglue_la_LDFLAGS =
 libglue_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libglue_la_OBJECTS = all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libglue_la_OBJECTS = flwfreetype.lo \
-@HACKING_COMPACT_BUILD_FALSE@	dl.lo gl.lo gl_wgl.lo gl_agl.lo \
-@HACKING_COMPACT_BUILD_FALSE@	gl_glx.lo GLUWrapper.lo \
+@HACKING_COMPACT_BUILD_FALSE@	flwwin32.lo dl.lo gl.lo gl_wgl.lo \
+@HACKING_COMPACT_BUILD_FALSE@	gl_agl.lo gl_glx.lo GLUWrapper.lo \
 @HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo \
 @HACKING_COMPACT_BUILD_FALSE@	openal_wrapper.lo \
 @HACKING_COMPACT_BUILD_FALSE@	fontlib_wrapper.lo
@@ -264,9 +265,10 @@ libglue@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libglue@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_TRUE@	all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libglue@SUFFIX@LINKHACK_la_OBJECTS = \
-@HACKING_COMPACT_BUILD_FALSE@	flwfreetype.lo dl.lo gl.lo \
-@HACKING_COMPACT_BUILD_FALSE@	gl_wgl.lo gl_agl.lo gl_glx.lo \
-@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.lo simage_wrapper.lo \
+@HACKING_COMPACT_BUILD_FALSE@	flwfreetype.lo flwwin32.lo dl.lo \
+@HACKING_COMPACT_BUILD_FALSE@	gl.lo gl_wgl.lo gl_agl.lo \
+@HACKING_COMPACT_BUILD_FALSE@	gl_glx.lo GLUWrapper.lo \
+@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo \
 @HACKING_COMPACT_BUILD_FALSE@	openal_wrapper.lo \
 @HACKING_COMPACT_BUILD_FALSE@	fontlib_wrapper.lo
 libglue@SUFFIX@LINKHACK_la_OBJECTS = \
@@ -280,6 +282,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/all-c.Plo $(DEPDIR)/all-c.Po \
 @AMDEP_TRUE@	$(DEPDIR)/dl.Plo $(DEPDIR)/dl.Po \
 @AMDEP_TRUE@	$(DEPDIR)/flwfreetype.Plo $(DEPDIR)/flwfreetype.Po \
+@AMDEP_TRUE@	$(DEPDIR)/flwwin32.Plo $(DEPDIR)/flwwin32.Po \
 @AMDEP_TRUE@	$(DEPDIR)/fontlib_wrapper.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/fontlib_wrapper.Po $(DEPDIR)/gl.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/gl.Po $(DEPDIR)/gl_agl.Plo \
@@ -372,6 +375,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/dl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/flwfreetype.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/flwfreetype.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/flwwin32.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/flwwin32.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/fontlib_wrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/fontlib_wrapper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/gl.Plo@am__quote@
