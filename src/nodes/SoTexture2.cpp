@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -34,6 +34,62 @@
   information about the specifics of how the textures will be applied.
 
   For a simple usage example, see the class documentation for SoSFImage.
+
+
+  When working with Inventor files, one often wants to embed external
+  texture image files into the Inventor files themselves. Here's a
+  minimal, stand-alone example which shows how that can be
+  accomplished by calling SoField::touch() on the SoTexture2::image
+  fields before scenegraph export:
+
+  \code
+  #include <Inventor/SoDB.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoTexture2.h>
+  #include <Inventor/actions/SoSearchAction.h>
+  #include <Inventor/actions/SoWriteAction.h>
+
+  int
+  main(void)
+  {
+    SoDB::init();
+
+    SoInput in;
+    SoSeparator * root = SoDB::readAll(&in);
+    if (!root) { exit(1); }
+
+    root->ref();
+
+    SoSearchAction searchaction;
+    searchaction.setType(SoTexture2::getClassTypeId());
+    searchaction.setSearchingAll(TRUE);
+    searchaction.setInterest(SoSearchAction::ALL);
+
+    searchaction.apply(root);
+
+    const SoPathList & pl = searchaction.getPaths();
+    for (int i=0; i < pl.getLength(); i++) {
+      SoFullPath * fp = (SoFullPath *)pl[i];
+      SoTexture2 * tex = (SoTexture2 *)fp->getTail();
+      assert(tex->getTypeId() == SoTexture2::getClassTypeId());
+      tex->image.touch();
+    }
+
+    SoWriteAction wa;
+    wa.apply(root);
+
+    root->unref();
+
+    return 0;
+  }
+  \endcode
+
+  Run the example by piping the iv-file you want do texture-embedding
+  on from stdin, e.g. like this:
+
+  \verbatim
+  $ ./test < input.iv
+  \endverbatim
 */
 
 #include <coindefs.h> // COIN_OBSOLETED()
@@ -416,7 +472,10 @@ SoTexture2::notify(SoNotList * l)
   SoField * f = l->getLastField();
   if (f == &this->image) {
     THIS->glimagevalid = FALSE;
-    this->filename.setDefault(TRUE); // write image, not filename
+
+    // write image, not filename
+    this->filename.setDefault(TRUE);
+    this->image.setDefault(FALSE);
   }
   else if (f == &this->wrapS || f == &this->wrapT) {
     THIS->glimagevalid = FALSE;
