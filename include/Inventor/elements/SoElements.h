@@ -103,6 +103,10 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoGLColorIndexElement.h>
+#include <Inventor/elements/SoListenerPositionElement.h>
+#include <Inventor/elements/SoListenerOrientationElement.h>
+#include <Inventor/elements/SoListenerVelocityElement.h>
+#include <Inventor/elements/SoListenerGainElement.h>
 
 // elements still supported by Coin that are not in SGI Inventor >= 2.1
 #include <Inventor/elements/SoAmbientColorElement.h>
