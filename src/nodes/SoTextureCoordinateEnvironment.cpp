@@ -31,6 +31,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <stdlib.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -40,6 +41,13 @@
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
 #include <float.h>
+
+static SbVec4f * dummy_texcoords = NULL;
+
+static void cleanup_func(void)
+{
+  delete dummy_texcoords;
+} 
 
 // *************************************************************************
 
@@ -103,13 +111,13 @@ SoTextureCoordinateEnvironment::generate(void *userdata,
   // in case an empty normal was supplied
   if (fabs(m) <= FLT_EPSILON) m = 1.0f;
 
-  // Dynamically allocated to avoid problems on systems which doesn't
-  // handle static constructors.
-  static SbVec4f * texcoords = new SbVec4f(0,0,0,1); // FIXME: deallocate on exit. 20000406 mortene.
-
-  (*texcoords)[0] = r[0] / m + 0.5f;
-  (*texcoords)[1] = r[1] / m + 0.5f;
-  return *texcoords;
+  if (dummy_texcoords == NULL) {
+    dummy_texcoords = new SbVec4f(0.0f, 0.0f, 0.0f, 1.0f);
+    atexit(cleanup_func);
+  }
+  (*dummy_texcoords)[0] = r[0] / m + 0.5f;
+  (*dummy_texcoords)[1] = r[1] / m + 0.5f;
+  return *dummy_texcoords;
 }
 
 /*!

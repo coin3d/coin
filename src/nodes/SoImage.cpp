@@ -641,7 +641,6 @@ SoImage::getImage(SbVec2s & size, int & nc)
       glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
       glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
-      // FIXME: ignoring the error code. Silly. 20000929 mortene.
       (void)GLUWrapper()->gluScaleImage(format,
                                         orgsize[0], orgsize[1],
                                         GL_UNSIGNED_BYTE, (void*) orgdata,

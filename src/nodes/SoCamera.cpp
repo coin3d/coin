@@ -35,15 +35,6 @@
   scene graph is none has been defined.
 */
 
-// Metadon doc:
-/*¡
-  FIXME:
-  <ul>
-  <li>antialiasing by "jittering" the camera when doing multipass
-      rendering has not been implemented yet</li>
-  </ul>
- */
-
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -451,20 +442,6 @@ SoCamera::GLRender(SoGLRenderAction * action)
 void
 SoCamera::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-#if 0 // FIXME: experimental code, not enabled, pederb, 2000-01-20
-  if (action->isInCameraSpace()) {
-    SoState * state = action->getState();
-    SbMatrix modelmatrix = SoModelMatrixElement::get(state);
-    SbVec3f camerapos(0.0f, 0.0f, 0.0f);
-    SbVec3f cameradir(0.0f, 0.0f, -1.0f);
-    modelmatrix.multVecMatrix(camerapos, camerapos);
-    modelmatrix.multDirMatrix(cameradir, cameradir);
-    cameradir.normalize();
-    SoModelMatrixElement::translateBy(state, this, -camerapos - SbVec3f(0, 0, 1));
-    SoModelMatrixElement::rotateBy(state, this, SbRotation(cameradir, SbVec3f(0, 0, -1)));
-    SoModelMatrixElement::makeIdentity(action->getState(), this);
-  }
-#endif // experimental code
   SoCamera::doAction(action);
 }
 
@@ -596,7 +573,7 @@ SoCamera::jitter(int numpasses, int curpass, const SbViewportRegion & vpreg,
   };
 
   // FIXME: support more rendering passes by generating jitter tables
-  // using some clever algorithm.
+  // using some clever algorithm. pederb, 2001-02-21
   if (numpasses > 16) numpasses = 16;
   if (curpass >= numpasses) curpass = numpasses - 1;
 

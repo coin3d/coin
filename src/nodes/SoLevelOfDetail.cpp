@@ -19,7 +19,7 @@
 
 /*!
   \class SoLevelOfDetail SoLevelOfDetail.h Inventor/nodes/SoLevelOfDetail.h
-  \brief The SoLevelOfDetail class ...
+  \brief The SoLevelOfDetail class is used to choose a child based on projected size.
   \ingroup nodes
 
   FIXME: write class doc
@@ -35,14 +35,20 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
+#include <stdlib.h>
 
+static SoGetBoundingBoxAction * bboxAction = NULL;
 
-// FIXME: this node should have a cleanUp-func
-static SoGetBoundingBoxAction *bboxAction = NULL;
+static void 
+cleanup_func(void)
+{
+  delete bboxAction;
+  bboxAction = NULL;
+}
 
 /*!
   \var SoMFFloat SoLevelOfDetail::screenArea
-  FIXME: write documentation for field
+  The screen areas for each child.
 */
 
 // *************************************************************************
@@ -83,20 +89,14 @@ SoLevelOfDetail::~SoLevelOfDetail()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoLevelOfDetail class. This includes setting up the
-  type system, among other things.
-*/
+// doc in parent
 void
 SoLevelOfDetail::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLevelOfDetail);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
 SoLevelOfDetail::doAction(SoAction *action)
 {
@@ -110,7 +110,7 @@ SoLevelOfDetail::doAction(SoAction *action)
   case SoAction::NO_PATH:
     break; // go on
   default:
-    assert(0 && "FIXME: unknown path code");
+    assert(0 && "unknown path code");
     return;
   }
 
@@ -134,6 +134,7 @@ SoLevelOfDetail::doAction(SoAction *action)
   if (!bboxAction) {
     SbViewportRegion dummy;
     bboxAction = new SoGetBoundingBoxAction(dummy);
+    atexit(cleanup_func);
   }
   bboxAction->setViewportRegion(SoViewportRegionElement::get(state));
   bboxAction->apply(this); // find bbox of all children
@@ -160,27 +161,21 @@ SoLevelOfDetail::doAction(SoAction *action)
   state->pop();
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
 SoLevelOfDetail::callback(SoCallbackAction *action)
 {
   SoLevelOfDetail::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
 SoLevelOfDetail::GLRender(SoGLRenderAction *action)
 {
   SoLevelOfDetail::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// doc in parent
 void
 SoLevelOfDetail::rayPick(SoRayPickAction *action)
 {

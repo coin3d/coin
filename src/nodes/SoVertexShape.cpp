@@ -218,18 +218,11 @@ SoVertexShape::generateNormals(SoState * const state)
   // See if the node supports the Coin-way of generating normals
   //
   if (!generateDefaultNormals(state, this->normalcache)) {
-    //
-    // try to generate normals the old Inventor way, using
-    // SoNormalBundle.
-    //
-    if (!generateDefaultNormals(state, (SoNormalBundle *)NULL)) {
-      // FIXME: what now?
+    // FIXME: implement SoNormalBundle
+    if (generateDefaultNormals(state, (SoNormalBundle *)NULL)) {
+      // FIXME: set generator in normal cache
     }
   }
-  // FIXME: check if cache has been invalidated. If it has been
-  // we should probably unref the cache and set it to NULL?
-  // pederb, 20000604
-
   state->pop(); // don't forget this pop
 
   SoCacheElement::setInvalid(storeinvalid);
@@ -258,6 +251,5 @@ SoVertexShape::getVertexData(SoState * state,
 void
 SoVertexShape::write(SoWriteAction * action)
 {
-  // FIXME: something missing here? 19991009 mortene.
   inherited::write(action);
 }

@@ -272,10 +272,6 @@ SoGroup::doAction(SoAction * action)
   const int * indices;
   switch (action->getPathCode(numindices, indices)) {
   case SoAction::IN_PATH:
-    // FIXME: not necessary to traverse children which do not
-    // affect state and is not in indices[] ?
-    // But, traversal will stop pretty soon anyway, so it might
-    // be slower to include a check here. pederb, 19990618
     this->children->traverse(action, 0, indices[numindices - 1]);
     break;
 

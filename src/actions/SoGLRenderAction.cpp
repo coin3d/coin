@@ -27,16 +27,6 @@
   the current OpenGL context.
  */
 
-// Metadon doc:
-/*¡
-  FIXME. This is missing from the implementation:
-  <ul>
-
-  <li> the UpdateArea setting isn't heeded.
-
-  </ul>
- */
-
 /*!
   \typedef void SoGLRenderPassCB(void * userdata)
 
@@ -753,14 +743,8 @@ SoGLRenderActionP::render(SoNode * node)
   SoLazyElement::setBlending(state, FALSE);
   SoLazyElement::setColorMaterial(state, TRUE);
 
-  // FIXME: is this the correct place to set these elements? 19990314 mortene.
-  SoDecimationPercentageElement::set(state, 1.0f);
-  SoDecimationTypeElement::set(state,
-                               SoDecimationTypeElement::AUTOMATIC);
-
-  // FIXME: use these as they're supposed to be used. 19990314 mortene.
   SoGLUpdateAreaElement::set(state,
-                             SbVec2f(0.0f, 0.0f), SbVec2f(1.0f, 1.0f));
+                             this->updateorigin, this->updatesize);
 
   SoGLCacheContextElement::set(state, this->cachecontext,
                                FALSE, this->renderingremote);

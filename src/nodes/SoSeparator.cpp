@@ -79,7 +79,7 @@
 static int COIN_RENDER_CACHING = -1;
 
 // Maximum number of caches available for allocation for the
-// rendercaching (FIXME: which is not implemented yet.. 20000426 mortene).
+// rendercaching
 int SoSeparator::numrendercaches = 2;
 
 
@@ -270,13 +270,6 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
   }
 
   SbBool validcache = this->bboxcache && this->bboxcache->isValid(state);
-
-  // FIXME: there needs to be some extra magic here to make caching
-  // work correctly when the bounding box is calculated in camera
-  // space. NB: getting this code in general to cooperate with an
-  // SoGetBoundingBoxAction with the isInCameraSpace() flag set is
-  // non-trivial. 19990513 mortene.
-  //  assert (!action->isInCameraSpace());
 
   if (iscaching && validcache) {
     SoCacheElement::addCacheDependency(state, this->bboxcache);
@@ -501,7 +494,7 @@ SoSeparator::GLRenderInPath(SoGLRenderAction * action)
     state->push();
     int childidx = 0;
     for (int i = 0; i < numindices; i++) {
-      SoAction::PathCode pathcode = action->getCurPathCode(); 
+      SoAction::PathCode pathcode = action->getCurPathCode();
       for (; childidx < indices[i] && !action->hasTerminated(); childidx++) {
         SoNode * offpath = childarray[childidx];
         if (offpath->affectsState()) {
@@ -587,10 +580,11 @@ SoSeparator::search(SoSearchAction * action)
 void
 SoSeparator::getMatrix(SoGetMatrixAction * action)
 {
-  if (action->getCurPathCode() == SoAction::IN_PATH)
-    inherited::getMatrix(action);
-
-  // FIXME: ..and? Is this all? 20000302 mortene.
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->children->traverse(action, 0, indices[numindices-1]);
+  }
 }
 
 /*!
@@ -604,8 +598,6 @@ void
 SoSeparator::setNumRenderCaches(const int howmany)
 {
   SoSeparator::numrendercaches = howmany;
-  // FIXME: not in use, as render caching has not been implemented
-  // yet. 20000426 mortene.
 }
 
 /*!
@@ -651,8 +643,6 @@ SoSeparator::notify(SoNotList * nl)
 #endif // debug
     this->glcachelist->invalidateAll();
   }
-  // FIXME: flag other caches (as they are implemented) as
-  // dirty. 20000426 mortene.
 }
 
 /*!
@@ -670,7 +660,6 @@ SoSeparator::cullTest(SoGLRenderAction * action, int & cullresults)
 SbBool
 SoSeparator::readInstance(SoInput * in, unsigned short flags)
 {
-  // FIXME: anything missing here?
   return inherited::readInstance(in, flags);
 }
 

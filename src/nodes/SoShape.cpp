@@ -27,12 +27,6 @@
   code used by the subclasses.
 */
 
-// Metadon doc:
-/*¡
-  FIXME: there're a bunch of FIXMEs scattered around in the source for
-  the SoShape class. They seem harmless, but they should be checked
-  and exterminated. 20000312 mortene.
- */
 
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -424,9 +418,6 @@ SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
   SbVec3f center;
   this->computeBBox(action, box, center);
 
-  // FIXME: detect and heed SoClipPlane's element settings.
-  // 19990421 mortene.
-
   if (!box.isEmpty()) {
     action->extendBy(box);
     action->setCenter(center, TRUE);
@@ -513,7 +504,7 @@ SoShape::getComplexityValue(SoAction * action)
       this->computeBBox(action, box, center);
       SbVec2s size;
       SoShape::getScreenSize(state, box, size);
-      // FIXME: needs calibration.
+      // FIXME: probably needs calibration.
 
 #if 1 // testing new complexity code
       // The cast within the sqrt() is done to avoid ambigouity error
@@ -636,7 +627,13 @@ SoShape::shouldRayPick(SoRayPickAction * const action)
 void
 SoShape::beginSolidShape(SoGLRenderAction * action)
 {
-  // FIXME: turn on backface culling
+  SoState * state = action->getState();
+  state->push();
+  
+  SoShapeHintsElement::set(state,
+                           SoShapeHintsElement::COUNTERCLOCKWISE,
+                           SoShapeHintsElement::SOLID,
+                           SoShapeHintsElement::FACE_TYPE_AS_IS);
 }
 
 /*!
@@ -645,7 +642,7 @@ SoShape::beginSolidShape(SoGLRenderAction * action)
 void
 SoShape::endSolidShape(SoGLRenderAction * action)
 {
-  // FIXME: disable backface culling
+  action->getState()->pop();
 }
 
 /*!

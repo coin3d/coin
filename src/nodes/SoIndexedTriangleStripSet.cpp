@@ -228,16 +228,13 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   dotextures = tb.needCoordinates();
-
-  Binding tbind = PER_VERTEX_INDEXED; // most common
+  
   if (dotextures) {
     if (tb.isFunction()) {
-      tbind = OVERALL;
       tindices = NULL;
     }
     else if (SoTextureCoordinateBindingElement::get(state) ==
              SoTextureCoordinateBindingElement::PER_VERTEX) {
-      tbind = PER_VERTEX;
       tindices = NULL;
     }
     else if (tindices == NULL) {
@@ -447,15 +444,12 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   dotextures = tb.needCoordinates();
 
-  Binding tbind = PER_VERTEX_INDEXED; // most common
   if (dotextures) {
     if (tb.isFunction()) {
-      tbind = OVERALL;
       tindices = NULL;
     }
     else if (SoTextureCoordinateBindingElement::get(state) ==
              SoTextureCoordinateBindingElement::PER_VERTEX) {
-      tbind = PER_VERTEX;
       tindices = NULL;
     }
     else if (tindices == NULL) {
@@ -511,8 +505,6 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
 
     this->beginShape(action, TRIANGLE_STRIP, &facedetail);
 
-    // vertex 1
-    // FIXME: optimize bindings test below
     if (mbind == PER_VERTEX || mbind == PER_TRIANGLE || mbind == PER_STRIP) {
       pointdetail.setMaterialIndex(matnr);
       vertex.setMaterialIndex(matnr++);

@@ -329,9 +329,6 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
   }
   GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_W_DISPLAY_MODE, displaymode);
 
-  // FIXME: we call sogl_render_nurbs_surface() even on GLU <
-  // v1.3. Won't this cause an assert() failure in
-  // sogl_render_nurbs_surface()? 20000929 mortene.
   sogl_render_nurbs_surface(action, this, this->nurbsrenderer,
                             this->numUControlPoints.getValue(),
                             this->numVControlPoints.getValue(),

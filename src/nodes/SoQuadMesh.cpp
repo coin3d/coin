@@ -620,13 +620,6 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
-  //
-  // FIXME: should I test for texture coordinate binding other
-  // than PER_VERTEX_INDEXED. The normal and material bindings
-  // are equal for indexed and nonindex, this is probably the
-  // case for texture coordinate binding too... (pederb, 990701)
-  //
-
   int start = this->startIndex.getValue();
 
   Binding mbind = findMaterialBinding(action->getState());

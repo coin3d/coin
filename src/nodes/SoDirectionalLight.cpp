@@ -129,8 +129,6 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
   SbVec4f dirvec(dir[0], dir[1], dir[2], 0.0f);
   glLightfv(light, GL_POSITION, dirvec.getValue());
 
-  // FIXME: is this needed for directional lights?
-  // turn off spot light properties for ordinary lights
   glLightf(light, GL_SPOT_EXPONENT, 0.0);
   glLightf(light, GL_SPOT_CUTOFF, 180.0);
   glLightf(light, GL_CONSTANT_ATTENUATION, 1);

@@ -42,6 +42,7 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/misc/SoGL.h>
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -66,6 +67,7 @@
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -328,7 +330,8 @@ void
 SoIndexedLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   inherited::getBoundingBox(action);
-  // FIXME: tell cache that geometry contain lines
+  // notify open (if any) bbox caches about lines in this shape
+  SoBoundingBoxCache::setHasLinesOrPoints(action->getState());
 }
 
 // doc from parent

@@ -438,7 +438,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
 
     const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
 
-    SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
+    SoTextureCoordinateBundle tb(action, TRUE, FALSE);
     doTextures = tb.needCoordinates();
 
     Binding mbind = this->findMaterialBinding(state);
@@ -620,6 +620,7 @@ SoFaceSet::generatePrimitives(SoAction *action)
   const SoCoordinateElement *coords;
   const SbVec3f * normals;
   SbBool doTextures;
+
   // FIXME: maybe SoLightModelElement should be enabled for
   // SoPickAction. This would make it possible to test the
   // element here, instead of always generating normals.

@@ -34,7 +34,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-
+#include <Inventor/elements/SoGLCacheContextElement.h>
 
 /*!
   \var SoMFFloat SoLOD::range
@@ -124,9 +124,21 @@ SoLOD::callback(SoCallbackAction *action)
 void
 SoLOD::GLRender(SoGLRenderAction * action)
 {
-  assert(action->getCurPathCode() == SoAction::NO_PATH);
-  int idx = this->whichToTraverse(action);;
-  if (idx >= 0) this->children->traverse(action, idx);
+  switch (action->getCurPathCode()) {
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:
+    SoLOD::GLRenderBelowPath(action);
+    break;
+  case SoAction::IN_PATH:
+    SoLOD::GLRenderInPath(action);
+    break;
+  case SoAction::OFF_PATH:
+    SoLOD::GLRenderOffPath(action);
+    break;
+  default:
+    assert(0 && "unknown path code.");
+    break;
+  }
 }
 
 /*!
@@ -136,7 +148,17 @@ void
 SoLOD::GLRenderBelowPath(SoGLRenderAction * action)
 {
   int idx = this->whichToTraverse(action);
-  if (idx >= 0) this->getChildren()->traverse(action, idx);
+  if (idx >= 0) {
+    // call GLRenderBelowPath() directly. A bit faster than using
+    // SoChildList::traverse()
+    SoNode * child = (SoNode*) this->children->get(idx);
+    action->pushCurPath(idx, child);
+    child->GLRenderBelowPath(action);
+    action->popCurPath(SoAction::BELOW_PATH);
+  }
+  // don't auto cache LOD nodes.
+  SoGLCacheContextElement::shouldAutoCache(action->getState(), 
+                                           SoGLCacheContextElement::DONT_AUTO_CACHE);
 }
 
 /*!
@@ -181,8 +203,11 @@ SoLOD::rayPick(SoRayPickAction *action)
 void
 SoLOD::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  // FIXME: what should be done here? Calculating a new bbox each
-  // time LOD is changed might hurt bbox cache performance.
+  // FIXME: SGI OIV seems to do some extra work here, but the manual
+  // pages states that it should do a normal SoGroup traversal.
+  // we should _not_ use whichToTraverse() to calculate bbox as
+  // this would cause cache dependencies on the camera and
+  // the model matrix.                       pederb, 2001-02-21
   inherited::getBoundingBox(action);
 }
 

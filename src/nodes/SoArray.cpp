@@ -172,7 +172,6 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
           multfactor_k = -multfactor_k;
           break;
 
-          // FIXME: catch w/SoDebugError. 19990324 mortene.
         default: assert(0); break;
         }
 
@@ -259,7 +258,6 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
     incj = -1.0f;
     inck = -1.0f;
     break;
-    // FIXME: catch w/SoDebugError. 19990324 mortene.
   default: assert(0); break;
   }
 
@@ -354,7 +352,6 @@ SoArray::doAction(SoAction *action)
           multfactor_k = -multfactor_k;
           break;
 
-          // FIXME: catch w/SoDebugError. 19990324 mortene.
         default: assert(0); break;
         }
 

@@ -31,7 +31,8 @@
 #include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
-
+#include <Inventor/elements/SoDecimationPercentageElement.h>
+#include <Inventor/elements/SoDecimationTypeElement.h>
 
 SO_ACTION_SOURCE(SoGetPrimitiveCountAction);
 
@@ -41,6 +42,9 @@ void
 SoGetPrimitiveCountAction::initClass(void)
 {
   SO_ACTION_INIT_CLASS(SoGetPrimitiveCountAction, SoAction);
+
+  SO_ENABLE(SoGetPrimitiveCountAction, SoDecimationPercentageElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoDecimationTypeElement);
 }
 
 
@@ -329,8 +333,8 @@ SoGetPrimitiveCountAction::beginTraversal(SoNode * node)
   this->numtexts = 0;
   this->numimages = 0;
 
-  // FIXME: set decimationtype and decimationpercentage elements.
-  // 20000306 mortene.
+  SoDecimationTypeElement::set(this->getState(), this->decimationtype);
+  SoDecimationPercentageElement::set(this->getState(), this->decimationpercentage);
 
   this->traverse(node);
 }

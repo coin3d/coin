@@ -300,15 +300,14 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f & box)
     return;
   }
 
-  // FIXME: maybe we should convert to an SbXfBox3f? 19990320 mortene.
-  SbBox3f tbox = box;
-  tbox.transform(SoLocalBBoxMatrixElement::get(this->state));
+  SbXfBox3f xfbox = box;
+  SbMatrix transform = SoLocalBBoxMatrixElement::get(this->getState());
   if (this->isInCameraSpace()) {
-    const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
-    tbox.transform(mat);
+    transform.multRight(SoViewingMatrixElement::get(this->getState()));
   }
 
-  this->bbox.extendBy(tbox);
+  xfbox.transform(transform);
+  this->bbox.extendBy(xfbox);
 }
 
 /*!
@@ -327,11 +326,11 @@ SoGetBoundingBoxAction::extendBy(const SbXfBox3f & box)
   }
 
   SbXfBox3f lbox = box;
-  lbox.transform(SoLocalBBoxMatrixElement::get(this->state));
+  SbMatrix transform = SoLocalBBoxMatrixElement::get(this->state);
   if (this->isInCameraSpace()) {
-    const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
-    lbox.transform(mat);
+    transform.multRight(SoViewingMatrixElement::get(this->state));
   }
+  lbox.transform(transform);
   this->bbox.extendBy(lbox);
 }
 
@@ -347,18 +346,16 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f & center,
   this->flags |= SoGetBoundingBoxAction::CENTER_SET;
 
   if (transformcenter) {
-    this->center = center;
-    const SbMatrix & lmat = SoLocalBBoxMatrixElement::get(this->state);
-    lmat.multVecMatrix(this->center, this->center);
+    SbMatrix lmat = SoLocalBBoxMatrixElement::get(this->state);
     if (this->isInCameraSpace()) {
-      const SbMatrix & vmat = SoViewingMatrixElement::get(this->state);
-      vmat.multVecMatrix(this->center, this->center);
+      lmat.multRight(SoViewingMatrixElement::get(this->state));
     }
+    lmat.multVecMatrix(center, this->center);
   }
   else {
     this->center = center;
   }
-
+  
 #if COIN_DEBUG && 0 // debug
   SoDebugError::post("SoGetBoundingBoxAction::setCenter",
                      "center: <%f, %f, %f>, transformcenter: %s, "
@@ -387,8 +384,6 @@ void
 SoGetBoundingBoxAction::resetCenter(void)
 {
   this->flags &= ~SoGetBoundingBoxAction::CENTER_SET;
-  // FIXME: check this->isInCameraSpace() and modify? Probably not, but
-  // investigate. 19990513 mortene.
   this->center.setValue(0.0f, 0.0f, 0.0f);
 }
 
@@ -402,13 +397,6 @@ SoGetBoundingBoxAction::beginTraversal(SoNode * node)
   this->resetCenter();
   this->bbox.makeEmpty();
 
-  assert(this->getState());
-
-  // FIXME: should we really push() and pop() here? Perhaps in the
-  // SoAction class instead? 19990303 mortene.
-
-  this->getState()->push();
   SoViewportRegionElement::set(this->getState(), this->vpregion);
   inherited::beginTraversal(node);
-  this->getState()->pop();
 }

@@ -295,9 +295,6 @@ SoIndexedNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbB
     }
   }
 
-  // FIXME: we call sogl_render_nurbs_curve() even on GLU <
-  // v1.3. Won't this cause an assert() failure in
-  // sogl_render_nurbs_curve()? 20000929 mortene.
   sogl_render_nurbs_curve(action, this, this->nurbsrenderer,
                           this->numControlPoints.getValue(),
                           this->knotVector.getValues(0),

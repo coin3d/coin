@@ -31,21 +31,17 @@
   sure the following geometry is scaled accordingly.
 */
 
-// Metadon doc:
-/*¡
-  FIXME: doesn't work correctly for unit settings ANGSTROMS or
-  POINTS. 20000321 mortene.
- */
-
 #include <Inventor/nodes/SoUnits.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoBBoxModelMatrixElement.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
+#include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoUnitsElement.h>
 
@@ -74,13 +70,11 @@ static const float factors[] = {
   0.000001f, // MICROMETERS
   0.000001f, // MICRONS
   0.000000001f, // NANOMETERS
-  // FIXME: find correct value. 19990315 mortene.
-  1.0f, // ANGSTROMS
+  0.0000000001f, // ANGSTROMS
   1000.0f, // KILOMETERS
   0.3048f, // FEET
   0.0254f, // INCHES
-  // FIXME: find correct value. 19990315 mortene.
-  1.0f, // POINTS
+  3.52777737e-4f, // POINTS
   0.9144f, // YARDS
   1609.3f, // MILES
   1852.0f, // NAUTICAL
@@ -140,50 +134,31 @@ SoUnits::initClass(void)
 void
 SoUnits::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoUnitsElement::Units currentunit = SoUnitsElement::get(action->getState());
-
-  if (currentunit != (SoUnitsElement::Units)units.getValue()) {
-    SoUnitsElement::set(action->getState(),
-                        (SoUnitsElement::Units)units.getValue());
-
-    float scale = factors[units.getValue()] / factors[currentunit];
-    SoBBoxModelMatrixElement::scaleBy(action->getState(), this,
-                                      SbVec3f(scale, scale, scale));
-  }
+  SoUnits::doAction((SoAction*)action);
 }
 
 // Doc from superclass.
 void
 SoUnits::GLRender(SoGLRenderAction * action)
 {
-  SoUnitsElement::Units currentunit = SoUnitsElement::get(action->getState());
-
-  if (currentunit != (SoUnitsElement::Units)units.getValue()) {
-    SoUnitsElement::set(action->getState(),
-                        (SoUnitsElement::Units)units.getValue());
-
-    float scale = factors[units.getValue()] / factors[currentunit];
-    SoModelMatrixElement::scaleBy(action->getState(), this,
-                                  SbVec3f(scale, scale, scale));
-
-    if (scale != 1.0f) {
-      SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
-    }
-  }
+  SoUnits::doAction((SoAction*)action);
 }
 
 // Doc from superclass.
 void
 SoUnits::doAction(SoAction * action)
 {
-  SoUnitsElement::Units currentunit = SoUnitsElement::get(action->getState());
+  if (this->units.isIgnored()) return;
+  SoState * state = action->getState();
+
+  SoUnitsElement::Units currentunit = SoUnitsElement::get(state);
 
   if (currentunit != (SoUnitsElement::Units)units.getValue()) {
-    SoUnitsElement::set(action->getState(),
+    SoUnitsElement::set(state,
                         (SoUnitsElement::Units)units.getValue());
 
     float scale = factors[units.getValue()] / factors[currentunit];
-    SoModelMatrixElement::scaleBy(action->getState(), this,
+    SoModelMatrixElement::scaleBy(state, this,
                                   SbVec3f(scale, scale, scale));
   }
 }
@@ -199,7 +174,23 @@ SoUnits::callback(SoCallbackAction * action)
 void
 SoUnits::getMatrix(SoGetMatrixAction * action)
 {
-  SoUnits::doAction((SoAction *)action);
+  if (this->units.isIgnored()) return;
+
+  SoState * state = action->getState();
+  SoUnitsElement::Units currentunit = SoUnitsElement::get(state);
+  if (currentunit != (SoUnitsElement::Units) this->units.getValue()) {
+    SoUnitsElement::set(state,
+                        (SoUnitsElement::Units)units.getValue());
+
+    float scale = factors[(int)this->units.getValue()] / factors[(int) currentunit];
+    float inv = 1.0f / scale;
+    
+    SbMatrix m;
+    m.setScale(SbVec3f(scale, scale, scale));
+    action->getMatrix().multLeft(m);
+    m.setScale(SbVec3f(inv, inv, inv));
+    action->getInverse().multRight(m);
+  }
 }
 
 // Doc from superclass.

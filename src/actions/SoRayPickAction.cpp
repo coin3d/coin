@@ -74,8 +74,6 @@ public:
   SbBool isFlagSet(const unsigned int flag) const;
   void calcObjectSpaceData(SoState * ownerstate);
   void calcMatrices(SoState * ownerstate);
-  // FIXME: unused method. 20010103 mortene.
-  float calcRayRadius(const SbVec2s & size, const float radiusinpixels);
 
   // Hidden private variables.
 
@@ -522,8 +520,6 @@ SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
   if ((op1-v0).dot(line.getDirection()) < 0.0f) op1 = v0;
   else if ((v1-op1).dot(line.getDirection()) < 0.0f) op1 = v1;
 
-  // FIXME: clamp op0 to raystart, rayfar ???
-
   THIS->obj2world.multVecMatrix(op0, p0);
   THIS->obj2world.multVecMatrix(op1, p1);
 
@@ -828,16 +824,4 @@ SoRayPickActionP::calcMatrices(SoState * state)
     this->obj2world.multLeft(this->extramatrix);
   }
   this->world2obj = this->obj2world.inverse();
-}
-
-float
-SoRayPickActionP::calcRayRadius(const SbVec2s & vpsize,
-                                const float radiusinpixels)
-{
-  // FIXME: unused method. 20010103 mortene.
-
-  float xsize = float(vpsize[0]);
-  float ysize = float(vpsize[1]);
-
-  return float(radiusinpixels / sqrt(xsize * xsize + ysize * ysize));
 }

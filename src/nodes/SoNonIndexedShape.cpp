@@ -94,17 +94,17 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
     vp->vertex.getNum() :
     coordelem->getNum();
 
-  // FIXME: handle assertion more gracefully. 19990327 mortene.
-  assert(numCoords > 0);
-
   int32_t startidx = this->startIndex.getValue();
   int32_t lastidx;
 
   if (numVertices < 0) lastidx = numCoords - 1;
   else lastidx = startidx + numVertices-1;
 
-  // FIXME: handle assertion more gracefully. 19990327 mortene.
-  assert(lastidx < numCoords);
+  if (numCoords <= 0 || lastidx >= numCoords) {
+    // no need to call box.makeEmpty(). Box will be empty when
+    // this method is called.
+    return;
+  }
 
   center.setValue(0.0f, 0.0f, 0.0f);
   

@@ -136,6 +136,12 @@ SoTextureCoordinateBinding::pick(SoPickAction *action)
 SbBool
 SoTextureCoordinateBinding::readInstance(SoInput * in, unsigned short flags)
 {
-  // FIXME: update binding? pederb, 990616
-  return inherited::readInstance(in, flags);
+  SbBool ret = inherited::readInstance(in, flags);
+  if (ret) {
+    // test for obsolete values
+    if (this->value.getValue() < 2) {
+      this->value = PER_VERTEX_INDEXED;
+    }
+  }
+  return ret;
 }

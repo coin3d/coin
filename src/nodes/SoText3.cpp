@@ -131,7 +131,6 @@
 // Metadon doc:
 /*¡
   FIXME: missing features, pederb 20000224
-  - Profile coordinates are not supported yet.
   - Texture coordinates are not generated yet.
   - Normals for SIDES should be smoothed.
 */

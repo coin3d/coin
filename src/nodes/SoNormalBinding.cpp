@@ -139,6 +139,14 @@ SoNormalBinding::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 SbBool
 SoNormalBinding::readInstance(SoInput * in, unsigned short flags)
 {
-  // FIXME: what else?
-  return inherited::readInstance(in, flags);
+  SbBool ret = inherited::readInstance(in, flags);
+  
+  if (this->value.getValue() < 2) {
+    // old OIV files might use obsolete bindings.  Change to
+    // PER_VERTEX_INDEXED
+    this->value = PER_VERTEX_INDEXED;
+  }
+  
+  return ret;
 }
+

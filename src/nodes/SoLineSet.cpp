@@ -41,8 +41,10 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/SoPrimitiveVertex.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -612,80 +614,6 @@ SoLineSet::GLRender(SoGLRenderAction * action)
       needNormals,
       drawPoints);
 
-#if 0 // obsloeted skei 2001-01-17, skei
-
-  if (nbind == PER_SEGMENT || mbind == PER_SEGMENT) {
-    if (drawPoints) glBegin(GL_POINTS);
-    else glBegin(GL_LINES);
-
-    while (ptr < end) {
-      int n = *ptr++;
-      if (n < 2) {
-        idx += n;
-        continue;
-      }
-      if (mbind == PER_LINE) {
-        mb.send(matnr++, TRUE);
-      }
-      if (nbind == PER_LINE) {
-        currnormal = normals++;
-      }
-      while (--n) {
-        if (mbind == PER_SEGMENT || mbind == PER_VERTEX) {
-          mb.send(matnr++, TRUE);
-        }
-        if (nbind == PER_SEGMENT || nbind == PER_VERTEX) {
-          currnormal = normals++;
-        }
-        glNormal3fv((const GLfloat*)currnormal);
-        if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-        coords->send(idx++);
-
-        if (nbind == PER_VERTEX) {
-          currnormal = normals++;
-          glNormal3fv((const GLfloat *)currnormal);
-        }
-        if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-        if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-        coords->send(idx);
-      }
-      idx++;
-    }
-    glEnd();
-  }
-  else {
-    if (drawPoints) glBegin(GL_POINTS);
-    while (ptr < end) {
-      int n = *ptr++;
-      if (n < 2) {
-        idx += n; // FIXME: is this correct?
-        continue;
-      }
-      n -= 2;
-      if (!drawPoints) glBegin(GL_LINE_STRIP);
-      if (nbind != OVERALL) {
-        currnormal = normals++;
-        glNormal3fv((const GLfloat *)currnormal);
-      }
-      if (mbind != OVERALL) mb.send(matnr++, TRUE);
-      if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-      coords->send(idx++);
-      do {
-        if (nbind == PER_VERTEX) {
-          currnormal = normals++;
-          glNormal3fv((const GLfloat *)currnormal);
-        }
-        if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-        if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-        coords->send(idx++);
-      } while (n--);
-      if (!drawPoints) glEnd();
-    }
-    if (drawPoints) glEnd();
-  }
-
-#endif // obsoleted
-
   if (didpush)
     state->pop();
 }
@@ -716,7 +644,8 @@ void
 SoLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   inherited::getBoundingBox(action);
-  // FIXME: tell caches that geometry contains lines
+  // notify open (if any) bbox caches about lines in this shape
+  SoBoundingBoxCache::setHasLinesOrPoints(action->getState());
 }
 
 // doc from parent
@@ -802,7 +731,7 @@ SoLineSet::generatePrimitives(SoAction *action)
       lineDetail.setLineIndex(0);
       int n = *ptr++;
       if (n < 2) {
-        idx += n; // FIXME: is this correct?
+        idx += n;
         continue;
       }
       n -= 2;

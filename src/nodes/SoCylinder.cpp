@@ -39,6 +39,9 @@
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoState.h>
@@ -152,8 +155,12 @@ SoCylinder::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  // FIXME: test if we really need normals and texcoords
-  unsigned int flags = SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS;
+  unsigned int flags = 0;
+  if (SoLightModelElement::get(state) != SoLightModelElement::BASE_COLOR)
+    flags |= SOGL_NEED_NORMALS;
+  if (SoGLTextureEnabledElement::get(state) && 
+      SoTextureCoordinateElement::getType(state) != SoTextureCoordinateElement::TEXGEN) 
+    flags |= SOGL_NEED_TEXCOORDS;
   if (p & SIDES) flags |= SOGL_RENDER_SIDE;
   if (p & TOP) flags |= SOGL_RENDER_TOP;
   if (p & BOTTOM) flags |= SOGL_RENDER_BOTTOM;
@@ -232,8 +239,9 @@ SoCylinder::rayPick(SoRayPickAction * action)
   float r = this->radius.getValue();
   float h = this->height.getValue() * 0.5f;
 
-  // FIXME: possible to simplify cylinder test, since this cylinder
-  // is aligned with the y-axis. 19991110 pederb.
+  // FIXME: should be possible to simplify cylinder test, since this
+  // cylinder is aligned with the y-axis. 19991110 pederb.
+
   int numPicked = 0; // will never be > 2
   SbVec3f enter, exit;
 
