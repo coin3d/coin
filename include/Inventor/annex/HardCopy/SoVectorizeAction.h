@@ -119,9 +119,11 @@ public:
                    HLHSR_PAINTER_SURFACE_REMOVAL, HIDDEN_LINES_REMOVAL };
 
   virtual void setDrawingDimensions(const SbVec2f & d, DimensionUnit u = MM);
+  virtual void setDrawingDimensions(float w, float h, DimensionUnit u = MM) { this->setDrawingDimensions(SbVec2f(w, h), u); }
   virtual SbVec2f getDrawingDimensions(DimensionUnit u = MM) const;
 
   virtual void setStartPosition(const SbVec2f & p, DimensionUnit u = MM);
+  virtual void setStartPosition(float x, float y, DimensionUnit u = MM) { this->setStartPosition(SbVec2f(x, y), u); }
   virtual SbVec2f getStartPosition(DimensionUnit u = MM) const;
 
   virtual void setColorTranslationMethod(ColorTranslationMethod method);
