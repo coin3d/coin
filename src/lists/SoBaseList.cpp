@@ -125,6 +125,24 @@ SoBaseList::remove(const int index)
 }
 
 /*!
+  Removes \a item from the list, dereferencing the object (unless
+  addReferences() has been set to \c FALSE).
+
+  \sa SbPList::removeItem()
+*/
+void
+SoBaseList::removeItem(SoBase * item)
+{
+  // We need to override the removeItem() function from our SbPList
+  // superclass, or invocations of it will not cause a decrease of the
+  // reference count.
+
+  // Just forward call to remove(), which takes care of the
+  // dereferencing.
+  this->remove(this->find(item));
+}
+
+/*!
   Makes the list contain only the \a length first items, removing all
   items from index \a length and onwards to the end of the
   list. Dereferences the objects to be removed (unless addReferences()

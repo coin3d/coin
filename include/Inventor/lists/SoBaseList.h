@@ -39,6 +39,7 @@ public:
   void append(SoBase * ptr);
   void insert(SoBase * ptr, const int addbefore);
   void remove(const int index);
+  void removeItem(SoBase * item);
   void truncate(const int length);
   void copy(const SoBaseList & l);
   SoBaseList & operator=(const SoBaseList & l);
