@@ -101,6 +101,9 @@ THE LINKS
   licenses are liberal, we might be able to avoid re-inventing wheels
   for some of the libraries provided.
 
+  [Matt Verona suggests using the tokenizer classes to parse the "search path
+  string" when implementing the SoSearchPathAction]
+
 * List of API changes from SGI Inventor v2.0 to v2.1:
 
    <URL:http://wwwinfo.cern.ch/asd/lhc++/OpenInventor/pro/porting/chapter2.html>.
@@ -194,3 +197,5 @@ THE LINKS
 * Check out "Valgrind", a Purify-like (?) memory debugger tool:
   <URL:http://devel-home.kde.org/~sewardj/> (or
   <URL:http://developer.kde.org/~sewardj>).
+
+
