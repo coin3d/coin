@@ -415,10 +415,20 @@ SoMField::getNum(void) const
 void
 SoMField::setNum(const int num)
 {
-  if (num != this->num) {
-    this->allocValues(num);
-    this->valueChanged();
+  // Note: this method is implemented in terms of the virtual methods
+  // deleteValues() and insertSpace() so the more "complex" fields
+  // (like SoMFNode and SoMFEngine) can also handle setNum() in a
+  // correct way.
+
+  if (num < this->getNum()) {
+    this->deleteValues(num, -1);
+    // deleteValues() also handles notification.
   }
+  else if (num > this->getNum()) {
+    this->insertSpace(this->getNum(), num - this->getNum());
+    // insertSpace() also handles notification.
+  }
+  // else no change.
 }
 
 /*!
@@ -458,9 +468,11 @@ SoMField::deleteValues(int start, int num)
     (void)memmove(move_to, move_from, fsize * elements);
   }
 
-  // Truncate (setNum() also calls valueChanged() (which triggers
-  // notification)).
-  this->setNum(this->getNum() - num);
+  // Truncate array.
+  this->allocValues(this->getNum() - num);
+
+  // Send notification.
+  this->valueChanged();
 }
 
 /*!
@@ -495,6 +507,7 @@ SoMField::insertSpace(int start, int num)
     (void)memcpy(move_to, move_from, fsize * num);
   }
 
+  // Send notification.
   this->valueChanged();
 }
 
