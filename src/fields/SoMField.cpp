@@ -741,33 +741,37 @@ SoMField::allocValues(int newnum)
       //
       // I think this will handle both cases quite gracefully: 1)
       // newnum > this->maxNum, 2) newnum < num
-      while (newnum > this->maxNum) this->maxNum <<= 1;
-      while ((this->maxNum >> 1) >= newnum) this->maxNum >>= 1;
+      int oldmaxnum = this->maxNum;
+      while (newnum > this->maxNum) this->maxNum *= 2;
+      while ((this->maxNum / 2) >= newnum) this->maxNum /= 2;
 
 #if COIN_DEBUG && 0 // debug
       SoDebugError::postInfo("SoMField::allocValues",
-                             "%d --> %d, name: '%s', ptr: %p",
-                             newnum, this->maxNum,
-                             getTypeId().getName().getString(), this);
+                             "'%s' newnum==%d, old/new %p->maxNum==%d/%d",
+                             this->getTypeId().getName().getString(),
+                             newnum, this, oldmaxnum, this->maxNum);
+
 #endif // debug
 
-      // FIXME: Umm.. aren't we supposed to use realloc() here?
-      // 20000915 mortene.
-      unsigned char * newblock = new unsigned char[this->maxNum * fsize];
-      int copysize = fsize * SbMin(this->num, newnum);
-      (void) memcpy(newblock, this->valuesPtr(), copysize);
-      // we have to dereference old values in SoMFNode, SoMFPath and
-      // SoMFEngine, so we just initialize the part of the array with
-      // no defined values to NULL.
-      int rest = this->maxNum*fsize - copysize;
-      if (rest > 0) {
-        (void)memset(newblock + copysize, 0, rest);
+      if (oldmaxnum != this->maxNum) {
+        // FIXME: Umm.. aren't we supposed to use realloc() here?
+        // 20000915 mortene.
+        unsigned char * newblock = new unsigned char[this->maxNum * fsize];
+        int copysize = fsize * SbMin(this->num, newnum);
+        (void) memcpy(newblock, this->valuesPtr(), copysize);
+        // we have to dereference old values in SoMFNode, SoMFPath and
+        // SoMFEngine, so we just initialize the part of the array
+        // with no defined values to NULL.
+        int rest = this->maxNum*fsize - copysize;
+        if (rest > 0) {
+          (void)memset(newblock + copysize, 0, rest);
+        }
+        if (!this->userDataIsUsed) {
+          delete[] (unsigned char *) this->valuesPtr();
+        }
+        this->setValuesPtr(newblock);
+        this->userDataIsUsed = FALSE;
       }
-      if (!this->userDataIsUsed) {
-        delete[] (unsigned char *) this->valuesPtr();
-      }
-      this->setValuesPtr(newblock);
-      this->userDataIsUsed = FALSE;
     }
     else {
       unsigned char * data = new unsigned char[newnum * fsize];

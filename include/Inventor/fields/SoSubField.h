@@ -298,9 +298,13 @@ _class_::~_class_(void) { }
 PRIVATE_TYPEID_SOURCE(_class_); \
 PRIVATE_EQUALITY_SOURCE(_class_); \
 const _class_ & \
-_class_::operator = (const _class_ & field) \
+_class_::operator=(const _class_ & field) \
 { \
+  /* The allocValues() call is needed, as setValues() doesn't */ \
+  /* necessarily make the field's getNum() size become the same */ \
+  /* as the second argument (only if it expands on the old size). */ \
   this->allocValues(field.getNum()); \
+  \
   this->setValues(0, field.getNum(), field.getValues(0)); \
   return *this; \
 }
@@ -364,7 +368,7 @@ _class_::setValue(_valref_ value) \
 } \
  \
 SbBool \
-_class_::operator == (const _class_ & field) const \
+_class_::operator==(const _class_ & field) const \
 { \
   if (this == &field) return TRUE; \
   if (this->getNum() != field.getNum()) return FALSE; \
@@ -418,17 +422,20 @@ _class_::allocValues(int newnum) \
       /* */ \
       /* I think this will handle both cases quite gracefully: */ \
       /* 1) newnum > this->maxNum, 2) newnum < num */ \
-      while (newnum > this->maxNum) this->maxNum <<= 1; \
-      while ((this->maxNum >> 1) >= newnum) this->maxNum >>= 1; \
+      int oldmaxnum = this->maxNum; \
+      while (newnum > this->maxNum) this->maxNum *= 2; \
+      while ((this->maxNum / 2) >= newnum) this->maxNum /= 2; \
  \
-      _valtype_ * newblock = new _valtype_[this->maxNum]; \
-      this->userDataIsUsed = FALSE; \
+      if (oldmaxnum != this->maxNum) { \
+        _valtype_ * newblock = new _valtype_[this->maxNum]; \
+        this->userDataIsUsed = FALSE; \
  \
-      for (int i=0; i < SbMin(this->num, newnum); i++) \
-        newblock[i] = this->values[i]; \
+        for (int i=0; i < SbMin(this->num, newnum); i++) \
+          newblock[i] = this->values[i]; \
  \
-      delete[] this->values; /* don't fetch pointer through valuesPtr() (avoids void* cast) */ \
-      this->setValuesPtr(newblock); \
+        delete[] this->values; /* don't fetch pointer through valuesPtr() (avoids void* cast) */ \
+        this->setValuesPtr(newblock); \
+      } \
     } \
     else { \
       this->setValuesPtr(new _valtype_[newnum]); \
