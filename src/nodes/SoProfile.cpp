@@ -95,9 +95,13 @@ SO_NODE_ABSTRACT_SOURCE(SoProfile);
 SoProfile::SoProfile(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoProfile);
-
+  
   SO_NODE_ADD_FIELD(index, (0));
   SO_NODE_ADD_FIELD(linkage, (START_FIRST));
+  SO_NODE_DEFINE_ENUM_VALUE(Profile, START_FIRST);
+  SO_NODE_DEFINE_ENUM_VALUE(Profile, START_NEW);
+  SO_NODE_DEFINE_ENUM_VALUE(Profile, ADD_TO_CURRENT);
+  SO_NODE_SET_SF_ENUM_TYPE(linkage, Profile);
 }
 
 /*!
