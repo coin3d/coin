@@ -44,18 +44,15 @@
   Note also that the rotation will start at the given angle value.
 */
 
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/fields/SoSFTime.h>
 #include <Inventor/nodes/SoRotor.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/fields/SoSFTime.h>
 #include <coindefs.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   \var SoSFFloat SoRotor::speed
@@ -85,6 +82,8 @@ get_current_time(void)
 
 class SoRotorP {
 public:
+  SoRotorP(SoRotor * m) { this->master = m; }
+
   SbTime starttime;
   SbVec3f startaxis;
   float startangle;
@@ -92,8 +91,16 @@ public:
   SoFieldSensor * onfieldsensor;
   SoFieldSensor * rotfieldsensor;
   SoFieldSensor * speedfieldsensor;
+
+  static void timerSensorCB(void * d, SoSensor * s);
+  static void fieldSensorCB(void * d, SoSensor * s);
+  void setRotation(void);
+
+private:
+  SoRotor * master;
 };
 
+#define PUBLIC(p) ((p)->master)
 #define PRIVATE(p) ((p)->pimpl)
 
 SO_NODE_SOURCE(SoRotor);
@@ -103,25 +110,22 @@ SO_NODE_SOURCE(SoRotor);
 */
 SoRotor::SoRotor(void)
 {
-  PRIVATE(this) = new SoRotorP;
+  PRIVATE(this) = new SoRotorP(this);
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoRotor);
 
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));
 
-  // FIXME: we used a SoOneShotSensor here earlier. That's why the
-  // callback is called oneshotSensorCB. Rename it for Coin-3, pederb
-  // 2003-10-01
-  PRIVATE(this)->timersensor = new SoTimerSensor(SoRotor::oneshotSensorCB, this);
+  PRIVATE(this)->timersensor = new SoTimerSensor(SoRotorP::timerSensorCB, this);
   PRIVATE(this)->timersensor->setInterval(SoDB::getRealTimeInterval());
-  PRIVATE(this)->onfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
+  PRIVATE(this)->onfieldsensor = new SoFieldSensor(SoRotorP::fieldSensorCB, this);
   PRIVATE(this)->onfieldsensor->setPriority(0);
   PRIVATE(this)->onfieldsensor->attach(&this->on);
-  PRIVATE(this)->speedfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
+  PRIVATE(this)->speedfieldsensor = new SoFieldSensor(SoRotorP::fieldSensorCB, this);
   PRIVATE(this)->speedfieldsensor->setPriority(0);
   PRIVATE(this)->speedfieldsensor->attach(&this->speed);
-  PRIVATE(this)->rotfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
+  PRIVATE(this)->rotfieldsensor = new SoFieldSensor(SoRotorP::fieldSensorCB, this);
   PRIVATE(this)->rotfieldsensor->attach(&this->rotation);
   PRIVATE(this)->rotfieldsensor->setPriority(0);
 
@@ -152,7 +156,7 @@ SoRotor::initClass(void)
 
 // detects when some field changes value
 void
-SoRotor::fieldSensorCB(void * d, SoSensor * s)
+SoRotorP::fieldSensorCB(void * d, SoSensor * s)
 {
   SoRotor * thisp = (SoRotor *) d;
 
@@ -179,17 +183,14 @@ SoRotor::fieldSensorCB(void * d, SoSensor * s)
 }
 
 
-// FIXME: we used a SoOneShotSensor here earlier. That's why the
-// callback is called oneshotSensorCB. Rename it for Coin-3, pederb
-// 2003-10-01
 void
-SoRotor::oneshotSensorCB(void * d, SoSensor *)
+SoRotorP::timerSensorCB(void * d, SoSensor *)
 {
   SoRotor * thisp = (SoRotor *) d;
   // got to check value of on field here in case timersensor
   // triggers before onfieldsensor.
   if (thisp->on.getValue()) {
-    thisp->setRotation();
+    PRIVATE(thisp)->setRotation();
   }
   else {
     PRIVATE(thisp)->timersensor->unschedule();
@@ -198,20 +199,20 @@ SoRotor::oneshotSensorCB(void * d, SoSensor *)
 
 // sets rotation based on time passed from starttime
 void
-SoRotor::setRotation(void)
+SoRotorP::setRotation(void)
 {
-  if (PRIVATE(this)->starttime == SbTime::zero()) {
+  if (this->starttime == SbTime::zero()) {
     // don't do anything first time we get here
-    PRIVATE(this)->starttime = get_current_time();
+    this->starttime = get_current_time();
     return;
   }
-  SbTime difftime = get_current_time() - PRIVATE(this)->starttime;
+  SbTime difftime = get_current_time() - this->starttime;
 
   float diffangle = (float)
     (difftime.getValue() *
-     ((double)this->speed.getValue()) * M_PI * 2.0);
+     ((double)PUBLIC(this)->speed.getValue()) * M_PI * 2.0);
 
-  float angle = PRIVATE(this)->startangle + diffangle;
+  float angle = this->startangle + diffangle;
 
   if (angle < 0.0f) {
     angle = (float) (2.0 * M_PI - fmod((double)-angle, M_PI*2.0));
@@ -220,9 +221,10 @@ SoRotor::setRotation(void)
     angle = (float) fmod((double)angle, M_PI * 2.0);
   }
   
-  PRIVATE(this)->rotfieldsensor->detach();
-  this->rotation.setValue(SbRotation(PRIVATE(this)->startaxis, angle));
-  PRIVATE(this)->rotfieldsensor->attach(&this->rotation);
+  this->rotfieldsensor->detach();
+  PUBLIC(this)->rotation.setValue(SbRotation(this->startaxis, angle));
+  this->rotfieldsensor->attach(&PUBLIC(this)->rotation);
 }
 
 #undef PRIVATE
+#undef PUBLIC

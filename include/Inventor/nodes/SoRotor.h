@@ -51,9 +51,7 @@ protected:
 
 private:
   SoRotorP * pimpl;
-  static void oneshotSensorCB(void * d, SoSensor * s);
-  static void fieldSensorCB(void * d, SoSensor * s);
-  void setRotation(void);
+  friend class SoRotorP;
 };
 
 #endif // !COIN_SOROTOR_H
