@@ -21,9 +21,9 @@
  *
 \**************************************************************************/
 
-#include "SoHardCopy.cpp"
-#include "SoPSVectorOutput.cpp"
-#include "SoVectorOutput.cpp"
-#include "SoVectorizeAction.cpp"
-#include "SoVectorizeActionP.cpp"
-#include "SoVectorizePSAction.cpp"
+#include "HardCopy.cpp"
+#include "PSVectorOutput.cpp"
+#include "VectorOutput.cpp"
+#include "VectorizeAction.cpp"
+#include "VectorizeActionP.cpp"
+#include "VectorizePSAction.cpp"
