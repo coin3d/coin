@@ -10,11 +10,11 @@ echo
 # necessary (I think -- haven't checked the spec yet), but HPUX aCC
 # needs them. mortene.
 
-echo "static const char draggergeometry[] = \"#Inventor V2.1 ascii\\"
+echo "static const char draggergeometry[] = \"#Inventor V2.1 ascii\\n\""
 
-cat $1 | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | egrep -v '^[ \t]*#' | sed 's/#.*//g' | sed 's/$/\\/'
+cat $1 | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | egrep -v '^[ \t]*#' | sed 's/#.*//g' | sed 's/$/\\n"/' | sed 's/^/"/'
 
-echo "\";"
+echo "\"\\n\";"
 
 echo
 echo "#endif /* !_SO${UPCASEBASE}_IV_H_*/"
