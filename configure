@@ -15474,7 +15474,7 @@ if test x"$enable_hacking" = x"yes"; then
     EXTRA_LIBS="$EXTRA_LIBS -l$dir${SUFFIX}LINKHACK"
   done
   if test x"$enable_vrml97" = x"true"; then
-    HACKING_LIBDIRS="$HACKING_LIBDIRS -L$(coin_build_dir)/src/extensions/vrml97/src/.libs"
+    HACKING_LIBDIRS="$HACKING_LIBDIRS -L${coin_build_dir}/src/extensions/vrml97/src/.libs"
     EXTRA_LIBS="$EXTRA_LIBS -lvrml97${SUFFIX}LINKHACK"
   fi
   COIN_HACKING_LIBDIRS="$HACKING_LIBDIRS"
