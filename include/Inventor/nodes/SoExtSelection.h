@@ -73,8 +73,14 @@ public:
     FULL_BBOX, PART_BBOX, FULL, PART
   };
 
+  enum LassoMode {
+    ALL_SHAPES,
+    VISIBLE_SHAPES
+  };
+
   SoSFEnum lassoType;
   SoSFEnum lassoPolicy;
+  SoSFEnum lassoMode;
 
   void useOverlay(SbBool overlay = TRUE);
   SbBool isUsingOverlay(void);
