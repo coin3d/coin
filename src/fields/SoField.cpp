@@ -1594,6 +1594,22 @@ SoField::read(SoInput * in, const SbName & name)
     else {
       in->putBack(c);
 
+      // Check if there's a field-to-field connection here as the
+      // default value following the field can be omitted.
+      if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
+        // FIXME: I believe there's the potential for an obscure bug
+        // to happen here; if the field is an SoSFString where the
+        // string is unquoted and starts with a CONNECTIONCHAR
+        // (i.e. '='), it could perhaps lead to a false positive for
+        // the check below. Should investigate by making a test case
+        // to try to trigger such a bug. 20030811 mortene.
+        if (c == CONNECTIONCHAR) { 
+           if (!this->readConnection(in)) return FALSE;
+           else return TRUE;
+        }
+        else in->putBack(c);
+      }
+      
       // Read field value(s).
       if (!this->readValue(in)) {
         SoReadError::post(in, "Couldn't read value for field \"%s\"",
@@ -1608,7 +1624,7 @@ SoField::read(SoInput * in, const SbName & name)
       }
     }
 
-    // Check if there's a field-to-field connection here.
+    // Check again if there's a field-to-field connection here.
     if (in->read(c)) { // if-check in case EOF on an SoField::set() invocation
       if (c == CONNECTIONCHAR) { if (!this->readConnection(in)) return FALSE; }
       else in->putBack(c);
