@@ -26,10 +26,17 @@
   \brief The SoToVRMLAction class builds a new scene graph using only VRML 1.0 nodes.
   \ingroup actions
 
-  FIXME: more class doc, describe the basics of how the conversion is
-  done. 20020705 mortene.
+  This action is used for converting a scene graph of VRML2/VRML97
+  nodes to a new scene graph using only VRML1 compatible nodes.
+
+  A current limitation of this action is that nodes specific for
+  Inventor / Coin (ie neither VRML1 or VRML97 compatible nodes) is not
+  attempted converted, they are just ignored.
 
   \sa SoToVRML2Action
+
+  \since Coin 2.0
+  \since TGS Inventor 2.5
 */
 
 #ifdef HAVE_CONFIG_H
@@ -65,8 +72,9 @@
 #endif // HAVE_VRML97
 
 // FIXME: currently only VRML2-nodes to VRML1-nodes is
-// supported. Inventor/Coin nodes must also be supported. It's quite
-// easy to add support new nodes though. pederb, 2002-07-17
+// supported. Inventor/Coin specific nodes must also be supported
+// (they are just ignored for now). It's quite easy to add support new
+// nodes though. pederb, 2002-07-17
 
 SO_ACTION_SOURCE(SoToVRMLAction);
 
