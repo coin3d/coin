@@ -71,6 +71,9 @@ protected:
   SoFieldSensor * centerFieldSensor;
   SoFieldSensor * scaleOrientFieldSensor;
   SoChildList * children;
+
+private:
+  void attachSensors(const SbBool onoff);
 };
 
 #endif // !COIN_SOTRANSFORMMANIP_H

@@ -18,7 +18,27 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoTransformManip.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/draggers/SoTransformerDragger.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/SoNodeKitPath.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 SO_NODE_SOURCE(SoTransformManip);
 
@@ -29,123 +49,422 @@ SoTransformManip::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTransformManip);
 }
 
+/*!
+  The constructor.
+*/
 SoTransformManip::SoTransformManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformManip);
 
-  // FIXME: stuff missing? 20000108 mortene.
+  this->children = new SoChildList(this);
 
-  COIN_STUB();
+  this->rotateFieldSensor = new SoFieldSensor(SoTransformManip::fieldSensorCB, this);
+  this->rotateFieldSensor->setPriority(0);
+  this->translFieldSensor = new SoFieldSensor(SoTransformManip::fieldSensorCB, this);
+  this->translFieldSensor->setPriority(0);
+  this->scaleFieldSensor = new SoFieldSensor(SoTransformManip::fieldSensorCB, this);
+  this->scaleFieldSensor->setPriority(0);
+  this->centerFieldSensor = new SoFieldSensor(SoTransformManip::fieldSensorCB, this);
+  this->centerFieldSensor->setPriority(0);
+  this->scaleOrientFieldSensor = new SoFieldSensor(SoTransformManip::fieldSensorCB, this);
+  this->scaleOrientFieldSensor->setPriority(0);
+
+  this->attachSensors(TRUE);
+  this->setDragger(new SoTransformerDragger);
 }
 
-
+/*!
+  The destructor.
+*/
 SoTransformManip::~SoTransformManip()
 {
-  COIN_STUB();
+  this->setDragger(NULL);
+  
+  delete this->rotateFieldSensor;
+  delete this->translFieldSensor;
+  delete this->scaleFieldSensor;
+  delete this->centerFieldSensor;
+  delete this->scaleOrientFieldSensor;
+  
+  delete this->children;
 }
 
+/*!
+  Sets a dragger for this manipulator. The default dragger is a SoTransformerDragger.
+*/
 void
 SoTransformManip::setDragger(SoDragger * newdragger)
 {
-  COIN_STUB();
+  SoDragger *olddragger = this->getDragger();
+  if (olddragger) {
+    olddragger->removeValueChangedCallback(SoTransformManip::valueChangedCB, this);
+    this->children->remove(0);
+  }
+  if (newdragger != NULL) {
+    if (this->children->getLength() > 0) {
+      this->children->set(0, newdragger);
+    }
+    else {
+      this->children->append(newdragger);
+      SoTransformManip::fieldSensorCB(this, NULL);
+      newdragger->addValueChangedCallback(SoTransformManip::valueChangedCB, this);
+    }
+  }
 }
 
+/*!
+  Returns the dragger used by this manipulator.
+*/
 SoDragger *
 SoTransformManip::getDragger(void)
 {
-  COIN_STUB();
+  if (this->children->getLength() > 0) {
+    SoNode *node = (*children)[0];
+    if (node->isOfType(SoDragger::getClassTypeId()))
+      return (SoDragger*)node;
+    else {
+#if COIN_DEBUG
+      SoDebugError::post("SoTransformManip::getDragger",
+                         "Child is not a dragger!");
+#endif // debug
+    }
+  }
   return NULL;
 }
 
+/*!
+  Replaces the node specified by \a path with this manipulator.
+  The manipulator will copy the field data from the node, to make
+  it affect the state in the same way as the node.
+*/
 SbBool
-SoTransformManip::replaceNode(SoPath * p)
+SoTransformManip::replaceNode(SoPath * path)
 {
-  COIN_STUB();
-  return FALSE;
+  SoFullPath *fullpath = (SoFullPath*)path;
+  SoNode *fulltail = fullpath->getTail();
+  if (!fulltail->isOfType(SoTransform::getClassTypeId())) {
+#if COIN_DEBUG
+    SoDebugError::post("SoTransformManip::replaceNode",
+                       "End of path is not an SoTransform");
+#endif // debug
+    return FALSE;
+  }
+  SoNode *tail = path->getTail();
+  if (tail->isOfType(SoBaseKit::getClassTypeId())) {
+    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SbString partname = kit->getPartString(path);
+    if (partname != "") {
+      SoTransform *oldpart = (SoTransform*) kit->getPart(partname, TRUE);
+      if (oldpart != NULL) {
+        this->attachSensors(FALSE);
+        this->transferFieldValues(oldpart, this);
+        this->attachSensors(TRUE);
+        SoTransformManip::fieldSensorCB(this, NULL);
+        kit->setPart(partname, this);
+        return TRUE;
+      }
+      else {
+        return FALSE;
+      }
+    }
+  }
+  if (fullpath->getLength() < 2) {
+#if COIN_DEBUG
+    SoDebugError::post("SoTransformManip::replaceNode",
+                       "Path is too short");
+#endif // debug
+    return FALSE;
+  }
+  SoNode *parent = fullpath->getNodeFromTail(1);
+  if (!parent->isOfType(SoGroup::getClassTypeId())) {
+#if COIN_DEBUG
+    SoDebugError::post("SoTransformManip::replaceNode",
+                       "Parent node is not a group");
+#endif // debug
+    return FALSE;
+  }
+  this->ref();
+  this->attachSensors(FALSE);
+  this->transferFieldValues((SoTransform*)fulltail, this);
+  this->attachSensors(TRUE);
+  SoTransformManip::fieldSensorCB(this, NULL);
+
+  ((SoGroup*)parent)->replaceChild(fulltail, this);
+  this->unrefNoDelete();
+  return TRUE;
 }
 
+/*!
+  Replaces this manipulator specified by \a path with \a newnode. If
+  \a newnode is \e NULL, a SoTransform will be created for you.
+*/
 SbBool
-SoTransformManip::replaceManip(SoPath * p, SoTransform * newone) const
+SoTransformManip::replaceManip(SoPath * path, SoTransform * newone) const
 {
-  COIN_STUB();
-  return FALSE;
+  SoFullPath *fullpath = (SoFullPath*) path;
+  SoNode *fulltail = fullpath->getTail();
+  if (fulltail != (SoNode*)this) {
+#if COIN_DEBUG
+    SoDebugError::post("SoTransformManip::replaceManip",
+                       "Child to replace is not this manip");
+#endif // debug
+  }
+  SoNode *tail = path->getTail();
+  if (tail->isOfType(SoBaseKit::getClassTypeId())) {
+    SoBaseKit *kit = (SoBaseKit*) ((SoNodeKitPath*)path)->getTail();
+    SbString partname = kit->getPartString(path);
+    if (partname != "") {
+      if (newone != NULL) {
+        this->transferFieldValues(this, newone);
+      }
+      kit->setPart(partname, newone);
+      return TRUE;
+    }
+  }
+  if (fullpath->getLength() < 2) {
+#if COIN_DEBUG
+    SoDebugError::post("SoTransformManip::replaceManip",
+                       "Path is too short");
+#endif // debug
+    return FALSE;
+  }
+  SoNode *parent = fullpath->getNodeFromTail(1);
+  if (!parent->isOfType(SoGroup::getClassTypeId())) {
+#if COIN_DEBUG
+    SoDebugError::post("SoTransformManip::replaceManip",
+                       "Parent node is not a group");
+#endif // debug
+    return FALSE;
+  }
+  if (newone == NULL) newone = new SoTransform;
+  newone->ref();
+  this->transferFieldValues(this, newone);
+  ((SoGroup*)parent)->replaceChild((SoNode*)this, newone);
+  newone->unrefNoDelete();
+  return TRUE;
 }
 
+/*!
+ */
 void
 SoTransformManip::doAction(SoAction * action)
 {
-  COIN_STUB();
+  int numindices;
+  const int *indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->children->traverse(action, 0, indices[numindices-1]);
+  }
+  else {
+    this->children->traverse(action);
+  }
 }
 
 void
 SoTransformManip::callback(SoCallbackAction * action)
 {
-  COIN_STUB();
+  SoTransformManip::doAction(action);
+  SoTransform::callback(action);
 }
 
+/*!
+ */
 void
 SoTransformManip::GLRender(SoGLRenderAction * action)
 {
-  COIN_STUB();
+  SoTransformManip::doAction(action);
+  SoTransform::GLRender(action);
 }
 
+/*!
+ */
 void
 SoTransformManip::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  COIN_STUB();
+  int numindices;
+  const int *indices;
+  int lastchild;
+  SbVec3f center(0.0f, 0.0f, 0.0f);
+  int numcenters = 0;
+
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    lastchild  = indices[numindices-1];
+  }
+  else {
+    lastchild = this->children->getLength() - 1;
+  }
+  for (int i = 0; i <= lastchild; i++) {
+    this->children->traverse(action, i, i);
+    if (action->isCenterSet()) {
+      center += action->getCenter();
+      numcenters++;
+      action->resetCenter();
+    }
+  }
+  SoTransform::getBoundingBox(action);
+  if (action->isCenterSet()) {
+    center += action->getCenter();
+    numcenters++;
+    action->resetCenter();
+  }
+  if (numcenters != 0) {
+    action->setCenter(center / numcenters, FALSE);
+  }
 }
 
+/*!
+ */
 void
 SoTransformManip::getMatrix(SoGetMatrixAction * action)
 {
-  COIN_STUB();
+  int numindices;
+  const int *indices;
+  switch (action->getPathCode(numindices, indices)) {
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:
+    break;
+  case SoAction::IN_PATH:
+    this->children->traverse(action, 0, indices[numindices-1]);
+    break;
+  case SoAction::OFF_PATH:
+    this->children->traverse(action);
+    break;
+  default:
+    assert(0 && "unknown path code");
+    break;
+  }
 }
 
+/*!
+ */
 void
 SoTransformManip::handleEvent(SoHandleEventAction * action)
 {
-  COIN_STUB();
+  SoTransformManip::doAction(action);
+  SoTransform::handleEvent(action);
 }
 
+/*!
+ */
 void
 SoTransformManip::pick(SoPickAction * action)
 {
-  COIN_STUB();
+  SoTransformManip::doAction(action);
+  SoTransform::pick(action);
 }
 
+/*!
+ */
 void
 SoTransformManip::search(SoSearchAction * action)
 {
-  COIN_STUB();
+  inherited::search(action);
+  if (action->isFound()) return;
+  SoTransformManip::doAction(action);
 }
 
+/*!
+  Returns the children of this node. This node only has the dragger
+  as a child.
+*/
 SoChildList *
 SoTransformManip::getChildren(void) const
 {
-  COIN_STUB();
-  return NULL;
+  return this->children;
 }
 
+/*!
+  Callback to update field values when motion matrix changes.
+*/
 void
-SoTransformManip::valueChangedCB(void * f, SoDragger * d)
+SoTransformManip::valueChangedCB(void * m, SoDragger * dragger)
 {
-  COIN_STUB();
+  SoTransformManip * thisp = (SoTransformManip*)m;
+
+  SbMatrix matrix = dragger->getMotionMatrix();
+  
+  SbVec3f t, s, c = thisp->center.getValue();
+  SbRotation r, so;
+  matrix.getTransform(t, r, s, so, c);
+  
+  thisp->attachSensors(FALSE);
+  if (thisp->translation.getValue() != t) {
+    thisp->translation = t;
+  }
+  if (thisp->scaleFactor.getValue() != s) {
+    thisp->scaleFactor = s;
+  }
+  if (thisp->rotation.getValue() != r) {
+    thisp->rotation = r;
+  }
+  if (thisp->scaleOrientation.getValue() != so) {
+    thisp->scaleOrientation = so;
+  }
+  //
+  // center will never be affected by motion matrix.
+  //
+  thisp->attachSensors(TRUE);
 }
 
+/*!
+  CAllback to update motion matrix when a field is modified.
+*/
 void
-SoTransformManip::fieldSensorCB(void * f, SoSensor * d)
+SoTransformManip::fieldSensorCB(void * m, SoSensor *)
 {
-  COIN_STUB();
+  SoTransformManip *thisp = (SoTransformManip*)m;
+  SoDragger *dragger = thisp->getDragger();
+  if (dragger != NULL) {
+    SbMatrix matrix;    
+    matrix.setTransform(thisp->translation.getValue(),
+                        thisp->rotation.getValue(),
+                        thisp->scaleFactor.getValue(),
+                        thisp->scaleOrientation.getValue(),
+                        thisp->center.getValue());
+    dragger->setMotionMatrix(matrix);
+  }
 }
 
+/*!
+  Overloaded to copy the dragger.
+*/
 void
 SoTransformManip::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
 {
-  COIN_STUB();
+  assert(fromfc->isOfType(SoTransformManip::getClassTypeId()));
+  SoDragger *dragger = ((SoTransformManip*)fromfc)->getDragger();
+  this->setDragger(dragger ? (SoDragger*) dragger->copy() : NULL);
+  inherited::copyContents(fromfc, copyconnections);
 }
 
+/*!
+  Copies field values from one node to the other.
+*/
 void
 SoTransformManip::transferFieldValues(const SoTransform * from, SoTransform * to)
 {
-  COIN_STUB();
+  to->translation = from->translation;
+  to->rotation = from->rotation;
+  to->scaleFactor = from->scaleFactor;
+  to->scaleOrientation = from->scaleOrientation;
+  to->center = from->center;
 }
+
+void
+SoTransformManip::attachSensors(const SbBool onoff)
+{
+  if (onoff) {
+    this->rotateFieldSensor->attach(&this->rotation);
+    this->translFieldSensor->attach(&this->translation);
+    this->scaleFieldSensor->attach(&this->scaleFactor);
+    this->centerFieldSensor->attach(&this->center);
+    this->scaleOrientFieldSensor->attach(&this->scaleOrientation);
+  }
+  else {
+    this->rotateFieldSensor->detach();
+    this->translFieldSensor->detach();
+    this->scaleFieldSensor->detach();
+    this->centerFieldSensor->detach();
+    this->scaleOrientFieldSensor->detach();
+  }
+}
+
