@@ -297,7 +297,7 @@ SoInput::checkISReference(SoFieldContainer * container,
     const int STATE_EXPECT_SPACE = 2;
     const int STATE_FOUND = 3;
     const int STATE_NOTFOUND = 4;
-    int state = STATE_WAIT_I; 
+    int state = STATE_WAIT_I;
     do {
       char c;
       readok = this->read(c, FALSE);
@@ -322,7 +322,7 @@ SoInput::checkISReference(SoFieldContainer * container,
         }
       }
     } while (readok && state != STATE_FOUND && state != STATE_NOTFOUND);
-    
+
     if (state == STATE_FOUND) {
       foundis = TRUE;
       SbName iname;
@@ -615,11 +615,11 @@ SoInput::setBuffer(void * bufpointer, size_t bufsize)
 
   this->closeFile();
   SoInput_Reader * reader = NULL;
-  
+
   unsigned char * header = (unsigned char*) bufpointer;
   if ((bufsize >= 2) && (header[0] == 0x1f) && (header[1] == 0x8b)) {
     if (cc_zlibglue_available()) {
-      reader = new SoInput_GZMemBufferReader(bufpointer, bufsize);  
+      reader = new SoInput_GZMemBufferReader(bufpointer, bufsize);
     }
     else {
       SoDebugError::postWarning("SoInput::setBuffer",
@@ -907,7 +907,7 @@ SoInput::read(SbString & s)
 }
 
 // helper function to handle VRML97
-static SbBool 
+static SbBool
 soinput_is_ident_start_char(SoInput * in, char c)
 {
   unsigned char uc = (unsigned char) c;
@@ -917,15 +917,15 @@ soinput_is_ident_start_char(SoInput * in, char c)
     switch (uc) {
     case 0x22:
     case 0x23:
-    case 0x27: 
-    case 0x2b: 
+    case 0x27:
+    case 0x2b:
     case 0x2c:
-    case 0x2d: 
+    case 0x2d:
     case 0x2e:
     case 0x5b:
     case 0x5c:
     case 0x5d:
-    case 0x7b: 
+    case 0x7b:
     case 0x7d:
     case 0x7f:
       return FALSE;
@@ -936,7 +936,7 @@ soinput_is_ident_start_char(SoInput * in, char c)
 }
 
 // helper function to handle VRML97
-static SbBool 
+static SbBool
 soinput_is_ident_char(SoInput * in, char c)
 {
   unsigned char uc = (unsigned char) c;
@@ -944,14 +944,14 @@ soinput_is_ident_char(SoInput * in, char c)
     if (uc <= 0x20) return FALSE;
     switch (uc) {
     case 0x22:
-    case 0x23: 
+    case 0x23:
     case 0x27:
-    case 0x2c: 
+    case 0x2c:
     case 0x2e:
     case 0x5b:
-    case 0x5c: 
+    case 0x5c:
     case 0x5d:
-    case 0x7b: 
+    case 0x7b:
     case 0x7d:
     case 0x7f:
       return FALSE;
@@ -1532,22 +1532,25 @@ SoInput::addEnvDirectoriesIdx(int startidx,
 void
 SoInput::removeDirectory(const char * dirName)
 {
-  int idx = SoInput::dirsearchlist->getLength() - 1;
-  for (; idx >= 0; idx--) {
-    if (*((*SoInput::dirsearchlist)[idx]) == dirName) break;
-  }
-
-  if (idx >=0) {
-    delete (*SoInput::dirsearchlist)[idx]; // Dealloc SbString object
-    SoInput::dirsearchlist->remove(idx);
-  }
+  // dirsearchlist might be null if user called SoDB::cleanup()
+  if (SoInput::dirsearchlist) {
+    int idx = SoInput::dirsearchlist->getLength() - 1;
+    for (; idx >= 0; idx--) {
+      if (*((*SoInput::dirsearchlist)[idx]) == dirName) break;
+    }
+    
+    if (idx >=0) {
+      delete (*SoInput::dirsearchlist)[idx]; // Dealloc SbString object
+      SoInput::dirsearchlist->remove(idx);
+    }
 #if COIN_DEBUG
-  else {
-    SoDebugError::postWarning("SoInput::removeDirectory",
-                              "Tried to remove nonexistent directory '%s'"
-                              " in directory search list.", dirName);
-  }
+    else {
+      SoDebugError::postWarning("SoInput::removeDirectory",
+                                "Tried to remove nonexistent directory '%s'"
+                                " in directory search list.", dirName);
+    }
 #endif // COIN_DEBUG
+  }
 }
 
 /*!
@@ -1606,6 +1609,7 @@ SoInput::clean(void)
 #if COIN_DEBUG
   SoInput::clearDirectories();
   delete SoInput::dirsearchlist;
+  SoInput::dirsearchlist = NULL;
 #endif // COIN_DEBUG
 }
 
@@ -2426,7 +2430,7 @@ SoInput::findFile(const char * basename, SbString & fullname)
     }
     cc_string_clean(&str);
   }
- 
+
   SbStringList sl = SoInput::getDirectories();
 
   // Make sure we try from cwd first.
