@@ -24,6 +24,8 @@
 #include <Inventor/C/basic.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/errors/debugerror.h>
 
 #include <assert.h>
 #include <stdlib.h>
@@ -76,7 +78,7 @@ openal_wrapper(void)
     openal_wrapper_t * oal = (openal_wrapper_t *)malloc(sizeof(openal_wrapper_t));
     /* FIXME: Verify that atexit works when Coin is used in an ActiveX
        dll also. 2003-01-27 thammer. */
-    (void)atexit(openal_wrapper_cleanup);
+    coin_atexit((coin_atexit_f *)openal_wrapper_cleanup);
 
     /* Detect recursive calls. */
     {
@@ -131,6 +133,10 @@ openal_wrapper(void)
 
     if (oal->available && !oal->alGetString) {
       /* something is seriously wrong */
+      cc_debugerror_post("openal_wrapper",
+                         "Loaded OpenAL DLL ok, but couldn't resolve symbol "
+                         "alGetString().");
+
       oal->available = 0;
       openal_failed_to_load = 1;
 
