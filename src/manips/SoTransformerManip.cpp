@@ -36,7 +36,7 @@ SoTransformerManip::SoTransformerManip(void)
 
   SoTransformerDragger *dragger = new SoTransformerDragger;
   this->setDragger(dragger);
-  
+
   SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
   ss->numNodesUpToContainer = 4;
   ss->numNodesUpToReset = 3;
@@ -54,6 +54,9 @@ SoTransformerManip::isLocateHighlighting(void)
   if (dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
     return ((SoTransformerDragger*)dragger)->isLocateHighlighting();
   }
+  // FIXME: temporary hack -- don't know what the correct measure
+  // is. Peder?  20000222 mortene.
+  return FALSE;
 }
 
 void
@@ -73,5 +76,3 @@ SoTransformerManip::unsquishKnobs(void)
     ((SoTransformerDragger*)dragger)->unsquishKnobs();
   }
 }
-
-
