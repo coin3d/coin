@@ -61,6 +61,8 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #endif // !COIN_EXCLUDE_SOVIEWVOLUMEELEMENT
 
+#include <Inventor/elements/SoModelMatrixElement.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -284,62 +286,7 @@ SoCamera::getViewportBounds(const SbViewportRegion & /* region */) const
 void
 SoCamera::GLRender(SoGLRenderAction *action)
 {
-#if 0 // debug
-  SbVec3f camerarotaxis;
-  float camerarotangle;
-  this->orientation.getValue(camerarotaxis, camerarotangle);
-  SoDebugError::postInfo("SoCamera::GLRender",
-                         "viewportMapping: %d, "
-                         "position: <%f, %f, %f>, "
-                         "orientation: <%f, %f, %f> %f, "
-                         "aspectRatio: %f, "
-                         "nearDistance: %f, "
-                         "farDistance: %f, "
-                         "focalDistance: %f",
-                         this->viewportMapping.getValue(),
-                         this->position.getValue()[0],
-                         this->position.getValue()[1],
-                         this->position.getValue()[2],
-                         camerarotaxis[0],
-                         camerarotaxis[1],
-                         camerarotaxis[2],
-                         camerarotangle,
-                         this->aspectRatio.getValue(),
-                         this->nearDistance.getValue(),
-                         this->farDistance.getValue(),
-                         this->focalDistance.getValue());
-#endif // debug
-
-  float aspectratio =
-    SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
-
-  // FIXME: there's a bug here somewhere -- the aspect ratio seems to
-  // be updated only on window resizes in one particular
-  // dimension (bugs when height > width). 19981029 mortene.
-//    if (aspectratio < 1.0f) aspectratio = 1.0f/aspectratio;
-//    if (aspectratio < 1.0f) aspectratio = 1.0f;
-#if 0 // debug
-  SoDebugError::postInfo("SoCamera::GLRender", "aspectratio: %f",
-                         aspectratio);
-#endif // debug
-
-  SbViewVolume vv = this->getViewVolume(aspectratio);
-  SbMatrix affine, proj;
-  vv.getMatrices(affine, proj);
-
-  // The view volume element _must_ be set correctly to get SoText2
-  // (and other nodes like it) to render properly. --mortene
-  SoViewVolumeElement::set(action->getState(), this, vv);
-
-#if 0 // debug
-  SoDebugError::postInfo("SoCamera::GLRender", "affine matrix");
-  affine.print(stdout);
-  SoDebugError::postInfo("SoCamera::GLRender", "proj matrix");
-  proj.print(stdout);
-#endif // debug
-
-  SoProjectionMatrixElement::set(action->getState(), this, proj);
-  SoViewingMatrixElement::set(action->getState(), this, affine);
+  SoCamera::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -350,22 +297,7 @@ SoCamera::GLRender(SoGLRenderAction *action)
 void
 SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
 {
-  // FIXME: viewportMapping field is not accounted for. 19990315
-  // mortene.
-  float aspectratio =
-    SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
-
-  SbViewVolume vv = this->getViewVolume(aspectratio);
-  SoViewVolumeElement::set(action->getState(), this, vv);
-
-  SbMatrix affine, proj;
-  vv.getMatrices(affine, proj);
-  SoProjectionMatrixElement::set(action->getState(), this, proj);
-  SoViewingMatrixElement::set(action->getState(), this, affine);
-#if 0 // debug
-  SoDebugError::postInfo("SoCamera::getBoundingBox", "viewingmatrix:");
-  affine.print(stdout);
-#endif // debug
+  SoCamera::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -402,17 +334,20 @@ SoCamera::doAction(SoAction *action)
 {
   // FIXME: viewportMapping field is not accounted for. 19990315
   // mortene.
+  SoState *state = action->getState();
 
   float aspectratio =
-    SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
+    SoViewportRegionElement::get(state).getViewportAspectRatio();
 
   SbViewVolume vv = this->getViewVolume(aspectratio);
-  SoViewVolumeElement::set(action->getState(), this, vv);
+  SoViewVolumeElement::set(state, this, vv);
 
   SbMatrix affine, proj;
   vv.getMatrices(affine, proj);
-  SoProjectionMatrixElement::set(action->getState(), this, proj);
-  SoViewingMatrixElement::set(action->getState(), this, affine);
+  affine.multRight(SoModelMatrixElement::get(state).inverse());
+  SoProjectionMatrixElement::set(state, this, proj);
+  SoViewingMatrixElement::set(state, this, affine);
+  SoFocalDistanceElement::set(state, this, this->focalDistance.getValue());
 }
 #endif // !COIN_EXCLUDE_DOACTION
 
