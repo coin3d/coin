@@ -25,9 +25,12 @@
 */
 
 #include <Inventor/elements/SoModelMatrixElement.h>
-
-
+#include <Inventor/SbVec3f.h>
 #include <assert.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 // defines for the flags member
 #define FLG_IDENTITY   0x1  // modelMatrix is identity
@@ -190,6 +193,16 @@ SoModelMatrixElement::scaleBy(SoState * const state,
                               SoNode * const node,
                               const SbVec3f & scaleFactor)
 {
+#if COIN_DEBUG
+  if (scaleFactor[0] <= 0.0f ||
+      scaleFactor[1] <= 0.0f ||
+      scaleFactor[2] <= 0.0f) {
+    SoDebugError::postWarning("SoModelMatrixElement::scaleBy",
+                              "invalid scale vector: <%f, %f, %f>",
+                              scaleFactor[0], scaleFactor[1], scaleFactor[2]);
+  }
+#endif // COIN_DEBUG
+
   SoModelMatrixElement *elem = (SoModelMatrixElement*)
     SoElement::getElement(state, classStackIndex);
   elem->scaleEltBy(scaleFactor);

@@ -28,6 +28,10 @@
 
 #include <coindefs.h> // COIN_STUB()
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \fn SoLocalBBoxMatrixElement::localMatrix
 
@@ -124,6 +128,13 @@ SoLocalBBoxMatrixElement::set(SoState * const state,
     // FIXME2: what the puck is this supposed to be good for?? 990404 mortene.
     element->localMatrix.multRight(element->modelInverseMatrix);
   }
+
+#if COIN_DEBUG && 0 // debug
+  if (element && element->localMatrix.det4() == 0.0f) {
+    SoDebugError::postWarning("SoLocalBBoxMatrixElement::set",
+                              "invalid matrix");
+  }
+#endif // debug
 }
 
 //! FIXME: write doc.
@@ -136,6 +147,13 @@ SoLocalBBoxMatrixElement::mult(SoState * const state,
     getElement(state, getClassStackIndex());
 
   if (element) element->localMatrix.multLeft(matrix);
+
+#if COIN_DEBUG && 0 // debug
+  if (element && element->localMatrix.det4() == 0.0f) {
+    SoDebugError::postWarning("SoLocalBBoxMatrixElement::mult",
+                              "invalid matrix");
+  }
+#endif // debug
 }
 
 //! FIXME: write doc.
@@ -152,6 +170,13 @@ SoLocalBBoxMatrixElement::translateBy(SoState * const state,
     matrix.setTranslate(translation);
     element->localMatrix.multLeft(matrix);
   }
+
+#if COIN_DEBUG && 0 // debug
+  if (element && element->localMatrix.det4() == 0.0f) {
+    SoDebugError::postWarning("SoLocalBBoxMatrixElement::translateBy",
+                              "invalid matrix");
+  }
+#endif // debug
 }
 
 //! FIXME: write doc.
@@ -168,6 +193,13 @@ SoLocalBBoxMatrixElement::rotateBy(SoState * const state,
     matrix.setRotate(rotation);
     element->localMatrix.multLeft(matrix);
   }
+
+#if COIN_DEBUG && 0 // debug
+  if (element && element->localMatrix.det4() == 0.0f) {
+    SoDebugError::postWarning("SoLocalBBoxMatrixElement::rotateBy",
+                              "invalid matrix");
+  }
+#endif // debug
 }
 
 //! FIXME: write doc.
@@ -184,6 +216,13 @@ SoLocalBBoxMatrixElement::scaleBy(SoState * const state,
     matrix.setScale(scaleFactor);
     element->localMatrix.multLeft(matrix);
   }
+
+#if COIN_DEBUG && 0 // debug
+  if (element && element->localMatrix.det4() == 0.0f) {
+    SoDebugError::postWarning("SoLocalBBoxMatrixElement::scaleBy",
+                              "invalid matrix");
+  }
+#endif // debug
 }
 
 //! FIXME: write doc.
