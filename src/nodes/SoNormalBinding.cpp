@@ -19,64 +19,33 @@
 
 /*!
   \class SoNormalBinding SoNormalBinding.h Inventor/nodes/SoNormalBinding.h
-  \brief The SoNormalBinding class ...
+  \brief The SoNormalBinding class is a node for specifying normal vector bindings.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use nodes of this type to specify how to map normal vectors from
+  SoNormal nodes in the scene graph to shape nodes.
 */
 
 
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
 
 /*!
   \enum SoNormalBinding::Binding
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoNormalBinding::Binding SoNormalBinding::OVERALL
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNormalBinding::Binding SoNormalBinding::PER_PART
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNormalBinding::Binding SoNormalBinding::PER_PART_INDEXED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNormalBinding::Binding SoNormalBinding::PER_FACE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNormalBinding::Binding SoNormalBinding::PER_FACE_INDEXED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNormalBinding::Binding SoNormalBinding::PER_VERTEX
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNormalBinding::Binding SoNormalBinding::PER_VERTEX_INDEXED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNormalBinding::Binding SoNormalBinding::DEFAULT
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNormalBinding::Binding SoNormalBinding::NONE
-  FIXME: write documentation for enum definition
+
+  Enumeration of available types of mappings. See documentation of
+  SoMaterialBinding node for explanation of the different values.
 */
 
 /*!
   \var SoSFEnum SoNormalBinding::value
-  FIXME: write documentation for field
+
+  The normal binding to use for subsequent shape nodes in the scene
+  graph.
 */
 
 // *************************************************************************
@@ -86,7 +55,7 @@ SO_NODE_SOURCE(SoNormalBinding);
 /*!
   Constructor.
 */
-SoNormalBinding::SoNormalBinding()
+SoNormalBinding::SoNormalBinding(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoNormalBinding);
 
@@ -112,11 +81,7 @@ SoNormalBinding::~SoNormalBinding()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoNormalBinding class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoNormalBinding::initClass(void)
 {
@@ -128,64 +93,51 @@ SoNormalBinding::initClass(void)
   SO_ENABLE(SoGetPrimitiveCountAction, SoNormalBindingElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoNormalBinding::GLRender(SoGLRenderAction * action)
 {
   SoNormalBinding::doAction(action);
-  if (!value.isIgnored()) {
-    Binding binding = (Binding)value.getValue();
+  if (!this->value.isIgnored()) {
+    Binding binding = (Binding)this->value.getValue();
     SoGLShadeModelElement::setNormal(action->getState(),
                                      binding == PER_VERTEX ||
                                      binding == PER_VERTEX_INDEXED);
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoNormalBinding::doAction(SoAction *action)
+SoNormalBinding::doAction(SoAction * action)
 {
-  if (!value.isIgnored()) {
+  if (!this->value.isIgnored()) {
     SoNormalBindingElement::set(action->getState(), this,
                                 (SoNormalBindingElement::Binding)
-                                value.getValue());
+                                this->value.getValue());
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoNormalBinding::callback(SoCallbackAction *action)
+SoNormalBinding::callback(SoCallbackAction * action)
 {
   SoNormalBinding::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoNormalBinding::pick(SoPickAction *action)
+SoNormalBinding::pick(SoPickAction * action)
 {
   SoNormalBinding::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Doc from superclass.
 void
-SoNormalBinding::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoNormalBinding::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoNormalBinding::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
 SbBool
 SoNormalBinding::readInstance(SoInput * in, unsigned short flags)
 {

@@ -20,9 +20,10 @@
 #ifndef COIN_SONORMALBINDING_H
 #define COIN_SONORMALBINDING_H
 
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
 
 
 class SoNormalBinding : public SoNode {
@@ -34,17 +35,17 @@ public:
   static void initClass(void);
   SoNormalBinding(void);
 
-  // Definitions must match 100% with the enum in
-  // SoNormalBindingElement. DEFAULT and NONE are obsolete, but
-  // included for compatibility with old code using Open Inventor.
   enum Binding {
-    OVERALL = 2,
-    PER_PART,
-    PER_PART_INDEXED,
-    PER_FACE,
-    PER_FACE_INDEXED,
-    PER_VERTEX,
-    PER_VERTEX_INDEXED,
+    OVERALL = SoNormalBindingElement::OVERALL,
+    PER_PART = SoNormalBindingElement::PER_PART,
+    PER_PART_INDEXED = SoNormalBindingElement::PER_PART_INDEXED,
+    PER_FACE = SoNormalBindingElement::PER_FACE,
+    PER_FACE_INDEXED = SoNormalBindingElement::PER_FACE_INDEXED,
+    PER_VERTEX = SoNormalBindingElement::PER_VERTEX,
+    PER_VERTEX_INDEXED = SoNormalBindingElement::PER_VERTEX_INDEXED,
+
+    // DEFAULT and NONE are obsolete, but included for compatibility
+    // with old Open Inventor applications.
     DEFAULT = PER_VERTEX_INDEXED,
     NONE = PER_VERTEX_INDEXED
   };
