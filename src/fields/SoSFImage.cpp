@@ -52,24 +52,23 @@
 
   "X" and "Y" are the image dimensions along the given axes, "C" is
   the number of components in the image. The number of 0xRRGGBBAA
-  pixel color specifications needs to equal X*Y. Each part of the
-  pixel color value is in the range 0x00 to 0xff (hexadecimal, 0 to
-  255 decimal).
+  pixel color specifications needs to equal the exact number of
+  pixels, which of course is given by X*Y. Each part of the pixel
+  color value is in the range 0x00 to 0xff (hexadecimal, 0 to 255
+  decimal).
 
   For 3-component images, the pixel-format is 0xXXRRGGBB, where the
-  byte in the pixel color value marked as "XX" is simply ignored.
+  byte in the pixel color value marked as "XX" is ignored and can be
+  left out.
 
   For 2-component images, the pixel-format is 0xXXXXGGAA, where the
-  bytes in the pixel color values marked as "XX" are ignored. "GG" is
-  the part which gives a grayscale value and "AA" is for opacity.
+  bytes in the pixel color values marked as "XX" are ignored and can
+  be left out. "GG" is the part which gives a grayscale value and "AA"
+  is for opacity.
   
   For 1-component images, the pixel-format is 0xXXXXXXGG, where the
-  bytes in the pixel color values marked as "XX" are ignored.
-
-  (If you think this image format is wasteful with regard to filesize
-  issues, you are absolutely correct. But this is how it was designed
-  by the SGI engineers when they developed the original Inventor
-  library, so Coin also uses it to keep file format compatibility.)
+  bytes in the pixel color values marked as "XX" are ignored and can
+  be left out.
 
   The pixels are read as being ordered in rows along X (width) and
   columns along Y (height, bottom to top).
@@ -81,11 +80,11 @@
   Texture2 {
      image 2 2 3
 
-     0x00ffffff 0x0000ff00
-     0x00ff0000 0x00ffff00
+     0xffffff 0x00ff00
+     0xff0000 0xffff00
   }
 
-  Complexity { textureQuality 0.1 }
+  Complexity { textureQuality 0.1 }   # set low to avoid smoothing
   Cube { }
   \endcode
 
