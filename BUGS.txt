@@ -3863,12 +3863,29 @@ incremented during the copy, but never decremented :(
 
 =====================================================================
 
-142 SoTabPlaneDragger tabs does not follow mouse pointer.
+143 Warnings typically triggered from faulty input files should be
+    easy to hide.
 
-    When dragging a tab of an SoTabPlaneDragger, it should follow
-    exactly under the mouse pointer. Coin is however buggy in this
-    respect (while SGI Inventor works fine).
+    We should provide a mechanism to hide all the warnings typically
+    thrown out when encountering a buggy input file, as a service to
+    applications that have little control over their input sources
+    (like VRML viewers, for instance).
 
-    20040922 mortene.
+    A couple of ideas:
+
+        * Provide an envvar, "COIN_DONT_WARN_ON_SCENEGRAPH" or some
+          such, that can be set to turn them off.
+
+        * Use a standard "tag" or prefix to those messages, so they
+          are easy to filter out for someone installing their own
+          error handler on SoError / SoDebugError.
+
+    Both the above suggestions could be implemented. In addition, one
+    needs to audit much of the Coin code to find the relevant
+    invocations of SoDebugError::post[Warning]().
+
+    Fairly low priority task.
+
+    20040924 mortene.
 
 =====================================================================
