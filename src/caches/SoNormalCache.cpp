@@ -396,21 +396,20 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
       float len = tmpvec.length();
 #if COIN_DEBUG
       if(len <= 0.0f) {
-        static uint32_t normgenerrors = 0;
-        if (normgenerrors < 1) {
+        static uint32_t normgenerrors_tri = 0;
+        if (normgenerrors_tri < 1) {
           SoDebugError::postWarning("SoNormalCache::generatePerFace",
                                     "Erroneous triangle specification in model "
                                     "(indices= [%d, %d, %d], "
-                                    "coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>)",
+                                    "coords=<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>) "
+                                    "(this warning will be printed only once, "
+                                    "but there might be more errors).",
                                     v0, v1, v2,
                                     coords[v0][0], coords[v0][1], coords[v0][2],
                                     coords[v1][0], coords[v1][1], coords[v1][2],
                                     coords[v2][0], coords[v2][1], coords[v2][2]);
-          SoDebugError::postWarning("SoNormalCache::generatePerFace",
-                                    "This warning will be printed only once, "
-                                    "but there might be more of these errors");
         }
-        normgenerrors++;
+        normgenerrors_tri++;
       }
 #endif // !COIN_DEBUG
       if (len > 0.0f) tmpvec.normalize();
@@ -437,7 +436,22 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
       tmpvec[1] += ((*vert1)[2] - (*vert2)[2]) * ((*vert1)[0] + (*vert2)[0]);
       tmpvec[2] += ((*vert1)[0] - (*vert2)[0]) * ((*vert1)[1] + (*vert2)[1]);
 
-      tmpvec.normalize();
+      // Be robust when it comes to erroneously specified polygons.
+      float len = tmpvec.length();
+#if COIN_DEBUG
+      if(len <= 0.0f) {
+        static uint32_t normgenerrors_poly = 0;
+        if (normgenerrors_poly < 1) {
+          SoDebugError::postWarning("SoNormalCache::generatePerFace",
+                                    "Erroneous polygon specification in model "
+                                    "(this warning will be printed only once, "
+                                    "but there might be more errors).");
+        }
+        normgenerrors_poly++;
+      }
+#endif // !COIN_DEBUG
+      if (len > 0.0f) tmpvec.normalize();
+      else tmpvec.setValue(1.0f, 0.0f, 0.0f); // dummy value
       this->normalArray.append(ccw ? tmpvec : -tmpvec);
       cind++; // skip the -1
     }
