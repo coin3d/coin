@@ -36,6 +36,15 @@ public:
   SoPathSensor(SoSensorCB * func, void * data);
   virtual ~SoPathSensor(void);
 
+  enum TriggerFilter {
+    PATH =           0x1,
+    NODES =          0x2,
+    PATH_AND_NODES = 0x3
+  };
+
+  void setTriggerFilter(const TriggerFilter type);
+  TriggerFilter getTriggerFilter(void) const;
+
   void attach(SoPath * path);
   void detach(void);
   SoPath * getAttachedPath(void) const;

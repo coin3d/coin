@@ -44,7 +44,7 @@ class SoPathSensorP {
 public:
   SoFullPath * path; // to audit path
   SoNode * headnode; // to audit nodes in path
-  SoPathSensor::TriggerType triggertype;
+  SoPathSensor::TriggerFilter triggerfilter;
 };
 
 
@@ -75,7 +75,7 @@ SoPathSensor::commonConstructor(void)
   PRIVATE(this) = new SoPathSensorP;
   PRIVATE(this)->path = NULL;
   PRIVATE(this)->headnode = NULL;
-  PRIVATE(this)->triggertype = PATH_AND_NODES;
+  PRIVATE(this)->triggerfilter = PATH_AND_NODES;
 }
 
 
@@ -141,27 +141,27 @@ SoPathSensor::getAttachedPath(void) const
 }
 
 /*!
-  Set the trigger type for this sensor.
+  Set the trigger filter for this sensor.
 
   The default is PATH_AND_NODES.
 
   \since 2003-02-25
 */
 void
-SoPathSensor::setTriggerType(const TriggerType type)
+SoPathSensor::setTriggerFilter(const TriggerFilter filter)
 {
-  PRIVATE(this)->triggertype = type;
+  PRIVATE(this)->triggerfilter = filter;
 }
 
 /*!
-  Return the trigger type for this sensor.
+  Return the trigger filter for this sensor.
 
   \since 2003-02-25
 */
-SoPathSensor::TriggerType
-SoPathSensor::getTriggerType(void) const
+SoPathSensor::TriggerFilter
+SoPathSensor::getTriggerFilter(void) const
 {
-  return PRIVATE(this)->triggertype;
+  return PRIVATE(this)->triggerfilter;
 }
 
 // Doc from superclass.
