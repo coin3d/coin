@@ -51,6 +51,7 @@
 #include <Inventor/misc/SbHash.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/misc/SoContextHandler.h>
 
 // *************************************************************************
 
@@ -93,7 +94,7 @@ public:
   SbList <int32_t> lineindices;
   SbList <int32_t> pointindices;
   SbHash <int32_t, SoPrimitiveVertexCache::Vertex> vhash;
-
+  
   const SbVec2f * bumpcoords;
   int numbumpcoords;
 
@@ -145,6 +146,7 @@ public:
 
   static void vbo_schedule(unsigned long key, void * value);
   static void vbo_delete(void * closure, uint32_t contextid);
+  static void contextCleanup(uint32_t context, void * closure);
 };
 
 #undef PRIVATE
@@ -160,7 +162,8 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 {
   PRIVATE(this) = new SoPrimitiveVertexCacheP;
   PRIVATE(this)->state = state;
-
+  SoContextHandler::addContextDestructionCallback(SoPrimitiveVertexCacheP::contextCleanup, 
+                                                  PRIVATE(this));
   const SoBumpMapCoordinateElement * belem =
     SoBumpMapCoordinateElement::getInstance(state);
 
@@ -231,6 +234,9 @@ SoPrimitiveVertexCache::SoPrimitiveVertexCache(SoState * state)
 */
 SoPrimitiveVertexCache::~SoPrimitiveVertexCache()
 {
+  SoContextHandler::removeContextDestructionCallback(SoPrimitiveVertexCacheP::contextCleanup, 
+                                                     PRIVATE(this));
+
   PRIVATE(this)->vbodict.applyToAll(SoPrimitiveVertexCacheP::vbo_schedule);
   if (PRIVATE(this)->lastenabled >= 1) {
     delete[] PRIVATE(this)->multitexcoords;
@@ -1069,6 +1075,21 @@ SoPrimitiveVertexCacheP::vbo_delete(void * closure, uint32_t contextid)
     }
   }
   delete vbo;
+}
+
+//
+// Callback from SoContextHandler
+//
+void 
+SoPrimitiveVertexCacheP::contextCleanup(uint32_t context, void * closure)
+{
+  SoPrimitiveVertexCacheP * thisp = (SoPrimitiveVertexCacheP*) closure;
+
+  void * tmp;
+  if (thisp->vbodict.find(context, tmp)) {
+    SoPrimitiveVertexCacheP::vbo_delete(tmp, context);
+    thisp->vbodict.remove(context);
+  }
 }
 
 
