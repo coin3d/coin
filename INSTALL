@@ -149,7 +149,7 @@ Configuration Options
 
   This option changes the make process from compiling the library to
   building an MS DevStudio project and workspace file that you can later
-  use from the MSVC++ ID to build Coin with.
+  use from the MSVC++ IDE to build Coin with.
 
 --without-framework
 
