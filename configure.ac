@@ -1101,6 +1101,11 @@ case "$host_os" in
     xlC | */xlC ) ac_coin_untested_platform=false ;;
     esac
     ;;
+  solaris*)
+    case $CXX in
+    g++ ) ac_coin_untested_platform=false ;;
+    esac
+    ;;
   hpux10.20)
     case $CXX in
     aCC | */aCC ) ac_coin_untested_platform=false ;;
