@@ -10,6 +10,48 @@ dnl but WITHOUT ANY WARRANTY, to the extent permitted by law; without
 dnl even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 dnl PARTICULAR PURPOSE.
 
+dnl  Macros for checking various compiler capabilities.
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+
+
+dnl SIM_COMPILER_INLINE_FOR([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl See if the compiler supports for(;;){} loops inside inlined
+dnl constructors.
+dnl
+dnl This smokes out the useless HPUX 10.20 CC compiler.
+dnl
+AC_DEFUN(SIM_COMPILER_INLINE_FOR,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.14])
+
+AC_CACHE_CHECK([whether the C++ compiler handles inlined loops],
+               sim_cv_c_inlinefor,
+               [cat > sim_ac_test.h <<EOF
+class TestClass {
+public:
+  TestClass(int);
+};
+
+inline TestClass::TestClass(int) { for (int i=0; i<1; i++) i=0; }
+EOF
+               AC_TRY_COMPILE([#include "sim_ac_test.h"],
+                              [TestClass t(0);],
+                              sim_cv_c_inlinefor=yes,
+                              sim_cv_c_inlinefor=no)
+])
+
+rm -rf sim_ac_test.h
+
+if test x"$sim_cv_c_inlinefor" = xyes; then
+  ifelse($1, , :, $1)
+else
+  ifelse($2, , :, $2)
+fi
+])
+
 # Do all the work for Automake.  This macro actually does too much --
 # some checks are only needed if your package does certain things.
 # But this isn't really a big deal.

@@ -7,6 +7,7 @@ dnl  it doesn't find a C++ compiler.
 AC_PROG_CXX
 AC_LANG_CPLUSPLUS
 
+SIM_COMPILER_INLINE_FOR(, AC_MSG_ERROR(the \"$CXX\" C++ compiler is not capable of compiling Coin))
 
 dnl *******************************************************************
 dnl * Library version control.
@@ -351,6 +352,7 @@ case "$host_os" in
     echo "    the old one:"
     echo
     echo "      # mv /unix.install /unix"
+    echo
     echo
     echo "  2 if linking fails with the error messages:"
     echo
