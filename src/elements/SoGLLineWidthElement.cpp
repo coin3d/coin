@@ -41,17 +41,11 @@
     glGetFloatv(GL_LINE_WIDTH_GRANULARITY, granularity);
   \endcode
 
-  For the next version of Coin, we expect to add a query function in
-  the Coin API which the application programmer can use to get hold of
-  these values without resorting to using direct OpenGL calls.
+  Another, perhaps more convenient, way of acquiring the OpenGL
+  implementation limits with regard to pointsizes is to use the
+  So*GLWidget::getPointSizeLimits() method in the GUI "glue" interface
+  library you are using (SoQt, SoXt, SoGtk, SoWin, ...).
 */
-
-// FIXME: the API extension mentioned at the end of the classdoc above
-// seems best suited to be placed in the API of the So*-libraries -- I
-// believe that's the only way for us to make it possible to guarantee
-// a valid OpenGL context. (One problem with this: we don't _really_
-// want more OpenGL code than absolutely necessary inside the So*
-// libraries.) 20011019 mortene.
 
 #include <Inventor/elements/SoGLLineWidthElement.h>
 
@@ -148,10 +142,9 @@ SoGLLineWidthElement::isLazy(void) const
   return TRUE;
 }
 
-//! FIXME: write doc.
-
+// private
 void
-SoGLLineWidthElement::updategl()
+SoGLLineWidthElement::updategl(void)
 {
   if (SoGLLineWidthElement::sizerange[0] == RANGE_NOT_CHECKED) {
     GLfloat vals[2];
@@ -167,12 +160,6 @@ SoGLLineWidthElement::updategl()
 
     SoGLLineWidthElement::sizerange[0] = vals[0];
     SoGLLineWidthElement::sizerange[1] = vals[1];
-
-    // FIXME: we should make the range values available for the
-    // app-programmer with a public API on this class (or somewhere
-    // else?). Along with the range we should also grab the value of
-    // GL_LINE_WIDTH_GRANULARITY and make that available
-    // aswell. 20011019 mortene.
   }
 
   float useval = this->current;

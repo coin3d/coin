@@ -41,17 +41,11 @@
     glGetFloatv(GL_POINT_SIZE_GRANULARITY, granularity);
   \endcode
 
-  For the next version of Coin, we expect to add a query function in
-  the Coin API which the application programmer can use to get hold of
-  these values without resorting to using direct OpenGL calls.
+  Another, perhaps more convenient, way of acquiring the OpenGL
+  implementation limits with regard to pointsizes is to use the
+  So*GLWidget::getPointSizeLimits() method in the GUI "glue" interface
+  library you are using (SoQt, SoXt, SoGtk, SoWin, ...).
 */
-
-// FIXME: the API extension mentioned at the end of the classdoc above
-// seems best suited to be placed in the API of the So*-libraries -- I
-// believe that's the only way for us to make it possible to guarantee
-// a valid OpenGL context. (One problem with this: we don't _really_
-// want more OpenGL code than absolutely necessary inside the So*
-// libraries.) 20011019 mortene.
 
 #include <Inventor/elements/SoGLPointSizeElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -149,7 +143,7 @@ SoGLPointSizeElement::isLazy(void) const
 
 // update GL state
 void
-SoGLPointSizeElement::updategl()
+SoGLPointSizeElement::updategl(void)
 {
   if (SoGLPointSizeElement::sizerange[0] == RANGE_NOT_CHECKED) {
     GLfloat vals[2];
@@ -169,12 +163,6 @@ SoGLPointSizeElement::updategl()
 
     SoGLPointSizeElement::sizerange[0] = vals[0];
     SoGLPointSizeElement::sizerange[1] = vals[1];
-
-    // FIXME: we should make the range values available for the
-    // app-programmer with a public API on this class (or somewhere
-    // else?). Along with the range we should also grab the value of
-    // GL_POINT_SIZE_GRANULARITY and make that available
-    // aswell. 20011019 mortene.
   }
 
   float useval = this->current;
