@@ -115,6 +115,7 @@
 #include <Inventor/lists/SoEngineList.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/misc/SbHash.h>
+#include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
 #include <coindefs.h> // COIN_STUB()
@@ -1460,7 +1461,18 @@ SoField::shouldWrite(void) const
 
   if (!this->isDefault()) return TRUE;
   if (this->isIgnored()) return TRUE;
-  if (this->isConnected()) return TRUE;
+  if (this->isConnected()) {
+    SoFieldContainer * thecontainer = this->getContainer();
+    if ( thecontainer != NULL &&
+         thecontainer->isOfType(SoProtoInstance::getClassTypeId()) ) {
+      // PROTO instance fields are usually connected, but we don't want to
+      // write out PROTO instance fields that contain default values - they
+      // will be hooked up and get the default value from the PROTO interface
+      // when they are read in again later anyways. -- 20040115 larsa
+      return FALSE;
+    }
+    return TRUE;
+  }
 
   // SGI Inventor seems to test forward connections here also. We
   // consider this is bug, since this field should not write just

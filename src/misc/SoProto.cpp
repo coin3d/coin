@@ -422,7 +422,7 @@ SoProto::writeInterface(SoOutput * out)
 
   for (int i = 0; i < fd->getNumFields(); i++) {
     out->indent();
-    const SoField * f = fd->getField(this, i);
+    SoField * f = fd->getField(this, i);
     SoType t = f->getTypeId();
     switch (f->getFieldType()) {
     case SoField::NORMAL_FIELD:
@@ -434,7 +434,12 @@ SoProto::writeInterface(SoOutput * out)
         out->write("\n");
       }
       else {
+        // field values are tagged as default for proto interface instances,
+        // but needs to be written to file anyway -- 20040115 larsa
+        SbBool fieldwasdefault = f->isDefault();
+        if ( fieldwasdefault ) f->setDefault(FALSE);
         f->write(out, fd->getFieldName(i));
+        if ( fieldwasdefault ) f->setDefault(TRUE);
       }
       break;
     case SoField::EXPOSED_FIELD:
@@ -904,12 +909,19 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         srcfield->connectFrom(dstfield);
       }
       else {
+        // We make bidirectional connections for regular fields.  That way
+        // you can modify the fields in the scene graph and have their PROTO
+        // instances written to file with the updated values.  The alternative
+        // is to have to locate the PROTO instance object yourself, and
+        // modify the fields on it directly - 20040115 larsa
+        SbBool srcisdefault = srcfield->isDefault();
         dstfield->connectFrom(srcfield);
-
-#if 0 // not such a good idea, disabled, pederb 2004-01-12
-        // make bidirectional connection
+        // propagate value immediately, before setting up reverse connection
+        dstfield->evaluate();
         srcfield->connectFrom(dstfield, FALSE, TRUE);
-#endif // disabled
+        // propagate value immediately, so we can tag field as default
+        srcfield->evaluate();
+        if ( srcisdefault ) srcfield->setDefault(TRUE);
       }
     }
     else {
