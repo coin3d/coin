@@ -238,6 +238,8 @@ GENERATE_BUGLIST       = YES
 #
 #       * VRML97-specific aliases
 #
+#       * aliases for engine documentation
+#
 #       * aliases for node kits documentation
 #
 #       * aliases for draggers
@@ -250,6 +252,8 @@ ALIASES                = \
   TOOLMAKER_REF="For extending the Coin library with your own classes, we strongly recommend that you make yourself acquainted with the excellent «The Inventor Toolmaker» book (ISBN 0-201-62493-1), which describes the tasks involved in detail. This book was written by the original SGI Inventor designers and explains many of the underlying design ideas, aswell as having lots of hands-on examples on how to extend the Coin toolkit in ways that are true to the fundamental design ideas. («The Inventor Toolmaker» is also available at SGI's online library, at no cost. See <a href=\"http://techpubs.sgi.com/library/tpl/cgi-bin/download.cgi?coll=0650&db=bks&docnumber=860-0107-002\">Download The Inventor Toolmaker</a>.) Reading the sourcecode of the built-in classes in Coin should also provide very helpful.\n" \
   \
   WEB3DCOPYRIGHT="<b>The detailed class documentation is taken verbatim from the VRML97 standard (ISO/IEC 14772-1:1997). It is copyright The Web3D Consortium, and is used by permission of the Consortium:</b>\n\n" \
+  \
+  ENGINE_TYPELESS_FILEFORMAT="The file format for this field is a bit special. Note the leading \"type\" specification, which is not necessary for most other field types:" \
   \
   NODEKIT_PRE_DIAGRAM="Node kit structure (new entries versus parent class marked with arrow prefix):" \
   NODEKIT_POST_DIAGRAM="(See SoBaseKit::printDiagram() for information about the output formatting.)" \
