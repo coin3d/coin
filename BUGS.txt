@@ -1752,3 +1752,87 @@
     20030602 mortene.
 
 =====================================================================
+
+073 Multiple complexity settings for same SoTexture2 does not work.
+
+    Using the same SoTexture2 nodes with different
+    SoComplexity::textureQuality settings is something which works for
+    SGI Inventor, so it should be considered a Coin bug.
+
+    Reproducible problem, example file:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #Inventor V2.1 ascii
+    
+    Separator {
+       Separator {
+          Complexity { textureQuality 0.1 }
+    
+          DEF mytex Texture2 {
+             image 2 2 3
+             0xffffff 0x00ff00   # white   green
+             0xff0000 0xffff00   #  red    yellow
+          }
+    
+          Cube { }
+       }
+    
+       Separator {
+          Complexity { textureQuality 1.0 }
+          USE mytex
+          Translation { translation 5 0 0 }
+          Cube { }
+       }
+    }
+    --------------8<----------- [snip] ------------------8<--------
+
+    pederb's comments on the bug:
+
+        We handled this earlier, but when adding proper support for
+        auto-caching, it was easier to store everything for a texture
+        object inside the texture object, and then identify it with a
+        single uint32. Then it's quite easy to figure out the current
+        texture object after a display list has been executed (the
+        render-cache must store the OpenGL state changes it does so
+        that SoGLLazyElement is updated after the display list has
+        been executed). I could add additional variables for storing
+        the filter settings, but I just couldn't see any practical
+        reason for doing this.
+
+
+    20030916 mortene.
+
+=====================================================================
+
+074 SoComplexity::textureQuality changes must be made before
+    SoTexture2 traversal.
+
+    In the "Inventor spirit" of appearance settings not having any
+    effect until hitting a shape node, it should be possible to do
+    this:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #Inventor V2.1 ascii
+    
+    Separator {
+      Texture2 {
+         image 2 2 3
+         0xffffff 0x00ff00   # white   green
+         0xff0000 0xffff00   #  red    yellow
+      }
+    
+      Complexity { textureQuality 0 }
+
+      Cube { }
+    }
+    --------------8<----------- [snip] ------------------8<--------
+
+    ..but the SoComplexity node will have no effect in this case. I
+    feel it should.
+
+    Note that SGI Inventor doesn't handle this either, but I still
+    think it is a weakness in Coin which we should fix.
+
+    20030916 mortene.
+
+=====================================================================
