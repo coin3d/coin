@@ -32,8 +32,8 @@ EXTRA_DIST = \
 	cfg/doxy4win.pl \
 	cfg/m4/msvccc
 
-doxygen-doc:
-	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
+	@$(SHELL) config.status --file=$@:coin.cfg.in
 
 # sources needed to generate docs must be created by this rule
 built-sources: $(BUILT_SOURCES)
@@ -44,10 +44,13 @@ include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in
 	@./config.status --header=$@
 
-coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
-	@$(SHELL) config.status --file=$@:coin.cfg.in
+doxygen-doc:
+	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
 
-install-exec-local: cfg/m4/wrapmsvc.exe
+doxygen-docs:
+	@@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+
+install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
 	@if @BUILD_WITH_MSVC@; then \
