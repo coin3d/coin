@@ -3,13 +3,14 @@ New in Coin 1.0 final beta (2001-07-22):
 * full Open Inventor 2.1 source code compatibility
 * miscellaneous extensions:
   - SoPolygonOffset node
+  - SoImage node
+  - SoExtSelection node
   - SoMouseButtonEvent::BUTTON4, BUTTON5 for wheelmouse events
   - SoKeyboardEvent::DELETE is portable even for MS Windows
+  - SoAction::IN_PATH is portable even for HPUX
   - SoCamera::setStereoMode()
   - SoCamera::pointAt(target, upvector);
   - SbImage class
-  - SoImage node
-  - SoExtSelection node
   - SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_* transparency modes
   - SoGLRenderAction::addPreRenderCallback()/removePreRenderCallback()
   - SoCallbackAction::setViewportRegion()/getViewportRegion().
