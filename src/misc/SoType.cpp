@@ -369,6 +369,8 @@ typedef void initClassFunction(void);
 SoType
 SoType::fromName(const SbName name)
 {
+  assert((SoType::typedict != NULL) && "SoType static class data not yet initialized");
+
   // It should be possible to specify a type name with the "So" prefix
   // and get the correct type id, even though the types in some type
   // hierarchies are named internally without the prefix.
