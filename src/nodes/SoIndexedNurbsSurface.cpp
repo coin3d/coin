@@ -29,6 +29,7 @@
 #include <Inventor/nodes/SoIndexedNurbsSurface.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -306,6 +307,22 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
     this->textureCoordIndex.getNum() &&
     this->textureCoordIndex[0] >= 0;
 
+  int displaymode = (int) GLU_FILL;
+  if (glrender) {
+    switch (SoDrawStyleElement::get(action->getState())) {
+    case SoDrawStyleElement::LINES:
+      displaymode = (int) GLU_OUTLINE_POLYGON;
+      break;
+    case SoDrawStyleElement::POINTS:
+      // not possible to draw NURBS as points using GLU...
+      displaymode = (int) GLU_OUTLINE_PATCH;
+      break;
+    default:
+      break;
+    }
+  }
+  gluNurbsProperty(nurbsobj, (GLenum) GLU_DISPLAY_MODE, displaymode);
+
   sogl_render_nurbs_surface(action, this, this->nurbsrenderer,
                             this->numUControlPoints.getValue(),
                             this->numVControlPoints.getValue(),
@@ -378,7 +395,7 @@ void
 SoIndexedNurbsSurface::tessTexCoord(GLfloat * texcoord, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
-  cbdata->vertex.setTextureCoords(SbVec4f(texcoord[0], texcoord[1], texcoord[2], texcoord[3]));
+  cbdata->vertex.setTextureCoords(SbVec2f(texcoord[0], texcoord[1]));
 }
 
 void
