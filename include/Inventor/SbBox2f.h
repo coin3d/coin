@@ -20,7 +20,6 @@
 #ifndef COIN_SBBOX2F_H
 #define COIN_SBBOX2F_H
 
-#include <float.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2f.h>
 

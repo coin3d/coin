@@ -32,11 +32,10 @@
 
 
 #include <Inventor/SbBox2f.h>
-#include <assert.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-
+#include <float.h>  // FLT_MAX
 
 /*!
   The default constructor makes an empty box.

@@ -34,6 +34,8 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbMatrix.h>
 #include <assert.h>
+#include <float.h> // FLT_MAX
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
