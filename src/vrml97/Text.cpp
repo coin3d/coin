@@ -438,9 +438,9 @@ SoVRMLText::GLRender(SoGLRenderAction * action)
 
       while (*ptr >= 0) {
         SbVec2f v0, v1, v2;
-        v0 = coords[*ptr++];
-        v1 = coords[*ptr++];
         v2 = coords[*ptr++];
+        v1 = coords[*ptr++];
+        v0 = coords[*ptr++];
         
      
         if (do2Dtextures) {
@@ -900,9 +900,9 @@ SoVRMLText::generatePrimitives(SoAction * action)
 
       while (*ptr >= 0) {
         SbVec2f v0, v1, v2;
-        v0 = coords[*ptr++];
-        v1 = coords[*ptr++];
         v2 = coords[*ptr++];
+        v1 = coords[*ptr++];
+        v0 = coords[*ptr++];
 
         if (do2Dtextures) {
           vertex.setTextureCoords(SbVec2f(v0[0] + xpos/PRIVATE(this)->textsize, 
