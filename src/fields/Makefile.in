@@ -97,104 +97,56 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
 
 ALLSOURCES = \
-	SoField.cpp \
-	SoField.h \
-	SoFieldContainer.cpp \
-	SoFieldContainer.h \
-	SoFieldData.cpp \
-	SoFieldData.h \
-	SoMFBitMask.cpp \
-	SoMFBitMask.h \
-	SoMFBool.cpp \
-	SoMFBool.h \
-	SoMFColor.cpp \
-	SoMFColor.h \
-	SoMFEngine.cpp \
-	SoMFEngine.h \
-	SoMFEnum.cpp \
-	SoMFEnum.h \
-	SoMFFloat.cpp \
-	SoMFFloat.h \
-	SoMFInt32.cpp \
-	SoMFInt32.h \
-	SoMFMatrix.cpp \
-	SoMFMatrix.h \
-	SoMFName.cpp \
-	SoMFName.h \
-	SoMFNode.cpp \
-	SoMFNode.h \
-	SoMFPath.cpp \
-	SoMFPath.h \
-	SoMFPlane.cpp \
-	SoMFPlane.h \
-	SoMFRotation.cpp \
-	SoMFRotation.h \
-	SoMFShort.cpp \
-	SoMFShort.h \
-	SoMFString.cpp \
-	SoMFString.h \
-	SoMFTime.cpp \
-	SoMFTime.h \
-	SoMFUInt32.cpp \
-	SoMFUInt32.h \
-	SoMFUShort.cpp \
-	SoMFUShort.h \
-	SoMFVec2f.cpp \
-	SoMFVec2f.h \
-	SoMFVec3f.cpp \
-	SoMFVec3f.h \
-	SoMFVec4f.cpp \
-	SoMFVec4f.h \
-	SoMField.cpp \
-	SoMField.h \
-	SoSFBitMask.cpp \
-	SoSFBitMask.h \
-	SoSFBool.cpp \
-	SoSFBool.h \
-	SoSFColor.cpp \
-	SoSFColor.h \
-	SoSFEngine.cpp \
-	SoSFEngine.h \
-	SoSFEnum.cpp \
-	SoSFEnum.h \
-	SoSFFloat.cpp \
-	SoSFFloat.h \
-	SoSFImage.cpp \
-	SoSFImage.h \
-	SoSFInt32.cpp \
-	SoSFInt32.h \
-	SoSFMatrix.cpp \
-	SoSFMatrix.h \
-	SoSFName.cpp \
-	SoSFName.h \
-	SoSFNode.cpp \
-	SoSFNode.h \
-	SoSFPath.cpp \
-	SoSFPath.h \
-	SoSFPlane.cpp \
-	SoSFPlane.h \
-	SoSFRotation.cpp \
-	SoSFRotation.h \
-	SoSFShort.cpp \
-	SoSFShort.h \
-	SoSFString.cpp \
-	SoSFString.h \
-	SoSFTime.cpp \
-	SoSFTime.h \
-	SoSFTrigger.cpp \
-	SoSFTrigger.h \
-	SoSFUInt32.cpp \
-	SoSFUInt32.h \
-	SoSFUShort.cpp \
-	SoSFUShort.h \
-	SoSFVec2f.cpp \
-	SoSFVec2f.h \
-	SoSFVec3f.cpp \
-	SoSFVec3f.h \
-	SoSFVec4f.cpp \
-	SoSFVec4f.h \
-	SoSField.cpp \
-	SoSField.h
+	SoField.cpp SoField.h \
+	SoFieldContainer.cpp SoFieldContainer.h \
+	SoFieldData.cpp SoFieldData.h \
+	SoMFBitMask.cpp SoMFBitMask.h \
+	SoMFBool.cpp SoMFBool.h \
+	SoMFColor.cpp SoMFColor.h \
+	SoMFEngine.cpp SoMFEngine.h \
+	SoMFEnum.cpp SoMFEnum.h \
+	SoMFFloat.cpp SoMFFloat.h \
+	SoMFInt32.cpp SoMFInt32.h \
+	SoMFMatrix.cpp SoMFMatrix.h \
+	SoMFName.cpp SoMFName.h \
+	SoMFNode.cpp SoMFNode.h \
+	SoMFPath.cpp SoMFPath.h \
+	SoMFPlane.cpp SoMFPlane.h \
+	SoMFRotation.cpp SoMFRotation.h \
+	SoMFShort.cpp SoMFShort.h \
+	SoMFString.cpp SoMFString.h \
+	SoMFTime.cpp SoMFTime.h \
+	SoMFUInt32.cpp SoMFUInt32.h \
+	SoMFUShort.cpp SoMFUShort.h \
+	SoMFVec2f.cpp SoMFVec2f.h \
+	SoMFVec3f.cpp SoMFVec3f.h \
+	SoMFVec4f.cpp SoMFVec4f.h \
+	SoMField.cpp SoMField.h \
+	SoSFBitMask.cpp SoSFBitMask.h \
+	SoSFBool.cpp SoSFBool.h \
+	SoSFColor.cpp SoSFColor.h \
+	SoSFEngine.cpp SoSFEngine.h \
+	SoSFEnum.cpp SoSFEnum.h \
+	SoSFFloat.cpp SoSFFloat.h \
+	SoSFImage.cpp SoSFImage.h \
+	SoSFInt32.cpp SoSFInt32.h \
+	SoSFMatrix.cpp SoSFMatrix.h \
+	SoSFName.cpp SoSFName.h \
+	SoSFNode.cpp SoSFNode.h \
+	SoSFPath.cpp SoSFPath.h \
+	SoSFPlane.cpp SoSFPlane.h \
+	SoSFRotation.cpp SoSFRotation.h \
+	SoSFShort.cpp SoSFShort.h \
+	SoSFString.cpp SoSFString.h \
+	SoSFTime.cpp SoSFTime.h \
+	SoSFTrigger.cpp SoSFTrigger.h \
+	SoSFUInt32.cpp SoSFUInt32.h \
+	SoSFUShort.cpp SoSFUShort.h \
+	SoSFVec2f.cpp SoSFVec2f.h \
+	SoSFVec3f.cpp SoSFVec3f.h \
+	SoSFVec4f.cpp SoSFVec4f.h \
+	SoSField.cpp SoSField.h \
+	SoGlobalField.cpp SoGlobalField.h
 
 
 ALLINSTHEADERS = \
@@ -299,7 +251,7 @@ SoSFEngine.lo SoSFEnum.lo SoSFFloat.lo SoSFImage.lo SoSFInt32.lo \
 SoSFMatrix.lo SoSFName.lo SoSFNode.lo SoSFPath.lo SoSFPlane.lo \
 SoSFRotation.lo SoSFShort.lo SoSFString.lo SoSFTime.lo SoSFTrigger.lo \
 SoSFUInt32.lo SoSFUShort.lo SoSFVec2f.lo SoSFVec3f.lo SoSFVec4f.lo \
-SoSField.lo
+SoSField.lo SoGlobalField.lo
 libfields_la_OBJECTS =  $(am_libfields_la_OBJECTS)
 libfieldsLINKHACK_la_LDFLAGS = 
 libfieldsLINKHACK_la_LIBADD = 
@@ -313,7 +265,7 @@ SoSFColor.lo SoSFEngine.lo SoSFEnum.lo SoSFFloat.lo SoSFImage.lo \
 SoSFInt32.lo SoSFMatrix.lo SoSFName.lo SoSFNode.lo SoSFPath.lo \
 SoSFPlane.lo SoSFRotation.lo SoSFShort.lo SoSFString.lo SoSFTime.lo \
 SoSFTrigger.lo SoSFUInt32.lo SoSFUShort.lo SoSFVec2f.lo SoSFVec3f.lo \
-SoSFVec4f.lo SoSField.lo
+SoSFVec4f.lo SoSField.lo SoGlobalField.lo
 libfieldsLINKHACK_la_OBJECTS =  $(am_libfieldsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -337,9 +289,9 @@ GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoField.Plo \
 $(DEPDIR)/SoFieldContainer.Plo $(DEPDIR)/SoFieldData.Plo \
-$(DEPDIR)/SoMFBitMask.Plo $(DEPDIR)/SoMFBool.Plo \
-$(DEPDIR)/SoMFColor.Plo $(DEPDIR)/SoMFEngine.Plo $(DEPDIR)/SoMFEnum.Plo \
-$(DEPDIR)/SoMFFloat.Plo $(DEPDIR)/SoMFInt32.Plo \
+$(DEPDIR)/SoGlobalField.Plo $(DEPDIR)/SoMFBitMask.Plo \
+$(DEPDIR)/SoMFBool.Plo $(DEPDIR)/SoMFColor.Plo $(DEPDIR)/SoMFEngine.Plo \
+$(DEPDIR)/SoMFEnum.Plo $(DEPDIR)/SoMFFloat.Plo $(DEPDIR)/SoMFInt32.Plo \
 $(DEPDIR)/SoMFMatrix.Plo $(DEPDIR)/SoMFName.Plo $(DEPDIR)/SoMFNode.Plo \
 $(DEPDIR)/SoMFPath.Plo $(DEPDIR)/SoMFPlane.Plo \
 $(DEPDIR)/SoMFRotation.Plo $(DEPDIR)/SoMFShort.Plo \
@@ -490,6 +442,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoField.Plo
 @AMDEP@include $(DEPDIR)/SoFieldContainer.Plo
 @AMDEP@include $(DEPDIR)/SoFieldData.Plo
+@AMDEP@include $(DEPDIR)/SoGlobalField.Plo
 @AMDEP@include $(DEPDIR)/SoMFBitMask.Plo
 @AMDEP@include $(DEPDIR)/SoMFBool.Plo
 @AMDEP@include $(DEPDIR)/SoMFColor.Plo

@@ -2,104 +2,57 @@
 ## 19990904 mortene.
 
 ALLSOURCES = \
-	SoField.cpp \
-	SoField.h \
-	SoFieldContainer.cpp \
-	SoFieldContainer.h \
-	SoFieldData.cpp \
-	SoFieldData.h \
-	SoMFBitMask.cpp \
-	SoMFBitMask.h \
-	SoMFBool.cpp \
-	SoMFBool.h \
-	SoMFColor.cpp \
-	SoMFColor.h \
-	SoMFEngine.cpp \
-	SoMFEngine.h \
-	SoMFEnum.cpp \
-	SoMFEnum.h \
-	SoMFFloat.cpp \
-	SoMFFloat.h \
-	SoMFInt32.cpp \
-	SoMFInt32.h \
-	SoMFMatrix.cpp \
-	SoMFMatrix.h \
-	SoMFName.cpp \
-	SoMFName.h \
-	SoMFNode.cpp \
-	SoMFNode.h \
-	SoMFPath.cpp \
-	SoMFPath.h \
-	SoMFPlane.cpp \
-	SoMFPlane.h \
-	SoMFRotation.cpp \
-	SoMFRotation.h \
-	SoMFShort.cpp \
-	SoMFShort.h \
-	SoMFString.cpp \
-	SoMFString.h \
-	SoMFTime.cpp \
-	SoMFTime.h \
-	SoMFUInt32.cpp \
-	SoMFUInt32.h \
-	SoMFUShort.cpp \
-	SoMFUShort.h \
-	SoMFVec2f.cpp \
-	SoMFVec2f.h \
-	SoMFVec3f.cpp \
-	SoMFVec3f.h \
-	SoMFVec4f.cpp \
-	SoMFVec4f.h \
-	SoMField.cpp \
-	SoMField.h \
-	SoSFBitMask.cpp \
-	SoSFBitMask.h \
-	SoSFBool.cpp \
-	SoSFBool.h \
-	SoSFColor.cpp \
-	SoSFColor.h \
-	SoSFEngine.cpp \
-	SoSFEngine.h \
-	SoSFEnum.cpp \
-	SoSFEnum.h \
-	SoSFFloat.cpp \
-	SoSFFloat.h \
-	SoSFImage.cpp \
-	SoSFImage.h \
-	SoSFInt32.cpp \
-	SoSFInt32.h \
-	SoSFMatrix.cpp \
-	SoSFMatrix.h \
-	SoSFName.cpp \
-	SoSFName.h \
-	SoSFNode.cpp \
-	SoSFNode.h \
-	SoSFPath.cpp \
-	SoSFPath.h \
-	SoSFPlane.cpp \
-	SoSFPlane.h \
-	SoSFRotation.cpp \
-	SoSFRotation.h \
-	SoSFShort.cpp \
-	SoSFShort.h \
-	SoSFString.cpp \
-	SoSFString.h \
-	SoSFTime.cpp \
-	SoSFTime.h \
-	SoSFTrigger.cpp \
-	SoSFTrigger.h \
-	SoSFUInt32.cpp \
-	SoSFUInt32.h \
-	SoSFUShort.cpp \
-	SoSFUShort.h \
-	SoSFVec2f.cpp \
-	SoSFVec2f.h \
-	SoSFVec3f.cpp \
-	SoSFVec3f.h \
-	SoSFVec4f.cpp \
-	SoSFVec4f.h \
-	SoSField.cpp \
-	SoSField.h
+	SoField.cpp SoField.h \
+	SoFieldContainer.cpp SoFieldContainer.h \
+	SoFieldData.cpp SoFieldData.h \
+	SoMFBitMask.cpp SoMFBitMask.h \
+	SoMFBool.cpp SoMFBool.h \
+	SoMFColor.cpp SoMFColor.h \
+	SoMFEngine.cpp SoMFEngine.h \
+	SoMFEnum.cpp SoMFEnum.h \
+	SoMFFloat.cpp SoMFFloat.h \
+	SoMFInt32.cpp SoMFInt32.h \
+	SoMFMatrix.cpp SoMFMatrix.h \
+	SoMFName.cpp SoMFName.h \
+	SoMFNode.cpp SoMFNode.h \
+	SoMFPath.cpp SoMFPath.h \
+	SoMFPlane.cpp SoMFPlane.h \
+	SoMFRotation.cpp SoMFRotation.h \
+	SoMFShort.cpp SoMFShort.h \
+	SoMFString.cpp SoMFString.h \
+	SoMFTime.cpp SoMFTime.h \
+	SoMFUInt32.cpp SoMFUInt32.h \
+	SoMFUShort.cpp SoMFUShort.h \
+	SoMFVec2f.cpp SoMFVec2f.h \
+	SoMFVec3f.cpp SoMFVec3f.h \
+	SoMFVec4f.cpp SoMFVec4f.h \
+	SoMField.cpp SoMField.h \
+	SoSFBitMask.cpp SoSFBitMask.h \
+	SoSFBool.cpp SoSFBool.h \
+	SoSFColor.cpp SoSFColor.h \
+	SoSFEngine.cpp SoSFEngine.h \
+	SoSFEnum.cpp SoSFEnum.h \
+	SoSFFloat.cpp SoSFFloat.h \
+	SoSFImage.cpp SoSFImage.h \
+	SoSFInt32.cpp SoSFInt32.h \
+	SoSFMatrix.cpp SoSFMatrix.h \
+	SoSFName.cpp SoSFName.h \
+	SoSFNode.cpp SoSFNode.h \
+	SoSFPath.cpp SoSFPath.h \
+	SoSFPlane.cpp SoSFPlane.h \
+	SoSFRotation.cpp SoSFRotation.h \
+	SoSFShort.cpp SoSFShort.h \
+	SoSFString.cpp SoSFString.h \
+	SoSFTime.cpp SoSFTime.h \
+	SoSFTrigger.cpp SoSFTrigger.h \
+	SoSFUInt32.cpp SoSFUInt32.h \
+	SoSFUShort.cpp SoSFUShort.h \
+	SoSFVec2f.cpp SoSFVec2f.h \
+	SoSFVec3f.cpp SoSFVec3f.h \
+	SoSFVec4f.cpp SoSFVec4f.h \
+	SoSField.cpp SoSField.h \
+	SoGlobalField.cpp SoGlobalField.h
+
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/fields/SoSubField.h \

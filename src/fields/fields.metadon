@@ -13,7 +13,7 @@
 # ==
 # HIERARCHY
 # id SoField
-#        SoSField
+# i      SoSField
 # i          SoSFBool
 # i          SoSFColor
 #            SoSFEngine
@@ -37,7 +37,7 @@
 # i          SoSFVec2f
 # i          SoSFVec3f
 # i          SoSFVec4f
-#        SoMField
+# i      SoMField
 # i          SoMFBool
 # i          SoMFColor
 #            SoMFEngine
@@ -59,8 +59,9 @@
 # i          SoMFVec2f
 # i          SoMFVec3f
 # i          SoMFVec4f
-# id SoFieldContainer
-# id SoFieldData
+# ID SoFieldContainer
+# ID SoFieldData
+#    SoGlobalField
 #
 ############################################################################
 #
