@@ -770,6 +770,8 @@ if $sim_ac_build_library; then
 if $BUILD_WITH_MSVC; then
   if $COIN_STATIC; then
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_NOT_DLL"
+    # forgot to include this case in SbBasic.h.in :(
+    CPPFLAGS="-DCOIN_NOT_DLL $CPPFLAGS"
   else
     CPPFLAGS="-DCOIN_MAKE_DLL $CPPFLAGS"
     COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS -DCOIN_DLL"
