@@ -139,6 +139,8 @@ class SoInputP {
   }
   
   SoInput_FileInfo * getTopOfStackPopOnEOF(void);
+  SbBool isIdentStartChar(unsigned char c);
+  SbBool isIdentChar(unsigned char c);
 
   SoInput * owner;
   SbBool usingstdin;
@@ -177,6 +179,8 @@ soinput_destruct_tls_data(void * closure)
 
 // *************************************************************************
 
+// Helper function that pops the stack when the current file is at
+// EOF.  Then it returns the file at the top of the stack.
 SoInput_FileInfo * 
 SoInputP::getTopOfStackPopOnEOF(void)
 {
@@ -194,6 +198,140 @@ SoInputP::getTopOfStackPopOnEOF(void)
   }
 
   return fi;
+}
+
+// Helperfunction to handle different filetypes (Inventor, VRML 1.0
+// and VRML 2.0).
+//
+// VRML 1.0 identifiers are defined as:
+//
+//  VRML 1.0 Node names must not begin with a digit, and must
+//  not contain spaces or control characters, single or double
+//  quote characters, backslashes, curly braces, the sharp (#)
+//  character, the plus (+) character or the period character.
+//
+//  Field names start with lower case letters, Node types start
+//  with upper case. The remainder of the characters may be any
+//  printable ascii (21H-7EH) except curly braces {}, square
+//  brackets [], single ' or double " quotes, sharp #, backslash
+//  \\ plus +, period . or ampersand &.
+//
+// The grammar for VRML2 identifiers is:
+//
+//  nodeNameId ::= Id ; 
+//  nodeTypeId ::= Id ; 
+//  fieldId ::= Id ;
+//
+//  Id ::= IdFirstChar | IdFirstChar IdRestChars ;
+//
+//  IdFirstChar ::= Any ISO-10646 character encoded using UTF-8
+//  except: 0x30-0x39, 0x0-0x20, 0x22, 0x23, 0x27, 0x2b, 0x2c,
+//  0x2d, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f ;
+//
+//  IdRestChars ::= Any number of ISO-10646 characters except:
+//  0x0-0x20, 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d,
+//  0x7b, 0x7d, 0x7f ;
+SbBool
+SoInputP::isIdentStartChar(unsigned char c)
+{
+  // FIXME: the invalid characters for VRML1 and VRML2 may be identical,
+  // but I was unable to find good documentation for legal characters in
+  // VRML1, so I have used the best guess method. jornskaa 20040713
+
+  // Cannot be unsigned when using strchr, but since all values are
+  // below 128, it does not matter if they are signed or unsigned.
+  const char invalid_vrml1[11] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
+                                   0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+                                 // '"',  '#',  ''',  '+',  '.',
+                                 // '[',  '\',  ']',  '{',  '}'
+
+  const char invalid_vrml2[14] = { 0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2d, 0x2e, 
+                                   0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
+                                 // '"',  '#',  ''',  '+',  ',',  '-',  '.',
+                                 // '[',  '\',  ']',  '{',  '}',   ''
+
+  // VRML1 and VRML2 are kept separate for ease of modification if
+  // more differences are found
+  if (owner->isFileVRML1()) {
+    if (c <= 0x20) return FALSE; // Control characters
+    if (c >= 0x30 && c <= 0x39) return FALSE; // Digits
+    return (strchr(invalid_vrml1, (int)c) == NULL ? TRUE : FALSE);
+  }
+  else if (owner->isFileVRML2()) {
+    if (c <= 0x20) return FALSE; // Control characters
+    if (c >= 0x30 && c <= 0x39) return FALSE; // Digits
+    return (strchr(invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
+  }
+  else { // Inventor files
+    return SbName::isIdentStartChar(c);
+  }
+}
+
+// Helperfunction to handle different filetypes (Inventor, VRML 1.0
+// and VRML 2.0).
+//
+// VRML 1.0 identifiers are defined as:
+//
+//  VRML 1.0 Node names must not begin with a digit, and must
+//  not contain spaces or control characters, single or double
+//  quote characters, backslashes, curly braces, the sharp (#)
+//  character, the plus (+) character or the period character.
+//
+//  Field names start with lower case letters, Node types start
+//  with upper case. The remainder of the characters may be any
+//  printable ascii (21H-7EH) except curly braces {}, square
+//  brackets [], single ' or double " quotes, sharp #, backslash
+//  \\ plus +, period . or ampersand &.
+//
+// The grammar for VRML2 identifiers is:
+//
+//  nodeNameId ::= Id ; 
+//  nodeTypeId ::= Id ; 
+//  fieldId ::= Id ;
+//
+//  Id ::= IdFirstChar | IdFirstChar IdRestChars ;
+//
+//  IdFirstChar ::= Any ISO-10646 character encoded using UTF-8
+//  except: 0x30-0x39, 0x0-0x20, 0x22, 0x23, 0x27, 0x2b, 0x2c,
+//  0x2d, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f ;
+//
+//  IdRestChars ::= Any number of ISO-10646 characters except:
+//  0x0-0x20, 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d,
+//  0x7b, 0x7d, 0x7f ;
+SbBool
+SoInputP::isIdentChar(unsigned char c)
+{
+  // FIXME: the invalid characters for VRML1 and VRML2 may be identical,
+  // but I was unable to find good documentation for legal characters in
+  // VRML1, so I have used the best guess method. jornskaa 20040713
+
+  // Cannot be unsigned when using strchr, but since all values are
+  // below 128, it does not matter if they are signed or unsigned.
+  const char invalid_vrml1[11] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
+                                   0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+                                 // '"',  '#',  ''',  '+',  '.',
+                                 // '[',  '\',  ']',  '{',  '}'
+
+  // Compared to isIdentStartChar, '+' and '-' have now become valid
+  // characters (compared to isIdentStartChar).
+  const char invalid_vrml2[12] = { 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 
+                                   0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
+                                 // '"',  '#',  ''',  ',',  '.',  '[',
+                                 // '\',  ']',  '{',  '}',   ''
+
+  // VRML1 and VRML2 are kept separate for ease of modification if
+  // more differences are found
+  if (owner->isFileVRML1()) {
+    if (c <= 0x20) return FALSE; // Control characters
+    return (strchr(invalid_vrml1, (int)c) == NULL ? TRUE : FALSE);
+  }
+  else if (owner->isFileVRML2()) {
+    if (c <= 0x20) return FALSE; // Control characters
+    return (strchr(invalid_vrml2, (int)c) == NULL ? TRUE : FALSE);
+  }
+  else { // Inventor files
+    return SbName::isIdentChar(c);
+  }
 }
 
 // *************************************************************************
@@ -1064,62 +1202,6 @@ SoInput::read(SbString & s)
   return TRUE;
 }
 
-// helper function to handle VRML97
-static SbBool
-soinput_is_ident_start_char(SoInput * in, char c)
-{
-  unsigned char uc = (unsigned char) c;
-  if (in->isFileVRML2()) {
-    if (uc <= 0x20) return FALSE;
-    if (uc >= 0x30 && uc <= 0x39) return FALSE;
-    switch (uc) {
-    case 0x22:
-    case 0x23:
-    case 0x27:
-    case 0x2b:
-    case 0x2c:
-    case 0x2d:
-    case 0x2e:
-    case 0x5b:
-    case 0x5c:
-    case 0x5d:
-    case 0x7b:
-    case 0x7d:
-    case 0x7f:
-      return FALSE;
-    }
-    return TRUE;
-  }
-  else return SbName::isIdentStartChar(c);
-}
-
-// helper function to handle VRML97
-static SbBool
-soinput_is_ident_char(SoInput * in, char c)
-{
-  unsigned char uc = (unsigned char) c;
-  if (in->isFileVRML2()) {
-    if (uc <= 0x20) return FALSE;
-    switch (uc) {
-    case 0x22:
-    case 0x23:
-    case 0x27:
-    case 0x2c:
-    case 0x2e:
-    case 0x5b:
-    case 0x5c:
-    case 0x5d:
-    case 0x7b:
-    case 0x7d:
-    case 0x7f:
-      return FALSE;
-    }
-    return TRUE;
-  }
-  else return SbName::isIdentChar(c);
-}
-
-
 /*!
   Read a name from the current stream and place it in \a n.
 
@@ -1149,9 +1231,9 @@ SoInput::read(SbName & n, SbBool validIdent)
     n = s;
 
     if (validIdent && s.getLength() > 0) {
-      if (!soinput_is_ident_start_char(this, s[0])) return FALSE;
+      if (!PRIVATE(this)->isIdentStartChar(s[0])) return FALSE;
       for (int i = 1; i < s.getLength(); i++)
-        if (!soinput_is_ident_char(this, s[i])) return FALSE;
+        if (!PRIVATE(this)->isIdentStartChar(s[i])) return FALSE;
     }
 
     return TRUE;
@@ -1160,7 +1242,12 @@ SoInput::read(SbName & n, SbBool validIdent)
   else {
     if (!fi->skipWhiteSpace()) return FALSE;
 
-    if (!validIdent) {
+    // In the VRML 1.0 and 2.0 standard, all nodestypes, nodenames and
+    // fields have to be valid identifiers. Though the meaning of what
+    // is a valid identifier differs slightly between the standards.
+    // Take a look at SoInputP::isIdentStartChar() and
+    // SoInputP::isIdentChar() for more information.
+    if (!validIdent && !fi->isFileVRML1() && !fi->isFileVRML2()) { 
       SbString s;
       if (!this->read(s)) return FALSE;
 
@@ -1207,10 +1294,10 @@ SoInput::read(SbName & n, SbBool validIdent)
       char c;
       SbBool gotchar;
 
-      if ((gotchar = fi->get(c)) && soinput_is_ident_start_char(this, c)) {
+      if ((gotchar = fi->get(c)) && PRIVATE(this)->isIdentStartChar(c)) {
         *b++ = c;
 
-        while ((gotchar = fi->get(c)) && soinput_is_ident_char(this, c)) {
+        while ((gotchar = fi->get(c)) && PRIVATE(this)->isIdentChar(c)) {
           *b++ = c;
           if (b - buf == 255) {
             *b = '\0';
@@ -1222,19 +1309,17 @@ SoInput::read(SbName & n, SbBool validIdent)
       // This behavior is pretty silly, but this is how it is supposed
       // to work, apparently -- _not_ returning FALSE upon end-of-file.
       if (gotchar) fi->putBack(c);
+
       *b = '\0';
       s += buf;
       n = SbName(s);
+
 #if 0 // debug
       SoDebugError::postInfo("SoInput::read",
                              "string read: ``%s''", s.getString());
 #endif // debug
 
-#if 0 // OBSOLETED, 19991116 mortene.
-      if (b == buf) return FALSE;
-#else
       if (s.getLength() == 0) return FALSE;
-#endif
     }
   }
 
