@@ -582,6 +582,8 @@ INPUT                 = @coin_build_dir@/include/Inventor/SbBasic.h \
                         @coin_src_dir@/include/Inventor/projectors/SbSphereSectionProjector.h \
                         @coin_src_dir@/src/projectors/SbSpherePlaneProjector.cpp \
                         @coin_src_dir@/include/Inventor/projectors/SbSpherePlaneProjector.h \
+                        @coin_src_dir@/src/misc/SoOffscreenRenderer.cpp \
+                        @coin_src_dir@/include/Inventor/SoOffscreenRenderer.h \
                         @coin_src_dir@/src/misc/SoNotification.cpp \
                         @coin_src_dir@/include/Inventor/misc/SoNotification.h \
                         @coin_src_dir@/src/misc/SoPath.cpp \
