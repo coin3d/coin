@@ -19,18 +19,19 @@
 
 /*!
   \class SoCacheElement Inventor/elements/SoCacheElement.h
-  \brief The SoCacheElement class stores the last opened cache.
-
-  This is not in use yet.
+  \brief The SoCacheElement class stores and manages the opene caches.
 */
 
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/caches/SoCache.h>
 #include <assert.h>
 
-// static variables
-SbBool SoCacheElement::invalidated;
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+SbBool SoCacheElement::invalidated = FALSE;
 
 SO_ELEMENT_SOURCE(SoCacheElement);
 
@@ -59,35 +60,31 @@ SoCacheElement::~SoCacheElement(void)
 void
 SoCacheElement::init(SoState * state)
 {
-    inherited::init(state);
-    this->cache = NULL;
-}
-
-//! FIXME: write doc.
-
-void
-SoCacheElement::push(SoState * state)
-{
-    inherited::push(state);
+  inherited::init(state);
+  this->cache = NULL;
 }
 
 /*!
-  Unrefs the cache.
+  Overloaded to unref the cache, since the cache is ref'ed in set(). 
 */
-
 void
 SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  COIN_STUB();
+  if (this->cache) this->cache->unref();
 }
 
-//! FIXME: write doc.
 
+/*!
+  Sets the current cache. The cache is ref'ed before returning.
+*/
 void
-SoCacheElement::set(SoState * const /* state */, SoCache * const /* cache */)
+SoCacheElement::set(SoState * const state, SoCache * const cache)
 {
-  COIN_STUB();
+  SoCacheElement * elem = (SoCacheElement*)
+    SoElement::getElement(state, classStackIndex);
+  elem->cache = cache;
+  if (elem->cache) elem->cache->ref();
 }
 
 /*!
@@ -97,7 +94,7 @@ SoCacheElement::set(SoState * const /* state */, SoCache * const /* cache */)
 SoCache *
 SoCacheElement::getCache(void) const
 {
-    return this->cache;
+  return this->cache;
 }
 
 /*!
@@ -105,20 +102,18 @@ SoCacheElement::getCache(void) const
 */
 
 SbBool
-SoCacheElement::anyOpen(SoState * const /* state */)
+SoCacheElement::anyOpen(SoState * const state)
 {
-  COIN_STUB();
-  return FALSE;
+  return SoCacheElement::getCurrentCache(state) != NULL;
 }
 
 /*!
-  This method invalidate open caches.  It should be called by uncacheable nodes.
+  This method invalidates open caches.  It should be called by uncacheable nodes.
 */
-
 void
-SoCacheElement::invalidate(SoState * const /* state */)
+SoCacheElement::invalidate(SoState * const state)
 {
-  COIN_STUB();
+  SoCacheElement::invalidated = TRUE;
 }
 
 /*!
@@ -129,34 +124,39 @@ SoCacheElement::invalidate(SoState * const /* state */)
 SbBool
 SoCacheElement::matches(const SoElement * /* element */) const
 {
-  COIN_STUB();
-  // FIXME: debug check + error message here. 19991213 mortene.
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoCacheElement::matches",
+                         "this method should not be called for this element");
+#endif // debug
   return FALSE;
 }
 
 /*!
   SoCacheElement objects should not be "copied" because you obviously don't
   cache them in the cache.
-
+  
   \sa SbBool SoCacheElement::matches(const SoElement * element) const
 */
 
 SoElement *
 SoCacheElement::copyMatchInfo(void) const
 {
-  COIN_STUB();
-  // FIXME: debug check + error message here. 19991213 mortene.
+#if COIN_DEBUG && 1 // debug
+  SoDebugError::postInfo("SoCacheElement::copyMatchInfo",
+                         "this method should not be called for this element");
+#endif // debug
   return NULL;
 }
 
 /*!
-  This method returns the next cache element.
+  This method returns the next cache element. That is the next cache 
+  element pointing towards the bottom of the state. In Coin we call
+  this the previous element.
 */
-
 SoCacheElement *
 SoCacheElement::getNextCacheElement(void) const
 {
-    return (SoCacheElement *) this->next;
+  return (SoCacheElement *) this->prev;
 }
 
 /*!
@@ -165,10 +165,15 @@ SoCacheElement::getNextCacheElement(void) const
 */
 
 void
-SoCacheElement::addElement(SoState * const /* state */,
-                           const SoElement * const /* element */)
+SoCacheElement::addElement(SoState * const state,
+                           const SoElement * const element)
 {
-  COIN_STUB();
+  SoCacheElement * elem = (SoCacheElement*)
+    state->getElementNoPush(classStackIndex);
+  while (elem) {
+    if (elem->cache) elem->cache->addElement(element);
+    elem = (SoCacheElement*) elem->prev;
+  }
 }
 
 /*!
@@ -177,22 +182,28 @@ SoCacheElement::addElement(SoState * const /* state */,
 */
 
 void
-SoCacheElement::addCacheDependency(SoState * const /* state */,
-                                   SoCache * const /* cache */)
+SoCacheElement::addCacheDependency(SoState * const state,
+                                   SoCache * const cache)
 {
-  COIN_STUB();
+  SoCacheElement * elem = (SoCacheElement*)
+    state->getElementNoPush(classStackIndex);
+  while (elem) {
+    if (elem->cache) elem->cache->addCacheDependency(state, cache);
+    elem = (SoCacheElement*) elem->prev;
+  }
 }
 
 /*!
   This method returns the old invalidated bit value, and sets it to
-  \a newValue.
+  \a newvalue.
 */
 
 SbBool
-SoCacheElement::setInvalid(const SbBool /* newValue */)
+SoCacheElement::setInvalid(const SbBool newvalue)
 {
-  COIN_STUB();
-  return FALSE;
+  SbBool oldval = SoCacheElement::invalidated;
+  SoCacheElement::invalidated = newvalue;
+  return oldval;
 }
 
 /*!
