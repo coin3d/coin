@@ -505,7 +505,10 @@ aglglue_context_bind_pbuffer(void * ctx)
   }
 
   struct aglglue_contextdata * context = (struct aglglue_contextdata *)ctx;
-  aglglue_context_reinstate_previous(context);
+  
+  /* FIXME: I don't think this needs to be here. pederb, 2003-11-27 */ 
+  /* aglglue_context_reinstate_previous(context); */
+
   aglTexImagePBuffer (context->storedcontext, context->aglpbuffer, GL_FRONT);
   context->pbufferisbound = TRUE;
   error = aglGetError();  
