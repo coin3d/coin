@@ -14,7 +14,7 @@
  * The patch is explained at the top of the diff file.
  */
 
-#include <Inventor/SbBasic.h>
+#include <Inventor/C/basic.h>
 #include "evaluator.h"
 #include <assert.h>
 #include <stdlib.h>

@@ -30,7 +30,7 @@ extern "C" {
 
 /* ********************************************************************** */
 
-#include <Inventor/SbBasic.h>
+#include <Inventor/C/basic.h>
 #include <stdarg.h>
 
 int coin_snprintf(char * dst, unsigned int n, const char * fmtstr, ...);

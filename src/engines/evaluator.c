@@ -22,7 +22,7 @@
 \**************************************************************************/
 
 #include "evaluator.h"
-#include <Inventor/SbBasic.h>
+#include <Inventor/C/basic.h>
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -22,7 +22,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
+#include <Inventor/C/basic.h>  /* COIN_DLL_API */
 #include <Inventor/C/threads/common.h>  /* cc_rwmutex, cc_precedence */
 
 #ifdef __cplusplus

@@ -22,7 +22,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>
+#include <Inventor/C/basic.h>
 
 #ifdef __cplusplus
 extern "C" {

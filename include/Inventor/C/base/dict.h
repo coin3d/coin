@@ -22,7 +22,7 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>  /* COIN_DLL_API */
+#include <Inventor/C/basic.h>  /* COIN_DLL_API */
 /* #include <Inventor/C/base/list.h>  - cc_list */
 
 #ifdef __cplusplus

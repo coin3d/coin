@@ -32,7 +32,7 @@
  * installed on nfs.sim.no).
  */
 
-#include <Inventor/SbBasic.h>
+#include <Inventor/C/basic.h>
 #include <float.h>
 #include <stdlib.h>
 #include "evaluator.h"
