@@ -635,6 +635,9 @@ SoNode::GLRenderS(SoAction * action, SoNode * node)
     // might get lucky and have it pinpointed for you right away. Then
     // again, you might not...
 
+    // FIXME: factorize the code here which is common for all the
+    // spots where we test for OpenGL errors into a SoGL
+    // function. 20011115 mortene.
     int err = glGetError();
     if (err != GL_NO_ERROR) {
       const char * errorstring;

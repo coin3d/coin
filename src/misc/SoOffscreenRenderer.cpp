@@ -56,6 +56,25 @@
 //
 // 20020110 mortene.
 
+// FIXME: expand this code and integrate properly into doc as a usage
+// example on how to write animations with proper system-time control:
+//
+// [snip]
+//
+//  SoSFTime * realtime = SoDB::getGlobalField("realTime");
+//  SoDB::enableRealTimeSensor(FALSE);
+//  realtime = 0.0;
+//  for (int i=0; i < NRFRAMES; i++) {
+//    offscreenrend->render(root);
+//    SbString framefile;
+//    framefile.sprintf("frame%06d.rgb", i);
+//    offscreenrend->writeToRGB(framefile);
+//    realtime = realtime.getValue() + 1/60.0;
+//  }
+// [snip]
+//
+// 20020224 mortene.
+
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -755,6 +774,8 @@ SoOffscreenRenderer::~SoOffscreenRenderer()
 float
 SoOffscreenRenderer::getScreenPixelsPerInch(void)
 {
+  // FIXME: implement me, goddammit. (Ugly, as we need X11-, Win32-
+  // and MacOSX-specific code.) 20020308 mortene.
   COIN_STUB();
   return 72.0f; // default value
 }

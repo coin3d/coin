@@ -69,7 +69,7 @@
   that when vertexordering is unknown, two-sided lighting should be
   enabled, since it will be difficult to know if a normal points in or
   out of a polygon.  But for compatibility reasons we are of course
-  sticking to the same behavior as the Inventor library.)
+  sticking to the same behavior as the original SGI Inventor library.)
 */
 
 
