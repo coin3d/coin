@@ -76,7 +76,7 @@
 #include <coindefs.h> // COIN_OBSOLETED
 
 // define this to debug path traversal
-// #define COIN_DEBUG_PATH_TRAVERSAL 1
+// #define DEBUG_PATH_TRAVERSAL
 
 // *************************************************************************
 
@@ -604,18 +604,18 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
       assert(curlen <= this->applieddata.path->getFullLength());
       if (this->currentpath.getIndex(curlen-1) !=
           this->applieddata.path->getIndex(curlen-1)) {
-#ifdef COIN_DEBUG_PATH_TRAVERSAL
+#ifdef DEBUG_PATH_TRAVERSAL
         fprintf(stderr,"off path at: %d (%s), depth: %d\n",
                 childindex, node->getName().getString(), curlen);
-#endif // COIN_DEBUG_PATH_TRAVERSAL
+#endif // DEBUG_PATH_TRAVERSAL
         this->currentpathcode = OFF_PATH;
       }
       else if (curlen == this->applieddata.path->getFullLength()) {
         this->currentpathcode = BELOW_PATH;
-#ifdef COIN_DEBUG_PATH_TRAVERSAL
+#ifdef DEBUG_PATH_TRAVERSAL
         fprintf(stderr,"below path at: %d (%s), depth: %d\n",
                 childindex, node->getName().getString(),curlen);
-#endif // COIN_DEBUG_PATH_TRAVERSAL
+#endif // DEBUG_PATH_TRAVERSAL
       }
     }
     else {
@@ -643,17 +643,17 @@ SoAction::pushCurPath(const int childindex, SoNode * node)
       // if no path is found, we're off path
       if (i == n) {
         this->currentpathcode = OFF_PATH;
-#ifdef COIN_DEBUG_PATH_TRAVERSAL
+#ifdef DEBUG_PATH_TRAVERSAL
         fprintf(stderr,"off path at: %d (%s), depth: %d\n",
                 childindex, node->getName().getString(), curlen);
-#endif // COIN_DEBUG_PATH_TRAVERSAL
+#endif // DEBUG_PATH_TRAVERSAL
       }
       else if (len == curlen) {
         this->currentpathcode = BELOW_PATH;
-#ifdef COIN_DEBUG_PATH_TRAVERSAL
+#ifdef DEBUG_PATH_TRAVERSAL
         fprintf(stderr,"below path at: %d (%s), depth: %d\n",
                 childindex, node->getName().getString(), curlen);
-#endif // COIN_DEBUG_PATH_TRAVERSAL
+#endif // DEBUG_PATH_TRAVERSAL
       }
     }
   }
