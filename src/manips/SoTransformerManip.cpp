@@ -61,7 +61,7 @@ SoTransformerManip::setLocateHighlighting(SbBool onoff)
 {
   SoDragger *dragger = this->getDragger();
   if (dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
-    return ((SoTransformerDragger*)dragger)->setLocateHighlighting(onoff);
+    ((SoTransformerDragger*)dragger)->setLocateHighlighting(onoff);
   }
 }
 
@@ -70,7 +70,7 @@ SoTransformerManip::unsquishKnobs(void)
 {
   SoDragger *dragger = this->getDragger();
   if (dragger->isOfType(SoTransformerDragger::getClassTypeId())) {
-    return ((SoTransformerDragger*)dragger)->unsquishKnobs();
+    ((SoTransformerDragger*)dragger)->unsquishKnobs();
   }
 }
 
