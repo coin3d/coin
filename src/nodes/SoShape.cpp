@@ -315,18 +315,19 @@ SoShape::rayPick(SoRayPickAction * action)
   if (this->shouldRayPick(action)) {
     this->computeObjectSpaceRay(action);
 
-    // if we have a valid bbox cache, test bbox/ray intersection
-    // before testing all triangles.
-    LOCK_BBOX(this);
-    if (!THIS ||
-        !THIS->bboxcache ||
-        !THIS->bboxcache->isValid(action->getState()) ||
-        soshape_ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
+    if (THIS) {
+      LOCK_BBOX(this);
+      if (!THIS->bboxcache ||
+          !THIS->bboxcache->isValid(action->getState()) ||
+          soshape_ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
+        UNLOCK_BBOX(this); // unlock as soon as possible
+        this->generatePrimitives(action);
+        return;
+      }
       UNLOCK_BBOX(this);
-      this->generatePrimitives(action);
     }
     else {
-      UNLOCK_BBOX(this);
+      this->generatePrimitives(action);
     }
   }
 }
