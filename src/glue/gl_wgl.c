@@ -62,6 +62,8 @@ coin_wgl_getprocaddress(const char * fname)
      * doesn't work, though, as GetProcAddress() will *only* resolve
      * symbols from the specific DLL module handle.
      */
+    /* FIXME: switch to using the cc_dl interface when
+       GetModuleHandle() is integrated there. 20021015 mortene. */
     HINSTANCE glhandle = GetModuleHandle("opengl32.dll");
 
     if (!glhandle && coin_glglue_debug()) {
