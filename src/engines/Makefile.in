@@ -97,11 +97,6 @@ coin_src_dir = @coin_src_dir@
 install_sh = @install_sh@
 sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 
-
-BUILT_SOURCES = \
-	$(top_srcdir)/src/engines/lex.so_eval.c \
-	$(top_srcdir)/src/engines/evaluator.tab.c
-
 @HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
 @HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
 @HACKING_COMPACT_BUILD_FALSE@	SoBoolOperation.cpp SoBoolOperation.h \
@@ -185,6 +180,10 @@ ALLINSTHEADERS = \
 
 # Don't use the explicit rules, they will just confuse users on
 # systems without flex and/or bison. 20000606 mortene.
+
+#BUILT_SOURCES = \
+#	$(top_srcdir)/src/engines/lex.so_eval.c \
+#	$(top_srcdir)/src/engines/evaluator.tab.c
 
 #$(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
 #	flex -o$(top_srcdir)/src/engines/lex.so_eval.c -L $(top_srcdir)/src/engines/evaluator.l
@@ -562,7 +561,6 @@ distclean-generic:
 
 maintainer-clean-generic:
 	-rm -f Makefile.in
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 mostlyclean-am:  mostlyclean-libLTLIBRARIES \
 		mostlyclean-noinstLTLIBRARIES mostlyclean-compile \
 		mostlyclean-libtool mostlyclean-tags mostlyclean-depend \
