@@ -244,8 +244,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <coindefs.h> // COIN_OBSOLETED
 
-#ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
-
+// Internal helper class.
 class SoDraggerCache {
 public:
   SoDraggerCache(SoDragger * parent) :
@@ -282,7 +281,7 @@ public:
     this->path->truncate(0);
   }
 
-  SoFullPath * path; // use temp path to avoid auditor overhead
+  SoFullPath * path;
   SoDragger * dragger; // pointer to cache owner
   SoGetMatrixAction * matrixAction; // avoid reallocating this action each frame
   SbMatrix draggerToWorld;
@@ -298,7 +297,7 @@ public:
   SbBool ignoreinbbox;
   const SoEvent * currentevent;
   SoPath * pickedpath;
-  class SoDraggerCache * draggercache;
+  SoDraggerCache * draggercache;
 
   SoCallbackList startCB;
   SoCallbackList motionCB;
@@ -318,7 +317,6 @@ public:
   SoPath * surrogatepath;
 };
 
-#endif // DOXYGEN_SKIP_THIS
 
 SO_KIT_SOURCE(SoDragger);
 
@@ -964,7 +962,6 @@ SoPath *
 SoDragger::createPathToThis(void)
 {
   assert(THIS->draggercache);
-  if (THIS->draggercache == NULL) return NULL; // should not happen
   assert(THIS->draggercache->path);
   SoPath * orgpath = (SoPath *) THIS->draggercache->path;
   return new SoPath(*orgpath);
@@ -1596,14 +1593,14 @@ void
 SoDragger::setDefaultOnNonWritingFields(void)
 {
 #define CHECK_DEFAULT(name, type, val) \
-  f = (SoField*) this->getField(name); \
-  if (f && !(f->isConnectionEnabled() && f->isConnected())) { \
-    if (((type*)f)->getValue() == val) f->setDefault(TRUE); \
-  } \
-  f = NULL
+  do { \
+    SoField * f = (SoField*) this->getField(name); \
+    if (f) { \
+      if (((type*)f)->getValue() == val) f->setDefault(TRUE); \
+    } \
+  } while (0)
 
   // check common subdragger fields
-  SoField * f;
   CHECK_DEFAULT("translation", SoSFVec3f, SbVec3f(0.0f, 0.0f, 0.0f));
   CHECK_DEFAULT("center", SoSFVec3f, SbVec3f(0.0f, 0.0f, 0.0f));
   CHECK_DEFAULT("scaleFactor", SoSFVec3f, SbVec3f(1.0f, 1.0f, 1.0f));
