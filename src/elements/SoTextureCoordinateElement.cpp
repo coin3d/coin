@@ -308,7 +308,7 @@ SoTextureCoordinateElement::get4(const int index) const
 {
   assert(index >= 0 && index < this->numCoords);
   assert(this->whatKind == EXPLICIT);
-  if (!(this->coordsDimension==4))
+  if (this->coordsDimension==4)
     return this->coords4[index];
   else {
     if (this->coordsDimension==2)
