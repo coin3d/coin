@@ -106,7 +106,7 @@
   all values with one function call; setValues().
 */
 /*!
-  \var SoMFImage SoTexture3::images
+  \var SoSFImage3 SoTexture3::images
   Inline image data.
 */
 /*!
