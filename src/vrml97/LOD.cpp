@@ -93,17 +93,17 @@
 */
 
 /*!
-  SoMFFloat SoVRMLLOD::range
+  \var SoMFFloat SoVRMLLOD::range
   The range for each level.
 */
 
 /*!
-  SoSFVec3f SoVRMLLOD::center
+  \var SoSFVec3f SoVRMLLOD::center
   The center used when calculating distance.
 */
 
 /*!
-  SoMFNode SoVRMLLOD::level
+  \var SoMFNode SoVRMLLOD::level
   The different levels.
 */
 
