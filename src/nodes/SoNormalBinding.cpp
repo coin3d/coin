@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -37,6 +37,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
 
 /*!
   \enum SoNormalBinding::Binding
@@ -112,10 +113,14 @@ SoNormalBinding::GLRender(SoGLRenderAction * action)
 void
 SoNormalBinding::doAction(SoAction * action)
 {
-  if (!this->value.isIgnored()) {
-    SoNormalBindingElement::set(action->getState(), this,
+  SoState * state = action->getState();
+  if (!this->value.isIgnored() && !SoOverrideElement::getNormalBindingOverride(state)) {
+    SoNormalBindingElement::set(state, this,
                                 (SoNormalBindingElement::Binding)
                                 this->value.getValue());
+    if (this->isOverride()) {
+      SoOverrideElement::setNormalBindingOverride(state, this, TRUE);
+    }
   }
 }
 
@@ -144,13 +149,12 @@ SbBool
 SoNormalBinding::readInstance(SoInput * in, unsigned short flags)
 {
   SbBool ret = inherited::readInstance(in, flags);
-  
+
   if (this->value.getValue() < 2) {
     // old OIV files might use obsolete bindings.  Change to
     // PER_VERTEX_INDEXED
     this->value = PER_VERTEX_INDEXED;
   }
-  
+
   return ret;
 }
-
