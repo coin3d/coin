@@ -396,6 +396,7 @@ case "$host_os" in
 esac
 
 if test $ac_coin_unknown_platform = yes; then
+  echo
   echo "************************* WARNING ****************************"
   echo "*"
   echo "* We have not tested Coin on the $host_os $host_cpu"
@@ -403,51 +404,29 @@ if test $ac_coin_unknown_platform = yes; then
   echo "* back to us at <coin-support@sim.no> how it works out."
   echo "*"
   echo "**************************************************************"
+  echo
 fi
 
 
 case "$host_os" in
   irix*)
-    echo
-    echo "Detected SGI IRIX. A couple of hints regarding this platform:"
-    echo
-    echo "  1 if linking fails due to problems with an error message about"
-    echo "    \"Argument list too long\", you need to increase the kernel"
-    echo "    setting of memory allocated to argument parsing in the shells."
-    echo
-    echo "    Log in as root, or do this through your sysadmin:"
-    echo
-    echo "      # systune -i"
-    echo "      > ncargs 40960"
-    echo "      > quit"
-    echo
-    echo "    To make the changes survive a reboot, copy the new kernel over"
-    echo "    the old one:"
-    echo
-    echo "      # mv /unix.install /unix"
-    echo
-    echo "    An alternative fix for this (if you don't have root access to"
-    echo "    the system, for instance) is to configure with the --enable-compact"
-    echo "    option."
-    echo
-    echo
-    echo "  2 if linking fails with the error messages:"
-    echo
-    echo "      ld: ERROR 48: Cannot access registry file .libs/so_locations ..."
-    echo "      ld: FATAL 51: Can't assign virtual addresses for ..."
-    echo
-    echo "    ..you're typically trying to link over NFS, which the SGI linker"
-    echo "    is not too fond of in certain situations. If this happens to you,"
-    echo "    try compiling and linking on a local disk instead."
+    echo ""
+    echo " Detected SGI IRIX. There are some hints regarding this platform"
+    echo " in the file "
+    echo ""
+    echo "           ${srcdir}/README.IRIX"
+    echo ""
+    echo " Please take a look if this is your first time building on IRIX."
     echo ;;
 
   aix*)
-    echo
-    echo "Detected IBM AIX. A hint for building on this platform:"
-    echo
-    echo "  If you get the error message \"Arg list too long\" when linking"
-    echo "  the Coin library, you need to re-configure with the"
-    echo "  --enable-compact option and try to make again."
+    echo ""
+    echo " Detected IBM AIX. There are some hints regarding this platform"
+    echo " in the file "
+    echo ""
+    echo "           ${srcdir}/README.AIX"
+    echo ""
+    echo " Please take a look if this is your first time building on AIX."
     echo ;;
 esac
 

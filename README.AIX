@@ -1,0 +1,19 @@
+Here are some information about a common problem when building on IBM
+AIX platforms:
+
+ 1 If you get the error message "Arg list too long" when linking the
+   Coin library, you need to re-run ``configure'' with the
+   "--enable-compact" option and try to make again.
+
+   The problem comes from AIX' much too low setting of the memory
+   allocated for shell argument parsing. This is a kernel parameter
+   which on AIX, unlike other operating systems like Linux or SGI
+   IRIX, can _not_ be tuned.
+
+
+The above is so far the only possible problem we are aware of on IBM
+AIX platforms when trying to configure and build Coin. If you bump
+into any other problems, please let us know.
+
+--
+mortene@sim.no

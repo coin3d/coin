@@ -1,0 +1,57 @@
+Here are some information about common problems when building on SGI
+IRIX platforms, sorted in approximate order of your chances of getting
+hit by the problem:
+
+
+ 1 If you are using the native SGI MIPSPro compiler, dependency
+   tracking during compilation might fail. If you get an error message
+   where one of the lines looks something like this:
+
+        CC WARNING: phase key (c) is no longer supported
+
+   ..re-run ``configure'' with the "--disable-dependency-tracking"
+   option.
+
+
+ 2 The SGI IRIX Make program has certain deficiencies, so if you get
+   lots of strange warnings and/or errors during build, we recommend
+   that you install and use GNU Make instead.
+
+
+ 3 If linking fails due to problems with an error message about
+   "Argument list too long", you need to increase the kernel setting
+   of memory allocated to argument parsing in the shells.
+
+   Log in as root, or do this through your sysadmin:
+
+      # systune -i
+      > ncargs 81920
+      > quit
+
+   To make the changes survive a reboot, copy the new kernel over the
+   old one:
+
+      # mv /unix.install /unix
+
+   An alternative fix for this (if you don't have root access to the
+   system, for instance) is to re-run ``configure'' with the
+   "--enable-compact" option.
+
+
+ 4 If linking fails with the error messages:
+
+     ld: ERROR 48: Cannot access registry file .libs/so_locations ...
+     ld: FATAL 51: Can't assign virtual addresses for ...
+
+   ..you're typically trying to link over NFS, which the SGI linker is
+   not too fond of in certain situations -- as it needs to be able to
+   lock the so_locations file. If this happens to you, try compiling
+   and linking on a local disk instead.
+
+
+The above is a complete list of the possible problems we are aware of
+on SGI IRIX platforms when trying to configure and build Coin. If you
+bump into any other problems, please let us know.
+
+--
+mortene@sim.no
