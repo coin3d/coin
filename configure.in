@@ -221,7 +221,7 @@ if test "x$want_simage" = "xyes"; then
     AC_CHECK_LIB(simage, simage_read_image, , simage_dev=no, -lz $MATHLIB)
   fi
   if test "$simage_dev" = no; then
-    AC_MSG_WARN(libsimage development system not found -- no simage texture support)
+    AC_MSG_WARN(libsimage development system not found)
   fi
 fi
 

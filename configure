@@ -3340,8 +3340,40 @@ fi
 
 if test "x$enable_warnings" = "xyes"; then
   if test "x$GXX" = "xyes" || test "x$GCC" = "xyes"; then
-    CFLAGS="$CFLAGS -W -Wall -Wno-unused -Wno-multichar"
-    CXXFLAGS="$CXXFLAGS -W -Wall -Wno-unused -Wno-multichar"
+    
+
+echo $ac_n "checking whether $CXX accepts -Wno-multichar""... $ac_c" 1>&6
+echo "configure:3347: checking whether $CXX accepts -Wno-multichar" >&5
+_save_cxxflags=$CXXFLAGS
+CXXFLAGS="$CXXFLAGS -Wno-multichar"
+cat > conftest.$ac_ext <<EOF
+#line 3351 "configure"
+#include "confdefs.h"
+
+int main() {
+
+; return 0; }
+EOF
+if { (eval echo configure:3358: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+  rm -rf conftest*
+  _accept_result=yes _warn_flags=-Wno-multichar
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  _accept_result=no 
+fi
+rm -f conftest*
+echo "$ac_t""$_accept_result" 1>&6
+CXXFLAGS=$_save_cxxflags
+unset _accept_result _save_cxxflags
+
+    _warn_flags="-W -Wall -Wno-unused $_warn_flags"
+
+    CFLAGS="$CFLAGS $_warn_flags"
+    CXXFLAGS="$CXXFLAGS $_warn_flags"
+
+    unset _warn_flags
   fi
 else
   if test "x$GXX" != "xyes" && test "x$GCC" != "xyes"; then
@@ -3392,15 +3424,15 @@ fi
 
 if test "x$want_simage" = "xyes"; then
   echo $ac_n "checking for simage header file""... $ac_c" 1>&6
-echo "configure:3396: checking for simage header file" >&5
+echo "configure:3428: checking for simage header file" >&5
 
     cat > conftest.$ac_ext <<EOF
-#line 3399 "configure"
+#line 3431 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3404: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3436: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3422,12 +3454,12 @@ rm -f conftest*
     _SAVECPPFLAGS=$CPPFLAGS
     CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
     cat > conftest.$ac_ext <<EOF
-#line 3426 "configure"
+#line 3458 "configure"
 #include "confdefs.h"
 #include <simage.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:3431: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:3463: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -3451,7 +3483,7 @@ rm -f conftest*
 
   if test "x$simage_dev" = "xyes"; then
     echo $ac_n "checking for simage_read_image in -lsimage""... $ac_c" 1>&6
-echo "configure:3455: checking for simage_read_image in -lsimage" >&5
+echo "configure:3487: checking for simage_read_image in -lsimage" >&5
 ac_lib_var=`echo simage'_'simage_read_image | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -3459,7 +3491,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lsimage -lz $MATHLIB $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 3463 "configure"
+#line 3495 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 #ifdef __cplusplus
@@ -3473,7 +3505,7 @@ int main() {
 simage_read_image()
 ; return 0; }
 EOF
-if { (eval echo configure:3477: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:3509: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -3503,7 +3535,7 @@ fi
 
   fi
   if test "$simage_dev" = no; then
-    echo "configure: warning: libsimage development system not found -- no simage texture support" 1>&2
+    echo "configure: warning: libsimage development system not found" 1>&2
   fi
 fi
 

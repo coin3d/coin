@@ -995,6 +995,8 @@ dnl    * [mortene:19991114] find out how to get GCC's
 dnl      -Werror-implicit-function-declaration option to work as expected
 dnl
 
+
+dnl SIM_COMPILER_WARNINGS( )
 AC_DEFUN(SIM_COMPILER_WARNINGS,
 [
 dnl Autoconf is a developer tool, so don't bother to support older versions.
@@ -1011,16 +1013,42 @@ AC_ARG_ENABLE(warnings,
 
 if test "x$enable_warnings" = "xyes"; then
   if test "x$GXX" = "xyes" || test "x$GCC" = "xyes"; then
-dnl FIXME: -Werror-implicit-function-declaration doesn't seem to work
-dnl under egcs-1.0.2, so we need to check for availability. 19991106 mortene.
-dnl    CXXFLAGS="$CXXFLAGS -W -Wall -Werror-implicit-function-declaration"
-    CFLAGS="$CFLAGS -W -Wall -Wno-unused -Wno-multichar"
-    CXXFLAGS="$CXXFLAGS -W -Wall -Wno-unused -Wno-multichar"
+    SIM_COMPILER_OPTION(-Wno-multichar, _warn_flags=-Wno-multichar)
+    _warn_flags="-W -Wall -Wno-unused $_warn_flags"
+
+    CFLAGS="$CFLAGS $_warn_flags"
+    CXXFLAGS="$CXXFLAGS $_warn_flags"
+
+    unset _warn_flags
   fi
 else
   if test "x$GXX" != "xyes" && test "x$GCC" != "xyes"; then
     AC_MSG_WARN(--enable-warnings only has effect when using GNU gcc or g++)
   fi
 fi
+])
+
+dnl  Use this file to store miscellaneous macros related to compiler
+dnl  queries.
+dnl
+dnl  Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl  TODO:
+dnl    * [mortene:19991125] make SIM_COMPILER_OPTION work with C compilers.
+dnl
+
+
+dnl SIM_COMPILER_OPTION(OPTION-TO-TEST, ACTION-IF-TRUE [, ACTION-IF-FALSE])
+AC_DEFUN(SIM_COMPILER_OPTION,
+[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.13])
+AC_MSG_CHECKING(whether $CXX accepts [$1])
+_save_cxxflags=$CXXFLAGS
+CXXFLAGS="$CXXFLAGS [$1]"
+AC_TRY_COMPILE( , , _accept_result=yes [$2], _accept_result=no [$3])
+AC_MSG_RESULT($_accept_result)
+CXXFLAGS=$_save_cxxflags
+unset _accept_result _save_cxxflags
 ])
 
