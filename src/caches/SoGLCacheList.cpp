@@ -196,9 +196,9 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
     THIS->opencache = new SoGLRenderCache(state);
     THIS->opencache->ref();
     SoCacheElement::set(state, THIS->opencache);
-    THIS->opencache->open(state);
     SoGLLazyElement::beginCaching(state, THIS->opencache->getPreLazyState(),
                                   THIS->opencache->getPostLazyState());
+    THIS->opencache->open(state);
   }
   THIS->autocachebits = SoGLCacheContextElement::resetAutoCacheBits(state);
 }
