@@ -26,6 +26,12 @@
   \brief The SoDirectionalLightDragger class provides interactive geometry for manipulating a directional light source.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/directionallight.png">
+  </center>
+
   This dragger is well suited to use for setting up the fields of a
   SoDirectionalLight node, as it provides geometry for the end-user to
   interact with a directional vector.
@@ -41,8 +47,6 @@
 
   \sa SoDirectionalLightManip
 */
-// FIXME: a bitmap snapshot of the default dragger appearance would be
-// nice. 20011023 mortene.
 
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>

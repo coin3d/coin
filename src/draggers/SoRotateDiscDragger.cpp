@@ -26,6 +26,12 @@
   \brief The SoRotateDiscDragger class is for rotating geometry around a single axis.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/rotatedisc.png">
+  </center>
+
   Use an instance of this dragger class in your scenegraph to let the
   end-users of your application rotate geometry around a pre-defined
   axis vector in 3D.

@@ -26,6 +26,12 @@
   \brief The SoDragPointDragger class provides mechanisms for moving a point in 3D.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/dragpoint.png">
+  </center>
+
   This dragger is convenient to use when it is desirable that the
   end-user should interact with points by positioning them freely in
   3D space.
@@ -41,10 +47,8 @@
   other principal axes.  This is done by position the mouse pointer
   over the dragger geometry and pressing and releasing a CTRL key.
 */
-// FIXME: Should include a diagram of the catalog structure in the
-// class documentation. Plus an URL-link to the default geometry-file?
-// Plus snapshot of how the dragger looks (and behaves?).  Plus a
-// small usage example.  20010909 mortene.
+// FIXME: Should include an URL-link to the default geometry-file?
+// Plus a small usage example.  20010909 mortene.
 
 #include <Inventor/draggers/SoDragPointDragger.h>
 

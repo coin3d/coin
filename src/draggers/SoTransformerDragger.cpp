@@ -26,6 +26,12 @@
   \brief The SoTransformerDragger provides geometry for translation, scaling and rotations.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/transformer.png">
+  </center>
+
   Translate the dragger by clicking and dragging any of the
   (invisible) sides. Translation will default be done in the plane of
   the side the end-user selected. The user can hold down a \c SHIFT

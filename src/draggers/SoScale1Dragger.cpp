@@ -26,6 +26,12 @@
   \brief The SoScale1Dragger class provides a mechanism for the end-user to scale in one dimension.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/scale1.png">
+  </center>
+
   Use this dragger to allow the end-user of your application to scale
   along the X-axis. (Use a transformation node in front of the dragger
   to position it and re-orient it to scale along any vector.)

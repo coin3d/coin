@@ -26,6 +26,12 @@
   \brief The SoPointLightDragger class provides interactive geometry for manipulating a point light source.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/pointlight.png">
+  </center>
+
   This dragger is well suited to use for setting up the fields of a
   SoPointLight node, as it provides geometry for the end-user to
   translate a point in 3D space.

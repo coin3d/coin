@@ -26,6 +26,12 @@
   \brief The SoJackDragger class is a dragger you can translate, rotate and scale.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/jack.png">
+  </center>
+
   Translation is done with this dragger by picking the flat
   transparent box ("x-z" translation) or the solid middle part of the
   axis ("y"-axis translation). Press a SHIFT-key while translating in

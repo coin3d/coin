@@ -26,6 +26,12 @@
   \brief The SoHandleBoxDragger class provides support for interactive scaling and translation.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/handlebox.png">
+  </center>
+
   A handlebox dragger is convenient to use for letting the user
   interact with geometry that can be scaled (uniformly or in a
   non-uniform way) and translated in 3D.
@@ -35,10 +41,8 @@
   dragger and click and drag any of the corner or edge markers for
   scaling operations.
 */
-// FIXME: Should include a diagram of the catalog structure in the
-// class documentation. Plus an URL-link to the default geometry-file?
-// Plus snapshot of how the dragger looks (and behaves?).  Plus a
-// small usage example.  20011113 mortene.
+// FIXME: Should include an URL-link to the default geometry-file?
+// Plus a small usage example.  20011113 mortene.
 
 #include <Inventor/draggers/SoHandleBoxDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>

@@ -26,6 +26,12 @@
   \brief The SoTabBoxDragger wraps a box around geometry you can then translate and scale.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/tabbox.png">
+  </center>
+
   This dragger lets the end-user do translation and non-uniform
   scaling of geometry with an easy to understand interface.
 

@@ -26,6 +26,12 @@
   \brief The SoTabPlaneDragger class is a dragger you can translate and scale within a plane.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/tabplane.png">
+  </center>
+
   For translation, click anywhere inside the dragger's plane and move
   it about in 2D.
 

@@ -26,6 +26,12 @@
   \brief The SoCenterballDragger class is a dragger you can rotate and translate.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/centerball.png">
+  </center>
+
   For rotation, click either the ball "bands" to constrain rotation to
   happen around the normal vector of the disc, or anywhere else on the
   (invisible) ball for free-form rotation.

@@ -26,6 +26,12 @@
   \brief The SoRotateSphericalDragger class is for rotating geometry in any direction.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/rotatespherical.png">
+  </center>
+
   Use an instance of this dragger class in your scenegraph to let the
   end-users of your application rotate geometry freely in any
   direction.

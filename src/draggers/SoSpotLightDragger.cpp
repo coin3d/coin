@@ -26,6 +26,12 @@
   \brief The SoSpotLightDragger class provides interactive geometry for manipulating a spotlight.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/spotlight.png">
+  </center>
+
   This dragger is well suited for setting up the fields of a
   SoSpotLight node, as it provides geometry for the end-user to
   interact with a directional vector for the spotlight, to set up it's

@@ -26,6 +26,12 @@
   \brief The SoTrackballDragger provides the end-user with rotation and scaling interaction possibilities.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball.png">
+  </center>
+
   The dragger has three "bands" around a transparent sphere, which
   when clicked and dragged will rotate around the three principal
   axes. In addition, the user can define his own rotation axis by
@@ -40,13 +46,6 @@
   clicking when the left mouse button. The dragger is then in scaling
   mode, and dragging while holding down the mouse button will \e
   uniformly scale the trackball sphere.
-
-  Here's how the dragger looks with it's default geometry (minus the
-  cone, which is part of the rest of the scenegraph, of course):
-
-  <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball.png">
-  </center>
 
   For the application programmer's convenience, the Coin library also
   provides a manipulator class called SoTrackballManip, which wraps

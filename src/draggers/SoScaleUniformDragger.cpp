@@ -26,6 +26,12 @@
   \brief The SoScaleUniformDragger class provides a mechanism for the end-user to scale in three dimensions.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/scaleuniform.png">
+  </center>
+
   Use this dragger to allow the end-user of your application to scale
   simultaneously along all the axes.
 

@@ -26,6 +26,12 @@
   \brief The SoTranslate2Dragger class provides a mechanism for the end-user to translate in a plane.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/translate2.png">
+  </center>
+
   Use this dragger to allow the end-user of your application to
   translate along the X-axis and the Y-axis at the same time, ie
   freely inside a 3D plane. (Use a transformation node in front of the

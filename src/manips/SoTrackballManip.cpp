@@ -73,7 +73,7 @@
   with the dragger bands.
 
   <center>
-  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball.png">
+  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball-cone.png">
   </center>
 */
 

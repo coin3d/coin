@@ -26,6 +26,12 @@
   \brief The SoTransformBoxDragger provides a box which can be translated, scaled and rotated.
   \ingroup draggers
 
+  \DRAGGER_DEFAULT_SCREENSHOT
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/transformbox.png">
+  </center>
+
   Translate the dragger by clicking and dragging any of the
   (invisible) sides. Scaling is done by dragging the corner
   cubes. Only uniform scaling is supported. Rotation is done by

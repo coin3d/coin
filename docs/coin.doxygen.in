@@ -256,7 +256,8 @@ ALIASES                = \
   NODEKIT_PRE_TABLE="Detailed information on catalog parts:" \
   NODEKIT_POST_TABLE="(See SoBaseKit::printTable() for information about the output formatting.)" \
   \
-  DRAGGER_CONSTRUCTOR="Default constructor, sets up the dragger nodekit catalog with the interaction and feedback geometry."
+  DRAGGER_CONSTRUCTOR="Default constructor, sets up the dragger nodekit catalog with the interaction and feedback geometry." \
+  DRAGGER_DEFAULT_SCREENSHOT="Here's how the dragger looks with it's default geometry in the inactive state:"
 
 
 # The ENABLED_SECTIONS tag can be used to enable conditional 
