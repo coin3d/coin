@@ -119,7 +119,7 @@ static int defaultfont_edgeidx_33[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_34[] = {
  0.003333f, 0.665556f,
@@ -205,7 +205,7 @@ static int defaultfont_edgeidx_34[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_35[] = {
  0.000000f, 0.240000f,
@@ -313,7 +313,7 @@ static int defaultfont_edgeidx_35[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_36[] = {
  0.016667f, 0.201111f,
@@ -531,7 +531,7 @@ static int defaultfont_edgeidx_36[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_37[] = {
  0.004444f, 0.514444f,
@@ -828,7 +828,7 @@ static int defaultfont_edgeidx_37[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_38[] = {
  0.187778f, 0.636667f,
@@ -1133,7 +1133,7 @@ static int defaultfont_edgeidx_38[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_39[] = {
  0.000000f, 0.686667f,
@@ -1212,7 +1212,7 @@ static int defaultfont_edgeidx_39[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_40[] = {
  0.097778f, 0.193333f,
@@ -1312,7 +1312,7 @@ static int defaultfont_edgeidx_40[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_41[] = {
  0.000000f, 0.733333f,
@@ -1412,7 +1412,7 @@ static int defaultfont_edgeidx_41[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_42[] = {
  0.000000f, 0.425556f,
@@ -1662,7 +1662,7 @@ static int defaultfont_edgeidx_42[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_43[] = {
  0.000000f, 0.244444f,
@@ -1706,7 +1706,7 @@ static int defaultfont_edgeidx_43[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_44[] = {
  0.007778f, 0.084444f,
@@ -1788,7 +1788,7 @@ static int defaultfont_edgeidx_44[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_45[] = {
  0.000000f, 0.244444f,
@@ -1810,7 +1810,7 @@ static int defaultfont_edgeidx_45[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_46[] = {
  0.000000f, 0.047778f,
@@ -1862,7 +1862,7 @@ static int defaultfont_edgeidx_46[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_47[] = {
  0.254444f, 0.751111f,
@@ -1884,7 +1884,7 @@ static int defaultfont_edgeidx_47[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_48[] = {
  0.000000f, 0.367778f,
@@ -2058,7 +2058,7 @@ static int defaultfont_edgeidx_48[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_49[] = {
  0.000000f, 0.634444f,
@@ -2134,7 +2134,7 @@ static int defaultfont_edgeidx_49[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_50[] = {
  0.001111f, 0.530000f,
@@ -2261,7 +2261,7 @@ static int defaultfont_edgeidx_50[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_51[] = {
  0.021111f, 0.620000f,
@@ -2460,7 +2460,7 @@ static int defaultfont_edgeidx_51[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_52[] = {
  0.044445f, 0.256667f,
@@ -2517,7 +2517,7 @@ static int defaultfont_edgeidx_52[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_53[] = {
  0.043333f, 0.457778f,
@@ -2665,7 +2665,7 @@ static int defaultfont_edgeidx_53[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_54[] = {
  0.007778f, 0.405556f,
@@ -2863,7 +2863,7 @@ static int defaultfont_edgeidx_54[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_55[] = {
  0.388889f, 0.653333f,
@@ -2912,7 +2912,7 @@ static int defaultfont_edgeidx_55[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_56[] = {
  0.084445f, 0.173333f,
@@ -3133,7 +3133,7 @@ static int defaultfont_edgeidx_56[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_57[] = {
  0.015556f, 0.586667f,
@@ -3334,7 +3334,7 @@ static int defaultfont_edgeidx_57[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_58[] = {
  0.000000f, 0.047778f,
@@ -3426,7 +3426,7 @@ static int defaultfont_edgeidx_58[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_59[] = {
  0.007778f, 0.084444f,
@@ -3548,7 +3548,7 @@ static int defaultfont_edgeidx_59[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_60[] = {
  0.092222f, 0.281111f,
@@ -3579,7 +3579,7 @@ static int defaultfont_edgeidx_60[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_61[] = {
  0.000000f, 0.133333f,
@@ -3611,7 +3611,7 @@ static int defaultfont_edgeidx_61[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_62[] = {
  0.472222f, 0.281111f,
@@ -3642,7 +3642,7 @@ static int defaultfont_edgeidx_62[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_63[] = {
  0.055556f, 0.521111f,
@@ -3818,7 +3818,7 @@ static int defaultfont_edgeidx_63[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_64[] = {
  0.311111f, 0.257778f,
@@ -4169,7 +4169,7 @@ static int defaultfont_edgeidx_64[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_65[] = {
  0.026667f, 0.025556f,
@@ -4277,7 +4277,7 @@ static int defaultfont_edgeidx_65[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_66[] = {
  0.000000f, 0.714444f,
@@ -4507,7 +4507,7 @@ static int defaultfont_edgeidx_66[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_67[] = {
  0.007778f, 0.455556f,
@@ -4694,7 +4694,7 @@ static int defaultfont_edgeidx_67[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_68[] = {
  0.050000f, 0.026667f,
@@ -4868,7 +4868,7 @@ static int defaultfont_edgeidx_68[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_69[] = {
  0.210000f, 0.364444f,
@@ -5028,7 +5028,7 @@ static int defaultfont_edgeidx_69[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_70[] = {
  0.050000f, 0.026667f,
@@ -5167,7 +5167,7 @@ static int defaultfont_edgeidx_70[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_71[] = {
  0.006667f, 0.447778f,
@@ -5381,7 +5381,7 @@ static int defaultfont_edgeidx_71[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_72[] = {
  0.054444f, 0.027778f,
@@ -5547,7 +5547,7 @@ static int defaultfont_edgeidx_72[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_73[] = {
  0.056667f, 0.025556f,
@@ -5629,7 +5629,7 @@ static int defaultfont_edgeidx_73[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_74[] = {
  0.013333f, 0.100000f,
@@ -5747,7 +5747,7 @@ static int defaultfont_edgeidx_74[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_75[] = {
  0.051111f, 0.026667f,
@@ -5946,7 +5946,7 @@ static int defaultfont_edgeidx_75[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_76[] = {
  0.000000f, 0.714444f,
@@ -6049,7 +6049,7 @@ static int defaultfont_edgeidx_76[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_77[] = {
  0.052222f, 0.027778f,
@@ -6197,7 +6197,7 @@ static int defaultfont_edgeidx_77[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_78[] = {
  0.052222f, 0.027778f,
@@ -6324,7 +6324,7 @@ static int defaultfont_edgeidx_78[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_79[] = {
  0.126667f, 0.367778f,
@@ -6528,7 +6528,7 @@ static int defaultfont_edgeidx_79[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_80[] = {
  0.053333f, 0.030000f,
@@ -6693,7 +6693,7 @@ static int defaultfont_edgeidx_80[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_81[] = {
  0.126667f, 0.366667f,
@@ -6927,7 +6927,7 @@ static int defaultfont_edgeidx_81[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_82[] = {
  0.052222f, 0.028889f,
@@ -7104,7 +7104,7 @@ static int defaultfont_edgeidx_82[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_83[] = {
  0.000000f, 0.221111f,
@@ -7306,7 +7306,7 @@ static int defaultfont_edgeidx_83[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_84[] = {
  0.217778f, 0.028889f,
@@ -7400,7 +7400,7 @@ static int defaultfont_edgeidx_84[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_85[] = {
  0.100000f, 0.614444f,
@@ -7569,7 +7569,7 @@ static int defaultfont_edgeidx_85[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_86[] = {
  0.000000f, 0.714444f,
@@ -7675,7 +7675,7 @@ static int defaultfont_edgeidx_86[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_87[] = {
  0.000000f, 0.714444f,
@@ -7841,7 +7841,7 @@ static int defaultfont_edgeidx_87[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_88[] = {
  0.037778f, 0.026667f,
@@ -8046,7 +8046,7 @@ static int defaultfont_edgeidx_88[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_89[] = {
  0.000000f, 0.714444f,
@@ -8188,7 +8188,7 @@ static int defaultfont_edgeidx_89[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_90[] = {
  0.485556f, 0.693333f,
@@ -8267,7 +8267,7 @@ static int defaultfont_edgeidx_90[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_91[] = {
  0.084444f, -0.087778f,
@@ -8319,7 +8319,7 @@ static int defaultfont_edgeidx_91[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_92[] = {
  0.000000f, 0.751111f,
@@ -8341,7 +8341,7 @@ static int defaultfont_edgeidx_92[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_93[] = {
  0.100000f, -0.145556f,
@@ -8393,7 +8393,7 @@ static int defaultfont_edgeidx_93[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_94[] = {
  0.201111f, 0.735556f,
@@ -8424,7 +8424,7 @@ static int defaultfont_edgeidx_94[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_95[] = {
  0.000000f, -0.138889f,
@@ -8446,7 +8446,7 @@ static int defaultfont_edgeidx_95[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_96[] = {
  0.014444f, 0.644444f,
@@ -8525,7 +8525,7 @@ static int defaultfont_edgeidx_96[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_97[] = {
  0.104444f, 0.353333f,
@@ -8741,7 +8741,7 @@ static int defaultfont_edgeidx_97[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_98[] = {
  0.073333f, 0.060000f,
@@ -8909,7 +8909,7 @@ static int defaultfont_edgeidx_98[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_99[] = {
  0.085556f, 0.281111f,
@@ -9051,7 +9051,7 @@ static int defaultfont_edgeidx_99[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_100[] = {
  0.098889f, 0.216667f,
@@ -9232,7 +9232,7 @@ static int defaultfont_edgeidx_100[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_101[] = {
  0.005556f, 0.307778f,
@@ -9382,7 +9382,7 @@ static int defaultfont_edgeidx_101[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_102[] = {
  0.001111f, 0.464444f,
@@ -9506,7 +9506,7 @@ static int defaultfont_edgeidx_102[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_103[] = {
  0.050000f, 0.060000f,
@@ -9799,7 +9799,7 @@ static int defaultfont_edgeidx_103[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_104[] = {
  0.001111f, 0.692222f,
@@ -9965,7 +9965,7 @@ static int defaultfont_edgeidx_104[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_105[] = {
  0.004444f, 0.433333f,
@@ -10072,7 +10072,7 @@ static int defaultfont_edgeidx_105[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_106[] = {
  0.013333f, -0.150000f,
@@ -10197,7 +10197,7 @@ static int defaultfont_edgeidx_106[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_107[] = {
  0.000000f, 0.692222f,
@@ -10369,7 +10369,7 @@ static int defaultfont_edgeidx_107[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_108[] = {
  0.000000f, 0.692222f,
@@ -10442,7 +10442,7 @@ static int defaultfont_edgeidx_108[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_109[] = {
  0.003333f, 0.442222f,
@@ -10680,7 +10680,7 @@ static int defaultfont_edgeidx_109[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_110[] = {
  0.000000f, 0.442222f,
@@ -10834,7 +10834,7 @@ static int defaultfont_edgeidx_110[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_111[] = {
  0.015556f, 0.351111f,
@@ -10999,7 +10999,7 @@ static int defaultfont_edgeidx_111[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_112[] = {
  0.004444f, 0.436667f,
@@ -11197,7 +11197,7 @@ static int defaultfont_edgeidx_112[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_113[] = {
  0.004444f, 0.291111f,
@@ -11377,7 +11377,7 @@ static int defaultfont_edgeidx_113[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_114[] = {
  0.002222f, 0.433333f,
@@ -11504,7 +11504,7 @@ static int defaultfont_edgeidx_114[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_115[] = {
  0.001111f, -0.004444f,
@@ -11670,7 +11670,7 @@ static int defaultfont_edgeidx_115[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_116[] = {
  0.063333f, 0.130000f,
@@ -11764,7 +11764,7 @@ static int defaultfont_edgeidx_116[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_117[] = {
  0.068889f, 0.133333f,
@@ -11897,7 +11897,7 @@ static int defaultfont_edgeidx_117[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_118[] = {
  0.000000f, 0.483333f,
@@ -12012,7 +12012,7 @@ static int defaultfont_edgeidx_118[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_119[] = {
  0.000000f, 0.483333f,
@@ -12187,7 +12187,7 @@ static int defaultfont_edgeidx_119[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_120[] = {
  0.037778f, 0.026667f,
@@ -12347,7 +12347,7 @@ static int defaultfont_edgeidx_120[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_121[] = {
  0.000000f, 0.484444f,
@@ -12495,7 +12495,7 @@ static int defaultfont_edgeidx_121[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_122[] = {
  0.295556f, 0.466667f,
@@ -12568,7 +12568,7 @@ static int defaultfont_edgeidx_122[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_123[] = {
  0.094444f, -0.045556f,
@@ -12707,7 +12707,7 @@ static int defaultfont_edgeidx_123[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_124[] = {
  0.000000f, -0.015556f,
@@ -12729,7 +12729,7 @@ static int defaultfont_edgeidx_124[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_125[] = {
  0.101111f, 0.420000f,
@@ -12868,7 +12868,7 @@ static int defaultfont_edgeidx_125[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 static float defaultfont_coords_126[] = {
  0.050000f, 0.323333f,
@@ -12944,7 +12944,7 @@ static int defaultfont_edgeidx_126[] = {
 };
 
 
-//--------------
+/* -------------- */
 
 
 
@@ -13359,7 +13359,7 @@ coin_default3dfont_get_advance(int charidx)
   charidx -= 33;
   if(charidx > (126-33)) charidx = -1;
 
-  if(charidx < 0) // Treat all unknown chars as space.
+  if(charidx < 0) /* Treat all unknown chars as space. */
     return 1.0f/3.0f;
   else
     return coin_defaultfont_advance_values[charidx];
