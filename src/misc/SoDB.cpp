@@ -464,14 +464,15 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
 }
 
 /*!
-  Reads all graphs from \a in and returns them under an SoSeparator node. If
-  the file contains only a single graph under an SoSeparator node (which is
-  the most common way of constructing and exporting scene graphs), no extra
-  SoSeparator node will be made.
+  Reads all graphs from \a in and returns them under an SoSeparator
+  node. If the file contains only a single graph under an SoSeparator
+  node (which is the most common way of constructing and exporting
+  scene graphs), no extra SoSeparator node will be made.
 
-  The reference count of the root separator returned from this method will
-  be zero. Other nodes in the returned scene graph will have reference counts
-  according to the number of parent-child relationsships, as usual.
+  The reference count of the root separator returned from this method
+  will be zero. Other nodes in the returned scene graph will have
+  reference counts according to the number of parent-child
+  relationships, as usual.
 
   Returns \c NULL on any error.
  */
@@ -494,7 +495,7 @@ SoDB::readAll(SoInput * in)
   do {
     if (!SoDB::read(in, topnode)) {
       root->unref();
-      return FALSE;
+      return NULL;
     }
     if (topnode) root->addChild(topnode);
   } while (topnode && in->skipWhiteSpace());
