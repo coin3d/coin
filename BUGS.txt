@@ -1951,26 +1951,6 @@
 
 =====================================================================
 
-081 Empty SoText2-node makes bbox-calculations come up wrong.
-
-    I assume that an SoText2 with an empty string-field should exhibit
-    the same bbox-influence as no SoText2 node, but that does not seem
-    to be the case, as can be seen by loading this file into an
-    examinerviewer:
-
-    --------------8<----------- [snip] ------------------8<--------
-    #Inventor V2.1 ascii
-
-    Text3 { string "Coin" }
-    Text2 { }
-    --------------8<----------- [snip] ------------------8<--------
-
-    ..then try without the Text2 in the file.
-
-    20031027 mortene.
-
-=====================================================================
-
 082 Configure/build problem: we need to demand X11 when using GLX.
 
     As it is now, it's possible on certain platforms (at least
@@ -3197,24 +3177,6 @@ Separator {
     harm.
 
     20040607 mortene, bug reported on coin-discuss by Nikolai Ruhe.
-
-=====================================================================
-
-116 SoAsciiText::width behaves wrongly
-
-    According to the documentation, the width field specifies the
-    total width of the string, but Coin seems to use this field as the
-    spacing between each character instead.
-
-    #VRML V1.0 ascii
-    Separator {
-      AsciiText {
-        width [ 1, 10]
-        string [ "Some text string", "some other text string" ]
-      }
-    }
-
-    20040609 kintel
 
 =====================================================================
 
