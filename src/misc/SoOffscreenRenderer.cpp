@@ -34,7 +34,6 @@
 
   Currently offscreen rendering can be done with GLX (i.e. OpenGL on
   X11) and WGL (i.e. OpenGL on Win32).
-
 */
 // FIXME: include the following in documentation about how to use the
 // SoOffscreenRenderer to write movies:
@@ -1198,15 +1197,46 @@ SoOffscreenRenderer::writeToPostScript(const char * filename,
   return result;
 }
 
+// FIXME: the file format support checking could have been done
+// better, for instance by using MIME types. 20020206 mortene.
 
 /*!
-  Returns TRUE if the buffer can be saved as a file of type \a
+  Returns \c TRUE if the buffer can be saved as a file of type \a
   filetypeextension, using SoOffscreenRenderer::writeToFile().  This
-  function needs simage v1.1 or newer. Examples of supported
-  extensions are: jpg, png, tiff and rgb. The extension match is not
-  case sensitive.
+  function needs simage v1.1 or newer.
 
-  This method is an extension versus the Open Inventor API.
+  Examples of possibly supported extensions are: "jpg", "png", "tiff",
+  "gif", "bmp", etc. The extension match is not case sensitive.
+
+  Which formats are \e actually supported depends on the capabilities
+  of Coin's support library for handling import and export of
+  pixel-data files: the simage library. If the simage library is not
+  installed on your system, no extension output formats will be
+  supported.
+
+  Also, note that it is possible to build and install a simage library
+  that lacks support for most or all of the file formats it is \e
+  capable of supporting. This is so because the simage library depends
+  on other, external 3rd party libraries -- in the same manner as Coin
+  depends on the simage library for added file format support.
+
+  The two built-in formats that are supported through the
+  SoOffscreenRenderer::writeToRGB() and
+  SoOffscreenRenderer::writeToPostScript() methods (for SGI RGB format
+  and for Adobe Postscript files, respectively) are \e not considered
+  by this method, as those two formats are guaranteed to \e always be
+  supported through those functions.
+
+  So if you want to be guaranteed to be able to export a screenshot in
+  your wanted format, you will have to use either one of the above
+  mentioned method for writing SGI RGB or Adobe Postscript directly,
+  or make sure the Coin library has been built and is running on top
+  of a version of the simage library (that you have preferably built
+  yourself) with the file format you want known to have been included.
+
+
+  This method is an extension versus the original SGI Open Inventor
+  API.
 
   \sa  getNumWriteFiletypes(), getWriteFiletypeInfo(), writeToFile()
 */
@@ -1225,10 +1255,14 @@ SoOffscreenRenderer::isWriteSupported(const SbName & filetypeextension) const
 }
 
 /*!
-  Returns the number of available exporters. Information about exporters
-  can be found using getNumWriteFiletypes().
+  Returns the number of available exporters. Information about
+  exporters can be found using getNumWriteFiletypes().
 
-  This method is an extension versus the Open Inventor API.
+  See SoOffscreenRenderer::isWriteSupported() for information about
+  which file formats you can expect to be present.
+
+  This method is an extension versus the original SGI Open Inventor
+  API.
 
   \sa getWriteFiletypeInfo()
 */
@@ -1246,12 +1280,17 @@ SoOffscreenRenderer::getNumWriteFiletypes(void) const
 }
 
 /*!
-  Returns information about an image exporter. \a extlist is a list of filenameextensions
-  for a file format. E.g. for JPEG it is legal to use both jpg and jpeg. \a fullname
-  is the full name of the image format. \a description is an optional string with
-  more information about the file format.
+  Returns information about an image exporter. \a extlist is a list of
+  filenameextensions for a file format. E.g. for JPEG it is legal to
+  use both jpg and jpeg. \a fullname is the full name of the image
+  format. \a description is an optional string with more information
+  about the file format.
 
-  This method is an extension versus the Open Inventor API.
+  See SoOffscreenRenderer::isWriteSupported() for information about
+  which file formats you can expect to be present.
+
+  This method is an extension versus the original SGI Open Inventor
+  API.
 
   \sa getNumWriteFiletypes(), writeToFile()
 */
@@ -1290,9 +1329,11 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
 }
 
 /*!
-  Saves the buffer to \a filename, in the filetype specified by \a filetypeextensions.
+  Saves the buffer to \a filename, in the filetype specified by \a
+  filetypeextensions.
 
-  This method is an extension versus the Open Inventor API.
+  This method is an extension versus the orignal SGI Open Inventor
+  API.
 
   \sa isWriteSupported()
 */
