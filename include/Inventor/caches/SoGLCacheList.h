@@ -31,7 +31,8 @@ class SoGLRenderAction;
 class SoGLRenderCache;
 class SoGLCacheListP;
 
-class SoGLCacheList {
+
+class COIN_DLL_API SoGLCacheList {
 public:
   SoGLCacheList(int numcaches = 2);
   ~SoGLCacheList();
