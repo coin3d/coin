@@ -73,74 +73,70 @@ SO_INTERNAL_ENGINE_SOURCE_DYNAMIC_IO(SoSelectOne);
 */
 SoSelectOne::SoSelectOne(SoType inputtype)
 {
-  this->initialize(inputtype);
+  this->input = NULL;
+  if (!this->initialize(inputtype)) {
+#if COIN_DEBUG
+    SoDebugError::post("SoSelectOne::SoSelectOne",
+                       "invalid type '%s' for input field",
+                       inputtype == SoType::badType() ? "badType" :
+                       inputtype.getName().getString());
+#endif // COIN_DEBUG
+  }
 }
 
 // Default constructor. Leaves engine in invalid state. Should only be
 // used from import code or copy code.
 SoSelectOne::SoSelectOne(void)
 {
+  this->input = NULL;
 }
 
 // Set up the input and output fields of the engine. This is done from
 // either the non-default constructor or the readInstance() import
 // code.
-void
+SbBool
 SoSelectOne::initialize(const SoType inputfieldtype)
 {
-  // FIXME: be robust wrt invalid types. 20000919 mortene.
+  assert(this->input == NULL);
 
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoSelectOne);
   SO_ENGINE_ADD_INPUT(index, (0));
 
   // Instead of SO_ENGINE_ADD_INPUT().
-  this->input = (SoMField *)inputfieldtype.createInstance();
-  this->input->setNum(0);
-  this->input->setContainer(this);
-  this->dynamicinput = new SoFieldData(SoSelectOne::inputdata);
-  this->dynamicinput->addField(this, "input", this->input);
-
-  // FIXME: couldn't this be extracted by the use of
-  // SoMField::getClassTypeId().getAllDerivedFrom() or something?
-  // 19990523 mortene.
-  SoType types[42]={
-    SoMFBitMask::getClassTypeId(),SoSFBitMask::getClassTypeId(),
-    SoMFBool::getClassTypeId(),SoSFBool::getClassTypeId(),
-    SoMFColor::getClassTypeId(),SoSFColor::getClassTypeId(),
-    SoMFEngine::getClassTypeId(),SoSFEngine::getClassTypeId(),
-    SoMFEnum::getClassTypeId(),SoSFEnum::getClassTypeId(),
-    SoMFFloat::getClassTypeId(),SoSFFloat::getClassTypeId(),
-    SoMFInt32::getClassTypeId(),SoSFInt32::getClassTypeId(),
-    SoMFMatrix::getClassTypeId(),SoSFMatrix::getClassTypeId(),
-    SoMFName::getClassTypeId(),SoSFName::getClassTypeId(),
-    SoMFNode::getClassTypeId(),SoSFNode::getClassTypeId(),
-    SoMFPath::getClassTypeId(),SoSFPath::getClassTypeId(),
-    SoMFPlane::getClassTypeId(),SoSFPlane::getClassTypeId(),
-    SoMFRotation::getClassTypeId(),SoSFRotation::getClassTypeId(),
-    SoMFShort::getClassTypeId(),SoSFShort::getClassTypeId(),
-    SoMFString::getClassTypeId(),SoSFString::getClassTypeId(),
-    SoMFTime::getClassTypeId(),SoSFTime::getClassTypeId(),
-    SoMFUInt32::getClassTypeId(),SoSFUInt32::getClassTypeId(),
-    SoMFUShort::getClassTypeId(),SoSFUShort::getClassTypeId(),
-    SoMFVec2f::getClassTypeId(),SoSFVec2f::getClassTypeId(),
-    SoMFVec3f::getClassTypeId(),SoSFVec3f::getClassTypeId(),
-    SoMFVec4f::getClassTypeId(),SoSFVec4f::getClassTypeId()
-  };
-
-  // FIXME: man, this is horrendous. Swap with a dict. 20000919 mortene.
-  SoType outputtype;
-  for (int i=0;i<42;i+=2) {
-    if (inputfieldtype==types[i]) {
-      outputtype=types[i+1];
-      break;
-    }
+  if (inputfieldtype.isDerivedFrom(SoMField::getClassTypeId()) &&
+      inputfieldtype.canCreateInstance()) {
+    this->input = (SoMField *)inputfieldtype.createInstance();
+    this->input->setNum(0);
+    this->input->setContainer(this);
+    this->dynamicinput = new SoFieldData(SoSelectOne::inputdata);
+    this->dynamicinput->addField(this, "input", this->input);
   }
+  else {
+    return FALSE;
+  }
+
+  SbString multiname = inputfieldtype.getName().getString();
+  // Built-in fields always start with the "MF", but we try to handle
+  // user-defined fields aswell.
+  char * ptr = strstr(multiname.getString(), "MF");
+  assert(ptr != NULL && "invalid input field type");
+  unsigned int offset = ptr - multiname.getString();
+  SbString singlename = offset == 0 ? "" : multiname.getSubString(0, offset-1);
+  singlename += 'S';
+  singlename += multiname.getSubString(offset + 1);
+
+  SoType outputtype = SoType::fromName(singlename);
+  assert(outputtype != SoType::badType() &&
+         outputtype.isDerivedFrom(SoSField::getClassTypeId()) &&
+         "invalid input field type");
 
   // Instead of SO_ENGINE_ADD_OUTPUT().
   this->output = new SoEngineOutput;
   this->dynamicoutput = new SoEngineOutputData(SoSelectOne::outputdata);
   this->dynamicoutput->addOutput(this, "output", this->output, outputtype);
   this->output->setContainer(this);
+
+  return TRUE;
 }
 
 // overloaded from parent
@@ -170,7 +166,7 @@ SoSelectOne::evaluate(void)
     SO_ENGINE_OUTPUT((*output), SoSField, setDirty(FALSE));
   }
   else if (idx >= 0 && idx < this->input->getNum()) {
-    // FIXME: this is a very suboptimal way of doing the
+    // FIXME: this is a _very_ suboptimal way of doing the
     // SoMFField->SoSFField conversion. 20000919 mortene.
     SbString valuestring;
     this->input->get1(idx, valuestring);
@@ -198,14 +194,12 @@ SoSelectOne::readInstance(SoInput * in, unsigned short flags)
     return FALSE;
   }
   SoType inputtype = SoType::fromName(fieldname);
-  if (inputtype == SoType::badType() ||
-      !inputtype.isDerivedFrom(SoMField::getClassTypeId())) {
+  if (!this->initialize(inputtype)) {
     SoReadError::post(in, "Type \"%s\" for input field is not valid.",
                       fieldname.getString());
     return FALSE;
   }
 
-  this->initialize(inputtype);
   return SoEngine::readInstance(in, flags);
 }
 
