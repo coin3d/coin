@@ -1,5 +1,5 @@
-#ifndef CC_WORKER_H
-#define CC_WORKER_H
+#ifndef CC_WPOOLP_H
+#define CC_WPOOLP_H
 
 /**************************************************************************\
  *
@@ -22,24 +22,31 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/basic.h>  /* COIN_DLL_API */
-#include <Inventor/C/threads/common.h>  /* cc_worker */
+#ifndef COIN_INTERNAL
+#error You have tried to use one of the private Coin header files
+#endif /* ! COIN_INTERNAL */
+
+#include <Inventor/C/threads/common.h>
+#include <Inventor/C/base/list.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-/* ********************************************************************** */
+struct cc_wpool {
+  cc_list * idlepool;
+  cc_list * busypool;
 
-  COIN_DLL_API cc_worker * cc_worker_construct(void);
-  COIN_DLL_API void cc_worker_destruct(cc_worker * worker);
+  SbBool iswaiting;
+  int numworkers;
 
-  COIN_DLL_API SbBool cc_worker_start(cc_worker * worker, 
-                                      void (*workfunc)(void *), void * closure);
-  COIN_DLL_API SbBool cc_worker_is_busy(cc_worker * worker);
-  COIN_DLL_API void cc_worker_wait(cc_worker * worker);
-  COIN_DLL_API void cc_worker_set_idle_callback(cc_worker * worker, 
-                                                void (*cb)(cc_worker *, void *), void * closure);
+  cc_mutex * mutex;
+  cc_condvar * waitcond;
+};
 
 /* ********************************************************************** */
 
@@ -47,9 +54,4 @@ extern "C" {
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_WORKER_H */
-
-
-
-
-
+#endif /* ! CC_WPOOLP_H */

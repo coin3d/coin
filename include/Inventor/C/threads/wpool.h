@@ -1,5 +1,5 @@
-#ifndef CC_THREADCOMMON_H
-#define CC_THREADCOMMON_H
+#ifndef CC_WPOOL_H
+#define CC_WPOOL_H
 
 /**************************************************************************\
  *
@@ -23,6 +23,7 @@
 \**************************************************************************/
 
 #include <Inventor/C/basic.h>  /* COIN_DLL_API */
+#include <Inventor/C/threads/common.h>  /* cc_worker_pool */
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,46 +31,22 @@ extern "C" {
 
 /* ********************************************************************** */
 
-  typedef struct cc_wpool cc_wpool;
-  typedef struct cc_worker cc_worker; 
-  typedef struct cc_thread cc_thread;
-  typedef struct cc_mutex cc_mutex;
-  typedef struct cc_rwmutex cc_rwmutex;
-  typedef struct cc_condvar cc_condvar;
-  typedef struct cc_barrier cc_barrier;
-  typedef struct cc_storage cc_storage;
+  COIN_DLL_API cc_wpool * cc_wpool_construct(int numworkers);
+  COIN_DLL_API void cc_wpool_destruct(cc_wpool * pool);
 
-  /* used by rwmutex - read_precedence is default */
-  enum cc_precedence {
-    CC_READ_PRECEDENCE,
-    CC_WRITE_PRECEDENCE
-  };
+  COIN_DLL_API int cc_wpool_get_num_workers(cc_wpool * pool);
+  COIN_DLL_API void cc_wpool_set_num_workers(cc_wpool * pool, int newnum);
+  COIN_DLL_API void cc_wpool_wait_all(cc_wpool * pool);
 
-  enum cc_threads_implementation {
-    CC_NO_THREADS = -1,
-    CC_PTHREAD    = 0,
-    CC_W32THREAD
-  };
+  COIN_DLL_API int cc_wpool_begin(cc_wpool * pool, int numworkersneeded);
+  COIN_DLL_API void cc_wpool_start_worker(cc_wpool * pool,
+                                          void (*workfunc)(void *), void * closure);
+  COIN_DLL_API void cc_wpool_end(cc_wpool * pool);
 
-  enum cc_retval {
-    CC_ERROR = 0,
-    CC_OK = 1,
-    CC_TIMEOUT,
-    CC_BUSY
-  };
-
-  typedef enum cc_precedence cc_precedence;
-  typedef enum cc_threads_implementation cc_threads_implementation;
-  typedef enum cc_retval cc_retval;
-
-  /* ********************************************************************** */
-
-  COIN_DLL_API int cc_thread_implementation(void);
-
-  /* ********************************************************************** */
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_THREADCOMMON_H */
+#endif /* ! CC_WPOOL_H */

@@ -59,4 +59,4 @@ struct cc_worker {
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_THREADP_H */
+#endif /* ! CC_WORKERP_H */

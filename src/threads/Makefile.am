@@ -6,7 +6,8 @@ RegularSources = \
 	rwmutex.c \
 	storage.c \
 	condvar.c \
-	worker.c
+	worker.c \
+	wpool.c
 #	barrier.c
 LinkHackSources = \
 	all-c.c
