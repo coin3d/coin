@@ -89,9 +89,6 @@ SoGLModelMatrixElement::init(SoState * state)
 void
 SoGLModelMatrixElement::push(SoState * state)
 {
-#if 0 // too much debug output.. 981021 mortene.
-  SoDebugError::postInfo("SoGLModelMatrixElement::push", "");
-#endif // 0
   glPushMatrix();
   inherited::push(state);
   SoGLModelMatrixElement *elem = (SoGLModelMatrixElement*)
@@ -128,9 +125,9 @@ void
 SoGLModelMatrixElement::setElt(const SbMatrix &matrix)
 {
   inherited::setElt(matrix);
-  SbMatrix mat = SoViewingMatrixElement::get(this->state);
-  mat.multRight(matrix);
+  const SbMatrix &mat = SoViewingMatrixElement::get(this->state);
   glLoadMatrixf(mat[0]);
+  glMultMatrixf(matrix[0]);
 }
 
 //! FIXME: write doc.
