@@ -30,29 +30,21 @@
   etc) will use the font specified from an SoFont node when
   visualizing text.
 
-  The mapping from SoFont::name to a font happens like this:
-  
-  <ol>
-
-  <li> If the font name is on the built-in list of (font name, font
-       file) pairs, use the font file from the list. FIXME: reproduce
-       list here. 20030316 mortene. </li>
-
-  <li> Try using the font name directly as a font file name. </li>
-
-  <li> If all else fails, use the built-in default font. </li>
-
-  </ol>
-
-  Font files are searched for in COIN_FONT_PATH if that environment
-  variable is defined.
-
-  On Win32 systems the $WINDIR/Fonts directory will also be searched.
-
-  Currently, font files in the TrueType format (.ttf) are supported.
-  
   \sa SoFontStyle, SoGlyph, SoText2, SoText3, SoAsciiText
 */
+
+// FIXME: add correct and elaborate info on this to the class docs
+// above;
+//
+//   Font files are searched for in COIN_FONT_PATH if that environment
+//   variable is defined.
+//
+//   On Win32 systems the $WINDIR/Fonts directory will also be searched.
+//
+//   Currently, only TrueType fonts are supported.
+//
+// 20030612 mortene.  
+
 
 #include <string.h>
 
@@ -79,8 +71,8 @@
 
   Name of font.
 
-  Which fontnames are available is rather systemdependent, not only on
-  whether or not you are running on a UNIX/Linux system, Microsoft
+  Which fontnames are available is rather system dependent, not only
+  on whether or not you are running on a UNIX/Linux system, Microsoft
   Windows or whatever, but also on which fonts and font \e types (like
   TrueType) are installed on a particular user's system.
 
@@ -96,7 +88,7 @@
 /*!
   \var SoSFFloat SoFont::size
 
-  Size of font. Defaults to 12.0.
+  Size of font. Defaults to 10.0.
 
   For 2D rendered bitmap fonts (like for SoText2), this value is the
   height of a character in screen pixels. For 3D text, this value is
@@ -165,7 +157,7 @@ SoFont::SoFont(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFont);
 
   SO_NODE_ADD_FIELD(name, ("defaultFont"));
-  SO_NODE_ADD_FIELD(size, (12.0f));
+  SO_NODE_ADD_FIELD(size, (10.0f));
 }
 
 /*!
