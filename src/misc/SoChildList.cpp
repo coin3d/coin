@@ -215,7 +215,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   int numindices;
   const int * indices;
   SoNode * node;
-  
+
   // use a local array pointer for speed
   SoNode ** childarray = (SoNode **) this->getArrayPtr();
 
@@ -245,7 +245,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
         int stop = indices[i];
         for (; childidx < stop && !action->hasTerminated(); childidx++) {
           // we are off path. Check if node affects state before traversing
-          node = childarray[i];
+          node = childarray[childidx];
           if (node->affectsState()) action->traverse(node);
         }
         // here we are in path. Always traverse
