@@ -582,6 +582,9 @@ SoSelection::findPath(const SoPath * path) const
 void
 SoSelection::handleEvent(SoHandleEventAction * action)
 {
+  inherited::handleEvent(action);
+  if (action->isHandled()) return;
+
   const SoEvent * event = action->getEvent();
 
   SbBool haltaction = FALSE;
@@ -595,18 +598,12 @@ SoSelection::handleEvent(SoHandleEventAction * action)
       this->mouseDownPickPath = pp->getPath();
       this->mouseDownPickPath->ref();
     }
-    inherited::handleEvent(action);
   }
   else if (SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
     SbBool ignorepick = FALSE;
     SoPath * selpath = this->getSelectionPath(action, ignorepick, haltaction);
-
-    if (haltaction) {
-      action->isHandled();
-    }
-    else {
-      inherited::handleEvent(action);
-    }
+    
+    if (haltaction) action->setHandled();
 
     if (!ignorepick) {
       if (selpath) selpath->ref();
@@ -619,9 +616,6 @@ SoSelection::handleEvent(SoHandleEventAction * action)
       this->mouseDownPickPath->unref();
       this->mouseDownPickPath = NULL;
     }
-  }
-  else {
-    inherited::handleEvent(action);
   }
 }
 
@@ -650,16 +644,19 @@ SoSelection::getSelectionPath(SoHandleEventAction * action, SbBool & ignorepick,
 
   haltaction = FALSE;
   ignorepick = FALSE;
-  if (!this->mouseDownPickPath) return NULL;
-
+  if (this->pickMatching && this->mouseDownPickPath == NULL) {
+    return NULL;
+  }
   const SoPickedPoint * pp = action->getPickedPoint();
   SoPath * selectionpath = NULL;
   if (pp) {
     selectionpath = pp->getPath();
-    int forkpos = selectionpath->findFork(this->mouseDownPickPath);
-    if (forkpos < selectionpath->getLength()-1) {
-      ignorepick = TRUE;
-      return NULL;
+    if (this->pickMatching) {
+      int forkpos = selectionpath->findFork(this->mouseDownPickPath);
+      if (forkpos < selectionpath->getLength()-1) {
+        ignorepick = TRUE;
+        return NULL;
+      }
     }
     if (this->pickCBFunc && (!this->callPickCBOnlyIfSelectable ||
                              selectionpath->findNode(this) >= 0)) {
