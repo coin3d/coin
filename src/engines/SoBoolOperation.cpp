@@ -19,10 +19,110 @@
 
 /*!
   \class SoBoolOperation SoBoolOperation.h Inventor/engines/SoBoolOperation.h
-  \brief The SoBoolOperation class performs boolean operations.
+  \brief The SoBoolOperation engine evaluates expressions of boolean logic.
   \ingroup engines
 
-  FIXME: doc
+  The multivalue fields SoBoolOperation::a and SoBoolOperation::b are
+  combined according to the operations set in
+  SoBoolOperation::operation, with the resulting \c TRUE or \c FALSE
+  value set on SoBoolOperation::output.
+*/
+
+/*!
+  \enum SoBoolOperation::Operation
+  Enumeration of available boolean logic operators.
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::CLEAR
+  Always set SoBoolOperation::output to \c FALSE, no matter the input
+  values.
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::SET
+  Always set SoBoolOperation::output to \c TRUE, no matter the input
+  values.
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::A
+  Output result = SoBoolOperation::a
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::NOT_A
+  Output result = ! SoBoolOperation::a
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::B
+  Output result = SoBoolOperation::b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::NOT_B
+  Output result = ! SoBoolOperation::b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::A_OR_B
+  r = a || b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::NOT_A_OR_B
+  r = !a || b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::A_OR_NOT_B
+  r = a || !b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::NOT_A_OR_NOT_B
+  r = !a || !b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::A_AND_B
+  r = a && b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::NOT_A_AND_B
+  r = !a && b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::A_AND_NOT_B
+  r = a && !b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::NOT_A_AND_NOT_B
+  r = !a && !b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::A_EQUALS_B
+  r = a==b
+*/
+/*!
+  \var SoBoolOperation::Operation SoBoolOperation::A_NOT_EQUALS_B
+  r = ! a==b
+*/
+
+/*!
+  \var SoMFBool SoBoolOperation::a
+  First set of boolean input "signal" values.
+*/
+/*!
+  \var SoMFBool SoBoolOperation::b
+  Second set of boolean input "signal" values.
+*/
+/*!
+  \var SoMFEnum SoBoolOperation::operation
+
+  Set of boolean logic expressions. Each of these are used to combine
+  SoBoolOperation::a with SoBoolOperation::b (for each index value
+  from 0 to the last value) to produce the results on the
+  SoBoolOperation::output field.
+*/
+
+/*!
+  \var SoEngineOutput SoBoolOperation::output
+  (SoMFBool) The result of each (a[i] operation[i] b[i]) expression.
+*/
+/*!
+  \var SoEngineOutput SoBoolOperation::inverse
+  (SoMFBool) The set of inverse results.
 */
 
 #include <Inventor/engines/SoBoolOperation.h>
@@ -36,7 +136,7 @@
 SO_ENGINE_SOURCE(SoBoolOperation);
 
 /*!
-  Defalt constructor.
+  Default constructor.
 */
 SoBoolOperation::SoBoolOperation(void)
 {
