@@ -1652,11 +1652,9 @@ SoGLImageP::reallyCreateTexture(SoState *state,
 
     this->applyFilter(mipmapfilter);
     if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) && 
-        cc_glglue_glext_supported(glw, "GL_EXT_texture_filter_anisotropic")) {
-      // FIXME: move the glGetFloatv() call into cc_glglue module
-      float maximumAnisotropy;
-      glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maximumAnisotropy);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maximumAnisotropy);
+        cc_glglue_can_do_anisotropic_filtering(glw)) {
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 
+                      cc_glglue_get_max_anisotropy(glw));
     }
     if (!mipmapimage) {
       // Create only level 0 texture. Mimpamps might be created by GL_SGIS_generate_mipmap
