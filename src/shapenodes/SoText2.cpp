@@ -383,7 +383,7 @@ SoText2::GLRender(SoGLRenderAction * action)
         if (offvp) { glBitmap(0,0,0,0,offsetx,offsety,NULL); }
 
         if (buffer) {
-           if (cc_glyph2d_getmono(glyph)) {
+          if (cc_glyph2d_getmono(glyph)) {
             glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
           } else {
             glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
