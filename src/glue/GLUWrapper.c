@@ -301,6 +301,15 @@ GLUWrapper(void)
 #else /* !gluNurbsCallbackData */
   gi->gluNurbsCallbackData = NULL;
 #endif /* !gluNurbsCallbackData */
+  GLUWRAPPER_REGISTER_FUNC(gluNewTess, gluNewTess_t);
+  GLUWRAPPER_REGISTER_FUNC(gluTessCallback, gluTessCallback_t);
+  GLUWRAPPER_REGISTER_FUNC(gluTessProperty, gluTessProperty_t);
+  GLUWRAPPER_REGISTER_FUNC(gluTessBeginPolygon, gluTessBeginPolygon_t);
+  GLUWRAPPER_REGISTER_FUNC(gluTessEndPolygon, gluTessEndPolygon_t);
+  GLUWRAPPER_REGISTER_FUNC(gluTessBeginContour, gluTessBeginContour_t);
+  GLUWRAPPER_REGISTER_FUNC(gluTessEndContour, gluTessEndContour_t);
+  GLUWRAPPER_REGISTER_FUNC(gluTessVertex, gluTessVertex_t);
+  GLUWRAPPER_REGISTER_FUNC(gluDeleteTess, gluDeleteTess_t);
 
   /* "Backup" functions, makes it easier to be robust even when no GLU
      library can be loaded. */
