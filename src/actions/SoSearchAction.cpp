@@ -37,6 +37,11 @@
   calls, note that the action will search for node(s) with an \c "AND"
   combination of the given search criteria.
 
+  One of the most common pitfalls when using the SoSearchAction class
+  is to call the function isFound() after doing a search.  It does not
+  return what you would expect it to return if you haven't read the
+  documentation for that function.
+
   Be aware that if you do search operations on an SoSearchAction
   created on the stack, you can get some unfortunate side effects if
   you're not careful. Since SoSearchAction keeps a list of the path(s)
@@ -357,7 +362,8 @@ SoSearchAction::setFound(void)
   Returns whether the search action was terminated.
 
   Note that this value does not reflect whether the node(s) that
-  was searched for was found or not.
+  was searched for was found or not.  Use the result of getPath()
+  / getPaths() if that is what you really are looking for.
 */
 SbBool
 SoSearchAction::isFound(void) const
