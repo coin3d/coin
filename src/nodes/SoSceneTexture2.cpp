@@ -166,14 +166,14 @@
 
 /*!
   \var SoSFVec4f SoSceneTexture2::clearColor
-  
+
   The color the color buffer is cleared to before rendering the scene.
   Default value is (0.0f, 0.0f, 0.0f, 0.0f).
 */
 
 /*!
-  \var SoSFEnum SoSceneTexture2::transparencyFunction 
-  
+  \var SoSFEnum SoSceneTexture2::transparencyFunction
+
   The transparency function used. Default value is NONE.
 */
 
@@ -310,22 +310,23 @@ SoSceneTexture2::SoSceneTexture2(void)
   SO_NODE_ADD_FIELD(model, (MODULATE));
   SO_NODE_ADD_FIELD(blendColor, (0.0f, 0.0f, 0.0f));
 
-  SO_NODE_SET_SF_ENUM_TYPE(wrapS, Wrap);
-  SO_NODE_SET_SF_ENUM_TYPE(wrapT, Wrap);
-  SO_NODE_SET_SF_ENUM_TYPE(model, Model);
-  SO_NODE_SET_SF_ENUM_TYPE(transparencyFunction, TransparencyFunction);
 
   SO_NODE_DEFINE_ENUM_VALUE(Model, MODULATE);
   SO_NODE_DEFINE_ENUM_VALUE(Model, DECAL);
   SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
   SO_NODE_DEFINE_ENUM_VALUE(Model, REPLACE);
-  
+
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, REPEAT);
   SO_NODE_DEFINE_ENUM_VALUE(Wrap, CLAMP);
-  
+
   SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, NONE);
   SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, ALPHA_BLEND);
   SO_NODE_DEFINE_ENUM_VALUE(TransparencyFunction, ALPHA_TEST);
+
+  SO_NODE_SET_SF_ENUM_TYPE(wrapS, Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(wrapT, Wrap);
+  SO_NODE_SET_SF_ENUM_TYPE(model, Model);
+  SO_NODE_SET_SF_ENUM_TYPE(transparencyFunction, TransparencyFunction);
 }
 
 SoSceneTexture2::~SoSceneTexture2(void)
@@ -643,13 +644,13 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     }
     switch ((SoSceneTexture2::TransparencyFunction) (PUBLIC(this)->transparencyFunction.getValue())) {
     case SoSceneTexture2::NONE:
-      flags |= SoGLImage::FORCE_TRANSPARENCY_FALSE;
-      break;
-    case SoSceneTexture2::ALPHA_BLEND:
-      flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_TRUE;
+      flags |= SoGLImage::FORCE_TRANSPARENCY_FALSE|SoGLImage::FORCE_ALPHA_TEST_FALSE;
       break;
     case SoSceneTexture2::ALPHA_TEST:
-      flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE;
+      flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_TRUE;
+      break;
+    case SoSceneTexture2::ALPHA_BLEND:
+      flags |= SoGLImage::FORCE_TRANSPARENCY_TRUE|SoGLImage::FORCE_ALPHA_TEST_FALSE;
       break;
     default:
       assert(0 && "should not get here");
