@@ -30,4 +30,5 @@
 #include "sched.c"
 #include "sync.c"
 #include "wpool.c"
+#include "worker.c"
 /* #include "barrier.c" */
