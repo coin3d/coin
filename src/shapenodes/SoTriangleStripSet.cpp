@@ -75,7 +75,7 @@
 
   The scene graph above in a viewer:
 
-  <center><img src="http://doc.coin3d.org/images/[PATH]/[FILENAME]"></center>
+  <center><img src="http://doc.coin3d.org/images/Coin/nodes/trianglestripset.png"></center>
 
 
   Strips are converted into triangles the way OpenGL does it, of
