@@ -1093,8 +1093,6 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
   SbBool changed = coin_locale_set_portable(&storedlocale);
 
   fprintf(fp, "%%!PS-Adobe-2.0 EPSF-1.2\n");
-  fprintf(fp, "%%%%Pages: 1\n");
-  fprintf(fp, "%%%%PageOrder: Ascend\n");
   fprintf(fp, "%%%%BoundingBox: 0 %d %d %d\n",
           pixelsize[1]-scaledsize[1],
           scaledsize[0],
