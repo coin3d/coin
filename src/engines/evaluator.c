@@ -300,8 +300,8 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     result->value = (float) fabs(param1.value);
     break;
   case ID_RAND:
-    /* FIXME: investigate how this is supposed to work. pederb, 20000307 */
-    assert(0 && "FIXME: not implemented");
+    result->value = ((float)rand()) / ((float)RAND_MAX); /* [0, 1] */
+    result->value *= param1.value; /* [0, arg] */
     break;
   case ID_CROSS:
     result->vec[0] = param1.vec[1]*param2.vec[2] - param1.vec[2]*param2.vec[1];
