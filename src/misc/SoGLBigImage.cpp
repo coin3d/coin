@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -186,7 +186,7 @@ SoGLBigImage::setData(const SbImage * image,
   inherited::setData(image, wraps, wrapt, quality, border, NULL);
 }
 
-void 
+void
 SoGLBigImage::setData(const SbImage * image,
                       const Wrap wraps,
                       const Wrap wrapt,
@@ -195,7 +195,12 @@ SoGLBigImage::setData(const SbImage * image,
                       const int border,
                       SoState * createinstate)
 {
-  assert(0 && "3D images not supported yet.");
+  if (createinstate) {
+    SoDebugError::postWarning("SoGLBigImage::setData",
+                              "createinstate must be NULL for SoGLBigImage");
+  }
+  THIS->reset(NULL);
+  inherited::setData(image, wraps, wrapt, wrapr, quality, border, NULL);
 }
 
 
@@ -238,7 +243,7 @@ SoGLBigImage::initSubImages(SoState * state,
   THIS->changecnt = 0;
   if (subimagesize == THIS->imagesize &&
       THIS->dim[0] > 0) return THIS->dim[0] * THIS->dim[1];
-  
+
   THIS->reset(state);
 
   THIS->imagesize = subimagesize;
@@ -260,7 +265,7 @@ SoGLBigImage::initSubImages(SoState * state,
   SbVec2s size(0,0);
   int nc;
 
-  const unsigned char * bytes = this->getImage() ? 
+  const unsigned char * bytes = this->getImage() ?
     this->getImage()->getValue(size, nc) : NULL;
 
   THIS->dim[0] = size[0] / subimagesize[0];
@@ -339,7 +344,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
                        THIS->glimagesize[1]/div);
     SbVec2s size;
     int numcomponents;
-    unsigned char * bytes = this->getImage() ? 
+    unsigned char * bytes = this->getImage() ?
       this->getImage()->getValue(size, numcomponents) : NULL;
     if (bytes) {
       int numbytes = actualsize[0]*actualsize[1]*numcomponents;
@@ -348,7 +353,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
         THIS->tmpbuf = new unsigned char[numbytes];
         THIS->tmpbufsize = numbytes;
       }
-    
+
       if (THIS->glimagesize == THIS->imagesize) {
         THIS->copySubImage(idx,
                            bytes,
@@ -446,7 +451,7 @@ SoGLBigImageP::copySubImage(const int idx,
   }
 }
 
-void 
+void
 SoGLBigImageP::copyResizeSubImage(const int idx,
                                   const unsigned char * src,
                                   const SbVec2s & fullsize,
@@ -455,14 +460,14 @@ SoGLBigImageP::copyResizeSubImage(const int idx,
                                   const SbVec2s & targetsize)
 {
   SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
-  
+
   SbVec2s origin;
   origin[0] = pos[0] * this->imagesize[0];
   origin[1] = pos[1] * this->imagesize[1];
-  
+
   int incy = ((this->imagesize[1]<<8) / targetsize[1]);
   int incx = ((this->imagesize[0]<<8) / targetsize[0]);
-  
+
   const int w = targetsize[0];
   const int h = targetsize[1];
 
@@ -474,7 +479,7 @@ SoGLBigImageP::copyResizeSubImage(const int idx,
     for (int x  = 0; x < w; x++) {
       const unsigned char * ptr = src + tmpaddy + ((addx>>8)+origin[0]) * nc;
       for (int c = 0; c < nc; c++) {
-        *dst++ = *ptr++; 
+        *dst++ = *ptr++;
       }
       addx += incx;
     }
