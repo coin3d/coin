@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O1 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /YX /FD /c
+# ADD CPP /nologo /W3 /GX /O1 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /YX /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -49,7 +49,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
-# ADD LIB32 "C:@libdir@\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" /nologo /out:"C:@libdir@\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" /out:
+# ADD LIB32 /nologo /out:"C:@libdir@\coin@COIN_VERSION@.lib"
 
 !ELSEIF  "$(CFG)" == "coin - Win32 Debug"
 
@@ -64,7 +64,7 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /D "COIN_DEBUG" /YX /FD /GZ /c
+# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /D "COIN_DEBUG" /YX /FD /GZ /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -72,7 +72,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LIB32=link.exe -lib
 # ADD BASE LIB32 /nologo
-# ADD LIB32 /nologo /out:"C:@libdir@\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib"
+# ADD LIB32 /nologo /out:"C:@libdir@\coin@COIN_VERSION@d.lib"
 
 !ENDIF 
 
@@ -89,6 +89,18 @@ SOURCE="@coin_src_dir@\src\manips\commoncode.cpp"
 # End Source File
 # Begin Source File
 
+SOURCE="@coin_src_dir@\src\misc\SoByteStream.cpp"
+# End Source File
+# Begin Source File
+
+SOURCE="@coin_src_dir@\src\misc\SoTranReceiver.cpp"
+# End Source File
+# Begin Source File
+
+SOURCE="@coin_src_dir@\src\misc\SoTranSender.cpp"
+# End Source File
+# Begin Source File
+
 SOURCE="@coin_src_dir@\src\misc\default2dfont.cpp"
 # End Source File
 # Begin Source File
@@ -101,7 +113,7 @@ SOURCE="@coin_src_dir@\src\engines\evaluator.c"
 # End Source File
 # Begin Source File
 
-SOURCE="@coin_src_dir@\src\engines\evaluator.tab.c"
+SOURCE="@coin_src_dir@\src\engines\evaluator_tab.c"
 # End Source File
 # Begin Source File
 

@@ -33,7 +33,7 @@ INTDIR=.\Release
 OutDir=C:@libdir@
 # End Custom Macros
 
-ALL : "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib"
+ALL : "$(OUTDIR)\coin@COIN_VERSION@.lib"
 
 
 CLEAN :
@@ -41,7 +41,7 @@ CLEAN :
 	-@erase "$(INTDIR)\default2dfont.obj"
 	-@erase "$(INTDIR)\default3dfont.obj"
 	-@erase "$(INTDIR)\evaluator.obj"
-	-@erase "$(INTDIR)\evaluator.tab.obj"
+	-@erase "$(INTDIR)\evaluator_tab.obj"
 	-@erase "$(INTDIR)\SbBox2f.obj"
 	-@erase "$(INTDIR)\SbBox2s.obj"
 	-@erase "$(INTDIR)\SbBox3f.obj"
@@ -112,6 +112,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoBoxHighlightRenderAction.obj"
 	-@erase "$(INTDIR)\SoBundle.obj"
 	-@erase "$(INTDIR)\SoButtonEvent.obj"
+	-@erase "$(INTDIR)\SoByteStream.obj"
 	-@erase "$(INTDIR)\SoCache.obj"
 	-@erase "$(INTDIR)\SoCacheElement.obj"
 	-@erase "$(INTDIR)\SoCalculator.obj"
@@ -483,6 +484,8 @@ CLEAN :
 	-@erase "$(INTDIR)\SoToVRMLAction.obj"
 	-@erase "$(INTDIR)\SoTrackballDragger.obj"
 	-@erase "$(INTDIR)\SoTrackballManip.obj"
+	-@erase "$(INTDIR)\SoTranReceiver.obj"
+	-@erase "$(INTDIR)\SoTranSender.obj"
 	-@erase "$(INTDIR)\SoTransform.obj"
 	-@erase "$(INTDIR)\SoTransformation.obj"
 	-@erase "$(INTDIR)\SoTransformBoxDragger.obj"
@@ -517,7 +520,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoWWWAnchor.obj"
 	-@erase "$(INTDIR)\SoWWWInline.obj"
 	-@erase "$(INTDIR)\vc60.idb"
-	-@erase "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib"
+	-@erase "$(OUTDIR)\coin@COIN_VERSION@.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -526,7 +529,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /ML /W3 /GX /O1 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_PROJ=/nologo /ML /W3 /GX /O1 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "NDEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -564,13 +567,16 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin.bsc"
 BSC32_SBRS= \
 	
 LIB32=link.exe -lib
-LIB32_FLAGS="C:@libdir@\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" /nologo /out:"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" /out: 
+LIB32_FLAGS=/nologo /out:"$(OUTDIR)\coin@COIN_VERSION@.lib" 
 LIB32_OBJS= \
 	"$(INTDIR)\commoncode.obj" \
+	"$(INTDIR)\SoByteStream.obj" \
+	"$(INTDIR)\SoTranReceiver.obj" \
+	"$(INTDIR)\SoTranSender.obj" \
 	"$(INTDIR)\default2dfont.obj" \
 	"$(INTDIR)\default3dfont.obj" \
 	"$(INTDIR)\evaluator.obj" \
-	"$(INTDIR)\evaluator.tab.obj" \
+	"$(INTDIR)\evaluator_tab.obj" \
 	"$(INTDIR)\SbBox2f.obj" \
 	"$(INTDIR)\SbBox2s.obj" \
 	"$(INTDIR)\SbBox3f.obj" \
@@ -1046,7 +1052,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoWWWAnchor.obj" \
 	"$(INTDIR)\SoWWWInline.obj"
 
-"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+"$(OUTDIR)\coin@COIN_VERSION@.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -1059,7 +1065,7 @@ INTDIR=.\Debug
 OutDir=C:@libdir@
 # End Custom Macros
 
-ALL : "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib"
+ALL : "$(OUTDIR)\coin@COIN_VERSION@d.lib"
 
 
 CLEAN :
@@ -1067,7 +1073,7 @@ CLEAN :
 	-@erase "$(INTDIR)\default2dfont.obj"
 	-@erase "$(INTDIR)\default3dfont.obj"
 	-@erase "$(INTDIR)\evaluator.obj"
-	-@erase "$(INTDIR)\evaluator.tab.obj"
+	-@erase "$(INTDIR)\evaluator_tab.obj"
 	-@erase "$(INTDIR)\SbBox2f.obj"
 	-@erase "$(INTDIR)\SbBox2s.obj"
 	-@erase "$(INTDIR)\SbBox3f.obj"
@@ -1138,6 +1144,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoBoxHighlightRenderAction.obj"
 	-@erase "$(INTDIR)\SoBundle.obj"
 	-@erase "$(INTDIR)\SoButtonEvent.obj"
+	-@erase "$(INTDIR)\SoByteStream.obj"
 	-@erase "$(INTDIR)\SoCache.obj"
 	-@erase "$(INTDIR)\SoCacheElement.obj"
 	-@erase "$(INTDIR)\SoCalculator.obj"
@@ -1509,6 +1516,8 @@ CLEAN :
 	-@erase "$(INTDIR)\SoToVRMLAction.obj"
 	-@erase "$(INTDIR)\SoTrackballDragger.obj"
 	-@erase "$(INTDIR)\SoTrackballManip.obj"
+	-@erase "$(INTDIR)\SoTranReceiver.obj"
+	-@erase "$(INTDIR)\SoTranSender.obj"
 	-@erase "$(INTDIR)\SoTransform.obj"
 	-@erase "$(INTDIR)\SoTransformation.obj"
 	-@erase "$(INTDIR)\SoTransformBoxDragger.obj"
@@ -1544,7 +1553,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoWWWInline.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\vc60.pdb"
-	-@erase "$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib"
+	-@erase "$(OUTDIR)\coin@COIN_VERSION@d.lib"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -1553,7 +1562,7 @@ CLEAN :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MLd /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /D "COIN_DEBUG" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
+CPP_PROJ=/nologo /MLd /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /D "COIN_INTERNAL" /D "COIN_DEBUG" /Fp"$(INTDIR)\coin.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -1591,13 +1600,16 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin.bsc"
 BSC32_SBRS= \
 	
 LIB32=link.exe -lib
-LIB32_FLAGS=/nologo /out:"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib" 
+LIB32_FLAGS=/nologo /out:"$(OUTDIR)\coin@COIN_VERSION@d.lib" 
 LIB32_OBJS= \
 	"$(INTDIR)\commoncode.obj" \
+	"$(INTDIR)\SoByteStream.obj" \
+	"$(INTDIR)\SoTranReceiver.obj" \
+	"$(INTDIR)\SoTranSender.obj" \
 	"$(INTDIR)\default2dfont.obj" \
 	"$(INTDIR)\default3dfont.obj" \
 	"$(INTDIR)\evaluator.obj" \
-	"$(INTDIR)\evaluator.tab.obj" \
+	"$(INTDIR)\evaluator_tab.obj" \
 	"$(INTDIR)\SbBox2f.obj" \
 	"$(INTDIR)\SbBox2s.obj" \
 	"$(INTDIR)\SbBox3f.obj" \
@@ -2073,7 +2085,7 @@ LIB32_OBJS= \
 	"$(INTDIR)\SoWWWAnchor.obj" \
 	"$(INTDIR)\SoWWWInline.obj"
 
-"$(OUTDIR)\coin@COIN_MAJOR_VERSION@@COIN_MINOR_VERSION@@COIN_MICRO_VERSION@d.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
+"$(OUTDIR)\coin@COIN_VERSION@d.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
   $(LIB32_FLAGS) $(DEF_FLAGS) $(LIB32_OBJS)
 <<
@@ -2115,9 +2127,9 @@ SOURCE="@coin_src_dir@\src\engines\evaluator.c"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE="@coin_src_dir@\src\engines\evaluator.tab.c"
+SOURCE="@coin_src_dir@\src\engines\evaluator_tab.c"
 
-"$(INTDIR)\evaluator.tab.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\evaluator_tab.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -2538,6 +2550,12 @@ SOURCE="@coin_src_dir@\src\bundles\SoBundle.cpp"
 SOURCE="@coin_src_dir@\src\events\SoButtonEvent.cpp"
 
 "$(INTDIR)\SoButtonEvent.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoByteStream.cpp"
+
+"$(INTDIR)\SoByteStream.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -4764,6 +4782,18 @@ SOURCE="@coin_src_dir@\src\draggers\SoTrackballDragger.cpp"
 SOURCE="@coin_src_dir@\src\manips\SoTrackballManip.cpp"
 
 "$(INTDIR)\SoTrackballManip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoTranReceiver.cpp"
+
+"$(INTDIR)\SoTranReceiver.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\misc\SoTranSender.cpp"
+
+"$(INTDIR)\SoTranSender.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
