@@ -408,6 +408,7 @@ glxglue_has_pbuffer_support(void)
   /* Make it possible to turn off pbuffers support completely. Mostly
      relevant for debugging purposes. */
   const char * env = coin_getenv("COIN_GLXGLUE_NO_PBUFFERS");
+  void *uniquememptr;
   if (env && atoi(env) > 0) { return FALSE; }
 
   /* Dummy invocation of the glxglue_init() function, which is
@@ -417,7 +418,7 @@ glxglue_has_pbuffer_support(void)
      getting non-context-specific functions bound (or perhaps we
      should treat this methods as context-specific and change code
      accordingly?). 20030815 mortene. */
-  void * uniquememptr = (void *)glxglue_has_pbuffer_support;
+  uniquememptr = (void *)glxglue_has_pbuffer_support;
   (void)cc_glglue_instance_from_context_ptr(uniquememptr);
 
   return
