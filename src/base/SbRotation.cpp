@@ -371,57 +371,51 @@ SbRotation::setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
   // Check if the vectors are valid.
   if (rotateFrom.length()==0.0f) {
     SoDebugError::postWarning("SbRotation::setValue",
-                              "rotateFrom parameter has zero length.");
+                              "rotateFrom argument has zero length.");
   }
-  if (rotateTo.length()==0.0f)
+  if (rotateTo.length()==0.0f) {
     SoDebugError::postWarning("SbRotation::setValue",
-                              "rotateTo parameter has zero length.");
+                              "rotateTo argument has zero length.");
+  }
 #endif // COIN_DEBUG
 
-  SbVec3f from = rotateFrom;
+  SbVec3f from(rotateFrom);
   from.normalize();
-  SbVec3f to = rotateTo;
+  SbVec3f to(rotateTo);
   to.normalize();
 
-  float dot = from.dot(to);
+  const float dot = from.dot(to);
+  SbVec3f crossvec = from.cross(to);
+  const float crosslen = crossvec.length();
 
-#if 0 // debug
-  SoDebugError::post("SbRotation::setValue",
-                     "value of dot-product: %.20f", dot);
-#endif // debug
+  if (crosslen == 0.0f) { // Parallel vectors
+    // Check if they are pointing in the same direction.
+    if (dot > 0.0f) {
+      this->setValue(0.0f, 0.0f, 0.0f, 1.0f);
+    }
+    // Ok, so they are parallel and pointing in the opposite direction
+    // of each other.
+    else {
+      // Try crossing with x axis.
+      SbVec3f t = from.cross(SbVec3f(1.0f, 0.0f, 0.0f));
+      // If not ok, cross with y axis.
+      if(t.length() == 0.0f) t = from.cross(SbVec3f(0.0f, 1.0f, 0.0f));
 
-  // FIXME: this should perhaps be "centralized" somewhere. 19990401 mortene.
-  // Make sure we can take the cross-product without underflow.
-  const float tolerance = (float)sqrt(sqrt(FLT_MIN));
-
-  // Check if they are parallel and pointing in the same direction.
-  if (fabs(dot - 1.0f) < tolerance) {
-    this->setValue(0.0f, 0.0f, 0.0f, 1.0f);
+      t.normalize();
+      this->setValue(t[0], t[1], t[2], 0.0f);
+    }
   }
-  // Check if they are parallel and pointing in the opposite direction
-  // of each other.
-  else if (fabs(1.0f + dot) < tolerance) {
-    // Try crossing with x axis.
-    SbVec3f t = from.cross(SbVec3f(1.0f, 0.0f, 0.0f));
-    // If not ok, cross with y axis.
-    if(t.length() == 0.0f) t = from.cross(SbVec3f(0.0f, 1.0f, 0.0f));
-
-    t.normalize();
-    this->setValue(t[0], t[1], t[2], 0.0f);
-  }
-  // Not parallel, just take the cross product and find the rotation
-  // value.
-  else {
-    SbVec3f t = from.cross(to);
-    t.normalize();
+  else { // Vectors are not parallel
+    crossvec.normalize();
     // The fabs() wrapping is to avoid problems when `dot' "overflows"
     // a tiny wee bit, which can lead to sqrt() returning NaN.
-    t *= (float)sqrt(0.5f * fabs(1.0f - dot));
+    crossvec *= (float)sqrt(0.5f * fabs(1.0f - dot));
     // The fabs() wrapping is to avoid problems when `dot' "underflows"
     // a tiny wee bit, which can lead to sqrt() returning NaN.
-    this->setValue(t[0], t[1], t[2], (float)sqrt(0.5 * fabs(1.0 + dot)));
+    this->setValue(crossvec[0], crossvec[1], crossvec[2],
+                   (float)sqrt(0.5 * fabs(1.0 + dot)));
   }
-
+  
   return *this;
 }
 
