@@ -6875,7 +6875,7 @@ if test x"$with_freetype" != x"no"; then
   sim_ac_freetype_cppflags=
 
   if test x"$with_freetype" != xyes && test x"$with_freetype" != x""; then
-    sim_ac_freetype_cppflags="-I${with_freetype}/include"
+    sim_ac_freetype_cppflags="-I${with_freetype}/include -I${with_freetype}/include/freetype2"
   fi
 
   CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"

@@ -17323,7 +17323,7 @@ if test x"$with_freetype" != x"no"; then
   sim_ac_freetype_cppflags=
 
   if test x"$with_freetype" != xyes && test x"$with_freetype" != x""; then
-    sim_ac_freetype_cppflags="-I${with_freetype}/include"
+    sim_ac_freetype_cppflags="-I${with_freetype}/include -I${with_freetype}/include/freetype2"
   fi
 
   CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
@@ -17476,11 +17476,6 @@ fi
     echo "$as_me:$LINENO: result: failure" >&5
 echo "${ECHO_T}failure" >&6
 
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_FREETYPE 0
-_ACEOF
-
   if $sim_ac_freetype_desired; then
     { echo "$as_me:$LINENO: WARNING: freetype development system not found" >&5
 echo "$as_me: WARNING: freetype development system not found" >&2;};
@@ -17496,11 +17491,6 @@ fi
 else
   echo "$as_me:$LINENO: result: disabled" >&5
 echo "${ECHO_T}disabled" >&6
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_FREETYPE 0
-_ACEOF
 
   if $sim_ac_freetype_desired; then
     { echo "$as_me:$LINENO: WARNING: freetype development system not found" >&5
