@@ -629,6 +629,12 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
       0, 0
     };
 
+    const int pbufferflags[] = {
+      WGL_TEXTURE_FORMAT_ARB, WGL_TEXTURE_RGBA_ARB,
+      WGL_TEXTURE_TARGET_ARB, WGL_TEXTURE_2D_ARB,
+      0, 0 
+    };
+
     /* choose pixel format */
     if (!wglglue_wglChoosePixelFormat(context->memorydc, attrs, fAttribList, 1,
                                          &pixformat, &numFormats)) {
@@ -636,11 +642,6 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx)
                                 "wglChoosePixelFormat() failed");
       return FALSE;
     }
-
-    const int pbufferflags[] = {
-      WGL_TEXTURE_FORMAT_ARB, WGL_TEXTURE_RGBA_ARB,
-      WGL_TEXTURE_TARGET_ARB, WGL_TEXTURE_2D_ARB,
-      0, 0 };
         
     /* create the pbuffer */
     context->hpbuffer = wglglue_wglCreatePbuffer(context->memorydc, 
