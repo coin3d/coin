@@ -90,10 +90,10 @@ void
 SoGLNormalizeElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLNormalizeElement *elem = (SoGLNormalizeElement*)this->next;
-  elem->glnormalize = this->glnormalize;
-  elem->unitNormals = this->unitNormals;
-  elem->okMatrix = this->okMatrix;
+  SoGLNormalizeElement * prev = (SoGLNormalizeElement*)this->getNextInStack();
+  this->glnormalize = prev->glnormalize;
+  this->unitNormals = prev->unitNormals;
+  this->okMatrix = prev->okMatrix;
 }
 
 //! FIXME: write doc.
@@ -102,7 +102,7 @@ void
 SoGLNormalizeElement::pop(SoState * state,
                            const SoElement * prevTopElement)
 {
-  ((SoGLNormalizeElement*)prevTopElement)->glnormalize = this->glnormalize;
+  this->glnormalize = ((SoGLNormalizeElement*)prevTopElement)->glnormalize;
   inherited::pop(state, prevTopElement);
 }
 

@@ -25,6 +25,7 @@
 */
 
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/misc/SoState.h>
 
 #include <coindefs.h> // COIN_STUB()
 
@@ -75,10 +76,10 @@ void
 SoLocalBBoxMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-  SoLocalBBoxMatrixElement *elem =
-    (SoLocalBBoxMatrixElement*) this->next;
-  elem->localMatrix = this->localMatrix;
-  elem->modelInverseMatrix = this->modelInverseMatrix;
+  SoLocalBBoxMatrixElement * prev =
+    (SoLocalBBoxMatrixElement*) this->getNextInStack();
+  this->localMatrix = prev->localMatrix;
+  this->modelInverseMatrix = prev->modelInverseMatrix;
 }
 
 //! FIXME: write doc.
@@ -252,14 +253,11 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
 void
 SoLocalBBoxMatrixElement::resetAll(SoState * const state)
 {
-  // get const element to avoid push. Since this method is called only
-  // from SoBBoxModelMatrixElement::reset(), it should be safe.
-  SoLocalBBoxMatrixElement * element =
-    (SoLocalBBoxMatrixElement *) SoElement::getConstElement(state, getClassStackIndex());
-
+  SoLocalBBoxMatrixElement * element = 
+    (SoLocalBBoxMatrixElement*) state->getElementNoPush(getClassStackIndex());
   while (element) {
     element->localMatrix.makeIdentity();
-    element = (SoLocalBBoxMatrixElement*) element->prev;
+    element = (SoLocalBBoxMatrixElement*) element->getNextInStack();
   }
 }
 

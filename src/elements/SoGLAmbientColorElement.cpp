@@ -61,7 +61,7 @@ SoGLAmbientColorElement::~SoGLAmbientColorElement()
 //! FIXME: write doc.
 
 void
-SoGLAmbientColorElement::init(SoState *state)
+SoGLAmbientColorElement::init(SoState * state)
 {
   inherited::init(state);
   this->current.setValue(0.2f, 0.2f, 0.2f);
@@ -71,12 +71,12 @@ SoGLAmbientColorElement::init(SoState *state)
 //! FIXME: write doc.
 
 void
-SoGLAmbientColorElement::push(SoState *state)
+SoGLAmbientColorElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLAmbientColorElement * const element =
-    (SoGLAmbientColorElement *)this->next;
-  element->current = this->current;
+  SoGLAmbientColorElement * const prev =
+    (SoGLAmbientColorElement *)this->getNextInStack();
+  this->current = prev->current;
 }
 
 //! FIXME: write doc.
@@ -85,7 +85,7 @@ void
 SoGLAmbientColorElement::pop(SoState *state, const SoElement *prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  ((SoGLAmbientColorElement*)prevTopElement)->current = this->current;
+  this->current = ((SoGLAmbientColorElement*)prevTopElement)->current;
 }
 
 //! FIXME: write doc.

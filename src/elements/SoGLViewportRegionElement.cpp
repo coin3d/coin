@@ -77,10 +77,10 @@ void
 SoGLViewportRegionElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLViewportRegionElement *elem = (SoGLViewportRegionElement*)
-    this->next;
-  elem->viewportRegion = this->viewportRegion;
-  elem->initialized = TRUE;
+  SoGLViewportRegionElement * prev = (SoGLViewportRegionElement*)
+    this->getNextInStack();
+  this->viewportRegion = prev->viewportRegion;
+  this->initialized = TRUE;
 }
 
 //! FIXME: write doc.
@@ -89,10 +89,10 @@ void
 SoGLViewportRegionElement::pop(SoState * state,
                                const SoElement * prevTopElement)
 {
-  SoGLViewportRegionElement *prev =
+  SoGLViewportRegionElement * prev =
     (SoGLViewportRegionElement *)prevTopElement;
   if (!(this->viewportRegion == prev->viewportRegion))
-    prev->updategl();
+    this->updategl();
   inherited::pop(state, prevTopElement);
 }
 

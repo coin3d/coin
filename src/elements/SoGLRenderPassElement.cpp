@@ -68,23 +68,6 @@ SoGLRenderPassElement::init(SoState * state)
 
 //! FIXME: write doc.
 
-void
-SoGLRenderPassElement::push(SoState * state)
-{
-  inherited::push(state);
-}
-
-//! FIXME: write doc.
-
-void
-SoGLRenderPassElement::pop(SoState * state,
-                           const SoElement * prevTopElement)
-{
-  inherited::pop(state, prevTopElement);
-}
-
-//! FIXME: write doc.
-
 SbBool
 SoGLRenderPassElement::matches(const SoElement * /* element */) const
 {

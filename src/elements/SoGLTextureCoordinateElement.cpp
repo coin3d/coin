@@ -76,8 +76,6 @@ void
 SoGLTextureCoordinateElement::push(SoState * state)
 {
   inherited::push(state);
-//   SoGLTextureCoordinateElement *elem = (SoGLTextureCoordinateElement*)
-//     this->next;
 }
 
 //!  FIXME: write doc.
@@ -87,7 +85,7 @@ SoGLTextureCoordinateElement::pop(SoState * state,
                                   const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  ((SoGLTextureCoordinateElement*)prevTopElement)->doCallback();
+  this->doCallback();
 }
 
 //!  FIXME: write doc.

@@ -86,7 +86,7 @@ SoState::~SoState(void)
     SoElement * elem = this->initial[i];
     SoElement * next;
     while (elem) {
-      next = elem->next;
+      next = elem->nextup;
       delete elem;
       elem = next;
     }
@@ -135,14 +135,14 @@ SoState::getElement(const int stackIndex)
 #endif // debug
 
   if (element->getDepth() < this->depth) { // create elt of correct depth
-    SoElement * next = element->next;
+    SoElement * next = element->nextup;
     if (! next) { // allocate new element
       next = (SoElement *) element->getTypeId().createInstance();
-      next->prev = element;
-      element->next = next;
+      next->nextdown = element;
+      element->nextup = next;
     }
     next->setDepth(this->depth);
-    element->push(this);
+    next->push(this);
     this->stack[ stackIndex ] = next;
     element = next;
   }
@@ -192,9 +192,9 @@ SoState::pop(void)
     SoElement * element;
     if ((element = this->stack[ i ]) != NULL) {
       if (element->getDepth() > this->depth) { // rett test? tror det
-        SoElement * prev = element->prev;
+        SoElement * prev = element->nextdown;
         assert(prev);
-        element->pop(this, prev);
+        prev->pop(this, element);
         this->stack[i] = prev;
       }
     }

@@ -65,10 +65,10 @@ void
 SoBBoxModelMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-
-  SoBBoxModelMatrixElement * const element =
-    (SoBBoxModelMatrixElement *)(this->next);
-  element->state = this->state;
+  
+  SoBBoxModelMatrixElement * const prev =
+    (SoBBoxModelMatrixElement *)this->getNextInStack();
+  this->state = prev->state;
 }
 
 /*!

@@ -202,25 +202,25 @@ SoGLPolygonStippleElement::get(SoState * const state)
 //! FIXME: write doc.
 
 void
-SoGLPolygonStippleElement::push(SoState * /* state */)
+SoGLPolygonStippleElement::push(SoState * state)
 {
-  SoGLPolygonStippleElement *elem = (SoGLPolygonStippleElement*)
-    this->next;
-  elem->currentEnabled = this->currentEnabled;
-  elem->currentPattern = this->currentPattern;
+  SoGLPolygonStippleElement * prev = (SoGLPolygonStippleElement*)
+    this->getNextInStack();
+  this->currentEnabled = prev->currentEnabled;
+  this->currentPattern = prev->currentPattern;
 }
 
 //! FIXME: write doc.
 
 void
-SoGLPolygonStippleElement::pop(SoState * /* state */,
+SoGLPolygonStippleElement::pop(SoState * state,
                                const SoElement * prevTopElement)
 {
-  SoGLPolygonStippleElement *prev = (SoGLPolygonStippleElement*)
+  SoGLPolygonStippleElement * prev = (SoGLPolygonStippleElement*)
     prevTopElement;
 
-  prev->currentEnabled = this->currentEnabled;
-  prev->currentPattern = this->currentPattern;
+  this->currentEnabled = prev->currentEnabled;
+  this->currentPattern = prev->currentPattern;
 }
 
 //! FIXME: write doc.

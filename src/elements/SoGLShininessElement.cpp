@@ -71,12 +71,12 @@ SoGLShininessElement::init(SoState *state)
 //! FIXME: write doc.
 
 void
-SoGLShininessElement::push(SoState *state)
+SoGLShininessElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLShininessElement * const element =
-    (SoGLShininessElement *)this->next;
-  element->current = this->current;
+  SoGLShininessElement * const prev =
+    (SoGLShininessElement *)this->getNextInStack();
+  this->current = prev->current;
 }
 
 //! FIXME: write doc.
@@ -85,7 +85,7 @@ void
 SoGLShininessElement::pop(SoState *state, const SoElement *prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  ((SoGLShininessElement*)prevTopElement)->current = this->current;
+  this->current = ((SoGLShininessElement*)prevTopElement)->current;
 }
 
 //! FIXME: write doc.

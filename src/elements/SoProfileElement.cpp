@@ -110,11 +110,12 @@ SoProfileElement::push(SoState * state)
 {
   inherited::push(state);
 
-  SoProfileElement * const element =
-    (SoProfileElement *)(this->next);
-  element->profiles.truncate(0);
-  const int numProfiles = this->profiles.getLength();
-  for (int i = 0; i < numProfiles; i++)
-    element->profiles.append(this->profiles[ i ]);
-  element->copyNodeIds(this);
+  SoProfileElement * const prev =
+    (SoProfileElement *) this->getNextInStack();
+  
+  this->profiles.truncate(0);
+  const int numprofiles = prev->profiles.getLength();
+  for (int i = 0; i < numprofiles; i++)
+    this->profiles.append(prev->profiles[i]);
+  this->copyNodeIds(prev);
 }

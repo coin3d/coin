@@ -136,14 +136,14 @@ void
 SoClipPlaneElement::push(SoState * state)
 {
   inherited::push(state);
-
-  SoClipPlaneElement * const element =
-    (SoClipPlaneElement *)(this->next);
-
-  element->planes.truncate(0);
-  for (int i = 0; i < this->planes.getLength(); i++) {
-    element->planes.append(this->planes[i]);
+  
+  SoClipPlaneElement * const prev =
+    (SoClipPlaneElement *)this->getNextInStack();
+  
+  this->planes.truncate(0);
+  for (int i = 0; i < prev->planes.getLength(); i++) {
+    this->planes.append(prev->planes[i]);
   }
-  element->startIndex = this->planes.getLength();
-  element->copyNodeIds(this);
+  this->startIndex = prev->planes.getLength();
+  this->copyNodeIds(prev);
 }

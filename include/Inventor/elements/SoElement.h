@@ -86,14 +86,17 @@ protected:
 
   int depth;
 
-  SoElement * next;
-  SoElement * prev;
+  SoElement * getNextInStack(void) const;
+  SoElement * getNextFree(void) const;
 
 private:
+
   static SoType classTypeId;
 
   friend class SoState; // FIXME: bad design. 19990629 mortene.
   static void cleanup(void);
+  SoElement * nextup;
+  SoElement * nextdown;
 };
 
 #endif // !COIN_SOELEMENT_H

@@ -84,8 +84,8 @@ void
 SoOverrideElement::push(SoState * state)
 {
   inherited::push(state);
-  SoOverrideElement *next = (SoOverrideElement*) this->next;
-  next->flags = this->flags;
+  SoOverrideElement * prev = (SoOverrideElement*) this->getNextInStack();
+  this->flags = prev->flags;
 }
 
 //! FIXME: write doc.

@@ -73,18 +73,18 @@ SoGLPolygonOffsetElement::init(SoState * state)
 }
 
 //! FIXME: write doc.
- 
+
 void
 SoGLPolygonOffsetElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLPolygonOffsetElement *top = (SoGLPolygonOffsetElement*)this->next;
+  SoGLPolygonOffsetElement * prev = (SoGLPolygonOffsetElement*)this->getNextInStack();
 
-  top->currentActive = this->currentActive;
-  top->currentStyle = this->currentStyle;
-  top->currentOffsetfactor = this->currentOffsetfactor;
-  top->currentOffsetunits = this->currentOffsetunits;
-  top->state = this->state;
+  this->currentActive = prev->currentActive;
+  this->currentStyle = prev->currentStyle;
+  this->currentOffsetfactor = prev->currentOffsetfactor;
+  this->currentOffsetunits = prev->currentOffsetunits;
+  this->state = prev->state;
 }
 
 //! FIXME: write doc.
@@ -92,13 +92,13 @@ SoGLPolygonOffsetElement::push(SoState * state)
 void
 SoGLPolygonOffsetElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-  SoGLPolygonOffsetElement *prev =
-    (SoGLPolygonOffsetElement*)prevTopElement;
+  const SoGLPolygonOffsetElement * prev =
+    (const SoGLPolygonOffsetElement*)prevTopElement;
 
-  prev->currentActive = this->currentActive;
-  prev->currentStyle = this->currentStyle;
-  prev->currentOffsetfactor = this->currentOffsetfactor;
-  prev->currentOffsetunits = this->currentOffsetunits;
+  this->currentActive = prev->currentActive;
+  this->currentStyle = prev->currentStyle;
+  this->currentOffsetfactor = prev->currentOffsetfactor;
+  this->currentOffsetunits = prev->currentOffsetunits;
 
   inherited::pop(state, prevTopElement);
 }
@@ -146,7 +146,7 @@ SoGLPolygonOffsetElement::updategl()
 #if GL_EXT_polygon_offset && ! GL_VERSION_1_1
   static int polygon_offset_ext_id = -1;
   if (polygon_offset_ext_id == -1) {
-    polygon_offset_ext_id = 
+    polygon_offset_ext_id =
       SoGLCacheContextElement::getExtID("GL_EXT_polygon_offset");
   }
 #endif // GL_EXT_polygon_offset && ! GL_VERSION_1_1

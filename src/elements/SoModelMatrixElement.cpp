@@ -386,16 +386,17 @@ void
 SoModelMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-  SoModelMatrixElement * const element =
-    (SoModelMatrixElement *)this->next;
-  element->modelMatrix = this->modelMatrix;
-  element->flags = this->flags;
+  SoModelMatrixElement * prev =
+    (SoModelMatrixElement *) this->getNextInStack();
+  
+  this->modelMatrix = prev->modelMatrix;
+  this->flags = prev->flags;
   // only copy when needed
-  if (this->flags & FLG_CULLMATRIX)
-    element->cullMatrix = this->cullMatrix;
-  if (this->flags & FLG_COMBINED)
-    element->combinedMatrix = this->combinedMatrix;
+  if (prev->flags & FLG_CULLMATRIX)
+    this->cullMatrix = prev->cullMatrix;
+  if (prev->flags & FLG_COMBINED)
+    this->combinedMatrix = prev->combinedMatrix;
 
   // make sure node ids are accumulated properly
-  element->copyNodeIds(this);
+  this->copyNodeIds(prev);
 }

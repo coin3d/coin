@@ -79,8 +79,8 @@ void
 SoGLPointSizeElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLPointSizeElement *top = (SoGLPointSizeElement*)this->next;
-  top->current = this->current;
+  SoGLPointSizeElement * prev = (SoGLPointSizeElement*)this->getNextInStack();
+  this->current = prev->current;
 }
 
 //! FIXME: write doc.
@@ -89,8 +89,8 @@ void
 SoGLPointSizeElement::pop(SoState * state,
                           const SoElement * prevTopElement)
 {
-  SoGLPointSizeElement *prev = (SoGLPointSizeElement*)prevTopElement;
-  prev->current = this->current;
+  SoGLPointSizeElement * prev = (SoGLPointSizeElement*)prevTopElement;
+  this->current = prev->current;
   inherited::pop(state, prevTopElement);
 }
 

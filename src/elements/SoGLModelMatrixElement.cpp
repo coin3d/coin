@@ -79,9 +79,9 @@ SoGLModelMatrixElement::push(SoState * state)
 {
   glPushMatrix();
   inherited::push(state);
-  SoGLModelMatrixElement *elem = (SoGLModelMatrixElement*)
-    this->next;
-  elem->state = state;
+  SoGLModelMatrixElement * prev = (SoGLModelMatrixElement*)
+    this->getNextInStack();
+  this->state = prev->state;
 }
 
 //! FIXME: write doc.

@@ -244,12 +244,12 @@ SoTextureMatrixElement::push(SoState * state)
 {
   inherited::push(state);
 
-  SoTextureMatrixElement * const element =
-    (SoTextureMatrixElement *)(this->next);
-  element->textureMatrix = this->textureMatrix;
+  SoTextureMatrixElement * prev =
+    (SoTextureMatrixElement *) this->getNextInStack();
+  this->textureMatrix = prev->textureMatrix;
 
   // make sure node ids are accumulated properly
-  element->copyNodeIds(this);
+  this->copyNodeIds(prev);
 }
 
 /*!

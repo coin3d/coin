@@ -71,21 +71,21 @@ SoGLSpecularColorElement::init(SoState *state)
 //! FIXME: write doc.
 
 void
-SoGLSpecularColorElement::push(SoState *state)
+SoGLSpecularColorElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLSpecularColorElement * const element =
-    (SoGLSpecularColorElement *)this->next;
-  element->current = this->current;
+  SoGLSpecularColorElement * const prev =
+    (SoGLSpecularColorElement *)this->getNextInStack();
+  this->current = prev->current;
 }
 
 //! FIXME: write doc.
 
 void
-SoGLSpecularColorElement::pop(SoState *state, const SoElement *prevTopElement)
+SoGLSpecularColorElement::pop(SoState *state, const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  ((SoGLSpecularColorElement*)prevTopElement)->current = this->current;
+  this->current = ((SoGLSpecularColorElement*)prevTopElement)->current;
 }
 
 //! FIXME: write doc.

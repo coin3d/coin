@@ -50,18 +50,6 @@
   FIXME: write doc.
 */
 
-/*!
-  \fn SoElement::next
-
-  FIXME: write doc.
-*/
-
-/*!
-  \fn SoElement::prev
-
-  FIXME: write doc
-*/
-
 
 
 // FIXME: do we need to duplicate the following documentation in all
@@ -228,9 +216,9 @@ SoElement::cleanup(void)
   for the elements type identifier..
 */
 SoElement::SoElement(void)
+  : nextup(NULL),
+    nextdown(NULL)
 {
-  this->next = NULL;
-  this->prev = NULL;
 }
 
 /*!
@@ -252,27 +240,33 @@ SoElement::init(SoState *)
 {
 }
 
-/*!
-  This method pushes the element.
-  It should duplicate the needed internal SoElement instance data
-  into the SoElement instance at \e next.
+/*!  
+  This method is called every time a new element is required in one of
+  the stacks. This happens when a writable element is requested, using
+  SoState::getElement() or indirectly SoElement::getElement(), and the
+  depth of the current element is less than the state depth.
 
-  This method is used for copying the
-  internal data to the next element in the stack, and is called by SoState
-  after such an element has been created.
+  Overload this method if your element needs to copy data from the
+  previous top of stack. The push() method is called on the new
+  element, and the previous element can be found using
+  SoElement::getNextInStack().
+
+  The default method does nothing.
 */
-
 void
 SoElement::push(SoState * /* state */)
 {
-  assert(this->next);
 }
 
 /*!
-  This function pops the element.
-  Default method does nothing.
-*/
+  This method is callled when the state is popped, and the depth
+  of the element is bigger than the current state depth. pop()
+  is called on the new top of stack, and a pointer to the previous
+  top of stack is passed in \a prevTopElement.
 
+  Default method does nothing. Overload this method if you need
+  to copy some state information from the previou top of stack.
+*/
 void
 SoElement::pop(SoState * /* state */, const SoElement * /* prevTopElement */)
 {
@@ -470,3 +464,24 @@ SoElement::createStackIndex(const SoType typeId)
   }
   return -1;
 }
+
+/*!
+  Returns the next element down in the stack. Should be used
+  in push() to get the previous element. This method has a
+  silly name (IMHO), but is kept to keep OIV compatibility.
+*/
+SoElement * 
+SoElement::getNextInStack(void) const
+{
+  return this->nextdown;
+}
+
+/*!
+  Returns the next free element. The next element up in the stack.
+*/
+SoElement * 
+SoElement::getNextFree(void) const
+{
+  return this->nextup;
+}
+

@@ -67,12 +67,11 @@ SoCacheElement::init(SoState * state)
 /*!
   Overloaded to initialize element.
 */
-void 
+void
 SoCacheElement::push(SoState * state)
 {
   inherited::push(state);
-  SoCacheElement * elem = (SoCacheElement*) this->next;
-  elem->cache = NULL;
+  this->cache = NULL;
 }
 
 /*!
@@ -81,9 +80,10 @@ SoCacheElement::push(SoState * state)
 void
 SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-  if (this->cache) {
-    this->cache->unref();
-    this->cache = NULL;
+  SoCacheElement * prev = (SoCacheElement*) prevTopElement;
+  if (prev->cache) {
+    prev->cache->unref();
+    prev->cache = NULL;
   }
   inherited::pop(state, prevTopElement);
   if (!this->anyOpen(state)) state->setCacheOpen(FALSE);
@@ -128,7 +128,7 @@ SoCacheElement::anyOpen(SoState * const state)
     state->getElementNoPush(classStackIndex);
   while (elem) {
     if (elem->cache) return TRUE;
-    elem = (SoCacheElement*) elem->prev;
+    elem = (SoCacheElement*) elem->getNextInStack();
   }
   return FALSE;
 }
@@ -153,7 +153,7 @@ SoCacheElement::invalidate(SoState * const state)
       elem->cache->unref();
       elem->cache = NULL;
     }
-    elem = (SoCacheElement*) elem->prev;
+    elem = (SoCacheElement*) elem->getNextInStack();
   }
 }
 
@@ -191,13 +191,12 @@ SoCacheElement::copyMatchInfo(void) const
 
 /*!
   This method returns the next cache element. That is the next cache
-  element pointing towards the bottom of the state. In Coin we call
-  this the previous element.
+  element pointing towards the bottom of the state. 
 */
 SoCacheElement *
 SoCacheElement::getNextCacheElement(void) const
 {
-  return (SoCacheElement *) this->prev;
+  return (SoCacheElement *) this->getNextInStack();
 }
 
 /*!
@@ -213,7 +212,7 @@ SoCacheElement::addElement(SoState * const state,
     state->getElementNoPush(classStackIndex);
   while (elem) {
     if (elem->cache) elem->cache->addElement(element);
-    elem = (SoCacheElement*) elem->prev;
+    elem = (SoCacheElement*) elem->getNextInStack();
   }
 }
 
@@ -230,7 +229,7 @@ SoCacheElement::addCacheDependency(SoState * const state,
     state->getElementNoPush(classStackIndex);
   while (elem) {
     if (elem->cache) elem->cache->addCacheDependency(state, cache);
-    elem = (SoCacheElement*) elem->prev;
+    elem = (SoCacheElement*) elem->getNextInStack();
   }
 }
 

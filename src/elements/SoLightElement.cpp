@@ -124,13 +124,13 @@ SoLightElement::push(SoState * state)
 {
   inherited::push(state);
 
-  SoLightElement * const element =
-    (SoLightElement *)(this->next);
-  element->lights.truncate(0);
-  const int numLights = this->lights.getLength();
+  SoLightElement * const prev =
+    (SoLightElement *) this->getNextInStack();
+  this->lights.truncate(0);
+  const int numLights = prev->lights.getLength();
   int i;
   for (i = 0; i < numLights; i++)
-    element->lights.append(this->lights[ i ]);
-  element->matrixlist = this->matrixlist; // just pass pointer to list
-  element->copyNodeIds(this);
+    this->lights.append(prev->lights[ i ]);
+  this->matrixlist = prev->matrixlist; // just pass pointer to list
+  this->copyNodeIds(prev);
 }

@@ -81,13 +81,13 @@ SoCullElement::init(SoState * state)
 void
 SoCullElement::push(SoState * state)
 {
-  SoCullElement * elem = (SoCullElement *)
-    this->next;
-
-  elem->flags = this->flags;
-  elem->numplanes = this->numplanes;
-  elem->vvindex = this->vvindex;
-  for (int i = 0; i < this->numplanes; i++) elem->plane[i] = this->plane[i];
+  SoCullElement * prev = (SoCullElement *)
+    this->getNextInStack();
+  
+  this->flags = prev->flags;
+  this->numplanes = prev->numplanes;
+  this->vvindex = prev->vvindex;
+  for (int i = 0; i < prev->numplanes; i++) this->plane[i] = prev->plane[i];
 }
 
 /*!

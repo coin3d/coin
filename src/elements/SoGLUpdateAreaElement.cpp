@@ -78,7 +78,7 @@ SoGLUpdateAreaElement::init(SoState * state)
 void
 SoGLUpdateAreaElement::push(SoState * state)
 {
-    inherited::push(state);
+  inherited::push(state);
 }
 
 //! FIXME: write doc.
@@ -87,7 +87,7 @@ void
 SoGLUpdateAreaElement::pop(SoState * state,
                            const SoElement * prevTopElement)
 {
-    inherited::pop(state, prevTopElement);
+  inherited::pop(state, prevTopElement);
 }
 
 //! FIXME: write doc.

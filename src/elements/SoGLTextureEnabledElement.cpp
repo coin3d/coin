@@ -86,8 +86,7 @@ void
 SoGLTextureEnabledElement::push(SoState * state)
 {
   inherited::push(state);
-  ((SoGLTextureEnabledElement*)this->next)->data = this->data;
-  ((SoGLTextureEnabledElement*)this->next)->glstate = this->glstate;
+  this->glstate = ((SoGLTextureEnabledElement*)this->getNextInStack())->glstate;
 }
 
 /*!
@@ -97,7 +96,7 @@ void
 SoGLTextureEnabledElement::pop(SoState * state,
                                const SoElement * prevTopElement)
 {
-  ((SoGLTextureEnabledElement*)prevTopElement)->glstate = this->glstate;
+  this->glstate = ((SoGLTextureEnabledElement*)prevTopElement)->glstate;
   inherited::pop(state, prevTopElement);
 }
 

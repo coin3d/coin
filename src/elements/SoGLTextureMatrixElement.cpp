@@ -69,7 +69,7 @@ SoGLTextureMatrixElement::pop(SoState * state,
                               const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  ((SoGLTextureMatrixElement*)prevTopElement)->updategl();
+  this->updategl();
 }
 
 // doc from parent

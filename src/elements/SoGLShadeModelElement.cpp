@@ -74,8 +74,11 @@ void
 SoGLShadeModelElement::push(SoState * state)
 {
   inherited::push(state);
-  ((SoGLShadeModelElement*)this->next)->glflat = this->glflat;
-  ((SoGLShadeModelElement*)this->next)->flat = this->flat;
+  SoGLShadeModelElement * prev = (SoGLShadeModelElement*)
+    this->getNextInStack();
+  
+  this->glflat = prev->glflat;
+  this->flat = prev->flat;
 }
 
 // doc from parent
@@ -83,7 +86,7 @@ void
 SoGLShadeModelElement::pop(SoState * state,
                            const SoElement * prevTopElement)
 {
-  ((SoGLShadeModelElement*)prevTopElement)->glflat = this->glflat;
+  this->glflat = ((SoGLShadeModelElement*)prevTopElement)->glflat;
   inherited::pop(state, prevTopElement);
 }
 

@@ -75,26 +75,27 @@ SoGLDiffuseColorElement::init(SoState *state)
 //! FIXME: write doc.
 
 void
-SoGLDiffuseColorElement::push(SoState *state)
+SoGLDiffuseColorElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLDiffuseColorElement * elem =
-    (SoGLDiffuseColorElement *)this->next;
-  elem->current = this->current;
-  elem->currentPacked = this->currentPacked;
+  SoGLDiffuseColorElement * prev =
+    (SoGLDiffuseColorElement *)this->getNextInStack();
+
+  this->current = prev->current;
+  this->currentPacked = prev->currentPacked; 
 }
 
 //! FIXME: write doc.
 
 void
-SoGLDiffuseColorElement::pop(SoState *state, const SoElement *prevTopElement)
+SoGLDiffuseColorElement::pop(SoState *state, const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  SoGLDiffuseColorElement *prev =
+  SoGLDiffuseColorElement * prev =
     (SoGLDiffuseColorElement*)prevTopElement;
 
-  prev->current = this->current;
-  prev->currentPacked = this->currentPacked;
+  this->current = prev->current;
+  this->currentPacked = prev->currentPacked;
 }
 
 //! FIXME: write doc.

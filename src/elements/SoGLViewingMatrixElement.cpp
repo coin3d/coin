@@ -68,7 +68,6 @@ SoGLViewingMatrixElement::init(SoState * state)
 {
   inherited::init(state);
   this->state = state;
-  //  glLoadIdentity(); // maybe not strictly necessary?
 }
 
 //! FIXME: write doc.
@@ -77,9 +76,7 @@ void
 SoGLViewingMatrixElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLViewingMatrixElement *elem = (SoGLViewingMatrixElement*)
-    this->next;
-  elem->state = state;
+  this->state = state;
 }
 
 //! FIXME: write doc.
@@ -89,7 +86,7 @@ SoGLViewingMatrixElement::pop(SoState * state,
                               const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  ((SoGLViewingMatrixElement*)prevTopElement)->updategl();
+  this->updategl();
 }
 
 //! FIXME: write doc.

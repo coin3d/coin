@@ -89,7 +89,7 @@ void
 SoGLLightIdElement::push(SoState * state)
 {
   inherited::push(state);
-  ((SoGLLightIdElement*)this->next)->data = this->data;
+  this->data = ((SoGLLightIdElement*)this->getNextInStack())->data;
 }
 
 //! FIXME: write doc.
@@ -98,9 +98,10 @@ void
 SoGLLightIdElement::pop(SoState * state,
                         const SoElement * prevTopElement)
 {
-  int idx = ((SoGLLightIdElement*)prevTopElement)->data + 1;
+  int idx = this->data + 1;
+  int prevdata = ((SoGLLightIdElement*)prevTopElement)->data;
   // disable used light sources
-  while (idx <= this->data) {
+  while (idx <= prevdata) {
     glDisable((GLenum)((int32_t)GL_LIGHT0 + idx));
     idx++;
   }
@@ -137,6 +138,7 @@ SoGLLightIdElement::increment(SoState * const state,
 int32_t
 SoGLLightIdElement::getMaxGLSources()
 {
+  // FIXME: consider context. pederb, 20001012
   if (SoGLLightIdElement::maxGLSources == -1) {
     // NB: don't try to be clever and move this code to the
     // initClass() method, as it won't work -- the GL variables may

@@ -88,10 +88,12 @@ void
 SoGLTextureImageElement::push(SoState * state)
 {
   inherited::push(state);
-  ((SoGLTextureImageElement*)this->next)->glmodel = this->glmodel;
-  ((SoGLTextureImageElement*)this->next)->glblendcolor = this->glblendcolor;
-  ((SoGLTextureImageElement*)this->next)->glalphatest = this->glalphatest;
-  ((SoGLTextureImageElement*)this->next)->state = state;
+  SoGLTextureImageElement * prev = (SoGLTextureImageElement*)
+    this->getNextInStack();
+  this->glmodel = prev->glmodel;
+  this->glblendcolor = prev->glblendcolor;
+  this->glalphatest = prev->glalphatest;
+  this->state = state;
 }
 
 
@@ -103,14 +105,14 @@ SoGLTextureImageElement::pop(SoState * state,
                              const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  SoGLTextureImageElement *prev = (SoGLTextureImageElement*)
+  SoGLTextureImageElement * prev = (SoGLTextureImageElement*)
     prevTopElement;
-
-  if (this->dlist) this->dlist->unref(state); // unref dlist (ref'ed in set())
-  prev->glmodel = this->glmodel;
-  prev->glblendcolor = this->glblendcolor;
-  prev->glalphatest = this->glalphatest;
-  prev->didapply = FALSE; // force texture to be applied in the next evaluate()
+  
+  if (prev->dlist) prev->dlist->unref(state); // unref dlist (ref'ed in set())
+  this->glmodel = prev->glmodel;
+  this->glblendcolor = prev->glblendcolor;
+  this->glalphatest = prev->glalphatest;
+  this->didapply = FALSE; // force texture to be applied in the next evaluate()
 }
 
 static SoTextureImageElement::Wrap

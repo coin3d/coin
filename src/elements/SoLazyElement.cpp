@@ -81,15 +81,15 @@ void
 SoLazyElement::push(SoState *state)
 {
   inherited::push(state);
-  SoLazyElement *elem = (SoLazyElement*) this->next;
-  elem->colorMaterial = this->colorMaterial;
-  elem->blending = this->blending;
-  elem->state = this->state;
-  elem->shininess = this->shininess;
-  elem->ambientColor = this->ambientColor;
-  elem->specularColor = this->specularColor;
-  elem->emissiveColor = this->emissiveColor;
-  elem->transparencyType = this->transparencyType;
+  SoLazyElement * prev = (SoLazyElement*) this->getNextInStack();
+  this->colorMaterial = prev->colorMaterial;
+  this->blending = prev->blending;
+  this->state = prev->state;
+  this->shininess = prev->shininess;
+  this->ambientColor = prev->ambientColor;
+  this->specularColor = prev->specularColor;
+  this->emissiveColor = prev->emissiveColor;
+  this->transparencyType = prev->transparencyType;
 }
 
 // ! FIXME: write doc

@@ -71,7 +71,7 @@ SoGLDrawStyleElement::push(SoState * state)
 {
   inherited::push(state);
   // copy data to avoid unessesary GL calls
-  ((SoGLDrawStyleElement*)this->next)->data = this->data;
+  this->data = ((SoGLDrawStyleElement*)this->getNextInStack())->data;
 }
 
 //! FIXME: write doc.
@@ -80,8 +80,8 @@ void
 SoGLDrawStyleElement::pop(SoState * state,
                           const SoElement * prevTopElement)
 {
-  SoGLDrawStyleElement *prev = (SoGLDrawStyleElement*) prevTopElement;
-  if (prev->data != this->data) prev->updategl();
+  SoGLDrawStyleElement * prev = (SoGLDrawStyleElement*) prevTopElement;
+  if (this->data != prev->data) this->updategl();
   inherited::pop(state, prevTopElement);
 }
 

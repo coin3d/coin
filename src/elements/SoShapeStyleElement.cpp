@@ -81,8 +81,8 @@ void
 SoShapeStyleElement::push(SoState * state)
 {
   inherited::push(state);
-  SoShapeStyleElement * elem = (SoShapeStyleElement *)this->next;
-  elem->flags = this->flags;
+  SoShapeStyleElement * prev = (SoShapeStyleElement *) this->getNextInStack();
+  this->flags = prev->flags;
 }
 
 //! FIXME: write doc.

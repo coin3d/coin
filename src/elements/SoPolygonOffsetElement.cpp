@@ -99,7 +99,7 @@ SoPolygonOffsetElement::init(SoState * state)
 void
 SoPolygonOffsetElement::push(SoState * state)
 {
-    inherited::push(state);
+  inherited::push(state);
 }
 
 //! FIXME: write doc.

@@ -105,10 +105,10 @@ void
 SoGLShapeHintsElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLShapeHintsElement * elem =
-    (SoGLShapeHintsElement *)this->next;
+  SoGLShapeHintsElement * prev =
+    (SoGLShapeHintsElement *) this->getNextInStack();
 
-  elem->glflags = this->glflags;
+  this->glflags = prev->glflags;
 }
 
 //! FIXME: write doc.
@@ -119,8 +119,8 @@ SoGLShapeHintsElement::pop(SoState * state,
 {
   inherited::pop(state, prevTopElement);
 
-  SoGLShapeHintsElement *prev = (SoGLShapeHintsElement*) prevTopElement;
-  prev->glflags = this->glflags;
+  SoGLShapeHintsElement * prev = (SoGLShapeHintsElement*) prevTopElement;
+  this->glflags = prev->glflags;
 }
 
 //! FIXME: write doc.

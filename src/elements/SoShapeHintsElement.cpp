@@ -67,10 +67,10 @@ void
 SoShapeHintsElement::push(SoState * state)
 {
   inherited::push(state);
-  SoShapeHintsElement *elem = (SoShapeHintsElement*)this->next;
-  elem->vertexOrdering = this->vertexOrdering;
-  elem->shapeType = this->shapeType;
-  elem->faceType = this->faceType;
+  SoShapeHintsElement * prev = (SoShapeHintsElement*) this->getNextInStack();
+  this->vertexOrdering = prev->vertexOrdering;
+  this->shapeType = prev->shapeType;
+  this->faceType = prev->faceType;
 }
 
 //! FIXME: write doc.

@@ -80,8 +80,8 @@ SoGLLineWidthElement::push(SoState * state)
 {
   inherited::push(state);
 
-  SoGLLineWidthElement *top = (SoGLLineWidthElement*)this->next;
-  top->current = this->current;
+  SoGLLineWidthElement * prev = (SoGLLineWidthElement*)this->getNextInStack();
+  this->current = prev->current;
 }
 
 //! FIXME: write doc.
@@ -90,8 +90,8 @@ void
 SoGLLineWidthElement::pop(SoState * state,
                           const SoElement * prevTopElement)
 {
-  SoGLLineWidthElement *prev = (SoGLLineWidthElement*)prevTopElement;
-  prev->current = this->current;
+  SoGLLineWidthElement * prev = (SoGLLineWidthElement*)prevTopElement;
+  this->current = prev->current;
   inherited::pop(state, prevTopElement);
 }
 

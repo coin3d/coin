@@ -74,8 +74,8 @@ void
 SoGLLightModelElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLLightModelElement *top = (SoGLLightModelElement*)this->next;
-  top->current = this->current;
+  SoGLLightModelElement * prev = (SoGLLightModelElement*)this->getNextInStack();
+  this->current = prev->current;
 }
 
 //! FIXME: write doc.
@@ -84,8 +84,8 @@ void
 SoGLLightModelElement::pop(SoState * state,
                           const SoElement * prevTopElement)
 {
-  SoGLLightModelElement *prev = (SoGLLightModelElement*)prevTopElement;
-  prev->current = this->current;
+  SoGLLightModelElement * prev = (SoGLLightModelElement*)prevTopElement;
+  this->current = prev->current;
   inherited::pop(state, prevTopElement);
 }
 

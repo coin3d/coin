@@ -81,8 +81,8 @@ void
 SoTextureOverrideElement::push(SoState *state)
 {
   inherited::push(state);
-  SoTextureOverrideElement *next = (SoTextureOverrideElement*) this->next;
-  next->flags = this->flags;
+  SoTextureOverrideElement * prev = (SoTextureOverrideElement*) this->getNextInStack();
+  this->flags = prev->flags;
 }
 
 //!

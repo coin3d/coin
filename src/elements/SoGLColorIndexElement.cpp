@@ -63,9 +63,9 @@ SoGLColorIndexElement::push(SoState * state)
 {
   inherited::push(state);
   // need to copy the colorindexmode member
-  SoGLColorIndexElement * elem =
-    (SoGLColorIndexElement *)this->next;
-  elem->colorindexmode = this->colorindexmode;
+  SoGLColorIndexElement * prev =
+    (SoGLColorIndexElement *) this->getNextInStack();
+  this->colorindexmode = prev->colorindexmode;
 }
 
 /*!

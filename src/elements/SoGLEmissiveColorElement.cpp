@@ -60,7 +60,7 @@ SoGLEmissiveColorElement::~SoGLEmissiveColorElement()
 //! FIXME: write doc.
 
 void
-SoGLEmissiveColorElement::init(SoState *state)
+SoGLEmissiveColorElement::init(SoState * state)
 {
   inherited::init(state);
   this->current.setValue(0.0f, 0.0f, 0.0f);
@@ -70,21 +70,21 @@ SoGLEmissiveColorElement::init(SoState *state)
 //! FIXME: write doc.
 
 void
-SoGLEmissiveColorElement::push(SoState *state)
+SoGLEmissiveColorElement::push(SoState * state)
 {
   inherited::push(state);
-  SoGLEmissiveColorElement * const element =
-    (SoGLEmissiveColorElement *)this->next;
-  element->current = this->current;
+  SoGLEmissiveColorElement * const prev =
+    (SoGLEmissiveColorElement *)this->getNextInStack();
+  this->current = prev->current;
 }
 
 //! FIXME: write doc.
 
 void
-SoGLEmissiveColorElement::pop(SoState *state, const SoElement *prevTopElement)
+SoGLEmissiveColorElement::pop(SoState *state, const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  ((SoGLEmissiveColorElement*)prevTopElement)->current = this->current;
+  this->current = ((SoGLEmissiveColorElement*)prevTopElement)->current;
 }
 
 //! FIXME: write doc.
