@@ -1,0 +1,44 @@
+#
+# Coin binary packaging for Mac OS X checklist
+#
+
+Prerequisites: 
+- simage and freetype-2.1.5 sources present 
+  in the ../checkout directory
+- An official Coin-$(VERSION).tar.gz
+
+
+o Initialization
+
+  mkdir Coin-installer-config
+  cd Coin-installer-config
+
+o configure and build simage
+
+  mkdir simage-config
+  cd simage-config
+  ../../../checkout/simage/configure --prefix=$PWD/../macosx/supportlibs/install --enable-quicktime --enable-optimization --disable-debug --disable-symbols --without-oggvorbis --without-libsndfile --libdir=$PWD/../macosx/supportlibs/lib
+  make install
+  cd ..
+
+o configure and build freetype
+
+  mkdir freetype-config
+  cd freetype-config
+  ../../../checkout/freetype-2.1.5/configure --prefix=$PWD/../macosx/supportlibs/install --disable-static --libdir=$PWD/../macosx/supportlibs/lib
+  make install
+  cd ..
+
+o Build & package Coin
+
+  tar xzf /path/to/Coin-$(VERSION).tar.gz
+  Coin-$(VERSION)/configure
+  make macosx-packages
+
+---
+
+You should now have the following:
+
+Coin-$(VERSION)-no_inst.dmg
+Coin-$(VERSION).dmg
+coin.info

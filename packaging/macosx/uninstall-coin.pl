@@ -1,7 +1,8 @@
 #! /usr/bin/perl
 
 # Script to remove the complete Coin installation, as done by the
-# binary installers for Coin-1.0.3, Coin-1.0.4, and/or Coin-2.0.0.
+# binary installers for Coin-1.0.3, Coin-1.0.4, Coin-2.0.0 and/or 
+# Coin-2.0.0.
 
 # This script is based on uninstall-devtools.pl by Apple. It's a shame
 # that the recommended/only way of uninstalling packages seems to be
@@ -24,7 +25,9 @@ die "ERROR: Must be run as root.\n" if ($< != 0);
 sub remove_main_packages  {
 
     # These are the versions we had binary installers for.
-    my @pkglist = ('Coin-2.0.0', 
+    my @pkglist = ('Coin', 
+                   'CoinTools',
+                   'Coin-2.0.0',
                    'Coin-1.0.4',
                    'Coin-1.0.3');
     

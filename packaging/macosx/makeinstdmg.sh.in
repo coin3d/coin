@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# Copyright 2004 Systems in Motion AS, All rights reserved.
+#
+# This script creates the main Coin-x.x.x.dmg image.
+# The dmg file will be put in the current directory.
+# 
+# Usage: makeinstdmg.sh [-v] -c <Coin-version>
+#  -v   verbose
+#  -c   Coin version string including name, e.g. "-c Coin-2.1.0"
+#
+# Authors:
+#   Marius Kintel <kintel@sim.no>
+
+printUsage()
+{
+  echo "Usage: $0 [-v] -c <Coin-version>"
+  echo
+  echo "  Example: $0 -c Coin-2.1.0"
+}
+
+while getopts 'vc:' c
+do
+  case $c in
+    v) VERBOSE=-v ;;
+    c) VOLNAME=$OPTARG;;
+  esac
+done
+
+if test -z "$VOLNAME"; then
+  printUsage
+  exit 1
+fi
+
+if test $VERBOSE; then
+  set -x
+fi
+
+if test -e /Volumes/$VOLNAME; then
+  echo "/Volumes/Coin-$VOLNAME already exists. Please unmount before running this script."
+  exit 1
+fi
+
+# Remove old generated files
+rm -rf inst-dmg-root
+rm -rf $VOLNAME.dmg
+
+# Create dmgroot from template dir
+ditto -rsrcFork @top_srcdir@/packaging/macosx/inst-dmg-files inst-dmg-root
+
+# Copy dist files
+ditto -rsrcFork Coin.pkg inst-dmg-root/Coin.pkg
+ditto -rsrcFork @top_srcdir@/packaging/macosx/uninstall-coin.pl inst-dmg-root/tools/
+ditto -rsrcFork CoinTools.pkg inst-dmg-root/tools/CoinTools.pkg
+#FIXME: doc disabled for now
+#ditto -rsrcFork @top_srcdir@/packaging/macosx/doc inst-dmg-root/doc
+
+# Build dmg file from dmgroot
+sh makedmg.sh -v $VOLNAME -o $VOLNAME.dmg -r inst-dmg-root
+
+# Remove temporary files
+rm -rf inst-dmg-root
