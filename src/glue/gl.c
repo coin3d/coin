@@ -65,6 +65,10 @@
    - The OpenGL Extension Registry:
      <URL:http://oss.sgi.com/projects/ogl-sample/registry/>
 
+   - A great overview of what OpenGL driver capabilities are available
+     for different cards, check out "3D Hardware Info" on
+     <URL:http://www.delphi3d.net/>.
+
    - Brian Paul presentation "Using OpenGL Extensions" from SIGGRAPH '97:
      <URL:http://www.mesa3d.org/brianp/sig97/exten.htm>
 
