@@ -263,7 +263,7 @@ void
 SoSFPath::notify(SoNotList * l)
 {
   // Detect if our path has gotten a new head :^), and if so do the
-  // necessary auditing magic.
+  // necessary audit setup magic.
   if (this->getValue() && this->getValue()->getHead() != this->head) {
     if (this->head) {
       this->head->removeAuditor(this, SoNotRec::FIELD);

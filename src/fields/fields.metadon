@@ -48,7 +48,7 @@
 # ID         SoMFMatrix
 # ID         SoMFName
 # ID         SoMFNode
-#            SoMFPath
+# ID         SoMFPath
 # ID         SoMFPlane
 # ID         SoMFRotation
 # ID         SoMFShort

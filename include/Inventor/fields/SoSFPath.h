@@ -43,6 +43,9 @@ public:
 private:
   virtual void countWriteRefs(SoOutput * out) const;
   SoNode * head;
+
+  // For accessing the readValue() and writeValue() methods.
+  friend class SoMFPath;
 };
 
 #endif // !COIN_SOSFPATH_H

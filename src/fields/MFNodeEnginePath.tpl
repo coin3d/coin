@@ -1,23 +1,4 @@
-//$ TEMPLATE MFNodeAndEngine(_Typename_, _typename_)
-
-/**************************************************************************\
- *
- *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public License
- *  version 2.1 as published by the Free Software Foundation. See the
- *  file LICENSE.LGPL at the root directory of the distribution for
- *  more details.
- *
- *  If you want to use Coin for applications not compatible with the
- *  LGPL, please contact SIM to acquire a Professional Edition license.
- *
- *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
- *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097
- *
-\**************************************************************************/
+//$ TEMPLATE MFNodeEnginePath(_Typename_, _typename_)
 
 /*!
   \class SoMF_Typename_ SoMF_Typename_.h Inventor/fields/SoMF_Typename_.h
@@ -38,7 +19,10 @@
 #include <Inventor/fields/SoMF_Typename_.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/fields/SoSF_Typename_.h>
-#include <Inventor/_typename_s/So_Typename_.h>
+
+#include <Inventor/SoPath.h>
+#include <Inventor/engines/SoEngine.h>
+#include <Inventor/nodes/SoNode.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -132,7 +116,12 @@ SoMF_Typename_::set1Value(const int idx, So_Typename_ * newval)
   SbBool notificstate = this->enableNotify(FALSE);
 
   // Expand array if necessary.
-  if (idx >= this->getNum()) this->setNum(idx + 1);
+  if (idx >= this->getNum()) {
+#ifdef COIN_SOMFPATH_H
+    for (int i = this->getNum(); i <= idx; i++) this->pathheads.append(NULL);
+#endif // COIN_SOMFPATH_H
+    this->setNum(idx + 1);
+  }
 
   So_Typename_ * oldptr = (*this)[idx];
   if (oldptr == newval) return;
@@ -140,14 +129,35 @@ SoMF_Typename_::set1Value(const int idx, So_Typename_ * newval)
   if (oldptr) {
     oldptr->removeAuditor(this, SoNotRec::FIELD);
     oldptr->unref();
+#ifdef COIN_SOMFPATH_H
+    SoNode * h = oldptr->getHead();
+    // The path should be audited by us at all times. So don't use
+    // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
+    assert(h==this->pathheads[idx] &&
+	   "Path head changed without notification!");
+    if (h) {
+      h->removeAuditor(this, SoNotRec::FIELD);
+      h->unref();
+    }
+#endif // COIN_SOMFPATH_H
   }
 
   if (newval) {
     newval->addAuditor(this, SoNotRec::FIELD);
     newval->ref();
+#ifdef COIN_SOMFPATH_H
+    SoNode * h = newval->getHead();
+    if (h) {
+      h->addAuditor(this, SoNotRec::FIELD);
+      h->ref();
+    }
+#endif // COIN_SOMFPATH_H
   }
 
   this->values[idx] = newval;
+#ifdef COIN_SOMFPATH_H
+  this->pathheads[idx] = newval ? newval->getHead() : NULL;
+#endif // COIN_SOMFPATH_H
 
   // Finally, send notification.
   (void)this->enableNotify(notificstate);
@@ -190,6 +200,14 @@ SoMF_Typename_::deleteValues(int start, int num)
       n->removeAuditor(this, SoNotRec::FIELD);
       n->unref();
     }
+#ifdef COIN_SOMFPATH_H
+    SoNode * h = this->pathheads[start];
+    this->pathheads.remove(start);
+    if (h) {
+      h->removeAuditor(this, SoNotRec::FIELD);
+      h->unref();
+    }
+#endif // COIN_SOMFPATH_H
   }
 
   inherited::deleteValues(start, num);
@@ -204,18 +222,24 @@ SoMF_Typename_::insertSpace(int start, int num)
   SbBool notificstate = this->enableNotify(FALSE);
 
   inherited::insertSpace(start, num);
-  for (int i=start; i < start+num; i++) this->values[i] = NULL;
+  for (int i=start; i < start+num; i++) {
+#ifdef COIN_SOMFPATH_H
+    this->pathheads.insert(NULL, start);
+#endif // COIN_SOMFPATH_H
+    this->values[i] = NULL;
+  }
 
   // Initialization done, now send notification.
   (void)this->enableNotify(notificstate);
   if (notificstate) this->valueChanged();
 }
 
+// This is the "memmove replacement" to use copy constructors where
+// they are defined.
 void
 SoMF_Typename_::copyValue(int to, int from)
 {
-  if (to == from) return;
-  this->set1Value(to, this->values[from]);
+  this->values[from] = this->values[to];
 }
 
 //// From the SO_MFIELD_VALUE_SOURCE macro, end. /////////////////////////////
@@ -255,6 +279,9 @@ SoMF_Typename_::countWriteRefs(SoOutput * out) const
     // Set the "from field" flag as FALSE, as that flag is meant to be
     // used for references through field-to-field connections.
     if (n) n->addWriteReference(out, FALSE);
+#ifdef COIN_SOMFPATH_H
+    if (this->pathheads[i]) this->pathheads[i]->addWriteReference(out, FALSE);
+#endif // COIN_SOMFPATH_H
   }
 }
 
@@ -268,9 +295,19 @@ SoMF_Typename_::fixCopy(SbBool copyconnections)
   for (int i=0; i < this->getNum(); i++) {
     So_Typename_ * n = (*this)[i];
     if (n) {
+      // There's only been a bitwise copy of the pointer; no auditing
+      // has been set up, no increase in the reference count. So we do
+      // that by setting the value to NULL and then re-setting with
+      // setValue().
+      this->values[i] = NULL;
+#if defined(COIN_SOMFNODE_H) || defined(COIN_SOMFENGINE_H)
       SoFieldContainer * fc = SoFieldContainer::findCopy(n, copyconnections);
-      this->set1Value(i, NULL); // Fool the set-as-same-value detection.
       this->set1Value(i, (So_Typename_ *)fc);
+#endif // COIN_SOMFNODE_H || COIN_SOMFENGINE_H
+
+#ifdef COIN_SOMFPATH_H
+      this->set1Value(i, n->copy());
+#endif // COIN_SOMFPATH_H
     }
   }
 }
@@ -283,7 +320,20 @@ SoMF_Typename_::referencesCopy(void) const
 
   for (int i=0; i < this->getNum(); i++) {
     So_Typename_ * n = (*this)[i];
-    if (n && SoFieldContainer::checkCopy(n)) return TRUE;
+    if (n) {
+      if (n->isOfType(SoNode::getClassTypeId()) ||
+	  n->isOfType(SoEngine::getClassTypeId())) {
+	if (SoFieldContainer::checkCopy((SoFieldContainer *)n)) return TRUE;
+      }
+      else if (n->isOfType(SoPath::getClassTypeId())) {
+	SoPath * p = (SoPath *)n;
+	if (p->getHead() && SoFieldContainer::checkCopy(p->getHead()))
+	  return TRUE;
+      }
+      else {
+	assert(0 && "strange internal error");
+      }
+    }
   }
 
   return FALSE;

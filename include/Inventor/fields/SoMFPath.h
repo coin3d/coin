@@ -22,9 +22,11 @@
 
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSubField.h>
+#include <Inventor/lists/SbList.h>
 
 class SoPath;
 class SoNotList;
+class SoNode;
 
 
 class COIN_DLL_EXPORT SoMFPath : public SoMField {
@@ -35,12 +37,16 @@ class COIN_DLL_EXPORT SoMFPath : public SoMField {
 public:
   static void initClass(void);
 
-  virtual void notify(SoNotList * list);
-  virtual void fixCopy(SbBool copyConnections);
+  virtual void notify(SoNotList * l);
+  virtual void fixCopy(SbBool copyconnections);
   virtual SbBool referencesCopy(void) const;
 
 private:
   virtual void countWriteRefs(SoOutput * out) const;
+  virtual void deleteValues(int start, int num = -1);
+  virtual void insertSpace(int start, int num);
+
+  SbList<SoNode *> pathheads;
 };
 
 #endif // !COIN_SOMFPATH_H
