@@ -1026,9 +1026,8 @@ SIM_AC_HAVE_FREETYPE_IFELSE([
   SIM_AC_CONFIGURATION_SETTING([FreeType support], [Yes, link-time binding])
 ], [
   if $sim_ac_freetype_desired; then
-    AC_MSG_WARN(freetype development system not found);
+    SIM_AC_CONFIGURATION_SETTING([FreeType support], [No])
   fi
-  SIM_AC_CONFIGURATION_SETTING([FreeType support], [No])
 ])
 AM_CONDITIONAL(HAVE_FREETYPE, $sim_ac_have_freetype)
 
