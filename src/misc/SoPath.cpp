@@ -942,13 +942,57 @@ SoPath::write(SoWriteAction * action)
 // *************************************************************************
 
 /*!
-  Not implemented yet.
+  Return TRUE if the notification chain \a l will affect the path. \a
+  l will affect the path either if the notification is in the path
+  (the notification started on a field in a node in the path), or off
+  the path (the notification started in a non-separator node that is
+  left of the path's node).
 */
 SbBool
 SoPath::isRelevantNotification(SoNotList * const l) const
 {
-  COIN_STUB();
-  return FALSE;
+  int len = this->getFullLength();
+  if (len == 0) return FALSE;
+
+  const SoNotRec * rec = l->getLastRec();
+  if (len == 1) return rec->getBase() == (SoBase*) this->getHead();
+
+  int pathidx = 1;
+  
+  // start at the root node and follow the notification chain until we
+  // find a node that is off the path or a notification that is not
+  // from a node.
+  do {
+    rec = rec->getPrevious();
+    if (rec) {
+      // check if we might be off path
+      if ((SoBase*) this->getNode(pathidx) != rec->getBase()) break;
+      assert(rec->getBase()->isOfType(SoNode::getClassTypeId()));
+    }
+    pathidx++;
+  } while (rec && (rec->getType() == SoNotRec::PARENT) && (pathidx < len));
+  
+  // check if we're off path
+  if (rec && (pathidx < len) && (rec->getType() == SoNotRec::PARENT)) {
+    SoBase * base = rec->getBase();
+    assert(base->isOfType(SoNode::getClassTypeId()));
+    SoNode * parent = this->getNode(pathidx-1);
+    assert(parent->getChildren());
+    int childidx = parent->getChildren()->find((SoNode*) base);
+    assert(childidx >= 0);
+
+    // check if node is to the right of the path
+    if (childidx > this->getIndex(pathidx)) return FALSE;
+
+    // check if the notification is from inside a separator node,
+    // then it will not affect the path 
+    do {
+      assert(rec->getBase()->isOfType(SoNode::getClassTypeId()));
+      if (!((SoNode*)rec->getBase())->affectsState()) return FALSE;
+      rec = rec->getPrevious();
+    } while(rec && rec->getType() == SoNotRec::PARENT);
+  }
+  return TRUE;
 }
 
 /*!
