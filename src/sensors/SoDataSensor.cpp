@@ -114,15 +114,6 @@ SoDataSensor::setDeleteCallback(SoSensorCB * function, void * data)
 SoNode *
 SoDataSensor::getTriggerNode(void) const
 {
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoDataSensor::getTriggerNode",
-                           "%s: triggernode: %p (\"%s\")",
-                           this,
-                           this->triggernode,
-                           this->triggernode ?
-                           this->triggernode->getName().getString() : "");
-#endif // debug
-
   return this->triggernode;
 }
 
@@ -218,15 +209,6 @@ SoDataSensor::notify(SoNotList * l)
     this->triggerfield = l->getLastField();
     SoNotRec * record = l->getFirstRecAtNode();
     this->triggernode = (SoNode *) (record ? record->getBase() : NULL);
-
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoDataSensor::notify",
-                           "%s: triggernode: %p (\"%s\")",
-                           this,
-                           this->triggernode,
-                           this->triggernode ?
-                           this->triggernode->getName().getString() : "");
-#endif // debug
 
     if (this->findpath && this->triggernode) {
       SoNotRec * lastrec = l->getLastRec();
