@@ -24,6 +24,13 @@
  *
 \**************************************************************************/
 
+// WARNING: This is work in progress. Do not expect this class to have
+// a stable interface over a long period of time. It is installed
+// because we need it in an internal project. 
+
+// FIXME: make sure we do a design review for this class for Coin v2.0
+// pederb, 2001-11-28
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec2f.h>

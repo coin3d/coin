@@ -46,6 +46,8 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoByteStream.h \
 	../../include/Inventor/misc/SoCallbackList.h \
 	../../include/Inventor/misc/SoChildList.h \
+	../../include/Inventor/misc/SoGLImage.h \
+	../../include/Inventor/misc/SoGLBigImage.h \
 	../../include/Inventor/misc/SoNormalGenerator.h \
 	../../include/Inventor/misc/SoNotification.h \
 	../../include/Inventor/misc/SoTranReceiver.h \
@@ -56,8 +58,6 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoTempPath.h
 PrivateHeaders = \
 	../../include/Inventor/misc/SoGL.h \
-	../../include/Inventor/misc/SoGLImage.h \
-	../../include/Inventor/misc/SoGLBigImage.h \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \

@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -23,6 +23,13 @@
  *  <URL:http://www.sim.no>, <mailto:support@sim.no>
  *
 \**************************************************************************/
+
+// WARNING: This is work in progress. Do not expect this class to have
+// a stable interface over a long period of time. It is installed
+// because we need it in an internal project. 
+
+// FIXME: make sure we do a design review for this class for Coin v2.0
+// pederb, 2001-11-28
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
@@ -110,7 +117,7 @@ private:
 
   class SoGLImageP * pimpl;
   friend class SoGLImageP;
-
+  
 public:
   // internal methods for texture resource management
   static void beginFrame(SoState * state);
