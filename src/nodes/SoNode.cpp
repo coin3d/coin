@@ -1251,7 +1251,15 @@ SoNode::addToCopyDict(void) const
       newinst->copyContents(inst, FALSE);
     }
     else {
-      cp = (SoNode *)this->getTypeId().createInstance();
+      if (this->isOfType(SoProto::getClassTypeId())) {
+        // just copy the pointer. A PROTO definition is
+        // read-only. It's not possible to change it after it has been
+        // created so this should be safe.
+        cp = (SoNode*) this;
+      }
+      else {
+        cp = (SoNode *)this->getTypeId().createInstance();
+      }
       assert(cp);
       SoFieldContainer::addCopy(this, cp);
 
@@ -1267,10 +1275,15 @@ SoNode::addToCopyDict(void) const
 void
 SoNode::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  inherited::copyContents(from, copyconnections);
+  // workaround when copying PROTO definitions. A PROTO definition is
+  // read-only, and we just copy the pointer (in
+  // SoNode::addToCopyDict(), not the contents.
+  if (!this->isOfType(SoProto::getClassTypeId())) {
+    inherited::copyContents(from, copyconnections);
 
-  SoNode * src = (SoNode *)from;
-  this->stateflags = src->stateflags;
+    SoNode * src = (SoNode *)from;
+    this->stateflags = src->stateflags;
+  }
 }
 
 // Overridden from parent class.
