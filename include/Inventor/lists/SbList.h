@@ -34,6 +34,15 @@
 // having functions declared as inline for a template class.
 // pederb, 2001-10-12
 
+// FIXME: this is just a quick hack to avoid heaps of irritating
+// warning messages from the compiler for client code compiled under
+// MSVC++. Should try to find the real reason for the warnings and fix
+// the cause of the problem instead. 20020730 mortene.
+#ifdef _MSC_VER // Microsoft Visual C++
+#pragma warning(disable:4251)
+#pragma warning(disable:4275)
+#endif // _MSC_VER
+
 template <class Type>
 class COIN_DLL_API SbList {
   // Older compilers aren't too happy about const declarations in the
