@@ -41,7 +41,7 @@ public:
   SbBool containsNode(SoBaseKit * node) const;
   int findFork(const SoNodeKitPath * path) const;
 
-  friend int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
+  friend COIN_DLL_EXPORT int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
 
 protected:
   SoNodeKitPath(const int approxLength);
@@ -64,5 +64,7 @@ private:
   void removeIndex(SoNode *parent,const int oldIndex);
   void replaceIndex(SoNode *parent,const int index,SoNode *newChild);
 };
+
+COIN_DLL_EXPORT int operator==(const SoNodeKitPath & p1, const SoNodeKitPath & p2);
 
 #endif // !COIN_SONODEKITPATH_H

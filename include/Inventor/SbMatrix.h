@@ -63,9 +63,9 @@ public:
   const float * operator [](int i) const;
   SbMatrix & operator =(const SbRotation & q);
   SbMatrix & operator *=(const SbMatrix & m);
-  friend SbMatrix operator *(const SbMatrix & m1, const SbMatrix & m2);
-  friend int operator ==(const SbMatrix & m1, const SbMatrix & m2);
-  friend int operator !=(const SbMatrix & m1, const SbMatrix & m2);
+  friend COIN_DLL_EXPORT SbMatrix operator *(const SbMatrix & m1, const SbMatrix & m2);
+  friend COIN_DLL_EXPORT int operator ==(const SbMatrix & m1, const SbMatrix & m2);
+  friend COIN_DLL_EXPORT int operator !=(const SbMatrix & m1, const SbMatrix & m2);
   void getValue(SbMat & m) const;
   static SbMatrix identity(void);
   void setScale(const float s);
@@ -103,5 +103,9 @@ private:
   void operator /=(const float v);
   void operator *=(const float v);
 };
+
+COIN_DLL_EXPORT SbMatrix operator *(const SbMatrix & m1, const SbMatrix & m2);
+COIN_DLL_EXPORT int operator ==(const SbMatrix & m1, const SbMatrix & m2);
+COIN_DLL_EXPORT int operator !=(const SbMatrix & m1, const SbMatrix & m2);
 
 #endif // !COIN_SBMATRIX_H

@@ -50,7 +50,7 @@ public:
   void setPixelsPerInch(float ppi);
   float getPixelsPerInch(void) const;
   float getPixelsPerPoint(void) const;
-  friend int operator ==(const SbViewportRegion & reg1,
+  friend COIN_DLL_EXPORT int operator ==(const SbViewportRegion & reg1,
                          const SbViewportRegion & reg2);
 
   void print(FILE * file) const;
@@ -63,5 +63,7 @@ private:
   SbVec2s vpsize_s;
   float pixperinch;
 };
+
+COIN_DLL_EXPORT int operator ==(const SbViewportRegion & reg1, const SbViewportRegion & reg2);
 
 #endif // !COIN_SBVIEWPORTREGION_H

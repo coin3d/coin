@@ -44,8 +44,8 @@ public:
   void getSize(short& sizeX, short& sizeY) const;
   float getAspectRatio(void) const;
   void makeEmpty(void);
-  friend int operator ==(const SbBox2s& b1, const SbBox2s& b2);
-  friend int operator !=(const SbBox2s& b1, const SbBox2s& b2);
+  friend COIN_DLL_EXPORT int operator ==(const SbBox2s& b1, const SbBox2s& b2);
+  friend COIN_DLL_EXPORT int operator !=(const SbBox2s& b1, const SbBox2s& b2);
 
 private:
   SbVec2s minpt, maxpt;
@@ -54,5 +54,8 @@ private:
   short height(void) const;
   SbBool hasArea(void) const;
 };
+
+COIN_DLL_EXPORT int operator ==(const SbBox2s& b1, const SbBox2s& b2);
+COIN_DLL_EXPORT int operator !=(const SbBox2s& b1, const SbBox2s& b2);
 
 #endif // !COIN_SBBOX2S_H

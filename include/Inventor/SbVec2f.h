@@ -46,19 +46,28 @@ public:
   SbVec2f & operator -= (const SbVec2f & u);
   SbVec2f operator -(void) const;
 
-  friend SbVec2f operator * (const SbVec2f & v, const float d);
-  friend SbVec2f operator * (const float d, const SbVec2f & v);
-  friend SbVec2f operator / (const SbVec2f & v, const float d);
-  friend SbVec2f operator + (const SbVec2f & v1, const SbVec2f & v2);
-  friend SbVec2f operator - (const SbVec2f & v1, const SbVec2f & v2);
-  friend int operator == (const SbVec2f & v1, const SbVec2f & v2);
-  friend int operator != (const SbVec2f & v1, const SbVec2f & v2);
+  friend COIN_DLL_EXPORT SbVec2f operator * (const SbVec2f & v, const float d);
+  friend COIN_DLL_EXPORT SbVec2f operator * (const float d, const SbVec2f & v);
+  friend COIN_DLL_EXPORT SbVec2f operator / (const SbVec2f & v, const float d);
+  friend COIN_DLL_EXPORT SbVec2f operator + (const SbVec2f & v1, const SbVec2f & v2);
+  friend COIN_DLL_EXPORT SbVec2f operator - (const SbVec2f & v1, const SbVec2f & v2);
+  friend COIN_DLL_EXPORT int operator == (const SbVec2f & v1, const SbVec2f & v2);
+  friend COIN_DLL_EXPORT int operator != (const SbVec2f & v1, const SbVec2f & v2);
 
   void print(FILE * fp) const;
 
 private:
   float vec[2];
 };
+
+COIN_DLL_EXPORT SbVec2f operator * (const SbVec2f & v, const float d);
+COIN_DLL_EXPORT SbVec2f operator * (const float d, const SbVec2f & v);
+COIN_DLL_EXPORT SbVec2f operator / (const SbVec2f & v, const float d);
+COIN_DLL_EXPORT SbVec2f operator + (const SbVec2f & v1, const SbVec2f & v2);
+COIN_DLL_EXPORT SbVec2f operator - (const SbVec2f & v1, const SbVec2f & v2);
+COIN_DLL_EXPORT int operator == (const SbVec2f & v1, const SbVec2f & v2);
+COIN_DLL_EXPORT int operator != (const SbVec2f & v1, const SbVec2f & v2);
+
 
 // *************************************************************************
 

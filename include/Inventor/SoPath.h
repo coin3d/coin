@@ -70,8 +70,8 @@ public:
   SbBool containsNode(const SoNode * const node) const;
   SbBool containsPath(const SoPath * const path) const;
   SoPath * copy(const int startfromnodeindex = 0, int numnodes = 0) const;
-  friend SbBool operator==(const SoPath & lhs, const SoPath & rhs);
-  friend SbBool operator!=(const SoPath & lhs, const SoPath & rhs);
+  friend COIN_DLL_EXPORT SbBool operator==(const SoPath & lhs, const SoPath & rhs);
+  friend COIN_DLL_EXPORT SbBool operator!=(const SoPath & lhs, const SoPath & rhs);
 
   static SoPath * getByName(const SbName name);
   static int getByName(const SbName name, SoPathList & l);

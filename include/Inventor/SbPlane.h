@@ -41,8 +41,8 @@ public:
   float getDistance(const SbVec3f &point) const;
   const SbVec3f& getNormal(void) const;
   float getDistanceFromOrigin(void) const;
-  friend int operator ==(const SbPlane& p1, const SbPlane& p2);
-  friend int operator !=(const SbPlane& p1, const SbPlane& p2);
+  friend COIN_DLL_EXPORT int operator ==(const SbPlane& p1, const SbPlane& p2);
+  friend COIN_DLL_EXPORT int operator !=(const SbPlane& p1, const SbPlane& p2);
 
   void print(FILE * file) const;
 
@@ -50,5 +50,8 @@ private:
   SbVec3f normal;
   float distance;
 };
+
+COIN_DLL_EXPORT int operator ==(const SbPlane& p1, const SbPlane& p2);
+COIN_DLL_EXPORT int operator !=(const SbPlane& p1, const SbPlane& p2);
 
 #endif // !COIN_SBPLANE_H

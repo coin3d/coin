@@ -74,17 +74,23 @@ public:
   static SbBool isBaseNameChar(const char c);
 
   int operator ! (void) const;
-  friend int operator == (const SbName & lhs, const char * rhs);
-  friend int operator == (const char * lhs, const SbName & rhs);
-  friend int operator == (const SbName & lhs, const SbName & rhs);
-  friend int operator != (const SbName & lhs, const char * rhs);
-  friend int operator != (const char * lhs, const SbName & rhs);
-  friend int operator != (const SbName & lhs, const SbName & rhs);
+  friend COIN_DLL_EXPORT int operator == (const SbName & lhs, const char * rhs);
+  friend COIN_DLL_EXPORT int operator == (const char * lhs, const SbName & rhs);
+  friend COIN_DLL_EXPORT int operator == (const SbName & lhs, const SbName & rhs);
+  friend COIN_DLL_EXPORT int operator != (const SbName & lhs, const char * rhs);
+  friend COIN_DLL_EXPORT int operator != (const char * lhs, const SbName & rhs);
+  friend COIN_DLL_EXPORT int operator != (const SbName & lhs, const SbName & rhs);
 
   operator const char * (void) const;
 
 private:
   const SbNameEntry * entry;
 };
+COIN_DLL_EXPORT int operator == (const SbName & lhs, const char * rhs);
+COIN_DLL_EXPORT int operator == (const char * lhs, const SbName & rhs);
+COIN_DLL_EXPORT int operator == (const SbName & lhs, const SbName & rhs);
+COIN_DLL_EXPORT int operator != (const SbName & lhs, const char * rhs);
+COIN_DLL_EXPORT int operator != (const char * lhs, const SbName & rhs);
+COIN_DLL_EXPORT int operator != (const SbName & lhs, const SbName & rhs);
 
 #endif // !COIN_SBNAME_H
