@@ -518,6 +518,14 @@
     scenegraph which I constructed this from, where the bbox is _way_
     off.)
 
+    UPDATE 20020830 mortene: I used SGI Inventor to check both the
+    boundingbox of the minimal case above and the larger scene where
+    it comes out fairly sub-optimal for us -- and the original SGI
+    Inventor doesn't make any tighter fit than we are. So there might
+    be something fundamental about the case above which makes it
+    impossible to have SbXfBox3f.extendBy(SbXfbox3f) come out with a
+    perfect fit?
+
     20020826 mortene.
 
 =====================================================================
