@@ -65,12 +65,10 @@ SoInput_FileInfo::SoInput_FileInfo(SoInput_Reader * reader)
 SoInput_FileInfo::~SoInput_FileInfo()
 {
   delete[] this->readbuf;
-  const char * buffer = NULL;
   if (this->deletebuffer) {
     delete[] this->deletebuffer;
   }
   delete this->reader;
-  if (buffer) delete[] buffer;
 }
 
 SbBool
