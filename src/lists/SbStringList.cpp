@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SbStringList Inventor/lists/SbStringList.h
+  \class SbStringList SbStringList.h Inventor/lists/SbStringList.h
   \brief The SbStringList class is a container for arrays of SbString pointers.
   \ingroup base
 
@@ -41,21 +41,22 @@
   list to \a sizehint. Note that the list will still initially contain
   zero items.
 
-  \sa SbList<Type>::SbList(const int sizehint)
+  \sa SbList::SbList(const int sizehint)
 */
 
 /*!
   \fn SbStringList::SbStringList(const SbStringList & l)
+
   Copy constructor.
 
-  \sa SbList<Type>::SbList(const SbList<Type> & l)
+  \sa SbList::SbList(const SbList<Type> & l)
 */
 
 /*!
   \fn SbString * SbStringList::get(const int index) const
 
   This method returns the element at \a index. Does the same thing as
-  the index operator. This method is only present for compatibility
+  SbList::operator[](). This method is only present for compatibility
   with the original Inventor API.
 */
 
@@ -63,6 +64,6 @@
   \fn void SbStringList::set(const int index, SbString * const item)
 
   This method sets the element at \a index to \a item. Does the same
-  thing as the assignment index operator. This method is only present
-  for compatibility with the original Inventor API.
+  thing as SbList::operator[](). This method is only present for
+  compatibility with the original Inventor API.
 */

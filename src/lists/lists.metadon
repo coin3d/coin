@@ -14,8 +14,8 @@
 # ID  SbList
 # ID      SbIntList
 # ID      SbStringList
+# ID      SbVec3fList 
 # ID      SbPList
-#             SbVec3fList 
 #             SoAuditorList 
 #             SoActionMethodList
 # I           SoBaseList

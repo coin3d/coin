@@ -56,7 +56,7 @@
   \fn void * SbPList::get(const int index) const
 
   This method returns the element at \a index. Does the same thing as
-  the index operator. This method is only present for compatibility
+  SbList::operator[](). This method is only present for compatibility
   with the original Inventor API.
 */
 
@@ -64,6 +64,6 @@
   \fn void SbPList::set(const int index, void * const item)
 
   This method sets the element at \a index to \a item. Does the same
-  thing as the assignment index operator. This method is only present
-  for compatibility with the original Inventor API.
+  thing as SbList::operator[](). This method is only present for
+  compatibility with the original Inventor API.
 */

@@ -18,21 +18,31 @@
 \**************************************************************************/
 
 /*!
-  \class SbIntList SbIntList.h Inventor/lists/SbIntList.h
-  \brief The SbIntList class is a container for integer list arrays.
+  \class SbVec3fList SbVec3fList.h Inventor/lists/SbVec3fList.h
+  \brief The SbVec3fList class is a container for arrays of SbVec3f pointers.
   \ingroup base
-*/
 
-#include <Inventor/lists/SbIntList.h>
+  Note that upon using the equality and inequality operators, the
+  SbVec3f objects themselves are not compared, only the pointer
+  values.
+
+  Note also that all calls to append() and insert() will cause the
+  list to allocate a new SbVec3f object. These objects are not freed
+  automatically, but are the responsibility of the user.
+ */
+
+#include <Inventor/lists/SbVec3fList.h>
+#include <Inventor/SbVec3f.h>
+
 
 /*!
-  \fn SbIntList::SbIntList(void)
+  \fn SbVec3fList::SbVec3fList(void)
 
   Default constructor.
 */
 
 /*!
-  \fn SbIntList::SbIntList(const int sizehint)
+  \fn SbVec3fList::SbVec3fList(const int sizehint)
 
   This constructor initializes the internal allocated size for the
   list to \a sizehint. Note that the list will still initially contain
@@ -42,7 +52,7 @@
 */
 
 /*!
-  \fn SbIntList::SbIntList(const SbIntList & l)
+  \fn SbVec3fList::SbVec3fList(const SbVec3fList & l)
 
   Copy constructor.
 
@@ -50,7 +60,7 @@
 */
 
 /*!
-  \fn int SbIntList::get(const int index) const
+  \fn SbVec3f * SbVec3fList::get(const int index) const
 
   This method returns the element at \a index. Does the same thing as
   SbList::operator[](). This method is only present for compatibility
@@ -58,9 +68,27 @@
 */
 
 /*!
-  \fn void SbIntList::set(const int index, const int item)
+  \fn void SbVec3fList::set(const int index, SbVec3f * const item)
 
   This method sets the element at \a index to \a item. Does the same
   thing as SbList::operator[](). This method is only present for
   compatibility with the original Inventor API.
 */
+
+/*!
+  \fn void SbVec3fList::append(const SbVec3f * item)
+
+  Overloaded from parent to allocate a new SbVec3f instance when
+  called.
+
+  \sa SbList::append()
+ */
+
+/*!
+  \fn void SbVec3fList::insert(const SbVec3f * item, const int insertbefore)
+
+  Overloaded from parent to allocate a new SbVec3f instance when
+  called.
+
+  \sa SbList::insert()
+ */

@@ -17,26 +17,31 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_LISTS_SBPLIST_H
-#define COIN_LISTS_SBPLIST_H
+#ifndef COIN_SBVEC3FLIST_H
+#define COIN_SBVEC3FLIST_H
 
 #include <Inventor/lists/SbList.h>
+#include <Inventor/SbVec3f.h>
 
-class SbPList : public SbList<void *> {
+
+class SbVec3fList : public SbList<SbVec3f *> {
 public:
-  SbPList(void) : SbList<void *>() { }
-  SbPList(const int sizehint) : SbList<void *>(sizehint) { }
-  SbPList(const SbPList & l) : SbList<void *>(l) { }
+  SbVec3fList(void) : SbList<SbVec3f *>() { }
+  SbVec3fList(const int sizehint) : SbList<SbVec3f *>(sizehint) { }
+  SbVec3fList(const SbVec3fList & l) : SbList<SbVec3f *>(l) { }
 
-  void * get(const int index) const { return (*this)[index]; }
-  void set(const int index, void * const item) { (*this)[index] = item; }
+  void append(const SbVec3f * item) {
+    SbVec3f * vec = new SbVec3f(*item);
+    SbList::append(vec);
+  }
+
+  void insert(const SbVec3f * item, const int insertbefore) {
+    SbVec3f * vec = new SbVec3f(*item);
+    SbList::insert(vec, insertbefore);
+  }
+
+  SbVec3f * get(const int index) const { return (*this)[index]; }
+  void set(const int index, SbVec3f * const item) { (*this)[index] = item; }
 };
 
-// For compatibility with Open Inventor.
-#ifndef COIN_INTERNAL
-#include <Inventor/lists/SbIntList.h>
-#include <Inventor/lists/SbVec3fList.h>
-#include <Inventor/lists/SbStringList.h>
-#endif // COIN_INTERNAL
-
-#endif // !COIN_LISTS_SBPLIST_H
+#endif // !COIN_SBVEC3FLIST_H

@@ -186,6 +186,8 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/lists/SbPList.h \
 	$(top_srcdir)/src/lists/SbIntList.cpp \
 	$(top_srcdir)/include/Inventor/lists/SbIntList.h \
+	$(top_srcdir)/src/lists/SbVec3fList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SbVec3fList.h \
 	$(top_srcdir)/src/lists/SbStringList.cpp \
 	$(top_srcdir)/include/Inventor/lists/SbStringList.h \
 
