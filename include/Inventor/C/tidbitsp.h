@@ -51,7 +51,10 @@ FILE * coin_get_stderr(void);
 
 typedef void coin_atexit_f(void);
 
-void coin_atexit(coin_atexit_f *, int32_t priority);
+#define coin_atexit(func, priority) \
+        coin_atexit_func(SO__QUOTE(func), func, priority)
+
+void coin_atexit_func(const char * name, coin_atexit_f * fp, int32_t priority);
 void coin_atexit_cleanup(void);
 SbBool coin_is_exiting(void);
 

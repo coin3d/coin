@@ -1023,6 +1023,7 @@ static cc_list * atexit_list = NULL;
 static SbBool isexiting = FALSE;
 
 typedef struct {
+  char * name;
   coin_atexit_f * func;
   int32_t priority;
   uint32_t cnt;
@@ -1054,17 +1055,26 @@ coin_atexit_cleanup(void)
 {
   int i, n;
   tb_atexit_data * data;
+  const char * debugstr;
+  SbBool debug = FALSE;
+
   if (!atexit_list) return;
 
   isexiting = TRUE;
 
-  n = cc_list_get_length(atexit_list);
+  debugstr = coin_getenv("COIN_DEBUG_CLEANUP");
+  debug = debugstr && (atoi(debugstr) > 0);
 
+  n = cc_list_get_length(atexit_list);
   qsort(cc_list_get_array(atexit_list), n, sizeof(void*), atexit_qsort_cb);
 
   for (i = n-1; i >= 0; i--) {
     data = (tb_atexit_data*) cc_list_get(atexit_list, i);
+    if (debug) {
+      cc_debugerror_postinfo("coin_atexit_cleanup", "invoking %s()", data->name);
+    }
     data->func();
+    free(data->name);
     free((void*)data);
   }
   cc_list_destruct(atexit_list);
@@ -1094,7 +1104,7 @@ coin_atexit_cleanup(void)
 */
 
 void
-coin_atexit(coin_atexit_f * f, int32_t priority)
+coin_atexit_func(const char * name, coin_atexit_f * f, int32_t priority)
 {
   tb_atexit_data * data;
 
@@ -1120,6 +1130,7 @@ coin_atexit(coin_atexit_f * f, int32_t priority)
   }
 
   data = (tb_atexit_data*) malloc(sizeof(tb_atexit_data));
+  data->name = strdup(name);
   data->func = f;
   data->priority = priority;
   data->cnt = cc_list_get_length(atexit_list);
