@@ -1705,138 +1705,26 @@
 
 =====================================================================
 
-067 Mis-compilation by gcc 2.95.4 with -O2 on ix86.
+067 Possible mis-compilation with Intel Compiler.
 
-    The following stand-alone example code works fine when building
-    the example code without -O2, but crashes when using -O2. Note
-    that the Coin library itself was built with -O2 for both cases.
+    The following snippet fails against a Coin built with the Intel
+    Compiler, at least with versions 5.0 and 7.0:
 
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #include <Inventor/SoInput.h>
-    #include <Inventor/SoOutput.h>
-    #include <Inventor/actions/SoWriteAction.h>
-    #include <Inventor/nodes/SoCone.h>
-    #include <Inventor/nodes/SoSeparator.h>
-    
-    #include <iostream>
-    
-    using namespace std;
-    
-    void * reallocCB(void * ptr, size_t newsize)
-    {
-      return realloc(ptr, newsize);
-    }
+    --------------8<----------- [snip] ------------------8<--------
+    #include <Inventor/SoDB.h>
+    #include <Inventor/events/SoMouseButtonEvent.h>
     
     int
     main(int argc, char ** argv)
     {
       SoDB::init();
-    
-      SoSeparator * root = new SoSeparator;
-      root->ref();
-      root->addChild(new SoCone);
-    
-      char * buf = (char*)malloc(1024);
-      SoOutput out;
-      out.setBuffer(buf, 1024, reallocCB);
-    
-      SoWriteAction wa1(&out);
-      wa1.apply(root);
-    
-      char * buf2;
-      size_t size;
-    
-      out.getBuffer((void *)buf2, size);
-      cout << buf2 << endl;
-      cout << "size=" << size << endl;
-    
-      SoInput input;
-      input.setBuffer(buf2, size);
-    
-      SoNode * node = SoDB::readAll(&input);
-      node->ref();
-    
-      SoWriteAction wa2;
-      wa2.apply(node);
-      
-      root->unref();
-      node->unref();
-    
+      SoMouseButtonEvent::getClassTypeId();
       return 0;
     }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    --------------8<----------- [snip] ------------------8<--------
 
-    20030513 mortene, reported by Leopold Avellaneda.
+    The call-stack backtrace is nonsensical.
 
-    UPDATE 20030514 mortene: Leopold Avellaneda posted an updated,
-    slightly changed version of the above code which does not exhibit
-    the bug:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #include <Inventor/SoInput.h>
-    #include <Inventor/SoOutput.h>
-    #include <Inventor/actions/SoWriteAction.h>
-    #include <Inventor/nodes/SoCone.h>
-    #include <Inventor/nodes/SoSeparator.h>
-    
-    #include <iostream>
-    
-    using namespace std;
-    
-    
-    void * reallocCB(void * ptr, size_t newsize)
-    {
-      return realloc(ptr, newsize);
-    }
-    
-    int
-    main(int argc, char ** argv)
-    {
-      SoDB::init();
-    
-      SoSeparator * root = new SoSeparator;
-      root->ref();
-      root->addChild(new SoCone);
-    
-      char * buf = (char*)malloc(1024);
-      SoOutput out;
-      out.setBuffer(buf, 1024, reallocCB);
-      //out.setBinary(TRUE);
-    
-      SoWriteAction wa1(&out);
-      wa1.apply(root);
-    
-      size_t size = out.getBufferSize();
-    
-      char *buffer = new char[size+1];
-    
-      out.setBuffer(buffer, size, reallocCB);
-    
-      buffer[size] = '\0';
-    
-      SoWriteAction wa2(&out);
-      wa2.apply(root);
-    
-      cout << "The first buffer " << endl;
-      cout << buffer << endl;
-      cout << "size=" << size << endl;
-    
-      SoInput input;
-      input.setBuffer(buffer, size);
-    
-      SoNode * node = SoDB::readAll(&input);
-      node->ref();
-    
-      cout << "The second buffer " << endl; 
-      SoWriteAction wa3;
-      wa3.apply(node);
-    
-    
-      root->unref();
-      node->unref();
-    
-      return 0;
-    }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    20030514 mortene, reported by Gerhard Bendels and Sheena Ritchie.
 
 =====================================================================
