@@ -53,5 +53,5 @@ SoNodeKit::init(void)
   SoShapeKit::initClass();
   SoWrapperKit::initClass();
 
-  // FIXME: other stuff probably missing. 19991106 mortene.
+  // FIXME: stuff missing? 19991106 mortene.
 }

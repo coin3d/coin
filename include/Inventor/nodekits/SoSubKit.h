@@ -132,6 +132,7 @@ _class_::getClassNodekitCatalogPtr(void) \
                            SoType::badType(), \
                            _ispublic_); \
     } \
+    SO_NODE_ADD_FIELD(_part_,(NULL)); \
   } while (0)
 
 
@@ -150,6 +151,7 @@ _class_::getClassNodekitCatalogPtr(void) \
                              _itemtype_::getClassTypeId(), \
                              _ispublic_); \
     } \
+    SO_NODE_ADD_FIELD(_part_,(NULL)); \
   } while (0)
 
 
@@ -168,6 +170,7 @@ _class_::getClassNodekitCatalogPtr(void) \
                              SoType::badType(), \
                              _ispublic_); \
     } \
+    SO_NODE_ADD_FIELD(_part_,(NULL)); \
   } while (0)
 
 

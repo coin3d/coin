@@ -4,19 +4,21 @@
 # I - Implemented [1.0]
 # D - Documented [0.2]
 #
+# ID
+# ==
 # HIERARCHY
-#       SoNodeKit
-#       SoBaseKit
-#               SoAppearanceKit
-#               SoCameraKit
-#               SoInteractionKit
-#               SoLightKit
-#               SoSceneKit
-#               SoSeparatorKit
-#                       SoShapeKit
-#                       SoWrapperKit
-#       SoNodeKitListPart
-#       SoNodeKitPath
-#       SoNodekitCatalog
+# I  SoNodeKit
+# i  SoBaseKit
+# i          SoAppearanceKit
+# i          SoCameraKit
+# i          SoInteractionKit
+# i          SoLightKit
+# i          SoSceneKit
+# i          SoSeparatorKit
+# i                  SoShapeKit
+# i                  SoWrapperKit
+# ID SoNodeKitListPart
+#    SoNodeKitPath
+# ID SoNodekitCatalog
 #
 ############################################################################

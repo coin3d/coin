@@ -26,6 +26,8 @@
 
   * what are nodekits?
   * why nodekits?
+  * how to use them
+  * how to make new ones
   * ...
 
 */
@@ -37,6 +39,10 @@
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/SbString.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 
 SO_KIT_SOURCE(SoBaseKit);
@@ -67,9 +73,28 @@ SoBaseKit::SoBaseKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoBaseKit);
 
+  // Can't use ADD_CATALOG_ENTRY macro for the toplevel "this" entry,
+  // as we don't want to call SO_NODE_ADD_FIELD(). This is how the
+  // invocation would have looked if we could use the macro:
+  //
+  // SO_KIT_ADD_CATALOG_ENTRY(this, SoBaseKit, TRUE, "", "", FALSE);
+
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoBaseKit::classcatalog->addEntry("this",
+                                      SoBaseKit::getClassTypeId(),
+                                      SoBaseKit::getClassTypeId(),
+                                      TRUE,
+                                      "",
+                                      "",
+                                      FALSE,
+                                      SoType::badType(),
+                                      SoType::badType(),
+                                      FALSE);
+  }
+
+
   // Note: we must use "" instead of , , to humour MS VisualC++ 6.
 
-  SO_KIT_ADD_CATALOG_ENTRY(this, SoBaseKit, TRUE, "", "", FALSE);
   SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, "", SoCallback, TRUE);
   SO_KIT_ADD_LIST_ITEM_TYPE(callbackList, SoEventCallback);
 
@@ -98,7 +123,7 @@ SoBaseKit::initClass(void)
   FIXME: write function documentation
 */
 SoNode *
-SoBaseKit::getPart(const SbName & /*partname*/, SbBool /*makeifneeded*/)
+SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
 {
   // BNF:
   //
@@ -111,8 +136,59 @@ SoBaseKit::getPart(const SbName & /*partname*/, SbBool /*makeifneeded*/)
   // singlelistname is name of a part which is a list
   // idx is an integer value
 
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
+  if (partname == "this") return NULL; // toplevel "node" is private
+
+  SoNode * ptr = NULL;
+
+  SbString s(partname.getString());
+  int start = 0, idx = 0;
+  const SoNodekitCatalog * thiscat = this->getNodekitCatalog();
+
+  while (idx < s.getLength()) {
+    while ((idx < s.getLength()) && (s[idx] != '.') && (s[idx] != '[')) idx++;
+
+    SbName n(s.getSubString(start, idx-1));
+    int nr = thiscat->getPartNumber(n);
+    if (nr == SO_CATALOG_NAME_NOT_FOUND) {
+      // Starts at index 1 to skip toplevel ``this'' part.
+      for (int i = 1; i < thiscat->getNumEntries(); i++) {
+        if (thiscat->getType(i).isDerivedFrom(SoBaseKit::getClassTypeId())) {
+          assert(0 && "search in nested nodekits missing");
+        }
+      }
+    }
+    else {
+      if (thiscat->isList(nr)) {
+        assert(0 && "list handling in nodekits missing");
+      }
+      else {
+#if 1 // debug
+        SoDebugError::postInfo("SoBaseKit::getPart",
+                               "hit: ``%s''", n.getString());
+#endif // debug
+
+        SoSFNode * nodefield = (SoSFNode *) this->getField(n);
+        assert(nodefield);
+        ptr = nodefield->getValue();
+
+        if (!ptr && makeifneeded) {
+          // Recursively allocate parents.
+          this->getPart(thiscat->getParentName(nr), TRUE);
+          
+          SoType nodetype = thiscat->getDefaultType(nr);
+          assert(nodetype.canCreateInstance());
+          ptr = (SoNode *) nodetype.createInstance();
+          nodefield->setValue(ptr);
+        }
+      }
+    }
+
+    assert(idx == s.getLength() && "only simple partnames supported yet");
+  }
+
+  // FIXME: return NULL on private parts. (hey, no pun intended..)
+  // 19991127 mortene.
+  return ptr;
 }
 
 /*!
