@@ -1183,10 +1183,10 @@ SoField::read(SoInput * in, const SbName & name)
 void
 SoField::write(SoOutput * out, const SbName & name) const
 {
+  if(!this->shouldWrite()) return;
+
   // ASCII write.
   if (!out->isBinary()) {
-    if(!this->shouldWrite()) return;
-
     out->indent();
     // Cast to avoid "'s.
     out->write((const char *)name);
