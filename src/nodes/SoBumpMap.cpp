@@ -26,14 +26,15 @@
   \brief The SoBumpMap class is used to map a bump map onto subsequent shapes.
   \ingroup nodes
 
-  Currently only normal maps are supported. This means that the image
-  must have three components, where the red image component equals the
-  X normal component, green equals Y, and blue is Z. See
+  Currently two types of maps are supported. If the image is a three
+  component (RGB) image, it will be treated as a normal map, where red
+  image component equals the X normal component, green equals Y, and
+  blue is Z. See
   http://www.paulsprojects.net/tutorials/simplebump/simplebump.html
   for a nice introduction about bump mapping and normal maps.
   
-  Grayscale images will be treated as height maps, and automatically
-  converted to normal maps.
+  If the image is a grayscale image, it will be treated as a height
+  map, and automatically converted to a normal map.
 
   For bump mapping to work with extension nodes for Coin, the
   SoShape::generatePrimitives() method must be correctly implemented
