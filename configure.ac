@@ -971,6 +971,30 @@ AC_SUBST(HAVE_SOUND)
 
 AM_CONDITIONAL([BUILD_WITH_SOUND], [$sim_ac_enable_sound])
 
+# *******************************************************************
+# * Set us up for using the FreeType font library (if wanted, and if
+# * available).
+# *******************************************************************
+
+SIM_AC_HAVE_FREETYPE_IFELSE([
+  AC_DEFINE(HAVE_FREETYPE,1,
+    [define if you have the freetype library])
+  CPPFLAGS="$CPPFLAGS $sim_ac_freetype_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_freetype_ldflags"
+  LIBS="$sim_ac_freetype_libs $LIBS"
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_freetype_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_freetype_ldflags"
+  COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
+  SIM_AC_CONFIGURATION_SETTING([FreeType support], [$sim_ac_freetype_path])
+], [
+  AC_DEFINE(HAVE_FREETYPE,0,
+    [define if you have the freetype library])
+  if $sim_ac_freetype_desired; then
+    AC_MSG_WARN(freetype development system not found);
+  fi
+  SIM_AC_CONFIGURATION_SETTING([FreeType support], [No])
+])
+AM_CONDITIONAL(HAVE_FREETYPE, $sim_ac_have_freetype)
 
 # *******************************************************************
 # * Mathlib stuff.
