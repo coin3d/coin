@@ -81,7 +81,7 @@ public:
 
   uint32_t redrawpri;
 
-  GLenum clearmask;
+  GLbitfield clearmask;
   static void prerendercb(void * userdata, SoGLRenderAction * action);
 };
 
@@ -707,7 +707,7 @@ SoSceneManagerP::nodesensorCB(void * data, SoSensor * /* sensor */)
   ((SoSceneManager *)data)->scheduleRedraw();
 }
 
-void 
+void
 SoSceneManagerP::prerendercb(void * userdata, SoGLRenderAction * action)
 {
   // remove callback again
