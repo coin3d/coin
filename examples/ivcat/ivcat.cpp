@@ -109,15 +109,15 @@ main(int argc, char * argv[])
   int i = 1;
 #endif
   SoInput stdinp;
-  SoSeparator * root = NULL;
+  SoSeparator * root = new SoSeparator;
 
   if (i >= argc) {
     /* No files specified, read from stdin only. */
-    root = SoDB::readAll(&stdinp);
+    SoSeparator * tmp = SoDB::readAll(&stdinp);
+    if (tmp) root->addChild(tmp);
   }
   else {
     SoInput fileinp;
-    root = new SoSeparator;
 
     for (; i < argc; i++) {
       SoInput * inp = NULL;
@@ -151,7 +151,7 @@ main(int argc, char * argv[])
     fprintf(stderr, "Warning: texture inlining not supported yet!\n");
   }
 
-  if (root && (root->getNumChildren() > 0)) {
+  if (root->getNumChildren() > 0) {
     SoOutput out;
     if (outname) {
       if (!out.openFile(outname)) {
@@ -161,9 +161,10 @@ main(int argc, char * argv[])
     }
     out.setBinary(writeasbinary);
 
-    SoNode * topnode = root->getNumChildren() == 1 ? root->getChild(0) : root;
     SoWriteAction wa(&out);
-    wa.apply(topnode);
+    for (int i=0; i < root->getNumChildren(); i++) {
+      wa.apply(root->getChild(i));
+    }
   }
 
   return 0;
