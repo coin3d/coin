@@ -91,8 +91,8 @@ public:
       this->filename = filename;
       this->fp = filepointer;
       this->readbuf = new char[READBUFSIZE];
-      this->readbufLen = 0;
-      this->memBuffer = FALSE;
+      this->readbuflen = 0;
+      this->ismembuffer = FALSE;
     }
 
   SoInput_FileInfo(void * bufPointer, size_t bufSize)
@@ -102,8 +102,8 @@ public:
       this->filename="<memory>";
       this->fp = NULL;
       this->readbuf = (char *)bufPointer;
-      this->readbufLen = bufSize;
-      this->memBuffer=TRUE;
+      this->readbuflen = bufSize;
+      this->ismembuffer=TRUE;
     }
 
   void commonConstructor(void)
@@ -112,95 +112,99 @@ public:
       this->headerisread = FALSE;
       this->ivversion = 0.0f;
       this->linenr = 1;
-      this->backBufIndex = -1;
-      this->readbufIndex = 0;
+      this->backbufidx = -1;
+      this->readbufidx = 0;
       this->totalread = 0;
       this->lastputback = -1;
       this->lastchar = -1;
-      this->prematureeof = FALSE;
+      this->eof = FALSE;
     }
 
   ~SoInput_FileInfo()
     {
-      if (!this->memBuffer) delete [] this->readbuf;
-      if ((this->filename != "<stdin>") && (this->filename.getLength()))
+      if (!this->ismembuffer) delete [] this->readbuf;
+
+      // Close files which are not a memory buffer nor the stdin and
+      // which we do have a filename for (if we don't have a filename,
+      // the FILE ptr was just passed in through setFilePointer() and
+      // is the library programmer's responsibility).
+      if (this->fp &&
+          (this->filename != "<stdin>") &&
+          (this->filename.getLength()))
         fclose(this->fp);
     }
 
   SbBool doBufferRead(void)
     {
       // Make sure that we really do need to read more bytes.
-      assert(this->backBufIndex == -1);
-      assert(this->readbufIndex == this->readbufLen);
+      assert(this->backbufidx == -1);
+      assert(this->readbufidx == this->readbuflen);
 
-      if (this->memBuffer) return FALSE;
+      if (this->ismembuffer) {
+        this->eof = TRUE;
+        return FALSE;
+      }
+
       int len = fread(this->readbuf, 1, READBUFSIZE, this->fp);
       if (len <= 0) {
-        this->readbufIndex = 0;
-        this->readbufLen = 0;
+        this->readbufidx = 0;
+        this->readbuflen = 0;
+        this->eof = TRUE;
 #if 0 // debug
-        SoDebugError::postInfo("doBufferRead", "eof!");
+        SoDebugError::postInfo("doBufferRead", "met Mr End-of-file");
 #endif // debug
         return FALSE;
       }
 
-      this->totalread += this->readbufIndex;
-      this->readbufIndex = 0;
-      this->readbufLen = len;
+      this->totalread += this->readbufidx;
+      this->readbufidx = 0;
+      this->readbuflen = len;
       return TRUE;
-    }
-
-  SbBool eof(void)
-    {
-      return ((this->backBufIndex == -1) &&
-              (this->readbufIndex == this->readbufLen) &&
-              !this->doBufferRead());
     }
 
   size_t getNumBytesParsedSoFar(void) const
     {
-      return this->totalread + this->readbufIndex - (this->backBufIndex + 1);
+      return this->totalread + this->readbufidx - (this->backbufidx + 1);
     }
 
   SbBool getChunkOfBytes(unsigned char * ptr, size_t length)
     {
       // Suck out any bytes from the backbuffer first.
-      while ((this->backBufIndex >= 0) && (length > 0)) {
-        *ptr++ = this->backBuf[this->backBufIndex--];
+      while ((this->backbufidx >= 0) && (length > 0)) {
+        *ptr++ = this->backBuf[this->backbufidx--];
         length--;
       }
 
-      SbBool reachedeof = FALSE;
       do {
         // Grab bytes from the buffer.
-        while ((this->readbufIndex < this->readbufLen) && (length > 0)) {
-          *ptr++ = this->readbuf[this->readbufIndex++];
+        while ((this->readbufidx < this->readbuflen) && (length > 0)) {
+          *ptr++ = this->readbuf[this->readbufidx++];
           length--;
         }
 
         // Fetch more bytes if necessary.
-        if (length > 0) reachedeof = !this->doBufferRead();
+        if ((length > 0) && !this->eof) this->doBufferRead();
 
-      } while (length && !reachedeof);
+      } while (length && !this->eof);
 
-      return !reachedeof;
+      return !this->eof;
     }
 
   SbBool get(char & c)
     {
-      if (this->backBufIndex >= 0) {
-        c = this->backBuf[this->backBufIndex--];
+      if (this->backbufidx >= 0) {
+        c = this->backBuf[this->backbufidx--];
       }
-      else if (this->readbufIndex >= this->readbufLen) {
+      else if (this->readbufidx >= this->readbuflen) {
         if (!this->doBufferRead()) {
           c = (char) EOF;
           return FALSE;
         }
 
-        c = this->readbuf[this->readbufIndex++];
+        c = this->readbuf[this->readbufidx++];
       }
       else {
-        c = this->readbuf[this->readbufIndex++];
+        c = this->readbuf[this->readbufidx++];
       }
 
       // NB: the line counting is not working 100% if we start putting
@@ -225,48 +229,21 @@ public:
       this->lastputback = c;
       this->lastchar = -1;
 
-      if (this->readbufIndex > 0 && this->backBufIndex < 0) {
-        this->readbufIndex--;
+      if (this->readbufidx > 0 && this->backbufidx < 0) {
+        this->readbufidx--;
         // Make sure we write back the same character which was read..
-        assert(c == this->readbuf[this->readbufIndex]);
+        assert(c == this->readbuf[this->readbufidx]);
       }
       else {
-        this->backBuf[++this->backBufIndex] = c;
+        this->backBuf[++this->backbufidx] = c;
       }
+
+      this->eof = FALSE;
     }
 
   void putBack(const char * const str)
     {
-#if 0 // Doesn't work yet. Also not needed at the moment.
-      // Binary format.
-
-      if (this->isbinary) {
-        unsigned int len = strlen(str);
-        char * valarray[sizeof(int)];
-        { // This code from SoOutput::convertInt32().
-          // Convert to "network format".
-
-          // FIXME: ugly hack, probably breaks on 64-bit architectures --
-          // lame. 19990627 mortene.
-          assert(sizeof(len) == sizeof(unsigned long int));
-          *((unsigned long int *)valarray) = htonl(*((unsigned long int *)&len));
-        }
-
-        for (unsigned int i=0; i < sizeof(len); i++)
-          this->putBack(valarray[i]);
-        for (unsigned int i=0; i < len; i++) this->putBack(str[i]);
-        if (len % 4) {
-          for (unsigned int i=0; i < (4 - (len%4)); i++) this->putBack('\0');
-        }
-        return;
-      }
-#else
-      if (this->isbinary) {
-        assert(0);
-      }
-#endif
-
-      // ASCII format.
+      assert(!this->isbinary);
 
       int n = strlen(str);
       if (!n) return;
@@ -283,12 +260,14 @@ public:
 
       this->lastchar = -1;
 
-      if (n <= this->readbufIndex && this->backBufIndex < 0)
-        this->readbufIndex -= n;
+      if (n <= this->readbufidx && this->backbufidx < 0)
+        this->readbufidx -= n;
       else {
         for (int i = n - 1; i >= 0; i--)
-          this->backBuf[++this->backBufIndex] = str[i];
+          this->backBuf[++this->backbufidx] = str[i];
       }
+
+      this->eof = FALSE;
     }
 
   SbBool skipWhiteSpace(void)
@@ -325,17 +304,14 @@ public:
   // header parse actually succeeded.
   SbBool readHeader(void)
     {
-      if (this->headerisread) return this->prematureeof ? FALSE : TRUE;
+      if (this->headerisread) return this->eof ? FALSE : TRUE;
       this->headerisread = TRUE;
 
       this->header = "";
       this->ivversion = 0.0f;
 
       char c;
-      if (!this->get(c)) {
-        this->prematureeof = TRUE;
-        return FALSE;
-      }
+      if (!this->get(c)) return FALSE;
 
       if (c != '#') {
         this->putBack(c);
@@ -344,11 +320,8 @@ public:
 
       this->header += c;
 
-      while ((this->get(c)) && (c != '\n') && (c != '\r')) this->header += c;
-      if ((c != '\n') && (c != '\r')) {
-        this->prematureeof = TRUE;
-        return FALSE;
-      }
+      while (this->get(c) && (c != '\n') && (c != '\r')) this->header += c;
+      if (this->eof) return FALSE;
 
       if (!SoDB::getHeaderData(this->header, this->isbinary, this->ivversion,
                                this->prefunc, this->postfunc, this->userdata,
@@ -357,7 +330,52 @@ public:
       return TRUE;
     }
 
-// members
+  SbBool isMemBuffer(void)
+    {
+      return this->ismembuffer;
+    }
+
+  SbBool isBinary(void)
+    {
+      return this->isbinary;
+    }
+
+  float ivVersion(void)
+    {
+      return this->ivversion;
+    }
+
+  void setIvVersion(const float v)
+    {
+      this->ivversion = v;
+    }
+
+  const SbString & ivHeader(void)
+    {
+      return this->header;
+    }
+
+  const SbString & ivFilename(void)
+    {
+      return this->filename;
+    }
+
+  FILE * ivFilePointer(void)
+    {
+      return this->fp;
+    }
+
+  unsigned int lineNr(void)
+    {
+      return this->linenr;
+    }
+
+  SbBool isEndOfFile(void)
+    {
+      return this->eof;
+    }
+
+private:
   SbString filename;
   FILE * fp;
   unsigned int linenr;
@@ -370,15 +388,15 @@ public:
   SbBool isbinary;
 
   char * readbuf;
-  int readbufIndex;
-  int readbufLen;
+  int readbufidx;
+  int readbuflen;
   size_t totalread;
   SbList<char> backBuf;
-  int backBufIndex;
+  int backbufidx;
   char lastputback; // The last character put back into the stream.
   char lastchar; // Last read character.
-  SbBool memBuffer;
-  SbBool headerisread, prematureeof;
+  SbBool ismembuffer;
+  SbBool headerisread, eof;
 };
 
 SbStringList SoInput::dirsearchlist;
@@ -434,8 +452,7 @@ SoInput::setFilePointer(FILE * newFP)
   this->closeFile();
 
   const char * name = newFP == stdin ? "<stdin>" : "";
-  SoInput_FileInfo * newfile =
-    new SoInput_FileInfo(name, newFP);
+  SoInput_FileInfo * newfile = new SoInput_FileInfo(name, newFP);
 
   if (newfile) this->filestack.insert(newfile, 0);
   // Just to make the directory search "stack" behave properly.
@@ -489,22 +506,6 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
 SbBool
 SoInput::pushFile(const char * filename)
 {
-  // FIXME:
-  //
-  // Files on the stack should be automatically popped when we reach
-  // their end-of-file marker, I think. That strategy is chock full of
-  // pitfalls, though -- so be careful when implementing. 19990623
-  // mortene.
-  //
-  // One (or "_the_"?) major problem is that SoInput will try to
-  // continue reading from stdin if the last "real" file is popped off
-  // the stack. Need to solve this first (remove stdin from the stack
-  // upon first setFilePointer()/pushFile()/openFile() call? Looks
-  // like that could work.) 19991208 mortene.
-  //
-  // Could we implement the auto-popping by simply adding the eof
-  // check to SoInput::checkHeader()? 19991208 mortene.
-
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);
   if (fp) {
@@ -532,14 +533,14 @@ SoInput::pushFile(const char * filename)
 void
 SoInput::closeFile(void)
 {
-  // Remove all entries except the default <stdin>.
-  while (this->filestack.getLength() > 1) {
+  // Remove all entries, including the default <stdin>.
+  while (this->filestack.getLength() > 0) {
     if (!this->fromBuffer()) {
-      SbString s = SoInput::getPathname(this->getTopOfStack()->filename);
-      SoInput::removeDirectory(s.getString());
+      SbString s = SoInput::getPathname(this->getTopOfStack()->ivFilename());
+      if (s.getLength()) SoInput::removeDirectory(s.getString());
     }
-    this->filestack.remove(0);
     delete this->getTopOfStack();
+    this->filestack.remove(0);
   }
 }
 
@@ -576,7 +577,7 @@ SoInput::isValidBuffer(void)
 FILE *
 SoInput::getCurFile(void) const
 {
-  return this->getTopOfStack()->fp;
+  return this->getTopOfStack()->ivFilePointer();
 }
 
 /*!
@@ -587,7 +588,7 @@ SoInput::getCurFile(void) const
 const char *
 SoInput::getCurFileName(void) const
 {
-  return this->getTopOfStack()->filename.getString();
+  return this->getTopOfStack()->ivFilename().getString();
 }
 
 /*!
@@ -619,7 +620,7 @@ SbString
 SoInput::getHeader(void)
 {
   this->checkHeader();
-  return this->getTopOfStack()->header;
+  return this->getTopOfStack()->ivHeader();
 }
 
 /*!
@@ -631,7 +632,7 @@ float
 SoInput::getIVVersion(void)
 {
   this->checkHeader();
-  return this->getTopOfStack()->ivversion;
+  return this->getTopOfStack()->ivVersion();
 }
 
 /*!
@@ -641,7 +642,7 @@ SbBool
 SoInput::isBinary(void)
 {
   this->checkHeader();
-  return this->getTopOfStack()->isbinary;
+  return this->getTopOfStack()->isBinary();
 }
 
 /*!
@@ -1142,11 +1143,8 @@ SoInput::readBinaryArray(double * d, int length)
 SbBool
 SoInput::eof(void) const
 {
-  // FIXME: shouldn't streams be automatically popped when we reach
-  // their EOF? If so, shouldn't this check really be "are any streams
-  // still present in the stack?"? 19990626 mortene.
-
-  return this->getTopOfStack()->eof();
+  if (!this->getTopOfStack()) return TRUE;
+  return this->getTopOfStack()->isEndOfFile();
 }
 
 /*!
@@ -1168,7 +1166,7 @@ SoInput::getLocationString(SbString & str) const
   else {
     str = "\tOccurred at line ";
     char buf[32];
-    sprintf(buf, "%3d", this->getTopOfStack()->linenr);
+    sprintf(buf, "%3d", this->getTopOfStack()->lineNr());
     str += buf;
     str += " in ";
     str += this->getCurFileName();
@@ -1380,7 +1378,7 @@ SoInput::removeDirectory(const char * dirName)
     if (*(SoInput::dirsearchlist[idx]) == dirName) break;
   }
 
-  if (idx < SoInput::dirsearchlist.getLength()) {
+  if (idx >=0) {
     delete SoInput::dirsearchlist[idx]; // Dealloc SbString object
     SoInput::dirsearchlist.remove(idx);
   }
@@ -1535,7 +1533,7 @@ SoInput::setIVVersion(float version)
 {
   SoInput_FileInfo * fi = this->getTopOfStack();
   assert(fi);
-  fi->ivversion = version;
+  fi->setIvVersion(version);
 }
 
 /*!
@@ -1562,8 +1560,10 @@ SbBool
 SoInput::checkHeader(SbBool bValidateBufferHeader)
 {
   SoInput_FileInfo * fi = this->getTopOfStack();
-  assert(fi);
-  return fi->readHeader() && (!bValidateBufferHeader || fi->ivversion != 0.0f);
+  if (!fi) return FALSE;
+  if (fi->isEndOfFile()) this->popFile(); // auto pop on EOF
+  fi = this->getTopOfStack();
+  return fi && fi->readHeader() && (!bValidateBufferHeader || fi->ivVersion() != 0.0f);
 }
 
 /*!
@@ -1575,7 +1575,7 @@ SoInput::fromBuffer(void) const
 {
   SoInput_FileInfo * fi = this->getTopOfStack();
   assert(fi);
-  return fi->memBuffer ? TRUE : FALSE;
+  return fi->isMemBuffer() ? TRUE : FALSE;
 }
 
 /*!
@@ -1585,21 +1585,24 @@ SoInput::fromBuffer(void) const
 SbBool
 SoInput::skipWhiteSpace(void)
 {
-  return this->getTopOfStack()->skipWhiteSpace();
+  return (this->checkHeader() && this->getTopOfStack()->skipWhiteSpace());
 }
 
 /*!
-  Pop the topmost file off the stack.
+  Pop the topmost file off the stack. Returns \a FALSE if there was no
+  files on the stack to pop.
 
   \sa pushFile(), openFile(), closeFile()
  */
 SbBool
 SoInput::popFile(void)
 {
-  assert(this->filestack.getLength() > 1);
-  if (this->getTopOfStack()->fp) {
-    const char * filename = this->getTopOfStack()->filename.getString();
-    SoInput::removeDirectory(SoInput::getPathname(filename).getString());
+  if (this->filestack.getLength() == 0) return FALSE;
+
+  if (this->getTopOfStack()->ivFilePointer()) {
+    const char * filename = this->getTopOfStack()->ivFilename().getString();
+    SbString path = SoInput::getPathname(filename);
+    if (path.getLength()) SoInput::removeDirectory(path.getString());
   }
   delete this->getTopOfStack();
   this->filestack.remove(0);
@@ -2050,7 +2053,7 @@ SoInput::setDirectories(SbStringList * dirs)
 SoInput_FileInfo *
 SoInput::getTopOfStack(void) const
 {
-  return (SoInput_FileInfo *)(this->filestack[0]);
+  return this->filestack[0];
 }
 
 /*!

@@ -23,13 +23,16 @@
 #include <Inventor/system/inttypes.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbDict.h>
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
+#include <stdio.h> // FILE
 
 class SoBase;
 class SbString;
 class SbTime;
 class SbName;
 class SbStringList;
+class SoInput_FileInfo;
+
 
 class SoInput {
 public:
@@ -135,9 +138,6 @@ protected:
 
 private:
   friend class SoDB;
-  // FIXME: remove this "friend" definition when automatic popping is
-  // in place. 19991208 mortene.
-  friend class SoFile;
 
   void constructorsCommon(void);
 
@@ -146,8 +146,8 @@ private:
                                    const char * separator);
   static SbStringList dirsearchlist;
 
-  SbPList filestack;
-  class SoInput_FileInfo * getTopOfStack(void) const;
+  SbList<SoInput_FileInfo *> filestack;
+  SoInput_FileInfo * getTopOfStack(void) const;
 
   SbDict refdict;
 };

@@ -347,13 +347,8 @@ SoDB::readAll(SoInput * in)
   }
 
 #if COIN_DEBUG
-  // FIXME: assert check disabled, due to the fact that SoInput
-  // doesn't automatically pop the way it should and because this
-  // assert then triggers on the hack in
-  // SoFile::readInstance(). 19991208 mortene.
-
   // Detect problems with missing pops from the SoInput file stack.
-//    assert(stackdepth == in->filestack.getLength());
+  assert(stackdepth == in->filestack.getLength());
 #endif // COIN_DEBUG
 
   return retnode;
