@@ -320,15 +320,15 @@ SoInteractionKit::readDefaultParts(const char *fileName,
     return;
   }
   fullname = dir;
-  
-#ifdef _WIN32  
-  if (fillname[fullname.getLength()-1] != '\\') fullname += "\\";
+
+#ifdef _WIN32
+  if (fullname[fullname.getLength()-1] != '\\') fullname += "\\";
 #else // ! WIN32
   if (fullname[fullname.getLength()-1] != '/') fullname += "/";
 #endif // !WIN32
-  
+
   fullname += fileName;
-  
+
   SoInput input;
   if (!fileName || !input.openFile(fullname.getString())) {
     input.setBuffer((void*)defaultBuffer, defBufSize);
