@@ -880,6 +880,12 @@ SoGLLazyElement::postCacheCall(SoState * state, GLState * poststate)
       case SHADE_MODEL_CASE:
         elem->glstate.flatshading = poststate->flatshading;
         break;
+      case GLIMAGE_CASE:
+        elem->glstate.glimageid = poststate->glimageid;
+        break;
+      case ALPHATEST_CASE:
+        elem->glstate.alphatest = poststate->alphatest;
+        break;
       }
     }
   }
@@ -897,32 +903,46 @@ SoGLLazyElement::preCacheCall(SoState * state, GLState * prestate)
       switch (i) {
       case LIGHT_MODEL_CASE:
         if (curr.lightmodel != prestate->lightmodel) return FALSE;
+        break;
       case DIFFUSE_CASE:
         if (curr.diffuse != prestate->diffuse) return FALSE;
+        break;
       case AMBIENT_CASE:
         if (curr.ambient != prestate->ambient) return FALSE;
+        break;
       case SPECULAR_CASE:
         if (curr.specular != prestate->specular) return FALSE;
+        break;
       case EMISSIVE_CASE:
         if (curr.emissive != prestate->emissive) return FALSE;
+        break;
       case SHININESS_CASE:
         if (curr.shininess != prestate->shininess) return FALSE;
+        break;
       case BLENDING_CASE:
         if (curr.blending != prestate->blending) return FALSE;
+        break;
       case TRANSPARENCY_CASE:
         if (curr.stipplenum != prestate->stipplenum) return FALSE;
+        break;
       case VERTEXORDERING_CASE:
         if (curr.vertexordering != prestate->vertexordering) return FALSE;
+        break;
       case CULLING_CASE:
         if (curr.culling != prestate->culling) return FALSE;
+        break;
       case TWOSIDE_CASE:
         if (curr.twoside != prestate->twoside) return FALSE;
+        break;
       case SHADE_MODEL_CASE:
         if (curr.flatshading != prestate->flatshading) return FALSE;
+        break;
       case GLIMAGE_CASE:
         if (curr.glimageid != prestate->glimageid) return FALSE;
+        break;
       case ALPHATEST_CASE:
         if (curr.alphatest != prestate->alphatest) return FALSE;
+        break;
       }
     }
   }
