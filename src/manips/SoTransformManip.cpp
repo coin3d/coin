@@ -274,18 +274,22 @@ SoTransformManip::getBoundingBox(SoGetBoundingBoxAction * action)
 // Documented in superclass
 void
 SoTransformManip::getMatrix(SoGetMatrixAction * action)
-{
+{  
   int numindices;
   const int *indices;
   switch (action->getPathCode(numindices, indices)) {
   case SoAction::NO_PATH:
+    SoTransform::getMatrix(action);
+    break;
   case SoAction::BELOW_PATH:
+    SoTransform::getMatrix(action);
     break;
   case SoAction::IN_PATH:
     this->children->traverse(action, 0, indices[numindices-1]);
     break;
   case SoAction::OFF_PATH:
     this->children->traverse(action);
+    SoTransform::getMatrix(action);
     break;
   default:
     assert(0 && "unknown path code");
