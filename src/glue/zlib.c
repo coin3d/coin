@@ -44,6 +44,7 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/zlib.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 
 /* workarounds for hacks in the zlib header file. inflateInit2
    and deflateInit2 are not functions but defines. The real
@@ -133,7 +134,6 @@ zlibglue_cleanup(void)
 #ifdef ZLIB_RUNTIME_LINKING
   if (zlib_libhandle) { cc_dl_close(zlib_libhandle); }
 #endif /* ZLIB_RUNTIME_LINKING */
-
   assert(zlib_instance);
   free(zlib_instance);
 }
@@ -212,32 +212,44 @@ zlibglue_init(void)
       zlib_instance = zi;
     }
     else {
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflateInit2_t, deflateInit2);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_inflateInit2_t, inflateInit2);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflateEnd_t, deflateEnd);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_inflateEnd_t, inflateEnd);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_inflate_t, inflate);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_inflateReset_t, inflateReset);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflateParams_t, deflateParams);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflate_t, deflate);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzopen_t, gzopen);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzdopen_t, gzdopen);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzsetparams_t, gzsetparams);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzread_t, gzread);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzwrite_t, gzwrite);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzseek_t, gzseek);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzrewind_t, gzrewind);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gztell_t, gztell);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzeof_t, gzeof);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzclose_t, gzclose);
-      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_crc32_t, crc32);
-
-      /* Do this late, so we can detect recursive calls to this function. */
-      zlib_instance = zi;
-
-      if (!zi->available) {
-        cc_debugerror_post("zlibglue_init",
-                           "Failed to initialize zlib glue.");
+      int major, minor, patch;;
+      if (!coin_parse_versionstring(zi->zlibVersion(), &major, &minor, &patch) ||
+          (major < 1) ||
+          (major == 1 && minor == 0 && patch < 2)) {
+        cc_debugerror_post("zlib glue",
+                           "Loaded zlib DLL ok, but version >= 1.0.2 is needed.");        
+        zi->available = 0;
+        zlib_failed_to_load = 1;
+        zlib_instance = zi;
+      }
+      else {
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflateInit2_t, deflateInit2);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_inflateInit2_t, inflateInit2);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflateEnd_t, deflateEnd);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_inflateEnd_t, inflateEnd);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_inflate_t, inflate);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_inflateReset_t, inflateReset);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflateParams_t, deflateParams);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_deflate_t, deflate);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzopen_t, gzopen);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzdopen_t, gzdopen);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzsetparams_t, gzsetparams);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzread_t, gzread);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzwrite_t, gzwrite);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzseek_t, gzseek);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzrewind_t, gzrewind);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gztell_t, gztell);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzeof_t, gzeof);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_gzclose_t, gzclose);
+        ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_crc32_t, crc32);
+        
+        /* Do this late, so we can detect recursive calls to this function. */
+        zlib_instance = zi;
+        
+        if (!zi->available) {
+          cc_debugerror_post("zlibglue_init",
+                             "Failed to initialize zlib glue.");
+        }
       }
     }
   }

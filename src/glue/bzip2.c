@@ -44,6 +44,7 @@
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/bzip2.h>
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 
 typedef const char * (*cc_bzglue_BZ2_bzlibVersion_t)(void);
 
@@ -173,19 +174,30 @@ bzglue_init(void)
       bzlib_instance = bi;
     }
     else {
-      BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzReadOpen_t, BZ2_bzReadOpen);
-      BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzReadClose_t, BZ2_bzReadClose); 
-      BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzRead_t, BZ2_bzRead);
-      BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzWriteOpen_t, BZ2_bzWriteOpen);
-      BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzWriteClose_t, BZ2_bzWriteClose);
-      BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzWrite_t, BZ2_bzWrite);
-
-      /* Do this late, so we can detect recursive calls to this function. */
-      bzlib_instance = bi;
-
-      if (!bi->available) {
-        cc_debugerror_post("bzglue_init",
-                           "Failed to initialize libbip2 glue.");
+      int major, minor, patch;
+      if (!coin_parse_versionstring(bi->BZ2_bzlibVersion(), &major, &minor, &patch) ||
+          (major < 1)) {
+        cc_debugerror_post("bzip2 glue",
+                           "Loaded bzip2 DLL ok, but version >= 1.0.0 is needed.");        
+        bi->available = 0;
+        bzlib_failed_to_load = 1;
+        bzlib_instance = bi;
+      }
+      else {
+        BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzReadOpen_t, BZ2_bzReadOpen);
+        BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzReadClose_t, BZ2_bzReadClose); 
+        BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzRead_t, BZ2_bzRead);
+        BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzWriteOpen_t, BZ2_bzWriteOpen);
+        BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzWriteClose_t, BZ2_bzWriteClose);
+        BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzWrite_t, BZ2_bzWrite);
+        
+        /* Do this late, so we can detect recursive calls to this function. */
+        bzlib_instance = bi;
+        
+        if (!bi->available) {
+          cc_debugerror_post("bzglue_init",
+                             "Failed to initialize libbzip2 glue.");
+        }
       }
     }
   }
