@@ -243,6 +243,10 @@ void
 SoVRMLBillboard::GLRenderBelowPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
+
+  // never cache this node
+  SoCacheElement::invalidate(state);
+
   state->push();
   this->performRotation(state);
 
@@ -253,7 +257,6 @@ SoVRMLBillboard::GLRenderBelowPath(SoGLRenderAction * action)
   for (int i = 0; i < n && !action->hasTerminated(); i++) {
     if (action->abortNow()) {
       // only cache if we do a full traversal
-      SoCacheElement::invalidate(state);
       break;
     }
     action->popPushCurPath(i, childarray[i]);
@@ -289,6 +292,7 @@ SoVRMLBillboard::GLRenderInPath(SoGLRenderAction * action )
   const int * indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
     SoState * state = action->getState();
+    SoCacheElement::invalidate(state);
     SoNode ** childarray = (SoNode**) this->getChildren()->getArrayPtr();
     state->push();
     this->performRotation(state);
@@ -303,9 +307,6 @@ SoVRMLBillboard::GLRenderInPath(SoGLRenderAction * action )
           if (!action->abortNow()) {
             offpath->GLRenderOffPath(action);
           }
-          else {
-            SoCacheElement::invalidate(state);
-          }
           action->popCurPath(pathcode);
         }
       }
@@ -313,9 +314,6 @@ SoVRMLBillboard::GLRenderInPath(SoGLRenderAction * action )
       action->pushCurPath(childidx, inpath);
       if (!action->abortNow()) {
         inpath->GLRenderInPath(action);
-      }
-      else {
-        SoCacheElement::invalidate(state);
       }
       action->popCurPath(pathcode);
       childidx++;
