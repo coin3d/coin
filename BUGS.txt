@@ -3718,3 +3718,19 @@ main(int argc, char ** argv)
 
     20040203 larsa.
 
+
+    UPDATE 20040203 mortene: my suggestion is that the API should
+    present the possibility of setting up a callback weighting
+    function to run the available GL-capable contexts through, because
+    this will give the API client full control if he/she so wishes.
+
+    Something like this has already been implemented internally for
+    SoWin, see SoWinGLWidget::weighPixelFormat(). I.e. default
+    weighting algorithms like that function should be available inside
+    libCoin, with the option of overriding them through the API.
+
+    Designing the API so it manages to abstract away the peculiarities
+    of each window-specific (GLX / WGL / AGL) context struct format
+    might be challenging.
+
+=====================================================================
