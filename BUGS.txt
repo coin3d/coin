@@ -3791,3 +3791,40 @@ Separator {
     20040705 mortene.
 
 =====================================================================
+
+122 Reading of nested nodekit parts fails.
+
+    As reported by Gerhard Reitmayr <reitmayr@ims.tuwien.ac.at>:
+
+        Reading in parts of nested nodekits does not allow certain
+        short cuts that are specified by the Inventor Mentor. The
+        Mentor specifies on page 278 that within nested nodekits
+        intermediary kits can be left out and will be created
+        automatically. Coin does not read in this syntax. It also
+        chokes on a related syntax that SGI Inventor reads in.
+
+    Two examples which fails:
+
+--------8<------------- [snip] --------------8<------------- [snip]
+#Inventor V2.1 ascii
+
+Separator {
+     # Read error in Coin, ok by Mentor
+     SoShapeKit {
+         shape Cube {}
+         material  Material { diffuseColor 1 0 0 }
+     }
+     # Read error in Coin, works in SGI
+     SoShapeKit {
+         transform Transform { translation 2 0 0 }
+         shape Cube {}
+         appearance.material  Material { diffuseColor 0 1 0 }
+     }
+}
+--------8<------------- [snip] --------------8<------------- [snip]
+
+    This is a medium priority item.
+
+    20040706 mortene.
+
+=====================================================================
