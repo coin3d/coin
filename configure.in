@@ -489,7 +489,7 @@ CPPFLAGS="$CPPFLAGS -DCOIN_INTERNAL"
 # **************************************************************************
 
 # Try to find snprintf() and vsnprintf() on the system.
-SIM_CHECK_NPRINTF
+SIM_AC_CHECK_NPRINTF
 
 SIM_AC_CHECK_MACRO_QUOTE([], [SIM_AC_ERROR([no-cpp-quoting])])
 if test x"$sim_ac_quote_hash" = xyes; then
