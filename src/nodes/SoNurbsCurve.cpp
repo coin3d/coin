@@ -303,7 +303,7 @@ SoNurbsCurve::tessBegin(int type, void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   TriangleShape shapetype;
-  switch ((int)type) {
+  switch (type) {
   case GL_LINES:
     shapetype = SoShape::LINES;
     break;
@@ -313,7 +313,15 @@ SoNurbsCurve::tessBegin(int type, void * data)
   case GL_LINE_LOOP:
     shapetype = SoShape::LINE_STRIP; // will not be closed...
     // FIXME: implement this functionality. 20010909 mortene.
-    COIN_STUB();
+
+    // FIXME: un-commenting the following line exposes a _weird_ HP-UX
+    // aCC bug -- should investigate closer.  (Detected with aCC
+    // version B3910B A.03.25).  If possible, try to re-write the
+    // COIN_STUB() function with a work-around for the aCC bug.
+    // 20010917 mortene.
+
+    //COIN_STUB();
+
 #if COIN_DEBUG
     SoDebugError::postWarning("SoNurbsCurve::tessBegin",
                               "LINE_LOOP is not supported yet");
