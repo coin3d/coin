@@ -39,6 +39,7 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/caches/SoGLRenderCache.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 
 #include <assert.h>
 #if HAVE_CONFIG_H
@@ -95,7 +96,7 @@ SoGLDisplayList::~SoGLDisplayList()
     // safe just to copy and delete the first index.
     GLuint tmpindex = (GLuint) this->firstindex;
     const GLWrapper_t * glw = GLWrapper(this->context);
-    if (glw->glGenTextures)
+    if (glw->glDeleteTextures)
       glDeleteTextures(1, &tmpindex);
   }
 }
@@ -134,9 +135,7 @@ SoGLDisplayList::open(SoState * state, int index)
   }
   else {
     assert(index == 0);
-    const GLWrapper_t * glw = GLWrapper(this->context);
-    if (glw->glGenTextures)
-      glw->glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
+    this->bindTexture(state);
   }
 }
 
@@ -162,9 +161,7 @@ SoGLDisplayList::call(SoState * state, int index)
   }
   else {
     assert(index == 0);
-    const GLWrapper_t * glw = GLWrapper(this->context);
-    if (glw->glGenTextures)
-      glw->glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
+    this->bindTexture(state);
   }
   this->addDependency(state);
 }
@@ -227,4 +224,22 @@ int
 SoGLDisplayList::getContext(void) const
 {
   return this->context;
+}
+
+/*!
+  \internal
+
+  \since 2001-11-27
+*/
+void 
+SoGLDisplayList::bindTexture(SoState *state)
+{
+  const GLWrapper_t * glw = GLWrapper(this->context);
+  if (glw->glBindTexture) {
+    if (SoGLTexture3EnabledElement::get(state)) {
+      if (glw->COIN_GL_TEXTURE_3D)
+        glw->glBindTexture(glw->COIN_GL_TEXTURE_3D, (GLuint) this->firstindex);
+    }
+    else glw->glBindTexture(GL_TEXTURE_2D, (GLuint) this->firstindex);
+  }
 }

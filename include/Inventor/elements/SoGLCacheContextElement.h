@@ -112,6 +112,8 @@ private:
   int context;
   int refcount;
   SbBool mipmap;
+
+  void bindTexture(SoState *state);
 };
 
 #endif // !COIN_SOGLCACHECONTEXTELEMENT_H
