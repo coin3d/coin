@@ -41,7 +41,7 @@
 // FIXME: as far as I can tell, SoWWWInline does not automatically
 // trigger a (re-)load when the "SoWWWInline::name" field
 // changes. Shouldn't it? Test what SGI/TGS Inventor does and mimic
-// it's behaviour. 20020522 mortene.
+// its behaviour. 20020522 mortene.
 
 #include <Inventor/nodes/SoWWWInline.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -52,6 +52,7 @@
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoLazyElement.h>
@@ -445,18 +446,49 @@ SoWWWInline::GLRender(SoGLRenderAction * action)
 void
 SoWWWInline::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SbVec3f halfsize = bboxSize.getValue()/2.0f;
-  SbVec3f center = bboxCenter.getValue();
-
-  action->extendBy(SbBox3f(-halfsize[0] + center[0],
-                           -halfsize[1] + center[1],
-                           -halfsize[2] + center[2],
-                           halfsize[0] + center[0],
-                           halfsize[1] + center[1],
-                           halfsize[2] + center[2]));
-
-  assert(! action->isCenterSet());
-  action->setCenter(center, TRUE);
+  if (this->getChildren()->getLength()) {
+    int numindices;
+    const int * indices;
+    int lastchildindex;
+    
+    if (action->getPathCode(numindices, indices) == SoAction::IN_PATH)
+      lastchildindex = indices[numindices-1];
+    else
+      lastchildindex = this->getChildren()->getLength() - 1;
+    
+    assert(lastchildindex < this->getChildren()->getLength());
+    
+    // Initialize accumulation variables.
+    SbVec3f acccenter(0.0f, 0.0f, 0.0f);
+    int numcenters = 0;
+    
+    for (int i = 0; i <= lastchildindex; i++) {
+      this->getChildren()->traverse(action, i);
+      
+      // If center point is set, accumulate.
+      if (action->isCenterSet()) {
+        acccenter += action->getCenter();
+        numcenters++;
+        action->resetCenter();
+      }
+    }
+    if (numcenters != 0)
+      action->setCenter(acccenter / float(numcenters), FALSE);
+  }
+  else {
+    SbVec3f halfsize = bboxSize.getValue()/2.0f;
+    SbVec3f center = bboxCenter.getValue();
+    
+    action->extendBy(SbBox3f(-halfsize[0] + center[0],
+                             -halfsize[1] + center[1],
+                             -halfsize[2] + center[2],
+                             halfsize[0] + center[0],
+                             halfsize[1] + center[1],
+                             halfsize[2] + center[2]));
+    
+    assert(! action->isCenterSet());
+    action->setCenter(center, TRUE);
+  }
 }
 
 /*!
@@ -472,13 +504,15 @@ SoWWWInline::getChildren(void) const
 void
 SoWWWInline::doAction(SoAction * action)
 {
-  int numindices;
-  const int * indices;
-  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
-    this->getChildren()->traverseInPath(action, numindices, indices);
-  }
-  else {
-    this->getChildren()->traverse((SoAction *)action);
+  if (this->getChildren()->getLength()) {
+    int numindices;
+    const int * indices;
+    if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+      this->getChildren()->traverseInPath(action, numindices, indices);
+    }
+    else {
+      this->getChildren()->traverse((SoAction *)action);
+    }
   }
 }
 
@@ -517,8 +551,10 @@ SoWWWInline::handleEvent(SoHandleEventAction * action)
 void
 SoWWWInline::search(SoSearchAction * action)
 {
-  // maybe search subgraph???
-  inherited::search(action);
+  SoNode::search(action);
+  if (!action->isFound()) {
+    SoWWWInline::doAction(action);
+  }
 }
 
 // doc in super
