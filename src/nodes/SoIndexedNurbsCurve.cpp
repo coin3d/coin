@@ -280,8 +280,12 @@ SoIndexedNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbB
     }
   }
 
+  // NB, don't move this structure inside the if-statement. It needs
+  // to be here so that the callbacks from sogl_render_nurbs_curve()
+  // have a valid pointer to the structure.
+  coin_inc_cbdata cbdata;
+
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-    coin_inc_cbdata cbdata;
     if (!glrender) {
       GLUWrapper()->gluNurbsCallbackData(this->nurbsrenderer, &cbdata);
       cbdata.action = action;
