@@ -170,7 +170,8 @@ SbRotation::getValue(SbVec3f& axis, float& radians) const
       axis[0] = this->quat[0] / scale;
       axis[1] = this->quat[1] / scale;
       axis[2] = this->quat[2] / scale;
-
+      // FIXME: why not just flip the sign on each component according
+      // to "scale" and normalize the axis instead? 20010111 mortene.
       return;
     }
   }
