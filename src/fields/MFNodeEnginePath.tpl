@@ -139,7 +139,7 @@ SoMF_Typename_::set1Value(const int idx, So_Typename_ * newval)
     // The path should be audited by us at all times. So don't use
     // SoMFPath to wrap SoTempPath or SoLightPath, for instance.
     assert(h==this->pathheads[idx] &&
-	   "Path head changed without notification!");
+           "Path head changed without notification!");
     if (h) {
       h->removeAuditor(this, SoNotRec::FIELD);
       h->unref();
