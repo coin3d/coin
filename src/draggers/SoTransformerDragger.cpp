@@ -106,11 +106,6 @@
 // strategy is better, since when switching between constrained
 // translations and unconstrained translation, the OIV feedback axes
 // can easily be positioned outside the face being dragged.
-
-// FIXME: one additional bug I found which is not mentioned above;
-// when doing uniform scaling towards a cornerpoint (holding CTRL),
-// the dragger jumps back to it's initial centerposition when CTRL is
-// released. This basically renders this feature unusable. 20011208 mortene.
 //
 // MATRICES AND SPACES:
 // There are many matrices and spaces that can take some time to get
@@ -198,7 +193,6 @@ class SoTransformerDraggerP {
 public:
   SbMatrix prevMotionMatrix;
   SbVec3f prevWorldHitPt;
-  SbVec3f prevHitPt;
   SbVec3f ctrlOffset;
   SbBool ctrlDown;
   SbBool shiftDown;
@@ -207,7 +201,6 @@ public:
   SbBool locateHighlighting;
   static int colinearThreshold;
   int constraintState;
-  SbVec3f worldRestartPt;
 
   int whatkind;
   int whatnum;
@@ -1188,7 +1181,6 @@ SoTransformerDragger::dragStart(void)
       this->lineProj->setLine(SbLine(startpt, startpt + n));
       THIS->constraintState = CONSTRAINT_OFF;
       if (THIS->shiftDown) {
-        this->getWorkingToWorldMatrix().multVecMatrix(startpt, THIS->worldRestartPt);
         THIS->constraintState = CONSTRAINT_WAIT;
       }
       SbLine myline(SbVec3f(0.0f, 0.0f, 0.0f), n);
@@ -1223,7 +1215,7 @@ SoTransformerDragger::dragStart(void)
         feedbackrot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), -float(M_PI)*0.5f);
         break;
       }
-      this->setDynamicTranslatorSwitches(event);
+      (void) this->setDynamicTranslatorSwitches(event);
     }
     break;
   case WHATKIND_SCALE:
@@ -1233,7 +1225,6 @@ SoTransformerDragger::dragStart(void)
       this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), startpt));
       THIS->constraintState = CONSTRAINT_OFF;
       if (THIS->shiftDown) {
-        this->getWorkingToWorldMatrix().multVecMatrix(startpt, THIS->worldRestartPt);
         THIS->constraintState = CONSTRAINT_WAIT;
       }
 
@@ -1241,7 +1232,7 @@ SoTransformerDragger::dragStart(void)
       str.sprintf("scale%dSwitch", THIS->whatnum);
       this->setAllPartSwitches(0, SO_SWITCH_NONE, SO_SWITCH_NONE);
       this->setSwitchValue(str.getString(), 1);
-      this->setDynamicScaleSwitches(event);
+      (void) this->setDynamicScaleSwitches(event);
     }
     break;
   case WHATKIND_ROTATE:
@@ -1268,7 +1259,6 @@ SoTransformerDragger::dragStart(void)
       SbVec3f projpt = this->sphereProj->project(this->getNormalizedLocaterPosition());
       this->getWorkingToWorldMatrix().multVecMatrix(projpt, THIS->prevWorldHitPt);
       THIS->prevMotionMatrix = this->getMotionMatrix();
-      THIS->prevHitPt = projpt;
 
       THIS->constraintState = CONSTRAINT_OFF;
       if (!THIS->shiftDown) {
@@ -1288,7 +1278,7 @@ SoTransformerDragger::dragStart(void)
       squish->sizing = sizing;
       squish->recalc();
       this->setAllPartSwitches(SO_SWITCH_NONE, 0, SO_SWITCH_NONE);
-      this->setDynamicRotatorSwitches(event);
+      (void) this->setDynamicRotatorSwitches(event);
     }
     break;
   default:
@@ -1333,12 +1323,14 @@ SoTransformerDragger::dragTranslate()
   if (event->wasShiftDown() && THIS->constraintState == CONSTRAINT_OFF) {
     THIS->constraintState = CONSTRAINT_WAIT;
     this->setStartLocaterPosition(event->getPosition());
-    this->getWorkingToWorldMatrix().multVecMatrix(projpt, THIS->worldRestartPt);
   }
   else if (!event->wasShiftDown() && THIS->constraintState != CONSTRAINT_OFF) {
     THIS->constraintState = CONSTRAINT_OFF;
   }
 
+  // Every time something changes (shift or ctrl is pressed), resave
+  // the state so that the transformation to come starts with blank
+  // sheets.
   if (this->setDynamicTranslatorSwitches(event)) {
     this->saveStartParameters();
     SbVec3f n(0.0f, 0.0f, 0.0f);
@@ -1358,46 +1350,48 @@ SoTransformerDragger::dragTranslate()
     motion = projpt - startpt;
   }
   else {
-    SbVec3f localrestartpt;
-    if (THIS->constraintState != CONSTRAINT_OFF) {
-      this->getWorldToLocalMatrix().multVecMatrix(THIS->worldRestartPt,
-                                                  localrestartpt);
-      motion = localrestartpt - startpt;
-    }
-    else motion = projpt - startpt;
+    motion = projpt - startpt;
+
     switch(THIS->constraintState) {
     case CONSTRAINT_OFF:
       break;
     case CONSTRAINT_WAIT:
       if (this->isAdequateConstraintMotion()) {
-        SbVec3f newmotion = projpt - localrestartpt;
         int biggest = 0;
-        double bigval = fabs(newmotion[0]);
-        if (fabs(newmotion[1]) > bigval) {
+        double bigval = fabs(motion[0]);
+        if (fabs(motion[1]) > bigval) {
           biggest = 1;
-          bigval = fabs(newmotion[1]);
+          bigval = fabs(motion[1]);
         }
-        if (fabs(newmotion[2]) > bigval) {
+        if (fabs(motion[2]) > bigval) {
           biggest = 2;
         }
-        motion[biggest] += newmotion[biggest];
+
+        // Set all but the constraint axis to 0
+        motion[(biggest + 1) % 3] = 0.0f;
+        motion[(biggest + 2) % 3] = 0.0f;
+
         THIS->constraintState = CONSTRAINT_X + biggest;
-        this->setDynamicTranslatorSwitches(event);
       }
       else {
         return;
       }
       break;
     case CONSTRAINT_X:
-      motion[0] += projpt[0] - localrestartpt[0];
+      motion[1] = 0.0f;
+      motion[2] = 0.0f;
       break;
     case CONSTRAINT_Y:
-      motion[1] += projpt[1] - localrestartpt[1];
+      motion[0] = 0.0f;
+      motion[2] = 0.0f;
       break;
     case CONSTRAINT_Z:
-      motion[2] += projpt[2] - localrestartpt[2];
+      motion[0] = 0.0f;
+      motion[1] = 0.0f;
+      break;
     }
   }
+
   SbMatrix mat, inv;
   this->getSurroundScaleMatrices(mat, inv);
   this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion, &mat));
@@ -1418,7 +1412,6 @@ SoTransformerDragger::dragScale()
   if (event->wasShiftDown() && THIS->constraintState == CONSTRAINT_OFF) {
     THIS->constraintState = CONSTRAINT_WAIT;
     this->setStartLocaterPosition(event->getPosition());
-    this->getWorkingToWorldMatrix().multVecMatrix(projpt, THIS->worldRestartPt);
   }
   else if (!event->wasShiftDown() && THIS->constraintState != CONSTRAINT_OFF) {
     this->saveStartParameters();
@@ -1471,7 +1464,19 @@ SoTransformerDragger::dragScale()
     this->setStartingPoint(worldpt);
   }
 
-  this->setDynamicScaleSwitches(event);
+  // If the control key is pressed or released,
+  // setDynamicScaleSwitches will return TRUE. When this happens, we
+  // have to resave our start motionmatrix to be able to do correct
+  // scaling. If we do not do this, the scaled object will jump
+  // because the scale center is changed, but not the scale.
+  if (this->setDynamicScaleSwitches(event)) {
+    this->saveStartParameters();
+    startpt = projpt;
+
+    SbVec3f worldpt;
+    this->getWorkingToWorldMatrix().multVecMatrix(projpt, worldpt);
+    this->setStartingPoint(worldpt);
+  }
 
   if (THIS->constraintState == CONSTRAINT_WAIT) return;
 
@@ -1527,7 +1532,7 @@ SoTransformerDragger::dragScale()
 // P := rotcenter
 // R := rot
 // M := new motion matrix
-// Mold := previous motionmatrix including surroundscale
+// Mold := previous motionmatrix
 // 
 // M = C^-1 * P^-1 * R * P * C * Mold
 // 
@@ -1578,7 +1583,6 @@ SoTransformerDragger::dragRotate(void)
     THIS->constraintState = CONSTRAINT_OFF;
     projpt = this->sphereProj->project(this->getNormalizedLocaterPosition());
     this->getWorkingToWorldMatrix().multVecMatrix(projpt, THIS->prevWorldHitPt);
-    THIS->prevHitPt = projpt;
     THIS->prevMotionMatrix = this->getMotionMatrix();
     this->saveStartParameters();
     this->setStartingPoint(THIS->prevWorldHitPt);
@@ -1605,7 +1609,7 @@ SoTransformerDragger::dragRotate(void)
   }
 
   // Show the necessary feedback geometry for rotation.
-  this->setDynamicRotatorSwitches(event);
+  (void) this->setDynamicRotatorSwitches(event);
 
   if (THIS->constraintState == CONSTRAINT_OFF) {
     SbVec3f worldcenter = this->getBoxPointInWorldSpace(center);
@@ -1616,7 +1620,6 @@ SoTransformerDragger::dragRotate(void)
     projpt = this->sphereProj->project(this->getNormalizedLocaterPosition());
     this->getWorkingToWorldMatrix().multVecMatrix(projpt, worldprojpt);
     SbVec3f wppt = worldprojpt;
-    SbVec3f ppt = projpt;
 
     // Find the projection vectors from the box center in world space.
     worldprojpt -= worldcenter;
@@ -1633,9 +1636,9 @@ SoTransformerDragger::dragRotate(void)
     // 20040804 jornskaa
     if (worldprojpt.dot(prevworldprojpt) > 0.8f) {
       THIS->prevWorldHitPt = wppt;
-      THIS->prevHitPt = ppt;
 
-      // Calculate the rotation from previous prevprojpt to worldprojpt
+      // Calculate the rotation from previous prevworldprojpt to
+      // worldprojpt
       SbRotation rot(prevworldprojpt, worldprojpt);
       
       // Calculate new motionmatrix by rotating in world space to
@@ -1672,12 +1675,11 @@ SoTransformerDragger::dragRotate(void)
 
     // set plane to do disc-rotate in
     this->planeProj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 0.0f), dim, dim+n));
-    this->setDynamicRotatorSwitches(event);
+    (void) this->setDynamicRotatorSwitches(event);
 
-    // Initialize prevWorldHitPt, prevHitPt and prevMotionMatrix.
+    // Initialize prevWorldHitPt and prevMotionMatrix.
     projpt = this->planeProj->project(THIS->normalizedStartLocaterPosition);
     this->getWorkingToWorldMatrix().multVecMatrix(projpt, THIS->prevWorldHitPt);
-    THIS->prevHitPt = projpt;
     THIS->prevMotionMatrix = this->getMotionMatrix();
   }
   if (THIS->constraintState >= CONSTRAINT_X) {
@@ -1689,7 +1691,6 @@ SoTransformerDragger::dragRotate(void)
     SbVec3f prevprojpt;
     SbVec3f worldprojpt;
 
-    prevprojpt = THIS->prevHitPt;
     prevworldprojpt = THIS->prevWorldHitPt;
 
     // Find current locater position projected onto the plane in world
@@ -1706,26 +1707,21 @@ SoTransformerDragger::dragRotate(void)
     prevworldprojpt -= plane.getNormal() * plane.getDistance(prevworldprojpt);
     worldprojpt -= plane.getNormal() * plane.getDistance(worldprojpt);
 
-    // Save the values for the new projection points before they are
+    // Save the values for the new projection point before it is
     // altered.
     SbVec3f wppt = worldprojpt;
-    SbVec3f ppt = projpt;
 
     // Adjust the rotation vectors of the dragger to match the center
     // of the dragger in working space and world space.
-    prevprojpt -= center;
     projpt -= center;
-
     prevworldprojpt -= worldcenter;
     worldprojpt -= worldcenter;
 
-    // Make sure the length of the projected vectors are greater than
+    // Make sure the length of the projected vector is greater than
     // a scalar constant. This ensures that the rotation is defined
     // and there is little room for error that might happen when the
     // vectors come very close to the rotation center.
-    if (prevprojpt.sqrLength() > 0.1f && 
-        projpt.sqrLength() > 0.1f) {
-
+    if (projpt.sqrLength() > 0.1f) {
       // Normalize the vectors before finding the dotproduct angle
       // between them.
       prevworldprojpt.normalize();
@@ -1740,7 +1736,6 @@ SoTransformerDragger::dragRotate(void)
       // the locater comes into the valid range before rotating.
       if (prevworldprojpt.dot(worldprojpt) > 0.3f) { // 0.3 == 72.5degrees
         THIS->prevWorldHitPt = wppt;
-        THIS->prevHitPt = ppt;
         
         // Rotate between the two points in the plane
         SbRotation rot(prevworldprojpt, worldprojpt);
