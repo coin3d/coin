@@ -1418,10 +1418,11 @@ void
 SoGLImageP::applyFilter(SbBool ismipmap)
 {
   GLenum target;
+
   // Casting away const
-  const SbVec3s size = ((SbImage *)this->image)->getSize();
+  const SbVec3s size = this->image ? this->image->getSize() : this->glsize;
   
-  if (size[2]>=1) target = GL_TEXTURE_3D;
+  if (size[2] >= 1) target = GL_TEXTURE_3D;
   else target = GL_TEXTURE_2D;
 
   if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
