@@ -409,8 +409,8 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
     tls->glimagediv[idx] = div;
 
     uint32_t flags = this->getFlags();
-    flags |= NO_MIPMAP;
-
+    flags |= NO_MIPMAP|INVINCIBLE;
+    
     if (flags & USE_QUALITY_VALUE) {
       flags &= ~USE_QUALITY_VALUE;
       if (quality >= LINEAR_LIMIT) {
