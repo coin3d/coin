@@ -21,8 +21,6 @@
  *
 \**************************************************************************/
 
-/*#error This file has moved to src/fonts/ -- update your build env.*/
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
@@ -81,37 +79,31 @@ int * cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph) {
 
 #else /* HAVE_FREETYPE || FREETYPE_RUNTIME_LINKING */
 
-static int moveToCallback(FT_Vector * to, void * user);
-static int lineToCallback(FT_Vector * to, void * user);
-static int conicToCallback(FT_Vector * control, FT_Vector * to, void * user);
-static int cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * user);
+static int flwft_moveToCallback(FT_Vector * to, void * user);
+static int flwft_lineToCallback(FT_Vector * to, void * user);
+static int flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user);
+static int flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, 
+                                 FT_Vector * to, void * user);
 
 
-static coin_GLUtessellator * tessellator_object;
-static SbBool contour_open;
-static float vertex_scale;
-static int tessellation_steps;
-static FT_Vector last_vertex;
-static GLenum triangle_mode;
-static int triangle_fan_root_index;
-static int triangle_indices[3];
-static int triangle_index_counter;
-static SbBool triangle_strip_flipflop;
-static int vertex_counter;
-static const int font3dsize = 40;
-static float fontcharwidth;
-static float fontcharheight;
+/* Which size the 3D fonts will be in when tesselated. Higher number
+   => more details and tris. */
+static const int flwft_3dfontsize = 40;
+static float flwft_fontcharwidth;
+static float flwft_fontcharheight;
 
-static void vertexCallback(GLvoid * vertex);
-static void beginCallback(GLenum which);
-static void endCallback(void);
-static void combineCallback(GLdouble coords[3], GLvoid * data, GLfloat weight[4], int **dataOut);
-static void errorCallback(GLenum error_code);
-static void addTessVertex(double * vertex);
 
-static void buildVertexList(struct cc_flw_vector_glyph * newglyph);
-static void buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
-static void buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
+static void flwft_vertexCallback(GLvoid * vertex);
+static void flwft_beginCallback(GLenum which);
+static void flwft_endCallback(void);
+static void flwft_combineCallback(GLdouble coords[3], GLvoid * data, 
+                                  GLfloat weight[4], int **dataOut);
+static void flwft_errorCallback(GLenum error_code);
+static void flwft_addTessVertex(double * vertex);
+
+static void flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph);
+static void flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph);
+static void flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
 
 
 #include <string.h>
@@ -140,14 +132,27 @@ static void buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph);
 #include "fontlib_wrapper.h"
 
 
-struct cc_flw_glyph_lists {
+typedef struct flwft_tessellator_t {  
+  coin_GLUtessellator * tessellator_object;
+  int tessellation_steps;
+  SbBool contour_open;
+
+  GLenum triangle_mode;
+  int triangle_fan_root_index;
+  int triangle_indices[3];
+  int triangle_index_counter;
+  SbBool triangle_strip_flipflop;
+
+  int vertex_counter;
+  FT_Vector last_vertex;
+  float vertex_scale;
+
   cc_list * vertexlist;
   cc_list * faceindexlist;
   cc_list * edgeindexlist;
-};
+} flwft_tessellator_t;
 
-static struct cc_flw_glyph_lists * vector_glyph_lists;
-
+static flwft_tessellator_t flwft_tessellator;
 
 
 /* ************************************************************************* */
@@ -170,11 +175,11 @@ static struct cc_flw_glyph_lists * vector_glyph_lists;
 /* ************************************************************************* */
 
 #ifndef FT_ENC_TAG
-#define FT_ENC_TAG(value, a, b, c, d)         \
-          value = (((FT_UInt32)(a) << 24) |  \
-                    ((FT_UInt32)(b) << 16) |  \
-                    ((FT_UInt32)(c) <<  8) |  \
-                      (FT_UInt32)(d)        )
+#define FT_ENC_TAG(value, a, b, c, d) \
+          value = (((FT_UInt32)(a) << 24) | \
+                    ((FT_UInt32)(b) << 16) | \
+                    ((FT_UInt32)(c) <<  8) | \
+                      (FT_UInt32)(d) )
 
 #endif /* FT_ENC_TAG */
 
@@ -393,10 +398,9 @@ cc_flwft_initialize(void)
   }
   
   /* Setup temporary glyph-struct used during for tessellation */
-  vector_glyph_lists = (struct cc_flw_glyph_lists *) malloc(sizeof(struct cc_flw_glyph_lists));
-  vector_glyph_lists->vertexlist = NULL;
-  vector_glyph_lists->faceindexlist = NULL;
-  vector_glyph_lists->edgeindexlist = NULL;
+  flwft_tessellator.vertexlist = NULL;
+  flwft_tessellator.faceindexlist = NULL;
+  flwft_tessellator.edgeindexlist = NULL;
   
 
   return TRUE;
@@ -622,8 +626,9 @@ cc_flwft_set_char_size(void * font, int width, int height)
   /* FIXME: the input arguments for width and height looks
      bogus. Check against the FreeType API doc. 20030515 mortene. */
 
-  fontcharwidth = ((float) width);
-  fontcharheight = ((float) height);
+  /* Store glyph width & height for later use */
+  flwft_fontcharwidth = ((float) width);
+  flwft_fontcharheight = ((float) height);
   
   width <<= 6;
   height <<= 6;
@@ -671,7 +676,7 @@ cc_flwft_get_glyph(void * font, unsigned int charidx)
      a non-existent font. Reenable assert when code paths are fixed. */
   
   if (face == NULL) { return 0; }
-
+  
   return cc_ftglue_FT_Get_Char_Index(face, charidx);
 }
 
@@ -682,18 +687,26 @@ cc_flwft_get_advance(void * font, int glyph, float *x, float *y)
   FT_Face face;
   int tmp;
   float fontscalingx, fontscalingy;
-  fontscalingx = ((float) fontcharwidth)/font3dsize;
-  fontscalingy = ((float) fontcharheight)/font3dsize;
+  fontscalingx = ((float) flwft_fontcharwidth)/flwft_3dfontsize;
+  fontscalingy = ((float) flwft_fontcharheight)/flwft_3dfontsize;
 
   assert(font);
   face = (FT_Face)font;
   error = cc_ftglue_FT_Load_Glyph(face, glyph, FT_LOAD_DEFAULT);
   assert(error == 0 && "FT_Load_Glyph() unexpected failure, investigate");
 
-  tmp = face->glyph->advance.x * vertex_scale;
+  tmp = face->glyph->advance.x * flwft_tessellator.vertex_scale;
   x[0] = (tmp / 64.0f) * fontscalingx;
-  tmp = face->glyph->advance.y * vertex_scale;
+  tmp = face->glyph->advance.y * flwft_tessellator.vertex_scale;
   y[0] = (tmp / 64.0f) * fontscalingy;
+
+  /*
+  // FIXME: This will always return 0 when handeling bitmap
+  // glyphs... Currently, the advancement in SoText2 is based on
+  // bitmap-width. Maybe a separate method for getting the
+  // advancement in ints should be made for bitmaps (20030911
+  // handegar)
+  */
 }
 
 void
@@ -704,8 +717,8 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
   FT_Face face;
 
   float fontscalingx, fontscalingy;
-  fontscalingx = ((float) fontcharwidth)/font3dsize;
-  fontscalingy = ((float) fontcharheight)/font3dsize;
+  fontscalingx = ((float) flwft_fontcharwidth)/flwft_3dfontsize;
+  fontscalingy = ((float) flwft_fontcharheight)/flwft_3dfontsize;
 
   assert(font);
   face = (FT_Face)font;
@@ -721,6 +734,15 @@ cc_flwft_get_kerning(void * font, int glyph1, int glyph2, float *x, float *y)
     *x = 0.0;
     *y = 0.0;
   }
+
+  /*
+  // FIXME: This will always return 0 when handeling bitmap
+  // glyphs... Currently, the advancement in SoText2 is based on
+  // bitmap-width. Maybe a separate method for getting the
+  // advancement in ints should be made for bitmaps (20030911
+  // handegar)
+  */
+
 }
 
 void
@@ -773,7 +795,6 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   bm->width = tfbm->width;
   bm->pitch = tfbm->pitch;
 
-
   memcpy(bm->buffer, tfbm->buffer, tfbm->rows * tfbm->pitch);
   cc_ftglue_FT_Done_Glyph(g);
   return bm;
@@ -820,9 +841,9 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
     return NULL;
   }
 
-  error = cc_ftglue_FT_Set_Char_Size(face, (font3dsize<<6), (font3dsize<<6), 72, 72);
+  error = cc_ftglue_FT_Set_Char_Size(face, (flwft_3dfontsize<<6), (flwft_3dfontsize<<6), 72, 72);
   if (error != 0) {  
-    cc_debugerror_post("cc_flwft_get_vector_glyph","Could not set character size = %d. Font is not properly initialized.", font3dsize);
+    cc_debugerror_post("cc_flwft_get_vector_glyph","Could not set character size = %d. Font is not properly initialized.", flwft_3dfontsize);
     return NULL;
   }
 
@@ -837,48 +858,47 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
   outline = g->outline;
 
 
-  if (vector_glyph_lists->vertexlist == NULL)
-    vector_glyph_lists->vertexlist = cc_list_construct();
-  if (vector_glyph_lists->faceindexlist == NULL)
-    vector_glyph_lists->faceindexlist = cc_list_construct();
-  if (vector_glyph_lists->edgeindexlist == NULL)
-    vector_glyph_lists->edgeindexlist = cc_list_construct();
+  if ( flwft_tessellator.vertexlist == NULL)
+     flwft_tessellator.vertexlist = cc_list_construct();
+  if ( flwft_tessellator.faceindexlist == NULL)
+     flwft_tessellator.faceindexlist = cc_list_construct();
+  if ( flwft_tessellator.edgeindexlist == NULL)
+     flwft_tessellator.edgeindexlist = cc_list_construct();
 
   /* FreeType callbacks */
-  outline_funcs.move_to = (FT_Outline_MoveToFunc) moveToCallback;
-  outline_funcs.line_to = (FT_Outline_LineToFunc) lineToCallback;
-  outline_funcs.conic_to = (FT_Outline_ConicToFunc) conicToCallback;
-  outline_funcs.cubic_to = (FT_Outline_CubicToFunc) cubicToCallback;
+  outline_funcs.move_to = (FT_Outline_MoveToFunc) flwft_moveToCallback;
+  outline_funcs.line_to = (FT_Outline_LineToFunc) flwft_lineToCallback;
+  outline_funcs.conic_to = (FT_Outline_ConicToFunc) flwft_conicToCallback;
+  outline_funcs.cubic_to = (FT_Outline_CubicToFunc) flwft_cubicToCallback;
   outline_funcs.shift = 0;
   outline_funcs.delta = 0;
 
+
+  flwft_tessellator.tessellator_object = GLUWrapper()->gluNewTess(); /* static object pointer */
+  flwft_tessellator.contour_open = FALSE;
+  flwft_tessellator.vertex_scale = 1.0f;
+  flwft_tessellator.tessellation_steps = 5; /* Higher number -> more tris */
+  flwft_tessellator.triangle_mode = 0;
+  flwft_tessellator.triangle_index_counter = 0;
+  flwft_tessellator.triangle_strip_flipflop = FALSE;
+  flwft_tessellator.vertex_counter = 0;
+
   /* gluTessllator callbacks */
-  
-  tessellator_object = GLUWrapper()->gluNewTess(); /* static object pointer */
-  contour_open = FALSE; /* static flag indicating if contour shall be closed */ 
-  vertex_scale = 1.0f; /* static float indicating scaling of every vertice */
-  tessellation_steps = 5; /* Static int indicating how detailed the curves should be */
-  triangle_mode = 0;
-  triangle_index_counter = 0;
-  triangle_strip_flipflop = FALSE;
-  vertex_counter = 0;
+  GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_VERTEX, (GLvoid (*)()) &flwft_vertexCallback);
+  GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_BEGIN, (GLvoid (*)()) &flwft_beginCallback);
+  GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_END, (GLvoid (*)()) &flwft_endCallback);
+  GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_COMBINE, (GLvoid (*)()) &flwft_combineCallback);
+  GLUWrapper()->gluTessCallback(flwft_tessellator.tessellator_object, GLU_TESS_ERROR, (GLvoid (*)()) &flwft_errorCallback);
 
-
-  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_VERTEX, (GLvoid (*)()) &vertexCallback);
-  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_BEGIN, (GLvoid (*)()) &beginCallback);
-  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_END, (GLvoid (*)()) &endCallback);
-  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_COMBINE, (GLvoid (*)()) &combineCallback);
-  GLUWrapper()->gluTessCallback(tessellator_object, GLU_TESS_ERROR, (GLvoid (*)()) &errorCallback);
-
-  GLUWrapper()->gluTessBeginPolygon(tessellator_object, NULL);  
+  GLUWrapper()->gluTessBeginPolygon(flwft_tessellator.tessellator_object, NULL);  
   error = cc_ftglue_FT_Outline_Decompose(&outline, &outline_funcs, NULL);
-  if (contour_open)
-    GLUWrapper()->gluTessEndContour(tessellator_object);
-  GLUWrapper()->gluTessEndPolygon(tessellator_object);  
-  GLUWrapper()->gluDeleteTess(tessellator_object);
+  if (flwft_tessellator.contour_open)
+    GLUWrapper()->gluTessEndContour(flwft_tessellator.tessellator_object);
+  GLUWrapper()->gluTessEndPolygon(flwft_tessellator.tessellator_object);  
+  GLUWrapper()->gluDeleteTess(flwft_tessellator.tessellator_object);
   
-  cc_list_append(vector_glyph_lists->faceindexlist, (void *) -1);  
-  cc_list_append(vector_glyph_lists->edgeindexlist, (void *) -1);
+  cc_list_append(flwft_tessellator.faceindexlist, (void *) -1);  
+  cc_list_append(flwft_tessellator.edgeindexlist, (void *) -1);
 
 
   /* Copy the static vector_glyph struct to a newly allocated struct
@@ -886,67 +906,67 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph)
      tessellation callback solution needs a static working struct. */
   new_vector_glyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
 
-  buildVertexList(new_vector_glyph);
-  buildFaceIndexList(new_vector_glyph);
-  buildEdgeIndexList(new_vector_glyph);
+  flwft_buildVertexList(new_vector_glyph);
+  flwft_buildFaceIndexList(new_vector_glyph);
+  flwft_buildEdgeIndexList(new_vector_glyph);
   
   return new_vector_glyph; 
 
 }
 
 static void
-addTessVertex(double * vertex)
+flwft_addTessVertex(double * vertex)
 {
 
   int * counter;
   float * point;
   point = malloc(sizeof(float)*2);
-  point[0] = (float) vertex_scale * vertex[0] / 64;
-  point[1] = (float) vertex_scale * vertex[1] / 64;
-  cc_list_append(vector_glyph_lists->vertexlist, point);
+  point[0] = flwft_tessellator.vertex_scale * ((float) vertex[0]) / 64.0f;
+  point[1] = flwft_tessellator.vertex_scale * ((float) vertex[1]) / 64.0f;
+  cc_list_append(flwft_tessellator.vertexlist, point);
   
   counter = malloc(sizeof(int));
-  counter[0] = vertex_counter++;
-  GLUWrapper()->gluTessVertex(tessellator_object, vertex, counter);
+  counter[0] = flwft_tessellator.vertex_counter++;
+  GLUWrapper()->gluTessVertex(flwft_tessellator.tessellator_object, vertex, counter);
 
 }
 
 
 static int
-moveToCallback(FT_Vector * to, void * user)
+flwft_moveToCallback(FT_Vector * to, void * user)
 {
 
-  if (contour_open)
-    GLUWrapper()->gluTessEndContour(tessellator_object);
+  if (flwft_tessellator.contour_open)
+    GLUWrapper()->gluTessEndContour(flwft_tessellator.tessellator_object);
 
-  last_vertex.x = to->x;
-  last_vertex.y = to->y;
+  flwft_tessellator.last_vertex.x = to->x;
+  flwft_tessellator.last_vertex.y = to->y;
 
-  GLUWrapper()->gluTessBeginContour(tessellator_object);
-  contour_open = TRUE;
+  GLUWrapper()->gluTessBeginContour(flwft_tessellator.tessellator_object);
+  flwft_tessellator.contour_open = TRUE;
   return 0;
 }
 
 static int
-lineToCallback(FT_Vector * to, void * user)
+flwft_lineToCallback(FT_Vector * to, void * user)
 {
 
   double * vertex = malloc(sizeof(double)*3);
 
-  last_vertex.x = to->x;
-  last_vertex.y = to->y;
+  flwft_tessellator.last_vertex.x = to->x;
+  flwft_tessellator.last_vertex.y = to->y;
 
   vertex[0] = to->x;
   vertex[1] = to->y;
   vertex[2] = 0;
 
-  addTessVertex(vertex);
+  flwft_addTessVertex(vertex);
   
   return 0;
 }
 
 static int
-conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
+flwft_conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
 {
 
   int i;
@@ -954,17 +974,17 @@ conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
   double b[2], c[2], d[2], f[2], df[2], df2[2];
   double spline_delta, spline_delta2;
 
-  spline_delta = 1. / (double)tessellation_steps;
+  spline_delta = 1. / (double)flwft_tessellator.tessellation_steps;
   spline_delta2 = spline_delta * spline_delta;
 
-  b[0] = last_vertex.x - (2*control->x) + to->x;
-  b[1] = last_vertex.y - (2*control->y) + to->y;
+  b[0] = flwft_tessellator.last_vertex.x - (2*control->x) + to->x;
+  b[1] = flwft_tessellator.last_vertex.y - (2*control->y) + to->y;
 
-  c[0] = 2*(-last_vertex.x + control->x);
-  c[1] = 2*(-last_vertex.y + control->y);
+  c[0] = 2*(-flwft_tessellator.last_vertex.x + control->x);
+  c[1] = 2*(-flwft_tessellator.last_vertex.y + control->y);
  
-  d[0] = (last_vertex.x);
-  d[1] = (last_vertex.y);
+  d[0] = (flwft_tessellator.last_vertex.x);
+  d[1] = (flwft_tessellator.last_vertex.y);
   
   f[0] = d[0];
   f[1] = d[1];
@@ -974,7 +994,7 @@ conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
   df2[0] = 2 * b[0] * spline_delta2;
   df2[1] = 2 * b[1] * spline_delta2;
   
-  for (i=0;i<tessellation_steps - 1;i++) {
+  for (i=0;i<flwft_tessellator.tessellation_steps - 1;i++) {
 
     f[0] += df[0];
     f[1] += df[1];
@@ -984,7 +1004,7 @@ conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
     vertex[1] = f[1];
     vertex[2] = 0;
     
-    addTessVertex(vertex);
+    flwft_addTessVertex(vertex);
 
     df[0] += df2[0];
     df[1] += df2[1];
@@ -995,16 +1015,16 @@ conicToCallback(FT_Vector * control, FT_Vector * to, void * user)
   vertex[0] = to->x;
   vertex[1] = to->y;
   vertex[2] = 0;
-  addTessVertex(vertex);
+  flwft_addTessVertex(vertex);
   
-  last_vertex.x = to->x;
-  last_vertex.y = to->y;
+  flwft_tessellator.last_vertex.x = to->x;
+  flwft_tessellator.last_vertex.y = to->y;
 
   return 0;
 }
 
 static int
-cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * user)
+flwft_cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * user)
 {
 
   /*
@@ -1018,22 +1038,22 @@ cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void
   double a[2], b[2], c[2], d[2], f[2], df[2], df2[2], df3[2];
   double spline_delta, spline_delta2, spline_delta3;
 
-  spline_delta = 1. / (double)tessellation_steps;
+  spline_delta = 1. / (double)flwft_tessellator.tessellation_steps;
   spline_delta2 = spline_delta * spline_delta;
   spline_delta3 = spline_delta2 * spline_delta;
 
 
-  a[0] = -last_vertex.x + 3*control1->x - 3*control2->x + to->x;
-  a[1] = -last_vertex.y + 3*control1->y - 3*control2->y + to->y;
+  a[0] = -flwft_tessellator.last_vertex.x + 3*control1->x - 3*control2->x + to->x;
+  a[1] = -flwft_tessellator.last_vertex.y + 3*control1->y - 3*control2->y + to->y;
 
-  b[0] = 3 * last_vertex.x - 6*control1->x + 3*control2->x;
-  b[1] = 3 * last_vertex.y - 6*control1->y + 3*control2->y;
+  b[0] = 3 * flwft_tessellator.last_vertex.x - 6*control1->x + 3*control2->x;
+  b[1] = 3 * flwft_tessellator.last_vertex.y - 6*control1->y + 3*control2->y;
 
-  c[0] = -3 * last_vertex.x + 3 * control1->x;
-  c[1] = -3 * last_vertex.y + 3 * control1->y;
+  c[0] = -3 * flwft_tessellator.last_vertex.x + 3 * control1->x;
+  c[1] = -3 * flwft_tessellator.last_vertex.y + 3 * control1->y;
 
-  d[0] = last_vertex.x;
-  d[1] = last_vertex.y;
+  d[0] = flwft_tessellator.last_vertex.x;
+  d[1] = flwft_tessellator.last_vertex.y;
 
   f[0] = d[0];
   f[1] = d[1];
@@ -1048,7 +1068,7 @@ cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void
   df3[1] = 6 * a[1] * spline_delta3;
 
 
-  for (i=0; i < tessellation_steps-1; i++) {
+  for (i=0; i < flwft_tessellator.tessellation_steps-1; i++) {
 
     f[0] += df[0];
     f[1] += df[1];
@@ -1058,7 +1078,7 @@ cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void
     vertex[1] = f[1];
     vertex[2] = 0;
     
-    addTessVertex(vertex);
+    flwft_addTessVertex(vertex);
     
     df[0] += df2[0];
     df[1] += df2[1];
@@ -1070,10 +1090,10 @@ cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void
   vertex[0] = to->x;
   vertex[1] = to->y;
   vertex[2] = 0;
-  addTessVertex(vertex);
+  flwft_addTessVertex(vertex);
   
-  last_vertex.x = to->x;
-  last_vertex.y = to->y;
+  flwft_tessellator.last_vertex.x = to->x;
+  flwft_tessellator.last_vertex.y = to->y;
  
   return 0;
 }
@@ -1081,122 +1101,128 @@ cubicToCallback(FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void
 
 
 static void 
-vertexCallback(GLvoid * data)
+flwft_vertexCallback(GLvoid * data)
 {
 
   int index;
   index = ((int *) data)[0];
 
-  if ((triangle_fan_root_index == -1) &&
-     (triangle_index_counter == 0)) {
-    triangle_fan_root_index = index;
+  if ((flwft_tessellator.triangle_fan_root_index == -1) &&
+     (flwft_tessellator.triangle_index_counter == 0)) {
+    flwft_tessellator.triangle_fan_root_index = index;
   }
 
-  if (triangle_mode == GL_TRIANGLE_FAN) {      
-    if (triangle_index_counter == 0) {
-      triangle_indices[0] = triangle_fan_root_index; 
-      triangle_indices[1] = index;
-      ++triangle_index_counter;
+  if (flwft_tessellator.triangle_mode == GL_TRIANGLE_FAN) {      
+    if (flwft_tessellator.triangle_index_counter == 0) {
+      flwft_tessellator.triangle_indices[0] = flwft_tessellator.triangle_fan_root_index; 
+      flwft_tessellator.triangle_indices[1] = index;
+      ++flwft_tessellator.triangle_index_counter;
     } 
-    else triangle_indices[triangle_index_counter++] = index;
+    else flwft_tessellator.triangle_indices[flwft_tessellator.triangle_index_counter++] = index;
   }
   else {
-    triangle_indices[triangle_index_counter++] = index; 
+    flwft_tessellator.triangle_indices[flwft_tessellator.triangle_index_counter++] = index; 
   }
   
-  assert(triangle_index_counter < 4);
+  assert(flwft_tessellator.triangle_index_counter < 4);
 
-  if (triangle_index_counter == 3) {
+  if (flwft_tessellator.triangle_index_counter == 3) {
     
     
-    if (triangle_mode == GL_TRIANGLE_STRIP) { 
-      if (triangle_strip_flipflop) {        
-        index = triangle_indices[1];
-        triangle_indices[1] = triangle_indices[2];
-        triangle_indices[2] = index;
+    if (flwft_tessellator.triangle_mode == GL_TRIANGLE_STRIP) { 
+      if (flwft_tessellator.triangle_strip_flipflop) {        
+        index = flwft_tessellator.triangle_indices[1];
+        flwft_tessellator.triangle_indices[1] = flwft_tessellator.triangle_indices[2];
+        flwft_tessellator.triangle_indices[2] = index;
       }
     }
     
 
-    cc_list_append(vector_glyph_lists->faceindexlist, (void *) triangle_indices[0]);  
-    cc_list_append(vector_glyph_lists->faceindexlist, (void *) triangle_indices[1]);  
-    cc_list_append(vector_glyph_lists->faceindexlist, (void *) triangle_indices[2]);  
+    cc_list_append(flwft_tessellator.faceindexlist, 
+                   (void *) flwft_tessellator.triangle_indices[0]);  
+    cc_list_append(flwft_tessellator.faceindexlist, 
+                   (void *) flwft_tessellator.triangle_indices[1]);  
+    cc_list_append(flwft_tessellator.faceindexlist, 
+                   (void *) flwft_tessellator.triangle_indices[2]);  
     
-    cc_list_append(vector_glyph_lists->edgeindexlist, (void *) triangle_indices[0]);  
-    cc_list_append(vector_glyph_lists->edgeindexlist, (void *) triangle_indices[1]);  
-    cc_list_append(vector_glyph_lists->edgeindexlist, (void *) triangle_indices[2]);  
+    cc_list_append(flwft_tessellator.edgeindexlist, 
+                   (void *) flwft_tessellator.triangle_indices[0]);  
+    cc_list_append(flwft_tessellator.edgeindexlist, 
+                   (void *) flwft_tessellator.triangle_indices[1]);  
+    cc_list_append(flwft_tessellator.edgeindexlist, 
+                   (void *) flwft_tessellator.triangle_indices[2]);  
     
-    if (triangle_mode == GL_TRIANGLE_FAN) {
-      triangle_indices[1] = triangle_indices[2];
-      triangle_index_counter = 2;
+    if (flwft_tessellator.triangle_mode == GL_TRIANGLE_FAN) {
+      flwft_tessellator.triangle_indices[1] = flwft_tessellator.triangle_indices[2];
+      flwft_tessellator.triangle_index_counter = 2;
     }
 
-    else if (triangle_mode == GL_TRIANGLE_STRIP) {
+    else if (flwft_tessellator.triangle_mode == GL_TRIANGLE_STRIP) {
 
-      if (triangle_strip_flipflop) {        
-        index = triangle_indices[1];
-        triangle_indices[1] = triangle_indices[2];
-        triangle_indices[2] = index;
+      if (flwft_tessellator.triangle_strip_flipflop) {        
+        index = flwft_tessellator.triangle_indices[1];
+        flwft_tessellator.triangle_indices[1] = flwft_tessellator.triangle_indices[2];
+        flwft_tessellator.triangle_indices[2] = index;
       }
 
-      triangle_indices[0] = triangle_indices[1];
-      triangle_indices[1] = triangle_indices[2];
-      triangle_index_counter = 2;    
-      triangle_strip_flipflop = !triangle_strip_flipflop;
+      flwft_tessellator.triangle_indices[0] = flwft_tessellator.triangle_indices[1];
+      flwft_tessellator.triangle_indices[1] = flwft_tessellator.triangle_indices[2];
+      flwft_tessellator.triangle_index_counter = 2;    
+      flwft_tessellator.triangle_strip_flipflop = !flwft_tessellator.triangle_strip_flipflop;
 
-    } else triangle_index_counter = 0;
+    } else flwft_tessellator.triangle_index_counter = 0;
 
   } 
 
 }
 
 static void 
-beginCallback(GLenum which)
+flwft_beginCallback(GLenum which)
 {
 
-  triangle_mode = which;
+  flwft_tessellator.triangle_mode = which;
   if (which == GL_TRIANGLE_FAN)
-    triangle_fan_root_index = -1;
+    flwft_tessellator.triangle_fan_root_index = -1;
   else
-    triangle_fan_root_index = 0;
-  triangle_index_counter = 0;
-  triangle_strip_flipflop = FALSE;
+    flwft_tessellator.triangle_fan_root_index = 0;
+  flwft_tessellator.triangle_index_counter = 0;
+  flwft_tessellator.triangle_strip_flipflop = FALSE;
   
 }
     
 static void 
-endCallback(void)
+flwft_endCallback(void)
 {
 }
 
 static void 
-combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
+flwft_combineCallback(GLdouble coords[3], GLvoid * vertex_data, GLfloat weight[4], int **dataOut)
 {
 
   int * ret;  
   float * point;
 
   point = malloc(sizeof(float)*2);
-  point[0] = (float) vertex_scale * coords[0] / 64;
-  point[1] = (float) vertex_scale * coords[1] / 64;
+  point[0] = flwft_tessellator.vertex_scale * ((float) coords[0]) / 64.0f;
+  point[1] = flwft_tessellator.vertex_scale * ((float) coords[1]) / 64.0f;
 
-  cc_list_append(vector_glyph_lists->vertexlist, point);
+  cc_list_append(flwft_tessellator.vertexlist, point);
 
   ret = malloc(sizeof(int));
-  ret[0] = vertex_counter++;
+  ret[0] = flwft_tessellator.vertex_counter++;
   
   *dataOut = ret;
-
+ 
 }
 
 static void 
-errorCallback(GLenum error_code)
+flwft_errorCallback(GLenum error_code)
 {
 }
 
 
 static void
-buildVertexList(struct cc_flw_vector_glyph * newglyph)
+flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph)
 {
 
   int numcoords,i;
@@ -1204,20 +1230,20 @@ buildVertexList(struct cc_flw_vector_glyph * newglyph)
   float * coord;
   float fontscalingx, fontscalingy;
 
-  assert(vector_glyph_lists->vertexlist && "Error fetching vector glyph coordinates\n");
-  numcoords = cc_list_get_length(vector_glyph_lists->vertexlist);
+  assert(flwft_tessellator.vertexlist && "Error fetching vector glyph coordinates\n");
+  numcoords = cc_list_get_length(flwft_tessellator.vertexlist);
 
   newglyph->vertices = (float *) malloc(sizeof(float)*numcoords*2);
 
   for (i=0;i<numcoords;++i) {
-    coord = (float *) cc_list_get(vector_glyph_lists->vertexlist,i);
-    newglyph->vertices[i*2 + 0] = coord[0] / font3dsize;
-    newglyph->vertices[i*2 + 1] = coord[1] / font3dsize;
+    coord = (float *) cc_list_get(flwft_tessellator.vertexlist,i);
+    newglyph->vertices[i*2 + 0] = coord[0] / flwft_3dfontsize;
+    newglyph->vertices[i*2 + 1] = coord[1] / flwft_3dfontsize;
     free(coord);
   }
 
-  cc_list_destruct(vector_glyph_lists->vertexlist);
-  vector_glyph_lists->vertexlist = NULL;
+  cc_list_destruct(flwft_tessellator.vertexlist);
+  flwft_tessellator.vertexlist = NULL;
 
 }
 
@@ -1230,22 +1256,22 @@ cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
 
 
 static void
-buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
+flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)
 {
 
   int * edgeidxlist;
   int i,len;
 
-  assert(vector_glyph_lists->edgeindexlist);
+  assert(flwft_tessellator.edgeindexlist);
  
-  len = cc_list_get_length(vector_glyph_lists->edgeindexlist);
+  len = cc_list_get_length(flwft_tessellator.edgeindexlist);
   newglyph->edgeindices = (int *) malloc(sizeof(int)*len);
 
   for (i=0;i<len;++i) 
-    newglyph->edgeindices[i] = (int) cc_list_get(vector_glyph_lists->edgeindexlist, i);
+    newglyph->edgeindices[i] = (int) cc_list_get(flwft_tessellator.edgeindexlist, i);
   
-  cc_list_destruct(vector_glyph_lists->edgeindexlist);
-  vector_glyph_lists->edgeindexlist = NULL;
+  cc_list_destruct(flwft_tessellator.edgeindexlist);
+  flwft_tessellator.edgeindexlist = NULL;
 
 }
 
@@ -1257,21 +1283,21 @@ cc_flwft_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
 } 
 
 static void
-buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
+flwft_buildFaceIndexList(struct cc_flw_vector_glyph * newglyph)
 {
   int * idxlist;
   int len,i;
 
-  assert(vector_glyph_lists->faceindexlist);
+  assert(flwft_tessellator.faceindexlist);
   
-  len = cc_list_get_length(vector_glyph_lists->faceindexlist);
+  len = cc_list_get_length(flwft_tessellator.faceindexlist);
   newglyph->faceindices = (int *) malloc(sizeof(int)*len);
 
   for (i=0;i<len;++i)
-    newglyph->faceindices[i] = (int) cc_list_get(vector_glyph_lists->faceindexlist, i);
+    newglyph->faceindices[i] = (int) cc_list_get(flwft_tessellator.faceindexlist, i);
  
-  cc_list_destruct(vector_glyph_lists->faceindexlist);
-  vector_glyph_lists->faceindexlist = NULL;
+  cc_list_destruct(flwft_tessellator.faceindexlist);
+  flwft_tessellator.faceindexlist = NULL;
 
 }
 
