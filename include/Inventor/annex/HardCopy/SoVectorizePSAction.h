@@ -26,8 +26,8 @@
 
 // *************************************************************************
 
-#include <HardCopy/SoVectorizeAction.h>
-#include <HardCopy/SoPSVectorOutput.h>
+#include <Inventor/annex/HardCopy/SoVectorizeAction.h>
+#include <Inventor/annex/HardCopy/SoPSVectorOutput.h>
 
 class SoVectorizePSActionP;
 

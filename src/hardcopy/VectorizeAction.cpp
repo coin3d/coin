@@ -25,7 +25,7 @@
   \class SoVectorizeAction HardCopy/SoVectorizeAction.h
   \brief The SoVectorizeAction class is the base class for vectorizing Coin scene graphs.
   \ingroup hardcopy
-  
+
   SoVectorizeAction will traverse the scene graph and convert all
   supported geometry into vectorized data. Subclasses can then use
   this data to produce vector files of different formats.
@@ -68,7 +68,7 @@
 
 
 /*!
-  \enum SoVectorizeAction::Orientation 
+  \enum SoVectorizeAction::Orientation
 
   The drawing orientation.
 */
@@ -142,7 +142,7 @@
   26 x 37 mm.
 */
 
-/*! 
+/*!
   \enum SoVectorizeAction::PointStyle
   Enumerates point rendering styles.
 */
@@ -166,7 +166,7 @@
 
 // *************************************************************************
 
-#include <HardCopy/SoVectorizeAction.h>
+#include <Inventor/annex/HardCopy/SoVectorizeAction.h>
 #include "VectorizeActionP.h"
 
 #include <Inventor/SbViewportRegion.h>
@@ -182,7 +182,7 @@ SO_ACTION_SOURCE(SoVectorizeAction);
 
 // *************************************************************************
 
-// Doc in parent 
+// Doc in parent
 void
 SoVectorizeAction::initClass(void)
 {
@@ -208,7 +208,7 @@ SoVectorizeAction::~SoVectorizeAction()
 
 // *************************************************************************
 
-/*!  
+/*!
   Returns the SoVectorOutput class used by this action. The output
   is written to stdout by default, but you can change this by using
   SoVectorOutput::openFile().
@@ -263,8 +263,8 @@ SoVectorizeAction::beginPage(const SbVec2f & startpagepos,
   // set up a viewport so that the aspect ratio will match the page
   SbVec2f s = this->getRotatedViewportSize();
   float m = SbMax(s[0], s[1]);
-  
-  SbVec2s ss;  
+
+  SbVec2s ss;
   ss[0] = (short) ((s[0] / m) * 32767.0f);
   ss[1] = (short) ((s[1] / m) * 32767.0f);
   this->setViewportRegion(SbViewportRegion(ss));
@@ -291,7 +291,7 @@ SoVectorizeAction::endPage(void)
 
   \sa beginPage(), endViewport()
 */
-void 
+void
 SoVectorizeAction::beginViewport(const SbVec2f & start, const SbVec2f & size,
                                  DimensionUnit u)
 {
@@ -316,8 +316,8 @@ SoVectorizeAction::beginViewport(const SbVec2f & start, const SbVec2f & size,
   // aspect ratio will match the page
   SbVec2f s = this->getRotatedViewportSize();
   float m = SbMax(s[0], s[1]);
-  
-  SbVec2s ss;  
+
+  SbVec2s ss;
   ss[0] = (short) ((s[0] / m) * 32767.0f);
   ss[1] = (short) ((s[1] / m) * 32767.0f);
   this->setViewportRegion(SbViewportRegion(ss));
@@ -326,7 +326,7 @@ SoVectorizeAction::beginViewport(const SbVec2f & start, const SbVec2f & size,
 /*!
   End writing a viewport. This will flush all vector items.
 */
-void 
+void
 SoVectorizeAction::endViewport(void)
 {
   if (PRIVATE(this)->itemlist.getLength()) {
@@ -335,7 +335,7 @@ SoVectorizeAction::endViewport(void)
   }
 }
 
-/*!  
+/*!
   Will calibrate pixel based attributes (font size, line width,
   points size, etc) so that it will match OpenGL rendering done in
   \a vp.
@@ -343,10 +343,10 @@ SoVectorizeAction::endViewport(void)
   \sa setPixelSize()
   \sa setNominalWidth()
 */
-void 
+void
 SoVectorizeAction::calibrate(const SbViewportRegion & vp)
 {
-  SbVec2s vpsize = vp.getViewportSizePixels();  
+  SbVec2s vpsize = vp.getViewportSizePixels();
   PRIVATE(this)->pixelimagesize = this->getPageSize()[1] / float(vpsize[1]);
   PRIVATE(this)->nominalwidth = this->getPageSize()[1] / float(vpsize[1]);
 }
@@ -395,7 +395,7 @@ SoVectorizeAction::getBackgroundColor(SbColor & col) const
   return PRIVATE(this)->background.on;
 }
 
-/*!  
+/*!
   Sets how to convert pixel based attributes (line width and point
   size) to vector sizes. By default 1 pixel equals 0.35 mm.
 
@@ -413,7 +413,7 @@ SoVectorizeAction::getNominalWidth(DimensionUnit u) const
   return from_mm(PRIVATE(this)->nominalwidth, u);
 }
 
-/*!  
+/*!
   Sets how the images and 2D fonts are converted. By default 1
   pixel equals 0.35 mm.
 
@@ -440,7 +440,7 @@ SoVectorizeAction::getPixelImageSize(DimensionUnit u) const
 /*!
   Sets the points rendering style. Default style is CIRCLE.
 */
-void 
+void
 SoVectorizeAction::setPointStyle(const PointStyle & style)
 {
   PRIVATE(this)->pointstyle = style;
@@ -449,7 +449,7 @@ SoVectorizeAction::setPointStyle(const PointStyle & style)
 /*!
   Returns the points rendering style.
 */
-SoVectorizeAction::PointStyle 
+SoVectorizeAction::PointStyle
 SoVectorizeAction::getPointStyle(void) const
 {
   return PRIVATE(this)->pointstyle;
@@ -481,7 +481,7 @@ SoVectorizeAction::printBackground(void) const
 
   Should be overridden by subclasses to set up the current page viewport.
 */
-void 
+void
 SoVectorizeAction::printViewport(void) const
 {
 
@@ -501,7 +501,7 @@ SoVectorizeAction::printItem(const SoVectorizeItem * item) const
   Convenience method for subclasses. Will return the viewport startpos,
   taking the orientation into account
 */
-SbVec2f 
+SbVec2f
 SoVectorizeAction::getRotatedViewportStartpos(void) const
 {
   SbVec2f p = PRIVATE(this)->viewport.startpos;
@@ -515,7 +515,7 @@ SoVectorizeAction::getRotatedViewportStartpos(void) const
   Convenience method for subclasses. Will return the viewport size,
   taking the orientation into account
 */
-SbVec2f 
+SbVec2f
 SoVectorizeAction::getRotatedViewportSize(void) const
 {
   SbVec2f p = PRIVATE(this)->viewport.size;
@@ -528,7 +528,7 @@ SoVectorizeAction::getRotatedViewportSize(void) const
   Should be used by subclasses to set the SoVectorOutput
   instance that should be used.
 */
-void 
+void
 SoVectorizeAction::setOutput(SoVectorOutput * output)
 {
   if (PRIVATE(this)->output) {
@@ -540,7 +540,7 @@ SoVectorizeAction::setOutput(SoVectorOutput * output)
 /*!
   Converts pixels to normalized units.
  */
-float 
+float
 SoVectorizeAction::pixelsToUnits(const int pixels)
 {
   float mm = this->getPixelImageSize() * pixels;
@@ -575,7 +575,7 @@ SoVectorizeAction::getBSPTree(void) const
   return PRIVATE(this)->bsp;
 }
 
-void 
+void
 SoVectorizeAction::beginStandardPage(const PageSize & pagesize, const float border)
 {
   static int a_table[] = {
@@ -593,13 +593,13 @@ SoVectorizeAction::beginStandardPage(const PageSize & pagesize, const float bord
     26, 37,
     // B0 - B10 (might add later)
   };
-  
+
   int idx = (int) pagesize;
   assert(idx >=0 && idx <= 10);
-  
+
   float xdim = (float) a_table[idx*2];
   float ydim = (float) a_table[idx*2+1];
-  
+
   this->beginPage(SbVec2f(border, border), SbVec2f(xdim-2.0f*border, ydim-2.0f*border), MM);
 }
 
@@ -609,7 +609,7 @@ SoVectorizeAction::beginStandardPage(const PageSize & pagesize, const float bord
 
   \sa beginViewport()
 */
-void 
+void
 SoVectorizeAction::setDrawingDimensions(const SbVec2f & d, DimensionUnit u)
 {
   PRIVATE(this)->viewport.size = to_mm(d, u);
@@ -618,7 +618,7 @@ SoVectorizeAction::setDrawingDimensions(const SbVec2f & d, DimensionUnit u)
 /*!
   Returns the current drawing dimensions.
 */
-SbVec2f 
+SbVec2f
 SoVectorizeAction::getDrawingDimensions(DimensionUnit u) const
 {
   return from_mm(PRIVATE(this)->viewport.size, u);
@@ -628,17 +628,17 @@ SoVectorizeAction::getDrawingDimensions(DimensionUnit u) const
   Sets the drawing staring position. You can use this and setDrawingDimensions() instead
   of using beginViewport(). Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::setStartPosition(const SbVec2f & p, DimensionUnit u)
 {
   PRIVATE(this)->viewport.startpos = to_mm(p, u);
-  
+
 }
 
 /*!
   Returns the current drawing starting position.
 */
-SbVec2f 
+SbVec2f
 SoVectorizeAction::getStartPosition(DimensionUnit u) const
 {
   return from_mm(PRIVATE(this)->viewport.startpos, u);
@@ -647,7 +647,7 @@ SoVectorizeAction::getStartPosition(DimensionUnit u) const
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::setColorTranslationMethod(ColorTranslationMethod method)
 {
 }
@@ -655,7 +655,7 @@ SoVectorizeAction::setColorTranslationMethod(ColorTranslationMethod method)
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-SoVectorizeAction::ColorTranslationMethod 
+SoVectorizeAction::ColorTranslationMethod
 SoVectorizeAction::getColorTranslationMethod(void) const
 {
   return AS_IS;
@@ -664,7 +664,7 @@ SoVectorizeAction::getColorTranslationMethod(void) const
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::setLineEndStyle(EndLineStyle style)
 {
 }
@@ -672,7 +672,7 @@ SoVectorizeAction::setLineEndStyle(EndLineStyle style)
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-SoVectorizeAction::EndLineStyle 
+SoVectorizeAction::EndLineStyle
 SoVectorizeAction::getLineEndStyle(void) const
 {
   return BUTT_END;
@@ -681,7 +681,7 @@ SoVectorizeAction::getLineEndStyle(void) const
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::setLineJoinsStyle(JoinLineStyle style)
 {
 }
@@ -689,7 +689,7 @@ SoVectorizeAction::setLineJoinsStyle(JoinLineStyle style)
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-SoVectorizeAction::JoinLineStyle 
+SoVectorizeAction::JoinLineStyle
 SoVectorizeAction::getLineJoinsStyle(void) const
 {
   return NO_JOIN;
@@ -698,7 +698,7 @@ SoVectorizeAction::getLineJoinsStyle(void) const
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::setHLHSRMode(HLHSRMode mode)
 {
 }
@@ -706,16 +706,16 @@ SoVectorizeAction::setHLHSRMode(HLHSRMode mode)
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-SoVectorizeAction::HLHSRMode 
+SoVectorizeAction::HLHSRMode
 SoVectorizeAction::getHLHSRMode(void) const
 {
   return HLHSR_PAINTER;
 }
-  
+
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::setBorder(float width)
 {
 }
@@ -723,20 +723,20 @@ SoVectorizeAction::setBorder(float width)
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::setBorder (float width, SbColor color)
 {
 }
-  
+
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::setMiterLimit(float limit)
 {
 }
 
-float 
+float
 SoVectorizeAction::getMiterLimit(void) const
 {
   return 0.0f;
@@ -745,10 +745,10 @@ SoVectorizeAction::getMiterLimit(void) const
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
-SoVectorizeAction::setPenDescription(int num_pens, 
-                                     const SbColor* colors, 
-                                     const float * widths, 
+void
+SoVectorizeAction::setPenDescription(int num_pens,
+                                     const SbColor* colors,
+                                     const float * widths,
                                      DimensionUnit u)
 {
 }
@@ -756,9 +756,9 @@ SoVectorizeAction::setPenDescription(int num_pens,
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
-SoVectorizeAction::getPenDescription(SbColor * colors, 
-                                     float * widths, 
+void
+SoVectorizeAction::getPenDescription(SbColor * colors,
+                                     float * widths,
                                      DimensionUnit u) const
 {
 }
@@ -766,7 +766,7 @@ SoVectorizeAction::getPenDescription(SbColor * colors,
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-int 
+int
 SoVectorizeAction::getPenNum(void) const
 {
   return 0;
@@ -775,7 +775,7 @@ SoVectorizeAction::getPenNum(void) const
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::setColorPriority(SbBool priority)
 {
 }
@@ -783,7 +783,7 @@ SoVectorizeAction::setColorPriority(SbBool priority)
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-SbBool 
+SbBool
 SoVectorizeAction::getColorPriority(void) const
 {
   return FALSE;
@@ -792,14 +792,14 @@ SoVectorizeAction::getColorPriority(void) const
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-void 
+void
 SoVectorizeAction::enableLighting(SbBool flag)
 {
 }
 /*!
   Not implemented yet. Provided for TGS OIV compatibility.
 */
-SbBool 
+SbBool
 SoVectorizeAction::isLightingEnabled(void) const
 {
   return TRUE;

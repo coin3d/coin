@@ -30,7 +30,7 @@
   \since TGS provides HardCopy support as a separate extension for TGS Inventor.
 */
 
-#include <HardCopy/SoPSVectorOutput.h>
+#include <Inventor/annex/HardCopy/SoPSVectorOutput.h>
 #include <Inventor/SbBasic.h>
 
 class SoPSVectorOutputP {

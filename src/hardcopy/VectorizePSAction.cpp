@@ -30,7 +30,7 @@
   \since TGS provides HardCopy support as a separate extension for TGS Inventor.
 */
 
-#include <HardCopy/SoVectorizePSAction.h>
+#include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
 #include "VectorizeActionP.h"
 #include <Inventor/C/tidbitsp.h>
 #include <stdio.h>

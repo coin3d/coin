@@ -24,7 +24,7 @@
  *
 \**************************************************************************/
 
-#include <HardCopy/SoVectorOutput.h>
+#include <Inventor/annex/HardCopy/SoVectorOutput.h>
 #include <Inventor/SbBasic.h>
 
 class SoPSVectorOutputP;

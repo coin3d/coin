@@ -113,8 +113,8 @@
 
 // *************************************************************************
 
-#include <HardCopy/SoHardCopy.h>
-#include <HardCopy/SoVectorizePSAction.h>
+#include <Inventor/annex/HardCopy/SoHardCopy.h>
+#include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
 
 // *************************************************************************
 
