@@ -65,6 +65,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoWindowElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
@@ -622,6 +623,9 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     inherited::beginTraversal(node);
     return;
   }
+
+  int err_before_init = glGetError();
+
   if (THIS->needglinit) {
     THIS->needglinit = FALSE;
 
@@ -642,7 +646,20 @@ SoGLRenderAction::beginTraversal(SoNode * node)
       glDisable(GL_LINE_SMOOTH);
     }
   }
+
+  int err_after_init = glGetError();
+
+  if (COIN_DEBUG && ((err_before_init != GL_NO_ERROR) || (err_after_init != GL_NO_ERROR))) {
+    int err = (err_before_init != GL_NO_ERROR) ? err_before_init : err_after_init;
+    SoDebugError::postWarning("SoGLRenderAction::beginTraversal",
+                              "GL error %s initalization: %s",
+                              (err_before_init != GL_NO_ERROR) ? "before" : "after",
+                              sogl_glerror_string(err).getString());
+  }
+
   THIS->render(node);
+
+  // GL errors after rendering will be caught in SoNode::GLRenderS().
 }
 
 // Documented in superclass. Overridden from parent class to clean up
