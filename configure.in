@@ -980,6 +980,15 @@ AM_CONFIG_HEADER(include/config.h)
 # for superglu.
 # 20011023 larsa
 
+# NEW FIX:
+# while boostrapping, exchange $vrml97makefile with the explicit filename,
+# then replace with variable and rerun autoconf to update configure-script.
+
+vrml97makefile=src/extensions/vrml97/src/Makefile
+if test -f $srcdir/${vrml97makefile}.in; then :; else
+  vrml97makefile=
+fi
+
 AC_CONFIG_FILES([
         Makefile
 	bin/Makefile
@@ -1017,9 +1026,14 @@ AC_CONFIG_FILES([
         src/sensors/Makefile
         src/threads/Makefile
         src/extensions/Makefile
+	$vrml97makefile
         docs/coin.doxygen
 ])
 
+dnl ## when bootstrapping
+dnl src/extensions/vrml97/src/Makefile
+dnl ## when post-running autoconf:
+dnl $vrml97makefile
 AC_OUTPUT
 
 # *******************************************************************

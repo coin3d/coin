@@ -3,6 +3,7 @@
 if BUILD_LIBRARY
 SRCDIRS = data src
 else
+SRCDIRS =
 endif
 
 if BUILD_HTMLPAGES
