@@ -280,6 +280,22 @@ Keywords which should be sent to this method:
 	  (setq startpos (+ startpos (length insstr)))))
     (goto-char startpos)))
 
+(defun coin-flip-debug-on ()
+  "Replace all ``COIN_DEBUG && 0'' with ``COIN_DEBUG && 1'' in buffer."
+  (interactive)
+  (save-excursion
+    (beginning-of-buffer)
+    (while (search-forward "COIN_DEBUG && 0" nil t)
+      (replace-match "COIN_DEBUG && 1" nil t))))
+
+(defun coin-flip-debug-off ()
+  "Replace all ``COIN_DEBUG && 1'' with ``COIN_DEBUG && 0'' in buffer."
+  (interactive)
+  (save-excursion
+    (beginning-of-buffer)
+    (while (search-forward "COIN_DEBUG && 1" nil t)
+      (replace-match "COIN_DEBUG && 0" nil t))))
+
 
 
 (defun doxygen-class-doc ()
