@@ -37,6 +37,7 @@
 
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+#include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -438,6 +439,7 @@ SoCamera::GLRender(SoGLRenderAction * action)
 void
 SoCamera::getBoundingBox(SoGetBoundingBoxAction * action)
 {
+  SoCacheElement::invalidate(action->getState());
   SoCamera::doAction(action);
 }
 
