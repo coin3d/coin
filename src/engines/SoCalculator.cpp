@@ -179,9 +179,9 @@ SoCalculator::evaluateExpression(struct so_eval_node *node)
     if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, set1Value(i, oa_od[3])); }
 
     if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, set1Value(i, oA_oD[0])); }
-    if (outused[4]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, set1Value(i, oA_oD[1])); }
-    if (outused[4]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, set1Value(i, oA_oD[2])); }
-    if (outused[4]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, set1Value(i, oA_oD[3])); }
+    if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, set1Value(i, oA_oD[1])); }
+    if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, set1Value(i, oA_oD[2])); }
+    if (outused[7]) { SO_ENGINE_OUTPUT(oD, SoMFVec3f, set1Value(i, oA_oD[3])); }
   }
 }
 
