@@ -26,25 +26,29 @@
   \brief The SbLine class represents a line in 3D space.
   \ingroup base
 
-  SbLine is used by many other classes in Coin.  It provides a way of
-  specifying a directed line through a specified point (origin) and a
-  direction in 3D space.  Note that the line is infinite in both directions
-  from its definition point as far as the getClosestPoint() functions are
-  concerned.
+  SbLine provides a way of specifying a directed line, through a 3D
+  point (origin) and a vector direction in 3D space.
+
+  It is context dependent whether or not an SbLine is considered as a
+  \e ray extending from the starting point in only one direction, or
+  as a \e line intersecting the origin point and extending infinitely
+  from it in both directions.
+
+  SbLine is used by many other classes in Coin.
 
   \sa SbVec3f
 */
 
 
 #include <assert.h>
+
 #include <Inventor/SbLine.h>
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+
 
 /*!
-  The empty constructor does nothing. The line will be uninitialized until
-  the first assignment or setValue() call.
+  The default constructor does nothing. The line will be uninitialized
+  until the first assignment or setValue() call.
 */
 SbLine::SbLine(void)
 {
@@ -103,6 +107,10 @@ SbLine::setValue(const SbVec3f& origin, const SbVec3f& point)
   parallel, all points are equally close and we return \c FALSE. If
   the lines are not parallel, the point positions will be stored in \a
   ptOnThis and \a ptOnLine2, and we'll return \c TRUE.
+
+  Note that both SbLine instances are considered to be infinite in
+  both directions from their definition points, as far as this
+  function is concerned.
 
   \sa getClosestPoint().
 */
@@ -241,6 +249,10 @@ SbLine::getClosestPoints(const SbLine& line2,
 
   The vector defined by \a point and the returned point will be normal
   to the line.
+
+  Note that the SbLine instance is considered to be infinite in both
+  directions from its definition point, as far as this function is
+  concerned.
 
   \sa getClosestPoints().
 */
