@@ -40,9 +40,6 @@ public:
   static void callDoAction(SoAction *action, SoNode *node);
   static void callAudioRender(SoAction *action, SoNode *node);
 
-  SbBool setSceneGraphHasSoundNode(SbBool flag);
-  SbBool sceneGraphHasSoundNode();
-
 protected:
   virtual void beginTraversal(SoNode *node);
 

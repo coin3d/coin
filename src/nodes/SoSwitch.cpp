@@ -48,6 +48,8 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoAudioRenderAction.h>
+#include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -80,6 +82,22 @@
 
 // *************************************************************************
 
+class SoSwitchP
+{
+public:
+  SoSwitchP(SoSwitch * master) : master(master) {};
+  SoSwitch *master;
+
+  enum { YES, NO, MAYBE } hassoundchild;
+  SbBool soundchildplaying;
+  SbBool shoulddosoundtraversal;
+};
+
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
+#undef PUBLIC
+#define PUBLIC(p) ((p)->master)
+
 SO_NODE_SOURCE(SoSwitch);
 
 /*!
@@ -87,9 +105,7 @@ SO_NODE_SOURCE(SoSwitch);
 */
 SoSwitch::SoSwitch(void)
 {
-  SO_NODE_INTERNAL_CONSTRUCTOR(SoSwitch);
-
-  SO_NODE_ADD_FIELD(whichChild, (SO_SWITCH_NONE));
+  this->commonConstructor();
 }
 
 /*!
@@ -103,9 +119,20 @@ SoSwitch::SoSwitch(void)
 SoSwitch::SoSwitch(int numchildren)
   : inherited(numchildren)
 {
+  this->commonConstructor();
+}
+
+void 
+SoSwitch::commonConstructor(void)
+{
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSwitch);
 
   SO_NODE_ADD_FIELD(whichChild, (SO_SWITCH_NONE));
+
+  PRIVATE(this) = new SoSwitchP(this);
+  PRIVATE(this)->hassoundchild = SoSwitchP::MAYBE;
+  PRIVATE(this)->soundchildplaying = FALSE;
+  PRIVATE(this)->shoulddosoundtraversal = TRUE;
 }
 
 /*!
@@ -113,6 +140,7 @@ SoSwitch::SoSwitch(int numchildren)
 */
 SoSwitch::~SoSwitch()
 {
+  delete PRIVATE(this);
 }
 
 // doc in super
@@ -220,42 +248,68 @@ SoSwitch::doAction(SoAction * action)
         this->children->traverse(action);
       }
     }
-  }
-  else if (idx >= 0) { // should only traverse one child
-    if (pathcode == SoAction::IN_PATH) {
-      // traverse only if one path matches idx
-      for (int i = 0; i < numindices; i++) {
-        if (indices[i] == idx) {
+  } else {
+    SbBool dosoundtraversal = action->isOfType(SoAudioRenderAction::getClassTypeId()) &&
+      (PRIVATE(this)->hassoundchild != SoSwitchP::NO);
+      // do more testing before enabeling this && PRIVATE(this)->soundchildplaying;
+    if (idx >= 0) { // should only traverse one child
+      if (pathcode == SoAction::IN_PATH) {
+        // traverse only if one path matches idx
+        dosoundtraversal = FALSE;
+        for (int i = 0; i < numindices; i++) {
+          if (indices[i] == idx) {
+            this->children->traverse(action, idx);
+            break;
+          }
+        }
+      }
+      else { // off, below or no path traversal
+        // be robust for index out of range
+        if (idx >= this->getNumChildren()) {
+#if COIN_DEBUG
+          static SbBool first = TRUE;
+          if (first) {
+            first = FALSE;
+            SbString s("(warning will be printed once, but there might be more cases of this problem).");
+            int lastidx = this->getNumChildren()-1;
+            if (lastidx >= 0) {
+              SoDebugError::post("SoSwitch::doAction",
+                                 "whichChild %d out of range [0, %d] %s",
+                                 idx, lastidx, s.getString());
+            }
+            else {
+              SoDebugError::post("SoSwitch::doAction",
+                                 "whichChild %d out of range -- "
+                                 "switch node has no children! %s",
+                                 idx, s.getString());
+            }
+          }
+#endif // COIN_DEBUG
+        }
+        else {
           this->children->traverse(action, idx);
-          break;
         }
       }
     }
-    else { // off, below or no path traversal
-      // be robust for index out of range
-      if (idx >= this->getNumChildren()) {
-#if COIN_DEBUG
-        static SbBool first = TRUE;
-        if (first) {
-          first = FALSE;
-          SbString s("(warning will be printed once, but there might be more cases of this problem).");
-          int lastidx = this->getNumChildren()-1;
-          if (lastidx >= 0) {
-            SoDebugError::post("SoSwitch::doAction",
-                               "whichChild %d out of range [0, %d] %s",
-                               idx, lastidx, s.getString());
-          }
-          else {
-            SoDebugError::post("SoSwitch::doAction",
-                               "whichChild %d out of range -- "
-                               "switch node has no children! %s",
-                               idx, s.getString());
+    if (dosoundtraversal) {
+      // Note: If there is a playing SoVRMLSound node somewhere among
+      // the non-active children sub-graphs, it must be informed that
+      // it shouldn't be playing anymore. So we traverse all inactive
+      // children. This could be optimized, as we only need to visit
+      // the old active (now inactive) child. 2003-02-04 thammer.
+
+      if (PRIVATE(this)->shoulddosoundtraversal) {
+        SoSoundElement::setIsPartOfActiveSceneGraph(state, this, FALSE);
+        int n = this->getNumChildren();
+        for (int i=0; i<n; i++) {
+          if (i != idx) {
+            action->getState()->push();
+            SoSoundElement::setIsPartOfActiveSceneGraph(state, this, FALSE);
+            this->children->traverse(action, i);
+            action->getState()->pop();
           }
         }
-#endif // COIN_DEBUG
-      }
-      else {
-        this->children->traverse(action, idx);
+        PRIVATE(this)->shoulddosoundtraversal = FALSE;
       }
     }
   }
@@ -299,7 +353,30 @@ SoSwitch::callback(SoCallbackAction *action)
 void
 SoSwitch::audioRender(SoAudioRenderAction * action)
 {
+  SbBool lookforsoundnode = FALSE;
+  SbBool oldhassound, oldisplaying;
+  int numindices;
+  const int * indices;
+  SoState * state = action->getState();
+  if ( (action->getPathCode(numindices, indices) != SoAction::IN_PATH) &&
+       (PRIVATE(this)->hassoundchild != SoSwitchP::NO) )
+    lookforsoundnode = TRUE;
+  if (lookforsoundnode) {
+    oldhassound = SoSoundElement::setSceneGraphHasSoundNode(state, this, FALSE);
+    oldisplaying = SoSoundElement::setSoundNodeIsPlaying(state, this, FALSE);
+  }
+      
   SoSwitch::doAction((SoAction*)action);
+  
+  if (lookforsoundnode) {
+      SbBool soundnodefound = SoSoundElement::sceneGraphHasSoundNode(state);
+      PRIVATE(this)->soundchildplaying = SoSoundElement::soundNodeIsPlaying(state);
+      SoSoundElement::setSceneGraphHasSoundNode(state, this, oldhassound || soundnodefound);
+      SoSoundElement::setSoundNodeIsPlaying(state, this, 
+                                            oldisplaying || PRIVATE(this)->soundchildplaying);
+      PRIVATE(this)->hassoundchild = soundnodefound ? SoSwitchP::YES : 
+        SoSwitchP::NO;
+  }
 }
 
 // Documented in superclass.
@@ -370,4 +447,15 @@ void
 SoSwitch::traverseChildren(SoAction * action)
 {
   COIN_OBSOLETED();
+}
+
+// Doc from superclass.
+void
+SoSwitch::notify(SoNotList * nl)
+{
+  inherited::notify(nl);
+
+  PRIVATE(this)->hassoundchild = SoSwitchP::MAYBE;
+  PRIVATE(this)->soundchildplaying = FALSE;
+  PRIVATE(this)->shoulddosoundtraversal = TRUE;
 }

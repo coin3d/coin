@@ -207,6 +207,7 @@
 #include <Inventor/elements/SoListenerOrientationElement.h>
 #include <Inventor/elements/SoListenerVelocityElement.h>
 #include <Inventor/elements/SoListenerGainElement.h>
+#include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
@@ -333,7 +334,9 @@ SoVRMLSound::SoVRMLSound(void)
 
   PRIVATE(this) = new SoVRMLSoundP(this);
 
-  PRIVATE(this)->channels = 1; // because spatialize defaults to TRUE and OpenAL only spatializes mono buffers
+  PRIVATE(this)->channels = 1; 
+  // because spatialize defaults to TRUE
+  // and OpenAL only spatializes mono buffers
 
   PRIVATE(this)->currentAudioClip = NULL;
   PRIVATE(this)->playing = FALSE;
@@ -412,12 +415,10 @@ SoVRMLSound::~SoVRMLSound(void)
 }
 
 /*
-  FIXME: Calling setDefaultBufferingProperties or 
-  setBufferingProperties while a sound was playing might mess
-  up quite a bit. This should be made more robust, or at the
-  very least documented properly.
-  2002-11-15 thammer.
- */
+  FIXME: Calling setDefaultBufferingProperties or
+  setBufferingProperties while a sound was playing might mess up quite
+  a bit. This should be made more robust, or at the very least
+  documented properly.  2002-11-15 thammer.  */
 
 void SoVRMLSound::setDefaultBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime)
 {
@@ -469,7 +470,10 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 #ifdef HAVE_THREADS
   SbThreadAutoLock autoLock(&PRIVATE(this)->syncmutex);
 #endif
-  action->setSceneGraphHasSoundNode(TRUE);
+  SoState * state = action->getState();
+  SoSoundElement::setSceneGraphHasSoundNode(state, this, TRUE);
+  SoSoundElement::setSoundNodeIsPlaying(state, this, FALSE); // might be changed below
+
   if (!SoAudioDevice::instance()->haveSound())
     return;
 
@@ -479,7 +483,8 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   SoSFBool * isActiveField = (SoSFBool *)PRIVATE(this)->currentAudioClip->getField("isActive");
   SbBool isactive = isActiveField->getValue();
 
-  if ( (!PRIVATE(this)->playing) && (!isactive) )
+  if ( (!PRIVATE(this)->playing) && 
+       ( (!isactive) || (!SoSoundElement::isPartOfActiveSceneGraph(state)) ) )
     return;
 
   if (PRIVATE(this)->errorInThread) {
@@ -493,7 +498,8 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
     return;
   }
 
-  if ( PRIVATE(this)->playing && (!isactive) ) {
+  if ( PRIVATE(this)->playing && 
+       ( (!isactive) ) || (!SoSoundElement::isPartOfActiveSceneGraph(state))) {
 #ifdef HAVE_THREADS
       PRIVATE(this)->syncmutex.unlock();
 #endif
@@ -506,9 +512,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
 
   // if we got here then we're either allready playing, or we should be
 
-  // get listener stuff
-  SoState * state = action->getState();
+  SoSoundElement::setSoundNodeIsPlaying(state, this, TRUE);
 
+  // get listener stuff
   const SbVec3f &listenerpos = SoListenerPositionElement::get(state);
   const SbRotation &listenerorientation = SoListenerOrientationElement::get(state);
   const SbVec3f &listenervelocity = SoListenerVelocityElement::get(state);
@@ -546,10 +552,9 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   }
 
 #if 0
-  // Note: if we ever want to implement velocity 
-  // (supported by OpenAL) then this is how it should be done.
-  // get alfloat3 from PRIVATE(this)->velocity.
-  // 2002-10-07 thammer.
+  // Note: if we ever want to implement velocity (supported by OpenAL)
+  // then this is how it should be done.  get alfloat3 from
+  // PRIVATE(this)->velocity.  2002-10-07 thammer.
   SbVec3f2ALfloat3(alfloat3, velocity.getValue());
 
   alSourcefv(this->sourceId, AL_VELOCITY, alfloat3);
@@ -579,14 +584,14 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
    */
 
   // Distance attenuation
-  /* FIXME: If minFront = maxFront = 0.0f, we interpret this as no distance attenuation.
-     This is a violation of the VRML97 spec, but we keep it like this because it is
-     so very very useful. It is strange that the VRML97 spec doesn't specify a 
-     way to bypass distance attenuation. 
-     If the user was able to specify some kind of MAX_FLOAT value as a parameter, we
-     wouldn't have to make this a special case, and we wouldn't have to violate the
-     VRML97 spec. Investigate this further. 2002-11-07 thammer.
-   */
+  /* FIXME: If minFront = maxFront = 0.0f, we interpret this as no
+     distance attenuation.  This is a violation of the VRML97 spec,
+     but we keep it like this because it is so very very useful. It is
+     strange that the VRML97 spec doesn't specify a way to bypass
+     distance attenuation.  If the user was able to specify some kind
+     of MAX_FLOAT value as a parameter, we wouldn't have to make this
+     a special case, and we wouldn't have to violate the VRML97
+     spec. Investigate this further. 2002-11-07 thammer.  */
 
   /*
     FIXME: move these to a sensor instead. 2002-11-07 thammer.
@@ -816,11 +821,10 @@ SbBool SoVRMLSoundP::stopPlaying()
     retval= FALSE;
   }
 
-  /* Note: Rewinding will make sure state is AL_INITIAL, not just AL_STOPPED.
-     This lets us give the user a warning if the source stopped playing
-     because a buffer underrun occured. See fillBuffers().
-     2002-11-07 thammer.
-  */
+  /* Note: Rewinding will make sure state is AL_INITIAL, not just
+     AL_STOPPED.  This lets us give the user a warning if the source
+     stopped playing because a buffer underrun occured. See
+     fillBuffers().  2002-11-07 thammer.  */
 
   openal_wrapper()->alSourceRewind(this->sourceId);
   if ((error = openal_wrapper()->alGetError()) != AL_NO_ERROR) {
@@ -830,19 +834,18 @@ SbBool SoVRMLSoundP::stopPlaying()
     retval= FALSE;
   }
 
-  /* FIXME: improve use of alGetSourcei[v] to avoid the #ifdef _WIN32. 
-     Look at how it is done in SoAudioRender.
-     20021106 thammer.
-   */
+  /* FIXME: improve use of alGetSourcei[v] to avoid the #ifdef _WIN32.
+     Look at how it is done in SoAudioRender.  20021106 thammer.  */
   int      processed;
   int      queued;
 
   openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_QUEUED, &queued);
   openal_wrapper()->alGetSourcei(this->sourceId, AL_BUFFERS_PROCESSED, &processed);
 
-  /* Note: if the sound was stopped after the thread reported to the audioclip that all
-     buffer were played, queued and processed should both be 0. If the sound was stopped
-     for any other reason (for instance because the url or startTime/stopTime of the
+  /* Note: if the sound was stopped after the thread reported to the
+     audioclip that all buffer were played, queued and processed
+     should both be 0. If the sound was stopped for any other reason
+     (for instance because the url or startTime/stopTime of the
      audioclip changed, processed and/or queued could be != 0.
      20021106 thammer
     
@@ -873,11 +876,13 @@ SbBool SoVRMLSoundP::stopPlaying()
      0, which means that the above unqueueing would fail (because it
      unqueues only processed buffers).
 
-     So, we try explisitly setting the AL_BUFFER source attribute to NULL,
-     which is legal according to the OpenAL documentation (and also redundant,
-     wrt alSourceUnqueueBuffers according to the same documentation).
+     So, we try explisitly setting the AL_BUFFER source attribute to
+     NULL, which is legal according to the OpenAL documentation (and
+     also redundant, wrt alSourceUnqueueBuffers according to the same
+     documentation).
 
-     To be absolutely sure the queue is empty, we verify this with an assert.
+     To be absolutely sure the queue is empty, we verify this with an
+     assert.
   
      2003-01-17 thammer. */
 
@@ -952,8 +957,8 @@ SbBool SoVRMLSoundP::startPlaying()
 #ifdef HAVE_THREADS
     if (this->workerThread!=NULL) {
       /* FIXME: Verify that this will actually happen sometimes. Also
-       verify that it is indeed necessary to stop and start the
-       thread. 2003-01-20 thammer. */
+         verify that it is indeed necessary to stop and start the
+         thread. 2003-01-20 thammer. */
       this->exitthreadmutex.lock();
       this->exitthread = TRUE;
       this->exitthreadcondvar.wakeAll();
@@ -1295,19 +1300,20 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
   SoSFBool * isActiveField = (SoSFBool *)this->currentAudioClip->getField("isActive");
   SbBool isactive = isActiveField->getValue();
 
-  /* Note: According to the OpenAL 1.0 spec, the legal range for pitch is [0, 1].
-     However, both the Win32 implementation and the linux implementation supports
-     the range [0, 2]. The Mac implementation supports the range [0, infinite>.
-     Testing shows that Creative Labs' binary-only OpenAL implementations also
-     supports the range [0, 2]. Since it is very useful to be able to increase
-     the pitch above unity, and since the VRML97 spec specifies the range to be
-     [0, infinite>, we will allow the range to be within [0, 2], and clamp
-     outside this range. 2002-11-07 thammer.
+  /* Note: According to the OpenAL 1.0 spec, the legal range for pitch
+     is [0, 1].  However, both the Win32 implementation and the linux
+     implementation supports the range [0, 2]. The Mac implementation
+     supports the range [0, infinite>.  Testing shows that Creative
+     Labs' binary-only OpenAL implementations also supports the range
+     [0, 2]. Since it is very useful to be able to increase the pitch
+     above unity, and since the VRML97 spec specifies the range to be
+     [0, infinite>, we will allow the range to be within [0, 2], and
+     clamp outside this range. 2002-11-07 thammer.
 
-     Update: It turns out that CreativeLabs' Win32 binary release of OpenAL will 
-     crash if pitch == 0.0. For that reason, we will clamp at 0.01. The range
-     supported is thus [0.01..2.0]. 2002-11-07 thammer.
-  */
+     Update: It turns out that CreativeLabs' Win32 binary release of
+     OpenAL will crash if pitch == 0.0. For that reason, we will clamp
+     at 0.01. The range supported is thus [0.01..2.0]. 2002-11-07
+     thammer.  */
 
   int error;
   float pitch = this->currentAudioClip->pitch.getValue();
@@ -1337,3 +1343,4 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
   }
 #endif // HAVE_SOUND
 }
+

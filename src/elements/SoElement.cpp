@@ -434,6 +434,8 @@ SoElement::initElements(void)
   SoListenerOrientationElement::initClass();
   SoListenerVelocityElement::initClass();
   SoListenerGainElement::initClass();
+
+  SoSoundElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be

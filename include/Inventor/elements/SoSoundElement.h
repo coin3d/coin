@@ -1,5 +1,3 @@
-#if 0 // while debugging
-
 #ifndef COIN_SOSOUNDELEMENT_H
 #define COIN_SOSOUNDELEMENT_H
 
@@ -41,24 +39,28 @@ public:
   virtual void init(SoState * state);
   static void set(SoState * const state, SoNode * const node,
                   SbBool scenegraphhassoundnode, 
-                  SbBool soundnodeplaying,
+                  SbBool soundnodeisplaying,
                   SbBool ispartofactivescenegraph);
 
   static SbBool setSceneGraphHasSoundNode(SoState * const state, SoNode * const node,
                                           SbBool flag);
   static SbBool sceneGraphHasSoundNode(SoState * const state);
 
-  static SbBool setSoundNodePlaying(SoState * const state, SoNode * const node,
+  static SbBool setSoundNodeIsPlaying(SoState * const state, SoNode * const node,
                                     SbBool flag);
-  static SbBool soundNodePlaying(SoState * const state);
+  static SbBool soundNodeIsPlaying(SoState * const state);
 
   static SbBool setIsPartOfActiveSceneGraph(SoState * const state, SoNode * const node,
                                             SbBool flag);
   static SbBool isPartOfActiveSceneGraph(SoState * const state);
 
+  virtual void push(SoState * state);
+
   virtual void print(FILE * file) const;
 
 protected:
+  void setDefaultValues();
+
   SbBool scenegraphhassoundnode;
   SbBool soundnodeisplaying;
   SbBool ispartofactivescenegraph;
@@ -66,4 +68,3 @@ protected:
 
 #endif // !COIN_SOSOUNDELEMENT_H
 
-#endif

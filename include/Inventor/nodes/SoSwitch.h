@@ -57,11 +57,18 @@ public:
   virtual void write(SoWriteAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual void audioRender(SoAudioRenderAction * action);
+  
+  virtual void notify(SoNotList *nl);
 
 protected:
   virtual ~SoSwitch();
 
   void traverseChildren(SoAction * action);
+
+private:
+  class SoSwitchP *pimpl;
+
+  void commonConstructor(void);
 };
 
 #endif // !COIN_SOSWITCH_H

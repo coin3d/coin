@@ -101,6 +101,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+#include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/misc/SoGL.h>
 
 #ifdef HAVE_CONFIG_H
@@ -495,13 +496,37 @@ SoVRMLGroup::write(SoWriteAction * action)
 void
 SoVRMLGroup::audioRender(SoAudioRenderAction * action)
 {
+  // Note: This function is similar to SoSeparator::audioRender() and
+  // SoSwitch::audioRender(). 2003-01-31 thammer.
+
+  int numindices;
+  const int * indices;
+  SoState * state = action->getState();
   if (THIS->hassoundchild != SoVRMLGroupP::NO) {
-    SbBool old = action->setSceneGraphHasSoundNode(FALSE);
-    SoVRMLGroup::doAction((SoAction *)action);
-    SbBool soundnodefound = action->sceneGraphHasSoundNode();
-    action->setSceneGraphHasSoundNode(old || soundnodefound);
-    THIS->hassoundchild = soundnodefound ? SoVRMLGroupP::YES : 
-      SoVRMLGroupP::NO;
+    if (action->getPathCode(numindices, indices) != SoAction::IN_PATH) {
+      SbBool oldhassound, newhassound, oldactive;
+      oldactive = SoSoundElement::isPartOfActiveSceneGraph(state);
+      
+      action->getState()->push();
+    
+      SoSoundElement::setSceneGraphHasSoundNode(state, this, FALSE);
+      SoSoundElement::setIsPartOfActiveSceneGraph(state, this, oldactive);
+
+      inherited::doAction(action);
+
+      newhassound = SoSoundElement::sceneGraphHasSoundNode(state);
+     
+      action->getState()->pop();
+
+      oldhassound = SoSoundElement::sceneGraphHasSoundNode(state);
+      SoSoundElement::setSceneGraphHasSoundNode(state, this, oldhassound || newhassound);
+
+    
+      THIS->hassoundchild = newhassound ? SoVRMLGroupP::YES : 
+        SoVRMLGroupP::NO;
+    } else {
+      SoVRMLGroup::doAction((SoAction*)action);
+    }
   }
 }
 

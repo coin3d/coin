@@ -45,6 +45,7 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoCoordinate4.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -63,8 +64,6 @@ class SoAudioRenderActionP
 public:
   SoAudioRenderActionP(SoAudioRenderAction * master) : master(master) {};
   SoAudioRenderAction *master;
-  
-  SbBool sceneGraphHasSoundNode;
 };
 
 #undef PRIVATE
@@ -86,6 +85,8 @@ void SoAudioRenderAction::initClass()
   SO_ENABLE(SoAudioRenderAction, SoProjectionMatrixElement);
   SO_ENABLE(SoAudioRenderAction, SoViewVolumeElement);
   SO_ENABLE(SoAudioRenderAction, SoViewingMatrixElement);
+
+  SO_ENABLE(SoAudioRenderAction, SoSoundElement);
 }
 
 SoAudioRenderAction::SoAudioRenderAction()
@@ -93,7 +94,6 @@ SoAudioRenderAction::SoAudioRenderAction()
   SO_ACTION_CONSTRUCTOR(SoAudioRenderAction);
 
   PRIVATE(this) = new SoAudioRenderActionP(this);
-  PRIVATE(this)->sceneGraphHasSoundNode = FALSE;
 }
 
 SoAudioRenderAction::~SoAudioRenderAction()
@@ -133,21 +133,6 @@ void SoAudioRenderAction::callAudioRender(SoAction *action, SoNode *node)
   }
 #endif // HAVE_VRML97
 }
-
-SbBool 
-SoAudioRenderAction::setSceneGraphHasSoundNode(SbBool flag)
-{
-  SbBool old = PRIVATE(this)->sceneGraphHasSoundNode;
-  PRIVATE(this)->sceneGraphHasSoundNode = flag;
-  return old;
-}
-
-SbBool 
-SoAudioRenderAction::sceneGraphHasSoundNode()
-{
-  return PRIVATE(this)->sceneGraphHasSoundNode;
-}
-
 
 /*
 FIXME 20021101 thammer: remember to override invalidateState if we
