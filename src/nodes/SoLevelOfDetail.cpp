@@ -166,11 +166,7 @@ SoLevelOfDetail::doAction(SoAction *action)
 void
 SoLevelOfDetail::callback(SoCallbackAction *action)
 {
-  action->invokePreCallbacks(this);
-  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
-    SoLevelOfDetail::doAction((SoAction*)action);
-    action->invokePostCallbacks(this);
-  }
+  SoLevelOfDetail::doAction((SoAction*)action);
 }
 
 /*!

@@ -121,7 +121,7 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
   // readNamedFile() as for this method, and then also the same name
   // dictionary -- which is necessary for "cross-file" references to
   // work.
-  // 
+  //
   // (Fixed Bugzilla #202.)
 
   this->namesensor->detach();
@@ -213,11 +213,7 @@ SoFile::doAction(SoAction * action)
 void
 SoFile::callback(SoCallbackAction * action)
 {
-  action->invokePreCallbacks(this);
-  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
-    SoFile::doAction((SoAction *)action);
-    action->invokePostCallbacks(this);
-  }
+  SoFile::doAction((SoAction *)action);
 }
 
 // Doc from superclass.

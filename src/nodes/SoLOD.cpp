@@ -115,11 +115,7 @@ SoLOD::doAction(SoAction *action)
 void
 SoLOD::callback(SoCallbackAction *action)
 {
-  action->invokePreCallbacks(this);
-  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
-    SoLOD::doAction((SoAction*)action);
-    action->invokePostCallbacks(this);
-  }
+  SoLOD::doAction((SoAction*)action);
 }
 
 /*!

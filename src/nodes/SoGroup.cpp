@@ -341,11 +341,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
 void
 SoGroup::callback(SoCallbackAction * action)
 {
-  action->invokePreCallbacks(this);
-  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
-    SoGroup::doAction((SoAction *)action);
-    action->invokePostCallbacks(this);
-  }
+  SoGroup::doAction((SoAction *)action);
 }
 
 // Doc from superclass.

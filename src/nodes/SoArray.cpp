@@ -384,11 +384,7 @@ SoArray::doAction(SoAction *action)
 void
 SoArray::callback(SoCallbackAction *action)
 {
-  action->invokePreCallbacks(this);
-  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
-    SoArray::doAction((SoAction*)action);
-    action->invokePostCallbacks(this);
-  }
+  SoArray::doAction((SoAction*)action);
 }
 
 /*!

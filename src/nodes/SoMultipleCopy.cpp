@@ -169,11 +169,7 @@ SoMultipleCopy::doAction(SoAction *action)
 void
 SoMultipleCopy::callback(SoCallbackAction *action)
 {
-  action->invokePreCallbacks(this);
-  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
-    SoMultipleCopy::doAction((SoAction*)action);
-    action->invokePostCallbacks(this);
-  }
+  SoMultipleCopy::doAction((SoAction*)action);
 }
 
 /*!

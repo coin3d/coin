@@ -285,11 +285,7 @@ SoSwitch::affectsState(void) const
 void
 SoSwitch::callback(SoCallbackAction *action)
 {
-  action->invokePreCallbacks(this);
-  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
-    SoSwitch::doAction(action);
-    action->invokePostCallbacks(this);
-  }
+  SoSwitch::doAction(action);
 }
 
 /*!
