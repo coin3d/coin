@@ -24,7 +24,7 @@
 /* This file should only be included from condvar.c */
 
 #include <Inventor/C/threads/mutexp.h>
-#include <Inventor/C/time.h>
+#include <Inventor/C/base/time.h>
 
 static int
 internal_condvar_struct_init(cc_condvar * condvar_struct)
