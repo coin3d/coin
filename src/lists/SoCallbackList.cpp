@@ -54,7 +54,7 @@ SoCallbackList::~SoCallbackList(void)
 void
 SoCallbackList::addCallback(SoCallbackListCB * f, void * userData)
 {
-  this->funclist.append((void *)f);
+  this->funclist.append(f);
   this->datalist.append(userData);
 }
 

@@ -25,6 +25,7 @@
 // SoCallbackList.h file in misc/.
 
 #include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
 typedef void SoCallbackListCB(void * userData, void * callbackData);
 
@@ -42,7 +43,7 @@ public:
   void invokeCallbacks(void * callbackData);
 
 private:
-  SbPList funclist;
+  SbList<SoCallbackListCB *> funclist;
   SbPList datalist;
 };
 
