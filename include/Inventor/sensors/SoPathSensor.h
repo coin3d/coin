@@ -26,6 +26,8 @@
 
 #include <Inventor/sensors/SoDataSensor.h>
 
+class SoPathSensorP;
+
 class COIN_DLL_API SoPathSensor : public SoDataSensor {
   typedef SoDataSensor inherited;
 
@@ -39,11 +41,13 @@ public:
   SoPath * getAttachedPath(void) const;
 
 protected:
-  void notify(SoNotList * l);
+  virtual void notify(SoNotList * l);
 
 private:
+  void commonConstructor(void);
   virtual void dyingReference(void);
-  SoPath * convict;
+
+  SoPathSensorP * pimpl;
 };
 
 #endif // !COIN_SOPATHSENSOR_H

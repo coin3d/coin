@@ -29,10 +29,22 @@
   If you need to know when a path changes (i.e. nodes in the path has
   been removed, or new nodes is added), use this sensor to get a
   notification.
+
+  You can also use this sensor to detect when some node in the path
+  is changed.
 */
 
+#define PRIVATE(p) (p)->pimpl
+
 #include <Inventor/sensors/SoPathSensor.h>
-#include <Inventor/SoPath.h>
+#include <Inventor/SoFullPath.h>
+#include <Inventor/nodes/SoNode.h>
+
+class SoPathSensorP {
+public:
+  SoFullPath * path; // to audit path
+  SoNode * headnode; // to audit nodes in path
+};
 
 
 /*!
@@ -41,7 +53,7 @@
 */
 SoPathSensor::SoPathSensor(void)
 {
-  this->convict = NULL;
+  this->commonConstructor();
 }
 
 /*!
@@ -53,15 +65,25 @@ SoPathSensor::SoPathSensor(void)
 SoPathSensor::SoPathSensor(SoSensorCB * func, void * data)
   : inherited(func, data)
 {
-  this->convict = NULL;
+  this->commonConstructor();
 }
+
+void 
+SoPathSensor::commonConstructor(void)
+{
+  PRIVATE(this) = new SoPathSensorP;
+  PRIVATE(this)->path = NULL;
+  PRIVATE(this)->headnode = NULL;
+}
+
 
 /*!
   Destructor.
 */
 SoPathSensor::~SoPathSensor(void)
 {
-  if (this->convict) this->detach();
+  this->detach();
+  delete PRIVATE(this);
 }
 
 /*!
@@ -73,8 +95,15 @@ SoPathSensor::~SoPathSensor(void)
 void
 SoPathSensor::attach(SoPath * path)
 {
-  this->convict = path;
-  path->addAuditor(this, SoNotRec::SENSOR);
+  this->detach();
+
+  PRIVATE(this)->path = (SoFullPath*) path;
+  PRIVATE(this)->path->addAuditor(this, SoNotRec::SENSOR);
+
+  PRIVATE(this)->headnode = path->getHead();
+  if (PRIVATE(this)->headnode) {
+    PRIVATE(this)->headnode->addAuditor(this, SoNotRec::SENSOR);
+  }
 }
 
 /*!
@@ -86,8 +115,16 @@ SoPathSensor::attach(SoPath * path)
 void
 SoPathSensor::detach(void)
 {
-  if (this->convict) this->convict->removeAuditor(this, SoNotRec::SENSOR);
-  this->convict = NULL;
+  if (PRIVATE(this)->path) {
+    PRIVATE(this)->path->removeAuditor(this, SoNotRec::SENSOR);
+    PRIVATE(this)->path = NULL;
+  }
+  if (PRIVATE(this)->headnode) {
+    PRIVATE(this)->headnode->removeAuditor(this, SoNotRec::SENSOR);
+    PRIVATE(this)->headnode = NULL;
+  }
+  // unschedule so that we don't trigger a new callback
+  if (this->isScheduled()) this->unschedule();
 }
 
 /*!
@@ -98,25 +135,49 @@ SoPathSensor::detach(void)
 SoPath *
 SoPathSensor::getAttachedPath(void) const
 {
-  return this->convict;
+  return PRIVATE(this)->path;
 }
 
 // Doc from superclass.
 void
 SoPathSensor::notify(SoNotList * l)
 {
-  inherited::notify(l);
+  SoBase * firstbase = l->getLastRec()->getBase();
+  SoBase * lastbase = l->getFirstRec()->getBase();
 
-  // FIXME: I don't know what the heck we're supposed to do here, but
-  // I included the overriding in case we find out after 1.0 release,
-  // and need to fix the behavior without changing the class signature
-  // (which would break binary compatibility). 20000402 mortene.
+  if ((lastbase != firstbase) && (lastbase == (SoBase*) PRIVATE(this)->path)) {
+    // some node in/off the path was changed, wait for the
+    // notification from the head node so that we only do the
+    // processing once.
+    return;
+  }
+  // if the path triggered the notification, we should always trigger
+  if (firstbase == (SoBase*) (PRIVATE(this)->path)) {
+    inherited::notify(l);
+  } 
+  else {
+    // we came here because the root node notified us. For now we
+    // always schedule (by calling SoDataSensor::notify()), but this
+    // will be fixed soon. pederb, 2002-02-25
+    inherited::notify(l);
+  }
 }
 
 // Doc from superclass.
 void
 SoPathSensor::dyingReference(void)
 {
+  // store the attached path, and only detach if the delete callback
+  // didn't attach this sensor to a new path.
+
+  SoPath * deadpath = this->getAttachedPath();
+  if (deadpath) deadpath->ref
+
   this->invokeDeleteCallback();
-  this->detach();
+  
+  if (this->getAttachedPath() == deadpath) {
+    this->detach();
+  }
 }
+
+#undef PRIVATE
