@@ -40,8 +40,18 @@ public:
 
   static void initClass(void);
 
+  virtual void apply(SoNode * node);
+  virtual void apply(SoPath * path);
+  virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+  
+  SoNode * getVRML2SceneGraph(void) const;
+
 protected:
   virtual void beginTraversal(SoNode * node);
+
+private:
+  class SoToVRML2ActionP * pimpl;
+  friend class SoToVRML2ActionP;
 };
 
 #endif // !COIN_SOTOVRML2ACTION_H
