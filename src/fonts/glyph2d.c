@@ -43,6 +43,7 @@ static SbBool glyph2d_specmatch(const cc_font_specification * spec1, const cc_fo
 struct cc_glyph2d {
   int fontidx;    
   int glyphidx;
+  uint32_t character;
   float angle;
   unsigned short width;
   unsigned short height;
@@ -52,6 +53,8 @@ struct cc_glyph2d {
   short bitmapoffsety;
   cc_font_specification * fontspec;
   unsigned char * bitmap;
+  int refcount;
+  int fontid;
 };
 
 static cc_hash * glyph2d_fonthash = NULL;
@@ -97,11 +100,14 @@ cc_glyph2d_initialize()
   GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
 }
 
+cc_glyph2d * cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, float angle)
+{
+  return cc_glyph2d_ref(character, spec, angle);
+}
 
 cc_glyph2d * 
-cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, float angle)
+cc_glyph2d_ref(uint32_t character, const cc_font_specification * spec, float angle)
 {
-
   void * val;
   cc_glyph2d * glyph;
   int fontidx;
@@ -126,14 +132,16 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   /* Has the glyph been created before? */
   if (cc_hash_get(glyph2d_fonthash, (unsigned long) character, &val)) {
     glyphlist = (cc_list *) val;
-    for (i=0;i<cc_list_get_length(glyphlist);++i) {
+    for (i = 0; i < cc_list_get_length(glyphlist); ++i) {
       glyph = (cc_glyph2d *) cc_list_get(glyphlist, i);
       if (glyph2d_specmatch(spec, glyph->fontspec)) {
         GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
+        glyph->refcount++;
         return glyph;
       }
     }    
-  } else {
+  } 
+  else {
     /* No glyphlist for this character is found. Create one and
        add it to the hashtable. */
     glyphlist = cc_list_construct();
@@ -144,6 +152,7 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
 
   /* build a new glyph struct with bitmap */    
   glyph = (cc_glyph2d *) malloc(sizeof(cc_glyph2d));
+  glyph->character = character;
   
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification)); 
   assert(newspec);
@@ -160,10 +169,12 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
     cc_string_append_string(fonttoload, &spec->style);
   }
 
-  fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size), angle);
+  fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), (int)(newspec->size), (int)(newspec->size), angle);
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
 
+  glyph->fontid = fontidx;
+  cc_flw_ref_font(fontidx);
 
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
      available for a specific character, a default empty rectangle
@@ -184,6 +195,7 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   glyph->bitmapoffsetx = bm->bearingX;
   glyph->bitmapoffsety = bm->bearingY;
   glyph->bitmap = bm->buffer;
+  glyph->refcount = 1;
   
   /* Store newly created glyph in the list for this character */
   cc_list_append(glyphlist, glyph);
@@ -192,11 +204,44 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   return glyph;
 }
 
+void 
+cc_glyph2d_unref(cc_glyph2d * glyph)
+{
+  glyph->refcount--;
+  if (glyph->refcount == 0) {
+    cc_list * glyphlist;
+    int ret;
+    void * tmp;
+    int i;
+
+    ret = cc_hash_get(glyph2d_fonthash, (unsigned long) glyph->character, &tmp);
+    assert(ret);
+    glyphlist = (cc_list*) tmp;
+    
+    for (i = 0; i < cc_list_get_length(glyphlist); i++) {
+      if (glyph == (cc_glyph2d*) cc_list_get(glyphlist, i)) break;
+    }    
+    assert(i < cc_list_get_length(glyphlist));
+
+    cc_list_remove_fast(glyphlist, i);
+    if (cc_list_get_length(glyphlist) == 0) {
+      (void) cc_hash_remove(glyph2d_fonthash, (unsigned long) glyph->character);
+      cc_list_destruct(glyphlist);
+    }
+
+    cc_fontspec_clean(glyph->fontspec);
+    free(glyph->fontspec);
+    cc_flw_done_glyph(glyph->fontidx, glyph->glyphidx);
+
+    cc_flw_unref_font(glyph->fontid);
+    free(glyph);
+  }
+}
+
 static SbBool 
 glyph2d_specmatch(const cc_font_specification * spec1, 
                   const cc_font_specification * spec2)
 {
-
   assert(spec1);
   assert(spec2);
 

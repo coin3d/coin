@@ -29,12 +29,13 @@ extern "C" {
 #endif
 
 #include "fontspec.h"
-  
+
   typedef struct cc_glyph3d cc_glyph3d;
-  
-  cc_glyph3d * cc_glyph3d_getglyph(uint32_t character, 
-                                   const cc_font_specification * spec);
-  
+
+  cc_glyph3d * cc_glyph3d_ref(uint32_t character,
+                              const cc_font_specification * spec);
+  void cc_glyph3d_unref(cc_glyph3d * glyph);
+
   const float * cc_glyph3d_getcoords(const cc_glyph3d * g);
   const int * cc_glyph3d_getfaceindices(const cc_glyph3d * g);
   const int * cc_glyph3d_getedgeindices(const cc_glyph3d * g);
@@ -48,7 +49,7 @@ extern "C" {
   const float * cc_glyph3d_getboundingbox(const cc_glyph3d * g);
 
   void cc_glyph3d_getadvance(const cc_glyph3d * g, float * x, float * y);
-  void cc_glyph3d_getkerning(const cc_glyph3d * left, const cc_glyph3d * right, 
+  void cc_glyph3d_getkerning(const cc_glyph3d * left, const cc_glyph3d * right,
                              float * x, float * y);
 
 #ifdef __cplusplus

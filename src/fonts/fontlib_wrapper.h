@@ -64,20 +64,21 @@ extern "C" {
   } cc_flw_vector_glyph;
 
 
-  int cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle);
-  int cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int ysizey, const float angle);
-  void cc_flw_done_font(unsigned int font);
-  const char * cc_flw_get_font_name(unsigned int font);
+  void cc_flw_ref_font(int fontid);
+  void cc_flw_unref_font(int fontid);
+  
+  int cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle);
+  const char * cc_flw_get_font_name(int fontid);
 
-  unsigned int cc_flw_get_glyph(unsigned int font, unsigned int charidx);
-  void cc_flw_get_bitmap_advance(unsigned int font, unsigned int glyph, int * x, int * y);
-  void cc_flw_get_vector_advance(unsigned int font, unsigned int glyph, float * x, float * y);
-  void cc_flw_get_bitmap_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2, int * x, int * y);
-  void cc_flw_get_vector_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2, float * x, float * y);
-  void cc_flw_done_glyph(unsigned int font, unsigned int glyph);
+  unsigned int cc_flw_get_glyph(int font, unsigned int charidx);
+  void cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y);
+  void cc_flw_get_vector_advance(int font, unsigned int glyph, float * x, float * y);
+  void cc_flw_get_bitmap_kerning(int font, unsigned int glyph1, unsigned int glyph2, int * x, int * y);
+  void cc_flw_get_vector_kerning(int font, unsigned int glyph1, unsigned int glyph2, float * x, float * y);
+  void cc_flw_done_glyph(int font, unsigned int glyph);
 
-  struct cc_flw_bitmap * cc_flw_get_bitmap(unsigned int font, unsigned int glyph);
-  struct cc_flw_vector_glyph * cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph, float complexity);
+  struct cc_flw_bitmap * cc_flw_get_bitmap(int font, unsigned int glyph);
+  struct cc_flw_vector_glyph * cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity);
 
   const float * cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
   const int * cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);

@@ -53,9 +53,12 @@ struct cc_glyph3d {
   int fontidx;
   int glyphidx;
   float width;
-  float * bbox;
+  float bbox[4];
   cc_flw_vector_glyph * vectorglyph;
+  SbBool didallocvectorglyph;
   cc_font_specification * fontspec;
+  uint32_t character;
+  int refcount;
 };
 
 static cc_hash * glyph3d_fonthash = NULL;
@@ -109,9 +112,8 @@ cc_glyph3d_initialize()
   GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);  
 }
 
-
 cc_glyph3d *
-cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
+cc_glyph3d_ref(uint32_t character, const cc_font_specification * spec)
 {
 
   cc_glyph3d * glyph;
@@ -140,6 +142,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
       glyph = (cc_glyph3d *) cc_list_get(glyphlist, i);
       if (glyph3d_specmatch(spec, glyph->fontspec)) {
         GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
+        glyph->refcount++;
         return glyph;
       }
     }    
@@ -154,6 +157,10 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
   /* build a new glyph struct */
   glyph = (cc_glyph3d *) malloc(sizeof(cc_glyph3d));
+
+  glyph->character = character;
+  glyph->refcount = 1;
+
 
   newspec = (cc_font_specification *) malloc(sizeof(cc_font_specification));
   assert(newspec);
@@ -170,13 +177,17 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
     cc_string_append_string(fonttoload, &spec->style);
   }
 
-  fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), 
-                            glyph3d_standardfontsize,
-                            glyph3d_standardfontsize,
-                            0.0f);
+  fontidx = cc_flw_get_font_id(cc_string_get_text(fonttoload), 
+                               glyph3d_standardfontsize,
+                               glyph3d_standardfontsize,
+                               0.0f);
+
+  /* fprintf(stderr,"new glyph: %c\n", glyph->character); */
 
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
+
+  cc_flw_ref_font(fontidx);
 
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
      available for a specific character, a default empty rectangle
@@ -186,7 +197,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
   glyph->glyphidx = glyphidx;
   glyph->fontidx = fontidx;
-  glyph->bbox = (float *) malloc(sizeof(float) * 4);
+  glyph->didallocvectorglyph = FALSE;
 
   if (fontidx != 0) 
     glyph->vectorglyph = cc_flw_get_vector_glyph(fontidx, character, newspec->complexity);
@@ -196,7 +207,8 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   /* Setup buildin default font if no character was found */
   if (glyph->vectorglyph == NULL) {
     glyph->vectorglyph = (struct cc_flw_vector_glyph *) malloc(sizeof(struct cc_flw_vector_glyph));
-
+    glyph->didallocvectorglyph = TRUE;
+  
     if (character <= 32 || character >= 127) {
 
       /* FIXME: Charachers other than space, should be replaced with
@@ -212,7 +224,6 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
       glyph->vectorglyph->faceindices = (int *) coin_default3dfont_get_faceidx()[character-33];
       glyph->vectorglyph->edgeindices = (int *) coin_default3dfont_get_edgeidx()[character-33];
     }
-
   } 
   
   glyph3d_calcboundingbox(glyph);  
@@ -223,6 +234,47 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
   GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
   return glyph;
+}
+
+void 
+cc_glyph3d_unref(cc_glyph3d * glyph)
+{
+  glyph->refcount--;
+  if (glyph->refcount == 0) {
+    cc_list * glyphlist;
+    int ret;
+    void * tmp;
+    int i;
+
+    /* fprintf(stderr,"unref glyph: %c\n", glyph->character); */
+
+    ret = cc_hash_get(glyph3d_fonthash, (unsigned long) glyph->character, &tmp);
+    assert(ret);
+    glyphlist = (cc_list*) tmp;
+    
+    for (i = 0; i < cc_list_get_length(glyphlist); i++) {
+      if (glyph == (cc_glyph3d*) cc_list_get(glyphlist, i)) break;
+    }    
+    assert(i < cc_list_get_length(glyphlist));
+
+    cc_list_remove_fast(glyphlist, i);
+    if (cc_list_get_length(glyphlist) == 0) {
+      (void) cc_hash_remove(glyph3d_fonthash, (unsigned long) glyph->character);
+      cc_list_destruct(glyphlist);
+    }
+
+    cc_fontspec_clean(glyph->fontspec);
+    free(glyph->fontspec);
+
+    if (glyph->didallocvectorglyph) {
+      free(glyph->vectorglyph);
+    }
+
+    cc_flw_done_glyph(glyph->fontidx, glyph->glyphidx);
+    cc_flw_unref_font(glyph->fontidx);
+
+    free(glyph);
+  }
 }
 
 const float *
@@ -326,10 +378,10 @@ glyph3d_calcboundingbox(cc_glyph3d * g)
   float * coordptr;
   int * edgeptr;
 
-  g->bbox[0] = 0;
-  g->bbox[1] = 0;
-  g->bbox[2] = 0;
-  g->bbox[3] = 0;
+  g->bbox[0] = 0.0f;
+  g->bbox[1] = 0.0f;
+  g->bbox[2] = 0.0f;
+  g->bbox[3] = 0.0f;
 
   coordptr = (float *) cc_glyph3d_getcoords(g);
   edgeptr = (int *) cc_glyph3d_getedgeindices(g);

@@ -35,6 +35,7 @@
 
 #include <Inventor/C/base/dynarray.h>
 #include <Inventor/C/base/string.h>
+#include <Inventor/C/base/hash.h>
 #include <Inventor/C/errors/debugerror.h>
 
 #include <Inventor/C/threads/threadsutilp.h>
@@ -55,7 +56,8 @@
 */
 
 static void * flw_global_lock = NULL;
-
+static int flw_global_font_index = 0;
+static int flw_global_glyph_index = 0;
 
 /* Debug: enable this in case code hangs waiting for a lock.  A hang
    will typically happen for one out of two reasons:
@@ -98,16 +100,19 @@ struct cc_flw_glyph {
   struct cc_flw_bitmap * bitmap;
   SbBool fromdefaultfont;
   uint32_t charidx;
+  int glyphindex;
 };
 
 struct cc_flw_font {
   void * font;
   cc_string * fontname;
   cc_string * requestname;
-  cc_dynarray * glypharray;
+  cc_hash * glyphdict;
   unsigned int sizex, sizey;
   float angle;
   SbBool defaultfont;
+  int fontindex;
+  int refcount;
 };
 
 static cc_dynarray * fontarray = NULL;
@@ -154,6 +159,7 @@ glyphstruct_new(void)
   gs->bitmap = NULL;
   gs->fromdefaultfont = FALSE;
   gs->charidx = 0;
+  gs->glyphindex = flw_global_glyph_index++;
   return gs;
 }
 
@@ -169,7 +175,9 @@ fontstruct_new(void * font)
   fs->sizey = 0;
   fs->angle = 0.0f;
   fs->defaultfont = FALSE;
-  fs->glypharray = cc_dynarray_new();
+  fs->glyphdict = cc_hash_construct(256, 0.7f);
+  fs->fontindex = flw_global_font_index++;
+  fs->refcount = 0;
   return fs;
 }
 
@@ -218,15 +226,20 @@ flw_done_bitmap(struct cc_flw_bitmap * bitmap)
 static struct cc_flw_glyph *
 flw_glyphidx2glyphptr(struct cc_flw_font * fs, unsigned int glyphidx)
 {
-  struct cc_flw_glyph * gs;
-
-  assert(glyphidx < cc_dynarray_length(fs->glypharray));
-  gs = (struct cc_flw_glyph *)cc_dynarray_get(fs->glypharray, glyphidx);
+  void * tmp;
+  struct cc_flw_glyph * gs = NULL;
+  
+  if (cc_hash_get(fs->glyphdict, glyphidx, &tmp)) {
+    gs = (struct cc_flw_glyph *) tmp;
+  }
+  else {
+    assert(0 && "glyph not found");
+  }  
   return gs;
 }
 
 static void
-fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
+fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph, int removefromdict)
 {
   struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, glyph);
   if (gs->bitmap) { /* might be NULL for 3D fonts */
@@ -234,42 +247,58 @@ fontstruct_rmglyph(struct cc_flw_font * fs, unsigned int glyph)
     if (gs->fromdefaultfont) gs->bitmap->buffer = NULL;
     flw_done_bitmap(gs->bitmap);
   }
+  free(gs);
+
+  if (removefromdict) {
+    if (!cc_hash_remove(fs->glyphdict, glyph)) {
+      assert(0 && "glyph to remove not found");
+    }
+  }
+}
+
+static void 
+fontstruct_rmglyph_apply(unsigned long key, void * val, void * closure)
+{
+  fontstruct_rmglyph((struct cc_flw_font*) closure,
+                     key, 0);
 }
 
 static void
-fontstruct_rmfont(unsigned int font)
+fontstruct_rmfont(int font)
 {
-  unsigned int i, n;
-  struct cc_flw_font * fs;
-
-  assert(font < cc_dynarray_length(fontarray));
-  fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, font);
-  assert(fs);
+  int i, n;
+  int arrayindex;
+  struct cc_flw_font * fs = NULL;
+  
+  n = cc_dynarray_length(fontarray);
+  for (i = 0; i < n; i++) {
+    fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
+    if (fs->fontindex == font) break;
+  }
+  assert(i < n);
+  arrayindex = i;
 
   if (fs->fontname) cc_string_destruct(fs->fontname);
   if (fs->requestname) cc_string_destruct(fs->requestname);
-
-  n = cc_dynarray_length(fs->glypharray);
-  for (i = 0; i < n; i++) { 
-    struct cc_flw_glyph * gs = flw_glyphidx2glyphptr(fs, i);
-    fontstruct_rmglyph(fs, i); 
-    /* needed since fontstruct_rmglyph() doesn't deallocate the
-       glyph struct. pederb, 2004-06-04 */
-    free(gs); 
-  }
-  cc_dynarray_destruct(fs->glypharray);
+    
+  cc_hash_apply(fs->glyphdict, fontstruct_rmglyph_apply, fs);  
+  cc_hash_destruct(fs->glyphdict);
   free(fs);
-  cc_dynarray_remove_idx(fontarray, font);
+  cc_dynarray_remove_idx(fontarray, arrayindex);
 }
 
 static struct cc_flw_font *
-flw_fontidx2fontptr(unsigned int fontidx)
+flw_fontidx2fontptr(int fontidx)
 {
   struct cc_flw_font * fs;
+  int i, n;
 
-  assert(fontidx < cc_dynarray_length(fontarray));
-  fs = (struct cc_flw_font *) cc_dynarray_get(fontarray, fontidx);
-  assert(fs);
+  n = (int) cc_dynarray_length(fontarray);
+  for (i = 0; i < n; i++) {
+    fs = (struct cc_flw_font *) cc_dynarray_get(fontarray, i);
+    if (fs->fontindex == fontidx) break;
+  }
+  assert(i < n);
 
   return fs;
 }
@@ -284,10 +313,9 @@ flw_map_fontname_to_defaultfont(const char * reqname)
   fontstruct_set_fontname(fs, "defaultFont");
   fontstruct_set_size(fs, 0, 0);
   fontstruct_set_angle(fs, 0.0f);
-  fs->defaultfont = TRUE;
-
+  fs->defaultfont = TRUE;  
   cc_dynarray_append(fontarray, fs);
-  return cc_dynarray_length(fontarray) - 1;
+  return fs->fontindex;
 }
 
 static void
@@ -296,6 +324,7 @@ flw_exit(void)
   unsigned int n;
 
   n = cc_dynarray_length(fontarray);
+  
   while (n--) {
     fontstruct_rmfont(n);
   }
@@ -303,13 +332,14 @@ flw_exit(void)
 
   if (freetypelib) { cc_flwft_exit(); }
   if (win32api) { cc_flww32_exit(); }
-
+  
   CC_MUTEX_DESTRUCT(flw_global_lock);
 }
 
 static void
 flw_initialize(void)
 {
+  int idx;
   const char * env;
   static SbBool initialized = FALSE;
   /* CC_MUTEX_CONSTRUCT uses a global mutex to be thread safe */
@@ -362,11 +392,12 @@ flw_initialize(void)
      that the first request for a font with the name "defaultFont"
      will not make the underlying font import libraries try to find a
      best match (and get a positive result for some random font). */
-  (void)flw_map_fontname_to_defaultfont("defaultFont");
+  idx = flw_map_fontname_to_defaultfont("defaultFont");
 
   coin_atexit((coin_atexit_f *)flw_exit, 0);
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
+  cc_flw_ref_font(idx); /* increase refcount for default font */
 }
 
 /* END Internal functions */
@@ -381,6 +412,92 @@ cc_flw_debug(void)
     dbg = env && (atoi(env) > 0);
   }
   return dbg;
+}
+
+
+/*
+  Returns internal index of given font specification, for subsequent
+  use as input argument to other functions as identification.
+
+  Returns -1 if no font with the given name and size has been made
+  yet.
+*/
+static int
+flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle)
+{
+  unsigned int i, n;
+  
+  /* This function is a common entry spot for first access into the
+     wrapper (unless client code is doing something wrong, but then
+     we'll likely catch that with an assert somewhere), so we call the
+     initialization code from here.
+
+     flw_initialize() is re-entrant, so this should be safe in a
+     multithreaded environment.
+  */
+  if (flw_global_lock == NULL) { flw_initialize(); }
+
+  FLW_MUTEX_LOCK(flw_global_lock);
+
+  n = cc_dynarray_length(fontarray);
+  for (i = 0; i < n; i++) {
+    struct cc_flw_font * fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
+    if ((fs->defaultfont || (fs->sizex == sizex && fs->sizey == sizey)) &&
+        (strcmp(fontname, cc_string_get_text(fs->requestname))==0) &&
+        (fs->angle == angle)) {
+      FLW_MUTEX_UNLOCK(flw_global_lock);
+      return fs->fontindex;
+    }
+  }
+  FLW_MUTEX_UNLOCK(flw_global_lock);
+  return -1;
+}
+
+
+void 
+cc_flw_ref_font(const int fontid)
+{
+  int i, n;
+  struct cc_flw_font * fs;
+  FLW_MUTEX_LOCK(flw_global_lock);
+  n = (int) cc_dynarray_length(fontarray);
+  for (i = 0; i < n; i++) {
+    fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
+    if (fs->fontindex == fontid) break;
+  }
+  assert(i < n);
+  fs->refcount++;
+  FLW_MUTEX_UNLOCK(flw_global_lock);
+}
+
+void 
+cc_flw_unref_font(const int fontid)
+{
+  int i, n;
+  struct cc_flw_font * fs;
+
+  FLW_MUTEX_LOCK(flw_global_lock);
+
+  n = (int) cc_dynarray_length(fontarray);
+  for (i = 0; i < n; i++) {
+    fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
+    if (fs->fontindex == fontid) break;
+  }
+  assert(i < n);
+  fs->refcount--;
+  if (fs->refcount == 0) {
+    /* fprintf(stderr,"unref font: %s\n", cc_string_get_text(fs->requestname)); */
+    
+    if (win32api) {
+      if (!fs->defaultfont) { cc_flww32_done_font(fs->font); }
+    }
+    else if (freetypelib) {
+      if (!fs->defaultfont) { cc_flwft_done_font(fs->font); }
+    }
+    fontstruct_rmfont(fontid);
+  }
+
+  FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
 /*!
@@ -399,18 +516,20 @@ cc_flw_debug(void)
   needing any error checking on behalf of the client code.
 */
 int
-cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle)
+cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle)
 {
   void * font;
   int idx;
 
   /* Don't create font if one has already been created for this name
      and size. */
-  idx = cc_flw_find_font(fontname, sizex, sizey, angle);
+  idx = flw_find_font(fontname, sizex, sizey, angle);
 
   if (idx != -1) { return idx; }
 
   font = NULL;
+
+  /* fprintf(stderr,"new font: %s\n", fontname); */
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
@@ -457,8 +576,7 @@ cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned 
     cc_string_clean(&realname);
 
     cc_dynarray_append(fontarray, fs);
-    idx = cc_dynarray_length(fontarray) - 1;
-
+    idx = fs->fontindex;
   }
   else {
     /* Use the default font for the given fontname and size. */
@@ -471,68 +589,10 @@ cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned 
   return idx;
 }
 
-/*!
-  Returns internal index of given font specification, for subsequent
-  use as input argument to other functions as identification.
-
-  Returns -1 if no font with the given name and size has been made
-  yet.
-*/
-int
-cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle)
-{
-  unsigned int i, n;
-
-  /* This function is a common entry spot for first access into the
-     wrapper (unless client code is doing something wrong, but then
-     we'll likely catch that with an assert somewhere), so we call the
-     initialization code from here.
-
-     flw_initialize() is re-entrant, so this should be safe in a
-     multithreaded environment.
-  */
-  if (flw_global_lock == NULL) { flw_initialize(); }
-
-  FLW_MUTEX_LOCK(flw_global_lock);
-
-
-  n = cc_dynarray_length(fontarray);
-  for (i = 0; i < n; i++) {
-    struct cc_flw_font * fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, i);
-    if ((fs->defaultfont || (fs->sizex == sizex && fs->sizey == sizey)) &&
-        (strcmp(fontname, cc_string_get_text(fs->requestname))==0) &&
-        (fs->angle == angle)) {
-      break;
-    }
-  }
-
-  FLW_MUTEX_UNLOCK(flw_global_lock);
-  return (i == n) ? -1 : (signed int)i;
-}
-
-void
-cc_flw_done_font(unsigned int font)
-{
-  struct cc_flw_font * fs;
-  FLW_MUTEX_LOCK(flw_global_lock);
-
-  fs = flw_fontidx2fontptr(font);
-
-  if (win32api) {
-    if (!fs->defaultfont) { cc_flww32_done_font(fs->font); }
-  }
-  else if (freetypelib) {
-    if (!fs->defaultfont) { cc_flwft_done_font(fs->font); }
-  }
-
-  fontstruct_rmfont(font);
-
-  FLW_MUTEX_UNLOCK(flw_global_lock);
-}
 
 
 const char *
-cc_flw_get_font_name(unsigned int font)
+cc_flw_get_font_name(int font)
 {
   const char * name;
   struct cc_flw_font * fs;
@@ -548,7 +608,7 @@ cc_flw_get_font_name(unsigned int font)
 
 
 unsigned int
-cc_flw_get_glyph(unsigned int font, unsigned int charidx)
+cc_flw_get_glyph(int font, unsigned int charidx)
 {
   unsigned int glyph = 0;
   int fsid = -1;
@@ -566,8 +626,10 @@ cc_flw_get_glyph(unsigned int font, unsigned int charidx)
       struct cc_flw_glyph * gs = glyphstruct_new();
       gs->glyph = glyph;
       gs->fromdefaultfont = FALSE;
-      cc_dynarray_append(fs->glypharray, gs);
-      fsid = cc_dynarray_length(fs->glypharray) - 1;
+      fsid = gs->glyphindex;
+      if (!cc_hash_put(fs->glyphdict, fsid, gs)) {
+        assert(0 && "glyph already exists");
+      }
     }
     else {
       /* Create glyph from default font, mark as default. */
@@ -600,8 +662,10 @@ cc_flw_get_glyph(unsigned int font, unsigned int charidx)
     gs->glyph = charidx;
     gs->fromdefaultfont = TRUE;
     gs->charidx = charidx;
-    cc_dynarray_append(fs->glypharray, gs);
-    fsid = cc_dynarray_length(fs->glypharray) - 1;
+    fsid = gs->glyphindex;
+    if (!cc_hash_put(fs->glyphdict, fsid, gs)) {
+      assert(0 && "glyph already exists");
+    }
   }
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
@@ -609,7 +673,7 @@ cc_flw_get_glyph(unsigned int font, unsigned int charidx)
 }
 
 void 
-cc_flw_get_bitmap_advance(unsigned int font, unsigned int glyph, int * x, int * y)
+cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y)
 {
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
@@ -633,7 +697,7 @@ cc_flw_get_bitmap_advance(unsigned int font, unsigned int glyph, int * x, int * 
 }
 
 void
-cc_flw_get_vector_advance(unsigned int font, unsigned int glyph, float * x, float * y)
+cc_flw_get_vector_advance(int font, unsigned int glyph, float * x, float * y)
 {
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
@@ -657,7 +721,7 @@ cc_flw_get_vector_advance(unsigned int font, unsigned int glyph, float * x, floa
 }
 
 void
-cc_flw_get_bitmap_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2,
+cc_flw_get_bitmap_kerning(int font, unsigned int glyph1, unsigned int glyph2,
                           int * x, int * y)
 {
   struct cc_flw_font * fs;
@@ -685,8 +749,8 @@ cc_flw_get_bitmap_kerning(unsigned int font, unsigned int glyph1, unsigned int g
 
 
 void
-cc_flw_get_vector_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2,
-                   float * x, float * y)
+cc_flw_get_vector_kerning(int font, unsigned int glyph1, unsigned int glyph2,
+                          float * x, float * y)
 {
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs1, * gs2;
@@ -712,7 +776,7 @@ cc_flw_get_vector_kerning(unsigned int font, unsigned int glyph1, unsigned int g
 }
 
 void
-cc_flw_done_glyph(unsigned int font, unsigned int glyph)
+cc_flw_done_glyph(int font, unsigned int glyph)
 {
   struct cc_flw_font * fs;
   struct cc_flw_glyph * gs;
@@ -729,13 +793,13 @@ cc_flw_done_glyph(unsigned int font, unsigned int glyph)
     cc_flwft_done_glyph(fs->font, gs->glyph);
   }
 
-  fontstruct_rmglyph(fs, glyph);
+  fontstruct_rmglyph(fs, glyph, 1);
 
   FLW_MUTEX_UNLOCK(flw_global_lock);
 }
 
 struct cc_flw_bitmap *
-cc_flw_get_bitmap(unsigned int font, unsigned int glyph)
+cc_flw_get_bitmap(int font, unsigned int glyph)
 {
   unsigned char * buf;
   struct cc_flw_font * fs;
@@ -784,7 +848,7 @@ cc_flw_get_bitmap(unsigned int font, unsigned int glyph)
 }
 
 struct cc_flw_vector_glyph *
-cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph, float complexity)
+cc_flw_get_vector_glyph(int font, unsigned int glyph, float complexity)
 {
 
   struct cc_flw_vector_glyph * vector_glyph = NULL;
