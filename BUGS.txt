@@ -1524,3 +1524,35 @@
     20030312 mortene.
 
 =====================================================================
+
+063 .iv-file import problem.
+
+    The perfectly valid Inventor file below fails import with the
+    error messages:
+
+        Coin read error: Couldn't read vector
+                Occurred at line  14 in /home/sigma/mortene/tmp/file_format.iv
+        Coin read error: Couldn't read value for field "translation"
+                Occurred at line  14 in /home/sigma/mortene/tmp/file_format.iv
+
+    Problem found and reported by Tamer Fahmy.
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+    
+    Separator {
+       DEF Trans Translation { translation 1 2 3 }
+       Cube {}
+    }
+    Separator {
+    # this one works
+    #   Translation { translation 0 0 0 = USE Trans . translation }
+    # if one leaves out the optional value it breaks
+       Translation { translation = USE Trans . translation }
+       Cone {}
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    20030404 mortene.
+
+=====================================================================
