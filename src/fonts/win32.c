@@ -164,6 +164,8 @@ static struct cc_flww32_globals_s cc_flww32_globals = {
 
 struct cc_flww32_glyph {
   struct cc_flw_bitmap * bitmap;
+  struct cc_flw_vector_glyph * vector;
+  int fontid;
 };
 
 /* Callback functions for cleaning up kerninghash table */
@@ -685,7 +687,33 @@ cc_flww32_get_vector_kerning(void * font, int glyph1, int glyph2, float * x, flo
 void
 cc_flww32_done_glyph(void * font, int glyph)
 {
-  /* FIXME: unimplemented. 20030515 mortene. */
+  cc_hash * glyphhash;
+
+  struct cc_flww32_glyph * glyphstruct = get_glyph_struct(font, glyph);
+  assert(glyphstruct);
+
+  if (glyphstruct->bitmap) {
+    /* bitmap glyph */
+    if (glyphstruct->bitmap->buffer) free(glyphstruct->bitmap->buffer);
+    free(glyphstruct->bitmap);
+  }
+  else {
+    assert(glyphstruct->vector);
+    
+    free(glyphstruct->vector->vertices);
+    free(glyphstruct->vector->faceindices);
+    free(glyphstruct->vector->edgeindices);
+    free(glyphstruct->vector);
+
+    if (glyphstruct->fontid >= 0) {
+      cc_flw_unref_font(glyphstruct->fontid);
+    }
+  }
+
+  free(glyphstruct);
+
+  glyphhash = get_glyph_hash(font);
+  (void) cc_hash_remove(glyphhash, (unsigned long) glyph);
 }
 
 /* Draws a bitmap for the given glyph. */
@@ -811,6 +839,8 @@ cc_flww32_get_bitmap(void * font, int glyph)
   glyphhash = get_glyph_hash(font);
   glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));
   glyphstruct->bitmap = bm;
+  glyphstruct->vector = NULL;
+  glyphstruct->fontid = -1;
   unused = cc_hash_put(glyphhash, (unsigned long)glyph, glyphstruct);
   assert(unused);
 
@@ -905,6 +935,9 @@ flww32_getVerticesFromPath(HDC hdc)
 cc_flw_vector_glyph *
 cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 {
+  SbBool unused;
+  cc_hash * glyphhash;
+  struct cc_flww32_glyph * glyphstruct;
 
   HDC memdc;
   HBITMAP membmp;
@@ -912,8 +945,9 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   TCHAR string[1];
   struct cc_flw_vector_glyph * new_vector_glyph;
   cc_string * fontname = NULL;
-
-
+  int newfontid;
+  void * oldfont = font;
+  
   if (!GLUWrapper()->available) {
     cc_debugerror_post("cc_flww32_get_vector_glyph",
                        "GLU library could not be loaded.");
@@ -943,12 +977,12 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   fontname = cc_string_construct_new();
   cc_flww32_get_font_name(font, fontname);
   flww32_font3dsize = flww32_calcfontsize(complexity);
-  font = cc_flww32_get_font(cc_string_get_text(fontname), 
-			    flww32_font3dsize, 
-			    flww32_font3dsize, 
-			    0.0f);
+  newfontid = cc_flw_get_font_id(cc_string_get_text(fontname), 
+                                 flww32_font3dsize, 
+                                 flww32_font3dsize, 
+                                 0.0f);
+  font = cc_flw_get_font_handle(newfontid);
   cc_string_destruct(fontname);
-
 
   /* FIXME: we're being unnecessary robust for much of the code below
      calling into Win32 API functions. For most or all of the calls we
@@ -1067,8 +1101,22 @@ cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity)
     cc_win32_print_error("cc_flww32_get_vector_glyph","DeleteObject(). Error deleting screen device context.", GetLastError());
   if (!DeleteObject(memdc))
     cc_win32_print_error("cc_flww32_get_vector_glyph","DeleteObject(). Error deleting memory device context.", GetLastError());
-  return new_vector_glyph; 
 
+  glyphhash = get_glyph_hash(font);
+  glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));
+  glyphstruct->bitmap = NULL;
+  glyphstruct->vector = new_vector_glyph;
+  glyphstruct->fontid = -1;
+  
+  if (oldfont != font) {
+    glyphstruct->fontid = newfontid;
+    cc_flw_ref_font(newfontid);
+  }
+
+  unused = cc_hash_put(glyphhash, (unsigned long)glyph, glyphstruct);
+  assert(unused);
+
+  return new_vector_glyph;
 }
 
 
