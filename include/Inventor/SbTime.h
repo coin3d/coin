@@ -24,8 +24,6 @@
  *
 \**************************************************************************/
 
-// Usually you get all you need from time.h
-#include <time.h>
 #include <stdio.h>
 
 #include <Inventor/system/inttypes.h>
@@ -95,9 +93,9 @@ COIN_DLL_API SbTime operator *(const double s, const SbTime & tm);
 COIN_DLL_API SbTime operator *(const SbTime & tm, const double s);
 COIN_DLL_API SbTime operator /(const SbTime & tm, const double s);
 
-// Avoid problem with Microsoft Win32 API headers (see
-// above). Redefine macro max() back to a definition compatible with
-// what it is in the MSVC header files.
+// Avoid problem with Microsoft Win32 API headers (see above).
+// Redefine macro max() back to a definition compatible with what it
+// is in the MSVC header files.
 #ifdef SBTIME_UNDEF_MAX
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #undef SBTIME_UNDEF_MAX
