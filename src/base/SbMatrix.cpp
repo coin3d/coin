@@ -66,8 +66,8 @@ typedef struct {
 } AffineParts;
 static float polar_decomp(HMatrix M, HMatrix Q, HMatrix S);
 static HVect spect_decomp(HMatrix S, HMatrix U);
-static Quat snuggle(Quat q, HVect *k);
-static void decomp_affine(HMatrix A, AffineParts *parts);
+static Quat snuggle(Quat q, HVect * k);
+static void decomp_affine(HMatrix A, AffineParts * parts);
 
 
 /*!
@@ -115,7 +115,7 @@ SbMatrix::SbMatrix(const float a11, const float a12,
   Constructs a matrix instance with the initial elements from the
   \a matrix argument.
  */
-SbMatrix::SbMatrix(const SbMat& matrix)
+SbMatrix::SbMatrix(const SbMat & matrix)
 {
   this->setValue(matrix);
 }
@@ -146,7 +146,7 @@ SbMatrix::getValue(void) const
   \sa getValue().
  */
 void
-SbMatrix::setValue(const SbMat& m)
+SbMatrix::setValue(const SbMat & m)
 {
   memcpy(this->matrix, m, sizeof(float)*4*4);
 }
@@ -155,7 +155,7 @@ SbMatrix::setValue(const SbMat& m)
   Assignment operator. Copies the elements from \a m to the matrix.
  */
 SbMatrix&
-SbMatrix::operator =(const SbMat& m)
+SbMatrix::operator =(const SbMat & m)
 {
   this->setValue(m);
   return *this;
@@ -165,7 +165,7 @@ SbMatrix::operator =(const SbMat& m)
   Assignment operator. Copies the elements from \a m to the matrix.
  */
 SbMatrix&
-SbMatrix::operator =(const SbMatrix& m)
+SbMatrix::operator =(const SbMatrix & m)
 {
   this->setValue(m.matrix);
   return *this;
@@ -194,10 +194,10 @@ SbMatrix::makeIdentity(void)
   \sa setTranslate(), setScale().
 */
 void
-SbMatrix::setRotate(const SbRotation& q)
+SbMatrix::setRotate(const SbRotation & q)
 {
   SbVec3f u;
-  float t,cost,sint;
+  float t, cost, sint;
 
   q.getValue(u, t);
   cost = (float)cos(t);
@@ -252,8 +252,8 @@ SbMatrix::setRotate(const SbRotation& q)
 void
 SbMatrix::operator *=(const float v)
 {
-  for(int i=0; i < 4; i++) {
-    for(int j=0; j < 4; j++) {
+  for (int i=0; i < 4; i++) {
+    for (int j=0; j < 4; j++) {
       this->matrix[i][j] *= v;
     }
   }
@@ -285,42 +285,42 @@ SbMatrix::det3(int r1, int r2, int r3,
 #if COIN_DEBUG
   if (r1<0 || r1>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-                              "r1 parameter (%f) out of bounds [0,3]. "
+                              "r1 parameter (%f) out of bounds [0, 3]. "
                               "Clamping to bounds.", r1);
     if (r1<0) r1=0;
     else if (r1>3) r1=3;
   }
   if (r2<0 || r2>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-                              "r2 parameter (%f) out of bounds [0,3]. "
+                              "r2 parameter (%f) out of bounds [0, 3]. "
                               "Clamping to bounds.", r2);
     if (r2<0) r2=0;
     else if (r2>3) r2=3;
   }
   if (r3<0 || r3>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-                              "r3 parameter (%f) out of bounds [0,3]. "
+                              "r3 parameter (%f) out of bounds [0, 3]. "
                               "Clamping to bounds.", r3);
     if (r3<0) r3=0;
     else if (r3>3) r3=3;
   }
   if (c1<0 || c1>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-                              "c1 parameter (%f) out of bounds [0,3]. "
+                              "c1 parameter (%f) out of bounds [0, 3]. "
                               "Clamping to bounds.", c1);
     if (c1<0) c1=0;
     else if (c1>3) c1=3;
   }
   if (c2<0 || c2>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-                              "c2 parameter (%f) out of bounds [0,3]. "
+                              "c2 parameter (%f) out of bounds [0, 3]. "
                               "Clamping to bounds.", c2);
     if (c2<0) c2=0;
     else if (c2>3) c2=3;
   }
   if (c3<0 || c3>3) {
     SoDebugError::postWarning("SbMatrix::det3",
-                              "c3 parameter (%f) out of bounds [0,3]. "
+                              "c3 parameter (%f) out of bounds [0, 3]. "
                               "Clamping to bounds.", c3);
     if (c3<0) c3=0;
     else if (c3>3) c3=3;
@@ -330,11 +330,11 @@ SbMatrix::det3(int r1, int r2, int r3,
 #if COIN_DEBUG
   if (r1==r2 || r1==r3 || r2==r3)
     SoDebugError::postWarning("SbMatrix::det3",
-                              "Row indices (%d,%d,%d) should be distinct.",
+                              "Row indices (%d, %d, %d) should be distinct.",
                               r1, r2, r3);
   if (c1==c2 || c1==c3 || c2==c3)
     SoDebugError::postWarning("SbMatrix::det3",
-                              "Column indices (%d,%d,%d) should be distinct.",
+                              "Column indices (%d, %d, %d) should be distinct.",
                               c1, c2, c3);
 #endif // COIN_DEBUG
 
@@ -351,11 +351,11 @@ SbMatrix::det3(int r1, int r2, int r3,
   float a32 = this->matrix[r3][c2];
   float a33 = this->matrix[r3][c3];
 
-  float M11 = a22*a33 - a32*a23;
-  float M21 = -(a12*a33 - a32*a13);
-  float M31 = a12*a23 - a22*a13;
+  float M11 = a22 * a33 - a32 * a23;
+  float M21 = -(a12 * a33 - a32 * a13);
+  float M31 = a12 * a23 - a22 * a13;
 
-  return (a11*M11 + a21*M21 + a31*M31);
+  return (a11 * M11 + a21 * M21 + a31 * M31);
 }
 
 /*!
@@ -378,10 +378,10 @@ SbMatrix::det4(void) const
   // for 1 of the testmatrices!). 1998???? mortene.
 
   float det = 0.0f;
-  det += this->matrix[0][0] * det3(1,2,3,1,2,3);
-  det -= this->matrix[1][0] * det3(0,2,3,1,2,3);
-  det += this->matrix[2][0] * det3(0,1,3,1,2,3);
-  det -= this->matrix[3][0] * det3(0,1,2,1,2,3);
+  det += this->matrix[0][0] * det3(1, 2, 3, 1, 2, 3);
+  det -= this->matrix[1][0] * det3(0, 2, 3, 1, 2, 3);
+  det += this->matrix[2][0] * det3(0, 1, 3, 1, 2, 3);
+  det -= this->matrix[3][0] * det3(0, 1, 2, 1, 2, 3);
   return det;
 }
 
@@ -406,22 +406,22 @@ SbMatrix::inverse(void) const
 
   SbMatrix result;
 
-  result.matrix[0][0] = this->det3(1,2,3,1,2,3);
-  result.matrix[1][0] = -this->det3(1,2,3,0,2,3);
-  result.matrix[2][0] = this->det3(1,2,3,0,1,3);
-  result.matrix[3][0] = -this->det3(1,2,3,0,1,2);
-  result.matrix[0][1] = -this->det3(0,2,3,1,2,3);
-  result.matrix[1][1] = this->det3(0,2,3,0,2,3);
-  result.matrix[2][1] = -this->det3(0,2,3,0,1,3);
-  result.matrix[3][1] = this->det3(0,2,3,0,1,2);
-  result.matrix[0][2] = this->det3(0,1,3,1,2,3);
-  result.matrix[1][2] = -this->det3(0,1,3,0,2,3);
-  result.matrix[2][2] = this->det3(0,1,3,0,1,3);
-  result.matrix[3][2] = -this->det3(0,1,3,0,1,2);
-  result.matrix[0][3] = -this->det3(0,1,2,1,2,3);
-  result.matrix[1][3] = this->det3(0,1,2,0,2,3);
-  result.matrix[2][3] = -this->det3(0,1,2,0,1,3);
-  result.matrix[3][3] = this->det3(0,1,2,0,1,2);
+  result.matrix[0][0] = this->det3(1, 2, 3, 1, 2, 3);
+  result.matrix[1][0] = -this->det3(1, 2, 3, 0, 2, 3);
+  result.matrix[2][0] = this->det3(1, 2, 3, 0, 1, 3);
+  result.matrix[3][0] = -this->det3(1, 2, 3, 0, 1, 2);
+  result.matrix[0][1] = -this->det3(0, 2, 3, 1, 2, 3);
+  result.matrix[1][1] = this->det3(0, 2, 3, 0, 2, 3);
+  result.matrix[2][1] = -this->det3(0, 2, 3, 0, 1, 3);
+  result.matrix[3][1] = this->det3(0, 2, 3, 0, 1, 2);
+  result.matrix[0][2] = this->det3(0, 1, 3, 1, 2, 3);
+  result.matrix[1][2] = -this->det3(0, 1, 3, 0, 2, 3);
+  result.matrix[2][2] = this->det3(0, 1, 3, 0, 1, 3);
+  result.matrix[3][2] = -this->det3(0, 1, 3, 0, 1, 2);
+  result.matrix[0][3] = -this->det3(0, 1, 2, 1, 2, 3);
+  result.matrix[1][3] = this->det3(0, 1, 2, 0, 2, 3);
+  result.matrix[2][3] = -this->det3(0, 1, 2, 0, 1, 3);
+  result.matrix[3][3] = this->det3(0, 1, 2, 0, 1, 2);
 
   result /= det;
   return result;
@@ -433,7 +433,7 @@ SbMatrix::inverse(void) const
   component basis.
  */
 SbBool
-SbMatrix::equals(const SbMatrix& m, float tolerance) const
+SbMatrix::equals(const SbMatrix & m, float tolerance) const
 {
 #if COIN_DEBUG
   if (tolerance<0.0f)
@@ -441,9 +441,9 @@ SbMatrix::equals(const SbMatrix& m, float tolerance) const
                               "tolerance should be >=0.0f.");
 #endif // COIN_DEBUG
 
-  for(int i=0; i < 4; i++) {
-    for(int j=0;  j< 4; j++) {
-      if(fabs(this->matrix[i][j] - m.matrix[i][j]) > tolerance) return FALSE;
+  for (int i=0; i < 4; i++) {
+    for (int j=0;  j< 4; j++) {
+      if (fabs(this->matrix[i][j] - m.matrix[i][j]) > tolerance) return FALSE;
     }
   }
 
@@ -518,7 +518,7 @@ SbMatrix::operator [](int i) const
   \sa setRotate().
 */
 SbMatrix&
-SbMatrix::operator =(const SbRotation& q)
+SbMatrix::operator =(const SbRotation & q)
 {
   this->setRotate(q);
   return *this;
@@ -530,7 +530,7 @@ SbMatrix::operator =(const SbRotation& q)
   \sa multRight().
  */
 SbMatrix&
-SbMatrix::operator *=(const SbMatrix& m)
+SbMatrix::operator *=(const SbMatrix & m)
 {
   return this->multRight(m);
 }
@@ -542,7 +542,7 @@ SbMatrix::operator *=(const SbMatrix& m)
   matrix.
 */
 SbMatrix
-operator *(const SbMatrix& m1, const SbMatrix& m2)
+operator *(const SbMatrix & m1, const SbMatrix & m2)
 {
   SbMatrix result = m1;
   result *= m2;
@@ -558,11 +558,11 @@ operator *(const SbMatrix& m1, const SbMatrix& m2)
   \sa equals().
 */
 int
-operator ==(const SbMatrix& m1, const SbMatrix& m2)
+operator ==(const SbMatrix & m1, const SbMatrix & m2)
 {
-  for(int i=0; i < 4; i++) {
-    for(int j=0; j < 4; j++) {
-      if(m1[i][j] != m2[i][j]) return FALSE;
+  for (int i=0; i < 4; i++) {
+    for (int j=0; j < 4; j++) {
+      if (m1[i][j] != m2[i][j]) return FALSE;
     }
   }
 
@@ -578,7 +578,7 @@ operator ==(const SbMatrix& m1, const SbMatrix& m2)
   \sa equals().
 */
 int
-operator !=(const SbMatrix& m1, const SbMatrix& m2)
+operator !=(const SbMatrix & m1, const SbMatrix & m2)
 {
   return !(m1 == m2);
 }
@@ -589,7 +589,7 @@ operator !=(const SbMatrix& m1, const SbMatrix& m2)
   \sa setValue().
  */
 void
-SbMatrix::getValue(SbMat& m) const
+SbMatrix::getValue(SbMat & m) const
 {
   memcpy(&m[0][0], &(this->matrix[0][0]), sizeof(float)*4*4);
 }
@@ -630,7 +630,7 @@ SbMatrix::setScale(const float s)
   \sa setRotate(), setTranslate().
  */
 void
-SbMatrix::setScale(const SbVec3f& s)
+SbMatrix::setScale(const SbVec3f & s)
 {
   this->makeIdentity();
   this->matrix[0][0] = s[0];
@@ -645,7 +645,7 @@ SbMatrix::setScale(const SbVec3f& s)
   \sa setRotate(), setScale().
  */
 void
-SbMatrix::setTranslate(const SbVec3f& t)
+SbMatrix::setTranslate(const SbVec3f & t)
 {
   this->makeIdentity();
 
@@ -665,7 +665,7 @@ SbMatrix::setTranslate(const SbVec3f& t)
   \sa setTranslate(), setRotate(), setScale() and getTransform().
  */
 void
-SbMatrix::setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s)
+SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & s)
 {
   SbMatrix tmp;
 
@@ -690,8 +690,8 @@ SbMatrix::setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s)
   \sa setTranslate(), setRotate(), setScale() and getTransform().
  */
 void
-SbMatrix::setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s,
-                       const SbRotation& so)
+SbMatrix::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & s,
+                       const SbRotation & so)
 {
   SbMatrix tmp;
 
@@ -723,11 +723,11 @@ SbMatrix::setTransform(const SbVec3f& t, const SbRotation& r, const SbVec3f& s,
   \sa setTranslate(), setRotate(), setScale() and getTransform().
  */
 void
-SbMatrix::setTransform(const SbVec3f& translation,
-                       const SbRotation& rotation,
-                       const SbVec3f& scaleFactor,
-                       const SbRotation& scaleOrientation,
-                       const SbVec3f& center)
+SbMatrix::setTransform(const SbVec3f & translation,
+                       const SbRotation & rotation,
+                       const SbVec3f & scaleFactor,
+                       const SbRotation & scaleOrientation,
+                       const SbVec3f & center)
 {
 #if 0 // replaced with optimized version, 19990423 pederb
   SbMatrix tmp;
@@ -872,7 +872,7 @@ SbMatrix::getTransform(SbVec3f & translation,
   \sa getTransform()
  */
 SbBool
-SbMatrix::factor(SbMatrix &r, SbVec3f &s, SbMatrix & u, SbVec3f &t,
+SbMatrix::factor(SbMatrix & r, SbVec3f & s, SbMatrix & u, SbVec3f & t,
                  SbMatrix & proj)
 {
   COIN_STUB();
@@ -1014,8 +1014,8 @@ SbMatrix::transpose(void) const
 {
   SbMatrix trans = (*this);
 
-  for(int i=0; i < 3; i++) {
-    for(int j=i+1; j < 4; j++) {
+  for (int i=0; i < 3; i++) {
+    for (int j=i+1; j < 4; j++) {
       SbSwap(trans[i][j], trans[j][i]);
     }
   }
@@ -1033,14 +1033,14 @@ SbMatrix &
 SbMatrix::multRight(const SbMatrix & m)
 {
   SbMatrix tmp;
-  const float *m0 = m[0];
-  const float *m1 = m[1];
-  const float *m2 = m[2];
-  const float *m3 = m[3];
-  const float *t0 = (*this)[0];
-  const float *t1 = (*this)[1];
-  const float *t2 = (*this)[2];
-  const float *t3 = (*this)[3];
+  const float * m0 = m[0];
+  const float * m1 = m[1];
+  const float * m2 = m[2];
+  const float * m3 = m[3];
+  const float * t0 = (*this)[0];
+  const float * t1 = (*this)[1];
+  const float * t2 = (*this)[2];
+  const float * t3 = (*this)[3];
 
   tmp[0][0]=m0[0]*t0[0]+m1[0]*t0[1]+m2[0]*t0[2]+m3[0]*t0[3];
   tmp[0][1]=m0[1]*t0[0]+m1[1]*t0[1]+m2[1]*t0[2]+m3[1]*t0[3];
@@ -1070,17 +1070,17 @@ SbMatrix::multRight(const SbMatrix & m)
   \sa multRight().
 */
 SbMatrix&
-SbMatrix::multLeft(const SbMatrix& m)
+SbMatrix::multLeft(const SbMatrix & m)
 {
   SbMatrix tmp;
-  const float *m0 = m[0];
-  const float *m1 = m[1];
-  const float *m2 = m[2];
-  const float *m3 = m[3];
-  const float *t0 = (*this)[0];
-  const float *t1 = (*this)[1];
-  const float *t2 = (*this)[2];
-  const float *t3 = (*this)[3];
+  const float * m0 = m[0];
+  const float * m1 = m[1];
+  const float * m2 = m[2];
+  const float * m3 = m[3];
+  const float * t0 = (*this)[0];
+  const float * t1 = (*this)[1];
+  const float * t2 = (*this)[2];
+  const float * t3 = (*this)[3];
 
   tmp[0][0]=m0[0]*t0[0]+m0[1]*t1[0]+m0[2]*t2[0]+m0[3]*t3[0];
   tmp[0][1]=m0[0]*t0[1]+m0[1]*t1[1]+m0[2]*t2[1]+m0[3]*t3[1];
@@ -1106,17 +1106,17 @@ SbMatrix::multLeft(const SbMatrix& m)
 /*!
   Multiply \a src vector with this matrix and return the result in \a dst.
   Multiplication is done with the vector on the right side of the
-  expression, i.e. dst = M*src.
+  expression, i.e. dst = M * src.
 
   \sa multVecMatrix(), multDirMatrix() and multLineMatrix().
 */
 void
-SbMatrix::multMatrixVec(const SbVec3f& src, SbVec3f& dst) const
+SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
 {
-  const float *t0 = (*this)[0];
-  const float *t1 = (*this)[1];
-  const float *t2 = (*this)[2];
-  const float *t3 = (*this)[3];
+  const float * t0 = (*this)[0];
+  const float * t1 = (*this)[1];
+  const float * t2 = (*this)[2];
+  const float * t3 = (*this)[3];
   // Copy the src vector, just in case src and dst is the same vector.
   SbVec3f s = src;
 
@@ -1130,19 +1130,19 @@ SbMatrix::multMatrixVec(const SbVec3f& src, SbVec3f& dst) const
 /*!
   Multiply \a src vector with this matrix and return the result in \a dst.
   Multiplication is done with the vector on the left side of the
-  expression, i.e. dst = src*M.
+  expression, i.e. dst = src * M.
 
   It is safe to let \a src and \dst be the same SbVec3f instance.
 
   \sa multMatrixVec(), multDirMatrix() and multLineMatrix().
 */
 void
-SbMatrix::multVecMatrix(const SbVec3f& src, SbVec3f& dst) const
+SbMatrix::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
 {
-  const float *t0 = (*this)[0];
-  const float *t1 = (*this)[1];
-  const float *t2 = (*this)[2];
-  const float *t3 = (*this)[3];
+  const float * t0 = (*this)[0];
+  const float * t1 = (*this)[1];
+  const float * t2 = (*this)[2];
+  const float * t3 = (*this)[3];
   // Copy the src vector, just in case src and dst is the same vector.
   SbVec3f s = src;
 
@@ -1157,12 +1157,12 @@ SbMatrix::multVecMatrix(const SbVec3f& src, SbVec3f& dst) const
   \overload
 */
 void
-SbMatrix::multVecMatrix(const SbVec4f &src, SbVec4f &dst) const
+SbMatrix::multVecMatrix(const SbVec4f & src, SbVec4f & dst) const
 {
-  const float *t0 = (*this)[0];
-  const float *t1 = (*this)[1];
-  const float *t2 = (*this)[2];
-  const float *t3 = (*this)[3];
+  const float * t0 = (*this)[0];
+  const float * t1 = (*this)[1];
+  const float * t2 = (*this)[2];
+  const float * t3 = (*this)[3];
 
   SbVec4f s = src;
 
@@ -1178,16 +1178,16 @@ SbMatrix::multVecMatrix(const SbVec4f &src, SbVec4f &dst) const
   ignored.
 
   Multiplication is done with the vector on the left side of the
-  expression, i.e. dst = src*M.
+  expression, i.e. dst = src * M.
 
   \sa multVecMatrix(), multMatrixVec() and multLineMatrix().
  */
 void
-SbMatrix::multDirMatrix(const SbVec3f& src, SbVec3f& dst) const
+SbMatrix::multDirMatrix(const SbVec3f & src, SbVec3f & dst) const
 {
-  const float *t0 = (*this)[0];
-  const float *t1 = (*this)[1];
-  const float *t2 = (*this)[2];
+  const float * t0 = (*this)[0];
+  const float * t1 = (*this)[1];
+  const float * t2 = (*this)[2];
   // Copy the src vector, just in case src and dst is the same vector.
   SbVec3f s = src;
 
@@ -1203,7 +1203,7 @@ SbMatrix::multDirMatrix(const SbVec3f& src, SbVec3f& dst) const
   \sa multVecMatrix(), multMatrixVec() and multDirMatrix().
  */
 void
-SbMatrix::multLineMatrix(const SbLine& src, SbLine& dst) const
+SbMatrix::multLineMatrix(const SbLine & src, SbLine & dst) const
 {
   SbVec3f newpt, newdir;
   this->multVecMatrix(src.getPosition(), newpt);
@@ -1238,18 +1238,18 @@ SbMatrix::print(FILE * fp) const
 /******* Matrix Preliminaries *******/
 
 /** Fill out 3x3 matrix to 4x4 **/
-#define mat_pad(A) (A[W][X]=A[X][W]=A[W][Y]=A[Y][W]=A[W][Z]=A[Z][W]=0,A[W][W]=1)
+#define mat_pad(A) (A[W][X]=A[X][W]=A[W][Y]=A[Y][W]=A[W][Z]=A[Z][W]=0, A[W][W]=1)
 
 /** Copy nxn matrix A to C using "gets" for assignment **/
-#define mat_copy(C,gets,A,n) {int i,j; for(i=0;i<n;i++) for(j=0;j<n;j++)\
+#define mat_copy(C, gets, A, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
     C[i][j] gets (A[i][j]);}
 
 /** Copy transpose of nxn matrix A to C using "gets" for assignment **/
-#define mat_tpose(AT,gets,A,n) {int i,j; for(i=0;i<n;i++) for(j=0;j<n;j++)\
+#define mat_tpose(AT, gets, A, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
     AT[i][j] gets (A[j][i]);}
 
 /** Assign nxn matrix C the element-wise combination of A and B using "op" **/
-#define mat_binop(C,gets,A,op,B,n) {int i,j; for(i=0;i<n;i++) for(j=0;j<n;j++)\
+#define mat_binop(C, gets, A, op, B, n) {int i, j; for (i=0;i<n;i++) for (j=0;j<n;j++)\
     C[i][j] gets (A[i][j]) op (B[i][j]);}
 
 /** Multiply the upper left 3x3 parts of A and B to get AB **/
@@ -1263,14 +1263,14 @@ mat_mult(HMatrix A, HMatrix B, HMatrix AB)
 
 /** Return dot product of length 3 vectors va and vb **/
 static float
-vdot(float *va, float *vb)
+vdot(float * va, float * vb)
 {
   return (va[0]*vb[0] + va[1]*vb[1] + va[2]*vb[2]);
 }
 
 /** Set v to cross product of length 3 vectors va and vb **/
 static void
-vcross(float *va, float *vb, float *v)
+vcross(float * va, float * vb, float * v)
 {
   v[0] = va[1]*vb[2] - va[2]*vb[1];
   v[1] = va[2]*vb[0] - va[0]*vb[2];
@@ -1358,18 +1358,18 @@ Qt_FromMatrix(HMatrix mat)
     if (mat[Y][Y] > mat[X][X]) h = Y;
     if (mat[Z][Z] > mat[h][h]) h = Z;
     switch (h) {
-#define caseMacro(i,j,k,I,J,K) \
+#define caseMacro(i, j, k, I, J, K) \
 	    case I:\
-		s = sqrt( (mat[I][I] - (mat[J][J]+mat[K][K])) + mat[W][W] );\
+		s = sqrt((mat[I][I] - (mat[J][J]+mat[K][K])) + mat[W][W]);\
 		qu.i = s*0.5;\
 		s = 0.5 / s;\
 		qu.j = (mat[I][J] + mat[J][I]) * s;\
 		qu.k = (mat[K][I] + mat[I][K]) * s;\
 		qu.w = (mat[K][J] - mat[J][K]) * s;\
 		break
-      caseMacro(x,y,z,X,Y,Z);
-      caseMacro(y,z,x,Y,Z,X);
-      caseMacro(z,x,y,Z,X,Y);
+      caseMacro(x, y, z, X, Y, Z);
+      caseMacro(y, z, x, Y, Z, X);
+      caseMacro(z, x, y, Z, X, Y);
     }
   }
   if (mat[W][W] != 1.0) qu = Qt_Scale(qu, 1/sqrt(mat[W][W]));
@@ -1378,7 +1378,7 @@ Qt_FromMatrix(HMatrix mat)
 
 /******* Decomp Auxiliaries *******/
 
-static HMatrix mat_id = {{1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}};
+static HMatrix mat_id = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
 
 /** Compute either the 1 or infinity norm of M, depending on tpose **/
 static float
@@ -1414,7 +1414,7 @@ find_max_col(HMatrix M)
 
 /** Setup u for Household reflection to zero all v components but first **/
 static void
-make_reflector(float *v, float *u)
+make_reflector(float * v, float * u)
 {
   float s = sqrt(vdot(v, v));
   u[0] = v[0]; u[1] = v[1];
@@ -1425,7 +1425,7 @@ make_reflector(float *v, float *u)
 
 /** Apply Householder reflection represented by u to column vectors of M **/
 static void
-reflect_cols(HMatrix M, float *u)
+reflect_cols(HMatrix M, float * u)
 {
   int i, j;
   for (i=0; i<3; i++) {
@@ -1435,7 +1435,7 @@ reflect_cols(HMatrix M, float *u)
 }
 /** Apply Householder reflection represented by u to row vectors of M **/
 static void
-reflect_rows(HMatrix M, float *u)
+reflect_rows(HMatrix M, float * u)
 {
   int i, j;
   for (i=0; i<3; i++) {
@@ -1450,7 +1450,7 @@ do_rank1(HMatrix M, HMatrix Q)
 {
   float v1[3], v2[3], s;
   int col;
-  mat_copy(Q,=,mat_id,4);
+  mat_copy(Q, =, mat_id, 4);
   /* If rank(M) is 1, we should find a non-zero column in M */
   col = find_max_col(M);
   if (col<0) return; /* Rank is 0 */
@@ -1506,7 +1506,7 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
   HMatrix Mk, MadjTk, Ek;
   float det, M_one, M_inf, MadjT_one, MadjT_inf, E_one, gamma, g1, g2;
   int i, j;
-  mat_tpose(Mk,=,M,3);
+  mat_tpose(Mk, =, M, 3);
   M_one = norm_one(Mk);  M_inf = norm_inf(Mk);
   do {
     adjoint_transpose(Mk, MadjTk);
@@ -1516,13 +1516,13 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
     gamma = sqrt(sqrt((MadjT_one*MadjT_inf)/(M_one*M_inf))/fabs(det));
     g1 = gamma*0.5;
     g2 = 0.5/(gamma*det);
-    mat_copy(Ek,=,Mk,3);
-    mat_binop(Mk,=,g1*Mk,+,g2*MadjTk,3);
-    mat_copy(Ek,-=,Mk,3);
+    mat_copy(Ek, =, Mk, 3);
+    mat_binop(Mk, =, g1*Mk, +, g2*MadjTk, 3);
+    mat_copy(Ek, -=, Mk, 3);
     E_one = norm_one(Ek);
     M_one = norm_one(Mk);  M_inf = norm_inf(Mk);
   } while (E_one>(M_one*TOL));
-  mat_tpose(Q,=,Mk,3); mat_pad(Q);
+  mat_tpose(Q, =, Mk, 3); mat_pad(Q);
   mat_mult(Mk, M, S);	 mat_pad(S);
   for (i=0; i<3; i++) for (j=i; j<3; j++)
     S[i][j] = S[j][i] = 0.5*(S[i][j]+S[j][i]);
@@ -1540,11 +1540,11 @@ static HVect
 spect_decomp(HMatrix S, HMatrix U)
 {
   HVect kv;
-  double Diag[3],OffD[3]; /* OffD is off-diag (by omitted index) */
-  double g,h,fabsh,fabsOffDi,t,theta,c,s,tau,ta,OffDq,a,b;
-  static char nxt[] = {Y,Z,X};
+  double Diag[3], OffD[3]; /* OffD is off-diag (by omitted index) */
+  double g, h, fabsh, fabsOffDi, t, theta, c, s, tau, ta, OffDq, a, b;
+  static char nxt[] = {Y, Z, X};
   int sweep, i, j;
-  mat_copy(U,=,mat_id,4);
+  mat_copy(U, =, mat_id, 4);
   Diag[X] = S[X][X]; Diag[Y] = S[Y][Y]; Diag[Z] = S[Z][Z];
   OffD[X] = S[Y][Z]; OffD[Y] = S[Z][X]; OffD[Z] = S[X][Y];
   for (sweep=20; sweep>0; sweep--) {
@@ -1594,12 +1594,12 @@ spect_decomp(HMatrix S, HMatrix U)
  * Proceedings of Graphics Interface 1992. Details on p. 262-263.
  */
 static Quat
-snuggle(Quat q, HVect *k)
+snuggle(Quat q, HVect * k)
 {
 #define SQRTHALF (0.7071067811865475244)
-#define sgn(n,v)    ((n)?-(v):(v))
-#define swap(a,i,j) {a[3]=a[i]; a[i]=a[j]; a[j]=a[3];}
-#define cycle(a,p)  if (p) {a[3]=a[0]; a[0]=a[1]; a[1]=a[2]; a[2]=a[3];}\
+#define sgn(n, v)    ((n)?-(v):(v))
+#define swap(a, i, j) {a[3]=a[i]; a[i]=a[j]; a[j]=a[3];}
+#define cycle(a, p)  if (p) {a[3]=a[0]; a[0]=a[1]; a[1]=a[2]; a[2]=a[3];}\
 		    else   {a[3]=a[2]; a[2]=a[1]; a[1]=a[0]; a[0]=a[3];}
   Quat p;
   float ka[4];
@@ -1611,18 +1611,18 @@ snuggle(Quat q, HVect *k)
     Quat qtoz, qp;
     unsigned neg[3], win;
     double mag[3], t;
-    static Quat qxtoz = {0,SQRTHALF,0,SQRTHALF};
-    static Quat qytoz = {SQRTHALF,0,0,SQRTHALF};
-    static Quat qppmm = { 0.5, 0.5,-0.5,-0.5};
+    static Quat qxtoz = {0, SQRTHALF, 0, SQRTHALF};
+    static Quat qytoz = {SQRTHALF, 0, 0, SQRTHALF};
+    static Quat qppmm = { 0.5, 0.5, -0.5, -0.5};
     static Quat qpppp = { 0.5, 0.5, 0.5, 0.5};
-    static Quat qmpmm = {-0.5, 0.5,-0.5,-0.5};
-    static Quat qpppm = { 0.5, 0.5, 0.5,-0.5};
+    static Quat qmpmm = {-0.5, 0.5, -0.5, -0.5};
+    static Quat qpppm = { 0.5, 0.5, 0.5, -0.5};
     static Quat q0001 = { 0.0, 0.0, 0.0, 1.0};
     static Quat q1000 = { 1.0, 0.0, 0.0, 0.0};
     switch (turn) {
     default: return (Qt_Conj(q));
-    case X: q = Qt_Mul(q, qtoz = qxtoz); swap(ka,X,Z) break;
-    case Y: q = Qt_Mul(q, qtoz = qytoz); swap(ka,Y,Z) break;
+    case X: q = Qt_Mul(q, qtoz = qxtoz); swap(ka, X, Z) break;
+    case Y: q = Qt_Mul(q, qtoz = qytoz); swap(ka, Y, Z) break;
     case Z: qtoz = q0001; break;
     }
     q = Qt_Conj(q);
@@ -1634,12 +1634,12 @@ snuggle(Quat q, HVect *k)
     else {if (mag[1]>mag[2]) win = 1; else win = 2;}
     switch (win) {
     case 0: if (neg[0]) p = q1000; else p = q0001; break;
-    case 1: if (neg[1]) p = qppmm; else p = qpppp; cycle(ka,0) break;
-    case 2: if (neg[2]) p = qmpmm; else p = qpppm; cycle(ka,1) break;
+    case 1: if (neg[1]) p = qppmm; else p = qpppp; cycle(ka, 0) break;
+    case 2: if (neg[2]) p = qmpmm; else p = qpppm; cycle(ka, 1) break;
     }
     qp = Qt_Mul(q, p);
     t = sqrt(mag[win]+0.5);
-    p = Qt_Mul(p, Qt_(0.0,0.0,-qp.z/t,qp.w/t));
+    p = Qt_Mul(p, Qt_(0.0, 0.0, -qp.z/t, qp.w/t));
     p = Qt_Mul(qtoz, Qt_Conj(p));
   }
   else {
@@ -1665,16 +1665,16 @@ snuggle(Quat q, HVect *k)
     if (all>two) {
       if (all>big) {/*all*/
         {int i; for (i=0; i<4; i++) pa[i] = sgn(neg[i], 0.5);}
-        cycle(ka,par)
-          } else {/*big*/ pa[hi] = sgn(neg[hi],1.0);}
+        cycle(ka, par)
+          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0);}
     }
     else {
       if (two>big) {/*two*/
-        pa[hi] = sgn(neg[hi],SQRTHALF); pa[lo] = sgn(neg[lo], SQRTHALF);
+        pa[hi] = sgn(neg[hi], SQRTHALF); pa[lo] = sgn(neg[lo], SQRTHALF);
         if (lo>hi) {hi ^= lo; lo ^= hi; hi ^= lo;}
         if (hi==W) {hi = "\001\002\000"[lo]; lo = 3-hi-lo;}
-        swap(ka,hi,lo)
-          } else {/*big*/ pa[hi] = sgn(neg[hi],1.0);}
+        swap(ka, hi, lo)
+          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0);}
     }
     p.x = -pa[0]; p.y = -pa[1]; p.z = -pa[2]; p.w = pa[3];
   }
@@ -1692,7 +1692,7 @@ snuggle(Quat q, HVect *k)
  * Proceedings of Graphics Interface 1992.
  */
 static void
-decomp_affine(HMatrix A, AffineParts *parts)
+decomp_affine(HMatrix A, AffineParts * parts)
 {
   HMatrix Q, S, U;
   Quat p;
@@ -1700,7 +1700,7 @@ decomp_affine(HMatrix A, AffineParts *parts)
   parts->t = Qt_(A[X][W], A[Y][W], A[Z][W], 0);
   det = polar_decomp(A, Q, S);
   if (det<0.0) {
-    mat_copy(Q,=,-Q,3);
+    mat_copy(Q, =, -Q, 3);
     parts->f = -1;
   }
   else parts->f = 1;
