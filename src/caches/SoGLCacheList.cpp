@@ -285,6 +285,7 @@ SoGLCacheList::close(SoGLRenderAction * action)
     if (THIS->opencache) {
       THIS->opencache->unref();
       THIS->opencache = NULL;
+      THIS->numdiscarded += 1;
 
 #if COIN_DEBUG
       if (COIN_DEBUG_CACHING) {
