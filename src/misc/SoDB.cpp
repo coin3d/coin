@@ -511,13 +511,6 @@ SoDB::init(void)
 void
 SoDBP::clean(void)
 {
-#ifdef HAVE_SOUND
-#ifndef _WIN32
-  // FIXME: For some reasen, this crashes in the OpenAL32.dll on
-  // Windows. Investigate.  20021104 thammer.
-  SoAudioDevice::instance()->cleanup();
-#endif
-#endif // HAVE_SOUND
 #if COIN_DEBUG
   // Avoid having the SoSensorManager instance trigging the callback
   // into the So@Gui@ class -- not only have it possible "died", but

@@ -61,10 +61,14 @@
 #include <Inventor/C/glue/openal_wrapper.h>
 #endif // HAVE_SOUND
 
+#include <stdlib.h> // for atexit
+
 class SoAudioDeviceP {
 public:
   SoAudioDeviceP(SoAudioDevice * master) : master(master) {};
   SoAudioDevice *master;
+
+  void internal_cleanup();
 
   static SoAudioDevice *singleton;
 
@@ -78,6 +82,7 @@ public:
   SbBool initOK;
   float lastGain;
 
+  static SbBool atexitcalled;
 };
 
 #undef PRIVATE
@@ -86,6 +91,7 @@ public:
 #define PUBLIC(p) ((p)->master)
 
 SoAudioDevice *SoAudioDeviceP::singleton = NULL;
+SbBool SoAudioDeviceP::atexitcalled= FALSE;
 
 /*!
   Returns a pointer to the SoAudioDevice class, which is a singleton.
@@ -112,6 +118,9 @@ SoAudioDevice::SoAudioDevice()
   PRIVATE(this)->enabled = FALSE;
   PRIVATE(this)->initOK = FALSE;
   PRIVATE(this)->lastGain = 1.0f;
+  if (!SoAudioDeviceP::atexitcalled)
+    atexit(SoAudioDeviceP::clean);
+  SoAudioDeviceP::atexitcalled = TRUE;
 }
 
 /*!
@@ -120,10 +129,7 @@ SoAudioDevice::SoAudioDevice()
 
 SoAudioDevice::~SoAudioDevice()
 {
-  this->cleanup();
-
   delete PRIVATE(this);
-  SoAudioDeviceP::singleton = NULL;
 }
 
 /*!
@@ -181,7 +187,7 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
     return FALSE;
   }
 
-  this->cleanup();
+  PRIVATE(this)->internal_cleanup();
 
   PRIVATE(this)->device = 
     openal_wrapper()->alcOpenDevice((unsigned char*)devicename.getString());
@@ -218,7 +224,8 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
   //
   // 20021029 mortene.
 
-  PRIVATE(this)->context = openal_wrapper()->alcCreateContext(PRIVATE(this)->device, NULL);
+  PRIVATE(this)->context = 
+    openal_wrapper()->alcCreateContext(PRIVATE(this)->device, NULL);
   openal_wrapper()->alcMakeContextCurrent(PRIVATE(this)->context);
 
   // Clear Error Code
@@ -286,27 +293,35 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
 
 void SoAudioDevice::cleanup()
 {
+  PRIVATE(this)->internal_cleanup();
+
+  if (SoAudioDeviceP::singleton)
+    delete SoAudioDeviceP::singleton;
+  SoAudioDeviceP::singleton = NULL;
+}
+
+void SoAudioDeviceP::internal_cleanup()
+{
   if (coin_debug_audio()) {
     SoDebugError::postInfo("SoAudioDevice::cleanup", "Closing audio device");
   }
 
-  if (!this->haveSound())
-    return;
-
-  this->disable();
+  if (PUBLIC(this)->haveSound()) {
+    PUBLIC(this)->disable();
 
 #ifdef HAVE_SOUND
-  if (PRIVATE(this)->context != NULL)
-    openal_wrapper()->alcDestroyContext(PRIVATE(this)->context);
-  PRIVATE(this)->context = NULL;
+    if (this->context != NULL)
+      openal_wrapper()->alcDestroyContext(this->context);
+    this->context = NULL;
 
-  //Close device
-  if (PRIVATE(this)->device != NULL)
-    openal_wrapper()->alcCloseDevice(PRIVATE(this)->device);
-  PRIVATE(this)->device = NULL;
+    //Close device
+    if (this->device != NULL)
+      openal_wrapper()->alcCloseDevice(this->device);
+    this->device = NULL;
 #endif // HAVE_SOUND
 
-  PRIVATE(this)->initOK = FALSE;
+    this->initOK = FALSE;
+  }
 }
   
 /*!
@@ -403,6 +418,15 @@ SoAudioDevice::mute(SbBool mute)
 void
 SoAudioDeviceP::clean()
 {
+#ifndef _WIN32
+  // Note: This crashes under Win32 if coin is used as a dll because
+  // OpenAL32.dll is unloaded before the coin dll, and this function
+  // is called as part of unloading the coin dll.
+  // 20021104 thammer.
   SoAudioDevice::instance()->cleanup();
-  delete SoAudioDevice::instance();
+#else 
+  if (SoAudioDeviceP::singleton)
+    delete SoAudioDeviceP::singleton;
+  SoAudioDeviceP::singleton = NULL;
+#endif // _WIN32
 }
