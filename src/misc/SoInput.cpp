@@ -1199,8 +1199,6 @@ SoInput::addReference(const SbName & name, SoBase * base,
                       SbBool /* addToGlobalDict */)
 {
   this->refdict.enter((unsigned long)name.getString(), (void *) base);
-  // FIXME: is this necessary? Looks suspicious. 19990626 mortene.
-  base->setName(name);
 }
 
 /*!

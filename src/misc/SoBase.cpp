@@ -634,9 +634,6 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
 void
 SoBase::setInstancePrefix(const SbString & c)
 {
-#if COIN_DEBUG
-  // FIXME: scan c for invalid characters? 19990701 mortene.
-#endif // COIN_DEBUG
   SoBase::refwriteprefix = c;
 }
 
@@ -897,7 +894,20 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
   SbBool retval = TRUE;
 
   if ((base = SoBase::createInstance(in, className))) {
-    if (!(!refName)) in->addReference(refName, base);
+    if (!(!refName)) {
+      // Set up new entry in reference hash -- with full name.
+      in->addReference(refName, base);
+
+      // Remove reference counter suffix, if any (i.e. "goldsphere+2"
+      // becomes "goldsphere").
+      SbString instancename = refName.getString();
+      const char * strp = instancename.getString();
+      const char * occ = strstr(strp, SoBase::refwriteprefix.getString());
+      if (occ) instancename = instancename.getSubString(0, occ - strp - 1);
+
+      // Set name identifier for newly created SoBase instance.
+      base->setName(instancename);
+    }
 
     unsigned short flags = 0;
     if (in->isBinary())
