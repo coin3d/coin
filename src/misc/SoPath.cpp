@@ -315,9 +315,12 @@ SoPath::append(const SoPath * const frompath)
 // SoNode.
 //
 static inline SbBool
-has_hidden_children(SoNode * node)
+has_hidden_children(const SoNode * node)
 {
-  return (node->getChildren() != NULL) &&
+  assert(node);
+
+  return
+    (node->getChildren() != NULL) &&
     !node->isOfType(SoGroup::getClassTypeId());
 }
 
@@ -1088,12 +1091,20 @@ void
 SoPath::setFirstHidden(void)
 {
   this->firsthidden = -1;
-  int n = this->nodes.getLength();
-  for (int i = 0; i < n; i++) {
-    if (has_hidden_children(this->nodes[i])) {
+
+  const int nr = this->nodes.getLength();
+  for (int i = 0; i < nr; i++) {
+    const SoNode * n = this->nodes[i];
+    if (n == NULL) { continue; } // this is a valid case, for instance
+                                 // if getLength() is called right
+                                 // after SoAction::pushCurPath(void)
+                                 // has been invoked
+
+    if (has_hidden_children(n)) {
       this->firsthidden = i;
       break;
     }
   }
+
   this->firsthiddendirty = FALSE;
 }
