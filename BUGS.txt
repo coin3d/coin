@@ -6,7 +6,7 @@
 
     ---8<-------8<-------8<-------8<-------8<-------8<-------8<----
     #Inventor V2.1 ascii
-    
+
     Separator {
        TransformerDragger {
           translator1Switch Switch { }
@@ -67,9 +67,9 @@
     #include <Inventor/nodes/SoSeparator.h>
     #include <Inventor/Qt/SoQt.h>
     #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
-    
+
     SoCoordinate3 *coord;
-    
+
     void mouseMoveCB(void *userData, SoEventCallback *eventCB)
     {
       const SoPickedPoint *pickP = eventCB->getPickedPoint();
@@ -79,7 +79,7 @@
         coord->point.setValue(xyz);
       }
     }
-    
+
     const char * nurbscurve = "#Inventor V2.1 ascii\n\n"
     "Separator {"
     "   PickStyle {"
@@ -127,15 +127,15 @@
     "       1 ]"
     "   }"
     "}";
-    
-    
+
+
     int
     main(int argc, char ** argv)
     {
       QWidget *window = SoQt::init(argv[0]);
-    
+
       SoSeparator *root = new SoSeparator;
-     
+
       //add a green marker to appear under cursor
       SoSeparator *marksep = new SoSeparator;
       root->addChild(marksep);
@@ -147,17 +147,17 @@
       SoMarkerSet *mark = new SoMarkerSet;
       marksep->addChild(mark);
       mark->markerIndex=SoMarkerSet::PLUS_5_5;
-      
+
       SoEventCallback *myEventCB = new SoEventCallback;
       root->addChild(myEventCB);
       myEventCB->addEventCallback(SoLocation2Event::getClassTypeId(),mouseMoveCB);
-    
+
       SoInput in;
       in.setBuffer((void *)nurbscurve, strlen(nurbscurve));
       SoSeparator * nurbsep = SoDB::readAll(&in);
       assert(nurbsep);
       root->addChild(nurbsep);
-    
+
       SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
       viewer->setSceneGraph(root);
       viewer->show();
@@ -189,7 +189,7 @@
     ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
 
     #Inventor V2.5 ascii
-    
+
     Group {
        MultipleCopy {
           matrix [
@@ -197,26 +197,26 @@
            0 1 0 0
            0 0 1 0
            0 0 0 1,
-          
+
            1 0 0 0
            0 1 0 0
            0 0 1 0
            4 0 0 1,
-    
+
            1 0 0 0
            0 1 0 0
            0 0 1 0
            -4 0 0 1,
           ]
-          
+
           Cube {
           }
        }
-    
+
        Rotation {
           rotation 0 1 0   0.785
        }
-    
+
        Cube {
        }
     }
@@ -257,5 +257,57 @@
     cause problems like this.)
 
     mortene 20020625.
+
+=====================================================================
+
+013 Bounding box calculation of the scenegraph given below is
+    sub-optimal.
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #Inventor V2.1 ascii
+
+    Separator {
+       Separator {
+          Cube { }
+
+          BaseColor { rgb 1 0 0 }
+          Translation { translation +4 0 0 }
+          Separator {
+    	 Transform {
+    	    translation 0 -0.5 0
+    	    rotation 0 0 1 0.78
+    	    scaleFactor 0.5 2 3
+    	    scaleOrientation 1 0 0 0.78
+    	    center 0.5 0.5 0.5
+    	 }
+    	 Cube { }
+          }
+       }
+
+       Translation { translation 0 +6 0 }
+       Separator {
+          Cube { }
+
+          BaseColor { rgb 1 0 0 }
+          Translation { translation +4 0 0 }
+          Separator {
+    	 Transform {
+    	    translation 10 -0.5 0 ~
+    	    rotation 0 0 1 0.78
+    	    scaleFactor 0.5 2 3
+    	    scaleOrientation 1 0 0 0.78
+    	    center 0.5 0.5 0.5
+    	 }
+    	 Cube { }
+          }
+       }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    A good strategy for investigating the bug is using the
+    SoGuiExamples/engines/computexfbox example code to load the scene
+    and view the resulting bbox.
+
+    mortene 20020729.
 
 =====================================================================
