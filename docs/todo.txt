@@ -48,3 +48,50 @@ STUFF TO FIX IN COIN
   The place to start is SbImage, but SbImage's "clients" might also
   needs changes. We will probably also have to fix libsimage to make
   more specific error reports.
+
+
+* A "stopwatch" for built-in profiling support
+  2001-11-27  Morten Eriksen  <mortene@sim.no>
+
+  Support for on-the-fly profiling would be very nice. It could help
+  us with the heuristics for the OpenGL displaylist render caching,
+  for instance.
+
+  We can't use the real-time time of day for this -- we need to
+  measure the process/CPU-time for just the current thread to get
+  proper data for this type of profiling.
+
+  On MSWin we could use "GetProcessTimes()" and there's a POSIX
+  function for doing it on UNIX-style platforms; "times()" (plus we
+  need to use the POSIX "sysconf(_SC_CLK_TCK)" to find the clocktick
+  value to multiply with).
+
+  On Mac it looks like there's a function "clock()" which does
+  something similar. Also, I expect Mac OS X to have the POSIX times()
+  and sysconf() methods.
+
+  Interface suggestion:
+
+        cc_time cc_time_get_cpu_time()  (public C++ API: SbTime::getCPUTime())
+
+  ..and then a "stopwatch-like" interface on top of that:
+
+        cc_stopwatch * cc_stopwatch_create(void)
+        void cc_stopwatch_start(cc_stopwatch *)
+        cc_time cc_stopwatch_stop(cc_stopwatch *)
+        void cc_stopwatch_destroy(cc_stopwatch *)
+
+  ..where cc_stopwatch would simply be
+
+        struct cc_stopwatch {
+          cc_time start;
+        };
+
+  ..or perhaps it could be just a
+
+        typedef cc_time cc_stopwatch;
+
+
+  One possible "gotcha": the OS-specific cpu-time functions must have
+  a resolution high enough to time even very short intervals for this
+  to be useful, I would assume.
