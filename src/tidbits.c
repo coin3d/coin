@@ -1017,6 +1017,8 @@ coin_viewvolume_jitter(int numpasses, int curpass, const int * vpsize, float * j
 
 /**************************************************************************/
 
+void free_std_fds(void);
+
 typedef void(*atexit_func_type)(void);
 
 static cc_list * atexit_list = NULL;
@@ -1077,6 +1079,10 @@ coin_atexit_cleanup(void)
     free(data->name);
     free((void*)data);
   }
+
+  // Close stdin/stdout/stderr if any of them have been opened
+  free_std_fds();
+
   cc_list_destruct(atexit_list);
   atexit_list = NULL;
   isexiting = FALSE;
@@ -1189,10 +1195,22 @@ coin_is_exiting(void)
   then open a new one?  20030217 larsa
 */
 
+static FILE * coin_stdin = NULL;
+static FILE * coin_stdout = NULL;
+static FILE * coin_stderr = NULL;
+
+void
+free_std_fds(void)
+{
+  // Close stdin/stdout/stderr
+  if (coin_stdin) { fclose(coin_stdin); coin_stdin = NULL; }
+  if (coin_stdout) { fclose(coin_stdout); coin_stdout = NULL; }
+  if (coin_stderr) { fclose(coin_stderr); coin_stderr = NULL; }
+}
+
 FILE *
 coin_get_stdin(void)
 {
-  static FILE * coin_stdin = NULL;
   if ( ! coin_stdin ) coin_stdin = fdopen(STDIN_FILENO, "r");
   return coin_stdin;
 }
@@ -1200,7 +1218,6 @@ coin_get_stdin(void)
 FILE *
 coin_get_stdout(void)
 {
-  static FILE * coin_stdout = NULL;
   if ( ! coin_stdout ) coin_stdout = fdopen(STDOUT_FILENO, "w");
   return coin_stdout;
 }
@@ -1208,7 +1225,6 @@ coin_get_stdout(void)
 FILE *
 coin_get_stderr(void)
 {
-  static FILE * coin_stderr = NULL;
   if ( ! coin_stderr ) coin_stderr = fdopen(STDERR_FILENO, "w");
   return coin_stderr;
 }
