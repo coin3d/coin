@@ -7605,7 +7605,7 @@ fi
 AC_DEFUN([SIM_AC_COMPILER_BUILTIN_EXPECT], [
 AC_MSG_CHECKING([for __builtin_expect()])
 sim_ac_builtin_expect=false
-AC_TRY_COMPILE([
+AC_TRY_LINK([
   #include <assert.h>
 ], [
   if ( __builtin_expect(!!(1), 1) ? 1 : 0 ) {
