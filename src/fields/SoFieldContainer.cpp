@@ -710,9 +710,10 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
       // We need to do some extra work when copying nodes that are
       // ProtoInstance root nodes. We create a new ProtoInstance node,
       // and register its root node as the copy. pederb, 2002-06-17
-      SoProto * proto = protoinst->getPROTODefinition();
+      SoProto * proto = protoinst->getProtoDefinition();
       SoProtoInstance * newinst = proto->createProtoInstance();
       cp = newinst->getRootNode();
+      newinst->copyContents(protoinst, FALSE);
       SoFieldContainer::addCopy(orig, cp); 
     }
     else {

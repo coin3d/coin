@@ -56,9 +56,10 @@ public:
   void setRootNode(SoNode * root);
   SoNode * getRootNode(void);
 
-  SoProto * getPROTODefinition(void) const;
+  SoProto * getProtoDefinition(void) const;
   SbName getProtoName(void) const;
-  virtual void writeInstance(SoOutput * out);
+  
+  virtual void write(SoWriteAction * action);
 
 protected:
   virtual ~SoProtoInstance();

@@ -37,6 +37,7 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/SbDict.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/actions/SoWriteAction.h>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -141,7 +142,7 @@ SoProtoInstance::getFieldData(void) const
   Returns the PROTO definition for this instance.
 */
 SoProto *
-SoProtoInstance::getPROTODefinition(void) const
+SoProtoInstance::getProtoDefinition(void) const
 {
   return THIS->protodef;
 }
@@ -192,15 +193,19 @@ SoProtoInstance::getRootNode(void)
 
 // Doc in parent
 void
-SoProtoInstance::writeInstance(SoOutput * out)
+SoProtoInstance::write(SoWriteAction * action)
 {
+#if 0 // just testing, disabled pederb, 2002-06-18
+  SoOutput * out = action->getOutput();
   if (out->getStage() == SoOutput::COUNT_REFS) {
     this->addWriteReference(out, FALSE);
   }
   else if (out->getStage() == SoOutput::WRITE) {
-    
   }
   else assert(0 && "unknown stage");
+#else
+  inherited::write(action);
+#endif
 }
 
 // Doc in parent

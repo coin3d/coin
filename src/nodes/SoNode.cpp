@@ -1172,9 +1172,10 @@ SoNode::addToCopyDict(void) const
     // and register its root node as the copy. pederb, 2002-06-17
     SoProtoInstance * inst = SoProtoInstance::findProtoInstance(this);
     if (inst) {
-      SoProto * proto = inst->getPROTODefinition();
+      SoProto * proto = inst->getProtoDefinition();
       SoProtoInstance * newinst = proto->createProtoInstance();
       cp = newinst->getRootNode();
+      newinst->copyContents(inst, FALSE);
       assert(cp);      
       SoFieldContainer::addCopy(this, cp);
     }
