@@ -62,7 +62,7 @@
 #endif // COIN_THREADSAFE
 
 #include <Inventor/system/gl.h>
-#include <../glue/GLUWrapper.h>
+#include <Inventor/C/glue/GLUWrapper.h>
 
 // Convenience function for access to OpenGL wrapper from an SoState
 // pointer.

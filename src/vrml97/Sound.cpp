@@ -232,7 +232,7 @@
 #endif
 
 #ifdef HAVE_SOUND
-#include <../glue/openal_wrapper.h>
+#include <Inventor/C/glue/openal_wrapper.h>
 #endif
 
 #define DEBUG_AUDIO 0

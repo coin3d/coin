@@ -159,7 +159,7 @@
 #include <Inventor/threads/SbThreadAutoLock.h>
 #endif
 
-#include <../glue/simage_wrapper.h>
+#include <Inventor/C/glue/simage_wrapper.h>
 
 #define DEBUG_AUDIO 0
 

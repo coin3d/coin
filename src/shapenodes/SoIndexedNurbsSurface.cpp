@@ -51,7 +51,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
-#include <../glue/GLUWrapper.h>
+#include <Inventor/C/glue/GLUWrapper.h>
 
 #include <coindefs.h> // COIN_OBSOLETED()
 

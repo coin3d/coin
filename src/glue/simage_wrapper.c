@@ -21,31 +21,29 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#else /* No config.h? Hmm. Assume the simage library is available for linking. */
+#define SIMAGEWRAPPER_ASSUME_SIMAGE
+#endif /* !HAVE_CONFIG_H */
+
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#ifdef HAVE_LIBSIMAGE /* In case we're _not_ doing runtime linking. */
+#define SIMAGEWRAPPER_ASSUME_SIMAGE
+#include <simage.h>
+#endif /* SIMAGEWRAPPER_ASSUME_SIMAGE */
+
 #include <Inventor/C/basic.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#else /* No config.h? Hmm. Assume the simage library is available for linking. */
-#define SIMAGEWRAPPER_ASSUME_SIMAGE 1
-#endif /* !HAVE_CONFIG_H */
-
-#ifdef HAVE_LIBSIMAGE /* In case we're _not_ doing runtime linking. */
-#define SIMAGEWRAPPER_ASSUME_SIMAGE 1
-#endif /* HAVE_LIBSIMAGE */
-
-#if SIMAGEWRAPPER_ASSUME_SIMAGE
-#include <simage.h>
-#endif /* SIMAGEWRAPPER_ASSUME_SIMAGE */
-
-#include <simage_wrapper.h>
+#include <Inventor/C/glue/simage_wrapper.h>
 
 static simage_wrapper_t * simage_instance = NULL;
 static cc_libhandle simage_libhandle = NULL;

@@ -27,9 +27,9 @@
 
 #include <stdlib.h>
 #include <Inventor/C/basic.h>
-#include "gl_glx.h"
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/glue/gl_glx.h>
 
 static void * glxglue_display = NULL;
 static int glxglue_screen = -1;

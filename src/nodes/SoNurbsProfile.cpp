@@ -45,7 +45,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
-#include <../glue/GLUWrapper.h>
+#include <Inventor/C/glue/GLUWrapper.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>

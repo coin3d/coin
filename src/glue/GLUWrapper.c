@@ -21,21 +21,22 @@
  *
 \**************************************************************************/
 
-#include <GLUWrapper.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/glue/dl.h>
-#include <Inventor/C/errors/debugerror.h>
-
-#include <assert.h>
-#include <Inventor/C/tidbits.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #else /* No config.h? Hmm. Assume the GLU library is available for linking. */
 #define GLUWRAPPER_ASSUME_GLU 1
 #endif /* !HAVE_CONFIG_H */
+
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/glue/dl.h>
+#include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/glue/GLUWrapper.h>
 
 #ifdef HAVE_GLU /* In case we're _not_ doing runtime linking. */
 #define GLUWRAPPER_ASSUME_GLU 1

@@ -24,17 +24,16 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-#if 0 /* to get proper auto-indentation in emacs */
-}
-#endif /* emacs indentation */
-
 
 void glxglue_init(cc_glglue * w);
 

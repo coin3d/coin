@@ -92,16 +92,20 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef HAVE_AGL_AGL_H
+#include <AGL/AGL.h>
+#endif /* HAVE_AGL_AGL_H */
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/errors/debugerror.h>
-
-#ifdef HAVE_AGL_AGL_H
-#include <AGL/AGL.h>
-#endif /* HAVE_AGL_AGL_H */
 
 /*
   FIXME: should make it possible to fetch a single common define from
@@ -114,13 +118,9 @@
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/C/tidbits.h>
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "gl_wgl.h"
-#include "gl_glx.h"
-#include "gl_nsgl.h"
+#include <Inventor/C/glue/gl_wgl.h>
+#include <Inventor/C/glue/gl_glx.h>
+#include <Inventor/C/glue/gl_nsgl.h>
 
 static cc_libhandle glglue_self_handle = NULL;
 static SbBool glglue_tried_open_self = FALSE;

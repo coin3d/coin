@@ -1,3 +1,6 @@
+#ifndef COIN_SIMAGEWRAPPER_H
+#define COIN_SIMAGEWRAPPER_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,8 +24,9 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_SIMAGEWRAPPER_H
-#define COIN_SIMAGEWRAPPER_H
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

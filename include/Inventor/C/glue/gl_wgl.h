@@ -1,5 +1,5 @@
-#ifndef COIN_GLUE_INTERNAL_NSGL_H
-#define COIN_GLUE_INTERNAL_NSGL_H
+#ifndef COIN_GLUE_INTERNAL_WGL_H
+#define COIN_GLUE_INTERNAL_WGL_H
 
 /**************************************************************************\
  *
@@ -24,19 +24,15 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-#if 0 /* to get proper auto-indentation in emacs */
-}
-#endif /* emacs indentation */
-
-
-
-void * coin_nsgl_getprocaddress(const char * fname);
-
-
+void * coin_wgl_getprocaddress(const char * fname);
 
 #ifdef __cplusplus
 }

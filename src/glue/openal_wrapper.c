@@ -21,22 +21,22 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/basic.h>
-#include <Inventor/C/threads/threadsutilp.h>
-#include <Inventor/C/glue/dl.h>
-#include <Inventor/C/tidbits.h>
-#include <Inventor/C/errors/debugerror.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#else /* No config.h? Hmm. Assume the openal library is not available for linking. */
+#define OPENALWRAPPER_ASSUME_OPENAL 0
+#endif /* !HAVE_CONFIG_H */
 
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#else /* No config.h? Hmm. Assume the openal library is not available for linking. */
-#define OPENALWRAPPER_ASSUME_OPENAL 0
-#endif /* !HAVE_CONFIG_H */
+#include <Inventor/C/basic.h>
+#include <Inventor/C/threads/threadsutilp.h>
+#include <Inventor/C/glue/dl.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/errors/debugerror.h>
 
 #ifdef HAVE_OPENAL /* In case we're _not_ doing runtime linking. */
 #define OPENALWRAPPER_ASSUME_OPENAL 1
@@ -52,7 +52,7 @@
 #endif 
 #endif /* OPENALWRAPPER_ASSUME_OPENAL */
 
-#include <openal_wrapper.h>
+#include <Inventor/C/glue/openal_wrapper.h>
 
 static openal_wrapper_t * openal_instance = NULL;
 static cc_libhandle openal_libhandle = NULL;

@@ -165,7 +165,7 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <../glue/simage_wrapper.h>
+#include <Inventor/C/glue/simage_wrapper.h>
 #include <math.h> // for ceil()
 #include <limits.h> // SHRT_MAX
 

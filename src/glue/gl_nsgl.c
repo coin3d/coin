@@ -25,12 +25,13 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include "gl_nsgl.h"
 #include <stdlib.h>
 #include <string.h>
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 #include <Inventor/C/errors/debugerror.h>
+#include <Inventor/C/glue/gl_nsgl.h>
 
 // FIXME: We probably should use a configure-time check for the
 // availability of the NSSymbol functions instead of a simple platform

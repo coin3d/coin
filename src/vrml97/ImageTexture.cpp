@@ -109,7 +109,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/C/tidbits.h>
 #include <assert.h>
-#include <../glue/simage_wrapper.h>
+#include <Inventor/C/glue/simage_wrapper.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

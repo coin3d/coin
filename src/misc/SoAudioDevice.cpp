@@ -58,7 +58,7 @@
 #include "AudioTools.h"
 
 #ifdef HAVE_SOUND
-#include <../glue/openal_wrapper.h>
+#include <Inventor/C/glue/openal_wrapper.h>
 #endif // HAVE_SOUND
 
 class SoAudioDeviceP {

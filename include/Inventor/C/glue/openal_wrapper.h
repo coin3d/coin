@@ -1,3 +1,6 @@
+#ifndef COIN_OPENALWRAPPER_H
+#define COIN_OPENALWRAPPER_H
+
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -21,12 +24,14 @@
  *
 \**************************************************************************/
 
-#ifndef COIN_OPENALWRAPPER_H
-#define COIN_OPENALWRAPPER_H
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
+
 #if HAVE_WINDOWS_H
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
