@@ -26,6 +26,7 @@
 
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SoAuditorList.h>
+#include <Inventor/C/base/rbptree.h>
 
 class SbString;
 class SoBaseList;
@@ -60,7 +61,7 @@ public:
   void addAuditor(void * const auditor, const SoNotRec::Type type);
   void removeAuditor(void * const auditor, const SoNotRec::Type type);
   const SoAuditorList & getAuditors(void) const;
-
+  
   virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
   SbBool shouldWrite(void);
 
@@ -130,16 +131,10 @@ private:
     // more than one machine word on a 32-bit platform.
   } objdata;
 #endif // DOXYGEN_SKIP_THIS
-
-  // Don't convert this to a pointer reference, as practically
-  // speaking all SoBase derived objects have auditors -- so the list
-  // will be allocated anyway, and we won't save any space (on the
-  // contrary, we'll use a few extra bytes for the pointer on each
-  // instance).
-  //
-  // But we should look into the possibility of slimming down
-  // SoAuditorList.
-  SoAuditorList auditors;
+  
+  void doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type);  
+  static void rbptree_notify_cb(void * auditor, void * type, void * closure);
+  cc_rbptree auditortree;
 
   static SbDict * name2obj;
   static SbDict * obj2name;

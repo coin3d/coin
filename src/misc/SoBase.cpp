@@ -43,6 +43,7 @@
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/SbDict.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoBaseList.h>
 #include <Inventor/nodes/SoUnknownNode.h>
@@ -149,6 +150,25 @@ static const int REFID_FIRSTWRITE = -1;
 // Reference id if we don't need to add a suffix to the node name
 static const int REFID_NOSUFFIX = -2;
 
+static SbDict * sobase_auditordict = NULL;
+
+static void
+sobase_auditordict_cb(unsigned long key, void * value)
+{
+  SoAuditorList * l = (SoAuditorList*) value;
+  delete l;
+}
+
+static void
+sobase_cleanup_auditordict(void)
+{
+  if (sobase_auditordict) {
+    sobase_auditordict->applyToAll(sobase_auditordict_cb);
+    delete sobase_auditordict;
+    sobase_auditordict = NULL;
+  }
+}
+
 // Only a small number of SoBase derived objects will under usual
 // conditions have designated names, so we use a couple of static
 // SbDict objects to keep track of them. Since we avoid storing a
@@ -231,6 +251,8 @@ set_current_writeref(const SoBase * base, const int rc)
  */
 SoBase::SoBase(void)
 {
+  cc_rbptree_init(&this->auditortree);
+
   this->objdata.referencecount = 0;
   this->objdata.ingraph = FALSE;
 
@@ -265,6 +287,45 @@ SoBase::~SoBase()
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::~SoBase", "%p", this);
 #endif // debug
+
+  if (sobase_auditordict) {
+    void * tmp;
+    if (sobase_auditordict->find((unsigned long) this, tmp)) {
+      delete ((SoAuditorList*) tmp);
+      sobase_auditordict->remove((unsigned long) this);
+    }
+  }
+  cc_rbptree_clean(&this->auditortree);
+}
+
+//
+// callback from auditortree that is used to add sensor
+// auditors to the list (closure).
+//
+static void
+sobase_sensor_add_cb(void * auditor, void * type, void * closure)
+{
+  SbList<SoDataSensor *> * auditingsensors = 
+    (SbList<SoDataSensor*> *) closure;
+  
+  // use a temporary variable, since some compilers can't cast
+  // directly from void * to SoNotRec::Type
+  uint32_t tmp = (int) type;
+  switch ((SoNotRec::Type) tmp) {
+  case SoNotRec::SENSOR:
+    auditingsensors->append((SoDataSensor *)auditor);
+    break;
+
+  case SoNotRec::FIELD:
+  case SoNotRec::ENGINE:
+  case SoNotRec::CONTAINER:
+  case SoNotRec::PARENT:
+    // FIXME: should any of these get special treatment? 20000402 mortene.
+    break;
+    
+  default:
+    assert(0 && "Unknown auditor type");
+  }
 }
 
 /*!
@@ -294,31 +355,11 @@ SoBase::destroy(void)
 
   // Find all auditors that they need to cut off their link to this
   // object. I believe this is necessary only for sensors.
-
   SbList<SoDataSensor *> auditingsensors;
-
-  for (int i=0; i < this->auditors.getLength(); i++) {
-    void * auditor = this->auditors.getObject(i);
-
-    switch (this->auditors.getType(i)) {
-    case SoNotRec::SENSOR:
-      auditingsensors.append((SoDataSensor *)auditor);
-      break;
-
-    case SoNotRec::FIELD:
-    case SoNotRec::ENGINE:
-    case SoNotRec::CONTAINER:
-    case SoNotRec::PARENT:
-      // FIXME: should any of these get special treatment? 20000402 mortene.
-      break;
-
-    default:
-      assert(0 && "Unknown auditor type");
-    }
-  }
+  cc_rbptree_traverse(&this->auditortree, sobase_sensor_add_cb, &auditingsensors);
 
   // Notify sensors that we're dying.
-  for (int j=0; j < auditingsensors.getLength(); j++)
+  for (int j = 0; j < auditingsensors.getLength(); j++)
     auditingsensors[j]->dyingReference();
 
   // Link out instance name from the list of all SoBase instances.
@@ -648,6 +689,41 @@ SoBase::startNotify(void)
   SoDB::endNotify();
 }
 
+// only needed for the callback from cc_rbptree_traverse
+typedef struct {
+  int cnt;
+  int total;
+  SoNotList * list;
+  SoBase * thisp;
+  SbList <void*> notified;
+} sobase_notify_data;
+
+//
+// Callback from cc_rbptree_traverse().
+//
+void 
+SoBase::rbptree_notify_cb(void * auditor, void * type, void * closure)
+{
+  sobase_notify_data * data = (sobase_notify_data*) closure;
+  data->cnt--;
+
+  // gcc will not allow direct cast from void * to SoNotRec::Type
+  uint32_t tmptype = (uint32_t) type;
+  
+  if (data->notified.find(auditor) < 0) {
+    if (data->cnt == 0) {
+      data->thisp->doNotify(data->list, auditor, (SoNotRec::Type) tmptype);
+    }
+    else {
+      assert(data->cnt > 0);
+      // use a copy of 'l', since the notification list might change
+      // when auditors are notified
+      SoNotList listcopy(data->list);
+      data->thisp->doNotify(&listcopy, auditor, (SoNotRec::Type) tmptype);
+    }
+  }
+}
+
 /*!
   Notifies all auditors for this instance when changes are made.
 */
@@ -657,7 +733,14 @@ SoBase::notify(SoNotList * l)
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::notify", "base %p, list %p", this, l);
 #endif // debug
-  this->auditors.notify(l);
+ 
+  sobase_notify_data notdata;
+  notdata.cnt = cc_rbptree_size(&this->auditortree);
+  notdata.list = l;
+  notdata.thisp = this;
+  
+  cc_rbptree_traverse(&this->auditortree, SoBase::rbptree_notify_cb, &notdata);  
+  assert(notdata.cnt == 0);
 }
 
 /*!
@@ -669,7 +752,7 @@ SoBase::notify(SoNotList * l)
 void
 SoBase::addAuditor(void * const auditor, const SoNotRec::Type type)
 {
-  this->auditors.append(auditor, type);
+  cc_rbptree_insert(&this->auditortree, auditor, (void*) type);
 }
 
 /*!
@@ -681,7 +764,18 @@ SoBase::addAuditor(void * const auditor, const SoNotRec::Type type)
 void
 SoBase::removeAuditor(void * const auditor, const SoNotRec::Type type)
 {
-  this->auditors.remove(auditor, type);
+  cc_rbptree_remove(&this->auditortree, auditor);
+}
+
+
+static void
+sobase_audlist_add(void * pointer, void * type, void * closure)
+{
+  SoAuditorList * list = (SoAuditorList*) closure;
+  uint32_t tmp = (uint32_t) type;
+
+  
+  list->append(pointer, (SoNotRec::Type) tmp);
 }
 
 /*!
@@ -692,7 +786,28 @@ SoBase::removeAuditor(void * const auditor, const SoNotRec::Type type)
 const SoAuditorList &
 SoBase::getAuditors(void) const
 {
-  return this->auditors;
+  // FIXME: make threadsafe
+  if (sobase_auditordict == NULL) {
+    sobase_auditordict = new SbDict();
+    atexit(sobase_cleanup_auditordict);
+  }
+  
+  SoAuditorList * list = NULL;
+  void * tmp;
+  if (sobase_auditordict->find((unsigned long) this, tmp)) {
+    list = (SoAuditorList*) tmp;
+    // empty list before copying in new values
+    for (int i = 0; i < list->getLength(); i++) {
+      list->remove(i);
+    }
+  }
+  else {
+    list = new SoAuditorList;
+    sobase_auditordict->enter((unsigned long) this, (void*) list);
+  }
+  cc_rbptree_traverse(&this->auditortree, sobase_audlist_add, (void*) list);
+
+  return *list;
 }
 
 /*!
@@ -1686,3 +1801,52 @@ SoBase::readRoute(SoInput * in)
   }
   return ok;
 }
+
+//
+// private method that sends a notify to auditor based on type
+//
+void 
+SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
+{
+  switch (type) {
+  case SoNotRec::CONTAINER:
+  case SoNotRec::PARENT:
+    {
+      SoFieldContainer * obj = (SoFieldContainer *)auditor;
+      obj->notify(l);
+    }
+    break;
+    
+  case SoNotRec::SENSOR:
+    {
+      SoDataSensor * obj = (SoDataSensor *)auditor;
+#if COIN_DEBUG && 0 // debug
+      SoDebugError::postInfo("SoAuditorList::notify",
+                             "notify and schedule sensor: %p", obj);
+#endif // debug
+      obj->notify(l);
+      obj->schedule();
+    }
+    break;
+    
+  case SoNotRec::FIELD:
+  case SoNotRec::ENGINE:
+    {
+      // We used to check whether or not the fields was already
+      // dirty before we transmitted the notification
+      // message. This is _not_ correct (the dirty flag is
+      // conceptually only relevant for whether or not to do
+      // re-evaluation), so don't try to "optimize" the
+      // notification mechanism by re-introducing that "feature".
+      // :^/
+      ((SoField *)auditor)->notify(l);
+    }
+    break;
+    
+  default:
+    assert(0 && "Unknown auditor type");
+  }
+}
+
+
+
