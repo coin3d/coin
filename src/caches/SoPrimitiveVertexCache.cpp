@@ -38,6 +38,7 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <stddef.h>
+#include <string.h> // memcmp()
 
 #ifndef DOXYGEN_SKIP_THIS
 
