@@ -1,11 +1,13 @@
 /*
  * Inventor/system/inttypes.h and config.h defines some of the same
- * definitions, which causes warnings with a lot of compilers.
+ * definitions, which cause warnings with a lot of compilers.
  *
  * When including config.h, we therefore undefine those definitions
- * first if they are defined.  The reversed is not necessary, as the
+ * first if they are defined.  The reverse is not necessary, as the
  * inttypes.h file contains the necessary wrapper protection.
  *
+ * This header, like the config.h header, should not be installed on
+ * the system.
  */
 
 #ifdef COIN_CONFIGURE_BUILD
@@ -94,5 +96,21 @@
 
 #ifdef COIN_UINT64_T
 #undef COIN_UINT64_T
+#endif
+
+#ifdef COIN_MAJOR_VERSION
+#undef COIN_MAJOR_VERSION
+#endif
+
+#ifdef COIN_MICRO_VERSION
+#undef COIN_MICRO_VERSION
+#endif
+
+#ifdef COIN_MINOR_VERSION
+#undef COIN_MINOR_VERSION
+#endif
+
+#ifdef COIN_VERSION
+#undef COIN_VERSION
 #endif
 
