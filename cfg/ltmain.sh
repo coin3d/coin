@@ -2842,15 +2842,7 @@ EOF
 
 	if test -n "$convenience"; then
 	  if test -n "$whole_archive_flag_spec"; then
-            eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
-# 20011008 larsa:
-#   this hack removes redundant convenience libraries when the platform
-#   is darwin
-            case $host in
-            *-*-darwin*)
-              deplibs=`echo " $deplibs" | sed -e 's/ [0-9A-Za-z_.][0-9A-Za-z_\/.-]*\.al//g'`
-              ;;
-            esac
+	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
 	  else
 	    gentop="$output_objdir/${outputname}x"
 	    $show "${rm}r $gentop"
