@@ -680,21 +680,14 @@ SoText2P::buildGlyphCache(SoState * state)
   // Check if style is baked into the fontname using the "family:style" syntax.
   this->fontspec->style = cc_string_construct_new();
   const char * tmpstr = cc_string_get_text(this->fontspec->name);
-  int pos = -1;
-  for (unsigned int j = 0;j < cc_string_length(this->fontspec->name);++j) {
-    if(tmpstr[j] == ':') {
-      pos = j;
-      break;
-    }
-  }
-  if (pos != -1) {
+  const char * tmpptr = strchr(tmpstr, ':');
+  if (tmpptr != NULL) {
+    int pos = (int) (tmpptr - tmpstr);
     cc_string_set_text(this->fontspec->style, cc_string_get_text(this->fontspec->name));
     cc_string_remove_substring(this->fontspec->style, 0, pos);
     const int namelen = cc_string_length(this->fontspec->name);
     cc_string_remove_substring(this->fontspec->name, pos, namelen-1);
   }
-
- 
 
 
   for (int i=0; i < nrlines; i++) {
