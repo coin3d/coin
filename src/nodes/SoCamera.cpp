@@ -570,9 +570,7 @@ SoCamera::GLRender(SoGLRenderAction * action)
   SoFocalDistanceElement::set(state, this, this->focalDistance.getValue());
 }
 
-/*!
-
- */
+// Documented in superclass.
 void 
 SoCamera::audioRender(SoAudioRenderAction *action)
 {
