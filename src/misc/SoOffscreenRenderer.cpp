@@ -32,9 +32,6 @@
   the scene to disk files (as pixel bitmaps or as Postscript files for
   sending to a Postscript-capable printer).
 
-  Currently offscreen rendering can be done with GLX (i.e. OpenGL on
-  X11), WGL (i.e. OpenGL on Win32) and AGL (i.e. OpenGL on Mac OS X).
-
   Here's a dead simple usage example:
 
   \code
@@ -43,6 +40,14 @@
   SbBool ok = myRenderer->render(root);
   // [then use image buffer in a texture, or write it to file, or whatever]
   \endcode
+
+
+  Offscreen rendering is internally done with either GLX (i.e. OpenGL
+  on X11) or WGL (i.e. OpenGL on Win32). The pixeldata is fetched from
+  the OpenGL buffer with glReadPixels(), with the format and type
+  arguments set to GL_RGBA and GL_UNSIGNED_BYTE, respectively. This
+  means that the maximum resolution is 32 bits, 8 bits for each of the
+  R/G/B/A components.
 */
 // FIXME: include the following in documentation about how to use the
 // SoOffscreenRenderer to write movies:
@@ -432,8 +437,8 @@ public:
         }
       }
 
-      glXMakeCurrent(this->display, this->glxpixmap, this->context);
-      return TRUE;
+      Bool r = glXMakeCurrent(this->display, this->glxpixmap, this->context);
+      return (r == True) ? TRUE : FALSE;
     }
     return FALSE;
   }
@@ -450,7 +455,7 @@ public:
       glReadPixels(0, 0, size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE,
                    this->buffer);
       glPixelStorei(GL_PACK_ALIGNMENT, 4);
-      (void) glXMakeCurrent(this->display, 0, 0);
+      (void) glXMakeCurrent(this->display, None, NULL); // release
 
       if (this->storedcontext && this->storeddrawable && this->storeddisplay) {
         (void) glXMakeCurrent(this->storeddisplay, this->storeddrawable,
@@ -806,6 +811,10 @@ SoOffscreenRenderer::getMaximumResolution(void)
   image (\c RGB plus transparency).
 
   The default format to render to is \c RGB.
+
+  This will invalidate the current buffer, if any. The buffer will not
+  contain valid data until another call to
+  SoOffscreenRenderer::render() happens.
 */
 void
 SoOffscreenRenderer::setComponents(const Components components)
@@ -831,6 +840,10 @@ SoOffscreenRenderer::getComponents(void) const
 
 /*!
   Sets the viewport region.
+
+  This will invalidate the current buffer, if any. The buffer will not
+  contain valid data until another call to
+  SoOffscreenRenderer::render() happens.
 */
 void
 SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
