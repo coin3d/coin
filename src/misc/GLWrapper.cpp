@@ -384,6 +384,9 @@ GLWrapper(int contextid)
     gi->glTexImage3D = NULL;
     gi->glCopyTexSubImage3D = NULL;
     gi->glTexSubImage3D = NULL;
+    gi->glBindTexture = NULL;
+    gi->glDeleteTextures = NULL;
+    gi->glGenTextures = NULL;
     
     gi->COIN_GL_CLAMP_TO_EDGE = 0;
     
@@ -471,6 +474,24 @@ GLWrapper(int contextid)
       GLWRAPPER_REGISTER_FUNC(glPolygonOffset, glPolygonOffset,
                               COIN_PFNGLPOLYGONOFFSETPROC);
     }
+
+    if (GLWrapper_glVersionMatchesAtLeast(gi,1,1,0)) {
+      GLWRAPPER_REGISTER_FUNC(glBindTexture, glBindTexture,
+                              COIN_PFNGLBINDTEXTUREPROC);
+      GLWRAPPER_REGISTER_FUNC(glDeleteTextures, glDeleteTextures,
+                              COIN_PFNGLDELETETEXTURESPROC);
+      GLWRAPPER_REGISTER_FUNC(glGenTextures, glGenTextures,
+                              COIN_PFNGLGENTEXTURESPROC);
+    }
+    else if (GLWrapper_glEXTSupported(gi, "GL_EXT_texture_object")) {
+      GLWRAPPER_REGISTER_FUNC(glBindTexture, glBindTextureEXT,
+                              COIN_PFNGLBINDTEXTUREPROC);
+      GLWRAPPER_REGISTER_FUNC(glDeleteTextures, glDeleteTexturesEXT,
+                              COIN_PFNGLDELETETEXTURESPROC);
+      GLWRAPPER_REGISTER_FUNC(glGenTextures, glGenTexturesEXT,
+                              COIN_PFNGLGENTEXTURESPROC);
+    }
+
 #else // Static binding
     if (0) {
     }
@@ -511,7 +532,20 @@ GLWrapper(int contextid)
     else {
       gi->glPolygonOffset = (COIN_PFNGLPOLYGONOFFSETPROC)&glPolygonOffset;
     }
+
+#if GL_VERSION_1_1
+    gi->glBindTexture =  &glBindTexture;
+    gi->glDeleteTextures = &glDeleteTextures;
+    gi->glGenTextures = &glGenTextures;
+#elif GL_EXT_texture_object
+    if (GLWrapper_glEXTSupported(gi, "GL_EXT_texture_object")) {
+      gi->glBindTexture =  &glBindTextureEXT;
+      gi->glDeleteTextures = &glDeleteTexturesEXT;
+      gi->glGenTextures = &glGenTexturesEXT;
+    }
 #endif
+
+#endif /* !COIN_OPENGL_DYNAMIC_BINDING */
 
 #ifdef HAVE_GLX
     //FIXME: Check if this function exists as an extension as well.

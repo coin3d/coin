@@ -89,6 +89,9 @@ typedef void (APIENTRY * COIN_PFNGLTEXIMAGE3DPROC) (GLenum target, GLint level, 
 typedef void (APIENTRY * COIN_PFNGLTEXSUBIMAGE3DPROC) (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, const GLvoid *pixels);
 typedef void (APIENTRY * COIN_PFNGLCOPYTEXSUBIMAGE3DPROC) (GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height);
 typedef void (APIENTRY * COIN_PFNGLPOLYGONOFFSETPROC) (GLfloat factor, GLfloat bias);
+typedef void (APIENTRY * COIN_PFNGLBINDTEXTUREPROC) (GLenum target, GLuint texture);
+typedef void (APIENTRY * COIN_PFNGLDELETETEXTURESPROC) (GLsizei n, const GLuint *textures);
+typedef void (APIENTRY * COIN_PFNGLGENTEXTURESPROC) (GLsizei n, GLuint *textures);
 
 #ifdef HAVE_GLX
 /* GLX functions */
@@ -131,6 +134,9 @@ typedef struct {
   COIN_PFNGLCOPYTEXSUBIMAGE3DPROC glCopyTexSubImage3D;
   COIN_PFNGLTEXSUBIMAGE3DPROC glTexSubImage3D; 
   COIN_PFNGLPOLYGONOFFSETPROC glPolygonOffset;
+  COIN_PFNGLBINDTEXTUREPROC glBindTexture;
+  COIN_PFNGLDELETETEXTURESPROC glDeleteTextures;
+  COIN_PFNGLGENTEXTURESPROC glGenTextures;
 
 #ifdef HAVE_GLX
   COIN_PFNGLXGETPROCADDRESSARB glXGetProcAddressARB;
