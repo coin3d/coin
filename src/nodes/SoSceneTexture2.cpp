@@ -548,6 +548,7 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
                                         SoShapeStyleElement::getTransparencyType(state));
 
     cc_glglue_context_make_current(this->glcontext);
+    glEnable(GL_DEPTH_TEST);
     this->glaction->apply(scene);
     // Make sure that rendering to pBuffer is completed to avoid
     // flickering. DON'T REMOVE THIS. You have been warned.
