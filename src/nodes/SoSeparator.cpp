@@ -292,22 +292,43 @@ SoSeparator::callback(SoCallbackAction * action)
 void
 SoSeparator::GLRender(SoGLRenderAction * action)
 {
-  SoState * state = action->getState();
-  state->push();
-  if (!this->cullTest(state)) {
-    this->children->traverse(action);
+  switch (action->getCurPathCode()) {
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:
+    this->GLRenderBelowPath(action);
+    break;
+  case SoAction::OFF_PATH:
+    // do nothing. Separator will reset state.
+    break;
+  case SoAction::IN_PATH:
+    this->GLRenderInPath(action);
+    break;
   }
-  state->pop();
 }
 
-// Doc from superclass.
+/*!
+  OIV 2.1 obsoleted support SoGLRenderAction::addMethod().
+  Instead, GLRender() might be called directly, and to optimize
+  traversal, the SoSeparator node calls GLRenderBelowPath whenever
+  the path code is BELOW_PATH or NO_PATH (path code is guaranteed
+  not to change).
+  SoSeparator::GLRenderBelowPath() do not traverse its children using
+  SoChildList::traverse(), but calls GLRenderBelowPath() directly
+  for all its children.
+*/
 void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
-{
+{  
   SoState * state = action->getState();
   state->push();
   if (!this->cullTest(state)) {
-    this->children->traverse(action);
+    int n = this->children->getLength();
+    SoAction::PathCode pathcode = action->getCurPathCode();
+    for (int i = 0; i < n; i++) {
+      action->pushCurPath(i);
+      (*this->children)[i]->GLRenderBelowPath(action);
+      action->popCurPath(pathcode);
+    }
   }
   state->pop();
 }
@@ -316,12 +337,10 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 void
 SoSeparator::GLRenderInPath(SoGLRenderAction * action)
 {
-  assert(action->getCurPathCode() == SoAction::IN_PATH);
-
   int numIndices;
   const int * indices;
   action->getPathCode(numIndices, indices);
-
+  
   action->getState()->push();
   this->children->traverse(action, 0, indices[numIndices-1]);
   action->getState()->pop();

@@ -442,32 +442,10 @@ SoNode::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoNode::GLRenderS(SoAction * action, SoNode * node)
 {
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoNode::GLRenderS",
-                         "nodetype: %s", node->getTypeId().getName().getString());
-#endif // debug
-
-  assert(action && node);
-  assert(action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId()));
-  SoGLRenderAction * const renderAction = (SoGLRenderAction *)(action);
-
-  switch (action->getCurPathCode()) {
-  case SoAction::NO_PATH:
-    node->GLRender(renderAction);
-    break;
-  case SoAction::IN_PATH:
-    node->GLRenderInPath(renderAction);
-    break;
-  case SoAction::OFF_PATH:
-    if (node->affectsState()) node->GLRenderOffPath(renderAction);
-    break;
-  case SoAction::BELOW_PATH:
-    node->GLRenderBelowPath(renderAction);
-    break;
-  default:
-    assert(0 && "Unknown path code");
-    break;
-  }
+  if ((action->getCurPathCode() != SoAction::OFF_PATH) ||
+      node->affectsState()) {
+    node->GLRender((SoGLRenderAction*)action);
+  }    
 #if COIN_DEBUG
   int err = glGetError();
   if (err != GL_NO_ERROR) {
