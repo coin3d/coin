@@ -49,37 +49,7 @@
   given \c BUTTON.
 */
 
-
-//$ BEGIN TEMPLATE EventSource(SoSpaceballButtonEvent)
-/*!
-  \var SoSpaceballButtonEvent::classTypeId
-  Unique type identification for the SoSpaceballButtonEvent class type.
-*/
-SoType SoSpaceballButtonEvent::classTypeId = SoType::badType();
-
-/*!
-  This is a virtual function overloaded in all subclasses which will
-  return the type identificator of the class instance.
-
-  \sa getClassTypeId(), isOfType()
-*/
-SoType
-SoSpaceballButtonEvent::getTypeId(void) const
-{
-  return SoSpaceballButtonEvent::classTypeId;
-}
-
-/*!
-  Returns the type identificator for the SoSpaceballButtonEvent class.
-
-  \sa getTypeId(), isOfType()
-*/
-SoType
-SoSpaceballButtonEvent::getClassTypeId(void)
-{
-  return SoSpaceballButtonEvent::classTypeId;
-}
-//$ END TEMPLATE EventSource
+SO_EVENT_SOURCE(SoSpaceballButtonEvent);
 
 /*!
   Initialize the type information data.
@@ -87,15 +57,7 @@ SoSpaceballButtonEvent::getClassTypeId(void)
 void
 SoSpaceballButtonEvent::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass(SpaceballButtonEvent)
-  // Make sure we only initialize once.
-  assert(SoSpaceballButtonEvent::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoSpaceballButtonEvent::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "SpaceballButtonEvent");
-//$ END TEMPLATE EventInitClass
+  SO_EVENT_INIT_CLASS(SoSpaceballButtonEvent, SoButtonEvent);
 }
 
 /*!

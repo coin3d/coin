@@ -31,9 +31,24 @@ public: \
   virtual SoType getTypeId(void) const
 
 
-#define SO_EVENT_SOURCE(_class_)
+#define SO_EVENT_SOURCE(_class_) \
+SoType _class_::getClassTypeId(void) { return _class_::classTypeId; } \
+SoType _class_::getTypeId(void) const { return _class_::classTypeId; } \
+/* Don't set value explicitly to SoType::badType(), to avoid a bug in \
+   Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
+SoType _class_::classTypeId
 
 
-#define SO_EVENT_INIT_CLASS(_class_, _parentclass_)
+#define SO_EVENT_INIT_CLASS(_class_, _parentclass_) \
+  do { \
+    /* Make sure we only initialize once. */ \
+    assert(_class_::classTypeId == SoType::badType()); \
+    /* Make sure superclass get initialized before subclass. */ \
+    assert(_parentclass_::getClassTypeId() != SoType::badType()); \
+    \
+    _class_::classTypeId = \
+      SoType::createType(_parentclass_::getClassTypeId(), SO__QUOTE(_class_)); \
+  } while (0)
+
 
 #endif // !COIN_SOSUBEVENT_H

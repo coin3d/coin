@@ -47,36 +47,7 @@
 #include <Inventor/SbViewportRegion.h>
 #include <assert.h>
 
-//$ BEGIN TEMPLATE EventSource(SoEvent)
-/*!
-  \var SoEvent::classTypeId
-  Unique type identification for the SoEvent class type.
-*/
-SoType SoEvent::classTypeId = SoType::badType();
-
-/*!
-  This is a virtual function overloaded in all subclasses which will
-  return the type identificator of the class instance.
-
-  \sa getClassTypeId(), isOfType()
-*/
-SoType
-SoEvent::getTypeId(void) const
-{
-  return SoEvent::classTypeId;
-}
-
-/*!
-  Returns the type identificator for the SoEvent class.
-
-  \sa getTypeId(), isOfType()
-*/
-SoType
-SoEvent::getClassTypeId(void)
-{
-  return SoEvent::classTypeId;
-}
-//$ END TEMPLATE EventSource
+SO_EVENT_SOURCE(SoEvent);
 
 /*!
   Initialize SoEvent and all it's known subclasses (i.e. all subclasses
@@ -91,8 +62,7 @@ SoEvent::initClass(void)
   // Make sure we only initialize once.
   assert(SoEvent::classTypeId == SoType::badType());
 
-  SoEvent::classTypeId =
-    SoType::createType(SoType::badType(), "Event");
+  SoEvent::classTypeId = SoType::createType(SoType::badType(), "SoEvent");
 
   SoEvent::initEvents();
 }

@@ -77,36 +77,7 @@
 
 
 
-//$ BEGIN TEMPLATE EventSource(SoMouseButtonEvent)
-/*!
-  \var SoMouseButtonEvent::classTypeId
-  Unique type identification for the SoMouseButtonEvent class type.
-*/
-SoType SoMouseButtonEvent::classTypeId = SoType::badType();
-
-/*!
-  This is a virtual function overloaded in all subclasses which will
-  return the type identificator of the class instance.
-
-  \sa getClassTypeId(), isOfType()
-*/
-SoType
-SoMouseButtonEvent::getTypeId(void) const
-{
-  return SoMouseButtonEvent::classTypeId;
-}
-
-/*!
-  Returns the type identificator for the SoMouseButtonEvent class.
-
-  \sa getTypeId(), isOfType()
-*/
-SoType
-SoMouseButtonEvent::getClassTypeId(void)
-{
-  return SoMouseButtonEvent::classTypeId;
-}
-//$ END TEMPLATE EventSource
+SO_EVENT_SOURCE(SoMouseButtonEvent);
 
 /*!
   Initialize the type information data.
@@ -114,15 +85,7 @@ SoMouseButtonEvent::getClassTypeId(void)
 void
 SoMouseButtonEvent::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass(MouseButtonEvent)
-  // Make sure we only initialize once.
-  assert(SoMouseButtonEvent::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMouseButtonEvent::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "MouseButtonEvent");
-//$ END TEMPLATE EventInitClass
+  SO_EVENT_INIT_CLASS(SoMouseButtonEvent, SoButtonEvent);
 }
 
 /*!

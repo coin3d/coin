@@ -120,36 +120,7 @@ static char converttoprintable_shift[] = {
   ' ', '\'', ',', '-', '.', '/', ';', '=', '[', '\\', ']', '~'
 };
 
-//$ BEGIN TEMPLATE EventSource(SoKeyboardEvent)
-/*!
-  \var SoKeyboardEvent::classTypeId
-  Unique type identification for the SoKeyboardEvent class type.
-*/
-SoType SoKeyboardEvent::classTypeId = SoType::badType();
-
-/*!
-  This is a virtual function overloaded in all subclasses which will
-  return the type identificator of the class instance.
-
-  \sa getClassTypeId(), isOfType()
-*/
-SoType
-SoKeyboardEvent::getTypeId(void) const
-{
-  return SoKeyboardEvent::classTypeId;
-}
-
-/*!
-  Returns the type identificator for the SoKeyboardEvent class.
-
-  \sa getTypeId(), isOfType()
-*/
-SoType
-SoKeyboardEvent::getClassTypeId(void)
-{
-  return SoKeyboardEvent::classTypeId;
-}
-//$ END TEMPLATE EventSource
+SO_EVENT_SOURCE(SoKeyboardEvent);
 
 /*!
   Initialize the type information data.
@@ -157,15 +128,7 @@ SoKeyboardEvent::getClassTypeId(void)
 void
 SoKeyboardEvent::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass(KeyboardEvent)
-  // Make sure we only initialize once.
-  assert(SoKeyboardEvent::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoKeyboardEvent::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "KeyboardEvent");
-//$ END TEMPLATE EventInitClass
+  SO_EVENT_INIT_CLASS(SoKeyboardEvent, SoButtonEvent);
 }
 
 /*!

@@ -34,36 +34,7 @@
 #include <assert.h>
 
 
-//$ BEGIN TEMPLATE EventSource(SoMotion3Event)
-/*!
-  \var SoMotion3Event::classTypeId
-  Unique type identification for the SoMotion3Event class type.
-*/
-SoType SoMotion3Event::classTypeId = SoType::badType();
-
-/*!
-  This is a virtual function overloaded in all subclasses which will
-  return the type identificator of the class instance.
-
-  \sa getClassTypeId(), isOfType()
-*/
-SoType
-SoMotion3Event::getTypeId(void) const
-{
-  return SoMotion3Event::classTypeId;
-}
-
-/*!
-  Returns the type identificator for the SoMotion3Event class.
-
-  \sa getTypeId(), isOfType()
-*/
-SoType
-SoMotion3Event::getClassTypeId(void)
-{
-  return SoMotion3Event::classTypeId;
-}
-//$ END TEMPLATE EventSource
+SO_EVENT_SOURCE(SoMotion3Event);
 
 /*!
   Initialize the type information data.
@@ -71,15 +42,7 @@ SoMotion3Event::getClassTypeId(void)
 void
 SoMotion3Event::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass(Motion3Event)
-  // Make sure we only initialize once.
-  assert(SoMotion3Event::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoMotion3Event::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Motion3Event");
-//$ END TEMPLATE EventInitClass
+  SO_EVENT_INIT_CLASS(SoMotion3Event, SoEvent);
 }
 
 /*!

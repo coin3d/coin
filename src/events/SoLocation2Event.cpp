@@ -38,36 +38,7 @@
 #include <assert.h>
 
 
-//$ BEGIN TEMPLATE EventSource(SoLocation2Event)
-/*!
-  \var SoLocation2Event::classTypeId
-  Unique type identification for the SoLocation2Event class type.
-*/
-SoType SoLocation2Event::classTypeId = SoType::badType();
-
-/*!
-  This is a virtual function overloaded in all subclasses which will
-  return the type identificator of the class instance.
-
-  \sa getClassTypeId(), isOfType()
-*/
-SoType
-SoLocation2Event::getTypeId(void) const
-{
-  return SoLocation2Event::classTypeId;
-}
-
-/*!
-  Returns the type identificator for the SoLocation2Event class.
-
-  \sa getTypeId(), isOfType()
-*/
-SoType
-SoLocation2Event::getClassTypeId(void)
-{
-  return SoLocation2Event::classTypeId;
-}
-//$ END TEMPLATE EventSource
+SO_EVENT_SOURCE(SoLocation2Event);
 
 /*!
   Initialize the type information data.
@@ -75,15 +46,7 @@ SoLocation2Event::getClassTypeId(void)
 void
 SoLocation2Event::initClass(void)
 {
-//$ BEGIN TEMPLATE EventInitClass(Location2Event)
-  // Make sure we only initialize once.
-  assert(SoLocation2Event::classTypeId == SoType::badType());
-  // Make sure superclass get initialized before subclass.
-  assert(inherited::getClassTypeId() != SoType::badType());
-
-  SoLocation2Event::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "Location2Event");
-//$ END TEMPLATE EventInitClass
+  SO_EVENT_INIT_CLASS(SoLocation2Event, SoEvent);
 }
 
 /*!
