@@ -184,14 +184,14 @@ soglbigimagetls_destruct(void * closure)
   delete[] tls->averagebuf;
 }
 
-#define THIS this->pimpl
+#define PRIVATE(obj) (obj->pimpl)
 
 /*!
   Constructor.
 */
 SoGLBigImage::SoGLBigImage(void)
 {
-  THIS = new SoGLBigImageP;
+  PRIVATE(this) = new SoGLBigImageP;
 }
 
 /*!
@@ -199,14 +199,14 @@ SoGLBigImage::SoGLBigImage(void)
 */
 SoGLBigImage::~SoGLBigImage()
 {
-  THIS->resetCache();
-  delete THIS;
+  PRIVATE(this)->resetCache();
+  delete PRIVATE(this);
 }
 
 void
 SoGLBigImage::unref(SoState * state)
 {
-  THIS->resetAllTls(state);
+  PRIVATE(this)->resetAllTls(state);
   inherited::unref(state);
 }
 
@@ -249,8 +249,8 @@ SoGLBigImage::setData(const SbImage * image,
     SoDebugError::postWarning("SoGLBigImage::setData",
                               "createinstate must be NULL for SoGLBigImage");
   }
-  delete THIS;
-  THIS = new SoGLBigImageP;
+  delete PRIVATE(this);
+  PRIVATE(this) = new SoGLBigImageP;
   inherited::setData(image, wraps, wrapt, quality, border, NULL);
 }
 
@@ -267,8 +267,8 @@ SoGLBigImage::setData(const SbImage * image,
     SoDebugError::postWarning("SoGLBigImage::setData",
                               "createinstate must be NULL for SoGLBigImage");
   }
-  delete THIS;
-  THIS = new SoGLBigImageP;
+  delete PRIVATE(this);
+  PRIVATE(this) = new SoGLBigImageP;
   inherited::setData(image, wraps, wrapt, wrapr, quality, border, NULL);
 }
 
@@ -282,7 +282,7 @@ SoGLBigImage::getGLDisplayList(SoState * state)
 int
 SoGLBigImage::initSubImages(const SbVec2s & subimagesize) const
 {
-  SoGLBigImageTls * tls = THIS->getTls();
+  SoGLBigImageTls * tls = PRIVATE(this)->getTls();
 
   tls->changecnt = 0;
   if (subimagesize == tls->imagesize &&
@@ -329,7 +329,7 @@ SoGLBigImage::handleSubImage(const int idx,
                              SbVec2f & end,
                              SbVec2f & tcmul)
 {
-  SoGLBigImageTls * tls = THIS->getTls();
+  SoGLBigImageTls * tls = PRIVATE(this)->getTls();
 
   SbVec2s pos(idx % tls->dim[0], idx / tls->dim[0]);
   start[0] = float(pos[0]) / float(tls->dim[0]);
@@ -354,7 +354,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
   unsigned char * bytes = this->getImage() ?
     this->getImage()->getValue(size, numcomponents) : NULL;
 
-  SoGLBigImageTls * tls = THIS->getTls();
+  SoGLBigImageTls * tls = PRIVATE(this)->getTls();
 
   if (tls->currentdim != tls->dim) {
     SoGLBigImageP::reset(tls, state);
@@ -375,11 +375,11 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
       new unsigned int[numbytes ? numbytes : 1];
 
     // lock before testing/creating cache to avoid race conditions
-    THIS->lock();
-    if (THIS->cache == NULL) {
-      THIS->createCache(bytes, size, numcomponents);
+    PRIVATE(this)->lock();
+    if (PRIVATE(this)->cache == NULL) {
+      PRIVATE(this)->createCache(bytes, size, numcomponents);
     }
-    THIS->unlock();
+    PRIVATE(this)->unlock();
   }
 
   int level = 0;
@@ -424,7 +424,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
       }
 
       if (tls->glimagesize == tls->imagesize) {
-        THIS->copySubImage(tls,
+        PRIVATE(this)->copySubImage(tls,
                            idx,
                            bytes,
                            size,
@@ -432,7 +432,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
                            tls->tmpbuf, div, level);
       }
       else {
-        THIS->copyResizeSubImage(tls,
+        PRIVATE(this)->copyResizeSubImage(tls,
                                  idx,
                                  bytes,
                                  size,
@@ -466,7 +466,7 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
 SbBool
 SoGLBigImage::exceededChangeLimit(void)
 {
-  return THIS->getTls()->changecnt >= CHANGELIMIT;
+  return PRIVATE(this)->getTls()->changecnt >= CHANGELIMIT;
 }
 
 // needed for cc_storage_apply_to_all() callback
@@ -500,7 +500,7 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
   this->incAge();
 }
 
-#undef THIS
+#undef PRIVATE
 
 #ifndef DOXYGEN_SKIP_THIS
 
