@@ -1764,6 +1764,57 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
 
     if (retval) retval = base->readInstance(in, flags);
 
+    // Make sure global fields are unique
+    if (retval && base->isOfType(SoGlobalField::getClassTypeId())) {
+      SoGlobalField * globalfield = (SoGlobalField *)base;
+
+      int numfields = globalfield->getFieldData()->getNumFields();
+      if (numfields != 1) {
+        SoReadError::post(in, "Global fields can only contain one field, not %d", numfields);
+
+        retval = FALSE;
+        goto postprocess;
+      }
+
+
+      // The global field is removed from the global field list because we have to
+      // check if there is already a global field in the list with the same name.
+      // This is because SoGlobalField's constructor automatically adds itself
+      // to the list of global fields without checking if the field already exists.
+      SoGlobalField::removeGlobalFieldContainer(globalfield);
+      
+      // See if the global field is in the database already
+      SoField * f = SoDB::getGlobalField(globalfield->getName());
+      
+      if (f) {
+        SoField * basefield = globalfield->getFieldData()->getField(globalfield, 0);
+          
+        assert(basefield && "base (SoGlobalField) does not appear to have a field, this should be impossible");
+        
+        if (!f->isOfType(basefield->getClassTypeId())) {
+          SoReadError::post(in, "Types of equally named global fields do not match: existing: %s, new: %s", 
+                              f->getTypeId().getName().getString(), basefield->getTypeId().getName().getString());
+          
+          retval = FALSE;
+          goto postprocess;
+        }
+        
+        SoGlobalField * container = (SoGlobalField *)f->getContainer();
+        container->copyFieldValues(globalfield, TRUE); // Assign new global field values to old global field
+          
+        base->ref(); base->unref(); // remove newly made SoGlobalField, use the previously made one instead
+        base = container; // Assign the base global field to the already loaded global field
+      }
+      else {
+        // The global field was first removed to check the existence of an
+        // equal named item. If no such global field exists, the removed
+        // global field has to be added again, which is done by this code:
+        SoGlobalField::addGlobalFieldContainer(globalfield);
+      }
+    }
+
+postprocess:
+
     if (!retval) {
       if (!(!refname)) in->removeReference(refname);
       base->ref();

@@ -49,6 +49,7 @@ public:
   virtual void writeInstance(SoOutput * out);
 
   static SoGlobalField * getGlobalFieldContainer(const SbName & name);
+  static void addGlobalFieldContainer(SoGlobalField * fieldcontainer);
   static void removeGlobalFieldContainer(SoGlobalField * fieldcontainer);
   static SoBaseList * getGlobalFieldContainers(void);
 

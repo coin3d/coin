@@ -80,6 +80,7 @@ SoGlobalField::SoGlobalField(const SbName & name, SoField * field)
   }
 
   this->setName(name);
+
   SoGlobalField::allcontainers->append(this);
 }
 
@@ -154,13 +155,18 @@ SoGlobalField::getGlobalFieldIndex(const SbName & name)
   return idx;
 }
 
+// Add the given global field to the global fieldcontainer list
+void
+SoGlobalField::addGlobalFieldContainer(SoGlobalField * fieldcontainer)
+{
+  SoGlobalField::allcontainers->append(fieldcontainer);
+}
+
 // Remove the given global field.
 void
 SoGlobalField::removeGlobalFieldContainer(SoGlobalField * fieldcontainer)
 {
-  const int idx = SoGlobalField::getGlobalFieldIndex(fieldcontainer->getName());
-  assert(idx >= 0);
-  SoGlobalField::allcontainers->remove(idx);
+  SoGlobalField::allcontainers->removeItem(fieldcontainer);
   return;
 }
 
