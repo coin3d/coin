@@ -235,7 +235,13 @@ GLWrapper_set_glxVersion(GLWrapper_t * gi)
   int major, minor;
   if (display) {
     ok = glXQueryVersion(display, &major, &minor);
-    XCloseDisplay(display);
+    // The Display resources is never deallocated explicitly (but of
+    // course implicitly by the system on application close
+    // down). This to work around some strange problems with the
+    // NVidia-driver 29.60 on XFree86 v4 when using XCloseDisplay() --
+    // like doublebuffered visuals not working correctly.
+    // 
+    //   XCloseDisplay(display);
   }
 
   if (!ok) {
