@@ -118,6 +118,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
@@ -212,7 +213,11 @@ SoVRMLBillboard::GLRender(SoGLRenderAction * action)
 void
 SoVRMLBillboard::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoVRMLBillboard::doAction((SoAction*) action);
+  SoState * state = action->getState();
+  state->push();
+  this->performRotation(state);
+  SoGroup::getBoundingBox(action);
+  state->pop();
 }
 
 // Doc in parent
