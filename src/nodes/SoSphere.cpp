@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -118,7 +118,7 @@ void
 SoSphere::GLRender(SoGLRenderAction * action)
 {
   if (!shouldGLRender(action)) return;
- 
+
   SoState *state = action->getState();
 
   SoMaterialBundle mb(action);
@@ -165,16 +165,16 @@ SoSphere::GLRender(SoGLRenderAction * action)
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
 
   sogl_render_sphere(this->radius.getValue(),
-		     (int)(SPHERE_NUM_SLICES * complexity),
-		     (int)(SPHERE_NUM_STACKS * complexity),
-		     &mb,
-		     flags);
+                     (int)(SPHERE_NUM_SLICES * complexity),
+                     (int)(SPHERE_NUM_STACKS * complexity),
+                     &mb,
+                     flags);
 }
 
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoSphere::willSetShadeModel(void) const
 {
   return TRUE;
@@ -183,14 +183,14 @@ SoSphere::willSetShadeModel(void) const
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoSphere::willSetShapeHints(void) const
 {
   return TRUE;
 }
 
 //! FIXME: doc
-SbBool 
+SbBool
 SoSphere::willUpdateNormalizeElement(SoState *) const
 {
   return TRUE;
@@ -225,7 +225,7 @@ SoSphere::rayPick(SoRayPickAction *action)
   const SbLine &line = action->getLine();
   SbSphere sphere(SbVec3f(0.0f, 0.0f, 0.0f), radius.getValue());
   SbVec3f enter, exit;
-  if (sphere.intersect(line, enter, exit)) {    
+  if (sphere.intersect(line, enter, exit)) {
     if (action->isBetweenPlanes(enter)) action->addIntersection(enter);
     if (action->isBetweenPlanes(exit)) action->addIntersection(exit);
   }
@@ -239,11 +239,11 @@ SoSphere::rayPick(SoRayPickAction *action)
 void
 SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
-  
+  if (!this->shouldPrimitiveCount(action)) return;
+
   if (action->isNonVertexShapesCountedAsTriangles()) {
     float complexity = this->getComplexityValue(action);
-    action->addNumTriangles((int)(complexity*2.0f*SPHERE_NUM_SLICES*(SPHERE_NUM_STACKS-1))); 
+    action->addNumTriangles((int)(complexity*2.0f*SPHERE_NUM_SLICES*(SPHERE_NUM_STACKS-1)));
   }
   else {
     action->incNumSpheres();

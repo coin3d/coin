@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -145,10 +145,10 @@ SoFaceSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 /*!
   \internal
 */
-SoFaceSet::Binding 
+SoFaceSet::Binding
 SoFaceSet::findMaterialBinding(SoState * const state) const
 {
-  SoMaterialBindingElement::Binding matbind = 
+  SoMaterialBindingElement::Binding matbind =
     SoMaterialBindingElement::get(state);
 
   Binding binding;
@@ -170,7 +170,7 @@ SoFaceSet::findMaterialBinding(SoState * const state) const
     binding = OVERALL;
 #if COIN_DEBUG
     SoDebugError::postWarning("SoFaceSet::findMaterialBinding",
-			      "unknown material binding setting");
+                              "unknown material binding setting");
 #endif // COIN_DEBUG
     break;
   }
@@ -181,10 +181,10 @@ SoFaceSet::findMaterialBinding(SoState * const state) const
 /*!
   \internal
 */
-SoFaceSet::Binding 
+SoFaceSet::Binding
 SoFaceSet::findNormalBinding(SoState * const state) const
 {
-  SoNormalBindingElement::Binding normbind = 
+  SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
 
   Binding binding;
@@ -206,7 +206,7 @@ SoFaceSet::findNormalBinding(SoState * const state) const
     binding = PER_VERTEX;
 #if COIN_DEBUG
     SoDebugError::postWarning("SoFaceSet::findNormalBinding",
-			      "unknown normal binding setting");
+                              "unknown normal binding setting");
 #endif // COIN_DEBUG
     break;
   }
@@ -239,7 +239,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   const SbVec3f * normals;
   SbBool doTextures;
   SbBool needNormals = TRUE;
-  
+
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   needNormals =
     (SoLightModelElement::get(state) !=
@@ -247,16 +247,16 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
 #endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
-			       needNormals);
-  
+                               needNormals);
+
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
-  
+
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
   doTextures = tb.needCoordinates();
-  
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
-  
+
   if (!needNormals) nbind = OVERALL;
 
   if (needNormals && normals == NULL) {
@@ -269,7 +269,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   int32_t idx = startIndex.getValue();
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
-  
+
   int matnr = 0;
   int texnr = 0;
   int mode = GL_POLYGON;
@@ -279,8 +279,8 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
   if (normals) currnormal = normals;
-  if (nbind == OVERALL && needNormals) 
-    glNormal3fv((const GLfloat *)currnormal); 
+  if (nbind == OVERALL && needNormals)
+    glNormal3fv((const GLfloat *)currnormal);
 
   while (ptr < end) {
     n = *ptr++;
@@ -302,8 +302,8 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     coords->send(idx++);
     while (--n) {
       if (nbind == PER_VERTEX) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat *)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat *)currnormal);
       }
       if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
       if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
@@ -319,23 +319,23 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 {
   SbBool ccw = TRUE;
   if (SoShapeHintsElement::getVertexOrdering(state) ==
       SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
-  
-  const SoCoordinateElement * coords = 
+
+  const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
   assert(coords);
 
   SbBool perVertex = TRUE;
 
 #if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
-  SoNormalBindingElement::Binding normbind = 
+  SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
-    
+
   switch (normbind) {
   case SoNormalBindingElement::PER_FACE:
   case SoNormalBindingElement::PER_FACE_INDEXED:
@@ -349,23 +349,23 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 #endif // COIN_EXCLUDE_SONORMALBINDINGELEMENT
 
   if (perVertex) {
-    SoNormalGenerator * gen = 
+    SoNormalGenerator * gen =
       new SoNormalGenerator(ccw, this->numVertices.getNum() * 3,
-			    TRUE);
-    
+                            TRUE);
+
     int32_t idx = startIndex.getValue();
     const int32_t * ptr = numVertices.getValues(0);
     const int32_t * end = ptr + numVertices.getNum();
 
-    const SoCoordinateElement * coords = 
+    const SoCoordinateElement * coords =
       SoCoordinateElement::getInstance(state);
-    
+
     while (ptr < end) {
       int num = *ptr++;
       assert(num >= 3);
       gen->beginPolygon();
       while (num--) {
-	gen->polygonVertex(coords->get3(idx++));
+        gen->polygonVertex(coords->get3(idx++));
       }
       gen->endPolygon();
     }
@@ -388,7 +388,7 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
  */
 SbBool
 SoFaceSet::generateDefaultNormals(SoState * /* state */,
-				  SoNormalBundle * /* nb */)
+                                  SoNormalBundle * /* nb */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -402,7 +402,7 @@ SoFaceSet::generateDefaultNormals(SoState * /* state */,
 void
 SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action)) return;
 
   int n = this->numVertices.getNum();
   if (n == 1 && this->numVertices[0] == -1) return;
@@ -413,7 +413,7 @@ SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   else {
     int cnt = 0;
     for (int i = 0; i < n; i++) {
-      cnt += this->numVertices[i]-2; 
+      cnt += this->numVertices[i]-2;
     }
     action->addNumTriangles(cnt);
   }
@@ -438,16 +438,16 @@ SoFaceSet::generatePrimitives(SoAction *action)
   const SbVec3f * normals;
   SbBool doTextures;
   SbBool needNormals = TRUE;
-  
+
   SoVertexShape::getVertexData(action->getState(), coords, normals,
-			       needNormals);
-  
+                               needNormals);
+
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
-  
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
-  
+
   if (needNormals && normals == NULL) {
     normals = getNormalCache()->getNormals();
   }
@@ -455,7 +455,7 @@ SoFaceSet::generatePrimitives(SoAction *action)
   int32_t idx = startIndex.getValue();
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
-  
+
   int matnr = 0;
   int texnr = 0;
   int normnr = 0;
@@ -470,9 +470,9 @@ SoFaceSet::generatePrimitives(SoAction *action)
   SoPrimitiveVertex vertex;
   SoFaceDetail faceDetail;
   SoPointDetail pointDetail;
-  
+
   vertex.setDetail(&pointDetail);
-  
+
   while (ptr < end) {
     n = *ptr++;
     if (n == 3) newmode = TRIANGLES;
@@ -494,34 +494,34 @@ SoFaceSet::generatePrimitives(SoAction *action)
       vertex.setMaterialIndex(matnr++);
     }
     if (doTextures) {
-      if (tb.isFunction()) 
-	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+      if (tb.isFunction())
+        vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
       else {
-	pointDetail.setTextureCoordIndex(texnr);
-	vertex.setTextureCoords(tb.get(texnr++));
+        pointDetail.setTextureCoordIndex(texnr);
+        vertex.setTextureCoords(tb.get(texnr++));
       }
     }
     pointDetail.setCoordinateIndex(idx);
     vertex.setPoint(coords->get3(idx++));
     this->shapeVertex(&vertex);
-    
+
     while (--n) {
       if (nbind == PER_VERTEX) {
-	pointDetail.setNormalIndex(normnr);
-	currnormal = &normals[normnr++];
-	vertex.setNormal(*currnormal);
+        pointDetail.setNormalIndex(normnr);
+        currnormal = &normals[normnr++];
+        vertex.setNormal(*currnormal);
       }
       if (mbind == PER_VERTEX) {
-	pointDetail.setMaterialIndex(matnr);
-	vertex.setMaterialIndex(matnr++);
+        pointDetail.setMaterialIndex(matnr);
+        vertex.setMaterialIndex(matnr++);
       }
       if (doTextures) {
-	if (tb.isFunction()) 
-	  vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-	else {
-	  pointDetail.setTextureCoordIndex(texnr);
-	  vertex.setTextureCoords(tb.get(texnr++));
-	}
+        if (tb.isFunction())
+          vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+        else {
+          pointDetail.setTextureCoordIndex(texnr);
+          vertex.setTextureCoords(tb.get(texnr++));
+        }
       }
       pointDetail.setCoordinateIndex(idx);
       vertex.setPoint(coords->get3(idx++));
@@ -542,10 +542,10 @@ SoFaceSet::generatePrimitives(SoAction *action)
  */
 SoDetail *
 SoFaceSet::createTriangleDetail(SoRayPickAction * /* action */,
-				const SoPrimitiveVertex * /* v1 */,
-				const SoPrimitiveVertex * /* v2 */,
-				const SoPrimitiveVertex * /* v3 */,
-				SoPickedPoint * /* pp */)
+                                const SoPrimitiveVertex * /* v1 */,
+                                const SoPrimitiveVertex * /* v2 */,
+                                const SoPrimitiveVertex * /* v3 */,
+                                SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -29,7 +29,7 @@
 //
 // Stuff missing in the GLRender implementation:
 //  * doesn't heed the justification field
-// 
+//
 // Besides, we need to fix or look into these things:
 //  * the getBoundingBox() method is just a stub now -- it needs to be correct
 //  * must clean up the local font cache stuff and move it into
@@ -38,7 +38,7 @@
 //  * the font acquisition is now dependent on X11 in the method
 //    interfaces -- we should abstract away from window system dependencies
 //    as much as possible
-//  * allocations aren't cleaned out on exit (Display *, XFontStructs, 
+//  * allocations aren't cleaned out on exit (Display *, XFontStructs,
 //    SbDict, OpenGL display lists, ...)
 //  * should we make hooks into the component class libraries for font handling
 //    methods to meet the goal of making the Coin core 100% window system
@@ -314,13 +314,13 @@ SoText2::GLRender(SoGLRenderAction * action)
     // changing GL state without affecting state of element
     SoGLLightModelElement::getInstance(state)->
       forceSend(SoLightModelElement::BASE_COLOR);
-    
+
     glListBase(fontlistbase);
 
     SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
     const SbMatrix & mat = SoModelMatrixElement::get(state);
     mat.multVecMatrix(nilpoint, nilpoint);
-    
+
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
 
     // this function will also modify the z-value of nilpoint
@@ -329,8 +329,8 @@ SoText2::GLRender(SoGLRenderAction * action)
 
 #if 0 // debug
     SoDebugError::postInfo("SoText2::GLRender",
-			   "nilpoint projected: <%f, %f>",
-			   nilpoint[0], nilpoint[1]);
+                           "nilpoint projected: <%f, %f>",
+                           nilpoint[0], nilpoint[1]);
 #endif // debug
 
     const SbViewportRegion & vp = SoViewportRegionElement::get(state);
@@ -340,10 +340,10 @@ SoText2::GLRender(SoGLRenderAction * action)
 
 #if 0 // debug
     SoDebugError::postInfo("SoText2::GLRender",
-			   "nilpoint de-normalized: <%f, %f>",
-			   nilpoint[0], nilpoint[1]);
+                           "nilpoint de-normalized: <%f, %f>",
+                           nilpoint[0], nilpoint[1]);
 #endif // debug
-    
+
     // Set new state.
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -353,7 +353,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     glLoadIdentity();
 
     glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
-    
+
     float linepos = nilpoint[1];
     for (int i = 0; i < this->string.getNum(); i++) {
       const char * s = this->string[i].getString();
@@ -362,25 +362,25 @@ SoText2::GLRender(SoGLRenderAction * action)
       int direction, ascent, descent;
       XCharStruct cs;
       XTextExtents(fontstruct, s, strlen(s),
-		   &direction, &ascent, &descent, &cs);
+                   &direction, &ascent, &descent, &cs);
 
       float xpos;
       switch (this->justification.getValue()) {
       case SoText2::LEFT:
-	xpos = nilpoint[0];
-	break;
+        xpos = nilpoint[0];
+        break;
       case SoText2::RIGHT:
-	xpos = nilpoint[0] - cs.width;
-	break;
+        xpos = nilpoint[0] - cs.width;
+        break;
       case SoText2::CENTER:
-	xpos = nilpoint[0] - cs.width/2;
-	break;
+        xpos = nilpoint[0] - cs.width/2;
+        break;
 #if COIN_DEBUG
       default:
-	SoDebugError::post("SoText2::GLRender",
-			   "value of justification field is invalid");
-	xpos = nilpoint[0];
-	break;
+        SoDebugError::post("SoText2::GLRender",
+                           "value of justification field is invalid");
+        xpos = nilpoint[0];
+        break;
 #endif // COIN_DEBUG
       }
 
@@ -435,8 +435,8 @@ SoText2::rayPick(SoRayPickAction * /* action */)
 void
 SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
-  
+  if (!this->shouldPrimitiveCount(action)) return;
+
   action->addNumText(this->string.getNum());
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -138,7 +138,7 @@ SoPointSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 /*!
   \internal
 */
-SoPointSet::Binding 
+SoPointSet::Binding
 SoPointSet::findMaterialBinding(SoState * const state) const
 {
   Binding binding = OVERALL;
@@ -152,7 +152,7 @@ SoPointSet::findMaterialBinding(SoState * const state) const
 /*!
   \internal
 */
-SoPointSet::Binding 
+SoPointSet::Binding
 SoPointSet::findNormalBinding(SoState * const state) const
 
 {
@@ -189,7 +189,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   const SbVec3f * normals;
   SbBool doTextures;
   SbBool needNormals = TRUE;
-  
+
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   needNormals =
     (SoLightModelElement::get(state) !=
@@ -197,10 +197,10 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 #endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
-			       needNormals);
+                               needNormals);
 
   if (normals == NULL) needNormals = FALSE;
-  
+
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
 
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
@@ -221,8 +221,8 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
   if (normals) currnormal = normals;
-  if (nbind == OVERALL && needNormals) 
-    glNormal3fv((const GLfloat *)currnormal); 
+  if (nbind == OVERALL && needNormals)
+    glNormal3fv((const GLfloat *)currnormal);
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
@@ -240,7 +240,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
       glNormal3fv((const GLfloat *)currnormal);
     }
     if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-    if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal); 
+    if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
     coords->send(idx++);
   }
   glEnd();
@@ -253,7 +253,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
 {
   // not possible to generate normals for PointSet
@@ -279,8 +279,8 @@ SoPointSet::getBoundingBox(SoGetBoundingBoxAction *action)
 void
 SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
-  
+  if (!this->shouldPrimitiveCount(action)) return;
+
   action->addNumPoints(this->numPoints.getValue());
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
@@ -303,7 +303,7 @@ SoPointSet::generatePrimitives(SoAction *action)
   const SbVec3f * normals;
   SbBool doTextures;
   SbBool needNormals = TRUE;
-  
+
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   needNormals =
     (SoLightModelElement::get(state) !=
@@ -311,13 +311,13 @@ SoPointSet::generatePrimitives(SoAction *action)
 #endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
   SoVertexShape::getVertexData(action->getState(), coords, normals,
-			       needNormals);
+                               needNormals);
 
   if (normals == NULL) needNormals = FALSE;
-  
+
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
-  
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
 
@@ -326,11 +326,11 @@ SoPointSet::generatePrimitives(SoAction *action)
   SoPrimitiveVertex vertex;
   SoPointDetail pointDetail;
   vertex.setDetail(&pointDetail);
-  
+
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
   if (normals) currnormal = normals;
-  if (nbind == OVERALL && needNormals) 
+  if (nbind == OVERALL && needNormals)
     vertex.setNormal(*currnormal);
 
   int32_t idx = this->startIndex.getValue();
@@ -353,11 +353,11 @@ SoPointSet::generatePrimitives(SoAction *action)
     }
     if (doTextures) {
       if (tb.isFunction()) {
-	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+        vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
       }
       else {
-	pointDetail.setTextureCoordIndex(texnr);
-	vertex.setTextureCoords(tb.get(texnr++));
+        pointDetail.setTextureCoordIndex(texnr);
+        vertex.setTextureCoords(tb.get(texnr++));
       }
     }
     pointDetail.setCoordinateIndex(idx);
@@ -378,8 +378,8 @@ SoPointSet::generatePrimitives(SoAction *action)
  */
 SoDetail *
 SoPointSet::createPointDetail(SoRayPickAction * /* action */,
-			      const SoPrimitiveVertex * /* v */,
-			      SoPickedPoint * /* pp */)
+                              const SoPrimitiveVertex * /* v */,
+                              SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

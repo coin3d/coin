@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -118,20 +118,20 @@ SO_NODE_SOURCE(SoCone);
 // is aligned with the y-axis.
 //
 // A point on a SoCone can be expressed by:
-// 
+//
 // x^2 + z^2 = r^2, where r = ((h/2)-y)*br/h
 //
 // Substituting x, y and z with the parametric line equations, and we
 // can find zero, one or two solutions for t. We have to check the y-value
-// afterwards to see if it's between +/- (h/2) 
+// afterwards to see if it's between +/- (h/2)
 //
 
-static int 
+static int
 intersect_cone_line(const float br,
-		    const float h,
-		    const SbLine &line,
-		    SbVec3f &enter,
-		    SbVec3f &exit)
+                    const float h,
+                    const SbLine &line,
+                    SbVec3f &enter,
+                    SbVec3f &exit)
 {
   float h2 = h * 0.5f;
   SbVec3f d = line.getDirection();
@@ -153,7 +153,7 @@ intersect_cone_line(const float br,
   float t1 = (-b + root) / (2.0f*a);
 
   if (t1 < t0) SbSwap(t0,t1);
-  
+
   enter = p + t0*d;
   exit = p + t1*d;
 
@@ -255,7 +255,7 @@ SoCone::GLRender(SoGLRenderAction * action)
       bind == SoMaterialBindingElement::PER_PART_INDEXED)
     flags |= SOGL_MATERIAL_PER_PART;
 #endif
-  
+
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
@@ -269,28 +269,28 @@ SoCone::GLRender(SoGLRenderAction * action)
 #endif
 
   float complexity = this->getComplexityValue(action);
-  
+
 #if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
     state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
-  if (!(p & SIDES)) 
+  if (!(p & SIDES))
     sm->forceSend(TRUE); // flatshading
   else
     sm->forceSend(FALSE); // smooth
-  
+
 #endif // ! COIN_EXCLUDE_SOGLSHADEMODELELEMENT
 
   sogl_render_cone(this->bottomRadius.getValue(),
-		   this->height.getValue(),
-		   (int)(CONE_SIDE_NUMTRIS*complexity),
-		   &mb,
-		   flags);
+                   this->height.getValue(),
+                   (int)(CONE_SIDE_NUMTRIS*complexity),
+                   &mb,
+                   flags);
 }
 
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoCone::willSetShapeHints(void) const
 {
   return TRUE;
@@ -299,7 +299,7 @@ SoCone::willSetShapeHints(void) const
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoCone::willSetShadeModel(void) const
 {
   return TRUE;
@@ -372,23 +372,23 @@ SoCone::rayPick(SoRayPickAction *action)
 
   if (this->parts.getValue() & SoCone::SIDES) {
     numisect = intersect_cone_line(this->bottomRadius.getValue(),
-				   this->height.getValue(),
-				   line,
-				   isect[0],
-				   isect[1]);
-    
+                                   this->height.getValue(),
+                                   line,
+                                   isect[0],
+                                   isect[1]);
+
     for (int i = 0; i < numisect; i++) {
       if (action->isBetweenPlanes(isect[i])) {
-	SoPickedPoint *pp = action->addIntersection(isect[i]);
-	if (pp) {
-	  SoConeDetail *detail = new SoConeDetail;
-	  detail->setPart((int)SoCone::SIDES);
-	  pp->setDetail(detail, this);
-	}
+        SoPickedPoint *pp = action->addIntersection(isect[i]);
+        if (pp) {
+          SoConeDetail *detail = new SoConeDetail;
+          detail->setPart((int)SoCone::SIDES);
+          pp->setDetail(detail, this);
+        }
       }
     }
   }
-  
+
   if ((numisect < 2) && (this->parts.getValue() & SoCone::BOTTOM)) {
     SbPlane bottom(SbVec3f(0,1,0), -this->height.getValue()*0.5f);
     SbVec3f bpt;
@@ -396,13 +396,13 @@ SoCone::rayPick(SoRayPickAction *action)
     r2 *= r2;
     if (bottom.intersect(line, bpt)) {
       if (((bpt[0]*bpt[0] + bpt[2]*bpt[2]) <= r2) &&
-	  (action->isBetweenPlanes(bpt))) {
-	SoPickedPoint *pp = action->addIntersection(bpt);
-	if (pp) {
-	  SoConeDetail *detail = new SoConeDetail();
-	  detail->setPart((int)SoCone::BOTTOM);      
-	  pp->setDetail(detail, this);	
-	}
+          (action->isBetweenPlanes(bpt))) {
+        SoPickedPoint *pp = action->addIntersection(bpt);
+        if (pp) {
+          SoConeDetail *detail = new SoConeDetail();
+          detail->setPart((int)SoCone::BOTTOM);
+          pp->setDetail(detail, this);
+        }
       }
     }
   }
@@ -416,12 +416,12 @@ SoCone::rayPick(SoRayPickAction *action)
 void
 SoCone::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action)) return;
 
   if (action->isNonVertexShapesCountedAsTriangles()) {
     float complexity = this->getComplexityValue(action);
     int numtris = (int)(complexity*CONE_SIDE_NUMTRIS);
-    
+
     if (this->parts.getValue() & SoCone::BOTTOM) {
       action->addNumTriangles(numtris-2);
     }

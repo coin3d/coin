@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -155,12 +155,12 @@ SoLineSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 /*!
   \internal
 */
-SoLineSet::Binding 
+SoLineSet::Binding
 SoLineSet::findMaterialBinding(SoState * const state) const
 {
   Binding binding = OVERALL;
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
-  SoMaterialBindingElement::Binding matbind = 
+  SoMaterialBindingElement::Binding matbind =
     SoMaterialBindingElement::get(state);
 
   switch (matbind) {
@@ -182,7 +182,7 @@ SoLineSet::findMaterialBinding(SoState * const state) const
     binding = OVERALL;
 #if COIN_DEBUG
     SoDebugError::postWarning("SoLineSet::findMaterialBinding",
-			      "unknown material binding setting");
+                              "unknown material binding setting");
 #endif // COIN_DEBUG
     break;
   }
@@ -194,13 +194,13 @@ SoLineSet::findMaterialBinding(SoState * const state) const
 /*!
   \internal
 */
-SoLineSet::Binding 
+SoLineSet::Binding
 SoLineSet::findNormalBinding(SoState * const state) const
 {
   Binding binding = PER_VERTEX;
 
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
-  SoNormalBindingElement::Binding normbind = 
+  SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
 
   switch (normbind) {
@@ -223,7 +223,7 @@ SoLineSet::findNormalBinding(SoState * const state) const
     binding = PER_VERTEX;
 #if COIN_DEBUG
     SoDebugError::postWarning("SoLineSet::findNormalBinding",
-			      "unknown normal binding setting");
+                              "unknown normal binding setting");
 #endif // COIN_DEBUG
     break;
   }
@@ -255,7 +255,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   const SbVec3f * normals;
   SbBool doTextures;
   SbBool needNormals = TRUE;
-  
+
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   needNormals =
     (SoLightModelElement::get(state) !=
@@ -263,18 +263,18 @@ SoLineSet::GLRender(SoGLRenderAction * action)
 #endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
-			   needNormals);
-  
+                           needNormals);
+
   if (normals == NULL) needNormals = FALSE;
 
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
-  
+
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
   doTextures = tb.needCoordinates();
-  
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
-  
+
   if (!needNormals) {
     nbind = OVERALL;
 #if !defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
@@ -287,8 +287,8 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
   if (normals) currnormal = normals;
-  if (nbind == OVERALL && needNormals) 
-    glNormal3fv((const GLfloat *)currnormal); 
+  if (nbind == OVERALL && needNormals)
+    glNormal3fv((const GLfloat *)currnormal);
 
 
   SoMaterialBundle mb(action);
@@ -316,26 +316,26 @@ SoLineSet::GLRender(SoGLRenderAction * action)
     while (ptr < end) {
       int n = *ptr++;
       if (n < 2) {
-	idx += n; // FIXME: is this correct?
-	continue;
+        idx += n; // FIXME: is this correct?
+        continue;
       }
       n -= 2;
       if (!drawPoints) glBegin(GL_LINE_STRIP);
       if (nbind != OVERALL) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat *)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat *)currnormal);
       }
       if (mbind != OVERALL) mb.send(matnr++, TRUE);
       if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
       coords->send(idx++);
       do {
-	if (nbind == PER_VERTEX) {
-	  currnormal = normals++;
-	  glNormal3fv((const GLfloat *)currnormal);
-	}
-	if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
-	if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
-	coords->send(idx++);
+        if (nbind == PER_VERTEX) {
+          currnormal = normals++;
+          glNormal3fv((const GLfloat *)currnormal);
+        }
+        if (mbind == PER_VERTEX) mb.send(matnr++, TRUE);
+        if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
+        coords->send(idx++);
       } while (n--);
       if (!drawPoints) glEnd();
     }
@@ -350,7 +350,7 @@ SoLineSet::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoLineSet::generateDefaultNormals(SoState * , SoNormalCache * nc)
 {
   // not possible to generate normals for LineSet
@@ -378,7 +378,7 @@ SoLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action)) return;
 
   int n = this->numVertices.getNum();
   if (n == 1 && this->numVertices[0] == -1) return;
@@ -389,7 +389,7 @@ SoLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   else {
     int cnt = 0;
     for (int i = 0; i < n; i++) {
-      cnt += this->numVertices[i]-1; 
+      cnt += this->numVertices[i]-1;
     }
     action->addNumLines(cnt);
   }
@@ -414,24 +414,24 @@ SoLineSet::generatePrimitives(SoAction *action)
   const SbVec3f * normals;
   SbBool doTextures;
   SbBool needNormals = TRUE;
-  
+
   SoVertexShape::getVertexData(action->getState(), coords, normals,
-			       needNormals);
-  
+                               needNormals);
+
   if (normals == NULL) needNormals = FALSE;
-  
+
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
-  
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
 
   if (!needNormals) nbind = OVERALL;
-  
+
   SoPrimitiveVertex vertex;
   SoLineDetail lineDetail;
   SoPointDetail pointDetail;
-  
+
   vertex.setDetail(&pointDetail);
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
@@ -439,7 +439,7 @@ SoLineSet::generatePrimitives(SoAction *action)
   if (normals) currnormal = normals;
   if (nbind == OVERALL && needNormals) {
     vertex.setNormal(*currnormal);
-  } 
+  }
 
   int32_t idx = startIndex.getValue();
   const int32_t * ptr = numVertices.getValues(0);
@@ -448,7 +448,7 @@ SoLineSet::generatePrimitives(SoAction *action)
   int normnr = 0;
   int matnr = 0;
   int texnr = 0;
-				   
+
   if (nbind == PER_SEGMENT || mbind == PER_SEGMENT) {
     assert(0);
   }
@@ -457,53 +457,53 @@ SoLineSet::generatePrimitives(SoAction *action)
       lineDetail.setLineIndex(0);
       int n = *ptr++;
       if (n < 2) {
-	idx += n; // FIXME: is this correct?
-	continue;
+        idx += n; // FIXME: is this correct?
+        continue;
       }
       n -= 2;
       this->beginShape(action, SoShape::LINE_STRIP, &lineDetail);
       if (nbind != OVERALL) {
-	pointDetail.setNormalIndex(normnr);
-	currnormal = &normals[normnr++];
-	vertex.setNormal(*currnormal);
+        pointDetail.setNormalIndex(normnr);
+        currnormal = &normals[normnr++];
+        vertex.setNormal(*currnormal);
       }
       if (mbind != OVERALL) {
-	pointDetail.setMaterialIndex(matnr);
-	vertex.setMaterialIndex(matnr++);
+        pointDetail.setMaterialIndex(matnr);
+        vertex.setMaterialIndex(matnr++);
       }
       if (doTextures) {
-	if (tb.isFunction())
-	  vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-	else {
-	  pointDetail.setTextureCoordIndex(texnr);
-	  vertex.setTextureCoords(tb.get(texnr++));
-	}
+        if (tb.isFunction())
+          vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+        else {
+          pointDetail.setTextureCoordIndex(texnr);
+          vertex.setTextureCoords(tb.get(texnr++));
+        }
       }
       pointDetail.setCoordinateIndex(idx);
       vertex.setPoint(coords->get3(idx++));
       this->shapeVertex(&vertex);
       do {
-	if (nbind == PER_VERTEX) {
-	  pointDetail.setNormalIndex(normnr);
-	  currnormal = &normals[normnr++];
-	  vertex.setNormal(*currnormal);
-	}
-	if (mbind == PER_VERTEX) {
-	  pointDetail.setMaterialIndex(matnr);
-	  vertex.setMaterialIndex(matnr++);
-	}
-	if (doTextures) {
-	  if (tb.isFunction())
-	    vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-	  else {
-	    pointDetail.setTextureCoordIndex(texnr);
-	    vertex.setTextureCoords(tb.get(texnr++));
-	  }
-	}
-	pointDetail.setCoordinateIndex(idx);
-	vertex.setPoint(coords->get3(idx++));
-	this->shapeVertex(&vertex);
-	lineDetail.incLineIndex();
+        if (nbind == PER_VERTEX) {
+          pointDetail.setNormalIndex(normnr);
+          currnormal = &normals[normnr++];
+          vertex.setNormal(*currnormal);
+        }
+        if (mbind == PER_VERTEX) {
+          pointDetail.setMaterialIndex(matnr);
+          vertex.setMaterialIndex(matnr++);
+        }
+        if (doTextures) {
+          if (tb.isFunction())
+            vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+          else {
+            pointDetail.setTextureCoordIndex(texnr);
+            vertex.setTextureCoords(tb.get(texnr++));
+          }
+        }
+        pointDetail.setCoordinateIndex(idx);
+        vertex.setPoint(coords->get3(idx++));
+        this->shapeVertex(&vertex);
+        lineDetail.incLineIndex();
       } while (n--);
       this->endShape();
       lineDetail.incPartIndex();
@@ -520,9 +520,9 @@ SoLineSet::generatePrimitives(SoAction *action)
  */
 SoDetail *
 SoLineSet::createLineSegmentDetail(SoRayPickAction * /* action */,
-				   const SoPrimitiveVertex * /* v1 */,
-				   const SoPrimitiveVertex * /* v2 */,
-				   SoPickedPoint * /* pp */)
+                                   const SoPrimitiveVertex * /* v1 */,
+                                   const SoPrimitiveVertex * /* v2 */,
+                                   SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -147,9 +147,9 @@ void
 SoQuadMesh::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   inherited::computeCoordBBox(action,
-			      this->verticesPerRow.getValue() *
-			      this->verticesPerColumn.getValue(),
-			      box, center);
+                              this->verticesPerRow.getValue() *
+                              this->verticesPerColumn.getValue(),
+                              box, center);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -157,10 +157,10 @@ SoQuadMesh::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 /*!
   \internal
 */
-SoQuadMesh::Binding 
+SoQuadMesh::Binding
 SoQuadMesh::findMaterialBinding(SoState * const state) const
 {
-  SoMaterialBindingElement::Binding matbind = 
+  SoMaterialBindingElement::Binding matbind =
     SoMaterialBindingElement::get(state);
 
   Binding binding;
@@ -184,7 +184,7 @@ SoQuadMesh::findMaterialBinding(SoState * const state) const
     binding = OVERALL;
 #if COIN_DEBUG
     SoDebugError::postWarning("SoQuadMesh::findMaterialBinding",
-			      "unknown material binding setting");
+                              "unknown material binding setting");
 #endif // COIN_DEBUG
     break;
   }
@@ -195,10 +195,10 @@ SoQuadMesh::findMaterialBinding(SoState * const state) const
 /*!
   \internal
 */
-SoQuadMesh::Binding 
+SoQuadMesh::Binding
 SoQuadMesh::findNormalBinding(SoState * const state) const
 {
-  SoNormalBindingElement::Binding normbind = 
+  SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
 
   Binding binding;
@@ -222,7 +222,7 @@ SoQuadMesh::findNormalBinding(SoState * const state) const
     binding = PER_VERTEX;
 #if COIN_DEBUG
     SoDebugError::postWarning("SoQuadMesh::findNormalBinding",
-			      "unknown normal binding setting");
+                              "unknown normal binding setting");
 #endif // COIN_DEBUG
     break;
   }
@@ -265,12 +265,12 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
 #endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
-  
+
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
-			       needNormals);
-  
+                               needNormals);
+
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
-  
+
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
   doTextures = tb.needCoordinates();
 
@@ -280,12 +280,12 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   // are equal for indexed and nonindex, this is probably the
   // case for texture coordinate binding too... (pederb, 990701)
   //
-  
+
   int start = this->startIndex.getValue();
-  
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
-  
+
   if (!needNormals) nbind = OVERALL;
 
   if (needNormals && normals == NULL) {
@@ -316,34 +316,34 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
       glNormal3fv((const GLfloat *)currnormal);
     }
     if (mbind == PER_ROW) mb.send(midx++,TRUE);
-    
+
     for (j = 0; j < rowsize; j++) {
       curridx = IDX(i,j);
       if (nbind == PER_VERTEX) {
-	currnormal = &normals[curridx];
-	glNormal3fv((const GLfloat *)currnormal);
+        currnormal = &normals[curridx];
+        glNormal3fv((const GLfloat *)currnormal);
       }
       else if (nbind == PER_FACE) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat *)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat *)currnormal);
       }
       if (mbind == PER_VERTEX) mb.send(curridx, TRUE);
       else if (mbind == PER_FACE) mb.send(midx++, TRUE);
-      
+
       if (doTextures) {
-	tb.send(curridx, coords->get3(start + curridx),
-		*currnormal);
+        tb.send(curridx, coords->get3(start + curridx),
+                *currnormal);
       }
       coords->send(start + curridx);
       curridx = IDX(i+1,j);
       if (nbind == PER_VERTEX) {
-	currnormal = &normals[curridx];
-	glNormal3fv((const GLfloat *)currnormal);
+        currnormal = &normals[curridx];
+        glNormal3fv((const GLfloat *)currnormal);
       }
       if (mbind == PER_VERTEX) mb.send(curridx, TRUE);
       if (doTextures) {
-	tb.send(curridx, coords->get3(start + curridx),
-		*currnormal);
+        tb.send(curridx, coords->get3(start + curridx),
+                *currnormal);
       }
       coords->send(start + curridx);
     }
@@ -358,39 +358,39 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 {
   if (verticesPerRow.getValue() < 2 || verticesPerColumn.getValue() < 2)
     return TRUE; // nothing to generate
-  
+
   SbBool ccw = TRUE;
   if (SoShapeHintsElement::getVertexOrdering(state) ==
       SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
-  
+
   const SbVec3f * coords = SoCoordinateElement::getArrayPtr3(state);
   assert(coords);
 
   Binding binding = findNormalBinding(state);
-  
+
   switch (binding) {
   case PER_VERTEX:
     nc->generatePerVertexQuad(coords + startIndex.getValue(),
-			      verticesPerRow.getValue(),
-			      verticesPerColumn.getValue(),
-			      ccw);
+                              verticesPerRow.getValue(),
+                              verticesPerColumn.getValue(),
+                              ccw);
     break;
   case PER_FACE:
     nc->generatePerFaceQuad(coords + startIndex.getValue(),
-			    verticesPerRow.getValue(),
-			    verticesPerColumn.getValue(),
-			    ccw);
+                            verticesPerRow.getValue(),
+                            verticesPerColumn.getValue(),
+                            ccw);
     break;
   case PER_ROW:
     nc->generatePerRowQuad(coords + startIndex.getValue(),
-			   verticesPerRow.getValue(),
-			   verticesPerColumn.getValue(),
-			   ccw);
+                           verticesPerRow.getValue(),
+                           verticesPerColumn.getValue(),
+                           ccw);
     break;
   case OVERALL:
     break;
@@ -411,8 +411,8 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 void
 SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
-  
+  if (!this->shouldPrimitiveCount(action)) return;
+
   action->addNumTriangles(2 * this->verticesPerRow.getValue() *
                           this->verticesPerColumn.getValue());
 }
@@ -453,18 +453,18 @@ SoQuadMesh::generatePrimitives(SoAction *action)
   const SbVec3f * normals;
   SbBool doTextures;
   SbBool needNormals = TRUE;
-  
+
   SoVertexShape::getVertexData(action->getState(), coords, normals,
-			       needNormals);
-    
+                               needNormals);
+
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
-    
+
   int start = this->startIndex.getValue();
-  
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
-  
+
   if (needNormals && normals == NULL) {
     normals = getNormalCache()->getNormals();
   }
@@ -481,9 +481,9 @@ SoQuadMesh::generatePrimitives(SoAction *action)
   if (nbind == OVERALL && needNormals) {
     vertex.setNormal(*currnormal);
   }
-  
+
   int curridx; // for optimization only
-  
+
 #define IDX(r,c) ((r)*rowsize+(c))
 
   int normnr = 0;
@@ -505,30 +505,30 @@ SoQuadMesh::generatePrimitives(SoAction *action)
     for (j = 0; j < rowsize; j++) {
       curridx = IDX(i,j);
       if (nbind == PER_VERTEX) {
-	pointDetail.setNormalIndex(curridx);
-	currnormal = &normals[curridx];
-	vertex.setNormal(*currnormal);
+        pointDetail.setNormalIndex(curridx);
+        currnormal = &normals[curridx];
+        vertex.setNormal(*currnormal);
       }
       else if (nbind == PER_FACE) {
-	pointDetail.setNormalIndex(normnr);
-	currnormal = &normals[normnr++];
-	vertex.setNormal(*currnormal);
+        pointDetail.setNormalIndex(normnr);
+        currnormal = &normals[normnr++];
+        vertex.setNormal(*currnormal);
       }
       if (mbind == PER_VERTEX) {
-	pointDetail.setMaterialIndex(curridx);
-	vertex.setMaterialIndex(curridx);
+        pointDetail.setMaterialIndex(curridx);
+        vertex.setMaterialIndex(curridx);
       }
       else if (mbind == PER_FACE) {
-	pointDetail.setMaterialIndex(midx);
-	vertex.setMaterialIndex(midx++);
-      }      
+        pointDetail.setMaterialIndex(midx);
+        vertex.setMaterialIndex(midx++);
+      }
       if (doTextures) {
-	if (tb.isFunction())
-	  vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
-	else {
-	  pointDetail.setTextureCoordIndex(curridx);
-	  vertex.setTextureCoords(tb.get(curridx));
-	}
+        if (tb.isFunction())
+          vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
+        else {
+          pointDetail.setTextureCoordIndex(curridx);
+          vertex.setTextureCoords(tb.get(curridx));
+        }
       }
       pointDetail.setCoordinateIndex(start + curridx);
       vertex.setPoint(coords->get3(start + curridx));
@@ -536,21 +536,21 @@ SoQuadMesh::generatePrimitives(SoAction *action)
 
       curridx = IDX(i+1,j);
       if (nbind == PER_VERTEX) {
-	pointDetail.setNormalIndex(curridx);
-	currnormal = &normals[curridx];
-	vertex.setNormal(*currnormal);
+        pointDetail.setNormalIndex(curridx);
+        currnormal = &normals[curridx];
+        vertex.setNormal(*currnormal);
       }
       if (mbind == PER_VERTEX) {
-	pointDetail.setMaterialIndex(curridx);
-	vertex.setMaterialIndex(curridx);
+        pointDetail.setMaterialIndex(curridx);
+        vertex.setMaterialIndex(curridx);
       }
       if (doTextures) {
-	if (tb.isFunction())
-	  vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
-	else {
-	  pointDetail.setTextureCoordIndex(curridx);
-	  vertex.setTextureCoords(tb.get(curridx));
-	}
+        if (tb.isFunction())
+          vertex.setTextureCoords(tb.get(coords->get3(start+curridx), *currnormal));
+        else {
+          pointDetail.setTextureCoordIndex(curridx);
+          vertex.setTextureCoords(tb.get(curridx));
+        }
       }
       pointDetail.setCoordinateIndex(start + curridx);
       vertex.setPoint(coords->get3(start + curridx));
@@ -562,10 +562,10 @@ SoQuadMesh::generatePrimitives(SoAction *action)
     faceDetail.incPartIndex();
   }
 #undef IDX
-  
+
   if (this->vertexProperty.getValue())
     state->pop();
-  
+
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -575,10 +575,10 @@ SoQuadMesh::generatePrimitives(SoAction *action)
 */
 SoDetail *
 SoQuadMesh::createTriangleDetail(SoRayPickAction * /* action */,
-				 const SoPrimitiveVertex * /* v1 */,
-				 const SoPrimitiveVertex * /* v2 */,
-				 const SoPrimitiveVertex * /* v3 */,
-				 SoPickedPoint * /* pp */)
+                                 const SoPrimitiveVertex * /* v1 */,
+                                 const SoPrimitiveVertex * /* v2 */,
+                                 const SoPrimitiveVertex * /* v3 */,
+                                 SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -146,7 +146,7 @@ SoImage::initClass(void)
 */
 void
 SoImage::computeBBox(SoAction * /* action */,
-		     SbBox3f & /* box */, SbVec3f & /* center */)
+                     SbBox3f & /* box */, SbVec3f & /* center */)
 {
   assert(0 && "FIXME: not implemented yet");
 }

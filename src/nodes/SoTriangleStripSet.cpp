@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -136,12 +136,12 @@ SoTriangleStripSet::initClass(void)
 */
 void
 SoTriangleStripSet::computeBBox(SoAction * action,
-				SbBox3f & box, SbVec3f & center)
+                                SbBox3f & box, SbVec3f & center)
 {
   int32_t numvertices = 0;
   for (int i=0; i < this->numVertices.getNum(); i++)
     numvertices += this->numVertices[i];
-  
+
   inherited::computeCoordBBox(action, numvertices, box, center);
 }
 
@@ -151,10 +151,10 @@ SoTriangleStripSet::computeBBox(SoAction * action,
 /*!
   \internal
 */
-SoTriangleStripSet::Binding 
+SoTriangleStripSet::Binding
 SoTriangleStripSet::findMaterialBinding(SoState * const state) const
 {
-  SoMaterialBindingElement::Binding matbind = 
+  SoMaterialBindingElement::Binding matbind =
     SoMaterialBindingElement::get(state);
 
   Binding binding;
@@ -176,7 +176,7 @@ SoTriangleStripSet::findMaterialBinding(SoState * const state) const
     binding = OVERALL;
 #if COIN_DEBUG
     SoDebugError::postWarning("SoTriangleStripSet::findMaterialBinding",
-			      "unknown material binding setting");
+                              "unknown material binding setting");
 #endif // COIN_DEBUG
     break;
   }
@@ -186,10 +186,10 @@ SoTriangleStripSet::findMaterialBinding(SoState * const state) const
 /*!
   \internal
 */
-SoTriangleStripSet::Binding 
+SoTriangleStripSet::Binding
 SoTriangleStripSet::findNormalBinding(SoState * const state) const
 {
-  SoNormalBindingElement::Binding normbind = 
+  SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
 
   Binding binding;
@@ -213,7 +213,7 @@ SoTriangleStripSet::findNormalBinding(SoState * const state) const
     binding = PER_VERTEX;
 #if COIN_DEBUG
     SoDebugError::postWarning("SoTriangleStripSet::findNormalBinding",
-			      "unknown normal binding setting");
+                              "unknown normal binding setting");
 #endif // COIN_DEBUG
     break;
   }
@@ -227,7 +227,7 @@ void
 SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 {
   // TODO: make several optimized functions to render this Shape.
-  
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -245,7 +245,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   const SbVec3f * normals;
   SbBool doTextures;
   SbBool needNormals = TRUE;
-  
+
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   needNormals =
     (SoLightModelElement::get(state) !=
@@ -253,16 +253,16 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 #endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
-			       needNormals);
-  
+                               needNormals);
+
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
-  
+
   SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
   doTextures = tb.needCoordinates();
-  
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
-  
+
   if (!needNormals) nbind = OVERALL;
 
   if (needNormals && normals == NULL) {
@@ -280,7 +280,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   int32_t idx = startIndex.getValue();
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
-  
+
   int matnr = 0;
   int texnr = 0;
   int n;
@@ -288,8 +288,8 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
   const SbVec3f * currnormal = &dummynormal;
   if (normals) currnormal = normals;
-  if (nbind == OVERALL && needNormals) 
-    glNormal3fv((const GLfloat *)currnormal); 
+  if (nbind == OVERALL && needNormals)
+    glNormal3fv((const GLfloat *)currnormal);
 
   while (ptr < end) {
     n = *ptr++ - 2;
@@ -315,8 +315,8 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 
     while (n--) {
       if (nbind >= PER_FACE) {
-	currnormal = normals++;
-	glNormal3fv((const GLfloat *)currnormal);
+        currnormal = normals++;
+        glNormal3fv((const GLfloat *)currnormal);
       }
       if (mbind >= PER_FACE) mb.send(matnr++, TRUE);
       if (doTextures) tb.send(texnr++, coords->get3(idx), *currnormal);
@@ -331,23 +331,23 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 {
   SbBool ccw = TRUE;
   if (SoShapeHintsElement::getVertexOrdering(state) ==
       SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
-  
-  const SoCoordinateElement * coords = 
+
+  const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
   assert(coords);
 
   SbBool perVertex = TRUE;
 
 #if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
-  SoNormalBindingElement::Binding normbind = 
+  SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
-    
+
   switch (normbind) {
   case SoNormalBindingElement::PER_FACE:
   case SoNormalBindingElement::PER_FACE_INDEXED:
@@ -361,15 +361,15 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 #endif // COIN_EXCLUDE_SONORMALBINDINGELEMENT
 
   if (perVertex) {
-    SoNormalGenerator * gen = 
+    SoNormalGenerator * gen =
       new SoNormalGenerator(ccw, this->numVertices.getNum()*3,
-			    TRUE);
-    
+                            TRUE);
+
     int32_t idx = startIndex.getValue();
     const int32_t * ptr = numVertices.getValues(0);
     const int32_t * end = ptr + numVertices.getNum();
 
-    const SoCoordinateElement * coords = 
+    const SoCoordinateElement * coords =
       SoCoordinateElement::getInstance(state);
 
     while (ptr < end) {
@@ -382,16 +382,16 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
       gen->triangle(striptri[0], striptri[1], striptri[2]);
       SbBool flag = FALSE;
       while (num--) {
-	if (flag) striptri[1] = striptri[2];
-	else striptri[0] = striptri[2];
-	flag = !flag;
-	striptri[2] = coords->get3(idx++);
-	gen->triangle(striptri[0], striptri[1], striptri[2]);
+        if (flag) striptri[1] = striptri[2];
+        else striptri[0] = striptri[2];
+        flag = !flag;
+        striptri[2] = coords->get3(idx++);
+        gen->triangle(striptri[0], striptri[1], striptri[2]);
       }
     }
-    gen->generate(SoCreaseAngleElement::get(state), 
-		  numVertices.getValues(0),
-		  numVertices.getNum());
+    gen->generate(SoCreaseAngleElement::get(state),
+                  numVertices.getValues(0),
+                  numVertices.getNum());
     nc->set(gen);
   }
   else {
@@ -410,18 +410,18 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 void
 SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action)) return;
 
   int n = this->numVertices.getNum();
   if (n == 1 && this->numVertices[0] == -1) return;
-  
+
   if (action->canApproximateCount()) {
     action->addNumTriangles(n*8); // this is a wild guess, disable?
   }
   else {
     int cnt = 0;
     for (int i = 0; i < n; i++) {
-      cnt += this->numVertices[i]-2; 
+      cnt += this->numVertices[i]-2;
     }
     action->addNumTriangles(cnt);
   }
@@ -433,7 +433,7 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
  */
 SbBool
 SoTriangleStripSet::generateDefaultNormals(SoState * /* state */,
-					   SoNormalBundle * /* nb */)
+                                           SoNormalBundle * /* nb */)
 {
   assert(0 && "FIXME: not implemented");
   return FALSE;
@@ -447,26 +447,26 @@ void
 SoTriangleStripSet::generatePrimitives(SoAction *action)
 {
   SoState * state = action->getState();
-  
+
   if (this->vertexProperty.getValue()) {
     state->push();
     this->vertexProperty.getValue()->doAction(action);
   }
-  
+
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
   SbBool doTextures;
   SbBool needNormals = TRUE;
-  
+
   SoVertexShape::getVertexData(action->getState(), coords, normals,
-			       needNormals);
-    
+                               needNormals);
+
   SoTextureCoordinateBundle tb(action, FALSE, FALSE);
   doTextures = tb.needCoordinates();
-  
+
   Binding mbind = findMaterialBinding(action->getState());
   Binding nbind = findNormalBinding(action->getState());
-  
+
   if (needNormals && normals == NULL) {
     normals = getNormalCache()->getNormals();
     if (normals == NULL) {
@@ -479,7 +479,7 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   int32_t idx = startIndex.getValue();
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
-  
+
   int matnr = 0;
   int texnr = 0;
   int normnr = 0;
@@ -495,11 +495,11 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
 
   vertex.setNormal(*currnormal);
   vertex.setDetail(&pointDetail);
-  
+
   while (ptr < end) {
     n = *ptr++ - 2;
     assert(n > 0);
-    
+
     faceDetail.setFaceIndex(0);
     this->beginShape(action, TRIANGLE_STRIP, &faceDetail);
 
@@ -514,10 +514,10 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
     }
     if (doTextures) {
       if (tb.isFunction())
-	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+        vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
       else {
-	pointDetail.setTextureCoordIndex(texnr);
-	vertex.setTextureCoords(tb.get(texnr++));
+        pointDetail.setTextureCoordIndex(texnr);
+        vertex.setTextureCoords(tb.get(texnr++));
       }
     }
     pointDetail.setCoordinateIndex(idx);
@@ -535,33 +535,33 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
     }
     if (doTextures) {
       if (tb.isFunction())
-	vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+        vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
       else {
-	pointDetail.setTextureCoordIndex(texnr);
-	vertex.setTextureCoords(tb.get(texnr++));
+        pointDetail.setTextureCoordIndex(texnr);
+        vertex.setTextureCoords(tb.get(texnr++));
       }
     }
     pointDetail.setCoordinateIndex(idx);
     vertex.setPoint(coords->get3(idx++));
     this->shapeVertex(&vertex);
-		    
+
     while (n--) {
       if (nbind >= PER_FACE) {
-	pointDetail.setNormalIndex(normnr);
-	currnormal = &normals[normnr++];
-	vertex.setNormal(*currnormal);
+        pointDetail.setNormalIndex(normnr);
+        currnormal = &normals[normnr++];
+        vertex.setNormal(*currnormal);
       }
       if (mbind >= PER_FACE) {
-	pointDetail.setMaterialIndex(matnr);
-	vertex.setMaterialIndex(matnr++);
+        pointDetail.setMaterialIndex(matnr);
+        vertex.setMaterialIndex(matnr++);
       }
       if (doTextures) {
-	if (tb.isFunction())
-	  vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
-	else {
-	  pointDetail.setCoordinateIndex(texnr);
-	  vertex.setTextureCoords(tb.get(texnr++));
-	}
+        if (tb.isFunction())
+          vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+        else {
+          pointDetail.setCoordinateIndex(texnr);
+          vertex.setTextureCoords(tb.get(texnr++));
+        }
       }
       pointDetail.setCoordinateIndex(idx);
       vertex.setPoint(coords->get3(idx));
@@ -582,10 +582,10 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
 */
 SoDetail*
 SoTriangleStripSet::createTriangleDetail(SoRayPickAction * /* action */,
-					 const SoPrimitiveVertex * /* v1 */,
-					 const SoPrimitiveVertex * /* v2 */,
-					 const SoPrimitiveVertex * /* v3 */,
-					 SoPickedPoint * /* pp */)
+                                         const SoPrimitiveVertex * /* v1 */,
+                                         const SoPrimitiveVertex * /* v2 */,
+                                         const SoPrimitiveVertex * /* v3 */,
+                                         SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;

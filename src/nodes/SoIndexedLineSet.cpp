@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -162,7 +162,7 @@ SoIndexedLineSet::initClass(void)
 /*!
   \internal
 */
-int 
+int
 SoIndexedLineSet::numLines() const
 {
   int i, n = coordIndex.getNum();
@@ -176,7 +176,7 @@ SoIndexedLineSet::numLines() const
 /*!
   \internal
 */
-int 
+int
 SoIndexedLineSet::numLineSegments() const
 {
   int i = 0, n = coordIndex.getNum();
@@ -199,15 +199,15 @@ SoIndexedLineSet::numLineSegments() const
 /*!
   \internal
 */
-SoIndexedLineSet::Binding 
+SoIndexedLineSet::Binding
 SoIndexedLineSet::findNormalBinding(SoState * state)
 {
   Binding binding = PER_VERTEX_INDEXED;
-  
+
 #if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
   SoNormalBindingElement::Binding normbind =
     (SoNormalBindingElement::Binding) SoNormalBindingElement::get(state);
-  
+
   switch (normbind) {
   case SoNormalBindingElement::OVERALL:
     binding = OVERALL;
@@ -233,27 +233,27 @@ SoIndexedLineSet::findNormalBinding(SoState * state)
   default:
 #if COIN_DEBUG
     SoDebugError::postWarning("SoIndexedLineSet::findNormalBinding",
-			      "unknown normal binding setting");
+                              "unknown normal binding setting");
 #endif // COIN_DEBUG
     break;
   }
 #endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-  
+
   return binding;
 }
 
 /*!
   \internal
 */
-SoIndexedLineSet::Binding 
+SoIndexedLineSet::Binding
 SoIndexedLineSet::findMaterialBinding(SoState * state)
 {
   Binding binding = OVERALL;
-  
+
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   SoMaterialBindingElement::Binding matbind =
     (SoMaterialBindingElement::Binding) SoMaterialBindingElement::get(state);
-  
+
   switch (matbind) {
   case SoNormalBindingElement::OVERALL:
     binding = OVERALL;
@@ -279,12 +279,12 @@ SoIndexedLineSet::findMaterialBinding(SoState * state)
   default:
 #if COIN_DEBUG
     SoDebugError::postWarning("SoIndexedFaceSet::findNormalBinding",
-			      "unknown normal binding setting");
+                              "unknown normal binding setting");
 #endif // COIN_DEBUG
     break;
   }
 #endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-  
+
   return binding;
 }
 
@@ -293,7 +293,7 @@ SoIndexedLineSet::findMaterialBinding(SoState * state)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
@@ -308,7 +308,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
       state->pop();
     return;
   }
-  
+
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
 
@@ -329,19 +329,19 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
      SoLightModelElement::BASE_COLOR);
 #endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
-  getVertexData(state, coords, normals, cindices, 
-		nindices, tindices, mindices, numindices, 
-		sendNormals, normalCacheUsed);
-  
+  getVertexData(state, coords, normals, cindices,
+                nindices, tindices, mindices, numindices,
+                sendNormals, normalCacheUsed);
+
   if (normals == NULL) sendNormals = FALSE;
-  
+
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
   Binding tbind = PER_VERTEX_INDEXED; // most common
   if (doTextures) {
     if (SoTextureCoordinateBindingElement::get(state) ==
-	SoTextureCoordinateBindingElement::PER_VERTEX) {
+        SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
       tindices = NULL; // just in case
     }
@@ -360,35 +360,35 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   }
   else if (nbind == OVERALL) {
     glNormal3fv((const GLfloat *)normals);
-  }  
+  }
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
-  
+
   SbBool drawPoints = FALSE;
 #if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
   drawPoints = SoDrawStyleElement::get(state) ==
     SoDrawStyleElement::POINTS;
 #endif
-  
+
 #if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
   const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
     action->getState()->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
   sh->forceSend(TRUE, FALSE, TRUE); // enable twoside lighting
 #endif
-  
+
   sogl_render_lineset((SoGLCoordinateElement *)coords,
-		      cindices,
-		      numindices,
-		      normals,
-		      nindices,
-		      &mb,
-		      mindices,
-		      &tb,
-		      tindices,
-		      (int)nbind,
-		      (int)mbind,
-		      doTextures?1:0,
-		      drawPoints?1:0);
+                      cindices,
+                      numindices,
+                      normals,
+                      nindices,
+                      &mb,
+                      mindices,
+                      &tb,
+                      tindices,
+                      (int)nbind,
+                      (int)mbind,
+                      doTextures?1:0,
+                      drawPoints?1:0);
 
   if (this->vertexProperty.getValue()) {
     state->pop();
@@ -398,7 +398,7 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoIndexedLineSet::willSetShapeHints(void) const
 {
   return TRUE;
@@ -409,9 +409,9 @@ SoIndexedLineSet::willSetShapeHints(void) const
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoIndexedLineSet::generateDefaultNormals(SoState * ,
-					 SoNormalCache * nc)
+                                         SoNormalCache * nc)
 {
   // not possible to generate normals for IndexedLineSet
   nc->set(0, NULL);
@@ -438,11 +438,11 @@ SoIndexedLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
-  
+  if (!this->shouldPrimitiveCount(action)) return;
+
   int n = this->coordIndex.getNum();
   if (n == 1 && this->coordIndex[0] == -1) return;
-  
+
   if (action->canApproximateCount()) {
     action->addNumLines(n/3);
   }
@@ -476,7 +476,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     state->push();
     this->vertexProperty.getValue()->doAction(action);
   }
-  
+
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
 
@@ -491,10 +491,10 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
   SbBool sendNormals = TRUE;
   SbBool normalCacheUsed;
 
-  getVertexData(state, coords, normals, cindices, 
-		normindices, texindices, matindices, numindices, 
-		sendNormals, normalCacheUsed);
-  
+  getVertexData(state, coords, normals, cindices,
+                normindices, texindices, matindices, numindices,
+                sendNormals, normalCacheUsed);
+
   if (normals == NULL) {
     sendNormals = FALSE;
     nbind = OVERALL;
@@ -506,7 +506,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
   Binding tbind = PER_VERTEX_INDEXED; // most common
   if (doTextures) {
     if (SoTextureCoordinateBindingElement::get(state) ==
-	SoTextureCoordinateBindingElement::PER_VERTEX) {
+        SoTextureCoordinateBindingElement::PER_VERTEX) {
       tbind = PER_VERTEX;
       texindices = NULL; // just in case
     }
@@ -514,7 +514,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
       texindices = cindices;
     }
   }
-    
+
   if (mbind == PER_VERTEX_INDEXED && matindices == NULL) {
     matindices = cindices;
   }
@@ -536,7 +536,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
   int texidx = 0;
   int32_t i;
   const int32_t *end = cindices + numindices;
-  
+
   SoPrimitiveVertex vertex;
   SoPointDetail pointDetail;
   SoLineDetail lineDetail;
@@ -549,99 +549,99 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
 
   if (nbind == OVERALL) {
     vertex.setNormal(*currnormal);
-  }  
+  }
 
   if (mbind == PER_SEGMENT || mbind == PER_SEGMENT_INDEXED ||
       nbind == PER_SEGMENT || nbind == PER_SEGMENT_INDEXED) {
     int previ;
     SbBool matPerPolyline = mbind == PER_LINE || mbind == PER_LINE_INDEXED;
     SbBool normPerPolyline = nbind == PER_LINE || nbind == PER_LINE_INDEXED;
-    
+
     this->beginShape(action, SoShape::LINES, &lineDetail);
-    
+
     while (cindices < end) {
       lineDetail.setLineIndex(0);
       previ = *cindices++;
 
       if (matPerPolyline) {
-	if (matindices) vertex.setMaterialIndex(*matindices++);
-	else vertex.setMaterialIndex(matnr++);
-	pointDetail.setMaterialIndex(vertex.getMaterialIndex());
+        if (matindices) vertex.setMaterialIndex(*matindices++);
+        else vertex.setMaterialIndex(matnr++);
+        pointDetail.setMaterialIndex(vertex.getMaterialIndex());
       }
       if (normPerPolyline) {
-	if (normindices) {
-	  pointDetail.setNormalIndex(*normindices);
-	  currnormal = &normals[*normindices++];
-	}
-	else {
-	  pointDetail.setNormalIndex(normnr);
-	  currnormal = &normals[normnr++];
-	}
-	vertex.setNormal(*currnormal);
+        if (normindices) {
+          pointDetail.setNormalIndex(*normindices);
+          currnormal = &normals[*normindices++];
+        }
+        else {
+          pointDetail.setNormalIndex(normnr);
+          currnormal = &normals[normnr++];
+        }
+        vertex.setNormal(*currnormal);
       }
-      
+
       i = *cindices++;
       while (i >= 0) {
-	if (!matPerPolyline && mbind != OVERALL) {
-	  if (matindices) vertex.setMaterialIndex(*matindices++);
-	  else vertex.setMaterialIndex(matnr++);
-	  pointDetail.setMaterialIndex(vertex.getMaterialIndex());
-	}
-	if (!normPerPolyline && nbind != OVERALL) {
-	  if (normindices) {
-	    pointDetail.setNormalIndex(*normindices);
-	    currnormal = &normals[*normindices++];
-	  }
-	  else {
-	    pointDetail.setNormalIndex(normnr);
-	    currnormal = &normals[normnr++];
-	  }
-	  vertex.setNormal(*currnormal);
-	}
-	if (doTextures) {
-	  if (tb.isFunction()) {
-	    vertex.setTextureCoords(tb.get(coords->get3(previ), *currnormal));
-	  }
-	  else {
-	    pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
-	    vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
-	  }
-	}
-	pointDetail.setCoordinateIndex(previ);
-	vertex.setPoint(coords->get3(previ));
-	this->shapeVertex(&vertex);
+        if (!matPerPolyline && mbind != OVERALL) {
+          if (matindices) vertex.setMaterialIndex(*matindices++);
+          else vertex.setMaterialIndex(matnr++);
+          pointDetail.setMaterialIndex(vertex.getMaterialIndex());
+        }
+        if (!normPerPolyline && nbind != OVERALL) {
+          if (normindices) {
+            pointDetail.setNormalIndex(*normindices);
+            currnormal = &normals[*normindices++];
+          }
+          else {
+            pointDetail.setNormalIndex(normnr);
+            currnormal = &normals[normnr++];
+          }
+          vertex.setNormal(*currnormal);
+        }
+        if (doTextures) {
+          if (tb.isFunction()) {
+            vertex.setTextureCoords(tb.get(coords->get3(previ), *currnormal));
+          }
+          else {
+            pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
+            vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+          }
+        }
+        pointDetail.setCoordinateIndex(previ);
+        vertex.setPoint(coords->get3(previ));
+        this->shapeVertex(&vertex);
 
-	if (mbind >= PER_VERTEX) {
-	  if (matindices) vertex.setMaterialIndex(*matindices++);
-	  else vertex.setMaterialIndex(matnr++);
-	  pointDetail.setMaterialIndex(vertex.getMaterialIndex());
-	}
-	if (nbind >= PER_VERTEX) {
-	  if (normindices) {
-	    pointDetail.setNormalIndex(*normindices);
-	    currnormal = &normals[*normindices++];
-	  }
-	  else {
-	    pointDetail.setNormalIndex(normnr);
-	    currnormal = &normals[normnr++];
-	  }
-	  vertex.setNormal(*currnormal);
-	}
-	if (doTextures) {
-	  if (tb.isFunction()) {
-	    vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
-	  }
-	  else {
-	    pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
-	    vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
-	  }
-	}
-	pointDetail.setCoordinateIndex(i);
-	vertex.setPoint(coords->get3(i));
-	this->shapeVertex(&vertex);
-	lineDetail.incLineIndex();
-	previ = i;
-	i = *cindices++;
+        if (mbind >= PER_VERTEX) {
+          if (matindices) vertex.setMaterialIndex(*matindices++);
+          else vertex.setMaterialIndex(matnr++);
+          pointDetail.setMaterialIndex(vertex.getMaterialIndex());
+        }
+        if (nbind >= PER_VERTEX) {
+          if (normindices) {
+            pointDetail.setNormalIndex(*normindices);
+            currnormal = &normals[*normindices++];
+          }
+          else {
+            pointDetail.setNormalIndex(normnr);
+            currnormal = &normals[normnr++];
+          }
+          vertex.setNormal(*currnormal);
+        }
+        if (doTextures) {
+          if (tb.isFunction()) {
+            vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
+          }
+          else {
+            pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
+            vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+          }
+        }
+        pointDetail.setCoordinateIndex(i);
+        vertex.setPoint(coords->get3(i));
+        this->shapeVertex(&vertex);
+        lineDetail.incLineIndex();
+        previ = i;
+        i = *cindices++;
       }
       lineDetail.incPartIndex();
       if (mbind == PER_VERTEX_INDEXED) matindices++;
@@ -651,7 +651,7 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     this->endShape();
     return;
   }
-    
+
   while (cindices < end) {
     this->beginShape(action, LINE_STRIP, &lineDetail);
     lineDetail.setLineIndex(0);
@@ -676,11 +676,11 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     vertex.setNormal(*currnormal);
     if (doTextures) {
       if (tb.isFunction()) {
-	vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
+        vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
       }
       else {
-	pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
-	vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+        pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
+        vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
       }
     }
     pointDetail.setCoordinateIndex(i);
@@ -696,55 +696,55 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     }
     if (nbind >= PER_VERTEX) {
       if (normindices) {
-	pointDetail.setNormalIndex(*normindices);
-	currnormal = &normals[*normindices++];
+        pointDetail.setNormalIndex(*normindices);
+        currnormal = &normals[*normindices++];
       }
       else {
-	pointDetail.setNormalIndex(normnr);
-	currnormal = &normals[normnr++];
+        pointDetail.setNormalIndex(normnr);
+        currnormal = &normals[normnr++];
       }
       vertex.setNormal(*currnormal);
     }
     if (doTextures) {
       if (tb.isFunction()) {
-	vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
+        vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
       }
       else {
-	pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
-	vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+        pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
+        vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
       }
     }
     pointDetail.setCoordinateIndex(i);
     vertex.setPoint(coords->get3(i));
     this->shapeVertex(&vertex);
-    
+
     i = *cindices++;
     while (i >= 0) {
       assert(cindices <= end);
       if (mbind >= PER_VERTEX) {
-	if (matindices) vertex.setMaterialIndex(*matindices++);
-	else vertex.setMaterialIndex(matnr++);
-	pointDetail.setMaterialIndex(vertex.getMaterialIndex());
+        if (matindices) vertex.setMaterialIndex(*matindices++);
+        else vertex.setMaterialIndex(matnr++);
+        pointDetail.setMaterialIndex(vertex.getMaterialIndex());
       }
       if (nbind >= PER_VERTEX) {
-	if (normindices) {
-	  pointDetail.setNormalIndex(*normindices);
-	  currnormal = &normals[*normindices++];
-	}
-	else {
-	  pointDetail.setNormalIndex(normnr);
-	  currnormal = &normals[normnr++];
-	}
-	vertex.setNormal(*currnormal);
+        if (normindices) {
+          pointDetail.setNormalIndex(*normindices);
+          currnormal = &normals[*normindices++];
+        }
+        else {
+          pointDetail.setNormalIndex(normnr);
+          currnormal = &normals[normnr++];
+        }
+        vertex.setNormal(*currnormal);
       }
       if (doTextures) {
-	if (tb.isFunction()) {
-	  vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
-	}
-	else {
-	  pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
-	  vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
-	}
+        if (tb.isFunction()) {
+          vertex.setTextureCoords(tb.get(coords->get3(i), *currnormal));
+        }
+        else {
+          pointDetail.setTextureCoordIndex(texindices?*texindices:texidx);
+          vertex.setTextureCoords(tb.get(texindices?*texindices++:texidx++));
+        }
       }
       pointDetail.setCoordinateIndex(i);
       vertex.setPoint(coords->get3(i));
@@ -771,13 +771,11 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
 */
 SoDetail *
 SoIndexedLineSet::createLineSegmentDetail(SoRayPickAction * /* action */,
-					  const SoPrimitiveVertex * /* v1 */,
-					  const SoPrimitiveVertex * /* v2 */,
-					  SoPickedPoint * /* pp */)
+                                          const SoPrimitiveVertex * /* v1 */,
+                                          const SoPrimitiveVertex * /* v2 */,
+                                          SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented");
   return NULL;
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
-
-

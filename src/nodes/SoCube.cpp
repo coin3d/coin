@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -123,7 +123,7 @@ SoCube::initClass(void)
 //
 // the 12 triangles in the cube
 //
-static int vindices[] = 
+static int vindices[] =
 {
   0, 1, 3,
   0, 3, 2,
@@ -142,7 +142,7 @@ static int vindices[] =
 //
 // a cube needs 6 normals
 //
-static SbVec3f normals[] = 
+static SbVec3f normals[] =
 {
   SbVec3f(0.0f, 0.0f, 1.0f),
   SbVec3f(-1.0f, 0.0f, 0.0f),
@@ -157,7 +157,7 @@ static SbVec3f normals[] =
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCube::GLRender(SoGLRenderAction * action)
 {
   if (!this->shouldGLRender(action)) return;
@@ -167,10 +167,10 @@ SoCube::GLRender(SoGLRenderAction * action)
   this->generateVertices(varray);
 
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
-  SoMaterialBindingElement::Binding binding = 
+  SoMaterialBindingElement::Binding binding =
     SoMaterialBindingElement::get(state);
-  
-  SbBool materialPerPart = 
+
+  SbBool materialPerPart =
     (binding == SoMaterialBindingElement::PER_PART ||
      binding == SoMaterialBindingElement::PER_PART_INDEXED);
 #else // COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
@@ -184,12 +184,12 @@ SoCube::GLRender(SoGLRenderAction * action)
 #endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
 
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
-  SbBool useTexFunc = 
+  SbBool useTexFunc =
     (SoTextureCoordinateElement::getType(state) ==
      SoTextureCoordinateElement::FUNCTION);
-  
+
   const SoTextureCoordinateElement * tce;
-  if (useTexFunc) 
+  if (useTexFunc)
     tce = SoTextureCoordinateElement::getInstance(state);
 #else // COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
   SbBool useTexFunc = FALSE;
@@ -232,31 +232,31 @@ SoCube::GLRender(SoGLRenderAction * action)
   if (sendNormals) flags |= SOGL_NEED_NORMALS;
 
   sogl_render_cube(width.getValue(),
-		   height.getValue(),
-		   depth.getValue(),
-		   &mb,
-		   flags);
+                   height.getValue(),
+                   depth.getValue(),
+                   &mb,
+                   flags);
 }
 
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCube::generatePrimitives(SoAction * action)
 {
   SoPrimitiveVertex pv;
   SoState * state = action->getState();
   float w, h, d;
   getHalfSize(w, h, d);
-  
+
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
-  SbBool useTexFunc = 
+  SbBool useTexFunc =
      (SoTextureCoordinateElement::getType(state) ==
       SoTextureCoordinateElement::FUNCTION);
-  
+
   const SoTextureCoordinateElement * tce = NULL;
   SbVec4f texCoord;
-  if (useTexFunc) 
+  if (useTexFunc)
     tce = SoTextureCoordinateElement::getInstance(state);
   else {
     texCoord[2] = 0.0f;
@@ -266,14 +266,14 @@ SoCube::generatePrimitives(SoAction * action)
   SbBool useTexFunc = FALSE;
   const SoTextureCoordinateElement * tce = NULL;
 #endif // COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
-  
+
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   // FIXME: varibles not in use? 19990925 mortene.
 #if 0 // disabled
-  SoMaterialBindingElement::Binding binding = 
+  SoMaterialBindingElement::Binding binding =
     SoMaterialBindingElement::get(state);
-  
-  SbBool materialPerPart = 
+
+  SbBool materialPerPart =
     (binding == SoMaterialBindingElement::PER_PART ||
      binding == SoMaterialBindingElement::PER_PART_INDEXED);
 #endif // disabled
@@ -286,25 +286,25 @@ SoCube::generatePrimitives(SoAction * action)
 #endif // disabled
 
 #endif // COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-  
+
   SbVec3f varray[8];
   generateVertices(varray);
   int * iptr = vindices;
   SbVec3f * nptr = normals;
 
   beginShape((SoGLRenderAction *)action, TRIANGLES);
-  
+
   for (int i = 0; i < 6; i++) {
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce, 
-		   0.0f, 0.0f, *nptr);
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce, 
-		   0.0f, 0.0f, *nptr);
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce, 
-		   0.0f, 0.0f, *nptr);
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce, 
-		   0.0f, 0.0f, *nptr);
-    generateVertex(&pv, varray[*iptr++], useTexFunc, tce, 
-		   0.0f, 0.0f, *nptr);
+    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
+                   0.0f, 0.0f, *nptr);
+    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
+                   0.0f, 0.0f, *nptr);
+    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
+                   0.0f, 0.0f, *nptr);
+    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
+                   0.0f, 0.0f, *nptr);
+    generateVertex(&pv, varray[*iptr++], useTexFunc, tce,
+                   0.0f, 0.0f, *nptr);
     nptr++;
   }
   endShape();
@@ -313,7 +313,7 @@ SoCube::generatePrimitives(SoAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoCube::willSetShadeModel(void) const
 {
   return TRUE;
@@ -322,14 +322,14 @@ SoCube::willSetShadeModel(void) const
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoCube::willSetShapeHints(void) const
 {
   return TRUE;
 }
 
 //!
-SbBool 
+SbBool
 SoCube::willUpdateNormalizeElement(SoState *) const
 {
   return TRUE;
@@ -341,7 +341,7 @@ SoCube::willUpdateNormalizeElement(SoState *) const
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCube::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
   center.setValue(0.0f, 0.0f, 0.0f);
@@ -356,11 +356,11 @@ SoCube::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoCube::rayPick(SoRayPickAction *action)
 {
   if (!shouldRayPick(action)) return;
-  
+
   static int translation[6] = {2,3,5,4,1,0}; // translate into detail part-num
   action->setObjectSpace();
   const SbLine &line = action->getLine();
@@ -368,8 +368,8 @@ SoCube::rayPick(SoRayPickAction *action)
   this->getHalfSize(size[0],size[1],size[2]);
 #if 0
   fprintf(stderr,"obj line: %g %g %g, %g %g %g\n",
-	  line.getPosition()[0], line.getPosition()[1], line.getPosition()[2],
-	  line.getDirection()[0], line.getDirection()[1], line.getDirection()[2]);
+          line.getPosition()[0], line.getPosition()[1], line.getPosition()[2],
+          line.getDirection()[0], line.getDirection()[1], line.getDirection()[2]);
 #endif
   int cnt = 0;
   // test intersection with all six planes
@@ -378,22 +378,22 @@ SoCube::rayPick(SoRayPickAction *action)
       SbVec3f norm(0,0,0);
       norm[i] = j;
       SbVec3f isect;
-      
+
       SbPlane plane(norm, size[i]);
       if (plane.intersect(line, isect)) {
-	int i1 = (i+1) % 3;
-	int i2 = (i+2) % 3;
+        int i1 = (i+1) % 3;
+        int i2 = (i+2) % 3;
 
-	if (isect[i1] >= -size[i1] && isect[i1] <= size[i1] &&
-	    isect[i2] >= -size[i2] && isect[i2] <= size[i2] &&
-	    action->isBetweenPlanes(isect)) {
-	  SoPickedPoint *pp = action->addIntersection(isect);
-	  if (pp) {
-	    SoCubeDetail *detail = new SoCubeDetail();
-	    detail->setPart(translation[cnt]);
-	    pp->setDetail(detail, this);
-	  }
-	}
+        if (isect[i1] >= -size[i1] && isect[i1] <= size[i1] &&
+            isect[i2] >= -size[i2] && isect[i2] <= size[i2] &&
+            action->isBetweenPlanes(isect)) {
+          SoPickedPoint *pp = action->addIntersection(isect);
+          if (pp) {
+            SoCubeDetail *detail = new SoCubeDetail();
+            detail->setPart(translation[cnt]);
+            pp->setDetail(detail, this);
+          }
+        }
       }
       cnt++;
     }
@@ -405,10 +405,10 @@ SoCube::rayPick(SoRayPickAction *action)
 */
 SoDetail *
 SoCube::createTriangleDetail(SoRayPickAction * /* action */,
-			     const SoPrimitiveVertex * /* v1 */,
-			     const SoPrimitiveVertex * /* v2 */,
-			     const SoPrimitiveVertex * /* v3 */,
-			     SoPickedPoint * /* pp */)
+                             const SoPrimitiveVertex * /* v1 */,
+                             const SoPrimitiveVertex * /* v2 */,
+                             const SoPrimitiveVertex * /* v3 */,
+                             SoPickedPoint * /* pp */)
 {
   assert(0 && "FIXME: not implemented yet");
   return NULL;
@@ -418,29 +418,29 @@ SoCube::createTriangleDetail(SoRayPickAction * /* action */,
 /*!
   \internal
 */
-void 
+void
 SoCube::getHalfSize(float & w, float & h, float & d)
 {
   w = (width.isIgnored() ? 1.0f :
        width.getValue() / 2.0f);
   h = (height.isIgnored() ? 1.0f :
        height.getValue() / 2.0f);
-  d = (depth.isIgnored() ? 1.0f : 
+  d = (depth.isIgnored() ? 1.0f :
        depth.getValue() / 2.0f);
 }
 
 /*!
   \internal
 */
-void 
+void
 SoCube::generateVertices(SbVec3f * const varray)
 {
   float w, h, d;
   getHalfSize(w, h, d);
   for (int i = 0; i < 8; i++) {
     varray[i].setValue((i & 1) ? -w : w,
-		       (i & 2) ? -h : h,
-		       (i & 4) ? -d : d);
+                       (i & 2) ? -h : h,
+                       (i & 4) ? -d : d);
   }
 }
 
@@ -451,7 +451,7 @@ SoCube::generateVertices(SbVec3f * const varray)
 void
 SoCube::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action)) return;
 
   if (action->isNonVertexShapesCountedAsTriangles()) {
     action->addNumTriangles(12);

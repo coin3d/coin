@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -61,7 +61,7 @@
 #endif // ! COIN_EXCLUDE_SOMODELMATRIXELEMENT
 #if !defined(COIN_EXCLUDE_SOVIEWVOLUMEELEMENT)
 #include <Inventor/elements/SoViewVolumeElement.h>
-#endif // !COIN_EXCLUDE_SOVIEWVOLUMEELEMENT 
+#endif // !COIN_EXCLUDE_SOVIEWVOLUMEELEMENT
 #if !defined(COIN_EXCLUDE_SOVIEWCOLUMEELEMENT)
 #include <Inventor/elements/SoViewportRegionElement.h>
 #endif // !COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT
@@ -187,8 +187,8 @@ public:
   }
 
   void beginShape(SoShape *shape, SoAction *action,
-		  SoShape::TriangleShape shapeType,
-		  SoDetail *detail) {
+                  SoShape::TriangleShape shapeType,
+                  SoDetail *detail) {
     this->shape = shape;
     this->action = action;
     this->shapeType = shapeType;
@@ -196,122 +196,122 @@ public:
     // other one is an illegal cast.
     this->faceDetail = (SoFaceDetail*)detail;
     this->lineDetail = (SoLineDetail*)detail;
-    this->counter = 0; 
+    this->counter = 0;
   }
   void endShape() {
     if (this->shapeType == SoShape::POLYGON) {
       if (SoShapeHintsElement::getFaceType(action->getState()) ==
-	  SoShapeHintsElement::CONVEX) {
-	for (int i = 1; i < counter-1; i++) {
-	  this->shape->invokeTriangleCallbacks(this->action,
-					       &vertsArray[0],
-					       &vertsArray[i],
-					       &vertsArray[i+1]);
-	}
+          SoShapeHintsElement::CONVEX) {
+        for (int i = 1; i < counter-1; i++) {
+          this->shape->invokeTriangleCallbacks(this->action,
+                                               &vertsArray[0],
+                                               &vertsArray[i],
+                                               &vertsArray[i+1]);
+        }
       }
       else {
-	this->tess->setCallback(shapePrimitiveData::tess_callback, this);
-	this->tess->beginPolygon(TRUE);
-	for (int i = 0; i < counter; i++) {
-	  this->tess->addVertex(vertsArray[i].getPoint(), &vertsArray[i]);
-	}
-	this->tess->endPolygon();
+        this->tess->setCallback(shapePrimitiveData::tess_callback, this);
+        this->tess->beginPolygon(TRUE);
+        for (int i = 0; i < counter; i++) {
+          this->tess->addVertex(vertsArray[i].getPoint(), &vertsArray[i]);
+        }
+        this->tess->endPolygon();
       }
     }
   }
-  
+
   void shapeVertex(const SoPrimitiveVertex * const v) {
     switch (shapeType) {
     case SoShape::TRIANGLE_STRIP:
       if (this->counter >= 3) {
-	if (this->counter & 1) this->copyVertex(2, 0);
-	else this->copyVertex(2, 1);
+        if (this->counter & 1) this->copyVertex(2, 0);
+        else this->copyVertex(2, 1);
       }
       this->setVertex(this->counter%3, v);
       this->counter++;
       if (this->counter >= 3) {
-	this->shape->invokeTriangleCallbacks(this->action,
-					     &vertsArray[0],
-					     &vertsArray[1],
-					     &vertsArray[2]);
+        this->shape->invokeTriangleCallbacks(this->action,
+                                             &vertsArray[0],
+                                             &vertsArray[1],
+                                             &vertsArray[2]);
       }
       break;
     case SoShape::TRIANGLE_FAN:
       if (this->counter == 3) {
-	this->copyVertex(2, 1);
-	this->setVertex(2, v);
+        this->copyVertex(2, 1);
+        this->setVertex(2, v);
       }
       else {
-	this->setVertex(this->counter++, v);
+        this->setVertex(this->counter++, v);
       }
       if (this->counter == 3) {
-	this->shape->invokeTriangleCallbacks(this->action,
-					     &vertsArray[0],
-					     &vertsArray[1],
-					     &vertsArray[2]);
+        this->shape->invokeTriangleCallbacks(this->action,
+                                             &vertsArray[0],
+                                             &vertsArray[1],
+                                             &vertsArray[2]);
       }
       break;
     case SoShape::TRIANGLES:
       this->setVertex(counter++, v);
       if (this->counter == 3) {
-	this->shape->invokeTriangleCallbacks(this->action,
-					     &vertsArray[0],
-					     &vertsArray[1],
-					     &vertsArray[2]);
-	this->counter = 0;
+        this->shape->invokeTriangleCallbacks(this->action,
+                                             &vertsArray[0],
+                                             &vertsArray[1],
+                                             &vertsArray[2]);
+        this->counter = 0;
       }
       break;
     case SoShape::POLYGON:
       if (this->counter >= this->arraySize) {
-	this->arraySize <<= 1;
-	SoPrimitiveVertex *newArray = new SoPrimitiveVertex[this->arraySize];
-	memcpy(newArray, this->vertsArray, 
-	       sizeof(SoPrimitiveVertex)*this->counter);
-	delete [] this->vertsArray;
-	this->vertsArray = newArray;
-	
-	SoPointDetail *newparray = new SoPointDetail[this->arraySize];
-	memcpy(newparray, this->pointDetails, 
-	       sizeof(SoPointDetail)*this->counter);
-	delete [] this->pointDetails;
-	this->pointDetails = newparray;
-	
-	if (this->faceDetail) {
-	  for (int i = 0; i < this->counter; i++) {
-	    this->vertsArray[i].setDetail(&this->pointDetails[i]);
-	  }
-	}
+        this->arraySize <<= 1;
+        SoPrimitiveVertex *newArray = new SoPrimitiveVertex[this->arraySize];
+        memcpy(newArray, this->vertsArray,
+               sizeof(SoPrimitiveVertex)*this->counter);
+        delete [] this->vertsArray;
+        this->vertsArray = newArray;
+
+        SoPointDetail *newparray = new SoPointDetail[this->arraySize];
+        memcpy(newparray, this->pointDetails,
+               sizeof(SoPointDetail)*this->counter);
+        delete [] this->pointDetails;
+        this->pointDetails = newparray;
+
+        if (this->faceDetail) {
+          for (int i = 0; i < this->counter; i++) {
+            this->vertsArray[i].setDetail(&this->pointDetails[i]);
+          }
+        }
       }
       this->setVertex(this->counter++, v);
       break;
     case SoShape::QUADS:
       this->setVertex(this->counter++, v);
       if (this->counter == 4) {
-	this->shape->invokeTriangleCallbacks(this->action,
-					     &vertsArray[0],
-					     &vertsArray[1],
-					     &vertsArray[2]);
-	this->shape->invokeTriangleCallbacks(this->action,
-					     &vertsArray[0],
-					     &vertsArray[2],
-					     &vertsArray[3]);
-	this->counter = 0;
+        this->shape->invokeTriangleCallbacks(this->action,
+                                             &vertsArray[0],
+                                             &vertsArray[1],
+                                             &vertsArray[2]);
+        this->shape->invokeTriangleCallbacks(this->action,
+                                             &vertsArray[0],
+                                             &vertsArray[2],
+                                             &vertsArray[3]);
+        this->counter = 0;
       }
       break;
     case SoShape::QUAD_STRIP:
       this->setVertex(this->counter++, v);
       if (counter == 4) {
-	this->shape->invokeTriangleCallbacks(this->action,
-					     &vertsArray[0],
-					     &vertsArray[1],
-					     &vertsArray[3]);
-	this->shape->invokeTriangleCallbacks(this->action,
-					     &vertsArray[0],
-					     &vertsArray[3],
-					     &vertsArray[2]);
-	this->copyVertex(2, 0);
-	this->copyVertex(3, 1);
-	this->counter = 2;
+        this->shape->invokeTriangleCallbacks(this->action,
+                                             &vertsArray[0],
+                                             &vertsArray[1],
+                                             &vertsArray[3]);
+        this->shape->invokeTriangleCallbacks(this->action,
+                                             &vertsArray[0],
+                                             &vertsArray[3],
+                                             &vertsArray[2]);
+        this->copyVertex(2, 0);
+        this->copyVertex(3, 1);
+        this->counter = 2;
       }
       break;
     case SoShape::POINTS:
@@ -320,20 +320,20 @@ public:
     case SoShape::LINES:
       this->setVertex(this->counter++, v);
       if (this->counter == 2) {
-	this->shape->invokeLineSegmentCallbacks(this->action,
-						&vertsArray[0],
-						&vertsArray[1]);	
-	this->counter = 0;
+        this->shape->invokeLineSegmentCallbacks(this->action,
+                                                &vertsArray[0],
+                                                &vertsArray[1]);
+        this->counter = 0;
       }
       break;
     case SoShape::LINE_STRIP:
       this->setVertex(this->counter++, v);
       if (this->counter == 2) {
-	this->shape->invokeLineSegmentCallbacks(this->action,
-						&vertsArray[0],
-						&vertsArray[1]);
-	this->copyVertex(1, 0);
-	this->counter = 1;
+        this->shape->invokeLineSegmentCallbacks(this->action,
+                                                &vertsArray[0],
+                                                &vertsArray[1]);
+        this->copyVertex(1, 0);
+        this->counter = 1;
       }
       break;
     default:
@@ -382,9 +382,9 @@ public:
       this->vertsArray[i2].setDetail(this->faceDetail);
     }
     this->shape->invokeTriangleCallbacks(this->action,
-					 &this->vertsArray[i0],
-					 &this->vertsArray[i1],
-					 &this->vertsArray[i2]);
+                                         &this->vertsArray[i0],
+                                         &this->vertsArray[i1],
+                                         &this->vertsArray[i2]);
   }
   void doLineSegmentCB(const int i0, const int i1) {
     if (this->lineDetail) {
@@ -394,16 +394,16 @@ public:
       this->vertsArray[i1].setDetail(this->lineDetail);
     }
     this->shape->invokeLineSegmentCallbacks(this->action,
-					    &this->vertsArray[i0],
-					    &this->vertsArray[i1]);
+                                            &this->vertsArray[i0],
+                                            &this->vertsArray[i1]);
   }
-  
+
   static void tess_callback(void *v0, void *v1, void *v2, void *data) {
     shapePrimitiveData *thisp = (shapePrimitiveData*) data;
     thisp->shape->invokeTriangleCallbacks(thisp->action,
-					  (SoPrimitiveVertex*)v0,
-					  (SoPrimitiveVertex*)v1,
-					  (SoPrimitiveVertex*)v2); 
+                                          (SoPrimitiveVertex*)v0,
+                                          (SoPrimitiveVertex*)v1,
+                                          (SoPrimitiveVertex*)v2);
   }
 };
 
@@ -427,7 +427,7 @@ SoShape::initClass(void)
   bounding box action. A SoShape subclass should usually reimplement
   computeBBox().
 */
-void 
+void
 SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SbBox3f box;
@@ -444,16 +444,16 @@ SoShape::getBoundingBox(SoGetBoundingBoxAction * action)
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
-  Renders the primitives generated by subclass. Should be 
+  Renders the primitives generated by subclass. Should be
   overloaded.
 */
-void 
+void
 SoShape::GLRender(SoGLRenderAction * /* action */)
 {
 #if COIN_DEBUG
   SoDebugError::postInfo("SoShape::GLRender",
-			 "method has not been overloaded in subclass '%s'",
-			 this->getTypeId().getName().getString());
+                         "method has not been overloaded in subclass '%s'",
+                         this->getTypeId().getName().getString());
 #endif // COIN_DEBUG
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
@@ -462,12 +462,12 @@ SoShape::GLRender(SoGLRenderAction * /* action */)
 /*!
   Calls generatePrimitives().
 */
-void 
+void
 SoShape::callback(SoCallbackAction * action)
 {
   if (action->shouldGeneratePrimitives(this)) {
     if (primData) primData->faceCounter = 0;
-    this->generatePrimitives(action); 
+    this->generatePrimitives(action);
   }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
@@ -477,7 +477,7 @@ SoShape::callback(SoCallbackAction * action)
   Calculates picked point based on primitives generated by subclasses.
   May be implemented by subclass.
 */
-void 
+void
 SoShape::rayPick(SoRayPickAction *action)
 {
   if (this->shouldRayPick(action)) {
@@ -491,11 +491,11 @@ SoShape::rayPick(SoRayPickAction *action)
   A convenience function that returns the size of a bounding box
   projected onto the screen. Useful for SCREEN_SPACE complexity
   geometry.
-*/  
-void 
+*/
+void
 SoShape::getScreenSize(SoState * const state,
-		       const SbBox3f &boundingBox,
-		       SbVec2s &rectSize)
+                       const SbBox3f &boundingBox,
+                       SbVec2s &rectSize)
 {
   const SbViewVolume &vv = SoViewVolumeElement::get(state);
   SbBox3f worldBox(boundingBox);
@@ -503,7 +503,7 @@ SoShape::getScreenSize(SoState * const state,
   SbVec2f normSize = vv.projectBox(worldBox);
   const SbViewportRegion &vr = SoViewportRegionElement::get(state);
   SbVec2s pixelSize = vr.getViewportSizePixels();
-  
+
   // make sure short doesn't overflow
   rectSize[0] = (short) SbMin(32767.0f, (float(pixelSize[0])*normSize[0]));
   rectSize[1] = (short) SbMin(32767.0f, (float(pixelSize[1])*normSize[1]));
@@ -512,10 +512,10 @@ SoShape::getScreenSize(SoState * const state,
 /*!
   Returns the complexity value to be used by subclasses. Considers
   complexity type. For OBJECT_SPACE complexity this will be a number
-  between 0 and 1. For SCREEN_SPACE complexity it is a number from 0 
+  between 0 and 1. For SCREEN_SPACE complexity it is a number from 0
   and up.
 */
-float 
+float
 SoShape::getComplexityValue(SoAction *action)
 {
   SoState *state = action->getState();
@@ -527,11 +527,11 @@ SoShape::getComplexityValue(SoAction *action)
       this->computeBBox(action, box, center);
       SbVec2s size;
       SoShape::getScreenSize(state, box, size);
-      // FIXME: needs calibration. 
+      // FIXME: needs calibration.
 
 #if 1 // testing new complexity code
-      return sqrt(SbMax(size[0], size[1])) * 0.4f * 
-	SoComplexityElement::get(state);
+      return sqrt(SbMax(size[0], size[1])) * 0.4f *
+        SoComplexityElement::get(state);
 #else // first version
       float numPixels = float(size[0])*float(size[1]);
       return numPixels * 0.0001f * SoComplexityElement::get(state);
@@ -553,12 +553,12 @@ SoShape::getComplexityValue(SoAction *action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoShape::shouldGLRender(SoGLRenderAction * action)
 {
   if (action->getCurPathCode() == SoAction::OFF_PATH &&
       !this->affectsState()) return FALSE;
-  
+
   // make sure lazy elements are up to date
   // all material lazy elements are handled by SoMaterialBundle
 
@@ -566,15 +566,15 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   SbBool needNormals = TRUE;
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
-  needNormals = 
+  needNormals =
     SoLightModelElement::get(state) == SoLightModelElement::PHONG;
 #endif // ! COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
 #if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
-  const SoTransparencyElement * trans = 
+  const SoTransparencyElement * trans =
     SoTransparencyElement::getInstance(state);
   SbBool t = trans->getNum() && trans->get(0) > 0.0f;
-  
+
   if (action->handleTransparency(t)) return FALSE;
 #endif // ! COIN_EXCLUDE_SOTRANSPARENCYELEMENT
 
@@ -627,7 +627,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
   if (SoComplexityTypeElement::get(state) ==
       SoComplexityTypeElement::BOUNDING_BOX) {
-    
+
     SbBox3f box;
     SbVec3f center;
     this->computeBBox(action, box, center);
@@ -636,11 +636,11 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 
     SoMaterialBundle mb(action);
     mb.sendFirst();
-    
+
 #if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
     {
       const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-	state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
+        state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
       sh->forceSend(TRUE, FALSE, FALSE);
     }
 #endif // ! COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
@@ -648,15 +648,15 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
     if (needNormals) {
       const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-	state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
+        state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
       ne->forceSend(TRUE); // cube will provide unit normals
     }
 #endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
-    
+
     glPushMatrix();
     glTranslatef(center[0], center[1], center[2]);
     sogl_render_cube(size[0], size[1], size[2], &mb,
-		     SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
+                     SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
     glPopMatrix();
     return FALSE;
   }
@@ -688,19 +688,19 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoShape::shouldRayPick(SoRayPickAction * const /* action */)
 {
   // FIXME: test bbox, create rayPick cache, or something?
   return TRUE;
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
- 
+
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShape::beginSolidShape(SoGLRenderAction * /* action */)
 {
   // FIXME: turn on backface culling
@@ -709,7 +709,7 @@ SoShape::beginSolidShape(SoGLRenderAction * /* action */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShape::endSolidShape(SoGLRenderAction * /* action */)
 {
   // FIXME: disable backface culling
@@ -720,7 +720,7 @@ SoShape::endSolidShape(SoGLRenderAction * /* action */)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShape::computeObjectSpaceRay(SoRayPickAction * const action)
 {
   action->setObjectSpace();
@@ -729,9 +729,9 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
-			       const SbMatrix &matrix)
+                               const SbMatrix &matrix)
 {
   action->setObjectSpace(matrix);
 }
@@ -741,10 +741,10 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
 */
 SoDetail *
 SoShape::createTriangleDetail(SoRayPickAction * /* action */,
-			      const SoPrimitiveVertex * /* v1 */,
-			      const SoPrimitiveVertex * /* v2 */,
-			      const SoPrimitiveVertex * /* v3 */,
-			      SoPickedPoint * /* pp */)
+                              const SoPrimitiveVertex * /* v1 */,
+                              const SoPrimitiveVertex * /* v2 */,
+                              const SoPrimitiveVertex * /* v3 */,
+                              SoPickedPoint * /* pp */)
 {
   return NULL;
 }
@@ -754,9 +754,9 @@ SoShape::createTriangleDetail(SoRayPickAction * /* action */,
 */
 SoDetail *
 SoShape::createLineSegmentDetail(SoRayPickAction * /* action */,
-				 const SoPrimitiveVertex * /* v1 */,
-				 const SoPrimitiveVertex * /* v2 */,
-				 SoPickedPoint * /* pp */)
+                                 const SoPrimitiveVertex * /* v1 */,
+                                 const SoPrimitiveVertex * /* v2 */,
+                                 SoPickedPoint * /* pp */)
 {
   return NULL;
 }
@@ -766,8 +766,8 @@ SoShape::createLineSegmentDetail(SoRayPickAction * /* action */,
 */
 SoDetail *
 SoShape::createPointDetail(SoRayPickAction * /* action */,
-			   const SoPrimitiveVertex * /* v */,
-			   SoPickedPoint * /* pp */)
+                           const SoPrimitiveVertex * /* v */,
+                           SoPickedPoint * /* pp */)
 {
   return NULL;
 }
@@ -777,38 +777,38 @@ SoShape::createPointDetail(SoRayPickAction * /* action */,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShape::invokeTriangleCallbacks(SoAction * const action,
-				 const SoPrimitiveVertex * const v1,
-				 const SoPrimitiveVertex * const v2,
-				 const SoPrimitiveVertex * const v3)
+                                 const SoPrimitiveVertex * const v1,
+                                 const SoPrimitiveVertex * const v2,
+                                 const SoPrimitiveVertex * const v3)
 {
   if (action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId())) {
     SoRayPickAction *ra = (SoRayPickAction*) action;
-    
+
     SbVec3f intersection;
     SbVec3f barycentric;
     SbBool front;
-    
+
     if (ra->intersect(v1->getPoint(), v2->getPoint(), v3->getPoint(),
-		      intersection, barycentric, front)) {
-      
+                      intersection, barycentric, front)) {
+
       if (ra->isBetweenPlanes(intersection)) {
-	SoPickedPoint * pp = ra->addIntersection(intersection);
-	if (pp) {
-	  // FIXME: add face detail using createTriangleDetail()
-	  // this is temporary code, pederb 1999-11-23
-	  if (primData && primData->faceDetail) 
-	    pp->setDetail(primData->faceDetail->copy(), this); 
-	}
+        SoPickedPoint * pp = ra->addIntersection(intersection);
+        if (pp) {
+          // FIXME: add face detail using createTriangleDetail()
+          // this is temporary code, pederb 1999-11-23
+          if (primData && primData->faceDetail)
+            pp->setDetail(primData->faceDetail->copy(), this);
+        }
       }
     }
   }
   else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
-    SoCallbackAction *ca = (SoCallbackAction*) action;    
+    SoCallbackAction *ca = (SoCallbackAction*) action;
     ca->invokeTriangleCallbacks(this, v1, v2, v3);
   }
-  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {    
+  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {
     SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
     ga->incNumTriangles();
   }
@@ -820,24 +820,24 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShape::invokeLineSegmentCallbacks(SoAction * const action,
-				    const SoPrimitiveVertex * const v1,
-				    const SoPrimitiveVertex * const v2)
+                                    const SoPrimitiveVertex * const v1,
+                                    const SoPrimitiveVertex * const v2)
 {
   if (action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId())) {
     SoRayPickAction *ra = (SoRayPickAction*) action;
-    
+
     SbVec3f intersection;
     if (ra->intersect(v1->getPoint(), v2->getPoint(), intersection)) {
       if (ra->isBetweenPlanes(intersection)) {
-	SoPickedPoint * pp = ra->addIntersection(intersection);
-	if (pp) {
-	  // FIXME: add line detail using createLineSegementDetail()
-	  // This is temporary code, pederb 1999-11-23
-	  if (primData && primData->lineDetail)
-	    pp->setDetail(primData->lineDetail->copy(), this);
-	}
+        SoPickedPoint * pp = ra->addIntersection(intersection);
+        if (pp) {
+          // FIXME: add line detail using createLineSegementDetail()
+          // This is temporary code, pederb 1999-11-23
+          if (primData && primData->lineDetail)
+            pp->setDetail(primData->lineDetail->copy(), this);
+        }
       }
     }
   }
@@ -845,11 +845,11 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
     SoCallbackAction *ca = (SoCallbackAction*) action;
     ca->invokeLineSegmentCallbacks(this, v1, v2);
   }
-  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {    
+  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {
     SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
     ga->incNumLines();
   }
-  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {    
+  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {
     SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
     ga->incNumPoints();
   }
@@ -862,23 +862,23 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShape::invokePointCallbacks(SoAction * const action,
-			      const SoPrimitiveVertex * const v)
+                              const SoPrimitiveVertex * const v)
 {
   if (action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId())) {
     SoRayPickAction *ra = (SoRayPickAction*) action;
-    
+
     SbVec3f intersection = v->getPoint();
     if (ra->intersect(intersection)) {
       if (ra->isBetweenPlanes(intersection)) {
-	SoPickedPoint * pp = ra->addIntersection(intersection);
-	if (pp) {
-	  // FIXME: add point detail using createPointDetail()
-	  // this is temporary code, pederb 1999-11-23
-	  if (v->getDetail()) 
-	    pp->setDetail(v->getDetail()->copy(), this);
-	}
+        SoPickedPoint * pp = ra->addIntersection(intersection);
+        if (pp) {
+          // FIXME: add point detail using createPointDetail()
+          // this is temporary code, pederb 1999-11-23
+          if (v->getDetail())
+            pp->setDetail(v->getDetail()->copy(), this);
+        }
       }
     }
   }
@@ -898,9 +898,9 @@ SoShape::invokePointCallbacks(SoAction * const action,
   a SoFaceDetail or a SoLineDetail. There is no use sending in a
   SoPointDetail, as nothing will be done with it.
 */
-void 
+void
 SoShape::beginShape(SoAction * const action, const TriangleShape shapeType,
-		    SoDetail * const detail)
+                    SoDetail * const detail)
 {
   if (primData == NULL) {
     primData = new shapePrimitiveData();
@@ -912,7 +912,7 @@ SoShape::beginShape(SoAction * const action, const TriangleShape shapeType,
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShape::shapeVertex(const SoPrimitiveVertex * const v)
 {
   assert(primData);
@@ -922,7 +922,7 @@ SoShape::shapeVertex(const SoPrimitiveVertex * const v)
 /*!
   FIXME: write function documentation
 */
-void 
+void
 SoShape::endShape()
 {
   assert(primData);
@@ -935,14 +935,14 @@ SoShape::endShape()
   Convenience function which sets up a SoPrimitiveVertex, and sends
   it using the SoShape::shapeVertex() function.
 */
-void 
+void
 SoShape::generateVertex(SoPrimitiveVertex * const pv,
-			const SbVec3f & point,
-			const SbBool useTexFunc,
-			const SoTextureCoordinateElement * const tce,
-			const float s,
-			const float t,
-			const SbVec3f & normal)
+                        const SbVec3f & point,
+                        const SbBool useTexFunc,
+                        const SoTextureCoordinateElement * const tce,
+                        const float s,
+                        const float t,
+                        const SbVec3f & normal)
 {
   SbVec4f texCoord;
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
@@ -968,27 +968,27 @@ SoShape::generateVertex(SoPrimitiveVertex * const pv,
   as the default method returns \e FALSE.
 
   This method is not a part of the original OIV API.
-  Don't overload it if you intend to make a node that will work 
+  Don't overload it if you intend to make a node that will work
   on both Coin and Open Inventor.
 */
-SbBool 
+SbBool
 SoShape::willSetShadeModel() const
 {
   return FALSE;
 }
 
 /*!
-  Should be overloaded by subclasses that will set 
+  Should be overloaded by subclasses that will set
   shape hints before rendering. The SoGLShapeHintsElement
   is a lazy element, and it will help performance if all
-  nodes which will set the shape hints before rendering 
+  nodes which will set the shape hints before rendering
   returns \e TRUE here.
-  
+
   This method is not a part of the original OIV API. Don't
-  overload it if you intend to make a shape node that will work 
+  overload it if you intend to make a shape node that will work
   on both Coin and Open Inventor.
 */
-SbBool 
+SbBool
 SoShape::willSetShapeHints() const
 {
   return FALSE;
@@ -1001,10 +1001,10 @@ SoShape::willSetShapeHints() const
   Default method returns FALSE.
 
   This method is not a part of the original OIV API. Don't
-  overload it if you intend to make a shape node that will work 
+  overload it if you intend to make a shape node that will work
   on both Coin and Open Inventor.
 */
-SbBool 
+SbBool
 SoShape::willUpdateNormalizeElement(SoState *) const
 {
   return FALSE;

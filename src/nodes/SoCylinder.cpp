@@ -1,5 +1,5 @@
 /**************************************************************************\
- * 
+ *
  *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
  *
  *  This file is part of the Coin library.
@@ -158,7 +158,7 @@ SoCylinder::initClass(void)
 */
 void
 SoCylinder::computeBBox(SoAction * /* action */,
-			SbBox3f & box, SbVec3f & center)
+                        SbBox3f & box, SbVec3f & center)
 {
 
   float r = this->radius.getValue();
@@ -233,24 +233,24 @@ SoCylinder::GLRender(SoGLRenderAction * action)
 #if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
     state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
-  if (!(p & SIDES)) 
+  if (!(p & SIDES))
     sm->forceSend(TRUE); // flatshading
   else
     sm->forceSend(FALSE); // smooth
-  
+
 #endif // ! COIN_EXCLUDE_SOGLSHADEMODELELEMENT
-  
+
   sogl_render_cylinder(this->radius.getValue(),
-		       this->height.getValue(),
-		       (int)(CYL_SIDE_NUMTRIS * complexity),
-		       &mb,
-		       flags);
+                       this->height.getValue(),
+                       (int)(CYL_SIDE_NUMTRIS * complexity),
+                       &mb,
+                       flags);
 }
 
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoCylinder::willSetShadeModel(void) const
 {
   return TRUE;
@@ -259,7 +259,7 @@ SoCylinder::willSetShadeModel(void) const
 /*!
   FIXME: write function documentation
 */
-SbBool 
+SbBool
 SoCylinder::willSetShapeHints(void) const
 {
   return TRUE;
@@ -336,43 +336,43 @@ SoCylinder::rayPick(SoRayPickAction *action)
 
   if (this->parts.getValue() & SoCylinder::SIDES) {
     SbCylinder cyl(SbLine(SbVec3f(0,0,0), SbVec3f(0,1,0)), r);
-    
+
     if (cyl.intersect(line, enter, exit)) {
       if ((fabs(enter[1]) <= h) && action->isBetweenPlanes(enter)) {
-	SoPickedPoint *pp = action->addIntersection(enter);
-	if (pp) {
-	  SoCylinderDetail *detail = new SoCylinderDetail();
-	  detail->setPart((int)SoCylinder::SIDES);
-	  pp->setDetail(detail, this);
-	  numPicked++;
-	}
+        SoPickedPoint *pp = action->addIntersection(enter);
+        if (pp) {
+          SoCylinderDetail *detail = new SoCylinderDetail();
+          detail->setPart((int)SoCylinder::SIDES);
+          pp->setDetail(detail, this);
+          numPicked++;
+        }
       }
       if ((fabs(exit[1]) <= h) && (enter != exit) && action->isBetweenPlanes(exit)) {
-	SoPickedPoint *pp = action->addIntersection(exit);
-	if (pp) {
-	  SoCylinderDetail *detail = new SoCylinderDetail();
-	  detail->setPart((int)SoCylinder::SIDES);      
-	  pp->setDetail(detail, this);
-	  numPicked++;
-	}
+        SoPickedPoint *pp = action->addIntersection(exit);
+        if (pp) {
+          SoCylinderDetail *detail = new SoCylinderDetail();
+          detail->setPart((int)SoCylinder::SIDES);
+          pp->setDetail(detail, this);
+          numPicked++;
+        }
       }
     }
   }
-  
+
   float r2 = r * r;
-  
+
   if ((numPicked < 2) && (this->parts.getValue() & SoCylinder::TOP)) {
     SbPlane top(SbVec3f(0,1,0), h);
     if (top.intersect(line, enter)) {
       if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
-	  (action->isBetweenPlanes(enter))) {
-	SoPickedPoint *pp = action->addIntersection(enter);
-	if (pp) {
-	  SoCylinderDetail *detail = new SoCylinderDetail();
-	  detail->setPart((int)SoCylinder::TOP);      
-	  pp->setDetail(detail, this);
-	  numPicked++;
-	}
+          (action->isBetweenPlanes(enter))) {
+        SoPickedPoint *pp = action->addIntersection(enter);
+        if (pp) {
+          SoCylinderDetail *detail = new SoCylinderDetail();
+          detail->setPart((int)SoCylinder::TOP);
+          pp->setDetail(detail, this);
+          numPicked++;
+        }
       }
     }
   }
@@ -381,13 +381,13 @@ SoCylinder::rayPick(SoRayPickAction *action)
     SbPlane bottom(SbVec3f(0,1,0), -h);
     if (bottom.intersect(line, enter)) {
       if (((enter[0]*enter[0] + enter[2]*enter[2]) <= r2) &&
-	  (action->isBetweenPlanes(enter))) {
-	SoPickedPoint *pp = action->addIntersection(enter);
-	if (pp) {
-	  SoCylinderDetail *detail = new SoCylinderDetail();
-	  detail->setPart((int)SoCylinder::BOTTOM);      
-	  pp->setDetail(detail, this);	
-	}
+          (action->isBetweenPlanes(enter))) {
+        SoPickedPoint *pp = action->addIntersection(enter);
+        if (pp) {
+          SoCylinderDetail *detail = new SoCylinderDetail();
+          detail->setPart((int)SoCylinder::BOTTOM);
+          pp->setDetail(detail, this);
+        }
       }
     }
   }
@@ -401,12 +401,12 @@ SoCylinder::rayPick(SoRayPickAction *action)
 void
 SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  if (!this>shouldPrimitiveCount(action)) return;
+  if (!this->shouldPrimitiveCount(action)) return;
 
   if (action->isNonVertexShapesCountedAsTriangles()) {
     float complexity = this->getComplexityValue(action);
     int numtris = (int)(complexity*CYL_SIDE_NUMTRIS);
-    
+
     if (this->parts.getValue() & SoCylinder::BOTTOM) {
       action->addNumTriangles(numtris-2);
     }
