@@ -55,7 +55,9 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-#include "../tidbits.h" // coin_getenv()
+#include <../tidbits.h> // coin_getenv()
+#include <stdlib.h> // strtol()
+#include <limits.h> // LONG_MIN, LONG_MAX
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -72,7 +74,7 @@
 static int COIN_RENDER_CACHING = -1;
 
 // Maximum number of caches available for allocation for the
-// rendercaching
+// rendercaching.
 int SoSeparator::numrendercaches = 2;
 
 
@@ -197,6 +199,19 @@ SoSeparator::commonConstructor(void)
   SO_NODE_SET_SF_ENUM_TYPE(boundingBoxCaching, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(renderCulling, CacheEnabled);
   SO_NODE_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
+
+  const char * maxcachesstr = coin_getenv("IV_SEPARATOR_MAX_CACHES");
+  if (maxcachesstr) {
+    long int maxcaches = strtol(maxcachesstr, NULL, 10);
+    if ((maxcaches == LONG_MIN) || (maxcaches == LONG_MAX) || (maxcaches < 0)) {
+      SoDebugError::post("SoSeparator::commonConstructor",
+                         "Environment variable IV_SEPARATOR_MAX_CACHES "
+                         "has invalid setting \"%s\"", maxcachesstr);
+    }
+    else {
+      SoSeparator::setNumRenderCaches(maxcaches);
+    }
+  }
 
   this->bboxcache = NULL;
   this->glcachelist = NULL;
@@ -595,11 +610,21 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
 }
 
 /*!
-  Set up number of caches SoSeparator nodes may allocate for render
-  caching. More caches might give better performance, but will use
-  more memory.
+  Set the maximum number of caches that SoSeparator nodes may allocate
+  for render caching.
 
-  Default value is 2.
+  This is a global value which will be used for all SoSeparator nodes,
+  but the value indicate the maximum number \e per SoSeparator node.
+
+  More caches might give better performance, but will use more memory.
+  The built-in default value is 2.
+
+  The value can also be changed globally by setting the host system's
+  environment variable IV_SEPARATOR_MAX_CACHES to the wanted
+  number. This is primarily meant as an aid during debugging, to make
+  it easy to turn off rendercaching completely (by setting
+  "IV_SEPARATOR_MAX_CACHES=0") without having to change any
+  application code.
 */
 void
 SoSeparator::setNumRenderCaches(const int howmany)

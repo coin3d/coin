@@ -52,7 +52,7 @@
 #define FLAG_SHOULD_TRY 0x1
 
 /*!
-  Constructor. Currently the \a numcaches argument is not used.
+  Constructor.
 */
 SoGLCacheList::SoGLCacheList(int numcaches)
   : numcaches(numcaches),
@@ -60,6 +60,11 @@ SoGLCacheList::SoGLCacheList(int numcaches)
     opencache(NULL),
     autocachebits(SoGLCacheContextElement::DO_AUTO_CACHE)
 {
+  // FIXME: currently the \a numcaches argument is not used. ???????? pederb.
+  //
+  // UPDATE 20020220 mortene: yikes! This means the
+  // SoSeparator::setNumRenderCaches() call is not working properly,
+  // for instance.
 }
 
 /*!
