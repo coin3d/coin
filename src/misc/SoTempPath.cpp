@@ -34,4 +34,5 @@ SoTempPath::SoTempPath(const int approxlength)
   : SoFullPath(approxlength)
 {
   this->auditPath(FALSE);
+  this->nodes.addReferences(FALSE);
 }

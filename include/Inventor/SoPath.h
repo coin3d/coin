@@ -106,6 +106,7 @@ private:
   friend class SoFullPath;
   friend class SoNodeKitPath;
   friend class SoAction;
+  friend class SoTempPath;
 };
 
 #ifndef COIN_INTERNAL
