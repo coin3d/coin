@@ -28,6 +28,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
+#include "../misc/GLWrapper.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -50,18 +51,10 @@ typedef struct {
 
 typedef struct {
   int context;
-  int major;
-  int minor;
-  int revision;
-} so_glversion_info;
-
-typedef struct {
-  int context;
   int handle;
 } so_gltexhandle_info;
 
 static SbList <so_glext_info *> *extsupportlist;
-static SbList <so_glversion_info> *glversionlist;
 static SbList <SoGLDisplayList*> *scheduledeletelist;
 
 static void soglcachecontext_cleanup(void)
@@ -71,7 +64,6 @@ static void soglcachecontext_cleanup(void)
     delete (*extsupportlist)[i];
   }
   delete extsupportlist;
-  delete glversionlist;
   delete scheduledeletelist;
 }
 
@@ -117,7 +109,6 @@ SoGLCacheContextElement::initClass(void)
   SO_ELEMENT_INIT_CLASS(SoGLCacheContextElement, inherited);
 
   extsupportlist = new SbList <so_glext_info *>;
-  glversionlist = new SbList <so_glversion_info>;
   scheduledeletelist = new SbList <SoGLDisplayList*>;
   (void)atexit(soglcachecontext_cleanup);
 }
@@ -251,75 +242,17 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
 }
 
 /*!
-  Returns the OpenGL version for the current context. This method
-  is an extension versus the Open Inventor API.
+  Returns the OpenGL version for the current context. This method is
+  an extension versus the Open Inventor API.
 */
 void
-SoGLCacheContextElement::getOpenGLVersion(SoState *state, 
-                                          int &major, int &minor)
-{
-  int revision;
-  SoGLCacheContextElement::getOpenGLVersion(state,major,minor,revision);
-}
-
-/*!
-  Returns the OpenGL version for the current context. This method
-  is an extension versus the Open Inventor API.
-
-  \since 2001-11-08
-*/
-void
-SoGLCacheContextElement::getOpenGLVersion(SoState *state, 
-                                          int &major, 
-                                          int &minor, 
-                                          int &revision)
+SoGLCacheContextElement::getOpenGLVersion(SoState * state,
+                                          int & major, int & minor)
 {
   int currcontext = SoGLCacheContextElement::get(state);
-
-  int i, n = glversionlist->getLength();
-  for (i = 0; i < n; i++) {
-    if ((*glversionlist)[i].context == currcontext) {
-      major = (*glversionlist)[i].major;
-      minor = (*glversionlist)[i].minor;
-      revision = (*glversionlist)[i].revision;
-      return;
-    }
-  }
-
-  const char *versionstr = (const char *)glGetString(GL_VERSION);
-  int maj,min,rev;
-  SoGLCacheContextElement::glVersionStringToNumeric(versionstr, maj, min, rev);
-
-  so_glversion_info info;
-  info.context = currcontext;
-  info.major = major = maj;
-  info.minor = minor = min;
-  info.revision = revision = rev;
-
-  glversionlist->append(info);
-}
-
-/*!
-  Returns true if the OpenGL version for the current context at 
-  least matches that defined by the \e major, \e minor and \e revision 
-  parameters.
-  
-  \since 2001-11-08
-*/
-SbBool
-SoGLCacheContextElement::openGLVersionMatchesAtLeast(SoState *state,
-                                                     int major,
-                                                     int minor,
-                                                     int revision)
-{
-  int maj,min,rev;
-  SoGLCacheContextElement::getOpenGLVersion(state,maj,min,rev);
-  if (maj < major) return false;
-  else if (maj > major) return true;
-  if (min < minor) return false;
-  else if (min > minor) return true;
-  if (rev < revision) return false;
-  return true;
+  const GLWrapper_t * w = GLWrapper(currcontext);
+  major = w->version.major;
+  minor = w->version.minor;
 }
 
 /*!
@@ -405,53 +338,4 @@ uint32_t
 SoGLCacheContextElement::getUniqueCacheContext(void)
 {
   return (uint32_t) ++biggest_cache_context_id;
-}
-
-/*!
-  \internal
-
-  FIXME: Reinsert Peder's comment about this being ripped from GLUWrapper.
-*/
-void
-SoGLCacheContextElement::glVersionStringToNumeric(const char *versionstr,
-                                                  int &major,
-                                                  int &minor,
-                                                  int &revision)
-{
-  char buffer[256];
-  char *dotptr;
-
-  major = 0;
-  minor = 0;
-  revision = 0;
-
-  (void)strncpy(buffer, (const char *)versionstr, 255);
-  buffer[255] = '\0'; /* strncpy() will not null-terminate if strlen > 255 */
-  dotptr = strchr(buffer, '.');
-  if (dotptr) {
-    char * spaceptr;
-    char * start = buffer;
-    *dotptr = '\0';
-    major = atoi(start);
-    start = ++dotptr;
-
-    dotptr = strchr(start, '.');
-    spaceptr = strchr(start, ' ');
-    if (!dotptr && spaceptr) dotptr = spaceptr;
-    if (dotptr && spaceptr && spaceptr < dotptr) dotptr = spaceptr;
-    if (dotptr) {
-      int terminate = *dotptr == ' ';
-      *dotptr = '\0';
-      minor = atoi(start);
-      if (!terminate) {
-        start = ++dotptr;
-        dotptr = strchr(start, ' ');
-        if (dotptr) *dotptr = '\0';
-        revision = atoi(start);
-      }
-    }
-    else {
-      minor = atoi(start);
-    }
-  }
 }

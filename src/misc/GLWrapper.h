@@ -32,10 +32,6 @@ typedef struct {
     unsigned int major, minor, release;
   } version;
 
-  int (*versionMatchesAtLeast)(unsigned int major,
-                               unsigned int minor,
-                               unsigned int release);
-
   /* OpenGL calls. Will be NULL if not available, otherwise they
      contain a valid function pointer into the OpenGL library. */
   COIN_PFNGLTEXIMAGE3DPROC glTexImage3D;
@@ -43,6 +39,16 @@ typedef struct {
 } GLWrapper_t;
 
 const GLWrapper_t * GLWrapper(int contextid);
+
+/*
+  Returns 1 if the OpenGL implementation of the wrapper context is at
+  least as "late" as what is given with the input arguments. Otherwise
+  returns 0.
+ */
+int GLWrapper_versionMatchesAtLeast(GLWrapper_t * wrapper,
+                                    unsigned int major,
+                                    unsigned int minor,
+                                    unsigned int release);
 
 #ifdef __cplusplus
 }

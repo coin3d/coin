@@ -26,8 +26,7 @@ class COIN_DLL_API SoGLCacheContextElement : public SoElement {
   typedef SoElement inherited;
 
   SO_ELEMENT_HEADER(SoGLCacheContextElement);
-  static void glVersionStringToNumeric(const char *str, 
-                                       int &major, int &minor, int &revision);
+
 public:
   static void initClass(void);
 protected:
@@ -43,13 +42,7 @@ public:
                   SbBool remoterendering);
   static int get(SoState * state);
   static int getExtID(const char * str);
-  static void getOpenGLVersion(SoState *state, int &major, int & minor);
-  static void getOpenGLVersion(SoState *state, 
-                               int &major, int &minor, int &revision);
-  static SbBool openGLVersionMatchesAtLeast(SoState *state, 
-                                          int major, 
-                                          int minor, 
-                                          int revision);
+  static void getOpenGLVersion(SoState * state, int & major, int & minor);
   static SbBool extSupported(SoState * state, int extid);
   static SbBool areMipMapsFast(SoState * state);
   enum {

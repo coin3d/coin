@@ -84,6 +84,71 @@ GLWrapper_cleanup(void)
   delete gldict;
 }
 
+
+/*
+  Set the OpenGL version variables in the given GLWrapper_t struct
+  instance.
+
+  Note: this code has been copied from GLUWrapper.c, so if any changes
+  are made, make sure they are propagated over if necessary.
+*/
+static void
+GLWrapper_set_numeric_version(GLWrapper_t * wrapper)
+{
+  char buffer[256];
+  char * dotptr;
+
+  const char * versionstr = (const char *)glGetString(GL_VERSION);
+
+  wrapper->version.major = 0;
+  wrapper->version.minor = 0;
+  wrapper->version.release = 0;
+
+  (void)strncpy(buffer, (const char *)versionstr, 255);
+  buffer[255] = '\0'; /* strncpy() will not null-terminate if strlen > 255 */
+  dotptr = strchr(buffer, '.');
+  if (dotptr) {
+    char * spaceptr;
+    char * start = buffer;
+    *dotptr = '\0';
+    wrapper->version.major = atoi(start);
+    start = ++dotptr;
+
+    dotptr = strchr(start, '.');
+    spaceptr = strchr(start, ' ');
+    if (!dotptr && spaceptr) dotptr = spaceptr;
+    if (dotptr && spaceptr && spaceptr < dotptr) dotptr = spaceptr;
+    if (dotptr) {
+      int terminate = *dotptr == ' ';
+      *dotptr = '\0';
+      wrapper->version.minor = atoi(start);
+      if (!terminate) {
+        start = ++dotptr;
+        dotptr = strchr(start, ' ');
+        if (dotptr) *dotptr = '\0';
+        wrapper->version.release = atoi(start);
+      }
+    }
+    else {
+      wrapper->version.minor = atoi(start);
+    }
+  }
+}
+
+int
+GLWrapper_versionMatchesAtLeast(GLWrapper_t * w,
+                                unsigned int major,
+                                unsigned int minor,
+                                unsigned int revision)
+{
+  if (w->version.major < major) return 0;
+  else if (w->version.major > major) return 1;
+  if (w->version.minor < minor) return 0;
+  else if (w->version.minor > minor) return 1;
+  if (w->version.release < revision) return 0;
+  return 1;
+}
+
 const GLWrapper_t *
 GLWrapper(int contextid)
 {
@@ -98,9 +163,10 @@ GLWrapper(int contextid)
 
   void * ptr;
   SbBool found = gldict->find(contextid, ptr);
+  GLWrapper_t * gi = NULL;
 
   if (!found) {
-    GLWrapper_t * gi = (GLWrapper_t *)malloc(sizeof(GLWrapper_t));
+    gi = (GLWrapper_t *)malloc(sizeof(GLWrapper_t));
     /* FIXME: handle out-of-memory on malloc(). 20000928 mortene. */
     ptr = gi;
     gldict->enter(contextid, ptr);
@@ -121,6 +187,11 @@ GLWrapper(int contextid)
     GLWRAPPER_REGISTER_FUNC(glTexImage3D, COIN_PFNGLTEXIMAGE3DPROC);
     GLWRAPPER_REGISTER_FUNC(glTexImage3DEXT, COIN_PFNGLTEXIMAGE3DEXTPROC);
   }
+  else {
+    gi = (GLWrapper_t *)ptr;
+  }
 
-  return (GLWrapper_t *)ptr;
+  GLWrapper_set_numeric_version(gi);
+
+  return gi;
 }
