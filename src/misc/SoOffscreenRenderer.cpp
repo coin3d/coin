@@ -186,6 +186,7 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoContextHandler.h>
+#include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoNode.h>
@@ -330,6 +331,7 @@ SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion
 
   PRIVATE(this)->renderaction = new SoGLRenderAction(viewportregion);
   PRIVATE(this)->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
+  PRIVATE(this)->renderaction->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
   this->setViewportRegion(viewportregion);
 }
 
@@ -631,6 +633,10 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     this->renderaction->setCacheContext(contextid);
   }
 
+  // Make this large to get best possible quality on any "big-image"
+  // textures (from using SoTextureScalePolicy).
+  const int bigimagechangelimit = SoGLBigImage::setChangeLimit(INT_MAX);
+
   // Deallocate old and allocate new target buffer.
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoOffscreenRendererP::renderFromBase",
@@ -764,6 +770,9 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     this->convertBuffer(this->internaldata->getBuffer(), dims[0], dims[1],
                         this->buffer, dims[0], dims[1]);
   }
+
+  // Restore old value.
+  (void)SoGLBigImage::setChangeLimit(bigimagechangelimit);
 
   this->internaldata->unmakeContextCurrent();
   // add contextid to the list of contextids used. If the user has set
@@ -1558,6 +1567,10 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
                                           SbString & fullname,
                                           SbString & description)
 {
+  SoDebugError::postWarning("SoOffscreenRenderer::getNumWriteFiletypes",
+                            "Obsoleted function. Use instead the overloaded "
+                            "method with an SbPList for the second argument.");
+
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
 #if COIN_DEBUG
     SoDebugError::postInfo("SoOffscreenRenderer::getNumWriteFiletypes",
