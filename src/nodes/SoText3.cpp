@@ -157,6 +157,11 @@ SoText3::SoText3(void)
   SO_NODE_SET_SF_ENUM_TYPE(parts, Part);
 
   this->stringsensor = new SoFieldSensor(SoText3::fieldSensorCB, this);
+  // Make sure we trigger immediately upon changes to the string, so
+  // the glyph list is always kept in sync -- if not, we're up for
+  // crashes in SoText3::render() function when a redraw preempts the
+  // call to fieldSensorCB().
+  this->stringsensor->setPriority(0);
   this->stringsensor->attach(&this->string);
 
   this->needsetup = TRUE;
@@ -428,8 +433,8 @@ SoText3::render(SoState * state, unsigned int part)
     }
 
     const char * str = this->string[i].getString();
-
     while (*str++) {
+      assert((glyphidx < this->glyphs.getLength()) && "glyph-list not in sync");
       const SoGlyph * glyph = this->glyphs[glyphidx++];
       const SbVec2f * coords = glyph->getCoords();
       if (part != SoText3::SIDES) {
