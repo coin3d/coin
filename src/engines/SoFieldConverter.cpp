@@ -46,9 +46,11 @@
  */
 
 #include <Inventor/engines/SoFieldConverter.h>
+
+#include <Inventor/fields/SoField.h>
 #include <Inventor/engines/SoOutputData.h>
 #include <Inventor/engines/SoConvertAll.h>
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/lists/SoTypeList.h>
 #include <assert.h>
 
 SO_ENGINE_ABSTRACT_SOURCE(SoFieldConverter);
@@ -75,25 +77,45 @@ SoFieldConverter::initClasses(void)
   SoConvertAll::initClass();
 }
 
+/*!
+  Returns the master field we are connected to (i.e. the source field
+  of the conversion).
+*/
 SoField *
 SoFieldConverter::getConnectedInput(void)
 {
-  COIN_STUB();
-  return 0L;
+  // FIXME: I'm not at all sure I've understood the point of this
+  // method and that this implementation does the correct
+  // thing. 20000409 mortene.
+
+  SoTypeList l;
+  (void)SoType::getAllDerivedFrom(SoField::getClassTypeId(), l);
+
+  SoField * gotyou = NULL;
+  for (int i=0; i < l.getLength(); i++) {
+    if ((gotyou = this->getInput(l[i])) != NULL) {
+      SoField * master;
+      if (gotyou->getConnectedField(master)) return master;
+      return NULL;
+    }
+  }
+
+  return NULL;
 }
 
+/*!
+  Returns fields which are connected as slaves of the engine output.
+*/
 int
 SoFieldConverter::getForwardConnections(SoFieldList & l) const
 {
-  const SoEngineOutputData *outputs = this->getOutputData();
+  const SoEngineOutputData * outputs = this->getOutputData();
   assert(outputs && outputs->getNumOutputs() == 1);
   
-  SoEngineOutput *output = outputs->getOutput(this, 0);
+  SoEngineOutput * output = outputs->getOutput(this, 0);
   assert(output);
   
   int n = output->getNumConnections();
-  for (int i = 0; i < n; i++) {
-    l.append((*output)[i]);
-  }
+  for (int i = 0; i < n; i++) l.append((*output)[i]);
   return n;
 }
