@@ -35,6 +35,8 @@ public:
   void setTimeFromNow(const SbTime & relTime);
   const SbTime & getTime(void) const;
 
+  virtual void schedule(void);
+
 private:
   SbTime alarm;
 };

@@ -29,6 +29,10 @@
 #include <Inventor/sensors/SoAlarmSensor.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   Constructor.
  */
@@ -88,4 +92,12 @@ const SbTime &
 SoAlarmSensor::getTime(void) const
 {
   return this->alarm;
+}
+
+// Doc from superclass.
+void
+SoAlarmSensor::schedule(void)
+{
+  this->setTriggerTime(this->alarm);
+  inherited::schedule();
 }
