@@ -185,6 +185,7 @@ SoIndexedLineSet::findMaterialBinding(SoState * state)
 void
 SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 {
+  if (this->coordIndex.getNum() < 2) return;
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -317,7 +318,7 @@ SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   if (!this->shouldPrimitiveCount(action)) return;
 
   int n = this->coordIndex.getNum();
-  if (n == 1 && this->coordIndex[0] == -1) return;
+  if (n < 2) return;
 
   if (action->canApproximateCount()) {
     action->addNumLines(n/3);
@@ -342,6 +343,8 @@ SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 void
 SoIndexedLineSet::generatePrimitives(SoAction *action)
 {
+  if (this->coordIndex.getNum() < 2) return;
+
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
