@@ -19,8 +19,11 @@
 
 #include <Inventor/engines/SoConcatenate.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/SbString.h>
+
 
 SO_ENGINE_ABSTRACT_SOURCE(SoConcatenate);
+
 
 SoConcatenate::SoConcatenate(SoType inputType)
 {

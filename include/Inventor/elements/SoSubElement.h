@@ -22,6 +22,7 @@
 
 #include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h>
+#include <assert.h>
 
 /*
  * This file contains macro definitions with common declarations and

@@ -20,8 +20,11 @@
 #include <Inventor/engines/SoGate.h>
 #include <Inventor/lists/SoEngineOutputList.h>
 #include <Inventor/engines/SoEngineOutput.h>
+#include <Inventor/SbString.h>
+
 
 SO_ENGINE_ABSTRACT_SOURCE(SoGate);
+
 
 SoGate::SoGate(SoType inputType)
 {
