@@ -500,7 +500,7 @@ SoMField::insertSpace(int start, int num)
   this->allocValues(oldnum + num);
 
   // Copy values upward.
-  for (int i = 0; i < oldnum-start; i++) {
+  for (int i = oldnum - start - 1; i >= 0; i--) { 
     this->copyValue(start+num+i, start+i);
   }
 
