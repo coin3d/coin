@@ -59,6 +59,7 @@ PublicHeaders = \
 	../../include/Inventor/VRMLnodes/SoVRMLSphere.h \
 	../../include/Inventor/VRMLnodes/SoVRMLSphereSensor.h \
 	../../include/Inventor/VRMLnodes/SoVRMLSpotLight.h \
+	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolator.h \
 	../../include/Inventor/VRMLnodes/SoVRMLSwitch.h \
 	../../include/Inventor/VRMLnodes/SoVRMLText.h \
 	../../include/Inventor/VRMLnodes/SoVRMLTexture.h \
@@ -73,8 +74,8 @@ PublicHeaders = \
 	../../include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
 	../../include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
 	../../include/Inventor/VRMLnodes/SoVRMLWorldInfo.h
-
-PrivateHeaders =
+PrivateHeaders = \
+	../../include/Inventor/VRMLnodes/SoVRMLSubInterpolatorP.h
 LinkHackSources = \
 	all.cpp
 RegularSources = \
