@@ -514,12 +514,39 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   Reads all graphs from \a in and returns them under an SoSeparator
   node. If the file contains only a single graph under an SoSeparator
   node (which is the most common way of constructing and exporting
-  scene graphs), no extra SoSeparator node will be made.
+  scene graphs), no \e extra SoSeparator root node will be made, but
+  the returned root node will be the top-most node from the file.
 
   The reference count of the root separator returned from this method
   will be zero. Other nodes in the returned scene graph will have
   reference counts according to the number of parent-child
   relationships, as usual.
+
+  The common layout for how to load, work with and then finally
+  destruct and return memory resources of scenegraphs usually goes
+  like this:
+
+  \code
+  // [snip]
+  SoSeparator * root = SoDB::readAll(&input); 
+  if (!root) { exit(1); }
+
+  // root-node returned from SoDB::readAll() has initial zero
+  // ref-count, so reference it before we start using it to
+  // avoid premature destruction.
+  root->ref();
+
+  // [do your thing here -- rendering of the scene, whatever]
+
+  // Bring ref-count of root-node back to zero to cause the
+  // destruction of the scene.
+  root->unref();
+  // (Upon self-destructing, the root-node will also de-reference
+  // it's children nodes, so they also self-destruct, and so on
+  // recursively down the scenegraph hierarchy until the complete
+  // scenegraph has self-destructed and thereby returned all
+  // memory resources it was using up.)
+  \endcode
 
   Returns \c NULL on any error.
  */
