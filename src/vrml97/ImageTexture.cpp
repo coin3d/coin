@@ -378,7 +378,23 @@ SoVRMLImageTexture::doAction(SoAction * action)
 
   SoTexture3EnabledElement::set(state, this, FALSE);
   if (!PRIVATE(this)->image.hasData()) {
-    SoTextureEnabledElement::set(state, this, FALSE);    
+    if (this->url.getNum()) {
+      // texture has not been loaded yet. Supply a dummy image and
+      // enable SoTextureImageElement so that texture coordinates are
+      // generated in generatePrimitives()
+      SoTextureEnabledElement::set(state, this, TRUE);    
+      static unsigned char dummydata[] = { 0xff, 0xff, 0xff, 0xff };
+      SoTextureImageElement::set(state, this,
+                                 SbVec2s(2,2), 1, dummydata,
+                                 imagetexture_translate_wrap(this->repeatS.getValue()),
+                                 imagetexture_translate_wrap(this->repeatT.getValue()),                                                           
+                                 SoTextureImageElement::MODULATE,
+                                 SbColor(1.0f, 1.0f, 1.0f));
+      
+    }
+    else {
+      SoTextureEnabledElement::set(state, this, FALSE);    
+    }    
   }
   else {
     int nc;
