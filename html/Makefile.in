@@ -399,6 +399,10 @@ uninstall-am: uninstall-info-am uninstall-local
 @BUILD_HTMLPAGES_TRUE@	"$(sim_ac_doxygen_exe)" docs/coin.doxygen )
 
 @BUILD_HTMLPAGES_TRUE@filelist.txt: index.html
+@BUILD_HTMLPAGES_TRUE@	@if cmp -s $(top_srcdir)/docs/doxygen/Coin_logo.png Coin_logo.png; then :; else \
+@BUILD_HTMLPAGES_TRUE@	  echo  " cp $(top_srcdir)/docs/doxygen/Coin_logo.png ."; \
+@BUILD_HTMLPAGES_TRUE@	  cp $(top_srcdir)/docs/doxygen/Coin_logo.png .; \
+@BUILD_HTMLPAGES_TRUE@	fi
 @BUILD_HTMLPAGES_TRUE@	@ls -1 | egrep '(\.html|\.png|\.gif|\.css)$$' >filelist.txt
 
 @BUILD_HTMLPAGES_TRUE@all-local: filelist.txt

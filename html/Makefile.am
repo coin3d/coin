@@ -15,6 +15,10 @@ index.html: $(top_builddir)/docs/coin.doxygen
 	"$(sim_ac_doxygen_exe)" docs/coin.doxygen )
 
 filelist.txt: index.html
+	@if cmp -s $(top_srcdir)/docs/doxygen/Coin_logo.png Coin_logo.png; then :; else \
+	  echo  " cp $(top_srcdir)/docs/doxygen/Coin_logo.png ."; \
+	  cp $(top_srcdir)/docs/doxygen/Coin_logo.png .; \
+	fi
 	@ls -1 | egrep '(\.html|\.png|\.gif|\.css)$$' >filelist.txt
 
 all-local: filelist.txt
