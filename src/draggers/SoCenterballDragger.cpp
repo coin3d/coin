@@ -296,8 +296,6 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   SbString str;
 
   if (onoff) {
-    SoSeparator *emptysep = new SoSeparator;
-
     inherited::setUpConnections(onoff, doitalways);
     SoDragger *child;
     child = (SoDragger*) this->getAnyPart("rotator", FALSE);
@@ -305,8 +303,8 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
                             "centerballRotator");
     child->setPartAsDefault("rotatorActive",
                             "centerballRotatorActive");
-    child->setPartAsDefault("feedback", emptysep);
-    child->setPartAsDefault("feedbackActive", emptysep);
+    child->setPartAsDefault("feedback", new SoSeparator);
+    child->setPartAsDefault("feedbackActive", new SoSeparator);
     this->addChildDragger(child);
 
     for (i = 0; i < 3; i++) {
@@ -316,8 +314,8 @@ SoCenterballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
                               "centerballStripe");
       child->setPartAsDefault("rotatorActive",
                               "centerballStripeActive");
-      child->setPartAsDefault("feedback", emptysep);
-      child->setPartAsDefault("feedbackActive", emptysep);
+      child->setPartAsDefault("feedback", new SoSeparator);
+      child->setPartAsDefault("feedbackActive", new SoSeparator);
       this->addChildDragger(child);
     }
 
