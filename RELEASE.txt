@@ -103,17 +103,13 @@ several times as new problems show up.
 
   - Mac OS X (GNU make and gcc)
 
-    This step is not a strict requirement (but it would be good to do
-    it nevertheless) before we officially support SoQt on Mac and/or
-    have our own SoMac library.
-
-    $ <srcdir>/Coin/configure && make distcheck
+    Create binary distribution, see Coin/packaging/macosx/checklist.txt.
 
   - Make Source Dist
 
     - Remember to remove src/extensions/superglu before running
 
-        $ <srcdir>/Coin-1/configure && make dist
+        $ <srcdir>/Coin-2/configure && make dist
 
       or superglu will be included in the dist tarball.
 
@@ -193,8 +189,8 @@ This stage should be self-explanatory.
 
 * Checkout of the release source code and make archive
 
-  $ cvs -d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co -r coin-#_#_# Coin-1
-  $ cd Coin-1
+  $ cvs -d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co -r coin-#_#_# Coin-2
+  $ cd Coin-2
   $ ./configure && make dist
 
 * Build Microsoft Visual C++ Windows SDK
@@ -216,6 +212,10 @@ This stage should be self-explanatory.
     uploader, not the package builder
 
 * Build RPM Packages
+
+* Build Mac OS X binary distribution
+
+  See Coin/packaging/macosx/checklist.txt.
 
 * Put source distribution at ftp://ftp.coin3d.org/pub/coin/src/
 
