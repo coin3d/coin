@@ -1,7 +1,7 @@
 SectionEnd
 # **************************************************************************
 Section "Uninstaller"
-SectionIn 1,2,3
+SectionIn 1 2 3
 
 SetCompress auto
 SetOverwrite on

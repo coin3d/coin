@@ -1,7 +1,7 @@
 SectionEnd
 # **************************************************************************
 Section "SDK Shell Parts"
-SectionIn 1,3
+SectionIn 1 3
 
 SetCompress auto
 SetOverwrite on
@@ -25,7 +25,7 @@ File @win_prefix@\share\Coin\conf\coin-debug.cfg
 SectionEnd
 # **************************************************************************
 Section "Data Files"
-SectionIn 1,2,3
+SectionIn 1 2 3
 
 SetCompress auto
 SetOverwrite on
@@ -36,7 +36,7 @@ File @win_prefix@\share\Coin\draggerDefaults\*.iv
 SectionEnd
 # **************************************************************************
 Section "HTML API Documentation"
-SectionIn 1,3
+SectionIn 1 3
 
 SetCompress auto
 SetOverwrite on

@@ -24,7 +24,7 @@ InstallDirRegKey HKEY_LOCAL_MACHINE SOFTWARE\Coin3D InstallPath
 
 # **************************************************************************
 Section "Run-Time Library"
-SectionIn 1,2,3
+SectionIn 1 2 3
 
 SetCompress auto
 SetOverwrite on
@@ -38,7 +38,7 @@ File coin-sdk.html
 SectionEnd
 # **************************************************************************
 Section "Binary SDK"
-SectionIn 1,3
+SectionIn 1 3
 
 SetCompress auto
 SetOverwrite on
