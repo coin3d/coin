@@ -116,6 +116,12 @@ SoVRMLIndexedShape::getVertexData(SoState * state,
       normals = nc->getNormals();
       nindices = nc->getIndices();
       normalcacheused = TRUE;
+      // if no normals were generated, unlock normal cache before
+      // returning
+      if (normals == NULL) {
+        this->readUnlockNormalCache();
+        normalcacheused = FALSE;
+      }
     }
   }
   return TRUE;
