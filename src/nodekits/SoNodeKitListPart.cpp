@@ -74,6 +74,11 @@ SoNodeKitListPart::SoNodeKitListPart(void)
   SO_NODE_ADD_FIELD(containerNode,(NULL));
 
   this->containerNode.setValue(new SoGroup);
+  // to avoid notification problems (container node is in the scene
+  // graph and notification will be propagated throught the scene
+  // graph). If notification is enabled for this field, the trigger
+  // path will be incorrect since it will stop at this node.
+  this->containerNode.enableNotify(FALSE);
   this->containerNode.setDefault(TRUE);
 
   this->typelistlocked = FALSE;
