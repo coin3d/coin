@@ -30,21 +30,11 @@
 class SoGLEnvironmentElement : public SoEnvironmentElement {
   typedef SoEnvironmentElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLEnvironmentElement)
+  SO_ELEMENT_HEADER(SoGLEnvironmentElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLEnvironmentElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLEnvironmentElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLEnvironmentElement();
 
 public:
   virtual void init(SoState * state);

@@ -30,21 +30,11 @@
 class SoGLLinePatternElement : public SoLinePatternElement {
   typedef SoLinePatternElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLLinePatternElement)
+  SO_ELEMENT_HEADER(SoGLLinePatternElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLLinePatternElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLLinePatternElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLLinePatternElement();
 
 public:
   virtual void init(SoState * state);

@@ -32,21 +32,11 @@
 class SoModelMatrixElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoModelMatrixElement)
+  SO_ELEMENT_HEADER(SoModelMatrixElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoModelMatrixElement(void);
-
   static void initClass(void);
-
 protected:
-  SoModelMatrixElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoModelMatrixElement();
 
 public:
   virtual void init(SoState * state);

@@ -30,21 +30,11 @@
 class SoNormalBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoNormalBindingElement)
+  SO_ELEMENT_HEADER(SoNormalBindingElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoNormalBindingElement(void);
-
   static void initClass(void);
-
 protected:
-  SoNormalBindingElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoNormalBindingElement();
 
 public:
 // constants: (numbers are adjusted for Inventor 2.0 binary format files)

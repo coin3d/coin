@@ -30,27 +30,17 @@
 class SoComplexityElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoComplexityElement)
+  SO_ELEMENT_HEADER(SoComplexityElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoComplexityElement(void);
-
   static void initClass(void);
-
 protected:
-  SoComplexityElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoComplexityElement();
 
 public:
   virtual void init(SoState * state);
 
   static  void set(SoState * const state, SoNode * const node,
-                    const float complexity);
+                   const float complexity);
 
   static  void set(SoState * const state, const float complexity);
   static  float get(SoState * const state);

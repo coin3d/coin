@@ -30,20 +30,11 @@
 class SoFloatElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE AbstractElementHeader(SoFloatElement)
+  SO_ELEMENT_ABSTRACT_HEADER(SoFloatElement);
 public:
-  static  SoType classTypeId;
-  static  SoType getClassTypeId(void);
-public:
-  virtual ~SoFloatElement(void);
-  static  int getClassStackIndex(void);
-
   static void initClass(void);
-
 protected:
-  SoFloatElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE AbstractElementHeader
+  virtual ~SoFloatElement();
 
 public:
   virtual void init(SoState * state);

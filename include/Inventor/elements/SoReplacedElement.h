@@ -31,20 +31,11 @@
 class SoReplacedElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE AbstractElementHeader(SoReplacedElement)
+  SO_ELEMENT_ABSTRACT_HEADER(SoReplacedElement);
 public:
-  static  SoType classTypeId;
-  static  SoType getClassTypeId(void);
-public:
-  virtual ~SoReplacedElement(void);
-  static  int getClassStackIndex(void);
-
   static void initClass(void);
-
 protected:
-  SoReplacedElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE AbstractElementHeader
+  virtual ~SoReplacedElement();
 
 public:
   virtual void init(SoState * state);

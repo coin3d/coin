@@ -30,21 +30,11 @@
 class SoGLPolygonStippleElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLPolygonStippleElement)
+  SO_ELEMENT_HEADER(SoGLPolygonStippleElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLPolygonStippleElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLPolygonStippleElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLPolygonStippleElement();
 
 public:
   virtual void init(SoState *state);

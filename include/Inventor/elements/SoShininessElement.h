@@ -30,21 +30,11 @@
 class SoShininessElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoShininessElement)
+  SO_ELEMENT_HEADER(SoShininessElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoShininessElement(void);
-
   static void initClass(void);
-
 protected:
-  SoShininessElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoShininessElement();
 
 public:
   virtual void init(SoState * state);

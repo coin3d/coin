@@ -30,21 +30,11 @@
 class SoGLProjectionMatrixElement : public SoProjectionMatrixElement {
   typedef SoProjectionMatrixElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLProjectionMatrixElement)
+  SO_ELEMENT_HEADER(SoGLProjectionMatrixElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLProjectionMatrixElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLProjectionMatrixElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLProjectionMatrixElement();
 
 public:
   virtual void pop(SoState * state,

@@ -30,21 +30,11 @@
 class SoGLClipPlaneElement : public SoClipPlaneElement {
   typedef SoClipPlaneElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLClipPlaneElement)
+  SO_ELEMENT_HEADER(SoGLClipPlaneElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLClipPlaneElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLClipPlaneElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLClipPlaneElement();
 
 public:
   virtual void init(SoState * state);

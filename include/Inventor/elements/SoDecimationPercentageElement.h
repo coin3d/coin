@@ -30,21 +30,11 @@
 class SoDecimationPercentageElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoDecimationPercentageElement)
+  SO_ELEMENT_HEADER(SoDecimationPercentageElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoDecimationPercentageElement(void);
-
   static void initClass(void);
-
 protected:
-  SoDecimationPercentageElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoDecimationPercentageElement();
 
 public:
   virtual void init(SoState * state);

@@ -32,21 +32,11 @@ typedef void SoTexCoordTexgenCB(void * data);
 class SoGLTextureCoordinateElement : public SoTextureCoordinateElement {
   typedef SoTextureCoordinateElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLTextureCoordinateElement)
+  SO_ELEMENT_HEADER(SoGLTextureCoordinateElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLTextureCoordinateElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLTextureCoordinateElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLTextureCoordinateElement();
 
 public:
   virtual void init(SoState * state);

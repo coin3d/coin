@@ -30,21 +30,11 @@
 class SoTransparencyElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoTransparencyElement)
+  SO_ELEMENT_HEADER(SoTransparencyElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoTransparencyElement(void);
-
   static void initClass(void);
-
 protected:
-  SoTransparencyElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoTransparencyElement();
 
 public:
   virtual void init(SoState * state);

@@ -30,21 +30,11 @@
 class SoGLTextureMatrixElement : public SoTextureMatrixElement {
   typedef SoTextureMatrixElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLTextureMatrixElement)
+  SO_ELEMENT_HEADER(SoGLTextureMatrixElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLTextureMatrixElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLTextureMatrixElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLTextureMatrixElement();
 
 public:
   virtual void init(SoState * state);

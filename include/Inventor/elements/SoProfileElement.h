@@ -33,21 +33,11 @@ class SoProfile;
 class SoProfileElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoProfileElement)
+  SO_ELEMENT_HEADER(SoProfileElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoProfileElement(void);
-
   static void initClass(void);
-
 protected:
-  SoProfileElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoProfileElement();
 
 public:
   enum Profile {

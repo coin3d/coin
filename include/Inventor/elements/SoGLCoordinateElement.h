@@ -30,21 +30,11 @@
 class SoGLCoordinateElement : public SoCoordinateElement {
   typedef SoCoordinateElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLCoordinateElement)
+  SO_ELEMENT_HEADER(SoGLCoordinateElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLCoordinateElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLCoordinateElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLCoordinateElement();
 
 public:
   const SbVec3f *getPtr3() const;

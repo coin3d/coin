@@ -30,21 +30,11 @@
 class SoGLRenderPassElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLRenderPassElement)
+  SO_ELEMENT_HEADER(SoGLRenderPassElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLRenderPassElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLRenderPassElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLRenderPassElement();
 
 public:
   virtual void init(SoState * state);

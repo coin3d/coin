@@ -30,21 +30,11 @@
 class SoTextOutlineEnabledElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoTextOutlineEnabledElement)
+  SO_ELEMENT_HEADER(SoTextOutlineEnabledElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoTextOutlineEnabledElement(void);
-
   static void initClass(void);
-
 protected:
-  SoTextOutlineEnabledElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoTextOutlineEnabledElement();
 
 public:
   virtual void init(SoState * state);

@@ -35,21 +35,11 @@ class SoLight;
 class SoLightElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoLightElement)
+  SO_ELEMENT_HEADER(SoLightElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoLightElement(void);
-
   static void initClass(void);
-
 protected:
-  SoLightElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoLightElement();
 
 public:
   virtual void init(SoState * state);

@@ -30,21 +30,11 @@
 class SoTextureCoordinateBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoTextureCoordinateBindingElement)
+  SO_ELEMENT_HEADER(SoTextureCoordinateBindingElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoTextureCoordinateBindingElement(void);
-
   static void initClass(void);
-
 protected:
-  SoTextureCoordinateBindingElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoTextureCoordinateBindingElement();
 
 public:
 // constants: (numbers are adjusted for Inventor 2.0 binary format files)

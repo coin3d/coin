@@ -30,21 +30,11 @@
 class SoSwitchElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoSwitchElement)
+  SO_ELEMENT_HEADER(SoSwitchElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoSwitchElement(void);
-
   static void initClass(void);
-
 protected:
-  SoSwitchElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoSwitchElement();
 
 public:
   virtual void init(SoState * state);

@@ -32,21 +32,11 @@
 class SoCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoCoordinateElement)
+  SO_ELEMENT_HEADER(SoCoordinateElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoCoordinateElement(void);
-
   static void initClass(void);
-
 protected:
-  SoCoordinateElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoCoordinateElement();
 
 public:
   virtual void init(SoState * state);

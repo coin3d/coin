@@ -35,21 +35,11 @@ class SoState;
 class SoTextureImageElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoTextureImageElement)
+  SO_ELEMENT_HEADER(SoTextureImageElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoTextureImageElement(void);
-
   static void initClass(void);
-
 protected:
-  SoTextureImageElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoTextureImageElement();
 
 public:
   enum Model {

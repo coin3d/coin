@@ -31,21 +31,11 @@
 class SoEnvironmentElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoEnvironmentElement)
+  SO_ELEMENT_HEADER(SoEnvironmentElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoEnvironmentElement(void);
-
   static void initClass(void);
-
 protected:
-  SoEnvironmentElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoEnvironmentElement();
 
 public:
 

@@ -30,21 +30,11 @@
 class SoLocalBBoxMatrixElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoLocalBBoxMatrixElement)
+  SO_ELEMENT_HEADER(SoLocalBBoxMatrixElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoLocalBBoxMatrixElement(void);
-
   static void initClass(void);
-
 protected:
-  SoLocalBBoxMatrixElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoLocalBBoxMatrixElement();
 
 public:
   virtual void init(SoState * state);

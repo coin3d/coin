@@ -30,21 +30,11 @@
 class SoGLNormalElement : public SoNormalElement {
   typedef SoNormalElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLNormalElement)
+  SO_ELEMENT_HEADER(SoGLNormalElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLNormalElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLNormalElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLNormalElement();
 
 public:
   virtual void init(SoState * state);

@@ -30,21 +30,11 @@
 class SoGLLightModelElement : public SoLightModelElement {
   typedef SoLightModelElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLLightModelElement)
+  SO_ELEMENT_HEADER(SoGLLightModelElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLLightModelElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLLightModelElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLLightModelElement();
 
 public:
   virtual void init(SoState * state);

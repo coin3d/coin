@@ -30,21 +30,11 @@
 class SoGLPointSizeElement : public SoPointSizeElement {
   typedef SoPointSizeElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLPointSizeElement)
+  SO_ELEMENT_HEADER(SoGLPointSizeElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLPointSizeElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLPointSizeElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLPointSizeElement();
 
 public:
   virtual void init(SoState * state);

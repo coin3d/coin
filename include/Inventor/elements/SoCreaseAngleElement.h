@@ -30,21 +30,11 @@
 class SoCreaseAngleElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoCreaseAngleElement)
+  SO_ELEMENT_HEADER(SoCreaseAngleElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoCreaseAngleElement(void);
-
   static void initClass(void);
-
 protected:
-  SoCreaseAngleElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoCreaseAngleElement();
 
 public:
   virtual void init(SoState * state);

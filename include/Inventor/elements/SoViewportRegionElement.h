@@ -31,21 +31,11 @@
 class SoViewportRegionElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoViewportRegionElement)
+  SO_ELEMENT_HEADER(SoViewportRegionElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoViewportRegionElement(void);
-
   static void initClass(void);
-
 protected:
-  SoViewportRegionElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoViewportRegionElement();
 
 public:
   virtual void init(SoState * state);

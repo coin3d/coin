@@ -30,21 +30,11 @@
 class SoFontSizeElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoFontSizeElement)
+  SO_ELEMENT_HEADER(SoFontSizeElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoFontSizeElement(void);
-
   static void initClass(void);
-
 protected:
-  SoFontSizeElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoFontSizeElement();
 
 public:
   virtual void init(SoState * state);

@@ -31,21 +31,11 @@
 class SoProjectionMatrixElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoProjectionMatrixElement)
+  SO_ELEMENT_HEADER(SoProjectionMatrixElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoProjectionMatrixElement(void);
-
   static void initClass(void);
-
 protected:
-  SoProjectionMatrixElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoProjectionMatrixElement();
 
 public:
   virtual void init(SoState * state);

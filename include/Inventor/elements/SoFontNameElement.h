@@ -31,21 +31,11 @@
 class SoFontNameElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoFontNameElement)
+  SO_ELEMENT_HEADER(SoFontNameElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoFontNameElement(void);
-
   static void initClass(void);
-
 protected:
-  SoFontNameElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoFontNameElement();
 
 public:
   virtual void init(SoState * state);

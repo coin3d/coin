@@ -30,21 +30,11 @@
 class SoLightModelElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoLightModelElement)
+  SO_ELEMENT_HEADER(SoLightModelElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoLightModelElement(void);
-
   static void initClass(void);
-
 protected:
-  SoLightModelElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoLightModelElement();
 
 public:
   enum Model {

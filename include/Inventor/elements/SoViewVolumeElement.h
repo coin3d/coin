@@ -32,21 +32,11 @@
 class SoViewVolumeElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoViewVolumeElement)
+  SO_ELEMENT_HEADER(SoViewVolumeElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoViewVolumeElement(void);
-
   static void initClass(void);
-
 protected:
-  SoViewVolumeElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoViewVolumeElement();
 
 public:
   virtual void init(SoState * state);

@@ -27,21 +27,11 @@
 class SoTextureFilenameElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoTextureFilenameElement)
+  SO_ELEMENT_HEADER(SoTextureFilenameElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoTextureFilenameElement(void);
-
   static void initClass(void);
-
 protected:
-  SoTextureFilenameElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoTextureFilenameElement();
 
 public:
   virtual void init(SoState * state);

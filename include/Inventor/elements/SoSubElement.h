@@ -30,15 +30,31 @@
  * instead of macros, so these macros aren't inserted since they aren't
  * in use yet.
  *
+ * FIXME: document macros. 19991209 mortene.
+ *
  */
 
-#define SO_ELEMENT_ABSTRACT_HEADER(className)
-#define SO_ELEMENT_HEADER(className)
+#define SO_ELEMENT_ABSTRACT_HEADER(_class_) \
+private: \
+  static SoType classTypeId; \
+protected: \
+  _class_(void); \
+  static int classStackIndex; \
+public: \
+  static SoType getClassTypeId(void); \
+  static int getClassStackIndex(void)
 
-#define SO_ELEMENT_ABSTRACT_SOURCE(className)
-#define SO_ELEMENT_SOURCE(className)
 
-#define SO_ELEMENT_INIT_ABSTRACT_CLASS(className, parentClassName)
-#define SO_ELEMENT_INIT_CLASS(className, parentClassName)
+#define SO_ELEMENT_HEADER(_class_) \
+  SO_ELEMENT_ABSTRACT_HEADER(_class_); \
+public: \
+  static void * createInstance(void)
+
+
+#define SO_ELEMENT_ABSTRACT_SOURCE(_class_)
+#define SO_ELEMENT_SOURCE(_class_)
+
+#define SO_ELEMENT_INIT_ABSTRACT_CLASS(_class_, _parent_)
+#define SO_ELEMENT_INIT_CLASS(_class_, _parent_)
 
 #endif // !__SOSUBELEMENT_H__

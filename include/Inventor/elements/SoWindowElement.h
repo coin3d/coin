@@ -43,21 +43,11 @@ class SoGLRenderAction;
 class SoWindowElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoWindowElement)
+  SO_ELEMENT_HEADER(SoWindowElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoWindowElement(void);
-
   static void initClass(void);
-
 protected:
-  SoWindowElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoWindowElement();
 
 public:
   virtual void init(SoState * state);
@@ -69,11 +59,11 @@ public:
   virtual SoElement * copyMatchInfo(void) const;
 
   static  void set(SoState * const state, const Window & window,
-              const GLXContext & context, Display * const display,
-              SoGLRenderAction * const action);
+                   const GLXContext & context, Display * const display,
+                   SoGLRenderAction * const action);
   static  void get(SoState * const state, Window & window,
-              GLXContext & context, Display * & display,
-              SoGLRenderAction * & action);
+                   GLXContext & context, Display * & display,
+                   SoGLRenderAction * & action);
 
 protected:
   Window window;

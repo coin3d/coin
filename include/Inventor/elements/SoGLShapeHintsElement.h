@@ -30,21 +30,11 @@
 class SoGLShapeHintsElement : public SoShapeHintsElement {
   typedef SoShapeHintsElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLShapeHintsElement)
+  SO_ELEMENT_HEADER(SoGLShapeHintsElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLShapeHintsElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLShapeHintsElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLShapeHintsElement();
 
 public:
   virtual void init(SoState * state);

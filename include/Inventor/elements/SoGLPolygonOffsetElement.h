@@ -30,21 +30,11 @@
 class SoGLPolygonOffsetElement : public SoPolygonOffsetElement {
   typedef SoPolygonOffsetElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLPolygonOffsetElement)
+  SO_ELEMENT_HEADER(SoGLPolygonOffsetElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLPolygonOffsetElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLPolygonOffsetElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLPolygonOffsetElement();
 
 public:
   virtual void init(SoState * state);

@@ -30,20 +30,12 @@
 
 class SoAccumulatedElement : public SoElement {
   typedef SoElement inherited;
-//$ BEGIN TEMPLATE AbstractElementHeader(SoAccumulatedElement)
-public:
-  static  SoType classTypeId;
-  static  SoType getClassTypeId(void);
-public:
-  virtual ~SoAccumulatedElement(void);
-  static  int getClassStackIndex(void);
 
+  SO_ELEMENT_ABSTRACT_HEADER(SoAccumulatedElement);
+public:
   static void initClass(void);
-
 protected:
-  SoAccumulatedElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE AbstractElementHeader
+  virtual ~SoAccumulatedElement();
 
 public:
   virtual SbBool matches(const SoElement * element) const;

@@ -42,35 +42,23 @@ public:
 class SoClipPlaneElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoClipPlaneElement)
+  SO_ELEMENT_HEADER(SoClipPlaneElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoClipPlaneElement(void);
-
   static void initClass(void);
-
 protected:
-  SoClipPlaneElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoClipPlaneElement();
 
 public:
   virtual void init(SoState * state);
 
   virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement *prevTopElement);
+  virtual void pop(SoState * state, const SoElement *prevTopElement);
 
   static  void add(SoState * const state, SoNode * const node,
                    const SbPlane & plane);
   static  const SoClipPlaneElement *getInstance(SoState * const state);
-  int getNum() const;
-  const SbPlane & get(const int index,
-                      const SbBool inWorldSpace = TRUE) const;
+  int getNum(void) const;
+  const SbPlane & get(const int index, const SbBool inWorldSpace = TRUE) const;
 
   virtual void print(FILE * file) const;
 
@@ -78,9 +66,7 @@ protected:
   int startIndex;
   SbList <so_plane_data> planes;
 
-  virtual void addToElt(const SbPlane & plane,
-                        const SbMatrix & modelMatrix);
-
+  virtual void addToElt(const SbPlane & plane, const SbMatrix & modelMatrix);
 };
 
 #endif // !__SOCLIPPLANEELEMENT_H__

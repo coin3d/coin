@@ -32,21 +32,11 @@ class SoGLImage;
 class SoGLTextureImageElement : public SoTextureImageElement {
   typedef SoTextureImageElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLTextureImageElement)
+  SO_ELEMENT_HEADER(SoGLTextureImageElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLTextureImageElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLTextureImageElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLTextureImageElement();
 
 public:
   virtual void init(SoState * state);

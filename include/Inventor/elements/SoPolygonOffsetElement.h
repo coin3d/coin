@@ -30,21 +30,11 @@
 class SoPolygonOffsetElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoPolygonOffsetElement)
+  SO_ELEMENT_HEADER(SoPolygonOffsetElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoPolygonOffsetElement(void);
-
   static void initClass(void);
-
 protected:
-  SoPolygonOffsetElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoPolygonOffsetElement();
 
 public:
   enum Style {

@@ -30,21 +30,11 @@
 class SoFocalDistanceElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoFocalDistanceElement)
+  SO_ELEMENT_HEADER(SoFocalDistanceElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoFocalDistanceElement(void);
-
   static void initClass(void);
-
 protected:
-  SoFocalDistanceElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoFocalDistanceElement();
 
 public:
     virtual void init(SoState * state);

@@ -32,21 +32,11 @@ class SoLocalBBoxMatrixElement;
 class SoBBoxModelMatrixElement : public SoModelMatrixElement {
   typedef SoModelMatrixElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoBBoxModelMatrixElement)
+  SO_ELEMENT_HEADER(SoBBoxModelMatrixElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoBBoxModelMatrixElement(void);
-
   static void initClass(void);
-
 protected:
-  SoBBoxModelMatrixElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoBBoxModelMatrixElement();
 
 public:
   virtual void init(SoState * state);

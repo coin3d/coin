@@ -1,4 +1,5 @@
 //$ TEMPLATE AbstractElementClassTypeHeader( className )
-public:
+private:
   static  SoType classTypeId;
+public:
   static  SoType getClassTypeId(void);

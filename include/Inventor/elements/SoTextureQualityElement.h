@@ -30,21 +30,11 @@
 class SoTextureQualityElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoTextureQualityElement)
+  SO_ELEMENT_HEADER(SoTextureQualityElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoTextureQualityElement(void);
-
   static void initClass(void);
-
 protected:
-  SoTextureQualityElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoTextureQualityElement();
 
 public:
   virtual void init(SoState * state);

@@ -42,21 +42,11 @@ typedef const SbVec4f & SoTextureCoordinateFunctionCB(void * userdata,
 class SoTextureCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoTextureCoordinateElement)
+  SO_ELEMENT_HEADER(SoTextureCoordinateElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoTextureCoordinateElement(void);
-
   static void initClass(void);
-
 protected:
-  SoTextureCoordinateElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoTextureCoordinateElement();
 
 public:
 
@@ -95,7 +85,7 @@ public:
 
   const SbVec2f *getArrayPtr2() const;
   const SbVec4f *getArrayPtr4() const;
-  
+
 protected:
   CoordType whatKind;
   SoTextureCoordinateFunctionCB *funcCB;

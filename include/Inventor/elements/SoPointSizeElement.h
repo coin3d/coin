@@ -30,21 +30,11 @@
 class SoPointSizeElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoPointSizeElement)
+  SO_ELEMENT_HEADER(SoPointSizeElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoPointSizeElement(void);
-
   static void initClass(void);
-
 protected:
-  SoPointSizeElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoPointSizeElement();
 
 public:
   virtual void init(SoState * state);

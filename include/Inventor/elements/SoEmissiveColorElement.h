@@ -32,21 +32,11 @@ class SbColor;
 class SoEmissiveColorElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoEmissiveColorElement)
+  SO_ELEMENT_HEADER(SoEmissiveColorElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoEmissiveColorElement(void);
-
   static void initClass(void);
-
 protected:
-  SoEmissiveColorElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoEmissiveColorElement();
 
 public:
   virtual void init(SoState * state);

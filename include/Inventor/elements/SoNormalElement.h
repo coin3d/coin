@@ -32,21 +32,11 @@
 class SoNormalElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoNormalElement)
+  SO_ELEMENT_HEADER(SoNormalElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoNormalElement(void);
-
   static void initClass(void);
-
 protected:
-  SoNormalElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoNormalElement();
 
 public:
   virtual void init(SoState * state);
@@ -61,8 +51,8 @@ public:
   const SbVec3f *getArrayPtr() const;
 
   SbBool areNormalsUnitLength() const;
-  
-  
+
+
   virtual void print(FILE * file) const;
 
 protected:

@@ -36,21 +36,11 @@
 class SoGLUpdateAreaElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLUpdateAreaElement)
+  SO_ELEMENT_HEADER(SoGLUpdateAreaElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLUpdateAreaElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLUpdateAreaElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLUpdateAreaElement();
 
 public:
   virtual void init(SoState * state);

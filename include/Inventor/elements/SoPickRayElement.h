@@ -31,21 +31,11 @@
 class SoPickRayElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoPickRayElement)
+  SO_ELEMENT_HEADER(SoPickRayElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoPickRayElement(void);
-
   static void initClass(void);
-
 protected:
-  SoPickRayElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoPickRayElement();
 
 public:
   virtual void init(SoState * state);

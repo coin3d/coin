@@ -30,21 +30,11 @@
 class SoAnnoText3RenderPrintElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoAnnoText3RenderPrintElement)
+  SO_ELEMENT_HEADER(SoAnnoText3RenderPrintElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoAnnoText3RenderPrintElement(void);
-
   static void initClass(void);
-
 protected:
-  SoAnnoText3RenderPrintElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoAnnoText3RenderPrintElement();
 
 public:
   enum RenderPrintType {

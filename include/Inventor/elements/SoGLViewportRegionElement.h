@@ -30,21 +30,11 @@
 class SoGLViewportRegionElement : public SoViewportRegionElement {
   typedef SoViewportRegionElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLViewportRegionElement)
+  SO_ELEMENT_HEADER(SoGLViewportRegionElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLViewportRegionElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLViewportRegionElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLViewportRegionElement();
 
 public:
   virtual void init(SoState * state);

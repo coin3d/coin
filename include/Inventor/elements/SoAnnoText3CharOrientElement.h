@@ -30,28 +30,17 @@
 class SoAnnoText3CharOrientElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoAnnoText3CharOrientElement)
+  SO_ELEMENT_HEADER(SoAnnoText3CharOrientElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoAnnoText3CharOrientElement(void);
-
   static void initClass(void);
-
 protected:
-  SoAnnoText3CharOrientElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoAnnoText3CharOrientElement();
 
 public:
   virtual void init(SoState * state);
   static void set(SoState * const state, SbBool isOriented);
   static SbBool get(SoState * state);
   static SbBool getDefault(void);
-
 };
 
 #endif // !__SOANNOTEXT3CHARORIENTELEMENT_H__

@@ -30,21 +30,11 @@
 class SoShapeStyleElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoShapeStyleElement)
+  SO_ELEMENT_HEADER(SoShapeStyleElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoShapeStyleElement(void);
-
   static void initClass(void);
-
 protected:
-  SoShapeStyleElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoShapeStyleElement();
 
 public:
   virtual void init(SoState * state);

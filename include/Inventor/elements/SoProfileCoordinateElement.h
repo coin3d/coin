@@ -38,21 +38,11 @@
 class SoProfileCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoProfileCoordinateElement)
+  SO_ELEMENT_HEADER(SoProfileCoordinateElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoProfileCoordinateElement(void);
-
   static void initClass(void);
-
 protected:
-  SoProfileCoordinateElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoProfileCoordinateElement();
 
 public:
   virtual void init(SoState * state);

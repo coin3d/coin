@@ -30,21 +30,11 @@
 class SoGLShininessElement : public SoShininessElement {
   typedef SoShininessElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLShininessElement)
+  SO_ELEMENT_HEADER(SoGLShininessElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLShininessElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLShininessElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLShininessElement();
 
 public:
   virtual void init(SoState *state);

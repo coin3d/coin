@@ -30,21 +30,11 @@
 class SoShapeHintsElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoShapeHintsElement)
+  SO_ELEMENT_HEADER(SoShapeHintsElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoShapeHintsElement(void);
-
   static void initClass(void);
-
 protected:
-  SoShapeHintsElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoShapeHintsElement();
 
 public:
   enum VertexOrdering {

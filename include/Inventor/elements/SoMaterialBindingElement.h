@@ -30,21 +30,11 @@
 class SoMaterialBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoMaterialBindingElement)
+  SO_ELEMENT_HEADER(SoMaterialBindingElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoMaterialBindingElement(void);
-
   static void initClass(void);
-
 protected:
-  SoMaterialBindingElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoMaterialBindingElement();
 
 public:
 // constants: (numbers are adjusted for Inventor 2.0 binary format files)

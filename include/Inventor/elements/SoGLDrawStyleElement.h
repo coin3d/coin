@@ -30,21 +30,11 @@
 class SoGLDrawStyleElement : public SoDrawStyleElement {
   typedef SoDrawStyleElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLDrawStyleElement)
+  SO_ELEMENT_HEADER(SoGLDrawStyleElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLDrawStyleElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLDrawStyleElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLDrawStyleElement();
 
 public:
   virtual void init(SoState * state);

@@ -30,21 +30,11 @@
 class SoLineWidthElement : public SoFloatElement {
   typedef SoFloatElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoLineWidthElement)
+  SO_ELEMENT_HEADER(SoLineWidthElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoLineWidthElement(void);
-
   static void initClass(void);
-
 protected:
-  SoLineWidthElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoLineWidthElement();
 
 public:
   virtual void init(SoState * state);

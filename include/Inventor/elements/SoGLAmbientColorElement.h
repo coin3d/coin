@@ -31,21 +31,11 @@
 class SoGLAmbientColorElement : public SoAmbientColorElement {
   typedef SoAmbientColorElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLAmbientColorElement)
+  SO_ELEMENT_HEADER(SoGLAmbientColorElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLAmbientColorElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLAmbientColorElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLAmbientColorElement();
 
 public:
   virtual void init(SoState *state);

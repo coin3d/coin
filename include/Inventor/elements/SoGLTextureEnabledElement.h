@@ -30,21 +30,11 @@
 class SoGLTextureEnabledElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLTextureEnabledElement)
+  SO_ELEMENT_HEADER(SoGLTextureEnabledElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLTextureEnabledElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLTextureEnabledElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLTextureEnabledElement();
 
 public:
   virtual void init(SoState * state);

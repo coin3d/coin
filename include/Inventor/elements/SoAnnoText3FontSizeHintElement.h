@@ -30,21 +30,11 @@
 class SoAnnoText3FontSizeHintElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoAnnoText3FontSizeHintElement)
+  SO_ELEMENT_HEADER(SoAnnoText3FontSizeHintElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoAnnoText3FontSizeHintElement(void);
-
   static void initClass(void);
-
 protected:
-  SoAnnoText3FontSizeHintElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoAnnoText3FontSizeHintElement();
 
 public:
   enum FontSizeHint {
@@ -58,7 +48,6 @@ public:
 
   static void set(SoState * const state, SoNode * const node,
                   const FontSizeHint hint);
-
 };
 
 #endif // !__SOANNOTEXT3FONTSIZEHINTELEMENT_H__

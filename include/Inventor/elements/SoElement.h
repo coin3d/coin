@@ -20,13 +20,16 @@
 #ifndef __SOELEMENT_H__
 #define __SOELEMENT_H__
 
-#include <stdio.h>
 #include <Inventor/SbBasic.h>
-#include <Inventor/SoType.h>
 
 #if defined(COIN_EXCLUDE_SOELEMENT)
 #error "Configuration settings disable this class!"
 #endif // COIN_EXCLUDE_SOELEMENT
+
+#include <Inventor/SoType.h>
+#include <Inventor/elements/SoSubElement.h>
+#include <stdio.h>
+
 
 // Remove all these dependencies in SoAction when compiling a minimal
 // version of the Coin library. This is for debugging purposes only,
@@ -136,20 +139,12 @@ class SoNode;
 class SoState;
 
 class SoElement {
-//$ BEGIN TEMPLATE AbstractElementHeader(SoElement)
-public:
-  static  SoType classTypeId;
-  static  SoType getClassTypeId(void);
-public:
-  virtual ~SoElement(void);
-  static  int getClassStackIndex(void);
 
+  SO_ELEMENT_ABSTRACT_HEADER(SoElement);
+public:
   static void initClass(void);
-
 protected:
-  SoElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE AbstractElementHeader
+  virtual ~SoElement();
 
 public:
   const SoType getTypeId(void) const;

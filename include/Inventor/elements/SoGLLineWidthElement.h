@@ -30,21 +30,11 @@
 class SoGLLineWidthElement : public SoLineWidthElement {
   typedef SoLineWidthElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoGLLineWidthElement)
+  SO_ELEMENT_HEADER(SoGLLineWidthElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoGLLineWidthElement(void);
-
   static void initClass(void);
-
 protected:
-  SoGLLineWidthElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoGLLineWidthElement();
 
 public:
   virtual void init(SoState * state);

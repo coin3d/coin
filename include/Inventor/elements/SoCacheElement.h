@@ -32,48 +32,36 @@ class SoCache;
 class SoCacheElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoCacheElement)
+  SO_ELEMENT_HEADER(SoCacheElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoCacheElement(void);
-
   static void initClass(void);
-
 protected:
-  SoCacheElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoCacheElement();
 
 public:
   virtual void init(SoState * state);
 
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
-                    const SoElement * prevTopElement);
+                   const SoElement * prevTopElement);
 
-  static  void set(SoState * const state, SoCache * const cache);
+  static void set(SoState * const state, SoCache * const cache);
   SoCache * getCache(void) const;
-  static  SbBool anyOpen(SoState * const state);
-  static  void invalidate(SoState * const state);
+  static SbBool anyOpen(SoState * const state);
+  static void invalidate(SoState * const state);
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo(void) const;
   SoCacheElement * getNextCacheElement(void) const;
 
-  static  void addElement(SoState * const state,
-                           const SoElement * const element);
-  static  void addCacheDependency(SoState * const state,
-                                   SoCache * const cache);
-  static  SbBool setInvalid(const SbBool newValue);
-  static  SoCache * getCurrentCache(SoState * const state);
+  static void addElement(SoState * const state,
+                         const SoElement * const element);
+  static void addCacheDependency(SoState * const state, SoCache * const cache);
+  static SbBool setInvalid(const SbBool newValue);
+  static SoCache * getCurrentCache(SoState * const state);
 
 private:
-    SoCache * cache;
-    static  SbBool invalidated;
-
+  SoCache * cache;
+  static SbBool invalidated;
 };
 
 #endif // !__SOCACHEELEMENT_H__

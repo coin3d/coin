@@ -30,21 +30,11 @@
 class SoUnitsElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoUnitsElement)
+  SO_ELEMENT_HEADER(SoUnitsElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoUnitsElement(void);
-
   static void initClass(void);
-
 protected:
-  SoUnitsElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoUnitsElement();
 
 public:
 // constants:

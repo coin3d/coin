@@ -25,21 +25,11 @@
 class SoPROTOElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoPROTOElement)
+  SO_ELEMENT_HEADER(SoPROTOElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoPROTOElement(void);
-
   static void initClass(void);
-
 protected:
-  SoPROTOElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoPROTOElement();
 
 public:
   virtual void init(SoState * state);

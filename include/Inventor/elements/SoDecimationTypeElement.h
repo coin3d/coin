@@ -30,21 +30,11 @@
 class SoDecimationTypeElement : public SoInt32Element {
   typedef SoInt32Element inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoDecimationTypeElement)
+  SO_ELEMENT_HEADER(SoDecimationTypeElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoDecimationTypeElement(void);
-
   static void initClass(void);
-
 protected:
-  SoDecimationTypeElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoDecimationTypeElement();
 
 public:
   enum Type { AUTOMATIC, HIGHEST, LOWEST, PERCENTAGE };

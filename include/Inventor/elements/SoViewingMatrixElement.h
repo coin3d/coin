@@ -32,21 +32,11 @@
 class SoViewingMatrixElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoViewingMatrixElement)
+  SO_ELEMENT_HEADER(SoViewingMatrixElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoViewingMatrixElement(void);
-
   static void initClass(void);
-
 protected:
-  SoViewingMatrixElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoViewingMatrixElement();
 
 public:
   virtual void init(SoState * state);

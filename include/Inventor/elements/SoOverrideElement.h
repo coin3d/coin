@@ -34,21 +34,11 @@ class SoType; // lame doxygen "fix"
 class SoOverrideElement : public SoElement {
   typedef SoElement inherited;
 
-//$ BEGIN TEMPLATE ElementHeader(SoOverrideElement)
+  SO_ELEMENT_HEADER(SoOverrideElement);
 public:
-  static SoType classTypeId;
-  static SoType getClassTypeId(void);
-  static void * createInstance(void);
-public:
-  static int getClassStackIndex(void);
-  virtual ~SoOverrideElement(void);
-
   static void initClass(void);
-
 protected:
-  SoOverrideElement(void);
-  static int classStackIndex;
-//$ END TEMPLATE ElementHeader
+  virtual ~SoOverrideElement();
 
 public:
   enum FlagBits {
