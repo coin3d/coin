@@ -229,7 +229,12 @@ SoCullElement::docull(SoState * state, const SbBox3f & box, const SbBool transfo
   SbMatrix mm;
   SbBool identity = ! transform;
   if (transform) {
-    mm = SoModelMatrixElement::get(state, identity);
+    SbBool wasopen = state->isCacheOpen();
+    // close the cache, since we don't create a cache dependency on
+    // the model matrix element
+    state->setCacheOpen(FALSE);
+    mm = SoModelMatrixElement::get(state);
+    state->setCacheOpen(wasopen);
   }
 
   // create the 8 box corner points

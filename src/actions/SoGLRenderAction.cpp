@@ -871,7 +871,15 @@ SoGLRenderAction::addTransPath(SoPath * path)
     THIS->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
     THIS->bboxaction->apply(path);
     SbVec3f center = THIS->bboxaction->getBoundingBox().getCenter();
+    // Disable cache dependencies on the view volume. We just need it
+    // to calcuate the distance to the object and it should not affect
+    // GLRenderCaches. When a cache is closed, it just stops recording
+    // which elements that are read while the cache is created.
+    SbBool wasopen = this->state->isCacheOpen();
+    this->state->setCacheOpen(FALSE);
     dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
+    // open the cache again (if it was open).
+    this->state->setCacheOpen(wasopen);
   }
   THIS->transpobjdistances.append(dist);
 }
