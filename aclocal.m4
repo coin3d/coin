@@ -442,23 +442,26 @@ AC_DEFUN([SIM_AC_SETUP_MSVCPP_IFELSE],
 [
 AC_REQUIRE([SIM_AC_MSVC_DISABLE_OPTION])
 
-BUILD_WITH_MSVC=false
+: ${BUILD_WITH_MSVC=false}
 if $sim_ac_try_msvc; then
-  sim_ac_wrapmsvc=`cd $srcdir; pwd`/cfg/wrapmsvc.exe
-  if test -z "$CC" -a -z "$CXX" && $sim_ac_wrapmsvc >/dev/null 2>&1; then
-    m4_ifdef([$0_VISITED],
-      [AC_FATAL([Macro $0 invoked multiple times])])
-    m4_define([$0_VISITED], 1)
-    CC=$sim_ac_wrapmsvc
-    CXX=$sim_ac_wrapmsvc
-    export CC CXX
-    BUILD_WITH_MSVC=true
-  else
-    case $host in
-    *-cygwin) SIM_AC_ERROR([no-msvc++]) ;;
-    esac
+  sim_ac_wrapmsvc=`cd $ac_aux_dir; pwd`/wrapmsvc.exe
+  if test -z "$CC" -a -z "$CXX"; then
+    if $sim_ac_wrapmsvc >/dev/null 2>&1; then
+      m4_ifdef([$0_VISITED],
+        [AC_FATAL([Macro $0 invoked multiple times])])
+      m4_define([$0_VISITED], 1)
+      CC=$sim_ac_wrapmsvc
+      CXX=$sim_ac_wrapmsvc
+      export CC CXX
+      BUILD_WITH_MSVC=true
+    else
+      case $host in
+      *-cygwin) SIM_AC_ERROR([no-msvc++]) ;;
+      esac
+    fi
   fi
 fi
+export BUILD_WITH_MSVC
 AC_SUBST(BUILD_WITH_MSVC)
 
 if $BUILD_WITH_MSVC; then
@@ -1720,7 +1723,7 @@ else
   lt_save_ifs="$IFS"; IFS=$PATH_SEPARATOR
   for dir in $PATH /usr/ucb; do
     IFS="$lt_save_ifs"
-    if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
+    if (test -f "$dir/echo" || test -f "$dir/echo$ac_exeext") &&
        test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
        echo_testing_string=`($dir/echo "$echo_test_string") 2>/dev/null` &&
        test "X$echo_testing_string" = "X$echo_test_string"; then
@@ -10386,7 +10389,7 @@ test x"$prefix" = xNONE && prefix=/usr/local
 test x"$exec_prefix" = xNONE && exec_prefix='${prefix}'
 sim_ac_uniqued_list=
 eval paramlist='"$2"'
-sim_ac_sed_expr="[s,\(-[_a-zA-Z0-9][#_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1#####\2,g]"
+sim_ac_sed_expr="[s,\(-[_a-zA-Z0-9][%_a-zA-Z0-9]*\) [ ]*\([_a-zA-Z0-9][_a-zA-Z0-9]*\),\1%%%%%\2,g]"
 paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
 while test x"$paramlist" != x"`echo $paramlist | sed \"$sim_ac_sed_expr\"`"; do
   paramlist="`echo $paramlist | sed \"$sim_ac_sed_expr\"`"
@@ -10406,7 +10409,7 @@ for sim_ac_item in $paramlist; do
     $sim_ac_unique && sim_ac_uniqued_list="$sim_ac_uniqued_list $sim_ac_item"
   fi
 done
-$1=`echo $sim_ac_uniqued_list | sed 's/#####/ /g'`
+$1=`echo $sim_ac_uniqued_list | sed 's/%%%%%/ /g'`
 prefix=$sim_ac_save_prefix
 exec_prefix=$sim_ac_save_exec_prefix
 # unset sim_ac_save_prefix
