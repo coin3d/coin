@@ -51,10 +51,50 @@
 #include <stdlib.h>
 #include "../tidbits.h" // coin_getenv()
 
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
+/*!
+  \enum SoInteractionKit::CacheEnabled
+
+  Enumeration of valid values for the cache control fields
+  SoInteractionKit::renderCaching,
+  SoInteractionKit::boundingBoxCaching,
+  SoInteractionKit::renderCulling and SoInteractionKit::pickCulling.
+*/
+
+/*!
+  \var SoSFEnum SoInteractionKit::renderCaching
+
+  Controls the value of the SoSeparator::renderCaching field in the
+  SoInteractionKit catalog's topSeparator instance.
+*/
+/*!
+  \var SoSFEnum SoInteractionKit::boundingBoxCaching
+
+  Controls the value of the SoSeparator::boundingBoxCaching field in
+  the SoInteractionKit catalog's topSeparator instance.
+*/
+/*!
+  \var SoSFEnum SoInteractionKit::renderCulling
+
+  Controls the value of the SoSeparator::renderCulling field in the
+  SoInteractionKit catalog's topSeparator instance.
+*/
+/*!
+  \var SoSFEnum SoInteractionKit::pickCulling
+
+  Controls the value of the SoSeparator::pickCulling field in the
+  SoInteractionKit catalog's topSeparator instance.
+*/
+
+/*!
+  \var SoFieldSensor * SoInteractionKit::fieldSensor
+  Obsoleted in Coin.
+*/
+/*!
+  \var SoFieldSensor * SoInteractionKit::oldTopSep
+  Obsoleted in Coin.
+*/
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -388,28 +428,28 @@ SoInteractionKit::readDefaultParts(const char * fileName,
   }
 
   if (!foundsrc) {
-#if COIN_DEBUG
-    SoDebugError::post("SoInteractionKit::readDefaultParts",
-                       "Could not find %s for the dragger "
-                       "default parts.%s",
-                       fileName,
-                       draggerdir ? "" :
-                       " (SO_DRAGGER_DIR environment variable is not set.)");
-    // FIXME: don't just exit! We should be robust on this and fall
-    // back on the default geometry. 20011023 mortene.
-    exit(1);
-#endif // COIN_DEBUG
+    if (COIN_DEBUG) {
+      SoDebugError::post("SoInteractionKit::readDefaultParts",
+                         "Could not find %s for the dragger "
+                         "default parts.%s",
+                         fileName,
+                         draggerdir ? "" :
+                         " (SO_DRAGGER_DIR environment variable is not set.)");
+      // FIXME: don't just exit! We should be robust on this and fall
+      // back on the default geometry. 20011023 mortene.
+      exit(1);
+    }
     return;
   }
 
   SoNode * node = (SoNode *)SoDB::readAll(&input);
   if (node == NULL) {
-#if COIN_DEBUG
-    SoReadError::post(&input, "error reading dragger defaults");
-    // FIXME: don't just exit! We should be robust on this and fall
-    // back on the default geometry. 20011023 mortene.
-    exit(1);
-#endif // COIN_DEBUG
+    if (COIN_DEBUG) {
+      SoReadError::post(&input, "error reading dragger defaults");
+      // FIXME: don't just exit! We should be robust on this and fall
+      // back on the default geometry. 20011023 mortene.
+      exit(1);
+    }
   }
   else {
     node->ref(); // this node is unref'ed at exit
@@ -442,18 +482,16 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
       field->setDefault(TRUE);
     }
     else {
-#if COIN_DEBUG
-      SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
-                             "no permission to set");
-#endif // COIN_DEBUG
+      if (COIN_DEBUG) {
+        SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
+                               "no permission to set");
+      }
     }
   }
-#if COIN_DEBUG
-  else {
+  else if (COIN_DEBUG) {
     SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
                            "part %s not found", partname.getString());
   }
-#endif // COIN_DEBUG
 
   return FALSE;
 }
@@ -475,8 +513,7 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
   if (node) {
     return this->setAnyPartAsDefault(partname, node, anypart, onlyifdefault);
   }
-#if COIN_DEBUG && 1 // debug
-  else {
+  else if (COIN_DEBUG && 1) { // debug
     SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
                            "nodename %s not found", nodename.getString());
 
@@ -485,7 +522,6 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
     ((SoText2 *)node)->string = "Default dragger part not found";
     return this->setAnyPartAsDefault(partname, node, anypart, onlyifdefault);
   }
-#endif // debug
   return FALSE;
 }
 
@@ -510,17 +546,17 @@ SoInteractionKit::setAnySurrogatePath(const SbName & partname,
     assert(kit->isOfType(SoInteractionKit::getClassTypeId()));
     const SoNodekitCatalog * catalog = kit->getNodekitCatalog();
     if (leafcheck && !catalog->isLeaf(partNum)) {
-#if COIN_DEBUG && 1 // debug
-      SoDebugError::postInfo("SoInteractionKit::setAnySurrogatePath",
-                             "part %s is not leaf", partname.getString());
-#endif // debug
+      if (COIN_DEBUG) {
+        SoDebugError::postInfo("SoInteractionKit::setAnySurrogatePath",
+                               "part %s is not leaf", partname.getString());
+      }
       return FALSE;
     }
     if (publiccheck && !catalog->isPublic(partNum)) {
-#if COIN_DEBUG && 1 // debug
-      SoDebugError::postInfo("SoInteractionKit::setAnySurrogatePath",
-                             "part %s is not public", partname.getString());
-#endif // debug
+      if (COIN_DEBUG) {
+        SoDebugError::postInfo("SoInteractionKit::setAnySurrogatePath",
+                               "part %s is not public", partname.getString());
+      }
       return FALSE;
     }
     int parentIdx = catalog->getParentPartNumber(partNum);
@@ -554,12 +590,10 @@ SoInteractionKit::setAnySurrogatePath(const SbName & partname,
     ((SoInteractionKit *)kit)->pimpl->addSurrogatePath(path, catalog->getName(partNum));
     return TRUE;
   }
-#if COIN_DEBUG && 1 // debug
-  else {
+  else if (COIN_DEBUG) {
     SoDebugError::postInfo("SoInteractionKit::setAnyPartAsDefault",
                            "part %s not found", partname.getString());
   }
-#endif // debug
   return FALSE;
 }
 
