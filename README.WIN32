@@ -1,0 +1,58 @@
+//////////////////////////////////////////////////////
+//
+//             COMPILING COIN ON WIN32
+//
+//////////////////////////////////////////////////////
+//
+//  Author:    Marius B. Monsen
+//  E-mail:    mariusbu@sim.no
+//
+//  Started:   2000.06.09
+//  Current:   2000.06.09
+//
+
+* 1 Introduction *
+
+1.1 Coin is a 3d retained mode library, compatible with
+    Open Inventor 1.2.
+
+1.2 Coin can use Simage to load image files for textures.
+
+
+* 2 Environment *
+
+2.1 Throughout this file we assume using CygWin and MSVC++.
+
+2.2 You can download CygWin from <URL:http://sourceware.cygnus.com/>.
+
+2.3 Throughout this file we assume that '[your_install_path]/include'
+    is set in the INCLUDE variable, '[your_install_path]/lib' is set in
+    your LIB variable and '[your_install_path]/bin' is in your PATH
+    variable.
+    If you ommit the --prefix option, the default installation path is
+    set to '/usr/local/'.
+
+
+* 4 Compiling Coin *
+
+4.1 Write the following into the command line
+
+      cd [your_build_path]
+      CC=cl CFLAGS=/Tp CXX=cl /[your_src_path]/configure --prefix=[your_install_path]
+      cd build
+      nmake coin.mak CFG="coin - Win32 Debug"
+      cd ..
+      make install-data
+
+
+* 5 Linking with Coin *
+
+5.1 When building programs using Coin, be sure to link coin.lib, opengl32.lib,
+    glu32.lib, wsock32.lib, Imm32.lib and any other libs you are using (like, say, 
+    soqt.lib).
+
+5.2 Note that you need a GUI-binding library (like SoQt) to get graphical output
+    from Coin.
+
+
+Done!
