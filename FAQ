@@ -16,16 +16,15 @@ Index
 =====
 
 0: Legal Issues
-  Q1: Coin is under the GNU Lesser General Public License ("LGPL").
-      That means I can use it in my proprietary, commercially sold
-      application, right?
+  Q1: Coin is under the GNU General Public License ("GPL").
+      Can I use it in my proprietary, commercially sold application?
 
   Q2: Is it possible to use the Coin library without the restrictions
-      of the GNU LGPL?
+      of the GNU GPL?
 
   Q3: How can you sell a "Professional Edition License" when the
-      library is released under the GNU LGPL? Wouldn't that be
-      disallowed by the GNU LGPL?
+      library is released under the GNU GPL? Wouldn't that be
+      disallowed by the GNU GPL?
 
 1: Extensions and Ports
   Q1: Are there plans for making Coin multi-thread safe?
@@ -63,66 +62,34 @@ Index
 Section 0. Legal Issues
 =======================
 
-Q0.1: Coin is under the GNU Lesser General Public License ("LGPL").
-      That means I can use it in my proprietary, commercially sold
-      application, right?
+Q0.1: Coin is under the GNU General Public License ("GPL").
+      Can I use it in my proprietary, commercially sold application?
 
-A:    Yes, given that the rules of the GNU LGPL is followed, of course.
+A:    No, the GNU GPL restricts the applications that can use Coin to
+      have to be Free Software, and otherwise compatible with the GNU
+      GPL.
 
-      You should for instance be aware that the GNU LGPL places
-      certain restrictions on how you can distribute your application
-      executable. Static linking against the library is difficult to
-      do while still heeding the LGPL: the software end-user can
-      demand that the vendor provides him with the means to re-link
-      the application against new versions of the library.
-
-      In practical terms, that would probably mean distributing the
-      compiler-generated object-files to the user -- which is likely
-      to cause a maintenance nightmare.
-
-      Another restriction set up by the GNU LGPL is that you or your
-      company also implicitly takes on the responsibility of making
-      the full Coin sourcecode available for any user who requests it.
-
-      Yet another restriction is that when you add extension code or
-      make changes to Coin or one of our other LGPL'ed libraries, like
-      SoQt, the GNU LGPL will usually force you to release those
-      extensions publicly -- no matter what size they are and effort
-      they represent on your's or your company's behalf.
-
-
-      For these reasons, the distribution and availability of the Coin
-      library under the GNU LGPL is primarily meant to be a service
-      for those who write other Free Software libraries or
-      applications. If you write proprietary software and would like
-      to use the Coin library, see the next question.
-
-      Important note: from version 2.0.0 and onwards, the Coin library
-      will no longer be released under the GNU LGPL. Future Free
-      Software releases will be done under the GNU GPL.
+      The distribution and availability of the Coin library under the
+      GNU GPL is primarily meant to be a service for those who write
+      other Free Software libraries or applications. If you write
+      proprietary software and would like to use the Coin library, see
+      the next question.
 
 
 Q0.2: Is it possible to use the Coin library without the restrictions
-      of the GNU LGPL?
+      of the GNU GPL?
 
 A:    Yes, as a service for those who would like to use the Coin library
       in proprietary software, we at Systems in Motion offer the "Coin
       Professional Edition License" which buys developers that are
       license holders the option to use the library with no strings
-      attached.
+      attached.  The "Coin Professional Edition License" covers all the
+      Coin libraries, including all the GUI toolkits.
 
       By "no strings attached", we of course mean that you as a
-      proprietary software developer would not have to obey the
-      restrictions of the GNU LGPL, as you would use the Coin library
-      under our "Professional Edition" license instead.
-
-      The Coin Professional Edition License additionally covers
-      other libraries in the "Coin family" for no extra cost,
-      including all the GUI toolkits (SoQt, SoWin, SoGtk, SoXt) and
-      Systems in Motion's 3D file format libraries Dime and Profit.
-
-      See <URL:http://www.coin3d.org> for more information about the
-      details of these libraries.
+      software developer would not have to obey the restrictions of
+      the GNU GPL, as you would use the Coin library under our
+      "Professional Edition" license instead.
 
       Prioritized support services is also part of the package -- your
       support requests will be sent straight to the top of the
@@ -132,7 +99,7 @@ A:    Yes, as a service for those who would like to use the Coin library
       library in the first place, so you will be in very good hands.
 
       We take pride in giving our customers excellent support, and
-      since the Coin library is what our developers love to work with,
+      since the Coin libraries are what our developers love to work with,
       it's given with a smile.  :-)
 
       Oh, and one additional benefit from being a Coin Professional
@@ -140,24 +107,24 @@ A:    Yes, as a service for those who would like to use the Coin library
       sourcecode and use it in your own applications without having to
       worry about licensing issues. This is for instance very
       convenient when writing extensions components for Coin, like new
-      nodes or action types.
+      viewers.
 
       You may also cut'n'paste code from all our example programs in
-      the same manner (these are originally under the GNU GPL, by the
-      way).
+      the same manner (these are also originally under the GNU GPL, by
+      the way).
 
 
 Q0.3: How can you sell a "Professional Edition License" when the
-      library is released under the GNU LGPL? Wouldn't that be
-      disallowed by the GNU LGPL?
+      library is released under the GNU GPL? Wouldn't that be
+      disallowed by the GNU GPL?
 
 A:    Systems in Motion can do this dual licensing "trick" with Coin
       because we are full copyright holders -- ie we own every single
       line of code written for the Coin library. Therefore we are able
       to license the Coin library both as Free Software aswell as
       under a special purpose license for proprietary software
-      vendors. (If you are familiar with TrollTech's "Qt" library,
-      they use the same strategy.)
+      vendors.  TrollTech uses the same strategy for their Qt library.
+
 
 
 
