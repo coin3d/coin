@@ -275,9 +275,9 @@ public:
   SbBool transpMatch(const uint32_t nodeid) const {
     return nodeid == this->transpid;
   }
-  void setNodeIds(const uint32_t diffuseid, const uint32_t transpid) {
-    this->diffuseid = diffuseid;
-    this->transpid = transpid;
+  void setNodeIds(const uint32_t diffuse, const uint32_t transp) {
+    this->diffuseid = diffuse;
+    this->transpid = transp;
   }
   int32_t getSize(void) const {
     return this->arraysize;
