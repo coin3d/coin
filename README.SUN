@@ -10,10 +10,15 @@ Forte compiler suite (aka Workshop)
    contains the string "Crun", it means that libCrun is not linked in
    on the link line, but should be.
 
-   The workaround for this problem is to add LIBS="-lCrun" at the end
-   of the Coin configure invocation line, something like this:
+   The workaround for this problem is to either add LIBS="-lCrun" at
+   the end of the Coin configure invocation line, or LIBS="-lCstd
+   -lCrun -lc", i.e. something like this:
 
         $ <srcdir>/configure <youroptions> LIBS="-lCrun"
+
+   or
+
+        $ <srcdir>/configure <youroptions> LIBS="-lCstd -lCrun -lc"
 
    To get -lCrun to work, you might also need to specify the linker
    path to that library.  Exactly where you will find it is system
@@ -26,6 +31,14 @@ Forte compiler suite (aka Workshop)
    (To let configure know about this extra path, add LDFLAGS="-L<path>"
    at the end of the configure invocation, like explained for the LIBS
    setting above.)
+
+ 2 We have reports of problems with the final link stage if the C
+   compiler in the Forte suite is used instead of the C++ compiler for
+   compiling Coin's C sources. This might be a Libtool bug. To work
+   around it, set up for building everything with the C++ compiler,
+   something like this:
+
+        $ <srcdir>/configure <youroptions> CC=CC CXX=CC
 
 ========================================================================
 
