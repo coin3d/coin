@@ -124,9 +124,8 @@
 #include <Inventor/nodes/SoMatrixTransform.h>
 #include <Inventor/SoPickedPoint.h>
 
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <coindefs.h> // COIN_OBSOLETED
 
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
@@ -954,15 +953,14 @@ SoDragger::setHandleEventAction(SoHandleEventAction * action)
 }
 
 /*!
-  Unimplemented. Should probably have been private in OIV.
+  This function is part of the original SGI Inventor 2.1 API, but has
+  not been implemented in Coin as it looks like a function which
+  should probably have been private in Open Inventor.
 */
 void
 SoDragger::setTempPathToThis(const SoPath *)
 {
-#if COIN_DEBUG
-  SoDebugError::postWarning("SoDragger::setTempPathToThis",
-                            "Not implemented in Coin.");
-#endif // COIN_DEBUG
+  COIN_OBSOLETED();
 }
 
 /*!
@@ -993,8 +991,6 @@ SoDragger::grabEventsCleanup(void)
   those fields and leaves the rest of the matrix as it was.  The
   following field names are supported: translation, scaleFactor,
   rotation and scaleOrientation.
-
-  Not implemented.
 */
 void
 SoDragger::workFieldsIntoTransform(SbMatrix & matrix)
@@ -1066,10 +1062,8 @@ SoDragger::getMinScale(void)
 
 /*!
   Same as above, but pointers to values are supplied. If a pointer is
-  \c NULL, the matrix value for that argument is used when reconstructing
-  the matrix.
-
-  Not implemented.
+  \c NULL, the matrix value for that argument is used when
+  reconstructing the matrix.
 */
 void
 SoDragger::workValuesIntoTransform(SbMatrix & matrix, const SbVec3f * translationptr, const SbRotation * rotationptr, const SbVec3f * scalefactorptr, const SbRotation * scaleorientationptr, const SbVec3f * centerptr)
@@ -1089,27 +1083,36 @@ SoDragger::workValuesIntoTransform(SbMatrix & matrix, const SbVec3f * translatio
 }
 
 /*!
-  Use when there is no scaleorientation. Faster than
-  workValuesIntoTransform().  Not implemented in Coin. We just forward
-  the call to workValuesIntoTransform().
+  Can be used when there is no scaleorientation. Faster than
+  SoDragger::workValuesIntoTransform().
 */
 void
-SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation & rotation, SbVec3f & scalefactor, SbRotation & scaleorientation, const SbVec3f & center)
+SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation,
+                            SbRotation & rotation, SbVec3f & scalefactor,
+                            SbRotation & scaleorientation,
+                            const SbVec3f & center)
 {
-  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation, &scalefactor,
+  // FIXME: faster code not implemented, we just forward the call to
+  // workValuesIntoTransform() anyway. 20011219 mortene.
+
+  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation,
+                                     &scalefactor,
                                      &scaleorientation, &center);
 }
 
 /*!
   \overload
-
-  Not implemented in Coin. We just forward the call to
-  workValuesIntoTransform().
 */
 void
-SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation & rotation, SbVec3f & scalefactor, SbRotation & scaleorientation)
+SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation,
+                            SbRotation & rotation, SbVec3f & scalefactor,
+                            SbRotation & scaleorientation)
 {
-  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation, &scalefactor,
+  // FIXME: faster code not implemented, we just forward the call to
+  // workValuesIntoTransform() anyway. 20011219 mortene.
+
+  SoDragger::workValuesIntoTransform(matrix, &translation, &rotation,
+                                     &scalefactor,
                                      &scaleorientation, NULL);
 }
 

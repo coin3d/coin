@@ -38,9 +38,12 @@
 
 
   If you as an application programmer is planning to write extensions
-  in the form of e.g. new nodekit classes or new dragger classes,
-  please also consult the book «The Inventor Toolmaker», ISBN
-  0-201-62493-1.
+  in the form of e.g. new nodekit classes or new dragger classes, we
+  recommend buying the book «The Inventor Toolmaker», ISBN
+  0-201-62493-1. This book was written by the original SGI Inventor
+  designers and explains many of the underlying design ideas, aswell
+  as having lots of hands-on examples on how to extend the Coin
+  toolkit in ways that are true to the fundamental design ideas.
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -709,7 +712,7 @@ SoBaseKit::countMyFields(SoOutput * out)
   argument \c TRUE on part fields that should not be written upon
   scenegraph export operations.
 
-  This is typically be done when:
+  This is typically done when:
 
   <OL>
 
@@ -777,8 +780,9 @@ SoBaseKit::setDefaultOnNonWritingFields(void)
 }
 
 /*!
-  Returns TRUE if kit should write. This happens if shouldWrite() returns
-  TRUE, or if any of the children (recursively) should write.
+  Returns \c TRUE if kit should write. This happens if shouldWrite()
+  returns \c TRUE, or if any of the children (recursively) should
+  write.
 */
 SbBool
 SoBaseKit::forceChildDrivenWriteRefs(SoOutput * out)
