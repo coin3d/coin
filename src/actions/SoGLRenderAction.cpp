@@ -556,7 +556,7 @@ SoGLRenderAction::abortNow(void)
       abort = TRUE;
       break;
     case DELAY:
-      this->addDelayedPath((SoPath*)this->getCurPath());
+      this->addDelayedPath(this->getCurPath()->copy());
       // prune this node
       abort = TRUE;
       break;
@@ -601,8 +601,7 @@ void
 SoGLRenderAction::addDelayedPath(SoPath * path)
 {
   assert(!THIS->delayedpathrender);
-  SoPath * copy = path->copy();
-  THIS->delayedpaths.append(copy);
+  THIS->delayedpaths.append(path);
 }
 
 /*!
@@ -616,7 +615,7 @@ SoGLRenderAction::isRenderingDelayedPaths(void) const
 }
 
 // Remember a path containing a transparent object for later
-// rendering.
+// rendering. We know path == this->getCurPath() when we get here.
 void
 SoGLRenderAction::addTransPath(SoPath * path)
 {
@@ -633,8 +632,7 @@ SoGLRenderAction::addTransPath(SoPath * path)
   // open, to avoid cache dependencies on model matrix and view
   // volume, which would be very bad for cache performance.
   if (!this->state->isCacheOpen() &&
-      tail->isOfType(SoShape::getClassTypeId()) && 
-      *(this->getCurPath()) == *path) { // common case
+      tail->isOfType(SoShape::getClassTypeId())) { // common case
     SbBox3f dummy;
     SbVec3f center;
     ((SoShape*)tail)->computeBBox(this, dummy, center);
@@ -848,7 +846,10 @@ SoGLRenderActionP::renderSingle(SoNode * node)
       this->sortrender = TRUE;
       this->action->doPathSort();
       this->enableBlend();
-      this->action->apply(this->transpobjpaths, TRUE);
+      int n = this->transpobjpaths.getLength();
+      for (int i  = 0; i < n; i++) {
+        this->action->apply(this->transpobjpaths[i]);
+      }
       this->disableBlend();
       this->sortrender = FALSE;
       this->transpobjpaths.truncate(0);

@@ -104,7 +104,7 @@ SoAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
   }
   else {
     SoCacheElement::invalidate(action->getState());
-    action->addDelayedPath((SoPath*)action->getCurPath());
+    action->addDelayedPath(action->getCurPath()->copy());
   }
 }
 
@@ -122,7 +122,7 @@ SoAnnotation::GLRenderInPath(SoGLRenderAction * action)
   }
   else {
     SoCacheElement::invalidate(action->getState());
-    action->addDelayedPath((SoPath*)action->getCurPath());
+    action->addDelayedPath(action->getCurPath()->copy());
   }
 }
 
