@@ -482,6 +482,12 @@ SIM_AC_CHECK_FUNC__SPLITPATH
 
 SIM_AC_CHECK_WIN32_API
 
+# Various systems (like MKS NuTCracker) needs explicit gdi32 linkage.
+if $sim_ac_have_win32_api; then
+  LIBS="$LIBS -lgdi32"
+  COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lgdi32"
+fi
+
 AC_CHECK_HEADERS(
   [sys/unistd.h],
   [sim_ac_have_sys_unistd_h=true],
