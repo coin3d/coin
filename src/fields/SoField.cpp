@@ -291,8 +291,8 @@ public:
     }
     SbString s;
     s.sprintf("field==%p/%s/'%s'",
-              this,
-              this->getTypeId().getName().getString(),
+              f,
+              f->getTypeId().getName().getString(),
               fname.getString());
     return s;
   }
