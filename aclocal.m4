@@ -938,8 +938,55 @@ if test x"$sim_cv_lib_x11shmem_avail" = xyes; then
   sim_ac_x11shmem_avail=yes
   ifelse($1, , :, $1)
 else
-  CPPFLAGS=$sim_ac_save_cppflags
-  LDFLAGS=$sim_ac_save_ldflags
+  LIBS=$sim_ac_save_libs
+  ifelse($2, , :, $2)
+fi
+])
+
+
+
+
+dnl Usage:
+dnl  SIM_CHECK_X11MU([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl  Try to find the X11 miscellaneous utilities extension. If it is
+dnl  found, this shell variable is set:
+dnl
+dnl    $sim_ac_x11mu_libs   (link libraries the linker needs for X11 MU)
+dnl
+dnl  The LIBS flag will also be modified accordingly. In addition, the
+dnl  variable $sim_ac_x11mu_avail is set to "yes" if the X11 miscellaneous
+dnl  utilities extension is found.
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl TODO:
+dnl    * [mortene:20000122] make sure this work on MSWin (with
+dnl      Cygwin installation)
+dnl
+
+AC_DEFUN(SIM_CHECK_X11MU,[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.14.1])
+
+sim_ac_x11mu_avail=no
+sim_ac_x11mu_libs="-lXmu"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_x11mu_libs $LIBS"
+
+AC_CACHE_CHECK([whether the X11 miscellaneous utilities is available],
+  sim_cv_lib_x11mu_avail,
+  [AC_TRY_LINK([#include <X11/Xlib.h>
+                #include <X11/Xmu/Xmu.h>],
+               [(void)XmuAllStandardColormaps(0L);],
+               sim_cv_lib_x11mu_avail=yes,
+               sim_cv_lib_x11mu_avail=no)])
+
+if test x"$sim_cv_lib_x11mu_avail" = xyes; then
+  sim_ac_x11mu_avail=yes
+  ifelse($1, , :, $1)
+else
   LIBS=$sim_ac_save_libs
   ifelse($2, , :, $2)
 fi
