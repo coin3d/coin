@@ -164,10 +164,9 @@ void
 cc_mutex_destruct(
   cc_mutex * mutex )
 {
-  CC_PTHREAD(int status;)
   assert((mutex != NULL) && (mutex->type == CC_MUTEX_TYPE));
   cc_mutex_struct_clean(mutex);
-  if ( mutex->type != CC_INVALID_TYPE ) goto error;
+  if (mutex->type != CC_INVALID_TYPE) goto error;
   free(mutex);
   return;
 
