@@ -179,13 +179,15 @@ SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
 void
 SbPlane::transform(const SbMatrix& matrix)
 {
-  // FIXME: this code is not tested, but it looks correct
-  // 19990423, pederb
   SbVec3f ptInPlane = this->normal * this->distance;
 
-  matrix.multVecMatrix(ptInPlane, ptInPlane);
-  matrix.multDirMatrix(this->normal, this->normal);
-
+  // according to discussions on comp.graphics.algorithms, the inverse
+  // transpose matrix should be used to transform the plane.
+  SbMatrix invtransp = matrix.inverse().transpose();
+  
+  invtransp.multVecMatrix(ptInPlane, ptInPlane);
+  invtransp.multDirMatrix(this->normal, this->normal);
+  
   this->normal.normalize();
   this->distance = this->normal.dot(ptInPlane);
 }
