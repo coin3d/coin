@@ -409,3 +409,84 @@
     20011208 mortene.
 
 =====================================================================
+
+020 There is a a crash bug when changing the parts of an
+    SoTransformBoxDragger. It can be reproduced with this stand-alone
+    example:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #include <Inventor/Qt/SoQt.h>
+    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+    #include <Inventor/draggers/SoTransformBoxDragger.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    
+    
+    int
+    main(int argc, char ** argv)
+    {
+      QWidget * window = SoQt::init(argv[0]);
+    
+      SoTransformBoxDragger * dragger = new SoTransformBoxDragger;
+    
+      SbString str;
+      for (int i = 1; i <= 6; i++) {
+        str.sprintf("translator%d.translator", i);
+        dragger->setPart(str.getString(), new SoSeparator);
+      }
+    
+      SoQtExaminerViewer * viewer = new SoQtExaminerViewer(window);
+      viewer->setSceneGraph(dragger);
+      viewer->show();
+      SoQt::show(window);
+    
+      SoQt::mainLoop();
+    
+      delete viewer;
+      return 0;
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    The bugs pop up at application *exit*, but not every time -- you
+    will typically have to try 4 or 5 times to get it to bug out.
+
+    Here's the backtrace from the first indication that something is
+    wrong (ie the first SoDebugError posting):
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    Coin error in SoChildList::removePathAuditor(): no SoPath 0x80f5fd8 is auditing list 0x80a3038! (of parent 0x80a2b70 (Dragger))
+    test: /home/sigma/mortene/code/coin-head/src/errors/SoDebugError.cpp:216: void check_breakpoints(const char *): Assertion `0 && "Coin debug break"' failed.
+    
+    Program received signal SIGABRT, Aborted.
+    [Switching to Thread 1024 (LWP 2619)]
+    0x40d7c9f1 in kill () from /lib/libc.so.6
+    (gdb) bt
+    [snip]
+    #5  0x408cbceb in SoDebugError::post (
+        source=0x409d07c0 "SoChildList::removePathAuditor", 
+        format=0x409d0780 "no SoPath %p is auditing list %p! (of parent %p (%s))")
+        at /home/sigma/mortene/code/coin-head/src/errors/SoDebugError.cpp:216
+    #6  0x4097bfe5 in SoChildList::removePathAuditor (this=0x80a3038, 
+        path=0x80f5fd8)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:364
+    #7  0x409bd29f in SoPath::truncate (this=0x80f5fd8, length=0, donotify=1)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoPath.cpp:499
+    #8  0x409bd1fb in SoPath::truncate (this=0x80f5fd8, length=0)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoPath.cpp:473
+    #9  0x409bca5b in SoPath::~SoPath (this=0x80f5fd8, __in_chrg=3)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoPath.cpp:154
+    #10 0x40978786 in SoBase::destroy (this=0x80f5fd8)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:383
+    #11 0x40978be5 in SoBase::unref (this=0x80f5fd8)
+        at /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:501
+    #12 0x407a1db7 in SoDragger::~SoDragger (this=0x80a2b70, __in_chrg=3)
+        at /home/sigma/mortene/code/coin-head/src/draggers/SoDragger.cpp:179
+    #13 0x407dbbb6 in SoTransformBoxDragger::~SoTransformBoxDragger (
+        this=0x80a2b70, __in_chrg=3)
+        at /home/sigma/mortene/code/coin-head/src/draggers/SoTransformBoxDragger.cpp:216
+    [snip]
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+
+    20020821 mortene.    
+
+=====================================================================
