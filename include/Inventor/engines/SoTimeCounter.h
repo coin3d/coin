@@ -53,10 +53,11 @@ public:
 protected:
   virtual ~SoTimeCounter();
 
-private:
-
-  virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
+  virtual void writeInstance(SoOutput * out);
+
+private:
+  virtual void evaluate(void);
   void calcStarttime(short value);
 
   SbBool prevon;

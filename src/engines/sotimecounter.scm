@@ -32,6 +32,19 @@
 ;; SoTimeCounter::duty field. 20000911 mortene.
 
 
+;; Export scenegraph with engine.
+(define writeaction (new-sowriteaction))
+(-> writeaction 'apply (-> viewer 'getscenegraph))
+
+;; Read scenegraph with engine in it.
+(let ((buffer "#Inventor V2.1 ascii\n\n Text3 { string \"X\" = TimeCounter { max 8 } . output }")
+      (input (new-soinput)))
+  (-> input 'setbuffer (void-cast buffer) (string-length buffer))
+  (let ((sceneroot (sodb::readall input)))
+    (-> viewer 'setscenegraph sceneroot)
+    (-> viewer 'viewall)))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;; Confirmed and potential bugs. ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

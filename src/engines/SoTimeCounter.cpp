@@ -42,7 +42,7 @@
 
 /*!
   \var SoSFShort SoTimeCounter::step
-  Counter step.
+  Counter step size.
 */
 
 /*!
@@ -143,6 +143,30 @@ SoTimeCounter::initClass(void)
 // private destructor
 SoTimeCounter::~SoTimeCounter()
 {
+}
+
+// Overloaded to not write connection to realTime global field.
+void
+SoTimeCounter::writeInstance(SoOutput * out)
+{
+  // Disconnect from realTime field.
+  SoField * connectfield = NULL;
+  SbBool connectfromrealTime =
+    this->timeIn.getConnectedField(connectfield) &&
+    connectfield == SoDB::getGlobalField("realTime");
+  SbBool defaultflag = this->timeIn.isDefault();
+  if (connectfromrealTime) {
+    this->timeIn.disconnect();
+    this->timeIn.setDefault(TRUE);
+  }
+
+  inherited::writeInstance(out);
+
+  // Re-connect to realTime field.
+  if (connectfromrealTime) {
+    this->timeIn.connectFrom(connectfield);
+    this->timeIn.setDefault(defaultflag);
+  }
 }
 
 // doc in parent
