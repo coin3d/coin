@@ -175,7 +175,8 @@ public:
     {
       // Suck out any bytes from the backbuffer first.
       while ((this->backbufidx >= 0) && (length > 0)) {
-        *ptr++ = this->backBuf[this->backbufidx--];
+        *ptr++ = this->backBuf[this->backbufidx];
+        this->backBuf.truncate(this->backbufidx--);
         length--;
       }
 
@@ -197,7 +198,8 @@ public:
   SbBool get(char & c)
     {
       if (this->backbufidx >= 0) {
-        c = this->backBuf[this->backbufidx--];
+        c = this->backBuf[this->backbufidx];
+        this->backBuf.truncate(this->backbufidx--);
       }
       else if (this->readbufidx >= this->readbuflen) {
         // doBufferRead() also does the right thing (i.e. sets the EOF
@@ -241,7 +243,8 @@ public:
         assert(c == this->readbuf[this->readbufidx]);
       }
       else {
-        this->backBuf[++this->backbufidx] = c;
+        this->backBuf.append(c);
+        this->backbufidx++;
       }
 
       this->eof = FALSE;
@@ -269,8 +272,10 @@ public:
       if (n <= this->readbufidx && this->backbufidx < 0)
         this->readbufidx -= n;
       else {
-        for (int i = n - 1; i >= 0; i--)
-          this->backBuf[++this->backbufidx] = str[i];
+        for (int i = n - 1; i >= 0; i--) {
+          this->backBuf.append(str[i]);
+        }
+        this->backbufidx += n;
       }
 
       this->eof = FALSE;
