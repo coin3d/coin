@@ -1014,6 +1014,28 @@ SoField::set(const char * valuestring)
   return TRUE;
 }
 
+static void * field_buffer = NULL;
+static size_t field_buffer_size = 0;
+
+static void 
+field_buffer_cleanup(void)
+{
+  if (field_buffer) {
+    free(field_buffer);
+    field_buffer = NULL;
+    field_buffer_size = 0;
+  }
+}
+
+static void * 
+field_buffer_realloc(void * bufptr, size_t size)
+{
+  void * newbuf = realloc(bufptr, size);
+  field_buffer = newbuf;
+  field_buffer_size = size;
+  return newbuf;
+}
+
 /*!
   Returns the field's value as an ASCII string in the export data
   format for Inventor files.
@@ -1029,14 +1051,24 @@ SoField::get(SbString & valuestring)
   // Initial buffer setup.
   SoOutput out;
   const size_t STARTSIZE = 32;
-  // FIXME: should start out with stackbuffer -- the current code
-  // leads to way too much malloc() & free() calls. 20000915 mortene.
-  void * buffer = malloc(STARTSIZE);
-  out.setBuffer(buffer, STARTSIZE, realloc);
+  // if buffer grow bigger than 1024 bytes, free memory
+  // at end of method. Otherwise, just keep using the allocated
+  // memory the next time this method is called.
+  const size_t MAXSIZE = 1024;
+  
+  if (field_buffer_size < STARTSIZE) {
+    field_buffer = malloc(STARTSIZE);
+    field_buffer_size = STARTSIZE;
+    atexit(field_buffer_cleanup);
+  }
+
+  out.setBuffer(field_buffer, field_buffer_size, 
+                field_buffer_realloc);
 
   // Record offset to skip header.
   out.write("");
   size_t offset;
+  void * buffer;
   out.getBuffer(buffer, offset);
 
   // Write field..
@@ -1046,8 +1078,10 @@ SoField::get(SbString & valuestring)
   out.getBuffer(buffer, size);
   valuestring = ((char *)buffer) + offset;
 
-  // Clean up.
-  free(buffer);
+  // check if buffer grew too big
+  if (field_buffer_size >= MAXSIZE) {
+    (void) field_buffer_realloc(field_buffer, STARTSIZE);
+  }
 }
 
 /*!
@@ -1079,12 +1113,10 @@ SoField::startNotify(void)
   SoDebugError::postInfo("SoField::startNotify", "field %p (%s), list %p",
                          this, this->getTypeId().getName().getString(), &l);
 #endif // debug
-
+  
+  SoDB::startNotify();
   this->notify(&l);
-
-  // Process zero-priority sensors after notification has been done.
-  SoSensorManager * sm = SoDB::getSensorManager();
-  if (sm->isDelaySensorPending()) sm->processImmediateQueue();
+  SoDB::endNotify();
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoField::startNotify", "DONE\n\n");

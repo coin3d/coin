@@ -206,6 +206,28 @@ SoMField::set1(const int index, const char * const valuestring)
   return TRUE;
 }
 
+static void * mfield_buffer = NULL;
+static size_t mfield_buffer_size = 0;
+
+static void
+mfield_buffer_cleanup(void)
+{
+  if (mfield_buffer) {
+    free(mfield_buffer);
+    mfield_buffer = NULL;
+    mfield_buffer_size = 0;
+  }
+}
+
+static void *
+mfield_buffer_realloc(void * bufptr, size_t size)
+{
+  void * newbuf = realloc(bufptr, size);
+  mfield_buffer = newbuf;
+  mfield_buffer_size = size;
+  return newbuf;
+}
+
 /*!
   Return the value at \a index in the \a valuestring string.
 */
@@ -218,14 +240,24 @@ SoMField::get1(const int index, SbString & valuestring)
   // Initial buffer setup.
   SoOutput out;
   const size_t STARTSIZE = 32;
-  // FIXME: should start out with stackbuffer -- the current code
-  // leads to way too much malloc() & free() calls. 20000915 mortene.
-  void * buffer = malloc(STARTSIZE);
-  out.setBuffer(buffer, STARTSIZE, realloc);
+  // if buffer grow bigger than 1024 bytes, free memory
+  // at end of method. Otherwise, just keep using the allocated
+  // memory the next time this method is called.
+  const size_t MAXSIZE = 1024;
+
+  if (mfield_buffer_size < STARTSIZE) {
+    mfield_buffer = malloc(STARTSIZE);
+    mfield_buffer_size = STARTSIZE;
+    atexit(mfield_buffer_cleanup);
+  }
+
+  out.setBuffer(mfield_buffer, mfield_buffer_size,
+                mfield_buffer_realloc);
 
   // Record offset to skip header.
   out.write("");
   size_t offset;
+  void * buffer;
   out.getBuffer(buffer, offset);
 
   // Write field..
@@ -235,8 +267,11 @@ SoMField::get1(const int index, SbString & valuestring)
   out.getBuffer(buffer, size);
   valuestring = ((char *)buffer) + offset;
 
-  // Clean up.
-  free(buffer);
+  // check if buffer grew too big
+  if (mfield_buffer_size >= MAXSIZE) {
+    // go back to startsize
+    (void) mfield_buffer_realloc(mfield_buffer, STARTSIZE);
+  }
 }
 
 /*!
