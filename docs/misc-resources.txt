@@ -31,6 +31,9 @@ THE LINKS
 * ColDet - Free 3D Collision Detection Library  (under the LGPL)
   <URL:http://photoneffect.com/coldet/>
 
+* SOLID - Software Library for Interference Detection (LGPL)
+  http://www.win.tue.nl/~gino/solid/
+
 * nVIDIA GL_vertex_array_range and GL_NV_fence
   2000-12-14 Peder Blekken <pederb@sim.no>
   http://www.nvidia.com/Marketing/Developer/DevRel.nsf/pages/AEE3673F9B8DBC228825693B00619F9C
