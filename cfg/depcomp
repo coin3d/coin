@@ -48,6 +48,14 @@ if test "$depmode" = dashXmstdout; then
 fi
 
 case "$depmode" in
+gcc3)
+## gcc 3 implements dependency tracking that does exactly what
+## we want.  Yay!
+   if "$@" -MT "$object" -MF "$depfile" -MD -MP; then
+      exit $?
+   fi
+   ;;
+
 gcc)
 ## There are various ways to get dependency output from gcc.  Here's
 ## why we pick this rather obscure method:
