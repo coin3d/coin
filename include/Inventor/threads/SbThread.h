@@ -35,11 +35,11 @@ public:
     delete thread;
   }
 
-  int join(void ** retval = 0L) {
-    return cc_thread_join(this->thread, retval);
+  SbBool join(void ** retval = 0L) {
+    return cc_thread_join(this->thread, retval) == CC_OK;
   }
-  static int join(SbThread * thread, void ** retval = 0L) {
-    return cc_thread_join(thread->thread, retval);
+  static SbBool join(SbThread * thread, void ** retval = 0L) {
+    return cc_thread_join(thread->thread, retval) == CC_OK;
   }
 
 protected:

@@ -37,93 +37,75 @@
 
 /* ********************************************************************** */
 
-#ifdef USE_W32THREAD
-
-DWORD WINAPI cc_w32thread_thread_proc( LPVOID lpParameter)
-{
-  cc_thread *thread = (cc_thread *)lpParameter;
-  return (DWORD) thread->func(thread->closure);
-};
-
-#endif /* USE_W32THREAD */
-
-/* ********************************************************************** */
-
 /*
  - use static table of cc_thread structures?
  - use cc_storage to reference self-structure for cc_thread_get_self()?
 */
 
-/* ********************************************************************** */
-
-/*
-  \internal
-  This function is provided so compound types can have thread structure
-  members instead of just pointers.  The point is to avoid the extra
-  memory allocation calls.  This function is basically the constructor
-  without the memory allocation part.
-*/
-
-void
-cc_thread_struct_init(cc_thread * thread_struct)
-{
-  /* FIXME: move code from _construct() */
-} /* cc_thread_struct_init() */
-
-/*
-  \internal
-  This function is provided so compound types can have thread structure
-  members instead of just pointers.  The point is to avoid the extra
-  memory allocation calls.  This function is basically the destructor
-  without the memory freeing part.
-*/
-
-void
-cc_thread_struct_clean(cc_thread * thread_struct)
-{
-  /* FIXME: move code from _destruct() */
-} /* cc_thread_struct_clean() */
-
-/* ********************************************************************** */
-
-/*
-*/
-
-cc_thread *
-cc_thread_construct(
-  void * (*func)(void *),
-  void * closure )
-{
-  cc_thread * thread;
-  CC_PTHREAD(int status;)
-  CC_W32THREAD(DWORD threadid_unused;)
-  thread = (cc_thread*) malloc(sizeof(cc_thread));
-  assert(thread != NULL);
-  thread->type = CC_THREAD_TYPE;
-  thread->func = func;
-  thread->closure = closure;
-
 #ifdef USE_PTHREAD
-  status = pthread_attr_init(&(thread->pthread.threadattrs));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+
+static int
+internal_init(cc_thread * thread)
+{
+  int status = pthread_attr_init(&(thread->pthread.threadattrs));
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_attr_init() error: %d\n", status);
-    goto error;
+    return CC_ERROR;
   }
 
   status = pthread_create(&(thread->pthread.threadid),
                           &(thread->pthread.threadattrs),
                           thread->func, thread->closure);
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
+  if (status != 0) {
+    if (COIN_DEBUG)
       cc_fprintf(stderr, "pthread_create() error: %d\n", status);
-    goto error;
+    return CC_ERROR;
   }
+  return CC_OK;
+}
+
+static int
+internal_clean(cc_thread * thread)
+{
+  int status = pthread_attr_destroy(&(thread->pthread.threadattrs));
+  if (status != 0) {
+    if ( COIN_DEBUG )
+      cc_fprintf(stderr, "pthread_attr_destroy() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_join(cc_thread * thread,
+               void ** retvalptr)
+{
+  int status = pthread_join(thread->pthread.threadid, retvalptr);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_fprintf(stderr, "pthread_join() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
 
 #endif /* USE_PTHREAD */
 
 #ifdef USE_W32THREAD
 
+/* FIXME: could this be static? pederb, 2001-12-10 */
+DWORD WINAPI cc_w32thread_thread_proc(LPVOID lpParameter)
+{
+  cc_thread *thread = (cc_thread *)lpParameter;
+  return (DWORD) thread->func(thread->closure);
+}
+
+static int
+internal_init(cc_thread * thread_struct)
+{
+  DWORD threadid_unused;
+  
   thread->w32thread.threadhandle = CreateThread(NULL, 0,
     cc_w32thread_thread_proc, (LPVOID) thread, 0, &threadid_unused);
 
@@ -138,86 +120,38 @@ cc_thread_construct(
    * ExitThread is called. " */
 
   if (thread->w32thread.threadhandle == NULL) {
-    if ( COIN_DEBUG ) {
+    if (COIN_DEBUG) {
       DWORD err;
       char *errstr;
       err = GetLastError();
       errstr = cc_internal_w32_getlasterrorstring(err);
       cc_fprintf(stderr, "CreateThread() error: %d, \"%s\"\n",
-        err, errstr);
+                 err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
-    goto error;
+    return CC_ERROR;
   }
+  return CC_OK;
+}
 
-#endif /* USE_W32THREAD */
-
-  return thread;
-
-error:
-  free(thread);
-  return NULL;
-} /* cc_thread_construct() */
-
-/* ********************************************************************** */
-
-/*
-*/
-
-void
-cc_thread_destruct(
-  cc_thread * thread )
+static int
+internal_clean(cc_thread * thread_struct)
 {
-  CC_PTHREAD(int status;)
-  assert((thread != NULL) && (thread->type == CC_THREAD_TYPE));
+  /* FIXME: Is there really nothing to do here? pederb, 2001-12-10 */
+  return CC_OK;
+}
 
-#ifdef USE_PTHREAD
-  status = pthread_attr_destroy(&(thread->pthread.threadattrs));
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
-      cc_fprintf(stderr, "pthread_attr_destroy() error: %d\n", status);
-    goto error;
-  }
-#endif /* USE_PTHREAD */
-
-  thread->type = CC_INVALID_TYPE;
-  free(thread);
-  return;
-
-error:
-  free(thread);
-} /* cc_thread_destruct() */
-
-/* ********************************************************************** */
-
-/*
-*/
-
-int
-cc_thread_join(
-  cc_thread * thread,
-  void ** retvalptr )
+static int
+internal_join(cc_thread * thread,
+               void ** retvalptr)
 {
-  CC_PTHREAD(int status;)
-  CC_W32THREAD(DWORD status;)
-  CC_W32THREAD(BOOL bstatus;)
-  CC_W32THREAD(DWORD exitcode;)
+  DWORD status;
+  BOOL bstatus;
+  DWORD exitcode;
 
-  assert((thread != NULL) && (thread->type == CC_THREAD_TYPE));
-
-#ifdef USE_PTHREAD
-  status = pthread_join(thread->pthread.threadid, retvalptr);
-  if ( status != 0 ) {
-    if ( COIN_DEBUG )
-      cc_fprintf(stderr, "pthread_join() error: %d\n", status);
-    return TRUE;
-  }
-#endif /* USE_PTHREAD */
-
-#ifdef USE_W32THREAD
   status = WaitForSingleObject(thread->w32thread.threadhandle, INFINITE);
   if (status == WAIT_FAILED) {
-    if ( COIN_DEBUG ) {
+    if (COIN_DEBUG) {
       DWORD err;
       char *errstr;
       err = GetLastError();
@@ -226,17 +160,18 @@ cc_thread_join(
         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
-    return TRUE; /* error */
+    return CC_ERROR;
   }
-  else if ( status != WAIT_OBJECT_0 ) {
-    if ( COIN_DEBUG ) {
+  else if (status != WAIT_OBJECT_0) {
+    if (COIN_DEBUG) {
       cc_fprintf(stderr, "WaitForSingleObject() - unknown return value: %d\n",
-        status);
+                 status);
     }
+    return CC_ERROR;
   }
-  bstatus = GetExitCodeThread (thread->w32thread.threadhandle, &exitcode);
+  bstatus = GetExitCodeThread(thread->w32thread.threadhandle, &exitcode);
   if (bstatus == FALSE) {
-    if ( COIN_DEBUG ) {
+    if (COIN_DEBUG) {
       DWORD err;
       char *errstr;
       err = GetLastError();
@@ -245,7 +180,8 @@ cc_thread_join(
         err, errstr);
       cc_internal_w32_freelasterrorstring(errstr);
     }
-  } else {
+  } 
+  else {
     *retvalptr = (void *)exitcode;
   }
   /* termination could be forced with TerminateThread() - but this
@@ -253,63 +189,77 @@ cc_thread_join(
    * SDK doc. */
   CloseHandle(thread->w32thread.threadhandle);
   thread->w32thread.threadhandle = NULL;
-#endif
+  
+  return bstatus ? CC_OK : CC_ERROR;
+}
 
-  return FALSE; /* ok */
-} /* cc_thread_join() */
+#endif /* USE_W32THREAD */
+
 
 /* ********************************************************************** */
 
-#if 0
-int
-cc_thread_priority_set(
-  cc_thread * thread,
-  int value )
+/*
+*/
+
+cc_thread *
+cc_thread_construct(void * (*func)(void *), void * closure)
 {
+  cc_thread * thread;
+  int ok;
+
+  thread = (cc_thread*) malloc(sizeof(cc_thread));
+  assert(thread != NULL);
+  thread->type = CC_THREAD_TYPE;
+  thread->func = func;
+  thread->closure = closure;
+
+  ok = internal_init(thread);
+  if (ok) return thread;
+  assert(0 && "unable to create thread");
+  free(thread);
+  return NULL;
+}
+
+/* ********************************************************************** */
+
+/*
+*/
+
+void
+cc_thread_destruct(cc_thread * thread)
+{
+  int ok;
+  assert((thread != NULL) && (thread->type == CC_THREAD_TYPE));
+  ok = internal_clean(thread);
+  assert(ok == CC_OK);
+  thread->type = CC_INVALID_TYPE;
+  free(thread);
+}
+
+/* ********************************************************************** */
+
+/*
+*/
+
+int
+cc_thread_join(cc_thread * thread,
+               void ** retvalptr)
+{
+  int ok;
   assert((thread != NULL) && (thread->type == CC_THREAD_TYPE));
 
-#ifdef USE_PTHREAD
-#endif /* USE_PTHREAD */
+  ok = internal_join(thread, retvalptr);
+  assert(ok == CC_OK);
+  return ok;
+}
 
-  return 0;
-} /* cc_thread_priority_set() */
-#endif /* 0 */
-
-#if 0
-int
-cc_thread_priority_change(
-  cc_thread * thread,
-  int change )
-{
-  assert((thread != NULL) && (thread->type == CC_THREAD_TYPE));
-
-#ifdef USE_PTHREAD
-#endif /* USE_PTHREAD */
-
-  return 0;
-} /* cc_thread_priority_change() */
-#endif /* 0 */
-
-#if 0
-int
-cc_thread_priority_get(
-  cc_thread * thread )
-{
-  assert((thread != NULL) && (thread->type == CC_THREAD_TYPE));
-
-#ifdef USE_PTHREAD
-#endif /* USE_PTHREAD */
-
-  return 0;
-} /* cc_thread_priority_get() */
-#endif /* 0 */
-
+/* ********************************************************************** */
 
 void
 cc_sleep(float seconds)
 {
 #ifndef _WIN32
-  /* fixme: 20011107, thammer: create a configure macro to detect
+  /* FIXME: 20011107, thammer: create a configure macro to detect
    * which sleep function is available */
   sleep(floor(seconds));
 #else
