@@ -77,7 +77,7 @@ void *
 SbPList::operator[](const int index) const
 {
   assert(index >= 0);
-  if (index >= this->getArraySize()) ((SbPList *)this)->expandlist(index + 1);
+  if (index >= this->getLength()) ((SbPList *)this)->expandlist(index + 1);
   return SbList<void *>::operator[](index);
 }
 
@@ -92,7 +92,7 @@ void * &
 SbPList::operator[](const int index)
 {
   assert(index >= 0);
-  if (index >= this->getArraySize()) this->expandlist(index + 1);
+  if (index >= this->getLength()) this->expandlist(index + 1);
   return SbList<void *>::operator[](index);
 }
 
@@ -103,5 +103,5 @@ SbPList::expandlist(const int size)
   const int oldsize = this->getLength();
   this->expand(size);
   SbList<void *> * thisp = (SbList<void *> *)this;
-  for (int i = oldsize; i < size; i++) *thisp[i] = NULL;
+  for (int i = oldsize; i < size; i++) (*thisp)[i] = NULL;
 }

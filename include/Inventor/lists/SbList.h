@@ -117,7 +117,7 @@ template <class Type> inline void
 SbList<Type>::expand(const int size)
 {
   this->grow(size);
-  this->numitems = size - 1;
+  this->numitems = size;
 }
 
 template <class Type> inline int
