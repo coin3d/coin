@@ -556,14 +556,10 @@ AC_SUBST(COIN_HACKING_LIBDIRS)
 
 SIM_EXPAND_DIR_VARS
 
-coin_src_dir=$srcdir
-coin_include_dir=$includedir
-coin_lib_dir=$libdir
+coin_src_dir=`cd $srcdir; pwd`
 
 AC_SUBST(coin_build_dir)
 AC_SUBST(coin_src_dir)
-AC_SUBST(coin_include_dir)
-AC_SUBST(coin_lib_dir)
 
 
 # **************************************************************************
