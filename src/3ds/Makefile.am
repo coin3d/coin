@@ -11,8 +11,8 @@ PrivateHeaders = \
 	3dsLoader.h \
 	SoStream.h
 else
-RegularSources =
-LinkHackSources =
+RegularSources = dummy.cpp
+LinkHackSources = dummy.cpp
 PrivateHeaders =
 endif
 
