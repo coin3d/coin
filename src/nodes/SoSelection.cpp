@@ -537,6 +537,7 @@ SoSelection::addPath(SoPath * path)
 {
   this->selectionList.append(path);
   this->selCBList->invokeCallbacks(path);
+  this->changeCBList->invokeCallbacks(this);
 }
 
 /*!
@@ -549,6 +550,7 @@ SoSelection::removePath(const int which)
   path->ref();
   this->selectionList.remove(which);
   this->deselCBList->invokeCallbacks(path);
+  this->changeCBList->invokeCallbacks(this);
   path->unref();
 }
 
