@@ -71,6 +71,17 @@ TODO:
   STL definition? Look into this to see if it can be solved. (Reported
   by Jason Fritz on coin-devsupport.)
 
+
+*** SUPPORT ITEMS ***
+
+* [mortene:19990807] make an overview list on the Coin WWW pages of
+  what's implemented and what's not -- separate list into "vs OI 2.1"
+  and "vs OI 2.5".
+
+* [mortene:19991009] autogenerate Doxygen html documentation and
+  publish on our Coin www pages.
+
+
 ===============================================================================
 DONE:
 =====
@@ -134,5 +145,12 @@ DONE:
 
 
 *** GENERIC ITEMS ***
+
+
+
+*** SUPPORT ITEMS ***
+
+* [mortene:19990807][mortene:19991009] fix up the autogeneration of
+  Metadon-pages.
 
 ===============================================================================

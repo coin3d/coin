@@ -14,9 +14,6 @@ with Coin. The items are roughly categorized in these categories:
 
 * Network: tasks in the vein of making Coin "network-friendly".
 
-* Support: tasks not directly related to the Coin source, but to the
-  development process or whatever else.
-
 * Misc: other items which are hard to categorize.
 
 
@@ -77,9 +74,3 @@ with Coin. The items are roughly categorized in these categories:
 
 031. (Misc) [1999????] Implement the various parts of Large Model
      Visualization.
-
-032. (Support) [19990807] Fix up the autogeneration of Metadon-pages.
-
-033. (Support) [19990807] Make an overview list on the Coin WWW pages
-     of what's implemented and what's not -- separate list into "vs OI
-     2.1" and "vs OI 2.5".

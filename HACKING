@@ -1,2 +1,23 @@
 FIXME: write information here on how to do effective Coin
 development. 19990926 mortene.
+
+==============================================================================
+
+* Building Coin for development
+	- discuss common C++ large project problems
+	- solutions applied in the Coin projects
+		o using multiply configure'd build directories
+			- slim
+			- full debug
+		o --enable-hacking (gives quick turn-around time)
+		o symlinks from install directory to avoid ``make install''
+		o explain coindev/coindev.cpp mechanisms
+
+* Styleguide for code
+	- rip out the text from Metadon.conf
+
+* Submitting patches
+	- technical walk-through
+	- legal aspects
+
+==============================================================================
