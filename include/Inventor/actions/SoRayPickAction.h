@@ -40,78 +40,83 @@ class SoRayPickAction : public SoPickAction {
   SO_ACTION_HEADER(SoRayPickAction);
 
 public:
-  SoRayPickAction(const SbViewportRegion & viewportRegion);
+  SoRayPickAction(const SbViewportRegion & viewportregion);
   virtual ~SoRayPickAction();
   static void initClass(void);
 
   void setPoint(const SbVec2s & viewportPoint);
-  void setNormalizedPoint(const SbVec2f & normPoint);
-  void setRadius(const float radiusInPixels);
+  void setNormalizedPoint(const SbVec2f & normpoint);
+  void setRadius(const float radiusinpixels);
   void setRay(const SbVec3f & start, const SbVec3f & direction,
-              float nearDistance = -1.0,
-              float farDistance = -1.0);
+              float neardistance = -1.0,
+              float fardistance = -1.0);
   void setPickAll(const SbBool flag);
-  SbBool isPickAll() const;
-  const SoPickedPointList & getPickedPointList() const;
-  SoPickedPoint *getPickedPoint(const int index = 0) const;
+  SbBool isPickAll(void) const;
+  const SoPickedPointList & getPickedPointList(void) const;
+  SoPickedPoint * getPickedPoint(const int index = 0) const;
 
 
-  void computeWorldSpaceRay();
-  SbBool hasWorldSpaceRay() const;
-  void setObjectSpace();
-  void setObjectSpace(const SbMatrix &matrix);
-  SbBool intersect(const SbVec3f &v0,
-                   const SbVec3f &v1,
-                   const SbVec3f &v2,
-                   SbVec3f &intersection, SbVec3f &barycentric,
-                   SbBool &front) const;
-  SbBool intersect(const SbVec3f &v0, const SbVec3f &v1,
-                   SbVec3f &intersection) const;
-  SbBool intersect(const SbVec3f &point) const;
-  SbBool intersect(const SbBox3f &box,
-                   const SbBool useFullViewVolume = TRUE);
-  const SbViewVolume &getViewVolume();
-  const SbLine &getLine();
-  SbBool isBetweenPlanes(const SbVec3f &intersection) const;
-  SoPickedPoint *addIntersection(const SbVec3f &objectSpacePoint);
+  void computeWorldSpaceRay(void);
+  SbBool hasWorldSpaceRay(void) const;
+  void setObjectSpace(void);
+  void setObjectSpace(const SbMatrix & matrix);
+  SbBool intersect(const SbVec3f & v0, const SbVec3f & v1, const SbVec3f & v2,
+                   SbVec3f & intersection, SbVec3f & barycentric,
+                   SbBool & front) const;
+  SbBool intersect(const SbVec3f & v0, const SbVec3f & v1,
+                   SbVec3f & intersection) const;
+  SbBool intersect(const SbVec3f & point) const;
+  SbBool intersect(const SbBox3f & box, const SbBool usefullviewvolume = TRUE);
+  const SbViewVolume & getViewVolume(void);
+  const SbLine & getLine(void);
+  SbBool isBetweenPlanes(const SbVec3f & intersection) const;
+  SoPickedPoint * addIntersection(const SbVec3f & objectspacepoint);
 
 protected:
-
-  virtual void beginTraversal(SoNode *node);
+  virtual void beginTraversal(SoNode * node);
 
 private:
-
   void cleanupPickedPoints(void);
   void setFlag(const unsigned int flag);
   void clearFlag(const unsigned int flag);
   SbBool isFlagSet(const unsigned int flag) const;
-  void calcObjectSpaceData();
-  void calcMatrices();
-  float calcRayRadius(const float radiusInPixels);
+  void calcObjectSpaceData(void);
+  void calcMatrices(void);
+  float calcRayRadius(const float radiusinpixels);
 
-  SbViewVolume osVolume;
-  SbLine osLine;
-  SbPlane nearPlane;
-  SbVec2s vpPoint;
-  SbVec2f normvpPoint;
-  SbVec3f rayStart;
-  SbVec3f rayDirection;
-  float rayRadiusStart;
-  float rayRadiusDelta;
-  float rayNear;
-  float rayFar;
-  float radiusInPixels;
+  SbViewVolume osvolume;
+  SbLine osline;
+  SbPlane nearplane;
+  SbVec2s vppoint;
+  SbVec2f normvppoint;
+  SbVec3f raystart;
+  SbVec3f raydirection;
+  float rayradiusstart;
+  float rayradiusdelta;
+  float raynear;
+  float rayfar;
+  float radiusinpixels;
 
   float currentPickDistance;
 
-  SbLine wsLine;
-  SbMatrix obj2World;
-  SbMatrix world2Obj;
-  SbMatrix extraMatrix;
+  SbLine wsline;
+  SbMatrix obj2world;
+  SbMatrix world2obj;
+  SbMatrix extramatrix;
 
-  SoPickedPointList pickedPointList;
+  SoPickedPointList pickedpointlist;
 
   unsigned int flags;
+
+  enum {
+    WS_RAY_SET =      0x0001, // ray set by ::setRay
+    WS_RAY_COMPUTED = 0x0002, // ray computed in ::computeWorldSpaceRay
+    PICK_ALL =        0x0004, // return all picked objects, or just closest
+    NORM_POINT =      0x0008, // is normalized vppoint calculated
+    CLIP_NEAR =       0x0010, // clip ray at near plane? 
+    CLIP_FAR =        0x0020, // clip ray at far plane? 
+    EXTRA_MATRIX =    0x0040 // is extra matrix supplied in ::setObjectSpace
+  };
 };
 
 #endif // !COIN_SORAYPICKACTION_H

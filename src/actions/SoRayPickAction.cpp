@@ -18,52 +18,42 @@
 \**************************************************************************/
 
 /*!
-  \class SoRayPickAction Inventor/include/SoRayPickAction.h
-  \brief The SoRayPickAction class is for picking objects in a scene through
-  sending rays into it.
+  \class SoRayPickAction SoRayPickAction.h Inventor/actions/SoRayPickAction.h
+  \brief The SoRayPickAction class does ray intersection with scene graphs.
+  \ingroup actions
 
-  FIXME: write full doc
+  For interaction with the scene graph geometry, it is necessary to be
+  able to do intersection testing for rays. This functionality is
+  provided by the SoRayPickAction class.
 */
 
-#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSubActionP.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
+
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoPickRayElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoPickRayElement.h>
-#include <Inventor/elements/SoClipPlaneElement.h>
-#include <Inventor/SoPickedPoint.h>
+#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoLOD.h>
+#include <Inventor/nodes/SoLevelOfDetail.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShape.h>
+#include <coindefs.h> // COIN_STUB()
 #include <float.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/nodes/SoCamera.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoLOD.h>
-#include <Inventor/nodes/SoLevelOfDetail.h>
-#include <Inventor/elements/SoOverrideElement.h>
-
-/*
- * Use bit-flags to hide implementation details.
- */
-
-#define FLAG_WS_RAY_SET       0x0001  // ray set by ::setRay
-#define FLAG_WS_RAY_COMPUTED  0x0002  // ray computed in ::computeWorldSpaceRay
-#define FLAG_PICK_ALL         0x0004  // return all picked objects, or just closest
-#define FLAG_NORM_POINT       0x0008  // is normalized vpPoint calculated
-#define FLAG_CLIP_NEAR        0x0010  // clip ray at near plane?
-#define FLAG_CLIP_FAR         0x0020  // clip ray at far plane?
-#define FLAG_EXTRA_MATRIX     0x0040  // is extra matrix supplied in ::setObjectSpace
-
-
 
 SO_ACTION_SOURCE(SoRayPickAction);
+
 
 // Override from parent class.
 void
@@ -78,13 +68,13 @@ SoRayPickAction::initClass(void)
 
 
 /*!
-  A constructor.
-*/
+  Constructor.
 
-SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportRegion)
-  : inherited(viewportRegion),
-    radiusInPixels(5.0f),
-    flags(0)
+  Some node types need a \a viewportregion to know exactly how they
+  are positioned within the scene.
+*/
+SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportregion)
+  : inherited(viewportregion), radiusinpixels(5.0f), flags(0)
 {
   SO_ACTION_CONSTRUCTOR(SoRayPickAction);
 
@@ -95,161 +85,157 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportRegion)
   SO_ACTION_ADD_METHOD_INTERNAL(SoLevelOfDetail, SoNode::rayPickS);
   SO_ACTION_ADD_METHOD_INTERNAL(SoShape, SoNode::rayPickS);
 
-  methods->setUp(); // FIXME: not sure if this should be called here...
+  methods->setUp();
 }
 
 /*!
-  The destructor.
+  Destructor, free temporary resources used by action.
 */
-
 SoRayPickAction::~SoRayPickAction(void)
 {
   this->cleanupPickedPoints();
 }
 
 /*!
-  This method sets the viewport-space point which the ray is sent through.
-*/
+  Sets the viewport-space point. This point is calculated into a line
+  from the near clipping plane to the far clipping plane, and the
+  intersection ray follows the line.
 
+  This is a convenient way to detect object intersection below the
+  cursor.
+*/
 void
-SoRayPickAction::setPoint(const SbVec2s &viewportPoint)
+SoRayPickAction::setPoint(const SbVec2s & viewportpoint)
 {
-  this->vpPoint = viewportPoint;
-  this->clearFlag(FLAG_NORM_POINT|FLAG_WS_RAY_SET|FLAG_WS_RAY_COMPUTED);
-  this->setFlag(FLAG_CLIP_NEAR|FLAG_CLIP_FAR);
+  this->vppoint = viewportpoint;
+  this->clearFlag(SoRayPickAction::NORM_POINT|SoRayPickAction::WS_RAY_SET|SoRayPickAction::WS_RAY_COMPUTED);
+  this->setFlag(SoRayPickAction::CLIP_NEAR|SoRayPickAction::CLIP_FAR);
 }
 
 /*!
-  This method sets the viewport-space point which the ray is sent through.
-  The coordinate is normalized, ranging from (0,0) to (1,1).
-*/
+  Sets the viewport-space point which the ray is sent through.
+  The coordinate is normalized, ranging from (0, 0) to (1, 1).
 
+  \sa setPoint()
+*/
 void
-SoRayPickAction::setNormalizedPoint(const SbVec2f &normPoint)
+SoRayPickAction::setNormalizedPoint(const SbVec2f & normpoint)
 {
-  this->normvpPoint = normPoint;
-  this->clearFlag(FLAG_WS_RAY_SET|FLAG_WS_RAY_COMPUTED);
-  this->setFlag(FLAG_NORM_POINT|FLAG_CLIP_NEAR|FLAG_CLIP_FAR);
+  this->normvppoint = normpoint;
+  this->clearFlag(SoRayPickAction::WS_RAY_SET|SoRayPickAction::WS_RAY_COMPUTED);
+  this->setFlag(SoRayPickAction::NORM_POINT|SoRayPickAction::CLIP_NEAR|SoRayPickAction::CLIP_FAR);
 }
 
 /*!
-  This method sets the radius of the picking ray.
+  Sets the radius of the picking ray, in screen pixels.
 */
-
 void
-SoRayPickAction::setRadius(const float radiusInPixels)
+SoRayPickAction::setRadius(const float radiusinpixels)
 {
-  this->radiusInPixels = radiusInPixels;
+  this->radiusinpixels = radiusinpixels;
 }
 
 /*!
-  This method sets the ray in world-space coordinates.
+  Sets the ray in world-space coordinates.
 */
-
 void
-SoRayPickAction::setRay(const SbVec3f &start,
-                        const SbVec3f &direction,
-                        float nearDistance,
-                        float farDistance)
+SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
+                        float neardistance, float fardistance)
 {
-  if (nearDistance >= 0.0f) this->setFlag(FLAG_CLIP_NEAR);
+  if (neardistance >= 0.0f) this->setFlag(SoRayPickAction::CLIP_NEAR);
   else {
-    this->clearFlag(FLAG_CLIP_NEAR);
-    nearDistance = 0.0f;
+    this->clearFlag(SoRayPickAction::CLIP_NEAR);
+    neardistance = 0.0f;
   }
 
-  if (farDistance >= 0.0f) this->setFlag(FLAG_CLIP_FAR);
+  if (fardistance >= 0.0f) this->setFlag(SoRayPickAction::CLIP_FAR);
   else {
-    this->clearFlag(FLAG_CLIP_FAR);
-    farDistance = nearDistance + 1.0f;
+    this->clearFlag(SoRayPickAction::CLIP_FAR);
+    fardistance = neardistance + 1.0f;
   }
 
   // FIXME: when do I calculate these?
-  this->rayRadiusStart = 0.01f;
-  this->rayRadiusDelta = 0.0f;
+  this->rayradiusstart = 0.01f;
+  this->rayradiusdelta = 0.0f;
 
-  this->rayStart = start;
-  this->rayDirection = direction;
-  this->rayDirection.normalize();
-  this->rayNear = nearDistance;
-  this->rayFar = farDistance;
-  this->wsLine = SbLine(start, start + direction);
+  this->raystart = start;
+  this->raydirection = direction;
+  this->raydirection.normalize();
+  this->raynear = neardistance;
+  this->rayfar = fardistance;
+  this->wsline = SbLine(start, start + direction);
 
   // D = shortest distance from origin to plane
-  const float D = this->rayDirection.dot(this->rayStart);
-  this->nearPlane = SbPlane(rayDirection, D + this->rayNear);
+  const float D = this->raydirection.dot(this->raystart);
+  this->nearplane = SbPlane(this->raydirection, D + this->raynear);
 
-  this->setFlag(FLAG_WS_RAY_SET);
+  this->setFlag(SoRayPickAction::WS_RAY_SET);
 }
 
 /*!
-  This method lets you decide wether only the closest object or all the objects
+  Lets you decide whether only the closest object or all the objects
   the ray intersects with should be picked.
 */
-
 void
 SoRayPickAction::setPickAll(const SbBool flag)
 {
-  if (flag) this->setFlag(FLAG_PICK_ALL);
-  else this->clearFlag(FLAG_PICK_ALL);
+  if (flag) this->setFlag(SoRayPickAction::PICK_ALL);
+  else this->clearFlag(SoRayPickAction::PICK_ALL);
 }
 
 /*!
-  This method returns wether only the closest object or all the objects the
-  ray intersects with is picked.
+  Returns whether only the closest object or all the objects the ray
+  intersects with is picked.
 */
-
 SbBool
 SoRayPickAction::isPickAll(void) const
 {
-  return this->isFlagSet(FLAG_PICK_ALL);
+  return this->isFlagSet(SoRayPickAction::PICK_ALL);
 }
 
 /*!
-  This method returns a list of the picked points.
+  Returns a list of the picked points.
 */
-
 const SoPickedPointList &
 SoRayPickAction::getPickedPointList(void) const
 {
-  return this->pickedPointList;
+  return this->pickedpointlist;
 }
 
 /*!
-  This method returns the picked point with index \a index in the list of
-  picked points.  \a index starts at index 0.
+  Returns the picked point with \a index in the list of picked
+  points.
 */
-
 SoPickedPoint *
 SoRayPickAction::getPickedPoint(const int index) const
 {
   assert(index >= 0);
-  if (index < this->pickedPointList.getLength())
-    return this->pickedPointList[index];
+  if (index < this->pickedpointlist.getLength())
+    return this->pickedpointlist[index];
   return NULL;
 }
 
-
+/*!
+  \internal
+ */
 void
-SoRayPickAction::computeWorldSpaceRay()
+SoRayPickAction::computeWorldSpaceRay(void)
 {
-  if (!this->isFlagSet(FLAG_WS_RAY_SET)) {
-    const SbViewVolume &vv = SoViewVolumeElement::get(this->state);
+  if (!this->isFlagSet(SoRayPickAction::WS_RAY_SET)) {
+    const SbViewVolume & vv = SoViewVolumeElement::get(this->state);
 
-    if (!this->isFlagSet(FLAG_NORM_POINT)) {
+    if (!this->isFlagSet(SoRayPickAction::NORM_POINT)) {
 
-      SbVec2s pt = this->vpPoint - this->vpRegion.getViewportOriginPixels();
+      SbVec2s pt = this->vppoint - this->vpRegion.getViewportOriginPixels();
       SbVec2s size = this->vpRegion.getViewportSizePixels();
-      this->normvpPoint.setValue(float(pt[0]) / float(size[0]),
+      this->normvppoint.setValue(float(pt[0]) / float(size[0]),
                                  float(pt[1]) / float(size[1]));
-      this->setFlag(FLAG_NORM_POINT);
+      this->setFlag(SoRayPickAction::NORM_POINT);
 
     }
 
 #if COIN_DEBUG
-    if (vv.getDepth() == 0.0f ||
-        vv.getWidth() == 0.0f ||
-        vv.getHeight() == 0.0f) {
+    if (vv.getDepth() == 0.0f || vv.getWidth() == 0.0f || vv.getHeight() == 0.0f) {
       SoDebugError::postWarning("SoRayPickAction::computeWorldSpaceRay",
                                 "invalid frustum: <%f, %f, %f>",
                                 vv.getWidth(), vv.getHeight(), vv.getDepth());
@@ -257,72 +243,84 @@ SoRayPickAction::computeWorldSpaceRay()
     }
 #endif // COIN_DEBUG
 
-    SbLine tempLine;
-    vv.projectPointToLine(this->normvpPoint, tempLine);
-    this->rayStart = tempLine.getPosition();
-    this->rayDirection = tempLine.getDirection();
+    SbLine templine;
+    vv.projectPointToLine(this->normvppoint, templine);
+    this->raystart = templine.getPosition();
+    this->raydirection = templine.getDirection();
 
-    this->rayNear = 0.0f;
-    this->rayFar = vv.getDepth();
+    this->raynear = 0.0f;
+    this->rayfar = vv.getDepth();
 
     // radius of ray for start and far positions
-    this->rayRadiusStart =
-      vv.getWorldToScreenScale(rayStart,
-                               this->calcRayRadius(this->radiusInPixels));
-    this->rayRadiusDelta =
-      vv.getWorldToScreenScale(this->rayStart + this->rayDirection,
-                               this->calcRayRadius(this->radiusInPixels));
-    this->rayRadiusDelta -= rayRadiusStart;
-    this->wsLine = SbLine(this->rayStart,
-                          this->rayStart + this->rayDirection);
+    this->rayradiusstart =
+      vv.getWorldToScreenScale(this->raystart,
+                               this->calcRayRadius(this->radiusinpixels));
+    this->rayradiusdelta =
+      vv.getWorldToScreenScale(this->raystart + this->raydirection,
+                               this->calcRayRadius(this->radiusinpixels));
+    this->rayradiusdelta -= this->rayradiusstart;
+    this->wsline = SbLine(this->raystart,
+                          this->raystart + this->raydirection);
 
-#if COIN_DEBUG && 0
+#if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoRayPickAction::computeWorldSpaceRay",
                            "%f %f %f",
-                           radiusInPixels,
-                           rayRadiusStart,
-                           rayRadiusDelta);
-#endif // COIN_DEBUG
+                           this->radiusinpixels,
+                           this->rayradiusstart,
+                           this->rayradiusdelta);
+#endif // debug
 
 
     // shortest distance from origin to plane
-    const float D = this->rayDirection.dot(this->rayStart);
-    this->nearPlane = SbPlane(rayDirection, D);
+    const float D = this->raydirection.dot(this->raystart);
+    this->nearplane = SbPlane(this->raydirection, D);
 
-    this->setFlag(FLAG_WS_RAY_COMPUTED);
+    this->setFlag(SoRayPickAction::WS_RAY_COMPUTED);
   }
 }
 
+/*!
+  \internal
+ */
 SbBool
-SoRayPickAction::hasWorldSpaceRay() const
+SoRayPickAction::hasWorldSpaceRay(void) const
 {
-  return this->isFlagSet(FLAG_WS_RAY_SET|FLAG_WS_RAY_COMPUTED);
+  return this->isFlagSet(SoRayPickAction::WS_RAY_SET|SoRayPickAction::WS_RAY_COMPUTED);
 }
 
+/*!
+  \internal
+ */
 void
-SoRayPickAction::setObjectSpace()
+SoRayPickAction::setObjectSpace(void)
 {
-  this->clearFlag(FLAG_EXTRA_MATRIX);
+  this->clearFlag(SoRayPickAction::EXTRA_MATRIX);
   this->calcObjectSpaceData();
 }
 
+/*!
+  \internal
+ */
 void
-SoRayPickAction::setObjectSpace(const SbMatrix &matrix)
+SoRayPickAction::setObjectSpace(const SbMatrix & matrix)
 {
-  this->setFlag(FLAG_EXTRA_MATRIX);
-  this->extraMatrix = matrix;
+  this->setFlag(SoRayPickAction::EXTRA_MATRIX);
+  this->extramatrix = matrix;
   this->calcObjectSpaceData();
 }
 
+/*!
+  \internal
+ */
 SbBool
-SoRayPickAction::intersect(const SbVec3f &v0,
-                           const SbVec3f &v1,
-                           const SbVec3f &v2,
-                           SbVec3f &intersection, SbVec3f &barycentric,
-                           SbBool &front) const
+SoRayPickAction::intersect(const SbVec3f & v0,
+                           const SbVec3f & v1,
+                           const SbVec3f & v2,
+                           SbVec3f & intersection, SbVec3f & barycentric,
+                           SbBool & front) const
 {
-  const SbVec3f &orig = osLine.getPosition();
-  const SbVec3f &dir = osLine.getDirection();
+  const SbVec3f & orig = this->osline.getPosition();
+  const SbVec3f & dir = this->osline.getDirection();
 
   SbVec3f edge1 = v1 - v0;
   SbVec3f edge2 = v2 - v0;
@@ -338,9 +336,9 @@ SoRayPickAction::intersect(const SbVec3f &v0,
   else front = FALSE;
 
   // create some more intuitive barycentric coordinate names
-  float &u = barycentric[0];
-  float &v = barycentric[1];
-  float &w = barycentric[2];
+  float & u = barycentric[0];
+  float & v = barycentric[1];
+  float & w = barycentric[2];
 
   float inv_det = 1.0f / det;
 
@@ -365,37 +363,40 @@ SoRayPickAction::intersect(const SbVec3f &v0,
 
   // calculate t and intersection point
   float t = edge2.dot(qvec) * inv_det;
-  intersection = orig + t*dir;
+  intersection = orig + t * dir;
 
   return TRUE;
 }
 
+/*!
+  \internal
+ */
 SbBool
-SoRayPickAction::intersect(const SbVec3f &v0, const SbVec3f &v1,
-                           SbVec3f &intersection) const
+SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
+                           SbVec3f & intersection) const
 {
-  SbLine line(v0,v1);
+  SbLine line(v0, v1);
   SbVec3f op0, op1; // object space
-  SbVec3f p0,p1; // world space
+  SbVec3f p0, p1; // world space
 
-  this->osLine.getClosestPoints(line, op0, op1);
+  this->osline.getClosestPoints(line, op0, op1);
 
   // clamp op1 between v0 and v1
   if ((op1-v0).dot(line.getDirection()) < 0.0f) op1 = v0;
   else if ((v1-op1).dot(line.getDirection()) < 0.0f) op1 = v1;
 
-  // FIXME: clamp op0 to rayStart, rayFar ???
+  // FIXME: clamp op0 to raystart, rayfar ???
 
-  this->obj2World.multVecMatrix(op0, p0);
-  this->obj2World.multVecMatrix(op1, p1);
+  this->obj2world.multVecMatrix(op0, p0);
+  this->obj2world.multVecMatrix(op1, p1);
 
   // distance between points
   float distance = (p1-p0).length();
 
-  float raypos = (p0 - this->rayStart).length();
+  float raypos = (p0 - this->raystart).length();
 
-  float radius = this->rayRadiusStart +
-    this->rayRadiusDelta*raypos/this->rayFar;
+  float radius = this->rayradiusstart +
+    this->rayradiusdelta * raypos/this->rayfar;
 
   if (radius >= distance) {
     intersection = op1;
@@ -404,102 +405,122 @@ SoRayPickAction::intersect(const SbVec3f &v0, const SbVec3f &v1,
   return FALSE;
 }
 
+/*!
+  \internal
+ */
 SbBool
-SoRayPickAction::intersect(const SbVec3f &point) const
+SoRayPickAction::intersect(const SbVec3f & point) const
 {
-  SbVec3f wPoint;
-  this->obj2World.multVecMatrix(point, wPoint);
-  SbVec3f ptOnLine = this->wsLine.getClosestPoint(wPoint);
+  SbVec3f wpoint;
+  this->obj2world.multVecMatrix(point, wpoint);
+  SbVec3f ptonline = this->wsline.getClosestPoint(wpoint);
 
   // distance between points
-  float distance = (wPoint-ptOnLine).length();
+  float distance = (wpoint-ptonline).length();
 
-  float raypos = (ptOnLine - this->rayStart).length();
+  float raypos = (ptonline - this->raystart).length();
 
-  float radius = this->rayRadiusStart +
-    this->rayRadiusDelta*raypos/this->rayFar;
+  float radius = this->rayradiusstart +
+    this->rayradiusdelta * raypos/this->rayfar;
 
   return (radius >= distance);
 }
 
+/*!
+  \internal
+ */
 SbBool
-SoRayPickAction::intersect(const SbBox3f &/*box*/,
-                           const SbBool /*useFullViewVolume*/)
+SoRayPickAction::intersect(const SbBox3f & box, const SbBool usefullviewvolume)
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
   return FALSE;
 }
 
+/*!
+  \internal
+ */
 const SbViewVolume &
-SoRayPickAction::getViewVolume()
+SoRayPickAction::getViewVolume(void)
 {
   COIN_STUB();
-  return this->osVolume;
+  return this->osvolume;
 }
 
+/*!
+  \internal
+ */
 const SbLine &
-SoRayPickAction::getLine()
+SoRayPickAction::getLine(void)
 {
-  return this->osLine;
+  return this->osline;
 }
 
+/*!
+  \internal
+ */
 SbBool
-SoRayPickAction::isBetweenPlanes(const SbVec3f &intersection) const
+SoRayPickAction::isBetweenPlanes(const SbVec3f & intersection) const
 {
-  SbVec3f worldPt;
-  this->obj2World.multVecMatrix(intersection, worldPt);
-  float dist = this->nearPlane.getDistance(worldPt);
-  if (this->isFlagSet(FLAG_CLIP_NEAR)) {
+  SbVec3f worldpoint;
+  this->obj2world.multVecMatrix(intersection, worldpoint);
+  float dist = this->nearplane.getDistance(worldpoint);
+  if (this->isFlagSet(SoRayPickAction::CLIP_NEAR)) {
     if (dist < 0) return FALSE;
   }
-  if (this->isFlagSet(FLAG_CLIP_FAR)) {
-    if (dist > (this->rayFar - this->rayNear)) return FALSE;
+  if (this->isFlagSet(SoRayPickAction::CLIP_FAR)) {
+    if (dist > (this->rayfar - this->raynear)) return FALSE;
   }
-  const SoClipPlaneElement *planes =
+  const SoClipPlaneElement * planes =
     SoClipPlaneElement::getInstance(this->state);
   int n =  planes->getNum();
   for (int i = 0; i < n; i++) {
-    if (!planes->get(i).isInHalfSpace(worldPt)) return FALSE;
+    if (!planes->get(i).isInHalfSpace(worldpoint)) return FALSE;
   }
   return TRUE;
 }
 
+/*!
+  \internal
+ */
 SoPickedPoint *
-SoRayPickAction::addIntersection(const SbVec3f &objectSpacePoint)
+SoRayPickAction::addIntersection(const SbVec3f & objectspacepoint)
 {
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoRayPickAction::addIntersection",
                          "%g %g %g",
-                         objectSpacePoint[0],
-                         objectSpacePoint[1],
-                         objectSpacePoint[2]);
+                         objectspacepoint[0],
+                         objectspacepoint[1],
+                         objectspacepoint[2]);
 #endif // debug
 
-  SbVec3f worldPt;
-  this->obj2World.multVecMatrix(objectSpacePoint, worldPt);
+  SbVec3f worldpoint;
+  this->obj2world.multVecMatrix(objectspacepoint, worldpoint);
 
-  if (this->pickedPointList.getLength() && !this->isFlagSet(FLAG_PICK_ALL)) {
+  if (this->pickedpointlist.getLength() && !this->isFlagSet(SoRayPickAction::PICK_ALL)) {
     // got to test if new candidate is closer than old one
-    float dist = this->nearPlane.getDistance(worldPt);
+    float dist = this->nearplane.getDistance(worldpoint);
     if (dist >= this->currentPickDistance) return NULL; // farther
 
     // remove old point
-    delete this->pickedPointList[0];
-    this->pickedPointList.truncate(0);
+    delete this->pickedpointlist[0];
+    this->pickedpointlist.truncate(0);
   }
 
-  if (!this->isFlagSet(FLAG_PICK_ALL)) {
-    this->currentPickDistance = this->nearPlane.getDistance(worldPt);
+  if (!this->isFlagSet(SoRayPickAction::PICK_ALL)) {
+    this->currentPickDistance = this->nearplane.getDistance(worldpoint);
   }
   // create the new picked point
   SoPickedPoint * pp = new SoPickedPoint(this->getCurPath(),
-                                         this->state, objectSpacePoint);
-  this->pickedPointList.append(pp);
+                                         this->state, objectspacepoint);
+  this->pickedpointlist.append(pp);
   return pp;
 }
 
+/*!
+  Overloaded to set up internal data.
+ */
 void
-SoRayPickAction::beginTraversal(SoNode *node)
+SoRayPickAction::beginTraversal(SoNode * node)
 {
   this->cleanupPickedPoints();
   this->getState()->push();
@@ -508,66 +529,73 @@ SoRayPickAction::beginTraversal(SoNode *node)
   this->getState()->pop();
 }
 
+// Private.
 void
 SoRayPickAction::setFlag(const unsigned int flag)
 {
   this->flags |= flag;
 }
 
+// Private.
 void
 SoRayPickAction::clearFlag(const unsigned int flag)
 {
   this->flags &= ~flag;
 }
 
+// Private.
 SbBool
 SoRayPickAction::isFlagSet(const unsigned int flag) const
 {
   return (this->flags & flag) != 0;
 }
 
+// Private.
 void
-SoRayPickAction::calcObjectSpaceData()
+SoRayPickAction::calcObjectSpaceData(void)
 {
   this->calcMatrices();
 
   SbVec3f start, dir;
 
-  this->world2Obj.multVecMatrix(this->rayStart, start);
-  this->world2Obj.multDirMatrix(this->rayDirection, dir);
-  this->osLine = SbLine(start, start + dir);
+  this->world2obj.multVecMatrix(this->raystart, start);
+  this->world2obj.multDirMatrix(this->raydirection, dir);
+  this->osline = SbLine(start, start + dir);
 
-  // FIXME: calc osVolume
+  // FIXME: calc this->osvolume
 }
 
+// Private.
 void
-SoRayPickAction::calcMatrices()
+SoRayPickAction::calcMatrices(void)
 {
-  this->obj2World = SoModelMatrixElement::get(this->state);
-  if (this->isFlagSet(FLAG_EXTRA_MATRIX)) {
-    this->obj2World.multLeft(this->extraMatrix);
+  this->obj2world = SoModelMatrixElement::get(this->state);
+  if (this->isFlagSet(SoRayPickAction::EXTRA_MATRIX)) {
+    this->obj2world.multLeft(this->extramatrix);
   }
-  this->world2Obj = this->obj2World.inverse();
+  this->world2obj = this->obj2world.inverse();
 }
 
+// Private.
 float
-SoRayPickAction::calcRayRadius(const float radiusInPixels)
+SoRayPickAction::calcRayRadius(const float radiusinpixels)
 {
   const SbVec2s &size = this->vpRegion.getViewportSizePixels();
 
   float xsize = float(size[0]);
   float ysize = float(size[1]);
 
-  return float(radiusInPixels / sqrt(xsize*xsize + ysize*ysize));
+  return float(radiusinpixels / sqrt(xsize * xsize + ysize * ysize));
 }
 
+// Private.
 void
 SoRayPickAction::cleanupPickedPoints(void)
 {
-  int n = this->pickedPointList.getLength();
+  int n = this->pickedpointlist.getLength();
 
   for (int i = 0; i < n; i++) {
-    delete this->pickedPointList[i];
+    delete this->pickedpointlist[i];
   }
-  this->pickedPointList.truncate(0);
+  this->pickedpointlist.truncate(0);
 }
