@@ -498,7 +498,8 @@ THE WISH LIST
 
 * The SbBool typedef
   2001-09-05  Lars J. Aas  <larsa@sim.no>
-  [ABI-incompatible change (mangled function signatures will change)]
+  [ABI-incompatible change (mangled function signatures will not be
+  the same on converting from int->bool)]
 
   The SbBool type is always int.  Consider detecting if the bool type exists
   and use it instead when available.  How does this work across multiple
