@@ -72,6 +72,8 @@
 #undef HAVE_STDINT_H
 /* The <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
+/* The <stddef.h> header file. */
+#undef HAVE_STDDEF_H
 
 
 /* If the system defines any of the types "on it's own", the
@@ -117,6 +119,9 @@
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 
 #if !defined(HAVE_INT8_T) && defined(COIN_INT8_T)
