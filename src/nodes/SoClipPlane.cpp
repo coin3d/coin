@@ -29,7 +29,8 @@
   A scene graph \e without any SoClipPlane nodes uses six clipping
   planes to define the viewing frustum: top, bottom, left, right, near
   and far. If you want extra clipping planes for "slicing" the visible
-  geometry, you can do that by using nodes of this type.
+  geometry, you can do that by using nodes of this type.  Geometry on
+  the back side of the clipping plane is clipped away.
 
   Note that OpenGL implementations have a fixed maximum number of
   clipping planes available. To find out what this number is, you can
@@ -54,6 +55,7 @@
 /*!
   \var SoSFPlane SoClipPlane::plane
   Definition of clipping plane.
+  Geometry on the back side of the clipping plane is clipped away.
 */
 /*!
   \var SoSFBool SoClipPlane::on
