@@ -122,6 +122,18 @@ public:
 
   void evaluate(void) const;
 
+  // enums for setFieldType()/getFieldType()
+  enum {
+    // FIXME: we might not need all these. Investigate before the next
+    // Coin version.  pederb, 2001-10-12
+    NORMAL_FIELD,
+    VRML97_EVENTIN_FIELD,
+    VRML97_EVENTOUT_FIELD,
+    EVENTIN_FIELD,
+    INTERNAL_FIELD,
+    VRML97_EXPOSED_FIELD
+  };
+
   void setFieldType(int type);
   int getFieldType(void) const;
 
