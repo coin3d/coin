@@ -45,7 +45,6 @@
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/caches/SoGLCacheList.h>
 #include <Inventor/elements/SoCacheElement.h>
@@ -449,7 +448,6 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   // ON. We'll develop the heuristics for automatically deciding when
   // to cache or not upon renderCaching==AUTO later.  pederb, 20001005
 
-  SbBool didlazyeval = FALSE;
   SoState * state = action->getState();
   SoGLCacheList * createcache = NULL;
   if ((this->renderCaching.getValue() == ON) &&
@@ -462,11 +460,8 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     if (!THIS->glcachelist) {
       THIS->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
     }
-    else {
-      SoMaterialBundle mb(action);
-      mb.sendFirst();
-
-      if (THIS->glcachelist->call(action, GL_ALL_ATTRIB_BITS)) {
+    else {      
+      if (THIS->glcachelist->call(action)) {
 #if GLCACHE_DEBUG && 1 // debug
         SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                                "Executing GL cache: %p", this);
@@ -484,13 +479,7 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   }
 
   state->push();
-  if (createcache) {
-    if (!didlazyeval) {
-      SoMaterialBundle mb(action);
-      mb.sendFirst();
-    }
-    createcache->open(action);
-  }
+  if (createcache) createcache->open(action);
 
   SbBool outsidefrustum = this->cullTest(state);
   if (createcache || !outsidefrustum) {

@@ -36,7 +36,7 @@ public:
   SoGLCacheList(int numcaches = 2);
   ~SoGLCacheList();
 
-  SbBool call(SoGLRenderAction * action, uint32_t pushattribbits = 0);
+  SbBool call(SoGLRenderAction * action);
 
   void open(SoGLRenderAction * action, SbBool autocache = TRUE);
   void close(SoGLRenderAction * action);

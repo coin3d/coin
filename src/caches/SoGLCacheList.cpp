@@ -123,7 +123,7 @@ SoGLCacheList::~SoGLCacheList()
   the GL state stack again after calling the cache.
 */
 SbBool
-SoGLCacheList::call(SoGLRenderAction * action, uint32_t pushattribbits)
+SoGLCacheList::call(SoGLRenderAction * action)
 {
   int i;
   SoState * state = action->getState();
@@ -136,12 +136,10 @@ SoGLCacheList::call(SoGLRenderAction * action, uint32_t pushattribbits)
     SoGLRenderCache * cache = THIS->itemlist[i];
     if (cache->getCacheContext() == context) {
       if (cache->isValid(state)) {
-        if (pushattribbits) glPushAttrib(pushattribbits);
         cache->ref();
         GLCACHE_UNLOCK(this); // allow other threads to access cache list
         cache->call(state);
         cache->unref(state);
-        if (pushattribbits) glPopAttrib();
         return TRUE;
       }
       // if we get here cache is invalid. Throw it away.
