@@ -2228,9 +2228,9 @@ exec 5>>./config.log
 
 
 #  These are used for constructing the coin-config file.
-COIN_EXTRA_CPPFLAGS=
-COIN_EXTRA_LDFLAGS=
-COIN_EXTRA_LIBS=
+COIN_EXTRA_CPPFLAGS=$CPPFLAGS
+COIN_EXTRA_LDFLAGS=$LDFLAGS
+COIN_EXTRA_LIBS=$LIBS
 
 
 
