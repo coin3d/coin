@@ -301,9 +301,15 @@ SoEngine::notify(SoNotList * nl)
   // on the next attempted read on our output(s).
   this->flags |= FLAG_ISDIRTY;
 
-  // Let engine know that a field changed, so we can recalculate
-  // internal variables, if necessary.
-  this->inputChanged(nl->getLastField());
+  // Call inputChanged() only if we're being notified through one of
+  // the engine's fields (lastrec == CONTAINER, set in
+  // SoField::notify()).
+  SoNotRec * lastrec = nl->getLastRec();
+  if (lastrec && lastrec->getType() == SoNotRec::CONTAINER) {
+    // Let engine know that a field changed, so we can recalculate
+    // internal variables, if necessary.
+    this->inputChanged(nl->getLastField());
+  }
 
   // add ourself to the notification list
   SoNotRec rec(this);
