@@ -26,6 +26,14 @@
   \brief The SoTextureUnit class is a node for setting the active texture unit.
   \ingroup nodes
 
+  When an SoTextureUnit node is inserted into the scene graph, all
+  subsequent texture nodes (SoTexture2, SoTextureCoordinate2,
+  SoTextureCoordinate3, SoTexture2Transform, SoTexture3Transform,
+  SoTextureCoordinateEnvironment, and SoTextureCoordinatePlane) will
+  affect the texture unit set in the unit field.
+
+  See the SoGuiExample CVS module for an usage example for this node.
+
   \since Coin 2.2
 */
 
@@ -55,6 +63,9 @@
   \var SoSFEnum SoTextureUnit::mappingMethod
 
   The mapping method for this unit. Default is IMAGE_MAPPING.
+
+  This field is not currently supported in Coin. It's included to
+  support TGS' API. We might support the field in the future.
 */
 
 
@@ -80,13 +91,13 @@ SO_NODE_SOURCE(SoTextureUnit);
 SoTextureUnit::SoTextureUnit(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureUnit);
-  
+
   SO_NODE_ADD_FIELD(unit, (0));
   SO_NODE_ADD_FIELD(mappingMethod, (IMAGE_MAPPING));
-  
+
   SO_NODE_DEFINE_ENUM_VALUE(MappingMethod, IMAGE_MAPPING);
   SO_NODE_DEFINE_ENUM_VALUE(MappingMethod, BUMP_MAPPING);
-  
+
   SO_NODE_SET_SF_ENUM_TYPE(mappingMethod, MappingMethod);
 }
 
@@ -119,7 +130,7 @@ SoTextureUnit::GLRender(SoGLRenderAction * action)
   SoState * state = action->getState();
   const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
   int maxunits = cc_glglue_max_texture_units(glue);
-  
+
   if (this->unit.getValue() >= maxunits) {
     static SbBool first = TRUE;
     if (first) {
@@ -175,11 +186,11 @@ SoTextureUnit::pick(SoPickAction * action)
   It's better to use cc_glglue_max_texture_units() if you're using
   Coin (declared in Inventor/C/glue/gl.h).
 */
-uint32_t 
+uint32_t
 SoTextureUnit::getMaxTextureUnit(void)
 {
   GLint tmp;
   glGetIntegerv(GL_MAX_TEXTURE_UNITS, &tmp);
-  
+
   return (uint32_t) tmp;
 }

@@ -26,6 +26,17 @@
   \brief The SoBumpMap class is used to map a bump map onto subsequent shapes.
   \ingroup nodes
 
+  Currently only normal maps are supported. This means that the image
+  must have three components, where the red image component equals
+  the X normal component, gree equals Y, and blue is Z. See 
+  http:// for a nice introduction about bump mapping and normal
+  maps.
+  
+  For bump mapping to work in Coin, the generatePrimitives() method
+  must be correctly implemented for the shape. This is needed since
+  tangent space coordinates needs to be calculated for each vertex in
+  the shape.
+
   \since Coin 2.2
 */
 
@@ -62,13 +73,8 @@
 /*!
   \var SoSFImage SoBumpMap::image
 
-  Inline image data. Defaults to contain an empty image.
+  Inline image data. Defaults to contain an empty bump map.
 
-  See documentation of the SoSFImage class for a very detailed
-  description of how the format specification for the image data is
-  layed out, and what different image formats for color textures,
-  semi-transparent textures, grayscale textures, etc etc, are
-  supported.
 */
 
 // *************************************************************************
@@ -124,7 +130,7 @@ void
 SoBumpMap::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoBumpMap, SO_FROM_COIN_2_2);
-  
+
   SO_ENABLE(SoGLRenderAction, SoBumpMapElement);
 }
 
@@ -159,7 +165,7 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
     int nc;
     SbVec2s size;
     const unsigned char * bytes = this->image.getValue(size, nc);
-    
+
     if (bytes && size != SbVec2s(0,0)) {
       if (!PRIVATE(this)->glimagevalid) {
         PRIVATE(this)->glimage->setData(bytes, size, nc,
@@ -178,7 +184,7 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
     static int didwarn = 0;
     if (!didwarn) {
       // FIXME: add link to bumpmapping doc on doc.coin3d.org. pederb, 2003-11-18
-      SoDebugError::postWarning("SoBumpMap::GLRender", 
+      SoDebugError::postWarning("SoBumpMap::GLRender",
                                 "Your OpenGL driver does not support the "
                                 "required extensions to do bumpmapping.");
       didwarn = 1;
