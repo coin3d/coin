@@ -140,17 +140,31 @@
 extern "C" {
 #endif
 
+/* ********************************************************************** */
+
 /*
   coin_vsnprintf() wrapper. Returns -1 if resultant string will be
   longer than n.
 */
 
-#ifdef HAVE_VSNPRINTF
+typedef int func_vsnprintf(char *, size_t, const char *, va_list);
 
-int
-coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
+static int
+coin_common_vsnprintf(func_vsnprintf * func,
+                      char * dst, unsigned int n,
+                      const char * fmtstr, va_list args)
 {
-  int length = vsnprintf(dst, (size_t)n, fmtstr, args);
+  int length;
+
+  /* Note: subtract one from n as the buffer size, because libDCE on
+     HP-UX has a vsnprintf() implementation which will otherwise
+     overwrite the array with one byte (it doesn't count the trailing
+     \0, as e.g. GNU libc does, and like a C99-conforming
+     implementation would). */
+  assert(n > 1);
+  n -= 1;
+
+  length = (*func)(dst, (size_t)n, fmtstr, args);
 
   /* Not all vsnprintf() implementations returns -1 upon failure (this
      is what vsnprintf() from GNU libc is documented to do).
@@ -158,14 +172,50 @@ coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
      At least with GNU libc 2.1.1, vsnprintf() does _not_ return -1
      (as documented in the snprintf(3) man-page) when we can't fit the
      constructed string within the given buffer, but rather the number
-     of characters needed.
+     of characters needed, excluding the terminating \0. The latter is
+     also the behavior specified by C99.
 
      IRIX 6.5 vsnprintf() just returns the number of characters until
-     clipped.
+     clipped, i.e. input argument n minus one.
+
+     For the C run-times that comes with MSVC++ 5.0 and MSVC++ 6.0,
+     _vsnprintf() is specified to return -1 on overruns. (To match
+     C99, one would expect Microsoft to change this, though. Perhaps
+     done for MSVC++ v7?)
+  
+
+     For reference, here's a simple test example which checks the
+     behavior of snprintf() / vsnprintf(), when trying to fit 26
+     characters plus a terminating \0 into a 20-character buffer:
+
+     -----8<----------- [snip] ---------------8<----------- [snip] ---------
+     #include <stdio.h>
+     
+     int
+     main(void)
+     {
+       char buffer[20] = "";
+       const int ret =
+         snprintf(buffer, sizeof(buffer), "%s",
+                  "abcdefghijklmnopqrstuvwxyz");
+       (void)printf("snprintf()==%d\n", ret);
+       (void)printf("buffer=\"%s\"\n", buffer);
+       return 0;
+     }
+     -----8<----------- [snip] ---------------8<----------- [snip] ---------
   */
+
   if (length >= (((int)n) - 1)) { length = -1; }
 
   return length;
+}
+
+#ifdef HAVE_VSNPRINTF
+
+int
+coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
+{
+  return coin_common_vsnprintf(vsnprintf, dst, (size_t)n, fmtstr, args);
 }
 
 #elif defined HAVE__VSNPRINTF
@@ -173,19 +223,7 @@ coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 int
 coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 {
-  int length = _vsnprintf(dst, (size_t)n, fmtstr, args);
-  /* For the C run-times that comes with MSVC++ 5.0 and MSVC++ 6.0,
-     _vsnprintf() is specified to return -1 on overruns.
-
-     But as vsnprintf() return value semantics in the C99
-     specification is different (returns how many characters would
-     have been written if the buffer was large enough), we also check
-     for this, in case MS changes the behavior for _vsnprintf() to
-     match C99.
-  */
-  if (length >= (((int)n) - 1)) { length = -1; }
-
-  return length;
+  return coin_common_vsnprintf(_vsnprintf, dst, (size_t)n, fmtstr, args);
 }
 
 #else /* neither vsnprintf() nor _vsnprintf() available, roll our own */
