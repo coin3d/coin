@@ -82,6 +82,7 @@
 #include "SoTextureOverrideElement.cpp"
 #include "SoTextureQualityElement.cpp"
 #include "SoTextureScalePolicyElement.cpp"
+#include "SoTextureScaleQualityElement.cpp"
 #include "SoTransparencyElement.cpp"
 #include "SoUnitsElement.cpp"
 #include "SoViewVolumeElement.cpp"
