@@ -167,10 +167,16 @@ SoBlinker::copy(SbBool copyconnections) const
   // written.
   ((SoBlinker *)this)->deconnectInternalEngine();
 
-  SoNode * cp = inherited::copy(copyconnections);
+  SoBlinker * cp = (SoBlinker *)inherited::copy(copyconnections);
 
   // Reenable all connections to/from internal engine.
   ((SoBlinker *)this)->reconnectInternalEngine();
+
+  // Need to set this explicitly after reconnect, as the internal
+  // engine for the copy initially contains incorrect values. The
+  // resulting notification on the copy also sets up correct min and
+  // max values for the engine.
+  cp->whichChild.setValue(this->whichChild.getValue());
 
   return cp;
 }
@@ -193,8 +199,4 @@ SoBlinker::reconnectInternalEngine(void)
   this->counter->frequency.connectFrom(&this->speed);
   this->counter->on.connectFrom(&this->on);
   this->whichChild.connectFrom(&this->counter->output);
-
-  // Make sure "on" field of engine get synchronized with the "on"
-  // field of the blinker.
-  this->on.touch();
 }

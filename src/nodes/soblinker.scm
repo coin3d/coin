@@ -40,7 +40,7 @@
 
 ;; Test copy.
 (define blinkercopy (soblinker-cast (-> viewer-copy 'getscenegraph)))
-(-> (-> blinkercopy 'on) 'setvalue 0)
+(-> (-> blinkercopy 'on) 'setvalue 1)
 
 ;; Export scenegraph with SoBlinker.
 (define writeaction (new-sowriteaction))
@@ -62,7 +62,17 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Scratch area ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (-> viewer 'viewAll)
 (-> viewer 'setscenegraph (new-socube))
-(display (-> blinker 'getnumchildren))
+
+(-> (-> blinker 'whichchild) 'getvalue)
+(-> (-> blinkercopy 'whichchild) 'getvalue)
+
+(-> (-> blinker 'on) 'setvalue 0)
+
 (display (-> (soblinker-cast (-> viewer 'getscenegraph)) 'getnumchildren))
+
+(begin
+  (-> (-> blinker 'on) 'setvalue 1)
+  (-> (-> blinkercopy 'on) 'setvalue 1))
