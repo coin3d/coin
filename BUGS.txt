@@ -4629,3 +4629,33 @@ diff -u -b -r1.27 SoIndexedFaceSet.h
     20041116 larsa.
 
 =====================================================================
+
+175 Crash when using SoFont + SoText2 + SoText3 on Windows
+
+    Using both an SoText2 and SoText3 node triggers an assert when
+    using the Win32 API for font support:
+    
+    Assertion failed: unused, file win32.c, line 1131 
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#Inventor V2.1 ascii
+
+Separator {
+   SoFont { 
+      name "Times New Roman"
+      size 50.0
+   }
+   SoText3 { string ["vi har en grevling i taket"] }
+   SoText2 { string ["greveling-grevelang"] }
+}
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    Switching the order of SoText3 and SoText2 instead results in a
+    access violation in cc_flww32_get_bitmap_advance() in win32.c:577
+
+    This only happens with certain font sizes (e.g. the using a size
+    of 120 is ok). 
+
+    20041201 kyrah
+
+=====================================================================
