@@ -646,7 +646,7 @@ SoBase::getTraceRefs(void)
 /*!
   Returns \a TRUE if this object will be written more than once upon
   export. Note that the result from this method is only valid during the
-  second pass of a write action.
+  second pass of a write action (and partly during the COUNT_REFS pass).
  */
 SbBool
 SoBase::hasMultipleWriteRefs(void) const
@@ -690,36 +690,26 @@ SoBase::writeHeader(SoOutput * out, SbBool isGroup, SbBool isEngine) const
   if (!firstwrite) {
     out->write(REFERENCE_KEYWORD);
     if (!out->isBinary()) out->write(' ');
-#if 1 // New code
     SbString s = name.getString();
     s += SoBase::refwriteprefix.getString();
-    s += refid;
+    SbString refidstr;
+    refidstr.intToString(refid);
+    s += refidstr;
     out->write(s.getString());
-#else // OBSOLETED: doesn't work with binary writes. 19990713 mortene.
-    out->write(name.getString());
-    out->write(SoBase::refwriteprefix.getString());
-    out->write(refid);
-#endif
   }
   else {
     if (name.getLength() || multiref) {
       out->write(DEFINITION_KEYWORD);
       if (!out->isBinary()) out->write(' ');
 
-#if 1 // New code
       SbString s = name.getString();
       if (multiref) {
 	s += SoBase::refwriteprefix.getString();
-	s += refid;
+	SbString refidstr;
+	refidstr.intToString(refid);
+	s += refidstr;
       }
       out->write(s.getString());
-#else // OBSOLETED: doesn't work with binary writes. 19990713 mortene.
-      out->write(name.getString());
-      if (multiref) {
-	out->write(SoBase::refwriteprefix.getString());
-	out->write(refid);
-      }
-#endif
       if (!out->isBinary()) out->write(' ');
     }
 

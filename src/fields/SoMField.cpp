@@ -242,7 +242,7 @@ SoMField::writeValue(SoOutput * out) const
   SbBool indented = FALSE;
 
   const int num = this->getNum();
-  if (num > 1) out->write("[ ");
+  if ((num > 1) || (num == 0)) out->write("[ ");
 
   for (int i=0; i < num; i++) {
     this->write1Value(out, i);
@@ -263,7 +263,7 @@ SoMField::writeValue(SoOutput * out) const
       }
     }
   }
-  if (num>1) out->write(" ]");
+  if ((num > 1) || (num == 0)) out->write(" ]");
 
   if (indented) out->decrementIndent();
 }
