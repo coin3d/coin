@@ -580,7 +580,11 @@ SoLineSet::GLRender(SoGLRenderAction * action)
   doTextures = tb.needCoordinates();
 
   Binding mbind = findMaterialBinding(action->getState());
-  Binding nbind = findNormalBinding(action->getState());
+
+
+  Binding nbind;
+  if (!needNormals) nbind = OVERALL;
+  else nbind = findNormalBinding(action->getState());
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
@@ -700,7 +704,7 @@ SoLineSet::generateDefaultNormals(SoState * , SoNormalCache * nc)
 /*!
   Overloader to return FALSE.
 */
-SbBool 
+SbBool
 SoLineSet::generateDefaultNormals(SoState *,
                                   SoNormalBundle *)
 {
