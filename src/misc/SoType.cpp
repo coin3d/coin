@@ -73,6 +73,7 @@
 #include <Inventor/lists/SbList.h>
 
 #include <Inventor/C/tidbits.h>
+#include <../tidbitsp.h>
 #include <Inventor/C/glue/dl.h>
 #include <assert.h>
 #include <stdlib.h> // NULL
@@ -333,23 +334,12 @@ SoType::overrideType(const SoType originalType,
 // far-reaching consequences for the whole SoType class implementation.
 // 2002-01-24 larsa
 
-// FIXME: wrap the below dlopen-dependent code in ifdefs.  20020216 larsa
-// FIXME: this implementation currently only works for single-level inheritance
-// from builtin nodes - I have not yet been able to load modules that are
-// derived from other modules.  This might be related to my module-building 
-// parameters though, and not this code, so maybe it works if I could build
-// the modules correctly...  20020216 larsa
-
 /*!
   This static function returns the SoType object associated with name \a name.
 
   Type objects for builtin types can be retreived by name both with and
   without the "So" prefix.  For dynamically loadable extension nodes, the
   name given to this function must match exactly.
-
-  FIXME: investigate how it works for non-builtin extension nodes.  It
-  probably works as for builtins, given that the class in question isn't
-  named with an "So" prefix.  20030223 larsa
 
   If no node type with the given name has been initialized, a dynamically
   loadable extension node with the given name is searched for.  If one is
@@ -358,8 +348,18 @@ SoType::overrideType(const SoType originalType,
   initialization of the module fails, SoType::badType() is returned.
 
   Support for dynamically loadable extension nodes varies from platform
-  to platform, and compiler suite to compiler suite.
+  to platform, and from compiler suite to compiler suite.
 */
+
+// FIXME: investigate how So-prefix stripping works for non-builtin
+// extension nodes.  It probably works as for builtins, given that the
+// class in question isn't named with an "So" prefix.  20030223 larsa
+
+#ifdef _MSC_VER
+typedef void __cdecl initClassFunction(void);
+#else
+typedef void initClassFunction(void);
+#endif
 
 SoType
 SoType::fromName(const SbName name)
@@ -377,13 +377,16 @@ SoType::fromName(const SbName name)
   // FIXME: we need to split SbDict into SbIntDict and SbPtrDict. 20030223 larsa
   if (!SoType::typedict->find((unsigned long)name.getString(), temp) &&
       !SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
-    SbBool nomsg = // SoError not initialized yet
+    SbBool nomsg = // SoError not initialized yet so we can't msg...
       (SoError::getClassTypeId() == SoType::badType()) ? TRUE : FALSE;
-    mangleFunc * manglefunc = getManglingFunction();
+
+    // find out which C++ name mangling scheme the compiler uses
+    static mangleFunc * manglefunc = getManglingFunction();
     if ( manglefunc == NULL ) {
       // dynamic loading is not yet supported for this compiler suite
       static long first = 1;
       if ( first ) {
+        // fprintf(coin_get_stderr(), "unable to figure out the C++ name mangling scheme\n");
         if ( !nomsg )
 	  SoDebugError::post("SoType::fromName", "unable to figure out the C++ name mangling scheme");
         first = 0;
@@ -391,60 +394,70 @@ SoType::fromName(const SbName name)
       return SoType::badType();
     }
     SbString mangled = manglefunc(name.getString());
-    SbString modulenamestring(name.getString());
 
-    // FIXME: put the module suffix string into a config.h variable.
-    // 20030223 larsa
-#ifdef HAVE_WINDOWS_H
-    modulenamestring += ".dll";
-#else
-    modulenamestring += ".so";
-#endif
-    SbName module(modulenamestring.getString());
-
-    if ( !SoType::moduledict ) {
+    if ( SoType::moduledict == NULL ) {
       SoType::moduledict = new SbDict;
-      // FIXME: add cleanup function to atexit()?
-    } else {
+      // FIXME: this is a one-off memory leak - add cleanup
+      // code to coin_atexit()
+    }
+
+    // FIXME: should we search the application code for the initClass()
+    // symbol first?  dlopen(NULL) might not be portable enough, but it
+    // could be a cool feature.  20030223 larsa
+
+    SbString modulename;
+    static char * modulenamepatterns[] = {
+      "%s.so", "lib%s.so", "%s.dll", "lib%s.dll",
+      NULL
+    };
+
+    cc_libhandle handle = NULL;
+    int i;
+    for ( i = 0; (modulenamepatterns[i] != NULL) && (handle == NULL); i++ ) {
+      modulename.sprintf(modulenamepatterns[i], name.getString());
+      SbName module(modulename.getString());
+
       void * idx = NULL;
       if ( SoType::moduledict->find((unsigned long) module.getString(), idx) ) {
         // Module has been loaded, but type is not yet finished initializing.
         // SoType::badType() is here the expected return value.  See below.
         return SoType::badType();
       }
+
+      // FIXME: should we maybe use a Coin-specific search path variable
+      // instead of the LD_LIBRARY_PATH one?  20020216 larsa
+
+      handle = cc_dl_open(module.getString());
+      if ( handle != NULL ) {
+        // We register the module so we don't recurse infinitely in the
+        // initClass() function which calls SoType::fromName() on itself
+        // which expects SoType::badType() in return.  See above.
+        SoType::moduledict->enter((unsigned long)module.getString(), handle);
+      }
     }
 
-    // FIXME: should we maybe use a Coin-specific search path variable
-    // instead of the LD_LIBRARY_PATH one?  20020216 larsa
-    // FIXME: should we search the already loaded application code for
-    // the initClass() symbol first?  dlopen(NULL) might not be portable
-    // enough.  20030223 larsa
-
-    cc_libhandle handle = cc_dl_open(module.getString());
-    if ( handle != NULL ) {
-      // We register the module so we don't recurse infinitely in the
-      // initClass() function which calls SoType::fromName() on itself
-      // and expects SoType::badType() in return.  See above.
-      SoType::moduledict->enter((unsigned long)module.getString(), handle);
-    } else {
-      // no such module
-      return SoType::badType();
-    }
+    if ( handle == NULL ) return SoType::badType();
 
     // find and invoke the initClass() function.
-    void (*initClass)() = (void (*)()) cc_dl_sym(handle, mangled.getString());
+    // FIXME: declspec stuff
+    initClassFunction * initClass = (initClassFunction *) cc_dl_sym(handle, mangled.getString());
     if ( initClass == NULL ) {
+      // FIXME: if a module is found and opened and initialization
+      // fails, the remaining module name patterns are not tried.
+      // might trigger as a problem one day...  2030224 larsa
       if ( !nomsg )
-	SoDebugError::postWarning("SoType::fromName", "mangled symbol %s not found in module %d.  it might be compiled with the wrong compiler/compiler settings or something similar.", mangled.getString(), module.getString());
+	SoDebugError::postWarning("SoType::fromName", "mangled symbol %s not found in module %d.  it might be compiled with the wrong compiler/compiler settings or something similar.", mangled.getString(), modulename.getString());
       cc_dl_close(handle);
       return SoType::badType();
     }
+
     initClass();
+
     // We run these tests to get the index into the temp pointer - that's
     // what typedict stores as userdata in SoType::createType().
     if (!SoType::typedict->find((unsigned long)name.getString(), temp) &&
         !SoType::typedict->find((unsigned long)noprefixname.getString(), temp)) {
-      return SoType::badType();
+      assert(0 && "how did this happen?");
     }
   }
   const int index = (int) temp;
