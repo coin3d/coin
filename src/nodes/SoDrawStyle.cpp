@@ -157,37 +157,49 @@ void
 SoDrawStyle::doAction(SoAction * action)
 {
   SoState * state = action->getState();
-
   uint32_t flags = SoOverrideElement::getFlags(state);
+
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
 
-  if (!style.isIgnored() && !TEST_OVERRIDE(DRAW_STYLE)) {
+  if (!this->style.isIgnored() && !TEST_OVERRIDE(DRAW_STYLE)) {
     SoDrawStyleElement::set(state, this,
-                            (SoDrawStyleElement::Style)style.getValue());
+                            (SoDrawStyleElement::Style)this->style.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setDrawStyleOverride(state, this, TRUE);
     }
   }
-  if (!linePattern.isIgnored() && !TEST_OVERRIDE(LINE_PATTERN)) {
-    SoLinePatternElement::set(state, this, linePattern.getValue());
+  if (!this->linePattern.isIgnored() && !TEST_OVERRIDE(LINE_PATTERN)) {
+    SoLinePatternElement::set(state, this, this->linePattern.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setLinePatternOverride(state, this, TRUE);
     }
   }
-  if (!lineWidth.isIgnored() && !TEST_OVERRIDE(LINE_WIDTH)) {
-    SoLineWidthElement::set(state, this, lineWidth.getValue());
+  if (!this->lineWidth.isIgnored() && !TEST_OVERRIDE(LINE_WIDTH)) {
+    SoLineWidthElement::set(state, this, this->lineWidth.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setLineWidthOverride(state, this, TRUE);
     }
   }
-  if (!pointSize.isIgnored() && !TEST_OVERRIDE(POINT_SIZE)) {
-    SoPointSizeElement::set(state, this, pointSize.getValue());
+  if (!this->pointSize.isIgnored() && !TEST_OVERRIDE(POINT_SIZE)) {
+
+    float val = this->pointSize.getValue();
+    // FIXME: this is a fix to avoid sending an invalid 0.0 value
+    // (which is the pointSize field default value) to the
+    // SoGLPointSizeElement (which will result in a
+    // SoDebugError::postWarning()).  The "FIXME" part of this is that
+    // the default pointSize value is stupid -- but we can't really
+    // fix that without breaking the API 100% compatible goal with SGI
+    // Open Inventor v2.1, even though it would be a very minor
+    // incompatibility issue.  20010823 mortene.
+    if (val == 0.0f) { val = 1.0f; }
+
+    SoPointSizeElement::set(state, this, val);
     if (this->isOverride()) {
       SoOverrideElement::setPointSizeOverride(state, this, TRUE);
     }
   }
-#undef TEST_OVERRIDE
 
+#undef TEST_OVERRIDE
 }
 
 // Doc from superclass.
