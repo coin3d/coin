@@ -119,6 +119,12 @@ THE LINKS
     http://oss.sgi.com/projects/ogl-sample/registry/ARB/get_proc_address.txt
     http://oss.sgi.com/projects/ogl-sample/ABI/
 
+  See also the GLAF project ("OpenGL Advanced Functionality"), which
+  wraps extensions etc in a portable framework (available under an
+  MIT-license):
+
+     http://webs.ono.com/usr003/cesarblecua/
+
 * An application partly covering the ideas behind our "gl-attack"
   suggested project: <URL:http://glean.sourceforge.net>.
 
