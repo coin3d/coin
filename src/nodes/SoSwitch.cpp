@@ -242,24 +242,27 @@ SoSwitch::doAction(SoAction * action)
 SbBool
 SoSwitch::affectsState(void) const
 {
-  // FIXME: this function can be called during an SoSearchAction's
-  // invocation of SoSwitch::search(), which means we should check
-  // that condition and behave as if whichChild was == SO_SWITCH_ALL
-  // if the SoSearchAction::isSearchingAll() flag equated to TRUE.
+  // Overridden because when this function is called we don't know
+  // which "mode" the traversing action is in. If it's an
+  // SoSearchAction with isSearchingAll() set to TRUE, we should
+  // behave as if whichChild == SO_SWITCH_ALL, for instance.
   //
-  // There are probably also other functions in this class that need
-  // an "is-searching-all" flag in case we're inside the "mode" of an
-  // SoSearchAction search in the "searching-all" state.
-  //
-  // 20011219 mortene.
+  // (To handle this exact case, SGI and TGS Inventor seems to use a
+  // global static flag SoSearchAction::duringSearchAll. We find this
+  // to be an utterly crap idea, though.)
+  // 
+  // So to be safe, we _always_ behave as if whichChild is set to
+  // traverse all children. The worst that can happen is that we get a
+  // "false positive", ie TRUE when it should be FALSE. That means the
+  // action needs to traverse one level further down onto one of our
+  // children -- which will just take a miniscule amount of additional
+  // processing time.
 
-  int idx = this->whichChild.getValue();
-  if (idx == SO_SWITCH_NONE) return FALSE;
-  if (idx >= this->getNumChildren()) return FALSE;
-  if (idx >= 0 && !this->getChild(idx)->affectsState()) return FALSE;
-  // FIXME: cover SO_SWITCH_INHERIT and SO_SWITCH_ALL.
-
-  return TRUE;
+  int n = this->getNumChildren();
+  for (int i=0; i < n; i++) {
+    if (this->getChild(i)->affectsState()) { return TRUE; }
+  }
+  return FALSE;
 }
 
 // Documented in superclass.
