@@ -1322,6 +1322,10 @@
 
     20030123 mortene.
 
+    UPDATE mortene 20030203: what looks like the same problem can be
+    seen when using an SoClipPlaneManip (and disappears when using the
+    SoJackDragger stand-alone).
+
 =====================================================================
 
 054 SoComputeBoundingBox engine probably fails with viewport-dependent
