@@ -1,31 +1,7 @@
 /* include/config.h.in.  Generated automatically from configure.in by autoheader.  */
 
 
-/* fix for removing redefinition warnings */
-#ifdef COIN_CONFIGURE_BUILD
-# undef COIN_CONFIGURE_BUILD /* protection */
-# undef COIN_CONFIGURE_HOST
-# undef COIN_CONFIGURE_TARGET
-# undef HAVE_INTTYPES_H
-# undef HAVE_STDINT_H
-# undef HAVE_SYS_TYPES_H
-# undef HAVE_INT8_T
-# undef HAVE_UINT8_T
-# undef HAVE_INT16_T
-# undef HAVE_UINT16_T
-# undef HAVE_INT32_T
-# undef HAVE_UINT32_T
-# undef HAVE_INT64_T
-# undef HAVE_UINT64_T
-# undef COIN_INT8_T
-# undef COIN_UINT8_T
-# undef COIN_INT16_T
-# undef COIN_UINT16_T
-# undef COIN_INT32_T
-# undef COIN_UINT32_T
-# undef COIN_INT64_T
-# undef COIN_UINT64_T
-#endif
+#include <unconfig.h>
 
 
 /* Build system. */
