@@ -1746,7 +1746,13 @@ cc_glglue_glXGetCurrentDisplay(const cc_glglue * w)
     assert(glGetError() == GL_NO_ERROR && "GL error when calling glGetString() -- no current GL context?");
   
     (void)fprintf(stdout, "glGetString(GL_VERSION)=='%s'\n", str);
-  
+ 
+    (void)fprintf(stdout, "glGenTextures=='%p'\n",
+                  cc_glglue_getprocaddress("glGenTextures"));
+
+    (void)fprintf(stdout, "glGenTexturesEXT=='%p'\n",
+                  cc_glglue_getprocaddress("glGenTexturesEXT"));
+ 
     cc_glglue_context_reinstate_previous(ctx);
     cc_glglue_context_destruct(ctx);
     return 0;
