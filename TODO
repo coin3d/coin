@@ -7,9 +7,6 @@ prioritized order)
 
 * [mortene:19990912] include check in configure.in for OpenGL/Mesa.
 
-* [mortene:19990913] ``make'' package within the srcdir, so the
-  .cvsignore file(s) can be constructed and submitted.
-
 * [mortene:19990913] remove multiple -lsimage on the final libCoin
   link line.
 
@@ -41,6 +38,9 @@ Done
 ====
 
 (format is: "* [author:conceived-date][implementer:finished-date] item")
+
+* [mortene:19990913][mortene:19990913] ``make'' package within the
+  srcdir, so the .cvsignore file(s) can be constructed and submitted.
 
 * [mortene:19990912][mortene:19990913] make version settings in
   SbBasic.h automatically follow the definitions made in configure.in.
