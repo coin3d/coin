@@ -249,3 +249,13 @@
     mortene 20020624.
 
 =====================================================================
+
+012 Buglet: the SoMaterial::shininess field is not clamped if it's >
+    1.0. This causes OpenGL errors, at least with some drivers.
+
+    (The other material field values are also likely to be able to
+    cause problems like this.)
+
+    mortene 20020625.
+
+=====================================================================
