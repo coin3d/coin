@@ -381,9 +381,9 @@ SoVRMLSound::SoVRMLSound(void)
 
   PRIVATE(this)->cliphandle = NULL;
 
-#ifdef HAVE_SOUND
   static SbBool warningprintedonce = FALSE;
 
+#ifdef HAVE_SOUND
   if (!warningprintedonce) {
     if (!SoAudioDevice::instance()->haveSound()) {
       warningprintedonce = TRUE;
@@ -441,7 +441,16 @@ SoVRMLSound::SoVRMLSound(void)
       }
     }
   }
-#endif // HAVE_SOUND
+#else // !HAVE_SOUND
+  if (!warningprintedonce) {
+    SoDebugError::postWarning("SoVRMLSound::SoVRMLSound", 
+      "You are using a SoVRMLSound node, but this version of Coin was built "
+      "without sound support. If you'd like to have sound support in Coin, "
+      "please reconfigure and rebuild the Coin library without specifying "
+      "--disable-sound or --disable-vrml on the configure command line.");
+    warningprintedonce = TRUE;
+  }
+#endif // !HAVE_SOUND
 }
 
 /*!
