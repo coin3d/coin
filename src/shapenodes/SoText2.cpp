@@ -147,10 +147,8 @@ public:
   SoText2P(SoText2 * textnode) : master(textnode)
   {
     this->bbox.makeEmpty();
-    this->useglyphcache = TRUE;
     this->prevfontname = SbName("");
     this->prevfontsize = 0.0;
-    this->hasbuiltglyphcache = FALSE;
   }
 
   void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
@@ -163,15 +161,13 @@ public:
 
   // FIXME: use notify() to handle changes, not comparison with last value.
 
-  SbBool useglyphcache;
-  SbList< SbList<const SoGlyph*> * > glyphs;
-  SbList< SbList<SbVec2s> * > positions;
+  SbList< SbList<const SoGlyph *> > glyphs;
+  SbList< SbList<SbVec2s> > positions;
   SbList< SbString > laststring;
   SbList<int> stringwidth;
   SbBox2s bbox;
   SbName prevfontname;
   float prevfontsize;
-  SbBool hasbuiltglyphcache;
 
 private:
   SoText2 * master;
@@ -292,10 +288,10 @@ SoText2::GLRender(SoGLRenderAction * action)
         }
         charcnt = PRIVATE(this)->laststring[i].getLength();
         for (int i2 = 0; i2 < charcnt; i2++) {
-          buffer = (*PRIVATE(this)->glyphs[i])[i2]->getBitmap(thissize, thispos, FALSE);
+          buffer = PRIVATE(this)->glyphs[i][i2]->getBitmap(thissize, thispos, FALSE);
           ix = thissize[0];
           iy = thissize[1];
-          position = (*PRIVATE(this)->positions[i])[i2];
+          position = PRIVATE(this)->positions[i][i2];
           fx = (float)position[0];
           fy = (float)position[1];
           
@@ -419,8 +415,8 @@ SoText2::rayPick(SoRayPickAction * action)
     
     float charleft, charright;
     for (i=0; i<strlength; i++) {
-      charleft = strleft + (*PRIVATE(this)->positions[stringidx])[i][0] / bbwidth;
-      charright = (i==strlength-1 ? strright : strleft + ((*PRIVATE(this)->positions[stringidx])[i+1][0] / bbwidth));
+      charleft = strleft + PRIVATE(this)->positions[stringidx][i][0] / bbwidth;
+      charright = (i==strlength-1 ? strright : strleft + (PRIVATE(this)->positions[stringidx][i+1][0] / bbwidth));
       if (hdist >= charleft && hdist <= charright) {
         charidx = i;
         i = strlength;
@@ -467,14 +463,11 @@ SoText2P::flushGlyphCache(const SbBool unrefglyphs)
   for (int i=0; i < nrlines; i++) {
     if (unrefglyphs) {
       for (int j=0; j<this->laststring[i].getLength(); j++) {
-        if ((*this->glyphs[i])[j]) {
-          (*this->glyphs[i])[j]->unref();
+        if (this->glyphs[i][j]) {
+          this->glyphs[i][j]->unref();
         }
       }
     }
-
-    delete this->glyphs[i];
-    delete this->positions[i];
   }
 
   this->stringwidth.truncate(0);
@@ -495,8 +488,8 @@ SoText2P::dumpGlyphCache()
     fprintf(stderr,"  stringwidth[%d]=%d\n", i, this->stringwidth[i]);
     fprintf(stderr,"  laststring[%d]=%s\n", i, this->laststring[i].getString());
     for (int j = 0; j < this->laststring[i].getLength(); j++) {
-      fprintf(stderr,"    glyph[%d][%d]=%p\n", i, j, (*this->glyphs[i])[j]);
-      fprintf(stderr,"    position[%d][%d]=(%d, %d)\n", i, j, (*this->positions[i])[j][0], (*this->positions[i])[j][1]);
+      fprintf(stderr,"    glyph[%d][%d]=%p\n", i, j, this->glyphs[i][j]);
+      fprintf(stderr,"    position[%d][%d]=(%d, %d)\n", i, j, this->positions[i][j][0], this->positions[i][j][1]);
     }
   }
 }
@@ -596,9 +589,6 @@ SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
 SbBool
 SoText2P::shouldBuildGlyphCache(SoState * state)
 {
-  if (!this->hasbuiltglyphcache) { return TRUE; }
-  if (!this->useglyphcache) { return FALSE; }
-
   const SbName curfontname = SoFontNameElement::get(state);
   const float curfontsize = SoFontSizeElement::get(state);
 
@@ -622,52 +612,47 @@ int
 SoText2P::buildGlyphCache(SoState * state)
 {
   if (this->shouldBuildGlyphCache(state)) {
-    const SbName curfontname = SoFontNameElement::get(state);
-    const float curfontsize = SoFontSizeElement::get(state);
-    this->prevfontname = curfontname;
-    this->prevfontsize = curfontsize;
+    this->prevfontname = SoFontNameElement::get(state);
+    this->prevfontsize = SoFontSizeElement::get(state);
     this->flushGlyphCache(FALSE);
-    this->hasbuiltglyphcache = TRUE;
     const int nrlines = PUBLIC(this)->string.getNum();
 
     SbVec2s penpos(0, 0);
-    SbVec2s advance = penpos;
-    SbVec2s kerning = penpos;
 
     for (int i=0; i < nrlines; i++) {
-      this->glyphs.append(new SbList<const SoGlyph *>);
-      this->positions.append(new SbList<SbVec2s>);
+      this->glyphs.append(SbList<const SoGlyph *>());
+      this->positions.append(SbList<SbVec2s>());
 
       const int strlength = PUBLIC(this)->string[i].getLength();
       this->laststring.append(SbString(PUBLIC(this)->string[i]));
 
       SbVec2s thissize;
+      SbVec2s kerning(0, 0);
+      SbVec2s advance(0, 0);
 
       for (int j = 0; j < strlength; j++) {
         const unsigned int idx = this->laststring[i][j];
-        (*this->glyphs[i]).append(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
+        this->glyphs[i].append(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
         // Should _always_ be able to get hold of a glyph -- if no
         // glyph is available for a specific character, a default
         // empty rectangle should be used.  -mortene.
-        assert((*this->glyphs[i])[j]);
+        assert(this->glyphs[i][j]);
 
         SbVec2s thispos;
-        (*this->glyphs[i])[j]->getBitmap(thissize, thispos, FALSE);
+        this->glyphs[i][j]->getBitmap(thissize, thispos, FALSE);
+
         if (j > 0) {
-          kerning = (*this->glyphs[i])[j-1]->getKerning(*(*this->glyphs[i])[j]);
-          advance = (*this->glyphs[i])[j-1]->getAdvance();
+          kerning = this->glyphs[i][j-1]->getKerning(*this->glyphs[i][j]);
+          advance = this->glyphs[i][j-1]->getAdvance();
         }
-        else {
-          kerning = SbVec2s(0,0);
-          advance = SbVec2s(0,0);
-        }
+
         penpos = penpos + advance + kerning;
-        (*this->positions[i]).append(penpos + thispos + SbVec2s(0, -thissize[1]));
-        this->bbox.extendBy((*this->positions[i])[j]);
-        this->bbox.extendBy((*this->positions[i])[j] + SbVec2s(thissize[0], -thissize[1]));
+        this->positions[i].append(penpos + thispos + SbVec2s(0, -thissize[1]));
+        this->bbox.extendBy(this->positions[i][j]);
+        this->bbox.extendBy(this->positions[i][j] + SbVec2s(thissize[0], -thissize[1]));
       }
 
-      this->stringwidth.append((*this->positions[i])[strlength - 1][0] + thissize[0]);
+      this->stringwidth.append(this->positions[i][strlength - 1][0] + thissize[0]);
       penpos = SbVec2s(0, penpos[1] - (short)(this->prevfontsize * PUBLIC(this)->spacing.getValue()));
     }
   }
