@@ -9,8 +9,8 @@ use strict;
 ### Globals ########################################################
 
 # Detect if we have ``cygpath'' available.
-my $CYGPATH = "cygpath -w";
-`$CYGPATH /bin > /dev/null 2>&1`;
+my $CYGPATH = "cygpath.exe -w";
+`$CYGPATH /bin`;
 if ($? != 0) { $CYGPATH="echo"; }
 
 # 1st arg.
