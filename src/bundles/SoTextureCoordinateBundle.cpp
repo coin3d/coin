@@ -76,20 +76,9 @@ SoTextureCoordinateBundle(SoAction * const action,
   //
   // return immediately if there is no texture
   //
-  if (forRendering && 
-      !SoGLTextureEnabledElement::get(this->state) &&
-      !SoGLTexture3EnabledElement::get(this->state))
+  if (!SoTextureEnabledElement::get(this->state) &&
+      !SoTexture3EnabledElement::get(this->state))
     return;
-  if (!forRendering) {
-    // test if element is enabled for this action.
-    int stackidx = SoTextureImageElement::getClassStackIndex();
-    if (this->state->isElementEnabled(stackidx)) {
-      SbVec3s dummysize;
-      int dummynum;
-      if (!SoTextureImageElement::getImage(this->state, dummysize, dummynum))
-        return;
-    }
-  }
 
   // FIXME: shapenode is not guaranteed to be a SoVertexShape, since
   // the VRML nodes have a different node hierarchy. It is safe to
@@ -262,18 +251,18 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   }
 
   // Map S,T,R to X,Y,Z for 3D texturing
-  if (!forRendering || SoGLTexture3EnabledElement::get(this->state)) {
+  if (SoTexture3EnabledElement::get(this->state)) {
     this->flags |= FLAG_3DTEXTURES;
     this->defaultdim0 = 0;
     this->defaultdim1 = 1;
-
-  // disable texture coordinate generation if empty or one
-  // dimensional bounding box.
+    
+    // disable texture coordinate generation if empty or one
+    // dimensional bounding box.
     if (size[2] <= 0.0f) {
       this->flags &= ~(FLAG_NEEDCOORDS|FLAG_DEFAULT|FLAG_FUNCTION);
       return;
     }
-
+    
     this->defaultorigo[2] = origo[2];
     this->defaultsize[2] = size[2];
     assert(this->defaultsize[2] > 0.0f);
