@@ -19,10 +19,23 @@
 
 /*!
   \class SoSurroundScale SoSurroundScale.h Inventor/nodes/SoSurroundScale.h
-  \brief The SoSurroundScale class ...
+  \brief The SoSurroundScale class is used to make a default cube surround geometry.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node calculates a transformation (a translation and a scale)
+  which will, when the node is traversed, be appended to the current
+  model matrix, making a default cube placed directly to the right of
+  this node in the graph surround geometry to the right of the
+  container branch this node is on. The container is specified by the
+  field \e numNodesUpToContainer. When calculating the bounding box to
+  be surrounded, the bounding box action will be applied to the
+  container node, and the bounding box calculations will be reset
+  after traversing the node specified by the field \e
+  numNodesUpToReset.
+
+  This node is (so far) only used by draggers to make it possible for
+  manipulators to have the dragger surround the geometry it is
+  modifying.  
 */
 
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -33,7 +46,6 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/misc/SoTempPath.h>
-#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -66,8 +78,6 @@ SoSurroundScale::SoSurroundScale()
 
   this->cacheOK = FALSE;
   this->ignoreInBBox = FALSE;
-
-  // FIXME: test how to support this, pederb, 20000215
   this->doTranslations = TRUE;
 }
 
@@ -91,8 +101,9 @@ SoSurroundScale::initClass(void)
 
 
 /*!
-  FIXME: write doc
- */
+  Invalidates the cached transformation, forcing a recalculation
+  to be done the next time this node is traversed.
+*/
 void
 SoSurroundScale::invalidate(void)
 {
@@ -101,23 +112,26 @@ SoSurroundScale::invalidate(void)
 
 /*!
   FIXME: write doc
- */
+*/
 void
 SoSurroundScale::doAction(SoAction *action)
 {
   SoState *state = action->getState();
   if (!this->cacheOK) {
-    SbMatrix inv = SoModelMatrixElement::get(state).inverse();
-    this->updateMySurroundParams(action, inv);
+    SbMatrix dummy;
+    this->updateMySurroundParams(action, dummy);
   }
-  if (this->cachedTranslation != SbVec3f(0.0f, 0.0f, 0.0f))
+  if (this->doTranslations && 
+      this->cachedTranslation != SbVec3f(0.0f, 0.0f, 0.0f)) {
     SoModelMatrixElement::translateBy(state, this, this->cachedTranslation);
+  }
   if (this->cachedScale != SbVec3f(1.0f, 1.0f, 1.0f)) 
     SoModelMatrixElement::scaleBy(state, this, this->cachedScale);
 }
 
 /*!
-  FIXME: write doc
+  Sets whether the translation part of the transformation should
+  be ignored or not.
 */
 void
 SoSurroundScale::setDoingTranslations(const SbBool val)
@@ -126,7 +140,8 @@ SoSurroundScale::setDoingTranslations(const SbBool val)
 }
 
 /*!
-  FIXME: write doc
+  Returns whether the translation part of the transformation
+  should be ignored or not.
 */
 SbBool
 SoSurroundScale::isDoingTranslations(void)
@@ -171,8 +186,10 @@ SoSurroundScale::getMatrix(SoGetMatrixAction *action)
   if (!this->cacheOK) {
     this->updateMySurroundParams(action, action->getInverse());
   }
-  if (this->cachedTranslation != SbVec3f(0.0f, 0.0f, 0.0f))
+  if (this->doTranslations && 
+      this->cachedTranslation != SbVec3f(0.0f, 0.0f, 0.0f)) {
     action->translateBy(this->cachedTranslation);
+  }
   if (this->cachedScale != SbVec3f(1.0f, 1.0f, 1.0f))
     action->scaleBy(this->cachedScale);
 }
@@ -193,9 +210,12 @@ SoSurroundScale::pick(SoPickAction *action)
 */
 void
 SoSurroundScale::updateMySurroundParams(SoAction *action,
-                                        const SbMatrix &invmodelmatrix)
+                                        const SbMatrix & /*inv*/)
 {
-  this->cacheOK = TRUE;
+  // I haven't found any use for the inv argument. The function
+  // should be kept as is to make this node OIV compatible though.
+  // pederb, 20000220
+
   int numtocontainer = this->numNodesUpToContainer.getValue();
   int numtoreset = this->numNodesUpToReset.getValue();
 
@@ -218,46 +238,42 @@ SoSurroundScale::updateMySurroundParams(SoAction *action,
   const SoFullPath *curpath = (const SoFullPath*) action->getCurPath(); 
   
   SoNode *applynode = curpath->getNodeFromTail(numtocontainer);
-
-  SoTempPath temppath(4);
-  int start = curpath->getLength() - 1 - numtocontainer;
-  int end = curpath->getLength() - 1 - numtoreset;
   
+  int start = curpath->getLength() - 1 - numtocontainer;
+  int end = curpath->getLength() - 1 - numtoreset;  
   assert(start >= 0);
   assert(end >= 0);
   
+  SoTempPath temppath(end-start+1);
   for (int i = start; i <= end; i++) {
     temppath.append(curpath->getNode(i));
   } 
   SoGetBoundingBoxAction bboxaction(SoViewportRegionElement::get(action->getState()));
-
+  
   // reset bbox when returning from surroundscale branch,
   // meaning we'll calculate the bbox of only the geometry
   // to the right of this branch, getting the wanted result.
   bboxaction.setResetPath(&temppath, FALSE, SoGetBoundingBoxAction::ALL);
   bboxaction.apply(applynode);
   
-  bboxaction.getXfBoundingBox().transform(invmodelmatrix);
   SbBox3f box = bboxaction.getBoundingBox();
-  
   box.getSize(this->cachedScale[0], this->cachedScale[1],
               this->cachedScale[2]);
+  
   this->cachedScale *= 0.5f;
   this->cachedInvScale[0] = 1.0f / this->cachedScale[0];
   this->cachedInvScale[1] = 1.0f / this->cachedScale[1];
   this->cachedInvScale[2] = 1.0f / this->cachedScale[2];
-
-  // FIXME: investigate what to do when a translation is needed.
-  // pederb, 20000216
-  this->cachedTranslation = SbVec3f(0,0,0);
-
+  
+  this->cachedTranslation = box.getCenter();
+  
   this->setIgnoreInBbox(storedignore);
   this->cacheOK = TRUE;
 }
 
 /*!
-  Sets whether bounding box in SoGetBoundingBoxAction should
-  be affected by this node.
+  Sets whether bounding box calculations in SoGetBoundingBoxAction 
+  should be affected by this node.
 */
 void
 SoSurroundScale::setIgnoreInBbox(const SbBool val)
@@ -266,8 +282,8 @@ SoSurroundScale::setIgnoreInBbox(const SbBool val)
 }
 
 /*!
-  Returns whether bounding box in SoGetBoundingBoxAction should
-  be affected by this node.
+  Returns whether bounding box calculations in SoGetBoundingBoxAction 
+  should be affected by this node.
 */
 SbBool
 SoSurroundScale::isIgnoreInBbox(void)
