@@ -77,7 +77,7 @@ SbBool
 SoAccumulatedElement::matches(const SoElement * element) const
 {
   const SoAccumulatedElement * elem = (const SoAccumulatedElement *)element;
-  return (elem->nodeids == this->nodeids);
+  return (elem->nodeIds == this->nodeIds);
 }
 
 /*!
@@ -86,7 +86,7 @@ SoAccumulatedElement::matches(const SoElement * element) const
 void
 SoAccumulatedElement::clearNodeIds(void)
 {
-  this->nodeids.truncate(0);
+  this->nodeIds.truncate(0);
   // we do not depend on previous elements any more
   this->recursecapture = FALSE;
 }
@@ -97,7 +97,7 @@ SoAccumulatedElement::clearNodeIds(void)
 void
 SoAccumulatedElement::addNodeId(const SoNode * const node)
 {
-  this->nodeids.append(node->getNodeId());
+  this->nodeIds.append(node->getNodeId());
 }
 
 /*!
@@ -118,11 +118,7 @@ SoAccumulatedElement::copyMatchInfo(void) const
 {
   SoAccumulatedElement * element =
     (SoAccumulatedElement *) this->getTypeId().createInstance();
-  const int n = this->nodeids.getLength();
-  for (int i = 0; i < n; i++) {
-    element->nodeids.append(this->nodeids[i]);
-  }
-  element->recursecapture = TRUE;
+  element->copyNodeIds(this);
   return element;
 }
 
@@ -133,7 +129,7 @@ SoAccumulatedElement::copyMatchInfo(void) const
 void
 SoAccumulatedElement::copyNodeIds(const SoAccumulatedElement * copyfrom)
 {
-  this->nodeids = copyfrom->nodeids;
+  this->nodeIds = copyfrom->nodeIds;
   
   // this elements uses data from previous element in stack
   this->recursecapture = TRUE;

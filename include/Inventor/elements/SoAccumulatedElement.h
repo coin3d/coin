@@ -50,7 +50,7 @@ protected:
   virtual SoElement * copyMatchInfo(void) const;
   virtual void captureThis(SoState * state) const;
 
-  SbList <uint32_t> nodeids;
+  SbList <uint32_t> nodeIds;
 
 private:
   SbBool recursecapture;
