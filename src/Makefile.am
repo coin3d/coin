@@ -204,10 +204,8 @@ install-data-local:
 
 uninstall-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
-	for file in \
-	  "$(DESTDIR)$(bindir)/$$basename.dll" \
-	  "$(DESTDIR)$(bindir)/$$basename.pdb" \
-	  "$(DESTDIR)$(libdir)/$$basename.lib"; do \
+	for ext in dll pdb lib; do \
+	  file="$(DESTDIR)$(bindir)/$$basename.$$ext"; \
 	  if test -f "$$file"; then \
 	    echo " rm -f" "$$file"; \
 	    rm -f "$$file"; \
