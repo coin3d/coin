@@ -81,3 +81,7 @@ THE LINKS
 
   http://www.stud.fee.vutbr.cz/~xpeciv00/OIV/SoGlut/
 
+* In-depth explanation of OpenGL on MSWin platforms:
+
+  <URL:http://msdn.microsoft.com/library/>, follow the link to
+  "Graphics and multimedia", then "Open GL"
