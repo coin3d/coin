@@ -370,6 +370,7 @@ SoGLCacheContextElement::scheduleDelete(SoState * state, class SoGLDisplayList *
 
   This function can be used to free OpenGL resources for a context.
   
+  \since Coin 2.3
 */
 void 
 SoGLCacheContextElement::scheduleDeleteCallback(const uint32_t contextid,
