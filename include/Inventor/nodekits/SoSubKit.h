@@ -22,6 +22,7 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFNode.h>
+#include <Inventor/nodekits/SoNodekitCatalog.h>
 
 
 #define SO_KIT_HEADER(_kitclass_) \
@@ -46,7 +47,7 @@ protected: SoSFNode _entry_; \
 
 #define SO_KIT_SOURCE(_class_) \
 SoNodekitCatalog * _class_::classcatalog = NULL; \
-const SoNodekitCatalog ** _class_::parentcatalogptr; \
+const SoNodekitCatalog ** _class_::parentcatalogptr = NULL; \
  \
 SO_NODE_SOURCE(_class_); \
  \
@@ -69,6 +70,8 @@ _class_::getClassNodekitCatalogPtr(void) \
 } \
 
 
+#define SO_KIT_IS_FIRST_INSTANCE() \
+  SO_NODE_IS_FIRST_INSTANCE()
 
 
 #define SO_KIT_INIT_CLASS(_class_, _parentclass_, _parentname_) \
@@ -81,6 +84,7 @@ _class_::getClassNodekitCatalogPtr(void) \
 #define SO_KIT_INTERNAL_INIT_CLASS(_class_) \
   do { \
     SO_NODE_INTERNAL_INIT_CLASS(_class_); \
+    _class_::parentcatalogptr = inherited::getClassNodekitCatalogPtr(); \
   } while (0)
 #endif // INTERNAL macro definition
 
@@ -88,6 +92,10 @@ _class_::getClassNodekitCatalogPtr(void) \
 #define SO_KIT_CONSTRUCTOR(_class_) \
   do { \
     SO_NODE_CONSTRUCTOR(_class_); \
+    if (SO_KIT_IS_FIRST_INSTANCE()) { \
+      SoType mytype = SoType::fromName(SO__QUOTE(_class_)); \
+      _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
+    } \
   } while (0)
 
 
@@ -95,11 +103,16 @@ _class_::getClassNodekitCatalogPtr(void) \
 #define SO_KIT_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
     SO_NODE_INTERNAL_CONSTRUCTOR(_class_); \
+    if (SO_KIT_IS_FIRST_INSTANCE()) { \
+      SoType mytype = SoType::fromName(SO__QUOTE(_class_)); \
+      _class_::classcatalog = (*_class_::parentcatalogptr)->clone(mytype); \
+    } \
   } while (0)
 #endif // INTERNAL macro definition
 
 
 #define SO_KIT_INIT_INSTANCE()
+
 
 
 #endif // !__SOSUBKIT_H__

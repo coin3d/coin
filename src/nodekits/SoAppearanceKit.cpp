@@ -27,6 +27,10 @@
 
 #include <Inventor/nodekits/SoAppearanceKit.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 SO_KIT_SOURCE(SoAppearanceKit);
 
 /*!
@@ -36,7 +40,9 @@ SoAppearanceKit::SoAppearanceKit(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoAppearanceKit);
 
-  // FIXME: need to define catalog here. 19991107 mortene.
+//    SO_KIT_ADD_CATALOG_ENTRY(lightModel, SoLightModel, TRUE, this, , TRUE);
+
+  // FIXME: need to define rest of catalog here. 19991107 mortene.
 
   SO_KIT_INIT_INSTANCE();
 }

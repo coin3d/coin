@@ -305,7 +305,8 @@ SoBaseKit::printSubDiagram(const SbName & rootname, int level)
   }
 
   int i = 0;
-  if (!parentcatalog || (parentcatalog->getPartNumber(rootname) == SO_CATALOG_NAME_NOT_FOUND)) {
+  if (!parentcatalog ||
+      parentcatalog->getPartNumber(rootname) == SO_CATALOG_NAME_NOT_FOUND) {
     fprintf(stdout, "-->");
     i++;
   }
@@ -315,20 +316,47 @@ SoBaseKit::printSubDiagram(const SbName & rootname, int level)
 
   const SoNodekitCatalog * thiscat = this->getNodekitCatalog();
   for (int j=0; j < thiscat->getNumEntries(); j++) {
-    // FIXME: make a list of children sorted to get right siblings
-    // correctly. 19991118 mortene.
+    // FIXME: make a list of sorted children to print in correct
+    // sibling order. 19991118 mortene.
     if (thiscat->getParentName(j) == rootname)
       this->printSubDiagram(thiscat->getName(j), level + 1);
   }
 }
 
 /*!
-  FIXME: write function documentation
+  Write the complete nodekit catalog in table form.
 */
 void
 SoBaseKit::printTable(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  fprintf(stdout, "CLASS %s\n", this->getTypeId().getName().getString());
+
+  const SoNodekitCatalog * thiscat = this->getNodekitCatalog();
+  for (int i=0; i < thiscat->getNumEntries(); i++) {
+    const SoType t = thiscat->getType(i);
+    fprintf(stdout, "%s   \"%s\",  So%s ",
+	    thiscat->isPublic(i) ? "   " : "PVT",
+	    thiscat->getName(i).getString(),
+	    t.getName().getString());
+    if (thiscat->isList(i)) {
+      SoTypeList tlist = thiscat->getListItemTypes(i);
+      fprintf(stdout, "[ ");
+      for (int j=0; j < tlist.getLength(); j++) {
+	if (j) fprintf(stdout, ", ");
+	fprintf(stdout, "So%s", tlist[j].getName().getString());
+      }
+      fprintf(stdout, " ] ");
+    }
+    else {
+      fprintf(stdout, " --- ");
+    }
+
+    if (t != thiscat->getDefaultType(i)) {
+      fprintf(stdout, ", (default type = So%s)",
+	      thiscat->getDefaultType(i).getName().getString());
+    }
+    fprintf(stdout, "\n");
+  }  
 }
 
 /*!
