@@ -510,6 +510,7 @@ SoGlyph::getGlyph(SoState * state,
       coin_glyph_info info(character, fontsize[0], state_name, g);
       g->pimpl->refcount++;
       activeGlyphs->append(info);
+      CC_MUTEX_UNLOCK(SoGlyph_mutex);
       return g;
     }
   }
