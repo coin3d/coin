@@ -57,6 +57,7 @@
 #endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
+#include <coindefs.h> // COIN_OBSOLETED()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -655,6 +656,7 @@ SoSeparator::notify(SoNotList * nl)
 SbBool
 SoSeparator::cullTest(SoGLRenderAction * action, int & cullresults)
 {
+  COIN_OBSOLETED();
   return FALSE;
 }
 
