@@ -1,3 +1,5 @@
+FIXME: obsolete this file.
+
 This file contains a list of semi-large tasks which needs to be done
 with Coin. The items are roughly categorized in these categories:
 
