@@ -20,10 +20,11 @@
 #ifndef COIN_SOSHAPEHINTS_H
 #define COIN_SOSHAPEHINTS_H
 
-#include <Inventor/nodes/SoSubNode.h>
+#include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoNode.h>
+#include <Inventor/nodes/SoSubNode.h>
 
 
 class SoShapeHints : public SoNode {
@@ -35,23 +36,20 @@ public:
   static void initClass(void);
   SoShapeHints(void);
 
-  // These must match 100% with the enum in SoShapeHintsElement.
   enum VertexOrdering {
-    UNKNOWN_ORDERING,
-    CLOCKWISE,
-    COUNTERCLOCKWISE
+    UNKNOWN_ORDERING = SoShapeHintsElement::UNKNOWN_ORDERING,
+    CLOCKWISE = SoShapeHintsElement::CLOCKWISE,
+    COUNTERCLOCKWISE = SoShapeHintsElement::COUNTERCLOCKWISE
   };
 
-  // These must match 100% with the enum in SoShapeHintsElement.
   enum ShapeType {
-    UNKNOWN_SHAPE_TYPE,
-    SOLID
+    UNKNOWN_SHAPE_TYPE = SoShapeHintsElement::UNKNOWN_SHAPE_TYPE,
+    SOLID = SoShapeHintsElement::SOLID
   };
 
-  // These must match 100% with the enum in SoShapeHintsElement.
   enum FaceType {
-    UNKNOWN_FACE_TYPE,
-    CONVEX
+    UNKNOWN_FACE_TYPE = SoShapeHintsElement::UNKNOWN_FACE_TYPE,
+    CONVEX = SoShapeHintsElement::CONVEX
   };
 
   SoSFEnum vertexOrdering;
@@ -60,10 +58,10 @@ public:
   SoSFFloat creaseAngle;
 
 
-  virtual void doAction(SoAction *action);
+  virtual void doAction(SoAction * action);
   virtual void GLRender(SoGLRenderAction * action);
   virtual void callback(SoCallbackAction * action);
-  virtual void getBoundingBox(SoGetBoundingBoxAction *action);
+  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
   virtual void pick(SoPickAction * action);
 
 protected:

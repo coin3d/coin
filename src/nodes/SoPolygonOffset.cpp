@@ -19,52 +19,69 @@
 
 /*!
   \class SoPolygonOffset SoPolygonOffset.h Inventor/nodes/SoPolygonOffset.h
-  \brief The SoPolygonOffset class ...
+  \brief The SoPolygonOffset class is a node type for "layering" rendering primitives.
   \ingroup nodes
 
-  FIXME: write class doc
+  A common problem with realtime 3D rendering systems is that rendered
+  primitives which are at approximately the same depth with regard to
+  the camera viewpoint will appear to flicker. I.e.: from one angle
+  one primitive will appear to be closer, while at another angle,
+  another primitive will appear closer. When this happens, the
+  rendered graphics at that part of the scene will of course look a
+  lot less visually pleasing.
+
+  One common situation where this problem often occurs is when you
+  attempt to put a wireframe grid as an outline on top of filled
+  polygons.
+
+  The cause of the problem described above is that the Z-buffer of any
+  render system has a limited resolution, often at 16, 24 or 32
+  bits. Because of this, primitives which are close will sometimes get
+  the \e same depth value in the Z-buffer, even though they are \a not
+  actually at the same depth-coordinate.
+
+  To rectify the flickering problem, this node can be inserted in the
+  scene graph at the proper place(s) to explicitly define how
+  polygons, lines and/or points should be offset with regard to other
+  primitives.
 */
 
 #include <Inventor/nodes/SoPolygonOffset.h>
 
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/actions/SoCallbackAction.h>
 
 /*!
   \enum SoPolygonOffset::Style
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoPolygonOffset::Style SoPolygonOffset::FILLED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoPolygonOffset::Style SoPolygonOffset::LINES
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoPolygonOffset::Style SoPolygonOffset::POINTS
-  FIXME: write documentation for enum definition
+
+  Enumeration of the rendering primitives which can be influenced by
+  an SoPolygonOffset node.
 */
 
 
 /*!
   \var SoSFFloat SoPolygonOffset::factor
-  FIXME: write documentation for field
+
+  Offset multiplication factor.
 */
 /*!
   \var SoSFFloat SoPolygonOffset::units
-  FIXME: write documentation for field
+
+  Absolute offset translation value.
 */
 /*!
   \var SoSFBitMask SoPolygonOffset::styles
-  FIXME: write documentation for field
+
+  The rendering primitive type to be influenced by this node. Defaults
+  to SoPolygonOffset::FILLED.
 */
 /*!
   \var SoSFBool SoPolygonOffset::on
-  FIXME: write documentation for field
+
+  Whether the offset is on or off. Default is for SoPolygonOffset::on
+  to be \c TRUE.
 */
 
 
@@ -75,7 +92,7 @@ SO_NODE_SOURCE(SoPolygonOffset);
 /*!
   Constructor.
 */
-SoPolygonOffset::SoPolygonOffset()
+SoPolygonOffset::SoPolygonOffset(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPolygonOffset);
 
@@ -97,68 +114,55 @@ SoPolygonOffset::~SoPolygonOffset()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoPolygonOffset class. This includes setting up the
-  type system, among other things.
-*/
 void
 SoPolygonOffset::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPolygonOffset);
 
-  SO_ENABLE(SoGLRenderAction, SoGLPolygonOffsetElement);
-
   SO_ENABLE(SoCallbackAction, SoPolygonOffsetElement);
+  SO_ENABLE(SoGLRenderAction, SoGLPolygonOffsetElement);
 }
 
 
-/*!
-  FIXME: write doc
- */
 void
 SoPolygonOffset::doAction(SoAction * action)
 {
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
   if (SoOverrideElement::getPolygonOffsetOverride(state)) return;
 
-  float _factor, _units;
-  SoPolygonOffsetElement::Style _styles;
-  SbBool _on;
+  float factorval, units_val;
+  SoPolygonOffsetElement::Style styles_val;
+  SbBool offset_on;
 
-  SoPolygonOffsetElement::get(state, _factor, _units, _styles, _on);
-  if (!factor.isIgnored()) _factor = factor.getValue();
-  if (!units.isIgnored()) _units = units.getValue();
-  if (!styles.isIgnored()) _styles = (SoPolygonOffsetElement::Style)styles.getValue();
-  if (!on.isIgnored()) _on = on.getValue();
+  SoPolygonOffsetElement::get(state, factorval, units_val, styles_val,
+                              offset_on);
+  if (!this->factor.isIgnored()) factorval = this->factor.getValue();
+  if (!this->units.isIgnored()) units_val = this->units.getValue();
+  if (!this->styles.isIgnored())
+    styles_val = (SoPolygonOffsetElement::Style)this->styles.getValue();
+  if (!this->on.isIgnored()) offset_on = this->on.getValue();
 
   SoPolygonOffsetElement::set(action->getState(),
                               this,
-                              _factor,
-                              _units,
-                              _styles,
-                              _on);
+                              factorval,
+                              units_val,
+                              styles_val,
+                              offset_on);
 
   if (this->isOverride()) {
     SoOverrideElement::setPolygonOffsetOverride(state, this, TRUE);
   }
 }
 
-/*!
-  FIXME: write doc
- */
 void
 SoPolygonOffset::callback(SoCallbackAction * action)
 {
-  SoPolygonOffset::doAction((SoAction*)action);
+  SoPolygonOffset::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write doc
- */
 void
 SoPolygonOffset::GLRender(SoGLRenderAction * action)
 {
-  SoPolygonOffset::doAction((SoAction*)action);
+  SoPolygonOffset::doAction((SoAction *)action);
 }

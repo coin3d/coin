@@ -26,7 +26,7 @@
 # ID-!!--!!!              SoOrthographicCamera
 # ID-Bg--RC!      SoShape
 #      -- -!              SoAnnoText3
-# ID   -- -!              SoAsciiText
+# IDTBG--R-!              SoAsciiText
 # IDTBG--R-!              SoCone
 # IDTBG--R-!              SoCube
 # IDTBG--R-!              SoCylinder
@@ -49,7 +49,7 @@
 #    Bg-- -!              SoNurbsSurface
 #   TBG--R-!              SoSphere
 #   TbG-- -!              SoText2
-#    bg--r-!              SoText3
+# IDTBG--R-!              SoText3
 #    B -P--!      SoAnnoText3Property
 #   -BGMP-C       SoGroup
 #   -BGM--C               SoSeparator
@@ -112,11 +112,11 @@
 # ID--G-P-C!      SoNormal
 # IDT-G-P-C!      SoNormalBinding
 # IDT-G---C!      SoPackedColor
-#    - -P-C!      SoPickStyle
-#   T-G---C!      SoPolygonOffset
-#   -B -P-C!      SoProfileCoordinate2
-#   -B -P-C!      SoProfileCoordinate3
-#   TBG-P-C!      SoShapeHints
+# ID----P-C!      SoPickStyle
+# IDT-G---C!      SoPolygonOffset
+# ID-BG-P-C!      SoProfileCoordinate2
+# ID-BG-P-C!      SoProfileCoordinate3
+# IDTBG-P-C!      SoShapeHints
 #   T-G---C!      SoTexture2
 #   T-GMP-C!      SoTexture2Transform
 #   --G-P-C!      SoTextureCoordinate2

@@ -26,6 +26,11 @@
   coordinates it contains will be put on the statestack for later use
   by shape nodes of types which needs coordinate sets (like SoFaceSet
   nodes or SoPointSet nodes).
+
+  Note that an SoCoordinate3 node will \e replace the coordinates
+  already present in the state (if any).
+
+  \sa SoCoordinate4
 */
 
 #include <Inventor/nodes/SoCoordinate3.h>

@@ -19,10 +19,18 @@
 
 /*!
   \class SoPickStyle SoPickStyle.h Inventor/nodes/SoPickStyle.h
-  \brief The SoPickStyle class ...
+  \brief The SoPickStyle class is a node for setting up how to do picking.
   \ingroup nodes
 
-  FIXME: write class doc
+  By default, all geometry in a scene is available for picking. Upon
+  writing applications with interaction possibilities, this is often
+  \e not what you want. To exclude parts of the scene graph from pick
+  actions, use the SoPickStyle::UNPICKABLE.
+
+  You can also optimize pick operations by using the
+  SoPickStyle::BOUNDING_BOX pickstyle.
+
+  \sa SoRayPickAction
 */
 
 
@@ -32,25 +40,33 @@
 
 /*!
   \enum SoPickStyle::Style
-  FIXME: write documentation for enum
+
+  Enumeration of the available picking strategies.
 */
 /*!
   \var SoPickStyle::Style SoPickStyle::SHAPE
-  FIXME: write documentation for enum definition
+
+  Do "exact" picks, finding the correct intersection point(s), etc.
 */
 /*!
   \var SoPickStyle::Style SoPickStyle::BOUNDING_BOX
-  FIXME: write documentation for enum definition
+
+  Only compare pick intersection with the bounding boxes of
+  shapes. This is usually much faster than SoPickStyle::SHAPE.
 */
 /*!
   \var SoPickStyle::Style SoPickStyle::UNPICKABLE
-  FIXME: write documentation for enum definition
+
+  The geometry following this node in the scene will not be available
+  for picking.
 */
 
 
 /*!
   \var SoSFEnum SoPickStyle::style
-  FIXME: write documentation for field
+
+  Which strategy to use for the picking actions for subsequent shapes
+  in the scene graph.
 */
 
 // *************************************************************************
@@ -60,7 +76,7 @@ SO_NODE_SOURCE(SoPickStyle);
 /*!
   Constructor.
 */
-SoPickStyle::SoPickStyle()
+SoPickStyle::SoPickStyle(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPickStyle);
 
@@ -79,52 +95,36 @@ SoPickStyle::~SoPickStyle()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoPickStyle class. This includes setting up the
-  type system, among other things.
-*/
 void
 SoPickStyle::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPickStyle);
 
-  SO_ENABLE(SoPickAction, SoPickStyleElement);
-
   SO_ENABLE(SoCallbackAction, SoPickStyleElement);
+  SO_ENABLE(SoPickAction, SoPickStyleElement);
 }
 
-
-/*!
-  FIXME: write doc
- */
 void
-SoPickStyle::doAction(SoAction *action)
+SoPickStyle::doAction(SoAction * action)
 {
-  if (!style.isIgnored()
+  if (!this->style.isIgnored()
       && !SoOverrideElement::getPickStyleOverride(action->getState())) {
     SoPickStyleElement::set(action->getState(), this,
-                            (int32_t) style.getValue());
+                            (int32_t) this->style.getValue());
     if (this->isOverride()) {
       SoOverrideElement::setPickStyleOverride(action->getState(), this, TRUE);
     }
   }
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoPickStyle::callback(SoCallbackAction *action)
+SoPickStyle::callback(SoCallbackAction * action)
 {
   SoPickStyle::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoPickStyle::pick(SoPickAction *action)
+SoPickStyle::pick(SoPickAction * action)
 {
   SoPickStyle::doAction(action);
 }

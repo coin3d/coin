@@ -19,23 +19,34 @@
 
 /*!
   \class SoProfileCoordinate3 SoProfileCoordinate3.h Inventor/nodes/SoProfileCoordinate3.h
-  \brief The SoProfileCoordinate3 class ...
+  \brief The SoProfileCoordinate3 class is a node specifying a set of 3D coordinates for profiles.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use nodes of this type to provide coordinates to profiles.
+
+  The third element of the coordinate vectors is used for
+  normalization. A node of this type where all the normalization
+  values are equal to 1.0 is the equivalent of setting up an
+  SoProfileCoordinate2 node.
+
+  Note that an SoProfileCoordinate3 node will \e replace the profile
+  coordinates already present in the state (if any).
+
+  \sa SoProfile, SoProfileCoordinate2
 */
 
 #include <Inventor/nodes/SoProfileCoordinate3.h>
 
+#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 /*!
   \var SoMFVec3f SoProfileCoordinate3::point
-  FIXME: write documentation for field
+
+  Pool of coordinate points for the traversal state.
 */
 
 // *************************************************************************
@@ -45,7 +56,7 @@ SO_NODE_SOURCE(SoProfileCoordinate3);
 /*!
   Constructor.
 */
-SoProfileCoordinate3::SoProfileCoordinate3()
+SoProfileCoordinate3::SoProfileCoordinate3(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoProfileCoordinate3);
 
@@ -59,11 +70,6 @@ SoProfileCoordinate3::~SoProfileCoordinate3()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoProfileCoordinate3 class. This includes setting up the
-  type system, among other things.
-*/
 void
 SoProfileCoordinate3::initClass(void)
 {
@@ -75,48 +81,34 @@ SoProfileCoordinate3::initClass(void)
   SO_ENABLE(SoGetPrimitiveCountAction, SoProfileCoordinateElement);
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate3::doAction(SoAction *action)
+SoProfileCoordinate3::doAction(SoAction * action)
 {
   SoProfileCoordinateElement::set3(action->getState(), this,
-                                   point.getNum(), point.getValues(0));
+                                   this->point.getNum(),
+                                   this->point.getValues(0));
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate3::GLRender(SoGLRenderAction *action)
+SoProfileCoordinate3::GLRender(SoGLRenderAction * action)
 {
   SoProfileCoordinate3::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate3::callback(SoCallbackAction *action)
+SoProfileCoordinate3::callback(SoCallbackAction * action)
 {
   SoProfileCoordinate3::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate3::pick(SoPickAction *action)
+SoProfileCoordinate3::pick(SoPickAction * action)
 {
   SoProfileCoordinate3::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate3::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoProfileCoordinate3::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoProfileCoordinate3::doAction(action);
 }

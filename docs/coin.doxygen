@@ -194,6 +194,7 @@ INPUT                = \
 	$(top_srcdir)/src/nodes/SoCone.cpp $(top_srcdir)/include/Inventor/nodes/SoCone.h \
 	$(top_srcdir)/src/nodes/SoCube.cpp $(top_srcdir)/include/Inventor/nodes/SoCube.h \
 	$(top_srcdir)/src/nodes/SoCylinder.cpp $(top_srcdir)/include/Inventor/nodes/SoCylinder.h \
+	$(top_srcdir)/src/nodes/SoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoText3.h \
 	$(top_srcdir)/src/nodes/SoTransformation.cpp $(top_srcdir)/include/Inventor/nodes/SoTransformation.h \
 	$(top_srcdir)/src/nodes/SoAntiSquish.cpp $(top_srcdir)/include/Inventor/nodes/SoAntiSquish.h \
 	$(top_srcdir)/src/nodes/SoMatrixTransform.cpp $(top_srcdir)/include/Inventor/nodes/SoMatrixTransform.h \
@@ -234,6 +235,11 @@ INPUT                = \
 	$(top_srcdir)/src/nodes/SoNormal.cpp $(top_srcdir)/include/Inventor/nodes/SoNormal.h \
 	$(top_srcdir)/src/nodes/SoNormalBinding.cpp $(top_srcdir)/include/Inventor/nodes/SoNormalBinding.h \
 	$(top_srcdir)/src/nodes/SoPackedColor.cpp $(top_srcdir)/include/Inventor/nodes/SoPackedColor.h \
+	$(top_srcdir)/src/nodes/SoPickStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoPickStyle.h \
+	$(top_srcdir)/src/nodes/SoPolygonOffset.cpp $(top_srcdir)/include/Inventor/nodes/SoPolygonOffset.h \
+	$(top_srcdir)/src/nodes/SoProfileCoordinate2.cpp $(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate2.h \
+	$(top_srcdir)/src/nodes/SoProfileCoordinate3.cpp $(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate3.h \
+	$(top_srcdir)/src/nodes/SoShapeHints.cpp $(top_srcdir)/include/Inventor/nodes/SoShapeHints.h \
 
 #	$(top_srcdir)/src/nodes/SoAnnoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 #	$(top_srcdir)/src/nodes/SoAnnoText3Property.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
@@ -263,19 +269,13 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoNurbsCurve.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsCurve.h \
 #	$(top_srcdir)/src/nodes/SoNurbsSurface.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsSurface.h \
 #	$(top_srcdir)/src/nodes/SoPathSwitch.cpp $(top_srcdir)/include/Inventor/nodes/SoPathSwitch.h \
-#	$(top_srcdir)/src/nodes/SoPickStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoPickStyle.h \
 #	$(top_srcdir)/src/nodes/SoPointSet.cpp $(top_srcdir)/include/Inventor/nodes/SoPointSet.h \
-#	$(top_srcdir)/src/nodes/SoPolygonOffset.cpp $(top_srcdir)/include/Inventor/nodes/SoPolygonOffset.h \
-#	$(top_srcdir)/src/nodes/SoProfileCoordinate2.cpp $(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate2.h \
-#	$(top_srcdir)/src/nodes/SoProfileCoordinate3.cpp $(top_srcdir)/include/Inventor/nodes/SoProfileCoordinate3.h \
 #	$(top_srcdir)/src/nodes/SoQuadMesh.cpp $(top_srcdir)/include/Inventor/nodes/SoQuadMesh.h \
 #	$(top_srcdir)/src/nodes/SoSelection.cpp $(top_srcdir)/include/Inventor/nodes/SoSelection.h \
 #	$(top_srcdir)/src/nodes/SoSeparator.cpp $(top_srcdir)/include/Inventor/nodes/SoSeparator.h \
-#	$(top_srcdir)/src/nodes/SoShapeHints.cpp $(top_srcdir)/include/Inventor/nodes/SoShapeHints.h \
 #	$(top_srcdir)/src/nodes/SoSphere.cpp $(top_srcdir)/include/Inventor/nodes/SoSphere.h \
 #	$(top_srcdir)/src/nodes/SoSwitch.cpp $(top_srcdir)/include/Inventor/nodes/SoSwitch.h \
 #	$(top_srcdir)/src/nodes/SoText2.cpp $(top_srcdir)/include/Inventor/nodes/SoText2.h \
-#	$(top_srcdir)/src/nodes/SoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoText3.h \
 #	$(top_srcdir)/src/nodes/SoTexture2.cpp $(top_srcdir)/include/Inventor/nodes/SoTexture2.h \
 #	$(top_srcdir)/src/nodes/SoTexture2Transform.cpp $(top_srcdir)/include/Inventor/nodes/SoTexture2Transform.h \
 #	$(top_srcdir)/src/nodes/SoTextureCoordinate2.cpp $(top_srcdir)/include/Inventor/nodes/SoTextureCoordinate2.h \

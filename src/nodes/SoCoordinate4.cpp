@@ -26,6 +26,16 @@
   coordinates it contains will be put on the statestack for later use
   by shape nodes of types which needs coordinate sets (like SoFaceSet
   nodes or SoPointSet nodes).
+
+  The fourth element of the coordinate vectors is used for
+  normalization. A node of this type where all the normalization
+  values are equal to 1.0 is the equivalent of setting up an
+  SoCoordinate3 node.
+
+  Note that an SoCoordinate4 node will \e replace the coordinates
+  already present in the state (if any).
+
+  \sa SoCoordinate3
 */
 
 #include <Inventor/nodes/SoCoordinate4.h>

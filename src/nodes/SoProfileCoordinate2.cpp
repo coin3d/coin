@@ -19,10 +19,15 @@
 
 /*!
   \class SoProfileCoordinate2 SoProfileCoordinate2.h Inventor/nodes/SoProfileCoordinate2.h
-  \brief The SoProfileCoordinate2 class ...
+  \brief The SoProfileCoordinate2 class is a node specifying a set of 2D coordinates for profiles.
   \ingroup nodes
 
-  FIXME: write class doc
+  Use nodes of this type to provide coordinates to profiles.
+
+  Note that an SoProfileCoordinate2 node will \e replace the profile
+  coordinates already present in the state (if any).
+
+  \sa SoProfile, SoProfileCoordinate3
 */
 
 #include <Inventor/nodes/SoProfileCoordinate2.h>
@@ -36,7 +41,8 @@
 
 /*!
   \var SoMFVec2f SoProfileCoordinate2::point
-  FIXME: write documentation for field
+
+  Pool of coordinate points for the traversal state.
 */
 
 // *************************************************************************
@@ -46,7 +52,7 @@ SO_NODE_SOURCE(SoProfileCoordinate2);
 /*!
   Constructor.
 */
-SoProfileCoordinate2::SoProfileCoordinate2()
+SoProfileCoordinate2::SoProfileCoordinate2(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoProfileCoordinate2);
 
@@ -60,74 +66,52 @@ SoProfileCoordinate2::~SoProfileCoordinate2()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoProfileCoordinate2 class. This includes setting up the
-  type system, among other things.
-*/
 void
 SoProfileCoordinate2::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoProfileCoordinate2);
 
-  SO_ENABLE(SoGetBoundingBoxAction, SoProfileCoordinateElement);
-  SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
-  SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoGetBoundingBoxAction, SoProfileCoordinateElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoProfileCoordinateElement);
+  SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoProfileCoordinate2::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoProfileCoordinate2::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate2::doAction(SoAction *action )
+SoProfileCoordinate2::doAction(SoAction * action)
 {
   SoProfileCoordinateElement::set2(action->getState(), this,
-                                   point.getNum(), point.getValues(0));
+                                   this->point.getNum(),
+                                   this->point.getValues(0));
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate2::GLRender(SoGLRenderAction *action)
+SoProfileCoordinate2::GLRender(SoGLRenderAction * action)
 {
   SoProfileCoordinate2::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate2::callback(SoCallbackAction *action)
+SoProfileCoordinate2::callback(SoCallbackAction * action)
 {
   SoProfileCoordinate2::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate2::pick(SoPickAction *action)
+SoProfileCoordinate2::pick(SoPickAction * action)
 {
   SoProfileCoordinate2::doAction(action);
 }
 
-/*!
-  FIXME: write doc
- */
 void
-SoProfileCoordinate2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoProfileCoordinate2::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoProfileCoordinate2::doAction(action);
 }
