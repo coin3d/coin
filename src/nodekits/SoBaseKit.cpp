@@ -1057,6 +1057,10 @@ SoBaseKit::findPart(const SbString &partname, SoBaseKit *&kit, int &partNum,
 
   partNum = kit->getNodekitCatalog()->getPartNumber(firstpartname);
   if (partNum == SO_CATALOG_NAME_NOT_FOUND) {
+#if COIN_DEBUG && 1 // debug
+    SoDebugError::postWarning("SoBaseKit::findPart",
+                              "part ``%s'' not found", firstpartname.getString());
+#endif // debug
     return FALSE;
   }
 
