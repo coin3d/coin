@@ -435,7 +435,7 @@ SoMFNode::referencesCopy(void) const
 
 
 /*!
-  Adds a node to this field.
+  Adds a node at the end of the array.
 
   \since 2001-10-25
 */
