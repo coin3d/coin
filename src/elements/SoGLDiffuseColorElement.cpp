@@ -65,7 +65,9 @@ void
 SoGLDiffuseColorElement::init(SoState *state)
 {
   inherited::init(state);
-  this->alpha = 1.0f;
+  this->current.setValue(0.8f, 0.8f, 0.8f, 1.0f);
+  this->currentpacked = 0xccccccff;
+  this->currentispacked = FALSE;
   this->updategl(SbVec4f(0.8f, 0.8f, 0.8f, 1.0f));
 }
 
@@ -75,6 +77,15 @@ void
 SoGLDiffuseColorElement::push(SoState * state)
 {
   inherited::push(state);
+  SoGLDiffuseColorElement * const prev =
+    (SoGLDiffuseColorElement *)this->getNextInStack();
+  this->currentispacked = prev->currentispacked;
+  if (this->currentispacked) {
+    this->currentpacked = prev->currentpacked;
+  }
+  else {
+    this->current = prev->current;
+  }
 }
 
 //! FIXME: write doc.
@@ -83,41 +94,60 @@ void
 SoGLDiffuseColorElement::pop(SoState *state, const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
+  SoGLDiffuseColorElement * const prev =
+    (SoGLDiffuseColorElement *)prevTopElement;
+  this->currentispacked = prev->currentispacked;
+  if (this->currentispacked) {
+    this->currentpacked = prev->currentpacked;
+  }
+  else {
+    this->current = prev->current;
+  }
 }
 
-//! FIXME: write doc.
 
-static void
-convert_packed(uint32_t packed, SbVec4f &v)
+inline void 
+SoGLDiffuseColorElement::updategl(const uint32_t col)
 {
-  static float DIV255 = 1.0f / 255.0f;
-  v[3] = float(packed&0xff)*DIV255;
-  packed >>= 8;
-  v[2] = float(packed & 0xff)*DIV255;
-  packed >>= 8;
-  v[1] = float(packed & 0xff)*DIV255;
-  v[0] = float(packed >> 8)*DIV255;
+  this->currentpacked = col;
+  glColor4ub((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, col&0xff);
 }
+
+inline void 
+SoGLDiffuseColorElement::updategl(const SbVec4f & col)
+{
+  this->current = col;
+  glColor4fv((const GLfloat*) &col);
+}
+
 
 //! FIXME: write doc.
 
 void
 SoGLDiffuseColorElement::send(const int index, const float alpha)
 {
-  assert(this->numColors > 0);
-  int realindex = index < this->numColors ? index : this->numColors - 1;
-  if (realindex < 0) realindex = 0;
-
+  int realindex = SbClamp(index, 0, this->numColors - 1);
   if (this->colors) {
-    this->alpha = alpha;
     const SbVec3f & c = this->colors[realindex];
     SbVec4f col(c[0], c[1], c[2], alpha);
-    this->updategl(col);
+
+    if (!this->currentispacked) {
+      if (this->current != col) this->updategl(col);
+    }
+    else {
+      this->currentispacked = FALSE;
+      this->updategl(col);
+    }
   }
   else if (this->packedColors) {
-    SbVec4f color;
-    convert_packed(this->packedColors[realindex], color);
-    this->updategl(color);
+    uint32_t col = this->packedColors[realindex];
+    if (this->currentispacked) {
+      if (col != this->currentpacked) this->updategl(col);
+    }
+    else {
+      this->currentispacked = TRUE;
+      this->updategl(col);
+    }
   }
 }
 
@@ -127,7 +157,7 @@ SoGLDiffuseColorElement::send(const int index, const float alpha)
 void
 SoGLDiffuseColorElement::send(const int index)
 {
-  this->send(index, this->alpha);
+  this->send(index, this->current[3]);
 }
 
 /*!
@@ -136,19 +166,11 @@ SoGLDiffuseColorElement::send(const int index)
 void
 SoGLDiffuseColorElement::sendOnePacked(const uint32_t packedcol)
 {
-  SbVec4f color;
-  convert_packed(packedcol, color);
-  this->updategl(color);
-}
-
-//! FIXME: write doc.
-
-void
-SoGLDiffuseColorElement::updategl(const SbVec4f & color)
-{
-#if 1 // if using GL_COLOR_MATERIAL
-  glColor4fv((const GLfloat*)&color);
-#else
-  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, &color);
-#endif
+  if (this->currentispacked) {
+    if (this->currentpacked != packedcol) this->updategl(packedcol);
+  }
+  else {
+    this->currentispacked = TRUE;
+    this->updategl(packedcol);
+  }
 }
