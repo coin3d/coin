@@ -1,6 +1,11 @@
 This document tentatively describes a plan for how the Coin
 development could proceed.
 
+*** IMPORTANT NOTE: THIS DOCUMENT HAS NOT BEEN UPDATED FOR A LONG,
+LONG TIME -- MANY ITEMS HAVE BEEN COMPLETED, SOME HAVE BEEN
+OBSOLETED. IF YOU HAVE PARTICULAR QUESTIONS OR WISHES, PLEASE GET IN
+TOUCH AT <mailto:coin-support@sim.no>. ***
+
 Changelog:
         19991031 mortene        Created.
 

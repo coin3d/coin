@@ -12,10 +12,10 @@ General guidelines:
       iii) low-level stuff (piping data to OpenGL, inlining of
            functions, etc)
 
-     i) should be more-or-less ok in Coin. There are major tasks at
-     ii), particularly in the SoSeparator implementation. The obvious
-     stuff at iii) is in the Sb* classes; SbVec3f, SbMatrix etc, but
-     we need decent profiling to expose the bottlenecks.
+     i) should be more-or-less ok in Coin. There might be major
+     remaining tasks at ii). The obvious stuff at iii) is in the Sb*
+     classes; SbVec3f, SbMatrix etc, but we need decent profiling to
+     expose the bottlenecks.
 
      One important thing to note about case iii) is the fact that we
      should _really_ have some kind of regression testing system in
@@ -69,8 +69,9 @@ Concrete tasks:
           include it properly in the public API of the
           So[Qt|Gtk|Xt|Win|...]Viewer class.
 
-        * SoSeparator is missing the rendercaching (with OpenGL
-          renderlists) mechanisms.
+        * SoSeparator rendercaching (with OpenGL renderlists)
+          mechanisms is not default activated yet. (At least I think
+          so, ask pederb about this.)
 
         * We've not yet implemented any heuristics on the "AUTO"
           setting for caching in SoSeparator (so far, we only do
@@ -84,6 +85,9 @@ Concrete tasks:
         * Trace the notification mechanisms to see if we send
           superfluous notification messages (field->field,
           field->node, node->node, ...).
+
+          Update: pederb has looked into and optimized at least some
+          parts of this.
 
         * SoTabBoxDragger rendering seems particularly slow on my PII
           266MHZ laptop -- why? The dragger geometry looks simple
@@ -124,7 +128,7 @@ Concrete tasks:
                 SoDecimationPercentageElement,
                 So*Viewer::setGoalFramesPerSecond(), etc
 
-          (This is a _huge_ task.)
+          (This is a large task.)
 
         * Make use of OpenGL 1.1 and 1.2 features which have the
           potential to speed up rendering (vertexarrays, for instance
