@@ -282,6 +282,8 @@ AC_ARG_WITH(depmode,
   AC_HELP_STRING([--with-depmode=MODE], [override dependency mode setting]),
   CCDEPMODE="depmode=${withval}" CXXDEPMODE="depmode=${withval}")
 
+# FIXME: should do a check for whether or not the compilers can
+# actually use the given depmode. 20000525 mortene.
 
 dnl *******************************************************************
 dnl * Do we want to build the tools?

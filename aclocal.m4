@@ -1,6 +1,6 @@
-dnl aclocal.m4 generated automatically by aclocal 1.4a
+dnl aclocal.m4 generated automatically by aclocal 1.4a-SIM-20000531
 
-dnl Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+dnl Copyright (C) 1994, 1995-9, 2000 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -94,29 +94,46 @@ fi
 # some checks are only needed if your package does certain things.
 # But this isn't really a big deal.
 
-# serial 1
+# serial 2
 
-dnl Usage:
-dnl AM_INIT_AUTOMAKE(package,version, [no-define])
+# AC_PROVIDE_IFELSE(MACRO-NAME, IF-PROVIDED, IF-NOT-PROVIDED)
+# -----------------------------------------------------------
+# If MACRO-NAME is provided do IF-PROVIDED, else IF-NOT-PROVIDED.
+# The purpose of this macro is to provide the user with a means to
+# check macros which are provided without letting her know how the
+# information is coded.
+# If this macro is not defined by Autoconf, define it here.
+ifdef([AC_PROVIDE_IFELSE],
+      [],
+      [define([AC_PROVIDE_IFELSE],
+              [ifdef([AC_PROVIDE_$1],
+                     [$2], [$3])])])
 
+
+# AM_INIT_AUTOMAKE(PACKAGE,VERSION, [NO-DEFINE])
+# ----------------------------------------------
 AC_DEFUN(AM_INIT_AUTOMAKE,
-[AC_REQUIRE([AC_PROG_INSTALL])
-dnl We require 2.13 because we rely on SHELL being computed by configure.
-AC_PREREQ([2.13])
-PACKAGE=[$1]
-AC_SUBST(PACKAGE)
-VERSION=[$2]
-AC_SUBST(VERSION)
-dnl test to see if srcdir already configured
+[dnl We require 2.13 because we rely on SHELL being computed by configure.
+AC_PREREQ([2.13])dnl
+AC_REQUIRE([AC_PROG_INSTALL])dnl
+# test to see if srcdir already configured
 if test "`CDPATH=: && cd $srcdir && pwd`" != "`pwd`" &&
    test -f $srcdir/config.status; then
   AC_MSG_ERROR([source directory already configured; run "make distclean" there first])
 fi
+
+# Define the identity of the package.
+PACKAGE=$1
+AC_SUBST(PACKAGE)dnl
+VERSION=$2
+AC_SUBST(VERSION)dnl
 ifelse([$3],,
-AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [Name of package])
-AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Version number of package]))
-AC_REQUIRE([AM_SANITY_CHECK])
-AC_REQUIRE([AC_ARG_PROGRAM])
+[AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [Name of package])
+AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Version number of package])])
+
+# Some tools Automake needs.
+AC_REQUIRE([AM_SANITY_CHECK])dnl
+AC_REQUIRE([AC_ARG_PROGRAM])dnl
 AM_MISSING_PROG(ACLOCAL, aclocal)
 AM_MISSING_PROG(AUTOCONF, autoconf)
 AM_MISSING_PROG(AUTOMAKE, automake)
@@ -126,14 +143,18 @@ AM_MISSING_PROG(AMTAR, tar)
 AM_MISSING_INSTALL_SH
 dnl We need awk for the "check" target.  The system "awk" is bad on
 dnl some platforms.
-AC_REQUIRE([AC_PROG_AWK])
-AC_REQUIRE([AC_PROG_MAKE_SET])
-AC_REQUIRE([AM_DEP_TRACK])
-AC_REQUIRE([AM_SET_DEPDIR])
-ifdef([AC_PROVIDE_AC_PROG_CC], [AM_DEPENDENCIES(CC)], [
-   define([AC_PROG_CC], defn([AC_PROG_CC])[AM_DEPENDENCIES(CC)])])
-ifdef([AC_PROVIDE_AC_PROG_CXX], [AM_DEPENDENCIES(CXX)], [
-   define([AC_PROG_CXX], defn([AC_PROG_CXX])[AM_DEPENDENCIES(CXX)])])
+AC_REQUIRE([AC_PROG_AWK])dnl
+AC_REQUIRE([AC_PROG_MAKE_SET])dnl
+AC_REQUIRE([AM_DEP_TRACK])dnl
+AC_REQUIRE([AM_SET_DEPDIR])dnl
+AC_PROVIDE_IFELSE([AC_PROG_CC],
+                  [AM_DEPENDENCIES(CC)],
+                  [define([AC_PROG_CC],
+                          defn([AC_PROG_CC])[AM_DEPENDENCIES(CC)])])dnl
+AC_PROVIDE_IFELSE([AC_PROG_CXX],
+                  [AM_DEPENDENCIES(CXX)],
+                  [define([AC_PROG_CXX],
+                          defn([AC_PROG_CXX])[AM_DEPENDENCIES(CXX)])])dnl
 ])
 
 #
@@ -210,7 +231,8 @@ if eval "$MISSING --run :"; then
   am_missing_run="$MISSING --run "
 else
   am_missing_run=
-  AC_MSG_WARN([`missing' script is too old or missing])
+  am_backtick='`'
+  AC_MSG_WARN([${am_backtick}missing' script is too old or missing])
 fi
 ])
 
@@ -739,31 +761,35 @@ esac
 ])
 
 # AC_LIBLTDL_CONVENIENCE[(dir)] - sets LIBLTDL to the link flags for
-# the libltdl convenience library, adds --enable-ltdl-convenience to
-# the configure arguments.  Note that LIBLTDL is not AC_SUBSTed, nor
-# is AC_CONFIG_SUBDIRS called.  If DIR is not provided, it is assumed
-# to be `${top_builddir}/libltdl'.  Make sure you start DIR with
-# '${top_builddir}/' (note the single quotes!) if your package is not
-# flat, and, if you're not using automake, define top_builddir as
-# appropriate in the Makefiles.
+# the libltdl convenience library and INCLTDL to the include flags for
+# the libltdl header and adds --enable-ltdl-convenience to the
+# configure arguments.  Note that LIBLTDL and INCLTDL are not
+# AC_SUBSTed, nor is AC_CONFIG_SUBDIRS called.  If DIR is not
+# provided, it is assumed to be `libltdl'.  LIBLTDL will be prefixed
+# with '${top_builddir}/' and INCLTDL will be prefixed with
+# '${top_srcdir}/' (note the single quotes!).  If your package is not
+# flat and you're not using automake, define top_builddir and
+# top_srcdir appropriately in the Makefiles.
 AC_DEFUN(AC_LIBLTDL_CONVENIENCE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
   case "$enable_ltdl_convenience" in
   no) AC_MSG_ERROR([this package needs a convenience libltdl]) ;;
   "") enable_ltdl_convenience=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
   esac
-  LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdlc.la
-  INCLTDL=ifelse($#,1,-I$1,['-I${top_builddir}/libltdl'])
+  LIBLTDL='${top_builddir}/'ifelse($#,1,[$1],['libltdl'])/libltdlc.la
+  INCLTDL='-I${top_srcdir}/'ifelse($#,1,[$1],['libltdl'])
 ])
 
 # AC_LIBLTDL_INSTALLABLE[(dir)] - sets LIBLTDL to the link flags for
-# the libltdl installable library, and adds --enable-ltdl-install to
-# the configure arguments.  Note that LIBLTDL is not AC_SUBSTed, nor
-# is AC_CONFIG_SUBDIRS called.  If DIR is not provided, it is assumed
-# to be `${top_builddir}/libltdl'.  Make sure you start DIR with
-# '${top_builddir}/' (note the single quotes!) if your package is not
-# flat, and, if you're not using automake, define top_builddir as
-# appropriate in the Makefiles.
+# the libltdl installable library and INCLTDL to the include flags for
+# the libltdl header and adds --enable-ltdl-install to the configure
+# arguments.  Note that LIBLTDL and INCLTDL are not AC_SUBSTed, nor is
+# AC_CONFIG_SUBDIRS called.  If DIR is not provided and an installed
+# libltdl is not found, it is assumed to be `libltdl'.  LIBLTDL will
+# be prefixed with '${top_builddir}/' and INCLTDL will be prefixed
+# with '${top_srcdir}/' (note the single quotes!).  If your package is
+# not flat and you're not using automake, define top_builddir and
+# top_srcdir appropriately in the Makefiles.
 # In the future, this macro may have to be called after AC_PROG_LIBTOOL.
 AC_DEFUN(AC_LIBLTDL_INSTALLABLE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
   AC_CHECK_LIB(ltdl, main,
@@ -776,8 +802,8 @@ AC_DEFUN(AC_LIBLTDL_INSTALLABLE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
   ])
   if test x"$enable_ltdl_install" = x"yes"; then
     ac_configure_args="$ac_configure_args --enable-ltdl-install"
-    LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdl.la
-    INCLTDL=ifelse($#,1,-I$1,['-I${top_builddir}/libltdl'])
+    LIBLTDL='${top_builddir}/'ifelse($#,1,[$1],['libltdl'])/libltdl.la
+    INCLTDL='-I${top_srcdir}/'ifelse($#,1,[$1],['libltdl'])
   else
     ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
     LIBLTDL="-lltdl"
@@ -878,7 +904,7 @@ else
                  int main(void) { return strcmp("sim", TEST_QUOTE(sim)); }],
                 [sim_cv_quote_apostrophes=yes],
                 [sim_cv_quote_apostrophes=no],
-                [sim_cv_quote_apostrophes=yes])]),
+                [sim_cv_quote_apostrophes=yes])])
   if test x"$sim_cv_quote_apostrophes" = x"yes"; then
     sim_ac_quote_apostrophes=yes
     $1
@@ -1473,6 +1499,32 @@ else
 fi
 ])
 
+# SIM_AC_CHECK_X11_ATHENA( [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND] )
+
+AC_DEFUN([SIM_AC_CHECK_X11_ATHENA], [
+sim_ac_athena_avail=no
+sim_ac_athena_libs="-lXaw"
+sim_ac_save_libs=$LIBS
+LIBS="$sim_ac_athena_libs $LIBS"
+
+AC_CACHE_CHECK(
+  [whether the X11 Athena widgets library is available],
+  sim_cv_lib_athena_avail,
+  [AC_TRY_LINK([#include <X11/Xfuncproto.h>
+                #include <X11/Xaw/XawInit.h>],
+               [XawInitializeWidgetSet();],
+               [sim_cv_lib_athena_avail=yes],
+               [sim_cv_lib_athena_avail=no])])
+
+if test x"$sim_cv_lib_athena_avail" = xyes; then
+  sim_ac_athena_avail=yes
+  $1
+else
+  LIBS=$sim_ac_save_libs
+  $2
+fi
+])
+
 # SIM_AC_X11_READY( [ACTION-IF-TRUE], [ACTION-IF-FALSE] )
 
 AC_DEFUN([SIM_AC_CHECK_X11_READY],
@@ -1992,16 +2044,54 @@ if test x"$enable_warnings" = x"yes"; then
     *-*-irix*) 
       if test x"$CC" = xcc || test x"$CXX" = xCC; then
         _warn_flags=
-        # Turn on all warnings.
+        _woffs=""
+        ### Turn on all warnings ######################################
         SIM_COMPILER_OPTION([-fullwarn],
                             [_warn_flags="$_warn_flags -fullwarn"])
+
+
+        ### Turn off specific (bogus) warnings ########################
+
+        ### SGI MipsPro v?.?? (our compiler on IRIX 6.2) ##############
+
         # Turn off ``type qualifiers are meaningless in this declaration''
         # warnings.
-        SIM_COMPILER_OPTION([-woff 3115],
-                            [_warn_flags="$_warn_flags -woff 3115"])
+        SIM_COMPILER_OPTION([-woff 3115], [_woffs="$_woffs 3115"])
         # Turn off warnings on unused variables.
-        SIM_COMPILER_OPTION([-woff 3262],
-                            [_warn_flags="$_warn_flags -woff 3262"])
+        SIM_COMPILER_OPTION([-woff 3262], [_woffs="$_woffs 3262"])
+
+        ### SGI MipsPro v7.30 #########################################
+
+	# "The function was declared but never referenced."
+        SIM_COMPILER_OPTION([-woff 1174], [_woffs="$_woffs 1174"])
+        # "The controlling expression is constant." (kill warning on
+        # if (0), assert(FALSE), etc).
+        SIM_COMPILER_OPTION([-woff 1209], [_woffs="$_woffs 1209"])
+        # Kill warnings on extra semicolons (which happens with some
+        # of the Coin macros).
+        SIM_COMPILER_OPTION([-woff 1355], [_woffs="$_woffs 1355"])
+        # Non-virtual destructors in base classes.
+        SIM_COMPILER_OPTION([-woff 1375], [_woffs="$_woffs 1375"])
+        # Unused argument to a function.
+        SIM_COMPILER_OPTION([-woff 3201], [_woffs="$_woffs 3201"])
+        # Meaningless type qualifier on return type (happens with the
+        # SoField macros in Coin).
+        SIM_COMPILER_OPTION([-woff 3303], [_woffs="$_woffs 3303"])
+        # Statement is not reachable (the Lex/Flex generated code in
+        # Coin/src/engines makes lots of shitty code which needs this).
+        SIM_COMPILER_OPTION([-woff 1110], [_woffs="$_woffs 1110"])
+
+        ###############################################################
+
+        # Convert to a comma-separated list behind the "-woff" option.
+        if test x"$_woffs" != x; then
+                _woffs=`echo $_woffs | sed "s%^ %%"`
+                _woffs=`echo $_woffs | sed "s% %,%g"`
+                _woffs=`echo $_woffs | sed "s%^%\-woff %"`
+                _warn_flags="$_warn_flags $_woffs"
+        fi
+
+        ###############################################################
 
         CFLAGS="$CFLAGS $_warn_flags"
         CXXFLAGS="$CXXFLAGS $_warn_flags"
