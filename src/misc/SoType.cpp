@@ -44,7 +44,8 @@
       // do something..
     }
     else {
-      SoDebugError::postWarning("cleanLens", "Unknown camera type!\n");
+      SoDebugError::postWarning("cleanLens", "Unknown camera type %s!\n",
+                                anode->getTypeId().getName());
     }
   }
   \endcode
