@@ -83,21 +83,7 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/SoInput.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/errors/SoReadError.h>
-#include <Inventor/lists/SbStringList.h>
-#include <Inventor/fields/SoField.h>
-#include <coindefs.h> // COIN_STUB(), COIN_OBSOLETED()
-#include <Inventor/SoDB.h>
-#include <Inventor/SbName.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/misc/SoProto.h>
-#include <Inventor/C/tidbits.h>
-#include <Inventor/C/tidbitsp.h>
-#include <Inventor/C/glue/zlib.h>
-#include "SoInput_FileInfo.h"
-
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -114,6 +100,21 @@
 #endif // HAVE_SYS_TYPES_H
 #include <ctype.h>
 
+#include <Inventor/SoInput.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/lists/SbStringList.h>
+#include <Inventor/fields/SoField.h>
+#include <coindefs.h> // COIN_STUB(), COIN_OBSOLETED()
+#include <Inventor/SoDB.h>
+#include <Inventor/SbName.h>
+#include <Inventor/nodes/SoNode.h>
+#include <Inventor/misc/SoProto.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
+#include <Inventor/C/glue/zlib.h>
+#include "SoInput_FileInfo.h"
+
 // This (POSIX-compliant) macro is missing from the Win32 API header
 // files for MSVC++ 6.0.
 #ifndef S_ISDIR
@@ -125,7 +126,6 @@
  #error Can neither find nor make an S_ISDIR macro to test stat structures.
  #endif // !_S_IFDIR
 #endif // !S_ISDIR
-
 
 // *************************************************************************
 
@@ -401,8 +401,8 @@ SoInput::openFile(const char * fileName, SbBool okIfNotFound)
     SoInput::addDirectoryFirst(SoInput::getPathname(fullname).getString());
     return TRUE;
   }
-  if (!okIfNotFound)
-    SoReadError::post(this, "Couldn't open file '%s' for reading.", fileName);
+
+  if (!okIfNotFound) { SoReadError::post(this, fullname.getString()); }
 
   return FALSE;
 }
@@ -436,7 +436,8 @@ SoInput::pushFile(const char * filename)
     return TRUE;
   }
 
-  SoReadError::post(this, "Couldn't open file '%s' for reading.", filename);
+  SoReadError::post(this, fullname.getString());
+
   return FALSE;
 }
 
@@ -2400,45 +2401,84 @@ SoInput::getTopOfStack(void) const
 FILE *
 SoInput::findFile(const char * basename, SbString & fullname)
 {
-  // FIXME: test this code on MSWindows. If it doesn't work,
-  // *fix*. 20010814 mortene.
+  fullname = "";
 
-#define DEBUG_FILE_SEARCHING 0
+  if (strlen(basename) < 1) {
+    SoDebugError::post("SoInput::findFile", "Was asked to find a file with no name!");
+    return NULL;
+  }
 
-  int baselen = strlen(basename);
-  if (!baselen) return NULL;
-
+  const char * env = coin_getenv("COIN_DEBUG_SOINPUT_FINDFILE");
+  const SbBool DEBUG_FILE_SEARCHING = env && (atoi(env) > 0);
+  if (DEBUG_FILE_SEARCHING) {
+    cc_string str;
+    cc_string_construct(&str);
+    SbBool ok = coin_getcwd(&str);
+    if (!ok) {
+      SoDebugError::post("SoInput::findFile",
+                         "Couldn't get current working directory: %s",
+                         cc_string_get_text(&str));
+    }
+    else {
+      SoDebugError::postInfo("SoInput::findFile",
+                             "Current working directory: '%s'",
+                             cc_string_get_text(&str));
+    }
+    cc_string_clean(&str);
+  }
+ 
   SbStringList sl = SoInput::getDirectories();
+
+  // Make sure we try from cwd first.
   SbString relativepath("");
-  sl.insert(&relativepath, 0); // So we'll try relative path from cwd first.
+  sl.insert(&relativepath, 0);
 
-  int diridx = 0;
   FILE * fp = NULL;
-  while (!fp && (diridx < sl.getLength())) {
-    fullname = * sl[diridx++];
-    int namelen = fullname.getLength();
-    if ((namelen && fullname[namelen - 1] != '/') && (basename[0] != '/'))
-      fullname += "/";
-    fullname += basename;
-
-#if COIN_DEBUG && DEBUG_FILE_SEARCHING // debug
-    SoDebugError::postInfo("SoInput::findFile",
-                           "%s", fullname.getString());
-#endif // debug
+  for (int diridx = 0; diridx < sl.getLength(); diridx++) {
+    SbString n = * sl[diridx];
+    const int namelen = n.getLength();
+    if ((namelen && n[namelen - 1] != '/' && n[namelen - 1] != '\\') &&
+        (basename[0] != '/' && basename[0] != '\\')) {
+      n += "/";
+    }
+    n += basename;
 
     struct stat buf;
-    if ((stat(fullname.getString(), &buf) == 0) && !S_ISDIR(buf.st_mode)) {
-      fp = fopen(fullname.getString(), "rb");
-#if COIN_DEBUG && DEBUG_FILE_SEARCHING // debug
-      SoDebugError::postInfo("SoInput::findFile",
-                             "fopen(%s)", fullname.getString());
-#endif // debug
+    if ((stat(n.getString(), &buf) == 0) && !S_ISDIR(buf.st_mode)) {
+      fp = fopen(n.getString(), "rb");
+      if (fp != NULL) {
+        if (DEBUG_FILE_SEARCHING) {
+          SoDebugError::postInfo("SoInput::findFile", "successfully fopened '%s'", n.getString());
+        }
+        fullname = n;
+        return fp;
+      }
+      else {
+        fullname.sprintf("%s%sFound '%s' as '%s', but was unable to open it: '%s'",
+                         fullname.getString(), fullname.getLength() ? "\n" : "",
+                         basename, n.getString(), strerror(errno));
+      }
     }
   }
 
-#if COIN_DEBUG && DEBUG_FILE_SEARCHING // debug
-  SoDebugError::postInfo("SoInput::findFile", "done");
-#endif // debug
+  // If file was not found, list all directories where we looked for
+  // it.
+  SbBool foundbutcouldntopen = fullname.getLength() > 0;
+  if (!foundbutcouldntopen) {
+    cc_string str;
+    cc_string_construct(&str);
+    SbBool ok = coin_getcwd(&str);
+    fullname.sprintf("Could not find '%s' in any of the "
+                     "following directories (from cwd '%s'):",
+                     basename, ok ? cc_string_get_text(&str) : "<unknown>");
+    cc_string_clean(&str);
 
-  return fp;
+    for (int diridx = 0; diridx < sl.getLength(); diridx++) {
+      fullname += "\n\t'";
+      fullname += * sl[diridx];
+      fullname += "'";
+    }
+  }
+
+  return NULL;
 }
