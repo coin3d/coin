@@ -2,11 +2,15 @@ This document tentatively describes a plan for how the Coin
 development could proceed.
 
 Changelog:
-	19991031 mortene	Created.
+        19991031 mortene        Created.
 
+        19991130 mortene        A few minor changes (clarifications and
+                                additions).
 
+==========================================================================
 Revision: $Id$
 ==========================================================================
+
 
 MILESTONE 1
 ===========
@@ -128,7 +132,10 @@ State of library when milestone is met:
 * a few simple example programs will accompany the library.
 	
 * platform availability:
-	- fully supported: Linux, MSWindows (with Troll Tech's Qt), BeOS
+
+	- fully supported: Linux, MSWindows (both with Troll Tech's
+          Qt), BeOS (native API)
+
 	- additional: most UNIX platforms (with Troll Tech's Qt)
 
 
@@ -205,6 +212,9 @@ Additional development necessary versus milestone 2:
   support them without doing terrible hacks.
 
 * support stereo mode viewing.
+
+* implement the tools shipped with Open Inventor: ivcat, ivinfo,
+  ivnorm, ivfix, ivview, ivAddVP, ivperf.
 
 * add example programs to show off most of the available features in
   the library.
