@@ -158,20 +158,34 @@ SoDB::init(void)
   // longer dependent on using native C types where we need to have a
   // particular bitwidth.
 
-  assert(sizeof(int) == 4);
+  // TMP OBSOLETED for 1.0 release. We should be 99% ok, I can only
+  // think of possibilities for problems in the binary .iv import and
+  // export code. 20010308 mortene.
+
+//    assert(sizeof(int) == 4);
+
 
   // Sanity check: if this breaks, the binary format import and export
   // routines will not work correctly. FIXME: the code should be fixed
   // to use the int16_t type, then we can remove this stoopid check.
 
-  assert(sizeof(short) == 2);
+  // TMP OBSOLETED for 1.0 release. We should be 99% ok, I can only
+  // think of possibilities for problems in the binary .iv import and
+  // export code. 20010308 mortene.
+
+//    assert(sizeof(short) == 2);
+
 
   // Sanity check: if the int type is unequal to the long type, things
   // will probably break. FIXME: this is really terrible and _must_ be
   // fixed. Remove this check when we are no longer dependent on using
   // native C types where we need to have a particular bitwidth.
 
-  assert(sizeof(int) == sizeof(long));
+  // TMP OBSOLETED for 1.0 release. We should be 99% ok, I can only
+  // think of possibilities for problems in the binary .iv import and
+  // export code. 20010308 mortene.
+
+//    assert(sizeof(int) == sizeof(long));
 
 
   // Allocate our static members.
