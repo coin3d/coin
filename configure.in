@@ -141,7 +141,7 @@ AC_SUBST(COIN_DOC_MAN)
 
 if test x"$want_html" != xno -o x"$want_man" != xno; then
   SIM_AC_DOXYGEN_TOOL(, AC_MSG_ERROR([Could not find the doxygen tool -- see http://www.stack.nl/~dimitri/doxygen/]))
-  sim_ac_doxygen_our_version=1.1.5
+  sim_ac_doxygen_our_version=1.2.1
   if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
     AC_MSG_WARN(You are not using Doxygen version $sim_ac_doxygen_our_version)
   fi

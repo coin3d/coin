@@ -3095,7 +3095,7 @@ fi
   fi
 fi
 
-  sim_ac_doxygen_our_version=1.1.5
+  sim_ac_doxygen_our_version=1.2.1
   if test x"$sim_ac_doxygen_avail" != x"$sim_ac_doxygen_our_version"; then
     echo "configure: WARNING: You are not using Doxygen version $sim_ac_doxygen_our_version" >&2
   fi
