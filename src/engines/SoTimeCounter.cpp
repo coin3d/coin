@@ -152,9 +152,9 @@ SoTimeCounter::~SoTimeCounter()
 void
 SoTimeCounter::writeInstance(SoOutput * out)
 {
-  // Note: the code in this method matches that of
-  // SoElapsedTime::writeInstance(), so if any bugs are found and
-  // corrected, remember to pass on the updates.
+  // Note: the code in this method matches that of SoElapsedTime and
+  // SoOneShot, so if any bugs are found and corrected, remember to
+  // pass on the updates.
 
   // Disconnect from realTime field.
   SoField * connectfield = NULL;

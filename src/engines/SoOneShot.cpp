@@ -139,7 +139,7 @@ SoOneShot::evaluate(void)
   SbTime durationval = this->duration.getValue();
 
   SbTime timeoutval;
-  float rampval;
+  float rampval = -999.0f; // Explicit init to kill bogus egcs-2.91.66 warning.
 
   if (this->running) {
     if (elapsed < durationval) {
@@ -213,4 +213,32 @@ SoOneShot::inputChanged(SoField * which)
   this->timeOut.enable(this->running || do_evaluate);
   this->ramp.enable(this->running || do_evaluate);
   this->isActive.enable(this->running || do_evaluate);
+}
+
+// Overloaded to not write connection to realTime global field.
+void
+SoOneShot::writeInstance(SoOutput * out)
+{
+  // Note: the code in this method matches that of SoElapsedTime and
+  // SoTimeCounter, so if any bugs are found and corrected, remember
+  // to pass on the updates.
+
+  // Disconnect from realTime field.
+  SoField * connectfield = NULL;
+  SbBool connectfromrealTime =
+    this->timeIn.getConnectedField(connectfield) &&
+    connectfield == SoDB::getGlobalField("realTime");
+  SbBool defaultflag = this->timeIn.isDefault();
+  if (connectfromrealTime) {
+    this->timeIn.disconnect();
+    this->timeIn.setDefault(TRUE);
+  }
+
+  inherited::writeInstance(out);
+
+  // Re-connect to realTime field.
+  if (connectfromrealTime) {
+    this->timeIn.connectFrom(connectfield);
+    this->timeIn.setDefault(defaultflag);
+  }
 }

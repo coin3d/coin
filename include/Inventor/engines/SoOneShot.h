@@ -55,6 +55,7 @@ protected:
 private:
   virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
+  virtual void writeInstance(SoOutput * out);
 
   SbTime holdduration;
   float holdramp;
