@@ -42,7 +42,7 @@ public:
   int operator!=(const SoSFTrigger & trigger) const;
 
   virtual void startNotify(void);
-  virtual void notify(SoNotList * list);
+  virtual void notify(SoNotList * l);
   virtual void touch(void);
 
 private:

@@ -19,16 +19,21 @@
 
 /*!
   \class SoSFTrigger SoSFTrigger.h Inventor/fields/SoSFTrigger.h
-  \brief The SoSFTrigger class ...
+  \brief The SoSFTrigger class is the "void" class used for detecting field changes.
   \ingroup fields
 
-  FIXME: write class doc
+  Connect this field to a master field (or engine output) to detect
+  when the master field changes its value.
+
+  This is useful if you want to automatically trigger an update from
+  the node or engine (or other field container) this field is
+  part of whenever another field changes -- and you are not particularly
+  interested in the actual value of the master field.
+
+  \sa SoFieldSensor
 */
 
 #include <Inventor/fields/SoSFTrigger.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/SoOutput.h>
-#include <coindefs.h> // COIN_STUB()
 
 
 SO_SFIELD_CONSTRUCTOR_SOURCE(SoSFTrigger);
@@ -44,21 +49,10 @@ SoSFTrigger::operator=(const SoSFTrigger & field)
   return *this;
 }
 
-
 /*!
-  Does initialization common for all objects of the
-  SoSFTrigger class. This includes setting up the
-  type system, among other things.
-*/
-void
-SoSFTrigger::initClass(void)
-{
-  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFTrigger);
-}
-
-/*!
-  FIXME: write function documentation
-*/
+  This field class does not actually contain any value, so we
+  just triggers an update by calling touch() within this method.
+ */
 void
 SoSFTrigger::setValue(void)
 {
@@ -66,17 +60,21 @@ SoSFTrigger::setValue(void)
 }
 
 /*!
-  FIXME: write function documentation
-*/
+  Field doesn't contain any value, so this method does nothing.
+ */
 void
 SoSFTrigger::getValue(void) const
 {
   // Does nothing.
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Override from parent class.
+void
+SoSFTrigger::initClass(void)
+{
+  SO_SFIELD_INTERNAL_INIT_CLASS(SoSFTrigger);
+}
+
 void
 SoSFTrigger::touch(void)
 {
@@ -84,57 +82,48 @@ SoSFTrigger::touch(void)
 }
 
 /*!
-  FIXME: write function documentation
-*/
+  Since SoSFTrigger fields doesn't have any value, they are all
+  equal. So this method always returns \c TRUE.
+ */
 int
-SoSFTrigger::operator==(const SoSFTrigger & /* trigger */) const
+SoSFTrigger::operator==(const SoSFTrigger & trigger) const
 {
-  COIN_STUB();
-  return -1;
+  return 1;
 }
 
 /*!
-  FIXME: write function documentation
+  Since SoSFTrigger fields doesn't have any value, they are all
+  equal. So this method always returns \c FALSE.
 */
 int
-SoSFTrigger::operator!=(const SoSFTrigger & /* trigger */) const
+SoSFTrigger::operator!=(const SoSFTrigger & trigger) const
 {
-  COIN_STUB();
-  return -1;
+  return 0;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoSFTrigger::startNotify(void)
 {
-  SoNotList list;
-
-  this->notify(&list);
+  SoNotList l;
+  this->notify(&l);
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
-SoSFTrigger::notify(SoNotList * list)
+SoSFTrigger::notify(SoNotList * l)
 {
-  inherited::notify(list);
-
-  //FIXME: What here? kintel
-  //  this->touch();
+  inherited::notify(l);
 }
 
+// No value to read, so just return TRUE.
 SbBool
-SoSFTrigger::readValue(SoInput * /* in */)
+SoSFTrigger::readValue(SoInput * in)
 {
-  COIN_STUB();
-  return FALSE;
+  return TRUE;
 }
 
+// No value to write, just return.
 void
-SoSFTrigger::writeValue(SoOutput * /* out */) const
+SoSFTrigger::writeValue(SoOutput * out) const
 {
-  COIN_STUB();
+  return;
 }
