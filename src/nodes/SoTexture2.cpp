@@ -40,6 +40,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
@@ -166,6 +167,7 @@ SoTexture2::initClass(void)
 
   SO_ENABLE(SoGLRenderAction, SoGLTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLTextureEnabledElement);
+  SO_ENABLE(SoGLRenderAction, SoGLTexture3EnabledElement);
 
   SO_ENABLE(SoCallbackAction, SoTextureImageElement);
 }
