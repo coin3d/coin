@@ -77,7 +77,7 @@
 
 // This is the "raw" auto-generated configuration settings file.
 #define _INCLUDED_FROM_CONFDEP_H_
-#include <Inventor/config.h>
+#include <Inventor/soconfig.h>
 #undef _INCLUDED_FROM_CONFDEP_H_
 
 ///////////////////////////////////////////////////////////////////////////
