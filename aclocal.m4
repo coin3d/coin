@@ -5297,11 +5297,12 @@ AC_ARG_ENABLE(
 # FIXME: don't mangle options like -fno-gnu-linker and -fvolatile-global
 # 20020104 larsa
 if test x"$enable_symbols" = x"no"; then
-  # CPPFLAGS="`echo $CPPFLAGS | sed 's/-g[0-9]//'`"
-  CFLAGS="`echo $CFLAGS | sed 's/-g[0-9]?//'`"
-  CXXFLAGS="`echo $CXXFLAGS | sed 's/-g[0-9]?//'`"
+  # CPPFLAGS="`echo $CPPFLAGS | sed 's/-g\>//'`"
+  CFLAGS="`echo $CFLAGS | sed 's/-g\>//'`"
+  CXXFLAGS="`echo $CXXFLAGS | sed 's/-g\>//'`"
 fi
-])
+]) # SIM_AC_DEBUGSYMBOLS
+
 
 # Usage:
 #   SIM_AC_RTTI_SUPPORT
