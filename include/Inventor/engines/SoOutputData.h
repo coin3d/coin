@@ -60,7 +60,7 @@ public:
   void writeDescriptions(SoOutput *out, SoEngine * engine) const;
 
 private:
-
+  SbBool hasOutput(const char * name) const;
   void addOutputInternal(const SoFieldContainer * base, const char *name,
                          const SoEngineOutput * output, SoType type);
   SoEngineOutput * getOutputInternal(const SoFieldContainer * base, int index) const;

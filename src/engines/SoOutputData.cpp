@@ -49,6 +49,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoType.h>
+#include <Inventor/C/threads/threadsutilp.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -137,7 +138,11 @@ void
 SoEngineOutputData::addOutput(const SoEngine *base, const char *name,
                               const SoEngineOutput *output, SoType type)
 {
-  this->addOutputInternal((const SoFieldContainer*) base, name, output, type);
+  CC_GLOBAL_LOCK;
+  if (!this->hasOutput(name)) {
+    this->addOutputInternal((const SoFieldContainer*) base, name, output, type);
+  }
+  CC_GLOBAL_UNLOCK;
 }
 
 /*!
@@ -286,4 +291,17 @@ SoEngineOutputData::getIndexInternal(const SoFieldContainer * base, const SoEngi
     if (this->outputlist[i]->ptroffset == ptroffset) return i;
   }
   return -1;
+}
+
+/*!
+  \internal
+  \since Coin 2.3
+*/
+SbBool 
+SoEngineOutputData::hasOutput(const char * name) const
+{
+  for (int i = 0; i < this->outputlist.getLength(); i++) {
+    if (this->outputlist[i]->name == name) return TRUE;
+  }
+  return FALSE;
 }
