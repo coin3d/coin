@@ -421,12 +421,24 @@ SoEngine::copyThroughConnection(void) const
 SbBool
 SoEngine::shouldCopy(void) const
 {
+  SbBool result = FALSE;
+
   SoFieldList fl;
   int nr = this->getFields(fl);
-  for (int i=0; i < nr; i++)
-    if (fl[i]->referencesCopy()) return TRUE;
+  for (int i=0; i < nr; i++) {
+    if (fl[i]->referencesCopy()) {
+      result = TRUE;
+      break;
+    }
+  }
 
-  return FALSE;
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngine::shouldCopy", "%p - %s, result==%s",
+                         this, this->getTypeId().getName().getString(),
+                         result ? "TRUE" : "FALSE");
+#endif // debug
+
+  return result;
 }
 
 /*!
