@@ -1346,5 +1346,18 @@
 
     UPDATE: Minimal code, and a NoOp dragger that isolates the error
     to SoDragger is added to Flip. 20021025 rolvs
+    
+    UPDATE: This bug is isolated to copying of malformed
+    NodeKit's. The erroneous behaviour is seen when a NodeKit adds a
+    catalog entry that is not null by default, as a child to a catalog
+    entry that /is/ null by default. e.g. in NodeKit constructor: 
+
+    SO_KIT_ADD_CATALOG_ENTRY( transformGroup, SoTransformSeparator, 
+                              TRUE, this,"",TRUE );
+    SO_KIT_ADD_CATALOG_ENTRY( cube, SoCube, 
+                              FALSE, transformGroup,"", TRUE );
+    
+    This behaviour is also defined and documented thoroughly in
+    Flip. Still working on a good fix though. 20021028 rolvs
 
 =====================================================================
