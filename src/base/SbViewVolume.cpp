@@ -715,3 +715,102 @@ SbViewVolume::getViewUp(void) const
 {
   return to_sbvec3f(this->dpvv.getViewUp());
 }
+
+
+/*!
+  Returns TRUE if \a p is inside the view volume.
+
+  \since 2004-02-12
+*/
+SbBool 
+SbViewVolume::intersect(const SbVec3f & p) const
+{
+  SbPlane planes[6];
+  this->getViewVolumePlanes(planes);
+  for (int i = 0; i < 6; i++) {
+    if (!planes[i].isInHalfSpace(p)) return FALSE;
+  }
+  return TRUE;
+}
+
+/*!  
+  Returns TRUE if the line segment \a p0, \a p1 may intersect
+  volume. Be aware that it's not 100% certain that the line segment
+  intersects the volume even if this function returns TRUE.
+  
+  \a closestpoint is set to the closest point on the line
+  to the center ray of the view volume.
+  
+  \since 2004-02-12
+*/
+SbBool 
+SbViewVolume::intersect(const SbVec3f & p0, const SbVec3f & p1,
+                        SbVec3f & closestpoint) const
+{
+  SbVec3f dummy;
+  SbLine centerray(this->getProjectionPoint(),
+                   this->getProjectionPoint() + this->getProjectionDirection());
+  SbLine line(p0, p1);
+
+  (void) line.getClosestPoints(centerray, closestpoint, dummy);
+  
+  // bah, lame. FIXME: pederb, 2003-02-12
+  SbBox3f bbox;
+  bbox.extendBy(p0);
+  bbox.extendBy(p1);
+  return this->intersect(bbox);
+}
+
+/*!
+  Returns TRUE if \a box may be inside the view volume.
+
+  \since 2004-02-12
+ */
+SbBool 
+SbViewVolume::intersect(const SbBox3f & box) const
+{
+  int i, j;
+  SbVec3f bmin, bmax;
+  bmin = box.getMin();
+  bmax = box.getMax();
+  SbVec3f pts[8];
+
+  // create the 8 box corner points
+  for (i = 0; i < 8; i++) {
+    pts[i][0] = i & 1 ? bmin[0] : bmax[0];
+    pts[i][1] = i & 2 ? bmin[1] : bmax[1];
+    pts[i][2] = i & 4 ? bmin[2] : bmax[2];
+  }
+
+  SbPlane planes[6];
+  this->getViewVolumePlanes(planes);
+
+  for (i = 0; i < 6; i++) {
+    for (j = 0; j < 8; j++) {
+      if (planes[i].isInHalfSpace(pts[j])) break;
+    }
+    if (j == 8) return FALSE;
+  }
+  return TRUE;
+}
+
+/*!
+  Returns TRUE if all eight corner points in \a bmin, \a bmax is
+  outside \a p.
+*/
+SbBool 
+SbViewVolume::outsideTest(const SbPlane & p,
+                          const SbVec3f & bmin, 
+                          const SbVec3f & bmax) const
+{
+  int i;
+  SbVec3f pt;
+  for (i = 0; i < 8; i++) {
+    pt[0] = i & 1 ? bmin[0] : bmax[0];
+    pt[1] = i & 2 ? bmin[1] : bmax[1];
+    pt[2] = i & 4 ? bmin[2] : bmax[2];
+    
+    if (p.isInHalfSpace(pt)) return FALSE;
+  }
+  return TRUE;
+}
