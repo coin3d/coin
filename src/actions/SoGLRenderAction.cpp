@@ -105,7 +105,7 @@
   behind A, the transparency will not be correct.
 
   In Coin we have a new transparency mode that solves some of these
-  problems: SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE blend. In
+  problems: SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND. In
   addition to sorting the objects, all polygons inside each object is
   also sorted back-to-front when rendering. But, if you have
   intersecting objects and/or intersecting polygons, even this
