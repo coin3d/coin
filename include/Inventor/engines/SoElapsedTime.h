@@ -48,6 +48,8 @@ public:
 protected:
   ~SoElapsedTime();
 
+  virtual void writeInstance(SoOutput * out);
+
 private:
   virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
