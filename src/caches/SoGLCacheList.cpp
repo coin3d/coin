@@ -58,6 +58,7 @@
 
 static int COIN_AUTO_CACHING = -1;
 static int COIN_DEBUG_CACHING = -1;
+static int COIN_SMART_CACHING = -1;
 
 // *************************************************************************
 
@@ -73,6 +74,7 @@ public:
   SbBool needclose;
   SoElement * invalidelement;
   int numframesok;
+  int numshapes;
 
   //
   // Callback from SoContextHandler
@@ -112,6 +114,7 @@ SoGLCacheList::SoGLCacheList(int numcaches)
   THIS->needclose = FALSE;
   THIS->invalidelement = NULL;
   THIS->numframesok = 0;
+  THIS->numshapes = 0;
 
   // auto caching must be enabled using an environment variable
   if (COIN_AUTO_CACHING < 0) {
@@ -126,6 +129,12 @@ SoGLCacheList::SoGLCacheList(int numcaches)
     else COIN_DEBUG_CACHING = 0;
   }
 #endif // debug
+  
+  if (COIN_SMART_CACHING < 0) {
+    const char * env = coin_getenv("COIN_SMART_CACHING");
+    if (env) COIN_SMART_CACHING = atoi(env);
+    else COIN_SMART_CACHING = 0;
+  }
   
   SoContextHandler::addContextDestructionCallback(SoGLCacheListP::contextCleanup, THIS);
 }
@@ -450,8 +459,30 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
   else {
     if (THIS->numframesok >= 2 && 
         (THIS->autocachebits == SoGLCacheContextElement::DO_AUTO_CACHE)) {
-      shouldcreate = TRUE;
-
+      
+      if (COIN_SMART_CACHING) {
+        if (THIS->numshapes < 2) {
+          if (THIS->numframesok >= 5) shouldcreate = TRUE;
+        }
+        else if (THIS->numshapes < 5) {
+          if (THIS->numframesok >= 4) shouldcreate = TRUE;
+        }
+        else if (THIS->numshapes < 10) {
+          if (THIS->numframesok >= 3) shouldcreate = TRUE;
+        }
+        else if (THIS->numshapes > 1000) {
+          if (THIS->numframesok >= 4) shouldcreate = TRUE;
+        }
+        else if (THIS->numshapes > 100) {
+          if (THIS->numframesok >= 3) shouldcreate = TRUE;
+        }
+        else {
+          shouldcreate = TRUE;
+        }
+      }
+      else {
+        shouldcreate = TRUE;
+      }
 #if COIN_DEBUG
       if (COIN_DEBUG_CACHING && THIS->numframesok >= 2) {
         SoDebugError::postInfo("SoGLCacheList::open",
@@ -502,6 +533,7 @@ SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
 #endif // debug
   }
   THIS->autocachebits = SoGLCacheContextElement::resetAutoCacheBits(state);
+  THIS->numshapes = 0;
 }
 
 /*!
@@ -554,6 +586,7 @@ SoGLCacheList::close(SoGLRenderAction * action)
     THIS->opencache = NULL;
   }
 
+  THIS->numshapes = SoGLCacheContextElement::getNumShapes(state);
   int bits = SoGLCacheContextElement::resetAutoCacheBits(state);
   SoGLCacheContextElement::setAutoCacheBits(state, bits|THIS->autocachebits);
   THIS->autocachebits = bits;
