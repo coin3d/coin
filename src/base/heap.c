@@ -224,7 +224,7 @@ cc_heap_remove(cc_heap * h, void * o)
   if (!cc_hash_get(h->hash, (unsigned long) o, &tmp))
     return FALSE;
 
-  i = (unsigned int) tmp;
+  i = (uintptr_t) tmp;
   assert(i < h->elements);
   assert(h->array[i] == o);
 
