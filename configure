@@ -20815,7 +20815,7 @@ if $sim_ac_make_dsp; then
   # this can't be set up at the point the libtool script is generated
   mv libtool libtool.bak
   sed -e "s%^CC=\"gcc\"%CC=\"$srcdir/cfg/m4/gendsp.sh\"%" \
-      -e "s%^CC=\"$srcdir/cfg/m4/wrapmsvc.exe\"%CC=\"$srcdir/cfg/m4/gendsp.sh\"%" \
+      -e "s%^CC=\".*/wrapmsvc.exe\"%CC=\"$srcdir/cfg/m4/gendsp.sh\"%" \
       <libtool.bak >libtool
   rm -f libtool.bak
   chmod 755 libtool
