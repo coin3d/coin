@@ -154,6 +154,46 @@
     event-mechanism in Open Inventor makes it really easy to create
     interactive 3D components like draggers and manipulators, one of
     the major features that makes people choose to use Open Inventor.
+
+  * larsa [unpublished] on Application-domain problems:
+
+    [Someone once wrote the following]
+    : I have a scene graph and I want to walk inside the scene
+    : (like a city and I want to walk along the roads in the city). How can I put
+    : the camera in a way so that I can only see the scene in front of me and
+    : round me, just like the view you see when you walk around? Is there any
+    : sample code so that I can use?
+
+    Just thought I should explain why you haven't gotten any answers on this
+    one, since it might clear up other generic issues you or anyone else are 
+    wondering about.
+  
+    The Open Inventor library doesn't really know a whole lot.  It doens't know
+    what "up" is, it has no concept of what is a road, what is a wall, what is
+    on the inside of something and what is on the outside.  It basically has
+    coordinates and polygons and ways to render those.
+  
+    On the other hand, Open Inventor is helpful when it comes to organizing your
+    models hierarchically or logically, making it easy for developers to know
+    what is a road and what are walls, if that's what the developer wants to
+    keep organized.  But to Open Inventor, it's still just coordinates and
+    triangles.  Knowing anything more than that falls into The Application Domain.
+  
+    So what you have above is a problem relating to the application domain.
+    The solution will be application specific.  For there to have been a
+    "generic ready-made solution" for this, you would have to have a standardized
+    way of organizing 3D models that the ready-made solution could utilize.
+    But Open Inventor developers' needs are so diverse when it comes to what 
+    their 3D models should represent, so creating the above standard would 
+    be - if not impossible - certainly very suboptimal.
+  
+    So it's like this:  
+    - As the creator of the application, you are the holder of the knowledge
+      on what a road is and what to do with it.
+    - As the creator of the application, you have the power to control and 
+      monitor what the camera is doing, and enforcing your application specific
+      rules on the camera movement.
+  
 */
 
 /* *********************************************************************** */
