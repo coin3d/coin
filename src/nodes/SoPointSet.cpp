@@ -221,6 +221,16 @@ SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
   return TRUE;
 }
 
+/*!
+  Overloaded to avoid compiler warnings.
+*/
+SbBool 
+SoPointSet::generateDefaultNormals(SoState * state,
+                                   SoNormalBundle * bundle)
+{
+  return FALSE;
+}
+
 // doc from parent
 void
 SoPointSet::getBoundingBox(SoGetBoundingBoxAction *action)
