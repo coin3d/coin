@@ -176,23 +176,44 @@ SoTimeCounter::writeInstance(SoOutput * out)
 void
 SoTimeCounter::evaluate(void)
 {
-  if (this->output.isEnabled()) {
-    SO_ENGINE_OUTPUT(output, SoSFShort, setValue(this->outputvalue));
-    // disable until new value is available in outputvalue
-    this->output.enable(FALSE);
+  // FIXME: check this->ispaused flag. 20000919 mortene.
+
+  double currtime = this->timeIn.getValue().getValue();
+  double difftime = currtime - this->starttime;
+  if (difftime > this->cyclelen) {
+    double num = difftime / this->cyclelen;
+    this->starttime += this->cyclelen * floor(num);
+    difftime = currtime - this->starttime;
   }
+  short value = this->findOutputValue(difftime);
+
+  if (value == this->outputvalue + this->step.getValue()) { // common case
+    this->stepnum++;
+  }
+  else { // either reset, wrap-around or a delay somewhere
+    short offset = value - this->min.getValue();
+    this->stepnum = offset / this->step.getValue();
+  }
+  this->outputvalue = value;
+    
+  // Force update on slave fields (SO_ENGINE_OUTPUT checks
+  // isEnabled()-value, and we want the setValue() to happen anyway).
+  this->output.enable(TRUE);
+  SO_ENGINE_OUTPUT(output, SoSFShort, setValue(this->outputvalue));
+  // The isEnabled() flag will be set back to FALSE again upon the
+  // next invocation of SoTimeCounter::inputChanged().
 }
 
 // doc in parent
 void
 SoTimeCounter::inputChanged(SoField * which)
 {
-#if COIN_DEBUG && 0 // debug
-  SbName fieldname;
-  which->getContainer()->getFieldName(which, fieldname);
-  SoDebugError::postInfo("SoTimeCounter::inputChanged", "field=%p, \"%s\"",
-                         which, fieldname.getString());
-#endif // debug
+  // Default is to not do any notification when we return from this
+  // function to SoEngine::notify(). This is an optimization for this
+  // engine to avoid transmission of notification to all slave fields
+  // each time the timeIn field is updated.
+  this->output.enable(FALSE);
+  this->syncOut.enable(FALSE);
 
   if (which == &this->timeIn) {
     if (this->ispaused) return;
@@ -203,27 +224,26 @@ SoTimeCounter::inputChanged(SoField * which)
     if (difftime > this->cyclelen) {
       // Trigger syncOut once at start of cycle.
       this->syncOut.enable(TRUE);
-      SO_ENGINE_OUTPUT(syncOut, SoSFTrigger, setValue());
-      // Avoid further notification of slave fields in
-      // SoEngine::notify().
-      this->syncOut.enable(FALSE);
 
       double num = difftime / this->cyclelen;
       this->starttime += this->cyclelen * floor(num);
       difftime = currtime - this->starttime;
     }
-    this->setOutputValue(this->findOutputValue(difftime));
+    if (this->firstoutputenable ||
+        this->findOutputValue(difftime) != this->outputvalue) {
+      this->firstoutputenable = FALSE;
+      this->output.enable(TRUE);
+    }
   }
   else if (which == &this->on) {
     if (this->on.getValue() && this->ispaused) {
       this->starttime =
         this->timeIn.getValue().getValue() - this->pausetimeincycle;
       this->ispaused = FALSE;
-      this->inputChanged(&this->timeIn); // fake it
+      this->output.enable(TRUE);
     }
     else if (!this->on.getValue() && !this->ispaused) {
       this->ispaused = TRUE;
-      this->output.enable(FALSE);
       this->pausetimeincycle =
         this->timeIn.getValue().getValue() - this->starttime;
     }
@@ -231,27 +251,30 @@ SoTimeCounter::inputChanged(SoField * which)
   else if (which == &this->frequency) {
     this->cyclelen = 1.0 / this->frequency.getValue();
     this->calcDutySteps();
+    this->output.enable(TRUE);
   }
-
   else if (which == &this->duty) {
     this->calcDutySteps();
+    this->output.enable(TRUE);
   }
   else if (which == &this->reset) {
     short minval = this->min.getValue();
     short val = SbClamp(this->reset.getValue(),
-                      minval,
-                      this->max.getValue());
+                        minval,
+                        this->max.getValue());
     short offset = val - minval;
     short stepval = this->step.getValue();
     if ((offset % stepval) != 0) {
       val = minval + (offset / stepval) * stepval;
     }
     this->calcStarttime(val);
-    this->setOutputValue(val);
+    if (val != this->outputvalue)
+      this->output.enable(TRUE);
   }
   else if (which == &this->syncIn) {
     this->starttime = this->timeIn.getValue().getValue();
-    this->setOutputValue(this->min.getValue());
+    if (this->min.getValue() != this->outputvalue)
+      this->output.enable(TRUE);
   }
   else if (which == &this->max) {
     if (this->max.getValue() < this->min.getValue())
@@ -260,7 +283,8 @@ SoTimeCounter::inputChanged(SoField * which)
     this->calcDutySteps();
     if (this->max.getValue() < this->outputvalue) {
       this->starttime = this->timeIn.getValue().getValue();
-      this->setOutputValue(this->min.getValue());
+      if (this->min.getValue() != this->outputvalue) // FIXME: should be max?
+        this->output.enable(TRUE);
     }
   }
   else if (which == &this->min) {
@@ -273,7 +297,8 @@ SoTimeCounter::inputChanged(SoField * which)
       this->starttime = this->timeIn.getValue().getValue();
       value = this->min.getValue();
     }
-    this->setOutputValue(value);
+    if (value != this->outputvalue)
+      this->output.enable(TRUE);
   }
   else if (which == &this->step) {
     this->calcNumSteps();
@@ -283,7 +308,11 @@ SoTimeCounter::inputChanged(SoField * which)
       this->starttime = this->timeIn.getValue().getValue();
       value = this->min.getValue();
     }
-    this->setOutputValue(value);
+    if (value != this->outputvalue)
+      this->output.enable(TRUE);
+  }
+  else {
+    assert(0 && "unknown field");
   }
 }
 
@@ -307,7 +336,7 @@ SoTimeCounter::calcDutySteps(void)
       dutysum += (double)this->duty[i];
     }
     double currsum = 0.0;
-    dutylimits.truncate(0);
+    this->dutylimits.truncate(0);
     for (i = 0; i < numsteps; i++) {
       currsum += (double) this->duty[i];
       this->dutylimits.append(currsum/dutysum * this->cyclelen);
@@ -315,7 +344,7 @@ SoTimeCounter::calcDutySteps(void)
   }
   else {
     // ignore duty values
-    dutylimits.truncate(0);
+    this->dutylimits.truncate(0);
   }
 }
 
@@ -345,30 +374,6 @@ SoTimeCounter::findOutputValue(double timeincycle) const
   }
   assert(val >= minval && val <= maxval);
   return val;
-}
-
-// sets current value to output. Enables output if new value
-void
-SoTimeCounter::setOutputValue(short value)
-{
-  if (value != this->outputvalue) {
-    if (value == this->outputvalue + this->step.getValue()) { // common case
-      this->stepnum++;
-    }
-    else { // either reset, wrap-around or a delay somewhere
-      short offset = value - this->min.getValue();
-      this->stepnum = offset / this->step.getValue();
-    }
-    this->outputvalue = value;
-    this->output.enable(TRUE);
-  }
-
-  // FIXME: is this really necessary? Can't we just set
-  // this->output.enable(TRUE) in the constructor instead? 20000907 mortene.
-  if (this->firstoutputenable) {
-    this->firstoutputenable = FALSE;
-    this->output.enable(TRUE);
-  }
 }
 
 // calculates cycle starttime based on counter value and timeIn.

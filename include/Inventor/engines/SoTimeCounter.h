@@ -69,7 +69,6 @@ private:
   double starttime;
   double cyclelen;
   short findOutputValue(double timeincycle) const;
-  void setOutputValue(short value);
   void calcDutySteps(void);
   void calcNumSteps(void);
 
