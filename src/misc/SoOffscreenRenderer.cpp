@@ -34,6 +34,15 @@
 
   Currently offscreen rendering can be done with GLX (i.e. OpenGL on
   X11) and WGL (i.e. OpenGL on Win32).
+
+  Here's a dead simple usage example:
+
+  \code
+  SoOffscreenRenderer * myRenderer = new SoOffscreenRenderer(vpregion);
+  SoNode * root = myViewer->getSceneManager()->getSceneGraph();
+  SbBool ok = myRenderer->render(root);
+  // [then use image buffer in a texture, or write it to file, or whatever]
+  \endcode
 */
 // FIXME: include the following in documentation about how to use the
 // SoOffscreenRenderer to write movies:
@@ -831,7 +840,40 @@ SoOffscreenRenderer::convertBuffer(void)
 }
 
 /*!
-  Render \a scene into our internal memory buffer.
+  Render the scenegraph rooted at \a scene into our internal pixel
+  buffer.
+
+
+  Important note: make sure you pass in a \a scene node pointer which
+  has both a camera and at least one lightsource below it -- otherwise
+  you are likely to end up with just a blank or black image buffer.
+
+  This mistake is easily made if you use an SoOffscreenRenderer on a
+  scenegraph from one of the standard viewer components, as you will
+  often just leave the addition of a camera and a headlight
+  lightsource to the viewer to set up. This camera and lightsource are
+  then part of the viewer's private "super-graph" outside of the scope
+  of the scenegraph passed in by the application programmer. To make
+  sure the complete scenegraph (including the viewer's "private parts"
+  (*snicker*)) are passed to this method, you can get the scenegraph
+  root from the viewer's internal SoSceneManager instance instead of
+  from the viewer's own getSceneGraph() method, like this:
+
+  \code
+  SoOffscreenRenderer * myRenderer = new SoOffscreenRenderer(vpregion);
+  SoNode * root = myViewer->getSceneManager()->getSceneGraph();
+  SbBool ok = myRenderer->render(root);
+  // [then use image buffer in a texture, or write it to file, or whatever]
+  \endcode
+
+  If you do this and still get a blank buffer, another common problem
+  is to have a camera which is not actually pointing at the scene
+  geometry you want a snapshot of. If you suspect that could be the
+  cause of problems on your end, take a look at SoCamera::pointAt()
+  and SoCamera::viewAll() to see how you can make a camera node
+  guaranteed to be directed at the scene geometry.
+
+  \sa writeToRGB()
 */
 SbBool
 SoOffscreenRenderer::render(SoNode * scene)
