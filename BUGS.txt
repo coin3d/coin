@@ -1,32 +1,7 @@
 =====================================================================
 
-000 Bounding box calculation is _very_ lousy when there are rotations
-    comined with bounding boxes for geometry that are not centered
-    around it's local origo. To reproduce in a way that shows off the
-    bug well, load this scenegraph into the
-    SoGuiExamples/engines/computexfbbox example:
-
-    ---8<-------8<-------8<-------8<-------8<-------8<-------8<----
-    #Inventor V2.0 ascii
-    
-    Separator {
-       Coordinate3 { point [ 0 0 0, 1 0 0, 1 1 0, 0 1 0 ] }
-       DEF square IndexedFaceSet { coordIndex [ 0, 1, 2, 3, -1 ] }
-    
-       RotationXYZ { axis Z  angle 0.5 }
-       USE square
-    
-       RotationXYZ { axis Z  angle 0.5 }
-       USE square
-    }
-    ---8<-------8<-------8<-------8<-------8<-------8<-------8<----
-
-    This bug has very nasty implications for some types of models, as
-    the bbox calculation error tend to accumulate -- so one can
-    quickly end up with some horribly bad fitting bboxes.
-
-    Bug reported by Nigel Murry. Write-down by <mortene@sim.no>,
-    20020204.
+000 FIXED 2002-02-17: Bounding box combinations came up lousy when the
+    bboxes that were combined had zero volume.
 
 =====================================================================
 
@@ -91,6 +66,7 @@
 
     Can at least be seen on the SoGuiExamples/nodes/texture
     example. Reported by Dan Stewart on coin-discuss. Cause not yet
-    known.
+    known. Hard to debug and fix without access to the platform in
+    question.
 
 =====================================================================
