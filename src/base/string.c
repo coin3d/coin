@@ -35,35 +35,14 @@
 
 /* ********************************************************************** */
 
-cc_string *
-cc_string_struct_malloc(void)
-{
-  cc_string * string_struct;
-  string_struct = (cc_string *) malloc(sizeof(cc_string));
-  assert(string_struct != NULL);
-  return string_struct;
-} /* cc_string_struct_malloc() */
+/* FIXME:
 
-void
-cc_string_struct_init(cc_string * string_struct)
-{
-  string_struct->pointer = string_struct->buffer;
-  string_struct->bufsize = CC_STRING_MIN_SIZE;
-  string_struct->buffer[0] = '\0';
-} /* cc_string_struct_init() */
+   - get rid of strlen() invocations
+   - use the cc_memalloc interface?
+   - use cc_error-style class instead of the fprintf()s
 
-void
-cc_string_struct_clean(cc_string * string_struct)
-{
-  if ( string_struct->pointer != string_struct->buffer )
-    free(string_struct->pointer);
-} /* cc_string_struct_clean() */
-
-void
-cc_string_struct_free(cc_string * string_struct)
-{
-  if ( string_struct ) free(string_struct);
-} /* cc_string_struct_free() */
+   20020513 mortene.
+*/
 
 /* ********************************************************************** */
 
@@ -76,6 +55,7 @@ cc_string_remove_substring(cc_string * me, int start, int end)
 
 #if COIN_DEBUG
   if ( start < 0 || start >= len || end < 0 || end >= len || start > end ) {
+    /* FIXME: convert to proper mechanism. 20020513 mortene. */
     /*
     SoDebugError::postWarning("cc_string_remove_substring",
                               "invalid arguments [%d, %d] for string ``%s''",
@@ -87,8 +67,7 @@ cc_string_remove_substring(cc_string * me, int start, int end)
   (void) memmove(me->pointer + start, me->pointer + end + 1, len - end);
 } /* cc_string_remove_substring() */
 
-static
-void
+static void
 cc_string_expand_buffer(cc_string * me, int additional)
 {
   int newsize;
@@ -107,50 +86,46 @@ cc_string_expand_buffer(cc_string * me, int additional)
 
 /* ********************************************************************** */
 
-cc_string *
-cc_string_construct(const char * text)
+void
+cc_string_construct(cc_string * me)
 {
-  cc_string * me;
-  me = cc_string_struct_malloc();
-  cc_string_struct_init(me);
-  cc_string_set_text(me, text);
-  return me;
+  me->pointer = me->buffer;
+  me->bufsize = CC_STRING_MIN_SIZE;
+  me->buffer[0] = '\0';
 } /* cc_string_construct() */
 
 cc_string *
 cc_string_construct_new(void)
 {
   cc_string * me;
-  me = cc_string_struct_malloc();
-  cc_string_struct_init(me);
+  me = (cc_string *) malloc(sizeof(cc_string));
+  assert(me != NULL);
+  cc_string_construct(me);
   return me;
 } /* cc_string_construct_new() */
-
-cc_string *
-cc_string_construct_subtext(const char * text, int start, int end)
-{
-  cc_string * me;
-  me = cc_string_struct_malloc();
-  cc_string_struct_init(me);
-  cc_string_set_subtext(me, text, start, end);
-  return me;
-} /* cc_string_construct_subtext() */
 
 cc_string *
 cc_string_clone(cc_string * string)
 {
   cc_string * me;
-  me = cc_string_struct_malloc();
-  cc_string_struct_init(me);
+  me = cc_string_construct_new();
   cc_string_set_text(me, string->pointer);
   return me;
 } /* cc_string_clone() */
 
 void
+cc_string_clean(cc_string * string_struct)
+{
+  if ( string_struct->pointer != string_struct->buffer )
+    free(string_struct->pointer);
+} /* cc_string_clean() */
+
+void
 cc_string_destruct(cc_string * me)
 {
-  cc_string_struct_clean(me);
-  cc_string_struct_free(me);
+  assert(me != NULL);
+  cc_string_clean(me);
+  free(me);
 } /* cc_string_destruct() */
 
 /* ********************************************************************** */
@@ -268,10 +243,10 @@ void
 cc_string_append_integer(cc_string * me, const int digits)
 {
   cc_string s;
-  cc_string_struct_init(&s);
+  cc_string_construct(&s);
   (void)cc_string_sprintf(&s, "%d", digits);
   cc_string_append_string(me, &s);
-  cc_string_struct_clean(&s);
+  cc_string_clean(&s);
 } /* cc_string_append_integer() */
 
 void
@@ -289,6 +264,7 @@ cc_string_append_char(cc_string * me, const char c)
 unsigned int
 cc_string_length(const cc_string * me)
 {
+  /* FIXME: should cache the length of the string. 20020513 mortene. */
   return strlen(me->pointer);
 } /* cc_string_length() */
 
@@ -334,12 +310,6 @@ cc_string_get_text(const cc_string * me)
 {
   return me->pointer;
 } /* cc_string_get_text() */
-
-cc_string *
-cc_string_get_substring(cc_string * me, int start, int end)
-{
-  return cc_string_construct_subtext(me->pointer, start, end);
-} /* cc_string_get_substring() */
 
 /* ********************************************************************** */
 
