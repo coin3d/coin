@@ -19,6 +19,8 @@
 
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
 #include <Inventor/SbVec3f.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 
 SO_KIT_SOURCE(SoRotateCylindricalDragger);
@@ -34,14 +36,12 @@ SoRotateCylindricalDragger::SoRotateCylindricalDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoRotateCylindricalDragger);
 
-  // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
-  // catalog. 20000107 mortene.
-  // feedback
-  // feedbackActive
-  // feedbackSwitch
-  // rotator
-  // rotatorActive
-  // rotatorSwitch
+  SO_KIT_ADD_CATALOG_ENTRY(rotatorSwitch, SoSwitch, TRUE, geomSeparator, feedbackSwitch, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotator, SoSeparator, TRUE, rotatorSwitch, rotatorActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotatorActive, SoSeparator, TRUE, rotatorSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(feedbackSwitch, SoSwitch, TRUE, geomSeparator, "", FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(feedback, SoSeparator, TRUE, feedbackSwitch, feedbackActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
 

@@ -18,6 +18,16 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoCenterballDragger.h>
+#include <Inventor/draggers/SoRotateCylindricalDragger.h>
+#include <Inventor/draggers/SoRotateSphericalDragger.h>
+#include <Inventor/draggers/SoTranslate2Dragger.h>
+#include <Inventor/nodes/SoAntiSquish.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMatrixTransform.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 
 SO_KIT_SOURCE(SoCenterballDragger);
@@ -33,30 +43,26 @@ SoCenterballDragger::SoCenterballDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoCenterballDragger);
 
-  // FIXME:
-  // SO_KIT_ADD_CATALOG_ENTRY for:
-  // XAxis
-  // XAxisSwitch
-  // XCenterChanger
-  // XRotator
-  // YAxis
-  // YAxisSwitch
-  // YCenterChanger
-  // YRotator
-  // ZAxis
-  // ZAxisSwitch
-  // ZCenterChanger
-  // ZRotator
-  // antiSquish
-  // lightModel
-  // rot2X90
-  // rotX90
-  // rotY90
-  // rotator
-  // surroundScale
-  // translateToCenter
-  //
-  //     20000107 mortene
+  SO_KIT_ADD_CATALOG_ENTRY(XAxis, SoSeparator, TRUE, XAxisSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(XAxisSwitch, SoSwitch, TRUE, geomSeparator, YAxisSwitch, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(XCenterChanger, SoTranslate2Dragger, TRUE, topSeparator, rot2X90, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(XRotator, SoRotateCylindricalDragger, TRUE, topSeparator, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(YAxis, SoSeparator, TRUE, YAxisSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(YAxisSwitch, SoSwitch, TRUE, geomSeparator, ZAxisSwitch, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(YCenterChanger, SoTranslate2Dragger, TRUE, topSeparator, rotY90, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(YRotator, SoRotateCylindricalDragger, TRUE, topSeparator, ZCenterChanger, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(ZAxis, SoSeparator, TRUE, ZAxisSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(ZAxisSwitch, SoSwitch, TRUE, geomSeparator, "", FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(ZCenterChanger, SoTranslate2Dragger, TRUE, topSeparator, rotX90, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(ZRotator, SoRotateCylindricalDragger, TRUE, topSeparator, YCenterChanger, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(antiSquish, SoAntiSquish, FALSE, topSeparator, lightModel, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(lightModel, SoLightModel, TRUE, topSeparator, geomSeparator, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(rot2X90, SoRotation, TRUE, topSeparator, XRotator, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotX90, SoRotation, TRUE, topSeparator, ZRotator, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotY90, SoRotation, TRUE, topSeparator, XCenterChanger, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotator, SoRotateSphericalDragger, TRUE, topSeparator, YRotator, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(surroundScale, SoSurroundScale, TRUE, topSeparator, antiSquish, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(translateToCenter, SoMatrixTransform, TRUE, topSeparator, surroundScale, TRUE);
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(center, (0.0f, 0.0f, 0.0f));

@@ -18,6 +18,8 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoPointLightDragger.h>
+#include <Inventor/draggers/SoDragPointDragger.h>
+#include <Inventor/nodes/SoMaterial.h>
 
 
 SO_KIT_SOURCE(SoPointLightDragger);
@@ -33,10 +35,8 @@ SoPointLightDragger::SoPointLightDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoPointLightDragger);
 
-  // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
-  // catalog. 20000107 mortene.
-  // material
-  // translator
+  SO_KIT_ADD_CATALOG_ENTRY(material, SoMaterial, TRUE, topSeparator, translator, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(translator, SoDragPointDragger, TRUE, topSeparator, geomSeparator, TRUE);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
 

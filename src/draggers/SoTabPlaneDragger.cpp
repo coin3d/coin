@@ -18,6 +18,15 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoTabPlaneDragger.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoNormalBinding.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 
 SO_KIT_SOURCE(SoTabPlaneDragger);
@@ -33,26 +42,24 @@ SoTabPlaneDragger::SoTabPlaneDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTabPlaneDragger);
 
-  // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
-  // catalog. 20000107 mortene.
-  // cornerScaleCoords
-  // cornerScaleTab0
-  // cornerScaleTab1
-  // cornerScaleTab2
-  // cornerScaleTab3
-  // edgeScaleCoords
-  // edgeScaleTab0
-  // edgeScaleTab1
-  // edgeScaleTab2
-  // edgeScaleTab3
-  // planeSwitch
-  // scaleTabHints
-  // scaleTabMaterial
-  // scaleTabMaterialBinding
-  // scaleTabNormal
-  // scaleTabNormalBinding
-  // scaleTabs
-  // translator
+  SO_KIT_ADD_CATALOG_ENTRY(planeSwitch, SoSwitch, TRUE, geomSeparator, "", FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(translator, SoSeparator, TRUE, planeSwitch, scaleTabs, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(scaleTabs, SoSeparator, TRUE, planeSwitch, "", FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(scaleTabMaterial, SoMaterial, TRUE, scaleTabs, scaleTabHints, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(scaleTabHints, SoShapeHints, TRUE, scaleTabs, scaleTabMaterialBinding, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(scaleTabMaterialBinding, SoMaterialBinding, TRUE, scaleTabs, scaleTabNormalBinding, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(scaleTabNormalBinding, SoNormalBinding, TRUE, scaleTabs, scaleTabNormal, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(scaleTabNormal, SoNormal, TRUE, scaleTabs, edgeScaleCoords, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(edgeScaleCoords, SoCoordinate3, TRUE, scaleTabs, edgeScaleTab0, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(edgeScaleTab0, SoIndexedFaceSet, TRUE, scaleTabs, edgeScaleTab1, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(edgeScaleTab1, SoIndexedFaceSet, TRUE, scaleTabs, edgeScaleTab2, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(edgeScaleTab2, SoIndexedFaceSet, TRUE, scaleTabs, edgeScaleTab3, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(edgeScaleTab3, SoIndexedFaceSet, TRUE, scaleTabs, cornerScaleCoords, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(cornerScaleCoords, SoCoordinate3, TRUE, scaleTabs, cornerScaleTab0, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(cornerScaleTab0, SoIndexedFaceSet, TRUE, scaleTabs, cornerScaleTab1, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(cornerScaleTab1, SoIndexedFaceSet, TRUE, scaleTabs, cornerScaleTab2, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(cornerScaleTab2, SoIndexedFaceSet, TRUE, scaleTabs, cornerScaleTab3, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(cornerScaleTab3, SoIndexedFaceSet, TRUE, scaleTabs, "", FALSE);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));

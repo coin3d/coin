@@ -18,6 +18,10 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoTabBoxDragger.h>
+#include <Inventor/draggers/SoTabPlaneDragger.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/nodes/SoTransform.h>
 
 
 SO_KIT_SOURCE(SoTabBoxDragger);
@@ -33,28 +37,26 @@ SoTabBoxDragger::SoTabBoxDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTabBoxDragger);
 
-  // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
-  // catalog. 20000107 mortene.
-  // boxGeom
-  // surroundScale
-  // tabPlane1
-  // tabPlane1Sep
-  // tabPlane1Xf
-  // tabPlane2
-  // tabPlane2Sep
-  // tabPlane2Xf
-  // tabPlane3
-  // tabPlane3Sep
-  // tabPlane3Xf
-  // tabPlane4
-  // tabPlane4Sep
-  // tabPlane4Xf
-  // tabPlane5
-  // tabPlane5Sep
-  // tabPlane5Xf
-  // tabPlane6
-  // tabPlane6Sep
-  // tabPlane6Xf
+  SO_KIT_ADD_CATALOG_ENTRY(surroundScale, SoSurroundScale, TRUE, topSeparator, tabPlane1Sep, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane1Sep, SoSeparator, FALSE, topSeparator, tabPlane2Sep, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane1Xf, SoTransform, TRUE, tabPlane1Sep, tabPlane1, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane1, SoTabPlaneDragger, TRUE, tabPlane1Sep, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane2Sep, SoSeparator, FALSE, topSeparator, tabPlane3Sep, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane2Xf, SoTransform, TRUE, tabPlane2Sep, tabPlane2, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane2, SoTabPlaneDragger, TRUE, tabPlane2Sep, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane3Sep, SoSeparator, FALSE, topSeparator, tabPlane4Sep, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane3Xf, SoTransform, TRUE, tabPlane3Sep, tabPlane3, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane3, SoTabPlaneDragger, TRUE, tabPlane3Sep, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane4Sep, SoSeparator, FALSE, topSeparator, tabPlane5Sep, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane4Xf, SoTransform, TRUE, tabPlane4Sep, tabPlane4, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane4, SoTabPlaneDragger, TRUE, tabPlane4Sep, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane5Sep, SoSeparator, FALSE, topSeparator, tabPlane6Sep, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane5Xf, SoTransform, TRUE, tabPlane5Sep, tabPlane5, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane5, SoTabPlaneDragger, TRUE, tabPlane5Sep, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane6Sep, SoSeparator, FALSE, topSeparator, geomSeparator, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane6Xf, SoTransform, TRUE, tabPlane6Sep, tabPlane6, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(tabPlane6, SoTabPlaneDragger, TRUE, tabPlane6Sep, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(boxGeom, SoSeparator, TRUE, geomSeparator, "", TRUE);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));

@@ -18,6 +18,11 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
+#include <Inventor/draggers/SoDragPointDragger.h>
+#include <Inventor/draggers/SoRotateSphericalDragger.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 
 SO_KIT_SOURCE(SoDirectionalLightDragger);
@@ -33,15 +38,11 @@ SoDirectionalLightDragger::SoDirectionalLightDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoDirectionalLightDragger);
 
-  // FIXME:
-  // SO_KIT_ADD_CATALOG_ENTRY for:
-  // material
-  // rotator
-  // translator
-  // translatorRotInv
-  // translatorSep
-  //
-  //     20000107 mortene
+  SO_KIT_ADD_CATALOG_ENTRY(material, SoMaterial, TRUE, topSeparator, translatorSep, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotator, SoRotateSphericalDragger, TRUE, topSeparator, geomSeparator, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(translator, SoDragPointDragger, TRUE, translatorSep, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(translatorRotInv, SoRotation, TRUE, translatorSep, translator, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(translatorSep, SoSeparator, TRUE, topSeparator, rotator, FALSE);
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

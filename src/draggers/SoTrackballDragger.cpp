@@ -18,6 +18,11 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoTrackballDragger.h>
+#include <Inventor/nodes/SoAntiSquish.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 
 SO_KIT_SOURCE(SoTrackballDragger);
@@ -33,29 +38,27 @@ SoTrackballDragger::SoTrackballDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTrackballDragger);
 
-  // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
-  // catalog. 20000107 mortene.
-  // XRotator
-  // XRotatorActive
-  // XRotatorSwitch
-  // YRotator
-  // YRotatorActive
-  // YRotatorSwitch
-  // ZRotator
-  // ZRotatorActive
-  // ZRotatorSwitch
-  // antiSquish
-  // rotator
-  // rotatorActive
-  // rotatorSwitch
-  // surroundScale
-  // userAxis
-  // userAxisActive
-  // userAxisRotation
-  // userAxisSwitch
-  // userRotator
-  // userRotatorActive
-  // userRotatorSwitch
+  SO_KIT_ADD_CATALOG_ENTRY(surroundScale, SoSurroundScale, TRUE, topSeparator, antiSquish, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(antiSquish, SoAntiSquish, FALSE, topSeparator, geomSeparator, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotatorSwitch, SoSwitch, TRUE, geomSeparator, XRotatorSwitch, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotator, SoSeparator, TRUE, rotatorSwitch, rotatorActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotatorActive, SoSeparator, TRUE, rotatorSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(XRotatorSwitch, SoSwitch, TRUE, geomSeparator, YRotatorSwitch, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(XRotator, SoSeparator, TRUE, XRotatorSwitch, XRotatorActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(XRotatorActive, SoSeparator, TRUE, XRotatorSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(YRotatorSwitch, SoSwitch, TRUE, geomSeparator, ZRotatorSwitch, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(YRotator, SoSeparator, TRUE, YRotatorSwitch, YRotatorActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(YRotatorActive, SoSeparator, TRUE, YRotatorSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(ZRotatorSwitch, SoSwitch, TRUE, geomSeparator, userAxisRotation, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(ZRotator, SoSeparator, TRUE, ZRotatorSwitch, ZRotatorActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(ZRotatorActive, SoSeparator, TRUE, ZRotatorSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(userAxisRotation, SoRotation, TRUE, geomSeparator, userAxisSwitch, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(userAxisSwitch, SoSwitch, TRUE, geomSeparator, userRotatorSwitch, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(userAxis, SoSeparator, TRUE, userAxisSwitch, userAxisActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(userAxisActive, SoSeparator, TRUE, userAxisSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(userRotatorSwitch, SoSwitch, TRUE, geomSeparator, "", FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(userRotator, SoSeparator, TRUE, userRotatorSwitch, userRotatorActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(userRotatorActive, SoSeparator, TRUE, userRotatorSwitch, "", TRUE);
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));

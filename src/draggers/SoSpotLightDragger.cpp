@@ -18,6 +18,14 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoSpotLightDragger.h>
+#include <Inventor/draggers/SoDragPointDragger.h>
+#include <Inventor/draggers/SoRotateSphericalDragger.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoScale.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTranslation.h>
 
 
 SO_KIT_SOURCE(SoSpotLightDragger);
@@ -33,19 +41,17 @@ SoSpotLightDragger::SoSpotLightDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoSpotLightDragger);
 
-  // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
-  // catalog. 20000107 mortene.
-  // beam
-  // beamActive
-  // beamPlacement
-  // beamScale
-  // beamSep
-  // beamSwitch
-  // material
-  // rotator
-  // translator
-  // translatorRotInv
-  // translatorSep
+  SO_KIT_ADD_CATALOG_ENTRY(material, SoMaterial, TRUE, topSeparator, translatorSep, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(translatorSep, SoSeparator, TRUE, topSeparator, rotator, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(translatorRotInv, SoRotation, TRUE, translatorSep, translator, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(translator, SoDragPointDragger, TRUE, translatorSep, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotator, SoRotateSphericalDragger, TRUE, topSeparator, beamSep, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(beamSep, SoSeparator, TRUE, topSeparator, geomSeparator, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(beamPlacement, SoTranslation, TRUE, beamSep, beamScale, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(beamScale, SoScale, TRUE, beamSep, beamSwitch, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(beamSwitch, SoSwitch, TRUE, beamSep, "", FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(beam, SoSeparator, TRUE, beamSwitch, beamActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(beamActive, SoSeparator, TRUE, beamSwitch, "", TRUE);
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

@@ -18,6 +18,11 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoJackDragger.h>
+#include <Inventor/draggers/SoDragPointDragger.h>
+#include <Inventor/draggers/SoRotateSphericalDragger.h>
+#include <Inventor/draggers/SoScaleUniformDragger.h>
+#include <Inventor/nodes/SoAntiSquish.h>
+#include <Inventor/nodes/SoSurroundScale.h>
 
 
 SO_KIT_SOURCE(SoJackDragger);
@@ -33,13 +38,11 @@ SoJackDragger::SoJackDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoJackDragger);
 
-  // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
-  // catalog. 20000107 mortene.
-  // antiSquish
-  // rotator
-  // scaler
-  // surroundScale
-  // translator
+  SO_KIT_ADD_CATALOG_ENTRY(surroundScale, SoSurroundScale, TRUE, topSeparator, antiSquish, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(antiSquish, SoAntiSquish, FALSE, topSeparator, scaler, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(scaler, SoScaleUniformDragger, TRUE, topSeparator, rotator, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(rotator, SoRotateSphericalDragger, TRUE, topSeparator, translator, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(translator, SoDragPointDragger, TRUE, topSeparator, geomSeparator, TRUE);
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));

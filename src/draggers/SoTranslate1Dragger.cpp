@@ -18,6 +18,8 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoTranslate1Dragger.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
 
 
 SO_KIT_SOURCE(SoTranslate1Dragger);
@@ -33,14 +35,12 @@ SoTranslate1Dragger::SoTranslate1Dragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTranslate1Dragger);
 
-  // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
-  // catalog. 20000107 mortene.
-  // feedback
-  // feedbackActive
-  // feedbackSwitch
-  // translator
-  // translatorActive
-  // translatorSwitch
+  SO_KIT_ADD_CATALOG_ENTRY(translatorSwitch, SoSwitch, TRUE, geomSeparator, feedbackSwitch, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(translator, SoSeparator, TRUE, translatorSwitch, translatorActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(translatorActive, SoSeparator, TRUE, translatorSwitch, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(feedbackSwitch, SoSwitch, TRUE, geomSeparator, "", FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(feedback, SoSeparator, TRUE, feedbackSwitch, feedbackActive, TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
 

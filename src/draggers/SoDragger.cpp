@@ -54,7 +54,7 @@ SoDragger::SoDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoDragger);
 
-  SO_KIT_ADD_CATALOG_ENTRY(motionMatrix, SoMatrixTransform, TRUE, topSeparator, geomSeparator, FALSE);
+  SO_KIT_ADD_CATALOG_ENTRY(motionMatrix, SoMatrixTransform, FALSE, topSeparator, geomSeparator, FALSE);
 
   SO_NODE_ADD_FIELD(isActive, (FALSE));
 
@@ -63,7 +63,6 @@ SoDragger::SoDragger(void)
 
 SoDragger::~SoDragger()
 {
-  COIN_STUB();
 }
 
 void
