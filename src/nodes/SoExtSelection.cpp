@@ -990,7 +990,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
 	  -1, 1);
 
 
-  // Because Mesa 4 cant properly push & pop GL_CURRENT_BIT, we have to
+  // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
   // save the current color for later. 
   GLfloat currentColor[4];
   glGetFloatv(GL_CURRENT_COLOR,currentColor);
@@ -1047,7 +1047,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
 
-  // Due to a Mesa 4 bug
+  // Due to a Mesa 3.4.2 bug
   glColor3fv(currentColor);
 
   glPopAttrib();
