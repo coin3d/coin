@@ -22,10 +22,15 @@
 
 #include <Inventor/nodekits/SoSubKit.h>
 #include <Inventor/nodes/SoNode.h>
+#ifdef COIN_INTERNAL
+class SoNodeKitPath;
+#else // !COIN_INTERNAL
+// Include this header file for better Open Inventor compatibility.
+#include <Inventor/SoNodeKitPath.h>
+#endif // !COIN_INTERNAL
 
 class SoGroup;
 class SoNodekitParts;
-class SoNodeKitPath;
 class SoNodekitCatalog;
 class SoPath;
 
