@@ -440,17 +440,21 @@ SoVRMLGroup::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
 {
-  // FIXME: for now we just cache if the renderCaching field is
-  // ON. We'll develop the heuristics for automatically deciding when
-  // to cache or not upon renderCaching==AUTO later.  pederb, 20001005
   SoState * state = action->getState();
+  state->push();
+  SbBool didcull = FALSE;
   SoGLCacheList * createcache = NULL;
-  if (this->renderCaching.getValue() == ON) {
-    // test if bbox is outside view-volume
-    if (!state->isCacheOpen() && this->cullTestNoPush(state)) {
-      return;
+  if ((this->renderCaching.getValue() != OFF) && 
+      (SoVRMLGroup::getNumRenderCaches() > 0)) {
+    if (!state->isCacheOpen()) {
+      didcull = TRUE;
+      if (this->cullTest(state)) {
+        // we're outside the view frustum
+        state->pop();
+        return;
+      }
     }
-
+      
     if (!THIS->glcachelist) {
       THIS->glcachelist = new SoGLCacheList(SoVRMLGroup::getNumRenderCaches());
     }
@@ -460,10 +464,11 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
         SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                                "Executing GL cache: %p", this);
 #endif // debug
+        state->pop();
         return;
       }
     }
-    if (!SoCacheElement::anyOpen(state)) { // nested GL caches not supported yet
+    if (!SoCacheElement::anyOpen(state)) {
 #if GLCACHE_DEBUG // debug
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                              "Creating GL cache: %p", this);
@@ -472,10 +477,9 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
     }
   }
 
-  state->push();
   if (createcache) createcache->open(action);
-
-  SbBool outsidefrustum = (createcache || state->isCacheOpen()) ? 
+  
+  SbBool outsidefrustum = (createcache || state->isCacheOpen() || didcull) ? 
     FALSE : this->cullTest(state);
   
   if (createcache || !outsidefrustum) {
