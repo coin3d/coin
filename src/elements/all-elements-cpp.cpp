@@ -29,6 +29,7 @@
 #include "SoBBoxModelMatrixElement.cpp"
 #include "SoBumpMapElement.cpp"
 #include "SoBumpMapCoordinateElement.cpp"
+#include "SoBumpMapMatrixElement.cpp"
 #include "SoBumpMappingPropertyElement.cpp"
 #include "SoCacheElement.cpp"
 #include "SoClipPlaneElement.cpp"
