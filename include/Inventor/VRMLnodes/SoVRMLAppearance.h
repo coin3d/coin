@@ -49,6 +49,8 @@ public:
 
 protected:
   virtual ~SoVRMLAppearance();
+
+private:
   SoChildList * childlist;
   SbBool childlistvalid;
 }; // class SoVRMLAppearance
