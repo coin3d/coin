@@ -28,45 +28,67 @@
 #include <Inventor/C/basic.h>
 #include "gl_glx.h"
 #include <Inventor/C/glue/dl.h>
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 #include <Inventor/C/errors/debugerror.h>
 
+static void * glxglue_display = NULL;
+static int glxglue_screen = -1;
 typedef void *(APIENTRY * COIN_PFNGLXGETPROCADDRESS)(const GLubyte *);
-static COIN_PFNGLXGETPROCADDRESS coin_glx_glXGetProcAddress = NULL;
+static COIN_PFNGLXGETPROCADDRESS glxglue_glXGetProcAddress = NULL;
 static SbBool tried_bind_glXGetProcAddress = FALSE;
 
+
+static void
+glxglue_set_version(int * major, int * minor)
+{
+  Bool ok = False;
+
+  *major = -1;
+  *minor = 0;
+
+  if (glxglue_display == NULL) { return; }
+
 #ifdef HAVE_GLX
-static Display * coin_glx_displayptr = NULL;
-#endif // HAVE_GLX
+  ok = glXQueryVersion((Display *)glxglue_display, major, minor);
+
+  if (!ok) {
+    cc_debugerror_post("glxglue_version",
+                       "Couldn't decide GLX version on your system!");
+  }
+
+  if (ok && coin_glglue_debug()) {
+    cc_debugerror_postinfo("glxglue_version",
+                           "GLX version: %d.%d", *major, *minor);
+  }
+#endif /* HAVE_GLX */
+}
 
 void *
-coin_glx_getprocaddress(const char * fname)
+glxglue_getprocaddress(const char * fname)
 {
   void * ptr = NULL;
 
-  if (!coin_glx_glXGetProcAddress && !tried_bind_glXGetProcAddress) {
+  if (!glxglue_glXGetProcAddress && !tried_bind_glXGetProcAddress) {
     cc_libhandle h = cc_dl_open(NULL);
     if (h) {
-      coin_glx_glXGetProcAddress = (COIN_PFNGLXGETPROCADDRESS)
+      glxglue_glXGetProcAddress = (COIN_PFNGLXGETPROCADDRESS)
         cc_dl_sym(h, "glXGetProcAddress");
 
       if (coin_glglue_debug()) {
-        cc_debugerror_postinfo("coin_glx_getprocaddress",
+        cc_debugerror_postinfo("glxglue_getprocaddress",
                                "%s glXGetProcAddress()",
-                               coin_glx_glXGetProcAddress ?
+                               glxglue_glXGetProcAddress ?
                                "picked up" : "can't use");
       }
 
-      if (!coin_glx_glXGetProcAddress) {
-        coin_glx_glXGetProcAddress = (COIN_PFNGLXGETPROCADDRESS)
+      if (!glxglue_glXGetProcAddress) {
+        glxglue_glXGetProcAddress = (COIN_PFNGLXGETPROCADDRESS)
           cc_dl_sym(h, "glXGetProcAddressARB");
       }
 
       if (coin_glglue_debug()) {
-        cc_debugerror_postinfo("coin_glx_getprocaddress",
+        cc_debugerror_postinfo("glxglue_getprocaddress",
                                "%s glXGetProcAddressARB()",
-                               coin_glx_glXGetProcAddress ?
+                               glxglue_glXGetProcAddress ?
                                "picked up" : "can't use");
       }
 
@@ -80,67 +102,119 @@ coin_glx_getprocaddress(const char * fname)
     tried_bind_glXGetProcAddress = TRUE;
   }
 
-  if (coin_glx_glXGetProcAddress) {
-    ptr = (void *)coin_glx_glXGetProcAddress((const GLubyte *)fname);
+  if (glxglue_glXGetProcAddress) {
+    ptr = (void *)glxglue_glXGetProcAddress((const GLubyte *)fname);
   }
 
   return ptr;
 }
 
-SbBool
-coin_glx_isdirect(void)
+static SbBool
+glxglue_isdirect(cc_glglue * w)
 {
 #ifdef HAVE_GLX
   GLXContext ctx = glXGetCurrentContext();
 
   if (!ctx) {
-    cc_debugerror_postwarning("coin_glx_isdirect", "couldn't get current GLX context");
+    cc_debugerror_postwarning("glxglue_isdirect", 
+                              "Couldn't get current GLX context.");
     return TRUE;
   }
 
-  if (!coin_glx_displayptr) { coin_glx_displayptr = XOpenDisplay(NULL); }
-  return glXIsDirect(coin_glx_displayptr, ctx) ? TRUE : FALSE;
-#else // ! HAVE_GLX
+  if (!glxglue_display) return TRUE;
+  return glXIsDirect((Display *)glxglue_display, ctx) ? TRUE : FALSE;
+#else /* ! HAVE_GLX */
   return TRUE;
-#endif // ! HAVE_GLX
+#endif /* ! HAVE_GLX */
 }
 
-/*
-  Find GLX version.
-*/
-void
-coin_glx_version(int * major, int * minor)
+int
+glxglue_ext_supported(const cc_glglue * w, const char * extension)
 {
-#ifndef HAVE_GLX
-  *major = -1;
-  *minor = 0;
-#else /* HAVE_GLX */
-  Bool ok = False;
+  return coin_glglue_extension_available(w->glx.glxextensions, extension);
+}
 
-  if (!coin_glx_displayptr) { coin_glx_displayptr = XOpenDisplay(NULL); }
-
-  if (coin_glx_displayptr) {
-    ok = glXQueryVersion(coin_glx_displayptr, major, minor);
-
-    /* The Display resources is never deallocated explicitly (but of
-     * course implicitly by the system on application close
-     * down). This to work around some strange problems with the
-     * NVidia-driver 29.60 on XFree86 v4 when using XCloseDisplay() --
-     * like doublebuffered visuals not working correctly.
-     *
-     *   XCloseDisplay(coin_glx_displayptr); */
+void
+glxglue_init(cc_glglue * w)
+{
+#ifdef HAVE_GLX
+  if (glxglue_display == NULL) {
+    /* FIXME: should use the real display-setting. :-(  20020926 mortene. */
+    glxglue_display = XOpenDisplay(NULL);
+    if (glxglue_display == NULL) {
+      cc_debugerror_post("glxglue_init",
+                         "Couldn't open NULL display.");
+    }
+    else {
+      /* FIXME: should use the real screen number. :-(  20020926 mortene. */
+      glxglue_screen = XDefaultScreen(glxglue_display);
+    }
   }
+#endif /* HAVE_GLX */
 
-  if (!ok) {
-    cc_debugerror_post("coin_glx_version",
-                       "couldn't decide GLX version on your system -- ai!%s",
-                       coin_glx_displayptr == NULL ?
-                       " (couldn't open NULL display)" : "");
-  }
+  /* The Display resource is never deallocated explicitly (but of
+   * course implicitly by the system on application close down). This
+   * to work around some strange problems with the NVidia-driver 29.60
+   * on XFree86 v4 when using XCloseDisplay() -- like doublebuffered
+   * visuals coming up just blank.
+   *
+   *   XCloseDisplay((Display *)glxglue_display);
+   */
 
-  if (coin_glglue_debug()) {
-    cc_debugerror_postinfo("coin_glx_version",
-                           "GLX version: %d.%d", *major, *minor);
+  glxglue_set_version(&w->glx.version.major, &w->glx.version.minor);
+  w->glx.isdirect = glxglue_isdirect(w);
+
+
+  w->glx.serverversion = NULL;
+  w->glx.servervendor = NULL;
+  w->glx.serverextensions = NULL;
+  w->glx.clientversion = NULL;
+  w->glx.clientvendor = NULL;
+  w->glx.clientextensions = NULL;
+  w->glx.glxextensions = NULL;
+#ifdef HAVE_GLX
+  if (glxglue_display) {
+
+    /* Note: be aware that glXQueryServerString(),
+       glXGetClientString() and glXQueryExtensionsString() are all
+       from GLX 1.1 -- just in case there are ever compile-time,
+       link-time or run-time problems with this.  */
+
+    w->glx.serverversion = glXQueryServerString(glxglue_display, glxglue_screen, GLX_VERSION);
+    w->glx.servervendor = glXQueryServerString(glxglue_display, glxglue_screen, GLX_VENDOR);
+    w->glx.serverextensions = glXQueryServerString(glxglue_display, glxglue_screen, GLX_EXTENSIONS);
+
+    w->glx.clientversion = glXGetClientString(glxglue_display, GLX_VERSION);
+    w->glx.clientvendor = glXGetClientString(glxglue_display, GLX_VENDOR);
+    w->glx.clientextensions = glXGetClientString(glxglue_display, GLX_EXTENSIONS);
+
+    w->glx.glxextensions = glXQueryExtensionsString(glxglue_display, glxglue_screen);
+
+    if (coin_glglue_debug()) {
+      cc_debugerror_postinfo("glxglue_init",
+                             "glXQueryServerString(GLX_VERSION)=='%s'",
+                             w->glx.serverversion);
+      cc_debugerror_postinfo("glxglue_init",
+                             "glXQueryServerString(GLX_VENDOR)=='%s'",
+                             w->glx.servervendor);
+      cc_debugerror_postinfo("glxglue_init",
+                             "glXQueryServerString(GLX_EXTENSIONS)=='%s'",
+                             w->glx.serverextensions);
+
+      cc_debugerror_postinfo("glxglue_init",
+                             "glXClientString(GLX_VERSION)=='%s'",
+                             w->glx.clientversion);
+      cc_debugerror_postinfo("glxglue_init",
+                             "glXClientString(GLX_VENDOR)=='%s'",
+                             w->glx.clientvendor);
+      cc_debugerror_postinfo("glxglue_init",
+                             "glXClientString(GLX_EXTENSIONS)=='%s'",
+                             w->glx.clientextensions);
+
+      cc_debugerror_postinfo("glxglue_init",
+                             "glXQueryExtensionsString()=='%s'",
+                             w->glx.glxextensions);
+    }
   }
 #endif /* HAVE_GLX */
 }

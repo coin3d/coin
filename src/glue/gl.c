@@ -29,6 +29,15 @@
 
    - Brian Paul presentation "Using OpenGL Extensions" from SIGGRAPH '97:
      <URL:http://www.mesa3d.org/brianp/sig97/exten.htm>
+
+   - Sun's man pages:
+     <URL:http://wwws.sun.com/software/graphics/OpenGL/manpages>
+
+   - IBM AIX GL man pages (try to find a "more official looking" link):
+     <URL:http://molt.zdv.uni-mainz.de/doc_link/en_US/a_doc_lib/libs/openglrf/OpenGLXEnv.htm>
+
+   - HP GL man pages:
+     <URL:http://www.hp.com/workstations/support/documentation/manuals/user_guides/graphics/opengl/RefTOC.html>
 */
 
 #ifdef HAVE_CONFIG_H
@@ -108,7 +117,7 @@ glglue_getprocaddress(const char * symname)
   ptr = coin_wgl_getprocaddress(symname);
   if (ptr) goto returnpoint;
 
-  ptr = coin_glx_getprocaddress(symname);
+  ptr = glxglue_getprocaddress(symname);
   if (ptr) goto returnpoint;
 
   if (glglue_self_handle) {
@@ -164,9 +173,9 @@ glglue_set_glVersion(cc_glglue * wrapper)
                            "glGetString(GL_VERSION)=='%s'", versionstr);
   }
 
-  wrapper->glVersion.major = 0;
-  wrapper->glVersion.minor = 0;
-  wrapper->glVersion.release = 0;
+  wrapper->version.major = 0;
+  wrapper->version.minor = 0;
+  wrapper->version.release = 0;
 
   (void)strncpy(buffer, (const char *)versionstr, 255);
   buffer[255] = '\0'; /* strncpy() will not null-terminate if strlen > 255 */
@@ -175,7 +184,7 @@ glglue_set_glVersion(cc_glglue * wrapper)
     char * spaceptr;
     char * start = buffer;
     *dotptr = '\0';
-    wrapper->glVersion.major = atoi(start);
+    wrapper->version.major = atoi(start);
     start = ++dotptr;
 
     dotptr = strchr(start, '.');
@@ -185,25 +194,25 @@ glglue_set_glVersion(cc_glglue * wrapper)
     if (dotptr) {
       int terminate = *dotptr == ' ';
       *dotptr = '\0';
-      wrapper->glVersion.minor = atoi(start);
+      wrapper->version.minor = atoi(start);
       if (!terminate) {
         start = ++dotptr;
         dotptr = strchr(start, ' ');
         if (dotptr) *dotptr = '\0';
-        wrapper->glVersion.release = atoi(start);
+        wrapper->version.release = atoi(start);
       }
     }
     else {
-      wrapper->glVersion.minor = atoi(start);
+      wrapper->version.minor = atoi(start);
     }
   }
 
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glglue_set_glVersion",
                            "parsed to major=='%d', minor=='%d', micro=='%d'",
-                           wrapper->glVersion.major,
-                           wrapper->glVersion.minor,
-                           wrapper->glVersion.release);
+                           wrapper->version.major,
+                           wrapper->version.minor,
+                           wrapper->version.release);
   }
 }
 
@@ -213,9 +222,9 @@ cc_glglue_glversion(const cc_glglue * w,
                     unsigned int * minor,
                     unsigned int * release)
 {
-  *major = w->glVersion.major;
-  *minor = w->glVersion.minor;
-  *release = w->glVersion.release;
+  *major = w->version.major;
+  *minor = w->version.minor;
+  *release = w->version.release;
 }
 
 
@@ -225,11 +234,11 @@ cc_glglue_glversion_matches_at_least(const cc_glglue * w,
                                      unsigned int minor,
                                      unsigned int revision)
 {
-  if (w->glVersion.major < major) return FALSE;
-  else if (w->glVersion.major > major) return TRUE;
-  if (w->glVersion.minor < minor) return FALSE;
-  else if (w->glVersion.minor > minor) return TRUE;
-  if (w->glVersion.release < revision) return FALSE;
+  if (w->version.major < major) return FALSE;
+  else if (w->version.major > major) return TRUE;
+  if (w->version.minor < minor) return FALSE;
+  else if (w->version.minor > minor) return TRUE;
+  if (w->version.release < revision) return FALSE;
   return TRUE;
 }
 
@@ -238,9 +247,9 @@ cc_glglue_glxversion_matches_at_least(const cc_glglue * w,
                                       int major,
                                       int minor)
 {
-  if (w->glxVersion.major < major) return FALSE;
-  else if (w->glxVersion.major > major) return TRUE;
-  if (w->glxVersion.minor < minor) return FALSE;
+  if (w->glx.version.major < major) return FALSE;
+  else if (w->glx.version.major > major) return TRUE;
+  if (w->glx.version.minor < minor) return FALSE;
   return TRUE;
 }
 
@@ -297,32 +306,39 @@ glglue_sanity_check_enums(void)
 }
 
 int
-cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
+coin_glglue_extension_available(const char * extensions, const char * ext)
 {
-  const GLubyte * start;
-  GLubyte * where, * terminator;
-  static const GLubyte * extensions = NULL;
+  const char * start;
+  int extlen;
 
-  assert(extension && "NULL string");
-  assert((extension[0] != '\0') && "empty string");
-  assert((strchr(extension, ' ') == NULL) && "extension name can't have spaces");
-
-  if (!extensions) { extensions = glGetString(GL_EXTENSIONS); }
+  assert(ext && "NULL string");
+  assert((ext[0] != '\0') && "empty string");
+  assert((strchr(ext, ' ') == NULL) && "extension name can't have spaces");
 
   start = extensions;
-  for (;;) {
-    where = (GLubyte *) strstr((const char *)start, extension);
-    if (!where)
-      break;
-    terminator = where + strlen(extension);
+  extlen = strlen(ext);
+
+  while (1) {
+    const char * where = strstr(start, ext);
+    if (!where) break;
+
     if (where == start || *(where - 1) == ' ') {
-      if (*terminator == ' ' || *terminator == '\0') {
-        return 1;
-      }
+      const char * terminator = where + extlen;
+      if (*terminator == ' ' || *terminator == '\0') { return 1; }
     }
-    start = terminator;
+
+    start = where + extlen;
   }
   return 0;
+}
+
+int
+cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
+{
+  /* FIXME: should do caching of results here for guaranteed quick
+     look-ups. (And then get rid of caching in
+     SoGLCacheContextElement::extSupported(). 20020926 mortene. */
+  return coin_glglue_extension_available(wrapper->extensionsstr, extension);
 }
 
 #ifdef COIN_OPENGL_DYNAMIC_BINDING
@@ -338,14 +354,16 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_VERSION_1_1 1
 #define GL_VERSION_1_2 1
 #define GL_VERSION_1_3 1
-#define GLX_VERSION_1_1 1
-#define GLX_VERSION_1_2 1
-#define GLX_VERSION_1_3 1
 #define GL_EXT_polygon_offset 1
 #define GL_EXT_texture_object 1
 #define GL_EXT_subtexture 1
 #define GL_EXT_texture3D 1
 #define GL_ARB_multitexture 1
+
+#define GLX_VERSION_1_1 1
+#define GLX_VERSION_1_2 1
+#define GLX_VERSION_1_3 1
+#define GLX_EXT_import_context 1
 
 #else /* static binding */
 
@@ -357,6 +375,10 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 static void
 glglue_resolve_symbols(cc_glglue * w)
 {
+  /* Note that there's a good reason why we use version checking
+     *along* with dynamic resolving (if the platform allows it): the
+     *OpenGL library could include */
+
   /* Appeared in OpenGL v1.1. We store both the "real" function
      pointer and the extension pointer, in case we need to work around
      an SGI bug (see comments in cc_glglue_glPolygonOffset(). */
@@ -444,18 +466,23 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_ARB_multitexture */
 
-  /* Appeared in GLX 1.3. */
+  /* SGI's glx.h header file shipped with the NVidia Linux drivers
+     lists glXGetCurrentDisplay() as a GLX 1.3 method, but Sun's GL
+     man pages lists it as a GLX 1.2 function, ditto for HP's GL man
+     pages, and ditto for AIX's man pages. (See top of this file for
+     URL). So we will assume the man pages are correct.
+  */
   w->glXGetCurrentDisplay = NULL;
-#ifdef GLX_VERSION_1_3
-  if (cc_glglue_glxversion_matches_at_least(w, 1, 3)) {
+#ifdef GLX_VERSION_1_2
+  if (cc_glglue_glxversion_matches_at_least(w, 1, 2)) {
     w->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplay);
   }
-#endif /* GLX_VERSION_1_3 */
-  /* From GLX_EXT_import_context. */
-  /* FIXME: need to implement extension querying for GLX. 20020919 mortene. */
-/*   if (!w->glXGetCurrentDisplay && cc_glglue_glxext_supported(w,"GLX_EXT_import_context")) { */
-/*     w->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplayEXT); */
-/*   } */
+#endif /* GLX_VERSION_1_2 */
+#ifdef GLX_EXT_import_context
+  if (!w->glXGetCurrentDisplay && glxglue_ext_supported(w, "GLX_EXT_import_context")) {
+    w->glXGetCurrentDisplay = (COIN_PFNGLXGETCURRENTDISPLAYPROC)PROC(glXGetCurrentDisplayEXT);
+  }
+#endif /* GLX_EXT_import_context */
 }
 
 #undef PROC
@@ -512,30 +539,28 @@ cc_glglue_instance(int contextid)
     }
 
     glglue_set_glVersion(gi);
-    coin_glx_version(&(gi->glxVersion.major), &(gi->glxVersion.minor));
+    glxglue_init(gi);
 
-    gi->isdirect = coin_glx_isdirect();
-
-    {
-      const GLubyte * vendor = glGetString(GL_VENDOR);
-      gi->vendor_is_SGI = strcmp((const char *)vendor, "SGI") == 0;
-    }
+    gi->vendorstr = glGetString(GL_VENDOR);
+    gi->vendor_is_SGI = strcmp((const char *)gi->vendorstr, "SGI") == 0;
+    gi->rendererstr = glGetString(GL_RENDERER);
+    gi->extensionsstr = glGetString(GL_EXTENSIONS);
 
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("cc_glglue_instance",
                              "glGetString(GL_VENDOR)=='%s' (=> vendor_is_SGI==%s)",
-                             glGetString(GL_VENDOR),
+                             gi->vendorstr,
                              gi->vendor_is_SGI ? "TRUE" : "FALSE");
       cc_debugerror_postinfo("cc_glglue_instance",
                              "glGetString(GL_RENDERER)=='%s'",
-                             glGetString(GL_RENDERER));
+                             gi->rendererstr);
       cc_debugerror_postinfo("cc_glglue_instance",
                              "glGetString(GL_EXTENSIONS)=='%s'",
-                             glGetString(GL_EXTENSIONS));
+                             gi->extensionsstr);
 
       cc_debugerror_postinfo("cc_glglue_instance",
                              "Rendering is %sdirect.",
-                             gi->isdirect ? "" : "in");
+                             gi->glx.isdirect ? "" : "in");
     }
 
     /* Resolve our function pointers. */
@@ -569,7 +594,7 @@ glglue_allow_newer_opengl(const cc_glglue * w)
     v = (glglue_resolve_envvar("COIN_FULL_INDIRECT_RENDERING") > 0) ? 1 : 0;
   }
 
-  return (w->isdirect || v);
+  return (w->glx.isdirect || v);
 }
 
 /*!

@@ -24,6 +24,9 @@
  *
 \**************************************************************************/
 
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/C/glue/glp.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -33,9 +36,10 @@ extern "C" {
 #endif /* emacs indentation */
 
 
-void * coin_glx_getprocaddress(const char * fname);
-void coin_glx_version(int * major, int * minor);
-SbBool coin_glx_isdirect(void);
+void glxglue_init(cc_glglue * w);
+
+void * glxglue_getprocaddress(const char * fname);
+int glxglue_ext_supported(const cc_glglue * w, const char * extension);
 
 #ifdef __cplusplus
 }

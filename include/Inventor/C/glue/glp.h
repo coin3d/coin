@@ -121,17 +121,38 @@ typedef void (APIENTRY * COIN_PFNGLACTIVETEXTUREPROC)(GLenum texture);
 typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD2FPROC)(GLenum target,
                                                         GLfloat s,
                                                         GLfloat t);
+
+/* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
 
-struct cc_glglue {
-  /* OpenGL versioning. */
-  struct {
-    unsigned int major, minor, release;
-  } glVersion;
 
+/* Type specification for GLX info storage structure, embedded witin
+   the main GL info structure below. */
+struct cc_glxglue {
   struct {
     int major, minor;
-  } glxVersion;
+  } version;
+
+  SbBool isdirect;
+
+  const char * serverversion;
+  const char * servervendor;
+  const char * serverextensions;
+
+  const char * clientversion;
+  const char * clientvendor;
+  const char * clientextensions;
+
+  const char * glxextensions;
+};
+
+/* GL info storage structure. An instance will be allocated and
+   initialized for each new GL context id. */
+struct cc_glglue {
+  
+  struct { /* OpenGL versioning. */
+    unsigned int major, minor, release;
+  } version;
 
   /* OpenGL calls. Will be NULL if not available, otherwise they
      contain a valid function pointer into the OpenGL library. */
@@ -148,12 +169,17 @@ struct cc_glglue {
   COIN_PFNGLMULTITEXCOORD2FPROC glMultiTexCoord2f;
   COIN_PFNGLXGETCURRENTDISPLAYPROC glXGetCurrentDisplay;
 
-  SbBool isdirect;
+  const char * vendorstr;
   SbBool vendor_is_SGI;
+  const char * rendererstr;
+  const char * extensionsstr;
+
+  struct cc_glxglue glx;
 };
 
 /* Exported internally to gl_glx.c and gl_wgl.c. */
 int coin_glglue_debug(void);
+int coin_glglue_extension_available(const char * extensions, const char * ext);
 
 #ifdef __cplusplus
 }
