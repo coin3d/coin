@@ -361,6 +361,8 @@ SoBaseKit::set(const char * namevaluepairliststring)
     }
 
     SoNode * node = kit->pimpl->instancelist[partNum]->getValue();
+    kit->pimpl->instancelist[partNum]->setDefault(FALSE);
+
     if (isList) {
       SoNodeKitListPart * list = (SoNodeKitListPart *)node;
       if (listIdx < 0 || listIdx > list->getNumChildren()) {
@@ -417,6 +419,7 @@ SoBaseKit::set(const char * partnamestring, const char * parameterstring)
   SoBaseKit * kit = this;
   if (SoBaseKit::findPart(partname, kit, partNum, isList, listIdx, TRUE, NULL, TRUE)) {
     SoNode * node = kit->pimpl->instancelist[partNum]->getValue();
+    kit->pimpl->instancelist[partNum]->setDefault(FALSE);
     assert(node != NULL); // makeifneeded was TRUE in findPart call
     if (isList) {
       assert(node->isOfType(SoNodeKitListPart::getClassTypeId()));
