@@ -95,7 +95,7 @@ SoTextureCoordinateBundle(SoAction * const action,
     multienabled = 
       SoMultiTextureEnabledElement::getEnabledUnits(this->state, multimax);
   }
-  SbBool bumpenabled = SoBumpMapElement::get(this->state) != NULL;
+  SbBool bumpenabled = glrender && (SoBumpMapElement::get(this->state) != NULL);
 
   if (!needinit && !multienabled && !bumpenabled) return;
 
