@@ -97,6 +97,32 @@ install_sh = @install_sh@
 sim_ac_simage_conf_cmd = @sim_ac_simage_conf_cmd@
 
 
+BUILT_SOURCES = \
+	translate1Dragger.h \
+	translate2Dragger.h \
+	centerballDragger.h \
+	tabPlaneDragger.h \
+	tabBoxDragger.h \
+	dragPointDragger.h \
+	pointLightDragger.h \
+	directionalLightDragger.h \
+	spotLightDragger.h \
+	handleBoxDragger.h \
+	jackDragger.h \
+	trackballDragger.h \
+	scaleUniformDragger.h \
+	scale2UniformDragger.h \
+	scale1Dragger.h \
+	scale2Dragger.h \
+	rotateCylindricalDragger.h \
+	rotateSphericalDragger.h \
+	rotateDiscDragger.h \
+	transformBoxDragger.h
+
+
+# This is necessary to include so the headers are actually built.
+noinst_HEADERS = $(BUILT_SOURCES)
+
 EXTRA_DIST = \
              data/draggerDefaults/translate1Dragger.iv \
              data/draggerDefaults/translate2Dragger.iv \
@@ -121,6 +147,7 @@ EXTRA_DIST = \
 
 
 draggerdefdatadir = $(datadir)/Coin/draggerDefaults
+
 draggerdefdata_DATA = translate1Dragger.iv \
 			translate2Dragger.iv \
 			centerballDragger.iv \
@@ -142,29 +169,6 @@ draggerdefdata_DATA = translate1Dragger.iv \
 			rotateDiscDragger.iv \
 			transformBoxDragger.iv
 
-
-BUILT_SOURCES = \
-	translate1Dragger.h \
-	translate2Dragger.h \
-	centerballDragger.h \
-	tabPlaneDragger.h \
-	tabBoxDragger.h \
-	dragPointDragger.h \
-	pointLightDragger.h \
-	directionalLightDragger.h \
-	spotLightDragger.h \
-	handleBoxDragger.h \
-	jackDragger.h \
-	trackballDragger.h \
-	scaleUniformDragger.h \
-	scale2UniformDragger.h \
-	scale1Dragger.h \
-	scale2Dragger.h \
-	rotateCylindricalDragger.h \
-	rotateSphericalDragger.h \
-	rotateDiscDragger.h \
-	transformBoxDragger.h
-
 subdir = data/draggerDefaults
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../../config.h ../../include/Inventor/SbBasic.h
@@ -172,7 +176,10 @@ CONFIG_CLEAN_FILES =
 DIST_SOURCES = 
 DATA =  $(draggerdefdata_DATA)
 
-DIST_COMMON =  README $(draggerdefdata_DATA) Makefile.am Makefile.in
+HEADERS =  $(noinst_HEADERS)
+
+DIST_COMMON =  README $(draggerdefdata_DATA) $(noinst_HEADERS) \
+Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -205,9 +212,39 @@ uninstall-draggerdefdataDATA:
 	  echo " rm -f $(DESTDIR)$(draggerdefdatadir)/$$f"; \
 	  rm -f $(DESTDIR)$(draggerdefdatadir)/$$f; \
 	done
-tags: TAGS
-TAGS:
 
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
+		$(TAGS_FILES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS) $(TAGS_FILES)'; \
+	unique=`for i in $$list; do \
+	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
+	  done | \
+	  $(AWK) '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || etags $(ETAGS_ARGS) $$tags  $$unique $(LISP)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
 
@@ -242,7 +279,7 @@ install-am: all-am
 install: install-am
 uninstall-am: uninstall-draggerdefdataDATA
 uninstall: uninstall-am
-all-am: Makefile $(DATA)
+all-am: Makefile $(DATA) $(HEADERS)
 all-redirect: all-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) INSTALL_STRIP_FLAG=-s install
@@ -261,26 +298,28 @@ distclean-generic:
 maintainer-clean-generic:
 	-rm -f Makefile.in
 	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
-mostlyclean-am:  mostlyclean-generic
+mostlyclean-am:  mostlyclean-tags mostlyclean-generic
 
 mostlyclean: mostlyclean-am
 
-clean-am:  clean-generic mostlyclean-am
+clean-am:  clean-tags clean-generic mostlyclean-am
 
 clean: clean-am
 
-distclean-am:  distclean-generic clean-am
+distclean-am:  distclean-tags distclean-generic clean-am
 	-rm -f libtool
 
 distclean: distclean-am
 
-maintainer-clean-am:  maintainer-clean-generic distclean-am
+maintainer-clean-am:  maintainer-clean-tags maintainer-clean-generic \
+		distclean-am
 	@echo "This command is intended for maintainers to use;"
 	@echo "it deletes files that may require special tools to rebuild."
 
 maintainer-clean: maintainer-clean-am
 
 .PHONY: uninstall-draggerdefdataDATA install-draggerdefdataDATA tags \
+mostlyclean-tags distclean-tags clean-tags maintainer-clean-tags \
 distdir info-am info dvi-am dvi check check-am installcheck-am \
 installcheck install-exec-am install-exec install-data-am install-data \
 install-am install uninstall-am uninstall all-redirect all-am all \
