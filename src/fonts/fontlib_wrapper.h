@@ -55,6 +55,7 @@ extern "C" {
     int advanceX; /* where to position pen for next glyph */
     int advanceY;
     unsigned char * buffer; /* bitmap data */
+    SbBool mono; /* monochrome or antialiased gray level bitmap */
   } cc_flw_bitmap;
 
   typedef struct cc_flw_vector_glyph {

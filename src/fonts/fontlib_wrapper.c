@@ -146,6 +146,7 @@ get_default_bitmap(unsigned int character)
     bm->rows = fontsize;
     bm->width = 7;
     bm->pitch = 1;
+    bm->mono = 1;
     return bm;
   }
   return NULL;
