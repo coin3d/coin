@@ -19,10 +19,20 @@
 
 /*!
   \class SoFaceSet SoFaceSet.h Inventor/nodes/SoFaceSet.h
-  \brief The SoFaceSet class ...
+  \brief The SoFaceSet class is used to render and organize non-indexed polygonal face data.
   \ingroup nodes
 
-  FIXME: write class doc
+  Faces are specified using the numVertices field. Coordinates,
+  normals, materials and texture coordinates are fetched in order from
+  the current state or from the vertexProperty node if set. For
+  example, if numVertices is set to [3, 4, 5, 3], this node would
+  specify a tringle from coordinates 0, 1 and 2, a quad from
+  coordinates 3, 4, 5 and 6, a polygon from coordinates 7, 8, 9, 10
+  and 11 and finally a triangle from coordinates 12, 13, 14.
+
+  Binding PER_VERTEX, PER_FACE or OVERALL can be set for material,
+  and normals. The default material binding is OVERALL. The default
+  normal binding is PER_VERTEX.
 */
 
 #include <Inventor/nodes/SoFaceSet.h>
@@ -51,30 +61,11 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 /*!
-  \enum SoFaceSet::Binding
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoFaceSet::Binding SoFaceSet::OVERALL
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoFaceSet::Binding SoFaceSet::PER_FACE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoFaceSet::Binding SoFaceSet::PER_VERTEX
-  FIXME: write documentation for enum definition
-*/
-
-
-/*!
   \var SoMFInt32 SoFaceSet::numVertices
-  FIXME: write documentation for field
+  Used to specify faces. Each entry specifies the number of coordinates
+  in a face. The coordinates are taken in order from the state or from
+  the vertexProperty node.
 */
-
-
-// *************************************************************************
 
 SO_NODE_SOURCE(SoFaceSet);
 
@@ -95,20 +86,14 @@ SoFaceSet::~SoFaceSet()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoFaceSet class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoFaceSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoFaceSet);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoFaceSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
@@ -119,9 +104,9 @@ SoFaceSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   inherited::computeCoordBBox(action, numvertices, box, center);
 }
 
-/*!
-  \internal
-*/
+//
+// translates current material binding to the internal enum
+//
 SoFaceSet::Binding
 SoFaceSet::findMaterialBinding(SoState * const state) const
 {
@@ -155,9 +140,9 @@ SoFaceSet::findMaterialBinding(SoState * const state) const
 }
 
 
-/*!
-  \internal
-*/
+//
+// translates current normal binding to the internal enum
+//
 SoFaceSet::Binding
 SoFaceSet::findNormalBinding(SoState * const state) const
 {
@@ -190,15 +175,15 @@ SoFaceSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoFaceSet::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: check for concave polygons, and use the
-  // SbTesselator to draw triangles...
-
+  // FIXME:
+  // 1) check for concave polygons, and use SbTesselator to draw triangles.
+  //    Or use SoConvexDataCache (much faster).
+  // 2) optimize rendering for this shape.
+  //                                                      pederb, 20000809
   SoState * state = action->getState();
 
   if (this->vertexProperty.getValue()) {
@@ -291,9 +276,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     state->pop();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 SbBool
 SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 {
@@ -339,19 +322,17 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 }
 
 /*!
-  FIXME: write doc
- */
+  Overloaded to return FALSE. Normals are genereted directly in normal
+  cache for this shape.
+*/
 SbBool
 SoFaceSet::generateDefaultNormals(SoState * /* state */,
                                   SoNormalBundle * /* nb */)
 {
-  COIN_STUB();
   return FALSE;
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -374,9 +355,7 @@ SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoFaceSet::generatePrimitives(SoAction *action)
 {
