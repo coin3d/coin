@@ -1303,8 +1303,9 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
   SbName refname;
 
   if (in->isFileVRML2()) {
-    if (classname == PROTO_KEYWORD) { // special case to handle PROTO definitions
-      SoProto * proto = new SoProto;
+    if (classname == PROTO_KEYWORD ||
+        classname == EXTERNPROTO_KEYWORD) { // special case to handle [EXTERN]PROTO definitions
+      SoProto * proto = new SoProto(classname == EXTERNPROTO_KEYWORD);
       proto->ref();
       ret = proto->readInstance(in, 0);
       if (ret) {
@@ -1317,12 +1318,6 @@ SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
       }
       base = proto;
       return TRUE;
-    }
-    else if (classname == EXTERNPROTO_KEYWORD) {
-      // FIXME: definitely needs to be fixed before releasing Coin
-      // v2. 20020204 mortene.
-      SoReadError::post(in, "EXTERNPROTO is not yet supported");
-      ret = FALSE;
     }
   }
 
