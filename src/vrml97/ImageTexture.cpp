@@ -106,11 +106,11 @@
 #include <config.h>
 #endif
 
+static int imagedata_maxage;
+
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbThread.h>
 #include <Inventor/threads/SbMutex.h>
-
-static int imagedata_maxage;
 
 typedef struct {
   SbThread * thread;
@@ -363,6 +363,7 @@ SoVRMLImageTexture::loadUrl(void)
 void
 SoVRMLImageTexture::glimage_callback(void * closure)
 {
+#ifdef HAVE_THREADS
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   if (thisp->pimpl->glimage) {
     int age = thisp->pimpl->glimage->getNumFramesSinceUsed();
@@ -374,6 +375,7 @@ SoVRMLImageTexture::glimage_callback(void * closure)
       (void) thisp->loadUrl();
     }
   }
+#endif // HAVE_THREADS
 }
 
 //
