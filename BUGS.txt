@@ -1383,3 +1383,22 @@
 
 =====================================================================
 
+059 VRML97 file crashes Coin.
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+    #VRML V2.0 utf8
+
+    Group {
+      children
+    }  
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    Partly tracked down: there is something fishy about how we handle
+    empty group nodes -- it seems like a NULL pointer get added to the
+    SoMFNode field. It might be two bugs here: *no* children should be
+    set up (instead of the single NULL child), and NULL child pointers
+    should _probably_ not be allowed by SoMFNode.
+
+    20030228 mortene.
+
+=====================================================================
