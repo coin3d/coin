@@ -48,9 +48,7 @@ private:
   virtual SbBool readValue(SoInput * in);
   virtual void writeValue(SoOutput * out) const;
 
-  SbVec2s imgdim;
-  unsigned char * pixblock;
-  int bytedepth;
+  class SbImage * image;
 };
 
 #endif // !COIN_SOSFIMAGE_H

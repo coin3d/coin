@@ -41,22 +41,12 @@
   \sa SoTexture2
 */
 
-/*¡
-  Wouldn't it make it better for the code in SoSFImage if there existed
-  an ``SbImage'' class? SbImage could probably also be used other places,
-  and could perhaps be the sole interface against the imagelib?
-
-  Discuss with pederb.
-
-  19990620 mortene.
- */
-
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSubFieldP.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
-
+#include <Inventor/SbImage.h>
 
 
 PRIVATE_TYPEID_SOURCE(SoSFImage);
@@ -67,10 +57,8 @@ PRIVATE_EQUALITY_SOURCE(SoSFImage);
   Constructor, initialized field to be empty.
 */
 SoSFImage::SoSFImage(void)
+  : image(new SbImage)
 {
-  this->imgdim[0] = this->imgdim[1] = 0;
-  this->bytedepth = 0;
-  this->pixblock = NULL;
 }
 
 /*!
@@ -78,7 +66,7 @@ SoSFImage::SoSFImage(void)
 */
 SoSFImage::~SoSFImage()
 {
-  delete[] this->pixblock;
+  delete this->image;
 }
 
 /*!
@@ -87,7 +75,11 @@ SoSFImage::~SoSFImage()
 const SoSFImage &
 SoSFImage::operator=(const SoSFImage & field)
 {
-  this->setValue(field.imgdim, field.bytedepth, field.pixblock);
+  int nc = 0;
+  SbVec2s size(0,0);
+  unsigned char * bytes = field.image->getValue(size, nc);
+
+  this->setValue(size, nc, bytes);
   return *this;
 }
 
@@ -101,68 +93,66 @@ SoSFImage::initClass(void)
 SbBool
 SoSFImage::readValue(SoInput * in)
 {
-  if (!in->read(this->imgdim[0]) || !in->read(this->imgdim[1]) ||
-      !in->read(this->bytedepth)) {
+  SbVec2s size;
+  int nc;
+  if (!in->read(size[0]) || !in->read(size[1]) ||
+      !in->read(nc)) {
     SoReadError::post(in, "Premature end of file");
     return FALSE;
   }
 
   // Note: empty images (dimensions 0x0x0) are allowed.
 
-  if (this->imgdim[0] < 0 || this->imgdim[1] < 0 ||
-      this->bytedepth < 0 || this->bytedepth > 4) {
+  if (size[0] < 0 || size[1] < 0 || nc < 0 || nc > 4) {
     SoReadError::post(in, "Invalid image specification %dx%dx%d",
-                      this->imgdim[0], this->imgdim[1], this->bytedepth);
+                      size[0], size[1], nc);
     return FALSE;
   }
 
-  int buffersize = this->imgdim[0] * this->imgdim[1] * this->bytedepth;
-
+  int buffersize = int(size[0]) * int(size[1]) * nc;
+  
   if (buffersize == 0 &&
-      (this->imgdim[0] != 0 || this->imgdim[1] != 0 || this->bytedepth != 0)) {
+      (size[0] != 0 || size[1] != 0 || nc != 0)) {
     SoReadError::post(in, "Invalid image specification %dx%dx%d",
-                      this->imgdim[0], this->imgdim[1], this->bytedepth);
+                      size[0], size[1], nc);
     return FALSE;
   }
-
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoSFImage::readValue", "image dimensions: %dx%dx%d",
-                         this->imgdim[0], this->imgdim[1], this->bytedepth);
+                         size[0], size[1], nc);
 #endif // debug
 
-  delete [] this->pixblock;
-  this->pixblock = NULL;
   if (!buffersize) {
+    this->image->setValue(SbVec2s(0,0), 0, NULL);
     this->valueChanged();
     return TRUE;
   }
 
-  // Align data -- since this is what is done during import of binary
-  // files with version number 2.0 (and older?).
-  buffersize = ((buffersize + 3) / 4) * 4;
-
-  this->pixblock = new unsigned char[buffersize];
+  // allocate image data and get new pointer back
+  this->image->setValue(size, nc, NULL);
+  unsigned char * pixblock = this->image->getValue(size, nc);
 
   // The binary image format of 2.1 and later tries to be less
   // wasteful when storing images.
   if (in->isBinary() && in->getIVVersion() >= 2.1f) {
-    if (!in->readBinaryArray(this->pixblock, buffersize)) {
+    if (!in->readBinaryArray(pixblock, buffersize)) {
       SoReadError::post(in, "Premature end of file");
       return FALSE;
     }
   }
   else {
     int byte = 0;
-    for (int i = 0; i < this->imgdim[0] * this->imgdim[1]; i++) {
+    int numpixels = int(size[0]) * int(size[1]);
+    for (int i = 0; i < numpixels; i++) {
       uint32_t l;
       if (!in->read(l)) {
         SoReadError::post(in, "Premature end of file");
         return FALSE;
       }
-      for (int j = 0; j < this->bytedepth; j++) {
-        this->pixblock[byte++] =
-          (unsigned char) ((l >> (8 * (this->bytedepth-j-1))) & 0xFF);
+      for (int j = 0; j < nc; j++) {
+        pixblock[byte++] =
+          (unsigned char) ((l >> (8 * (nc-j-1))) & 0xFF);
       }
     }
   }
@@ -174,16 +164,20 @@ SoSFImage::readValue(SoInput * in)
 void
 SoSFImage::writeValue(SoOutput * out) const
 {
-  out->write(this->imgdim[0]);
+  int nc;
+  SbVec2s size;
+  unsigned char * pixblock = this->image->getValue(size, nc);
+
+  out->write(size[0]);
   if (!out->isBinary()) out->write(' ');
-  out->write(this->imgdim[1]);
+  out->write(size[1]);
   if (!out->isBinary()) out->write(' ');
-  out->write(this->bytedepth);
+  out->write(nc);
 
   if (out->isBinary()) {
-    int buffersize = this->imgdim[0] * this->imgdim[1] * this->bytedepth;
+    int buffersize = int(size[0]) * int(size[1]) * nc;
     if (buffersize) { // in case of an empty image
-      out->writeBinaryArray(this->pixblock, buffersize);
+      out->writeBinaryArray(pixblock, buffersize);
       int padsize = ((buffersize + 3) / 4) * 4 - buffersize;
       if (padsize) {
         unsigned char pads[3] = {'\0','\0','\0'};
@@ -195,14 +189,15 @@ SoSFImage::writeValue(SoOutput * out) const
     out->write('\n');
     out->indent();
 
-    for (int i=0; i < this->imgdim[0] * this->imgdim[1]; i++) {
+    int numpixels = int(size[0]) * int(size[1]);
+    for (int i = 0; i < numpixels; i++) {
       uint32_t data = 0;
-      for (int j=0; j < this->bytedepth; j++) {
+      for (int j = 0; j < nc; j++) {
         if (j) data <<= 8;
-        data |= (uint32_t)(this->pixblock[i * this->bytedepth + j]);
+        data |= (uint32_t)(pixblock[i * nc + j]);
       }
       out->write(data);
-      if (((i+1)%8 == 0) && (i+1 != this->imgdim[0] * this->imgdim[1])) {
+      if (((i+1)%8 == 0) && (i+1 != numpixels)) {
         out->write('\n');
         out->indent();
       }
@@ -227,15 +222,7 @@ SoSFImage::writeValue(SoOutput * out) const
 int
 SoSFImage::operator==(const SoSFImage & field) const
 {
-  if (this->imgdim[0] != field.imgdim[0]) return FALSE;
-  if (this->imgdim[1] != field.imgdim[1]) return FALSE;
-  if (this->bytedepth != field.bytedepth) return FALSE;
-
-  int bytesize = this->imgdim[0] * this->imgdim[1] * this->bytedepth;
-  for (int i=0; i < bytesize; i++) {
-    if (this->pixblock[i] != field.pixblock[i]) return FALSE;
-  }
-  return TRUE;
+  return (*this->image) == (*field.image);
 }
 
 
@@ -246,9 +233,7 @@ SoSFImage::operator==(const SoSFImage & field) const
 const unsigned char *
 SoSFImage::getValue(SbVec2s & size, int & nc) const
 {
-  size = this->imgdim;
-  nc = this->bytedepth;
-  return this->pixblock;
+  return this->image->getValue(size, nc);
 }
 
 /*!
@@ -264,29 +249,7 @@ void
 SoSFImage::setValue(const SbVec2s & size, const int nc,
                     const unsigned char * bytes)
 {
-  delete[] this->pixblock;
-  this->pixblock = NULL;
-  this->imgdim = size;
-  this->bytedepth = nc;
-  int buffersize = size[0] * size[1] * nc;
-
-  if (buffersize) { // images can be empty
-
-    // Align buffers because the binary file format has the data aligned
-    // (simplifies export code).
-    buffersize = ((buffersize + 3) / 4) * 4;
-    unsigned char * newblock = new unsigned char[buffersize];
-    this->pixblock = newblock;
-
-    if (bytes) {
-      (void)memcpy(this->pixblock, bytes,
-                   this->imgdim[0] * this->imgdim[1] * this->bytedepth);
-    }
-    else {
-      (void)memset(this->pixblock, 0,
-                   this->imgdim[0] * this->imgdim[1] * this->bytedepth);
-    }
-  }
+  this->image->setValue(size, nc, bytes);
   this->valueChanged();
 }
 
@@ -300,9 +263,7 @@ SoSFImage::setValue(const SbVec2s & size, const int nc,
 unsigned char *
 SoSFImage::startEditing(SbVec2s & size, int & nc)
 {
-  size = this->imgdim;
-  nc = this->bytedepth;
-  return this->pixblock;
+  return this->image->getValue(size, nc);
 }
 
 /*!
