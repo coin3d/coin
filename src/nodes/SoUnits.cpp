@@ -39,6 +39,10 @@
 #endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #if !defined(COIN_EXCLUDE_SOUNITSELEMENT)
 #include <Inventor/elements/SoUnitsElement.h>
 #endif // !COIN_EXCLUDE_SOUNITSELEMENT
@@ -191,6 +195,9 @@ SoUnits::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoUnitsElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+  SO_ENABLE(SoPickAction, SoUnitsElement);
+  SO_ENABLE(SoCallbackAction, SoUnitsElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoUnitsElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
