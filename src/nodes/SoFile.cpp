@@ -234,24 +234,26 @@ SoFile::readNamedFile(SoInput * in)
   if (readok) {
     this->children->copy(cl); // (copy() implicitly truncates before copying)
 
-    // All characters may not have been read from the current stream.
-    // The reading stops when the last valid '}' is found, so we have
-    // to read until the current file on the stack is at the end.  All
-    // non-whitespace characters from now on are erroneous.
-    if (in->getCurFileName() == this->name.getValue()) {
-      static uint32_t fileerrors_termination = 0;
-
-      SbString dummy;
-      while (in->read(dummy)) { 
-        if (fileerrors_termination < 1) {
-          SoReadError::post(in, "Erroneous character(s) after end of scenegraph: \"%s\". "
-                            "This message will only be shown once for this file, "
-                            "but more errors might be present", dummy.getString());
+    if (!in->eof()) {
+      // All characters may not have been read from the current stream.
+      // The reading stops when the last valid '}' is found, so we have
+      // to read until the current file on the stack is at the end.  All
+      // non-whitespace characters from now on are erroneous.
+      if (in->getCurFileName() == this->name.getValue()) {
+        static uint32_t fileerrors_termination = 0;
+        
+        SbString dummy;
+        while (in->read(dummy)) { 
+          if (fileerrors_termination < 1) {
+            SoReadError::post(in, "Erroneous character(s) after end of scenegraph: \"%s\". "
+                              "This message will only be shown once for this file, "
+                              "but more errors might be present", dummy.getString());
+          }
+          fileerrors_termination++;
         }
-        fileerrors_termination++;
+        
+        assert(in->eof());
       }
-      
-      assert(in->eof());
     }
   }
   else {
