@@ -25,6 +25,7 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoImageInterface.h>
 #include <Inventor/misc/SoGL.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #ifdef _WIN32
@@ -266,7 +267,14 @@ SoGLImage::checkResize()
 
 /**** some static methods needed to reuse GL images *********/
 
-static SbList <SoGLImage *> storedImages;
+
+static SbList <SoGLImage *> *storedImages = NULL;
+
+// atexit-function
+static void cleanup(void)
+{
+  delete storedImages;
+}
 
 /*!
   Searches the texture database and returns a texture object that
@@ -293,9 +301,13 @@ SoGLImage::findOrCreateGLImage(SoImageInterface * const image,
                                const float quality,
                                void * const context)
 {
-  int i, n = storedImages.getLength();
+  if (storedImages == NULL) {
+    storedImages = new SbList <SoGLImage*>;
+    atexit(cleanup);
+  }
+  int i, n = storedImages->getLength();
   for (i = 0; i < n; i++) {
-    SoGLImage *glimage = storedImages[i];
+    SoGLImage *glimage = (*storedImages)[i];
     if (glimage->image == image &&
         glimage->context == context &&
         glimage->clampS == clamps &&
@@ -303,14 +315,14 @@ SoGLImage::findOrCreateGLImage(SoImageInterface * const image,
         glimage->quality == quality) break;
   }
   if (i < n) {
-    storedImages[i]->refCount++;
-    return storedImages[i];
+    (*storedImages)[i]->refCount++;
+    return (*storedImages)[i];
   }
   else {
     SoGLImage *glimage = new SoGLImage(image, clamps, clampt, quality, context);
     glimage->GLinit();
     glimage->refCount++;
-    storedImages.append(glimage);
+    storedImages->append(glimage);
     return glimage;
   }
 }
@@ -319,13 +331,14 @@ SoGLImage::findOrCreateGLImage(SoImageInterface * const image,
 void
 SoGLImage::unrefGLImage(SoGLImage * const image)
 {
-  int i, n = storedImages.getLength();
+  assert(storedImages != NULL);
+  int i, n = storedImages->getLength();
   for (i = 0; i < n; i++) {
-    if (storedImages[i] == image) break;
+    if ((*storedImages)[i] == image) break;
   }
   assert(i < n);
   if (image->refCount == 1) {
-    storedImages.removeFast(i);
+    storedImages->removeFast(i);
     delete image;
   }
   else image->refCount--;
