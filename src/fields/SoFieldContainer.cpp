@@ -532,11 +532,14 @@ SoFieldContainer::validateNewFieldValue(SoField * field, void * newval)
 void
 SoFieldContainer::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
+  // only count the fields if !isfromfield and this is the first time
+  // that this node is counted (shouldWrite() is FALSE).
+  SbBool countfields = !isfromfield && (this->shouldWrite() == FALSE);
   inherited::addWriteReference(out, isfromfield);
 
   // Avoid doing too many references to fields (and nodes, engines and
   // paths _within_ certain field types).
-  if (!isfromfield && !this->hasMultipleWriteRefs()) {
+  if (countfields) {
     const SoFieldData * fd = this->getFieldData();
     if (fd) fd->write(out, this);
   }
