@@ -196,44 +196,35 @@ dnl * Check if libsimage development system is installed (if necessary).
 dnl *******************************************************************
 
 if test "x$want_simage" = "xyes"; then
-  AC_CACHE_CHECK([for simage header file], ac_cv_macro_SIMAGE_HEADER,
-  [
+  AC_MSG_CHECKING(for simage header file)
+
   dnl First try standard system locations.
-  AC_TRY_CPP([#include <simage.h>],
-             ac_cv_macro_SIMAGE_HEADER=yes,
-             ac_cv_macro_SIMAGE_HEADER=no)
+  AC_TRY_CPP([#include <simage.h>], simage_dev=yes, simage_dev=no)
 
   dnl Not found in any of the standard system locations, try libCoin
   dnl installation directory.
   dnl FIXME: use AC_DEFINE_DIR from the autoconf macro archive. 19991127 mortene.
-  if test $ac_cv_macro_SIMAGE_HEADER = no; then
+  if test "x$simage_dev" = "xno"; then
     _COINPREFIX=$prefix
     test "x$_COINPREFIX" = xNONE && _COINPREFIX=$ac_default_prefix
     _COINEPREFIX=$exec_prefix
     test "x$_COINEPREFIX" = xNONE && _COINEPREFIX=$_COINPREFIX
     _SAVECPPFLAGS=$CPPFLAGS
     CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
-    AC_TRY_CPP([#include <simage.h>],
-               ac_cv_macro_SIMAGE_HEADER=coin,
-               ac_cv_macro_SIMAGE_HEADER=no)
+    AC_TRY_CPP([#include <simage.h>], simage_dev=yes, simage_dev=no)
     CPPFLAGS=$_SAVECPPFLAGS
-  fi])
-
-  if test $ac_cv_macro_SIMAGE_HEADER = coin; then
-    _COINPREFIX=$prefix
-    test "x$_COINPREFIX" = xNONE && _COINPREFIX=$ac_default_prefix
-    _COINEPREFIX=$exec_prefix
-    test "x$_COINEPREFIX" = xNONE && _COINEPREFIX=$_COINPREFIX
-    CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
-    LDFLAGS="-L$_COINEPREFIX/lib $LDFLAGS"
+    if test "x$simage_dev" = "xyes"; then
+      CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
+      LDFLAGS="-L$_COINEPREFIX/lib $LDFLAGS"
+    fi
   fi
 
-  if test $ac_cv_macro_SIMAGE_HEADER = yes; then
-      AC_CHECK_LIB(simage, simage_read_image,
-                   ac_cv_macro_SIMAGE_LIBRARY=yes,
-                   ac_cv_macro_SIMAGE_LIBRARY=no, -lz $MATHLIB)
+  AC_MSG_RESULT($simage_dev)
+
+  if test "x$simage_dev" = "xyes"; then
+    AC_CHECK_LIB(simage, simage_read_image, , simage_dev=no, -lz $MATHLIB)
   fi
-  if test $ac_cv_macro_SIMAGE_HEADER = no || test $ac_cv_macro_SIMAGE_LIBRARY = no; then
+  if test "$simage_dev" = no; then
     AC_MSG_WARN(libsimage development system not found)
   fi
 fi
