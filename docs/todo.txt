@@ -9,6 +9,25 @@ fixed within an hour or two.
 See also the api-wish-list.txt file for other "mini" projects.
 
 
+Important note: I (mortene@sim.no) believe it would in general be a
+good idea if as many as possible of the SIM developers involved in
+Coin development "cleaned the table" to make time for a "Coin2" summit
+well before we are closing in on a release date for version
+2.0.0. Preferably such a summit could be held for a number of days,
+maybe even as much as ~ a whole week.
+
+The reasons for this is that there's quite a number of important
+design issues for all the new functionality (implemented and planned)
+we should *really* think through before setting them in stone, as we
+don't want to end up with second-rate API-stuff that we have to
+support indefinitely in future Coin versions.
+
+So presentations and round-table discussions around API-extensions for
+Coin v2 would be a Really Good Thing to plan for -- sometime in late
+Q1 2002 or early Q2 2002, perhaps.
+
+
+
 STUFF TO FIX IN COIN
 ====================
 
