@@ -147,6 +147,35 @@ SoLineHighlightRenderAction::apply(SoNode * node)
 }
 
 /*!
+  This method will just call the SoGLRenderAction::apply() method (so
+  no highlighting will be done).
+
+  It has been overloaded to avoid confusing the compiler, which
+  typically want to see either all or none of the apply() methods
+  overloaded.
+ */
+void
+SoLineHighlightRenderAction::apply(SoPath * path)
+{
+  SoGLRenderAction::apply(path);
+}
+
+/*!
+  This method will just call the SoGLRenderAction::apply() method (so
+  no highlighting will be done).
+
+  It has been overloaded to avoid confusing the compiler, which
+  typically want to see either all or none of the apply() methods
+  overloaded.
+ */
+void
+SoLineHighlightRenderAction::apply(const SoPathList & pathlist,
+                                   SbBool obeysrules)
+{
+  SoGLRenderAction::apply(pathlist, obeysrules);
+}
+
+/*!
   Sets if highlight wireframes should be \a visible when
   rendering. Defaults to \c TRUE.
 */

@@ -140,13 +140,42 @@ SoBoxHighlightRenderAction::apply(SoNode * node)
     if (this->searchaction->isFound()) {
       SoSelection * selection =
         (SoSelection *)this->searchaction->getPath()->getTail();
-      assert(selection->getTypeId(). isDerivedFrom(SoSelection::getClassTypeId()));
+      assert(selection->getTypeId().isDerivedFrom(SoSelection::getClassTypeId()));
 
       if (selection->getNumSelected()) {
         this->drawBoxes(this->searchaction->getPath(), selection->getList());
       }
     }
   }
+}
+
+/*!
+  This method will just call the SoGLRenderAction::apply() method (so
+  no highlighting will be done).
+
+  It has been overloaded to avoid confusing the compiler, which
+  typically want to see either all or none of the apply() methods
+  overloaded.
+ */
+void
+SoBoxHighlightRenderAction::apply(SoPath * path)
+{
+  SoGLRenderAction::apply(path);
+}
+
+/*!
+  This method will just call the SoGLRenderAction::apply() method (so
+  no highlighting will be done).
+
+  It has been overloaded to avoid confusing the compiler, which
+  typically want to see either all or none of the apply() methods
+  overloaded.
+ */
+void
+SoBoxHighlightRenderAction::apply(const SoPathList & pathlist,
+                                  SbBool obeysrules)
+{
+  SoGLRenderAction::apply(pathlist, obeysrules);
 }
 
 /*!

@@ -40,6 +40,8 @@ public:
   static void initClass(void);
 
   virtual void apply(SoNode * node);
+  virtual void apply(SoPath * path);
+  virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
   void setVisible(const SbBool visible);
   SbBool isVisible(void) const;
   void setColor(const SbColor & color);
