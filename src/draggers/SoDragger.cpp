@@ -302,6 +302,7 @@ public:
   const SoEvent * currentevent;
   SoPath * pickedpath;
   SoDraggerCache * draggercache;
+  SbBool didmousemove;
 
   SoCallbackList startCB;
   SoCallbackList motionCB;
@@ -359,6 +360,7 @@ SoDragger::SoDragger(void)
   THIS->surrogateownerpath = NULL;
   THIS->surrogatepath = NULL;
   THIS->cbaction = NULL;
+  THIS->didmousemove = FALSE;
 }
 
 /*!
@@ -1537,13 +1539,19 @@ void
 SoDragger::handleEvent(SoHandleEventAction * action)
 {
   const SoEvent * event = action->getEvent();
-
+  
   if (this->isActive.getValue() || this->getActiveChildDragger()) {
     if (!action->getGrabber())
       this->updateDraggerCache(action->getCurPath());
     else
       this->updateDraggerCache(NULL);
   }
+  // try child draggers first
+  if (action->getGrabber() != this) {
+    inherited::handleEvent(action);
+  }
+  // return if handled by a child
+  if (action->isHandled()) return;
 
   // this is a special case, to be able to detect when somebody
   // clicks ctrl over a dragger. This has a special meaning for
@@ -1592,6 +1600,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
         this->updateDraggerCache(NULL);
 
       this->isActive = TRUE;
+      THIS->didmousemove = FALSE;
       this->setCameraInfo(action);
       this->setStartingPoint(pp);
       this->eventHandled(event, action);
@@ -1607,7 +1616,10 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   }
   else if (this->isActive.getValue() && SO_MOUSE_RELEASE_EVENT(event, BUTTON1)) {
     this->isActive = FALSE;
-    this->eventHandled(event, action);
+    if (THIS->didmousemove) {
+      this->eventHandled(event, action);
+      THIS->didmousemove = FALSE;
+    }
     if (THIS->isgrabbing) this->grabEventsCleanup();
     if (THIS->pickedpath) {
       THIS->pickedpath->unref();
@@ -1628,6 +1640,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   }
   else if (this->isActive.getValue() && event->isOfType(SoLocation2Event::getClassTypeId())) {
     this->eventHandled(event, action);
+    THIS->didmousemove = TRUE;
     THIS->motionCB.invokeCallbacks(this);
     if (!THIS->isgrabbing) {
       this->grabEventsSetup();
