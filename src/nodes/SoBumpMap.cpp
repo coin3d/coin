@@ -49,36 +49,16 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/misc/SoGLImage.h>
-
+#include <Inventor/C/glue/gl.h>
 
 /*!
   \var SoSFString SoBumpMap::filename
 
-  Texture filename, referring to a file on disk in a supported image
-  bitmap format.
-
-  By default contains an empty string, which means the texture will be
-  fetched from SoTexture2::image and not from disk. (Specify either
-  this field or use SoTexture2::image, not both.)
-
-  For reading texture image files from disk, Coin uses the "simage"
-  library from Systems in Motion. This library must be installed for
-  it to be possible to load any image files at all.
-
-  The set of image formats you can actually read with the simage
-  library depends on how the simage library was built, as simage is
-  again dependent on a few other low-level file import/export
-  libraries (for instance for JPEG, GIF, TIFF and PNG support).  To
-  make sure all wanted formats are supported, you should build the
-  simage library yourself.
-
-  The set of image formats guaranteed to be supported by simage is
-  Targa (.tga), PIC (.pic), SGI RGB (.rgb, .bw) and XWD (.xwd).
-
-  For more information about the simage library, including download
-  and build instructions, see the <a href="http://www.coin3d.org">Coin
-  www-pages</a>.
+  Bump map (or normal map) filename, referring to a file on disk in a
+  supported image bitmap format. See SoTexture2::filename for more
+  information.
 */
+
 /*!
   \var SoSFImage SoBumpMap::image
 
@@ -193,12 +173,14 @@ SoBumpMap::GLRender(SoGLRenderAction * action)
 void
 SoBumpMap::doAction(SoAction * action)
 {
+  // will be implemented when (if) more actions support SoBumpMap.
 }
 
 // doc from parent
 void
 SoBumpMap::callback(SoCallbackAction * action)
 {
+  // not supported for SoCallbackAction yet
   // SoBumpMap::doAction(action);
 }
 
@@ -206,6 +188,7 @@ SoBumpMap::callback(SoCallbackAction * action)
 void
 SoBumpMap::rayPick(SoRayPickAction * action)
 {
+  // not supported for SoRayPickAction yet
   // SoBumpMap::doAction(action);
 }
 
