@@ -37,6 +37,9 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoNode.h>
+#ifdef _WIN32
+#include <windows.h> // Need this to resolve everything for <GL/gl.h>.
+#endif // _WIN32
 #include <GL/gl.h>
 #include <assert.h>
 #include <string.h> // memset(), memcpy()
