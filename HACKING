@@ -160,12 +160,13 @@ are using is a symlink pointing to the one in your build directory, so
 no re-installation need to happen.
 
 
-One caveat emptor: if any of the class-definitions change in a
-non-ABI[1] compatible way in any of the corresponding .h files, you
-need to recompile and relink _all_ sourcecode depending on this class,
-not just the class itself. Or core dumps will happen.
+One caveat emptor: if any of the class-definitions change in a non-ABI
+compatible way in any of the corresponding .h files, you need to
+recompile and relink _all_ sourcecode depending on this class, not
+just the class itself. Or core dumps will happen. (See footnote 1 at
+the end of this document for an explanation of the term "ABI".)
 
-There are many, many ways to break ABI[1] compatiblity in C++:
+There are many, many ways to break ABI compatiblity in C++:
 
   - variables being added or removed from / to a class, making it's
     sizeof() change
@@ -173,7 +174,7 @@ There are many, many ways to break ABI[1] compatiblity in C++:
   - functions made virtual or "un-made" from virtual
   - function signatures changed in general
 
-  ...etc. See footnote [1] at the end of this document for more
+  ...etc. See footnote 1 at the end of this document for more
   discussion on the issue. Anyway, as long as you're only changing the
   .cpp files, you should be home free.
 
@@ -448,15 +449,14 @@ XXX FIXME: complete doc. XXX
 
 ==============================================================================
 
-The following text pertains to the versioning that is set up in configure.ac
-(configure.in).
-
 Library versioning
 ==================
 
 When making releases, we follow these rules:
 
-* if there has been made any incompatible changes to the ABI[1]:
+* If there has been made any incompatible changes to the ABI (see
+  footnote 1 at end of document for an explanation of the term "ABI"):
+
     COIN_MAJOR_VERSION += 1,
     COIN_MINOR_VERSION = 0,
     COIN_MICRO_VERSION = 0.
@@ -465,14 +465,39 @@ When making releases, we follow these rules:
    release is binary incompatible with the last ABI, you shouldn't
    be making releases.)
 
-* if there has been made additions to the API[2], but the ABI
-  is still backwards compatible: COIN_MAJOR_VERSION unchanged,
-  COIN_MINOR_VERSION += 1, COIN_MICRO_VERSION = 0.
+  Typical cases: public interfaces have been changed in a manner that
+  is not compatible with old code. Classes have add private data
+  members added or removed.
 
-* for bugfix releases and other changes which do not change the interface
-  at all, keep COIN_MAJOR_VERSION and COIN_MINOR_VERSION unchanged
-  and COIN_MICRO_VERSION += 1.
+  We might also have just simply added many new significant major
+  features to the library, which in itself justifies increasing the
+  major version number.
 
+
+* If there has been made additions to the API (see footnote 2 at the
+  end of the document for an explanation of the term "API"), but the
+  ABI is still backwards compatible:
+
+    COIN_MAJOR_VERSION unchanged,
+    COIN_MINOR_VERSION += 1,
+    COIN_MICRO_VERSION = 0.
+
+  Typical cases: new functionality has been added through new C
+  functions, new C++ class member functions have been added (but not
+  virtual functions, as that changes the sizeof() value of a class),
+  or completely new classes have been added.
+
+
+* For bugfix releases and other changes which do not change the interface
+  at all:
+
+    COIN_MAJOR_VERSION unchanged,
+    COIN_MINOR_VERSION unchanged,
+    COIN_MICRO_VERSION += 1.
+
+
+The following text pertains to the versioning that is set up in
+configure.ac:
 
 Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
 the idea of library versioning applied by Libtool. According to Libtool,
@@ -620,10 +645,11 @@ First, the larger issues:
 
       There is one important "trick" to apply to C++ classes when they
       are part of a library with a public API where binary
-      compatibility (ie a stable ABI[1]) between releases are
-      important -- as it is for the Coin library. The trick is to hide
-      all the private implementation data within an internal class,
-      only visible to the .cpp-file of the "real" class.
+      compatibility (i.e. a stable ABI (see footnote 1 at end of
+      document)) between releases are important -- as it is for the
+      Coin library. The trick is to hide all the private
+      implementation data within an internal class, only visible to
+      the .cpp-file of the "real" class.
 
       This is a common design pattern that goes under many different
       names; the Bridge pattern (from «Design Patterns», Gamma et al),
@@ -1062,18 +1088,46 @@ A few hints:
 Footnotes
 =========
 
-[1] Application Binary Interface. This covers any publicly exposed
-    functions, function signatures, structures (and classes for C++
-    code). If any functions has been removed or changed, or if any
+[1] "ABI" is short for "Application Binary Interface". The ABI of a
+    software component of object code (usually a dynamic or static
+    library) covers any publicly exposed functions, function
+    signatures, structures (and classes for C++ code). If any
+    functions has been removed or changed, or if any
     structures/classes has been modified in any way, the ABI has most
     likely been made incompatible with earlier releases.
 
-    For a more comprehensive list of what breaks ABI compatibility
+    What this means for practical purposes is that application
+    programs (or other client code, like other libraries using the
+    library in question) must be relinked when ABI compatibility is
+    broken.
+
+    A quick example of why re-building is necessary when the ABI is
+    made incompatible with the previous version: let's say that a
+    class has gotten a few new member variables added. This breaks the
+    ABI in a manner which is neither upwards nor downwards compatible,
+    as the statement
+
+        AClass * anobject = new AClass;
+
+    ...in client code will allocate a chunk of memory with the size
+    sizeof(AClass). Adding member variables will increase
+    sizeof(AClass) in the /library/ object code, but the compiled
+    /client code/ will still use the old sizeof(AClass), with the
+    boundary overwrites and other "interesting" effects that may come
+    out of it if the client code is not re-compiled.
+
+
+    For a quite comprehensive list of what breaks ABI compatibility
     under C++, see the technical FAQ for Troll Tech' Qt library. Last
-    seen here: <URL:http://www.trolltech.com/developer/faqs/technical.html>.
+    seen here:
+
+      <URL:http://www.trolltech.com/developer/faqs/technical.html>
+
     (It's the "You frequently say that you cannot add this or that
     feature because it would break binary compatibility. What does
     this mean, really?" question.)
+
+
 
 [2] Application Programmer's Interface. This is the functions and data
     structures/classes exposed to the application programmer for
