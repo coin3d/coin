@@ -100,7 +100,7 @@
 #define GL_COLOR_TABLE_WIDTH              0x80D9
 #endif /* !GL_COLOR_TABLE_WIDTH */
 
-/* OpenGL multitexture defines. For now we just define for maximum four units */
+/* OpenGL multitexture defines. For now we just define for maximum sixteen units */
 #ifndef GL_TEXTURE0
 #define GL_TEXTURE0                       0x84C0
 #endif /* !GL_TEXTURE0 */
@@ -113,13 +113,52 @@
 #ifndef GL_TEXTURE3
 #define GL_TEXTURE3                       0x84C3
 #endif /* !GL_TEXTURE3 */
+#ifndef GL_TEXTURE4
+#define GL_TEXTURE4                       0x84C4
+#endif /* !GL_TEXTURE4 */
+#ifndef GL_TEXTURE5
+#define GL_TEXTURE5                       0x84C5
+#endif /* !GL_TEXTURE5 */
+#ifndef GL_TEXTURE6
+#define GL_TEXTURE6                       0x84C6
+#endif /* !GL_TEXTURE6 */
+#ifndef GL_TEXTURE7
+#define GL_TEXTURE7                       0x84C7
+#endif /* !GL_TEXTURE7 */
+#ifndef GL_TEXTURE8
+#define GL_TEXTURE8                       0x84C8
+#endif /* !GL_TEXTURE8 */
+#ifndef GL_TEXTURE9
+#define GL_TEXTURE9                       0x84C9
+#endif /* !GL_TEXTURE9 */
+#ifndef GL_TEXTURE10
+#define GL_TEXTURE10                      0x84CA
+#endif /* !GL_TEXTURE10 */
+#ifndef GL_TEXTURE11
+#define GL_TEXTURE11                      0x84CB
+#endif /* !GL_TEXTURE11 */
+#ifndef GL_TEXTURE12
+#define GL_TEXTURE12                      0x84CC
+#endif /* !GL_TEXTURE12 */
+#ifndef GL_TEXTURE13
+#define GL_TEXTURE13                      0x84CD
+#endif /* !GL_TEXTURE13 */
+#ifndef GL_TEXTURE14
+#define GL_TEXTURE14                      0x84CE
+#endif /* !GL_TEXTURE14 */
+#ifndef GL_TEXTURE15
+#define GL_TEXTURE15                      0x84CF
+#endif /* !GL_TEXTURE15 */
+
 #ifndef GL_MAX_TEXTURE_UNITS
 #define GL_MAX_TEXTURE_UNITS              0x84E2
 #endif /* !GL_MAX_TEXTURE_UNITS */
 #ifndef GL_ACTIVE_TEXTURE
 #define GL_ACTIVE_TEXTURE                 0x84E0
 #endif /* !GL_ACTIVE_TEXTURE */
-
+#ifndef GL_CLIENT_ACTIVE_TEXTURE
+#define GL_CLIENT_ACTIVE_TEXTURE          0x84E1
+#endif /* !GL_CLIENT_ACTIVE_TEXTURE */
 /* A define from the old EXT_polygon_offset from SGI. This define at
    least missing from Microsoft's OpenGL 1.1 SDK. */
 #ifndef GL_POLYGON_OFFSET_EXT
