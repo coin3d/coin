@@ -1977,7 +1977,18 @@
     --------------8<----------- [snip] ------------------8<--------
 
     This is a serious error, and a high priority item.
-
+  
     20031013 mortene.
+
+    It's quite easy to fix. If you set up your viewer to use some
+    kind of sorting transparency type (e.g. SORTED_OBJECT_BLEND),
+    everything works as expected.
+
+    We just need a flag in SoGLRenderAction that should be set to
+    TRUE for shapes that need to be sorted, so that when the viewer
+    transparency is set to SCREEN_DOOR, the shapes are still sorted
+    (not just delayed) when rendering.
+    
+    20031014 pederb 
 
 =====================================================================
