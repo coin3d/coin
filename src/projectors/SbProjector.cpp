@@ -19,35 +19,65 @@
 
 /*!
   \class SbProjector SbProjector.h Inventor/projectors/SbProjector.h
-  \brief The SbProjector class is the base class for all other projector
-  classes.
+  \brief The SbProjector class is the abstract base projector class.
   \ingroup projectors
 
-  FIXME: write class doc.
+  Projectors are used in the Coin library for mapping 2D coordinates
+  (typically from position of the mouse cursor in the rendering
+  window) to 3D "world" coordinates.
+
+  Mapping 2D coordinates to 3D coordinates is something which is done
+  extensively in the dragger classes, to provide the user with a
+  convenient and natural way of interacting with the 3D geometry of
+  scenes.
+
+  The application programmer should normally not need to care about
+  the projector classes, unless there are special needs in the
+  application.
+
+  \sa SoDragger
 */
+
 
 #include <Inventor/projectors/SbProjector.h>
 
+
+/*!
+  \fn SbProjector::~SbProjector()
+
+  Destructor is protected, as this is an abstract class.
+ */
+
 /*!
   \fn virtual SbVec3f SbProjector::project(const SbVec2f & point)
-  FIXME: write doc
+
+  Project the 2D \a point from normalized viewport coordinates to a 3D
+  point. The mapping will be done in accordance with the type of the
+  projector.
  */
 /*!
   \fn virtual SbProjector * SbProjector::copy(void) const
-  FIXME: write doc
+
+  Construct and return a copy of this projector. The caller is
+  responsible for destructing the new instance.
  */
 
 /*!
   \var SbProjector::viewVol
-  FIXME: write doc
+
+  The viewVol definition.
 */
 /*!
   \var SbProjector::worldToWorking
-  FIXME: write doc
+
+  The matrix which converts from world coordinates to coordinates in
+  the projector's local coordinate system.
 */
 /*!
   \var SbProjector::workingToWorld
-  FIXME: write doc
+
+  The matrix which converts from coordinates in the projector's local
+  coordinate system to world coordinates.
 */
 
 
@@ -64,10 +94,10 @@ SbProjector::SbProjector(void)
 /*!
   Set the viewing volume the projections will take place in.
 
-  \sa getViewVolume().
+  \sa getViewVolume()
  */
 void
-SbProjector::setViewVolume(const SbViewVolume &vol)
+SbProjector::setViewVolume(const SbViewVolume & vol)
 {
   this->viewVol = vol;
 }
@@ -75,7 +105,7 @@ SbProjector::setViewVolume(const SbViewVolume &vol)
 /*!
   Return the current viewing volume used by the projections.
 
-  \sa setViewVolume().
+  \sa setViewVolume()
  */
 const SbViewVolume &
 SbProjector::getViewVolume(void) const
@@ -84,17 +114,20 @@ SbProjector::getViewVolume(void) const
 }
 
 /*!
-  FIXME: write doc
+  Sets the matrix used for converting from the projector's coordinate
+  system to the world coordinate system.
  */
 void
-SbProjector::setWorkingSpace(const SbMatrix &space)
+SbProjector::setWorkingSpace(const SbMatrix & space)
 {
   this->workingToWorld = space;
   this->worldToWorking = space.inverse();
 }
 
 /*!
-  FIXME: write doc
+  Returns projector-to-world matrix.
+
+  \sa setWorkingSpace()
  */
 const SbMatrix &
 SbProjector::getWorkingSpace(void) const
@@ -103,10 +136,14 @@ SbProjector::getWorkingSpace(void) const
 }
 
 /*!
-  FIXME: write doc
+  From the 2D \a point in normalized screenspace coordinates,
+  calculate the line passing through the scene.
+
+  Typically used for tracking intersection points for the mouse
+  cursor.
  */
 SbLine
-SbProjector::getWorkingLine(const SbVec2f &point) const
+SbProjector::getWorkingLine(const SbVec2f & point) const
 {
   SbLine l;
   this->viewVol.projectPointToLine(point, l);

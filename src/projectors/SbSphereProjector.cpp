@@ -19,10 +19,13 @@
 
 /*!
   \class SbSphereProjector SbSphereProjector.h Inventor/projectors/SbSphereProjector.h
-  \brief The SbSphereProjector class is ... blablabla FIXME.
+  \brief The SbSphereProjector class is the abstract base class for mapping to spherical surfaces.
   \ingroup projectors
 
-  FIXME: write doc
+  The sphere projectors map 2D points to various surface types based
+  on spherical shapes.
+
+  \sa SbCylinderProjector
  */
 
 #include <Inventor/projectors/SbSphereProjector.h>
@@ -30,59 +33,72 @@
 
 /*!
   \fn SbRotation SbSphereProjector::getRotation(const SbVec3f & point1, const SbVec3f & point2)
-  FIXME: write doc
+
+  Returns rotation on the projection surface which re-orients \a
+  point1 to \a point2.
 */
 
 /*!
   \var SbSphereProjector::intersectFront
-  FIXME: write doc
+
+  Flag which says whether or not we should map to the outside or
+  inside of the sphere surface.
 */
 /*!
   \var SbSphereProjector::sphere
-  FIXME: write doc
+
+  Projection sphere.
 */
 /*!
   \var SbSphereProjector::orientToEye
-  FIXME: write doc
+
+  Which direction the spherical surface is oriented.
 */
 /*!
   \var SbSphereProjector::needSetup
-  FIXME: write doc
+
+  Set to \c TRUE whenever the projection surface needs to be
+  recalculated according to the setting of the
+  SbSphereProjector::orientToEye flag.
 */
 /*!
   \var SbSphereProjector::lastPoint
-  FIXME: write doc
+
+  Stores the previously projected 3D point.
 */
 
 
 
 /*!
-  FIXME: write doc
+  Default constructor sets up a sphere at the origin with radius 1.
 */
-SbSphereProjector::SbSphereProjector(const SbBool orient)
+SbSphereProjector::SbSphereProjector(const SbBool orienttoeye)
   : intersectFront(TRUE),
     sphere(SbVec3f(0.0f, 0.0f, 0.0f), 1.0f),
-    orientToEye(orient),
+    orientToEye(orienttoeye),
     needSetup(TRUE),
     lastPoint(0.0f, 0.0f, 0.0f)
 {
 }
 
 /*!
-  FIXME: write doc
+  Constructor taking an explicit \a sphere projection definition.
 */
-SbSphereProjector::SbSphereProjector(const SbSphere &s,
-                                     const SbBool orient)
+SbSphereProjector::SbSphereProjector(const SbSphere & s,
+                                     const SbBool orienttoeye)
   : intersectFront(TRUE),
     sphere(s),
-    orientToEye(orient),
+    orientToEye(orienttoeye),
     needSetup(TRUE),
     lastPoint(0.0f, 0.0f, 0.0f)
 {
 }
 
 /*!
-  FIXME: write doc
+  Project the 2D point to a 3D coordinate on the spherical surface,
+  and find the rotation from the last projection to this one.
+
+  \sa project(), getRotation()
 */
 SbVec3f
 SbSphereProjector::projectAndGetRotation(const SbVec2f & point,
@@ -96,7 +112,7 @@ SbSphereProjector::projectAndGetRotation(const SbVec2f & point,
 }
 
 /*!
-  FIXME: write doc
+  Set \a sphere to project onto.
 */
 void
 SbSphereProjector::setSphere(const SbSphere & sph)
@@ -106,7 +122,7 @@ SbSphereProjector::setSphere(const SbSphere & sph)
 }
 
 /*!
-  FIXME: write doc
+  Returns projection sphere.
 */
 const SbSphere &
 SbSphereProjector::getSphere(void) const
@@ -115,17 +131,18 @@ SbSphereProjector::getSphere(void) const
 }
 
 /*!
-  FIXME: write doc
+  Sets whether or not the projection surface should be oriented
+  towards the eye of the viewer.
 */
 void
-SbSphereProjector::setOrientToEye(const SbBool orientToEye)
+SbSphereProjector::setOrientToEye(const SbBool orienttoeye)
 {
-  this->orientToEye = orientToEye;
+  this->orientToEye = orienttoeye;
   this->needSetup = TRUE;
 }
 
 /*!
-  FIXME: write doc
+  Returns the state of the sphere orientation flag.
 */
 SbBool
 SbSphereProjector::isOrientToEye(void) const
@@ -134,17 +151,19 @@ SbSphereProjector::isOrientToEye(void) const
 }
 
 /*!
-  FIXME: write doc
+  Set whether to intersect with the outside of the sphere (\a infront
+  equal to \c TRUE), or the inside.
 */
 void
-SbSphereProjector::setFront(const SbBool inFront)
+SbSphereProjector::setFront(const SbBool infront)
 {
-  this->intersectFront = inFront;
+  this->intersectFront = infront;
   this->needSetup = TRUE;
 }
 
 /*!
-  FIXME: write doc
+  Returns value of the flag which decides whether to intersect with
+  the outside or inside of the sphere.
 */
 SbBool
 SbSphereProjector::isFront(void) const
@@ -153,10 +172,11 @@ SbSphereProjector::isFront(void) const
 }
 
 /*!
-  FIXME: write doc
+  Check if \a point is on the frontside or the backside of the
+  cylinder.
 */
 SbBool
-SbSphereProjector::isPointInFront(const SbVec3f &point) const
+SbSphereProjector::isPointInFront(const SbVec3f & point) const
 {
   SbVec3f dir;
   if (this->orientToEye) {
@@ -173,11 +193,14 @@ SbSphereProjector::isPointInFront(const SbVec3f &point) const
 }
 
 /*!
-  FIXME: write doc
+  Intersect \a line with the SbSphereProjector::sphere and place the
+  intersection point (if any) in \a result.
+
+  Returns \c TRUE if \a line actually hits the sphere, \c FALSE if it
+  doesn't intersect with it.
 */
 SbBool
-SbSphereProjector::intersectSphereFront(const SbLine &l,
-                                        SbVec3f &result)
+SbSphereProjector::intersectSphereFront(const SbLine & l, SbVec3f & result)
 {
   SbVec3f i0, i1;
   if (this->sphere.intersect(l, i0, i1)) {
@@ -189,10 +212,10 @@ SbSphereProjector::intersectSphereFront(const SbLine &l,
 }
 
 /*!
-  FIXME: write doc
+  Overloaded from parent to set \a needSetup to \c TRUE.
 */
 void
-SbSphereProjector::setWorkingSpace(const SbMatrix &space)
+SbSphereProjector::setWorkingSpace(const SbMatrix & space)
 {
   this->needSetup = TRUE;
   inherited::setWorkingSpace(space);

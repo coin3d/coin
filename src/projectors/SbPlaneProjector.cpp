@@ -18,11 +18,14 @@
 \**************************************************************************/
 
 /*!
-  \class SbPlaneProjector Inventor/projectors/SbPlaneProjector.h
-  \brief The SbPlaneProjector class is ... blablabla TODO.
+  \class SbPlaneProjector SbPlaneProjector.h Inventor/projectors/SbPlaneProjector.h
+  \brief The SbPlaneProjector class projects 2D points to 3D points in a plane.
   \ingroup projectors
 
-  TODO: class doc.
+  The 3D projection of the 2D coordinates is for this projector class
+  constrained to lie inside a pre-defined 3D plane.
+
+  \sa SbLineProjector
 */
 
 #include <assert.h>
@@ -35,21 +38,38 @@
 
 /*!
   \var SbPlaneProjector::plane
-  FIXME: write doc
+
+  The projection plane.
 */
 /*!
   \var SbPlaneProjector::orientToEye
-  FIXME: write doc
+
+  Which direction the plane is oriented.
 */
 /*!
   \var SbPlaneProjector::lastPoint
-  FIXME: write doc
+
+  Stores the previously projected 3D point.
+*/
+/*!
+  \var SbPlaneProjector::needSetup
+
+  Set to \c TRUE whenever the plane needs to be recalculated according
+  to the setting of the SbPlaneProjector::orientToEye flag.
+ */
+/*!
+  \var SbPlaneProjector::nonOrientPlane
+
+  The "original" plane which was set (as opposed to the recalculated
+  projection plane according to the SbPlaneProjector::orientToEye
+  setting).
 */
 
 
 
 /*!
-  Constructor.
+  Constructor. Sets up a projection plane parallel with the XY-plane
+  in world coordinates.
 */
 SbPlaneProjector::SbPlaneProjector(const SbBool orient)
   : plane(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f),
@@ -60,9 +80,9 @@ SbPlaneProjector::SbPlaneProjector(const SbBool orient)
 }
 
 /*!
-  FIXME: write doc
+  Constructor taking an explicit projection \a plane definition.
 */
-SbPlaneProjector::SbPlaneProjector(const SbPlane &plane, const SbBool orient)
+SbPlaneProjector::SbPlaneProjector(const SbPlane & plane, const SbBool orient)
   : plane(plane),
     nonOrientPlane(plane),
     orientToEye(orient),
@@ -71,7 +91,8 @@ SbPlaneProjector::SbPlaneProjector(const SbPlane &plane, const SbBool orient)
 }
 
 /*!
-  FIXME: write doc
+  Projects 2D \a point into a 3D point within the current projection
+  plane.
 */
 SbVec3f
 SbPlaneProjector::project(const SbVec2f & point)
@@ -85,26 +106,27 @@ SbPlaneProjector::project(const SbVec2f & point)
     SoDebugError::postWarning("SbPlaneProjector::project",
                               "working line is parallel to plane.");
 #endif // COIN_DEBUG
-    // set to (0,0,0) to avoid crazy rotations
+    // set to (0, 0, 0) to avoid crazy rotations
     projpt = SbVec3f(0.0f, 0.0f, 0.0f);
   }
   return projpt;
 }
 
 /*!
-  FIXME: write doc
+  Sets whether or not the plane should always be oriented towards the
+  "eye" of the viewer.
 */
 void
-SbPlaneProjector::setOrientToEye(const SbBool orientToEye)
+SbPlaneProjector::setOrientToEye(const SbBool orienttoeye)
 {
-  if (orientToEye != this->orientToEye) {
-    this->orientToEye = orientToEye;
+  if (orienttoeye != this->orientToEye) {
+    this->orientToEye = orienttoeye;
     this->needSetup = TRUE;
   }
 }
 
 /*!
-  FIXME: write doc
+  Returns the state of the plane orientation flag.
 */
 SbBool
 SbPlaneProjector::isOrientToEye(void) const
@@ -113,17 +135,17 @@ SbPlaneProjector::isOrientToEye(void) const
 }
 
 /*!
-  Set a new plane.
+  Set a new projection \a plane.
 */
 void
-SbPlaneProjector::setPlane(const SbPlane &plane)
+SbPlaneProjector::setPlane(const SbPlane & plane)
 {
   this->nonOrientPlane = this->plane = plane;
   this->needSetup = TRUE;
 }
 
 /*!
-  Returns the currently set plane.
+  Returns the current projection plane.
 */
 const SbPlane &
 SbPlaneProjector::getPlane(void) const
@@ -132,50 +154,50 @@ SbPlaneProjector::getPlane(void) const
 }
 
 /*!
-  FIXME: write doc
+  Returns a vector between the projected 3D points of \a viewpos1 and
+  \a viewpos2.
 */
 SbVec3f
-SbPlaneProjector::getVector(const SbVec2f &mousePosition1,
-                            const SbVec2f &mousePosition2)
+SbPlaneProjector::getVector(const SbVec2f & viewpos1, const SbVec2f & viewpos2)
 {
-  SbVec3f mp1 = this->project(mousePosition1);
-  SbVec3f mp2 = this->project(mousePosition2);
-  this->lastPoint = mp2; // FIXME: correct? pederb, 1999-12-06
+  SbVec3f mp1 = this->project(viewpos1);
+  SbVec3f mp2 = this->project(viewpos2);
+  this->lastPoint = mp2;
   return mp2 - mp1;
 }
 
 /*!
-  FIXME: write doc
+  Returns a vector between the last projected point and the projected
+  3D point of \a viewpos.
 */
 SbVec3f
-SbPlaneProjector::getVector(const SbVec2f &mousePosition)
+SbPlaneProjector::getVector(const SbVec2f & viewpos)
 {
   SbVec3f lp = this->lastPoint; // lastPoint is updated in project()
-  return (this->project(mousePosition) - lp);
+  return (this->project(viewpos) - lp);
 }
 
 /*!
-  FIXME: write doc
+  Explicitly set position of initial projection, so we get correct
+  values for later calls to getVector() etc.
 */
 void
-SbPlaneProjector::setStartPosition(const SbVec2f &mousePosition)
+SbPlaneProjector::setStartPosition(const SbVec2f & viewpos)
 {
-  this->lastPoint = this->project(mousePosition);
+  this->lastPoint = this->project(viewpos);
 }
 
 /*!
-  FIXME: write doc
+  Explicitly set position of initial projection, so we get correct
+  values for later calls to getVector() etc.
 */
 void
-SbPlaneProjector::setStartPosition(const SbVec3f &point)
+SbPlaneProjector::setStartPosition(const SbVec3f & point)
 {
   this->lastPoint = point;
 }
 
-/*!
-  Make an exact copy of the SbPlaneProjector instance. The caller will be
-  responsible for destroying the new instance.
-*/
+// Overloaded from parent.
 SbProjector *
 SbPlaneProjector::copy(void) const
 {
@@ -183,7 +205,8 @@ SbPlaneProjector::copy(void) const
 }
 
 /*!
-  Should be called whenever needSetup is \a TRUE. Will calculate \e plane.
+  Should be called whenever SbPlaneProjector::needSetup is \c
+  TRUE. Will recalculate projection plane.
 */
 void
 SbPlaneProjector::setupPlane(void)

@@ -19,10 +19,13 @@
 
 /*!
   \class SbCylinderProjector SbCylinderProjector.h Inventor/projectors/SbCylinderProjector.h
-  \brief The SbCylinderProjector class is ... blablabla FIXME.
+  \brief The SbCylinderProjector class is the abstract base class for mapping to cylindrical surfaces.
   \ingroup projectors
 
-  FIXME: write doc
+  The cylinder projectors map 2D points to various surface types based
+  on cylindrical shapes.
+
+  \sa SbSphereProjector
  */
 
 #include <Inventor/projectors/SbCylinderProjector.h>
@@ -32,58 +35,74 @@
 
 /*!
   \var SbCylinderProjector::intersectFront
-  FIXME: write doc
+
+  Flag which says whether or not we should map to the outside or
+  inside of the cylinder surface.
 */
 /*!
   \var SbCylinderProjector::cylinder
-  FIXME: write doc
+
+  Specification of the projection cylinder.
 */
 /*!
   \var SbCylinderProjector::orientToEye
-  FIXME: write doc
+
+  Which direction the cylindrical surface is oriented.
 */
 /*!
   \var SbCylinderProjector::needSetup
-  FIXME: write doc
+
+  Set to \c TRUE whenever the projection surface needs to be
+  recalculated according to the setting of the
+  SbCylinderProjector::orientToEye flag.
 */
 /*!
   \var SbCylinderProjector::lastPoint
-  FIXME: write doc
+
+  Stores the previously projected 3D point.
 */
+/*!
+  \fn virtual SbRotation SbCylinderProjector::getRotation(const SbVec3f & point1, const SbVec3f & point2)
+
+  Returns rotation on the projection surface which re-orients \a
+  point1 to \a point2.
+*/
+
 
 
 /*!
-  FIXME: write doc
+  Default constructor sets up a cylinder along the Y axis with height
+  1.
 */
-SbCylinderProjector::SbCylinderProjector(const SbBool orientToEye)
+SbCylinderProjector::SbCylinderProjector(const SbBool orienttoeye)
   : intersectFront(TRUE),
     cylinder(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f)), 1.0f),
-    orientToEye(orientToEye),
+    orientToEye(orienttoeye),
     needSetup(TRUE)
 {
 }
 
 /*!
-  FIXME: write doc
+  Constructor taking an explicit \a cylinder projection definition.
 */
-SbCylinderProjector::SbCylinderProjector(const SbCylinder &cyl,
-                                         const SbBool orientToEye)
+SbCylinderProjector::SbCylinderProjector(const SbCylinder & cylinder,
+                                         const SbBool orienttoeye)
   : intersectFront(TRUE),
-    cylinder(cyl),
-    orientToEye(orientToEye),
+    cylinder(cylinder),
+    orientToEye(orienttoeye),
     needSetup(TRUE)
 {
 }
 
 /*!
-  Project the point, but also find the rotation from previous
-  projection to this one.
+  Project the 2D point to a 3D coordinate on the cylindrical surface,
+  and find the rotation from the last projection to this one.
 
-  \sa SbCylinderProjector::project()
+  \sa project(), getRotation()
 */
 SbVec3f
-SbCylinderProjector::projectAndGetRotation(const SbVec2f &point,
-                                           SbRotation &rot)
+SbCylinderProjector::projectAndGetRotation(const SbVec2f & point,
+                                           SbRotation & rot)
 {
   SbVec3f lastpt = this->lastPoint;
   SbVec3f newpt = this->project(point);
@@ -93,17 +112,17 @@ SbCylinderProjector::projectAndGetRotation(const SbVec2f &point,
 }
 
 /*!
-  FIXME: write doc
+  Set \a cylinder to project onto.
 */
 void
-SbCylinderProjector::setCylinder(const SbCylinder &cyl)
+SbCylinderProjector::setCylinder(const SbCylinder & cylinder)
 {
-  this->cylinder = cyl;
+  this->cylinder = cylinder;
   this->needSetup = TRUE;
 }
 
 /*!
-  FIXME: write doc
+  Returns projection cylinder.
 */
 const SbCylinder &
 SbCylinderProjector::getCylinder(void) const
@@ -112,19 +131,20 @@ SbCylinderProjector::getCylinder(void) const
 }
 
 /*!
-  FIXME: write doc
+  Sets whether or not the projection surface should be oriented
+  towards the eye of the viewer.
 */
 void
-SbCylinderProjector::setOrientToEye(const SbBool orientToEye)
+SbCylinderProjector::setOrientToEye(const SbBool orienttoeye)
 {
-  if (this->orientToEye != orientToEye) {
-    this->orientToEye = orientToEye;
+  if (this->orientToEye != orienttoeye) {
+    this->orientToEye = orienttoeye;
     this->needSetup = TRUE;
   }
 }
 
 /*!
-  FIXME: write doc
+  Returns the state of the cylinder orientation flag.
 */
 SbBool
 SbCylinderProjector::isOrientToEye(void) const
@@ -133,19 +153,21 @@ SbCylinderProjector::isOrientToEye(void) const
 }
 
 /*!
-  FIXME: write doc
+  Set whether to intersect with the outside of the cylinder (\a
+  isfront equal to \c TRUE), or the inside.
 */
 void
-SbCylinderProjector::setFront(const SbBool isFront)
+SbCylinderProjector::setFront(const SbBool infront)
 {
-  if (this->intersectFront != isFront) {
-    this->intersectFront = isFront;
+  if (this->intersectFront != infront) {
+    this->intersectFront = infront;
     this->needSetup = TRUE;
   }
 }
 
 /*!
-  FIXME: write doc
+  Returns value of the flag which decides whether to intersect with
+  the outside or inside of the cylinder.
 */
 SbBool
 SbCylinderProjector::isFront(void) const
@@ -154,32 +176,33 @@ SbCylinderProjector::isFront(void) const
 }
 
 /*!
-  FIXME: write doc
+  Check if \a point is on the frontside or the backside of the
+  cylinder.
 */
 SbBool
-SbCylinderProjector::isPointInFront(const SbVec3f &point) const
+SbCylinderProjector::isPointInFront(const SbVec3f & point) const
 {
   // FIXME: not quite sure about this one.
   // 19991207, pederb
 
-  SbVec3f refDir;
+  SbVec3f refdir;
   if (this->orientToEye) {
-    refDir = -this->viewVol.getProjectionDirection();
-    this->worldToWorking.multDirMatrix(refDir, refDir);
+    refdir = -this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(refdir, refdir);
   }
   else {
-    refDir = SbVec3f(0.0f, 0.0f, 1.0f);
+    refdir = SbVec3f(0.0f, 0.0f, 1.0f);
   }
-  const SbLine &axis = this->cylinder.getAxis();
-  SbVec3f somePt = axis.getPosition() + refDir;
-  SbVec3f ptOnAxis = axis.getClosestPoint(somePt);
+  const SbLine & axis = this->cylinder.getAxis();
+  SbVec3f somept = axis.getPosition() + refdir;
+  SbVec3f ptonaxis = axis.getClosestPoint(somept);
 
   // find plane direction perpendicular to line
-  SbVec3f planeDir = somePt - ptOnAxis;
+  SbVec3f planeDir = somept - ptonaxis;
   planeDir.normalize();
 
-  ptOnAxis = axis.getClosestPoint(point);
-  SbVec3f ptDir = point - ptOnAxis;
+  ptonaxis = axis.getClosestPoint(point);
+  SbVec3f ptDir = point - ptonaxis;
   ptDir.normalize();
 
   float dot = ptDir.dot(planeDir);
@@ -188,11 +211,15 @@ SbCylinderProjector::isPointInFront(const SbVec3f &point) const
 }
 
 /*!
-  FIXME: write doc
+  Intersect \a line with the SbCylinderProjector::cylinder and place
+  the intersection point (if any) in \a result.
+
+  Returns \c TRUE if \a line actually hits the cylinder, \c FALSE if
+  it doesn't intersect with it.
 */
 SbBool
-SbCylinderProjector::intersectCylinderFront(const SbLine &line,
-                                            SbVec3f &result)
+SbCylinderProjector::intersectCylinderFront(const SbLine & line,
+                                            SbVec3f & result)
 {
   SbVec3f i0, i1;
   SbBool isect = this->cylinder.intersect(line, i0, i1);
@@ -204,10 +231,10 @@ SbCylinderProjector::intersectCylinderFront(const SbLine &line,
 }
 
 /*!
-  Overloaded just to set \e needSetup to \a TRUE.
+  Overloaded from parent to set \a needSetup to \c TRUE.
 */
 void
-SbCylinderProjector::setWorkingSpace(const SbMatrix &space)
+SbCylinderProjector::setWorkingSpace(const SbMatrix & space)
 {
   this->needSetup = TRUE;
   inherited::setWorkingSpace(space);

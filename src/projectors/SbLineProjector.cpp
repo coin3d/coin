@@ -18,11 +18,16 @@
 \**************************************************************************/
 
 /*!
-  \class SbLineProjector Inventor/projectors/SbLineProjector.h
-  \brief The SbLineProjector class is ... blablabla TODO.
+  \class SbLineProjector SbLineProjector.h Inventor/projectors/SbLineProjector.h
+  \brief The SbLineProjector class projects 2D points to 3D points along a line.
   \ingroup projectors
 
-  FIXME: write class doc.
+  The 3D projection of the 2D coordinates is for this projector class
+  constrained to lie along a pre-defined line.
+
+  Among other places, this is useful within the translation draggers,
+  like for instance SoTranslate1Dragger, where we want to move
+  "pieces" along one or more axes.
 */
 
 #include <Inventor/projectors/SbLineProjector.h>
@@ -30,18 +35,20 @@
 
 /*!
   \var SbLineProjector::line
-  FIXME: write doc
+
+  The projection line. Projected 3D points will be constrained to be
+  on this line.
 */
 /*!
   \var SbLineProjector::lastPoint
-  FIXME: write doc
+
+  The last projected point.
 */
 
 
-
-
 /*!
-  Constructor.
+  Constructor. Intializes the projector instance to use a line from
+  <0, 0, 0> to <0, 1, 0>.
  */
 SbLineProjector::SbLineProjector(void)
   : line(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 1.0f, 0.0f)),
@@ -49,33 +56,32 @@ SbLineProjector::SbLineProjector(void)
 {
 }
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent class.
 SbVec3f
-SbLineProjector::project(const SbVec2f& point)
+SbLineProjector::project(const SbVec2f & point)
 {
   SbLine projline = this->getWorkingLine(point);
   SbVec3f thispt, projpt;
   SbBool nonparallel = this->line.getClosestPoints(projline, thispt, projpt);
   // if lines are parallel, we will never get an intersection, and
-  // we set projection point to (0,0,0) to avoid strange rotations
+  // we set projection point to (0, 0, 0) to avoid strange rotations
   if (!nonparallel) thispt = SbVec3f(0.0f, 0.0f, 0.0f);
   this->lastPoint = thispt;
   return thispt;
 }
 
 /*!
-  Set a new line.
+  Set a new projection line. 3D points will be mapped to be on this
+  line.
  */
 void
-SbLineProjector::setLine(const SbLine& line)
+SbLineProjector::setLine(const SbLine & line)
 {
   this->line = line;
 }
 
 /*!
-  Returns the currently set line.
+  Returns the currently set projection line.
  */
 const SbLine&
 SbLineProjector::getLine(void) const
@@ -84,50 +90,50 @@ SbLineProjector::getLine(void) const
 }
 
 /*!
-  FIXME: write doc
+  Calculates and returns a vector between the projected 3D position of
+  \a viewpos1 and \a viewpos2.
 */
 SbVec3f
-SbLineProjector::getVector(const SbVec2f& mousePosition1,
-                           const SbVec2f& mousePosition2)
+SbLineProjector::getVector(const SbVec2f & viewpos1, const SbVec2f & viewpos2)
 {
-  SbVec3f mp1 = this->project(mousePosition1);
-  SbVec3f mp2 = this->project(mousePosition2);
+  SbVec3f mp1 = this->project(viewpos1);
+  SbVec3f mp2 = this->project(viewpos2);
   this->lastPoint = mp2;
   return mp2 - mp1;
 }
 
 /*!
-  FIXME: write doc
+  Returns the 3D vector between the last projection and the one
+  calculated for \a viewpos.
 */
 SbVec3f
-SbLineProjector::getVector(const SbVec2f& mousePosition)
+SbLineProjector::getVector(const SbVec2f & viewpos)
 {
   SbVec3f lp = this->lastPoint; // lastPoint is updated in project()
-  return (this->project(mousePosition) - lp);
+  return (this->project(viewpos) - lp);
 }
 
 /*!
-  FIXME: write doc
+  Explicitly set position of initial projection, so we get correct
+  values for later calls to getVector() etc.
 */
 void
-SbLineProjector::setStartPosition(const SbVec2f& mousePosition)
+SbLineProjector::setStartPosition(const SbVec2f & viewpos)
 {
-  this->lastPoint = this->project(mousePosition);
+  this->lastPoint = this->project(viewpos);
 }
 
 /*!
-  FIXME: write doc
+  Explicitly set position of initial projection, so we get correct
+  values for later calls to getVector() etc.
 */
 void
-SbLineProjector::setStartPosition(const SbVec3f& point)
+SbLineProjector::setStartPosition(const SbVec3f & point)
 {
   this->lastPoint = point;
 }
 
-/*!
-  Make an exact copy of the SbLineProjector instance. The caller will be
-  responsible for destroying the new instance.
- */
+// Overloaded from parent.
 SbProjector *
 SbLineProjector::copy(void) const
 {
