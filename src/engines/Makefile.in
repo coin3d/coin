@@ -172,7 +172,8 @@ RegularSources = \
 	evaluator_tab.c
 
 LinkHackSources = \
-	all.cpp
+	all-cpp.cpp \
+	all-c.c
 
 PublicHeaders = \
 	../../include/Inventor/engines/SoSubEngine.h \
@@ -281,7 +282,8 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 engines_lst_AR = $(AR) cru
 engines_lst_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_engines_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_engines_lst_OBJECTS = all-cpp.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_TRUE@	all-c.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am_engines_lst_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	SoBoolOperation.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoCalculator.$(OBJEXT) \
@@ -326,7 +328,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libengines_la_LDFLAGS =
 libengines_la_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_libengines_la_OBJECTS = all.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libengines_la_OBJECTS = all-cpp.lo \
+@HACKING_COMPACT_BUILD_TRUE@	all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libengines_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	SoBoolOperation.lo SoCalculator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoComposeMatrix.lo \
@@ -361,7 +364,7 @@ libengines_la_OBJECTS = $(am_libengines_la_OBJECTS)
 libengines@SUFFIX@LINKHACK_la_LDFLAGS =
 libengines@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libengines@SUFFIX@LINKHACK_la_OBJECTS = \
-@HACKING_COMPACT_BUILD_TRUE@	all.lo
+@HACKING_COMPACT_BUILD_TRUE@	all-cpp.lo all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libengines@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	SoBoolOperation.lo SoCalculator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoComposeMatrix.lo \
@@ -462,8 +465,9 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoTransformVec3f.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTransformVec3f.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTriggerAny.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoTriggerAny.Po $(DEPDIR)/all.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/all.Po $(DEPDIR)/evaluator.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoTriggerAny.Po $(DEPDIR)/all-c.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/all-c.Po $(DEPDIR)/all-cpp.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/all-cpp.Po $(DEPDIR)/evaluator.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/evaluator.Po $(DEPDIR)/evaluator_tab.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/evaluator_tab.Po \
 @AMDEP_TRUE@	$(DEPDIR)/lex.so_eval.Plo $(DEPDIR)/lex.so_eval.Po
@@ -623,8 +627,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTransformVec3f.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTriggerAny.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTriggerAny.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/evaluator.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/evaluator.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/evaluator_tab.Plo@am__quote@

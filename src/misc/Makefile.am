@@ -34,11 +34,12 @@ RegularSources = \
 	SoTranReceiver.cpp \
 	default3dfont.cpp \
 	default2dfont.cpp \
-	GLUWrapper.c \
 	GLWrapper.cpp \
+	GLUWrapper.c \
 	simage_wrapper.c
 LinkHackSources = \
-	all.cpp
+	all-cpp.cpp \
+	all-c.c
 PublicHeaders = \
 	../../include/Inventor/misc/SoAuditorList.h \
 	../../include/Inventor/misc/SoBase.h \

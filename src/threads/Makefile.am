@@ -8,7 +8,7 @@ RegularSources = \
 	condvar.c
 #	barrier.c
 LinkHackSources = \
-	all.c
+	all-c.c
 PublicHeaders = \
 	../../include/Inventor/threads/SbThread.h \
 	../../include/Inventor/threads/SbMutex.h \

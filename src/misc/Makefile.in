@@ -164,12 +164,13 @@ RegularSources = \
 	SoTranReceiver.cpp \
 	default3dfont.cpp \
 	default2dfont.cpp \
-	GLUWrapper.c \
 	GLWrapper.cpp \
+	GLUWrapper.c \
 	simage_wrapper.c
 
 LinkHackSources = \
-	all.cpp
+	all-cpp.cpp \
+	all-c.c
 
 PublicHeaders = \
 	../../include/Inventor/misc/SoAuditorList.h \
@@ -249,7 +250,8 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 misc_lst_AR = $(AR) cru
 misc_lst_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_misc_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_TRUE@am_misc_lst_OBJECTS = all-cpp.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_TRUE@	all-c.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am_misc_lst_OBJECTS = SoBase.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoChildList.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGL.$(OBJEXT) SoGLImage.$(OBJEXT) \
@@ -279,15 +281,15 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	default3dfont.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	GLWrapper.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.$(OBJEXT)
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libmisc_la_LDFLAGS =
 libmisc_la_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS = all.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS = all-cpp.lo all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libmisc_la_OBJECTS = SoBase.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoChildList.lo SoGL.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLImage.lo SoGLBigImage.lo \
@@ -305,13 +307,13 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLUWrapper.lo \
-@HACKING_COMPACT_BUILD_FALSE@	GLWrapper.lo simage_wrapper.lo
+@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLWrapper.lo \
+@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.lo simage_wrapper.lo
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
 libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
-@HACKING_COMPACT_BUILD_TRUE@	all.lo
+@HACKING_COMPACT_BUILD_TRUE@	all-cpp.lo all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	SoBase.lo SoChildList.lo SoGL.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLImage.lo SoGLBigImage.lo \
@@ -329,8 +331,8 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLUWrapper.lo \
-@HACKING_COMPACT_BUILD_FALSE@	GLWrapper.lo simage_wrapper.lo
+@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLWrapper.lo \
+@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.lo simage_wrapper.lo
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -381,8 +383,9 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoTranReceiver.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoTranSender.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoTranSender.Po $(DEPDIR)/SoType.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoType.Po $(DEPDIR)/all.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/all.Po $(DEPDIR)/default2dfont.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoType.Po $(DEPDIR)/all-c.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/all-c.Po $(DEPDIR)/all-cpp.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/all-cpp.Po $(DEPDIR)/default2dfont.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/default2dfont.Po \
 @AMDEP_TRUE@	$(DEPDIR)/default3dfont.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/default3dfont.Po \
@@ -536,8 +539,10 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoTranSender.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoType.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoType.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-cpp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/default2dfont.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/default2dfont.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/default3dfont.Plo@am__quote@

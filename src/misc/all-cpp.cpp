@@ -2,7 +2,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *
+ *  
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -21,14 +21,32 @@
  *
 \**************************************************************************/
 
-// IMPORTANT NOTE: this file should not be compiled/linked into Coin,
-// it was put here to run the C++ compiler over the C++ wrapper headers
-// for syntax/sanity checking...
-
-#include <Inventor/threads/SbThread.h>
-#include <Inventor/threads/SbMutex.h>
-#include <Inventor/threads/SbRWMutex.h>
-#include <Inventor/threads/SbCondVar.h>
-/* #include <Inventor/threads/SbBarrier.h> */
-#include <Inventor/threads/SbStorage.h>
-#include <Inventor/threads/SbTypedStorage.h>
+#include "SoBase.cpp"
+#include "SoByteStream.cpp"
+#include "SoChildList.cpp"
+#include "SoDB.cpp"
+#include "SoFullPath.cpp"
+#include "SoGL.cpp"
+#include "SoGLBigImage.cpp"
+#include "SoGLImage.cpp"
+#include "SoGenerate.cpp"
+#include "SoGlyph.cpp"
+#include "SoInput.cpp"
+#include "SoInteraction.cpp"
+#include "SoLightPath.cpp"
+#include "SoLockManager.cpp"
+#include "SoNormalGenerator.cpp"
+#include "SoNotification.cpp"
+#include "SoOffscreenRenderer.cpp"
+#include "SoOutput.cpp"
+#include "SoPath.cpp"
+#include "SoPickedPoint.cpp"
+#include "SoPrimitiveVertex.cpp"
+#include "SoSceneManager.cpp"
+#include "SoState.cpp"
+#include "SoTempPath.cpp"
+#include "SoTranReceiver.cpp"
+#include "SoTranSender.cpp"
+#include "SoType.cpp"
+#include "default2dfont.cpp"
+#include "default3dfont.cpp"

@@ -21,14 +21,10 @@
  *
 \**************************************************************************/
 
-// IMPORTANT NOTE: this file should not be compiled/linked into Coin,
-// it was put here to run the C++ compiler over the C++ wrapper headers
-// for syntax/sanity checking...
-
-#include <Inventor/threads/SbThread.h>
-#include <Inventor/threads/SbMutex.h>
-#include <Inventor/threads/SbRWMutex.h>
-#include <Inventor/threads/SbCondVar.h>
-/* #include <Inventor/threads/SbBarrier.h> */
-#include <Inventor/threads/SbStorage.h>
-#include <Inventor/threads/SbTypedStorage.h>
+#include "common.c"
+#include "thread.c"
+#include "mutex.c"
+#include "condvar.c"
+#include "rwmutex.c"
+#include "storage.c"
+/* #include "barrier.c" */
