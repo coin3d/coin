@@ -89,7 +89,7 @@ struct SoTypeData {
              const SoType theParent = SoType::badType(),
              const SoType::instantiationMethod createMethod = NULL)
     : name(theName), type(type), isPublic(ispublic), data(theData),
-      parent(theParent), method(createMethod), fielddata(NULL) { };
+      parent(theParent), method(createMethod) { };
 
   SbName name;
   SoType type;
@@ -97,7 +97,6 @@ struct SoTypeData {
   uint16_t data;
   SoType parent;
   SoType::instantiationMethod method;
-  const SoFieldData ** fielddata;
 };
 
 // OBSOLETED: this code was only active for GCC 2.7.x, and I don't
@@ -662,32 +661,6 @@ SoType::instantiationMethod
 SoType::getInstantiationMethod(void) const
 {
   return (*SoType::typedatalist)[(int)this->getKey()]->method;
-}
-
-/*!
-  Registers the field data pointer for a class type.
-  This function is for internal use only.
-
-  \since 2002-02-16
-*/
-
-void
-SoType::setFieldDataPtr(SoType type, const SoFieldData ** ptr) // static
-{
-  (*SoType::typedatalist)[(int)type.getKey()]->fielddata = ptr;
-}
-
-/*!
-  Returns the field data pointer for a class type.
-  This function is for internal use only.
-
-  \since 2002-02-16
-*/
-
-const SoFieldData **
-SoType::getFieldDataPtr(SoType type) // static
-{
-  return (*SoType::typedatalist)[(int)type.getKey()]->fielddata;
 }
 
 /*!

@@ -171,8 +171,7 @@ _class_::createInstance(void) \
     SoNode::incNextActionMethodIndex(); \
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
-    _class_::parentFieldData = SoType::getFieldDataPtr(parentType); \
-    SoType::setFieldDataPtr(_class_::classTypeId, (const SoFieldData **) &_class_::fieldData); \
+    _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
   } while (0)
 
 

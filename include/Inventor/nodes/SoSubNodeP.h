@@ -55,7 +55,6 @@
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
     _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
-    SoType::setFieldDataPtr(_class_::classTypeId, (const SoFieldData **) &_class_::fieldData); \
   } while (0)
 
 #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \

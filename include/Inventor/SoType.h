@@ -80,9 +80,6 @@ public:
 
   instantiationMethod getInstantiationMethod(void) const;
 
-  static void setFieldDataPtr(SoType type, const SoFieldData ** ptr);
-  static const SoFieldData ** getFieldDataPtr(SoType type);
-
 private:
   static void clean(void);
 
