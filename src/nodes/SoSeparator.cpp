@@ -68,6 +68,10 @@
 #include <Inventor/system/gl.h>
 #include <coindefs.h> // COIN_OBSOLETED()
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
+
 #if COIN_DEBUG
 #define GLCACHE_DEBUG 0 // set to 1 to debug caching
 #endif
@@ -156,14 +160,25 @@ class SoSeparatorP {
 public:
   class SoBoundingBoxCache * bboxcache;
   class SoGLCacheList * glcachelist;
+#ifdef COIN_THREADSAFE
+  SbMutex bboxmutex;
+#endif // COIN_THREADSAFE
 };
-
 #endif // DOXYGEN_SKIP_THIS
 
 #undef THIS
 #define THIS this->pimpl
 
 // *************************************************************************
+
+#ifdef COIN_THREADSAFE
+#define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
+#define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
+#else // COIN_THREADSAFE
+#define LOCK_BBOX(_thisp_)
+#define UNLOCK_BBOX(_thisp_)
+#endif // COIN_THREADSAFE
+
 
 SO_NODE_SOURCE(SoSeparator);
 
@@ -226,7 +241,12 @@ SoSeparator::commonConstructor(void)
 
   THIS->bboxcache = NULL;
   THIS->glcachelist = NULL;
-
+#ifdef COIN_THREADSAFE
+  // SoGLCacheList should be thread safe, but we need to create the
+  // instance in the constructor to avoid a race condition when
+  // creating the cache list
+  THIS->glcachelist = new SoGLCacheList;
+#endif // COIN_THREADSAFE
 
   // This environment variable used for local stability / robustness /
   // correctness testing of the render caching. If set >= 1,
@@ -305,6 +325,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     break;
   }
 
+  LOCK_BBOX(this);
   SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
 
   if (iscaching && validcache) {
@@ -351,6 +372,8 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     if (iscaching) SoCacheElement::setInvalid(storedinvalid);
   }
 
+  UNLOCK_BBOX(this);
+
   if (!childrenbbox.isEmpty()) {
     action->extendBy(childrenbbox);
     if (childrencenterset) {
@@ -374,7 +397,10 @@ SoSeparator::callback(SoCallbackAction * action)
   // culling planes should normally not be set, but can be set
   // manually by the application programmer to optimize callback
   // action traversal.
-  if (!this->cullTest(state)) { SoGroup::callback(action); }
+
+  if (!this->cullTest(state)) { 
+    SoGroup::callback(action); 
+  }
   state->pop();
 }
 
@@ -421,11 +447,11 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   SoGLCacheList * createcache = NULL;
   if ((this->renderCaching.getValue() == ON) &&
       (SoSeparator::getNumRenderCaches() > 0)) {
+
     // test if bbox is outside view-volume
     if (this->cullTestNoPush(state)) {
       return;
     }
-
     if (!THIS->glcachelist) {
       THIS->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
     }
@@ -707,11 +733,19 @@ SbBool
 SoSeparator::cullTest(SoState * state)
 {
   if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
-  if (!THIS->bboxcache ||
-      !THIS->bboxcache->isValid(state) ||
-      THIS->bboxcache->getProjectedBox().isEmpty()) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;
-  return SoCullElement::cullBox(state, THIS->bboxcache->getProjectedBox());
+  
+  SbBool outside = FALSE;
+  LOCK_BBOX(this);
+  if (THIS->bboxcache &&
+      THIS->bboxcache->isValid(state)) {
+    const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
+    if (!bbox.isEmpty()) {
+      outside = SoCullElement::cullBox(state, bbox);
+    }
+  }
+  UNLOCK_BBOX(this);
+  return outside;
 }
 
 //
@@ -723,11 +757,21 @@ SbBool
 SoSeparator::cullTestNoPush(SoState * state)
 {
   if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
-  if (!THIS->bboxcache ||
-      !THIS->bboxcache->isValid(state) ||
-      THIS->bboxcache->getProjectedBox().isEmpty()) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;
-  return SoCullElement::cullBox(state, THIS->bboxcache->getProjectedBox());
+
+  SbBool outside = FALSE;
+  LOCK_BBOX(this);
+  if (THIS->bboxcache &&
+      THIS->bboxcache->isValid(state)) {
+    const SbBox3f & bbox = THIS->bboxcache->getProjectedBox();
+    if (bbox.isEmpty()) {
+      outside = SoCullElement::cullTest(state, bbox);
+    }
+  }
+  UNLOCK_BBOX(this);
+  return outside;
 }
 
 #undef THIS
+#undef LOCK_BBOX
+#undef UNLOCK_BBOX
