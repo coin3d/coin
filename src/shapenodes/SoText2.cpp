@@ -71,12 +71,8 @@
   \sa SoFont, SoFontStyle, SoText3, SoAsciiText, SoGlyph
 */
 
-#include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
+#include <limits.h>
+#include <string.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -86,29 +82,42 @@
 #include <GL/glx.h>
 #endif // HAVE_GLX
 
-#include <Inventor/system/gl.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoFontNameElement.h>
-#include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoCullElement.h>
-#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/nodes/SoText2.h>
+
+#include <Inventor/SbBox2s.h>
+#include <Inventor/SbLine.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SbString.h>
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/details/SoTextDetail.h>
-#include <Inventor/SoPickedPoint.h>
-#include <Inventor/SbPlane.h>
-#include <Inventor/SbLine.h>
-#include <Inventor/SbString.h>
-#include <Inventor/SbBox2s.h>
+#include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGlyph.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 
-#include <limits.h>
-#include <string.h>
+// The "lean and mean" define is a workaround for a Cygwin bug: when
+// windows.h is included _after_ one of the X11 or GLX headers above
+// (as it is indirectly from Inventor/system/gl.h), compilation of
+// winspool.h (included from windows.h) will bail out with an error
+// message due to the use of "Status" as a struct member ("Status" is
+// probably #defined somewhere in the X11 or GLX header files).
+//
+// The WIN32_LEAN_AND_MEAN causes windows.h to not include winspool.h.
+//
+// 20030429 mortene.
+#define WIN32_LEAN_AND_MEAN
+#include <Inventor/system/gl.h>
 
 static const unsigned int NOT_AVAILABLE = UINT_MAX;
 
