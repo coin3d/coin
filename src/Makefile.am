@@ -106,7 +106,7 @@ LibtoolLinkArgs = -no-undefined
 endif
 
 libCoin@SUFFIX@_la_LDFLAGS = \
-	$(LibtoolLinkArg) \
+	$(LibtoolLinkArgs) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 # header installation
