@@ -137,8 +137,6 @@
 
 #include <Inventor/system/gl.h>
 
-#ifndef DOXYGEN_SKIP_THIS
-
 class SoVRMLInlineP {
 public:
   SbString fullurlname;
@@ -146,8 +144,6 @@ public:
   SoChildList * children;
   SoFieldSensor * urlsensor;
 };
-
-#endif // DOXYGEN_SKIP_THIS
 
 static SoVRMLInline::BboxVisibility
 sovrmlinline_bboxvisibility = SoVRMLInline::UNTIL_LOADED;
@@ -570,9 +566,9 @@ SoVRMLInline::readInstance(SoInput * in,
 {
   SbBool ret = TRUE;
 
-  THIS->urlsensor->detach();
+  PRIVATE(this)->urlsensor->detach();
   if (sovrmlinline_readassofile) {
-    THIS->fullurlname.makeEmpty();
+    PRIVATE(this)->fullurlname.makeEmpty();
     ret = inherited::readInstance(in, flags);
     ret = ret && this->readLocalFile(in);
   }
@@ -580,7 +576,7 @@ SoVRMLInline::readInstance(SoInput * in,
     ret = inherited::readInstance(in, flags);
     if (ret) this->requestURLData();
   }
-  THIS->urlsensor->attach(&this->url);
+  PRIVATE(this)->urlsensor->attach(&this->url);
 
   return ret; 
 }
