@@ -38,10 +38,7 @@
 #include <unistd.h> /* STDERR_FILENO */
 #endif /* HAVE_UNISTD_H */
 
-#ifndef STDERR_FILENO
-/* stderr should always be on file descriptor 2, according to POSIX. */
-#define STDERR_FILENO 2
-#endif /* STDERR_FILENO */
+#include "../tidbitsp.h"
 
 static cc_mutex * cc_error_mutex = NULL;
 
@@ -58,7 +55,7 @@ cc_error_default_handler_cb(const cc_error * err, void * data)
      directly will result in a crash when Coin has been compiled as a
      .DLL. */
   static FILE * coin_stderr = NULL;
-  if (!coin_stderr) { coin_stderr = fdopen(STDERR_FILENO, "w"); }
+  if (!coin_stderr) { coin_stderr = coin_get_stderr(); }
 
   if (coin_stderr) {
     const cc_string * str = cc_error_get_debug_string(err);

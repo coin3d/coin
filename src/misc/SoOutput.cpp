@@ -32,6 +32,10 @@
   \sa SoInput
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SoOutput.h>
 
 #include <Inventor/C/tidbits.h>
@@ -43,11 +47,10 @@
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoField.h>
+#include "../tidbitsp.h"
+
 #include <assert.h>
 #include <string.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #if HAVE_WINDOWS_H
 #include <windows.h>
@@ -235,7 +238,7 @@ SoOutput::constructorCommon(void)
   this->wroteHeader = FALSE;
   THIS->memorybuffer = FALSE;
   THIS->writecompact = FALSE;
-  THIS->filep = stdout;
+  THIS->filep = coin_get_stdout();
   THIS->buffer = NULL;
   THIS->headerstring = NULL;
   THIS->indentlevel = 0;
@@ -875,7 +878,7 @@ SoOutput::reset(void)
   THIS->disabledwriting = FALSE;
   this->wroteHeader = FALSE;
   THIS->memorybuffer = FALSE;
-  THIS->filep = stdout;
+  THIS->filep = coin_get_stdout();
   THIS->buffer = NULL;
   THIS->indentlevel = 0;
 }

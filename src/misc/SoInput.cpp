@@ -79,6 +79,10 @@
   \sa SoOutput, SoDB
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
@@ -90,12 +94,10 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/C/tidbits.h>
+#include "../tidbitsp.h"
+
 #include <stdlib.h>
 #include <string.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #include <sys/stat.h>
 #if HAVE_UNISTD_H
@@ -293,7 +295,12 @@ SoInput::SoInput(SoInput * dictIn)
 void
 SoInput::constructorsCommon(void)
 {
-  this->setFilePointer(stdin);
+  /* It is not possible to "pass" C library data from the application
+     to a MSWin .DLL, so this is necessary to get hold of the stderr
+     FILE*. Just using fprintf(stderr, ...) or fprintf(stdout, ...)
+     directly might result in a crash when Coin has been compiled as a
+     .DLL. */
+  this->setFilePointer(coin_get_stdin());
 }
 
 /*!
@@ -496,7 +503,7 @@ SoInput::setFilePointer(FILE * newFP)
 {
   this->closeFile();
 
-  const char * name = newFP == stdin ? "<stdin>" : "";
+  const char * name = (newFP == coin_get_stdin()) ? "<stdin>" : "";
   SoInput_FileInfo * newfile = new SoInput_FileInfo(name, newFP);
 
   if (newfile) this->filestack.insert(newfile, 0);
@@ -553,7 +560,7 @@ SoInput::pushFile(const char * filename)
 {
   // Get rid of default stdin filepointer.
   if (this->filestack.getLength() == 1 &&
-      this->filestack[0]->ivFilePointer() == stdin) this->closeFile();
+      this->filestack[0]->ivFilePointer() == coin_get_stdin()) this->closeFile();
 
   SbString fullname;
   FILE * fp = this->findFile(filename, fullname);
@@ -588,7 +595,7 @@ SoInput::closeFile(void)
 {
   // Remove all entries, including the default <stdin>.
   while (this->filestack.getLength() > 0) {
-    if (!this->fromBuffer() && (this->getCurFile() != stdin)) {
+    if (!this->fromBuffer() && (this->getCurFile() != coin_get_stdin())) {
       SbString s = SoInput::getPathname(this->getTopOfStack()->ivFilename());
       if (s.getLength()) SoInput::removeDirectory(s.getString());
     }
