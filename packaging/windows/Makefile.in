@@ -23,7 +23,7 @@ DBGCFLAGS = $(ALLCFLAGS) /GZ /Zi /Yd
 OPTCFLAGS = $(ALLCFLAGS) /Oitgb1 /Gs
 DLLCFLAGS = /GD
 
-BUILDS = docs shared-release shared-debug # static-release static-debug
+BUILDS = docs shared-release shared-debug build-files # static-release static-debug
 
 # **************************************************************************
 
@@ -82,6 +82,21 @@ sourcelist.nsi: Coin-$(VERSION) Makefile
 	  fi; \
 	done ) >sourcelist.nsi
 
+buildfileslist.nsi: build-files Makefile
+	( prevdir=; cd build-files; for path in ./coin@COIN_MAJOR_VERSION@.* `find . -name "*.h"`; do \
+	  dir=`echo $$path | sed 's/\/[^\/]*$$//'`; \
+	  if test x"$$dir" != x"$$prevdir"; then \
+	    prevdir=$$dir; \
+	    file=`echo $$path | sed 's/^.*\///g'`; \
+	    dir=`echo $$dir | sed 's/\//\\\\/g'`; \
+	    echo "SetOutPath \$$INSTDIR\\build\\$$dir"; \
+	    echo "File $$dir\\$$file"; \
+	  else \
+	    file=`echo $$path | sed 's/^.*\///g'`; \
+	    echo "File $$dir\\$$file"; \
+	  fi; \
+	done ) >buildfileslist.nsi
+
 uninstall.nsi: Makefile
 	( cd $(sdk_prefix); \
 	for dir in `find . -type d -depth`; do \
@@ -93,8 +108,8 @@ uninstall.nsi: Makefile
 	  echo "RMDir \$$INSTDIR\\$$dir"; \
 	done ) >uninstall.nsi
 
-coin.nsi: heading.nsi headerlist.nsi middle.nsi sourcelist.nsi uninstall.nsi footer.nsi unix2dos.sed Makefile
-	cat heading.nsi headerlist.nsi middle.nsi sourcelist.nsi post.nsi uninstall.nsi footer.nsi >coin.tmp
+coin.nsi: heading.nsi headerlist.nsi middle.nsi sourcelist.nsi bfheader.nsi buildfiles.nsi post.nsi uninstall.nsi footer.nsi unix2dos.sed Makefile
+	cat heading.nsi headerlist.nsi middle.nsi sourcelist.nsi bfheader.nsi buildfiles.nsi post.nsi uninstall.nsi footer.nsi >coin.tmp
 	winpath=`CYGWIN= cygpath -w "$(sdk_prefix)"`; \
 	winpath=`echo $$winpath | sed -e 's/\\\\/\\\\\\\\/g'`; \
 	sed -e 's/@win_prefix@/'$$winpath'/g' \
@@ -206,6 +221,14 @@ build-static-debug/src/coin@COIN_MAJOR@d.dll: Coin-$(VERSION)
 	$(MAKE) install
 
 static-debug: build-static-debug/src/coin@COIN_MAJOR@d.dll
+
+build-files: build-files/coin@COIN_MAJOR_VERSION@.dsp
+
+build-files/coin@COIN_MAJOR_VERSION@.dsp: Coin-$(VERSION)
+	@if test -d build-files; then :; else mkdir build-files; fi
+	cd build-files; \
+	../Coin-$(VERSION)/configure --enable-msvcdsp; \
+	$(MAKE) clean && $(MAKE)
 
 .PHONY: docs shared-release shared-debug static-release static-debug
 
