@@ -24,7 +24,9 @@
 // Added to be Inventor compliant.
 #include <Inventor/SbString.h>
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_INTERNAL
+#else // !COIN_INTERNAL
+#include <Inventor/SbName.h>
+#endif // COIN_INTERNAL
 
 
 #define SO_ACTION_ADD_METHOD(_nodeclass_, _method_) \
