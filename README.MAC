@@ -23,7 +23,7 @@ towards implementing a "SoMac" library with bindings between the
 native Mac GUI API and the Coin library.  For using the Coin library
 on Mac platforms, your best option so far is to control your own
 OpenGL-canvas, like done in the glutiv.cpp example found on the
-<URL:http://www.coin3d.org> websites.
+<URL:http://www.coin3d.org> website.
 
 --
 larsa@sim.no
