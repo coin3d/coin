@@ -56,6 +56,12 @@
 /*
   Useful resources:
 
+   - About OpenGL 1.2, 1.3, 1.4:
+     <URL:http://www.opengl.org/developers/documentation/OpenGL12.html>
+     <URL:http://www.opengl.org/developers/documentation/OpenGL13.html>
+     <URL:http://www.opengl.org/developers/documentation/OpenGL14.html>
+     (explains all new features in depth)
+
    - The OpenGL Extension Registry:
      <URL:http://oss.sgi.com/projects/ogl-sample/registry/>
 
@@ -70,6 +76,9 @@
 
    - HP GL man pages:
      <URL:http://www.hp.com/workstations/support/documentation/manuals/user_guides/graphics/opengl/RefTOC.html>
+
+   - An Apple Technical Q&A on how to do dynamic binding to OpenGL symbols:
+     <URL:http://developer.apple.com/qa/qa2001/qa1188.html>
 */
 
 #ifdef HAVE_CONFIG_H
