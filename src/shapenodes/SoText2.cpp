@@ -390,7 +390,8 @@ SoText2::rayPick(SoRayPickAction * action)
     int stringidx = SbClamp(int(vdist/fonth), 0, this->string.getNum()-1);
 
     int maxlen = 0;
-    for (int i = 0; i < this->string.getNum(); i++) {
+    int i;
+    for (i = 0; i < this->string.getNum(); i++) {
       int len = this->string[i].getLength();
       if (len > maxlen) maxlen = len;
     }
@@ -456,7 +457,7 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 void
 SoText2::generatePrimitives(SoAction * action)
 {
-  // this is supposed to be empty. There are no primitives.
+  // This is supposed to be empty. There are no primitives.
 }
 
 
