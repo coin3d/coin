@@ -63,6 +63,7 @@ RegularSources = \
 	SoTextureMatrixElement.cpp \
 	SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
+	SoTextureScaleQualityElement.cpp \
 	SoTextureQualityElement.cpp \
 	SoTransparencyElement.cpp \
 	SoUnitsElement.cpp \
@@ -152,7 +153,8 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoListenerVelocityElement.h \
 	../../include/Inventor/elements/SoSoundElement.h
 PrivateHeaders = \
-	../../include/Inventor/elements/SoTextureScalePolicyElement.h
+	../../include/Inventor/elements/SoTextureScalePolicyElement.h \
+	../../include/Inventor/elements/SoTextureScaleQualityElement.h
 ObsoletedHeaders =
 
 ##$ BEGIN TEMPLATE Make-Common(elements, elements)
