@@ -22,9 +22,15 @@
 \**************************************************************************/
 
 /*!
-  \class SoToVRML2Action Inventor/include/SoToVRML2Action.h
-  \brief The SoToVRML2Action class builds a new scene graph, using only
-  VRML 2.0 nodes.
+  \class SoToVRML2Action SoToVRML2Action.h Inventor/actions/SoToVRML2Action.h
+  \brief The SoToVRML2Action class builds a new scene graph, using only VRML97/VRML2 nodes.
+  \ingroup actions
+
+  FIXME: more class doc, describe the basics of how the conversion is
+  done. (And what happens when VRML97 support is not present in the
+  library..) 20020730 mortene.
+
+  \sa SoToVRMLAction
 */
 
 #include <Inventor/SbName.h>
