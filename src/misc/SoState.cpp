@@ -27,8 +27,6 @@
 */
 
 #include <Inventor/misc/SoState.h>
-#include <coindefs.h> // COIN_STUB()
-
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/elements/SoElement.h>
 
@@ -45,7 +43,7 @@
 
 SoState::SoState(SoAction * const theAction,
                  const SoTypeList & enabledElements)
-  : action(theAction), depth(0)
+  : action(theAction), depth(0), cacheopen(FALSE)
 {
   int i;
 
@@ -241,29 +239,21 @@ SoState::getDepth(void) const
 }
 
 /*!
-  This method is for caching, something that isn't implemented in Coin yet.
-  Using it does nothing.
-  It is included for compatibility reasons (at the moment at least).
+  Controls whether a cache is open.
 */
-
 void
-SoState::setCacheOpen(const SbBool)
+SoState::setCacheOpen(const SbBool open)
 {
-  COIN_STUB();
-//  this->cacheOpen = FALSE /* flag */;
+  this->cacheopen = open;
 }
 
 /*!
-  This method returns FALSE.
-
-  Caching is not implemented in Coin.
+  Returns whether a cache is open.
 */
-
 SbBool
 SoState::isCacheOpen(void) const
 {
-  COIN_STUB();
-  return FALSE;
+  return this->cacheopen;
 }
 
 /*!

@@ -59,6 +59,7 @@ private:
   SoElement ** initial;
   int numStacks;
   int depth;
+  SbBool cacheopen;
 };
 
 #endif // !COIN_SOSTATE_H
