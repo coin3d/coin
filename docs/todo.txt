@@ -13,7 +13,7 @@ STUFF TO FIX IN COIN
 ====================
 
 * Bounding box rendering, major performance optimization
-  2001-11-23  Morten Eriksen  <mortene@sim.no>
+  2001-11-24  Morten Eriksen  <mortene@sim.no>
 
   Bounding boxes are now always recalculated when used for
   rendering. See the relevant code in SoShape::shouldGLRender().
@@ -21,3 +21,30 @@ STUFF TO FIX IN COIN
   A huge speed-up when rendering bboxes instead of geometry could be
   had if SoShape nodes kept a bounding box cache in the same manner as
   SoSeparator nodes.
+
+
+* Improve error reporting on texture loading
+  2001-11-24  Morten Eriksen  <mortene@sim.no>
+
+  The only message one can get now is "Couldn't load texture
+  blablabla". This is a rather lousy error message for both the
+  end-user and for the application programmer.
+
+  We should have code which could at least recognize and spit out
+  error messages in these categories:
+
+        * no texture loading library available (which is only simage
+          at the moment, but could be others)
+
+        * could not find texture file <filename> in any of these
+          directories: <searchlist>
+
+        * found texture file at <fullfilename>, but does not recognize
+          file format
+
+        * found texture file at <fullfilename>, but file seems
+          damaged
+
+  The place to start is SbImage, but SbImage's "clients" might also
+  needs changes. We will probably also have to fix libsimage to make
+  more specific error reports.
