@@ -69,12 +69,16 @@ private:
   void * nurbsrenderer;
   void doNurbs(SoAction * action, const SbBool glrender);
 
+  // These have all been obsoleted, but are kept to make sure we don't
+  // change anything with the ABI of the stable Coin-1 library. They
+  // has been removed for Coin-2.
   static void tessBegin(int , void * data);
   static void tessTexCoord(float * texcoord, void * data);
   static void tessNormal(float * normal, void * data);
   static void tessVertex(float * vertex, void * data);
   static void tessEnd(void * data);
 
+  friend class SoIndexedNurbsSurfaceP;
 };
 
 #endif // !COIN_SOINDEXEDNURBSSURFACE_H

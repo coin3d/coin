@@ -99,6 +99,17 @@
 
 // *************************************************************************
 
+class SoIndexedNurbsSurfaceP {
+public:
+  static void APIENTRY tessBegin(int , void * data);
+  static void APIENTRY tessTexCoord(float * texcoord, void * data);
+  static void APIENTRY tessNormal(float * normal, void * data);
+  static void APIENTRY tessVertex(float * vertex, void * data);
+  static void APIENTRY tessEnd(void * data);
+};
+
+// *************************************************************************
+
 SO_NODE_SOURCE(SoIndexedNurbsSurface);
 
 /*!
@@ -294,11 +305,11 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
     this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
 
     if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)tessBegin);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)tessTexCoord);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_NORMAL_DATA, (gluNurbsCallback_cb_t)tessNormal);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX_DATA, (gluNurbsCallback_cb_t)tessVertex);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_END_DATA, (gluNurbsCallback_cb_t)tessEnd);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsSurfaceP::tessBegin);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsSurfaceP::tessTexCoord);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_NORMAL_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsSurfaceP::tessNormal);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsSurfaceP::tessVertex);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_END_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsSurfaceP::tessEnd);
     }
   }
 
@@ -360,11 +371,11 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
                             texindex ? this->textureCoordIndex.getValues(0) : NULL);
 }
 
-void
-SoIndexedNurbsSurface::tessBegin(int type, void * data)
+void APIENTRY
+SoIndexedNurbsSurfaceP::tessBegin(int type, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
-  TriangleShape shapetype;
+  SoIndexedNurbsSurface::TriangleShape shapetype;
   switch ((int)type) {
   case GL_TRIANGLES:
     shapetype = SoShape::TRIANGLES;
@@ -386,10 +397,10 @@ SoIndexedNurbsSurface::tessBegin(int type, void * data)
     break;
   default:
     shapetype = SoShape::POINTS; // illegal value
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoIndexedNurbsSurface::tessBegin",
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoIndexedNurbsSurfaceP::tessBegin",
                            "unsupported GL enum: 0x%x", type);
-#endif // debug
+#endif // COIN_DEBUG
     break;
   }
   if (shapetype != SoShape::POINTS) {
@@ -397,31 +408,38 @@ SoIndexedNurbsSurface::tessBegin(int type, void * data)
   }
 }
 
-void
-SoIndexedNurbsSurface::tessTexCoord(float * texcoord, void * data)
+void APIENTRY
+SoIndexedNurbsSurfaceP::tessTexCoord(float * texcoord, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->vertex.setTextureCoords(SbVec2f(texcoord[0], texcoord[1]));
 }
 
-void
-SoIndexedNurbsSurface::tessNormal(float * normal, void * data)
+void APIENTRY
+SoIndexedNurbsSurfaceP::tessNormal(float * normal, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
 }
 
-void
-SoIndexedNurbsSurface::tessVertex(float * vertex, void * data)
+void APIENTRY
+SoIndexedNurbsSurfaceP::tessVertex(float * vertex, void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));
   cbdata->thisp->shapeVertex(&cbdata->vertex);
 }
 
-void
-SoIndexedNurbsSurface::tessEnd(void * data)
+void APIENTRY
+SoIndexedNurbsSurfaceP::tessEnd(void * data)
 {
   coin_ins_cbdata * cbdata = (coin_ins_cbdata*) data;
   cbdata->thisp->endShape();
 }
+
+// These have been obsoleted, and removed in Coin-2.
+void SoIndexedNurbsSurface::tessBegin(int type, void * data) { assert(FALSE); }
+void SoIndexedNurbsSurface::tessTexCoord(float * texcoord, void * data) { assert(FALSE); }
+void SoIndexedNurbsSurface::tessNormal(float * normal, void * data) { assert(FALSE); }
+void SoIndexedNurbsSurface::tessVertex(float * vertex, void * data) { assert(FALSE); }
+void SoIndexedNurbsSurface::tessEnd(void * data) { assert(FALSE); }

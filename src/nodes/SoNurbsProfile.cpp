@@ -198,7 +198,7 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
 }
 
 
-static void
+static void APIENTRY
 nurbsprofile_tess_vertex(float * vertex)
 {
   SbList <float> * coordListNurbsProfile =

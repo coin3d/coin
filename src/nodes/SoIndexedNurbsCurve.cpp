@@ -78,6 +78,17 @@
 
 // *************************************************************************
 
+class SoIndexedNurbsCurveP {
+public:
+  static void APIENTRY tessBegin(int , void * data);
+  static void APIENTRY tessTexCoord(float * texcoord, void * data);
+  static void APIENTRY tessNormal(float * normal, void * data);
+  static void APIENTRY tessVertex(float * vertex, void * data);
+  static void APIENTRY tessEnd(void * data);
+};
+
+// *************************************************************************
+
 SO_NODE_SOURCE(SoIndexedNurbsCurve);
 
 /*!
@@ -283,11 +294,11 @@ SoIndexedNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbB
     this->nurbsrenderer = GLUWrapper()->gluNewNurbsRenderer();
 
     if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)tessBegin);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)tessTexCoord);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_NORMAL_DATA, (gluNurbsCallback_cb_t)tessNormal);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX_DATA, (gluNurbsCallback_cb_t)tessVertex);
-      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_END_DATA, (gluNurbsCallback_cb_t)tessEnd);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_BEGIN_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessBegin);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_TEXTURE_COORD_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessTexCoord);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_NORMAL_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessNormal);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_VERTEX_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessVertex);
+      GLUWrapper()->gluNurbsCallback(this->nurbsrenderer, (GLenum) GLU_NURBS_END_DATA, (gluNurbsCallback_cb_t)SoIndexedNurbsCurveP::tessEnd);
     }
   }
 
@@ -318,11 +329,11 @@ SoIndexedNurbsCurve::doNurbs(SoAction * action, const SbBool glrender, const SbB
                           this->coordIndex.getNum(), this->coordIndex.getValues(0));
 }
 
-void
-SoIndexedNurbsCurve::tessBegin(int type, void * data)
+void APIENTRY
+SoIndexedNurbsCurveP::tessBegin(int type, void * data)
 {
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
-  TriangleShape shapetype;
+  SoIndexedNurbsCurve::TriangleShape shapetype;
   switch ((int)type) {
   case GL_LINES:
     shapetype = SoShape::LINES;
@@ -353,31 +364,39 @@ SoIndexedNurbsCurve::tessBegin(int type, void * data)
   }
 }
 
-void
-SoIndexedNurbsCurve::tessTexCoord(float * texcoord, void * data)
+void APIENTRY
+SoIndexedNurbsCurveP::tessTexCoord(float * texcoord, void * data)
 {
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->vertex.setTextureCoords(SbVec4f(texcoord[0], texcoord[1], texcoord[2], texcoord[3]));
 }
 
-void
-SoIndexedNurbsCurve::tessNormal(float * normal, void * data)
+void APIENTRY
+SoIndexedNurbsCurveP::tessNormal(float * normal, void * data)
 {
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->vertex.setNormal(SbVec3f(normal[0], normal[1], normal[2]));
 }
 
-void
-SoIndexedNurbsCurve::tessVertex(float * vertex, void * data)
+void APIENTRY
+SoIndexedNurbsCurveP::tessVertex(float * vertex, void * data)
 {
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->vertex.setPoint(SbVec3f(vertex[0], vertex[1], vertex[2]));
   cbdata->thisp->shapeVertex(&cbdata->vertex);
 }
 
-void
-SoIndexedNurbsCurve::tessEnd(void * data)
+void APIENTRY
+SoIndexedNurbsCurveP::tessEnd(void * data)
 {
   coin_inc_cbdata * cbdata = (coin_inc_cbdata*) data;
   cbdata->thisp->endShape();
 }
+
+
+// These have been obsoleted, and removed in Coin-2.
+void SoIndexedNurbsCurve::tessBegin(int type, void * data) { assert(FALSE); }
+void SoIndexedNurbsCurve::tessTexCoord(float * texcoord, void * data) { assert(FALSE); }
+void SoIndexedNurbsCurve::tessNormal(float * normal, void * data) { assert(FALSE); }
+void SoIndexedNurbsCurve::tessVertex(float * vertex, void * data) { assert(FALSE); }
+void SoIndexedNurbsCurve::tessEnd(void * data) { assert(FALSE); }
