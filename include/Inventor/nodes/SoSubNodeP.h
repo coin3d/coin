@@ -61,11 +61,20 @@
     SoNode::setCompatibilityTypes(_class_::getClassTypeId(), _fileformats_); \
   } while (0)
 
+#define SO_FROM_COIN_2_0 \
+  (SoNode::COIN_2_0)
+
+#define SO_FROM_COIN_1_0 \
+  (SoNode::COIN_1_0|SO_FROM_COIN_2_0)
+
+#define SO_FROM_INVENTOR_2_6 \
+  (SoNode::INVENTOR_2_6)
+
 #define SO_FROM_INVENTOR_2_5 \
-  (SoNode::INVENTOR_2_5)
+  (SoNode::INVENTOR_2_5|SO_FROM_INVENTOR_2_6)
 
 #define SO_FROM_INVENTOR_2_1 \
-  (SoNode::INVENTOR_2_1|SO_FROM_INVENTOR_2_5)
+  (SoNode::INVENTOR_2_1|SO_FROM_INVENTOR_2_5|SO_FROM_COIN_1_0)
 
 #define SO_FROM_INVENTOR_2_0 \
   (SoNode::INVENTOR_2_0|SO_FROM_INVENTOR_2_1)
