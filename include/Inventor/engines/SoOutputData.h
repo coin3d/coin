@@ -24,6 +24,7 @@
 #ifndef COIN_OUTPUTDATA_H
 #define COIN_OUTPUTDATA_H
 
+#include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
 
 class SoEngine;

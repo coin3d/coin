@@ -24,7 +24,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/SbBasic.h>
 #include <assert.h>
 #include <stddef.h> // NULL definition
 

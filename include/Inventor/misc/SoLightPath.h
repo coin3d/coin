@@ -24,6 +24,7 @@
  *
 \**************************************************************************/
 
+#include <Inventor/SbBasic.h>
 #include <Inventor/lists/SbList.h>
 
 class SoNode;
