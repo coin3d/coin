@@ -60,6 +60,9 @@
   \fn SbBool SoBase::readInstance(SoInput * in, unsigned short flags)
 
   Reads definition of SoBase instance from input stream \a in.
+
+  \a flags is used internally during binary import when reading user
+  extension nodes, groupnodes or engine classes.
 */
 /*!
   \enum SoBase::BaseFlags
@@ -565,9 +568,9 @@ SoBase::getNamedBases(const SbName & name, SoBaseList & baselist, SoType type)
   \c USE keyword) unknown instances.
 
   If we return \c TRUE with \a base equal to \c NULL, there was either
-  end-of-file or a NULL keyword for the next \a base instance in the
-  file. Use SoInput::eof() after calling this method to detect
-  end-of-file conditions.
+  end-of-file or \a in didn't have a valid identifier name at the
+  stream for us to read. Use SoInput::eof() after calling this method
+  to detect end-of-file conditions.
 
   If \c TRUE is returned and \a base is non-NULL upon return,
   the instance was allocated and initialized according the what
@@ -582,19 +585,15 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
 
   SbName name;
   SbBool result = in->read(name, TRUE);
-  if (!result) {
-#if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoBase::read", "hit EOF");
-#endif // debug
-    return TRUE; // EOF, return TRUE with base==NULL
-  }
+  // The SoInput stream does not start with a valid base name. Return
+  // TRUE with base==NULL.
+  if (!result) return TRUE;
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::read", "name: '%s'", name.getString());
 #endif // debug
 
-  if (name == NULL_KEYWORD) return TRUE; // happens with So[S|M]FNode field values
-  else if (name == USE_KEYWORD) result = SoBase::readReference(in, base);
+  if (name == USE_KEYWORD) result = SoBase::readReference(in, base);
   else result = SoBase::readBase(in, name, base);
 
   // Check type correctness.
@@ -605,20 +604,17 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedType)
     assert(type != SoType::badType());
 
     if (!type.isDerivedFrom(expectedType)) {
-#if COIN_DEBUG
-      SoDebugError::postInfo("SoBase::read",
-                             "type '%s' is not derived from '%s'",
-                             type.getName().getString(),
-                             expectedType.getName().getString());
-#endif // COIN_DEBUG
+      SoReadError::post(in, "Type '%s' is not derived from '%s'",
+                        type.getName().getString(),
+                        expectedType.getName().getString());
       result = FALSE;
     }
   }
 
+  // Make sure we don't leak memory.
   if (!result && base && (name != USE_KEYWORD)) {
     base->ref();
     base->unref();
-    base = NULL;
   }
 
   return result;
@@ -821,6 +817,11 @@ SoBase::readReference(SoInput * in, SoBase *& base)
     return FALSE;
   }
 
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoBase::readReference",
+                         "USE: '%s'", refname.getString());
+#endif // debug
+
   return TRUE;
 }
 
@@ -916,13 +917,10 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
       }
     }
 
+    // The "flags" argument to readInstance is only checked during
+    // import from binary format files.
     unsigned short flags = 0;
-    if (in->isBinary())
-      retval = in->read(flags);
-    else
-      flags =
-        (base->isOfType(SoType::fromName("SoGroup")) ? IS_GROUP : 0x0) |
-        (base->isOfType(SoType::fromName("SoEngine")) ? IS_ENGINE : 0x0);
+    if (in->isBinary()) retval = in->read(flags);
 
     if (retval) retval = base->readInstance(in, flags);
 

@@ -261,7 +261,8 @@ SoDB::read(SoInput * /* in */, SoPath *& /* path */)
 
 /*!
   Instantiates and reads an object of type SoBase from \a in and returns
-  a pointer to it in \a base.
+  a pointer to it in \a base. \a base will be \c NULL on return if we hit
+  end of file.
 
   The reference count of the base object will initially be zero.
 
@@ -271,7 +272,7 @@ SbBool
 SoDB::read(SoInput * in, SoBase *& base)
 {
   if (!in->isValidFile()) return FALSE;
-  return SoBase::read(in, base, SoBase::getClassTypeId()) && base;
+  return SoBase::read(in, base, SoBase::getClassTypeId());
 }
 
 /*!
@@ -294,6 +295,8 @@ SoDB::read(SoInput * in, SoNode *& rootNode)
       rootNode = (SoNode *)baseptr;
     }
     else {
+      SoReadError::post(in, "'%s' not derived from SoNode",
+                        baseptr->getTypeId().getName().getString());
       baseptr->ref();
       baseptr->unref();
       result = FALSE;
@@ -317,9 +320,6 @@ SoDB::read(SoInput * in, SoNode *& rootNode)
 SoSeparator *
 SoDB::readAll(SoInput * in)
 {
-#if 1 // New code, designed to work better with binary files. 19990711 mortene.
-
-  // If this check wasn't present, we'd never return NULL.
   if (!in->isValidFile()) return NULL;
 
 #if COIN_DEBUG // See comments below in next COIN_DEBUG block.
@@ -329,13 +329,14 @@ SoDB::readAll(SoInput * in)
   SoSeparator * root = new SoSeparator;
   root->ref();
 
-  SoNode * topnode = NULL;
-  while (SoDB::read(in, topnode) && topnode) {
-    root->addChild(topnode);
-    topnode = NULL;
-  }
-
-  // FIXME: check that we are at EOF. 19990711 mortene.
+  SoNode * topnode;
+  do {
+    if (!SoDB::read(in, topnode)) {
+      root->unref();
+      return FALSE;
+    }
+    if (topnode) root->addChild(topnode);
+  } while (topnode && in->skipWhiteSpace());
 
   SoSeparator * retnode;
   if ((root->getNumChildren() == 1) &&
@@ -343,11 +344,9 @@ SoDB::readAll(SoInput * in)
     retnode = (SoSeparator *)root->getChild(0);
     retnode->ref();
     root->unref();
-    retnode->unrefNoDelete();
   }
   else {
     retnode = root;
-    root->unrefNoDelete();
   }
 
 #if COIN_DEBUG
@@ -355,60 +354,9 @@ SoDB::readAll(SoInput * in)
   assert(stackdepth == in->filestack.getLength());
 #endif // COIN_DEBUG
 
+  assert(retnode->getRefCount() == 1);
+  retnode->unrefNoDelete(); // return with a zero refcount
   return retnode;
-
-#else // Old code
-  if (!in->isValidFile()) return NULL;
-
-  // FIXME: read paths aswell. 19990403 mortene.
-
-  SoSeparator * root = NULL;
-  SbBool result = FALSE;
-
-  if (in->isValidFile()) {
-    root = new SoSeparator;
-    // This doesn't work anymore (moved readChildren() from public to
-    // protected in SoGroup). 19991214 mortene.
-    result = root->readChildren(in);
-  }
-
-  if (result && !in->eof()) {
-    if (in->isBinary()) {
-      SoReadError::post(in, "Extra characters found in input");
-    }
-    else {
-      char c;
-      in->read(c);
-      SoReadError::post(in, "Extra characters ('%c') found in input", c);
-    }
-
-    // FIXME: return NULL? 19990403 mortene.
-  }
-
-  if (!result) {
-    if (root) {
-      root->ref();
-      root->unref();
-      root = NULL;
-    }
-  }
-  else {
-    if (root->getNumChildren() == 1 &&
-        root->getChild(0)->isOfType(SoSeparator::getClassTypeId())) {
-      SoSeparator * child = (SoSeparator *)(root->getChild(0));
-      child->ref();
-      root->ref();
-      root->unref();
-      child->unrefNoDelete();
-      root = child;
-    }
-  }
-
-  // FIXME: this should really be done implicit in SoInput upon
-  // hitting EOF. 19990708 mortene.
-  in->popFile();
-  return root;
-#endif
 }
 
 /*!
