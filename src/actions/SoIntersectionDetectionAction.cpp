@@ -134,7 +134,7 @@ SoIntersectionDetectionActionP::getEpsilon(void) const
 SO_ACTION_SOURCE(SoIntersectionDetectionAction);
 
 /*!
-  \class SoIntersectionDetectionAction Inventor/actions/SoIntersectionDetectionAction.h
+  \class SoIntersectionDetectionAction Inventor/collision/SoIntersectionDetectionAction.h
   \brief The SoIntersectionDetectionAction class is for detecting intersecting
   primitives in a scene.
   \ingroup actions
