@@ -102,7 +102,7 @@
 
 #include <Inventor/SoOutput.h>
 #include <Inventor/nodes/SoNode.h>
-
+#include "../io/SoWriterefCounter.h"
 
 SO_ACTION_SOURCE(SoWriteAction);
 
@@ -212,6 +212,9 @@ SoWriteAction::beginTraversal(SoNode * node)
   if (!this->outobj->isBinary() && !this->continuing) {
     outobj->write('\n');
     outobj->resolveRoutes();
+  }
+  if (!this->continuing) {
+    SoWriterefCounter::instance(this->getOutput())->debugCleanup();
   }
 }
 

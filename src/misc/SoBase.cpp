@@ -77,6 +77,7 @@
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
 #include <Inventor/fields/SoGlobalField.h>
+#include "../io/SoWriterefCounter.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -214,11 +215,6 @@ static const char ROUTE_KEYWORD[] = "ROUTE";
 static const char PROTO_KEYWORD[] = "PROTO";
 static const char EXTERNPROTO_KEYWORD[] = "EXTERNPROTO";
 
-// Reference id if no DEF instance of a node is written yet
-static const int REFID_FIRSTWRITE = -1;
-// Reference id if we don't need to add a suffix to the node name
-static const int REFID_NOSUFFIX = -2;
-
 // Only a small number of SoBase derived objects will under usual
 // conditions have designated names, so we use a couple of static
 // SbDict objects to keep track of them. Since we avoid storing a
@@ -239,73 +235,6 @@ uint32_t SoBase::writecounter = 0;
 
 /**********************************************************************/
 
-//
-// If this environment variable is set to 1, we try to preserve
-// the original node names as far as possible instead of appending
-// a "+<refid>" suffix.
-//
-static SbBool
-dont_mangle_output_names(const SoBase *base)
-{
-  static int COIN_DONT_MANGLE_OUTPUT_NAMES = -1;
-
-  // Always unmangle node names in VRML1 and VRML2
-  if (base->isOfType(SoNode::getClassTypeId()) &&
-      (((SoNode *)base)->getNodeType()==SoNode::VRML1 ||
-       ((SoNode *)base)->getNodeType()==SoNode::VRML2)) return TRUE;
-
-  if (COIN_DONT_MANGLE_OUTPUT_NAMES < 0) {
-    COIN_DONT_MANGLE_OUTPUT_NAMES = 0;
-    const char * env = coin_getenv("COIN_DONT_MANGLE_OUTPUT_NAMES");
-    if (env) COIN_DONT_MANGLE_OUTPUT_NAMES = atoi(env);
-  }
-  return COIN_DONT_MANGLE_OUTPUT_NAMES ? TRUE : FALSE;
-}
-
-// For counting write references during SoWriteAction traversal, to
-// make DEF / USE come out correctly in the output. The hash mapping
-// is from SoBase* -> int.
-//
-// FIXME: this data-structure is not safe to use in a multithreading
-// context, with multiple SoWriteAction instances applied in
-// parallel. 20020324 mortene.
-static SbDict * writerefs = NULL;
-
-// Imported (with extern <funcdef>) and used from SoWriteAction to
-// check the writeref dict after a completed action traversal. The
-// dict should be empty, if writeref counting was correct.
-SbDict *
-coin_debug_get_writeref_dict(void)
-{
-  return writerefs;
-}
-
-static inline int
-get_current_writeref(const SoBase * base)
-{
-  void * val;
-  SbBool found = writerefs->find((unsigned long)base, val);
-  int refcount = 0;
-  if (found) { refcount = (int)((intptr_t) val); }
-  return refcount;
-}
-
-static inline void
-set_current_writeref(const SoBase * base, const int rc)
-{
-  // don't be so strict. The exported scene-graph will usually be
-  // correct, and it's easier to debug without the assert.
-#if 0  // disabled for now
-  assert(rc >= 0 && "buggy writerefcounter");
-#else // disabled code
-  if (rc < 0) {
-    SoDebugError::post("set_current_writeref",
-                       "buggy writerefcounter (%d): %p (%s)\n",
-                       rc, base, base->getTypeId().getName().getString());
-  }
-#endif // new debug code
-  (void)writerefs->enter((unsigned long)base, (void *) ((uintptr_t) rc));
-}
 
 static SbBool
 debug_writerefs(void)
@@ -362,15 +291,6 @@ SoBase::SoBase(void)
   cc_rbptree_init(&this->auditortree);
 
   this->objdata.referencecount = 0;
-  this->objdata.ingraph = FALSE;
-
-  if (writerefs == NULL) {
-    writerefs = new SbDict;
-    // Since the SbDict design is crap, make sure we at least detect
-    // problems on platforms not commonly used internally for testing.
-    assert((sizeof(unsigned long) >= sizeof(SoBase *)) && "SbDict overflow");
-    assert((sizeof(void *) >= sizeof(int)) && "SbDict overflow");
-  }
 
   // For debugging -- we try to catch dangling references after
   // premature destruction. See the SoBase::assertAlive() method for
@@ -535,7 +455,9 @@ SoBase::initClass(void)
 
   // debug
   const char * str = coin_getenv("COIN_DEBUG_TRACK_SOBASE_INSTANCES");
-  SoBaseP::trackbaseobjects = str && atoi(str) > 0;
+  SoBaseP::trackbaseobjects = str && atoi(str) > 0;  
+
+  SoWriterefCounter::initClass();
 }
 
 // Clean up all commonly allocated resources before application
@@ -576,7 +498,6 @@ SoBase::cleanClass(void)
   delete SoBase::name2obj; SoBase::name2obj = NULL;
   delete SoBase::obj2name; SoBase::obj2name = NULL;
 
-  delete writerefs;
   delete SoBase::refwriteprefix;
 
   CC_MUTEX_DESTRUCT(SoBaseP::mutex);
@@ -1067,7 +988,7 @@ SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
   assert(out->getStage() == SoOutput::COUNT_REFS);
 
-  int refcount = get_current_writeref(this);
+  int refcount = SoWriterefCounter::instance(out)->getWriteref(this);
 
 #if COIN_DEBUG
   if (debug_writerefs()) {
@@ -1081,9 +1002,10 @@ SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
 
   refcount++;
 
-  if (!isfromfield) this->objdata.ingraph = TRUE;
-
-  set_current_writeref(this, refcount);
+  if (!isfromfield) {
+    SoWriterefCounter::instance(out)->setInGraph(this, TRUE);
+  }
+  SoWriterefCounter::instance(out)->setWriteref(this, refcount);
 }
 
 /*!
@@ -1102,7 +1024,7 @@ SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
 SbBool
 SoBase::shouldWrite(void)
 {
-  return (this->objdata.ingraph == TRUE);
+  return SoWriterefCounter::instance(NULL)->shouldWrite(this);
 }
 
 /*!
@@ -1289,6 +1211,7 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
 void
 SoBase::setInstancePrefix(const SbString & c)
 {
+  SoWriterefCounter::setInstancePrefix(c);
   (*SoBase::refwriteprefix) = c;
 }
 
@@ -1326,7 +1249,7 @@ SoBase::getTraceRefs(void)
 SbBool
 SoBase::hasMultipleWriteRefs(void) const
 {
-  return get_current_writeref(this) > 1;
+  return SoWriterefCounter::instance(NULL)->getWriteref(this) > 1;
 }
 
 // FIXME: temporary bug-workaround needed to test if we are exporting
@@ -1362,162 +1285,9 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
 
   SbName name = this->getName();
   int refid = out->findReference(this);
-  SbBool firstwrite = refid == REFID_FIRSTWRITE;
-  SbBool multiref = this->hasMultipleWriteRefs();
-
-  // Find what node name to write
-  SbString writename;
-  if (dont_mangle_output_names(this)) {
-    //
-    // Try to keep the original node names as far as possible.
-    // Weaknesses (FIXME kintel 20020429):
-    //  o We should try to reuse refid's as well.
-    //  o We should try to let "important" (=toplevel?) nodes
-    //    keep their original node names before some subnode "captures" it.
-    //
-
-    /* Code example. The correct output file is shown below
-
-       #include <Inventor/SoDB.h>
-       #include <Inventor/SoInput.h>
-       #include <Inventor/SoOutput.h>
-       #include <Inventor/actions/SoWriteAction.h>
-       #include <Inventor/nodes/SoSeparator.h>
-
-       void main(int argc, char *argv[])
-       {
-       SoDB::init();
-
-       SoSeparator *root = new SoSeparator;
-       root->ref();
-       root->setName("root");
-
-       SoSeparator *n0 = new SoSeparator;
-       SoSeparator *a0 = new SoSeparator;
-       SoSeparator *a1 = new SoSeparator;
-       SoSeparator *a2 = new SoSeparator;
-       SoSeparator *a3 = new SoSeparator;
-       SoSeparator *b0 = new SoSeparator;
-       SoSeparator *b1 = new SoSeparator;
-       SoSeparator *b2 = new SoSeparator;
-       SoSeparator *b3 = new SoSeparator;
-       SoSeparator *b4 = new SoSeparator;
-       SoSeparator *c0 = new SoSeparator;
-
-       a2->setName(SbName("MyName"));
-       b0->setName(SbName("MyName"));
-       b1->setName(SbName("MyName"));
-       b2->setName(SbName("MyName"));
-       b4->setName(SbName("MyName"));
-       c0->setName(SbName("MyName"));
-
-       root->addChild(n0);
-       root->addChild(n0);
-       root->addChild(a0);
-       a0->addChild(b0);
-       a0->addChild(b1);
-       root->addChild(b0);
-       root->addChild(a1);
-       a1->addChild(b2);
-       a1->addChild(b1);
-       root->addChild(b1);
-       root->addChild(a2);
-       root->addChild(a2);
-       root->addChild(a3);
-       a3->addChild(b3);
-       b3->addChild(c0);
-       b3->addChild(c0);
-       a3->addChild(b4);
-       a3->addChild(a2);
-
-       SoOutput out;
-       out.openFile("out.wrl");
-       out.setHeaderString(SbString("#VRML V1.0 ascii"));
-       SoWriteAction wra(&out);
-       wra.apply(root);
-       out.closeFile();
-
-       root->unref();
-       }
-
-       Output file:
-
-       #VRML V1.0 ascii
-
-       DEF root Separator {
-         DEF +0 Separator {
-         }
-         USE +0
-         Separator {
-           DEF MyName Separator {
-           }
-           DEF MyName+1 Separator {
-           }
-         }
-         USE MyName
-         Separator {
-           DEF MyName Separator {
-           }
-           USE MyName+1
-         }
-         USE MyName+1
-         DEF MyName Separator {
-         }
-         USE MyName
-         Separator {
-           Separator {
-             DEF MyName+2 Separator {
-             }
-             USE MyName+2
-           }
-           DEF MyName+3 Separator {
-           }
-           USE MyName
-         }
-       }
-    */
-
-    if (!firstwrite) {
-      writename = name.getString();
-      // We have used a suffix when DEF'ing the node
-      if (refid != REFID_NOSUFFIX) {
-        writename += SoBase::refwriteprefix->getString();
-        writename.addIntString(refid);
-      }
-      // Detects last USE of a node, enables reuse of DEF's
-      if (!multiref) out->removeDEFNode(SbName(writename));
-    }
-    else {
-      SbBool found = out->lookupDEFNode(name);
-      writename = name.getString();
-      if (!found && (!multiref || name.getLength() > 0)) {
-        // We can use the node without a suffix
-        if (multiref) out->addDEFNode(name);
-        out->setReference(this, REFID_NOSUFFIX);
-      }
-      else {
-        // Node name is already DEF'ed or an unnamed multiref => use a suffix.
-        writename += SoBase::refwriteprefix->getString();
-        writename.addIntString(out->addReference(this));
-        out->addDEFNode(SbName(writename));
-      }
-    }
-  }
-  else { // Default OIV behavior
-    if (multiref && firstwrite) refid = out->addReference(this);
-    if (!firstwrite) {
-      writename = name.getString();
-      writename += SoBase::refwriteprefix->getString();
-      writename.addIntString(refid);
-    }
-    else {
-      writename = name.getString();
-      if (multiref) {
-        writename += SoBase::refwriteprefix->getString();
-        writename.addIntString(refid);
-      }
-    }
-  }
+  SbBool firstwrite = (refid == SoWriterefCounter::FIRSTWRITE);
+  SbBool multiref = SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this);
+  SbName writename = SoWriterefCounter::instance(out)->getWriteName(this);
 
   // Write the node
   if (!firstwrite) {
@@ -1569,9 +1339,9 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
       out->incrementIndent();
     }
   }
-
-  int writerefcount = get_current_writeref(this);
-
+  
+  int writerefcount = SoWriterefCounter::instance(out)->getWriteref(this);
+  
 #if COIN_DEBUG
   if (debug_writerefs()) {
     SoDebugError::postInfo("SoBase::writeHeader",
@@ -1585,27 +1355,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
 
   SoBase * thisp = (SoBase *)this;
   writerefcount--;
-
-  if (writerefcount == 0) {
-    // Make ready for next initial write action pass by resetting
-    // data.
-    thisp->objdata.ingraph = FALSE;
-    SbBool found = writerefs->remove((unsigned long)this);
-    assert(found && "writeref hash in trouble");
-
-    // Ouch. Does this to avoid having two subsequent write actions on
-    // the same SoOutput to write "USE ..." when it should write a
-    // full node/subgraph specification on the second run.  -mortene.
-    //
-    // FIXME: accessing out->removeSoBase2IdRef() directly takes a
-    // "friend SoBase" in the SoOutput class definition. Should fix
-    // with proper design for next major Coin release. 20020426 mortene.
-    if (out->findReference(this) != REFID_FIRSTWRITE)
-      out->removeSoBase2IdRef(this);
-  }
-  else {
-    set_current_writeref(this, writerefcount);
-  }
+  SoWriterefCounter::instance(out)->setWriteref(this, writerefcount);
 
   // Don't need to write out the rest if we are writing anything but
   // the first instance.
@@ -2282,3 +2032,5 @@ SoBase::staticDataUnlock(void)
 {
   CC_MUTEX_UNLOCK(SoBaseP::global_mutex);
 }
+
+

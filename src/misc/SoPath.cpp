@@ -55,6 +55,7 @@
 #include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
+#include "../io/SoWriterefCounter.h"
 #include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
@@ -914,10 +915,10 @@ void
 SoPath::write(SoWriteAction * action)
 {
   SoOutput * out = action->getOutput();
-
+  
   if (out->getStage() == SoOutput::COUNT_REFS) {
     inherited::addWriteReference(out, FALSE);
-    if (!this->hasMultipleWriteRefs()) {
+    if (!SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this)) {
       SoWriteAction wa(out);
       wa.continueToApply(this->getHead());
     }

@@ -57,6 +57,7 @@
 #include <Inventor/misc/SoProto.h>
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/threads/SbStorage.h>
+#include "../io/SoWriterefCounter.h"
 #include <coindefs.h> // COIN_STUB()
 
 /*!
@@ -595,7 +596,7 @@ SoFieldContainer::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
   // only count the fields if !isfromfield and this is the first time
   // that this node is counted (shouldWrite() is FALSE).
-  SbBool countfields = !isfromfield && (this->shouldWrite() == FALSE);
+  SbBool countfields = !isfromfield && (SoWriterefCounter::instance(out)->shouldWrite(this) == FALSE);
   inherited::addWriteReference(out, isfromfield);
 
   // Avoid doing too many references to fields (and nodes, engines and

@@ -184,6 +184,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/misc/SoGL.h>
+#include "../io/SoWriterefCounter.h"
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -601,7 +602,7 @@ SoGroup::write(SoWriteAction * action)
     this->addWriteReference(out);
     // Only increase number of writereferences to the top level node
     // in a tree which is used multiple times.
-    if (!this->hasMultipleWriteRefs()) SoGroup::doAction((SoAction *)action);
+    if (!SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this)) SoGroup::doAction((SoAction *)action);
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;

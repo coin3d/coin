@@ -42,6 +42,7 @@
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
+#include "../io/SoWriterefCounter.h"
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -219,7 +220,7 @@ SoUnknownNode::write(SoWriteAction * action)
     inherited::write(action);
     // Only increase number of writereferences to the top level node
     // in a tree which is used multiple times.
-    if (!this->hasMultipleWriteRefs())
+    if (!SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this))
       if (PRIVATE(this)->privatechildren) PRIVATE(this)->privatechildren->traverse(action);
   }
   else if (out->getStage() == SoOutput::WRITE) {

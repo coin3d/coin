@@ -142,6 +142,7 @@ private:
   void writeBytesWithPadding(const char * const p, const size_t nr);
   
   friend class SoBase; // Need to be able to remove items from dict.
+  friend class SoWriterefCounter; // ditto
   void removeSoBase2IdRef(const SoBase * base);
 };
 

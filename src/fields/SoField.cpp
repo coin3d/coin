@@ -118,6 +118,7 @@
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoDataSensor.h>
+#include "../io/SoWriterefCounter.h"
 #include <coindefs.h> // COIN_STUB()
 
 #ifdef HAVE_CONFIG_H
@@ -264,7 +265,14 @@ SoConnectStorage::add_vrml2_routes(SoOutput * out, const SoField * f)
     SoFieldContainer * fc = master->getContainer();
     assert(fc);
     (void) fc->getFieldName(master, fromname);
-    out->addRoute(fc, fromname, tofc, toname);
+
+    if (out->getStage() == SoOutput::COUNT_REFS) {
+      fc->addWriteReference(out, TRUE);
+      tofc->addWriteReference(out, TRUE);
+    }
+    else {
+      out->addRoute(fc, fromname, tofc, toname);
+    }
   }
   for (i = 0; i < this->masterengineouts.getLength(); i++) {
     SoEngineOutput * engineout = this->masterengineouts[i];
@@ -279,7 +287,13 @@ SoConnectStorage::add_vrml2_routes(SoOutput * out, const SoField * f)
       assert(engine);
       (void) engine->getOutputName(engineout, fromname);
     }
-    out->addRoute(fc, fromname, tofc, toname);
+    if (out->getStage() == SoOutput::COUNT_REFS) {
+      fc->addWriteReference(out, TRUE);
+      tofc->addWriteReference(out, TRUE);
+    }
+    else {
+      out->addRoute(fc, fromname, tofc, toname);
+    }
   }
 }
 
@@ -1828,13 +1842,16 @@ SoField::write(SoOutput * out, const SbName & name) const
   SbBool writeconnection = FALSE;
   SbName dummy;
   SoFieldContainer * fc = this->resolveWriteConnection(dummy);
-  if (fc && (fc->shouldWrite() || fc->isOfType(SoEngine::getClassTypeId())))
+  
+  if (fc && (SoWriterefCounter::instance(out)->shouldWrite(fc) || fc->isOfType(SoEngine::getClassTypeId())))
     writeconnection = TRUE;
-
+  
   // check VRML2 connections. Since VRML2 fields can have multiple
   // master fields/engines, the field can still be default even though
   // it is connected, and we should _not_ write the field. The ROUTEs
   // should be added though. pederb, 2002-06-13
+
+  SbBool vrml2connection = FALSE;
 
   if (is_vrml2_field(this)) {
     if (writeconnection) {
@@ -1847,7 +1864,7 @@ SoField::write(SoOutput * out, const SbName & name) const
     // never write eventIn fields
     if (this->getFieldType() == SoField::EVENTIN_FIELD) return;
   }
-
+  
   // ASCII write.
   if (!out->isBinary()) {
     out->indent();
@@ -1863,7 +1880,6 @@ SoField::write(SoOutput * out, const SbName & name) const
     }
 
     if (writeconnection) this->writeConnection(out);
-
     out->write('\n');
   }
   // Binary write.
@@ -1878,10 +1894,12 @@ SoField::write(SoOutput * out, const SbName & name) const
     if (this->isDefault()) flags |= SoField::DEFAULT;
 
     out->write(flags);
-
+    
     if (writeconnection) this->writeConnection(out);
   }
 }
+
+#include <stdio.h>
 
 /*!
   This method is called during the first pass of write operations, to
@@ -1897,23 +1915,28 @@ SoField::countWriteRefs(SoOutput * out) const
   // should work for both Inventor and VRML2 scene graphs
   // though. pederb, 2002-06-13
   if (this->isConnected()) {
-    int i;
-    for (i = 0; i < this->storage->masterfields.getLength(); i++) {
-      SoField * master = this->storage->masterfields[i];
-      SoFieldContainer * fc = master->getContainer();
-      assert(fc);
-      // TRUE = reference is from field connection. This is needed
-      // so that the fields inside 'fc' is counted only once
-      fc->addWriteReference(out, TRUE);
+    if (is_vrml2_field(this)) {
+      this->storage->add_vrml2_routes(out, this);
     }
-    for (i = 0; i < this->storage->masterengineouts.getLength(); i++) {
-      SoEngineOutput * engineout = this->storage->masterengineouts[i];
-      SoFieldContainer * fc = engineout->getFieldContainer();
-      assert(fc);
-      // since engines are always connected directly to the field
-      // (they're not nodes), engines are always counted with
-      // isfromfield = FALSE
-      fc->addWriteReference(out, FALSE);
+    else {
+      int i;
+      for (i = 0; i < this->storage->masterfields.getLength(); i++) {
+        SoField * master = this->storage->masterfields[i];
+        SoFieldContainer * fc = master->getContainer();
+        assert(fc);
+        // TRUE = reference is from field connection. This is needed
+        // so that the fields inside 'fc' is counted only once
+        fc->addWriteReference(out, TRUE);
+      }
+      for (i = 0; i < this->storage->masterengineouts.getLength(); i++) {
+        SoEngineOutput * engineout = this->storage->masterengineouts[i];
+        SoFieldContainer * fc = engineout->getFieldContainer();
+        assert(fc);
+        // since engines are always connected directly to the field
+        // (they're not nodes), engines are always counted with
+        // isfromfield = FALSE
+        fc->addWriteReference(out, FALSE);
+      }
     }
   }
 }
@@ -2223,7 +2246,7 @@ SoFieldContainer *
 SoField::resolveWriteConnection(SbName & mastername) const
 {
   if (!this->isConnected()) return NULL;
-
+  
   SoFieldContainer * fc = NULL;
   SoField * fieldmaster;
   SoEngineOutput * enginemaster;

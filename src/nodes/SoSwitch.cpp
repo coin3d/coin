@@ -55,6 +55,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/SoOutput.h>
+#include "../io/SoWriterefCounter.h"
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -409,7 +410,7 @@ SoSwitch::write(SoWriteAction * action)
     this->addWriteReference(out, FALSE);
     // Only increase number of writereferences to the top level node
     // in a tree which is used multiple times.
-    if (!this->hasMultipleWriteRefs()) this->getChildren()->traverse(action);
+    if (!SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this)) this->getChildren()->traverse(action);
   }
   else if (out->getStage() == SoOutput::WRITE) {
     if (this->writeHeader(out, TRUE, FALSE)) return;

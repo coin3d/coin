@@ -51,7 +51,7 @@
 
   You can not use file compression together with I/O to memory buffers,
   except for reading from memory buffers containing gzip-compressed files.
- 
+
   For backwards compatibility with Coin 2.0 and Coin 1.0, compressed files
   must not be used.  Compressed files works only from Coin 2.1 and
   upwards.
@@ -87,6 +87,7 @@
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/zlib.h>
 #include <Inventor/C/glue/bzip2.h>
+#include "SoWriterefCounter.h"
 
 /*! \enum SoOutput::Stage
   Enumerates the possible stages of a write operation (writing needs to be
@@ -161,12 +162,11 @@ public:
   SbBool disabledwriting;
   SbString * headerstring;
   SoOutput::Stage stage;
-  SbDict * sobase2id;
-  int nextreferenceid;
   uint32_t annotationbits;
   SbList <SoProto*> protostack;
   SbList <SbDict*> defstack;
   SbList <SoOutputROUTEList *> routestack;
+  SoWriterefCounter * counter;
 
   SbName compmethod;
   float complevel;
@@ -227,7 +227,7 @@ public:
 
   SoOutput_Writer * getWriter(void) {
     if (this->writer == NULL) {
-      this->writer = SoOutput_Writer::createWriter(coin_get_stdout(), FALSE, 
+      this->writer = SoOutput_Writer::createWriter(coin_get_stdout(), FALSE,
                                                    this->compmethod, this->complevel);
     }
     return this->writer;
@@ -276,8 +276,10 @@ SoOutput_compression_list_init(void)
 SoOutput::SoOutput(void)
 {
   this->constructorCommon();
-  PRIVATE(this)->sobase2id = NULL;
   PRIVATE(this)->defstack.append(NULL);
+
+  SoWriterefCounter::create(this, NULL);
+  PRIVATE(this)->counter = SoWriterefCounter::instance(this);
 }
 
 /*!
@@ -288,10 +290,12 @@ SoOutput::SoOutput(SoOutput * dictOut)
 {
   assert(dictOut != NULL);
   this->constructorCommon();
-  PRIVATE(this)->sobase2id = new SbDict(*(dictOut->pimpl->sobase2id));
 
   SbDict * olddef = dictOut->pimpl->getCurrentDefNames(FALSE);
   PRIVATE(this)->defstack.append(olddef ? new SbDict(*olddef) : NULL);
+
+  SoWriterefCounter::create(this, dictOut);
+  PRIVATE(this)->counter = SoWriterefCounter::instance(this);
 }
 
 /*!
@@ -312,7 +316,6 @@ SoOutput::constructorCommon(void)
   PRIVATE(this)->writecompact = FALSE;
   PRIVATE(this)->headerstring = NULL;
   PRIVATE(this)->indentlevel = 0;
-  PRIVATE(this)->nextreferenceid = 0;
   PRIVATE(this)->annotationbits = 0x00;
   PRIVATE(this)->routestack.append(NULL);
 
@@ -325,6 +328,7 @@ SoOutput::constructorCommon(void)
 */
 SoOutput::~SoOutput(void)
 {
+  SoWriterefCounter::destruct(this);
   this->reset();
   delete PRIVATE(this)->headerstring;
   delete PRIVATE(this);
@@ -344,7 +348,7 @@ void
 SoOutput::setFilePointer(FILE * newFP)
 {
   this->reset();
-  PRIVATE(this)->setWriter(SoOutput_Writer::createWriter(newFP, FALSE, 
+  PRIVATE(this)->setWriter(SoOutput_Writer::createWriter(newFP, FALSE,
                                                          PRIVATE(this)->compmethod,
                                                          PRIVATE(this)->complevel));
 }
@@ -431,7 +435,7 @@ SoOutput::closeFile(void)
   This method will return \e TRUE if the compression method selected
   is available. If it's not available, \e FALSE will be returned and
   compression is disabled.
-  
+
   \sa getAvailableCompressionMethods()
   \since Coin 2.1
  */
@@ -440,12 +444,12 @@ SoOutput::setCompression(const SbName & compmethod, const float level)
 {
   PRIVATE(this)->complevel = level;
   PRIVATE(this)->compmethod = compmethod;
-  
+
   if (compmethod == "GZIP") {
     if (cc_zlibglue_available()) return TRUE;
     SoDebugError::postWarning("SoOutput::setCompression",
                               "Requested GZIP compression, but zlib is not available.");
-    
+
   }
   if (compmethod == "BZIP2") {
     if (cc_bzglue_available()) return TRUE;
@@ -455,8 +459,8 @@ SoOutput::setCompression(const SbName & compmethod, const float level)
 
   PRIVATE(this)->compmethod = SbName("NONE");
   PRIVATE(this)->complevel = 0.0f;
-  
-  if (compmethod == "NONE" || level == 0.0f) return TRUE;  
+
+  if (compmethod == "NONE" || level == 0.0f) return TRUE;
   SoDebugError::postWarning("SoOutput::setCompression",
                             "Unsupported compression method: %s",
                             compmethod.getString());
@@ -470,7 +474,7 @@ SoOutput::setCompression(const SbName & compmethod, const float level)
   \sa setCompression()
   \since Coin 2.1
  */
-const SbName * 
+const SbName *
 SoOutput::getAvailableCompressionMethods(unsigned int & num)
 {
   SoOutput_compression_list_init();
@@ -500,10 +504,10 @@ SoOutput::getAvailableCompressionMethods(unsigned int & num)
   #include <Inventor/actions/SoWriteAction.h>
   #include <Inventor/nodes/SoCone.h>
   #include <Inventor/nodes/SoSeparator.h>
-  
+
   static char * buffer;
   static size_t buffer_size = 0;
-  
+
   static void *
   buffer_realloc(void * bufptr, size_t size)
   {
@@ -511,7 +515,7 @@ SoOutput::getAvailableCompressionMethods(unsigned int & num)
     buffer_size = size;
     return buffer;
   }
-  
+
   static SbString
   buffer_writeaction(SoNode * root)
   {
@@ -519,28 +523,28 @@ SoOutput::getAvailableCompressionMethods(unsigned int & num)
     buffer = (char *)malloc(1024);
     buffer_size = 1024;
     out.setBuffer(buffer, buffer_size, buffer_realloc);
-  
+
     SoWriteAction wa(&out);
     wa.apply(root);
-  
+
     SbString s(buffer);
     free(buffer);
     return s;
   }
-  
+
   int
   main(int argc, char ** argv)
   {
     SoDB::init();
-  
+
     SoSeparator * root = new SoSeparator;
     root->ref();
-  
+
     root->addChild(new SoCone);
-  
+
     SbString s = buffer_writeaction(root);
     (void)fprintf(stdout, "%s\n", s.getString());
-  
+
     root->unref();
     return 0;
   }
@@ -956,8 +960,8 @@ SoOutput::writeBinaryArray(const unsigned char * constc, const int length)
 
   this->checkHeader();
 
-  size_t wrote = PRIVATE(this)->getWriter()->write((const char*) constc, 
-                                                   (size_t) length, 
+  size_t wrote = PRIVATE(this)->getWriter()->write((const char*) constc,
+                                                   (size_t) length,
                                                    PRIVATE(this)->binarystream);
   if (wrote != (size_t)length) {
     SoDebugError::postWarning("SoOutput::writeBinaryArray",
@@ -1089,7 +1093,6 @@ void
 SoOutput::reset(void)
 {
   this->closeFile();
-  delete PRIVATE(this)->sobase2id; PRIVATE(this)->sobase2id = NULL;
 
   while (PRIVATE(this)->routestack.getLength()) {
     delete PRIVATE(this)->routestack[0];
@@ -1278,12 +1281,7 @@ SoOutput::bytesInBuf(void) const
 int
 SoOutput::addReference(const SoBase * base)
 {
-  if (!PRIVATE(this)->sobase2id) PRIVATE(this)->sobase2id = new SbDict;
-  int id = PRIVATE(this)->nextreferenceid++;
-  // Ugly! Should be solved by making a decent templetized
-  // SbDict-alike class.
-  PRIVATE(this)->sobase2id->enter((unsigned long)base, (void *)id);
-  return id;
+  return PRIVATE(this)->counter->addReference(base);
 }
 
 /*!
@@ -1292,12 +1290,7 @@ SoOutput::addReference(const SoBase * base)
 int
 SoOutput::findReference(const SoBase * base) const
 {
-  // Ugly! Should be solved by making a decent templetized
-  // SbDict-alike class.
-  void * id;
-  SbBool ok = PRIVATE(this)->sobase2id && PRIVATE(this)->sobase2id->find((unsigned long)base, id);
-  // the extra intermediate "long" cast is needed by 64-bits IRIX CC
-  return ok ? (int)((long)id) : -1;
+  return PRIVATE(this)->counter->findReference(base);
 }
 
 /*!
@@ -1306,8 +1299,7 @@ SoOutput::findReference(const SoBase * base) const
 void
 SoOutput::setReference(const SoBase * base, int refid)
 {
-  if (!PRIVATE(this)->sobase2id) PRIVATE(this)->sobase2id = new SbDict;
-  PRIVATE(this)->sobase2id->enter((unsigned long)base, (void *)refid);
+  PRIVATE(this)->counter->setReference(base, refid);
 }
 
 /*!
@@ -1423,10 +1415,6 @@ void
 SoOutput::addRoute(SoFieldContainer * from, const SbName & fromfield,
                    SoFieldContainer * to, const SbName & tofield)
 {
-  // FIXME: try to find a better/nicer way to handle ROUTE export without
-  // adding new methods in SoOutput. For instance, is it possible to
-  // add elements in the SoWriteAction state stack? pederb, 2002-06-12
-
   SoOutputROUTEList * list = PRIVATE(this)->getCurrentRoutes(TRUE);
   assert(list);
   SoOutputROUTE r;
@@ -1465,14 +1453,18 @@ SoOutput::resolveRoutes(void)
 
       this->indent();
       this->write("ROUTE ");
-      this->write(fromc->getName().getString());
+      this->write(PRIVATE(this)->counter->getWriteName(fromc).getString());
       this->write('.');
       this->write(fromname.getString());
       this->write(" TO ");
-      this->write(toc->getName().getString());
+      this->write(PRIVATE(this)->counter->getWriteName(toc).getString());
       this->write('.');
       this->write(toname.getString());
       this->write("\n");
+
+      // remove write references again
+      PRIVATE(this)->counter->decrementWriteref(fromc);
+      PRIVATE(this)->counter->decrementWriteref(toc);
     }
     list->truncate(0);
   }
@@ -1625,7 +1617,7 @@ SoOutput::padHeader(const SbString & inString)
 void
 SoOutput::removeSoBase2IdRef(const SoBase * base)
 {
-  PRIVATE(this)->sobase2id->remove((unsigned long)base);
+  PRIVATE(this)->counter->removeSoBase2IdRef(base);
 }
 
 // FIXME: temporary workaround needed to test if we are currently

@@ -534,6 +534,7 @@
 #include <string.h>
 #include <Inventor/C/tidbits.h> // coin_isspace()
 #include <coindefs.h> // COIN_OBSOLETED()
+#include "../io/SoWriterefCounter.h"
 #include <Inventor/errors/SoDebugError.h>
 
 class SoBaseKitP {
@@ -1168,7 +1169,7 @@ SoBaseKit::addWriteReference(SoOutput * out, SbBool isfromfield)
 
   // If first invocation during the reference counting pass, check
   // nodes in our catalog.
-  if (!isfromfield && !this->hasMultipleWriteRefs()) {
+  if (!isfromfield && !SoWriterefCounter::instance(out)->hasMultipleWriteRefs(this)) {
     this->countMyFields(out);
   }
 }
@@ -1214,8 +1215,8 @@ SoBaseKit::countMyFields(SoOutput * out)
           // the correct value because we're not through with the
           // first write pass yet (see API doc on
           // shouldWrite()). 20030528 mortene.
-          (node && node->shouldWrite())) {
-
+          (node && SoWriterefCounter::instance(out)->shouldWrite(node))) {
+        
 #if COIN_DEBUG && 0 // debug
         SoDebugError::postInfo("SoBaseKit::countMyFields",
                                "set field %p non-default");
@@ -1360,7 +1361,7 @@ SoBaseKit::setDefaultOnNonWritingFields(void)
 SbBool
 SoBaseKit::forceChildDrivenWriteRefs(SoOutput * out)
 {
-  if (this->shouldWrite()) return TRUE;
+  if (SoWriterefCounter::instance(out)->shouldWrite(this)) return TRUE;
 
   // if NULL we already did this test, found that we shouldn't write,
   // deleted writedata and set writedata to NULL.
@@ -1380,7 +1381,7 @@ SoBaseKit::forceChildDrivenWriteRefs(SoOutput * out)
       SoSFNode * part = (SoSFNode*) field;
       SoNode * node = part->getValue();
       if (node) {
-        if (node->shouldWrite()) break;
+        if (SoWriterefCounter::instance(out)->shouldWrite(node)) break;
         else if (node->isOfType(SoBaseKit::getClassTypeId())) {
           SoBaseKit * kit = (SoBaseKit*) node;
           // recurse

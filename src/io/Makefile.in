@@ -140,6 +140,7 @@ LTLIBOBJS = @LTLIBOBJS@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
 LT_REVISION = @LT_REVISION@
+MACOSX_10_2FF = @MACOSX_10_2FF@
 MACOSX_10_2FF_FALSE = @MACOSX_10_2FF_FALSE@
 MACOSX_10_2FF_TRUE = @MACOSX_10_2FF_TRUE@
 MACOSX_FALSE = @MACOSX_FALSE@
@@ -256,6 +257,7 @@ RegularSources = \
 	SoByteStream.cpp \
 	SoTranSender.cpp \
 	SoTranReceiver.cpp \
+	SoWriterefCounter.cpp \
 	gzmemio.c
 
 
@@ -269,6 +271,7 @@ PrivateHeaders = \
 	SoInput_FileInfo.h \
 	SoInput_Reader.h \
 	SoOutput_Writer.h \
+	SoWriterefCounter.h \
 	gzmemio.h
 
 ObsoleteHeaders = 
@@ -334,22 +337,23 @@ io_lst_AR = $(AR) cru
 io_lst_LIBADD =
 am__io_lst_SOURCES_DIST = SoInput.cpp SoInput_FileInfo.cpp \
 	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
-	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp gzmemio.c \
-	all-io-cpp.cpp all-io-c.c
+	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
+	SoWriterefCounter.cpp gzmemio.c all-io-cpp.cpp all-io-c.c
 am__objects_1 = all-io-cpp.$(OBJEXT) all-io-c.$(OBJEXT)
 am__objects_2 = SoInput.$(OBJEXT) SoInput_FileInfo.$(OBJEXT) \
 	SoInput_Reader.$(OBJEXT) SoOutput.$(OBJEXT) \
 	SoOutput_Writer.$(OBJEXT) SoByteStream.$(OBJEXT) \
 	SoTranSender.$(OBJEXT) SoTranReceiver.$(OBJEXT) \
-	gzmemio.$(OBJEXT)
+	SoWriterefCounter.$(OBJEXT) gzmemio.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_io_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_io_lst_SOURCES_DIST = SoInput_FileInfo.h SoInput_Reader.h \
-	SoOutput_Writer.h gzmemio.h all-io-cpp.cpp all-io-c.c \
-	SoInput.cpp SoInput_FileInfo.cpp SoInput_Reader.cpp \
+	SoOutput_Writer.h SoWriterefCounter.h gzmemio.h all-io-cpp.cpp \
+	all-io-c.c SoInput.cpp SoInput_FileInfo.cpp SoInput_Reader.cpp \
 	SoOutput.cpp SoOutput_Writer.cpp SoByteStream.cpp \
-	SoTranSender.cpp SoTranReceiver.cpp gzmemio.c
+	SoTranSender.cpp SoTranReceiver.cpp SoWriterefCounter.cpp \
+	gzmemio.c
 io_lst_OBJECTS = $(am_io_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -357,33 +361,36 @@ libio_la_LDFLAGS =
 libio_la_LIBADD =
 am__libio_la_SOURCES_DIST = SoInput.cpp SoInput_FileInfo.cpp \
 	SoInput_Reader.cpp SoOutput.cpp SoOutput_Writer.cpp \
-	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp gzmemio.c \
-	all-io-cpp.cpp all-io-c.c
+	SoByteStream.cpp SoTranSender.cpp SoTranReceiver.cpp \
+	SoWriterefCounter.cpp gzmemio.c all-io-cpp.cpp all-io-c.c
 am__objects_6 = all-io-cpp.lo all-io-c.lo
 am__objects_7 = SoInput.lo SoInput_FileInfo.lo SoInput_Reader.lo \
 	SoOutput.lo SoOutput_Writer.lo SoByteStream.lo SoTranSender.lo \
-	SoTranReceiver.lo gzmemio.lo
+	SoTranReceiver.lo SoWriterefCounter.lo gzmemio.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libio_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libio_la_SOURCES_DIST = SoInput_FileInfo.h SoInput_Reader.h \
-	SoOutput_Writer.h gzmemio.h all-io-cpp.cpp all-io-c.c \
-	SoInput.cpp SoInput_FileInfo.cpp SoInput_Reader.cpp \
+	SoOutput_Writer.h SoWriterefCounter.h gzmemio.h all-io-cpp.cpp \
+	all-io-c.c SoInput.cpp SoInput_FileInfo.cpp SoInput_Reader.cpp \
 	SoOutput.cpp SoOutput_Writer.cpp SoByteStream.cpp \
-	SoTranSender.cpp SoTranReceiver.cpp gzmemio.c
+	SoTranSender.cpp SoTranReceiver.cpp SoWriterefCounter.cpp \
+	gzmemio.c
 libio_la_OBJECTS = $(am_libio_la_OBJECTS)
 libio@SUFFIX@LINKHACK_la_LDFLAGS =
 libio@SUFFIX@LINKHACK_la_LIBADD =
 am__libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput.cpp \
 	SoInput_FileInfo.cpp SoInput_Reader.cpp SoOutput.cpp \
 	SoOutput_Writer.cpp SoByteStream.cpp SoTranSender.cpp \
-	SoTranReceiver.cpp gzmemio.c all-io-cpp.cpp all-io-c.c
+	SoTranReceiver.cpp SoWriterefCounter.cpp gzmemio.c \
+	all-io-cpp.cpp all-io-c.c
 am_libio@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libio@SUFFIX@LINKHACK_la_SOURCES_DIST = SoInput_FileInfo.h \
-	SoInput_Reader.h SoOutput_Writer.h gzmemio.h all-io-cpp.cpp \
-	all-io-c.c SoInput.cpp SoInput_FileInfo.cpp SoInput_Reader.cpp \
-	SoOutput.cpp SoOutput_Writer.cpp SoByteStream.cpp \
-	SoTranSender.cpp SoTranReceiver.cpp gzmemio.c
+	SoInput_Reader.h SoOutput_Writer.h SoWriterefCounter.h \
+	gzmemio.h all-io-cpp.cpp all-io-c.c SoInput.cpp \
+	SoInput_FileInfo.cpp SoInput_Reader.cpp SoOutput.cpp \
+	SoOutput_Writer.cpp SoByteStream.cpp SoTranSender.cpp \
+	SoTranReceiver.cpp SoWriterefCounter.cpp gzmemio.c
 libio@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libio@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -402,6 +409,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTranReceiver.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTranSender.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTranSender.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoWriterefCounter.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoWriterefCounter.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-io-c.Plo ./$(DEPDIR)/all-io-c.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/all-io-cpp.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/all-io-cpp.Po ./$(DEPDIR)/gzmemio.Plo \
@@ -507,6 +516,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranReceiver.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranSender.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTranSender.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWriterefCounter.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoWriterefCounter.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-c.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/all-io-cpp.Plo@am__quote@

@@ -7,6 +7,7 @@ RegularSources = \
 	SoByteStream.cpp \
 	SoTranSender.cpp \
 	SoTranReceiver.cpp \
+	SoWriterefCounter.cpp \
 	gzmemio.c
 
 LinkHackSources = \
@@ -18,6 +19,7 @@ PrivateHeaders = \
 	SoInput_FileInfo.h \
 	SoInput_Reader.h \
 	SoOutput_Writer.h \
+	SoWriterefCounter.h \
 	gzmemio.h
 ObsoleteHeaders =
 

@@ -120,8 +120,7 @@ private:
   static SoType classTypeId;
 
   struct {
-    int32_t referencecount  : 27;
-    unsigned int ingraph    :  1;
+    int32_t referencecount  : 28;
     unsigned int alive      :  4;
     // The number of bits should sum up to 32, so we don't allocate
     // more than one machine word on a 32-bit platform.
