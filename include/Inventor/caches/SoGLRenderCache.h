@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/caches/SoCache.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 
 class SoGLDisplayList;
 class SoGLRenderCacheP;
@@ -44,6 +45,9 @@ public:
 
   virtual SbBool isValid(const SoState * state) const;
   virtual void addNestedCache(SoGLDisplayList * child);
+
+  SoGLLazyElement::GLState * getPreLazyState(void);
+  SoGLLazyElement::GLState * getPostLazyState(void);
 
 protected:
   virtual void destroy(SoState *state);

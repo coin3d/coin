@@ -38,6 +38,8 @@ public:
   SoGLDisplayList * displaylist;
   SoState * openstate;
   SbList <SoGLDisplayList*> nestedcachelist;
+  SoGLLazyElement::GLState prestate;
+  SoGLLazyElement::GLState poststate;
 };
 #endif // DOXYGEN_SKIP_THIS
 
@@ -161,3 +163,16 @@ SoGLRenderCache::destroy(SoState * state)
     THIS->displaylist = NULL;
   }
 }
+
+SoGLLazyElement::GLState * 
+SoGLRenderCache::getPreLazyState(void)
+{
+  return &THIS->prestate;
+}
+
+SoGLLazyElement::GLState * 
+SoGLRenderCache::getPostLazyState(void)
+{
+  return &THIS->poststate;
+}
+
