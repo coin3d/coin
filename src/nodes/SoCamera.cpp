@@ -577,12 +577,19 @@ SoCamera::audioRender(SoAudioRenderAction *action)
   }
   setbylistener = SoListenerOrientationElement::isSetByListener(state);
   if ((! setbylistener) && (! this->orientation.isIgnored())) {
-    SbVec3f t;
+    SbBool mmidentity;
     SbRotation r;
-    SbVec3f s;
-    SbRotation so;
-    SoModelMatrixElement::get(state).getTransform(t, r, s, so);
-    r *= this->orientation.getValue();
+    SbMatrix m = SoModelMatrixElement::get(state, mmidentity);
+    if (!mmidentity) {
+      SbVec3f t;
+      SbVec3f s;
+      SbRotation so;
+      m.getTransform(t, r, s, so);
+      r *= this->orientation.getValue();
+    }
+    else {
+      r = this->orientation.getValue();
+    }
     SoListenerOrientationElement::set(state, this, r, FALSE);
   }
 }
