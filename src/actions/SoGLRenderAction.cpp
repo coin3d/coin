@@ -131,6 +131,10 @@
   for instance SoGLRenderAction::SORTED_OBJECT_BLEND for all other
   transparent objects.
 
+  The highest quality transparency mode in Coin is
+  SoGLRenderAction::SORTED_LAYERS_BLEND. It is also the only mode that
+  overrides all other modes in the scenegraph.
+
   \sa SoTransparencyType
 */
 
@@ -144,6 +148,12 @@
   it always renders the transparent parts of the scene correct with
   regard to internal depth ordering of objects / polygons, something
   which is not the case for any other transparency mode.
+
+  Polygons rendered with only transparent textures are not shown as
+  being transparent when using this mode. The reason being that the
+  SCREEN_DOOR mode is working on polygons, not pixels. To render
+  polygons with dither pattern, a material node has to be inserted
+  into the scenegraph with it's transparency field set.
 */
 
 /*!
@@ -286,6 +296,10 @@
   normal and intersecting transparent objects correctly independent of
   rendering order. It is the only transparency type rendering mode
   which is guaranteed to do so.
+
+  This mode is different from all other modes in that it overrides the
+  SoTransparencyType nodes in the scenegraph; all objects are drawn using
+  SORTED_LAYERS_BLEND.
 
   There are currently two separate code paths for this mode. Both
   paths are heavily based on OpenGL extensions. The first method is
@@ -1254,6 +1268,11 @@ SoGLRenderActionP::render(SoNode * node)
   SoViewportRegionElement::set(state, this->viewport);
   SoLazyElement::setTransparencyType(state,
                                      (int32_t)this->transparencytype);
+
+  if (this->transparencytype == SoGLRenderAction::SORTED_LAYERS_BLEND) {
+    SoOverrideElement::setTransparencyTypeOverride(state, node, TRUE);
+  }
+
   SoLazyElement::setColorMaterial(state, TRUE);
 
   SoGLUpdateAreaElement::set(state,
