@@ -1,16 +1,16 @@
 # CONFIG "The Node Hierarchy"
 # factors: [work in progress / no work done]
 # FLAGS [1]
-# I = Full implementation of all non-actionmethods [0.1]
-# D = Documented [0.1]
-# T = Compliance test file available under Coin/tests/models/oiv_compliance
+# I = Full implementation of all non-actionmethods [1]
+# D = Documented [0.5]
+# T = Compliance test file available under Coin/models/oiv_compliance
 # B = SoGetBoundingBoxAction
 # G = SoGLRenderAction [2]
 # M = SoGetMatrixAction [0.2]
 # P = SoPickAction
 # R = SoRayPickAction
 # C = SoCallbackAction
-# S = SoSearchAction [0.1]
+# S = SoSearchAction [0.2]
 # 
 # VALUES
 # - = not applicable
@@ -20,7 +20,7 @@
 # IDTBGMPRCS
 # ==========
 # HIERARCHY
-#   -B-   C   SoNode
+# ID-BGMPRCS  SoNode
 #   TbG--RC       SoCamera
 #   -!!----               SoPerspectiveCamera
 #   -!!----               SoOrthographicCamera

@@ -43,9 +43,10 @@ class SoNode : public SoFieldContainer {
   typedef SoFieldContainer inherited;
 
 public:
-  enum Stage { FIRST_INSTANCE,
-               PROTO_INSTANCE,
-               OTHER_INSTANCE };
+  // Probably not interesting for the application programmer..?
+#ifndef DOXYGEN_SKIP_THIS
+  enum Stage { FIRST_INSTANCE, PROTO_INSTANCE, OTHER_INSTANCE };
+#endif // !DOXYGEN_SKIP_THIS
 
   void setOverride(const SbBool state);
   SbBool isOverride(void) const;
@@ -94,7 +95,7 @@ public:
   static uint32_t getNextNodeId(void);
   static int getActionMethodIndex(const SoType type);
 
-  static void getBoundingBoxS(SoAction * action,SoNode * node);
+  static void getBoundingBoxS(SoAction * action, SoNode * node);
   static void GLRenderS(SoAction * action, SoNode * node);
   static void callbackS(SoAction * action, SoNode * node);
   static void getMatrixS(SoAction * action, SoNode * node);
@@ -118,9 +119,14 @@ protected:
 private:
   static SoType classTypeId;
 
+  // FIXME: works around a bug with Doxygen 1.0.0. Remove this hack
+  // when bug has been removed from next release version of
+  // Doxygen. 20000308 mortene.
+#ifndef DOXYGEN_SKIP_THIS
   struct {
     unsigned int override : 1;
   } stateflags;
+#endif // !DOXYGEN_SKIP_THIS
 };
 
 #endif // !COIN_SONODE_H

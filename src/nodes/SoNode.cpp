@@ -19,13 +19,26 @@
 
 /*!
   \class SoNode SoNode.h Inventor/nodes/SoNode.h
-  \brief The SoNode class ...
+  \brief The SoNode class is the base class for nodes used in scene graphs.
   \ingroup nodes
 
-  FIXME: write class doc
-*/
+  Coin is a \e retained \e mode 3D visualization library (built on top
+  of the \e immediate \e mode OpenGL library). "Retained mode" means
+  that instead of passing commands to draw graphics primitives
+  directly to the renderer, you build up data structures which are
+  rendered by the library \e on \e demand.
 
-#include <coindefs.h> // COIN_STUB()
+  The node classes are the main "primitive" for building these data
+  structures. In Coin, you build tree hierarchies made up of different
+  node types: group nodes (for the layout of the other nodes),
+  appearance nodes (for setting up materials, textures, etc), shape
+  nodes (for the actual geometry), and nodes for lighting, camera
+  positioning etc etc.
+
+  For more information, see the "Inventor Mentor: Programming
+  Object-Oriented 3D Graphics with Open Inventor" (ISBN 0-201-62495-8)
+  for detailed explanations on the basic principles involved.
+*/
 
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoActions.h>
@@ -35,43 +48,21 @@
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <assert.h>
 
-#ifdef _WIN32
-#include <windows.h>
-#endif // _WIN32
-
-#ifndef NDEBUG
-#include <GL/gl.h> // assert glGetError
+#ifndef COIN_DEBUG
+#include <GL/gl.h> // glGetError
 #endif
 
 /*!
-  \enum SoNode::Stage
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoNode::Stage SoNode::FIRST_INSTANCE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNode::Stage SoNode::PROTO_INSTANCE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoNode::Stage SoNode::OTHER_INSTANCE
-  FIXME: write documentation for enum definition
-*/
-
-
-/*!
   \var uint32_t SoNode::uniqueId
-  FIXME: write doc
+  \internal
 */
 /*!
   \var uint32_t SoNode::nextUniqueId
-  FIXME: write doc
+  \internal
 */
 /*!
   \var int SoNode::nextActionMethodIndex
-  FIXME: write doc
+  \internal
 */
 
 
@@ -85,9 +76,7 @@ int SoNode::nextActionMethodIndex = 0;
 SoType SoNode::classTypeId = SoType::badType();
 
 
-/*!
-  FIXME: write function documentation
-*/
+// Overridden from parent.
 SoType
 SoNode::getClassTypeId(void)
 {
@@ -95,7 +84,7 @@ SoNode::getClassTypeId(void)
 }
 
 /*!
-  Default constructor.
+  Default constructor, initializes node instance.
 */
 SoNode::SoNode(void)
 {
@@ -109,7 +98,7 @@ SoNode::SoNode(void)
 SoNode::~SoNode()
 {
   // FIXME: detach any node sensor(s) to avoid references to free'd
-  // memory. 19981027 mortene.
+  // memory? 19981027 mortene.
 }
 
 /*!
@@ -134,18 +123,14 @@ SoNode::copy(SbBool copyconnections) const
 }
 
 
-/*!
-  FIXME: write doc
-*/
+// Overloaded from parent.
 void
 SoNode::startNotify(void)
 {
   inherited::startNotify();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Overloaded from parent.
 void
 SoNode::notify(SoNotList * l)
 {
@@ -158,7 +143,7 @@ SoNode::notify(SoNotList * l)
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 int
 SoNode::getActionMethodIndex(const SoType type)
@@ -166,11 +151,7 @@ SoNode::getActionMethodIndex(const SoType type)
   return type.getData();
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoNode class. This includes setting up the
-  type system, among other things.
-*/
+// Overridden from parent class.
 void
 SoNode::initClass(void)
 {
@@ -189,7 +170,7 @@ SoNode::initClass(void)
 
 
 /*!
-  FIXME: write function documentation
+  Initialize all the node classes of Coin.
 */
 void
 SoNode::initClasses(void)
@@ -335,8 +316,8 @@ SoNode::isOverride(void) const
 // *************************************************************************
 
 /*!
-  This function performs the typical operation of a node for any action.
-  Default method does nothing.
+  This function performs the typical operation of a node for any
+  action.
 */
 void
 SoNode::doAction(SoAction * action)
@@ -344,14 +325,23 @@ SoNode::doAction(SoAction * action)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \c TRUE if the node could have any effect on the state
+  during traversal.
+
+  If it returns \c FALSE, no data in the traversal-state will change
+  from the pre-traversal state to the post-traversal state. The
+  SoSeparator node will for instance return \c FALSE, as it pushes and
+  pops the state before and after traversal of its children. All shape
+  nodes will also return \c FALSE, as just pushing out geometry data
+  to the rendering engine won't affect the actual rendering state.
+
+  The default method returns \c TRUE, on a "better safe than sorry"
+  philosophy.
 */
 SbBool
 SoNode::affectsState(void) const
 {
-  // FIXME: shouldn't this be "FALSE", as mostly just appearance type
-  // nodes affects the state? 20000213 mortene.
-  return TRUE; // default
+  return TRUE;
 }
 
 /*!
@@ -379,13 +369,14 @@ SoNode::getByName(const SbName & name, SoNodeList & l)
 }
 
 /*!
-  FIXME: write function documentation
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::getBoundingBox() virtual method which
+  does the \e real work.
 */
 void
 SoNode::getBoundingBoxS(SoAction * action, SoNode * node)
 {
   assert(action && node);
-  //  assert(action->getTypeId().isDerivedFrom(SoGetBoundingBoxAction::getClassTypeId()));
   SoGetBoundingBoxAction * bboxaction = (SoGetBoundingBoxAction *)action;
   bboxaction->checkResetBefore();
   node->getBoundingBox(bboxaction);
@@ -393,44 +384,52 @@ SoNode::getBoundingBoxS(SoAction * action, SoNode * node)
 }
 
 /*!
-  FIXME: write function documentation
+  Action method for the SoGetBoundingBoxAction.
+
+  Calculates bounding box and center coordinates for node and modifies
+  the values of the \a action to encompass the bounding box for this
+  node and to shift the center point for the scene more towards the
+  one for this node.
 */
 void
-SoNode::getBoundingBox(SoGetBoundingBoxAction *)
+SoNode::getBoundingBox(SoGetBoundingBoxAction * action)
 {
 }
 
 /*!
-  FIXME: write function documentation
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::getPrimitiveCount() virtual method
+  which does the \e real work.
 */
 void
 SoNode::getPrimitiveCountS(SoAction * action, SoNode * node)
 {
   assert(action && node);
-  //  assert(action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId()));
   node->getPrimitiveCount((SoGetPrimitiveCountAction *)action);
 }
 
 /*!
-  FIXME: write function documentation
+  Action method for the SoGetPrimitiveCountAction.
+
+  Calculates the number of triangle, line segment and point primitives
+  for the node and adds these to the counters of the \a action.
 */
 void
-SoNode::getPrimitiveCount(SoGetPrimitiveCountAction *)
+SoNode::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
 }
 
 /*!
-  This static method is used for calling the respective virtual method on the
-  node.
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::GLRender() virtual method which does
+  the \e real work.
 */
 void
-SoNode::GLRenderS(SoAction * action,
-                  SoNode * node)
+SoNode::GLRenderS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId()));
-  SoGLRenderAction * const renderAction =
-    (SoGLRenderAction *)(action);
+  SoGLRenderAction * const renderAction = (SoGLRenderAction *)(action);
 
   switch (action->getCurPathCode()) {
   case SoAction::NO_PATH:
@@ -452,8 +451,8 @@ SoNode::GLRenderS(SoAction * action,
 #if COIN_DEBUG
   int err = glGetError();
   if (err != GL_NO_ERROR) {
-    const char *errorstring;
-    switch(err) {
+    const char * errorstring;
+    switch (err) {
     case GL_INVALID_VALUE:
       errorstring = "GL_INVALID_VALUE";
       break;
@@ -485,17 +484,19 @@ SoNode::GLRenderS(SoAction * action,
 }
 
 /*!
-  This method is used by SoGLRenderAction render traversals. The default
-  method does nothing, of course, so all classes which does rendering
-  or influences rendering state need to reimplement this.
+  Action method for the SoGLRenderAction.
+
+  This is called during rendering traversals. Nodes influencing the
+  rendering state in any way or who wants to throw geometry primitives
+  at OpenGL overloads this method.
 */
 void
-SoNode::GLRender(SoGLRenderAction * /* action */)
+SoNode::GLRender(SoGLRenderAction * action)
 {
 }
 
 /*!
-  FIXME: write doc
+  Use a different traversal method for the rendering.
 */
 void
 SoNode::GLRenderBelowPath(SoGLRenderAction * action)
@@ -504,7 +505,7 @@ SoNode::GLRenderBelowPath(SoGLRenderAction * action)
 }
 
 /*!
-  FIXME: write doc
+  Use a different traversal method for the rendering.
 */
 void
 SoNode::GLRenderInPath(SoGLRenderAction * action)
@@ -513,7 +514,7 @@ SoNode::GLRenderInPath(SoGLRenderAction * action)
 }
 
 /*!
-  FIXME: write doc
+  Use a different traversal method for the rendering.
 */
 void
 SoNode::GLRenderOffPath(SoGLRenderAction * action)
@@ -522,11 +523,12 @@ SoNode::GLRenderOffPath(SoGLRenderAction * action)
 }
 
 /*!
-  FIXME: write function documentation
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::callback() virtual method which does
+  the \e real work.
 */
 void
-SoNode::callbackS(SoAction * action,
-                  SoNode * node)
+SoNode::callbackS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   SoCallbackAction * const cbAction =
@@ -548,130 +550,135 @@ SoNode::callbackS(SoAction * action,
 }
 
 /*!
-  FIXME: write function documentation
+  Action method for SoCallbackAction.
+
+  Simply updates the state according to how the node behaves for the
+  render action, so the application programmer can use the
+  SoCallbackAction for extracting information about the scene graph.
 */
 void
-SoNode::callback(SoCallbackAction * /* action */)
+SoNode::callback(SoCallbackAction * action)
 {
 }
 
 /*!
-  FIXME: write function documentation
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::getMatrix() virtual method which does
+  the \e real work.
 */
 void
 SoNode::getMatrixS(SoAction * action, SoNode * node)
 {
-#if 0 // debug
-  SoDebugError::postInfo("SoNode::getMatrixS",
-                         "%s",
-                         node->getTypeId().getName().getString());
-#endif // debug
-
   assert(action && node);
   assert(action->getTypeId() == SoGetMatrixAction::getClassTypeId());
-  SoGetMatrixAction * const getMatrixAction =
-    (SoGetMatrixAction *)(action);
+  SoGetMatrixAction * const getMatrixAction = (SoGetMatrixAction *)(action);
   node->getMatrix(getMatrixAction);
 }
 
 /*!
-//FIXME: How does doxygen manage links from classnames in the documentation?
-//       (kintel 19990616)
-  This is the default virtual function used by SoGetMatrixAction.
-  It may be overloaded in subclasses (usually SoTransform subclasses)
+  Action method for SoGetMatrixAction.
+
+  Updates \a action by accumulating with the transformation matrix of
+  this node (if any).
 */
 void
-SoNode::getMatrix(SoGetMatrixAction * /* action */)
+SoNode::getMatrix(SoGetMatrixAction * action)
 {
-  //FIXME: This should return identity as default (kintel 19990615)
 }
 
 /*!
-  FIXME: write function documentation
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::handleEvent() virtual method which does
+  the \e real work.
 */
 void
 SoNode::handleEventS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoHandleEventAction::getClassTypeId()));
-  SoHandleEventAction * const handleEventAction =
-    (SoHandleEventAction *)(action);
+  SoHandleEventAction * handleEventAction = (SoHandleEventAction *)(action);
   node->handleEvent(handleEventAction);
 }
 
 /*!
-  FIXME: write function documentation
+  Action method for SoHandleEventAction.
+
+  Inspects the event data from \a action, and processes it if it is
+  something which this node should react to.
 */
 void
-SoNode::handleEvent(SoHandleEventAction * /* action */)
+SoNode::handleEvent(SoHandleEventAction * action)
 {
 }
 
 /*!
-  FIXME: write function documentation
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::pick() virtual method which does the \e
+  real work.
 */
 void
 SoNode::pickS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoPickAction::getClassTypeId()));
-  SoPickAction * const pickAction =
-    (SoPickAction *)(action);
+  SoPickAction * const pickAction = (SoPickAction *)(action);
   node->pick(pickAction);
 }
 
 /*!
-  FIXME: write function documentation
+  Action method for SoPickAction.
+
+  Does common processing for SoPickAction \a action instances.
 */
 void
-SoNode::pick(SoPickAction * /* action */)
+SoNode::pick(SoPickAction * action)
 {
 }
 
 /*!
-  FIXME: write function documentation
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::rayPick() virtual method which does the
+  \e real work.
 */
 void
 SoNode::rayPickS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId()));
-
-#if 0 // debug
-  SoDebugError::postInfo("SoNode::rayPickS",
-                         "%s", node->getTypeId().getName().getString());
-#endif // debug
-
-  SoRayPickAction * const rayPickAction =
-    (SoRayPickAction *)(action);
+  SoRayPickAction * const rayPickAction = (SoRayPickAction *)(action);
   node->rayPick(rayPickAction);
 }
 
 /*!
-  FIXME: write function documentation
+  Action method for SoRayPickAction.
+
+  Checks the ray specification of the \a action and tests for
+  intersection with the data of the node.
 */
 void
-SoNode::rayPick(SoRayPickAction * /* action */)
+SoNode::rayPick(SoRayPickAction * action)
 {
 }
 
 /*!
-  FIXME: write function documentation
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::search() virtual method which does the
+  \e real work.
 */
 void
 SoNode::searchS(SoAction * action, SoNode * node)
 {
   assert(action && node);
   assert(action->getTypeId().isDerivedFrom(SoSearchAction::getClassTypeId()));
-  SoSearchAction * const searchAction =
-    (SoSearchAction *)(action);
+  SoSearchAction * const searchAction = (SoSearchAction *)(action);
   node->search(searchAction);
 }
 
 /*!
-  This method is used by SoSearchAction instances to traverse and
-  search the scene graph for specific nodes, specified by type, name
-  or pointer value.
+  Action method for SoSearchAction.
+
+  Compares the search criteria from the \a action to see if this node
+  is a match.
 */
 void
 SoNode::search(SoSearchAction * action)
@@ -685,39 +692,35 @@ SoNode::search(SoSearchAction * action)
   if ((lookFor & SoSearchAction::NODE) &&
        (this == action->getNode())) {
     action->addPath(action->getCurPath()->copy());
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoNode::search", "NODE match found.\n");
 #endif // debug
   } else if ((lookFor & SoSearchAction::NAME) &&
       (this->getName() == action->getName())) {
     action->addPath(action->getCurPath()->copy());
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoNode::search", "NAME match found.\n");
 #endif // debug
   } else if ((lookFor & SoSearchAction::TYPE) &&
       ((this->getTypeId() == action->getType(flag)) ||
       (flag && this->getTypeId().isDerivedFrom(action->getType(flag))))) {
     action->addPath(action->getCurPath()->copy());
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
     SoDebugError::postInfo("SoNode::search", "TYPE match found.\n");
 #endif // debug
   }
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   else {
     SoDebugError::postInfo("SoNode::search", "no match for %p (type '%s').",
                            this, this->getTypeId().getName().getString());
   }
 #endif // debug
-
-
-  //doAction(action);  // this is correct, right? I don't think so: pederb
 }
 
 /*!
-  \internal
-
-  Static method registered with SoWriteAction. Just calls the virtual
-  write() method.
+  This is a static "helper" method registered with the action, and
+  used for calling the SoNode::write() virtual method which does the
+  \e real work.
 */
 void
 SoNode::writeS(SoAction * action, SoNode * node)
@@ -729,8 +732,10 @@ SoNode::writeS(SoAction * action, SoNode * node)
 }
 
 /*!
-  This is the default method for writing out a node object. It is used
-  by SoWriteAction.
+  Action method for SoWriteAction.
+
+  Writes out a node object, and any connected nodes, engines etc, if
+  necessary.
 */
 void
 SoNode::write(SoWriteAction * action)
@@ -748,7 +753,7 @@ SoNode::write(SoWriteAction * action)
 }
 
 /*!
-  FIXME: write function documentation
+  Returns list of children for this node.
 */
 SoChildList *
 SoNode::getChildren(void) const
@@ -757,25 +762,25 @@ SoNode::getChildren(void) const
 }
 
 /*!
-  FIXME: write doc
+  Called from SoHandleEventAction::setGrabber() to notify a node when
+  it becomes the node where all events are sent.
 */
 void
 SoNode::grabEventsSetup(void)
 {
-  COIN_STUB();
 }
 
 /*!
-  FIXME: write doc
+  Called from SoHandleEventAction to notify a node when it looses
+  status as the node where events are sent.
 */
 void
 SoNode::grabEventsCleanup(void)
 {
-  COIN_STUB();
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
 */
 uint32_t
 SoNode::getNodeId(void) const
@@ -785,8 +790,8 @@ SoNode::getNodeId(void) const
 
 /*!
   This method is called from write() if the actual writing pass of the
-  write action is taking place. It dumps the node to the given output
-  stream.
+  write action is taking place. It dumps the node to the given \a out
+  output stream.
 */
 void
 SoNode::writeInstance(SoOutput * out)
@@ -797,7 +802,7 @@ SoNode::writeInstance(SoOutput * out)
 
 /*!
   Add this node and (recursively) all children to the copy dictionary
-  of SoFieldContainer.
+  of SoFieldContainer. Used internally during copy operations.
 */
 SoNode *
 SoNode::addToCopyDict(void) const
@@ -851,6 +856,7 @@ SoNode::copyThroughConnection(void) const
 }
 
 /*!
+  \internal
   Return the next unique identification number to be assigned.
 */
 uint32_t
@@ -860,7 +866,7 @@ SoNode::getNextNodeId(void)
 }
 
 /*!
-  FIXME: write function documentation
+  \internal
  */
 const SoFieldData **
 SoNode::getFieldDataPtr(void)
