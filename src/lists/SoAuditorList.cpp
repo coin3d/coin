@@ -202,8 +202,11 @@ SoAuditorList::notify(SoNotList * l)
       }
       notified.append(auditor);
     }
-    // make sure no auditors are removed during the notification loop.
-    // This is not (currently) supported. pederb, 2001-11-06
-    assert(num == this->getLength());
+
+    // FIXME: it should be possible for the application programmer to
+    // do this (it is for instance useful and tempting to do it upon
+    // changes in engines). pederb, 2001-11-06
+    assert(num == this->getLength() &&
+           "auditors can not be removed during the notification loop");
   }
 }
