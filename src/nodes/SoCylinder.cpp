@@ -306,6 +306,12 @@ SoCylinder::rayPick(SoRayPickAction *action)
     // reported by Petter Reinholdtsen (pere@hungry.com) on
     // coin-discuss.
     //
+    // Update: it doesn't work with GCC 2.95.2 either, which is now
+    // the current official release of GCC. And I can't find any
+    // mention of a bug like this being fixed from the CVS ChangeLog,
+    // neither in the gcc/egcs head branch nor the release-2.95
+    // branch.  20000103 mortene.
+    //
     // FIXME: should a) make sure this is known to the GCC
     // maintainers, b) have an autoconf check to test for this exact
     // bug. 19991230 mortene.
