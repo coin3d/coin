@@ -450,10 +450,25 @@ STUFF TO FIX IN COIN
         * make it less likely that the simage sourcecode is slowly
           rotting away
 
-     Note that we should still keep simage as a separate CVS project,
-     as it could be usable in other contexts. We should also set up a
-     configure option that makes it possible to _exclude_ simage from
-     Coin build, as not everyone needs to be able to load textures
-     from disk.
+    Note that we should still keep simage as a separate CVS project,
+    as it could be usable in other contexts. We should also set up a
+    configure option that makes it possible to _exclude_ simage from
+    Coin build, as not everyone needs to be able to load textures
+    from disk.
+
+
+019 Dynamically configurable viewer interaction (SoQt++)
+    2002-09-30  Lars J. Aas  <larsa@sim.no>
+
+    It would be better if the interaction functionality of the
+    ExaminerViewer, PlaneViewer, etc. were implemented at the FullViewer
+    level (or even Viewer), and the leaf viewer classes mostly differed
+    in how it hooked the different interaction functionality up to the
+    different user interactions in the constructor through some generic
+    interaction configuration API.  A side-effect would be that an
+    ExaminerViewer could at run-tim be reconfigured to act as a FlyViewer,
+    but the main reason for doing this is to separate user interactions
+    from how the viewer responds, and make this more configurable, and
+    shrink the implementations of the leaf viewers to the absolute minimum.
 
 
