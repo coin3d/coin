@@ -143,8 +143,12 @@ SoSearchAction::setNode(SoNode * const node)
 }
 
 /*!
-  Returns the node the SoSearchAction instance is configured
-  to search for.
+  Returns the node the SoSearchAction instance is configured to search
+  for.
+
+  Note that this method does not return what was found when you applied the
+  action - it only returns what was specifically set by the user with
+  setNode().  What the action found is returned by getPath() and getPaths().
 */
 SoNode *
 SoSearchAction::getNode(void) const
