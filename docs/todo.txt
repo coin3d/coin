@@ -440,3 +440,16 @@ STUFF TO FIX IN COIN
   with Qt -- that would relieve us of the common problems of app
   programmers double-linking against Qt through SoQt and their
   app-code.)
+
+
+* Move action-style code developed in other projects into proper actions.
+  2002-07-05  Morten Eriksen  <mortene@sim.no>
+
+  Peder has already written much of the code needed for the TGS
+  Inventor SoToVRMLAction class, and Kintel has written code which
+  could fit into the TGS SoReorganizeAction class.
+
+  It's important to get this code into proper classes, so they are
+  used by a larger audience, adding value to the Coin library we
+  offer, so the code will be maintained instead of bit-rotting, etc
+  etc.
