@@ -45,14 +45,12 @@ protected:
 
 private:
 
-  Style currentStyle;
-  SbBool currentActive;
+  Style currentstyles;
+  float currentoffsetfactor;
+  float currentoffsetunits;
   SoState * state; // needed to test for OpenGL extension
-  float currentOffsetfactor;
-  float currentOffsetunits;
 
-  void updategl();
-
+  void updategl(void);
 };
 
 #endif // !COIN_SOGLPOLYGONOFFSETELEMENT_H

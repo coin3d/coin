@@ -64,12 +64,10 @@ void
 SoGLPolygonOffsetElement::init(SoState * state)
 {
   inherited::init(state);
-  this->currentActive = FALSE;
-  this->currentStyle = FILLED;
-  this->currentOffsetfactor = 1.0f;
-  this->currentOffsetunits = 1.0f;
+  this->currentstyles = (Style) 0;
+  this->currentoffsetfactor = 1.0f;
+  this->currentoffsetunits = 1.0f;
   this->state = state;
-  this->updategl();
 }
 
 //! FIXME: write doc.
@@ -80,11 +78,10 @@ SoGLPolygonOffsetElement::push(SoState * state)
   inherited::push(state);
   SoGLPolygonOffsetElement * prev = (SoGLPolygonOffsetElement*)this->getNextInStack();
 
-  this->currentActive = prev->currentActive;
-  this->currentStyle = prev->currentStyle;
-  this->currentOffsetfactor = prev->currentOffsetfactor;
-  this->currentOffsetunits = prev->currentOffsetunits;
-  this->state = prev->state;
+  this->currentstyles = prev->currentstyles;
+  this->currentoffsetfactor = prev->currentoffsetfactor;
+  this->currentoffsetunits = prev->currentoffsetunits;
+  this->state = state;
 }
 
 //! FIXME: write doc.
@@ -95,10 +92,9 @@ SoGLPolygonOffsetElement::pop(SoState * state, const SoElement * prevTopElement)
   const SoGLPolygonOffsetElement * prev =
     (const SoGLPolygonOffsetElement*)prevTopElement;
 
-  this->currentActive = prev->currentActive;
-  this->currentStyle = prev->currentStyle;
-  this->currentOffsetfactor = prev->currentOffsetfactor;
-  this->currentOffsetunits = prev->currentOffsetunits;
+  this->currentstyles = prev->currentstyles;
+  this->currentoffsetfactor = prev->currentoffsetfactor;
+  this->currentoffsetunits = prev->currentoffsetunits;
 
   inherited::pop(state, prevTopElement);
 }
@@ -118,18 +114,8 @@ SoGLPolygonOffsetElement::setElt(float factor, float units,
 void
 SoGLPolygonOffsetElement::lazyEvaluate(void) const
 {
-  if (this->currentActive != this->active ||
-      this->currentStyle != this->style ||
-      this->currentOffsetfactor != this->offsetfactor ||
-      this->currentOffsetunits != this->offsetunits) {
-
-    SoGLPolygonOffsetElement *elem = (SoGLPolygonOffsetElement*)this;
-    elem->currentActive = this->active;
-    elem->currentStyle = this->style;
-    elem->currentOffsetfactor = this->offsetfactor;
-    elem->currentOffsetunits = this->offsetunits;
-    elem->updategl();
-  }
+  SoGLPolygonOffsetElement *elem = (SoGLPolygonOffsetElement*)this;
+  elem->updategl();
 }
 
 // doc in parent
@@ -143,57 +129,77 @@ SoGLPolygonOffsetElement::isLazy(void) const
 //! FIXME: write doc.
 
 void
-SoGLPolygonOffsetElement::updategl()
+SoGLPolygonOffsetElement::updategl(void)
 {
-  // FIXME: might be faster to update the current-values here
-  // and check exactly what has changed
-
-  // FIXME: is it possible to enable more than one Style at
-  // a time?
-
-#if GL_EXT_polygon_offset && ! GL_VERSION_1_1
+#if GL_EXT_polygon_offset && !GL_VERSION_1_1
   static int polygon_offset_ext_id = -1;
   if (polygon_offset_ext_id == -1) {
     polygon_offset_ext_id =
       SoGLCacheContextElement::getExtID("GL_EXT_polygon_offset");
   }
-#endif // GL_EXT_polygon_offset && ! GL_VERSION_1_1
+#endif GL_EXT_polygon_offset && ! GL_VERSION_1_1
 
-  if (this->currentActive) {
+  if (this->active) {
 #if GL_VERSION_1_1
-    if (currentStyle & FILLED)
+    if ((this->style & FILLED) && !(this->currentstyles & FILLED))
       glEnable(GL_POLYGON_OFFSET_FILL);
-    if (currentStyle & LINES)
+    if ((this->style & LINES) && !(this->currentstyles & LINES))
       glEnable(GL_POLYGON_OFFSET_LINE);
-    if (currentStyle & POINTS)
+    if ((this->style & POINTS) && !(this->currentstyles & POINTS))
       glEnable(GL_POLYGON_OFFSET_POINT);
-
-    glPolygonOffset(this->currentOffsetfactor,
-                    this->currentOffsetunits);
+    glPolygonOffset(this->currentoffsetfactor,
+                    this->currentoffsetunits);
+#ifdef __sgi
+    // glPolygonOffset() is Buggy on some IRIX GL-implementations that
+    // reports OpenGL 1.1 support, but only has partial
+    // support. Nothing dangerous, but causes GL errors/warning. Just
+    // clear GL errors for now.  Problem reported by
+    // Jacob@fedem.com. pederb 2001-06-25
+    while (glGetError() != GL_NO_ERROR);
+#endif // __sgi
+    
 #elif GL_EXT_polygon_offset
     if (SoGLCacheContextElement::extSupported(this->state, polygon_offset_ext_id)) {
       // FIXME: this value (0.0000001) a hack to make it look
       // ok on old SGI HW
-
+      
       // try to detect if user attempted to specify a bias, and not units
       SbBool isbias = this->currentOffsetunits > 0.0f && this->currentOffsetunits < 0.01f;
-      if (currentStyle & FILLED) {
-        glPolygonOffsetEXT(this->currentOffsetfactor,
-                           isbias ? this->currentOffsetunits : 0.000001);
+      glPolygonOffsetEXT(this->currentoffsetfactor,
+                         isbias ? this->currentoffsetunits : 0.000001);
+      if ((this->styles & FILLED) && !(this->currentstyles & FILLED)) {
         glEnable(GL_POLYGON_OFFSET_EXT);
       }
     }
-#endif
+#endif // GL_EXT_polygon_offset
+    this->currentstyles = this->style;
   }
-  else {
+  else { // ! active
 #if GL_VERSION_1_1
-    glDisable(GL_POLYGON_OFFSET_FILL);
-    glDisable(GL_POLYGON_OFFSET_LINE);
-    glDisable(GL_POLYGON_OFFSET_POINT);
+    if (this->currentstyles & FILLED) 
+      glDisable(GL_POLYGON_OFFSET_FILL);
+    if (this->currentstyles & LINES)
+      glDisable(GL_POLYGON_OFFSET_LINE);
+    if (this->currentstyles & POINTS)
+      glDisable(GL_POLYGON_OFFSET_POINT);
+#ifdef __sgi
+    // glPolygonOffset() is Buggy on some IRIX GL-implementations that
+    // reports OpenGL 1.1 support, but only has partial
+    // support. Nothing dangerous, but causes GL errors/warning. Just
+    // clear GL errors for now.  Problem reported by
+    // Jacob@fedem.com. pederb 2001-06-25
+    while (glGetError() != GL_NO_ERROR);
+#endif // __sgi
 #elif GL_EXT_polygon_offset
     if (SoGLCacheContextElement::extSupported(this->state, polygon_offset_ext_id)) {
-      glDisable(GL_POLYGON_OFFSET_EXT);
+      if (this->currentstyles & FILLED)
+        glDisable(GL_POLYGON_OFFSET_EXT);
     }
-#endif
+#endif // GL_EXT_polygon_offset
+    this->currentstyles = (Style) 0;
   }
+  
+  // update current offset values before returning
+  this->currentoffsetfactor = this->offsetfactor;
+  this->currentoffsetunits = this->offsetunits;
 }
