@@ -148,7 +148,6 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
 {
   // FIXME: optimize by detecting when the previously calculated
   // vertices can be returned. pederb, 20000922
-#if defined(HAVE_GLU_NURBSOBJECT) && GLU_VERSION_1_3
   int numpoints;
   float * points;
   int floatspervec;
@@ -173,9 +172,11 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
   for (int i = 0; i < numpoints; i++) {
     nurbsProfileTempList->append(points[i*floatspervec]);
     nurbsProfileTempList->append(points[i*floatspervec+1]);
+#if defined(HAVE_GLU_NURBSOBJECT) && GLU_VERSION_1_3
     nurbsProfileTempList->append(0.0f); // gluNurbs needs 3D coordinates
+#endif // HAVE_GLU_NURBSOBJECT) && GLU_VERSION_1_3
   }
-  
+#if defined(HAVE_GLU_NURBSOBJECT) && GLU_VERSION_1_3
   // we will write into this array in the GLU callback
   coordListNurbsProfile->truncate(0);
 
@@ -232,7 +233,8 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
   numvertices = coordListNurbsProfile->getLength() / 2;
   vertices = (SbVec2f*) coordListNurbsProfile->getArrayPtr();
 #else // HAVE_GLU_NURBSOBJECT && GLU_VERSION_1_3
-  numvertices = 0;
-  vertices = NULL;
+  // just send the control points when GLU v1.3 is not available
+  numvertices = numpoints;
+  vertices = (SbVec2f*) nurbsProfileTempList->getArrayPtr();
 #endif // ! HAVE_GLU_NURBSOBJECT && GLU_VERSION_1_3
 }
