@@ -1,0 +1,236 @@
+This document describes the process of making a new release of the Coin
+library.
+
+
+CODE AUDITING
+=============
+
+* Look through the patches in Coin-?/patchqueue/ and apply those who
+  are decided to be ripe for plucking. Just use common sense and your
+  knowledge about what can and can't be done versus API and ABI
+  incompabilities and upgrades for the version to be released. Be
+  conservative, better safe than sorry and all that.
+
+* Grep for "\since" in the sourcecode files, and replace all the
+  YYYY-MM-DD date tags with a version number.
+
+* For new classes and methods, inspect the interface for correctness with
+  regards to constness, access rights and similar things.
+
+* If there's been a New Year's Eve since last release, update copyright
+  information in all the source files, etc.
+
+
+SPIFFING
+========
+
+This phase consists of getting everything straightened out and verifying
+that things work as expected.  This phase should be repeated randomly
+several times as new problems show up.
+
+* Build-system updating:
+
+  - Check installed versions of Autoconf, Automake and Libtool, and
+    bootstrap the repository.  Libtoolize if necessary.  Note local
+    changes to the libtool files, if any.  Verify the autotools
+    information given in HACKING.  Update NEWS if there has been changes
+    (new requirements?) since last release.
+
+  - Enter cfg/ and update config.guess and config.sub from these files:
+      ftp://ftp.gnu.org/gnu/config/config.guess
+      ftp://ftp.gnu.org/gnu/config/config.sub
+
+* Source and build-system validation:
+
+  All of this ought really be done from sources from a "make dist" tarball.
+
+  - Linux (GNU make and gcc):
+
+    $ <srcdir>/Coin/configure && make distcheck
+
+    Verify the enable-compact build:
+
+    $ <srcdir>/Coin/configure --enable-compact && make
+
+    - Linux Debian packaging check (from "make dist" tarball)
+
+      $ cd /tmp
+      $ debootstrap sid sid-chroot
+      $ cp /etc/apt/sources.list sid-chroot/etc/apt/
+      $ cp Coin-#.#.#.tar.gz sid-chroot/tmp
+      $ chroot sid-chroot
+      $ apt-get update
+      $ apt-get install build-essential
+      $ cd /tmp
+      $ tar zxvf Coin-#.#.#.tar.gz
+      $ cd Coin-#.#.#
+
+      Inspect packaging/debian/control.in and do for each dependency package
+        $ apt-get install <package>
+
+      $ ./configure && make debian-packages
+
+  - IRIX (IRIX CC and IRIX make):
+
+    $ unset NLSPATH
+    $ export CC="CC -n32"
+    $ export CXX="CC -n32"
+    $ export MAKE=/bin/make
+    $ export PATH=/bin:$PATH
+    $ Coin/configure && make distcheck
+
+  - Cygwin (GNU make and MS Visual C++)
+
+    $ <srcdir>/Coin/configure && make windows-packages
+
+    * Build SoQt and then build SoQt/test-code/assertdbg/crash.cpp with
+      the debug libraries of Coin and SoQt, and ensure that the debugger
+      has symbols and can trace through the source code when it comes up.
+ 
+    This step will verify both release and debug builds.
+
+  - Mac OS X (GNU make and gcc)
+
+    This step is not a strict requirement (but it would be good to do
+    it nevertheless) before we officially support SoQt on Mac and/or
+    have our own SoMac library.
+
+    $ <srcdir>/Coin/configure && make distcheck
+
+  - Make Source Dist
+
+    - Remember to remove src/extensions/superglu before running
+
+        $ <srcdir>/Coin-1/configure && make dist
+
+      or superglu will be included in the dist tarball.
+
+    - Remember to try bootstrap on the dist tarball to see that all the
+      required m4 files are included in the dist.
+
+  - Builds to set up:
+
+    * Build against OpenGL 1.1 (lowest supported version)
+      - both debug and release mode
+
+  * build a GUI toolkit + SoGuiExamples on top of Coin and run a few programs
+
+* Update Documents
+
+  - Run through ChangeLog and update NEWS on user-visible changes.
+
+  - Run through ChangeLog and update RELNOTES on semantic changes.
+
+  - Run through ChangeLog and update THANKS.
+
+  - Check for missing and stale information in INSTALL.
+
+  - Update README and README.*
+
+  - Create stub ChangeLog.vN.N.N in docs and add it to $(EXTRA_DIST) in
+    toplevel Makefile.am.
+
+  - Write usenet/mailinglist announcement and commit it to docs/ and add the
+    file to $(EXTRA_DIST) in toplevel Makefile.am.
+    - Include NEWS section.
+    - Include download information.
+
+* Bootstrap and commit everything.
+
+
+PUNTING
+=======
+
+It is very important that all spiffing has been finished before embarking
+on this phase.  It can only be done once for each release, and should be
+done on a tight timeframe so chances of other people commiting anything to
+the library at the same time is minimal.  One should of course announce
+to all CVS writers that punting will be done and nobody should commit
+anything.
+
+* Release Version Number Update:
+
+  configure.ac (top section)
+  NEWS (header)
+  README (multiple instances)
+  RELNOTES
+  INSTALL
+  HACKING
+
+  Rerun bootstrap.  Commit.
+
+* Generate up-to-date ChangeLog file for this release.
+
+  Ensure the version number update is top entry in ChangeLog.
+
+  Move updated ChangeLog file to docs/ChangeLog.vN.N.N.
+  Put "See docs/ChangeLog.vN.N.N" as the only content of root ChangeLog file.
+  Commit changes.
+
+* Tag Source Repository
+
+  $ cvs tag coin-N_N_N
+
+* Version Number Update
+
+  configure.in (update COIN_MICRO and set COIN_BETA to a)
+  NEWS (start new section for Coin beta)
+
+  Rerun bootstrap.  Commit changes.
+
+  We're now home free if everything went well with the spiffing.
+
+
+PUBLISHING / ANNOUNCING
+=======================
+
+This stage should be self-explanatory.
+
+
+* Checkout of the release source code and make archive
+
+  $ cvs -d :pserver:cvs@cvs.coin3d.org:/export/cvsroot co -r coin-#_#_# Coin-1
+  $ cd Coin-1
+  $ ./configure && make dist
+
+* Build Microsoft Visual C++ Windows SDK
+
+  $ ./configure && make windows-packages
+
+  (FIXME note for future releases: MSVC++ v6 and v7 binary SDKs might
+  be incompatible due to changes in which C-libraries are used.  (At
+  least TGS is releasing separate SDKs of TGS Inventor for the two
+  MSVC++ versions.) Investigate, and if this is the case, we should
+  pick up an MSVC++ v7 license after the official release somewhere in
+  2002-02 and support both versions.  2002-01-26 mortene.)
+
+* Build Debian Packages
+
+  $ ./configure && make debian-packages
+
+  * NOTE: PGP-signing of the packages is done by the Debian sponsor/
+    uploader, not the package builder
+
+* Build RPM Packages
+
+* Put source distribution at ftp://ftp.coin3d.org/pub/coin/src/
+
+* Put binary distributions at ftp://ftp.coin3d.org/pub/coin/bin/<arch>/
+
+* Make Debian Upload
+
+  Steve M. Robbins <smr at debian.org> is our contact on this item.
+
+* Send announcements to coin-announce@coin3d.org and coin-discuss@coin3d.org
+
+* Post announcement on comp.graphics.api.inventor
+
+* Update Coin Freshmeat project
+
+* Send announcement to maintainers of OpenGL.org, Linux3D.org (dead?),
+  VIS-SIM.org, 3dvis.siliconthoughts.com, vrsource.org
+
+* Update our Coin entry on www.versiontracker.com (Mac OS equivalent
+  of freshmeat.net).
+
+* Lean back and wait for bug reports
