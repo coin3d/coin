@@ -1227,6 +1227,10 @@ SoShapeP::calibrateBBoxCache(void)
       vecarray[i][j] = ((float) rand()) / ((float) RAND_MAX);
     }
   }
+
+  // FIXME: should really measure CPU time spent, and not just wall
+  // time. See the item in Coin/docs/todo.txt on implementing a
+  // "stopwatch" ADT. 20021111 mortene.
   SbTime begin = SbTime::getTimeOfDay();
   SbBox3f bbox;
   bbox.makeEmpty();

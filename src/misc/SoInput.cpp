@@ -2171,6 +2171,8 @@ SoInput::convertFloat(char * from, float * f)
   // works. Probably because the bitpatterns of the parts of float
   // numbers are standardized according to IEEE 754 (?).
   assert(sizeof(uint32_t) == sizeof(float));
+  // FIXME: we now have coin_ntoh_float() and coin_hton_float()
+  // functions in tidbits.c. 20021121 mortene.
   uint32_t fbitval = coin_ntoh_uint32(*((uint32_t *)from));
   memcpy(f, &fbitval, sizeof(float));
 }
@@ -2187,6 +2189,8 @@ SoInput::convertDouble(char * from, double * d)
   // Universe, but hey -- it works for me. I think.
   assert(sizeof(uint32_t) * 2 == sizeof(double));
   unsigned long int dbitvals[2] = {
+    // FIXME: we now have coin_ntoh_float() and coin_hton_float()
+    // functions in tidbits.c. 20021121 mortene.
     coin_ntoh_uint32(*((uint32_t *)from)),
     coin_ntoh_uint32(*((uint32_t *)(from + sizeof(double)/2))),
   };
@@ -2224,7 +2228,7 @@ SoInput::convertInt32Array(char * from, int32_t * to, int len)
 }
 
 /*!
-  Convert a b ock of single-precision floating point numbers in
+  Convert a block of single-precision floating point numbers in
   network format to native format.
 
   \sa convertFloat()

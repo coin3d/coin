@@ -6,6 +6,10 @@
 # warn/exit. Ditto goes for all our other software modules aswell, of
 # course. 20020519 mortene.
 
+# FIXME: need to figure out when libstdc++ is necessary to link. GCC
+# 3.2 on Solaris seems to demand it, or we'll get unresolved symbols.
+# 20021128 mortene.
+
 # **************************************************************************
 
 # release version number info
