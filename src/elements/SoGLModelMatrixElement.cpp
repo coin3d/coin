@@ -171,4 +171,5 @@ SoGLModelMatrixElement::popMatrixElt(const SbMatrix &matrix)
   if (this->viewEltNodeId != SoGLViewingMatrixElement::getNodeId(this->state)) {
     this->setElt(matrix);
   }
+  inherited::popMatrixElt(matrix);
 }
