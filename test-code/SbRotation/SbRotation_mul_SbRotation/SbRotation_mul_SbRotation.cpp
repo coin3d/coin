@@ -25,6 +25,7 @@ main(int argc, char ** argv)
     if (valsread == 4) {
       SbRotation n(v);
       r *= n;
+      r = r * n; // test this variant aswell
       const float * a = r.getValue();
       (void)fprintf(stdout, "%.3f %.3f %.3f %3f\n", a[0], a[1], a[2], a[3]);
     }
