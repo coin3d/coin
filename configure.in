@@ -453,20 +453,71 @@ fi
 
 if $sim_ac_build_library; then
 
-  # instead of getenv() on most Win32 platforms (not Windows CE)
-  AC_MSG_CHECKING([GetEnvironmentVariable() function])
-  AC_TRY_LINK([
+# *******************************************************************
+# Instead of getenv() on most Win32 platforms (not Windows CE).
+
+AC_MSG_CHECKING([for GetEnvironmentVariable() function])
+AC_TRY_LINK([
 #ifdef HAVE_WINDOWS_H
 #include <windows.h>
 #endif
-  ], [
-    (void)GetEnvironmentVariable("FOOBAR", NULL, 0);
-  ], [
-    AC_MSG_RESULT([yes])
-    AC_DEFINE([HAVE_GETENVIRONMENTVARIABLE],, [Define to use GetEnvironmentVariable() instead of getenv()])
-  ], [
-    AC_MSG_RESULT([no])
-  ])
+], [
+  (void)GetEnvironmentVariable("FOOBAR", NULL, 0);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_GETENVIRONMENTVARIABLE],, [Define to use GetEnvironmentVariable() instead of getenv()])
+], [
+  AC_MSG_RESULT([no])
+])
+
+# *******************************************************************
+# Test for misc functions to get systemtime with.
+
+AC_MSG_CHECKING([for QueryPerformanceCounter() function])
+AC_TRY_LINK([
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+], [
+  LARGE_INTEGER l;
+  (void)QueryPerformanceFrequency(&l);
+  (void)QueryPerformanceCounter(&l);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_QUERYPERFORMANCECOUNTER],, [Define to use Win32 QueryPerformanceCounter()])
+], [
+  AC_MSG_RESULT([no])
+])
+
+AC_MSG_CHECKING([for _ftime() function])
+AC_TRY_LINK([
+#include <windows.h>
+#include <sys/types.h>
+#include <sys/timeb.h>
+], [
+  struct _timeb timebuffer;
+  _ftime(&timebuffer);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE__FTIME],, [Define to use Win32 _ftime()])
+], [
+  AC_MSG_RESULT([no])
+])
+
+AC_MSG_CHECKING([for gettimeofday() function])
+AC_TRY_LINK([
+#include <sys/time.h>
+#include <unistd.h>
+], [
+  struct timeval tmp;
+  (void)gettimeofday(&tmp, NULL);
+], [
+  AC_MSG_RESULT([yes])
+  AC_DEFINE([HAVE_GETTIMEOFDAY],, [Define to use SVr4 / BSD4.3 gettimeofday()])
+], [
+  AC_MSG_RESULT([no])
+])
+
 
 # *******************************************************************
 # * Test to see if dynamic linking through either the (Linux/IRIX/...)
