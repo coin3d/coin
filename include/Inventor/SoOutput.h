@@ -34,6 +34,7 @@ class SbName;
 class SoBase;
 class SoOutputP;
 class SoProto;
+class SoField;
 
 typedef void * SoOutputReallocCB(void * ptr, size_t newSize);
 
@@ -105,6 +106,9 @@ public:
   void pushProto(SoProto * proto);
   SoProto * getCurrentProto(void) const;
   void popProto(void);
+
+  void addROUTE(SoField * from, SoField * to);
+  void resolveROUTEs(void);
 
 protected:
   SbBool isToBuffer(void) const;

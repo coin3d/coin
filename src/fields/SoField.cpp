@@ -75,6 +75,7 @@
 #include <../tidbits.h> // coin_atexit()
 
 #include <Inventor/SoDB.h>
+#include <Inventor/nodes/SoNode.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -1728,6 +1729,16 @@ SoField::writeConnection(SoOutput * out) const
   SoFieldContainer * fc = this->resolveWriteConnection(mastername);
   assert(fc);
 
+  if (this->getContainer()->isOfType(SoNode::getClassTypeId()) &&
+      fc->isOfType(SoNode::getClassTypeId())) {
+    SoNode * node = (SoNode*) this->getContainer();
+    if ((node->getNodeType() & SoNode::VRML2) &&
+        (((SoNode*)fc)->getNodeType() & SoNode::VRML2)) {
+      out->addROUTE(fc->getField(mastername), (SoField*) this);
+      return;
+    }
+  }
+  
   if (!out->isBinary()) {
     out->write(' ');
     out->write(CONNECTIONCHAR);

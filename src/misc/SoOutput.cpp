@@ -37,6 +37,9 @@
 #include <Inventor/SbDict.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SoFieldList.h>
+#include <Inventor/fields/SoFieldContainer.h>
+#include <Inventor/fields/SoField.h>
 #include <assert.h>
 #include <string.h>
 #if HAVE_CONFIG_H
@@ -107,7 +110,37 @@ public:
   uint32_t annotationbits;
   SbList <SoProto*> protostack;
   SbList <SbDict*> defstack;
+  SbList <SoFieldList *> routestack; 
 
+  void pushRoutes(const SbBool copyprev) {
+    const int oldidx = this->routestack.getLength() - 1;
+    assert(oldidx >= 0);
+    SoFieldList * newlist;
+    SoFieldList * oldlist = this->routestack[oldidx];
+    if (copyprev && oldlist && oldlist->getLength()) {
+      newlist = new SoFieldList(*oldlist);
+    }
+    else newlist = new SoFieldList;
+    this->routestack.push(newlist);
+  }
+  SoFieldList * getCurrentRoutes(const SbBool createifnull) {
+    const int n = this->routestack.getLength();
+    assert(n);
+    SoFieldList * list = this->routestack[n-1];
+    if (list == NULL && createifnull) {
+      list = new SoFieldList;
+      this->routestack[n-1] = list;
+    }
+    return list;
+  }
+
+  void popRoutes(void) {
+    const int idx = this->routestack.getLength()-1;
+    assert(idx >= 0);
+    delete this->routestack[idx];
+    this->routestack.remove(idx);
+  }
+  
   void pushDefNames(const SbBool copyprev) {
     const int n = this->defstack.getLength();
     assert(n);
@@ -188,6 +221,7 @@ SoOutput::constructorCommon(void)
   THIS->indentlevel = 0;
   THIS->nextreferenceid = 0;
   THIS->annotationbits = 0x00;
+  THIS->routestack.append(NULL);
 }
 
 /*!
@@ -798,6 +832,12 @@ SoOutput::reset(void)
 {
   this->closeFile();
   delete THIS->sobase2id; THIS->sobase2id = NULL;
+  
+  while (THIS->routestack.getLength()) {
+    delete THIS->routestack[0];
+    THIS->routestack.removeFast(0);
+  }
+  THIS->routestack.append(NULL);
 
   THIS->protostack.truncate(0);
   while (THIS->defstack.getLength()) {
@@ -1056,17 +1096,26 @@ SoOutput::removeDEFNode(SbName name)
 /*!
   \internal
 
+  FIXME: try to find a better/nicer way to handle PROTO export without
+  adding new methods in SoOutput. For instance, is it possible to
+  add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
   \since 2002-05-27
 */
 void 
 SoOutput::pushProto(SoProto * proto)
 {
+  THIS->pushRoutes(FALSE);
   THIS->protostack.push(proto);
   THIS->pushDefNames(FALSE);
 }
 
 /*!
   \internal
+
+  FIXME: try to find a better/nicer way to handle PROTO export without
+  adding new methods in SoOutput. For instance, is it possible to
+  add elements in the SoWriteAction state stack? pederb, 2002-06-12
 
   \since 2002-05-27
 */
@@ -1082,6 +1131,10 @@ SoOutput::getCurrentProto(void) const
 /*!
   \internal
 
+  FIXME: try to find a better/nicer way to handle PROTO export without
+  adding new methods in SoOutput. For instance, is it possible to
+  add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
   \since 2002-05-27
 */
 void 
@@ -1090,6 +1143,68 @@ SoOutput::popProto(void)
   assert(THIS->protostack.getLength());
   THIS->protostack.pop();
   THIS->popDefNames();
+  this->resolveROUTEs();
+  THIS->popRoutes();
+}
+
+/*!
+  \internal
+
+  FIXME: try to find a better/nicer way to handle ROUTE export without
+  adding new methods in SoOutput. For instance, is it possible to
+  add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
+  \since 2002-06-12
+*/
+void 
+SoOutput::addROUTE(SoField * from, SoField * to)
+{
+  SoFieldList * list = THIS->getCurrentRoutes(TRUE);
+  assert(list);
+  list->append(from);
+  list->append(to);
+}
+
+/*!
+  \internal
+
+  FIXME: try to find a better/nicer way to handle ROUTE export without
+  adding new methods in SoOutput. For instance, is it possible to
+  add elements in the SoWriteAction state stack? pederb, 2002-06-12
+
+  \since 2002-06-12 
+*/
+void 
+SoOutput::resolveROUTEs(void)
+{
+  SoFieldList * list = THIS->getCurrentRoutes(FALSE);
+  if (list && list->getLength()) {
+    const int n = list->getLength() / 2;
+    for (int i = 0; i < n; i++) {
+      SoField * from = (*list)[i*2];
+      SoField * to = (*list)[i*2+1];
+      SoFieldContainer * fromc = from->getContainer();
+      SoFieldContainer * toc = to->getContainer();
+
+      SbName fromname;
+      SbName toname;
+
+      (void) fromc->getFieldName(from, fromname);
+      (void) toc->getFieldName(to, toname);
+
+      this->indent();
+      this->write("ROUTE ");
+      this->write(fromc->getName().getString());
+      this->write('.');
+      this->write(fromname.getString());
+      this->write(" TO ");
+      this->write(toc->getName().getString());
+      this->write('.');
+      this->write(toname.getString());
+      this->write("\n");
+    }
+    list->truncate(0);
+  }
 }
 
 /*!

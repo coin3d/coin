@@ -155,7 +155,10 @@ SoWriteAction::beginTraversal(SoNode * node)
     this->outobj->setStage(SoOutput::WRITE);
   }
   this->traverse(node);
-  if (!this->outobj->isBinary() && !this->continuing) outobj->write('\n');
+  if (!this->outobj->isBinary() && !this->continuing) {
+    outobj->write('\n');
+    outobj->resolveROUTEs();
+  }
 }
 
 /*!
