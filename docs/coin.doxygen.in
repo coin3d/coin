@@ -830,6 +830,12 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLViewpoint.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/VRMLnodes/SoVRMLWorldInfo.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoHardCopy.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoPSVectorOutput.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorOutput.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizeAction.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizeItems.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/annex/HardCopy/SoVectorizePSAction.h \
                          @path_tag@@coin_src_dir@/src/actions/SoAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoAudioRenderAction.cpp \
                          @path_tag@@coin_src_dir@/src/actions/SoBoxHighlightRenderAction.cpp \
@@ -1278,7 +1284,13 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/vrml97/VertexShape.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/Viewpoint.cpp \
                          @path_tag@@coin_src_dir@/src/vrml97/VisibilitySensor.cpp \
-                         @path_tag@@coin_src_dir@/src/vrml97/WorldInfo.cpp
+                         @path_tag@@coin_src_dir@/src/vrml97/WorldInfo.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/HardCopy.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/PSVectorOutput.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/VectorOutput.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/VectorizeAction.cpp \
+                         @path_tag@@coin_src_dir@/src/hardcopy/VectorizePSAction.cpp
+
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 

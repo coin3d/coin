@@ -21,6 +21,13 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoPSVectorOutput HardCopy/SoPSVectorOutput.h
+  \brief The SoPSVectorOutput class is writing Postscript.
+  \ingroup hardcopy
+
+*/
+
 #include <HardCopy/SoPSVectorOutput.h>
 #include <Inventor/SbBasic.h>
 

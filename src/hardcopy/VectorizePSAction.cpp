@@ -24,6 +24,7 @@
 /*!
   \class SoVectorizePSAction HardCopy/SoVectorizePSAction.h
   \brief The SoVectorizePSAction class is used for rendering to Postscript.
+  \ingroup hardcopy
 
 */
 

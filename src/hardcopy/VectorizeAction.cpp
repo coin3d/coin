@@ -24,6 +24,7 @@
 /*!
   \class SoVectorizeAction HardCopy/SoVectorizeAction.h
   \brief The SoVectorizeAction class is the base class for vectorizing Coin scene graphs.
+  \ingroup hardcopy
 
   The main API for HardCopy support in Coin is the abstract class
   SoVectorizAction. SoVectorizeAction will extract geometry from an

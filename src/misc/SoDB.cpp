@@ -97,6 +97,7 @@
 /*! \defgroup events Event classes */
 /*! \defgroup fields Field classes */
 /*! \defgroup general General classes */
+/*! \defgroup hardcopy Support for vectorized printing */
 /*! \defgroup manips Manipulators */
 /*! \defgroup nodekits Node Kits */
 /*! \defgroup nodes Nodes */

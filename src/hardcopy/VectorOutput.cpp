@@ -29,6 +29,7 @@
 /*!
   \class SoVectorOutput HardCopy/SoVectorOutput.h
   \brief The SoVectorOutput class is used for setting vector output file.
+  \ingroup hardcopy
 
   SoVectorizeAction will create an SoVectorOutput which will output
   to stdout by default. SoVectorizeAction::getOutput() can be used to
