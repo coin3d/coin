@@ -1038,6 +1038,9 @@ SoBaseKit::getMatrix(SoGetMatrixAction * action)
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
     this->children->traverseInPath(action, numindices, indices);
   }
+  else {
+    this->children->traverse(action);
+  }
 }
 
 // Doc in superclass.
