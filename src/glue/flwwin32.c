@@ -21,9 +21,14 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/glue/flwwin32.h>
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #include <stdlib.h>
 #include <assert.h>
+
+#include <Inventor/C/glue/flwwin32.h>
 
 /* ************************************************************************* */
 
@@ -35,11 +40,6 @@
 */
 
 /* ************************************************************************* */
-
-/* FIXME: should be based on a configure check. 20030515 mortene. */
-#ifdef _WIN32
-#define HAVE_WIN32_API
-#endif /* _WIN32 */
 
 #ifndef HAVE_WIN32_API
 
