@@ -201,19 +201,50 @@ fi
 
 
 # *******************************************************************
+# * Test to see if dynamic linking through the dl library is
+# * available.
+# *******************************************************************
+
+SIM_AC_CHECK_DL(
+  AC_DEFINE_UNQUOTED(HAVE_DL_LIB)
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_dl_cppflags"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_dl_ldflags"
+  COIN_EXTRA_LIBS="$sim_ac_dl_libs $COIN_EXTRA_LIBS"
+)
+
+
+# *******************************************************************
 # * Set us up for using the simage library (if wanted, and if
 # * available).
 # *******************************************************************
 
-SIM_AC_HAVE_SIMAGE_IFELSE(
-  AC_DEFINE(HAVE_LIBSIMAGE)
-  CPPFLAGS="$CPPFLAGS $sim_ac_simage_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_simage_ldflags"
-  LIBS="$sim_ac_simage_libs $LIBS"
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_simage_cppflags"
-  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
-  COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
-, AC_MSG_WARN(simage development system not found))
+AC_ARG_ENABLE([dl-simage],
+  AC_HELP_STRING([--enable-dl-simage],
+                 [use runtime dynamic linking for libsimage if possible [[default=yes]]]),
+  [case "${enableval}" in
+    yes | no) enable_dl_simage=${enableval} ;;
+    *) AC_MSG_ERROR(bad value "${enableval}" for --enable-dl-simage) ;;
+  esac],
+  [enable_dl_simage=yes])
+
+if test x"$sim_ac_dl_avail" = xyes -a x"$enable_dl_simage" = xyes; then
+  AC_DEFINE_UNQUOTED(SIMAGE_RUNTIME_LINKING)
+else
+  SIM_AC_HAVE_SIMAGE_IFELSE(
+    AC_DEFINE(HAVE_LIBSIMAGE)
+    CPPFLAGS="$CPPFLAGS $sim_ac_simage_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_simage_ldflags"
+    LIBS="$sim_ac_simage_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_simage_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
+  , if $sim_ac_simage_desired; then AC_MSG_WARN(simage development system not found); fi)
+fi
+
+
+# *******************************************************************
+# * Mathlib stuff.
+# *******************************************************************
 
 # We need to check for the math library on our own if its not
 # "inherited" from the simage library. FIXME: this could better
@@ -316,7 +347,7 @@ fi
 # *******************************************************************
 
 AC_ARG_ENABLE(compact,
-  AC_HELP_STRING([--enable-compact], [enable hack for compact compilation [default=no]]),
+  AC_HELP_STRING([--enable-compact], [enable hack for compact compilation [[default=no]]]),
   [case "${enableval}" in
     yes) enable_compact=yes ;;
     no)  enable_compact=no ;;
@@ -334,7 +365,7 @@ AM_CONDITIONAL(HACKING_COMPACT_BUILD, test x"$enable_compact" = x"yes")
 # *******************************************************************
 
 AC_ARG_ENABLE(hacking,
-  AC_HELP_STRING([--enable-hacking], [enable hacks for quick turn-around cycles during development [default=no]]),
+  AC_HELP_STRING([--enable-hacking], [enable hacks for quick turn-around cycles during development [[default=no]]]),
   [case "${enableval}" in
     yes) enable_hacking=yes ;;
     no)  enable_hacking=no ;;
@@ -371,7 +402,7 @@ AC_ARG_WITH(depmode,
 # *******************************************************************
 
 AC_ARG_WITH(tools,
-  AC_HELP_STRING([--with-tools], [build Coin-based tools [default=yes]]),
+  AC_HELP_STRING([--with-tools], [build Coin-based tools [[default=yes]]]),
   [case "${withval}" in
     yes) want_tools=yes ;;
     no)  want_tools=no ;;
@@ -387,7 +418,7 @@ AM_CONDITIONAL(BUILD_TOOLS, test x"$want_tools" = xyes)
 # *******************************************************************
 
 AC_ARG_WITH(examples,
-  AC_HELP_STRING([--with-examples], [build Coin example programs [default=yes]]),
+  AC_HELP_STRING([--with-examples], [build Coin example programs [[default=yes]]]),
   [case "${withval}" in
     yes) want_examples=yes ;;
     no)  want_examples=no ;;

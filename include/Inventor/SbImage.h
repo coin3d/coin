@@ -44,6 +44,7 @@ public:
   int operator!=(const SbImage & image) const {
     return ! operator == (image);
   }
+
 private:
   unsigned char * bytes;
   SbVec2s size;

@@ -23,11 +23,14 @@
 #include <string.h>
 #include <stdlib.h>
 #if HAVE_CONFIG_H
-#include <config.h> // HAVE_LIBSIMAGE define
+#include <config.h> // HAVE_LIBSIMAGE, SIMAGE_RUNTIME_LINKING etc
 #endif // HAVE_CONFIG_H
 #if HAVE_LIBSIMAGE
 #include <simage.h>
 #endif // HAVE_LIBSIMAGE
+#if HAVE_DLFCN_H
+#include <dlfcn.h>
+#endif // HAVE_DLFCN_H
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -46,6 +49,14 @@
 
   This class is an extension to the OIV API.
 */
+
+// Data for libsimage interface.
+static SbBool SIMAGE_failed_to_load = FALSE;
+static void * SIMAGE_libhandle = NULL;
+//  typedef SIMAGE_read_image_t unsigned char * (*)(const char *, int *, int *, int *);
+static unsigned char * (*SIMAGE_read_image)(const char *, int *, int *, int *) = NULL;
+
+
 
 /*!
   Default constructor.
@@ -263,20 +274,55 @@ SbImage::readFile(const SbString & filename,
                   const SbString * const * searchdirectories,
                   const int numdirectories)
 {
-#if HAVE_LIBSIMAGE
   SbString finalname = search_for_file(filename, searchdirectories,
                                        numdirectories);
   if (finalname.getLength()) {
     int w, h, nc;
-    unsigned char * simagedata =
-      simage_read_image(finalname.getString(), &w, &h, &nc);
+    unsigned char * simagedata = NULL;
+
+#if HAVE_LIBSIMAGE
+    // Function symbol simage_read_image() from libsimage is already
+    // loaded.
+    if (!SIMAGE_read_image) SIMAGE_read_image = simage_read_image;
+#endif // HAVE_LIBSIMAGE
+
+#if SIMAGE_RUNTIME_LINKING
+    if (!SIMAGE_read_image && !SIMAGE_failed_to_load) {
+      SIMAGE_libhandle = dlopen("libsimage.so", RTLD_NOW);
+      if (!SIMAGE_libhandle) {
+        SIMAGE_failed_to_load = TRUE;
+#if COIN_DEBUG
+        SoDebugError::post("SbImage::readFile",
+                           "couldn't open libsimage.so; '%s'",
+                           dlerror());
+#endif // COIN_DEBUG
+      }
+      else {
+        // FIXME: setup atexit() with dlclose. 20000927 mortene.
+        SIMAGE_read_image = (unsigned char *(*)(const char *, int *, int *, int *))
+          dlsym(SIMAGE_libhandle, "simage_read_image");
+        if (!SIMAGE_read_image) {
+          SIMAGE_failed_to_load = TRUE;
+#if COIN_DEBUG
+          SoDebugError::post("SbImage::readFile",
+                             "couldn't find function pointer "
+                             "simage_read_image; '%s'",
+                             dlerror());
+#endif // COIN_DEBUG
+        }
+      }
+    }
+#endif // SIMAGE_RUNTIME_LINKING
+
+    if (SIMAGE_read_image) {
+      simagedata = SIMAGE_read_image(finalname.getString(), &w, &h, &nc);
+    }
     if (simagedata) {
       this->setValue(SbVec2s((short)w, (short)h), nc, simagedata);
       free(simagedata);
       return TRUE;
     }
   }
-#endif // HAVE_LIBSIMAGE
 
   this->setValue(SbVec2s(0,0), 0, NULL);
   return FALSE;

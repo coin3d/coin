@@ -987,7 +987,7 @@ AC_PREREQ([2.13])
 
 AC_ARG_ENABLE(
   [debug],
-  AC_HELP_STRING([--enable-debug], [compile in debug mode [default=yes]]),
+  AC_HELP_STRING([--enable-debug], [compile in debug mode [[default=yes]]]),
   [case "${enableval}" in
     yes) enable_debug=yes ;;
     no)  enable_debug=no ;;
@@ -1023,7 +1023,7 @@ AC_DEFUN([SIM_AC_DEBUGSYMBOLS], [
 AC_ARG_ENABLE(
   [symbols],
   AC_HELP_STRING([--enable-symbols],
-                 [include symbol debug information [default=yes]]),
+                 [include symbol debug information [[default=yes]]]),
   [case "${enableval}" in
     yes) enable_symbols=yes ;;
     no)  enable_symbols=no ;;
@@ -1055,7 +1055,7 @@ AC_DEFUN([SIM_AC_RTTI_SUPPORT], [
 AC_PREREQ([2.13])
 AC_ARG_ENABLE(
   [rtti],
-  AC_HELP_STRING([--enable-rtti], [(g++ only) compile with RTTI [default=yes]]),
+  AC_HELP_STRING([--enable-rtti], [(g++ only) compile with RTTI [[default=yes]]]),
   [case "${enableval}" in
     yes) enable_rtti=yes ;;
     no)  enable_rtti=no ;;
@@ -1094,7 +1094,7 @@ AC_PREREQ([2.13])
 AC_ARG_ENABLE(
   [exceptions],
   AC_HELP_STRING([--enable-exceptions],
-                 [(g++ only) compile with exceptions [default=no]]),
+                 [(g++ only) compile with exceptions [[default=no]]]),
   [case "${enableval}" in
     yes) enable_exceptions=yes ;;
     no)  enable_exceptions=no ;;
@@ -1198,7 +1198,7 @@ AC_PREREQ([2.13])
 AC_ARG_ENABLE(
   [profile],
   AC_HELP_STRING([--enable-profile],
-                 [(GCC only) turn on inclusion of profiling code [default=no]]),
+                 [(GCC only) turn on inclusion of profiling code [[default=no]]]),
   [case "${enableval}" in
     yes) enable_profile=yes ;;
     no)  enable_profile=no ;;
@@ -1247,7 +1247,7 @@ AC_DEFUN([SIM_COMPILER_WARNINGS], [
 AC_ARG_ENABLE(
   [warnings],
   AC_HELP_STRING([--enable-warnings],
-                 [turn on warnings when compiling [default=yes]]),
+                 [turn on warnings when compiling [[default=yes]]]),
   [case "${enableval}" in
     yes) enable_warnings=yes ;;
     no)  enable_warnings=no ;;
@@ -1478,6 +1478,75 @@ fi
 ])
 
 # Usage:
+#  SIM_AC_CHECK_DL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+#
+#  Try to find the dynamic link loader library. If it is found, these
+#  shell variables are set:
+#
+#    $sim_ac_dl_cppflags (extra flags the compiler needs for dl lib)
+#    $sim_ac_dl_ldflags  (extra flags the linker needs for dl lib)
+#    $sim_ac_dl_libs     (link libraries the linker needs for dl lib)
+#
+#  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+#  In addition, the variable $sim_ac_dl_avail is set to "yes" if
+#  the dynamic link loader library is found.
+#
+#
+# Author: Morten Eriksen, <mortene@sim.no>.
+
+AC_DEFUN([SIM_AC_CHECK_DL], [
+AC_ARG_WITH(
+  [dl],
+  AC_HELP_STRING([--with-dl=DIR],
+                 [include support for the dynamic link loader library [[default=yes]]]),
+  [],
+  [with_dl=yes])
+
+sim_ac_dl_avail=no
+
+if test x"$with_dl" != xno; then
+  if test x"$with_dl" != xyes; then
+    sim_ac_dl_cppflags="-I${with_dl}/include"
+    sim_ac_dl_ldflags="-L${with_dl}/lib"
+  fi
+  sim_ac_dl_libs="-ldl"
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_dl_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_dl_ldflags"
+  LIBS="$sim_ac_dl_libs $LIBS"
+
+  # Use SIM_AC_CHECK_HEADERS instead of .._HEADER to get the
+  # HAVE_DLFCN_H symbol set up in config.h automatically.
+  SIM_AC_CHECK_HEADERS(dlfcn.h)
+
+  AC_CACHE_CHECK([whether the dynamic link loader library is available],
+    sim_cv_lib_dl_avail,
+    [AC_TRY_LINK([
+#if HAVE_DLFCN_H
+#include <dlfcn.h>
+#endif /* HAVE_DLFCN_H */
+],
+                 [(void)dlopen(0L, 0);],
+                 [sim_cv_lib_dl_avail=yes],
+                 [sim_cv_lib_dl_avail=no])])
+
+  if test x"$sim_cv_lib_dl_avail" = xyes; then
+    sim_ac_dl_avail=yes
+    $1
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    $2
+  fi
+fi
+])
+
+# Usage:
 #   SIM_AC_HAVE_SIMAGE_IFELSE( IF-FOUND, IF-NOT-FOUND )
 #
 # Description:
@@ -1529,7 +1598,7 @@ AC_ARG_WITH(
   esac],
   [])
 
-if test "x$sim_ac_simage_desired" != "xno"; then
+if $sim_ac_simage_desired; then
   sim_ac_path=$PATH
   test -z "$sim_ac_simage_extrapath" ||
     sim_ac_path=$sim_ac_simage_extrapath/bin:$sim_ac_path
@@ -2082,7 +2151,7 @@ sim_ac_gl_avail=no
 AC_ARG_WITH(
   [mesa],
   AC_HELP_STRING([--with-mesa],
-                 [prefer MesaGL (if found) over OpenGL [default=yes]]),
+                 [prefer MesaGL (if found) over OpenGL [[default=yes]]]),
   [],
   [with_mesa=yes])
 

@@ -16,5 +16,9 @@
 #undef HAVE_UNISTD_H
 #undef HAVE_IO_H
 #undef HAVE_WINDOWS_H
+#undef HAVE_DLFCN_H
+#undef HAVE_DL_LIB
 
 #undef HAVE_GLU_NURBSOBJECT
+
+#undef SIMAGE_RUNTIME_LINKING
