@@ -576,7 +576,7 @@ SoVRMLAudioClipP::internalFillBuffer(int frameoffset, void *buffer, int numframe
     /* FIXME: Read the VRML spec on the url field in AudioClip more
        carefully. I think it's only supposed to play one file, and
        only try the next if the current file fails. 
-       2003-01-16 thammer. /*
+       2003-01-16 thammer. */
 
     if (this->stream==NULL) {
       if ( this->loop && (this->currentPlaylistIndex >= this->playlist.getLength()) ) 
