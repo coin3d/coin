@@ -116,7 +116,9 @@ SoError::initClass(void)
 void
 SoError::cleanClass(void)
 {
-  delete SoError::strbuffer;
+#if COIN_DEBUG
+  delete SoError::strbuffer; SoError::strbuffer = NULL;
+#endif // COIN_DEBUG
 }
 
 /*!
