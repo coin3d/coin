@@ -35,91 +35,79 @@ class SoGLRenderAction : public SoAction {
   SO_ACTION_HEADER(SoGLRenderAction);
 
 public:
-
-  enum TransparencyType {
-    SCREEN_DOOR,
-    ADD,
-    DELAYED_ADD,
-    SORTED_OBJECT_ADD,
-    BLEND,
-    DELAYED_BLEND,
-    SORTED_OBJECT_BLEND
-  };
-
-  enum AbortCode {
-    CONTINUE,
-    ABORT,
-    PRUNE,
-    DELAY
-  };
-
-  typedef AbortCode   SoGLRenderAbortCB(void *userData);
-  typedef void        SoGLRenderPassCB(void *userData);
-
-
-public:
-  SoGLRenderAction(const SbViewportRegion &viewportRegion);
+  SoGLRenderAction(const SbViewportRegion & viewportregion);
   virtual ~SoGLRenderAction();
 
   static void initClass(void);
 
-  void setViewportRegion(const SbViewportRegion &newRegion);
-  const SbViewportRegion &getViewportRegion() const;
-  void setUpdateArea(const SbVec2f &origin, const SbVec2f &size);
-  void getUpdateArea(SbVec2f &origin, SbVec2f &size) const;
-  void setAbortCallback(SoGLRenderAbortCB * const func, void * const userData);
+  enum TransparencyType {
+    SCREEN_DOOR,
+    ADD, DELAYED_ADD, SORTED_OBJECT_ADD,
+    BLEND, DELAYED_BLEND, SORTED_OBJECT_BLEND
+  };
+
+  enum AbortCode {
+    CONTINUE, ABORT, PRUNE, DELAY
+  };
+
+  typedef AbortCode SoGLRenderAbortCB(void * userdata);
+  typedef void SoGLRenderPassCB(void * userdata);
+
+  void setViewportRegion(const SbViewportRegion & newregion);
+  const SbViewportRegion & getViewportRegion(void) const;
+  void setUpdateArea(const SbVec2f & origin, const SbVec2f & size);
+  void getUpdateArea(SbVec2f & origin, SbVec2f & size) const;
+  void setAbortCallback(SoGLRenderAbortCB * const func, void * const userdata);
   void setTransparencyType(const TransparencyType type);
-  TransparencyType getTransparencyType() const;
+  TransparencyType getTransparencyType(void) const;
   void setSmoothing(const SbBool smooth);
-  SbBool isSmoothing() const;
+  SbBool isSmoothing(void) const;
   void setNumPasses(const int num);
-  int getNumPasses() const;
+  int getNumPasses(void) const;
   void setPassUpdate(const SbBool flag);
-  SbBool isPassUpdate() const;
-  void setPassCallback(SoGLRenderPassCB * const func, void *const userData);
+  SbBool isPassUpdate(void) const;
+  void setPassCallback(SoGLRenderPassCB * const func, void * const userdata);
   void setCacheContext(const uint32_t context);
-  uint32_t getCacheContext() const;
+  uint32_t getCacheContext(void) const;
 
-  void addDelayedPath(SoPath *path);
-  SbBool isRenderingDelayedPaths() const;
+  void addDelayedPath(SoPath * path);
+  SbBool isRenderingDelayedPaths(void) const;
 
-public:
-
-  SbBool handleTransparency(SbBool isTransparent = FALSE);
-  int getCurPass() const;
-  SbBool abortNow();
+  SbBool handleTransparency(SbBool istransparent = FALSE);
+  int getCurPass(void) const;
+  SbBool abortNow(void);
 
 protected:
-  virtual void beginTraversal(SoNode *node);
-  virtual void endTraversal(SoNode *node);
+  virtual void beginTraversal(SoNode * node);
+  virtual void endTraversal(SoNode * node);
 
 private:
+  void addTransPath(SoPath * path);
+  void doPathSort(void);
+
   SbViewportRegion viewport;
-  int numPasses;
-  TransparencyType transType;
+  int numpasses;
+  TransparencyType transparencytype;
   SbBool smoothing;
-  SbBool passUpdate;
-  SoGLRenderPassCB *passCB;
-  void *passCBdata;
-  SoGLRenderAbortCB *abortCB;
-  void *abortCBdata;
-  uint32_t cacheContext;
-  SbBool firstRender;
-  int currentPass;
-  SbBool didHaveTransparent;
-  SbBool isBlendEnabled;
+  SbBool passupdate;
+  SoGLRenderPassCB * passcallback;
+  void * passcallbackdata;
+  SoGLRenderAbortCB * abortcallback;
+  void * abortcallbackdata;
+  uint32_t cachecontext;
+  SbBool firstrender;
+  int currentpass;
+  SbBool didhavetransparent;
+  SbBool isblendenabled;
   void disableBlend(const SbBool force = FALSE);
   void enableBlend(const SbBool force = FALSE);
-
-  SoPathList delayedPaths;
-  SbBool delayedRender;
-
-  SbBool sortRender;
-  SoPathList transpObjPaths;
-  SbList <float> transpObjDistances;
-  class SoGetBoundingBoxAction *bboxAction;
-  void addTransPath(SoPath *path);
-  void doPathSort();
+  SoPathList delayedpaths;
+  SbBool delayedrender;
+  SbBool sortrender;
+  SoPathList transpobjpaths;
+  SbList<float> transpobjdistances;
+  class SoGetBoundingBoxAction * bboxaction;
+  SbVec2f updateorigin, updatesize;
 };
 
 #endif // !COIN_SOGLRENDERACTION_H

@@ -18,33 +18,49 @@
 \**************************************************************************/
 
 /*!
-  \class SoLineHighlightRenderAction Inventor/include/SoLineHighlightRenderAction.h
-  \brief The SoLineHighlightRenderAction class renders selections with line
-  highlighting
+  \class SoLineHighlightRenderAction SoLineHighlightRenderAction.h Inventor/actions/SoLineHighlightRenderAction.h
+  \brief The SoLineHighlightRenderAction class renders selections with line highlighting.
+  \ingroup actions
+
+  See the documentation of SoBoxHighlightRenderAction.
+
+  The only difference between SoBoxHighlightRenderAction and this
+  action is that this action renders highlights by superposing a
+  wireframe image onto each shape instead of the bounding box when
+  drawing the highlight.
+
+  \sa SoBoxHighlightRenderAction, SoSelection
 */
 
-#include <Inventor/SbName.h>
 #include <Inventor/actions/SoLineHighlightRenderAction.h>
-#include <Inventor/actions/SoSubAction.h>
-
-#include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/SbName.h>
 #include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/nodes/SoSelection.h>
-#include <Inventor/lists/SoPathList.h>
-#include <Inventor/elements/SoDrawStyleElement.h>
+#include <Inventor/actions/SoSubAction.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoLinePatternElement.h>
+#include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoPolygonOffsetElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
-#include <Inventor/elements/SoPolygonOffsetElement.h>
+#include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoSelection.h>
 #include <assert.h>
+
+/*!
+  \var SoLineHighlightRenderAction::hlVisible
+
+  Boolean which decides whether or not the highlights for selected
+  nodes should be visible.
+ */
 
 
 SO_ACTION_SOURCE(SoLineHighlightRenderAction);
+
 
 // Override from parent class.
 void
@@ -55,9 +71,9 @@ SoLineHighlightRenderAction::initClass(void)
 
 
 /*!
-  A constructor.
-*/
-
+  Default constructor. Note: passes a default SbViewportRegion to the
+  parent constructor.
+ */
 SoLineHighlightRenderAction::SoLineHighlightRenderAction(void)
   : inherited(SbViewportRegion())
 {
@@ -65,11 +81,10 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(void)
 }
 
 /*!
-  A constructor.
+  Constructor, taking an explicit \a viewportregion to render.
 */
-
-SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion & viewportRegion)
-  : inherited(viewportRegion)
+SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion & viewportregion)
+  : inherited(viewportregion)
 {
   this->init();
 }
@@ -77,9 +92,9 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion 
 /*!
   The destructor.
 */
-SoLineHighlightRenderAction::~SoLineHighlightRenderAction(void)
+SoLineHighlightRenderAction::~SoLineHighlightRenderAction()
 {
-  delete this->searchAction;
+  delete this->searchaction;
 }
 
 //
@@ -96,38 +111,39 @@ SoLineHighlightRenderAction::init(void)
   this->color = SbColor(1.0f, 0.0f, 0.0f);
   this->linepattern = 0xffff;
   this->linewidth = 3.0f;
-  this->searchAction = NULL;
+  this->searchaction = NULL;
 }
 
 /*!
-  Applies this action on scene rooted by \a node.
+  Overloaded to add highlighting after the "ordinary" rendering.
 */
 void
-SoLineHighlightRenderAction::apply(SoNode *node)
+SoLineHighlightRenderAction::apply(SoNode * node)
 {
   SoGLRenderAction::apply(node);
   if (this->hlVisible) {
-    if (this->searchAction == NULL) {
-      this->searchAction = new SoSearchAction;
-      this->searchAction->setType(SoSelection::getClassTypeId());
-      this->searchAction->setInterest(SoSearchAction::FIRST);
+    if (this->searchaction == NULL) {
+      this->searchaction = new SoSearchAction;
+      this->searchaction->setType(SoSelection::getClassTypeId());
+      this->searchaction->setInterest(SoSearchAction::FIRST);
     }
-    this->searchAction->apply(node);
-    if (this->searchAction->isFound()) {
-      SoSelection *selection = (SoSelection*)
-        this->searchAction->getPath()->getTail();
+    this->searchaction->apply(node);
+    if (this->searchaction->isFound()) {
+      SoSelection * selection = (SoSelection *)
+        this->searchaction->getPath()->getTail();
       assert(selection->getTypeId().
              isDerivedFrom(SoSelection::getClassTypeId()));
 
       if (selection->getNumSelected()) {
-        this->drawBoxes(this->searchAction->getPath(), selection->getList());
+        this->drawBoxes(this->searchaction->getPath(), selection->getList());
       }
     }
   }
 }
 
 /*!
-  Sets if selection wireframe should be visible.
+  Sets if highlight wireframes should be \a visible when
+  rendering. Defaults to \c TRUE.
 */
 void
 SoLineHighlightRenderAction::setVisible(const SbBool visible)
@@ -136,34 +152,35 @@ SoLineHighlightRenderAction::setVisible(const SbBool visible)
 }
 
 /*!
-  Return if selection wireframe should be visible.
+  Return if selection wireframes should be visible.
 */
 SbBool
-SoLineHighlightRenderAction::isVisible() const
+SoLineHighlightRenderAction::isVisible(void) const
 {
   return this->hlVisible;
 }
 
 /*!
-  Sets the color of the wireframe.
+  Sets the \a color of the wireframes. Defaults to red.
 */
 void
-SoLineHighlightRenderAction::setColor(const SbColor &color)
+SoLineHighlightRenderAction::setColor(const SbColor & color)
 {
   this->color = color;
 }
 
 /*!
-  Differs from OIV by returning const.
+  Returns color of selection wireframes.
 */
 const SbColor &
-SoLineHighlightRenderAction::getColor()
+SoLineHighlightRenderAction::getColor(void)
 {
   return this->color;
 }
 
 /*!
-  Sets the line pattern used when drawing wireframe.
+  Sets the line \a pattern used when drawing wireframes. Defaults to
+  \c 0xffff (i.e. full, unstippled lines).
 */
 void
 SoLineHighlightRenderAction::setLinePattern(unsigned short pattern)
@@ -175,13 +192,14 @@ SoLineHighlightRenderAction::setLinePattern(unsigned short pattern)
   Returns line pattern used when drawing wireframe.
 */
 unsigned short
-SoLineHighlightRenderAction::getLinePattern() const
+SoLineHighlightRenderAction::getLinePattern(void) const
 {
   return this->linepattern;
 }
 
 /*!
-  Sets the line width used when drawing wireframe.
+  Sets the line \a width used when drawing wireframe. Defaults to 3
+  (measured in screen pixels).
 */
 void
 SoLineHighlightRenderAction::setLineWidth(const float width)
@@ -193,23 +211,23 @@ SoLineHighlightRenderAction::setLineWidth(const float width)
   Returns the line width used when drawing wireframe.
 */
 float
-SoLineHighlightRenderAction::getLineWidth() const
+SoLineHighlightRenderAction::getLineWidth(void) const
 {
   return this->linewidth;
 }
 
 void
-SoLineHighlightRenderAction::drawBoxes(SoPath *pathtothis, const SoPathList *pathlist)
+SoLineHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pathlist)
 {
   int i;
-  int thispos = ((SoFullPath*)pathtothis)->getLength()-1;
+  int thispos = ((SoFullPath *)pathtothis)->getLength()-1;
   assert(thispos >= 0);
   SoTempPath temppath(32);
   temppath.ref(); // to avoid having refcount == 0
 
   for (i = 0; i < thispos; i++) temppath.append(pathtothis->getNode(i));
 
-  SoState *state = this->getState();
+  SoState * state = this->getState();
   state->push();
 
   SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
@@ -227,7 +245,7 @@ SoLineHighlightRenderAction::drawBoxes(SoPath *pathtothis, const SoPathList *pat
   SoTextureOverrideElement::setQualityOverride(state, TRUE);
 
   for (i = 0; i < pathlist->getLength(); i++) {
-    SoFullPath *path = (SoFullPath*)(*pathlist)[i];
+    SoFullPath * path = (SoFullPath *)(*pathlist)[i];
 
     for (int j = 0; j < path->getLength(); j++) {
       temppath.append(path->getNode(j));

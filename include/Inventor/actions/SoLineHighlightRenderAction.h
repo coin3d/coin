@@ -34,20 +34,20 @@ class SoLineHighlightRenderAction : public SoGLRenderAction {
 
 public:
   SoLineHighlightRenderAction(void);
-  SoLineHighlightRenderAction(const SbViewportRegion & viewportRegion);
+  SoLineHighlightRenderAction(const SbViewportRegion & viewportregion);
   virtual ~SoLineHighlightRenderAction();
 
   static void initClass(void);
 
-  virtual void apply(SoNode *node);
+  virtual void apply(SoNode * node);
   void setVisible(const SbBool visible);
-  SbBool isVisible() const;
-  void setColor(const SbColor &color);
-  const SbColor &getColor();
+  SbBool isVisible(void) const;
+  void setColor(const SbColor & color);
+  const SbColor & getColor(void);
   void setLinePattern(unsigned short pattern);
-  unsigned short getLinePattern() const;
+  unsigned short getLinePattern(void) const;
   void setLineWidth(const float width);
-  float getLineWidth() const;
+  float getLineWidth(void) const;
 
 protected:
 
@@ -60,9 +60,9 @@ protected:
   // the action to conform more to OIV. pederb, 20000222
 
 private:
-  class SoSearchAction *searchAction;
-  void init();
-  void drawBoxes(SoPath *pathtothis, const SoPathList *pathlist);
+  class SoSearchAction * searchaction;
+  void init(void);
+  void drawBoxes(SoPath * pathtothis, const SoPathList * pathlist);
   SbColor color;
   unsigned short linepattern;
   float linewidth;

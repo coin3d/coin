@@ -18,75 +18,113 @@
 \**************************************************************************/
 
 /*!
-  \class SoGLRenderAction Inventor/actions/SoGLRenderAction.h
-  \brief The SoGLRenderAction class is an action for rendering an Open Inventor
-  scene graph with OpenGL.
-*/
+  \class SoGLRenderAction SoGLRenderAction.h Inventor/actions/SoGLRenderAction.h
+  \brief The SoGLRenderAction class renders the scene graph with OpenGL calls.
+  \ingroup actions
+
+  Applying this method at a root node for a scene graph, path or
+  pathlist will render all geometry contained within that instance to
+  the current OpenGL context.
+ */
+
+// Metadon doc:
+/*¡
+  FIXME. This is missing from the implementation:
+  <ul>
+
+  <li> the abort callback function is never called -- it _should_ be
+       called for every node during traversal.
+
+  <li> the pass callback function is never called.
+
+  <li> the cachecontext setting for sharing OpenGL display lists is
+       not used.
+
+  <li> the UpdateArea setting isn't heeded.
+
+  <li> the Smoothing flag does not influence rendering.
+
+  <li> the PassUpdate flag is not used.
+
+  <li> antialiased rendering is not done if number of rendering passes
+       is larger than 1.
+
+  </ul>
+ */
 
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
-#include <Inventor/nodes/SoNode.h>
-#include <Inventor/actions/SoSubActionP.h>
-#include <Inventor/SbColor.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/misc/SoGL.h>
-#include <Inventor/SbPlane.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <coindefs.h>
-
-
-#include <Inventor/elements/SoGLLightIdElement.h>
-#include <Inventor/elements/SoGLRenderPassElement.h>
-#include <Inventor/elements/SoGLUpdateAreaElement.h>
-#include <Inventor/elements/SoDecimationTypeElement.h>
-#include <Inventor/elements/SoDecimationPercentageElement.h>
-#include <Inventor/elements/SoWindowElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
-#include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoTextureOverrideElement.h>
-#include <Inventor/elements/SoLazyElement.h>
-
-#include <Inventor/elements/SoViewVolumeElement.h>
-#include <Inventor/elements/SoModelMatrixElement.h>
-
-// FIXME: see comment on SoGLViewportRegionElement::set in
-// beginTraversel() below. 19990228 mortene.
-#include <Inventor/elements/SoGLViewportRegionElement.h>
-// FIXME: these should not be necessary here. tmp hack. 19990228 mortene.
-#include <Inventor/elements/SoTextureCoordinateElement.h>
-
-#ifdef _WIN32
-#include <windows.h>
-#endif // _WIN32
 
 #include <GL/gl.h>
+#include <Inventor/SbColor.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoSubActionP.h>
+#include <Inventor/elements/SoDecimationPercentageElement.h>
+#include <Inventor/elements/SoDecimationTypeElement.h>
+#include <Inventor/elements/SoGLLightIdElement.h>
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#include <Inventor/elements/SoGLRenderPassElement.h>
+#include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoGLUpdateAreaElement.h>
+#include <Inventor/elements/SoGLViewportRegionElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoTextureOverrideElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoWindowElement.h>
+#include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/misc/SoGL.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoNode.h>
+#include <coindefs.h>
 
 // *************************************************************************
 
 /*!
-  \fn SoGLRenderAction::TransparencyType
+  \enum SoGLRenderAction::TransparencyType
 
-  FIXME: write doc.
+  Various settings for how to do rendering of transparent objects in
+  the scene. Some of the settings will provide faster rendering, while
+  others gives you better quality rendering.
 */
 
 /*!
-  \fn SoGLRenderAction::AbortCode
+  \enum SoGLRenderAction::AbortCode
 
-  FIXME: write doc.
+  The return codes which an SoGLRenderAbortCB callback function should
+  use.
+*/
+/*!
+  \var SoGLRenderAction::AbortCode SoGLRenderAction::CONTINUE
+  Continue rendering as usual.
+*/
+/*!
+  \var SoGLRenderAction::AbortCode SoGLRenderAction::ABORT
+  Abort the rendering action immediately.
+*/
+/*!
+  \var SoGLRenderAction::AbortCode SoGLRenderAction::PRUNE
+  Do not render the current node or any of its children, but continue
+  the rendering traversal.
+*/
+/*!
+  \var SoGLRenderAction::AbortCode SoGLRenderAction::DELAY
+  Delay rendering of the current node (and its children) until the
+  next rendering pass.
 */
 
 /*!
-  \fn typedef SoGLRenderAction::SoGLRenderAbortCB(void * userData)
-
-  FIXME: write doc.
+  \typedef typedef SoGLRenderAction::SoGLRenderAbortCB(void * userdata)
+  Abort callbacks should be of this type.
+  \sa setAbortCallback()
 */
 
 /*!
-  \fn typedef SoGLRenderAction::SoGLRenderPassCB(void * userData)
-
-  FIXME: write doc.
+  \typedef typedef SoGLRenderAction::SoGLRenderPassCB(void * userdata)
+  Renderpass callbacks should be of this type.
+  \sa setPassCallback()
 */
 
 
@@ -98,88 +136,82 @@ SoGLRenderAction::initClass(void)
 {
   SO_ACTION_INIT_CLASS(SoGLRenderAction, SoAction);
 
-  SO_ENABLE(SoGLRenderAction, SoViewportRegionElement);
-  SO_ENABLE(SoGLRenderAction, SoGLRenderPassElement);
-  SO_ENABLE(SoGLRenderAction, SoDecimationTypeElement);
   SO_ENABLE(SoGLRenderAction, SoDecimationPercentageElement);
-  SO_ENABLE(SoGLRenderAction, SoWindowElement);
+  SO_ENABLE(SoGLRenderAction, SoDecimationTypeElement);
   SO_ENABLE(SoGLRenderAction, SoGLLightIdElement);
-  SO_ENABLE(SoGLRenderAction, SoGLUpdateAreaElement);
-
-  SO_ENABLE(SoGLRenderAction, SoGLShadeModelElement);
   SO_ENABLE(SoGLRenderAction, SoGLNormalizeElement);
-
+  SO_ENABLE(SoGLRenderAction, SoGLRenderPassElement);
+  SO_ENABLE(SoGLRenderAction, SoGLShadeModelElement);
+  SO_ENABLE(SoGLRenderAction, SoGLUpdateAreaElement);
+  SO_ENABLE(SoGLRenderAction, SoLazyElement);
   SO_ENABLE(SoGLRenderAction, SoOverrideElement);
   SO_ENABLE(SoGLRenderAction, SoTextureOverrideElement);
-  SO_ENABLE(SoGLRenderAction, SoLazyElement);
+  SO_ENABLE(SoGLRenderAction, SoWindowElement);
 
-  // FIXME: see comment on SoGLViewportRegionElement::set in
-  // beginTraversel() below. 19990228 mortene.
+  // FIXME: if the order of initialization for these two is reversed,
+  // the viewport region when rendering comes out all wrong. This is
+  // probably due to a bug somewhere. 20000305 mortene.
+  SO_ENABLE(SoGLRenderAction, SoViewportRegionElement);
   SO_ENABLE(SoGLRenderAction, SoGLViewportRegionElement);
 }
 
 // *************************************************************************
 
 /*!
-  A constructor.
+  Constructor. Sets up the render action for rendering within the
+  given \a viewportregion.
 */
-
-SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportRegion)
+SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
 {
   SO_ACTION_CONSTRUCTOR(SoGLRenderAction);
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::GLRenderS);
 
-  methods->setUp(); // FIXME: not sure if this should be called here...
+  SoGLRenderAction::methods->setUp();
 
   // Can't just push this on the SoViewportRegionElement stack, as the
   // state hasn't been made yet.
-  this->viewport = viewportRegion;
+  this->viewport = viewportregion;
 
-  this->passCB = NULL;
-  this->passCBdata = NULL;
+  this->passcallback = NULL;
+  this->passcallbackdata = NULL;
   this->smoothing = FALSE;
-  this->numPasses = 1;
-
-  this->transType = SoGLRenderAction::DELAYED_BLEND;
-  this->firstRender = TRUE;
-  this->delayedRender = FALSE;
-  this->sortRender = FALSE;
-  this->isBlendEnabled = FALSE;
-  this->bboxAction = NULL;
+  this->numpasses = 1;
+  this->transparencytype = SoGLRenderAction::DELAYED_BLEND;
+  this->firstrender = TRUE;
+  this->delayedrender = FALSE;
+  this->sortrender = FALSE;
+  this->isblendenabled = FALSE;
+  this->passupdate = FALSE;
+  this->bboxaction = NULL;
+  this->updateorigin.setValue(0.0f, 0.0f);
+  this->updatesize.setValue(1.0f, 1.0f);
 }
 
 /*!
-  The destructor.
+  Destructor, frees up all internal resources for action instance.
 */
-
 SoGLRenderAction::~SoGLRenderAction()
 {
-  delete this->bboxAction;
+  delete this->bboxaction;
 }
 
 /*!
-  This method sets the viewport region.
+  Sets the viewport region for rendering. This will then override the
+  region passed in with the constructor.
 */
-
 void
-SoGLRenderAction::setViewportRegion(const SbViewportRegion & newRegion)
+SoGLRenderAction::setViewportRegion(const SbViewportRegion & newregion)
 {
   if (this->getState()) {
-#if 0 // debug
-    SoDebugError::postInfo("SoGLRenderAction::setViewportRegion",
-                           "aspectratio: %f",
-                           newRegion.getViewportAspectRatio());
-#endif // debug
-    SoViewportRegionElement::set(this->getState(), newRegion);
+    SoViewportRegionElement::set(this->getState(), newregion);
   }
-  this->viewport = newRegion;
+  this->viewport = newregion;
 }
 
 /*!
-  This method gets the viewport region.
+  Returns the viewport region for the rendering action.
 */
-
 const SbViewportRegion &
 SoGLRenderAction::getViewportRegion(void) const
 {
@@ -187,64 +219,76 @@ SoGLRenderAction::getViewportRegion(void) const
 }
 
 /*!
-  This methor sets the area to be updated.
-*/
+  Sets the area of the OpenGL context canvas we should render into.
 
+  The coordinates for \a origin and \a size should be normalized to be
+  within [0.0, 1.0]. The default settings are <0.0, 0.0> for the \a
+  origin and <1.0, 1.0> for the \a size, using the full size of the
+  rendering canvas.
+*/
 void
-SoGLRenderAction::setUpdateArea(const SbVec2f & /* origin */,
-                                const SbVec2f & /* size */)
+SoGLRenderAction::setUpdateArea(const SbVec2f & origin, const SbVec2f & size)
 {
-  COIN_STUB();
+  this->updateorigin = origin;
+  this->updatesize = size;
 }
 
 /*!
-  This method gets the area to be updated.
+  Returns information about the area of the rendering context window
+  to be updated.
 */
-
 void
-SoGLRenderAction::getUpdateArea(SbVec2f & /* origin */,
-                                SbVec2f & /* size */) const
+SoGLRenderAction::getUpdateArea(SbVec2f & origin, SbVec2f & size) const
 {
-  COIN_STUB();
+  origin = this->updateorigin;
+  size = this->updatesize;
 }
 
 /*!
-  This method sets the abort callback.  The abort callback is called during
-  traversal to check for abort conditions.
-*/
+  Sets the abort callback.  The abort callback is called by the action
+  for each node during traversal to check for abort conditions.
 
+  \sa SoGLRenderAction::AbortCode
+*/
 void
 SoGLRenderAction::setAbortCallback(SoGLRenderAbortCB * const func,
-                                   void * const userData)
+                                   void * const userdata)
 {
-  this->abortCB = func;
-  this->abortCBdata = userData;
+  this->abortcallback = func;
+  this->abortcallbackdata = userdata;
 }
 
 /*!
-  This method sets the transparency type.
-*/
+  Sets the transparency rendering method for transparent objects in
+  the scene graph.
 
+  \sa SoGLRenderAction::TransparencyType
+*/
 void
 SoGLRenderAction::setTransparencyType(const TransparencyType type)
 {
-  this->transType = type;
+  this->transparencytype = type;
 }
 
 /*!
-  This method returns the transparency type.
+  Returns the transparency rendering type.
 */
-
 SoGLRenderAction::TransparencyType
-SoGLRenderAction::getTransparencyType() const
+SoGLRenderAction::getTransparencyType(void) const
 {
-  return this->transType;
+  return this->transparencytype;
 }
 
 /*!
-  This method sets (or unsets) smoothing.
-*/
+  Sets (or unsets) smoothing. If the smoothing flag is \c on, Coin
+  will try to use built-in features from the OpenGL implementation to
+  smooth the appearance of otherwise jagged borders.
 
+  This is a simple (and computationally non-intensive) way of doing
+  anti-aliasing.
+
+  Default value for this flag is to be \c off.
+*/
 void
 SoGLRenderAction::setSmoothing(const SbBool smooth)
 {
@@ -252,124 +296,105 @@ SoGLRenderAction::setSmoothing(const SbBool smooth)
 }
 
 /*!
-  This method returns wether smoothing is set or not.
+  Returns whether smoothing is set or not.
 */
-
 SbBool
-SoGLRenderAction::isSmoothing() const
+SoGLRenderAction::isSmoothing(void) const
 {
   return this->smoothing;
 }
 
 /*!
-  This method sets the number of passes.  Default is 1, anything greater will
-  enable antialiasing.
+  Sets the number of rendering passes.  Default is 1, anything greater
+  will enable antialiasing.
 */
-
 void
 SoGLRenderAction::setNumPasses(const int num)
 {
-  this->numPasses = num;
+  this->numpasses = num;
 }
 
 /*!
-  This method returns the number of passes set for rendering.
+  Returns the number of rendering passes done on updates.
 */
-
 int
-SoGLRenderAction::getNumPasses() const
+SoGLRenderAction::getNumPasses(void) const
 {
-  return this->numPasses;
+  return this->numpasses;
 }
 
 /*!
-  This method sets wether intermediate results should be displayed during
-  multipass antialiasing rendering.  Not in use.
+  Sets whether each pass should render to screen or not.
 */
-
 void
 SoGLRenderAction::setPassUpdate(const SbBool flag)
 {
-  this->passUpdate = flag;
+  this->passupdate = flag;
 }
 
 /*!
-  This method returns wether the passUpdate flag is set or not.
+  Returns the value of the "show intermediate updates" flag.
 
-  \sa void SoGLRenderAction::setPassUpdate(const SbBool flag)
+  \sa setPassUpdate()
 */
-
 SbBool
-SoGLRenderAction::isPassUpdate() const
+SoGLRenderAction::isPassUpdate(void) const
 {
-  return this->passUpdate;
+  return this->passupdate;
 }
 
 /*!
-  This method sets the pass callback.  The callback is called between each
-  pass.
+  Sets the pass callback.  The callback is called between each
+  rendering pass.
 */
-
 void
 SoGLRenderAction::setPassCallback(SoGLRenderPassCB * const func,
-                                  void * const userData)
+                                  void * const userdata)
 {
-  this->passCB = func;
-  this->passCBdata = userData;
+  this->passcallback = func;
+  this->passcallbackdata = userdata;
 }
 
 /*!
-  This methos sets the OpenGL cache context key.
+  Sets the OpenGL cache context key, which is used for deciding when
+  to share OpenGL display lists.
 */
-
 void
 SoGLRenderAction::setCacheContext(const uint32_t context)
 {
-  this->cacheContext = context;
+  this->cachecontext = context;
 }
 
 /*!
-  This method returns the cache context key.
+  Returns the cache context key for this rendering action instance.
 */
-
 uint32_t
-SoGLRenderAction::getCacheContext() const
+SoGLRenderAction::getCacheContext(void) const
 {
-  return this->cacheContext;
+  return this->cachecontext;
 }
 
 /*!
-  This method is called before the action is applied.
+  Overloaded from parent class to initialize the OpenGL state.
 */
-
 void
 SoGLRenderAction::beginTraversal(SoNode * node)
 {
-  if (this->sortRender || this->delayedRender) {
+  if (this->sortrender || this->delayedrender) {
     inherited::beginTraversal(node);
     return;
   }
 
-  static int first = 1;
+  static SbBool first = TRUE;
   if (first) {
-    first = 0;
-    // FIXME: this should eventually be unnecessary (move GL
-    // implementation checking code to SoGL*Element classes). 19990314
-    // mortene.
-    sogl_global_init(); // find GL implementation dependant limits
+    first = FALSE;
+    // Check and remember various GL implementation details and
+    // limits.
+    sogl_global_init();
   }
 
-  // FIXME: shouldn't the GL initialization rather be done in
-  // SoSceneManager::render()? Or perhaps in the individual elements
-  // (partly)? 19990215 mortene.
-
-  //
-  // Actually, this code should be here in case elements are disabled.
-  // This code should then set the GL state to default values...
-  // 990630, pederb
-  //
-  if (this->firstRender) {
-    this->firstRender = FALSE;
+  if (this->firstrender) {
+    this->firstrender = FALSE;
     glDisable(GL_FOG);
     glDisable(GL_TEXTURE_1D);
     glDisable(GL_LINE_STIPPLE);
@@ -421,7 +446,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     glDisable(GL_COLOR_MATERIAL);
     glDisable(GL_AUTO_NORMAL);
 
-    // FIXME (pederb)
+    // FIXME (pederb) (fix what? -- 20000305 mortene)
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
@@ -456,27 +481,28 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     this->disableBlend(TRUE);
   }
 
-  // FIXME: should we really push() and pop() here? Perhaps in the
-  // SoAction class instead? 19990303 mortene.
-
-  this->currentPass = 0;
-  this->didHaveTransparent = FALSE;
+  this->currentpass = 0;
+  this->didhavetransparent = FALSE;
   this->disableBlend(); // just in case
 
-  if (this->transType == BLEND || this->transType == DELAYED_BLEND ||
-      this->transType == SORTED_OBJECT_BLEND) {
+  if (this->transparencytype == BLEND ||
+      this->transparencytype == DELAYED_BLEND ||
+      this->transparencytype == SORTED_OBJECT_BLEND) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   }
-  else if (this->transType == ADD || this->transType == DELAYED_ADD ||
-           this->transType == SORTED_OBJECT_ADD) {
+  else if (this->transparencytype == ADD ||
+           this->transparencytype == DELAYED_ADD ||
+           this->transparencytype == SORTED_OBJECT_ADD) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
   }
   this->getState()->push();
 
-  SoShapeStyleElement::setTransparencyType(this->getState(), this->transType);
+  SoShapeStyleElement::setTransparencyType(this->getState(),
+                                           this->transparencytype);
 
   SoGLViewportRegionElement::set(this->getState(), this->viewport);
-  SoLazyElement::setTransparencyType(this->getState(), (int32_t)this->transType);
+  SoLazyElement::setTransparencyType(this->getState(),
+                                     (int32_t)this->transparencytype);
   SoLazyElement::setBlending(this->getState(), FALSE);
   SoLazyElement::setColorMaterial(this->getState(), TRUE);
 
@@ -492,85 +518,91 @@ SoGLRenderAction::beginTraversal(SoNode * node)
 
   inherited::beginTraversal(node);
 
-  if (this->didHaveTransparent && !this->sortRender) {
-    if (this->transType == DELAYED_BLEND ||
-        this->transType == DELAYED_ADD) {
-      this->currentPass = 1;
+  if (this->didhavetransparent && !this->sortrender) {
+    if (this->transparencytype == DELAYED_BLEND ||
+        this->transparencytype == DELAYED_ADD) {
+      this->currentpass = 1;
       SoGLRenderPassElement::set(this->getState(), 1);
       this->enableBlend();
       inherited::beginTraversal(node);
       this->disableBlend();
     }
-    else if (this->transType == SORTED_OBJECT_BLEND ||
-             this->transType == SORTED_OBJECT_ADD) {
-      this->sortRender = TRUE;
+    else if (this->transparencytype == SORTED_OBJECT_BLEND ||
+             this->transparencytype == SORTED_OBJECT_ADD) {
+      this->sortrender = TRUE;
       this->doPathSort();
       this->enableBlend();
-      this->apply(this->transpObjPaths, TRUE);
+      this->apply(this->transpobjpaths, TRUE);
       this->disableBlend();
     }
   }
 
   this->disableBlend();
 
-  if (this->delayedPaths.getLength()) {
-    if (!this->delayedRender) {
+  if (this->delayedpaths.getLength()) {
+    if (!this->delayedrender) {
       SbBool usedepthbuffer = glIsEnabled(GL_DEPTH_TEST);
       if (usedepthbuffer) glDisable(GL_DEPTH_TEST);
-      this->delayedRender = TRUE;
-      this->apply(this->delayedPaths, TRUE);
+      this->delayedrender = TRUE;
+      this->apply(this->delayedpaths, TRUE);
       if (usedepthbuffer) glEnable(GL_DEPTH_TEST);
     }
   }
   this->getState()->pop();
 }
 
+/*!
+  Overloaded from parent class to clean up the lists of objects which
+  were included in the delayed rendering.
+ */
 void
 SoGLRenderAction::endTraversal(SoNode *)
 {
-  if (this->delayedPaths.getLength() && this->delayedRender) {
-    this->delayedRender = FALSE;
-    this->delayedPaths.truncate(0);
+  if (this->delayedpaths.getLength() && this->delayedrender) {
+    this->delayedrender = FALSE;
+    this->delayedpaths.truncate(0);
   }
-  if (this->transpObjPaths.getLength() && this->sortRender) {
-    this->sortRender = FALSE;
-    this->transpObjPaths.truncate(0);
-    this->transpObjDistances.truncate(0);
+  if (this->transpobjpaths.getLength() && this->sortrender) {
+    this->sortrender = FALSE;
+    this->transpobjpaths.truncate(0);
+    this->transpobjdistances.truncate(0);
   }
 }
 
 /*!
-  FIXME: write doc.
+  Used by shape nodes or others which need to know whether or not they
+  should immediately render themselves or if they should wait until
+  the next pass.
 */
-
 SbBool
-SoGLRenderAction::handleTransparency(SbBool isTransparent)
+SoGLRenderAction::handleTransparency(SbBool istransparent)
 {
-  if (this->delayedRender) { // special case when rendering delayed paths
-    if (!isTransparent) {
+  if (this->delayedrender) { // special case when rendering delayed paths
+    if (!istransparent) {
       this->disableBlend();
     }
     else {
-      if (this->transType != SCREEN_DOOR) this->enableBlend();
+      if (this->transparencytype != SCREEN_DOOR) this->enableBlend();
       this->disableBlend();
     }
     return FALSE; // always render
   }
 
   // normal case
-  if (isTransparent) this->didHaveTransparent = TRUE;
-  if (this->transType == DELAYED_ADD || this->transType == DELAYED_BLEND) {
-    if (this->currentPass == 0) return isTransparent;
-    else return !isTransparent;
+  if (istransparent) this->didhavetransparent = TRUE;
+  if (this->transparencytype == DELAYED_ADD ||
+      this->transparencytype == DELAYED_BLEND) {
+    if (this->currentpass == 0) return istransparent;
+    else return !istransparent;
   }
-  else if (this->transType == SORTED_OBJECT_ADD ||
-           this->transType == SORTED_OBJECT_BLEND) {
-    if (this->sortRender || !isTransparent) return FALSE;
+  else if (this->transparencytype == SORTED_OBJECT_ADD ||
+           this->transparencytype == SORTED_OBJECT_BLEND) {
+    if (this->sortrender || !istransparent) return FALSE;
     this->addTransPath(this->getCurPath()->copy());
     return TRUE;
   }
-  else if (this->transType == ADD || this->transType == BLEND) {
-    if (isTransparent) this->enableBlend();
+  else if (this->transparencytype == ADD || this->transparencytype == BLEND) {
+    if (istransparent) this->enableBlend();
     else this->disableBlend();
     return FALSE; // node should always render
   }
@@ -579,86 +611,97 @@ SoGLRenderAction::handleTransparency(SbBool isTransparent)
 }
 
 /*!
-  This method returns the number of the current pass.
+  Returns the number of the current rendering pass.
 */
 
 int
-SoGLRenderAction::getCurPass() const
+SoGLRenderAction::getCurPass(void) const
 {
-  return this->currentPass;
+  return this->currentpass;
 }
 
 /*!
-  This method returns TRUE if the render action should abort now.
-  It always returns FALSE at this moment.
+  Returns \c TRUE if the render action should abort now.  It always
+  returns \c FALSE at this moment.
 */
-
 SbBool
-SoGLRenderAction::abortNow()
+SoGLRenderAction::abortNow(void)
 {
-  // FIXME: not implemented
+  COIN_STUB(); // FIXME
   return FALSE;
 }
 
+/*!
+  Adds a path to the list of paths to render after the current pass.
+ */
 void
 SoGLRenderAction::addDelayedPath(SoPath * path)
 {
-  assert(!this->delayedRender);
+  assert(!this->delayedrender);
   SoPath * copy = path->copy();
-  this->delayedPaths.append(copy);
+  this->delayedpaths.append(copy);
 }
 
+/*!
+  Returns a flag indicating whether or not we are currently rendering
+  from the list of delayed paths of the scene graph.
+ */
+SbBool
+SoGLRenderAction::isRenderingDelayedPaths(void) const
+{
+  return this->delayedrender;
+}
+
+// Remember a path containing a transparent object for later
+// rendering.
 void
 SoGLRenderAction::addTransPath(SoPath *path)
 {
-  if (this->bboxAction == NULL) {
-    this->bboxAction =
+  if (this->bboxaction == NULL) {
+    this->bboxaction =
       new SoGetBoundingBoxAction(SoViewportRegionElement::get(this->state));
   }
-  this->bboxAction->setViewportRegion(SoViewportRegionElement::get(this->state));
-  this->bboxAction->apply(path);
-  SbVec3f center = this->bboxAction->getBoundingBox().getCenter();
+  this->bboxaction->setViewportRegion(SoViewportRegionElement::get(this->state));
+  this->bboxaction->apply(path);
+  SbVec3f center = this->bboxaction->getBoundingBox().getCenter();
   SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
   float dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
-  this->transpObjPaths.append(path);
-  this->transpObjDistances.append(dist);
+  this->transpobjpaths.append(path);
+  this->transpobjdistances.append(dist);
 }
 
-SbBool
-SoGLRenderAction::isRenderingDelayedPaths() const
-{
-  return this->delayedRender;
-}
-
+// Disable OpenGL blending.
 void
 SoGLRenderAction::disableBlend(const SbBool force)
 {
-  if (force || this->isBlendEnabled) {
+  if (force || this->isblendenabled) {
     glDisable(GL_BLEND);
     glDepthMask(GL_TRUE);
-    this->isBlendEnabled = FALSE;
+    this->isblendenabled = FALSE;
   }
 }
 
+// Enable OpenGL blending.
 void
 SoGLRenderAction::enableBlend(const SbBool force)
 {
-  if (force || !this->isBlendEnabled) {
+  if (force || !this->isblendenabled) {
     glEnable(GL_BLEND);
     glDepthMask(GL_FALSE);
-    this->isBlendEnabled = TRUE;
+    this->isblendenabled = TRUE;
   }
 }
 
+// Sort paths with transparent objects before rendering.
 void
-SoGLRenderAction::doPathSort()
+SoGLRenderAction::doPathSort(void)
 {
   // need to cast to SbPList to avoid ref/unref problems
-  SbPList *plist = (SbPList*) &this->transpObjPaths;
-  float * darray = (float *)this->transpObjDistances.getArrayPtr();
+  SbPList * plist = (SbPList *)&this->transpobjpaths;
+  float * darray = (float *)this->transpobjdistances.getArrayPtr();
 
-  int i, j, distance, n = this->transpObjDistances.getLength();
-  void *ptmp;
+  int i, j, distance, n = this->transpobjdistances.getLength();
+  void * ptmp;
   float dtmp;
 
   // shell sort algorithm (O(nlog(n))
