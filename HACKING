@@ -12,7 +12,15 @@ First of all, you should make sure you are building from the latest
 sources from the CVS branch you want to work with. This is done by
 using the Concurrent Versioning System for staying in sync with the
 sourcecode repository we at Systems in Motion are using. Follow the
-instructions on the webpages at <URL:http://www.coin3d.org>.
+instructions on the webpages at <URL:http://www.coin3d.org/>.
+
+Be aware that Coin has two source repositories.  "Coin" is the head
+development repository which is unstable and may contain unportable
+code and break binary compatibility from time to time.  "Coin-1" is
+the repository we release the Coin 1.* releases from and will always
+contain stable code that does not break upwards binary compatibility.
+You can hack on either, but for your application development efforts'
+sake you might want to follow Coin-1.
 
 If you are not familiar with CVS, check out the CVS homepages at
 <URL:http://cvshome.org>.
@@ -41,9 +49,9 @@ demonstration purposes):
   $ cd $HOME
   $ mkdir code compile install
   $ cd code
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P simage
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P simage-1
   [cvs doing its thing]
-  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P Coin
+  $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P Coin-1
   [cvs doing its thing]
   $ cvs -z3 -d :pserver:cvs@cvs.sim.no:/export/cvsroot checkout -P SoXt
   [cvs doing its thing]
@@ -64,13 +72,13 @@ demonstration purposes):
   $ mkdir simage Coin SoXt
 
   $ cd $HOME/compile/simage
-  $ $HOME/code/simage/configure --prefix=$HOME/install
+  $ $HOME/code/simage-1/configure --prefix=$HOME/install
   [configure running]
   $ make install
   [build should complete quickly]
 
   $ cd $HOME/compile/Coin
-  $ $HOME/code/Coin/configure --prefix=$HOME/install --enable-hacking
+  $ $HOME/code/Coin-1/configure --prefix=$HOME/install --enable-hacking
   [configure running]
 
         Note the "--enable-hacking" option to configure. This is the
@@ -174,146 +182,125 @@ XXX FIXME: complete doc. XXX
 The following text pertains to the versioning that is set up in configure.ac
 (configure.in).
 
-# **************************************************************************
-# *******  MAKING RELEASES  ************************************************
-# **************************************************************************
-#
-# Library versioning
-# ==================
-#
-# When making releases, follow these rules:
-#
-#  * if there has been made any incompatible changes to the ABI¹:
-#    COIN_MAJOR_VERSION += 1, COIN_MINOR_VERSION = 0,
-#    COIN_MICRO_VERSION = 0.
-#
-#    (If you don't know if the changes that have been made since last
-#    release is binary incompatible with the last ABI, you shouldn't
-#    be making releases.)
-#
-#  * if there has been made additions to the API², but the ABI
-#    is still backwards compatible: COIN_MAJOR_VERSION unchanged,
-#    COIN_MINOR_VERSION += 1, COIN_MICRO_VERSION = 0.
-#
-#  * for bugfix releases and other changes which do not change the interface
-#    at all, keep COIN_MAJOR_VERSION and COIN_MINOR_VERSION unchanged
-#    and COIN_MICRO_VERSION += 1.
-#
-# Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
-# the idea of library versioning applied by Libtool. According to Libtool,
-# libraries should be versioned according to a CURRENT.AGE.REVISION scheme.
-# Here CURRENT is supposed to be increased by 1 each time the API changes,
-# and AGE increased by 1 along with CURRENT each time the API changes in a
-# way which keeps the ABI backwards compatible. If compatibility is broken,
-# AGE is set to 0 (while CURRENT is still increased by 1). The REVISION
-# number has the same semantics as our MICRO number.
-#
-# To cooperate in a painless way with Libtool, we choose to "convert" our
-# MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
-#
-#    * Libtool's CURRENT number is increased when our MAJOR number is
-#      increased.
-#
-#    * Libtool's AGE number is always kept at 0 (i.e. we will never make
-#      ABI compatible releases where we increase the MAJOR number).
-#
-#    * Libtool's REVISION number will be a combination of our MINOR and
-#      MICRO number, like this: REVISION = MINOR * 100 + MICRO, so we get
-#      a REVISION number monotonically increasing in the way we want.
-#
-#      Note that this little "simplification" has two important
-#      ramifications: 1) we can't make more than 99 bugfix-releases of
-#      the library unless a MINOR or MAJOR version increase has happened,
-#      2) we need to keep a release history log to map from Libtool numbers
-#      back to our "native" MACRO.MINOR.MICRO versioning, as Libtool encodes
-#      the filename of the library with it's own CURRENT.AGE.REVISION scheme.
-#      This way it'll still be easy for us to find out which version a
-#      bugreport belongs to: we must tell the user to check out the full
-#      filename of the library, then we can just look up the MAJOR.MINOR.MICRO
-#      number from the release history log below.
-#
-#
-# **************************************************************************
-# CVS maintenance
-# ===============
-#
-# When making a release from the HEAD branch, increase the MAJOR number
-# and make a new branch as follows (from the HEAD):
-#
-#   $ cd [coin_srcdir_HEADbranch]
-#   $ cvs tag -b coin-MAJOR-0
-#
-# (The explicit mention of "coin" in the branch name is necessary
-# because we also tag this name onto all included CVS modules.)
-#
-# Note that new releases from the HEAD branch should only happen when
-# there has been incompatible interface changes.
-#
-#
-# When adding new functionality while keeping backward ABI compatibility,
-# increase the MINOR number and make a new branch as follows:
-#
-#   $ cd [coin_srcdir_MAJORbranch]
-#   $ cvs tag -b coin-MAJOR-MINOR
-#
-# (Where MINOR>0 always).
-#
-#
-# Bugfix releases should be handled by setting a tag on the
-# coin-MAJOR-MINOR with the latest MAJOR.MINOR.x release,
-# like this:
-#
-#   $ cd [coin_srcdir_MAJORMINORbranch]
-#   $ cvs tag coin-MAJOR-MINOR-MICRO
-#
-# (Where MICRO>0 always).
-#
-# **************************************************************************
-# Distribution binaries
-# =====================
-#
-#  * MSWindows SDK: this is constructed as a self-extracting InstallShield
-#    package. Run ``configure'' and ``make install'' on an MSWin-box with
-#    the correct setup (latest Cygwin, MSVC++ v6.0 and InstallShield Express
-#    v2.12), then execute
-#
-#         $ cd [coin_builddir]/build
-#         $ make ispkg
-#
-#    (Installshield's IsxBuild.exe need to be in your path.)
-#
-#    A self-extracting executable SETUPEX.EXE with the InstallShield install
-#    should then be available under [coin_builddir]/build/coin/. Move
-#    to <ftp://ftp.sim.no/pub/coin/bin/win32/coin-@COIN_VERSION@.exe>.
-#
-#  * RPM packages: follow the instructions at the top of the
-#    build/coin.spec.in file, make one package for each major platform
-#    version we have access to (RedHat v5, v6, v7, Mandrake?, SuSE, etc)
-#    for the architectures we want (i386, ...). Place packages under
-#    <ftp://ftp.sim.no/pub/coin/bin/[platform]/[arch]/>.
-#
-# **************************************************************************
-# Release history
-# ===============
-#
-# Release version     | Libtool version   |                 |
-# (MAJOR.MINOR.MICRO) | (CURRENT.AGE.REV) | CVS Branch name | Tag name
-# --------------------+-------------------+-----------------+-----------------
-#     0.9.99          |     0.0.999       |      HEAD       | coin-0-9-99
-#
-#
-# **************************************************************************
-# Footnotes
-# =========
-#
-# ¹ Application Binary Interface. This covers any publicly exposed
-#   functions, function signatures, structures (and classes for C++
-#   code). If any functions has been removed or changed, or if any
-#   structures/classes has been modified in any way, the ABI has
-#   most likely been made incompatible with earlier releases.
-#
-# ² Application Programmer's Interface. This is the functions and data
-#   structures/classes exposed to the application programmer for
-#   interaction with the library.
-#
-# **************************************************************************
+Library versioning
+==================
+
+When making releases, we follow these rules:
+
+* if there has been made any incompatible changes to the ABI¹:
+    COIN_MAJOR_VERSION += 1,
+    COIN_MINOR_VERSION = 0,
+    COIN_MICRO_VERSION = 0.
+
+   (If you don't know if the changes that have been made since last
+   release is binary incompatible with the last ABI, you shouldn't
+   be making releases.)
+
+* if there has been made additions to the API², but the ABI
+  is still backwards compatible: COIN_MAJOR_VERSION unchanged,
+  COIN_MINOR_VERSION += 1, COIN_MICRO_VERSION = 0.
+
+* for bugfix releases and other changes which do not change the interface
+  at all, keep COIN_MAJOR_VERSION and COIN_MINOR_VERSION unchanged
+  and COIN_MICRO_VERSION += 1.
+
+Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
+the idea of library versioning applied by Libtool. According to Libtool,
+libraries should be versioned according to a CURRENT.AGE.REVISION scheme.
+Here CURRENT is supposed to be increased by 1 each time the API changes,
+and AGE increased by 1 along with CURRENT each time the API changes in a
+way which keeps the ABI backwards compatible. If compatibility is broken,
+AGE is set to 0 (while CURRENT is still increased by 1). The REVISION
+number has the same semantics as our MICRO number.
+
+To cooperate in a painless way with Libtool, we choose to "convert" our
+MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
+
+* Libtool's CURRENT number is increased when the MAJOR or MINOR number is
+  changed.  If development and realeases were dune in a linear fashion, we
+  would just have to increase CURRENT by one when the above happens, but
+  since we intend to continue to support Coin 1.* after the release of
+  Coin 2.* we have had to make up a different scheme.  What we have done is
+  to reserve room for 20 minor releases between each major release.  This
+  should hopefully be more than enough.  With this premise, we can calculate
+  CURRENT with the formula MAJOR * 20 + MINOR.  This will ensure that
+  CURRENT for 2.0 will be greater than CURRENT for 1.3 (and 1.17 for that
+  matter).
+
+  Note that this scheme has the "strange" (it's actually completely natural)
+  effect that Coin 1.0 will be found as /usr/local/lib/libCoin.so.20.*
+  (for Linux) and Coin 2.0 will be libCoin.so.40.*.
+
+* Libtool's AGE number is the number of previous CURRENT version numbers
+  that the library is binary compatible with.  This should always be the same
+  number as MINOR is - when we make a new release with a new MAJOR number
+  and 0 as MINOR number, ABI compatibility *will* be broken.
+
+* Libtool's REVISION number is the number of the release with the exact same
+  API/ABI as the previous release.  This is typical for patch-releases
+  where some implementation bugs are fixed without touching anything in the
+  library API.  In other words, when we up the MICRO number.  This means
+  REVISION = MICRO.
+
+==============================================================================
+
+CVS maintenance
+===============
+
+New "Coin-MAJOR" repositories will be branched off the head "Coin" repository.
+When this happens, the Coin repository will be tagged with the symbolic name
+"coin-MAJOR_0_0".
+
+All releases will be made from the Coin-MAJOR repositories.  When a new
+release is made from one of those, the sources will be tagged with the
+symbolic name "coin-MAJOR_MINOR_MICRO".  This was forgotten for the
+Coin-1.0.0 release, but for MAJOR.0.0 releases this is not very important
+as it will coincide with the initial import of the repository.
+
+Releases made from Coin-MAJOR repositories will be in sequence.  When the
+MINOR version number is increased, no more releases of the MINOR - 1 branch
+will be made.
+
+
+Making Releases
+===============
+
+When a new release is to be made, configure.ac must be updated with new
+version information.  Make sure COIN_BETA is set to [] (empty), and the
+release version number is set up.  Run bootstrap and check that
+"make distcheck" works.  Commit the changes with a message about setting
+the version number to MAJOR.MINOR.MICRO.
+
+Add a CVS tag on the new version number.
+  $ cvs tag coin-MAJOR_MINOR_MICRO
+
+Edit configure.ac again and increase micro (unless a new minor will be the
+next release) and set COIN_BETA to [a].  Rerun bootstrap, and commit the
+new setup with a message about setting the version number again.
+
+These two version-increment commits should happen without getting any
+unrelated commits inbetween them so there won't be multiple states of
+the CVS repository with a release version number.
+
+Then go back to the tag (update -dP -r coin-MAJOR_MINOR_MICRO) and
+prepare the release.
+
+Source release tarballs are created with "make dist".  Binary releases are
+created from the source release tarball.
+
+==============================================================================
+
+Footnotes
+=========
+
+¹ Application Binary Interface. This covers any publicly exposed
+  functions, function signatures, structures (and classes for C++
+  code). If any functions has been removed or changed, or if any
+  structures/classes has been modified in any way, the ABI has
+  most likely been made incompatible with earlier releases.
+
+² Application Programmer's Interface. This is the functions and data
+  structures/classes exposed to the application programmer for
+  interaction with the library.
+
+==============================================================================
