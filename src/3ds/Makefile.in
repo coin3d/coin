@@ -140,24 +140,24 @@ sim_ac_makensis_exe = @sim_ac_makensis_exe@
 sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
+# dummy included for 'make dist'
 @BUILD_3DS_CAPABILITIES_TRUE@RegularSources = \
 @BUILD_3DS_CAPABILITIES_TRUE@	3dsLoader.cpp \
 @BUILD_3DS_CAPABILITIES_TRUE@	SoStream.cpp
 
 @BUILD_3DS_CAPABILITIES_FALSE@RegularSources = dummy.cpp
-
 @BUILD_3DS_CAPABILITIES_TRUE@LinkHackSources = \
 @BUILD_3DS_CAPABILITIES_TRUE@	3dsLoader.cpp \
 @BUILD_3DS_CAPABILITIES_TRUE@	SoStream.cpp
 
 @BUILD_3DS_CAPABILITIES_FALSE@LinkHackSources = dummy.cpp
-
+# for 'make dist'
 @BUILD_3DS_CAPABILITIES_TRUE@PrivateHeaders = \
 @BUILD_3DS_CAPABILITIES_TRUE@	3dsLoader.h \
-@BUILD_3DS_CAPABILITIES_TRUE@	SoStream.h
+@BUILD_3DS_CAPABILITIES_TRUE@	SoStream.h \
+@BUILD_3DS_CAPABILITIES_TRUE@	dummy.cpp
 
-@BUILD_3DS_CAPABILITIES_FALSE@PrivateHeaders = 
-
+@BUILD_3DS_CAPABILITIES_FALSE@PrivateHeaders = 3dsLoader.cpp 3dsLoader.h SoStream.cpp SoStream.h
 PublicHeaders = 
 
 

@@ -2,20 +2,20 @@ if BUILD_3DS_CAPABILITIES
 RegularSources = \
 	3dsLoader.cpp \
 	SoStream.cpp
-
 LinkHackSources = \
 	3dsLoader.cpp \
 	SoStream.cpp
-
 PrivateHeaders = \
 	3dsLoader.h \
-	SoStream.h
+	SoStream.h \
+	dummy.cpp
+# dummy included for 'make dist'
 else
 RegularSources = dummy.cpp
 LinkHackSources = dummy.cpp
-PrivateHeaders =
+# for 'make dist'
+PrivateHeaders = 3dsLoader.cpp 3dsLoader.h SoStream.cpp SoStream.h
 endif
-
 PublicHeaders = 
 
 # Automake wasn't too supportive of having variables starting with numbers,
