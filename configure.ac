@@ -1301,8 +1301,6 @@ if $sim_ac_make_dsp; then
         COIN_DSP_LIBS="$COIN_DSP_LIBS $libname.lib"
       fi
       ;;
-    * )
-      ;;
     esac
   done
   AC_SUBST(COIN_DSP_LIBS)
@@ -1314,6 +1312,7 @@ if $sim_ac_make_dsp; then
       <libtool.bak >libtool
   rm -f libtool.bak
   chmod 755 libtool
+
 elif $sim_ac_build_library; then
   if $BUILD_WITH_MSVC; then
     rm -f vc60.pdb
