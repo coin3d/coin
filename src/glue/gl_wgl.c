@@ -234,6 +234,8 @@ struct wglglue_contextdata {
 
   WGLGLUE_HPBUFFER hpbuffer;
   SbBool noappglcontextavail;
+
+  SbBool supports_render_to_texture;
   SbBool pbufferisbound;
 
   int pixelformat;
@@ -342,7 +344,7 @@ wglglue_resolve_symbols(struct wglglue_contextdata * context)
 
 #ifdef WGL_ARB_render_texture
   if (wglglue_ext_supported(context, "WGL_ARB_render_texture")) {
-    wglglue_wglBindTexImageARB =  (COIN_PFNWGLBINDTEXIMAGEARBPROC) PROC(wglBindTexImageARB);
+    wglglue_wglBindTexImageARB = (COIN_PFNWGLBINDTEXIMAGEARBPROC) PROC(wglBindTexImageARB);
     wglglue_wglReleaseTexImageARB = (COIN_PFNWGLBINDTEXIMAGEARBPROC) PROC(wglReleaseTexImageARB);
   }
 #endif /* WGL_ARB_render_texture */
@@ -372,6 +374,7 @@ wglglue_contextdata_init(unsigned int width, unsigned int height)
   context->storedcontext = NULL;
   context->storeddc = NULL;
   context->noappglcontextavail = FALSE;
+  context->supports_render_to_texture = FALSE;
   context->pbufferisbound = FALSE;
   context->pixelformat = 0;
 
@@ -731,51 +734,89 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
 
   {
     GLint pixformat;
-
     unsigned int numFormats;
-    const float fAttribList[] = {0};
+    const float fAttribList[] = { 0 };
 
-    const int attrs[] = {
-      WGL_DRAW_TO_PBUFFER_ARB, 1,
-      WGL_BIND_TO_TEXTURE_RGBA_ARB, 1,
+    const int nontex_attrs[] = {
+      WGL_DRAW_TO_PBUFFER_ARB, TRUE,
       WGL_COLOR_BITS_ARB, 32,
       WGL_ALPHA_BITS_ARB, 8,
       WGL_DEPTH_BITS_ARB, 24,
-      0, 0 /* FIXME: do I need both? pederb, 2003-11-28 */
+      0
     };
+    const int tex_attrs[] = {
+      WGL_DRAW_TO_PBUFFER_ARB, TRUE,
+      WGL_BIND_TO_TEXTURE_RGBA_ARB, TRUE,
+      WGL_COLOR_BITS_ARB, 32,
+      WGL_ALPHA_BITS_ARB, 8,
+      WGL_DEPTH_BITS_ARB, 24,
+      0
+    };
+    const int * attrs[] = { nontex_attrs, tex_attrs };
 
-    const int pbufferflags[] = {
+    const int nontex_pbufferflags[] = { 0 };
+    const int tex_pbufferflags[] = {
       WGL_TEXTURE_FORMAT_ARB, WGL_TEXTURE_RGBA_ARB,
       WGL_TEXTURE_TARGET_ARB, WGL_TEXTURE_2D_ARB,
-      0, 0 /* FIXME: do I need both? pederb, 2003-11-28 */
+      0
     };
+    const int * pbufferflags[] = { nontex_pbufferflags, tex_pbufferflags };
 
-    /* choose pixel format */
-    if (!wglglue_wglChoosePixelFormat(context->memorydc, attrs, fAttribList, 1,
-                                      &pixformat, &numFormats)) {
-      if (warnonerrors || coin_glglue_debug()) {
-        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                  "wglChoosePixelFormat() failed");
+    /* iterate from end of arrays, which contains "best" option */
+    unsigned int try = (sizeof(attrs) / sizeof(attrs[0]));
+    /* if render-to-texture extension not supported, don't attempt to
+       set up a pbuffer with those capabilities (could in theory cause
+       nasty WGL errors): */
+    if (wglglue_wglBindTexImageARB == NULL) { try--; }
+
+    while (try > 0) {
+      try--;
+
+      /* choose pixel format */
+      if (!wglglue_wglChoosePixelFormat(context->memorydc, attrs[try],
+                                        fAttribList, 1, &pixformat,
+                                        &numFormats)) {
+        if (warnonerrors || coin_glglue_debug()) {
+          cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                    "wglChoosePixelFormat() failed, try %u",
+                                    try);
+        }
+        continue;
       }
-      return FALSE;
+
+      /* create the pbuffer */
+      context->hpbuffer = wglglue_wglCreatePbuffer(context->memorydc,
+                                                   pixformat,
+                                                   context->width,
+                                                   context->height,
+                                                   pbufferflags[try]);
+      if (!context->hpbuffer) {
+        if (warnonerrors || coin_glglue_debug()) {
+          cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                    "wglCreatePbuffer(HDC, PixelFormat==%d, "
+                                    "Width==%d, Height==%d, AttribList==%p) "
+                                    "failed, try %u",
+                                    pixformat,
+                                    context->width, context->height,
+                                    pbufferflags[try], try);
+        }
+        continue;
+      }
+
+      /* success, set capability flag, and break loop */
+      if (coin_glglue_debug()) {
+        cc_debugerror_postinfo("wglglue_context_create_pbuffer",
+                               "wglCreatePbuffer() success, try %u", try);
+      }
+      context->supports_render_to_texture =
+        (pbufferflags[try] == tex_pbufferflags);
+      break;
     }
+
+    /* if no way to construct a pbuffer was found: */
+    if (!context->hpbuffer) { return FALSE; }
 
     context->pixelformat = pixformat;
-
-    /* create the pbuffer */
-    context->hpbuffer = wglglue_wglCreatePbuffer(context->memorydc,
-                                                 pixformat,
-                                                 context->width,
-                                                 context->height,
-                                                 pbufferflags);
-    if (!context->hpbuffer) {
-      if (warnonerrors || coin_glglue_debug()) {
-        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                  "wglCreatePbuffer(..., %d, %d, %d, ...) failed",
-                                  pixformat, context->width, context->height);
-      }
-      return FALSE;
-    }
 
     /* delete/release device context and window in case we created it
        ourselves */
@@ -996,24 +1037,33 @@ wglglue_context_destruct(void * ctx)
   wglglue_contextdata_cleanup(context);
 }
 
+/* ********************************************************************** */
+
 void
 wglglue_context_bind_pbuffer(void * ctx)
 {
+  BOOL ok;
+
   struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
   assert(wglglue_wglBindTexImageARB != NULL);
+  assert(context->supports_render_to_texture);
 
-  /* FIXME: check return value. pederb, 2003--11-27 */
-  (void) wglglue_wglBindTexImageARB(context->hpbuffer, WGL_FRONT_LEFT_ARB);
+  ok = wglglue_wglBindTexImageARB(context->hpbuffer, WGL_FRONT_LEFT_ARB);
+  assert(ok);
+  context->pbufferisbound = TRUE;
 }
 
 void
 wglglue_context_release_pbuffer(void * ctx)
 {
+  BOOL ok;
+
   struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
   assert(wglglue_wglReleaseTexImageARB != NULL);
 
-  /* FIXME: check return value. pederb, 2003--11-27 */
-  (void) wglglue_wglReleaseTexImageARB(context->hpbuffer, WGL_FRONT_LEFT_ARB);
+  ok = wglglue_wglReleaseTexImageARB(context->hpbuffer, WGL_FRONT_LEFT_ARB);
+  assert(ok);
+  context->pbufferisbound = FALSE;
 }
 
 SbBool
@@ -1027,8 +1077,10 @@ SbBool
 wglglue_context_can_render_to_texture(void * ctx)
 {
   struct wglglue_contextdata * context = (struct wglglue_contextdata *)ctx;
-  return context->hpbuffer != NULL;
+  return context->supports_render_to_texture;
 }
+
+/* ********************************************************************** */
 
 /* This assumes the context has already been made current. If ctx does
    not point at a pbuffer context, but rather a "normal" offscreen
