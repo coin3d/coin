@@ -201,9 +201,13 @@ SoTimeCounter::inputChanged(SoField * which)
     double difftime = currtime - this->starttime;
 
     if (difftime > this->cyclelen) {
+      // Trigger syncOut once at start of cycle.
       this->syncOut.enable(TRUE);
       SO_ENGINE_OUTPUT(syncOut, SoSFTrigger, setValue());
-      this->syncOut.enable(TRUE);
+      // Avoid further notification of slave fields in
+      // SoEngine::notify().
+      this->syncOut.enable(FALSE);
+
       double num = difftime / this->cyclelen;
       this->starttime += this->cyclelen * floor(num);
       difftime = currtime - this->starttime;
