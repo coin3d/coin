@@ -28,6 +28,10 @@ AC_INIT([Coin], [COIN_MAJOR.COIN_MINOR.COIN_MICRO[]COIN_BETA],
 AC_CONFIG_AUX_DIR(cfg)
 AC_CONFIG_SRCDIR(src/misc/SoDB.cpp)
 
+# FIXME: detect and exit upon this problem (as seen reported on
+# coin-bugs): the install prefix is set to the same directory as the
+# build directory (or also as the srccode dir). 20020129 mortene.
+
 SIM_AC_CVS_CHANGES([
   # the moving of "conf-macros" to "cfg/m4"
   SIM_AC_CVS_CHANGE([
