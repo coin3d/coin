@@ -10,6 +10,7 @@ threadsinc_HEADERS = \
 	worker.h \
 	wpool.h \
 	sched.h \
+	sync.h \
 	fifo.h
 #	barrier.h
 
@@ -23,6 +24,7 @@ EXTRA_DIST = \
 	workerp.h \
 	wpoolp.h \
 	schedp.h \
+	syncp.h \
 	fifop.h
 #	barrierp.h
 

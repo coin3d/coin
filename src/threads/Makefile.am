@@ -9,6 +9,7 @@ RegularSources = \
 	worker.c \
 	wpool.c \
 	sched.c \
+	sync.c \
 	fifo.c
 #	barrier.c
 LinkHackSources = \

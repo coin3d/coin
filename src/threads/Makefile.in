@@ -141,6 +141,7 @@ RegularSources = \
 	worker.c \
 	wpool.c \
 	sched.c \
+	sync.c \
 	fifo.c
 
 #	barrier.c
@@ -208,7 +209,7 @@ threads_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	storage.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	condvar.$(OBJEXT) worker.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	wpool.$(OBJEXT) sched.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	fifo.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	sync.$(OBJEXT) fifo.$(OBJEXT)
 threads_lst_OBJECTS = $(am_threads_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -218,7 +219,7 @@ libthreads_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@am_libthreads_la_OBJECTS = common.lo \
 @HACKING_COMPACT_BUILD_FALSE@	thread.lo mutex.lo rwmutex.lo \
 @HACKING_COMPACT_BUILD_FALSE@	storage.lo condvar.lo worker.lo \
-@HACKING_COMPACT_BUILD_FALSE@	wpool.lo sched.lo fifo.lo
+@HACKING_COMPACT_BUILD_FALSE@	wpool.lo sched.lo sync.lo fifo.lo
 libthreads_la_OBJECTS = $(am_libthreads_la_OBJECTS)
 libthreads@SUFFIX@LINKHACK_la_LDFLAGS =
 libthreads@SUFFIX@LINKHACK_la_LIBADD =
@@ -228,7 +229,7 @@ libthreads@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	common.lo thread.lo mutex.lo \
 @HACKING_COMPACT_BUILD_FALSE@	rwmutex.lo storage.lo condvar.lo \
 @HACKING_COMPACT_BUILD_FALSE@	worker.lo wpool.lo sched.lo \
-@HACKING_COMPACT_BUILD_FALSE@	fifo.lo
+@HACKING_COMPACT_BUILD_FALSE@	sync.lo fifo.lo
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -245,6 +246,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/rwmutex.Plo $(DEPDIR)/rwmutex.Po \
 @AMDEP_TRUE@	$(DEPDIR)/sched.Plo $(DEPDIR)/sched.Po \
 @AMDEP_TRUE@	$(DEPDIR)/storage.Plo $(DEPDIR)/storage.Po \
+@AMDEP_TRUE@	$(DEPDIR)/sync.Plo $(DEPDIR)/sync.Po \
 @AMDEP_TRUE@	$(DEPDIR)/thread.Plo $(DEPDIR)/thread.Po \
 @AMDEP_TRUE@	$(DEPDIR)/worker.Plo $(DEPDIR)/worker.Po \
 @AMDEP_TRUE@	$(DEPDIR)/wpool.Plo $(DEPDIR)/wpool.Po \
@@ -349,6 +351,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/sched.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/storage.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/storage.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/sync.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/sync.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/thread.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/thread.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/worker.Plo@am__quote@

@@ -142,6 +142,7 @@ threadsinc_HEADERS = \
 	worker.h \
 	wpool.h \
 	sched.h \
+	sync.h \
 	fifo.h
 
 
@@ -155,6 +156,7 @@ EXTRA_DIST = \
 	workerp.h \
 	wpoolp.h \
 	schedp.h \
+	syncp.h \
 	fifop.h
 
 subdir = include/Inventor/C/threads
