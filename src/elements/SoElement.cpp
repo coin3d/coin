@@ -263,6 +263,10 @@
 
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
+
 #include <Inventor/elements/SoCullElement.h> // internal element
 #include <Inventor/elements/SoGLLazyElement.h> // internal element
 #include <Inventor/elements/SoTextureScalePolicyElement.h> // internal element
@@ -441,6 +445,13 @@ SoElement::initElements(void)
   SoSoundElement::initClass();
 
   SoTextureUnitElement::initClass();
+  
+  SoMultiTextureCoordinateElement::initClass();
+  SoMultiTextureImageElement::initClass();
+  SoMultiTextureEnabledElement::initClass();
+  SoGLMultiTextureCoordinateElement::initClass();
+  SoGLMultiTextureImageElement::initClass();
+  SoGLMultiTextureEnabledElement::initClass();
 }
 
 // Note: the following documentation for initClass() will also be
