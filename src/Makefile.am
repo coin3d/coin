@@ -101,12 +101,19 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 
 ## Installation information.
 
-if MACOSX_10_2FF
-# we are dealing with the Mac OS X 10.2 gcc compiler toolset...
-LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000
+if !MACOSX
+LibtoolLinkArgs = -no-undefined 
 else
-LibtoolLinkArgs = -no-undefined
+# On Mac OS X, pad the install_name to make it possible to change it
+# later (e.g. to include the library in an app bundle).On Mac OS 10.2
+# or later, also create two-level namespace binaries and use prebinding.
+if MACOSX_10_2FF
+LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000 -headerpad_max_install_names 
+else
+LibtoolLinkArgs = -headerpad_max_install_names 
 endif
+endif 
+
 
 libCoin@SUFFIX@_la_LDFLAGS = \
 	$(LibtoolLinkArgs) \

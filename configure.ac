@@ -229,17 +229,24 @@ if $BUILD_WITH_MSVC; then
   export RANLIB
 fi
 
-# Detect Mac OS 10.2 "Jaguar" or 10.3 "Panther"
+# Detect Mac OS X in general and Mac OS 10.2 "Jaguar" or 10.3
+# "Panther" in particular
 case $host_os in
 darwin6.* )
+  sim_ac_macosx=true
   sim_ac_macosx_10_2ff=true
   sim_ac_macosx_name="Jaguar"
   ;;
 darwin7.* )
+  sim_ac_macosx=true
   sim_ac_macosx_10_2ff=true
   sim_ac_macosx_name="Panther"
   ;;
+darwin* )
+  sim_ac_macosx=true
+  ;;
 * )
+  sim_ac_macosx=false
   sim_ac_macosx_10_2ff=false 
   sim_ac_macosx_name=""
   ;;
@@ -247,6 +254,7 @@ esac
 
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
 AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
+AM_CONDITIONAL([MACOSX], [$sim_ac_macosx])
 AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
 
 if test x"$sim_ac_macosx_10_2ff" = x"true"; then
