@@ -19,29 +19,34 @@
 
 /*!
   \class SoInteractionKit SoInteractionKit.h Inventor/nodekits/SoInteractionKit.h
-  \brief The SoInteractionKit class is the base class for all draggers.
+  \brief The SoInteractionKit class is a base class for draggers.
   \ingroup nodekits
 
-  Ihis nodekits makes it possible to set surrogate paths for
+  This nodekit class makes it possible to set surrogate paths for
   parts. Instead of creating new geometry for the dragger, it is
   possible to specify an existing path in your scene to be used for
   interaction. All picks on this path will be handled by the dragger.
+
+  The SoInteractionKit is primarily an internal class used as a
+  superclass for the dragger classes, and it is unlikely that it
+  should be of interest to application programmers, unless you have
+  very special needs in your application.
 */
 
-#include <Inventor/nodekits/SoInteractionKit.h>
-#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/errors/SoReadError.h>
-#include <coindefs.h>
+#include <Inventor/lists/SbList.h>
+#include <Inventor/lists/SoPathList.h>
+#include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodekits/SoInteractionKit.h>
+#include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/lists/SoPathList.h>
-#include <Inventor/lists/SbList.h>
-#include <Inventor/misc/SoChildList.h>
+#include <coindefs.h>
 
 #include <stdlib.h>
 
@@ -147,11 +152,7 @@ SoInteractionKit::~SoInteractionKit()
   delete THIS;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoInteractionKit class. This includes setting up the
-  type system, among other things.
-*/
+// doc in super
 void
 SoInteractionKit::initClass(void)
 {
@@ -352,6 +353,8 @@ SoInteractionKit::readDefaultParts(const char * fileName,
     if (draggerdir) {
       SbString fullname = draggerdir;
       // FIXME: use configure to check this. 20000129 mortene.
+      // FIXME, update: this seems plain wrong, as paths under Win32
+      // can have separator going either way. 20010816 mortene.
 #ifdef _WIN32
       char dirsep = '\\';
 #else // ! WIN32
@@ -471,8 +474,9 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
 }
 
 /*!
-  Protected version of setPartAsPath(), to make it possible to set non-leaf
-  and private parts.
+  Protected version of setPartAsPath(), to make it possible to set
+  non-leaf and private parts.
+
   \sa setPartAsPath()
 */
 SbBool
@@ -543,9 +547,7 @@ SoInteractionKit::setAnySurrogatePath(const SbName & partname,
   return FALSE;
 }
 
-/*!
-  FIXME: doc
-*/
+// doc in super
 SbBool
 SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
 {
@@ -584,9 +586,7 @@ test_set_default(SoSFEnum * field, int value)
       field->getValue() == value) field->setDefault(TRUE);
 }
 
-/*!
-  FIXME: doc
-*/
+// doc in super
 void
 SoInteractionKit::setDefaultOnNonWritingFields(void)
 {
@@ -612,20 +612,23 @@ SoInteractionKit::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
-/*!
-  Overloaded only to fool the incredible stupid gcc 2.95.2
-  compiler, who couldn't figure out I wanted to call this function in
-  SoBaseKit, but instead insisted that I tried to call
-  SoInteractionKit::setPart(int, SoNode *). Cheeessss.
-*/
+// doc in super
 SbBool
 SoInteractionKit::setPart(const SbName & partname, SoNode * from)
 {
+  // Overloaded only to fool some incredibly stupid behaviour in the
+  // gcc 2.95.2 compiler, who couldn't figure out I wanted to call
+  // this function in SoBaseKit, but instead insisted that I tried to
+  // call SoInteractionKit::setPart(int, SoNode *). Cheeessssh.
+  // <pederb>.
   return inherited::setPart(partname, from);
 }
 
 #undef THIS
-// methods for SoInteractionKitP are below
+
+/*** methods for SoInteractionKitP are below *****************************/
+
+#ifndef DOXYGEN_SKIP_THIS
 
 //
 // checks if partname is in surrogate list. Returns index, -1 if not found.
@@ -745,3 +748,5 @@ SoInteractionKitP::sensorCB(void * data, SoSensor *)
     thisp->connectFields(TRUE);
   }
 }
+
+#endif DOXYGEN_SKIP_THIS

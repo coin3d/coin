@@ -19,34 +19,45 @@
 
 /*!
   \class SoCylinderDetail SoCylinderDetail.h Inventor/details/SoCylinderDetail.h
-  \brief The SoCylinderDetail class is yet to be documented.
+  \brief The SoCylinderDetail class contains information about the parts of a SoCylinder shape.
   \ingroup details
 
-  FIXME: write doc.
 */
 
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/SbName.h>
 
+/*!
+  \var int SoCylinderDetail::part
+  \internal
+*/
+
+
 SO_DETAIL_SOURCE(SoCylinderDetail);
 
-
+/*!
+  Constructor.
+ */
 SoCylinderDetail::SoCylinderDetail(void)
   : part(0)
 {
 }
 
+/*!
+  Destructor.
+ */
 SoCylinderDetail::~SoCylinderDetail()
 {
 }
 
-
+// doc in super
 void
 SoCylinderDetail::initClass(void)
 {
   SO_DETAIL_INIT_CLASS(SoCylinderDetail, SoDetail);
 }
 
+// doc in super
 SoDetail *
 SoCylinderDetail::copy(void) const
 {
@@ -55,12 +66,20 @@ SoCylinderDetail::copy(void) const
   return copy;
 }
 
+/*!
+  Set the part of a cylinder which was selected. A cylinder has
+  three different conceptual parts; SoCylinder::SIDES, SoCylinder::TOP
+  or SoCylinder::BOTTOM.
+  */
 void
 SoCylinderDetail::setPart(const int part)
 {
   this->part = part;
 }
 
+/*!
+  Returns selected cylinder part.
+ */
 int
 SoCylinderDetail::getPart(void) const
 {

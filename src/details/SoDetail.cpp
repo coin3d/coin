@@ -19,11 +19,15 @@
 
 /*!
   \class SoDetail SoDetail.h Inventor/classes/SoDetail.h
-  \brief The SoDetail class is yet to be documented.
+  \brief The SoDetail class is the superclass for all classes storing
+  detailed information about particular shapes.
   \ingroup details
 
-  FIXME: write doc.
-*/
+  Detail information about shapes is used in relation to picking
+  actions in Coin.  They typically contain the relevant information
+  about what particular part of the shape a pick ray intersected with.
+
+  */
 
 #include <Inventor/details/SoDetails.h>
 
@@ -32,6 +36,12 @@ SoType SoDetail::classTypeId;
 /*!
   \fn SoDetail * SoDetail::copy(void) const
   Return a copy of ourself.
+*/
+/*!
+  \fn SoType SoDetail::getTypeId(void) const
+
+  Returns the actual type id of an object derived from a class
+  inheriting SoDetail. Overloaded in all subclasses.
 */
 
 

@@ -22,9 +22,9 @@
   \brief The SoLocateHighlight class highlights geometry under the cursor.
   \ingroup nodes
 
-  This node is supposed to draw to the front buffer. However, in Coin
-  we always draw to the back buffer, forcing a scene redraw whenever
-  a highlight state changes.
+  Note: this node is supposed to draw to the front buffer. However, in
+  Coin we always draw to the back buffer, forcing a scene redraw
+  whenever a highlight state changes.
 */
 
 

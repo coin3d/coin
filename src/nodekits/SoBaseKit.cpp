@@ -1381,7 +1381,7 @@ SoBaseKit::catalogError(void)
   FIXME: write function documentation
 */
 SbBool
-SoBaseKit::setUpConnections(SbBool /*onoff*/, SbBool /*doitalways*/)
+SoBaseKit::setUpConnections(SbBool onoff, SbBool doitalways)
 {
   return this->connectionsSetUp;
 }

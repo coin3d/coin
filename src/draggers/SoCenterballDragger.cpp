@@ -45,9 +45,25 @@
 
 #include <data/draggerDefaults/centerballDragger.h>
 
+/*!
+  \var SoSFRotation SoCenterballDragger::rotation
+  FIXME: doc
+*/
+/*!
+  \var SoSFVec3f SoCenterballDragger::center
+  FIXME: doc
+*/
+
+/*!
+  \var SoFieldSensor * SoCenterballDragger::rotFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoCenterballDragger::centerFieldSensor
+  \internal
+*/
 
 SO_KIT_SOURCE(SoCenterballDragger);
-
 
 void
 SoCenterballDragger::initClass(void)
@@ -340,6 +356,7 @@ SoCenterballDragger::setDefaultOnNonWritingFields(void)
   inherited::setDefaultOnNonWritingFields();
 }
 
+/*! \internal */
 void
 SoCenterballDragger::fieldSensorCB(void * d, SoSensor *)
 {
@@ -349,6 +366,7 @@ SoCenterballDragger::fieldSensorCB(void * d, SoSensor *)
   thisp->setMotionMatrix(matrix);
 }
 
+/*! \internal */
 void
 SoCenterballDragger::valueChangedCB(void *, SoDragger * d)
 {

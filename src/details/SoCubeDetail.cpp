@@ -19,10 +19,17 @@
 
 /*!
   \class SoCubeDetail SoCubeDetail.h Inventor/details/SoCubeDetail.h
-  \brief The SoCubeDetail class is yet to be documented.
+  \brief The SoCubeDetail class contains information about the parts of a SoCube shape.
   \ingroup details
 
-  FIXME: write doc.
+  The part indices are ordered from 0 to 5 as [ front, back, left,
+  right, top, bottom ].
+
+ */
+
+/*!
+  \var int SoConeDetail::part
+  \internal
 */
 
 #include <Inventor/details/SoCubeDetail.h>
@@ -30,23 +37,29 @@
 
 SO_DETAIL_SOURCE(SoCubeDetail);
 
-
+/*!
+  Constructor.
+ */
 SoCubeDetail::SoCubeDetail(void)
   : part(0)
 {
 }
 
+/*!
+  Destructor.
+ */
 SoCubeDetail::~SoCubeDetail()
 {
 }
 
-
+// doc in super
 void
 SoCubeDetail::initClass(void)
 {
   SO_DETAIL_INIT_CLASS(SoCubeDetail, SoDetail);
 }
 
+// doc in super
 SoDetail *
 SoCubeDetail::copy(void) const
 {
@@ -55,12 +68,19 @@ SoCubeDetail::copy(void) const
   return copy;
 }
 
+/*!
+  Set the part of a cube which was selected. A cube has of course six
+  different conceptual parts -- it's sides.
+  */
 void
 SoCubeDetail::setPart(const int part)
 {
   this->part = part;
 }
 
+/*!
+  Returns selected cube part.
+ */
 int
 SoCubeDetail::getPart(void) const
 {

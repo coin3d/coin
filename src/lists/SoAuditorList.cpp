@@ -75,7 +75,9 @@ SoAuditorList::set(const int index,
   SbPList::set(index * 2 + 1, (void *)type);
 }
 
-// Override from parent class.
+/*!
+  Returns number of elements in list.
+*/
 int
 SoAuditorList::getLength(void) const
 {

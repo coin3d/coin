@@ -835,6 +835,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoNodekitCatalog.h \
                          @path_tag@@coin_src_dir@/src/nodekits/SoBaseKit.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoBaseKit.h \
+                         @path_tag@@coin_src_dir@/src/nodekits/SoInteractionKit.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodekits/SoInteractionKit.h \
                          @path_tag@@coin_src_dir@/src/draggers/SoDragger.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/draggers/SoDragger.h \
                          @path_tag@@coin_src_dir@/src/draggers/SoCenterballDragger.cpp \

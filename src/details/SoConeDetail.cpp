@@ -19,10 +19,13 @@
 
 /*!
   \class SoConeDetail SoConeDetail.h Inventor/details/SoConeDetail.h
-  \brief The SoConeDetail class is yet to be documented.
+  \brief The SoConeDetail class contains information about the parts of a SoCone shape.
   \ingroup details
+*/
 
-  FIXME: write doc.
+/*!
+  \var int SoConeDetail::part
+  \internal
 */
 
 #include <Inventor/details/SoConeDetail.h>
@@ -30,23 +33,29 @@
 
 SO_DETAIL_SOURCE(SoConeDetail);
 
-
+/*!
+  Constructor.
+  */
 SoConeDetail::SoConeDetail(void)
   : part(0)
 {
 }
 
+/*!
+  Destructor.
+ */
 SoConeDetail::~SoConeDetail()
 {
 }
 
-
+// doc in super
 void
 SoConeDetail::initClass(void)
 {
   SO_DETAIL_INIT_CLASS(SoConeDetail, SoDetail);
 }
 
+// doc in super
 SoDetail *
 SoConeDetail::copy(void) const
 {
@@ -55,12 +64,19 @@ SoConeDetail::copy(void) const
   return copy;
 }
 
+/*!
+  Set the part of a cone which was selected. A cone has two
+  different conceptual parts; SoCone::SIDES or SoCone::BOTTOM.
+ */
 void
 SoConeDetail::setPart(const int part)
 {
   this->part = part;
 }
 
+/*!
+  Returns selected cone part, either SoCone::SIDES or SoCone::BOTTOM.
+ */
 int
 SoConeDetail::getPart(void) const
 {
