@@ -302,13 +302,13 @@ SoDB::read(SoInput * /* in */, SoPath *& /* path */)
 
   The reference count of the base object will initially be zero.
 
-  Return \a FALSE on error.
+  Returns \a FALSE on error.
 */
 SbBool
 SoDB::read(SoInput * in, SoBase *& base)
 {
   if (!in->isValidFile()) return FALSE;
-  return SoBase::read(in, base, SoBase::getClassTypeId());
+  return SoBase::read(in, base, SoBase::getClassTypeId()) && base;
 }
 
 /*!
