@@ -463,3 +463,30 @@ STUFF TO FIX IN COIN
     requires some thinking on what API extensions to make for this.
 
 
+020 Detect and support libtar if present, and update SoInput accordingly.
+    2002-08-30  Lars J. Aas  <larsa@sim.no>
+
+    If you could bundle your inventor model, and all external texture
+    files and .iv files in a tar archive (possibly compressed), and
+    still load it and its sub-files with Coin, that would be a huge gain.
+    The library "libtar" (BSD-licensed, freshmeat) would enable us to do
+    this.
+
+    Typically, the basename of the tar-file would be used as the basename
+    of the Inventor model file loaded from the archive.  That way, you
+    could untar multiple such bundles in the same dir, and not worry
+    about overwriting some "default" filename for the root Inventor file.
+    This has the disadvantage of making it impossible to rename the bundle
+    file though.
+
+    Another option is to load the first .iv-file found in the bundle as
+    the root file.  Libtar will probably allow us to inspect this kind
+    of stuff quite easily.
+
+    A new write-action (or extensions to the existing one) is needed so
+    Coin can generate such bundles automatically, moving referenced files
+    and textures into the being-written bundle.  If bundles always had to
+    be created manually (which is acceptable in the development phase),
+    the point would kind of be gone.
+
+
