@@ -60,6 +60,7 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoProto.h>
 #include <coindefs.h> // COIN_STUB()
 #include <ctype.h>
 
@@ -569,9 +570,21 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   // necessary. 20000102 mortene.
   if (!object->getIsBuiltIn()) this->writeFieldDescriptions(out, object);
 
-  for (i=0; i < this->getNumFields(); i++) {
+  SoProto * proto = out->getCurrentProto();
+
+  for (i = 0; i < this->getNumFields(); i++) {
     SoField * f = this->getField(object, i);
-    if (writeallfields || f->shouldWrite()) {
+    // Test if field has a PROTO IS reference
+    SbName pname = proto ? 
+      proto->findISReference(object, this->getFieldName(i)) : SbName("");
+    if (pname.getLength()) {
+      out->indent();
+      out->write(this->getFieldName(i).getString());
+      out->write(" IS ");
+      out->write(pname.getString());
+      out->write("\n");
+    }
+    else if (writeallfields || f->shouldWrite()) {
       f->write(out, this->getFieldName(i));
     }
   }
