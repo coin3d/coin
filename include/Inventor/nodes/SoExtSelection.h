@@ -28,19 +28,19 @@
 class SbColor;
 class SoPrimitiveVertex;
 
-typedef SbBool SoExtSelectionTriangleCB(void * userdata, 
-                                        SoCallbackAction * action, 
-                                        const SoPrimitiveVertex * v1, 
-                                        const SoPrimitiveVertex * v2, 
+typedef SbBool SoExtSelectionTriangleCB(void * userdata,
+                                        SoCallbackAction * action,
+                                        const SoPrimitiveVertex * v1,
+                                        const SoPrimitiveVertex * v2,
                                         const SoPrimitiveVertex * v3);
 
-typedef SbBool SoExtSelectionLineSegmentCB(void * userdata, 
-                                           SoCallbackAction * action, 
-                                           const SoPrimitiveVertex * v1, 
+typedef SbBool SoExtSelectionLineSegmentCB(void * userdata,
+                                           SoCallbackAction * action,
+                                           const SoPrimitiveVertex * v1,
                                            const SoPrimitiveVertex * v2);
 
-typedef SbBool SoExtSelectionPointCB(void * userdata, 
-                                     SoCallbackAction * action, 
+typedef SbBool SoExtSelectionPointCB(void * userdata,
+                                     SoCallbackAction * action,
                                      const SoPrimitiveVertex * v1);
 
 typedef SoPath * SoLassoSelectionFilterCB(void * userdata, const SoPath * path);
@@ -85,12 +85,14 @@ public:
   void setLassoFilterCallback(SoLassoSelectionFilterCB * f, void * userdata = NULL,
                               const SbBool callonlyifselectable = TRUE);
 
-  void setTriangleFilterCallback(SoExtSelectionTriangleCB * func, 
-                                 void * userdata = NULL); 
-  void setLineSegmentFilterCallback(SoExtSelectionLineSegmentCB * func, 
+  void setTriangleFilterCallback(SoExtSelectionTriangleCB * func,
+                                 void * userdata = NULL);
+  void setLineSegmentFilterCallback(SoExtSelectionLineSegmentCB * func,
                                     void * userdata = NULL);
-  void setPointFilterCallback(SoExtSelectionPointCB * func, 
-                              void * userdata = NULL); 
+  void setPointFilterCallback(SoExtSelectionPointCB * func,
+                              void * userdata = NULL);
+  SbBool wasShiftDown(void) const;
+
 protected:
   virtual ~SoExtSelection();
 

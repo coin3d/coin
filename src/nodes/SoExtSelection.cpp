@@ -25,6 +25,11 @@
   This class enables you to select geometry by specifying a lasso (a
   polygon) or a rectangle on screen. When objects are selected, you'll
   receive the same callbacks as for the SoSelection node.
+
+  This node is based on TGS' SoExtSelection, and we aim to be API
+  compatible with this node to enable users to switch between using
+  Coin and TGS Inventor.  Please contact us if you find discrepancies
+  between Coin SoExtSelection and TGS SoExtSelection.
 */
 
 #include <Inventor/nodes/SoExtSelection.h>
@@ -215,6 +220,7 @@ public:
     SbVec2s vpsize;
     SbBool abort;
     SbBool allhit;
+    SbBool onlyrect;
   } primcbdata_t;
   primcbdata_t primcbdata;
 
@@ -929,6 +935,13 @@ SoExtSelection::setLassoFilterCallback(SoLassoSelectionFilterCB * f, void * user
   THIS->callfiltercbonlyifselectable = callonlyifselectable;
 }
 
+/*!
+  Sets the callback that will be called for every triangle inside the
+  lasso/rectangle when selecting. The user should return \e FALSE if
+  he/she wants to continue receiving callbacks. When the user returns
+  \e TRUE, the object/shape is selected, and no more callbacks will be
+  invoked for the object.
+*/
 void
 SoExtSelection::setTriangleFilterCallback(SoExtSelectionTriangleCB * func,
                                           void * userdata)
@@ -937,6 +950,13 @@ SoExtSelection::setTriangleFilterCallback(SoExtSelectionTriangleCB * func,
   THIS->triangleFilterCBData = userdata;
 }
 
+/*!
+  Sets the callback that will be called for every line segment inside
+  the lasso/rectangle when selecting. The user should return \e FALSE
+  if he/she wants to continue receiving callbacks. When the user
+  returns \e TRUE, the object/shape is selected, and no more callbacks
+  will be invoked for the object.
+*/
 void
 SoExtSelection::setLineSegmentFilterCallback(SoExtSelectionLineSegmentCB * func,
                                              void * userdata)
@@ -945,6 +965,13 @@ SoExtSelection::setLineSegmentFilterCallback(SoExtSelectionLineSegmentCB * func,
   THIS->lineFilterCBData = userdata;
 }
 
+/*!
+  Sets the callback that will be called for every point inside the
+  lasso/rectangle when selecting. The user should return \e FALSE if
+  he/she wants to continue receiving callbacks. When the user returns
+  \e TRUE, the object/shape is selected, and no more callbacks will be
+  invoked for the object.
+*/
 void
 SoExtSelection::setPointFilterCallback(SoExtSelectionPointCB * func,
                                        void * userdata)
@@ -953,10 +980,24 @@ SoExtSelection::setPointFilterCallback(SoExtSelectionPointCB * func,
   THIS->pointFilterCBData = userdata;
 }
 
+/*!
+  Returns whether the SHIFT key was pressed during the latest
+  user interaction. This is useful if you want to respect the
+  shift policy while selecting primitives.
+
+  This method is specific to Coin, and is not part of TGS OIV.
+*/
+SbBool
+SoExtSelection::wasShiftDown(void) const
+{
+  return THIS->wasshiftdown;
+}
+
 #undef THIS
 
 #ifndef DOXYGEN_SKIP_THIS
 
+// timer callback for rendering lasso animation.
 void
 SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
 {
@@ -971,6 +1012,7 @@ SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
   }
 }
 
+// callback that is called for a shape before processing primitives.
 SoCallbackAction::Response
 SoExtSelectionP::preShapeCallback(void *data, SoCallbackAction *action, const SoNode *node)
 {
@@ -980,6 +1022,7 @@ SoExtSelectionP::preShapeCallback(void *data, SoCallbackAction *action, const So
   return ext->pimpl->testShape(action, (const SoShape*) node);
 }
 
+// callback that is called for a shape after all primitives have been processed
 SoCallbackAction::Response
 SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const SoNode *node)
 {
@@ -1000,6 +1043,8 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
   return SoCallbackAction::CONTINUE;
 }
 
+// SoCamera callback for callback action. Will set view volume planes
+// in SoCullElement to optimize picking.
 SoCallbackAction::Response
 SoExtSelectionP::cameraCB(void * data,
                           SoCallbackAction * action,
@@ -1033,6 +1078,7 @@ SoExtSelectionP::cameraCB(void * data,
   return SoCallbackAction::CONTINUE;
 }
 
+//
 SoCallbackAction::Response
 SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
 {
@@ -1066,6 +1112,7 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
   return SoCallbackAction::CONTINUE;
 }
 
+// project a point to screen
 static SbVec2s
 project_pt(const SbMatrix & projmatrix, const SbVec3f & v,
            const SbVec2s & vporg, const SbVec2s & vpsize)
@@ -1086,7 +1133,7 @@ project_pt(const SbMatrix & projmatrix, const SbVec3f & v,
                  (short) SbClamp(normpt[1], -32768.0f, 32767.0f));
 }
 
-
+// test for intersection between bbox and lasso/rectangle
 SoCallbackAction::Response
 SoExtSelectionP::testBBox(SoCallbackAction * action,
                           const SbMatrix & projmatrix,
@@ -1154,7 +1201,7 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
   return SoCallbackAction::PRUNE; // we don't need do callbacks for primitives
 }
 
-// SoShape callback from SoCallbackAction
+// initialize some variables needed before receiving primitive callbacks.
 SoCallbackAction::Response
 SoExtSelectionP::testPrimitives(SoCallbackAction * action,
                                 const SbMatrix & projmatrix,
@@ -1174,7 +1221,9 @@ SoExtSelectionP::testPrimitives(SoCallbackAction * action,
   this->primcbdata.vporg = SoViewportRegionElement::get(action->getState()).getViewportOriginPixels();
   this->primcbdata.vpsize = SoViewportRegionElement::get(action->getState()).getViewportSizePixels();
   this->primcbdata.abort = FALSE;
-
+  this->primcbdata.onlyrect =
+    this->master->lassoType.getValue() ==
+    SoExtSelection::LASSO;
   // signal to callback action that we want to generate primitives for
   // this shape
   return SoCallbackAction::CONTINUE;
@@ -1202,40 +1251,55 @@ SoExtSelectionP::triangleCB(void * userData,
     return;
   }
 
-  SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
-                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  if (!thisp->primcbdata.lassorect.intersect(p0) || !point_in_poly(thisp->coords, p0)) {
-    thisp->primcbdata.allhit = FALSE;
-    return;
-  }
+  SbBool onlyrect = thisp->primcbdata.onlyrect;
 
-  SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+  if (thisp->primcbdata.fulltest) { // entire triangle must be inside lasso
+    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!thisp->primcbdata.lassorect.intersect(p0) || (onlyrect || !point_in_poly(thisp->coords, p0))) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    
+    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  if (!thisp->primcbdata.lassorect.intersect(p1) || !point_in_poly(thisp->coords, p1)) {
-    thisp->primcbdata.allhit = FALSE;
-    return;
-  }
-  SbVec2s p2 = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
-                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  if (!thisp->primcbdata.lassorect.intersect(p2) || !point_in_poly(thisp->coords, p2)) {
-    thisp->primcbdata.allhit = FALSE;
-    return;
-  }
+    if (!thisp->primcbdata.lassorect.intersect(p1) || (onlyrect || !point_in_poly(thisp->coords, p1))) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    SbVec2s p2 = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!thisp->primcbdata.lassorect.intersect(p2) || (onlyrect || !point_in_poly(thisp->coords, p2))) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
 
-  if (poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
-    thisp->primcbdata.allhit = FALSE;
-    return;
+    if (poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    if (poly_line_intersect(thisp->coords, p1, p2, FALSE)) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    if (poly_line_intersect(thisp->coords, p2, p0, FALSE)) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
   }
-  if (poly_line_intersect(thisp->coords, p1, p2, FALSE)) {
-    thisp->primcbdata.allhit = FALSE;
-    return;
+  else { // some part of the triangle must be inside lasso
+    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    SbVec2s p2 = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!poly_tri_intersect(thisp->coords, p0, p1, p2)) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
   }
-  if (poly_line_intersect(thisp->coords, p2, p0, FALSE)) {
-    thisp->primcbdata.allhit = FALSE;
-    return;
-  }
-
-  // triangle is surrounded by the lasso
+  // triangle is hit/surrounded by the lasso
   thisp->primcbdata.hit = TRUE;
 
   if (thisp->triangleFilterCB) {
@@ -1270,26 +1334,40 @@ SoExtSelectionP::lineSegmentCB(void *userData,
     return;
   }
 
-  SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
-                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  if (!thisp->primcbdata.lassorect.intersect(p0) || !point_in_poly(thisp->coords, p0)) {
-    thisp->primcbdata.allhit = FALSE;
-    return;
+  SbBool onlyrect = thisp->primcbdata.onlyrect;
+
+  if (thisp->primcbdata.fulltest) {
+    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!thisp->primcbdata.lassorect.intersect(p0) || (onlyrect || !point_in_poly(thisp->coords, p0))) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+
+    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!thisp->primcbdata.lassorect.intersect(p1) || (onlyrect || !point_in_poly(thisp->coords, p1))) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+
+    if (poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+  }
+  else {
+    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!poly_line_intersect(thisp->coords, p0, p1, TRUE)) {
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
   }
 
-  SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
-                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  if (!thisp->primcbdata.lassorect.intersect(p1) || !point_in_poly(thisp->coords, p1)) {
-    thisp->primcbdata.allhit = FALSE;
-    return;
-  }
-
-  if (poly_line_intersect(thisp->coords, p0, p1, FALSE)) {
-    thisp->primcbdata.allhit = FALSE;
-    return;
-  }
-
-  // line segment is surrounded by the lasso
+  // line segment is hit/surrounded by the lasso
   thisp->primcbdata.hit = TRUE;
 
   if (thisp->lineFilterCB) {
@@ -1323,9 +1401,11 @@ SoExtSelectionP::pointCB(void *userData,
     return;
   }
 
+  SbBool onlyrect = thisp->primcbdata.onlyrect;
+
   SbVec2s p = project_pt(thisp->primcbdata.projmatrix, v->getPoint(),
                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  if (!thisp->primcbdata.lassorect.intersect(p) || !point_in_poly(thisp->coords, p)) {
+  if (!thisp->primcbdata.lassorect.intersect(p) || (onlyrect || !point_in_poly(thisp->coords, p))) {
     thisp->primcbdata.allhit = FALSE;
     return;
   }
@@ -1344,6 +1424,7 @@ SoExtSelectionP::pointCB(void *userData,
   }
 }
 
+// invoke selection policy on a shape
 void
 SoExtSelectionP::doSelect(const SoPath * path)
 {
@@ -1362,9 +1443,22 @@ SoExtSelectionP::doSelect(const SoPath * path)
   if (newpath != path) newpath->unref();
 }
 
+// start a selecting for the current lasso/rectangle
 void
 SoExtSelectionP::performSelection(SoHandleEventAction * action)
 {
+  if (this->master->lassoType.getValue() == SoExtSelection::RECTANGLE) {
+    assert(this->coords.getLength() == 2);
+    SbVec2s p0 = this->coords[0];
+    SbVec2s p1 = this->coords[1];
+    this->coords.truncate(0);
+    // convert the rectangle to a polygon
+    this->coords.append(p0);
+    this->coords.append(SbVec2s(p1[0], p0[1]));
+    this->coords.append(p1);
+    this->coords.append(SbVec2s(p0[0], p1[1]));
+  }
+
   this->curvp = SoViewportRegionElement::get(action->getState());
   this->cbaction->setViewportRegion(this->curvp);
 
