@@ -184,6 +184,8 @@ SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
                                           this,
                                           SoTextureCoordinatePlane::handleTexgen,
+                                          this,
+                                          SoTextureCoordinatePlane::generate,
                                           this);
 }
 
