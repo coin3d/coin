@@ -28,6 +28,11 @@
 #include <assert.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+
 /*!
   \var SbPlaneProjector::plane
   FIXME: write doc
@@ -45,57 +50,60 @@
 
 /*!
   Constructor.
- */
-SbPlaneProjector::SbPlaneProjector(SbBool orient)
-  : plane(SbVec3f(0.0f, 0.0f, 1.0f), SbVec3f(0.0f, 0.0f, 0.0f)),
+*/
+SbPlaneProjector::SbPlaneProjector(const SbBool orient)
+  : plane(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f),
+    nonOrientPlane(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f),
     orientToEye(orient),
-    lastPoint(0.0f, 0.0f, 0.0f)
+    needSetup(orient) // will need setup if orient-to-plane
 {
-  // FIXME: orientToEye==TRUE not handled. 19990329 mortene.
 }
 
 /*!
   FIXME: write doc
- */
-SbPlaneProjector::SbPlaneProjector(const SbPlane & plane, SbBool orient)
+*/
+SbPlaneProjector::SbPlaneProjector(const SbPlane &plane, const SbBool orient)
   : plane(plane),
+    nonOrientPlane(plane),
     orientToEye(orient),
-    lastPoint(0.0f, 0.0f, 0.0f)
+    needSetup(orient) // will need setup if orient-to-plane
 {
-  // FIXME: orientToEye==TRUE not handled. 19990329 mortene.
 }
 
 /*!
   FIXME: write doc
- */
+*/
 SbVec3f
 SbPlaneProjector::project(const SbVec2f & point)
 {
-  // FIXME: orientToEye==TRUE not handled. 19990329 mortene.
+  if (this->needSetup) this->setupPlane();
 
   SbLine projline = this->getWorkingLine(point);
   SbVec3f projpt;
-  SbBool isect = this->plane.intersect(projline, projpt);
-  // FIXME: is this a good way of handling the case of parallel lines?
-  // 19990329 mortene.
-  if (!isect) projpt = this->lastPoint;
-  else this->lastPoint = projpt;
+  if (!this->plane.intersect(projline, projpt)) {
+#if COIN_DEBUG
+    SoDebugError::postWarning("SbPlaneProjector::project",
+                              "working line is paralell to plane.");
+#endif // COIN_DEBUG
+  }
   return projpt;
 }
 
 /*!
   FIXME: write doc
- */
+*/
 void
-SbPlaneProjector::setOrientToEye(SbBool orientToEye)
+SbPlaneProjector::setOrientToEye(const SbBool orientToEye)
 {
-  this->orientToEye = orientToEye;
-  // FIXME: orientToEye==TRUE not handled. 19990329 mortene.
+  if (orientToEye != this->orientToEye) {
+    this->orientToEye = orientToEye;
+    this->needSetup = TRUE;
+  }
 }
 
 /*!
   FIXME: write doc
- */
+*/
 SbBool
 SbPlaneProjector::isOrientToEye(void) const
 {
@@ -104,16 +112,17 @@ SbPlaneProjector::isOrientToEye(void) const
 
 /*!
   Set a new plane.
- */
+*/
 void
-SbPlaneProjector::setPlane(const SbPlane & plane)
+SbPlaneProjector::setPlane(const SbPlane &plane)
 {
   this->plane = plane;
+  this->needSetup = TRUE;
 }
 
 /*!
   Returns the currently set plane.
- */
+*/
 const SbPlane &
 SbPlaneProjector::getPlane(void) const
 {
@@ -122,24 +131,22 @@ SbPlaneProjector::getPlane(void) const
 
 /*!
   FIXME: write doc
- */
+*/
 SbVec3f
-SbPlaneProjector::getVector(const SbVec2f& mousePosition1,
-                            const SbVec2f& mousePosition2)
+SbPlaneProjector::getVector(const SbVec2f &mousePosition1,
+                            const SbVec2f &mousePosition2)
 {
-  // Must precalculate these, so lastPoint is finally set to the value
-  // of the projected mousePosition2.
   SbVec3f mp1 = this->project(mousePosition1);
   SbVec3f mp2 = this->project(mousePosition2);
-
+  this->lastPoint = mp2; // FIXME: correct? pederb, 1999-12-06
   return mp2 - mp1;
 }
 
 /*!
   FIXME: write doc
- */
+*/
 SbVec3f
-SbPlaneProjector::getVector(const SbVec2f& mousePosition)
+SbPlaneProjector::getVector(const SbVec2f &mousePosition)
 {
   SbVec3f lp = this->lastPoint; // lastPoint is updated in project()
   return (this->project(mousePosition) - lp);
@@ -147,18 +154,18 @@ SbPlaneProjector::getVector(const SbVec2f& mousePosition)
 
 /*!
   FIXME: write doc
- */
+*/
 void
-SbPlaneProjector::setStartPosition(const SbVec2f& mousePosition)
+SbPlaneProjector::setStartPosition(const SbVec2f &mousePosition)
 {
   this->lastPoint = this->project(mousePosition);
 }
 
 /*!
   FIXME: write doc
- */
+*/
 void
-SbPlaneProjector::setStartPosition(const SbVec3f& point)
+SbPlaneProjector::setStartPosition(const SbVec3f &point)
 {
   this->lastPoint = point;
 }
@@ -166,7 +173,7 @@ SbPlaneProjector::setStartPosition(const SbVec3f& point)
 /*!
   Make an exact copy of the SbPlaneProjector instance. The caller will be
   responsible for destroying the new instance.
- */
+*/
 SbProjector *
 SbPlaneProjector::copy(void) const
 {
@@ -174,11 +181,20 @@ SbPlaneProjector::copy(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  Should be called whenever needSetup is \a TRUE. Will calculate \e plane.
+*/
 void
 SbPlaneProjector::setupPlane(void)
 {
-  // FIXME: implement
-  assert(0);
+  if (this->orientToEye) {
+    SbVec3f pnt = -this->nonOrientPlane.getNormal() *
+      this->nonOrientPlane.getDistanceFromOrigin();
+    SbVec3f dir = -this->viewVol.getProjectionDirection();
+    this->worldToWorking.multDirMatrix(dir, dir);
+    this->plane = SbPlane(dir, pnt);
+  }
+  else {
+    this->plane = this->nonOrientPlane;
+  }
+  this->needSetup = FALSE;
 }

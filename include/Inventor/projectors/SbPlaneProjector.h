@@ -29,8 +29,8 @@ class SbPlaneProjector : public SbProjector {
   typedef SbProjector inherited;
 
 public:
-  SbPlaneProjector(SbBool orient = FALSE);
-  SbPlaneProjector(const SbPlane & plane, SbBool orient = FALSE);
+  SbPlaneProjector(const SbBool orient = FALSE);
+  SbPlaneProjector(const SbPlane & plane, const SbBool orient = FALSE);
   virtual SbProjector * copy(void) const;
 
   virtual SbVec3f project(const SbVec2f & point);
@@ -47,8 +47,10 @@ public:
 protected:
   void setupPlane(void);
 
-  SbPlane plane;
+protected:
+  SbPlane plane, nonOrientPlane;
   SbBool orientToEye;
+  SbBool needSetup;
   SbVec3f lastPoint;
 };
 
