@@ -107,7 +107,13 @@ SbDict * SoType::typedict = NULL;
 /*!
   \typedef SoType::instantiationMethod
 
-  FIXME: write doc.
+  This is a convenience typedef for the function signature of a typed
+  class' instantiation method. It is an extension on the original
+  Inventor API.  Mostly only useful for internal purposes.
+
+  An instantation method will take no arguments and returns a
+  void-pointer to a newly allocated and initialized object of the
+  class type.
 */
 
 /*!
@@ -437,35 +443,39 @@ SoType::isInternal(void) const
 /*!
   \fn SbBool SoType::operator != (const SoType type) const
 
-  FIXME: write doc.
+  Check type inequality.
 */
 
 /*!
   \fn SbBool SoType::operator == (const SoType type) const
 
-  FIXME: write doc.
+  Check type equality.
 */
 
 /*!
   \fn SbBool SoType::operator <  (const SoType type) const
 
-  FIXME: write doc.
+  Comparison operator for sorting type data according to some internal
+  criterion.
 */
 
 /*!
   \fn SbBool SoType::operator <= (const SoType type) const
 
-  FIXME: write doc.
+  Comparison operator for sorting type data according to some internal
+  criterion.
 */
 
 /*!
   \fn SbBool SoType::operator >= (const SoType type) const
 
-  FIXME: write doc.
+  Comparison operator for sorting type data according to some internal
+  criterion.
 */
 
 /*!
   \fn SbBool SoType::operator >  (const SoType type) const
 
-  FIXME: write doc.
+  Comparison operator for sorting type data according to some internal
+  criterion.
 */
