@@ -78,6 +78,19 @@ A:      Systems in Motion can do this dual licensing "trick" with Coin
         they use the same strategy.)
 
 
+Q 0.3:  What happens if I don't renew my Coin PEL? Can I still continue
+        using Coin?
+
+A:      Yes. You can continue development using the last version of
+        Coin (or any earlier version, if you want) that was released 
+        while you were a registered PEL holder. Version in this context
+        means "release with a unique version number", so for instance 
+        1.0.0 and 1.0.1 count as different versions. 
+
+        Of course you are not allowed to use any version of Coin that
+        was released after the expiry date, and you will not get any 
+        more developer support.
+
 
         I .  C o n c e r n i n g   t h e   n e w   P E L  ( v 2 )
 
