@@ -39,17 +39,17 @@
     advantage of OpenGL1.1+ and extensions even when doing
     remote/indirect rendering.
 
-    We don't allow this now, for mainly two reaons: 1) we've seen
-    NVidia GLX bugs when attempting this. 2) We generally prefer a
-    "better safe than sorry".
+    We don't allow this by default now, for mainly two reasons: 1)
+    we've seen NVidia GLX bugs when attempting this. 2) We generally
+    prefer a "better safe than sorry" strategy.
 
-    We might consider changing this strategy to default to allow it,
-    and provide an envvar to turn it off instead -- if we can indeed
-    get confirmation that the assumed NVidia driver bug is indeed
-    NVidia's problem.
+    We might consider changing this strategy to allow it by default,
+    and provide an envvar to turn it off instead -- if we can get
+    confirmation that the assumed NVidia driver bug is indeed NVidia's
+    problem.
 
   - COIN_FORCE_GL1_0_ONLY: set to "1" to disallow use of OpenGL1.1+
-    and extensions under any circumstances.
+    and extensions under all circumstances.
 */
 
 
@@ -79,6 +79,9 @@
 
    - An Apple Technical Q&A on how to do dynamic binding to OpenGL symbols:
      <URL:http://developer.apple.com/qa/qa2001/qa1188.html>
+
+     Full documentation on all "Object File Image" functions, see:
+     <URL:http://developer.apple.com/techpubs/macosx/DeveloperTools/MachORuntime/5rt_api_reference/_Object_Fil_e_Functions.html>
 */
 
 #ifdef HAVE_CONFIG_H
