@@ -787,6 +787,8 @@ SoNode::rayPickS(SoAction * action, SoNode * node)
 void
 SoNode::rayPick(SoRayPickAction * action)
 {
+  // if node has no defined rayPick(), try the pick method
+  this->pick(action);
 }
 
 /*!
