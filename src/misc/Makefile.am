@@ -35,10 +35,8 @@ RegularSources = \
 	SoTranReceiver.cpp \
 	default3dfont.cpp \
 	default2dfont.cpp \
-	GLUWrapper.c \
-	simage_wrapper.c \
 	SoAudioDevice.cpp \
-        AudioTools.cpp
+	AudioTools.cpp
 LinkHackSources = \
 	all-cpp.cpp \
 	all-c.c
@@ -68,9 +66,7 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \
-	GLUWrapper.h \
-	simage_wrapper.h \
-        AudioTools.h \
+	AudioTools.h \
 	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \
 	SoGLTristripTemplate.icc \

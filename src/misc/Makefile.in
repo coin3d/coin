@@ -92,6 +92,7 @@ HAVE_3DS_IMPORT_CAPABILITIES = @HAVE_3DS_IMPORT_CAPABILITIES@
 HAVE_SOUND = @HAVE_SOUND@
 HAVE_SUPERGLU = @HAVE_SUPERGLU@
 HAVE_THREADS = @HAVE_THREADS@
+HAVE_THREADSAFE = @HAVE_THREADSAFE@
 HAVE_VRML97 = @HAVE_VRML97@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LIBFLAGS = @LIBFLAGS@
@@ -171,10 +172,8 @@ RegularSources = \
 	SoTranReceiver.cpp \
 	default3dfont.cpp \
 	default2dfont.cpp \
-	GLUWrapper.c \
-	simage_wrapper.c \
 	SoAudioDevice.cpp \
-        AudioTools.cpp
+	AudioTools.cpp
 
 LinkHackSources = \
 	all-cpp.cpp \
@@ -207,9 +206,7 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \
-	GLUWrapper.h \
-	simage_wrapper.h \
-        AudioTools.h \
+	AudioTools.h \
 	SoGLFaceSetTemplate.icc \
 	SoGLLineSetTemplate.icc \
 	SoGLTristripTemplate.icc \
@@ -303,8 +300,6 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	default3dfont.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	default2dfont.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	GLUWrapper.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoAudioDevice.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	AudioTools.$(OBJEXT)
 misc_lst_OBJECTS = $(am_misc_lst_OBJECTS)
@@ -330,8 +325,7 @@ libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLUWrapper.lo \
-@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo SoAudioDevice.lo \
+@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo SoAudioDevice.lo \
 @HACKING_COMPACT_BUILD_FALSE@	AudioTools.lo
 libmisc_la_OBJECTS = $(am_libmisc_la_OBJECTS)
 libmisc@SUFFIX@LINKHACK_la_LDFLAGS =
@@ -355,8 +349,7 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGenerate.lo SoLockManager.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoByteStream.lo SoTranSender.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTranReceiver.lo default3dfont.lo \
-@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo GLUWrapper.lo \
-@HACKING_COMPACT_BUILD_FALSE@	simage_wrapper.lo SoAudioDevice.lo \
+@HACKING_COMPACT_BUILD_FALSE@	default2dfont.lo SoAudioDevice.lo \
 @HACKING_COMPACT_BUILD_FALSE@	AudioTools.lo
 libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libmisc@SUFFIX@LINKHACK_la_OBJECTS)
@@ -367,7 +360,6 @@ CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/AudioTools.Plo $(DEPDIR)/AudioTools.Po \
-@AMDEP_TRUE@	$(DEPDIR)/GLUWrapper.Plo $(DEPDIR)/GLUWrapper.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoAudioDevice.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoAudioDevice.Po $(DEPDIR)/SoBase.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoBase.Po $(DEPDIR)/SoByteStream.Plo \
@@ -415,9 +407,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/all-cpp.Po $(DEPDIR)/default2dfont.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/default2dfont.Po \
 @AMDEP_TRUE@	$(DEPDIR)/default3dfont.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/default3dfont.Po \
-@AMDEP_TRUE@	$(DEPDIR)/simage_wrapper.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/simage_wrapper.Po
+@AMDEP_TRUE@	$(DEPDIR)/default3dfont.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -504,8 +494,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/AudioTools.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/AudioTools.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/GLUWrapper.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/GLUWrapper.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAudioDevice.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoAudioDevice.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoBase.Plo@am__quote@
@@ -578,8 +566,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/default2dfont.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/default3dfont.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/default3dfont.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/simage_wrapper.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/simage_wrapper.Po@am__quote@
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
@@ -773,7 +759,7 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 # this rule causes a make warning, so we remove it when it is not in use
 misc.lst: Makefile $(misc_lst_OBJECTS)
 	@echo "Linking misc.lst..."; \
-	rm -f $@; \
+	rm -f $@; touch $@; \
 	for i in $(misc_lst_OBJECTS); do echo $$i >>$@; done
 
 install-libmiscincHEADERS: $(libmiscinc_HEADERS)

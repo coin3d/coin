@@ -267,47 +267,6 @@ AM_CONDITIONAL([BUILD_VRML97], [$sim_ac_enable_vrml97])
 
 AM_CONDITIONAL([MAC_FRAMEWORK], [false])
 
-# Check if sound is enabled
-
-sim_ac_enable_sound=false
-
-AC_ARG_ENABLE(
-  [sound],
-  AC_HELP_STRING([--enable-sound], [enable sound support]), [
-  case $enableval in
-    yes) sim_ac_enable_sound=true ;;
-    *) ;;
-  esac])
-
-#  Check for openal (required for sound)
-
-SIM_AC_HAVE_OPENAL_IFELSE([
-  CPPFLAGS="$CPPFLAGS $sim_ac_openal_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
-  LIBS="$sim_ac_openal_libs $LIBS"
-  AC_DEFINE(HAVE_OPENAL, 1, [openal extensions available])
-  SIM_AC_CONFIGURATION_SETTING([OpenAL support], [Yes])
-], [
-  if $sim_ac_enable_sound; then
-    AC_MSG_WARN([openal is needed for sound])
-    sim_ac_enable_sound=false
-  fi
-  SIM_AC_CONFIGURATION_SETTING([OpenAL support], [No])
-])
-
-HAVE_SOUND=1
-
-if $sim_ac_enable_sound ; then
-  AC_DEFINE([HAVE_SOUND],, [define to enable sound support])
-  SIM_AC_CONFIGURATION_SETTING([Sound support], [Yes])
-else
-  HAVE_SOUND=0
-  SIM_AC_CONFIGURATION_SETTING([Sound support], [No  (enable with --enable-sound)])
-fi
-AC_SUBST(HAVE_SOUND)
-
-AM_CONDITIONAL([BUILD_WITH_SOUND], [$sim_ac_enable_sound])
-
 # *******************************************************************
 # Search for the "local GLU" extension
 
@@ -840,6 +799,64 @@ else
     SIM_AC_CONFIGURATION_SETTING([simage linkage], [no simage support])
   ])
 fi
+
+# Check if sound is enabled
+
+sim_ac_enable_sound=true
+
+AC_ARG_ENABLE(
+  [sound],
+  AC_HELP_STRING([--disable-sound], [disable sound support]), [
+  case $enableval in
+    no | false) sim_ac_enable_sound=false ;;
+    *) ;;
+  esac])
+
+#  Check for openal (required for sound)
+
+AC_ARG_ENABLE([dl-openal],
+  AC_HELP_STRING([--enable-dl-openal],
+                 [use runtime dynamic linking for OpenAL if possible [[default=yes]]]),
+  [case "${enableval}" in
+    yes | true) enable_dl_openal=true ;;
+    no | false) enable_dl_openal=false ;;
+    *) SIM_AC_ENABLE_ERROR([--enable-dl-openal]) ;;
+  esac],
+  [enable_dl_openal=true])
+
+if $sim_ac_enable_sound && $enable_dl_openal && $coin_can_do_runtime_linking; then
+  AC_DEFINE_UNQUOTED([OPENAL_RUNTIME_LINKING],1,
+    [define for runtime linking with OpenAL])
+  SIM_AC_CONFIGURATION_SETTING([OpenAL support], [Yes, run-time binding])
+else
+SIM_AC_HAVE_OPENAL_IFELSE([
+  CPPFLAGS="$CPPFLAGS $sim_ac_openal_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_openal_ldflags"
+  LIBS="$sim_ac_openal_libs $LIBS"
+  AC_DEFINE(HAVE_OPENAL, 1, [openal extensions available])
+  SIM_AC_CONFIGURATION_SETTING([OpenAL support], [Yes, link-time binding])
+], [
+  if $sim_ac_enable_sound; then
+    AC_MSG_WARN([openal is needed for sound])
+    sim_ac_enable_sound=false
+  fi
+  SIM_AC_CONFIGURATION_SETTING([OpenAL support], [No])
+])
+fi
+
+HAVE_SOUND=1
+
+if $sim_ac_enable_sound ; then
+  AC_DEFINE([HAVE_SOUND],, [define to enable sound support])
+  SIM_AC_CONFIGURATION_SETTING([Sound support], [Yes])
+else
+  HAVE_SOUND=0
+  SIM_AC_CONFIGURATION_SETTING([Sound support], [No  (enable with --enable-sound)])
+fi
+AC_SUBST(HAVE_SOUND)
+
+AM_CONDITIONAL([BUILD_WITH_SOUND], [$sim_ac_enable_sound])
+
 
 
 # *******************************************************************

@@ -271,6 +271,9 @@
 /* define if _vsnprintf() is available */
 #undef HAVE__VSNPRINTF
 
+/* define for runtime linking with OpenAL */
+#undef OPENAL_RUNTIME_LINKING
+
 /* Name of package */
 #undef PACKAGE
 
