@@ -41,6 +41,8 @@ TODO:
 * [mortene:19990912] get rid of Inventor/system/inttypes.h. Check to
   see if we can use the AC_COMPILE_CHECK_SIZEOF macro from the
   autoconf macro archive to find and define types for 8/16/32/64 bits.
+  Update: a related item is part of the OpenSSH TODO list as of
+  release 1.2.2, and there's some code in configure.in.
 
 * [mortene:19990912] get rid of Inventor/system/kosher.h, replace with
   autoconf checks. (Needs to try compiling under g++ and SGI CC to
