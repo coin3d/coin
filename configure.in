@@ -223,12 +223,28 @@ AC_SUBST(COIN_EXTRA_LDFLAGS)
 AC_SUBST(COIN_EXTRA_LIBS)
 
 
-# Do not use AC_CHECK_HEADERS, as we can get false positives and/or
-# false negatives when running under Cygwin, using the Microsoft
-# VisualC++ compiler (the configure script will pick the GCC
-# preprocessor, and AC_CHECK_HEADERS uses AC_TRY_CPP).
+AC_CHECK_HEADERS([unistd.h sys/types.h sys/param.h io.h windows.h winsock2.h])
+
+# According to Coin user Ralf Corsepius, at least SunOS4 needs
+# to include sys/types.h before netinet/in.h. There have also
+# been a problem report for FreeBSD which seems to indicate
+# the same dependency on that platform aswell.
 #
-SIM_AC_CHECK_HEADERS([unistd.h netinet/in.h sys/param.h io.h windows.h winsock2.h])
+# FIXME: should we make this into a general macro
+# SIM_AC_CHECK_DEPENDENT_HEADER(HEADER, DEPENDONHEADERS..)? 20001025 mortene.
+
+AC_CACHE_CHECK([netinet/in.h], sim_cv_netinet_in_h, [
+  AC_TRY_COMPILE([
+    #if HAVE_SYS_TYPES_H
+    #include <sys/types.h>
+    #endif /* HAVE_SYS_TYPES_H */
+    #include <netinet/in.h>],
+    [], [sim_cv_netinet_in_h=true], [sim_cv_netinet_in_h=false])])
+
+if $sim_cv_netinet_in_h; then
+  AC_DEFINE_UNQUOTED(HAVE_NETINET_IN_H, 1, [Define if you have the <netinet/in.h> header file.])
+fi
+
 
 # Test for ntohl() etc.
 SIM_AC_BYTEORDER_CONVERSION(

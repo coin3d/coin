@@ -79,6 +79,13 @@
 #if HAVE_WINSOCK2_H
 #include <winsock2.h> // ntohl(), ntohs() etc on MSWindows
 #endif // HAVE_WINSOCK2_H
+#if HAVE_SYS_TYPES_H
+/* According to Coin user Ralf Corsepius, at least SunOS4 needs to
+   include sys/types.h before netinet/in.h. There have also been a
+   problem report for FreeBSD which seems to indicate that the same
+   dependency exists on that platform aswell. */
+#include <sys/types.h>
+#endif // HAVE_SYS_TYPES_H
 #if HAVE_NETINET_IN_H
 #include <netinet/in.h> // ntohl(), ntohs() etc on Linux boxen
 #endif // HAVE_NETINET_IN_H
