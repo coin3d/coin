@@ -697,10 +697,25 @@ fi
 # * Mathlib stuff.
 # *******************************************************************
 
+# Need to check necessity of including "-lm" on the link-line for both
+# C and C++ compiled code, as it could differ. We've had a gcc/g++
+# on AIX problem with missing "-lm" on the final link-line which I
+# suspect to stem from this. <mortene@sim.no>.
+
+AC_LANG_PUSH(C)
 SIM_AC_MATHLIB_READY_IFELSE([], [
   SIM_AC_CHECK_MATHLIB(
     [COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm"],
     [SIM_AC_ERROR([no-math-library])])])
+AC_LANG_POP(C)
+
+AC_LANG_PUSH(C++)
+SIM_AC_MATHLIB_READY_IFELSE([], [
+  SIM_AC_CHECK_MATHLIB(
+    [COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS $sim_ac_libm"],
+    [SIM_AC_ERROR([no-math-library])])])
+AC_LANG_POP(C++)
+
 
 AC_CACHE_CHECK([whether single-precision math functions are available],
   sim_cv_func_singleprec_avail,
