@@ -139,8 +139,8 @@ LTLIBOBJS = @LTLIBOBJS@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
 LT_REVISION = @LT_REVISION@
-MACOSX_10_2_FALSE = @MACOSX_10_2_FALSE@
-MACOSX_10_2_TRUE = @MACOSX_10_2_TRUE@
+MACOSX_10_2FF_FALSE = @MACOSX_10_2FF_FALSE@
+MACOSX_10_2FF_TRUE = @MACOSX_10_2FF_TRUE@
 MACOSX_PACKAGEABLE_FALSE = @MACOSX_PACKAGEABLE_FALSE@
 MACOSX_PACKAGEABLE_TRUE = @MACOSX_PACKAGEABLE_TRUE@
 MAC_FRAMEWORK = @MAC_FRAMEWORK@
@@ -331,8 +331,8 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 
 
 # we are dealing with the Mac OS X 10.2 gcc compiler toolset...
-@MACOSX_10_2_TRUE@LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000
-@MACOSX_10_2_FALSE@LibtoolLinkArgs = -no-undefined
+@MACOSX_10_2FF_TRUE@LibtoolLinkArgs = -Wl,-twolevel_namespace -Wl,-undefined,error -Wl,-prebind -Wl,-seg1addr,0x3f000000
+@MACOSX_10_2FF_FALSE@LibtoolLinkArgs = -no-undefined
 
 libCoin@SUFFIX@_la_LDFLAGS = \
 	$(LibtoolLinkArgs) \
