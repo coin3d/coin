@@ -771,14 +771,3 @@ THE WISH LIST
 
   Note also that these changes would break the ABI, so this would have
   to be done for the next major release.
-
-* SbViewVolume::frustum()
-  2002-08-30  Morten Eriksen  <mortene@sim.no>
-
-  For more flexibility in controlling the view volume setup,
-  particularly useful for asymmetric projections (which can't be done
-  in a straightforward manner through the ::ortho() and
-  ::perspective() methods).
-
-  Requested by Eric Rose. TGS-extension to the original SGI Inventor
-  API.
