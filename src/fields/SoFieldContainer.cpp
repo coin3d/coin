@@ -494,11 +494,20 @@ SoFieldContainer::notify(SoNotList * l)
 #endif // debug
 
   if (this->donotify) {
-    SoNotRec rec(this);
-    l->append(&rec);
-    inherited::notify(l);
+    if (l->getLastRec()->getType() == SoNotRec::PARENT) {
+      // we were notified from a child node. Create a new SoNotRec.
+      SoNotRec rec(this);
+      l->append(&rec);
+      inherited::notify(l);
+    }
+    else {
+      // we were notififed from a field. No need to add a new
+      // SoNotRec since the base pointer will point to us.
+      assert(l->getLastRec()->getType() == SoNotRec::CONTAINER);  
+      assert(l->getLastRec()->getBase() == (SoBase*) this);
+      inherited::notify(l);
+    }
   }
-
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoFieldContainer::notify", "DONE");
 #endif // debug
