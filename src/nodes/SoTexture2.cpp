@@ -248,6 +248,17 @@ SoTexture2::doAction(SoAction * action)
                                (SoTextureImageElement::Model) model.getValue(),
                                this->blendColor.getValue());
   }
+  // if a filename has been set, but the file has not been loaded, supply
+  // a dummy texture image to make sure texture coordinates are generated.
+  else if (this->image.isDefault() && this->filename.getValue().getLength()) {
+    static const unsigned char dummytex[] = {0xff,0xff,0xff,0xff};
+    SoTextureImageElement::set(state, this,
+                               SbVec2s(2,2), 1, dummytex,
+                               (int)this->wrapT.getValue(),
+                               (int)this->wrapS.getValue(),
+                               (SoTextureImageElement::Model) model.getValue(),
+                               this->blendColor.getValue());    
+  }
   else {
     SoTextureImageElement::setDefault(state, this);
   }
