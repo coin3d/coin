@@ -441,7 +441,7 @@ SoMarkerSet::initClass(void)
 void
 SoMarkerSet::GLRender(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -452,7 +452,7 @@ SoMarkerSet::GLRender(SoGLRenderAction * /* action */)
 void
 SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
@@ -462,7 +462,7 @@ SoMarkerSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 int
 SoMarkerSet::getNumDefinedMarkers(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0;
 }
 
@@ -474,7 +474,7 @@ SoMarkerSet::addMarker(int /* markerIndex */, const SbVec2s & /* size */,
                        const unsigned char * /* bytes */, SbBool /* isLSBFirst */,
                        SbBool /* isUpToDown */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -484,7 +484,7 @@ SbBool
 SoMarkerSet::getMarker(int /* markerIndex */, SbVec2s & /* size */,
                        const unsigned char *& /* bytes */, SbBool & /* isLSBFirst */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -494,7 +494,7 @@ SoMarkerSet::getMarker(int /* markerIndex */, SbVec2s & /* size */,
 SbBool
 SoMarkerSet::removeMarker(int /* markerIndex */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -504,7 +504,7 @@ SoMarkerSet::removeMarker(int /* markerIndex */)
 SbBool
 SoMarkerSet::isMarkerBitSet(int /* markerIndex */, int /* bitNumber */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 

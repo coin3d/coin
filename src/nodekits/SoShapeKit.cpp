@@ -100,5 +100,5 @@ SoShapeKit::initClass(void)
 void
 SoShapeKit::setDefaultOnNonWritingFields(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }

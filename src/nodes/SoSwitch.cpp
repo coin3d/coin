@@ -301,7 +301,7 @@ SoSwitch::pick(SoPickAction *action)
 void
 SoSwitch::handleEvent(SoHandleEventAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
@@ -346,6 +346,6 @@ SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 void
 SoSwitch::traverseChildren(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION

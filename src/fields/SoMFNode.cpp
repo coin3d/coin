@@ -40,6 +40,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <assert.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -311,7 +312,7 @@ SoMFNode::write1Value(SoOutput * out, int idx) const
 void
 SoMFNode::fixCopy(SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -320,7 +321,7 @@ SoMFNode::fixCopy(SbBool /* copyConnections */)
 SbBool
 SoMFNode::referencesCopy(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 

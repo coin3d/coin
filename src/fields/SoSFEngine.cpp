@@ -33,6 +33,7 @@
 #include <Inventor/engines/SoEngine.h>
 #endif // !COIN_EXCLUDE_SOENGINE
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #if COIN_DEBUG
@@ -180,7 +181,7 @@ SoSFEngine::~SoSFEngine(void)
 SbBool
 SoSFEngine::readValue(SoInput * /* in */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -190,7 +191,7 @@ SoSFEngine::readValue(SoInput * /* in */)
 void
 SoSFEngine::fixCopy(SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -199,7 +200,7 @@ SoSFEngine::fixCopy(SbBool /* copyConnections */)
 SbBool
 SoSFEngine::referencesCopy(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -209,7 +210,7 @@ SoSFEngine::referencesCopy(void) const
 void
 SoSFEngine::writeValue(SoOutput * /* out */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 void

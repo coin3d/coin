@@ -469,7 +469,7 @@ SoElement::print(FILE * file) const
 SbBool
 SoElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -577,7 +577,7 @@ SoElement::capture(SoState * const state) const
 void
 SoElement::captureThis(SoState * /* state */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!

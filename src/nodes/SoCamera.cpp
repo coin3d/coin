@@ -275,7 +275,7 @@ SoCamera::viewAll(SoPath * const path,
 SbViewportRegion
 SoCamera::getViewportBounds(const SbViewportRegion & /* region */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return SbViewportRegion();
 }
 
@@ -322,7 +322,7 @@ SoCamera::jitter(int /* numPasses */, int /* curPass */,
                  const SbViewportRegion & /* vpReg */,
                  SbVec3f & /* jitterAmount */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 #if !defined(COIN_EXCLUDE_DOACTION)

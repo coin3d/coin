@@ -79,7 +79,7 @@ SoBlinker::initClass(void)
 void
 SoBlinker::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -90,6 +90,6 @@ SoBlinker::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 void
 SoBlinker::write(SoWriteAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOWRITEACTION

@@ -26,6 +26,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 // *************************************************************************
 
@@ -129,7 +130,7 @@ SoToVRML2Action::initClass(void)
 
 SoToVRML2Action::SoToVRML2Action(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -148,5 +149,5 @@ SoToVRML2Action::~SoToVRML2Action(void)
 void
 SoToVRML2Action::beginTraversal(SoNode * /* node */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

@@ -118,7 +118,7 @@ SoWindowElement::pop(SoState * state,
 SbBool
 SoWindowElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -127,7 +127,7 @@ SoWindowElement::matches(const SoElement * /* element */) const
 SoElement *
 SoWindowElement::copyMatchInfo(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -140,7 +140,7 @@ SoWindowElement::set(SoState * const /* state */,
                      Display * const /* display */,
                      SoGLRenderAction * const /* action */)
 {
-    assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 //! FIXME: write doc.
@@ -152,5 +152,5 @@ SoWindowElement::get(SoState * const /* state */,
                      Display * & /* display */,
                      SoGLRenderAction * & /* action */)
 {
-    assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

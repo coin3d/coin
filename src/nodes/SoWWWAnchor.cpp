@@ -101,7 +101,7 @@ SoWWWAnchor::initClass(void)
 void
 SoWWWAnchor::setFullURLName(const SbString & /* url */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -110,7 +110,7 @@ SoWWWAnchor::setFullURLName(const SbString & /* url */)
 const SbString &
 SoWWWAnchor::getFullURLName(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   static SbString s;
   return s;
 }
@@ -122,7 +122,7 @@ SoWWWAnchor::getFullURLName(void)
 void
 SoWWWAnchor::handleEvent(SoHandleEventAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
@@ -132,7 +132,7 @@ SoWWWAnchor::handleEvent(SoHandleEventAction * /* action */)
 void
 SoWWWAnchor::setFetchURLCallBack(SoWWWAnchorCB * /* f */, void * /* userData */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -141,7 +141,7 @@ SoWWWAnchor::setFetchURLCallBack(SoWWWAnchorCB * /* f */, void * /* userData */)
 void
 SoWWWAnchor::setHighlightURLCallBack(SoWWWAnchorCB * /* f */, void * /* userData */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -150,5 +150,5 @@ SoWWWAnchor::setHighlightURLCallBack(SoWWWAnchorCB * /* f */, void * /* userData
 void
 SoWWWAnchor::redrawHighlighted(SoAction * /* act */, SbBool /* isNowHighlighting */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

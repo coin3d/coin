@@ -396,7 +396,7 @@ SoSearchAction::reset(void)
 void
 SoSearchAction::setFound(void)
 {
-  setTerminated(TRUE);
+  this->setTerminated(TRUE);
 }
 
 /*!
@@ -407,7 +407,7 @@ SoSearchAction::setFound(void)
 SbBool
 SoSearchAction::isFound(void) const
 {
-  return hasTerminated();
+  return this->hasTerminated();
 }
 
 /*!

@@ -316,7 +316,7 @@ void
 SoGLRenderAction::setUpdateArea(const SbVec2f & /* origin */,
                                 const SbVec2f & /* size */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -327,7 +327,7 @@ void
 SoGLRenderAction::getUpdateArea(SbVec2f & /* origin */,
                                 SbVec2f & /* size */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!

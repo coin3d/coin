@@ -123,7 +123,7 @@ SoGLNormalizeElement::pop(SoState * state,
 SbBool
 SoGLNormalizeElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -132,7 +132,7 @@ SoGLNormalizeElement::matches(const SoElement * /* element */) const
 SoElement *
 SoGLNormalizeElement::copyMatchInfo() const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 

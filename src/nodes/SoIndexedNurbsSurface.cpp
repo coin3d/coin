@@ -120,7 +120,7 @@ void
 SoIndexedNurbsSurface::computeBBox(SoAction * /* action */,
                                  SbBox3f & /* box */, SbVec3f & /* center */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -132,7 +132,7 @@ SoIndexedNurbsSurface::computeBBox(SoAction * /* action */,
 void
 SoIndexedNurbsSurface::GLRender(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 
   //
   // See comment in SoNurbsSurface::GLRender
@@ -148,7 +148,7 @@ SoIndexedNurbsSurface::GLRender(SoGLRenderAction * /* action */)
 void
 SoIndexedNurbsSurface::rayPick(SoRayPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
@@ -159,7 +159,7 @@ SoIndexedNurbsSurface::rayPick(SoRayPickAction * /* action */)
 void
 SoIndexedNurbsSurface::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
@@ -170,7 +170,7 @@ SoIndexedNurbsSurface::getPrimitiveCount(SoGetPrimitiveCountAction * /* action *
 void
 SoIndexedNurbsSurface::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -181,6 +181,6 @@ SoIndexedNurbsSurface::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
 void
 SoIndexedNurbsSurface::generatePrimitives(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION

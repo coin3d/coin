@@ -405,7 +405,7 @@ SoImage::generatePrimitives(SoAction *action)
 SbBool
 SoImage::readInstance(SoInput * in, unsigned short flags)
 {
-  assert(!in->isBinary() && "FIXME: not implemented yet");
+  COIN_STUB();
   return inherited::readInstance(in, flags);
 }
 
@@ -415,7 +415,7 @@ SoImage::readInstance(SoInput * in, unsigned short flags)
 int
 SoImage::getReadStatus(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0;
 }
 
@@ -425,7 +425,7 @@ SoImage::getReadStatus(void)
 void
 SoImage::setReadStatus(SbBool /* flag */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 SbBool

@@ -29,6 +29,7 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoNotification.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <assert.h>
 
 /*!
@@ -107,5 +108,5 @@ SoNodeSensor::getAttachedNode(void) const
 void
 SoNodeSensor::dyingReference(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

@@ -73,6 +73,6 @@ SoColorIndex::initClass(void)
 void
 SoColorIndex::GLRender(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION

@@ -31,6 +31,7 @@
 #include <Inventor/misc/SoBase.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
@@ -493,7 +494,7 @@ SoBase::shouldWrite(void)
 void
 SoBase::incrementCurrentWriteCounter(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -502,7 +503,7 @@ SoBase::incrementCurrentWriteCounter(void)
 void
 SoBase::decrementCurrentWriteCounter(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -645,7 +646,7 @@ SoBase::setInstancePrefix(const SbString & c)
 void
 SoBase::setTraceRefs(SbBool /* bTrace */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -654,7 +655,7 @@ SoBase::setTraceRefs(SbBool /* bTrace */)
 SbBool
 SoBase::getTraceRefs(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -787,7 +788,7 @@ SoBase::getFileFormatName(void) const
 uint32_t
 SoBase::getCurrentWriteCounter(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0;
 }
 
@@ -938,7 +939,7 @@ SoBase::createInstance(SoInput * in, const SbName & className)
   SoBase * instance = (SoBase *)insttype.createInstance();
 
   if (!instance) {
-    assert(0 && "FIXME: not implemented");
+    COIN_STUB();
 
     // FIXME: is this ok for .iv-files? Or is it only for VRML 1 (or
     // VRML 1 & 2)? Check and maybe fix. 19990403 mortene.

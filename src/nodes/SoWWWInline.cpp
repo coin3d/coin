@@ -121,7 +121,7 @@ SoWWWInline::initClass(void)
 void
 SoWWWInline::setFullURLName(const SbString & /* url */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -130,7 +130,7 @@ SoWWWInline::setFullURLName(const SbString & /* url */)
 const SbString &
 SoWWWInline::getFullURLName(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   static SbString s;
   return s;
 }
@@ -141,7 +141,7 @@ SoWWWInline::getFullURLName(void)
 SoGroup *
 SoWWWInline::copyChildren(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -151,7 +151,7 @@ SoWWWInline::copyChildren(void) const
 void
 SoWWWInline::requestURLData(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -160,7 +160,7 @@ SoWWWInline::requestURLData(void)
 SbBool
 SoWWWInline::isURLDataRequested(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -170,7 +170,7 @@ SoWWWInline::isURLDataRequested(void) const
 SbBool
 SoWWWInline::isURLDataHere(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -180,7 +180,7 @@ SoWWWInline::isURLDataHere(void) const
 void
 SoWWWInline::cancelURLDataRequest(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -189,7 +189,7 @@ SoWWWInline::cancelURLDataRequest(void)
 void
 SoWWWInline::setChildData(SoNode * /* urlData */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -198,7 +198,7 @@ SoWWWInline::setChildData(SoNode * /* urlData */)
 SoNode *
 SoWWWInline::getChildData(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -209,7 +209,7 @@ void
 SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * /* f */,
                                  void * /* userData */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -218,7 +218,7 @@ SoWWWInline::setFetchURLCallBack(SoWWWInlineFetchURLCB * /* f */,
 void
 SoWWWInline::setBoundingBoxVisibility(BboxVisibility /* b */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -227,7 +227,7 @@ SoWWWInline::setBoundingBoxVisibility(BboxVisibility /* b */)
 SoWWWInline::BboxVisibility
 SoWWWInline::getBoundingBoxVisibility(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NEVER;
 }
 
@@ -237,7 +237,7 @@ SoWWWInline::getBoundingBoxVisibility(void)
 void
 SoWWWInline::setBoundingBoxColor(SbColor & /* c */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -246,7 +246,7 @@ SoWWWInline::setBoundingBoxColor(SbColor & /* c */)
 const SbColor &
 SoWWWInline::getBoundingBoxColor(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   static SbColor col;
   return col;
 }
@@ -257,7 +257,7 @@ SoWWWInline::getBoundingBoxColor(void)
 void
 SoWWWInline::setReadAsSoFile(SbBool /* onOff */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -266,7 +266,7 @@ SoWWWInline::setReadAsSoFile(SbBool /* onOff */)
 SbBool
 SoWWWInline::getReadAsSoFile(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -355,7 +355,7 @@ SoWWWInline::getBoundingBox(SoGetBoundingBoxAction * action)
 SoChildList *
 SoWWWInline::getChildren(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -366,7 +366,7 @@ SoWWWInline::getChildren(void) const
 void
 SoWWWInline::doAction(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -375,7 +375,7 @@ SoWWWInline::doAction(SoAction * /* action */)
 void
 SoWWWInline::doActionOnKidsOrBox(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -386,7 +386,7 @@ SoWWWInline::doActionOnKidsOrBox(SoAction * /* action */)
 void
 SoWWWInline::callback(SoCallbackAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -397,7 +397,7 @@ SoWWWInline::callback(SoCallbackAction * /* action */)
 void
 SoWWWInline::getMatrix(SoGetMatrixAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -408,7 +408,7 @@ SoWWWInline::getMatrix(SoGetMatrixAction * /* action */)
 void
 SoWWWInline::handleEvent(SoHandleEventAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
@@ -419,7 +419,7 @@ SoWWWInline::handleEvent(SoHandleEventAction * /* action */)
 void
 SoWWWInline::search(SoSearchAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOSEARCHACTION
 
@@ -430,7 +430,7 @@ SoWWWInline::search(SoSearchAction * /* action */)
 void
 SoWWWInline::pick(SoPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
@@ -441,7 +441,7 @@ SoWWWInline::pick(SoPickAction * /* action */)
 void
 SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
@@ -451,7 +451,7 @@ SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 void
 SoWWWInline::addBoundingBoxChild(SbVec3f /* center */, SbVec3f /* size */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -460,8 +460,7 @@ SoWWWInline::addBoundingBoxChild(SbVec3f /* center */, SbVec3f /* size */)
 SbBool
 SoWWWInline::readInstance(SoInput * in, unsigned short /* flags */)
 {
-  assert(0 && "FIXME: not implemented");
-  assert(!in->isBinary() && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -472,5 +471,5 @@ void
 SoWWWInline::copyContents(const SoFieldContainer * /* fromFC */,
                           SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

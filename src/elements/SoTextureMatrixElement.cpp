@@ -245,5 +245,5 @@ SoTextureMatrixElement::pop(SoState * state,
 void
 SoTextureMatrixElement::emptyMatrix(SoState * const /* state */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

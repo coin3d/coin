@@ -112,7 +112,7 @@ SoAsciiText::initClass(void)
 void
 SoAsciiText::GLRender(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -123,7 +123,7 @@ SoAsciiText::GLRender(SoGLRenderAction * /* action */)
 void
 SoAsciiText::rayPick(SoRayPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
@@ -134,7 +134,7 @@ SoAsciiText::rayPick(SoRayPickAction * /* action */)
 void
 SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
@@ -146,7 +146,7 @@ void
 SoAsciiText::computeBBox(SoAction * /* action */,
                          SbBox3f & /* box */, SbVec3f & /* center */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -157,6 +157,6 @@ SoAsciiText::computeBBox(SoAction * /* action */,
 void
 SoAsciiText::generatePrimitives(SoAction *)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION

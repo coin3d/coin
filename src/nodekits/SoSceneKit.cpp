@@ -80,7 +80,7 @@ SoSceneKit::initClass(void)
 int
 SoSceneKit::getCameraNumber(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return -1;
 }
 
@@ -90,7 +90,7 @@ SoSceneKit::getCameraNumber(void)
 void
 SoSceneKit::setCameraNumber(int /*camNum*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -99,6 +99,6 @@ SoSceneKit::setCameraNumber(int /*camNum*/)
 SbBool
 SoSceneKit::affectsState(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }

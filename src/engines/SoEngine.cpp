@@ -49,7 +49,7 @@ SoEngine::getOutputs(SoEngineOutputList & list) const
 SoEngineOutput *
 SoEngine::getOutput(const SbName & /* outputName */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -57,28 +57,28 @@ SbBool
 SoEngine::getOutputName(const SoEngineOutput * /* output */,
                         SbName & /* outputName */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
 SoEngine *
 SoEngine::copy(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
 SoEngine *
 SoEngine::getByName(const SbName & /* name */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
 int
 SoEngine::getByName(const SbName & /* name */, SoEngineList & /* list */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return -1;
 }
 

@@ -140,7 +140,7 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
   int numCoords = vpvtx ?
     vp->vertex.getNum() :
     coordelem->getNum();
-  
+
   if (vpvtx || coordelem->is3D()) {
     const SbVec3f * coords = vpvtx ?
       vp->vertex.getValues(0) :
@@ -181,7 +181,7 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
 SbBool
 SoIndexedShape::areTexCoordsIndexed(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return TRUE;
 }
 #endif // !COIN_EXCLUDE_SOACTION
@@ -209,7 +209,7 @@ SoIndexedShape::setupIndices(const int /* numParts */,
                              const SbBool /* needNormals */,
                              const SbBool /* needTexCoords */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -218,7 +218,7 @@ SoIndexedShape::setupIndices(const int /* numParts */,
 const int32_t *
 SoIndexedShape::getNormalIndices()
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -228,7 +228,7 @@ SoIndexedShape::getNormalIndices()
 const int32_t *
 SoIndexedShape::getColorIndices()
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -238,7 +238,7 @@ SoIndexedShape::getColorIndices()
 const int32_t *
 SoIndexedShape::getTexCoordIndices()
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -253,7 +253,7 @@ SoIndexedShape::generateDefaultNormals(SoState * state,
   SbBool ccw = TRUE;
   if (SoShapeHintsElement::getVertexOrdering(state) ==
       SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
-  
+
   const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
   assert(coords);
 

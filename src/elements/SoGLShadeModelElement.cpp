@@ -109,7 +109,7 @@ SoGLShadeModelElement::pop(SoState * state,
 SbBool
 SoGLShadeModelElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -118,7 +118,7 @@ SoGLShadeModelElement::matches(const SoElement * /* element */) const
 SoElement *
 SoGLShadeModelElement::copyMatchInfo() const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 

@@ -75,7 +75,7 @@ SoNurbsProfile::getTrimCurve(SoState * /* state */, int32_t & /* numPoints */,
                              float *& /* points */, int & /* floatsPerVec */,
                              int32_t & /* numKnots */, float *& /* knotVector */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -85,5 +85,5 @@ void
 SoNurbsProfile::getVertices(SoState * /* state */, int32_t & /* nVertices */,
                             SbVec2f *& /* vertices */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

@@ -97,7 +97,7 @@ SoGLEnvironmentElement::pop(SoState * state,
 SbBool
 SoGLEnvironmentElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -106,7 +106,7 @@ SoGLEnvironmentElement::matches(const SoElement * /* element */) const
 SoElement *
 SoGLEnvironmentElement::copyMatchInfo() const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 

@@ -24,6 +24,7 @@
 */
 
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 /*!
   Constructor with \a state being the current state.
@@ -108,7 +109,7 @@ void
 SoBoundingBoxCache::setHasLinesOrPoints(SoState *state)
 {
   if (state) {}
-  assert(0 && "FIXME: implement");
+  COIN_STUB();
 }
 
 /*!

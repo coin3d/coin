@@ -144,7 +144,7 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
 
   int dim = coords->is3D() ? 3 : 4;
 
-  const SoCoordinateElement *coordelem = 
+  const SoCoordinateElement *coordelem =
     SoCoordinateElement::getInstance(state);
 
   GLfloat * ptr = coords->is3D() ?
@@ -172,9 +172,9 @@ SoNurbsCurve::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   // FIXME: this is just a quick approximation
   SoState * state = action->getState();
-  const SoCoordinateElement *coordelem = 
+  const SoCoordinateElement *coordelem =
     SoCoordinateElement::getInstance(state);
-  
+
 
   int numCoords = coordelem->getNum();
   int num = this->numControlPoints.getValue();
@@ -208,7 +208,7 @@ SoNurbsCurve::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 void
 SoNurbsCurve::rayPick(SoRayPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
@@ -219,7 +219,7 @@ SoNurbsCurve::rayPick(SoRayPickAction * /* action */)
 void
 SoNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
@@ -230,7 +230,7 @@ SoNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 void
 SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -241,7 +241,7 @@ SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 void
 SoNurbsCurve::sendPrimitive(SoAction *,  SoPrimitiveVertex *)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -252,6 +252,6 @@ SoNurbsCurve::sendPrimitive(SoAction *,  SoPrimitiveVertex *)
 void
 SoNurbsCurve::generatePrimitives(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION

@@ -133,7 +133,7 @@ SoLocateHighlight::turnOffCurrentHighlight(SoGLRenderAction * /* action */)
 void
 SoLocateHighlight::handleEvent(SoHandleEventAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
@@ -144,7 +144,7 @@ SoLocateHighlight::handleEvent(SoHandleEventAction * /* action */)
 void
 SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -153,7 +153,7 @@ SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * /* action */)
 void
 SoLocateHighlight::GLRenderInPath(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -164,6 +164,6 @@ SoLocateHighlight::GLRenderInPath(SoGLRenderAction * /* action */)
 void
 SoLocateHighlight::redrawHighlighted(SoAction * /* act */, SbBool /* flag */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION

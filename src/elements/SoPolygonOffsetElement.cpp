@@ -119,7 +119,7 @@ SoPolygonOffsetElement::push(SoState * state)
 SbBool
 SoPolygonOffsetElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -128,7 +128,7 @@ SoPolygonOffsetElement::matches(const SoElement * /* element */) const
 SoElement *
 SoPolygonOffsetElement::copyMatchInfo(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 

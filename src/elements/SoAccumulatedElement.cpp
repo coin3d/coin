@@ -78,7 +78,7 @@ SoAccumulatedElement::~SoAccumulatedElement(void)
 SbBool
 SoAccumulatedElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -120,7 +120,7 @@ SoAccumulatedElement::setNodeId(const SoNode * const node)
 SoElement *
 SoAccumulatedElement::copyMatchInfo() const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -129,5 +129,5 @@ SoAccumulatedElement::copyMatchInfo() const
 void
 SoAccumulatedElement::captureThis(SoState * /* state */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

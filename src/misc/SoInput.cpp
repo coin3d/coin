@@ -66,6 +66,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <Inventor/SoDB.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/misc/SoBase.h>
@@ -1545,7 +1546,7 @@ SoInput::initFile(FILE * /* newFP */, const char * /* fileName */,
                   SbString * /* fullName */,
                   SbBool /* openedHere */, SbDict * /* refDict */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -1611,7 +1612,7 @@ SoInput::popFile(void)
 size_t
 SoInput::freeBytesInBuf(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return 0;
 }
 
@@ -1852,8 +1853,7 @@ SoInput::readChar(char * s, char charToRead)
 SbBool
 SoInput::makeRoomInBuf(size_t /* nBytes */)
 {
-  // FIXME: implement
-  assert(0);
+  COIN_STUB();
   return FALSE;
 }
 
@@ -1984,7 +1984,7 @@ SoInput::convertDoubleArray(char * from, double * to, int len)
 SbBool
 SoInput::isFileVRML2(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -1994,7 +1994,7 @@ SoInput::isFileVRML2(void)
 void
 SoInput::resetFilePointer(FILE * /* fptr */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -2003,8 +2003,7 @@ SoInput::resetFilePointer(FILE * /* fptr */)
 SbBool
 SoInput::isFileURL(const char * /* url */)
 {
-  // FIXME: implement
-  assert(0);
+  COIN_STUB();
   return FALSE;
 }
 
@@ -2014,8 +2013,7 @@ SoInput::isFileURL(const char * /* url */)
 char *
 SoInput::URLToFile(char * /* out_buf */, const char * /* in_buf */)
 {
-  // FIXME: implement
-  assert(0);
+  COIN_STUB();
   return NULL;
 }
 
@@ -2025,8 +2023,7 @@ SoInput::URLToFile(char * /* out_buf */, const char * /* in_buf */)
 SbBool
 SoInput::IsURL(const char * /* c_strng */)
 {
-  // FIXME: implement
-  assert(0);
+  COIN_STUB();
   return FALSE;
 }
 

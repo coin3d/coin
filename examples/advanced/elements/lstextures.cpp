@@ -27,8 +27,8 @@
   We initialize the element, enable it for the SoCallbackAction, read
   a scene graph file, set callbacks on SoTexture2 and all shape nodes
   and applies the SoCallbackAction. The callbacks will then print out
-  the texture filename information from the TextureFilenameElement in
-  the callbacks each time an interesting node is hit.
+  the texture filename information from the TextureFilenameElement
+  each time an interesting node is hit.
 
 
   Check the code in texturefilenameelement.cpp for further information
@@ -114,6 +114,7 @@ main(int argc, char ** argv)
     cbaction.addPreCallback(SoTexture2::getClassTypeId(), pre_tex2_cb, NULL);
     cbaction.addPreCallback(SoShape::getClassTypeId(), pre_shape_cb, NULL);
     cbaction.apply(root);
+    return 0;
   }
-  return 0;
+  return 1;
 }

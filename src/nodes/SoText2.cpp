@@ -410,7 +410,7 @@ void
 SoText2::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
   // FIXME: implement properly. 19990418 mortene.
-  box.setBounds(SbVec3f(-1.0f, -1.0f, -0.1f), 
+  box.setBounds(SbVec3f(-1.0f, -1.0f, -0.1f),
 	            SbVec3f(1.0f, 1.0f, 0.1f));
   center.setValue(0.0f, 0.0f, 0.0f);
 }
@@ -424,7 +424,7 @@ SoText2::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 void
 SoText2::rayPick(SoRayPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
@@ -448,6 +448,6 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 void
 SoText2::generatePrimitives(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION

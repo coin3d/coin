@@ -345,7 +345,7 @@ SoField::~SoField()
       case SoNotRec::ENGINE:
       case SoNotRec::SENSOR:
       case SoNotRec::INTERP:
-        assert(0 && "FIXME: not implemented yet");
+        COIN_STUB();
         break;
 
       case SoNotRec::PARENT:
@@ -1105,8 +1105,7 @@ SoField::connectionStatusChanged(int /* numConnections */)
 SbBool
 SoField::isReadOnly(void) const
 {
-  // XXX //
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -1116,7 +1115,7 @@ SoField::isReadOnly(void) const
 void
 SoField::fixCopy(SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -1125,7 +1124,7 @@ SoField::fixCopy(SbBool /* copyConnections */)
 SbBool
 SoField::referencesCopy(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -1135,7 +1134,7 @@ SoField::referencesCopy(void) const
 void
 SoField::copyConnection(const SoField * /* fromfield */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -1257,7 +1256,7 @@ SoField::write(SoOutput * out, const SbName & name) const
 void
 SoField::countWriteRefs(SoOutput * /* out */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -1440,7 +1439,7 @@ SoField::reallocOutputBuf(void * buffer, size_t newsize)
 SbBool
 SoField::readConnection(SoInput * /* in */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -1495,10 +1494,10 @@ SoField::writeConnection(SoOutput * out) const
     wa.continueToApply((SoNode *)fieldcont);
   }
   else if (engine) {
-    assert(0 && "FIXME: not implemented");
+    COIN_STUB();
   }
   else if (interpolator) {
-    assert(0 && "FIXME: not implemented");
+    COIN_STUB();
   }
   else assert(0);
 
@@ -1533,8 +1532,7 @@ SoField::evaluateConnection(void) const
   }
 #endif // !COIN_EXCLUDE_SOENGINE
   else if (this->isConnectedFromVRMLInterp()) {
-    // TODO
-    assert(0);
+    COIN_STUB();
   }
   else {
     // Should never happen.
@@ -1585,7 +1583,7 @@ SoField::notifyAuditors(SoNotList * list)
 void
 SoField::setFieldType(int /* flagValue */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -1594,7 +1592,7 @@ SoField::setFieldType(int /* flagValue */)
 int
 SoField::getFieldType(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return 0;
 }
 

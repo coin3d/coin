@@ -28,6 +28,7 @@
  */
 
 #include <Inventor/engines/SoEngineOutput.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 /*!
   Returns the type of the connection.
@@ -161,7 +162,7 @@ SoEngineOutput::operator[](int i) const
 void
 SoEngineOutput::prepareToWrite(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -170,5 +171,5 @@ SoEngineOutput::prepareToWrite(void) const
 void
 SoEngineOutput::doneWriting(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }

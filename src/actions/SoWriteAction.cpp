@@ -28,6 +28,7 @@
 
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoSubAction.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 #include <Inventor/SbName.h>
 #include <Inventor/SoOutput.h>
@@ -192,7 +193,7 @@ SoWriteAction::getOutput(void) const
 void
 SoWriteAction::writePROTO(SoVRMLPROTODef * /* protoDef */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -201,7 +202,7 @@ SoWriteAction::writePROTO(SoVRMLPROTODef * /* protoDef */)
 void
 SoWriteAction::writeEXTERNPROTO(SoVRMLEXTERNPROTODef * /* externprotoDef */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -210,7 +211,7 @@ SoWriteAction::writeEXTERNPROTO(SoVRMLEXTERNPROTODef * /* externprotoDef */)
 void
 SoWriteAction::writeAllPROTO(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -229,7 +230,7 @@ SoWriteAction::continueToApply(SoNode * node)
 void
 SoWriteAction::continueToApply(SoPath * /* path */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -253,6 +254,6 @@ SoWriteAction::beginTraversal(SoNode * node)
 SbBool
 SoWriteAction::shouldCompactPathLists(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }

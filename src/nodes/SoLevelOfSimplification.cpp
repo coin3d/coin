@@ -99,7 +99,7 @@ SoLevelOfSimplification::initClass(void)
 void
 SoLevelOfSimplification::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
@@ -110,7 +110,7 @@ SoLevelOfSimplification::getPrimitiveCount(SoGetPrimitiveCountAction * /* action
 int
 SoLevelOfSimplification::whichToTraverse(SoAction *)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0;
 }
 #endif // !COIN_EXCLUDE_SOACTION

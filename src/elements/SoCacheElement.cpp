@@ -90,8 +90,8 @@ SoCacheElement::push(SoState * state)
 void
 SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 {
-    inherited::pop(state, prevTopElement);
-    assert(0 && "FIXME: not implemented");
+  inherited::pop(state, prevTopElement);
+  COIN_STUB();
 }
 
 //! FIXME: write doc.
@@ -99,7 +99,7 @@ SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 void
 SoCacheElement::set(SoState * const /* state */, SoCache * const /* cache */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -119,7 +119,7 @@ SoCacheElement::getCache(void) const
 SbBool
 SoCacheElement::anyOpen(SoState * const /* state */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -130,7 +130,7 @@ SoCacheElement::anyOpen(SoState * const /* state */)
 void
 SoCacheElement::invalidate(SoState * const /* state */)
 {
-    assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -141,8 +141,9 @@ SoCacheElement::invalidate(SoState * const /* state */)
 SbBool
 SoCacheElement::matches(const SoElement * /* element */) const
 {
-    assert(0 && "FIXME: not implemented"); // print error message
-    return FALSE;
+  COIN_STUB();
+  // FIXME: debug check + error message here. 19991213 mortene.
+  return FALSE;
 }
 
 /*!
@@ -155,8 +156,9 @@ SoCacheElement::matches(const SoElement * /* element */) const
 SoElement *
 SoCacheElement::copyMatchInfo(void) const
 {
-    assert(0 && "FIXME: not implemented"); // print error message
-    return NULL;
+  COIN_STUB();
+  // FIXME: debug check + error message here. 19991213 mortene.
+  return NULL;
 }
 
 /*!
@@ -178,7 +180,7 @@ void
 SoCacheElement::addElement(SoState * const /* state */,
                            const SoElement * const /* element */)
 {
-    assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -190,7 +192,7 @@ void
 SoCacheElement::addCacheDependency(SoState * const /* state */,
                                    SoCache * const /* cache */)
 {
-    assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -201,8 +203,8 @@ SoCacheElement::addCacheDependency(SoState * const /* state */,
 SbBool
 SoCacheElement::setInvalid(const SbBool /* newValue */)
 {
-    assert(0 && "FIXME: not implemented");
-    return FALSE;
+  COIN_STUB();
+  return FALSE;
 }
 
 /*!

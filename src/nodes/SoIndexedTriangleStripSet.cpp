@@ -492,7 +492,7 @@ SbBool
 SoIndexedTriangleStripSet::generateDefaultNormals(SoState * /* state */,
                                                   SoNormalBundle * /* nb */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 

@@ -125,7 +125,7 @@ SoShapeStyleElement::pop(SoState * state, const SoElement * prevTopElement)
 SbBool
 SoShapeStyleElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -134,7 +134,7 @@ SoShapeStyleElement::matches(const SoElement * /* element */) const
 SoElement *
 SoShapeStyleElement::copyMatchInfo() const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -276,7 +276,7 @@ SoShapeStyleElement::isScreenDoor(SoState * const state)
 void
 SoShapeStyleElement::print(FILE * /* file */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -316,7 +316,7 @@ SoShapeStyleElement::needTexCoords() const
 int
 SoShapeStyleElement::getRenderCaseMask() const
 {
-  assert(0 && "FIXME: Not implemented");
+  COIN_STUB();
   return 0;
 }
 

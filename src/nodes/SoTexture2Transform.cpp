@@ -181,7 +181,7 @@ SoTexture2Transform::callback(SoCallbackAction *action)
 void
 SoTexture2Transform::getMatrix(SoGetMatrixAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -192,6 +192,6 @@ SoTexture2Transform::getMatrix(SoGetMatrixAction * /* action */)
 void
 SoTexture2Transform::pick(SoPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION

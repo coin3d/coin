@@ -49,6 +49,7 @@
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <Inventor/sensors/SoTimerQueueSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -521,6 +522,6 @@ SoSensorManager::doSelect(int /* nfds */, fd_set * /* readfds */, fd_set * /* wr
 {
   // TODO: implement. See SoDB::doSelect() (which should probably only
   // be a wrapper around this call). 19990425 mortene.
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return 0;
 }

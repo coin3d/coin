@@ -95,7 +95,7 @@ SoTextureCoordinatePlane::generate(void * /* userdata */,
                                    const SbVec3f & /* p */,
                                    const SbVec3f & /* n */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   static SbVec4f s(0,0,0,1);
   return s;
 }

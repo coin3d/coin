@@ -262,7 +262,7 @@ SoState::getDepth(void) const
 void
 SoState::setCacheOpen(const SbBool)
 {
-//  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 //  this->cacheOpen = FALSE /* flag */;
 }
 
@@ -275,6 +275,7 @@ SoState::setCacheOpen(const SbBool)
 SbBool
 SoState::isCacheOpen(void) const
 {
+  COIN_STUB();
   return FALSE;
 }
 

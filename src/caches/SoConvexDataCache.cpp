@@ -19,7 +19,8 @@
 
 /*!
   \class SoConvexDataCache include/Inventor/caches/SoConvexDataCache.h
-  The SoConvexDataCache class is used to cache convexified polygons.
+  \brief The SoConvexDataCache class is used to cache convexified polygons.
+
   This class is not part of the original OIV API. It is used to
   speed up rendering of concave polygons by tesselating all
   polygons into triangles.

@@ -101,7 +101,7 @@ SoGLRenderPassElement::pop(SoState * state,
 SbBool
 SoGLRenderPassElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -110,7 +110,7 @@ SoGLRenderPassElement::matches(const SoElement * /* element */) const
 SoElement *
 SoGLRenderPassElement::copyMatchInfo(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -140,5 +140,5 @@ SoGLRenderPassElement::get(SoState * const state)
 void
 SoGLRenderPassElement::print(FILE * /* file */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

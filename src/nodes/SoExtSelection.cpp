@@ -128,7 +128,7 @@ SoExtSelection::initClass(void)
 void
 SoExtSelection::useOverlay(SbBool /* flg */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -137,7 +137,7 @@ SoExtSelection::useOverlay(SbBool /* flg */)
 SbBool
 SoExtSelection::isUsingOverlay(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -147,7 +147,7 @@ SoExtSelection::isUsingOverlay(void)
 SoSeparator *
 SoExtSelection::getOverlaySceneGraph(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -157,7 +157,7 @@ SoExtSelection::getOverlaySceneGraph(void)
 void
 SoExtSelection::setOverlayLassoColorIndex(int /* index */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -166,7 +166,7 @@ SoExtSelection::setOverlayLassoColorIndex(int /* index */)
 int
 SoExtSelection::getOverlayLassoColorIndex(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0;
 }
 
@@ -176,7 +176,7 @@ SoExtSelection::getOverlayLassoColorIndex(void)
 void
 SoExtSelection::setLassoColor(SbColor /* c */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -185,7 +185,7 @@ SoExtSelection::setLassoColor(SbColor /* c */)
 SbColor
 SoExtSelection::getLassoColor(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   static SbColor col;
   return col;
 }
@@ -196,7 +196,7 @@ SoExtSelection::getLassoColor(void)
 void
 SoExtSelection::setLassoWidth(float /* width */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -205,7 +205,7 @@ SoExtSelection::setLassoWidth(float /* width */)
 float
 SoExtSelection::getLassoWidth(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0.0f;
 }
 
@@ -215,7 +215,7 @@ SoExtSelection::getLassoWidth(void)
 void
 SoExtSelection::setOverlayLassoPattern(unsigned short /* pattern */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -224,7 +224,7 @@ SoExtSelection::setOverlayLassoPattern(unsigned short /* pattern */)
 unsigned short
 SoExtSelection::getOverlayLassoPattern(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0;
 }
 
@@ -234,7 +234,7 @@ SoExtSelection::getOverlayLassoPattern(void)
 void
 SoExtSelection::animateOverlayLasso(SbBool /* flg */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -243,6 +243,6 @@ SoExtSelection::animateOverlayLasso(SbBool /* flg */)
 SbBool
 SoExtSelection::isOverlayLassoAnimated(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }

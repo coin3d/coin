@@ -30,6 +30,7 @@
 #include <Inventor/fields/SoSFPath.h>
 #endif // !COIN_EXCLUDE_SOSFPATH
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <assert.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -277,7 +278,7 @@ SoMFPath::initClass(void)
 SbBool
 SoMFPath::read1Value(SoInput * /* in */, int /* idx */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -287,7 +288,7 @@ SoMFPath::read1Value(SoInput * /* in */, int /* idx */)
 void
 SoMFPath::write1Value(SoOutput * /* out */, int /* idx */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -296,7 +297,7 @@ SoMFPath::write1Value(SoOutput * /* out */, int /* idx */) const
 void
 SoMFPath::notify(SoNotList * /* list */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -305,7 +306,7 @@ SoMFPath::notify(SoNotList * /* list */)
 void
 SoMFPath::fixCopy(SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -314,7 +315,7 @@ SoMFPath::fixCopy(SbBool /* copyConnections */)
 SbBool
 SoMFPath::referencesCopy(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 

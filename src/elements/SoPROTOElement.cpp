@@ -99,8 +99,7 @@ SoPROTOElement::pop(SoState * state, const SoElement * prevTopElement)
 SbBool
 SoPROTOElement::matches(const SoElement * /* element */) const
 {
-  // FIXME
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -109,6 +108,6 @@ SoPROTOElement::matches(const SoElement * /* element */) const
 SoElement *
 SoPROTOElement::copyMatchInfo(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }

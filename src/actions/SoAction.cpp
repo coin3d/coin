@@ -345,7 +345,7 @@ SoAction::apply(const SoPathList & pathList, SbBool /* obeysRules */)
 void
 SoAction::invalidateState()
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   // do what here?
   // probable use - if the list of enabled elements changes for an action,
   // the state must be destroyed and recreated at next apply()
@@ -435,7 +435,7 @@ SoAction::getOriginalPathListAppliedto() const
 SbBool
 SoAction::isLastPathListAppliedTo() const
 {
-  assert(0 && "FIXME: Not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -657,9 +657,9 @@ SoAction::usePathCode(int & numIndices, const int * & indices)
 */
 
 void
-SoAction::pushCurPath()
+SoAction::pushCurPath(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -678,7 +678,7 @@ SoAction::popPushCurPath(const int childIndex)
 */
 
 void
-SoAction::popCurPath()
+SoAction::popCurPath(void)
 {
   this->currentPath.pop();
 }
@@ -740,6 +740,6 @@ SoAction::setTerminated(const SbBool flag)
 SbBool
 SoAction::shouldCompactPathList() const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }

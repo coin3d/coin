@@ -77,7 +77,7 @@ SoEventCallback::initClass(void)
 void
 SoEventCallback::setPath(SoPath * /* path */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -86,7 +86,7 @@ SoEventCallback::setPath(SoPath * /* path */)
 const SoPath *
 SoEventCallback::getPath(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -152,7 +152,7 @@ SoEventCallback::getEvent(void) const
 const SoPickedPoint *
 SoEventCallback::getPickedPoint(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 

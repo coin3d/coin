@@ -30,6 +30,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 #include <malloc.h>
 #include <assert.h>
@@ -327,7 +328,7 @@ SoMField::setNum(const int num)
 void
 SoMField::deleteValues(int /* start */, int /* num */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -336,7 +337,7 @@ SoMField::deleteValues(int /* start */, int /* num */)
 void
 SoMField::insertSpace(int /* start */, int /* num */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!

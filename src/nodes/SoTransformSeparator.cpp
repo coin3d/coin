@@ -107,7 +107,7 @@ SoTransformSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
  */
 SoTransformSeparator::SoTransformSeparator(int /* nChildren */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

@@ -29,6 +29,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 // *************************************************************************
 
@@ -96,7 +97,7 @@ SoSFTrigger::initClass(void)
 void
 SoSFTrigger::copyFrom(const SoField & /* field */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -105,7 +106,7 @@ SoSFTrigger::copyFrom(const SoField & /* field */)
 SbBool
 SoSFTrigger::isSame(const SoField & /* field */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -115,7 +116,7 @@ SoSFTrigger::isSame(const SoField & /* field */) const
 const SoSFTrigger &
 SoSFTrigger::operator = (const SoSFTrigger & /* field */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return *this;
 }
 
@@ -125,7 +126,7 @@ SoSFTrigger::operator = (const SoSFTrigger & /* field */)
 void
 SoSFTrigger::setValue(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -134,7 +135,7 @@ SoSFTrigger::setValue(void)
 void
 SoSFTrigger::getValue(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -152,7 +153,7 @@ SoSFTrigger::touch(void)
 int
 SoSFTrigger::operator == (const SoSFTrigger & /* trigger */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return -1;
 }
 
@@ -162,7 +163,7 @@ SoSFTrigger::operator == (const SoSFTrigger & /* trigger */) const
 int
 SoSFTrigger::operator != (const SoSFTrigger & /* trigger */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return -1;
 }
 
@@ -194,7 +195,7 @@ SoSFTrigger::notify(SoNotList * list)
 */
 SoSFTrigger::SoSFTrigger(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -202,18 +203,18 @@ SoSFTrigger::SoSFTrigger(void)
 */
 SoSFTrigger::~SoSFTrigger(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 SbBool
 SoSFTrigger::readValue(SoInput * /* in */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
 void
 SoSFTrigger::writeValue(SoOutput * /* out */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }

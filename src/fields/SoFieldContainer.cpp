@@ -109,7 +109,7 @@ SoFieldContainer::setToDefaults(void)
 {
   const SoFieldData * const fields = this->getFieldData();
   assert(fields);
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -121,7 +121,7 @@ SoFieldContainer::hasDefaultValues(void) const
 {
   const SoFieldData * const fields = this->getFieldData();
   assert(fields);
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -138,7 +138,7 @@ SoFieldContainer::fieldsAreEqual(const SoFieldContainer * const container) const
   const SoFieldData * const otherfielddata = container->getFieldData();
   assert(otherfielddata);
 
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -208,7 +208,7 @@ SoFieldContainer::get(SbString & fieldDataString)
 int
 SoFieldContainer::getFields(SoFieldList & /* list */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0;
 }
 
@@ -218,7 +218,7 @@ SoFieldContainer::getFields(SoFieldList & /* list */) const
 int
 SoFieldContainer::getAllFields(SoFieldList & /* list */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0;
 }
 
@@ -245,7 +245,7 @@ SoFieldContainer::getField(const SbName & fieldName) const
 SoField *
 SoFieldContainer::getEventIn(const SbName & /* fieldName */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -256,7 +256,7 @@ SoFieldContainer::getEventIn(const SbName & /* fieldName */) const
 SoField *
 SoFieldContainer::getEventOut(const SbName & /* fieldName */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -322,7 +322,7 @@ SoFieldContainer::set(const char * const /* fieldDataString */,
   const SoFieldData * const fields = this->getFieldData();
   assert(fields);
 
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -336,7 +336,7 @@ SoFieldContainer::get(SbString & /* fieldDataString */,
   const SoFieldData * const fields = this->getFieldData();
   assert(fields);
 
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 
@@ -356,7 +356,7 @@ SbBool
 SoFieldContainer::validateNewFieldValue(SoField * /* pField */,
                                         void * /* newValue */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -438,7 +438,7 @@ void
 SoFieldContainer::copyContents(const SoFieldContainer * /* fromFC */,
                                SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 
@@ -448,7 +448,7 @@ SoFieldContainer::copyContents(const SoFieldContainer * /* fromFC */,
 SoFieldContainer *
 SoFieldContainer::copyThroughConnection(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -459,7 +459,7 @@ SoFieldContainer::copyThroughConnection(void) const
 void
 SoFieldContainer::initCopyDict(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 
@@ -470,7 +470,7 @@ void
 SoFieldContainer::addCopy(const SoFieldContainer * const /* orig */,
                           const SoFieldContainer * const /* copy */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 
@@ -480,7 +480,7 @@ SoFieldContainer::addCopy(const SoFieldContainer * const /* orig */,
 SoFieldContainer *
 SoFieldContainer::checkCopy(const SoFieldContainer * const /* orig */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -492,7 +492,7 @@ SoFieldContainer *
 SoFieldContainer::findCopy(const SoFieldContainer * const /* orig */,
                            const SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -503,7 +503,7 @@ SoFieldContainer::findCopy(const SoFieldContainer * const /* orig */,
 void
 SoFieldContainer::copyDone(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 

@@ -261,7 +261,7 @@ SoBaseKit::getPart(const SbName & partname, SbBool makeifneeded)
 SbString
 SoBaseKit::getPartString(const SoBase * /*part*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return SbString();
 }
 
@@ -271,7 +271,7 @@ SoBaseKit::getPartString(const SoBase * /*part*/)
 SoNodeKitPath *
 SoBaseKit::createPathToPart(const SbName & /*partname*/, SbBool /*makeifneeded*/, const SoPath * /*pathtoextend*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -281,7 +281,7 @@ SoBaseKit::createPathToPart(const SbName & /*partname*/, SbBool /*makeifneeded*/
 SbBool
 SoBaseKit::setPart(const SbName & /*partname*/, SoNode * /*from*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -291,7 +291,7 @@ SoBaseKit::setPart(const SbName & /*partname*/, SoNode * /*from*/)
 SbBool
 SoBaseKit::set(char * /*namevaluepairliststring*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -301,7 +301,7 @@ SoBaseKit::set(char * /*namevaluepairliststring*/)
 SbBool
 SoBaseKit::set(char * /*partnamestring*/, char * /*parameterstring*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -311,7 +311,7 @@ SoBaseKit::set(char * /*partnamestring*/, char * /*parameterstring*/)
 void
 SoBaseKit::doAction(SoAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -320,7 +320,7 @@ SoBaseKit::doAction(SoAction * /*action*/)
 void
 SoBaseKit::callback(SoCallbackAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -329,7 +329,7 @@ SoBaseKit::callback(SoCallbackAction * /*action*/)
 void
 SoBaseKit::GLRender(SoGLRenderAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -338,7 +338,7 @@ SoBaseKit::GLRender(SoGLRenderAction * /*action*/)
 void
 SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -347,7 +347,7 @@ SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * /*action*/)
 void
 SoBaseKit::getMatrix(SoGetMatrixAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -356,7 +356,7 @@ SoBaseKit::getMatrix(SoGetMatrixAction * /*action*/)
 void
 SoBaseKit::handleEvent(SoHandleEventAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -365,7 +365,7 @@ SoBaseKit::handleEvent(SoHandleEventAction * /*action*/)
 void
 SoBaseKit::rayPick(SoRayPickAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -374,7 +374,7 @@ SoBaseKit::rayPick(SoRayPickAction * /*action*/)
 void
 SoBaseKit::search(SoSearchAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -383,7 +383,7 @@ SoBaseKit::search(SoSearchAction * /*action*/)
 void
 SoBaseKit::write(SoWriteAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -392,7 +392,7 @@ SoBaseKit::write(SoWriteAction * /*action*/)
 void
 SoBaseKit::getPrimitiveCount(SoGetPrimitiveCountAction * /*action*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -401,7 +401,7 @@ SoBaseKit::getPrimitiveCount(SoGetPrimitiveCountAction * /*action*/)
 SoChildList *
 SoBaseKit::getChildren(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -492,7 +492,7 @@ SoBaseKit::printTable(void)
 void
 SoBaseKit::addWriteReference(SoOutput * /*out*/, SbBool /*isfromfield*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -501,7 +501,7 @@ SoBaseKit::addWriteReference(SoOutput * /*out*/, SbBool /*isfromfield*/)
 SbBool
 SoBaseKit::forceChildDrivenWriteRefs(SoOutput * /*out*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -511,7 +511,7 @@ SoBaseKit::forceChildDrivenWriteRefs(SoOutput * /*out*/)
 SbBool
 SoBaseKit::isSearchingChildren(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -521,7 +521,7 @@ SoBaseKit::isSearchingChildren(void)
 void
 SoBaseKit::setSearchingChildren(SbBool /*newval*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -530,7 +530,7 @@ SoBaseKit::setSearchingChildren(SbBool /*newval*/)
 SoNode *
 SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & /*parttype*/, SoNode * /*node*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -540,7 +540,7 @@ SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & /*parttype*/, S
 SoNode *
 SoBaseKit::addToCopyDict(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -550,7 +550,7 @@ SoBaseKit::addToCopyDict(void) const
 void
 SoBaseKit::copyContents(const SoFieldContainer * /*fromfc*/, SbBool /*copyconnections*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -559,7 +559,7 @@ SoBaseKit::copyContents(const SoFieldContainer * /*fromfc*/, SbBool /*copyconnec
 SoGroup *
 SoBaseKit::getContainerNode(const SbName & /*listname*/, SbBool /*makeifneeded*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -569,7 +569,7 @@ SoBaseKit::getContainerNode(const SbName & /*listname*/, SbBool /*makeifneeded*/
 SoNode *
 SoBaseKit::getAnyPart(const SbName & /*partname*/, SbBool /*makeifneeded*/, SbBool /*leafcheck*/, SbBool /*publiccheck*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -579,7 +579,7 @@ SoBaseKit::getAnyPart(const SbName & /*partname*/, SbBool /*makeifneeded*/, SbBo
 SoNodeKitPath *
 SoBaseKit::createPathToAnyPart(const SbName & /*partname*/, SbBool /*makeifneeded*/, SbBool /*leafcheck*/, SbBool /*publiccheck*/, const SoPath * /*pathtoextend*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -589,7 +589,7 @@ SoBaseKit::createPathToAnyPart(const SbName & /*partname*/, SbBool /*makeifneede
 SbBool
 SoBaseKit::setAnyPart(const SbName & /*partname*/, SoNode * /*from*/, SbBool /*anypart*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -599,7 +599,7 @@ SoBaseKit::setAnyPart(const SbName & /*partname*/, SoNode * /*from*/, SbBool /*a
 void
 SoBaseKit::createNodekitPartsList(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -608,7 +608,7 @@ SoBaseKit::createNodekitPartsList(void)
 void
 SoBaseKit::createDefaultParts(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -617,7 +617,7 @@ SoBaseKit::createDefaultParts(void)
 const SoNodekitParts *
 SoBaseKit::getNodekitPartsList(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -627,7 +627,7 @@ SoBaseKit::getNodekitPartsList(void) const
 void
 SoBaseKit::catalogError(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -636,7 +636,7 @@ SoBaseKit::catalogError(void)
 SbBool
 SoBaseKit::setUpConnections(SbBool /*onoff*/, SbBool /*doitalways*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -646,7 +646,7 @@ SoBaseKit::setUpConnections(SbBool /*onoff*/, SbBool /*doitalways*/)
 SbBool
 SoBaseKit::readInstance(SoInput * /*in*/, unsigned short /*flags*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -656,7 +656,7 @@ SoBaseKit::readInstance(SoInput * /*in*/, unsigned short /*flags*/)
 void
 SoBaseKit::setDefaultOnNonWritingFields(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -665,5 +665,5 @@ SoBaseKit::setDefaultOnNonWritingFields(void)
 void
 SoBaseKit::countMyFields(SoOutput * /*out*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }

@@ -397,7 +397,7 @@ void
 SoSelection::invokeSelectionPolicy(SoPath * const /* path */,
                                    const SbBool /* shiftDown */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -406,7 +406,7 @@ SoSelection::invokeSelectionPolicy(SoPath * const /* path */,
 void
 SoSelection::performSingleSelection(SoPath * const /* path */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -415,7 +415,7 @@ SoSelection::performSingleSelection(SoPath * const /* path */)
 void
 SoSelection::performToggleSelection(SoPath * const /* path */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -475,7 +475,7 @@ SoSelection::findPath(const SoPath * const path) const
 void
 SoSelection::handleEvent(SoHandleEventAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 //

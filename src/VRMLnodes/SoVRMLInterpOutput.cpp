@@ -30,6 +30,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLInterpOutput.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -191,7 +192,7 @@ SoVRMLInterpOutput::operator[](int i) const
 void
 SoVRMLInterpOutput::prepareToWrite(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -200,5 +201,5 @@ SoVRMLInterpOutput::prepareToWrite(void) const
 void
 SoVRMLInterpOutput::doneWriting(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }

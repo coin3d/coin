@@ -27,6 +27,7 @@
  */
 
 #include <Inventor/sensors/SoPathSensor.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <stdlib.h> // NULL
 #include <assert.h>
 
@@ -101,7 +102,7 @@ SoPathSensor::getAttachedPath(void) const
 void
 SoPathSensor::notify(SoNotList * /* list */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -110,5 +111,5 @@ SoPathSensor::notify(SoNotList * /* list */)
 void
 SoPathSensor::dyingReference(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

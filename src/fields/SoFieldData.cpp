@@ -38,6 +38,7 @@
 #endif // tmp disabled
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <ctype.h>
 
 #if COIN_DEBUG
@@ -99,7 +100,7 @@ SoFieldData::SoFieldData(void)
  */
 SoFieldData::SoFieldData(const SoFieldData & /* fd */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -107,7 +108,7 @@ SoFieldData::SoFieldData(const SoFieldData & /* fd */)
  */
 SoFieldData::SoFieldData(const SoFieldData * /* fd */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -115,7 +116,7 @@ SoFieldData::SoFieldData(const SoFieldData * /* fd */)
  */
 SoFieldData::SoFieldData(int /* numfields */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -162,7 +163,7 @@ SoFieldData::overlay(SoFieldContainer * /* to */,
                      const SoFieldContainer * /* from */,
                      SbBool /* copyConnections */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -200,7 +201,7 @@ int
 SoFieldData::getIndex(const SoFieldContainer * /* fc */,
                       const SoField * /* field */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return -1;
 }
 
@@ -368,7 +369,7 @@ void
 SoFieldData::write(SoOutput * /* out */,
                    const SoFieldContainer * /* object */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -400,7 +401,7 @@ SbBool
 SoFieldData::isSame(const SoFieldContainer * /* c1 */,
                     const SoFieldContainer * /* c2 */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -411,7 +412,7 @@ SbBool
 SoFieldData::readFieldDescriptions(SoInput * /* in */, SoFieldContainer * /* object */,
                                    int /* numDescriptionsExpected */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -422,7 +423,7 @@ void
 SoFieldData::writeFieldDescriptions(SoOutput * /* out */,
                                     const SoFieldContainer * /* object */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!

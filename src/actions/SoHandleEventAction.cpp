@@ -272,7 +272,7 @@ SoHandleEventAction::getGrabber(void) const
 void
 SoHandleEventAction::setPickRoot(SoNode * /* node */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -282,7 +282,7 @@ SoHandleEventAction::setPickRoot(SoNode * /* node */)
 SoNode *
 SoHandleEventAction::getPickRoot(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -292,7 +292,7 @@ SoHandleEventAction::getPickRoot(void) const
 void
 SoHandleEventAction::setPickRadius(float /* radiusInPixels */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -301,7 +301,7 @@ SoHandleEventAction::setPickRadius(float /* radiusInPixels */)
 const SoPickedPoint *
 SoHandleEventAction::getPickedPoint(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -311,7 +311,7 @@ SoHandleEventAction::getPickedPoint(void)
 const SoPickedPointList &
 SoHandleEventAction::getPickedPointList(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   static SoPickedPointList pl;
   return pl;
 }

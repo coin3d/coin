@@ -952,7 +952,7 @@ SoNode::getChildren(void) const
 void
 SoNode::grabEventsSetup(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -961,7 +961,7 @@ SoNode::grabEventsSetup(void)
 void
 SoNode::grabEventsCleanup(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -971,7 +971,6 @@ void
 SoNode::startNotify(void)
 {
   inherited::startNotify();
-//    assert(0 && "FIXME: not implemented");
 }
 
 /*!
@@ -1001,7 +1000,7 @@ SoNode::writeInstance(SoOutput * out)
 SoNode *
 SoNode::addToCopyDict(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -1012,7 +1011,7 @@ void
 SoNode::copyContents(const SoFieldContainer * /* fromFC */,
                      SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -1021,7 +1020,7 @@ SoNode::copyContents(const SoFieldContainer * /* fromFC */,
 SoFieldContainer *
 SoNode::copyThroughConnection(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -1040,6 +1039,6 @@ SoNode::getNextNodeId(void)
 const SoFieldData **
 SoNode::getFieldDataPtr(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }

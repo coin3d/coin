@@ -32,6 +32,7 @@
 #endif // !COIN_EXCLUDE_SOMFNODE
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
@@ -208,7 +209,7 @@ SoSFNode::readValue(SoInput * in)
 void
 SoSFNode::fixCopy(SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -217,7 +218,7 @@ SoSFNode::fixCopy(SbBool /* copyConnections */)
 SbBool
 SoSFNode::referencesCopy(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -248,7 +249,7 @@ SoSFNode::writeValue(SoOutput * out) const
       node->writeFooter(out);
     }
     else {
-      assert(0 && "FIXME: not implemented yet");
+      COIN_STUB();
     }
   }
   else assert(0 && "unknown stage");

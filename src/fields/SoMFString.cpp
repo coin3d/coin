@@ -31,6 +31,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <assert.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -357,7 +358,7 @@ void
 SoMFString::deleteText(const int /* fromLine */, const int /* fromChar */,
                         const int /* toLine */, const int /* toChar */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 void

@@ -424,7 +424,7 @@ SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 SbBool
 SoQuadMesh::generateDefaultNormals(SoState * /* state */, SoNormalBundle * /* nb */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 

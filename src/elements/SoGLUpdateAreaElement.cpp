@@ -107,7 +107,7 @@ SoGLUpdateAreaElement::pop(SoState * state,
 SbBool
 SoGLUpdateAreaElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -116,7 +116,7 @@ SoGLUpdateAreaElement::matches(const SoElement * /* element */) const
 SoElement *
 SoGLUpdateAreaElement::copyMatchInfo() const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 

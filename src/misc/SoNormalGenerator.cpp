@@ -23,6 +23,7 @@
 */
 
 #include <Inventor/misc/SoNormalGenerator.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <stdio.h>
 #include <math.h>
 
@@ -245,7 +246,7 @@ SoNormalGenerator::getNumNormals() const
 void
 SoNormalGenerator::setNumNormals(const int /* num */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -276,7 +277,7 @@ void
 SoNormalGenerator::setNormal(const int32_t /* index */,
                              const SbVec3f & /* normal */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 //

@@ -29,6 +29,7 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/misc/SoNotification.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <assert.h>
 
 /*!
@@ -102,7 +103,7 @@ SoFieldSensor::getAttachedField(void) const
 void
 SoFieldSensor::trigger(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -111,5 +112,5 @@ SoFieldSensor::trigger(void)
 void
 SoFieldSensor::dyingReference(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

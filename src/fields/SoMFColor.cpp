@@ -34,6 +34,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <assert.h>
 
 // *************************************************************************
@@ -310,7 +311,7 @@ void
 SoMFColor::setHSVValues(const int /* start */, const int /* num */,
                         const float /* hsv */[][3])
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -346,7 +347,7 @@ SoMFColor::setValue(const float rgb[3])
 void
 SoMFColor::setHSVValue(const float /* h */, const float /* s */, const float /* v */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -355,7 +356,7 @@ SoMFColor::setHSVValue(const float /* h */, const float /* s */, const float /* 
 void
 SoMFColor::setHSVValue(const float /* hsv */[3])
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -392,7 +393,7 @@ void
 SoMFColor::set1HSVValue(const int /* idx */,
                         const float /* h */, const float /* s */, const float /* v */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -401,7 +402,7 @@ SoMFColor::set1HSVValue(const int /* idx */,
 void
 SoMFColor::set1HSVValue(const int /* idx */, const float /* hsv */[3])
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 void

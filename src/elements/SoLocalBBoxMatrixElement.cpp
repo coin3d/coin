@@ -95,7 +95,7 @@ SoLocalBBoxMatrixElement::push(SoState * state)
 SbBool
 SoLocalBBoxMatrixElement::matches(const SoElement * /* element */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -104,7 +104,7 @@ SoLocalBBoxMatrixElement::matches(const SoElement * /* element */) const
 SoElement *
 SoLocalBBoxMatrixElement::copyMatchInfo(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -226,7 +226,7 @@ SoLocalBBoxMatrixElement::popMatrix(SoState * const state,
 void
 SoLocalBBoxMatrixElement::resetAll(SoState * const /* state */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 //! FIXME: write doc.
@@ -245,5 +245,5 @@ SoLocalBBoxMatrixElement::get(SoState * const state)
 void
 SoLocalBBoxMatrixElement::print(FILE * /* file */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

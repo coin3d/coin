@@ -363,7 +363,7 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
 */
 SoSeparator::SoSeparator(const int /* nChildren */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -372,7 +372,7 @@ SoSeparator::SoSeparator(const int /* nChildren */)
 void
 SoSeparator::setNumRenderCaches(const int /* howMany */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -381,7 +381,7 @@ SoSeparator::setNumRenderCaches(const int /* howMany */)
 int
 SoSeparator::getNumRenderCaches()
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return 0;
 }
 
@@ -423,7 +423,7 @@ SoSeparator::notify(SoNotList * list)
 SbBool
 SoSeparator::cullTest(SoGLRenderAction * /* action */, int & /* cullResults */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION

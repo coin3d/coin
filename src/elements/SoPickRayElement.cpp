@@ -124,5 +124,5 @@ SoPickRayElement::get(SoState * const state)
 void
 SoPickRayElement::print(FILE * /* file */) const
 {
-  assert(0 && "FIXME: not imlemented");
+  COIN_STUB();
 }

@@ -26,6 +26,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoSimplifyAction.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 // *************************************************************************
 
@@ -129,7 +130,7 @@ SoSimplifyAction::initClass(void)
 
 SoSimplifyAction::SoSimplifyAction(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -147,5 +148,5 @@ SoSimplifyAction::~SoSimplifyAction(void)
 void
 SoSimplifyAction::beginTraversal(SoNode * /* node */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

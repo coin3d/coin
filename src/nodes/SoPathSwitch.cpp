@@ -73,7 +73,7 @@ SoPathSwitch::initClass(void)
 void
 SoPathSwitch::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -85,7 +85,7 @@ SoPathSwitch::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 void
 SoPathSwitch::doAction(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -96,7 +96,7 @@ SoPathSwitch::doAction(SoAction * /* action */)
 void
 SoPathSwitch::GLRender(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -107,7 +107,7 @@ SoPathSwitch::GLRender(SoGLRenderAction * /* action */)
 void
 SoPathSwitch::pick(SoPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
@@ -118,7 +118,7 @@ SoPathSwitch::pick(SoPickAction * /* action */)
 void
 SoPathSwitch::handleEvent(SoHandleEventAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
@@ -129,7 +129,7 @@ SoPathSwitch::handleEvent(SoHandleEventAction * /* action */)
 void
 SoPathSwitch::getMatrix(SoGetMatrixAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -140,7 +140,7 @@ SoPathSwitch::getMatrix(SoGetMatrixAction * /* action */)
 void
 SoPathSwitch::search(SoSearchAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOSEARCHACTION
 
@@ -151,6 +151,6 @@ SoPathSwitch::search(SoSearchAction * /* action */)
 void
 SoPathSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

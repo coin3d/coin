@@ -25,6 +25,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoReorganizeAction.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 // *************************************************************************
 
@@ -128,7 +129,7 @@ SoReorganizeAction::initClass(void)
 
 SoReorganizeAction::SoReorganizeAction(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -137,7 +138,7 @@ SoReorganizeAction::SoReorganizeAction(void)
 
 SoReorganizeAction::~SoReorganizeAction(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -147,5 +148,5 @@ SoReorganizeAction::~SoReorganizeAction(void)
 void
 SoReorganizeAction::beginTraversal(SoNode * /* node */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

@@ -122,7 +122,7 @@ SoAntiSquish::initClass(void)
 void
 SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -132,7 +132,7 @@ SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 void
 SoAntiSquish::recalc(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -142,7 +142,7 @@ SoAntiSquish::recalc(void)
 void
 SoAntiSquish::doAction(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -153,7 +153,7 @@ SoAntiSquish::doAction(SoAction * /* action */)
 void
 SoAntiSquish::callback(SoCallbackAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -164,7 +164,7 @@ SoAntiSquish::callback(SoCallbackAction * /* action */)
 void
 SoAntiSquish::GLRender(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -175,7 +175,7 @@ SoAntiSquish::GLRender(SoGLRenderAction * /* action */)
 void
 SoAntiSquish::getMatrix(SoGetMatrixAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -186,7 +186,7 @@ SoAntiSquish::getMatrix(SoGetMatrixAction * /* action */)
 void
 SoAntiSquish::pick(SoPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
@@ -198,6 +198,6 @@ SoAntiSquish::getUnsquishingMatrix(SbMatrix /* squishedMatrix */,
                                    SbBool /* doInverse */,
                                    SbMatrix & /* inverseAnswer */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return SbMatrix::identity();
 }

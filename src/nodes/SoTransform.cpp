@@ -119,7 +119,7 @@ void
 SoTransform::pointAt(const SbVec3f & /* fromPoint */,
                      const SbVec3f & /* toPoint */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -129,7 +129,7 @@ void
 SoTransform::getScaleSpaceMatrix(SbMatrix & /* mat */,
                                  SbMatrix & /* inv */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -139,7 +139,7 @@ void
 SoTransform::getRotationSpaceMatrix(SbMatrix & /* mat */,
                                     SbMatrix & /* inv */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -149,7 +149,7 @@ void
 SoTransform::getTranslationSpaceMatrix(SbMatrix & /* mat */,
                                        SbMatrix & /* inv */) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -158,7 +158,7 @@ SoTransform::getTranslationSpaceMatrix(SbMatrix & /* mat */,
 void
 SoTransform::multLeft(const SbMatrix & /* mat */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -167,7 +167,7 @@ SoTransform::multLeft(const SbMatrix & /* mat */)
 void
 SoTransform::multRight(const SbMatrix & /* mat */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -176,7 +176,7 @@ SoTransform::multRight(const SbMatrix & /* mat */)
 void
 SoTransform::combineLeft(SoTransformation * /* nodeOnRight */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -185,7 +185,7 @@ SoTransform::combineLeft(SoTransformation * /* nodeOnRight */)
 void
 SoTransform::combineRight(SoTransformation * /* nodeOnLeft */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -194,7 +194,7 @@ SoTransform::combineRight(SoTransformation * /* nodeOnLeft */)
 void
 SoTransform::setMatrix(const SbMatrix & /* mat */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -203,7 +203,7 @@ SoTransform::setMatrix(const SbMatrix & /* mat */)
 void
 SoTransform::recenter(const SbVec3f & /* newCenter */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)

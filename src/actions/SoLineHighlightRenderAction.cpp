@@ -26,6 +26,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoLineHighlightRenderAction.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 // *************************************************************************
 
@@ -130,7 +131,7 @@ SoLineHighlightRenderAction::initClass(void)
 SoLineHighlightRenderAction::SoLineHighlightRenderAction(void)
   : inherited(SbViewportRegion())
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -140,7 +141,7 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(void)
 SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion & viewportRegion)
   : inherited(viewportRegion)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!

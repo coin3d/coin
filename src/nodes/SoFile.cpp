@@ -137,7 +137,7 @@ SoFile::readInstance(SoInput * in, unsigned short flags)
 SoGroup *
 SoFile::copyChildren(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -228,5 +228,5 @@ void
 SoFile::copyContents(const SoFieldContainer * /* fromFC */,
                      SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

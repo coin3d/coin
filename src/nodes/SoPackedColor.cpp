@@ -134,6 +134,6 @@ SoPackedColor::callback(SoCallbackAction *action)
 SbBool
 SoPackedColor::isTransparent(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }

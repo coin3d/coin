@@ -85,7 +85,7 @@ SoGroup::SoGroup()
 */
 SoGroup::SoGroup(int /* nchildren */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!

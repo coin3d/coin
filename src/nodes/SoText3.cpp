@@ -140,7 +140,7 @@ void
 SoText3::computeBBox(SoAction * /* action */,
                      SbBox3f & /* box */, SbVec3f & /* center */)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -152,7 +152,7 @@ SbBox3f
 SoText3::getCharacterBounds(SoState * /* state */,
                             int /* stringIndex */, int /* charIndex */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return SbBox3f();
 }
 
@@ -163,7 +163,7 @@ SoText3::getCharacterBounds(SoState * /* state */,
 void
 SoText3::GLRender(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -174,7 +174,7 @@ SoText3::GLRender(SoGLRenderAction * /* action */)
 void
 SoText3::rayPick(SoRayPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
@@ -185,7 +185,7 @@ SoText3::rayPick(SoRayPickAction * /* action */)
 void
 SoText3::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
@@ -196,6 +196,6 @@ SoText3::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 void
 SoText3::generatePrimitives(SoAction *)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION

@@ -33,6 +33,7 @@
  */
 
 #include <Inventor/sensors/SoSensor.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <stdlib.h> // to get NULL definition
 #include <assert.h>
 
@@ -159,7 +160,7 @@ SoSensor::trigger(void)
 void
 SoSensor::setNextInQueue(SoSensor * /* next */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -168,7 +169,7 @@ SoSensor::setNextInQueue(SoSensor * /* next */)
 SoSensor *
 SoSensor::getNextInQueue(void) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return NULL;
 }
 
@@ -178,5 +179,5 @@ SoSensor::getNextInQueue(void) const
 void
 SoSensor::initClass(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

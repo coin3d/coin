@@ -94,7 +94,7 @@ SoLightElement::add(SoState * const /* state */, SoLight * const /* light */,
 const SoNodeList &
 SoLightElement::getLights(SoState * const /* state */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   static SoNodeList nl;
   return nl;
 }
@@ -104,7 +104,7 @@ SoLightElement::getLights(SoState * const /* state */)
 const SbMatrix &
 SoLightElement::getMatrix(SoState * const /* state */, const int /* index */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   static SbMatrix m = SbMatrix::identity();
   return m;
 }

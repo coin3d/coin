@@ -629,8 +629,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     SoTransparencyElement::getInstance(state);
   SbBool t = trans->getNum() && trans->get(0) > 0.0f;
 
-  if (action->handleTransparency(t || 
-                                 SoTextureImageElement::containsTransparency(state))) 
+  if (action->handleTransparency(t ||
+                                 SoTextureImageElement::containsTransparency(state)))
     return FALSE;
 #endif // ! COIN_EXCLUDE_SOTRANSPARENCYELEMENT
 
@@ -920,7 +920,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
     ga->incNumTriangles();
   }
   else {
-    assert(0 && "FIXME: not implemented");
+    COIN_STUB();
   }
 }
 
@@ -954,7 +954,7 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
     ga->incNumLines();
   }
   else {
-    assert(0 && "FIXME: not implemented");
+    COIN_STUB();
   }
 
 }
@@ -988,7 +988,7 @@ SoShape::invokePointCallbacks(SoAction * const action,
     ga->incNumPoints();
   }
   else {
-    assert(0 && "FIXME: not implemented");
+    COIN_STUB();
   }
 }
 
@@ -1141,7 +1141,7 @@ SoShape::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 float
 SoShape::getDecimatedComplexity(SoState * /* state */, float /* complexity */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return 0.5f;
 }
 
@@ -1152,7 +1152,7 @@ SoShape::getDecimatedComplexity(SoState * /* state */, float /* complexity */)
 void
 SoShape::GLRenderBoundingBox(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

@@ -79,7 +79,7 @@ SoSurroundScale::initClass(void)
 void
 SoSurroundScale::invalidate(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -89,7 +89,7 @@ SoSurroundScale::invalidate(void)
 void
 SoSurroundScale::doAction(SoAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -99,7 +99,7 @@ SoSurroundScale::doAction(SoAction * /* action */)
 void
 SoSurroundScale::setDoingTranslations(SbBool /* doEm */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -108,7 +108,7 @@ SoSurroundScale::setDoingTranslations(SbBool /* doEm */)
 SbBool
 SoSurroundScale::isDoingTranslations(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -119,7 +119,7 @@ SoSurroundScale::isDoingTranslations(void)
 void
 SoSurroundScale::callback(SoCallbackAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -130,7 +130,7 @@ SoSurroundScale::callback(SoCallbackAction * /* action */)
 void
 SoSurroundScale::GLRender(SoGLRenderAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -141,7 +141,7 @@ SoSurroundScale::GLRender(SoGLRenderAction * /* action */)
 void
 SoSurroundScale::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -152,7 +152,7 @@ SoSurroundScale::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 void
 SoSurroundScale::getMatrix(SoGetMatrixAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -163,7 +163,7 @@ SoSurroundScale::getMatrix(SoGetMatrixAction * /* action */)
 void
 SoSurroundScale::pick(SoPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION)
 
@@ -174,7 +174,7 @@ void
 SoSurroundScale::updateMySurroundParams(SoAction * /* action */,
                                         const SbMatrix & /* inv */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -183,7 +183,7 @@ SoSurroundScale::updateMySurroundParams(SoAction * /* action */,
 void
 SoSurroundScale::setIgnoreInBbox(SbBool /* newVal */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -192,6 +192,6 @@ SoSurroundScale::setIgnoreInBbox(SbBool /* newVal */)
 SbBool
 SoSurroundScale::isIgnoreInBbox(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }

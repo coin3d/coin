@@ -192,5 +192,5 @@ void
 SoCallback::copyContents(const SoFieldContainer * /* fromFC */,
                          SbBool /* copyConnections */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

@@ -27,6 +27,7 @@
  */
 
 #include <Inventor/sensors/SoDataSensor.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <stdlib.h> // NULL
 #include <assert.h>
 
@@ -144,7 +145,7 @@ SoDataSensor::getTriggerPathFlag(void) const
 void
 SoDataSensor::notify(SoNotList * /* list */)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 /*!
@@ -153,5 +154,5 @@ SoDataSensor::notify(SoNotList * /* list */)
 void
 SoDataSensor::invokeDeleteCallback(void)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }

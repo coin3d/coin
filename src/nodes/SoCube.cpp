@@ -215,7 +215,7 @@ SoCube::generatePrimitives(SoAction * action)
 {
   SoMaterialBindingElement::Binding binding =
     SoMaterialBindingElement::get(action->getState());
-  
+
   SbBool materialPerPart =
     (binding == SoMaterialBindingElement::PER_PART ||
      binding == SoMaterialBindingElement::PER_PART_INDEXED);

@@ -38,6 +38,7 @@
 
 #include <Inventor/SbString.h>
 #include <Inventor/SbName.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoChildList.h>
 
@@ -674,7 +675,7 @@ SoPath::copy(const int startFromNodeIndex, int numNodes) const
 SoPath *
 SoPath::getByName(const SbName /*name*/)
 {
-  assert(0 && "FIXME: implement");
+  COIN_STUB();
   return NULL;
 }
 
@@ -686,7 +687,7 @@ SoPath::getByName(const SbName /*name*/)
 int
 SoPath::getByName(const SbName /*name*/, SoPathList & /*list*/)
 {
-  assert(0 && "FIXME: implement");
+  COIN_STUB();
   return 0;
 }
 
@@ -763,7 +764,7 @@ SoPath::replaceIndex(SoNode * const parent, const int index,
 void
 SoPath::write(SoWriteAction * /*writeAction*/) const
 {
-  assert(0 && "FIXME: implement");
+  COIN_STUB();
 }
 
 // *************************************************************************
@@ -781,7 +782,7 @@ SoPath::write(SoWriteAction * /*writeAction*/) const
 SbBool
 SoPath::isRelevantNotification(SoNotList * const /*list*/) const
 {
-  assert(0 && "FIXME: implement");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -806,6 +807,6 @@ SoPath::auditPath(const SbBool flag)
 SbBool
 SoPath::readInstance(SoInput * /*in*/, unsigned short /*flags*/)
 {
-  assert(0); // FIXME: implement
+  COIN_STUB();
   return TRUE;
 }

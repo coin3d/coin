@@ -76,7 +76,7 @@ SoTextureCoordinateBundle(SoAction * const action,
   coordElt = SoTextureCoordinateElement::getInstance(state);
   switch (coordElt->getType()) {
   case SoTextureCoordinateElement::DEFAULT:
-    assert(0 && "FIXME: not implemented");
+    COIN_STUB();
     break;
   case SoTextureCoordinateElement::EXPLICIT:
     if (coordElt->getNum() > 0) {

@@ -297,8 +297,7 @@ SoDB::getVersion(void)
 SbBool
 SoDB::read(SoInput * /* in */, SoPath *& /* path */)
 {
-  // TODO: implement.
-  assert(0);
+  COIN_STUB();
   return FALSE;
 }
 
@@ -820,7 +819,7 @@ SoDB::doSelect(int nfds, fd_set * readfds, fd_set * writefds,
   // 19990425 mortene.
 
 #ifdef __BEOS__
-  assert(0 && "FIXME: suitable function not found in BeOS (yet)\n");
+  COIN_STUB();
   return 0;
 #else // !__BEOS__
   return select(nfds, readfds, writefds, exceptfds, userTimeOut);
@@ -868,8 +867,7 @@ SoDB::createConverter(SoType fromType, SoType toType)
 SoVRMLGroup *
 SoDB::readAllVRML(SoInput * /* in */)
 {
-  // FIXME: implement.
-  assert(0);
+  COIN_STUB();
   return NULL;
 }
 
@@ -880,8 +878,7 @@ void
 SoDB::createRoute(SoNode * /* fromnode */, const char * /* eventout */,
                   SoNode * /* tonode */, const char * /* eventin */)
 {
-  // FIXME: implement.
-  assert(0);
+  COIN_STUB();
 }
 
 /*!

@@ -17,6 +17,35 @@
  *
 \**************************************************************************/
 
+/*************************************************************************/
+
+#include <stdio.h>
+
+#if COIN_DEBUG
+// This is the method which prints out stub information. Used all over
+// the place where there is functionality missing. Prototyped for the
+// rest of the system in misc/SoBasic.h.
+void
+coin_stub(const char * filename, unsigned int linenr, const char * funcname)
+{
+  if (funcname) {
+    fprintf(stderr,
+            "STUB: %s not yet completed (at %s, line %u).\n",
+            funcname, filename, linenr);
+  }
+  else {
+    fprintf(stderr,
+            "STUB: functionality not yet completed at %s, line %u.\n",
+            filename, linenr);
+  }
+}
+#else // !COIN_DEBUG
+void coin_stub(const char *, unsigned int, const char *) { }
+#endif // !COIN_DEBUG
+
+/*************************************************************************/
+
+
 /*!
   \class SoError Inventor/errors/SoError.h
   \brief The SoError class is the base class for all the error handling classes.
@@ -27,7 +56,7 @@
 */
 
 /*¡
-  Potensial buffer overflow errors, should be fixed - 990610 larsa
+  Potensial buffer overflow errors, should be fixed - 19990610 larsa
 */
 
 #include <Inventor/errors/SoErrors.h>

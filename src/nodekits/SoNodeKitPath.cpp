@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/SoNodeKitPath.h>
+#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 
 /*!
@@ -33,7 +34,7 @@
 */
 SoNodeKitPath::SoNodeKitPath(int /*approxLength*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -41,7 +42,7 @@ SoNodeKitPath::SoNodeKitPath(int /*approxLength*/)
 */
 SoNodeKitPath::~SoNodeKitPath()
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -50,7 +51,7 @@ SoNodeKitPath::~SoNodeKitPath()
 int
 SoNodeKitPath::getLength(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return -1;
 }
 
@@ -60,7 +61,7 @@ SoNodeKitPath::getLength(void) const
 SoNode *
 SoNodeKitPath::getTail(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -70,7 +71,7 @@ SoNodeKitPath::getTail(void) const
 SoNode *
 SoNodeKitPath::getNode(int /*i*/) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -80,7 +81,7 @@ SoNodeKitPath::getNode(int /*i*/) const
 SoNode *
 SoNodeKitPath::getNodeFromTail(int /*i*/) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return NULL;
 }
 
@@ -90,7 +91,7 @@ SoNodeKitPath::getNodeFromTail(int /*i*/) const
 void
 SoNodeKitPath::truncate(int /*start*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -99,7 +100,7 @@ SoNodeKitPath::truncate(int /*start*/)
 void
 SoNodeKitPath::pop(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -108,7 +109,7 @@ SoNodeKitPath::pop(void)
 void
 SoNodeKitPath::append(SoBaseKit * /*childKit*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -117,7 +118,7 @@ SoNodeKitPath::append(SoBaseKit * /*childKit*/)
 void
 SoNodeKitPath::append(const SoNodeKitPath * /*fromPath*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
 }
 
 /*!
@@ -126,7 +127,7 @@ SoNodeKitPath::append(const SoNodeKitPath * /*fromPath*/)
 SbBool
 SoNodeKitPath::containsNode(SoBaseKit * /*node*/) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return FALSE;
 }
 
@@ -136,7 +137,7 @@ SoNodeKitPath::containsNode(SoBaseKit * /*node*/) const
 int
 SoNodeKitPath::findFork(const SoNodeKitPath * /*path*/) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return 0;
 }
 
@@ -146,6 +147,6 @@ SoNodeKitPath::findFork(const SoNodeKitPath * /*path*/) const
 int
 operator==(const SoNodeKitPath & /*p1*/, const SoNodeKitPath & /*p2*/)
 {
-  assert(0 && "FIXME: not implemented yet");
+  COIN_STUB();
   return 0;
 }

@@ -536,14 +536,14 @@ SbBool
 SoRayPickAction::intersect(const SbBox3f &/*box*/,
                            const SbBool /*useFullViewVolume*/)
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return FALSE;
 }
 
 const SbViewVolume &
 SoRayPickAction::getViewVolume()
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
   return this->osVolume;
 }
 

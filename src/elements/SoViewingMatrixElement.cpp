@@ -113,7 +113,7 @@ SoViewingMatrixElement::init(SoState * state)
 void
 SoViewingMatrixElement::print(FILE * /* file */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 //! FIXME: write doc.

@@ -94,7 +94,7 @@ SoDecimationTypeElement::init(SoState * state)
 void
 SoDecimationTypeElement::print(FILE * /* fp */) const
 {
-  assert(0 && "FIXME: not implemented");
+  COIN_STUB();
 }
 
 //! FIXME: write doc.
