@@ -46,89 +46,6 @@ THE WISH LIST
   See also item "SbReal typedef" further down in this file.
 
 
-* SoDepthBuffer, SoGLDepthBufferElement
-  2000-12-07  Peder Blekken  <pederb@sim.no>
-  [upwards compatible extension]
-
-  This node and element would really be useful to be able to
-  control the depth buffer in a scene graph. It's already
-  implemented, and I use it all the time in internal projects.
-
-  In addition, the element would really be useful when rendering
-  SoAnnotation nodes.
-
-
-* SoViewportRegion
-  2000-12-07  Peder Blekken  <pederb@sim.no>
-  [upwards compatible extension]
-
-  This node could also be useful to a lot of people, I think. I've
-  seen postings on comp.graphics.api.inventor on people using
-  SoCallback nodes to change the viewport in a scene graph.
-  It would be much easier to use a node for doing this. The element
-  is already part of the Open Inventor API so it's a really
-  simple node.
-
-  This node is implemented and works like a charm.
-
-
-* Coinboard node
-  2000-12-07  Peder Blekken  <pederb@sim.no>
-  [upwards compatible extension]
-
-  Silly name for a node, I know, but Billboard is already taken by
-  VRML97. In my implementation it is actually a shape node which can
-  be directed towards the camera, and the shape can be rendered in
-  multiple positions, controlled by an SoMFVec3f. This is very useful
-  and much more optimal than using a node derived from SoGroup
-  (there is quite a lot of overhead in the GLRender()-method of a
-  shape node (initialize material, find bindings, evaluate lazy
-  elements etc), and since (usually) all shapes are equal under a
-  Billboard shape node, it's just silly to do this repeatedly for all
-  shapes. We should have a normal SoGroup-inherited Billboard node
-  also, I guess.
-
-  This node is typically used for rendering simple shapes with a
-  alpha-transparent texture, such as trees in terrain, particles or
-  other billboards. Unfortunately, this will not work properly
-  in SGI or TGS Inventor, since they don't support alpha test
-  rendering of textured shapes.
-
-  This node is only partly implemented (generatePrimitives() is missing).
-
-
-* SoEnvironment::fogStart field.
-  2000-12-07  Peder Blekken  <pederb@sim.no>
-  [upwards compatible extension]
-
-  Why, oh why didn't SGI include this field when designing the
-  Environment node? It makes it possible to set the distance at
-  which fog starts for linear (HAZE) fog. I've already added support
-  for this in SoEnvironmentElement and SoGLEnvironmentElement.
-
-
-* SoSkyDome node.
-  2000-12-07  Peder Blekken  <pederb@sim.no>
-  [upwards compatible extension]
-
-  This node renders a skydome which can be connected to the camera
-  to create a nice, global environment in your applications. The 
-  node has the following fields:
-
-    SoSFFloat startAngle;
-    SoSFFloat endAngle;
-    SoSFInt32 numStacks;
-    SoSFInt32 numSlices;
-    SoSFFloat height;
-    SoSFFloat radius;
-
-  This makes it possible to draw a partial (or full) sphere, and the
-  current texture is mapped from startAngle (t=0) to endAngle (t=1).
-  The s texture coordinate is mapped in the same way as SoSphere.
-  
-  This node is partly implemented (only GLRender()-method so far).
-
-
 * SoGLPrimitiveSet node.
   2000-12-07  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
@@ -237,6 +154,9 @@ THE WISH LIST
     SbDict (ie "templatize" our hash-classes the "C-way").  I believe
     they do something like this for hashes in the Linux kernel
     sources.
+
+  Update, mortene 2003-09-12:
+    We now have a C hash ADT. (But it is not generic.)
 
 
 * SoGestureEvent
@@ -485,16 +405,6 @@ THE WISH LIST
   code we need for the getAsEuler() method.
 
   See also SmallChange's Rot2Heading engine.
-
-* SoTexture2::CLAMP_TO_EDGE
-  2001-07-17 <pederb@sim.no>
-
-  We should add a new wrap mode, CLAMP_TO_EDGE. Very useful and quite
-  frequently used. SoGLImage has support for this so it's very easy to
-  implement. Unlike CLAMP, pixel values will be clamped to the border
-  pixel instead of the texture border color when texture coordinates are
-  outside the [0,1] range.
-
 
 * SoFocusEvent
   2001-08-15  Lars J. Aas  <larsa@sim.no>
@@ -791,21 +701,6 @@ THE WISH LIST
   to be done for the next major release.
 
 
-* Detect and link with libz if present and update SoInput accordingly.
-  2002-08-29  Lars J. Aas  <larsa@sim.no>
-
-  This would make Coin able to read compressed iv/wrl files directly.
-
-  It should also be possible to write compressed iv/wrl files.  API
-  needs to be extended with the following functions,
-
-    void SoWriteAction::setZLibCompressionEnabled(SbBool compression);
-    SbBool SoWriteAction::isZLibCompressionEnabled(void) const;
-
-  and SoInput/SoOutput must redirect read/write calls through libz, which
-  may cause more API changes.
-
-
 * Detect and support libtar if present, and update SoInput accordingly.
   2002-08-30  Lars J. Aas  <larsa@sim.no>
 
@@ -924,3 +819,89 @@ THE WISH LIST
   several VRML2 files with identical textturefilenames (but different
   textures).
 
+
+
+IMPLEMENTED, RESIDING IN SmallChange
+====================================
+
+* SoDepthBuffer, SoGLDepthBufferElement
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  This node and element would really be useful to be able to
+  control the depth buffer in a scene graph. It's already
+  implemented, and I use it all the time in internal projects.
+
+  In addition, the element would really be useful when rendering
+  SoAnnotation nodes.
+
+
+* SoViewportRegion
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  This node could also be useful to a lot of people, I think. I've
+  seen postings on comp.graphics.api.inventor on people using
+  SoCallback nodes to change the viewport in a scene graph.
+  It would be much easier to use a node for doing this. The element
+  is already part of the Open Inventor API so it's a really
+  simple node.
+
+  This node is implemented and works like a charm.
+
+
+* Coinboard node
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  Silly name for a node, I know, but Billboard is already taken by
+  VRML97. In my implementation it is actually a shape node which can
+  be directed towards the camera, and the shape can be rendered in
+  multiple positions, controlled by an SoMFVec3f. This is very useful
+  and much more optimal than using a node derived from SoGroup
+  (there is quite a lot of overhead in the GLRender()-method of a
+  shape node (initialize material, find bindings, evaluate lazy
+  elements etc), and since (usually) all shapes are equal under a
+  Billboard shape node, it's just silly to do this repeatedly for all
+  shapes. We should have a normal SoGroup-inherited Billboard node
+  also, I guess.
+
+  This node is typically used for rendering simple shapes with a
+  alpha-transparent texture, such as trees in terrain, particles or
+  other billboards. Unfortunately, this will not work properly
+  in SGI or TGS Inventor, since they don't support alpha test
+  rendering of textured shapes.
+
+  This node is only partly implemented (generatePrimitives() is missing).
+
+
+* SoEnvironment::fogStart field.
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  Why, oh why didn't SGI include this field when designing the
+  Environment node? It makes it possible to set the distance at
+  which fog starts for linear (HAZE) fog. I've already added support
+  for this in SoEnvironmentElement and SoGLEnvironmentElement.
+
+
+* SoSkyDome node.
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  This node renders a skydome which can be connected to the camera
+  to create a nice, global environment in your applications. The 
+  node has the following fields:
+
+    SoSFFloat startAngle;
+    SoSFFloat endAngle;
+    SoSFInt32 numStacks;
+    SoSFInt32 numSlices;
+    SoSFFloat height;
+    SoSFFloat radius;
+
+  This makes it possible to draw a partial (or full) sphere, and the
+  current texture is mapped from startAngle (t=0) to endAngle (t=1).
+  The s texture coordinate is mapped in the same way as SoSphere.
+  
+  This node is partly implemented (only GLRender()-method so far).
