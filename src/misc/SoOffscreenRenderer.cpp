@@ -1543,3 +1543,6 @@ SoOffscreenRendererP::getMaxTileSize(void)
 
   return SbVec2s(dims[0], dims[1]);
 }
+
+#undef PRIVATE
+#undef PUBLIC
