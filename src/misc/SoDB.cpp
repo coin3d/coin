@@ -416,15 +416,21 @@ SoDB::init(void)
   initaudio = TRUE;
 #endif // _WIN32
 
-  if (!initaudio) {
-    env = coin_getenv("COIN_SOUND_ENABLE");
-    if (env && atoi(env)) {
+  env = coin_getenv("COIN_SOUND_ENABLE");
+  if (env) {
+    if (!initaudio && atoi(env) > 0) {
       SoDebugError::postInfo("SoDB::init", 
-        "Sound has been enabled because the environment variable "
-        "COIN_SOUND_ENABLE=1. Sound support on this platform is considered "
-        "experimental, and is therefore not enabled by default. "
-         SOUND_NOT_ENABLED_BY_DEFAULT_STRING );
+                             "Sound has been enabled because the environment variable "
+                             "COIN_SOUND_ENABLE=1. Sound support on this platform is considered "
+                             "experimental, and is therefore not enabled by default. "
+                             SOUND_NOT_ENABLED_BY_DEFAULT_STRING );
       initaudio = TRUE;
+    }
+    else if (initaudio && atoi(env) == 0) {
+      SoDebugError::postInfo("SoDB::init", 
+                             "Sound has been disabled because the environment variable "
+                             "COIN_SOUND_ENABLE=0.");
+      initaudio = FALSE;
     }
   }
 
