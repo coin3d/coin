@@ -162,7 +162,7 @@ zlibglue_init(void)
          Autoconf check? 20000930 mortene. */
       const char * possiblelibnames[] = {
         NULL, /* is set below */
-        "zlib", "libz", "libz.so",
+        "zlib1", "zlib", "libz", "libz.so",
         "libz.dylib", 
         NULL
       };
