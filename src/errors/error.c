@@ -29,7 +29,10 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
+#ifdef HAVE_THREADS
 #include <Inventor/C/threads/mutex.h>
+#include <Inventor/C/threads/mutexp.h>
+#endif /* HAVE_THREADS */
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h> /* STDERR_FILENO */
@@ -107,7 +110,14 @@ cc_error_handle(cc_error * me)
   assert(function != NULL);
 
 #ifdef HAVE_THREADS
-  if (!cc_error_mutex) { cc_error_mutex = cc_mutex_construct(); }
+  if (!cc_error_mutex) { 
+    /* extra locking to avoid that two threads create the mutex */
+    cc_mutex_global_lock();
+    if (cc_error_mutex == NULL) {
+      cc_error_mutex = cc_mutex_construct(); 
+    }
+    cc_mutex_global_unlock();
+  }
   cc_mutex_lock(cc_error_mutex);
 #endif /* HAVE_THREADS */
 
