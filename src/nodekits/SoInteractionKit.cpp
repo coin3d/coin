@@ -384,80 +384,72 @@ SoInteractionKit::readInstance(SoInput * in, unsigned short flags)
   This method is called from dragger constructors to set up a
   dragger's nodekit catalog of interaction and feedback geometry.
 
-  \a fileName is the user-changeable resource file (most often an
-  ascii iv file), while \a defaultBuffer and \a defBufSize can point
-  to the statically compiled default parts.
+  \a fileName is the user-changeable resource file in the Inventor
+  file format, while \a defaultBuffer and \a defBufSize can point to
+  the statically compiled default parts.
+
+  The environment variable \c SO_DRAGGER_DIR must be set to a valid
+  directory prefix for \a fileName, or no resource file will be loaded
+  (and \a defaultBuffer will be used instead).
 
   If both a \a fileName and a \a defaultBuffer is provided, the file
   will be attempted found and loaded first, if that fails, the
-  geometry will attempted read from the buffer.
-
-  If the environment variable SO_DRAGGER_DIR has been set up, it's
-  value will be used as the path prefix for the \a fileName.
+  geometry will be attempted read from the buffer.
 */
 void
 SoInteractionKit::readDefaultParts(const char * fileName,
                                    const char defaultBuffer[],
                                    int defBufSize)
 {
-  SbBool foundsrc = FALSE;
+  // FIXME: it'd be great if this code could be changed so that the
+  // dragger parts file (if any) would just replace the parts from the
+  // default buffer. Then it would be possible to let the diskfile
+  // contain a subset of the full set of geometries for the dragger. I
+  // seem to remember that SGI Inventor works this way. 20020322 mortene.
+
   SoInput input;
+  SoNode * root = NULL;
 
   const char * draggerdir = coin_getenv("SO_DRAGGER_DIR");
 
-  if (fileName) {
-    if (draggerdir) {
-      SbString fullname = draggerdir;
-      // FIXME: use configure to check this. 20000129 mortene.
-      // FIXME, update: this seems plain wrong, as paths under Win32
-      // can have separator going either way. 20010816 mortene.
-#ifdef _WIN32
-      char dirsep = '\\';
-#else // ! WIN32
-      char dirsep = '/';
-#endif // !WIN32
+  if (fileName && draggerdir) {
+    SbString fullname = draggerdir;
+    const char dirsep = '/';
 
-      if (fullname.getLength() && fullname[fullname.getLength()-1] != dirsep)
-        fullname += dirsep;
-
-      fullname += fileName;
-      if (input.openFile(fullname.getString(), TRUE)) foundsrc = TRUE;
+    if (fullname.getLength() && fullname[fullname.getLength()-1] != dirsep) {
+      fullname += dirsep;
     }
-    else if (input.openFile(fileName, TRUE)) foundsrc = TRUE;
-  }
-
-  if (!foundsrc && defaultBuffer) {
-    input.setBuffer((void *)defaultBuffer, defBufSize);
-    foundsrc = TRUE;
-  }
-
-  if (!foundsrc) {
-    if (COIN_DEBUG) {
+    fullname += fileName;
+    if (input.openFile(fullname.getString(), TRUE)) {
+      root = (SoNode *)SoDB::readAll(&input);
+    }
+    else if (COIN_DEBUG) {
       SoDebugError::post("SoInteractionKit::readDefaultParts",
-                         "Could not find %s for the dragger "
-                         "default parts.%s",
-                         fileName,
-                         draggerdir ? "" :
-                         " (SO_DRAGGER_DIR environment variable is not set.)");
-      // FIXME: don't just exit! We should be robust on this and fall
-      // back on the default geometry. 20011023 mortene.
-      exit(1);
+                         "Could not find file '%s' for the dragger "
+                         "default parts.",
+                         fullname);
     }
-    return;
   }
 
-  SoNode * node = (SoNode *)SoDB::readAll(&input);
-  if (node == NULL) {
-    if (COIN_DEBUG) {
-      SoReadError::post(&input, "error reading dragger defaults");
-      // FIXME: don't just exit! We should be robust on this and fall
-      // back on the default geometry. 20011023 mortene.
-      exit(1);
-    }
+  if (!root && defaultBuffer) {
+    input.setBuffer((void *)defaultBuffer, defBufSize);
+    root = (SoNode *)SoDB::readAll(&input);
+  }
+
+  if (root) {
+    root->ref(); // this node is unref'ed at exit
+
+    // FIXME: the nodes are later picked up by SoNode::getByName(),
+    // which means this is a rather lousy and error-prone technique
+    // with the potential for namespace clashes. Should *at* *least*
+    // append a prefix "coininternal_draggerdefaultpart_" or something
+    // to all nodes. See also the related FIXME in
+    // setAnyPartAsDefault(SbName,SbName). 20020322 mortene.
+    defaultdraggerparts->append(root);
   }
   else {
-    node->ref(); // this node is unref'ed at exit
-    defaultdraggerparts->append(node);
+    SoDebugError::post("SoInteractionKit::readDefaultParts",
+                       "Dragger default parts not available.");
   }
 }
 
@@ -497,6 +489,8 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
                            "part %s not found", partname.getString());
   }
 
+  // FIXME: this method is _always_ returning FALSE, which seems
+  // completely bogus. 20020322 mortene.
   return FALSE;
 }
 
@@ -512,8 +506,14 @@ SoInteractionKit::setAnyPartAsDefault(const SbName & partname,
                                       SbBool anypart,
                                       SbBool onlyifdefault)
 {
+  // FIXME: this is lame and error-prone -- default dragger-parts are
+  // actually just stored outside any scenegraph, and then picked up
+  // like this. We should at least prefix the node names with an
+  // internal namespace prefix. See also the related FIXME in
+  // readDefaultParts(). 20020322 mortene.
   SoNode * node = (SoNode *)
     SoBase::getNamedBase(nodename, SoNode::getClassTypeId());
+
   if (node) {
     return this->setAnyPartAsDefault(partname, node, anypart, onlyifdefault);
   }
