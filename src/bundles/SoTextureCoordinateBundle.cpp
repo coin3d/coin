@@ -120,6 +120,7 @@ SoTextureCoordinateBundle(SoAction * const action,
   this->glElt = NULL;
   if (forRendering) {
     this->glElt = (SoGLTextureCoordinateElement*) this->coordElt;
+    this->glElt->initMulti(action->getState());
   }
   if ((this->flags & FLAG_DEFAULT) && !setUpDefault) {
     // FIXME: I couldn't be bothered to support this yet. It is for picking
