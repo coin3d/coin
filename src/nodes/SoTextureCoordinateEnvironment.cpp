@@ -29,6 +29,8 @@
   FIXME: write class doc
 */
 
+// FIXME: Can this somehow relate to 3D textures? (kintel 20020203)
+
 #include <Inventor/nodes/SoTextureCoordinateEnvironment.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SbVec3f.h>
