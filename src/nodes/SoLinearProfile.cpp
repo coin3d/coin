@@ -29,8 +29,16 @@
 #include <Inventor/nodes/SoLinearProfile.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
+#include <Inventor/lists/SbList.h>
+#include <stdlib.h>
 #include <coindefs.h> // COIN_STUB()
 
+static SbList <float> * coordList = NULL;
+
+static void cleanup(void)
+{
+  delete coordList;
+}
 
 // *************************************************************************
 
@@ -64,18 +72,33 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
                               float *& points, int & floatspervec,
                               int32_t & numknots, float *& knotvector)
 {
+  if (coordList == NULL) {
+    coordList = new SbList <float>;
+    atexit(cleanup);
+  }
   numknots = 0;
-  const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*) 
-    SoProfileCoordinateElement::getInstance(state);  
+  const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
+    SoProfileCoordinateElement::getInstance(state);
   numpoints = elem->getNum();
   if (numpoints) {
     if (elem->is2D()) {
       points = (float*) elem->getArrayPtr2();
+      floatspervec = 2;
     }
     else {
       points = (float*) elem->getArrayPtr3();
+      floatspervec = 3;
     }
   }
+  coordList->truncate(0);
+  int n = this->index.getNum();
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < floatspervec; j++) {
+      coordList->append(points[this->index[i]*floatspervec+j]);
+    }    
+  }
+  points = (float*) coordList->getArrayPtr();
+  numpoints = n;
 }
 
 // Doc from superclass.
