@@ -356,7 +356,7 @@ fi
 # *******************************************************************
 # Headers we might want to use
 
-AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h io.h windows.h winsock2.h])
+AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h io.h windows.h winsock2.h tlhelp32.h])
 
 AC_CHECK_HEADERS(
   [sys/unistd.h],
