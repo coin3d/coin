@@ -27,7 +27,7 @@ endif
 
 if BUILD_WITH_THREADS
 THREADSDIR = threads
-THREADSLIBADD = threads/libthreads.lib
+THREADSLIBADD = threads/libthreads.la
 THREADSLSTADD = threads/threads.lst
 else
 THREADSDIR =
