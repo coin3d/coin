@@ -88,7 +88,6 @@ private:
 
   int16_t index;
 
-  static SoTypeList * typelist;
   static SbList<SoTypeData *> * typedatalist;
   static SbDict * typedict;
   static SbDict * moduledict;

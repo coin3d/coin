@@ -70,6 +70,7 @@
 // MSVC++ needs 'SbName.h' and 'SbString.h' to compile
 #include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
+#include <Inventor/lists/SbList.h>
 
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/glue/dl.h>
@@ -81,14 +82,16 @@
 
 struct SoTypeData {
   SoTypeData(const SbName theName,
+             const SoType type = SoType::badType(),
              const SbBool ispublic = FALSE,
              const uint16_t theData = 0,
              const SoType theParent = SoType::badType(),
              const SoType::instantiationMethod createMethod = NULL)
-    : name(theName), isPublic(ispublic), data(theData),
+    : name(theName), type(type), isPublic(ispublic), data(theData),
       parent(theParent), method(createMethod), fielddata(NULL) { };
 
   SbName name;
+  SoType type;
   SbBool isPublic;
   uint16_t data;
   SoType parent;
@@ -107,7 +110,6 @@ template class SbList<SoTypeData *>;
 #endif // obsoleted
 
 
-SoTypeList * SoType::typelist = NULL;
 SbList<SoTypeData *> * SoType::typedatalist = NULL;
 SbDict * SoType::typedict = NULL;
 SbDict * SoType::moduledict = NULL;
@@ -140,14 +142,11 @@ SoType::init(void)
 
   // If any of these assert fails, it is probably because
   // SoType::init() has been called for a second time. --mortene
-  assert(SoType::typelist == NULL);
   assert(SoType::typedatalist == NULL);
 
-  SoType::typelist = new SoTypeList;
   SoType::typedatalist = new SbList<SoTypeData *>;
   SoType::typedict = new SbDict;
 
-  SoType::typelist->append(SoType::badType()); // bad type at index 0
   SoType::typedatalist->append(new SoTypeData(SbName("BadType")));
   SoType::typedict->enter((unsigned long)SbName("BadType").getString(), 0);
 }
@@ -157,8 +156,6 @@ void
 SoType::clean(void)
 {
 #if COIN_DEBUG
-  delete SoType::typelist;
-
   // clean SoType::typedatalist (first delete structures)
   const int num = SoType::typedatalist->getLength();
   for (int i = 0; i < num; i++) delete (*SoType::typedatalist)[i];
@@ -197,10 +194,9 @@ SoType::createType(const SoType parent, const SbName name,
   SoDebugError::postInfo("SoType::createType", "%s", name.getString());
 #endif // debug
 
-  SoTypeData * typeData = new SoTypeData(name, TRUE, data, parent, method);
   SoType newType;
-  newType.index = SoType::typelist->getLength();
-  SoType::typelist->append(newType);
+  newType.index = SoType::typedatalist->getLength();
+  SoTypeData * typeData = new SoTypeData(name, newType, TRUE, data, parent, method);
   SoType::typedatalist->append(typeData);
 
   // add to dictionary for fast lookup
@@ -452,10 +448,10 @@ SoType::fromName(const SbName name)
     }
   }
   const int index = (int) temp;
-  assert(index >= 0 && index < SoType::typelist->getLength());
+  assert(index >= 0 && index < SoType::typedatalist->getLength());
   assert(((*SoType::typedatalist)[index]->name == name) ||
          ((*SoType::typedatalist)[index]->name == noprefixname));
-  return (*SoType::typelist)[index];
+  return (*SoType::typedatalist)[index]->type;
 }
 
 /*!
@@ -465,8 +461,10 @@ SoType::fromName(const SbName name)
 SoType
 SoType::fromKey(uint16_t key)
 {
-  assert(key < SoType::typelist->getLength());
-  return (*SoType::typelist)[(int)key];
+  assert(SoType::typedatalist);
+  assert(key < SoType::typedatalist->getLength());
+
+  return (*SoType::typedatalist)[(int)key]->type;
 }
 
 /*!
@@ -579,9 +577,9 @@ SoType::getAllDerivedFrom(const SoType type, SoTypeList & list)
   assert(type != SoType::badType() && "argument is badType()");
 
   int counter = 0;
-  int n = SoType::typelist->getLength();
+  int n = SoType::typedatalist->getLength();
   for (int i = 0; i < n; i++) {
-    SoType chktype = (*SoType::typelist)[i];
+    SoType chktype = (*SoType::typedatalist)[i]->type;
     if (!chktype.isInternal() && chktype.isDerivedFrom(type)) {
       list.append(chktype);
       counter++;
@@ -637,7 +635,7 @@ SoType::createInstance(void) const
 int
 SoType::getNumTypes(void)
 {
-  return SoType::typelist->getLength();
+  return SoType::typedatalist->getLength();
 }
 
 /*!
