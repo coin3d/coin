@@ -137,16 +137,21 @@ Section 1. Extensions and Ports
 
 Q1.1:   Are there plans for making Coin multi-thread safe?
 
-A:      Yes.  The wheels are in motion on this one.  It is not happening
-        for the Coin 1.* branch though.
-
-
+A:      Coin will probably never be 100% thread safe, but in Coin-2 we've 
+        added support for thread safe rendering. This means that you can 
+        render a scene graph using many threads, at the same time. The 
+        application programmer is responsible for all thread synchronization
+        though, but we've added many thread classes to make this easier
+        for you (SbMutex, SbRWMutex, SbStorage, SbBarrier, ...).
+       
 Q1.2:   Can Coin do multi-pipe rendering?
 
-A:      Not yet.  We certainly want to support this.  Note that this
-        feature depends on having achieved multi-thread safety for
-        Coin first.
-
+A:      Yes, but you have to do most of the work. Coin can do thread-safe
+        rendering traversals, but we haven't implemented a simple viewer that
+        will set up the OpenGL contexts and handle the rendering for each
+        context yet. We've done some internal testing with SGI's OpenGL
+        Multipipe SDK, and we might release a viewer using that SDK.
+        Please contact us if you're interested in multi-pipe rendering.
 
 Q1.3:   Can I do volume rendering with Coin?
 
@@ -164,9 +169,12 @@ A:      There are no volume rendering extensions for Coin yet.  Support for
 Q1.4:   Does Coin support VRML97?
 
 A:      Coin 1.* does not support VRML97.  Coin 2.0 and upwards supports it.
-        The development repository for Coin already contains code for a
-        great deal of the VRML97 standard.  We are not supporting 100% of
-        the VRML97 standard, but we are pretty close.
+        We are not supporting 100% of the VRML97 standard yet, but most
+        models will load and display correctly. The main missing features
+        are URL loading (there are callbacks that makes it possible for the
+        application programmer to fix this though), proper support for
+        bindable nodes, and scripting (can also be supported through
+        callbacks).
 
 
 Q1.5:   Is there an MS Visual C++ project I can use to build Coin?
