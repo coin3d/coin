@@ -1537,6 +1537,43 @@ cc_glglue_instance(int contextid)
     glGetIntegerv(GL_MAX_LIGHTS, &gltmp);
     gi->max_lights = (int) gltmp;
 
+    {
+      GLfloat vals[2];
+      glGetFloatv(GL_POINT_SIZE_RANGE, vals);
+
+      // Matthias Koenig reported on coin-discuss that the OpenGL
+      // implementation on SGI Onyx 2 InfiniteReality returns 0 for the
+      // lowest pointsize, but it will still set the return value of
+      // glGetError() to GL_INVALID_VALUE if this size is attempted
+      // used. So the boundary range fix in the next line of code is a
+      // workaround for that OpenGL implementation bug.
+      //
+      // 0.0f and lower values are explicitly disallowed, according to
+      // the OpenGL 1.3 specification, Chapter 3.3.
+
+      if (vals[0] <= 0.0f) { 
+        vals[0] = vals[1] < 1.0f ? vals[1] : 1.0f;
+      }
+      gi->point_size_range[0] = vals[0];
+      gi->point_size_range[1] = vals[1]; 
+    }
+    {
+      GLfloat vals[2];
+      glGetFloatv(GL_LINE_WIDTH_RANGE, vals);
+
+      // Matthias Koenig reported on coin-discuss that the OpenGL
+      // implementation on SGI Onyx 2 InfiniteReality returns 0 for the
+      // lowest linewidth, but it will still set the return value of
+      // glGetError() to GL_INVALID_VALUE if this size is attempted
+      // used. This is a workaround for what looks like an OpenGL bug.
+      
+      if (vals[0] <= 0.0f) { 
+        vals[0] = vals[1] < 1.0f ? vals[1] : 1.0f;
+      }
+      gi->line_width_range[0] = vals[0];
+      gi->line_width_range[1] = vals[1];
+    }
+
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("cc_glglue_instance",
                              "glGetString(GL_VENDOR)=='%s' (=> vendor_is_SGI==%s)",
@@ -2594,6 +2631,18 @@ int
 cc_glglue_get_max_lights(const cc_glglue * glue)
 {
   return glue->max_lights;
+}
+
+const float * 
+cc_glglue_get_line_width_range(const cc_glglue * glue)
+{
+  return glue->line_width_range;
+}
+
+const float * 
+cc_glglue_get_point_size_range(const cc_glglue * glue)
+{
+  return glue->point_size_range;
 }
 
 /* GL_NV_register_combiners functions */
