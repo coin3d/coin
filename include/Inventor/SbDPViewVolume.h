@@ -100,12 +100,6 @@ private:
   SbVec3d lrf;
   SbVec3d ulf;
 
-  static SbDPMatrix getOrthoProjection(const double left, const double right,
-                                       const double bottom, const double top,
-                                       const double nearval, const double farval);
-  static SbDPMatrix getPerspectiveProjection(const double left, const double right,
-                                             const double bottom, const double top,
-                                             const double nearval, const double farval);
   void getPlaneRectangle(const double depth, SbVec3d & lowerleft,
                          SbVec3d & lowerright, SbVec3d & upperleft,
                          SbVec3d & upperright) const;
