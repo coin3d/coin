@@ -92,6 +92,37 @@ A:      Yes. You can continue development using the last version of
         more developer support.
 
 
+Q 0.4:  Can't I just use the Coin Free Edition to develop my software
+        in-house, and then get a PEL and switch to a non-Free license
+        just before I release it?
+
+A:      From a strictly legal point of view, this is possible. As 
+        long as you do not release binaries, you do not need to
+        release the source code either, so you can work on a piece of
+        software under the terms of the GPL, and then re-license it
+        before releasing it.
+
+        We strongly discourage this approach, though, for several
+        reasons. First, the Free Edition of Coin is intended for Free
+        Software developers, and using it for proprietary development
+        obviously is against this intention.
+
+        Second, the PEL is meant to be a per-developer license, taking
+        into account that you are likely to need professional support
+        when doing your development. By getting a PEL when you start
+        developing your software, you can benefit from our priority
+        support when you actually need it - during development.
+
+        Third, note that even if you never release the in-house GPL
+        version to the public, the terms of the GPL are valid for all
+        the people involved in the project. That means that everybody
+        with access to the software has the irrevokable right to get
+        the source code and distribute it to whomever they want,
+        including posting it on public websites etc. - and this would
+        be perfectly legal. This is the freedom granted by the GPL,
+        and it intentionally clashes with proprietary development.
+
+
         I .  C o n c e r n i n g   t h e   n e w   P E L  ( v 2 )
 
 
