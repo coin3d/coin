@@ -341,9 +341,10 @@ SoInteractionKit::readDefaultParts(const char *fileName,
   if (!foundsrc) {
 #if COIN_DEBUG
     SoDebugError::post("SoInteractionKit::readDefaultParts",
-                       "Could not find any source for the dragger "
+                       "Could not find %s for the dragger "
                        "default parts. Have you forgotten to set the "
-                       "SO_DRAGGER_DIR environment variable?");
+                       "SO_DRAGGER_DIR environment variable?", fileName);
+    exit(1);
 #endif // COIN_DEBUG
     return;
   }
@@ -352,6 +353,7 @@ SoInteractionKit::readDefaultParts(const char *fileName,
   if (node == NULL) {
 #if COIN_DEBUG
     SoReadError::post(&input, "error reading dragger defaults");
+    exit(1);
 #endif // COIN_DEBUG
   }
   else {
@@ -660,16 +662,14 @@ SoInteractionKit::connectSeparator(SoSeparator *sep, const SbBool onOff)
   }
 }
 
-/*!  
+/*!
   Overloaded only to fool the incredible stupid gcc 2.95.2
   compiler, who couldn't figure out I wanted to call this function in
   SoBaseKit, but instead insisted that I tried to call
   SoInteractionKit::setPart(int, SoNode*). Cheeessss.
 */
-SbBool 
+SbBool
 SoInteractionKit::setPart(const SbName & partname, SoNode * from)
 {
   return inherited::setPart(partname, from);
 }
-
-
