@@ -230,7 +230,12 @@ glxglue_init(cc_glglue * w)
 
 /*** GLX offscreen contexts **************************************************/
 
-#ifdef HAVE_GLX
+#ifndef HAVE_GLX
+void * glxglue_context_create_offscreen(unsigned int width, unsigned int height) { assert(FALSE); }
+SbBool glxglue_context_make_current(const cc_glglue * glw, void * ctx) { assert(FALSE); return FALSE; }
+void glxglue_context_reinstate_previous(void * ctx) { assert(FALSE); }
+void glxglue_context_destruct(void * ctx) { assert(FALSE); }
+#else /* HAVE_GLX */
 
 struct glxglue_contextdata {
   XVisualInfo * visinfo;
@@ -479,4 +484,4 @@ glxglue_context_destruct(void * ctx)
   glxglue_contextdata_cleanup(context);
   free(context);
 }
-#endif // HAVE_GLX
+#endif /* HAVE_GLX */
