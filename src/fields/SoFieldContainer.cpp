@@ -418,19 +418,13 @@ SoFieldContainer::set(const char * fielddata, SoInput * in)
     return TRUE;
   }
 
-  SoInput * readbuf;
-  if (in) {
-    SoInput inbuf(in);
-    readbuf = &inbuf;
-  }
-  else {
-    SoInput inbuf;
-    readbuf = &inbuf;
-  }
-
+  SoInput * readbuf = in ? new SoInput(in) : new SoInput;
   readbuf->setBuffer((void *)fielddata, strlen(fielddata));
+
   SbBool dummy;
-  return fields->read(readbuf, this, FALSE, dummy);
+  SbBool ok = fields->read(readbuf, this, FALSE, dummy);
+  delete readbuf;
+  return ok;
 }
 
 // Used from get()'s SoOutput if the initial buffer is too small.
