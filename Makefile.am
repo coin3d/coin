@@ -1,4 +1,4 @@
-############################################################################
+###########################################################################
 ##
 
 if BUILD_LIBRARY
@@ -84,6 +84,26 @@ EXTRA_DIST = \
 	packaging/debian/libcoin40-doc.README.Debian.in \
 	packaging/debian/libcoin40-runtime.files.in \
 	packaging/debian/libcoin40-runtime.README.Debian.in \
+	packaging/macosx/coin.info.template.in \
+	packaging/macosx/checklist.txt \
+	packaging/macosx/Coin_Description.plist.in \
+	packaging/macosx/Coin_Info.plist.in \
+	packaging/macosx/Coin_Welcome.rtfd/TXT.rtf \
+	packaging/macosx/CoinTools_Description.plist.in \
+	packaging/macosx/CoinTools_Info.plist.in \
+	packaging/macosx/CoinTools_Welcome.rtfd/TXT.rtf \
+	packaging/macosx/inst-dmg-files/.DS_Store \
+	packaging/macosx/inst-dmg-files/background.png \
+	packaging/macosx/License.rtfd/TXT.rtf \
+	packaging/macosx/makecoinpkg.sh.in \
+	packaging/macosx/makecointoolspkg.sh.in \
+	packaging/macosx/makedmg.sh.in \
+	packaging/macosx/Makefile.in \
+	packaging/macosx/makeinstdmg.sh.in \
+	packaging/macosx/makenoinstdmg.sh.in \
+	packaging/macosx/noinst-dmg-files/.DS_Store \
+	packaging/macosx/noinst-dmg-files/background.png \
+	packaging/macosx/README.txt.in \
 	packaging/macosx/uninstall-coin.pl \
 	packaging/redhat/coin.spec.in \
 	packaging/windows/Makefile.in \
@@ -94,6 +114,14 @@ EXTRA_DIST = \
 	packaging/windows/middle.nsi.in \
 	packaging/windows/post.nsi.in \
 	examples/bindings/glutiv.cpp
+
+
+#	packaging/macosx/inst-dmg-files/Desktop DB \
+#	packaging/macosx/inst-dmg-files/Desktop DF \
+#	packaging/macosx/noinst-dmg-files/Desktop DB \
+#	packaging/macosx/noinst-dmg-files/Desktop DF \
+
+
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
@@ -240,6 +268,27 @@ windows-files:
 
 windows-packages: windows-files
 	@( cd windows; $(MAKE) VERSION=$(VERSION) )
+
+endif
+
+# **************************************************************************
+# misc rules for automatic Mac OS X packaging.
+# main: `macosx-packages'
+
+if MACOSX_PACKAGEABLE
+
+macosx-files:
+	@if test -d macosx; then :; else mkdir macosx; fi
+	@for file in $(top_srcdir)/packaging/macosx/*.in; do \
+	  basename=`basename $$file .in`; \
+          if ! test -f macosx/$$basename; then \
+	    ./config.status --file=macosx/$$basename:$$file; \
+          fi \
+	done
+
+macosx-packages: macosx-files
+macosx-packages:
+	@( cd macosx; $(MAKE) VERSION=$(VERSION) )
 
 endif
 
