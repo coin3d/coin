@@ -206,6 +206,8 @@ THE WISH LIST
   textures.
 
 * Add SoMFMatrix input fields in SoCalculator
+  2001-03-29  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
 
   It could be useful to do matrix operations in the calculator, and
   by adding some SoMFMatrix input fields we could do just that.
