@@ -1,0 +1,347 @@
+Index: include/Inventor/SbString.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/SbString.h,v
+retrieving revision 1.19
+diff -u -r1.19 SbString.h
+--- include/Inventor/SbString.h	23 Nov 2001 14:25:46 -0000	1.19
++++ include/Inventor/SbString.h	16 Jan 2002 12:11:55 -0000
+@@ -25,65 +25,104 @@
+ \**************************************************************************/
+ 
+ #include <Inventor/system/inttypes.h>
+-#include <Inventor/SbBasic.h>
++#include <Inventor/C/base/string.h>
+ 
+-#include <stdio.h>
+ #include <stdarg.h>
+-
+-#define SB_STRING_STATIC_STORAGE_SIZE 128
+-
++#include <stdlib.h>
+ 
+ class COIN_DLL_API SbString {
+ public:
+-  SbString(void);
+-  SbString(const char * str);
+-  SbString(const char * str, int start, int end);
+-  SbString(const SbString & str);
+-  SbString(const int digits);
+-  ~SbString();
+-
+-  uint32_t hash(void);
+-  int getLength(void) const;
+-  void makeEmpty(SbBool freeold = TRUE);
+-  const char * getString(void) const;
+-  SbString getSubString(int startidx, int endidx = -1) const;
+-  void deleteSubString(int startidx, int endidx = -1);
+-
+-  void addIntString(const int value);
+-
+-  char operator [](int index) const;
+-  SbString & operator = (const char * str);
+-  SbString & operator = (const SbString & str);
+-  SbString & operator += (const char * str);
+-  SbString & operator += (const SbString & str);
+-  int operator ! (void) const;
+-  friend COIN_DLL_API int operator == (const SbString & str, const char * s);
+-  friend COIN_DLL_API int operator == (const char * s, const SbString & str);
+-  friend COIN_DLL_API int operator == (const SbString & str1, const SbString & str2);
+-  friend COIN_DLL_API int operator != (const SbString & str, const char * s);
+-  friend COIN_DLL_API int operator != (const char * s, const SbString & str);
+-  friend COIN_DLL_API int operator != (const SbString & str1, const SbString & str2);
+-  static uint32_t hash(const char * s);
+-
+-  SbString & operator += (const char c);
+-  SbString & sprintf(const char * formatstr, ...);
+-  SbString & vsprintf(const char * formatstr, va_list args);
+-
+-  void print(FILE * file = stdout) const;
++  SbString(void) { cc_string_struct_init(&this->string); }
++  SbString(const char * str)
++    { cc_string_struct_init(&this->string);
++      cc_string_set_text(&this->string, str); }
++  SbString(const char * str, int start, int end)
++    { cc_string_struct_init(&this->string);
++      cc_string_set_subtext(&this->string, str, start, end); }
++  SbString(const SbString & str)
++    { cc_string_struct_init(&this->string);
++      cc_string_set_string(&this->string, &str.string); }
++  SbString(const int digits)
++    { cc_string_struct_init(&this->string);
++      cc_string_set_integer(&this->string, digits); }
++  ~SbString(void) { cc_string_struct_clean(&this->string); }
++
++  uint32_t hash(void) { return cc_string_hash(&this->string); }
++  static uint32_t hash(const char * s) { return cc_string_hash_text(s); }
++
++  int getLength(void) const
++    { return cc_string_length(&this->string); }
++
++  void makeEmpty(SbBool freeold = TRUE)
++    { if ( freeold ) cc_string_clear(&this->string);
++      else cc_string_clear_no_free(&this->string); }
++
++  const char * getString(void) const
++    { return cc_string_get_text(&this->string); }
++
++  SbString getSubString(int startidx, int endidx = -1) const
++    { return SbString(cc_string_construct_subtext(this->string.pointer, startidx, endidx)); }
++  void deleteSubString(int startidx, int endidx = -1)
++    { cc_string_remove_substring(&this->string, startidx, endidx); }
++
++  void addIntString(const int value)
++    { cc_string_append_integer(&this->string, value); }
++
++  char operator [] (int index) const { return this->string.pointer[index]; }
++
++  SbString & operator = (const char * str)
++    { cc_string_set_text(&this->string, str); return *this; }
++  SbString & operator = (const SbString & str)
++    { cc_string_set_text(&this->string, str.string.pointer); return *this; }
++
++  SbString & operator += (const char * str)
++    { cc_string_append_text(&this->string, str); return *this; }
++  SbString & operator += (const SbString & str)
++    { cc_string_append_string(&this->string, &str.string); return *this; }
++  SbString & operator += (const char c)
++    { cc_string_append_char(&this->string, c); return *this; }
++
++  int operator ! (void) const { return ! cc_string_is(&this->string); }
++
++  SbString & sprintf(const char * formatstr, ...)
++    { va_list args; va_start(args, formatstr);
++      cc_string_vsprintf(&this->string, formatstr, args);
++      va_end(args); return *this; }
++  SbString & vsprintf(const char * formatstr, va_list args)
++    { cc_string_vsprintf(&this->string, formatstr, args); return *this; }
++
++  friend int operator == (const SbString & str, const char * s);
++  friend int operator == (const char * s, const SbString & str);
++  friend int operator == (const SbString & str1, const SbString & str2);
++  friend int operator != (const SbString & str, const char * s);
++  friend int operator != (const char * s, const SbString & str);
++  friend int operator != (const SbString & str1, const SbString & str2);
++
++protected:
++  SbString(cc_string * internal_string)
++    { (void) memcpy(&this->string, internal_string, sizeof(cc_string));
++      if ( internal_string->pointer == internal_string->buffer )
++        this->string.pointer = this->string.buffer;
++      cc_string_struct_free(internal_string); }
+ 
+ private:
+-  char * sstring;
+-  int storagesize;
+-  char staticstorage[SB_STRING_STATIC_STORAGE_SIZE];
+-  void expand(int additional);
++  struct cc_string string;
++
+ };
+ 
+-COIN_DLL_API int operator == (const SbString & str, const char * s);
+-COIN_DLL_API int operator == (const char * s, const SbString & str);
+-COIN_DLL_API int operator == (const SbString & str1, const SbString & str2);
+-COIN_DLL_API int operator != (const SbString & str, const char * s);
+-COIN_DLL_API int operator != (const char * s, const SbString & str);
+-COIN_DLL_API int operator != (const SbString & str1, const SbString & str2);
++inline int operator == (const SbString & str, const char * s)
++  { return ! cc_string_compare_text(str.string.pointer, s); }
++inline int operator == (const char * s, const SbString & str)
++  { return ! cc_string_compare_text(s, str.string.pointer); }
++inline int operator == (const SbString & str1, const SbString & str2)
++  { return ! cc_string_compare_text(str1.string.pointer, str2.string.pointer); }
++
++inline int operator != (const SbString & str, const char * s)
++  { return cc_string_compare_text(str.string.pointer, s); }
++inline int operator != (const char * s, const SbString & str)
++  { return cc_string_compare_text(s, str.string.pointer); }
++inline int operator != (const SbString & str1, const SbString & str2)
++  { return cc_string_compare_text(str1.string.pointer, str2.string.pointer); }
+ 
+ #ifndef COIN_INTERNAL
+ // For Open Inventor compatibility.
+Index: include/Inventor/C/base/Makefile.am
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/C/base/Makefile.am,v
+retrieving revision 1.2
+diff -u -r1.2 Makefile.am
+--- include/Inventor/C/base/Makefile.am	20 Nov 2001 12:49:06 -0000	1.2
++++ include/Inventor/C/base/Makefile.am	16 Jan 2002 12:11:55 -0000
+@@ -1,13 +1,13 @@
+ 
+ baseincdir = $(includedir)/Inventor/C/base
+ baseinc_HEADERS = \
+-	dict.h \
+ 	debug.h \
+-	time.h
++	dict.h \
++	time.h \
++	string.h
+ 
+ EXTRA_DIST = \
+ 	basep.h \
+ 	list.h \
+-	name.h \
+-	string.h
++	name.h
+ 
+Index: src/base/Makefile.am
+===================================================================
+RCS file: /export/cvsroot/Coin/src/base/Makefile.am,v
+retrieving revision 1.32
+diff -u -r1.32 Makefile.am
+--- src/base/Makefile.am	29 Nov 2001 12:49:27 -0000	1.32
++++ src/base/Makefile.am	16 Jan 2002 12:11:55 -0000
+@@ -5,7 +5,8 @@
+ ThreadsDependentSources = \
+ 	base.c \
+ 	debug.c \
+-	time.c
++	time.c \
++	string.c
+ else
+ ThreadsDependentSources =
+ endif
+@@ -29,7 +30,6 @@
+ 	SbPlane.cpp \
+ 	SbRotation.cpp \
+ 	SbSphere.cpp \
+-	SbString.cpp \
+ 	SbTesselator.cpp \
+ 	SbTime.cpp \
+ 	SbVec2f.cpp \
+Index: src/base/all.cpp
+===================================================================
+RCS file: /export/cvsroot/Coin/src/base/all.cpp,v
+retrieving revision 1.11
+diff -u -r1.11 all.cpp
+--- src/base/all.cpp	20 Nov 2001 12:52:48 -0000	1.11
++++ src/base/all.cpp	16 Jan 2002 12:11:55 -0000
+@@ -25,6 +25,14 @@
+ #include <config.h>
+ #endif /* HAVE_CONFIG_H */
+ 
++// C Types
++#include "base.c"
++#include "debug.c"
++#include "time.c"
++#include "string.c"
++#include "name.c"
++
++// C++ Types
+ #include "SbBSPTree.cpp"
+ #include "SbBox2f.cpp"
+ #include "SbBox2s.cpp"
+@@ -54,10 +62,3 @@
+ #include "SbViewVolume.cpp"
+ #include "SbViewportRegion.cpp"
+ #include "SbXfBox3f.cpp"
+-
+-#ifdef HAVE_THREADS
+-#include "base.c"
+-#include "debug.c"
+-#include "time.c"
+-#endif
+-
+Index: src/base/string.c
+===================================================================
+RCS file: /export/cvsroot/Coin/src/base/string.c,v
+retrieving revision 1.5
+diff -u -r1.5 string.c
+--- src/base/string.c	30 Nov 2001 13:38:13 -0000	1.5
++++ src/base/string.c	16 Jan 2002 12:11:55 -0000
+@@ -111,8 +111,7 @@
+ cc_string_construct(const char * text)
+ {
+   cc_string * me;
+-  me = (cc_string *) malloc(sizeof(cc_string));
+-  assert(me != NULL);
++  me = cc_string_struct_malloc();
+   cc_string_struct_init(me);
+   cc_string_set_text(me, text);
+   return me;
+@@ -122,8 +121,7 @@
+ cc_string_construct_new(void)
+ {
+   cc_string * me;
+-  me = (cc_string *) malloc(sizeof(cc_string));
+-  assert(me != NULL);
++  me = cc_string_struct_malloc();
+   cc_string_struct_init(me);
+   return me;
+ } /* cc_string_construct_new() */
+@@ -132,8 +130,7 @@
+ cc_string_construct_subtext(const char * text, int start, int end)
+ {
+   cc_string * me;
+-  me = (cc_string *) malloc(sizeof(cc_string));
+-  assert(me != NULL);
++  me = cc_string_struct_malloc();
+   cc_string_struct_init(me);
+   cc_string_set_subtext(me, text, start, end);
+   return me;
+@@ -143,8 +140,7 @@
+ cc_string_clone(cc_string * string)
+ {
+   cc_string * me;
+-  me = (cc_string *) malloc(sizeof(cc_string));
+-  assert(me != NULL);
++  me = cc_string_struct_malloc();
+   cc_string_struct_init(me);
+   cc_string_set_text(me, string->pointer);
+   return me;
+@@ -154,7 +150,7 @@
+ cc_string_destruct(cc_string * me)
+ {
+   cc_string_struct_clean(me);
+-  free(me);
++  cc_string_struct_free(me);
+ } /* cc_string_destruct() */
+ 
+ /* ********************************************************************** */
+@@ -184,34 +180,40 @@
+   int len, size;
+   if ( text == NULL ) text = emptystring;
+   len = strlen(text);
++  if ( end == -1 ) end = len - 1;
+ 
+ #if COIN_DEBUG && 0 /* FIXME */
+   if (start<0) {
+-    SoDebugError::postWarning("SbString::SbString",
++    // SoDebugError::postWarning("SbString::SbString",
++    fprintf(stderr, 
+                               "start index (%d) should be >= 0. Clamped to 0.",
+                               start);
+     start=0;
+   }
+   else if (start>len) {
+-    SoDebugError::postWarning("SbString::SbString",
++    // SoDebugError::postWarning("SbString::SbString",
++    fprintf(stderr, 
+                               "start index (%d) is out of bounds [0, %d>. "
+                               "Clamped to %d.", start, len, len-1);
+     start=len;
+   }
+   if (end<0) {
+-    SoDebugError::postWarning("SbString::SbString",
++    // SoDebugError::postWarning("SbString::SbString",
++    fprintf(stderr, 
+                               "end index (%d) should be >= 0. Clamped to 0.",
+                               end);
+     end=0;
+   }
+   else if (end>len) {
+-    SoDebugError::postWarning("SbString::SbString",
++    // SoDebugError::postWarning("SbString::SbString",
++    fprintf(stderr, 
+                               "end index (%d) is out of bounds [0, %d>. "
+                               "Clamped to %d.", end, len, len-1);
+     end=len;
+   }
+   if (start>end+1) {
+-    SoDebugError::postWarning("SbString::SbString",
++    // SoDebugError::postWarning("SbString::SbString",
++    fprintf(stderr, 
+                               "start index (%d) is greater than end index "
+                               "(%d). Empty string created.", start, end);
+     start=0;
