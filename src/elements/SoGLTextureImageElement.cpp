@@ -127,15 +127,19 @@ translateWrap(const SoGLImage::Wrap wrap)
 }
 
 /*!
-  Sets the current texture.
+  Sets the current texture. Id \a didapply is TRUE, it is assumed 
+  that the texture image already is the current GL texture. Do not
+  use this feature unless you know what you're doing.
 */
 void
 SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                              SoGLImage * image, const Model model,
-                             const SbColor & blendColor)
+                             const SbColor & blendColor,
+                             const SbBool didapply)
 {
   SoGLTextureImageElement * elem = (SoGLTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
+  if (elem->dlist) elem->dlist->unref();
   if (image) {
     // keep SoTextureImageElement "up-to-date"
     inherited::set(state, node,
@@ -147,7 +151,7 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    model,
                    blendColor);
     elem->image = image;
-    elem->didapply = FALSE;
+    elem->didapply = didapply;
     elem->quality = SoTextureQualityElement::get(state);
     // FIXME: the next line causes a memory leak, according to
     // Purify. 20001102 mortene.

@@ -42,7 +42,8 @@ public:
 
   static void set(SoState * const state, SoNode * const node,
                   SoGLImage *image, const Model model,
-                  const SbColor &blendColor);
+                  const SbColor &blendColor,
+                  const SbBool didapply = FALSE);
 
   virtual void evaluate(const SbBool enabled, const SbBool transparency) const;
   static int32_t getMaxGLTextureSize(void);
