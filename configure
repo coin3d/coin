@@ -3343,7 +3343,7 @@ if test "x$enable_warnings" = "xyes"; then
     CXXFLAGS="$CXXFLAGS -W -Wall"
   fi
 else
-  if test "x$GXX" != "xyes"; then
+  if test "x$GXX" != "xyes" && test "x$GCC" != "xyes"; then
     echo "configure: warning: --enable-warnings only has effect when using GNU gcc or g++" 1>&2
   fi
 fi

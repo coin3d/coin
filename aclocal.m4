@@ -1018,7 +1018,7 @@ dnl    CXXFLAGS="$CXXFLAGS -W -Wall -Werror-implicit-function-declaration"
     CXXFLAGS="$CXXFLAGS -W -Wall"
   fi
 else
-  if test "x$GXX" != "xyes"; then
+  if test "x$GXX" != "xyes" && test "x$GCC" != "xyes"; then
     AC_MSG_WARN(--enable-warnings only has effect when using GNU gcc or g++)
   fi
 fi
