@@ -41,7 +41,7 @@ public:
   static void initClass(void);
   static void initClasses(void);
 
-  void setIgnored(SbBool ig);
+  void setIgnored(SbBool ignore);
   SbBool isIgnored(void) const;
 
   void setDefault(SbBool def);
@@ -89,8 +89,8 @@ public:
   void setContainer(SoFieldContainer * cont);
   SoFieldContainer * getContainer(void) const;
 
-  SbBool set(const char * valueString);
-  void get(SbString & valueString);
+  SbBool set(const char * valuestring);
+  void get(SbString & valuestring);
 
   SbBool shouldWrite(void) const;
 
@@ -106,12 +106,12 @@ public:
   int operator ==(const SoField & f) const;
   int operator !=(const SoField & f) const;
 
-  virtual void connectionStatusChanged(int numConnections);
+  virtual void connectionStatusChanged(int numconnections);
   SbBool isReadOnly(void) const;
   virtual SbBool isSame(const SoField & f) const = 0;
   virtual void copyFrom(const SoField & f) = 0;
 
-  virtual void fixCopy(SbBool copyConnections);
+  virtual void fixCopy(SbBool copyconnections);
   virtual SbBool referencesCopy(void) const;
   void copyConnection(const SoField * fromfield);
 
@@ -122,7 +122,7 @@ public:
 
   void evaluate(void) const;
 
-  void setFieldType(int flagValue);
+  void setFieldType(int type);
   int getFieldType(void) const;
 
   SbBool getDirty(void);
@@ -133,7 +133,7 @@ public:
 protected:
   SoField(void);
 
-  void valueChanged(SbBool resetDefault = TRUE);
+  void valueChanged(SbBool resetdefault = TRUE);
   virtual void evaluateConnection(void) const;
   virtual SbBool readValue(SoInput * in) = 0;
   virtual void writeValue(SoOutput * out) const = 0;
@@ -146,13 +146,20 @@ private:
   void doConnect(SoField * master, SbBool notify);
   void doConnect(SoVRMLInterpOutput * master, SbBool notify);
   void doConnect(SoEngineOutput * master, SbBool notify);
-  SbBool createConverter(SoType fromType, SoType toType,
-                         SoFieldConverter *& conv);
-
+  SbBool createConverter(SoType from, SoType to, SoFieldConverter *& conv);
+  SoFieldContainer * resolveWriteConnection(SbName & mastername) const;
 
   void notifyAuditors(SoNotList * list);
 
   static SoType classTypeId;
+
+  // These are bit flags.
+  enum FileFormatFlags {
+    IGNORED = 0x01,
+    CONNECTED = 0x02,
+    DEFAULT = 0x04,
+    ALLFILEFLAGS = IGNORED|CONNECTED|DEFAULT
+  };
 
   struct {
     unsigned int isdefault      : 1;
@@ -161,6 +168,7 @@ private:
     unsigned int enableconnects : 1;
     unsigned int needevaluation : 1;
     unsigned int isevaluating   : 1;
+    unsigned int type           : 3; // Needs to hold values in range [0-5]
   } statusflags;
 
   union {

@@ -61,8 +61,7 @@
 #include <Inventor/actions/SoWriteAction.h>
 
 static const char IGNOREDCHAR = '~';
-// FIXME: '\n' not correct on win32/mac? 19980910 mortene.
-static const char EOLSTR[] = "\n";
+static const char CONNECTIONCHAR = '=';
 
 /*
   This class is used to aid in "multiplexing" the pointer member of
@@ -270,7 +269,7 @@ private:
 */
 /*!
   \fn void SoField::copyFrom(const SoField & f)
-  Copy value(s) from \a f.
+  Copy value(s) from \a f into this field.
 */
 /*!
   \fn SbBool SoField::readValue(SoInput * in)
@@ -305,6 +304,7 @@ SoField::SoField(void)
   this->statusflags.enableconnects = TRUE;
   this->statusflags.needevaluation = FALSE;
   this->statusflags.isevaluating = FALSE;
+  this->statusflags.type = 0;
 }
 
 /*!
@@ -313,7 +313,7 @@ SoField::SoField(void)
  */
 SoField::~SoField()
 {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoField::~SoField", "destructing %p", this);
 #endif // debug
 
@@ -363,6 +363,7 @@ SoField::initClass(void)
 {
   // Make sure we only initialize once.
   assert(SoField::classTypeId == SoType::badType());
+
   SoField::classTypeId = SoType::createType(SoType::badType(), "Field");
   SoField::initClasses();
 }
@@ -406,17 +407,16 @@ SoField::isIgnored(void) const
 void
 SoField::setDefault(SbBool def)
 {
-  // FIXME: make private or protected? 19990623 mortene.
   this->statusflags.isdefault = def;
 }
 
 /*!
-  Check if the field contains its default value. Fields which has their default
-  value intact will normally not be included in the output when writing
-  scene graphs out to a file, for instance.
+  Check if the field contains its default value. Fields which has
+  their default value intact will normally not be included in the
+  output when writing scene graphs out to a file, for instance.
 
   \sa setDefault()
- */
+*/
 SbBool
 SoField::isDefault(void) const
 {
@@ -424,7 +424,7 @@ SoField::isDefault(void) const
 }
 
 /*!
-  Returns a unique type identifier for the SoField class.
+  Returns a unique type identifier for the field class.
 
   \sa getTypeId(), SoType
  */
@@ -435,9 +435,9 @@ SoField::getClassTypeId(void)
 }
 
 /*!
-  Check if the class is of either the same type or a derived type of the one
-  given with the \a type parameter.
- */
+  Check if this instance is of a derived type or is the same type as
+  the one given with the \a type parameter.
+*/
 SbBool
 SoField::isOfType(const SoType type) const
 {
@@ -445,10 +445,10 @@ SoField::isOfType(const SoType type) const
 }
 
 /*!
-  This sets a flag which indicates whether or not the set up connection
-  should be considered active. For as long as the "enable connection"
-  flag is \a FALSE, no value propagation will be done from any
-  connected source field, engine or interpolator into this field.
+  This sets a \a flag value which indicates whether or not the set up
+  connection should be considered active. For as long as the "enable
+  connection" flag is \c FALSE, no value propagation will be done from
+  any connected source field, engine or interpolator into this field.
 
   If the connection is first disabled and then enabled again, the
   field is marked as dirty, which means that it will again be in
@@ -480,12 +480,13 @@ SoField::isConnectionEnabled(void) const
   of this field will be automatically updated when \a master is changed (as
   long as the connection also is enabled).
 
-  If the field connected \e from is different from the field connected
-  \e to, a field converter is inserted. For some combinations of fields
-  no such conversion is possible, and we'll return \a FALSE.
+  If the field connected \e from has a different type from the field
+  connected \e to, a field converter is inserted. For some
+  combinations of fields no such conversion is possible, and we'll
+  return \c FALSE.
 
-  If this field had any master-relationships beforehand, these are all
-  broken up if \a append is \a FALSE.
+  If this field had any connections to master fields beforehand, these
+  are all broken up if \a append is \c FALSE.
 
   Call with \a notnotify if you want to avoid the initial notification
   of connected auditors (a.k.a. slaves).
@@ -505,9 +506,8 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
     return TRUE;
   }
 
-  SoFieldConverter * conv=NULL;
-  SbBool OK=this->createConverter(mastertype, slavetype, conv);
-  if (OK) {
+  SoFieldConverter * conv = NULL;
+  if (this->createConverter(mastertype, slavetype, conv)) {
     assert(conv);
     conv->getInput(mastertype)->doConnect(master, !notnotify);
     if (!append) this->disconnect();
@@ -523,12 +523,13 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
   of this field will be automatically updated when \a master is changed (as
   long as the connection also is enabled).
 
-  If the field output connected \e from is different from the field connected
-  \e to, a field converter is inserted. For some combinations of fields
-  no such conversion is possible, and we'll return \a FALSE.
+  If the field output connected \e from is of a different type from
+  the field connected \e to, a field converter is inserted. For some
+  combinations of fields no such conversion is possible, and we'll
+  return \c FALSE.
 
   If this field had any master-relationships beforehand, these are all
-  broken up if \a append is \a FALSE.
+  broken up if \a append is \c FALSE.
 
   Call with \a notnotify if you want to avoid the initial notification
   of connected auditors (a.k.a. slaves).
@@ -568,12 +569,13 @@ SoField::connectFrom(SoVRMLInterpOutput * master,
   of this field will be automatically updated when \a master is changed (as
   long as the connection also is enabled).
 
-  If the field output connected \e from is different from the field connected
-  \e to, a field converter is inserted. For some combinations of fields
-  no such conversion is possible, and we'll return \a FALSE.
+  If the field output connected \e from is of a different type from
+  the field connected \e to, a field converter is inserted. For some
+  combinations of fields no such conversion is possible, and we'll
+  return \c FALSE.
 
   If this field had any master-relationships beforehand, these are all
-  broken up if \a append is \a FALSE.
+  broken up if \a append is \c FALSE.
 
   Call with \a notnotify if you want to avoid the initial notification
   of connected auditors (a.k.a. slaves).
@@ -613,7 +615,7 @@ SoField::connectFrom(SoEngineOutput * master,
 void
 SoField::disconnect(SoField * master)
 {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoField::disconnect",
                          "removing slave %p from master %p", this, master);
 #endif // debug
@@ -660,8 +662,8 @@ SoField::getNumConnections(void) const
   Returns number of masters this field is connected to, and places
   pointers to all of them into \a masterlist.
 
-  Note that we replace the contents of \a masterlist, i.e. we're not
-  \e appending new data.
+  Note that we replace the contents of \a masterlist, i.e. we're
+  \e not appending new data.
 
   \sa getNumConnections()
 */
@@ -681,9 +683,6 @@ SoField::getConnections(SoFieldList & masterlist) const
 void
 SoField::disconnect(void)
 {
-  //FIXME: Check for converters?
-  //...Not necessary, I think (kintel 19981030)
-
   // Disconnect us from all master fields.
   while (this->isConnectedFromField())
     this->disconnect(this->storage->getFieldConnection(0));
@@ -700,7 +699,7 @@ SoField::disconnect(void)
 }
 
 /*!
-  Returns \a TRUE if we're connected from another field, engine or
+  Returns \c TRUE if we're connected from another field, engine or
   interpolator.
 
   \sa isConnectedFromField(), isConnectedFromEngine()
@@ -715,7 +714,7 @@ SoField::isConnected(void) const
 }
 
 /*!
-  Returns \a TRUE if we're a slave of at least one field.
+  Returns \c TRUE if we're a slave of at least one field.
 
   \sa isConnected(), isConnectedFromEngine(), isConnectedFromVRMLInterp()
   \sa connectFrom(SoField *)
@@ -728,7 +727,7 @@ SoField::isConnectedFromField(void) const
 }
 
 /*!
-  Returns \a TRUE if we're a slave of at least one VRML interpolator.
+  Returns \c TRUE if we're a slave of at least one VRML interpolator.
 
   \sa isConnected(), isConnectedFromEngine(), isConnectedFromField()
   \sa connectFrom(SoVRMLInterpOutput *)
@@ -741,7 +740,7 @@ SoField::isConnectedFromVRMLInterp(void) const
 }
 
 /*!
-  Returns \a TRUE if we're connected from an engine.
+  Returns \c TRUE if we're connected from an engine.
 
   \sa isConnected(), isConnectedFromVRMLInterp(), isConnectedFromField()
   \sa connectFrom(SoEngineOutput *)
@@ -754,7 +753,7 @@ SoField::isConnectedFromEngine(void) const
 }
 
 /*!
-  Returns \a TRUE if we are connected as a slave to at least one other field.
+  Returns \c TRUE if we are connected as a slave to at least one other field.
   \a master will be set to the source field in the last field connection made.
 
   \sa isConnectedFromField(), connectFrom(SoField *),
@@ -771,7 +770,7 @@ SoField::getConnectedField(SoField *& master) const
 
 
 /*!
-  Returns \a TRUE if we are connected as a slave to at least one VRML
+  Returns \c TRUE if we are connected as a slave to at least one VRML
   interpolator. \a master will be set to the source of the last
   interpolator connection made.
 
@@ -787,7 +786,7 @@ SoField::getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const
   return nr ? TRUE : FALSE;
 }
 /*!
-  Returns \a TRUE if we are connected as a slave to at least one
+  Returns \c TRUE if we are connected as a slave to at least one
   engine. \a master will be set to the source of the last
   engine connection made.
 
@@ -805,7 +804,7 @@ SoField::getConnectedEngine(SoEngineOutput *& master) const
 
 /*!
   Appends all the fields which are auditing this field in \a slavelist,
-  and returns the number of fieldtype slaves.
+  and returns the number of fields which are our slaves.
  */
 int
 SoField::getForwardConnections(SoFieldList & slavelist) const
@@ -826,7 +825,7 @@ SoField::getForwardConnections(SoFieldList & slavelist) const
 }
 
 /*!
-  Let the field know in which container it belongs.
+  Let the field know to which container it belongs.
 
   \sa getContainer(), SoFieldContainer
  */
@@ -860,29 +859,29 @@ SoField::setContainer(SoFieldContainer * cont)
 SoFieldContainer *
 SoField::getContainer(void) const
 {
-  if (!this->hasExtendedStorage())
-    return this->container;
-  else
-    return this->storage->getContainer();
+  if (!this->hasExtendedStorage()) return this->container;
+  else return this->storage->getContainer();
 }
 
 /*!
-  Set the field's value through the given string. The format of the string
-  must adhere to the ASCII format used in Coin data format files.
-  Only the value should be specified, though - \e not the name of the field.
+  Set the field's value through the given \a valuestring. The format
+  of the string must adhere to the ASCII format used in Coin data
+  format files.
 
-  \c FALSE is returned if the stringencoded field value is invalid for
-  the field type and can't be parsed in any sensible way.
+  Only the value should be specified - \e not the name of the field.
+
+  \c FALSE is returned if the field value is invalid for the field
+  type and can't be parsed in any sensible way.
 
   \sa get()
 */
 SbBool
-SoField::set(const char * valueString)
+SoField::set(const char * valuestring)
 {
   // Note that it is not necessary to set a header identification line
   // for this to work.
   SoInput in;
-  in.setBuffer((void *)valueString, strlen(valueString));
+  in.setBuffer((void *)valuestring, strlen(valuestring));
   if (!this->readValue(&in)) return FALSE;
 
   this->valueChanged();
@@ -896,7 +895,7 @@ SoField::set(const char * valueString)
   \sa set()
  */
 void
-SoField::get(SbString & valueString)
+SoField::get(SbString & valuestring)
 {
   SoOutput out;
   const size_t STARTSIZE = 32;
@@ -911,7 +910,7 @@ SoField::get(SbString & valueString)
   char * start = strstr((char *)buffer, "\n\n");
   assert(start != NULL);
   start += 2;
-  valueString = start;
+  valuestring = start;
   free(buffer);
 }
 
@@ -936,8 +935,8 @@ SoField::touch(void)
 void
 SoField::startNotify(void)
 {
-  SoNotList list;
-  this->notify(&list);
+  SoNotList l;
+  this->notify(&l);
 }
 
 /*!
@@ -946,13 +945,13 @@ SoField::startNotify(void)
 void
 SoField::notify(SoNotList * nlist)
 {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoField::notify", "%p", this);
 #endif // debug
 
   // If we're not the originator of the notification process, we need
   // to be marked dirty, as it means something we're connected to as
-  // a slave has changed and our value need to be updated.
+  // a slave has changed and our value needs to be updated.
   if (nlist->getFirstRec()) this->setDirty(TRUE);
 
   if (this->isNotifyEnabled()) {
@@ -1011,7 +1010,7 @@ SoField::addAuditor(void * f, SoNotRec::Type type)
 void
 SoField::removeAuditor(void * f, SoNotRec::Type type)
 {
-#if 0 // debug
+#if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoField::removeAuditor",
                          "%p removing %p", this, f);
 #endif // debug
@@ -1022,8 +1021,8 @@ SoField::removeAuditor(void * f, SoNotRec::Type type)
 }
 
 /*!
-  Checks for equality. Returns \a 0 if the fields are of different type
-  or does not equal each other's values.
+  Checks for equality. Returns \c 0 if the fields are of different type
+  or the field's value(s) are not equal.
  */
 int
 SoField::operator ==(const SoField & f) const
@@ -1032,7 +1031,7 @@ SoField::operator ==(const SoField & f) const
 }
 
 /*!
-  Returns \a TRUE if the fields are of different type or has different value.
+  Returns \c TRUE if the fields are of different type or has different value.
  */
 int
 SoField::operator !=(const SoField & f) const
@@ -1041,7 +1040,7 @@ SoField::operator !=(const SoField & f) const
 }
 
 /*!
-  Returns \a TRUE if it is necessary to write the field when dumping a
+  Returns \c TRUE if it is necessary to write the field when dumping a
   scene graph.
  */
 SbBool
@@ -1049,31 +1048,31 @@ SoField::shouldWrite(void) const
 {
   if (!this->isDefault()) return TRUE;
   if (this->isIgnored()) return TRUE;
-  // ..more here?..yes: connections..
+  // FIXME: ..more here?..yes: connections.. 20000124 mortene.
   return FALSE;
 }
 
 /*!
   Called whenever another slave attaches or detaches itself to us.
-  \a numConnections is the difference in number of connections
-  made (i.e. if stuff is \e disconnected, \a numConnections will be
+  \a numconnections is the difference in number of connections
+  made (i.e. if stuff is \e disconnected, \a numconnections will be
   a negative number).
  */
 void
-SoField::connectionStatusChanged(int /* numConnections */)
+SoField::connectionStatusChanged(int /* numconnections */)
 {
   // FIXME: not sure if this is correct or not. Looks like it could
   // have unwanted side effects (premature destruction). 19990711
   // mortene.
 #if 0
-  while (numConnections > 0) {
+  while (numconnections > 0) {
     this->ref();
-    numConnections--;
+    numconnections--;
   }
 
-  while (numConnections < 0) {
+  while (numconnections < 0) {
     this->unref();
-    numConnections++;
+    numconnections++;
   }
 #endif // disabled
 }
@@ -1141,9 +1140,6 @@ SoField::copyConnection(const SoField * fromfield)
   // Consider most common case first.
   if (!fromfield->isConnected()) return;
 
-  // FIXME: disconnect any connections already in place first?
-  // 20000116 mortene.
-
   // FIXME: copy _all_ connections (in preparation for VRML2 support)?
   // 20000116 mortene.
 
@@ -1156,6 +1152,9 @@ SoField::copyConnection(const SoField * fromfield)
   _fieldtype_ * copyfield = (_fieldtype_ *)((char *)copyfc + ptroffset); \
   this->connectFrom(copyfield)
 
+
+  // Connections already in place will be automatically removed, as
+  // the append argument to connectFrom() is default FALSE.
 
   if (fromfield->isConnectedFromField()) {
     COPYCONNECT(SoField, getConnectedField);
@@ -1172,62 +1171,78 @@ SoField::copyConnection(const SoField * fromfield)
 
 /*!
   Reads and sets the value of this field from the given SoInput instance.
-  Returns \a FALSE if the field value can not be parsed from the input.
+  Returns \c FALSE if the field value can not be parsed from the input.
 
   \sa set(), write()
  */
 SbBool
 SoField::read(SoInput * in, const SbName & name)
 {
+  // This macro is convenient for reading with error detection.
+#define READ_VAL(val) \
+  if (!in->read(val)) { \
+    SoReadError::post(in, "Premature end of file"); \
+    return FALSE; \
+  }
+
+
   this->setDefault(FALSE);
   this->setDirty(FALSE);
 
-  if (!in->isBinary()) {
-    // Check for ignored flag first.
+  if (!in->isBinary()) { // ASCII file format.
     char c;
-    if (!in->read(c)) return FALSE;
-    if (c == IGNOREDCHAR) {
-      this->setIgnored(TRUE);
-      return TRUE;
-    }
+    // Check for the ignored flag first, as it is valid to let the
+    // field data be just the ignored flag and nothing else.
+    READ_VAL(c);
+    if (c == IGNOREDCHAR) this->setIgnored(TRUE);
     else {
       in->putBack(c);
+
+      // Read field value(s).
+      if (!this->readValue(in)) {
+        SoReadError::post(in, "Couldn't read value for field \"%s\"",
+                          name.getString());
+        return FALSE;
+      }
+
+      // Check again for ignored flag.
+      READ_VAL(c);
+      if (c == IGNOREDCHAR) this->setIgnored(TRUE);
+      else in->putBack(c);
     }
-  }
 
-  if (!this->readValue(in)) {
-    SoReadError::post(in, "Couldn't read value for field \"%s\"",
-                      name.getString());
-    return FALSE;
+    // Check if there's a field-to-field connection here.
+    READ_VAL(c);
+    if (c == CONNECTIONCHAR) { if (!this->readConnection(in)) return FALSE; }
+    else in->putBack(c);
   }
-
-  if (in->isBinary()) {
-    unsigned int flags;
-    if (!in->read(flags)) {
-      SoReadError::post(in, "Couldn't read field flags for field \"%s\"",
+  else { // Binary file format.
+    // Read field value(s).
+    if (!this->readValue(in)) {
+      SoReadError::post(in, "Couldn't read value for field \"%s\"",
                         name.getString());
       return FALSE;
     }
 
-    if (flags & 0x01) this->setIgnored(TRUE);
-    if (flags & 0x04) this->setDefault(TRUE);
+    // Check for the "ignored", "connection" and "default" flags.
+    unsigned int flags;
+    READ_VAL(flags);
+
+    if (flags & SoField::IGNORED) this->setIgnored(TRUE);
+    if (flags & SoField::CONNECTED) { if (!this->readConnection(in)) return FALSE; }
+    if (flags & SoField::DEFAULT) this->setDefault(TRUE);
 #if COIN_DEBUG
-    // FIXME: probably more flags to take care of. 19990711 mortene.
-    if (flags & ~(0x01 | 0x04)) {
-      SoDebugError::postInfo("SoField::read",
-                             "unknown field flags (flags: 0x%x)", flags);
+    if (flags & ~SoField::ALLFILEFLAGS) {
+      SoDebugError::postWarning("SoField::read",
+                                "unknown field flags (0x%x) -- ",
+                                "please report to coin-bugs@sim.no", flags);
     }
 #endif // COIN_DEBUG
   }
-  else {
-    // Check again for ignored flag.
-    char c;
-    if (!in->read(c)) return FALSE;
-    if (c == IGNOREDCHAR) this->setIgnored(TRUE);
-    else in->putBack(c);
-  }
 
-  // FIXME: call touch()? Probably not. 19990406 mortene.
+#undef READ_VAL
+
+  // FIXME: call touch() or valueChanged()? Probably not. 19990406 mortene.
   return TRUE;
 }
 
@@ -1258,7 +1273,7 @@ SoField::write(SoOutput * out, const SbName & name) const
 
     if (this->isConnected()) this->writeConnection(out);
 
-    out->write(EOLSTR);
+    out->write('\n');
   }
   // Binary write.
   else {
@@ -1267,13 +1282,14 @@ SoField::write(SoOutput * out, const SbName & name) const
     this->writeValue(out);
 
     unsigned int flags = 0;
-    if (this->isIgnored()) flags |= 0x01;
-    if (this->isDefault()) flags |= 0x04;
-    // FIXME: more flags? 19990629 mortene.
+    if (this->isIgnored()) flags |= SoField::IGNORED;
+    SbName dummy;
+    if (this->resolveWriteConnection(dummy)) flags |= SoField::CONNECTED;
+    if (this->isDefault()) flags |= SoField::DEFAULT;
+
     out->write(flags);
 
-    assert(!this->isConnected() &&
-           "FIXME: binary export of connections not implemented yet");
+    if (this->isConnected()) this->writeConnection(out);
   }
 }
 
@@ -1366,12 +1382,11 @@ SoField::appendConnection(SoVRMLInterpOutput * master, SbBool notnotify)
   FIXME: write function documentation
 */
 SbBool
-SoField::createConverter(SoType fromType, SoType toType,
-                         SoFieldConverter *& conv)
+SoField::createConverter(SoType from, SoType to, SoFieldConverter *& conv)
 {
-  if (fromType == toType) return TRUE;
+  if (from == to) return TRUE;
 
-  conv = SoDB::createConverter(fromType, toType);
+  conv = SoDB::createConverter(from, to);
   if (conv) return TRUE;
   else return FALSE;
 }
@@ -1457,13 +1472,62 @@ SoField::reallocOutputBuf(void * buffer, size_t newsize)
 }
 
 /*!
-  FIXME: write function documentation
+  Read the fieldcontainer and master field id of a field-to-field
+  connection.
 */
 SbBool
-SoField::readConnection(SoInput * /* in */)
+SoField::readConnection(SoInput * in)
 {
-  COIN_STUB();
-  return FALSE;
+  // Read the fieldcontainer instance containing the master field
+  // we're connected to.
+  SoBase * bp;
+  if (!SoBase::read(in, bp, SoFieldContainer::getClassTypeId())) return FALSE;
+  if (!bp) {
+    SoReadError::post(in, "couldn't read field-to-field connection");
+    return FALSE;
+  }
+
+  SoFieldContainer * fc = (SoFieldContainer *)bp;
+
+  // Scan past the '.' character for ASCII format.
+  if (!in->isBinary()) {
+    char c;
+    if (!in->read(c)) {
+      SoReadError::post(in, "premature EOF");
+      return FALSE;
+    }
+    if (c != '.') {
+      SoReadError::post(in, "expected '.', got '%c'", c);
+      return FALSE;
+    }
+  }
+
+  // Read name of master field.
+  SbName mastername;
+  if (!in->read(mastername)) {
+    SoReadError::post(in, "premature EOF");
+    return FALSE;
+  }
+
+
+  // Find container for master field.
+  // FIXME: does this also work for connections to engines and VRML
+  // interpolators? 20000129 mortene.
+  SoField * masterfield = fc->getField(mastername);
+  if (!masterfield) {
+    SoReadError::post(in, "no field ``%s'' in ``%s''",
+                      mastername.getString(),
+                      fc->getTypeId().getName().getString());
+    return FALSE;
+  }
+
+  // Finally, make connection.
+  if (!this->connectFrom(masterfield)) {
+    SoReadError::post(in, "couldn't connect to ``%s''",
+                      mastername.getString());
+  }
+
+  return TRUE;
 }
 
 /*!
@@ -1472,61 +1536,83 @@ SoField::readConnection(SoInput * /* in */)
 void
 SoField::writeConnection(SoOutput * out) const
 {
+  SbName mastername;
+  SoFieldContainer * fc = this->resolveWriteConnection(mastername);
+  assert(fc);
+
+  if (!out->isBinary()) {
+    out->write(' ');
+    out->write(CONNECTIONCHAR);
+  }
+
+  if (fc->isOfType(SoNode::getClassTypeId())) {
+    // FIXME: is this the correct thing to do if fc is an
+    // SoVRMLInterpolator? 20000129 mortene.
+    SoWriteAction wa(out);
+    wa.continueToApply((SoNode *)fc);
+  }
+  else if (fc->isOfType(SoEngine::getClassTypeId())) {
+    COIN_STUB();
+  }
+  else assert(FALSE);
+
+  if (!out->isBinary()) {
+    out->indent();
+    out->write(". ");
+  }
+
+  out->write(mastername.getString());
+}
+
+// Check if this field should write a connection upon export. Returns
+// a pointer to the fieldcontainer with the master field we're
+// connected to (or NULL if none, or if the master field's container
+// is not within the scenegraph). If the return value is non-NULL, the
+// name of the master field is copied to the mastername argument.
+SoFieldContainer *
+SoField::resolveWriteConnection(SbName & mastername) const
+{
+  if (!this->isConnected()) return NULL;
+
+  SoFieldContainer * fc = NULL;
   SoField * fieldmaster;
-  SoFieldContainer * fieldcont = NULL;
   SoEngineOutput * enginemaster;
-  SoEngine * engine = NULL;
   SoVRMLInterpOutput * interpmaster;
-  SoVRMLInterpolator * interpolator = NULL;
-  SbName name;
 
   if (this->getConnectedField(fieldmaster)) {
-    fieldcont = fieldmaster->getContainer();
+    fc = fieldmaster->getContainer();
     // FIXME: won't this fail with global fields? Check and
     // fix. 19990707 mortene.
-    assert(fieldcont);
+    assert(fc);
 
     // This will trigger if the field container is not in the
-    // graph. If this is the case, we just discards the connection
-    // (the master's value will be fetched and written, though).
-    if (!fieldcont->shouldWrite()) return;
+    // graph. If this is the case, we just discard the write operation
+    // on the connection (but we'll still perform an evaluation to get
+    // the master's value).
+    if (!fc->shouldWrite()) return NULL;
 
-    SbBool ok = fieldcont->getFieldName(fieldmaster, name);
+    SbBool ok = fc->getFieldName(fieldmaster, mastername);
     assert(ok);
   }
   else if (this->getConnectedEngine(enginemaster)) {
-    engine = enginemaster->getContainer();
-    assert(engine);
-    SbBool ok = engine->getOutputName(enginemaster, name);
+    fc = enginemaster->getContainer();
+    assert(fc);
+    // FIXME: couldn't we use getFieldName()? 20000129 mortene.
+    SbBool ok = ((SoEngine *)fc)->getOutputName(enginemaster, mastername);
     assert(ok);
   }
   else if (this->getConnectedVRMLInterp(interpmaster)) {
-    interpolator = interpmaster->getContainer();
-    assert(interpolator);
-    SbBool ok = interpolator->getOutputName(interpmaster, name);
+    fc = interpmaster->getContainer();
+    assert(fc);
+    // FIXME: couldn't we use getFieldName()? 20000129 mortene.
+    SbBool ok = ((SoVRMLInterpolator *)fc)->getOutputName(interpmaster, mastername);
     assert(ok);
   }
-  else assert(0);
+  else assert(FALSE);
 
-  out->write(" =");
-
-  if (fieldcont) {
-    SoWriteAction wa(out);
-    wa.continueToApply((SoNode *)fieldcont);
-  }
-  else if (engine) {
-    COIN_STUB();
-  }
-  else if (interpolator) {
-    COIN_STUB();
-  }
-  else assert(0);
-
-  out->indent();
-  out->write(". ");
-
-  out->write(name.getString());
+  return fc;
 }
+
 
 /*!
   \internal
@@ -1569,10 +1655,10 @@ SoField::evaluateConnection(void) const
   The method will also notify any auditors that its value has changed.
  */
 void
-SoField::valueChanged(SbBool resetDefault)
+SoField::valueChanged(SbBool resetdefault)
 {
   this->setDirty(FALSE);
-  if (resetDefault) this->setDefault(FALSE);
+  if (resetdefault) this->setDefault(FALSE);
   if (this->container) this->startNotify();
 }
 
@@ -1593,22 +1679,31 @@ SoField::notifyAuditors(SoNotList * list)
 }
 
 /*!
-  FIXME: write function documentation
+  Set type of this field.
+
+  The possible values for \a type is: 0 for ordinary fields,
+  1 for VRML2 eventIn fields, 2 for VRML2 eventOut fields, 3 for
+  some other type of eventIn field, 4 for internal fields,
+  5 for VRML2 exposedField fields.
+
+  Note: this method is only used for VRML2 support, and is therefore
+  not "active" yet.
 */
 void
-SoField::setFieldType(int /* flagValue */)
+SoField::setFieldType(int type)
 {
-  COIN_STUB();
+  this->statusflags.type = type;
 }
 
 /*!
-  FIXME: write function documentation
+  Return the type of this field.
+
+  \sa setFieldType()
 */
 int
 SoField::getFieldType(void) const
 {
-  COIN_STUB();
-  return 0;
+  return this->statusflags.type;
 }
 
 /*!
