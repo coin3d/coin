@@ -78,10 +78,6 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_GLX
-#include <GL/glx.h>
-#endif // HAVE_GLX
-
 #include <Inventor/nodes/SoText2.h>
 
 #include <Inventor/SbBox2s.h>
@@ -115,9 +111,16 @@
 //
 // The WIN32_LEAN_AND_MEAN causes windows.h to not include winspool.h.
 //
-// 20030429 mortene.
+//        -mortene
 #define WIN32_LEAN_AND_MEAN
 #include <Inventor/system/gl.h>
+// UPDATE, FIXME: due to some reorganization of header files GL/glx.h
+// should not be included anywhere for this source code file any
+// more. This means the hack above should no longer be necessary. To
+// test, try building this file with g++ on a Cygwin system where both
+// windows.h and GL/glx.h are available. If that works fine, remove
+// the "#define WIN32_LEAN_AND_MEAN" hack. 20030625 mortene.
+
 
 static const unsigned int NOT_AVAILABLE = UINT_MAX;
 
