@@ -95,13 +95,6 @@ SoLineSet::~SoLineSet()
 
 // doc from parent
 void
-SoLineSet::initClass(void)
-{
-  SO_NODE_INTERNAL_INIT_CLASS(SoLineSet, SO_FROM_INVENTOR_1);
-}
-
-// doc from parent
-void
 SoLineSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   int32_t numvertices = 0;
@@ -502,48 +495,51 @@ static void sogl_ls_m3_n3_t1
 
 // doc from parent
 void
+SoLineSet::initClass(void)
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoLineSet, SO_FROM_INVENTOR_1);
+
+  lineset_render_funcs[ 0] = sogl_ls_m0_n0_t0;
+  lineset_render_funcs[ 1] = sogl_ls_m0_n0_t1;
+  lineset_render_funcs[ 2] = sogl_ls_m0_n1_t0;
+  lineset_render_funcs[ 3] = sogl_ls_m0_n1_t1;
+  lineset_render_funcs[ 4] = sogl_ls_m0_n2_t0;
+  lineset_render_funcs[ 5] = sogl_ls_m0_n2_t1;
+  lineset_render_funcs[ 6] = sogl_ls_m0_n3_t0;
+  lineset_render_funcs[ 7] = sogl_ls_m0_n3_t1;
+  
+  lineset_render_funcs[ 8] = sogl_ls_m1_n0_t0;
+  lineset_render_funcs[ 9] = sogl_ls_m1_n0_t1;
+  lineset_render_funcs[10] = sogl_ls_m1_n1_t0;
+  lineset_render_funcs[11] = sogl_ls_m1_n1_t1;
+  lineset_render_funcs[12] = sogl_ls_m1_n2_t0;
+  lineset_render_funcs[13] = sogl_ls_m1_n2_t1;
+  lineset_render_funcs[14] = sogl_ls_m1_n3_t0;
+  lineset_render_funcs[15] = sogl_ls_m1_n3_t1;
+
+  lineset_render_funcs[16] = sogl_ls_m2_n0_t0;
+  lineset_render_funcs[17] = sogl_ls_m2_n0_t1;
+  lineset_render_funcs[18] = sogl_ls_m2_n1_t0;
+  lineset_render_funcs[19] = sogl_ls_m2_n1_t1;
+  lineset_render_funcs[20] = sogl_ls_m2_n2_t0;
+  lineset_render_funcs[21] = sogl_ls_m2_n2_t1;
+  lineset_render_funcs[22] = sogl_ls_m2_n3_t0;
+  lineset_render_funcs[23] = sogl_ls_m2_n3_t1;
+
+  lineset_render_funcs[24] = sogl_ls_m3_n0_t0;
+  lineset_render_funcs[25] = sogl_ls_m3_n0_t1;
+  lineset_render_funcs[26] = sogl_ls_m3_n1_t0;
+  lineset_render_funcs[27] = sogl_ls_m3_n1_t1;
+  lineset_render_funcs[28] = sogl_ls_m3_n2_t0;
+  lineset_render_funcs[29] = sogl_ls_m3_n2_t1;
+  lineset_render_funcs[30] = sogl_ls_m3_n3_t0;
+  lineset_render_funcs[31] = sogl_ls_m3_n3_t1;
+}
+
+// doc from parent
+void
 SoLineSet::GLRender(SoGLRenderAction * action)
 {
-  static int first = 1;
-  if (first) {
-    lineset_render_funcs[ 0] = sogl_ls_m0_n0_t0;
-    lineset_render_funcs[ 1] = sogl_ls_m0_n0_t1;
-    lineset_render_funcs[ 2] = sogl_ls_m0_n1_t0;
-    lineset_render_funcs[ 3] = sogl_ls_m0_n1_t1;
-    lineset_render_funcs[ 4] = sogl_ls_m0_n2_t0;
-    lineset_render_funcs[ 5] = sogl_ls_m0_n2_t1;
-    lineset_render_funcs[ 6] = sogl_ls_m0_n3_t0;
-    lineset_render_funcs[ 7] = sogl_ls_m0_n3_t1;
-
-    lineset_render_funcs[ 8] = sogl_ls_m1_n0_t0;
-    lineset_render_funcs[ 9] = sogl_ls_m1_n0_t1;
-    lineset_render_funcs[10] = sogl_ls_m1_n1_t0;
-    lineset_render_funcs[11] = sogl_ls_m1_n1_t1;
-    lineset_render_funcs[12] = sogl_ls_m1_n2_t0;
-    lineset_render_funcs[13] = sogl_ls_m1_n2_t1;
-    lineset_render_funcs[14] = sogl_ls_m1_n3_t0;
-    lineset_render_funcs[15] = sogl_ls_m1_n3_t1;
-
-    lineset_render_funcs[16] = sogl_ls_m2_n0_t0;
-    lineset_render_funcs[17] = sogl_ls_m2_n0_t1;
-    lineset_render_funcs[18] = sogl_ls_m2_n1_t0;
-    lineset_render_funcs[19] = sogl_ls_m2_n1_t1;
-    lineset_render_funcs[20] = sogl_ls_m2_n2_t0;
-    lineset_render_funcs[21] = sogl_ls_m2_n2_t1;
-    lineset_render_funcs[22] = sogl_ls_m2_n3_t0;
-    lineset_render_funcs[23] = sogl_ls_m2_n3_t1;
-
-    lineset_render_funcs[24] = sogl_ls_m3_n0_t0;
-    lineset_render_funcs[25] = sogl_ls_m3_n0_t1;
-    lineset_render_funcs[26] = sogl_ls_m3_n1_t0;
-    lineset_render_funcs[27] = sogl_ls_m3_n1_t1;
-    lineset_render_funcs[28] = sogl_ls_m3_n2_t0;
-    lineset_render_funcs[29] = sogl_ls_m3_n2_t1;
-    lineset_render_funcs[30] = sogl_ls_m3_n3_t0;
-    lineset_render_funcs[31] = sogl_ls_m3_n3_t1;
-    first = 0;
-  }
-
   SoState * state = action->getState();
 
   SbBool didpush = FALSE;
