@@ -23,13 +23,88 @@
   \ingroup nodes
 
   Inserting an SoSelection node in your scene graph enables you to let
-  the user pick to select/deselect objects.
+  the user "pick" with the left mousebutton to select/deselect objects
+  below the SoSelection node.
+
+  Using an SoBoxHighlightRenderAction or an
+  SoLineHighlightRenderAction to render scenegraphs containing
+  SoSelection nodes provides a convenient way of providing visual
+  feedback about the selections to the application user.
+
+  Beware that one common faulty assumption which is made about the
+  node is that the scene will automatically be re-rendered whenever
+  the user pick objects. This is not the case, the application
+  programmer must himself schedule a redraw. A straightforward way to
+  accomplish this is to SoNode::touch() the SoSelection node in the
+  selection / deselection callback.
+
+  A "skeleton" for basic use of SoSelection nodes is given below:
+
+  \code
+  extern SoSeparator * make_scenegraph( void );
+  static SoSelection * selection = NULL;
+
+  // Callback function triggered for selection / deselection.
+  void made_selection( void * userdata, SoPath * path )
+  {
+    (void)fprintf( stdout, "%sselected %s\n",
+                   userdata == (void *)1L ? "" : "de",
+                   path->getTail()->getTypeId().getName().getString() );
+
+    selection->touch(); // to redraw
+  }
+
+  // *************************************************************************
+
+  // Print a quick instructions notice on stdout.
+  void show_instructions( void )
+  {
+    (void)fprintf( stdout, "\nThis example program demonstrates the use of the SoSelection node type.\n" );
+    (void)fprintf( stdout, "\nQuick instructions:\n\n" );
+    (void)fprintf( stdout, "  * pick with left mouse button\n" );
+    (void)fprintf( stdout, "  * hold SHIFT to select multiple objects\n" );
+    (void)fprintf( stdout, "  * hit ESC to toggle back and forth to view mode\n" );
+    (void)fprintf( stdout, "\n" );
+  }
+
+  // *************************************************************************
+
+  int main( int argc, char ** argv )
+  {
+    QWidget * window = SoQt::init( argv[0] );
+    show_instructions();
+
+    selection = new SoSelection;
+    selection->policy = SoSelection::SHIFT;
+    selection->ref();
+
+    selection->addChild( make_scenegraph() );
+    selection->addSelectionCallback( made_selection, (void *)1L );
+    selection->addDeselectionCallback( made_selection, (void *)0L );
+
+    SoQtExaminerViewer * examinerviewer = new SoQtExaminerViewer( window );
+    examinerviewer->setSceneGraph( selection );
+    examinerviewer->setGLRenderAction( new SoBoxHighlightRenderAction );
+    examinerviewer->setViewing( FALSE );
+    examinerviewer->show();
+
+    SoQt::show( window );
+    SoQt::mainLoop();
+
+    delete examinerviewer;
+    selection->unref();
+
+    return 0;
+  }
+  \endcode
 
   This node is not initialized in SoDB::init(), since it is part of
-  the interaction kit. Before using this node, you must either call 
-  SoInteraction::initClass() or SoSelection::initClass() directly.
-  If you're using one of the GUI-toolkits, SoInteraction::initClass()
-  will be called for you.
+  the interaction kit "add-on". Before using this node, you should
+  therefore call SoInteraction::initClass(). If you're using one of
+  the standard GUI-toolkits (SoXt / SoQt / SoGtk / SoWin)
+  SoInteraction::initClass() will be called for you from the
+  So[Xt|Qt|Gtk|Win]::init() method and you don't have to worry about
+  it.
 */
 
 
@@ -457,14 +532,13 @@ SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
 
   Possible return values from the callback:
 
-  - NULL -- simulate that nothing was picked. This will clear the selection 
-           for the SINGLE policy. The handle event action will be halted. 
+  - NULL -- simulate that nothing was picked. This will clear the selection for the SINGLE policy. The handle event action will be halted. 
   - A path -- the path will be selected/deselected. The handle event action will be halted.
   - A path containing only the Selection node -- Same as NULL, but action will not be halted.
   - An empty path or a path not containing the Selection node -- the pick will be ignored.
 
-  if \a callOnlyIfSelectable is \e TRUE, the callback will only be called if the
-  Selection node is in the picked path.
+  if \a callOnlyIfSelectable is \e TRUE, the callback will only be
+  called if the Selection node is in the picked path.
 */
 void
 SoSelection::setPickFilterCallback(SoSelectionPickCB * f,
