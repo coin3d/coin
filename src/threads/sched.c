@@ -76,13 +76,12 @@ sched_worker_entry_point(void * userdata)
 
     cc_mutex_unlock(sched->mutex);
     item->workfunc(item->closure);
-    cc_memalloc_deallocate(sched->itemalloc, (void*) item);
     cc_mutex_lock(sched->mutex);
+    cc_memalloc_deallocate(sched->itemalloc, (void*) item);
   }
-  cc_mutex_unlock(sched->mutex);
-
   /* in case the main thread is in sched_wait_all() */
   cc_condvar_wake_one(sched->cond);
+  cc_mutex_unlock(sched->mutex);
 }
 
 /* ********************************************************************** */
@@ -152,13 +151,15 @@ cc_sched_schedule(cc_sched * sched,
                   void (*workfunc)(void *), void * closure,
                   unsigned int priority)
 {
-  sched_item * item = (sched_item*) cc_memalloc_allocate(sched->itemalloc);
+  sched_item * item;
+
+  cc_mutex_lock(sched->mutex);
+  item = (sched_item*) cc_memalloc_allocate(sched->itemalloc);
   
   item->workfunc = workfunc;
   item->closure = closure;
   item->priority = priority;
 
-  cc_mutex_lock(sched->mutex);
   cc_heap_add(sched->itemheap, (void*) item);
   sched_try_trigger(sched);
 
