@@ -403,6 +403,14 @@ SoPointLightManip::fieldSensorCB(void * m, SoSensor *)
     dragger->setMotionMatrix(matrix);
 
     SoMaterial * material = (SoMaterial *)dragger->getPart("material", TRUE);
+#if COIN_DEBUG
+    if (!material->isOfType(SoMaterial::getClassTypeId())) {
+      SoDebugError::post("SoPointLightManip::fieldSensorCB",
+                         "found %s where there should be Material",
+                         material->getTypeId().getName().getString());
+      return;
+    }
+#endif // COIN_DEBUG
     material->diffuseColor = SbColor(0.0f, 0.0f, 0.0f);
     material->emissiveColor = thisp->color.getValue();
   }
