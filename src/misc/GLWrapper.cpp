@@ -141,7 +141,6 @@ GLWrapper_getProcAddressMethod(GLWrapper_t *gi)
 
 /* FIXME: support HP-UX 10.x? (Doesn't have dlopen().) 20010626 mortene. */
 
-static GLWrapper_t * GL_instance = NULL;
 static SbDict * gldict = NULL;
 
 static void
