@@ -36,6 +36,7 @@
 #include <stddef.h> /* NULL definition. */
 #include <stdlib.h> /* atoi() */
 #include <malloc.h>
+#include <assert.h>
 #include <Inventor/C/glue/dl.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <../tidbits.h>
