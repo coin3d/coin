@@ -26,6 +26,7 @@
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec3s.h>
 #include <Inventor/SbColor.h>
 
 class SoState;
@@ -60,11 +61,21 @@ public:
                   const unsigned char * bytes,
                   const int wrapS, const int wrapT,
                   const int model, const SbColor & blendColor);
+  static void set(SoState * const state, SoNode * const node,
+                  const SbVec3s & size, const int numComponents,
+                  const unsigned char * bytes,
+                  const int wrapS, const int wrapT, const int wrapR,
+                  const int model, const SbColor & blendColor);
 
   static void set(SoState * const state, SoNode * const node,
                   const SbVec2s & size, const int numComponents,
                   const unsigned char * bytes,
                   const Wrap wrapS, const Wrap wrapT,
+                  const Model model, const SbColor & blendColor);
+  static void set(SoState * const state, SoNode * const node,
+                  const SbVec3s & size, const int numComponents,
+                  const unsigned char * bytes,
+                  const Wrap wrapS, const Wrap wrapT, const Wrap wrapR,
                   const Model model, const SbColor & blendColor);
 
   static const unsigned char *get(SoState * const state,
@@ -72,6 +83,14 @@ public:
                                   int & numComponents,
                                   Wrap & wrapS,
                                   Wrap & wrapT,
+                                  Model & model,
+                                  SbColor & blendColor);
+  static const unsigned char *get(SoState * const state,
+                                  SbVec3s & size,
+                                  int & numComponents,
+                                  Wrap & wrapS,
+                                  Wrap & wrapT,
+                                  Wrap & wrapR,
                                   Model & model,
                                   SbColor & blendColor);
 
@@ -82,36 +101,53 @@ public:
                                   int & wrapT,
                                   int & model,
                                   SbColor & blendColor);
+  static const unsigned char *get(SoState * const state,
+                                  SbVec3s & size,
+                                  int & numComponents,
+                                  int & wrapS,
+                                  int & wrapT,
+                                  int & wrapR,
+                                  int & model,
+                                  SbColor & blendColor);
 
   static const SbColor &getBlendColor(SoState * const state);
   static const unsigned char *getImage(SoState * const state,
                                        SbVec2s &size,
                                        int &numComponents);
+  static const unsigned char *getImage(SoState * const state,
+                                       SbVec3s &size,
+                                       int &numComponents);
   static Model getModel(SoState * const state);
   static Wrap getWrapS(SoState * const state);
   static Wrap getWrapT(SoState * const state);
+  static Wrap getWrapR(SoState * const state);
 
   static SbBool containsTransparency(SoState * const state);
 
   static const unsigned char *getDefault(SbVec2s & size, int & numComponents);
+  static const unsigned char *getDefault(SbVec3s & size, int & numComponents);
 
 protected:
   virtual void setElt(const SbVec2s & size, const int numComponents,
                       const unsigned char * bytes,
                       const Wrap wrapS, const Wrap wrapT,
                       const Model model, const SbColor & blendColor);
+  virtual void setElt(const SbVec3s & size, const int numComponents,
+                      const unsigned char * bytes,
+                      const Wrap wrapS, const Wrap wrapT, const Wrap wrapR,
+                      const Model model, const SbColor & blendColor);
 
   virtual SbBool hasTransparency(void) const;
 
-  SbVec2s size;
+  SbVec3s size;
   int numComponents;
   const unsigned char *bytes;
-  Wrap wrapS, wrapT;
+  Wrap wrapS, wrapT, wrapR;
   Model model;
   SbColor blendColor;
 
 private:
-  void setDefaultValues();
+  void setDefaultValues(void);
 };
 
 #endif // !COIN_SOTEXTUREIMAGEELEMENT_H

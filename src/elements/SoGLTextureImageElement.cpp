@@ -150,11 +150,12 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
   if (image) {
     // keep SoTextureImageElement "up-to-date"
     inherited::set(state, node,
-                   SbVec2s(0,0),
+                   SbVec3s(0,0,0),
                    0,
                    NULL,
                    translateWrap(image->getWrapS()),
                    translateWrap(image->getWrapT()),
+                   translateWrap(image->getWrapR()),
                    model,
                    blendColor);
     elem->quality = -1.0f;
@@ -208,14 +209,14 @@ void
 SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparency) const
 {
   // cast away constness
-  SoGLTextureImageElement *elem = (SoGLTextureImageElement*) this;
+  SoGLTextureImageElement * elem = (SoGLTextureImageElement *)this;
 
 #ifdef HAVE_THREADS
   // if threads is enabled, the image is loaded on demand, and we
   // should trigger a image load by just attempting to fetch the data
   // from the image.
   if (!enabled && elem->image && elem->image->getImage()) {
-    SbVec2s size;
+    SbVec3s size;
     int nc;
     (void) elem->image->getImage()->getValue(size, nc);
   }
@@ -279,6 +280,7 @@ SoGLTextureImageElement::getMaxGLTextureSize(void)
   static int32_t maxGLTextureSize = -1;
   if (maxGLTextureSize == -1) {
     GLint val;
+    //FIXME: Use 3D_TEXTURE_SIZE or proxy textures? (kintel 20011111)
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &val);
     maxGLTextureSize = (int32_t)val;
   }
