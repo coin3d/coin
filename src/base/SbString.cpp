@@ -450,7 +450,7 @@ SbString::operator ! (void) const
 int
 operator ==(const SbString & str, const char * s)
 {
-  return s && str.sstring[0] == s[0] && ! strcmp(str.sstring, s);
+  return s && (str.sstring[0] == s[0]) && (strcmp(str.sstring, s) == 0);
 }
 
 /*!
@@ -480,8 +480,7 @@ operator == (const SbString & str1, const SbString & str2)
 int
 operator !=(const SbString & str, const char * s)
 {
-  if (!s) return TRUE;
-  return (str.sstring[0] != s[0] || strcmp(str.sstring, s));
+  return ((str == s) ? FALSE : TRUE);
 }
 
 /*!
