@@ -636,6 +636,11 @@ SoInput::setBuffer(void * bufpointer, size_t bufsize)
 /*!
   Returns number of bytes read so far from the current file or memory
   buffer.
+  You can only use this method while you're reading the file.
+  When the reading has finished, the current file is popped off the
+  file stack, and a more or less random number is returned. You
+  should use the stat() system call to find the size of a file (or
+  fseek() and ftell()).
 */
 size_t
 SoInput::getNumBytesRead(void) const
