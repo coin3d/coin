@@ -507,6 +507,28 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
     mb.sendFirst(); // make sure we have the correct material
 
     int32_t idx = this->startIndex.getValue();
+
+    // Robustness test to see if the startindex is valid.  If it is
+    // not, print error message and exit.
+    if (idx < 0) {
+      static uint32_t current_errors = 0;
+      if (current_errors < 1) {
+        SoDebugError::postWarning("SoFaceSet::GLRender", "startIndex == %d "
+                                  "< 0, which is erroneous. This message will only "
+                                  "be printed once, but more errors might be present",
+                                  idx);
+      }
+      current_errors++;
+
+      // Unlock resource if needed
+      if (nc) {
+        this->readUnlockNormalCache();
+      }
+
+      // Goto end of this method to clean up resources
+      goto glrender_done;
+    }
+
     int32_t dummyarray[1];
     const int32_t *ptr = this->numVertices.getValues(0);
     const int32_t *end = ptr + this->numVertices.getNum();
@@ -529,6 +551,8 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
       this->readUnlockNormalCache();
     }
   }
+
+ glrender_done:
 
   if (this->vertexProperty.getValue())
     state->pop();
@@ -563,16 +587,49 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
 
+  int numcoords = coords->getNum();
+
+  // Robustness test to see if the startindex is valid.  If it is
+  // not, print error message and return FALSE.
+  if (idx < 0) {
+    static uint32_t current_errors = 0;
+    if (current_errors < 1) {
+      SoDebugError::postWarning("SoFaceSet::generateDefaultNormals", "startIndex == %d "
+                                "< 0, which is erroneous. This message will only "
+                                "be printed once, but more errors might be present",
+                                idx);
+    }
+    current_errors++;
+
+    // Unable to generate normals for illegal faceset
+    return FALSE;
+  }
+
+  // Generate normals for the faceset
   while (ptr < end) {
     int num = *ptr++;
-    assert(num >= 3);
-    gen->beginPolygon();
-    while (num--) {
-      // FIXME: need to check if idx gets out of bounds to be
-      // robust. 20040623 mortene.
-      gen->polygonVertex(coords->get3(idx++));
+    // If a valid number of points for the faceset has been specified,
+    // and the end index is below the number of points available, then
+    // everything is okidoki, and a polygon is added to the normal
+    // generator.
+    if (num >= 3 && (idx + num) <= numcoords) {
+      gen->beginPolygon();
+      while (num--) {
+        gen->polygonVertex(coords->get3(idx++));
+      }
+      gen->endPolygon();
     }
-    gen->endPolygon();
+    // If an invalid polygon has been specified, print errormessage
+    // and return FALSE.
+    else {
+      SoDebugError::postWarning("SoFaceSet::generateDefaultNormals", "Erroneous "
+                                "number of coordinates: %d specified for FaceSet. "
+                                "Legal value is >= 3, with %d coordinate(s) available", 
+                                num, numcoords - idx);
+
+      // Not able to generate normals for invalid faceset
+      return FALSE;
+    }
   }
 
   switch (this->findNormalBinding(state)) {
