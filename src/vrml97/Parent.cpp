@@ -310,7 +310,9 @@ SoVRMLParent::readInstance(SoInput * in,
                            unsigned short flags)
 {
   SbBool oldnot = this->children.enableNotify(FALSE);
-  SbBool ret = inherited::readInstance(in, flags);
+  // call SoNode::readInstance(), not SoGroup::readInstance() since
+  // this node stores all children in the children field.
+  SbBool ret = SoNode::readInstance(in, flags);
   if (oldnot) this->children.enableNotify(TRUE);
   PRIVATE(this)->childlistvalid = FALSE;
   return ret;
