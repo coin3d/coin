@@ -85,7 +85,10 @@ SoCalculator::SoCalculator(void)
 SoCalculator::~SoCalculator(void)
 {
   for (int i = 0; i < this->evaluatorList.getLength(); i++) {
+#if 0
+    // FIXME: tmp disabled to avoid crash. 20000411 mortene.
     so_eval_delete(this->evaluatorList[i]);
+#endif // tmp disabled
   }
 }
 
@@ -132,7 +135,7 @@ SoCalculator::evaluate(void)
   for (i = 0; i < this->evaluatorList.getLength(); i++) {
     this->findUsed(this->evaluatorList[i], inused, outused);
   }
-  
+
   // find max number of values in used input fields
   char fieldname[2];
   fieldname[1] = 0;
@@ -154,7 +157,7 @@ SoCalculator::evaluate(void)
   if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, setNum(maxnum)); }
   if (outused[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, setNum(maxnum)); }
   if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, setNum(maxnum)); }
-  
+
   if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, setNum(maxnum)); }
   if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, setNum(maxnum)); }
   if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, setNum(maxnum)); }
@@ -192,17 +195,17 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
   fieldname[1] = 0;
   char inused[16]; /* a-h and A-H */
   char outused[8]; /* oa-od and oA-oD */
-  
+
   so_eval_cbdata cbdata;
   cbdata.readfieldcb = SoCalculator::readfieldcb;
   cbdata.writefieldcb = SoCalculator::writefieldcb;
   cbdata.userdata = this;
-  
+
   for (i = 0; i < 16; i++) inused[i] = 0;
   for (i = 0; i < 8; i++) outused[i] = 0;
 
   this->findUsed(node, inused, outused);
-  
+
   // copy values from fields to temporary "registers" while evaluating
   for (i = 0; i < 8; i++) {
     if (inused[i]) {
@@ -229,7 +232,7 @@ SoCalculator::evaluateExpression(struct so_eval_node *node, const int fieldidx)
   if (outused[1]) { SO_ENGINE_OUTPUT(ob, SoMFFloat, set1Value(fieldidx, oa_od[1])); }
   if (outused[2]) { SO_ENGINE_OUTPUT(oc, SoMFFloat, set1Value(fieldidx, oa_od[2])); }
   if (outused[3]) { SO_ENGINE_OUTPUT(od, SoMFFloat, set1Value(fieldidx, oa_od[3])); }
-  
+
   if (outused[4]) { SO_ENGINE_OUTPUT(oA, SoMFVec3f, set1Value(fieldidx, oA_oD[0])); }
   if (outused[5]) { SO_ENGINE_OUTPUT(oB, SoMFVec3f, set1Value(fieldidx, oA_oD[1])); }
   if (outused[6]) { SO_ENGINE_OUTPUT(oC, SoMFVec3f, set1Value(fieldidx, oA_oD[2])); }
