@@ -140,10 +140,16 @@
 #include <sys/stat.h>  /* stat() */
 #endif /* HAVE_SYS_STAT_H */
 
+/* ********************************************************************** */
+
+static const char * NULL_STR = "(null)";
+
 struct cc_libhandle_struct {
   void * nativehnd;
   cc_string libname;
 };
+
+/* ********************************************************************** */
 
 /* Return value of COIN_DEBUG_DL environment variable. */
 static int
@@ -202,7 +208,7 @@ cc_dirname(const char *path) {
   }
 
   if ((unsigned int)(ptr - path + 1) > sizeof(dirpath)) {
-    return(NULL);
+    return NULL;
   }
 
   strncpy(dirpath, path, ptr - path + 1);
@@ -542,7 +548,7 @@ cc_dl_open(const char * filename)
   }
   else {
     cc_string_construct(&h->libname);
-    cc_string_set_text(&h->libname, filename ? filename : "(null)");
+    cc_string_set_text(&h->libname, filename ? filename : NULL_STR);
 
     if (cc_dl_debugging()) {
 #ifdef HAVE_WINDLL_RUNTIME_BINDING
@@ -678,7 +684,18 @@ cc_dl_close(cc_libhandle handle)
 #ifdef HAVE_DL_LIB
 
   {
-    int result = dlclose(handle->nativehnd);
+    int result = 0;
+    int is_proc_img;
+
+    /* Don't dlclose() on handle to the process image, as HP-UX 11's
+       dlclose() will complain with an "invalid handle" error then. */
+
+    is_proc_img =
+      cc_string_compare_text(cc_string_get_text(&handle->libname),
+                             NULL_STR) == 0;
+    if (!is_proc_img) {
+      result = dlclose(handle->nativehnd);
+    }
     
     if (result != 0) {
       const char * e = dlerror();
