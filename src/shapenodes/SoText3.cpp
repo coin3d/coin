@@ -57,6 +57,7 @@
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/nodes/SoNurbsProfile.h>
 #include <Inventor/SbLine.h>
+#include <string.h>
 
 #include <coindefs.h> // COIN_OBSOLETED()
 
