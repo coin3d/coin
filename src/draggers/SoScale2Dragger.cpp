@@ -73,7 +73,7 @@ SO_KIT_SOURCE(SoScale2Dragger);
 void
 SoScale2Dragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoScale2Dragger, SO_FROM_INVENTOR_2_1);
+  SO_KIT_INTERNAL_INIT_CLASS(SoScale2Dragger, SO_FROM_INVENTOR_1);
 }
 
 // FIXME: document which parts need to be present in the geometry

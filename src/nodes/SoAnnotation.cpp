@@ -70,7 +70,7 @@ SoAnnotation::~SoAnnotation()
 void
 SoAnnotation::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoAnnotation, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoAnnotation, SO_FROM_INVENTOR_1);
 }
 
 // Doc in superclass.

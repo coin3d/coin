@@ -96,7 +96,7 @@ SO_KIT_SOURCE(SoDirectionalLightDragger);
 void
 SoDirectionalLightDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoDirectionalLightDragger, SO_FROM_INVENTOR_2_1);
+  SO_KIT_INTERNAL_INIT_CLASS(SoDirectionalLightDragger, SO_FROM_INVENTOR_1);
 }
 
 // FIXME: document which parts need to be present in the geometry

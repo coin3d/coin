@@ -63,7 +63,7 @@ SoTransformation::~SoTransformation()
 void
 SoTransformation::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoTransformation, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoTransformation, SO_FROM_INVENTOR_1);
 
   SO_ENABLE(SoGetBoundingBoxAction, SoModelMatrixElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoBBoxModelMatrixElement);

@@ -84,7 +84,7 @@ SO_NODE_SOURCE(SoSpotLightManip);
 void
 SoSpotLightManip::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoSpotLightManip, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoSpotLightManip, SO_FROM_INVENTOR_1);
 }
 
 /*!

@@ -97,7 +97,7 @@ SoAntiSquish::~SoAntiSquish()
 void
 SoAntiSquish::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoAntiSquish, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoAntiSquish, SO_FROM_INVENTOR_1);
 }
 
 // Doc from superclass.

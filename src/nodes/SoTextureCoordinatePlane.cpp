@@ -77,7 +77,7 @@ SoTextureCoordinatePlane::~SoTextureCoordinatePlane()
 void
 SoTextureCoordinatePlane::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinatePlane, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinatePlane, SO_FROM_INVENTOR_2_0);
 }
 
 // generates texture coordinates for callback and raypick action

@@ -87,7 +87,7 @@ SO_KIT_SOURCE(SoTranslate2Dragger);
 void
 SoTranslate2Dragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoTranslate2Dragger, SO_FROM_INVENTOR_2_1);
+  SO_KIT_INTERNAL_INIT_CLASS(SoTranslate2Dragger, SO_FROM_INVENTOR_1);
 }
 
 // FIXME: document which parts need to be present in the geometry

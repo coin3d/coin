@@ -124,7 +124,7 @@ SoRotor::~SoRotor()
 void
 SoRotor::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoRotor, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoRotor, SO_FROM_INVENTOR_1);
 }
 
 // detects when some field changes value

@@ -242,7 +242,7 @@ SoSeparator::~SoSeparator()
 void
 SoSeparator::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoSeparator, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoSeparator, SO_FROM_INVENTOR_1|SoNode::VRML1);
 
   SO_ENABLE(SoGetBoundingBoxAction, SoCacheElement);
   SO_ENABLE(SoGLRenderAction, SoCacheElement);

@@ -83,7 +83,7 @@ SoTextureCoordinate3::~SoTextureCoordinate3()
 void
 SoTextureCoordinate3::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinate3, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinate3, SO_FROM_INVENTOR_1);
 
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
 

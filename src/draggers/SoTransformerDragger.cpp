@@ -202,7 +202,7 @@ SO_KIT_SOURCE(SoTransformerDragger);
 void
 SoTransformerDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoTransformerDragger, SO_FROM_INVENTOR_2_1);
+  SO_KIT_INTERNAL_INIT_CLASS(SoTransformerDragger, SO_FROM_INVENTOR_1);
 }
 
 void

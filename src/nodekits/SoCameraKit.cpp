@@ -70,5 +70,5 @@ SoCameraKit::~SoCameraKit()
 void
 SoCameraKit::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoCameraKit, SO_FROM_INVENTOR_2_1);
+  SO_KIT_INTERNAL_INIT_CLASS(SoCameraKit, SO_FROM_INVENTOR_1);
 }

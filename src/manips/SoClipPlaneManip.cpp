@@ -84,7 +84,7 @@ SO_NODE_SOURCE(SoClipPlaneManip);
 void
 SoClipPlaneManip::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoClipPlaneManip, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoClipPlaneManip, SO_FROM_INVENTOR_1);
 }
 
 /*!

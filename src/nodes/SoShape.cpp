@@ -129,7 +129,7 @@ SoShape::~SoShape()
 void
 SoShape::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShape, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoShape, SO_FROM_INVENTOR_1);
 }
 
 // Doc in parent.

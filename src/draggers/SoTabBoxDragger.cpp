@@ -78,7 +78,7 @@ SO_KIT_SOURCE(SoTabBoxDragger);
 void
 SoTabBoxDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoTabBoxDragger, SO_FROM_INVENTOR_2_1);
+  SO_KIT_INTERNAL_INIT_CLASS(SoTabBoxDragger, SO_FROM_INVENTOR_1);
 }
 
 // FIXME: document which parts need to be present in the geometry

@@ -100,7 +100,7 @@ SoFont::~SoFont()
 void
 SoFont::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoFont, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoFont, SO_FROM_INVENTOR_1);
 
   SO_ENABLE(SoCallbackAction, SoFontNameElement);
   SO_ENABLE(SoCallbackAction, SoFontSizeElement);

@@ -124,7 +124,7 @@ SoSeparatorKit::~SoSeparatorKit()
 void
 SoSeparatorKit::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoSeparatorKit, SO_FROM_INVENTOR_2_1);
+  SO_KIT_INTERNAL_INIT_CLASS(SoSeparatorKit, SO_FROM_INVENTOR_1);
 }
 
 void

@@ -74,7 +74,7 @@ SO_KIT_SOURCE(SoRotateCylindricalDragger);
 void
 SoRotateCylindricalDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoRotateCylindricalDragger, SO_FROM_INVENTOR_2_1);
+  SO_KIT_INTERNAL_INIT_CLASS(SoRotateCylindricalDragger, SO_FROM_INVENTOR_1);
 }
 
 // FIXME: document which parts need to be present in the geometry

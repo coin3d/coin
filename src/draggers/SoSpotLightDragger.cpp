@@ -113,7 +113,7 @@ SO_KIT_SOURCE(SoSpotLightDragger);
 void
 SoSpotLightDragger::initClass(void)
 {
-  SO_KIT_INTERNAL_INIT_CLASS(SoSpotLightDragger, SO_FROM_INVENTOR_2_1);
+  SO_KIT_INTERNAL_INIT_CLASS(SoSpotLightDragger, SO_FROM_INVENTOR_1);
 }
 
 // FIXME: document which parts need to be present in the geometry

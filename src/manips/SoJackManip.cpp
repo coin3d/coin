@@ -45,7 +45,7 @@ SO_NODE_SOURCE(SoJackManip);
 void
 SoJackManip::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoJackManip, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoJackManip, SO_FROM_INVENTOR_1);
 }
 
 /*!

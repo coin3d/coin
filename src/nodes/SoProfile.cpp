@@ -119,7 +119,7 @@ SoProfile::~SoProfile()
 void
 SoProfile::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoProfile, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoProfile, SO_FROM_INVENTOR_1);
 
   SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);

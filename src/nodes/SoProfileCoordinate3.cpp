@@ -79,7 +79,7 @@ SoProfileCoordinate3::~SoProfileCoordinate3()
 void
 SoProfileCoordinate3::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoProfileCoordinate3, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoProfileCoordinate3, SO_FROM_INVENTOR_1);
 
   SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
   SO_ENABLE(SoPickAction, SoProfileCoordinateElement);

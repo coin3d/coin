@@ -85,7 +85,7 @@ SoTextureCoordinateEnvironment::~SoTextureCoordinateEnvironment()
 void
 SoTextureCoordinateEnvironment::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateEnvironment, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateEnvironment, SO_FROM_INVENTOR_1);
 }
 
 /*!

@@ -216,7 +216,7 @@ SoShapeHints::~SoShapeHints()
 void
 SoShapeHints::initClass(void)
 {
-  SO_NODE_INTERNAL_INIT_CLASS(SoShapeHints, SO_FROM_INVENTOR_2_1);
+  SO_NODE_INTERNAL_INIT_CLASS(SoShapeHints, SO_FROM_INVENTOR_2_0|SoNode::VRML1);
 
   SO_ENABLE(SoCallbackAction, SoCreaseAngleElement);
   SO_ENABLE(SoCallbackAction, SoShapeHintsElement);
