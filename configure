@@ -5235,7 +5235,7 @@ else
     # FIXME: Relying on posixy $() will cause problems for
     #        cross-compilation, but unfortunately the echo tests do not
     #        yet detect zsh echo's removal of \ escapes.
-    archive_cmds='$nonopt $(test "x$module" = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs$linker_flags -install_name $rpath/$soname $verstring'
+    archive_cmds='$nonopt $(test x$module = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $linker_flags -install_name $rpath/$soname $verstring'
     # We need to add '_' to the symbols in $export_symbols first
     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols'
     hardcode_direct=yes
@@ -13878,9 +13878,11 @@ fi
 # * Test for installation of Mesa or OpenGL development system.
 # *******************************************************************
 
-unset sim_ac_gl_cppflags
-unset sim_ac_gl_ldflags
-unset sim_ac_gl_libs
+sim_ac_gl_cppflags=
+sim_ac_gl_cflags=
+sim_ac_gl_cxxflags=
+sim_ac_gl_ldflags=
+sim_ac_gl_libs=
 sim_ac_gl_avail=no
 
 # Check whether --with-mesa or --without-mesa was given.
@@ -13911,19 +13913,94 @@ else
 fi;
 
 if test x"$with_opengl" != xno; then
+  sim_ac_use_framework_option=false;
+  case $host_os in
+  darwin*)
+    if test x"$GCC" = x"yes"; then
+
+ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+echo "$as_me:13927: checking whether $CC accepts -framework OpenGL" >&5
+echo $ECHO_N "checking whether $CC accepts -framework OpenGL... $ECHO_C" >&6
+
+sim_ac_save_cppflags=$CPPFLAGS
+CPPFLAGS="$CPPFLAGS -framework OpenGL"
+cat >conftest.$ac_ext <<_ACEOF
+#line 13933 "configure"
+#include "confdefs.h"
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:13945: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:13948: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:13951: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:13954: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  sim_ac_accept_result=yes
+else
+  echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+sim_ac_accept_result=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:13963: result: $sim_ac_accept_result" >&5
+echo "${ECHO_T}$sim_ac_accept_result" >&6
+CPPFLAGS=$sim_ac_save_cppflags
+# This need to go last, in case CPPFLAGS is modified in sim_ac_use_framework_option=true or .
+if test $sim_ac_accept_result = yes; then
+  sim_ac_use_framework_option=true
+else
+  :
+fi
+
+ac_ext=cc
+ac_cpp='$CXXCPP $CPPFLAGS'
+ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+
+    fi
+    ;;
+  esac
+
   if test x"$with_opengl" != xyes; then
     sim_ac_gl_cppflags="-I${with_opengl}/include"
     sim_ac_gl_ldflags="-L${with_opengl}/lib"
   else
-    ## This is a common location for the OpenGL library on HPUX.
-    sim_ac_gl_hpux=/opt/graphics/OpenGL
-    if test -d $sim_ac_gl_hpux; then
-      sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
-      sim_ac_gl_ldflags=-L$sim_ac_gl_hpux/lib
+    if $sim_ac_use_framework_option; then
+      # hopefully, this is the default behavior and not needed. 20011005 larsa
+      # sim_ac_gl_cppflags="-F/System/Library/Frameworks/OpenGL.framework/"
+      sim_ac_gl_ldflags="-Wl,-framework,OpenGL"
+    else
+      ## This is a common location for the OpenGL library on HPUX.
+      sim_ac_gl_hpux=/opt/graphics/OpenGL
+      if test -d $sim_ac_gl_hpux; then
+        sim_ac_gl_cppflags=-I$sim_ac_gl_hpux/include
+        sim_ac_gl_ldflags=-L$sim_ac_gl_hpux/lib
+      fi
     fi
   fi
 
   sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_cflags=$CFLAGS
+  sim_ac_save_cxxflags=$CXXFLAGS
   sim_ac_save_ldflags=$LDFLAGS
   sim_ac_save_libs=$LIBS
 
@@ -13935,23 +14012,23 @@ if test x"$with_opengl" != xno; then
 for ac_header in GL/gl.h OpenGL/gl.h
 do
 as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
-echo "$as_me:13938: checking for $ac_header" >&5
+echo "$as_me:14015: checking for $ac_header" >&5
 echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
 if eval "test \"\${$as_ac_Header+set}\" = set"; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
-#line 13944 "configure"
+#line 14021 "configure"
 #include "confdefs.h"
 #include <$ac_header>
 _ACEOF
-if { (eval echo "$as_me:13948: \"$ac_cpp conftest.$ac_ext\"") >&5
+if { (eval echo "$as_me:14025: \"$ac_cpp conftest.$ac_ext\"") >&5
   (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
   ac_status=$?
   egrep -v '^ *\+' conftest.er1 >conftest.err
   rm -f conftest.er1
   cat conftest.err >&5
-  echo "$as_me:13954: \$? = $ac_status" >&5
+  echo "$as_me:14031: \$? = $ac_status" >&5
   (exit $ac_status); } >/dev/null; then
   if test -s conftest.err; then
     ac_cpp_err=$ac_cxx_preproc_warn_flag
@@ -13970,7 +14047,7 @@ else
 fi
 rm -f conftest.err conftest.$ac_ext
 fi
-echo "$as_me:13973: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "$as_me:14050: result: `eval echo '${'$as_ac_Header'}'`" >&5
 echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
 if test `eval echo '${'$as_ac_Header'}'` = yes; then
   cat >>confdefs.h <<EOF
@@ -13980,18 +14057,19 @@ EOF
 fi
 done
 
-  echo "$as_me:13983: checking whether OpenGL library is available" >&5
+  echo "$as_me:14060: checking whether OpenGL library is available" >&5
 echo $ECHO_N "checking whether OpenGL library is available... $ECHO_C" >&6
 if test "${sim_cv_lib_gl+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   sim_cv_lib_gl=UNRESOLVED
 
-    for sim_ac_gl_libcheck in $sim_ac_gl_first $sim_ac_gl_second; do
+    # Mac OS X uses nada, which is why "" was set first
+    for sim_ac_gl_libcheck in "" $sim_ac_gl_first $sim_ac_gl_second; do
       if test "x$sim_cv_lib_gl" = "xUNRESOLVED"; then
         LIBS="$sim_ac_gl_libcheck $sim_ac_save_libs"
         cat >conftest.$ac_ext <<_ACEOF
-#line 13994 "configure"
+#line 14072 "configure"
 #include "confdefs.h"
 
 #ifdef HAVE_WINDOWS_H
@@ -14001,6 +14079,7 @@ else
 #include <GL/gl.h>
 #else
 #ifdef HAVE_OPENGL_GL_H
+/* Mac OS X */
 #include <OpenGL/gl.h>
 #endif
 #endif
@@ -14016,18 +14095,23 @@ glPointSize(1.0f);
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:14019: \"$ac_link\"") >&5
+if { (eval echo "$as_me:14098: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:14022: \$? = $ac_status" >&5
+  echo "$as_me:14101: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:14025: \"$ac_try\"") >&5
+  { (eval echo "$as_me:14104: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:14028: \$? = $ac_status" >&5
+  echo "$as_me:14107: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  sim_cv_lib_gl="$sim_ac_gl_libcheck"
+
+          if test x"$sim_ac_gl_libcheck" = x""; then
+            sim_cv_lib_gl="$sim_ac_gl_ldflags"
+          else
+            sim_cv_lib_gl="$sim_ac_gl_libcheck"
+          fi
 else
   echo "$as_me: failed program was:" >&5
 cat conftest.$ac_ext >&5
@@ -14037,15 +14121,21 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
     done
 
 fi
-echo "$as_me:14040: result: $sim_cv_lib_gl" >&5
+echo "$as_me:14124: result: $sim_cv_lib_gl" >&5
 echo "${ECHO_T}$sim_cv_lib_gl" >&6
 
   LIBS="$sim_ac_save_libs"
 
-  if test "x$sim_cv_lib_gl" != "xUNRESOLVED"; then
+  case $sim_cv_lib_gl in
+  -Wl,-framework,OpenGL)
+    sim_ac_gl_libs=
+    sim_ac_gl_ldflags="$sim_cv_lib_gl"
+    ;;
+  -l*)
     sim_ac_gl_libs="$sim_cv_lib_gl"
-  else
-    { echo "$as_me:14048: WARNING: couldn't compile or link with OpenGL library -- trying with pthread library in place..." >&5
+    ;;
+  *)
+    { echo "$as_me:14138: WARNING: couldn't compile or link with OpenGL library -- trying with pthread library in place..." >&5
 echo "$as_me: WARNING: couldn't compile or link with OpenGL library -- trying with pthread library in place..." >&2;}
 
 # Check whether --with-pthread or --without-pthread was given.
@@ -14073,13 +14163,13 @@ if test x"$with_pthread" != xno; then
   LDFLAGS="$LDFLAGS $sim_ac_pthread_ldflags"
   LIBS="$sim_ac_pthread_libs $LIBS"
 
-  echo "$as_me:14076: checking whether the pthread development system is available" >&5
+  echo "$as_me:14166: checking whether the pthread development system is available" >&5
 echo $ECHO_N "checking whether the pthread development system is available... $ECHO_C" >&6
 if test "${sim_cv_lib_pthread_avail+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
-#line 14082 "configure"
+#line 14172 "configure"
 #include "confdefs.h"
 #include <pthread.h>
 int
@@ -14091,16 +14181,16 @@ main ()
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:14094: \"$ac_link\"") >&5
+if { (eval echo "$as_me:14184: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:14097: \$? = $ac_status" >&5
+  echo "$as_me:14187: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:14100: \"$ac_try\"") >&5
+  { (eval echo "$as_me:14190: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:14103: \$? = $ac_status" >&5
+  echo "$as_me:14193: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   sim_cv_lib_pthread_avail=yes
 else
@@ -14110,7 +14200,7 @@ sim_cv_lib_pthread_avail=no
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 fi
-echo "$as_me:14113: result: $sim_cv_lib_pthread_avail" >&5
+echo "$as_me:14203: result: $sim_cv_lib_pthread_avail" >&5
 echo "${ECHO_T}$sim_cv_lib_pthread_avail" >&6
 
   if test x"$sim_cv_lib_pthread_avail" = xyes; then
@@ -14122,13 +14212,13 @@ echo "${ECHO_T}$sim_cv_lib_pthread_avail" >&6
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
-    { echo "$as_me:14125: WARNING: couldn't compile or link with pthread library" >&5
+    { echo "$as_me:14215: WARNING: couldn't compile or link with pthread library" >&5
 echo "$as_me: WARNING: couldn't compile or link with pthread library" >&2;}
   fi
 fi
 
     if test "x$sim_ac_pthread_avail" = "xyes"; then
-      echo "$as_me:14131: checking whether OpenGL library can be linked with pthread library" >&5
+      echo "$as_me:14221: checking whether OpenGL library can be linked with pthread library" >&5
 echo $ECHO_N "checking whether OpenGL library can be linked with pthread library... $ECHO_C" >&6
 if test "${sim_cv_lib_gl_pthread+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -14139,7 +14229,7 @@ else
           if test "x$sim_cv_lib_gl_pthread" = "xUNRESOLVED"; then
             LIBS="$sim_ac_gl_libcheck $sim_ac_pthread_libs $sim_ac_save_libs"
             cat >conftest.$ac_ext <<_ACEOF
-#line 14142 "configure"
+#line 14232 "configure"
 #include "confdefs.h"
 
 #ifdef HAVE_GL_GL_H
@@ -14161,16 +14251,16 @@ glPointSize(1.0f);
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:14164: \"$ac_link\"") >&5
+if { (eval echo "$as_me:14254: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:14167: \$? = $ac_status" >&5
+  echo "$as_me:14257: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:14170: \"$ac_try\"") >&5
+  { (eval echo "$as_me:14260: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:14173: \$? = $ac_status" >&5
+  echo "$as_me:14263: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   sim_cv_lib_gl_pthread="$sim_ac_gl_libcheck"
 else
@@ -14182,17 +14272,18 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
         done
 
 fi
-echo "$as_me:14185: result: $sim_cv_lib_gl_pthread" >&5
+echo "$as_me:14275: result: $sim_cv_lib_gl_pthread" >&5
 echo "${ECHO_T}$sim_cv_lib_gl_pthread" >&6
 
       if test "x$sim_cv_lib_gl_pthread" != "xUNRESOLVED"; then
         sim_ac_gl_libs="$sim_cv_lib_gl_pthread $sim_ac_pthread_libs"
       fi
     fi
-  fi
+    ;;
+  esac
 
-  if test "x$sim_ac_gl_libs" != "x"; then
-    LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
+  # MacOS will have empty sim_ac_gl_libs, so don't check if it is empty...
+  if test x"$sim_cv_gl_libs" != x"UNRESOLVED"; then
     sim_ac_gl_avail=yes
 
 cat >>confdefs.h <<\EOF
@@ -14204,6 +14295,8 @@ EOF
   COIN_EXTRA_LIBS="$sim_ac_gl_libs $COIN_EXTRA_LIBS"
   else
     CPPFLAGS=$sim_ac_save_cppflags
+    CFLAGS=$sim_ac_save_cflags
+    CXXFLAGS=$sim_ac_save_cxxflags
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
 
@@ -14216,13 +14309,13 @@ if test x"$sim_ac_gl_avail" = xyes; then
   # ** Check what OpenGL->windowsystem bindings are available.
   # *******************************************************************
 
-echo "$as_me:14219: checking whether GLX is on the system" >&5
+echo "$as_me:14312: checking whether GLX is on the system" >&5
 echo $ECHO_N "checking whether GLX is on the system... $ECHO_C" >&6
 if test "${sim_cv_have_glx+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
-#line 14225 "configure"
+#line 14318 "configure"
 #include "confdefs.h"
 
 #include <GL/glx.h>
@@ -14242,16 +14335,16 @@ glEnd();
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:14245: \"$ac_link\"") >&5
+if { (eval echo "$as_me:14338: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:14248: \$? = $ac_status" >&5
+  echo "$as_me:14341: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:14251: \"$ac_try\"") >&5
+  { (eval echo "$as_me:14344: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:14254: \$? = $ac_status" >&5
+  echo "$as_me:14347: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   sim_cv_have_glx=true
 else
@@ -14261,7 +14354,7 @@ sim_cv_have_glx=false
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 fi
-echo "$as_me:14264: result: $sim_cv_have_glx" >&5
+echo "$as_me:14357: result: $sim_cv_have_glx" >&5
 echo "${ECHO_T}$sim_cv_have_glx" >&6
 
 if ${sim_cv_have_glx=false}; then
@@ -14278,13 +14371,13 @@ sim_ac_save_libs=$LIBS
 sim_ac_wgl_libs="-lgdi32"
 LIBS="$LIBS $sim_ac_wgl_libs"
 
-echo "$as_me:14281: checking whether WGL is on the system" >&5
+echo "$as_me:14374: checking whether WGL is on the system" >&5
 echo $ECHO_N "checking whether WGL is on the system... $ECHO_C" >&6
 if test "${sim_cv_have_wgl+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
-#line 14287 "configure"
+#line 14380 "configure"
 #include "confdefs.h"
 
 #include <windows.h>
@@ -14299,16 +14392,16 @@ main ()
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:14302: \"$ac_link\"") >&5
+if { (eval echo "$as_me:14395: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:14305: \$? = $ac_status" >&5
+  echo "$as_me:14398: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:14308: \"$ac_try\"") >&5
+  { (eval echo "$as_me:14401: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:14311: \$? = $ac_status" >&5
+  echo "$as_me:14404: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   sim_cv_have_wgl=true
 else
@@ -14318,7 +14411,7 @@ sim_cv_have_wgl=false
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 fi
-echo "$as_me:14321: result: $sim_cv_have_wgl" >&5
+echo "$as_me:14414: result: $sim_cv_have_wgl" >&5
 echo "${ECHO_T}$sim_cv_have_wgl" >&6
 
 LIBS=$sim_ac_save_libs
@@ -14345,7 +14438,7 @@ if test "${enable_dl_glu+set}" = set; then
       yes | true) enable_dl_glu=true ;;
       no | false) enable_dl_glu=false ;;
       *)
-{ { echo "$as_me:14348: error: invalid value \"${enableval}\" for \"--enable-dl-glu\" configure argument" >&5
+{ { echo "$as_me:14441: error: invalid value \"${enableval}\" for \"--enable-dl-glu\" configure argument" >&5
 echo "$as_me: error: invalid value \"${enableval}\" for \"--enable-dl-glu\" configure argument" >&2;}
    { (exit 1); exit 1; }; }
  ;;
@@ -14357,13 +14450,14 @@ fi;
   if $coin_can_do_runtime_linking && $enable_dl_glu; then
     # See if GLU is part of GL library (this is the case on BeOS, for
     # instance) before setting us up for runtime linking.
-    echo "$as_me:14360: checking if GLU is available as part of GL library" >&5
+
+echo "$as_me:14454: checking if GLU is available as part of GL library" >&5
 echo $ECHO_N "checking if GLU is available as part of GL library... $ECHO_C" >&6
 if test "${sim_cv_glu_ready+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
-#line 14366 "configure"
+#line 14460 "configure"
 #include "confdefs.h"
 
 #ifdef HAVE_WINDOWS_H
@@ -14376,7 +14470,13 @@ else
 #include <OpenGL/gl.h>
 #endif
 #endif
+#ifdef HAVE_GL_GLU_H
 #include <GL/glu.h>
+#else
+#ifdef HAVE_OPENGL_GLU_H
+#include <OpenGL/glu.h>
+#endif
+#endif
 
 int
 main ()
@@ -14392,16 +14492,16 @@ glEnd();
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:14395: \"$ac_link\"") >&5
+if { (eval echo "$as_me:14495: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:14398: \$? = $ac_status" >&5
+  echo "$as_me:14498: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:14401: \"$ac_try\"") >&5
+  { (eval echo "$as_me:14501: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:14404: \$? = $ac_status" >&5
+  echo "$as_me:14504: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   sim_cv_glu_ready=true
 else
@@ -14411,7 +14511,7 @@ sim_cv_glu_ready=false
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 fi
-echo "$as_me:14414: result: $sim_cv_glu_ready" >&5
+echo "$as_me:14514: result: $sim_cv_glu_ready" >&5
 echo "${ECHO_T}$sim_cv_glu_ready" >&6
 if ${sim_cv_glu_ready}; then
 
@@ -14443,6 +14543,54 @@ fi
     # *******************************************************************
     # ** Check if GLU headers and lib is available on build host.
     # *******************************************************************
+
+for ac_header in GL/glu.h OpenGL/glu.h
+do
+as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
+echo "$as_me:14550: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line 14556 "configure"
+#include "confdefs.h"
+#include <$ac_header>
+_ACEOF
+if { (eval echo "$as_me:14560: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  egrep -v '^ *\+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:14566: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_cxx_preproc_warn_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  eval "$as_ac_Header=yes"
+else
+  echo "$as_me: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  eval "$as_ac_Header=no"
+fi
+rm -f conftest.err conftest.$ac_ext
+fi
+echo "$as_me:14585: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
+if test `eval echo '${'$as_ac_Header'}'` = yes; then
+  cat >>confdefs.h <<EOF
+#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
+EOF
+
+fi
+done
 
 unset sim_ac_glu_cppflags
 unset sim_ac_glu_ldflags
@@ -14483,7 +14631,7 @@ if test x"$with_glu" != xno; then
   CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
   LDFLAGS="$LDFLAGS $sim_ac_glu_ldflags"
 
-  echo "$as_me:14486: checking whether GLU is available" >&5
+  echo "$as_me:14634: checking whether GLU is available" >&5
 echo $ECHO_N "checking whether GLU is available... $ECHO_C" >&6
 if test "${sim_cv_lib_glu+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -14496,7 +14644,7 @@ else
       if test "x$sim_cv_lib_glu" = "xUNRESOLVED"; then
         LIBS="$sim_ac_glu_libcheck $sim_ac_save_libs"
         cat >conftest.$ac_ext <<_ACEOF
-#line 14499 "configure"
+#line 14647 "configure"
 #include "confdefs.h"
 
 #ifdef HAVE_WINDOWS_H
@@ -14509,9 +14657,13 @@ else
 #include <OpenGL/gl.h>
 #endif
 #endif
-/* FIXME: is this correct for Mac OS X?  Seems unlikely, should
-   probably be OpenGL/glu.h? 20010915 mortene. */
+#ifdef HAVE_GL_GLU_H
 #include <GL/glu.h>
+#else
+#ifdef HAVE_OPENGL_GLU_H
+#include <OpenGL/glu.h>
+#endif
+#endif
 
 int
 main ()
@@ -14527,16 +14679,16 @@ glEnd();
 }
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:14530: \"$ac_link\"") >&5
+if { (eval echo "$as_me:14682: \"$ac_link\"") >&5
   (eval $ac_link) 2>&5
   ac_status=$?
-  echo "$as_me:14533: \$? = $ac_status" >&5
+  echo "$as_me:14685: \$? = $ac_status" >&5
   (exit $ac_status); } &&
          { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:14536: \"$ac_try\"") >&5
+  { (eval echo "$as_me:14688: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
-  echo "$as_me:14539: \$? = $ac_status" >&5
+  echo "$as_me:14691: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
   sim_cv_lib_glu="$sim_ac_glu_libcheck"
 else
@@ -14548,7 +14700,7 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
     done
 
 fi
-echo "$as_me:14551: result: $sim_cv_lib_glu" >&5
+echo "$as_me:14703: result: $sim_cv_lib_glu" >&5
 echo "${ECHO_T}$sim_cv_lib_glu" >&6
 
   LIBS="$sim_ac_save_libs"
@@ -14602,20 +14754,20 @@ echo >&2 ""
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!no-opengl$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
-    { { echo "$as_me:14605: error: no message named 'no-opengl' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&5
+    { { echo "$as_me:14757: error: no message named 'no-opengl' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&5
 echo "$as_me: error: no message named 'no-opengl' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&2;}
    { (exit 1); exit 1; }; }
   else
     eval "echo >&2 \"$sim_ac_message\""
   fi
 else
-  { { echo "$as_me:14612: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&5
+  { { echo "$as_me:14764: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&5
 echo "$as_me: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
 echo >&2 ""
-{ { echo "$as_me:14618: error: aborting" >&5
+{ { echo "$as_me:14770: error: aborting" >&5
 echo "$as_me: error: aborting" >&2;}
    { (exit 1); exit 1; }; }
 
@@ -14627,20 +14779,20 @@ echo >&2 ""
 if test -f $sim_ac_message_file; then
   sim_ac_message="`sed -n -e '/^!no-opengl$/,/^!/ { /^!/ d; p; }' <$sim_ac_message_file`"
   if test x"$sim_ac_message" = x""; then
-    { { echo "$as_me:14630: error: no message named 'no-opengl' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&5
+    { { echo "$as_me:14782: error: no message named 'no-opengl' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&5
 echo "$as_me: error: no message named 'no-opengl' in '$sim_ac_message_file' - notify the $PACKAGE_NAME maintainer(s)" >&2;}
    { (exit 1); exit 1; }; }
   else
     eval "echo >&2 \"$sim_ac_message\""
   fi
 else
-  { { echo "$as_me:14637: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&5
+  { { echo "$as_me:14789: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&5
 echo "$as_me: error: file '$sim_ac_message_file' not found - notify the $PACKAGE_NAME maintainer(s)" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
 echo >&2 ""
-{ { echo "$as_me:14643: error: aborting" >&5
+{ { echo "$as_me:14795: error: aborting" >&5
 echo "$as_me: error: aborting" >&2;}
    { (exit 1); exit 1; }; }
 
@@ -14657,7 +14809,7 @@ if test "${enable_vrml97+set}" = set; then
     yes | true)  enable_vrml97=true ;;
     no | false)  enable_vrml97=false ;;
     *)
-{ { echo "$as_me:14660: error: invalid value \"${enableval}\" for \"--enable-vrml97\" configure argument" >&5
+{ { echo "$as_me:14812: error: invalid value \"${enableval}\" for \"--enable-vrml97\" configure argument" >&5
 echo "$as_me: error: invalid value \"${enableval}\" for \"--enable-vrml97\" configure argument" >&2;}
    { (exit 1); exit 1; }; }
  ;;
@@ -14698,7 +14850,7 @@ if test "${enable_compact+set}" = set; then
     yes | true)  enable_compact=yes ;;
     no | false)  enable_compact=no ;;
     *)
-{ { echo "$as_me:14701: error: invalid value \"${enableval}\" for \"--enable-compact\" configure argument" >&5
+{ { echo "$as_me:14853: error: invalid value \"${enableval}\" for \"--enable-compact\" configure argument" >&5
 echo "$as_me: error: invalid value \"${enableval}\" for \"--enable-compact\" configure argument" >&2;}
    { (exit 1); exit 1; }; }
  ;;
@@ -14727,7 +14879,7 @@ if test "${enable_hacking+set}" = set; then
     yes | true)  enable_hacking=yes ;;
     no | false)  enable_hacking=no ;;
     *)
-{ { echo "$as_me:14730: error: invalid value \"${enableval}\" for \"--enable-hacking\" configure argument" >&5
+{ { echo "$as_me:14882: error: invalid value \"${enableval}\" for \"--enable-hacking\" configure argument" >&5
 echo "$as_me: error: invalid value \"${enableval}\" for \"--enable-hacking\" configure argument" >&2;}
    { (exit 1); exit 1; }; }
  ;;
@@ -15164,7 +15316,7 @@ DEFS=-DHAVE_CONFIG_H
 : ${CONFIG_STATUS=./config.status}
 ac_clean_files_save=$ac_clean_files
 ac_clean_files="$ac_clean_files $CONFIG_STATUS"
-{ echo "$as_me:15167: creating $CONFIG_STATUS" >&5
+{ echo "$as_me:15319: creating $CONFIG_STATUS" >&5
 echo "$as_me: creating $CONFIG_STATUS" >&6;}
 cat >$CONFIG_STATUS <<_ACEOF
 #! $SHELL
@@ -15340,7 +15492,7 @@ cat >>$CONFIG_STATUS <<\EOF
     echo "$ac_cs_version"; exit 0 ;;
   --he | --h)
     # Conflict between --help and --header
-    { { echo "$as_me:15343: error: ambiguous option: $1
+    { { echo "$as_me:15495: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&2;}
@@ -15359,7 +15511,7 @@ Try \`$0 --help' for more information." >&2;}
     ac_need_defaults=false;;
 
   # This is an error.
-  -*) { { echo "$as_me:15362: error: unrecognized option: $1
+  -*) { { echo "$as_me:15514: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&2;}
@@ -15439,7 +15591,7 @@ do
   "docs/coin.doxygen" ) CONFIG_FILES="$CONFIG_FILES docs/coin.doxygen" ;;
   "default-1" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
   "include/config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS include/config.h" ;;
-  *) { { echo "$as_me:15442: error: invalid argument: $ac_config_target" >&5
+  *) { { echo "$as_me:15594: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
    { (exit 1); exit 1; }; };;
   esac
@@ -15743,7 +15895,7 @@ done; }
   esac
 
   if test x"$ac_file" != x-; then
-    { echo "$as_me:15746: creating $ac_file" >&5
+    { echo "$as_me:15898: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
     rm -f "$ac_file"
   fi
@@ -15761,7 +15913,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:15764: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:15916: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -15774,7 +15926,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:15777: error: cannot find input file: $f" >&5
+           { { echo "$as_me:15929: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -15835,7 +15987,7 @@ for ac_file in : $CONFIG_HEADERS; do test "x$ac_file" = x: && continue
   * )   ac_file_in=$ac_file.in ;;
   esac
 
-  test x"$ac_file" != x- && { echo "$as_me:15838: creating $ac_file" >&5
+  test x"$ac_file" != x- && { echo "$as_me:15990: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
 
   # First look for the input files in the build tree, otherwise in the
@@ -15846,7 +15998,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:15849: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:16001: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -15859,7 +16011,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:15862: error: cannot find input file: $f" >&5
+           { { echo "$as_me:16014: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
@@ -15976,7 +16128,7 @@ cat >>$CONFIG_STATUS <<\EOF
   rm -f $tmp/in
   if test x"$ac_file" != x-; then
     if cmp -s $ac_file $tmp/config.h 2>/dev/null; then
-      { echo "$as_me:15979: $ac_file is unchanged" >&5
+      { echo "$as_me:16131: $ac_file is unchanged" >&5
 echo "$as_me: $ac_file is unchanged" >&6;}
     else
       ac_dir=`$as_expr X"$ac_file" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
