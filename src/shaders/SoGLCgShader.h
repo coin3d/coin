@@ -19,27 +19,31 @@ class SoGLCgShaderObject;
 class SoGLCgShaderParameter : public SoGLShaderParameter
 {
  public:
-  virtual inline SbBool isReferenced() { return this->isReferencedFlag; }
+  virtual inline SbBool isReferenced();
 
-  virtual void set1f(const float value);
-  virtual void set2f(const float *value);
-  virtual void set3f(const float *value);
-  virtual void set4f(const float *value);
+  virtual void set1f(const float value,  const char* name, const int id);
+  virtual void set2f(const float *value, const char* name, const int id);
+  virtual void set3f(const float *value, const char* name, const int id);
+  virtual void set4f(const float *value, const char* name, const int id);
 
   virtual SoGLShader::ShaderType shaderType() const;
+
+ public:
+  void setState(CGGLenum matrix, CGGLenum transform, const char* name);
 
  public:
   SoGLCgShaderParameter(SoGLCgShaderObject*   shader, 
 			const char*           name,
 			SoGLShader::ValueType type);
-
-  void setState(CGGLenum matrix, CGGLenum transform);
+  virtual ~SoGLCgShaderParameter();
 
  private:
+  CGprogram*  cgProgram;
   CGparameter cgParameter;
-  SbBool      isReferencedFlag;
 
+  SbBool isCorrectType(SoGLShader::ValueType theType);
   static SoGLShader::ValueType getParameterTypeFor(CGtype type);
+  SbBool ensureParameter(const char* name, SoGLShader::ValueType theType);
 };
 
 

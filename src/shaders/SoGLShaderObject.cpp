@@ -1,9 +1,10 @@
 #include "SoGLShaderObject.h"
+
+#include <assert.h>
+
 #include "SoGLARBShader.h"
 #include "SoGLCgShader.h"
 #include "SoGLSLShader.h"
-#include <assert.h>
-#include <iostream>
 
 SoGLShaderObject::SoGLShaderObject()
 {

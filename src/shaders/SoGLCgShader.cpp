@@ -10,31 +10,18 @@
 
 SoGLCgShaderParameter::SoGLCgShaderParameter(SoGLCgShaderObject*   shader,
 					     const char*           name,
-					     SoGLShader::ValueType type) 
+					     SoGLShader::ValueType type)
   : SoGLShaderParameter()
 {
-  this->cgParameter = cgGetNamedParameter(shader->cgProgram, name);
-  if (cgIsParameter(this->cgParameter)) {
-    CGtype cgType = cgGetParameterType(this->cgParameter);
+  this->cgParameter      = cgGetNamedParameter(shader->cgProgram, name);
+  this->type             = SoGLShader::UNKNOWN_TYPE;
+  this->cgProgram        = &shader->cgProgram;
 
-    this->type = SoGLCgShaderParameter::getParameterTypeFor(cgType);
+  ensureParameter(name, type);
+}
 
-    if (this->type == type || type == SoGLShader::UNKNOWN_TYPE) {
-      this->isReferencedFlag = cgIsParameterReferenced(this->cgParameter);
-    }
-    else {
-      this->isReferencedFlag = FALSE;
-      std::cerr << "WARNING in main(): parameter ";
-      std::cerr << name;
-      std::cerr << " [";
-      std::cerr << cgGetTypeString(cgType);
-      std::cerr << "]  is of wrong type!" << std::endl;
-    }
-  }
-  else {
-    this->type             = SoGLShader::UNKNOWN_TYPE;
-    this->isReferencedFlag = FALSE;
-  }
+SoGLCgShaderParameter::~SoGLCgShaderParameter()
+{
 }
 
 SoGLShader::ShaderType SoGLCgShaderParameter::shaderType() const
@@ -42,34 +29,74 @@ SoGLShader::ShaderType SoGLCgShaderParameter::shaderType() const
   return SoGLShader::CG_SHADER;
 }
 
-void SoGLCgShaderParameter::setState(CGGLenum matrix, CGGLenum transform)
+SbBool SoGLCgShaderParameter::isReferenced()
+{ 
+  return (cgIsParameter(this->cgParameter));
+}
+
+void SoGLCgShaderParameter::
+setState(CGGLenum matrix, CGGLenum transform, const char* name)
 {
-  if (this->isReferenced() && this->type == SoGLShader::FLOAT_MATRIX4)
+  if (this->ensureParameter(name, SoGLShader::FLOAT_MATRIX4))
     cgGLSetStateMatrixParameter(this->cgParameter, matrix, transform);
 }
 
-void SoGLCgShaderParameter::set1f(const float value)
+void SoGLCgShaderParameter::set1f(const float v, const char* name, const int)
 {
-  if (this->isReferenced() && isFloat())
-    cgGLSetParameter1f(this->cgParameter, value);
+  if (this->ensureParameter(name, SoGLShader::FLOAT))
+    cgGLSetParameter1f(this->cgParameter, v);
 }
 
-void SoGLCgShaderParameter::set2f(const float *value)
+void SoGLCgShaderParameter::set2f(const float *v, const char* name, const int)
 {
-  if (this->isReferenced() && isFloat2())
-    cgGLSetParameter2f(this->cgParameter, value[0], value[1]);
+  if (this->ensureParameter(name, SoGLShader::FLOAT2))
+    cgGLSetParameter2f(this->cgParameter, v[0], v[1]);
 }
 
-void SoGLCgShaderParameter::set3f(const float *value)
+void SoGLCgShaderParameter::set3f(const float *v, const char* name, const int)
 {
-  if (this->isReferenced() && isFloat3())
-    cgGLSetParameter3f(this->cgParameter, value[0], value[1], value[2]);
+  if (this->ensureParameter(name, SoGLShader::FLOAT3))
+    cgGLSetParameter3f(this->cgParameter, v[0], v[1], v[2]);
 }
 
-void SoGLCgShaderParameter::set4f(const float *value)
+void SoGLCgShaderParameter::set4f(const float *v, const char* name, const int)
 {
-  if (this->isReferenced() && isFloat4())
-    cgGLSetParameter4f(this->cgParameter, value[0], value[1], value[2], value[3]);
+  if (this->ensureParameter(name, SoGLShader::FLOAT4))
+    cgGLSetParameter4f(this->cgParameter, v[0], v[1], v[2],v[3]); 
+}
+
+SbBool SoGLCgShaderParameter::isCorrectType(SoGLShader::ValueType theType) 
+{
+  return (this->type == theType || theType == SoGLShader::UNKNOWN_TYPE);
+}
+
+SbBool SoGLCgShaderParameter::
+ensureParameter(const char* name, SoGLShader::ValueType theType)
+{
+  if (this->isCorrectType(theType) && this->isReferenced()) {
+    // std::cerr << "cgParam is cached!" << std::endl;
+    return TRUE;
+  }
+    
+  this->cgParameter = cgGetNamedParameter(*this->cgProgram, name);
+  this->type        = SoGLShader::UNKNOWN_TYPE;
+
+  if (!this->isReferenced()) return FALSE;
+  
+  CGtype cgType = cgGetParameterType(this->cgParameter);
+
+  this->type = SoGLCgShaderParameter::getParameterTypeFor(cgType);
+
+  if (!this->isCorrectType(theType)) {
+    std::cerr << "WARNING in main(): parameter ";
+    std::cerr << name;
+    std::cerr << " [";
+    std::cerr << cgGetTypeString(cgType);
+    std::cerr << "]  is of wrong type!" << std::endl;
+    return FALSE;
+  }
+  else
+    return this->isReferenced();
 }
 
 // --- static methods -------------------------------------------------------
@@ -122,7 +149,7 @@ SoGLShader::ShaderType SoGLCgShaderObject::shaderType() const
 }
 
 SoGLShaderParameter* SoGLCgShaderObject::
-getParameter(int index, const char* name, SoGLShader::ValueType type)
+getParameter(int, const char* name, SoGLShader::ValueType type)
 {
   return new SoGLCgShaderParameter(this, name, type);
 }

@@ -22,7 +22,11 @@ SbBool SoVertexShader::isVertexShader() const
   return TRUE;
 }
 
-SbBool SoVertexShader::isSupported(SourceType sourceType)
+SbBool SoVertexShader::isSupported(SourceType
+#if !defined(SO_ARB_SHADER_SUPPORT) || !defined(SO_CG_SHADER_SUPPORT)  || !defined(SO_GLSL_SHADER_SUPPORT)
+ sourceType
+#endif
+)
 {
   // FIXME: Martin
 #if !defined(SO_ARB_SHADER_SUPPORT)

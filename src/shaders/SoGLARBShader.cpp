@@ -38,25 +38,25 @@ SoGLShader::ShaderType SoGLARBShaderParameter::shaderType() const
   return SoGLShader::ARB_SHADER;
 }
 
-void SoGLARBShaderParameter::set1f(const float value)
+void SoGLARBShaderParameter::set1f(const float value, const char*, const int)
 {
   glProgramLocalParameter4fARB(this->target, this->identifier,
 			       value, value, value, value);
 }
 
-void SoGLARBShaderParameter::set2f(const float *value)
+void SoGLARBShaderParameter::set2f(const float *value, const char*, const int)
 {
   glProgramLocalParameter4fARB(this->target, this->identifier,
 			       value[0], value[1], value[0], value[0]);
 }
 
-void SoGLARBShaderParameter::set3f(const float *value)
+void SoGLARBShaderParameter::set3f(const float *value, const char*, const int)
 {
   glProgramLocalParameter4fARB(this->target, this->identifier,
 			       value[0], value[1], value[2], value[0]);
 }
 
-void SoGLARBShaderParameter::set4f(const float *value)
+void SoGLARBShaderParameter::set4f(const float *value, const char*, const int)
 {
   glProgramLocalParameter4fARB(this->target, this->identifier,
 			       value[0], value[1], value[2], value[3]);
@@ -146,7 +146,7 @@ SoGLShader::ShaderType SoGLARBShaderObject::shaderType() const
 }
 
 SoGLShaderParameter* SoGLARBShaderObject
-::getParameter(int index, const char* name, SoGLShader::ValueType type)
+::getParameter(int index, const char*, SoGLShader::ValueType)
 {
   return new SoGLARBShaderParameter(this->target, index);
 }

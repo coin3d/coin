@@ -1,20 +1,23 @@
 #include <Inventor/nodes/SoShaderObject.h>
-#include <Inventor/elements/SoGLShaderProgramElement.h>
-#include <Inventor/nodes/SoShaderParameter.h>
-#include <Inventor/nodes/SoFragmentShader.h>
-#include <Inventor/nodes/SoVertexShader.h>
-#include <Inventor/nodes/SoGLShaderProgram.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/sensors/SoNodeSensor.h>
-#include <fstream>
-#include <assert.h>
-#include <iostream>
 
-#include "SoGLShaderObject.h"
+#include <assert.h>
+#include <fstream>
+
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoGLShaderProgramElement.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/nodes/SoFragmentShader.h>
+#include <Inventor/nodes/SoGLShaderProgram.h>
+#include <Inventor/nodes/SoShaderParameter.h>
+#include <Inventor/nodes/SoVertexShader.h>
+#include <Inventor/sensors/SoNodeSensor.h>
+
 #include "SoGLARBShader.h"
 #include "SoGLCgShader.h"
 #include "SoGLSLShader.h"
+#include "SoGLShaderObject.h"
 
+// *************************************************************************
 
 class SoShaderObjectP 
 {
@@ -53,7 +56,11 @@ private:
 
 #define SELF this->pimpl
 
+// *************************************************************************
+
 SO_NODE_ABSTRACT_SOURCE(SoShaderObject);
+
+// *************************************************************************
 
 void SoShaderObject::initClass()
 {
@@ -159,7 +166,8 @@ SoShaderObjectP::~SoShaderObjectP()
   }
 }
 
-void SoShaderObjectP::GLRender(SoGLRenderAction * action)
+void
+SoShaderObjectP::GLRender(SoGLRenderAction * action)
 {
   SoState           * state         = action->getState();
   SoGLShaderProgram * shaderProgram = SoGLShaderProgramElement::get(state);
@@ -185,14 +193,15 @@ void SoShaderObjectP::GLRender(SoGLRenderAction * action)
     if (this->cachedSourceType == SoShaderObject::FILENAME) return;
 
     if (!this->isSupported(this->cachedSourceType)) {
-      std::cerr << "WARNING: ";
+      SbString s;
       switch (this->cachedSourceType) {
-	case SoShaderObject::ARB_PROGRAM:  std::cerr << "ARB_PROGRAM ";  break;
-	case SoShaderObject::CG_PROGRAM:   std::cerr << "CG_PROGRAM ";   break;
-	case SoShaderObject::GLSL_PROGRAM: std::cerr << "GLSL_PROGRAM "; break;
-                                  default: std::cerr << "unknown shader";
+      case SoShaderObject::ARB_PROGRAM: s = "ARB_PROGRAM "; break;
+      case SoShaderObject::CG_PROGRAM: s = "CG_PROGRAM "; break;
+      case SoShaderObject::GLSL_PROGRAM: s = "GLSL_PROGRAM "; break;
+      default: assert(FALSE && "unknown shader");
       }
-      std::cerr << "is not supported" << std::endl;
+      SoDebugError::postWarning("SoShaderObjectP::GLRender",
+                                "%s is not supported", s.getString());
       return;
     }
     
@@ -267,7 +276,8 @@ void SoShaderObjectP::GLRender(SoGLRenderAction * action)
 
 // sets this->cachedSourceType to [ARB|CG|GLSL]_PROGRAM
 // this->cachedSourceType will be set to FILENAME, if sourceType is unknown
-void SoShaderObjectP::checkType()
+void
+SoShaderObjectP::checkType()
 {
   this->cachedSourceType = 
     (SoShaderObject::SourceType)this->owner->sourceType.getValue();
@@ -301,14 +311,14 @@ void SoShaderObjectP::checkType()
       return;
     }
   }
-  std::cerr << std::endl
-    << " WARNING: Could not determine shader type of file '"
-    << fileName.getString() << "'!"                             << std::endl
-    << "          Following file extensions are supported:"     << std::endl
-    << "              *.fp   ->  ARB_PROGRAM (fragment)"        << std::endl
-    << "              *.vp   ->  ARB_PROGRAM (vertex)"          << std::endl
-    << "              *.cg   ->   CG_PROGRAM (fragment|vertex)" << std::endl
-    << "              *.glsl -> GLSL_PROGRAM (fragment|vertex)" << std::endl;
+  SoDebugError::postWarning("SoShaderObjectP::checkType",
+                            "Could not determine shader type of file '%s'!\n"
+                            "   Following file extensions are supported:\n"
+                            "       *.fp -> ARB_PROGRAM (fragment)\n"
+                            "       *.vp -> ARB_PROGRAM (vertex)\n"
+                            "       *.cg -> CG_PROGRAM (fragment|vertex)\n"
+                            "       *.glsl -> GLSL_PROGRAM (fragment|vertex)\n",
+                            fileName.getString());
   // error: could not determine SourceType
   this->cachedSourceType = SoShaderObject::FILENAME;
 }

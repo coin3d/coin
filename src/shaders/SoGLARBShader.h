@@ -21,14 +21,14 @@ class SoGLARBShaderParameter : public SoGLShaderParameter
 
   virtual SoGLShader::ShaderType shaderType() const;
 
-  virtual void set1f(const float value);
-  virtual void set2f(const float *value);
-  virtual void set3f(const float *value);
-  virtual void set4f(const float *value);
+  virtual void set1f(const float  value, const char* name, const int id);
+  virtual void set2f(const float *value, const char* name, const int id);
+  virtual void set3f(const float *value, const char* name, const int id);
+  virtual void set4f(const float *value, const char* name, const int id);
 
 public:
   SoGLARBShaderParameter(GLenum target, GLuint index);
-  ~SoGLARBShaderParameter();
+  virtual ~SoGLARBShaderParameter();
 
 private:
   GLenum target;

@@ -23,10 +23,10 @@ class SoGLSLShaderParameter : public SoGLShaderParameter
   virtual inline SbBool isTexture()    { return FALSE;                 }
   virtual inline SbBool isReferenced() { return (this->location >= 0); }
 
-  virtual void set1f(const float value);
-  virtual void set2f(const float *value);
-  virtual void set3f(const float *value);
-  virtual void set4f(const float *value);
+  virtual void set1f(const float  value, const char* name, const int id);
+  virtual void set2f(const float *value, const char* name, const int id);
+  virtual void set3f(const float *value, const char* name, const int id);
+  virtual void set4f(const float *value, const char* name, const int id);
 
   virtual SoGLShader::ShaderType shaderType() const;
 

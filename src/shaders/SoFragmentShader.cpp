@@ -21,7 +21,11 @@ SbBool SoFragmentShader::isVertexShader() const
   return FALSE;
 }
 
-SbBool SoFragmentShader::isSupported(SourceType sourceType)
+SbBool SoFragmentShader::isSupported(SourceType
+#if !defined(SO_ARB_SHADER_SUPPORT) || !defined(SO_CG_SHADER_SUPPORT)  || !defined(SO_GLSL_SHADER_SUPPORT)
+ sourceType
+#endif
+)
 {
   // FIXME: 20041001 martin
 #if !defined(SO_ARB_SHADER_SUPPORT)

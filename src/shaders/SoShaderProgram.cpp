@@ -5,6 +5,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/sensors/SoNodeSensor.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <iostream>
 #include <assert.h>
 
@@ -130,14 +131,14 @@ void SoShaderProgramP::GLRender(SoGLRenderAction *action)
   if (this->shouldTraverseShaderObjects) {
     SbBool flag = FALSE;
     
-    for (i=0; i<cnt1 && flag == FALSE; i++) {
+    for (i=0; i<cnt1; i++) {
       SoShaderObject *node = (SoShaderObject *)this->owner->shaderObject[i];
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
 	node->updateAllParameters();
 	if (node->containStateMatrixParameters()) flag = TRUE;
       }
     }
-    for (i=0; i<cnt2 && flag == FALSE; i++) {
+    for (i=0; i<cnt2; i++) {
       SoShaderObject *node = (SoShaderObject *)this->owner->getChild(i);
       if (node->isOfType(SoShaderObject::getClassTypeId())) {
 	node->updateAllParameters();
@@ -146,13 +147,14 @@ void SoShaderProgramP::GLRender(SoGLRenderAction *action)
     }
     this->doesContainStateMatrixParameters = flag;
   }
-  if (this->doesContainStateMatrixParameters) 
+  else if (this->doesContainStateMatrixParameters)
     this->updateStateMatrixParameters(state);
   
   this->shouldTraverseShaderObjects = FALSE;
+  SoGLTextureEnabledElement::set(state, TRUE);
 }
 
-void SoShaderProgramP::updateStateMatrixParameters(SoState *state)
+void SoShaderProgramP::updateStateMatrixParameters(SoState*)
 {
   int cnt1 = this->owner->shaderObject.getNum();
   int cnt2 = this->owner->getNumChildren();
@@ -199,7 +201,7 @@ void SoShaderProgramP::removeFromPreviousChildren(SoNode *shader)
   if (idx >= 0) this->previousChildren.remove(idx);
 }
 
-void SoShaderProgramP::sensorCB(void *data, SoSensor *sensor)
+void SoShaderProgramP::sensorCB(void *data, SoSensor*)
 {
   ((SoShaderProgramP *)data)->shouldTraverseShaderObjects = TRUE;
 }

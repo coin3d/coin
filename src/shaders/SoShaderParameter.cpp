@@ -1,4 +1,5 @@
 #include <Inventor/nodes/SoShaderParameter.h>
+
 #include "SoGLShaderObject.h"
 #include "SoGLCgShader.h"
 #include <iostream>
@@ -97,7 +98,9 @@ SoShaderParameter1f::~SoShaderParameter1f()
 void SoShaderParameter1f::updateParameter(SoGLShaderObject *shader)
 {
   if (!ensureParameter(shader, SoGLShader::FLOAT)) return;
-  this->parameter->set1f(this->value.getValue());
+  this->parameter->set1f(this->value.getValue(),
+			 this->name.getValue().getString(),
+			 this->identifier.getValue());
 }
 
 /* **************************************************************************
@@ -126,7 +129,9 @@ SoShaderParameter2f::~SoShaderParameter2f()
 void SoShaderParameter2f::updateParameter(SoGLShaderObject *shader)
 {
   if (!ensureParameter(shader, SoGLShader::FLOAT2)) return;
-  this->parameter->set2f(this->value.getValue().getValue());
+  this->parameter->set2f(this->value.getValue().getValue(),
+			 this->name.getValue().getString(),
+			 this->identifier.getValue());
 }
 
 /* **************************************************************************
@@ -155,7 +160,9 @@ SoShaderParameter3f::~SoShaderParameter3f()
 void SoShaderParameter3f::updateParameter(SoGLShaderObject *shader)
 {
   if (!ensureParameter(shader, SoGLShader::FLOAT3)) return;
-  this->parameter->set3f(this->value.getValue().getValue());
+  this->parameter->set3f(this->value.getValue().getValue(),
+			 this->name.getValue().getString(),
+			 this->identifier.getValue());
 }
 
 /* **************************************************************************
@@ -184,7 +191,9 @@ SoShaderParameter4f::~SoShaderParameter4f()
 void SoShaderParameter4f::updateParameter(SoGLShaderObject *shader)
 {
   if (!ensureParameter(shader, SoGLShader::FLOAT4)) return;
-  this->parameter->set4f(this->value.getValue().getValue());
+  this->parameter->set4f(this->value.getValue().getValue(),
+			 this->name.getValue().getString(),
+			 this->identifier.getValue());
 }
 
 /* **************************************************************************
@@ -231,14 +240,16 @@ SoShaderStateMatrixParameter::~SoShaderStateMatrixParameter()
 // State matrices only work with CG!!!
 void SoShaderStateMatrixParameter::updateParameter(SoGLShaderObject *shader)
 {
-  if (this->name.isDefault()) return;
   if (shader->shaderType() != SoGLShader::CG_SHADER) return;
+  if (this->name.isDefault()) return;
 
   if (!ensureParameter(shader, SoGLShader::FLOAT_MATRIX4)) return;
   
   CGGLenum type  = getType((MatrixType)matrixType.getValue());
   CGGLenum tform = getTransform((MatrixTransform)matrixTransform.getValue());
-  ((SoGLCgShaderParameter *)this->parameter)->setState(type,tform);
+
+  SoGLCgShaderParameter *param = (SoGLCgShaderParameter *)this->parameter;
+  param->setState(type, tform, this->name.getValue().getString());
 }
 
 CGGLenum SoShaderStateMatrixParameter::getType(MatrixType type)
@@ -264,3 +275,33 @@ CGGLenum SoShaderStateMatrixParameter::getTransform(MatrixTransform tform)
 }
 
 #endif /* SO_CG_SHADER_SUPPORT */
+
+/* **************************************************************************
+ * ***                      SoShaderParameterSampler2D                    ***
+ * **************************************************************************/
+
+SO_NODE_SOURCE(SoShaderParameterSampler2D);
+
+void SoShaderParameterSampler2D::initClass()
+{
+  SO_NODE_INIT_CLASS(SoShaderParameterSampler2D, SoUniformShaderParameter,
+		     "SoUniformShaderParameter");
+}
+
+SoShaderParameterSampler2D::SoShaderParameterSampler2D()
+{
+  SO_NODE_CONSTRUCTOR(SoShaderParameterSampler2D);
+
+  SO_NODE_ADD_FIELD(filename, (""));
+  //SO_NODE_ADD_FIELD(image,    ());
+}
+
+SoShaderParameterSampler2D::~SoShaderParameterSampler2D()
+{  
+}
+
+void SoShaderParameterSampler2D::updateParameter(SoGLShaderObject *shader)
+{
+  if (!ensureParameter(shader, SoGLShader::TEXTURE2D)) return;
+  //this->parameter->set4f(this->value.getValue().getValue());
+}

@@ -35,7 +35,7 @@ PFNGLGETOBJECTPARAMETERIVARBPROC glGetObjectParameterivARB;
 
 SoGLSLShaderParameter::SoGLSLShaderParameter(GLhandleARB           program,
 					     const char*           theName, 
-					     SoGLShader::ValueType theType)
+					     SoGLShader::ValueType)
 {
   this->location = glGetUniformLocationARB(program,(const GLcharARB *)theName);
   if (this->location == -1)
@@ -63,24 +63,24 @@ SoGLShader::ShaderType SoGLSLShaderParameter::shaderType() const
   return SoGLShader::GLSL_SHADER;
 }
 
-void SoGLSLShaderParameter::set1f(const float value)
+void SoGLSLShaderParameter::set1f(const float value, const char*, const int)
 {
   if (this->isReferenced() && isFloat()) glUniform1fARB(this->location, value);
 }
 
-void SoGLSLShaderParameter::set2f(const float *value)
+void SoGLSLShaderParameter::set2f(const float *value, const char*, const int)
 {
   if (this->isReferenced() && isFloat2()) 
     glUniform2fARB(this->location, value[0], value[1]);
 }
 
-void SoGLSLShaderParameter::set3f(const float *value)
+void SoGLSLShaderParameter::set3f(const float *value, const char*, const int)
 {
   if (this->isReferenced() && isFloat3())
     glUniform3fARB(this->location, value[0], value[1], value[2]);
 }
 
-void SoGLSLShaderParameter::set4f(const float *value)
+void SoGLSLShaderParameter::set4f(const float *value, const char*, const int)
 {
   if (this->isReferenced() && isFloat4()) 
     glUniform4fARB(this->location, value[0], value[1],value[2],value[3]);
@@ -154,7 +154,7 @@ void SoGLSLShaderObject::unload()
 }
 
 SoGLShaderParameter* SoGLSLShaderObject::
-getParameter(int index, const char* name, SoGLShader::ValueType type)
+getParameter(int, const char* name, SoGLShader::ValueType type)
 {
   return new SoGLSLShaderParameter(this->programHandle, name, type);
 }
