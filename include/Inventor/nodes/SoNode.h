@@ -51,6 +51,14 @@ public:
   void setOverride(const SbBool state);
   SbBool isOverride(void) const;
 
+  enum NodeType {
+    INVENTOR = 0,
+    VRML1 = 1
+  };
+  
+  void setNodeType(const NodeType type);
+  NodeType getNodeType(void) const;
+
   virtual SoNode * copy(SbBool copyconnections = FALSE) const;
   virtual SbBool affectsState(void) const;
 
@@ -110,6 +118,8 @@ protected:
   SoNode(void);
   virtual ~SoNode();
 
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+
   static const SoFieldData ** getFieldDataPtr(void);
 
   // These are necessary to avoid problems with us not exporting the
@@ -126,15 +136,11 @@ protected:
 
 private:
   static SoType classTypeId;
+  uint32_t stateflags;
+  void clearStateFlags(const unsigned int bits);
+  void setStateFlags(const unsigned int bits);
+  SbBool getState(const unsigned int bits) const;
 
-  // FIXME: works around a bug with Doxygen 1.0.0. Remove this hack
-  // when bug has been removed from next release version of
-  // Doxygen. 20000308 mortene.
-#ifndef DOXYGEN_SKIP_THIS
-  struct {
-    unsigned int override : 1;
-  } stateflags;
-#endif // !DOXYGEN_SKIP_THIS
 };
 
 #endif // !COIN_SONODE_H

@@ -47,6 +47,7 @@
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/SoInput.h>
 #include <assert.h>
 
 #if HAVE_CONFIG_H
@@ -73,6 +74,21 @@
   \internal
 */
 
+/*!
+  \enum SoNode::NodeType
+  Used to store node type.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::INVENTOR
+  Specifies Inventor node type.
+*/
+
+/*!
+  \var SoNode::NodeType SoNode::VRML1
+  Spcifies VRML V1.0 node type.
+*/
+
 
 uint32_t SoNode::nextUniqueId = 0;
 int SoNode::nextActionMethodIndex = 0;
@@ -88,13 +104,44 @@ SoNode::getClassTypeId(void)
   return SoNode::classTypeId;
 }
 
+// defines for node state flags
+
+#define FLAG_TYPEMASK 0x07 // max  8 types for now. Must be in LSBs
+#define FLAG_OVERRIDE 0x08
+
+// private methods. Inlined inside this file only.
+
+// clear bits in stateflags
+inline void
+SoNode::clearStateFlags(const unsigned int bits)
+{
+  this->stateflags &= ~bits;
+}
+
+// sets bits in stateflags
+inline void
+SoNode::setStateFlags(const unsigned int bits)
+{
+  this->stateflags |= bits;
+}
+
+// return TRUE if any of bits are set
+inline SbBool
+SoNode::getState(const unsigned int bits) const
+{
+  return (this->stateflags & bits) != 0;
+}
+
 /*!
   Default constructor, initializes node instance.
 */
 SoNode::SoNode(void)
 {
   this->uniqueId = SoNode::nextUniqueId++;
-  this->stateflags.override = FALSE;
+  this->stateflags = 0; // clear all flags
+
+  // set node type to Inventor by default.
+  this->setNodeType(SoNode::INVENTOR);
 }
 
 /*!
@@ -342,13 +389,14 @@ SoNode::initClasses(void)
 void
 SoNode::setOverride(const SbBool state)
 {
-  if ((state && !this->isOverride()) || (!state && this->isOverride())){
+  if (state != this->getState(FLAG_OVERRIDE)) {
     // This change affects caches in the tree, so we must change our id
     // setting, so the caches are regenerated.
     this->uniqueId = SoNode::nextUniqueId++;
+    
+    if (state) this->setStateFlags(FLAG_OVERRIDE);
+    else this->clearStateFlags(FLAG_OVERRIDE);
   }
-
-  this->stateflags.override = state;
 }
 
 /*!
@@ -359,7 +407,42 @@ SoNode::setOverride(const SbBool state)
 SbBool
 SoNode::isOverride(void) const
 {
-  return this->stateflags.override;
+  return this->getState(FLAG_OVERRIDE);
+}
+
+/*!
+  Sets the node type for this node to \a type. Since some nodes
+  should be handled differently in VRML1 vs. Inventor, this 
+  should be used to get correct behavior for those cases.
+  The default node type is INVENTOR.
+
+  This method is an extension versus the Open Inventor API.
+
+  \sa getNodeType()
+*/
+void 
+SoNode::setNodeType(const NodeType type)
+{
+  // make sure we have enogh bits to store this type
+  assert((uint32_t) type <= FLAG_TYPEMASK);
+  // clear old type
+  this->clearStateFlags(FLAG_TYPEMASK);
+  // set new type
+  this->setStateFlags((uint32_t) type);  
+}
+
+/*!
+  Returns the node type set for this node.
+  
+  This method is an extension versus the Open Inventor API.
+
+  \sa setNodeType()
+*/
+SoNode::NodeType 
+SoNode::getNodeType(void) const
+{
+  uint32_t type = this->stateflags & FLAG_TYPEMASK;
+  return (NodeType) type;
 }
 
 /*!
@@ -884,7 +967,7 @@ SoNode::copyContents(const SoFieldContainer * from, SbBool copyconnections)
   inherited::copyContents(from, copyconnections);
 
   SoNode * src = (SoNode *)from;
-  this->stateflags.override = src->isOverride();
+  this->stateflags = src->stateflags;
 }
 
 // Overloaded from parent class.
@@ -917,3 +1000,21 @@ SoNode::getFieldDataPtr(void)
 {
   return NULL;
 }
+
+/*!
+  Overloaded to set node type.
+*/
+SbBool 
+SoNode::readInstance(SoInput * in, unsigned short flags)
+{
+  SbBool ret = inherited::readInstance(in, flags);
+  if (ret) {
+    if (in->isFileVRML1()) this->setNodeType(SoNode::VRML1);
+  }
+  return ret;
+}
+
+// just undef flags here
+
+#undef FLAG_TYPEMASK
+#undef FLAG_OVERRIDE
