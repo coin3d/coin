@@ -151,8 +151,19 @@ coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 int
 coin_vsnprintf(char * dst, unsigned int n, const char * fmtstr, va_list args)
 {
-  /* This is how it is defined in MSVC++ 5.0. */
-  return _vsnprintf(dst, (size_t)n, fmtstr, args);
+  int length = _vsnprintf(dst, (size_t)n, fmtstr, args);
+  /* For the C run-times that comes with MSVC++ 5.0 and MSVC++ 6.0,
+     _vsnprintf() is specified to return -1 on overruns.
+
+     But as vsnprintf() return value semantics in the C99
+     specification is different (returns how many characters would
+     have been written if the buffer was large enough), we also check
+     for this, in case MS changes the behavior for _vsnprintf() to
+     match C99.
+  */
+  if (length >= (((int)n) - 1)) { length = -1; }
+
+  return length;
 }
 
 #else /* neither vsnprintf() nor _vsnprintf() available, roll our own */
