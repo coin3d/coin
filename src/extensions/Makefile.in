@@ -127,14 +127,11 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 @BUILD_WITH_SUPERGLU_TRUE@SUPERGLUDIR = superglu
 @BUILD_WITH_SUPERGLU_FALSE@SUPERGLUDIR = 
 
-@BUILD_WITH_THREADS_TRUE@THREADSDIR = threads
-@BUILD_WITH_THREADS_FALSE@THREADSDIR = 
-
 VRML97DIR = 
 
-SUBDIRS = $(SUPERGLUDIR) $(VRML97DIR) $(THREADSDIR)
+SUBDIRS = $(SUPERGLUDIR) $(VRML97DIR)
 
-DIST_SUBDIRS = . $(SUPERGLUDIR) $(VRML97DIR) $(THREADSDIR)
+DIST_SUBDIRS = . $(SUPERGLUDIR) $(VRML97DIR)
 subdir = src/extensions
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/config.h
