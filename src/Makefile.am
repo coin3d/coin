@@ -232,6 +232,7 @@ uninstall-local:
 	  "$$baseincdir/base" \
 	  "$$baseincdir/bundles" \
 	  "$$baseincdir/caches" \
+	  "$$baseincdir/collision" \
 	  "$$baseincdir/details" \
 	  "$$baseincdir/draggers" \
 	  "$$baseincdir/elements" \
