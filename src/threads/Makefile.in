@@ -245,28 +245,35 @@ target_alias = @target_alias@
 target_cpu = @target_cpu@
 target_os = @target_os@
 target_vendor = @target_vendor@
+@BUILD_WITH_THREADS_FALSE@RegularSources = \
+@BUILD_WITH_THREADS_FALSE@	common.c \
+@BUILD_WITH_THREADS_FALSE@	storage.c \
+@BUILD_WITH_THREADS_FALSE@	threads-dummy.cpp
 
-RegularSources = \
-	common.c \
-	thread.c \
-	mutex.c \
-	rwmutex.c \
-	storage.c \
-	condvar.c \
-	worker.c \
-	wpool.c \
-	recmutex.c \
-	sched.c \
-	sync.c \
-	fifo.c \
-	barrier.c \
-	threads-dummy.cpp
+@BUILD_WITH_THREADS_TRUE@RegularSources = \
+@BUILD_WITH_THREADS_TRUE@	common.c \
+@BUILD_WITH_THREADS_TRUE@	thread.c \
+@BUILD_WITH_THREADS_TRUE@	mutex.c \
+@BUILD_WITH_THREADS_TRUE@	rwmutex.c \
+@BUILD_WITH_THREADS_TRUE@	storage.c \
+@BUILD_WITH_THREADS_TRUE@	condvar.c \
+@BUILD_WITH_THREADS_TRUE@	worker.c \
+@BUILD_WITH_THREADS_TRUE@	wpool.c \
+@BUILD_WITH_THREADS_TRUE@	recmutex.c \
+@BUILD_WITH_THREADS_TRUE@	sched.c \
+@BUILD_WITH_THREADS_TRUE@	sync.c \
+@BUILD_WITH_THREADS_TRUE@	fifo.c \
+@BUILD_WITH_THREADS_TRUE@	barrier.c \
+@BUILD_WITH_THREADS_TRUE@	threads-dummy.cpp
+
 
 LinkHackSources = \
 	all-threads-c.c \
 	threads-dummy.cpp
 
+
 PublicHeaders = 
+
 PrivateHeaders = \
 	condvar_pthread.ic \
 	condvar_win32.ic \
@@ -277,8 +284,11 @@ PrivateHeaders = \
 	thread_win32.ic \
 	wrappers.cpp
 
+
 ObsoleteHeaders = 
 
+
+# **************************************************************************
 
 # win32 isn't able to link wrappers without including all dependencies
 # also disabled for other platforms since there were also problems
@@ -345,22 +355,28 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 threads_lst_AR = $(AR) cru
 threads_lst_LIBADD =
-am__threads_lst_SOURCES_DIST = common.c thread.c mutex.c rwmutex.c \
-	storage.c condvar.c worker.c wpool.c recmutex.c sched.c sync.c \
-	fifo.c barrier.c threads-dummy.cpp all-threads-c.c
+am__threads_lst_SOURCES_DIST = common.c storage.c threads-dummy.cpp \
+	thread.c mutex.c rwmutex.c condvar.c worker.c wpool.c \
+	recmutex.c sched.c sync.c fifo.c barrier.c all-threads-c.c
 am__objects_1 = all-threads-c.$(OBJEXT) threads-dummy.$(OBJEXT)
-am__objects_2 = common.$(OBJEXT) thread.$(OBJEXT) mutex.$(OBJEXT) \
-	rwmutex.$(OBJEXT) storage.$(OBJEXT) condvar.$(OBJEXT) \
-	worker.$(OBJEXT) wpool.$(OBJEXT) recmutex.$(OBJEXT) \
-	sched.$(OBJEXT) sync.$(OBJEXT) fifo.$(OBJEXT) barrier.$(OBJEXT) \
-	threads-dummy.$(OBJEXT)
+@BUILD_WITH_THREADS_TRUE@am__objects_2 = common.$(OBJEXT) \
+@BUILD_WITH_THREADS_TRUE@	thread.$(OBJEXT) mutex.$(OBJEXT) \
+@BUILD_WITH_THREADS_TRUE@	rwmutex.$(OBJEXT) storage.$(OBJEXT) \
+@BUILD_WITH_THREADS_TRUE@	condvar.$(OBJEXT) worker.$(OBJEXT) \
+@BUILD_WITH_THREADS_TRUE@	wpool.$(OBJEXT) recmutex.$(OBJEXT) \
+@BUILD_WITH_THREADS_TRUE@	sched.$(OBJEXT) sync.$(OBJEXT) \
+@BUILD_WITH_THREADS_TRUE@	fifo.$(OBJEXT) barrier.$(OBJEXT) \
+@BUILD_WITH_THREADS_TRUE@	threads-dummy.$(OBJEXT)
+@BUILD_WITH_THREADS_FALSE@am__objects_2 = common.$(OBJEXT) \
+@BUILD_WITH_THREADS_FALSE@	storage.$(OBJEXT) \
+@BUILD_WITH_THREADS_FALSE@	threads-dummy.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_threads_lst_OBJECTS = $(am__objects_3)
 am__EXTRA_threads_lst_SOURCES_DIST = condvar_pthread.ic condvar_win32.ic \
 	mutex_pthread.ic mutex_win32cs.ic mutex_win32mutex.ic \
 	thread_pthread.ic thread_win32.ic wrappers.cpp all-threads-c.c \
-	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
+	threads-dummy.cpp common.c storage.c thread.c mutex.c rwmutex.c \
 	condvar.c worker.c wpool.c recmutex.c sched.c sync.c fifo.c \
 	barrier.c
 threads_lst_OBJECTS = $(am_threads_lst_OBJECTS)
@@ -368,13 +384,17 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libthreads_la_LDFLAGS =
 libthreads_la_LIBADD =
-am__libthreads_la_SOURCES_DIST = common.c thread.c mutex.c rwmutex.c \
-	storage.c condvar.c worker.c wpool.c recmutex.c sched.c sync.c \
-	fifo.c barrier.c threads-dummy.cpp all-threads-c.c
+am__libthreads_la_SOURCES_DIST = common.c storage.c threads-dummy.cpp \
+	thread.c mutex.c rwmutex.c condvar.c worker.c wpool.c \
+	recmutex.c sched.c sync.c fifo.c barrier.c all-threads-c.c
 am__objects_7 = all-threads-c.lo threads-dummy.lo
-am__objects_8 = common.lo thread.lo mutex.lo rwmutex.lo storage.lo \
-	condvar.lo worker.lo wpool.lo recmutex.lo sched.lo sync.lo \
-	fifo.lo barrier.lo threads-dummy.lo
+@BUILD_WITH_THREADS_TRUE@am__objects_8 = common.lo thread.lo mutex.lo \
+@BUILD_WITH_THREADS_TRUE@	rwmutex.lo storage.lo condvar.lo \
+@BUILD_WITH_THREADS_TRUE@	worker.lo wpool.lo recmutex.lo \
+@BUILD_WITH_THREADS_TRUE@	sched.lo sync.lo fifo.lo barrier.lo \
+@BUILD_WITH_THREADS_TRUE@	threads-dummy.lo
+@BUILD_WITH_THREADS_FALSE@am__objects_8 = common.lo storage.lo \
+@BUILD_WITH_THREADS_FALSE@	threads-dummy.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
 am_libthreads_la_OBJECTS = $(am__objects_9)
@@ -382,21 +402,21 @@ am__EXTRA_libthreads_la_SOURCES_DIST = condvar_pthread.ic \
 	condvar_win32.ic mutex_pthread.ic mutex_win32cs.ic \
 	mutex_win32mutex.ic thread_pthread.ic thread_win32.ic \
 	wrappers.cpp all-threads-c.c threads-dummy.cpp common.c \
-	thread.c mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c \
+	storage.c thread.c mutex.c rwmutex.c condvar.c worker.c wpool.c \
 	recmutex.c sched.c sync.c fifo.c barrier.c
 libthreads_la_OBJECTS = $(am_libthreads_la_OBJECTS)
 libthreads@SUFFIX@LINKHACK_la_LDFLAGS =
 libthreads@SUFFIX@LINKHACK_la_LIBADD =
-am__libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = common.c thread.c \
-	mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c \
-	recmutex.c sched.c sync.c fifo.c barrier.c threads-dummy.cpp \
+am__libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = common.c storage.c \
+	threads-dummy.cpp thread.c mutex.c rwmutex.c condvar.c worker.c \
+	wpool.c recmutex.c sched.c sync.c fifo.c barrier.c \
 	all-threads-c.c
 am_libthreads@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	condvar_pthread.ic condvar_win32.ic mutex_pthread.ic \
 	mutex_win32cs.ic mutex_win32mutex.ic thread_pthread.ic \
 	thread_win32.ic wrappers.cpp all-threads-c.c threads-dummy.cpp \
-	common.c thread.c mutex.c rwmutex.c storage.c condvar.c \
+	common.c storage.c thread.c mutex.c rwmutex.c condvar.c \
 	worker.c wpool.c recmutex.c sched.c sync.c fifo.c barrier.c
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
