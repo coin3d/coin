@@ -84,16 +84,16 @@ expose_cb(void)
 
   glBindTexture(GL_TEXTURE_2D,textures[0]);
 
-  GLvoid * pixels = malloc(256*256*4);
-  (void)memset(pixels, 0x55, 256*256*4);
+  static GLvoid * pixels = NULL;
+  if (!pixels) {
+    pixels = malloc(256*256*4);
+    (void)memset(pixels, 0x55, 256*256*4);
+  }
   glTexImage2D(GL_TEXTURE_2D,0,0x0003,2,2,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
   glTexImage2D(GL_TEXTURE_2D,1,0x0003,1,1,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
 
   glBindTexture(GL_TEXTURE_2D,textures[0]);
   glDisable(GL_ALPHA_TEST);
-  glBegin(GL_TRIANGLES);
-  send_triangle();
-  glEnd();
 
   glBegin(GL_TRIANGLES);
   glColor4ub(255,255,0,255);
@@ -122,13 +122,11 @@ expose_cb(void)
   send_triangle();
   glEnd();
 
-  glEnable(GL_TEXTURE_2D);
   glBindTexture(GL_TEXTURE_2D,textures[1]);
   glBegin(GL_TRIANGLES);
   send_triangle();
   glEnd();
 
-  glEnable(GL_TEXTURE_2D);
   glColor4ub(0,0,255,255);
   glBindTexture(GL_TEXTURE_2D,textures[1]);
 
@@ -138,8 +136,9 @@ expose_cb(void)
   glEnd();
 
   glEnable(GL_TEXTURE_2D);
-  glColor4ub(255,0,255,255);
   glBindTexture(GL_TEXTURE_2D,textures[1]);
+
+  glColor4ub(255,0,255,255);
 
   glBegin(GL_TRIANGLES);
   for (i=0; i < 16; i++) { send_triangle(); }
