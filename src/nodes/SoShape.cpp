@@ -1142,6 +1142,20 @@ SoShape::notify(SoNotList * nl)
   }
 }
 
+/*!
+  Return the bounding box cache for this shape. It might return
+  NULL if no bounding box cache has been created. If not NULL, the
+  caller must check if the cache is valid before using it. This
+  can be done using SoCache::isValid().
+  
+  \since 2002-11-07
+*/
+const SoBoundingBoxCache * 
+SoShape::getBoundingBoxCache(void) const
+{
+  return THIS->bboxcache;
+}
+
 // return the bbox for this shape, using the cache if valid,
 // calculating it if not.
 void

@@ -37,6 +37,7 @@ class SoState;
 class SoTextureCoordinateElement;
 class SbVec2f;
 class SoMaterialBundle;
+class SoBoundingBoxCache;
 
 class COIN_DLL_API SoShape : public SoNode {
   typedef SoNode inherited;
@@ -66,7 +67,8 @@ public:
   static void getScreenSize(SoState * const state, const SbBox3f & boundingbox,
                             SbVec2s & rectsize);
   static float getDecimatedComplexity(SoState * state, float complexity);
-
+  const SoBoundingBoxCache * getBoundingBoxCache(void) const;
+  
 protected:
   SoShape(void);
   virtual ~SoShape();
