@@ -407,3 +407,27 @@ STUFF TO FIX IN COIN
 
   See also the comments about this in the technical ``FAQ'' file on
   the root of the sourcecode archive.
+
+
+* Rewrite non-member/friend operator methods for the base classes.
+  2002-06-05  Kristian Eide, write-up by <mortene@sim.no>
+
+  This:
+
+    friend SbMatrix operator *(const SbMatrix &m1, const SbMatrix &m2);
+
+  can for instance be rewritten as this, with the exact same
+  semantics:
+
+    SbMatrix SbMatrix::operator*(const SbMatrix &m);
+
+  Rewriting these should be done for two reasons: 1) the member
+  operator-functions can be made more efficient, as they can access
+  the private data of the class-instances directly, 2) it looks
+  cleaner.
+
+  Note that not *all* of them can be converted, like for instance this
+  one, which has a native type on the left side of the binary
+  *-operator:
+
+    friend SbVec3f operator *(float d, const SbVec3f &v);
