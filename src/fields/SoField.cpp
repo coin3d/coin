@@ -1532,17 +1532,28 @@ SoField::evaluate(void) const
   if (this->getDirty() == FALSE) return;
   if (this->isConnected() == FALSE) return;
 
-  // FIXME: 2002-02-22 pederb
-  // Temporary fix. I needed to read a field while in notify() in Geo2000.
-  // Notify me before removing this code, please...
-  if (this->getStatus(FLAG_ISEVALUATING)) return;
-
-
-  // Recursive calls to SoField::evalute() shouldn't happen, as the
-  // state of the field variables might not be consistent while
-  // evaluating.
-  assert(!this->getStatus(FLAG_ISEVALUATING));
-
+  // Recursive calls to SoField::evalute() should _absolutely_ not
+  // happen, as the state of the field variables might not be
+  // consistent while evaluating.
+  //
+  // This is an error which is not too hard to bump into, and the
+  // _immediate_ repercussions are non-fatal, so we just spit out this
+  // error message and carry on -- for less application programmer
+  // frustrations.
+  if (this->getStatus(FLAG_ISEVALUATING)) {
+#if COIN_DEBUG
+    SoDebugError::post("SoField::evaluate",
+                       "Detected indirectly recursive call to "
+                       "SoField::evaluate() -- which is a *bad* thing."
+                       "This indicates a non-trivial programming error "
+                       "somewhere either in the application (most likely) "
+                       "or the library code itself (less likely). "
+                       "We strongly advise you to investigate and resolve "
+                       "this issue before moving on.");
+#endif // COIN_DEBUG
+    return;
+  }
+  
   // Cast away the const. (evaluate() must be const, since we're using
   // evaluate() from getValue().)
   SoField * that = (SoField *)this;
