@@ -562,13 +562,17 @@ void
 SoOutput::write(const SbString & s)
 {
   // FIXME: share code with SoOutput::write(const SbName &). 19991113 mortene.
+  // FIXME: Verify correctness for !VRML97 formats (kintel 20030430)
 
   if (this->isBinary()) {
     this->write(s.getString());
   }
   else {
     SbString ws("\"");
-    ws += s;
+    for (int i=0;i<s.getLength();i++) {
+      if (s[i] == '"' || s[i] == '\\') ws += "\\";
+      ws += s[i];
+    }
     ws += "\"";
     this->write(ws.getString());
   }
