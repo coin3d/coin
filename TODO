@@ -20,22 +20,12 @@ TODO:
 
 *** BUILD ITEMS ***
 
-* [mortene:20000112] replace larsa's libm macro check with the one
-  which comes with libtool (AC_CHECK_LIBM).
-
-* [mortene:20000112] construct an m4 macro for autoconf which detects
-  the presence of libCoin and adds the propriate flags and stuff for
-  application programmers, and install it in $prefix/share/aclocal/.
-
 * [mortene:19991218] set up a "make test" target which can do
   regression testing. Take a look at the functionality offered by
   DejaGnu to see if it can be useful for our purposes.
 
 * [pederb:19991217] demand at least version 2.8 when trying to compile
   with GCC (g++).
-
-* [mortene:19991209] switch to latest release version of libtool
-  (v1.3.4 as of today).
 
 * [mortene:19991113] is it possible to get the make process to print
   out which dependency causes recompilation of a file? That would be a
@@ -48,9 +38,6 @@ TODO:
   subsequent core dump, of course) on SoDebugError::postWarning() and
   SoDebugError::post().
 
-* [mortene:19990926] add configure option for specifying location of
-  simage.
-
 * [mortene:19990912] get rid of Inventor/system/inttypes.h. Check to
   see if we can use the AC_COMPILE_CHECK_SIZEOF macro from the
   autoconf macro archive to find and define types for 8/16/32/64 bits.
@@ -58,10 +45,6 @@ TODO:
 * [mortene:19990912] get rid of Inventor/system/kosher.h, replace with
   autoconf checks. (Needs to try compiling under g++ and SGI CC to
   check that we've covered the functionality provided.)
-
-* [mortene:19990924] clean up the configure.in file a bit by making
-  macros SIM_ARG_WITH_BOOL, SIM_ARG_WITHOUT_BOOL, SIM_ARG_ENABLE_BOOL
-  and SIM_ARG_DISABLE_BOOL?
 
 * [mortene:19990912] add options in configure for compiling slimmed
   versions of Coin (--without-coin-engines etc). Or perhaps make a
@@ -72,11 +55,6 @@ TODO:
 
 * [mortene:19990913] integrate the doxygen man- and html-generation
   into "make install".
-
-* [mortene:19990917] clean up the .h-files before installation: remove
-  "//$ BEGIN TEMPLATE" and "//$ END TEMPLATE". Remove
-  "#if.*(COIN_EXCLUDE_.*)" blocks? Remove stuff between
-  __SOLIB_INTERNAL__.
 
 * [mortene:1999????] make Coin build under MSWindows with the Cygwin
   tools.
@@ -138,109 +116,5 @@ TODO:
 * [mortene:19990913] fill in the ``HACKING'' file with tips & tricks
   for faster turn-around when doing development.
 
-
-===============================================================================
-DONE:
-=====
-
-(format is: "* [author:conceived-date][implementer:finished-date] item")
-
-*** RENDERING ITEMS ***
-
-
-
-*** BUILD ITEMS ***
-
-* [mortene:19991108][mortene:19991213] it looks like the header files
-  are copied twice upon ``make install'', so the hack in the
-  Makefile.am files to work around an Automake bug should be improved
-  a bit.. or perhaps we could just as well wait for the next Automake
-  release, and remove the hack altogether?
-  => this was a "false alarm"
-
-* [mortene:19990916][mortene:19991205] make ``make install'' avoid
-  re-installing header files which has not been modified (and other
-  untouched files, for that matter).
-
-* [mortene:19990926][mortene:19991205] fix code which generates
-  warnings when configured with --disable-debug.
-
-* [mortene:19991124][mortene:19991126] install the binaries under the
-  tools/ directory in $prefix/bin.
-        
-* [mortene:19990916][mortene:19991030] improve the autoconf macro
-  which checks for Mesa/OpenGL (read the FIXME's in configure.in just
-  above where it's in use). NB: this macro is _completely_ and
-  _utterly_ foobar! We're probably better off writing our own
-  macro(s). ==> Didn't bother to make a new macro, as the OpenGL/Mesa
-  checks aren't too complex (not much different from searching for any
-  other link library).
-
-* [mortene:19990926][mortene:19990926] add "testlib" idea from DDJ to
-  increase turnaround time when doing compile & link.
-
-* [mortene:19990924][mortene:19990926] check for simage in the
-  --prefix installation directory.
-
-* [mortene:19990914][mortene:19990926] check possibility of making all
-  .o/.lo files (or only the .la files?) into .so shared libraries to
-  avoid long linking times (could be a brilliant hack if it is
-  possible)
-
-* [mortene:19990924][mortene:19990924] default to compile without RTTI
-  and exceptions for g++/egcs?
-
-* [mortene:19990918][mortene:19990918] use the GL_CFLAGS and GL_LIBS
-  from the OpenGL detection macro.
-
-* [mortene:19990912][mortene:19990916] add configure options for
-  turning compilation with profiling information on or off.
-
-* [mortene:19990912][mortene:19990916] add configure options for
-  turning compilation with all compiler warnings on or off.
-
-* [mortene:19990912][mortene:19990915] include check in configure.in
-  for OpenGL/Mesa.
-
-* [mortene:19990912][mortene:19990913] add configure option for doing
-  compilation without any symbols included in the object files.
-
-* [mortene:19990912][mortene:19990913] add configure option for
-  turning compilation with all debug information on or off.
-
-* [mortene:19990913][mortene:19990913] avoid having
-  include/Inventor/SbBasic.h being regenerated if it would be
-  identical to the file already present.
-
-* [mortene:19990913][mortene:19990913] remove multiple -lsimage on the
-  final libCoin link line.
-
-* [mortene:19990913][mortene:19990913] ``make'' package within the
-  srcdir, so the .cvsignore file(s) can be constructed and submitted.
-
-* [mortene:19990912][mortene:19990913] make version settings in
-  SbBasic.h automatically follow the definitions made in configure.in.
-
-* [mortene:19990912][mortene:19990913] include check in configure.in
-  for simage.
-
-* [mortene:19990913][mortene:19990913] use simage define setting to
-  include/exclude use of functionality possibly provided by the simage
-  library.
-
-
-
-*** GENERIC ITEMS ***
-
-* [mortene:19990913][mortene:19991213] move tasklist from
-  docs/todo.txt into this file => killed todo.txt alltogether.
-
-*** SUPPORT ITEMS ***
-
-* [mortene:19991110][mortene:19991115] pipe commit messages from CVS
-  to a coin-cvs mailing list.
-
-* [mortene:19990807][mortene:19991009] fix up the autogeneration of
-  Metadon-pages.
 
 ===============================================================================
