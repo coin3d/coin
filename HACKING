@@ -399,7 +399,7 @@ A few points about include files.
   * optional libraries (for instance audio)
   * Open Inventor *core* headers
   * Open Inventor toolkit headers
-  * Open Inventor exensions headers
+  * Open Inventor extensions headers
   * internal headers
   * "inline" source files
 
