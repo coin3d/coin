@@ -210,7 +210,7 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     }
     break;
   case ID_FMOD:
-    result->value = fmod(param1.value, param2.value);
+    result->value = (float) fmod(param1.value, param2.value);
     break;
   case ID_NEG:
     result->value = - param1.value;
@@ -258,7 +258,7 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     break;
   case ID_ATAN2:
     if (param2.value == 0.0) {
-      result->value = param1.value >= 0.0f ? M_PI * 0.5f : - M_PI * 0.5f;
+      result->value = (float) (param1.value >= 0.0f ? M_PI * 0.5 : - M_PI * 0.5);
     }
     else {
       result->value = (float)atan2(param1.value, param2.value);
@@ -288,13 +288,13 @@ so_eval_traverse(so_eval_node *node, so_eval_param *result, const so_eval_cbdata
     result->value = param1.value <= 0.0f ? -38.0f : (float)log10(param1.value);
     break;
   case ID_CEIL:
-    result->value = ceil(param1.value);
+    result->value = (float) ceil(param1.value);
     break;
   case ID_FLOOR:
-    result->value = floor(param1.value);
+    result->value = (float) floor(param1.value);
     break;
   case ID_FABS:
-    result->value = fabs(param1.value);
+    result->value = (float) fabs(param1.value);
     break;
   case ID_RAND:
     /* FIXME: investigate how this is supposed to work. pederb, 20000307 */
