@@ -83,6 +83,10 @@ SoProfileElement::add(SoState * const state,
 {
   SoProfileElement * element = (SoProfileElement *)
     getElement(state, classStackIndex);
+
+  // FIXME: this doesn't look correct. Shouldn't we check the
+  // SoProfile::linkage field, and then append or replace based on
+  // that value? 20000327 mortene.
   element->profiles.append(profile);
 }
 
