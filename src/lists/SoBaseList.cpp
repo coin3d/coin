@@ -171,12 +171,20 @@ SoBaseList::operator=(const SoBaseList & l)
   return *this;
 }
 
-// Documented in superclass. Overridden from parent class to cast from
-// the \c void pointer actually stored.
+/*!
+  Returns element at \a idx.
+
+  Will automatically expand the size of the internal array if \a idx
+  is outside the current bounds of the list. The values of any
+  additional pointers are then set to \c NULL.
+*/
 SoBase *
-SoBaseList::operator[](const int i) const
+SoBaseList::operator[](const int idx) const
 {
-  return (SoBase *)SbPList::operator[](i);
+  // Overridden from superclass to cast from the \c void pointer
+  // actually stored.
+
+  return (SoBase *)SbPList::operator[](idx);
 }
 
 /*!

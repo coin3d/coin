@@ -55,6 +55,17 @@
 */
 
 /*!
+  \fn SoDetail * SoDetailList::operator[](const int idx) const
+
+  Returns element at \a idx.
+
+  Will automatically expand the size of the internal array if \a idx
+  is outside the current bounds of the list. The values of any
+  additional pointers are then set to \c NULL.
+*/
+
+
+/*!
   Copy constructor.
 */
 SoDetailList::SoDetailList(const SoDetailList & l)

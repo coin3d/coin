@@ -97,7 +97,7 @@
 */
 
 /*!
-  \fn void *& operator[](const int index) const
+  \fn void *& SbPList::operator[](const int index) const
 
   Returns element at \a index.
 

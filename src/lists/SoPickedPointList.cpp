@@ -55,8 +55,17 @@
 */
 
 /*!
-  \fn SoPickedPointList::SoPickedPointList(const SoPickedPointList & l)
+  \fn SoPickedPoint * SoPickedPoint::operator[](const int idx) const
 
+  Returns element at \a idx.
+
+  Will automatically expand the size of the internal array if \a idx
+  is outside the current bounds of the list. The values of any
+  additional pointers are then set to \c NULL.
+*/
+
+
+/*!
   Copy constructor. Will copy picked points, not just pointers.
 
   \sa SbList::SbList(const SbList<Type> & l)

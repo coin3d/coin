@@ -53,7 +53,16 @@
 
 // void append(SoEngineOutput * output);
 // void insert(SoEngineOutput * output, const int insertbefore);
-// SoEngineOutput * operator [](const int idx) const
+
+/*!
+  \fn SoEngineOutput * SoEngineOutput::operator[](const int idx) const
+
+  Returns element at \a idx.
+
+  Will automatically expand the size of the internal array if \a idx
+  is outside the current bounds of the list. The values of any
+  additional pointers are then set to \c NULL.
+*/
 
 
 /*!

@@ -74,7 +74,7 @@
 */ 
 
 /*!
-  \fn const SbString ** getArrayPtr(void) const 
+  \fn const SbString ** SbStringList::getArrayPtr(void) const 
   
   Overridden from parent to return an SbString pointer array.
 */
