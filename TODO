@@ -92,9 +92,6 @@ TODO:
 
 *** SUPPORT ITEMS ***
 
-* [mortene:19991110] pipe commit messages from CVS to a coin-cvs
-  mailing list.
-
 * [mortene:19990807] make an overview list on the Coin WWW pages of
   what's implemented and what's not -- separate list into "vs OI 2.1"
   and "vs OI 2.5".
@@ -194,6 +191,9 @@ DONE:
 
 
 *** SUPPORT ITEMS ***
+
+* [mortene:19991110][mortene:19991115] pipe commit messages from CVS
+  to a coin-cvs mailing list.
 
 * [mortene:19990807][mortene:19991009] fix up the autogeneration of
   Metadon-pages.
