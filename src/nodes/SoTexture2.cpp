@@ -56,14 +56,14 @@
   {
     if (argc < 2) return -1;
     SoDB::init();
-  
+
     SoInput in;
     if (!in.openFile(argv[1])) return -1;
 
     SoSeparator * root = SoDB::readAll(&in);
     if (!root) return -1;
     root->ref();
-  
+
     SoSearchAction sa;
     sa.setType(SoTexture2::getClassTypeId());
     sa.setInterest(SoSearchAction::ALL);
@@ -71,7 +71,7 @@
     sa.apply(root);
     SoPathList & pl = sa.getPaths();
     SbDict namedict;
-     
+
     for (int i = 0; i < pl.getLength(); i++) {
       SoFullPath * p = (SoFullPath*) pl[i];
       if (p->getTail()->isOfType(SoTexture2::getClassTypeId())) {
@@ -178,12 +178,14 @@
 #include <Inventor/elements/SoTextureScalePolicyElement.h>
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/lists/SbStringList.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
+#include <Inventor/C/glue/gl.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -198,12 +200,15 @@
 /*!
   \var SoTexture2::Model SoTexture2::MODULATE
 
-  Texture image is modulated with polygon shading.
+  Texture color is multipled by the polygon color. The result will
+  be Phong shaded (if light model is PHONG).
 */
 /*!
   \var SoTexture2::Model SoTexture2::DECAL
 
-  Texture image overwrites polygon colors.
+  Texture image overwrites polygon shading. Textured pixels will
+  not be Phong shaded. Has undefined behaviour for grayscale and
+  grayscale-alpha textures.
 */
 /*!
   \var SoTexture2::Model SoTexture2::BLEND
@@ -211,8 +216,24 @@
   This model is normally used with monochrome textures (i.e. textures
   with one or two components). The first component, the intensity, is
   then used to blend between the shaded color of the polygon and the
-  SoTexture2::blendColor.  
+  SoTexture2::blendColor.
 */
+/*!
+  \var SoTexture2::Model SoTexture2::REPLACE
+
+  Texture image overwrites polygon shading. Textured pixels will not
+  be Phong shaded. Supports grayscale and grayscale alpha
+  textures. This feature requires OpenGL 1.1. MODULATE will be used if
+  OpenGL version < 1.1 is detected.
+
+  Please note that using this texture model will make your Inventor
+  files incompatible with older versions of Coin and Inventor. You
+  need Coin >= 2.2 or TGS Inventor 4.0 to load Inventor files that
+  uses the REPLACE texture model.
+
+  \since Coin 2.2
+  \since TGS Inventor 4.0
+*/ 
 
 /*!
   \enum SoTexture2::Wrap
@@ -354,6 +375,7 @@ SoTexture2::SoTexture2(void)
   SO_NODE_DEFINE_ENUM_VALUE(Model, MODULATE);
   SO_NODE_DEFINE_ENUM_VALUE(Model, DECAL);
   SO_NODE_DEFINE_ENUM_VALUE(Model, BLEND);
+  SO_NODE_DEFINE_ENUM_VALUE(Model, REPLACE);
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
 
   PRIVATE(this)->glimage = NULL;
@@ -481,12 +503,32 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   }
 
   UNLOCK_GLIMAGE(this);
-
+  
+  SoTextureImageElement::Model glmodel = (SoTextureImageElement::Model) 
+    this->model.getValue();
+  
+  if (glmodel == SoTextureImageElement::REPLACE) {
+    const cc_glglue * glue = cc_glglue_instance(SoGLCacheContextElement::get(state));
+    if (!cc_glglue_glversion_matches_at_least(glue, 1, 1, 0)) {
+      static int didwarn = 0;
+      if (!didwarn) {
+        SoDebugError::postWarning("SoTexture2::GLRender",
+                                  "Unable to use the GL_REPLACE texture model. "
+                                  "Your OpenGL version is < 1.1. "
+                                  "Using GL_MODULATE instead.");
+        didwarn = 1;
+      }
+      // use MODULATE and not DECAL, since DECAL only works for RGB
+      // and RGBA textures
+      glmodel = SoTextureImageElement::MODULATE;
+    }
+  }
+  
   SoGLTextureImageElement::set(state, this,
                                PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
-                               (SoTextureImageElement::Model) model.getValue(),
+                               glmodel,
                                this->blendColor.getValue());
-
+  
   SoGLTexture3EnabledElement::set(state, this, FALSE);
   SoGLTextureEnabledElement::set(state,
                                  this, PRIVATE(this)->glimagevalid &&
@@ -550,7 +592,7 @@ SoTexture2::callback(SoCallbackAction * action)
 }
 
 // doc from parent
-void 
+void
 SoTexture2::rayPick(SoRayPickAction * action)
 {
   SoTexture2::doAction(action);
