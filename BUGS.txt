@@ -3893,7 +3893,23 @@ incremented during the copy, but never decremented :(
 
 =====================================================================
 
-145 Compatibility issue: SoShapeHints::windingType missing in Coin.
+145 Offscreen rendering not working on Mac OS X/X11.
+
+    This might either be a problem with our offscreen rendering code
+    (rather unlikely, since the GLX code that works on other platform
+    is used) or a limitation of the X11 implementation itself (more
+    likely - it was a known bug in the last public beta before they
+    went GM, but was neither mentioned as resolved in the release
+    notes nor is it still listed as a known problem).
+
+    In any case, we should definitely not just crash (as we do now
+    when trying to render a scenetexture node).
+
+    20041007 kyrah
+
+=====================================================================
+
+146 Compatibility issue: SoShapeHints::windingType missing in Coin.
 
     This was added for TGS OIV 4.0, so we should implement this for
     compatibility reasons. We've also had an external request for
@@ -3910,7 +3926,7 @@ incremented during the copy, but never decremented :(
 
 =====================================================================
 
-146 Compatibility issue: SoTexture2 and SoTexture3
+147 Compatibility issue: SoTexture2 and SoTexture3
     "enableCompressedTexture" fields missing in Coin.
 
     This was added for TGS OIV 4.0, so we should implement this for
@@ -3925,7 +3941,7 @@ incremented during the copy, but never decremented :(
 
 =====================================================================
 
-147 Compatibility issue: SoDrawStyle::linePatternScaleFactor missing
+148 Compatibility issue: SoDrawStyle::linePatternScaleFactor missing
     in Coin.
 
     This was added for TGS OIV 4.0, so we should implement this for
@@ -3938,7 +3954,7 @@ incremented during the copy, but never decremented :(
 
 =====================================================================
 
-148 Compatibility issue: SoVRMLSound fields dopplerFactor and
+149 Compatibility issue: SoVRMLSound fields dopplerFactor and
     dopplerVelocity missing in Coin.
 
     This was added for TGS OIV 4.0, so we should implement this for
@@ -3955,7 +3971,7 @@ incremented during the copy, but never decremented :(
 
 =====================================================================
 
-149 Compatibility issue: SoVRMLMovieTexture fields alpha, model,
+150 Compatibility issue: SoVRMLMovieTexture fields alpha, model,
     blendColor and scaleTexCoord missing in Coin.
 
     This was added for TGS OIV 4.0, so we should implement this for
@@ -3969,21 +3985,5 @@ incremented during the copy, but never decremented :(
     duly noted in their API doc, when written.
 
     20041010 mortene.
-
-=====================================================================
-
-145 Offscreen rendering not working on Mac OS X/X11.
-
-    This might either be a problem with our offscreen rendering code
-    (rather unlikely, since the GLX code that works on other platform
-    is used) or a limitation of the X11 implementation itself (more
-    likely - it was a known bug in the last public beta before they
-    went GM, but was neither mentioned as resolved in the release
-    notes nor is it still listed as a known problem).
-
-    In any case, we should definitely not just crash (as we do now
-    when trying to render a scenetexture node).
-
-    20041007 kyrah
 
 =====================================================================
