@@ -246,8 +246,6 @@
 
 SO_NODE_SOURCE(SoVRMLBackground);
 
-// FIXME: Should this be formed as VRML97 instead of standard Inventor?
-// (11Aug2003 handegar)
 static char scenery_data[] = {
   "#Inventor 2.1 ascii\n\n"
   "  BaseColor { rgb [1 1 1] }\n"
@@ -300,8 +298,15 @@ public:
   SoSeparator * leftface;
   SoSeparator * rightface;
 
+  SbBool geometrybuilt;
+
   void buildGeometry();
- 
+  void modifyCubeFace(SoMFString & urls, SoSeparator * facesep, int * vindices);
+  SoSeparator * createCubeFace(SoMFString & urls, SoSeparator * sep, int * vindices);
+  void buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int matlength);
+
+
+
 };
 
 
@@ -343,8 +348,8 @@ SoVRMLBackground::SoVRMLBackground(void)
   PRIVATE(this)->setbindsensor->attach(&this->set_bind);
   PRIVATE(this)->isboundsensor->attach(&this->isBound);
 
-  PRIVATE(this)->setbindsensor->setPriority(0);
-  PRIVATE(this)->isboundsensor->setPriority(0);
+  PRIVATE(this)->setbindsensor->setPriority(5);
+  PRIVATE(this)->isboundsensor->setPriority(5);
 
   // Geometry sensors
   PRIVATE(this)->groundanglesensor = new SoFieldSensor(geometrychangeCB, PRIVATE(this));
@@ -357,8 +362,8 @@ SoVRMLBackground::SoVRMLBackground(void)
   PRIVATE(this)->skyanglesensor->attach(&this->skyAngle);
   PRIVATE(this)->skycolorsensor->attach(&this->skyColor);
 
-  PRIVATE(this)->groundanglesensor->setPriority(5); // Delay changes a bit incase 
-  PRIVATE(this)->groundcolorsensor->setPriority(5); // several changes come at once.
+  PRIVATE(this)->groundanglesensor->setPriority(5); 
+  PRIVATE(this)->groundcolorsensor->setPriority(5); 
   PRIVATE(this)->skyanglesensor->setPriority(5);
   PRIVATE(this)->skycolorsensor->setPriority(5);
 
@@ -377,12 +382,14 @@ SoVRMLBackground::SoVRMLBackground(void)
   PRIVATE(this)->bottomurlsensor->attach(&this->bottomUrl);
   PRIVATE(this)->topurlsensor->attach(&this->topUrl);
 
-  PRIVATE(this)->backurlsensor->setPriority(0);
-  PRIVATE(this)->fronturlsensor->setPriority(0);
-  PRIVATE(this)->lefturlsensor->setPriority(0);
-  PRIVATE(this)->righturlsensor->setPriority(0);
-  PRIVATE(this)->bottomurlsensor->setPriority(0);
-  PRIVATE(this)->topurlsensor->setPriority(0);
+  PRIVATE(this)->backurlsensor->setPriority(5);
+  PRIVATE(this)->fronturlsensor->setPriority(5);
+  PRIVATE(this)->lefturlsensor->setPriority(5);
+  PRIVATE(this)->righturlsensor->setPriority(5);
+  PRIVATE(this)->bottomurlsensor->setPriority(5);
+  PRIVATE(this)->topurlsensor->setPriority(5);
+
+  PRIVATE(this)->geometrybuilt = FALSE;
 
 }
 
@@ -408,7 +415,11 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   SbVec3f trans  = vv.getProjectionPoint();
 
   // FIXME: When trans[z] > 10000000, things start to act strange
-  // (geometry starts to bounce uncontrolled). (7Aug2003 handegar)
+  // (geometry starts to bounce uncontrolled). This can be observed
+  // by zooming out in an examinerviewer. At first the background is
+  // still (as it should), then suddenly it starts to move as
+  // described. Might be caused by a variabel overflow/wrap somewhere
+  // (7Aug2003 handegar)
   SoModelMatrixElement::translateBy(state, (SoNode *) this, trans);
  
   SbBool depthtest = glIsEnabled(GL_DEPTH_TEST);
@@ -426,17 +437,19 @@ SoVRMLBackground::GLRender(SoGLRenderAction * action)
   if (depthtest)
     glEnable(GL_DEPTH_TEST);
 
-
   state->pop();
 
 }
 
+
+// FIXME: This method is disabled as there is no virtual 'readInstance'
+// method in Coin-2 yet (there is one in Coin-1). (11Aug2003 handegar)
+/*
 // Documented in superclass. Overridden to check if texture file (if
 // any) can be found and loaded.
 SbBool
 SoVRMLBackground::readInstance(SoInput * in, unsigned short flags)
 {
-
 
   PRIVATE(this)->groundanglesensor->detach();
   PRIVATE(this)->groundcolorsensor->detach();
@@ -473,7 +486,7 @@ SoVRMLBackground::readInstance(SoInput * in, unsigned short flags)
 
   return readok;
 }
-
+*/
 
 void
 SoVRMLBackgroundP::buildGeometry()
@@ -481,249 +494,177 @@ SoVRMLBackgroundP::buildGeometry()
 
   float sphereradius = 1.5;
   SbList <float> angles;
-
-  //
-  // Sky sphere
-  //
-  angles.append(0);
-  float angle = 0;
-  for (int k=0;k<PUBLIC(this)->skyAngle.getNum();++k) { 
-    if (angle > PUBLIC(this)->skyAngle[k]) {
-       SoDebugError::postInfo("SoVRMLBackground","skyAngle array must be non-decreasing.");
-       continue;
-    }
-    angle = PUBLIC(this)->skyAngle[k];
-    if (angle > M_PI) {
-      SoDebugError::postInfo("SoVRMLBackground","skyAngle > PI not allowed.");
-      angle = M_PI;
-    } else if (angle < 0) {
-      SoDebugError::postInfo("SoVRMLBackground","skyAngle < 0 not allowed.");
-      angle = 0;
-    } 
-    angles.append(angle);
-  }
-  if (angle != M_PI)
-    angles.append(M_PI);
-
-  int len = angles.getLength();
-  int sphereres = len;
-
-  SbVec3f * skyvertexarray = new SbVec3f[sphereres * sphereres];
-  SbVec3f * groundvertexarray = new SbVec3f[sphereres * sphereres];
-
-  // FIXME: Will an 'unref' of the rootnode prevent memleaks here? (8Aug2003 handegar)
-  SoIndexedTriangleStripSet * sky = new SoIndexedTriangleStripSet;
-  SoIndexedTriangleStripSet * ground = new SoIndexedTriangleStripSet;
-  SoVertexProperty * skyproperties = new SoVertexProperty;
-  SoVertexProperty * groundproperties = new SoVertexProperty;
-
-  skyproperties->normalBinding.setValue(SoVertexProperty::PER_VERTEX_INDEXED);
-  groundproperties->normalBinding.setValue(SoVertexProperty::PER_VERTEX_INDEXED);
-
-  // Calculate vertices and normals
-  float x, y, z;
-  int counter = 0;
-  for (int i=0;i<sphereres;++i) {
-    for (int j=0;j<len;++j) {
-      x = sphereradius * cos(i * ((2 * M_PI) / sphereres)) * sin(angles[j]);
-      y = sphereradius * cos(angles[j]);
-      z = sphereradius * sin(i * ((2 * M_PI) / sphereres)) * sin(angles[j]);
-      skyvertexarray[counter++] = SbVec3f(x,y,z);
-    }
-  }
-  for (i=0;i<sphereres * angles.getLength();++i) {
-    skyproperties->vertex.set1Value(i, skyvertexarray[i]);
-    SbVec3f normal = -skyvertexarray[i];
-    normal.normalize();
-    skyproperties->normal.set1Value(i, normal);
-  }
-  delete [] skyvertexarray;
-  sky->vertexProperty.setValue(skyproperties);
-
-
-  // Setup color arrays
-  if (PUBLIC(this)->skyColor.getNum() > 0) {
-    for (int i=0;i<PUBLIC(this)->skyColor.getNum();++i)
-      skyproperties->orderedRGBA.set1Value(i, PUBLIC(this)->skyColor[i].getPackedValue(0));
-    skyproperties->materialBinding = SoMaterialBinding::PER_VERTEX_INDEXED;
-  } else {
-    SoDebugError::postInfo("SoVRMLBackground","No colors specified for sky");
-    return;
-  }
-
-  // Build vertex and normal indices
-  int matindex = 0;
-  int matlength = PUBLIC(this)->skyColor.getNum();
-  counter = 0;
-  for (i=0;i<sphereres - 1;++i) {
-    for (int j=0;j<len;++j) {
-      
-      sky->materialIndex.set1Value(counter,matindex);
-      sky->normalIndex.set1Value(counter, ((i + 1) * len) + j);
-      sky->coordIndex.set1Value(counter++, ((i + 1) * len) + j);
- 
-      sky->materialIndex.set1Value(counter, matindex);
-      sky->normalIndex.set1Value(counter, (i * len) + j);
-      sky->coordIndex.set1Value(counter++, (i * len) + j);
-     
-      ++matindex;
-      if (matindex >= matlength)
-        matindex = matlength - 1;
-    }
-    sky->materialIndex.set1Value(counter, -1);
-    sky->coordIndex.set1Value(counter, -1);
-    sky->normalIndex.set1Value(counter++, -1);
-    matindex = 0;
-  }
- 
-  matindex = 0;
-  i = sphereres - 1;
-  for (int j=0;j<len;++j) {
-
-    sky->materialIndex.set1Value(counter, matindex);
-    sky->normalIndex.set1Value(counter, j);
-    sky->coordIndex.set1Value(counter++, j);
-
-    sky->materialIndex.set1Value(counter, matindex);
-    sky->normalIndex.set1Value(counter, (i * len) + j);
-    sky->coordIndex.set1Value(counter++, (i * len) + j);
-
-    ++matindex;
-    if (matindex >= matlength)
-      matindex = matlength - 1;
-  }
-
-  sky->materialIndex.set1Value(counter, -1);
-  sky->coordIndex.set1Value(counter, -1);
-  sky->normalIndex.set1Value(counter++, -1);
-  
   
   //
-  // Ground sphere
-  //
-  sphereradius = sphereradius * 0.9;
-  counter = 0;
-
-  angles.truncate(0);
-  angles.append(0);
-  angle = 0;
-  for (k=0;k<PUBLIC(this)->groundAngle.getNum();++k) { 
-    if (angle > PUBLIC(this)->groundAngle[k]) {
-       SoDebugError::postInfo("SoVRMLBackground","groundAngle array must be non-decreasing.");
-       continue;
-    }
-    angle = PUBLIC(this)->groundAngle[k];
-    if (angle > M_PI/2) {
-      SoDebugError::postInfo("SoVRMLBackground","groundAngle > PI/2 not allowed.");
-      angle = M_PI / 2;
-    } else if (angle < 0) {
-      SoDebugError::postInfo("SoVRMLBackground","groundAngle < 0 not allowed.");
-      angle = 0;
-    } 
-    angles.append(angle);
-  }
-  if (angle != M_PI/2)
-    angles.append(M_PI / 2);
-
-  len = angles.getLength();
-
-  // Calculate vertices and normals
-  counter = 0;
-  for (i=0;i<sphereres;++i) {
-    for (int j=0;j<len;++j) {
-      x = sphereradius * cos(i * ((2 * M_PI) / sphereres)) * sin(angles[j]);
-      y = -sphereradius * cos(angles[j]);
-      z = sphereradius * sin(i * ((2 * M_PI) / sphereres)) * sin(angles[j]);
-      groundvertexarray[counter++] = SbVec3f(x, y, z);
-    }
-  }
-  for (i=0;i<sphereres*angles.getLength();++i) {
-    groundproperties->vertex.set1Value(i, groundvertexarray[i]);
-    SbVec3f normal = -groundvertexarray[i];
-    normal.normalize();
-    groundproperties->normal.set1Value(i, normal);
-  }
-  delete [] groundvertexarray;
-  ground->vertexProperty.setValue(groundproperties);
-
-
-  // Setup color arrays
-  if (PUBLIC(this)->groundColor.getNum() > 0) {
-    for (int i=0;i<PUBLIC(this)->groundColor.getNum();++i)
-      groundproperties->orderedRGBA.set1Value(i, PUBLIC(this)->groundColor[i].getPackedValue(0));
-    groundproperties->materialBinding = SoMaterialBinding::PER_VERTEX_INDEXED;
-  } else {
-    SoDebugError::postInfo("SoVRMLBackground","No colors specified for ground");
-    return;
-  }
-
-  // Build vertex and normal indices
-
-  matindex = 0;
-  matlength = PUBLIC(this)->groundColor.getNum();
-  counter = 0;
-  for (i=0;i<sphereres - 1;++i) {
-    for (int j=0;j<len;++j) {
-      
-      ground->materialIndex.set1Value(counter, matindex);
-      ground->normalIndex.set1Value(counter, (i * len) + j);
-      ground->coordIndex.set1Value(counter++, (i * len) + j);
- 
-      ground->materialIndex.set1Value(counter, matindex);
-      ground->normalIndex.set1Value(counter, ((i + 1) * len) + j);
-      ground->coordIndex.set1Value(counter++, ((i + 1) * len) + j);
-     
-      ++matindex;
-      if (matindex >= matlength)
-        matindex = matlength - 1;
-    }
-    ground->materialIndex.set1Value(counter, -1);
-    ground->coordIndex.set1Value(counter, -1);
-    ground->normalIndex.set1Value(counter++, -1);
-    matindex = 0;
-  }
- 
-  matindex = 0;
-  i = sphereres - 1;
-  for (j=0;j<len;++j) {
-
-    ground->materialIndex.set1Value(counter, matindex);
-    ground->normalIndex.set1Value(counter, (i * len) + j);
-    ground->coordIndex.set1Value(counter++, (i * len) + j);
-
-    ground->materialIndex.set1Value(counter, matindex);
-    ground->normalIndex.set1Value(counter, j);
-    ground->coordIndex.set1Value(counter++, j);
-
-    ++matindex;
-    if (matindex >= matlength)
-      matindex = matlength - 1;
-  }
-
-  ground->materialIndex.set1Value(counter, -1);
-  ground->coordIndex.set1Value(counter, -1);
-  ground->normalIndex.set1Value(counter++, -1);
-
-
-  //
-  // Build scenegraph
+  // Initial scenegraph
   //
 
   this->rootnode = new SoSeparator;
   this->rootnode->ref();
 
-  SoShapeHints * shapehints = new SoShapeHints;
-  shapehints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
-  shapehints->shapeType = SoShapeHints::SOLID;
-  shapehints->faceType = SoShapeHints::CONVEX;
-
   SoLightModel * lightmodel = new SoLightModel;
   lightmodel->model.setValue(SoLightModel::BASE_COLOR);
 
   this->rootnode->addChild(lightmodel);
-  this->rootnode->addChild(shapehints);
-  this->rootnode->addChild(sky);
-  this->rootnode->addChild(ground);
+
+  
+  //
+  // Sky sphere
+  //
+
+  if(PUBLIC(this)->skyAngle.getNum() > 0){
+
+    angles.append(0);
+    float angle = 0;
+    for (int k=0;k<PUBLIC(this)->skyAngle.getNum();++k) { 
+      if (angle > PUBLIC(this)->skyAngle[k]) {
+        SoDebugError::postWarning("buildGeometry","skyAngle array must be non-decreasing.");
+        continue;
+      }
+      angle = PUBLIC(this)->skyAngle[k];
+      if (angle > M_PI) {
+        SoDebugError::postWarning("buildGeometry","skyAngle > PI not allowed.");
+        angle = M_PI;
+      } else if (angle < 0) {
+        SoDebugError::postWarning("buildGeometry","skyAngle < 0 not allowed.");
+        angle = 0;
+      } 
+      angles.append(angle);
+    }
+    if (angle != M_PI)
+      angles.append(M_PI);
+    
+    int len = angles.getLength();
+    
+    SbVec3f * skyvertexarray = new SbVec3f[len * len];    
+    SoIndexedTriangleStripSet * sky = new SoIndexedTriangleStripSet;
+    SoVertexProperty * skyproperties = new SoVertexProperty;    
+    skyproperties->normalBinding.setValue(SoVertexProperty::PER_VERTEX_INDEXED);
+
+   
+    // Calculate vertices and normals
+    double x, y, z;
+    int counter = 0;
+    for (int i=0;i<len;++i) {
+      for (int j=0;j<len;++j) {
+        x = sphereradius * cos(i * ((2 * M_PI) / len)) * sin(angles[j]);
+        y = sphereradius * cos(angles[j]);
+        z = sphereradius * sin(i * ((2 * M_PI) / len)) * sin(angles[j]);
+        skyvertexarray[counter++] = SbVec3f((float) x, (float) y, (float) z);
+      }
+    }
+    for (i=0;i<len*len;++i) {
+      skyproperties->vertex.set1Value(i, skyvertexarray[i]);
+      SbVec3f normal = -skyvertexarray[i];
+      normal.normalize();
+      skyproperties->normal.set1Value(i, normal);
+    }
+    delete [] skyvertexarray;
+    sky->vertexProperty.setValue(skyproperties);
+    
+
+    // Setup color arrays
+    if (PUBLIC(this)->skyColor.getNum() > 0) {
+      for (int i=0;i<PUBLIC(this)->skyColor.getNum();++i)
+        skyproperties->orderedRGBA.set1Value(i, PUBLIC(this)->skyColor[i].getPackedValue(0));
+      skyproperties->materialBinding = SoMaterialBinding::PER_VERTEX_INDEXED;
+    } else {
+      SoDebugError::postWarning("buildGeometry","No colors specified for sky");
+      return;
+    }
+
+
+    buildIndexList(sky, len, PUBLIC(this)->skyColor.getNum());
+
+
+    SoShapeHints * shapehintssky = new SoShapeHints;
+    shapehintssky->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    shapehintssky->shapeType = SoShapeHints::SOLID;
+    shapehintssky->faceType = SoShapeHints::CONVEX;
+
+    this->rootnode->addChild(shapehintssky);
+    this->rootnode->addChild(sky);  
+
+  }
+  
+  //
+  // Ground sphere
+  //
+
+  if (PUBLIC(this)->groundAngle.getNum() > 0) {
+
+    sphereradius = sphereradius * 0.9;
+    angles.truncate(0);
+    angles.append(0);
+    float angle = 0;
+    for (int k=0;k<PUBLIC(this)->groundAngle.getNum();++k) { 
+      if (angle > PUBLIC(this)->groundAngle[k]) {
+        SoDebugError::postWarning("buildGeometry","groundAngle array must be non-decreasing.");
+        continue;
+      }
+      angle = PUBLIC(this)->groundAngle[k];
+      if (angle > M_PI/2) {
+        SoDebugError::postWarning("buildGeometry","groundAngle > PI/2 not allowed.");
+        angle = M_PI / 2;
+      } else if (angle < 0) {
+        SoDebugError::postWarning("buildGeometry","groundAngle < 0 not allowed.");
+        angle = 0;
+      } 
+      angles.append(angle);
+    }
+    if (angle != M_PI/2)
+      angles.append(M_PI / 2);
+
+    int len = angles.getLength();
+
+    SbVec3f * groundvertexarray = new SbVec3f[len * len];
+    SoIndexedTriangleStripSet * ground = new SoIndexedTriangleStripSet;
+    SoVertexProperty * groundproperties = new SoVertexProperty;
+    groundproperties->normalBinding.setValue(SoVertexProperty::PER_VERTEX_INDEXED);
+
+    // Calculate vertices and normals
+    int counter = 0;
+    double x,y,z;
+    for (int i=0;i<len;++i) {
+      for (int j=0;j<len;++j) {
+        x = sphereradius * cos(i * ((2 * M_PI) / len)) * sin(angles[j]);
+        y = -sphereradius * cos(angles[j]);
+        z = sphereradius * sin(i * ((2 * M_PI) / len)) * sin(angles[j]);
+        groundvertexarray[counter++] = SbVec3f((float) x, (float) y, (float) z);
+      }
+    }
+    for (i=0;i<len*len;++i) {
+      groundproperties->vertex.set1Value(i, groundvertexarray[i]);
+      SbVec3f normal = -groundvertexarray[i];
+      normal.normalize();
+      groundproperties->normal.set1Value(i, normal);
+    }
+    delete [] groundvertexarray;
+    ground->vertexProperty.setValue(groundproperties);
+
+
+    // Setup color arrays
+    if (PUBLIC(this)->groundColor.getNum() > 0) {
+      for (int i=0;i<PUBLIC(this)->groundColor.getNum();++i)
+        groundproperties->orderedRGBA.set1Value(i, PUBLIC(this)->groundColor[i].getPackedValue(0));
+      groundproperties->materialBinding = SoMaterialBinding::PER_VERTEX_INDEXED;
+    } else {
+      SoDebugError::postWarning("buildGeometry","No colors specified for ground");
+      return;
+    }
+
+    // Build vertex and normal indices
+    buildIndexList(ground, len, PUBLIC(this)->groundColor.getNum());
+      
+    SoShapeHints * shapehintsground = new SoShapeHints;
+    shapehintsground->vertexOrdering = SoShapeHints::CLOCKWISE;
+    shapehintsground->shapeType = SoShapeHints::SOLID;
+    shapehintsground->faceType = SoShapeHints::CONVEX;
+
+    this->rootnode->addChild(shapehintsground);
+    this->rootnode->addChild(ground);
+
+  }
 
 
   //
@@ -751,118 +692,171 @@ SoVRMLBackgroundP::buildGeometry()
 
   SoVRMLImageTexture * tex;
 
-  if (PUBLIC(this)->backUrl.getNum() != 0) {
+  if (PUBLIC(this)->backUrl.getNum() != 0) {     
     int vindices[] = {3, 2, 1, 0, -1};
-    this->backface = new SoSeparator;
-    this->backface->ref();
-    tex = new SoVRMLImageTexture;
-    tex->url = PUBLIC(this)->backUrl;
-    tex->repeatS.setValue(FALSE);
-    tex->repeatT.setValue(FALSE);
-    SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
-    faceset->coordIndex.setValues(0, 5, vindices);
-    faceset->textureCoordIndex.setValues(0, 5, tindices);
-    this->backface->addChild(tex);
-    this->backface->addChild(faceset);
-
-    cubedata->addChild(this->backface);
+    SoSeparator * sep = this->createCubeFace(PUBLIC(this)->backUrl,this->backface, vindices);    
+    cubedata->addChild(sep);
   }
   
   if (PUBLIC(this)->leftUrl.getNum() != 0) {
     int vindices[] = {0, 1, 5, 4, -1};
-    this->leftface = new SoSeparator;
-    this->leftface->ref();
-    tex = new SoVRMLImageTexture;
-    tex->url = PUBLIC(this)->leftUrl;
-    tex->repeatS.setValue(FALSE);
-    tex->repeatT.setValue(FALSE);
-    SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
-    faceset->coordIndex.setValues(0, 5, vindices);
-    faceset->textureCoordIndex.setValues(0, 5, tindices);
-    this->leftface->addChild(tex);
-    this->leftface->addChild(faceset);
-
-    cubedata->addChild(this->leftface);
+    SoSeparator * sep = this->createCubeFace(PUBLIC(this)->leftUrl,this->leftface, vindices);    
+    cubedata->addChild(sep);
   }
   
   if (PUBLIC(this)->frontUrl.getNum() != 0) {
     int vindices[] = {4, 5, 6, 7, -1};
-    this->frontface = new SoSeparator;
-    this->frontface->ref();
-    tex = new SoVRMLImageTexture;
-    tex->url = PUBLIC(this)->frontUrl;
-    tex->repeatS.setValue(FALSE);
-    tex->repeatT.setValue(FALSE);
-    SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
-    faceset->coordIndex.setValues(0, 5, vindices);
-    faceset->textureCoordIndex.setValues(0, 5, tindices);
-    this->frontface->addChild(tex);
-    this->frontface->addChild(faceset);
-
-    cubedata->addChild(this->frontface);
+    SoSeparator * sep = this->createCubeFace(PUBLIC(this)->frontUrl,this->frontface, vindices);    
+    cubedata->addChild(sep);
   }
 
   if (PUBLIC(this)->rightUrl.getNum() != 0) {
     int vindices[] = {7, 6, 2, 3, -1};
-    this->rightface = new SoSeparator;
-    this->rightface->ref();
-    tex = new SoVRMLImageTexture;
-    tex->url = PUBLIC(this)->rightUrl;
-    tex->repeatS.setValue(FALSE);
-    tex->repeatT.setValue(FALSE);
-    SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
-    faceset->coordIndex.setValues(0, 5, vindices);
-    faceset->textureCoordIndex.setValues(0, 5, tindices);
-    this->rightface->addChild(tex);
-    this->rightface->addChild(faceset);
-
-    cubedata->addChild(this->rightface);
+    SoSeparator * sep = this->createCubeFace(PUBLIC(this)->rightUrl,this->rightface, vindices);    
+    cubedata->addChild(sep);
   }
 
   if (PUBLIC(this)->bottomUrl.getNum() != 0) {
     int vindices[] = {7, 3, 0, 4, -1};
-    this->bottomface = new SoSeparator;
-    this->bottomface->ref();
-    tex = new SoVRMLImageTexture;
-    tex->url = PUBLIC(this)->bottomUrl;
-    tex->repeatS.setValue(FALSE);
-    tex->repeatT.setValue(FALSE);
-    SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
-    faceset->coordIndex.setValues(0, 5, vindices);
-    faceset->textureCoordIndex.setValues(0, 5, tindices);
-    this->bottomface->addChild(tex);
-    this->bottomface->addChild(faceset);
-
-    cubedata->addChild(this->bottomface);
+    SoSeparator * sep = this->createCubeFace(PUBLIC(this)->bottomUrl,this->bottomface, vindices);    
+    cubedata->addChild(sep);
   }
 
   if (PUBLIC(this)->topUrl.getNum() != 0) {
     int vindices[] = {2, 6, 5, 1, -1};
-    this->topface = new SoSeparator;
-    this->topface->ref();
-    tex = new SoVRMLImageTexture;
-    tex->url = PUBLIC(this)->topUrl;
-    tex->repeatS.setValue(FALSE);
-    tex->repeatT.setValue(FALSE);
-    SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
-    faceset->coordIndex.setValues(0, 5, vindices);
-    faceset->textureCoordIndex.setValues(0, 5, tindices);
-    this->topface->addChild(tex);
-    this->topface->addChild(faceset);
-
-    cubedata->addChild(this->topface);
+    SoSeparator * sep = this->createCubeFace(PUBLIC(this)->topUrl,this->topface, vindices);    
+    cubedata->addChild(sep);
   }
   
   this->children->append(rootnode);
   angles.truncate(0);
+ 
+  this->geometrybuilt = TRUE;
+ 
+}
+
+
+void
+SoVRMLBackgroundP::buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int matlength)
+{
+
+  // Build vertex and normal indices for triangle strips
+  int matindex = 0;
+  int counter = 0;
+  for (int i=0;i<len - 1;++i) {
+    for (int j=0;j<len;++j) {
+      
+      sphere->materialIndex.set1Value(counter,matindex);
+      sphere->normalIndex.set1Value(counter, ((i + 1) * len) + j);
+      sphere->coordIndex.set1Value(counter++, ((i + 1) * len) + j);
+      
+      sphere->materialIndex.set1Value(counter, matindex);
+      sphere->normalIndex.set1Value(counter, (i * len) + j);
+      sphere->coordIndex.set1Value(counter++, (i * len) + j);
+      
+      ++matindex;
+      if (matindex >= matlength) 
+        matindex = matlength - 1;
+    }
+    sphere->materialIndex.set1Value(counter, -1);
+    sphere->coordIndex.set1Value(counter, -1);
+    sphere->normalIndex.set1Value(counter++, -1);
+    matindex = 0;
+  }
+  
+  //matindex = 0;
+  i = len - 1;
+  for (int j=0;j<len;++j) {
+    
+    sphere->materialIndex.set1Value(counter, matindex);
+    sphere->normalIndex.set1Value(counter, j);
+    sphere->coordIndex.set1Value(counter++, j);
+    
+    sphere->materialIndex.set1Value(counter, matindex);
+    sphere->normalIndex.set1Value(counter, (i * len) + j);
+    sphere->coordIndex.set1Value(counter++, (i * len) + j);
+    
+    ++matindex;
+    if (matindex >= matlength)
+      matindex = matlength - 1;
+  }
+  
+  sphere->materialIndex.set1Value(counter, -1);
+  sphere->coordIndex.set1Value(counter, -1);
+  sphere->normalIndex.set1Value(counter++, -1);
   
 }
+
+
+
+SoSeparator * 
+SoVRMLBackgroundP::createCubeFace(SoMFString & urls, SoSeparator * sep, int * vindices)
+{
+
+  int tindices[] = {1, 2, 3, 0, -1};
+  sep = new SoSeparator;
+  sep->ref();
+  SoVRMLImageTexture * tex = new SoVRMLImageTexture;
+  tex->url = urls;
+  tex->repeatS.setValue(FALSE);
+  tex->repeatT.setValue(FALSE);
+  SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
+  faceset->coordIndex.setValues(0, 5, vindices);
+  faceset->textureCoordIndex.setValues(0, 5, tindices);
+  sep->addChild(tex);
+  sep->addChild(faceset);
+  
+  return sep;
+
+}
+
+void
+SoVRMLBackgroundP::modifyCubeFace(SoMFString & urls, SoSeparator * sep, int * vindices)
+{
+
+  SoVRMLImageTexture * tex;
+
+  if (urls.getNum() == 0) {
+    if (sep != NULL) {
+      sep->unref();
+      sep = NULL;
+    }
+    return;
+  }
+  else if (sep == NULL) { 
+    sep = new SoSeparator;
+    sep->ref();
+
+    tex = new SoVRMLImageTexture;
+    tex->ref();
+    tex->repeatS.setValue(FALSE);
+    tex->repeatT.setValue(FALSE);
+    int tindices[] = {1, 2, 3, 0, -1};
+    SoIndexedFaceSet * faceset = new SoIndexedFaceSet;
+    faceset->textureCoordIndex.setValues(0, 5, tindices);
+
+    faceset->coordIndex.setValues(0, 5, vindices);
+    sep->addChild(tex);
+    sep->addChild(faceset);
+  }
+  else {
+    tex = (SoVRMLImageTexture *) sep->getChild(0);
+  }
+  tex->url = urls;
+
+}
+
 
 void
 vrmltexturechangeCB(void * data, SoSensor * sensor)
 {
 
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
+
+  if(!pimpl->geometrybuilt)
+    pimpl->buildGeometry();
+
+
   SoVRMLImageTexture * tex = new SoVRMLImageTexture;
   tex->ref();
   tex->repeatS.setValue(FALSE);
@@ -872,154 +866,33 @@ vrmltexturechangeCB(void * data, SoSensor * sensor)
   faceset->textureCoordIndex.setValues(0, 5, tindices);
   
   if (sensor == pimpl->fronturlsensor) {
-    
-    if (pimpl->master->frontUrl.getNum() == 0) {
-      if (pimpl->frontface != NULL) {
-        pimpl->frontface->unref();
-        pimpl->frontface = NULL;
-      }
-      return;
-    }
-    if (pimpl->frontface == NULL) { 
-      int vindices[] = {4, 5, 6, 7, -1};
-      pimpl->frontface = new SoSeparator;
-      pimpl->frontface->ref();
-      tex->url = pimpl->master->frontUrl;
-      faceset->coordIndex.setValues(0, 5, vindices);
-      pimpl->frontface->addChild(tex);
-      pimpl->frontface->addChild(faceset);
-      return;
-    }
-    tex->unref();
-    tex = (SoVRMLImageTexture *) pimpl->frontface->getChild(0);
-    tex->url = pimpl->master->frontUrl;
+    int vindices[] = {4, 5, 6, 7, -1};
+    pimpl->modifyCubeFace(pimpl->master->frontUrl, pimpl->frontface, vindices);
   }
-
 
   else if (sensor == pimpl->backurlsensor) {
-    
-    if (pimpl->master->backUrl.getNum() == 0) {
-      if (pimpl->backface != NULL) {
-        pimpl->backface->unref();
-        pimpl->backface = NULL;
-      }
-      return;
-    }
-    if (pimpl->backface == NULL) {
-      int vindices[] = {3, 2, 1, 0, -1};
-      pimpl->backface = new SoSeparator;
-      pimpl->backface->ref();
-      tex->url = pimpl->master->backUrl;
-      faceset->coordIndex.setValues(0, 5, vindices);
-      pimpl->backface->addChild(tex);
-      pimpl->backface->addChild(faceset);
-      return;
-    }
-    tex->unref();
-    tex = (SoVRMLImageTexture *) pimpl->backface->getChild(0);
-    tex->url = pimpl->master->backUrl;
+    int vindices[] = {3, 2, 1, 0, -1};
+    pimpl->modifyCubeFace(pimpl->master->backUrl, pimpl->backface, vindices);
   }
-  
   
   else if (sensor == pimpl->lefturlsensor) {
-    
-    if (pimpl->master->leftUrl.getNum() == 0) {
-      if (pimpl->leftface != NULL) {
-        pimpl->leftface->unref();
-        pimpl->leftface = NULL;
-      }
-      return;
-    }
-    if (pimpl->leftface == NULL) {
-      int vindices[] = {0, 1, 5, 4, -1};
-      pimpl->leftface = new SoSeparator;
-      pimpl->leftface->ref();
-      tex->url = pimpl->master->leftUrl;
-      faceset->coordIndex.setValues(0, 5, vindices);
-      pimpl->leftface->addChild(tex);
-      pimpl->leftface->addChild(faceset);
-      return;
-    }
-    tex->unref();
-    tex = (SoVRMLImageTexture *) pimpl->leftface->getChild(0);
-    tex->url = pimpl->master->leftUrl;
+    int vindices[] = {0, 1, 5, 4, -1};
+    pimpl->modifyCubeFace(pimpl->master->leftUrl, pimpl->leftface, vindices);
   }
-
 
   else if (sensor == pimpl->righturlsensor) {
-
-    if (pimpl->master->rightUrl.getNum() == 0) {
-      if (pimpl->rightface != NULL) {
-        pimpl->rightface->unref();
-        pimpl->rightface = NULL;
-      }
-      return;
-    }
-    if (pimpl->rightface == NULL) {
-      int vindices[] = {7, 6, 2, 3, -1};
-      pimpl->rightface = new SoSeparator;
-      pimpl->rightface->ref();
-      tex->url = pimpl->master->rightUrl;
-      faceset->coordIndex.setValues(0, 5, vindices);
-      pimpl->rightface->addChild(tex);
-      pimpl->rightface->addChild(faceset);
-      return;
-    }
-    tex->unref();
-    tex = (SoVRMLImageTexture *) pimpl->rightface->getChild(0);
-    tex->url = pimpl->master->rightUrl;
+    int vindices[] = {7, 6, 2, 3, -1};
+    pimpl->modifyCubeFace(pimpl->master->rightUrl, pimpl->rightface, vindices);
   }
-
-
 
   else if (sensor == pimpl->topurlsensor) {
-
-    if (pimpl->master->topUrl.getNum() == 0) {
-      if (pimpl->topface != NULL) {
-        pimpl->topface->unref();
-        pimpl->topface = NULL;
-      }
-      return;
-    }
-    if (pimpl->topface == NULL) {
-      int vindices[] = {2, 6, 5, 1, -1};
-      pimpl->topface = new SoSeparator;
-      pimpl->topface->ref();
-      tex->url = pimpl->master->topUrl;
-      faceset->coordIndex.setValues(0, 5, vindices);
-      pimpl->topface->addChild(tex);
-      pimpl->topface->addChild(faceset);
-      return;
-    }
-    tex->unref();
-    tex = (SoVRMLImageTexture *) pimpl->topface->getChild(0);
-    tex->url = pimpl->master->topUrl;
+    int vindices[] = {2, 6, 5, 1, -1};
+    pimpl->modifyCubeFace(pimpl->master->topUrl, pimpl->topface, vindices);
   }
 
-
-
   else if (sensor == pimpl->bottomurlsensor) {
-
-    if (pimpl->master->bottomUrl.getNum() == 0) {
-      if (pimpl->bottomface != NULL) {
-        pimpl->bottomface->unref();
-        pimpl->bottomface = NULL;
-      }
-      return;
-    }
-    if (pimpl->bottomface == NULL) {
-      int vindices[] = {7, 3, 0, 4, -1};
-      pimpl->bottomface = new SoSeparator;
-      pimpl->bottomface->ref();
-      tex->url = pimpl->master->bottomUrl;
-      faceset->coordIndex.setValues(0, 5, vindices);
-      pimpl->bottomface->addChild(tex);
-      pimpl->bottomface->addChild(faceset);
-      return;
-    }
-    tex->unref();
-    tex = (SoVRMLImageTexture *) pimpl->bottomface->getChild(0);
-    tex->url = pimpl->master->bottomUrl;
+    int vindices[] = {7, 3, 0, 4, -1};
+    pimpl->modifyCubeFace(pimpl->master->bottomUrl, pimpl->bottomface, vindices);
   }
   
 
@@ -1029,6 +902,9 @@ void
 geometrychangeCB(void * data, SoSensor * sensor)
 {
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
+
+  if(!pimpl->geometrybuilt)
+    pimpl->buildGeometry();
 
   pimpl->rootnode->removeAllChildren(); // Remove everything incase this was called earlier
   pimpl->rootnode->unref();
@@ -1046,15 +922,15 @@ bindingchangeCB(void * data, SoSensor * sensor)
   SoFieldSensor * isboundsensor;
 
   // FIXME: Support for 'set_bind' and 'isBound' must be implemented,
-  // but first Coin must support this kind of special node treatment
-  // (goes for Background, Fog, NavigationInfo and Viewport
+  // but first a Coin viewer must support this kind of special node
+  // treatment (goes for Background, Fog, NavigationInfo and Viewport
   // vrml-nodes) (11Aug2003 handegar)
 
   if (sensor == pimpl->setbindsensor) {
-    SoDebugError::postInfo("bindingchangeCB", "'set_bind' event not implemented yet");
+    SoDebugError::postWarning("bindingchangeCB", "'set_bind' event not implemented yet");
   }
   else if (sensor == pimpl->isboundsensor) {
-    SoDebugError::postInfo("bindingchangeCB", "'isBound' event not implemented yet");
+    SoDebugError::postWarning("bindingchangeCB", "'isBound' event not implemented yet");
   }
 
 }
