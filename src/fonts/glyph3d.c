@@ -66,9 +66,12 @@ static SbBool glyph3d_initialized = FALSE;
 /* Mutex lock for the static ang global font hash */
 static void * glyph3d_fonthash_lock = NULL;
 
-/* Minimum size for 3D glyphs to prevent windows 
-   from aligning small glyphs to screen pixel positions */
-static float glyph3d_minimumfontsize = 20.0f;
+/* Because the 3D glyphs are normalized when generated, a standard
+   fontsize is used for all glyphs. This also prevent Windows from
+   quantizing advancement and kerning values for very small fontsizes
+   (size<4).
+*/
+static unsigned int glyph3d_standardfontsize = 50;
 
 /* Set '#if 1' to enable debug info to stderr when tracking mutex locking. */
 #if 0
@@ -168,11 +171,11 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   }
 
   fontidx = cc_flw_get_font(cc_string_get_text(fonttoload), 
-                            (int)(newspec->size + glyph3d_minimumfontsize), 
-                            (int)(newspec->size + glyph3d_minimumfontsize));
+                            glyph3d_standardfontsize,
+                            glyph3d_standardfontsize);
+
   cc_string_destruct(fonttoload);
   assert(fontidx >= 0);
-
 
   /* Should _always_ be able to get hold of a glyph -- if no glyph is
      available for a specific character, a default empty rectangle
@@ -208,7 +211,6 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
       glyph->vectorglyph->faceindices = (int *) coin_default3dfont_get_faceidx()[character-33];
       glyph->vectorglyph->edgeindices = (int *) coin_default3dfont_get_edgeidx()[character-33];
     }
-
   }
 
   glyph3d_calcboundingbox(glyph);

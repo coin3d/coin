@@ -1276,7 +1276,6 @@ flwft_buildVertexList(struct cc_flw_vector_glyph * newglyph)
   numcoords = cc_list_get_length(flwft_tessellator.vertexlist);
 
   newglyph->vertices = (float *) malloc(sizeof(float)*numcoords*2);
-  newglyph->numvertices = numcoords;
 
   for (i=0;i<numcoords;++i) {
     coord = (float *) cc_list_get(flwft_tessellator.vertexlist,i);
@@ -1296,17 +1295,6 @@ cc_flwft_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
   assert(vecglyph->vertices && "Vertices not initialized properly");
   return vecglyph->vertices;
 } 
-
-void
-cc_flwft_scale_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph, float factor)
-{
-  int i;
-  for(i=0;i < vecglyph->numvertices;i++) {
-    vecglyph->vertices[i*2] = vecglyph->vertices[i*2] * factor;
-    vecglyph->vertices[i*2 + 1] = vecglyph->vertices[i*2 + 1] * factor;
-  }
-}
-
 
 static void
 flwft_buildEdgeIndexList(struct cc_flw_vector_glyph * newglyph)

@@ -58,7 +58,6 @@ extern "C" {
   } cc_flw_bitmap;
   
   typedef struct cc_flw_vector_glyph {
-    int numvertices;
     float * vertices;
     int * faceindices;
     int * edgeindices;
@@ -83,7 +82,6 @@ extern "C" {
   void cc_flw_get_bitmap_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2, int * x, int * y);
   void cc_flw_get_vector_kerning(unsigned int font, unsigned int glyph1, unsigned int glyph2, float * x, float * y);
   void cc_flw_done_glyph(unsigned int font, unsigned int glyph);
-  void cc_flw_scale_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph, float factor);
 
   struct cc_flw_bitmap * cc_flw_get_bitmap(unsigned int font, unsigned int glyph);
   struct cc_flw_vector_glyph * cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph, float complexity);

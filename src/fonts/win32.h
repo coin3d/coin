@@ -56,8 +56,6 @@ extern "C" {
 
   struct cc_flw_bitmap * cc_flww32_get_bitmap(void * font, int glyph);
   struct cc_flw_vector_glyph * cc_flww32_get_vector_glyph(void * font, unsigned int glyph, float complexity);
-
-  void cc_flww32_scale_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph, float factor);
   const float * cc_flww32_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph);
   const int * cc_flww32_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph);
   const int * cc_flww32_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph);
