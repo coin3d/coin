@@ -27,7 +27,9 @@
 // Some simple classes to store vectorized items. Inlined and with
 // public data members.
 
-class SoVectorizeItem {
+#include <Inventor/SbBasic.h>
+
+class COIN_DLL_API SoVectorizeItem {
 public:
   SoVectorizeItem() {
     this->type = UNDEFINED;
@@ -46,7 +48,7 @@ public:
   float depth; // for depth sorting
 };
 
-class SoVectorizePoint : public SoVectorizeItem {
+class COIN_DLL_API SoVectorizePoint : public SoVectorizeItem {
 public:
   SoVectorizePoint(void) {
     this->type = POINT;
@@ -57,7 +59,7 @@ public:
   uint32_t col;
 };
 
-class SoVectorizeTriangle : public SoVectorizeItem {
+class COIN_DLL_API SoVectorizeTriangle : public SoVectorizeItem {
 public:
   SoVectorizeTriangle(void) {
     this->type = TRIANGLE;
@@ -66,7 +68,7 @@ public:
   uint32_t col[3];
 };
 
-class SoVectorizeLine : public SoVectorizeItem {
+class COIN_DLL_API SoVectorizeLine : public SoVectorizeItem {
 public:
   SoVectorizeLine(void) {
     this->type = LINE;
@@ -79,18 +81,18 @@ public:
   float width;       // Coin line width (pixels)
 };
 
-class SoVectorizeText : public SoVectorizeItem {
+class COIN_DLL_API SoVectorizeText : public SoVectorizeItem {
 public:
   SoVectorizeText(void) {
     this->type = TEXT;
   }
-  
+
   enum Justification {
     LEFT,
     RIGHT,
     CENTER
   };
-  
+
   SbName fontname;
   float fontsize;    // size in normalized coordinates
   SbString string;
@@ -99,7 +101,7 @@ public:
   Justification justification;
 };
 
-class SoVectorizeImage : public SoVectorizeItem {
+class COIN_DLL_API SoVectorizeImage : public SoVectorizeItem {
 public:
   SoVectorizeImage(void) {
     this->type = IMAGE;

@@ -29,12 +29,12 @@
 
 class SoPSVectorOutputP;
 
-class SoPSVectorOutput : public SoVectorOutput {
+class COIN_DLL_API SoPSVectorOutput : public SoVectorOutput {
 public:
   SoPSVectorOutput();
   virtual ~SoPSVectorOutput();
-  
-  void setColored(SbBool flag = TRUE); 
+
+  void setColored(SbBool flag = TRUE);
   SbBool getColored(void) const;
 
 private:

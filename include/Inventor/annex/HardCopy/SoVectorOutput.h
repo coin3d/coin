@@ -31,7 +31,7 @@
 
 class SoVectorOutputP;
 
-class SoVectorOutput {
+class COIN_DLL_API SoVectorOutput {
 
 public:
   SoVectorOutput(void);
@@ -42,7 +42,7 @@ public:
 
   FILE * getFilePointer(void);
 
-protected:
+private:
   SoVectorOutputP * pimpl;
   friend class SoVectorOutputP;
 };

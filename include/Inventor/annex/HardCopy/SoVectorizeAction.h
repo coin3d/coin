@@ -42,9 +42,9 @@ class SbBSPTree;
 
 // *************************************************************************
 
-class SoVectorizeAction : public SoCallbackAction {
+class COIN_DLL_API SoVectorizeAction : public SoCallbackAction {
   typedef SoCallbackAction inherited;
-
+  
   SO_ACTION_HEADER(SoVectorizeAction);
 
 public:
@@ -153,8 +153,9 @@ public:
 
 protected:
 
-  virtual float pixelsToUnits(const int pixels);
+  void setOutput(SoVectorOutput * output);
 
+  virtual float pixelsToUnits(const int pixels);
   virtual void printHeader(void) const = 0;
   virtual void printFooter(void) const;
   virtual void printBackground(void) const;
@@ -169,10 +170,8 @@ protected:
 
   const SbBSPTree & getBSPTree(void) const;
 
-  SoVectorizeActionP * pimpl;
-
 private:
-
+  SoVectorizeActionP * pimpl;
   friend class SoVectorizeActionP;
 };
 

@@ -251,6 +251,9 @@ SoVectorizeAction::~SoVectorizeAction()
 SoVectorOutput *
 SoVectorizeAction::getOutput(void) const
 {
+  if (PRIVATE(this)->output == NULL) {
+    PRIVATE(this)->output = new SoVectorOutput;
+  }
   return PRIVATE(this)->output;
 }
 
@@ -512,6 +515,19 @@ SoVectorizeAction::getRotatedViewportSize(void) const
 
   if (this->getOrientation() == LANDSCAPE) SbSwap(p[0], p[1]);
   return p;
+}
+
+/*!
+  Should be used by subclasses to set the SoVectorOutput
+  instance that should be used.
+*/
+void 
+SoVectorizeAction::setOutput(SoVectorOutput * output)
+{
+  if (PRIVATE(this)->output) {
+    delete PRIVATE(this)->output;
+  }
+  PRIVATE(this)->output = output;
 }
 
 /*!

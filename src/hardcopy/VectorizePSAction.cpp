@@ -27,7 +27,6 @@
 
 */
 
-
 #include <HardCopy/SoVectorizePSAction.h>
 #include "VectorizeActionP.h"
 #include <stdio.h>
@@ -41,7 +40,7 @@ encode_ascii85(const unsigned char * in, unsigned char * out)
     ((uint32_t)(in[1])<<16) |
     ((uint32_t)(in[2])<< 8) |
     ((uint32_t)(in[3]));
-  
+
   if (data == 0) {
     out[0] = 'z';
     return 1;
@@ -123,7 +122,7 @@ public:
     this->publ = p;
     this->linepattern = 0xffff;
     this->linewidth = 1.0f;
-    
+
     this->fontname = "";
     this->fontsize = -1.0f;
   }
@@ -165,7 +164,8 @@ SoVectorizePSAction::SoVectorizePSAction(void)
   PRIVATE(this)->gouraudeps = 0.0f;
   PRIVATE(this)->default2dfont = "Courier";
   SO_ACTION_CONSTRUCTOR(SoVectorizePSAction);
-  SoVectorizeAction::pimpl->output = new SoPSVectorOutput;
+
+  this->setOutput(new SoPSVectorOutput);
 }
 
 /*!
@@ -194,7 +194,7 @@ SoVectorizePSAction::setGouraudThreshold(const double eps)
   Text2-nodes which have no Font-nodes preceding them. The default
   value is "Courier".
 */
-void 
+void
 SoVectorizePSAction::setDefault2DFont(const SbString & fontname)
 {
   PRIVATE(this)->default2dfont = fontname;
@@ -205,7 +205,7 @@ SoVectorizePSAction::setDefault2DFont(const SbString & fontname)
 
   \sa setDefault2DFont()
 */
-const SbString & 
+const SbString &
 SoVectorizePSAction::getDefault2DFont(void) const
 {
   return PRIVATE(this)->default2dfont;
@@ -214,20 +214,20 @@ SoVectorizePSAction::getDefault2DFont(void) const
 /*!
   Returns the SoPSVectorOutput used by this instance.
 */
-SoPSVectorOutput * 
+SoPSVectorOutput *
 SoVectorizePSAction::getOutput(void) const
 {
-  return (SoPSVectorOutput*) SoVectorizeAction::pimpl->output;
+  return (SoPSVectorOutput*)SoVectorizeAction::getOutput();
 }
 
 /*!
-  Returns the SoPSVectorOutput used by this instance. Provided 
+  Returns the SoPSVectorOutput used by this instance. Provided
   for API compatibility with TGS HardCopy support.
 */
-SoPSVectorOutput * 
+SoPSVectorOutput *
 SoVectorizePSAction::getPSOutput(void) const
 {
-  return (SoPSVectorOutput*) SoVectorizeAction::pimpl->output;
+  return (SoPSVectorOutput*)SoVectorizeAction::getOutput();
 }
 
 static char * gouraudtriangle[] = {
@@ -274,7 +274,7 @@ static char * flatshadetriangle[] = {
 };
 
 static char * rightshow[] = {
-  "% print a right justified string", 
+  "% print a right justified string",
   "/rightshow",
   "{ dup stringwidth pop",
   "neg",
@@ -355,7 +355,7 @@ SoVectorizePSAction::printFooter(void) const
 }
 
 // doc in parent
-void 
+void
 SoVectorizePSAction::printViewport(void) const
 {
   FILE * file = this->getOutput()->getFilePointer();
@@ -365,7 +365,7 @@ SoVectorizePSAction::printViewport(void) const
   viewport[1] = this->convertToPS(this->getRotatedViewportStartpos())[1];
   viewport[2] = this->convertToPS(this->getRotatedViewportSize())[0] + viewport[0];
   viewport[3] = this->convertToPS(this->getRotatedViewportSize())[1] + viewport[1];
-  
+
   fputs("% set up clipping for viewport\n", file);
   fprintf(file, "newpath\n");
   fprintf(file, "%g %g moveto\n", viewport[0], viewport[1]);
@@ -447,12 +447,12 @@ static int count_bits(uint16_t mask, int & pos, SbBool onoff)
 //
 // Set up line stipple.
 //
-void 
+void
 SoVectorizePSAction::printSetdash(uint16_t pattern) const
 {
   FILE * file = this->getOutput()->getFilePointer();
   fputs("[", file);
-  
+
   int pos = 15;
   SbBool onoff = TRUE;
   while (pos >= 0) {
@@ -471,7 +471,7 @@ SoVectorizePSAction::printSetdash(uint16_t pattern) const
 //
 // make sure we have the correct font
 //
-void 
+void
 SoVectorizePSAction::updateFont(const SbString & fontname, const float fontsize) const
 {
   FILE * file = this->getOutput()->getFilePointer();
@@ -481,7 +481,7 @@ SoVectorizePSAction::updateFont(const SbString & fontname, const float fontsize)
     fprintf(file, "/%s findfont\n", fontname.getString());
     fprintf(file, "%g scalefont\n", fontsize);
     fprintf(file, "setfont\n");
-    
+
     PRIVATE(this)->fontname = fontname;
     PRIVATE(this)->fontsize = fontsize;
   }
@@ -490,11 +490,11 @@ SoVectorizePSAction::updateFont(const SbString & fontname, const float fontsize)
 //
 // Make sure line width and line stipple is correct.
 //
-void 
+void
 SoVectorizePSAction::updateLineAttribs(const SoVectorizeLine * line) const
 {
   FILE * file = this->getOutput()->getFilePointer();
-  
+
   float lw = line->width;
   uint16_t lp = line->pattern;
 
@@ -512,7 +512,7 @@ SoVectorizePSAction::updateLineAttribs(const SoVectorizeLine * line) const
       this->printSetdash(lp);
     }
   }
-} 
+}
 
 //
 // will output a line in postscript format
@@ -548,7 +548,7 @@ SoVectorizePSAction::printLine(const SoVectorizeLine * item) const
 }
 
 
-void 
+void
 SoVectorizePSAction::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
 {
   FILE * file = this->getOutput()->getFilePointer();
@@ -565,7 +565,7 @@ void
 SoVectorizePSAction::printPoint(const SoVectorizePoint * item) const
 {
   FILE * file = this->getOutput()->getFilePointer();
-  
+
   SbVec2f mul = this->convertToPS(this->getRotatedViewportSize());
   SbVec2f add = this->convertToPS(this->getRotatedViewportStartpos());
 
@@ -575,13 +575,13 @@ SoVectorizePSAction::printPoint(const SoVectorizePoint * item) const
   SbVec3f v;
   SbColor c;
   float t;
-  
+
   v = bsp.getPoint(item->vidx);
   v[0] = (v[0] * mul[0]) + add[0];
   v[1] = (v[1] * mul[1]) + add[1];
   c.setPackedValue(item->col, t);
-  
-  this->printCircle(v, c, this->convertToPS(item->size * this->getNominalWidth())); 
+
+  this->printCircle(v, c, this->convertToPS(item->size * this->getNominalWidth()));
 }
 
 void
@@ -589,7 +589,7 @@ SoVectorizePSAction::printTriangle(const SbVec3f * v, const SbColor * c) const
 {
   FILE * file = this->getOutput()->getFilePointer();
 
-  if ((PRIVATE(this)->gouraudeps == 0.0f) || 
+  if ((PRIVATE(this)->gouraudeps == 0.0f) ||
       ((c[0] == c[1]) && (c[1] == c[2]))) {
     // flatshaded
     fprintf(file, "%g %g %g %g %g %g %g %g %g flatshadetriangle\n",
@@ -617,7 +617,7 @@ void
 SoVectorizePSAction::printTriangle(const SoVectorizeTriangle * item) const
 {
   FILE * file = this->getOutput()->getFilePointer();
-  
+
   SbVec2f mul = this->convertToPS(this->getRotatedViewportSize());
   SbVec2f add = this->convertToPS(this->getRotatedViewportStartpos());
 
@@ -632,7 +632,7 @@ SoVectorizePSAction::printTriangle(const SoVectorizeTriangle * item) const
     v[i] = bsp.getPoint(item->vidx[i]);
     v[i][0] = (v[i][0] * mul[0]) + add[0];
     v[i][1] = (v[i][1] * mul[1]) + add[1];
-    
+
     c[i].setPackedValue(item->col[i], t[i]);
   }
   this->printTriangle((SbVec3f*)v, (SbColor*)c);
@@ -641,7 +641,7 @@ SoVectorizePSAction::printTriangle(const SoVectorizeTriangle * item) const
 //
 // will output an image in postscript format
 //
-void 
+void
 SoVectorizePSAction::printImage(const SoVectorizeImage * item) const
 {
   FILE * fp = this->getOutput()->getFilePointer();
@@ -658,24 +658,24 @@ SoVectorizePSAction::printImage(const SoVectorizeImage * item) const
   const unsigned char * src = item->image.data;
 
   //  fprintf(fp, "0 0 moveto\n");
-  fprintf(fp, "%g %g translate\n", 
-          item->pos[0]*mul[0] + add[0], 
+  fprintf(fp, "%g %g translate\n",
+          item->pos[0]*mul[0] + add[0],
           item->pos[1]*mul[1] + add[1]);
 
   fprintf(fp, "/pix %d string def\n", size[0] * (nc >= 3 ? 3 : 1));
-  
+
   fprintf(fp, "%g %g scale\n",
           item->size[0] * mul[0],
           item->size[1] * mul[1]);
-  
+
   fprintf(fp, "%d %d 8 [%d 0 0 %d 0 0] currentfile\n",
           (int)item->image.size[0], (int)item->image.size[1],
           (int)item->image.size[0], (int)item->image.size[1]);
-  
+
   fprintf(fp, "/ASCII85Decode filter\n");
   if (item->image.nc >= 3) fprintf(fp, "false 3\ncolorimage\n");
   else fprintf(fp,"image\n");
-  
+
   const int rowlen = 72;
   int num = size[0] * size[1];
   unsigned char tuple[4];
@@ -717,7 +717,7 @@ SoVectorizePSAction::printImage(const SoVectorizeImage * item) const
 //
 // will output text in postscript format
 //
-void 
+void
 SoVectorizePSAction::printText(const SoVectorizeText * item) const
 {
   FILE * file = this->getOutput()->getFilePointer();
@@ -738,14 +738,14 @@ SoVectorizePSAction::printText(const SoVectorizeText * item) const
 
   fprintf(file, "%g %g %g setrgbcolor\n",
           c[0], c[1], c[2]);
-  fprintf(file, "%g %g moveto\n", 
-          item->pos[0]*mul[0] + add[0], 
+  fprintf(file, "%g %g moveto\n",
+          item->pos[0]*mul[0] + add[0],
           item->pos[1]*mul[1] + add[1]);
 
   SbString op;
   switch (item->justification) {
   default:
-  case SoVectorizeText::LEFT: 
+  case SoVectorizeText::LEFT:
     op = "show";
     break;
   case SoVectorizeText::CENTER:
@@ -755,22 +755,22 @@ SoVectorizePSAction::printText(const SoVectorizeText * item) const
     op = "rightshow";
     break;
   }
-  
+
   fprintf(file, "(%s) %s\n\n", item->string.getString(), op.getString());
 }
 
 // a standard PS unit is 1/72 inch
-SbVec2f 
+SbVec2f
 SoVectorizePSAction::convertToPS(const SbVec2f & mm) const
 {
-  return from_mm(mm, INCH) * 72.0f; 
+  return from_mm(mm, INCH) * 72.0f;
 }
 
 // a standard PS unit is 1/72 inch
-float 
+float
 SoVectorizePSAction::convertToPS(const float mm) const
 {
-  return from_mm(mm, INCH) * 72.0f; 
+  return from_mm(mm, INCH) * 72.0f;
 }
 
 // *************************************************************************

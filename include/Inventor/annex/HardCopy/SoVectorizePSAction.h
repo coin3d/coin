@@ -33,7 +33,7 @@ class SoVectorizePSActionP;
 
 // *************************************************************************
 
-class SoVectorizePSAction : public SoVectorizeAction {
+class COIN_DLL_API SoVectorizePSAction : public SoVectorizeAction {
 
   SO_ACTION_HEADER(SoVectorizePSAction);
 
@@ -58,7 +58,7 @@ protected:
   virtual void printBackground(void) const;
   virtual void printItem(const SoVectorizeItem * item) const;
   virtual void printViewport(void) const;
-  
+
 private:
 
   SbVec2f convertToPS(const SbVec2f & mm) const;
