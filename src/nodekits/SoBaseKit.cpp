@@ -227,7 +227,6 @@ SoBaseKit::getPartString(const SoBase * part)
 #endif // COIN_DEBUG
         return SbString();
       }
-      // FIXME: not quite sure if this test is sufficient, pederb 2000-02-01
       if (catalog->isLeaf(partnum)) {
         if (partname != "") partname += '.';
         partname += catalog->getName(partnum).getString();
@@ -1154,8 +1153,6 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
                                SbBool leafcheck, SbBool publiccheck,
                                const SoPath * pathtoextend)
 {
-  // FIXME: leafcheck and publiccheck support, pederb 2000-01-07
-
   SoFullPath * path;
   if (pathtoextend) {
     path = (SoFullPath *)pathtoextend->copy();
@@ -1185,6 +1182,13 @@ SoBaseKit::createPathToAnyPart(const SbName & partname, SbBool makeifneeded,
 
   if (SoBaseKit::findPart(SbString(partname.getString()), kit, partNum,
                           isList, listIdx, makeifneeded, path)) {
+    const SoNodekitCatalog * catalog = kit->getNodekitCatalog();
+    if ((leafcheck && ! catalog->isLeaf(partNum)) ||
+        (publiccheck && ! catalog->isPublic(partNum))) {
+      path->unref();
+      return NULL;
+    }
+
     SoNode * node = kit->pimpl->instancelist[partNum]->getValue();
     if (node) {
       path->append(node);
@@ -1582,7 +1586,6 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
       }
     }
     else {
-      // FIXME: replace with test and debug message? pederb, 2000-01-04
       assert(node->isOfType(SoBaseKit::getClassTypeId()));
       kit = (SoBaseKit *)node;
     }
