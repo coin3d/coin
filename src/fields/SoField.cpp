@@ -93,7 +93,8 @@ static const char IS_KEYWORD[] = "IS";
 class SoConnectStorage {
 public:
   SoConnectStorage(SoFieldContainer * c, SoType t)
-    : container(c), fieldtype(t)
+    : container(c), fieldtype(t),
+      maptoconverter(13) // save about ~1kB vs default SbDict nr of buckets
     { }
 
 #if COIN_DEBUG
@@ -133,6 +134,10 @@ public:
   void addConverter(const void * item, SoFieldConverter * converter)
   {
     // "item" can be SoField* or SoEngineOutput*.
+
+    // FIXME: this probably hashes horribly bad, as the item value is
+    // a pointer and is therefore address-aligned (lower 32 (?) bits
+    // are all 0).  20010911 mortene.
     this->maptoconverter.enter((unsigned long)item, converter);
   }
 
@@ -1006,11 +1011,14 @@ SoField::get(SbString & valuestring)
 }
 
 /*!
-  Mark the field as changed. Touching a field which is part of any
-  component (engine or node) in a scene graph will lead to a forced
-  redraw. This is useful if you have been doing several updates to the
-  field wrapped in a pair of enableNotify() calls to notify the
-  field's auditors that its value has changed.
+  Notify the field as well as the field's owner / container that it
+  has been changed.
+
+  Touching a field which is part of any component (engine or node) in
+  a scene graph will lead to a forced redraw. This is useful if you
+  have been doing several updates to the field wrapped in a pair of
+  enableNotify() calls to notify the field's auditors that its value
+  has changed.
 
   \sa setValue(), enableNotify()
 */
