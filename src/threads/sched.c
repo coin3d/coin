@@ -24,6 +24,7 @@
 #include <Inventor/C/threads/wpool.h>
 #include <Inventor/C/threads/mutex.h>
 #include <Inventor/C/threads/condvar.h>
+#include <Inventor/C/threads/thread.h>
 
 #include <Inventor/C/base/debug.h>
 #include <stdlib.h>
@@ -64,6 +65,9 @@ sched_worker_entry_point(void * userdata)
     cc_mutex_lock(sched->mutex);
   }
   cc_mutex_unlock(sched->mutex);
+
+  /* in case the main thread is in sched_wait_all() */
+  cc_condvar_wake_one(sched->cond);
 }
 
 /* ********************************************************************** */
