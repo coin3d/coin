@@ -132,20 +132,20 @@ SoFontStyle::getFontName(void) const
   if (fontname == "defaultFont") {
     switch (this->family.getValue()) {
     case SoFontStyle::SERIF:
-      fontname = "times";
+      fontname = "Times New Roman";
       break;
     case SoFontStyle::SANS:
-      fontname = "helvetica";
+      fontname = "Arial";
       break;
     case SoFontStyle::TYPEWRITER:
-      fontname = "courier";
+      fontname = "Courier New";
       break;
 #if COIN_DEBUG
     default:
       SoDebugError::postWarning("SoFontStyle::getFontName",
                                 "value of family field is invalid, "
                                 "setting to SERIF");
-      fontname = "times";
+      fontname = "Times New Roman";
       break;
 #endif // COIN_DEBUG
     }
@@ -157,16 +157,15 @@ SoFontStyle::getFontName(void) const
 
   switch (this->style.getValue()) {
   case SoFontStyle::NONE:
-    fontname += "-*-r-";
     break;
   case SoFontStyle::BOLD:
-    fontname += "-bold-r-";
+    fontname += ":Bold";
     break;
   case SoFontStyle::ITALIC:
-    fontname += "-*-i-";
+    fontname += ":Italic";
     break;
   case (SoFontStyle::BOLD | SoFontStyle::ITALIC):
-    fontname += "-bold-i-";
+    fontname += ":Bold Italic";
     break;
 #if COIN_DEBUG
   default:
