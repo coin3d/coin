@@ -51,3 +51,4 @@ with Coin. The items are roughly categorized in these categories:
 028. (Network) [1999????] Interface relevant parts of Coin to Curl
      (SoWWWAnchor, SoWWWInline, texture import, misc VRML support).
 
+
