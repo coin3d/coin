@@ -170,9 +170,11 @@ public:
 
 typedef struct {
   soshape_primdata * primdata;
-  soshape_bigtexture * bigtexture;
+  SbList <soshape_bigtexture*> * bigtexturelist;
+  SbList <uint32_t> * bigtexturecontext;
   soshape_trianglesort * trianglesort;
   
+  soshape_bigtexture * currentbigtexture;
   // used in generatePrimitives() callbacks to set correct material
   SoMaterialBundle * currentbundle;
   
@@ -181,24 +183,44 @@ typedef struct {
   SbBool is_doing_bigtexture_rendering; 
 } soshape_staticdata;
 
+static soshape_bigtexture *
+soshape_get_bigtexture(soshape_staticdata * data, uint32_t context)
+{
+  for (int i = 0; i < data->bigtexturecontext->getLength(); i++) {
+    if ((*(data->bigtexturecontext))[i] == context) {
+      return (*(data->bigtexturelist))[i];
+    }
+  }
+  soshape_bigtexture * newtex = new soshape_bigtexture;
+  data->bigtexturelist->append(newtex);
+  data->bigtexturecontext->append(context);
+  return newtex;
+}
+
 static void
 soshape_construct_staticdata(void * closure)
 {
   soshape_staticdata * data = (soshape_staticdata*) closure;
   
+  data->bigtexturelist = new SbList <soshape_bigtexture*>;
+  data->bigtexturecontext = new SbList <uint32_t>;
   data->primdata = new soshape_primdata();
-  data->bigtexture = new soshape_bigtexture();
   data->trianglesort = new soshape_trianglesort();
   data->is_doing_sorted_rendering = FALSE;
   data->is_doing_bigtexture_rendering = FALSE;
+  
 }
 
 static void
 soshape_destruct_staticdata(void * closure)
 {
   soshape_staticdata * data = (soshape_staticdata*) closure;
+  for (int i = 0; i < data->bigtexturelist->getLength(); i++) {
+    delete (*(data->bigtexturelist))[i];
+  }
+  delete data->bigtexturelist;
+  delete data->bigtexturecontext;
   delete data->primdata;
-  delete data->bigtexture;
   delete data->trianglesort;
 }
 
@@ -523,12 +545,14 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     SoGLBigImage * big = (SoGLBigImage*) glimage;
 
     shapedata->is_doing_bigtexture_rendering = TRUE;
-
-    shapedata->bigtexture->beginShape(big, SoTextureQualityElement::get(state));
+    
+    soshape_bigtexture * bigtex = soshape_get_bigtexture(shapedata, action->getCacheContext());
+    shapedata->currentbigtexture = bigtex;
+    bigtex->beginShape(big, SoTextureQualityElement::get(state));
     this->generatePrimitives(action);
     // endShape() returns whether more/less detailed textures need to be
     // fetched. We force a redraw if this is needed.
-    if (shapedata->bigtexture->endShape(state, this, mb) == FALSE) {
+    if (bigtex->endShape(state, this, mb) == FALSE) {
       action->getCurPath()->getHead()->touch();
     }
     shapedata->is_doing_bigtexture_rendering = FALSE;
@@ -773,7 +797,7 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
       shapedata->trianglesort->triangle(action->getState(), v1, v2, v3);
     }
     else if (shapedata->is_doing_bigtexture_rendering) {
-      shapedata->bigtexture->triangle(action->getState(), v1, v2, v3);
+      shapedata->currentbigtexture->triangle(action->getState(), v1, v2, v3);
     }
     else {
       glBegin(GL_TRIANGLES);
