@@ -4072,9 +4072,6 @@ sogl_glerror_string(int err)
   return errorstring;
 }
 
-// FIXME: make it possible to configure these numbers using
-// environment variables (or a rendering performance test?).
-// pederb, 2002-09-18
 static int SOGL_AUTOCACHE_REMOTE_MIN = 500;
 static int SOGL_AUTOCACHE_REMOTE_MAX = 5000;
 static int SOGL_AUTOCACHE_LOCAL_MIN = 100;
@@ -4087,6 +4084,28 @@ static int SOGL_AUTOCACHE_LOCAL_MAX = 1000;
 void 
 sogl_autocache_update(SoState * state, const int numprimitives)
 {
+  static SbBool didtestenv = FALSE;
+  if (!didtestenv) {
+    const char * env;
+    env = coin_getenv("COIN_AUTOCACHE_REMOTE_MIN");
+    if (env) {
+      SOGL_AUTOCACHE_REMOTE_MIN = atoi(env);
+    }
+    env = coin_getenv("COIN_AUTOCACHE_REMOTE_MAX");
+    if (env) {
+      SOGL_AUTOCACHE_REMOTE_MAX = atoi(env);
+    }
+    env = coin_getenv("COIN_AUTOCACHE_LOCAL_MIN");
+    if (env) {
+      SOGL_AUTOCACHE_LOCAL_MIN = atoi(env);
+    }
+    env = coin_getenv("COIN_AUTOCACHE_LOCAL_MAX");
+    if (env) {
+      SOGL_AUTOCACHE_LOCAL_MAX = atoi(env);
+    }
+    didtestenv = TRUE;
+  }
+
   int minval = SOGL_AUTOCACHE_LOCAL_MIN;
   int maxval = SOGL_AUTOCACHE_LOCAL_MAX;
   if (SoGLCacheContextElement::getIsRemoteRendering(state)) {
