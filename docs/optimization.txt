@@ -105,10 +105,6 @@ Concrete tasks:
              separate memory allocator, probably handled by the cache
              copying the element.
 
-           - consider adding SoState::popElements(const SbList
-             <SoType> &list), to make it possible to pop only selected
-             elements (dangerous stuff. Ask pederb why he needs this).
-
           (Note: should investigate a bit (i.e. do profiling) before
           deciding if this is really worth the effort.)
 
