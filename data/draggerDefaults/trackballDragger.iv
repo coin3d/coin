@@ -5,8 +5,8 @@ DEF TRACKBALL_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveCol
 DEF TRACKBALL_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
 DEF TRACKBALL_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
 # Additional material definitions for this dragger.
-DEF TRACKBALL_USER_INACTIVE_MATERIAL Material { diffuseColor 0 0.2 0.1  emissiveColor 0 0.2 0.1 }
-DEF TRACKBALL_USER_ACTIVE_MATERIAL Material { diffuseColor 0 0.3 0.1  emissiveColor 0 0.3 0.1 }
+DEF TRACKBALL_USER_INACTIVE_MATERIAL Material { diffuseColor 0 0.7 0.1  emissiveColor 0 0.2 0.1 }
+DEF TRACKBALL_USER_ACTIVE_MATERIAL Material { diffuseColor 0 0.8 0.1  emissiveColor 0 0.3 0.1 }
 
 
 # Common geometry definition for dragger band / ring around the ball.
