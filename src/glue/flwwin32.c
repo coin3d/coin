@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
+/* ************************************************************************* */
+
 /* FIXME: should be based on a configure check. 20030515 mortene. */
 #ifdef _WIN32
 #define HAVE_WIN32_API
@@ -60,28 +62,46 @@ int cc_flww32_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 
 #else /* HAVE_WIN32_API */
 
+/* ************************************************************************* */
+
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
 #include <stddef.h>
 
-/*  #define WIN32_LEAN_AND_MEAN */
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <wingdi.h>
 
 #include <Inventor/C/tidbits.h>
+#include <Inventor/C/base/hash.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
 #include <Inventor/C/glue/win32api.h>
 
+/* ************************************************************************* */
 
 struct cc_flww32_globals_s {
+  /* Offscreen device context for connecting to fonts. */
   HDC devctx;
+
+  /* This is a hash of hashes. The unique keys are HFONT instances,
+     which each maps to a new hash. This hash then contains a set of
+     glyph ids (i.e. which are the hash keys) which maps to struct
+     cc_flw_bitmap instances. */
+  cc_hash * font2glyphhash;
 };
 
 static struct cc_flww32_globals_s cc_flww32_globals = {
-  NULL /* devctx */
+  NULL, /* devctx */
+  NULL /* font2glyphhash */
 };
+
+struct cc_flww32_glyph {
+  struct cc_flw_bitmap * bitmap;
+};
+
+/* ************************************************************************* */
 
 /* dumps debug information about one of the system fonts */
 static int CALLBACK
@@ -113,6 +133,32 @@ font_enum_proc(ENUMLOGFONTEX * logicalfont, NEWTEXTMETRICEX * physicalfont,
   return 1; /* non-0 to continue enumeration */
 }
 
+static cc_hash *
+get_glyph_hash(void * font)
+{
+  void * val;
+  SbBool found;
+
+  found = cc_hash_get(cc_flww32_globals.font2glyphhash,
+                      (unsigned long)font, &val);
+  return found ? ((cc_hash *)val) : NULL;
+}
+
+static struct cc_flww32_glyph *
+get_glyph_struct(void * font, int glyph)
+{
+  void * val;
+  SbBool found;
+
+  cc_hash * ghash = get_glyph_hash(font);
+  if (ghash == NULL) { return NULL; }
+
+  found = cc_hash_get(ghash, (unsigned long)glyph, &val);
+  return found ? ((struct cc_flww32_glyph *)val) : NULL;
+}
+
+/* ************************************************************************* */
+
 SbBool
 cc_flww32_initialize(void)
 {
@@ -138,30 +184,39 @@ cc_flww32_initialize(void)
     return FALSE;
   }
 
+  cc_flww32_globals.font2glyphhash = cc_hash_construct(17, 0.75);
+
   return TRUE;
 }
 
 void
 cc_flww32_exit(void)
 {
-  BOOL ok = DeleteDC(cc_flww32_globals.devctx);
+  BOOL ok;
+
+  /* FIXME: this hash should be empty at this point, or it means that
+     one or more calls to cc_flww32_done_font() are missing. Should
+     insert a check (plus dump) for that here. 20030610 mortene. */
+  cc_hash_destruct(cc_flww32_globals.font2glyphhash);
+
+  ok = DeleteDC(cc_flww32_globals.devctx);
   if (!ok) {
     cc_win32_print_error("cc_flww32_exit", "DeleteDC()", GetLastError());
   }
 }
+
+/* ************************************************************************* */
 
 /* Allocates and returns a new font id matching the exact fontname.
    Returns NULL on error. */
 void *
 cc_flww32_get_font(const char * fontname, int sizex, int sizey)
 {
-  /* FIXME: unimplemented. 20030515 mortene. */
-
-  HGDIOBJ previousfont;
-
+  cc_hash * glyphhash;
   HFONT wfont = CreateFont(sizey,
-                           /* FIXME: should we let width==0 for better
-                              chance of getting a match? 20030530 mortene. */
+                           /* FIXME: should we let width==0 instead of
+                              sizex for better chance of getting a
+                              match? 20030610 mortene. */
                            sizex,
                            0, 0, /* escapement, orientation */
                            FW_DONTCARE, /* weight */
@@ -177,7 +232,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
                            CLIP_DEFAULT_PRECIS, /* clipping precision */
                            PROOF_QUALITY, /* output quality */
                            DEFAULT_PITCH, /* pitch and family */
-                           fontname /* XXX "Verdana" XXX */); /* typeface name */
+                           fontname); /* typeface name */
 
   if (!wfont) {
     DWORD lasterr = GetLastError();
@@ -189,16 +244,8 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey)
     return NULL;
   }
 
-  previousfont = SelectObject(cc_flww32_globals.devctx, wfont);
-  if (previousfont == NULL) {
-    cc_win32_print_error("cc_flww32_get_font", "SelectObject()", GetLastError());
-    /* FIXME: handle bad return value. 20030530 mortene. */
-    (void)DeleteObject(wfont);
-    return NULL;
-  }
-
-  /* FIXME: need to call DeleteObject() on the font to clean up when
-     we're done. 20030530 mortene. */
+  glyphhash = cc_hash_construct(127, 0.75);
+  cc_hash_put(cc_flww32_globals.font2glyphhash, (unsigned long)wfont, glyphhash);
 
   return (void *)wfont;
 }
@@ -240,7 +287,26 @@ cc_flww32_get_font_style(void * font)
 void
 cc_flww32_done_font(void * font)
 {
-  /* FIXME: unimplemented. 20030515 mortene. */
+  BOOL ok;
+  SbBool found;
+
+  cc_hash * glyphs = get_glyph_hash(font);
+  assert(glyphs && "called with non-existent font");
+
+  found = cc_hash_remove(cc_flww32_globals.font2glyphhash,
+                         (unsigned long)font);
+  /* FIXME: needs mt-safeness for this assert() to guarantee this
+     assert to never hit.. 20030610 mortene. */
+  assert(found && "huh?");
+
+  /* FIXME: the hash should really be checked to see if it's empty or
+     not, but the cc_flww32_done_glyph() method hasn't been
+     implemented yet. 20030610 mortene. */
+  cc_hash_destruct(glyphs);
+  
+
+  ok = DeleteObject((HFONT)font);
+  assert(ok && "DeleteObject() failed, investigate");
 }
 
 /* Returns the number of character mappings available for the given
@@ -297,9 +363,26 @@ cc_flww32_get_glyph(void * font, unsigned int charidx)
 int
 cc_flww32_get_advance(void * font, int glyph, float * x, float * y)
 {
-  /* FIXME: unimplemented. 20030515 mortene. */
-  *x = 10.0f;
-  *y = 0.0f;
+  struct cc_flww32_glyph * glyphstruct = get_glyph_struct(font, glyph);
+#if 0
+  /* FIXME: is this too strict? Could make it on demand. Fix if we
+     ever run into this assert. 20030610 mortene. */
+  assert(glyphstruct && "glyph was not made yet");
+  /* UPDATE: assert hits if glyph does not exist. Re-enable assert
+     after we have set up the code for making an empty rectangle on
+     non-existent glyph. 20030610 mortene. */
+#else /* tmp enabled */
+  if (glyphstruct == NULL) {
+    *x = 10.0f;
+    *y = 0.0f;
+    return 0;
+  }
+#endif
+
+  *x = (float) glyphstruct->bitmap->advanceX;
+  *y = (float) glyphstruct->bitmap->advanceY;
+  /* FIXME: this function shouldn't need to return a value, fix
+     API. 20030610 mortene. */
   return 0;
 }
 
@@ -308,7 +391,9 @@ cc_flww32_get_advance(void * font, int glyph, float * x, float * y)
 int
 cc_flww32_get_kerning(void * font, int glyph1, int glyph2, float * x, float * y)
 {
-  /* FIXME: unimplemented. 20030515 mortene. */
+  /* FIXME: unimplemented. (Note that setting these values to <0,0>
+     simply means that the kerning will have no effect (kerning is
+     specified as an offset)). 20030515 mortene. */
   *x = 0.0f;
   *y = 0.0f;
   return 0;
@@ -326,19 +411,33 @@ cc_flww32_done_glyph(void * font, int glyph)
 struct cc_flw_bitmap *
 cc_flww32_get_bitmap(void * font, int glyph)
 {
-  /* FIXME: so far, this is just a mock-up implementation. 20030515 mortene. */
-  
   struct cc_flw_bitmap * bm = NULL;
-
-  /* The GetGlyphOutline function retrieves the outline or bitmap for
-     a character in the TrueType font that is selected into the
-     specified device context. */
   GLYPHMETRICS gm;
   static const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
                                        { 0, 0 }, { 0, 1 } };
   DWORD ret;
   DWORD size = 0;
   uint8_t * w32bitmap = NULL;
+  HFONT previousfont;
+  SbBool unused;
+  cc_hash * glyphhash;
+  struct cc_flww32_glyph * glyphstruct;
+
+  /* See if we can just return the bitmap from cached glyph. */
+  if (glyphstruct = get_glyph_struct(font, glyph)) {
+    return glyphstruct->bitmap;
+  }
+
+  /* Connect device context to font. */
+  previousfont = SelectObject(cc_flww32_globals.devctx, (HFONT)font);
+  if (previousfont == NULL) {
+    cc_win32_print_error("cc_flww32_get_font", "SelectObject()", GetLastError());
+    return NULL;
+  }
+
+  /* The GetGlyphOutline function retrieves the outline or bitmap for
+     a character in the TrueType font that is selected into the
+     specified device context. */
 
   ret = GetGlyphOutline(cc_flww32_globals.devctx,
                         glyph, /* character to query */
@@ -353,49 +452,43 @@ cc_flww32_get_bitmap(void * font, int glyph)
     cc_string str;
     cc_string_construct(&str);
     cc_string_sprintf(&str,
-                      "GetGlyphOutline(%p, 0x%x '%c', GGO_BITMAP, "
+                      "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_BITMAP, "
                       "<metricsstruct>, 0, NULL, <idmatrix>)",
                       cc_flww32_globals.devctx, glyph, (unsigned char)glyph);
     cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
     cc_string_clean(&str);
-    return NULL;
+    goto done;
   }
 
   assert((ret >= 0) && (ret < 1024*1024) && "bogus buffer size");
   size = ret;
 
-  if (size == 0) {
-    cc_debugerror_post("cc_flww32_get_bitmap",
-                       "something funny is going on, got zero-size buffer for "
-                       "glyph 0x%x ('%c')", glyph, (unsigned char)glyph);
-    return NULL;
-  }
+  /* "size" can be equal to zero, it is for instance known to happen
+     for at least the space char glyph for some charsets. */
+  if (size > 0) {
+    w32bitmap = (uint8_t *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, ret);
+    assert(w32bitmap != NULL); /* FIXME: be robust. 20030530 mortene. */
 
-  w32bitmap = (uint8_t *)HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, ret);
-  assert(w32bitmap != NULL); /* FIXME: be robust. 20030530 mortene. */
+    ret = GetGlyphOutline(cc_flww32_globals.devctx,
+                          glyph, /* character to query */
+                          GGO_BITMAP, /* format of data to return */
+                          &gm, /* metrics */
+                          size, /* size of buffer for data */
+                          w32bitmap, /* buffer for data */
+                          &identitymatrix /* transformation matrix */
+                          );
 
-  ret = GetGlyphOutline(cc_flww32_globals.devctx,
-                        glyph, /* character to query */
-                        GGO_BITMAP, /* format of data to return */
-                        &gm, /* metrics */
-                        size, /* size of buffer for data */
-                        w32bitmap, /* buffer for data */
-                        &identitymatrix /* transformation matrix */
-                        );
-
-  if (ret == GDI_ERROR) {
-    cc_string str;
-    cc_string_construct(&str);
-    cc_string_sprintf(&str,
-                      "GetGlyphOutline(%p, 0x%x '%c', GGO_BITMAP, "
-                      "<metricsstruct>, %d, <buffer>, <idmatrix>)",
-                      cc_flww32_globals.devctx, glyph, (unsigned char)glyph, size);
-    cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
-    cc_string_clean(&str);
-
-    /* FIXME: catch error return. 20030530 mortene. */
-    (void)HeapFree(GetProcessHeap(), 0, w32bitmap);
-    return NULL;
+    if (ret == GDI_ERROR) {
+      cc_string str;
+      cc_string_construct(&str);
+      cc_string_sprintf(&str,
+                        "GetGlyphOutline(%p, 0x%x '%c', GGO_BITMAP, "
+                        "<metricsstruct>, %d, <buffer>, <idmatrix>)",
+                        cc_flww32_globals.devctx, glyph, (unsigned char)glyph, size);
+      cc_win32_print_error("cc_flww32_get_bitmap", cc_string_get_text(&str), GetLastError());
+      cc_string_clean(&str);
+      goto done;
+    }
   }
 
   bm = (struct cc_flw_bitmap *)malloc(sizeof(struct cc_flw_bitmap));
@@ -407,10 +500,10 @@ cc_flww32_get_bitmap(void * font, int glyph)
   bm->rows = gm.gmBlackBoxY;
   bm->width = gm.gmBlackBoxX;
   bm->pitch = (bm->width + 7) / 8;
-  bm->buffer = (unsigned char *)malloc(bm->rows * bm->pitch);
-  assert(bm->buffer);
-  {
+  bm->buffer = NULL;
+  if (w32bitmap != NULL) { /* Could be NULL for at least space char glyph. */
     unsigned int i;
+    bm->buffer = (unsigned char *)malloc(bm->rows * bm->pitch);
     for (i = 0; i < bm->rows; i++) {
       (void)memcpy(&(bm->buffer[i * bm->pitch]),
                    /* the win32 bitmap is doubleword aligned pr row */
@@ -418,9 +511,26 @@ cc_flww32_get_bitmap(void * font, int glyph)
                    bm->pitch);
     }
   }
-  
+  else {
+    /* FIXME: hack, fix API. 20030610 mortene. */
+    bm->buffer = (unsigned char *)malloc(1);
+    bm->buffer[0] = 0;
+  }
+
+  glyphhash = get_glyph_hash(font);
+  glyphstruct = (struct cc_flww32_glyph *)malloc(sizeof(struct cc_flww32_glyph));
+  glyphstruct->bitmap = bm;
+  unused = cc_hash_put(glyphhash, (unsigned long)glyph, glyphstruct);
+  assert(unused);
+
+ done:  
   /* FIXME: catch error return. 20030530 mortene. */
   (void)HeapFree(GetProcessHeap(), 0, w32bitmap);
+
+  /* Reconnect device context to default font. */
+  if (SelectObject(cc_flww32_globals.devctx, previousfont) != (HFONT)font) {
+    cc_win32_print_error("cc_flww32_get_font", "SelectObject()", GetLastError());
+  }
   
   return bm;
 }
@@ -429,7 +539,7 @@ cc_flww32_get_bitmap(void * font, int glyph)
 int
 cc_flww32_get_outline(void * font, int glyph)
 {
-  /* FIXME: implement. */
+  /* FIXME: implement. 2003???? preng. */
   return 0;
 }
 
