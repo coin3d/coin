@@ -593,6 +593,7 @@ STUFF TO FIX IN COIN
     need to be able to run all necessary dependencies under Wine
     (Cygwin?, MSVC's command-line tools, SuperPIMP, ...).
 
+    See also this article: <URL:http://codingstyle.com/articles/using-ms-vcpp-with-gnu-wine.html>.
 
 027 Build Coin / SoQt / SoWin on MSWin without relying on MSVC++.
     2003-01-10  Morten Eriksen  <mortene@sim.no>
