@@ -74,9 +74,6 @@ SoDirectionalLight::SoDirectionalLight(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoDirectionalLight);
 
-  SO_NODE_ADD_FIELD(on, (TRUE));
-  SO_NODE_ADD_FIELD(intensity, (1.0f));
-  SO_NODE_ADD_FIELD(color, (1.0f, 1.0f, 1.0f));
   SO_NODE_ADD_FIELD(direction, (0.0f, 0.0f, -1.0f));
 }
 
