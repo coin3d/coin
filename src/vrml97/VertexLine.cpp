@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLVertexLine SoVRMLVertexLine.h Inventor/VRMLnodes/SovRMLVertexLine.h
   \brief The SoVRMLVertexLine class is a superclass for line based VRML geometry.
@@ -140,6 +146,4 @@ SoVRMLVertexLine::shouldGLRender(SoGLRenderAction * action)
   return inherited::shouldGLRender(action);
 }
 
-
-
-
+#endif // HAVE_VRML97

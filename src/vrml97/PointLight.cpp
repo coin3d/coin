@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLPointLight SoVRMLPointLight.h Inventor/VRMLnodes/SoVRMLPointLight.h
   \brief The SoVRMLPointLight class is used to represent a point light.
@@ -96,9 +102,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
 SO_NODE_SOURCE(SoVRMLPointLight);
@@ -177,3 +180,5 @@ SoVRMLPointLight::GLRender(SoGLRenderAction * action)
 
   // FIXME: consider radius
 }
+
+#endif // HAVE_VRML97

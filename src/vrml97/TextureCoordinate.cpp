@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLTextureCoordinate SoVRMLTextureCoordinate.h Inventor/VRMLnodes/SoVRMLTextureCoordinate.h
   \brief The SoVRMLTextureCoordinate class binds texture coordinates to vertex-based geometry.
@@ -144,3 +150,5 @@ SoVRMLTextureCoordinate::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoVRMLTextureCoordinate::doAction((SoAction*)action);
 }
+
+#endif // HAVE_VRML97

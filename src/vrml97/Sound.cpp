@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLSound SoVRMLSound.h Inventor/VRMLnodes/SoVRMLSound.h
   \brief The SoVRMLSound class is used to represent a sound source.
@@ -205,9 +211,7 @@
   TRUE is sound should be spatialized with respect to the viewer. Default value is TRUE.
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include <stddef.h>
 
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
@@ -227,7 +231,6 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/tidbits.h>
 #include <Inventor/SbTime.h>
-#include <stddef.h>
 
 #include "../misc/AudioTools.h"
 
@@ -236,11 +239,11 @@
 #include <Inventor/threads/SbMutex.h>
 #include <Inventor/threads/SbThreadAutoLock.h>
 #include <Inventor/C/threads/thread.h>
-#endif
+#endif // HAVE_THREADS
 
 #ifdef HAVE_SOUND
 #include <Inventor/C/glue/openal_wrapper.h>
-#endif
+#endif // HAVE_SOUND
 
 #define DEBUG_AUDIO 0
 
@@ -304,9 +307,7 @@ public:
   void *cliphandle;
 };
 
-#undef PRIVATE
 #define PRIVATE(p) ((p)->pimpl)
-#undef PUBLIC
 #define PUBLIC(p) ((p)->master)
 
 int SoVRMLSoundP::defaultBufferLength = 44100/10;
@@ -1564,3 +1565,8 @@ SoVRMLSoundP::sourceSensorCB(SoSensor *)
   }
 #endif // HAVE_SOUND
 }
+
+#undef PRIVATE
+#undef PUBLIC
+
+#endif // HAVE_VRML97

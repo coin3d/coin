@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLCylinderSensor SoVRMLCylinderSensor.h Inventor/VRMLnodes/SoVRMLCylinderSensor
   \brief The SoVRMLCylinderSensor class maps pointer motion into rotations around the Y axis.
@@ -257,3 +263,5 @@ SoVRMLCylinderSensor::findAngle(const SbRotation & rot)
   if (axis[1] >= 0.0f) return angle;
   return -angle;
 }
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLMaterial SoVRMLMaterial.h Inventor/VRMLnodes/SoVRMLMaterial.h
   \brief The SoVRMLMaterial class is used to assign a material to geometry.
@@ -131,8 +137,7 @@ public:
 
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_NODE_SOURCE(SoVRMLMaterial);
 
@@ -148,7 +153,7 @@ SoVRMLMaterial::initClass(void)
 */
 SoVRMLMaterial::SoVRMLMaterial(void)
 {
-  THIS = new SoVRMLMaterialP;
+  PRIVATE(this) = new SoVRMLMaterialP;
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLMaterial);
 
@@ -165,7 +170,7 @@ SoVRMLMaterial::SoVRMLMaterial(void)
 */
 SoVRMLMaterial::~SoVRMLMaterial()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 // Doc in parent
@@ -181,9 +186,9 @@ SoVRMLMaterial::doAction(SoAction * action)
 
   if (!this->diffuseColor.isIgnored() &&
       !TEST_OVERRIDE(AMBIENT_COLOR)) {
-    THIS->tmpambient = this->diffuseColor.getValue();
+    PRIVATE(this)->tmpambient = this->diffuseColor.getValue();
     if (!this->ambientIntensity.isIgnored())
-      THIS->tmpambient *= this->ambientIntensity.getValue();
+      PRIVATE(this)->tmpambient *= this->ambientIntensity.getValue();
     bitmask |= SoLazyElement::AMBIENT_MASK;
     if (this->isOverride()) {
       SoOverrideElement::setAmbientColorOverride(state, this, TRUE);
@@ -225,7 +230,7 @@ SoVRMLMaterial::doAction(SoAction * action)
   }
   if (!this->transparency.isIgnored() &&
       !TEST_OVERRIDE(TRANSPARENCY)) {
-    THIS->tmptransparency = this->transparency.getValue();
+    PRIVATE(this)->tmptransparency = this->transparency.getValue();
     bitmask |= SoLazyElement::TRANSPARENCY_MASK;
     // Note: the override flag bit values for diffuseColor and
     // transparency are equal (done like that to match SGI/TGS
@@ -253,14 +258,14 @@ SoVRMLMaterial::doAction(SoAction * action)
 #endif // COIN_DEBUG
     
     SoLazyElement::setMaterials(state, this, bitmask,
-                                &THIS->colorpacker,
+                                &PRIVATE(this)->colorpacker,
                                 &this->diffuseColor.getValue(), 1,
-                                &THIS->tmptransparency, 1,
-                                THIS->tmpambient,
+                                &PRIVATE(this)->tmptransparency, 1,
+                                PRIVATE(this)->tmpambient,
                                 this->emissiveColor.getValue(),
                                 this->specularColor.getValue(),
                                 SbClamp(this->shininess.getValue(), 0.0f, 1.0f),
-                                THIS->tmptransparency > 0.0f);
+                                PRIVATE(this)->tmptransparency > 0.0f);
   }
 }
 
@@ -278,4 +283,6 @@ SoVRMLMaterial::callback(SoCallbackAction * action)
   SoVRMLMaterial::doAction(action);
 }
 
-#undef THIS
+#undef PRIVATE
+
+#endif // HAVE_VRML97

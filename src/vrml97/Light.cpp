@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLLight SoVRMLLight.h Inventor/VRMLnodes/SoVRMLLight.h
   \brief The SoVRMLLight class is a superclass for VRML light nodes.
@@ -85,3 +91,4 @@ SoVRMLLight::GLRender(SoGLRenderAction * action)
 {
 }
 
+#endif // HAVE_VRML97

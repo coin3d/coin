@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLBillboard SoVRMLBillboard.h Inventor/VRMLnodes/SoVRMLBillboard.h
   \brief The SoVRMLBillboard class is used for rotating geometry towards the viewpoint.
@@ -112,6 +118,8 @@
   The bounding box size hint. Default value is (-1, -1, -1).
 */
 
+#include <math.h>
+
 #include <Inventor/VRMLnodes/SoVRMLBillboard.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -128,12 +136,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/misc/SoGL.h>
-#include <math.h>
 #include <Inventor/errors/SoDebugError.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
 
@@ -411,3 +414,5 @@ SoVRMLBillboard::performRotation(SoState * state) const
   mm2.setTransform(translation, rot, scale);
   SoModelMatrixElement::set(state, (SoNode*) this, mm2);
 }
+
+#endif // HAVE_VRML97

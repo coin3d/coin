@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLLOD SoVRMLLOD.h Inventor/VRMLnodes/SoVRMLLOD.h
   \brief The SoVRMLLOD class is used to represent various levels of detail based on distance.
@@ -123,10 +129,6 @@
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/errors/SoDebugError.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 #include <Inventor/system/gl.h>
 
 #include "../nodes/SoSoundElementHelper.h"
@@ -139,8 +141,7 @@ public:
 };
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_NODE_SOURCE(SoVRMLLOD);
 
@@ -164,7 +165,7 @@ SoVRMLLOD::SoVRMLLOD(void)
 */
 SoVRMLLOD::~SoVRMLLOD() // virtual, protected
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -179,8 +180,8 @@ SoVRMLLOD::SoVRMLLOD(int levels)
 void
 SoVRMLLOD::commonConstructor(void)
 {
-  THIS = new SoVRMLLODP;
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this) = new SoVRMLLODP;
+  PRIVATE(this)->childlistvalid = FALSE;
   
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLLOD);
 
@@ -311,8 +312,8 @@ SoVRMLLOD::doAction(SoAction * action)
     int idx = this->whichToTraverse(action);;
     if (idx >= 0) {
       this->getChildren()->traverse(action, idx);
-      THIS->enableTraversingOfInactiveChildren();
-      THIS->traverseInactiveChildren(this, action, idx, pathcode,
+      PRIVATE(this)->enableTraversingOfInactiveChildren();
+      PRIVATE(this)->traverseInactiveChildren(this, action, idx, pathcode,
                                      this->getNumChildren(), 
                                      this->getChildren());
     }
@@ -391,9 +392,9 @@ SoVRMLLOD::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 void
 SoVRMLLOD::audioRender(SoAudioRenderAction * action)
 {
-  THIS->preAudioRender(this, action);
+  PRIVATE(this)->preAudioRender(this, action);
   SoVRMLLOD::doAction((SoAction*) action);
-  THIS->postAudioRender(this, action);
+  PRIVATE(this)->postAudioRender(this, action);
 }
 
 // Doc in parent
@@ -476,7 +477,7 @@ void
 SoVRMLLOD::addChild(SoNode * child)
 {
   this->level.addNode(child);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -484,7 +485,7 @@ void
 SoVRMLLOD::insertChild(SoNode * child, int idx)
 {
   this->level.insertNode(child, idx);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -513,7 +514,7 @@ void
 SoVRMLLOD::removeChild(int idx)
 {
   this->level.removeNode(idx);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -521,7 +522,7 @@ void
 SoVRMLLOD::removeChild(SoNode * child)
 {
   this->level.removeNode(child);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -530,7 +531,7 @@ SoVRMLLOD::removeAllChildren(void)
 {
   this->level.removeAllNodes();
   SoGroup::children->truncate(0);
-  THIS->childlistvalid = TRUE;
+  PRIVATE(this)->childlistvalid = TRUE;
 }
 
 // Doc in parent
@@ -538,7 +539,7 @@ void
 SoVRMLLOD::replaceChild(int idx, SoNode * child)
 {
   this->level.replaceNode(idx, child);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -547,7 +548,7 @@ SoVRMLLOD::replaceChild(SoNode * old,
                            SoNode * child)
 {
   this->level.replaceNode(old, child);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 // Doc in parent
@@ -556,10 +557,10 @@ SoVRMLLOD::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
   if (f == &this->level) {
-    THIS->childlistvalid = FALSE;
+    PRIVATE(this)->childlistvalid = FALSE;
   }
   inherited::notify(list);
-  THIS->notifyCalled();
+  PRIVATE(this)->notifyCalled();
 }
 
 // Doc in parent
@@ -571,7 +572,7 @@ SoVRMLLOD::readInstance(SoInput * in,
   SbBool oldnot = this->level.enableNotify(FALSE);
   SbBool ret = inherited::readInstance(in, flags);
   if (oldnot) this->level.enableNotify(TRUE);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
   return ret;
 }
 
@@ -582,7 +583,7 @@ SoVRMLLOD::copyContents(const SoFieldContainer * from,
 {
   SoGroup::children->truncate(0);
   SoNode::copyContents(from, copyConn);
-  THIS->childlistvalid = FALSE;
+  PRIVATE(this)->childlistvalid = FALSE;
 }
 
 /*!
@@ -617,7 +618,7 @@ SoVRMLLOD::whichToTraverse(SoAction * action)
 SoChildList *
 SoVRMLLOD::getChildren(void) const
 {
-  if (!THIS->childlistvalid) {
+  if (!PRIVATE(this)->childlistvalid) {
     SoVRMLParent::updateChildList(this->level.getValues(0),
                                   this->level.getNum(),
                                   *SoGroup::children);
@@ -626,4 +627,6 @@ SoVRMLLOD::getChildren(void) const
   return SoGroup::children;
 }
 
-#undef THIS
+#undef PRIVATE
+
+#endif // HAVE_VRML97

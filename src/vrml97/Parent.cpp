@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLParent SoVRMLParent.h Inventor/VRMLnodes/SoVRMLParent.h
   \brief The SoVRMLParent node is a superclass for all VRML grouping nodes.
@@ -37,10 +43,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/nodes/SoInfo.h>
 #include <Inventor/C/tidbitsp.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -84,7 +86,7 @@ public:
   }
 };
 
-#endif // DOXYGEN_SKIP_PRIVATE(this)
+#endif // DOXYGEN_SKIP_THIS
 
 static SoInfo * vrmlparent_nullnode = NULL;
 
@@ -501,3 +503,5 @@ SoVRMLParent::makeWriteData(void)
 }
 
 #undef PRIVATE
+
+#endif // HAVE_VRML97

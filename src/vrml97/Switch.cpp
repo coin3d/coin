@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLSwitch SoVRMLSwitch.h Inventor/VRMLnodes/SoVRMLSwitch.h
   \brief The SoVRMLSwitch class is a group node for traversing selected children.
@@ -66,6 +72,8 @@
 
 */
 
+#include <stddef.h>
+
 #include <Inventor/VRMLnodes/SoVRMLSwitch.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
@@ -89,11 +97,6 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <stddef.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -593,3 +596,5 @@ SoVRMLSwitch::getChildren(void) const
 }
 
 #undef PRIVATE
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLIndexedLine SoVRMLIndexedLine.h Inventor/VRMLnodes/SoVRMLIndexedLine.h
   \brief The SoVRMLIndexedLine class is an abstract superclass for lines specified with indices.
@@ -109,3 +115,5 @@ SoVRMLIndexedLine::notify(SoNotList * list)
   // Please document special cases like this.  20030603 mortene.
   inherited::notify(list);
 }
+
+#endif // HAVE_VRML97

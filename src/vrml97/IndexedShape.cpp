@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLIndexedShape SoVRMLIndexedShape.h Inventor/VRMLnodes/SoVRMLIndexedShape.h
   \brief The SoVRMLIndexedShape class is a superclass for geometry that use indexes.
@@ -174,3 +180,5 @@ SoVRMLIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
   }
   if (!box.isEmpty()) center = box.getCenter();
 }
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLShape SoVRMLShape.h Inventor/VRMLnodes/SoVRMLShape.h
   \brief The SoVRMLShape class holds geometry and geometry appearance nodes.
@@ -93,8 +99,7 @@
   Bounding box caching strategy. Default value is AUTO.
 */
 
-
-
+#include <stddef.h>
 
 #include <Inventor/VRMLnodes/SoVRMLShape.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -121,16 +126,11 @@
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
-
-#include <stddef.h>
 
 #ifndef DOXYGEN_SKIP_THIS
 
@@ -392,3 +392,4 @@ SoVRMLShape::copyContents(const SoFieldContainer * from,
 
 #undef PRIVATE
 
+#endif // HAVE_VRML97

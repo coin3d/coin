@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLDragSensor SoVRMLDragSensor.h Inventor/VRMLnodes/SoVRMLDragSensor.h
   \brief The SoVRMLDragSensor class is a superclass for VRML drag sensors.
@@ -221,3 +227,5 @@ SoVRMLDragSensor::getNormalizedLocaterPosition(void) const
 {
   return this->normpos;
 }
+
+#endif // HAVE_VRML97

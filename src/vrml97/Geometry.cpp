@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLGeometry SoVRMLGeometry.h Inventor/VRMLnodes/SoVRMLGeometry.h
   \brief The SoVRMLGeometry class is a superclass for VRML shapes.
@@ -34,10 +40,6 @@
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/actions/SoSearchAction.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -64,7 +66,6 @@ public:
 };
 #endif // DOXYGEN_SKIP_THIS
 
-#undef PRIVATE
 #define PRIVATE(thisp) ((thisp)->pimpl)
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLGeometry);
@@ -173,3 +174,5 @@ SoVRMLGeometry::copyContents(const SoFieldContainer * from,
 }
 
 #undef PRIVATE
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLPositionInterpolator SoVRMLPositionInterpolator.h Inventor/VRMLnodes/SoVRMLPositionInterpolator.h
   \brief The SoVRMLPositionInterpolator class is used to interpolate 3D points.
@@ -103,3 +109,5 @@ SoVRMLPositionInterpolator::evaluate(void)
   }
   SO_ENGINE_OUTPUT(value_changed, SoSFVec3f, setValue(v0));
 }
+
+#endif // HAVE_VRML97

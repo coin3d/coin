@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLSphereSensor SoVRMLSphereSensor.h Inventor/VRMLnodes/SoVRMLSphereSensor
   \brief The SoVRMLSphereSensor class maps pointer motion into rotations on a sphere.
@@ -201,3 +207,5 @@ SoVRMLSphereSensor::dragFinish(void)
     this->offset = this->rotation_changed.getValue();
   }
 }
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLGroup SoVRMLGroup.h Inventor/VRMLnodes/SoVRMLGroup.h
   \brief The SoVRMLGroup class is used for grouping VRML nodes.
@@ -104,10 +110,6 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/threads/SbStorage.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
 
@@ -701,3 +703,5 @@ SoVRMLGroup::cullTestNoPush(SoState * state)
 }
 
 #undef PRIVATE
+
+#endif // HAVE_VRML97

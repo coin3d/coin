@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLCone SoVRMLCone.h Inventor/VRMLnodes/SoVRMLCone.h
   \brief The SoVRMLCone class is used to represent a Cone object.
@@ -263,3 +269,5 @@ SoVRMLCone::computeBBox(SoAction * action,
 }
 
 #undef CONE_SIDE_NUMTRIS
+
+#endif // HAVE_VRML97

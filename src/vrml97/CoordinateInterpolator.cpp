@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLCoordinateInterpolator SoVRMLCoordinateInterpolator.h Inventor/VRMLnodes/SoVRMLCoorinateInterpolator.h
   \brief The SoVRMLCoordinateInterpolator class is used to interpolate 3D coordinates.
@@ -69,12 +75,11 @@ SoVRMLCoordinateInterpolator::initClass(void) // static
   SO_NODEENGINE_INTERNAL_INIT_CLASS(SoVRMLCoordinateInterpolator);
 }
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SoVRMLCoordinateInterpolator::SoVRMLCoordinateInterpolator(void)
 {
-  THIS = new SoVRMLCoordinateInterpolatorP;
+  PRIVATE(this) = new SoVRMLCoordinateInterpolatorP;
 
   SO_NODEENGINE_INTERNAL_CONSTRUCTOR(SoVRMLCoordinateInterpolator);
 
@@ -84,7 +89,7 @@ SoVRMLCoordinateInterpolator::SoVRMLCoordinateInterpolator(void)
 
 SoVRMLCoordinateInterpolator::~SoVRMLCoordinateInterpolator()
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 void
@@ -96,7 +101,7 @@ SoVRMLCoordinateInterpolator::evaluate(void)
   int i, idx = this->getKeyValueIndex(interp);
   if (idx < 0) return;
 
-  THIS->tmplist.truncate(0);
+  PRIVATE(this)->tmplist.truncate(0);
   const int numkeys = this->key.getNum();
   const int numcoords = this->keyValue.getNum() / numkeys;
 
@@ -105,11 +110,15 @@ SoVRMLCoordinateInterpolator::evaluate(void)
   if (interp > 0.0f) c1 = this->keyValue.getValues((idx+1)*numcoords);
 
   for (i = 0; i < numcoords; i++) {
-    THIS->tmplist.append(c0[i] + (c1[i]-c0[i]) * interp);
+    PRIVATE(this)->tmplist.append(c0[i] + (c1[i]-c0[i]) * interp);
   }
 
-  const SbVec3f * coords = THIS->tmplist.getArrayPtr();
+  const SbVec3f * coords = PRIVATE(this)->tmplist.getArrayPtr();
 
   SO_ENGINE_OUTPUT(value_changed, SoMFVec3f, setNum(numcoords));
   SO_ENGINE_OUTPUT(value_changed, SoMFVec3f, setValues(0, numcoords, coords));
 }
+
+#undef PRIVATE
+
+#endif // HAVE_VRML97

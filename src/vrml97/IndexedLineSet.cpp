@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLIndexedLineSet SoVRMLIndexedLineSet.h Inventor/VRMLnodes/SoVRMLIndexedLineSet.h
   \brief The SoVRMLIndexedLineSet class is used to represent a generic 3D line shape.
@@ -97,6 +103,8 @@
 
 */
 
+#include <assert.h>
+
 #include <Inventor/VRMLnodes/SoVRMLIndexedLineSet.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -110,9 +118,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/misc/SoGL.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -129,7 +134,6 @@
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#include <assert.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
@@ -138,7 +142,7 @@
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif
+#endif // COIN_DEBUG
 
 class SoVRMLIndexedLineSetP {
 public:
@@ -433,3 +437,5 @@ SoVRMLIndexedLineSet::generatePrimitives(SoAction * action)
   }
   state->pop();
 }
+
+#endif // HAVE_VRML97

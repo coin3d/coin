@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 #include <Inventor/VRMLnodes/SoVRML.h>
 #include <Inventor/VRMLnodes/SoVRMLNodes.h>
 
@@ -101,3 +107,5 @@ so_vrml_init(void)
   SoVRMLVisibilitySensor::initClass();
   SoVRMLWorldInfo::initClass();
 }
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLPlaneSensor SoVRMLPlaneSensor.h Inventor/VRMLnodes/SoVRMLPlaneSensor
   \brief The SoVRMLPlaneSensor class maps pointer motion into object space translations.
@@ -229,3 +235,5 @@ SoVRMLPlaneSensor::dragFinish(void)
     this->offset = this->translation_changed;
   }
 }
+
+#endif // HAVE_VRML97

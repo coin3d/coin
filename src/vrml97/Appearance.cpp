@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLAppearance SoVRMLAppearance.h Inventor/VRMLnodes/SoVRMLAppearance.h
   \brief The SoVRMLAppearance class specifies visual properties for shapes.
@@ -72,6 +78,8 @@
   Can contain an SoVRMLTextureTransform node. Is NULL by default.
 */
 
+#include <stddef.h>
+
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/VRMLnodes/SoVRMLAppearance.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -84,10 +92,6 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
-#include <stddef.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -294,3 +298,4 @@ SoVRMLAppearance::copyContents(const SoFieldContainer * from,
 
 #undef PRIVATE
 
+#endif // HAVE_VRML97

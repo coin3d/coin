@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLDirectionalLight SoVRMLDirectionalLight.h Inventor/VRMLnodes/SoVRMLDirectionalLight.h
   \brief The SoVRMLDirectionalLight class is a node type for specifying directional light sources
@@ -73,9 +79,6 @@
 #include <Inventor/elements/SoEnvironmentElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
 #if COIN_DEBUG
@@ -153,3 +156,5 @@ SoVRMLDirectionalLight::GLRender(SoGLRenderAction * action)
   glLightf(light, GL_QUADRATIC_ATTENUATION, 0);
 
 }
+
+#endif HAVE_VRML97

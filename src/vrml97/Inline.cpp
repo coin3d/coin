@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLInline SoVRMLInline.h Inventor/VRMLnodes/SoVRMLInline.h
   \brief The SoVRMLInline class is used to insert VRML files into a scene.
@@ -108,6 +114,8 @@
   Always display bounding box.
 */
 
+#include <stdlib.h>
+
 #include <Inventor/VRMLnodes/SoVRMLInline.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -126,12 +134,6 @@
 #include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/C/tidbitsp.h>
-#include <stdlib.h>
-
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #include <Inventor/system/gl.h>
 
@@ -175,17 +177,16 @@ SoVRMLInline::initClass(void)
                                  SoAudioRenderAction::callDoAction);
 }
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor
 */
 SoVRMLInline::SoVRMLInline(void)
 {
-  THIS = new SoVRMLInlineP;
-  THIS->isrequested = FALSE;
-  THIS->children = new SoChildList(this);
+  PRIVATE(this) = new SoVRMLInlineP;
+  PRIVATE(this)->isrequested = FALSE;
+  PRIVATE(this)->children = new SoChildList(this);
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLInline);
 
@@ -193,9 +194,9 @@ SoVRMLInline::SoVRMLInline(void)
   SO_VRMLNODE_ADD_FIELD(bboxSize, (-1.0f, -1.0f, -1.0f));
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
 
-  THIS->urlsensor = new SoFieldSensor(SoVRMLInline::urlFieldModified, this);
-  THIS->urlsensor->setPriority(0); // immediate sensor
-  THIS->urlsensor->attach(& this->url);
+  PRIVATE(this)->urlsensor = new SoFieldSensor(SoVRMLInline::urlFieldModified, this);
+  PRIVATE(this)->urlsensor->setPriority(0); // immediate sensor
+  PRIVATE(this)->urlsensor->attach(& this->url);
 }
 
 /*!
@@ -203,8 +204,8 @@ SoVRMLInline::SoVRMLInline(void)
 */
 SoVRMLInline::~SoVRMLInline()
 {
-  delete THIS->children;
-  delete THIS;
+  delete PRIVATE(this)->children;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -213,7 +214,7 @@ SoVRMLInline::~SoVRMLInline()
 void
 SoVRMLInline::setFullURLName(const SbString & urlref)
 {
-  THIS->fullurlname = urlref;
+  PRIVATE(this)->fullurlname = urlref;
 }
 
 /*!
@@ -222,7 +223,7 @@ SoVRMLInline::setFullURLName(const SbString & urlref)
 const SbString &
 SoVRMLInline::getFullURLName(void)
 {
-  return THIS->fullurlname;
+  return PRIVATE(this)->fullurlname;
 }
 
 /*!
@@ -231,9 +232,9 @@ SoVRMLInline::getFullURLName(void)
 SoGroup *
 SoVRMLInline::copyChildren(void) const
 {
-  if (THIS->children->getLength() == 0) return NULL;
-  assert(THIS->children->getLength() == 1);
-  SoNode * rootcopy = (*(THIS->children))[0]->copy();
+  if (PRIVATE(this)->children->getLength() == 0) return NULL;
+  assert(PRIVATE(this)->children->getLength() == 1);
+  SoNode * rootcopy = (*(PRIVATE(this)->children))[0]->copy();
   assert(rootcopy->isOfType(SoGroup::getClassTypeId()));
   return (SoGroup *)rootcopy;
 }
@@ -242,7 +243,7 @@ SoVRMLInline::copyChildren(void) const
 SoChildList *
 SoVRMLInline::getChildren(void) const
 {
-  return THIS->children;
+  return PRIVATE(this)->children;
 }
 
 /*!
@@ -251,9 +252,9 @@ SoVRMLInline::getChildren(void) const
 void
 SoVRMLInline::requestURLData(void)
 {
-  THIS->isrequested = TRUE;
+  PRIVATE(this)->isrequested = TRUE;
   if (sovrmlinline_fetchurlcb) {
-    sovrmlinline_fetchurlcb(THIS->fullurlname,
+    sovrmlinline_fetchurlcb(PRIVATE(this)->fullurlname,
                             sovrmlinline_fetchurlcbclosure,
                             this);
   }
@@ -265,7 +266,7 @@ SoVRMLInline::requestURLData(void)
 SbBool
 SoVRMLInline::isURLDataRequested(void) const
 {
-  return THIS->isrequested;
+  return PRIVATE(this)->isrequested;
 }
 
 /*!
@@ -283,7 +284,7 @@ SoVRMLInline::isURLDataHere(void) const
 void
 SoVRMLInline::cancelURLDataRequest(void)
 {
-  THIS->isrequested = FALSE;
+  PRIVATE(this)->isrequested = FALSE;
 }
 
 /*!
@@ -292,10 +293,10 @@ SoVRMLInline::cancelURLDataRequest(void)
 void
 SoVRMLInline::setChildData(SoNode * urldata)
 {
-  THIS->isrequested = FALSE;
-  THIS->children->truncate(0);
+  PRIVATE(this)->isrequested = FALSE;
+  PRIVATE(this)->children->truncate(0);
   if (urldata) {
-    THIS->children->append(urldata);
+    PRIVATE(this)->children->append(urldata);
   }
 }
 
@@ -305,8 +306,8 @@ SoVRMLInline::setChildData(SoNode * urldata)
 SoNode *
 SoVRMLInline::getChildData(void) const
 {
-  if (THIS->children->getLength()) {
-    return (*THIS->children)[0];
+  if (PRIVATE(this)->children->getLength()) {
+    return (*PRIVATE(this)->children)[0];
   }
   return NULL;
 }
@@ -383,10 +384,10 @@ SoVRMLInline::doAction(SoAction * action)
   int numindices;
   const int * indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
-    THIS->children->traverseInPath(action, numindices, indices);
+    PRIVATE(this)->children->traverseInPath(action, numindices, indices);
   }
   else {
-    THIS->children->traverse(action);
+    PRIVATE(this)->children->traverse(action);
   }
 }
 
@@ -589,13 +590,13 @@ void
 SoVRMLInline::copyContents(const SoFieldContainer * from,
                            SbBool copyconnections)
 {
-  THIS->children->truncate(0);
+  PRIVATE(this)->children->truncate(0);
   inherited::copyContents(from, copyconnections);
 
   SoVRMLInline * inlinenode = (SoVRMLInline *)from;
-  THIS->fullurlname = inlinenode->pimpl->fullurlname;
+  PRIVATE(this)->fullurlname = inlinenode->pimpl->fullurlname;
   // the request will go to the original node, not this one.
-  THIS->isrequested = FALSE;
+  PRIVATE(this)->isrequested = FALSE;
 
   if (inlinenode->pimpl->children->getLength() == 0) return;
 
@@ -604,7 +605,7 @@ SoVRMLInline::copyContents(const SoFieldContainer * from,
   SoNode * cp = (SoNode *)
     SoFieldContainer::findCopy((*(inlinenode->pimpl->children))[0],
                                copyconnections);
-  THIS->children->append(cp);
+  PRIVATE(this)->children->append(cp);
 }
 
 /*!
@@ -624,16 +625,16 @@ SoVRMLInline::readLocalFile(SoInput * in)
   // exit with a failure code.
   if (!in->pushFile(filename.getString())) return TRUE;
 
-  THIS->fullurlname = in->getCurFileName();
+  PRIVATE(this)->fullurlname = in->getCurFileName();
 
   SoSeparator * node = SoDB::readAll(in);
 
   if (node) {
-    THIS->children->truncate(0);
-    THIS->children->append((SoNode *)node);
+    PRIVATE(this)->children->truncate(0);
+    PRIVATE(this)->children->append((SoNode *)node);
   }
   else {
-    if (in->getCurFileName() == THIS->fullurlname) {
+    if (in->getCurFileName() == PRIVATE(this)->fullurlname) {
       // Take care of popping the file off the stack. This is a bit
       // "hack-ish", but its done this way instead of loosening the
       // protection of SoInput::popFile().
@@ -668,6 +669,10 @@ SoVRMLInline::urlFieldModified(void * userdata, SoSensor * sensor)
     (void)thisp->readLocalFile(&in);
   }
   else {
+
+#undef PRIVATE
+
+#endif // HAVE_VRML97
     thisp->requestURLData();
   }
 }

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLVisibilitySensor SoVRMLVisibilitySensor.h Inventor/VRMLnodes/SoVRMLVisibilitySensor.h
   \brief The SoVRMLVisibilitySensor class will generate events based on visibility.
@@ -202,3 +208,5 @@ SoVRMLVisibilitySensor::GLRender(SoGLRenderAction * action)
     this->isActive = FALSE;
   }
 }
+
+#endif // HAVE_VRML97

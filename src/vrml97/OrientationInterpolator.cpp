@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLOrientationInterpolator SoVRMLOrientationInterpolator.h Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h
   \brief The SoVRMLOrientationInterpolator class is used to interpolate orientations.
@@ -117,3 +123,5 @@ SoVRMLOrientationInterpolator::evaluate(void)
   SO_ENGINE_OUTPUT(value_changed, SoSFRotation, setValue(v0));
 
 }
+
+#endif // HAVE_VRML97

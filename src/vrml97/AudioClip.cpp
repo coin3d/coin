@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLAudioClip SoVRMLAudioClip.h Inventor/VRMLnodes/SoVRMLAudioClip.h
   \brief The SoVRMLAudioClip class is used to load and store audio data.
@@ -140,6 +146,9 @@
   This eventOut is sent when the sound starts/stops playing.
 */
 
+#include <string.h>
+#include <stdio.h> // for EOF
+
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/actions/SoAudioRenderAction.h>
@@ -150,13 +159,6 @@
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/C/tidbitsp.h>
-
-#include <string.h>
-#include <stdio.h> // for EOF
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 
 #ifdef HAVE_THREADS
 #include <Inventor/threads/SbMutex.h>
@@ -1100,3 +1102,5 @@ SoVRMLAudioClipP::closeFile()
 
 #undef PRIVATE
 #undef PUBLIC
+
+#endif // HAVE_VRML97

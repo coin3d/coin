@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLExtrusion SoVRMLExtrusion.h Inventor/VRMLnodes/SoVRMLExtrusion.h
   \brief The SoVRMLExtrusion class is a a geometry node for extruding a cross section along a spine.
@@ -309,6 +315,8 @@
   The spine points.
 */
 
+#include <float.h>
+#include <math.h>
 
 #include <Inventor/VRMLnodes/SoVRMLExtrusion.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
@@ -331,11 +339,7 @@
 #include <Inventor/elements/SoMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoMultiTextureCoordinateElement.h>
 #include <Inventor/SbBox2f.h>
-#include <float.h>
-#include <math.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
+
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
 #endif // COIN_THREADSAFE
@@ -410,7 +414,6 @@ public:
   }
 };
 
-#undef PRIVATE
 #define PRIVATE(obj) (obj)->pimpl
 #define PUBLIC(obj) obj->master
 
@@ -667,8 +670,6 @@ SoVRMLExtrusion::createTriangleDetail(SoRayPickAction * action,
   // no triangle detail for Extrusion
   return NULL;
 }
-
-#undef PRIVATE
 
 static SbVec3f
 calculate_y_axis(const SbVec3f * spine, const int i,
@@ -1079,3 +1080,4 @@ SoVRMLExtrusionP::tess_callback(void * v0, void * v1, void * v2, void * data)
 #undef PUBLIC
 #undef PRIVATE
 
+#endif // HAVE_VRML97

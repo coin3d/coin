@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLTransform SoVRMLTransform.h Inventor/VRMLnodes/SoVRMLTransform.h
   \brief The SoVRMLTransform class is a grouping node that defines a transformation for its children.
@@ -529,3 +535,5 @@ SoVRMLTransform::applyMatrix(SoState * state)
     SoModelMatrixElement::mult(state, this, matrix);
   }
 }
+
+#endif // HAVE_VRML97

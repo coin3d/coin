@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLSensor SoVRMLSensor.h Inventor/VRMLnodes/SoVRMLSensor.h
   \brief The SoVRMLSensor class is an abstract superclass for VRML sensors.
@@ -51,3 +57,5 @@ SoVRMLSensor::SoVRMLSensor(void)
 SoVRMLSensor::~SoVRMLSensor()
 {
 }
+
+#endif // HAVE_VRML97

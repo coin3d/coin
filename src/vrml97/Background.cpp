@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLBackground SoVRMLBackground.h Inventor/VRMLnodes/SoVRMLBackground.h
   \brief The SoVRMLBackground class is used for specifying a viewer panorama.
@@ -1008,3 +1014,7 @@ background_bindingchangeCB(void * data, SoSensor * sensor)
 
 }
 
+#undef PRIVATE
+#undef PUBLIC
+
+#endif // HAVE_VRML97

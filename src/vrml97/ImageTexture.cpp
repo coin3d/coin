@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLImageTexture SoVRMLImageTexture.h Inventor/VRMLnodes/SoVRMLImageTexture.h
   \brief The SoVRMLImageTexture class is used for mapping a texture file onto geometry.
@@ -186,10 +192,6 @@
 #include <assert.h>
 #include <Inventor/C/glue/simage_wrapper.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
 static int imagedata_maxage = 0;
 static VRMLPrequalifyFileCallback * imagetexture_prequalify_cb = NULL;
 static void * imagetexture_prequalify_closure = NULL;
@@ -278,7 +280,6 @@ SoVRMLImageTexture::initClass(void) // static
 #endif // COIN_THREADSAFE
 }
 
-#undef PRIVATE
 #define PRIVATE(x) (x)->pimpl
 
 /*!
@@ -764,8 +765,6 @@ SoVRMLImageTexture::setImageDataMaxAge(const uint32_t maxage)
   imagedata_maxage = maxage;
 }
 
-#undef PRIVATE
-
 void 
 SoVRMLImageTextureP::timersensor_cb(void * data, SoSensor * sensor)
 {
@@ -777,5 +776,9 @@ SoVRMLImageTextureP::timersensor_cb(void * data, SoSensor * sensor)
   }
 }
 
+#undef PRIVATE
+
 #undef LOCK_GLIMAGE
 #undef UNLOCK_GLIMAGE
+
+#endif // HAVE_VRML97

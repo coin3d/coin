@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLCoordinate SoVRMLCoordinate.h Inventor/VRMLnodes/SoVRMLCoordinate.h
   \brief The SoVRMLCoordinate class is used to define 3D coordinates for shapes.
@@ -112,3 +118,5 @@ SoVRMLCoordinate::pick(SoPickAction * action)
 {
   SoVRMLCoordinate::doAction((SoAction*) action);
 }
+
+#endif // HAVE_VRML97

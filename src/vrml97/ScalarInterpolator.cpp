@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLScalarInterpolator SoVRMLScalarInterpolator.h Inventor/VRMLnodes/SoVRMLScalarInterpolator.h
   \brief The SoVRMLScalarInterpolator class is used to interpolate scalar values.
@@ -103,3 +109,5 @@ SoVRMLScalarInterpolator::evaluate(void)
   }
   SO_ENGINE_OUTPUT(value_changed, SoSFFloat, setValue(v0));
 }
+
+#endif // HAVE_VRML97

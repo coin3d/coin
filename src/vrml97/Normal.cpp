@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLNormal SoVRMLNormal.h Inventor/VRMLnodes/SoVRMLNormal.h
   \brief The SoVRMLNormal class is used to bind normals to geometry.
@@ -118,3 +124,5 @@ SoVRMLNormal::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoVRMLNormal::doAction((SoAction*) action);
 }
+
+#endif // HAVE_VRML97

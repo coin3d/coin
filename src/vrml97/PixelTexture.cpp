@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLPixelTexture SoVRMLPixelTexture.h Inventor/VRMLnodes/SoVRMLPixelTexture.h
   \brief The SoVRMLPixelTexture class is used for mapping a texture image onto geometry..
@@ -74,6 +80,9 @@
   The image data.
 */
 
+#include <assert.h>
+#include <stddef.h>
+
 #include <Inventor/VRMLnodes/SoVRMLPixelTexture.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -93,12 +102,6 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbImage.h>
-#include <assert.h>
-#include <stddef.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -135,23 +138,22 @@ SoVRMLPixelTexture::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLPixelTexture, SO_VRML97_NODE_TYPE);
 }
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor.
 */
 SoVRMLPixelTexture::SoVRMLPixelTexture(void)
 {
-  THIS = new SoVRMLPixelTextureP;
+  PRIVATE(this) = new SoVRMLPixelTextureP;
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLPixelTexture);
 
   SO_VRMLNODE_ADD_EXPOSED_FIELD(image, (SbVec2s(0,0), 0, NULL));
 
-  THIS->glimage = NULL;
-  THIS->glimagevalid = FALSE;
-  THIS->readstatus = 1;
+  PRIVATE(this)->glimage = NULL;
+  PRIVATE(this)->glimagevalid = FALSE;
+  PRIVATE(this)->readstatus = 1;
 }
 
 /*!
@@ -159,8 +161,8 @@ SoVRMLPixelTexture::SoVRMLPixelTexture(void)
 */
 SoVRMLPixelTexture::~SoVRMLPixelTexture()
 {
-  if (THIS->glimage) THIS->glimage->unref(NULL);
-  delete THIS;
+  if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(NULL);
+  delete PRIVATE(this);
 }
 
 static SoGLImage::Wrap
@@ -222,7 +224,7 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
 
   LOCK_GLIMAGE(this);
 
-  if (!THIS->glimagevalid) {
+  if (!PRIVATE(this)->glimagevalid) {
     int nc;
     SbVec2s size;
     const unsigned char * bytes =
@@ -232,28 +234,28 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
     SbBool needbig = (scalepolicy == SoTextureScalePolicyElement::FRACTURE);
 
     if (needbig &&
-        (THIS->glimage == NULL ||
-         THIS->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
-      if (THIS->glimage) THIS->glimage->unref(state);
-      THIS->glimage = new SoGLBigImage();
+        (PRIVATE(this)->glimage == NULL ||
+         PRIVATE(this)->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
+      if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(state);
+      PRIVATE(this)->glimage = new SoGLBigImage();
     }
     else if (!needbig &&
-             (THIS->glimage == NULL ||
-              THIS->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
-      if (THIS->glimage) THIS->glimage->unref(state);
-      THIS->glimage = new SoGLImage();
+             (PRIVATE(this)->glimage == NULL ||
+              PRIVATE(this)->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
+      if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(state);
+      PRIVATE(this)->glimage = new SoGLImage();
     }
 
     if (scalepolicy == SoTextureScalePolicyElement::SCALE_DOWN) {
-      THIS->glimage->setFlags(THIS->glimage->getFlags()|SoGLImage::SCALE_DOWN);
+      PRIVATE(this)->glimage->setFlags(PRIVATE(this)->glimage->getFlags()|SoGLImage::SCALE_DOWN);
     }
 
     if (bytes && size != SbVec2s(0,0)) {
-      THIS->glimage->setData(bytes, size, nc,
+      PRIVATE(this)->glimage->setData(bytes, size, nc,
                              pixeltexture_translate_wrap(this->repeatS.getValue()),
                              pixeltexture_translate_wrap(this->repeatT.getValue()),
                              quality);
-      THIS->glimagevalid = TRUE;
+      PRIVATE(this)->glimagevalid = TRUE;
       // don't cache while creating a texture object
       SoCacheElement::setInvalid(TRUE);
       if (state->isCacheOpen()) {
@@ -265,12 +267,12 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
   UNLOCK_GLIMAGE(this);
 
   SoGLTextureImageElement::set(state, this,
-                               THIS->glimagevalid ? THIS->glimage : NULL,
+                               PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
                                SoTextureImageElement::MODULATE,
                                SbColor(1.0f, 1.0f, 1.0f));
 
   SoGLTextureEnabledElement::set(state,
-                                 this, THIS->glimagevalid &&
+                                 this, PRIVATE(this)->glimagevalid &&
                                  quality > 0.0f);
 
   if (this->isOverride()) {
@@ -290,7 +292,7 @@ SbBool
 SoVRMLPixelTexture::readInstance(SoInput * in,
                                  unsigned short flags)
 {
-  THIS->glimagevalid = FALSE;
+  PRIVATE(this)->glimagevalid = FALSE;
   return inherited::readInstance(in, flags);
 }
 
@@ -300,10 +302,12 @@ SoVRMLPixelTexture::readInstance(SoInput * in,
 void
 SoVRMLPixelTexture::notify(SoNotList * list)
 {
-  THIS->glimagevalid = FALSE;
+  PRIVATE(this)->glimagevalid = FALSE;
   SoNode::notify(list);
 }
 
-#undef THIS
+#undef PRIVATE
 #undef LOCK_GLIMAGE
 #undef UNLOCK_GLIMAGE
+
+#endif // HAVE_VRML97

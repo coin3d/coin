@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLVertexShape SoVRMLVertexShape.h Inventor/VRMLnodes/SoVRMLVertexShape.h
   \brief The SoVRMLVertexShape class is a superclass for vertex based shapes.
@@ -56,6 +62,8 @@
   When TRUE, normals are applied per vertex. Default value is TRUE.
 */
 
+#include <stddef.h>
+
 #include <Inventor/VRMLnodes/SoVRMLVertexShape.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLNormal.h>
@@ -66,15 +74,10 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoState.h>
-#include <stddef.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbRWMutex.h>
@@ -96,8 +99,7 @@ public:
 };
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_NODE_ABSTRACT_SOURCE(SoVRMLVertexShape);
 
@@ -113,8 +115,8 @@ SoVRMLVertexShape::initClass(void)
 */
 SoVRMLVertexShape::SoVRMLVertexShape(void)
 {
-  THIS = new SoVRMLVertexShapeP;
-  THIS->normalcache = NULL;
+  PRIVATE(this) = new SoVRMLVertexShapeP;
+  PRIVATE(this)->normalcache = NULL;
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLVertexShape);
 
@@ -131,8 +133,8 @@ SoVRMLVertexShape::SoVRMLVertexShape(void)
 */
 SoVRMLVertexShape::~SoVRMLVertexShape()
 {
-  if (THIS->normalcache) THIS->normalcache->unref();
-  delete THIS;
+  if (PRIVATE(this)->normalcache) PRIVATE(this)->normalcache->unref();
+  delete PRIVATE(this);
 }
 
 // This documentation block has a copy in shapenodes/VertexShape.cpp.
@@ -236,8 +238,8 @@ SoVRMLVertexShape::notify(SoNotList * list)
   
   if (f == &this->coord) {
     this->readLockNormalCache();
-    if (THIS->normalcache) {
-      THIS->normalcache->invalidate();
+    if (PRIVATE(this)->normalcache) {
+      PRIVATE(this)->normalcache->invalidate();
     }
     this->readUnlockNormalCache();
   }
@@ -256,12 +258,12 @@ SoVRMLVertexShape::setNormalCache(SoState * state,
                                   SbVec3f * normals)
 {
   this->writeLockNormalCache();
-  if (THIS->normalcache) THIS->normalcache->unref();
+  if (PRIVATE(this)->normalcache) PRIVATE(this)->normalcache->unref();
   // create new normal cache with no dependencies
   state->push();
-  THIS->normalcache = new SoNormalCache(state);
-  THIS->normalcache->ref();
-  THIS->normalcache->set(num, normals);
+  PRIVATE(this)->normalcache = new SoNormalCache(state);
+  PRIVATE(this)->normalcache->ref();
+  PRIVATE(this)->normalcache->set(num, normals);
   // force element dependencies
   (void) SoCoordinateElement::getInstance(state);
   state->pop();
@@ -287,23 +289,23 @@ SoNormalCache *
 SoVRMLVertexShape::generateAndReadLockNormalCache(SoState * const state)
 {
   this->readLockNormalCache();
-  if (THIS->normalcache && THIS->normalcache->isValid(state)) {
-    return THIS->normalcache;
+  if (PRIVATE(this)->normalcache && PRIVATE(this)->normalcache->isValid(state)) {
+    return PRIVATE(this)->normalcache;
   }
   this->readUnlockNormalCache();
   this->writeLockNormalCache();
   
   SbBool storeinvalid = SoCacheElement::setInvalid(FALSE);
   
-  if (THIS->normalcache) THIS->normalcache->unref();
+  if (PRIVATE(this)->normalcache) PRIVATE(this)->normalcache->unref();
   state->push(); // need to push for cache dependencies
-  THIS->normalcache = new SoNormalCache(state);
-  THIS->normalcache->ref();
-  SoCacheElement::set(state, THIS->normalcache);
+  PRIVATE(this)->normalcache = new SoNormalCache(state);
+  PRIVATE(this)->normalcache->ref();
+  SoCacheElement::set(state, PRIVATE(this)->normalcache);
   //
   // See if the node supports the Coin-way of generating normals
   //
-  if (!generateDefaultNormals(state, THIS->normalcache)) {
+  if (!generateDefaultNormals(state, PRIVATE(this)->normalcache)) {
     // FIXME: implement SoNormalBundle
     if (generateDefaultNormals(state, (SoNormalBundle *)NULL)) {
       // FIXME: set generator in normal cache
@@ -314,13 +316,13 @@ SoVRMLVertexShape::generateAndReadLockNormalCache(SoState * const state)
   SoCacheElement::setInvalid(storeinvalid);
   this->writeUnlockNormalCache();
   this->readLockNormalCache();
-  return THIS->normalcache;
+  return PRIVATE(this)->normalcache;
 }
 
 SoNormalCache *
 SoVRMLVertexShape::getNormalCache(void) const
 {
-  return THIS->normalcache;
+  return PRIVATE(this)->normalcache;
 }
 
 /*!
@@ -360,7 +362,7 @@ void
 SoVRMLVertexShape::readLockNormalCache(void)
 {
 #ifdef COIN_THREADSAFE
-  THIS->normalcachemutex.readLock();
+  PRIVATE(this)->normalcachemutex.readLock();
 #endif // COIN_THREADSAFE
 }
 
@@ -377,7 +379,7 @@ void
 SoVRMLVertexShape::readUnlockNormalCache(void)
 {
 #ifdef COIN_THREADSAFE
-  THIS->normalcachemutex.readUnlock();
+  PRIVATE(this)->normalcachemutex.readUnlock();
 #endif // COIN_THREADSAFE
 }
 
@@ -386,7 +388,7 @@ void
 SoVRMLVertexShape::writeLockNormalCache(void)
 {
 #ifdef COIN_THREADSAFE
-  THIS->normalcachemutex.writeLock();
+  PRIVATE(this)->normalcachemutex.writeLock();
 #endif // COIN_THREADSAFE
 }
 
@@ -395,9 +397,10 @@ void
 SoVRMLVertexShape::writeUnlockNormalCache(void)
 {
 #ifdef COIN_THREADSAFE
-  THIS->normalcachemutex.writeUnlock();
+  PRIVATE(this)->normalcachemutex.writeUnlock();
 #endif // COIN_THREADSAFE
 }
 
-#undef THIS
+#undef PRIVATE
 
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLColorInterpolator SoVRMLColorInterpolator.h Inventor/VRMLnodes/SoVRMLColorInterpolator.h
   \brief The SoVRMLColorInterpolator class is used to interpolate color values.
@@ -113,3 +119,5 @@ SoVRMLColorInterpolator::evaluate(void)
   }
   SO_ENGINE_OUTPUT(value_changed, SoSFColor, setValue(v0));
 }
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLColor SoVRMLColor.h Inventor/VRMLnodes/SoVRMLColor.h
   \brief The SoVRMLColor class is used to specify multiple colors for a single shape.
@@ -72,8 +78,7 @@ public:
 };
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_NODE_SOURCE(SoVRMLColor);
 
@@ -89,7 +94,7 @@ SoVRMLColor::initClass(void) // static
 */
 SoVRMLColor::SoVRMLColor(void)
 {
-  THIS = new SoVRMLColorP;
+  PRIVATE(this) = new SoVRMLColorP;
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLColor);
 
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(color);
@@ -100,7 +105,7 @@ SoVRMLColor::SoVRMLColor(void)
 */
 SoVRMLColor::~SoVRMLColor() // virtual, protected
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 // Doc in parent
@@ -115,7 +120,7 @@ SoVRMLColor::doAction(SoAction * action)
                               this,
                               this->color.getNum(),
                               this->color.getValues(0),
-                              &THIS->colorpacker);
+                              &PRIVATE(this)->colorpacker);
     if (this->isOverride()) {
       SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
     }
@@ -136,4 +141,6 @@ SoVRMLColor::callback(SoCallbackAction * action)
   SoVRMLColor::doAction((SoAction*) action);
 }
 
-#undef THIS
+#undef PRIVATE
+
+#endif // HAVE_VRML97

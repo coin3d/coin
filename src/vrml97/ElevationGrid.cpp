@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLElevationGrid SoVRMLElevationGrid.h Inventor/VRMLnodes/SoVRMLElevationGrid.h
   \brief The SoVRMLElevationGrid class is used to represent elevation grids.
@@ -253,6 +259,7 @@
   Specifies whether normals should be applied per vertex. Default value is TRUE.
 */
 
+#include <float.h>
 
 #include <Inventor/VRMLnodes/SoVRMLElevationGrid.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -272,10 +279,6 @@
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <float.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
 #ifdef COIN_THREADSAFE
@@ -325,8 +328,7 @@ public:
 
 #endif // DOXYGEN_SKIP_THIS
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 SO_NODE_SOURCE(SoVRMLElevationGrid);
 
@@ -342,7 +344,7 @@ SoVRMLElevationGrid::initClass(void)
 */
 SoVRMLElevationGrid::SoVRMLElevationGrid(void)
 {
-  THIS = new SoVRMLElevationGridP;
+  PRIVATE(this) = new SoVRMLElevationGridP;
 
   SO_VRMLNODE_INTERNAL_CONSTRUCTOR(SoVRMLElevationGrid);
 
@@ -366,7 +368,7 @@ SoVRMLElevationGrid::SoVRMLElevationGrid(void)
 */
 SoVRMLElevationGrid::~SoVRMLElevationGrid(void)
 {
-  delete THIS;
+  delete PRIVATE(this);
 }
 
 // Doc in parent
@@ -615,7 +617,7 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
     glEnd();
   }
 
-  if (normalcache) THIS->readUnlockNormalCache();
+  if (normalcache) PRIVATE(this)->readUnlockNormalCache();
 }
 
 // Doc in parent
@@ -844,7 +846,7 @@ SoVRMLElevationGrid::generatePrimitives(SoAction * action)
   }
   this->endShape();
 
-  if (normalcache) THIS->readUnlockNormalCache();
+  if (normalcache) PRIVATE(this)->readUnlockNormalCache();
 }
 
 //
@@ -886,7 +888,7 @@ SoVRMLElevationGrid::notify(SoNotList * list)
       f == &this->zDimension ||
       f == &this->xSpacing ||
       f == &this->zSpacing) {
-    THIS->dirty = TRUE;
+    PRIVATE(this)->dirty = TRUE;
   }
   inherited::notify(list);
 }
@@ -897,14 +899,14 @@ SoVRMLElevationGrid::notify(SoNotList * list)
 const SbVec3f *
 SoVRMLElevationGrid::updateNormalCache(Binding & nbind)
 {
-  THIS->readLockNormalCache();
+  PRIVATE(this)->readLockNormalCache();
 
-  if (THIS->dirty) {
-    THIS->readUnlockNormalCache();
-    THIS->writeLockNormalCache();
+  if (PRIVATE(this)->dirty) {
+    PRIVATE(this)->readUnlockNormalCache();
+    PRIVATE(this)->writeLockNormalCache();
     // FIXME: optimize by using a specialized algorithm for
     // calculating the normals.
-    THIS->ngen.reset(this->ccw.getValue());
+    PRIVATE(this)->ngen.reset(this->ccw.getValue());
 
     const int xdim = this->xDimension.getValue();
     const int zdim = this->zDimension.getValue();
@@ -928,7 +930,7 @@ SoVRMLElevationGrid::updateNormalCache(Binding & nbind)
         SbVec3f v2(currx+xspace, h[x+1], currz);
         SbVec3f v3(currx, h[x], currz);
 
-        THIS->ngen.quad(v0, v1, v2, v3);
+        PRIVATE(this)->ngen.quad(v0, v1, v2, v3);
         currx += xspace;
       }
       h += xdim;
@@ -937,19 +939,23 @@ SoVRMLElevationGrid::updateNormalCache(Binding & nbind)
     }
 
     if (this->creaseAngle.getValue() <= FLT_EPSILON) {
-      THIS->nbind = PER_QUAD;
-      THIS->ngen.generatePerFace();
+      PRIVATE(this)->nbind = PER_QUAD;
+      PRIVATE(this)->ngen.generatePerFace();
     }
     else {
-      THIS->nbind = PER_VERTEX;
-      THIS->ngen.generate(this->creaseAngle.getValue());
+      PRIVATE(this)->nbind = PER_VERTEX;
+      PRIVATE(this)->ngen.generate(this->creaseAngle.getValue());
     }
-    THIS->dirty = FALSE;
-    THIS->writeUnlockNormalCache();
-    THIS->readLockNormalCache();
+    PRIVATE(this)->dirty = FALSE;
+    PRIVATE(this)->writeUnlockNormalCache();
+    PRIVATE(this)->readLockNormalCache();
   }
 
   // cache is read locked when we get here
-  nbind = THIS->nbind;
-  return THIS->ngen.getNormals();
+  nbind = PRIVATE(this)->nbind;
+  return PRIVATE(this)->ngen.getNormals();
 }
+
+#undef PRIVATE
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLVertexPoint SoVRMLVertexPoint.h Inventor/VRMLnodes/SoVRMLVertexPoint.h
   \brief The SoVRMLVertexPoint class is a superclass for point based VRML shapes.
@@ -161,3 +167,5 @@ SoVRMLVertexPoint::shouldGLRender(SoGLRenderAction * action)
   if (this->coord.getValue() == NULL) return FALSE;
   return inherited::shouldGLRender(action);
 }
+
+#endif // HAVE_VRML97

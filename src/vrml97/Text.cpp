@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLText SoVRMLText.h Inventor/VRMLnodes/SoVRMLText.h
   \brief The SoVRMLText class is used to represent text in a scene.
@@ -102,10 +108,6 @@
   \var SoSFFloat SoVRMLText::maxExtent
   Maximum object space extent of longest string.
 */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 
 #include <float.h> // FLT_MIN
 #include <stddef.h>
@@ -1114,3 +1116,4 @@ SoVRMLTextP::setUpGlyphs(SoState * state, SoVRMLText * textnode)
   if (oldcache) oldcache->unref();
 }
 
+#endif // HAVE_VRML97

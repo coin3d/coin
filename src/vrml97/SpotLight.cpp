@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLSpotLight SoVRMLSpotLight.h Inventor/VRMLnodes/SoVRMLSpotLight.h
   \brief The SoVRMLSpotLight class defines a spot light source.
@@ -169,6 +175,8 @@
   The attenuiation vector. Default value is (1, 0, 0).
 */
 
+#include <math.h>
+
 #include <Inventor/VRMLnodes/SoVRMLSpotLight.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -183,12 +191,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
-
-#include <math.h>
 
 SO_NODE_SOURCE(SoVRMLSpotLight);
 
@@ -270,3 +273,5 @@ SoVRMLSpotLight::GLRender(SoGLRenderAction * action)
 
   // FIXME: consider radius and beamWidth
 }
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLTexture SoVRMLTexture.h Inventor/VRMLnodes/SoVRMLTexture.h
   \brief The SoVRMLTexture class is a superclass for VRML texture nodes.
@@ -73,4 +79,4 @@ SoVRMLTexture::GLRender(SoGLRenderAction * action)
 {
 }
 
-
+#endif // HAVE_VRML97

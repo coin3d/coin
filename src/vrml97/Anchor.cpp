@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLAnchor SoVRMLAnchor.h Inventor/VRMLnodes/SoVRMLAnchor.h
   \brief The SoVRMLAnchor class is used for linking to other URL resources.
@@ -167,6 +173,8 @@
   Children bounding box size hint. Default value is (-1, -1, -1).
 */
 
+#include <stdlib.h>
+
 #include <Inventor/VRMLnodes/SoVRMLAnchor.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/misc/SoState.h>
@@ -174,7 +182,6 @@
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <stdlib.h>
 
 // static members
 SoVRMLAnchorCB * SoVRMLAnchor::fetchurlcb;
@@ -250,3 +257,5 @@ SoVRMLAnchor::handleEvent(SoHandleEventAction * action)
   inherited::handleEvent(action);
   state->pop();
 }
+
+#endif // HAVE_VRML97

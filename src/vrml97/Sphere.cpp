@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLSphere SoVRMLSphere.h Inventor/VRMLnodes/SoVRMLSphere.h
   \brief The SoVRMLSphere class is used to represent a spherical 3D object.
@@ -189,3 +195,5 @@ SoVRMLSphere::computeBBox(SoAction * action,
 
 #undef SPHERE_NUM_SLICES
 #undef SPHERE_NUM_STACKS
+
+#endif // HAVE_VRML97

@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLTextureTransform SoVRMLTextureTransform.h Inventor/VRMLnodes/SoVRMLTextureTransform.h
   \brief The SoVRMLTextureTransform class defines a transformation applied to texture coordinates.
@@ -227,3 +233,5 @@ SoVRMLTextureTransform::makeMatrix(SbMatrix & mat) const
     mat.multRight(tmp);
   }
 }
+
+#endif // HAVE_VRML97

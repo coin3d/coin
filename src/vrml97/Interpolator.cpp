@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLInterpolator SoVRMLInterpolator.h Inventor/VRMLnodes/SoVRMLInterpolator.h
   \brief The SoVRMLInterpolator class is an internal abstract class.
@@ -126,3 +132,5 @@ SoVRMLInterpolator::getKeyValueIndex(float & interp)
   interp = 0.0f;
   return n-1;
 }
+
+#endif // HAVE_VRML97

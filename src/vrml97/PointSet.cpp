@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLPointSet SoVRMLPointSet.h Inventor/VRMLnodes/SoVRMLPointSet.h
   \brief The SoVRMLPointSet class is used to represent a set of 3D points.
@@ -68,9 +74,6 @@
 #include <Inventor/SoPrimitiveVertex.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
 #include <Inventor/system/gl.h>
 
 #include <Inventor/nodes/SoVertexProperty.h>
@@ -214,3 +217,5 @@ SoVRMLPointSet::generatePrimitives(SoAction * action)
   }
   this->endShape();
 }
+
+#endif // HAVE_VRML97

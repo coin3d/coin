@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLTimeSensor SoVRMLTimeSensor.h Inventor/VRMLnodes/SoVRMLTimeSensor.h
   \brief The SoVRMLTimeSensor class is a multi-purpose time event generator.
@@ -437,3 +443,7 @@ SoVRMLTimeSensor::handleEvent(SoHandleEventAction * action)
 {
   inherited::handleEvent(action);
 }
+
+#undef PRIVATE
+
+#endif // HAVE_VRML97

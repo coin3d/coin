@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLBox SoVRMLBox.h Inventor/VRMLnodes/SoVRMLBox.h
   \brief The SoVRMLBox class is used for representing a 3D box.
@@ -194,3 +200,5 @@ SoVRMLBox::computeBBox(SoAction * action,
 
   box.setBounds(-w, -h, -d, w, h, d);
 }
+
+#endif // HAVE_VRML97

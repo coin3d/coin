@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLCollision SoVRMLCollision.h Inventor/VRMLnodes/SoVRMLCollision.h
   \brief The SoVRMLCollision class is used for collision detection with the avatar.
@@ -238,3 +244,5 @@ SoVRMLCollision::notify(SoNotList * list)
 {
   inherited::notify(list);
 }
+
+#endif // HAVE_VRML97

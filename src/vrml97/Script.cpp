@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLScript SoVRMLScript.h Inventor/VRMLnodes/SoVRMLScript.h
   \brief The SoVRMLScript class is used to control the scene using scripts.
@@ -528,5 +534,6 @@ SoVRMLScript::eval_cb(void * data, SoSensor *)
   }
 }
 
-
 #undef PRIVATE
+
+#endif // HAVE_VRML97

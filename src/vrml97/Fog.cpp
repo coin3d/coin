@@ -21,6 +21,12 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
+#ifdef HAVE_VRML97
+
 /*!
   \class SoVRMLFog SoVRMLFog.h Inventor/VRMLnodes/SoVRMLFog.h
   \brief The SoVRMLFog class is used to specify a global scene fog.
@@ -276,4 +282,7 @@ fog_bindingchangeCB(void * data, SoSensor * sensor)
 
 }
 
+#undef PRIVATE
+#undef PUBLIC
 
+#endif // HAVE_VRML97
