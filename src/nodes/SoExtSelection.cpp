@@ -41,6 +41,7 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoShape.h>
+#include <Inventor/nodes/SoCamera.h>
 
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbBox2s.h>
@@ -53,6 +54,8 @@
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoCullElement.h>
 #include <Inventor/lists/SoCallbackList.h>
 
 #include <Inventor/SbMatrix.h>
@@ -119,6 +122,7 @@ q  FIXME: write documentation for enum definition
 
 // *************************************************************************
 
+#ifndef DOXYGEN_SKIP_THIS
 
 class SoExtSelectionP {
 public:
@@ -156,6 +160,10 @@ public:
                                                SoCallbackAction *action,
                                                const SoNode *node);
 
+  static SoCallbackAction::Response cameraCB(void * data,
+                                             SoCallbackAction * action,
+                                             const SoNode * node);
+
   SoCallbackAction::Response testShape(SoCallbackAction * action, const SoShape * shape);
 
   SoCallbackAction::Response testBBox(SoCallbackAction * action,
@@ -172,39 +180,11 @@ public:
 
 };
 
-void
-SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
-{
-  SoExtSelection *ext = (SoExtSelection *)data;
-  if (ext == NULL) return;
-  if (ext->isOverlayLassoAnimated()) {
-    int pat = ext->getOverlayLassoPattern();
-    int pat2 = pat << 1;
-    if ((pat & 0x8000) != 0) pat2 |= 1;
-    ext->setOverlayLassoPattern(pat2 & 0xffff);
-    ext->touch();
-  }
-}
+#endif // DOXYGEN_SKIP_THIS
 
-// ----------
-
-    // The following code is by Randolph Franklin,
-    // it returns 1 for interior points and 0 for exterior points.
-    // http://astronomy.swin.edu.au/pbourke/geometry/insidepoly/
-    /*
-      int
-      pnpoly(int npol, float *xp, float *yp, float x, float y)
-      {
-        int i, j, c = 0;
-        for (i = 0, j = npol-1; i < npol; j = i++) {
-          if ((((yp[i] <= y) && (y < yp[j])) ||
-            ((yp[j] <= y) && (y < yp[i]))) &&
-            (x < (xp[j] - xp[i]) * (y - yp[i]) / (yp[j] - yp[i]) + xp[i]))
-          c = !c;
-        }
-        return c;
-      }
-    */
+// The following code is by Randolph Franklin,
+// it returns 1 for interior points and 0 for exterior points.
+// http://astronomy.swin.edu.au/pbourke/geometry/insidepoly/
 
 static SbBool
 pointinpoly(const SbList <SbVec2s> & coords, const SbVec2s & point)
@@ -222,7 +202,7 @@ pointinpoly(const SbList <SbVec2s> & coords, const SbVec2s & point)
     pi[1] = (float) coords[i][1];
     pj[0] = (float) coords[j][0];
     pj[1] = (float) coords[j][1];
-    
+
     if ((((pi[1] <= y) && (y < pj[1])) ||
 	 ((pj[1] <= y) && (y < pi[1]))) &&
 	(x < (pj[0] - pi[0]) * (y - pi[1]) / (pj[1] - pi[1]) + pi[0]))
@@ -232,14 +212,6 @@ pointinpoly(const SbList <SbVec2s> & coords, const SbVec2s & point)
 }
 
 // ----------
-
-SoCallbackAction::Response
-SoExtSelectionP::myCallback(void *data, SoCallbackAction *action, const SoNode *node)
-{
-  SoExtSelection * ext = (SoExtSelection*)data;
-  assert(node->isOfType(SoShape::getClassTypeId()));
-  return ext->pimpl->testShape(action, (const SoShape*) node);
-}
 
 #undef THIS
 #define THIS this->pimpl
@@ -278,6 +250,8 @@ SoExtSelection::SoExtSelection(void)
   THIS->cbaction = new SoCallbackAction();
   THIS->cbaction->addPreCallback(SoShape::getClassTypeId(), SoExtSelectionP::myCallback,
                                  (void *) this);
+  THIS->cbaction->addPostCallback(SoCamera::getClassTypeId(), SoExtSelectionP::cameraCB,
+                                  (void *) this);
 
   // some init (just to be sure?)
   THIS->lassocolor = SbColor(1.0f, 1.0f, 1.0f);
@@ -436,7 +410,10 @@ SoExtSelection::isOverlayLassoAnimated(void)
 void
 SoExtSelection::handleEvent(SoHandleEventAction * action)
 {
-  // do not call SoSelction::handleEvent()
+  if (this->lassoType.getValue() == NOLASSO) {
+    inherited::handleEvent(action);
+    return;
+  }
   SoSeparator::handleEvent(action);
   if (action->isHandled()) return;
 
@@ -637,6 +614,57 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 
 #ifndef DOXYGEN_SKIP_THIS
 
+void
+SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
+{
+  SoExtSelection *ext = (SoExtSelection *)data;
+  if (ext == NULL) return;
+  if (ext->isOverlayLassoAnimated()) {
+    int pat = ext->getOverlayLassoPattern();
+    int pat2 = pat << 1;
+    if ((pat & 0x8000) != 0) pat2 |= 1;
+    ext->setOverlayLassoPattern(pat2 & 0xffff);
+    ext->touch();
+  }
+}
+
+SoCallbackAction::Response
+SoExtSelectionP::myCallback(void *data, SoCallbackAction *action, const SoNode *node)
+{
+  SoExtSelection * ext = (SoExtSelection*)data;
+  assert(node->isOfType(SoShape::getClassTypeId()));
+  return ext->pimpl->testShape(action, (const SoShape*) node);
+}
+
+SoCallbackAction::Response
+SoExtSelectionP::cameraCB(void * data,
+                          SoCallbackAction * action,
+                          const SoNode * node)
+{
+  SoExtSelection * thisp = (SoExtSelection*) data;
+
+  SoState * state = action->getState();
+  SbViewVolume vv = SoViewVolumeElement::get(state);
+  const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+
+  SbBox2s rectbbox;
+  for (int i = 0; i < thisp->pimpl->coords.getLength(); i++) {
+    rectbbox.extendBy(thisp->pimpl->coords[i]);
+  }
+
+  SbVec2s org = vp.getViewportOriginPixels();
+  SbVec2s siz = vp.getViewportSizePixels();
+  float left = float(rectbbox.getMin()[0] - org[0]) / float(siz[0]);
+  float bottom = float(rectbbox.getMin()[1] - org[1]) / float(siz[1]);
+
+  float right = float(rectbbox.getMax()[0] - org[0]) / float(siz[0]);
+  float top = float(rectbbox.getMax()[1] - org[1]) / float(siz[1]);
+
+  vv = vv.narrow(left, bottom, right, top);
+  SoCullElement::setViewVolume(state, vv);
+  return SoCallbackAction::CONTINUE;
+}
+
 SoCallbackAction::Response
 SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
 {
@@ -726,7 +754,7 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
         if (i == 8) hit = TRUE;
       }
       else {
-        // not 100% correct since we're testing against the 
+        // not 100% correct since we're testing against the
         // projected shape bbox, but should be good enough
         for (i = 0; i < this->coords.getLength(); i++) {
           if (shapebbox.intersect(this->coords[i])) { hit = TRUE; break; }
