@@ -47,7 +47,7 @@
 #include <Inventor/nodes/SoRotor.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/sensors/SoOneShotSensor.h>
+#include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/fields/SoSFTime.h>
@@ -88,7 +88,7 @@ public:
   SbTime starttime;
   SbVec3f startaxis;
   float startangle;
-  SoOneShotSensor * oneshotsensor;
+  SoTimerSensor * timersensor;
   SoFieldSensor * onfieldsensor;
   SoFieldSensor * rotfieldsensor;
   SoFieldSensor * speedfieldsensor;
@@ -110,8 +110,11 @@ SoRotor::SoRotor(void)
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));
 
-  PRIVATE(this)->oneshotsensor = new SoOneShotSensor(SoRotor::oneshotSensorCB, this);
-  PRIVATE(this)->oneshotsensor->setPriority(1);
+  // FIXME: we used a SoOneShotSensor here earlier. That's why the
+  // callback is called oneshotSensorCB. Rename it for Coin-3, pederb
+  // 2003-10-01
+  PRIVATE(this)->timersensor = new SoTimerSensor(SoRotor::oneshotSensorCB, this);
+  PRIVATE(this)->timersensor->setInterval(SoDB::getRealTimeInterval());
   PRIVATE(this)->onfieldsensor = new SoFieldSensor(SoRotor::fieldSensorCB, this);
   PRIVATE(this)->onfieldsensor->setPriority(0);
   PRIVATE(this)->onfieldsensor->attach(&this->on);
@@ -124,7 +127,7 @@ SoRotor::SoRotor(void)
 
   PRIVATE(this)->starttime = SbTime::zero();
   this->rotation.getValue(PRIVATE(this)->startaxis, PRIVATE(this)->startangle);
-  PRIVATE(this)->oneshotsensor->schedule();
+  PRIVATE(this)->timersensor->schedule();
 }
 
 
@@ -134,7 +137,7 @@ SoRotor::SoRotor(void)
 SoRotor::~SoRotor()
 {
   delete PRIVATE(this)->rotfieldsensor;
-  delete PRIVATE(this)->oneshotsensor;
+  delete PRIVATE(this)->timersensor;
   delete PRIVATE(this)->onfieldsensor;
   delete PRIVATE(this)->speedfieldsensor;
   delete PRIVATE(this);
@@ -155,14 +158,14 @@ SoRotor::fieldSensorCB(void * d, SoSensor * s)
 
   if (s == PRIVATE(thisp)->onfieldsensor) {
     if (thisp->on.getValue() == FALSE) {
-      if (PRIVATE(thisp)->oneshotsensor->isScheduled())
-        PRIVATE(thisp)->oneshotsensor->unschedule();
+      if (PRIVATE(thisp)->timersensor->isScheduled())
+        PRIVATE(thisp)->timersensor->unschedule();
     }
     else {
       thisp->rotation.getValue(PRIVATE(thisp)->startaxis, PRIVATE(thisp)->startangle);
       PRIVATE(thisp)->starttime = get_current_time();
-      if (!PRIVATE(thisp)->oneshotsensor->isScheduled())
-        PRIVATE(thisp)->oneshotsensor->schedule();
+      if (!PRIVATE(thisp)->timersensor->isScheduled())
+        PRIVATE(thisp)->timersensor->schedule();
     }
   }
   else if (s == PRIVATE(thisp)->speedfieldsensor) {
@@ -175,16 +178,21 @@ SoRotor::fieldSensorCB(void * d, SoSensor * s)
   }
 }
 
-// oneshot sensor is used to animate
+
+// FIXME: we used a SoOneShotSensor here earlier. That's why the
+// callback is called oneshotSensorCB. Rename it for Coin-3, pederb
+// 2003-10-01
 void
 SoRotor::oneshotSensorCB(void * d, SoSensor *)
 {
   SoRotor * thisp = (SoRotor *) d;
-  // got to check value of on field here in case oneshotsensor
+  // got to check value of on field here in case timersensor
   // triggers before onfieldsensor.
   if (thisp->on.getValue()) {
     thisp->setRotation();
-    PRIVATE(thisp)->oneshotsensor->schedule();
+  }
+  else {
+    PRIVATE(thisp)->timersensor->unschedule();
   }
 }
 
