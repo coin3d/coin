@@ -79,8 +79,11 @@ void
 SoMatrixTransform::doAction(SoAction * action)
 {
   if (!this->matrix.isIgnored()) {
-    SoModelMatrixElement::mult(action->getState(), this,
-                               this->matrix.getValue());
+    const SbMatrix & mat = this->matrix.getValue();
+    if (mat != SbMatrix::identity()) {
+      SoModelMatrixElement::mult(action->getState(), this,
+                                 mat);
+    }
   }
 }
 
