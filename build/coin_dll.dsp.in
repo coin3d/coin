@@ -1,0 +1,2021 @@
+# Microsoft Developer Studio Project File - Name="coin_dll" - Package Owner=<4>
+# Microsoft Developer Studio Generated Build File, Format Version 6.00
+# ** DO NOT EDIT **
+
+# TARGTYPE "Win32 (x86) Dynamic-Link Library" 0x0102
+
+CFG=coin_dll - Win32 Debug
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
+!MESSAGE 
+!MESSAGE NMAKE /f "coin_dll.mak".
+!MESSAGE 
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "coin_dll.mak" CFG="coin_dll - Win32 Debug"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "coin_dll - Win32 Release" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE "coin_dll - Win32 Debug" (based on "Win32 (x86) Dynamic-Link Library")
+!MESSAGE 
+
+# Begin Project
+# PROP AllowPerConfigDependencies 0
+# PROP Scc_ProjName ""
+# PROP Scc_LocalPath ""
+CPP=cl.exe
+MTL=midl.exe
+RSC=rc.exe
+
+!IF  "$(CFG)" == "coin_dll - Win32 Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "Release"
+# PROP BASE Intermediate_Dir "Release"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "C:@libdir@"
+# PROP Intermediate_Dir "Release"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "_DLL" /YX /FD /c
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD BASE RSC /l 0x409 /d "NDEBUG"
+# ADD RSC /l 0x409 /d "NDEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
+# ADD LINK32 Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /out:"Release/coin.dll"
+# SUBTRACT LINK32 /nodefaultlib
+
+!ELSEIF  "$(CFG)" == "coin_dll - Win32 Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "Debug"
+# PROP BASE Intermediate_Dir "Debug"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "C:@libdir@"
+# PROP Intermediate_Dir "Debug"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@/include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@/include" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "COIN_MAKE_DLL" /YX /FD /GZ /c
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
+# ADD BASE RSC /l 0x409 /d "_DEBUG"
+# ADD RSC /l 0x409 /d "_DEBUG"
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 Msvcrtd.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /nodefaultlib /out:"Debug/coin.dll" /pdbtype:sept /libpath:"C:\usr\local\lib"
+# SUBTRACT LINK32 /incremental:no
+
+!ENDIF 
+
+# Begin Target
+
+# Name "coin_dll - Win32 Release"
+# Name "coin_dll - Win32 Debug"
+# Begin Group "Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\commoncode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\default2dfont.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\default3dfont.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\evaluator.c
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\evaluator.tab.c
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbBox2f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbBox2s.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbBox3f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbBSPTree.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbColor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbColor4f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbCylinder.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbCylinderPlaneProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbCylinderProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbCylinderSectionProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbCylinderSheetProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbDict.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbHeap.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SbIntList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbLine.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbLineProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SbList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbMatrix.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbName.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbOctTree.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbPlane.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbPlaneProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SbPList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbRotation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbSphere.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbSpherePlaneProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbSphereProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbSphereSectionProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\projectors\SbSphereSheetProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbString.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SbStringList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbTesselator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbTime.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbVec2f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbVec2s.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbVec3f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SbVec3fList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbVec4f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbViewportRegion.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbViewVolume.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\base\SbXfBox3f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\snprintf.c
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoAccumulatedElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoActionMethodList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoAlarmSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoAmbientColorElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoAnnotation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoAnnoText3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoAnnoText3CharOrientElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoAnnoText3FontSizeHintElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoAnnoText3Property.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoAnnoText3RenderPrintElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoAntiSquish.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoAppearanceKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoArray.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoAsciiText.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoAuditorList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoBase.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoBaseColor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoBaseKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoBaseList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoBBoxModelMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoBlinker.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoBoolOperation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\caches\SoBoundingBoxCache.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoBoxHighlightRenderAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\bundles\SoBundle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\events\SoButtonEvent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\caches\SoCache.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoCacheElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoCalculator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoCallback.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoCallbackAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoCallbackList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoCamera.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoCameraKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoCenterballDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoCenterballManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoChildList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoClipPlane.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoClipPlaneElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoClipPlaneManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoColorIndex.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoComplexity.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoComplexityElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoComplexityTypeElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoComposeMatrix.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoComposeRotation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoComposeRotationFromTo.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoComposeVec2f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoComposeVec3f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoComposeVec4f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoComputeBoundingBox.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoConcatenate.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoCone.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\details\SoConeDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoConvertAll.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\caches\SoConvexDataCache.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoCoordinate3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoCoordinate4.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoCoordinateElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoCounter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoCreaseAngleElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoCube.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\details\SoCubeDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoCullElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoCylinder.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\details\SoCylinderDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoDataSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoDB.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\errors\SoDebugError.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoDecimationPercentageElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoDecimationTypeElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoDecomposeMatrix.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoDecomposeRotation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoDecomposeVec2f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoDecomposeVec3f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoDecomposeVec4f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoDelayQueueSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\details\SoDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoDetailList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoDiffuseColorElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoDirectionalLight.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoDirectionalLightDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoDirectionalLightManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoDragPointDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoDrawStyle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoDrawStyleElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoElapsedTime.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoEmissiveColorElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoEnabledElementsList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoEngine.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoEngineList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoEngineOutput.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoEngineOutputList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoEnvironment.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoEnvironmentElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\errors\SoError.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\events\SoEvent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoEventCallback.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoExtSelection.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\details\SoFaceDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoFaceSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoField.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoFieldContainer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoFieldConverter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoFieldData.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoFieldList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoFieldSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoFile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoFloatElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoFocalDistanceElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoFont.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoFontNameElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoFontSizeElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoFontStyle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoFullPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoGate.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoGenerate.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoGetBoundingBoxAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoGetMatrixAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoGetPrimitiveCountAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoGL.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLAmbientColorElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLClipPlaneElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLCoordinateElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLDiffuseColorElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLDrawStyleElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLEmissiveColorElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLEnvironmentElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoGLImage.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLLazyElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLLightIdElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLLightModelElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLLinePatternElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLLineWidthElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLModelMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLNormalElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLNormalizeElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoGlobalField.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoGlobalSimplifyAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLPointSizeElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLPolygonOffsetElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLPolygonStippleElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLProjectionMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoGLRenderAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLRenderPassElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLShadeModelElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLShapeHintsElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLShininessElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLSpecularColorElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLTextureCoordinateElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLTextureEnabledElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLTextureImageElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLTextureMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLUpdateAreaElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLViewingMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoGLViewportRegionElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoGlyph.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoGroup.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoHandleBoxDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoHandleBoxManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoHandleEventAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoIdleSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoImage.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoImageInterface.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoIndexedFaceSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoIndexedLineSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoIndexedNurbsCurve.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoIndexedNurbsSurface.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoIndexedShape.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoIndexedTriangleStripSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoInfo.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoInput.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoInt32Element.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoInteraction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoInteractionKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoInterpolate.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoInterpolateFloat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoInterpolateRotation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoInterpolateVec2f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoInterpolateVec3f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoInterpolateVec4f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoJackDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoJackManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\events\SoKeyboardEvent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoLabel.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoLazyElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoLevelOfDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoLevelOfSimplification.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoLight.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoLightAttenuationElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoLightElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoLightKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoLightModel.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoLightModelElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoLightPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoLinearProfile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\details\SoLineDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoLineHighlightRenderAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoLinePatternElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoLineSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoLineWidthElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoLocalBBoxMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoLocateHighlight.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\events\SoLocation2Event.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoLockManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoLOD.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoMarkerSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoMaterial.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoMaterialBinding.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoMaterialBindingElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\bundles\SoMaterialBundle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoMatrixTransform.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\errors\SoMemoryError.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFBitMask.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFBool.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFColor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFEngine.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFEnum.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFFloat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMField.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFInt32.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFMatrix.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFName.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFNode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFPlane.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFRotation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFShort.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFString.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFTime.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFUInt32.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFUShort.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFVec2f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFVec3f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoMFVec4f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoModelMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\events\SoMotion3Event.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\events\SoMouseButtonEvent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoMultipleCopy.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoNode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoNodeKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoNodekitCatalog.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\details\SoNodeKitDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoNodeKitListPart.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoNodeKitPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoNodeList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoNodeSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoNonIndexedShape.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoNormal.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoNormalBinding.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoNormalBindingElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\caches\SoNormalCache.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoNormalElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoNormalGenerator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoNotification.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoNurbsCurve.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoNurbsProfile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoNurbsSurface.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoOffscreenRenderer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoOneShot.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoOneShotSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoOnOff.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoOrthographicCamera.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoOutput.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoOutputData.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoOverrideElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoPackedColor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoPathList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoPathSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoPathSwitch.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoPendulum.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoPerspectiveCamera.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoPickAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoPickedPoint.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoPickedPointList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoPickRayElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoPickStyle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoPickStyleElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\details\SoPointDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoPointLight.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoPointLightDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoPointLightManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoPointSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoPointSizeElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoPolygonOffset.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoPolygonOffsetElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoPrimitiveVertex.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoProfile.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoProfileCoordinate2.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoProfileCoordinate3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoProfileCoordinateElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoProfileElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoProjectionMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoPROTOElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoQuadMesh.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoRayPickAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\errors\SoReadError.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoReorganizeAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoReplacedElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoResetTransform.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoRotateCylindricalDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoRotateDiscDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoRotateSphericalDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoRotation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoRotationXYZ.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoRotor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoScale.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoScale1Dragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoScale2Dragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoScale2UniformDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoScaleUniformDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoSceneKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoSceneManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoSearchAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoSelection.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoSelectOne.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoSensorManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoSeparator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoSeparatorKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFBitMask.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFBool.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFColor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFEngine.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFEnum.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFFloat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSField.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFImage.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFInt32.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFMatrix.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFName.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFNode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFPlane.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFRotation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFShort.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFString.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFTime.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFTrigger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFUInt32.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFUShort.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFVec2f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFVec3f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\fields\SoSFVec4f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoShape.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoShapeHints.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoShapeHintsElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoShapeKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoShapeSimplifyAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoShapeStyleElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoShininessElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoShuttle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoSimplifyAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\events\SoSpaceballButtonEvent.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoSpecularColorElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoSphere.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoSpotLight.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoSpotLightDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoSpotLightManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoState.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoSurroundScale.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoSwitch.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoSwitchElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoTabBoxDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoTabBoxManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoTabPlaneDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoTempPath.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoText2.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoText3.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\details\SoTextDetail.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoTextOutlineEnabledElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTexture2.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTexture2Transform.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTextureCoordinate2.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTextureCoordinateBinding.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoTextureCoordinateBindingElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\bundles\SoTextureCoordinateBundle.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\caches\SoTextureCoordinateCache.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTextureCoordinateDefault.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoTextureCoordinateElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTextureCoordinateEnvironment.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTextureCoordinateFunction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTextureCoordinatePlane.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoTextureImageElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoTextureMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoTextureOverrideElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoTextureQualityElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoTimeCounter.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoTimerQueueSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\sensors\SoTimerSensor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoToVRML2Action.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoToVRMLAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoTrackballDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoTrackballManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTransform.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTransformation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoTransformBoxDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoTransformBoxManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoTransformerDragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoTransformerManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\manips\SoTransformManip.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTransformSeparator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoTransformVec3f.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoTranslate1Dragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\draggers\SoTranslate2Dragger.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTranslation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoTransparencyElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoTriangleStripSet.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\engines\SoTriggerAny.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\misc\SoType.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoTypeList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoUnits.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoUnitsElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoUnknownNode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoVertexProperty.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoVertexShape.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoViewingMatrixElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoViewportRegionElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoViewVolumeElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\VRMLnodes\SoVRMLInterpolator.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\VRMLnodes\SoVRMLInterpOutput.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\lists\SoVRMLInterpOutputList.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\elements\SoWindowElement.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodekits\SoWrapperKit.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\actions\SoWriteAction.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoWWWAnchor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=@coin_src_dir@\src\nodes\SoWWWInline.cpp
+# End Source File
+# End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# End Group
+# End Target
+# End Project

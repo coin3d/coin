@@ -4915,7 +4915,8 @@ config_files="\\
     tools/ivcat/Makefile tools/ivhierarchy/Makefile
     tools/ivNodeKitStructure/Makefile tools/renderos/Makefile
     examples/Makefile examples/advanced/Makefile
-    examples/advanced/elements/Makefile build/coin.dsp build/coin.mak"
+    examples/advanced/elements/Makefile build/coin.dsp build/coin.mak
+    build/coin_dll.dsp build/coin_dll.mak"
 config_headers="\\
     config.h include/Inventor/SbBasic.h"
 
@@ -4997,6 +4998,8 @@ do
   'examples/advanced/elements/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/advanced/elements/Makefile" ;;
   'build/coin.dsp' ) CONFIG_FILES="\$CONFIG_FILES build/coin.dsp" ;;
   'build/coin.mak' ) CONFIG_FILES="\$CONFIG_FILES build/coin.mak" ;;
+  'build/coin_dll.dsp' ) CONFIG_FILES="\$CONFIG_FILES build/coin_dll.dsp" ;;
+  'build/coin_dll.mak' ) CONFIG_FILES="\$CONFIG_FILES build/coin_dll.mak" ;;
   'config.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS config.h" ;;
   'include/Inventor/SbBasic.h' ) CONFIG_HEADERS="\$CONFIG_HEADERS include/Inventor/SbBasic.h" ;;
   # This is an error.
@@ -5450,7 +5453,7 @@ test "$no_create" = yes || $SHELL $CONFIG_STATUS || exit 1
 
 
 if test x"$sim_ac_linking_style" = xmswin; then
-  for sim_ac_winfile in build/coin.dsp build/coin.mak; do
+  for sim_ac_winfile in build/coin.dsp build/coin.mak build/coin_dll.dsp build/coin_dll.mak; do
     mv $sim_ac_winfile $sim_ac_winfile.bak
     echo "(Win)DOS-ifying $sim_ac_winfile"
     sed -e 's/$/
@@ -5536,12 +5539,7 @@ if test x"$sim_ac_linking_style" = xmswin; then
     echo ""
     echo " Please take a look if this is your first time building with"
     echo " MSVC++."
+else # Only on UNIX systems.
     echo
+    echo "Now, run 'make install' to build and install Coin."
 fi
-
-# *******************************************************************
-# * Made it!
-# *******************************************************************
-
-echo
-echo "Now, run 'make install' to build and install Coin."

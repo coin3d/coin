@@ -401,11 +401,13 @@ AC_OUTPUT([
         examples/advanced/elements/Makefile
         build/coin.dsp
         build/coin.mak
+        build/coin_dll.dsp
+        build/coin_dll.mak
         ],
         [chmod a+x coin-config])
 
 if test x"$sim_ac_linking_style" = xmswin; then
-  for sim_ac_winfile in build/coin.dsp build/coin.mak; do
+  for sim_ac_winfile in build/coin.dsp build/coin.mak build/coin_dll.dsp build/coin_dll.mak; do
     mv $sim_ac_winfile $sim_ac_winfile.bak
     echo "(Win)DOS-ifying $sim_ac_winfile"
     sed -e 's/$/
@@ -491,12 +493,7 @@ if test x"$sim_ac_linking_style" = xmswin; then
     echo ""
     echo " Please take a look if this is your first time building with"
     echo " MSVC++."
+else # Only on UNIX systems.
     echo
+    echo "Now, run 'make install' to build and install Coin."
 fi
-
-# *******************************************************************
-# * Made it!
-# *******************************************************************
-
-echo
-echo "Now, run 'make install' to build and install Coin."
