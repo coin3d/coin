@@ -74,6 +74,8 @@
   \fn SoTextureCoordinateElement::coords3
 
   FIXME: write doc.
+
+  \since 2001-11-26
 */
 
 /*!
@@ -92,6 +94,8 @@
   \fn SoTextureCoordinateElement::convert3
 
   FIXME: write doc.
+
+  \since 2001-11-26
 */
 
 /*!
@@ -104,6 +108,8 @@
   \fn SoTextureCoordinateElement::coordsDimension
 
   FIXME: write doc.
+
+  \since 2001-11-26
 */
 
 SO_ELEMENT_SOURCE(SoTextureCoordinateElement);
@@ -176,8 +182,11 @@ SoTextureCoordinateElement::set2(SoState * const state,
   element->whatKind = EXPLICIT;
 }
 
-//! FIXME: write doc.
+/*! 
+  FIXME: write doc.
 
+  \since 2001-11-26
+*/
 void
 SoTextureCoordinateElement::set3(SoState * const state,
                                  SoNode * const node,
@@ -255,8 +264,11 @@ SoTextureCoordinateElement::get2(const int index) const
   }
 }
 
-//! FIXME: write doc.
+/*!
+  FIXME: write doc.
 
+  \since 2001-11-26
+*/
 const SbVec3f &
 SoTextureCoordinateElement::get3(const int index) const
 {
@@ -368,8 +380,10 @@ SoTextureCoordinateElement::is2D() const
   return (this->coordsDimension==2);
 }
 
-//! FIXME: write doc.
+/*! FIXME: write doc.
 
+  \since 2001-11-26
+*/
 //$ EXPORT INLINE
 int32_t
 SoTextureCoordinateElement::getDimension() const
@@ -390,6 +404,8 @@ SoTextureCoordinateElement::getArrayPtr2() const
 /*!
   Returns a pointer to the 3D texture coordinate array. This method is not
   part of the OIV API.
+
+  \since 2001-11-26
 */
 const SbVec3f *
 SoTextureCoordinateElement::getArrayPtr3() const
