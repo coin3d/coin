@@ -890,6 +890,13 @@
     'rotate-translate-rotate-translate' directly on the manip and
     verified that the results are healthy. 20021111 rolvs
 
+    UPDATE: Interacting with the JackManip seems to be performing as
+    expected from the documentation (e.g. no translation while
+    rotating when dragging on the thin lines connecting the scaling
+    cubes.) I experienced some 'jerky' or 'popping' behavior when
+    dragging though, but this is likely to be due to my old timer
+    mouse. If your mouse is fresh, please check. 20021209 rolvs
+
 =====================================================================
 
 036 This program will hit an assert if we interact with the
@@ -1284,6 +1291,10 @@
     
     (Update made by larsa, committed by rolvs 20021209. If that makes
     sense to anyone... ? :-)
+
+    UPDATE 20021209 rolvs : This bug is caused by intended behaviour:
+    The real-time field is updated every frame (TGS and
+    SGI). Investigate to find the correct update policy.
     
 =====================================================================
 
@@ -1391,3 +1402,34 @@
     the autoconf-set optimization-options.  Tricky stuff...
 
 =====================================================================
+
+045 SoCenterballManip rotation off-center.
+
+    When dragging the 'stripes' on a CenterballManip node, rotation
+    happen around an off-center axis. (Off CenterballManip center)
+    This happen for rotations around all the axis.
+
+    NOTE: The bug is not visible if there is no connected geometry, or
+    if the geometry is 'simple', like one cube or one cone.
+    
+    A simple scene-graph to reproduce:
+    
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #Inventor V2.1 ascii
+
+    Separator{
+        CenterballManip {}
+	Array{
+		numElements1 2
+		numElements2 2
+		numElements3 2
+                separation1  2.0 0.0 0.0
+                separation2  0.0 2.0 0.0
+                separation3  0.0 0.0 2.0
+               	Cone {}
+	}
+    }
+    
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    20021209 rolvs
