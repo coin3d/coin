@@ -800,6 +800,31 @@
 
     Found and reported on coin-discuss by Coin-user Martin Vogt.
 
+    A few interesting findings after some fiddling with the .iv-file
+    in question:
+
+        - SGI Inventor renders the geometry of the file with a lot
+          better performance than Coin-2
+
+        - turning off transparency in all materials doesn't help
+
+        - blanking out all materials in general doesn't help
+
+        - changing TRANSFORMER_ROTATOR_MARKER to be an SoLabel instead
+          of an SoSphere speeds up rendering *dramatically* (fps goes
+          from ~7 to ~50 on my home machine), even though from a quick
+          look I believe that only removes 18 spheres from the scene
+
+        - removing all SoIndexedFaceSet instances alone doesn't seem
+          to help much (fps stays about the same)
+
+        - removing all SoIndexedLineSet instances alone doesn't seem
+          to help much (fps stays about the same)
+
+        - removing all SoIndexedFaceSet and SoIndexedLineSet instances
+          *together* causes a jump in fps approximately equal to the
+          one when removing the spheres
+
     20021007 mortene.
 
 =====================================================================
