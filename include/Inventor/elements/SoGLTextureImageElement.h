@@ -44,7 +44,7 @@ public:
                   SoGLImage *image, const Model model,
                   const SbColor &blendColor);
 
-  virtual void evaluate() const;
+  virtual void evaluate(const SbBool enabled, const SbBool transparency) const;
 
 protected:
   virtual SbBool hasTransparency(void) const;
@@ -52,10 +52,12 @@ protected:
 private:
   SoGLImage *image;
   float quality;
+  SbBool alphatest;
 
   SoGLImage *glimage;
   float glquality;
   int glmodel;
+  SbBool glalphatest;
   SbColor glblendcolor;
 };
 

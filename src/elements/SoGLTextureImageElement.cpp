@@ -19,9 +19,9 @@
 
 /*!
   \class SoGLTextureImageElement Inventor/elements/SoGLTextureImageElement.h
-  \brief The SoGLTextureImageElement class is yet to be documented.
+  \brief The SoGLTextureImageElement is used to control the current GL texture.
 
-  FIXME: write doc.
+  This is a lazy element. It is evaluated in SoShape::shouldGLRender().
 */
 
 #include <Inventor/elements/SoGLTextureImageElement.h>
@@ -35,8 +35,6 @@
 #endif // !_WIN32
 
 #include <GL/gl.h>
-#include <assert.h>
-
 
 SO_ELEMENT_SOURCE(SoGLTextureImageElement);
 
@@ -59,8 +57,8 @@ SoGLTextureImageElement::~SoGLTextureImageElement(void)
 {
 }
 
-//! FIXME: write doc.
 
+// doc from parent
 void
 SoGLTextureImageElement::init(SoState * state)
 {
@@ -77,7 +75,9 @@ SoGLTextureImageElement::init(SoState * state)
 }
 
 
-//! FIXME: write doc
+/*!
+  Overloaded to pass GL state to the next element.
+*/
 void
 SoGLTextureImageElement::push(SoState * state)
 {
@@ -86,11 +86,13 @@ SoGLTextureImageElement::push(SoState * state)
   ((SoGLTextureImageElement*)this->next)->glquality = this->glquality;
   ((SoGLTextureImageElement*)this->next)->glmodel = this->glmodel;
   ((SoGLTextureImageElement*)this->next)->glblendcolor = this->glblendcolor;
+  ((SoGLTextureImageElement*)this->next)->glalphatest = this->glalphatest;
 }
 
 
-//! FIXME: write doc.
-
+/*!
+  Overloaded to pass GL state to the previous element.
+*/
 void
 SoGLTextureImageElement::pop(SoState * state,
                              const SoElement * prevTopElement)
@@ -103,10 +105,12 @@ SoGLTextureImageElement::pop(SoState * state,
   prev->glmodel = this->glmodel;
   prev->glquality = this->glquality;
   prev->glblendcolor = this->glblendcolor;
+  prev->glalphatest = this->glalphatest;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets the current texture.
+*/
 void
 SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                              SoGLImage *image, const Model model,
@@ -131,10 +135,12 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    blendColor);
     elem->image = image;
     elem->quality = SoTextureQualityElement::get(state);
+    elem->alphatest = image->getImage()->needAlphaTest();
   }
   else {
     elem->image = NULL;
     elem->quality = SoTextureQualityElement::get(state);
+    elem->alphatest = FALSE;
     inherited::setDefault(state, node);
   }
 }
@@ -149,14 +155,18 @@ SoGLTextureImageElement::hasTransparency(void) const
   return FALSE;
 }
 
-
+/*!
+  Evaluates this lazy element. \a enabled should be TRUE if texturing is
+  enabled. \a transparency should be TRUE if the current material is
+  transparent and screen door transparency is not used.
+*/
 void
-SoGLTextureImageElement::evaluate() const
+SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparency) const
 {
   // cast away constness
   SoGLTextureImageElement *elem = (SoGLTextureImageElement*) this;
 
-  if (elem->image) {
+  if (enabled && elem->image) {
     if (elem->image != elem->glimage) {
       elem->glimage = elem->image;
       elem->glquality = elem->quality;
@@ -183,5 +193,23 @@ SoGLTextureImageElement::evaluate() const
         glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendColor.getValue());
       }
     }
+  }
+
+  // if transparent or !enabled, disable alpha test
+  if (transparency || !enabled) { 
+    if (elem->glalphatest) {
+      glDisable(GL_ALPHA_TEST);
+      elem->glalphatest = FALSE;
+    }
+  }
+  else if (elem->alphatest != elem->glalphatest) {
+    // update GL alpha test
+    elem->glalphatest = elem->alphatest;
+    if (elem->alphatest) {
+      // draw everything with alpha != 0.0
+      glAlphaFunc(GL_NOTEQUAL, 0.0f);
+      glEnable(GL_ALPHA_TEST);
+    }
+    else glDisable(GL_ALPHA_TEST);
   }
 }

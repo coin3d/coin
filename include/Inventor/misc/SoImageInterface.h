@@ -43,6 +43,7 @@ public:
   int getOrgNumComponents() const;
   SbVec2s getOriginalSize() const;
   SbBool hasTransparency() const;
+  SbBool needAlphaTest() const;
 
   void ref();
   void unref(); // use this to delete
@@ -73,6 +74,7 @@ private:
   SbBool didAlloc;
   SbBool transparency;
   SbBool isReuseable;
+  SbBool alphaTest;
 };
 
 #endif // !COIN_SOIMAGEINTERFACE_H

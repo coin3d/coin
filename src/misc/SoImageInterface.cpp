@@ -74,7 +74,8 @@ SoImageInterface::SoImageInterface(const char * const file_name)
     hasTried(FALSE),
     didAlloc(FALSE),
     transparency(FALSE),
-    isReuseable(TRUE)
+    isReuseable(TRUE),
+    alphaTest(FALSE)
 {
 }
 
@@ -297,6 +298,20 @@ SoImageInterface::hasTransparency() const
 }
 
 /*!
+  Returns if this texture should be rendered with alpha test
+  enabled. This can be done if texture only contains alpha
+  values 0 or 255. Rendering with alpha test is much faster
+  than using blending, and it is not necessary to render
+  the object in a delayed pass, since z-buffer can be 
+  updated while doing alpha test rendering.
+*/
+SbBool 
+SoImageInterface::needAlphaTest() const
+{
+  return this->alphaTest;
+}
+
+/*!
   Convenience method that creates an SoImageInterface which is a copy
   of this image. Only the image data will be copied, not attributes
   like filename.
@@ -325,19 +340,26 @@ void
 SoImageInterface::checkTransparency()
 {
   if (this->numComponents == 2 || this->numComponents == 4) {
-
     int n = this->size[0] * this->size[1];
     int nc = this->numComponents;
     unsigned char *ptr = (unsigned char *) this->dataPtr + nc - 1;
 
     while (n) {
-      if (*ptr != 255) break;
+      if (*ptr != 255 && *ptr != 0) break;
+      if (*ptr == 0) this->alphaTest = TRUE;
       ptr += nc;
       n--;
     }
-    this->transparency = n > 0;
+    if (n > 0) {
+      this->transparency = TRUE;
+      this->alphaTest = FALSE;
+    }
+    else this->transparency = FALSE;
   }
-  else this->transparency = FALSE;
+  else {
+    this->transparency = FALSE;
+    this->alphaTest = FALSE;
+  }
 }
 
 

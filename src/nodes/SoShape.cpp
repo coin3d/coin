@@ -52,6 +52,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
 
 // Lazy GL-elements not handled by SoMaterialBundle
 #include <Inventor/elements/SoGLPointSizeElement.h>
@@ -607,11 +608,11 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     lm->evaluate();
   }
 
-  // only evaluate texture image if texturing is enabled
-  if (SoGLTextureEnabledElement::get(state)) {
+  {
     const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
       state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
-    ti->evaluate();
+    ti->evaluate(SoGLTextureEnabledElement::get(state),
+                 transparent && !SoShapeStyleElement::isScreenDoor(state));
   }
 
   {
