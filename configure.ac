@@ -1450,7 +1450,9 @@ COIN_DSP_DEFS=
 if $sim_ac_make_dsp; then
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [msvc .dsp])
 
-  for arg in -DHAVE_CONFIG_H $CPPFLAGS $LDFLAGS $LIBS; do
+  # -DHAVE_CONFIG_H is set up in $DEFS too late for use to use, and some
+  # include directives are set up in the Makefile.am files
+  for arg in -DHAVE_CONFIG_H -I$coin_build_dir/include -I$coin_src_dir -I$coin_build_dir/include $CPPFLAGS $LDFLAGS $LIBS; do
     case $arg in
     -L* )
       # libdir=`echo $arg | cut -c3-`
