@@ -32,6 +32,10 @@
 #include <Inventor/fields/SoFields.h>
 #include <Inventor/engines/SoSubEngineP.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*** SO_ENGINE_SOURCE replacement start *************************************/
 
 // Can not use the standard SO_ENGINE_SOURCE macro, as SoSelectOne
@@ -91,7 +95,7 @@ SoSelectOne::SoSelectOne(SoType inputtype)
 {
   SO_ENGINE_INTERNAL_CONSTRUCTOR(SoSelectOne);
 
-  SO_ENGINE_ADD_INPUT(index, (-1));
+  SO_ENGINE_ADD_INPUT(index, (0));
 
   // Instead of SO_ENGINE_ADD_INPUT().
   this->input = (SoMField *)inputtype.createInstance();
@@ -171,11 +175,20 @@ SoSelectOne::evaluate(void)
 {
   int idx = this->index.getValue();
 
-  if (idx >= 0 && idx < this->input->getNum()) {
+  if (idx == 0 && this->input->getNum() == 0) {
+    // Nil is the no-op value (also the default initial value).
+    SO_ENGINE_OUTPUT((*output), SoSField, setDirty(FALSE));
+  }
+  else if (idx >= 0 && idx < this->input->getNum()) {
     // FIXME: this is a very suboptimal way of doing the
     // SoMFField->SoSFField conversion. 20000919 mortene.
     SbString valuestring;
     this->input->get1(idx, valuestring);
     SO_ENGINE_OUTPUT((*output), SoSField, set(valuestring.getString()));
   }
+#if COIN_DEBUG
+  else {
+    SoDebugError::post("SoSelectOne::evaluate", "invalid index %d", idx);
+  }
+#endif // COIN_DEBUG
 }
