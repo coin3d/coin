@@ -853,9 +853,10 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
    */
   if (wc != SO_SWITCH_ALL) {
     SoState * state = action->getState();
-    state->push();
     // update SwitchElement before traversing children (this is
-    // usually done in SoSwitch::doAction)
+    // usually done in SoSwitch::doAction) (don't push before setting
+    // this element as it's supposed to be set when traversing the
+    // next sibling).
     SoSwitchElement::set(state, wc);
     int n = oldswitch->getNumChildren();
     for (int i = 0; i < n; i++) {
@@ -868,7 +869,6 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
     if (wc >= 0 && wc < oldswitch->getNumChildren()) {
       action->switchToNodeTraversal(oldswitch->getChild(wc));
     }
-    state->pop();
     // so that the children will not be traversed
     return SoCallbackAction::PRUNE;
   }
