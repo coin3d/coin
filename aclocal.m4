@@ -4794,7 +4794,7 @@ int
 main(void)
 {
   myclass proj = hepp(2.0f, 4.0f);
-  return (proj.ref() == -6) ? 0 : 1;
+  return (proj.ref() < 0.0f) ? 0 : 1;
 }
 ],
   [sim_cv_c_gcctwonightysixbug=false],
@@ -5160,10 +5160,12 @@ AC_ARG_ENABLE(
   esac],
   [enable_symbols=yes])
 
+# FIXME: don't mangle options like -fno-gnu-linker and -fvolatile-global
+# 20020104 larsa
 if test x"$enable_symbols" = x"no"; then
-  CFLAGS="`echo $CFLAGS | sed 's/-g//'`"
-  CPPFLAGS="`echo $CPPFLAGS | sed 's/-g//'`"
-  CXXFLAGS="`echo $CXXFLAGS | sed 's/-g//'`"
+  # CPPFLAGS="`echo $CPPFLAGS | sed 's/-g[0-9]//'`"
+  CFLAGS="`echo $CFLAGS | sed 's/-g[0-9]?//'`"
+  CXXFLAGS="`echo $CXXFLAGS | sed 's/-g[0-9]?//'`"
 fi
 ])
 
