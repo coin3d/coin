@@ -34,3 +34,18 @@ C RESOURCES
 * Programming techniques with ISO C89 to get OO design:
   <URL:http://ldeniau.home.cern.ch/ldeniau/html/oopc/oopc.html>
   ("Object Oriented Programming In C" by Laurent Deniau).
+
+
+TODOs
+=====
+
+* SbTime is not very well designed, as it really represents two
+  different abstractions: a timer and a date / calendar. The latter
+  supported by the format() / formatDate() / getTimeOfDay() /
+  setTimeOfDay() (the two last ones are badly named) functions.
+
+  So we should split to abstractions cc_time(r?) and cc_date /
+  cc_calendar.
+
+  Study the standard Java API for a more extensive abstraction of the
+  last type before starting the C API design and implementation.
