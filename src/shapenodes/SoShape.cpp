@@ -68,6 +68,7 @@
 #include <Inventor/elements/SoGLMultiTextureImageElement.h>
 #include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/nodes/SoLight.h>
 
@@ -781,6 +782,8 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     }
     PRIVATE(this)->unlock();    
 
+    SoGLCacheContextElement::shouldAutoCache(state, 
+                                             SoGLCacheContextElement::DONT_AUTO_CACHE);
     int arrays = SoPrimitiveVertexCache::NORMAL|SoPrimitiveVertexCache::COLOR;
     if (glimage) arrays |= SoPrimitiveVertexCache::TEXCOORD;
     SoMaterialBundle mb(action);
