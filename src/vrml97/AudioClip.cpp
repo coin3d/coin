@@ -571,13 +571,14 @@ void SoVRMLAudioClipP::loadUrl()
     if ( (str == NULL) || (strlen(str)==0) )
       continue; // ignore empty url
 
-    SbString filename = SoInput::searchForFile(SbString(str), SoInput::getDirectories(), 
-      SoVRMLAudioClip::getSubdirectories());
+    SbString filename =
+      SoInput::searchForFile(SbString(str), SoInput::getDirectories(), 
+                             SoVRMLAudioClip::getSubdirectories());
 
     if (filename.getLength() <= 0) {
-      SoDebugError::postWarning("SoVRMLAudioClipStreaming::loadUrl(index)",
+      SoDebugError::postWarning("SoVRMLAudioClipP::loadUrl(index)",
                                 "File not found: '%s'",
-                                filename.getString());
+                                str);
       continue; // ignore invalid file
     }
 
