@@ -184,16 +184,22 @@ cc_dl_get_win32_err(DWORD * lasterr, cc_string * str)
 
 #if defined (HAVE_DYLD_RUNTIME_BINDING)
 
-
 static char *
 cc_dirname(const char *path) {
 
 #ifdef HAVE_LIBGEN_H
 
-  // Mac OS 10.2 and later have dirname()
+  /* Mac OS 10.2 and later have dirname() */
   return dirname(path);
 
 #else
+
+  /* FIXME: dirname() is not confirming to neither ISO/ANSI C nor
+     POSIX, which means we could run into this problem on other
+     platforms than just Mac OS 10.1. We should have it implemented in
+     a manner compatible with DOS filenames aswell as UNIX-style
+     paths, and move the implementation to either src/tidbits.c or
+     (better) into a cc_file ADT. 20030804 mortene. */
 
   static char dirpath [MAXPATHLEN];
   const char * ptr;
@@ -227,7 +233,7 @@ cc_dirname(const char *path) {
   dirpath[ptr - path + 1] = '\0';
   return(dirpath);
 
-#endif // libgen.h
+#endif /* libgen.h */
 }
 
 
@@ -266,6 +272,8 @@ cc_build_search_list(const char * libname)
 
   const char * framework_prefix = "/Library/Frameworks/";
   const char * framework_ext = ".framework";
+  /* FIXME: it'd be simpler, cleaner and safer to use the
+     cc_string_sprintf() function. 20030804 mortene. */
   length = strlen(framework_prefix) + strlen(framework_ext) +
     strlen(libname) + 1;
   framework_path = malloc(length);
@@ -295,6 +303,8 @@ cc_build_search_list(const char * libname)
         /* We get /path/to/Foo.framework/Versions/A/Libraries/foo.dylib
            but want /path/to/Foo.framework/Versions/A/Resources */
         char * path_to_version_dir = cc_dirname(cc_dirname(p));
+        /* FIXME: it'd be simpler, cleaner and safer to use the
+           cc_string_sprintf() function. 20030804 mortene. */
         size_t l = strlen(path_to_version_dir) + strlen("/Resources") + 1;
         res_path = malloc(l);
         snprintf(res_path, l, "%s%s", path_to_version_dir, "/Resources");
@@ -303,9 +313,10 @@ cc_build_search_list(const char * libname)
     }
   }
   
+  /* FIXME: it'd be simpler, cleaner and safer to use the
+     cc_string_sprintf() function. 20030804 mortene. */
   length = strlen(framework_path) + strlen(dyld_path) + strlen(default_path) + 
            (res_path ? strlen(res_path) : 0) + 4;
-
   path = malloc(length);
   snprintf(path, length, "%s%s%s%s%s%s%s",
            framework_path, ":",
@@ -369,6 +380,23 @@ cc_find_file(const char * file, const char ** fullpath)
 
 #endif /* HAVE_DYLD_RUNTIME_BINDING */
 
+/* Returns TRUE if run-time linking to dynamic libraries can be
+   done. So far, these ways of doing run-time linking are supported:
+
+   \li libdl.so: for Linux, SGI IRIX, Solaris, and other *nix & *BSD systems
+   \li LoadLibrary() et al: from the Win32 API
+   \li libdld.so: for HP-UX (which also has libdl.so, BTW)
+   \li dyld: for Mac OS X (with NSLookupAndBindSymbol() et al)
+*/
+SbBool
+cc_dl_available(void)
+{
+#ifdef HAVE_DYNAMIC_LINKING
+  return TRUE;
+#else /* don't know how to do dynamic linking on this system */
+  return FALSE;
+#endif
+}
 
 cc_libhandle
 cc_dl_open(const char * filename)

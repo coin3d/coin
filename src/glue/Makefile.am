@@ -1,15 +1,12 @@
-## Process this file with automake to generate Makefile.in.
-## 19990904 mortene.
-
 RegularSources = \
-        flwfreetype.c flwwin32.c \
+	flwfreetype.c flwwin32.c \
 	dl.c \
 	gl.c \
 	gl_wgl.c gl_agl.c gl_glx.c \
 	GLUWrapper.c \
 	simage_wrapper.c \
 	openal_wrapper.c \
-        fontlib_wrapper.c \
+	fontlib_wrapper.c \
 	win32api.c \
 	zlib.c \
 	bzip2.c \
@@ -23,8 +20,9 @@ LinkHackSources = \
 # Header installation is controlled from include/Inventor/C/glue/Makefile.am.
 PublicHeaders =
 PrivateHeaders = \
-        ../../include/Inventor/C/glue/flwfreetype.h \
-        ../../include/Inventor/C/glue/flwwin32.h \
+	../../include/Inventor/C/glue/dlp.h \
+	../../include/Inventor/C/glue/flwfreetype.h \
+	../../include/Inventor/C/glue/flwwin32.h \
 	../../include/Inventor/C/glue/glp.h \
 	../../include/Inventor/C/glue/gl_wgl.h \
 	../../include/Inventor/C/glue/gl_glx.h \
@@ -32,11 +30,11 @@ PrivateHeaders = \
 	../../include/Inventor/C/glue/GLUWrapper.h \
 	../../include/Inventor/C/glue/simage_wrapper.h \
 	../../include/Inventor/C/glue/openal_wrapper.h \
-        ../../include/Inventor/C/glue/fontlib_wrapper.h \
-        ../../include/Inventor/C/glue/win32api.h \
-        ../../include/Inventor/C/glue/zlib.h \
-        ../../include/Inventor/C/glue/bzip2.h \
-        ../../include/Inventor/C/glue/freetype.h
+	../../include/Inventor/C/glue/fontlib_wrapper.h \
+	../../include/Inventor/C/glue/win32api.h \
+	../../include/Inventor/C/glue/zlib.h \
+	../../include/Inventor/C/glue/bzip2.h \
+	../../include/Inventor/C/glue/freetype.h
 
 ##$ BEGIN TEMPLATE Make-Common(glue, glue)
 # **************************************************************************
