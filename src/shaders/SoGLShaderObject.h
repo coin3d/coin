@@ -24,6 +24,12 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
+
+// *************************************************************************
+
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/nodes/SoGLShaderTypes.h>
 #include <Inventor/SbString.h>
