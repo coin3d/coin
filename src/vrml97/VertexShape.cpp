@@ -165,6 +165,7 @@ void
 SoVRMLVertexShape::callback(SoCallbackAction * action)
 {
   SoVRMLVertexShape::doAction((SoAction*) action);
+  inherited::callback(action);
 }
 
 void
