@@ -510,10 +510,18 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
   SoType mastertype = master->getConnectionType();
   SoType thistype = this->getTypeId();
 
+  // If we connectFrom() on the same engine as the field is already
+  // connected to, we want to avoid the master container engine being
+  // unref()'ed down to ref-count 0 upon the disconnect().
+  SoEngine * masterengine = master->getContainer();
+  if (masterengine) masterengine->ref();
+
+
   // Set up all links.  ///////////////////////////////////////////
 
   if (mastertype == thistype) { // Can do direct field-to-engineout link.
     if (!append) this->disconnect();
+
     // Set up the auditor link from the master engineout to the slave
     // field.  (Note that the ``this'' slave field can also be an
     // input field of an SoFieldConverter instance.)
@@ -524,7 +532,12 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
   }
   else { // Needs an SoFieldConverter between this field and the SoEngineOutput
     SoFieldConverter * conv = this->createConverter(mastertype);
-    if (!conv) return FALSE;
+    if (!conv) { // Handle this exception.
+      // Clean up the ref().
+      if (masterengine) masterengine->unref();
+      // Sorry, can't connect.
+      return FALSE;
+    }
 
     if (!append) this->disconnect();
 
@@ -542,6 +555,9 @@ SoField::connectFrom(SoEngineOutput * master, SbBool notnotify, SbBool append)
     // SoFieldConverter by setting up a dict entry.
     this->storage->addConverter(master, conv);
   }
+
+  // Match the ref() invocation.
+  if (masterengine) masterengine->unref();
 
   // Common bookkeeping.
   this->storage->masterengineouts.append(master); // slave -> master link
