@@ -169,7 +169,11 @@ cc_thread_init(void)
   /* needed to quickly generate a thread-id for each thread */
   win32_threadid_idx = TlsAlloc();
   assert(win32_threadid_idx != TLS_OUT_OF_INDEXES); 
-  atexit(win32_threadid_idx_cleanup);
+#if 0 /* disabled 2002-08-30, pederb */
+  /* don't free this in atexit, since other cleanup functions might
+   * need win32_threadid_idx */
+#endif /* disabled */
+  coin_atexit(win32_threadid_idx_cleanup);
 #endif /* USE_WIN32THREAD */ 
 }
 
