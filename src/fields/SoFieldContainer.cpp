@@ -371,10 +371,8 @@ SoFieldContainer::getField(const SbName & name) const
 SoField *
 SoFieldContainer::getEventIn(const SbName & name) const
 {
-  // No VRML support yet. Add eventIn and eventOut fields when it is
-  // implemented.
-  COIN_STUB();
-  return NULL;
+  SoField * f = this->getField(name);
+  return (f && (f->getFieldType() == SoField::EVENTIN_FIELD)) ? f : NULL;
 }
 
 /*!
@@ -384,10 +382,8 @@ SoFieldContainer::getEventIn(const SbName & name) const
 SoField *
 SoFieldContainer::getEventOut(const SbName & name) const
 {
-  // No VRML support yet. Add eventIn and eventOut fields when it is
-  // implemented.
-  COIN_STUB();
-  return NULL;
+  SoField * f = this->getField(name);
+  return (f && (f->getFieldType() == SoField::EVENTOUT_FIELD)) ? f : NULL;
 }
 
 
