@@ -74,6 +74,7 @@ COIN_BETA_VERSION = @COIN_BETA_VERSION@
 COIN_COMPILER = @COIN_COMPILER@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
+COIN_DSP_LIBS = @COIN_DSP_LIBS@
 COIN_EXTRA_CFLAGS = @COIN_EXTRA_CFLAGS@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
 COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
@@ -136,8 +137,10 @@ coin_man_dir = @coin_man_dir@
 coin_src_dir = @coin_src_dir@
 coin_w32_build_dir = @coin_w32_build_dir@
 coin_w32_src_dir = @coin_w32_src_dir@
+frameworkdir = @frameworkdir@
 htmldir = @htmldir@
 install_sh = @install_sh@
+ivincludedir = @ivincludedir@
 nop = @nop@
 path_tag = @path_tag@
 sim_ac_doxygen_exe = @sim_ac_doxygen_exe@
@@ -147,9 +150,9 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 CLEANFILES = \
-  coin@COIN_MAJOR_VERSION@@SUFFIX@.pdb \
-  coin@COIN_MAJOR_VERSION@@SUFFIX@.dll \
-  coin@COIN_MAJOR_VERSION@@SUFFIX@.exp
+	coin@COIN_MAJOR_VERSION@@SUFFIX@.pdb \
+	coin@COIN_MAJOR_VERSION@@SUFFIX@.dll \
+	coin@COIN_MAJOR_VERSION@@SUFFIX@.exp
 
 
 
@@ -189,6 +192,9 @@ INCLUDES = -I$(top_srcdir)/include
 @BUILD_WITH_MSVC_TRUE@lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 @BUILD_WITH_MSVC_FALSE@lib_LTLIBRARIES = libCoin@SUFFIX@.la
 
+# hack to change libdir value when installing Mac OS X compiler framework
+@MAC_FRAMEWORK_TRUE@lib@nop@dir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Libraries
+
 @HACKING_DYNAMIC_MODULES_TRUE@libCoin@SUFFIX@_la_LIBADD = 
 @HACKING_DYNAMIC_MODULES_FALSE@libCoin@SUFFIX@_la_LIBADD = \
 @HACKING_DYNAMIC_MODULES_FALSE@	actions/libactions.la base/libbase.la \
@@ -226,13 +232,18 @@ coin@COIN_MAJOR_VERSION@@SUFFIX@_lib_SOURCES = \
 	coin-dummy.cpp
 
 
+# we are dealing with the Mac OS X 10.2 gcc compiler toolset...
+@MACOSX_10_2_TRUE@LibtoolLinkArgs = -flat_namespace -undefined warning
+@MACOSX_10_2_FALSE@LibtoolLinkArgs = -no-undefined
+
 libCoin@SUFFIX@_la_LDFLAGS = \
-	-no-undefined \
-        -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+	$(LibtoolLinkArgs) \
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 
 # header installation
-libCoinincdir = $(includedir)/Inventor
+@MAC_FRAMEWORK_TRUE@libCoinincdir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Headers
+@MAC_FRAMEWORK_FALSE@libCoinincdir = $(includedir)/Inventor
 libCoininc_HEADERS = \
 	../include/Inventor/SbPList.h \
 	../include/Inventor/So.h \
@@ -1153,6 +1164,19 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	  fi \
 	done
 
+@MAC_FRAMEWORK_TRUE@	@echo " ln -sf Versions/Current/Libraries/libCoin.dylib $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$(MAC_FRAMEWORK_NAME)"; \
+@MAC_FRAMEWORK_TRUE@	ln -sf Versions/Current/Libraries/libCoin.dylib $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$(MAC_FRAMEWORK_NAME);
+@MAC_FRAMEWORK_FALSE@install-data-local:
+@MAC_FRAMEWORK_FALSE@	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
+@MAC_FRAMEWORK_FALSE@	for ext in lib; do \
+@MAC_FRAMEWORK_FALSE@	  file="$$basename.$$ext"; \
+@MAC_FRAMEWORK_FALSE@	  if test -f "$$file"; then \
+@MAC_FRAMEWORK_FALSE@	    $(mkinstalldirs) "$(DESTDIR)$(libdir)"; \
+@MAC_FRAMEWORK_FALSE@	    echo " $(INSTALL_DATA) $$file $(DESTDIR)$(libdir)/$$file"; \
+@MAC_FRAMEWORK_FALSE@	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(libdir)/$$file"; \
+@MAC_FRAMEWORK_FALSE@	  fi \
+@MAC_FRAMEWORK_FALSE@	done;
+
 @BUILD_WITH_MSVC_TRUE@install-exec-local: coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 @BUILD_WITH_MSVC_TRUE@	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
 @BUILD_WITH_MSVC_TRUE@	for ext in dll pdb; do \
@@ -1165,32 +1189,19 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 @BUILD_WITH_MSVC_TRUE@	done
 @BUILD_WITH_MSVC_FALSE@install-exec-local:
 
-install-data-local:
-	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
-	for ext in lib; do \
-	  file="$$basename.$$ext"; \
-	  if test -f "$$file"; then \
-	    $(mkinstalldirs) "$(DESTDIR)$(libdir)"; \
-	    echo " $(INSTALL_DATA) $$file $(DESTDIR)$(libdir)/$$file"; \
-	    $(INSTALL_DATA) "$$file" "$(DESTDIR)$(libdir)/$$file"; \
-	  fi \
-	done;
-
 uninstall-local:
 	@basename="coin@COIN_MAJOR_VERSION@@SUFFIX@"; \
-	for ext in dll pdb lib; do \
-	  file="$(DESTDIR)$(bindir)/$$basename.$$ext"; \
+	for file in \
+	  "$(DESTDIR)$(bindir)/$$basename.dll" \
+	  "$(DESTDIR)$(bindir)/$$basename.pdb" \
+	  "$(DESTDIR)$(libdir)/$$basename.lib" \
+	  "$(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$(MAKE_FRAMEWORK_NAME)"; do \
 	  if test -f "$$file"; then \
-	    echo " rm -f $$file"; \
-	    rm -f "$$file"; \
-	  fi; \
-	  file="$(DESTDIR)$(libdir)/$$basename.$$ext"; \
-	  if test -f "$$file"; then \
-	    echo " rm -f $$file"; \
+	    echo " rm -f" "$$file"; \
 	    rm -f "$$file"; \
 	  fi \
 	done; \
-	baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
+	baseincdir="$(DESTDIR)$(libCoinincdir)"; \
 	for dir in \
 	  "$$baseincdir/3ds" \
 	  "$$baseincdir/actions" \
