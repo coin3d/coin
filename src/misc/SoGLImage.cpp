@@ -94,6 +94,10 @@
   http://www.opengl.org/discussion_boards/ubb/Forum3/HTML/007306.html
   for a discussion regarding GL_CLAMP and GL_CLAMP_TO_EDGE.  
 
+  \li COIN_TEX2_ANISOTROPIC_LIMIT: Anisotropic filtering is enabled
+  for textures when the texture quality is higher than this value.
+  Default value is 0.85 
+
   \COIN_CLASS_EXTENSION
 
   \since Coin 2.0
@@ -169,11 +173,13 @@ static float DEFAULT_LINEAR_LIMIT = 0.2f;
 static float DEFAULT_MIPMAP_LIMIT = 0.5f;
 static float DEFAULT_LINEAR_MIPMAP_LIMIT = 0.8f;
 static float DEFAULT_SCALEUP_LIMIT = 0.7f;
+static float DEFAULT_ANISOTROPIC_LIMIT = 0.85f;
 
 static float COIN_TEX2_LINEAR_LIMIT = -1.0f;
 static float COIN_TEX2_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_LINEAR_MIPMAP_LIMIT = -1.0f;
 static float COIN_TEX2_SCALEUP_LIMIT = -1.0f;
+static float COIN_TEX2_ANISOTROPIC_LIMIT = -1.0f;
 static int COIN_TEX2_USE_GLTEXSUBIMAGE = -1;
 static int COIN_ENABLE_CONFORMANT_GL_CLAMP = -1; 
 
@@ -703,6 +709,11 @@ SoGLImage::SoGLImage(void)
       COIN_ENABLE_CONFORMANT_GL_CLAMP = 1;
     }
     else COIN_ENABLE_CONFORMANT_GL_CLAMP = 0;
+  }
+  if (COIN_TEX2_ANISOTROPIC_LIMIT < 0.0f) {
+    const char *env = coin_getenv("COIN_TEX2_ANISOTROPIC_LIMIT");
+    if (env) COIN_TEX2_ANISOTROPIC_LIMIT = (float) atof(env);
+    else COIN_TEX2_ANISOTROPIC_LIMIT = DEFAULT_ANISOTROPIC_LIMIT;
   }
 }
 
@@ -1633,8 +1644,20 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       }
       else mipmapfilter = FALSE;
     }
+
+    else if (mipmap && cc_glglue_glext_supported(glw, "GL_SGIS_generate_mipmap")) {
+      glTexParameteri(target, GL_GENERATE_MIPMAP_SGIS, GL_TRUE);        
+      mipmapimage = FALSE;
+    }
+
     this->applyFilter(mipmapfilter);
-    
+    if ((this->quality > COIN_TEX2_ANISOTROPIC_LIMIT) && 
+        cc_glglue_glext_supported(glw, "GL_EXT_texture_filter_anisotropic")) {
+      // FIXME: move the glGetFloatv() call into cc_glglue module
+      float maximumAnisotropy;
+      glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maximumAnisotropy);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, maximumAnisotropy);
+    }
     if (!mipmapimage) {
       // Create only level 0 texture. Mimpamps might be created by GL_SGIS_generate_mipmap
       glTexImage2D(target, 0, numComponents, w, h,
@@ -1648,9 +1671,7 @@ SoGLImageP::reallyCreateTexture(SoState *state,
       //   (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents,
       //                                         w, h, glformat,
       //                                         GL_UNSIGNED_BYTE, texture);
-
       fast_mipmap(state, w, h, numComponents, texture, glformat, FALSE);
-
     }
   }
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
