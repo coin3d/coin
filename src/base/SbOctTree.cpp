@@ -21,11 +21,13 @@
  *
 \**************************************************************************/
 
+#include <assert.h>
+#include <float.h>
+#include <stddef.h>
+
 #include <Inventor/SbOctTree.h>
 #include <Inventor/SbSphere.h>
 #include <Inventor/SbPlane.h>
-#include <float.h>
-#include <stddef.h>
 
 /*!
   \class SbOctTree SbOctTree.h Inventor/SbOctTree.h
@@ -45,25 +47,30 @@
   SbOctTree.
 */
 
+// FIXME: the doc above is faulty -- it's the insideboxfunc that's
+// needed. The bboxfunc is simply ignored. 20030328 mortene.
+
 /*!
   \var SbOctTreeFuncs::bboxfunc
   Should return the bounding box of the item.
  */
 /*!
   \var SbOctTreeFuncs::ptinsidefunc
-  Should return whether a point is inside item..
+  Should return whether a point is inside item.
 */
 /*!
   \var SbOctTreeFuncs::insideboxfunc
-  Should return whether item is inside a box.
+  Should return whether item is either fully or partly inside a box.
  */
 /*!
   \var SbOctTreeFuncs::insidespherefunc
-  Should return whether item is inside sphere.
+  Should return whether item is either fully or partly inside a
+  sphere.
  */
 /*!
   \var SbOctTreeFuncs::insideplanesfunc
-  Should return whether item is inside planes.
+  Should return whether item is either fully or partly inside a set of
+  planes.
 */
 
 //
@@ -164,9 +171,11 @@ public:
                  const SbBox3f &nodesize,
                  const SbBool removeduplicates) const;
 
-  void debugTree(FILE *fp, const int indent);
+  void debugTree(FILE *fp, const int indent, const SbBox3f & nodesize);
 
 private:
+  SbBool isLeaf(void) const { return this->children[0] == NULL; }
+  unsigned int totalNumberOfItems(void) const;
 
   void splitBox(const SbBox3f & box, SbBox3f * destarray) const;
   SbBool splitNode(const SbBox3f & nodesize, const SbOctTreeFuncs & funcs);
@@ -175,15 +184,44 @@ private:
   SbList <void*> items;
 };
 
-void 
-SbOctTreeNode::debugTree(FILE *fp, const int indent)
+// Returns all items of the node, including all items in child nodes
+// if we're not a leaf node.
+unsigned int
+SbOctTreeNode::totalNumberOfItems(void) const
 {
+  unsigned int nr = this->items.getLength();
+
+  if (!this->isLeaf()) {
+    for (int i = 0; i < 8; i++) {
+      nr += this->children[i]->totalNumberOfItems();
+    }
+  }
+  return nr;
+}
+
+void 
+SbOctTreeNode::debugTree(FILE *fp, const int indent, const SbBox3f & nodesize)
+{
+  (void)fprintf(fp, "%02d", indent - 1);
+
   int i;
-  for (i = 0; i < indent; i++) fprintf(fp," ");
-  fprintf(fp, "Node: %d\n", this->items.getLength());
-  if (this->children[0]) {
-    for (i =0 ; i < 8; i++) {
-      this->children[i]->debugTree(fp, indent+1);
+  for (i = 0; i < indent; i++) { (void)fprintf(fp, "  "); }
+
+  const SbVec3f & vmin = nodesize.getMin();
+  const SbVec3f & vmax = nodesize.getMax();
+
+  (void)fprintf(fp, "%s, %d items, ",
+                this->isLeaf() ? "Leaf" : "Group", this->totalNumberOfItems());
+  (void)fprintf(fp, "box==<%.2f, %.2f, %.2f>-<%.2f, %.2f, %.2f>",
+                vmin[0], vmin[1], vmin[2], vmax[0], vmax[1], vmax[2]);
+  (void)fprintf(fp, "\n");
+
+  if (!this->isLeaf()) {
+    SbBox3f childboxes[8];
+    this->splitBox(nodesize, childboxes);
+
+    for (i = 0; i < 8; i++) {
+      this->children[i]->debugTree(fp, indent+1, childboxes[i]);
     }
   }
 }
@@ -219,7 +257,7 @@ SbOctTreeNode::addItem(void * const item,
 {
   if (this->children[0]) { // node has been split
     SbBox3f childbox[8];
-    splitBox(nodesize, childbox);
+    this->splitBox(nodesize, childbox);
     for (int i = 0; i < 8; i++) {
       if (itemfuncs.insideboxfunc(item, childbox[i])) {
         this->children[i]->addItem(item, itemfuncs,
@@ -249,9 +287,8 @@ SbOctTreeNode::removeItem(void *const item,
 {
   if (children[0]) {
     SbBox3f childbox[8];
-    splitBox(nodesize, childbox);
-    int i;
-    for (i = 0; i < 8; i++) {
+    this->splitBox(nodesize, childbox);
+    for (int i = 0; i < 8; i++) {
       if (itemfuncs.insideboxfunc(item, childbox[i])) {
         this->children[i]->removeItem(item, itemfuncs,
                                       childbox[i]);
@@ -260,9 +297,7 @@ SbOctTreeNode::removeItem(void *const item,
   }
   else {
     int n = this->items.getLength();
-    int i;
-
-    for (i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       if (this->items[i] == item) {
         this->items.removeFast(i);
         n--;
@@ -425,9 +460,9 @@ SbOctTreeNode::splitNode(const SbBox3f & nodesize,
     this->children[i] = new SbOctTreeNode();
 
   SbBox3f childbox[8];
-  splitBox(nodesize, childbox);
+  this->splitBox(nodesize, childbox);
 
-  int n = this->items.getLength();
+  const int n = this->items.getLength();
   for (i = 0; i < n; i++) {
     void *item = this->items[i];
     for (int j = 0; j < 8; j++) {
@@ -436,9 +471,14 @@ SbOctTreeNode::splitNode(const SbBox3f & nodesize,
       }
     }
   }
+
+  // Check to see if one or more of the new nodes contains *all* items
+  // from the parent node (i.e. this node). If so, the split won't
+  // gain us any in processing time (it will likely be hurtful), so
+  // decide against splitting.
   int cntnodes = 0;
   for (i = 0; i < 8; i++) {
-    int len = children[i]->items.getLength();
+    const int len = children[i]->items.getLength();
     if (len == n) cntnodes++;
   }
   if (cntnodes > 0) {
@@ -448,6 +488,7 @@ SbOctTreeNode::splitNode(const SbBox3f & nodesize,
     }
     return FALSE;
   }
+
   this->items.truncate(0, TRUE);
   return TRUE;
 }
@@ -491,6 +532,9 @@ SbOctTree::clear(void)
 void
 SbOctTree::addItem(void * const item)
 {
+  assert(this->itemfuncs.insideboxfunc(item, this->boundingbox) &&
+         "bbox of item outside the octtree top-level bbox");
+
   this->topnode->addItem(item, this->itemfuncs,
                          this->maxitemspernode,
                          this->boundingbox);
@@ -605,5 +649,5 @@ void
 SbOctTree::debugTree(FILE * fp)
 {
   fprintf(fp, "Oct Tree:\n");
-  if (this->topnode) this->topnode->debugTree(fp, 1);
+  if (this->topnode) this->topnode->debugTree(fp, 1, this->boundingbox);
 }
