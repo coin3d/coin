@@ -44,17 +44,16 @@ public:
   SbBool find(const unsigned long key, void *& value) const;
   void makePList(SbPList & keys, SbPList & values);
   SbBool remove(const unsigned long key);
-
+  
+  void setHashingFunction(unsigned long (*func)(const unsigned long key));
+  
 private:
+  unsigned long (*hashfunc)(const unsigned long key);
   int tablesize;
   SbDictEntry ** buckets;
-  SbDictEntry *& findEntry(const unsigned long key) const;
   SbDictEntry *findEntry(const unsigned long key,
                          const unsigned long bucketnum,
                          SbDictEntry **prev = NULL) const;
-  static void addEntryToPLists(const unsigned long key,
-                               void * const value,
-                               void * const data);
   static void copyval(unsigned long key, void * value, void * data);
 
 };

@@ -34,17 +34,27 @@
 class SbDictEntry
 {
 private:
-  SbDictEntry(const unsigned long key, void * const value) {
-    this->key = key; this->value = value;
+  SbDictEntry(const unsigned long key,
+              void * const value) {
+    this->key = key; 
+    this->value = value;
   }
 private:
   unsigned long key;
   void * value;
   SbDictEntry * next;
-
+  
   friend class SbDict;
 };
 
+//
+// default hashing function will just return the key
+//
+static unsigned long 
+default_hashfunc(const unsigned long key)
+{
+  return key;
+}
 
 // *************************************************************************
 
@@ -58,12 +68,13 @@ SbDict::SbDict(const int entries)
   assert(entries > 0);
   this->tablesize = entries;
   this->buckets = new SbDictEntry *[this->tablesize];
+  this->hashfunc = default_hashfunc;
   for (int i = 0; i < this->tablesize; i++) this->buckets[i] = NULL;
 }
 
 /*!
   Copy constructor.
- */
+*/
 SbDict::SbDict(const SbDict & from)
 {
   this->operator=(from);
@@ -80,11 +91,12 @@ SbDict::~SbDict()
 
 /*!
   Make a deep copy of the contents of dictionary \a from into this dictionary.
- */
+*/
 SbDict &
 SbDict::operator=(const SbDict & from)
 {
   this->tablesize = from.tablesize;
+  this->hashfunc = from.hashfunc;
   this->buckets = new SbDictEntry *[this->tablesize];
   for (int i = 0; i < this->tablesize; i++) this->buckets[i] = NULL;
   from.applyToAll(copyval, this);
@@ -94,7 +106,7 @@ SbDict::operator=(const SbDict & from)
 /*!
   \internal
   Callback for copying values from one SbDict to another.
- */
+*/
 void
 SbDict::copyval(unsigned long key, void * value, void * data)
 {
@@ -110,7 +122,7 @@ SbDict::clear(void)
 {
   int i;
   SbDictEntry * entry, * nextEntry;
-
+  
   for (i = 0; i < this->tablesize; i++) {
     for (entry = buckets[i]; entry != NULL; entry = nextEntry) {
       nextEntry = entry->next;
@@ -123,7 +135,7 @@ SbDict::clear(void)
 /*!
   Inserts a new entry into the dictionary. \a key should be
   a unique number, and \a value is the generic user data.
-
+  
   \e If \a key does not exist in the dictionary, a new entry
   is created and TRUE is returned. Otherwise, the generic user
   data is chenged to \a value, and \e FALSE is returned.
@@ -131,20 +143,7 @@ SbDict::clear(void)
 SbBool
 SbDict::enter(const unsigned long key, void * const value)
 {
-#if 0 // OBSOLETED, 19991026, pederb (ugly code)
-  SbDictEntry *& entry = this->findEntry(key);
-
-  if (entry == NULL) {
-    entry = new SbDictEntry(key, value);
-    entry->next = NULL;
-    return TRUE;
-  }
-  else {
-    entry->value = value;
-    return FALSE;
-  }
-#else // new code
-  const unsigned long bucketnum = key % this->tablesize;
+  const unsigned long bucketnum = this->hashfunc(key) % this->tablesize;
   SbDictEntry *entry = findEntry(key, bucketnum);
   if (entry == NULL) {
     entry = new SbDictEntry(key, value);
@@ -156,7 +155,6 @@ SbDict::enter(const unsigned long key, void * const value)
     entry->value = value;
     return FALSE;
   }
-#endif // end of new code
 }
 
 /*!
@@ -167,19 +165,7 @@ SbDict::enter(const unsigned long key, void * const value)
 SbBool
 SbDict::find(const unsigned long key, void *& value) const
 {
-#if 0 // OBSOLETED 19991026, pederb
-  SbDictEntry *& entry = this->findEntry(key);
-
-  if (entry == NULL) {
-    value = NULL;
-    return FALSE;
-  }
-  else {
-    value = entry->value;
-    return TRUE;
-  }
-#else // new code
-  const unsigned long bucketnum = key % this->tablesize;
+  const unsigned long bucketnum = this->hashfunc(key) % this->tablesize;
   SbDictEntry *entry = findEntry(key, bucketnum);
   if (entry == NULL) {
     value = NULL;
@@ -189,30 +175,16 @@ SbDict::find(const unsigned long key, void *& value) const
     value = entry->value;
     return TRUE;
   }
-#endif // new code
 }
 
 /*!
   Removes the entry with key \a key. \e TRUE is returned if an entry
   with this key existed, \e FALSE otherwise.
- */
+*/
 SbBool
 SbDict::remove(const unsigned long key)
 {
-#if 0 // OBSOLETED 19991026, pederb
-  SbDictEntry *& entry = this->findEntry(key);
-  SbDictEntry * tmp;
-
-  if (entry == NULL)
-    return FALSE;
-  else {
-    tmp = entry;
-    entry = entry->next;
-    delete tmp;
-    return TRUE;
-  }
-#else // new code
-  const unsigned long bucketnum = key % this->tablesize;
+  const unsigned long bucketnum = this->hashfunc(key) % this->tablesize;
   SbDictEntry *prev = NULL;
   SbDictEntry *entry = findEntry(key, bucketnum, &prev);
   if (entry == NULL)
@@ -227,7 +199,6 @@ SbDict::remove(const unsigned long key)
     delete entry;
     return TRUE;
   }
-#endif // new code
 }
 
 /*!
@@ -278,26 +249,9 @@ SbDict::makePList(SbPList & keys, SbPList & values)
     while (entry) {
       keys.append((void *)entry->key);
       values.append((void *)entry->value);
+      entry = entry->next;
     }
   }
-}
-
-//
-// private method
-//
-// this code seems to crash on Solaris 2.6. Testing new
-// code below, 19991026, pederb
-//
-SbDictEntry *&
-SbDict::findEntry(const unsigned long key) const
-{
-  SbDictEntry **entry;
-  entry = &buckets[key % this->tablesize];
-  while (*entry != NULL) {
-    if ((*entry)->key == key) break;
-    entry = &(*entry)->next;
-  }
-  return *entry;
 }
 
 SbDictEntry *
@@ -306,13 +260,31 @@ SbDict::findEntry(const unsigned long key,
                   SbDictEntry **prev) const
 {
   if (prev) *prev = NULL;
-  SbDictEntry *entry = buckets[key % tablesize];
+  SbDictEntry *entry = buckets[bucketnum];
   while (entry) {
     if (entry->key == key) break;
     if (prev) *prev = entry;
     entry = entry->next;
   }
   return entry;
+}
+
+/*!
+  Sets a new hashing function for this dictionary. Default 
+  hashing function just returns the key.
+  
+  If you find that items entered into the dictionary seems to make 
+  clusters in only a few buckets, you should try setting a hashing 
+  function. If you're for instance using strings, you could use the 
+  static SbString::hash() function (you'd need to make a static function
+  that will cast from unsigned long to char * of course).
+  
+  This function is not part of the OIV API.
+*/
+void 
+SbDict::setHashingFunction(unsigned long (*func)(const unsigned long key))
+{
+  this->hashfunc = func;
 }
 
 
