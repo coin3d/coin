@@ -46,9 +46,9 @@ public:
 
   SoDebugError::Severity getSeverity(void) const;
 
-  static void post(const char * const type, const char * const format, ...);
-  static void postWarning(const char * const type, const char * const format, ...);
-  static void postInfo(const char * const type, const char * const format, ...);
+  static void post(const char * const source, const char * const format, ...);
+  static void postWarning(const char * const source, const char * const format, ...);
+  static void postInfo(const char * const source, const char * const format, ...);
 
   static void initClass(void);
 
