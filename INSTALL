@@ -1,9 +1,9 @@
 
-                          Install Instructions
+                         Install Instructions
 
-                   Copyright 2001   Systems in Motion
+               Copyright 2001-2002   Systems in Motion
 
-                         http://www.coin3d.org/
+                        http://www.coin3d.org/
 
 
 Introduction
@@ -294,7 +294,7 @@ Configuration Options
   This option will disable the use of the dl library.  No libraries will
   get run-time bindings to Coin.
 
---without-loadlibrary
+--disable-loadlibrary
 
   The alternative to the dl library for Windows is called LoadLibrary.
   To disable using LoadLibrary for loading simage and GLU, this option
