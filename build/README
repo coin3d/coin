@@ -1,6 +1,17 @@
-README
-======
+coin.spec.in
 
-This directory contains project and makefiles for building Coin with
-the Microsoft VisualC++ compiler. Read ../README.WIN32 for more
-information.
+        Template processed by configure script to generate an RPM
+        specification file coin.spec.
+
+coin.iwz.in
+
+        Template processed by configure script to generate
+        specification file for InstallShield Express v2.12. Invoke the
+        script by running
+
+	       $ cd [coin_builddir]
+               $ IsxBuild.exe build/coin.iwz -E -O
+
+        A self-extracting executable SETUPEX.EXE with the
+        InstallShield install should then be available under
+        [coin_builddir]/build/coin/.
