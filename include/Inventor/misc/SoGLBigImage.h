@@ -44,7 +44,7 @@ public:
                        const float quality = 0.5f,
                        const int border = 0,
                        SoState * createinstate = NULL);
-  
+
   int initSubImages(SoState * state, const SbVec2s & subimagesize) const;
   void handleSubImage(const int idx, SbVec2f & start, SbVec2f & end,
                       SbVec2f & tcmul);
@@ -57,8 +57,6 @@ public:
 
 private:
   virtual ~SoGLBigImage();
-
-  void copySubImage(const int idx, unsigned char * dst);
 
   class SoGLBigImageP * pimpl;
   friend class SoGLBigImageP;

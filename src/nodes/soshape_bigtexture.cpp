@@ -27,6 +27,7 @@
 #include <Inventor/SbBox2f.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/nodes/SoShape.h>
 #include <stdlib.h>
 
 #ifdef HAVE_CONFIG_H
@@ -48,10 +49,10 @@ public:
 static SbList <SoPrimitiveVertex*> * bt_pvlist;
 static int bt_pvlistcnt;
 
-static SoPrimitiveVertex * 
+static SoPrimitiveVertex *
 bt_get_new_pv(void)
 {
-  if (bt_pvlistcnt < bt_pvlist->getLength()) 
+  if (bt_pvlistcnt < bt_pvlist->getLength())
     return (*bt_pvlist)[bt_pvlistcnt++];
   else {
     SoPrimitiveVertex * pv = new SoPrimitiveVertex;
@@ -104,15 +105,15 @@ cleanup_bigtexture(void)
 }
 
 void
-bigtexture_begin_shape(SoState * state, 
+bigtexture_begin_shape(SoState * state,
                        SoGLBigImage * image,
                        const float quality)
 {
   bt_image = image;
   bt_quality = quality;
   bt_pvlistcnt = 0;
-
-  int num = image->initSubImages(state, SbVec2s(512, 512));
+  
+  int num = image->initSubImages(state, SbVec2s(256, 256));
   bt_numregions = num;
 
   if (bt_clipper == NULL) {
@@ -135,31 +136,42 @@ bigtexture_begin_shape(SoState * state,
                              reg.start,
                              reg.end,
                              reg.tcmul);
-    reg.planes[0] = 
+    reg.planes[0] =
       SbPlane(SbVec3f(1.0f, 0.0f, 0.0f), reg.start[0]);
-    reg.planes[1] = 
+    reg.planes[1] =
       SbPlane(SbVec3f(0.0f, 1.0f, 0.0f), reg.start[1]);
-    reg.planes[2] = 
+    reg.planes[2] =
       SbPlane(SbVec3f(-1.0f, 0.0f, 0.0f), -reg.end[0]);
-    reg.planes[3] = 
+    reg.planes[3] =
       SbPlane(SbVec3f(0.0f, -1.0f, 0.0f), -reg.end[1]);
   }
 }
 
 void
-bigtexture_end_shape(SoState * state, SoMaterialBundle & mb)
+bigtexture_end_shape(SoState * state, 
+                     SoShape * shape,
+                     SoMaterialBundle & mb)
 {
   const int numreg = bt_numregions;
   for (int i = 0; i < numreg; i++) {
+    int numv, j;
+
     const bt_region & reg = bt_regions[i];
     int numface = reg.facelist.getLength();
     if (numface == 0) continue;
 
-    bt_image->applySubImage(state, i, bt_quality, SbVec2s(0,0));
+    numv = reg.pvlist.getLength();
+    SbBox3f bbox;
+    for (j = 0; j < numv; j++) {
+      bbox.extendBy(reg.pvlist[j]->getPoint());
+    }
+    SbVec2s rectsize;
+    shape->getScreenSize(state, bbox, rectsize);
+    bt_image->applySubImage(state, i, bt_quality, rectsize);
     int vcnt = 0;
-    for (int j = 0; j < numface; j++) {
+    for (j = 0; j < numface; j++) {
       glBegin(GL_TRIANGLE_FAN);
-      int numv = reg.facelist[j];
+      numv = reg.facelist[j];
       for (int k = 0; k < numv; k++) {
         SoPrimitiveVertex * v = reg.pvlist[vcnt++];
         SbVec4f tc = v->getTextureCoords();
@@ -173,11 +185,11 @@ bigtexture_end_shape(SoState * state, SoMaterialBundle & mb)
         glVertex3fv(v->getPoint().getValue());
       }
       glEnd();
-    } 
+    }
   }
 }
 
-void 
+void
 bigtexture_triangle(SoState * state,
                     const SoPrimitiveVertex * v1,
                     const SoPrimitiveVertex * v2,
@@ -192,13 +204,13 @@ bigtexture_triangle(SoState * state,
   bbox.extendBy(SbVec2f(tc2[0], tc2[1]));
   bbox.extendBy(SbVec2f(tc3[0], tc3[1]));
   SbBox2f regbbox;
-  
+
   for (int i = 0; i < bt_numregions; i++) {
     bt_region & reg = bt_regions[i];
     regbbox.makeEmpty();
     regbbox.extendBy(reg.start);
     regbbox.extendBy(reg.end);
-    
+
     // check if there is a chance for an intersection
     if (regbbox.intersect(bbox)) {
       bt_clipper->reset();
@@ -210,16 +222,16 @@ bigtexture_triangle(SoState * state,
       *pv2 = *v2;
       SoPrimitiveVertex * pv3 = bt_get_new_pv();
       *pv3 = *v3;
-      
+
       bt_clipper->addVertex(SbVec3f(tc1[0], tc1[1],0.0f), pv1);
       bt_clipper->addVertex(SbVec3f(tc2[0], tc2[1],0.0f), pv2);
       bt_clipper->addVertex(SbVec3f(tc3[0], tc3[1],0.0f), pv3);
-      
+
       bt_clipper->clip(reg.planes[0]);
       bt_clipper->clip(reg.planes[1]);
       bt_clipper->clip(reg.planes[2]);
       bt_clipper->clip(reg.planes[3]);
-      
+
       const int numv = bt_clipper->getNumVertices();
       if (numv >= 3) {
         int j;

@@ -384,7 +384,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     
     bigtexture_begin_shape(state, big, SoTextureQualityElement::get(state));    
     this->generatePrimitives(action);
-    bigtexture_end_shape(state, mb);
+    bigtexture_end_shape(state, this, mb);
     is_doing_bigtexture_rendering = FALSE;
 
     return FALSE;

@@ -22,14 +22,13 @@
   \brief The SoGLBigImage class is used to handle 2D OpenGL textures of any size.
 
   This class is currently under heavy development, and is probably
-  very buggy.  Don't use it unless you really know what you're doing!  
+  very buggy.  Don't use it unless you really know what you're doing!
 */
 
 #include <Inventor/misc/SoGLBigImage.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
-#include <Inventor/SbImage.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -52,17 +51,31 @@ public:
     imagesize(0,0),
     remain(0,0),
     dim(0,0),
-    glimagearray(NULL) {}
-
+    tmpbuf(NULL),
+    tmpbufsize(0),
+    glimagearray(NULL),
+    glimagediv(NULL) {}
+  
   ~SoGLBigImageP() {
     assert(this->glimagearray == NULL);
+    delete[] this->tmpbuf;
   }
   SbVec2s imagesize;
   SbVec2s remain;
   SbVec2s dim;
-  SbImage tmpimage;
+  unsigned char * tmpbuf;
+  int tmpbufsize;
   SoGLImage ** glimagearray;
+  int * glimagediv;
   SbVec2f tcmul;
+  
+  void copySubImage(const int idx,
+                    const unsigned char * src,
+                    const SbVec2s & fullsize,
+                    const int nc,
+                    unsigned char * dst,
+                    const int div);
+
 
   void reset(SoState * state = NULL) {
     const int n = this->dim[0] * this->dim[1];
@@ -73,7 +86,9 @@ public:
       }
     }
     delete[] this->glimagearray;
+    delete[] this->glimagediv;
     this->glimagearray = NULL;
+    this->glimagediv = NULL;
     this->imagesize.setValue(0,0);
     this->remain.setValue(0,0);
     this->dim.setValue(0,0);
@@ -173,21 +188,23 @@ SoGLBigImage::initSubImages(SoState * state,
   THIS->dim[0] = size[0] / subimagesize[0];
   THIS->dim[1] = size[1] / subimagesize[1];
 
-  const int numimages = THIS->dim[0] * THIS->dim[1];
-
-#ifdef BIGTEXTURE_DEBUG
-  fprintf(stderr,"SoGLBigImage init: %d\n", numimages);
-#endif
-  THIS->glimagearray = new SoGLImage*[numimages];
-  for (int i = 0; i < numimages; i++) THIS->glimagearray[i] = NULL;
-
   THIS->remain[0] = size[0] % subimagesize[0];
   if (THIS->remain[0]) THIS->dim[0] += 1;
   THIS->remain[1] = size[1] % subimagesize[1];
   if (THIS->remain[1]) THIS->dim[1] += 1;
 
+  const int numimages = THIS->dim[0] * THIS->dim[1];
+
+  THIS->glimagediv = new int[numimages];
+  THIS->glimagearray = new SoGLImage*[numimages];
+  for (int i = 0; i < numimages; i++) {
+    THIS->glimagearray[i] = NULL;
+    THIS->glimagediv[i] = 1;
+  }
+
   THIS->tcmul[0] = float(THIS->dim[0] * subimagesize[0]) / float(size[0]);
   THIS->tcmul[1] = float(THIS->dim[1] * subimagesize[1]) / float(size[1]);
+
   return THIS->dim[0] * THIS->dim[1];
 }
 
@@ -211,67 +228,75 @@ SoGLBigImage::handleSubImage(const int idx,
 }
 
 void
-SoGLBigImage::applySubImage(SoState * state, const int idx, const float quality,
+SoGLBigImage::applySubImage(SoState * state, const int idx, 
+                            const float quality,
                             const SbVec2s & projsize)
 {
-  if (THIS->glimagearray[idx] == NULL) {
-    THIS->glimagearray[idx] = new SoGLImage();
-    // it actually looks ok if we create mipmaps CLAMP_TO_EDGE seems
-    // to work great.
-//      THIS->glimagearray[idx]->setFlags(SoGLImage::NO_MIPMAP|
-//                                        SoGLImage::LINEAR_MIN_FILTER|
-//                                        SoGLImage::LINEAR_MAG_FILTER);
-    THIS->glimagearray[idx]->setFlags(SoGLImage::NO_MIPMAP);
-    SbVec2s size;
-    int bpp;
-    unsigned char * ptr = THIS->tmpimage.getValue(size, bpp);
-    if (size != THIS->imagesize) {
-      THIS->tmpimage.setValue(THIS->imagesize, this->getNumComponents(), NULL);
-      ptr = THIS->tmpimage.getValue(size, bpp);
+  int div = 2;
+  while ((THIS->imagesize[0]/div > projsize[0]) && 
+         (THIS->imagesize[1]/div > projsize[1])) div <<= 1;
+  div >>= 1;
+    
+  if (THIS->glimagearray[idx] == NULL || THIS->glimagediv[idx] != div) {
+    if (THIS->glimagearray[idx] == NULL) 
+      THIS->glimagearray[idx] = new SoGLImage();
+    THIS->glimagediv[idx] = div;
+
+    THIS->glimagearray[idx]->setFlags(SoGLImage::NO_MIPMAP|
+                                      SoGLImage::LINEAR_MIN_FILTER|
+                                      SoGLImage::LINEAR_MAG_FILTER);
+    SbVec2s actualsize(THIS->imagesize[0]/div,
+                       THIS->imagesize[1]/div);
+    
+    int numbytes = actualsize[0]*actualsize[1]*this->getNumComponents();
+    if (numbytes > THIS->tmpbufsize) {
+      delete[] THIS->tmpbuf;
+      THIS->tmpbuf = new unsigned char[numbytes];
+      THIS->tmpbufsize = numbytes;
     }
-    this->copySubImage(idx, ptr);
-    THIS->glimagearray[idx]->setData(THIS->tmpimage.getValue(size, bpp),
-                                     THIS->imagesize,
-                                     bpp,
+    THIS->copySubImage(idx, 
+                       this->getDataPtr(),
+                       this->getSize(),
+                       this->getNumComponents(),
+                       THIS->tmpbuf, div);
+    THIS->glimagearray[idx]->setData(THIS->tmpbuf,
+                                     actualsize,
+                                     this->getNumComponents(),
                                      SoGLImage::CLAMP_TO_EDGE,
                                      SoGLImage::CLAMP_TO_EDGE,
                                      quality,
                                      0, state);
   }
+
   SoGLDisplayList * dl = THIS->glimagearray[idx]->getGLDisplayList(state);
-#if 1
-  fprintf(stderr,"Big Apply: %d\n", idx);
-#endif
   dl->call(state);
 }
 
-void
-SoGLBigImage::copySubImage(const int idx, unsigned char * dst)
-{
-  SbVec2s pos(idx % THIS->dim[0], idx / THIS->dim[0]);
+#undef THIS
 
+void
+SoGLBigImageP::copySubImage(const int idx, 
+                            const unsigned char * src,
+                            const SbVec2s & fullsize,
+                            const int nc,
+                            unsigned char * dst,
+                            const int div)
+{
+  SbVec2s pos(idx % this->dim[0], idx / this->dim[0]);
 
   // FIXME: investigate if it's possible to set the pixel transfer
   // mode so that we don't have to copy the data into a temporary
   // image. This is probably fast enough though.
 
-  const unsigned char * src = this->getDataPtr();
-  SbVec2s fullsize = this->getSize();
-  int nc = this->getNumComponents();
-
   SbVec2s origin;
-  origin[0] = pos[0] * THIS->imagesize[0];
-  origin[1] = pos[1] * THIS->imagesize[1];
+  origin[0] = pos[0] * this->imagesize[0];
+  origin[1] = pos[1] * this->imagesize[1];
 
-#ifdef BIGTEXTURE_DEBUG
-  fprintf(stderr,"Big copy: %d -> %d %d (%d %d)\n",
-          idx, pos[0], pos[1], origin[0], origin[1]);
-#endif
-
-  for (int y = 0; y < int(THIS->imagesize[1]); y++) {
-    for (int x = 0; x < int(THIS->imagesize[0]); x++) {
+  for (int y = 0; y < int(this->imagesize[1]); y += div) {
+    for (int x = 0; x < int(this->imagesize[0]); x += div) {
       if ((origin[0] + x) < fullsize[0] && (origin[1] + y) < fullsize[1]) {
-        const unsigned char * srcptr = src + nc * (fullsize[0] * (origin[1]+y) + origin[0]+x);
+        const unsigned char * srcptr = 
+          src + nc * (fullsize[0] * (origin[1]+y) + origin[0]+x);
         for (int c = 0; c < nc; c++) {
           *dst++ = srcptr[c];
         }
@@ -282,5 +307,3 @@ SoGLBigImage::copySubImage(const int idx, unsigned char * dst)
     }
   }
 }
-
-#undef THIS
