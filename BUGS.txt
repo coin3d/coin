@@ -1361,3 +1361,16 @@
     Flip. Still working on a good fix though. 20021028 rolvs
 
 =====================================================================
+
+043 We're writing invalid VRML97 files.
+
+    According to spec, '+' is not allowed as a first character of
+    nodes names in VRML97. But upon writing a scene graph from Coin,
+    nameless nodes that are referenced from other nodes is still
+    written to disk as "DEF +0", "DEF +1", etc.
+
+    For how to fix properly, see Coin/docs/todo.txt, item #003.
+
+    20021029 mortene, problem reported by kintel.
+
+=====================================================================
