@@ -576,7 +576,8 @@ versus the code "layout" (to make it more easily readable):
         ...
       }
 
-  - Pointer types: use a space on each side of the '*', like this
+  - Pointer types and references: use a space on each side of the '*'
+    and '&' operators, like this
 
         SoNode * mynode = NULL;
 
@@ -585,7 +586,8 @@ versus the code "layout" (to make it more easily readable):
         SoNode *mynode = NULL;
 
     because it makes it look like the '*' "belongs" to the variable
-    name, and not like this either
+    name (which of course is wrong -- it's part of the type), and not
+    like this either
 
         SoNode* mynode = NULL;
 
