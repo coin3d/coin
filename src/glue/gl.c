@@ -98,6 +98,7 @@
 
 #ifdef HAVE_AGL
 #include <AGL/AGL.h>
+#include <OpenGL/CGLCurrent.h>  // for CGLGetCurrentContext
 #endif /* HAVE_AGL */
 
 #include <Inventor/C/glue/gl.h>
@@ -973,14 +974,10 @@ cc_glglue_instance(int contextid)
     assert((wglGetCurrentContext() != NULL) && "must have a current GL context when instantiating cc_glglue");
 #endif /* HAVE_WGL */
 #ifdef HAVE_AGL
-    /* NB! It would seem logical to assert on aglGetCurrentContext()
-       != NULL here, but that does not work, since
-       aglGetCurrentContext() only returns a value != NULL if the
-       context has been set using aglSetCurrentContext(). Therefore,
-       GLUT or Cocoa application using Coin would not work anymore!
-
-       FIXME: Find out how to check for valid OpenGL context on a
-       lower level (i.e. CGL) kyrah 20030122 */
+    assert (CGLGetCurrentContext() != NULL);
+    /* Note: We cannot use aglGetCurrentContext() here, since that
+       only returns a value !- NULL if the context has been set using
+       aglSetCurrentContext(). */
 #endif /* HAVE_AGL */
 
     glglue_sanity_check_enums();
