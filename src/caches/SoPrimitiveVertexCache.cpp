@@ -642,6 +642,79 @@ SoPrimitiveVertexCache::getPointIndices(void) const
   return PRIVATE(this)->pointindices.getArrayPtr();
 }
 
+// sort an array of three integers
+static void sort3(int32_t * arr)
+{
+  // simple bubble-sort
+  int32_t tmp;
+  if (arr[1] < arr[0]) {
+    tmp = arr[0];
+    arr[0] = arr[1];
+    arr[1] = tmp;
+  }
+  if (arr[2] < arr[1]) {
+    tmp = arr[1];
+    arr[1] = arr[2];
+    arr[2] = tmp;
+  }
+  if (arr[1] < arr[0]) {
+    tmp = arr[0];
+    arr[0] = arr[1];
+    arr[1] = tmp;
+  }
+}
+
+// qsort callback used for sorting triangles based on vertex indices
+extern "C" {
+static int
+compare_triangle(const void * v0, const void * v1)
+{
+  int i;
+  int32_t * t0 = (int*) v0;
+  int32_t * t1 = (int*) v1;
+
+  int32_t ti0[3];
+  int32_t ti1[3];
+  for (i = 0; i < 3; i++) {
+    ti0[i] = t0[i];
+    ti1[i] = t1[i];
+  }
+  sort3(ti0);
+  sort3(ti1);
+
+  for (i = 0; i < 3; i++) {
+    int32_t diff = ti0[i] - ti1[i];
+    if (diff != 0) return diff;
+  }
+  return 0;
+}
+}
+
+// qsort callback used for sorting line segments based on vertex
+// indices
+extern "C" {
+static int
+compare_line_segment(const void * v0, const void * v1)
+{
+  int i;
+  int32_t * l0 = (int*) v0;
+  int32_t * l1 = (int*) v1;
+  int32_t li0[2];
+  int32_t li1[2];
+  
+  li0[0] = SbMin(l0[0], l0[1]);
+  li0[1] = SbMax(l0[0], l0[1]);
+  li1[0] = SbMin(l1[0], l1[1]);
+  li1[1] = SbMax(l1[0], l1[1]);
+
+  for (i = 0; i < 2; i++) {
+    int diff = li0[i] - li1[i];
+    if (diff) return diff;
+  }
+  return 0;
+}
+}
+
 void
 SoPrimitiveVertexCache::fit(void)
 {
@@ -654,6 +727,24 @@ SoPrimitiveVertexCache::fit(void)
   PRIVATE(this)->lineindices.fit();
   PRIVATE(this)->pointindices.fit();
   PRIVATE(this)->vhash.clear();
+
+  // sort triangles based on vertex indices to get more hits in the
+  // GPU vertex cache. Not the optimal solution, but usually works pretty
+  // well
+  if (PRIVATE(this)->indices.getLength()) {
+    qsort((void*) PRIVATE(this)->indices.getArrayPtr(),
+          PRIVATE(this)->indices.getLength() / 3,
+          sizeof(int32_t) * 3,
+          compare_triangle);
+  }
+  
+  // sort lines as well
+  if (PRIVATE(this)->lineindices.getLength()) {
+    qsort((void*) PRIVATE(this)->lineindices.getArrayPtr(),
+          PRIVATE(this)->lineindices.getLength() / 2,
+          sizeof(int32_t) * 2,
+          compare_line_segment);
+  }
 }
 
 #undef PRIVATE
