@@ -161,16 +161,16 @@ SoPrimitiveVertexCache::addTriangle(const SoPrimitiveVertex * v0,
       if (PRIVATE(this)->numbumpcoords) {
         v.bumpcoord = PRIVATE(this)->bumpcoords[SbClamp(tidx, 0, PRIVATE(this)->numbumpcoords)];
       }
-      int32_t idx;
-      if (!PRIVATE(this)->vhash.get(v, idx)) {
-        idx = PRIVATE(this)->vertices.getLength();
-        PRIVATE(this)->vhash.put(v, idx);
-        PRIVATE(this)->vertices.append(v);
-        PRIVATE(this)->indices.append(idx);
-      }
-      else {
-        PRIVATE(this)->indices.append(idx);
-      }
+    }
+    int32_t idx;
+    if (!PRIVATE(this)->vhash.get(v, idx)) {
+      idx = PRIVATE(this)->vertices.getLength();
+      PRIVATE(this)->vhash.put(v, idx);
+      PRIVATE(this)->vertices.append(v);
+      PRIVATE(this)->indices.append(idx);
+    }
+    else {
+      PRIVATE(this)->indices.append(idx);
     }
   }
 }
