@@ -3,12 +3,12 @@ to start installation. If you do not want to use an installer, you can
 find a package containing only the framework itself (called
 Coin-@VERSION@-Jaguar-no_inst.dmg) at ftp://ftp.sim.no/pub/coin/bin/macosx.
 
-If you intend to develop without using ProjectBuilder, you should  
-also install the CoinTools package, which contains the coin-config
-commandline utility, its associated man page, and its default
-configuration. The coin tools are a convenience if you want to
-build Coin applications from the Terminal, and are also needed
-when compiling SoQt.
+If you intend to develop without using ProjectBuilder/Xcode, you
+should also install the CoinTools package, which contains the
+coin-config commandline utility, its associated man page, and its
+default configuration. The coin tools are a convenience if you want to
+build Coin applications from the Terminal, and are also needed when
+compiling SoQt.
 
 Note that this Coin framework has been built with gcc 3.1 and will not
 work with gcc 3.3. It is primarily meant for use on Mac OS 10.2
