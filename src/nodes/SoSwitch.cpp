@@ -40,6 +40,8 @@
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/SoOutput.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -328,8 +330,24 @@ SoSwitch::getMatrix(SoGetMatrixAction *action)
 void
 SoSwitch::write(SoWriteAction * action)
 {
-  // FIXME: anything missing? 19991112 mortene.
-  inherited::write(action);
+  // to keep child numbering, always write out all children for a
+  // switch
+  
+  SoOutput * out = action->getOutput();
+  if (out->getStage() == SoOutput::COUNT_REFS) {
+    this->addWriteReference(out, FALSE);
+    // Only increase number of writereferences to the top level node
+    // in a tree which is used multiple times.
+    if (!this->hasMultipleWriteRefs()) this->getChildren()->traverse(action); 
+  }
+  else if (out->getStage() == SoOutput::WRITE) {
+    if (this->writeHeader(out, TRUE, FALSE)) return;
+    this->writeInstance(out);
+    if (out->isBinary()) out->write(this->getNumChildren());
+    this->getChildren()->traverse(action);
+    this->writeFooter(out);
+  }
+  else assert(0 && "unknown stage");
 }
 
 /*!
