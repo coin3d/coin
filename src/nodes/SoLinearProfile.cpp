@@ -33,11 +33,11 @@
 #include <stdlib.h>
 #include <coindefs.h> // COIN_STUB()
 
-static SbList <float> * coordList = NULL;
+static SbList <float> * coordListLinearProfile = NULL;
 
-static void cleanup(void)
+static void cleanupLinearProfile(void)
 {
-  delete coordList;
+  delete coordListLinearProfile;
 }
 
 // *************************************************************************
@@ -72,9 +72,9 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
                               float *& points, int & floatspervec,
                               int32_t & numknots, float *& knotvector)
 {
-  if (coordList == NULL) {
-    coordList = new SbList <float>;
-    atexit(cleanup);
+  if (coordListLinearProfile == NULL) {
+    coordListLinearProfile = new SbList <float>;
+    atexit(cleanupLinearProfile);
   }
   numknots = 0;
   const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
@@ -90,14 +90,14 @@ SoLinearProfile::getTrimCurve(SoState * state, int32_t & numpoints,
       floatspervec = 3;
     }
   }
-  coordList->truncate(0);
+  coordListLinearProfile->truncate(0);
   int n = this->index.getNum();
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < floatspervec; j++) {
-      coordList->append(points[this->index[i]*floatspervec+j]);
-    }    
+      coordListLinearProfile->append(points[this->index[i]*floatspervec+j]);
+    }
   }
-  points = (float*) coordList->getArrayPtr();
+  points = (float*) coordListLinearProfile->getArrayPtr();
   numpoints = n;
 }
 

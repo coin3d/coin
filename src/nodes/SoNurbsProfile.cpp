@@ -39,11 +39,11 @@
   Knot values for the nurbs curve.
 */
 
-static SbList <float> * coordList = NULL;
+static SbList <float> * coordListNurbsProfile = NULL;
 
-static void cleanup(void)
+static void cleanupNurbsProfile(void)
 {
-  delete coordList;
+  delete coordListNurbsProfile;
 }
 
 // *************************************************************************
@@ -80,9 +80,9 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
                              float *& points, int & floatspervec,
                              int32_t & numknots, float *& knotvector)
 {
-  if (coordList == NULL) {
-    coordList = new SbList <float>;
-    atexit(cleanup);
+  if (coordListNurbsProfile == NULL) {
+    coordListNurbsProfile = new SbList <float>;
+    atexit(cleanupNurbsProfile);
   }
   numknots = this->knotVector.getNum();
   if (numknots) knotvector = (float *)(this->knotVector.getValues(0));
@@ -101,14 +101,14 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
       floatspervec = 3;
     }
   }
-  coordList->truncate(0);
+  coordListNurbsProfile->truncate(0);
   int n = this->index.getNum();
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < floatspervec; j++) {
-      coordList->append(points[this->index[i]*floatspervec+j]);
-    }    
+      coordListNurbsProfile->append(points[this->index[i]*floatspervec+j]);
+    }
   }
-  points = (float*) coordList->getArrayPtr();
+  points = (float*) coordListNurbsProfile->getArrayPtr();
   numpoints = n;
 }
 
