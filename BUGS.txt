@@ -991,3 +991,91 @@
     Sri Lanka. :-}
 
 =====================================================================
+
+038 One particular .iv-file with SoIndexedNurbsSurface node causes
+    crash on rendering.
+
+    This scenegraph causes any Coin viewer to crash on first attempt
+    at rendering:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #Inventor V2.1 ascii
+    
+    Separator {
+    
+       Texture2 { image 2 2 4 0xff0000ff 0x00ff00ff 0x0000ffff 0xff00ffff }
+    
+       Coordinate3 {
+          point [
+           0 0 0,
+           0 0 0,
+           -4.5 -2.0  8.0,
+           -2.0  1.0  8.0,
+           2.0 -3.0  6.0,
+           5.0 -1.0  8.0,
+           -3.0  3.0  4.0,
+           0.0 -1.0  4.0,
+           1.0 -1.0  4.0,
+           3.0  2.0  4.0,
+           -5.0 -2.0 -2.0,
+           -2.0 -4.0 -2.0,
+           2.0 -1.0 -2.0,
+           5.0  0.0 -2.0,
+           -4.5  2.0 -6.0,
+           -2.0 -4.0 -5.0,
+           2.0  3.0 -5.0,
+           4.5 -2.0 -6.0
+          ]
+       }
+    
+       TextureCoordinate2 {
+          point [
+           0 0,
+           0 0,
+           0 0,
+           -4.5 8.0,
+           -2.0 8.0,
+           2.0 6.0,
+           5.0 8.0,
+           -3.0 4.0,
+           0.0 4.0,
+           1.0 4.0,
+           3.0 4.0,
+           -5.0 -2.0,
+           -2.0 -2.0,
+           2.0 -2.0,
+           5.0 -2.0,
+           -4.5 -6.0,
+           -2.0 -5.0,
+           2.0 -5.0,
+           4.5 -6.0
+          ]
+       }
+    
+    
+       IndexedNurbsSurface {
+          numUControlPoints 4
+          numVControlPoints 4
+          uKnotVector [ 0, 0, 0, 0, 1, 1, 1, 1 ]
+          vKnotVector [ 0, 0, 0, 0, 1, 1, 1, 1 ]
+          numSControlPoints 4
+          numTControlPoints 4
+          sKnotVector [ 0, 0, 0, 0, 1, 1, 1, 1 ]
+          tKnotVector [ 0, 0, 0, 0, 1, 1, 1, 1 ]
+          coordIndex [ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]
+          textureCoordIndex [ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ]
+       }
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    If we remove all texture-related stuff in the file, it will no
+    longer crash.
+
+    Investigate to find the exact cause. If it's our bug, fix. If it's
+    a bug in the file, try to make code more robust (at least insert
+    an assert(), but preferably handle with just a warning and no
+    crash).
+
+    20021015 mortene.
+
+=====================================================================
