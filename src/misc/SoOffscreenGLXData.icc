@@ -253,6 +253,9 @@ SoOffscreenGLXData::postRender(void)
     // need for any extra book-keeping on the application side.
     
     if (this->storedcontext && this->storeddrawable && this->storeddisplay) {
+      // FIXME: this causes a crash for X11 Mesa version 4.1.0, on the
+      // third invocation after two successful runs first. This is
+      // _bad_. 20020729 mortene.
       (void) glXMakeCurrent(this->storeddisplay, this->storeddrawable,
                             this->storedcontext);
     }
