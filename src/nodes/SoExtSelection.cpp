@@ -207,6 +207,11 @@ public:
     SbVec2s vpsize;
     SbBool abort;
   } primcbdata;
+
+  void doSelect(const SoPath * path);
+  SoLassoSelectionFilterCB * filterCB;
+  void * filterCBData;
+  SbBool callfiltercbonlyifselectable;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -519,6 +524,8 @@ SoExtSelection::SoExtSelection(void)
   THIS->selectionstate = SoExtSelectionP::NONE;
   THIS->isDragging = FALSE;
   THIS->coords.truncate(0);
+
+  THIS->filterCB = NULL;
 }
 
 /*!
@@ -877,6 +884,31 @@ SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
   state->pop();
 }
 
+/*!
+
+  The lasso selection filter callback is called when a node is about
+  to be selected, and enables the application programmer to return a
+  new path to be used when selecting. The new returned path should
+  not be ref'd. SoExtSelection will ref() and unref() it.
+
+  To cancel the selection, return NULL from the callback.
+
+  if \a callonlyifselectable is TRUE, the callback will only be
+  invoked when the path to the new node pass through the
+  SoExtSelection node.
+  
+  This method is specific to Coin, and is not part of TGS OIV.
+*/
+
+void 
+SoExtSelection::setLassoFilterCallback(SoLassoSelectionFilterCB * f, void * userdata,
+                                       const SbBool callonlyifselectable)
+{
+  THIS->filterCB = f;
+  THIS->filterCBData = userdata;
+  THIS->callfiltercbonlyifselectable = callonlyifselectable;
+}
+
 #undef THIS
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -918,11 +950,7 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
   default:
     break;
   }
-  if (hit) {
-    ext->startCBList->invokeCallbacks(ext);
-    ext->invokeSelectionPolicy((SoPath*) action->getCurPath(), TRUE);
-    ext->finishCBList->invokeCallbacks(ext);
-  }
+  if (hit) ext->pimpl->doSelect(action->getCurPath());
   return SoCallbackAction::CONTINUE;
 }
 
@@ -1075,11 +1103,7 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
     default:
       break;
     }
-    if (hit) {
-      this->master->startCBList->invokeCallbacks(this->master);
-      this->master->invokeSelectionPolicy((SoPath*) action->getCurPath(), TRUE);
-      this->master->finishCBList->invokeCallbacks(this->master);
-    }
+    if (hit) this->doSelect(action->getCurPath());
   }
   return SoCallbackAction::PRUNE; // we don't need do callbacks for primitives
 }
@@ -1234,6 +1258,26 @@ SoExtSelectionP::pointCB(void *userData,
     thisp->primcbdata.hit = TRUE;
     thisp->primcbdata.abort = TRUE;
   }
+}
+
+void
+SoExtSelectionP::doSelect(const SoPath * path)
+{
+  SoPath * newpath = (SoPath*) path;
+  
+  if (this->filterCB && (!this->callfiltercbonlyifselectable ||
+                         path->findNode(this->master) >= 0)) {
+    newpath = this->filterCB(this->filterCBData, path);
+  }
+  if (newpath == NULL) return;
+  
+  if (newpath != path) newpath->ref();
+  
+  this->master->startCBList->invokeCallbacks(this->master);
+  this->master->invokeSelectionPolicy(newpath, TRUE);
+  this->master->finishCBList->invokeCallbacks(this->master);
+  
+  if (newpath != path) newpath->unref();
 }
 
 #endif // DOXYGEN_SKIP_THIS

@@ -26,6 +26,8 @@
 
 class SbColor;
 
+typedef SoPath * SoLassoSelectionFilterCB(void * userdata, const SoPath * path);
+
 class COIN_DLL_API SoExtSelection : public SoSelection {
   typedef SoSelection inherited;
 
@@ -62,6 +64,9 @@ public:
 
   virtual void handleEvent(SoHandleEventAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
+  
+  void setLassoFilterCallback(SoLassoSelectionFilterCB * f, void * userdata = NULL,
+                              const SbBool callonlyifselectable = TRUE);
 
 protected:
   virtual ~SoExtSelection();
