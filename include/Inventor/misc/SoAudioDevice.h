@@ -38,7 +38,8 @@ public:
   void setGLRenderAction(SoGLRenderAction *ra);
   virtual SbBool enable();
   virtual void disable();
-protected:
+
+private:
   class SoAudioDeviceP *soaudiodevice_impl;
   friend class SoAudioDeviceP;
 };

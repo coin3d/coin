@@ -60,10 +60,9 @@ public:
 protected:
   virtual ~SoVRMLSound(void);
 
+private:
   class SoVRMLSoundP *sovrmlsound_impl;
   friend class SoVRMLSoundP;
-
-
-}; // class SoVRMLSound
+};
 
 #endif // ! COIN_SOVRMLSOUND_H

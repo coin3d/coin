@@ -75,8 +75,9 @@ protected:
   SoSFTime duration_changed; // eventOut
   SoSFBool isActive;         // eventOut
 
+private:
   class SoVRMLAudioClipP *sovrmlaudioclip_impl;
   friend class SoVRMLAudioClipP;
-}; // class SoVRMLAudioClip
+};
 
 #endif // ! COIN_SOVRMLAUDIOCLIP_H
