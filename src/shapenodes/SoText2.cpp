@@ -99,7 +99,6 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/misc/SoGlyph.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
 // The "lean and mean" define is a workaround for a Cygwin bug: when
@@ -293,7 +292,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     int thissize[2];
     unsigned char * buffer = NULL;
     const cc_glyph2d * prevglyph = NULL;
-
+    
     const int nrlines = PRIVATE(this)->laststring.getLength();
 
     for (int i = 0; i < nrlines; i++) {
@@ -730,7 +729,7 @@ SoText2P::buildGlyphCache(SoState * state)
       glyphwidth = (int) cc_glyph2d_getwidth(glyph);
       if (glyphwidth == 0) // SPACE width is always returned 0, set to standardwidth/3.
         glyphwidth = (int) SoFontSizeElement::get(state) / 3; 
-      actuallength += glyphwidth;
+      actuallength += (glyphwidth+1);
         
       // Must fetch special modifiers so that heights for chars like
       // 'q' and 'g' will be taken into account when creating a
