@@ -97,10 +97,12 @@ SoNode::getClassTypeId(void)
 }
 
 /*!
-  Constructor.
+  Default constructor.
 */
-SoNode::SoNode()
+SoNode::SoNode(void)
 {
+  this->uniqueId = SoNode::nextUniqueId++;
+  this->stateflags.override = FALSE;
 }
 
 /*!
@@ -113,18 +115,32 @@ SoNode::~SoNode()
 }
 
 /*!
-  FIXME: write function documentation
+  Make a duplicate of this node and return a pointer to the duplicate.
+
+  If this node is a group node, children are also copied and we return
+  a pointer to the root of a full copy of the subgraph rooted here.
+
+  If \a copyconnections is \c TRUE, we also copy the connections to
+  fields within this node (and ditto for any children and children's
+  children etc).
 */
 SoNode *
-SoNode::copy(SbBool /* copyConnections */) const
+SoNode::copy(SbBool copyconnections) const
 {
-  SoNode * newnode = (SoNode *)(this->getTypeId().createInstance());
-  assert(newnode != NULL);
+  static unsigned int iscopying = 0;
+  if (!iscopying) inherited::initCopyDict();
+  iscopying++;
 
-#if 0 // FIXME: tmp disabled during development. 19980923 mortene.
-  newnode->setName(this->getName());
-  newnode->copyFieldValues(this);
-#endif // disabled
+  SoNode * newnode = (SoNode *)inherited::checkCopy(this);
+  if (!newnode) {
+    newnode = (SoNode *)this->getTypeId().createInstance();
+    assert(newnode != NULL);
+    inherited::addCopy(this, newnode);
+    newnode->copyContents(this, copyconnections);
+  }
+
+  iscopying--;
+  if (!iscopying) inherited::copyDone();
 
   return newnode;
 }
@@ -134,10 +150,10 @@ SoNode::copy(SbBool /* copyConnections */) const
   FIXME: write function documentation
 */
 void
-SoNode::notify(SoNotList * list)
+SoNode::notify(SoNotList * l)
 {
-  // FIXME: should put ourselves in the list. 19990701 mortene.
-  inherited::notify(list);
+  // FIXME: should put ourselves in the list, I think. 19990701 mortene.
+  inherited::notify(l);
 }
 
 /*!
@@ -279,19 +295,34 @@ SoNode::initClasses(void)
   SoWWWInline::initClass();
 }
 
-// *************************************************************************
-
 /*!
-  FIXME: write function documentation
+  Set the override flag.
+
+  If this flag is \c TRUE, the field values of this node will override
+  the field values of other nodes of the same type during scene graph
+  traversal.
+
+  A common applicaton for "override nodes" is to place them at the top
+  of the tree as a convenient way to force e.g. a common drawstyle on
+  the complete tree.
 */
 void
 SoNode::setOverride(const SbBool state)
 {
+  if ((state && !this->isOverride()) ||
+      (!state && this->isOverride())){
+    // This change affects caches in the tree, so we must change our id
+    // setting, so the caches are regenerated.
+    this->uniqueId = SoNode::nextUniqueId++;
+  }
+  
   this->stateflags.override = state;
 }
 
 /*!
-  FIXME: write function documentation
+  Return status of override flag.
+
+  \sa setOverride()
 */
 SbBool
 SoNode::isOverride(void) const
@@ -308,7 +339,7 @@ SoNode::isOverride(void) const
   Default method does nothing.
 */
 void
-SoNode::doAction(SoAction *)
+SoNode::doAction(SoAction * action)
 {
 }
 
@@ -316,7 +347,7 @@ SoNode::doAction(SoAction *)
   FIXME: write function documentation
 */
 SbBool
-SoNode::affectsState() const
+SoNode::affectsState(void) const
 {
   return TRUE; // default
 }
@@ -338,7 +369,7 @@ SoNode::getByName(const SbName & /* name */)
   of nodes with the specified name.
 */
 int
-SoNode::getByName(const SbName & /* name */, SoNodeList & /* list */)
+SoNode::getByName(const SbName & /* name */, SoNodeList & /* l */)
 {
   // FIXME
   assert(0);
@@ -782,14 +813,14 @@ SoNode::addToCopyDict(void) const
   return NULL;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Overloaded from parent class.
 void
-SoNode::copyContents(const SoFieldContainer * /* fromFC */,
-                     SbBool /* copyConnections */)
+SoNode::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  COIN_STUB();
+  inherited::copyContents(from, copyconnections);
+
+  SoNode * src = (SoNode *)from;
+  this->stateflags.override = src->isOverride();
 }
 
 /*!
@@ -803,7 +834,7 @@ SoNode::copyThroughConnection(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  Return the next unique identification number to be assigned. 
 */
 uint32_t
 SoNode::getNextNodeId(void)

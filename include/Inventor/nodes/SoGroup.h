@@ -64,10 +64,10 @@ protected:
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   virtual SbBool readChildren(SoInput * in);
 
-  SoChildList * children;
+  virtual void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections);
 
-  // -- clean out this
-  virtual SoNode * copy(void);
+  SoChildList * children;
 
   friend class SoUnknownNode; // Let SoUnknownNode access readChildren().
 };

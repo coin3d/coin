@@ -22,7 +22,6 @@
 
 #include <Inventor/fields/SoFieldContainer.h>
 
-
 class SoAction;
 class SoCallbackAction;
 class SoChildList;
@@ -46,13 +45,12 @@ class SoNode : public SoFieldContainer {
 public:
   enum Stage { FIRST_INSTANCE,
                PROTO_INSTANCE,
-               OTHER_INSTANCE
-  };
+               OTHER_INSTANCE };
 
   void setOverride(const SbBool state);
   SbBool isOverride(void) const;
 
-  SoNode * copy(SbBool copyConnections = FALSE) const;
+  SoNode * copy(SbBool copyconnections = FALSE) const;
   virtual SbBool affectsState(void) const;
 
   virtual void doAction(SoAction * action);
@@ -74,21 +72,21 @@ public:
   virtual void grabEventsCleanup(void);
 
   virtual void startNotify(void);
-  virtual void notify(SoNotList * list);
+  virtual void notify(SoNotList * l);
 
   uint32_t getNodeId(void) const;
   virtual SoChildList * getChildren(void) const;
 
   virtual void writeInstance(SoOutput * out);
   virtual SoNode * addToCopyDict(void) const;
-  virtual void copyContents(const SoFieldContainer * fromFC,
-                            SbBool copyConnections);
+  virtual void copyContents(const SoFieldContainer * from,
+                            SbBool copyconnections);
   virtual SoFieldContainer * copyThroughConnection(void) const;
 
 
   static SoType getClassTypeId(void);
   static SoNode * getByName(const SbName & name);
-  static int getByName(const SbName & name, SoNodeList & list);
+  static int getByName(const SbName & name, SoNodeList & l);
 
   static void initClass(void);
   static void initClasses(void);
@@ -118,7 +116,6 @@ protected:
   static int nextActionMethodIndex;
 
 private:
-  Stage stage;
   static SoType classTypeId;
 
   struct {

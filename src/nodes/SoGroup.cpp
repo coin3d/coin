@@ -60,7 +60,7 @@ SO_NODE_SOURCE(SoGroup);
 /*!
   Constructor.
 */
-SoGroup::SoGroup()
+SoGroup::SoGroup(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoGroup);
 
@@ -171,20 +171,20 @@ SoGroup::readChildren(SoInput * in)
   return TRUE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
-SoNode *
-SoGroup::copy(void)
+// Overloaded from parent.
+void
+SoGroup::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  SoGroup * newnode = (SoGroup *)SoNode::copy();
+  inherited::copyContents(from, copyconnections);
 
-  for (int i=0;i<getNumChildren();i++) {
-    SoNode * newchild = getChild(i)->copy();
-    newnode->addChild(newchild);
+  SoGroup * g = (SoGroup *)from;
+
+  // Add children of "from" group node.
+  for (int i=0 ; i < getNumChildren(); i++) {
+    SoNode * cp = (SoNode *)
+      SoFieldContainer::findCopy(g->getChild(i), copyconnections);
+    this->addChild(cp);
   }
-
-  return newnode;
 }
 
 /*!

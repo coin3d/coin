@@ -308,7 +308,7 @@ SoFieldContainer::getFieldName(const SoField * const field,
 
 /*!
   This method sets whether notification will be propagated on changing the
-  values of the contained fields.  The old value of the setting is returned.
+  values of the contained fields.  The old value of the flag is returned.
 
   Notification is default \e on. Turning off automatic notification
   can be useful for optimizing performance. During series of updates
@@ -444,24 +444,25 @@ SoFieldContainer::get(SbString & fielddata, SoOutput * out)
   free(buffer);
 }
 
-/*!
-  FIXME: write doc
- */
+// Overloaded from parent class.
 void
 SoFieldContainer::notify(SoNotList * l)
 {
+  // FIXME: not sure if this is all we should do. 20000115 mortene.
+
   if (this->donotify) inherited::notify(l);
 }
 
 /*!
-  FIXME: write doc
+  \internal
+  I can't make head or tails of this method, it seems to return TRUE
+  no matter what the arguments are.
  */
 SbBool
-SoFieldContainer::validateNewFieldValue(SoField * /* field */,
-                                        void * /* newval */)
+SoFieldContainer::validateNewFieldValue(SoField * field, void * newval)
 {
   COIN_STUB();
-  return FALSE;
+  return TRUE;
 }
 
 /*!
@@ -527,13 +528,15 @@ SoFieldContainer::getFieldData(void) const
 
 
 /*!
-  FIXME: write doc
+  Copy field values and name of \from into this instance.
  */
 void
-SoFieldContainer::copyContents(const SoFieldContainer * /* from */,
-                               SbBool /* copyconnections */)
+SoFieldContainer::copyContents(const SoFieldContainer * from,
+                               SbBool copyconnections)
 {
-  COIN_STUB();
+  this->setName(from->getName());
+  this->donotify = from->donotify;
+  this->copyFieldValues(from, copyconnections);
 }
 
 
@@ -548,65 +551,98 @@ SoFieldContainer::copyThroughConnection(void) const
 }
 
 
+static SbDict * ptrsdict = NULL;
+
 /*!
-  FIXME: write doc
+  \internal
+
+  Initialize a dictionary hash storing pointers for original
+  fieldcontainer instances and their copies during scene graph copy
+  operations.
+  
+  This method is called from the start of SoNode::copy().
  */
 void
 SoFieldContainer::initCopyDict(void)
 {
-  COIN_STUB();
+  assert(!ptrsdict);
+  ptrsdict = new SbDict;
 }
 
 
 /*!
-  FIXME: write doc
+  Add a pair of pointers to an original fieldcontainer and a copy of it
+  to an internal pointer dictionary used during scene graph copy
+  operations.
  */
 void
-SoFieldContainer::addCopy(const SoFieldContainer * const /* orig */,
-                          const SoFieldContainer * const /* copy */)
+SoFieldContainer::addCopy(const SoFieldContainer * const orig,
+                          const SoFieldContainer * const copy)
 {
-  COIN_STUB();
+  assert(ptrsdict);
+  // FIXME: casting pointer to unsigned long is nasty. We badly need a
+  // better hash class. 20000115 mortene.
+  ptrsdict->enter((unsigned long)orig, copy);
 }
 
 
 /*!
-  FIXME: write doc
+  Returns the copy of \a orig, if any. If no copy exists, we return a
+  \c NULL pointer.
  */
 SoFieldContainer *
-SoFieldContainer::checkCopy(const SoFieldContainer * const /* orig */)
+SoFieldContainer::checkCopy(const SoFieldContainer * const orig)
 {
-  COIN_STUB();
-  return NULL;
+  assert(ptrsdict);
+  void * fccopy;
+  return ptrsdict->find((unsigned long)orig, fccopy) ? fccopy : NULL;
 }
 
 
 /*!
-  FIXME: write doc
- */
+  Returns a copy of \a orig.
+
+  If no copy has been made earlier when the function is called, a copy
+  is made on-the-fly (which is the reason we need to pass along the
+  \a copyconnections flag).
+
+  \sa checkCopy()
+*/
 SoFieldContainer *
-SoFieldContainer::findCopy(const SoFieldContainer * const /* orig */,
-                           const SbBool /* copyconnections */)
+SoFieldContainer::findCopy(const SoFieldContainer * const orig,
+                           const SbBool copyconnections)
 {
-  COIN_STUB();
-  return NULL;
+  assert(ptrsdict);
+
+  SoFieldContainer * cp = SoFieldContainer::checkCopy(orig);
+  if (!cp) {
+    cp = (SoFieldContainer *)orig->getTypeId().createInstance();
+    assert(cp);
+    SoFieldContainer::addCopy(orig, cp);
+    cp->copyContents(orig, copyconnections);
+  }
+  return cp;
 }
 
 
 /*!
-  FIXME: write doc
+  \internal
+
+  Clean up the dictionary hash.
+
+  This method is called from the end of SoNode::copy().
  */
 void
 SoFieldContainer::copyDone(void)
 {
-  COIN_STUB();
+  assert(ptrsdict);
+  delete ptrsdict;
+  ptrsdict = NULL;
 }
 
-
-/*!
-  FIXME: write doc
- */
+// Overloaded from parent.
 SbBool
-SoFieldContainer::readInstance(SoInput * in, unsigned short /* flags */)
+SoFieldContainer::readInstance(SoInput * in, unsigned short flags)
 {
   const SoFieldData * fd = this->getFieldData();
   if (fd) {
