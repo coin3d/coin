@@ -1,5 +1,5 @@
-#ifndef COIN_SOGLSHADEROBJECT_H
-#define COIN_SOGLSHADEROBJECT_H
+#ifndef COIN_SOGLARBSHADERPARAMETER_H
+#define COIN_SOGLARBSHADERPARAMETER_H
 
 /**************************************************************************\
  *
@@ -24,44 +24,36 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/nodes/SoGLShaderTypes.h>
-#include <Inventor/SbString.h>
-
-class SoGLShaderParameter;
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
 
 // *************************************************************************
 
-class SoGLShaderObject
+#include <Inventor/nodes/SoGLShaderParameter.h>
+#include "SoGLShaderObject.h"
+
+// *************************************************************************
+
+class SoGLARBShaderParameter : public SoGLShaderParameter
 {
-public:
-  virtual SbBool isLoaded(const cc_glglue * g) const = 0;
-  virtual void load(const cc_glglue * g, const char * sourceString) = 0;
-  virtual void unload(const cc_glglue * g) = 0;
-  virtual SoGLShader::ShaderType shaderType(void) const = 0;
-  virtual SoGLShaderParameter * getParameter(int index, const char * name,
-                                             SoGLShader::ValueType type) = 0;
+ public: // satisfy SoGLShaderParameter protocol interface
+  virtual inline SbBool isReferenced() { return FALSE; }
+
+  virtual SoGLShader::ShaderType shaderType() const;
+
+  virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id);
+  virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id);
+  virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id);
+  virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id);
 
 public:
-  void operator delete(void * obj);
-  void operator delete[](void * obj);
-
-  void setIsVertexShader(const cc_glglue * g, SbBool flag);
-  SbBool isVertexShader(void) const;
-
-  void setIsActive(SbBool flag);
-  SbBool isActive(const cc_glglue * g) const;
-
-public:
-  SoGLShaderObject(void);
-
-#if defined(SOURCE_HINT)
-  SbString sourceHint; // either the file name or the first line of source code
-#endif
+  SoGLARBShaderParameter(GLenum target, GLuint index);
+  virtual ~SoGLARBShaderParameter();
 
 private:
-  SbBool isVertexShaderFlag;
-  SbBool isActiveFlag;
+  GLenum target;
+  GLuint identifier;
 };
 
-#endif /* ! COIN_SOGLSHADEROBJECT_H */
+#endif /* ! COIN_SOGLARBSHADERPARAMETER_H */

@@ -49,16 +49,15 @@ SbBool SoVertexShader::isVertexShader() const
   return TRUE;
 }
 
-SbBool SoVertexShader::isSupported(SourceType
-#if !defined(SO_ARB_SHADER_SUPPORT) || !defined(SO_CG_SHADER_SUPPORT)  || !defined(SO_GLSL_SHADER_SUPPORT)
- sourceType
-#endif
-)
+SbBool SoVertexShader::isSupported(SourceType sourceType)
 {
-  // FIXME: Martin
-#if !defined(SO_ARB_SHADER_SUPPORT)
+  // FIXME: return a correct value, based on the capabilities of the
+  // GL driver. (But first check whether this is part of the TGS
+  // Inventor API -- it's not very well designed, as we really need a
+  // guaranteed GL context for this.) 20050120 mortene.
   if (sourceType == ARB_PROGRAM) return FALSE;
-#endif
+
+  // FIXME: Martin
 #if !defined(SO_CG_SHADER_SUPPORT)
   if (sourceType == CG_PROGRAM) return FALSE;
 #endif

@@ -25,57 +25,59 @@
 
 #include <assert.h>
 
-#include "SoGLARBShader.h"
+#include "SoGLARBShaderObject.h"
 #include "SoGLCgShader.h"
 #include "SoGLSLShader.h"
 
+// *************************************************************************
+
 SoGLShaderObject::SoGLShaderObject()
 {
-  this->isActiveFlag       = TRUE;
+  this->isActiveFlag = TRUE;
   this->isVertexShaderFlag = TRUE;
 }
 
-void SoGLShaderObject::operator delete(void *obj)
+void
+SoGLShaderObject::operator delete(void * obj)
 {
   switch (((SoGLShaderObject *)obj)->shaderType()) {
-#if defined (SO_ARB_SHADER_SUPPORT)
-    case  SoGLShader::ARB_SHADER: ::delete (SoGLARBShaderObject *)obj; break;
-#endif
+  case SoGLShader::ARB_SHADER: ::delete (SoGLARBShaderObject *)obj; break;
 #if defined(SO_CG_SHADER_SUPPORT)
-    case   SoGLShader::CG_SHADER: ::delete (SoGLCgShaderObject *)obj;  break;
+  case SoGLShader::CG_SHADER: ::delete (SoGLCgShaderObject *)obj; break;
 #endif
 #if defined(SO_GLSL_SHADER_SUPPORT)
-    case SoGLShader::GLSL_SHADER: ::delete (SoGLSLShaderObject*)obj;   break;
+  case SoGLShader::GLSL_SHADER: ::delete (SoGLSLShaderObject*)obj; break;
 #endif
-             default: assert(FALSE && "shaderType unknown!");
+  default: assert(FALSE && "shaderType unknown!");
   }
 }
 
-void SoGLShaderObject::operator delete[](void *obj)  
+void
+SoGLShaderObject::operator delete[](void * obj)
 {
   switch (((SoGLShaderObject *)obj)->shaderType()) {
-#if defined(SO_ARB_SHADER_SUPPORT)
-    case  SoGLShader::ARB_SHADER: ::delete [](SoGLARBShaderObject *)obj; break;
-#endif
+  case SoGLShader::ARB_SHADER: ::delete [](SoGLARBShaderObject *)obj; break;
 #if defined(SO_CG_SHADER_SUPPORT)
-    case   SoGLShader::CG_SHADER: ::delete [](SoGLCgShaderObject *)obj;  break;
+  case SoGLShader::CG_SHADER: ::delete [](SoGLCgShaderObject *)obj; break;
 #endif
 #if defined(SO_GLSL_SHADER_SUPPORT)
-    case  SoGLShader::GLSL_SHADER: ::delete [](SoGLSLShaderObject*)obj;  break;
+  case SoGLShader::GLSL_SHADER: ::delete [](SoGLSLShaderObject*)obj; break;
 #endif
-             default: assert(FALSE && "shaderType unknown!");
+  default: assert(FALSE && "shaderType unknown!");
   }
 }
 
-void SoGLShaderObject::setIsVertexShader(SbBool flag)
+void
+SoGLShaderObject::setIsVertexShader(const cc_glglue * g, SbBool flag)
 {
   if (this->isVertexShaderFlag != flag) {
-    unload();
+    this->unload(g);
     this->isVertexShaderFlag = flag;
   }
 }
 
-SbBool SoGLShaderObject::isVertexShader() const
+SbBool
+SoGLShaderObject::isVertexShader(void) const
 {
   return this->isVertexShaderFlag;
 }
@@ -85,9 +87,8 @@ void SoGLShaderObject::setIsActive(SbBool flag)
   this->isActiveFlag = flag;
 }
 
-SbBool SoGLShaderObject::isActive() const
+SbBool
+SoGLShaderObject::isActive(const cc_glglue * g) const
 {
-  return (!this->isLoaded()) ?  false : this->isActiveFlag;
+  return (!this->isLoaded(g)) ? FALSE : this->isActiveFlag;
 }
-
-

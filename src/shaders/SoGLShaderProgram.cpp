@@ -26,7 +26,7 @@
 #include <assert.h>
 
 #include "SoGLShaderObject.h"
-#include "SoGLARBShader.h"
+#include "SoGLARBShaderProgram.h"
 #include "SoGLCgShader.h"
 #include "SoGLSLShader.h"
 
@@ -34,11 +34,9 @@
 
 SoGLShaderProgram::SoGLShaderProgram()
 {
-#if defined(SO_ARB_SHADER_SUPPORT)
-  this->arbShaderProgram  = new SoGLARBShaderProgram;
-#endif
+  this->arbShaderProgram = new SoGLARBShaderProgram;
 #if defined(SO_CG_SHADER_SUPPORT)
-  this->cgShaderProgram   = new SoGLCgShaderProgram;
+  this->cgShaderProgram = new SoGLCgShaderProgram;
 #endif
 #if defined(SO_GLSL_SHADER_SUPPORT)
   this->glslShaderProgram = new SoGLSLShaderProgram;
@@ -47,9 +45,7 @@ SoGLShaderProgram::SoGLShaderProgram()
 
 SoGLShaderProgram::~SoGLShaderProgram()
 {
-#if defined(SO_ARB_SHADER_SUPPORT)
   delete this->arbShaderProgram;
-#endif
 #if defined(SO_CG_SHADER_SUPPORT)
   delete this->cgShaderProgram;
 #endif
@@ -61,54 +57,49 @@ SoGLShaderProgram::~SoGLShaderProgram()
 void SoGLShaderProgram::addShaderObject(SoGLShaderObject *shader)
 {
   switch (shader->shaderType()) {
-#if defined(SO_ARB_SHADER_SUPPORT)
-    case SoGLShader::ARB_SHADER:
-      this->arbShaderProgram->addShaderObject((SoGLARBShaderObject*)shader);
-      break;
-#endif
+  case SoGLShader::ARB_SHADER:
+    this->arbShaderProgram->addShaderObject((SoGLARBShaderObject*)shader);
+    break;
 #if defined(SO_CG_SHADER_SUPPORT)
-    case SoGLShader::CG_SHADER:
-      this->cgShaderProgram->addShaderObject((SoGLCgShaderObject*)shader);
-      break;
+  case SoGLShader::CG_SHADER:
+    this->cgShaderProgram->addShaderObject((SoGLCgShaderObject*)shader);
+    break;
 #endif
 #if defined(SO_GLSL_SHADER_SUPPORT)
-    case SoGLShader::GLSL_SHADER:
-      this->glslShaderProgram->addShaderObject((SoGLSLShaderObject*)shader);
-      break;
+  case SoGLShader::GLSL_SHADER:
+    this->glslShaderProgram->addShaderObject((SoGLSLShaderObject*)shader);
+    break;
 #endif
-    default:
-      assert(FALSE && "shaderType unknown!");
+  default:
+    assert(FALSE && "shaderType unknown!");
   }
 }
 
 void SoGLShaderProgram::removeShaderObject(SoGLShaderObject *shader)
 {
   switch (shader->shaderType()) {
-#if defined(SO_ARB_SHADER_SUPPORT)
-    case SoGLShader::ARB_SHADER:
-      this->arbShaderProgram->removeShaderObject((SoGLARBShaderObject*)shader);
-      break;
-#endif
+  case SoGLShader::ARB_SHADER:
+    this->arbShaderProgram->removeShaderObject((SoGLARBShaderObject*)shader);
+    break;
 #if defined(SO_CG_SHADER_SUPPORT)
-    case SoGLShader::CG_SHADER:
-      this->cgShaderProgram->removeShaderObject((SoGLCgShaderObject*)shader);
-      break;
+  case SoGLShader::CG_SHADER:
+    this->cgShaderProgram->removeShaderObject((SoGLCgShaderObject*)shader);
+    break;
 #endif
 #if defined(SO_GLSL_SHADER_SUPPORT)
-    case SoGLShader::GLSL_SHADER:
-      this->glslShaderProgram->removeShaderObject((SoGLSLShaderObject*)shader);
-      break;
+  case SoGLShader::GLSL_SHADER:
+    this->glslShaderProgram->removeShaderObject((SoGLSLShaderObject*)shader);
+    break;
 #endif
-    default:
-      assert(FALSE && "shaderType unknown!");
+  default:
+    assert(FALSE && "shaderType unknown!");
   }
 }
 
-void SoGLShaderProgram::enable()
+void
+SoGLShaderProgram::enable(const cc_glglue * g)
 {
-#if defined(SO_ARB_SHADER_SUPPORT)
-  this->arbShaderProgram->enable();
-#endif
+  this->arbShaderProgram->enable(g);
 #if defined(SO_CG_SHADER_SUPPORT)
   this->cgShaderProgram->enable();
 #endif
@@ -117,11 +108,9 @@ void SoGLShaderProgram::enable()
 #endif
 }
 
-void SoGLShaderProgram::disable()
+void SoGLShaderProgram::disable(const cc_glglue * g)
 {
-#if defined(SO_ARB_SHADER_SUPPORT)
-  this->arbShaderProgram->disable();
-#endif
+  this->arbShaderProgram->disable(g);
 #if defined(SO_CG_SHADER_SUPPORT)
   this->cgShaderProgram->disable();
 #endif
@@ -142,10 +131,8 @@ void SoGLShaderProgram::postShouldLink()
 SbString SoGLShaderProgram::getSourceHint()
 {
   SbString result;
-  
-#if defined(SO_ARB_SHADER_SUPPORT)
+
   result += this->arbShaderProgram->getSourceHint();
-#endif
 #if defined(SO_CG_SHADER_SUPPORT)
   result += this->cgShaderProgram->getSourceHint();
 #endif

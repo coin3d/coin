@@ -258,11 +258,9 @@ SoShaderObjectP::GLRender(SoGLRenderAction * action)
     // Is current shaderObject already created? -> if not: create it
     if (!this->glShaderObject) {
       switch (this->cachedSourceType) {
-#if defined(SO_ARB_SHADER_SUPPORT)
       case SoShaderObject::ARB_PROGRAM:
         this->glShaderObject = (SoGLShaderObject*) new SoGLARBShaderObject;
         break;
-#endif
 #if defined(SO_CG_SHADER_SUPPORT)
       case SoShaderObject::CG_PROGRAM:
         this->glShaderObject = (SoGLShaderObject*) new SoGLCgShaderObject;
@@ -368,17 +366,17 @@ SoShaderObjectP::readSource(void)
       FILE * f = fopen(fileName.getString(), "rb");
       if (f) {
         int ok = fseek(f, 0L, SEEK_END);
-        assert(ok); // FIXME: be more robust. 20050120 mortene.
+        assert(ok); // FIXME: be more robust. 20050120 mortene. 
         const long length = ftell(f);
-        assert(length != -1); // FIXME: be more robust. 20050120 mortene.
-        assert(length != 0); // FIXME: be more robust. 20050120 mortene.
+        assert(length != -1); // FIXME: be more robust. 20050120 mortene. 
+        assert(length != 0); // FIXME: be more robust. 20050120 mortene. 
 
         ok = fseek(f, 0L, SEEK_SET);
-        assert(ok); // FIXME: be more robust. 20050120 mortene.
+        assert(ok); // FIXME: be more robust. 20050120 mortene. 
 
         char * srcstr = new char[length+1];
         size_t readlen = fread(srcstr, 1, length, f);
-        assert(readlen == (size_t)length); // FIXME: be more robust. 20050120 mortene.
+        assert(readlen == (size_t)length); // FIXME: be more robust. 20050120 mortene. 
 
         srcstr[length] = '\0';
         this->cachedSourceProgram = srcstr;
@@ -496,9 +494,8 @@ void SoShaderObjectP::removeGLShaderFromGLProgram(SoGLShaderProgram *glProgram)
 #if defined(SOURCE_HINT)
 SbString SoShaderObjectP::getSourceHint() const
 {
-  SoShaderObject::SourceType srcType;
-
-  srcType = (SoShaderObject::SourceType)this->owner->sourceType.getValue();
+  SoShaderObject::SourceType srcType =
+    (SoShaderObject::SourceType)this->owner->sourceType.getValue();
 
   if (srcType == SoShaderObject::FILENAME)
     return this->owner->sourceProgram.getValue();

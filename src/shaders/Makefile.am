@@ -1,7 +1,9 @@
 if BUILD_SHADERS
 RegularSources = \
 	SoFragmentShader.cpp \
-	SoGLARBShader.cpp \
+	SoGLARBShaderParameter.cpp \
+	SoGLARBShaderObject.cpp \
+	SoGLARBShaderProgram.cpp \
 	SoGLCgShader.cpp \
 	SoGLSLShader.cpp \
 	SoGLShaderObject.cpp \
@@ -15,7 +17,9 @@ RegularSources = \
 	SoVertexShader.cpp
 LinkHackSources = \
 	SoFragmentShader.cpp \
-	SoGLARBShader.cpp \
+	SoGLARBShaderParameter.cpp \
+	SoGLARBShaderObject.cpp \
+	SoGLARBShaderProgram.cpp \
 	SoGLCgShader.cpp \
 	SoGLSLShader.cpp \
 	SoGLShaderObject.cpp \
@@ -28,7 +32,9 @@ LinkHackSources = \
 	SoShaders.cpp \
 	SoVertexShader.cpp
 PrivateHeaders = \
-	SoGLARBShader.h \
+	SoGLARBShaderParameter.h \
+	SoGLARBShaderObject.h \
+	SoGLARBShaderProgram.h \
 	SoGLCgShader.h \
 	SoGLSLShader.h \
 	SoGLShaderObject.h 
@@ -38,7 +44,9 @@ LinkHackSources = shaders-dummy.cpp
 # for 'make dist'
 PrivateHeaders = \
 	SoFragmentShader.cpp \
-	SoGLARBShader.cpp \
+	SoGLARBShaderParameter.cpp \
+	SoGLARBShaderObject.cpp \
+	SoGLARBShaderProgram.cpp \
 	SoGLCgShader.cpp \
 	SoGLSLShader.cpp \
 	SoGLShaderObject.cpp \
@@ -50,7 +58,9 @@ PrivateHeaders = \
 	SoShaderProgram.cpp \
 	SoShaders.cpp \
 	SoVertexShader.cpp \
-	SoGLARBShader.h \
+	SoGLARBShaderParameter.h \
+	SoGLARBShaderObject.h \
+	SoGLARBShaderProgram.h \
 	SoGLCgShader.h \
 	SoGLSLShader.h \
 	SoGLShaderObject.h \

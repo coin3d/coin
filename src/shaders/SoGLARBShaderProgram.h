@@ -1,5 +1,5 @@
-#ifndef COIN_SOGLSHADEROBJECT_H
-#define COIN_SOGLSHADEROBJECT_H
+#ifndef COIN_SOGLARBSHADERPROGRAM_H
+#define COIN_SOGLARBSHADERPROGRAM_H
 
 /**************************************************************************\
  *
@@ -24,44 +24,37 @@
  *
 \**************************************************************************/
 
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/nodes/SoGLShaderTypes.h>
-#include <Inventor/SbString.h>
-
-class SoGLShaderParameter;
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
 
 // *************************************************************************
 
-class SoGLShaderObject
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/nodes/SoGLShaderParameter.h>
+
+class SoGLARBShaderObject;
+
+// *************************************************************************
+
+class SoGLARBShaderProgram
 {
 public:
-  virtual SbBool isLoaded(const cc_glglue * g) const = 0;
-  virtual void load(const cc_glglue * g, const char * sourceString) = 0;
-  virtual void unload(const cc_glglue * g) = 0;
-  virtual SoGLShader::ShaderType shaderType(void) const = 0;
-  virtual SoGLShaderParameter * getParameter(int index, const char * name,
-                                             SoGLShader::ValueType type) = 0;
+  SoGLARBShaderProgram();
 
-public:
-  void operator delete(void * obj);
-  void operator delete[](void * obj);
+  virtual void addShaderObject(SoGLARBShaderObject * shaderObject);
+  virtual void removeShaderObject(SoGLARBShaderObject * shaderObject);
 
-  void setIsVertexShader(const cc_glglue * g, SbBool flag);
-  SbBool isVertexShader(void) const;
-
-  void setIsActive(SbBool flag);
-  SbBool isActive(const cc_glglue * g) const;
-
-public:
-  SoGLShaderObject(void);
+  virtual void enable(const cc_glglue * g);
+  virtual void disable(const cc_glglue * g);
 
 #if defined(SOURCE_HINT)
-  SbString sourceHint; // either the file name or the first line of source code
+  virtual SbString getSourceHint(void) const;
 #endif
 
-private:
-  SbBool isVertexShaderFlag;
-  SbBool isActiveFlag;
+protected:
+  SoGLARBShaderObject * fragmentShader;
+  SoGLARBShaderObject * vertexShader;
 };
 
-#endif /* ! COIN_SOGLSHADEROBJECT_H */
+#endif /* ! COIN_SOGLARBSHADERPROGRAM_H */

@@ -24,36 +24,42 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif
+
+// *************************************************************************
+
 #include <Inventor/SbBasic.h>
 #include <Inventor/nodes/SoGLShaderTypes.h>
+#include <Inventor/C/glue/gl.h>
 
 // *************************************************************************
 
 class SoGLShaderParameter
 {
 public:
-  virtual SbBool isReferenced() = 0;
+  virtual SbBool isReferenced(void) = 0;
 
-  virtual void set1f(const float value, const char* name, const int id) = 0;
-  virtual void set2f(const float* value, const char* name, const int id) = 0;
-  virtual void set3f(const float* value, const char* name, const int id) = 0;
-  virtual void set4f(const float* value, const char* name, const int id) = 0;
+  virtual void set1f(const cc_glglue * g, const float value, const char * name, const int id) = 0;
+  virtual void set2f(const cc_glglue * g, const float * value, const char * name, const int id) = 0;
+  virtual void set3f(const cc_glglue * g, const float * value, const char * name, const int id) = 0;
+  virtual void set4f(const cc_glglue * g, const float * value, const char * name, const int id) = 0;
 
-  virtual SoGLShader::ShaderType shaderType() const = 0;
+  virtual SoGLShader::ShaderType shaderType(void) const = 0;
 
 public:
-  virtual SbBool isFloat();
-  virtual SbBool isFloat2();
-  virtual SbBool isFloat3();
-  virtual SbBool isFloat4();
-  virtual SbBool isTexture();
+  virtual SbBool isFloat(void);
+  virtual SbBool isFloat2(void);
+  virtual SbBool isFloat3(void);
+  virtual SbBool isFloat4(void);
+  virtual SbBool isTexture(void);
 
 public: 
-  SoGLShaderParameter();
+  SoGLShaderParameter(void);
 
-  // the SoGLShaderParameter implements its own delete operator 
-  void operator delete(void *obj);
-  void operator delete[](void *obj);
+  void operator delete(void * obj);
+  void operator delete[](void * obj);
 
 protected:
   SoGLShader::ValueType type;
