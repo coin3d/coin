@@ -224,6 +224,11 @@ SoAction::isOfType(SoType type) const
 void
 SoAction::apply(SoNode * root)
 {
+  // need to store these in case action in reapplied
+  AppliedCode storedcode = this->appliedcode;
+  PathCode storedcurr = this->currentpathcode;
+  AppliedData storeddata = this->applieddata;
+
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
@@ -252,6 +257,9 @@ SoAction::apply(SoNode * root)
     this->applieddata.node = NULL;
     root->unrefNoDelete();
   }
+  this->appliedcode = storedcode;
+  this->currentpathcode = storedcurr;
+  this->applieddata = storeddata;
 }
 
 /*!
@@ -260,6 +268,11 @@ SoAction::apply(SoNode * root)
 void
 SoAction::apply(SoPath * path)
 {
+  // need to store these in case action in reapplied
+  AppliedCode storedcode = this->appliedcode;
+  PathCode storedcurr = this->currentpathcode;
+  AppliedData storeddata = this->applieddata;
+
   // This is a pretty good indicator on whether or not we remembered
   // to use the SO_ACTION_CONSTRUCTOR() macro in the constructor of
   // the SoAction subclass.
@@ -293,6 +306,9 @@ SoAction::apply(SoPath * path)
   }
 
   path->unrefNoDelete();
+  this->appliedcode = storedcode;
+  this->currentpathcode = storedcurr;
+  this->applieddata = storeddata;
 }
 
 /*!
@@ -315,6 +331,11 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
   assert(this->traversalMethods);
   this->traversalMethods->setUp();
   if (pathlist.getLength() == 0) return;
+
+  // need to store these in case action in reapplied
+  AppliedCode storedcode = this->appliedcode;
+  PathCode storedcurr = this->currentpathcode;
+  AppliedData storeddata = this->applieddata;
 
   this->terminated = FALSE;
 
@@ -373,6 +394,9 @@ SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
       }
     }
   }
+  this->appliedcode = storedcode;
+  this->currentpathcode = storedcurr;
+  this->applieddata = storeddata;
 }
 
 /*!
