@@ -1,10 +1,34 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.  See the file LICENSE.GPL
+ *  at the root directory of this source distribution for more details.
+ *
+ *  If you desire to use Coin with software that is incompatible
+ *  licensewise with the GPL, and / or you would like to take
+ *  advantage of the additional benefits with regard to our support
+ *  services, please contact Systems in Motion about acquiring a Coin
+ *  Professional Edition License.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
+ *  www.sim.no, support@sim.no, Voice: +47 22114160, Fax: +47 22207097
+ *
+\**************************************************************************/
+
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #include <Inventor/C/errors/debugerror.h>
 #include <stdlib.h>
 
-/* FIXME: name clash with cc_error's static members, will cause
-   all-c.c compilation to fail. 20020526 mortene. */
-static cc_error_cb * callback = cc_error_default_handler_cb;
-static void * callback_data = NULL;
+static cc_error_cb * dbgerr_callback = cc_error_default_handler_cb;
+static void * dbgerr_callback_data = NULL;
+
 
 void
 cc_debugerror_init(cc_debugerror * me)
@@ -28,27 +52,27 @@ cc_debugerror_get_severity(const cc_debugerror * me)
 void
 cc_debugerror_set_handler_callback(cc_error_cb * function, void * data)
 {
-  callback = function;
-  callback_data = data;
+  dbgerr_callback = function;
+  dbgerr_callback_data = data;
 }
 
 cc_error_cb *
 cc_debugerror_get_handler_callback(void)
 {
-  return callback;
+  return dbgerr_callback;
 }
 
 void *
 cc_debugerror_get_handler_data(void)
 {
-  return callback_data;
+  return dbgerr_callback_data;
 }
 
 cc_error_cb *
 cc_debugerror_get_handler(void ** data)
 {
-  *data = callback_data;
-  return callback;
+  *data = dbgerr_callback_data;
+  return dbgerr_callback;
 }
 
 static void
