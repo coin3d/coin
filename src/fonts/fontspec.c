@@ -24,6 +24,8 @@
 #include "fontspec.h"
 #include <string.h>
 
+#include <Inventor/C/glue/freetype.h>
+
 void
 cc_fontspec_construct(cc_font_specification * spec,
 		      const char * name_style, float size, float complexity)
@@ -38,11 +40,28 @@ cc_fontspec_construct(cc_font_specification * spec,
 
   cc_string_construct(&spec->style);
 
+  /* handle the previously allowed ':Bold Italic' case for fontconfig */
+  /* FIXME: this is an ugly non robust workaround. it would be better
+     to agree on an abstract fontname matching schema that is then
+     consistently applied upon all font backend
+     implementations. 20040929 tamer. */
+  if (cc_fcglue_available()) {
+    tmpstr = cc_string_get_text(&spec->name);
+
+    if ((tmpptr = strchr(tmpstr, ':'))) {
+      char * tmpptrspace;
+      if ((tmpptrspace = strchr(tmpptr, ' '))) {
+        *tmpptrspace = ':';
+      }
+    }
+    
+    return; 
+  }
+
   /* Check if style is included in the fontname using the
      "family:style" syntax. */
   tmpstr = cc_string_get_text(&spec->name);
-  tmpptr = strchr(tmpstr, ':');
-  if (tmpptr != NULL) {
+  if ((tmpptr = strchr(tmpstr, ':'))) {
     const int pos = (int)(tmpptr - tmpstr);
     const int namelen = cc_string_length(&spec->name);
 
@@ -70,8 +89,9 @@ cc_fontspec_construct(cc_font_specification * spec,
       --trimstyleend;
     }
     
-    if(trimstyleend !=  trimposstyle)
+    if(trimstyleend !=  trimposstyle) {
       cc_string_remove_substring(&spec->style, trimstyleend, cc_string_length(&spec->style) - 1);
+    }
     
     tmpstr = cc_string_get_text(&spec->name);
     trimnamestart = 0;
@@ -79,8 +99,9 @@ cc_fontspec_construct(cc_font_specification * spec,
       ++trimnamestart;
     }
     
-    if (trimnamestart != 0)
+    if (trimnamestart != 0) {
       cc_string_remove_substring(&spec->name, 0, trimnamestart-1);
+    }
    
   }
 }
