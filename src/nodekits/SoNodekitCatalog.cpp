@@ -667,6 +667,27 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   if (rightsibling[0] == '\"' && rightsibling[1] == '\"') rightsibling = "";
 
 
+  // FIXME: At several points down this function the debug defines
+  // causes the contract of this function to be changed for debug
+  // builds vs release builds. This is comparable to go to sleep with
+  // a loaded gun under your pillow.
+  // 
+  // I don't dear to change the defines to display the behavoior that
+  // we are testing (e.g. the debug behaviour), to be equal to the
+  // released version, because the full contract of this method is at
+  // best unclear, and changing behaviour in released code might cause
+  // some customer 'stir'. I recomend to document the contract of this
+  // function thoroughly in Flip by using unittests, and fix it so
+  // that it fulfills one contract, both for debug and release
+  // versions.
+  // 
+  // The areas I recognice as boobytraps is commented below. 
+  // 20021028 rolvs
+
+
+
+  // FIXME: Different behaviour in debug vs release
+  // version. See note on top. 20021028 rolvs
 #if COIN_DEBUG
   if (name == "") {
     SoDebugError::post("SoNodekitCatalog::addEntry", "empty name not allowed");
@@ -693,6 +714,10 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   SbBool delay = FALSE;
   if (rightsibling != "" &&
       this->getPartNumber(this->items, rightsibling) == SO_CATALOG_NAME_NOT_FOUND) {
+    
+    // FIXME: Different behaviour in debug vs release
+    // version. See note on top. 20021028 rolvs
+
 #if 0 // obsoleted
     SoDebugError::post("SoNodekitCatalog::addEntry",
                        "right sibling \"%s\" for \"%s\" not found",
@@ -704,6 +729,9 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   }
   else if (parent != "" &&
            this->getPartNumber(this->items, parent) == SO_CATALOG_NAME_NOT_FOUND) {
+
+    // FIXME: Different behaviour in debug vs release
+    // version. See note on top. 20021028 rolvs
 #if 0 // obsoleted
     SoDebugError::post("SoNodekitCatalog::addEntry",
                        "parent \"%s\" for \"%s\" not found",
@@ -714,8 +742,8 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
 #endif // new code
   }
 
-
-#if 0 // debug
+  
+#if COIN_DEBUG && 0// debug
   SoDebugError::postInfo("SoNodekitCatalog::addEntry",
                          "new entry: ``%s''", name.getString());
 #endif // debug
@@ -732,7 +760,7 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
   newitem->itemtypeslist.append(listitemtype);
   newitem->ispublic = ispublic;
 
-  if (delay) this->delayeditems.append(newitem);
+  if (delay)this->delayeditems.append(newitem);
   else if (!this->reallyAddEntry(newitem)) return FALSE;
 
   // Move elements from list of delayed inserts to "real" catalog
@@ -765,6 +793,10 @@ SoNodekitCatalog::reallyAddEntry(CatalogItem * newitem)
 {
   // First item in catalog?
   if (this->items.getLength() == 0) {
+
+    
+    // FIXME: Different behaviour in debug vs release
+    // version. See note on top. 20021028 rolvs
 #if COIN_DEBUG
     if (newitem->parentname != "" || newitem->siblingname != "") {
       SoDebugError::post("SoNodekitCatalog::addEntry",
@@ -795,6 +827,9 @@ SoNodekitCatalog::reallyAddEntry(CatalogItem * newitem)
   else {
     CatalogItem * next = this->items[position];
     if (next->parentname != newitem->parentname) {
+
+      // FIXME: Different behaviour in debug vs release
+      // version. See note on top. 20021028 rolvs
 #if COIN_DEBUG
       if (newitem->siblingname != "") {
         SoDebugError::post("SoNodekitCatalog::addEntry",
