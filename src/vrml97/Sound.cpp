@@ -148,10 +148,10 @@
 
 */
 
-/*!
-  \var SoSFNode SoVRMLSound::source
-  The audio stream. Either an SoVRMLAudioClip or an SoVRMLMovieTexture.
-*/
+/*!  
+  \var SoSFNode SoVRMLSound::source The audio stream. Either an
+  SoVRMLAudioClip or an SoVRMLMovieTexture. Coin only supports
+  playback of audio from SoVRMLAudioClip, not from SoVRMLMovieTexture.  */
 
 /*!
   \var SoSFFloat SoVRMLSound::intensity
@@ -160,8 +160,7 @@
 
 /*!
   \var SoSFFloat SoVRMLSound::priority
-  Browser hint for how important the sound is. A value from 0 to 1. Default value is 0.
-*/
+  Browser hint for how important the sound is. A value from 0 to 1. Default value is 0. Coin does not yet support this field.  */
 
 /*!
   \var SoSFVec3f SoVRMLSound::location
@@ -170,27 +169,31 @@
 
 /*!
   \var SoSFVec3f SoVRMLSound::direction
-  Sound direction. Default value is (0, 0, 1).
-*/
+  Sound direction. Default value is (0, 0, 1). Coin does not yet
+  support this field.  */
 
 /*!
   \var SoSFFloat SoVRMLSound::minFront
-  Inner ellipse front value. Default value is 1.
+  Inner ellipse front value. Default value is 1. Coin does not yet
+  support this field.
 */
 
 /*!
   \var SoSFFloat SoVRMLSound::maxFront
-  Outer ellipse front value. Default value is 10.
+  Outer ellipse front value. Default value is 10. Coin does not yet
+  support this field.
 */
 
 /*!
   \var SoSFFloat SoVRMLSound::minBack
-  Inner ellipse back value. Default value is 1.
+  Inner ellipse back value. Default value is 1. Coin does not yet
+  support this field.
 */
 
 /*!
   \var SoSFFloat SoVRMLSound::maxBack
-  Outer ellips back value. Default value is 10.
+  Outer ellips back value. Default value is 10. Coin does not yet
+  support this field.
 */
 
 /*!
@@ -205,7 +208,7 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoListenerPositionElement.h>
 #include <Inventor/elements/SoListenerOrientationElement.h>
-#include <Inventor/elements/SoListenerVelocityElement.h>
+#include <Inventor/elements/SoListenerDopplerElement.h>
 #include <Inventor/elements/SoListenerGainElement.h>
 #include <Inventor/elements/SoSoundElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -662,7 +665,7 @@ void SoVRMLSound::audioRender(SoAudioRenderAction *action)
   // get listener stuff
   const SbVec3f &listenerpos = SoListenerPositionElement::get(state);
   const SbRotation &listenerorientation = SoListenerOrientationElement::get(state);
-  const SbVec3f &listenervelocity = SoListenerVelocityElement::get(state);
+  const SbVec3f &listenervelocity = SoListenerDopplerElement::getDopplerVelocity(state);
   float listenergain = SoListenerGainElement::get(state);
 
 

@@ -21,6 +21,25 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoListener SoListener.h Inventor/nodes/SoListener.h
+  \brief The SoListener class defines listener attributes used when rendering sound.
+  \ingroup nodes
+
+  When rendering geometry, one needs to have a camera defining certain
+  attributes related to vieweing. The SoListener plays a similar
+  role when it comes to rendering audio.
+
+  If no SoListener has been encountered when a SoVRMLSound node
+  renders itself, it will use the position and the orientation of the
+  current camera. In this case, a gain of 1, a dopplerVelocity of 0
+  and a dopplerFactor of 0 will be assumed.
+
+  Coin does not currently support doppler effects, so the
+  dopplerVelocity and dopplerFactor fields are currently ignored.
+
+  \sa SoVRMLSound */
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -33,8 +52,60 @@
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/elements/SoListenerPositionElement.h>
 #include <Inventor/elements/SoListenerOrientationElement.h>
-#include <Inventor/elements/SoListenerVelocityElement.h>
+#include <Inventor/elements/SoListenerDopplerElement.h>
 #include <Inventor/elements/SoListenerGainElement.h>
+
+/*!
+  \var SoSFVec3f SoListener::position
+
+  Listener position. Defaults to (0.0f, 0.0f, 0.0f).
+
+*/
+
+/*!
+  \var SoSFVec3f SoListener::orientation
+
+  Listener orientation specified as a rotation value from the default
+  orientation where the listener is looking pointing along the
+  negative z-axis, with "up" along the positive y-axis. Defaults to
+  SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f).
+
+*/
+
+/*!
+  \var SoSFVec3f SoListener::gain
+
+  The gain is a scalar amplitude multiplier that attenuates all sounds
+  in the scene. The legal range is [0.0f, any), however a gain value >
+  1.0f might be clamped to 1.0f by the audio device. Defaults to 1.0f,
+  meaning that the sound is un-attenuated. A gain value of 0.5f would
+  be equivalent to a 6dB attenuation. If gain is set to 0.0f, no sound
+  can be heard.
+
+*/
+
+/*!
+  \var SoSFVec3f SoListener::dopplerVelocity
+
+  The doppler velocity of the sound. It is the application
+  programmer's responsibility to set this value. Coin does not update
+  this value automatically based on changes in a sound's
+  position. The default value is (0.0f, 0.0f, 0.0f).
+
+  Coin does not yet support doppler effects.  
+*/
+
+/*!
+  \var SoSFFloat SoListener::dopplerFactor
+
+  The amount of doppler effect applied to the sound. The legal range
+  is [0.0f, any>, where 0.0f is default and disable all doppler
+  effects, 1.0f would be a typical value for this field if doppler
+  effects are required.
+
+  Coin does not yet support doppler effects.  
+*/
+
 
 SO_NODE_SOURCE(SoListener);
 
@@ -44,7 +115,7 @@ void SoListener::initClass()
 
   SO_ENABLE(SoAudioRenderAction, SoListenerPositionElement);
   SO_ENABLE(SoAudioRenderAction, SoListenerOrientationElement);
-  SO_ENABLE(SoAudioRenderAction, SoListenerVelocityElement);
+  SO_ENABLE(SoAudioRenderAction, SoListenerDopplerElement);
   SO_ENABLE(SoAudioRenderAction, SoListenerGainElement);
 }
 
@@ -54,69 +125,13 @@ SoListener::SoListener()
   SO_NODE_ADD_FIELD(position, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(orientation, 
                     (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
-  SO_NODE_ADD_FIELD(velocity, (0.0f, 0.0f, 0.0f));
+  SO_NODE_ADD_FIELD(dopplerVelocity, (0.0f, 0.0f, 0.0f));
+  SO_NODE_ADD_FIELD(dopplerFactor, (0.0f));
   SO_NODE_ADD_FIELD(gain, (1.0f));
 }
 
 SoListener::~SoListener()
 {
-}
-
-
-/*!  
-  Sets the doppler velocity relative to the global coordinate
-  system. Not implemented yet.  
-*/
-
-void 
-SoListener::setDopplerVelocity(float velocity)
-{
-  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
-  SoDebugError::postWarning("SoListener::setDopplerVelocity",
-                            "Not yet implemented for Coin. "
-                            "Get in touch if you need this functionality.");
-}
-
-/*!  
-  Returns the doppler velocity relative to the global coordinate
-  system. Not implemented yet.  
-*/
-
-float 
-SoListener::getDopplerVelocity()
-{
-  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
-  SoDebugError::postWarning("SoListener::getDopplerVelocity",
-                            "Not yet implemented for Coin. "
-                            "Get in touch if you need this functionality.");
-  return 0.0f;
-}
-
-/*!  
-  Sets the doppler factor. Not implemented yet.  
-*/
-
-void 
-SoListener::setDopplerFactor(float factor)
-{
-  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
-  SoDebugError::postWarning("SoListener::setDopplerFactor",
-                            "Not yet implemented for Coin. "
-                            "Get in touch if you need this functionality.");
-}
-
-/*!  
-  Returns the doppler factor. Not implemented yet.  
-*/
-
-float 
-SoListener::getDopplerFactor()
-{
-  // FIXME: as of yet unimplemented. 2003-02-26 thammer.
-  SoDebugError::postWarning("SoListener::getDopplerFactor",
-                            "Not yet implemented for Coin. "
-                            "Get in touch if you need this functionality.");
-  return 0.0f;
 }
 
 void
@@ -145,8 +160,12 @@ SoListener::audioRender(SoAudioRenderAction *action)
     r *= this->orientation.getValue();
     SoListenerOrientationElement::set(state, this, r, TRUE);
   }
-  if (! this->velocity.isIgnored())
-    SoListenerVelocityElement::set(state, this, this->velocity.getValue());
+  if (! this->dopplerVelocity.isIgnored())
+    SoListenerDopplerElement::setDopplerVelocity(state, this, 
+                                   this->dopplerVelocity.getValue());
+  if (! this->dopplerFactor.isIgnored())
+    SoListenerDopplerElement::setDopplerFactor(state, this, 
+                                  this->dopplerFactor.getValue());
   if (! this->gain.isIgnored())
     SoListenerGainElement::set(state, this, this->gain.getValue());
 }

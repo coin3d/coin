@@ -444,7 +444,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerPositionElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerOrientationElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerGainElement.h \
-                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerVelocityElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerDopplerElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoBoolOperation.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoCalculator.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoCompose.h \
@@ -874,7 +874,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/elements/SoListenerPositionElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoListenerOrientationElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoListenerGainElement.cpp \
-                         @path_tag@@coin_src_dir@/src/elements/SoListenerVelocityElement.cpp \
+                         @path_tag@@coin_src_dir@/src/elements/SoListenerDopplerElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoPointSizeElement.cpp \
                          @path_tag@@coin_src_dir@/src/elements/SoReplacedElement.cpp \
                          @path_tag@@coin_src_dir@/src/engines/SoBoolOperation.cpp \

@@ -43,13 +43,9 @@ public:
 
   SoSFVec3f position;
   SoSFRotation orientation;
-  SoSFVec3f velocity;
   SoSFFloat gain;
-
-  void setDopplerVelocity(float velocity);
-  float getDopplerVelocity();
-  void setDopplerFactor(float factor);
-  float getDopplerFactor();
+  SoSFVec3f dopplerVelocity;
+  SoSFFloat dopplerFactor;
 
 protected:
   virtual void audioRender(class SoAudioRenderAction *action);
