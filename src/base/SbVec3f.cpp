@@ -38,14 +38,14 @@
 /*!
   The default constructor does nothing. The vector coordinates will be
   uninitialized until you do a setValue() call.
- */
+*/
 SbVec3f::SbVec3f(void)
 {
 }
 
 /*!
   Constructs an SbVec3f instance with initial values from \a v.
- */
+*/
 SbVec3f::SbVec3f(const float v[3])
 {
   this->vec[0] = v[0];
@@ -56,7 +56,7 @@ SbVec3f::SbVec3f(const float v[3])
 /*!
   Constructs an SbVec3f instance with the initial vector endpoint set to
   \a <x,y,z>.
- */
+*/
 SbVec3f::SbVec3f(const float x, const float y, const float z)
 {
   this->vec[0] = x;
@@ -68,15 +68,15 @@ SbVec3f::SbVec3f(const float x, const float y, const float z)
   Constructs an SbVec3f instance by combining the three given planes.
   None of the planes should be parallel to any of the other two, otherwise
   a divide by zero error will occur.
- */
-SbVec3f::SbVec3f(const SbPlane& p0, const SbPlane& p1, const SbPlane& p2)
+*/
+SbVec3f::SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2)
 {
   SbVec3f n0 = p0.getNormal();
   SbVec3f n1 = p1.getNormal();
   SbVec3f n2 = p2.getNormal();
 
 #if COIN_DEBUG
-  if(!((fabs(n0.dot(n1)) != 1.0f) &&
+  if (!((fabs(n0.dot(n1)) != 1.0f) &&
        (fabs(n0.dot(n2)) != 1.0f) &&
        (fabs(n1.dot(n2)) != 1.0f)))
     SoDebugError::postWarning("SbVec3f::SbVec3f",
@@ -135,24 +135,24 @@ SbVec3f::SbVec3f(const SbPlane& p0, const SbPlane& p1, const SbPlane& p2)
   int i, j;
   const int n = 3; // Input matrix dimensions are n × (n+1).
 
-  for(int k=0; k < n-1; k++) {
+  for (int k=0; k < n-1; k++) {
     j=k;
 
-    while(a[j][k] == 0.0f) j++;
-    if(j != k) for(i=0; i < n+1; i++) SbSwap(a[j][i], a[k][i]);
+    while (a[j][k] == 0.0f) j++;
+    if (j != k) for (i=0; i < n+1; i++) SbSwap(a[j][i], a[k][i]);
 
-    for(j = k+1; j < n; j++) {
+    for (j = k+1; j < n; j++) {
       m[j][k] = a[j][k]/a[k][k];
 
-      for(int p=k+1; p < n+1; p++) a[j][p] -= m[j][k]*a[k][p];
+      for (int p=k+1; p < n+1; p++) a[j][p] -= m[j][k]*a[k][p];
     }
   }
 
   // Back substitution.
   x[n-1] = a[n-1][n]/a[n-1][n-1];
-  for(i=n-2; i >= 0; i--) {
+  for (i=n-2; i >= 0; i--) {
     float sum = 0.0f;
-    for(j=i+1; j < n; j++) sum += a[i][j]*x[j];
+    for (j=i+1; j < n; j++) sum += a[i][j]*x[j];
 
     x[i] = (a[i][n] - sum)/a[i][i];
   }
@@ -164,9 +164,9 @@ SbVec3f::SbVec3f(const SbPlane& p0, const SbPlane& p1, const SbPlane& p2)
 
 /*!
   Returns the result of taking the cross product of this vector and \a v.
- */
+*/
 SbVec3f
-SbVec3f::cross(const SbVec3f& v) const
+SbVec3f::cross(const SbVec3f & v) const
 {
   return SbVec3f(this->vec[1]*v.vec[2] - this->vec[2]*v.vec[1],
                  this->vec[2]*v.vec[0] - this->vec[0]*v.vec[2],
@@ -176,23 +176,23 @@ SbVec3f::cross(const SbVec3f& v) const
 /*!
   Calculates and returns the result of taking the dot product of this
   vector and \a v.
- */
+*/
 float
-SbVec3f::dot(const SbVec3f& v) const
+SbVec3f::dot(const SbVec3f & v) const
 {
   return this->vec[0]*v.vec[0] + this->vec[1]*v.vec[1] + this->vec[2]*v.vec[2];
 }
 
 /*!
-  Compares the vector with \a v and returns TRUE if the largest distance
-  between the vectors are larger than the square root of the given
-  tolerance value.
- */
+  Compares the vector with \a v and returns \c TRUE if the largest
+  distance between the vectors are larger than the square root of the
+  given tolerance value.
+*/
 SbBool
-SbVec3f::equals(const SbVec3f& v, const float tolerance) const
+SbVec3f::equals(const SbVec3f & v, const float tolerance) const
 {
 #if COIN_DEBUG
-  if(!(tolerance >= 0.0f))
+  if (!(tolerance >= 0.0f))
     SoDebugError::postWarning("SbVec3f::equals",
                               "Tolerance should be >= 0.0f");
 #endif // COIN_DEBUG
@@ -201,12 +201,12 @@ SbVec3f::equals(const SbVec3f& v, const float tolerance) const
   float ydist = this->vec[1] - v[1];
   float zdist = this->vec[2] - v[2];
 
-  if((xdist*xdist + ydist*ydist + zdist*zdist) <= tolerance) return TRUE;
-  return FALSE;
+  return ((xdist*xdist + ydist*ydist + zdist*zdist) <= tolerance);
 }
 
 /*!
-  Return the vector representing the principal axis closest to this vector.
+  Return the vector representing the principal axis closest to this
+  vector.
 */
 SbVec3f
 SbVec3f::getClosestAxis(void) const
@@ -216,19 +216,19 @@ SbVec3f::getClosestAxis(void) const
   float yabs = (float)fabs(this->vec[1]);
   float zabs = (float)fabs(this->vec[2]);
 
-  if(xabs>=yabs && xabs>=zabs) closest[0] = (this->vec[0] > 0.0f) ? 1.0f : -1.0f;
-  else if(yabs>=zabs) closest[1] = (this->vec[1] > 0.0f) ? 1.0f : -1.0f;
+  if (xabs>=yabs && xabs>=zabs) closest[0] = (this->vec[0] > 0.0f) ? 1.0f : -1.0f;
+  else if (yabs>=zabs) closest[1] = (this->vec[1] > 0.0f) ? 1.0f : -1.0f;
   else closest[2] = (this->vec[2] > 0.0f) ? 1.0f : -1.0f;
 
   return closest;
 }
 
 /*!
-  Returns a pointer to an array of three floats containing the
-  x, y and z coordinates of the vector.
+  Returns a pointer to an array of three floats containing the x, y
+  and z coordinates of the vector.
 
   \sa setValue().
- */
+*/
 const float *
 SbVec3f::getValue(void) const
 {
@@ -239,9 +239,9 @@ SbVec3f::getValue(void) const
   Returns the x, y and z coordinates of the vector.
 
   \sa setValue().
- */
+*/
 void
-SbVec3f::getValue(float& x, float& y, float& z) const
+SbVec3f::getValue(float & x, float & y, float & z) const
 {
   x = this->vec[0];
   y = this->vec[1];
@@ -250,7 +250,7 @@ SbVec3f::getValue(float& x, float& y, float& z) const
 
 /*!
   Return length of vector.
- */
+*/
 float
 SbVec3f::length(void) const
 {
@@ -260,10 +260,10 @@ SbVec3f::length(void) const
 }
 
 /*!
-  Returns the squared length of the vector
+  Returns the squared length of the vector.
 */
 float
-SbVec3f::sqrLength() const
+SbVec3f::sqrLength(void) const
 {
   return
     this->vec[0]*this->vec[0] +
@@ -273,7 +273,7 @@ SbVec3f::sqrLength() const
 
 /*!
   Negate the vector (i.e. point it in the opposite direction).
- */
+*/
 void
 SbVec3f::negate(void)
 {
@@ -286,15 +286,15 @@ SbVec3f::negate(void)
   Normalize the vector to unit length. Return value is the original
   length of the vector before normalization.
 
-  If the vector is the null vector, no attempt at normalization will be
-  done.
- */
+  If the vector is the null vector, no attempt at normalization will
+  be done.
+*/
 float
 SbVec3f::normalize(void)
 {
   float len = this->length();
 #if COIN_DEBUG
-  if(!(len > 0.0f))
+  if (!(len > 0.0f))
     SoDebugError::postWarning("SbVec3f::normalize",
                               "The length of the vector should be > 0.0f "
                               "to be able to normalize.");
@@ -309,8 +309,8 @@ SbVec3f::normalize(void)
   self.
 
   \sa getValue().
- */
-SbVec3f&
+*/
+SbVec3f &
 SbVec3f::setValue(const float v[3])
 {
   this->vec[0] = v[0];
@@ -323,8 +323,8 @@ SbVec3f::setValue(const float v[3])
   Set new coordinates for the vector. Returns reference to self.
 
   \sa getValue().
- */
-SbVec3f&
+*/
+SbVec3f &
 SbVec3f::setValue(const float x, const float y, const float z)
 {
   this->vec[0] = x;
@@ -339,9 +339,9 @@ SbVec3f::setValue(const float x, const float y, const float z)
 
   \sa getValue().
 */
-SbVec3f&
-SbVec3f::setValue(const SbVec3f& barycentic,
-                  const SbVec3f& v0, const SbVec3f& v1, const SbVec3f& v2)
+SbVec3f &
+SbVec3f::setValue(const SbVec3f & barycentic,
+                  const SbVec3f & v0, const SbVec3f & v1, const SbVec3f & v2)
 {
   this->vec[0] = barycentic[0]*v0[0]+barycentic[1]*v1[0]+barycentic[2]*v2[0];
   this->vec[1] = barycentic[0]*v0[1]+barycentic[1]*v1[1]+barycentic[2]*v2[1];
@@ -353,12 +353,12 @@ SbVec3f::setValue(const SbVec3f& barycentic,
   Index operator. Returns modifiable x, y or z coordinate of vector.
 
   \sa getValue() and setValue().
- */
+*/
 float&
 SbVec3f::operator [](const int i)
 {
 #if COIN_DEBUG
-  if(!(i>=0 && i<=2))
+  if (!(i>=0 && i<=2))
     SoDebugError::postWarning("SbVec3f::operator[]",
                               "Index out of bounds [0..2].");
 #endif // COIN_DEBUG
@@ -370,12 +370,12 @@ SbVec3f::operator [](const int i)
   Index operator. Returns x, y or z coordinate of vector.
 
   \sa getValue() and setValue().
- */
+*/
 const float&
 SbVec3f::operator [](const int i) const
 {
 #if COIN_DEBUG
-  if(!(i>=0 && i<=2))
+  if (!(i>=0 && i<=2))
     SoDebugError::postWarning("SbVec3f::operator[]",
                               "Index out of bounds [0..2].");
 #endif // COIN_DEBUG
@@ -385,8 +385,8 @@ SbVec3f::operator [](const int i) const
 
 /*!
   Multiply components of vector with value \a d. Returns reference to self.
- */
-SbVec3f&
+*/
+SbVec3f &
 SbVec3f::operator *=(const float d)
 {
   this->vec[0] *= d;
@@ -397,12 +397,12 @@ SbVec3f::operator *=(const float d)
 
 /*!
   Divides components of vector with value \a d. Returns reference to self.
- */
-SbVec3f&
+*/
+SbVec3f &
 SbVec3f::operator /=(const float d)
 {
 #if COIN_DEBUG
-  if(!(d != 0.0f))
+  if (!(d != 0.0f))
     SoDebugError::postWarning("SbVec3f::operator/=",
                               "Division by zero.");
 #endif // COIN_DEBUG
@@ -417,9 +417,9 @@ SbVec3f::operator /=(const float d)
 
 /*!
   Adds this vector and vector \a u. Returns reference to self.
- */
-SbVec3f&
-SbVec3f::operator +=(const SbVec3f& u)
+*/
+SbVec3f &
+SbVec3f::operator +=(const SbVec3f & u)
 {
   this->vec[0] += u.vec[0];
   this->vec[1] += u.vec[1];
@@ -429,9 +429,9 @@ SbVec3f::operator +=(const SbVec3f& u)
 
 /*!
   Subtracts vector \a u from this vector. Returns reference to self.
- */
-SbVec3f&
-SbVec3f::operator -=(const SbVec3f& u)
+*/
+SbVec3f &
+SbVec3f::operator -=(const SbVec3f & u)
 {
   this->vec[0] -= u.vec[0];
   this->vec[1] -= u.vec[1];
@@ -440,11 +440,11 @@ SbVec3f::operator -=(const SbVec3f& u)
 }
 
 /*!
-  Non-destructive negation operator. Returns a new SbVec3f instance which
-  points in the opposite direction of this vector.
+  Non-destructive negation operator. Returns a new SbVec3f instance
+  which points in the opposite direction of this vector.
 
   \sa negate().
- */
+*/
 SbVec3f
 SbVec3f::operator -(void) const
 {
@@ -456,9 +456,9 @@ SbVec3f::operator -(void) const
 
   Returns an SbVec3f instance which is the components of vector \a v
   multiplied with \a d.
- */
+*/
 SbVec3f
-operator *(const SbVec3f& v, const float d)
+operator *(const SbVec3f & v, const float d)
 {
   return SbVec3f(v.vec[0] * d, v.vec[1] * d, v.vec[2] * d);
 }
@@ -468,11 +468,11 @@ operator *(const SbVec3f& v, const float d)
 
   Returns an SbVec3f instance which is the components of vector \a v
   multiplied with \a d.
- */
+*/
 SbVec3f
-operator *(const float d, const SbVec3f& v)
+operator *(const float d, const SbVec3f & v)
 {
-  return v*d;
+  return v * d;
 }
 
 /*!
@@ -480,12 +480,12 @@ operator *(const float d, const SbVec3f& v)
 
   Returns an SbVec3f instance which is the components of vector \a v
   divided on the scalar factor \a d.
- */
+*/
 SbVec3f
-operator /(const SbVec3f& v, const float d)
+operator /(const SbVec3f & v, const float d)
 {
 #if COIN_DEBUG
-  if(!(d != 0.0f))
+  if (!(d != 0.0f))
     SoDebugError::postWarning("SbVec3f::operator/",
                               "Division by zero.");
 #endif // COIN_DEBUG
@@ -497,9 +497,9 @@ operator /(const SbVec3f& v, const float d)
   \relates SbVec3f
 
   Returns an SbVec3f instance which is the sum of vectors \a v1 and \a v2.
- */
+*/
 SbVec3f
-operator +(const SbVec3f& v1, const SbVec3f& v2)
+operator +(const SbVec3f & v1, const SbVec3f & v2)
 {
   return SbVec3f(v1.vec[0] + v2.vec[0],
                  v1.vec[1] + v2.vec[1],
@@ -511,9 +511,9 @@ operator +(const SbVec3f& v1, const SbVec3f& v2)
 
   Returns an SbVec3f instance which is vector \a v2 subtracted from
   vector \a v1.
- */
+*/
 SbVec3f
-operator -(const SbVec3f& v1, const SbVec3f& v2)
+operator -(const SbVec3f & v1, const SbVec3f & v2)
 {
   return SbVec3f(v1.vec[0] - v2.vec[0],
                  v1.vec[1] - v2.vec[1],
@@ -523,14 +523,14 @@ operator -(const SbVec3f& v1, const SbVec3f& v2)
 /*!
   \relates SbVec3f
 
-  Returns \a 1 if \a v1 and \a v2 are equal, \a 0 otherwise.
+  Returns \a 1 if \a v1 and \a v2 are \e exactly equal, \a 0 otherwise.
 
   \sa equals().
- */
+*/
 int
-operator ==(const SbVec3f& v1, const SbVec3f& v2)
+operator ==(const SbVec3f & v1, const SbVec3f & v2)
 {
-  if(v1.vec[0] == v2.vec[0] &&
+  if (v1.vec[0] == v2.vec[0] &&
      v1.vec[1] == v2.vec[1] &&
      v1.vec[2] == v2.vec[2]) return TRUE;
   return FALSE;
@@ -542,21 +542,22 @@ operator ==(const SbVec3f& v1, const SbVec3f& v2)
   Returns \a 1 if \a v1 and \a v2 are not equal, \a 0 if they are equal.
 
   \sa equals().
- */
+*/
 int
-operator !=(const SbVec3f& v1, const SbVec3f& v2)
+operator !=(const SbVec3f & v1, const SbVec3f & v2)
 {
   return !(v1 == v2);
 }
 
 /*!
   Dump the state of this object to the \a file stream. Only works in
-  debug version of library, method does nothing in an optimized compile.
- */
+  debug version of library, method does nothing in an optimized
+  compile.
+*/
 void
 SbVec3f::print(FILE * fp) const
 {
 #if COIN_DEBUG
-  fprintf( fp, "<%f, %f, %f>", this->vec[0], this->vec[1], this->vec[2] );
+  (void)fprintf(fp, "<%f, %f, %f>", this->vec[0], this->vec[1], this->vec[2]);
 #endif // COIN_DEBUG
 }
