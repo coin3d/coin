@@ -219,7 +219,7 @@ uninstall-local:
 	  if test -f "$$file"; then \
 	    echo " rm -f $$file"; \
 	    rm -f "$$file"; \
-	  fi \
+	  fi; \
 	  file="$(DESTDIR)$(libdir)/$$basename.$$ext"; \
 	  if test -f "$$file"; then \
 	    echo " rm -f $$file"; \
@@ -229,8 +229,8 @@ uninstall-local:
 	baseincdir="$(DESTDIR)$(includedir)/Inventor"; \
 	for dir in \
 	  "$$baseincdir/3ds" \
-	  "$$baseincdir/base" \
 	  "$$baseincdir/actions" \
+	  "$$baseincdir/base" \
 	  "$$baseincdir/bundles" \
 	  "$$baseincdir/caches" \
 	  "$$baseincdir/collision" \
@@ -241,6 +241,7 @@ uninstall-local:
 	  "$$baseincdir/errors" \
 	  "$$baseincdir/events" \
 	  "$$baseincdir/fields" \
+	  "$$baseincdir/glue" \
 	  "$$baseincdir/lists" \
 	  "$$baseincdir/lock" \
 	  "$$baseincdir/manips" \
@@ -251,6 +252,7 @@ uninstall-local:
 	  "$$baseincdir/sensors" \
 	  "$$baseincdir/system" \
 	  "$$baseincdir/threads" \
+	  "$$baseincdir/upgraders" \
 	  "$$baseincdir/VRMLnodes" \
 	  "$$baseincdir/C/base" \
 	  "$$baseincdir/C/errors" \

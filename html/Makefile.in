@@ -277,8 +277,8 @@ uninstall-am: uninstall-info-am uninstall-local
 
 @BUILD_HTMLPAGES_TRUE@index.html: $(top_builddir)/docs/coin.doxygen
 @BUILD_HTMLPAGES_TRUE@	@( cd ..; \
-@BUILD_HTMLPAGES_TRUE@	echo " @sim_ac_doxygen_exe@ docs/coin.doxygen"; \
-@BUILD_HTMLPAGES_TRUE@	@sim_ac_doxygen_exe@ docs/coin.doxygen )
+@BUILD_HTMLPAGES_TRUE@	echo " $(sim_ac_doxygen_exe) docs/coin.doxygen"; \
+@BUILD_HTMLPAGES_TRUE@	"$(sim_ac_doxygen_exe)" docs/coin.doxygen )
 
 @BUILD_HTMLPAGES_TRUE@filelist.txt: index.html
 @BUILD_HTMLPAGES_TRUE@	@ls -1 | egrep '(\.html|\.png|\.gif|\.css)$$' >filelist.txt

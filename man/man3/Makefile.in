@@ -270,15 +270,14 @@ $(top_builddir)/docs/coin.doxygen: $(top_srcdir)/docs/coin.doxygen.in $(top_buil
 	@( cd $(top_builddir); $(MAKE) docs/coin.doxygen )
 
 SoDB.3: $(top_builddir)/docs/coin.doxygen
-	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+	@( cd ../..; \
+	echo " $(sim_ac_doxygen_exe) docs/coin.doxygen"; \
+	"$(sim_ac_doxygen_exe)" docs/coin.doxygen )
 
 filelist.txt: SoDB.3
 	ls *.3 >filelist.txt
 
 @BUILD_MANPAGES_TRUE@all-local: filelist.txt
-
-@BUILD_MANPAGES_TRUE@clean-local:
-@BUILD_MANPAGES_TRUE@	rm -f filelist.txt *.3
 
 @BUILD_MANPAGES_TRUE@install-data-local: install-man
 
@@ -286,7 +285,7 @@ filelist.txt: SoDB.3
 
 @BUILD_MANPAGES_TRUE@install-man: filelist.txt
 @BUILD_MANPAGES_TRUE@	@$(NORMAL_INSTALL)
-@BUILD_MANPAGES_TRUE@	$(mkinstalldirs) $(DESTDIR)$(mandir)
+@BUILD_MANPAGES_TRUE@	$(mkinstalldirs) $(DESTDIR)$(mandir)/man3
 @BUILD_MANPAGES_TRUE@	@list="`cat filelist.txt`"; \
 @BUILD_MANPAGES_TRUE@	for i in $$list; do \
 @BUILD_MANPAGES_TRUE@	  echo " $(INSTALL_DATA) $$i $(DESTDIR)$(mandir)/man3/$$i"; \
@@ -303,6 +302,11 @@ filelist.txt: SoDB.3
 @BUILD_MANPAGES_TRUE@	@echo " rmdir $(DESTDIR)$(mandir)"; \
 @BUILD_MANPAGES_TRUE@	rmdir $(DESTDIR)$(mandir) 2>/dev/null; \
 @BUILD_MANPAGES_TRUE@	:
+
+# IRIX make barfs if clean-local is moved inside the conditional clause.
+# Automake bug?  20011025 larsa
+clean-local:
+	rm -f filelist.txt *.3
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
