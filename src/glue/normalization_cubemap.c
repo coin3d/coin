@@ -88,7 +88,7 @@ coin_create_normalization_cube_map(const int size)
     }
   }
   glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X,
-               0, GL_RGBA8, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+               0, 3, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
   /* negative x */
   ptr = data;
@@ -109,7 +109,7 @@ coin_create_normalization_cube_map(const int size)
     }
   }
   glTexImage2D(	GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-                0, GL_RGBA8, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+                0, 3, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
   /* positive y */
   ptr=data;
@@ -130,7 +130,7 @@ coin_create_normalization_cube_map(const int size)
       }
   }
   glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
-               0, GL_RGBA8, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+               0, 3, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
   /* negative y */
   ptr = data;
@@ -151,7 +151,7 @@ coin_create_normalization_cube_map(const int size)
     }
   }
   glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
-               0, GL_RGBA8, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+               0, 3, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
   /* positive z */
   ptr = data;
@@ -172,7 +172,7 @@ coin_create_normalization_cube_map(const int size)
     }
   }
   glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
-               0, GL_RGBA8, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+               0, 3, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
   /* negative z */
   ptr=data;
@@ -193,7 +193,7 @@ coin_create_normalization_cube_map(const int size)
     }
   }
   glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
-               0, GL_RGBA8, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+               0, 3, size, size, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
   free(data);
 }
