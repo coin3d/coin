@@ -142,6 +142,11 @@ static const char ROUTE_KEYWORD[] = "ROUTE";
 static const char PROTO_KEYWORD[] = "PROTO";
 static const char EXTERNPROTO_KEYWORD[] = "EXTERNPROTO";
 
+// Reference id if no DEF instance of a node is written yet
+static const int REFID_FIRSTWRITE = -1; 
+// Reference id if we don't need to add a suffix to the node name
+static const int REFID_NOSUFFIX = -2;
+
 // Only a small number of SoBase derived objects will under usual
 // conditions have designated names, so we use a couple of static
 // SbDict objects to keep track of them. Since we avoid storing a
@@ -161,6 +166,29 @@ SbBool SoBase::tracerefs = FALSE;
 uint32_t SoBase::writecounter = 0;
 
 /**********************************************************************/
+
+//
+// If this environment variable is set to 1, we try to preserve
+// the original node names as far as possible instead of appending
+// a "+<refid>" suffix.
+//
+static SbBool
+dont_mangle_output_names(const SoBase *base)
+{
+  static int COIN_DONT_MANGLE_OUTPUT_NAMES = -1;
+
+  // Always unmangle node names in VRML1
+  // FIXME: What should we do about VRML2? (kintel 20020429)
+  if (base->isOfType(SoNode::getClassTypeId()) && 
+      ((SoNode *)base)->getNodeType()==SoNode::VRML1) return TRUE;
+
+  if (COIN_DONT_MANGLE_OUTPUT_NAMES < 0) {
+    COIN_DONT_MANGLE_OUTPUT_NAMES = 0;
+    const char * env = coin_getenv("COIN_DONT_MANGLE_OUTPUT_NAMES");
+    if (env) COIN_DONT_MANGLE_OUTPUT_NAMES = atoi(env);
+  }
+  return COIN_DONT_MANGLE_OUTPUT_NAMES ? TRUE : FALSE;
+}
 
 // For counting write references during SoWriteAction traversal, to
 // make DEF / USE come out correctly in the output. The hash mapping
@@ -963,30 +991,175 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
 
   SbName name = this->getName();
   int refid = out->findReference(this);
-  SbBool firstwrite = refid == -1;
+  SbBool firstwrite = refid == REFID_FIRSTWRITE;
   SbBool multiref = this->hasMultipleWriteRefs();
 
-  if (multiref && firstwrite) refid = out->addReference(this);
+  // Find what node name to write
+  SbString writename; 
+  if (dont_mangle_output_names(this)) {
+    //
+    // Try to keep the original node names as far as possible.
+    // Weaknesses (FIXME kintel 20020429): 
+    //  o We should try to reuse refid's as well.
+    //  o We should try to let "important" (=toplevel?) nodes 
+    //    keep their original node names before some subnode "captures" it.
+    //
 
+    /* Code example. The correct output file is shown below
+
+       #include <Inventor/SoDB.h>
+       #include <Inventor/SoInput.h>
+       #include <Inventor/SoOutput.h>
+       #include <Inventor/actions/SoWriteAction.h>
+       #include <Inventor/nodes/SoSeparator.h>
+
+       void main(int argc, char *argv[])
+       {
+       SoDB::init();
+
+       SoSeparator *root = new SoSeparator;
+       root->ref();
+       root->setName("root");
+
+       SoSeparator *n0 = new SoSeparator;
+       SoSeparator *a0 = new SoSeparator;
+       SoSeparator *a1 = new SoSeparator;
+       SoSeparator *a2 = new SoSeparator;
+       SoSeparator *a3 = new SoSeparator;
+       SoSeparator *b0 = new SoSeparator;
+       SoSeparator *b1 = new SoSeparator;
+       SoSeparator *b2 = new SoSeparator;
+       SoSeparator *b3 = new SoSeparator;
+       SoSeparator *b4 = new SoSeparator;
+       SoSeparator *c0 = new SoSeparator;
+
+       a2->setName(SbName("MyName"));
+       b0->setName(SbName("MyName"));
+       b1->setName(SbName("MyName"));
+       b2->setName(SbName("MyName"));
+       b4->setName(SbName("MyName"));
+       c0->setName(SbName("MyName"));
+  
+       root->addChild(n0);
+       root->addChild(n0);
+       root->addChild(a0);
+       a0->addChild(b0);
+       a0->addChild(b1);
+       root->addChild(b0);
+       root->addChild(a1);
+       a1->addChild(b2);
+       a1->addChild(b1);
+       root->addChild(b1);
+       root->addChild(a2);
+       root->addChild(a2);
+       root->addChild(a3);
+       a3->addChild(b3);
+       b3->addChild(c0);
+       b3->addChild(c0);
+       a3->addChild(b4);
+       a3->addChild(a2);
+
+       SoOutput out;
+       out.openFile("out.wrl");
+       out.setHeaderString(SbString("#VRML V1.0 ascii"));
+       SoWriteAction wra(&out);
+       wra.apply(root);
+       out.closeFile();
+
+       root->unref();
+       }
+
+       Output file:
+
+       #VRML V1.0 ascii
+
+       DEF root Separator {
+         DEF +0 Separator {
+         }
+         USE +0
+         Separator {
+           DEF MyName Separator {
+           }
+           DEF MyName+1 Separator {
+           }  
+         }
+         USE MyName
+         Separator {
+           DEF MyName Separator {
+           }
+           USE MyName+1  
+         }
+         USE MyName+1
+         DEF MyName Separator {
+         }
+         USE MyName
+         Separator {
+           Separator {
+             DEF MyName+2 Separator {
+             }
+             USE MyName+2
+           }
+           DEF MyName+3 Separator {
+           }
+           USE MyName  
+         }
+       }
+    */
+
+    if (!firstwrite) {
+      writename = name.getString();
+      // We have used a suffix when DEF'ing the node
+      if (refid != REFID_NOSUFFIX) {
+        writename += SoBase::refwriteprefix->getString();
+        writename.addIntString(refid);
+      }
+      // Detects last USE of a node, enables reuse of DEF's
+      if (!multiref) out->removeDEFNode(SbName(writename));
+    }
+    else {
+      bool found = out->lookupDEFNode(name);
+      writename = name.getString();
+      if (!found && (!multiref || name.getLength() > 0)) {
+        // We can use the node without a suffix
+        if (multiref) out->addDEFNode(name);
+        out->setReference(this, REFID_NOSUFFIX);
+      }
+      else { 
+        // Node name is already DEF'ed or an unnamed multiref => use a suffix.
+        writename += SoBase::refwriteprefix->getString();
+        writename.addIntString(out->addReference(this));
+        out->addDEFNode(SbName(writename));
+      }
+    }
+  }
+  else { // Default OIV behavior
+    if (multiref && firstwrite) refid = out->addReference(this);
+    if (!firstwrite) {
+      writename = name.getString();
+      writename += SoBase::refwriteprefix->getString();
+      writename.addIntString(refid);
+    }
+    else {
+      writename = name.getString();
+      if (multiref) {
+        writename += SoBase::refwriteprefix->getString();
+        writename.addIntString(refid);
+      }
+    }
+  }
+
+  // Write the node
   if (!firstwrite) {
     out->write(USE_KEYWORD);
     if (!out->isBinary()) out->write(' ');
-    SbString s = name.getString();
-    s += SoBase::refwriteprefix->getString();
-    s.addIntString(refid);
-    out->write(s.getString());
+    out->write(writename.getString());
   }
   else {
     if (name.getLength() || multiref) {
       out->write(DEF_KEYWORD);
       if (!out->isBinary()) out->write(' ');
 
-      SbString s = name.getString();
-      if (multiref) {
-        s += SoBase::refwriteprefix->getString();
-        s.addIntString(refid);
-      }
-      out->write(s.getString());
+      out->write(writename.getString());
       if (!out->isBinary()) out->write(' ');
     }
 
@@ -1030,7 +1203,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     // FIXME: accessing out->sobase2id directly takes a "friend
     // SoBase" in the SoOutput class definition. Should fix with
     // proper design for Coin-2. 20020426 mortene
-    if (out->findReference(this) != -1)
+    if (out->findReference(this) != REFID_FIRSTWRITE)
       out->sobase2id->remove((unsigned long)this);
   }
   else {

@@ -98,6 +98,7 @@ SoOutput::SoOutput(void)
 {
   this->constructorCommon();
   this->sobase2id = NULL;
+  this->defnames = NULL;
 }
 
 /*!
@@ -109,6 +110,7 @@ SoOutput::SoOutput(SoOutput * dictOut)
   assert(dictOut != NULL);
   this->constructorCommon();
   this->sobase2id = new SbDict(*(dictOut->sobase2id));
+  this->defnames = new SbDict(*(dictOut->defnames));
 }
 
 /*!
@@ -740,6 +742,7 @@ SoOutput::reset(void)
 {
   this->closeFile();
   delete this->sobase2id; this->sobase2id = NULL;
+  delete this->defnames; this->defnames = NULL;
 
   this->usersetfp = FALSE;
   this->disabledwriting = FALSE;
@@ -923,7 +926,7 @@ SoOutput::addReference(const SoBase * base)
 }
 
 /*!
-  Returns the unique identifier for \a base.
+  Returns the unique identifier for \a base or -1 if not found.
 */
 int
 SoOutput::findReference(const SoBase * base) const
@@ -934,6 +937,53 @@ SoOutput::findReference(const SoBase * base) const
   SbBool ok = this->sobase2id && this->sobase2id->find((unsigned long)base, id);
   return ok ? (int)id : -1;
 }
+
+/*!
+  Sets the reference for \a base manually.
+*/
+void
+SoOutput::setReference(const SoBase * base, int refid)
+{
+  if (!this->sobase2id) this->sobase2id = new SbDict;
+  this->sobase2id->enter((unsigned long)base, (void *)refid);
+}
+
+/*!
+  Adds \a name to the set of currently DEF'ed node names so far in the output 
+  process.
+*/
+void 
+SoOutput::addDEFNode(SbName name)
+{
+  void * value = NULL;
+  if (!this->defnames) this->defnames = new SbDict;
+  this->defnames->enter((unsigned long)name.getString(), value);
+}
+
+/*!
+  Checks whether \a name is already DEF'ed at this point in the output process.
+  Returns TRUE if \a name is DEF'ed.
+*/
+SbBool 
+SoOutput::lookupDEFNode(SbName name)
+{
+  void * value;
+  if (!this->defnames) this->defnames = new SbDict;
+  return this->defnames->find((unsigned long)name.getString(), value);
+}
+
+/*!
+  Removes \a name from the set of DEF'ed node names. Used after the last
+  reference to a DEF'ed node if we want to reuse the DEF at a later point
+  in the file.
+*/
+void 
+SoOutput::removeDEFNode(SbName name)
+{
+  assert(this->defnames);
+  if (this->defnames) this->defnames->remove((unsigned long)name.getString());
+}
+
 
 /*!
   Convert the short integer in \a s to most-significant-byte first format

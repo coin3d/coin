@@ -94,6 +94,11 @@ public:
 
   int addReference(const SoBase * base);
   int findReference(const SoBase * base) const;
+  void setReference(const SoBase * base, int refid);
+
+  void addDEFNode(SbName name);
+  SbBool lookupDEFNode(SbName name);
+  void removeDEFNode(SbName name);
 
 protected:
   SbBool isToBuffer(void) const;
@@ -127,6 +132,7 @@ private:
   SbDict * sobase2id;
   int nextreferenceid;
   uint32_t annotationbits;
+  SbDict * defnames;
 
   void constructorCommon(void);
 
