@@ -20905,6 +20905,152 @@ fi
 
 
 
+
+
+
+
+
+for ac_header in inttypes.h stdint.h sys/types.h stddef.h
+do
+as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo "$as_me:$LINENO: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+fi
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
+else
+  # Is the header compilable?
+echo "$as_me:$LINENO: checking $ac_header usability" >&5
+echo $ECHO_N "checking $ac_header usability... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <$ac_header>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_compiler=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_header_compiler=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+echo "${ECHO_T}$ac_header_compiler" >&6
+
+# Is the header present?
+echo "$as_me:$LINENO: checking $ac_header presence" >&5
+echo $ECHO_N "checking $ac_header presence... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <$ac_header>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_cxx_preproc_warn_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_header_preproc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+rm -f conftest.err conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+echo "${ECHO_T}$ac_header_preproc" >&6
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc in
+  yes:no )
+    { echo "$as_me:$LINENO: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&5
+echo "$as_me: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
+    (
+      cat <<\_ASBOX
+## ------------------------------------ ##
+## Report this to bug-autoconf@gnu.org. ##
+## ------------------------------------ ##
+_ASBOX
+    ) |
+      sed "s/^/$as_me: WARNING:     /" >&2
+    ;;
+  no:yes )
+    { echo "$as_me:$LINENO: WARNING: $ac_header: present but cannot be compiled" >&5
+echo "$as_me: WARNING: $ac_header: present but cannot be compiled" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: check for missing prerequisite headers?" >&5
+echo "$as_me: WARNING: $ac_header: check for missing prerequisite headers?" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
+    (
+      cat <<\_ASBOX
+## ------------------------------------ ##
+## Report this to bug-autoconf@gnu.org. ##
+## ------------------------------------ ##
+_ASBOX
+    ) |
+      sed "s/^/$as_me: WARNING:     /" >&2
+    ;;
+esac
+echo "$as_me:$LINENO: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  eval "$as_ac_Header=$ac_header_preproc"
+fi
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
+
+fi
+if test `eval echo '${'$as_ac_Header'}'` = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
+_ACEOF
+
+fi
+
+done
+
 echo "$as_me:$LINENO: checking standard bytesize typedefs" >&5
 echo $ECHO_N "checking standard bytesize typedefs... $ECHO_C" >&6
 cat >conftest.$ac_ext <<_ACEOF
@@ -20926,6 +21072,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -20976,7 +21125,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-cat >>confdefs.h <<_ACEOF
+cat >>confdefs.h <<\_ACEOF
 #define COIN_INT8_T int8_t
 _ACEOF
 
@@ -20986,7 +21135,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-cat >>confdefs.h <<_ACEOF
+cat >>confdefs.h <<\_ACEOF
 #define COIN_UINT8_T uint8_t
 _ACEOF
 
@@ -20997,16 +21146,11 @@ _ACEOF
 
 
 cat >>confdefs.h <<_ACEOF
-#define COIN_INT16_T int16_t
-_ACEOF
-
-
-cat >>confdefs.h <<_ACEOF
 #define HAVE_UINT16_T 1
 _ACEOF
 
 
-cat >>confdefs.h <<_ACEOF
+cat >>confdefs.h <<\_ACEOF
 #define COIN_UINT16_T uint16_t
 _ACEOF
 
@@ -21016,7 +21160,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-cat >>confdefs.h <<_ACEOF
+cat >>confdefs.h <<\_ACEOF
 #define COIN_INT32_T int32_t
 _ACEOF
 
@@ -21026,7 +21170,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-cat >>confdefs.h <<_ACEOF
+cat >>confdefs.h <<\_ACEOF
 #define COIN_UINT32_T uint32_t
 _ACEOF
 
@@ -21036,7 +21180,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-cat >>confdefs.h <<_ACEOF
+cat >>confdefs.h <<\_ACEOF
 #define COIN_INT64_T int64_t
 _ACEOF
 
@@ -21046,7 +21190,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-cat >>confdefs.h <<_ACEOF
+cat >>confdefs.h <<\_ACEOF
 #define COIN_UINT64_T uint64_t
 _ACEOF
 
@@ -21056,7 +21200,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-cat >>confdefs.h <<_ACEOF
+cat >>confdefs.h <<\_ACEOF
 #define COIN_INTPTR_T intptr_t
 _ACEOF
 
@@ -21077,6 +21221,7 @@ else
 echo "${ECHO_T}not available" >&6
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for int8_t type or equivalent" >&5
 echo $ECHO_N "checking for int8_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in int8_t char
@@ -21101,6 +21246,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21146,6 +21294,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21224,6 +21375,7 @@ else
 fi
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for uint8_t type or equivalent" >&5
 echo $ECHO_N "checking for uint8_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in uint8_t u_int8_t "unsigned char"
@@ -21248,6 +21400,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21293,6 +21448,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21372,6 +21530,7 @@ fi
 
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for int16_t type or equivalent" >&5
 echo $ECHO_N "checking for int16_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in int16_t short int
@@ -21396,6 +21555,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21441,6 +21603,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21519,6 +21684,7 @@ else
 fi
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for uint16_t type or equivalent" >&5
 echo $ECHO_N "checking for uint16_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in uint16_t u_int16_t "unsigned short" "unsigned int"
@@ -21543,6 +21709,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21588,6 +21757,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21667,6 +21839,7 @@ fi
 
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for int32_t type or equivalent" >&5
 echo $ECHO_N "checking for int32_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in int32_t int long
@@ -21691,6 +21864,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21736,6 +21912,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21814,6 +21993,7 @@ else
 fi
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for uint32_t type or equivalent" >&5
 echo $ECHO_N "checking for uint32_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in uint32_t u_int32_t "unsigned int" "unsigned long"
@@ -21838,6 +22018,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21883,6 +22066,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -21962,6 +22148,7 @@ fi
 
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for int64_t type or equivalent" >&5
 echo $ECHO_N "checking for int64_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in int64_t long int "long long" __int64
@@ -21986,6 +22173,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -22031,6 +22221,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -22108,6 +22301,7 @@ else
 fi
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for uint64_t type or equivalent" >&5
 echo $ECHO_N "checking for uint64_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in uint64_t u_int64_t "unsigned long" "unsigned int" "unsigned long long" "unsigned __int64"
@@ -22132,6 +22326,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -22177,6 +22374,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -22255,6 +22455,7 @@ fi
 
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for intptr_t type or equivalent" >&5
 echo $ECHO_N "checking for intptr_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in intptr_t int long "long long" __int64
@@ -22279,6 +22480,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -22324,6 +22528,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -22401,6 +22608,7 @@ else
 fi
 
   sim_ac_searching=true
+
 echo "$as_me:$LINENO: checking for uintptr_t type or equivalent" >&5
 echo $ECHO_N "checking for uintptr_t type or equivalent... $ECHO_C" >&6
 for sim_ac_type in uintptr_t u_intptr_t "_W64 unsigned int" "unsigned int" "unsigned long" u_int64_t "unsigned long long" "unsigned __int64"
@@ -22425,6 +22633,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
@@ -22470,6 +22681,9 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
+#ifdef HAVE_STDDEF_H
+#include <stddef.h>
+#endif /* HAVE_STDDEF_H */
 
 int
 main ()
