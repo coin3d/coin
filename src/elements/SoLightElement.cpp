@@ -46,7 +46,9 @@
   to this list is passed along to the other elements.
 */
 
-SO_ELEMENT_SOURCE(SoLightElement);
+
+// need a custom constructor to disable refcounting in node list
+SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoLightElement);
 
 
 // doc from parent
@@ -54,6 +56,18 @@ void
 SoLightElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoLightElement, inherited);
+}
+
+/*!
+  The constructor
+*/
+SoLightElement::SoLightElement(void)
+{
+  this->setTypeId(SoLightElement::classTypeId);
+  this->setStackIndex(SoLightElement::classStackIndex);
+  // this is safe since a node should never be deleted while it's
+  // active during a traversal
+  this->lights.addReferences(FALSE);
 }
 
 /*!
