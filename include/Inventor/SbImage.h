@@ -26,7 +26,7 @@
 
 class SbImage;
 
-typedef void SbImageScheduleReadCB(const SbString &, SbImage *, void *);
+typedef SbBool SbImageScheduleReadCB(const SbString &, SbImage *, void *);
 
 class COIN_DLL_API SbImage {
 public:
@@ -67,7 +67,7 @@ public:
   // methods for delaying image loading until it is actually needed.
   void readLock(void) const;
   void readUnlock(void) const;
-  
+
   SbBool scheduleReadFile(SbImageScheduleReadCB * cb,
                           void * closure,
                           const SbString & filename,

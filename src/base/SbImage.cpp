@@ -256,8 +256,10 @@ SbImage::getValue(SbVec2s & size, int & bytesperpixel) const
   if (THIS->schedulecb) {
     SbImage * thisp = (SbImage*) this;
     // start a thread to read the image.
-    THIS->schedulecb(THIS->schedulename, thisp, THIS->scheduleclosure);
-    THIS->schedulecb = NULL;
+    SbBool scheduled = THIS->schedulecb(THIS->schedulename, thisp, THIS->scheduleclosure);
+    if (scheduled) {
+      THIS->schedulecb = NULL;
+    }
   }
   size = THIS->size;
   bytesperpixel = THIS->bpp;
