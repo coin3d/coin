@@ -44,6 +44,7 @@ class SoPathSensorP {
 public:
   SoFullPath * path; // to audit path
   SoNode * headnode; // to audit nodes in path
+  SoPathSensor::TriggerType triggertype;
 };
 
 
@@ -68,12 +69,13 @@ SoPathSensor::SoPathSensor(SoSensorCB * func, void * data)
   this->commonConstructor();
 }
 
-void 
+void
 SoPathSensor::commonConstructor(void)
 {
   PRIVATE(this) = new SoPathSensorP;
   PRIVATE(this)->path = NULL;
   PRIVATE(this)->headnode = NULL;
+  PRIVATE(this)->triggertype = PATH_AND_NODES;
 }
 
 
@@ -138,6 +140,30 @@ SoPathSensor::getAttachedPath(void) const
   return PRIVATE(this)->path;
 }
 
+/*!
+  Set the trigger type for this sensor.
+
+  The default is PATH_AND_NODES.
+
+  \since 2003-02-25
+*/
+void
+SoPathSensor::setTriggerType(const TriggerType type)
+{
+  PRIVATE(this)->triggertype = type;
+}
+
+/*!
+  Return the trigger type for this sensor.
+
+  \since 2003-02-25
+*/
+SoPathSensor::TriggerType
+SoPathSensor::getTriggerType(void) const
+{
+  return PRIVATE(this)->triggertype;
+}
+
 // Doc from superclass.
 void
 SoPathSensor::notify(SoNotList * l)
@@ -154,11 +180,11 @@ SoPathSensor::notify(SoNotList * l)
   // if the path triggered the notification, we should always trigger
   if (firstbase == (SoBase*) (PRIVATE(this)->path)) {
     inherited::notify(l);
-  } 
+  }
   else {
     // we came here because the root node notified us. For now we
     // always schedule (by calling SoDataSensor::notify()), but this
-    // will be fixed soon. pederb, 2002-02-25
+    // will be fixed soon. pederb, 2003-02-25
     inherited::notify(l);
   }
 }
@@ -171,10 +197,9 @@ SoPathSensor::dyingReference(void)
   // didn't attach this sensor to a new path.
 
   SoPath * deadpath = this->getAttachedPath();
-  if (deadpath) deadpath->ref
 
   this->invokeDeleteCallback();
-  
+
   if (this->getAttachedPath() == deadpath) {
     this->detach();
   }
