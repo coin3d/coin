@@ -315,6 +315,7 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   // mortene.
   unsigned long chksum = 0xdeadbeef;
   for (i = first; i <= last; i++) { chksum ^= (unsigned long)(*this)[i]; }
+  SbBool changedetected = FALSE;
 #endif // COIN_DEBUG
 
   SoAction::PathCode pathcode = action->getCurPathCode();
@@ -325,7 +326,12 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
     // always traverse all nodes.
     action->pushCurPath();
     for (i = first; (i <= last) && !action->hasTerminated(); i++) {
-      assert((i < this->getLength()) && "do not change scene graph layout during traversal!");
+#if COIN_DEBUG
+      if (i >= this->getLength()) {
+        changedetected = TRUE;
+        break;
+      }
+#endif // COIN_DEBUG
       node = (*this)[i];
       action->popPushCurPath(i, node);
       action->traverse(node);
@@ -334,7 +340,12 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
     break;
   case SoAction::OFF_PATH:
     for (i = first; (i <= last) && !action->hasTerminated(); i++) {      
-      assert((i < this->getLength()) && "do not change scene graph layout during traversal!");
+#if COIN_DEBUG
+      if (i >= this->getLength()) {
+        changedetected = TRUE;
+        break;
+      }
+#endif // COIN_DEBUG
       node = (*this)[i];
       // only traverse nodes that affects state
       if (node->affectsState()) {
@@ -346,7 +357,12 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
     break;
   case SoAction::IN_PATH:
     for (i = first; (i <= last) && !action->hasTerminated(); i++) {
-      assert((i < this->getLength()) && "do not change scene graph layout during traversal!");
+#if COIN_DEBUG
+      if (i >= this->getLength()) {
+        changedetected = TRUE;
+        break;
+      }
+#endif // COIN_DEBUG
       node = (*this)[i];
       action->pushCurPath(i, node);
       // if we're OFF_PATH after pushing, we only traverse if the node
@@ -364,8 +380,17 @@ SoChildList::traverse(SoAction * const action, const int first, const int last)
   }
 
 #if COIN_DEBUG
-  for (i = last; i >= first; i--) { chksum ^= (unsigned long)(*this)[i]; }
-  assert((chksum == 0xdeadbeef) && "do not change scene graph layout during traversal!");
+  if (!changedetected) {
+    for (i = last; i >= first; i--) { chksum ^= (unsigned long)(*this)[i]; }
+    if (chksum != 0xdeadbeef) changedetected = TRUE;
+  }
+  if (changedetected) {
+    SoDebugError::postWarning("SoChildList::traverse",
+                              "Detected a scene graph change during traversal. This is considered "
+                              "to be extremely dangerous, and we strongly advice you to "
+                              "change your code and/or reorganize your scene graph so that this "
+                              "doesn't happen.");
+  }
 #endif // COIN_DEBUG
 }
 
