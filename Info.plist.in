@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Inventor</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Coin framework, copyright Systems in Motion AS 1998-2004</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.coin3d.Coin.framework</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@COIN_VERSION@</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>@COIN_VERSION@</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright Systems in Motion AS 1998-2004</string>
+</dict>
+</plist>

@@ -26,7 +26,9 @@ BUILT_SOURCES = \
 	include/Inventor/SbBasic.h \
 	include/Inventor/system/gl.h \
 	include/Inventor/system/inttypes.h \
-	coin-@CONFIG@.cfg
+	coin-@CONFIG@.cfg \
+	Info.plist \
+	version.plist
 
 CLEANFILES = \
 	coin@COIN_MAJOR_VERSION@.dsp \
@@ -37,6 +39,8 @@ CLEANFILES = \
 
 DISTCLEANFILES = \
 	coin-@CONFIG@.cfg \
+	Info.plist \
+	version.plist
 	docs/coin.doxygen \
 	docs/coin.doxygen.bak
 
@@ -46,6 +50,11 @@ dist_m4data_DATA = cfg/coin.m4
 
 cfgdatadir = $(datadir)/Coin/conf
 cfgdata_DATA = coin-@CONFIG@.cfg
+
+if MAC_FRAMEWORK
+frameworkdatadir = $(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/Versions/$(MAC_FRAMEWORK_VERSION)/Resources
+frameworkdata_DATA = Info.plist version.plist
+endif
 endif
 
 EXTRA_DIST = \
@@ -62,7 +71,8 @@ EXTRA_DIST = \
 	RELNOTES \
 	bootstrap \
 	coin.cfg.in \
-	Info.plist \
+	Info.plist.in \
+	version.plist.in \
 	docs/ChangeLog.1999 \
 	docs/ChangeLog.2000 \
 	docs/ChangeLog.2001 \
@@ -136,6 +146,12 @@ EXTRA_DIST = \
 
 coin-@CONFIG@.cfg: config.status $(srcdir)/coin.cfg.in
 	@$(SHELL) config.status --file=$@:coin.cfg.in
+
+Info.plist: config.status $(srcdir)/Info.plist.in
+	@$(SHELL) config.status --file=$@:Info.plist.in
+
+version.plist: config.status $(srcdir)/version.plist.in
+	@$(SHELL) config.status --file=$@:version.plist.in
 
 # sources needed to generate docs must be created by this rule
 built-sources: $(BUILT_SOURCES)
