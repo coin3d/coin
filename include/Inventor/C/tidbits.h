@@ -62,6 +62,7 @@ COIN_DLL_API SbBool coin_isspace(const char c);
 COIN_DLL_API SbBool coin_is_power_of_two(uint32_t x);
 COIN_DLL_API uint32_t coin_next_power_of_two(uint32_t x);
 COIN_DLL_API uint32_t coin_geq_power_of_two(uint32_t x);
+COIN_DLL_API int32_t coin_ilogb(int32_t x);
 
 COIN_DLL_API void coin_viewvolume_jitter(int numpasses, int curpass, const int * vpsize, float * jitter);
 
