@@ -1,22 +1,28 @@
 ## Process this file with automake to generate Makefile.in.
 
 BUILT_SOURCES = \
+	gl.h \
 	inttypes.h
 
 DISTCLEANFILES = \
+	gl.h \
 	inttypes.h
 
 EXTRA_DIST = \
-	inttypes.h.in \
-	gl.h
+	gl.h.in \
+	inttypes.h.in
 
-inttypes.h: $(srcdir)/inttypes.h.in $(top_builddir)/config.status
+gl.h: $(srcdir)/inttypes.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
+
+inttypes.h: $(srcdir)/gl.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(MAKE) include/Inventor/system/gl.h )
 
 # header installation information
 
 systemincdir = $(includedir)/Inventor/system
 nodist_systeminc_HEADERS = \
+	gl.h \
 	inttypes.h
 
 install-nodist_systemincHEADERS: $(nodist_systeminc_HEADERS)

@@ -108,6 +108,10 @@ OBJEXT = @OBJEXT@
 PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 RFC822_DATE = @RFC822_DATE@
+SIM_INCLUDE_GLEXT_H = @SIM_INCLUDE_GLEXT_H@
+SIM_INCLUDE_GLU_H = @SIM_INCLUDE_GLU_H@
+SIM_INCLUDE_GL_H = @SIM_INCLUDE_GL_H@
+SIM_INCLUDE_WINDOWS_H = @SIM_INCLUDE_WINDOWS_H@
 STRIP = @STRIP@
 SUFFIX = @SUFFIX@
 SUPERGLUPREFIX = @SUPERGLUPREFIX@
@@ -132,22 +136,25 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 BUILT_SOURCES = \
+	gl.h \
 	inttypes.h
 
 
 DISTCLEANFILES = \
+	gl.h \
 	inttypes.h
 
 
 EXTRA_DIST = \
-	inttypes.h.in \
-	gl.h
+	gl.h.in \
+	inttypes.h.in
 
 
 
 # header installation information
 systemincdir = $(includedir)/Inventor/system
 nodist_systeminc_HEADERS = \
+	gl.h \
 	inttypes.h
 
 subdir = include/Inventor/system
@@ -322,8 +329,11 @@ uninstall-am: uninstall-info-am uninstall-nodist_systemincHEADERS
 	uninstall-info-am uninstall-nodist_systemincHEADERS
 
 
-inttypes.h: $(srcdir)/inttypes.h.in $(top_builddir)/config.status
+gl.h: $(srcdir)/inttypes.h.in $(top_builddir)/config.status
 	@( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
+
+inttypes.h: $(srcdir)/gl.h.in $(top_builddir)/config.status
+	@( cd $(top_builddir); $(MAKE) include/Inventor/system/gl.h )
 
 install-nodist_systemincHEADERS: $(nodist_systeminc_HEADERS)
 	@$(NORMAL_INSTALL)
