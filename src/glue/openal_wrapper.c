@@ -43,8 +43,13 @@
 #endif /* HAVE_OPENAL */
 
 #if OPENALWRAPPER_ASSUME_OPENAL
+#if defined HAVE_AL_AL_H
 #include <AL/al.h>
 #include <AL/alc.h>
+#elif defined HAVE_OPENAL_AL_H
+#include <OpenAL/al.h>
+#include <OpenAL/alc.h>
+#endif 
 #endif /* OPENALWRAPPER_ASSUME_OPENAL */
 
 #include <openal_wrapper.h>
