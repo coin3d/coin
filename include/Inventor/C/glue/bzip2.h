@@ -29,6 +29,7 @@
 #endif
 
 #include <Inventor/C/basic.h>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,11 +39,37 @@ extern "C" {
 }
 #endif /* emacs indentation */
 
-int cc_bzip2_available(void);
+int cc_bzglue_available(void);
 
+const char * cc_bzglue_BZ2_bzlibVersion(void);
+void * cc_bzglue_BZ2_bzReadOpen(int * bzerror,
+                                FILE * f,
+                                int verbosity,
+                                int small,
+                                void * unused,
+                                int nunused);
+void cc_bzglue_BZ2_bzReadClose(int * bzerror, 
+                               void * bzfile); 
+int cc_bzglue_BZ2_bzRead(int * bzerror, 
+                         void * bzfile, 
+                         void * buf, 
+                         int len);
+void * cc_bzglue_BZ2_bzWriteOpen(int * bzerror,      
+                                 FILE * fp, 
+                                 int blocksize100k, 
+                                 int verbosity, 
+                                 int workfactor); 
+void cc_bzglue_BZ2_bzWriteClose(int * bzerror, 
+                                void * bzfile, 
+                                int abandon, 
+                                unsigned int * nbytesin, 
+                                unsigned int * nbytesout);
+void cc_bzglue_BZ2_bzWrite(int * bzerror, 
+                           void * bzfile, 
+                           void * buf, 
+                           int len);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
 #endif /* !COIN_GLUE_BZIP2_H */
-

@@ -24,6 +24,7 @@
 #include "SoInput_Reader.h"
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/C/glue/zlib.h>
+#include <Inventor/C/glue/bzip2.h>
 
 #include <string.h>
 #include <assert.h>
@@ -38,12 +39,15 @@
 #ifdef HAVE_IO_H
 #include <io.h> // Win32 dup()
 #endif // HAVE_IO_H
-
 #include "gzmemio.h"
 
-#if defined(HAVE_BZIP2) || defined(LIBBZIP2_RUNTIME_LINKING)
-#include <bzlib.h>
-#endif
+#ifndef BZ_OK
+#define BZ_OK 0
+#endif // BZ_OK
+
+#ifndef BZ_STREAM_END
+#define BZ_STREAM_END 4
+#endif // BZ_STREAM_END
 
 //
 // abstract class
@@ -85,15 +89,24 @@ SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
   (void) fseek(fp, offset, SEEK_SET);
   fflush(fp); // needed since we fetch the file descriptor later
 
-#ifdef HAVE_BZIP2
   if (header[0] == 'B' && header[1] == 'Z') {
-    int bzerror = BZ_OK;
-    void * bzfp = BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
-    if ((bzerror == BZ_OK) && (bzfp != NULL)) {
-      reader = new SoInput_BZ2FileReader(fullname.getString(), bzfp);
+    if (!cc_bzglue_available()) {
+      SoDebugError::postWarning("SoInput_Reader::createReader",
+                                "File seems to be in bzip2 format, but libbz2 support is "
+                                "not available.");
+    }
+    else {
+      int bzerror = BZ_OK;
+      void * bzfp = cc_bzglue_BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
+      if ((bzerror == BZ_OK) && (bzfp != NULL)) {
+        reader = new SoInput_BZ2FileReader(fullname.getString(), bzfp);
+      }
+      else {
+        SoDebugError::postWarning("SoInput_Reader::createReader",
+                                  "Unable to open bzip2 file.");
+      }
     }
   }
-#endif // HAVE_BZIP2
   if ((reader == NULL) && 
       (header[0] == 0x1f) && 
       (header[1] == 0x8b)) {
@@ -285,7 +298,7 @@ SoInput_BZ2FileReader::~SoInput_BZ2FileReader()
 {
   if (this->bzfp) {
     int bzerror = BZ_OK;
-    BZ2_bzReadClose(&bzerror, this->bzfp);
+    cc_bzglue_BZ2_bzReadClose(&bzerror, this->bzfp);
   }
 }
 
@@ -301,11 +314,11 @@ SoInput_BZ2FileReader::readBuffer(char * buf, const size_t readlen)
   if (this->bzfp == NULL) return -1;
 
   int bzerror = BZ_OK;
-  int ret = BZ2_bzRead(&bzerror, this->bzfp,
-                       buf, readlen);
+  int ret = cc_bzglue_BZ2_bzRead(&bzerror, this->bzfp,
+                                 buf, readlen);
   if ((bzerror != BZ_OK) && (bzerror != BZ_STREAM_END)) {
     ret = -1;
-    BZ2_bzReadClose(&bzerror, this->bzfp);
+    cc_bzglue_BZ2_bzReadClose(&bzerror, this->bzfp);
     this->bzfp = NULL;
   }
   return ret;
@@ -316,3 +329,7 @@ SoInput_BZ2FileReader::getFilename(void)
 {
   return this->filename;
 }
+
+#undef BZ_OK
+#undef BZ_STREAM_END
+

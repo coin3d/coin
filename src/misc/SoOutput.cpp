@@ -51,6 +51,7 @@
 #include "SoOutput_Writer.h"
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/C/glue/zlib.h>
+#include <Inventor/C/glue/bzip2.h>
 
 #include <assert.h>
 #include <string.h>
@@ -230,9 +231,9 @@ SoOutput_compression_list_init(void)
   if (cc_zlibglue_available()) {
     SoOutput_compmethods->append(SbName("GZIP"));
   }
-#ifdef HAVE_BZIP2
-  SoOutput_compmethods->append(SbName("BZIP2"));
-#endif // HAVE_BZIP2
+  if (cc_bzglue_available()) {
+    SoOutput_compmethods->append(SbName("BZIP2"));
+  }
   coin_atexit((coin_atexit_f*) SoOutput_compression_list_cleanup, 0);
 }
 
@@ -413,18 +414,16 @@ SoOutput::setCompression(const SbName & compmethod, const float level)
   PRIVATE(this)->compmethod = compmethod;
   
   if (compmethod == "GZIP") {
-    if (cc_zlibglue_available()) {
-      return TRUE;
-    }
-    else {
-      SoDebugError::postWarning("SoOutput::setCompression",
-                                "Requested GZIP compression, but zlib is not available.");
-
-    }
+    if (cc_zlibglue_available()) return TRUE;
+    SoDebugError::postWarning("SoOutput::setCompression",
+                              "Requested GZIP compression, but zlib is not available.");
+    
   }
-#ifdef HAVE_BZIP2
-  if (compmethod == "BZIP2") return TRUE;
-#endif // HAVE_BZIP2
+  if (compmethod == "BZIP2") {
+    if (cc_bzglue_available()) return TRUE;
+    SoDebugError::postWarning("SoOutput::setCompression",
+                              "Requested BZIP2 compression, but libbz2 is not available.");
+  }
 
   PRIVATE(this)->compmethod = SbName("NONE");
   PRIVATE(this)->complevel = 0.0f;

@@ -25,9 +25,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SbName.h>
 #include <Inventor/C/glue/zlib.h>
+#include <Inventor/C/glue/bzip2.h>
 #include <string.h>
 #include <assert.h>
-
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -41,7 +41,13 @@
 #include <io.h> // Win32 dup()
 #endif // HAVE_IO_H
 
-#include <bzlib.h>
+#ifndef BZ_OK
+#define BZ_OK 0
+#endif // BZ_OK
+
+#ifndef BZ_IO_ERROR
+#define BZ_IO_ERROR (-6)
+#endif // BZ_IO_ERROR
 
 //
 // abstract interface class
@@ -72,19 +78,21 @@ SoOutput_Writer::createWriter(FILE * fp,
     if (cc_zlibglue_available()) {
       return new SoOutput_GZFileWriter(fp, shouldclose, level);
     }
-    else {
-      SoDebugError::postWarning("SoOutput_Writer::createWriter",
-                                "Requested zlib compression, but zlib is not available.");
-    }
-    // return default writer
-    return new SoOutput_FileWriter(fp, shouldclose);
+    SoDebugError::postWarning("SoOutput_Writer::createWriter",
+                              "Requested zlib compression, but zlib is not available.");
   }
-#ifdef HAVE_BZIP2
   if (compmethod == "BZIP2") {
-    return new SoOutput_BZ2FileWriter(fp, shouldclose, level);
+    if (cc_bzglue_available()) {
+      return new SoOutput_BZ2FileWriter(fp, shouldclose, level);
+    }
+    SoDebugError::postWarning("SoOutput_Writer::createWriter",
+                              "Requested bzip2 compression, but libz2 is not available.");
   }
-#endif // HAVE_BZIP2
-  assert(compmethod == "NONE");
+  else if (compmethod != "NONE") {
+    SoDebugError::postWarning("SoOutput_Writer::createWriter",
+                              "Requested zlib compression, but zlib is not available.");
+
+  }
   return new SoOutput_FileWriter(fp, shouldclose);
 }
 
@@ -269,11 +277,11 @@ SoOutput_BZ2FileWriter::SoOutput_BZ2FileWriter(FILE * fp, const SbBool shouldclo
   int bzerror = BZ_OK;
   int numblocks =  (int) SbClamp((level * 8.0f) + 1.0f, 1.0f, 9.0f);
   
-  this->bzfp = BZ2_bzWriteOpen(&bzerror, fp, numblocks, 0, 0);
+  this->bzfp = cc_bzglue_BZ2_bzWriteOpen(&bzerror, fp, numblocks, 0, 0);
   if (this->bzfp && (bzerror != BZ_OK)) {
     SoDebugError::postWarning("SoOutput_BZ2FileWriter::SoOutput_BZF2ileWriter", 
                               "Unable to open file for writing.");    
-    BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
+    cc_bzglue_BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
     this->bzfp = NULL;
   }
 }
@@ -282,7 +290,7 @@ SoOutput_BZ2FileWriter::~SoOutput_BZ2FileWriter()
 {
   if (this->bzfp) {
     int bzerror = BZ_OK;
-    BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
+    cc_bzglue_BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
     if (bzerror != BZ_OK) {
       SoDebugError::postWarning("SoOutput_BZ2FileWriter::~SoOutput_BZ2FileWriter", 
                                 "Error when closing bzip2 file.");    
@@ -304,13 +312,13 @@ SoOutput_BZ2FileWriter::write(const char * buf, size_t numbytes, const SbBool bi
 {
   if (this->bzfp) {
     int bzerror = BZ_OK;
-    BZ2_bzWrite(&bzerror, this->bzfp, (void*) buf, numbytes);
+    cc_bzglue_BZ2_bzWrite(&bzerror, this->bzfp, (void*) buf, numbytes);
     
     if (bzerror != BZ_OK) {
       assert(bzerror == BZ_IO_ERROR);
       SoDebugError::postWarning("SoOutput_BZ2FileWriter::write", 
                                 "I/O error while writing.");    
-      BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
+      cc_bzglue_BZ2_bzWriteClose(&bzerror, this->bzfp, 0, NULL, NULL);
       this->bzfp = NULL;
       return 0;
     }
@@ -325,4 +333,7 @@ SoOutput_BZ2FileWriter::bytesInBuf(void)
 {
   return this->writecounter;
 }
+
+#undef BZ_OK
+#undef BZ_IO_ERROR
 
