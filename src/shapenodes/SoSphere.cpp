@@ -139,11 +139,18 @@ SoSphere::GLRender(SoGLRenderAction * action)
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
   else if (do3DTextures) flags |= SOGL_NEED_3DTEXCOORDS;
 
+#if 1
   sogl_render_sphere(this->radius.getValue(),
                      (int)(SPHERE_NUM_SLICES * complexity),
                      (int)(SPHERE_NUM_STACKS * complexity),
                      &mb,
                      flags);
+#else
+  sogl_render_sphere_new(this->radius.getValue(),
+                        (int)(SPHERE_NUM_SLICES * complexity) * (int)(SPHERE_NUM_STACKS * complexity),
+                        &mb,
+                        flags);
+#endif
 }
 
 // Documented in superclass.

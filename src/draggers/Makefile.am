@@ -51,6 +51,8 @@ PublicHeaders = \
 	../../include/Inventor/draggers/SoTranslate2Dragger.h
 PrivateHeaders =
 
+ExtraIncludeDirs = -I$(top_builddir)
+
 ##$ BEGIN TEMPLATE Make-Common(draggers, draggers)
 # **************************************************************************
 # This template depends on the following variables having been set up before
@@ -91,7 +93,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/src/extensions
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include $(ExtraIncludeDirs)
 
 # header installation
 if MAC_FRAMEWORK
@@ -145,6 +147,3 @@ install-libdraggersincHEADERS: $(libdraggersinc_HEADERS)
 	done
 
 ##$ END TEMPLATE Make-Common
-
-INCLUDES += -I$(top_builddir)
-

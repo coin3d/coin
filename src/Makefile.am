@@ -47,7 +47,7 @@ SUBDIRS = \
 	engines errors events fields glue manips misc lists nodekits nodes \
 	shapenodes projectors sensors upgraders 3ds $(THREADSDIR) $(VRML97DIR) .
 
-INCLUDES = -I$(top_srcdir)/include
+DEFAULT_INCLUDES = -I$(top_builddir)/include -I$(top_srcdir)/include
 
 if BUILD_WITH_MSVC
 lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib

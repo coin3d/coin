@@ -492,6 +492,215 @@ sogl_render_sphere(const float radius,
   glEnd(); // GL_TRIANGLES
 }
 
+static
+inline
+float
+vec3f_length(const float * vec)
+{
+  return (float) sqrt(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
+}
+
+static
+inline
+float
+vec3f_normalize(float * vec)
+{
+  const float len = vec3f_length(vec);
+  assert(len > 0.0f);
+  const float invlen = 1.0f / len;
+  vec[0] *= invlen;
+  vec[1] *= invlen;
+  vec[2] *= invlen;
+  return len;
+}
+
+static
+void
+sogl_render_sphere_squarediv2_rec(float * coords, int level, unsigned int flags)
+{
+  float center[3] = { (coords[0] + coords[3] + coords[6] + coords[ 9]) / 4.0f,
+                      (coords[1] + coords[4] + coords[7] + coords[10]) / 4.0f,
+                      (coords[2] + coords[5] + coords[8] + coords[11]) / 4.0f };
+  vec3f_normalize((float *) center);
+  if ( level > 0 ) {
+    float newcoords[3*4];
+    int i;
+    float * anchor = NULL, * first = NULL, * last = NULL;
+    for ( i = 0; i < 4; i++ ) {
+      switch ( i ) {
+      case 0:
+	anchor = coords + 0;
+	first = coords + 3;
+	last = coords + 9;
+	break;
+      case 1:
+	anchor = coords + 3;
+	first = coords + 6;
+	last = coords + 0;
+	break;
+      case 2:
+	anchor = coords + 6;
+	first = coords + 9;
+	last = coords + 3;
+	break;
+      case 3:
+	anchor = coords + 9;
+	first = coords + 0;
+	last = coords + 6;
+	break;
+      }
+      newcoords[0] = anchor[0];
+      newcoords[1] = anchor[1];
+      newcoords[2] = anchor[2];
+      newcoords[3] = (anchor[0] + first[0]) / 2.0f;
+      newcoords[4] = (anchor[1] + first[1]) / 2.0f;
+      newcoords[5] = (anchor[2] + first[2]) / 2.0f;
+      newcoords[6] = center[0];
+      newcoords[7] = center[1];
+      newcoords[8] = center[2];
+      newcoords[9] = (anchor[0] + last[0]) / 2.0f;
+      newcoords[10] = (anchor[1] + last[1]) / 2.0f;
+      newcoords[11] = (anchor[2] + last[2]) / 2.0f;
+      vec3f_normalize((float *) newcoords + 3);
+      vec3f_normalize((float *) newcoords + 9);
+      sogl_render_sphere_squarediv2_rec((float *) newcoords, level - 1, flags);
+    }
+  } else {
+    glBegin(GL_TRIANGLE_FAN);
+    glNormal3f(center[0], center[1], center[2]);
+    glVertex3f(center[0], center[1], center[2]);
+    glNormal3f(coords[0], coords[1], coords[2]);
+    glVertex3f(coords[0], coords[1], coords[2]);
+    glNormal3f(coords[3], coords[4], coords[5]);
+    glVertex3f(coords[3], coords[4], coords[5]);
+    glNormal3f(coords[6], coords[7], coords[8]);
+    glVertex3f(coords[6], coords[7], coords[8]);
+    glNormal3f(coords[9], coords[10], coords[11]);
+    glVertex3f(coords[9], coords[10], coords[11]);
+    glNormal3f(coords[0], coords[1], coords[2]);
+    glVertex3f(coords[0], coords[1], coords[2]);
+    glEnd(); // GL_TRIANGLE_FAN
+  }
+}
+
+// recursive subdivision of the squares in a cube
+void
+sogl_render_sphere_new1(const float radius, const int triangles, SoMaterialBundle * const material, const unsigned int flags)
+{
+  int i;
+  static const float diagonal = 1.0f / sqrt(3.0f);
+  static const float ndiagonal = -diagonal;
+  float coords[6*3];
+  const float invradius = 1.0f / radius;
+  glScalef(radius, radius, radius);
+  for ( i = 0; i < 6; i++ ) {
+    switch ( i ) {
+    case 0:
+      coords[0] = ndiagonal; coords[1]  =  diagonal; coords[2]  = ndiagonal;
+      coords[3] = ndiagonal; coords[4]  = ndiagonal; coords[5]  = ndiagonal;
+      coords[6] =  diagonal; coords[7]  = ndiagonal; coords[8]  = ndiagonal;
+      coords[9] =  diagonal; coords[10] =  diagonal; coords[11] = ndiagonal;
+      break;
+    case 1:
+      coords[0] = ndiagonal; coords[1]  =  diagonal; coords[2]  =  diagonal;
+      coords[3] =  diagonal; coords[4]  =  diagonal; coords[5]  =  diagonal;
+      coords[6] =  diagonal; coords[7]  = ndiagonal; coords[8]  =  diagonal;
+      coords[9] = ndiagonal; coords[10] = ndiagonal; coords[11] =  diagonal;
+      break;
+    case 2:
+      coords[0] =  diagonal; coords[1]  = ndiagonal; coords[2]  =  diagonal;
+      coords[3] =  diagonal; coords[4]  = ndiagonal; coords[5]  = ndiagonal;
+      coords[6] =  diagonal; coords[7]  =  diagonal; coords[8]  = ndiagonal;
+      coords[9] =  diagonal; coords[10] =  diagonal; coords[11] =  diagonal;
+      break;
+    case 3:
+      coords[0] = ndiagonal; coords[1]  = ndiagonal; coords[2]  =  diagonal;
+      coords[3] = ndiagonal; coords[4]  =  diagonal; coords[5]  =  diagonal;
+      coords[6] = ndiagonal; coords[7]  =  diagonal; coords[8]  = ndiagonal;
+      coords[9] = ndiagonal; coords[10] = ndiagonal; coords[11] = ndiagonal;
+      break;
+    case 4:
+      coords[0] = ndiagonal; coords[1]  =  diagonal; coords[2]  =  diagonal;
+      coords[3] = ndiagonal; coords[4]  =  diagonal; coords[5]  = ndiagonal;
+      coords[6] =  diagonal; coords[7]  =  diagonal; coords[8]  = ndiagonal;
+      coords[9] =  diagonal; coords[10] =  diagonal; coords[11] =  diagonal;
+      break;
+    case 5:
+      coords[0] = ndiagonal; coords[1]  = ndiagonal; coords[2]  =  diagonal;
+      coords[3] =  diagonal; coords[4]  = ndiagonal; coords[5]  =  diagonal;
+      coords[6] =  diagonal; coords[7]  = ndiagonal; coords[8]  = ndiagonal;
+      coords[9] = ndiagonal; coords[10] = ndiagonal; coords[11] = ndiagonal;
+      break;
+    }
+    sogl_render_sphere_squarediv2_rec((float *) coords, 2, flags);
+  }
+  glScalef(invradius, invradius, invradius);
+}
+
+
+// recursive subdivision of the triangles in an octahedron
+//      c0
+//      /\      .
+//   n3/__\n5
+//    /\  /\    .
+//   /__\/__\   .
+// c1   n4  c2
+
+static
+void
+sogl_render_sphere_tridiv4_rec(float * c0, float * c1, float * c2, int levelsleft, unsigned int flags)
+{
+  if ( levelsleft > 0 ) {
+    float n3[3] = { (c0[0] + c1[0]) / 2.0f, (c0[1] + c1[1]) / 2.0f, (c0[2] + c1[2]) / 2.0f };
+    float n4[3] = { (c1[0] + c2[0]) / 2.0f, (c1[1] + c2[1]) / 2.0f, (c1[2] + c2[2]) / 2.0f };
+    float n5[3] = { (c0[0] + c2[0]) / 2.0f, (c0[1] + c2[1]) / 2.0f, (c0[2] + c2[2]) / 2.0f };
+    vec3f_normalize(n3);
+    vec3f_normalize(n4);
+    vec3f_normalize(n5);
+    sogl_render_sphere_tridiv4_rec(c0, n3, n5, levelsleft - 1, flags);
+    sogl_render_sphere_tridiv4_rec(n3, c1, n4, levelsleft - 1, flags);
+    sogl_render_sphere_tridiv4_rec(n5, n4, c2, levelsleft - 1, flags);
+    sogl_render_sphere_tridiv4_rec(n3, n4, n5, levelsleft - 1, flags);
+  } else {
+    glNormal3f(c0[0], c0[1], c0[2]);
+    glVertex3f(c0[0], c0[1], c0[2]);
+    glNormal3f(c1[0], c1[1], c1[2]);
+    glVertex3f(c1[0], c1[1], c1[2]);
+    glNormal3f(c2[0], c2[1], c2[2]);
+    glVertex3f(c2[0], c2[1], c2[2]);
+  }
+}
+
+void
+sogl_render_sphere_new(const float radius, const int triangles, SoMaterialBundle * const material, const unsigned int flags)
+{
+  static float coords[6*3] = {
+    1, 0, 0,
+    0, 1, 0,
+    0, 0, 1,
+   -1, 0, 0,
+    0,-1, 0,
+    0, 0,-1
+  };
+  const float invradius = 1.0f / radius;
+  int levels = (int) ((log10(triangles) - 2.0f) * 4.0f); // some heuristics
+  fprintf(stderr, "wanted triangles: %i : levels %i\n", triangles, levels);
+  if ( triangles == 0 ) levels = 0;
+  glScalef(radius, radius, radius);
+  glBegin(GL_TRIANGLES);
+  sogl_render_sphere_tridiv4_rec(coords +  0, coords +  3, coords +  6, levels, flags);
+  sogl_render_sphere_tridiv4_rec(coords +  0, coords + 15, coords +  3, levels, flags);
+  sogl_render_sphere_tridiv4_rec(coords +  0, coords + 12, coords + 15, levels, flags);
+  sogl_render_sphere_tridiv4_rec(coords +  0, coords +  6, coords + 12, levels, flags);
+  sogl_render_sphere_tridiv4_rec(coords +  9, coords +  6, coords +  3, levels, flags);
+  sogl_render_sphere_tridiv4_rec(coords +  9, coords +  3, coords + 15, levels, flags);
+  sogl_render_sphere_tridiv4_rec(coords +  9, coords + 15, coords + 12, levels, flags);
+  sogl_render_sphere_tridiv4_rec(coords +  9, coords + 12, coords +  6, levels, flags);
+  glEnd();
+  glScalef(invradius, invradius, invradius);
+}
+
+
 //
 // the 12 triangles in the cube
 //
