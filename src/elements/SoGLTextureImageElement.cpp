@@ -25,6 +25,7 @@
 */
 
 #include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/misc/SoGLImage.h>
 
@@ -66,6 +67,7 @@ SoGLTextureImageElement::init(SoState * state)
   this->dlist = NULL;
   this->image = NULL;
   this->didapply = FALSE;
+  this->quality = -1.0f;
 
   // set these to illegal values to make sure things are initialized
   // the first time.
@@ -148,6 +150,7 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    translateWrap(image->getWrapS()),
                    model,
                    blendColor);
+    elem->quality = -1.0f;
     elem->image = image;
     elem->didapply = didapply;
     // FIXME: the next line causes a memory leak, according to
@@ -205,6 +208,12 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
     if (!elem->didapply) {
       elem->dlist->call(elem->state);
       elem->didapply = TRUE;
+      elem->quality = -1.0f;
+    }
+    float quality = SoTextureQualityElement::get(elem->state);
+    if (elem->quality != quality) {
+      elem->image->applyQuality(elem->dlist, quality);
+      elem->quality = quality;
     }
     if (int(elem->model) != elem->glmodel ||
         (elem->model == BLEND && elem->blendColor != elem->glblendcolor)) {

@@ -84,6 +84,7 @@
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -272,6 +273,9 @@ public:
   SoGLDisplayList * findDL(SoState * state);
   void tagDL(SoState * state);
   void unrefOldDL(SoState * state, const uint32_t maxage);
+  SoGLImage * owner; // for debugging only
+
+  void init(void);
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -286,20 +290,8 @@ public:
 SoGLImage::SoGLImage(void)
 {
   THIS = new SoGLImageP;
-  THIS->isregistered = FALSE;
-  THIS->bytes = NULL;
-  THIS->size.setValue(0,0);
-  THIS->numcomponents = 0;
-  THIS->wraps = SoGLImage::CLAMP;
-  THIS->wrapt = SoGLImage::CLAMP;
-  THIS->border = 0;
-  THIS->flags = USE_QUALITY_VALUE;
-  THIS->needtransparencytest = TRUE;
-  THIS->hastransparency = FALSE;
-  THIS->usealphatest = FALSE;
-  THIS->quality = 0.4f;
-
-  //   THIS->flags = USE_QUALITY_VALUE;
+  THIS->init(); // init members to default values
+  THIS->owner = this; // for debugging
 
   // check environment variables
   if (COIN_TEX2_LINEAR_LIMIT < 0.0f) {
@@ -372,8 +364,17 @@ SoGLImage::getTypeId(void) const
   return SoGLImage::getClassTypeId();
 }
 
+void
+SoGLImage::applyQuality(SoGLDisplayList * dl, const float quality)
+{
+  float oldquality = THIS->quality;
+  THIS->quality = quality;
+  THIS->applyFilter(dl->isMipMapTextureObject());
+  THIS->quality = oldquality;
+}
+
 /*!
-  Returns whether an SoGLImage instance.inherits (or is of) type \a
+  Returns whether an SoGLImage instance inherits (or is of) type \a
   type.
 */
 SbBool
@@ -382,7 +383,7 @@ SoGLImage::isOfType(SoType type) const
   return this->getTypeId().isDerivedFrom(type);
 }
 
-/*!
+/*!  
   Sets the data for this GL image. Should only be called when one
   of the parameters have changed, since this will cause the GL texture
   object to be recreated.  Caller is responsible for sending legal
@@ -391,31 +392,34 @@ SoGLImage::isOfType(SoType type) const
   implementations (GL_SGIS_texture_edge_clamp).
 
   For now, if quality > 0.5 when created, we create mipmaps, otherwise
-  a regular texture is created.  Be aware, if you for instance create a
-  texture with texture quality 0.4, and then later try to apply the
-  texture with a texture quality greater than 0.5, you will not get a
-  mipmap texture. If you suspect you might need a mipmap texture, it
-  should be created with a texture quality bigger than 0.5.
+  a regular texture is created.  Be aware, if you for instance create
+  a texture with texture quality 0.4, and then later try to apply the
+  texture with a texture quality greater than 0.5, the texture object
+  will be recreated as a mipmap texture object. This will happen only
+  once though, of course.
 
   If \a border != 0, the OpenGL texture will be created with this
-  border size. Be aware that this might be extremely slow on most
-  PC hardware.
+  border size. Be aware that this might be extremely slow on most PC
+  hardware.
 
   Normally, the OpenGL texture object isn't created until the first
   time it is needed, but if \a createinstate is != NULL, the texture
   object is created immediately. This is useful if you use a temporary
   buffer to hold the texture data. Be careful when using this feature,
   since the texture data might be needed at a later stage (for
-  instance to create a texture object for another context).
-  It will not be possible to create texture objects for other cache
-  contexts when \a createinstate is != NULL.
+  instance to create a texture object for another context).  It will
+  not be possible to create texture objects for other cache contexts
+  when \a createinstate is != NULL.
 
   Also if \a createinstate is supplied, and all the attributes are the
   same as the current data in the image, glTexSubImage() will be used
   to insert the image data instead of creating a new texture object.
   This is much faster on most OpenGL drivers, and is very useful, for
   instance when doing animated textures.
-*/
+  
+  If you supply NULL for \a bytes, the instance will be reset, causing
+  all display lists and memory to be freed.  */
+
 void
 SoGLImage::setData(const unsigned char * bytes,
                    const SbVec2s size,
@@ -427,6 +431,13 @@ SoGLImage::setData(const unsigned char * bytes,
                    SoState * createinstate)
 
 {
+  if (bytes == NULL) {
+    THIS->unrefDLists(createinstate);
+    if (THIS->isregistered) SoGLImage::unregisterImage(this);
+    THIS->init(); // init to default values
+    return;
+  }
+
   THIS->needtransparencytest = FALSE;
   THIS->hastransparency = FALSE;
   THIS->usealphatest = FALSE;
@@ -491,7 +502,7 @@ SoGLImage::setData(const unsigned char * bytes,
     }
   }
 
-  if (THIS->bytes && !THIS->isregistered) {
+  if (THIS->bytes && !THIS->isregistered && !(this->getFlags() & INVINCIBLE)) {
     THIS->isregistered = TRUE;
     SoGLImage::registerImage(this);
   }
@@ -582,6 +593,25 @@ SoGLImage::getGLDisplayList(SoState * state)
     dl = THIS->createGLDisplayList(state);
     if (dl) THIS->dlists.append(SoGLImageP::dldata(dl));
   }
+  if (!dl->isMipMapTextureObject() && THIS->bytes) {
+    float quality = SoTextureQualityElement::get(state);
+    float oldquality = THIS->quality;
+    THIS->quality = quality;
+    if (THIS->shouldCreateMipmap()) {
+      // recreate DL to get a mipmapped image
+      int n = THIS->dlists.getLength();
+      for (int i = 0; i < n; i++) {
+        if (THIS->dlists[i].dlist == dl) {
+          dl->unref(state); // unref old DL
+          dl = THIS->createGLDisplayList(state);
+          THIS->dlists[i].dlist = dl;
+          break;
+        }
+      }
+    }
+    else THIS->quality = oldquality;
+  }
+
   return dl;
 }
 
@@ -640,6 +670,23 @@ SoGLImage::getWrapT(void) const
 #undef THIS
 
 #ifndef DOXYGEN_SKIP_THIS
+
+void
+SoGLImageP::init(void)
+{
+  this->isregistered = FALSE;
+  this->bytes = NULL;
+  this->size.setValue(0,0);
+  this->numcomponents = 0;
+  this->wraps = SoGLImage::CLAMP;
+  this->wrapt = SoGLImage::CLAMP;
+  this->border = 0;
+  this->flags = SoGLImage::USE_QUALITY_VALUE;
+  this->needtransparencytest = TRUE;
+  this->hastransparency = FALSE;
+  this->usealphatest = FALSE;
+  this->quality = 0.4f;
+}
 
 // returns the number of bits set, and ets highbit to
 // the highest bit set.
@@ -890,7 +937,10 @@ SoGLImageP::reallyCreateTexture(SoState * state,
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
                   translate_wrap(state, this->wrapt));
 
-  this->applyFilter(mipmap);
+  // just initialize to a filter that is valid also for non mipmapped
+  // images. Filter will be applied later by SoGLTextureImageElement
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
   GLenum glformat;
   switch (numComponents) {
@@ -985,7 +1035,7 @@ SoGLImageP::unrefOldDL(SoState * state, const uint32_t maxage)
 #if COIN_DEBUG && 0 // debug
       SoDebugError::postInfo("SoGLImageP::unrefOldDL",
                              "DL killed because of old age: %p",
-                             data.dlist);
+                             this->owner);
 #endif // debug
       data.dlist->unref(state);
       this->dlists.removeFast(i);
