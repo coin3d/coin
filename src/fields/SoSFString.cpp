@@ -33,7 +33,6 @@
 */
 
 #include <Inventor/fields/SoSFString.h>
-#include <Inventor/fields/SoMFString.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
@@ -99,20 +98,4 @@ void
 SoSFString::setValue(const char * str)
 {
   this->setValue(SbString(str));
-}
-
-void
-SoSFString::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoMFString::getClassTypeId()) {
-    ((SoMFString *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFString::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

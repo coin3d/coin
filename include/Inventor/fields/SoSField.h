@@ -36,8 +36,6 @@ protected:
   SoSField(void);
 
 private:
-  virtual void convertTo(SoField * dest) const;
-
   static SoType classTypeId;
 };
 

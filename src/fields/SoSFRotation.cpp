@@ -37,9 +37,6 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/errors/SoReadError.h>
 
-#include <Inventor/fields/SoSFMatrix.h>
-#include <Inventor/fields/SoMFRotation.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -156,37 +153,4 @@ void
 SoSFRotation::setValue(const SbVec3f & axis, const float angle)
 {
   this->setValue(SbRotation(axis, angle));
-}
-
-
-void
-SoSFRotation::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFMatrix::getClassTypeId()) {
-    SbMatrix mat;
-    mat.setRotate(this->getValue());
-    ((SoSFMatrix *)dest)->setValue(mat);
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
-    SbVec3f vec;
-    float rad;
-    this->getValue().getValue(vec,rad);
-    ostr << vec[0] << " " << vec[1] << " " << vec[2] << "  " <<
-      rad << ends;
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-  else if (dest->getTypeId()==SoMFRotation::getClassTypeId()) {
-    ((SoMFRotation *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFRotation::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

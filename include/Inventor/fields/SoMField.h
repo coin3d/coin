@@ -40,8 +40,8 @@ public:
   virtual void deleteValues(int start, int num = -1);
   virtual void insertSpace(int start, int num);
 
-  SbBool set1(const int index, const char * const valstr);
-  void get1(const int index, SbString & valstr);
+  SbBool set1(const int index, const char * const valuestring);
+  void get1(const int index, SbString & valuestring);
 
   static void initClass(void);
 
@@ -69,7 +69,6 @@ private:
   virtual SbBool readBinaryValues(SoInput * in, int num);
   virtual void writeBinaryValues(SoOutput * out) const;
   virtual int getNumValuesPerLine(void) const;
-  virtual void convertTo(SoField * dest) const;
 
   static SoType classTypeId;
 };

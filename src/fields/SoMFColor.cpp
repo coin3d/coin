@@ -31,8 +31,6 @@
 */
 
 #include <Inventor/fields/SoMFColor.h>
-#include <Inventor/fields/SoSFColor.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -206,22 +204,4 @@ void
 SoMFColor::set1HSVValue(const int idx, const float hsv[3])
 {
   this->set1HSVValue(idx, hsv[0], hsv[1], hsv[2]);
-}
-
-
-void
-SoMFColor::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFColor::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFColor *)dest)->setValue((*this)[0]);
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFColor::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

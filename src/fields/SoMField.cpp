@@ -178,39 +178,46 @@ SoMField::makeRoom(int newnum)
 }
 
 /*!
-  Set the value at \a index to the value contained in \a valstr.
+  Set the value at \a index to the value contained in \a valuestring.
   Returns \c TRUE if a valid value for this field can be extracted
-  from \a valstr, otherwise \c FALSE.
+  from \a valuestring, otherwise \c FALSE.
 */
 SbBool
-SoMField::set1(const int index, const char * const valstr)
+SoMField::set1(const int index, const char * const valuestring)
 {
   SoInput in;
-  in.setBuffer((void *)valstr, strlen(valstr));
+  in.setBuffer((void *)valuestring, strlen(valuestring));
   if (!this->read1Value(&in, index)) return FALSE;
   this->valueChanged();
   return TRUE;
 }
 
 /*!
-  Return the value at \a index in the \a valstr string.
+  Return the value at \a index in the \a valuestring string.
 */
 void
-SoMField::get1(const int index, SbString & valstr)
+SoMField::get1(const int index, SbString & valuestring)
 {
+  // Note: this code has an almost verbatim copy in SoField::get(), so
+  // remember to update both places if any fixes are done.
+
   SoOutput out;
-  out.setHeaderString("");
+  // FIXME: wouldn't it be better to empty the headerstring like this
+  // than doing the stripping later on? 20000312 mortene.
+//    out.setHeaderString("");
+  const size_t STARTSIZE = 32;
+  void * buffer = malloc(STARTSIZE);
 
-  void * buffer = malloc(128);
-  out.setBuffer(buffer, 10, realloc);
-
-  this->evaluate();
+  out.setBuffer(buffer, STARTSIZE, realloc);
   this->write1Value(&out, index);
 
-  size_t dummy;
-  out.getBuffer(buffer, dummy);
-
-  valstr = (char *)buffer;
+  size_t size;
+  out.getBuffer(buffer, size);
+  // Strip off header.
+  char * start = strstr((char *)buffer, "\n\n");
+  assert(start != NULL);
+  start += 2;
+  valuestring = start;
   free(buffer);
 }
 
@@ -460,19 +467,6 @@ SoMField::insertSpace(int start, int num)
     char * move_to = ((char *)this->valuesPtr()) + (start + num) * fsize;
     (void)memcpy(move_to, move_from, fsize * num);
   }
-}
-
-// If there's any multiple value fields without conversion
-// functionality, calls to convertTo() will end up here.
-void
-SoMField::convertTo(SoField * dest) const
-{
-#if COIN_DEBUG
-  SoDebugError::postWarning("SoMField::convertTo",
-                            "Can't convert from %s to %s",
-                            this->getTypeId().getName().getString(),
-                            dest->getTypeId().getName().getString());
-#endif // COIN_DEBUG
 }
 
 #ifndef DOXYGEN_SKIP_THIS // Internal method.

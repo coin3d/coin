@@ -26,7 +26,6 @@
 */
 
 #include <Inventor/fields/SoMFUShort.h>
-#include <Inventor/fields/SoSFUShort.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -75,36 +74,4 @@ int
 SoMFUShort::getNumValuesPerLine(void) const
 {
   return 8;
-}
-
-void
-SoMFUShort::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFUShort::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFUShort *)dest)->setValue((*this)[0]);
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    const int num=this->getNum();
-    ostrstream ostr;
-    if (num!=1) ostr << "[ ";
-    for (int i=0;i<num;i++) {
-      if ((*this)[i]>0) ostr.flags(ios::hex|ios::showbase);
-      ostr << (*this)[i];
-      if (i<num-1) ostr << ", ";
-    }
-    if (num!=1) ostr << " ]";
-    ostr << ends;
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFUShort::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

@@ -30,9 +30,6 @@ class SoMFBitMask : public SoMFEnum {
 
 public:
   static void initClass(void);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOMFBITMASK_H

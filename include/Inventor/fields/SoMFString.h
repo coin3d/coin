@@ -37,9 +37,6 @@ public:
   void setValue(const char * string);
   void deleteText(const int fromline, const int fromchar,
                   const int toline, const int tochar);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOMFSTRING_H

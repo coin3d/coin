@@ -44,9 +44,6 @@ public:
 
                 const float a41, const float a42,
                 const float a43, const float a44);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOMFMATRIX_H

@@ -29,9 +29,6 @@
 */
 
 #include <Inventor/fields/SoMFUInt32.h>
-
-#include <Inventor/fields/SoSFUInt32.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -81,36 +78,4 @@ int
 SoMFUInt32::getNumValuesPerLine(void) const
 {
   return 8;
-}
-
-void
-SoMFUInt32::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFUInt32::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFUInt32 *)dest)->setValue((*this)[0]);
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    const int num=this->getNum();
-    ostrstream ostr;
-    if (num!=1) ostr << "[ ";
-    for (int i=0;i<num;i++) {
-      if ((*this)[i]>0) ostr.flags(ios::hex|ios::showbase);
-      ostr << (*this)[i];
-      if (i<num-1) ostr << ", ";
-    }
-    if (num!=1) ostr << " ]";
-    ostr << ends;
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFUInt32::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

@@ -31,7 +31,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoMFPath.h>
 #include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -99,22 +98,6 @@ SoSFPath::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
-void
-SoSFPath::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoMFPath::getClassTypeId()) {
-    ((SoMFPath *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFPath::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
-}
 
 // Overridden from parent to propagate write reference counting to
 // value member.

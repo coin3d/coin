@@ -31,9 +31,6 @@ class SoSFFloat : public SoSField {
 
 public:
   static void initClass(void);
-
-private:
-  virtual void convertTo(SoField *dest) const;
 };
 
 #endif // !COIN_SOSFFLOAT_H

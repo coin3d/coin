@@ -30,7 +30,6 @@
 */
 
 #include <Inventor/fields/SoMFRotation.h>
-#include <Inventor/fields/SoSFRotation.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -141,40 +140,4 @@ void
 SoMFRotation::setValue(const SbVec3f & axis, const float angle)
 {
   this->setValue(SbRotation(axis, angle));
-}
-
-void
-SoMFRotation::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFRotation::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFRotation *)dest)->setValue((*this)[0]);
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
-    SbVec3f vec;
-    float rad;
-    const int num=this->getNum();
-
-    if (num>1) ostr << "[ ";
-    for (int i=0;i<num;i++) {
-      (*this)[i].getValue(vec,rad);
-      ostr << vec[0] << " " << vec[1] << " " << vec[2] << "  " <<
-        rad;
-      if (i<num-1) ostr << ", ";
-    }
-    if (num>1) ostr << " ]";
-    ostr << ends;
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFRotation::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

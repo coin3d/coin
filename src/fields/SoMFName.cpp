@@ -30,8 +30,6 @@
 */
 
 #include <Inventor/fields/SoMFName.h>
-#include <Inventor/fields/SoSFName.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -97,34 +95,4 @@ void
 SoMFName::setValue(const char * str)
 {
   this->setValue(SbName(str));
-}
-
-void
-SoMFName::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFName::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFName *)dest)->setValue((*this)[0]);
-  }
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    SbString ostr;
-    const int num=this->getNum();
-    if (num>1) ostr += "[ ";
-    for (int i=0;i<num;i++) {
-      ostr += "\"";
-      ostr += (*this)[i].getString();
-      ostr += "\"";
-      if (i<num-1) ostr += ", ";
-    }
-    if (num>1) ostr += " ]";
-    ((SoSFString *)dest)->setValue(ostr.getString());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFName::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

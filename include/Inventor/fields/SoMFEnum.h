@@ -45,9 +45,6 @@ protected:
   int numEnums;
   int * enumValues;
   SbName * enumNames;
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOMFENUM_H

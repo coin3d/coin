@@ -289,10 +289,6 @@ private:
   \fn void SoField::writeValue(SoOutput * out) const
   Write field value(s).
 */
-/*!
-  \fn void SoField::convertTo(SoField * dest) const
-  Converts our field's value(s) to value(s) acceptable for the \a dest field.
-*/
 
 
 // *************************************************************************
@@ -902,7 +898,13 @@ SoField::set(const char * valuestring)
 void
 SoField::get(SbString & valuestring)
 {
+  // Note: this code has an almost verbatim copy in SoMField::get1(),
+  // so remember to update both places if any fixes are done.
+
   SoOutput out;
+  // FIXME: wouldn't it be better to empty the headerstring like this
+  // than doing the stripping later on? 20000312 mortene.
+//    out.setHeaderString("");
   const size_t STARTSIZE = 32;
   void * buffer = malloc(STARTSIZE);
 

@@ -32,9 +32,6 @@ class SoMFTime : public SoMField {
 
 public:
   static void initClass(void);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOMFTIME_H

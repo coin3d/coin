@@ -38,9 +38,6 @@ public:
   void setValue(const float rgb[3]);
   void setHSVValue(const float h, const float s, const float v);
   void setHSVValue(const float hsv[3]);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOSFCOLOR_H

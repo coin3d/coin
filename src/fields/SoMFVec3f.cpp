@@ -30,8 +30,6 @@
 */
 
 #include <Inventor/fields/SoMFVec3f.h>
-#include <Inventor/fields/SoSFVec3f.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -61,7 +59,7 @@ SbBool
 SoMFVec3f::read1Value(SoInput * in, int idx)
 {
   SbVec3f v;
-  if (!sosfvec3f_read_value(in, v)) return FALSE; 
+  if (!sosfvec3f_read_value(in, v)) return FALSE;
   this->set1Value(idx, v);
   return TRUE;
 }
@@ -126,21 +124,4 @@ SoMFVec3f::setValue(const float xyz[3])
 {
   if (xyz == NULL) this->allocValues(0);
   else this->setValue(SbVec3f(xyz));
-}
-
-void
-SoMFVec3f::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFVec3f::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFVec3f *)dest)->setValue((*this)[0]);
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFVec3f::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

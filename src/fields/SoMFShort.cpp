@@ -30,7 +30,6 @@
 */
 
 #include <Inventor/fields/SoMFShort.h>
-#include <Inventor/fields/SoSFShort.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -80,35 +79,4 @@ int
 SoMFShort::getNumValuesPerLine(void) const
 {
   return 8;
-}
-
-void
-SoMFShort::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFShort::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFShort *)dest)->setValue((*this)[0]);
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    const int num=this->getNum();
-    ostrstream ostr;
-    if (num!=1) ostr << "[ ";
-    for (int i=0;i<num;i++) {
-      ostr << (*this)[i];
-      if (i<num-1) ostr << ", ";
-    }
-    if (num!=1) ostr << " ]";
-    ostr << ends;
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFRotation::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

@@ -30,13 +30,9 @@
 */
 
 #include <Inventor/fields/SoMFBool.h>
-#include <Inventor/fields/SoSFBool.h>
-
-#include <Inventor/fields/SoSFString.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <malloc.h>
 
 
 SO_MFIELD_SOURCE_MALLOC(SoMFBool, SbBool, SbBool);
@@ -81,33 +77,4 @@ int
 SoMFBool::getNumValuesPerLine(void) const
 {
   return 8;
-}
-
-// Convert from our data format to the value format of the destination
-// field type.
-void
-SoMFBool::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFBool::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFBool *)dest)->setValue((*this)[0]);
-  }
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    const int num=this->getNum() - 1;
-    SbString ostr( "" );
-    if ( num != 0 ) ostr += "[ ";
-    for ( int i = 0; i < num; i++ )
-      ostr += ((*this)[i]) ? "TRUE, " : "FALSE, ";
-    ostr += ((*this)[num]) ? "TRUE" : "FALSE";
-    if ( num != 0 ) ostr += " ]";
-    ((SoSFString *)dest)->setValue( ostr.getString() );
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFBool::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

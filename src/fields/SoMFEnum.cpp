@@ -27,15 +27,13 @@
 
   A field of this type stores its values to file as the symbolic
   names, rather than the actual integer values.
-  
+
   \sa SoSFEnum
 
 */
 
 #include <Inventor/fields/SoMFEnum.h>
-#include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/errors/SoReadError.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -239,22 +237,4 @@ SoMFEnum::findEnumName(int value, const SbName * & name) const
     }
   }
   return FALSE;
-}
-
-
-void
-SoMFEnum::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFEnum::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFEnum *)dest)->setValue((*this)[0]);
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFEnum::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

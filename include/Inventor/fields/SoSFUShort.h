@@ -31,9 +31,6 @@ class SoSFUShort : public SoSField {
 
 public:
   static void initClass(void);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOSFUSHORT_H

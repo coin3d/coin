@@ -30,7 +30,7 @@
   names, rather than the actual integer bitmask. If more than one
   bit is set in the value when exporting, the bits are written like
   this: "(BITNAME|BITNAME|BITNAME|...)".
-  
+
   \sa SoMFBitMask
 
 */
@@ -40,7 +40,6 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <Inventor/fields/SoMFBitMask.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 
@@ -198,20 +197,3 @@ SoSFBitMask::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
-
-void
-SoSFBitMask::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoMFBitMask::getClassTypeId()) {
-    ((SoMFBitMask *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFBitMask::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
-}

@@ -30,7 +30,6 @@
 */
 
 #include <Inventor/fields/SoMFTime.h>
-#include <Inventor/fields/SoSFTime.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -71,21 +70,3 @@ SoMFTime::write1Value(SoOutput * out, int idx) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
-
-void
-SoMFTime::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFTime::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFTime *)dest)->setValue((*this)[0]);
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFTime::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
-}

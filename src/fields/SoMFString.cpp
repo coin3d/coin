@@ -30,8 +30,6 @@
 */
 
 #include <Inventor/fields/SoMFString.h>
-#include <Inventor/fields/SoSFString.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -128,21 +126,4 @@ SoMFString::deleteText(const int fromline, const int fromchar,
     // Delete intermediate strings + toline string.
     this->deleteValues(fromline + 1, toline - fromline);
   }
-}
-
-void
-SoMFString::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFString *)dest)->setValue((*this)[0]);
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFString::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

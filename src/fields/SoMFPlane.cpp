@@ -30,7 +30,6 @@
 */
 
 #include <Inventor/fields/SoMFPlane.h>
-#include <Inventor/fields/SoSFPlane.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -79,40 +78,4 @@ int
 SoMFPlane::getNumValuesPerLine(void) const
 {
   return 8;
-}
-
-void
-SoMFPlane::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFPlane::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFPlane *)dest)->setValue((*this)[0]);
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
-    const SbPlane * plane;
-    const int num=this->getNum();
-
-    if (num>1) ostr << "[ ";
-    for (int i=0;i<num;i++) {
-      plane=&(*this)[i];
-      const SbVec3f * norm=&plane->getNormal();
-      ostr << (*norm)[0] << " " << (*norm)[1] << " " << (*norm)[2] << "  " <<
-        plane->getDistanceFromOrigin();
-      if (i<num-1) ostr << ", ";
-    }
-    if (num>1) ostr << " ]";
-    ostr << ends;
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFPlane::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

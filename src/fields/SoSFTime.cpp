@@ -37,10 +37,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/fields/SoMFTime.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -100,29 +96,3 @@ SoSFTime::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
-
-void
-SoSFTime::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFFloat::getClassTypeId()) {
-    ((SoSFFloat *)dest)->setValue(float(this->getValue().getValue()));
-  }
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    if (this->getValue().getValue()>31500000.0)
-      ((SoSFString *)dest)->setValue(this->getValue().formatDate());
-    else
-      ((SoSFString *)dest)->setValue(this->getValue().format());
-  }
-  else if (dest->getTypeId()==SoMFTime::getClassTypeId()) {
-    ((SoMFTime *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFTime::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
-}

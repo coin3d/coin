@@ -32,22 +32,22 @@ public:
   SoField * input;
   SoEngineOutput output;
 
-  static void initClass();
-  SoConvertAll(const SoType fromType, const SoType toType);
+  static void initClass(void);
+  SoConvertAll(const SoType from, const SoType to);
 
 protected:
   virtual ~SoConvertAll();
-  virtual void evaluate();
+  virtual void evaluate(void);
   virtual SoField * getInput(SoType type);
   virtual SoEngineOutput * getOutput(SoType type);
 
 private:
-//   void convert2String();
-//   void convertFromString();
-//   void convertScalar();
+  typedef void converter_func(SoField * from, SoField * to);
 
-  SoType fromType, toType;
+  static void register_converter(converter_func * f, SoType from, SoType to);
 
+  static SbDict * converter_dict;
+  converter_func * convertvalue;
 };
 
 #endif // !COIN_SOCONVERTALL_H

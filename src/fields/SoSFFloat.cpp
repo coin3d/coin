@@ -33,14 +33,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 
-#include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFUInt32.h>
-#include <Inventor/fields/SoSFShort.h>
-#include <Inventor/fields/SoSFUShort.h>
-#include <Inventor/fields/SoMFFloat.h>
-#include <Inventor/fields/SoSFTime.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -97,45 +89,3 @@ SoSFFloat::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
-
-void
-SoSFFloat::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFBool::getClassTypeId()) {
-    ((SoSFBool *)dest)->setValue((SbBool)this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFInt32::getClassTypeId()) {
-    ((SoSFInt32 *)dest)->setValue((int32_t)this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFShort::getClassTypeId()) {
-    ((SoSFShort *)dest)->setValue((short)this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFUInt32::getClassTypeId()) {
-    ((SoSFUInt32 *)dest)->setValue((uint32_t)this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFUShort::getClassTypeId()) {
-    ((SoSFUShort *)dest)->setValue((unsigned short)this->getValue());
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
-    ostr << this->getValue() << '\0';
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-  else if (dest->getTypeId()==SoMFFloat::getClassTypeId()) {
-    ((SoMFFloat *)dest)->setValue(this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFTime::getClassTypeId()) {
-    ((SoSFTime *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFFloat::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
-}

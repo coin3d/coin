@@ -34,7 +34,6 @@
 */
 
 #include <Inventor/fields/SoMFNode.h>
-
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/nodes/SoNode.h>
 #if COIN_DEBUG
@@ -202,7 +201,7 @@ void
 SoMFNode::countWriteRefs(SoOutput * out) const
 {
   inherited::countWriteRefs(out);
-  
+
   for (int i=0; i < this->getNum(); i++) {
     SoNode * n = (*this)[i];
     // Set the "from field" flag as FALSE, is that flag is meant to be
@@ -237,22 +236,4 @@ SoMFNode::referencesCopy(void) const
   }
 
   return FALSE;
-}
-
-
-void
-SoMFNode::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFNode::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFNode *)dest)->setValue((*this)[0]);
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFNode::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

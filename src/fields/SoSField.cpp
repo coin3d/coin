@@ -116,16 +116,3 @@ SoSField::initClass(void)
 {
   PRIVATE_FIELD_INIT_CLASS(SoSField, "SField", inherited, NULL);
 }
-
-// If there's any single value fields without conversion
-// functionality, calls to convertTo() will end up here.
-void
-SoSField::convertTo(SoField * dest) const
-{
-#if COIN_DEBUG
-  SoDebugError::postWarning("SoSField::convertTo",
-                            "Can't convert from %s to %s",
-                            this->getTypeId().getName().getString(),
-                            dest->getTypeId().getName().getString());
-#endif // COIN_DEBUG
-}

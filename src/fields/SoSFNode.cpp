@@ -39,7 +39,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoMFNode.h>
 #include <Inventor/nodes/SoNode.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -174,20 +173,4 @@ SoSFNode::referencesCopy(void) const
   if (n && SoFieldContainer::checkCopy(n)) return TRUE;
 
   return FALSE;
-}
-
-void
-SoSFNode::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoMFNode::getClassTypeId()) {
-    ((SoMFNode *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFNode::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

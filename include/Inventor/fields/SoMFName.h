@@ -35,9 +35,6 @@ public:
 
   void setValues(const int start, const int num, const char * strings[]);
   void setValue(const char * str);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOMFNAME_H

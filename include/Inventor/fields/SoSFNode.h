@@ -39,7 +39,6 @@ public:
 
 private:
   virtual void countWriteRefs(SoOutput * out) const;
-  virtual void convertTo(SoField * dest) const;
 
   friend class SoMFNode; // For readValue() & writeValue().
 };

@@ -31,9 +31,6 @@ class SoSFBitMask : public SoSFEnum {
 public:
   static void initClass(void);
 
-private:
-  virtual void convertTo(SoField * dest) const;
-
   friend class SoMFBitMask; // For readValue() & writeValue().
 };
 

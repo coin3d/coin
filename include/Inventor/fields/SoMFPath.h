@@ -41,7 +41,6 @@ public:
 
 private:
   virtual void countWriteRefs(SoOutput * out) const;
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOMFPATH_H

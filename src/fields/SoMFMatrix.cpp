@@ -31,8 +31,6 @@
 
 #include <Inventor/fields/SoMFMatrix.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/fields/SoSFMatrix.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -94,54 +92,4 @@ SoMFMatrix::setValue(const float a11, const float a12,
 {
   this->setValue(SbMatrix(a11,a12,a13,a14, a21,a22,a23,a24,
                           a31,a32,a33,a34, a41,a42,a43,a44));
-}
-
-void
-SoMFMatrix::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFMatrix::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFMatrix *)dest)->setValue((*this)[0]);
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
-    int num=this->getNum();
-    if (num>1) ostr << "[ ";
-    for (int i=0;i<num;i++) {
-      ostr << this->values[i][0][0] << " " <<
-        this->values[i][0][1] << " " <<
-        this->values[i][0][2] << " " <<
-        this->values[i][0][3] << "\n\t";
-      if (num>1) ostr << "  ";
-      ostr << this->values[i][1][0] << " " <<
-        this->values[i][1][1] << " " <<
-        this->values[i][1][2] << " " <<
-        this->values[i][1][3] << "\n\t";
-      if (num>1) ostr << "  ";
-      ostr << this->values[i][2][0] << " " <<
-        this->values[i][2][1] << " " <<
-        this->values[i][2][2] << " " <<
-        this->values[i][2][3] << "\n\t";
-      if (num>1) ostr << "  ";
-      ostr << this->values[i][3][0] << " " <<
-        this->values[i][3][1] << " " <<
-        this->values[i][3][2] << " " <<
-        this->values[i][3][3];
-      if (i<num-1)
-        ostr << ", ";
-    }
-    if (num>1) ostr << " ]";
-    ostr << ends;
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFMatrix::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

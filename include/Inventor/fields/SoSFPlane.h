@@ -32,9 +32,6 @@ class SoSFPlane : public SoSField {
 
 public:
   static void initClass(void);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOSFPLANE_H

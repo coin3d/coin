@@ -37,8 +37,6 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
-#include <Inventor/fields/SoMFColor.h>
-#include <Inventor/fields/SoSFVec3f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -157,32 +155,4 @@ SoSFColor::setHSVValue(const float hsv[3])
 {
   this->value.setHSVValue(hsv);
   this->valueChanged();
-}
-
-void
-SoSFColor::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFVec3f::getClassTypeId()) {
-    ((SoSFVec3f *)dest)->setValue(this->getValue());
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
-    ostr << this->getValue()[0] << " " <<
-      this->getValue()[1] << " " <<
-      this->getValue()[2] << '\0';
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-  else if (dest->getTypeId()==SoMFColor::getClassTypeId()) {
-    ((SoMFColor *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFColor::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

@@ -35,10 +35,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoReadError.h>
-
-#include <Inventor/fields/SoSFRotation.h>
-#include <Inventor/fields/SoMFMatrix.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -145,48 +141,4 @@ SoSFMatrix::setValue(const float a11, const float a12,
 {
   this->setValue(SbMatrix(a11,a12,a13,a14,a21,a22,a23,a24,
                           a31,a32,a33,a34,a41,a42,a43,a44));
-}
-
-
-void
-SoSFMatrix::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFRotation::getClassTypeId()) {
-    ((SoSFRotation *)dest)->setValue(this->getValue());
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
-    const SbMatrix mat=this->getValue();
-    ostr << mat[0][0] << " " <<
-      mat[0][1] << " " <<
-      mat[0][2] << " " <<
-      mat[0][3] << "\n\t" <<
-      mat[1][0] << " " <<
-      mat[1][1] << " " <<
-      mat[1][2] << " " <<
-      mat[1][3] << "\n\t" <<
-      mat[2][0] << " " <<
-      mat[2][1] << " " <<
-      mat[2][2] << " " <<
-      mat[2][3] << "\n\t" <<
-      mat[3][0] << " " <<
-      mat[3][1] << " " <<
-      mat[3][2] << " " <<
-      mat[3][3] << ends;
-
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-  else if (dest->getTypeId()==SoMFMatrix::getClassTypeId()) {
-    ((SoMFMatrix *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFMatrix::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

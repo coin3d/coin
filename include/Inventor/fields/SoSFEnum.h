@@ -44,9 +44,6 @@ protected:
   int * enumValues;
   SbName * enumNames;
   SbBool legalValuesSet;
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 

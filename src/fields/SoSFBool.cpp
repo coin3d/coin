@@ -39,14 +39,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#include <Inventor/fields/SoSFInt32.h>
-#include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/fields/SoSFUInt32.h>
-#include <Inventor/fields/SoSFShort.h>
-#include <Inventor/fields/SoSFUShort.h>
-#include <Inventor/fields/SoSFString.h>
-#include <Inventor/fields/SoMFBool.h>
-
 
 SO_SFIELD_SOURCE(SoSFBool, SbBool, const SbBool);
 
@@ -132,40 +124,3 @@ SoSFBool::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
-
-// Convert from our data format to the value format of the destination
-// field type.
-void
-SoSFBool::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFFloat::getClassTypeId()) {
-    ((SoSFFloat *)dest)->setValue((float)this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFInt32::getClassTypeId()) {
-    ((SoSFInt32 *)dest)->setValue(this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFShort::getClassTypeId()) {
-    ((SoSFShort *)dest)->setValue(this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFUInt32::getClassTypeId()) {
-    ((SoSFUInt32 *)dest)->setValue(this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFUShort::getClassTypeId()) {
-    ((SoSFUShort *)dest)->setValue(this->getValue());
-  }
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ((SoSFString *)dest)->setValue(this->getValue()?"TRUE":"FALSE");
-  }
-  else if (dest->getTypeId()==SoMFBool::getClassTypeId()) {
-    ((SoMFBool *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFBool::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
-}

@@ -33,7 +33,6 @@
 */
 
 #include <Inventor/fields/SoSFPlane.h>
-#include <Inventor/fields/SoMFPlane.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoReadError.h>
@@ -105,32 +104,3 @@ SoSFPlane::writeValue(SoOutput * out) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
-
-void
-SoSFPlane::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoMFPlane::getClassTypeId()) {
-    ((SoMFPlane *)dest)->setValue(this->getValue());
-  }
-#if 0 // OBSOLETED: don't use libstdc++ stuff. 20000219 mortene
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
-    ostrstream ostr;
-    const SbPlane plane=this->getValue();
-    const SbVec3f norm=plane.getNormal();
-
-    ostr << norm[0] << " " << norm[1] << " " << norm[2] << "  " <<
-      plane.getDistanceFromOrigin() << ends;
-
-    ((SoSFString *)dest)->setValue(ostr.str());
-  }
-#endif // OBSOLETED
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFPlane::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
-}

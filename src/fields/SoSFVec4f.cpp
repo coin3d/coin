@@ -30,7 +30,6 @@
 */
 
 #include <Inventor/fields/SoSFVec4f.h>
-#include <Inventor/fields/SoMFVec4f.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
@@ -115,20 +114,4 @@ void
 SoSFVec4f::setValue(const float xyzw[4])
 {
   this->setValue(SbVec4f(xyzw));
-}
-
-void
-SoSFVec4f::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoMFVec4f::getClassTypeId()) {
-    ((SoMFVec4f *)dest)->setValue(this->getValue());
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoSFVec4f::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }

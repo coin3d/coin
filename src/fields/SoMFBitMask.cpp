@@ -31,7 +31,6 @@
 
 #include <Inventor/fields/SoMFBitMask.h>
 #include <Inventor/fields/SoSFBitMask.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -72,21 +71,3 @@ SoMFBitMask::write1Value(SoOutput * out, int idx) const
 }
 
 #endif // DOXYGEN_SKIP_THIS
-
-
-void
-SoMFBitMask::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFBitMask::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFBitMask *)dest)->setValue((*this)[0]);
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFBitMask::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
-}

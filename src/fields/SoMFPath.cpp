@@ -26,7 +26,6 @@
 */
 
 #include <Inventor/fields/SoMFPath.h>
-#include <Inventor/fields/SoSFPath.h>
 #include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -93,23 +92,6 @@ SoMFPath::referencesCopy(void) const
 {
   COIN_STUB();
   return FALSE;
-}
-
-void
-SoMFPath::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFPath::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFPath *)dest)->setValue((*this)[0]);
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFPath::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }
 
 // Overridden from parent to propagate write reference counting to

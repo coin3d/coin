@@ -26,7 +26,6 @@
 */
 
 #include <Inventor/fields/SoMFEngine.h>
-#include <Inventor/fields/SoSFEngine.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -84,23 +83,6 @@ SoMFEngine::referencesCopy(void) const
 {
   COIN_STUB();
   return FALSE;
-}
-
-void
-SoMFEngine::convertTo(SoField * dest) const
-{
-  if (dest->getTypeId()==SoSFEngine::getClassTypeId()) {
-    if (this->getNum()>0)
-      ((SoSFEngine *)dest)->setValue((*this)[0]);
-  }
-#if COIN_DEBUG
-  else {
-    SoDebugError::post("SoMFEngine::convertTo",
-                       "Can't convert from %s to %s",
-                       this->getTypeId().getName().getString(),
-                       dest->getTypeId().getName().getString());
-  }
-#endif // COIN_DEBUG
 }
 
 // Overridden from parent to propagate write reference counting to

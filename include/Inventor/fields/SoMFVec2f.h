@@ -38,9 +38,6 @@ public:
   void set1Value(const int idx, const float xy[2]);
   void setValue(const float x, const float y);
   void setValue(const float xy[2]);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOMFVEC2F_H

@@ -22,322 +22,405 @@
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/fields/SoFields.h>
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+#include <assert.h>
 
-#define SO_CONVERTALL_ADD_INPUT(memberName,defaultValue) \
-SO_ENGINE_ADD_INPUT(memberName,defaultValue) \
-if (firstInstance) \
-  inputDict.enter((unsigned long)memberName.getTypeId().getKey(),&memberName);
+// FIXME:
 
-#define SO_CONVERTALL_ADD_OUTPUT(memberName,outputType) \
-SO_ENGINE_ADD_OUTPUT(memberName,outputType) \
-if (firstInstance) \
-  outputDict.enter((unsigned long)outputType::getClassTypeId().getKey(), \
-                   &memberName);
+// SoSFTime -> SoSFString
+//      if (this->getValue().getValue()>31500000.0)
+//        ((SoSFString *)dest)->setValue(this->getValue().formatDate());
+//      else
+//        ((SoSFString *)dest)->setValue(this->getValue().format());
 
-#define SO_CONVERTALL_SFMF(sfield,mfield) \
-SoDB::addConverter(sfield::getClassTypeId(),mfield::getClassTypeId(), \
-                   getClassTypeId()); \
-SoDB::addConverter(mfield::getClassTypeId(),sfield::getClassTypeId(), \
-                   getClassTypeId())
+// SoSFRotation -> SoSFMatrix
+//      SbMatrix mat;
+//      mat.setRotate(this->getValue());
+//      ((SoSFMatrix *)dest)->setValue(mat);
 
-#define SO_CONVERTALL_OUTPUT_SCALAR(input_,fromType_) \
-else if (this->fromType==fromType_::getClassTypeId()) \
-  SO_ENGINE_OUTPUT(this->output,fromType_,setValue(input_->getValue()));
+// SoSFMatrix -> SoSFRotation
+//      ((SoSFRotation *)dest)->setValue(this->getValue());
 
 
-// OBSOLETED?? 19990925 mortene.
-#if 0
-
-#define SO_CONVERTALL_CONVERT_SCALAR(input_) \
-if (this->useInput==&input_) { \
-  if (0); \
-  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFBool) \
-  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFFloat) \
-  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFInt32) \
-  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFShort) \
-  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFUInt32) \
-  SO_CONVERTALL_OUTPUT_SCALAR(input_,SoSFUShort) \
-  break; \
-}
+SbDict * SoConvertAll::converter_dict = NULL;
 
 
-#define SO_CONVERTALL_CONVERT_SCALAR(fromType_) \
- if (this->fromType==fromType_::getClassTypeId) { \
- if (0); \
- SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFBool) \
- SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFFloat) \
- SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFInt32) \
- SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFShort) \
- SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFUInt32) \
- SO_CONVERTALL_OUTPUT_SCALAR(fromType,SoSFUShort) \
- break; \
- }
-
-#define SO_CONVERTALL_OUTPUT_SCALAR(fromType_,toType_) \
- else if (this->toType==toType::getClassTypeId()) \
- SO_ENGINE_OUTPUT(this->output,fromType_,setValue(((toType_ *)input)->getValue()));
-
-#define SO_CONVERTALL_OUTPUT_MSCALAR(type) \
- if (this->toType.getKey()==type::getClassTypeId().getKey()) { \
- SO_ENGINE_OUTPUT(this->output,type,setNum(input->getNum())); \
- for (int i=0;i<input->getNum();i++) \
-   SO_ENGINE_OUTPUT(this->output,type,setValue(input->get1Value(i))); \
- break; \
- }
-
-#endif // OBSOLETED??
-
+// FIXME: "ABSTRACT"? 20000311 mortene.
 SO_ENGINE_ABSTRACT_SOURCE(SoConvertAll);
 
-void
-SoConvertAll::initClass()
-{
-  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoConvertAll);
-
-  SoType SFTypes[] = {
-    SoSFBitMask::getClassTypeId(),
-    SoSFBool::getClassTypeId(),
-    SoSFColor::getClassTypeId(),
-    SoSFEngine::getClassTypeId(),
-    SoSFEnum::getClassTypeId(),
-    SoSFFloat::getClassTypeId(),
-    SoSFImage::getClassTypeId(),
-    SoSFInt32::getClassTypeId(),
-    SoSFMatrix::getClassTypeId(),
-    SoSFName::getClassTypeId(),
-    SoSFNode::getClassTypeId(),
-    SoSFPath::getClassTypeId(),
-    SoSFPlane::getClassTypeId(),
-    SoSFRotation::getClassTypeId(),
-    SoSFShort::getClassTypeId(),
-    SoSFString::getClassTypeId(),
-    SoSFTime::getClassTypeId(),
-    SoSFTrigger::getClassTypeId(),
-    SoSFUInt32::getClassTypeId(),
-    SoSFUShort::getClassTypeId(),
-    SoSFVec2f::getClassTypeId(),
-    SoSFVec3f::getClassTypeId(),
-    SoSFVec4f::getClassTypeId(),
-    SoType::badType()
-  };
-
-  SoType MFTypes[] = {
-    SoMFBitMask::getClassTypeId(),
-    SoMFBool::getClassTypeId(),
-    SoMFColor::getClassTypeId(),
-    SoMFEngine::getClassTypeId(),
-    SoMFEnum::getClassTypeId(),
-    SoMFFloat::getClassTypeId(),
-    SoMFInt32::getClassTypeId(),
-    SoMFMatrix::getClassTypeId(),
-    SoMFName::getClassTypeId(),
-    SoMFNode::getClassTypeId(),
-    SoMFPath::getClassTypeId(),
-    SoMFPlane::getClassTypeId(),
-    SoMFRotation::getClassTypeId(),
-    SoMFShort::getClassTypeId(),
-    SoMFString::getClassTypeId(),
-    SoMFTime::getClassTypeId(),
-    SoMFUInt32::getClassTypeId(),
-    SoMFUShort::getClassTypeId(),
-    SoMFVec2f::getClassTypeId(),
-    SoMFVec3f::getClassTypeId(),
-    SoMFVec4f::getClassTypeId(),
-    SoType::badType()
-  };
-
-  SoType scalarTypes[] = {
-    SoSFBool::getClassTypeId(),
-    SoSFFloat::getClassTypeId(),
-    SoSFInt32::getClassTypeId(),
-    SoSFShort::getClassTypeId(),
-    SoSFUInt32::getClassTypeId(),
-    SoSFUShort::getClassTypeId(),
-    SoType::badType()
-  };
 
 
-  int i = 0;
-  while (SFTypes[i] != SoType::badType()) {
-    if (SFTypes[i] != SoSFString::getClassTypeId()) {
-      SoDB::addConverter(SFTypes[i],
-                         SoSFString::getClassTypeId(),
-                         SoConvertAll::getClassTypeId());
-      SoDB::addConverter(SoSFString::getClassTypeId(),
-                         SFTypes[i],
-                         SoConvertAll::getClassTypeId());
-    }
-    i++;
-  }
-
-  i = 0;
-  while (MFTypes[i] != SoType::badType()) {
-    SoDB::addConverter(MFTypes[i],
-                       SoSFString::getClassTypeId(),
-                       getClassTypeId());
-    SoDB::addConverter(SoSFString::getClassTypeId(),
-                       MFTypes[i],
-                       getClassTypeId());
-    i++;
-  }
-
-
-  int j = 0;
-  while (scalarTypes[j] != SoType::badType()) {
-    i = 0;
-    while (scalarTypes[i] != SoType::badType()) {
-      if (i!=j)
-        SoDB::addConverter(scalarTypes[j],scalarTypes[i],getClassTypeId());
-      i++;
-    }
-    j++;
-  }
-
-  //Color <=> Vec3f
-  SoDB::addConverter(SoSFVec3f::getClassTypeId(),
-                     SoSFColor::getClassTypeId(),
-                     getClassTypeId());
-  SoDB::addConverter(SoSFColor::getClassTypeId(),
-                     SoSFVec3f::getClassTypeId(),
-                     getClassTypeId());
-
-  //Float <=> Time
-  SoDB::addConverter(SoSFFloat::getClassTypeId(),
-                     SoSFTime::getClassTypeId(),
-                     getClassTypeId());
-  SoDB::addConverter(SoSFTime::getClassTypeId(),
-                     SoSFFloat::getClassTypeId(),
-                     getClassTypeId());
-
-  //Matrix <=> Rotation
-  SoDB::addConverter(SoSFMatrix::getClassTypeId(),
-                     SoSFRotation::getClassTypeId(),
-                     getClassTypeId());
-  SoDB::addConverter(SoSFRotation::getClassTypeId(),
-                     SoSFMatrix::getClassTypeId(),
-                     getClassTypeId());
-
-  //SF <-> MF
-  SO_CONVERTALL_SFMF(SoSFBitMask,SoMFBitMask);
-  SO_CONVERTALL_SFMF(SoSFBool,SoMFBool);
-  SO_CONVERTALL_SFMF(SoSFColor,SoMFColor);
-  SO_CONVERTALL_SFMF(SoSFEngine,SoMFEngine);
-  SO_CONVERTALL_SFMF(SoSFEnum,SoMFEnum);
-  SO_CONVERTALL_SFMF(SoSFFloat,SoMFFloat);
-  SO_CONVERTALL_SFMF(SoSFInt32,SoMFInt32);
-  SO_CONVERTALL_SFMF(SoSFMatrix,SoMFMatrix);
-  SO_CONVERTALL_SFMF(SoSFName,SoMFName);
-  SO_CONVERTALL_SFMF(SoSFNode,SoMFNode);
-  SO_CONVERTALL_SFMF(SoSFPath,SoMFPath);
-  SO_CONVERTALL_SFMF(SoSFPlane,SoMFPlane);
-  SO_CONVERTALL_SFMF(SoSFRotation,SoMFRotation);
-  SO_CONVERTALL_SFMF(SoSFShort,SoMFShort);
-  SO_CONVERTALL_SFMF(SoSFTime,SoMFTime);
-  SO_CONVERTALL_SFMF(SoSFUInt32,SoMFUInt32);
-  SO_CONVERTALL_SFMF(SoSFUShort,SoMFUShort);
-  SO_CONVERTALL_SFMF(SoSFVec2f,SoMFVec2f);
-  SO_CONVERTALL_SFMF(SoSFVec3f,SoMFVec3f);
-  SO_CONVERTALL_SFMF(SoSFVec4f,SoMFVec4f);
+// Defines function for converting SoSFXXX -> SoMFXXX.
+#define SOCONVERTALL_SINGLE2MULTI(_fromto_, _from_, _to_) \
+static void _fromto_(SoField * from, SoField * to) \
+{ \
+  ((_to_ *)to)->setValue(((_from_ *)from)->getValue()); \
 }
 
-SoConvertAll::SoConvertAll(const SoType fType,const SoType tType)
+// Defines function for converting SoMFXXX -> SoSFXXX.
+#define SOCONVERTALL_MULTI2SINGLE(_fromto_, _from_, _to_) \
+static void _fromto_(SoField * from, SoField * to) \
+{ \
+  if (((_from_ *)from)->getNum() > 0) \
+    ((_to_ *)to)->setValue((*((_from_ *)from))[0]); \
+}
+
+
+SOCONVERTALL_SINGLE2MULTI(SoSFBitMask_SoMFBitMask, SoSFBitMask, SoMFBitMask);
+SOCONVERTALL_MULTI2SINGLE(SoMFBitMask_SoSFBitMask, SoMFBitMask, SoSFBitMask);
+SOCONVERTALL_SINGLE2MULTI(SoSFBool_SoMFBool, SoSFBool, SoMFBool);
+SOCONVERTALL_MULTI2SINGLE(SoMFBool_SoSFBool, SoMFBool, SoSFBool);
+SOCONVERTALL_SINGLE2MULTI(SoSFColor_SoMFColor, SoSFColor, SoMFColor);
+SOCONVERTALL_MULTI2SINGLE(SoMFColor_SoSFColor, SoMFColor, SoSFColor);
+SOCONVERTALL_SINGLE2MULTI(SoSFEnum_SoMFEnum, SoSFEnum, SoMFEnum);
+SOCONVERTALL_MULTI2SINGLE(SoMFEnum_SoSFEnum, SoMFEnum, SoSFEnum);
+SOCONVERTALL_SINGLE2MULTI(SoSFFloat_SoMFFloat, SoSFFloat, SoMFFloat);
+SOCONVERTALL_MULTI2SINGLE(SoMFFloat_SoSFFloat, SoMFFloat, SoSFFloat);
+SOCONVERTALL_SINGLE2MULTI(SoSFInt32_SoMFInt32, SoSFInt32, SoMFInt32);
+SOCONVERTALL_MULTI2SINGLE(SoMFInt32_SoSFInt32, SoMFInt32, SoSFInt32);
+SOCONVERTALL_SINGLE2MULTI(SoSFMatrix_SoMFMatrix, SoSFMatrix, SoMFMatrix);
+SOCONVERTALL_MULTI2SINGLE(SoMFMatrix_SoSFMatrix, SoMFMatrix, SoSFMatrix);
+SOCONVERTALL_SINGLE2MULTI(SoSFName_SoMFName, SoSFName, SoMFName);
+SOCONVERTALL_MULTI2SINGLE(SoMFName_SoSFName, SoMFName, SoSFName);
+SOCONVERTALL_SINGLE2MULTI(SoSFNode_SoMFNode, SoSFNode, SoMFNode);
+SOCONVERTALL_MULTI2SINGLE(SoMFNode_SoSFNode, SoMFNode, SoSFNode);
+SOCONVERTALL_SINGLE2MULTI(SoSFPath_SoMFPath, SoSFPath, SoMFPath);
+SOCONVERTALL_MULTI2SINGLE(SoMFPath_SoSFPath, SoMFPath, SoSFPath);
+SOCONVERTALL_SINGLE2MULTI(SoSFPlane_SoMFPlane, SoSFPlane, SoMFPlane);
+SOCONVERTALL_MULTI2SINGLE(SoMFPlane_SoSFPlane, SoMFPlane, SoSFPlane);
+SOCONVERTALL_SINGLE2MULTI(SoSFRotation_SoMFRotation, SoSFRotation, SoMFRotation);
+SOCONVERTALL_MULTI2SINGLE(SoMFRotation_SoSFRotation, SoMFRotation, SoSFRotation);
+SOCONVERTALL_SINGLE2MULTI(SoSFShort_SoMFShort, SoSFShort, SoMFShort);
+SOCONVERTALL_MULTI2SINGLE(SoMFShort_SoSFShort, SoMFShort, SoSFShort);
+SOCONVERTALL_SINGLE2MULTI(SoSFString_SoMFString, SoSFString, SoMFString);
+SOCONVERTALL_MULTI2SINGLE(SoMFString_SoSFString, SoMFString, SoSFString);
+SOCONVERTALL_SINGLE2MULTI(SoSFTime_SoMFTime, SoSFTime, SoMFTime);
+SOCONVERTALL_MULTI2SINGLE(SoMFTime_SoSFTime, SoMFTime, SoSFTime);
+SOCONVERTALL_SINGLE2MULTI(SoSFUInt32_SoMFUInt32, SoSFUInt32, SoMFUInt32);
+SOCONVERTALL_MULTI2SINGLE(SoMFUInt32_SoSFUInt32, SoMFUInt32, SoSFUInt32);
+SOCONVERTALL_SINGLE2MULTI(SoSFUShort_SoMFUShort, SoSFUShort, SoMFUShort);
+SOCONVERTALL_MULTI2SINGLE(SoMFUShort_SoSFUShort, SoMFUShort, SoSFUShort);
+SOCONVERTALL_SINGLE2MULTI(SoSFVec2f_SoMFVec2f, SoSFVec2f, SoMFVec2f);
+SOCONVERTALL_MULTI2SINGLE(SoMFVec2f_SoSFVec2f, SoMFVec2f, SoSFVec2f);
+SOCONVERTALL_SINGLE2MULTI(SoSFVec3f_SoMFVec3f, SoSFVec3f, SoMFVec3f);
+SOCONVERTALL_MULTI2SINGLE(SoMFVec3f_SoSFVec3f, SoMFVec3f, SoSFVec3f);
+SOCONVERTALL_SINGLE2MULTI(SoSFVec4f_SoMFVec4f, SoSFVec4f, SoMFVec4f);
+SOCONVERTALL_MULTI2SINGLE(SoMFVec4f_SoSFVec4f, SoMFVec4f, SoSFVec4f);
+
+#undef SOCONVERTALL_SINGLE2MULTI
+#undef SOCONVERTALL_MULTI2SINGLE
+
+
+// Defines function for converting SoField -> SoSFString.
+static void field_to_sfstring(SoField * from, SoField * to)
+{
+  SbString s;
+  from->get(s);
+  ((SoSFString *)to)->setValue(s);
+}
+
+// Defines function for converting SoSFString -> SoField.
+static void sfstring_to_field(SoField * from, SoField * to)
+{
+  to->set(((SoSFString *)from)->getValue().getString());
+}
+
+// Defines function for converting SoSField -> SoMFString.
+static void sfield_to_mfstring(SoField * from, SoField * to)
+{
+  SbString s;
+  ((SoSField *)from)->get(s);
+  ((SoMFString *)to)->setValue(s);
+}
+
+// Defines function for converting SoMFString -> SoSField.
+static void mfstring_to_sfield(SoField * from, SoField * to)
+{
+  if (((SoMFString *)from)->getNum() > 0) ((SoSField *)to)->set((*((SoMFString *)from))[0].getString());
+}
+
+// Defines function for converting SoMField -> SoMFString.
+static void mfield_to_mfstring(SoField * from, SoField * to)
+{
+  SbString s;
+  for (int i=0; i < ((SoMField *)from)->getNum(); i++) {
+    ((SoMField *)from)->get1(i, s);
+    ((SoMFString *)to)->set1Value(i, s);
+  }
+}
+
+// Defines function for converting SoMFString -> SoMField.
+static void mfstring_to_mfield(SoField * from, SoField * to)
+{
+  for (int i=0; i < ((SoMFString *)from)->getNum(); i++)
+    ((SoMField *)to)->set1(i, (*((SoMFString *)from))[i].getString());
+}
+
+
+void
+SoConvertAll::register_converter(converter_func * f, SoType from, SoType to)
+{
+  SoDB::addConverter(from, to, SoConvertAll::getClassTypeId());
+  uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
+  SbBool nonexist = SoConvertAll::converter_dict->enter(val, (void *)f);
+  assert(nonexist);
+}
+
+void
+SoConvertAll::initClass(void)
+{
+  // FIXME: deallocate at final exit(). 20000311 mortene.
+  SoConvertAll::converter_dict = new SbDict;
+
+  SO_ENGINE_INTERNAL_INIT_ABSTRACT_CLASS(SoConvertAll);
+
+#define SOCONVERTALL_ADDCONVERTER(_fromto_, _from_, _to_) \
+  SoConvertAll::register_converter(_fromto_, _from_::getClassTypeId(), _to_::getClassTypeId())
+
+  SOCONVERTALL_ADDCONVERTER(SoSFBitMask_SoMFBitMask, SoSFBitMask, SoMFBitMask);
+  SOCONVERTALL_ADDCONVERTER(SoMFBitMask_SoSFBitMask, SoMFBitMask, SoSFBitMask);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFBool, SoSFBool, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFBool, SoMFBool, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFColor_SoMFColor, SoSFColor, SoMFColor);
+  SOCONVERTALL_ADDCONVERTER(SoMFColor_SoSFColor, SoMFColor, SoSFColor);
+  SOCONVERTALL_ADDCONVERTER(SoSFEnum_SoMFEnum, SoSFEnum, SoMFEnum);
+  SOCONVERTALL_ADDCONVERTER(SoMFEnum_SoSFEnum, SoMFEnum, SoSFEnum);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFFloat, SoSFFloat, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFFloat, SoMFFloat, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFInt32, SoSFInt32, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFInt32, SoMFInt32, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFMatrix_SoMFMatrix, SoSFMatrix, SoMFMatrix);
+  SOCONVERTALL_ADDCONVERTER(SoMFMatrix_SoSFMatrix, SoMFMatrix, SoSFMatrix);
+  SOCONVERTALL_ADDCONVERTER(SoSFName_SoMFName, SoSFName, SoMFName);
+  SOCONVERTALL_ADDCONVERTER(SoMFName_SoSFName, SoMFName, SoSFName);
+  SOCONVERTALL_ADDCONVERTER(SoSFNode_SoMFNode, SoSFNode, SoMFNode);
+  SOCONVERTALL_ADDCONVERTER(SoMFNode_SoSFNode, SoMFNode, SoSFNode);
+  SOCONVERTALL_ADDCONVERTER(SoSFPath_SoMFPath, SoSFPath, SoMFPath);
+  SOCONVERTALL_ADDCONVERTER(SoMFPath_SoSFPath, SoMFPath, SoSFPath);
+  SOCONVERTALL_ADDCONVERTER(SoSFPlane_SoMFPlane, SoSFPlane, SoMFPlane);
+  SOCONVERTALL_ADDCONVERTER(SoMFPlane_SoSFPlane, SoMFPlane, SoSFPlane);
+  SOCONVERTALL_ADDCONVERTER(SoSFRotation_SoMFRotation, SoSFRotation, SoMFRotation);
+  SOCONVERTALL_ADDCONVERTER(SoMFRotation_SoSFRotation, SoMFRotation, SoSFRotation);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFShort, SoSFShort, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFShort, SoMFShort, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFString_SoMFString, SoSFString, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(SoMFString_SoSFString, SoMFString, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(SoSFTime_SoMFTime, SoSFTime, SoMFTime);
+  SOCONVERTALL_ADDCONVERTER(SoMFTime_SoSFTime, SoMFTime, SoSFTime);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFUInt32, SoSFUInt32, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFUInt32, SoMFUInt32, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFUShort, SoSFUShort, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFUShort, SoMFUShort, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFVec2f_SoMFVec2f, SoSFVec2f, SoMFVec2f);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec2f_SoSFVec2f, SoMFVec2f, SoSFVec2f);
+  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_SoMFVec3f, SoSFVec3f, SoMFVec3f);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_SoSFVec3f, SoMFVec3f, SoSFVec3f);
+  SOCONVERTALL_ADDCONVERTER(SoSFVec4f_SoMFVec4f, SoSFVec4f, SoMFVec4f);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec4f_SoSFVec4f, SoMFVec4f, SoSFVec4f);
+
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFBitMask, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFBool, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFColor, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFEnum, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFFloat, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFInt32, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFMatrix, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFName, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFNode, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFPath, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFPlane, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFRotation, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFShort, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFTime, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFUInt32, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFUShort, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFVec2f, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFVec3f, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoMFVec4f, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFBitMask, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFBool, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFColor, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFEnum, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFFloat, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFInt32, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFMatrix, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFName, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFNode, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFPath, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFPlane, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFRotation, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFShort, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFTime, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFUInt32, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFUShort, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec2f, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec3f, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(field_to_sfstring, SoSFVec4f, SoSFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFBitMask, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFBool, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFColor, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFEnum, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFFloat, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFInt32, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFMatrix, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFName, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFNode, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFPath, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFPlane, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFRotation, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFShort, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFTime, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFUInt32, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFUShort, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec2f, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec3f, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(sfield_to_mfstring, SoSFVec4f, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFBitMask, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFBool, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFColor, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFEnum, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFFloat, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFInt32, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFMatrix, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFName, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFNode, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFPath, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFPlane, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFRotation, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFShort, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFTime, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFUInt32, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFUShort, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec2f, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec3f, SoMFString);
+  SOCONVERTALL_ADDCONVERTER(mfield_to_mfstring, SoMFVec4f, SoMFString);
+
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFBitMask);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFColor);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFEnum);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFMatrix);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFName);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFNode);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFPath);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFPlane);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFRotation);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFTime);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFVec2f);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFVec3f);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoSFVec4f);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFBitMask);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFColor);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFEnum);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFMatrix);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFName);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFNode);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFPath);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFPlane);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFRotation);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFTime);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec2f);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec3f);
+  SOCONVERTALL_ADDCONVERTER(sfstring_to_field, SoSFString, SoMFVec4f);
+
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFBitMask);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFColor);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFEnum);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFMatrix);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFName);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFNode);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFPath);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFPlane);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFRotation);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFTime);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec2f);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec3f);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_sfield, SoMFString, SoSFVec4f);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFBitMask);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFColor);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFEnum);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFMatrix);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFName);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFNode);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFPath);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFPlane);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFRotation);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFTime);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec2f);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec3f);
+  SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec4f);
+
+#undef SOCONVERTALL_ADDCONVERTER
+}
+
+SoConvertAll::SoConvertAll(const SoType from, const SoType to)
 {
   SO_ENGINE_CONSTRUCTOR(SoConvertAll);
 
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoConvertAll::SoConvertAll",
                          "from: %s, to: %s",
-                         fType.getName().getString(),
-                         tType.getName().getString());
+                         from.getName().getString(),
+                         to.getName().getString());
 #endif // debug
 
-  this->input=(SoField *)fType.createInstance();
-  
-  //FIXME: ?
-  //  this->input->setValue defaultValue;
+  this->input = (SoField *)from.createInstance();
+
   this->input->setContainer(this);
   this->output.setContainer(this);
-  SoConvertAll::outputdata->addOutput(this, "output", &this->output, tType);
+  SoConvertAll::outputdata->addOutput(this, "output", &this->output, to);
 
-  this->fromType=fType;
-  this->toType=tType;
+  uint32_t val = (((uint32_t)from.getKey()) << 16) + to.getKey();
+  void * ptr;
+  if (!SoConvertAll::converter_dict->find(val, ptr)) assert(FALSE);
+  this->convertvalue = (converter_func *)ptr;
 }
 
 SoConvertAll::~SoConvertAll()
 {
-  delete input;
+  delete this->input;
 }
 
 SoField *
 SoConvertAll::getInput(SoType /* type */)
 {
-  return input;
+  return this->input;
 }
 
 SoEngineOutput *
 SoConvertAll::getOutput(SoType /* type */)
 {
-  return &output;
+  return &this->output;
 }
 
 void
-SoConvertAll::evaluate()
+SoConvertAll::evaluate(void)
 {
   for (int i = 0 ; i < this->output.getNumConnections(); i++)
-    this->input->convertTo(this->output[i]);
-
-
-
-//   if (this->output.getConnectionType()==SoSFString::getClassTypeId())
-//     this->convert2String();
-
-//   if (this->input->getTypeId()==SoSFString::getClassTypeId())
-//     this->convertFromString();
+    this->convertvalue(this->input, this->output[i]);
 }
-
-// void
-// SoConvertAll::convert2String()
-// {
-//   SbString str;
-
-//   this->input->get(str);
-
-//   SO_ENGINE_OUTPUT(this->output,SoSFString,setValue(str));
-// }
-
-// void
-// SoConvertAll::convertFromString()
-// {
-//   SbString str;
-
-//   this->input->get(str);
-
-//   for (int _i=0;_i<this->output.getNumConnections();_i++)
-//     ((SoField *)(this->output)[_i])->set(str.getString());
-// }
-
-// void
-// SoConvertAll::convertScalar()
-// {
-//   while (1) {
-//     SO_CONVERTALL_CONVERT_SCALAR(sfbool,
-//     SO_CONVERTALL_CONVERT_SCALAR(SoSFBool);
-//     SO_CONVERTALL_CONVERT_SCALAR(SoSFFloat);
-//     SO_CONVERTALL_CONVERT_SCALAR(SoSFLong);
-//     SO_CONVERTALL_CONVERT_SCALAR(SoSFShort);
-//     SO_CONVERTALL_CONVERT_SCALAR(SoSFULong);
-//     SO_CONVERTALL_CONVERT_SCALAR(SoSFUShort);
-
-// //     SO_CONVERTALL_CONVERT_MSCALAR(SoMFBool);
-// //     SO_CONVERTALL_CONVERT_MSCALAR(SoMFFloat);
-// //     SO_CONVERTALL_CONVERT_MSCALAR(SoMFLong);
-// //     SO_CONVERTALL_CONVERT_MSCALAR(SoMFShort);
-// //     SO_CONVERTALL_CONVERT_MSCALAR(SoMFULong);
-// //     SO_CONVERTALL_CONVERT_MSCALAR(SoMFUShort);
-//     break;
-//   }
-// }

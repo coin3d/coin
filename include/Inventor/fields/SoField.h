@@ -128,8 +128,6 @@ public:
   SbBool getDirty(void);
   void setDirty(SbBool dirty);
 
-  virtual void convertTo(SoField * dest) const = 0;
-
 protected:
   SoField(void);
 

@@ -35,7 +35,6 @@ public:
 
 private:
   virtual int getNumValuesPerLine(void) const;
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOMFPLANE_H

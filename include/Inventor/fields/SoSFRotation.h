@@ -37,9 +37,6 @@ public:
   void setValue(const float q0, const float q1, const float q2, const float q3);
   void setValue(const float q[4]);
   void setValue(const SbVec3f & axis, const float angle);
-
-private:
-  virtual void convertTo(SoField * dest) const;
 };
 
 #endif // !COIN_SOSFROTATION_H
