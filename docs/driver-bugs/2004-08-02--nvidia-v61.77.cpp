@@ -1,12 +1,8 @@
 /*
-  The simple example below causes a WinXP machine with NVIDIA 61.77 to
-  crash within the driver. The example code just compiles a GL display
-  list with a few triangles, then invokes this list. This causes a
-  crash.
-
-  Not yet reported to NVIDIA, asking for confirmation from other
-  systems, on the nvnews.net forums, aswell as from HitecO (who
-  originally found the bug).
+  The simple example below causes a WinXP machine with NVIDIA drivers
+  to crash within the driver. The example code just compiles a GL
+  display list with a few triangles, then invokes this list. This
+  causes a crash.
 
   System information:
 
@@ -22,6 +18,16 @@
   * Display settings: any resolution, any color depth.
 
   <mortene@sim.no>.
+*/
+/*
+  UPDATE 2004-08-31 mortene:
+
+  This stand-alone example program has also been found to crash on
+  Linux, with Linux driver versions 53.36 and 61.11 (the latter one is
+  the most recent, as of 2004-08-31).
+
+  The Linux crash happens with a backtrace ending in memcpy(), and the
+  next level up is inside libGL.so.
 */
 
 // *************************************************************************
