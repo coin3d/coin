@@ -296,6 +296,9 @@ COIN_DLL_API void cc_glglue_glBlendEquation(const cc_glglue * glue, GLenum mode)
 
 COIN_DLL_API void * cc_glglue_glXGetCurrentDisplay(const cc_glglue * w);
 
+
+COIN_DLL_API void cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height);
+
 COIN_DLL_API void * cc_glglue_context_create_offscreen(unsigned int width, unsigned int height);
 COIN_DLL_API SbBool cc_glglue_context_make_current(void * ctx);
 COIN_DLL_API void cc_glglue_context_reinstate_previous(void * ctx);
