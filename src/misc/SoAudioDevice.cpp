@@ -34,10 +34,12 @@
 #ifdef HAVE_SOUND
 #include <AL/al.h>
 #include <AL/alc.h>
-#endif // HAVE_SOUND
 
 typedef ALCenum (ALAPIENTRY * COIN_ALCMAKECONTEXTCURRENT)(void * handle);
 typedef ALCenum (ALAPIENTRY * COIN_ALCDESTROYCONTEXT)(void * handle);
+
+#endif // HAVE_SOUND
+
 
 class SoAudioDeviceP {
 public:
@@ -53,6 +55,8 @@ public:
   void *context;
 #ifdef HAVE_SOUND
   ALCdevice *device;
+  COIN_ALCMAKECONTEXTCURRENT alcMakeContextCurrent;
+  COIN_ALCDESTROYCONTEXT alcDestroyContext;
 #endif // HAVE_SOUND
   SoGLRenderAction *glRenderAction;
   SoAudioRenderAction *audioRenderAction;
@@ -61,8 +65,6 @@ public:
   SbBool enabled;
   SbBool initOK;
 
-  COIN_ALCMAKECONTEXTCURRENT alcMakeContextCurrent;
-  COIN_ALCDESTROYCONTEXT alcDestroyContext;
 };
 
 #undef PRIVATE
@@ -101,7 +103,7 @@ SoAudioDevice::SoAudioDevice()
   // function pointer of a safe "common" type.
   PRIVATE(this)->alcMakeContextCurrent = (COIN_ALCMAKECONTEXTCURRENT)alcMakeContextCurrent;
   PRIVATE(this)->alcDestroyContext = (COIN_ALCDESTROYCONTEXT)alcDestroyContext;
-#endif
+#endif // HAVE_SOUND
 
   PRIVATE(this)->audioRenderAction = new SoAudioRenderAction();
 }
