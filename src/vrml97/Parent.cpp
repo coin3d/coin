@@ -214,15 +214,28 @@ void
 SoVRMLParent::removeChild(int idx)
 {
   this->children.removeNode(idx);
-  PRIVATE(this)->childlistvalid = FALSE;
+  if (this->children.getNum() > 0) {
+    PRIVATE(this)->childlistvalid = FALSE;
+  }
+  else {
+    SoGroup::children->truncate(0);
+    PRIVATE(this)->childlistvalid = TRUE;
+  }  
 }
+
 
 // Doc in parent
 void
 SoVRMLParent::removeChild(SoNode * child)
 {
   this->children.removeNode(child);
-  PRIVATE(this)->childlistvalid = FALSE;
+  if (this->children.getNum() > 0) {
+    PRIVATE(this)->childlistvalid = FALSE;
+  }
+  else {
+    SoGroup::children->truncate(0);
+    PRIVATE(this)->childlistvalid = TRUE;
+  }
 }
 
 // Doc in parent
