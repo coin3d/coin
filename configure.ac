@@ -474,7 +474,15 @@ AC_SUBST([HAVE_THREADSAFE])
 # *******************************************************************
 # Headers we might want to use
 
-AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h tlhelp32.h libgen.h])
+# We expect these to include their dependencies.
+AC_CHECK_HEADERS([unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h])
+
+# At least with MSVC++, these headers needs windows.h to have been included first.
+AC_CHECK_HEADERS([tlhelp32.h], [], [], [
+#if HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+])
 
 AC_CHECK_HEADERS(
   [sys/unistd.h],
