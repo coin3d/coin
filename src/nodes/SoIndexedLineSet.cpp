@@ -215,19 +215,6 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
     this->vertexProperty.getValue()->GLRender(action);
   }
 
-  // If the coordIndex field is invalid by not including the
-  // terminating -1, fix the field by adding it.
-  //
-  // (FIXME: this is a bit naughty, as we change a field without
-  // warning from within the library code. Should really see if we
-  // could find a better solution -- which also goes for the other
-  // nodes using coordinate index fields, of course. 20010104
-  // mortene.)
-
-  if (this->coordIndex.getNum() && this->coordIndex[this->coordIndex.getNum()-1] >= 0) {
-    this->coordIndex.set1Value(coordIndex.getNum(), -1);
-  }
-
   const SoCoordinateElement * coords;
   const SbVec3f * normals;
   const int32_t * cindices;
