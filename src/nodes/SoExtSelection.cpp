@@ -2334,8 +2334,8 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     this->coords.truncate(0);
 
     // Is this actually a rectangle and not just a point or line?
-    if(((p0[0] == p1[0]) && (p0[1] == p1[0])) ||
-       ((p0[0] == p1[0]) || (p0[1] == p1[1]))){
+    if (((p0[0] == p1[0]) && (p0[1] == p1[0])) ||
+        ((p0[0] == p1[0]) || (p0[1] == p1[1]))){
       master->touch();
       return;
     }
@@ -2346,6 +2346,9 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     this->coords.append(p1);
     this->coords.append(SbVec2s(p0[0], p1[1]));
   }
+
+  // Send signalt to client that tris are comming up
+  PUBLIC(this)->startCBList->invokeCallbacks(PUBLIC(this));
 
   this->curvp = SoViewportRegionElement::get(action->getState());
   this->cbaction->setViewportRegion(this->curvp);
@@ -2362,9 +2365,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     break;
   }
 
-
-  if(PUBLIC(this)->lassoMode.getValue() == SoExtSelection::ALL_SHAPES) {
-
+  if (PUBLIC(this)->lassoMode.getValue() == SoExtSelection::ALL_SHAPES) {
     this->offscreencolorcounter = 1;
     this->offscreenskipcounter = 0;
     this->applyonlyonselectedtriangles = FALSE;
@@ -2374,10 +2375,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     // Execute 'search' for triangles
     primcbdata.allshapes = TRUE;
-    PUBLIC(this)->startCBList->invokeCallbacks(PUBLIC(this));
     this->cbaction->apply(action->getCurPath()->getHead());
-    PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));
-    PUBLIC(this)->touch();
   
   } else {
 
@@ -2386,8 +2384,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     //
     primcbdata.allshapes = FALSE;
 
-    // Send signalt to client that tris are comming up
-    PUBLIC(this)->startCBList->invokeCallbacks(PUBLIC(this));
 
     this->offscreenaction = action;
     this->offscreenheadnode = action->getCurPath()->getHead();
@@ -2441,7 +2437,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     SoCallback * cbnode = new SoCallback;
     cbnode->ref();
     cbnode->setCallback(offscreenRenderCallback, this);
-
  
     do { // --- Render and processing loop.
 
@@ -2502,9 +2497,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     } while(this->offscreencolorcounterpasses*this->maximumcolorcounter < this->drawcallbackcounter);
 
-    // Send signal to client that we are finished searching for tris
-    PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));    
-
     // Release allocated stuff
     cbnode->unref();
     delete [] this->visibletrianglesbitarray;
@@ -2513,5 +2505,10 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
   }
 
+  // Send signal to client that we are finished searching for tris
+  PUBLIC(this)->finishCBList->invokeCallbacks(PUBLIC(this));
+  PUBLIC(this)->touch();
+
   selectPaths(); // Execute a 'doSelect' on all stored paths.
 }
+
