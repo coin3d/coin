@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoSoOffscreenRenderer SoOffscreenRenderer.h Inventor/SoOffscreenRenderer.h
+  \class SoOffscreenRenderer SoOffscreenRenderer.h Inventor/SoOffscreenRenderer.h
   \brief The SoOffscreenRenderer class is used for rendering scenes in offscreen buffers.
   \ingroup general
 
