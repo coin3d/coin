@@ -39,8 +39,8 @@
   vertex structure, calculate your data (e.g. a new texture
   coordinate) and return a pointer to this structure.  
 
-  Be aware that this class is an extension of Coin, and it is not
-  available in the original SGi Open Inventor v2.1 API.
+  Be aware that this class is an extension for Coin, and it is not
+  available in the original SGI Open Inventor v2.1 API.
 */
 
 /*!
