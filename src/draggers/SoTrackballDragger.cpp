@@ -23,7 +23,7 @@
 
 /*!
   \class SoTrackballDragger SoTrackballDragger.h Inventor/draggers/SoTrackballDragger.h
-  \brief The SoTrackballDragger is used to provide the end-user with rotation and scaling interaction possibilities.
+  \brief The SoTrackballDragger provides the end-user with rotation and scaling interaction possibilities.
   \ingroup draggers
 
   The dragger has three "bands" around a transparent sphere, which
@@ -42,10 +42,10 @@
   uniformly scale the trackball sphere.
 
   For the application programmer's convenience, the Coin library also
-  provides a manipulator class SoTrackballManip, which wraps the
-  SoTrackballDragger into the necessary mechanisms for making direct
-  insertion of this dragger into a scenegraph possible with very
-  little effort.
+  provides a manipulator class called SoTrackballManip, which wraps
+  the SoTrackballDragger into the necessary mechanisms for making
+  direct insertion of this dragger into a scenegraph possible with
+  very little effort.
 
   \sa SoTrackballManip
 */
@@ -79,7 +79,7 @@
 
   Continuously updated to contain the current vector of scaling along
   the X, Y and Z axes. The three components will always be equal, as
-  this dragger only support uniform scale operations.
+  this dragger only supports uniform scale operations.
 */
 
 /*!

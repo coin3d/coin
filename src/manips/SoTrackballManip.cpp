@@ -51,7 +51,8 @@ SoTrackballManip::initClass(void)
 
 /*!
   Default constructor. Allocates an SoTrackballDragger and an
-  SoSurroundScale node to surround the geometry.
+  SoSurroundScale node to surround the geometry within our part of the
+  scenegraph.
 */
 SoTrackballManip::SoTrackballManip(void)
 {

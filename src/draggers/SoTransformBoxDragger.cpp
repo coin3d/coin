@@ -23,10 +23,26 @@
 
 /*!
   \class SoTransformBoxDragger SoTransformBoxDragger.h Inventor/draggers/SoTransformBoxDragger.h
-  \brief The SoTransformBoxDragger class is (FIXME: doc)
+  \brief The SoTransformBoxDragger provides a box which can be translated, scaled and rotated.
   \ingroup draggers
 
-  FIXME: document class
+  Translate the dragger by clicking and dragging any of the
+  (invisible) sides. Scaling is done by dragging the corner
+  cubes. Only uniform scaling is supported. Rotation is done by
+  dragging any of the 12 beams connecting the corner cubes.
+
+  This dragger consists of a rigid framework for doing all the usual
+  interaction operations on scene geometry. The "user interface" of
+  the dragger is very simple, providing little room for the end-user
+  to make mistakes.
+
+  For the application programmer's convenience, the Coin library also
+  provides a manipulator class called SoTransformBoxManip, which wraps
+  the SoTransformBoxDragger into the necessary mechanisms for making
+  direct insertion of this dragger into a scenegraph possible with
+  very little effort.
+
+  \sa SoTransformBoxManip
 */
 
 #include <Inventor/draggers/SoTransformBoxDragger.h>
@@ -41,6 +57,39 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 
 #include <data/draggerDefaults/transformBoxDragger.h>
+
+/*!
+  \var SoSFRotation SoTransformBoxDragger::rotation
+
+  This field is continuously updated to contain the rotation of the
+  dragger's box.
+*/
+/*!
+  \var SoSFVec3f SoTransformBoxDragger::translation
+
+  The dragger's offset position from the local origo.
+*/
+/*!
+  \var SoSFVec3f SoTransformBoxDragger::scaleFactor
+
+  Continuously updated to contain the current vector of scaling along
+  the X, Y and Z axes. The three components will always be equal, as
+  this dragger only supports uniform scale operations.
+*/
+
+/*!
+  \var SoFieldSensor * SoTransformBoxDragger::rotFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoTransformBoxDragger::translFieldSensor
+  \internal
+*/
+/*!
+  \var SoFieldSensor * SoTransformBoxDragger::scaleFieldSensor
+  \internal
+*/
+
 
 SO_KIT_SOURCE(SoTransformBoxDragger);
 
@@ -307,6 +356,7 @@ SoTransformBoxDragger::valueChangedCB(void *, SoDragger * d)
   thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
+// private
 void 
 SoTransformBoxDragger::addChildDragger(SoDragger * child)
 {
@@ -315,6 +365,7 @@ SoTransformBoxDragger::addChildDragger(SoDragger * child)
   this->registerChildDragger(child);
 }
 
+// private
 void 
 SoTransformBoxDragger::removeChildDragger(SoDragger * child)
 {
@@ -323,6 +374,7 @@ SoTransformBoxDragger::removeChildDragger(SoDragger * child)
   this->unregisterChildDragger(child);
 }
 
+/*! \internal */
 void
 SoTransformBoxDragger::invalidateSurroundScaleCB(void *, SoDragger * d)
 {

@@ -21,6 +21,19 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTransformBoxManip SoTransformBoxManip.h Inventor/manips/SoTransformBoxManip.h
+  \brief The SoTransformBoxManip wraps an SoTransformBoxDragger for convenience.
+  \ingroup manips
+
+  The manipulator class takes care of wrapping up the
+  SoTransformBoxDragger in a simple and convenient API for the
+  application programmer, making it automatically surround the
+  geometry it influences and taking care of the book-keeping routines
+  for it's interaction with the relevant fields of an SoTransformation
+  node.
+*/
+
 #include <Inventor/manips/SoTransformBoxManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -36,6 +49,11 @@ SoTransformBoxManip::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTransformBoxManip);
 }
 
+/*!
+  Default constructor. Allocates an SoTransformBoxDragger and an
+  SoSurroundScale node to surround the geometry within our part of the
+  scenegraph.
+*/
 SoTransformBoxManip::SoTransformBoxManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformBoxManip);
@@ -48,7 +66,9 @@ SoTransformBoxManip::SoTransformBoxManip(void)
   ss->numNodesUpToReset = 3;
 }
 
-
+/*!
+  Destructor.
+*/
 SoTransformBoxManip::~SoTransformBoxManip()
 {
 }
