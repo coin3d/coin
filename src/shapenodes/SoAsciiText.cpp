@@ -302,9 +302,6 @@ SoAsciiText::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   // 'g' etc.) are not completely inside the boundingbox. Must
   // fix. (20030910 handegar)
 
-  SbBox2f maxbox;
-  float * bbox;
-
   float maxy, miny;
   float minx, maxx;
   

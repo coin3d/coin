@@ -295,7 +295,7 @@ SoText2::GLRender(SoGLRenderAction * action)
     float spacesize = SoFontSizeElement::get(state) / 3;  
     float xpos = nilpoint[0];      // to get rid of compiler warning..
     float ypos = nilpoint[1];
-    float fx, fy, rasterx, rastery, rpx, rpy, offsetx, offsety;
+    float rasterx, rastery, rpx, rpy, offsetx, offsety;
     int ix=0, iy=0;
     int charcnt, offvp;
     int thispos[2];
