@@ -175,6 +175,8 @@ SoGroup::readChildren(SoInput * in)
 void
 SoGroup::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
+  this->removeAllChildren();
+
   inherited::copyContents(from, copyconnections);
 
   SoGroup * g = (SoGroup *)from;
