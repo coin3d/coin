@@ -53,10 +53,7 @@
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/engines/SoNodeEngine.h>
 #include <Inventor/C/threads/threadsutilp.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include "../upgraders/SoUpgrader.h"
 #include <../tidbits.h> // coin_atexit()
