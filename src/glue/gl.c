@@ -119,6 +119,16 @@ glglue_resolve_envvar(const char * txt)
   return val ? atoi(val) : 0;
 }
 
+/* Return value of COIN_GLGLUE_NO_RADEON_WARNING environment variable. */
+int
+coin_glglue_radeon_warning(void)
+{
+  static int d = -1;
+  if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_RADEON_WARNING"); }
+  /* Note the inversion of the envvar value versus the return value. */
+  return (d > 0) ? 0 : 1;
+}
+
 /* Return value of COIN_DEBUG_GLGLUE environment variable. */
 int
 coin_glglue_debug(void)
@@ -594,6 +604,44 @@ cc_glglue_instance(int contextid)
                              "Rendering is %sdirect.",
                              gi->glx.isdirect ? "" : "in");
     }
+
+#ifdef COIN_DEBUG
+    if (coin_glglue_radeon_warning()) {
+      if (strcmp(gi->rendererstr, "Radeon 7500 DDR x86/SSE2") == 0) {
+        cc_debugerror_postwarning("cc_glglue_instance",
+                                  "We've had an unconfirmed bugreport that "
+                                  "this OpenGL driver ('%s') may crash upon "
+                                  "attempts to use 3D texturing. "
+                                  "We would like to get assistance to help "
+                                  "us debug the cause of this problem, so "
+                                  "please get in touch with us at "
+                                  "<coin-support@coin3d.org>. "
+                                  "This debug message can be turned off "
+                                  "permanently by setting the environment "
+                                  "variable COIN_GLGLUE_NO_RADEON_WARNING=1.",
+                                  gi->rendererstr);
+        /* Some additional information:
+
+           The full driver information for the driver where this was
+           reported is as follows:
+
+             GL_VERSION == '1.3.3302 Win2000 Release'
+             GL_VENDOR == 'ATI Technologies Inc.'
+             GL_RENDERER == 'Radeon 7500 DDR x86/SSE2'
+
+           The driver would crash with the
+           SoGuiExamples/nodes/texture3 example. The reporter couldn't
+           help us debug it, as he could a) not get a call-stack
+           backtrace, and b) swapped his card for an NVidia card.
+
+           Perhaps we should get hold of a Radeon card ourselves, to
+           test and debug the problem.
+
+           <mortene@sim.no>
+        */
+      }
+    }
+#endif /* COIN_DEBUG */
 
     /* Resolve our function pointers. */
     glglue_resolve_symbols(gi);
