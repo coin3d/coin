@@ -1089,7 +1089,7 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
                                        const SbVec2f & printsize) const
 {
   if (PRIVATE(this)->internaldata) {
-    const SbVec2s size = PRIVATE(this)->internaldata->getSize();
+    const SbVec2s size = PRIVATE(this)->requestedsize;
     const int nc = this->getComponents();
     const float defaultdpi = 72.0f; // we scale against this value
     const float dpi = this->getScreenPixelsPerInch();
@@ -1108,7 +1108,7 @@ SoOffscreenRenderer::writeToPostScript(FILE * fp,
             pixelsize[1]-scaledsize[1],
             scaledsize[0],
             pixelsize[1]);
-    fprintf(fp, "%%%%Creator: Coin <http://www.coin3d.org\n");
+    fprintf(fp, "%%%%Creator: Coin <http://www.coin3d.org>\n");
     fprintf(fp, "%%%%EndComments\n");
 
     fprintf(fp, "\n");
