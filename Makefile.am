@@ -133,7 +133,65 @@ EXTRA_DIST = \
 	packaging/windows/heading.nsi.in \
 	packaging/windows/middle.nsi.in \
 	packaging/windows/post.nsi.in \
-	examples/bindings/glutiv.cpp
+	examples/bindings/glutiv.cpp \
+	build/msvc6/data/draggerDefaults/centerballDragger.h \
+	build/msvc6/data/draggerDefaults/directionalLightDragger.h \
+	build/msvc6/data/draggerDefaults/dragPointDragger.h \
+	build/msvc6/data/draggerDefaults/handleBoxDragger.h \
+	build/msvc6/data/draggerDefaults/jackDragger.h \
+	build/msvc6/data/draggerDefaults/pointLightDragger.h \
+	build/msvc6/data/draggerDefaults/rotateCylindricalDragger.h \
+	build/msvc6/data/draggerDefaults/rotateDiscDragger.h \
+	build/msvc6/data/draggerDefaults/rotateSphericalDragger.h \
+	build/msvc6/data/draggerDefaults/scale1Dragger.h \
+	build/msvc6/data/draggerDefaults/scale2Dragger.h \
+	build/msvc6/data/draggerDefaults/scale2UniformDragger.h \
+	build/msvc6/data/draggerDefaults/scaleUniformDragger.h \
+	build/msvc6/data/draggerDefaults/spotLightDragger.h \
+	build/msvc6/data/draggerDefaults/tabBoxDragger.h \
+	build/msvc6/data/draggerDefaults/tabPlaneDragger.h \
+	build/msvc6/data/draggerDefaults/trackballDragger.h \
+	build/msvc6/data/draggerDefaults/transformBoxDragger.h \
+	build/msvc6/data/draggerDefaults/transformerDragger.h \
+	build/msvc6/data/draggerDefaults/translate1Dragger.h \
+	build/msvc6/data/draggerDefaults/translate2Dragger.h \
+	build/msvc6/coin3.dsp \
+	build/msvc6/coin3.dsw \
+	build/msvc6/generate.sh \
+	build/msvc6/include/Inventor/C/basic.h \
+	build/msvc6/include/Inventor/system/gl.h \
+	build/msvc6/include/Inventor/system/inttypes.h \
+	build/msvc6/include/config.h \
+	build/msvc7/data/draggerDefaults/centerballDragger.h \
+	build/msvc7/data/draggerDefaults/directionalLightDragger.h \
+	build/msvc7/data/draggerDefaults/dragPointDragger.h \
+	build/msvc7/data/draggerDefaults/handleBoxDragger.h \
+	build/msvc7/data/draggerDefaults/jackDragger.h \
+	build/msvc7/data/draggerDefaults/pointLightDragger.h \
+	build/msvc7/data/draggerDefaults/rotateCylindricalDragger.h \
+	build/msvc7/data/draggerDefaults/rotateDiscDragger.h \
+	build/msvc7/data/draggerDefaults/rotateSphericalDragger.h \
+	build/msvc7/data/draggerDefaults/scale1Dragger.h \
+	build/msvc7/data/draggerDefaults/scale2Dragger.h \
+	build/msvc7/data/draggerDefaults/scale2UniformDragger.h \
+	build/msvc7/data/draggerDefaults/scaleUniformDragger.h \
+	build/msvc7/data/draggerDefaults/spotLightDragger.h \
+	build/msvc7/data/draggerDefaults/tabBoxDragger.h \
+	build/msvc7/data/draggerDefaults/tabPlaneDragger.h \
+	build/msvc7/data/draggerDefaults/trackballDragger.h \
+	build/msvc7/data/draggerDefaults/transformBoxDragger.h \
+	build/msvc7/data/draggerDefaults/transformerDragger.h \
+	build/msvc7/data/draggerDefaults/translate1Dragger.h \
+	build/msvc7/data/draggerDefaults/translate2Dragger.h \
+	build/msvc7/coin3.dsp \
+	build/msvc7/coin3.dsw \
+	build/msvc7/coin3.sln \
+	build/msvc7/coin3.vcproj \
+	build/msvc7/generate.sh \
+	build/msvc7/include/Inventor/C/basic.h \
+	build/msvc7/include/Inventor/system/gl.h \
+	build/msvc7/include/Inventor/system/inttypes.h \
+	build/msvc7/include/config.h
 
 # FIXME: These files should really be added instead of the ones
 #        containing '_' instead of ' '. If this is fixed, also
