@@ -105,8 +105,15 @@ SoLOD::initClass(void)
 void
 SoLOD::doAction(SoAction *action)
 {
-  int idx = this->whichToTraverse(action);;
-  if (idx >= 0) this->children->traverse(action, idx);
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->children->traverseInPath(action, numindices, indices);
+  }
+  else {
+    int idx = this->whichToTraverse(action);;
+    if (idx >= 0) this->children->traverse(action, idx);
+  }
 }
 
 /*!
@@ -149,15 +156,15 @@ SoLOD::GLRenderBelowPath(SoGLRenderAction * action)
 {
   int idx = this->whichToTraverse(action);
   if (idx >= 0) {
-    // call GLRenderBelowPath() directly. A bit faster than using
-    // SoChildList::traverse()
-    SoNode * child = (SoNode*) this->children->get(idx);
-    action->pushCurPath(idx, child);
-    child->GLRenderBelowPath(action);
-    action->popCurPath(SoAction::BELOW_PATH);
+    if (!action->abortNow()) {
+      SoNode * child = (SoNode*) this->children->get(idx);
+      action->pushCurPath(idx, child);
+      child->GLRenderBelowPath(action);
+      action->popCurPath();
+    }
   }
   // don't auto cache LOD nodes.
-  SoGLCacheContextElement::shouldAutoCache(action->getState(), 
+  SoGLCacheContextElement::shouldAutoCache(action->getState(),
                                            SoGLCacheContextElement::DONT_AUTO_CACHE);
 }
 
@@ -167,13 +174,23 @@ SoLOD::GLRenderBelowPath(SoGLRenderAction * action)
 void
 SoLOD::GLRenderInPath(SoGLRenderAction * action)
 {
-  int numIndices;
-  const int *indices;
-  action->getPathCode(numIndices, indices);
+  int numindices;
+  const int * indices;
+  SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
 
-  // no need to traverse OFF_PATH children
-  for (int i = 0; i < numIndices; i++) {
-    this->children->traverse(action, indices[i]);
+  if (pathcode == SoAction::IN_PATH) {
+    for (int i = 0; i < numindices; i++) {
+      if (action->abortNow()) break;
+      int idx = indices[i];
+      SoNode * node = this->getChild(idx);
+      action->pushCurPath(idx, node);
+      node->GLRenderInPath(action);
+      action->popCurPath(pathcode);
+    }
+  }
+  else {
+    assert(pathcode == SoAction::BELOW_PATH);
+    SoLOD::GLRenderBelowPath(action);
   }
 }
 
@@ -184,8 +201,14 @@ void
 SoLOD::GLRenderOffPath(SoGLRenderAction * action)
 {
   int idx = this->whichToTraverse(action);;
-  if (idx >= 0 && this->getChild(idx)->affectsState())
-    this->children->traverse(action, idx);
+  if (idx >= 0) {
+    SoNode * node = this->getChild(idx);
+    if (node->affectsState()) {
+      action->pushCurPath(idx, node);
+      node->GLRenderOffPath(action);
+      action->popCurPath();
+    }
+  }
 }
 
 /*!

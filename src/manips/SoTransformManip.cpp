@@ -243,7 +243,7 @@ SoTransformManip::doAction(SoAction * action)
   int numindices;
   const int *indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
-    this->children->traverse(action, 0, indices[numindices-1]);
+    this->children->traverseInPath(action, numindices, indices);
   }
   else {
     this->children->traverse(action);
@@ -315,7 +315,7 @@ SoTransformManip::getMatrix(SoGetMatrixAction * action)
     SoTransform::getMatrix(action);
     break;
   case SoAction::IN_PATH:
-    this->children->traverse(action, 0, indices[numindices-1]);
+    this->children->traverseInPath(action, numindices, indices);
     break;
   case SoAction::OFF_PATH:
     this->children->traverse(action);
@@ -382,7 +382,7 @@ SoTransformManip::valueChangedCB(void * m, SoDragger * dragger)
   if (field && field->isOfType(SoSFVec3f::getClassTypeId())) {
     c = ((SoSFVec3f*)field)->getValue();
   }
-  
+
   SbRotation r, so;
   matrix.getTransform(t, r, s, so, c);
 

@@ -42,6 +42,8 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <assert.h>
 
 #if COIN_DEBUG
@@ -388,7 +390,14 @@ SoNodeKitListPart::affectsState(void) const
 void
 SoNodeKitListPart::doAction(SoAction * action)
 {
-  this->children->traverse(action);
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    children->traverseInPath(action, numindices, indices);
+  }
+  else {
+    this->children->traverse(action);
+  }
 }
 
 /*!
@@ -397,7 +406,7 @@ SoNodeKitListPart::doAction(SoAction * action)
 void
 SoNodeKitListPart::callback(SoCallbackAction * action)
 {
-  this->children->traverse((SoAction*)action);
+  SoNodeKitListPart::doAction((SoAction*)action);
 }
 
 /*!
@@ -406,7 +415,7 @@ SoNodeKitListPart::callback(SoCallbackAction * action)
 void
 SoNodeKitListPart::GLRender(SoGLRenderAction * action)
 {
-  this->children->traverse((SoAction*)action);
+  SoNodeKitListPart::doAction((SoAction*)action);
 }
 
 /*!
@@ -415,7 +424,23 @@ SoNodeKitListPart::GLRender(SoGLRenderAction * action)
 void
 SoNodeKitListPart::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  this->children->traverse((SoAction*)action);
+  int numindices;
+  const int * indices;
+  int last = action->getPathCode(numindices, indices) == SoAction::IN_PATH ?
+    indices[numindices-1] : this->children->getLength() - 1;
+
+  SbVec3f acccenter(0.0f, 0.0f, 0.0f);
+  int numacc = 0;
+  
+  for (int i = 0; i <= last; i++) {
+    children->traverse(action, i, i);
+    if (action->isCenterSet()) {
+      acccenter += action->getCenter();
+      numacc++;
+      action->resetCenter();
+    }
+  }
+  if (numacc) action->setCenter(acccenter / float(numacc), FALSE);
 }
 
 /*!
@@ -424,7 +449,22 @@ SoNodeKitListPart::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoNodeKitListPart::getMatrix(SoGetMatrixAction * action)
 {
-  this->children->traverse((SoAction*)action);
+  int numindices;
+  const int * indices;
+  
+  switch (action->getPathCode(numindices, indices)) {
+  case SoAction::IN_PATH:
+    this->children->traverseInPath(action, numindices, indices);
+    break;
+  case SoAction::OFF_PATH:
+    this->children->traverse(action);
+    break;
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:
+    break;
+  default:
+    assert(0 && "unknown path code");
+  }
 }
 
 /*!
@@ -433,7 +473,7 @@ SoNodeKitListPart::getMatrix(SoGetMatrixAction * action)
 void
 SoNodeKitListPart::handleEvent(SoHandleEventAction * action)
 {
-  this->children->traverse((SoAction*)action);
+  SoNodeKitListPart::doAction((SoAction*)action);
 }
 
 /*!
@@ -442,7 +482,7 @@ SoNodeKitListPart::handleEvent(SoHandleEventAction * action)
 void
 SoNodeKitListPart::pick(SoPickAction * action)
 {
-  this->children->traverse((SoAction*)action);
+  SoNodeKitListPart::doAction((SoAction*)action);
 }
 
 /*!
@@ -451,9 +491,9 @@ SoNodeKitListPart::pick(SoPickAction * action)
 void
 SoNodeKitListPart::search(SoSearchAction * action)
 {
-  inherited::search(action);
+  SoNode::search(action);
   if (!action->isFound())
-    this->children->traverse((SoAction*)action);
+    SoNodeKitListPart::doAction(action);
 }
 
 /*!
@@ -462,7 +502,7 @@ SoNodeKitListPart::search(SoSearchAction * action)
 void
 SoNodeKitListPart::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
-  this->children->traverse((SoAction*)action);
+  SoNodeKitListPart::doAction((SoAction*)action);
 }
 
 /*!

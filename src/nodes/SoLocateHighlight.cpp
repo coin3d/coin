@@ -171,20 +171,12 @@ void
 SoLocateHighlight::GLRenderBelowPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  if (!this->cullTest(state)) {
-    state->push();
-    if (this->highlighted || this->mode.getValue() == ON) {
-      this->setOverride(action);
-    }
-    int n = this->children->getLength();
-    SoAction::PathCode pathcode = action->getCurPathCode();
-    for (int i = 0; i < n; i++) {
-      action->pushCurPath(i);
-      (*this->children)[i]->GLRenderBelowPath(action);
-      action->popCurPath(pathcode);
-    }
-    state->pop();
+  state->push();
+  if (this->highlighted || this->mode.getValue() == ON) {
+    this->setOverride(action);
   }
+  inherited::GLRenderBelowPath(action);
+  state->pop();
 }
 
 // doc from parent
@@ -192,15 +184,11 @@ void
 SoLocateHighlight::GLRenderInPath(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  int numIndices;
-  const int * indices;
-  action->getPathCode(numIndices, indices);
-
   state->push();
   if (this->highlighted || this->mode.getValue() == ON) {
     this->setOverride(action);
   }
-  this->children->traverse(action, 0, indices[numIndices-1]);
+  inherited::GLRenderInPath(action);
   state->pop();
 }
 

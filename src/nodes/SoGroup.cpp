@@ -270,28 +270,11 @@ SoGroup::doAction(SoAction * action)
 {
   int numindices;
   const int * indices;
-  switch (action->getPathCode(numindices, indices)) {
-  case SoAction::IN_PATH:
-    this->children->traverse(action, 0, indices[numindices - 1]);
-    break;
-
-  case SoAction::NO_PATH:
-  case SoAction::BELOW_PATH:
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->children->traverseInPath(action, numindices, indices);
+  }
+  else {
     this->children->traverse(action); // traverse all children
-    break;
-
-  case SoAction::OFF_PATH:
-    {
-      int n = this->getNumChildren();
-      for (int i = 0; i < n; i++) {
-        if (this->getChild(i)->affectsState())
-          this->children->traverse(action, i);
-      }
-      break;
-    }
-  default:
-    assert(0 && "Unknown path code");
-    break;
   }
 }
 
@@ -356,6 +339,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
     }
   }
   else {
+    action->pushCurPath();
     int n = this->children->getLength();
     for (int i = 0; i < n && !action->hasTerminated(); i++) {
       if (action->abortNow()) {
@@ -363,10 +347,10 @@ SoGroup::GLRender(SoGLRenderAction * action)
         SoCacheElement::invalidate(state);
         break;
       }
-      action->pushCurPath(i, childarray[i]);
+      action->popPushCurPath(i, childarray[i]);
       childarray[i]->GLRender(action);
-      action->popCurPath(pathcode);
     }
+    action->popCurPath();
   }
 }
 

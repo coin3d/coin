@@ -425,15 +425,15 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 
   if (createcache || !this->cullTest(state)) {
     int n = this->children->getLength();
-    SoAction::PathCode pathcode = action->getCurPathCode();
     SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
+    action->pushCurPath();
     for (int i = 0; i < n && !action->hasTerminated(); i++) {
       if (action->abortNow()) {
         // only cache if we do a full traversal
         SoCacheElement::invalidate(state);
         break;
       }
-      action->pushCurPath(i, childarray[i]);
+      action->popPushCurPath(i, childarray[i]);
       childarray[i]->GLRenderBelowPath(action);
       // The GL error test is disabled for this optimized path.
       // If you get a GL error reporting an error in the Separator node,
@@ -473,8 +473,8 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
                                (*this->children)[i]->getTypeId().getName().getString());
       }
 #endif // GL debug
-      action->popCurPath(pathcode);
     }
+    action->popCurPath();
   }
   state->pop();
   if (createcache) {
@@ -583,7 +583,7 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
   int numindices;
   const int * indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
-    this->children->traverse(action, 0, indices[numindices-1]);
+    this->children->traverseInPath(action, numindices, indices);
   }
 }
 

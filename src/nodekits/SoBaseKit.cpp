@@ -436,29 +436,13 @@ SoBaseKit::set(const char * partnamestring, const char * parameterstring)
 void
 SoBaseKit::doAction(SoAction * action)
 {
-  int numIndices;
+  int numindices;
   const int * indices;
-  switch (action->getPathCode(numIndices, indices)) {
-  case SoAction::IN_PATH:
-    this->children->traverse(action, 0, indices[numIndices - 1]);
-    break;
-  case SoAction::NO_PATH:
-  case SoAction::BELOW_PATH:
-    this->children->traverse(action); // traverse all children
-    break;
-  case SoAction::OFF_PATH:
-    {
-      SoChildList * children = this->getChildren();
-      int n = children->getLength();
-      for (int i = 0; i < n; i++) {
-        if ((*children)[i]->affectsState())
-          children->traverse(action, i);
-      }
-      break;
-    }
-  default:
-    assert(0 && "Unknown path code");
-    break;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->children->traverseInPath(action, numindices, indices);
+  }
+  else {
+    this->children->traverse(action);
   }
 }
 

@@ -218,7 +218,7 @@ SoPointLightManip::doAction(SoAction * action)
   int numindices;
   const int * indices;
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
-    this->children->traverse(action, 0, indices[numindices-1]);
+    this->children->traverseInPath(action, numindices, indices);
   }
   else {
     this->children->traverse(action);
@@ -287,7 +287,7 @@ SoPointLightManip::getMatrix(SoGetMatrixAction * action)
   case SoAction::BELOW_PATH:
     break;
   case SoAction::IN_PATH:
-    this->children->traverse(action, 0, indices[numindices-1]);
+    this->children->traverseInPath(action, numindices, indices);
     break;
   case SoAction::OFF_PATH:
     this->children->traverse(action);

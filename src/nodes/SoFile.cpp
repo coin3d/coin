@@ -206,7 +206,14 @@ SoFile::getChildren(void) const
 void
 SoFile::doAction(SoAction * action)
 {
-  this->children->traverse((SoAction *)action);
+  int numindices;
+  const int * indices;
+  if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
+    this->children->traverseInPath(action, numindices, indices);
+  }
+  else {
+    this->children->traverse((SoAction *)action);
+  }
 }
 
 // Doc from superclass.

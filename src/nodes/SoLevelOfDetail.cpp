@@ -39,7 +39,7 @@
 
 static SoGetBoundingBoxAction * bboxAction = NULL;
 
-static void 
+static void
 cleanup_func(void)
 {
   delete bboxAction;
@@ -123,9 +123,12 @@ SoLevelOfDetail::doAction(SoAction *action)
   if (n == 0) return;
   float complexity = SoComplexityElement::get(state);
 
+  // quick test to see if we should just traverse last child
   if ((SoComplexityTypeElement::get(state) ==
        SoComplexityTypeElement::BOUNDING_BOX) ||
-      complexity == 0.0f) {
+      (complexity == 0.0f) ||
+      (n == 1) ||
+      (this->screenArea.getNum() == 0)) {
     state->push();
     this->getChildren()->traverse(action, n-1);
     state->pop();
