@@ -91,7 +91,7 @@
  // The _S_IFDIR bitpattern is not in the POSIX standard, but MSVC++
  // header files has it.
  #ifdef _S_IFDIR
- #define S_ISDIR(s) s & _S_IFDIR
+ #define S_ISDIR(s) (s & _S_IFDIR)
  #else // Ai.
  #error Can neither find nor make an S_ISDIR macro to test stat structures.
  #endif // !_S_IFDIR
