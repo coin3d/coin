@@ -43,6 +43,9 @@ SoSelectOne::SoSelectOne(SoType inputType)
   SO_ENGINE_ADD_INPUT(index,(0));
   this->input=(SoMField *)inputType.createInstance();
 
+  //Instead of SO_ENGINE_ADD_OUTPUT()
+  this->output=new SoEngineOutput;
+#if 0 // obsoleted. FIXME: reimplement, 20000309 pederb
   // FIXME: couldn't this be extracted by the use of
   // SoMField::getClassTypeId().getAllDerivedFrom() or something?
   // 19990523 mortene.
@@ -70,9 +73,6 @@ SoSelectOne::SoSelectOne(SoType inputType)
     SoMFVec4f::getClassTypeId(),SoMFVec4f::getClassTypeId()
   };
 
-  //Instead of SO_ENGINE_ADD_OUTPUT()
-  this->output=new SoEngineOutput;
-#if 0 // obsoleted. FIXME: reimplement, 20000309 pederb
   SoType outputType;
   for (int i=0;i<42;i+=2) {
     if (inputType==types[i]) {
