@@ -76,12 +76,14 @@
 #include <Inventor/VRMLnodes/SoVRMLAppearance.h>
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/VRMLnodes/SoVRMLParent.h>
+#include <Inventor/VRMLnodes/SoVRMLMaterial.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
+#include <Inventor/elements/SoTextureImageElement.h>
 #include <stddef.h>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -98,18 +100,19 @@ public:
   SbBool childlistvalid;
 
 #ifdef COIN_THREADSAFE
-  SbMutex childlistmutex;
+  SbMutex mutex;
 #endif // COIN_THREADSAFE
-  void lockChildList(void) {
+  void lock(void) {
 #ifdef COIN_THREADSAFE
-    this->childlistmutex.lock();
+    this->mutex.lock();
 #endif // COIN_THREADSAFE
   }
-  void unlockChildList(void) {
+  void unlock(void) {
 #ifdef COIN_THREADSAFE
-    this->childlistmutex.unlock();
+    this->mutex.unlock();
 #endif // COIN_THREADSAFE
   }
+  uint32_t fakecolor;
 };
 #endif // DOXYGEN_SKIP_THIS
 
@@ -215,14 +218,28 @@ SoVRMLAppearance::GLRender(SoGLRenderAction * action)
     action->popCurPath();
   }
 
+  // workaround for weird (IMO) VRML97 texture/material handling. For 
+  // RGB[A] textures, the texture color should replace the diffuse color.
+  SbVec2s size;
+  int nc;
+  (void) SoTextureImageElement::getImage(state, size, nc);
   
-  // FIXME: read up on the VRML97 lighting model. It seems like we should check
-  // how many components there are in the texture before deciding what to do with
-  // the material diffuse color. pederb, 2002-11-08
-//    if (this->texture.getValue() && SoTextureQualityElement::get(state) > 0.0f) {
-//      static uint32_t white = 0xffffffff;
-//      SoLazyElement::setPacked(state, this, 1, &white);
-//    }
+  if (this->texture.getValue() && 
+      SoTextureQualityElement::get(state) > 0.0f && 
+      size != SbVec2s(0,0) && 
+      nc >= 3) {
+    SoVRMLMaterial * mat = (SoVRMLMaterial*) this->material.getValue();
+    uint32_t alpha = 0xff;
+    if (mat) {
+      alpha = (uint32_t) ((1.0f - mat->transparency.getValue()) * 255.0f);
+      if (alpha > 255) alpha = 255;
+    }
+    // lock just in case two threads get here at the same time
+    PRIVATE(this)->lock();
+    PRIVATE(this)->fakecolor = 0xffffff00 | alpha;
+    PRIVATE(this)->unlock();
+    SoLazyElement::setPacked(state, this, 1, &PRIVATE(this)->fakecolor);
+  }
 }
 
 // doc in parent
@@ -242,14 +259,14 @@ SoVRMLAppearance::getChildren(void) const
     // this is not 100% thread safe. The assumption is that no nodes
     // will be added or removed while a scene graph is being
     // traversed. For Coin, this is an ok assumption.
-    PRIVATE(this)->lockChildList();
+    PRIVATE(this)->lock();
     // test again after we've locked
     if (!PRIVATE(this)->childlistvalid) {
       SoVRMLAppearance * thisp = (SoVRMLAppearance*) this;
       SoVRMLParent::updateChildList(thisp, *(PRIVATE(thisp)->childlist));
       PRIVATE(thisp)->childlistvalid = TRUE;
     }
-    PRIVATE(this)->unlockChildList();
+    PRIVATE(this)->unlock();
   }
   return PRIVATE(this)->childlist;
 }
