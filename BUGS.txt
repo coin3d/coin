@@ -222,46 +222,6 @@ Now, for the list of known bugs in the core Coin library:
 
 =====================================================================
 
-018 SoTransformerDragger has a bug where the transformation matrix can
-    end up with shearing.
-
-    Here's a simple way of reproducing the bug: click and drag the
-    middle front rotation point after loading the following scene (and
-    changing the viewpoint slightly, so the camera direction is not
-    normal to it). Upon releasing the rotation invokation, the
-    geometry of the Text3 will be slightly sheared, indicating a
-    faulty transform matrix somewhere:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #Inventor V2.1 ascii
-
-    Separator {
-       TransformerManip { }
-       Text3 { string "b"   parts ALL }
-    }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    The bug is also listed in the topmost FIXME in
-    src/draggers/SoTransformerDragger.cpp, so update that comment
-    aswell if you fix the problem.
-
-    mortene 20020813.
-
-    UPDATE 20040706 mortene: we've had several external reports about
-    this, so consider this a high priority item.
-
-    UPDATE 20040714 jornskaa: The bug happens when a SoSurroundScale
-    node in the scenegraph. When this node calculates a non-uniform
-    scale, the result is that the node to be scaled is sheared.  This
-    could be because a rotation takes place that brings a node out of
-    it's local coordinates system before the scaling in the
-    SoSurroundScale node takes place - which causes shearing. But the
-    reason for the bug is probably located somewhere else. Probably is
-    it something that happens during the traversal of the scenegraph
-    when using the SoGetMatrixAction.
-
-=====================================================================
-
 019 When using the CTRL key while doing scaling with
     SoTransformerDragger (to scale against the corner point on the
     opposite side), the geometry will jump by an offset both on
