@@ -21094,12 +21094,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(int8_t) equals 1 */
-    switch ( switchval ) {
-    case sizeof(int8_t): break;
-    case 1: break;
-    }
+      /* establish that type 'int8_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      int8_t variable = 0;
 
   ;
   return 0;
@@ -21118,29 +21115,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(int8_t) equals 1 */
+      switch ( switchval ) {
+      case sizeof(int8_t): break;
+      case 1: break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "int8_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "int8_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INT8_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_INT8_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
@@ -21188,12 +21241,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(uint8_t) equals 1 */
-    switch ( switchval ) {
-    case sizeof(uint8_t): break;
-    case 1: break;
-    }
+      /* establish that type 'uint8_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      uint8_t variable = 0;
 
   ;
   return 0;
@@ -21212,29 +21262,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(uint8_t) equals 1 */
+      switch ( switchval ) {
+      case sizeof(uint8_t): break;
+      case 1: break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "uint8_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "uint8_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_UINT8_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_UINT8_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
@@ -21283,12 +21389,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(int16_t) equals 2 */
-    switch ( switchval ) {
-    case sizeof(int16_t): break;
-    case 2: break;
-    }
+      /* establish that type 'int16_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      int16_t variable = 0;
 
   ;
   return 0;
@@ -21307,29 +21410,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(int16_t) equals 2 */
+      switch ( switchval ) {
+      case sizeof(int16_t): break;
+      case 2: break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "int16_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "int16_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INT16_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_INT16_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
@@ -21377,12 +21536,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(uint16_t) equals 2 */
-    switch ( switchval ) {
-    case sizeof(uint16_t): break;
-    case 2: break;
-    }
+      /* establish that type 'uint16_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      uint16_t variable = 0;
 
   ;
   return 0;
@@ -21401,29 +21557,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(uint16_t) equals 2 */
+      switch ( switchval ) {
+      case sizeof(uint16_t): break;
+      case 2: break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "uint16_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "uint16_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_UINT16_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_UINT16_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
@@ -21472,12 +21684,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(int32_t) equals 4 */
-    switch ( switchval ) {
-    case sizeof(int32_t): break;
-    case 4: break;
-    }
+      /* establish that type 'int32_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      int32_t variable = 0;
 
   ;
   return 0;
@@ -21496,29 +21705,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(int32_t) equals 4 */
+      switch ( switchval ) {
+      case sizeof(int32_t): break;
+      case 4: break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "int32_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "int32_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INT32_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_INT32_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
@@ -21566,12 +21831,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(uint32_t) equals 4 */
-    switch ( switchval ) {
-    case sizeof(uint32_t): break;
-    case 4: break;
-    }
+      /* establish that type 'uint32_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      uint32_t variable = 0;
 
   ;
   return 0;
@@ -21590,29 +21852,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(uint32_t) equals 4 */
+      switch ( switchval ) {
+      case sizeof(uint32_t): break;
+      case 4: break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "uint32_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "uint32_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_UINT32_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_UINT32_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
@@ -21661,12 +21979,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(int64_t) equals 8 */
-    switch ( switchval ) {
-    case sizeof(int64_t): break;
-    case 8: break;
-    }
+      /* establish that type 'int64_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      int64_t variable = 0;
 
   ;
   return 0;
@@ -21685,29 +22000,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(int64_t) equals 8 */
+      switch ( switchval ) {
+      case sizeof(int64_t): break;
+      case 8: break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "int64_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "int64_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INT64_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_INT64_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
@@ -21754,12 +22125,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(uint64_t) equals 8 */
-    switch ( switchval ) {
-    case sizeof(uint64_t): break;
-    case 8: break;
-    }
+      /* establish that type 'uint64_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      uint64_t variable = 0;
 
   ;
   return 0;
@@ -21778,29 +22146,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(uint64_t) equals 8 */
+      switch ( switchval ) {
+      case sizeof(uint64_t): break;
+      case 8: break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "uint64_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "uint64_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_UINT64_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_UINT64_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
@@ -21848,12 +22272,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(intptr_t) equals sizeof(void *) */
-    switch ( switchval ) {
-    case sizeof(intptr_t): break;
-    case sizeof(void *): break;
-    }
+      /* establish that type 'intptr_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      intptr_t variable = 0;
 
   ;
   return 0;
@@ -21872,29 +22293,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(intptr_t) equals sizeof(void *) */
+      switch ( switchval ) {
+      case sizeof(intptr_t): break;
+      case sizeof(void *): break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "intptr_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "intptr_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_INTPTR_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_INTPTR_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext
@@ -21941,12 +22418,9 @@ int
 main ()
 {
 
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof(uintptr_t) equals sizeof(void *) */
-    switch ( switchval ) {
-    case sizeof(uintptr_t): break;
-    case sizeof(void *): break;
-    }
+      /* establish that type 'uintptr_t' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      uintptr_t variable = 0;
 
   ;
   return 0;
@@ -21965,29 +22439,85 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
 
-    # compile time success means we *haven't* found the type of right size
-    :
+      cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
+int
+main ()
+{
+
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof(uintptr_t) equals sizeof(void *) */
+      switch ( switchval ) {
+      case sizeof(uintptr_t): break;
+      case sizeof(void *): break;
+      }
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+
+      # compile time success means we *haven't* found the type of right size
+      :
 
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 
-    echo "$as_me:$LINENO: result: $sim_ac_type" >&5
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      echo "$as_me:$LINENO: result: $sim_ac_type" >&5
 echo "${ECHO_T}$sim_ac_type" >&6
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "uintptr_t"; then
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "uintptr_t"; then
 
 cat >>confdefs.h <<_ACEOF
 #define HAVE_UINTPTR_T 1
 _ACEOF
 
-    fi
+      fi
 
 cat >>confdefs.h <<_ACEOF
 #define COIN_UINTPTR_T $sim_ac_type
 _ACEOF
 
+
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
 fi
 rm -f conftest.$ac_objext conftest.$ac_ext

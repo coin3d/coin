@@ -130,7 +130,6 @@ fi
 # SIM_AC_BYTESIZE_TYPE(TYPEDEFTYPE, BYTESIZE, ALTERNATE_TYPELIST,
 #                     [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 # ----------------------------------------------------------
-# FIXME: pretty ugly code with several quick hacks. 20010324 mortene.
 AC_DEFUN([SIM_AC_BYTESIZE_TYPE],
 [sim_ac_searching=true
 AC_MSG_CHECKING([for $1 type or equivalent])
@@ -150,23 +149,42 @@ do
 #include <sys/types.h>
 #endif /* HAVE_SYS_TYPES_H */
 ], [
-    int switchval = 0;
-    /* trick compiler to abort with error if sizeof($1) equals $2 */
-    switch ( switchval ) {
-    case sizeof($1): break;
-    case $2: break;
-    }
+      /* establish that type '$1' is actually usable before trying to
+         make a failure-dependend compilation test case using it. */
+      $1 variable = 0;
 ], [
-    # compile time success means we *haven't* found the type of right size
-    :
+      AC_TRY_COMPILE([
+#include <stdio.h>
+#ifdef HAVE_INTTYPES_H
+#include <inttypes.h>
+#else /* !HAVE_INTTYPES_H */
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#endif /* HAVE_STDINT_H */
+#endif /* !HAVE_INTTYPES_H */
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
 ], [
-    AC_MSG_RESULT([$sim_ac_type])
-    sim_ac_searching=false
-    if test "$sim_ac_type" = "$1"; then
-      AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(have_$1), 1, [define this if the type is available on the system])
-    fi
-    AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(coin_$1), $sim_ac_type, [define this to a type of the indicated bitwidth])
-])
+      int switchval = 0;
+      /* trick compiler to abort with error if sizeof($1) equals $2 */
+      switch ( switchval ) {
+      case sizeof($1): break;
+      case $2: break;
+      }
+], [
+      # compile time success means we *haven't* found the type of right size
+      :
+], [
+      # constructed switch became illegal C code - meaning we have found a
+      # type that has desired size
+      AC_MSG_RESULT([$sim_ac_type])
+      sim_ac_searching=false
+      if test "$sim_ac_type" = "$1"; then
+        AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(have_$1), 1, [define this if the type is available on the system])
+      fi
+      AC_DEFINE_UNQUOTED(SIM_AS_TR_CPP(coin_$1), $sim_ac_type, [define this to a type of the indicated bitwidth])
+])])
   fi
 done
 
