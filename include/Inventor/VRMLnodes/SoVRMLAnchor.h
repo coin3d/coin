@@ -31,6 +31,7 @@
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoVRMLAnchor;
+class SoVRMLAnchorP;
 
 typedef void SoVRMLAnchorCB( const SbString &, void *,  SoVRMLAnchor *);
 
@@ -61,6 +62,7 @@ private:
   static SoVRMLAnchorCB * fetchurlcb;
   static void * userdata;
 
-}; // class SoVRMLAnchor
+  SoVRMLAnchorP * pimpl;
+};
 
 #endif // ! COIN_SOVRMLANCHOR_H

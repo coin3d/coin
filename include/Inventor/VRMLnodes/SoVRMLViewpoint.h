@@ -33,6 +33,8 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFRotation.h>
 
+class SoVRMLViewpointP;
+
 class COIN_DLL_API SoVRMLViewpoint : public SoNode
 {
   typedef SoNode inherited;
@@ -56,6 +58,8 @@ protected:
   SoSFTime bindTime;
   SoSFBool isBound;
 
-}; // class SoVRMLViewpoint
+private:
+  SoVRMLViewpointP * pimpl;
+};
 
 #endif // ! COIN_SOVRMLVIEWPOINT_H

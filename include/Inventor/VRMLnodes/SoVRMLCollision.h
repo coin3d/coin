@@ -30,6 +30,8 @@
 #include <Inventor/fields/SoSFNode.h>
 #include <Inventor/fields/SoSFTime.h>
 
+class SoVRMLCollisionP;
+
 class COIN_DLL_API SoVRMLCollision : public SoVRMLGroup
 {
   typedef SoVRMLGroup inherited;
@@ -53,7 +55,7 @@ protected:
 
 private:
   void commonConstructor(void);
-
-}; // class SoVRMLCollision
+  SoVRMLCollisionP * pimpl;
+};
 
 #endif // ! COIN_SOVRMLCOLLISION_H

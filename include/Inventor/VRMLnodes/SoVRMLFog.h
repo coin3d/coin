@@ -31,6 +31,8 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFBool.h>
 
+class SoVRMLFogP;
+
 class COIN_DLL_API SoVRMLFog : public SoNode
 {
   typedef SoNode inherited;
@@ -52,6 +54,8 @@ protected:
 
   virtual ~SoVRMLFog();
 
-}; // class SoVRMLFog
+private:
+  SoVRMLFogP * pimpl;
+};
 
 #endif // ! COIN_SOVRMLFOG_H

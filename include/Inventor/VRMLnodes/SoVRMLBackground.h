@@ -31,6 +31,8 @@
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/fields/SoSFBool.h>
 
+class SoVRMLBackgroundP;
+
 class COIN_DLL_API SoVRMLBackground : public SoNode
 {
   typedef SoNode inherited;
@@ -59,6 +61,9 @@ protected:
   SoSFBool set_bind; // eventIn
   SoSFBool isBound;  // eventOut
 
-}; // class SoVRMLBackground
+private:
+  SoVRMLBackgroundP * pimpl;
+
+};
 
 #endif // ! COIN_SOVRMLBACKGROUND_H

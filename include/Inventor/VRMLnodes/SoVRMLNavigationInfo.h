@@ -31,6 +31,8 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
+class SoVRMLNavigationInfoP;
+
 class COIN_DLL_API SoVRMLNavigationInfo : public SoNode
 {
   typedef SoNode inherited;
@@ -54,6 +56,8 @@ protected:
   SoSFBool set_bind;
   SoSFBool isBound;
 
-}; // class SoVRMLNavigationInfo
+private:
+  SoVRMLNavigationInfoP * pimpl;
+};
 
 #endif // ! COIN_SOVRMLNAVIGATIONINFO_H

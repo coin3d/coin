@@ -32,6 +32,8 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/SbString.h>
 
+class SoVRMLFontStyleP;
+
 class COIN_DLL_API SoVRMLFontStyle : public SoNode
 {
   typedef SoNode inherited;
@@ -76,6 +78,8 @@ public:
 protected:
   virtual ~SoVRMLFontStyle();
 
-}; // class SoVRMLFontStyle
+private:
+  SoVRMLFontStyleP * pimpl;
+};
 
 #endif // ! COIN_SOVRMLFONTSTYLE_H

@@ -31,6 +31,8 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoMFFloat.h>
 
+class SoVRMLTextP;
+
 class COIN_DLL_API SoVRMLText : public SoVRMLGeometry
 {
   typedef SoVRMLGeometry inherited;
@@ -65,6 +67,9 @@ protected:
   virtual void generatePrimitives(SoAction * action);
   SoChildList * children;
 
-}; // class SoVRMLText
+private:
+  SoVRMLTextP * pimpl;
+
+};
 
 #endif // ! COIN_SOVRMLTEXT_H

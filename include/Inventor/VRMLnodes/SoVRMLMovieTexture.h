@@ -31,6 +31,8 @@
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/fields/SoMFString.h>
 
+class SoVRMLMovieTextureP;
+
 class COIN_DLL_API SoVRMLMovieTexture : public SoVRMLTexture
 {
   typedef SoVRMLTexture inherited;
@@ -53,6 +55,8 @@ public:
 protected:
   virtual ~SoVRMLMovieTexture();
 
-}; // class SoVRMLMovieTexture
+private:
+  SoVRMLMovieTextureP * pimpl;
+};
 
 #endif // ! COIN_SOVRMLMOVIETEXTURE_H
