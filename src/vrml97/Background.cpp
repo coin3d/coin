@@ -306,7 +306,6 @@ public:
   void buildIndexList(SoIndexedTriangleStripSet * sphere, int len, int matlength);
 
 
-
 };
 
 
@@ -398,6 +397,12 @@ SoVRMLBackground::SoVRMLBackground(void)
 */
 SoVRMLBackground::~SoVRMLBackground()
 {
+  
+  if (PRIVATE(this)->geometrybuilt) {
+    PRIVATE(this)->rootnode->removeAllChildren();
+    PRIVATE(this)->rootnode->unref();
+  }
+  
   delete PRIVATE(this)->children;
   delete PRIVATE(this);
 }
@@ -449,45 +454,54 @@ SoVRMLBackgroundP::buildGeometry()
   float sphereradius = 1.5;
   SbList <float> angles;
   
-  //
-  // Initial scenegraph
-  //
-
   this->rootnode = new SoSeparator;
   this->rootnode->ref();
 
   SoLightModel * lightmodel = new SoLightModel;
   lightmodel->model.setValue(SoLightModel::BASE_COLOR);
-
   this->rootnode->addChild(lightmodel);
+
 
   
   //
   // Sky sphere
   //
 
-  if(PUBLIC(this)->skyAngle.getNum() > 0){
+  if ((PUBLIC(this)->skyAngle.getNum() > 0) || (PUBLIC(this)->skyColor.getNum() > 0)) {
 
     angles.append(0);
     float angle = 0;
-    for (int k=0;k<PUBLIC(this)->skyAngle.getNum();++k) { 
-      if (angle > PUBLIC(this)->skyAngle[k]) {
-        SoDebugError::postWarning("buildGeometry","skyAngle array must be non-decreasing.");
-        continue;
+
+    if (PUBLIC(this)->skyAngle.getNum() > 0) {
+      for (int k=0;k<PUBLIC(this)->skyAngle.getNum();++k) { 
+        if (angle > PUBLIC(this)->skyAngle[k]) {
+          SoDebugError::postWarning("buildGeometry","skyAngle array must be non-decreasing.");
+          continue;
+        }
+        angle = PUBLIC(this)->skyAngle[k];
+        if (angle > M_PI) {
+          SoDebugError::postWarning("buildGeometry","skyAngle > PI not allowed.");
+          angle = M_PI;
+        } else if (angle < 0) {
+          SoDebugError::postWarning("buildGeometry","skyAngle < 0 not allowed.");
+          angle = 0;
+        } 
+        angles.append(angle);
       }
-      angle = PUBLIC(this)->skyAngle[k];
-      if (angle > M_PI) {
-        SoDebugError::postWarning("buildGeometry","skyAngle > PI not allowed.");
-        angle = M_PI;
-      } else if (angle < 0) {
-        SoDebugError::postWarning("buildGeometry","skyAngle < 0 not allowed.");
-        angle = 0;
-      } 
-      angles.append(angle);
+      if (angle != M_PI)
+        angles.append(M_PI);
+
     }
-    if (angle != M_PI)
-      angles.append(M_PI);
-    
+    else { // No angles specified. Creating list based on number of colors.
+      int num = PUBLIC(this)->skyColor.getNum();
+      if(num == 1)
+        ++num;
+      for (int i=0;i<=num;++i) 
+        angles.append((M_PI/num)*i);
+    }
+
+
+        
     int len = angles.getLength();
     
     SbVec3f * skyvertexarray = new SbVec3f[len * len];    
@@ -536,38 +550,58 @@ SoVRMLBackgroundP::buildGeometry()
     shapehintssky->shapeType = SoShapeHints::SOLID;
     shapehintssky->faceType = SoShapeHints::CONVEX;
 
+    SoScale * scale = new SoScale;
+    SbVec3f factor(3, 3, 3);
+    scale->scaleFactor.setValue(factor);
+    this->rootnode->addChild(scale);
+
     this->rootnode->addChild(shapehintssky);
     this->rootnode->addChild(sky);  
 
   }
+
+
   
   //
   // Ground sphere
   //
 
-  if (PUBLIC(this)->groundAngle.getNum() > 0) {
+  if ((PUBLIC(this)->groundAngle.getNum() > 0) || (PUBLIC(this)->groundColor.getNum() > 0)) {
 
     sphereradius = sphereradius * 0.9;
     angles.truncate(0);
     angles.append(0);
     float angle = 0;
-    for (int k=0;k<PUBLIC(this)->groundAngle.getNum();++k) { 
-      if (angle > PUBLIC(this)->groundAngle[k]) {
-        SoDebugError::postWarning("buildGeometry","groundAngle array must be non-decreasing.");
-        continue;
+
+    if (PUBLIC(this)->groundAngle.getNum() > 0) {
+
+      for (int k=0;k<PUBLIC(this)->groundAngle.getNum();++k) { 
+        if (angle > PUBLIC(this)->groundAngle[k]) {
+          SoDebugError::postWarning("buildGeometry","groundAngle array must be non-decreasing.");
+          continue;
+        }
+        angle = PUBLIC(this)->groundAngle[k];
+        if (angle > M_PI/2) {
+          SoDebugError::postWarning("buildGeometry","groundAngle > PI/2 not allowed.");
+          angle = M_PI / 2;
+        } else if (angle < 0) {
+          SoDebugError::postWarning("buildGeometry","groundAngle < 0 not allowed.");
+          angle = 0;
+        } 
+        angles.append(angle);
       }
-      angle = PUBLIC(this)->groundAngle[k];
-      if (angle > M_PI/2) {
-        SoDebugError::postWarning("buildGeometry","groundAngle > PI/2 not allowed.");
-        angle = M_PI / 2;
-      } else if (angle < 0) {
-        SoDebugError::postWarning("buildGeometry","groundAngle < 0 not allowed.");
-        angle = 0;
-      } 
-      angles.append(angle);
+      if(angles.getLength() < 3)
+        angles.append(angle);
+
     }
-    if (angle != M_PI/2)
-      angles.append(M_PI / 2);
+    else {
+      int num = PUBLIC(this)->groundColor.getNum();
+      if(num == 1)
+        ++num;
+      for (int i=0;i<num;++i)
+        angles.append((M_PI/(num))*i);
+    }
+
 
     int len = angles.getLength();
 
@@ -615,15 +649,23 @@ SoVRMLBackgroundP::buildGeometry()
     shapehintsground->shapeType = SoShapeHints::SOLID;
     shapehintsground->faceType = SoShapeHints::CONVEX;
 
+    SoScale * scale = new SoScale;
+    SbVec3f factor(2, 2, 2);
+    scale->scaleFactor.setValue(factor);
+    this->rootnode->addChild(scale);
+
+
     this->rootnode->addChild(shapehintsground);
     this->rootnode->addChild(ground);
 
   }
 
 
+
   //
   // Scenery cube
   //
+
   SoDB::init();
   SoInput in;
   in.setBuffer(scenery_data, sizeof(scenery_data));
@@ -718,7 +760,6 @@ SoVRMLBackgroundP::buildIndexList(SoIndexedTriangleStripSet * sphere, int len, i
     matindex = 0;
   }
   
-  //matindex = 0;
   i = len - 1;
   for (int j=0;j<len;++j) {
     
@@ -807,7 +848,7 @@ vrmltexturechangeCB(void * data, SoSensor * sensor)
 
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
 
-  if(!pimpl->geometrybuilt)
+  if (!pimpl->geometrybuilt)
     pimpl->buildGeometry();
 
 
@@ -857,7 +898,7 @@ geometrychangeCB(void * data, SoSensor * sensor)
 {
   SoVRMLBackgroundP * pimpl = (SoVRMLBackgroundP *) data;
 
-  if(!pimpl->geometrybuilt)
+  if (!pimpl->geometrybuilt)
     pimpl->buildGeometry();
 
   pimpl->rootnode->removeAllChildren(); // Remove everything incase this was called earlier
@@ -877,8 +918,8 @@ bindingchangeCB(void * data, SoSensor * sensor)
 
   // FIXME: Support for 'set_bind' and 'isBound' must be implemented,
   // but first a Coin viewer must support this kind of special node
-  // treatment (goes for Background, Fog, NavigationInfo and Viewport
-  // vrml-nodes) (11Aug2003 handegar)
+  // treatment (This applies to 'Background', 'Fog', 'NavigationInfo'
+  // and 'Viewport' nodes aswell) (11Aug2003 handegar)
 
   if (sensor == pimpl->setbindsensor) {
     SoDebugError::postWarning("bindingchangeCB", "'set_bind' event not implemented yet");
