@@ -417,7 +417,7 @@ cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned
   }
 
   CC_MUTEX_UNLOCK(flw_global_lock);
-  return (i == n) ? -1 : i;
+  return (i == n) ? -1 : (signed int)i;
 }
 
 void
