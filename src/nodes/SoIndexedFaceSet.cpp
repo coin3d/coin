@@ -266,10 +266,6 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     return;
   }
 
-  if (coordIndex.getNum() && coordIndex[coordIndex.getNum()-1] >= 0) {
-    coordIndex.set1Value(coordIndex.getNum(), -1);
-  }
-
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
 
@@ -416,10 +412,6 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
     this->vertexProperty.getValue()->doAction(action);
   }
 
-  if (coordIndex.getNum() && coordIndex[coordIndex.getNum()-1] >= 0) {
-    coordIndex.set1Value(coordIndex.getNum(), -1);
-  }
-
   Binding mbind = this->findMaterialBinding(state);
   Binding nbind = this->findNormalBinding(state);
 
@@ -515,7 +507,7 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   int matnr = 0;
   int normnr = 0;
 
-  while (viptr + 3 < viendptr) {
+  while (viptr + 2 < viendptr) {
     v1 = *viptr++;
     v2 = *viptr++;
     v3 = *viptr++;
@@ -528,10 +520,10 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
       
       break;
     } 
-    v4 = *viptr++;
+    v4 = viptr < viendptr ? *viptr++ : -1;
     if (v4  < 0) newmode = TRIANGLES;
     else {
-      v5 = *viptr++;
+      v5 = viptr < viendptr ? *viptr++ : -1;
       if (v5 < 0) newmode = QUADS;
       else newmode = POLYGON;
     }
@@ -580,10 +572,10 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
       DO_VERTEX(v4);
       if (mode == POLYGON) {
         DO_VERTEX(v5);
-        v1 = *viptr++;
+        v1 = viptr < viendptr ? *viptr++ : -1;
         while (v1 >= 0) {
           DO_VERTEX(v1);
-          v1 = *viptr++;
+          v1 = viptr < viendptr ? *viptr++ : -1;
         }
         this->endShape();
       }

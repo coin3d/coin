@@ -247,7 +247,7 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
 
   if (tristrip) {
     i = 0;
-    while (i < numvi) {
+    while (i + 2 < numvi) {
       temp = vindex[i++];
       assert(temp >= 0);
       vertexFaceArray[temp].append(numfaces);
@@ -259,8 +259,8 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
       vertexFaceArray[temp].append(numfaces);
 
       numfaces++;
-      temp = vindex[i++];
-
+      temp = i < numvi ? vindex[i++] : -1;
+      
       while (temp >= 0) {
         vertexFaceArray[temp].append(numfaces++);
         temp = vindex[i++];
@@ -274,6 +274,8 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
         vertexFaceArray[temp].append(numfaces);
       else numfaces++;
     }
+    // add a face if last index != -1
+    if (numvi >= 3 && vindex[numvi-1] != -1) numfaces++;
   }
 
   float threshold = (float)cos(crease_angle);
@@ -364,7 +366,7 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 
   SbVec3f tmpvec;
 
-  while (cind + 3 < endptr) {
+  while (cind + 2 < endptr) {
     int v0 = cind[0];
     int v1 = cind[1];
     int v2 = cind[2];
@@ -377,8 +379,8 @@ SoNormalCache::generatePerFace(const SbVec3f * const coords,
 #endif // COIN_DEBUG
       break;
     }
-
-    if (cind[3] < 0) { // triangle
+    
+    if (cind + 3 >= endptr || cind[3] < 0) { // triangle
       if (!ccw)
         tmpvec = (coords[v0] - coords[v1]).cross(coords[v2] - coords[v1]);
       else
@@ -486,7 +488,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
 
   SbBool flip = ccw;
 
-  while (cind < endptr) {
+  while (cind + 2 < endptr) {
     flip = ccw;
     c0 = &coords[*cind++];
     c1 = &coords[*cind++];
@@ -499,7 +501,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
     n.normalize();
     THIS->normalArray.append(n);
 
-    int idx = *cind++;
+    int idx = cind < endptr ? *cind++ : -1;
     while (idx >= 0) {
       c0 = c1;
       c1 = c2;
@@ -511,7 +513,7 @@ SoNormalCache::generatePerFaceStrip(const SbVec3f * const coords,
         n = (*c2 - *c1).cross(*c0 - *c1);
       n.normalize();
       THIS->normalArray.append(n);
-      idx = *cind++;
+      idx = cind < endptr ? *cind++ : -1;
     }
   }
 
@@ -548,7 +550,7 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
 
   SbBool flip = ccw;
 
-  while (cind < endptr) {
+  while (cind + 2 < endptr) {
     flip = ccw;
     c0 = &coords[*cind++];
     c1 = &coords[*cind++];
@@ -559,7 +561,7 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
     else
       n = (*c2 - *c1).cross(*c0 - *c1);
 
-    int idx = *cind++;
+    int idx = cind < endptr ? *cind++ : -1;
     while (idx >= 0) {
       c0 = c1;
       c1 = c2;
@@ -569,7 +571,7 @@ SoNormalCache::generatePerStrip(const SbVec3f * const coords,
         n += (*c0 - *c1).cross(*c2 - *c1);
       else
         n += (*c2 - *c1).cross(*c0 - *c1);
-      idx = *cind++;
+      idx = cind < endptr ? *cind++ : -1;
     }
     n.normalize();
     THIS->normalArray.append(n);
