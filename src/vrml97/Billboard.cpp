@@ -372,13 +372,7 @@ SoVRMLBillboard::performRotation(SoState * state) const
 
   (void) toviewer.normalize();
 
-  // Used to get components from modelmatrix
-  SbVec3f translation, scale;
-  SbRotation rotation, scaleorientation;
-  // Used to set modelmatrix with translation, scale and the new rotation
-  SbMatrix mm2;
   SbVec3f rotaxis = this->axisOfRotation.getValue();
-
   if (rotaxis == SbVec3f(0.0f, 0.0f, 0.0f)) {
     // 1. Compute the billboard-to-viewer vector.
     // 2. Rotate the Z-axis of the billboard to be collinear with the
@@ -387,15 +381,10 @@ SoVRMLBillboard::performRotation(SoState * state) const
     //    same direction as the Y-axis of the viewer.
     rot.setValue(SbVec3f(0.0f, 0.0f, 1.0f), toviewer);
     SbVec3f viewup = vv.getViewUp();
-
     SbVec3f yaxis(0.0f, 1.0f, 0.0f);
     rot.multVec(yaxis, yaxis);
     SbRotation rot2(yaxis, viewup);
     rot = rot * rot2;
-
-    mm.getTransform(translation, rotation, scale, scaleorientation);
-    mm2.setTransform(translation, rot, scale);
-    SoModelMatrixElement::set(state, (SoNode*) this, mm2);
   }
   else {
     // 1. Compute the vector from the Billboard node's origin to the viewer's
@@ -404,7 +393,6 @@ SoVRMLBillboard::performRotation(SoState * state) const
     //    billboard-to-viewer vector.
     // 3. Rotate the local Z-axis of the billboard into the plane from 2.,
     //    pivoting around the axisOfRotation.
-
     SbVec3f zaxis(0.0f, 0.0f, 1.0f);
     SbPlane plane(rotaxis.cross(toviewer), 0.0f);
     const SbVec3f n = plane.getNormal();
@@ -413,9 +401,11 @@ SoVRMLBillboard::performRotation(SoState * state) const
     if (vecinplane.dot(toviewer) < 0.0f) vecinplane = - vecinplane;
     float angle = (float) acos(SbClamp(vecinplane.dot(zaxis), -1.0f, 1.0f));
     rot.setValue(rotaxis, n[2] < 0.0f ? angle : - angle);
-
-    mm.getTransform(translation, rotation, scale, scaleorientation);
-    mm2.setTransform(translation, rot, scale);
-    SoModelMatrixElement::set(state, (SoNode*) this, mm2);
   }
+  SbVec3f translation, scale;
+  SbRotation rotation, scaleorientation;
+  mm.getTransform(translation, rotation, scale, scaleorientation);
+  SbMatrix mm2;
+  mm2.setTransform(translation, rot, scale);
+  SoModelMatrixElement::set(state, (SoNode*) this, mm2);
 }
