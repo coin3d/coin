@@ -234,7 +234,7 @@ SoSwitch::doAction(SoAction * action)
 #if COIN_DEBUG
         SoDebugError::post("SoSwitch::doAction",
                            "whichChild %d out of range (0-%d).",
-                           idx, this->getNumChildren());
+                           idx, this->getNumChildren()-1);
 #endif // COIN_DEBUG
       }
       else {
