@@ -713,6 +713,7 @@ struct cc_glglue {
   const char * extensionsstr;
   int maxtextureunits;
   struct cc_glxglue glx;
+  float max_anisotropy;
 
   /* normalization cube map */
   GLuint normalizationcubemap;
@@ -720,6 +721,7 @@ struct cc_glglue {
 
   SbBool can_do_bumpmapping;
   SbBool can_do_sortedlayersblend;
+  SbBool can_do_anisotropic_filtering;
 
   SbBool has_nv_register_combiners;
   SbBool has_ext_texture_rectangle;
@@ -730,6 +732,7 @@ struct cc_glglue {
   SbBool has_arb_vertex_program;
   SbBool has_arb_shader_objects;
   SbBool has_texture_env_combine;
+
 
   int max_lights;
   float line_width_range[2];

@@ -1923,6 +1923,21 @@ cc_glglue_instance(int contextid)
                              "Rendering is %sdirect.",
                              gi->glx.isdirect ? "" : "in");
     }
+    
+    /* anisotropic test */
+    gi->can_do_anisotropic_filtering = FALSE;
+    gi->max_anisotropy = 0.0f;
+    if (cc_glglue_glext_supported(gi, "GL_EXT_texture_filter_anisotropic")) {
+      gi->can_do_anisotropic_filtering = TRUE;
+      glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gi->max_anisotropy);
+      if (coin_glglue_debug()) {
+        cc_debugerror_postinfo("cc_glglue_instance",
+                               "Anisotropic filtering: %s (%g)",
+                               gi->can_do_anisotropic_filtering ? "TRUE" : "FALSE",
+                               gi->max_anisotropy);
+      }
+
+    }
 
     glglue_check_driver(gi->vendorstr, gi->rendererstr, gi->versionstr);
 
@@ -4168,6 +4183,21 @@ cc_glglue_is_texture_size_legal(const cc_glglue * glw,
 }
 
 /*** </PROXY texture handling> ***********************************************/
+
+/*** <Anisotropic filtering> *************************************************/
+
+float cc_glglue_get_max_anisotropy(const cc_glglue * glue)
+{
+  return glue->max_anisotropy;
+}
+
+SbBool 
+cc_glglue_can_do_anisotropic_filtering(const cc_glglue * glue)
+{
+  return glue->can_do_anisotropic_filtering;
+}
+
+/*** </Anisotropic filtering> *************************************************/
 
 
 #ifdef __cplusplus

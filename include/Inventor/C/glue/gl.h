@@ -521,6 +521,7 @@ COIN_DLL_API void cc_glglue_glGetVertexAttribPointerv(const cc_glglue * glue, GL
 /* GL feature queries */
 COIN_DLL_API SbBool cc_glglue_can_do_bumpmapping(const cc_glglue * glue);
 COIN_DLL_API SbBool cc_glglue_can_do_sortedlayersblend(const cc_glglue * glue);
+COIN_DLL_API SbBool cc_glglue_can_do_anisotropic_filtering(const cc_glglue * glue);
 
 /* GL limits */
 COIN_DLL_API int cc_glglue_get_max_lights(const cc_glglue * glue);
@@ -528,7 +529,7 @@ COIN_DLL_API const float * cc_glglue_get_line_width_range(const cc_glglue * glue
 COIN_DLL_API const float * cc_glglue_get_point_size_range(const cc_glglue * glue);
 COIN_DLL_API SbBool cc_glglue_is_texture_size_legal(const cc_glglue * glw, int xsize, int ysize, 
                                                     int zsize, int bytespertexel, SbBool mipmap);
-
+COIN_DLL_API float cc_glglue_get_max_anisotropy(const cc_glglue * glue);
 
 /* ********************************************************************** */
 
