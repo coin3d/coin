@@ -26,7 +26,110 @@
   \brief The SoLevelOfDetail class is used to choose a child based on projected size.
   \ingroup nodes
 
-  FIXME: write class doc
+  A level-of-detail mechanism is typically used by application
+  programmers to assist the library in speeding up the rendering.
+
+  The way a level-of-detail mechanism works is basically like this:
+
+  Several versions of varying complexity of \e the \e same geometry /
+  shape is provided by the application programmer in sorted order from
+  "most complex" to "least complex" (where "complex" in this context
+  should be taken to mean more or less detailed in the number of
+  polygons / shapes used for rendering it).
+
+  The run-time rendering system then, upon scenegraph traversal,
+  calculates on-the-fly either the distance from the camera to the
+  3D-model in question, or the number of pixels in the screen
+  projection of the 3D-model. This value is then used to decide which
+  version of the model to actually render: as the model is moved
+  farther away from the camera, a less detailed version of the model
+  is used. And vice versa, as the model moves closer to the camera,
+  more and more detailed versions of it are rendered.
+
+  This is under many different circumstances a very effective way to
+  let the application programmer assist to \e profoundly optimize the
+  rendering of her 3D-scene.
+
+  There is of course a trade-off with the level-of-detail technique:
+  more versions of the same 3D model means the scenegraph will use up
+  more application memory resources. Also, generating the set of less
+  and less detailed versions of a 3D model from the original is often
+  not a trivial task to do properly. The process is often assisted by
+  software like what Systems in Motion offers in their <a
+  href="http://www.rational-reducer.com>Rational Reducer</a>package.
+
+
+  The SoLevelOfDetail node implements the "projected size" variety
+  level-of-detail technique (as opposed to the "object distance"
+  technique, as done by the SoLOD node).
+
+  The node works by comparing the current projected size of the
+  smallest rectangle covering the bounding box of it's child geometry.
+  
+
+  Along with this set of models of the same shape, a specification of
+  when to switch between them is also provided.
+
+  \code
+LevelOfDetail {
+   screenArea [ 2000, 500, 50 ]
+
+   DEF version-0 Separator {
+     # most complex / detailed / heavy version of subgraph
+   }
+   DEF version-1 Separator {
+     # less complex version of subgraph
+   }
+   DEF version-2 Separator {
+     # even less complex version of subgraph
+   }
+   DEF version-3 Separator {
+     # simplest / "lightest" version of subgraph
+   }
+}
+  \endcode
+
+  The way the above sub-scenegraph would work would be the following:
+  if the rectangular area around the model's projected bounding box
+  covers \e more than 2000 pixels (meaning it will be up pretty close
+  to the camera), the most complex version of the model (\c version-0)
+  would be traversed (and rendered, of course). If the projected area
+  would be \e between 500 and 2000 pixels, the \c version-1 model
+  would be used. Ditto if the projected area was between 100 and 500
+  pixels, the \c version-2 version of the model would be
+  used. Finally, if the projected bounding box area would be \e less
+  than 50 square pixels, the presumably least detailed version of the
+  modeled would be used.
+
+  (A common "trick" is to let the last of the SoLevelOfDetail node's
+  children be just an empty subgraph, so no geometry will be rendered
+  at all if the model is sufficiently far away. This will of course
+  have a positive effect on the total rendering time for the complete
+  scenegraph.)
+
+  Note that the SoLevelOfDetail::screenArea vector will be influenced
+  by preceding SoComplexity nodes in the following way: if
+  SoComplexity::value is set from 0.0 up to 0.5, lower detail levels
+  than normal will be shown. If SoComplexity::value is above 0.5,
+  higher level details than normal will be shown. An
+  SoComplexity::value equal to 1.0 will cause the first child of
+  SoLevelOfDetail to always be shown.
+
+
+  As mentioned above, there is one other level-of-detail node in the
+  Coin library: SoLOD. The difference between that one and this is
+  just that instead of projected bounding box area, SoLOD uses the
+  distance between the camera and the object to find out when to
+  switch between the different model versions.
+
+  Using SoLOD is faster, since figuring out the projected bounding box
+  area needs a certain amount of calculations. But using
+  SoLevelOfDetail is often "better", in the sense that it's really a
+  model's size and visibility in the viewport that determines whether
+  we could switch to a less complex version without losing enough
+  detail that it gives a noticable visual degradation.
+
+  \sa SoLOD
 */
 
 
@@ -54,7 +157,11 @@ SoLevelOfDetail_cleanup_func(void)
 /*!
   \var SoMFFloat SoLevelOfDetail::screenArea
 
-  The screen areas for each child.
+  The screen area limits for the children. See usage example in main
+  class documentation of SoLevelOfDetail for an explanation of how
+  this vector should be set up correctly.
+
+  By default this vector just contains a single value 0.0f.
 */
 
 // *************************************************************************
@@ -95,14 +202,14 @@ SoLevelOfDetail::~SoLevelOfDetail()
 {
 }
 
-// doc in parent
+// Documented in superclass.
 void
 SoLevelOfDetail::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLevelOfDetail);
 }
 
-// doc in parent
+// Documented in superclass.
 void
 SoLevelOfDetail::doAction(SoAction *action)
 {
@@ -162,7 +269,7 @@ SoLevelOfDetail::doAction(SoAction *action)
   // SoComplexity::value > 0.5.
   projarea = float(size[0]) * float(size[1]) * (complexity + 0.5f);
 
-  // in case there are too few screenArea values
+  // In case there are too few or too many screenArea values.
   n = SbMin(n, this->screenArea.getNum());
 
   for (i = 0; i < n; i++) {
@@ -181,21 +288,21 @@ SoLevelOfDetail::doAction(SoAction *action)
   return;
 }
 
-// doc in parent
+// Documented in superclass.
 void
 SoLevelOfDetail::callback(SoCallbackAction *action)
 {
   SoLevelOfDetail::doAction((SoAction*)action);
 }
 
-// doc in parent
+// Documented in superclass.
 void
 SoLevelOfDetail::GLRender(SoGLRenderAction *action)
 {
   SoLevelOfDetail::doAction((SoAction*)action);
 }
 
-// doc in parent
+// Documented in superclass.
 void
 SoLevelOfDetail::rayPick(SoRayPickAction *action)
 {

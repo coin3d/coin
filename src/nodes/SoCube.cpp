@@ -21,13 +21,30 @@
  *
 \**************************************************************************/
 
+// Note: the class documentation for the basic primitive shapes
+// SoSphere, SoCylinder, SoCone and SoCube have many common, or at
+// least close to common, paragraphs. If you make any changes, check
+// those other shapes too, to see if your updates / fixes should be
+// migrated. <mortene@sim.no>.
 /*!
   \class SoCube SoCube.h Inventor/nodes/SoCube.h
   \brief The SoCube class is for rendering cubes.
   \ingroup nodes
 
-  Strictly speaking, as you can have different width, height and depth
-  values for the "cube", instances of this class renders \e boxes.
+  Insert a cube shape into the scenegraph. The cube is rendered with
+  the current material, texture and drawstyle settings (if any,
+  otherwise the default settings are used).
+
+  (Strictly speaking, as you can have different width, height and
+  depth values for the "cube", instances of this class actually
+  represents \e boxes.)
+
+  The SoCube node class is provided as a convenient abstraction for
+  the application programmer to use "complex" shapes of this type
+  without having to do the calculation and book-keeping of the polygon
+  sides and other low-level programming herself.
+
+  \sa SoCylinder, SoSphere, SoCone
 */
 
 #include <Inventor/nodes/SoCube.h>

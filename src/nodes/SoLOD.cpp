@@ -23,10 +23,45 @@
 
 /*!
   \class SoLOD SoLOD.h Inventor/nodes/SoLOD.h
-  \brief The SoLOD class ...
+  \brief The SoLOD class is used to choose a child based distance between viewer and object.
   \ingroup nodes
 
-  FIXME: write class doc
+  The class documentation for the SoLOD node class would be similar
+  enough to that of SoLevelOfDetail that we will refer you to look at
+  that one first. It will explain the general principles of what a
+  level-of-detail mechanism is, and why and how to use it.
+
+  (The main difference between SoLOD and SoLevelOfDetail is that SoLOD
+  uses the speedier "distance-to-viewer" technique for implementing
+  level-of-detail functionality, versus the more correct (but
+  potentially slower) "projected-bbox-area" technique used by
+  SoLevelOfDetail.)
+
+  Here's a mockup example (in Inventor file format style, but easily
+  converted to code) that shows how to use this node:
+
+  \code
+LOD {
+   range [ 10, 20, 30, 40 ]
+
+   Sphere { }
+   Cylinder { }
+   Cone { }
+   Cube { }
+   Info { }
+}
+  \endcode
+
+  For the sub-scenegraph above, when the LOD-object is less than 10
+  units away from the viewer / camera, an SoSphere will be shown. For
+  distances 10 - 20 units away, this will be changed to the
+  SoCylinder, and so on. For distances of \e more than 40 units from
+  the camera, an SoInfo node will be traversed / rendered -- ie,
+  nothing will be shown. (This is a common "trick" used to optimize
+  rendering when models get far enough away from the camera that we
+  want to remove them completely).
+
+  \sa SoLevelOfDetail
 */
 
 
@@ -42,11 +77,24 @@
 
 /*!
   \var SoMFFloat SoLOD::range
-  FIXME: write documentation for field
+
+  The distance ranges which decides when to use each child for
+  traversal / rendering. See usage example in main class documentation
+  of SoLOD for an explanation of how this vector should be set up
+  correctly.
+
+  By default this vector just contains a single value 0.0f.
 */
 /*!
   \var SoSFVec3f SoLOD::center
-  FIXME: write documentation for field
+
+  This vector represents an offset within the object from the
+  geometric center point to the center point the application
+  programmer would actually like the distance between the viewer and
+  the object to be calculated from.
+
+  Default value is [0, 0, 0]. It is usually not necessary to change
+  this field.
 */
 
 // *************************************************************************
@@ -91,7 +139,7 @@ SoLOD::~SoLOD()
 {
 }
 
-// doc in super
+// Documented in superclass.
 void
 SoLOD::initClass(void)
 {
@@ -99,9 +147,7 @@ SoLOD::initClass(void)
 }
 
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoLOD::doAction(SoAction *action)
 {
@@ -116,18 +162,14 @@ SoLOD::doAction(SoAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoLOD::callback(SoCallbackAction *action)
 {
   SoLOD::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoLOD::GLRender(SoGLRenderAction * action)
 {
@@ -148,9 +190,7 @@ SoLOD::GLRender(SoGLRenderAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoLOD::GLRenderBelowPath(SoGLRenderAction * action)
 {
@@ -168,9 +208,7 @@ SoLOD::GLRenderBelowPath(SoGLRenderAction * action)
                                            SoGLCacheContextElement::DONT_AUTO_CACHE);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoLOD::GLRenderInPath(SoGLRenderAction * action)
 {
@@ -194,9 +232,7 @@ SoLOD::GLRenderInPath(SoGLRenderAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoLOD::GLRenderOffPath(SoGLRenderAction * action)
 {
@@ -211,18 +247,14 @@ SoLOD::GLRenderOffPath(SoGLRenderAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoLOD::rayPick(SoRayPickAction *action)
 {
   SoLOD::doAction((SoAction*)action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoLOD::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -234,9 +266,7 @@ SoLOD::getBoundingBox(SoGetBoundingBoxAction * action)
   inherited::getBoundingBox(action);
 }
 
-/*!
-  FIXME: write doc
- */
+// Documented in superclass.
 void
 SoLOD::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -245,9 +275,9 @@ SoLOD::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
 /*!
   Returns the child to traverse based on the ranges in
-  SoLOD::range. Will clamp to index to the number of children.
-  This method will return -1 if no child should be traversed.
-  This will only happen if the node has no children though.
+  SoLOD::range. Will clamp to index to the number of children.  This
+  method will return -1 if no child should be traversed.  This will
+  only happen if the node has no children though.
 */
 int
 SoLOD::whichToTraverse(SoAction *action)

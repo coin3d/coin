@@ -21,10 +21,37 @@
  *
 \**************************************************************************/
 
+// Note: the class documentation for the basic primitive shapes
+// SoSphere, SoCylinder, SoCone and SoCube have many common, or at
+// least close to common, paragraphs. If you make any changes, check
+// those other shapes too, to see if your updates / fixes should be
+// migrated. <mortene@sim.no>.
 /*!
   \class SoCylinder SoCylinder.h Inventor/nodes/SoCylinder.h
   \brief The SoCylinder class is for rendering cylinder shapes.
   \ingroup nodes
+
+  Insert a cylinder shape into the scenegraph. The cylinder is
+  rendered with the current material, texture and drawstyle settings
+  (if any, otherwise the default settings are used).
+
+  The SoCylinder node class is provided as a convenient abstraction
+  for the application programmer to use "complex" shapes of this type
+  without having to do the tesselation to polygons and other low-level
+  programming herself.
+
+  A cylinder is visualized by the underlying rendering system by first
+  tesselating the conceptual cylinder into a set of polygons. To
+  control the trade-off between an as much as possible correct visual
+  appearance of the cylinder versus fast rendering, use an
+  SoComplexity node to influence the number of polygons generated from
+  the tesselation process. (The higher the complexity value, the more
+  polygons will be generated, the more \e rounded the sides of the
+  cylinder will look.) Set the SoComplexity::value field to what you
+  believe would be a good trade-off between correctness and speed for
+  your particular application.
+
+  \sa SoCone, SoSphere, SoCube
 */
 
 #include <Inventor/nodes/SoCylinder.h>

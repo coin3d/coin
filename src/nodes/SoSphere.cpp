@@ -21,37 +21,67 @@
  *
 \**************************************************************************/
 
+// Note: the class documentation for the basic primitive shapes
+// SoSphere, SoCylinder, SoCone and SoCube have many common, or at
+// least close to common, paragraphs. If you make any changes, check
+// those other shapes too, to see if your updates / fixes should be
+// migrated. <mortene@sim.no>.
 /*!
   \class SoSphere SoSphere.h Inventor/nodes/SoSphere.h
-  \brief The SoSphere class is a sphere shape node.
+  \brief The SoSphere class is for rendering sphere shapes.
   \ingroup nodes
 
-  FIXME: write class doc
+  Renders a sphere with the size given by the SoSphere::radius
+  field. The sphere is rendered with the current material, texture and
+  drawstyle settings (if any, otherwise the default settings are
+  used).
+
+  The SoSphere node class is provided as a convenient abstraction for
+  the application programmer to use "complex" shapes of this type
+  without having to do the tesselation to polygons and other low-level
+  programming herself.
+
+  A good trick for rendering ellipsoidal 3D shapes is to use an
+  SoSphere prefixed with an SoScale transformation to "flatten" it
+  along one or more of the principal axes. (Ie use for instance an
+  SoScale node with SoScale::scaleFactor equal to [1, 1, 0.1] to
+  flatten it along the Z direction.)
+
+  A sphere is visualized by the underlying rendering system by first
+  tesselating the conceptual sphere into a set of polygons. To control
+  the trade-off between an as much as possible correct visual
+  appearance of the sphere versus fast rendering, use an SoComplexity
+  node to influence the number of polygons generated from the
+  tesselation process. (The higher the complexity value, the more
+  polygons will be generated, the more \e rounded the sphere will
+  look.) Set the SoComplexity::value field to what you believe would
+  be a good trade-off between correctness and speed for your
+  particular application.
+
+  \sa SoCone, SoCylinder, SoCube
 */
 
 #include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+
 #include <Inventor/SbSphere.h>
-
-#include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoGL.h>
-
-#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/misc/SoPick.h>
-#include <Inventor/SoPickedPoint.h>
-#include <math.h>
+#include <Inventor/misc/SoState.h>
 
 /*!
   \var SoSFFloat SoSphere::radius
-  FIXME: write documentation for field
+
+  Radius of sphere. Default value is 1.0.
 */
 
 #define SPHERE_NUM_SLICES 30.0f
@@ -64,7 +94,7 @@ SO_NODE_SOURCE(SoSphere);
 /*!
   Constructor.
 */
-SoSphere::SoSphere()
+SoSphere::SoSphere(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoSphere);
 
@@ -78,20 +108,20 @@ SoSphere::~SoSphere()
 {
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoSphere::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoSphere);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoSphere::GLRender(SoGLRenderAction * action)
 {
-  if (!shouldGLRender(action)) return;
+  if (!this->shouldGLRender(action)) return;
 
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
@@ -102,7 +132,7 @@ SoSphere::GLRender(SoGLRenderAction * action)
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
 
-  float complexity = this->getComplexityValue(action);
+  float complexity = SbClamp(this->getComplexityValue(action), 0.0f, 1.0f);
 
   if (sendNormals) SoGLNormalizeElement::forceSend(state, TRUE);
 
@@ -117,9 +147,9 @@ SoSphere::GLRender(SoGLRenderAction * action)
                      flags);
 }
 
-// doc from parent
+// Documented in superclass.
 void
-SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
+SoSphere::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   float r = this->radius.getValue();
 
@@ -130,7 +160,7 @@ SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
   center.setValue(0.0f, 0.0f, 0.0f);
 }
 
-// doc from parent
+// Documented in superclass.
 void
 SoSphere::rayPick(SoRayPickAction *action)
 {
@@ -140,9 +170,9 @@ SoSphere::rayPick(SoRayPickAction *action)
                      action);
 }
 
-// doc from parent
+// Documented in superclass.
 void
-SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   if (!this->shouldPrimitiveCount(action)) return;
 
@@ -150,9 +180,9 @@ SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   action->addNumTriangles((int)(complexity*2.0f*SPHERE_NUM_SLICES*(SPHERE_NUM_STACKS-1)));
 }
 
-// doc from parent
+// Documented in superclass.
 void
-SoSphere::generatePrimitives(SoAction *action)
+SoSphere::generatePrimitives(SoAction * action)
 {
   float complexity = this->getComplexityValue(action);
 
@@ -161,5 +191,4 @@ SoSphere::generatePrimitives(SoAction *action)
                         (int)(SPHERE_NUM_STACKS * complexity),
                         this,
                         action);
-
 }

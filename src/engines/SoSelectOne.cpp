@@ -199,7 +199,7 @@ SoSelectOne::evaluate(void)
 SbBool
 SoSelectOne::readInstance(SoInput * in, unsigned short flags)
 {
-  // This code is identical to writeInstance() of SoGate and
+  // This code is identical to readInstance() of SoGate and
   // SoConcatenate, so migrate changes.
 
   SbName tmp;
