@@ -41,16 +41,26 @@ public:
   void getValue(SbVec3f & a, SbVec3f & b, SbVec3f & c) const;
   SbVec3f getNormal() const;
   float getDistance(const SbTri3f & t) const;
-  float getDistance(const SbVec3f & p, 
-                    const SbVec3f & p1, const SbVec3f & p2) const;
+  static float getDistance(const SbVec3f & p, 
+                           const SbVec3f & p1, const SbVec3f & p2);
   float getDistance(const SbVec3f & p) const;
+  float getDistance(const SbVec3f & p1, const SbVec3f & p2) const;
+  static float sqrDistance(const SbVec3f & a1, const SbVec3f & a2,
+                           const SbVec3f & b1, const SbVec3f & b2,
+                           float * linP0, float * linP1);
+  float sqrDistance(const SbVec3f & p1, 
+                    float * pfSParam = NULL, float * pfTParam = NULL) const;
 
   SbTri3f & operator = (const SbTri3f & t);
 
   SbBool intersect(const SbTri3f & triangle) const;
   SbBool intersect(const SbTri3f & triangle, float epsilon) const;
 
+  const SbBox3f getBoundingBox(void) const;
+
 private:
+  // FIXME: get rid of this -- a triangle is too simple a class to
+  // have a private implementation. 20030328 mortene.
   SbTri3fP * const pimpl;
 };
 
