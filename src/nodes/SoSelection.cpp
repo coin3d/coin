@@ -491,7 +491,6 @@ SoSelection::addPath(SoPath *path)
 {
   this->selectionList.append(path);
   this->selCBList->invokeCallbacks(path);
-  this->touch();
 }
 
 /*!
@@ -505,7 +504,6 @@ SoSelection::removePath(const int which)
   this->selectionList.remove(which);
   this->deselCBList->invokeCallbacks(path);
   path->unref();
-  this->touch();
 }
 
 /*!
