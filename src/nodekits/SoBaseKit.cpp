@@ -2222,7 +2222,7 @@ SoBaseKit::findPart(const SbString & partname, SoBaseKit *& kit, int & partnum,
 #endif // COIN_DEBUG
         return FALSE;
       }
-      else { // listidx == numlistchildren && makeifneeded
+      else if (listidx == numlistchildren) {
         (void) list->createAndAddDefaultChild();
       }
       SoNode * partnode = list->getChild(listidx);
