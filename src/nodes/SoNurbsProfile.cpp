@@ -47,6 +47,9 @@
 #include <Inventor/system/gl.h>
 #include <../misc/GLUWrapper.h>
 
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#endif // COIN_THREADSAFE
 
 
 /*!
@@ -54,14 +57,66 @@
   Knot values for the nurbs curve.
 */
 
-static SbList <float> * coordListNurbsProfile = NULL;
-static SbList <float> * nurbsProfileTempList = NULL;
+typedef struct {
+  SbList <float> * coordlist;
+  SbList <float> * tmplist;
+} so_nurbsprofile_data;
 
 static void
-cleanupNurbsProfile(void)
+so_nurbsprofile_construct_data(void * closure)
 {
-  delete coordListNurbsProfile;
-  delete nurbsProfileTempList;
+  so_nurbsprofile_data * data = (so_nurbsprofile_data*) closure;
+  data->coordlist = NULL;
+  data->tmplist = NULL;
+}
+
+static void
+so_nurbsprofile_destruct_data(void * closure)
+{
+  so_nurbsprofile_data * data = (so_nurbsprofile_data*) closure;
+  delete data->coordlist;
+  delete data->tmplist;
+}
+
+#ifdef COIN_THREADSAFE
+static SbStorage * so_nurbsprofile_storage;
+#else // COIN_THREADSAFE
+static so_nurbsprofile_data * so_nurbsprofile_single_data;
+#endif // ! COIN_THREADSAFE
+
+static void
+so_nurbsprofile_cleanup(void)
+{
+#ifdef COIN_THREADSAFE
+  delete so_nurbsprofile_storage;
+#else // COIN_THREADSAFE
+  so_nurbsprofile_destruct_data((void*) so_nurbsprofile_single_data);
+  delete so_nurbsprofile_single_data;
+#endif // ! COIN_THREADSAFE
+}
+
+static SbList <float> *
+so_nurbsprofile_get_coordlist(const SbBool tmplist)
+{
+  so_nurbsprofile_data * data = NULL;
+#ifdef COIN_THREADSAFE
+  data = (so_nurbsprofile_data*) so_nurbsprofile_storage->get();
+#else // COIN_THREADSAFE
+  data = so_nurbsprofile_single_data;
+#endif // ! COIN_THREADSAFE
+
+  if (tmplist) {
+    if (data->tmplist == NULL) {
+      data->tmplist = new SbList<float>;
+    }
+    return data->tmplist;
+  }
+  else {
+    if (data->coordlist == NULL) {
+      data->coordlist = new SbList<float>;
+    }
+    return data->coordlist;
+  }
 }
 
 // *************************************************************************
@@ -94,6 +149,15 @@ void
 SoNurbsProfile::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoNurbsProfile, SO_FROM_INVENTOR_1);
+#ifdef COIN_THREADSAFE
+  so_nurbsprofile_storage = new SbStorage(sizeof(so_nurbsprofile_data),
+                                           so_nurbsprofile_construct_data,
+                                           so_nurbsprofile_destruct_data);
+#else // COIN_THREADSAFE
+  so_nurbsprofile_single_data = new so_nurbsprofile_data;
+  so_nurbsprofile_construct_data((void*) so_nurbsprofile_single_data);
+#endif // ! COIN_THREADSAFE
+  coin_atexit((coin_atexit_f*) so_nurbsprofile_cleanup);
 }
 
 // Doc from superclass.
@@ -102,10 +166,9 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
                              float *& points, int & floatspervec,
                              int32_t & numknots, float *& knotvector)
 {
-  if (coordListNurbsProfile == NULL) {
-    coordListNurbsProfile = new SbList <float>;
-    coin_atexit((coin_atexit_f *)cleanupNurbsProfile);
-  }
+  SbList <float> * coordListNurbsProfile =
+    so_nurbsprofile_get_coordlist(FALSE);
+
   numknots = this->knotVector.getNum();
   if (numknots) knotvector = (float *)(this->knotVector.getValues(0));
 
@@ -138,6 +201,9 @@ SoNurbsProfile::getTrimCurve(SoState * state, int32_t & numpoints,
 static void
 nurbsprofile_tess_vertex(float * vertex)
 {
+  SbList <float> * coordListNurbsProfile =
+    so_nurbsprofile_get_coordlist(FALSE);
+
   coordListNurbsProfile->append(vertex[0]);
   coordListNurbsProfile->append(vertex[1]);
 }
@@ -161,13 +227,11 @@ SoNurbsProfile::getVertices(SoState * state, int32_t & numvertices,
     return;
   }
 
-  if (coordListNurbsProfile == NULL) {
-    coordListNurbsProfile = new SbList <float>;
-    coin_atexit((coin_atexit_f *)cleanupNurbsProfile);
-  }
-  if (nurbsProfileTempList == NULL) {
-    nurbsProfileTempList = new SbList <float>;
-  }
+  SbList <float> * coordListNurbsProfile =
+    so_nurbsprofile_get_coordlist(FALSE);
+
+  SbList <float> * nurbsProfileTempList =
+    so_nurbsprofile_get_coordlist(TRUE);
 
   nurbsProfileTempList->truncate(0);
   for (int i = 0; i < numpoints; i++) {
