@@ -45,7 +45,7 @@ static SbBool glyph3d_initialized = FALSE;
 /*
   Mutex lock for the static ang global font hash
 */
-static void * fonthash_lock = NULL;
+static void * glyph3d_fonthash_lock = NULL;
 
 /* Debug: enable this in case code hangs waiting for a lock.  A hang
    will typically happen for one out of two reasons:
