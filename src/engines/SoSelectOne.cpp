@@ -47,6 +47,7 @@
     type <multivaluefieldtype>
     [...fields...]
   }
+  \endverbatim
 */
 
 #include <Inventor/engines/SoSelectOne.h>
