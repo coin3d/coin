@@ -51,10 +51,29 @@
 */
 
 /*!
-  \fn SbList::SbList(const int initSize = 0)
+  \fn SbList::SbList(const int initSize = 4)
 
-  A constructor (default).
-*/
+  Default constructor.
+
+  The \a initSize argument hints about how many elements the list will
+  contain, so memory allocation can be done efficiently.
+
+  Important note: explicitly specifying an \a initSize value does \c
+  not mean that the list will initially contain this number of
+  values. Here's a good example on how to give yourself hard to find
+  bugs:
+
+  \code
+  SbList<SbBool> flags(2); // Assume we need only 2 elements. Note
+                           // that the list is still 0 elements long.
+  flags[0] = TRUE;         // Ouch. List is still 0 elements long.
+  \endcode
+
+  Since this conceptual misunderstanding is so easy to make, you're
+  probably better (or at least safer) off leaving the \a initSize
+  argument to its default value by not explicitly specifying it.
+
+ */
 
 /*!
   \fn SbList::SbList(const SbList<Type> & list)
