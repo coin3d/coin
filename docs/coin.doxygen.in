@@ -442,6 +442,10 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoLineWidthElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoPointSizeElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/elements/SoReplacedElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerPositionElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerOrientationElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerGainElement.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/elements/SoListenerVelocityElement.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoBoolOperation.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoCalculator.h \
                          @path_tag@@coin_src_dir@/include/Inventor/engines/SoCompose.h \
