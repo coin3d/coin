@@ -787,22 +787,27 @@ cc_flwft_get_vector_glyph(void * font, int glyph)
       (GLUWrapper()->gluTessEndPolygon == NULL) ||
       (GLUWrapper()->gluDeleteTess == NULL) ||
       (GLUWrapper()->gluTessVertex == NULL) ||
-      (GLUWrapper()->gluTessBeginContour == NULL))
-      return NULL;
+      (GLUWrapper()->gluTessBeginContour == NULL)) {
+    /* FIXME: unexpected error -- should report. 20030908 mortene. */
+    return NULL;
+  }
 
   face = (FT_Face) font;
 
   error = cc_ftglue_FT_Set_Char_Size(face, (font3dsize<<6), (font3dsize<<6), 72, 72);
+  /* FIXME: unexpected error -- should report. 20030908 mortene. */
   if (error != 0) 
     return NULL;
 
   glyphindex = cc_ftglue_FT_Get_Char_Index(face, glyph);
 
   error = cc_ftglue_FT_Load_Glyph(face, glyphindex, FT_LOAD_DEFAULT );
+  /* FIXME: unexpected error -- should report. 20030908 mortene. */
   if (error != 0)
     return NULL;
 
   error = cc_ftglue_FT_Get_Glyph(face->glyph, &tmp);
+  /* FIXME: unexpected error -- should report. 20030908 mortene. */
   if (error != 0)
     return NULL;
   g = (FT_OutlineGlyph)tmp;
