@@ -1,3 +1,15 @@
+
+*********************************************************************
+
+                * IMPORTANT NOTE *
+
+At this point, the unstable Coin branch does not support Mac OS X. 
+If you want to use Coin on the Mac, use the stable branch (Coin-1). 
+
+*********************************************************************
+
+
+
 This file contains information about building Coin on Mac OS X.
 
 
