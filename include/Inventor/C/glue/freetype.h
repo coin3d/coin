@@ -55,6 +55,8 @@ extern "C" {
 
 /* we also need some defines */
 #define FT_LOAD_DEFAULT 0x0
+#define FT_LOAD_RENDER 0x4
+#define FT_LOAD_MONOCHROME 0x1000
 #define FT_FACE_FLAG_KERNING (1L <<  6)
 #define FT_KERNING_DEFAULT  0
 #define FT_RENDER_MODE_MONO 2
@@ -68,6 +70,7 @@ typedef void * FT_Library;
 typedef int FT_Error;
 typedef int FT_Int;
 typedef long FT_Long;
+typedef unsigned long FT_ULong;
 typedef char FT_String;
 typedef short FT_Short;
 typedef unsigned short FT_UShort;
@@ -191,9 +194,9 @@ typedef struct FT_GlyphRec_ {
 typedef struct {
   short       n_contours;
   short       n_points;
-  FT_Vector*  points;
-  char*       tags;
-  short*      contours;
+  FT_Vector * points;
+  char *      tags;
+  short *     contours;
   int         flags;
 } FT_Outline;
 
@@ -265,6 +268,37 @@ struct FT_BitmapGlyphRec_ {
   FT_Bitmap bitmap;
 };
 
+typedef int (*FT_Outline_MoveToFunc) (FT_Vector * to, void * user);
+typedef int (*FT_Outline_LineToFunc) (FT_Vector * to, void * user);
+typedef int (*FT_Outline_ConicToFunc) (FT_Vector * control, FT_Vector * to, void * user);
+typedef int (*FT_Outline_CubicToFunc) (FT_Vector * control1, FT_Vector * control2, FT_Vector * to, void * user);
+#define FT_Outline_MoveTo_Func FT_Outline_MoveToFunc
+#define FT_Outline_LineTo_Func FT_Outline_LineToFunc
+#define FT_Outline_ConicTo_Func FT_Outline_ConicToFunc
+#define FT_Outline_CubicTo_Func FT_Outline_CubicToFunc
+
+typedef struct  FT_Outline_Funcs_ {
+  FT_Outline_MoveToFunc move_to;
+  FT_Outline_LineToFunc line_to;
+  FT_Outline_ConicToFunc conic_to;
+  FT_Outline_CubicToFunc cubic_to;  
+  int shift;
+  FT_Pos delta;  
+} FT_Outline_Funcs;
+
+typedef struct  FT_OutlineGlyphRec_
+{
+  FT_GlyphRec  root;
+  FT_Outline   outline;
+  
+} FT_OutlineGlyphRec;
+
+
+typedef struct FT_OutlineGlyphRec_* FT_OutlineGlyph;
+
+
+
+
 #endif /* !HAVE_FREETYPE */
 
 int cc_ftglue_available(void);
@@ -283,6 +317,8 @@ FT_Error cc_ftglue_FT_Get_Kerning(FT_Face face, unsigned int left, unsigned int 
 FT_Error cc_ftglue_FT_Get_Glyph(void * glyphslot, FT_Glyph * glyph);
 FT_Error cc_ftglue_FT_Glyph_To_Bitmap(FT_Glyph * glyph, int rendermode, FT_Vector * origin, int destroy);
 void cc_ftglue_FT_Done_Glyph(FT_Glyph glyph);
+FT_Error cc_ftglue_FT_Outline_Decompose(FT_Outline * outline, const FT_Outline_Funcs * func_interface, void * user);
+
 
 #ifdef __cplusplus
 }
