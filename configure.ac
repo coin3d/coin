@@ -987,8 +987,6 @@ SIM_AC_HAVE_FREETYPE_IFELSE([
   COIN_EXTRA_LIBS="$sim_ac_freetype_libs $COIN_EXTRA_LIBS"
   SIM_AC_CONFIGURATION_SETTING([FreeType support], [$sim_ac_freetype_path])
 ], [
-  AC_DEFINE(HAVE_FREETYPE,0,
-    [define if you have the freetype library])
   if $sim_ac_freetype_desired; then
     AC_MSG_WARN(freetype development system not found);
   fi
