@@ -1164,6 +1164,7 @@ install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	  fi \
 	done
 
+@MAC_FRAMEWORK_TRUE@install-data-local:
 @MAC_FRAMEWORK_TRUE@	@echo " ln -sf Versions/Current/Libraries/libCoin.dylib $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$(MAC_FRAMEWORK_NAME)"; \
 @MAC_FRAMEWORK_TRUE@	ln -sf Versions/Current/Libraries/libCoin.dylib $(DESTDIR)$(MAC_FRAMEWORK_PREFIX)/$(MAC_FRAMEWORK_NAME).framework/$(MAC_FRAMEWORK_NAME);
 @MAC_FRAMEWORK_FALSE@install-data-local:
