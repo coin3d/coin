@@ -128,8 +128,10 @@ SIM_AC_CHECK_VAR_FUNCTIONNAME
 #    the correct setup (latest Cygwin, MSVC++ v6.0 and InstallShield Express
 #    v2.12), then execute
 #
-#         $ cd [coin_builddir]
-#         $ IsxBuild.exe build/coin.iwz -E -O
+#         $ cd [coin_builddir]/build
+#         $ make ispkg
+#
+#    (Installshield's IsxBuild.exe need to be in your path.)
 #
 #    A self-extracting executable SETUPEX.EXE with the InstallShield install
 #    should then be available under [coin_builddir]/build/coin/. Move
@@ -585,12 +587,6 @@ if $BUILD_WITH_MSVC; then
   # also use them from "parent" code (remember that their interfaces
   # is not exposed from the DLL) without any fuss.
   COIN_EXTRA_LIBS="-lcoin$COIN_MAJOR_VERSION $COIN_EXTRA_LIBS"
-
-  # These are for the .iwz InstallShield Express file under build/.
-#  win_includedir=`cygpath -w $includedir`
-#  AC_SUBST(win_includedir)
-#  win_libdir=`cygpath -w $libdir`
-#  AC_SUBST(win_libdir)
 
 else
   COIN_EXTRA_LIBS="-lCoin $COIN_EXTRA_LIBS"
