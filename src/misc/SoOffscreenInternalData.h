@@ -77,7 +77,50 @@ public:
 
   void postRender(void) {
     SbVec2s size = this->getBufferSize();
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+    // First reset all settings that can influence the result of a
+    // glReadPixels() call, to make sure we get the actual contents of
+    // the buffer, unmodified.
+    //
+    // The values set up below matches the default settings of an
+    // OpenGL driver.
+
+    glPixelStorei(GL_PACK_SWAP_BYTES, 0);
+    glPixelStorei(GL_PACK_LSB_FIRST, 0);
+    glPixelStorei(GL_PACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_PACK_SKIP_ROWS, 0);
+    glPixelStorei(GL_PACK_SKIP_PIXELS, 0);
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
+
+    glPixelTransferi(GL_MAP_COLOR, 0);
+    glPixelTransferi(GL_MAP_STENCIL, 0);
+    glPixelTransferi(GL_INDEX_SHIFT, 0);
+    glPixelTransferi(GL_INDEX_OFFSET, 0);
+    glPixelTransferf(GL_RED_SCALE, 1);
+    glPixelTransferf(GL_RED_BIAS, 0);
+    glPixelTransferf(GL_GREEN_SCALE, 1);
+    glPixelTransferf(GL_GREEN_BIAS, 0);
+    glPixelTransferf(GL_BLUE_SCALE, 1);
+    glPixelTransferf(GL_BLUE_BIAS, 0);
+    glPixelTransferf(GL_ALPHA_SCALE, 1);
+    glPixelTransferf(GL_ALPHA_BIAS, 0);
+    glPixelTransferf(GL_DEPTH_SCALE, 1);
+    glPixelTransferf(GL_DEPTH_BIAS, 0);
+
+    GLuint i = 0;
+    GLfloat f = 0.0f;
+    glPixelMapfv(GL_PIXEL_MAP_I_TO_I, 1, &f);
+    glPixelMapuiv(GL_PIXEL_MAP_S_TO_S, 1, &i);
+    glPixelMapfv(GL_PIXEL_MAP_I_TO_R, 1, &f);
+    glPixelMapfv(GL_PIXEL_MAP_I_TO_G, 1, &f);
+    glPixelMapfv(GL_PIXEL_MAP_I_TO_B, 1, &f);
+    glPixelMapfv(GL_PIXEL_MAP_I_TO_A, 1, &f);
+    glPixelMapfv(GL_PIXEL_MAP_R_TO_R, 1, &f);
+    glPixelMapfv(GL_PIXEL_MAP_G_TO_G, 1, &f);
+    glPixelMapfv(GL_PIXEL_MAP_B_TO_B, 1, &f);
+    glPixelMapfv(GL_PIXEL_MAP_A_TO_A, 1, &f);
 
     // The flushing of the OpenGL pipeline before and after the
     // glReadPixels() call is done as a work-around for a reported
@@ -105,6 +148,8 @@ public:
                  this->getBuffer());
     glPixelStorei(GL_PACK_ALIGNMENT, 4);
     glFlush(); glFinish();
+
+    glPopAttrib();
   }
 
 protected:
