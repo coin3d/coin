@@ -1373,7 +1373,6 @@ elif $sim_ac_build_library; then
     else
       COIN_EXTRA_LIBS="-lCoin${SUFFIX}"
     fi
-
   fi
 
   COIN_COMPILER="$CXX"
@@ -1384,11 +1383,60 @@ elif $sim_ac_build_library; then
   fi
   AC_SUBST(COIN_COMPILER)
 
-  if test x"$prefix" = x"NONE"; then
-    SIM_AC_CONFIGURATION_SETTING([Install prefix], [/usr/local])
-  else
-    SIM_AC_CONFIGURATION_SETTING([Install prefix], [$prefix])
+  sim_ac_path_problem=true # until proven otherwise
+  eval "prefix=${prefix}"
+  if test x"$prefix" = x"NONE"; then prefix=/usr/local; fi
+  eval "exec_prefix=${exec_prefix}"
+  if test x"$exec_prefix" = x"NONE"; then exec_prefix="$prefix"; fi
+  eval "bindir=${bindir}"
+  if test -d "${bindir}"; then
+    # search by inode id seems safer than strings because of noncanonical paths
+    ( eval set dummy `ls -id "${bindir}" 2>/dev/null`;
+      findinode=$2;
+      IFS=:; for dir in $PATH; do
+        # inode=`ls -id "$dir" 2>/dev/null | sed 's/^\([ ]*\)\([0-9]*\).*/\2/g'`;
+        eval set dummy `ls -id "$dir" 2>/dev/null`;
+        inode=$2;
+        test x"$inode" = x"$findinode" && exit 0;
+      done; exit 1 ) && sim_ac_path_problem=false
   fi
+  if $sim_ac_path_problem; then
+    ( IFS=:; for dir in $PATH; do
+        test x"$dir" = x"${bindir}" && exit 0;
+      done; exit 1 ) && sim_ac_path_problem=false
+  fi
+
+  if $sim_ac_framework; then
+    SIM_AC_CONFIGURATION_SETTING([Coin build type], [Mac OS X framework])
+  elif $sim_ac_path_problem; then
+    SIM_AC_CONFIGURATION_WARNING([Your \$PATH variable does not appear to include \"$prefix/bin\"])
+  fi
+
+  if $sim_ac_framework; then
+    # set up the Coin-related flags
+    COIN_EXTRA_CPPFLAGS=
+    COIN_EXTRA_CFLAGS=
+    COIN_EXTRA_CXXFLAGS=
+    COIN_EXTRA_LDFLAGS="-framework $MAC_FRAMEWORK_NAME"
+    COIN_EXTRA_LIBS=
+    # adjust for AGL usage
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_agl_ldflags"
+    # adjust for OpenGL usage
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -framework OpenGL"
+    # adjust for simage usage
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"
+    # adjust for the Think Different factor
+    COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lobjc"
+  fi
+  # Mac OS X 10.2 needs some additional tweaks (see also src/Makefile.am)
+  if $sim_ac_macosx_10_2; then
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS -L/usr/lib/gcc/darwin/3.1/private/"
+    LIBS="$LIBS -lgcc"
+  fi
+
+
+  SIM_AC_CONFIGURATION_SETTING([Install prefix], [$prefix])
 else
   SIM_AC_CONFIGURATION_SETTING([Coin build type], [build disabled])
 fi
