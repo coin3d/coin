@@ -117,9 +117,9 @@ fltstatement  : boolstatement '?' fltstatement ':' fltstatement
               | LEX_TMP_VEC_REG '[' LEX_VALUE ']' 
               { $$ = so_eval_create_reg_comp(get_regname($1, REGTYPE_TMP), (int) $3);}
               | LEX_IN_VEC_REG '[' LEX_VALUE ']' 
-              { $$ = so_eval_create_reg_comp(get_regname($1, REGTYPE_OUT), (int) $3);}
-              | LEX_OUT_VEC_REG '[' LEX_VALUE ']' 
               { $$ = so_eval_create_reg_comp(get_regname($1, REGTYPE_IN), (int) $3);}
+              | LEX_OUT_VEC_REG '[' LEX_VALUE ']' 
+              { $$ = so_eval_create_reg_comp(get_regname($1, REGTYPE_OUT), (int) $3);}
               | LEX_VALUE
               { $$ = so_eval_create_flt_val($1); }
               ;

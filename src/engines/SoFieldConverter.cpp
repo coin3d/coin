@@ -53,11 +53,18 @@
 #include <Inventor/lists/SoTypeList.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 SO_ENGINE_ABSTRACT_SOURCE(SoFieldConverter);
 
 
 SoFieldConverter::SoFieldConverter(void)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoFieldConverter::SoFieldConverter", "%p", this);
+#endif // debug
 }
 
 SoFieldConverter::~SoFieldConverter()

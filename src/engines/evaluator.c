@@ -44,7 +44,7 @@ create_node(int id)
 }
 
 /*
- * convenience method that creates an unary node
+ * convenience method that creates a unary node
  */
 so_eval_node *
 so_eval_create_unary(int id, so_eval_node *topnode)
