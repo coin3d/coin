@@ -31,7 +31,7 @@ m4_define([SO_NUMBER], [m4_eval(COIN_MAJOR*20)])
 # For Mac OS X Compiler Frameworks:
 m4_define([MAC_FRAMEWORK_NAME_DEFAULT], [Inventor])
 m4_define([MAC_FRAMEWORK_PREFIX_DEFAULT], [/Library/Frameworks])
-m4_define([MAC_FRAMEWORK_VERSION_DEFAULT], [B])
+m4_define([MAC_FRAMEWORK_VERSION_DEFAULT], [C])
 
 # **************************************************************************
 

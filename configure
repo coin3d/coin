@@ -1825,7 +1825,7 @@ fi;
 #   [  --with-framework-version=<version>  (default: "MAC_FRAMEWORK_VERSION_DEFAULT")],
 #   [sim_ac_framework_version="$withval"],
 #   [sim_ac_framework_version="MAC_FRAMEWORK_VERSION_DEFAULT"])
-sim_ac_framework_version="B"
+sim_ac_framework_version="C"
 
 MAC_FRAMEWORK=$sim_ac_framework
 
