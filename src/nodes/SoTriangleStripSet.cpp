@@ -101,14 +101,6 @@ SoTriangleStripSet::~SoTriangleStripSet()
 
 // doc from parent
 void
-SoTriangleStripSet::initClass(void)
-{
-  SO_NODE_INTERNAL_INIT_CLASS(SoTriangleStripSet, SO_FROM_INVENTOR_1);
-}
-
-
-// doc from parent
-void
 SoTriangleStripSet::computeBBox(SoAction * action,
                                 SbBox3f & box, SbVec3f & center)
 {
@@ -507,48 +499,51 @@ static void sogl_nits_m3_n3_t1
 
 // doc from parent
 void
+SoTriangleStripSet::initClass(void)
+{
+  SO_NODE_INTERNAL_INIT_CLASS(SoTriangleStripSet, SO_FROM_INVENTOR_1);
+
+  sotristripset_ni_render_funcs[ 0] = sogl_nits_m0_n0_t0;
+  sotristripset_ni_render_funcs[ 1] = sogl_nits_m0_n0_t1;
+  sotristripset_ni_render_funcs[ 2] = sogl_nits_m0_n1_t0;
+  sotristripset_ni_render_funcs[ 3] = sogl_nits_m0_n1_t1;
+  sotristripset_ni_render_funcs[ 4] = sogl_nits_m0_n2_t0;
+  sotristripset_ni_render_funcs[ 5] = sogl_nits_m0_n2_t1;
+  sotristripset_ni_render_funcs[ 6] = sogl_nits_m0_n3_t0;
+  sotristripset_ni_render_funcs[ 7] = sogl_nits_m0_n3_t1;
+
+  sotristripset_ni_render_funcs[ 8] = sogl_nits_m1_n0_t0;
+  sotristripset_ni_render_funcs[ 9] = sogl_nits_m1_n0_t1;
+  sotristripset_ni_render_funcs[10] = sogl_nits_m1_n1_t0;
+  sotristripset_ni_render_funcs[11] = sogl_nits_m1_n1_t1;
+  sotristripset_ni_render_funcs[12] = sogl_nits_m1_n2_t0;
+  sotristripset_ni_render_funcs[13] = sogl_nits_m1_n2_t1;
+  sotristripset_ni_render_funcs[14] = sogl_nits_m1_n3_t0;
+  sotristripset_ni_render_funcs[15] = sogl_nits_m1_n3_t1;
+  
+  sotristripset_ni_render_funcs[16] = sogl_nits_m2_n0_t0;
+  sotristripset_ni_render_funcs[17] = sogl_nits_m2_n0_t1;
+  sotristripset_ni_render_funcs[18] = sogl_nits_m2_n1_t0;
+  sotristripset_ni_render_funcs[19] = sogl_nits_m2_n1_t1;
+  sotristripset_ni_render_funcs[20] = sogl_nits_m2_n2_t0;
+  sotristripset_ni_render_funcs[21] = sogl_nits_m2_n2_t1;
+  sotristripset_ni_render_funcs[22] = sogl_nits_m2_n3_t0;
+  sotristripset_ni_render_funcs[23] = sogl_nits_m2_n3_t1;
+  
+  sotristripset_ni_render_funcs[24] = sogl_nits_m3_n0_t0;
+  sotristripset_ni_render_funcs[25] = sogl_nits_m3_n0_t1;
+  sotristripset_ni_render_funcs[26] = sogl_nits_m3_n1_t0;
+  sotristripset_ni_render_funcs[27] = sogl_nits_m3_n1_t1;
+  sotristripset_ni_render_funcs[28] = sogl_nits_m3_n2_t0;
+  sotristripset_ni_render_funcs[29] = sogl_nits_m3_n2_t1;
+  sotristripset_ni_render_funcs[30] = sogl_nits_m3_n3_t0;
+  sotristripset_ni_render_funcs[31] = sogl_nits_m3_n3_t1;
+}
+
+// doc from parent
+void
 SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 {
-  static int first = 1;
-  if (first) {
-    first = 0;
-    sotristripset_ni_render_funcs[ 0] = sogl_nits_m0_n0_t0;
-    sotristripset_ni_render_funcs[ 1] = sogl_nits_m0_n0_t1;
-    sotristripset_ni_render_funcs[ 2] = sogl_nits_m0_n1_t0;
-    sotristripset_ni_render_funcs[ 3] = sogl_nits_m0_n1_t1;
-    sotristripset_ni_render_funcs[ 4] = sogl_nits_m0_n2_t0;
-    sotristripset_ni_render_funcs[ 5] = sogl_nits_m0_n2_t1;
-    sotristripset_ni_render_funcs[ 6] = sogl_nits_m0_n3_t0;
-    sotristripset_ni_render_funcs[ 7] = sogl_nits_m0_n3_t1;
-
-    sotristripset_ni_render_funcs[ 8] = sogl_nits_m1_n0_t0;
-    sotristripset_ni_render_funcs[ 9] = sogl_nits_m1_n0_t1;
-    sotristripset_ni_render_funcs[10] = sogl_nits_m1_n1_t0;
-    sotristripset_ni_render_funcs[11] = sogl_nits_m1_n1_t1;
-    sotristripset_ni_render_funcs[12] = sogl_nits_m1_n2_t0;
-    sotristripset_ni_render_funcs[13] = sogl_nits_m1_n2_t1;
-    sotristripset_ni_render_funcs[14] = sogl_nits_m1_n3_t0;
-    sotristripset_ni_render_funcs[15] = sogl_nits_m1_n3_t1;
-    
-    sotristripset_ni_render_funcs[16] = sogl_nits_m2_n0_t0;
-    sotristripset_ni_render_funcs[17] = sogl_nits_m2_n0_t1;
-    sotristripset_ni_render_funcs[18] = sogl_nits_m2_n1_t0;
-    sotristripset_ni_render_funcs[19] = sogl_nits_m2_n1_t1;
-    sotristripset_ni_render_funcs[20] = sogl_nits_m2_n2_t0;
-    sotristripset_ni_render_funcs[21] = sogl_nits_m2_n2_t1;
-    sotristripset_ni_render_funcs[22] = sogl_nits_m2_n3_t0;
-    sotristripset_ni_render_funcs[23] = sogl_nits_m2_n3_t1;
-
-    sotristripset_ni_render_funcs[24] = sogl_nits_m3_n0_t0;
-    sotristripset_ni_render_funcs[25] = sogl_nits_m3_n0_t1;
-    sotristripset_ni_render_funcs[26] = sogl_nits_m3_n1_t0;
-    sotristripset_ni_render_funcs[27] = sogl_nits_m3_n1_t1;
-    sotristripset_ni_render_funcs[28] = sogl_nits_m3_n2_t0;
-    sotristripset_ni_render_funcs[29] = sogl_nits_m3_n2_t1;
-    sotristripset_ni_render_funcs[30] = sogl_nits_m3_n3_t0;
-    sotristripset_ni_render_funcs[31] = sogl_nits_m3_n3_t1;
-  }  
-  
   SoState * state = action->getState();
   SbBool didpush = FALSE;
 
