@@ -550,6 +550,8 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
   }
 
   const SbVec2s tilesize = SoOffscreenRendererP::getMaxTileSize();
+  if (tilesize == SbVec2s(0, 0)) { return FALSE; }
+
   const SbVec2s fullsize = this->viewport.getViewportSizePixels();
   const SbVec2s regionsize = SbVec2s(SbMin(tilesize[0], fullsize[0]), SbMin(tilesize[1], fullsize[1]));
 
@@ -1515,8 +1517,11 @@ SoOffscreenRendererP::getMaxTileSize(void)
 {
   // cache the values in static variables so that a new context is not
   // created every time render() is called in SoOffscreenRenderer
+  static SbBool cached = FALSE;
   static unsigned int maxtile[2] = { 0, 0 };
-  if (maxtile[0] > 0) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
+  if (cached) return SbVec2s((short)maxtile[0], (short)maxtile[1]);
+
+  cached = TRUE; // Flip on first run.
 
   unsigned int width, height;
   cc_glglue_context_max_dimensions(&width, &height);
@@ -1567,13 +1572,13 @@ SoOffscreenRenderer::getWriteFiletypeInfo(const int idx,
                                           SbString & fullname,
                                           SbString & description)
 {
-  SoDebugError::postWarning("SoOffscreenRenderer::getNumWriteFiletypes",
+  SoDebugError::postWarning("SoOffscreenRenderer::getWriteFiletypeInfo",
                             "Obsoleted function. Use instead the overloaded "
                             "method with an SbPList for the second argument.");
 
   if (!simage_wrapper()->versionMatchesAtLeast(1,1,0)) {
 #if COIN_DEBUG
-    SoDebugError::postInfo("SoOffscreenRenderer::getNumWriteFiletypes",
+    SoDebugError::postInfo("SoOffscreenRenderer::getWriteFiletypeInfo",
                            "You need simage v1.1 for this functionality.");
 #endif // COIN_DEBUG
     return;
