@@ -27,7 +27,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec3s.h>
 
-class SbBox3s {
+class COIN_DLL_API SbBox3s {
 public:
   SbBox3s(void);
   SbBox3s(short xmin, short ymin, short zmin, short xmax, short ymax, short zmax);
