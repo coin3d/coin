@@ -48,8 +48,8 @@ SoSceneKit::SoSceneKit(void)
   // Note: we must use "" instead of , , to humour MS VisualC++ 6.
 
   SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, TRUE, this, "", FALSE);
-  SO_KIT_ADD_CATALOG_LIST_ENTRY(cameraList, SoSwitch, TRUE, topSeparator, "", SoCameraKit, TRUE);
-  SO_KIT_ADD_CATALOG_LIST_ENTRY(lightList, SoGroup, TRUE, topSeparator, "", SoLightKit, TRUE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(cameraList, SoSwitch, TRUE, topSeparator, lightList, SoCameraKit, TRUE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(lightList, SoGroup, TRUE, topSeparator, childList, SoLightKit, TRUE);
   SO_KIT_ADD_CATALOG_LIST_ENTRY(childList, SoGroup, TRUE, topSeparator, "", SoShapeKit, TRUE);
   SO_KIT_ADD_LIST_ITEM_TYPE(childList, SoSeparatorKit);
 

@@ -208,7 +208,7 @@ SoBaseKit::set(const char *namevaluepairliststring)
   int stringlen = strlen(namevaluepairliststring); // cache this value
   const char *currptr = skip_spaces(namevaluepairliststring);
   SoInput memInput;
-  
+
   while (*currptr) {
     int partnamelen = find_partname_length(currptr);
     const char *start = skip_spaces(currptr + partnamelen);
@@ -234,7 +234,7 @@ SoBaseKit::set(const char *namevaluepairliststring)
 #endif // debug
       return FALSE;
     }
-    
+
     SoNode *node = kit->fieldList[partNum]->getValue();
     if (isList) {
       SoNodeKitListPart *list = (SoNodeKitListPart*)node;
@@ -662,9 +662,9 @@ SoBaseKit::getAnyPart(const SbName &partname, SbBool makeifneeded, SbBool leafch
 SoNodeKitPath *
 SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBool /*leafcheck*/, SbBool /*publiccheck*/, const SoPath *pathtoextend)
 {
-  // FIXME: leafcheck and publiccheck support, pederb 2000-01-07  
-  
-  // FIXME: need to investigate whether containerNode for lists should be 
+  // FIXME: leafcheck and publiccheck support, pederb 2000-01-07
+
+  // FIXME: need to investigate whether containerNode for lists should be
   // in the path. pederb, 2000-01-07
 
   SoPath *path;
@@ -688,7 +688,7 @@ SoBaseKit::createPathToAnyPart(const SbName &partname, SbBool makeifneeded, SbBo
     path= new SoPath(this);
   }
   path->ref();
-  
+
   SoBaseKit *kit = this;
   int partNum;
   SbBool isList;
@@ -754,7 +754,7 @@ SoBaseKit::setAnyPart(const SbName &partname, SoNode *from, SbBool anypart)
                                    "index %d out of bounds for part ``%s''",
                                    listIdx, partname.getString());
 #endif // debug
-            
+
           }
         }
       }

@@ -46,8 +46,8 @@ SoLightKit::SoLightKit(void)
   // Note: we must use "" instead of , , to humour MS VisualC++ 6.
 
   SO_KIT_ADD_CATALOG_ENTRY(transformGroup, SoTransformSeparator, TRUE, this, "", FALSE);
-  SO_KIT_ADD_CATALOG_ENTRY(transform, SoTransform, TRUE, transformGroup, "", TRUE);
-  SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(light, SoLight, SoDirectionalLight, FALSE, transformGroup, "", TRUE);
+  SO_KIT_ADD_CATALOG_ENTRY(transform, SoTransform, TRUE, transformGroup, light, TRUE);
+  SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(light, SoLight, SoDirectionalLight, FALSE, transformGroup, iconSeparator, TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(iconSeparator, SoSeparator, TRUE, transformGroup, "", FALSE);
   SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(icon, SoNode, SoCube, TRUE, iconSeparator, "", TRUE);
 
