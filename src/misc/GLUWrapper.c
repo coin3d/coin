@@ -182,16 +182,37 @@ GLUWrapper(void)
     GLU_instance->available = 1;
 
 #if GLU_RUNTIME_LINKING
-    /* FIXME: kick the .so extension? Will probably cause problems on
-       HP-UX for instance. 20000928 mortene */
-    GLU_libhandle = dlopen("libGLU.so", RTLD_LAZY);
-    if (!GLU_libhandle) {
-      (void)fprintf(stderr,
-                    "GLU wrapper debug: couldn't open libGLU.so: '%s'\n",
-                    dlerror());
-      (void)fflush(stderr);
-      GLU_instance->available = 0;
-      GLU_failed_to_load = 1;
+    {
+      const char * possiblelibnames[] = {
+        /* FIXME: should we get the system shared library name from an
+           Autoconf check? 20000930 mortene. */
+        "GLU", "MesaGLU",
+        "libGLU", "libMesaGLU",
+        "libGLU.so", "libMesaGLU.so",
+        /* FIXME: this hits on HP-UX? 20000930 mortene. */
+        "libGLU.sl", "libMesaGLU.sl",
+        NULL
+      };
+      /* FIXME: implement same functionality on MSWindows. 20000930 mortene. */
+      int idx = 0;
+      while (!GLU_libhandle && possiblelibnames[idx]) {
+        GLU_libhandle = dlopen(possiblelibnames[idx], RTLD_LAZY);
+#if 0 /* debug */
+        if (!GLU_libhandle) {
+          (void)fprintf(stderr,
+                        "GLU wrapper debug: couldn't open '%s': '%s'\n",
+                        possiblelibnames[idx],
+                        dlerror());
+          (void)fflush(stderr);
+        }
+#endif /* debug */
+        idx++;
+      }
+
+      if (!GLU_libhandle) {
+        GLU_instance->available = 0;
+        GLU_failed_to_load = 1;
+      }
     }
 
     /* Define GLUWRAPPER_REGISTER_FUNC macro. Casting the type is
