@@ -781,16 +781,11 @@ SoHandleBoxDragger::updateArrows(void)
 void
 SoHandleBoxDragger::getSurroundScaleMatrices(SbMatrix &mat, SbMatrix &inv)
 {
-  SoSurroundScale *ss = SO_CHECK_ANY_PART(this, "surroundScale", SoSurroundScale);
-  if (ss) {
-    SoGetMatrixAction ma(this->getViewportRegion());
-    ma.apply(ss);
-    mat = ma.getMatrix();
-    inv = ma.getInverse();
+  if (this->surroundScale.getValue()) {
+    this->getPartToLocalMatrix("surroundScale", mat, inv);
   }
   else {
-    mat = SbMatrix::identity();
-    inv = SbMatrix::identity();
+    mat = inv = SbMatrix::identity();
   }
 }
 
