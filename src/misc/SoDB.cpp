@@ -591,7 +591,7 @@ SoDB::createGlobalField(const SbName & name, SoType type)
   // (Deallocation of the field happens in the SoGlobalField
   // destructor.)
   SoField * newfield = (SoField *)type.createInstance();
-  SoGlobalField * gf = new SoGlobalField(name, newfield);
+  (void) new SoGlobalField(name, newfield);
   return newfield;
 }
 

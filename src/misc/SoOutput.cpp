@@ -523,7 +523,7 @@ SoOutput::write(const short s)
     this->writeBytesWithPadding(str.getString(), str.getLength());
   }
   else {
-    this->write((const int)s);
+    this->write((int)s);
   }
 }
 
@@ -541,7 +541,7 @@ SoOutput::write(const unsigned short s)
     this->writeBytesWithPadding(str.getString(), str.getLength());
   }
   else {
-    this->write((const unsigned int)s);
+    this->write((unsigned int)s);
   }
 }
 

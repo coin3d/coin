@@ -46,7 +46,7 @@
 #endif // COIN_DEBUG
 
 
-#if COIN_DEBUG // Convenience function for dumping the SoPath during debugging.
+#if COIN_DEBUG && 0 // Convenience function for dumping the SoPath during debugging.
 #include <Inventor/SoFullPath.h>
 
 static void

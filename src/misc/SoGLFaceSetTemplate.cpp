@@ -61,8 +61,11 @@
   const int32_t *viendptr = viptr + numindices;
   int32_t v1, v2, v3, v4, v5 = 0; // v5 init unnecessary, but kills a compiler warning.
   SbVec3f dummynormal(0,0,1);
+
+#if NBINDING==PER_VERTEX || NBINDING==PER_FACE || NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_FACE_INDEXED || TEXTURES==TRUE
   const SbVec3f *currnormal = &dummynormal;
   if (normals) currnormal = normals;
+#endif // currnormal wrapper
 
 #if MBINDING==PER_FACE || MBINDING==PER_VERTEX
   int matnr = 0;

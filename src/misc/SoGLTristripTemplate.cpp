@@ -54,8 +54,11 @@
   const int32_t *viendptr = viptr + numindices;
   int32_t v1, v2, v3;
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
+
+#if NBINDING==PER_VERTEX || NBINDING==PER_TRIANGLE || NBINDING==PER_STRIP || NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_TRIANGLE_INDEXED || NBINDING==PER_STRIP_INDEXED || TEXTURES==TRUE
   const SbVec3f *currnormal = &dummynormal;
   if (normals) currnormal = normals;
+#endif // currnormal wrapper
 
 #if MBINDING==PER_TRIANGLE || MBINDING==PER_STRIP || MBINDING==PER_VERTEX
   int matnr = 0;

@@ -287,7 +287,6 @@ public:
                             const unsigned int flags,
                             SoShape * const shape,
                             SoAction * const action) {
-    static int translate[6] = {0, 2, 1, 3, 4, 5};
     SbVec3f varray[8];
     sogenerate_generate_cube_vertices(varray,
                            width * 0.5f,

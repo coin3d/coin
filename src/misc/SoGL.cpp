@@ -33,9 +33,10 @@
 #include <string.h>
 
 
-//
-// function used to check if an extension is supported
-//
+
+#if !GL_VERSION_1_1 && (GL_EXT_polygon_offset || GL_EXT_texture_object || GL_EXT_vertex_array)
+// Function used to check if an extension is supported. (Wrapped in
+// #if/#endif to avoid compiler warning.)
 static int
 extension_supported(char *extension)
 {
@@ -65,15 +66,9 @@ extension_supported(char *extension)
   }
   return 0;
 }
-
+#endif // extension support check
 
 static SbBool isInitialized = FALSE;
-static int maxTextureSize;
-static int maxLights;
-static int maxClipPlanes;
-static int maxModelviewStackDepth;
-static int maxProjectionStackDepth;
-static int maxTextureStackDepth;
 
 #if GL_VERSION_1_1
 #elif GL_EXT_polygon_offset
@@ -118,6 +113,14 @@ sogl_global_init()
 #endif // debug
 #endif
 
+#if 0 // debug
+  static int maxTextureSize;
+  static int maxLights;
+  static int maxClipPlanes;
+  static int maxModelviewStackDepth;
+  static int maxProjectionStackDepth;
+  static int maxTextureStackDepth;
+
   GLint tmp;
 
   glGetIntegerv(GL_MAX_TEXTURE_SIZE, &tmp);
@@ -133,7 +136,6 @@ sogl_global_init()
   glGetIntegerv(GL_MAX_TEXTURE_STACK_DEPTH, &tmp);
   maxTextureStackDepth = tmp;
 
-#if 0 // debug
   fprintf(stderr,"max texure size: %d\n", maxTextureSize);
   fprintf(stderr,"max modelview matrix depth: %d\n", maxModelviewStackDepth);
   fprintf(stderr,"max lights: %d\n", maxLights);
