@@ -37,6 +37,9 @@ RegularSources = \
 	SoLineWidthElement.cpp \
 	SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoMultiTextureCoordinateElement.cpp \
+	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp \
 	SoNormalBindingElement.cpp \
 	SoNormalElement.cpp \
@@ -64,6 +67,7 @@ RegularSources = \
 	SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp \
+	SoTextureUnitElement.cpp \
 	SoTextureQualityElement.cpp \
 	SoTransparencyElement.cpp \
 	SoUnitsElement.cpp \

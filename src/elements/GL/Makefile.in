@@ -252,6 +252,9 @@ RegularSources = \
 	SoGLLinePatternElement.cpp \
 	SoGLLineWidthElement.cpp \
 	SoGLModelMatrixElement.cpp \
+	SoGLMultiTextureCoordinateElement.cpp \
+	SoGLMultiTextureEnabledElement.cpp \
+	SoGLMultiTextureImageElement.cpp \
 	SoGLNormalElement.cpp \
 	SoGLPointSizeElement.cpp \
 	SoGLPolygonOffsetElement.cpp \
@@ -368,14 +371,17 @@ am__glelements_lst_SOURCES_DIST = SoGLCacheContextElement.cpp \
 	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
 	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
 	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
-	SoGLNormalElement.cpp SoGLPointSizeElement.cpp \
-	SoGLPolygonOffsetElement.cpp SoGLProjectionMatrixElement.cpp \
-	SoGLRenderPassElement.cpp SoGLShapeHintsElement.cpp \
-	SoGLTextureCoordinateElement.cpp SoGLTextureEnabledElement.cpp \
-	SoGLTexture3EnabledElement.cpp SoGLTextureImageElement.cpp \
-	SoGLTextureMatrixElement.cpp SoGLUpdateAreaElement.cpp \
-	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp all-glelements-cpp.cpp
+	SoGLMultiTextureCoordinateElement.cpp \
+	SoGLMultiTextureEnabledElement.cpp \
+	SoGLMultiTextureImageElement.cpp SoGLNormalElement.cpp \
+	SoGLPointSizeElement.cpp SoGLPolygonOffsetElement.cpp \
+	SoGLProjectionMatrixElement.cpp SoGLRenderPassElement.cpp \
+	SoGLShapeHintsElement.cpp SoGLTextureCoordinateElement.cpp \
+	SoGLTextureEnabledElement.cpp SoGLTexture3EnabledElement.cpp \
+	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
+	SoGLUpdateAreaElement.cpp SoGLViewingMatrixElement.cpp \
+	SoGLViewportRegionElement.cpp SoGLDisplayList.cpp \
+	all-glelements-cpp.cpp
 am__objects_1 = all-glelements-cpp.$(OBJEXT)
 am__objects_2 = SoGLCacheContextElement.$(OBJEXT) \
 	SoGLClipPlaneElement.$(OBJEXT) SoGLColorIndexElement.$(OBJEXT) \
@@ -383,6 +389,9 @@ am__objects_2 = SoGLCacheContextElement.$(OBJEXT) \
 	SoGLEnvironmentElement.$(OBJEXT) SoGLLazyElement.$(OBJEXT) \
 	SoGLLightIdElement.$(OBJEXT) SoGLLinePatternElement.$(OBJEXT) \
 	SoGLLineWidthElement.$(OBJEXT) SoGLModelMatrixElement.$(OBJEXT) \
+	SoGLMultiTextureCoordinateElement.$(OBJEXT) \
+	SoGLMultiTextureEnabledElement.$(OBJEXT) \
+	SoGLMultiTextureImageElement.$(OBJEXT) \
 	SoGLNormalElement.$(OBJEXT) SoGLPointSizeElement.$(OBJEXT) \
 	SoGLPolygonOffsetElement.$(OBJEXT) \
 	SoGLProjectionMatrixElement.$(OBJEXT) \
@@ -432,14 +441,16 @@ am__EXTRA_glelements_lst_SOURCES_DIST = \
 	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
 	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
 	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
-	SoGLNormalElement.cpp SoGLPointSizeElement.cpp \
-	SoGLPolygonOffsetElement.cpp SoGLProjectionMatrixElement.cpp \
-	SoGLRenderPassElement.cpp SoGLShapeHintsElement.cpp \
-	SoGLTextureCoordinateElement.cpp SoGLTextureEnabledElement.cpp \
-	SoGLTexture3EnabledElement.cpp SoGLTextureImageElement.cpp \
-	SoGLTextureMatrixElement.cpp SoGLUpdateAreaElement.cpp \
-	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp
+	SoGLMultiTextureCoordinateElement.cpp \
+	SoGLMultiTextureEnabledElement.cpp \
+	SoGLMultiTextureImageElement.cpp SoGLNormalElement.cpp \
+	SoGLPointSizeElement.cpp SoGLPolygonOffsetElement.cpp \
+	SoGLProjectionMatrixElement.cpp SoGLRenderPassElement.cpp \
+	SoGLShapeHintsElement.cpp SoGLTextureCoordinateElement.cpp \
+	SoGLTextureEnabledElement.cpp SoGLTexture3EnabledElement.cpp \
+	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
+	SoGLUpdateAreaElement.cpp SoGLViewingMatrixElement.cpp \
+	SoGLViewportRegionElement.cpp SoGLDisplayList.cpp
 glelements_lst_OBJECTS = $(am_glelements_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -451,21 +462,26 @@ am__libglelements_la_SOURCES_DIST = SoGLCacheContextElement.cpp \
 	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
 	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
 	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
-	SoGLNormalElement.cpp SoGLPointSizeElement.cpp \
-	SoGLPolygonOffsetElement.cpp SoGLProjectionMatrixElement.cpp \
-	SoGLRenderPassElement.cpp SoGLShapeHintsElement.cpp \
-	SoGLTextureCoordinateElement.cpp SoGLTextureEnabledElement.cpp \
-	SoGLTexture3EnabledElement.cpp SoGLTextureImageElement.cpp \
-	SoGLTextureMatrixElement.cpp SoGLUpdateAreaElement.cpp \
-	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp all-glelements-cpp.cpp
+	SoGLMultiTextureCoordinateElement.cpp \
+	SoGLMultiTextureEnabledElement.cpp \
+	SoGLMultiTextureImageElement.cpp SoGLNormalElement.cpp \
+	SoGLPointSizeElement.cpp SoGLPolygonOffsetElement.cpp \
+	SoGLProjectionMatrixElement.cpp SoGLRenderPassElement.cpp \
+	SoGLShapeHintsElement.cpp SoGLTextureCoordinateElement.cpp \
+	SoGLTextureEnabledElement.cpp SoGLTexture3EnabledElement.cpp \
+	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
+	SoGLUpdateAreaElement.cpp SoGLViewingMatrixElement.cpp \
+	SoGLViewportRegionElement.cpp SoGLDisplayList.cpp \
+	all-glelements-cpp.cpp
 am__objects_6 = all-glelements-cpp.lo
 am__objects_7 = SoGLCacheContextElement.lo SoGLClipPlaneElement.lo \
 	SoGLColorIndexElement.lo SoGLCoordinateElement.lo \
 	SoGLDrawStyleElement.lo SoGLEnvironmentElement.lo \
 	SoGLLazyElement.lo SoGLLightIdElement.lo \
 	SoGLLinePatternElement.lo SoGLLineWidthElement.lo \
-	SoGLModelMatrixElement.lo SoGLNormalElement.lo \
+	SoGLModelMatrixElement.lo SoGLMultiTextureCoordinateElement.lo \
+	SoGLMultiTextureEnabledElement.lo \
+	SoGLMultiTextureImageElement.lo SoGLNormalElement.lo \
 	SoGLPointSizeElement.lo SoGLPolygonOffsetElement.lo \
 	SoGLProjectionMatrixElement.lo SoGLRenderPassElement.lo \
 	SoGLShapeHintsElement.lo SoGLTextureCoordinateElement.lo \
@@ -510,14 +526,16 @@ am__EXTRA_libglelements_la_SOURCES_DIST = \
 	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
 	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
 	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
-	SoGLNormalElement.cpp SoGLPointSizeElement.cpp \
-	SoGLPolygonOffsetElement.cpp SoGLProjectionMatrixElement.cpp \
-	SoGLRenderPassElement.cpp SoGLShapeHintsElement.cpp \
-	SoGLTextureCoordinateElement.cpp SoGLTextureEnabledElement.cpp \
-	SoGLTexture3EnabledElement.cpp SoGLTextureImageElement.cpp \
-	SoGLTextureMatrixElement.cpp SoGLUpdateAreaElement.cpp \
-	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp
+	SoGLMultiTextureCoordinateElement.cpp \
+	SoGLMultiTextureEnabledElement.cpp \
+	SoGLMultiTextureImageElement.cpp SoGLNormalElement.cpp \
+	SoGLPointSizeElement.cpp SoGLPolygonOffsetElement.cpp \
+	SoGLProjectionMatrixElement.cpp SoGLRenderPassElement.cpp \
+	SoGLShapeHintsElement.cpp SoGLTextureCoordinateElement.cpp \
+	SoGLTextureEnabledElement.cpp SoGLTexture3EnabledElement.cpp \
+	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
+	SoGLUpdateAreaElement.cpp SoGLViewingMatrixElement.cpp \
+	SoGLViewportRegionElement.cpp SoGLDisplayList.cpp
 libglelements_la_OBJECTS = $(am_libglelements_la_OBJECTS)
 libglelements@SUFFIX@LINKHACK_la_LDFLAGS =
 libglelements@SUFFIX@LINKHACK_la_LIBADD =
@@ -527,7 +545,10 @@ am__libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGLDrawStyleElement.cpp SoGLEnvironmentElement.cpp \
 	SoGLLazyElement.cpp SoGLLightIdElement.cpp \
 	SoGLLinePatternElement.cpp SoGLLineWidthElement.cpp \
-	SoGLModelMatrixElement.cpp SoGLNormalElement.cpp \
+	SoGLModelMatrixElement.cpp \
+	SoGLMultiTextureCoordinateElement.cpp \
+	SoGLMultiTextureEnabledElement.cpp \
+	SoGLMultiTextureImageElement.cpp SoGLNormalElement.cpp \
 	SoGLPointSizeElement.cpp SoGLPolygonOffsetElement.cpp \
 	SoGLProjectionMatrixElement.cpp SoGLRenderPassElement.cpp \
 	SoGLShapeHintsElement.cpp SoGLTextureCoordinateElement.cpp \
@@ -571,14 +592,16 @@ am__EXTRA_libglelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoGLEnvironmentElement.cpp SoGLLazyElement.cpp \
 	SoGLLightIdElement.cpp SoGLLinePatternElement.cpp \
 	SoGLLineWidthElement.cpp SoGLModelMatrixElement.cpp \
-	SoGLNormalElement.cpp SoGLPointSizeElement.cpp \
-	SoGLPolygonOffsetElement.cpp SoGLProjectionMatrixElement.cpp \
-	SoGLRenderPassElement.cpp SoGLShapeHintsElement.cpp \
-	SoGLTextureCoordinateElement.cpp SoGLTextureEnabledElement.cpp \
-	SoGLTexture3EnabledElement.cpp SoGLTextureImageElement.cpp \
-	SoGLTextureMatrixElement.cpp SoGLUpdateAreaElement.cpp \
-	SoGLViewingMatrixElement.cpp SoGLViewportRegionElement.cpp \
-	SoGLDisplayList.cpp
+	SoGLMultiTextureCoordinateElement.cpp \
+	SoGLMultiTextureEnabledElement.cpp \
+	SoGLMultiTextureImageElement.cpp SoGLNormalElement.cpp \
+	SoGLPointSizeElement.cpp SoGLPolygonOffsetElement.cpp \
+	SoGLProjectionMatrixElement.cpp SoGLRenderPassElement.cpp \
+	SoGLShapeHintsElement.cpp SoGLTextureCoordinateElement.cpp \
+	SoGLTextureEnabledElement.cpp SoGLTexture3EnabledElement.cpp \
+	SoGLTextureImageElement.cpp SoGLTextureMatrixElement.cpp \
+	SoGLUpdateAreaElement.cpp SoGLViewingMatrixElement.cpp \
+	SoGLViewportRegionElement.cpp SoGLDisplayList.cpp
 libglelements@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libglelements@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -607,6 +630,12 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLLineWidthElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLModelMatrixElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLModelMatrixElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLMultiTextureCoordinateElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLMultiTextureCoordinateElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLMultiTextureEnabledElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLMultiTextureEnabledElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLMultiTextureImageElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoGLMultiTextureImageElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLNormalElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLNormalElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoGLPointSizeElement.Plo \
@@ -747,6 +776,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLLineWidthElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLModelMatrixElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLModelMatrixElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLMultiTextureCoordinateElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLMultiTextureCoordinateElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLMultiTextureEnabledElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLMultiTextureEnabledElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLMultiTextureImageElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLMultiTextureImageElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLNormalElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLNormalElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoGLPointSizeElement.Plo@am__quote@

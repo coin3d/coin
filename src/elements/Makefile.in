@@ -276,6 +276,9 @@ RegularSources = \
 	SoLineWidthElement.cpp \
 	SoLocalBBoxMatrixElement.cpp \
 	SoMaterialBindingElement.cpp \
+	SoMultiTextureCoordinateElement.cpp \
+	SoMultiTextureEnabledElement.cpp \
+	SoMultiTextureImageElement.cpp \
 	SoModelMatrixElement.cpp \
 	SoNormalBindingElement.cpp \
 	SoNormalElement.cpp \
@@ -303,6 +306,7 @@ RegularSources = \
 	SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
 	SoTextureScaleQualityElement.cpp \
+	SoTextureUnitElement.cpp \
 	SoTextureQualityElement.cpp \
 	SoTransparencyElement.cpp \
 	SoUnitsElement.cpp \
@@ -475,9 +479,11 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoLightAttenuationElement.cpp SoLightElement.cpp \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
-	SoMaterialBindingElement.cpp SoModelMatrixElement.cpp \
-	SoNormalBindingElement.cpp SoNormalElement.cpp \
-	SoOverrideElement.cpp SoPickRayElement.cpp \
+	SoMaterialBindingElement.cpp \
+	SoMultiTextureCoordinateElement.cpp \
+	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
+	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
 	SoPolygonOffsetElement.cpp SoProfileCoordinateElement.cpp \
 	SoProfileElement.cpp SoProjectionMatrixElement.cpp \
@@ -490,13 +496,14 @@ am__elements_lst_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
-	SoTextureScaleQualityElement.cpp SoTextureQualityElement.cpp \
-	SoTransparencyElement.cpp SoUnitsElement.cpp \
-	SoViewVolumeElement.cpp SoViewingMatrixElement.cpp \
-	SoViewportRegionElement.cpp SoWindowElement.cpp \
-	SoListenerPositionElement.cpp SoListenerOrientationElement.cpp \
-	SoListenerGainElement.cpp SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp all-elements-cpp.cpp
+	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
+	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
+	SoUnitsElement.cpp SoViewVolumeElement.cpp \
+	SoViewingMatrixElement.cpp SoViewportRegionElement.cpp \
+	SoWindowElement.cpp SoListenerPositionElement.cpp \
+	SoListenerOrientationElement.cpp SoListenerGainElement.cpp \
+	SoListenerDopplerElement.cpp SoSoundElement.cpp \
+	all-elements-cpp.cpp
 am__objects_1 = all-elements-cpp.$(OBJEXT)
 am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoAmbientColorElement.$(OBJEXT) \
@@ -519,6 +526,9 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoLinePatternElement.$(OBJEXT) SoLineWidthElement.$(OBJEXT) \
 	SoLocalBBoxMatrixElement.$(OBJEXT) \
 	SoMaterialBindingElement.$(OBJEXT) \
+	SoMultiTextureCoordinateElement.$(OBJEXT) \
+	SoMultiTextureEnabledElement.$(OBJEXT) \
+	SoMultiTextureImageElement.$(OBJEXT) \
 	SoModelMatrixElement.$(OBJEXT) SoNormalBindingElement.$(OBJEXT) \
 	SoNormalElement.$(OBJEXT) SoOverrideElement.$(OBJEXT) \
 	SoPickRayElement.$(OBJEXT) SoPickStyleElement.$(OBJEXT) \
@@ -537,6 +547,7 @@ am__objects_2 = SoAccumulatedElement.$(OBJEXT) \
 	SoTextureOverrideElement.$(OBJEXT) \
 	SoTextureScalePolicyElement.$(OBJEXT) \
 	SoTextureScaleQualityElement.$(OBJEXT) \
+	SoTextureUnitElement.$(OBJEXT) \
 	SoTextureQualityElement.$(OBJEXT) \
 	SoTransparencyElement.$(OBJEXT) SoUnitsElement.$(OBJEXT) \
 	SoViewVolumeElement.$(OBJEXT) SoViewingMatrixElement.$(OBJEXT) \
@@ -640,9 +651,11 @@ am__EXTRA_elements_lst_SOURCES_DIST = \
 	SoLightAttenuationElement.cpp SoLightElement.cpp \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
-	SoMaterialBindingElement.cpp SoModelMatrixElement.cpp \
-	SoNormalBindingElement.cpp SoNormalElement.cpp \
-	SoOverrideElement.cpp SoPickRayElement.cpp \
+	SoMaterialBindingElement.cpp \
+	SoMultiTextureCoordinateElement.cpp \
+	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
+	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
 	SoPolygonOffsetElement.cpp SoProfileCoordinateElement.cpp \
 	SoProfileElement.cpp SoProjectionMatrixElement.cpp \
@@ -655,13 +668,13 @@ am__EXTRA_elements_lst_SOURCES_DIST = \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
-	SoTextureScaleQualityElement.cpp SoTextureQualityElement.cpp \
-	SoTransparencyElement.cpp SoUnitsElement.cpp \
-	SoViewVolumeElement.cpp SoViewingMatrixElement.cpp \
-	SoViewportRegionElement.cpp SoWindowElement.cpp \
-	SoListenerPositionElement.cpp SoListenerOrientationElement.cpp \
-	SoListenerGainElement.cpp SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp
+	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
+	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
+	SoUnitsElement.cpp SoViewVolumeElement.cpp \
+	SoViewingMatrixElement.cpp SoViewportRegionElement.cpp \
+	SoWindowElement.cpp SoListenerPositionElement.cpp \
+	SoListenerOrientationElement.cpp SoListenerGainElement.cpp \
+	SoListenerDopplerElement.cpp SoSoundElement.cpp
 elements_lst_OBJECTS = $(am_elements_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -683,9 +696,11 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoLightAttenuationElement.cpp SoLightElement.cpp \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
-	SoMaterialBindingElement.cpp SoModelMatrixElement.cpp \
-	SoNormalBindingElement.cpp SoNormalElement.cpp \
-	SoOverrideElement.cpp SoPickRayElement.cpp \
+	SoMaterialBindingElement.cpp \
+	SoMultiTextureCoordinateElement.cpp \
+	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
+	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
 	SoPolygonOffsetElement.cpp SoProfileCoordinateElement.cpp \
 	SoProfileElement.cpp SoProjectionMatrixElement.cpp \
@@ -698,13 +713,14 @@ am__libelements_la_SOURCES_DIST = SoAccumulatedElement.cpp \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
-	SoTextureScaleQualityElement.cpp SoTextureQualityElement.cpp \
-	SoTransparencyElement.cpp SoUnitsElement.cpp \
-	SoViewVolumeElement.cpp SoViewingMatrixElement.cpp \
-	SoViewportRegionElement.cpp SoWindowElement.cpp \
-	SoListenerPositionElement.cpp SoListenerOrientationElement.cpp \
-	SoListenerGainElement.cpp SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp all-elements-cpp.cpp
+	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
+	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
+	SoUnitsElement.cpp SoViewVolumeElement.cpp \
+	SoViewingMatrixElement.cpp SoViewportRegionElement.cpp \
+	SoWindowElement.cpp SoListenerPositionElement.cpp \
+	SoListenerOrientationElement.cpp SoListenerGainElement.cpp \
+	SoListenerDopplerElement.cpp SoSoundElement.cpp \
+	all-elements-cpp.cpp
 am__objects_6 = all-elements-cpp.lo
 am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoAnnoText3CharOrientElement.lo \
@@ -721,26 +737,29 @@ am__objects_7 = SoAccumulatedElement.lo SoAmbientColorElement.lo \
 	SoLazyElement.lo SoLightAttenuationElement.lo SoLightElement.lo \
 	SoLightModelElement.lo SoLinePatternElement.lo \
 	SoLineWidthElement.lo SoLocalBBoxMatrixElement.lo \
-	SoMaterialBindingElement.lo SoModelMatrixElement.lo \
-	SoNormalBindingElement.lo SoNormalElement.lo \
-	SoOverrideElement.lo SoPickRayElement.lo SoPickStyleElement.lo \
-	SoPointSizeElement.lo SoPolygonOffsetElement.lo \
-	SoProfileCoordinateElement.lo SoProfileElement.lo \
-	SoProjectionMatrixElement.lo SoReplacedElement.lo \
-	SoShapeHintsElement.lo SoShapeStyleElement.lo \
-	SoShininessElement.lo SoSpecularColorElement.lo \
-	SoSwitchElement.lo SoTextOutlineEnabledElement.lo \
+	SoMaterialBindingElement.lo SoMultiTextureCoordinateElement.lo \
+	SoMultiTextureEnabledElement.lo SoMultiTextureImageElement.lo \
+	SoModelMatrixElement.lo SoNormalBindingElement.lo \
+	SoNormalElement.lo SoOverrideElement.lo SoPickRayElement.lo \
+	SoPickStyleElement.lo SoPointSizeElement.lo \
+	SoPolygonOffsetElement.lo SoProfileCoordinateElement.lo \
+	SoProfileElement.lo SoProjectionMatrixElement.lo \
+	SoReplacedElement.lo SoShapeHintsElement.lo \
+	SoShapeStyleElement.lo SoShininessElement.lo \
+	SoSpecularColorElement.lo SoSwitchElement.lo \
+	SoTextOutlineEnabledElement.lo \
 	SoTextureCoordinateBindingElement.lo \
 	SoTextureCoordinateElement.lo SoTextureEnabledElement.lo \
 	SoTexture3EnabledElement.lo SoTextureImageElement.lo \
 	SoTextureMatrixElement.lo SoTextureOverrideElement.lo \
 	SoTextureScalePolicyElement.lo SoTextureScaleQualityElement.lo \
-	SoTextureQualityElement.lo SoTransparencyElement.lo \
-	SoUnitsElement.lo SoViewVolumeElement.lo \
-	SoViewingMatrixElement.lo SoViewportRegionElement.lo \
-	SoWindowElement.lo SoListenerPositionElement.lo \
-	SoListenerOrientationElement.lo SoListenerGainElement.lo \
-	SoListenerDopplerElement.lo SoSoundElement.lo
+	SoTextureUnitElement.lo SoTextureQualityElement.lo \
+	SoTransparencyElement.lo SoUnitsElement.lo \
+	SoViewVolumeElement.lo SoViewingMatrixElement.lo \
+	SoViewportRegionElement.lo SoWindowElement.lo \
+	SoListenerPositionElement.lo SoListenerOrientationElement.lo \
+	SoListenerGainElement.lo SoListenerDopplerElement.lo \
+	SoSoundElement.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_8 = $(am__objects_6)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_8 = $(am__objects_7)
 am_libelements_la_OBJECTS = $(am__objects_8)
@@ -836,9 +855,11 @@ am__EXTRA_libelements_la_SOURCES_DIST = \
 	SoLightAttenuationElement.cpp SoLightElement.cpp \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
-	SoMaterialBindingElement.cpp SoModelMatrixElement.cpp \
-	SoNormalBindingElement.cpp SoNormalElement.cpp \
-	SoOverrideElement.cpp SoPickRayElement.cpp \
+	SoMaterialBindingElement.cpp \
+	SoMultiTextureCoordinateElement.cpp \
+	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
+	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
 	SoPolygonOffsetElement.cpp SoProfileCoordinateElement.cpp \
 	SoProfileElement.cpp SoProjectionMatrixElement.cpp \
@@ -851,13 +872,13 @@ am__EXTRA_libelements_la_SOURCES_DIST = \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
-	SoTextureScaleQualityElement.cpp SoTextureQualityElement.cpp \
-	SoTransparencyElement.cpp SoUnitsElement.cpp \
-	SoViewVolumeElement.cpp SoViewingMatrixElement.cpp \
-	SoViewportRegionElement.cpp SoWindowElement.cpp \
-	SoListenerPositionElement.cpp SoListenerOrientationElement.cpp \
-	SoListenerGainElement.cpp SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp
+	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
+	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
+	SoUnitsElement.cpp SoViewVolumeElement.cpp \
+	SoViewingMatrixElement.cpp SoViewportRegionElement.cpp \
+	SoWindowElement.cpp SoListenerPositionElement.cpp \
+	SoListenerOrientationElement.cpp SoListenerGainElement.cpp \
+	SoListenerDopplerElement.cpp SoSoundElement.cpp
 libelements_la_OBJECTS = $(am_libelements_la_OBJECTS)
 libelements@SUFFIX@LINKHACK_la_LDFLAGS =
 libelements@SUFFIX@LINKHACK_la_LIBADD =
@@ -878,9 +899,11 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoLightAttenuationElement.cpp SoLightElement.cpp \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
-	SoMaterialBindingElement.cpp SoModelMatrixElement.cpp \
-	SoNormalBindingElement.cpp SoNormalElement.cpp \
-	SoOverrideElement.cpp SoPickRayElement.cpp \
+	SoMaterialBindingElement.cpp \
+	SoMultiTextureCoordinateElement.cpp \
+	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
+	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
 	SoPolygonOffsetElement.cpp SoProfileCoordinateElement.cpp \
 	SoProfileElement.cpp SoProjectionMatrixElement.cpp \
@@ -893,13 +916,14 @@ am__libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
-	SoTextureScaleQualityElement.cpp SoTextureQualityElement.cpp \
-	SoTransparencyElement.cpp SoUnitsElement.cpp \
-	SoViewVolumeElement.cpp SoViewingMatrixElement.cpp \
-	SoViewportRegionElement.cpp SoWindowElement.cpp \
-	SoListenerPositionElement.cpp SoListenerOrientationElement.cpp \
-	SoListenerGainElement.cpp SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp all-elements-cpp.cpp
+	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
+	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
+	SoUnitsElement.cpp SoViewVolumeElement.cpp \
+	SoViewingMatrixElement.cpp SoViewportRegionElement.cpp \
+	SoWindowElement.cpp SoListenerPositionElement.cpp \
+	SoListenerOrientationElement.cpp SoListenerGainElement.cpp \
+	SoListenerDopplerElement.cpp SoSoundElement.cpp \
+	all-elements-cpp.cpp
 am_libelements@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_8)
 am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	../../include/Inventor/elements/SoSubElement.h \
@@ -993,9 +1017,11 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoLightAttenuationElement.cpp SoLightElement.cpp \
 	SoLightModelElement.cpp SoLinePatternElement.cpp \
 	SoLineWidthElement.cpp SoLocalBBoxMatrixElement.cpp \
-	SoMaterialBindingElement.cpp SoModelMatrixElement.cpp \
-	SoNormalBindingElement.cpp SoNormalElement.cpp \
-	SoOverrideElement.cpp SoPickRayElement.cpp \
+	SoMaterialBindingElement.cpp \
+	SoMultiTextureCoordinateElement.cpp \
+	SoMultiTextureEnabledElement.cpp SoMultiTextureImageElement.cpp \
+	SoModelMatrixElement.cpp SoNormalBindingElement.cpp \
+	SoNormalElement.cpp SoOverrideElement.cpp SoPickRayElement.cpp \
 	SoPickStyleElement.cpp SoPointSizeElement.cpp \
 	SoPolygonOffsetElement.cpp SoProfileCoordinateElement.cpp \
 	SoProfileElement.cpp SoProjectionMatrixElement.cpp \
@@ -1008,13 +1034,13 @@ am__EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	SoTexture3EnabledElement.cpp SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp SoTextureOverrideElement.cpp \
 	SoTextureScalePolicyElement.cpp \
-	SoTextureScaleQualityElement.cpp SoTextureQualityElement.cpp \
-	SoTransparencyElement.cpp SoUnitsElement.cpp \
-	SoViewVolumeElement.cpp SoViewingMatrixElement.cpp \
-	SoViewportRegionElement.cpp SoWindowElement.cpp \
-	SoListenerPositionElement.cpp SoListenerOrientationElement.cpp \
-	SoListenerGainElement.cpp SoListenerDopplerElement.cpp \
-	SoSoundElement.cpp
+	SoTextureScaleQualityElement.cpp SoTextureUnitElement.cpp \
+	SoTextureQualityElement.cpp SoTransparencyElement.cpp \
+	SoUnitsElement.cpp SoViewVolumeElement.cpp \
+	SoViewingMatrixElement.cpp SoViewportRegionElement.cpp \
+	SoWindowElement.cpp SoListenerPositionElement.cpp \
+	SoListenerOrientationElement.cpp SoListenerGainElement.cpp \
+	SoListenerDopplerElement.cpp SoSoundElement.cpp
 libelements@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libelements@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -1094,6 +1120,12 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoMaterialBindingElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoModelMatrixElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoModelMatrixElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureCoordinateElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureCoordinateElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureEnabledElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureEnabledElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureImageElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoMultiTextureImageElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNormalBindingElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNormalBindingElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoNormalElement.Plo \
@@ -1150,6 +1182,8 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureScalePolicyElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureScaleQualityElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTextureScaleQualityElement.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureUnitElement.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/SoTextureUnitElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransparencyElement.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/SoTransparencyElement.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/SoUnitsElement.Plo \
@@ -1333,6 +1367,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMaterialBindingElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoModelMatrixElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoModelMatrixElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureCoordinateElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureCoordinateElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureEnabledElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureEnabledElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureImageElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoMultiTextureImageElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalBindingElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalBindingElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoNormalElement.Plo@am__quote@
@@ -1389,6 +1429,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureScalePolicyElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureScaleQualityElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureScaleQualityElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureUnitElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTextureUnitElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransparencyElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoTransparencyElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SoUnitsElement.Plo@am__quote@

@@ -13,6 +13,9 @@ RegularSources = \
 	SoGLLinePatternElement.cpp \
 	SoGLLineWidthElement.cpp \
 	SoGLModelMatrixElement.cpp \
+	SoGLMultiTextureCoordinateElement.cpp \
+	SoGLMultiTextureEnabledElement.cpp \
+	SoGLMultiTextureImageElement.cpp \
 	SoGLNormalElement.cpp \
 	SoGLPointSizeElement.cpp \
 	SoGLPolygonOffsetElement.cpp \
