@@ -32,8 +32,6 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-
-#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 
@@ -102,10 +100,6 @@ SoSphere::GLRender(SoGLRenderAction * action)
 
   float complexity = this->getComplexityValue(action);
 
-  const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
-    state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
-  sm->forceSend(FALSE);
-
   if (sendNormals) {
     const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
       state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
@@ -121,13 +115,6 @@ SoSphere::GLRender(SoGLRenderAction * action)
                      (int)(SPHERE_NUM_STACKS * complexity),
                      &mb,
                      flags);
-}
-
-// doc from parent
-SbBool
-SoSphere::willSetShadeModel(void) const
-{
-  return TRUE;
 }
 
 // doc from parent

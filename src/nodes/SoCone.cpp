@@ -39,7 +39,6 @@
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/details/SoConeDetail.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
@@ -214,13 +213,6 @@ SoCone::GLRender(SoGLRenderAction * action)
 
   float complexity = this->getComplexityValue(action);
 
-  const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
-    state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
-  if (!(p & SIDES))
-    sm->forceSend(TRUE); // flatshading
-  else
-    sm->forceSend(FALSE); // smooth
-
   sogl_render_cone(this->bottomRadius.getValue(),
                    this->height.getValue(),
                    (int)(CONE_SIDE_NUMTRIS * complexity),
@@ -230,13 +222,6 @@ SoCone::GLRender(SoGLRenderAction * action)
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoCone::GLRender", "end");
 #endif // debug
-}
-
-// Doc from parent.
-SbBool
-SoCone::willSetShadeModel(void) const
-{
-  return TRUE;
 }
 
 /*!

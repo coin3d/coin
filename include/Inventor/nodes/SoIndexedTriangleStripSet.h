@@ -49,12 +49,12 @@ public:
 
   virtual void GLRender(SoGLRenderAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
 
 protected:
   virtual ~SoIndexedTriangleStripSet();
 
+  virtual SbBool willSetShadeModel() const;
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
   virtual void generatePrimitives(SoAction * action);
 

@@ -37,7 +37,6 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoGenerate.h>
@@ -166,25 +165,11 @@ SoCylinder::GLRender(SoGLRenderAction * action)
 
   float complexity = this->getComplexityValue(action);
 
-  const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
-    state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
-  if (!(p & SIDES))
-    sm->forceSend(TRUE); // flatshading
-  else
-    sm->forceSend(FALSE); // smooth
-
   sogl_render_cylinder(this->radius.getValue(),
                        this->height.getValue(),
                        (int)(CYL_SIDE_NUMTRIS * complexity),
                        &mb,
                        flags);
-}
-
-// Doc in parent.
-SbBool
-SoCylinder::willSetShadeModel(void) const
-{
-  return TRUE;
 }
 
 /*!

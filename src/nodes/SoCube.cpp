@@ -37,7 +37,6 @@
 #include <Inventor/details/SoCubeDetail.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -114,10 +113,6 @@ SoCube::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
-    state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
-  sm->forceSend(TRUE);
-
   if (sendNormals) {
     const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
       state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
@@ -155,13 +150,6 @@ SoCube::generatePrimitives(SoAction * action)
                       flags,
                       this,
                       action);
-}
-
-// Doc in parent.
-SbBool
-SoCube::willSetShadeModel(void) const
-{
-  return TRUE;
 }
 
 // Doc in parent.

@@ -38,7 +38,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 
@@ -196,18 +195,7 @@ SoMaterialBinding::initClass(void)
 void
 SoMaterialBinding::GLRender(SoGLRenderAction * action)
 {
-  if (!this->value.isIgnored()
-      && !SoOverrideElement::getMaterialBindingOverride(action->getState())) {
-    Binding binding = (Binding)this->value.getValue();
-    SoMaterialBindingElement::set(action->getState(),
-                                  (SoMaterialBindingElement::Binding)binding);
-    SoGLShadeModelElement::setMaterial(action->getState(),
-                                       binding == PER_VERTEX ||
-                                       binding == PER_VERTEX_INDEXED);
-    if (this->isOverride()) {
-      SoOverrideElement::setMaterialBindingOverride(action->getState(), this, TRUE);
-    }
-  }
+  SoMaterialBinding::doAction(action);
 }
 
 // Doc from superclass.

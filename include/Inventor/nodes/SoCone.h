@@ -50,8 +50,6 @@ public:
   SbBool hasPart(SoCone::Part part) const;
 
   virtual void GLRender(SoGLRenderAction * action);
-  virtual SbBool willSetShadeModel() const;
-
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
 

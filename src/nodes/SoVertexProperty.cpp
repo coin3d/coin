@@ -50,7 +50,6 @@
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
 
@@ -159,11 +158,7 @@ SoVertexProperty::~SoVertexProperty()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoVertexProperty class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoVertexProperty::initClass()
 {
@@ -215,7 +210,6 @@ void
 SoVertexProperty::GLRender(SoGLRenderAction * action)
 {
   SoState *state = action->getState();
-  SbBool materialbindoverride = SoOverrideElement::getMaterialBindingOverride(state);
 
   if (SoShapeStyleElement::isScreenDoor(state) &&
       ! this->orderedRGBA.isIgnored() &&
@@ -226,25 +220,11 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
     SoGLPolygonStippleElement::set(state, t >= 1.0f/255.0f);
   }
 
-  if (texCoord.getNum() > 0) {
+  if (this->texCoord.getNum() > 0) {
     SoGLTextureCoordinateElement::setTexGen(state,
                                             this, NULL);
   }
-
   SoVertexProperty::doAction(action);
-  if (this->normal.getNum() && !this->normalBinding.isIgnored()) {
-    Binding binding = (Binding)this->normalBinding.getValue();
-    SoGLShadeModelElement::setNormal(state,
-                                     binding == PER_VERTEX ||
-                                     binding == PER_VERTEX_INDEXED);
-  }
-  if (this->orderedRGBA.getNum() &&
-      !materialbindoverride && !this->materialBinding.isIgnored()) {
-    Binding binding = (Binding) this->materialBinding.getValue();
-    SoGLShadeModelElement::setMaterial(state,
-                                       binding == PER_VERTEX ||
-                                       binding == PER_VERTEX_INDEXED);
-  }
 }
 
 /*!

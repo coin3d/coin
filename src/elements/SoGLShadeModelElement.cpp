@@ -19,17 +19,19 @@
 
 /*!
   \class SoGLShadeModelElement Inventor/elements/SoGLShadeModelElement.h
-  \brief The SoGLShadeModelElement class is for GL optimization only.
+  \brief The SoGLShadeModelElement class is used to control the GL shade model.
 
   It keeps track of the current shade model (flat or smooth) and
-  evaluates lazily when this should be changed. Flat-shaded
+  evaluates lazily when the GL state should be updated. Flat-shaded
   triangles are much faster to draw (at least in SW) than smooth
-  shaded triangles.
+  shaded triangles, and is needed to draw triangle strips with normal
+  or material binding per face. This element will normally be set to
+  smooth shading, but might be changed be some shapes which need flat
+  shading when rendering.  
 */
 
 #include <Inventor/elements/SoGLShadeModelElement.h>
-
-#include <coindefs.h> // COIN_STUB()
+#include <Inventor/misc/SoState.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -40,11 +42,7 @@
 
 SO_ELEMENT_SOURCE(SoGLShadeModelElement);
 
-/*!
-  This static method initializes static data for the
-  SoGLShadeModelElement class.
-*/
-
+// doc from parent
 void
 SoGLShadeModelElement::initClass()
 {
@@ -54,36 +52,30 @@ SoGLShadeModelElement::initClass()
 /*!
   The destructor.
 */
-
 SoGLShadeModelElement::~SoGLShadeModelElement()
 {
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoGLShadeModelElement::init(SoState * state)
 {
   inherited::init(state);
-  this->matPerVertex = FALSE;
-  this->normPerVertex = TRUE;
-  this->glflat = TRUE;
-  this->updategl(FALSE);
+  this->flat = FALSE;
+  this->glflat = TRUE; // force smooth setting
+  this->updategl(this->flat);
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoGLShadeModelElement::push(SoState * state)
 {
   inherited::push(state);
   ((SoGLShadeModelElement*)this->next)->glflat = this->glflat;
-  ((SoGLShadeModelElement*)this->next)->matPerVertex = this->matPerVertex;
-  ((SoGLShadeModelElement*)this->next)->normPerVertex = this->normPerVertex;
+  ((SoGLShadeModelElement*)this->next)->flat = this->flat;
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 void
 SoGLShadeModelElement::pop(SoState * state,
                            const SoElement * prevTopElement)
@@ -92,78 +84,70 @@ SoGLShadeModelElement::pop(SoState * state,
   inherited::pop(state, prevTopElement);
 }
 
-//! FIXME: write doc.
 
+// doc from parent
 SbBool
 SoGLShadeModelElement::matches(const SoElement * /* element */) const
 {
-  COIN_STUB();
+  assert(0 && "should not get here");
   return FALSE;
 }
 
-//! FIXME: write doc.
-
+// doc from parent
 SoElement *
 SoGLShadeModelElement::copyMatchInfo() const
 {
-  COIN_STUB();
+  assert(0 && "should not get here");
   return NULL;
 }
 
-//! FIXME: write doc.
-
+/*!
+  Sets the current shade model.
+*/
 void
-SoGLShadeModelElement::setMaterial(SoState * const state,
-                                   const SbBool perVertex)
+SoGLShadeModelElement::set(SoState * state, const SbBool flat)
 {
-  SoGLShadeModelElement * e = (SoGLShadeModelElement *)
-    inherited::getElement(state, SoGLShadeModelElement::classStackIndex);
-  e->matPerVertex = perVertex;
+  SoGLShadeModelElement * elem = (SoGLShadeModelElement*)
+    state->getElement(classStackIndex);
+  elem->flat = flat;
 }
 
-//! FIXME: write doc.
-
-void
-SoGLShadeModelElement::setNormal(SoState * const state,
-                                 const SbBool perVertex)
+/*!
+  Returns current element. Will not cause cache dependencies.
+*/
+const SoGLShadeModelElement * 
+SoGLShadeModelElement::getInstance(SoState * state)
 {
-  SoGLShadeModelElement * e = (SoGLShadeModelElement *)
-    inherited::getElement(state, SoGLShadeModelElement::classStackIndex);
-  e->normPerVertex = perVertex;
+  return (const SoGLShadeModelElement*)
+    state->getConstElement(classStackIndex);
 }
 
-//! FIXME: write doc.
-
+/*!
+  Updates the GL state.
+*/
 void
-SoGLShadeModelElement::print(FILE *) const
+SoGLShadeModelElement::evaluate(void) const
 {
+  ((SoGLShadeModelElement*)this)->updategl(this->flat);
 }
 
-//! FIXME: write doc.
-
-void
-SoGLShadeModelElement::evaluate() const
-{
-  SbBool flat = !(this->matPerVertex || this->normPerVertex);
-  ((SoGLShadeModelElement*)this)->updategl(flat);
-}
-
-//! FIXME: write doc.
-
+/*!
+  Force GL shading model to flat or smooth. This will not change the
+  state of the element.
+*/
 void
 SoGLShadeModelElement::forceSend(const SbBool flat) const
 {
   ((SoGLShadeModelElement*)this)->updategl(flat);
 }
 
-//! FIXME: write doc.
-
+// set correct GL state
 void
-SoGLShadeModelElement::updategl(const SbBool flat)
+SoGLShadeModelElement::updategl(const SbBool flatshade)
 {
-  if (flat != this->glflat) {
-    this->glflat = flat;
-    if (flat) glShadeModel(GL_FLAT);
+  if (flatshade != this->glflat) {
+    this->glflat = flatshade;
+    if (flatshade) glShadeModel(GL_FLAT);
     else glShadeModel(GL_SMOOTH);
   }
 }

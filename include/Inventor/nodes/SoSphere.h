@@ -36,7 +36,6 @@ public:
 
   SoSFFloat radius;
 
-  virtual SbBool willSetShadeModel() const;
   virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual void GLRender(SoGLRenderAction * action);
   virtual void rayPick(SoRayPickAction * action);

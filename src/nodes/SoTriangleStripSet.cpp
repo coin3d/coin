@@ -41,6 +41,7 @@
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
+#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -57,29 +58,31 @@
 
 /*!
   \enum SoTriangleStripSet::Binding
-  FIXME: write documentation for enum
+  Used internally to specify material and normal binding.
 */
 /*!
   \var SoTriangleStripSet::Binding SoTriangleStripSet::OVERALL
-  FIXME: write documentation for enum definition
+  Specifies Overall material or normal binding.
 */
 /*!
   \var SoTriangleStripSet::Binding SoTriangleStripSet::PER_STRIP
-  FIXME: write documentation for enum definition
+  Specifies one normal or color per triangle strip.
 */
 /*!
   \var SoTriangleStripSet::Binding SoTriangleStripSet::PER_FACE
-  FIXME: write documentation for enum definition
+  Specifies one normal or color per triangle.
 */
 /*!
   \var SoTriangleStripSet::Binding SoTriangleStripSet::PER_VERTEX
-  FIXME: write documentation for enum definition
+  Specifies one normal or color per vertex.
 */
 
 
-/*!
-  \var SoMFInt32 SoTriangleStripSet::numVertices
-  FIXME: write documentation for field
+/*!  
+  \var SoMFInt32 SoTriangleStripSet::numVertices Specifies the
+  number of vertices in each triangle strip. The vertices are fetched
+  from the current coordinate node, or from the vertexProperty field
+  if present.  
 */
 
 // *************************************************************************
@@ -102,11 +105,7 @@ SoTriangleStripSet::~SoTriangleStripSet()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoTriangleStripSet class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoTriangleStripSet::initClass(void)
 {
@@ -114,9 +113,7 @@ SoTriangleStripSet::initClass(void)
 }
 
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTriangleStripSet::computeBBox(SoAction * action,
                                 SbBox3f & box, SbVec3f & center)
@@ -202,9 +199,7 @@ SoTriangleStripSet::findNormalBinding(SoState * const state) const
   return binding;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 {
@@ -235,7 +230,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 
   const SoGLCoordinateElement * coords = (SoGLCoordinateElement *)tmp;
 
-  SoTextureCoordinateBundle tb(action, TRUE, FALSE); //FIXME
+  SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
   Binding mbind = this->findMaterialBinding(action->getState());
@@ -245,12 +240,14 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
 
   if (needNormals && normals == NULL) {
     normals = getNormalCache()->getNormals();
-    if (normals == NULL) {
-      // FIXME: temporary until normals can be generated per face
-      //        and per strip
-      nbind = OVERALL;
-    }
+    assert(normals);
   }
+
+  const SoGLShadeModelElement * sm = SoGLShadeModelElement::getInstance(state);
+  if ((nbind == PER_FACE) || (mbind == PER_FACE))
+    sm->forceSend(TRUE);
+  else
+    sm->evaluate();
 
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
@@ -308,9 +305,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
     state->pop();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 SbBool
 SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 {
@@ -394,9 +389,14 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
+SbBool 
+SoTriangleStripSet::willSetShadeModel(void) const
+{
+  return TRUE;
+}
+
+// doc from parent
 SbBool
 SoTriangleStripSet::generateDefaultNormals(SoState * /* state */,
                                            SoNormalBundle * /* nb */)
@@ -405,9 +405,7 @@ SoTriangleStripSet::generateDefaultNormals(SoState * /* state */,
   return FALSE;
 }
 
-/*!
-  FIXME: write doc
- */
+// doc from parent
 void
 SoTriangleStripSet::generatePrimitives(SoAction *action)
 {
@@ -434,11 +432,7 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
 
   if (needNormals && normals == NULL) {
     normals = this->getNormalCache()->getNormals();
-    if (normals == NULL) {
-      // FIXME: temporary until normals can be generated per face
-      //        and per strip
-      nbind = OVERALL;
-    }
+    assert(normals);
   }
 
   int32_t idx = startIndex.getValue();

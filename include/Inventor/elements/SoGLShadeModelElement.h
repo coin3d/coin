@@ -40,22 +40,18 @@ public:
 
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo() const;
-
-  static void setMaterial(SoState * const state,
-                          const SbBool perVertex);
-  static void setNormal(SoState * const state,
-                        const SbBool perVertex);
-  virtual void print(FILE * file) const;
-
-  void evaluate() const;
+  
+  static void set(SoState * state, const SbBool flat);
+  
+  void evaluate(void) const;
   void forceSend(const SbBool flat) const;
-
+  
+  static const SoGLShadeModelElement * getInstance(SoState * state);
+  
 private:
-  SbBool matPerVertex;
-  SbBool normPerVertex;
+  SbBool flat;
   SbBool glflat;
-
-  void updategl(const SbBool flat);
+  void updategl(const SbBool flatshade);
 };
 
 #endif // !COIN_SOGLSHADEMODELELEMENT_H

@@ -42,8 +42,8 @@ protected: \
   static const SoFieldData ** getFieldDataPtr(void); \
   virtual const SoFieldData * getFieldData(void) const; \
 private: \
-  static const SoFieldData ** parentclassfielddata; \
-  static SoFieldData * classfielddata; \
+  static const SoFieldData ** parentFieldData; \
+  static SoFieldData * fieldData; \
   /* Counts number of instances of subclasses aswell as "direct" */ \
   /* instances from non-abstract classes. */ \
   static unsigned int classinstances
@@ -72,19 +72,19 @@ SoType _class_::classTypeId
 PRIVATE_NODE_TYPESYSTEM_SOURCE(_class_); \
  \
 unsigned int _class_::classinstances = 0; \
-const SoFieldData ** _class_::parentclassfielddata = NULL; \
-SoFieldData * _class_::classfielddata = NULL; \
+const SoFieldData ** _class_::parentFieldData = NULL; \
+SoFieldData * _class_::fieldData = NULL; \
  \
 const SoFieldData ** \
 _class_::getFieldDataPtr(void) \
 { \
-  return (const SoFieldData **)(&_class_::classfielddata); \
+  return (const SoFieldData **)(&_class_::fieldData); \
 } \
  \
 const SoFieldData * \
 _class_::getFieldData(void) const \
 { \
-  return _class_::classfielddata; \
+  return _class_::fieldData; \
 }
 
 
@@ -114,10 +114,10 @@ _class_::createInstance(void) \
     /* Catch attempts to use a node class which has not been initialized. */ \
     assert(_class_::classTypeId != SoType::badType()); \
     /* Initialize a fielddata container for the class only once. */ \
-    if (!_class_::classfielddata) { \
-      _class_::classfielddata = \
-        new SoFieldData(_class_::parentclassfielddata ? \
-                        *_class_::parentclassfielddata : NULL); \
+    if (!_class_::fieldData) { \
+      _class_::fieldData = \
+        new SoFieldData(_class_::parentFieldData ? \
+                        *_class_::parentFieldData : NULL); \
     } \
     /* Extension classes from the application programmers should not be \
        considered native. This is important to get the export code to do \
@@ -142,7 +142,7 @@ _class_::createInstance(void) \
                          SoNode::nextActionMethodIndex++); \
  \
     /* Store parent's fielddata pointer for later use in the constructor. */ \
-    _class_::parentclassfielddata = _parentclass_::getFieldDataPtr(); \
+    _class_::parentFieldData = _parentclass_::getFieldDataPtr(); \
   } while (0)
 
 
@@ -170,7 +170,7 @@ _class_::createInstance(void) \
     this->_field_.setValue _defaultval_;\
     this->_field_.setContainer(this); \
     if (SO_NODE_IS_FIRST_INSTANCE()) { \
-      classfielddata->addField(this, SO__QUOTE(_field_), &this->_field_);\
+      fieldData->addField(this, SO__QUOTE(_field_), &this->_field_);\
     } \
   } while (0)
 
@@ -179,8 +179,8 @@ _class_::createInstance(void) \
 #define SO_NODE_DEFINE_ENUM_VALUE(_enumname_, _enumval_) \
   do { \
     if (SO_NODE_IS_FIRST_INSTANCE()) \
-      classfielddata->addEnumValue(SO__QUOTE(_enumname_), \
-                                   SO__QUOTE(_enumval_), _enumval_); \
+      fieldData->addEnumValue(SO__QUOTE(_enumname_), \
+                              SO__QUOTE(_enumval_), _enumval_); \
   } while (0)
 
 

@@ -832,17 +832,17 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
       if (ra->isBetweenPlanes(intersection)) {
         SoPickedPoint * pp = ra->addIntersection(intersection);
         if (pp) {
-          pp->setDetail(this->createTriangleDetail(ra, v1, v2, v3, pp), this);          
+          pp->setDetail(this->createTriangleDetail(ra, v1, v2, v3, pp), this);
           // calculate normal at picked point
-          SbVec3f n = 
-            v1->getNormal() * barycentric[0] + 
-            v2->getNormal() * barycentric[1] + 
+          SbVec3f n =
+            v1->getNormal() * barycentric[0] +
+            v2->getNormal() * barycentric[1] +
             v3->getNormal() * barycentric[2];
           n.normalize();
           pp->setObjectNormal(n);
-          
+
           // calculate texture coordinate at picked point
-          SbVec4f tc = 
+          SbVec4f tc =
             v1->getTextureCoords() * barycentric[0] +
             v2->getTextureCoords() * barycentric[1] +
             v3->getTextureCoords() * barycentric[2];
@@ -920,20 +920,20 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
             len1 /= total;
             len2 /= total;
           }
-          SbVec3f n = 
+          SbVec3f n =
             v1->getNormal() * len1 +
             v2->getNormal() * len2;
           n.normalize();
           pp->setObjectNormal(n);
-          
-          SbVec4f tc = 
+
+          SbVec4f tc =
             v1->getTextureCoords() * len1 +
             v2->getTextureCoords() * len2;
           pp->setObjectTextureCoords(tc);
-          pp->setMaterialIndex(len1 >= len2 ? 
+          pp->setMaterialIndex(len1 >= len2 ?
                                v1->getMaterialIndex() :
                                v2->getMaterialIndex());
-          
+
         }
       }
     }
@@ -1165,7 +1165,7 @@ SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * action)
 //
 // used when pickStyle == BOUNDING_BOX
 //
-void 
+void
 SoShape::rayPickBoundingBox(SoRayPickAction * action)
 {
   SbBox3f box;
@@ -1180,4 +1180,3 @@ SoShape::rayPickBoundingBox(SoRayPickAction * action)
     }
   }
 }
-

@@ -47,6 +47,7 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
+#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
@@ -242,6 +243,13 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
     nbind = PER_VERTEX_INDEXED;
   }
 
+  const SoGLShadeModelElement * sm = SoGLShadeModelElement::getInstance(state);
+  if ((nbind == PER_TRIANGLE) || (nbind == PER_TRIANGLE_INDEXED) ||
+      (mbind == PER_TRIANGLE) || (mbind == PER_TRIANGLE_INDEXED))
+    sm->forceSend(TRUE);
+  else
+    sm->evaluate();
+
   SoMaterialBundle mb(action);
 
   mb.sendFirst(); // make sure we have the correct material
@@ -382,6 +390,13 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
 {
   COIN_STUB();
   return FALSE;
+}
+
+// doc from parent
+SbBool 
+SoIndexedTriangleStripSet::willSetShadeModel(void) const
+{
+  return TRUE;
 }
 
 /*!

@@ -52,9 +52,7 @@ public:
 
   virtual void rayPick(SoRayPickAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-
   virtual void GLRender(SoGLRenderAction * action);
-  virtual SbBool willSetShadeModel(void) const;
 
 protected:
   virtual ~SoCylinder();

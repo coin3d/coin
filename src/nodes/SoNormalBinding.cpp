@@ -32,7 +32,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 
 /*!
@@ -103,12 +102,6 @@ void
 SoNormalBinding::GLRender(SoGLRenderAction * action)
 {
   SoNormalBinding::doAction(action);
-  if (!this->value.isIgnored()) {
-    Binding binding = (Binding)this->value.getValue();
-    SoGLShadeModelElement::setNormal(action->getState(),
-                                     binding == PER_VERTEX ||
-                                     binding == PER_VERTEX_INDEXED);
-  }
 }
 
 // Doc from superclass.
