@@ -1,5 +1,5 @@
-#ifndef CC_THREADCOMMON_H
-#define CC_THREADCOMMON_H
+#ifndef CC_WORKER_H
+#define CC_WORKER_H
 
 /**************************************************************************\
  *
@@ -23,6 +23,7 @@
 \**************************************************************************/
 
 #include <Inventor/C/basic.h>  /* COIN_DLL_API */
+#include <Inventor/C/threads/common.h>  /* cc_worker */
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,45 +31,25 @@ extern "C" {
 
 /* ********************************************************************** */
 
-  typedef struct cc_worker cc_worker; 
-  typedef struct cc_thread cc_thread;
-  typedef struct cc_mutex cc_mutex;
-  typedef struct cc_rwmutex cc_rwmutex;
-  typedef struct cc_condvar cc_condvar;
-  typedef struct cc_barrier cc_barrier;
-  typedef struct cc_storage cc_storage;
+  COIN_DLL_API cc_worker * cc_worker_construct(void);
+  COIN_DLL_API void cc_worker_destruct(cc_worker * worker);
 
-  /* used by rwmutex - read_precedence is default */
-  enum cc_precedence {
-    CC_READ_PRECEDENCE,
-    CC_WRITE_PRECEDENCE
-  };
+  COIN_DLL_API SbBool cc_worker_start(cc_worker * worker, 
+                                      void (*workfunc)(void *), void * closure);
+  COIN_DLL_API SbBool cc_worker_is_busy(cc_worker * worker);
+  COIN_DLL_API void cc_worker_wait(cc_worker * worker);
+  COIN_DLL_API void cc_worker_set_idle_callback(cc_worker * worker, 
+                                                void (*cb)(cc_worker *, void *), void * closure);
 
-  enum cc_threads_implementation {
-    CC_NO_THREADS = -1,
-    CC_PTHREAD    = 0,
-    CC_W32THREAD
-  };
-
-  enum cc_retval {
-    CC_ERROR = 0,
-    CC_OK = 1,
-    CC_TIMEOUT,
-    CC_BUSY
-  };
-
-  typedef enum cc_precedence cc_precedence;
-  typedef enum cc_threads_implementation cc_threads_implementation;
-  typedef enum cc_retval cc_retval;
-
-  /* ********************************************************************** */
-
-  COIN_DLL_API int cc_thread_implementation(void);
-
-  /* ********************************************************************** */
+/* ********************************************************************** */
 
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */
 
-#endif /* ! CC_THREADCOMMON_H */
+#endif /* ! CC_THREAD_H */
+
+
+
+
+

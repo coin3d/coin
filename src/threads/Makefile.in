@@ -137,7 +137,8 @@ RegularSources = \
 	mutex.c \
 	rwmutex.c \
 	storage.c \
-	condvar.c
+	condvar.c \
+	worker.c
 
 #	barrier.c
 LinkHackSources = \
@@ -202,7 +203,7 @@ threads_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	thread.$(OBJEXT) mutex.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	rwmutex.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	storage.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	condvar.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	condvar.$(OBJEXT) worker.$(OBJEXT)
 threads_lst_OBJECTS = $(am_threads_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -211,7 +212,7 @@ libthreads_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libthreads_la_OBJECTS = all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libthreads_la_OBJECTS = common.lo \
 @HACKING_COMPACT_BUILD_FALSE@	thread.lo mutex.lo rwmutex.lo \
-@HACKING_COMPACT_BUILD_FALSE@	storage.lo condvar.lo
+@HACKING_COMPACT_BUILD_FALSE@	storage.lo condvar.lo worker.lo
 libthreads_la_OBJECTS = $(am_libthreads_la_OBJECTS)
 libthreads@SUFFIX@LINKHACK_la_LDFLAGS =
 libthreads@SUFFIX@LINKHACK_la_LIBADD =
@@ -219,7 +220,8 @@ libthreads@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@	all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@	common.lo thread.lo mutex.lo \
-@HACKING_COMPACT_BUILD_FALSE@	rwmutex.lo storage.lo condvar.lo
+@HACKING_COMPACT_BUILD_FALSE@	rwmutex.lo storage.lo condvar.lo \
+@HACKING_COMPACT_BUILD_FALSE@	worker.lo
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -235,6 +237,7 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/rwmutex.Plo $(DEPDIR)/rwmutex.Po \
 @AMDEP_TRUE@	$(DEPDIR)/storage.Plo $(DEPDIR)/storage.Po \
 @AMDEP_TRUE@	$(DEPDIR)/thread.Plo $(DEPDIR)/thread.Po \
+@AMDEP_TRUE@	$(DEPDIR)/worker.Plo $(DEPDIR)/worker.Po \
 @AMDEP_TRUE@	$(DEPDIR)/wrappers.Plo $(DEPDIR)/wrappers.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -334,6 +337,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/storage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/thread.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/thread.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/worker.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/worker.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/wrappers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/wrappers.Po@am__quote@
 
