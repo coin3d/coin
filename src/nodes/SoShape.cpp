@@ -941,10 +941,6 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
     SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
     ga->incNumLines();
   }
-  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {
-    SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
-    ga->incNumPoints();
-  }
   else {
     assert(0 && "FIXME: not implemented");
   }
@@ -974,6 +970,10 @@ SoShape::invokePointCallbacks(SoAction * const action,
   else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
     SoCallbackAction *ca = (SoCallbackAction*) action;
     ca->invokePointCallbacks(this, v);
+  }
+  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {
+    SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
+    ga->incNumPoints();
   }
   else {
     assert(0 && "FIXME: not implemented");
