@@ -583,7 +583,7 @@ void
 SoInput::setStringArray(const char * strings[])
 {
   size_t bufsize = 0;
-  int i, j;
+  int i;
   for (i = bufsize = 0; strings[i] != NULL; i++ )
     bufsize += strlen(strings[i]);
   char * buf = new char [bufsize + 1];

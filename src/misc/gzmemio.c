@@ -133,7 +133,6 @@ static int cc_gzm_ferror(cc_gzm_file * file);
 
 void * cc_gzm_open(const uint8_t * buffer, uint32_t len)
 {
-  int err;
   int level = Z_DEFAULT_COMPRESSION; /* compression level */
   int strategy = Z_DEFAULT_STRATEGY; /* compression strategy */
   cc_gzm_stream * s;
