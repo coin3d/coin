@@ -573,6 +573,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformManip.h \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoTransformerManip.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoAudioDevice.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/misc/SoGlyph.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoBase.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoChildList.h \
                          @path_tag@@coin_src_dir@/include/Inventor/misc/SoNotification.h \
@@ -1001,6 +1002,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/manips/SoTransformerManip.cpp \
                          @path_tag@@coin_src_dir@/src/manips/commoncode.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoAudioDevice.cpp \
+                         @path_tag@@coin_src_dir@/src/misc/SoGlyph.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoBase.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoChildList.cpp \
                          @path_tag@@coin_src_dir@/src/misc/SoDB.cpp \
