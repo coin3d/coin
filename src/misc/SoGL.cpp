@@ -73,8 +73,12 @@ const cc_glglue *
 sogl_glue_instance(const SoState * state)
 {
   SoGLRenderAction * action = (SoGLRenderAction *)state->getAction();
+  // disabled until we figure out why this doesn't work on some
+  // Linux systems (gcc 3.2 systems, it seems). pederb, 2002-11-24
+#if 0
   assert(action->isOfType(SoGLRenderAction::getClassTypeId()) &&
          "must have state from SoGLRenderAction to get hold of GL wrapper");
+#endif // disabled
   return cc_glglue_instance(action->getCacheContext());
 }
 
