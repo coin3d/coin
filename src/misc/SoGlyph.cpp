@@ -65,14 +65,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef DOXYGEN_SKIP_THIS
-
+// FIXME: when is this defined? Looks bogus -- default 2D and 3D fonts
+// should always be present. 20030526 mortene.
 #if !defined(COIN_NO_DEFAULT_3DFONT)
 #include "../misc/defaultfonts.h"
 #endif // COIN_NO_DEFAULT_3DFONT
-
-#undef THIS
-#define THIS this->pimpl
 
 class SoGlyphP {
 public:
@@ -96,30 +93,31 @@ public:
     unsigned int didcalcbbox : 1;
   } flags;
 
-  static SoGlyph *createSystemGlyph(const char character, const SbName & font);
-  static SoGlyph *createSystemGlyph(const unsigned int character, SoState * state) {return NULL;};
+  static SoGlyph * createSystemGlyph(const char character, const SbName & font);
+  static SoGlyph * createSystemGlyph(const unsigned int character, SoState * state) {return NULL;};
   
   // static SoGlyph *getGlyph(const SbName &font, const SbName &style, const SbVec2s &size, const float angle);
 };
 
-#endif  // Doxygen
+#undef PRIVATE
+#define PRIVATE(p) ((p)->pimpl)
 
 /*!
   Constructor.
 */
-SoGlyph::SoGlyph()
+SoGlyph::SoGlyph(void)
 {
-  THIS = new SoGlyphP();
-  THIS->refcount = 0;
-  THIS->flags.didalloccoords = 0;
-  THIS->flags.didallocfaceidx  = 0;
-  THIS->flags.didallocedgeidx = 0;
-  THIS->flags.didcalcbbox = 0;
-  THIS->coords = NULL;
-  THIS->faceidx = NULL;
-  THIS->edgeidx = NULL;
-  THIS->ymin = 0.0f;
-  THIS->ymax = 0.0f;
+  PRIVATE(this) = new SoGlyphP();
+  PRIVATE(this)->refcount = 0;
+  PRIVATE(this)->flags.didalloccoords = 0;
+  PRIVATE(this)->flags.didallocfaceidx  = 0;
+  PRIVATE(this)->flags.didallocedgeidx = 0;
+  PRIVATE(this)->flags.didcalcbbox = 0;
+  PRIVATE(this)->coords = NULL;
+  PRIVATE(this)->faceidx = NULL;
+  PRIVATE(this)->edgeidx = NULL;
+  PRIVATE(this)->ymin = 0.0f;
+  PRIVATE(this)->ymax = 0.0f;
 }
 
 /*!
@@ -127,10 +125,10 @@ SoGlyph::SoGlyph()
 */
 SoGlyph::~SoGlyph()
 {
-  if (THIS->flags.didalloccoords) delete [] THIS->coords;
-  if (THIS->flags.didallocfaceidx) delete [] THIS->faceidx;
-  if (THIS->flags.didallocedgeidx) delete [] THIS->edgeidx;
-  delete THIS;
+  if (PRIVATE(this)->flags.didalloccoords) delete [] PRIVATE(this)->coords;
+  if (PRIVATE(this)->flags.didallocfaceidx) delete [] PRIVATE(this)->faceidx;
+  if (PRIVATE(this)->flags.didallocedgeidx) delete [] PRIVATE(this)->edgeidx;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -138,7 +136,7 @@ SoGlyph::~SoGlyph()
   free memory used by this glyph when it is no longer used by any node.
 */
 void
-SoGlyph::unref() const
+SoGlyph::unref(void) const
 {
   SoGlyph::unrefGlyph((SoGlyph*)this);
 }
@@ -149,7 +147,7 @@ SoGlyph::unref() const
 const SbVec2f *
 SoGlyph::getCoords(void) const
 {
-  return THIS->coords;
+  return PRIVATE(this)->coords;
 }
 
 /*!
@@ -158,7 +156,7 @@ SoGlyph::getCoords(void) const
 const int *
 SoGlyph::getFaceIndices(void) const
 {
-  return THIS->faceidx;
+  return PRIVATE(this)->faceidx;
 }
 
 /*!
@@ -167,7 +165,7 @@ SoGlyph::getFaceIndices(void) const
 const int *
 SoGlyph::getEdgeIndices(void) const
 {
-  return THIS->edgeidx;
+  return PRIVATE(this)->edgeidx;
 }
 
 /*!
@@ -180,12 +178,12 @@ SoGlyph::getNextCWEdge(const int edgeidx) const
   int idx = edgeidx * 2;
   // test for common case
   if (edgeidx > 0) {
-    if (THIS->edgeidx[idx] == THIS->edgeidx[idx-1])
-      return &THIS->edgeidx[idx-2];
+    if (PRIVATE(this)->edgeidx[idx] == PRIVATE(this)->edgeidx[idx-1])
+      return &PRIVATE(this)->edgeidx[idx-2];
   }
   // do a linear search
-  int findidx = THIS->edgeidx[idx];
-  int * ptr = THIS->edgeidx;
+  int findidx = PRIVATE(this)->edgeidx[idx];
+  int * ptr = PRIVATE(this)->edgeidx;
   while (*ptr >= 0) {
     if (ptr[1] == findidx) return ptr;
     ptr += 2;
@@ -202,11 +200,11 @@ SoGlyph::getNextCCWEdge(const int edgeidx) const
 {
   int idx = edgeidx * 2;
   // test for common case
-  if (THIS->edgeidx[idx+1] == THIS->edgeidx[idx+2])
-    return &THIS->edgeidx[idx+2];
+  if (PRIVATE(this)->edgeidx[idx+1] == PRIVATE(this)->edgeidx[idx+2])
+    return &PRIVATE(this)->edgeidx[idx+2];
   // do a linear search
-  int findidx = THIS->edgeidx[idx+1];
-  int * ptr = THIS->edgeidx;
+  int findidx = PRIVATE(this)->edgeidx[idx+1];
+  int * ptr = PRIVATE(this)->edgeidx;
   while (*ptr >= 0) {
     if (*ptr == findidx) return ptr;
     ptr += 2;
@@ -232,17 +230,17 @@ SoGlyph::getBoundingBox(void) const
 {
   // this method needs to be const, so cast away constness
   SoGlyph * thisp = (SoGlyph*) this;
-  if (!THIS->flags.didcalcbbox) {
-    thisp->pimpl->bbox.makeEmpty();
-    int *ptr = THIS->edgeidx;
+  if (!PRIVATE(this)->flags.didcalcbbox) {
+    PRIVATE(thisp)->bbox.makeEmpty();
+    int *ptr = PRIVATE(this)->edgeidx;
     int idx = *ptr++;
     while (idx >= 0) {
-      thisp->pimpl->bbox.extendBy(THIS->coords[idx]);
+      PRIVATE(thisp)->bbox.extendBy(PRIVATE(this)->coords[idx]);
       idx = *ptr++;
     }
-    thisp->pimpl->flags.didcalcbbox = 1;
+    PRIVATE(thisp)->flags.didcalcbbox = 1;
   }
-  return THIS->bbox;
+  return PRIVATE(this)->bbox;
 }
 
 /*!
@@ -253,15 +251,15 @@ SoGlyph::getBoundingBox(void) const
 void
 SoGlyph::setCoords(SbVec2f *coords, int numcoords)
 {
-  if (THIS->flags.didalloccoords) delete [] THIS->coords;
+  if (PRIVATE(this)->flags.didalloccoords) delete [] PRIVATE(this)->coords;
   if (numcoords > 0) {
-    THIS->coords = new SbVec2f[numcoords];
-    memcpy(THIS->coords, coords, numcoords*sizeof(SbVec2f));
-    THIS->flags.didalloccoords = 1;
+    PRIVATE(this)->coords = new SbVec2f[numcoords];
+    memcpy(PRIVATE(this)->coords, coords, numcoords*sizeof(SbVec2f));
+    PRIVATE(this)->flags.didalloccoords = 1;
   }
   else {
-    THIS->coords = coords;
-    THIS->flags.didalloccoords = 0;
+    PRIVATE(this)->coords = coords;
+    PRIVATE(this)->flags.didalloccoords = 0;
   }
 }
 
@@ -273,15 +271,15 @@ SoGlyph::setCoords(SbVec2f *coords, int numcoords)
 void
 SoGlyph::setFaceIndices(int *indices, int numindices)
 {
-  if (THIS->flags.didallocfaceidx) delete [] THIS->faceidx;
+  if (PRIVATE(this)->flags.didallocfaceidx) delete [] PRIVATE(this)->faceidx;
   if (numindices > 0) {
-    THIS->faceidx = new int[numindices];
-    memcpy(THIS->faceidx, indices, numindices*sizeof(int));
-    THIS->flags.didallocfaceidx = 1;
+    PRIVATE(this)->faceidx = new int[numindices];
+    memcpy(PRIVATE(this)->faceidx, indices, numindices*sizeof(int));
+    PRIVATE(this)->flags.didallocfaceidx = 1;
   }
   else {
-    THIS->faceidx = indices;
-    THIS->flags.didallocfaceidx = 0;
+    PRIVATE(this)->faceidx = indices;
+    PRIVATE(this)->flags.didallocfaceidx = 0;
   }
 }
 
@@ -293,15 +291,15 @@ SoGlyph::setFaceIndices(int *indices, int numindices)
 void
 SoGlyph::setEdgeIndices(int *indices, int numindices)
 {
-  if (THIS->flags.didallocedgeidx) delete [] THIS->edgeidx;
+  if (PRIVATE(this)->flags.didallocedgeidx) delete [] PRIVATE(this)->edgeidx;
   if (numindices > 0) {
-    THIS->edgeidx = new int[numindices];
-    memcpy(THIS->edgeidx, indices, numindices*sizeof(int));
-    THIS->flags.didallocedgeidx = 1;
+    PRIVATE(this)->edgeidx = new int[numindices];
+    memcpy(PRIVATE(this)->edgeidx, indices, numindices*sizeof(int));
+    PRIVATE(this)->flags.didallocedgeidx = 1;
   }
   else {
-    THIS->edgeidx = indices;
-    THIS->flags.didallocedgeidx = 0;
+    PRIVATE(this)->edgeidx = indices;
+    PRIVATE(this)->flags.didallocedgeidx = 0;
   }
 }
 
@@ -357,7 +355,8 @@ void SoGlyph_cleanup(void)
 }
 
 /*!
-  Returns a character of the specified font, suitable for polygonal rendering.
+  Returns a character of the specified font, suitable for polygonal
+  rendering.
 */
 const SoGlyph *
 SoGlyph::getGlyph(const char character, const SbName & font)
@@ -387,7 +386,7 @@ SoGlyph::getGlyph(const char character, const SbName & font)
   }
   if (i < n) {
     SoGlyph *glyph = (*activeGlyphs)[i].glyph;
-    glyph->pimpl->refcount++;
+    PRIVATE(glyph)->refcount++;
     CC_MUTEX_UNLOCK(SoGlyph_mutex);
     return glyph;
   }
@@ -411,8 +410,8 @@ SoGlyph::getGlyph(const char character, const SbName & font)
       glyph->setCoords(NULL);
       glyph->setFaceIndices(spaceidx);
       glyph->setEdgeIndices(spaceidx);
-      glyph->pimpl->bbox.setBounds(SbVec2f(0.0f, 0.0f), SbVec2f(0.2f, 0.0f));
-      glyph->pimpl->flags.didcalcbbox = 1;
+      PRIVATE(glyph)->bbox.setBounds(SbVec2f(0.0f, 0.0f), SbVec2f(0.2f, 0.0f));
+      PRIVATE(glyph)->flags.didcalcbbox = 1;
     }
     else {
       const int idx = character-33;
@@ -424,7 +423,7 @@ SoGlyph::getGlyph(const char character, const SbName & font)
   }
   // Use impossible font size to avoid mixing polygonal & bitmap glyphs.
   coin_glyph_info info(character, -1.0, font, glyph, 0.0);
-  glyph->pimpl->refcount++;
+  PRIVATE(glyph)->refcount++;
   activeGlyphs->append(info);
   CC_MUTEX_UNLOCK(SoGlyph_mutex);
   return glyph;
@@ -436,9 +435,9 @@ SoGlyph::unrefGlyph(SoGlyph *glyph)
 {
   CC_MUTEX_LOCK(SoGlyph_mutex);
   assert(activeGlyphs);
-  assert(glyph->pimpl->refcount > 0);
-  glyph->pimpl->refcount--;
-  if (glyph->pimpl->refcount == 0) {
+  assert(PRIVATE(glyph)->refcount > 0);
+  PRIVATE(glyph)->refcount--;
+  if (PRIVATE(glyph)->refcount == 0) {
     int i, n = activeGlyphs->getLength();
     for (i = 0; i < n; i++) {
       if ((*activeGlyphs)[i].glyph == glyph) break;
@@ -451,8 +450,9 @@ SoGlyph::unrefGlyph(SoGlyph *glyph)
 }
 
 /*!
-  Returns a character of the specified font, suitable for bitmap rendering.
-  The size parameter overrides state's SoFontSizeElement (if != SbVec2s(0,0))
+  Returns a character of the specified font, suitable for bitmap
+  rendering.  The size parameter overrides state's SoFontSizeElement
+  (if != SbVec2s(0,0))
 */
 const SoGlyph *
 SoGlyph::getGlyph(SoState * state,
@@ -464,15 +464,12 @@ SoGlyph::getGlyph(SoState * state,
 
   SbName state_name = SoFontNameElement::get(state);
   float state_size = SoFontSizeElement::get(state);
-  if (!state_name || state_name == SbName("")) {
+  if (state_name == SbName("")) {
     state_name = SbName("defaultFont");
     state_size = 12.0;
   }
-  SbVec2s fontsize;
-  if (size == SbVec2s(0,0))
-    fontsize = SbVec2s((short)state_size, (short)state_size);
-  else
-    fontsize = size;
+  SbVec2s fontsize((short)state_size, (short)state_size);
+  if (size != SbVec2s(0,0)) { fontsize = size; }
   
   // Similar code in start of getGlyph(..., fontname) - keep in sync.
   if (SoGlyph_mutex == NULL) {
@@ -492,14 +489,14 @@ SoGlyph::getGlyph(SoState * state,
   }
   if (i < n) {
     SoGlyph *glyph = (*activeGlyphs)[i].glyph;
-    glyph->pimpl->refcount++;
+    PRIVATE(glyph)->refcount++;
     CC_MUTEX_UNLOCK(SoGlyph_mutex);
     return glyph;
   }
 
   // FIXME: use font style in addition to font name. preng 2003-03-03
   SbString fontname = state_name.getString();
-  const int font = SoFontLib::getFont( fontname, fontsize);
+  const int font = SoFontLib::getFont(fontname, fontsize);
   // Should _always_ be able to get hold of a font, as we have an
   // embedded default font to use if nothing is found in the
   // environment.  -mortene.
@@ -513,13 +510,13 @@ SoGlyph::getGlyph(SoState * state,
   assert(glyphidx >= 0);
 
   SoGlyph * g = new SoGlyph();
-  g->pimpl->fontidx = font;
-  g->pimpl->glyphidx = glyphidx;
-  g->pimpl->size = fontsize;
-  g->pimpl->angle = angle;
-  g->pimpl->character = character;
+  PRIVATE(g)->fontidx = font;
+  PRIVATE(g)->glyphidx = glyphidx;
+  PRIVATE(g)->size = fontsize;
+  PRIVATE(g)->angle = angle;
+  PRIVATE(g)->character = character;
   coin_glyph_info info(character, fontsize[0], state_name, g, angle);
-  g->pimpl->refcount++;
+  PRIVATE(g)->refcount++;
   activeGlyphs->append(info);
 
   CC_MUTEX_UNLOCK(SoGlyph_mutex);
@@ -530,8 +527,8 @@ SoGlyph::getGlyph(SoState * state,
 SbVec2s
 SoGlyph::getAdvance(void) const
 {
-  if (this->pimpl->fontidx >= 0 && this->pimpl->glyphidx >= 0) {
-    return SoFontLib::getAdvance(this->pimpl->fontidx, this->pimpl->glyphidx);
+  if (PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0) {
+    return SoFontLib::getAdvance(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx);
   }
   return SbVec2s(0,0);
 }
@@ -540,9 +537,9 @@ SoGlyph::getAdvance(void) const
 SbVec2s
 SoGlyph::getKerning(const SoGlyph & rightglyph) const
 {
-  if (this->pimpl->fontidx >= 0 && this->pimpl->glyphidx >= 0 &&
-      rightglyph.pimpl->fontidx >= 0 && rightglyph.pimpl->glyphidx >= 0) {
-    return SoFontLib::getKerning(this->pimpl->fontidx, this->pimpl->glyphidx, rightglyph.pimpl->glyphidx);
+  if (PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0 &&
+      PRIVATE(&rightglyph)->fontidx >= 0 && PRIVATE(&rightglyph)->glyphidx >= 0) {
+    return SoFontLib::getKerning(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, PRIVATE(&rightglyph)->glyphidx);
   }
   return SbVec2s(0,0);
 }
@@ -554,13 +551,11 @@ SoGlyph::getKerning(const SoGlyph & rightglyph) const
 unsigned char *
 SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const
 {
-  if (this->pimpl->fontidx >= 0 && this->pimpl->glyphidx >= 0) {
-    return SoFontLib::getBitmap(this->pimpl->fontidx, this->pimpl->glyphidx, size, pos, antialiased);
+  if (PRIVATE(this)->fontidx >= 0 && PRIVATE(this)->glyphidx >= 0) {
+    return SoFontLib::getBitmap(PRIVATE(this)->fontidx, PRIVATE(this)->glyphidx, size, pos, antialiased);
   }
   return NULL;
 }
-
-#ifndef DOXYGEN_SKIP_THIS
 
 // should handle platform-specific font loading
 SoGlyph *
@@ -569,5 +564,3 @@ SoGlyphP::createSystemGlyph(const char character, const SbName & font)
   // FIXME: implement me somebody, please
   return NULL;
 }
-
-#endif // Doxygen
