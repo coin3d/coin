@@ -551,13 +551,24 @@ SoNodekitCatalog::isPublic(const SbName & name) const
 }
 
 /*!
-  FIXME: write function documentation
+  Return a clone of this catalog. \a type will be used to set the type
+  and defaulttype values of the toplevel \c this entry.
 */
 SoNodekitCatalog *
-SoNodekitCatalog::clone(SoType /*type*/) const
+SoNodekitCatalog::clone(SoType type) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
+  SoNodekitCatalog * newcat = new SoNodekitCatalog;
+  for (int i=0; i < this->items.getLength(); i++) {
+    CatalogItem * olditem = this->items[i];
+    CatalogItem * newitem = new CatalogItem(*olditem);
+    newitem->type = type;
+    newitem->defaulttype = type;
+    // This is the only element in CatalogItem which can't be bitwise
+    // copied.
+    newitem->itemtypeslist = olditem->itemtypeslist;
+    newcat->items.append(newitem);
+  }
+  return newcat;
 }
 
 /*!
