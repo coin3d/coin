@@ -211,8 +211,13 @@ void
 SoVRMLVertexShape::notify(SoNotList * list)
 {
   SoField * f = list->getLastField();
-  if (f == &this->coord && THIS->normalcache) {
-    THIS->normalcache->invalidate();
+  
+  if (f == &this->coord) {
+    this->readLockNormalCache();
+    if (THIS->normalcache) {
+      THIS->normalcache->invalidate();
+    }
+    this->readUnlockNormalCache();
   }
   inherited::notify(list);
 }

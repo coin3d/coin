@@ -162,6 +162,7 @@ public:
 
   SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
+  SbMutex mutex;
   SbStorage * glcachestorage;
   static void invalidate_gl_cache(void * tls, void *) {
     sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) tls;
@@ -187,6 +188,16 @@ public:
       this->glcachelist->invalidateAll(); 
     }
 #endif // !COIN_THREADSAFE
+  }
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
   }
 };
 
@@ -395,9 +406,11 @@ SoVRMLGroup::getBoundingBox(SoGetBoundingBoxAction * action)
 
     if (iscaching) {
       // if we get here, we know bbox cache is not created or is invalid
+      PRIVATE(this)->lock();
       if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
       PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
       PRIVATE(this)->bboxcache->ref();
+      PRIVATE(this)->unlock();
       // set active cache to record cache dependencies
       SoCacheElement::set(state, PRIVATE(this)->bboxcache);
     }
@@ -540,7 +553,9 @@ SoVRMLGroup::GLRenderBelowPath(SoGLRenderAction * action)
       }
     }
     
+    PRIVATE(this)->lock();
     SoGLCacheList * glcachelist = PRIVATE(this)->getGLCacheList(TRUE);
+    PRIVATE(this)->unlock();
     if (glcachelist->call(action)) {
 #if GLCACHE_DEBUG && 1 // debug
       SoDebugError::postInfo("SoVRMLGroup::GLRenderBelowPath",
@@ -661,9 +676,11 @@ SoVRMLGroup::notify(SoNotList * list)
 {
   inherited::notify(list);
   
+  PRIVATE(this)->lock();
   if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
   PRIVATE(this)->invalidateGLCaches();
   PRIVATE(this)->hassoundchild = SoVRMLGroupP::MAYBE;
+  PRIVATE(this)->unlock();
 }
 
 /*!

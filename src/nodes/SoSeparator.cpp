@@ -216,7 +216,7 @@ soseparator_storage_construct(void * data)
   ptr->glcachelist = NULL;
 }
 
-static void 
+static void
 soseparator_storage_destruct(void * data)
 {
   soseparator_storage * ptr = (soseparator_storage*) data;
@@ -229,7 +229,7 @@ public:
   // lots of ifdefs here but it can't be helped...
   SoSeparatorP(void) {
 #ifdef COIN_THREADSAFE
-    this->glcachestorage = 
+    this->glcachestorage =
       new SbStorage(sizeof(soseparator_storage),
                     soseparator_storage_construct,
                     soseparator_storage_destruct);
@@ -246,6 +246,7 @@ public:
   }
   SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
+  SbMutex mutex;
   SbStorage * glcachestorage;
   static void invalidate_gl_cache(void * tls, void *) {
     soseparator_storage * ptr = (soseparator_storage*) tls;
@@ -267,9 +268,20 @@ public:
     glcachestorage->applyToAll(invalidate_gl_cache, NULL);
 #else // COIN_THREADSAFE
     if (this->glcachelist) {
-      this->glcachelist->invalidateAll(); 
+      this->glcachelist->invalidateAll();
     }
 #endif // !COIN_THREADSAFE
+  }
+
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
   }
 };
 
@@ -277,7 +289,7 @@ public:
 SoGLCacheList *
 SoSeparatorP::getGLCacheList(const SbBool createifnull)
 {
-  soseparator_storage * ptr = 
+  soseparator_storage * ptr =
     (soseparator_storage*) this->glcachestorage->get();
   if (createifnull && ptr->glcachelist == NULL) {
     ptr->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
@@ -459,10 +471,14 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     state->push();
 
     if (iscaching) {
+      // lock before changing the bboxcache pointer so that the notify()
+      // function can be used by another thread.
+      PRIVATE(this)->lock();
       // if we get here, we know bbox cache is not created or is invalid
       if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
       PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
       PRIVATE(this)->bboxcache->ref();
+      PRIVATE(this)->unlock();
       // set active cache to record cache dependencies
       SoCacheElement::set(state, PRIVATE(this)->bboxcache);
     }
@@ -508,8 +524,8 @@ SoSeparator::callback(SoCallbackAction * action)
   // manually by the application programmer to optimize callback
   // action traversal.
 
-  if (!this->cullTest(state)) { 
-    SoGroup::callback(action); 
+  if (!this->cullTest(state)) {
+    SoGroup::callback(action);
   }
   state->pop();
 }
@@ -564,7 +580,9 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
         return;
       }
     }
+    PRIVATE(this)->lock();
     SoGLCacheList * glcachelist = PRIVATE(this)->getGLCacheList(TRUE);
+    PRIVATE(this)->unlock();
     if (glcachelist->call(action)) {
 #if GLCACHE_DEBUG && 1 // debug
       SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
@@ -583,9 +601,9 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   }
 
   if (createcache) createcache->open(action, this->renderCaching.getValue() == AUTO);
-  
-  SbBool outsidefrustum = 
-    (createcache || state->isCacheOpen() || didcull) ? 
+
+  SbBool outsidefrustum =
+    (createcache || state->isCacheOpen() || didcull) ?
     FALSE : this->cullTest(state);
   if (createcache || !outsidefrustum) {
     int n = this->children->getLength();
@@ -703,7 +721,7 @@ SoSeparator::audioRender(SoAudioRenderAction * action)
       action->getState()->push();
       SoSoundElement::setSceneGraphHasSoundNode(state, this, FALSE);
       inherited::doAction(action);
-      PRIVATE(this)->hassoundchild = SoSoundElement::sceneGraphHasSoundNode(state) ? 
+      PRIVATE(this)->hassoundchild = SoSoundElement::sceneGraphHasSoundNode(state) ?
         SoSeparatorP::YES : SoSeparatorP::NO;
       action->getState()->pop();
     } else {
@@ -815,9 +833,13 @@ SoSeparator::notify(SoNotList * nl)
 {
   inherited::notify(nl);
 
+  // lock before using the cache pointers so that we know the pointers
+  // are valid while reading them
+  PRIVATE(this)->lock();
   if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
   PRIVATE(this)->invalidateGLCaches();
   PRIVATE(this)->hassoundchild = SoSeparatorP::MAYBE;
+  PRIVATE(this)->unlock();
 }
 
 /*!
@@ -852,7 +874,7 @@ SoSeparator::cullTest(SoState * state)
 {
   if (this->renderCulling.getValue() == SoSeparator::OFF) return FALSE;
   if (SoCullElement::completelyInside(state)) return FALSE;
-  
+
   SbBool outside = FALSE;
   if (PRIVATE(this)->bboxcache &&
       PRIVATE(this)->bboxcache->isValid(state)) {
@@ -887,4 +909,3 @@ SoSeparator::cullTestNoPush(SoState * state)
 }
 
 #undef PRIVATE
-

@@ -160,6 +160,7 @@
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbStorage.h>
+#include <Inventor/threads/SbMutex.h>
 #endif // COIN_THREADSAFE
 
 typedef struct {
@@ -234,6 +235,20 @@ so_lod_get_bbox_action(void)
 class SoLevelOfDetailP {
 public:
   SoBoundingBoxCache * bboxcache;
+#ifdef COIN_THREADSAFE
+  SbMutex mutex;
+#endif // COIN_THREADSAFE
+
+  void lock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.lock();
+#endif // COIN_THREADSAFE 
+ }
+  void unlock(void) {
+#ifdef COIN_THREADSAFE
+    this->mutex.unlock();
+#endif // COIN_THREADSAFE
+  }
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -481,9 +496,11 @@ SoLevelOfDetail::getBoundingBox(SoGetBoundingBoxAction * action)
       storedinvalid = SoCacheElement::setInvalid(FALSE);
 
       // if we get here, we know bbox cache is not created or is invalid
+      THIS->lock();
       if (THIS->bboxcache) THIS->bboxcache->unref();
       THIS->bboxcache = new SoBoundingBoxCache(state);
       THIS->bboxcache->ref();
+      THIS->unlock();
       // set active cache to record cache dependencies
       SoCacheElement::set(state, THIS->bboxcache);
     }
@@ -530,7 +547,9 @@ void
 SoLevelOfDetail::notify(SoNotList * nl)
 {
   if (nl->getLastField() != &this->screenArea) {
+    THIS->lock();
     if (THIS->bboxcache) THIS->bboxcache->invalidate();
+    THIS->unlock();
   }
   inherited::notify(nl);
 }

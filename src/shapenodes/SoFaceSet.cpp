@@ -742,7 +742,9 @@ void
 SoFaceSet::notify(SoNotList * l)
 {
   // Overridden to invalidate convex cache.
+  THIS->readLockConvexCache();
   if (THIS->convexCache) THIS->convexCache->invalidate();
+  THIS->readUnlockConvexCache();
   SoField *f = l->getLastField();
   if (f == &this->numVertices) THIS->concavestatus = STATUS_UNKNOWN;
   inherited::notify(l);

@@ -241,8 +241,9 @@ void
 SoIndexedFaceSet::notify(SoNotList * list)
 {
   // Overridden to invalidate convex cache.
-
+  THIS->readLockConvexCache();
   if (THIS->convexCache) THIS->convexCache->invalidate();
+  THIS->readUnlockConvexCache();
   SoField *f = list->getLastField();
   if (f == &this->coordIndex) THIS->concavestatus = STATUS_UNKNOWN;
   inherited::notify(list);

@@ -123,7 +123,9 @@ SoVertexShape::initClass(void)
 void
 SoVertexShape::notify(SoNotList * nl)
 {
+  this->readLockNormalCache();
   if (THIS->normalcache) THIS->normalcache->invalidate();
+  this->readUnlockNormalCache();
   inherited::notify(nl);
 }
 

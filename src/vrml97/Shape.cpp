@@ -142,6 +142,7 @@ public:
   SbBool childlistvalid;
 #ifdef COIN_THREADSAFE
   SbMutex childlistmutex;
+  SbMutex bboxmutex;
 #endif // COIN_THREADSAFE
   void lockChildList(void) {
 #ifdef COIN_THREADSAFE
@@ -151,6 +152,16 @@ public:
   void unlockChildList(void) {
 #ifdef COIN_THREADSAFE
     this->childlistmutex.unlock();
+#endif // COIN_THREADSAFE
+  }
+  void lockBBox(void) {
+#ifdef COIN_THREADSAFE
+    this->bboxmutex.lock();
+#endif // COIN_THREADSAFE
+  }
+  void unlockBBox(void) {
+#ifdef COIN_THREADSAFE
+    this->bboxmutex.unlock();
 #endif // COIN_THREADSAFE
   }
 };
@@ -407,9 +418,11 @@ SoVRMLShape::getBoundingBox(SoGetBoundingBoxAction * action)
 
     if (iscaching) {
       // if we get here, we know bbox cache is not created or is invalid
+      PRIVATE(this)->lockBBox();
       if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->unref();
       PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
       PRIVATE(this)->bboxcache->ref();
+      PRIVATE(this)->unlockBBox();
       // set active cache to record cache dependencies
       SoCacheElement::set(state, PRIVATE(this)->bboxcache);
     }
@@ -519,7 +532,9 @@ SoVRMLShape::notify(SoNotList * list)
   if (f && f->getTypeId() == SoSFNode::getClassTypeId()) {
     PRIVATE(this)->childlistvalid = FALSE;
   }
+  PRIVATE(this)->lockBBox();
   if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
+  PRIVATE(this)->unlockBBox();
   inherited::notify(list);
 }
 
