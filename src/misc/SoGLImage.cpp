@@ -542,7 +542,7 @@ SoGLImage::setData(const SbImage *image,
                    SoState *createinstate)
 
 {
-  this->setData(image, wraps, wrapt, (const Wrap)THIS->wrapr, 
+  this->setData(image, wraps, wrapt, (Wrap)THIS->wrapr, 
                 quality, border, createinstate);
 }
 
