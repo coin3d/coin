@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -31,6 +31,7 @@
 #define COIN_INCLUDED_FROM_SBBOX_H
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbBox2s.h>
+#include <Inventor/SbBox3s.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbXfBox3f.h>
 #undef  COIN_INCLUDED_FROM_SBBOX_H
