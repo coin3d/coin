@@ -586,7 +586,8 @@ AC_SUBST(SUFFIX)
 
 SIM_AC_COMPILE_DEBUG([
   if test x"$GCC" = x"yes"; then
-    CPPFLAGS="$CPPFLAGS -fno-builtin";
+    CPPFLAGS="$CPPFLAGS -fno-builtin";   # no auto string.h-functions
+    CPPFLAGS="$CPPFLAGS -Wreturn-type";  # warn on missing return-value
   fi
   CPPFLAGS="$CPPFLAGS -DCOIN_DEBUG=1"
 ], [
