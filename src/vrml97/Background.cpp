@@ -485,7 +485,7 @@ SoVRMLBackgroundP::buildGeometry()
   if ((PUBLIC(this)->skyAngle.getNum() > 0) || (PUBLIC(this)->skyColor.getNum() > 0)) {
 
     angles.append(0);
-    float angle = 0;
+    float angle = 0.0f;
 
     if (PUBLIC(this)->skyAngle.getNum() > 0) {
       for (int k=0;k<PUBLIC(this)->skyAngle.getNum();++k) { 
@@ -496,22 +496,22 @@ SoVRMLBackgroundP::buildGeometry()
         angle = PUBLIC(this)->skyAngle[k];
         if (angle > M_PI) {
           SoDebugError::postWarning("buildGeometry","skyAngle=%f > PI not allowed.", angle);
-          angle = M_PI;
+          angle = (float) M_PI;
         } else if (angle < 0) {
           SoDebugError::postWarning("buildGeometry","skyAngle=%f < 0 not allowed.", angle);
-          angle = 0;
+          angle = 0.0f;
         } 
         angles.append(angle);
       }
       if (angle != M_PI)
-        angles.append(M_PI);
+        angles.append((float)M_PI);
 
     }
     else { // No angles specified. Creating list based on number of colors.
       int num = PUBLIC(this)->skyColor.getNum();
       if (num == 1) ++num; // Special case for one-colored sky.
       for (int i=0;i<=num;++i) 
-        angles.append((M_PI/num)*i);
+        angles.append((float) ((M_PI/num)*i));
     }
 
 
@@ -592,7 +592,7 @@ SoVRMLBackgroundP::buildGeometry()
         if (angle > M_PI/2) {
           SoDebugError::postWarning("buildGeometry","groundAngle=%f > PI/2 not allowed.", angle);
 
-          angle = M_PI / 2;
+          angle = (float) (M_PI / 2.0);
         } else if (angle < 0) {
           SoDebugError::postWarning("buildGeometry","groundAngle=%f < 0 not allowed.", angle);
           angle = 0;
@@ -607,7 +607,7 @@ SoVRMLBackgroundP::buildGeometry()
       int num = PUBLIC(this)->groundColor.getNum();
       if (num == 1) ++num;
       for (int i=0;i<num;++i)
-        angles.append((M_PI/(num))*i);
+        angles.append((float) ((M_PI/(num))*i));
     }
 
 
