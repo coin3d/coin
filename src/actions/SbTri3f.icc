@@ -1,0 +1,340 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2002 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org> for  more information.
+ *
+ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no>.
+ *
+\**************************************************************************/
+
+#include <assert.h>
+
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SbLine.h>
+#include <Inventor/SbBox3f.h>
+
+#include "SbTri3f.ih"
+
+/*!
+  \class SbTri3f noheader
+  \brief A class that at this point in time has one purpose - figuring out
+  if two triangles intersect each other.
+  \ingroup base
+
+  This class is so limited in functionality that it is not included in the
+  public Coin API for now.
+
+  The internals will probably be changed as well, as the a, b, c
+  representation isn't very convenient for linear algebra purposes.  But
+  as a public base class, the internal representation should be fixed, and
+  made part of the private section of the public header.
+
+  \since 20021022
+*/
+
+// Here's an idea for an alternate approach for this class:
+//
+// Let's say the triangle is defined as (0,0,0), (1,0,0), (1,1,0)
+// transformed through a transformation matrix.
+//
+// With this representation, a triangle would take the 16 floats of
+// an SbMatrix instead of 9 for the vertex positions.
+//
+// Finding the normal of the triangle is a multVecMatrix() call
+// Finding a, b, and c are multVecMatrix() calls
+// Finding the area is a multVecMatrix() and a getLength() call
+//
+// Doing intersection testing would be done by transforming one primitive
+// into the local coordinate system of the triangle (by using the inverse
+// matrix).  Given the simplicity of the a, b, and c coordinates of the
+// localspace triangle, the intersection testing ought to be a lot more
+// trivial to perform than in fully flexible 3D space.  Especially the
+// case of triangles in the same plane...
+
+
+// *************************************************************************
+
+class SbTri3fP {
+public:
+  SbTri3fP(void) {}
+  SbTri3fP(SbTri3fP * t)
+    : a(t->a), b(t->b), c(t->c), p(t->a, t->b, t->c) {}
+  SbTri3fP(const SbVec3f & na, const SbVec3f & nb, const SbVec3f & nc)
+    : a(na), b(nb), c(nc), p(na, nb, nc)
+  { assert(a != b && a != c && b != c); }
+
+  SbBool planarIntersection(SbTri3fP * t);
+  SbBool planarIntersection(SbTri3fP * t, float eps);
+
+  SbVec3f a;
+  SbVec3f b;
+  SbVec3f c;
+  SbPlane p;
+};
+
+SbBool
+SbTri3fP::planarIntersection(SbTri3fP * t)
+{
+  static SbBool once = TRUE;
+  if ( COIN_DEBUG && once ) {
+    SoDebugError::postInfo("SbTri3fP::planarIntersection",
+                           "special planar case not implemented\n");
+    once = FALSE;
+  }
+  return FALSE;
+}
+
+SbBool
+SbTri3fP::planarIntersection(SbTri3fP * t, float e)
+{
+  static SbBool once = TRUE;
+  if ( COIN_DEBUG && once ) {
+    SoDebugError::postInfo("SbTri3fP::planarIntersection",
+                           "special planar with epsilon case not implemented\n");
+    once = FALSE;
+  }
+  return FALSE;
+}
+
+// *************************************************************************
+
+#define PRIVATE(obj) ((obj)->pimpl)
+
+SbTri3f::SbTri3f(void)
+  : pimpl(new SbTri3fP)
+{
+}
+
+SbTri3f::SbTri3f(const SbTri3f & t)
+  : pimpl(new SbTri3fP(PRIVATE(&t)))
+{
+}
+
+SbTri3f::SbTri3f(const SbVec3f & a, const SbVec3f & b, const SbVec3f & c)
+  : pimpl(new SbTri3fP(a, b, c))
+{
+}
+
+SbTri3f::~SbTri3f(void)
+{
+  delete PRIVATE(this);
+}
+
+SbTri3f &
+SbTri3f::setValue(const SbTri3f & t)
+{
+  PRIVATE(this)->a = PRIVATE(&t)->a;
+  PRIVATE(this)->b = PRIVATE(&t)->b;
+  PRIVATE(this)->c = PRIVATE(&t)->c;
+  assert(PRIVATE(this)->a != PRIVATE(this)->b && PRIVATE(this)->a != PRIVATE(this)->c && PRIVATE(this)->b != PRIVATE(this)->c);
+  PRIVATE(this)->p = PRIVATE(&t)->p;
+  return *this;
+}
+
+SbTri3f &
+SbTri3f::setValue(const SbVec3f & a, const SbVec3f & b, const SbVec3f & c)
+{
+  assert(a != b && a != c && b != c);
+  PRIVATE(this)->a = a;
+  PRIVATE(this)->b = b;
+  PRIVATE(this)->c = c;
+  PRIVATE(this)->p = SbPlane(a, b, c);
+  return *this;
+}
+
+void
+SbTri3f::getValue(SbTri3f & t) const
+{
+  PRIVATE(&t)->a = PRIVATE(this)->a;
+  PRIVATE(&t)->b = PRIVATE(this)->b;
+  PRIVATE(&t)->c = PRIVATE(this)->c;
+  PRIVATE(&t)->p = PRIVATE(this)->p;
+}
+
+void
+SbTri3f::getValue(SbVec3f & a, SbVec3f & b, SbVec3f & c) const
+{
+  a = PRIVATE(this)->a;
+  b = PRIVATE(this)->b;
+  c = PRIVATE(this)->c;
+}
+
+SbTri3f &
+SbTri3f::operator = (const SbTri3f & t)
+{
+  PRIVATE(this)->a = PRIVATE(&t)->a;
+  PRIVATE(this)->b = PRIVATE(&t)->b;
+  PRIVATE(this)->c = PRIVATE(&t)->c;
+  PRIVATE(this)->p = PRIVATE(&t)->p;
+  return *this;
+}
+
+// *************************************************************************
+
+SbBool
+SbTri3f::intersect(const SbTri3f & t) const
+{
+  // FIXME: remove all "programming logic" error messages and asserts from
+  // this function when it's verified that those paths can't be taken.
+  if ( PRIVATE(this)->p == PRIVATE(&t)->p )
+    return PRIVATE(this)->planarIntersection(PRIVATE(&t));
+
+  // find line intersection between planes
+  SbLine iline;
+  if ( !PRIVATE(this)->p.intersect(PRIVATE(&t)->p, iline) ) return FALSE;
+
+  const SbPlane & plane1 = PRIVATE(this)->p;
+  const SbPlane & plane2 = PRIVATE(&t)->p;
+
+  // ensure triangles cross plane intersection line
+  SbBool a1hs = plane2.isInHalfSpace(PRIVATE(this)->a);
+  SbBool b1hs = plane2.isInHalfSpace(PRIVATE(this)->b);
+  SbBool c1hs = plane2.isInHalfSpace(PRIVATE(this)->c);
+  if ( (a1hs == b1hs) && (a1hs == c1hs) ) return FALSE;
+  SbBool a2hs = plane1.isInHalfSpace(PRIVATE(&t)->a);
+  SbBool b2hs = plane1.isInHalfSpace(PRIVATE(&t)->b);
+  SbBool c2hs = plane1.isInHalfSpace(PRIVATE(&t)->c);
+  if ( (a2hs == b2hs) && (a2hs == c2hs) ) return FALSE;
+
+  // find triangle-intersecting line segments
+  // set up a points on one side, and b and c on the other
+  SbVec3f a1, b1, c1;
+  if ( b1hs == c1hs ) { // a is in other halfspace
+    a1 = PRIVATE(this)->a;
+    b1 = PRIVATE(this)->b;
+    c1 = PRIVATE(this)->c;
+  } else if ( a1hs == c1hs ) { // b is in other halfspace
+    a1 = PRIVATE(this)->b;
+    b1 = PRIVATE(this)->c;
+    c1 = PRIVATE(this)->a;
+  } else if ( a1hs == b1hs ) { // c is in other halfspace
+    a1 = PRIVATE(this)->c;
+    b1 = PRIVATE(this)->a;
+    c1 = PRIVATE(this)->b;
+  } else {
+    assert(0);
+  }
+
+  // find intersection points on line for triangles
+  SbVec3f p11, p12;
+  if ( !plane2.intersect(SbLine(a1, b1), p11) ) {
+    // should never happen
+    if ( COIN_DEBUG )
+      SoDebugError::post("SbTri3f::intersect", "programming logic error 1\n");
+    assert(0);
+    return FALSE;
+  }
+  if ( !plane2.intersect(SbLine(a1, c1), p12) ) {
+    // should never happen
+    if ( COIN_DEBUG )
+      SoDebugError::post("SbTri3f::intersect", "programming logic error 2\n");
+    assert(0);
+    return FALSE;
+  }
+
+  SbVec3f a2, b2, c2;
+  if ( b2hs == c2hs ) { // a is in other halfspace
+    a2 = PRIVATE(&t)->a;
+    b2 = PRIVATE(&t)->b;
+    c2 = PRIVATE(&t)->c;
+  } else if ( a2hs == c2hs ) { // b is in other halfspace
+    a2 = PRIVATE(&t)->b;
+    b2 = PRIVATE(&t)->c;
+    c2 = PRIVATE(&t)->a;
+  } else if ( a2hs == b2hs ) { // c is in other halfspace
+    a2 = PRIVATE(&t)->c;
+    b2 = PRIVATE(&t)->a;
+    c2 = PRIVATE(&t)->b;
+  } else {
+    assert(0);
+  }
+
+  SbVec3f p21, p22;
+  if ( !plane1.intersect(SbLine(a2, b2), p21) ) {
+    // should never happen
+    if ( COIN_DEBUG )
+      SoDebugError::post("SbTri3f::intersect", "programming logic error 3\n");
+    assert(0);
+    return FALSE;
+  }
+  if ( !plane1.intersect(SbLine(a2, c2), p22) ) {
+    // should never happen
+    if ( COIN_DEBUG )
+      SoDebugError::post("SbTri3f::intersect", "programming logic error 4\n");
+    assert(0);
+    return FALSE;
+  }
+
+  // find end point of the four (the one furtest from origo would be an end point)
+  // and the length of that line segment
+  float distance, maxdistance;
+  int vertex = 1;
+  maxdistance = p11.sqrLength();
+  distance = p12.sqrLength();
+  if ( distance > maxdistance ) {
+    vertex = 2;
+    maxdistance = distance;
+  }
+  distance = p21.sqrLength();
+  if ( distance > maxdistance ) {
+    vertex = 3;
+    maxdistance = distance;
+  }
+  distance = p22.sqrLength();
+  if ( distance > maxdistance ) {
+    vertex = 4;
+    maxdistance = distance;
+  }
+
+  // check if a vertec from the other line segment is within the perimeter of the line
+  SbVec3f p, e, p1, p2;
+  switch ( vertex ) {
+  case 1:
+    p = p11; e = p12; p1 = p21; p2 = p22;
+    break;
+  case 2:
+    p = p12; e = p11; p1 = p21; p2 = p22;
+    break;
+  case 3:
+    p = p21; e = p22; p1 = p11; p2 = p12;
+    break;
+  case 4:
+    p = p22; e = p21; p1 = p11; p2 = p12;
+    break;
+  default:
+    if ( COIN_DEBUG )
+      SoDebugError::post("SbTri3f::intersect", "programming logic error 5\n");
+    assert(0);
+  }
+  float pedistance = (e - p).sqrLength();
+  if ( pedistance > (p1-p).sqrLength() ) return TRUE;
+  if ( pedistance > (p2-p).sqrLength() ) return TRUE;
+  return FALSE;
+}
+
+SbBool
+SbTri3f::intersect(const SbTri3f & t, float e) const
+{
+  if ( this->intersect(t) ) return TRUE;
+  if ( COIN_DEBUG )
+    SoDebugError::postInfo("SbTri3f::intersect",
+                           "intersection testing with epsilon is not implemented yet");
+  return FALSE;
+}
+
+// *************************************************************************
