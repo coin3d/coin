@@ -231,12 +231,23 @@ fi
 
 # Detect Mac OS 10.2 "Jaguar" or 10.3 "Panther"
 case $host_os in
-darwin[[67]].* ) sim_ac_macosx_10_2ff=true ;;
-* )         sim_ac_macosx_10_2ff=false ;;
+darwin6.* )
+  sim_ac_macosx_10_2ff=true
+  sim_ac_macosx_name="Jaguar"
+  ;;
+darwin7.* )
+  sim_ac_macosx_10_2ff=true
+  sim_ac_macosx_name="Panther"
+  ;;
+* )
+  sim_ac_macosx_10_2ff=false 
+  sim_ac_macosx_name=""
+  ;;
 esac
 
 AM_CONDITIONAL([MAC_FRAMEWORK], [$sim_ac_framework])
 AM_CONDITIONAL([MACOSX_10_2FF], [$sim_ac_macosx_10_2ff])
+AC_SUBST([MACOSX_NAME], [$sim_ac_macosx_name])
 
 if test x"$sim_ac_macosx_10_2ff" = x"true"; then
   # In libtool.m4, undefined symbols are handled depending on 
