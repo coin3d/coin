@@ -589,41 +589,47 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
         state->pop();
         SoCacheElement::setInvalid(storedinvalid);
       }
-
-      // FIXME: disable multi-texture units 2-n (if active)
       
       glPushAttrib(GL_DEPTH_BUFFER_BIT);
       glDepthFunc(GL_LEQUAL);
       glDisable(GL_LIGHTING);
       glColor3f(1.0f, 1.0f, 1.0f);
-           
-      // fetch matrix that convert the light from its object space
-      // to the OpenGL world space
-      SbMatrix lm = SoLightElement::getMatrix(state, 0);
 
-      // convert light back to this objects' object space
-      SbMatrix m = SoModelMatrixElement::get(state) *
-        SoViewingMatrixElement::get(state);
-      m = m.inverse();
-      m.multLeft(lm);
+      int numlights = lights.getLength();
+      for (int i = 0; i < numlights; i++) {      
+        // fetch matrix that convert the light from its object space
+        // to the OpenGL world space
+        SbMatrix lm = SoLightElement::getMatrix(state, i);
 
-      // bumprender is shared among all threads, so the mutex needs to
-      // be locked when we get here since some internal arrays are
-      // used while rendering
-      PRIVATE(this)->bumprender->renderBump(state, PRIVATE(this)->pvcache, 
-                                            (SoLight*) lights[0], m);
+        // convert light back to this objects' object space
+        SbMatrix m = SoModelMatrixElement::get(state) *
+          SoViewingMatrixElement::get(state);
+        m = m.inverse();
+        m.multLeft(lm);
+
+        // bumprender is shared among all threads, so the mutex needs to
+        // be locked when we get here since some internal arrays are
+        // used while rendering
+        PRIVATE(this)->bumprender->renderBump(state, PRIVATE(this)->pvcache, 
+                                              (SoLight*) lights[i], m);
+        
+        if (i == 0) glEnable(GL_BLEND);
+        if (i == numlights-1) {
+          glBlendFunc(GL_DST_COLOR, GL_ZERO);
+        }
+        else if (i == 0) {
+          glBlendFunc(GL_ONE, GL_ONE);
+        }
+      }
       PRIVATE(this)->unlock();
 
       SoGLLazyElement::getInstance(state)->reset(state, 
                                                  SoLazyElement::DIFFUSE_MASK|
                                                  SoLazyElement::GLIMAGE_MASK);
+
       SoMaterialBundle mb(action);
       mb.sendFirst();
       
-      glEnable(GL_BLEND);
-      glBlendFunc(GL_DST_COLOR, GL_ZERO);
-      glDisable(GL_LIGHTING);
-            
       PRIVATE(this)->bumprender->renderNormal(state, PRIVATE(this)->pvcache);
       glPopAttrib();
       glDisable(GL_BLEND); // FIXME: temporary for FPS-counter
