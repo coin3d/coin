@@ -125,7 +125,7 @@ public:
   void * buffer;
   size_t buffersize;
   SoOutputReallocCB * reallocfunc;
-  int32_t bufferoffset;
+  int32_t bufferoffset, startoffset;
   SoOutput::Stage stage;
   SbDict * sobase2id;
   int nextreferenceid;
@@ -360,7 +360,7 @@ SoOutput::setBuffer(void * bufPointer, size_t initSize,
   assert(initSize > 0 && "invalid argument");
   THIS->buffersize = initSize;
   THIS->reallocfunc = reallocFunc;
-  THIS->bufferoffset = offset;
+  THIS->startoffset = THIS->bufferoffset = offset;
 }
 
 /*!
@@ -402,7 +402,7 @@ void
 SoOutput::resetBuffer(void)
 {
   assert(this->isToBuffer());
-  THIS->bufferoffset = 0;
+  THIS->bufferoffset = THIS->startoffset;
 }
 
 /*!
@@ -1016,7 +1016,7 @@ SoOutput::writeBytesWithPadding(const char * const p, const size_t nr)
     if (padbytes[0] == 'X')
       for (int i=0; i < HOSTWORDSIZE; i++) padbytes[i] = '\0';
 
-    int writeposition = this->bytesInBuf();
+    const int writeposition = THIS->bufferoffset - THIS->startoffset;
     int padsize = HOSTWORDSIZE - (writeposition % HOSTWORDSIZE);
     if (padsize == HOSTWORDSIZE) padsize = 0;
     this->writeBinaryArray(padbytes, padsize);
@@ -1063,13 +1063,16 @@ SoOutput::isToBuffer(void) const
 }
 
 /*!
-  Returns number of bytes written to file or pushed into memory buffer.
+  Returns current write position.
+
+  Note that for memory buffer writing, this includes the offset from
+  SoOutput::setBuffer(), if any.
 */
 size_t
 SoOutput::bytesInBuf(void) const
 {
-  if (this->isToBuffer()) return THIS->bufferoffset;
-  else return ftell(THIS->filep);
+  if (this->isToBuffer()) { return THIS->bufferoffset; }
+  else { return ftell(THIS->filep); }
 }
 
 /*!
