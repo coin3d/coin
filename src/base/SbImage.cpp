@@ -395,6 +395,7 @@ SbImage::operator==(const SbImage & image) const
   callback, as this will lock up the application.
 
   \sa readFile()
+  \since 2001-11-xx
 */
 SbBool
 SbImage::scheduleReadFile(SbImageScheduleReadCB * cb,
