@@ -39,6 +39,11 @@
 #ifdef HAVE_IO_H
 #include <io.h> // Win32 dup()
 #endif // HAVE_IO_H
+
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif
+
 #include "gzmemio.h"
 
 // We don't want to include bzlib.h, so we just define the constants
@@ -84,67 +89,84 @@ SoInput_Reader *
 SoInput_Reader::createReader(FILE * fp, const SbString & fullname)
 {
   SoInput_Reader * reader = NULL;
+  SbBool trycompression = FALSE;
 
-  unsigned char header[4];
-  long offset = ftell(fp);
-  int siz = fread(header, 1, 4, fp);
-  (void) fseek(fp, offset, SEEK_SET);
-  fflush(fp); // needed since we fetch the file descriptor later
-
-  if (header[0] == 'B' && header[1] == 'Z') {
-    if (!cc_bzglue_available()) {
-      SoDebugError::postWarning("SoInput_Reader::createReader",
-                                "File seems to be in bzip2 format, but libbz2 support is "
-                                "not available.");
-    }
-    else {
-      int bzerror = BZ_OK;
-      void * bzfp = cc_bzglue_BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
-      if ((bzerror == BZ_OK) && (bzfp != NULL)) {
-        reader = new SoInput_BZ2FileReader(fullname.getString(), bzfp);
-      }
-      else {
-        SoDebugError::postWarning("SoInput_Reader::createReader",
-                                  "Unable to open bzip2 file.");
-      }
+#ifdef HAVE_FSTAT
+  // need to make sure stream is seekable to enable compression
+  // support, because we need to fseek() the stream
+  int fn = fileno(fp);
+  struct stat sb;
+  if ( fstat(fn, &sb) == 0 ) {
+    if ( sb.st_mode & S_IFREG ) { // regular file
+      trycompression = TRUE;
     }
   }
-  if ((reader == NULL) && 
-      (header[0] == 0x1f) && 
-      (header[1] == 0x8b)) {
-    if (!cc_zlibglue_available()) {
-      SoDebugError::postWarning("SoInput_Reader::createReader",
-                                "File seems to be in gzip format, but zlib support is "
-                                "not available.");
-    }
-    else {
-      int fd = fileno(fp);
-      // need to use dup() if we didn't open the file since gzdclose
-      // will close it
-      if (fd >= 0 && fullname.getLength() && fullname != "<stdin>") fd = dup(fd);
-      if (fd >= 0) {
-        void * gzfp = 0;
-#ifdef HAVE_GZDOPEN
-        gzfp = cc_zlibglue_gzdopen(fd, "rb");
-#else // gzdopen() after reading from the compressed file does not work on Mac OS X
-        if (fullname.getLength()) {
-          gzfp = cc_zlibglue_gzopen(fullname.getString(), "rb");
-        } else {
+#endif // HAVE_FSTAT
+
+  if ( trycompression ) {
+    unsigned char header[4];
+    long offset = ftell(fp);
+    int siz = fread(header, 1, 4, fp);
+    (void) fseek(fp, offset, SEEK_SET);
+    fflush(fp); // needed since we fetch the file descriptor later
+
+    if (header[0] == 'B' && header[1] == 'Z') {
+      if (!cc_bzglue_available()) {
+        SoDebugError::postWarning("SoInput_Reader::createReader",
+                                  "File seems to be in bzip2 format, but "
+                                  "libbz2 support is not available.");
+      }
+      else {
+        int bzerror = BZ_OK;
+        void * bzfp = cc_bzglue_BZ2_bzReadOpen(&bzerror,  fp, 0, 0, NULL, 0);
+        if ((bzerror == BZ_OK) && (bzfp != NULL)) {
+          reader = new SoInput_BZ2FileReader(fullname.getString(), bzfp);
+        }
+        else {
           SoDebugError::postWarning("SoInput_Reader::createReader",
-                                    "Passing FILE* for gzipped files on Mac "
-                                    "OS X not allowed, unable to open.");
-        }
-#endif
-        if (gzfp) {
-          reader = new SoInput_GZFileReader(fullname.getString(), gzfp);
+                                    "Unable to open bzip2 file.");
         }
       }
-      else {
+    }
+    if ((reader == NULL) && 
+        (header[0] == 0x1f) && 
+        (header[1] == 0x8b)) {
+      if (!cc_zlibglue_available()) {
         SoDebugError::postWarning("SoInput_Reader::createReader",
-                                  "Unable to create file descriptor from stream.");
+                                  "File seems to be in gzip format, but "
+                                  "zlib support is not available.");
+      }
+      else {
+        int fd = fileno(fp);
+        // need to use dup() if we didn't open the file since gzdclose
+        // will close it
+        if (fd >= 0 && fullname.getLength() && fullname != "<stdin>")
+          fd = dup(fd);
+        if (fd >= 0) {
+          void * gzfp = 0;
+#ifdef HAVE_GZDOPEN
+          gzfp = cc_zlibglue_gzdopen(fd, "rb");
+#else // gzdopen() after reading from the compressed file does not work on Mac OS X
+          if (fullname.getLength()) {
+            gzfp = cc_zlibglue_gzopen(fullname.getString(), "rb");
+          } else {
+            SoDebugError::postWarning("SoInput_Reader::createReader",
+                                      "Passing FILE* for gzipped files on "
+                                      "Mac OS X not allowed, unable to open.");
+          }
+#endif
+          if (gzfp) {
+            reader = new SoInput_GZFileReader(fullname.getString(), gzfp);
+          }
+        }
+        else {
+          SoDebugError::postWarning("SoInput_Reader::createReader",
+                                    "Unable to create file descriptor from stream.");
+        }
       }
     }
   }
+
   if (reader == NULL) {
     reader = new SoInput_FileReader(fullname.getString(), fp);
   }

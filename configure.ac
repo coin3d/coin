@@ -608,6 +608,19 @@ fi
 SIM_AC_DEFINE_BYTESIZE_TYPES
 
 # *******************************************************************
+
+AC_MSG_CHECKING([for fstat() function])
+AC_TRY_LINK(
+ [#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif],
+ [struct stat sb;
+  int result = fstat(0, &sb);],
+ [AC_DEFINE(HAVE_FSTAT, 1, [define if fstat() is available])
+  AC_MSG_RESULT([available])],
+ [AC_MSG_RESULT([not available])])
+
+# *******************************************************************
 # We want to use BSD 4.3's isinf(), isnan(), finite() if they are
 # available.
 
@@ -615,7 +628,7 @@ AC_MSG_CHECKING([for BSD 4.3 isinf() function])
 AC_TRY_LINK(
  [#include <math.h>],
  [int result = isinf(42.0);],
- [AC_DEFINE(HAVE_ISINF, 1, [whether or not isinf() is available])
+ [AC_DEFINE(HAVE_ISINF, 1, [define if isinf() is available])
   AC_MSG_RESULT([available])],
  [AC_MSG_RESULT([not available])])
 
