@@ -128,7 +128,6 @@ SoTimeCounter::SoTimeCounter(void)
   this->cyclelen = 1.0;
   this->numsteps = 2;
   this->stepnum = 0;
-  this->prevon = TRUE;
   this->ispaused = FALSE;
 
   this->timeIn.connectFrom(realtime);
@@ -212,21 +211,17 @@ SoTimeCounter::inputChanged(SoField * which)
     this->setOutputValue(this->findOutputValue(difftime));
   }
   else if (which == &this->on) {
-    if (this->on.getValue() != this->prevon) {
-      if (this->on.getValue() == FALSE) {
-        this->ispaused = TRUE;
-        this->output.enable(FALSE);
-        this->pausetimeincycle =
-          this->timeIn.getValue().getValue() - this->starttime;
-        this->prevon = FALSE;
-      }
-      else {
-        this->starttime =
-          this->timeIn.getValue().getValue() - this->pausetimeincycle;
-        this->ispaused = FALSE;
-        this->prevon = TRUE;
-        this->inputChanged(&this->timeIn); // fake it
-      }
+    if (this->on.getValue() && this->ispaused) {
+      this->starttime =
+        this->timeIn.getValue().getValue() - this->pausetimeincycle;
+      this->ispaused = FALSE;
+      this->inputChanged(&this->timeIn); // fake it
+    }
+    else if (!this->on.getValue() && !this->ispaused) {
+      this->ispaused = TRUE;
+      this->output.enable(FALSE);
+      this->pausetimeincycle =
+        this->timeIn.getValue().getValue() - this->starttime;
     }
   }
   else if (which == &this->frequency) {

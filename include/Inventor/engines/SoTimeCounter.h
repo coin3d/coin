@@ -60,7 +60,6 @@ private:
   virtual void evaluate(void);
   void calcStarttime(short value);
 
-  SbBool prevon;
   SbBool ispaused;
   double pausetimeincycle;
   SbBool firstoutputenable;
