@@ -187,8 +187,6 @@ SoText3::~SoText3()
 {
   if (PRIVATE(this)->fontspec != NULL) {
     cc_string_destruct(PRIVATE(this)->fontspec->name);
-    if (PRIVATE(this)->fontspec->family != NULL)
-      cc_string_destruct(PRIVATE(this)->fontspec->family);
     if (PRIVATE(this)->fontspec->style != NULL)
       cc_string_destruct(PRIVATE(this)->fontspec->style);
     delete PRIVATE(this)->fontspec;
@@ -332,6 +330,7 @@ SoText3::getCharacterBounds(SoState * state, int stringindex, int charindex)
 void
 SoText3::GLRender(SoGLRenderAction * action)
 {
+
   if (!this->shouldGLRender(action)) return;
 
   SoState * state = action->getState();
@@ -676,7 +675,7 @@ SoText3::generate(SoAction * action, unsigned int part)
   vertex.setDetail(&detail);
   vertex.setMaterialIndex(matidx);
 
-  float size = SoFontSizeElement::get(state);
+  float size = PRIVATE(this)->fontspec->size;
   int i, n = PRIVATE(this)->widths.getLength();
 
   int firstprofile = -1;
@@ -963,13 +962,33 @@ SoText3P::setUpGlyphs(SoState * state, SoText3 * textnode)
   if (!this->needsetup) return;
   this->needsetup = FALSE;
 
-  // Build up font-spesification struct  
+  // Build up font-spesification struct
+  if (this->fontspec != NULL) {
+    cc_string_destruct(this->fontspec->name);
+    cc_string_destruct(this->fontspec->style);
+    delete this->fontspec;
+  }
   this->fontspec = new cc_font_specification;
   this->fontspec->name = cc_string_construct_new();
-  cc_string_set_text(this->fontspec->name, SoFontNameElement::get(state).getString());
-  this->fontspec->family = NULL;
-  this->fontspec->style = NULL;
+  cc_string_set_text(this->fontspec->name, SoFontNameElement::get(state).getString());   
   this->fontspec->size = SoFontSizeElement::get(state);
+
+  // Check if style is baked into the fontname using the "family:style" syntax.
+  this->fontspec->style = cc_string_construct_new();
+  const char * tmpstr = cc_string_get_text(this->fontspec->name);
+  int pos = -1;
+  for (unsigned int j = 0;j < cc_string_length(this->fontspec->name);++j) {
+    if(tmpstr[j] == ':') {
+      pos = j;
+      break;
+    }
+  }
+  if (pos != -1) {
+    cc_string_set_text(this->fontspec->style, cc_string_get_text(this->fontspec->name));
+    cc_string_remove_substring(this->fontspec->style, 0, pos);
+    const int namelen = cc_string_length(this->fontspec->name);
+    cc_string_remove_substring(this->fontspec->name, pos, namelen-1);
+  }
 
   // store old glyphs to avoid freeing glyphs too soon
   this->widths.truncate(0);
