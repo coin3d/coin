@@ -339,7 +339,12 @@ SoTexture2::loadFilename(void)
       int nc;
       SbVec2s size;
       unsigned char * bytes = tmpimage.getValue(size, nc);
+      // disable notification on image while setting data from filename
+      // as a notify will cause a filename.setDefault(TRUE).
+      SbBool oldnotify = this->image.enableNotify(FALSE);
       this->image.setValue(size, nc, bytes);
+      this->image.enableNotify(oldnotify);
+      this->glimagevalid = FALSE; // recreate GL image in next GLRender()
       retval = TRUE;
     }
   }
