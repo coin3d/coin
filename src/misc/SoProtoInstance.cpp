@@ -189,8 +189,6 @@ SoProtoInstance::setRootNode(SoNode * root)
 SoNode *
 SoProtoInstance::getRootNode(void)
 {
-  SbName name = this->getName();
-  if (name != THIS->root->getName()) THIS->root->setName(name);
   return THIS->root;
 }
 
