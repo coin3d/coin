@@ -28,30 +28,30 @@
 
 class COIN_DLL_EXPORT SoCounter : public SoEngine {
   typedef SoEngine inherited;
+
   SO_ENGINE_HEADER(SoCounter);
 
 public:
+  static void initClass(void);
+  SoCounter(void);
+
   SoSFShort min;
   SoSFShort max;
   SoSFShort step;
   SoSFTrigger trigger;
   SoSFShort reset;
 
-  SoEngineOutput output;  //SoSFShort
-  SoEngineOutput syncOut; //SoSFTrigger
-
-  SoCounter();
-
-  static void initClass();
+  SoEngineOutput output;  // SoSFShort
+  SoEngineOutput syncOut; // SoSFTrigger
 
 protected:
-  ~SoCounter();
+  ~SoCounter(void);
 
 private:
-  virtual void evaluate();
+  virtual void evaluate(void);
   virtual void inputChanged(SoField * which);
 
-  int numSteps;
+  int numsteps;
   short value;
 };
 

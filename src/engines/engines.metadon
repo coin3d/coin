@@ -28,7 +28,7 @@
 # ID      SoDecomposeMatrix
 # ID      SoComputeBoundingBox
 # ID      SoConcatenate
-# Id      SoCounter
+# ID      SoCounter
 # Id      SoElapsedTime
 # ID      SoEngineOutputData
 # id      SoFieldConverter
