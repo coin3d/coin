@@ -66,8 +66,6 @@ public:
 protected:
   ~SoCenterballDragger();
   void transferCenterDraggerMotion(SoDragger * childdragger);
-  virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-  virtual void getMatrix(SoGetMatrixAction * action);
   void setSwitches(SoDragger * activechild);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
@@ -79,6 +77,12 @@ protected:
 
   SoFieldSensor * rotFieldSensor;
   SoFieldSensor * centerFieldSensor;
+
+private:
+  SbVec3f savedtransl;
+  SbVec3f savedcenter;
+  void addChildDragger(SoDragger *child);
+  void removeChildDragger(const char *childname);
 };
 
 #endif // !COIN_SOCENTERBALLDRAGGER_H
