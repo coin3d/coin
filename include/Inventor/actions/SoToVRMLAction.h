@@ -27,6 +27,9 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoSubAction.h>
 
+// FIXME: the API does not match the one in TGS Inventor, which it
+// should. 20020705 mortene.
+
 class COIN_DLL_API SoToVRMLAction : public SoAction {
   typedef SoAction inherited;
 
@@ -38,8 +41,42 @@ public:
 
   static void initClass(void);
 
+  virtual void apply(SoNode * node);
+  virtual void apply(SoPath * path);
+  virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+  
+  SoNode * getVRMLSceneGraph(void) const;
+  
+  void expandSoFile(SbBool flag);
+  SbBool areSoFileExpanded(void) const;
+  
+  void setUrlName(const SbString name);
+  SbString getUrlName(void) const;
+  
+  void writeTexCoords(SbBool flag);
+  SbBool areTexCoordWritten(void) const;
+  
+  void expandTexture2Node(SbBool flag);
+  SbBool areTexture2NodeExpanded(void) const;
+  
+  void keepUnknownNodes(SbBool flag);
+  SbBool areUnknownNodeKept(void) const;
+  
+  void convertInlineNodes(SbBool flag);
+  SbBool doConvertInlineNodes(void) const;
+  
+  void conditionalConversion(SbBool flag);
+  SbBool doConditionalConversion(void) const;
+  
+  void setVerbosity(SbBool flag);
+  SbBool isVerbose(void) const;
+
 protected:
   virtual void beginTraversal(SoNode * node);
+
+private:
+  class SoToVRMLActionP * pimpl;
+  friend class SoToVRMLActionP;
 };
 
 #endif // !COIN_SOTOVRMLACTION_H
