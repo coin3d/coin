@@ -2882,45 +2882,58 @@ cc_glglue_context_destruct(void * ctx)
 void
 cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 {
-  GLint size[2] = { 128, 128 };
+  void * ctx;
+  SbBool ok;
   const char * vendor;
-  void * ctx = cc_glglue_context_create_offscreen(128, 128);
+  GLint size[2];
+  static unsigned int dim[2] = { 0, 0 };
 
-  if (ctx) {
-    SbBool ok = cc_glglue_context_make_current(ctx);
-    if (ok) {
-      glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
-
-      vendor = (const char *)glGetString(GL_VENDOR);
-      if (strcmp(vendor, "NVIDIA Corporation") == 0) {
-
-        /* NVIDIA seems to have a bug where max render size is limited
-           by desktop resolution (at least for their Linux X11
-           drivers), not the texture maxsize returned by OpenGL. So we
-           use a workaround by limiting max size to the lowend
-           resolution for desktop monitors.
-
-           According to pederb, there are versions of the NVidia
-           drivers where the offscreen buffer also has to have
-           dimensions that are 2^x, so we limit further down to these
-           dimension settings to be sure.
-        */
-
-        /* FIXME: should make a stand-alone test-case (not dependent
-           on Coin, only GL, GLX & X11) that demonstrates this problem
-           for a) submitting to <linux-bugs@nvidia.com>, and b) to
-           test which versions of the NVidia drivers are affected --
-           as it is now, we shrink the max to <512,512> on all
-           versions (even if we're under MSWin). 20030812 mortene.
-         */
-
-        size[0] = cc_min(size[0], 512);
-        size[1] = cc_min(size[1], 512);
-      }
-      cc_glglue_context_reinstate_previous(ctx);
-    }
-    cc_glglue_context_destruct(ctx);
+  if (dim[0] > 0) { /* value cached */
+    *width = dim[0];
+    *height = dim[1];
+    return;
   }
+
+
+  /* There is no known reason why the below calls should fail, so we
+     don't try to be robust, and just assert upon failure. */
+
+  ctx = cc_glglue_context_create_offscreen(32, 32);
+  assert(ctx);
+  ok = cc_glglue_context_make_current(ctx);
+  assert(ok);
+
+  glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
+
+  vendor = (const char *)glGetString(GL_VENDOR);
+  if (strcmp(vendor, "NVIDIA Corporation") == 0) {
+
+    /* NVIDIA seems to have a bug where max render size is limited
+       by desktop resolution (at least for their Linux X11
+       drivers), not the texture maxsize returned by OpenGL. So we
+       use a workaround by limiting max size to the lowend
+       resolution for desktop monitors.
+
+       According to pederb, there are versions of the NVidia
+       drivers where the offscreen buffer also has to have
+       dimensions that are 2^x, so we limit further down to these
+       dimension settings to be sure.
+    */
+
+    /* FIXME: should make a stand-alone test-case (not dependent
+       on Coin, only GL, GLX & X11) that demonstrates this problem
+       for a) submitting to <linux-bugs@nvidia.com>, and b) to
+       test which versions of the NVidia drivers are affected --
+       as it is now, we shrink the max to <512,512> on all
+       versions (even if we're under MSWin). 20030812 mortene.
+    */
+
+    size[0] = cc_min(size[0], 512);
+    size[1] = cc_min(size[1], 512);
+  }
+
+  cc_glglue_context_reinstate_previous(ctx);
+  cc_glglue_context_destruct(ctx);
 
   /* FIXME: if we're on e.g. GLX and are going to use pbuffers, we
      should check the GLX_MAX_PBUFFER_WIDTH, GLX_MAX_PBUFFER_HEIGHT
@@ -2931,7 +2944,6 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 
      20030812 mortene.
   */
-
 
   *width = (unsigned int) size[0];
   *height = (unsigned int) size[1];
@@ -2961,6 +2973,11 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
     cc_debugerror_postinfo("cc_glglue_context_max_dimensions",
                            "max dimensions==<%d, %d>", width, height);
   }
+
+  /* cache values for next invocation */
+
+  dim[0] = *width;
+  dim[1] = *height;
 }
 
 
