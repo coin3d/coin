@@ -1371,17 +1371,3 @@
     the autoconf-set optimization-options.  Tricky stuff...
 
 =====================================================================
-
-045 Check for bugs: picking in combination with "sliced" geometry.
-
-    What happens if we for instance try to pick on the inside of an
-    SoCube that has been clipped by an SoClipPlane? Compare this with
-    how SGI Inventor handles this.
-
-    (Note that I don't know _if_ there's a bug here, it just hit me a
-    something we should look into, as it seems probable that it could
-    be bugs here.)
-
-    20021203 mortene.
-
-=====================================================================
