@@ -271,8 +271,11 @@ SoTextureCoordinateElement::get2(const int index) const
     // need an instance we can write to
     SoTextureCoordinateElement * elem = (SoTextureCoordinateElement*) this;
     
-    elem->convert2.setValue(this->coords4[index][0],
-                            this->coords4[index][1]);
+    float tmp = this->coords4[index][3];
+    float to2D = tmp == 0.0f ? 1.0f : 1.0f / tmp;
+
+    elem->convert2.setValue(this->coords4[index][0] * to2D,
+                            this->coords4[index][1] * to2D);
     return this->convert2;
   }
 }
