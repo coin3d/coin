@@ -303,7 +303,7 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
   }
 
   // if we have a valid bbox cache, do a view volume cull test here.
-  if (THIS->bboxcache &&
+  if (!state->isCacheOpen() && THIS->bboxcache &&
       THIS->bboxcache->isValid(state)) {
     if (!SoCullElement::completelyInside(state)) {
       if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
