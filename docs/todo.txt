@@ -412,6 +412,7 @@ STUFF TO FIX IN COIN
 
     For Nvidia specific hardware/drivers:
       <URL:http://developer.nvidia.com/view.asp?IO=Interactive_Order_Transparency>
+      <URL:http://developer.nvidia.com/view.asp?IO=order_independent_transparency>
 
 
 016 Detect multiple instances of the Coin library within the same run-time application space.
@@ -602,6 +603,9 @@ STUFF TO FIX IN COIN
         - Cygwin GCC (<URL:http://www.cygwin.com>)
         - MingW (URL?)
         - Borland's C++ compiler
+        - Digital Mars C/C++ compiler (<URL:http://www.digitalmars.com>)
+          (note: only "free", not "Free" -- not even with source code)
+
 
 028 Support for multiple viewports in render areas
     2003-01-22 Marius Kintel <kintel@sim.no>
@@ -634,6 +638,52 @@ STUFF TO FIX IN COIN
     We also have to resolve the camera issue somehow; control cameras per
     viewport area vs. sharing cameras between viewport areas, sync cameras
     with the viewer, control view/pick mode per viewport area.
+
+
+029 Better font support.
+    2003-01-30  Morten Eriksen  <mortene@sim.no>
+
+    This is a braindump of my ideas and hints for how to go about this
+    task:
+
+     * We should be able to load TrueType fonts, which I believe would
+       give us, our users, and our users's users good flexibility.
+
+       The obvious choice for getting support for TTF seems to be by
+       using the FreeType library (<URL:http://www.freetype.org>).
+
+       The FreeType library has a license which is liberal enough that
+       we can actually embed the source code into the Coin source
+       code. There are good arguments both for and against this
+       strategy. On the plus side, that would make packaging and
+       distribution easier and more "fail-safe", both for us, other
+       Coin users and for the end-users of Coin-based application
+       software. On the other hand, this would give us more work with
+       regard to keeping in sync with the FreeType projects bug-fixes
+       and other upgrades.
+
+       If we don't embed the FreeType library, we should let it be
+       dynamically loaded through a run-time binding, like we do for
+       simage, GLU and OpenAL.
+
+     * We have feedback from a Coin-user (Daniel Alvarez) that going
+       up one extra level of abstraction (from using FreeType
+       directly) would give us some important advantages. Check with
+       him what the arguments are.
+
+       SGI Inventor does this through their "libFL" library.
+
+     * Handle Unicode charactersets -- just ASCII or iso-8859-[1|15]
+       is not enough.
+
+       (<URL:http://www.wikipedia.org> is a great place to go and read
+       oneself up on Unicode, UTF-8, UTF-16, iso-8859-*, and character
+       encodings in general.)
+
+     * One important aspect of the implementation is to get the
+       internal class abstraction for handling glyphs correctly. The
+       current SoGlyph class probably leaves a lot to be wanted.
+       
 
 
 OTHER COIN-RELATED STUFF TO FIX
