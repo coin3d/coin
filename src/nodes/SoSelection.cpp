@@ -535,9 +535,11 @@ SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
   Sets the pick filter callback. This callback will be called when a
   path is about to be added to or removed from the list of selected
   objects. The callback function should return a replacement path that
-  should be used instead of the picked path. If no callback is set
-  (the default), the picked path will be used for
-  selecting/deselecting.
+  should be used instead of the picked path. The returned path will
+  be ref'ed, copied, and then unref'ed again by the SoSelection node.
+  
+  If no callback is set (the default), the picked path will be used
+  for selecting/deselecting.
 
   Possible return values from the callback:
 
@@ -552,7 +554,7 @@ SoSelection::removeFinishCallback(SoSelectionClassCB * f, void * userData)
     pick will be ignored.
 
   if \a callOnlyIfSelectable is \e TRUE, the callback will only be
-  called if the Selection node is in the picked path.
+  called if the Selection node is in the picked path.  
 */
 void
 SoSelection::setPickFilterCallback(SoSelectionPickCB * f,
