@@ -218,12 +218,14 @@ SoGLTextureImageElement::getMaxGLTextureSize(void)
 /*!
   Returns true if the texture with the given dimensions is supported
   by the current OpenGL context.
+
   If zsize==0, 2D texturing is assumed, else 3D texturing is assumed.
 
-  This function uses PROXY textures and will fall back to getMaxGLTextureSize()
-  if PROXY textures are not supported (OpenGL < 1.1 and GL_EXT_texture not
-  available). In the 3D case, 3D textures need to be supported (OpenGL >= 1.2
-  or GL_EXT_texture3D).
+  This function uses OpenGL proxy textures and will fall back to what
+  you get from SoGLTextureImageElement::getMaxGLTextureSize() if proxy
+  textures are not supported (i.e. OpenGL version < 1.1 and
+  GL_EXT_texture not available). In the 3D case, 3D textures need to
+  be supported (OpenGL >= 1.2 or GL_EXT_texture3D).
 
   Note that this function needs an OpenGL context to be made current
   for it to work. Without that, you will most likely get a faulty
@@ -237,70 +239,9 @@ SbBool
 SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
                                             int bytespertexel)
 {
-  // FIXME: the technique we are using doesn't really match what is recommended at
-  //  http://www.opengl.org/developers/documentation/OGL_userguide/OpenGLonWin-13.html
-  // (see "Testing Whether Textures Fit: The Texture Proxy Mechanism").
-  // 20020701 mortene.
-
-  // FIXME: mipmaps must be handled specifically, which we are not
-  // doing. 20020701 mortene.
-
   const cc_glglue * glw = sogl_glue_instance(this->state);
-  if (zsize==0) { // 2D textures
-    if (COIN_MAXIMUM_TEXTURE2_SIZE > 0) {
-      if (xsize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
-      if (ysize > COIN_MAXIMUM_TEXTURE2_SIZE) return FALSE;
-      return TRUE;
-    }
-    if (cc_glglue_has_2d_proxy_textures(glw)) {
-      GLint w;
-      glTexImage2D(GL_PROXY_TEXTURE_2D, 0, bytespertexel,
-                   xsize, ysize, 0,
-                   GL_RGBA, GL_UNSIGNED_BYTE,
-                   NULL);
-      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
-                               GL_TEXTURE_WIDTH, &w);
-      if (w==0) return FALSE;
-      return TRUE;
-    }
-    else {
-      // Falls back to using the old method
-      int maxsize = SoGLTextureImageElement::getMaxGLTextureSize();
-      if (xsize > maxsize || ysize > maxsize) return FALSE;
-      return TRUE;
-    }
-  }
-  else { // 3D textures
-    if (cc_glglue_has_3d_textures(glw)) {
-      if (COIN_MAXIMUM_TEXTURE3_SIZE > 0) {
-        if (xsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
-        if (ysize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
-        if (zsize > COIN_MAXIMUM_TEXTURE3_SIZE) return FALSE;
-        return TRUE;
-      }
-      cc_glglue_glTexImage3D(glw,
-                             GL_PROXY_TEXTURE_3D, 0, (GLenum) bytespertexel,
-                             xsize, ysize, zsize, 0,
-                             GL_RGBA, GL_UNSIGNED_BYTE,
-                             NULL);
-      GLint w;
-      glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
-                               GL_TEXTURE_WIDTH, &w);
-      if (w==0) return FALSE;
-      return TRUE;
-    }
-    else {
-#if COIN_DEBUG
-      static SbBool first = TRUE;
-      if (first) {
-        SoDebugError::post("SoGLTextureImageElement::isTextureSizeLegal",
-                           "3D not supported with this OpenGL driver");
-        first = FALSE;
-      }
-#endif // COIN_DEBUG
-      return FALSE;
-    }
-  }
+  return cc_glglue_is_texture_size_legal(glw, xsize, ysize, zsize, 
+                                         bytespertexel, TRUE);
 }
 
 void 
