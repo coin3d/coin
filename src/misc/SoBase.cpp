@@ -1047,6 +1047,12 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   SoDebugError::postInfo("SoBase::read", "name: '%s'", name.getString());
 #endif // debug
 
+  if (name == "") {
+    SoReadError::post(in, "Expected type name or identifier when reading new "
+                      "base item, but found empty string.");
+    return FALSE;
+  }
+
   //.read all (vrml97) routes
   if (in->isFileVRML2()) {
     while (result && name == ROUTE_KEYWORD) {
@@ -1520,6 +1526,8 @@ SoBase::readReference(SoInput * in, SoBase *& base)
 SbBool
 SoBase::readBase(SoInput * in, SbName & classname, SoBase *& base)
 {
+  assert(classname != "");
+
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoBase::readBase", "classname: '%s'",
                          classname.getString());
@@ -1599,6 +1607,8 @@ SbBool
 SoBase::readBaseInstance(SoInput * in, const SbName & classname,
                          const SbName & refname, SoBase *& base)
 {
+  assert(classname != "");
+
   SbBool retval = TRUE;
   SbBool needupgrade = FALSE;
 
@@ -1670,6 +1680,8 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
 SoBase *
 SoBase::createInstance(SoInput * in, const SbName & classname)
 {
+  assert(classname != "");
+
   SoType type = SoType::badType();
   if (in->isFileVRML2()) {
     SbString newname;
