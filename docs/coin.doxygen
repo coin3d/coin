@@ -191,7 +191,11 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/errors/SoMemoryError.h \
 	$(top_srcdir)/src/errors/SoDebugError.cpp \
 	$(top_srcdir)/include/Inventor/errors/SoDebugError.h \
-
+	\
+	$(top_srcdir)/src/fields/SoFieldData.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoFieldData.h \
+	$(top_srcdir)/src/fields/SoFieldContainer.cpp \
+	$(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
 
 #	$(top_srcdir)/src/base/SbBSPTree.cpp \	
 #	$(top_srcdir)/include/Inventor/SbBSPTree.h \
@@ -624,11 +628,6 @@ INPUT                = \
 #	$(top_srcdir)/include/Inventor/elements/SoViewportRegionElement.h \
 #	$(top_srcdir)/src/elements/SoWindowElement.cpp \
 #	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h \
-#	\
-#	$(top_srcdir)/src/fields/SoFieldContainer.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
-#	$(top_srcdir)/src/fields/SoFieldData.cpp \
-#	$(top_srcdir)/include/Inventor/fields/SoFieldData.h \
 #	\
 #	$(top_srcdir)/src/fields/SoField.cpp \
 #	$(top_srcdir)/include/Inventor/fields/SoField.h \
@@ -1150,7 +1149,7 @@ INCLUDE_PATH         = \
 # or name=definition (no spaces). If the definition and the = are 
 # omitted =1 is assumed.
 
-PREDEFINED           =
+PREDEFINED           = DOXYGEN_SKIP_THIS
 
 # If the EXPAND_ONLY_PREDEF and MACRO_EXPANSION tags are both set to YES
 # then the macro expansion is limited to the macros specified with the

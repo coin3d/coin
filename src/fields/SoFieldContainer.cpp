@@ -18,18 +18,20 @@
 \**************************************************************************/
 
 /*!
-  \class SoFieldContainer Inventor/fields/SoFieldContainer.h
-  \brief The SoFieldContainer class is the base class for all classes that
+  \class SoFieldContainer SoFieldContainer.h Inventor/fields/SoFieldContainer.h
+  \brief The SoFieldContainer class is a base class for all classes that
   contain fields.
   \ingroup general
 
-  Classes containing fields are nodes and engines.
+  The classes containing fields in Coin are the node and engine
+  classes, so they are all subclasses of SoFieldContainer.
 
-  It takes care of keeping track of the fields in a node, or the input fields
-  of an engine; reading them, writing them, comparing them, copying them, etc.
+  SoFieldContainer provides methods for reading, writing, comparing
+  for equality, copy operations, etc on fields.
 
   \sa SoField
-*/
+
+ */
 
 
 #include <Inventor/fields/SoFieldContainer.h>
@@ -43,6 +45,7 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/fields/SoFieldData.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -50,11 +53,11 @@
 
 /*!
   \var SbBool SoFieldContainer::isBuiltIn
-  FIXME: write doc
-*/
-/*!
-  \var SoFieldData SoFieldContainer::fieldData
-  FIXME: write doc
+
+  Flag for storing whether or not this class instance is a built-in
+  class or not. By knowing the difference between a class which is
+  native Coin or a user extension, it is possible to automatically
+  store and read extension nodes and engines.
 */
 
 
@@ -62,26 +65,26 @@ SoType SoFieldContainer::classTypeId = SoType::badType();
 
 
 /*!
-  The constructor.
+  Constructor.
 */
-
 SoFieldContainer::SoFieldContainer(void)
   : isBuiltIn(TRUE), donotify(TRUE)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoFieldContainer::SoFieldContainer",
+                         "new instance of ``%s''",
+                         this->getTypeId().getName().getString());
+#endif // debug
 }
 
 /*!
-  The destructor.
+  Destructor.
 */
-
 SoFieldContainer::~SoFieldContainer(void)
 {
 }
 
-/*!
-  This static method initializes stuff so the SoFieldContainer class can
-  function properly.
-*/
+// Overridden from parent class.
 void
 SoFieldContainer::initClass(void)
 {
@@ -94,10 +97,7 @@ SoFieldContainer::initClass(void)
     SoType::createType(inherited::getClassTypeId(), "FieldContainer", NULL);
 }
 
-/*!
-  This static method returns the SoType object associated with
-  SoFieldContainer objects.
-*/
+// Overridden from parent class.
 SoType
 SoFieldContainer::getClassTypeId(void)
 {
@@ -277,15 +277,11 @@ SoFieldContainer::getFieldName(const SoField * const field,
                                SbName & fieldName) const
 {
   const SoFieldData * const fields = this->getFieldData();
-  assert(fields);
-  const int numFields = fields->getNumFields();
-  for (int i = 0; i < numFields; i++) {
-    if (field == fields->getField(this, i)) {
-      fieldName = fields->getFieldName(i);
-      return TRUE;
-    }
-  }
-  return FALSE;
+  if (!fields) return FALSE;
+  int idx = fields->getIndex(this, field);
+  if (idx == -1) return FALSE;
+  fieldName = fields->getFieldName(idx);
+  return TRUE;
 }
 
 

@@ -70,6 +70,16 @@ public:
                               const SoFieldContainer * object) const;
 
 private:
+  // Bitflags for control word in the file format.
+  enum ControlWord {
+    NOTBUILTIN = 0x40
+  };
+
+  int operator==(const SoFieldData * fd) const;
+  int operator!=(const SoFieldData * fd) const { return ! operator==(fd); }
+  int operator==(const SoFieldData & fd) const { return operator==(&fd); }
+  int operator!=(const SoFieldData & fd) const { return ! operator==(&fd); }
+
   void freeResources(void);
 
   SbList<SoFieldEntry *> fields;

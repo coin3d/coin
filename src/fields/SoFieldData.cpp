@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoFieldData Inventor/fields/SoFieldData.h
+  \class SoFieldData SoFieldData.h Inventor/fields/SoFieldData.h
   \brief The SoFieldData class is a container for a prototype set of fields.
   \ingroup fields
 
@@ -29,7 +29,7 @@
   within its "owner" class and a pointer offset to the dynamic
   instance of the field itself.
 
-  Enumeration sets are stored with (name value) pairs, to make it
+  Enumeration sets are stored with (name, value) pairs, to make it
   possible to address, read and save enum type fields by name.
 
   It is unlikely that application programmers should need to use any
@@ -60,8 +60,9 @@ static const char OPEN_BRACE_CHAR = '[';
 static const char CLOSE_BRACE_CHAR = ']';
 static const char VALUE_SEPARATOR_CHAR = ',';
 
+// Internal classes, start /////////////////////////////////////////////////
 
-/// Internal classes, start /////////////////////////////////////////////////
+#ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
 class SoFieldEntry {
 public:
@@ -69,6 +70,14 @@ public:
   // Copy constructors.
   SoFieldEntry(const SoFieldEntry * fe) { this->copy(fe); }
   SoFieldEntry(const SoFieldEntry & fe) { this->copy(&fe); }
+
+  int operator==(const SoFieldEntry * fe) const
+    {
+      return ((this->name == fe->name) && (this->ptroffset == fe->ptroffset));
+    }
+  int operator!=(const SoFieldEntry * fe) const { return ! operator==(fe); }
+  int operator==(const SoFieldEntry & fe) const { return operator==(&fe); }
+  int operator!=(const SoFieldEntry & fe) const { return ! operator==(&fe); }
 
   SbName name;
   int ptroffset;
@@ -88,6 +97,16 @@ public:
   SoEnumEntry(const SoEnumEntry * ee) { this->copy(ee); }
   SoEnumEntry(const SoEnumEntry & ee) { this->copy(&ee); }
 
+  int operator==(const SoEnumEntry * ee) const
+    {
+      return ((this->nameoftype == ee->nameoftype) &&
+              (this->names == ee->names) && (this->values == ee->values));
+    }
+  int operator!=(const SoEnumEntry * ee) const { return ! operator==(ee); }
+  int operator==(const SoEnumEntry & ee) const { return operator==(&ee); }
+  int operator!=(const SoEnumEntry & ee) const { return ! operator==(&ee); }
+
+
   SbName nameoftype;
   SbList<SbName> names;
   SbList<int> values;
@@ -101,7 +120,9 @@ private:
     }
 };
 
-/// Internal classes, end ///////////////////////////////////////////////////
+#endif // DOXYGEN_SKIP_THIS
+
+// Internal classes, end ///////////////////////////////////////////////////
 
 
 
@@ -131,7 +152,7 @@ SoFieldData::SoFieldData(const SoFieldData * fd)
 
 /*!
   Constructor. Takes an indication on the number of fields which
-  should be stored.
+  should be stored, to make sure the memory handling is efficient.
  */
 SoFieldData::SoFieldData(int /* numfields */)
 {
@@ -226,7 +247,7 @@ SoFieldData::getField(const SoFieldContainer * object, int index) const
 
 /*!
   Returns the internal index value of \a field in \a fc. If \a field
-  is not part of \a fc, return -1.
+  is not part of \a fc, returns -1.
 */
 int
 SoFieldData::getIndex(const SoFieldContainer * fc, const SoField * field) const
@@ -275,7 +296,7 @@ SoFieldData::addEnumValue(const char * enumname, const char * valuename,
 
 /*!
   Returns the \a names and \a values of enumeration entry with the \a
-  enumname. The number of (name value) pairs available in the
+  enumname. The number of (name, value) pairs available in the
   enumeration is returned in \a num.
 */
 void
@@ -314,7 +335,7 @@ SoFieldData::getEnumData(const char * enumname, int & num,
   If \a notbuiltin is \c TRUE on return, \a object is an unknown node
   or engine type. Unknown nodes are recognized by the \c fields
   keyword first in their file format definition, and unknown engines
-  by the \a inputs keyword.
+  by the \c inputs keyword.
 
 */
 SbBool
@@ -340,15 +361,19 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 #endif // debug
 
     // Unknown node type, must read field descriptions.
-    if (fieldflags & 0x40) {
+    if (fieldflags & SoFieldData::NOTBUILTIN) {
       if (!this->readFieldDescriptions(in, object, numfields)) return FALSE;
     }
-    else if (fieldflags != 0x00) {
-      // FIXME: check for other fieldflags. 20000103 mortene.
-      COIN_STUB();
+
+    // Check for more flags, in case there's any we've missed.
+    if (fieldflags & ~(SoFieldData::NOTBUILTIN)) {
+      SoReadError::post(in,
+                        "Unknown flags in control word: 0x%02x, "
+                        "please report to coin-support@sim.no",
+                        fieldflags);
     }
 
-#if COIN_DEBUG    
+#if COIN_DEBUG
     if (numfields > this->fields.getLength())
       SoDebugError::postWarning("SoFieldData::read",
                                 "Suspicious number of fields: %d", numfields);
@@ -419,9 +444,9 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 }
 
 /*!
-  Find field \a fieldname in \a object, and if it is available, sets
-  \a foundname to \c TRUE and tries to read the field specification
-  from \a in. If \a foundname is returned as \c TRUE, the return value
+  Find field \a fieldname in \a object, and if it is available, set
+  \a foundname to \c TRUE and try to read the field specification
+  from \a in. If \a foundname is set to \c TRUE, the return value
   says whether or not the field specification could be read without
   any problems.
 
@@ -461,7 +486,7 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
       f->setDefault(FALSE);
     }
   }
-  
+
   // FIXME: is this really the best place to write the flags +
   // numfields value? 20000102 mortene.
 
@@ -476,9 +501,9 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
     }
 
     uint16_t fieldflags = 0x00;
-    // FIXME: take care of setting flags for SoUnknownEngines and
-    // group SoUnknownNodes. 20000102 mortene.
-    if (!object->getIsBuiltIn()) fieldflags |= 0x40;
+    // FIXME: take care of setting flags for SoUnknownEngines, if
+    // necessary. 20000102 mortene.
+    if (!object->getIsBuiltIn()) fieldflags |= SoFieldData::NOTBUILTIN;
 
     uint32_t w = fieldflags;
     w <<= 8;
@@ -507,6 +532,9 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
 
   If there was any data set up in this instance before the method was
   called, the old data is removed first.
+
+  Note that this only copies the field set template specification from
+  \a src, \e not any actual fields.
  */
 void
 SoFieldData::copy(const SoFieldData * src)
@@ -523,7 +551,21 @@ SoFieldData::copy(const SoFieldData * src)
 }
 
 /*!
-  FIXME: write doc
+  Compares \a c1 and \a c2 to see if they have the same field data set
+  and if the fields of \a c1 have the same values as the fields of \a c2.
+
+  Field connections are not considered (i.e. we will return \c TRUE if
+  the values of the fields of \a c1 are equal to the fields of \a c2,
+  even if they differ in how they have made connections to other
+  fields).
+
+  If you think the method signature is a bit strange, you're correct.
+  This should really have been a static method (the owner \c this
+  instance of the method isn't used at all, due to how the internal
+  representation of field template list are stored), but for unknown
+  reasons this is a dynamic method in Open Inventor. So also in Coin,
+  to keep compatibility.
+
  */
 SbBool
 SoFieldData::isSame(const SoFieldContainer * c1,
@@ -531,8 +573,17 @@ SoFieldData::isSame(const SoFieldContainer * c1,
 {
   if (c1 == c2) return TRUE;
 
-  COIN_STUB();
-  return FALSE;
+  const SoFieldData * fd1 = c1->getFieldData();
+  const SoFieldData * fd2 = c2->getFieldData();
+  if (!fd1 && !fd2) return TRUE;
+  if (!fd1 || !fd2) return FALSE;
+  if (*fd1 != *fd2) return FALSE;
+
+  int num = fd1->getNumFields();
+  for (int i=0; i < num; i++)
+    if (*(fd1->getField(c1, i)) != *(fd2->getField(c2, i))) return FALSE;
+
+  return TRUE;
 }
 
 /*!
@@ -540,7 +591,7 @@ SoFieldData::isSame(const SoFieldContainer * c1,
   in the form "[ FIELDCLASS FIELDNAME, FIELDCLASS FIELDNAME, ... ]".
 
   \a numdescriptionsexpected is used for binary format import to know
-  how many descriptions should be present.
+  how many descriptions should be parsed.
 
  */
 SbBool
@@ -658,4 +709,12 @@ SoFieldData::writeFieldDescriptions(SoOutput * out,
   }
 
   if (!out->isBinary()) out->write(" ]\n");
+}
+
+// Check for equality.
+int
+SoFieldData::operator==(const SoFieldData * fd) const
+{
+  return (((*this->enums) == (*fd->enums)) &&
+          ((*this->fields) == (*fd->fields)));
 }

@@ -141,8 +141,9 @@ SoBase::destroy(void)
 }
 
 /*!
-  This need to be called before we start instantiating and using objects
-  derived from SoBase. SoDB::init() will call this method automatically.
+  Sets up initialization for data common to all instances of this
+  class, like submitting necessary information to the Coin type
+  system.
  */
 void
 SoBase::initClass(void)
@@ -285,7 +286,8 @@ SoBase::isOfType(SoType type) const
 }
 
 /*!
-  Returns the type identifier for the SoBase class.
+  This static method returns the SoType object associated with
+  objects of this class.
  */
 SoType
 SoBase::getClassTypeId(void)
@@ -921,8 +923,6 @@ SoBase::readBaseInstance(SoInput * in, const SbName & className,
     // import from binary format files.
     unsigned short flags = 0;
     if (in->isBinary()) {
-      // FIXME: what about user extension nodes with children in
-      // versions < 2.1 of the file format? 20000106 mortene.
       if (in->getIVVersion() > 2.0f) retval = in->read(flags);
     }
 

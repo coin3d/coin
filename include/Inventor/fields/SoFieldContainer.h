@@ -21,11 +21,12 @@
 #define __SOFIELDCONTAINER_H__
 
 #include <Inventor/misc/SoBase.h>
-#include <Inventor/fields/SoFieldData.h>
 
 class SbString;
+class SoFieldData;
 class SoFieldList;
 class SoOutput;
+
 
 class SoFieldContainer : public SoBase {
   typedef SoBase inherited;

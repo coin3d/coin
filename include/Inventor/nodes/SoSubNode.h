@@ -20,9 +20,10 @@
 #ifndef __SOSUBNODE_H__
 #define __SOSUBNODE_H__
 
-#include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
+#include <Inventor/fields/SoFieldData.h>
+#include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
 
 
 
@@ -129,6 +130,8 @@ _class_::createInstance(void) \
 #define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \
   do { \
     SO_NODE_CONSTRUCTOR(_class_); \
+    /* Restore value of isBuiltIn flag (which is set to FALSE */ \
+    /* in the SO_NODE_CONSTRUCTOR() macro. */ \
     this->isBuiltIn = TRUE; \
   } while (0)
 #endif // INTERNAL macro definition
@@ -190,14 +193,13 @@ _class_::createInstance(void) \
 
 
 // FIXME: document. 20000103 mortene.
-#define SO_NODE_ADD_FIELD(_fieldname_, _defaultval_) \
+#define SO_NODE_ADD_FIELD(_field_, _defaultval_) \
   do { \
-    if (SO_NODE_IS_FIRST_INSTANCE()) \
-      classfielddata->addField(this, SO__QUOTE(_fieldname_), \
-                               &this->_fieldname_);\
-    this->_fieldname_.setValue _defaultval_;\
-    this->_fieldname_.setContainer(this); \
-    this->_fieldname_.setDefault(TRUE); \
+    this->_field_.setValue _defaultval_;\
+    this->_field_.setContainer(this); \
+    if (SO_NODE_IS_FIRST_INSTANCE()) { \
+      classfielddata->addField(this, SO__QUOTE(_field_), &this->_field_);\
+    } \
   } while (0)
 
 
