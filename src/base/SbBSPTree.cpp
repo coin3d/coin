@@ -255,7 +255,7 @@ coin_bspnode::split()
       !this->right->indices.getLength()) {
     fprintf(stderr,"Left:\n");
     n = this->indices.getLength();
-    SbVec3f * pts = (SbVec3f *)this->pointsArray;
+    const SbVec3f * pts = this->pointsArray->getArrayPtr();
     for (i = 0; i < n; i++) {
       SbVec3f vec = pts[this->indices[i]];
       fprintf(stderr,"pt: %f %f %f\n",
@@ -288,23 +288,22 @@ coin_bspnode::split()
 void
 coin_bspnode::sort()
 {
-  int * idxarray = (int *)this->indices.getArrayPtr();
   int num = this->indices.getLength();
   int dim = this->dimension;
-  SbVec3f * points = (SbVec3f *)this->pointsArray;
+  const SbVec3f * points = this->pointsArray->getArrayPtr();
   int i, j, distance;
   int idx;
   for (distance = 1; distance <= num/9; distance = 3*distance + 1);
   for (; distance > 0; distance /= 3) {
     for (i = distance; i < num; i++) {
-      idx = idxarray[i];
+      idx = this->indices[i];
       j = i;
       while (j >= distance &&
-             points[idxarray[j-distance]][dim] > points[idx][dim]) {
-        idxarray[j] = idxarray[j-distance];
+             points[this->indices[j-distance]][dim] > points[idx][dim]) {
+        this->indices[j] = this->indices[j-distance];
         j -= distance;
       }
-      idxarray[j] = idx;
+      this->indices[j] = idx;
     }
   }
 }
