@@ -707,3 +707,46 @@ SoAction::shouldCompactPathList() const
   COIN_STUB();
   return FALSE;
 }
+
+void
+SoAction::switchToPathTraversal(SoPath *path)
+{
+  AppliedData oldData = this->appliedData;
+  AppliedCode oldCode = this->appliedCode;
+  PathCode oldPathCode = this->currentPathCode;
+  SoPath oldPath = this->currentPath;
+
+  this->appliedCode = SoAction::PATH;
+  this->appliedData.path = path;
+  this->currentPathCode = SoAction::IN_PATH;
+
+  this->traverse(path->getNode(0));
+
+  // restore previous state
+  this->currentPath = oldPath;
+  this->currentPathCode = oldPathCode;
+  this->appliedData = oldData;
+  this->appliedCode = oldCode;
+}
+
+void
+SoAction::switchToNodeTraversal(SoNode *node)
+{
+  AppliedData oldData = this->appliedData;
+  AppliedCode oldCode = this->appliedCode;
+  PathCode oldPathCode = this->currentPathCode;
+  SoPath oldPath = this->currentPath;
+
+  this->appliedCode = SoAction::NODE;
+  this->appliedData.node = node;
+  this->currentPathCode = SoAction::NO_PATH;
+  this->currentPath.truncate(0);
+
+  this->traverse(node);
+
+  // restore previous state
+  this->currentPath = oldPath;
+  this->currentPathCode = oldPathCode;
+  this->appliedData = oldData;
+  this->appliedCode = oldCode;
+}

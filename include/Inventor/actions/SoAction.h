@@ -111,8 +111,10 @@ public:
   void pushCurPath(void);
 
   void popPushCurPath(const int childIndex);
-
   void popCurPath(void);
+
+  void switchToPathTraversal(SoPath *path);
+  void switchToNodeTraversal(SoNode *node);
 
 protected:
   virtual void beginTraversal(SoNode * node);
@@ -128,7 +130,7 @@ private:
   static void initActions(void);
 
   AppliedCode appliedCode;
-  union {
+  union AppliedData {
     SoNode * node;
     SoPath * path;
     struct {
