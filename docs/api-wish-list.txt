@@ -39,4 +39,156 @@ THE WISH LIST
 
   Probably not that many are worth implementing...
 
+  [I would really like an SbVec2s field, 2000-12-07 pederb]
 
+* SbVec2i, SbVec2d, SbVec3d, SbVec4d
+  2000-12-07 Peder Blekken <pederb@sim.no>
+
+  It would be very useful to have these classes. SbVec2i for storing
+  2D integer vectors, SbVec2d, SbVec3d, SbVec4d for storing doubles.
+
+  The corresponding field classes should also be added.
+
+* SoDepthBuffer, SoGLDepthBufferElement
+  2000-12-07 Peder Blekken <pederb@sim.no>
+
+  This node and element would really be useful to be able to
+  control the depth buffer in a scene graph. It's already
+  implemented, and I use it all the time in internal projects.
+
+  In addition, the element would really be useful when rendering
+  SoAnnotation nodes.
+
+* SoViewportRegion
+  2000-12-07 Peder Blekken <pederb@sim.no>
+
+  This node could also be useful to a lot of people, I think. I've
+  seen postings on comp.graphics.api.inventor on people using
+  SoCallback nodes to change the viewport in a scene graph.
+  It would be much easier to use a node for doing this. The element
+  is already part of the Open Inventor API so it's a really
+  simple node.
+
+  This node is implemented and works like a charm.
+
+* Coinboard node
+  2000-12-07 Peder Blekken <pederb@sim.no>
+
+  Silly name for a node, I know, but Billboard is already taken by
+  VRML97. In my implementation it is actually a shape node which can
+  be directed towards the camera, and the shape can be rendered in
+  multiple positions, controlled by an SoMFVec3f. This is very useful
+  and much more optimal than using a node derived from SoGroup
+  (there is quite a lot of overhead in the GLRender()-method of a
+  shape node (initialize material, find bindings, evaluate lazy
+  elements etc), and since (usually) all shapes are equal under a
+  Billboard shape node, it's just silly to do this repeatedly for all
+  shapes. We should have a normal SoGroup-inherited Billboard node
+  also, I guess.
+
+  This node is typically used for rendering simple shapes with a
+  alpha-transparent texture, such as trees in terrain, particles or
+  other billboards. Unfortunately, this will not work properly
+  in SGI or TGS Inventor, since they don't support alpha test
+  rendering of textured shapes.
+
+  This node is only partly implemented (generatePrimitives() is missing).
+
+* SoEnvironment::fogStart field.
+  2000-12-07 Peder Blekken <pederb@sim.no>
+
+  Why, oh why didn't SGI include this field when designing the
+  Environment node? It makes it possible to set the distance at
+  which fog starts for linear (HAZE) fog. I've already added support
+  for this in SoEnvironmentElement and SoGLEnvironmentElement.
+
+* SoSkyDome node.
+  2000-12-07 Peder Blekken <pederb@sim.no>
+
+  This node renders a skydome which can be connected to the camera
+  to create a nice, global environment in your applications. The 
+  node has the following fields:
+
+    SoSFFloat startAngle;
+    SoSFFloat endAngle;
+    SoSFInt32 numStacks;
+    SoSFInt32 numSlices;
+    SoSFFloat height;
+    SoSFFloat radius;
+
+  This makes it possible to draw a partial (or full) sphere, and the
+  current texture is mapped from startAngle (t=0) to endAngle (t=1).
+  The s texture coordinate is mapped in the same way as SoSphere.
+  
+  This node is partly implemented (only GLRender()-method so far).
+
+* SoGLPrimitiveSet node.
+  2000-12-07 Peder Blekken <pederb@sim.no>
+
+  A node designed for fast rendering, since it's an exact mapping
+  on how OpenGL renders shapes, and all information (except current
+  material and texture) is stored inside the node. This might be our
+  alternative to the (IMHO) silly SoVertexProperty node.
+
+  The node has the following fields:
+ 
+    SoMFInt32 coordIndex;
+    SoMFInt32 rgbaIndex;
+    SoMFInt32 normalIndex;
+    SoMFInt32 textureCoordIndex;
+
+    SoMFVec3f point;
+    SoMFVec3f normal;
+    SoMFVec2f texCoord;  // or possibly SbVec4f to support 3D textures
+    SoMFUInt32 orderedRGBA;
+
+  All geometry information is inside the node. This will lead to much
+  less overhead for each rendered node, which might be important if
+  you have lots of nodes in a scene.  Also, this makes it very easy to
+  create a display list inside the node, and a much simpler notification
+  scheme.
+
+  This node can contain triangles, triangle strips, triangle fans,
+  quads, quad strips or polygons. All geometry must be initialized
+  with a negative code, and the geometry type will be rendered until
+  the next negative code. Since this scheme is an exact mapping of the
+  way OpenGL renders geometry, this will lead to maximum performance
+  OpenGL rendering. Polygons must of course be convex; polygon
+  tessellation will not be performed by this node, as it is designed
+  for speed, not flexibility.  
+
+  Default texture coordinates will not be generated. If you want
+  texture coordinates, supply them yourself. The same goes for normals;
+  they will not be generated.
+
+  For material nodes with multiple values per field, only the first
+  value per field will be used. Diffuse color and transparency can be
+  replaced using an orderedRGBA field inside the node.
+
+  Normal bindings:
+
+  NONE               : when normal and normalIndex are empty
+  PER_VERTEX         : when normalIndex is empty              
+  PER_VERTEX_INDEXED : otherwise
+
+  color and texture bindings use the same scheme.
+
+  For INDEXED bindings, you should put a -1 in the normalIndex,
+  rgbaIndex and texCoordIndex fields when there's a negative index
+  code in the coordIndex field. This is mostly to make the node a little
+  more readable for the human eye.
+
+  It is not possible to specify normals, colors or texcoords
+  per face, but this can be achieved with very little overhead using the 
+  index-fields (it is very rarely used anyway, I think).
+
+  I guess this node is most suited to be computer generated since 
+  it is easy to make mistakes with all the different coordIndex codes.
+  But, experienced OpenGL programmers should be able to use it quite easily.
+
+* More nodes and element to control GL state.
+  2000-12-07 Peder Blekken <pederb@sim.no>
+  
+  Alpha test, blending, stencil etc. We should at least have an 
+  SoGLAlphaTestElement, since Coin supports alpha test rendering of
+  textures.
