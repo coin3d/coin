@@ -276,3 +276,35 @@ THE WISH LIST
     Many components are inherently 2D and would be hard to re-make in
     3D, though.
 
+* Less environment pollution
+  2001-05-02  Lars J. Aas  <larsa@sim.no>
+
+  Instead of having one environment variable for each togglable option, we
+  could use one one variable containing several options.  For instance:
+
+    export COIN_RENDER_CACHING=1
+    export COIN_TEX2_BUILD_MIPMAP_FAST=1
+
+  could become:
+
+    export COIN_OPTIONS="+RENDER_CACHING,+TEX2_BUILD_MIPMAP_FAST"
+
+  You could use + (optional) to turn an option on, and - to turn it off.
+  One could use ! instead of -, but bash (readline?) doesn't handle use of
+  ! as gracefully as it ought to.
+
+  The last ocurrence of an option would be the result of a lookup.  That
+  way, you can override previous settings by writing:
+
+    COIN_OPTIONS="$COIN_OPTIONS,-RENDER_CACHING"
+
+  Using a list to assign values (integers and strings) can also be done
+  quite easily.  (COIN_OPTIONS="ARBITRARY_LIMIT=512").  
+
+  If there are limits to the length of the contents of an environment
+  variable, an option is to search the environment for COIN_OPTIONS,
+  COIN_OPTIONS2, COIN_OPTIONS3, etc. until there is no environment
+  variable with the name of the next variable.  This will unfortunately
+  not work with the above scheme of appending overriding options at the
+  end of COIN_OPTIONS since you need to know which variable is parsed last.
+
