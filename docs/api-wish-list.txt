@@ -771,3 +771,73 @@ THE WISH LIST
 
   Note also that these changes would break the ABI, so this would have
   to be done for the next major release.
+
+
+* Detect and link with libz if present and update SoInput accordingly.
+  2002-08-29  Lars J. Aas  <larsa@sim.no>
+
+  This would make Coin able to read compressed iv/wrl files directly.
+
+  It should also be possible to write compressed iv/wrl files.  API
+  needs to be extended with the following functions,
+
+    void SoWriteAction::setZLibCompressionEnabled(SbBool compression);
+    SbBool SoWriteAction::isZLibCompressionEnabled(void) const;
+
+  and SoInput/SoOutput must redirect read/write calls through libz, which
+  may cause more API changes.
+
+
+* Detect and support libtar if present, and update SoInput accordingly.
+  2002-08-30  Lars J. Aas  <larsa@sim.no>
+
+  If you could bundle your inventor model, and all external texture
+  files and .iv files in a tar archive (possibly compressed), and
+  still load it and its sub-files with Coin, that would be a huge gain.
+  The library "libtar" (BSD-licensed, freshmeat) would enable us to do
+  this.
+
+  Typically, the basename of the tar-file would be used as the basename
+  of the Inventor model file loaded from the archive.  That way, you
+  could untar multiple such bundles in the same dir, and not worry
+  about overwriting some "default" filename for the root Inventor file.
+  This has the disadvantage of making it impossible to rename the bundle
+  file though.
+
+  Another option is to load the first .iv-file found in the bundle as
+  the root file.  Libtar will probably allow us to inspect this kind
+  of stuff quite easily.
+
+  A new write-action (or extensions to the existing one) is needed so
+  Coin can generate such bundles automatically, moving referenced files
+  and textures into the being-written bundle.  If bundles always had to
+  be created manually (which is acceptable in the development phase),
+  the point would kind of be gone.
+
+  URL: http://www-dev.cso.uiuc.edu/libtar/
+
+    void SoWriteAction::setTarBundlingEnabled(SbBool bundling);
+    SbBool SoWriteAction::isTarBundlingEnabled(void) const;
+
+* Prettier SoWriteAction .iv-formatting
+  2002-09-22  Lars J. Aas  <larsa@sim.no>
+
+  I'm not to happy with the spacing/indentation of SoWriteAction.  I
+  believe the current output is more or less equivalent on the bit-level
+  to what SGI Inventor writes, but it's not the most easy formatting for
+  the eyes.  It seems to be designed for a tab-width setting of 4, and lacks
+  linebreaks after close brackets, and has line breaks before node
+  lines instead or something.
+
+  I therefore propose adding a get/set SbBool flag for TAB-less, properly
+  line-broken indentation in SoWriteAction.
+
+  What I want is more or less like this (note the control characters):
+
+   $ sed -e 's/^I/    /g' -e 's/}/}^M/g' <input.iv \
+     | tr '\r' '\n' \
+     | sed -e '3,$ { /^$/ d; }' >output.iv
+
+    void SoWriteAction::setCoinFormattingEnabled(SbBool bundling);
+    SbBool SoWriteAction::isCoinFormattingEnabled(void) const;
+
