@@ -208,8 +208,10 @@
 /*!
   \var SoTexture2::Model SoTexture2::BLEND
 
-  Blend texturemap image on polygons using the color stored in the
-  SoTexture2::blendColor field.
+  This model is normally used with monochrome textures (i.e. textures
+  with one or two components). The first component, the intensity, is
+  then used to blend between the shaded color of the polygon and the
+  SoTexture2::blendColor.  
 */
 
 /*!
