@@ -201,6 +201,18 @@ public:
   SbBool matches(const char character, const SbName font) {
     return (this->character == character) && (this->font == font);
   }
+
+  // AIX native compiler xlC needs equality and inequality operators
+  // to compile templates where these operators are referenced (even
+  // if they are actually never used).
+
+  SbBool operator==(const coin_glyph_info & gi) {
+    return this->matches(gi.character, gi.font) && this->glyph == gi.glyph;
+  }
+  SbBool operator!=(const coin_glyph_info & gi) {
+    return !(*this == gi);
+  }
+
   char character;
   SbName font;
   SoGlyph *glyph;
