@@ -1049,6 +1049,9 @@ SoVRMLAudioClipP::openFile(const char *filename)
     return FALSE;
   }
 
+  // FIXME: only looks in current directory -- should use the full set
+  // of SoInput::getDirectories() (make a copy of the returned
+  // SbStringList from when the SoVRMLAudioClip was read).  20050113 mortene.
   this->stream = simage_wrapper()->s_stream_open(filename, NULL);
   if (this->stream == NULL) {
     /*
