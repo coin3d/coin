@@ -163,6 +163,12 @@ public:
   SoBoundingBoxCache * bboxcache;
 #ifdef COIN_THREADSAFE
   SbStorage * glcachestorage;
+  static void invalidate_gl_cache(void * tls, void *) {
+    sovrmlgroup_storage * ptr = (sovrmlgroup_storage*) tls;
+    if (ptr->glcachelist) {
+      ptr->glcachelist->invalidateAll();
+    }
+  }
 #else // COIN_THREADSAFE
 private:
   SoGLCacheList * glcachelist;
@@ -172,6 +178,16 @@ public:
   enum { YES, NO, MAYBE } hassoundchild;
 
   SoGLCacheList * getGLCacheList(const SbBool createifnull);
+
+  void invalidateGLCaches(void) {
+#ifdef COIN_THREADSAFE
+    glcachestorage->applyToAll(invalidate_gl_cache, NULL);
+#else // COIN_THREADSAFE
+    if (this->glcachelist) {
+      this->glcachelist->invalidateAll(); 
+    }
+#endif // !COIN_THREADSAFE
+  }
 };
 
 #ifdef COIN_THREADSAFE
@@ -644,16 +660,9 @@ void
 SoVRMLGroup::notify(SoNotList * list)
 {
   inherited::notify(list);
-
+  
   if (PRIVATE(this)->bboxcache) PRIVATE(this)->bboxcache->invalidate();
-  SoGLCacheList * glcachelist = PRIVATE(this)->getGLCacheList(FALSE);
-  if (glcachelist) {
-#if GLCACHE_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoVRMLGroup::notify",
-                           "Invalidating GL cache: %p", this);
-#endif // debug
-    glcachelist->invalidateAll();
-  }
+  PRIVATE(this)->invalidateGLCaches();
   PRIVATE(this)->hassoundchild = SoVRMLGroupP::MAYBE;
 }
 
