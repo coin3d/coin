@@ -60,13 +60,13 @@ SO_NODE_ABSTRACT_SOURCE(SoVertexShape);
 /*!
   Constructor.
 */
-SoVertexShape::SoVertexShape()
+SoVertexShape::SoVertexShape(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexShape);
 
-  SO_NODE_ADD_FIELD(vertexProperty,(NULL));
+  SO_NODE_ADD_FIELD(vertexProperty, (NULL));
 
-  this->normalCache = NULL;
+  this->normalcache = NULL;
 }
 
 /*!
@@ -74,25 +74,19 @@ SoVertexShape::SoVertexShape()
 */
 SoVertexShape::~SoVertexShape()
 {
-  delete this->normalCache;
+  delete this->normalcache;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoVertexShape class. This includes setting up the
-  type system, among other things.
-*/
+// doc from superclass
 void
-SoVertexShape::initClass()
+SoVertexShape::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoVertexShape);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from superclass
 void
-SoVertexShape::notify(SoNotList * /* list */)
+SoVertexShape::notify(SoNotList * nl)
 {
   // FIXME: cache(s) need invalidation. 19990327 mortene.
 }
@@ -128,9 +122,7 @@ SoVertexShape::generateDefaultNormals(SoState * /* state */,
   return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from superclass
 SbBool
 SoVertexShape::shouldGLRender(SoGLRenderAction * action)
 {
@@ -148,8 +140,8 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
       (SoVertexProperty *) this->vertexProperty.getValue();
     if (elem->getNum() == 0 &&
         (!vp || vp->normal.getNum() <= 0)) {
-      if (this->normalCache == NULL ||
-          !this->normalCache->isValid(state)) {
+      if (this->normalcache == NULL ||
+          !this->normalcache->isValid(state)) {
         generateNormals(state);
       }
 #if 0 // OIV doesn't do this, so it's disabled in Coin also.
@@ -183,7 +175,7 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
   to be unit length).
 */
 SbBool
-SoVertexShape::willUpdateNormalizeElement(SoState *state) const
+SoVertexShape::willUpdateNormalizeElement(SoState * state) const
 {
   const SoNormalElement * elem = SoNormalElement::getInstance(state);
   const SoVertexProperty * vp =
@@ -195,7 +187,7 @@ SoVertexShape::willUpdateNormalizeElement(SoState *state) const
   //
 
   if (elem->getNum() <= 0 && (!vp || vp->normal.getNum() <= 0) &&
-      this->normalCache) return TRUE;
+      this->normalcache) return TRUE;
   return FALSE;
 }
 
@@ -208,19 +200,19 @@ SoVertexShape::setNormalCache(SoState * const state,
                               const int num,
                               const SbVec3f * normals)
 {
-  if (this->normalCache == NULL) {
-    this->normalCache = new SoNormalCache(state);
+  if (this->normalcache == NULL) {
+    this->normalcache = new SoNormalCache(state);
   }
-  this->normalCache->set(num, normals);
+  this->normalcache->set(num, normals);
 }
 
 /*!
   FIXME: write function documentation
 */
 SoNormalCache *
-SoVertexShape::getNormalCache() const
+SoVertexShape::getNormalCache(void) const
 {
-  return this->normalCache;
+  return this->normalcache;
 }
 
 /*!
@@ -229,14 +221,14 @@ SoVertexShape::getNormalCache() const
 void
 SoVertexShape::generateNormals(SoState * const state)
 {
-  if (this->normalCache == NULL) {
-    this->normalCache = new SoNormalCache(state);
+  if (this->normalcache == NULL) {
+    this->normalcache = new SoNormalCache(state);
   }
 
   //
   // See if the node supports the Coin-way of generating normals
   //
-  if (!generateDefaultNormals(state, this->normalCache)) {
+  if (!generateDefaultNormals(state, this->normalcache)) {
     //
     // try to generate normals the old Inventor way, using
     // SoNormalBundle.
@@ -254,24 +246,21 @@ void
 SoVertexShape::getVertexData(SoState * state,
                              const SoCoordinateElement *& coords,
                              const SbVec3f *& normals,
-                             const SbBool needNormals)
+                             const SbBool neednormals)
 {
   coords = SoCoordinateElement::getInstance(state);
   assert(coords);
 
   normals = NULL;
-  if (needNormals) {
+  if (neednormals) {
     normals = SoNormalElement::getInstance(state)->getArrayPtr();
   }
 }
 
-
-/*!
-  FIXME: write doc
- */
+// doc from superclass
 void
-SoVertexShape::write(SoWriteAction * writeAction)
+SoVertexShape::write(SoWriteAction * action)
 {
   // FIXME: something missing here? 19991009 mortene.
-  inherited::write(writeAction);
+  inherited::write(action);
 }

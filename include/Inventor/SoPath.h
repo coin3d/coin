@@ -23,6 +23,10 @@
 #include <Inventor/misc/SoBase.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/lists/SoNodeList.h>
+#ifndef COIN_INTERNAL
+ // For Open Inventor compatibility.
+ #include <Inventor/SoLists.h>
+#endif // !COIN_INTERNAL
 
 class SoWriteAction;
 class SoNotList;

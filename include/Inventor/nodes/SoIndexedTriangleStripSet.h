@@ -22,6 +22,10 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
+#ifndef COIN_INTERNAL
+ // For Open Inventor compatibility.
+ #include <Inventor/nodes/SoVertexProperty.h>
+#endif // !COIN_INTERNAL
 
 
 class SoIndexedTriangleStripSet : public SoIndexedShape {

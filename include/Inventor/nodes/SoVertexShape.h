@@ -23,6 +23,10 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFNode.h>
+#ifndef COIN_INTERNAL
+ // For Open Inventor compatibility.
+ #include <Inventor/nodes/SoVertexProperty.h>
+#endif // !COIN_INTERNAL
 
 
 class SoNormalCache;
@@ -43,14 +47,14 @@ public:
 
   SoSFNode vertexProperty;
 
-  virtual void notify(SoNotList * list);
+  virtual void notify(SoNotList * nl);
   virtual SbBool generateDefaultNormals(SoState * state,
                                         SoNormalBundle * bundle);
   virtual SbBool generateDefaultNormals(SoState * state,
                                         SoNormalCache * cache);
   void generateNormals(SoState * const state);
 
-  virtual void write(SoWriteAction * writeAction);
+  virtual void write(SoWriteAction * action);
 
 protected:
   SoVertexShape(void);
@@ -66,12 +70,10 @@ protected:
   void getVertexData(SoState * state,
                      const SoCoordinateElement *& coords,
                      const SbVec3f *& normals,
-                     const SbBool needNormals);
+                     const SbBool neednormals);
 
 private:
-  SoNormalCache * normalCache;
+  SoNormalCache * normalcache;
 };
-
-
 
 #endif // !COIN_SOVERTEXSHAPE_H
