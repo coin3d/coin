@@ -295,7 +295,7 @@ PRIVATE_EQUALITY_SOURCE(_class_); \
 const _class_ & \
 _class_::operator = (const _class_ & field) \
 { \
-  if (field.getNum() < this->getNum()) this->deleteAllValues(); \
+  this->allocValues(field.getNum()); \
   this->setValues(0, field.getNum(), field.getValues(0)); \
   return *this; \
 }
@@ -373,7 +373,7 @@ _class_::operator == (const _class_ & field) const \
 void \
 _class_::deleteAllValues(void) \
 { \
-  this->allocValues(0); \
+  this->setNum(0); \
 } \
  \
 void \

@@ -48,7 +48,6 @@ public:
 protected:
   SoMField(void);
   virtual void makeRoom(int newnum);
-  virtual void evaluateConnection(void) const;
 
 #ifndef DOXYGEN_SKIP_THIS // Internal methods.
   virtual int fieldSizeof(void) const = 0;
