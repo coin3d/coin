@@ -623,7 +623,8 @@ SoVRMLBackgroundP::buildGeometry()
     // Calculate vertices and normals
     int counter = 0;
     double x,y,z;
-    for (int i=0;i<slices;++i) {
+    int i;
+    for (i=0;i<slices;++i) {
       for (int j=0;j<len;++j) {
         x = sphereradius * cos(i * ((2 * M_PI) / slices)) * sin(angles[j]);
         y = -sphereradius * cos(angles[j]);
@@ -748,7 +749,8 @@ SoVRMLBackgroundP::buildIndexList(SoIndexedTriangleStripSet * sphere, int len, i
   // Build vertex and normal indices for triangle strips
   int matindex = 0;
   int counter = 0;
-  for (int i=0;i<slices - 1;++i) {
+  int i;
+  for (i=0;i<slices - 1;++i) {
     for (int j=0;j<len;++j) {
       
       sphere->materialIndex.set1Value(counter,matindex);
