@@ -37,6 +37,9 @@
 /* System dependant thread ID type */
 #undef COIN_THREADID_TYPE
 
+/* define to compile thread safe library */
+#undef COIN_THREADSAFE
+
 /* define this to a type of the indicated bitwidth */
 #undef COIN_UINT16_T
 

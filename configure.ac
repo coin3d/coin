@@ -326,8 +326,31 @@ AC_SUBST([HAVE_THREADS])
 
 SIM_AC_CONFIGURATION_SETTING([System threads API], [$sim_ac_threads_api])
 
-
 AM_CONDITIONAL([BUILD_WITH_THREADS], [$sim_ac_enable_threads])
+
+# *******************************************************************
+# Thread safe library
+
+sim_ac_enable_threadsafe=false
+
+if test "$sim_ac_threads_api" != "none"; then
+  AC_ARG_ENABLE(
+    [threadsafe],
+    AC_HELP_STRING([--enable-threadsafe], [enable thread safe library]), [
+    case $enableval in
+      yes) sim_ac_enable_threadsafe=true ;;
+      *) ;;
+    esac])
+fi
+
+COIN_THREADSAFE=0
+if $sim_ac_enable_threadsafe; then
+  COIN_THREADSAFE = 1
+  AC_DEFINE([COIN_THREADSAFE],, [define to compile thread safe library])
+  SIM_AC_CONFIGURATION_SETTING([Thread safe], [Yes])
+else
+  SIM_AC_CONFIGURATION_SETTING([Thread safe], [No  (enable with --enable-threadsafe)])
+fi
 
 # *******************************************************************
 # Headers we might want to use

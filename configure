@@ -1028,6 +1028,7 @@ Optional Features:
   --enable-vrml97         enable VRML97 support
   --disable-threads       disable multithreading support
   --disable-w32threads    disable Win32 threads, even when available
+  --enable-threadsafe     enable thread safe library
   --disable-build         disable configuration for library build
   --enable-html           build and install Coin HTML documentation
   --enable-man            build and install Coin man pages
@@ -5029,7 +5030,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 5032 "configure"' > conftest.$ac_ext
+  echo '#line 5033 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5565,7 +5566,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:5568: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:5569: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -7358,7 +7359,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7361 "configure"
+#line 7362 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -7456,7 +7457,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 7459 "configure"
+#line 7460 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -9065,13 +9066,52 @@ fi
 
 
 
-
 if $sim_ac_enable_threads; then
   BUILD_WITH_THREADS_TRUE=
   BUILD_WITH_THREADS_FALSE='#'
 else
   BUILD_WITH_THREADS_TRUE='#'
   BUILD_WITH_THREADS_FALSE=
+fi
+
+# *******************************************************************
+# Thread safe library
+
+sim_ac_enable_threadsafe=false
+
+if test "$sim_ac_threads_api" != "none"; then
+  # Check whether --enable-threadsafe or --disable-threadsafe was given.
+if test "${enable_threadsafe+set}" = set; then
+  enableval="$enable_threadsafe"
+
+    case $enableval in
+      yes) sim_ac_enable_threadsafe=true ;;
+      *) ;;
+    esac
+fi;
+fi
+
+COIN_THREADSAFE=0
+if $sim_ac_enable_threadsafe; then
+  COIN_THREADSAFE = 1
+
+cat >>confdefs.h <<\_ACEOF
+#define COIN_THREADSAFE
+_ACEOF
+
+  if test x${sim_ac_configuration_settings+set} != xset; then
+  sim_ac_configuration_settings="Thread safe:Yes"
+else
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe:Yes"
+fi
+
+else
+  if test x${sim_ac_configuration_settings+set} != xset; then
+  sim_ac_configuration_settings="Thread safe:No  (enable with --enable-threadsafe)"
+else
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|Thread safe:No  (enable with --enable-threadsafe)"
+fi
+
 fi
 
 # *******************************************************************
