@@ -87,6 +87,10 @@ private:
   SbBool typelistlocked;
   SoTypeList allowedtypes;
 
+  SbBool canCreateDefaultChild(void) const;
+  SoNode * createAndAddDefaultChild(void);
+  SoType getDefaultChildType(void) const;
+
   friend class SoBaseKit;
 };
 

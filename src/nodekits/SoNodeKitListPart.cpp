@@ -42,6 +42,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoSearchAction.h>
+#include <assert.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -530,5 +531,35 @@ SoNodeKitListPart::syncInternalData(void)
     this->children->remove(0);
     this->children->append(this->containerNode.getValue());
   }
-  // FIXME: lock typelist after import? 19991128 mortene.
+}
+
+// TRUE if default child can be created
+SbBool 
+SoNodeKitListPart::canCreateDefaultChild(void) const
+{
+  return this->getDefaultChildType() != SoType::badType();
+}
+
+// create, add and return a new default child. Should not be called if default
+// child can not be created.
+SoNode * 
+SoNodeKitListPart::createAndAddDefaultChild(void)
+{
+  SoType type = this->getDefaultChildType();
+  assert(type != SoType::badType());
+  SoNode * newnode = (SoNode*) type.createInstance();
+  this->addChild(newnode);
+  return newnode;
+}
+
+// return the first non abstract child type, or SoType::badType if none exists
+SoType 
+SoNodeKitListPart::getDefaultChildType(void) const
+{
+  const SoTypeList & typelist = this->getChildTypes();
+  int n = typelist.getLength();
+  for (int i = 0; i < n; i++) {
+    if (typelist[i].canCreateInstance()) return typelist[i];
+  }
+  return SoType::badType();
 }
