@@ -156,6 +156,15 @@ SbBool SoAudioDevice::init(const SbString &devicetype,
     str = alGetString(AL_EXTENSIONS);
     SoDebugError::postInfo("SoAudioDevice::init", "AL_EXTENSIONS=='%s'", str);
   }
+  // FIXME: the version string should be checked against the minimum
+  // version we demand. A standard "Debian testing" distribution as of
+  // now comes with version 0.0.6, for instance, and that one has
+  // problems with thammer's code. It is unknown if the problems are
+  // caused by our code, or by old bugs in OpenAL, though.
+  //
+  // const ALubyte * str = alGetString(AL_VERSION);
+  //
+  // 20021029 mortene.
 
   PRIVATE(this)->context = alcCreateContext(PRIVATE(this)->device,NULL);
   PRIVATE(this)->alcMakeContextCurrent(PRIVATE(this)->context);
