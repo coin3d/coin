@@ -441,6 +441,7 @@ cc_glglue_glext_supported(const cc_glglue * wrapper, const char * extension)
 #define GL_VERSION_1_1 1
 #define GL_VERSION_1_2 1
 #define GL_VERSION_1_3 1
+#define GL_VERSION_1_4 1
 #define GL_EXT_polygon_offset 1
 #define GL_EXT_texture_object 1
 #define GL_EXT_subtexture 1
@@ -588,8 +589,7 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_ARB_texture_compression */
 
-  /* FIXME: also possible that this exists in OpenGL as a
-     non-extension. 20021202 mortene. */
+  /* FIXME: this exists in OpenGL as a non-extension. 20021202 mortene. */
 #ifdef GL_EXT_paletted_texture
   if (cc_glglue_glext_supported(w,"GL_EXT_paletted_texture")) {
     w->glColorTableEXT = (COIN_PFNGLCOLORTABLEEXTPROC)PROC(glColorTableEXT);
@@ -599,12 +599,20 @@ glglue_resolve_symbols(cc_glglue * w)
   }
 #endif /* GL_EXT_paletted_texture */
 
-#if defined(GL_VERSION_1_2) && defined(GL_ARB_imaging)
-  if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0) &&
-      cc_glglue_glext_supported(w, "GL_ARB_imaging")) {
+#if defined(GL_VERSION_1_4)
+  if (cc_glglue_glversion_matches_at_least(w, 1, 4, 0)) {
     w->glBlendEquation = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquation);
   }
 #endif /* GL_VERSION_1_2 && GL_ARB_imaging */
+
+  if (w->glBlendEquation == NULL) {
+#if defined(GL_VERSION_1_2) && defined(GL_ARB_imaging)
+    if (cc_glglue_glversion_matches_at_least(w, 1, 2, 0) &&
+        cc_glglue_glext_supported(w, "GL_ARB_imaging")) {
+      w->glBlendEquation = (COIN_PFNGLBLENDEQUATIONPROC)PROC(glBlendEquation);
+    }
+#endif /* GL_VERSION_1_2 && GL_ARB_imaging */
+  }
 
 #ifdef GL_EXT_blend_minmax
   if (cc_glglue_glext_supported(w, "GL_EXT_blend_minmax")) {
@@ -730,6 +738,11 @@ glglue_check_driver(const char * vendor, const char * renderer,
     ------8<---- [snip] -----------8<---- [snip] -----
 
     <mortene@sim.no>
+
+    UPDATE 20030116 mortene: as of this date, the most recent Matrox
+    driver (version 5.86.032, from 2002-11-21) still exhibits the same
+    problem, while the ELSA driver can be upgraded to a version that
+    does not have the bug any more.
   */
 }
 
