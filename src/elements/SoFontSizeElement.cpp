@@ -99,5 +99,5 @@ SoFontSizeElement::get(SoState * const state)
 float
 SoFontSizeElement::getDefault()
 {
-  return 10.0f;
+  return 12.0f;
 }
