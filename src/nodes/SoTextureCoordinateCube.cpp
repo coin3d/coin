@@ -134,8 +134,17 @@ textureCoordinateCallback(void * userdata,
   if (shape != pimpl->currentshape) {       
     pimpl->boundingbox.makeEmpty();
     shape->computeBBox(state->getAction(), pimpl->boundingbox, pimpl->origo);
-    pimpl->origo = pimpl->boundingbox.getCenter();
+    SbVec3f c = pimpl->origo = pimpl->boundingbox.getCenter();
     pimpl->currentshape = shape;
+
+    float sx, sy, sz;
+    pimpl->boundingbox.getSize(sx, sy, sz);
+    if (sy > sx) sx = sy;
+    if (sz > sx) sx = sz;
+    sx *= 0.5f;
+    
+    pimpl->boundingbox.setBounds(c[0] - sx, c[1] - sx, c[2] - sx,
+                                 c[0] + sx, c[1] + sx, c[2] + sx);
   }
 
   const SbVec4f & ret = pimpl->calculateTextureCoordinate(point, normal);
@@ -156,11 +165,8 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
   int i0 = (maxi + 1) % 3;
   int i1 = (maxi + 2) % 3;
 
-  // FIXME: Is this the correct way to make the bbox equally large in
-  // every direction? (20040123 handegar)
   SbVec3f bmax = this->boundingbox.getMax();
-  SbVec3f bmin = -bmax;
-
+  SbVec3f bmin = this->boundingbox.getMin();
   float d0 = bmax[i0] - bmin[i0];
   float d1 = bmax[i1] - bmin[i1];
 
@@ -170,8 +176,27 @@ SoTextureCoordinateCubeP::calculateTextureCoordinate(SbVec3f point, SbVec3f n)
   float s = (point[i0] - bmin[i0]) / d0; 
   float t = (point[i1] - bmin[i1]) / d1;
 
-  return SbVec4f(s, t, 0.0f, 1.0f);
- 
+  SbVec4f tc(s, t, 0.0f, 1.0f);
+  switch (maxi) {
+  case 0:
+    tc[0] = 1.0f - t;
+    tc[1] = s; 
+    break;
+  case 1:
+    tc[0] = t;
+    tc[1] = 1.0f - s; 
+    break;
+  }
+  if (n[maxi] < 0.0f) {
+    if (maxi == 1) {
+      tc[1] = 1.0f - tc[1];
+    }
+    else {
+      tc[0] = 1.0f - tc[0];
+    }
+  }
+
+  return tc;
 }
 
 
