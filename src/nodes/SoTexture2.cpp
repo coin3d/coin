@@ -226,7 +226,8 @@ SoTexture2::GLRender(SoGLRenderAction * action)
     if (bytes && size != SbVec2s(0,0)) {
       this->glimage->setData(bytes, size, nc,
                              translateWrap((Wrap)this->wrapS.getValue()),
-                             translateWrap((Wrap)this->wrapT.getValue()));
+                             translateWrap((Wrap)this->wrapT.getValue()),
+                             quality);
       this->glimagevalid = TRUE;
     }
   }
