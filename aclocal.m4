@@ -164,8 +164,9 @@ AC_SUBST(BUILD_WITH_MSVC)
 # some checks are only needed if your package does certain things.
 # But this isn't really a big deal.
 
-# serial 3
+# serial 4
 
+# We require 2.13 because we rely on SHELL being computed by configure.
 AC_PREREQ([2.13])
 
 # AC_PROVIDE_IFELSE(MACRO-NAME, IF-PROVIDED, IF-NOT-PROVIDED)
@@ -185,8 +186,7 @@ ifdef([AC_PROVIDE_IFELSE],
 # AM_INIT_AUTOMAKE(PACKAGE,VERSION, [NO-DEFINE])
 # ----------------------------------------------
 AC_DEFUN([AM_INIT_AUTOMAKE],
-[dnl We require 2.13 because we rely on SHELL being computed by configure.
-AC_REQUIRE([AC_PROG_INSTALL])dnl
+[AC_REQUIRE([AC_PROG_INSTALL])dnl
 # test to see if srcdir already configured
 if test "`CDPATH=:; cd $srcdir && pwd`" != "`pwd`" &&
    test -f $srcdir/config.status; then
@@ -232,6 +232,8 @@ AC_PROVIDE_IFELSE([AC_PROG_CXX],
 # Check to make sure that the build environment is sane.
 #
 
+# serial 2
+
 AC_DEFUN([AM_SANITY_CHECK],
 [AC_MSG_CHECKING([whether build environment is sane])
 # Just in case
@@ -244,12 +246,12 @@ echo timestamp > conftestfile
 # directory).
 if (
    set X `ls -Lt $srcdir/configure conftestfile 2> /dev/null`
-   if test "[$]*" = "X"; then
+   if test "$[*]" = "X"; then
       # -L didn't work.
       set X `ls -t $srcdir/configure conftestfile`
    fi
-   if test "[$]*" != "X $srcdir/configure conftestfile" \
-      && test "[$]*" != "X conftestfile $srcdir/configure"; then
+   if test "$[*]" != "X $srcdir/configure conftestfile" \
+      && test "$[*]" != "X conftestfile $srcdir/configure"; then
 
       # If neither matched, then we have a broken ls.  This can happen
       # if, for instance, CONFIG_SHELL is bash and it inherits a
@@ -259,7 +261,7 @@ if (
 alias in your environment])
    fi
 
-   test "[$]2" = conftestfile
+   test "$[2]" = conftestfile
    )
 then
    # Ok.
@@ -271,31 +273,42 @@ fi
 rm -f conftest*
 AC_MSG_RESULT(yes)])
 
+
+# serial 2
+
 # AM_MISSING_PROG(NAME, PROGRAM)
-AC_DEFUN([AM_MISSING_PROG], [
-AC_REQUIRE([AM_MISSING_HAS_RUN])
+# ------------------------------
+AC_DEFUN([AM_MISSING_PROG],
+[AC_REQUIRE([AM_MISSING_HAS_RUN])
 $1=${$1-"${am_missing_run}$2"}
 AC_SUBST($1)])
 
+
+# AM_MISSING_INSTALL_SH
+# ---------------------
 # Like AM_MISSING_PROG, but only looks for install-sh.
-# AM_MISSING_INSTALL_SH()
-AC_DEFUN([AM_MISSING_INSTALL_SH], [
-AC_REQUIRE([AM_MISSING_HAS_RUN])
+AC_DEFUN([AM_MISSING_INSTALL_SH],
+[AC_REQUIRE([AM_MISSING_HAS_RUN])
 if test -z "$install_sh"; then
-   install_sh="$ac_aux_dir/install-sh"
-   test -f "$install_sh" || install_sh="$ac_aux_dir/install.sh"
-   test -f "$install_sh" || install_sh="${am_missing_run}${ac_auxdir}/install-sh"
-   dnl FIXME: an evil hack: we remove the SHELL invocation from
-   dnl install_sh because automake adds it back in.  Sigh.
-   install_sh="`echo $install_sh | sed -e 's/\${SHELL}//'`"
+   for install_sh in "$ac_aux_dir/install-sh" \
+                     "$ac_aux_dir/install.sh" \
+                     "${am_missing_run}${ac_auxdir}/install-sh";
+   do
+     test -f "$install_sh" && break
+   done
+   # FIXME: an evil hack: we remove the SHELL invocation from
+   # install_sh because automake adds it back in.  Sigh.
+   install_sh=`echo $install_sh | sed -e 's/\${SHELL}//'`
 fi
 AC_SUBST(install_sh)])
 
-# AM_MISSING_HAS_RUN.
+
+# AM_MISSING_HAS_RUN
+# ------------------
 # Define MISSING if not defined so far and test if it supports --run.
 # If it does, set am_missing_run to use it, otherwise, to nothing.
-AC_DEFUN([AM_MISSING_HAS_RUN], [
-test x"${MISSING+set}" = xset || \
+AC_DEFUN([AM_MISSING_HAS_RUN],
+[test x"${MISSING+set}" = xset ||
   MISSING="\${SHELL} `CDPATH=:; cd $ac_aux_dir && pwd`/missing"
 # Use eval to expand $SHELL
 if eval "$MISSING --run :"; then
@@ -307,37 +320,38 @@ else
 fi
 ])
 
-# See how the compiler implements dependency checking.
-# Usage:
+# serial 2
+
 # AM_DEPENDENCIES(NAME)
+# ---------------------
+# See how the compiler implements dependency checking.
 # NAME is "CC", "CXX" or "OBJC".
-
 # We try a few techniques and use that to set a single cache variable.
-
-AC_DEFUN([AM_DEPENDENCIES],[
-AC_REQUIRE([AM_SET_DEPDIR])
+AC_DEFUN([AM_DEPENDENCIES],
+[AC_REQUIRE([AM_SET_DEPDIR])
 AC_REQUIRE([AM_OUTPUT_DEPENDENCY_COMMANDS])
-ifelse([$1],CC,[
-AC_REQUIRE([AC_PROG_CC])
+ifelse([$1], CC,
+       [AC_REQUIRE([AC_PROG_CC])
 AC_REQUIRE([AC_PROG_CPP])
 depcc="$CC"
-depcpp="$CPP"],[$1],CXX,[
-AC_REQUIRE([AC_PROG_CXX])
+depcpp="$CPP"],
+       [$1], CXX, [AC_REQUIRE([AC_PROG_CXX])
 AC_REQUIRE([AC_PROG_CXXCPP])
 depcc="$CXX"
-depcpp="$CXXCPP"],[$1],OBJC,[
-am_cv_OBJC_dependencies_compiler_type=gcc],[
-AC_REQUIRE([AC_PROG_][$1])
-depcc="$[$1]"
+depcpp="$CXXCPP"],
+       [$1], OBJC, [am_cv_OBJC_dependencies_compiler_type=gcc],
+       [AC_REQUIRE([AC_PROG_$1])
+depcc="$$1"
 depcpp=""])
-AC_MSG_CHECKING([dependency style of $depcc])
-AC_CACHE_VAL(am_cv_[$1]_dependencies_compiler_type,[
-if test -z "$AMDEP"; then
+
+AC_CACHE_CHECK([dependency style of $depcc],
+               [am_cv_$1_dependencies_compiler_type],
+[if test -z "$AMDEP"; then
   echo '#include "conftest.h"' > conftest.c
   echo 'int i;' > conftest.h
 
-  am_cv_[$1]_dependencies_compiler_type=none
-  for depmode in `sed -n 's/^#*\([a-zA-Z0-9]*\))$/\1/p' < "$am_depcomp"`; do
+  am_cv_$1_dependencies_compiler_type=none
+  for depmode in `sed -n ['s/^#*\([a-zA-Z0-9]*\))$/\1/p'] < "$am_depcomp"`; do
     case "$depmode" in
     nosideeffect)
       # after this tag, mechanisms are not by side-effect, so they'll
@@ -358,19 +372,18 @@ if test -z "$AMDEP"; then
        depfile=conftest.Po tmpdepfile=conftest.TPo \
        $SHELL $am_depcomp $depcc -c conftest.c -o conftest.o >/dev/null 2>&1 &&
        grep conftest.h conftest.Po > /dev/null 2>&1; then
-      am_cv_[$1]_dependencies_compiler_type="$depmode"
+      am_cv_$1_dependencies_compiler_type="$depmode"
       break
     fi
   done
 
   rm -f conftest.*
 else
-  am_cv_[$1]_dependencies_compiler_type=none
+  am_cv_$1_dependencies_compiler_type=none
 fi
 ])
-AC_MSG_RESULT($am_cv_[$1]_dependencies_compiler_type)
-[$1]DEPMODE="depmode=$am_cv_[$1]_dependencies_compiler_type"
-AC_SUBST([$1]DEPMODE)
+$1DEPMODE="depmode=$am_cv_$1_dependencies_compiler_type"
+AC_SUBST([$1DEPMODE])
 ])
 
 # Choose a directory name for dependency files.
@@ -926,11 +939,14 @@ AC_DEFUN([AM_MAINTAINER_MODE],
 ]
 )
 
-# Define a conditional.
+# serial 2
 
+# AM_CONDITIONAL(NAME, SHELL-CONDITION)
+# -------------------------------------
+# Define a conditional.
 AC_DEFUN([AM_CONDITIONAL],
-[AC_SUBST($1_TRUE)
-AC_SUBST($1_FALSE)
+[AC_SUBST([$1_TRUE])
+AC_SUBST([$1_FALSE])
 if $2; then
   $1_TRUE=
   $1_FALSE='#'
@@ -1153,10 +1169,6 @@ fi
 #   Morten Eriksen, <mortene@sim.no>
 #   Lars J. Aas, <larsa@sim.no>
 #
-# TODO:
-# * [larsa:20000220] Set up ATTRIBUTE-LIST for developer-configurable
-#   default-value.
-#
 
 AC_DEFUN([SIM_AC_COMPILE_DEBUG], [
 AC_ARG_ENABLE(
@@ -1171,12 +1183,16 @@ AC_ARG_ENABLE(
   [enable_debug=true])
 
 if $enable_debug; then
+  DSUFFIX=d
   ifelse([$1], , :, [$1])
 else
+  DSUFFIX=
   CPPFLAGS="$CPPFLAGS -DNDEBUG"
-  $2
+  ifelse([$2], , :, [$2])
 fi
+AC_SUBST(DSUFFIX)
 ])
+
 
 # Usage:
 #   SIM_AC_DEBUGSYMBOLS
@@ -1638,8 +1654,9 @@ fi
 AC_DEFUN([SIM_AC_CHECK_DL], [
 AC_ARG_WITH(
   [dl],
-  AC_HELP_STRING([--with-dl=DIR],
-                 [include support for the dynamic link loader library [[default=yes]]]),
+  [AC_HELP_STRING(
+    [--with-dl=DIR],
+    [include support for the dynamic link loader library [default=yes]])],
   [],
   [with_dl=yes])
 
@@ -1662,7 +1679,7 @@ if test x"$with_dl" != xno; then
 
   # Use SIM_AC_CHECK_HEADERS instead of .._HEADER to get the
   # HAVE_DLFCN_H symbol set up in config.h automatically.
-  SIM_AC_CHECK_HEADERS(dlfcn.h)
+  SIM_AC_CHECK_HEADERS([dlfcn.h])
 
   AC_CACHE_CHECK([whether the dynamic link loader library is available],
     sim_cv_lib_dl_avail,
@@ -1677,15 +1694,16 @@ if test x"$with_dl" != xno; then
 
   if test x"$sim_cv_lib_dl_avail" = xyes; then
     sim_ac_dl_avail=yes
-    $1
+    ifelse([$1], , :, [$1])
   else
     CPPFLAGS=$sim_ac_save_cppflags
     LDFLAGS=$sim_ac_save_ldflags
     LIBS=$sim_ac_save_libs
-    $2
+    ifelse([$2], , :, [$2])
   fi
 fi
 ])
+
 
 # SIM_AC_CHECK_HEADER(HEADER-FILE, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 # --------------------------------------------------------------------------
@@ -1701,13 +1719,14 @@ AC_CACHE_CHECK(
   [for $1],
   ac_Header,
   [AC_TRY_COMPILE([#include <$1>],
-  [],
-  [AC_VAR_SET(ac_Header, yes)],
-  [AC_VAR_SET(ac_Header, no)])])
-AS_IFELSE(
-  [test AC_VAR_GET(ac_Header) = yes],
-  [$2],
-  [$3])
+    [],
+    [AC_VAR_SET([ac_Header], yes)],
+    [AC_VAR_SET([ac_Header], no)])])
+if test AC_VAR_GET(ac_Header) = yes; then
+  ifelse([$2], , :, [$2])
+else
+  ifelse([$3], , :, [$3])
+fi
 AC_VAR_POPDEF([ac_Header])
 ])# SIM_AC_CHECK_HEADER
 
@@ -1724,6 +1743,7 @@ SIM_AC_CHECK_HEADER(
   [$3])
 done
 ])# SIM_AC_CHECK_HEADERS
+
 
 # Usage:
 #   SIM_AC_HAVE_SIMAGE_IFELSE( IF-FOUND, IF-NOT-FOUND )
