@@ -48,8 +48,8 @@ public: \
  \
 protected: \
   virtual const SoEnabledElementsList & getEnabledElements(void) const; \
-  static SoEnabledElementsList * enabledElements; \
-  static SoActionMethodList * methods; \
+  static COIN_DLL_IMPORT SoEnabledElementsList * enabledElements; \
+  static COIN_DLL_IMPORT SoActionMethodList * methods; \
  \
 private: \
   static SoType classTypeId

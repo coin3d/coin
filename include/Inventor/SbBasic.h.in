@@ -285,13 +285,34 @@ inline Type SbSqr(const Type val) {
 
 /* Enable to generate COIN.DLL (under Win32). */
 #ifdef COIN_MAKE_DLL
+
 #define COIN_DLL_EXPORT __declspec(dllexport)
+
+#else /* !COIN_MAKE_DLL */
+
+/* Ok, I hate ifdef-testing on compiler-specific stuff, but this seems
+   very hard to avoid here. So we take the easy route instead of
+   making the "Autoconf macro from hell" to check whether or not we
+   are allowed to link against static class members from MSWin
+   DLLs. 20000808 mortene. */
+#ifdef _WIN32
+#define COIN_DLL_IMPORT __declspec(dllimport)
+#endif /* _WIN32 */
+
 #endif /* !COIN_MAKE_DLL */
 
-/* Empty define to avoid errors when _not_ compiling as a DLL. */
+
+/* Empty define to avoid errors when _not_ compiling as a DLL (MSWin
+   and UNIX). */
 #ifndef COIN_DLL_EXPORT
 #define COIN_DLL_EXPORT
 #endif /* !COIN_DLL_EXPORT */
+
+/* Empty define to avoid errors when compiling the library aswell as
+   applications on top of it on other platforms than MSWin. */
+#ifndef COIN_DLL_IMPORT
+#define COIN_DLL_IMPORT
+#endif /* !COIN_DLL_IMPORT */
 
 /* *********************************************************************** */
 
