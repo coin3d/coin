@@ -3,4 +3,7 @@ New in Coin 1.0 final beta (2001-07-22):
 * full Open Inventor 2.1 source code compatibility
 * miscellaneous extensions:
   - SoPolygonOffset node
+  - SoMouseButtonEvent::BUTTON4, BUTTON5 for wheelmouse events
+  - SoKeyboardEvent::DELETE is portable even for MS Windows
+  - SoCamera::setStereoMode()
   - and more [to be mapped down later]
