@@ -1241,6 +1241,7 @@ SoNode::addToCopyDict(void) const
     if (inst) {
       SoProto * proto = inst->getProtoDefinition();
       SoProtoInstance * newinst = proto->createProtoInstance();
+      if (inst->getName().getLength()) newinst->setName(inst->getName());
       cp = newinst->getRootNode();
       assert(cp);      
       // We have to call addCopy() before calling copyContents() since

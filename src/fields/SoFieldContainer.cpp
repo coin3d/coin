@@ -741,6 +741,9 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
       // and register its root node as the copy. pederb, 2002-06-17
       SoProto * proto = protoinst->getProtoDefinition();
       SoProtoInstance * newinst = proto->createProtoInstance();
+      if (protoinst->getName().getLength()) {
+        newinst->setName(protoinst->getName());
+      }
       cp = newinst->getRootNode();
       // We have to call addCopy() before calling copyContents() since
       // the proto instance might have a field that has a pointer to
