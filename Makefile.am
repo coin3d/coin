@@ -61,4 +61,22 @@ install-exec-local: $(srcdir)/cfg/m4/wrapmsvc.exe
 	  $(INSTALL_PROGRAM) $(srcdir)/cfg/m4/$$p $(DESTDIR)$(bindir)/$$p; \
 	fi
 
+# **************************************************************************
+
+debian-setup: distdir
+	debdir=Coin-$(VERSION)/debian; \
+	conf=./config.status; \
+	test -d $$debdir || mkdir $$debdir; \
+	for f in packaging/debian/*.in; do \
+	  file=`echo $$f | sed 's/.*\///g; s/\.in$$//g'`; \
+	  $$conf --file=$$debdir/$$file:$$f; \
+	done; \
+	for f in rules preinst prerm postinst postrm; do \
+	  if test -f $$debdir/$$f; then \
+	    echo " chmod +x $$debdir/$$f"; \
+	    chmod +x $$debdir/$$f; \
+	  fi; \
+	done;
+#	echo "pkgversion=$(VERSION)" >$$debdir/substvars
+
 # EOF ######################################################################
