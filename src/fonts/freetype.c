@@ -56,7 +56,7 @@ extern "C" {
 SbBool cc_flwft_initialize(void) { return FALSE; }
 void cc_flwft_exit(void) { }
 
-  void * cc_flwft_get_font(const char * fontname, const unsigned int pixelsize) { assert(FALSE); return NULL; }
+void * cc_flwft_get_font(const char * fontname, const unsigned int pixelsize) { assert(FALSE); return NULL; }
 void cc_flwft_get_font_name(void * font, cc_string * str) { assert(FALSE); }
 void cc_flwft_done_font(void * font) { assert(FALSE); }
 
