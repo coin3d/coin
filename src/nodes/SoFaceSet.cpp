@@ -187,7 +187,7 @@ typedef void sogl_render_ni_faceset_func( const SoGLCoordinateElement * coords,
     const int32_t *end,
     SbBool needNormals);
 
-static sogl_render_ni_faceset_func *ni_render_funcs[22];
+static sogl_render_ni_faceset_func *sofaceset_ni_render_funcs[22];
 
 #define OVERALL             0
 #define PER_FACE            1
@@ -370,26 +370,26 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   static int first = 1;
   if (first) {
     first = 0;
-    ni_render_funcs[ 0] = sogl_nifs_m0_n0_t0;
-    ni_render_funcs[ 1] = sogl_nifs_m0_n0_t1;
-    ni_render_funcs[ 2] = sogl_nifs_m0_n1_t0;
-    ni_render_funcs[ 3] = sogl_nifs_m0_n1_t1;
-    ni_render_funcs[ 4] = sogl_nifs_m0_n2_t0;
-    ni_render_funcs[ 5] = sogl_nifs_m0_n2_t1;
+    sofaceset_ni_render_funcs[ 0] = sogl_nifs_m0_n0_t0;
+    sofaceset_ni_render_funcs[ 1] = sogl_nifs_m0_n0_t1;
+    sofaceset_ni_render_funcs[ 2] = sogl_nifs_m0_n1_t0;
+    sofaceset_ni_render_funcs[ 3] = sogl_nifs_m0_n1_t1;
+    sofaceset_ni_render_funcs[ 4] = sogl_nifs_m0_n2_t0;
+    sofaceset_ni_render_funcs[ 5] = sogl_nifs_m0_n2_t1;
 
-    ni_render_funcs[ 8] = sogl_nifs_m1_n0_t0;
-    ni_render_funcs[ 9] = sogl_nifs_m1_n0_t1;
-    ni_render_funcs[10] = sogl_nifs_m1_n1_t0;
-    ni_render_funcs[11] = sogl_nifs_m1_n1_t1;
-    ni_render_funcs[12] = sogl_nifs_m1_n2_t0;
-    ni_render_funcs[13] = sogl_nifs_m1_n2_t1;
+    sofaceset_ni_render_funcs[ 8] = sogl_nifs_m1_n0_t0;
+    sofaceset_ni_render_funcs[ 9] = sogl_nifs_m1_n0_t1;
+    sofaceset_ni_render_funcs[10] = sogl_nifs_m1_n1_t0;
+    sofaceset_ni_render_funcs[11] = sogl_nifs_m1_n1_t1;
+    sofaceset_ni_render_funcs[12] = sogl_nifs_m1_n2_t0;
+    sofaceset_ni_render_funcs[13] = sogl_nifs_m1_n2_t1;
 
-    ni_render_funcs[16] = sogl_nifs_m2_n0_t0;
-    ni_render_funcs[17] = sogl_nifs_m2_n0_t1;
-    ni_render_funcs[18] = sogl_nifs_m2_n1_t0;
-    ni_render_funcs[19] = sogl_nifs_m2_n1_t1;
-    ni_render_funcs[20] = sogl_nifs_m2_n2_t0;
-    ni_render_funcs[21] = sogl_nifs_m2_n2_t1;
+    sofaceset_ni_render_funcs[16] = sogl_nifs_m2_n0_t0;
+    sofaceset_ni_render_funcs[17] = sogl_nifs_m2_n0_t1;
+    sofaceset_ni_render_funcs[18] = sogl_nifs_m2_n1_t0;
+    sofaceset_ni_render_funcs[19] = sogl_nifs_m2_n1_t1;
+    sofaceset_ni_render_funcs[20] = sogl_nifs_m2_n2_t0;
+    sofaceset_ni_render_funcs[21] = sogl_nifs_m2_n2_t1;
   }
 
   SoState * state = action->getState();
@@ -438,7 +438,7 @@ SoFaceSet::GLRender(SoGLRenderAction * action)
   const int32_t *end = ptr + this->numVertices.getNum();
   this->fixNumVerticesPointers(state, ptr, end, dummyarray);
 
-  ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
+  sofaceset_ni_render_funcs[ (mbind << 3) | (nbind << 1) | doTextures ]
     ( coords,
       normals,
       &mb,
