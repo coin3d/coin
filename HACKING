@@ -239,6 +239,7 @@ and explains the principles applied fairly well.
 
     (setq auto-mode-alist (cons '("\\.h\\.in\\'" . c++-mode) auto-mode-alist))
     (setq auto-mode-alist (cons '("\\.cpp\\.in\\'" . c++-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons '("\\.icc\\'" . c++-mode) auto-mode-alist))
 
   Also, to make emacs insert spaces instead of tabulator characters when
   indenting (we don't want any tabulators):
@@ -246,6 +247,16 @@ and explains the principles applied fairly well.
     (let ((loadhook (lambda () (setq indent-tabs-mode nil))))
       (add-hook 'find-file-hooks loadhook)
       (add-hook 'find-file-not-found-hooks loadhook))
+
+* vim
+
+  To insert spaces instead of tab characters (using 2 space characters 
+  every time you press 'tab', and also using 2 spaces for
+  auto-indentation), add the following to your ~/.vimrc file:
+
+    set expandtab 
+    set tabstop=2
+    set shiftwidth=2
 
 
 5 The Build Environment
