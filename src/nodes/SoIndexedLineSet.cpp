@@ -534,8 +534,8 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
         }
         pointDetail.setCoordinateIndex(i);
         vertex.setPoint(coords->get3(i));
-        this->shapeVertex(&vertex);
         lineDetail.incLineIndex();
+        this->shapeVertex(&vertex);
         previ = i;
         i = *cindices++;
       }
@@ -644,8 +644,8 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
       }
       pointDetail.setCoordinateIndex(i);
       vertex.setPoint(coords->get3(i));
-      this->shapeVertex(&vertex);
       lineDetail.incLineIndex();
+      this->shapeVertex(&vertex);
       i = *cindices++;
     }
     lineDetail.incPartIndex();
