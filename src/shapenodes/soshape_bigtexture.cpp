@@ -30,6 +30,8 @@
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbBox2f.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <Inventor/elements/SoTextureMatrixElement.h>
+#include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/C/tidbits.h>
@@ -69,6 +71,7 @@ soshape_bigtexture::beginShape(SoGLBigImage * imageptr,
   this->image = imageptr;
   this->quality = qualityarg;
   this->pvlistcnt = 0;
+  this->vertexlist.truncate(0);
 
   int num = imageptr->initSubImages(SbVec2s(256, 256));
   this->numregions = num;
@@ -108,6 +111,22 @@ soshape_bigtexture::endShape(SoState * state,
                              SoShape * shape,
                              SoMaterialBundle & mb)
 {
+  this->clip_triangles(state);
+
+  // clear texture matrix. We've already calculated the world space
+  // texture coordinates.
+  glMatrixMode(GL_TEXTURE);
+  glPushMatrix();
+  glLoadIdentity();
+  glMatrixMode(GL_MODELVIEW);
+
+  // disable texgen functions, we always supply texture coordinates
+  glPushAttrib(GL_ENABLE_BIT);
+  glDisable(GL_TEXTURE_GEN_S);
+  glDisable(GL_TEXTURE_GEN_T);
+  glDisable(GL_TEXTURE_GEN_R);
+  glDisable(GL_TEXTURE_GEN_Q);
+  
   const int numreg = this->numregions;
   for (int i = 0; i < numreg; i++) {
     int numv, j;
@@ -143,6 +162,15 @@ soshape_bigtexture::endShape(SoState * state,
       glEnd();
     }
   }  
+
+  // enable texgen (if active)
+  glPopAttrib();
+
+  // restore texture matrix
+  glMatrixMode(GL_TEXTURE);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+
   // return TRUE if all textures were created in the correct resolution
   return ! this->image->exceededChangeLimit();
 }
@@ -153,14 +181,112 @@ soshape_bigtexture::triangle(SoState * state,
                              const SoPrimitiveVertex * v2,
                              const SoPrimitiveVertex * v3)
 {
-  const SbVec4f & tc1 = v1->getTextureCoords();
-  const SbVec4f & tc2 = v2->getTextureCoords();
-  const SbVec4f & tc3 = v3->getTextureCoords();
+  const SoPrimitiveVertex * vp[] = {v1, v2, v3};
+  
+  for (int i = 0; i < 3; i++) {
+    SoPrimitiveVertex * pv = this->get_new_pv();
+    *pv = *(vp[i]);
+    this->vertexlist.append(pv);
+  }
+}
+
+void 
+soshape_bigtexture::clip_triangles(SoState * state)
+{
+  int n = this->vertexlist.getLength();
+  if (n == 0) return;
+  
+  // need texture matrix to transform the texture coordinates
+  SbMatrix texturematrix = SoTextureMatrixElement::get(state);
+  int wrap[2];
+  SbVec2s dummy;
+  int dummync;
+  SbColor dummycol;
+  int dummymod;
+
+  // need wrapS/T to figure out how to handle the texture coordinates
+  (void) SoTextureImageElement::get(state, dummy, dummync,
+                                    wrap[0], wrap[1], 
+                                    dummymod, dummycol);
+  SbVec4f tmp;
+  SbVec2f mintex;  
+  int i, j;
+  for (i = 0; i < n; i++) {
+    tmp = this->vertexlist[i]->getTextureCoords();
+    texturematrix.multVecMatrix(tmp, tmp);
+    SbVec3f tmp3;
+    tmp.getReal(tmp3);
+
+    for (j = 0; j < 2; j++) {
+      if (wrap[j] == SoTextureImageElement::CLAMP) {
+        tmp3[j] = SbClamp(tmp3[j], 0.0f, 1.0f);
+      }
+    }
+    this->vertexlist[i]->setTextureCoords(tmp3);
+    if (i == 0) {
+      mintex[0] = tmp3[0];
+      mintex[1] = tmp3[1];
+    }
+    else {
+      if (tmp3[0] < mintex[0]) mintex[0] = tmp3[0];
+      if (tmp3[1] < mintex[1]) mintex[1] = tmp3[1];
+    }
+  }
+
+  // adjust the texture coordinates to account for REPEAT mode.
+  if ((wrap[0] == SoTextureImageElement::REPEAT) ||
+      (wrap[1] == SoTextureImageElement::REPEAT)) {
+    
+    for (j = 0; j < 2; j++) {
+      // in REPEAT mode, we need to ignore the integer part of the
+      // texture coordinate. Our clipper needs the texture coordinates
+      // to be between 0 and 1.
+      if (wrap[j] == SoTextureImageElement::REPEAT) {
+        int val = (int) mintex[j];
+        if (mintex[j] < 0.0f) {
+          // only adjust if the integer is rounded up
+          if (float(val) > mintex[j]) {
+            val -= 1;
+          }
+        }
+        mintex[j] = (float) val;
+      }
+    }
+    
+    for (i = 0; i < n; i++) {
+      tmp = this->vertexlist[i]->getTextureCoords();
+      for (j = 0; j < 2; j++) {
+        if (wrap[j] == SoTextureImageElement::REPEAT) {
+          tmp[j] -= mintex[j];
+        }
+      }
+      this->vertexlist[i]->setTextureCoords(tmp);
+    }
+  }
+  
+  for (int i = 0; i < n; i += 3) {
+    this->handle_triangle(state, 
+                          this->vertexlist[i],
+                          this->vertexlist[i+1],
+                          this->vertexlist[i+2]);
+  }
+}
+
+void
+soshape_bigtexture::handle_triangle(SoState * state,
+                                    SoPrimitiveVertex * v1,
+                                    SoPrimitiveVertex * v2,
+                                    SoPrimitiveVertex * v3)
+{
+  SbVec4f tc[3];
+  tc[0] = v1->getTextureCoords();
+  tc[1] = v2->getTextureCoords();
+  tc[2] = v3->getTextureCoords();
 
   SbBox2f bbox;
-  bbox.extendBy(SbVec2f(tc1[0], tc1[1]));
-  bbox.extendBy(SbVec2f(tc2[0], tc2[1]));
-  bbox.extendBy(SbVec2f(tc3[0], tc3[1]));
+  bbox.extendBy(SbVec2f(tc[0][0], tc[0][1]));
+  bbox.extendBy(SbVec2f(tc[1][0], tc[1][1]));
+  bbox.extendBy(SbVec2f(tc[2][0], tc[2][1]));
   SbBox2f regbbox;
 
   for (int i = 0; i < this->numregions; i++) {
@@ -181,9 +307,9 @@ soshape_bigtexture::triangle(SoState * state,
       SoPrimitiveVertex * pv3 = this->get_new_pv();
       *pv3 = *v3;
 
-      this->clipper->addVertex(SbVec3f(tc1[0], tc1[1],0.0f), pv1);
-      this->clipper->addVertex(SbVec3f(tc2[0], tc2[1],0.0f), pv2);
-      this->clipper->addVertex(SbVec3f(tc3[0], tc3[1],0.0f), pv3);
+      this->clipper->addVertex(SbVec3f(tc[0][0], tc[0][1], 0.0f), pv1);
+      this->clipper->addVertex(SbVec3f(tc[1][0], tc[1][1], 0.0f), pv2);
+      this->clipper->addVertex(SbVec3f(tc[2][0], tc[2][1], 0.0f), pv3);
 
       this->clipper->clip(reg.planes[0]);
       this->clipper->clip(reg.planes[1]);
@@ -208,6 +334,7 @@ soshape_bigtexture::triangle(SoState * state,
     }
   }
 }
+
 
 SoPrimitiveVertex *
 soshape_bigtexture::get_new_pv(void)

@@ -58,7 +58,16 @@ public:
   SbBool endShape(SoState * state, SoShape * shape,
                   SoMaterialBundle & mb);
 
+
 private:
+  void clip_triangles(SoState * state);
+  void handle_triangle(SoState * state,
+                       SoPrimitiveVertex * v1,
+                       SoPrimitiveVertex * v2,
+                       SoPrimitiveVertex * v3);
+  
+  SbList <SoPrimitiveVertex*> vertexlist;
+  
   class bt_region {
   public:
     SbVec2f start, end, tcmul;
