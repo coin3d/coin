@@ -37,6 +37,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include "../snprintf.h"
 
 SO_ELEMENT_SOURCE(SoGLPolygonOffsetElement);
 
@@ -159,7 +160,7 @@ SoGLPolygonOffsetElement::updategl(void)
     // FIXME: I believe the above define is ugly and lousy
     // coding. Shouldn't we runtime-check the OpenGL vendor string
     // instead? 20010821 mortene.
-    char * env = coin_getenv("COIN_SGI_USE_GLPOLYGONOFFSETEXT");
+    const char * env = coin_getenv("COIN_SGI_USE_GLPOLYGONOFFSETEXT");
     if (env) COIN_SGI_USE_GLPOLYGONOFFSETEXT = atoi(env);
 #endif // __sgi
 #endif // GL_VERSION_1_1
@@ -224,7 +225,7 @@ SoGLPolygonOffsetElement::updategl(void)
     }
 #endif // GL_EXT_polygon_offset && (!GL_VERSION_1_1 || defined(__sgi))
     this->currentstyles = (Style) 0;
-  }  
+  }
   // update current offset values before returning
   this->currentoffsetfactor = this->offsetfactor;
   this->currentoffsetunits = this->offsetunits;
