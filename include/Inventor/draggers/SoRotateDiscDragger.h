@@ -21,10 +21,11 @@
 #define COIN_SOROTATEDISCDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFRotation.h>
 
 class SoSensor;
 class SoFieldSensor;
+class SbPlaneProjector;
 
 
 class SoRotateDiscDragger : public SoDragger {
@@ -32,24 +33,36 @@ class SoRotateDiscDragger : public SoDragger {
 
   SO_KIT_HEADER(SoRotateDiscDragger);
 
-  // XXX catalog entries
+  SO_KIT_CATALOG_ENTRY_HEADER(feedback);
+  SO_KIT_CATALOG_ENTRY_HEADER(feedbackActive);
+  SO_KIT_CATALOG_ENTRY_HEADER(feedbackSwitch);
+  SO_KIT_CATALOG_ENTRY_HEADER(rotator);
+  SO_KIT_CATALOG_ENTRY_HEADER(rotatorActive);
+  SO_KIT_CATALOG_ENTRY_HEADER(rotatorSwitch);
 
 
 public:
   static void initClass(void);
   SoRotateDiscDragger(void);
 
-  // XXX fields
+  SoSFRotation rotation;
 
 protected:
   ~SoRotateDiscDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
 
+  static void startCB(void * f, SoDragger * d);
+  static void motionCB(void * f, SoDragger * d);
+  static void doneCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  void dragStart(void);
+  void drag(void);
+  void dragFinish(void);
+
+  SoFieldSensor * fieldSensor;
+  SbPlaneProjector * planeProj;
 };
 
 #endif // !COIN_SOROTATEDISCDRAGGER_H

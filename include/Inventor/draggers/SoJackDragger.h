@@ -21,7 +21,8 @@
 #define COIN_SOJACKDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFRotation.h>
 
 class SoSensor;
 class SoFieldSensor;
@@ -32,24 +33,33 @@ class SoJackDragger : public SoDragger {
 
   SO_KIT_HEADER(SoJackDragger);
 
-  // XXX catalog entries
+  SO_KIT_CATALOG_ENTRY_HEADER(antiSquish);
+  SO_KIT_CATALOG_ENTRY_HEADER(rotator);
+  SO_KIT_CATALOG_ENTRY_HEADER(scaler);
+  SO_KIT_CATALOG_ENTRY_HEADER(surroundScale);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator);
 
 
 public:
   static void initClass(void);
   SoJackDragger(void);
 
-  // XXX fields
+  SoSFRotation rotation;
+  SoSFVec3f translation;
+  SoSFVec3f scaleFactor;
 
 protected:
   ~SoJackDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
+  virtual void setDefaultOnNonWritingFields(void);
 
+  static void invalidateSurroundScaleCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  SoFieldSensor * rotFieldSensor;
+  SoFieldSensor * translFieldSensor;
+  SoFieldSensor * scaleFieldSensor;
 };
 
 #endif // !COIN_SOJACKDRAGGER_H

@@ -21,10 +21,13 @@
 #define COIN_SOROTATESPHERICALDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
+class SbSphereProjector;
 
 
 class SoRotateSphericalDragger : public SoDragger {
@@ -32,24 +35,45 @@ class SoRotateSphericalDragger : public SoDragger {
 
   SO_KIT_HEADER(SoRotateSphericalDragger);
 
-  // XXX catalog entries
+  SO_KIT_CATALOG_ENTRY_HEADER(feedback);
+  SO_KIT_CATALOG_ENTRY_HEADER(feedbackActive);
+  SO_KIT_CATALOG_ENTRY_HEADER(feedbackSwitch);
+  SO_KIT_CATALOG_ENTRY_HEADER(rotator);
+  SO_KIT_CATALOG_ENTRY_HEADER(rotatorActive);
+  SO_KIT_CATALOG_ENTRY_HEADER(rotatorSwitch);
 
 
 public:
   static void initClass(void);
   SoRotateSphericalDragger(void);
 
-  // XXX fields
+  SoSFRotation rotation;
+
+  void setProjector(SbSphereProjector * p);
+  const SbSphereProjector * getProjector(void) const;
 
 protected:
   ~SoRotateSphericalDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
 
+  virtual void copyContents(const SoFieldContainer * fromfc,
+                            SbBool copyconnections);
+
+  static void startCB(void * f, SoDragger * d);
+  static void motionCB(void * f, SoDragger * d);
+  static void doneCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  void dragStart(void);
+  void drag(void);
+  void dragFinish(void);
+
+  SoFieldSensor * fieldSensor;
+  SbMatrix prevMotionMatrix;
+  SbVec3f prevWorldHitPt;
+  SbSphereProjector * sphereProj;
+  SbBool userProj;
 };
 
 #endif // !COIN_SOROTATESPHERICALDRAGGER_H

@@ -21,10 +21,11 @@
 #define COIN_SOSCALEUNIFORMDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
+class SbLineProjector;
 
 
 class SoScaleUniformDragger : public SoDragger {
@@ -32,24 +33,37 @@ class SoScaleUniformDragger : public SoDragger {
 
   SO_KIT_HEADER(SoScaleUniformDragger);
 
-  // XXX catalog entries
+  SO_KIT_CATALOG_ENTRY_HEADER(feedback);
+  SO_KIT_CATALOG_ENTRY_HEADER(feedbackActive);
+  SO_KIT_CATALOG_ENTRY_HEADER(feedbackSwitch);
+  SO_KIT_CATALOG_ENTRY_HEADER(scaler);
+  SO_KIT_CATALOG_ENTRY_HEADER(scalerActive);
+  SO_KIT_CATALOG_ENTRY_HEADER(scalerSwitch);
 
 
 public:
   static void initClass(void);
   SoScaleUniformDragger(void);
 
-  // XXX fields
+  SoSFVec3f scaleFactor;
 
 protected:
   ~SoScaleUniformDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
+
+  static void startCB(void * f, SoDragger * d);
+  static void motionCB(void * f, SoDragger * d);
+  static void finishCB(void * f, SoDragger * d);
 
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  void dragStart(void);
+  void drag(void);
+  void dragFinish(void);
+
+  SoFieldSensor * fieldSensor;
+  SbLineProjector * lineProj;
 };
 
 #endif // !COIN_SOSCALEUNIFORMDRAGGER_H

@@ -21,7 +21,7 @@
 #define COIN_SOTABBOXDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
@@ -32,24 +32,47 @@ class SoTabBoxDragger : public SoDragger {
 
   SO_KIT_HEADER(SoTabBoxDragger);
 
-  // XXX catalog entries
+  SO_KIT_CATALOG_ENTRY_HEADER(boxGeom);
+  SO_KIT_CATALOG_ENTRY_HEADER(surroundScale);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane1);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane1Sep);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane1Xf);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane2);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane2Sep);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane2Xf);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane3);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane3Sep);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane3Xf);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane4);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane4Sep);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane4Xf);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane5);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane5Sep);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane5Xf);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane6);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane6Sep);
+  SO_KIT_CATALOG_ENTRY_HEADER(tabPlane6Xf);
 
 
 public:
   static void initClass(void);
   SoTabBoxDragger(void);
 
-  // XXX fields
+  SoSFVec3f translation;
+  SoSFVec3f scaleFactor;
 
 protected:
   ~SoTabBoxDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
+  virtual void setDefaultOnNonWritingFields(void);
 
+  static void invalidateSurroundScaleCB(void * f, SoDragger * d);
+  static void adjustScaleTabSizeCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  SoFieldSensor * translFieldSensor;
+  SoFieldSensor * scaleFieldSensor;
 };
 
 #endif // !COIN_SOTABBOXDRAGGER_H

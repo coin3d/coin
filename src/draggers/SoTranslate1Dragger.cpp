@@ -35,6 +35,12 @@ SoTranslate1Dragger::SoTranslate1Dragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // feedback
+  // feedbackActive
+  // feedbackSwitch
+  // translator
+  // translatorActive
+  // translatorSwitch
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -69,6 +75,42 @@ SoTranslate1Dragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoTranslate1Dragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate1Dragger::startCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate1Dragger::motionCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate1Dragger::finishCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate1Dragger::dragStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate1Dragger::drag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate1Dragger::dragFinish(void)
 {
   COIN_STUB();
 }

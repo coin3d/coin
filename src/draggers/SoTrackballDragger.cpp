@@ -35,6 +35,27 @@ SoTrackballDragger::SoTrackballDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // XRotator
+  // XRotatorActive
+  // XRotatorSwitch
+  // YRotator
+  // YRotatorActive
+  // YRotatorSwitch
+  // ZRotator
+  // ZRotatorActive
+  // ZRotatorSwitch
+  // antiSquish
+  // rotator
+  // rotatorActive
+  // rotatorSwitch
+  // surroundScale
+  // userAxis
+  // userAxisActive
+  // userAxisRotation
+  // userAxisSwitch
+  // userRotator
+  // userRotatorActive
+  // userRotatorSwitch
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -69,6 +90,67 @@ SoTrackballDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoTrackballDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+SbBool
+SoTrackballDragger::isAnimationEnabled(void)
+{
+  COIN_STUB();
+  return FALSE;
+}
+
+void
+SoTrackballDragger::setAnimationEnabled(SbBool newval)
+{
+  COIN_STUB();
+}
+
+void
+SoTrackballDragger::dragStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTrackballDragger::drag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTrackballDragger::dragFinish(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTrackballDragger::setAllPartsActive(SbBool onoroff)
+{
+  COIN_STUB();
+}
+
+void
+SoTrackballDragger::startCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTrackballDragger::motionCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTrackballDragger::finishCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTrackballDragger::metaKeyChangeCB(void * f, SoDragger * d)
 {
   COIN_STUB();
 }

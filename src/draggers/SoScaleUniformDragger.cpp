@@ -35,6 +35,12 @@ SoScaleUniformDragger::SoScaleUniformDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // feedback
+  // feedbackActive
+  // feedbackSwitch
+  // scaler
+  // scalerActive
+  // scalerSwitch
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -56,12 +62,6 @@ SoScaleUniformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 }
 
 void
-SoScaleUniformDragger::setDefaultOnNonWritingFields(void)
-{
-  COIN_STUB();
-}
-
-void
 SoScaleUniformDragger::fieldSensorCB(void * f, SoSensor * s)
 {
   COIN_STUB();
@@ -69,6 +69,42 @@ SoScaleUniformDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoScaleUniformDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoScaleUniformDragger::startCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoScaleUniformDragger::motionCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoScaleUniformDragger::finishCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoScaleUniformDragger::dragStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoScaleUniformDragger::drag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoScaleUniformDragger::dragFinish(void)
 {
   COIN_STUB();
 }

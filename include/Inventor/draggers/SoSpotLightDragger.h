@@ -21,10 +21,13 @@
 #define COIN_SOSPOTLIGHTDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFRotation.h>
+#include <Inventor/fields/SoSFVec3f.h>
+#include <Inventor/fields/SoSFFloat.h>
 
 class SoSensor;
 class SoFieldSensor;
+class SbPlaneProjector;
 
 
 class SoSpotLightDragger : public SoDragger {
@@ -32,24 +35,48 @@ class SoSpotLightDragger : public SoDragger {
 
   SO_KIT_HEADER(SoSpotLightDragger);
 
-  // XXX catalog entries
+  SO_KIT_CATALOG_ENTRY_HEADER(beam);
+  SO_KIT_CATALOG_ENTRY_HEADER(beamActive);
+  SO_KIT_CATALOG_ENTRY_HEADER(beamPlacement);
+  SO_KIT_CATALOG_ENTRY_HEADER(beamScale);
+  SO_KIT_CATALOG_ENTRY_HEADER(beamSep);
+  SO_KIT_CATALOG_ENTRY_HEADER(beamSwitch);
+  SO_KIT_CATALOG_ENTRY_HEADER(material);
+  SO_KIT_CATALOG_ENTRY_HEADER(rotator);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator);
+  SO_KIT_CATALOG_ENTRY_HEADER(translatorRotInv);
+  SO_KIT_CATALOG_ENTRY_HEADER(translatorSep);
 
 
 public:
   static void initClass(void);
   SoSpotLightDragger(void);
 
-  // XXX fields
+  SoSFRotation rotation;
+  SoSFVec3f translation;
+  SoSFFloat angle;
 
 protected:
   ~SoSpotLightDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
+  virtual void setDefaultOnNonWritingFields(void);
 
+  static void startCB(void * f, SoDragger * d);
+  static void motionCB(void * f, SoDragger * d);
+  static void doneCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  void dragStart(void);
+  void drag(void);
+  void dragFinish(void);
+
+  void setBeamScaleFromAngle(float beamangle);
+
+  SoFieldSensor * rotFieldSensor;
+  SoFieldSensor * translFieldSensor;
+  SoFieldSensor * angleFieldSensor;
+  SbPlaneProjector * planeProj;
 };
 
 #endif // !COIN_SOSPOTLIGHTDRAGGER_H

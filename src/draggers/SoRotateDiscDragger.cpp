@@ -35,6 +35,12 @@ SoRotateDiscDragger::SoRotateDiscDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // feedback
+  // feedbackActive
+  // feedbackSwitch
+  // rotator
+  // rotatorActive
+  // rotatorSwitch
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -56,12 +62,6 @@ SoRotateDiscDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 }
 
 void
-SoRotateDiscDragger::setDefaultOnNonWritingFields(void)
-{
-  COIN_STUB();
-}
-
-void
 SoRotateDiscDragger::fieldSensorCB(void * f, SoSensor * s)
 {
   COIN_STUB();
@@ -69,6 +69,42 @@ SoRotateDiscDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoRotateDiscDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateDiscDragger::startCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateDiscDragger::motionCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateDiscDragger::doneCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateDiscDragger::dragStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateDiscDragger::drag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateDiscDragger::dragFinish(void)
 {
   COIN_STUB();
 }

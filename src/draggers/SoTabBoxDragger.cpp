@@ -35,6 +35,26 @@ SoTabBoxDragger::SoTabBoxDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // boxGeom
+  // surroundScale
+  // tabPlane1
+  // tabPlane1Sep
+  // tabPlane1Xf
+  // tabPlane2
+  // tabPlane2Sep
+  // tabPlane2Xf
+  // tabPlane3
+  // tabPlane3Sep
+  // tabPlane3Xf
+  // tabPlane4
+  // tabPlane4Sep
+  // tabPlane4Xf
+  // tabPlane5
+  // tabPlane5Sep
+  // tabPlane5Xf
+  // tabPlane6
+  // tabPlane6Sep
+  // tabPlane6Xf
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -69,6 +89,18 @@ SoTabBoxDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoTabBoxDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTabBoxDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTabBoxDragger::adjustScaleTabSizeCB(void * f, SoDragger * d)
 {
   COIN_STUB();
 }

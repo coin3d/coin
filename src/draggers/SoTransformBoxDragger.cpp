@@ -35,6 +35,36 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // antiSquish
+  // rotator1
+  // rotator1Rot
+  // rotator1Sep
+  // rotator2
+  // rotator2Rot
+  // rotator2Sep
+  // rotator3
+  // rotator3Rot
+  // rotator3Sep
+  // scaler
+  // surroundScale
+  // translator1
+  // translator1Rot
+  // translator1Sep
+  // translator2
+  // translator2Rot
+  // translator2Sep
+  // translator3
+  // translator3Rot
+  // translator3Sep
+  // translator4
+  // translator4Rot
+  // translator4Sep
+  // translator5
+  // translator5Rot
+  // translator5Sep
+  // translator6
+  // translator6Rot
+  // translator6Sep
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -69,6 +99,12 @@ SoTransformBoxDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoTransformBoxDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTransformBoxDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
 {
   COIN_STUB();
 }

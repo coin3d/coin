@@ -21,7 +21,7 @@
 #define COIN_SOHANDLEBOXDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
@@ -32,24 +32,108 @@ class SoHandleBoxDragger : public SoDragger {
 
   SO_KIT_HEADER(SoHandleBoxDragger);
 
-  // XXX catalog entries
-
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow1);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow1Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow2);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow2Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow3);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow3Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow4);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow4Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow5);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow5Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow6);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrow6Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(arrowTranslation);
+  SO_KIT_CATALOG_ENTRY_HEADER(drawStyle);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder1);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder1Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder1Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder2);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder2Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder2Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder3);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder3Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder3Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder4);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder4Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder4Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder5);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder5Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder5Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder6);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder6Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(extruder6Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(surroundScale);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator1);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator1Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator1Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator2);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator2Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator2Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator3);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator3Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator3Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator4);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator4Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator4Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator5);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator5Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator5Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator6);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator6Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator6Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform1);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform1Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform1Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform2);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform2Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform2Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform3);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform3Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform3Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform4);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform4Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform4Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform5);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform5Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform5Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform6);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform6Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform6Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform7);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform7Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform7Switch);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform8);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform8Active);
+  SO_KIT_CATALOG_ENTRY_HEADER(uniform8Switch);
 
 public:
   static void initClass(void);
   SoHandleBoxDragger(void);
 
-  // XXX fields
+  SoSFVec3f scaleFactor;
+  SoSFVec3f translation;
 
 protected:
   ~SoHandleBoxDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
+  virtual void setDefaultOnNonWritingFields(void);
 
+  static void startCB(void * f, SoDragger * d);
+  static void motionCB(void * f, SoDragger * d);
+  static void finishCB(void * f, SoDragger * d);
+  static void metaKeyChangeCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  void dragStart(void);
+  void drag(void);
+  void dragFinish(void);
+  void setAllPartsActive(SbBool onoroff);
+
+  SoFieldSensor * translFieldSensor;
+  SoFieldSensor * scaleFieldSensor;
 };
 
 #endif // !COIN_SOHANDLEBOXDRAGGER_H

@@ -21,10 +21,11 @@
 #define COIN_SOTRANSLATE1DRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
+class SbLineProjector;
 
 
 class SoTranslate1Dragger : public SoDragger {
@@ -32,24 +33,37 @@ class SoTranslate1Dragger : public SoDragger {
 
   SO_KIT_HEADER(SoTranslate1Dragger);
 
-  // XXX catalog entries
+  SO_KIT_CATALOG_ENTRY_HEADER(feedback);
+  SO_KIT_CATALOG_ENTRY_HEADER(feedbackActive);
+  SO_KIT_CATALOG_ENTRY_HEADER(feedbackSwitch);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator);
+  SO_KIT_CATALOG_ENTRY_HEADER(translatorActive);
+  SO_KIT_CATALOG_ENTRY_HEADER(translatorSwitch);
 
 
 public:
-  static void initClass(void);
+static void initClass(void);
   SoTranslate1Dragger(void);
 
-  // XXX fields
+  SoSFVec3f translation;
 
 protected:
   ~SoTranslate1Dragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
+  virtual void setDefaultOnNonWritingFields(void);
 
+  static void startCB(void * f, SoDragger * d);
+  static void motionCB(void * f, SoDragger * d);
+  static void finishCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  void dragStart(void);
+  void drag(void);
+  void dragFinish(void);
+
+  SoFieldSensor * fieldSensor;
+  SbLineProjector * lineProj;
 };
 
 #endif // !COIN_SOTRANSLATE1DRAGGER_H

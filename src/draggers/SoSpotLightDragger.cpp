@@ -35,6 +35,17 @@ SoSpotLightDragger::SoSpotLightDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // beam
+  // beamActive
+  // beamPlacement
+  // beamScale
+  // beamSep
+  // beamSwitch
+  // material
+  // rotator
+  // translator
+  // translatorRotInv
+  // translatorSep
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -69,6 +80,48 @@ SoSpotLightDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoSpotLightDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoSpotLightDragger::startCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoSpotLightDragger::motionCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoSpotLightDragger::doneCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoSpotLightDragger::dragStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoSpotLightDragger::drag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoSpotLightDragger::dragFinish(void)
+{
+  COIN_STUB();
+}
+
+void
+SoSpotLightDragger::setBeamScaleFromAngle(float beamangle)
 {
   COIN_STUB();
 }

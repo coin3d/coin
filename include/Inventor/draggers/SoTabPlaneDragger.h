@@ -21,10 +21,12 @@
 #define COIN_SOTABPLANEDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
+class SbLineProjector;
+class SbPlaneProjector;
 
 
 class SoTabPlaneDragger : public SoDragger {
@@ -32,24 +34,88 @@ class SoTabPlaneDragger : public SoDragger {
 
   SO_KIT_HEADER(SoTabPlaneDragger);
 
-  // XXX catalog entries
+  SO_KIT_CATALOG_ENTRY_HEADER(cornerScaleCoords);
+  SO_KIT_CATALOG_ENTRY_HEADER(cornerScaleTab0);
+  SO_KIT_CATALOG_ENTRY_HEADER(cornerScaleTab1);
+  SO_KIT_CATALOG_ENTRY_HEADER(cornerScaleTab2);
+  SO_KIT_CATALOG_ENTRY_HEADER(cornerScaleTab3);
+  SO_KIT_CATALOG_ENTRY_HEADER(edgeScaleCoords);
+  SO_KIT_CATALOG_ENTRY_HEADER(edgeScaleTab0);
+  SO_KIT_CATALOG_ENTRY_HEADER(edgeScaleTab1);
+  SO_KIT_CATALOG_ENTRY_HEADER(edgeScaleTab2);
+  SO_KIT_CATALOG_ENTRY_HEADER(edgeScaleTab3);
+  SO_KIT_CATALOG_ENTRY_HEADER(planeSwitch);
+  SO_KIT_CATALOG_ENTRY_HEADER(scaleTabHints);
+  SO_KIT_CATALOG_ENTRY_HEADER(scaleTabMaterial);
+  SO_KIT_CATALOG_ENTRY_HEADER(scaleTabMaterialBinding);
+  SO_KIT_CATALOG_ENTRY_HEADER(scaleTabNormal);
+  SO_KIT_CATALOG_ENTRY_HEADER(scaleTabNormalBinding);
+  SO_KIT_CATALOG_ENTRY_HEADER(scaleTabs);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator);
 
 
 public:
   static void initClass(void);
   SoTabPlaneDragger(void);
 
-  // XXX fields
+  SoSFVec3f translation;
+  SoSFVec3f scaleFactor;
+
+  void adjustScaleTabSize(void);
 
 protected:
-  ~SoTabPlaneDragger();
-  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
+  enum State {
+    INACTIVE,
+    TRANSLATING,
+    EDGE_SCALING,
+    CORNER_SCALING,
+    UNIFORM_SCALING
+  };
 
+  ~SoTabPlaneDragger();
+
+  virtual void GLRender(SoGLRenderAction * action);
+
+  virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
+  virtual void setDefaultOnNonWritingFields(void);
+
+  void reallyAdjustScaleTabSize(SoGLRenderAction * action);
+
+  void getXYScreenLengths(SbVec2f & lengths, const SbMatrix & localtoscreen,
+                           const SbVec2s & winsize);
+
+  void dragStart(void);
+  void drag(void);
+  void dragFinish(void);
+
+  void translateStart(void);
+  void translateDrag(void);
+  void edgeScaleStart(void);
+  void edgeScaleDrag(void);
+  void cornerScaleStart(void);
+  void cornerScaleDrag(void);
+  void scaleUniformStart(void);
+  void scaleUniformDrag(void);
+
+  static void startCB(void * f, SoDragger * d);
+  static void motionCB(void * f, SoDragger * d);
+  static void finishCB(void * f, SoDragger * d);
+  static void metaKeyChangeCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  SbBool needScaleTabAdjustment;
+  SbBool shftDown;
+  SbLineProjector * lineProj;
+  SbPlaneProjector * planeProj;
+  SbVec3f scaleCenter;
+  SbVec3f worldRestartPt;
+  SoFieldSensor * scaleFieldSensor;
+  SoFieldSensor * translFieldSensor;
+  State currentState;
+  State restartState;
+  int currentScalePatch;
+  int translateDir;
 };
 
 #endif // !COIN_SOTABPLANEDRAGGER_H

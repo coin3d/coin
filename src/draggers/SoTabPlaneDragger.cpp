@@ -35,6 +35,24 @@ SoTabPlaneDragger::SoTabPlaneDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // cornerScaleCoords
+  // cornerScaleTab0
+  // cornerScaleTab1
+  // cornerScaleTab2
+  // cornerScaleTab3
+  // edgeScaleCoords
+  // edgeScaleTab0
+  // edgeScaleTab1
+  // edgeScaleTab2
+  // edgeScaleTab3
+  // planeSwitch
+  // scaleTabHints
+  // scaleTabMaterial
+  // scaleTabMaterialBinding
+  // scaleTabNormal
+  // scaleTabNormalBinding
+  // scaleTabs
+  // translator
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -69,6 +87,120 @@ SoTabPlaneDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoTabPlaneDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::GLRender(SoGLRenderAction * action)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::adjustScaleTabSize(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction * action)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::getXYScreenLengths(SbVec2f & lengths, const SbMatrix & localtoscreen, const SbVec2s & winsize)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::dragStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::drag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::dragFinish(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::translateStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::translateDrag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::edgeScaleStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::edgeScaleDrag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::cornerScaleStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::cornerScaleDrag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::scaleUniformStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::scaleUniformDrag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::startCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::motionCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::finishCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTabPlaneDragger::metaKeyChangeCB(void * f, SoDragger * d)
 {
   COIN_STUB();
 }

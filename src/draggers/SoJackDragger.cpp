@@ -35,6 +35,11 @@ SoJackDragger::SoJackDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // antiSquish
+  // rotator
+  // scaler
+  // surroundScale
+  // translator
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -69,6 +74,12 @@ SoJackDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoJackDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoJackDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
 {
   COIN_STUB();
 }

@@ -21,7 +21,7 @@
 #define COIN_SOPOINTLIGHTDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-// XXX fields
+#include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
 class SoFieldSensor;
@@ -32,24 +32,25 @@ class SoPointLightDragger : public SoDragger {
 
   SO_KIT_HEADER(SoPointLightDragger);
 
-  // XXX catalog entries
+  SO_KIT_CATALOG_ENTRY_HEADER(material);
+  SO_KIT_CATALOG_ENTRY_HEADER(translator);
 
 
 public:
   static void initClass(void);
   SoPointLightDragger(void);
 
-  // XXX fields
+  SoSFVec3f translation;
 
 protected:
   ~SoPointLightDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
-  virtual void setDefaultOnNonWritingFields(void); // XXX remove?
+  virtual void setDefaultOnNonWritingFields(void);
 
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SoFieldSensor * Sensor; // XXX
+  SoFieldSensor * fieldSensor;
 };
 
 #endif // !COIN_SOPOINTLIGHTDRAGGER_H

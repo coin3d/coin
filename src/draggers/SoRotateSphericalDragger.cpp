@@ -35,6 +35,12 @@ SoRotateSphericalDragger::SoRotateSphericalDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // feedback
+  // feedbackActive
+  // feedbackSwitch
+  // rotator
+  // rotatorActive
+  // rotatorSwitch
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -56,12 +62,6 @@ SoRotateSphericalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 }
 
 void
-SoRotateSphericalDragger::setDefaultOnNonWritingFields(void)
-{
-  COIN_STUB();
-}
-
-void
 SoRotateSphericalDragger::fieldSensorCB(void * f, SoSensor * s)
 {
   COIN_STUB();
@@ -69,6 +69,61 @@ SoRotateSphericalDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoRotateSphericalDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateSphericalDragger::setProjector(SbSphereProjector * p)
+{
+  COIN_STUB();
+}
+
+const SbSphereProjector *
+SoRotateSphericalDragger::getProjector(void) const
+{
+  COIN_STUB();
+  return NULL;
+}
+
+void
+SoRotateSphericalDragger::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateSphericalDragger::startCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateSphericalDragger::motionCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateSphericalDragger::doneCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateSphericalDragger::dragStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateSphericalDragger::drag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateSphericalDragger::dragFinish(void)
 {
   COIN_STUB();
 }

@@ -35,6 +35,12 @@ SoRotateCylindricalDragger::SoRotateCylindricalDragger(void)
 
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
+  // feedback
+  // feedbackActive
+  // feedbackSwitch
+  // rotator
+  // rotatorActive
+  // rotatorSwitch
 
   // FIXME: should the fields of this class be added to the field list
   // with SO_NODE_ADD_FIELD()? 20000107 mortene.
@@ -56,12 +62,6 @@ SoRotateCylindricalDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 }
 
 void
-SoRotateCylindricalDragger::setDefaultOnNonWritingFields(void)
-{
-  COIN_STUB();
-}
-
-void
 SoRotateCylindricalDragger::fieldSensorCB(void * f, SoSensor * s)
 {
   COIN_STUB();
@@ -69,6 +69,61 @@ SoRotateCylindricalDragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoRotateCylindricalDragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateCylindricalDragger::setProjector(SbCylinderProjector * p)
+{
+  COIN_STUB();
+}
+
+const SbCylinderProjector *
+SoRotateCylindricalDragger::getProjector(void) const
+{
+  COIN_STUB();
+  return NULL;
+}
+
+void
+SoRotateCylindricalDragger::copyContents(const SoFieldContainer * fromfc, SbBool copyconnections)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateCylindricalDragger::startCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateCylindricalDragger::motionCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateCylindricalDragger::doneCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateCylindricalDragger::dragStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateCylindricalDragger::drag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoRotateCylindricalDragger::dragFinish(void)
 {
   COIN_STUB();
 }

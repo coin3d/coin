@@ -56,12 +56,6 @@ SoTranslate2Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
 }
 
 void
-SoTranslate2Dragger::setDefaultOnNonWritingFields(void)
-{
-  COIN_STUB();
-}
-
-void
 SoTranslate2Dragger::fieldSensorCB(void * f, SoSensor * s)
 {
   COIN_STUB();
@@ -69,6 +63,48 @@ SoTranslate2Dragger::fieldSensorCB(void * f, SoSensor * s)
 
 void
 SoTranslate2Dragger::valueChangedCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate2Dragger::startCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate2Dragger::motionCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate2Dragger::finishCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate2Dragger::metaKeyChangeCB(void * f, SoDragger * d)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate2Dragger::dragStart(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate2Dragger::drag(void)
+{
+  COIN_STUB();
+}
+
+void
+SoTranslate2Dragger::dragFinish(void)
 {
   COIN_STUB();
 }
