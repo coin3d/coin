@@ -23,7 +23,7 @@
 #include <Inventor/elements/SoTextureImageElement.h>
 
 class SoGLImage;
-
+class SoGLDisplayList;
 
 class COIN_DLL_EXPORT SoGLTextureImageElement : public SoTextureImageElement {
   typedef SoTextureImageElement inherited;
@@ -51,15 +51,15 @@ protected:
   virtual SbBool hasTransparency(void) const;
 
 private:
-  SoGLImage *image;
+  SoGLImage * image;
+  SoGLDisplayList * dlist;
   float quality;
   SbBool alphatest;
-
-  SoGLImage *glimage;
-  float glquality;
+  SoState * state;
   int glmodel;
   SbBool glalphatest;
   SbColor glblendcolor;
+  SbBool didapply;
 };
 
 #endif // !COIN_SOGLTEXTUREIMAGEELEMENT_H

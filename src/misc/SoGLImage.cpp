@@ -22,9 +22,18 @@
   \brief The SoGLImage class is used to handle OpenGL textures.
 */
 
+/*!
+  \enum SoGLImage::Wrap
+
+  Used to specify how texture coordinates < 0.0 and > 1.0 should be handled.
+  It can either be repeated (REPEAT), clamped (CLAMP) or clamped to edge
+  (CLAMP_TO_EDGE), which is useful when tiling textures.
+*/
+
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -46,12 +55,9 @@
 #define QUALITY_SCALELIMIT 0.7f
 
 
-#define FLAG_CLAMPS               0x01
-#define FLAG_CLAMPT               0x02
-#define FLAG_TRANSPARENCY         0x04
-#define FLAG_ALPHATEST            0x08
-#define FLAG_INVALIDHANDLE        0x10
-#define FLAG_NEEDTRANSPARENCYTEST 0x20
+#define FLAG_TRANSPARENCY         0x01
+#define FLAG_ALPHATEST            0x02
+#define FLAG_NEEDTRANSPARENCYTEST 0x04
 
 /*!
   Constructor.
@@ -61,42 +67,63 @@ SoGLImage::SoGLImage(void)
     size(0,0),
     numcomponents(0),
     flags(0),
-    context(NULL),
-    handle(0),
-    quality(0.0f)
+    wraps(CLAMP),
+    wrapt(CLAMP),
+    border(0)
 {
 }
 
 /*!
-  Sets the data for this GL image. Should only be called
-  when one of the parameters have changed, since this
-  will cause the GL texture object to be recreated.
+  Sets the data for this GL image. Should only be called when one
+  of the parameters have changed, since this will cause the GL texture
+  object to be recreated.  Caller is responsible for sending legal
+  Wrap values.  CLAMP_TO_EDGE is only supported on OpenGL v1.2
+  implementations, and as an extension on some earlier SGI
+  implementations (GL_SGIS_texture_edge_clamp).
+
+  For now, if quality > 0.5 when created, we create mipmaps, otherwise
+  a regular texture is created.  Be aware, if you for instance create a
+  texture with texture quality 0.4, and then later try to apply the
+  texture with a texture quality greater than 0.5, you will not get a
+  mipmap texture. If you suspect you might need a mipmap texture, it
+  should be created with a texture quality bigger than 0.5.
+
+  If \a border != 0, the OpenGL texture will be created with this
+  border size. Be aware that this might be extremely slow on most
+  PC hardware. 
+
+  Normally, the OpenGL texture object isn't created until the first
+  time it is needed, but if \a createinstate is != NULL, the texture
+  object is created immediately. This is useful if you use a temporary
+  buffer to hold the texture data. Be careful when using this feature,
+  since the texture data might be needed at a later stage (for
+  instance to create a texture object for another context).
+  It will not be possible to create texture objects for other cache
+  contexts when \a createinstate is != NULL.
 */
 void
 SoGLImage::setData(const unsigned char * bytes,
                    const SbVec2s size,
                    const int nc,
-                   const SbBool clamps,
-                   const SbBool clampt,
+                   const Wrap wraps,
+                   const Wrap wrapt,
                    const float quality,
-                   void * context,
-                   const SbBool createhandlenow)
+                   const int border,
+                   SoState * createinstate)
+
 {
   this->bytes = bytes;
   this->size = size;
   this->numcomponents = nc;
   this->flags = 0;
-  if (clamps) this->flags |= FLAG_CLAMPS;
-  if (clampt) this->flags |= FLAG_CLAMPT;
+  this->wraps = wraps;
+  this->wrapt = wrapt;
   if (nc == 2 || nc == 4) this->flags |= FLAG_NEEDTRANSPARENCYTEST;
-  this->flags |= FLAG_INVALIDHANDLE;
-  this->quality = quality;
-  this->context = context;
-
-  if (createhandlenow) {
-    if (this->handle) sogl_free_texture(this->handle);
-    this->handle = this->createHandle();
-    this->flags &= ~FLAG_INVALIDHANDLE;
+  this->border = border;
+  this->unrefDLists(createinstate);
+  if (createinstate) {
+    this->dlists.append(this->createGLDisplayList(createinstate, quality));
+    this->bytes = NULL; // data is assumed to be temporary
   }
 }
 
@@ -105,8 +132,24 @@ SoGLImage::setData(const unsigned char * bytes,
 */
 SoGLImage::~SoGLImage()
 {
-  if (this->handle) sogl_free_texture(this->handle);
+  this->unrefDLists(NULL);
 }
+
+/*!
+  This class has a private destuctor since we want users to supply
+  the current GL state when deleting the image. This is to make sure
+  gl texture objects are freed as soon as possible. If you supply
+  NULL to this method, the gl texture objects won't be deleted
+  until the next time an GLRenderAaction is applied in the image's
+  cache context(s).
+*/
+void
+SoGLImage::unref(SoState * state)
+{
+  this->unrefDLists(state);
+  delete this;
+}
+
 
 /*!
   Returns a pointer to the image data.
@@ -135,30 +178,47 @@ SoGLImage::getNumComponents(void) const
   return this->numcomponents;
 }
 
+/*!
+  Returns or creates a SoGLDisplayList to be used for rendering.
+  \a quality should contain the desired quality of the texture,
+  as found in the SoComplexity::textureQuality. Returns
+  NULL if no SoDLDisplayList could be created.
+*/
+SoGLDisplayList *
+SoGLImage::getGLDisplayList(SoState * state, const float quality)
+{
+  int currcontext = SoGLCacheContextElement::get(state);
+  int i, n = this->dlists.getLength();
+  SoGLDisplayList * dl = NULL;
+  for (i = 0; i < n; i++) {
+    dl = this->dlists[i];
+    if (dl->getContext() == currcontext) break;
+  }
+  if (i == n) {
+    dl = this->createGLDisplayList(state, quality);
+    if (dl) this->dlists.append(dl);
+  }
+  return dl;
+}
 
 /*!
-  Makes this texture the current OpenGL texture. \a quality
-  is the current textureQuality value found from the
-  Complexity node.
+  Conveniece method which makes \a dl the current texture for
+  the current context, and sets the filtering values based on
+  \a quality. It will not enable mipmap filtering unless the
+  the texture object contains mipmap data.
+
+  \sa setData()
 */
 void
-SoGLImage::apply(const float quality)
+SoGLImage::apply(SoState * state, SoGLDisplayList * dl, const float quality)
 {
-  if (this->handle && (this->flags & FLAG_INVALIDHANDLE)) {
-    sogl_free_texture(this->handle);
-    this->handle = 0;
-    this->flags &= ~FLAG_INVALIDHANDLE;
-  }
-  if (this->handle == 0) {
-    this->handle = this->createHandle();
-    this->flags &= ~FLAG_INVALIDHANDLE;
-  }
-  sogl_apply_texture(this->handle);
+  SbBool ismipmap = dl->isMipMapTextureObject();
+  dl->call(state);
   if (quality < LINEAR_LIMIT) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   }
-  else if ((quality < MIPMAP_LIMIT) || (this->quality < MIPMAP_LIMIT)) {
+  else if ((quality < MIPMAP_LIMIT) || !ismipmap) {
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   }
@@ -200,47 +260,21 @@ SoGLImage::needAlphaTest(void) const
 }
 
 /*!
-  Returns \e TRUE if texture coordinates should be clamped in
-  the s-direction.
+  Returns the wrap strategy for the S (horizontal) direction.
 */
-SbBool
-SoGLImage::shouldClampS(void) const
+SoGLImage::Wrap
+SoGLImage::getWrapS(void) const
 {
-  return (this->flags & FLAG_CLAMPS) !=0;
+  return this->wraps;
 }
 
 /*!
-  Returns \e TRUE if texture coordinates should be clamped in
-  the t-direction.
+  Returns the wrap strategy for the T (vertical) direction.
 */
-SbBool
-SoGLImage::shouldClampT(void) const
+SoGLImage::Wrap
+SoGLImage::getWrapT(void) const
 {
-  return (this->flags & FLAG_CLAMPT) !=0;
-}
-
-/*!
-  Returns texture quality for this GL image. For now, if quality >
-  0.5 when created, we create mipmaps, otherwise a normal texture is
-  created.  Be aware, if you for instance create a texture with
-  texture quality 0.4, and then later try to apply the texture with a
-  texture quality greater than 0.5, you will not get a mipmap
-  texture. If you suspect you might need a mipmap texture, it should
-  be created with a texture quality greater than 0.5.
-*/
-float
-SoGLImage::getQuality(void) const
-{
-  return this->quality;
-}
-
-/*!
-  Returns TRUE if the GL handle inside this instance is valid.
-*/
-SbBool
-SoGLImage::isValid(void) const
-{
-  return (this->flags & FLAG_INVALIDHANDLE) == 0;
+  return this->wrapt;
 }
 
 // returns the number of bits set, and ets highbit to
@@ -282,22 +316,27 @@ void cleanup_tmpimage(void)
 // private method that tests the size of the image, and
 // performs an resize if the size is not a power of two.
 //
-int
-SoGLImage::createHandle(void)
+SoGLDisplayList *
+SoGLImage::createGLDisplayList(SoState * state, const float quality)
 {
+  if (!this->bytes) return NULL;
+
   int xsize = this->size[0];
   int ysize = this->size[1];
-  unsigned int newx = (unsigned int)nearest_power_of_two(xsize);
-  unsigned int newy = (unsigned int)nearest_power_of_two(ysize);
+
+  // these might change if image is resized
+  const unsigned char * imageptr = this->bytes;
+  unsigned int newx = (unsigned int)nearest_power_of_two(xsize-2*this->border);
+  unsigned int newy = (unsigned int)nearest_power_of_two(ysize-2*this->border);
 
   // if >= 256 and low quality, don't scale up unless size is
   // close to an above power of two. This saves a lot of texture memory
-  if (this->quality < 0.7f) {
+  if (quality < 0.7f) {
     if (newx >= 256) {
-      if ((newx - xsize) > (newx>>3)) newx >>= 1;
+      if ((newx - (xsize-2*this->border)) > (newx>>3)) newx >>= 1;
     }
     if (newy >= 256) {
-      if ((newy - ysize) > (newy>>3)) newy >>= 1;
+      if ((newy - (ysize-2*this->border)) > (newy>>3)) newy >>= 1;
     }
   }
 
@@ -306,10 +345,11 @@ SoGLImage::createHandle(void)
   while (newx > maxsize) newx >>= 1;
   while (newy > maxsize) newy >>= 1;
 
-  // these might change if image is resized
-  const unsigned char * imageptr = this->bytes;
+  newx += 2*this->border;
+  newy += 2*this->border;
 
-  if (newx != (unsigned long) xsize || newy != (unsigned long) ysize) {
+
+  if ((newx != (unsigned long) xsize) || (newy != (unsigned long) ysize)) {
     int numbytes = newx * newy * this->numcomponents;
     if (numbytes > glimage_tmpimagebuffersize) {
       delete [] glimage_tmpimagebuffer;
@@ -342,37 +382,142 @@ SoGLImage::createHandle(void)
     imageptr = glimage_tmpimagebuffer;
   }
 
-  return sogl_create_texture(this->shouldClampS(),
-                             this->shouldClampT(),
-                             imageptr,
-                             this->numcomponents,
-                             newx, newy,
-                             this->quality >= MIPMAP_LIMIT);
+  SoGLDisplayList * dl =
+    new SoGLDisplayList(state,
+                        SoGLDisplayList::TEXTURE_OBJECT,
+                        1, quality > MIPMAP_LIMIT);
+  dl->ref();
+  dl->open(state);
+  this->reallyCreateTexture(state, imageptr, this->numcomponents,
+                            newx, newy, dl->getType() == SoGLDisplayList::DISPLAY_LIST,
+                            quality > MIPMAP_LIMIT,
+                            this->border);
+  dl->close(state);
+  return dl;
 }
 
 // test image data for transparency
 void
 SoGLImage::checkTransparency(void)
 {
-  if (this->numcomponents == 2 || this->numcomponents == 4) {
-    int n = this->size[0] * this->size[1];
-    int nc = this->numcomponents;
-    unsigned char * ptr = (unsigned char *) this->bytes + nc - 1;
-
-    while (n) {
-      if (*ptr != 255 && *ptr != 0) break;
-      if (*ptr == 0) this->flags |= FLAG_ALPHATEST;
-      ptr += nc;
-      n--;
+  if (this->bytes == NULL) {
+    if (this->numcomponents == 2 || this->numcomponents == 4) {
+      this->flags = FLAG_TRANSPARENCY;
     }
-    if (n > 0) {
-      this->flags |= FLAG_TRANSPARENCY;
-      this->flags &= ~FLAG_ALPHATEST;
+    else {
+      this->flags = 0;
     }
-    else this->flags &= ~FLAG_TRANSPARENCY;
   }
-  else this->flags &= ~(FLAG_TRANSPARENCY|FLAG_ALPHATEST);
+  else {
+    if (this->numcomponents == 2 || this->numcomponents == 4) {
+      int n = this->size[0] * this->size[1];
+      int nc = this->numcomponents;
+      unsigned char * ptr = (unsigned char *) this->bytes + nc - 1;
+      
+      while (n) {
+        if (*ptr != 255 && *ptr != 0) break;
+        if (*ptr == 0) this->flags |= FLAG_ALPHATEST;
+        ptr += nc;
+        n--;
+      }
+      if (n > 0) {
+        this->flags |= FLAG_TRANSPARENCY;
+        this->flags &= ~FLAG_ALPHATEST;
+      }
+      else this->flags &= ~FLAG_TRANSPARENCY;
+    }
+    else this->flags &= ~(FLAG_TRANSPARENCY|FLAG_ALPHATEST);
+    
+    // clear test flag before returning
+    this->flags &= ~FLAG_NEEDTRANSPARENCYTEST;
+  }
+}
 
-  // clear test flag before returning
-  this->flags &= ~FLAG_NEEDTRANSPARENCYTEST;
+static GLenum
+translate_wrap(SoState * state, const SoGLImage::Wrap wrap)
+{
+  if (wrap == SoGLImage::REPEAT) return GL_REPEAT;
+  if (wrap == SoGLImage::CLAMP_TO_EDGE) {
+#if GL_VERSION_1_2
+    return GL_CLAMP_TO_EDGE;
+#elif GL_EXT_texture_edge_clamp
+    static int texture_clamp_ext = -1;
+    if (texture_clamp_ext == -1) {
+      texture_clamp_ext = SoGLCacheContextElement::getExtID("GL_EXT_texture_edge_clamp");
+    }
+    if (SoGLCacheContextElement::extSupported(state, texture_clamp_ext))
+      return GL_CLAMP_TO_EDGE_EXT;
+#elif GL_SGIS_texture_edge_clamp
+    static int texture_clamp_sgis = -1;
+    if (texture_clamp_sgis == -1) {
+      texture_clamp_sgis = SoGLCacheContextElement::getExtID("SGIS_texture_edge_clamp");
+    }
+    if (SoGLCacheContextElement::extSupported(state, texture_clamp_sgis))
+      return GL_CLAMP_TO_EDGE_SGIS;
+#endif // GL_SGIS_texture_edge_clamp
+  }
+  return GL_CLAMP;
+}
+
+void
+SoGLImage::reallyCreateTexture(SoState * state,
+                               const unsigned char * const texture,
+                               const int numComponents,
+                               const int w, const int h,
+                               const SbBool dlist,
+                               const SbBool mipmap,
+                               const int border)
+{
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
+                  translate_wrap(state, this->wraps));
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
+                  translate_wrap(state, this->wrapt));
+  // set filtering to legal values for non mipmapped texture
+  if (!dlist && !mipmap) {
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  }
+
+  GLenum glformat;
+  switch (numComponents) {
+  case 1:
+    glformat = GL_LUMINANCE;
+    break;
+  case 2:
+    glformat = GL_LUMINANCE_ALPHA;
+    break;
+  case 3:
+    glformat = GL_RGB;
+    break;
+  case 4:
+    glformat = GL_RGBA;
+    break;
+  default:
+    assert(0 && "illegal numComonents");
+    glformat = GL_RGB; // Unnecessary, but kills a compiler warning.
+  }
+
+  if (!mipmap) {
+    glTexImage2D(GL_TEXTURE_2D, 0, numComponents, w, h,
+                 border, glformat, GL_UNSIGNED_BYTE, texture);
+  }
+  else { // mipmaps
+    // FIXME: ignoring the error code. Silly. 20000929 mortene.
+    (void)GLUWrapper()->gluBuild2DMipmaps(GL_TEXTURE_2D, numComponents, w, h,
+                                          glformat, GL_UNSIGNED_BYTE, texture);
+  }
+}
+
+//
+// unref all dlists stored in image
+//
+void
+SoGLImage::unrefDLists(SoState * state)
+{
+  int n = this->dlists.getLength();
+  for (int i = 0; i < n; i++) {
+    this->dlists[i]->unref(state);
+  }
+  this->dlists.truncate(0);
 }

@@ -22,45 +22,65 @@
 
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbVec2s.h>
+#include <Inventor/lists/SbList.h>
+
+class SoGLDisplayList;
+class SoState;
 
 class COIN_DLL_EXPORT SoGLImage {
 public:
 
   SoGLImage();
-  ~SoGLImage();
+  void unref(SoState * state = NULL);
+
+  enum Wrap {
+    REPEAT = 0,
+    CLAMP,
+    CLAMP_TO_EDGE
+  };
 
   void setData(const unsigned char * bytes,
                const SbVec2s size,
                const int nc,
-               const SbBool clamps,
-               const SbBool clampt,
-               const float quality,
-               void * context,
-               const SbBool createhandlenow = FALSE);
+               const Wrap wraps,
+               const Wrap wrapt,
+               const float quality = 0.5f,
+               const int border = 0,
+               SoState * createinstate = NULL);
 
   const unsigned char * getDataPtr(void) const;
   SbVec2s getSize(void) const;
   int getNumComponents(void) const;
 
-  void apply(const float quality);
+  static void apply(SoState * state, SoGLDisplayList * dl, const float quality);
+  SoGLDisplayList * getGLDisplayList(SoState * state, const float quality);
   SbBool hasTransparency(void) const;
   SbBool needAlphaTest(void) const;
-  SbBool shouldClampS() const;
-  SbBool shouldClampT() const;
-  float getQuality() const;
-  SbBool isValid(void) const;
+  Wrap getWrapS(void) const;
+  Wrap getWrapT(void) const;
 
 private:
-  int createHandle(void);
+  friend class my_dummy_class; // avoid warnings because of private destructor
+  ~SoGLImage();
+  SoGLDisplayList * createGLDisplayList(SoState * state, const float quality);
   void checkTransparency(void);
-
+  void unrefDLists(SoState * state);
+  void reallyCreateTexture(SoState * state,
+                           const unsigned char * const texture,
+                           const int numComponents,
+                           const int w, const int h,
+                           const SbBool dlist,
+                           const SbBool mipmap,
+                           const int border);
   const unsigned char * bytes;
   SbVec2s size;
   int numcomponents;
   unsigned int flags;
-  void * context;
-  int handle;
-  float quality;
+  Wrap wraps;
+  Wrap wrapt;
+  int border;
+  SbList <SoGLDisplayList*> dlists;
+  static int translateWrap(const Wrap wrap);
 };
 
 #endif // !COIN_SOGLIMAGE_H

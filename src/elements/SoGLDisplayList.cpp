@@ -45,29 +45,56 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-
 /*!
   Constructor.
 */
-SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum)
+SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
+                                 SbBool mipmaptexobj)
   : type(type),
     numalloc(allocnum),
     context(SoGLCacheContextElement::get(state)),
-    refcount(0)
+    refcount(0),
+    mipmap(mipmaptexobj)
 {
   if (type == TEXTURE_OBJECT) {
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoGLDisplayList::SoGLDisplayList()",
-                           "TEXTURE_OBJECT not supported. Falling back to display list.");
-#endif // debug
+#if GL_VERSION_1_1
+    glGenTextures(allocnum, &this->firstindex);
+#elif GL_EXT_texture_object
+    static int sogldl_texobj_ext = -1;
+    if (sogldl_texobj_ext == -1) {
+      sogldl_texobj_ext =
+        SoGLCacheContextElement::getExtID("GL_EXT_texture_object");
+    }
+    if (SoGLCacheContextElement::extSupported(state, sogldl_texobj_ext)) {
+      glGenTexturesEXT(allocnum, &this->firstindex);
+    }
+    else {
+      // fall back to display list
+      this->type = DISPLAY_LIST;
+      this->firstindex = glGenLists(allocnum);
+    }
+#else // GL_EXT_texture_object
+    this->firstindex = glGenLists(allocnum);
+#endif // ! GL_EXT_texture_object
   }
-  this->firstindex = glGenLists(allocnum);
+  else {
+    this->firstindex = glGenLists(allocnum);
+  }
 }
 
 // private destructor. Use ref()/unref()
 SoGLDisplayList::~SoGLDisplayList()
 {
-  glDeleteLists(this->firstindex, this->numalloc);
+  if (this->type == DISPLAY_LIST) {
+    glDeleteLists(this->firstindex, this->numalloc);
+  }
+  else {
+#if GL_VERSION_1_1
+    glDeleteTextures(this->numalloc, &this->firstindex);
+#elif GL_EXT_texture_object
+    glDeleteTexturesEXT(this->numalloc, &this->firstindex);
+#endif // GL_EXT_texture_object
+  }
 }
 
 /*!
@@ -86,11 +113,11 @@ SoGLDisplayList::ref(void)
 void
 SoGLDisplayList::unref(SoState * state)
 {
+  assert(this->refcount > 0);
   if (--this->refcount == 0) {
     // Let SoGLCacheContext delete this instance the next time context is current.
     SoGLCacheContextElement::scheduleDelete(state, this);
   }
-  assert(this->refcount > 0);
 }
 
 /*!
@@ -99,7 +126,16 @@ SoGLDisplayList::unref(SoState * state)
 void
 SoGLDisplayList::open(SoState * state, int index)
 {
-  glNewList(this->firstindex+index, GL_COMPILE_AND_EXECUTE);
+  if (type == DISPLAY_LIST) {
+    glNewList(this->firstindex+index, GL_COMPILE_AND_EXECUTE);
+  }
+  else {
+#if GL_VERSION_1_1
+    glBindTexture(GL_TEXTURE_2D, this->firstindex+index);
+#elif GL_EXT_texture_object
+    glBindTextureEXT(GL_TEXTURE_2D, this->firstindex+index);
+#endif // GL_EXT_texture_object
+  }
 }
 
 /*!
@@ -108,7 +144,9 @@ SoGLDisplayList::open(SoState * state, int index)
 void
 SoGLDisplayList::close(SoState * state)
 {
-  glEndList();
+  if (this->type == DISPLAY_LIST) {
+    glEndList();
+  }
 }
 
 /*!
@@ -117,7 +155,16 @@ SoGLDisplayList::close(SoState * state)
 void
 SoGLDisplayList::call(SoState * state, int index)
 {
-  glCallList(this->firstindex + index);
+  if (this->type == DISPLAY_LIST) {
+    glCallList(this->firstindex + index);
+  }
+  else {
+#if GL_VERSION_1_1
+    glBindTexture(GL_TEXTURE_2D, this->firstindex+index);
+#elif GL_EXT_texture_object
+    glBindTextureEXT(GL_TEXTURE_2D, this->firstindex+index);
+#endif // GL_EXT_texture_object
+  }
   this->addDependency(state);
 }
 
@@ -129,6 +176,17 @@ SoGLDisplayList::addDependency(SoState * state)
 {
   // FIXME: when GL cache is implemented, add nested dependency on this cache
   // pederb, 20000310
+}
+
+/*!
+  Returns whether the texture object stored in this instance 
+  was created with mipmap data. This method is an extension
+  versus the Open Inventor API.
+*/
+SbBool
+SoGLDisplayList::isMipMapTextureObject(void) const
+{
+  return this->mipmap;
 }
 
 /*!

@@ -25,7 +25,7 @@
 */
 
 #include <Inventor/elements/SoGLTextureImageElement.h>
-
+#include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/misc/SoGLImage.h>
 
@@ -64,17 +64,20 @@ void
 SoGLTextureImageElement::init(SoState * state)
 {
   inherited::init(state);
-  this->quality = SoTextureQualityElement::getDefault();
-  this->image = NULL;   // the image stored in this element
-  this->glimage = NULL; // the image currently sent to GL
+  this->dlist = NULL;
+  this->image = NULL;
+  this->didapply = FALSE;
 
   // set these to illegal values to make sure things are initialized
   // the first time.
+  this->quality = SoTextureQualityElement::getDefault();
   this->glmodel = -1;
-  this->glquality = -1.0f;
   this->glblendcolor.setValue(-1.0f, -1.0f, -1.0f);
   this->glalphatest = FALSE;
   glDisable(GL_ALPHA_TEST);
+
+  // store state to be able to apply dlists
+  this->state = state;
 }
 
 
@@ -85,11 +88,10 @@ void
 SoGLTextureImageElement::push(SoState * state)
 {
   inherited::push(state);
-  ((SoGLTextureImageElement*)this->next)->glimage = this->glimage;
-  ((SoGLTextureImageElement*)this->next)->glquality = this->glquality;
   ((SoGLTextureImageElement*)this->next)->glmodel = this->glmodel;
   ((SoGLTextureImageElement*)this->next)->glblendcolor = this->glblendcolor;
   ((SoGLTextureImageElement*)this->next)->glalphatest = this->glalphatest;
+  ((SoGLTextureImageElement*)this->next)->state = state;
 }
 
 
@@ -104,11 +106,19 @@ SoGLTextureImageElement::pop(SoState * state,
   SoGLTextureImageElement *prev = (SoGLTextureImageElement*)
     prevTopElement;
 
-  prev->glimage = this->glimage;
+  if (this->dlist) this->dlist->unref(state); // unref dlist (ref'ed in set())
   prev->glmodel = this->glmodel;
-  prev->glquality = this->glquality;
   prev->glblendcolor = this->glblendcolor;
   prev->glalphatest = this->glalphatest;
+  prev->didapply = FALSE; // force texture to be applied in the next evaluate()
+}
+
+static SoTextureImageElement::Wrap
+translateWrap(const SoGLImage::Wrap wrap)
+{
+  // FIXME: add test when OpenGL 1.2 feature CLAMP_TO_EDGE is added
+  if (wrap == SoGLImage::REPEAT) return SoTextureImageElement::REPEAT;
+  return SoTextureImageElement::CLAMP;
 }
 
 /*!
@@ -116,8 +126,8 @@ SoGLTextureImageElement::pop(SoState * state,
 */
 void
 SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
-                             SoGLImage *image, const Model model,
-                             const SbColor &blendColor)
+                             SoGLImage * image, const Model model,
+                             const SbColor & blendColor)
 {
   SoGLTextureImageElement * elem = (SoGLTextureImageElement*)
     SoReplacedElement::getElement(state, classStackIndex, node);
@@ -127,20 +137,21 @@ SoGLTextureImageElement::set(SoState * const state, SoNode * const node,
                    image->getSize(),
                    image->getNumComponents(),
                    image->getDataPtr(),
-                   image->shouldClampS() ?
-                   SoTextureImageElement::CLAMP :
-                   SoTextureImageElement::REPEAT,
-                   image->shouldClampT() ?
-                   SoTextureImageElement::CLAMP :
-                   SoTextureImageElement::REPEAT,
+                   translateWrap(image->getWrapS()),
+                   translateWrap(image->getWrapS()),
                    model,
                    blendColor);
     elem->image = image;
+    elem->didapply = FALSE;
     elem->quality = SoTextureQualityElement::get(state);
+    elem->dlist = image->getGLDisplayList(state, elem->quality);
+    if (elem->dlist) elem->dlist->ref(); // ref to make sure dlist is not deleted too soon
     elem->alphatest = image->needAlphaTest();
   }
   else {
+    elem->didapply = FALSE;
     elem->image = NULL;
+    elem->dlist = NULL;
     elem->quality = SoTextureQualityElement::get(state);
     elem->alphatest = FALSE;
     inherited::setDefault(state, node);
@@ -168,17 +179,11 @@ SoGLTextureImageElement::evaluate(const SbBool enabled, const SbBool transparenc
   // cast away constness
   SoGLTextureImageElement *elem = (SoGLTextureImageElement*) this;
 
-  if (enabled && elem->image) {
-    if (elem->image != elem->glimage || !elem->image->isValid()) {
-      elem->glimage = elem->image;
-      elem->glquality = elem->quality;
-      elem->image->apply(elem->quality);
+  if (enabled && elem->dlist) {
+    if (!elem->didapply) {
+      SoGLImage::apply(elem->state, elem->dlist, elem->quality);
+      elem->didapply = TRUE;
     }
-    else if (elem->quality != elem->glquality) {
-      elem->glquality = elem->quality;
-      elem->image->apply(elem->quality);
-    }
-
     if (int(elem->model) != elem->glmodel ||
         (elem->model == BLEND && elem->blendColor != elem->glblendcolor)) {
       elem->glmodel = (int) elem->model;

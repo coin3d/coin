@@ -52,6 +52,11 @@ typedef struct {
   int minor;
 } so_glversion_info;
 
+typedef struct {
+  int context;
+  int handle;
+} so_gltexhandle_info;
+
 static SbList <so_glext_info *> * extsupportlist;
 static SbList <so_glversion_info> * glversionlist;
 static SbList <SoGLDisplayList*> * scheduledeletelist;
@@ -312,7 +317,7 @@ SoGLCacheContextElement::shouldAutoCache(SoState * state, int bits)
 }
 
 /*!
-  This method is not supported in Coin. We will use our own 
+  This method is not supported in Coin. We will use our own
   auto caching strategy.
 */
 void
@@ -322,7 +327,7 @@ SoGLCacheContextElement::setAutoCacheBits(SoState * state, int bits)
 }
 
 /*!
-  This method is not supported in Coin. We will use our own 
+  This method is not supported in Coin. We will use our own
   auto caching strategy.
 */
 int
@@ -347,7 +352,7 @@ SoGLCacheContextElement::getIsRemoteRendering(SoState * state)
 // internal method used by SoGLDisplayList to delete list as soon as
 // the display list context is current again.
 //
-void 
+void
 SoGLCacheContextElement::scheduleDelete(SoState * state, class SoGLDisplayList * dl)
 {
   if (state && dl->getContext() == SoGLCacheContextElement::get(state)) {

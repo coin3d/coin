@@ -143,7 +143,7 @@ SoTexture2::SoTexture2(void)
 */
 SoTexture2::~SoTexture2()
 {
-  delete this->glimage;
+  if (this->glimage) this->glimage->unref(NULL);
   delete this->filenamesensor;
 }
 
@@ -181,6 +181,14 @@ SoTexture2::readInstance(SoInput * in, unsigned short flags)
   return readOK;
 }
 
+static SoGLImage::Wrap
+translateWrap(const SoTexture2::Wrap wrap)
+{
+  // FIXME: add support for OpenGL 1.2 CLAMP_TO_EDGE in SoTexture2
+  if (wrap == SoTexture2::REPEAT) return SoGLImage::REPEAT;
+  return SoGLImage::CLAMP;
+}
+
 // doc from parent
 void
 SoTexture2::GLRender(SoGLRenderAction * action)
@@ -193,20 +201,18 @@ SoTexture2::GLRender(SoGLRenderAction * action)
 
   float quality = SoTextureQualityElement::get(state);
   if (!this->glimagevalid) {
-    SbBool clamps = this->wrapS.getValue() == SoTexture2::CLAMP;
-    SbBool clampt = this->wrapT.getValue() == SoTexture2::CLAMP;
     int nc;
     SbVec2s size;
-
     const unsigned char * bytes =
       this->image.getValue(size, nc);
     if (bytes && size != SbVec2s(0,0)) {
-      this->glimage->setData(bytes, size, nc, clamps, clampt,
-                             quality, NULL);
+      this->glimage->setData(bytes, size, nc,
+                             translateWrap((Wrap)this->wrapS.getValue()),
+                             translateWrap((Wrap)this->wrapT.getValue()));
       this->glimagevalid = TRUE;
     }
   }
-
+  
   SoGLTextureImageElement::set(state, this,
                                this->glimagevalid ? this->glimage : NULL,
                                (SoTextureImageElement::Model) model.getValue(),
