@@ -166,35 +166,32 @@ SoVRMLImageTexture::initClass(void) // static
 #endif // HAVE_THREADS
 }
 
-#undef THIS
-#define THIS this->pimpl
-
-#undef THISP
-#define THISP thisp->pimpl
+#undef PRIVATE
+#define PRIVATE(x) x->pimpl
 
 /*!
   Constructor.
 */
 SoVRMLImageTexture::SoVRMLImageTexture(void)
 {
-  THIS = new SoVRMLImageTextureP;
+  PRIVATE(this) = new SoVRMLImageTextureP;
 
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLImageTexture);
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
 
-  THIS->glimage = NULL;
-  THIS->glimagevalid = FALSE;
-  THIS->readstatus = 1;
+  PRIVATE(this)->glimage = NULL;
+  PRIVATE(this)->glimagevalid = FALSE;
+  PRIVATE(this)->readstatus = 1;
   
   // use field sensor for url since we will load an image if
   // filename changes. This is a time-consuming task which should
   // not be done in notify().
-  THIS->urlsensor = new SoFieldSensor(urlSensorCB, this);
-  THIS->urlsensor->setPriority(0);
-  THIS->urlsensor->attach(&this->url);
+  PRIVATE(this)->urlsensor = new SoFieldSensor(urlSensorCB, this);
+  PRIVATE(this)->urlsensor->setPriority(0);
+  PRIVATE(this)->urlsensor->attach(&this->url);
 
 #ifdef HAVE_THREADS
-  THIS->isdestructing = FALSE;
+  PRIVATE(this)->isdestructing = FALSE;
 #endif // HAVE_THREADS
 }
 
@@ -206,14 +203,14 @@ SoVRMLImageTexture::~SoVRMLImageTexture()
 #ifdef HAVE_THREADS
   // just wait for all threads to finish reading
   if (imagetexture_scheduler) {
-    THIS->isdestructing = TRUE; // signal thread that we are destructing
+    PRIVATE(this)->isdestructing = TRUE; // signal thread that we are destructing
     cc_sched_wait_all(imagetexture_scheduler);
   }
 #endif // HAVE_THREADS  
 
-  if (THIS->glimage) THIS->glimage->unref(NULL);
-  delete THIS->urlsensor;
-  delete THIS;
+  if (PRIVATE(this)->glimage) PRIVATE(this)->glimage->unref(NULL);
+  delete PRIVATE(this)->urlsensor;
+  delete PRIVATE(this);
 }
 
 /*!
@@ -256,46 +253,46 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
     return;
 
   float quality = SoTextureQualityElement::get(state);
-  if (!THIS->glimagevalid) {
+  if (!PRIVATE(this)->glimagevalid) {
     SbBool needbig =
       SoTextureScalePolicyElement::get(state) ==
       SoTextureScalePolicyElement::DONT_SCALE;
 
     if (needbig &&
-        (THIS->glimage == NULL ||
-         THIS->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
-      if (THIS->glimage) {
-        THIS->glimage->setEndFrameCallback(NULL, NULL);
-        THIS->glimage->unref(state);
+        (PRIVATE(this)->glimage == NULL ||
+         PRIVATE(this)->glimage->getTypeId() != SoGLBigImage::getClassTypeId())) {
+      if (PRIVATE(this)->glimage) {
+        PRIVATE(this)->glimage->setEndFrameCallback(NULL, NULL);
+        PRIVATE(this)->glimage->unref(state);
       }
-      THIS->glimage = new SoGLBigImage();
+      PRIVATE(this)->glimage = new SoGLBigImage();
     }
     else if (!needbig &&
-             (THIS->glimage == NULL ||
-              THIS->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
-      if (THIS->glimage) {
-        THIS->glimage->setEndFrameCallback(NULL, NULL);
-        THIS->glimage->unref(state);
+             (PRIVATE(this)->glimage == NULL ||
+              PRIVATE(this)->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
+      if (PRIVATE(this)->glimage) {
+        PRIVATE(this)->glimage->setEndFrameCallback(NULL, NULL);
+        PRIVATE(this)->glimage->unref(state);
       }
-      THIS->glimage = new SoGLImage();
+      PRIVATE(this)->glimage = new SoGLImage();
     }
 
-    THIS->glimagevalid = TRUE;
-    THIS->glimage->setData(&THIS->image,
-                           translateWrap(this->repeatS.getValue()),
-                           translateWrap(this->repeatT.getValue()),
-                           quality);
+    PRIVATE(this)->glimagevalid = TRUE;
+    PRIVATE(this)->glimage->setData(&PRIVATE(this)->image,
+                                    translateWrap(this->repeatS.getValue()),
+                                    translateWrap(this->repeatT.getValue()),
+                                    quality);
   }
 
   SoGLTextureImageElement::set(state, this,
-                               THIS->glimagevalid ? THIS->glimage : NULL,
+                               PRIVATE(this)->glimagevalid ? PRIVATE(this)->glimage : NULL,
                                SoTextureImageElement::MODULATE,
                                SbColor(1.0f, 1.0f, 1.0f));
 
-  SbBool enable = THIS->glimagevalid &&
+  SbBool enable = PRIVATE(this)->glimagevalid &&
     quality > 0.0f &&
-    THIS->glimage->getImage() &&
-    THIS->glimage->getImage()->hasData();
+    PRIVATE(this)->glimage->getImage() &&
+    PRIVATE(this)->glimage->getImage()->hasData();
 
   SoGLTextureEnabledElement::set(state,
                                  this,
@@ -317,7 +314,7 @@ SbBool
 SoVRMLImageTexture::readInstance(SoInput * in,
                                  unsigned short flags)
 {
-  THIS->urlsensor->detach();
+  PRIVATE(this)->urlsensor->detach();
   SbBool ret = inherited::readInstance(in, flags);
   this->setReadStatus((int) ret);
   if (ret) {
@@ -327,7 +324,7 @@ SoVRMLImageTexture::readInstance(SoInput * in,
       this->setReadStatus(FALSE);
     }
   }
-  THIS->urlsensor->attach(&this->url);
+  PRIVATE(this)->urlsensor->attach(&this->url);
   return ret;
 }
 
@@ -337,7 +334,7 @@ SoVRMLImageTexture::readInstance(SoInput * in,
 int
 SoVRMLImageTexture::getReadStatus(void) const
 {
-  return THIS->readstatus;
+  return PRIVATE(this)->readstatus;
 }
 
 /*!
@@ -346,7 +343,7 @@ SoVRMLImageTexture::getReadStatus(void) const
 void
 SoVRMLImageTexture::setReadStatus(int status)
 {
-  THIS->readstatus = status;
+  PRIVATE(this)->readstatus = status;
 }
 
 //
@@ -356,7 +353,7 @@ SoVRMLImageTexture::setReadStatus(int status)
 SbBool
 SoVRMLImageTexture::loadUrl(void)
 {
-  THIS->glimagevalid = FALSE; // recreate GL image in next GLRender()
+  PRIVATE(this)->glimagevalid = FALSE; // recreate GL image in next GLRender()
 
   SbBool retval = FALSE;
   if (this->url.getNum() && this->url[0].getLength()) {
@@ -365,15 +362,15 @@ SoVRMLImageTexture::loadUrl(void)
     // instruct SbImage to call image_read_cb the first time the image
     // data is requested (typically when some shape using the texture
     // is inside the view frustum).
-    if (THIS->image.scheduleReadFile(image_read_cb, this,
-                                     this->url[0],
-                                     sl.getArrayPtr(), sl.getLength())) {
+    if (PRIVATE(this)->image.scheduleReadFile(image_read_cb, this,
+                                              this->url[0],
+                                              sl.getArrayPtr(), sl.getLength())) {
       retval = TRUE;
     }
 #else // HAVE_THREADS
     // if we don't have threads, read the image file immedidately
-    if (THIS->image.readFile(this->url[0],
-                             sl.getArrayPtr(), sl.getLength())) {
+    if (PRIVATE(this)->image.readFile(this->url[0],
+                                      sl.getArrayPtr(), sl.getLength())) {
       retval = TRUE;
     }
 #endif // ! HAVE_THREADS
@@ -392,13 +389,13 @@ SoVRMLImageTexture::glimage_callback(void * closure)
 {
 #ifdef HAVE_THREADS
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
-  if (THISP->glimage) {
-    int age = THISP->glimage->getNumFramesSinceUsed();
+  if (PRIVATE(thisp)->glimage) {
+    int age = PRIVATE(thisp)->glimage->getNumFramesSinceUsed();
     if (age > imagedata_maxage) {
-      THISP->glimagevalid = FALSE;
-      assert(THISP->glimage);
-      THISP->glimage->setEndFrameCallback(NULL, NULL);
-      THISP->image.setValue(SbVec2s(0,0), 0, NULL);
+      PRIVATE(thisp)->glimagevalid = FALSE;
+      assert(PRIVATE(thisp)->glimage);
+      PRIVATE(thisp)->glimage->setEndFrameCallback(NULL, NULL);
+      PRIVATE(thisp)->image.setValue(SbVec2s(0,0), 0, NULL);
       (void) thisp->loadUrl();
     }
   }
@@ -414,18 +411,19 @@ SoVRMLImageTexture::read_thread(void * closure)
 #ifdef HAVE_THREADS
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
   
-  if (!imagetexture_is_exiting && !THISP->isdestructing) {
+  if (!imagetexture_is_exiting && !PRIVATE(thisp)->isdestructing) {
+
+    fprintf(stderr,"starting to read image: %s\n", PRIVATE(thisp)->scheduledfilename.getString());
+    (void) PRIVATE(thisp)->image.readFile(PRIVATE(thisp)->scheduledfilename);
     
-    (void) THISP->image.readFile(THISP->scheduledfilename);
-    
-    assert(THISP->glimage);
-    THISP->glimage->setEndFrameCallback(glimage_callback, thisp);
-    THISP->glimagevalid = FALSE;
+    assert(PRIVATE(thisp)->glimage);
+    PRIVATE(thisp)->glimage->setEndFrameCallback(glimage_callback, thisp);
+    PRIVATE(thisp)->glimagevalid = FALSE;
 #ifdef COIN_THREADSAFE
     thisp->touch(); // schedule redraw
 #endif // COIN_THREADSAFE
   }  
-  THISP->readimagemutex.unlock(); // unlock to enable new images to be read
+  PRIVATE(thisp)->readimagemutex.unlock(); // unlock to enable new images to be read
 #endif // HAVE_THREADS
 }
 
@@ -437,15 +435,15 @@ SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, vo
 {
 #ifdef HAVE_THREADS
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
-  assert(&THISP->image == image);
-  assert(THISP->glimage);
-  if (!THISP->glimage) {
+  assert(&PRIVATE(thisp)->image == image);
+  assert(PRIVATE(thisp)->glimage);
+  if (!PRIVATE(thisp)->glimage) {
     return FALSE;
   }
   // lock mutex to avoid another thread overwriting our data.
-  (void) THISP->readimagemutex.lock();
+  (void) PRIVATE(thisp)->readimagemutex.lock();
 
-  THISP->scheduledfilename = filename;
+  PRIVATE(thisp)->scheduledfilename = filename;
 
   cc_sched_schedule(imagetexture_scheduler,
                     read_thread, thisp, 0);
@@ -470,6 +468,24 @@ SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
                               thisp->url[0].getString());
     thisp->setReadStatus(0);
   }
+  else { // empty image?
+    if (thisp->url.getNum() == 0 || thisp->url[0].getLength() == 0) {
+      // lock/unlock mutex in case a thread has been started to load
+      // the previous image
+#ifdef HAVE_THREADS
+      PRIVATE(thisp)->readimagemutex.lock();
+#endif // HAVE_THREADS
+      
+      thisp->pimpl->image.setValue(SbVec2s(0,0), 0, NULL);
+      thisp->pimpl->glimagevalid = FALSE;
+      if (PRIVATE(thisp)->glimage) {
+        PRIVATE(thisp)->glimage->setEndFrameCallback(NULL, NULL);
+      }
+#ifdef HAVE_THREADS
+      PRIVATE(thisp)->readimagemutex.unlock();
+#endif // HAVE_THREADS
+    }
+  }
 }
 
 /*!
@@ -478,7 +494,7 @@ SoVRMLImageTexture::urlSensorCB(void * data, SoSensor *)
 const SbImage *
 SoVRMLImageTexture::getImage(void) const
 {
-  return &THIS->image;
+  return &PRIVATE(this)->image;
 }
 
 /*!
@@ -489,3 +505,5 @@ SoVRMLImageTexture::setImageDataMaxAge(const uint32_t maxage)
 {
   imagedata_maxage = maxage;
 }
+
+#undef PRIVATE
