@@ -242,6 +242,11 @@ darwin7.* )
   sim_ac_macosx_10_2ff=true
   sim_ac_macosx_name="Panther"
   ;;
+darwin8.* )
+  sim_ac_macosx=true
+  sim_ac_macosx_10_2ff=true
+  sim_ac_macosx_name="Tiger"
+  ;;
 darwin* )
   sim_ac_macosx=true
   ;;
