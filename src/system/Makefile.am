@@ -2,7 +2,7 @@
 
 ## FIXME: this file should eventually be rendered obsolete, as the
 ## information contained in inttypes.h and kosher.h should be moved to
-## config.h.  19990912 mortene.
+## config.h through the configure-based process.  19990912 mortene.
 
 ## Installation information.
 
@@ -13,9 +13,9 @@ systeminc_HEADERS = \
 	$(top_srcdir)/include/Inventor/system/kosher.h
 
 
-## FIXME: this is a temporary workaround for a bug in Automake. The
-## bug is fixed in the latest Automake CVS, but not in any "official"
-## release (?). Last checked with Automake 1.4a. 19990912 mortene.
+# FIXME: this is a temporary workaround for a bug in Automake. The
+# bug is fixed in the latest Automake CVS, but not in any "official"
+# release (?). Last checked with Automake 1.4a. 19990912 mortene.
 
 install-systemincHEADERS: $(systeminc_HEADERS)
 	@$(NORMAL_INSTALL)

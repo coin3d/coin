@@ -10,6 +10,21 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
+# This macro contains fixes to avoid the default flush of output from
+# the automake generated rules. 19991201 mortene. 
+
+# FIXME: the non-dependency rules won't be overridden without make
+# emitting ugly warnings. 19991201 mortene.
+
+#.cpp.o:
+#	@echo Compiling $< | sed -e 's/\/.*\///'
+#	@$(CXXCOMPILE) -c $<
+#
+#.cpp.lo:
+#	@echo Compiling $< | sed -e 's/\/.*\///'
+#	@$(LTCXXCOMPILE) -c $<
+#
+
 
 SHELL = @SHELL@
 
@@ -71,7 +86,6 @@ COIN_VERSION = @COIN_VERSION@
 CXX = @CXX@
 DLLTOOL = @DLLTOOL@
 LD = @LD@
-LIBTOOL = @LIBTOOL@
 LN_S = @LN_S@
 LT_AGE = @LT_AGE@
 LT_CURRENT = @LT_CURRENT@
@@ -84,6 +98,11 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
+
+# This macro contains fixes to avoid the default flush of output from
+# the automake generated rules. 19991201 mortene. 
+
+LIBTOOL = @LIBTOOL@ --silent
 
 lib_LTLIBRARIES = libCoin.la
 @HACKING_DYNAMIC_MODULES_TRUE@TESTLIBDIR = coindev
@@ -103,7 +122,7 @@ libCoinincdir = $(includedir)/Inventor
 libCoin_la_LDFLAGS =          -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)         -release $(LT_RELEASE)
 
 
-libCoininc_HEADERS =  	$(top_srcdir)/include/Inventor/soconfig.h 	$(top_srcdir)/include/Inventor/confdep.h 	$(top_builddir)/include/Inventor/SbBasic.h 	$(top_srcdir)/include/Inventor/SbPList.h 	$(top_srcdir)/include/Inventor/So.h 	$(top_srcdir)/include/Inventor/SoDB.h 	$(top_srcdir)/include/Inventor/SoFullPath.h 	$(top_srcdir)/include/Inventor/SoNodeKitPath.h 	$(top_srcdir)/include/Inventor/SoInput.h 	$(top_srcdir)/include/Inventor/SoInteraction.h 	$(top_srcdir)/include/Inventor/SoOutput.h 	$(top_srcdir)/include/Inventor/SoPath.h 	$(top_srcdir)/include/Inventor/SoPickedPoint.h 	$(top_srcdir)/include/Inventor/SoPrimitiveVertex.h 	$(top_srcdir)/include/Inventor/SoSceneManager.h 	$(top_srcdir)/include/Inventor/SoType.h
+libCoininc_HEADERS =  	$(top_srcdir)/include/Inventor/soconfig.h 	$(top_srcdir)/include/Inventor/confdep.h 	$(top_builddir)/include/Inventor/SbBasic.h 	$(top_srcdir)/include/Inventor/SbPList.h 	$(top_srcdir)/include/Inventor/So.h 	$(top_srcdir)/include/Inventor/SoDB.h 	$(top_srcdir)/include/Inventor/SoFullPath.h 	$(top_srcdir)/include/Inventor/SoNodeKitPath.h 	$(top_srcdir)/include/Inventor/SoInput.h 	$(top_srcdir)/include/Inventor/SoInteraction.h 	$(top_srcdir)/include/Inventor/SoOutput.h 	$(top_srcdir)/include/Inventor/SoPath.h 	$(top_srcdir)/include/Inventor/SoPickedPoint.h 	$(top_srcdir)/include/Inventor/SoPrimitiveVertex.h 	$(top_srcdir)/include/Inventor/SoSceneManager.h 	$(top_srcdir)/include/Inventor/SoType.h 	$(top_srcdir)/include/Inventor/Sb.h 	$(top_srcdir)/include/Inventor/SbBox.h 	$(top_srcdir)/include/Inventor/SbBSPTree.h 	$(top_srcdir)/include/Inventor/SbLinear.h 	$(top_srcdir)/include/Inventor/SoLists.h 	$(top_srcdir)/include/Inventor/SbBox2f.h 	$(top_srcdir)/include/Inventor/SbBox2s.h 	$(top_srcdir)/include/Inventor/SbBox3f.h 	$(top_srcdir)/include/Inventor/SbColor.h 	$(top_srcdir)/include/Inventor/SbColor4f.h 	$(top_srcdir)/include/Inventor/SbCylinder.h 	$(top_srcdir)/include/Inventor/SbDict.h 	$(top_srcdir)/include/Inventor/SbHeap.h 	$(top_srcdir)/include/Inventor/SbLine.h 	$(top_srcdir)/include/Inventor/SbMatrix.h 	$(top_srcdir)/include/Inventor/SbName.h 	$(top_srcdir)/include/Inventor/SbOctTree.h 	$(top_srcdir)/include/Inventor/SbPlane.h 	$(top_srcdir)/include/Inventor/SbRotation.h 	$(top_srcdir)/include/Inventor/SbSphere.h 	$(top_srcdir)/include/Inventor/SbString.h 	$(top_srcdir)/include/Inventor/SbTesselator.h 	$(top_srcdir)/include/Inventor/SbTime.h 	$(top_srcdir)/include/Inventor/SbVec2f.h 	$(top_srcdir)/include/Inventor/SbVec2s.h 	$(top_srcdir)/include/Inventor/SbVec3f.h 	$(top_srcdir)/include/Inventor/SbVec4f.h 	$(top_srcdir)/include/Inventor/SbViewVolume.h 	$(top_srcdir)/include/Inventor/SbViewportRegion.h 	$(top_srcdir)/include/Inventor/SbXfBox3f.h
 
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h ../include/Inventor/SbBasic.h
@@ -487,6 +506,29 @@ all-redirect all-am all installdirs-am installdirs mostlyclean-generic \
 distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
+
+%.o: %.cpp
+	@echo Compiling $< | sed -e 's/\/.*\///'; \
+	$(CXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-cp .deps/$(*F).pp .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm .deps/$(*F).pp
+
+%.lo: %.cpp
+	@echo Compiling $< | sed -e 's/\/.*\///'; \
+	$(LTCXXCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
+	  < .deps/$(*F).pp > .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm -f .deps/$(*F).pp
+
+# FIXME: this is a temporary workaround for a bug in Automake. The
+# bug is fixed in the latest Automake CVS, but not in any "official"
+# release (?). Last checked with Automake 1.4a. 19990912 mortene.
 
 install-libCoinincHEADERS: $(libCoininc_HEADERS)
 	@$(NORMAL_INSTALL)
