@@ -4595,4 +4595,35 @@ WWWInline { alternateRep Group { BaseColor { rgb .2 .4 .6 } Cone { } } }
 ----8<-------------- [snip] -------8<-------------- [snip] -------------
 
     20050315 mortene.
+
+=====================================================================
+
+190 Unknown node types will crash Coin upon parsing.
+
+    Upon finding an unknown node type in a scene graph upon loading an
+    iv-file, an SoUnknownNode should be constructed, and the file
+    parsing should not abort. This does however not work now, so there
+    has been some kind of regression. To reproduce, try loading this
+    into e.g. an examiner viewer:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+x { }
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    This results in:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+embla:~/tmp$ ./examinerviewer bug.iv
+Coin read error: Node type ``x'' not recognized.
+        Occurred at line   3 in bug.iv
+examinerviewer: /home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:375: void SoGroup::addChild(SoNode *): Assertion `node != __null' failed.
+Aborted
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    Bug #188 may be the same problem as this.
+
+    20050317 mortene.
+
 =====================================================================
