@@ -197,7 +197,7 @@ THE WISH LIST
   it is easy to make mistakes with all the different coordIndex codes.
   But, experienced OpenGL programmers should be able to use it quite easily.
 
-* More nodes and element to control GL state.
+* More nodes and elements to control GL state.
   2000-12-07  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
   
@@ -224,7 +224,7 @@ THE WISH LIST
         SbDictT (templatized key type, void* value type)
           +- SbDict32 (key type == uint16_t)
           +- SbDict64 (key type == uint32_t)
-          +- SbDict (key type == unsigned long, for API compatibility)
+          +- SbDict (key type == unsigned long, for backwards API compatibility)
 
   Comment by pederb:
     Remember that all template code should be inline, in the SbDict.h
@@ -244,18 +244,18 @@ THE WISH LIST
   2001-04-30  Peder Blekken <pederb@sim.no>
   [upwards compatible extension]
 
-  I wish for new field in this node, to be able to control the vertical 
-  alignment of the strings. Useful if you want to align strings at the 
-  bottom or centre of something. We could also consider adding this field 
-  in SoAsciiText and SoText3.
+  I wish for this new field in the node, to be able to control the
+  vertical alignment of the strings. Useful if you want to align
+  strings at the bottom or centre of something. We could also consider
+  adding this field in SoAsciiText and SoText3.
 
 * 3D GUI Components
   2001-05-01  Peder Blekken <pederb@sim.no>
 
   It would be very useful to have a set of classes to build simple 3D
   GUIs. A nice approach might be to do something similar to how
-  draggers are created, as nodekits, with default geometry that can be
-  replaced by supplying your own geometry files.
+  draggers are created -- as nodekits -- with default geometry that
+  can be replaced by supplying your own geometry files.
 
   Examples of useful components: PushButton, ScrollBar, ComboBox,
   RadioButton, LineEdit, Menu?...
@@ -351,3 +351,10 @@ THE WISH LIST
   the value returned from the callback function.
 
 
+* SbString / SbName / Coin internationalization
+  2001-06-28  Morten Eriksen <mortene@sim.no>
+
+  Sooner or later, my guess is that we will have to make SbString and
+  SbName capable of handling more than simple ASCII / iso-8859-*
+  character sets. Other areas of Coin probably also need some
+  rewriting for internationalization.
