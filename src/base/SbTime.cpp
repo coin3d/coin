@@ -48,79 +48,10 @@
 #endif // HAVE_WINDOWS_H
 
 #include <Inventor/errors/SoDebugError.h>
+#include <Inventor/C/base/time.h>
+
 
 static const double SMALLEST_DOUBLE_TIMEUNIT  = 1.0/1000000.0;
-
-#ifdef HAVE_QUERYPERFORMANCECOUNTER
-static int highperf_available = -1;
-static double highperf_start = -1;
-static double highperf_tick = -1;
-#endif // HAVE_QUERYPERFORMANCECOUNTER
-
-// The Win32 QueryPerformanceCounter() strategy is based on code
-// submitted by Jan Peciva (aka PCJohn).
-inline
-SbBool SbTime_QueryPerformanceCounter(SbTime & sbtime)
-{
-#ifdef HAVE_QUERYPERFORMANCECOUNTER
-  if (highperf_available == -1) {
-    LARGE_INTEGER frequency;
-    highperf_available = (QueryPerformanceFrequency(&frequency) != 0);
-    if (highperf_available) {
-      highperf_tick = 1.0 / frequency.QuadPart;
-
-      time_t tt = time(NULL);
-      LARGE_INTEGER counter;
-      (void)QueryPerformanceCounter(&counter);
-      highperf_start = tt - ((double)counter.QuadPart * highperf_tick);
-    }
-  }
-
-  if (highperf_available) {
-    LARGE_INTEGER counter;
-    BOOL b = QueryPerformanceCounter(&counter);
-    assert(b && "QueryPerformanceCounter() failed even though QueryPerformanceFrequency() worked");
-    sbtime.setValue((double)counter.QuadPart * highperf_tick + highperf_start);
-    return TRUE;
-  }
-  return FALSE;
-#else // !HAVE_QUERYPERFORMANCECOUNTER
-  return FALSE;
-#endif // !HAVE_QUERYPERFORMANCECOUNTER
-}
-
-inline
-SbBool SbTime_gettimeofday(SbTime & sbtime)
-{
-#ifdef HAVE_GETTIMEOFDAY
-  struct timeval tmp;
-  int result = gettimeofday(&tmp, NULL);
-  if (COIN_DEBUG && (result < 0)) {
-    SoDebugError::postWarning("SbTime_gettimeofday",
-                              "Something went wrong (invalid timezone "
-                              "setting?). Result is undefined.");
-  }
-  sbtime.setValue(&tmp);
-  return TRUE;
-#else // !HAVE_GETTIMEOFDAY
-  return FALSE;
-#endif // !HAVE_GETTIMEOFDAY
-}
-
-inline
-SbBool SbTime__ftime(SbTime & sbtime)
-{
-#ifdef HAVE__FTIME
-  struct _timeb timebuffer;
-  _ftime(&timebuffer);
-  // FIXME: should use timezone field of struct _timeb aswell. 20011023 mortene.
-  sbtime.setValue((double)timebuffer.time +
-                  (double)timebuffer.millitm / 1000.0);
-  return TRUE;
-#else // !HAVE__FTIME
-  return FALSE;
-#endif // !HAVE__FTIME
-}
 
 
 /*!
@@ -169,11 +100,7 @@ SbTime::SbTime(const struct timeval * const tv)
 SbTime
 SbTime::getTimeOfDay(void)
 {
-  SbTime t;
-  if (SbTime_QueryPerformanceCounter(t)) { return t; }
-  if (SbTime_gettimeofday(t)) { return t; }
-  if (SbTime__ftime(t)) { return t; }
-  assert(FALSE && "unable to find current time");
+  SbTime t(cc_time_gettimeofday());
   return t;
 }
 
