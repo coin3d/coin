@@ -21,9 +21,15 @@
  *
 \**************************************************************************/
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #include <Inventor/C/glue/flwfreetype.h>
 #include <stdlib.h>
 #include <assert.h>
+
+/* ************************************************************************* */
 
 #ifndef HAVE_FREETYPE
 
@@ -53,12 +59,25 @@ void cc_flwft_done_glyph(void * font, int glyph) { assert(FALSE); }
 struct cc_flw_bitmap * cc_flwft_get_bitmap(void * font, int glyph) { assert(FALSE); return NULL; }
 int cc_flwft_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 
-#else /* HAVE_FREETYPE */
+#else /* HAVE_FREETYPE ***************************************************** */
 
 #include <string.h>
 #include <math.h>
 #include <stdio.h>
 #include <stddef.h>
+
+#include <sys/stat.h>
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif /* HAVE_UNISTD_H */
+#if HAVE_SYS_TYPES_H
+/* According to Coin user Ralf Corsepius, at least SunOS4 needs to
+   include sys/types.h before netinet/in.h. There have also been a
+   problem report for FreeBSD which seems to indicate that the same
+   dependency exists on that platform aswell. */
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
+
 
 #include <ft2build.h>
 /* FIXME: FT build macros don't work for MSVC dsp builds. preng 2003-03-11
@@ -70,6 +89,28 @@ int cc_flwft_get_outline(void * font, int glyph) { assert(FALSE); return 0; }
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/base/string.h>
+#include <Inventor/C/base/hash.h>
+#include <Inventor/C/base/dynarray.h>
+#include <Inventor/C/base/name.h>
+
+/* ************************************************************************* */
+
+/* FIXME: the following snippet duplicated from SoInput.cpp -- should
+   collect common code. 20030604 mortene. */
+
+/* This (POSIX-compliant) macro is missing from the Win32 API header
+   files for MSVC++ 6.0. */
+#ifndef S_ISDIR
+/* The _S_IFDIR bitpattern is not in the POSIX standard, but MSVC++
+   header files has it. */
+ #ifdef _S_IFDIR
+ #define S_ISDIR(s) (s & _S_IFDIR)
+#else /* Ai. */
+ #error Can neither find nor make an S_ISDIR macro to test stat structures.
+#endif /* !_S_IFDIR */
+#endif /* !S_ISDIR */
+
+/* ************************************************************************* */
 
 /* workaround for freetype < 2.1 */
 #if FREETYPE_MAJOR == 2 && FREETYPE_MINOR < 1
@@ -108,7 +149,93 @@ enum Coin_FT_Encoding {
 
 #endif /* FREETYPE_VERSION < 2.1 */
 
+/* ************************************************************************* */
+
 static FT_Library library;
+
+/* Built-in mappings from font names to font file names.
+
+   First item is a generic font name, then comes a list of possible
+   file names (in sorted order of priority), then a NULL pointer, then
+   a new generic font name, etc.
+*/
+static const char * fontfilenames[] = {
+  /* FIXME: different font _styles_ are just jumbled together below,
+     and are not really supported. It will take some work to sort out
+     that mess. 20030606 mortene. */
+
+  /*
+    Names of some TrueType font files on MS Windows installations.
+
+    FIXME: should provide more information about this -- e.g. is this
+    a complete set? Ask Preng why he wrote up exactly these
+    files. Where do these file names come from anyway? Just from
+    peeking in $WINDIR/Fonts/? 20030606 mortene.
+  */
+  "Arial", "arial.ttf", NULL,
+  "Arial Bold", "arialbd.ttf", NULL,
+  "Arial Bold Italic", "arialbi.ttf", NULL,
+  "Arial Italic", "ariali.ttf", NULL,
+  "Century Gothic", "gothic.ttf", NULL,
+  "Century Gothic Bold", "gothicb.ttf", NULL,
+  "Century Gothic Bold Italic", "gothicbi.ttf", NULL,
+  "Century Gothic Italic", "gothici.ttf", NULL,
+  "Courier", "cour.ttf", NULL,
+  "Courier Bold", "courbd.ttf", NULL,
+  "Courier Bold Italic", "courbi.ttf", NULL,
+  "Courier Italic", "couri.ttf", NULL,
+  "Simian", "simtoran.ttf", "simtgori.ttf", "simtchimp.ttf", NULL,
+  "Times New Roman", "times.ttf", NULL,
+  "Times New Roman Bold", "timesbd.ttf", NULL,
+  "Times New Roman Bold Italic", "timesbi.ttf", NULL,
+  "Times New Roman Italic", "timesi.ttf", NULL,
+  "Verdana", "verdana.ttf", NULL,
+  "Verdana Bold", "verdanab.ttf", NULL,
+  "Verdana Bold Italic", "verdanaz.ttf", NULL,
+  "Verdana Italic", "verdanai.ttf", NULL,
+  "OpenSymbol", "opens___.ttf", NULL,
+  "Small", "smalle.fon", NULL,
+
+  /* These are the TrueType fonts installed from the Debian Linux
+     "msttcorefonts" package, as of version 1.1.2. */
+  "Andale Mono", "Andale_Mono.ttf", NULL,
+  "Arial", "Arial.ttf", NULL,
+  "Arial Black", "Arial_Black.ttf", NULL,
+  "Arial Bold", "Arial_Bold.ttf", NULL,
+  "Arial Bold Italic", "Arial_Bold_Italic.ttf", NULL,
+  "Arial Italic", "Arial_Italic.ttf", NULL,
+  "Comic Sans MS", "Comic_Sans_MS.ttf", NULL,
+  "Comic Sans MS Bold", "Comic_Sans_MS_Bold.ttf", NULL,
+  "Courier", "Courier_New.ttf", NULL,
+  "Courier New", "Courier_New.ttf", NULL,
+  "Courier New Bold", "Courier_New_Bold.ttf", NULL,
+  "Courier New Bold Italic", "Courier_New_Bold_Italic.ttf", NULL,
+  "Courier New Italic", "Courier_New_Italic.ttf", NULL,
+  "Georgia", "Georgia.ttf", NULL,
+  "Georgia Bold", "Georgia_Bold.ttf", NULL,
+  "Georgia Bold Italic", "Georgia_Bold_Italic.ttf", NULL,
+  "Georgia Italic", "Georgia_Italic.ttf", NULL,
+  "Impact", "Impact.ttf", NULL,
+  "Times", "Times_New_Roman.ttf", NULL,
+  "Times New Roman", "Times_New_Roman.ttf", NULL,
+  "Times New Roman Bold", "Times_New_Roman_Bold.ttf", NULL,
+  "Times New Roman Bold Italic", "Times_New_Roman_Bold_Italic.ttf", NULL,
+  "Times New Roman Italic", "Times_New_Roman_Italic.ttf", NULL,
+  "Trebuchet MS", "Trebuchet_MS.ttf", NULL,
+  "Trebuchet MS Bold", "Trebuchet_MS_Bold.ttf", NULL,
+  "Trebuchet MS Bold Italic", "Trebuchet_MS_Bold_Italic.ttf", NULL,
+  "Trebuchet MS Italic", "Trebuchet_MS_Italic.ttf", NULL,
+  "Verdana", "Verdana.ttf", NULL,
+  "Verdana Bold", "Verdana_Bold.ttf", NULL,
+  "Verdana Bold Italic", "Verdana_Bold_Italic.ttf", NULL,
+  "Verdana Italic", "Verdana_Italic.ttf", NULL,
+  "Webdings", "Webdings.ttf", NULL
+};
+
+static cc_hash * fontname2filename = NULL;
+static cc_dynarray * fontfiledirs = NULL;
+
+/* ************************************************************************* */
 
 static SbBool
 cc_freetype_debug(void)
@@ -117,6 +244,8 @@ cc_freetype_debug(void)
   return env && (atoi(env) > 0);
 }
 
+/* ************************************************************************* */
+
 SbBool
 cc_flwft_initialize(void)
 {
@@ -124,8 +253,10 @@ cc_flwft_initialize(void)
   if (error) {
     if (cc_freetype_debug()) cc_debugerror_post("cc_flwft_initialize", "error %d", error);
     library = NULL;
+    return FALSE;
   }
-  else if (cc_freetype_debug()) {
+
+  if (cc_freetype_debug()) {
     FT_Int major, minor, patch;
     FT_Library_Version(library, &major, &minor, &patch);
     cc_debugerror_postinfo("cc_flwft_initialize",
@@ -133,33 +264,191 @@ cc_flwft_initialize(void)
                            major, minor, patch);
   }
 
-  return error == 0 ? TRUE : FALSE;
+  assert((fontname2filename == NULL) && "call cc_flwft_initialize only once!");
+
+  /* Set up hash of font name to array of file name mappings. */
+  fontname2filename = cc_hash_construct(50, 0.75);
+  {
+    unsigned int i = 0;
+    while (i < sizeof(fontfilenames) / sizeof(fontfilenames[0])) {
+      void * val;
+      SbBool found, unused;
+      cc_dynarray * array;
+      cc_name * namemapping = cc_name_new(fontfilenames[i]);
+      unsigned long key = (unsigned long)cc_name_get_string(namemapping);
+
+      found = cc_hash_get(fontname2filename, key, &val);
+      if (found) {
+        array = (cc_dynarray *)val;
+      }
+      else {
+        array = cc_dynarray_new();
+        unused = cc_hash_put(fontname2filename, key, array);
+        assert(unused);
+      }
+
+      cc_name_destruct(namemapping);
+
+      while (fontfilenames[++i] != NULL) {
+        cc_dynarray_append(array, (void *)fontfilenames[i]);
+      }
+      
+      i++;
+    }
+  }
+
+  /* Set up where to look for font files. */
+  {
+    const char * env;
+    char * str;
+    fontfiledirs = cc_dynarray_new();
+
+    if ((env = coin_getenv("COIN_FONT_PATH")) != NULL) {
+      str = strdup(env);
+      assert(str);
+      cc_dynarray_append(fontfiledirs, str);
+    }
+
+    /* FIXME: bad #ifdef, should ideally be a *run-time* check for
+       MSWindows. 20030526 mortene. */
+#ifdef _WIN32
+    if ((env = coin_getenv("WINDIR")) != NULL) {
+      cc_string fullpath;
+      cc_string_construct(&fullpath);
+
+      cc_string_set_text(&fullpath, env);
+      cc_string_append_text(&fullpath, "/Fonts");
+
+      str = strdup(cc_string_get_text(&fullpath));
+      assert(str);
+      cc_dynarray_append(fontfiledirs, str);
+
+      cc_string_clean(&fullpath);
+    }
+#endif /* _WIN32 */
+
+    /* Try current working directory aswell. */
+    str = strdup("./");
+    assert(str);
+    cc_dynarray_append(fontfiledirs, str);
+  }
+
+  return TRUE;
+}
+
+static void
+clean_fontmap_hash(unsigned long key, void * val, void * closure)
+{
+  cc_dynarray * array = (cc_dynarray *)val;
+  cc_dynarray_destruct(array);
 }
 
 void
 cc_flwft_exit(void)
 {
+  unsigned int i, n = cc_dynarray_length(fontfiledirs);
+  for (i = 0; i < n; i++) {
+    /* All string pointers should have been allocated with
+       strdup(). */
+    free(cc_dynarray_get(fontfiledirs, i));
+  }
+  cc_dynarray_destruct(fontfiledirs);
+
+  cc_hash_apply(fontname2filename, clean_fontmap_hash, NULL);
+  cc_hash_destruct(fontname2filename);
+
   FT_Done_FreeType(library);
+}
+
+static const char *
+find_font_file(const char * fontname)
+{
+  struct stat buf;
+  cc_string str;
+  unsigned int i, j, n;
+  cc_dynarray * possiblefilenames;
+  void * val;
+  const char * foundfile = NULL;
+  SbBool found;
+  cc_name * namemapping;
+  unsigned long key;
+
+  namemapping = cc_name_new(fontname);
+  key = (unsigned long)cc_name_get_string(namemapping);
+  cc_name_destruct(namemapping);
+  found = cc_hash_get(fontname2filename, key, &val);
+  if (!found) {
+    if (cc_freetype_debug()) {
+      cc_debugerror_postinfo("find_font_file",
+                             "fontname '%s' not found in name hash",
+                             fontname);
+    }
+    return NULL;
+  }
+
+  possiblefilenames = (cc_dynarray *)val;
+  n = cc_dynarray_length(possiblefilenames);
+
+  cc_string_construct(&str);
+  for (i = 0; i < n; i++) {
+    /* FIXME: the following code is generic code for finding a file in
+       a list of directories. Should move this to a new C ADT
+       "cc_file" (or "cc_dir"?). If done, should also wrap the SoInput
+       functions which does the same around it. 20030604 mortene. */
+    const unsigned int dirs = cc_dynarray_length(fontfiledirs);
+    for (j = 0; j < dirs; j++) {
+      SbBool found = FALSE;
+
+      cc_string_set_text(&str, (const char *)cc_dynarray_get(fontfiledirs, j));
+      cc_string_append_char(&str, '/');
+      cc_string_append_text(&str, (const char *)cc_dynarray_get(possiblefilenames, i));
+
+      found = (stat(cc_string_get_text(&str), &buf) == 0) && !S_ISDIR(buf.st_mode);
+      if (cc_freetype_debug()) {
+        cc_debugerror_postinfo("find_font_file", "'%s' %s",
+                               cc_string_get_text(&str),
+                               found ? "found!" : "NOT found");
+      }
+
+      if (found) {
+        /* Stor permanent in global name hash. */
+        cc_name * name = cc_name_new(cc_string_get_text(&str));
+        foundfile = cc_name_get_string(name);
+        cc_name_destruct(name);
+        goto done;
+      }
+    }
+  }
+
+ done:
+  cc_string_clean(&str);
+  return foundfile;
 }
 
 void *
 cc_flwft_get_font(const char * fontname)
 {
-  FT_Error error;
   FT_Face face;
-  error = FT_New_Face(library, fontname, 0, &face);
+  const char * fontfilename = find_font_file(fontname);
+  FT_Error error =
+    FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
+
   if (error) {
     if (cc_freetype_debug()) {
-      cc_debugerror_postwarning("cc_flwft_get_font", "error %d for fontname '%s'",
-                                error, fontname);
+      cc_debugerror_postwarning("cc_flwft_get_font",
+                                "error %d for fontname '%s' (filename '%s')",
+                                error, fontname,
+                                fontfilename ? fontfilename : "(null)");
     }
     return NULL;
   }
 
   if (cc_freetype_debug()) {
     cc_debugerror_postinfo("cc_flwft_get_font",
-                           "FT_New_Face(..., \"%s\", ...) => family \"%s\" and style \"%s\"",
-                           fontname, face->family_name, face->style_name);
+                           "FT_New_Face(..., \"%s\" / \"%s\", ...) => "
+                           "family \"%s\" and style \"%s\"",
+                           fontname, fontfilename ? fontfilename : "(null)",
+                           face->family_name, face->style_name);
   }
   return face;
 }
