@@ -721,10 +721,9 @@ SoGlyphP::setup3DFontData()
     else {
       // Install truetype font
 
-      // NOTE: We have to cast away the 'const'...
-      this->master->setCoords((SbVec2f *) ((float *) cc_flw_get_vector_glyph_coords(vector_glyph)));
-      this->master->setFaceIndices(((int *) cc_flw_get_vector_glyph_faceidx(vector_glyph))); 
-      this->master->setEdgeIndices(((int *) cc_flw_get_vector_glyph_edgeidx(vector_glyph))); 
+      this->master->setCoords((const SbVec2f *)cc_flw_get_vector_glyph_coords(vector_glyph));
+      this->master->setFaceIndices(cc_flw_get_vector_glyph_faceidx(vector_glyph));
+      this->master->setEdgeIndices(cc_flw_get_vector_glyph_edgeidx(vector_glyph));
     }
     
   }
