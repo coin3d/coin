@@ -525,11 +525,12 @@ THE WISH LIST
 * SoInput/SoOutput alternative
   2001-09-16  Lars J. Aas  <larsa@sim.no>
 
-  The SoInput / SoOutput classes are very messy.  Although they have lots of
-  virtual methods, they are almost impossible to derive to change their
-  behaviour (like I/O throught network connections and compression libraries).
-  A simpler, cleaner, more flexible/extendible alternative should be created
-  and allowed to be used as an alternative to these classes.
+  The SoInput / SoOutput classes are very messy.  Although they have
+  lots of virtual methods, they are almost impossible to derive to
+  change their behaviour (like I/O through network connections and
+  compression libraries).  A simpler, cleaner, more flexible /
+  extendible alternative should be created and allowed to be used as
+  an alternative to these classes.
 
 * SoAction::apply(SoAction * beingApplied)
   2001-09-20  Lars J. Aas  <larsa@sim.no>
@@ -671,3 +672,13 @@ THE WISH LIST
   this (as "setValuePointer").
 
 
+* SoOffscreenRenderer::render(SoPathList &)
+  2002-02-13  Peder Blekken  <pederb@sim.no>, write-up by <mortene@sim.no>
+
+  Would of course be extremely useful for rendering selected parts of
+  the scenegraph, and should even be part of the API just for
+  consistency reasons versus SoGLRenderAction.
+
+  (Perhaps a better, more general solution would be to just add
+  SoOffscreenRenderer::prepareForRendering(), and let the application
+  programmer apply his own SoGLRenderAction?)
