@@ -567,6 +567,10 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
     forcetiled || (fullsize[0] > tilesize[0]) || (fullsize[1] > tilesize[1]);
 
   // work around a bug in the ATI drivers.
+
+  // FIXME: What bug? What version of the drivers? What platform(s)?
+  // Under what circumstances? This is just ridiculous. kyrah 20040409
+
   if (!tiledrendering && (!coin_is_power_of_two(fullsize[0]) || !coin_is_power_of_two(fullsize[1]))) {
     if (this->forcepoweroftwo < 0) {
       this->forcepoweroftwo = 0;
