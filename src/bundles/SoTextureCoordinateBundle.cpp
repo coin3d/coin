@@ -70,39 +70,39 @@ SoTextureCoordinateBundle(SoAction * const action,
 
     if (action->getTypeId().isDerivedFrom(SoPickAction::getClassTypeId())) {
       // FIXME: this is a temporary fix. Since SoTextureImageElement is not
-      // enabled for SoPickAction or SoRayPickAction (I think it perhaps 
-      // should be) it's not possible to detect if there's an active 
-      // texture in the state; if texture coordinates are needed. Since it would 
+      // enabled for SoPickAction or SoRayPickAction (I think it perhaps
+      // should be) it's not possible to detect if there's an active
+      // texture in the state; if texture coordinates are needed. Since it would
       // be a _big_ waste of CPU-time to simply generate default texture
-      // coordinates even if a shape isn't textured (most shapes use 
-      // SoShape::generatePrimitives() for picking), we should find a solution 
+      // coordinates even if a shape isn't textured (most shapes use
+      // SoShape::generatePrimitives() for picking), we should find a solution
       // to this. For now, I just disable texture coordinates when picking.
       // I haven't implemented proper support for calculating them when picking
       // anyway.
       // pederb, 20000218
       return;
     }
-    
+
     SbVec2s dummysize;
     int dummynum;
     if (!SoTextureImageElement::getImage(this->state, dummysize, dummynum))
       return;
   }
-  
+
   assert(action->getCurPathTail()->isOfType(SoVertexShape::getClassTypeId()));
   this->shapenode = (SoVertexShape*)action->getCurPathTail();
-  
+
   SoVertexProperty *vp = (SoVertexProperty*)
     this->shapenode->vertexProperty.getValue();
-  
-  if (vp && vp->texCoord.getNum() > 0) {    
+
+  if (vp && vp->texCoord.getNum() > 0) {
     // FIXME:
     // the SoVertexProperty node is a bad design idea, IMHO
     // Just push and place needed stuff on the element stack for now.
     // will probably optimize later.
     // pederb, 20000218
     //
-    
+
     const SbVec2f *texcoords = vp->texCoord.getValues(0);
     this->state->push();
     this->flags |= FLAG_DIDPUSH;
@@ -114,7 +114,7 @@ SoTextureCoordinateBundle(SoAction * const action,
                                      vp->texCoord.getNum(),
                                      vp->texCoord.getValues(0));
   }
-  
+
   this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
   switch (coordElt->getType()) {
   case SoTextureCoordinateElement::DEFAULT:
@@ -144,16 +144,16 @@ SoTextureCoordinateBundle(SoAction * const action,
     break;
   }
 
-  this->glElt = NULL; 
+  this->glElt = NULL;
   if (forRendering) {
     this->glElt = (SoGLTextureCoordinateElement*) coordElt;
   }
   if ((this->flags & FLAG_DEFAULT) && !setUpDefault) {
     //
-    // FIXME: I couldn't be bothered to support this yet. It is for picking 
+    // FIXME: I couldn't be bothered to support this yet. It is for picking
     // optimization only, pederb, 20000218
     //
-  }  
+  }
 }
 
 /*!
@@ -232,7 +232,7 @@ SoTextureCoordinateBundle::get(const int index)
 */
 
 
-void 
+void
 SoTextureCoordinateBundle::initDefault(SoAction * const action,
                                        const SbBool forRendering)
 {
@@ -241,7 +241,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   this->flags |= FLAG_FUNCTION;
 
   if (forRendering) {
-    if (!this->flags & FLAG_DIDPUSH) {
+    if (!(this->flags & FLAG_DIDPUSH)) {
       this->state->push();
       this->flags |= FLAG_DIDPUSH;
     }
@@ -252,7 +252,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
                                             this);
     this->coordElt = SoTextureCoordinateElement::getInstance(this->state);
   }
-  
+
   //
   // calculate needed stuff for default mapping
   //
@@ -264,7 +264,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   this->shapenode->computeBBox(action, box, center);
   SbVec3f size;
   box.getSize(size[0], size[1], size[2]);
-  
+
   // find the two biggest dimensions
   int smallest = 0;
   float smallval = size[0];
@@ -275,14 +275,14 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   if (size[2] < smallval) {
     smallest = 2;
   }
-  
+
   this->defaultdim0 = (smallest + 1) % 3;
   this->defaultdim1 = (smallest + 2) % 3;
-  
+
   if (size[this->defaultdim0] == size[this->defaultdim1]) {
     // FIXME: this is probably an OIV bug. The OIV man pages are not
     // clear on this point (surprise), but the VRML specification states
-    // that if the two dimensions are equal, the ordering X>Y>Z should 
+    // that if the two dimensions are equal, the ordering X>Y>Z should
     // be used.
 #if 0 // the correct way to do it
     if (this->defaultdim0 > this->defaultdim1) {
@@ -297,7 +297,7 @@ SoTextureCoordinateBundle::initDefault(SoAction * const action,
   else if (size[this->defaultdim0] < size[this->defaultdim1]) {
     SbSwap(this->defaultdim0, this->defaultdim1);
   }
-  
+
   SbVec3f origo = box.getMin();
   this->defaultorigo[0] = origo[this->defaultdim0];
   this->defaultorigo[1] = origo[this->defaultdim1];
