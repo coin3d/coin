@@ -150,7 +150,7 @@ SoBaseKit::SoBaseKit(void)
   }
 
 
-  SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, \x0, SoCallback, TRUE);
+  SO_KIT_ADD_CATALOG_LIST_ENTRY(callbackList, SoSeparator, TRUE, this, "", SoCallback, TRUE);
   SO_KIT_ADD_LIST_ITEM_TYPE(callbackList, SoEventCallback);
 
   // this could be created on demand, but will make it more complicated
