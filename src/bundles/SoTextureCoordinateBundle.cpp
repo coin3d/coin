@@ -95,8 +95,9 @@ SoTextureCoordinateBundle(SoAction * const action,
     multienabled = 
       SoMultiTextureEnabledElement::getEnabledUnits(this->state, multimax);
   }
-  
-  if (!needinit && !multienabled) return;
+  SbBool bumpenabled = SoBumpMapElement::get(this->state) != NULL;
+
+  if (!needinit && !multienabled && !bumpenabled) return;
 
   // It is safe to assume that shapenode is of type SoShape, so we
   // cast to SoShape before doing any operations on the node.
@@ -156,7 +157,7 @@ SoTextureCoordinateBundle(SoAction * const action,
     }
     if (!needindices && this->isFunction()) {
       // check if bump mapping needs texture coordinate indices
-      if (SoBumpMapElement::get(state) && 
+      if (bumpenabled && 
           (SoBumpMapCoordinateElement::getInstance(state)->getNum())) {
         needindices = TRUE;
       }
