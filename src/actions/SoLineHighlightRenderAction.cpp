@@ -61,9 +61,49 @@
   nodes should be visible.
  */
 
+// *************************************************************************
+
+#define PRIVATE(p) (this->pimpl)
+#define PUBLIC(p) (this->owner)
+
+class SoLineHighlightRenderActionP {
+public:
+  SoLineHighlightRenderActionP(SoLineHighlightRenderAction * o) {
+    this->owner = o;
+
+    PUBLIC(this)->hlVisible = TRUE;
+    this->color = SbColor(1.0f, 0.0f, 0.0f);
+    this->linepattern = 0xffff;
+    this->linewidth = 3.0f;
+    this->searchaction = NULL;
+
+    // SoBase-derived objects should be dynamically allocated.
+    this->postprocpath = new SoTempPath(32);
+    this->postprocpath->ref();
+  }
+
+  ~SoLineHighlightRenderActionP() {
+    this->postprocpath->unref();
+    delete this->searchaction;
+  }
+
+  void drawBoxes(SoPath * pathtothis, const SoPathList * pathlist);
+
+  SoSearchAction * searchaction;
+  SbColor color;
+  uint16_t linepattern;
+  float linewidth;
+  SoTempPath * postprocpath;
+
+private:
+  SoLineHighlightRenderAction * owner;
+};
+
+// *************************************************************************
 
 SO_ACTION_SOURCE(SoLineHighlightRenderAction);
 
+// *************************************************************************
 
 // Override from parent class.
 void
@@ -80,7 +120,8 @@ SoLineHighlightRenderAction::initClass(void)
 SoLineHighlightRenderAction::SoLineHighlightRenderAction(void)
   : inherited(SbViewportRegion())
 {
-  this->init();
+  SO_ACTION_CONSTRUCTOR(SoLineHighlightRenderAction);
+  PRIVATE(this) = new SoLineHighlightRenderActionP(this);
 }
 
 /*!
@@ -89,7 +130,8 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(void)
 SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion & viewportregion)
   : inherited(viewportregion)
 {
-  this->init();
+  SO_ACTION_CONSTRUCTOR(SoLineHighlightRenderAction);
+  PRIVATE(this) = new SoLineHighlightRenderActionP(this);
 }
 
 /*!
@@ -97,27 +139,7 @@ SoLineHighlightRenderAction::SoLineHighlightRenderAction(const SbViewportRegion 
 */
 SoLineHighlightRenderAction::~SoLineHighlightRenderAction()
 {
-  this->postprocpath->unref();
-  delete this->searchaction;
-}
-
-//
-// private. called by both constructors
-//
-void
-SoLineHighlightRenderAction::init(void)
-{
-  SO_ACTION_CONSTRUCTOR(SoLineHighlightRenderAction);
-
-  this->hlVisible = TRUE;
-  this->color = SbColor(1.0f, 0.0f, 0.0f);
-  this->linepattern = 0xffff;
-  this->linewidth = 3.0f;
-  this->searchaction = NULL;
-
-  // SoBase-derived objects should be dynamically allocated.
-  this->postprocpath = new SoTempPath(32);
-  this->postprocpath->ref();
+  delete PRIVATE(this);
 }
 
 // Documented in superclass. Overridden to add highlighting after the
@@ -128,20 +150,20 @@ SoLineHighlightRenderAction::apply(SoNode * node)
   SoGLRenderAction::apply(node);
 
   if (this->hlVisible) {
-    if (this->searchaction == NULL) {
-      this->searchaction = new SoSearchAction;
-      this->searchaction->setType(SoSelection::getClassTypeId());
-      this->searchaction->setInterest(SoSearchAction::FIRST);
+    if (PRIVATE(this)->searchaction == NULL) {
+      PRIVATE(this)->searchaction = new SoSearchAction;
+      PRIVATE(this)->searchaction->setType(SoSelection::getClassTypeId());
+      PRIVATE(this)->searchaction->setInterest(SoSearchAction::FIRST);
     }
-    this->searchaction->apply(node);
-    if (this->searchaction->isFound()) {
+    PRIVATE(this)->searchaction->apply(node);
+    if (PRIVATE(this)->searchaction->isFound()) {
       SoSelection * selection = (SoSelection *)
-        this->searchaction->getPath()->getTail();
+        PRIVATE(this)->searchaction->getPath()->getTail();
       assert(selection->getTypeId().
              isDerivedFrom(SoSelection::getClassTypeId()));
 
       if (selection->getNumSelected()) {
-        this->drawBoxes(this->searchaction->getPath(), selection->getList());
+        PRIVATE(this)->drawBoxes(PRIVATE(this)->searchaction->getPath(), selection->getList());
       }
     }
   }
@@ -197,7 +219,7 @@ SoLineHighlightRenderAction::isVisible(void) const
 void
 SoLineHighlightRenderAction::setColor(const SbColor & color)
 {
-  this->color = color;
+  PRIVATE(this)->color = color;
 }
 
 /*!
@@ -206,7 +228,7 @@ SoLineHighlightRenderAction::setColor(const SbColor & color)
 const SbColor &
 SoLineHighlightRenderAction::getColor(void)
 {
-  return this->color;
+  return PRIVATE(this)->color;
 }
 
 /*!
@@ -214,18 +236,18 @@ SoLineHighlightRenderAction::getColor(void)
   \c 0xffff (i.e. full, unstippled lines).
 */
 void
-SoLineHighlightRenderAction::setLinePattern(unsigned short pattern)
+SoLineHighlightRenderAction::setLinePattern(uint16_t pattern)
 {
-  this->linepattern = pattern;
+  PRIVATE(this)->linepattern = pattern;
 }
 
 /*!
   Returns line pattern used when drawing wireframe.
 */
-unsigned short
+uint16_t
 SoLineHighlightRenderAction::getLinePattern(void) const
 {
-  return this->linepattern;
+  return PRIVATE(this)->linepattern;
 }
 
 /*!
@@ -235,7 +257,7 @@ SoLineHighlightRenderAction::getLinePattern(void) const
 void
 SoLineHighlightRenderAction::setLineWidth(const float width)
 {
-  this->linewidth = width;
+  PRIVATE(this)->linewidth = width;
 }
 
 /*!
@@ -244,11 +266,12 @@ SoLineHighlightRenderAction::setLineWidth(const float width)
 float
 SoLineHighlightRenderAction::getLineWidth(void) const
 {
-  return this->linewidth;
+  return PRIVATE(this)->linewidth;
 }
 
 void
-SoLineHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * pathlist)
+SoLineHighlightRenderActionP::drawBoxes(SoPath * pathtothis,
+                                        const SoPathList * pathlist)
 {
   int i;
   int thispos = ((SoFullPath *)pathtothis)->getLength()-1;
@@ -258,11 +281,11 @@ SoLineHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * p
   for (i = 0; i < thispos; i++)
     this->postprocpath->append(pathtothis->getNode(i));
 
-  SoState * state = this->getState();
+  SoState * state = PUBLIC(this)->getState();
   state->push();
   
   SoLightModelElement::set(state, SoLightModelElement::BASE_COLOR);
-  SoDiffuseColorElement::set(state, NULL, 1, &color);
+  SoDiffuseColorElement::set(state, NULL, 1, &this->color);
   SoLineWidthElement::set(state, this->linewidth);
   SoLinePatternElement::set(state, this->linepattern);
   SoTextureQualityElement::set(state, 0.0f);
@@ -280,7 +303,7 @@ SoLineHighlightRenderAction::drawBoxes(SoPath * pathtothis, const SoPathList * p
       this->postprocpath->append(path->getNode(j));
     }
 
-    SoGLRenderAction::apply(this->postprocpath);
+    PUBLIC(this)->SoGLRenderAction::apply(this->postprocpath);
     this->postprocpath->truncate(thispos);
   }
   state->pop();

@@ -46,13 +46,12 @@ public:
   SbBool isVisible(void) const;
   void setColor(const SbColor & color);
   const SbColor & getColor(void);
-  void setLinePattern(unsigned short pattern);
-  unsigned short getLinePattern(void) const;
+  void setLinePattern(uint16_t pattern);
+  uint16_t getLinePattern(void) const;
   void setLineWidth(const float width);
   float getLineWidth(void) const;
 
 protected:
-
   SbBool hlVisible;
   // Some protected members are missing compared to OIV here.
   // I doubt that anyone will use them though, since it looked
@@ -62,13 +61,8 @@ protected:
   // the action to conform more to OIV. pederb, 20000222
 
 private:
-  class SoSearchAction * searchaction;
-  void init(void);
-  void drawBoxes(SoPath * pathtothis, const SoPathList * pathlist);
-  SbColor color;
-  unsigned short linepattern;
-  float linewidth;
-  SoTempPath * postprocpath;
+  class SoLineHighlightRenderActionP * pimpl;
+  friend class SoLineHighlightRenderActionP;
 };
 
 #endif // !COIN_SOLINEHIGHLIGHTRENDERACTION_H
