@@ -82,6 +82,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
@@ -244,10 +246,26 @@ public:
   SoGLImage::Wrap wraps;
   SoGLImage::Wrap wrapt;
   int border;
-  SbList <SoGLDisplayList*> dlists;
+  SbBool isregistered;
 
+  class dldata {
+  public:
+    dldata(void)
+      : dlist(NULL), age(0) { }
+    dldata(SoGLDisplayList * dl)
+      : dlist(dl),
+        age(0) { }
+    dldata(const dldata & org)
+      : dlist(org.dlist),
+        age(org.age) { }
+    SoGLDisplayList * dlist;
+    uint32_t age;
+  };
+  
+  SbList <dldata> dlists;
   SoGLDisplayList * findDL(SoState * state);
-
+  void tagDL(SoState * state);
+  void unrefOldDL(SoState * state, const uint32_t maxage);
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -262,6 +280,7 @@ public:
 SoGLImage::SoGLImage(void)
 {
   THIS = new SoGLImageP;
+  THIS->isregistered = FALSE;
   THIS->bytes = NULL;
   THIS->size.setValue(0,0);
   THIS->numcomponents = 0;
@@ -423,7 +442,7 @@ SoGLImage::setData(const unsigned char * bytes,
       (dl = THIS->findDL(createinstate)) != NULL) {
     dl->ref();
     THIS->unrefDLists(createinstate);
-    THIS->dlists.append(dl);
+    THIS->dlists.append(SoGLImageP::dldata(dl));
     THIS->bytes = NULL; // data is temporary, and only for current context
     dl->call(createinstate);
     GLenum format;
@@ -461,9 +480,14 @@ SoGLImage::setData(const unsigned char * bytes,
     THIS->border = border;
     THIS->unrefDLists(createinstate);
     if (createinstate) {
-      THIS->dlists.append(THIS->createGLDisplayList(createinstate));
+      THIS->dlists.append(SoGLImageP::dldata(THIS->createGLDisplayList(createinstate)));
       THIS->bytes = NULL; // data is assumed to be temporary
     }
+  }
+
+  if (THIS->bytes && !THIS->isregistered) { 
+    THIS->isregistered = TRUE;
+    SoGLImage::registerImage(this);
   }
 }
 
@@ -472,6 +496,7 @@ SoGLImage::setData(const unsigned char * bytes,
 */
 SoGLImage::~SoGLImage()
 {
+  if (THIS->isregistered) SoGLImage::unregisterImage(this);
   THIS->unrefDLists(NULL);
   delete THIS;
 }
@@ -549,7 +574,7 @@ SoGLImage::getGLDisplayList(SoState * state)
 
   if (dl == NULL) {
     dl = THIS->createGLDisplayList(state);
-    if (dl) THIS->dlists.append(dl);
+    if (dl) THIS->dlists.append(SoGLImageP::dldata(dl));
   }
   return dl;
 }
@@ -908,7 +933,7 @@ SoGLImageP::unrefDLists(SoState * state)
 {
   int n = this->dlists.getLength();
   for (int i = 0; i < n; i++) {
-    this->dlists[i]->unref(state);
+    this->dlists[i].dlist->unref(state);
   }
   this->dlists.truncate(0);
 }
@@ -921,10 +946,51 @@ SoGLImageP::findDL(SoState * state)
   int i, n = this->dlists.getLength();
   SoGLDisplayList * dl;
   for (i = 0; i < n; i++) {
-    dl = this->dlists[i];
+    dl = this->dlists[i].dlist;
     if (dl->getContext() == currcontext) return dl;
   }
   return NULL;
+}
+
+void 
+SoGLImageP::tagDL(SoState * state)
+{
+  int currcontext = SoGLCacheContextElement::get(state);
+  int i, n = this->dlists.getLength();
+  SoGLDisplayList * dl;
+  for (i = 0; i < n; i++) {
+    dl = this->dlists[i].dlist;
+    if (dl->getContext() == currcontext) {
+      this->dlists[i].age = 0;
+      break;
+    }
+  }
+}
+
+void 
+SoGLImageP::unrefOldDL(SoState * state, const uint32_t maxage)
+{
+  int n = this->dlists.getLength();
+  int i = 0;
+
+  while (i < n) {
+    dldata & data = this->dlists[i];
+    if (data.age > maxage) {
+#if COIN_DEBUG && 0 // debug
+      SoDebugError::postInfo("SoGLImageP::unrefOldDL",
+                             "DL killed because of old age: %p",
+                             data.dlist);
+#endif // debug
+      data.dlist->unref(state);
+      this->dlists.removeFast(i);
+      n--; // one less in list now
+    }
+    else {
+      // increment age
+      data.age++;
+      i++;
+    }
+  }
 }
 
 SbBool
@@ -988,3 +1054,103 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
 }
 
 #endif // DOXYGEN_SKIP_THIS
+
+
+//
+// Texture resource management.
+//
+// FIXME: consider sorting images on an LRU strategy to
+// speed up the process of searching for GL-images to free.
+//
+
+static SbList <SoGLImage*> * glimage_reglist;
+static uint32_t glimage_maxage = 5;
+
+static void 
+regimage_cleanup(void)
+{
+
+}
+
+/*!  
+  When doing texture resource control, call this method before
+  rendering the scene, typically in the viewer's actualRedraw().  
+  \a state should be your SoGLRenderAction state.
+
+  \sa endFrame(), tagImage(), setDisplayListMaxAge()
+*/
+void 
+SoGLImage::beginFrame(SoState * /* state */)
+{
+  // nothing is done for now
+}
+
+/*! 
+  Should be called when a texture image is used. In Coin this is
+  handled by SoGLTextureImageElement, but if you use an SoGLImage on
+  your own, you should call this method to avoid that the display list
+  is deleted too soon. \a state should be your SoGLRenderAction state,
+  \a image the image you are about to use/have used.
+*/
+void
+SoGLImage::tagImage(SoState * state, SoGLImage * image)
+{
+  assert(image);
+  if (image) {
+    image->pimpl->tagDL(state);
+  }
+}
+
+/*!
+  Should be called after your scene is rendered. Old display
+  lists will be deleted when you call this method. \a state
+  should be your SoGLRenderAction state.
+
+  \sa beginFrame(), tagImage(), setDisplayListMaxAge()
+*/
+void 
+SoGLImage::endFrame(SoState * state)
+{
+  if (glimage_reglist) {
+    int n = glimage_reglist->getLength();
+    for (int i = 0; i < n; i++) {
+      SoGLImage * img = (*glimage_reglist)[i];
+      img->pimpl->unrefOldDL(state, glimage_maxage);
+    }
+  }
+}
+
+/*!  
+  Set the maximum age for a texture object/display list.  The age
+  of an image is the number of frames since it has been used.  
+  Default maximum age is 5.
+*/
+void 
+SoGLImage::setDisplayListMaxAge(const uint32_t maxage)
+{
+  glimage_maxage = maxage;
+}
+
+// used internally to keep track of the SoGLImages
+void 
+SoGLImage::registerImage(SoGLImage * image)
+{
+  if (glimage_reglist == NULL) {
+    glimage_reglist = new SbList<SoGLImage*>;
+    atexit(regimage_cleanup);
+  }
+  assert(glimage_reglist->find(image) < 0);
+  glimage_reglist->append(image);
+}
+
+// used internally to keep track of the SoGLImages
+void 
+SoGLImage::unregisterImage(SoGLImage * image)
+{
+  assert(glimage_reglist);
+  int idx = glimage_reglist->find(image);
+  assert(idx >= 0);
+  if (idx >= 0) {
+    glimage_reglist->removeFast(idx);
+  }
+}

@@ -94,6 +94,17 @@ private:
 
   class SoGLImageP * pimpl;
   friend class SoGLImageP;
+
+public:
+  // internal methods for texture resource management
+  static void beginFrame(SoState * state);
+  static void tagImage(SoState * state, SoGLImage * image);
+  static void endFrame(SoState * state);
+  static void setDisplayListMaxAge(const uint32_t maxage);
+
+private:
+  static void registerImage(SoGLImage * image);
+  static void unregisterImage(SoGLImage * image);
 };
 
 #endif // !COIN_SOGLIMAGE_H
