@@ -126,8 +126,12 @@
 void
 SoHardCopy::init(void)
 {
-  SoVectorizeAction::initClass();
-  SoVectorizePSAction::initClass();
+  static int first = 1;
+  if (first) {
+    SoVectorizeAction::initClass();
+    SoVectorizePSAction::initClass();
+    first = 0;
+  }
 }
 
 /*!

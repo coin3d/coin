@@ -156,6 +156,8 @@
 #include <Inventor/misc/SoProtoInstance.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/annex/HardCopy/SoHardCopy.h>
+
 #include <coindefs.h> // COIN_STUB()
 #include <stdlib.h>
 
@@ -181,6 +183,7 @@
 #include <Inventor/misc/SoAudioDevice.h>
 #include <Inventor/VRMLnodes/SoVRMLSound.h>
 #include <Inventor/VRMLnodes/SoVRMLAudioClip.h>
+
 #include "AudioTools.h"
 #endif // HAVE_SOUND
 
@@ -403,6 +406,8 @@ SoDB::init(void)
 
   SoGLImage::initClass();
   SoGLBigImage::initClass();
+
+  SoHardCopy::init();
 
 #ifdef HAVE_VRML97
   so_vrml_init();
