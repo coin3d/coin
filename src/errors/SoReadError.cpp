@@ -146,7 +146,7 @@ SoReadError::post(const SoInput * const in, const char * const format, ...)
   in->getLocationString(s);
 
   ostrstream buffer;
-  buffer << "Coin read error: " << msg << endl << s.getString();
+  buffer << "Coin read error: " << msg.str() << endl << s.getString();
 
   SoReadError error;
   error.setDebugString(buffer.str());
