@@ -34,6 +34,13 @@
  *
  * (Note: flex version should be 2.5.4, since this is what is
  * installed on nfs.sim.no).
+ *
+ * Flex 2.5.4 generates code that includes unitstd.h. unistd.h does
+ * not exist on the windows platform. You therefore need to apply
+ * a patch after running flex:
+ *
+ *             patch -p0 < so_eval.diff
+ *
  */
 
 #include <Inventor/C/basic.h>
