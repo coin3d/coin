@@ -132,7 +132,7 @@ static void addTessVertex(double * vertex);
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/dynarray.h>
 #include <Inventor/C/base/namemap.h>
-#include <Inventor/C/glue/fontlib_wrapper.h>
+#include "fontlib_wrapper.h"
 
 /* ************************************************************************* */
 

@@ -7,11 +7,11 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
 #include <Inventor/C/base/string.h>
 
+#include "fontlib_wrapper.h"
 #include "freetype.h"
 #include "glyph2d.h"
 
