@@ -141,6 +141,8 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   }
 
   const int numcoords = vpvtx ? vp->vertex.getNum() : coordelem->getNum();
+  int numacc = 0; // to calculate weighted center point
+  center.setValue(0.0f, 0.0f, 0.0f);
 
   if (vpvtx || coordelem->is3D()) {
     const SbVec3f * coords = vpvtx ?
@@ -152,30 +154,9 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     while (ptr < endptr) {
       const int idx = *ptr++;
       if (idx < numcoords) {
-        if (idx >= 0) box.extendBy(coords[idx]);
-      }
-#if COIN_DEBUG
-      else {
-        const int faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
-        error_idx_out_of_bounds(this, faultyidxpos, numcoords - 1);
-        if (numcoords <= 1) break; // give only one error msg on missing coords
-        // (the default state is that there's a default
-        // SoCoordinateElement element with a single default
-        // coordinate point setup)
-      }
-#endif // COIN_DEBUG
-    }
-  }
-  else {
-    const SbVec4f * coords = coordelem->getArrayPtr4();
-    const int32_t * ptr = this->coordIndex.getValues(0);
-    const int32_t * endptr = ptr + this->coordIndex.getNum();
-    while (ptr < endptr) {
-      int idx = *ptr++;
-      if (idx < numcoords) {
         if (idx >= 0) {
-          SbVec4f tmp = coords[idx];
-          box.extendBy(SbVec3f(tmp[0], tmp[1], tmp[2]));
+          box.extendBy(coords[idx]);
+          center += coords[idx];
         }
       }
 #if COIN_DEBUG
@@ -190,8 +171,35 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 #endif // COIN_DEBUG
     }
   }
-
-  if (!box.isEmpty()) center = box.getCenter();
+  else {
+    SbVec3f tmp;
+    const SbVec4f * coords = coordelem->getArrayPtr4();
+    const int32_t * ptr = this->coordIndex.getValues(0);
+    const int32_t * endptr = ptr + this->coordIndex.getNum();
+    while (ptr < endptr) {
+      int idx = *ptr++;
+      if (idx < numcoords) {
+        if (idx >= 0) {
+          SbVec4f h = coords[idx];
+          h.getReal(tmp);
+          box.extendBy(tmp);
+          center += tmp;
+          numacc++;
+        }
+      }
+#if COIN_DEBUG
+      else {
+        const int faultyidxpos = (ptr - this->coordIndex.getValues(0)) - 1;
+        error_idx_out_of_bounds(this, faultyidxpos, numcoords - 1);
+        if (numcoords <= 1) break; // give only one error msg on missing coords
+        // (the default state is that there's a default
+        // SoCoordinateElement element with a single default
+        // coordinate point setup)
+      }
+#endif // COIN_DEBUG
+    }
+  }
+  if (numacc) center /= (float) numacc;
 }
 
 /*!
