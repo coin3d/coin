@@ -475,12 +475,13 @@ AC_SUBST([HAVE_THREADSAFE])
 # Headers we might want to use
 
 # We expect these to include their dependencies.
+#
+# A non-empty last argument indicates to Autoconf that we would like to heed
+# the result from compilation, not just pre-processing. (A space is enough
+# to indicate non-emptiness.)
 AC_CHECK_HEADERS(
   [unistd.h sys/types.h inttypes.h stdint.h sys/param.h sys/time.h sys/timeb.h time.h io.h windows.h libgen.h direct.h],
   [], [],
-  # A non-empty last argument indicates to Autoconf that we would like to heed
-  # the result from compilation, not just pre-processing. (A space is enough
-  # to indicate non-emptiness.)
   [ ])
 
 SIM_AC_CHECK_HEADER_TLHELP32_H
@@ -494,13 +495,13 @@ if $sim_ac_have_win32_api; then
   COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lgdi32"
 fi
 
+# A non-empty last argument indicates to Autoconf that we would like to heed
+# the result from compilation, not just pre-processing. (A space is enough
+# to indicate non-emptiness.)
 AC_CHECK_HEADERS(
   [sys/unistd.h],
   [sim_ac_have_sys_unistd_h=true],
   [sim_ac_have_sys_unistd_h=false],
-  # A non-empty last argument indicates to Autoconf that we would like to heed
-  # the result from compilation, not just pre-processing. (A space is enough
-  # to indicate non-emptiness.)
   [ ])
 
 if $sim_ac_have_sys_unistd_h; then

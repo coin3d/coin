@@ -20276,6 +20276,10 @@ fi
 # Headers we might want to use
 
 # We expect these to include their dependencies.
+#
+# A non-empty last argument indicates to Autoconf that we would like to heed
+# the result from compilation, not just pre-processing. (A space is enough
+# to indicate non-emptiness.)
 
 
 
@@ -20303,9 +20307,6 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-# A non-empty last argument indicates to Autoconf that we would like to heed
-  # the result from compilation, not just pre-processing. (A space is enough
-  # to indicate non-emptiness.)
 
 
 #include <$ac_header>
@@ -20541,6 +20542,9 @@ if $sim_ac_have_win32_api; then
   COIN_EXTRA_LIBS="$COIN_EXTRA_LIBS -lgdi32"
 fi
 
+# A non-empty last argument indicates to Autoconf that we would like to heed
+# the result from compilation, not just pre-processing. (A space is enough
+# to indicate non-emptiness.)
 
 for ac_header in sys/unistd.h
 do
@@ -20557,9 +20561,6 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-# A non-empty last argument indicates to Autoconf that we would like to heed
-  # the result from compilation, not just pre-processing. (A space is enough
-  # to indicate non-emptiness.)
 
 
 #include <$ac_header>
