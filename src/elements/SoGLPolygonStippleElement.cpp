@@ -75,7 +75,7 @@ static void make_dither_matrix(uint32_t *ptr, int size)
     nextsize = currsize << 1;
     nextmatrix = new unsigned int[nextsize*nextsize];
     generate_next_matrix(currmatrix, currsize, nextmatrix);
-    if (currmatrix != two_by_two) delete currmatrix;
+    if (currmatrix != two_by_two) delete[] currmatrix;
     currmatrix = nextmatrix;
     currsize = nextsize;
   }
@@ -84,7 +84,7 @@ static void make_dither_matrix(uint32_t *ptr, int size)
   for (i = 0; i < size*size; i++)
     ptr[i] = currmatrix[i];
 
-  if (currmatrix != two_by_two) delete currmatrix;
+  if (currmatrix != two_by_two) delete[] currmatrix;
 }
 
 //

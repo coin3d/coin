@@ -124,12 +124,12 @@ public:
   }
   virtual ~SoOffscreenMesaData() {
     if (this->context) OSMesaDestroyContext(this->context);
-    delete this->buffer;
+    delete[] this->buffer;
   }
 
   virtual void setBufferSize(const SbVec2s & size) {
     SoOffscreenInternalData::setBufferSize(size);
-    delete this->buffer;
+    delete[] this->buffer;
     this->buffer =
       new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
   }
@@ -237,13 +237,13 @@ public:
     if (this->pixmap) XFreePixmap(this->display, this->pixmap);
     if (this->display) XCloseDisplay(this->display);
 
-    delete this->buffer;
+    delete[] this->buffer;
   }
 
   virtual void setBufferSize(const SbVec2s & size) {
     SoOffscreenInternalData::setBufferSize(size);
 
-    delete this->buffer;
+    delete[] this->buffer;
     this->buffer =
       new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
 
@@ -368,7 +368,7 @@ SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
 */
 SoOffscreenRenderer::~SoOffscreenRenderer()
 {
-  delete this->buffer;
+  delete[] this->buffer;
   delete this->internaldata;
   if (this->didallocaction) delete this->renderaction;
 }
@@ -408,7 +408,7 @@ SoOffscreenRenderer::setComponents(const Components components)
 
   SbVec2s dims = this->getViewportRegion().getViewportSizePixels();
 
-  delete this->buffer;
+  delete[] this->buffer;
   this->buffer = new unsigned char[dims[0] * dims[1] * this->components];
 }
 
@@ -437,7 +437,7 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
   SbVec2s dims = region.getViewportSizePixels();
   if (this->internaldata) this->internaldata->setBufferSize(dims);
 
-  delete this->buffer;
+  delete[] this->buffer;
   this->buffer = new unsigned char[dims[0] * dims[1] * this->getComponents()];
 }
 
