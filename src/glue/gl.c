@@ -1071,9 +1071,11 @@ glglue_allow_newer_opengl(const cc_glglue * w)
 {
   static SbBool fullindirect = -1;
   static SbBool force1_0 = -1;
+  static const char * COIN_FULL_INDIRECT_RENDERING = "COIN_FULL_INDIRECT_RENDERING";
+  static const char * COIN_DONT_INFORM_INDIRECT_RENDERING = "COIN_DONT_INFORM_INDIRECT_RENDERING";
 
   if (fullindirect == -1) {
-    fullindirect = (glglue_resolve_envvar("COIN_FULL_INDIRECT_RENDERING") > 0);
+    fullindirect = (glglue_resolve_envvar(COIN_FULL_INDIRECT_RENDERING) > 0);
   }
 
   if (force1_0 == -1) {
@@ -1081,7 +1083,31 @@ glglue_allow_newer_opengl(const cc_glglue * w)
   }
 
   if (force1_0) return FALSE;
-  if (!w->glx.isdirect && !fullindirect) return FALSE;
+
+  if (!w->glx.isdirect && !fullindirect) {
+    /* We give out a warning when the full OpenGL feature set is not
+       used, in case the end user uses an application with a remote
+       display, and that was not expected by the application
+       programmer. */
+    static int inform = -1;
+    if (inform == -1) { inform = glglue_resolve_envvar(COIN_DONT_INFORM_INDIRECT_RENDERING); }
+    if (inform == 0) {
+      cc_debugerror_postinfo("glglue_allow_newer_opengl",
+                             "\n\nFeatures of OpenGL version > 1.0 has been\n"
+                             "disabled, due to the use of a remote display.\n\n"
+                             "This is so because many common OpenGL drivers\n"
+                             "have problems in this regard.\n\n"
+                             "To force full OpenGL use, set the environment\n"
+                             "variable %s=1 and re-run the application.\n\n"
+                             "If you don't want this message displayed again,\n"
+                             "set the environment variable %s=1.\n",
+                             COIN_FULL_INDIRECT_RENDERING,
+                             COIN_DONT_INFORM_INDIRECT_RENDERING);
+    }
+
+    return FALSE;
+  }
+
   return TRUE;
 }
 
