@@ -37,6 +37,11 @@ class SoGLRenderAction;
 class SoNode;
 class SoPath;
 
+// This shouldn't strictly be necessary, but the OSF1/cxx compiler
+// complains if this is left out, while using the "friend class
+// SoExtSelectionP" statement in the class definition.
+class SoOffscreenRendererP;
+
 
 class COIN_DLL_API SoOffscreenRenderer {
 public:
@@ -82,6 +87,10 @@ public:
   SbBool writeToFile(const SbString & filename, const SbName & filetypeextension) const; 
 
 private:
+
+  friend class SoOffscreenRendererP;
+  class SoOffscreenRendererP * pimpl;
+  /*
   SbBool renderFromBase(SoBase * base);
   void convertBuffer(void);
 
@@ -92,6 +101,7 @@ private:
   SbBool didallocaction;
   class SoOffscreenInternalData * internaldata;
   unsigned char * buffer;
+  */
 };
 
 #endif // !COIN_SOOFFSCREENRENDERER_H
