@@ -32,14 +32,6 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_FREETYPE
-#include <ft2build.h>
-#include <freetype/freetype.h>
-#include <freetype/ftglyph.h>
-#else /* HAVE_FREETYPE */
-
-#include <Inventor/C/basic.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -47,6 +39,56 @@ extern "C" {
 #if 0 /* to get proper auto-indentation in emacs */
 }
 #endif /* emacs indentation */
+
+/* FIXME: Usage of fontconfig is tightly coupled and only makes sense
+ * with freetype. therefore decided to define structures together with
+ * freetype. Still, should it better be in its own file or rather
+ * inside the HAVE_FREETYPE section? 20040411 tamer.
+ */
+
+#ifdef HAVE_FONTCONFIG
+#include <fontconfig/fontconfig.h>
+#else /* HAVE_FONTCONFIG */
+
+/* avoid including <fontconfig/fontconfig.h>. define absolutely
+ * necessary structs and types.
+ */
+
+typedef enum _FcMatchKind {
+  FcMatchPattern, FcMatchFont
+} FcMatchKind;
+
+typedef enum _FcResult {
+  FcResultMatch, FcResultNoMatch, FcResultTypeMismatch, FcResultNoId
+} FcResult;
+
+typedef struct _FcPattern {
+  int num;
+  int size;
+  void * elts; /* void * instead of FcPatternElt * to minimize declarations! */
+  int ref;
+} FcPattern;
+
+#endif /* !HAVE_FONTCONFIG */
+
+int cc_fcglue_available(void);
+
+int cc_fcglue_FcGetVersion(void);
+FcPattern * cc_fcglue_FcNameParse(const unsigned char * name);
+int cc_fcglue_FcConfigSubstitute(void * config, FcPattern * pattern, FcMatchKind kind);
+void cc_fcglue_FcDefaultSubstitute(FcPattern *pattern);
+FcPattern * cc_fcglue_FcFontMatch(void * config, FcPattern * pattern, FcResult * result);
+FcResult cc_fcglue_FcPatternGetString(const FcPattern * pattern, const char * object, int n, unsigned char ** s);
+void cc_fcglue_FcPatternDestroy(FcPattern * pattern);
+void cc_fcglue_FcPatternPrint(const FcPattern * pattern);
+
+#ifdef HAVE_FREETYPE
+#include <ft2build.h>
+#include <freetype/freetype.h>
+#include <freetype/ftglyph.h>
+#else /* HAVE_FREETYPE */
+
+#include <Inventor/C/basic.h>
 
 /* 
    We need some freetype structs, so define them here for runtime
@@ -59,11 +101,19 @@ extern "C" {
 #define FT_LOAD_MONOCHROME 0x1000
 #define FT_FACE_FLAG_KERNING (1L <<  6)
 #define FT_KERNING_DEFAULT  0
+#define FT_RENDER_MODE_NORMAL 0
 #define FT_RENDER_MODE_MONO 2
 #define ft_kerning_default FT_KERNING_DEFAULT
 #define ft_render_mode_mono FT_RENDER_MODE_MONO
+#define ft_render_mode_normal FT_RENDER_MODE_NORMAL
 
 #define FT_HAS_KERNING(face) (face->face_flags & FT_FACE_FLAG_KERNING)
+
+#define FT_GLYPH_FORMAT_BITMAP \
+         ( ( (unsigned long)'b' << 24 ) | \
+           ( (unsigned long)'i' << 16 ) | \
+           ( (unsigned long)'t' << 8  ) | \
+             (unsigned long)'s'       )
 
 /* ...and lots of typedefs */
 typedef void * FT_Library;
@@ -295,9 +345,6 @@ typedef struct  FT_OutlineGlyphRec_
 
 
 typedef struct FT_OutlineGlyphRec_* FT_OutlineGlyph;
-
-
-
 
 #endif /* !HAVE_FREETYPE */
 
