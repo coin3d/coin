@@ -105,11 +105,12 @@ SoVRMLIndexedShape::getVertexData(SoState * state,
   tindices = this->texCoordIndex.getValues(0);
   if (this->texCoordIndex.getNum() <= 0 || tindices[0] < 0) tindices = NULL;
 
+  normalcacheused = FALSE;
+
   if (neednormals) {
     nindices = this->normalIndex.getValues(0);
     if (this->normalIndex.getNum() <= 0 || nindices[0] < 0) nindices = NULL;
     
-    normalcacheused = FALSE;
     if (normals == NULL) {
       SoNormalCache * nc = this->generateAndReadLockNormalCache(state);
       normals = nc->getNormals();
