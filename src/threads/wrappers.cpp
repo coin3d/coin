@@ -32,3 +32,11 @@
 /* #include <Inventor/threads/SbBarrier.h> */
 #include <Inventor/threads/SbStorage.h>
 #include <Inventor/threads/SbTypedStorage.h>
+#include <Inventor/threads/SbFifo.h>
+
+int
+main(int argc, char ** argv)
+{
+  return 0;
+}
+
