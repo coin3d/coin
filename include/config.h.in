@@ -64,6 +64,9 @@
 /* define this to the full libCoin major.minor.micro version number */
 #undef COIN_VERSION
 
+/* define for runtime linking with freetype */
+#undef FREETYPE_RUNTIME_LINKING
+
 /* define if GLU is part of the GL library */
 #undef GLU_IS_PART_OF_GL
 
