@@ -56,6 +56,8 @@ SoDragger::SoDragger(void)
 
   SO_KIT_ADD_CATALOG_ENTRY(motionMatrix, SoMatrixTransform, TRUE, topSeparator, geomSeparator, FALSE);
 
+  SO_NODE_ADD_FIELD(isActive, (FALSE));
+
   SO_KIT_INIT_INSTANCE();
 }
 

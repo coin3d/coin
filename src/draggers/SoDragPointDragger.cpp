@@ -72,11 +72,10 @@ SoDragPointDragger::SoDragPointDragger(void)
   // zFeedbackTranslation
   // zTranslator
   // zTranslatorSwitch
-  // 
+  //
   //     20000107 mortene
 
-  // FIXME: should the "rotation" and "translation" fields be added to
-  // the field list with SO_NODE_ADD_FIELD()? 20000107 mortene.
+  SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
 
   SO_KIT_INIT_INSTANCE();
 }

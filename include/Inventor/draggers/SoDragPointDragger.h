@@ -21,7 +21,6 @@
 #define COIN_SODRAGPOINTDRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
-#include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
 class SoSensor;
@@ -80,14 +79,13 @@ public:
   float getJumpLimit(void) const;
   void showNextDraggerSet(void);
 
-  SoSFRotation rotation;
   SoSFVec3f translation;
 
 protected:
   ~SoDragPointDragger();
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
-  
+
   void dragStart(void);
   void drag(void);
   void dragFinish(void);
@@ -98,7 +96,7 @@ protected:
   static void metaKeyChangeCB(void * f, SoDragger * d);
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
-  
+
   SoFieldSensor * fieldSensor;
 };
 

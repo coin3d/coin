@@ -182,23 +182,23 @@ public:
   SoSFFloat minDiscRotDot;
 
   enum State {
-    INACTIVE, 
+    INACTIVE,
 
     RIT_X_ROTATE,
     TOP_Y_ROTATE,
-    FNT_Z_ROTATE, 
+    FNT_Z_ROTATE,
     LFT_X_ROTATE,
     BOT_Y_ROTATE,
-    BAK_Z_ROTATE, 
+    BAK_Z_ROTATE,
 
     PX_PY_PZ_3D_SCALE,
     PX_PY_NZ_3D_SCALE,
-    PX_NY_PZ_3D_SCALE, 
+    PX_NY_PZ_3D_SCALE,
     PX_NY_NZ_3D_SCALE,
     NX_PY_PZ_3D_SCALE,
-    NX_PY_NZ_3D_SCALE, 
+    NX_PY_NZ_3D_SCALE,
     NX_NY_PZ_3D_SCALE,
-    NX_NY_NZ_3D_SCALE, 
+    NX_NY_NZ_3D_SCALE,
 
     RIT_TRANSLATE,
     TOP_TRANSLATE,

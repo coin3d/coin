@@ -71,12 +71,12 @@ protected:
   void setSwitches(SoDragger * activechild);
   virtual SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE);
   virtual void setDefaultOnNonWritingFields(void);
-  
+
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
   static void kidStartCB(void * f, SoDragger * d);
   static void kidFinishCB(void * f, SoDragger * d);
-  
+
   SoFieldSensor * rotFieldSensor;
   SoFieldSensor * centerFieldSensor;
 };

@@ -36,8 +36,7 @@ SoTranslate2Dragger::SoTranslate2Dragger(void)
   // FIXME: SO_KIT_ADD_CATALOG_ENTRY for all entries in this dragger's
   // catalog. 20000107 mortene.
 
-  // FIXME: should the fields of this class be added to the field list
-  // with SO_NODE_ADD_FIELD()? 20000107 mortene.
+  SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
 
   SO_KIT_INIT_INSTANCE();
 }
