@@ -761,6 +761,9 @@ SoFieldContainer::findCopy(const SoFieldContainer * orig,
     }
     else {
       if (orig->isOfType(SoProto::getClassTypeId())) {
+        // just copy the pointer. A PROTO definition is
+        // read-only. It's not possible to change it after it has been
+        // created so this should be safe.
         cp = (SoFieldContainer*) orig;
       }
       else {
