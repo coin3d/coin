@@ -9,7 +9,8 @@ threadsinc_HEADERS = \
 	storage.h \
 	worker.h \
 	wpool.h \
-	sched.h
+	sched.h \
+	fifo.h
 #	barrier.h
 
 ## These headers are not installed - they are internal to Coin...
@@ -20,7 +21,9 @@ EXTRA_DIST = \
 	rwmutexp.h \
 	storagep.h \
 	workerp.h \
-	wpoolp.h
+	wpoolp.h \
+	schedp.h \
+	fifop.h
 #	barrierp.h
 
 install-threadsincHEADERS: $(threadsinc_HEADERS)

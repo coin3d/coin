@@ -141,7 +141,8 @@ threadsinc_HEADERS = \
 	storage.h \
 	worker.h \
 	wpool.h \
-	sched.h
+	sched.h \
+	fifo.h
 
 
 #	barrier.h
@@ -152,7 +153,9 @@ EXTRA_DIST = \
 	rwmutexp.h \
 	storagep.h \
 	workerp.h \
-	wpoolp.h
+	schedp.h \
+	wpoolp.h \
+	fifop.h
 
 subdir = include/Inventor/C/threads
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs

@@ -8,7 +8,8 @@ RegularSources = \
 	condvar.c \
 	worker.c \
 	wpool.c \
-	sched.c
+	sched.c \
+	fifo.c
 #	barrier.c
 LinkHackSources = \
 	all-c.c
