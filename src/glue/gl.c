@@ -163,6 +163,16 @@ coin_glglue_old_elsa_warning(void)
   return (d > 0) ? 0 : 1;
 }
 
+/* Return value of COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING environment variable. */
+static int
+coin_glglue_sun_expert3d_warning(void)
+{
+  static int d = -1;
+  if (d == -1) { d = glglue_resolve_envvar("COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING"); }
+  /* Note the inversion of the envvar value versus the return value. */
+  return (d > 0) ? 0 : 1;
+}
+
 /* Return value of COIN_DEBUG_GLGLUE environment variable. */
 int
 coin_glglue_debug(void)
@@ -771,6 +781,47 @@ glglue_check_driver(const char * vendor, const char * renderer,
     problem, while the ELSA driver can be upgraded to a version that
     does not have the bug any more.
   */
+
+  if (coin_glglue_sun_expert3d_warning() &&
+      (strcmp(renderer, "Sun Expert3D, VIS") == 0) &&
+      (strcmp(version, "1.2 Sun OpenGL 1.2.1 patch 109544-19 for Solaris") == 0)) {
+    cc_debugerror_postwarning("glglue_check_driver",
+                              "This OpenGL driver (\"%s\" \"%s\") has known "
+                              "problems with dual screen configurations, "
+                              "please upgrade.  "
+                              "(This debug message can be turned off "
+                              "permanently by setting the environment variable"
+                              " COIN_GLGLUE_NO_SUN_EXPERT3D_WARNING=1).",
+                              renderer, version);
+  /*
+    The full driver information for the driver where this was reported
+    is as follows:
+
+    GL_VENDOR == 'Sun Microsystems, Inc.'
+    GL_RENDERER == 'Sun Expert3D, VIS'
+    GL_VERSION == '1.2 Sun OpenGL 1.2.1 patch 109544-19 for Solaris'
+
+    The driver was reported to fail when running on a Sun Solaris
+    system with the XVR1000 graphics card. Quoted verbatim from the
+    problem report:
+
+    ------8<---- [snip] -----------8<---- [snip] -----
+
+    [The client] works with two screens. One of the screen works as it
+    should, while the otherone has erronious apperance (see uploaded
+    image). The errors are the stripes on the texture (It should be
+    one continious texture). The texture is wrapped on a rectangle
+    (i.e. two large triangles). It is not only the OpenGl part of the
+    window that is weired.  Some buttons are missing and other buttons
+    have wrong colors++.
+
+    ------8<---- [snip] -----------8<---- [snip] -----
+
+    The error disappeared after a driver upgrade.
+
+    <mortene@sim.no>
+  */
+  }
 }
 
 /* We're basically using the Singleton pattern to instantiate and
