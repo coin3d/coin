@@ -30,6 +30,7 @@
     int colsize,
     int start )
 {
+  assert(rowsize >= 0 && colsize >= 0 && start >= 0);
   assert(coords->getNum() - start >= rowsize * colsize);
 
   const SbVec3f * coords3d = NULL;
