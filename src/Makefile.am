@@ -92,15 +92,15 @@ libCoininc_HEADERS = \
 ## DLL. If not, just make an empty coin{version}.dll file so the
 ## install-exec-hook knows when to _not_ install the .dll.
 
-coin@COIN_MAJOR_VERSION@.dll: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
-	@rm -f coin@COIN_MAJOR_VERSION@.dll && \
+coin@COIN_MAJOR_VERSION@@DSUFFIX@.dll: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
+	@rm -f coin@COIN_MAJOR_VERSION@@DSUFFIX@.dll && \
 	if @BUILD_WITH_MSVC@; then \
 	  echo "Linking DLL..."; \
-	  $(CC) @DLLFLAGS@ /out:coin@COIN_MAJOR_VERSION@.dll $(LDFLAGS) \
+	  $(CC) @DLLFLAGS@ /out:coin@COIN_MAJOR_VERSION@@DSUFFIX@.dll $(LDFLAGS) \
 	        `echo $(libCoin_la_OBJECTS) | sed 's%\.lo%.obj%g'` \
 	        $(libCoin_la_LIBADD) $(LIBS); \
 	else \
-	  touch coin@COIN_MAJOR_VERSION@.dll; \
+	  touch coin@COIN_MAJOR_VERSION@@DSUFFIX@.dll; \
 	fi
 
 ## This hook will be run at the end of a ``make install''.
@@ -108,12 +108,12 @@ coin@COIN_MAJOR_VERSION@.dll: $(libCoin_la_OBJECTS) $(libCoin_la_DEPENDENCIES)
 ## The single action taken is to install the coin.dll and coin.lib
 ## files (if they have been built properly).
 
-install-exec-hook: coin@COIN_MAJOR_VERSION@.dll
-	@if test -s coin@COIN_MAJOR_VERSION@.dll; then \
-	  echo "Installing coin@COIN_MAJOR_VERSION@.dll"; \
+install-exec-hook: coin@COIN_MAJOR_VERSION@@DSUFFIX@.dll
+	@if test -s coin@COIN_MAJOR_VERSION@@DSUFFIX@.dll; then \
+	  echo "Installing coin@COIN_MAJOR_VERSION@@DSUFFIX@.dll"; \
 	  for e in dll lib pdb; do \
-	    file="coin@COIN_MAJOR_VERSION@.$$e"; \
-	    if test -s "$$file"; then \
+	    file="coin@COIN_MAJOR_VERSION@@DSUFFIX@.$$e"; \
+	    if test -s $$file; then \
 	      $(INSTALL_DATA) $$file $(DESTDIR)$(libdir)/$$file; \
 	    fi \
 	  done \
@@ -121,10 +121,10 @@ install-exec-hook: coin@COIN_MAJOR_VERSION@.dll
 
 uninstall: uninstall-am
 	@for e in dll lib pdb; do \
-	  file="$(DESTDIR)$(libdir)/coin@COIN_MAJOR_VERSION@.$$e"; \
-	  if test -f "$$file"; then \
-	    echo rm -f "$$file"; \
-	    rm -f "$$file"; \
+	  file="$(DESTDIR)$(libdir)/coin@COIN_MAJOR_VERSION@@DSUFFIX@.$$e"; \
+	  if test -f $$file; then \
+	    echo rm -f $$file; \
+	    rm -f $$file; \
 	  fi \
 	done
 
