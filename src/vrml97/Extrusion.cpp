@@ -715,6 +715,21 @@ SoVRMLExtrusionP::generateCoords(void)
     closed = TRUE;
   }
 
+  // calculate the length of the spine and cross section. Needed for
+  // texture coordinates.
+  float spinelen = 0.0f;
+  float crosslen = 0.0f;
+
+  for (i = 0; i < numspine-1; i++) {
+    spinelen += (spine[i+1]-spine[i]).length();
+  }
+  if (spinelen == 0.0f) spinelen = 1.0f;
+    
+  for (i = 0; i < numcross-1; i++) {
+    crosslen += (cross[i+1]-cross[i]).length();
+  }
+  if (crosslen == 0.0f) crosslen = 1.0f;
+
   SbVec3f prevY(0.0f, 0.0f, 0.0f);
   SbVec3f prevZ(0.0f, 0.0f, 0.0f);
   const SbVec3f empty(0.0f, 0.0f, 0.0f);
@@ -755,6 +770,8 @@ SoVRMLExtrusionP::generateCoords(void)
   for (j = 0; j < numcross; j++) {
     crossbox.extendBy(cross[j]);
   }
+
+  float currentspinelen = 0.0f; // for texcoords
 
   // loop through all spines
   for (i = 0; i < numspine; i++) {
@@ -811,6 +828,7 @@ SoVRMLExtrusionP::generateCoords(void)
       matrix.multLeft(smat);
     }
 
+    float currentcrosslen = 0.0f; // for texcoords
     for (j = 0; j < numcross; j++) {
       SbVec3f c;
       SbVec2f tc;
@@ -820,9 +838,16 @@ SoVRMLExtrusionP::generateCoords(void)
 
       matrix.multVecMatrix(c, c);
       this->coord.append(c);     
-      tc[0] = ((float)j) / ((float)(numcross-1));
-      tc[1] = ((float)i) / ((float)(numspine-1));
+      tc[0] = currentcrosslen / crosslen;
+      tc[1] = currentspinelen / spinelen;
       this->tcoord.append(tc);
+
+      if (j < numcross-1) {
+        currentcrosslen += (cross[j+1]-cross[j]).length();
+      }
+    }
+    if (i < numspine-1) {
+      currentspinelen += (spine[i+1]-spine[i]).length();
     }
   }
 
