@@ -6,6 +6,7 @@ RegularSources = \
 	SbBox2f.cpp \
 	SbBox2s.cpp \
 	SbBox3f.cpp \
+	SbClip.cpp \
 	SbColor.cpp \
 	SbColor4f.cpp \
 	SbCylinder.cpp \
@@ -37,6 +38,7 @@ PrivateHeaders = \
 	$(top_srcdir)/include/Inventor/SbBox2f.h \
 	$(top_srcdir)/include/Inventor/SbBox2s.h \
 	$(top_srcdir)/include/Inventor/SbBox3f.h \
+	$(top_srcdir)/include/Inventor/SbClip.h \
 	$(top_srcdir)/include/Inventor/SbColor.h \
 	$(top_srcdir)/include/Inventor/SbColor4f.h \
 	$(top_srcdir)/include/Inventor/SbCylinder.h \

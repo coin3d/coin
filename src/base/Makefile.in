@@ -123,6 +123,7 @@ RegularSources = \
 	SbBox2f.cpp \
 	SbBox2s.cpp \
 	SbBox3f.cpp \
+	SbClip.cpp \
 	SbColor.cpp \
 	SbColor4f.cpp \
 	SbCylinder.cpp \
@@ -156,6 +157,7 @@ PrivateHeaders = \
 	$(top_srcdir)/include/Inventor/SbBox2f.h \
 	$(top_srcdir)/include/Inventor/SbBox2s.h \
 	$(top_srcdir)/include/Inventor/SbBox3f.h \
+	$(top_srcdir)/include/Inventor/SbClip.h \
 	$(top_srcdir)/include/Inventor/SbColor.h \
 	$(top_srcdir)/include/Inventor/SbColor4f.h \
 	$(top_srcdir)/include/Inventor/SbCylinder.h \
@@ -236,7 +238,7 @@ libbase_la_LDFLAGS =
 libbase_la_LIBADD = 
 @HACKING_COMPACT_BUILD_TRUE@am_libbase_la_OBJECTS = all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libbase_la_OBJECTS = SbBSPTree.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SbBox2f.lo SbBox2s.lo SbBox3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SbBox2f.lo SbBox2s.lo SbBox3f.lo SbClip.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SbColor.lo SbColor4f.lo SbCylinder.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SbDict.lo SbHeap.lo SbImage.lo SbLine.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SbMatrix.lo SbName.lo SbOctTree.lo \
@@ -252,14 +254,15 @@ libbase@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@ all.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libbase@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_FALSE@ SbBSPTree.lo SbBox2f.lo SbBox2s.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SbBox3f.lo SbColor.lo SbColor4f.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SbCylinder.lo SbDict.lo SbHeap.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SbImage.lo SbLine.lo SbMatrix.lo SbName.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SbOctTree.lo SbPlane.lo SbRotation.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SbSphere.lo SbString.lo SbTesselator.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SbTime.lo SbVec2f.lo SbVec2s.lo SbVec3f.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SbVec4f.lo SbViewVolume.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SbViewportRegion.lo SbXfBox3f.lo
+@HACKING_COMPACT_BUILD_FALSE@ SbBox3f.lo SbClip.lo SbColor.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SbColor4f.lo SbCylinder.lo SbDict.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SbHeap.lo SbImage.lo SbLine.lo SbMatrix.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SbName.lo SbOctTree.lo SbPlane.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SbRotation.lo SbSphere.lo SbString.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SbTesselator.lo SbTime.lo SbVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SbVec2s.lo SbVec3f.lo SbVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SbViewVolume.lo SbViewportRegion.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SbXfBox3f.lo
 libbase@SUFFIX@LINKHACK_la_OBJECTS = \
 $(am_libbase@SUFFIX@LINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -282,26 +285,27 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@DEP_FILES = $(DEPDIR)/SbBSPTree.Plo $(DEPDIR)/SbBSPTree.Po \
 @AMDEP@ $(DEPDIR)/SbBox2f.Plo $(DEPDIR)/SbBox2f.Po $(DEPDIR)/SbBox2s.Plo \
 @AMDEP@ $(DEPDIR)/SbBox2s.Po $(DEPDIR)/SbBox3f.Plo $(DEPDIR)/SbBox3f.Po \
-@AMDEP@ $(DEPDIR)/SbColor.Plo $(DEPDIR)/SbColor.Po \
-@AMDEP@ $(DEPDIR)/SbColor4f.Plo $(DEPDIR)/SbColor4f.Po \
-@AMDEP@ $(DEPDIR)/SbCylinder.Plo $(DEPDIR)/SbCylinder.Po \
-@AMDEP@ $(DEPDIR)/SbDict.Plo $(DEPDIR)/SbDict.Po $(DEPDIR)/SbHeap.Plo \
-@AMDEP@ $(DEPDIR)/SbHeap.Po $(DEPDIR)/SbImage.Plo $(DEPDIR)/SbImage.Po \
-@AMDEP@ $(DEPDIR)/SbLine.Plo $(DEPDIR)/SbLine.Po $(DEPDIR)/SbMatrix.Plo \
-@AMDEP@ $(DEPDIR)/SbMatrix.Po $(DEPDIR)/SbName.Plo $(DEPDIR)/SbName.Po \
-@AMDEP@ $(DEPDIR)/SbOctTree.Plo $(DEPDIR)/SbOctTree.Po \
-@AMDEP@ $(DEPDIR)/SbPlane.Plo $(DEPDIR)/SbPlane.Po \
-@AMDEP@ $(DEPDIR)/SbRotation.Plo $(DEPDIR)/SbRotation.Po \
-@AMDEP@ $(DEPDIR)/SbSphere.Plo $(DEPDIR)/SbSphere.Po \
-@AMDEP@ $(DEPDIR)/SbString.Plo $(DEPDIR)/SbString.Po \
-@AMDEP@ $(DEPDIR)/SbTesselator.Plo $(DEPDIR)/SbTesselator.Po \
-@AMDEP@ $(DEPDIR)/SbTime.Plo $(DEPDIR)/SbTime.Po $(DEPDIR)/SbVec2f.Plo \
-@AMDEP@ $(DEPDIR)/SbVec2f.Po $(DEPDIR)/SbVec2s.Plo $(DEPDIR)/SbVec2s.Po \
-@AMDEP@ $(DEPDIR)/SbVec3f.Plo $(DEPDIR)/SbVec3f.Po $(DEPDIR)/SbVec4f.Plo \
-@AMDEP@ $(DEPDIR)/SbVec4f.Po $(DEPDIR)/SbViewVolume.Plo \
-@AMDEP@ $(DEPDIR)/SbViewVolume.Po $(DEPDIR)/SbViewportRegion.Plo \
-@AMDEP@ $(DEPDIR)/SbViewportRegion.Po $(DEPDIR)/SbXfBox3f.Plo \
-@AMDEP@ $(DEPDIR)/SbXfBox3f.Po $(DEPDIR)/all.Plo $(DEPDIR)/all.Po
+@AMDEP@ $(DEPDIR)/SbClip.Plo $(DEPDIR)/SbClip.Po $(DEPDIR)/SbColor.Plo \
+@AMDEP@ $(DEPDIR)/SbColor.Po $(DEPDIR)/SbColor4f.Plo \
+@AMDEP@ $(DEPDIR)/SbColor4f.Po $(DEPDIR)/SbCylinder.Plo \
+@AMDEP@ $(DEPDIR)/SbCylinder.Po $(DEPDIR)/SbDict.Plo $(DEPDIR)/SbDict.Po \
+@AMDEP@ $(DEPDIR)/SbHeap.Plo $(DEPDIR)/SbHeap.Po $(DEPDIR)/SbImage.Plo \
+@AMDEP@ $(DEPDIR)/SbImage.Po $(DEPDIR)/SbLine.Plo $(DEPDIR)/SbLine.Po \
+@AMDEP@ $(DEPDIR)/SbMatrix.Plo $(DEPDIR)/SbMatrix.Po \
+@AMDEP@ $(DEPDIR)/SbName.Plo $(DEPDIR)/SbName.Po $(DEPDIR)/SbOctTree.Plo \
+@AMDEP@ $(DEPDIR)/SbOctTree.Po $(DEPDIR)/SbPlane.Plo \
+@AMDEP@ $(DEPDIR)/SbPlane.Po $(DEPDIR)/SbRotation.Plo \
+@AMDEP@ $(DEPDIR)/SbRotation.Po $(DEPDIR)/SbSphere.Plo \
+@AMDEP@ $(DEPDIR)/SbSphere.Po $(DEPDIR)/SbString.Plo \
+@AMDEP@ $(DEPDIR)/SbString.Po $(DEPDIR)/SbTesselator.Plo \
+@AMDEP@ $(DEPDIR)/SbTesselator.Po $(DEPDIR)/SbTime.Plo \
+@AMDEP@ $(DEPDIR)/SbTime.Po $(DEPDIR)/SbVec2f.Plo $(DEPDIR)/SbVec2f.Po \
+@AMDEP@ $(DEPDIR)/SbVec2s.Plo $(DEPDIR)/SbVec2s.Po $(DEPDIR)/SbVec3f.Plo \
+@AMDEP@ $(DEPDIR)/SbVec3f.Po $(DEPDIR)/SbVec4f.Plo $(DEPDIR)/SbVec4f.Po \
+@AMDEP@ $(DEPDIR)/SbViewVolume.Plo $(DEPDIR)/SbViewVolume.Po \
+@AMDEP@ $(DEPDIR)/SbViewportRegion.Plo $(DEPDIR)/SbViewportRegion.Po \
+@AMDEP@ $(DEPDIR)/SbXfBox3f.Plo $(DEPDIR)/SbXfBox3f.Po $(DEPDIR)/all.Plo \
+@AMDEP@ $(DEPDIR)/all.Po
 DIST_COMMON = $(libbaseinc_HEADERS) Makefile.am Makefile.in
 
 SOURCES = $(base_lst_SOURCES) $(EXTRA_base_lst_SOURCES) $(libbase_la_SOURCES) $(EXTRA_libbase_la_SOURCES) $(libbase@SUFFIX@LINKHACK_la_SOURCES) $(EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES)
@@ -424,6 +428,8 @@ distclean-tags:
 @AMDEP@@_am_include@ $(DEPDIR)/SbBox2s.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbBox3f.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SbBox3f.Po
+@AMDEP@@_am_include@ $(DEPDIR)/SbClip.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SbClip.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbColor.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SbColor.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SbColor4f.Plo
