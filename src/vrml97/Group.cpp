@@ -170,9 +170,9 @@ private:
   SoGLCacheList * glcachelist;
 #endif // !COIN_THREADSAFE
 
+public:
   enum { YES, NO, MAYBE } hassoundchild;
 
-public:
   SoGLCacheList * getGLCacheList(const SbBool createifnull);
 };
 
