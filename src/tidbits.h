@@ -26,13 +26,18 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /*__cplusplus */
 
 /* ********************************************************************** */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
+
+#include <Inventor/system/inttypes.h>
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif /* HAVE_SYS_TYPES_H */
 
 #ifndef HAVE_SNPRINTF
 #ifdef HAVE__SNPRINTF
@@ -65,7 +70,7 @@ uint32_t coin_ntoh_uint32(uint32_t value);
 /* ********************************************************************** */
 
 #ifdef __cplusplus
-}
-#endif
+} /* extern "C" */
+#endif /* __cplusplus */
 
 #endif /* COIN_TIDBITS_H */
