@@ -98,13 +98,20 @@ A:    Yes, as a service for those who would like to use the Coin library
       in proprietary software, we at Systems in Motion offer the "Coin
       Professional Edition License" which buys developers that are
       license holders the option to use the library with no strings
-      attached.  The "Coin Professional Edition License" covers all the
-      Coin libraries, including all the GUI toolkits.
+      attached.
 
       By "no strings attached", we of course mean that you as a
       proprietary software developer would not have to obey the
       restrictions of the GNU LGPL, as you would use the Coin library
       under our "Professional Edition" license instead.
+
+      The Coin Professional Edition License additionally covers
+      other libraries in the "Coin family" for no extra cost,
+      including all the GUI toolkits (SoQt, SoWin, SoGtk, SoXt) and
+      Systems in Motion's 3D file format libraries Dime and Profit.
+
+      See <URL:http://www.coin3d.org> for more information about the
+      details of these libraries.
 
       Prioritized support services is also part of the package -- your
       support requests will be sent straight to the top of the
