@@ -112,6 +112,8 @@ SoLinearProfile::getVertices(SoState * state, int32_t & numvertices,
   const SoProfileCoordinateElement * elem = (const SoProfileCoordinateElement*)
     SoProfileCoordinateElement::getInstance(state);
 
+  // FIXME: always truncating and appending is performancewise a not
+  // very optimal strategy. 20000921 mortene.
   coordListLinearProfile->truncate(0);
 
   int32_t numcoords = elem->getNum();
