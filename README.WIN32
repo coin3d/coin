@@ -7,44 +7,57 @@
 //  Author:    Marius B. Monsen
 //  E-mail:    mariusbu@sim.no
 
+
 * 1 Introduction *
 
-1.1 Coin is a 3d retained-mode library, compatible with Open Inventor 2.1.
+Coin is a 3d retained-mode library, compatible with Open Inventor 2.1.
 
-1.2 CygWin is a Linux/Unix-like environment for Windows made by Cygnus Solutions.
+CygWin is a Linux/Unix-like environment for Windows made by Cygnus Solutions.
 
-1.3 Microsoft Visual C++ (MSVC++) is the C/C++ compiler in Microsoft DeveloperStudio.
+Microsoft Visual C++ (MSVC++) is the C/C++ compiler in Microsoft DeveloperStudio.
 
 
 * 2 Environment *
 
-2.1 Throughout this file we assume using CygWin and MSVC++.
+Throughout this file we assume using CygWin and MSVC++.
 
-2.2 Download CygWin from <URL:http://sourceware.cygnus.com/>.
+Download CygWin from <URL:http://sourceware.cygnus.com/>.
 
-2.3 Install CygWin (instructions on the website).
+Install CygWin (instructions on the website).
 
-2.4 Throughout this file we assume that 'your_install_path/include'
-    is in you include path and 'your_install_path/lib' is in your
-    lib path.
+Make sure the environment variables INCLUDE and LIB are set.
+To check this, write the following in the command line (bash):
+
+  echo $INCLUDE
+  echo $LIB
+
+If they are not set, write the following in the command line (bash):
+
+  vcvars32.bat
+
+Throughout this file we assume that 'your_install_path/include'
+is in you include path and 'your_install_path/lib' is in your
+lib path.
 
 
 * 3 Compiling Coin *
 
-3.1 Coin does not contain any platform-spesific code.
+Coin does not contain any platform-spesific code.
 
-3.2 Write the following in the command line:
+Write the following in the command line (bash):
 
-      CC=cl CXX=cl CFLAGS=/Tp /your_path_here/configure --prefix=your_install_path
-      cd data
-      make
-    [from here on, you can use build/coin.dsp instead of make]
-      cd ..
-      cd build
-      nmake coin.mak CFG="coin - Win32 Debug"
-      cd ..
-      make install-data
-      make install-exec-am
+  CC=cl CXX=cl CFLAGS=/Tp /your_path_here/configure --prefix=your_install_path
+  cd data
+  make
+  [from here on, you can use build/coin.dsp instead of nmake]
+  cd ..
+  cd build
+  nmake coin.mak CFG="coin - Win32 Debug"
+  cd ..
+  make install-data
+  make install-exec-am
 
+NB! Note the difference between 'make' (the GNU make utility)
+and 'nmake' (the Microsoft make utility).
 
 Done!
