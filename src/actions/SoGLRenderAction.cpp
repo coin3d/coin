@@ -192,6 +192,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   this->updatesize.setValue(1.0f, 1.0f);
   this->renderingremote = FALSE;
   this->abortcallback = NULL;
+  this->cachecontext = 0;
 }
 
 /*!
