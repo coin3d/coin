@@ -34,7 +34,9 @@
 
 #include <Inventor/SbString.h>
 #include <Inventor/SbName.h>
+#ifdef COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/system/kosher.h>
@@ -131,6 +133,15 @@ SoType::createType(const SoType parent, const SbName name,
 		   const instantiationMethod method,
 		   const uint16_t data)
 {
+#ifdef COIN_DEBUG
+  if (SoType::fromName(name.getString()) != SoType::badType()) {
+    SoDebugError::post("SoType::createType",
+		       "a type with name ``%s'' already created",
+		       name.getString());
+    return SoType::fromName(name.getString());
+  }
+#endif // COIN_DEBUG  
+
   SoTypeData * typeData = new SoTypeData(name, TRUE, data, parent, method);
   SoType newType;
   newType.index = SoType::typeList.getLength();
@@ -166,20 +177,21 @@ SoType::overrideType(const SoType originalType,
 SoType
 SoType::fromName(const SbName name)
 {
-  // It should be possible to specify a name without the "So" prefix
-  // and get the correct type id.
-  SbString pref("So");
-  pref += name.getString();
-  SbName prefixedname(pref);
+  // It should be possible to specify a type name with the "So" prefix
+  // and get the correct type id, even though the types in some type
+  // hierarchies are named internally without the prefix.
+  SbString tmp(name.getString());
+  if ((tmp.getLength() > 2) && (strcmp(tmp.getSubString(0, 1).getString(), "So") == 0))
+    tmp = tmp.getSubString(2);
+  SbName noprefixname(tmp);
 
   void * temp = NULL;
   if (SoType::typeDict.find((unsigned long)name.getString(), temp) ||
-      SoType::typeDict.find((unsigned long)prefixedname.getString(), temp)) {
+      SoType::typeDict.find((unsigned long)noprefixname.getString(), temp)) {
     const int index = (int)temp;
     assert(index >= 0 && index < SoType::typeList.getLength());
-#if 0 // OBSOLETE: this need not be valid, I believe. 19991107 mortene.
-    assert(SoType::typeDataList[index]->name == name);
-#endif // OBSOLETE
+    assert((SoType::typeDataList[index]->name == name) ||
+	   (SoType::typeDataList[index]->name == noprefixname));
     return SoType::typeList[index];
   }
   return SoType::badType();
