@@ -79,17 +79,20 @@ public:
   {
     this->owner = m;
     this->nurbsrenderer = NULL;
+    this->offscreenctx = NULL;
   }
 
   ~SoNurbsCurveP()
   {
+    if (this->offscreenctx) { cc_glglue_context_destruct(this->offscreenctx); }
     if (this->nurbsrenderer) {
       GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
     }
   }
 
+  void * offscreenctx;
   void * nurbsrenderer;
-  void doNurbsWrapper(SoAction * action, const SbBool drawaspoints);
+
   void doNurbs(SoAction * action, const SbBool glrender, const SbBool drawaspoints);
 
   static void APIENTRY tessBegin(int type, void * data);
@@ -271,16 +274,21 @@ void
 SoNurbsCurve::generatePrimitives(SoAction * action)
 {
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-    // HACK WARNING: pederb, 2003-01-30
-    //
-    // call doNurbsWrapper() instead of doNurbs(). doNurbsWrapper()
-    // will use sogl_offscreencontext_callback() to call
-    // doNurbs(). This is needed since it seems like the GLU NURBS
-    // renderer makes some OpenGL calls even when in tessellate
-    // mode. sogl_offscreencontext_callback() will set up an offscreen
-    // context so that we are guaranteed to have a valid GL context
+
+    // We've found that the SGI GLU NURBS renderer makes some OpenGL
+    // calls even when in tessellate mode. So we need to set up an
+    // offscreen context to be guaranteed to have a valid GL context
     // before making the GLU calls.
-    PRIVATE(this)->doNurbsWrapper(action, FALSE);
+
+    if (PRIVATE(this)->offscreenctx == NULL) {
+      PRIVATE(this)->offscreenctx = cc_glglue_context_create_offscreen(32, 32);
+    }
+
+    if (PRIVATE(this)->offscreenctx &&
+        cc_glglue_context_make_current(PRIVATE(this)->offscreenctx)) {
+      PRIVATE(this)->doNurbs(action, FALSE, FALSE);
+      cc_glglue_context_reinstate_previous(PRIVATE(this)->offscreenctx);
+    }
   }
 }
 
@@ -436,27 +444,4 @@ SoNurbsCurveP::tessEnd(void * data)
 {
   coin_nc_cbdata * cbdata = (coin_nc_cbdata*) data;
   cbdata->thisp->endShape();
-}
-
-typedef struct {
-  SoNurbsCurveP * thisp;
-  SoAction * action;
-  SbBool drawaspoints;
-} sonurbscurve_call_donurbs_data;
-
-static void SoNurbsCurve_call_donurbs(void * userdata, SoAction * action)
-{
-  sonurbscurve_call_donurbs_data * data =
-    (sonurbscurve_call_donurbs_data*) userdata;
-  data->thisp->doNurbs(data->action, FALSE, data->drawaspoints);
-}
-
-void
-SoNurbsCurveP::doNurbsWrapper(SoAction * action, const SbBool drawaspoints)
-{
-  sonurbscurve_call_donurbs_data data;
-  data.thisp = this;
-  data.action = action;
-  data.drawaspoints = drawaspoints;
-  sogl_offscreencontext_callback(SoNurbsCurve_call_donurbs, &data);
 }

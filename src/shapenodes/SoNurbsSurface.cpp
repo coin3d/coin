@@ -105,17 +105,20 @@ public:
   {
     this->owner = m;
     this->nurbsrenderer = NULL;
+    this->offscreenctx = NULL;
   }
 
   ~SoNurbsSurfaceP()
   {
+    if (this->offscreenctx) { cc_glglue_context_destruct(this->offscreenctx); }
     if (this->nurbsrenderer) {
       GLUWrapper()->gluDeleteNurbsRenderer(this->nurbsrenderer);
     }
   }
 
+  void * offscreenctx;
   void * nurbsrenderer;
-  void doNurbsWrapper(SoAction * action);
+
   void doNurbs(SoAction * action, const SbBool glrender);
 
   static void APIENTRY tessBegin(int , void * data);
@@ -285,16 +288,21 @@ void
 SoNurbsSurface::generatePrimitives(SoAction * action)
 {
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
-    // HACK WARNING: pederb, 2003-01-30
-    //
-    // call doNurbsWrapper() instead of doNurbs(). doNurbsWrapper()
-    // will use sogl_offscreencontext_callback() to call
-    // doNurbs(). This is needed since it seems like the GLU NURBS
-    // renderer makes some OpenGL calls even when in tessellate
-    // mode. sogl_offscreencontext_callback() will set up an offscreen
-    // context so that we are guaranteed to have a valid GL context
+
+    // We've found that the SGI GLU NURBS renderer makes some OpenGL
+    // calls even when in tessellate mode. So we need to set up an
+    // offscreen context to be guaranteed to have a valid GL context
     // before making the GLU calls.
-    PRIVATE(this)->doNurbsWrapper(action);
+
+    if (PRIVATE(this)->offscreenctx == NULL) {
+      PRIVATE(this)->offscreenctx = cc_glglue_context_create_offscreen(32, 32);
+    }
+
+    if (PRIVATE(this)->offscreenctx &&
+        cc_glglue_context_make_current(PRIVATE(this)->offscreenctx)) {
+      PRIVATE(this)->doNurbs(action, FALSE);
+      cc_glglue_context_reinstate_previous(PRIVATE(this)->offscreenctx);
+    }
   }
 }
 
@@ -464,25 +472,3 @@ SoNurbsSurfaceP::tessEnd(void * data)
   coin_ns_cbdata * cbdata = (coin_ns_cbdata*) data;
   cbdata->thisp->endShape();
 }
-
-typedef struct {
-  SoNurbsSurfaceP * thisp;
-  SoAction * action;
-} sonurbssurface_call_donurbs_data;
-
-static void SoNurbsSurface_call_donurbs(void * userdata, SoAction * action)
-{
-  sonurbssurface_call_donurbs_data * data = 
-    (sonurbssurface_call_donurbs_data*) userdata;
-  data->thisp->doNurbs(data->action, FALSE);
-}
-
-void 
-SoNurbsSurfaceP::doNurbsWrapper(SoAction * action)
-{
-  sonurbssurface_call_donurbs_data data;
-  data.thisp = this;
-  data.action = action;
-  sogl_offscreencontext_callback(SoNurbsSurface_call_donurbs, &data);
-}
-

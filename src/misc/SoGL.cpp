@@ -4064,6 +4064,16 @@ static void offscreenrenderer_cleanup(void)
   offscreencallback = NULL;
 }
 
+// This is really obsoleted now that we have
+// cc_glglue_context_create_offscreen() et al in the OpenGL
+// wrapper. So don't use this function any more from within Coin.
+//
+// FIXME: must be kept around due to ABI & API compatibility reasons
+// for now, but should consider taking it out for the next major Coin
+// release.
+//
+// 20030519 mortene.
+
 void 
 sogl_offscreencontext_callback(void (*cb)(void *, SoAction*),
                                void * closure)
