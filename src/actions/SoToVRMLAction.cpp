@@ -563,7 +563,7 @@ SoToVRMLActionP::post_primitives_cb(void * closure, SoCallbackAction * action, c
 {
   SoToVRMLActionP * thisp = (SoToVRMLActionP*) closure;
 
-  int i, n;
+  int n;
   SoGroup * tail = thisp->get_current_tail();
   SoCoordinate3 * coord = new SoCoordinate3;
   coord->point.setValues(0, thisp->bsptree->numPoints(),

@@ -106,7 +106,7 @@ void
 SoGLLightModelElement::lazyEvaluate(void) const
 {
   if (this->data != this->current) {
-    this->updategl((const Model) this->data);
+    this->updategl((Model) this->data);
   }
 }
 

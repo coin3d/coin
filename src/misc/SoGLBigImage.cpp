@@ -534,7 +534,6 @@ SoGLBigImageP::copySubImage(const int idx,
     memset(this->averagebuf, 0, w*h*nc*sizeof(int)/div);
     unsigned int * aptr = this->averagebuf;
     int y;
-    int ax, ay;
     for (y = 0; y < h; y++) {
       unsigned int * tmpaptr = aptr;
       const unsigned char * srcptr = 
