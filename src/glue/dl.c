@@ -117,7 +117,9 @@
 
 #include <Inventor/C/errors/debugerror.h>
 #include <Inventor/C/glue/dl.h>
+#include <Inventor/C/glue/win32api.h>
 #include <Inventor/C/tidbits.h>
+#include <assert.h>
 #include <assert.h>
 #include <stddef.h> /* NULL definition. */
 #include <stdlib.h> /* atoi() */
@@ -150,36 +152,6 @@ cc_dl_debugging(void)
   }
   return (d > 0) ? 1 : 0;
 }
-
-#ifdef HAVE_WINDLL_RUNTIME_BINDING
-/* Returns the string and error code describing the cause of an
-   internal Win32 API error. */
-static void
-cc_dl_get_win32_err(DWORD * lasterr, cc_string * str)
-{
-  LPTSTR buffer;
-  BOOL result;
-
-  *lasterr = GetLastError();
-  result = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                         FORMAT_MESSAGE_FROM_SYSTEM |
-                         FORMAT_MESSAGE_IGNORE_INSERTS,
-                         NULL,
-                         *lasterr,
-                         0,
-                         (LPTSTR)&buffer,
-                         0,
-                         NULL);
-
-  if (!result) {
-    cc_debugerror_post("cc_dl_get_Win32_err", "FormatMessage() failed!?");
-  }
-  else {
-    cc_string_set_text(str, buffer);
-    (void)LocalFree(buffer);
-  }
-}
-#endif /* HAVE_WINDLL_RUNTIME_BINDING */
 
 
 #if defined (HAVE_DYLD_RUNTIME_BINDING)
@@ -507,15 +479,11 @@ cc_dl_open(const char * filename)
    */
 
   if (cc_dl_debugging() && (h->nativehnd == NULL)) {
-    DWORD lasterr;
-    cc_string errstr;
-
-    cc_string_construct(&errstr);
-    cc_dl_get_win32_err(&lasterr, &errstr);
-    cc_debugerror_post("cc_dl_open", "LoadLibrary(\"%s\") failed with: '%s'",
-                       filename ? filename : "(null)",
-                       cc_string_get_text(&errstr));
-    cc_string_clean(&errstr);
+    cc_string funcstr;
+    cc_string_construct(&funcstr);
+    cc_string_sprintf(&funcstr, "LoadLibrary(\"%s\")", filename ? filename : "(null)");
+    cc_win32_print_error("cc_dl_open", cc_string_get_text(&funcstr), GetLastError());
+    cc_string_clean(&funcstr);
   }
 
 #elif defined (HAVE_DLD_LIB)
@@ -675,16 +643,11 @@ cc_dl_sym(cc_libhandle handle, const char * symbolname)
   ptr = GetProcAddress(handle->nativehnd, symbolname);
 
   if (cc_dl_debugging() && (ptr == NULL)) {
-    DWORD lasterr;
-    cc_string errstr;
-
-    cc_string_construct(&errstr);
-    cc_dl_get_win32_err(&lasterr, &errstr);
-    cc_debugerror_post("cc_dl_sym",
-                       "GetProcAddress(\"%s\", \"%s\") failed with: '%s'",
-                       cc_string_get_text(&handle->libname), symbolname,
-                       cc_string_get_text(&errstr));
-    cc_string_clean(&errstr);
+    cc_string funcstr;
+    cc_string_construct(&funcstr);
+    cc_string_sprintf(&funcstr, "GetProcAddress(\"%s\", \"%s\")", cc_string_get_text(&handle->libname), symbolname);
+    cc_win32_print_error("cc_dl_sym", cc_string_get_text(&funcstr), GetLastError());
+    cc_string_clean(&funcstr);
   }
 
 #elif defined (HAVE_DLD_LIB)
@@ -732,16 +695,11 @@ cc_dl_close(cc_libhandle handle)
   BOOL result = FreeLibrary(handle->nativehnd);
 
   if (!result) {
-    DWORD lasterr;
-    cc_string errstr;
-
-    cc_string_construct(&errstr);
-    cc_dl_get_win32_err(&lasterr, &errstr);
-    cc_debugerror_post("cc_dl_close",
-                       "FreeLibrary(\"%s\") failed with: '%s'",
-                       cc_string_get_text(&handle->libname),
-                       cc_string_get_text(&errstr));
-    cc_string_clean(&errstr);
+    cc_string funcstr;
+    cc_string_construct(&funcstr);
+    cc_string_sprintf(&funcstr, "FreeLibrary(\"%s\")", cc_string_get_text(&handle->libname));
+    cc_win32_print_error("cc_dl_close", cc_string_get_text(&funcstr), GetLastError());
+    cc_string_clean(&funcstr);
   }
 
 #elif defined (HAVE_DLD_LIB)
