@@ -3565,3 +3565,31 @@ end
 
 =====================================================================
 
+130 Not robust enough on bad profile coordinates.
+
+    I came over a segfault while playing around with profile
+    coordinates, using this (probably bogus) coordinate set:
+
+--------8<------------- [snip] --------------8<------------- [snip]
+#Inventor V2.1 ascii
+
+ProfileCoordinate3 {
+   point [ 0 0 0, 0.1 1 0.2, 0.2 0 0.4, 0.3 1 0.6, 0.4 0 0.8, 0.5 1 1.0 ]
+}
+
+LinearProfile {
+   index [ 0 1 2 3 4 5 ]
+}
+
+Text3 {
+   string "hepp"
+   parts ALL
+}
+--------8<------------- [snip] --------------8<------------- [snip]
+
+    Even though this may be bogus, we should be robust enough to not
+    crash.
+
+    20040811 mortene.
+
+=====================================================================
