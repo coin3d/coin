@@ -94,6 +94,7 @@
 #include "SoTextureCoordinateFunction.cpp"
 #include "SoTextureCoordinatePlane.cpp"
 #include "SoTextureScalePolicy.cpp"
+#include "SoTextureUnit.cpp"
 #include "SoTransform.cpp"
 #include "SoTransformSeparator.cpp"
 #include "SoTransformation.cpp"

@@ -75,6 +75,7 @@ RegularSources = \
 	SoTextureCoordinateFunction.cpp \
 	SoTextureCoordinatePlane.cpp \
 	SoTextureScalePolicy.cpp \
+	SoTextureUnit.cpp \
 	SoTransform.cpp \
 	SoTransparencyType.cpp \
 	SoTransformSeparator.cpp \
