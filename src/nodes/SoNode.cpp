@@ -230,8 +230,10 @@ SoNode::getClassTypeId(void)
 
 // defines for node state flags
 
-#define FLAG_TYPEMASK 0x07 // max  8 types for now. Must be in LSBs
-#define FLAG_OVERRIDE 0x08
+// we can currently have 31 node types. The last bit is used to store
+// the override flag.
+#define FLAG_TYPEMASK 0x7fffffff
+#define FLAG_OVERRIDE 0x80000000
 
 // private methods. Inlined inside this file only.
 
