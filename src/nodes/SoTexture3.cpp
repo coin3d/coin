@@ -378,7 +378,7 @@ SoTexture3::loadFilenames(SoInput * in)
   SbVec3s volumeSize(0,0,0);
   int volumenc;
   int numImages = this->filenames.getNum();
-  bool sizeError = FALSE;
+  SbBool sizeError = FALSE;
   int i;
 
   // Fail on empty filenames
@@ -404,7 +404,8 @@ SoTexture3::loadFilenames(SoInput * in)
         else { // Verify size & components
           if (size[0] != volumeSize[0] || 
               size[1] != volumeSize[1] || 
-              size[2] != (volumeSize[2]/numImages) || //FIXME: always 1 or what? (kintel 20020110)
+              //FIXME: always 1 or what? (kintel 20020110)
+              size[2] != (volumeSize[2]/numImages) ||
               nc != volumenc) {
             sizeError = TRUE;
             retval = FALSE;
