@@ -30,7 +30,7 @@ cc_win32_print_error(const char * callerfuncname, const char * apifuncname,
     cc_debugerror_post("cc_win32_print_error", "FormatMessage() failed!");
   }
   else {
-    cc_debugerror_post(callerfunc, "%s failed: '%s'", apifuncname, buffer);
+    cc_debugerror_post(callerfuncname, "%s failed: '%s'", apifuncname, buffer);
     (void)LocalFree(buffer);
   }
 }
