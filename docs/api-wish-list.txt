@@ -11,7 +11,6 @@ it will be implemented, only that it will be considered to be implemented.
 
 Ideas for this wish list can be submitted by anyone.
 
-
 THE WISH LIST
 =============
 
@@ -28,7 +27,6 @@ THE WISH LIST
   +   int getNumEnums(void);
   +   int getEnum( int idx, SbName & name ); // returns enum value
 
-
 * missing base class fields
   2000-12-05  Lars J. Aas  <larsa@sim.no>
   [upwards compatible extension]
@@ -42,7 +40,8 @@ THE WISH LIST
   [I would really like an SbVec2s field, 2000-12-07 pederb]
 
 * SbVec2i, SbVec2d, SbVec3d, SbVec4d
-  2000-12-07 Peder Blekken <pederb@sim.no>
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
 
   It would be very useful to have these classes. SbVec2i for storing
   2D integer vectors, SbVec2d, SbVec3d, SbVec4d for storing doubles.
@@ -56,7 +55,8 @@ THE WISH LIST
   the code for the class implementations.) 2000-12-07 mortene]
 
 * SoDepthBuffer, SoGLDepthBufferElement
-  2000-12-07 Peder Blekken <pederb@sim.no>
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
 
   This node and element would really be useful to be able to
   control the depth buffer in a scene graph. It's already
@@ -66,7 +66,8 @@ THE WISH LIST
   SoAnnotation nodes.
 
 * SoViewportRegion
-  2000-12-07 Peder Blekken <pederb@sim.no>
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
 
   This node could also be useful to a lot of people, I think. I've
   seen postings on comp.graphics.api.inventor on people using
@@ -78,7 +79,8 @@ THE WISH LIST
   This node is implemented and works like a charm.
 
 * Coinboard node
-  2000-12-07 Peder Blekken <pederb@sim.no>
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
 
   Silly name for a node, I know, but Billboard is already taken by
   VRML97. In my implementation it is actually a shape node which can
@@ -101,7 +103,8 @@ THE WISH LIST
   This node is only partly implemented (generatePrimitives() is missing).
 
 * SoEnvironment::fogStart field.
-  2000-12-07 Peder Blekken <pederb@sim.no>
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
 
   Why, oh why didn't SGI include this field when designing the
   Environment node? It makes it possible to set the distance at
@@ -109,7 +112,8 @@ THE WISH LIST
   for this in SoEnvironmentElement and SoGLEnvironmentElement.
 
 * SoSkyDome node.
-  2000-12-07 Peder Blekken <pederb@sim.no>
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
 
   This node renders a skydome which can be connected to the camera
   to create a nice, global environment in your applications. The 
@@ -129,7 +133,8 @@ THE WISH LIST
   This node is partly implemented (only GLRender()-method so far).
 
 * SoGLPrimitiveSet node.
-  2000-12-07 Peder Blekken <pederb@sim.no>
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
 
   A node designed for fast rendering, since it's an exact mapping
   on how OpenGL renders shapes, and all information (except current
@@ -193,8 +198,10 @@ THE WISH LIST
   But, experienced OpenGL programmers should be able to use it quite easily.
 
 * More nodes and element to control GL state.
-  2000-12-07 Peder Blekken <pederb@sim.no>
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
   
   Alpha test, blending, stencil etc. We should at least have an 
   SoGLAlphaTestElement, since Coin supports alpha test rendering of
   textures.
+
