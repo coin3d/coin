@@ -1,5 +1,5 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
+;;; Copyright (C) 1998-2001 by Systems in Motion. All rights reserved.
 ;;; Written by mortene@sim.no, 2000-10-03.
 
 (define basekit (new-sobasekit))

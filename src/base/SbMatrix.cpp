@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
+ *  Copyright (C) 1998-2001 by Systems in Motion. All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public License
@@ -64,20 +64,18 @@
  * declarations for polar_decomp algorithm from Graphics Gems IV,
  * by Ken Shoemake <shoemake@graphics.cis.upenn.edu>
  */
-typedef struct {float x, y, z, w;} Quat; /* Quaternion */
 enum QuatPart {X, Y, Z, W};
-typedef Quat HVect; /* Homogeneous 3D vector */
 typedef float HMatrix[4][4]; /* Right-handed, for column vectors */
 typedef struct {
-  HVect t;	/* Translation components */
-  Quat  q;	/* Essential rotation	  */
-  Quat  u;	/* Stretch rotation	  */
-  HVect k;	/* Stretch factors	  */
+  SbVec4f t;	/* Translation components */
+  SbRotation  q;	/* Essential rotation	  */
+  SbRotation  u;	/* Stretch rotation	  */
+  SbVec4f k;	/* Stretch factors	  */
   float f;	/* Sign of determinant	  */
 } AffineParts;
 static float polar_decomp(HMatrix M, HMatrix Q, HMatrix S);
-static HVect spect_decomp(HMatrix S, HMatrix U);
-static Quat snuggle(Quat q, HVect * k);
+static SbVec4f spect_decomp(HMatrix S, HMatrix U);
+static SbRotation snuggle(SbRotation q, SbVec4f & k);
 static void decomp_affine(HMatrix A, AffineParts * parts);
 
 
@@ -698,21 +696,21 @@ SbMatrix::getTransform(SbVec3f & t, SbRotation & r, SbVec3f & s,
   decomp_affine(hmatrix, &parts);
 
   float mul = 1.0f;
-  if (parts.t.w != 0.0f) mul = 1.0f / parts.t.w;
-  t[0] = parts.t.x * mul;
-  t[1] = parts.t.y * mul;
-  t[2] = parts.t.z * mul;
+  if (parts.t[W] != 0.0f) mul = 1.0f / parts.t[W];
+  t[0] = parts.t[X] * mul;
+  t[1] = parts.t[Y] * mul;
+  t[2] = parts.t[Z] * mul;
 
-  r.setValue(parts.q.x, parts.q.y, parts.q.z, parts.q.w);
+  r = parts.q;
   mul = 1.0f;
-  if (parts.k.w != 0.0f) mul = 1.0f / parts.k.w;
+  if (parts.k[W] != 0.0f) mul = 1.0f / parts.k[W];
   // mul be sign of determinant to support negative scales.
   mul *= parts.f;
-  s[0] = parts.k.x * mul;
-  s[1] = parts.k.y * mul;
-  s[2] = parts.k.z * mul;
+  s[0] = parts.k[X] * mul;
+  s[1] = parts.k[Y] * mul;
+  s[2] = parts.k[Z] * mul;
 
-  so.setValue(parts.u.x, parts.u.y, parts.u.z, parts.u.w);
+  so = parts.u;
 }
 
 /*!
@@ -1131,96 +1129,6 @@ adjoint_transpose(HMatrix M, HMatrix MadjT)
   vcross(M[0], M[1], MadjT[2]);
 }
 
-/******* Quaternion Preliminaries *******/
-
-/* Construct a (possibly non-unit) quaternion from real components. */
-static Quat
-Qt_(float x, float y, float z, float w)
-{
-  Quat qq;
-  qq.x = x; qq.y = y; qq.z = z; qq.w = w;
-  return (qq);
-}
-
-/* Return conjugate of quaternion. */
-static Quat
-Qt_Conj(Quat q)
-{
-  Quat qq;
-  qq.x = -q.x; qq.y = -q.y; qq.z = -q.z; qq.w = q.w;
-  return (qq);
-}
-
-/* Return quaternion product qL * qR.  Note: order is important!
- * To combine rotations, use the product Mul(qSecond, qFirst),
- * which gives the effect of rotating by qFirst then qSecond. */
-static Quat
-Qt_Mul(Quat qL, Quat qR)
-{
-  Quat qq;
-  qq.w = qL.w*qR.w - qL.x*qR.x - qL.y*qR.y - qL.z*qR.z;
-  qq.x = qL.w*qR.x + qL.x*qR.w + qL.y*qR.z - qL.z*qR.y;
-  qq.y = qL.w*qR.y + qL.y*qR.w + qL.z*qR.x - qL.x*qR.z;
-  qq.z = qL.w*qR.z + qL.z*qR.w + qL.x*qR.y - qL.y*qR.x;
-  return (qq);
-}
-
-/* Return product of quaternion q by scalar w. */
-static Quat
-Qt_Scale(Quat q, float w)
-{
-  Quat qq;
-  qq.w = q.w*w; qq.x = q.x*w; qq.y = q.y*w; qq.z = q.z*w;
-  return (qq);
-}
-
-/* Construct a unit quaternion from rotation matrix.  Assumes matrix is
- * used to multiply column vector on the left: vnew = mat vold.	 Works
- * correctly for right-handed coordinate system and right-handed rotations.
- * Translation and perspective components ignored. */
-static Quat
-Qt_FromMatrix(HMatrix mat)
-{
-  /* This algorithm avoids near-zero divides by looking for a large component
-   * - first w, then x, y, or z.  When the trace is greater than zero,
-   * |w| is greater than 1/2, which is as small as a largest component can be.
-     * Otherwise, the largest diagonal entry corresponds to the largest of |x|,
-     * |y|, or |z|, one of which must be larger than |w|, and at least 1/2. */
-  Quat qu;
-  register double tr, s;
-
-  tr = mat[X][X] + mat[Y][Y]+ mat[Z][Z];
-  if (tr >= 0.0) {
-    s = sqrt(tr + mat[W][W]);
-    qu.w = ((float)s)*0.5f;
-    s = 0.5 / s;
-    qu.x = (float)((mat[Z][Y] - mat[Y][Z]) * s);
-    qu.y = (float)((mat[X][Z] - mat[Z][X]) * s);
-    qu.z = (float)((mat[Y][X] - mat[X][Y]) * s);
-  }
-  else {
-    int h = X;
-    if (mat[Y][Y] > mat[X][X]) h = Y;
-    if (mat[Z][Z] > mat[h][h]) h = Z;
-    switch (h) {
-#define caseMacro(i, j, k, I, J, K) \
-	    case I:\
-		s = sqrt((mat[I][I] - (mat[J][J]+mat[K][K])) + mat[W][W]);\
-		qu.i = ((float)s)*0.5f;\
-		s = 0.5 / s;\
-		qu.j = (float)((mat[I][J] + mat[J][I]) * s);\
-		qu.k = (float)((mat[K][I] + mat[I][K]) * s);\
-		qu.w = (float)((mat[K][J] - mat[J][K]) * s);\
-		break
-      caseMacro(x, y, z, X, Y, Z);
-      caseMacro(y, z, x, Y, Z, X);
-      caseMacro(z, x, y, Z, X, Y);
-    }
-  }
-  if (mat[W][W] != 1.0f) qu = Qt_Scale(qu, 1.0f/(float)(sqrt(mat[W][W])));
-  return (qu);
-}
-
 /******* Decomp Auxiliaries *******/
 
 static HMatrix mat_id = {{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
@@ -1381,10 +1289,10 @@ polar_decomp(HMatrix M, HMatrix Q, HMatrix S)
  * matrix of the scale factors, then S = U K (U transpose). Uses Jacobi method.
  * See Gene H. Golub and Charles F. Van Loan. Matrix Computations. Hopkins 1983.
  */
-static HVect
+static SbVec4f
 spect_decomp(HMatrix S, HMatrix U)
 {
-  HVect kv;
+  SbVec4f kv;
   double Diag[3], OffD[3]; /* OffD is off-diag (by omitted index) */
   double g, h, fabsh, fabsOffDi, t, theta, c, s, tau, ta, OffDq, a, b;
   static char nxt[] = {Y, Z, X};
@@ -1425,8 +1333,8 @@ spect_decomp(HMatrix S, HMatrix U)
       }
     }
   }
-  kv.x = (float)Diag[X]; kv.y = (float)Diag[Y]; kv.z = (float)Diag[Z];
-  kv.w = 1.0f;
+  kv[X] = (float)Diag[X]; kv[Y] = (float)Diag[Y]; kv[Z] = (float)Diag[Z];
+  kv[W] = 1.0f;
   return (kv);
 }
 
@@ -1439,42 +1347,42 @@ spect_decomp(HMatrix S, HMatrix U)
  * See Ken Shoemake and Tom Duff. Matrix Animation and Polar Decomposition.
  * Proceedings of Graphics Interface 1992. Details on p. 262-263.
  */
-static Quat
-snuggle(Quat q, HVect * k)
+static SbRotation
+snuggle(SbRotation q, SbVec4f & k)
 {
 #define SQRTHALF (0.7071067811865475244f)
 #define sgn(n, v)    ((n)?-(v):(v))
 #define swap(a, i, j) {a[3]=a[i]; a[i]=a[j]; a[j]=a[3];}
 #define cycle(a, p)  if (p) {a[3]=a[0]; a[0]=a[1]; a[1]=a[2]; a[2]=a[3];}\
 		    else   {a[3]=a[2]; a[2]=a[1]; a[1]=a[0]; a[0]=a[3];}
-  Quat p;
+  SbRotation p;
   float ka[4];
   int i, turn = -1;
-  ka[X] = k->x; ka[Y] = k->y; ka[Z] = k->z;
+  ka[X] = k[X]; ka[Y] = k[Y]; ka[Z] = k[Z];
   if (ka[X]==ka[Y]) {if (ka[X]==ka[Z]) turn = W; else turn = Z;}
   else {if (ka[X]==ka[Z]) turn = Y; else if (ka[Y]==ka[Z]) turn = X;}
   if (turn>=0) {
-    Quat qtoz, qp;
+    SbRotation qtoz, qp;
     unsigned neg[3], win;
     double mag[3], t;
-    static Quat qxtoz = {0.0f, SQRTHALF, 0.0f, SQRTHALF};
-    static Quat qytoz = {SQRTHALF, 0.0f, 0.0f, SQRTHALF};
-    static Quat qppmm = { 0.5f, 0.5f, -0.5f, -0.5f};
-    static Quat qpppp = { 0.5f, 0.5f, 0.5f, 0.5f};
-    static Quat qmpmm = {-0.5f, 0.5f, -0.5f, -0.5f};
-    static Quat qpppm = { 0.5f, 0.5f, 0.5f, -0.5f};
-    static Quat q0001 = { 0.0f, 0.0f, 0.0f, 1.0f};
-    static Quat q1000 = { 1.0f, 0.0f, 0.0f, 0.0f};
+    static SbRotation qxtoz(0.0f, SQRTHALF, 0.0f, SQRTHALF);
+    static SbRotation qytoz(SQRTHALF, 0.0f, 0.0f, SQRTHALF);
+    static SbRotation qppmm(0.5f, 0.5f, -0.5f, -0.5f);
+    static SbRotation qpppp(0.5f, 0.5f, 0.5f, 0.5f);
+    static SbRotation qmpmm(-0.5f, 0.5f, -0.5f, -0.5f);
+    static SbRotation qpppm(0.5f, 0.5f, 0.5f, -0.5f);
+    static SbRotation q0001(0.0f, 0.0f, 0.0f, 1.0f);
+    static SbRotation q1000(1.0f, 0.0f, 0.0f, 0.0f);
     switch (turn) {
-    default: return (Qt_Conj(q));
-    case X: q = Qt_Mul(q, qtoz = qxtoz); swap(ka, X, Z) break;
-    case Y: q = Qt_Mul(q, qtoz = qytoz); swap(ka, Y, Z) break;
+    default: return SbRotation(q).invert();
+    case X: q = (qtoz = qxtoz) * q; swap(ka, X, Z) break;
+    case Y: q = (qtoz = qytoz) * q; swap(ka, Y, Z) break;
     case Z: qtoz = q0001; break;
     }
-    q = Qt_Conj(q);
-    mag[0] = (double)q.z*q.z+(double)q.w*q.w-0.5;
-    mag[1] = (double)q.x*q.z-(double)q.y*q.w;
-    mag[2] = (double)q.y*q.z+(double)q.x*q.w;
+    q.invert();
+    mag[0] = (double)q.getValue()[Z]*q.getValue()[Z]+(double)q.getValue()[W]*q.getValue()[W]-0.5;
+    mag[1] = (double)q.getValue()[X]*q.getValue()[Z]-(double)q.getValue()[Y]*q.getValue()[W];
+    mag[2] = (double)q.getValue()[Y]*q.getValue()[Z]+(double)q.getValue()[X]*q.getValue()[W];
     for (i=0; i<3; i++) if ((neg[i] = (mag[i] < 0.0))) mag[i] = -mag[i];
     if (mag[0]>mag[1]) {if (mag[0]>mag[2]) win = 0; else win = 2;}
     else {if (mag[1]>mag[2]) win = 1; else win = 2;}
@@ -1483,16 +1391,16 @@ snuggle(Quat q, HVect * k)
     case 1: if (neg[1]) p = qppmm; else p = qpppp; cycle(ka, 0) break;
     case 2: if (neg[2]) p = qmpmm; else p = qpppm; cycle(ka, 1) break;
     }
-    qp = Qt_Mul(q, p);
+    qp = p * q;
     t = sqrt(mag[win]+0.5);
-    p = Qt_Mul(p, Qt_(0.0, 0.0, -qp.z/(float)t, qp.w/(float)t));
-    p = Qt_Mul(qtoz, Qt_Conj(p));
+    p = SbRotation(0.0, 0.0, -qp.getValue()[Z]/(float)t, qp.getValue()[W]/(float)t) * p;
+    p = SbRotation(p).invert() * qtoz;
   }
   else {
     float qa[4], pa[4];
     unsigned lo, hi, neg[4], par = 0;
     double all, big, two;
-    qa[0] = q.x; qa[1] = q.y; qa[2] = q.z; qa[3] = q.w;
+    qa[0] = q.getValue()[X]; qa[1] = q.getValue()[Y]; qa[2] = q.getValue()[Z]; qa[3] = q.getValue()[W];
     for (i=0; i<4; i++) {
       pa[i] = 0.0;
       if ((neg[i] = (qa[i]<0.0))) qa[i] = -qa[i];
@@ -1522,9 +1430,10 @@ snuggle(Quat q, HVect * k)
         swap(ka, hi, lo)
           } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0f);}
     }
-    p.x = -pa[0]; p.y = -pa[1]; p.z = -pa[2]; p.w = pa[3];
+    // FIXME: p = conjugate(pa)? 20010114 mortene.
+    p.setValue(-pa[0], -pa[1], -pa[2], pa[3]);
   }
-  k->x = ka[X]; k->y = ka[Y]; k->z = ka[Z];
+  k[X] = ka[X]; k[Y] = ka[Y]; k[Z] = ka[Z];
   return (p);
 }
 
@@ -1541,18 +1450,24 @@ static void
 decomp_affine(HMatrix A, AffineParts * parts)
 {
   HMatrix Q, S, U;
-  Quat p;
-  float det;
-  parts->t = Qt_(A[X][W], A[Y][W], A[Z][W], 0);
-  det = polar_decomp(A, Q, S);
+  SbRotation p;
+  parts->t = SbVec4f(A[X][W], A[Y][W], A[Z][W], 0);
+  float det = polar_decomp(A, Q, S);
   if (det<0.0) {
     mat_copy(Q, =, -Q, 3);
     parts->f = -1;
   }
   else parts->f = 1;
-  parts->q = Qt_FromMatrix(Q);
+
+  // Transpose for our code (we use OpenGL's convention for numbering
+  // rows and columns).
+  SbMatrix TQ(Q);
+  parts->q = SbRotation(TQ.transpose());
   parts->k = spect_decomp(S, U);
-  parts->u = Qt_FromMatrix(U);
-  p = snuggle(parts->u, &parts->k);
-    parts->u = Qt_Mul(parts->u, p);
+  // Transpose for our code (we use OpenGL's convention for numbering
+  // rows and columns).
+  SbMatrix TU(U);
+  parts->u = SbRotation(TU.transpose());
+  p = snuggle(parts->u, parts->k);
+  parts->u = p * parts->u;
 }

@@ -1,7 +1,7 @@
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
- *  Copyright (C) 1998-2000 by Systems in Motion. All rights reserved.
+ *  Copyright (C) 1998-2001 by Systems in Motion. All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public License
@@ -191,7 +191,7 @@ SoCone::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 void
 SoCone::GLRender(SoGLRenderAction * action)
 {
-#if COIN_DEBUG && 0 // debug
+#if COIN_DEBUG && 1 // debug
   SoDebugError::postInfo("SoCone::GLRender", "start");
 #endif // debug
 
