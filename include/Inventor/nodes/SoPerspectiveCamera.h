@@ -35,13 +35,13 @@ public:
 
   SoSFFloat heightAngle;
 
-  virtual void scaleHeight(float scaleFactor);
-  virtual SbViewVolume getViewVolume(float useAspectRatio = 0.0f) const;
+  virtual void scaleHeight(float scalefactor);
+  virtual SbViewVolume getViewVolume(float useaspectratio = 0.0f) const;
 
 protected:
   virtual ~SoPerspectiveCamera();
 
-  virtual void viewBoundingBox(const SbBox3f &box, float aspect, float slack);
+  virtual void viewBoundingBox(const SbBox3f & box, float aspect, float slack);
 };
 
 #endif // !COIN_SOPERSPECTIVECAMERA_H

@@ -19,99 +19,127 @@
 
 /*!
   \class SoCamera SoCamera.h Inventor/nodes/SoCamera.h
-  \brief The SoCamera class ...
+  \brief The SoCamera class is the abstract base class for camera definition nodes.
   \ingroup nodes
 
-  FIXME: write class doc
+  To be able to view a scene, one needs to have a camera in the scene
+  graph. A camera node will set up the projection and viewing matrices
+  for rendering of the geometry in the scene.
+
+  This node just defines the abstract interface by collecting common
+  fields all camera type nodes needs. Use of the non-abstract
+  subclasses within our scene graph.
+
+  Note that the viewer components of the GUI glue libraries of Coin
+  (SoXt, SoQt, SoBe, etc) will automatically insert a camera into a
+  scene graph is none has been defined.
 */
+
+// Metadon doc:
+/*¡
+  FIXME:
+  <ul>
+  <li>value of viewportMapping field is ignored</li>
+  <li>antialiasing by "jittering" the camera when doing multipass
+      rendering has not been implemented yet</li>
+  <li>aspect ratio for rendering when height > width of viewport is wrong</li>
+  </ul>
+ */
 
 #include <Inventor/nodes/SoCamera.h>
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
 #include <Inventor/elements/SoGLViewportRegionElement.h>
-#include <Inventor/elements/SoFocalDistanceElement.h>
-#include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
 
-
-#include <assert.h>
-
+// FIXME: should document the enum values. 20000310 mortene.
 /*!
   \enum SoCamera::ViewportMapping
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoCamera::ViewportMapping SoCamera::CROP_VIEWPORT_FILL_FRAME
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoCamera::ViewportMapping SoCamera::CROP_VIEWPORT_LINE_FRAME
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoCamera::ViewportMapping SoCamera::CROP_VIEWPORT_NO_FRAME
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoCamera::ViewportMapping SoCamera::ADJUST_CAMERA
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoCamera::ViewportMapping SoCamera::LEAVE_ALONE
-  FIXME: write documentation for enum definition
+
+  Enumerates the available possibilities for how the render frame
+  should map the viewport.
 */
 
 
 /*!
   \var SoSFEnum SoCamera::viewportMapping
-  FIXME: write documentation for field
+
+  Set up how the render frame should map the viewport. The default is
+  SoCamera::ADJUST_CAMERA.
 */
 /*!
   \var SoSFVec3f SoCamera::position
-  FIXME: write documentation for field
+
+  Camera position. Defaults to <0,0,1>.
 */
 /*!
   \var SoSFRotation SoCamera::orientation
-  FIXME: write documentation for field
+
+  Camera orientation specified as a rotation value from the default
+  orientation where the camera is pointing along the negative z-axis,
+  with "up" along the positive y-axis.
 */
 /*!
   \var SoSFFloat SoCamera::aspectRatio
-  FIXME: write documentation for field
+
+  Aspect ratio for the camera (i.e. width / height). Defaults to 1.0.
 */
 /*!
   \var SoSFFloat SoCamera::nearDistance
-  FIXME: write documentation for field
+
+  Distance from camera position to the near clipping plane. Defaults
+  to 1.0.
+
+  The default behavior of the GUI viewer components is to
+  automatically update this value for the scene camera according to
+  the scene bounding box. Ditto for the far clipping plane.
 */
 /*!
   \var SoSFFloat SoCamera::farDistance
-  FIXME: write documentation for field
+
+  Distance from camera position to the far clipping plane. Defaults to
+  10.0.
+
+  See also documentation of SoCamera::nearDistance.
 */
 /*!
   \var SoSFFloat SoCamera::focalDistance
-  FIXME: write documentation for field
+
+  Distance from camera position to center of scene.
 */
 
 
 /*!
-  \fn void SoCamera::scaleHeight(float scaleFactor)
-  FIXME: write doc
+  \fn void SoCamera::scaleHeight(float scalefactor)
+
+  Sets a \a scalefactor for the height of the camera viewport. What
+  "viewport height" means exactly in this context depends on the
+  camera model. See documentation in subclasses.
 */
 
 /*!
-  \fn SbViewVolume SoCamera::getViewVolume(float useAspectRatio = 0.0f) const
-  FIXME: write doc
+  \fn SbViewVolume SoCamera::getViewVolume(float useaspectratio = 0.0f) const
+
+  Returns total view volume covered by the camera under the current
+  settings.
 */
 
 /*!
   \fn void SoCamera::viewBoundingBox(const SbBox3f & box, float aspect, float slack)
-  FIXME: write doc
+
+  Convenience method for setting up the camera definition to cover the
+  given bounding \a box with the given \a aspect ratio. Multiplies the
+  exact dimensions with a \a slack factor to have some space between
+  the rendered model and the borders of the rendering area.
 */
 
 
@@ -124,13 +152,13 @@ SoCamera::SoCamera()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoCamera);
 
-  SO_NODE_ADD_FIELD(viewportMapping,(ADJUST_CAMERA));
-  SO_NODE_ADD_FIELD(position,(0.0f, 0.0f, 1.0f));
-  SO_NODE_ADD_FIELD(orientation,(SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
-  SO_NODE_ADD_FIELD(nearDistance,(1.0f));
-  SO_NODE_ADD_FIELD(farDistance,(10.0f));
-  SO_NODE_ADD_FIELD(aspectRatio,(1.0f));
-  SO_NODE_ADD_FIELD(focalDistance,(5.0f));
+  SO_NODE_ADD_FIELD(viewportMapping, (ADJUST_CAMERA));
+  SO_NODE_ADD_FIELD(position, (0.0f, 0.0f, 1.0f));
+  SO_NODE_ADD_FIELD(orientation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
+  SO_NODE_ADD_FIELD(nearDistance, (1.0f));
+  SO_NODE_ADD_FIELD(farDistance, (10.0f));
+  SO_NODE_ADD_FIELD(aspectRatio, (1.0f));
+  SO_NODE_ADD_FIELD(focalDistance, (5.0f));
 
   SO_NODE_DEFINE_ENUM_VALUE(ViewportMapping, CROP_VIEWPORT_FILL_FRAME);
   SO_NODE_DEFINE_ENUM_VALUE(ViewportMapping, CROP_VIEWPORT_LINE_FRAME);
@@ -148,11 +176,7 @@ SoCamera::~SoCamera()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoCamera class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in superclass.
 void
 SoCamera::initClass(void)
 {
@@ -185,30 +209,34 @@ SoCamera::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Reorients the camera so the direction vector goes through \a
+  targetpoint.
 */
 void
-SoCamera::pointAt(const SbVec3f & targetPoint)
+SoCamera::pointAt(const SbVec3f & targetpoint)
 {
   // FIXME: is this really correct? What if camera is not positioned
-  // in or near origo and targetPoint is behind us, for instance?
+  // in or near origo and targetpoint is behind us, for instance?
   // 19990228 mortene.
 
-  SbVec3f dir = targetPoint - position.getValue();
+  SbVec3f dir = targetpoint - this->position.getValue();
   SbRotation rot(SbVec3f(0.0f, 0.0f, -1.0f), dir);
-  orientation.setValue(rot);
+  this->orientation.setValue(rot);
 }
 
 /*!
-  FIXME: write function documentation
+  Position the camera so all geometry of the scene from \a sceneroot
+  is contained in the view volume of the camera.
+
+  Finds the bounding box of the scene and calls
+  SoCamera::viewBoundingBox().
 */
 void
-SoCamera::viewAll(SoNode * const sceneRoot,
-                  const SbViewportRegion & vpRegion,
+SoCamera::viewAll(SoNode * const sceneroot, const SbViewportRegion & vpregion,
                   const float slack)
 {
-  SoGetBoundingBoxAction action(vpRegion);
-  action.apply(sceneRoot);
+  SoGetBoundingBoxAction action(vpregion);
+  action.apply(sceneroot);
   SbBox3f box = action.getBoundingBox();
 #if 0 // debug
   SoDebugError::postInfo("SoCamera::viewAll",
@@ -216,61 +244,61 @@ SoCamera::viewAll(SoNode * const sceneRoot,
                          box.getMin()[0], box.getMin()[1], box.getMin()[2],
                          box.getMax()[0], box.getMax()[1], box.getMax()[2]);
 #endif // debug
-  this->viewBoundingBox(box.isEmpty() ? SbBox3f(.0f,.0f,.0f,.0f,.0f,.0f) : box,
-                        aspectRatio.getValue(), slack);
+  this->viewBoundingBox(box.isEmpty() ? SbBox3f(.0f, .0f, .0f, .0f, .0f, .0f) : box,
+                        this->aspectRatio.getValue(), slack);
 }
 
 /*!
-  FIXME: write function documentation
+  Position the camera so all geometry of the scene in \a path is
+  contained in the view volume of the camera.
+
+  Finds the bounding box of the scene and calls
+  SoCamera::viewBoundingBox().
 */
 void
-SoCamera::viewAll(SoPath * const path,
-                  const SbViewportRegion &vpRegion,
+SoCamera::viewAll(SoPath * const path, const SbViewportRegion & vpregion,
                   const float slack)
 {
-  SoGetBoundingBoxAction action(vpRegion);
+  SoGetBoundingBoxAction action(vpregion);
   action.apply(path);
   SbBox3f box = action.getBoundingBox();
-  this->viewBoundingBox(box.isEmpty() ? SbBox3f(.0f,.0f,.0f,.0f,.0f,.0f) : box,
-                        aspectRatio.getValue(), slack);
+  this->viewBoundingBox(box.isEmpty() ? SbBox3f(.0f, .0f, .0f, .0f, .0f, .0f) : box,
+                        this->aspectRatio.getValue(), slack);
 }
 
 /*!
-  FIXME: write function documentation
+  Based in the SoCamera::viewportMapping setting, convert the values
+  of \a region to the viewport region we will actually render into.
 */
 SbViewportRegion
-SoCamera::getViewportBounds(const SbViewportRegion & /* region */) const
+SoCamera::getViewportBounds(const SbViewportRegion & region) const
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
   return SbViewportRegion();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
-SoCamera::GLRender(SoGLRenderAction *action)
+SoCamera::GLRender(SoGLRenderAction * action)
 {
   SoCamera::doAction(action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
-SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
+SoCamera::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-#if 0 // experimental code, not enabled, pederb, 2000-01-20
+#if 0 // FIXME: experimental code, not enabled, pederb, 2000-01-20
   if (action->isInCameraSpace()) {
-    SoState *state = action->getState();
-    SbMatrix modelMatrix = SoModelMatrixElement::get(state);
-    SbVec3f cameraPos(0.0f, 0.0f, 0.0f);
-    SbVec3f cameraDir(0.0f, 0.0f, -1.0f);
-    modelMatrix.multVecMatrix(cameraPos, cameraPos);
-    modelMatrix.multDirMatrix(cameraDir, cameraDir);
-    cameraDir.normalize();
-    SoModelMatrixElement::translateBy(state, this, -cameraPos - SbVec3f(0,0,1));
-    SoModelMatrixElement::rotateBy(state, this, SbRotation(cameraDir, SbVec3f(0,0,-1)));
+    SoState * state = action->getState();
+    SbMatrix modelmatrix = SoModelMatrixElement::get(state);
+    SbVec3f camerapos(0.0f, 0.0f, 0.0f);
+    SbVec3f cameradir(0.0f, 0.0f, -1.0f);
+    modelmatrix.multVecMatrix(camerapos, camerapos);
+    modelmatrix.multDirMatrix(cameradir, cameradir);
+    cameradir.normalize();
+    SoModelMatrixElement::translateBy(state, this, -camerapos - SbVec3f(0, 0, 1));
+    SoModelMatrixElement::rotateBy(state, this, SbRotation(cameradir, SbVec3f(0, 0, -1)));
     SoModelMatrixElement::makeIdentity(action->getState(), this);
   }
 #endif // experimental code
@@ -278,14 +306,17 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
 }
 
 /*!
-  FIXME: write function documentation
-*/
+  Picking actions can be triggered during handle event action
+  traversal, and to do picking we need to know the camera state.
+
+  \sa SoCamera::rayPick()
+ */
 void
-SoCamera::handleEvent(SoHandleEventAction *action)
+SoCamera::handleEvent(SoHandleEventAction * action)
 {
   // FIXME: viewportMapping field is not accounted for. 19990315
   // mortene.
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
   float aspectratio =
     SoViewportRegionElement::get(state).getViewportAspectRatio();
@@ -295,26 +326,30 @@ SoCamera::handleEvent(SoHandleEventAction *action)
 }
 
 /*!
-  FIXME: write function documentation
+  "Jitter" the camera according to the current rendering pass (\a
+  curpass), to get an antialiased rendering of the scene when doing
+  multipass rendering.
 */
 void
-SoCamera::jitter(int /* numPasses */, int /* curPass */,
-                 const SbViewportRegion & /* vpReg */,
-                 SbVec3f & /* jitterAmount */) const
+SoCamera::jitter(int numpasses, int curpass, const SbViewportRegion & vpreg,
+                 SbVec3f & jitteramount) const
 {
-  COIN_STUB();
+  COIN_STUB(); // FIXME
 }
 
 /*!
-  FIXME: write doc
-*/
+  Overloaded to set up the viewing and projection matrices.
+ */
 void
-SoCamera::doAction(SoAction *action)
+SoCamera::doAction(SoAction * action)
 {
   // FIXME: viewportMapping field is not accounted for. 19990315
   // mortene.
-  SoState *state = action->getState();
+  SoState * state = action->getState();
 
+  // FIXME: there's a bug here which phucks up the rendering to
+  // viewports where height > width (I'll promise to buy the person
+  // who fixes this bug a beer of his choice). 20000310 mortene.
   float aspectratio =
     SoViewportRegionElement::get(state).getViewportAspectRatio();
 
@@ -336,20 +371,19 @@ SoCamera::doAction(SoAction *action)
   SoFocalDistanceElement::set(state, this, this->focalDistance.getValue());
 }
 
-/*!
-  FIXME: write doc
-*/
+// Doc in superclass.
 void
-SoCamera::callback(SoCallbackAction *action)
+SoCamera::callback(SoCallbackAction * action)
 {
   SoCamera::doAction(action);
 }
 
 /*!
-  FIXME: write doc
-*/
+  Overloaded to calculate the coordinates of the ray within the
+  current camera settings.
+ */
 void
-SoCamera::rayPick(SoRayPickAction *action)
+SoCamera::rayPick(SoRayPickAction * action)
 {
   SoCamera::doAction(action);
 
@@ -364,10 +398,13 @@ SoCamera::rayPick(SoRayPickAction *action)
 }
 
 /*!
-  FIXME: write doc
-*/
+  The number of primitives used to render a shape can change according
+  to the shape's distance to the camera, so we need to overload this
+  method from the superclass to modify the traversal state settings
+  for the camera view.
+ */
 void
-SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction *action)
+SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoCamera::doAction(action);
 }

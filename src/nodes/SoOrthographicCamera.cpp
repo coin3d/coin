@@ -19,22 +19,23 @@
 
 /*!
   \class SoOrthographicCamera SoOrthographicCamera.h Inventor/nodes/SoOrthographicCamera.h
-  \brief The SoOrthographicCamera class ...
+  \brief The SoOrthographicCamera class defines a camera node with orthographic rendering.
   \ingroup nodes
 
-  FIXME: write class doc
+  Orthographic rendering will not give a particularly realistic
+  impression of the scene, but is for various reasons widely used in
+  applications for Computer Aided Design.
 */
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
-
+#include <Inventor/SbSphere.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <Inventor/SbSphere.h>
 
 /*!
   \var SoSFFloat SoOrthographicCamera::height
-  FIXME: write documentation for field
+  Height of viewport in world-space scale. Defaults to 2.0 units.
 */
 
 // *************************************************************************
@@ -58,11 +59,7 @@ SoOrthographicCamera::~SoOrthographicCamera()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoOrthographicCamera class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in superclass.
 void
 SoOrthographicCamera::initClass(void)
 {
@@ -70,38 +67,34 @@ SoOrthographicCamera::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Scale SoOrthographicCamera::height by multiplying with \a
+  scalefactor.
 */
 void
-SoOrthographicCamera::scaleHeight(float scaleFactor)
+SoOrthographicCamera::scaleHeight(float scalefactor)
 {
-  height.setValue(height.getValue() * scaleFactor);
+  this->height.setValue(this->height.getValue() * scalefactor);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 SbViewVolume
-SoOrthographicCamera::getViewVolume(float useAspectRatio) const
+SoOrthographicCamera::getViewVolume(float useaspectratio) const
 {
   SbViewVolume volume;
 
-  if (useAspectRatio == 0.0f) useAspectRatio = aspectRatio.getValue();
+  if (useaspectratio == 0.0f) useaspectratio = this->aspectRatio.getValue();
 
-  // FIXME: this is pro'ly not correct (?). 19981024 mortene.
-  float width = height.getValue() * useAspectRatio;
+  float width = this->height.getValue() * useaspectratio;
   volume.ortho(-width/2.0f, width/2.0f,
-               -height.getValue()/2.0f, height.getValue()/2.0f,
-               nearDistance.getValue(), farDistance.getValue());
+               -this->height.getValue()/2.0f, this->height.getValue()/2.0f,
+               this->nearDistance.getValue(), this->farDistance.getValue());
 
-  volume.rotateCamera(orientation.getValue());
-  volume.translateCamera(position.getValue());
+  volume.rotateCamera(this->orientation.getValue());
+  volume.translateCamera(this->position.getValue());
   return volume;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoOrthographicCamera::viewBoundingBox(const SbBox3f & box,
                                       float aspect, float slack)

@@ -185,6 +185,9 @@ INPUT                = \
 	$(top_srcdir)/src/fields/SoFieldContainer.cpp $(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
 	\
 	$(top_srcdir)/src/nodes/SoNode.cpp $(top_srcdir)/include/Inventor/nodes/SoNode.h \
+	$(top_srcdir)/src/nodes/SoCamera.cpp $(top_srcdir)/include/Inventor/nodes/SoCamera.h \
+	$(top_srcdir)/src/nodes/SoPerspectiveCamera.cpp $(top_srcdir)/include/Inventor/nodes/SoPerspectiveCamera.h \
+	$(top_srcdir)/src/nodes/SoOrthographicCamera.cpp $(top_srcdir)/include/Inventor/nodes/SoOrthographicCamera.h \
 
 #	$(top_srcdir)/src/nodes/SoAnnoText3.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 #	$(top_srcdir)/src/nodes/SoAnnoText3Property.cpp $(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
@@ -195,7 +198,6 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoBaseColor.cpp $(top_srcdir)/include/Inventor/nodes/SoBaseColor.h \
 #	$(top_srcdir)/src/nodes/SoBlinker.cpp $(top_srcdir)/include/Inventor/nodes/SoBlinker.h \
 #	$(top_srcdir)/src/nodes/SoCallback.cpp $(top_srcdir)/include/Inventor/nodes/SoCallback.h \
-#	$(top_srcdir)/src/nodes/SoCamera.cpp $(top_srcdir)/include/Inventor/nodes/SoCamera.h \
 #	$(top_srcdir)/src/nodes/SoClipPlane.cpp $(top_srcdir)/include/Inventor/nodes/SoClipPlane.h \
 #	$(top_srcdir)/src/nodes/SoColorIndex.cpp $(top_srcdir)/include/Inventor/nodes/SoColorIndex.h \
 #	$(top_srcdir)/src/nodes/SoComplexity.cpp $(top_srcdir)/include/Inventor/nodes/SoComplexity.h \
@@ -242,11 +244,9 @@ INPUT                = \
 #	$(top_srcdir)/src/nodes/SoNurbsCurve.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsCurve.h \
 #	$(top_srcdir)/src/nodes/SoNurbsProfile.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsProfile.h \
 #	$(top_srcdir)/src/nodes/SoNurbsSurface.cpp $(top_srcdir)/include/Inventor/nodes/SoNurbsSurface.h \
-#	$(top_srcdir)/src/nodes/SoOrthographicCamera.cpp $(top_srcdir)/include/Inventor/nodes/SoOrthographicCamera.h \
 #	$(top_srcdir)/src/nodes/SoPackedColor.cpp $(top_srcdir)/include/Inventor/nodes/SoPackedColor.h \
 #	$(top_srcdir)/src/nodes/SoPathSwitch.cpp $(top_srcdir)/include/Inventor/nodes/SoPathSwitch.h \
 #	$(top_srcdir)/src/nodes/SoPendulum.cpp $(top_srcdir)/include/Inventor/nodes/SoPendulum.h \
-#	$(top_srcdir)/src/nodes/SoPerspectiveCamera.cpp $(top_srcdir)/include/Inventor/nodes/SoPerspectiveCamera.h \
 #	$(top_srcdir)/src/nodes/SoPickStyle.cpp $(top_srcdir)/include/Inventor/nodes/SoPickStyle.h \
 #	$(top_srcdir)/src/nodes/SoPointLight.cpp $(top_srcdir)/include/Inventor/nodes/SoPointLight.h \
 #	$(top_srcdir)/src/nodes/SoPointSet.cpp $(top_srcdir)/include/Inventor/nodes/SoPointSet.h \

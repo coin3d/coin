@@ -1,15 +1,15 @@
 # CONFIG "The Node Hierarchy"
 # factors: [work in progress / no work done]
 # FLAGS [1]
-# I = Full implementation of all non-actionmethods [1]
+# I = Has implementation of non-actionmethods [1]
 # D = Documented [0.5]
-# T = Compliance test file available under Coin/models/oiv_compliance
-# B = SoGetBoundingBoxAction
+# T = Compliance test file available under Coin/models/oiv_compliance [0.5]
+# B = SoGetBoundingBoxAction [1]
 # G = SoGLRenderAction [2]
 # M = SoGetMatrixAction [0.2]
-# P = SoPickAction
-# R = SoRayPickAction
-# C = SoCallbackAction
+# P = SoPickAction [1]
+# R = SoRayPickAction [1]
+# C = SoCallbackAction [1]
 # S = SoSearchAction [0.2]
 # 
 # VALUES
@@ -21,9 +21,9 @@
 # ==========
 # HIERARCHY
 # ID-BGMPRCS  SoNode
-#   TbG--RC       SoCamera
-#   -!!----               SoPerspectiveCamera
-#   -!!----               SoOrthographicCamera
+# IDTBG--RCS      SoCamera
+# ID-!!--!!!              SoPerspectiveCamera
+# ID-!!--!!!              SoOrthographicCamera
 #   -B---RC       SoShape
 #      -- -               SoAnnoText3
 #      -- -               SoAsciiText
@@ -132,10 +132,6 @@
 # ************************************************************************
 #
 # COMMENTS
-#
-# FIXME: The weight for I, D and S is way too low, I just set them to 0.1
-# for now because the status for these flags have not been made
-# up-to-date. 20000105 mortene.
 #
 # Status "yellow" for the .iv compliance testfile column means the tests
 # contained in the file(s) are not very extensive, and should be improved

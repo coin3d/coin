@@ -71,14 +71,12 @@ public:
   SoSFFloat farDistance;
   SoSFFloat focalDistance;
 
-  void pointAt(const SbVec3f & targetPoint);
-  virtual void scaleHeight(float scaleFactor) = 0;
-  virtual SbViewVolume getViewVolume(float useAspectRatio = 0.0f) const = 0;
-  void viewAll(SoNode * const sceneRoot,
-               const SbViewportRegion & vpRegion,
+  void pointAt(const SbVec3f & targetpoint);
+  virtual void scaleHeight(float scalefactor) = 0;
+  virtual SbViewVolume getViewVolume(float useaspectratio = 0.0f) const = 0;
+  void viewAll(SoNode * const sceneroot, const SbViewportRegion & vpregion,
                const float slack = 1.0f);
-  void viewAll(SoPath * const path,
-               const SbViewportRegion & vpRegion,
+  void viewAll(SoPath * const path, const SbViewportRegion & vpregion,
                const float slack = 1.0f);
   SbViewportRegion getViewportBounds(const SbViewportRegion & region) const;
 
@@ -94,13 +92,11 @@ protected:
   SoCamera(void);
   virtual ~SoCamera();
 
-  virtual void viewBoundingBox(const SbBox3f & box,
-                               float aspect, float slack) = 0;
-  virtual void jitter(int numPasses, int curPass,
-                      const SbViewportRegion & vpReg,
-                      SbVec3f & jitterAmount) const;
-
-
+  virtual void viewBoundingBox(const SbBox3f & box, float aspect,
+                               float slack) = 0;
+  virtual void jitter(int numpasses, int curpass,
+                      const SbViewportRegion & vpreg,
+                      SbVec3f & jitteramount) const;
 };
 
 #endif // !COIN_SOCAMERA_H

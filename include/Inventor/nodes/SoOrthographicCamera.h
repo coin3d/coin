@@ -25,7 +25,7 @@
 
 
 class SoOrthographicCamera : public SoCamera {
-    typedef SoCamera inherited;
+  typedef SoCamera inherited;
 
   SO_NODE_HEADER(SoOrthographicCamera);
 
@@ -35,13 +35,13 @@ public:
 
   SoSFFloat height;
 
-  virtual void scaleHeight(float scaleFactor);
-  virtual SbViewVolume getViewVolume(float useAspectRatio = 0.0f) const;
+  virtual void scaleHeight(float scalefactor);
+  virtual SbViewVolume getViewVolume(float useaspectratio = 0.0f) const;
 
 protected:
   virtual ~SoOrthographicCamera();
 
-  virtual void viewBoundingBox(const SbBox3f &box, float aspect, float slack);
+  virtual void viewBoundingBox(const SbBox3f & box, float aspect, float slack);
 };
 
 #endif // !COIN_SOORTHOGRAPHICCAMERA_H

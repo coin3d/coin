@@ -19,15 +19,14 @@
 
 /*!
   \class SoPerspectiveCamera SoPerspectiveCamera.h Inventor/nodes/SoPerspectiveCamera.h
-  \brief The SoPerspectiveCamera class ...
+  \brief The SoPerspectiveCamera class defines a camera node with perspective rendering.
   \ingroup nodes
 
-  FIXME: write class doc
+  For realistic looking 3D scene, the geometry should be rendered with
+  perspective calculations. Use this camera type to accomplish this.
 */
 
 #include <Inventor/nodes/SoPerspectiveCamera.h>
-
-
 #include <Inventor/SbSphere.h>
 #include <assert.h>
 
@@ -37,7 +36,9 @@
 
 /*!
   \var SoSFFloat SoPerspectiveCamera::heightAngle
-  FIXME: write documentation for field
+
+  The vertical angle of the viewport, also known as "field of view".
+  Default value is 45° (note: value is specified in radians).
 */
 
 // *************************************************************************
@@ -51,7 +52,7 @@ SoPerspectiveCamera::SoPerspectiveCamera()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoPerspectiveCamera);
 
-  SO_NODE_ADD_FIELD(heightAngle, (float(M_PI)/4.0f));  // 45 degrees
+  SO_NODE_ADD_FIELD(heightAngle, (float(M_PI)/4.0f));  // 45°.
 }
 
 /*!
@@ -61,11 +62,7 @@ SoPerspectiveCamera::~SoPerspectiveCamera()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoPerspectiveCamera class. This includes setting up the
-  type system, among other things.
-*/
+// Doc in superclass.
 void
 SoPerspectiveCamera::initClass(void)
 {
@@ -73,41 +70,32 @@ SoPerspectiveCamera::initClass(void)
 }
 
 /*!
-  FIXME: write function documentation
+  Scale the SoPerspectiveCamera::heightAngle field by multiplying with
+  \a scalefactor.
 */
 void
-SoPerspectiveCamera::scaleHeight(float scaleFactor)
+SoPerspectiveCamera::scaleHeight(float scalefactor)
 {
-  float tmp = heightAngle.getValue();
-  heightAngle.setValue(tmp * scaleFactor);
+  float tmp = this->heightAngle.getValue();
+  this->heightAngle.setValue(tmp * scalefactor);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 SbViewVolume
-SoPerspectiveCamera::getViewVolume(float useAspectRatio) const
+SoPerspectiveCamera::getViewVolume(float useaspectratio) const
 {
-  if (useAspectRatio == 0.0f) useAspectRatio = aspectRatio.getValue();
-
-#if 0 // debug
-  // there's still a bug here somewhere. 19981029 mortene.
-  SoDebugError::postInfo("SoPerspectiveCamera::getViewVolume",
-                         "useAspectRatio: %f",
-                         useAspectRatio);
-#endif // 0
+  if (useaspectratio == 0.0f) useaspectratio = this->aspectRatio.getValue();
 
   SbViewVolume volume;
-  volume.perspective(heightAngle.getValue(), useAspectRatio,
-                     nearDistance.getValue(), farDistance.getValue());
-  volume.rotateCamera(orientation.getValue());
-  volume.translateCamera(position.getValue());
+  volume.perspective(this->heightAngle.getValue(), useaspectratio,
+                     this->nearDistance.getValue(),
+                     this->farDistance.getValue());
+  volume.rotateCamera(this->orientation.getValue());
+  volume.translateCamera(this->position.getValue());
   return volume;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoPerspectiveCamera::viewBoundingBox(const SbBox3f & box, float aspect,
                                      float slack)
