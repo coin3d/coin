@@ -1,3 +1,25 @@
+/**************************************************************************\
+ *
+ *  This file is part of the Coin 3D visualization library.
+ *  Copyright (C) 1998-2003 by Systems in Motion.  All rights reserved.
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  ("GPL") version 2 as published by the Free Software Foundation.
+ *  See the file LICENSE.GPL at the root directory of this source
+ *  distribution for additional information about the GNU GPL.
+ *
+ *  For using Coin with software that can not be combined with the GNU
+ *  GPL, and for taking advantage of the additional benefits of our
+ *  support services, please contact Systems in Motion about acquiring
+ *  a Coin Professional Edition License.
+ *
+ *  See <URL:http://www.coin3d.org> for  more information.
+ *
+ *  Systems in Motion, Teknobyen, Abels Gate 5, 7030 Trondheim, NORWAY.
+ *  <URL:http://www.sim.no>.
+ *
+\**************************************************************************/
 
 #include <string.h>
 #include <stdlib.h>
@@ -7,6 +29,9 @@
 
 #include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/glue/flwfreetype.h>
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/errors/debugerror.h>
+
 #include <ft2build.h>
 // FT build macros don't work for MSVC dsp builds. preng 2003-03-11
 // #include FT_FREETYPE_H
@@ -14,25 +39,36 @@
 #include <freetype/freetype.h>
 #include <freetype/ftglyph.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+static FT_Library library;
 
-FT_Library  library;
-
-int
-flwftInitialize()
+static SbBool
+cc_freetype_debug(void)
 {
-  int error;
-  error = FT_Init_FreeType( &library );
-  if ( error ) {
-    fprintf(stderr,"flwftInitialize error %d\n", error);
+  const char * env = coin_getenv("COIN_DEBUG_FREETYPE");
+  return env && (atoi(env) > 0);
+}
+
+SbBool
+flwftInitialize(void)
+{
+  FT_Error error = FT_Init_FreeType(&library);
+  if (error) {
+    cc_debugerror_post("flwftInitialize", "error %d", error);
+    library = NULL;
   }
-  return error;
+  else if (cc_freetype_debug()) {
+    FT_Int major, minor, patch;
+    FT_Library_Version(library, &major, &minor, &patch);
+    cc_debugerror_postinfo("flwftInitialize",
+                           "FreeType library version is %d.%d.%d",
+                           major, minor, patch);
+  }
+
+  return error == 0 ? TRUE : FALSE;
 }
 
 void
-flwftExit()
+flwftExit(void)
 {
   FT_Done_FreeType(library);
 }
@@ -40,14 +76,14 @@ flwftExit()
 FLWfont
 flwftGetFont(const char * fontname)
 {
-  int error;
+  FT_Error error;
   FT_Face face;
-  error = FT_New_Face( library,
-                       fontname,
-                       0,
-                       &face );
-  if ( error ) {
-    // fprintf(stderr,"flwftGetFont error %d for font file %s\n", error, fontname);
+  error = FT_New_Face(library, fontname, 0, &face);
+  if (error) {
+    if (cc_freetype_debug()) {
+      cc_debugerror_postwarning("flwftGetFont", "error %d for fontname '%s'\n",
+                                error, fontname);
+    }
     return NULL;
   }
   return face;
@@ -87,7 +123,7 @@ flwftGetFontStyle(FLWfont font, char * buffer, int bufsize)
 void
 flwftDoneFont(FLWfont font)
 {
-  int error;
+  FT_Error error;
   FT_Face face;
   if (font) {
     face = (FT_Face)font;
@@ -120,12 +156,17 @@ flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
         name = "symbol"; break;
       case ft_encoding_unicode:	
         name = "unicode"; break;
-        /* disabled 2003-03-13 pederb. Not defined on my system */
+        /* FIXME: disabled 2003-03-13 pederb. Not defined on my system */
 
 /*       case ft_encoding_latin_1:	 */
 /*         name = "latin_1"; break; */
-      case ft_encoding_latin_2:	
-        name = "latin_2"; break;
+
+        /* FIXME: disabled, as "ft_encoding_latin_2" not defined on my
+           Freetype dev system. 20030316 mortene.*/
+
+/*       case ft_encoding_latin_2:	 */
+/*         name = "latin_2"; break; */
+
       case ft_encoding_sjis:	
         name = "sjis"; break;
       case ft_encoding_gb2312:
@@ -161,7 +202,7 @@ flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
 int
 flwftSetCharmap(FLWfont font, int charmap)
 {
-  int error;
+  FT_Error error;
   FT_Face face;
   if (font) {
     face = (FT_Face)font;
@@ -178,7 +219,7 @@ flwftSetCharmap(FLWfont font, int charmap)
 int
 flwftSetCharSize(FLWfont font, int width, int height)
 {
-  int error;
+  FT_Error error;
   FT_Face face;
   if (font) {
     face = (FT_Face)font;
@@ -222,7 +263,7 @@ flwftGetGlyph(FLWfont font, unsigned int charidx)
 int
 flwftGetAdvance(FLWfont font, FLWglyph glyph, float *x, float *y)
 {
-  int error;
+  FT_Error error;
   FT_Face face;
   int tmp;
   if (font) {
@@ -244,7 +285,7 @@ flwftGetAdvance(FLWfont font, FLWglyph glyph, float *x, float *y)
 int
 flwftGetKerning(FLWfont font, FLWglyph glyph1, FLWglyph glyph2, float *x, float *y)
 {
-  int error;
+  FT_Error error;
   FT_Vector kerning;
   FT_Face face;
   if (font) {
@@ -276,7 +317,7 @@ flwftDoneGlyph(FLWfont font, FLWglyph glyph)
 FLWbitmap *
 flwftGetBitmap(FLWfont font, FLWglyph glyph)
 {
-  int error;
+  FT_Error error;
   FLWbitmap * bm;
   FT_Face face;
   FT_Glyph g;
@@ -352,7 +393,3 @@ flwftGetOutline(FLWfont font, FLWglyph glyph)
   fprintf(stderr,"flwftGetOutline has not been implemented yet.\n");
   return 0;
 }
-
-#ifdef __cplusplus
-}
-#endif

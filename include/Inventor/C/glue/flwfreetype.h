@@ -25,6 +25,7 @@
 \**************************************************************************/
 
 #include <Inventor/C/glue/fontlib_wrapper.h>
+#include <Inventor/C/basic.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,7 +38,7 @@ extern "C" {
     the FreeType font library.
   */
   
-  int flwftInitialize(void);
+  SbBool flwftInitialize(void);
   void flwftExit(void);
 
   FLWfont flwftGetFont(const char * fontname);
