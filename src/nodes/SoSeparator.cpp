@@ -433,12 +433,12 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     SoNode ** childarray = (SoNode**) this->children->getArrayPtr();
     action->pushCurPath();
     for (int i = 0; i < n && !action->hasTerminated(); i++) {
+      action->popPushCurPath(i, childarray[i]);
       if (action->abortNow()) {
         // only cache if we do a full traversal
         SoCacheElement::invalidate(state);
         break;
       }
-      action->popPushCurPath(i, childarray[i]);
       childarray[i]->GLRenderBelowPath(action);
 
       // The GL error test is disabled for this optimized path.  If
