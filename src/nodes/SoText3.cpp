@@ -49,7 +49,6 @@
 #include <Inventor/details/SoTextDetail.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLShapeHintsElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -334,9 +333,6 @@ SoText3::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   unsigned int prts = this->parts.getValue();
-
-  // we will provide unit length normals
-  SoGLNormalizeElement::forceSend(state, TRUE);
 
   if (prts & SoText3::FRONT) {
     this->render(state, SoText3::FRONT);

@@ -38,7 +38,6 @@
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 
 /*!
   \var SoSFVec3f SoScale::scaleFactor
@@ -101,10 +100,6 @@ SoScale::doAction(SoAction * action)
 void
 SoScale::GLRender(SoGLRenderAction * action)
 {
-  if (scaleFactor.getValue() != SbVec3f(1.0f, 1.0f, 1.0f)) {
-    SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
-  }
-
   SoScale::doAction((SoAction *)action);
 }
 

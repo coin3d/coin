@@ -57,7 +57,7 @@
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
-#include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -560,7 +560,7 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
       didpush = TRUE;
       state->push();
     }
-    SoGLShadeModelElement::set(state, TRUE);
+    SoLazyElement::setShadeModel(state, TRUE);
   }
 
   if (!this->shouldGLRender(action)) {

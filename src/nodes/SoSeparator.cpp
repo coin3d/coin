@@ -466,9 +466,6 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
       SoMaterialBundle mb(action);
       mb.sendFirst();
 
-      // update lazy elements
-      state->lazyEvaluate();
-
       if (THIS->glcachelist->call(action, GL_ALL_ATTRIB_BITS)) {
 #if GLCACHE_DEBUG && 1 // debug
         SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
@@ -489,7 +486,6 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
   state->push();
   if (createcache) {
     if (!didlazyeval) {
-      state->lazyEvaluate();
       SoMaterialBundle mb(action);
       mb.sendFirst();
     }

@@ -257,7 +257,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/VRMLnodes/SoVRMLColor.h>
@@ -428,7 +428,7 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
   if (nbind == PER_QUAD && mbind == PER_VERTEX) drawasstrip = FALSE;
 
   if (nbind <= PER_QUAD && mbind <= PER_QUAD) {
-    SoGLShadeModelElement::forceSend(state, TRUE);
+    SoGLLazyElement::sendFlatshading(state, TRUE);
   }
 
   // FIXME: Probably too slow. Need several rendering loops

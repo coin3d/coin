@@ -41,17 +41,17 @@ public:
   virtual void push(SoState * state);
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
-  virtual void lazyEvaluate(void) const;
-  virtual SbBool isLazy(void) const;
 
 protected:
   virtual void setElt(float width);
 
 private:
+  SoState * state;
   static float sizerange[2];
-  float current;
-  void updategl();
-
+  void updategl(void);
 };
 
 #endif // !COIN_SOGLLINEWIDTHELEMENT_H
+
+
+

@@ -46,7 +46,6 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoUnitsElement.h>
 
 /*!

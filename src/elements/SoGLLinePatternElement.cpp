@@ -67,7 +67,7 @@ void
 SoGLLinePatternElement::init(SoState * state)
 {
   inherited::init(state);
-  updategl();
+  this->updategl();
 }
 
 //! FIXME: write doc.
@@ -75,8 +75,12 @@ SoGLLinePatternElement::init(SoState * state)
 void
 SoGLLinePatternElement::push(SoState * state)
 {
-  inherited::push(state);
-  this->data = ((SoGLLinePatternElement*)this->getNextInStack())->data;
+  SoGLLinePatternElement * prev = (SoGLLinePatternElement*)
+    this->getNextInStack();
+
+  this->data = prev->data;
+  // capture element since we might or might not change the GL state
+  prev->capture(state);
 }
 
 //! FIXME: write doc.
@@ -87,7 +91,6 @@ SoGLLinePatternElement::pop(SoState * state,
 {
   SoGLLinePatternElement * prev = (SoGLLinePatternElement*) prevTopElement;
   if (this->data != prev->data) this->updategl();
-  inherited::pop(state, prevTopElement);
 }
 
 //! FIXME: write doc.
@@ -97,7 +100,7 @@ SoGLLinePatternElement::setElt(int32_t pattern)
 {
   if (pattern != this->data) {
     this->data = pattern;
-    updategl();
+    this->updategl();
   }
 }
 

@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -43,9 +43,6 @@ public:
   virtual void push(SoState * state);
   virtual void pop(SoState * state, const SoElement * prevTopElement);
 
-  virtual void lazyEvaluate(void) const;
-  virtual SbBool isLazy(void) const;
-
 protected:
   virtual void setElt(float size);
 
@@ -54,8 +51,6 @@ private:
   // without breaking ABI compatibility, though, so wait until Coin
   // version 2.  20010823 mortene.
   static float sizerange[2];
-
-  float current;
   void updategl();
 };
 

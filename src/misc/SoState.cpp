@@ -103,7 +103,6 @@ public:
   SoElement ** initial;
   int depth;
   class sostate_pushstore * pushstore;
-  SbList <int> lazylist;
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -154,10 +153,6 @@ SoState::SoState(SoAction * theAction, const SoTypeList & enabledelements)
       this->stack[stackindex] = element;
       THIS->initial[stackindex] = element;
       element->init(this); // called for first element in state stack
-
-      if (element->isLazy()) {
-        THIS->lazylist.append(stackindex);
-      }
     }
   }
   THIS->pushstore = new sostate_pushstore;
@@ -331,37 +326,6 @@ void
 SoState::setCacheOpen(const SbBool open)
 {
   this->cacheopen = open;
-}
-
-/*!
-  Evaluates (calls the virtual function lazyEvaluate()) for all
-  lazy elements (isLazy() returns TRUE).
-*/
-void
-SoState::lazyEvaluate(void) const
-{
-  int n = THIS->lazylist.getLength();
-  for (int i = 0; i < n; i++) {
-    SoElement * elm = this->stack[THIS->lazylist[i]];
-    elm->lazyEvaluate();
-
-    // The GL error test is default disabled for this optimized path.
-    // If you get a GL error during rendering, enable this code by
-    // setting the environment variable COIN_GLERROR_DEBUGGING to "1",
-    // and it might be able to pinpoint the exact error location.
-#if COIN_DEBUG
-    static SbBool chkglerr = sogl_glerror_debugging();
-    if (chkglerr) {
-      int err = glGetError();
-      if (err != GL_NO_ERROR) {
-        SoDebugError::postInfo("SoState::lazyEvaluate",
-                               "GL error: %s, elementtype: %s",
-                               sogl_glerror_string(err).getString(),
-                               elm->getTypeId().getName().getString());
-      }
-    }
-#endif // COIN_DEBUG
-  }
 }
 
 #undef THIS

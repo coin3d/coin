@@ -43,10 +43,10 @@
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoPickStyleElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/elements/SoLazyElement.h>
-#include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -166,7 +166,9 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   // disable texturing
-  SoGLTextureEnabledElement::forceSend(state, FALSE);
+  if (SoGLTextureEnabledElement::get(state)) {
+    SoGLTextureEnabledElement::set(state, FALSE);
+  }
 
   // Create lazy element for GL_AUTO_NORMAL ?
   glEnable(GL_AUTO_NORMAL);

@@ -52,7 +52,7 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
@@ -198,8 +198,7 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
       state->push();
       didpush = TRUE;
     }
-    // enable flat shading before calling shouldGLRender()
-    SoGLShadeModelElement::set(state, TRUE);
+    SoLazyElement::setShadeModel(state, TRUE);
   }
 
   if (!this->shouldGLRender(action)) {

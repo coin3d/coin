@@ -265,13 +265,16 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
     
     SbBool validcache = THIS->bboxcache && THIS->bboxcache->isValid(state);
     if (validcache) {
+      state->pop();
       SbBox3f box = THIS->bboxcache->getProjectedBox();      
       SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
       SbVec3f size = box.getMax()  - box.getMin();
       
       UNLOCK_BBOX(this);
 
-      SoGLTextureEnabledElement::forceSend(state, FALSE);
+      if (SoGLTextureEnabledElement::get(state)) {
+        SoGLTextureEnabledElement::set(state, FALSE);
+      }
       SoGLShapeHintsElement::forceSend(state, TRUE, FALSE, FALSE);
       SoGLLazyElement::sendLightModel(state, SoLazyElement::BASE_COLOR);
   
@@ -290,6 +293,7 @@ SoVRMLShape::GLRender(SoGLRenderAction * action)
       sogl_render_cube(size[0], size[1], size[2], NULL, 
                        SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
       glPopMatrix();
+      state->pop();
       return;
     }
   }

@@ -57,6 +57,7 @@ public:
 
   virtual void init(SoState * state);
   virtual void push(SoState * state);
+  virtual void pop(SoState * state, const SoElement * prevtopelement);
 
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement *copyMatchInfo(void) const;
@@ -81,6 +82,7 @@ public:
   virtual void print(FILE * file) const;
 
 protected:
+  void updateLazyElement(SoState * state);
   virtual void setElt(VertexOrdering vertexOrdering,
                       ShapeType shapeType, FaceType faceType);
 

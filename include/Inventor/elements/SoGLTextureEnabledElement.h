@@ -42,20 +42,17 @@ public:
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
 
-  virtual void lazyEvaluate(void) const;
-  virtual SbBool isLazy(void) const;
-
-  static  void forceSend(SoState * const state, const SbBool onoff);
-  static  void set(SoState * const state, SoNode * const node,
-                   const SbBool enabled);
-  static  void set(SoState * const state, const SbBool enabled);
+  static void set(SoState * const state, SoNode * const node,
+                  const SbBool enabled);
+  static void set(SoState * const state, const SbBool enabled);
 
   static SbBool get(SoState * const state);
   static SbBool getDefault(void);
 
+  virtual void setElt(int32_t value);
+
 private:
-  int32_t glstate;
-  void updategl(const int32_t newstate) const;
+  void updategl(void);
 
 };
 

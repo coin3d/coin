@@ -70,7 +70,6 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/misc/SoGL.h>
@@ -134,8 +133,6 @@ SoSphere::GLRender(SoGLRenderAction * action)
   SbBool sendNormals = !mb.isColorOnly();
 
   float complexity = SbClamp(this->getComplexityValue(action), 0.0f, 1.0f);
-
-  if (sendNormals) SoGLNormalizeElement::forceSend(state, TRUE);
 
   unsigned int flags = 0;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;

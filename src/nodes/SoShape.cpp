@@ -453,10 +453,6 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
   if (action->handleTransparency(transparent))
     return FALSE;
 
-  // make sure lazy elements are up to date
-  // all material lazy elements are handled by SoMaterialBundle
-  state->lazyEvaluate();
-
   // SoGLTextureImageElement is lazy, but needs some arguments
   // update manually
   const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)

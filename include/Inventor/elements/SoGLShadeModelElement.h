@@ -24,38 +24,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/elements/SoSubElement.h>
-
-class COIN_DLL_API SoGLShadeModelElement : public SoElement {
-  typedef SoElement inherited;
-
-  SO_ELEMENT_HEADER(SoGLShadeModelElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoGLShadeModelElement();
-
-public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
-
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo() const;
-
-  static void set(SoState * state, const SbBool flat);
-
-  virtual void lazyEvaluate(void) const;
-  virtual SbBool isLazy(void) const;
-  static void forceSend(SoState * const state, const SbBool flat);
-
-  static const SoGLShadeModelElement * getInstance(SoState * state);
-
-private:
-  SbBool flat;
-  SbBool glflat;
-  void updategl(const SbBool flatshade) const;
-};
+#error This element is obsoleted (2002-09-12). Use SoGLLazyElement instead.
 
 #endif // !COIN_SOGLSHADEMODELELEMENT_H

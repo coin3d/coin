@@ -55,6 +55,7 @@
 //
 
 #include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 
 
 #if HAVE_CONFIG_H
@@ -64,11 +65,6 @@
 #include <Inventor/system/gl.h>
 
 #include <assert.h>
-
-// for the "glflags" variable
-#define SOSH_CCW      0x01
-#define SOSH_TWOSIDE  0x02
-#define SOSH_CULL     0x04
 
 SO_ELEMENT_SOURCE(SoGLShapeHintsElement);
 
@@ -96,12 +92,9 @@ SoGLShapeHintsElement::~SoGLShapeHintsElement(void)
 void
 SoGLShapeHintsElement::init(SoState * state)
 {
-  inherited::init(state);
+  inherited::init(state);  
   glCullFace(GL_BACK);
-
-  // fake this to turn off culling and twoside
-  this->glflags = SOSH_CULL | SOSH_TWOSIDE;
-  this->updategl(SOSH_CCW); // set CCW, no culling, no twoside
+  this->state = state;
 }
 
 //! FIXME: write doc.
@@ -112,8 +105,7 @@ SoGLShapeHintsElement::push(SoState * state)
   inherited::push(state);
   SoGLShapeHintsElement * prev =
     (SoGLShapeHintsElement *) this->getNextInStack();
-
-  this->glflags = prev->glflags;
+  this->state = prev->state;
 }
 
 //! FIXME: write doc.
@@ -123,9 +115,6 @@ SoGLShapeHintsElement::pop(SoState * state,
                            const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-
-  SoGLShapeHintsElement * prev = (SoGLShapeHintsElement*) prevTopElement;
-  this->glflags = prev->glflags;
 }
 
 //! FIXME: write doc.
@@ -136,34 +125,8 @@ SoGLShapeHintsElement::setElt(VertexOrdering vertexOrdering,
                               FaceType faceType)
 {
   inherited::setElt(vertexOrdering, shapeType, faceType);
-  // do nothing since this is a lazy element
+  // do nothing since GL stuff is handled by SoGLLazyElement
 }
-
-// doc in parent
-void
-SoGLShapeHintsElement::lazyEvaluate(void) const
-{
-  unsigned int flags = this->glflags & SOSH_CCW;
-  if (vertexOrdering == CLOCKWISE) flags = 0;
-  else if (vertexOrdering == COUNTERCLOCKWISE) flags = SOSH_CCW;
-  
-  if (vertexOrdering != UNKNOWN_ORDERING) {
-    if (shapeType == SOLID) flags |= SOSH_CULL;
-    else flags |= SOSH_TWOSIDE;
-  }
-  
-  if (flags ^ this->glflags) { // xor to see if some bit has changed
-    this->updategl(flags);
-  }
-}
-
-// doc in parent
-SbBool
-SoGLShapeHintsElement::isLazy(void) const
-{
-  return TRUE;
-}
-
 
 /*!
   Update gl state. Use this is you only want to modify the
@@ -174,11 +137,7 @@ void
 SoGLShapeHintsElement::forceSend(SoState * const state,
                                  const SbBool twoside)
 {
-  const SoGLShapeHintsElement * sh = (const SoGLShapeHintsElement *)
-    SoElement::getConstElement(state, classStackIndex);
-  unsigned int flags = sh->glflags & ~SOSH_TWOSIDE;
-  if (twoside) flags |= SOSH_TWOSIDE;
-  sh->updategl(flags);
+  SoGLLazyElement::sendTwosideLighting(state, twoside);
 }
 
 /*!
@@ -190,12 +149,8 @@ void
 SoGLShapeHintsElement::forceSend(SoState * const state,
                                  const SbBool ccw, const SbBool cull)
 {
-  const SoGLShapeHintsElement * sh = (const SoGLShapeHintsElement *)
-    SoElement::getConstElement(state, classStackIndex);
-  unsigned int flags = sh->glflags & SOSH_TWOSIDE;
-  if (ccw) flags |= SOSH_CCW;
-  if (cull) flags |= SOSH_CULL;
-  sh->updategl(flags);
+  SoGLLazyElement::sendVertexOrdering(state, ccw ? SoLazyElement::CCW : SoLazyElement::CW);
+  SoGLLazyElement::sendBackfaceCulling(state, cull);
 }
 
 //! FIXME: write doc.
@@ -205,34 +160,7 @@ SoGLShapeHintsElement::forceSend(SoState * const state,
                                  const SbBool ccw, const SbBool cull,
                                  const SbBool twoside)
 {
-  const SoGLShapeHintsElement * sh = (const SoGLShapeHintsElement *)
-    SoElement::getConstElement(state, classStackIndex);
-  unsigned int flags = 0;
-  if (ccw) flags |= SOSH_CCW;
-  if (cull) flags |= SOSH_CULL;
-  if (twoside) flags |= SOSH_TWOSIDE;
-  sh->updategl(flags);
-}
-
-//! FIXME: write doc.
-
-void
-SoGLShapeHintsElement::updategl(const unsigned int flags) const
-{
-  unsigned int changed = this->glflags ^ flags;
-
-  // cast away constness, since the GL state is not really a part of
-  // the element value.
-  ((SoGLShapeHintsElement*)this)->glflags = flags;
-
-  if (changed & SOSH_CCW) {
-    flags & SOSH_CCW ? glFrontFace(GL_CCW) : glFrontFace(GL_CW);
-  }
-  if (changed & SOSH_TWOSIDE) {
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,
-                  flags & SOSH_TWOSIDE ? GL_TRUE : GL_FALSE);
-  }
-  if (changed & SOSH_CULL) {
-    flags & SOSH_CULL ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
-  }
+  SoGLLazyElement::sendVertexOrdering(state, ccw ? SoLazyElement::CCW : SoLazyElement::CW);
+  SoGLLazyElement::sendBackfaceCulling(state, cull);
+  SoGLLazyElement::sendTwosideLighting(state, twoside);
 }

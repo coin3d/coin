@@ -52,9 +52,7 @@
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
 #include <Inventor/elements/SoGLLightIdElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLRenderPassElement.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoGLUpdateAreaElement.h>
 #include <Inventor/elements/SoGLViewportRegionElement.h>
 #include <Inventor/elements/SoLazyElement.h>
@@ -369,9 +367,7 @@ SoGLRenderAction::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoDecimationPercentageElement);
   SO_ENABLE(SoGLRenderAction, SoDecimationTypeElement);
   SO_ENABLE(SoGLRenderAction, SoGLLightIdElement);
-  SO_ENABLE(SoGLRenderAction, SoGLNormalizeElement);
   SO_ENABLE(SoGLRenderAction, SoGLRenderPassElement);
-  SO_ENABLE(SoGLRenderAction, SoGLShadeModelElement);
   SO_ENABLE(SoGLRenderAction, SoGLUpdateAreaElement);
   SO_ENABLE(SoGLRenderAction, SoLazyElement);
   SO_ENABLE(SoGLRenderAction, SoOverrideElement);
@@ -665,6 +661,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
     // we are always using GL_COLOR_MATERIAL in Coin
     glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_NORMALIZE);
 
     THIS->disableBlend();
     THIS->gltransptype = SoGLRenderAction::NONE;

@@ -50,8 +50,6 @@
 
 #include <Inventor/system/gl.h>
 
-static int32_t defaultIndexArray[] = { 1 };
-
 SO_ELEMENT_SOURCE(SoGLColorIndexElement);
 
 // doc in parent

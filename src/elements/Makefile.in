@@ -172,12 +172,10 @@ RegularSources = \
 	SoGLLineWidthElement.cpp \
 	SoGLModelMatrixElement.cpp \
 	SoGLNormalElement.cpp \
-	SoGLNormalizeElement.cpp \
 	SoGLPointSizeElement.cpp \
 	SoGLPolygonOffsetElement.cpp \
 	SoGLProjectionMatrixElement.cpp \
 	SoGLRenderPassElement.cpp \
-	SoGLShadeModelElement.cpp \
 	SoGLShapeHintsElement.cpp \
 	SoGLTextureCoordinateElement.cpp \
 	SoGLTextureEnabledElement.cpp \
@@ -275,8 +273,8 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoGLPolygonOffsetElement.h \
 	../../include/Inventor/elements/SoGLProjectionMatrixElement.h \
 	../../include/Inventor/elements/SoGLRenderPassElement.h \
-	../../include/Inventor/elements/SoGLShadeModelElement.h \
 	../../include/Inventor/elements/SoGLShapeHintsElement.h \
+	../../include/Inventor/elements/SoGLShadeModelElement.h \
 	../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
 	../../include/Inventor/elements/SoGLTextureEnabledElement.h \
 	../../include/Inventor/elements/SoGLTexture3EnabledElement.h \
@@ -409,12 +407,10 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalizeElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLShadeModelElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.$(OBJEXT) \
@@ -507,12 +503,10 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLShadeModelElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
@@ -603,12 +597,10 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLShadeModelElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.lo \
@@ -739,8 +731,6 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoGLModelMatrixElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLNormalElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLNormalElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLNormalizeElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLNormalizeElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLPointSizeElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLPointSizeElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLPolygonOffsetElement.Plo \
@@ -749,8 +739,6 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoGLProjectionMatrixElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLRenderPassElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLRenderPassElement.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLShadeModelElement.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLShadeModelElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLShapeHintsElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLShapeHintsElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoGLTexture3EnabledElement.Plo \
@@ -1008,8 +996,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLModelMatrixElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLNormalElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLNormalElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLNormalizeElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLNormalizeElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPointSizeElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPointSizeElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLPolygonOffsetElement.Plo@am__quote@
@@ -1018,8 +1004,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLProjectionMatrixElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLRenderPassElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLRenderPassElement.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShadeModelElement.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShadeModelElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShapeHintsElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLShapeHintsElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTexture3EnabledElement.Plo@am__quote@

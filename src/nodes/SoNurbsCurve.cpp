@@ -122,7 +122,9 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   // disable texturing
-  SoGLTextureEnabledElement::forceSend(state, FALSE);
+  if (SoGLTextureEnabledElement::get(state)) {
+    SoGLTextureEnabledElement::set(state, FALSE);
+  }
 
   // Create lazy element for GL_AUTO_NORMAL ?
   glEnable(GL_AUTO_NORMAL);

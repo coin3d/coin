@@ -42,9 +42,6 @@ public:
   virtual void pop(SoState * state,
                    const SoElement * prevTopElement);
 
-  virtual void lazyEvaluate(void) const;
-  virtual SbBool isLazy(void) const;
-
   static void forceSend(SoState * const state, const SbBool twoside);
   static void forceSend(SoState * const state,
                         const SbBool ccw, const SbBool cull);
@@ -55,9 +52,7 @@ protected:
   virtual void setElt(VertexOrdering vertexOrdering,
                       ShapeType shapeType, FaceType faceType);
 private:
-  unsigned int glflags;
-  void updategl(const unsigned int flags) const;
-
+  SoState * state;
 };
 
 #endif // !COIN_SOGLSHAPEHINTSELEMENT_H

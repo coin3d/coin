@@ -45,9 +45,6 @@ public:
   virtual void push(SoState * state);
   virtual void pop(SoState * state, const SoElement * prevTopElement);
 
-  virtual SbBool isLazy(void) const;
-  virtual void lazyEvaluate(void) const;
-
   virtual SbBool matches(const SoElement * element) const = 0;
   virtual SoElement * copyMatchInfo(void) const = 0;
 

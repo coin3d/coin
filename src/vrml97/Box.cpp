@@ -70,7 +70,6 @@
 #include <Inventor/VRMLnodes/SoVRMLMacros.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -121,10 +120,6 @@ SoVRMLBox::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   SbBool sendNormals = !mb.isColorOnly();
-
-  if (sendNormals) {
-    SoGLNormalizeElement::forceSend(state, TRUE);
-  }
 
   unsigned int flags = 0;
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;

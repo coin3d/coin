@@ -58,7 +58,6 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoCubeDetail.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
@@ -134,8 +133,6 @@ SoCube::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
   SbBool sendNormals = ! mb.isColorOnly();
-
-  if (sendNormals) SoGLNormalizeElement::forceSend(state, TRUE);
 
   unsigned int flags = 0;
   if (materialPerPart) flags |= SOGL_MATERIAL_PER_PART;

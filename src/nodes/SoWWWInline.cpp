@@ -397,9 +397,6 @@ SoWWWInline::GLRender(SoGLRenderAction * action)
   SoGLTextureEnabledElement::set(state, this, FALSE);
   SoGLTexture3EnabledElement::set(state, this, FALSE);
 
-  // update GL state
-  state->lazyEvaluate();
-
   SoMaterialBundle mb(action);
   mb.sendFirst(); // set current color
 

@@ -95,7 +95,7 @@ SoGLViewportRegionElement::pop(SoState * state,
     (SoGLViewportRegionElement *)prevTopElement;
   if (!(this->viewportRegion == prev->viewportRegion))
     this->updategl();
-  inherited::pop(state, prevTopElement);
+  prev->capture(state);
 }
 
 //! FIXME: write doc.

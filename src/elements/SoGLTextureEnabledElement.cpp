@@ -78,18 +78,20 @@ SoGLTextureEnabledElement::set(SoState * const state,
 void
 SoGLTextureEnabledElement::init(SoState * state)
 {
-  inherited::init(state);
   this->data = SoGLTextureEnabledElement::getDefault();
-  this->glstate = 0;
-  glDisable(GL_TEXTURE_2D);
+  this->updategl();
 }
 
 // Documented in superclass. Overridden to track GL state.
 void
 SoGLTextureEnabledElement::push(SoState * state)
 {
-  inherited::push(state);
-  this->glstate = ((SoGLTextureEnabledElement*)this->getNextInStack())->glstate;
+  SoGLTextureEnabledElement * prev = (SoGLTextureEnabledElement*) this->getNextInStack();
+  
+  this->data = prev->data;
+  // capture previous element since we might or might not change the
+  // GL state in set/pop
+  prev->capture(state);
 }
 
 // Documented in superclass. Overridden to track GL state.
@@ -97,44 +99,11 @@ void
 SoGLTextureEnabledElement::pop(SoState * state,
                                const SoElement * prevTopElement)
 {
-  this->glstate = ((SoGLTextureEnabledElement*)prevTopElement)->glstate;
-  inherited::pop(state, prevTopElement);
-}
-
-/*!
-  Evaluates the element. After this call the GL state will be the same
-  as the state of the element.
-*/
-void
-SoGLTextureEnabledElement::lazyEvaluate(void) const
-{
-  if (this->data != this->glstate) {
-    this->updategl(this->data);
+  SoGLTextureEnabledElement * prev = (SoGLTextureEnabledElement*) prevTopElement;
+  if (this->data != prev->data) {
+    this->updategl();
   }
 }
-
-// doc in parent
-SbBool
-SoGLTextureEnabledElement::isLazy(void) const
-{
-  return TRUE;
-}
-
-/*!
-  Updates the GL state without changing the state of the element. If GL
-  state already is the same as \a onoff, nothing will happen.
-*/
-void
-SoGLTextureEnabledElement::forceSend(SoState * const state,
-                                     const SbBool onoff)
-{
-  const SoGLTextureEnabledElement * te = (const SoGLTextureEnabledElement *)
-    SoElement::getConstElement(state, classStackIndex);
-  if (te->glstate != onoff) {
-    te->updategl(onoff);
-  }
-}
-
 
 /*!
   Sets the state of the element.
@@ -166,15 +135,22 @@ SoGLTextureEnabledElement::getDefault(void)
   return FALSE;
 }
 
+void 
+SoGLTextureEnabledElement::setElt(int32_t value)
+{
+  if (this->data != value) {
+    this->data = value;
+    this->updategl();
+  }
+}
+
+
 //
-// updates GL state if needed
+// updates GL state
 //
 void
-SoGLTextureEnabledElement::updategl(const int32_t newstate) const
+SoGLTextureEnabledElement::updategl(void)
 {
-  // cast away constness since GL state is not really a part of the
-  // element value.
-  ((SoGLTextureEnabledElement*)this)->glstate = newstate;
-  if (newstate) glEnable(GL_TEXTURE_2D);
+  if (this->data) glEnable(GL_TEXTURE_2D);
   else glDisable(GL_TEXTURE_2D);
 }

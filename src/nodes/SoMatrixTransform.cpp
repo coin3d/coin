@@ -38,7 +38,6 @@
 
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
 /*!
@@ -89,16 +88,6 @@ SoMatrixTransform::doAction(SoAction * action)
 void
 SoMatrixTransform::GLRender(SoGLRenderAction * action)
 {
-  // We should only need to activate the OpenGL unit vector
-  // normalization if the matrix contains an "active" scale component,
-  // but as checking for this will take some time, we always activate.
-  //
-  // An optimization for this node could be to cache the scale
-  // component whenever the matrix is set, and then check the scale
-  // factor component here before possibly activating the OpenGL
-  // normalize code.
-  SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
-
   SoMatrixTransform::doAction((SoAction *)action);
 }
 

@@ -401,11 +401,15 @@ SoVRMLInline::GLRender(SoGLRenderAction * action)
       ((vis == ALWAYS) || 
        (vis == UNTIL_LOADED && child == NULL))) {
     SoState * state = action->getState();
+    state->push();
+
+    if (SoGLTextureEnabledElement::get(state)) {
+      SoGLTextureEnabledElement::set(state, FALSE);
+    }
     
     uint32_t packedcolor = sovrmlinline_bboxcolor->getPackedValue();
     SoGLLazyElement::sendLightModel(state, SoLazyElement::BASE_COLOR);
     SoGLLazyElement::sendPackedDiffuse(state, packedcolor);
-    SoGLTextureEnabledElement::forceSend(state, FALSE);
     
     SbVec3f center = this->bboxCenter.getValue();
     SbVec3f minv = center - size*0.5f;
@@ -447,6 +451,7 @@ SoVRMLInline::GLRender(SoGLRenderAction * action)
     glVertex3fv(p[5].getValue());
 
     glEnd();
+    state->pop();
   }
   SoVRMLInline::doAction(action);
 }

@@ -57,6 +57,10 @@ public:
     SHININESS_CASE,
     BLENDING_CASE,
     TRANSPARENCY_CASE,
+    VERTEXORDERING_CASE,
+    TWOSIDE_CASE,
+    CULLING_CASE,
+    SHADE_MODEL_CASE,
     LAZYCASES_LAST // must be last
   };
   enum masks{
@@ -69,6 +73,10 @@ public:
     SHININESS_MASK = 1 << SHININESS_CASE,
     TRANSPARENCY_MASK = 1 << TRANSPARENCY_CASE,
     BLENDING_MASK = 1 << BLENDING_CASE,
+    VERTEXORDERING_MASK = 1 << VERTEXORDERING_CASE,
+    TWOSIDE_MASK = 1 << TWOSIDE_CASE,
+    CULLING_MASK = 1 << CULLING_CASE,
+    SHADE_MODEL_MASK = 1 << SHADE_MODEL_CASE,
     ALL_MASK = (1 << LAZYCASES_LAST)-1
   };
   
@@ -83,6 +91,11 @@ public:
   enum LightModel {
     BASE_COLOR,
     PHONG
+  };
+
+  enum VertexOrdering {
+    CW,
+    CCW
   };
 
   virtual void init(SoState *state);
@@ -106,6 +119,10 @@ public:
   static void setColorMaterial(SoState *state, SbBool value);
   static void setBlending(SoState *state,  SbBool value);
   static void setLightModel(SoState *state, const int32_t model);
+  static void setVertexOrdering(SoState * state, VertexOrdering ordering);
+  static void setBackfaceCulling(SoState * state, SbBool onoff);
+  static void setTwosideLighting(SoState * state, SbBool onoff);
+  static void setShadeModel(SoState * state, SbBool flatshading);
   static const SbColor & getDiffuse(SoState* state, int index);
   static float getTransparency(SoState*, int index);
   static const uint32_t * getPackedColors(SoState*);
@@ -178,6 +195,10 @@ protected:
     uint32_t diffusenodeid;
     uint32_t transpnodeid;
     int32_t stipplenum;
+    VertexOrdering vertexordering;
+    SbBool twoside;
+    SbBool culling;
+    SbBool flatshading;
   } coinstate;
 
 protected:
@@ -206,6 +227,10 @@ protected:
                               const SbColor & emissive,
                               const SbColor & specular,
                               const float shininess);
+  virtual void setVertexOrderingElt(VertexOrdering ordering);
+  virtual void setBackfaceCullingElt(SbBool onoff);
+  virtual void setTwosideLightingElt(SbBool onoff);
+  virtual void setShadeModelElt(SbBool flatshading);
 
 private:
   SoLazyElementP * pimpl; // for future use

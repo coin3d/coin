@@ -35,7 +35,6 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -105,8 +104,6 @@ SoResetTransform::GLRender(SoGLRenderAction * action)
   if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM) {
     SoModelMatrixElement::set(action->getState(), this,
                               SbMatrix::identity());
-    SoGLNormalizeElement::setMatrixState(action->getState(), TRUE);
-
   }
 }
 

@@ -121,7 +121,6 @@ SoCallback::GLRender(SoGLRenderAction * action)
 {
   if (this->cbfunc) {
     SoState * state = action->getState();
-    state->lazyEvaluate();
     
     SbBool transparent = SoTextureImageElement::containsTransparency(state);
     if (!transparent) {

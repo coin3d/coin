@@ -113,6 +113,11 @@ SoLazyElement::init(SoState * state)
   this->coinstate.transptype= (int32_t) SoGLRenderAction::SCREEN_DOOR;
   this->coinstate.diffusenodeid = 0;
   this->coinstate.transpnodeid = 0;
+  this->coinstate.stipplenum = 0;
+  this->coinstate.vertexordering = CCW;
+  this->coinstate.twoside = FALSE;
+  this->coinstate.culling = FALSE;
+  this->coinstate.flatshading = FALSE;
 }
 
 // ! FIXME: write doc
@@ -580,6 +585,42 @@ SoLazyElement::setMaterials(SoState * state, SoNode *node, uint32_t bitmask,
   }
 }
 
+void 
+SoLazyElement::setVertexOrdering(SoState * state, VertexOrdering ordering)
+{
+  SoLazyElement * elem = SoLazyElement::getInstance(state);
+  if (elem->coinstate.vertexordering != ordering) {
+    getWInstance(state)->setVertexOrderingElt(ordering);
+  }
+}
+
+void 
+SoLazyElement::setBackfaceCulling(SoState * state, SbBool onoff)
+{
+  SoLazyElement * elem = SoLazyElement::getInstance(state);
+  if (elem->coinstate.culling != onoff) {
+    getWInstance(state)->setBackfaceCullingElt(onoff);
+  }
+}
+
+void 
+SoLazyElement::setTwosideLighting(SoState * state, SbBool onoff)
+{
+  SoLazyElement * elem = SoLazyElement::getInstance(state);
+  if (elem->coinstate.twoside != onoff) {
+    getWInstance(state)->setTwosideLightingElt(onoff);
+  }
+}
+
+void 
+SoLazyElement::setShadeModel(SoState * state, SbBool flatshading)
+{
+  SoLazyElement * elem = SoLazyElement::getInstance(state);
+  
+  if (elem->coinstate.flatshading != flatshading) {
+    getWInstance(state)->setShadeModelElt(flatshading);
+  }
+}
 
 // ! FIXME: write doc
 
@@ -773,6 +814,30 @@ SoLazyElement::setMaterialElt(SoNode * node, uint32_t bitmask,
   if (bitmask & SHININESS_MASK) {
     this->coinstate.shininess = shininess;
   }
+}
+
+void 
+SoLazyElement::setVertexOrderingElt(VertexOrdering ordering)
+{
+  this->coinstate.vertexordering = ordering;
+}
+
+void 
+SoLazyElement::setBackfaceCullingElt(SbBool onoff)
+{
+  this->coinstate.culling = onoff;
+}
+
+void 
+SoLazyElement::setTwosideLightingElt(SbBool onoff)
+{
+  this->coinstate.twoside = onoff;
+}
+
+void 
+SoLazyElement::setShadeModelElt(SbBool flatshading)
+{
+  this->coinstate.flatshading = flatshading;
 }
 
 // SoColorPacker class. FIXME: move to separate file and document, pederb, 2002-09-09

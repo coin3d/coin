@@ -45,7 +45,6 @@
 #include <Inventor/details/SoTextDetail.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #include <Inventor/errors/SoDebugError.h>
@@ -153,9 +152,6 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
-
- // we will provide unit length normals
-  SoGLNormalizeElement::forceSend(state, TRUE);
 
   float size = SoFontSizeElement::get(state);
   SbBool do2Dtextures = FALSE;

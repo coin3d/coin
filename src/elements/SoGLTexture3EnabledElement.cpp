@@ -81,72 +81,34 @@ SoGLTexture3EnabledElement::set(SoState * const state,
 void
 SoGLTexture3EnabledElement::init(SoState * state)
 {
-  inherited::init(state);
   this->state = state;
   this->data = SoGLTexture3EnabledElement::getDefault();
-  this->glstate = 0;
-  const cc_glglue * glw = sogl_glue_instance(state);
-  if (cc_glglue_has_3d_textures(glw)) glDisable(GL_TEXTURE_3D);
+  this->updategl();
 }
 
 // Documented in superclass. Overridden to track GL state.
 void
 SoGLTexture3EnabledElement::push(SoState * state)
 {
-  inherited::push(state);
-  this->glstate =
-    ((SoGLTexture3EnabledElement*)this->getNextInStack())->glstate;
+  SoGLTexture3EnabledElement * prev = (SoGLTexture3EnabledElement*) this->getNextInStack();
+  
+  this->data = prev->data;
   this->state = state;
+  // capture previous element since we might or might not change the
+  // GL state in set/pop
+  prev->capture(state);
 }
 
 // Documented in superclass. Overridden to track GL state.
 void
 SoGLTexture3EnabledElement::pop(SoState * state,
-                               const SoElement * prevTopElement)
+                                const SoElement * prevTopElement)
 {
-  this->glstate = ((SoGLTexture3EnabledElement*)prevTopElement)->glstate;
-  inherited::pop(state, prevTopElement);
-}
-
-/*!
-  Evaluates the element. After this call the GL state will be the same
-  as the state of the element.
-*/
-void
-SoGLTexture3EnabledElement::lazyEvaluate(void) const
-{
-  if (this->data != this->glstate) {
-    ((SoGLTexture3EnabledElement*)this)->updategl();
+  SoGLTexture3EnabledElement * prev = (SoGLTexture3EnabledElement*) prevTopElement;
+  if (this->data != prev->data) {
+    this->updategl();
   }
 }
-
-// doc in parent
-SbBool
-SoGLTexture3EnabledElement::isLazy(void) const
-{
-  return TRUE;
-}
-
-/*!
-  Updates the GL state without changing the state of the element. If GL
-  state already is the same as \a onoff, nothing will happen.
-*/
-void
-SoGLTexture3EnabledElement::forceSend(SoState * const state,
-                                      const SbBool onoff)
-{
-  SoGLTexture3EnabledElement * te = (SoGLTexture3EnabledElement *)
-    SoElement::getConstElement(state, classStackIndex);
-  if (te->glstate != onoff) {
-    te->glstate = onoff;
-    const cc_glglue * glw = sogl_glue_instance(state);
-    if (cc_glglue_has_3d_textures(glw)) {
-      if (onoff) glEnable(GL_TEXTURE_3D);
-      else glDisable(GL_TEXTURE_3D);
-    }
-  }
-}
-
 
 /*!
   Sets the state of the element.
@@ -168,15 +130,24 @@ SoGLTexture3EnabledElement::get(SoState * const state)
   return (SbBool) SoInt32Element::get(classStackIndex, state);
 }
 
-
 /*!
   Returns default state of this element (FALSE).
 */
 SbBool
-SoGLTexture3EnabledElement::getDefault()
+SoGLTexture3EnabledElement::getDefault(void)
 {
   return FALSE;
 }
+
+void 
+SoGLTexture3EnabledElement::setElt(int32_t value)
+{
+  if (this->data != value) {
+    this->data = value;
+    this->updategl();
+  }
+}
+
 
 //
 // updates GL state if needed
@@ -184,7 +155,6 @@ SoGLTexture3EnabledElement::getDefault()
 void
 SoGLTexture3EnabledElement::updategl(void)
 {
-  this->glstate = this->data;
   const cc_glglue * glw = sogl_glue_instance(this->state);
   if (cc_glglue_has_3d_textures(glw)) {
     if (this->data) glEnable(GL_TEXTURE_3D);

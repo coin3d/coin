@@ -113,8 +113,4 @@
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 
-// elements not found in OIV. Added to optimize rendering
-#include <Inventor/elements/SoGLShadeModelElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
-
 #endif // !COIN_SOELEMENTS_H

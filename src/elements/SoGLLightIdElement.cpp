@@ -96,6 +96,9 @@ void
 SoGLLightIdElement::pop(SoState * state,
                         const SoElement * prevTopElement)
 {
+  // capture element since we change the GL state here
+  this->capture(state);
+
   int idx = this->data + 1;
   int prevdata = ((SoGLLightIdElement*)prevTopElement)->data;
   // disable used light sources
@@ -103,7 +106,6 @@ SoGLLightIdElement::pop(SoState * state,
     glDisable((GLenum)((int32_t)GL_LIGHT0 + idx));
     idx++;
   }
-  inherited::pop(state, prevTopElement);
 }
 
 //! FIXME: write doc.

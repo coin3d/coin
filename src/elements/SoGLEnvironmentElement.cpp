@@ -61,8 +61,6 @@ SoGLEnvironmentElement::~SoGLEnvironmentElement()
 {
 }
 
-//! FIXME: write doc.
-
 void
 SoGLEnvironmentElement::init(SoState * state)
 {
@@ -70,17 +68,14 @@ SoGLEnvironmentElement::init(SoState * state)
   this->updategl(state);
 }
 
-//! FIXME: write doc.
-
 void
 SoGLEnvironmentElement::pop(SoState * state,
                            const SoElement * prevTopElement)
 {
+  this->capture(state);
   this->updategl(state);
-  inherited::pop(state, prevTopElement);
 }
 
-//! FIXME: doc
 void
 SoGLEnvironmentElement::setElt(SoState * const state,
                                const float ambientIntensity,

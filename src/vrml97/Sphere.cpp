@@ -64,7 +64,6 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -120,10 +119,6 @@ SoVRMLSphere::GLRender(SoGLRenderAction * action)
   SbBool sendNormals = !mb.isColorOnly();
 
   float complexity = this->getComplexityValue(action);
-
-  if (sendNormals) {
-    SoGLNormalizeElement::forceSend(state, TRUE);
-  }
 
   unsigned int flags = 0;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;

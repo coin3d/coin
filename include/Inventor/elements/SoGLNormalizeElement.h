@@ -5,7 +5,7 @@
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2001 by Systems in Motion.  All rights reserved.
- *  
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
  *  version 2 as published by the Free Software Foundation.  See the
@@ -24,44 +24,6 @@
  *
 \**************************************************************************/
 
-#include <Inventor/elements/SoSubElement.h>
-
-class COIN_DLL_API SoGLNormalizeElement : public SoElement {
-  typedef SoElement inherited;
-
-  SO_ELEMENT_HEADER(SoGLNormalizeElement);
-public:
-  static void initClass(void);
-protected:
-  virtual ~SoGLNormalizeElement();
-
-public:
-  virtual void init(SoState * state);
-  virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-                   const SoElement * prevTopElement);
-
-  virtual SbBool matches(const SoElement * element) const;
-  virtual SoElement * copyMatchInfo() const;
-
-  static void setMatrixState(SoState * const state,
-                             const SbBool valid);
-  static void setUnitNormals(SoState * const state,
-                             const SbBool unitNormals);
-
-  virtual void lazyEvaluate(void) const;
-  virtual SbBool isLazy(void) const;
-
-  static void forceSend(SoState * const state, 
-                        const SbBool normalsAreUnitLength);
-
-private:
-
-  SbBool okMatrix;
-  SbBool unitNormals;
-  SbBool glnormalize;
-
-  void updategl(const SbBool normalize);
-};
+#error This element is obsoleted (2002-09-12)
 
 #endif // !COIN_SOGLNORMALIZEELEMENT_H

@@ -143,4 +143,5 @@ SoMaterialBundle::setupElements(const SbBool isbetweenbeginend)
   else {
     this->lazyelem->send(this->state, SoLazyElement::ALL_MASK); 
   }
+  this->firsttime = FALSE;
 }

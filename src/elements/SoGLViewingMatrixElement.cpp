@@ -84,7 +84,7 @@ void
 SoGLViewingMatrixElement::pop(SoState * state,
                               const SoElement * prevTopElement)
 {
-  inherited::pop(state, prevTopElement);
+  this->capture(state);
   this->updategl();
 }
 

@@ -38,12 +38,10 @@ RegularSources = \
 	SoGLLineWidthElement.cpp \
 	SoGLModelMatrixElement.cpp \
 	SoGLNormalElement.cpp \
-	SoGLNormalizeElement.cpp \
 	SoGLPointSizeElement.cpp \
 	SoGLPolygonOffsetElement.cpp \
 	SoGLProjectionMatrixElement.cpp \
 	SoGLRenderPassElement.cpp \
-	SoGLShadeModelElement.cpp \
 	SoGLShapeHintsElement.cpp \
 	SoGLTextureCoordinateElement.cpp \
 	SoGLTextureEnabledElement.cpp \
@@ -139,8 +137,8 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoGLPolygonOffsetElement.h \
 	../../include/Inventor/elements/SoGLProjectionMatrixElement.h \
 	../../include/Inventor/elements/SoGLRenderPassElement.h \
-	../../include/Inventor/elements/SoGLShadeModelElement.h \
 	../../include/Inventor/elements/SoGLShapeHintsElement.h \
+	../../include/Inventor/elements/SoGLShadeModelElement.h \
 	../../include/Inventor/elements/SoGLTextureCoordinateElement.h \
 	../../include/Inventor/elements/SoGLTextureEnabledElement.h \
 	../../include/Inventor/elements/SoGLTexture3EnabledElement.h \

@@ -421,8 +421,6 @@ SoElement::initElements(void)
   SoShininessElement::initClass();
   SoSpecularColorElement::initClass();
 
-  SoGLShadeModelElement::initClass();
-  SoGLNormalizeElement::initClass();
   SoLazyElement::initClass();
   SoGLLazyElement::initClass();
   SoCullElement::initClass();
@@ -702,33 +700,4 @@ SoElement *
 SoElement::getNextFree(void) const
 {
   return this->nextup;
-}
-
-/*!
-  Returns \c TRUE if this element does lazy evaluation of state-change
-  operations against the underlying immediate mode rendering library.
-
-  Lazy evaluation (of for instance OpenGL calls) is done as an
-  important optimization measure. State-changes are usually expensive
-  when rendering is done at least partially through hardware
-  acceleration features. We avoid doing as much unnecessary state
-  changes as possible by only setting the correct state right before
-  it is actually needed.
-*/
-SbBool
-SoElement::isLazy(void) const
-{
-  return FALSE;
-}
-
-/*!
-  Evaluates lazy element. This will finally push the element value to
-  the rendering state.
-
-  \sa isLazy()
-*/
-void
-SoElement::lazyEvaluate(void) const
-{
-  // virtual method
 }

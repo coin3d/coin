@@ -178,6 +178,36 @@ SoGLLazyElement::sendLightModel(const int32_t model) const
   else glDisable(GL_LIGHTING);
 }
 
+inline void 
+SoGLLazyElement::sendFlatshading(const SbBool onoff) const
+{
+  ((SoGLLazyElement*)this)->glstate.flatshading = (int32_t) onoff;
+  if (onoff) glShadeModel(GL_FLAT);
+  else glShadeModel(GL_SMOOTH);
+}
+
+inline void 
+SoGLLazyElement::sendVertexOrdering(const VertexOrdering ordering) const
+{
+  ((SoGLLazyElement*)this)->glstate.vertexordering = (int32_t) ordering;
+  glFrontFace(ordering == CW ? GL_CW : GL_CCW);
+}
+
+inline void 
+SoGLLazyElement::sendTwosideLighting(const SbBool onoff) const
+{
+  ((SoGLLazyElement*)this)->glstate.twoside = (int32_t) onoff;
+  glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, onoff ? GL_TRUE : GL_FALSE);
+}
+
+inline void 
+SoGLLazyElement::sendBackfaceCulling(const SbBool onoff) const
+{
+  ((SoGLLazyElement*)this)->glstate.flatshading = onoff;
+  if (onoff) glEnable(GL_CULL_FACE);
+  else glDisable(GL_CULL_FACE);
+}
+
 void 
 SoGLLazyElement::init(SoState * state)
 {
@@ -190,6 +220,10 @@ SoGLLazyElement::init(SoState * state)
   this->glstate.lightmodel = -1;
   this->glstate.blending = -1;
   this->glstate.stipplenum = 0;
+  this->glstate.vertexordering = -1;
+  this->glstate.twoside = -1;
+  this->glstate.culling = -1;
+  this->glstate.flatshading = -1;
   this->packedpointer = NULL;
   this->transpmask = 0xff;
   this->colorpacker = NULL;
@@ -375,6 +409,26 @@ SoGLLazyElement::send(const SoState * state, uint32_t mask) const
       ((SoGLLazyElement*)this)->glstate.stipplenum = stipplenum;
     }
   }
+  if (mask & VERTEXORDERING_MASK) {
+    if (this->glstate.vertexordering != this->coinstate.vertexordering) {
+      this->sendVertexOrdering(this->coinstate.vertexordering);
+    }
+  }
+  if (mask & CULLING_MASK) {
+    if (this->glstate.culling != this->coinstate.culling) {
+      this->sendBackfaceCulling(this->coinstate.culling);
+    }
+  }
+  if (mask & TWOSIDE_MASK) {
+    if (this->glstate.twoside != this->coinstate.twoside) {
+      this->sendTwosideLighting(this->coinstate.twoside);
+    }
+  }
+  if (mask & SHADE_MODEL_MASK) {
+    if (this->glstate.flatshading != this->coinstate.flatshading) {
+      this->sendFlatshading(this->coinstate.flatshading);
+    }
+  }
 }
 
 //! FIXME: write doc
@@ -409,6 +463,42 @@ SoGLLazyElement::sendPackedDiffuse(SoState * state, const uint32_t diffuse)
   SoGLLazyElement * elem = getInstance(state);
   if (elem->glstate.diffuse != diffuse) {
     elem->sendPackedDiffuse(diffuse);
+  }
+}
+
+void 
+SoGLLazyElement::sendFlatshading(SoState * state, SbBool onoff)
+{
+  SoGLLazyElement * elem = getInstance(state);
+  if (elem->glstate.flatshading != onoff) {
+    elem->sendFlatshading(onoff);
+  }
+}
+
+void 
+SoGLLazyElement::sendVertexOrdering(SoState * state, const VertexOrdering ordering)
+{
+  SoGLLazyElement * elem = getInstance(state);
+  if (elem->glstate.vertexordering != (int32_t) ordering) {
+    elem->sendVertexOrdering(ordering);
+  }
+}
+
+void 
+SoGLLazyElement::sendTwosideLighting(SoState * state, const SbBool onoff)
+{
+  SoGLLazyElement * elem = getInstance(state);
+  if (elem->glstate.twoside != (int32_t) onoff) {
+    elem->sendTwosideLighting(onoff);
+  }
+}
+
+void 
+SoGLLazyElement::sendBackfaceCulling(SoState * state, const SbBool onoff)
+{
+  SoGLLazyElement * elem = getInstance(state);
+  if (elem->glstate.culling != (int32_t) onoff) {
+    elem->sendBackfaceCulling(onoff);
   }
 }
 
@@ -510,6 +600,31 @@ SoGLLazyElement::setMaterialElt(SoNode * node, uint32_t bitmask,
                             emissive, specular, shininess);
   this->colorpacker = packer;
 }
+
+void 
+SoGLLazyElement::setVertexOrderingElt(VertexOrdering ordering)
+{
+  inherited::setVertexOrderingElt(ordering);
+}
+
+void 
+SoGLLazyElement::setBackfaceCullingElt(SbBool onoff)
+{
+  inherited::setBackfaceCullingElt(onoff);
+}
+
+void 
+SoGLLazyElement::setTwosideLightingElt(SbBool onoff)
+{
+  inherited::setTwosideLightingElt(onoff);
+}
+
+void 
+SoGLLazyElement::setShadeModelElt(SbBool flatshading)
+{
+  inherited::setShadeModelElt(flatshading);
+}
+
 
 void 
 SoGLLazyElement::packColors(SoColorPacker * packer) const

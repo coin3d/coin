@@ -69,9 +69,6 @@ void
 SoGLPolygonOffsetElement::init(SoState * state)
 {
   inherited::init(state);
-  this->currentstyles = (Style) 0;
-  this->currentoffsetfactor = 1.0f;
-  this->currentoffsetunits = 1.0f;
   this->state = state;
 }
 
@@ -80,13 +77,16 @@ SoGLPolygonOffsetElement::init(SoState * state)
 void
 SoGLPolygonOffsetElement::push(SoState * state)
 {
-  inherited::push(state);
   SoGLPolygonOffsetElement * prev = (SoGLPolygonOffsetElement*)this->getNextInStack();
 
-  this->currentstyles = prev->currentstyles;
-  this->currentoffsetfactor = prev->currentoffsetfactor;
-  this->currentoffsetunits = prev->currentoffsetunits;
+  this->style = prev->style;
+  this->active = prev->active;
+  this->offsetfactor = prev->offsetfactor;
+  this->offsetunits = prev->offsetunits;
   this->state = state;
+  // capture previous element since we might or might not change the
+  // GL state in set/pop
+  prev->capture(state);
 }
 
 //! FIXME: write doc.
@@ -97,11 +97,12 @@ SoGLPolygonOffsetElement::pop(SoState * state, const SoElement * prevTopElement)
   const SoGLPolygonOffsetElement * prev =
     (const SoGLPolygonOffsetElement*)prevTopElement;
 
-  this->currentstyles = prev->currentstyles;
-  this->currentoffsetfactor = prev->currentoffsetfactor;
-  this->currentoffsetunits = prev->currentoffsetunits;
-
-  inherited::pop(state, prevTopElement);
+  if (this->style != prev->style ||
+      this->active != prev->active ||
+      this->offsetfactor != prev->offsetfactor ||
+      this->offsetunits != prev->offsetunits) {
+    this->updategl();
+  }
 }
 
 //! FIXME: write doc.
@@ -110,25 +111,18 @@ void
 SoGLPolygonOffsetElement::setElt(float factor, float units,
                                  Style styles, SbBool on)
 {
-  inherited::setElt(factor, units, styles, on);
-  // this is a lazy element. Do nothing.
+  if (on != this->active ||
+      styles != this->style ||
+      factor != this->offsetfactor ||
+      units != this->offsetunits) {
+    this->active = on;
+    this->style = styles;
+    this->offsetfactor = factor;
+    this->offsetunits = units; 
+    this->updategl();
+  }
 }
 
-
-// doc in parent
-void
-SoGLPolygonOffsetElement::lazyEvaluate(void) const
-{
-  SoGLPolygonOffsetElement *elem = (SoGLPolygonOffsetElement*)this;
-  elem->updategl();
-}
-
-// doc in parent
-SbBool
-SoGLPolygonOffsetElement::isLazy(void) const
-{
-  return TRUE;
-}
 
 //! FIXME: write doc.
 
@@ -181,24 +175,12 @@ SoGLPolygonOffsetElement::updategl(void)
   if (this->active) {
 #if GL_VERSION_1_1
     if (!COIN_SGI_USE_GLPOLYGONOFFSETEXT) {
-      if ((this->style & FILLED) && !(this->currentstyles & FILLED)) {
-        glEnable(GL_POLYGON_OFFSET_FILL);
-      }
-      else if (!(this->style & FILLED) && (this->currentstyles & FILLED)) {
-        glDisable(GL_POLYGON_OFFSET_FILL);
-      }
-      if ((this->style & LINES) && !(this->currentstyles & LINES)) {
-        glEnable(GL_POLYGON_OFFSET_LINE);
-      }
-      else if (!(this->style & LINES) && (this->currentstyles & LINES)) {
-        glDisable(GL_POLYGON_OFFSET_LINE);        
-      }
-      if ((this->style & POINTS) && !(this->currentstyles & POINTS)) {
-        glEnable(GL_POLYGON_OFFSET_POINT);
-      }
-      else if (!(this->style & POINTS) && (this->currentstyles & POINTS)) {
-        glDisable(GL_POLYGON_OFFSET_POINT);
-      }
+      if (this->style & FILLED) glEnable(GL_POLYGON_OFFSET_FILL);
+      else glDisable(GL_POLYGON_OFFSET_FILL);
+      if (this->style & LINES) glEnable(GL_POLYGON_OFFSET_LINE);
+      else glDisable(GL_POLYGON_OFFSET_LINE);        
+      if (this->style & POINTS) glEnable(GL_POLYGON_OFFSET_POINT);
+      else glDisable(GL_POLYGON_OFFSET_POINT);
       glPolygonOffset(this->offsetfactor,
                       this->offsetunits);
     }
@@ -214,42 +196,25 @@ SoGLPolygonOffsetElement::updategl(void)
       SbBool isbias = this->offsetunits > 0.0f && this->offsetunits < 0.01f;
       glPolygonOffsetEXT(this->offsetfactor,
                          isbias ? this->offsetunits : 0.000001);
-      if ((this->style & FILLED) && !(this->currentstyles & FILLED)) {
-        glEnable(GL_POLYGON_OFFSET_EXT);
-      }
-      else if (!(this->style & FILLED) && (this->currentstyles & FILLED)) {
-        glDisable(GL_POLYGON_OFFSET_EXT);
-      }
+      if (this->style & FILLED) glEnable(GL_POLYGON_OFFSET_EXT);
+      else glDisable(GL_POLYGON_OFFSET_EXT);
     }
 #endif // GL_EXT_polygon_offset && (!GL_VERSION_1_1 || defined(__sgi)
-    this->currentstyles = this->style;
   }
   else { // ! active
 #if GL_VERSION_1_1
     if (!COIN_SGI_USE_GLPOLYGONOFFSETEXT) {
-      if (this->currentstyles & FILLED) {
-        glDisable(GL_POLYGON_OFFSET_FILL);
-      }
-      if (this->currentstyles & LINES) {
-        glDisable(GL_POLYGON_OFFSET_LINE);
-      }
-      if (this->currentstyles & POINTS) {
-        glDisable(GL_POLYGON_OFFSET_POINT);
-      }
+      glDisable(GL_POLYGON_OFFSET_FILL);
+      glDisable(GL_POLYGON_OFFSET_LINE);
+      glDisable(GL_POLYGON_OFFSET_POINT);
     }
 #endif // GL_VERSION_1_1
 
 #if GL_EXT_polygon_offset && (!GL_VERSION_1_1 || defined(__sgi))
     if (COIN_SGI_USE_GLPOLYGONOFFSETEXT &&
         SoGLCacheContextElement::extSupported(this->state, polygon_offset_ext_id)) {
-      if (this->currentstyles & FILLED) {
-        glDisable(GL_POLYGON_OFFSET_EXT);
-      }
+      glDisable(GL_POLYGON_OFFSET_EXT);
     }
 #endif // GL_EXT_polygon_offset && (!GL_VERSION_1_1 || defined(__sgi))
-    this->currentstyles = (Style) 0;
   }
-  // update current offset values before returning
-  this->currentoffsetfactor = this->offsetfactor;
-  this->currentoffsetunits = this->offsetunits;
 }

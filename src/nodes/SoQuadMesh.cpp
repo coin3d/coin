@@ -97,7 +97,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoGLLazyElement.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #if HAVE_CONFIG_H
@@ -676,8 +676,9 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   Binding nbind = findNormalBinding(action->getState());
   if (!needNormals) nbind = OVERALL;
 
-  if ((nbind == PER_FACE) || (mbind == PER_FACE))
-    SoGLShadeModelElement::forceSend(state, TRUE);
+  if ((nbind == PER_FACE) || (mbind == PER_FACE)) {
+    SoGLLazyElement::sendFlatshading(state, TRUE);
+  }
 
   SoNormalCache * nc = NULL;
 

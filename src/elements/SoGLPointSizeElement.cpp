@@ -94,16 +94,17 @@ void
 SoGLPointSizeElement::init(SoState * state)
 {
   inherited::init(state);
-  this->current = -1.0f;
 }
 
 // Doc in super.
 void
 SoGLPointSizeElement::push(SoState * state)
 {
-  inherited::push(state);
   SoGLPointSizeElement * prev = (SoGLPointSizeElement*)this->getNextInStack();
-  this->current = prev->current;
+  this->data = prev->data;
+  // capture previous element since we might or might not change the
+  // GL state in set/pop
+  prev->capture(state);
 }
 
 // Doc in super.
@@ -112,38 +113,20 @@ SoGLPointSizeElement::pop(SoState * state,
                           const SoElement * prevTopElement)
 {
   SoGLPointSizeElement * prev = (SoGLPointSizeElement*)prevTopElement;
-  this->current = prev->current;
-  inherited::pop(state, prevTopElement);
+  if (this->data != prev->data) {
+    this->updategl();
+  }
 }
 
 /*! \COININTERNAL */
 void
 SoGLPointSizeElement::setElt(float val)
 {
-  inherited::setElt(val);
-  // this is a lazy element, do nothing
-}
-
-
-// Doc in super.
-void
-SoGLPointSizeElement::lazyEvaluate(void) const
-{
-  if (this->data != current) {
-    // cast away constness
-    SoGLPointSizeElement *elem = (SoGLPointSizeElement*)this;
-    elem->current = this->data;
-    elem->updategl();
+  if (val != this->data) {
+    this->data = val;
+    this->updategl();
   }
 }
-
-// Doc in super.
-SbBool
-SoGLPointSizeElement::isLazy(void) const
-{
-  return TRUE;
-}
-
 
 // update GL state
 void
@@ -169,13 +152,13 @@ SoGLPointSizeElement::updategl(void)
     SoGLPointSizeElement::sizerange[1] = vals[1];
   }
 
-  float useval = this->current;
+  float useval = this->data;
 
   // 0.0f is used as a "dummy" default value by our superclass and by
   // SoDrawStyle::pointSize, so handle that case outside of the
   // rangecheck below.
 
-  if (this->current == 0.0f) { useval = 1.0f; }
+  if (this->data == 0.0f) { useval = 1.0f; }
 
   // Range checks.
 
@@ -190,14 +173,14 @@ SoGLPointSizeElement::updategl(void)
     // Detect invalid values and warn the application programmer.
     // (0.0f is used as a "dummy" default value by our superclass and
     // by SoDrawStyle::pointSize, so ignore that case.)
-    if ((useval != this->current) && (this->current != 0.0f)) {
+    if ((useval != this->data) && (this->data != 0.0f)) {
       // Only warn once for each case.
       static SbBool warn_below = TRUE;
       static SbBool warn_above = TRUE;
-      if ((warn_below && (useval > this->current)) ||
-          (warn_above && (useval < this->current))) {
-        if (useval > this->current) { warn_below = FALSE; }
-        if (useval < this->current) { warn_above = FALSE; }
+      if ((warn_below && (useval > this->data)) ||
+          (warn_above && (useval < this->data))) {
+        if (useval > this->data) { warn_below = FALSE; }
+        if (useval < this->data) { warn_above = FALSE; }
         SoDebugError::postWarning("SoGLPointSizeElement::updategl",
                                   "%f is outside the legal range of [%f, %f] "
                                   "for this OpenGL implementation's "
@@ -206,7 +189,7 @@ SoGLPointSizeElement::updategl(void)
                                   "information on how the application programmer should "
                                   "acquire the boundary values for the legal "
                                   "range.",
-                                  this->current,
+                                  this->data,
                                   SoGLPointSizeElement::sizerange[0],
                                   SoGLPointSizeElement::sizerange[1]);
       }

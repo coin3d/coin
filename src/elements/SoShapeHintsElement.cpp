@@ -30,7 +30,7 @@
 */
 
 #include <Inventor/elements/SoShapeHintsElement.h>
-
+#include <Inventor/elements/SoLazyElement.h>
 
 #include <assert.h>
 
@@ -78,6 +78,12 @@ SoShapeHintsElement::push(SoState * state)
   this->faceType = prev->faceType;
 }
 
+void 
+SoShapeHintsElement::pop(SoState * state, const SoElement * prevtopelement)
+{
+  this->updateLazyElement(state);
+}
+
 //! FIXME: write doc.
 
 SbBool
@@ -116,6 +122,7 @@ SoShapeHintsElement::set(SoState * const state,
     SoElement::getElement(state, classStackIndex);
   if (elem) {
     elem->setElt(vertexOrdering, shapeType, faceType);
+    elem->updateLazyElement(state);
   }
 }
 
@@ -225,4 +232,17 @@ SoShapeHintsElement::FaceType
 SoShapeHintsElement::getDefaultFaceType()
 {
   return CONVEX;
+}
+
+void 
+SoShapeHintsElement::updateLazyElement(SoState * state)
+{
+  if (state->isElementEnabled(SoLazyElement::getClassStackIndex())) {
+    SoLazyElement::setVertexOrdering(state, this->vertexOrdering == CLOCKWISE ?
+                                     SoLazyElement::CW : SoLazyElement::CCW);
+    SoLazyElement::setTwosideLighting(state, this->vertexOrdering != UNKNOWN_ORDERING &&
+                                      this->shapeType == UNKNOWN_SHAPE_TYPE);
+    SoLazyElement::setBackfaceCulling(state, this->vertexOrdering != UNKNOWN_ORDERING &&
+                                      this->shapeType == SOLID);
+  }
 }

@@ -210,7 +210,7 @@ SoPointSet::GLRender(SoGLRenderAction * action)
                        mbind != OVERALL ? &mb : NULL,
                        doTextures ? &tb : NULL,
                        numpts, idx);
-
+  
   if (didpush)
     state->pop();
 }

@@ -54,8 +54,6 @@ public:
   void setCacheOpen(const SbBool flag);
   SbBool isCacheOpen(void) const;
 
-  void lazyEvaluate(void) const;
-
   SoElement * getElementNoPush(const int stackindex) const;
 
 private:

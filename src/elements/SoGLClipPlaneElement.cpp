@@ -75,6 +75,7 @@ void
 SoGLClipPlaneElement::pop(SoState * state,
                           const SoElement * prevTopElement)
 {
+  this->capture(state);
   const SoGLClipPlaneElement * prev = (const SoGLClipPlaneElement*)
     prevTopElement;
 

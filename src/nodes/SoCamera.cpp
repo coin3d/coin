@@ -792,9 +792,6 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
 
   if (viewportmapping == SoCamera::CROP_VIEWPORT_LINE_FRAME) {
     SoLineWidthElement::set(state, this, 1.0f);
-    const SoGLLineWidthElement * lw = (SoGLLineWidthElement *)
-      state->getConstElement(SoGLLineWidthElement::getClassStackIndex());
-    lw->lazyEvaluate();
   }
   else { // FILL
     SoDrawStyleElement::set(state, this, SoDrawStyleElement::FILLED);
