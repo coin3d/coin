@@ -14,7 +14,6 @@ mortene ("x" means "done"):
         - sphere_arb.iv: bug on sphere #2 from the left on my ATI Radeon laptop
         - sphere_glsl.iv: bugs upon first *redraw* on my NVidia desktop
         - sphere_cg.iv: better handling of streams of error messages from Cg
-        - support context ID changing
         - clean up the SOURCE_HINT #define (use an element to pass on error messages?)
         - Cheshire Cat for classes in public API (may be ok already)
         - check all public API elements against TGS Inventor
