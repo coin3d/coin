@@ -500,8 +500,9 @@ SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
       PRIVATE(this)->renderaction->setViewportRegion(PRIVATE(this)->subviewport);
     PRIVATE(this)->internaldata->setBufferSize(PRIVATE(this)->subscreensize);
   }
-  
-  delete [] PRIVATE(this)->buffer;
+
+  if(!PRIVATE(this)->buffer)
+    delete [] PRIVATE(this)->buffer;
 }
 
 /*!
@@ -644,8 +645,7 @@ SoOffscreenRendererP::renderFromBase(SoBase * base)
 
     
     // We have to grab cameras using this callback during rendering
-    this->renderaction->setAbortCallback(&subscreenAbortCallback,this);
-    
+    this->renderaction->setAbortCallback(&subscreenAbortCallback,this);    
     this->currentsubscreen = 0;
     
     // Render entire scenegraph for each subscreen.
@@ -898,7 +898,6 @@ SoOffscreenRenderer::writeToRGB(FILE * fp) const
       size[0] = PRIVATE(this)->numsubscreens[0] * PRIVATE(this)->subscreensize[0];
       size[1] = PRIVATE(this)->numsubscreens[1] * PRIVATE(this)->subscreensize[1];
     }
-
 
     write_short(fp, 0x01da); // imagic
     write_short(fp, 0x0001); // raw (no rle yet)
@@ -1404,7 +1403,7 @@ SoOffscreenRenderer::writeToFile(const SbString & filename, const SbName & filet
     return FALSE;
   }
   if (PRIVATE(this)->internaldata) {
-    SbVec2s size = PRIVATE(this)->internaldata->getSize();
+    SbVec2s size = PRIVATE(this)->requestedsize;
     int comp = (int) this->getComponents();
     unsigned char * bytes = PRIVATE(this)->buffer;
     int ret = simage_wrapper()->simage_save_image(filename.getString(),
