@@ -21,17 +21,17 @@
 #define COIN_SORAYPICKACTION_H
 
 #include <Inventor/actions/SoPickAction.h>
-#include <Inventor/SbViewVolume.h>
-#include <Inventor/SbLine.h>
-#include <Inventor/SbPlane.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/lists/SoPickedPointList.h>
 
-class SbVec2s;
+class SbBox3f;
+class SbLine;
+class SbMatrix;
 class SbVec2f;
+class SbVec2s;
 class SbVec3f;
+class SbViewVolume;
 class SbViewportRegion;
 class SoPickedPoint;
+class SoPickedPointList;
 
 
 class COIN_DLL_API SoRayPickAction : public SoPickAction {
@@ -78,48 +78,7 @@ protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
-  SbBool isBetweenPlanesWS(const SbVec3f & intersection) const;
-  void cleanupPickedPoints(void);
-  void setFlag(const unsigned int flag);
-  void clearFlag(const unsigned int flag);
-  SbBool isFlagSet(const unsigned int flag) const;
-  void calcObjectSpaceData(void);
-  void calcMatrices(void);
-  float calcRayRadius(const float radiusinpixels);
-
-  SbViewVolume osvolume;
-  SbLine osline;
-  SbPlane nearplane;
-  SbVec2s vppoint;
-  SbVec2f normvppoint;
-  SbVec3f raystart;
-  SbVec3f raydirection;
-  double rayradiusstart;
-  double rayradiusdelta;
-  double raynear;
-  double rayfar;
-  float radiusinpixels;
-
-  float currentPickDistance;
-
-  SbLine wsline;
-  SbMatrix obj2world;
-  SbMatrix world2obj;
-  SbMatrix extramatrix;
-
-  SoPickedPointList pickedpointlist;
-
-  unsigned int flags;
-
-  enum {
-    WS_RAY_SET =      0x0001, // ray set by ::setRay
-    WS_RAY_COMPUTED = 0x0002, // ray computed in ::computeWorldSpaceRay
-    PICK_ALL =        0x0004, // return all picked objects, or just closest
-    NORM_POINT =      0x0008, // is normalized vppoint calculated
-    CLIP_NEAR =       0x0010, // clip ray at near plane?
-    CLIP_FAR =        0x0020, // clip ray at far plane?
-    EXTRA_MATRIX =    0x0040 // is extra matrix supplied in ::setObjectSpace
-  };
+  class SoRayPickActionP * pimpl;
 };
 
 #endif // !COIN_SORAYPICKACTION_H
