@@ -288,6 +288,11 @@
 
     mortene 20020729.
 
+    UPDATE 20030113 mortene: it is known that bbox accumulation does
+    not always yield a perfect fit (see class doc on
+    SoGetBoundingBoxAction), but this seems to be caused by a separate
+    problem.
+
 =====================================================================
 
 017 If you drag one of the interaction tabs on an SoTabPlaneDragger
@@ -1662,5 +1667,52 @@
     be for the camera to be position there from the start.
 
     20030103 mortene.
+
+=====================================================================
+
+052 Bad VRML97 import and/or export.
+
+    Bug-report from kintel:
+
+      Look at the following two files. The second file is the result
+      of feeding the first through Coin. Note the two extra "USE"
+      statements that shouldn't be there.
+
+      ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+      #VRML V2.0 utf8
+      
+      Group {
+        children Switch {
+          whichChoice -1
+          choice [ 
+            DEF _0 WorldInfo {
+            },
+            USE _0
+          ]
+        }
+      }
+      ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+      ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+      #VRML V2.0 utf8
+      
+      Separator {
+      
+        Group {
+      	children 
+      	  Switch {
+      		whichChoice -1
+      		choice [ 
+      		  DEF _0 WorldInfo {
+      		  },
+      		    
+      		  USE _0 ]
+      
+      		USE _0
+      		USE _0	  }
+        }}
+      ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
+
+    20030106 mortene.
 
 =====================================================================
