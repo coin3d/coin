@@ -449,11 +449,14 @@ SoGLBigImage::applySubImage(SoState * state, const int idx,
       tls->myimage->setValuePtr(actualsize, numcomponents, tls->tmpbuf);
     }
     else tls->myimage->setValuePtr(SbVec2s(0,0), 0, NULL);
+
+    // do not create-in-state, since the same thread might be used to
+    // render into more than one context
     tls->glimagearray[idx]->setData(tls->myimage,
                                     SoGLImage::CLAMP_TO_EDGE,
                                     SoGLImage::CLAMP_TO_EDGE,
                                     quality,
-                                    0, state);
+                                    0, NULL);
   }
 
   SoGLDisplayList * dl = tls->glimagearray[idx]->getGLDisplayList(state);
