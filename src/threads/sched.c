@@ -65,16 +65,12 @@ sched_try_trigger(cc_sched * sched)
 void
 sched_worker_entry_point(void * userdata)
 {
-  void (*func)(void *);
-  void * closure;
-
+  sched_item * item;
   cc_sched * sched = (cc_sched*) userdata;
 
-  func = NULL;
-  closure = NULL;
   cc_mutex_lock(sched->mutex);
   while (!cc_heap_empty(sched->itemheap)) {
-    sched_item * item = (sched_item*) cc_heap_extract_top(sched->itemheap);
+    item = (sched_item*) cc_heap_extract_top(sched->itemheap);
 
     cc_mutex_unlock(sched->mutex);
     item->workfunc(item->closure);
