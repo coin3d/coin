@@ -59,10 +59,7 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 /*!
   \enum SoFontStyle::Family
@@ -135,10 +132,11 @@ SoFontStyle::getFontName(void) const
 
 #if COIN_DEBUG
   static SbBool messageflag = TRUE;
-  if((messageflag) && (fontname.getString() != NULL)) {
+  if (messageflag && (fontname != "defaultFont")) {
     SoDebugError::postWarning("SoFontStyle::getFontName",
-                              "Font name ('%s') is ignored when using FontStyle nodes. "
-                              "Use the 'family' and 'style' fields instead.", 
+                              "Font name ('%s') is ignored when using "
+                              "FontStyle nodes. Use the 'family' and "
+                              "'style' fields instead.", 
                               fontname.getString());    
     messageflag = FALSE; // Only display this message once.
   }
