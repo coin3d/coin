@@ -68,6 +68,8 @@
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #include <assert.h>
 
 /*!
@@ -447,8 +449,15 @@ SoCube::generateVertices(SbVec3f * const varray)
   FIXME: write doc
 */
 void
-SoCube::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoCube::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+
+  if (action->isNonVertexShapesCountedAsTriangles()) {
+    action->addNumTriangles(12);
+  }
+  else {
+    action->incNumCubes();
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

@@ -39,6 +39,8 @@
 #include <GL/gl.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
@@ -273,11 +275,13 @@ SoPointSet::getBoundingBox(SoGetBoundingBoxAction *action)
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
- */
+*/
 void
-SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+  
+  action->addNumPoints(this->numPoints.getValue());
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

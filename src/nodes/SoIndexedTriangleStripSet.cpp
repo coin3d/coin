@@ -49,6 +49,8 @@
 #include <GL/gl.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
 #endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
@@ -425,25 +427,23 @@ SoIndexedTriangleStripSet::getNumTriangles()
   if (numTriangles == -1) {
     const int32_t * ptr = coordIndex.getValues(0);
     const int32_t * endptr = ptr + coordIndex.getNum();
+
+    if (endptr-ptr == 1 && ptr[0] == -1) {
+      this->numTriangles = 0;
+      this->numStrips = 0;
+      return 0;
+    }
+
     int cnt = 0;
     int stripcnt = 0;
-    int32_t idx;
+    int tmpcnt = 0;
     while (ptr < endptr) {
-      idx = *ptr++;
-      assert(idx >= 0);
-      idx = *ptr++;
-      assert(idx >= 0);
-      idx = *ptr++;
-      assert(idx >= 0);
-      cnt++;
-
-      idx = *ptr++;
-      while (idx >= 0) {
-	assert(ptr < endptr);
-	cnt++;
-	idx = *ptr++;
+      if (*ptr++ >= 0) tmpcnt++;
+      else {
+        stripcnt++;
+        cnt += tmpcnt-2;
+        tmpcnt = 0;
       }
-      stripcnt++;
     }
     this->numTriangles = cnt;
     this->numStrips = stripcnt;
@@ -467,9 +467,19 @@ SoIndexedTriangleStripSet::getNumStrips()
   FIXME: write doc
 */
 void
-SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+  
+  int n = this->coordIndex.getNum();
+  if (n == 1 && this->coordIndex[0] == -1) return;
+  
+  if (action->canApproximateCount()) {
+    action->addNumTriangles(n-2); // assumes one strip
+  }
+  else {
+    action->addNumTriangles(this->getNumTriangles());
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

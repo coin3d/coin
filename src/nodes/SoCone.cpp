@@ -74,6 +74,8 @@
 #include <Inventor/elements/SoComplexityElement.h>
 #endif
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 /*!
   \enum SoCone::Part
   FIXME: write documentation for enum
@@ -105,6 +107,7 @@
   FIXME: write documentation for field
 */
 
+#define CONE_SIDE_NUMTRIS 40.0f
 
 // *************************************************************************
 
@@ -279,7 +282,7 @@ SoCone::GLRender(SoGLRenderAction * action)
 
   sogl_render_cone(this->bottomRadius.getValue(),
 		   this->height.getValue(),
-		   (int)(40.0f*complexity),
+		   (int)(CONE_SIDE_NUMTRIS*complexity),
 		   &mb,
 		   flags);
 }
@@ -411,9 +414,24 @@ SoCone::rayPick(SoRayPickAction *action)
   FIXME: write doc
 */
 void
-SoCone::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoCone::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+
+  if (action->isNonVertexShapesCountedAsTriangles()) {
+    float complexity = this->getComplexityValue(action);
+    int numtris = (int)(complexity*CONE_SIDE_NUMTRIS);
+    
+    if (this->parts.getValue() & SoCone::BOTTOM) {
+      action->addNumTriangles(numtris-2);
+    }
+    if (this->parts.getValue() & SoCone::SIDES) {
+      action->addNumTriangles(numtris);
+    }
+  }
+  else {
+    action->incNumCones();
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
@@ -422,7 +440,7 @@ SoCone::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
   FIXME: write doc
 */
 void
-SoCone::generatePrimitives(SoAction * /* action */)
+SoCone::generatePrimitives(SoAction * /*action*/)
 {
   assert(0 && "FIXME: not implemented");
 }

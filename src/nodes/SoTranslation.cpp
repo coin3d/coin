@@ -158,8 +158,8 @@ SoTranslation::pick(SoPickAction *action)
   FIXME: write doc
  */
 void
-SoTranslation::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoTranslation::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoTranslation::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

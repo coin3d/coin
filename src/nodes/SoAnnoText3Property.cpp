@@ -45,6 +45,7 @@
 
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 /*!
   \enum SoAnnoText3Property::RenderPrintType
@@ -151,6 +152,8 @@ SoAnnoText3Property::initClass(void)
   SO_ENABLE(SoPickAction, SoAnnoText3FontSizeHintElement);
   SO_ENABLE(SoPickAction, SoAnnoText3RenderPrintElement);
 
+  SO_ENABLE(SoGetPrimitiveCountAction, SoAnnoText3FontSizeHintElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoAnnoText3RenderPrintElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -246,8 +249,8 @@ SoAnnoText3Property::pick(SoPickAction *action)
   FIXME: write doc
 */
 void
-SoAnnoText3Property::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoAnnoText3Property::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoAnnoText3Property::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

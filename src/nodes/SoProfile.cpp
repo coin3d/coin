@@ -50,6 +50,7 @@
 #endif // !COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT
 
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 /*!
   \enum SoProfile::Profile
@@ -139,6 +140,9 @@ SoProfile::initClass(void)
 
   SO_ENABLE(SoCallbackAction, SoProfileElement);
   SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
+
+  SO_ENABLE(SoGetPrimitiveCountAction, SoProfileElement);
+  SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -202,8 +206,8 @@ SoProfile::pick(SoPickAction *action)
   FIXME: write doc
  */
 void
-SoProfile::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoProfile::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoProfile::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

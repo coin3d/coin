@@ -529,8 +529,8 @@ SoGroup::replaceChild(SoNode * const oldChild, SoNode * const newChild)
   FIXME: write doc
 */
 void
-SoGroup::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoGroup::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoGroup::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

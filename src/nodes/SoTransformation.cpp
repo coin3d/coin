@@ -53,6 +53,7 @@
 #endif // !COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT
 
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 SO_NODE_ABSTRACT_SOURCE(SoTransformation);
 
@@ -95,4 +96,5 @@ SoTransformation::initClass(void)
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
   SO_ENABLE(SoCallbackAction, SoModelMatrixElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoModelMatrixElement);
 }

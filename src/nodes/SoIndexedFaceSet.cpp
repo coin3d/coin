@@ -55,6 +55,8 @@
 #include <GL/gl.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
 #endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
@@ -88,7 +90,7 @@
 
 
 /*!
-  \enum SoIndexedFaceSet::Binding
+   \enum SoIndexedFaceSet::Binding
   FIXME: write documentation for enum
 */
 /*!
@@ -202,6 +204,7 @@ SoIndexedFaceSet::countPrimitives(void)
       else if (cnt == 3) numt++;
       else if (cnt == 4) numq++;
       else nump++;
+      cnt = 0;
     }
   }
   this->numTriangles = numt;
@@ -697,9 +700,30 @@ SoIndexedFaceSet::createTriangleDetail(SoRayPickAction */*action*/,
   FIXME: write doc
 */
 void
-SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+  
+  int n = this->coordIndex.getNum();
+  if (n == 1 && this->coordIndex[0] == -1) return;
+  
+  if (action->canApproximateCount()) {
+    action->addNumTriangles(n/4);
+  }
+  else {
+    const int32_t * ptr = coordIndex.getValues(0);
+    const int32_t * endptr = ptr + n;
+    int cnt = 0;
+    int add = 0;
+    while (ptr < endptr) {
+      if (*ptr++ >= 0) cnt++;
+      else {
+        add += cnt-2;
+        cnt = 0;
+      }
+    }
+    action->addNumTriangles(add);
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

@@ -27,7 +27,7 @@
 
 #include <Inventor/nodes/SoImage.h>
 
-
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 #include <Inventor/SoInput.h>
 
@@ -180,9 +180,9 @@ SoImage::rayPick(SoRayPickAction * /* action */)
   FIXME: write doc
 */
 void
-SoImage::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoImage::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (this->shouldPrimitiveCount(action)) action->incNumImage();
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

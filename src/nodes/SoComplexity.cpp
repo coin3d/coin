@@ -42,6 +42,8 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
 #include <Inventor/elements/SoComplexityElement.h>
 #endif // !COIN_EXCLUDE_SOCOMPLEXITYELEMENT
@@ -155,6 +157,9 @@ SoComplexity::initClass(void)
   SO_ENABLE(SoPickAction, SoShapeStyleElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
+  SO_ENABLE(SoGetPrimitiveCountAction, SoComplexityElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoComplexityTypeElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoShapeStyleElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -244,9 +249,23 @@ SoComplexity::pick(SoPickAction *action)
   FIXME: write doc
 */
 void
-SoComplexity::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoComplexity::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState * state = action->getState();
+#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
+  if (!value.isIgnored() 
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getComplexityOverride(state)
+#endif // ! COIN_EXCLUDE_SOOVERRIDEELEMENT
+      ) 
+    SoComplexityElement::set(state, value.getValue());
+#endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
+  
+  // complexity type element is always OBJECT_SPACE for this action.
+  // this is somewhat odd. If it had been possible to supply a 
+  // viewport in the action constructor, it would be possible
+  // to also calculate SCREEN_SPACE complexity.
+  // pederb, 1999-11-25
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

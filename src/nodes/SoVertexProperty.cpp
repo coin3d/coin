@@ -48,6 +48,8 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
@@ -213,6 +215,12 @@ SoVertexProperty::initClass()
   SO_ENABLE(SoCallbackAction, SoNormalBindingElement);
   SO_ENABLE(SoCallbackAction, SoNormalElement);
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
+
+  SO_ENABLE(SoGetPrimitiveCountAction, SoCoordinateElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoMaterialBindingElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoNormalBindingElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoNormalElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoTextureCoordinateElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -340,8 +348,8 @@ SoVertexProperty::pick(SoPickAction *action)
   FIXME: write doc
  */
 void
-SoVertexProperty::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoVertexProperty::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoVertexProperty::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

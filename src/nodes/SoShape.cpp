@@ -100,6 +100,7 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -807,6 +808,10 @@ SoShape::invokeTriangleCallbacks(SoAction * const action,
     SoCallbackAction *ca = (SoCallbackAction*) action;    
     ca->invokeTriangleCallbacks(this, v1, v2, v3);
   }
+  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {    
+    SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
+    ga->incNumTriangles();
+  }
   else {
     assert(0 && "FIXME: not implemented");
   }
@@ -839,6 +844,14 @@ SoShape::invokeLineSegmentCallbacks(SoAction * const action,
   else if (action->getTypeId().isDerivedFrom(SoCallbackAction::getClassTypeId())) {
     SoCallbackAction *ca = (SoCallbackAction*) action;
     ca->invokeLineSegmentCallbacks(this, v1, v2);
+  }
+  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {    
+    SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
+    ga->incNumLines();
+  }
+  else if (action->getTypeId().isDerivedFrom(SoGetPrimitiveCountAction::getClassTypeId())) {    
+    SoGetPrimitiveCountAction *ga = (SoGetPrimitiveCountAction*) action;
+    ga->incNumPoints();
   }
   else {
     assert(0 && "FIXME: not implemented");
@@ -1013,9 +1026,11 @@ SoShape::affectsState(void) const
   FIXME: write doc
  */
 void
-SoShape::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoShape::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (this->shouldPrimitiveCount(action)) {
+    this->generatePrimitives(action);
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
@@ -1047,7 +1062,6 @@ SoShape::GLRenderBoundingBox(SoGLRenderAction * /* action */)
 SbBool
 SoShape::shouldPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
+  return TRUE; // FIXME: what to do here? pederb 1999-11-25
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

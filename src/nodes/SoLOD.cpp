@@ -189,9 +189,9 @@ SoLOD::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoLOD::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoLOD::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoLOD::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

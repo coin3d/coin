@@ -40,6 +40,7 @@
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 #if !defined(COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT)
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
@@ -208,6 +209,11 @@ SoCamera::initClass(void)
   SO_ENABLE(SoCallbackAction, SoViewVolumeElement);
   SO_ENABLE(SoCallbackAction, SoViewingMatrixElement);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
+  SO_ENABLE(SoGetPrimitiveCountAction, SoFocalDistanceElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoProjectionMatrixElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoViewVolumeElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoViewingMatrixElement);
 }
 
 /*!
@@ -438,8 +444,8 @@ SoCamera::rayPick(SoRayPickAction *action)
   FIXME: write doc
 */
 void
-SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCamera::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

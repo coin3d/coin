@@ -474,8 +474,8 @@ SoArray::search(SoSearchAction * action)
   FIXME: write doc
 */
 void
-SoArray::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoArray::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoArray::doAction((SoAction*)action);  
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

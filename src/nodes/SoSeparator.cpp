@@ -400,9 +400,9 @@ SoSeparator::affectsState(void) const
   FIXME: write doc
  */
 void
-SoSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoSeparator::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoSeparator::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

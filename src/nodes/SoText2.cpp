@@ -75,6 +75,8 @@
 #include <Inventor/elements/SoGLLightModelElement.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #include <limits.h>
 
 static const unsigned int NOT_AVAILABLE = UINT_MAX;
@@ -431,9 +433,11 @@ SoText2::rayPick(SoRayPickAction * /* action */)
   FIXME: write doc
  */
 void
-SoText2::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+  
+  action->addNumText(this->string.getNum());
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

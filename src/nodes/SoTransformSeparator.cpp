@@ -194,8 +194,8 @@ SoTransformSeparator::getMatrix(SoGetMatrixAction *action)
   FIXME: write doc
  */
 void
-SoTransformSeparator::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoTransformSeparator::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoTransformSeparator::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

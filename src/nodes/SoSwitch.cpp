@@ -54,6 +54,7 @@
 #endif // !COIN_EXCLUDE_SOSWITCHELEMENT
 
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 /*!
   \var SoSFInt32 SoSwitch::whichChild
@@ -108,6 +109,7 @@ SoSwitch::initClass(void)
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
   SO_ENABLE(SoCallbackAction, SoSwitchElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoSwitchElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -327,9 +329,9 @@ SoSwitch::write(SoWriteAction * action)
   FIXME: write doc
  */
 void
-SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoSwitch::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

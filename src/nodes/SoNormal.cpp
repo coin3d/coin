@@ -41,6 +41,7 @@
 #endif // !COIN_EXCLUDE_SONORMALELEMENT
 
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 /*!
   \var SoMFVec3f SoNormal::vector
@@ -87,6 +88,7 @@ SoNormal::initClass(void)
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
   SO_ENABLE(SoCallbackAction, SoNormalElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoNormalElement);
 }
 
 // FIXME: enable this for 10%++ performance gain (no need to enable

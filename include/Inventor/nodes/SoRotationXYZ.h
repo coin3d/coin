@@ -77,7 +77,7 @@ protected:
   virtual ~SoRotationXYZ();
 
 private:
-  SbBool getVector(SbVec3f & rotvec);
+  SbBool getVector(SbVec3f & rotvec) const;
 };
 
 #endif // !__SOROTATIONXYZ_H__

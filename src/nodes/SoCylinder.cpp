@@ -70,7 +70,11 @@
 #include <Inventor/elements/SoComplexityElement.h>
 #endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #include <math.h> // fabs()
+
+#define CYL_SIDE_NUMTRIS 40.0f
 
 /*!
   \enum SoCylinder::Part
@@ -238,7 +242,7 @@ SoCylinder::GLRender(SoGLRenderAction * action)
   
   sogl_render_cylinder(this->radius.getValue(),
 		       this->height.getValue(),
-		       (int)(40.0f * complexity),
+		       (int)(CYL_SIDE_NUMTRIS * complexity),
 		       &mb,
 		       flags);
 }
@@ -395,9 +399,27 @@ SoCylinder::rayPick(SoRayPickAction *action)
   FIXME: write doc
 */
 void
-SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+
+  if (action->isNonVertexShapesCountedAsTriangles()) {
+    float complexity = this->getComplexityValue(action);
+    int numtris = (int)(complexity*CYL_SIDE_NUMTRIS);
+    
+    if (this->parts.getValue() & SoCylinder::BOTTOM) {
+      action->addNumTriangles(numtris-2);
+    }
+    if (this->parts.getValue() & SoCylinder::TOP) {
+      action->addNumTriangles(numtris-2);
+    }
+    if (this->parts.getValue() & SoCylinder::SIDES) {
+      action->addNumTriangles(numtris*2);
+    }
+  }
+  else {
+    action->incNumCylinders();
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

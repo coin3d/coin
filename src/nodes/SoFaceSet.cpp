@@ -67,6 +67,8 @@
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/details/SoFaceDetail.h>
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 /*!
   \enum SoFaceSet::Binding
   FIXME: write documentation for enum
@@ -398,9 +400,23 @@ SoFaceSet::generateDefaultNormals(SoState * /* state */,
   FIXME: write doc
  */
 void
-SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+
+  int n = this->numVertices.getNum();
+  if (n == 1 && this->numVertices[0] == -1) return;
+
+  if (action->canApproximateCount()) {
+    action->addNumTriangles(n*3);
+  }
+  else {
+    int cnt = 0;
+    for (int i = 0; i < n; i++) {
+      cnt += this->numVertices[i]-2; 
+    }
+    action->addNumTriangles(cnt);
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

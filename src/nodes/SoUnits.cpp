@@ -300,8 +300,8 @@ SoUnits::pick(SoPickAction *action)
   FIXME: write doc
  */
 void
-SoUnits::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoUnits::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoUnits::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

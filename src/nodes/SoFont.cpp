@@ -42,6 +42,7 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 #if !defined(COIN_EXCLUDE_SOFONTNAMEELEMENT)
 #include <Inventor/elements/SoFontNameElement.h>
@@ -113,6 +114,9 @@ SoFont::initClass(void)
   SO_ENABLE(SoPickAction, SoFontNameElement);
   SO_ENABLE(SoPickAction, SoFontSizeElement);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+  SO_ENABLE(SoGetPrimitiveCountAction, SoFontNameElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoFontSizeElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -188,12 +192,13 @@ SoFont::pick(SoPickAction *action)
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
+
 /*!
   FIXME: write doc
- */
+*/
 void
-SoFont::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoFont::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoFont::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

@@ -164,8 +164,8 @@ SoScale::pick(SoPickAction *action)
   FIXME: write doc
  */
 void
-SoScale::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoScale::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoScale::doAction((SoAction*)action);  
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

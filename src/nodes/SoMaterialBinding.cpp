@@ -39,6 +39,8 @@
 #include <Inventor/actions/SoPickAction.h>
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
@@ -152,6 +154,8 @@ SoMaterialBinding::initClass(void)
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoMaterialBindingElement);
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
+  SO_ENABLE(SoGetPrimitiveCountAction, SoMaterialBindingElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
@@ -226,9 +230,9 @@ SoMaterialBinding::pick(SoPickAction *action)
   FIXME: write doc
  */
 void
-SoMaterialBinding::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoMaterialBinding::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMaterialBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

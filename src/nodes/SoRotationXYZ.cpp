@@ -185,7 +185,7 @@ SoRotationXYZ::pick(SoPickAction * action)
   FIXME: write function documentation
 */
 SbBool 
-SoRotationXYZ::getVector(SbVec3f & rotvec)
+SoRotationXYZ::getVector(SbVec3f & rotvec) const
 {  
   assert((int)axis.getValue() >= 0 && (int)axis.getValue() <= 2);
   
@@ -201,8 +201,9 @@ SoRotationXYZ::getVector(SbVec3f & rotvec)
 SbRotation
 SoRotationXYZ::getRotation(void) const
 {
-  assert(0 && "FIXME: not implemented");
-  return SbRotation(SbVec3f(1,0,0), 0);
+  SbVec3f axis;
+  this->getVector(axis);
+  return SbRotation(axis, this->angle.getValue());
 }
 
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
@@ -210,8 +211,8 @@ SoRotationXYZ::getRotation(void) const
   FIXME: write doc
  */
 void
-SoRotationXYZ::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoRotationXYZ::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoRotationXYZ::doAction((SoAction *)action);  
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

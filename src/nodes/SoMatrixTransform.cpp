@@ -51,7 +51,6 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 
-
 /*!
   \var SoSFMatrix SoMatrixTransform::matrix
   FIXME: write documentation for field
@@ -171,8 +170,8 @@ SoMatrixTransform::pick(SoPickAction *action)
   FIXME: write doc
  */
 void
-SoMatrixTransform::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoMatrixTransform::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMatrixTransform::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

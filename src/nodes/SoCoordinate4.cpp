@@ -40,6 +40,7 @@
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 #if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -98,6 +99,7 @@ SoCoordinate4::initClass(void)
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoCoordinateElement);
+  SO_ENABLE(SoGetPrimitiveCountAction, SoCoordinateElement);
 }
 
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
@@ -162,8 +164,8 @@ SoCoordinate4::pick(SoPickAction *action)
   FIXME: write doc
 */
 void
-SoCoordinate4::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoCoordinate4::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCoordinate4::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

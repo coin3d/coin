@@ -256,10 +256,10 @@ SoMultipleCopy::search(SoSearchAction *action)
 #if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
- */
+*/
 void
-SoMultipleCopy::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoMultipleCopy::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMultipleCopy::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

@@ -39,6 +39,8 @@
 #include <GL/gl.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
 #endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
@@ -407,9 +409,12 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   FIXME: write doc
  */
 void
-SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+  
+  action->addNumTriangles(2 * this->verticesPerRow.getValue() *
+                          this->verticesPerColumn.getValue());
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

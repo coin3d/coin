@@ -68,10 +68,15 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 /*!
   \var SoSFFloat SoSphere::radius
   FIXME: write documentation for field
 */
+
+#define SPHERE_NUM_SLICES 30.0f
+#define SPHERE_NUM_STACKS 30.0f
 
 // *************************************************************************
 
@@ -160,8 +165,8 @@ SoSphere::GLRender(SoGLRenderAction * action)
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
 
   sogl_render_sphere(this->radius.getValue(),
-		     (int)(30.0f * complexity),
-		     (int)(30.0f * complexity),
+		     (int)(SPHERE_NUM_SLICES * complexity),
+		     (int)(SPHERE_NUM_STACKS * complexity),
 		     &mb,
 		     flags);
 }
@@ -232,9 +237,17 @@ SoSphere::rayPick(SoRayPickAction *action)
   FIXME: write doc
  */
 void
-SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+  
+  if (action->isNonVertexShapesCountedAsTriangles()) {
+    float complexity = this->getComplexityValue(action);
+    action->addNumTriangles((int)(complexity*2.0f*SPHERE_NUM_SLICES*(SPHERE_NUM_STACKS-1))); 
+  }
+  else {
+    action->incNumSpheres();
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 

@@ -55,10 +55,70 @@ public:
 public:
   SoGetPrimitiveCountAction(void);
 
+  int getTriangleCount() const;
+  int getLineCount() const;
+  int getPointCount() const;
+  int getTextCount() const;
+  int getImageCount() const;
+  SbBool containsNoPrimitives();
+  SbBool containsNonTriangleShapes();
+
+  SbBool is3DTextCountedAsTriangles();
+  void setCount3DTextAsTriangles(const SbBool onOff);
+
+  SbBool canApproximateCount();
+  void setCanApproximate(const SbBool onOff);
+  
+#if 0 // not supported yet
+  void setDecimationValue(SoDecimationTypeElement::Type type,
+                          float percentage = 1.0);
+  SoDecimationTypeElement::Type getDecimationType();
+  float getDecimationPercentage();
+#endif // not supported  
+
+public:
+  void addNumTriangles(const int num);
+  void addNumLines(const int num);
+  void addNumPoints(const int num);
+  void addNumText(const int num);
+  void addNumImage(const int num);
+  void incNumTriangles();
+  void incNumLines();
+  void incNumPoints();
+  void incNumText();
+  void incNumImage();
+
+  // not part of OIV
+  SbBool isNonVertexShapesCountedAsTriangles() const;
+  void setCountNonVertexShapesAsTriangles(const SbBool onOff);
+
+  int getCubeCount() const;
+  int getCylinderCount() const;
+  int getConeCount() const;
+  int getSphereCount() const;
+
+  void incNumCubes();
+  void incNumCylinders();
+  void incNumCones();
+  void incNumSpheres();
+
 protected:
   virtual void beginTraversal(SoNode * node);
 
 private:
+  int numTris;
+  int numLines;
+  int numPoints;
+  int numTexts;
+  int numImages;
+  int numCubes;
+  int numCylinders;
+  int numCones;
+  int numSpheres;
+
+  SbBool textAsTris;
+  SbBool approx;
+  SbBool nonVertexAsTris;
 };
 
 #endif // !__SOGETPRIMITIVECOUNTACTION_H__

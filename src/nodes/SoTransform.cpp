@@ -325,8 +325,8 @@ SoTransform::pick(SoPickAction * action)
   FIXME: write doc
  */
 void
-SoTransform::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoTransform::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoTransform::doAction((SoAction *)action);
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

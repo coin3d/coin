@@ -39,6 +39,8 @@
 #include <GL/gl.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+
 #if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
 #include <Inventor/elements/SoGLCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
@@ -406,9 +408,23 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   FIXME: write doc
  */
 void
-SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
+SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!this>shouldPrimitiveCount(action)) return;
+
+  int n = this->numVertices.getNum();
+  if (n == 1 && this->numVertices[0] == -1) return;
+  
+  if (action->canApproximateCount()) {
+    action->addNumTriangles(n*8); // this is a wild guess, disable?
+  }
+  else {
+    int cnt = 0;
+    for (int i = 0; i < n; i++) {
+      cnt += this->numVertices[i]-2; 
+    }
+    action->addNumTriangles(cnt);
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
