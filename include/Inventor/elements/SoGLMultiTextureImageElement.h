@@ -49,6 +49,8 @@ public:
                   const int unit,
                   SoGLImage * image, const SoTextureImageElement::Model model,
                   const SbColor & blendColor);
+
+  static void restore(SoState * state, const int unit);
   
   static SoGLImage * get(SoState * state, 
                          const int unit,
