@@ -40,7 +40,7 @@ public:
   void setViewportRegion(const SbViewportRegion & newregion);
   const SbViewportRegion & getViewportRegion(void);
 
-void enableCulling(const SbBool flag);
+  void enableCulling(const SbBool flag);
   SbBool isCullingEnabled() const;
 
 protected:
