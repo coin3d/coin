@@ -377,13 +377,19 @@ SoVRMLElevationGrid::GLRender(SoGLRenderAction * action)
   const int zdim = this->zDimension.getValue();
   if (xdim < 2 || zdim < 2) return;
 
-  if (this->height.getNum() != xdim*zdim) {
+  if (this->height.getNum() < xdim*zdim) {
     SoDebugError::postWarning("SoVRMLElevationGrid::GLRender",
-                              "Wrong number of height values.");
+                              "Too few height values. "
+                              "Expected %d values, got %d",
+                              xdim*zdim, this->height.getNum());
     return;
   }
 
   if (!this->shouldGLRender(action)) return;
+
+  // update state with color information
+  SoNode * node = this->color.getValue();
+  if (node) node->GLRender(action);
 
   SoState * state = action->getState();
   SoMaterialBundle mb(action);
