@@ -2122,7 +2122,6 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   this->maximumcolorcounter = ((int) pow(2,this->colorbitsred) - 1) << (this->colorbitsgreen + this->colorbitsblue);
   this->maximumcolorcounter += ((int) pow(2,this->colorbitsgreen) - 1) << (this->colorbitsblue);
   this->maximumcolorcounter += ((int) pow(2,this->colorbitsblue));
-  
 }
 
 SbBool
@@ -2248,7 +2247,6 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     // Check OpenGL capabilities
     this->checkOffscreenRendererCapabilities();
-    this->maximumcolorcounter = 0xffffff;
 
     this->visibletrianglesbitarray = new unsigned char[((this->maximumcolorcounter) >> 3)+1];
  
