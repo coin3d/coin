@@ -592,8 +592,8 @@ SoNodekitCatalog::addEntry(const SbName & name, SoType type,
     return FALSE;
   }
   else if ((type == SoType::badType()) || (defaulttype == SoType::badType()) ||
-	   (listcontainertype == SoType::badType()) ||
-	   (listitemtype == SoType::badType())) {
+	   (islist && ((listcontainertype == SoType::badType()) ||
+		       (listitemtype == SoType::badType())))) {
     SoDebugError::post("SoNodekitCatalog::addEntry", "bad type");
     return FALSE;
   }
