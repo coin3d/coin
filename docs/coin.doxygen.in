@@ -885,6 +885,8 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/SbBasic.h \
                          @path_tag@@coin_src_dir@/src/manips/commoncode.cpp \
                          @path_tag@@coin_src_dir@/src/manips/SoCenterballManip.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoCenterballManip.h \
+                         @path_tag@@coin_src_dir@/src/manips/SoClipPlaneManip.cpp \
+                         @path_tag@@coin_src_dir@/include/Inventor/manips/SoClipPlaneManip.h \
                          @path_tag@@coin_src_dir@/src/manips/SoDirectionalLightManip.cpp \
                          @path_tag@@coin_src_dir@/include/Inventor/manips/SoDirectionalLightManip.h \
                          @path_tag@@coin_src_dir@/src/manips/SoHandleBoxManip.cpp \
