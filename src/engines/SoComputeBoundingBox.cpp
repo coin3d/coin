@@ -107,22 +107,29 @@ SoComputeBoundingBox::~SoComputeBoundingBox()
 void
 SoComputeBoundingBox::evaluate(void)
 {
+  SoPath * bboxpath = this->path.getValue();
+  SoNode * bboxnode = this->node.getValue();
 
-  SoPath * mypath = this->path.getValue();
-  if (mypath) {
-    this->bboxaction->apply(mypath);
+  if (!bboxpath && !bboxnode) {
+    // Nothing to see, move along.. (we "un-dirty" the fields to avoid
+    // them being re-evaluated again and again while the engine inputs
+    // are NULL).
+    SO_ENGINE_OUTPUT(min, SoSFVec3f, setDirty(FALSE));
+    SO_ENGINE_OUTPUT(max, SoSFVec3f, setDirty(FALSE));
+    SO_ENGINE_OUTPUT(boxCenter, SoSFVec3f, setDirty(FALSE));
+    SO_ENGINE_OUTPUT(objectCenter, SoSFVec3f, setDirty(FALSE));
+    return;
   }
-  else {
-    SoNode * mynode = this->node.getValue();
-    if (mynode == NULL) return;
-    this->bboxaction->apply(mynode);
-  }
+
+  if (bboxpath) this->bboxaction->apply(bboxpath);
+  else this->bboxaction->apply(bboxnode);
+
   SbBox3f box = this->bboxaction->getBoundingBox();
-  const SbVec3f & center = this->bboxaction->getCenter();
-
   SO_ENGINE_OUTPUT(min, SoSFVec3f, setValue(box.getMin()));
   SO_ENGINE_OUTPUT(max, SoSFVec3f, setValue(box.getMax()));
   SO_ENGINE_OUTPUT(boxCenter, SoSFVec3f, setValue(box.getCenter()));
+
+  const SbVec3f & center = this->bboxaction->getCenter();
   SO_ENGINE_OUTPUT(objectCenter, SoSFVec3f, setValue(center));
 }
 
