@@ -29,6 +29,24 @@
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/nodes/SoNode.h>
 
+/*
+  The most used macros and their arguments:
+
+  header files:
+    SO_NODE_HEADER(classname)
+    SO_NODE_ABSTRACT_HEADER(classname)
+
+  source files:
+    SO_NODE_SOURCE(classname)
+    SO_NODE_ABSTRACT_SOURCE(classname)
+    in constructor:
+      SO_NODE_CONSTRUCTOR(classname)
+      SO_NODE_DEFINE_ENUM_VALUE(enumname, enumvalue)
+      SO_NODE_ADD_FIELD(fieldname, (defaultvalue))
+    in initClass():
+      SO_NODE_INIT_CLASS(classname, parentclassname, parentclassname)
+      SO_NODE_INIT_ABSTRACT_CLASS(classname, parentclassname, parentclassname)
+*/
 
 #define PRIVATE_NODE_TYPESYSTEM_HEADER( ) \
 public: \
