@@ -312,20 +312,23 @@ SbTesselator::endPolygon()
     // add all vertices to heap.
     cc_heap_clear(PRIVATE(this)->heap);
     PRIVATE(this)->bsptree.clear(256);
-    
-    int cnt = 1;
-    cc_heap_add(PRIVATE(this)->heap, this->headV);
-    PRIVATE(this)->bsptree.addPoint(SbVec3f(this->headV->v[X],
-                                            this->headV->v[Y],
-                                            0.0f), this->headV);
-    v = this->headV->next;
-    while (v != this->headV) {
-      cc_heap_add(PRIVATE(this)->heap, v);
+
+    // use two loops to add points to bsptree and heap, since the heap
+    // requires that the bsptree is fully set up to evaluate
+    // correctly.
+    v = this->headV;
+    do {
       PRIVATE(this)->bsptree.addPoint(SbVec3f(v->v[X],
                                               v->v[Y],
                                               0.0f), v);
       v = v->next;
-    }
+    } while (v != this->headV);
+
+    do {
+      cc_heap_add(PRIVATE(this)->heap, v);
+      v = v->next;
+    } while (v != this->headV);
+    
     while (this->numVerts > 4) {
       v = (SbTVertex*) cc_heap_get_top(PRIVATE(this)->heap);
       if (heap_evaluate(v) == FLT_MAX) break;
@@ -333,7 +336,6 @@ SbTesselator::endPolygon()
       PRIVATE(this)->bsptree.removePoint(SbVec3f(v->next->v[X],
                                                  v->next->v[Y],
                                                  0.0f));
-
       this->emitTriangle(v); // will remove v->next
       this->numVerts--;
       
@@ -509,7 +511,9 @@ SbTesselator::clippable(SbTVertex *v)
   PRIVATE(this)->bsptree.findPoints(sphere, l);
   for (int i = 0; i < l.getLength(); i++) {
     SbTVertex * vtx = (SbTVertex*) PRIVATE(this)->bsptree.getUserData(l[i]);
-    if (vtx != v && vtx != v->next && vtx != v->next->next && pointInTriangle(vtx, v)) return FALSE;
+    if (vtx != v && vtx != v->next && vtx != v->next->next) {
+      if (pointInTriangle(vtx, v)) return FALSE;
+    }
   }
   return TRUE;
 }
