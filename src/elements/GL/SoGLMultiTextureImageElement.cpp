@@ -139,7 +139,8 @@ SoGLMultiTextureImageElement::pop(SoState * state,
   
   for (int i = 0; i < MAX_UNITS; i++) {
     const GLUnitData & prevud = PRIVATE(prev)->unitdata[i];
-    if (prevud.glimage && prevud.glimage->getImage()) prevud.glimage->getImage()->readUnlock();
+    // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
+    // if (prevud.glimage && prevud.glimage->getImage()) prevud.glimage->getImage()->readUnlock();
     const GLUnitData & thisud = PRIVATE(prev)->unitdata[i];
     
     if (thisud.glimage != prevud.glimage) this->updateGL(i); 
@@ -172,7 +173,8 @@ SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
 
   GLUnitData & ud = PRIVATE(elem)->unitdata[unit];
 
-  if (ud.glimage && ud.glimage->getImage()) ud.glimage->getImage()->readUnlock();
+  // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
+  // if (ud.glimage && ud.glimage->getImage()) ud.glimage->getImage()->readUnlock();
 
   if (image) {
     // keep SoMultiTextureImageElement "up-to-date"
@@ -188,7 +190,8 @@ SoGLMultiTextureImageElement::set(SoState * const state, SoNode * const node,
                    blendColor);
     ud.glimage = image;
     // make sure image isn't changed while this is the active texture
-    if (image->getImage()) image->getImage()->readLock();
+    // FIXME: buggy. Find some solution to handle this. pederb, 2003-11-12
+    // if (image->getImage()) image->getImage()->readLock();
   }
   else {
     ud.glimage = NULL;
