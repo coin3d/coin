@@ -1425,6 +1425,18 @@ spect_decomp(HMatrix S, HMatrix U)
   return (kv);
 }
 
+/* Helper function for the snuggle() function below. */
+static inline void
+cycle(double * a, SbBool flip)
+{
+  if (flip) {
+    a[3]=a[0]; a[0]=a[1]; a[1]=a[2]; a[2]=a[3];
+  }
+  else {
+    a[3]=a[2]; a[2]=a[1]; a[1]=a[0]; a[0]=a[3];
+  }
+}
+
 /******* Spectral Axis Adjustment *******/
 
 /* Given a unit quaternion, q, and a scale vector, k, find a unit quaternion, p,
@@ -1440,8 +1452,7 @@ snuggle(SbDPRotation q, SbVec4d & k)
 #define SQRTHALF (0.7071067811865475244f)
 #define sgn(n, v)    ((n)?-(v):(v))
 #define swap(a, i, j) {a[3]=a[i]; a[i]=a[j]; a[j]=a[3];}
-#define cycle(a, p)  if (p) {a[3]=a[0]; a[0]=a[1]; a[1]=a[2]; a[2]=a[3];}\
-                    else   {a[3]=a[2]; a[2]=a[1]; a[1]=a[0]; a[0]=a[3];}
+
   SbDPRotation p;
   double ka[4];
   int i, turn = -1;
@@ -1475,8 +1486,8 @@ snuggle(SbDPRotation q, SbVec4d & k)
     else {if (mag[1]>mag[2]) win = 1; else win = 2;}
     switch (win) {
     case 0: if (neg[0]) p = q1000; else p = q0001; break;
-    case 1: if (neg[1]) p = qppmm; else p = qpppp; cycle(ka, 0) break;
-    case 2: if (neg[2]) p = qmpmm; else p = qpppm; cycle(ka, 1) break;
+    case 1: if (neg[1]) p = qppmm; else p = qpppp; cycle(ka, FALSE); break;
+    case 2: if (neg[2]) p = qmpmm; else p = qpppm; cycle(ka, TRUE); break;
     }
     qp = p * q;
     t = sqrt(mag[win]+0.5);
@@ -1506,8 +1517,9 @@ snuggle(SbDPRotation q, SbVec4d & k)
     if (all>two) {
       if (all>big) {/*all*/
         {int i; for (i=0; i<4; i++) pa[i] = sgn(neg[i], 0.5f);}
-        cycle(ka, par)
-          } else {/*big*/ pa[hi] = sgn(neg[hi], 1.0f);}
+        cycle(ka, par);
+      }
+      else {/*big*/ pa[hi] = sgn(neg[hi], 1.0f);}
     }
     else {
       if (two>big) {/*two*/
