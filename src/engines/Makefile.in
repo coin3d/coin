@@ -116,7 +116,6 @@ ALLSOURCES = \
 	SoElapsedTime.cpp SoElapsedTime.h \
 	SoEngine.cpp SoEngine.h \
 	SoEngineOutput.cpp SoEngineOutput.h \
-	SoExpressionParser.cpp SoExpressionParser.h \
 	SoFieldConverter.cpp SoFieldConverter.h \
 	SoGate.cpp SoGate.h \
 	SoInterpolateAbs.cpp SoInterpolateAbs.h \
@@ -155,7 +154,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoElapsedTime.h \
 	$(top_srcdir)/include/Inventor/engines/SoEngine.h \
 	$(top_srcdir)/include/Inventor/engines/SoEngineOutput.h \
-	$(top_srcdir)/include/Inventor/engines/SoExpressionParser.h \
 	$(top_srcdir)/include/Inventor/engines/SoFieldConverter.h \
 	$(top_srcdir)/include/Inventor/engines/SoGate.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolate.h \
@@ -211,8 +209,8 @@ SoComposeMatrix.lo SoComposeRotation.lo SoComposeVec2f.lo \
 SoComposeVec3f.lo SoComposeVec4f.lo SoConcatenate.lo SoConvertAll.lo \
 SoCounter.lo SoDecomposeMatrix.lo SoDecomposeRotation.lo \
 SoDecomposeVec2f.lo SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
-SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoExpressionParser.lo \
-SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
+SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoFieldConverter.lo \
+SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
 SoInterpolateRotation.lo SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
 SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoOutputData.lo \
 SoSelectOne.lo SoTriggerAny.lo evaluator.lo evaluator.tab.lo
@@ -224,8 +222,8 @@ SoComposeMatrix.lo SoComposeRotation.lo SoComposeVec2f.lo \
 SoComposeVec3f.lo SoComposeVec4f.lo SoConcatenate.lo SoConvertAll.lo \
 SoCounter.lo SoDecomposeMatrix.lo SoDecomposeRotation.lo \
 SoDecomposeVec2f.lo SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
-SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoExpressionParser.lo \
-SoFieldConverter.lo SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
+SoElapsedTime.lo SoEngine.lo SoEngineOutput.lo SoFieldConverter.lo \
+SoGate.lo SoInterpolateAbs.lo SoInterpolateFloat.lo \
 SoInterpolateRotation.lo SoInterpolateVec2f.lo SoInterpolateVec3f.lo \
 SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo SoOutputData.lo \
 SoSelectOne.lo SoTriggerAny.lo evaluator.lo evaluator.tab.lo
@@ -260,15 +258,14 @@ $(DEPDIR)/SoCounter.Plo $(DEPDIR)/SoDecomposeMatrix.Plo \
 $(DEPDIR)/SoDecomposeRotation.Plo $(DEPDIR)/SoDecomposeVec2f.Plo \
 $(DEPDIR)/SoDecomposeVec3f.Plo $(DEPDIR)/SoDecomposeVec4f.Plo \
 $(DEPDIR)/SoElapsedTime.Plo $(DEPDIR)/SoEngine.Plo \
-$(DEPDIR)/SoEngineOutput.Plo $(DEPDIR)/SoExpressionParser.Plo \
-$(DEPDIR)/SoFieldConverter.Plo $(DEPDIR)/SoGate.Plo \
-$(DEPDIR)/SoInterpolateAbs.Plo $(DEPDIR)/SoInterpolateFloat.Plo \
-$(DEPDIR)/SoInterpolateRotation.Plo $(DEPDIR)/SoInterpolateVec2f.Plo \
-$(DEPDIR)/SoInterpolateVec3f.Plo $(DEPDIR)/SoInterpolateVec4f.Plo \
-$(DEPDIR)/SoOnOff.Plo $(DEPDIR)/SoOneShot.Plo \
-$(DEPDIR)/SoOutputData.Plo $(DEPDIR)/SoSelectOne.Plo \
-$(DEPDIR)/SoTriggerAny.Plo $(DEPDIR)/evaluator.Plo \
-$(DEPDIR)/evaluator.tab.Plo
+$(DEPDIR)/SoEngineOutput.Plo $(DEPDIR)/SoFieldConverter.Plo \
+$(DEPDIR)/SoGate.Plo $(DEPDIR)/SoInterpolateAbs.Plo \
+$(DEPDIR)/SoInterpolateFloat.Plo $(DEPDIR)/SoInterpolateRotation.Plo \
+$(DEPDIR)/SoInterpolateVec2f.Plo $(DEPDIR)/SoInterpolateVec3f.Plo \
+$(DEPDIR)/SoInterpolateVec4f.Plo $(DEPDIR)/SoOnOff.Plo \
+$(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoOutputData.Plo \
+$(DEPDIR)/SoSelectOne.Plo $(DEPDIR)/SoTriggerAny.Plo \
+$(DEPDIR)/evaluator.Plo $(DEPDIR)/evaluator.tab.Plo
 SOURCES = $(libengines_la_SOURCES) $(libenginesLINKHACK_la_SOURCES)
 OBJECTS = $(am_libengines_la_OBJECTS) $(am_libenginesLINKHACK_la_OBJECTS)
 
@@ -418,7 +415,6 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoElapsedTime.Plo
 @AMDEP@include $(DEPDIR)/SoEngine.Plo
 @AMDEP@include $(DEPDIR)/SoEngineOutput.Plo
-@AMDEP@include $(DEPDIR)/SoExpressionParser.Plo
 @AMDEP@include $(DEPDIR)/SoFieldConverter.Plo
 @AMDEP@include $(DEPDIR)/SoGate.Plo
 @AMDEP@include $(DEPDIR)/SoInterpolateAbs.Plo

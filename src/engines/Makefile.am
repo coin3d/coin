@@ -20,7 +20,6 @@ ALLSOURCES = \
 	SoElapsedTime.cpp SoElapsedTime.h \
 	SoEngine.cpp SoEngine.h \
 	SoEngineOutput.cpp SoEngineOutput.h \
-	SoExpressionParser.cpp SoExpressionParser.h \
 	SoFieldConverter.cpp SoFieldConverter.h \
 	SoGate.cpp SoGate.h \
 	SoInterpolateAbs.cpp SoInterpolateAbs.h \
@@ -59,7 +58,6 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoElapsedTime.h \
 	$(top_srcdir)/include/Inventor/engines/SoEngine.h \
 	$(top_srcdir)/include/Inventor/engines/SoEngineOutput.h \
-	$(top_srcdir)/include/Inventor/engines/SoExpressionParser.h \
 	$(top_srcdir)/include/Inventor/engines/SoFieldConverter.h \
 	$(top_srcdir)/include/Inventor/engines/SoGate.h \
 	$(top_srcdir)/include/Inventor/engines/SoInterpolate.h \
