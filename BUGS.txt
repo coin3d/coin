@@ -709,3 +709,31 @@
     20020924 mortene.
 
 =====================================================================
+
+031 Setting up the alpha channel for the offscreen renderer doesn't
+    consistently (between hosts) produce a transparent background when
+    using setComponents(SoOffscreenRenderer::RGB_TRANSPARENCY).  It
+    works at home on my Debian Linux w/ GeForce4MX440 with the 3123
+    NVIDIA GLX sources, but not at work with whatever gfx system I
+    have there.
+
+    Index: src/misc/SoOffscreenGLXData.icc
+    ===================================================================
+    RCS file: /export/cvsroot/Coin/src/misc/SoOffscreenGLXData.icc,v
+    retrieving revision 1.17
+    diff -u -r1.17 SoOffscreenGLXData.icc
+    --- src/misc/SoOffscreenGLXData.icc     19 Sep 2002 10:08:04 -0000      1.17
+    +++ src/misc/SoOffscreenGLXData.icc     27 Sep 2002 08:50:02 -0000
+    @@ -199,6 +199,8 @@
+         attrs[pos++] = 4;
+         // FIXME: won't get an alpha channel in the context unless we also
+         // request a particular ALPHA bitsize. 20020605 mortene.
+    +    attrs[pos++] = GLX_ALPHA_SIZE;
+    +    attrs[pos++] = 4;
+       }
+       attrs[pos++] = None;
+       return pos;
+
+    20020927 larsa.
+
+=====================================================================
