@@ -188,7 +188,7 @@ SoDB::init(void)
   SoEngine::initClass();
   SoEvent::initClass();
 
-  
+
   // Register all valid file format headers.
   SoDB::registerHeader(SbString("#Inventor V2.1 ascii   "), FALSE, 2.1f,
                        NULL, NULL, NULL);
@@ -303,6 +303,7 @@ SoDB::read(SoInput * in, SoBase *& base)
 SbBool
 SoDB::read(SoInput * in, SoNode *& rootNode)
 {
+  rootNode = NULL;
   SoBase * baseptr;
   SbBool result = SoDB::read(in, baseptr);
   if (result && baseptr) {
