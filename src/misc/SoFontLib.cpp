@@ -66,6 +66,21 @@ SbDict SoFontLibP::openfonts;
 
 /*************************************************************************/
 
+/* This method, with the same environment variable check, is
+   replicated in glue/fontlib_wrapper.c. */
+static SbBool
+cc_flw_debug(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_FONTSUPPORT");
+    dbg = env && (atoi(env) > 0);
+  }
+  return dbg;
+}
+
+/*************************************************************************/
+
 /*!
   Constructor.
 */
