@@ -1,4 +1,4 @@
-/**************************************************************************\
+ /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
  *  Copyright (C) 1998-2003 by Systems in Motion.  All rights reserved.
@@ -193,11 +193,7 @@ SoGate::evaluate(void)
   // Force update of slave fields.
   this->output->enable(TRUE);
 
-  // FIXME: this is an amazingly ineffective way of copying the
-  // values. 20000920 mortene.
-  SbString valuestring;
-  this->input->get(valuestring);
-  SO_ENGINE_OUTPUT((*output), SoField, set(valuestring.getString()));
+  SO_ENGINE_OUTPUT((*output), SoField, copyFrom(*this->input));  
 
   // No more updates until either the SoGate::enable field or the
   // SoGate::trigger field is touched.
