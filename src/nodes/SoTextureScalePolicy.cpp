@@ -43,6 +43,7 @@
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoTextureScaleQualityElement.h>
+#include <Inventor/elements/SoTextureScalePolicyElement.h>
 
 /*!
   \enum SoTextureScalePolicy::Policy
@@ -128,14 +129,34 @@ SoTextureScalePolicy::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoTextureScaleQualityElement);
 }
 
+static SoTextureScalePolicyElement::Policy
+convert_policy(const SoTextureScalePolicy::Policy policy)
+{
+  switch (policy) {
+  default:
+    assert(0 && "unknown policy");
+  case SoTextureScalePolicy::USE_TEXTURE_QUALITY:
+    return SoTextureScalePolicyElement::USE_TEXTURE_QUALITY;
+    break;
+  case SoTextureScalePolicy::SCALE_DOWN:
+    return SoTextureScalePolicyElement::SCALE_DOWN;
+    break;
+  case SoTextureScalePolicy::SCALE_UP:
+    return SoTextureScalePolicyElement::SCALE_UP;
+    break;
+  case SoTextureScalePolicy::FRACTURE:
+    return SoTextureScalePolicyElement::FRACTURE;
+    break;
+  }
+}
+
 // Doc from superclass.
 void
 SoTextureScalePolicy::GLRender(SoGLRenderAction * action)
 {
   if (!this->policy.isIgnored()) {
     SoTextureScalePolicyElement::set(action->getState(), this, 
-                                     (SoTextureScalePolicyElement::Policy) 
-                                     this->policy.getValue());
+                                     convert_policy((Policy)this->policy.getValue()));
   }
   if (!this->quality.isIgnored()) {
     SoTextureScaleQualityElement::set(action->getState(), this,
