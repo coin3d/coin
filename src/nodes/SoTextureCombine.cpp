@@ -240,7 +240,7 @@
 #include <Inventor/elements/SoTextureCombineElement.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
 #include <Inventor/errors/SoDebugError.h>
-
+#include <Inventor/C/glue/gl.h>
 
 // *************************************************************************
 
@@ -323,7 +323,21 @@ SoTextureCombine::initClass(void)
 void
 SoTextureCombine::GLRender(SoGLRenderAction * action)
 {
-  SoTextureCombine::doAction((SoAction*)action);
+  const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
+  if (cc_glglue_glversion_matches_at_least(glue, 1, 3, 0) ||
+      cc_glglue_glext_supported(glue, "GL_ARB_texture_env_combine")) {
+    SoTextureCombine::doAction((SoAction*)action);
+  }
+  else {
+    static int didwarn = 0;
+    if (!didwarn) {
+      SoDebugError::postWarning("SoTextureCombine::GLRender",
+                                "Your OpenGL driver does not support the "
+                                "required extensions to do texture combine.");
+      didwarn = 1;
+    }
+
+  }
 }
 
 // Doc from superclass.
