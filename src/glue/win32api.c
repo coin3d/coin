@@ -6,6 +6,7 @@
    of the Win32 API. 20030530 mortene. */
 #ifdef _WIN32
 
+#include <assert.h>
 #include <windows.h>
 
 #include <Inventor/C/glue/win32api.h>
