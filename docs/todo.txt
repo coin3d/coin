@@ -194,6 +194,8 @@ STUFF TO FIX IN COIN
        support the format, explain why, and how to build Coin with
        support for that file format.]
 
+       [UPDATE 20031117 mortene: this is now fixed for 3DS files.]
+
     3) File formats we know about, but don't support. (Examples:
        Inventor 1.0 ascii & binary. We could also add in all sorts of
        3D file formats here, like Maya, OBJ, etc etc.)

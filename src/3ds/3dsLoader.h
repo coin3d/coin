@@ -30,11 +30,14 @@
 class SoInput;
 class SoSeparator;
 
-SbBool is3dsFile(SoInput *in);
-SbBool read3dsFile(SoInput *in, SoSeparator *& root,
-                   int appendNormals = 2, float creaseAngle = 25.f/180.f*M_PI,
-                   SbBool loadMaterials = TRUE, SbBool loadTextures = TRUE,
-                   SbBool loadObjNames = FALSE, SbBool indexedTriSet = FALSE,
-                   SbBool centerModel = TRUE, float modelSize = 10.f);
+SbBool coin_3ds_read_file(SoInput * in, SoSeparator *& root,
+                          int appendNormals = 2,
+                          float creaseAngle = 25.f/180.f*M_PI,
+                          SbBool loadMaterials = TRUE,
+                          SbBool loadTextures = TRUE,
+                          SbBool loadObjNames = FALSE,
+                          SbBool indexedTriSet = FALSE,
+                          SbBool centerModel = TRUE,
+                          float modelSize = 10.f);
 
 #endif // !COIN_3DSLOADER_H

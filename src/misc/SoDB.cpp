@@ -319,6 +319,19 @@ public:
   static SbDict * converters;
   static int notificationcounter;
   static SbBool isinitialized;
+
+  static SbBool is3dsFile(SoInput * in);
+  static SoSeparator * read3DSFile(SoInput * in);
+
+  struct ProgressCallbackInfo {
+    SoDB::ProgressCallbackType * func;
+    void * userdata;
+
+    int operator==(const ProgressCallbackInfo & a) {
+      return (a.func == this->func) && (a.userdata == this->userdata);
+    }
+  };
+  static SbList<struct ProgressCallbackInfo> * progresscblist;
 };
 
 SbList<SoDB_HeaderInfo *> * SoDBP::headerlist = NULL;
@@ -327,6 +340,7 @@ SoTimerSensor * SoDBP::globaltimersensor = NULL;
 SbDict * SoDBP::converters = NULL;
 SbBool SoDBP::isinitialized = FALSE;
 int SoDBP::notificationcounter = 0;
+SbList<SoDBP::ProgressCallbackInfo> * SoDBP::progresscblist = NULL;
 
 // *************************************************************************
 
@@ -664,6 +678,9 @@ SoDB::init(void)
 void
 SoDBP::clean(void)
 {
+  delete SoDBP::progresscblist;
+  SoDBP::progresscblist = NULL;
+
   // Here be dragons: If SoAudioDevice::instance()->cleanup() for some
   // reason is called as part of Coin's atexit() queue, and
   // SoAudioDevice::instance()->haveSound() == TRUE, and Coin is used
@@ -780,6 +797,29 @@ SoDB::read(SoInput * in, SoPath *& path)
   return TRUE;
 }
 
+SoSeparator *
+SoDBP::read3DSFile(SoInput * in)
+{
+  assert(SoDBP::is3dsFile(in));
+
+#ifdef HAVE_3DS_IMPORT_CAPABILITIES
+
+  SoSeparator * b;
+  const SbBool ok = coin_3ds_read_file(in, b);
+  if (ok) { return b; }
+
+#else // !HAVE_3DS_IMPORT_CAPABILITIES
+
+  SoDebugError::postWarning("SoDB::read",
+                            "It seems like the input file is in 3D Studio "
+                            "format, but this configuration of Coin was "
+                            "built without support for that file format.");
+
+#endif // !HAVE_3DS_IMPORT_CAPABILITIES
+
+  return NULL;
+}
+
 /*!
   Instantiates and reads an object of type SoBase from \a in and
   returns a pointer to it in \a base. \a base will be \c NULL on
@@ -792,14 +832,10 @@ SoDB::read(SoInput * in, SoPath *& path)
 SbBool
 SoDB::read(SoInput * in, SoBase *& base)
 {
-#ifdef HAVE_3DS_IMPORT_CAPABILITIES
-  if (is3dsFile(in)) {
-    SoSeparator * b;
-    SbBool ok = read3dsFile(in, b);
-    base = ok ? b : NULL;
-    return ok;
+  if (SoDBP::is3dsFile(in)) {
+    base = SoDBP::read3DSFile(in);
+    return (base != NULL);
   }
-#endif // HAVE_3DS_IMPORT_CAPABILITIES
 
   // Header is only required when reading from a stream, if reading from
   // memory no header is required
@@ -823,14 +859,10 @@ SoDB::read(SoInput * in, SoNode *& rootnode)
   rootnode = NULL;
   SoBase * baseptr;
 
-#ifdef HAVE_3DS_IMPORT_CAPABILITIES
-  if (is3dsFile(in)) {
-    SoSeparator * b;
-    SbBool ok = read3dsFile(in, b);
-    if (ok) { rootnode = b; }
-    return ok;
+  if (SoDBP::is3dsFile(in)) {
+    rootnode = SoDBP::read3DSFile(in);
+    return (rootnode != NULL);
   }
-#endif // HAVE_3DS_IMPORT_CAPABILITIES
 
   if (!SoDB::read(in, baseptr)) return FALSE;
   if (!baseptr) return TRUE; // eof
@@ -1423,21 +1455,49 @@ SoDB::enableRealTimeSensor(SbBool on)
 #endif // COIN_DEBUG
 }
 
+SbBool
+SoDBP::is3dsFile(SoInput * in)
+{
+  if (in->getHeader().getLength() > 0) { return FALSE; }
+
+  char c1, c2;
+  if (!in->get(c1)) { return FALSE; }
+  if (!in->get(c2)) { in->putBack(c1); return FALSE; }
+  in->putBack(c2);
+  in->putBack(c1);
+
+  // FIXME: this seems like a rather weak test for 3D Studio format
+  // files (1 out of every 65536 files with random data would return
+  // TRUE). Should check up on the format spec, and improve
+  // it. 20031117 mortene.
+  if (c1 != 0x4d) { return FALSE; }
+  if (c2 != 0x4d) { return FALSE; }
+
+  return TRUE;
+}
+
 // private wrapper for readAll() and readAllVRML()
 SoGroup *
 SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
 {
   assert(SoDB::isInitialized() && "you forgot to initialize the Coin library");
 
-#ifdef HAVE_3DS_IMPORT_CAPABILITIES
-  if (is3dsFile(in)) {
-    SoSeparator * base = NULL;
-    if (read3dsFile(in, base)) {
-      return base;
+  assert(grouptype.canCreateInstance());
+  assert(grouptype.isDerivedFrom(SoGroup::getClassTypeId()));
+
+  if (SoDBP::is3dsFile(in)) {
+    SoSeparator * root3ds = SoDBP::read3DSFile(in);
+    if (root3ds == NULL) { return NULL; }
+
+    if (!SoSeparator::getClassTypeId().isDerivedFrom(grouptype)) {
+      SoGroup * root = (SoGroup *)grouptype.createInstance();
+      root->addChild(root3ds);
+      return root;
     }
-    return NULL;
+    else {
+      return root3ds;
+    }
   }
-#endif // HAVE_3DS_IMPORT_CAPABILITIES
 
   if (!in->isValidFile()) {
     SoReadError::post(in, "Not a valid Inventor file.");
@@ -1445,46 +1505,132 @@ SoDB::readAllWrapper(SoInput * in, const SoType & grouptype)
   }
 
 #if COIN_DEBUG // See comments below in next COIN_DEBUG block.
-  int stackdepth = in->filestack.getLength();
+  const int stackdepth = in->filestack.getLength();
 #endif // COIN_DEBUG
 
-  assert(grouptype.canCreateInstance());
-  assert(grouptype.isDerivedFrom(SoGroup::getClassTypeId()));
-  SoGroup * root = (SoGroup*) grouptype.createInstance();
-
-  root->ref();
-
+  SoGroup * root = (SoGroup *)grouptype.createInstance();
   SoNode * topnode;
   do {
     if (!SoDB::read(in, topnode)) {
+      root->ref();
       root->unref();
       return NULL;
     }
-    if (topnode) root->addChild(topnode);
+    if (topnode) { root->addChild(topnode); }
   } while (topnode && in->skipWhiteSpace());
-
-  SoGroup * retnode;
-  if ((root->getNumChildren() == 1) &&
-      (root->getChild(0)->isOfType(grouptype))) {
-    retnode = (SoGroup*)root->getChild(0);
-    retnode->ref();
-    root->unref();
-  }
-  else {
-    retnode = root;
-  }
 
 #if COIN_DEBUG
   // Detect problems with missing pops from the SoInput file stack.
   assert(stackdepth == in->filestack.getLength());
 #endif // COIN_DEBUG
-  if (in->filestack.getLength() == 1) in->popFile(); // force a header post callback
 
-  assert(retnode->getRefCount() == 1);
-  retnode->unrefNoDelete(); // return with a zero refcount
-  return retnode;
+  // Force a header post callback.
+  if (in->filestack.getLength() == 1) { in->popFile(); }
+
+  // Strip off extra root group node if it was unnecessary (i.e. if
+  // the file only had a single top-level root, and it was of the same
+  // type as is requested returned).
+  if ((root->getNumChildren() == 1) && (root->getChild(0)->isOfType(grouptype))) {
+    SoNode * n = root->getChild(0);
+    n->ref();
+    root->ref();
+    root->unref();
+    n->unrefNoDelete();
+    return (SoGroup *)n;
+  }
+
+  return root;
 }
 
+/* *********************************************************************** */
+
+/*!
+  \typedef SbBool SoDB::ProgressCallbackType(const SbName & itemid, float fraction, void * userdata)
+
+  Client code progress callback function must be static functions of
+  this type.
+
+  The return value is an abort flag indication from the client code,
+  the \a itemid argument is a unique text identifier which says what
+  is being processed (use this for any GUI progress bar informational
+  text), and \a fraction is a value in the range [0, 1] which
+  indicates how far the process has got. If the task is successfully
+  aborted, the callback will be invoked a last time with \a fraction
+  set to -1.0.
+
+  See SoDB::addProgressCallback() for full documentation of how the
+  progress notification mechanism works.
+*/
+
+/*!
+  The concept behind progress information in Coin is that any internal
+  process which may take a long time to complete (like e.g. file
+  import for huge scenes) can pass on progress information by calling
+  back to a progress callback set up by the code of the client
+  application.
+
+  The client's progress callback's function signature must match the
+  SoDB::ProgressCallbackType.
+
+  The mechanism works by enforcing that all progress notification from
+  within Coin must
+
+  <ol>
+
+  <li> Use a unique text id to identify the "progress-informing"
+       process (e.g. "File import" for SoDB::readAll() / SoInput file
+       reading, "File export" for SoOutput / SoWriteAction, etc). This
+       is the \a itemid name passed on to the progress callback.</li>
+
+  <li>The first invocation of the user callback will be done with an
+      exact 0.0 \a fraction value.</li>
+
+  <li>The last invocation will be done with an exact 1.0 fraction
+      value.</li>
+
+  <li>An exception to the last point is that if the process is
+      aborted, a final invocation with a -1.0 fraction value will be
+      made.</li>
+
+  </ol>
+
+  One important thing to note about the mechanism is that processes
+  with progress callbacks can be running within \e other processes
+  using the progress callback functionality.  Progress information
+  will then have to be considered to be "stacked", and client code
+  must be aware of and treat this properly.
+
+  \COIN_FUNCTION_EXTENSION
+
+  \since Coin 2.2
+*/
+void
+SoDB::addProgressCallback(ProgressCallbackType * func, void * userdata)
+{
+  if (SoDBP::progresscblist == NULL) {
+    SoDBP::progresscblist = new SbList<SoDBP::ProgressCallbackInfo>;
+  }
+
+  const SoDBP::ProgressCallbackInfo newitem = { func, userdata };
+  SoDBP::progresscblist->append(newitem);
+}
+
+/*!
+  Removes a progress callback function, which will no longer be
+  invoked.
+*/
+void
+SoDB::removeProgressCallback(ProgressCallbackType * func, void * userdata)
+{
+  assert(SoDBP::progresscblist);
+
+  const SoDBP::ProgressCallbackInfo item = { func, userdata };
+  const int idx = SoDBP::progresscblist->find(item);
+  assert(idx != -1);
+  SoDBP::progresscblist->remove(idx);
+}
+
+/* *********************************************************************** */
 
 #if defined(HAVE_WINDLL_RUNTIME_BINDING) && defined(HAVE_TLHELP32_H)
 

@@ -511,57 +511,12 @@ CHUNK_DECL(LoadMapVOffset);
 static int coin_debug_3ds();
 
 
-
-
-SbBool is3dsFile(SoInput *in)
-{
-  if (in->getHeader().getLength() > 0)  return FALSE;
-
-  char c1,c2;
-  if (!in->get(c1))  return FALSE;
-  if (!in->get(c2)) { in->putBack(c1); return FALSE; }
-  in->putBack(c2);
-  in->putBack(c1);
-  if (c1 != 0x4d)  return FALSE;
-  if (c2 != 0x4d)  return FALSE;
-
-  return TRUE;
-}
-
-
-
-// forward declaration
-SbBool read3dsFile(SoStream *in, SoSeparator *&root,
-                 int appendNormals = 2, float creaseAngle = 25.f/180.f*M_PI,
-                 SbBool loadMaterials = TRUE, SbBool loadTextures = TRUE,
-                 SbBool loadObjNames = FALSE, SbBool indexedTriSet = FALSE,
-                 SbBool centerModel = TRUE, float modelSize = 10.f);
-
-
-
-SbBool read3dsFile(SoInput *in, SoSeparator *&root,
-                 int appendNormals = 2, float creaseAngle = 25.f/180.f*M_PI,
-                 SbBool loadMaterials = TRUE, SbBool loadTextures = TRUE,
-                 SbBool loadObjNames = FALSE, SbBool indexedTriSet = FALSE,
-                 SbBool centerModel = TRUE, float modelSize = 10.f)
-{
-  SoStream s;
-  s.setBinary(TRUE);
-  s.setEndianOrdering(SoStream::LITTLE_ENDIAN_STREAM);
-  s.wrapSoInput(in);
-
-  return read3dsFile(&s, root, appendNormals, creaseAngle, loadMaterials,
-                     loadTextures, loadObjNames, indexedTriSet,
-                     centerModel, modelSize);
-}
-
-
-
-SbBool read3dsFile(SoStream *in, SoSeparator *&root,
-                 int appendNormals, float creaseAngle,
-                 SbBool loadMaterials, SbBool loadTextures,
-                 SbBool loadObjNames, SbBool indexedTriSet,
-                 SbBool centerModel, float modelSize)
+static SbBool
+read3dsFile(SoStream *in, SoSeparator *&root,
+            int appendNormals, float creaseAngle,
+            SbBool loadMaterials, SbBool loadTextures,
+            SbBool loadObjNames, SbBool indexedTriSet,
+            SbBool centerModel, float modelSize)
 {
   // read the stream header
   uint16_t header;
@@ -2041,3 +1996,26 @@ static int coin_debug_3ds()
   }
   return d;
 }
+
+// *************************************************************************
+
+// This is the only interface exposed to code outside this file.
+
+SbBool
+coin_3ds_read_file(SoInput *in, SoSeparator *&root,
+                   int appendNormals, float creaseAngle,
+                   SbBool loadMaterials, SbBool loadTextures,
+                   SbBool loadObjNames, SbBool indexedTriSet,
+                   SbBool centerModel, float modelSize)
+{
+  SoStream s;
+  s.setBinary(TRUE);
+  s.setEndianOrdering(SoStream::LITTLE_ENDIAN_STREAM);
+  s.wrapSoInput(in);
+
+  return read3dsFile(&s, root, appendNormals, creaseAngle, loadMaterials,
+                     loadTextures, loadObjNames, indexedTriSet,
+                     centerModel, modelSize);
+}
+
+// *************************************************************************

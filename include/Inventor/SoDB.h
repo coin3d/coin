@@ -93,6 +93,11 @@ public:
   static SbBool isNotifying(void);
   static void endNotify(void);
 
+  typedef SbBool ProgressCallbackType(const SbName & itemid, float fraction,
+                                      void * userdata);
+  static void addProgressCallback(ProgressCallbackType * func, void * userdata);
+  static void removeProgressCallback(ProgressCallbackType * func, void * userdata);
+
 private:
   static SoGroup * readAllWrapper(SoInput * in, const SoType & grouptype);
 };
