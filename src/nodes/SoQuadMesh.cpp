@@ -268,7 +268,7 @@ static sogl_render_qmesh_func *soquadmesh_ni_render_funcs[ 32 ];
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_qmesh_m0_n0_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -277,7 +277,7 @@ static void sogl_qmesh_m0_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_qmesh_m1_n0_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -286,7 +286,7 @@ static void sogl_qmesh_m1_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_qmesh_m2_n0_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -295,7 +295,7 @@ static void sogl_qmesh_m2_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_qmesh_m3_n0_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -308,7 +308,7 @@ static void sogl_qmesh_m3_n0_t0
 #define NBINDING PER_ROW
 #define TEXTURES FALSE
 static void sogl_qmesh_m0_n1_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -317,7 +317,7 @@ static void sogl_qmesh_m0_n1_t0
 #define NBINDING PER_ROW
 #define TEXTURES FALSE
 static void sogl_qmesh_m1_n1_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -326,7 +326,7 @@ static void sogl_qmesh_m1_n1_t0
 #define NBINDING PER_ROW
 #define TEXTURES FALSE
 static void sogl_qmesh_m2_n1_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -335,7 +335,7 @@ static void sogl_qmesh_m2_n1_t0
 #define NBINDING PER_ROW
 #define TEXTURES FALSE
 static void sogl_qmesh_m3_n1_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -348,7 +348,7 @@ static void sogl_qmesh_m3_n1_t0
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
 static void sogl_qmesh_m0_n2_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -357,7 +357,7 @@ static void sogl_qmesh_m0_n2_t0
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
 static void sogl_qmesh_m1_n2_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -366,7 +366,7 @@ static void sogl_qmesh_m1_n2_t0
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
 static void sogl_qmesh_m2_n2_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -375,7 +375,7 @@ static void sogl_qmesh_m2_n2_t0
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
 static void sogl_qmesh_m3_n2_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -388,7 +388,7 @@ static void sogl_qmesh_m3_n2_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_qmesh_m0_n3_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -397,7 +397,7 @@ static void sogl_qmesh_m0_n3_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_qmesh_m1_n3_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -406,7 +406,7 @@ static void sogl_qmesh_m1_n3_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_qmesh_m2_n3_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -415,7 +415,7 @@ static void sogl_qmesh_m2_n3_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_qmesh_m3_n3_t0
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -430,7 +430,7 @@ static void sogl_qmesh_m3_n3_t0
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_qmesh_m0_n0_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -439,7 +439,7 @@ static void sogl_qmesh_m0_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_qmesh_m1_n0_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -448,7 +448,7 @@ static void sogl_qmesh_m1_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_qmesh_m2_n0_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -457,7 +457,7 @@ static void sogl_qmesh_m2_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_qmesh_m3_n0_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -470,7 +470,7 @@ static void sogl_qmesh_m3_n0_t1
 #define NBINDING PER_ROW
 #define TEXTURES TRUE
 static void sogl_qmesh_m0_n1_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -479,7 +479,7 @@ static void sogl_qmesh_m0_n1_t1
 #define NBINDING PER_ROW
 #define TEXTURES TRUE
 static void sogl_qmesh_m1_n1_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -488,7 +488,7 @@ static void sogl_qmesh_m1_n1_t1
 #define NBINDING PER_ROW
 #define TEXTURES TRUE
 static void sogl_qmesh_m2_n1_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -497,7 +497,7 @@ static void sogl_qmesh_m2_n1_t1
 #define NBINDING PER_ROW
 #define TEXTURES TRUE
 static void sogl_qmesh_m3_n1_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -510,7 +510,7 @@ static void sogl_qmesh_m3_n1_t1
 #define NBINDING PER_FACE
 #define TEXTURES TRUE
 static void sogl_qmesh_m0_n2_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -519,7 +519,7 @@ static void sogl_qmesh_m0_n2_t1
 #define NBINDING PER_FACE
 #define TEXTURES TRUE
 static void sogl_qmesh_m1_n2_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -528,7 +528,7 @@ static void sogl_qmesh_m1_n2_t1
 #define NBINDING PER_FACE
 #define TEXTURES TRUE
 static void sogl_qmesh_m2_n2_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -537,7 +537,7 @@ static void sogl_qmesh_m2_n2_t1
 #define NBINDING PER_FACE
 #define TEXTURES TRUE
 static void sogl_qmesh_m3_n2_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -550,7 +550,7 @@ static void sogl_qmesh_m3_n2_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_qmesh_m0_n3_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -559,7 +559,7 @@ static void sogl_qmesh_m0_n3_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_qmesh_m1_n3_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -568,7 +568,7 @@ static void sogl_qmesh_m1_n3_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_qmesh_m2_n3_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -577,7 +577,7 @@ static void sogl_qmesh_m2_n3_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_qmesh_m3_n3_t1
-#include "../misc/SoGLqmeshTemplate.cpp"
+#include "../misc/SoGLqmeshTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES

@@ -210,7 +210,7 @@ static sogl_render_lineset_func *lineset_render_funcs[ 32 ];
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ls_m0_n0_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -219,7 +219,7 @@ static void sogl_ls_m0_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ls_m1_n0_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -228,7 +228,7 @@ static void sogl_ls_m1_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ls_m2_n0_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -237,7 +237,7 @@ static void sogl_ls_m2_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ls_m3_n0_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -246,7 +246,7 @@ static void sogl_ls_m3_n0_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ls_m0_n1_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -255,7 +255,7 @@ static void sogl_ls_m0_n1_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ls_m1_n1_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -264,7 +264,7 @@ static void sogl_ls_m1_n1_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ls_m2_n1_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -273,7 +273,7 @@ static void sogl_ls_m2_n1_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ls_m3_n1_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -282,7 +282,7 @@ static void sogl_ls_m3_n1_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ls_m0_n2_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -291,7 +291,7 @@ static void sogl_ls_m0_n2_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ls_m1_n2_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -300,7 +300,7 @@ static void sogl_ls_m1_n2_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ls_m2_n2_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -309,7 +309,7 @@ static void sogl_ls_m2_n2_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ls_m3_n2_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -318,7 +318,7 @@ static void sogl_ls_m3_n2_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ls_m0_n3_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -327,7 +327,7 @@ static void sogl_ls_m0_n3_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ls_m1_n3_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -336,7 +336,7 @@ static void sogl_ls_m1_n3_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ls_m2_n3_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -345,7 +345,7 @@ static void sogl_ls_m2_n3_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ls_m3_n3_t0
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -354,7 +354,7 @@ static void sogl_ls_m3_n3_t0
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ls_m0_n0_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -363,7 +363,7 @@ static void sogl_ls_m0_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ls_m1_n0_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -372,7 +372,7 @@ static void sogl_ls_m1_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ls_m2_n0_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -381,7 +381,7 @@ static void sogl_ls_m2_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ls_m3_n0_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -390,7 +390,7 @@ static void sogl_ls_m3_n0_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ls_m0_n1_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -399,7 +399,7 @@ static void sogl_ls_m0_n1_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ls_m1_n1_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -408,7 +408,7 @@ static void sogl_ls_m1_n1_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ls_m2_n1_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -417,7 +417,7 @@ static void sogl_ls_m2_n1_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ls_m3_n1_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -426,7 +426,7 @@ static void sogl_ls_m3_n1_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ls_m0_n2_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -435,7 +435,7 @@ static void sogl_ls_m0_n2_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ls_m1_n2_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -444,7 +444,7 @@ static void sogl_ls_m1_n2_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ls_m2_n2_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -453,7 +453,7 @@ static void sogl_ls_m2_n2_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ls_m3_n2_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -462,7 +462,7 @@ static void sogl_ls_m3_n2_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ls_m0_n3_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -471,7 +471,7 @@ static void sogl_ls_m0_n3_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ls_m1_n3_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -480,7 +480,7 @@ static void sogl_ls_m1_n3_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ls_m2_n3_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -489,7 +489,7 @@ static void sogl_ls_m2_n3_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ls_m3_n3_t1
-#include "../misc/SoGLLineSetTemplate.cpp"
+#include "../misc/SoGLLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES

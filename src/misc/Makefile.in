@@ -199,13 +199,13 @@ PrivateHeaders = \
 	GLUWrapper.h \
 	GLWrapper.h \
 	simage_wrapper.h \
-	SoGLFaceSetTemplate.cpp \
-	SoGLLineSetTemplate.cpp \
-	SoGLTristripTemplate.cpp \
-	SoGLindexedLineSetTemplate.cpp \
-	SoGLnonindexedFaceSetTemplate.cpp \
-	SoGLnonindexedTristripSetTemplate.cpp \
-	SoGLqmeshTemplate.cpp
+	SoGLFaceSetTemplate.icc \
+	SoGLLineSetTemplate.icc \
+	SoGLTristripTemplate.icc \
+	SoGLindexedLineSetTemplate.icc \
+	SoGLnonindexedFaceSetTemplate.icc \
+	SoGLnonindexedTristripSetTemplate.icc \
+	SoGLqmeshTemplate.icc
 
 
 
@@ -348,26 +348,11 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoDB.Po $(DEPDIR)/SoFullPath.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoFullPath.Po $(DEPDIR)/SoGL.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGL.Po $(DEPDIR)/SoGLBigImage.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLBigImage.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLFaceSetTemplate.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLFaceSetTemplate.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLImage.Plo $(DEPDIR)/SoGLImage.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLineSetTemplate.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLLineSetTemplate.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTristripTemplate.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLTristripTemplate.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLindexedLineSetTemplate.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLindexedLineSetTemplate.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLnonindexedFaceSetTemplate.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLnonindexedFaceSetTemplate.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLnonindexedTristripSetTemplate.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLnonindexedTristripSetTemplate.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLqmeshTemplate.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoGLqmeshTemplate.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGenerate.Plo $(DEPDIR)/SoGenerate.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoGlyph.Plo $(DEPDIR)/SoGlyph.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoInput.Plo $(DEPDIR)/SoInput.Po \
-@AMDEP_TRUE@	$(DEPDIR)/SoInteraction.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLBigImage.Po $(DEPDIR)/SoGLImage.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGLImage.Po $(DEPDIR)/SoGenerate.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGenerate.Po $(DEPDIR)/SoGlyph.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoGlyph.Po $(DEPDIR)/SoInput.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoInput.Po $(DEPDIR)/SoInteraction.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoInteraction.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLightPath.Plo $(DEPDIR)/SoLightPath.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLockManager.Plo \
@@ -505,22 +490,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGL.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLBigImage.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLBigImage.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLFaceSetTemplate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLFaceSetTemplate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLImage.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLImage.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLineSetTemplate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLLineSetTemplate.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTristripTemplate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLTristripTemplate.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLindexedLineSetTemplate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLindexedLineSetTemplate.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLnonindexedFaceSetTemplate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLnonindexedFaceSetTemplate.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLnonindexedTristripSetTemplate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLnonindexedTristripSetTemplate.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLqmeshTemplate.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGLqmeshTemplate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGenerate.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGenerate.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoGlyph.Plo@am__quote@

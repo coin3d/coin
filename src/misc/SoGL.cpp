@@ -598,7 +598,7 @@ typedef void sogl_render_ils_func ( const SoGLCoordinateElement * /*const*/ coor
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ils_m0_n0_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -607,7 +607,7 @@ static void sogl_ils_m0_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ils_m1_n0_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -616,7 +616,7 @@ static void sogl_ils_m1_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ils_m2_n0_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -625,7 +625,7 @@ static void sogl_ils_m2_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ils_m3_n0_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -634,7 +634,7 @@ static void sogl_ils_m3_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ils_m4_n0_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -643,7 +643,7 @@ static void sogl_ils_m4_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ils_m5_n0_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -652,7 +652,7 @@ static void sogl_ils_m5_n0_t0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ils_m6_n0_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -661,7 +661,7 @@ static void sogl_ils_m6_n0_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ils_m0_n1_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -670,7 +670,7 @@ static void sogl_ils_m0_n1_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ils_m1_n1_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -679,7 +679,7 @@ static void sogl_ils_m1_n1_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ils_m2_n1_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -688,7 +688,7 @@ static void sogl_ils_m2_n1_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ils_m3_n1_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -697,7 +697,7 @@ static void sogl_ils_m3_n1_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ils_m4_n1_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -706,7 +706,7 @@ static void sogl_ils_m4_n1_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ils_m5_n1_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -715,7 +715,7 @@ static void sogl_ils_m5_n1_t0
 #define NBINDING PER_SEGMENT
 #define TEXTURES FALSE
 static void sogl_ils_m6_n1_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -724,7 +724,7 @@ static void sogl_ils_m6_n1_t0
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m0_n2_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -733,7 +733,7 @@ static void sogl_ils_m0_n2_t0
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m1_n2_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -742,7 +742,7 @@ static void sogl_ils_m1_n2_t0
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m2_n2_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -751,7 +751,7 @@ static void sogl_ils_m2_n2_t0
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m3_n2_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -760,7 +760,7 @@ static void sogl_ils_m3_n2_t0
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m4_n2_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -769,7 +769,7 @@ static void sogl_ils_m4_n2_t0
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m5_n2_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -778,7 +778,7 @@ static void sogl_ils_m5_n2_t0
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m6_n2_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -787,7 +787,7 @@ static void sogl_ils_m6_n2_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ils_m0_n3_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -796,7 +796,7 @@ static void sogl_ils_m0_n3_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ils_m1_n3_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -805,7 +805,7 @@ static void sogl_ils_m1_n3_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ils_m2_n3_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -814,7 +814,7 @@ static void sogl_ils_m2_n3_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ils_m3_n3_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -823,7 +823,7 @@ static void sogl_ils_m3_n3_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ils_m4_n3_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -832,7 +832,7 @@ static void sogl_ils_m4_n3_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ils_m5_n3_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -841,7 +841,7 @@ static void sogl_ils_m5_n3_t0
 #define NBINDING PER_LINE
 #define TEXTURES FALSE
 static void sogl_ils_m6_n3_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -850,7 +850,7 @@ static void sogl_ils_m6_n3_t0
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m0_n4_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -859,7 +859,7 @@ static void sogl_ils_m0_n4_t0
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m1_n4_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -868,7 +868,7 @@ static void sogl_ils_m1_n4_t0
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m2_n4_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -877,7 +877,7 @@ static void sogl_ils_m2_n4_t0
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m3_n4_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -886,7 +886,7 @@ static void sogl_ils_m3_n4_t0
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m4_n4_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -895,7 +895,7 @@ static void sogl_ils_m4_n4_t0
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m5_n4_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -904,7 +904,7 @@ static void sogl_ils_m5_n4_t0
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m6_n4_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -913,7 +913,7 @@ static void sogl_ils_m6_n4_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ils_m0_n5_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -922,7 +922,7 @@ static void sogl_ils_m0_n5_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ils_m1_n5_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -931,7 +931,7 @@ static void sogl_ils_m1_n5_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ils_m2_n5_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -940,7 +940,7 @@ static void sogl_ils_m2_n5_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ils_m3_n5_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -949,7 +949,7 @@ static void sogl_ils_m3_n5_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ils_m4_n5_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -958,7 +958,7 @@ static void sogl_ils_m4_n5_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ils_m5_n5_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -967,7 +967,7 @@ static void sogl_ils_m5_n5_t0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ils_m6_n5_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -976,7 +976,7 @@ static void sogl_ils_m6_n5_t0
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m0_n6_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -985,7 +985,7 @@ static void sogl_ils_m0_n6_t0
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m1_n6_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -994,7 +994,7 @@ static void sogl_ils_m1_n6_t0
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m2_n6_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1003,7 +1003,7 @@ static void sogl_ils_m2_n6_t0
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m3_n6_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1012,7 +1012,7 @@ static void sogl_ils_m3_n6_t0
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m4_n6_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1021,7 +1021,7 @@ static void sogl_ils_m4_n6_t0
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m5_n6_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1030,7 +1030,7 @@ static void sogl_ils_m5_n6_t0
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ils_m6_n6_t0
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1039,7 +1039,7 @@ static void sogl_ils_m6_n6_t0
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ils_m0_n0_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1048,7 +1048,7 @@ static void sogl_ils_m0_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ils_m1_n0_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1057,7 +1057,7 @@ static void sogl_ils_m1_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ils_m2_n0_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1066,7 +1066,7 @@ static void sogl_ils_m2_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ils_m3_n0_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1075,7 +1075,7 @@ static void sogl_ils_m3_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ils_m4_n0_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1084,7 +1084,7 @@ static void sogl_ils_m4_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ils_m5_n0_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1093,7 +1093,7 @@ static void sogl_ils_m5_n0_t1
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_ils_m6_n0_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1102,7 +1102,7 @@ static void sogl_ils_m6_n0_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ils_m0_n1_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1111,7 +1111,7 @@ static void sogl_ils_m0_n1_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ils_m1_n1_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1120,7 +1120,7 @@ static void sogl_ils_m1_n1_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ils_m2_n1_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1129,7 +1129,7 @@ static void sogl_ils_m2_n1_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ils_m3_n1_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1138,7 +1138,7 @@ static void sogl_ils_m3_n1_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ils_m4_n1_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1147,7 +1147,7 @@ static void sogl_ils_m4_n1_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ils_m5_n1_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1156,7 +1156,7 @@ static void sogl_ils_m5_n1_t1
 #define NBINDING PER_SEGMENT
 #define TEXTURES TRUE
 static void sogl_ils_m6_n1_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1165,7 +1165,7 @@ static void sogl_ils_m6_n1_t1
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m0_n2_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1174,7 +1174,7 @@ static void sogl_ils_m0_n2_t1
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m1_n2_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1183,7 +1183,7 @@ static void sogl_ils_m1_n2_t1
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m2_n2_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1192,7 +1192,7 @@ static void sogl_ils_m2_n2_t1
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m3_n2_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1201,7 +1201,7 @@ static void sogl_ils_m3_n2_t1
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m4_n2_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1210,7 +1210,7 @@ static void sogl_ils_m4_n2_t1
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m5_n2_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1219,7 +1219,7 @@ static void sogl_ils_m5_n2_t1
 #define NBINDING PER_SEGMENT_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m6_n2_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1228,7 +1228,7 @@ static void sogl_ils_m6_n2_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ils_m0_n3_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1237,7 +1237,7 @@ static void sogl_ils_m0_n3_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ils_m1_n3_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1246,7 +1246,7 @@ static void sogl_ils_m1_n3_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ils_m2_n3_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1255,7 +1255,7 @@ static void sogl_ils_m2_n3_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ils_m3_n3_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1264,7 +1264,7 @@ static void sogl_ils_m3_n3_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ils_m4_n3_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1273,7 +1273,7 @@ static void sogl_ils_m4_n3_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ils_m5_n3_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1282,7 +1282,7 @@ static void sogl_ils_m5_n3_t1
 #define NBINDING PER_LINE
 #define TEXTURES TRUE
 static void sogl_ils_m6_n3_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1291,7 +1291,7 @@ static void sogl_ils_m6_n3_t1
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m0_n4_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1300,7 +1300,7 @@ static void sogl_ils_m0_n4_t1
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m1_n4_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1309,7 +1309,7 @@ static void sogl_ils_m1_n4_t1
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m2_n4_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1318,7 +1318,7 @@ static void sogl_ils_m2_n4_t1
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m3_n4_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1327,7 +1327,7 @@ static void sogl_ils_m3_n4_t1
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m4_n4_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1336,7 +1336,7 @@ static void sogl_ils_m4_n4_t1
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m5_n4_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1345,7 +1345,7 @@ static void sogl_ils_m5_n4_t1
 #define NBINDING PER_LINE_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m6_n4_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1354,7 +1354,7 @@ static void sogl_ils_m6_n4_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ils_m0_n5_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1363,7 +1363,7 @@ static void sogl_ils_m0_n5_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ils_m1_n5_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1372,7 +1372,7 @@ static void sogl_ils_m1_n5_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ils_m2_n5_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1381,7 +1381,7 @@ static void sogl_ils_m2_n5_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ils_m3_n5_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1390,7 +1390,7 @@ static void sogl_ils_m3_n5_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ils_m4_n5_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1399,7 +1399,7 @@ static void sogl_ils_m4_n5_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ils_m5_n5_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1408,7 +1408,7 @@ static void sogl_ils_m5_n5_t1
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_ils_m6_n5_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1417,7 +1417,7 @@ static void sogl_ils_m6_n5_t1
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m0_n6_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1426,7 +1426,7 @@ static void sogl_ils_m0_n6_t1
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m1_n6_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1435,7 +1435,7 @@ static void sogl_ils_m1_n6_t1
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m2_n6_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1444,7 +1444,7 @@ static void sogl_ils_m2_n6_t1
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m3_n6_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1453,7 +1453,7 @@ static void sogl_ils_m3_n6_t1
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m4_n6_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1462,7 +1462,7 @@ static void sogl_ils_m4_n6_t1
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m5_n6_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -1471,7 +1471,7 @@ static void sogl_ils_m5_n6_t1
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_ils_m6_n6_t1
-#include "SoGLindexedLineSetTemplate.cpp"
+#include "SoGLindexedLineSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2119,7 +2119,7 @@ static sogl_render_faceset_func *render_funcs[74];
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_fs_n0_m0
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2128,7 +2128,7 @@ static void sogl_fs_n0_m0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_fs_n0_m1
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2137,7 +2137,7 @@ static void sogl_fs_n0_m1
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_fs_n0_m2
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2146,7 +2146,7 @@ static void sogl_fs_n0_m2
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_fs_n0_m3
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2155,7 +2155,7 @@ static void sogl_fs_n0_m3
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_fs_n0_m4
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2168,7 +2168,7 @@ static void sogl_fs_n0_m4
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
 static void sogl_fs_n1_m0
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2177,7 +2177,7 @@ static void sogl_fs_n1_m0
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
 static void sogl_fs_n1_m1
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2186,7 +2186,7 @@ static void sogl_fs_n1_m1
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
 static void sogl_fs_n1_m2
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2195,7 +2195,7 @@ static void sogl_fs_n1_m2
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
 static void sogl_fs_n1_m3
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2204,7 +2204,7 @@ static void sogl_fs_n1_m3
 #define NBINDING PER_FACE
 #define TEXTURES FALSE
 static void sogl_fs_n1_m4
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2216,7 +2216,7 @@ static void sogl_fs_n1_m4
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n2_m0
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2225,7 +2225,7 @@ static void sogl_fs_n2_m0
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n2_m1
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2234,7 +2234,7 @@ static void sogl_fs_n2_m1
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n2_m2
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2243,7 +2243,7 @@ static void sogl_fs_n2_m2
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n2_m3
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2252,7 +2252,7 @@ static void sogl_fs_n2_m3
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n2_m4
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2265,7 +2265,7 @@ static void sogl_fs_n2_m4
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_fs_n3_m0
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2274,7 +2274,7 @@ static void sogl_fs_n3_m0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_fs_n3_m1
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2283,7 +2283,7 @@ static void sogl_fs_n3_m1
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_fs_n3_m2
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2292,7 +2292,7 @@ static void sogl_fs_n3_m2
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_fs_n3_m3
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2301,7 +2301,7 @@ static void sogl_fs_n3_m3
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_fs_n3_m4
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2315,7 +2315,7 @@ static void sogl_fs_n3_m4
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n4_m0
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2324,7 +2324,7 @@ static void sogl_fs_n4_m0
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n4_m1
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2333,7 +2333,7 @@ static void sogl_fs_n4_m1
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n4_m2
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2342,7 +2342,7 @@ static void sogl_fs_n4_m2
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n4_m3
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2351,7 +2351,7 @@ static void sogl_fs_n4_m3
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_fs_n4_m4
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2365,7 +2365,7 @@ static void sogl_fs_n4_m4
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_fs_n0_m0_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2374,7 +2374,7 @@ static void sogl_fs_n0_m0_tex
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_fs_n0_m1_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2383,7 +2383,7 @@ static void sogl_fs_n0_m1_tex
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_fs_n0_m2_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2392,7 +2392,7 @@ static void sogl_fs_n0_m2_tex
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_fs_n0_m3_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2401,7 +2401,7 @@ static void sogl_fs_n0_m3_tex
 #define NBINDING OVERALL
 #define TEXTURES TRUE
 static void sogl_fs_n0_m4_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2414,7 +2414,7 @@ static void sogl_fs_n0_m4_tex
 #define NBINDING PER_FACE
 #define TEXTURES TRUE
 static void sogl_fs_n1_m0_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2423,7 +2423,7 @@ static void sogl_fs_n1_m0_tex
 #define NBINDING PER_FACE
 #define TEXTURES TRUE
 static void sogl_fs_n1_m1_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2432,7 +2432,7 @@ static void sogl_fs_n1_m1_tex
 #define NBINDING PER_FACE
 #define TEXTURES TRUE
 static void sogl_fs_n1_m2_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2441,7 +2441,7 @@ static void sogl_fs_n1_m2_tex
 #define NBINDING PER_FACE
 #define TEXTURES TRUE
 static void sogl_fs_n1_m3_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2450,7 +2450,7 @@ static void sogl_fs_n1_m3_tex
 #define NBINDING PER_FACE
 #define TEXTURES TRUE
 static void sogl_fs_n1_m4_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2462,7 +2462,7 @@ static void sogl_fs_n1_m4_tex
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n2_m0_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2471,7 +2471,7 @@ static void sogl_fs_n2_m0_tex
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n2_m1_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2480,7 +2480,7 @@ static void sogl_fs_n2_m1_tex
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n2_m2_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2489,7 +2489,7 @@ static void sogl_fs_n2_m2_tex
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n2_m3_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2498,7 +2498,7 @@ static void sogl_fs_n2_m3_tex
 #define NBINDING PER_FACE_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n2_m4_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2511,7 +2511,7 @@ static void sogl_fs_n2_m4_tex
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_fs_n3_m0_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2520,7 +2520,7 @@ static void sogl_fs_n3_m0_tex
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_fs_n3_m1_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2529,7 +2529,7 @@ static void sogl_fs_n3_m1_tex
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_fs_n3_m2_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2538,7 +2538,7 @@ static void sogl_fs_n3_m2_tex
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_fs_n3_m3_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2547,7 +2547,7 @@ static void sogl_fs_n3_m3_tex
 #define NBINDING PER_VERTEX
 #define TEXTURES TRUE
 static void sogl_fs_n3_m4_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2561,7 +2561,7 @@ static void sogl_fs_n3_m4_tex
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n4_m0_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2570,7 +2570,7 @@ static void sogl_fs_n4_m0_tex
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n4_m1_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2579,7 +2579,7 @@ static void sogl_fs_n4_m1_tex
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n4_m2_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2588,7 +2588,7 @@ static void sogl_fs_n4_m2_tex
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n4_m3_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2597,7 +2597,7 @@ static void sogl_fs_n4_m3_tex
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES TRUE
 static void sogl_fs_n4_m4_tex
-#include "SoGLFaceSetTemplate.cpp"
+#include "SoGLFaceSetTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2718,7 +2718,7 @@ sogl_render_faceset(const SoGLCoordinateElement * const vertexlist,
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ts_n0_m0
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2727,7 +2727,7 @@ static void sogl_ts_n0_m0
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ts_n0_m1
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2736,7 +2736,7 @@ static void sogl_ts_n0_m1
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ts_n0_m2
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2745,7 +2745,7 @@ static void sogl_ts_n0_m2
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ts_n0_m3
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2754,7 +2754,7 @@ static void sogl_ts_n0_m3
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ts_n0_m4
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2763,7 +2763,7 @@ static void sogl_ts_n0_m4
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ts_n0_m5
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2772,7 +2772,7 @@ static void sogl_ts_n0_m5
 #define NBINDING OVERALL
 #define TEXTURES FALSE
 static void sogl_ts_n0_m6
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2785,7 +2785,7 @@ static void sogl_ts_n0_m6
 #define NBINDING PER_STRIP
 #define TEXTURES FALSE
 static void sogl_ts_n1_m0
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2794,7 +2794,7 @@ static void sogl_ts_n1_m0
 #define NBINDING PER_STRIP
 #define TEXTURES FALSE
 static void sogl_ts_n1_m1
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2803,7 +2803,7 @@ static void sogl_ts_n1_m1
 #define NBINDING PER_STRIP
 #define TEXTURES FALSE
 static void sogl_ts_n1_m2
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2812,7 +2812,7 @@ static void sogl_ts_n1_m2
 #define NBINDING PER_STRIP
 #define TEXTURES FALSE
 static void sogl_ts_n1_m3
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2821,7 +2821,7 @@ static void sogl_ts_n1_m3
 #define NBINDING PER_STRIP
 #define TEXTURES FALSE
 static void sogl_ts_n1_m4
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2830,7 +2830,7 @@ static void sogl_ts_n1_m4
 #define NBINDING PER_STRIP
 #define TEXTURES FALSE
 static void sogl_ts_n1_m5
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2839,7 +2839,7 @@ static void sogl_ts_n1_m5
 #define NBINDING PER_STRIP
 #define TEXTURES FALSE
 static void sogl_ts_n1_m6
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2854,7 +2854,7 @@ static void sogl_ts_n1_m6
 #define NBINDING PER_STRIP_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n2_m0
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2863,7 +2863,7 @@ static void sogl_ts_n2_m0
 #define NBINDING PER_STRIP_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n2_m1
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2872,7 +2872,7 @@ static void sogl_ts_n2_m1
 #define NBINDING PER_STRIP_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n2_m2
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2881,7 +2881,7 @@ static void sogl_ts_n2_m2
 #define NBINDING PER_STRIP_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n2_m3
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2890,7 +2890,7 @@ static void sogl_ts_n2_m3
 #define NBINDING PER_STRIP_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n2_m4
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2899,7 +2899,7 @@ static void sogl_ts_n2_m4
 #define NBINDING PER_STRIP_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n2_m5
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2908,7 +2908,7 @@ static void sogl_ts_n2_m5
 #define NBINDING PER_STRIP_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n2_m6
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2924,7 +2924,7 @@ static void sogl_ts_n2_m6
 #define NBINDING PER_TRIANGLE
 #define TEXTURES FALSE
 static void sogl_ts_n3_m0
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2933,7 +2933,7 @@ static void sogl_ts_n3_m0
 #define NBINDING PER_TRIANGLE
 #define TEXTURES FALSE
 static void sogl_ts_n3_m1
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2942,7 +2942,7 @@ static void sogl_ts_n3_m1
 #define NBINDING PER_TRIANGLE
 #define TEXTURES FALSE
 static void sogl_ts_n3_m2
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2951,7 +2951,7 @@ static void sogl_ts_n3_m2
 #define NBINDING PER_TRIANGLE
 #define TEXTURES FALSE
 static void sogl_ts_n3_m3
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2960,7 +2960,7 @@ static void sogl_ts_n3_m3
 #define NBINDING PER_TRIANGLE
 #define TEXTURES FALSE
 static void sogl_ts_n3_m4
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2969,7 +2969,7 @@ static void sogl_ts_n3_m4
 #define NBINDING PER_TRIANGLE
 #define TEXTURES FALSE
 static void sogl_ts_n3_m5
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2978,7 +2978,7 @@ static void sogl_ts_n3_m5
 #define NBINDING PER_TRIANGLE
 #define TEXTURES FALSE
 static void sogl_ts_n3_m6
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -2992,7 +2992,7 @@ static void sogl_ts_n3_m6
 #define NBINDING PER_TRIANGLE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n4_m0
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3001,7 +3001,7 @@ static void sogl_ts_n4_m0
 #define NBINDING PER_TRIANGLE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n4_m1
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3010,7 +3010,7 @@ static void sogl_ts_n4_m1
 #define NBINDING PER_TRIANGLE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n4_m2
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3019,7 +3019,7 @@ static void sogl_ts_n4_m2
 #define NBINDING PER_TRIANGLE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n4_m3
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3028,7 +3028,7 @@ static void sogl_ts_n4_m3
 #define NBINDING PER_TRIANGLE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n4_m4
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3037,7 +3037,7 @@ static void sogl_ts_n4_m4
 #define NBINDING PER_TRIANGLE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n4_m5
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3046,7 +3046,7 @@ static void sogl_ts_n4_m5
 #define NBINDING PER_TRIANGLE_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n4_m6
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3061,7 +3061,7 @@ static void sogl_ts_n4_m6
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ts_n5_m0
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3070,7 +3070,7 @@ static void sogl_ts_n5_m0
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ts_n5_m1
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3079,7 +3079,7 @@ static void sogl_ts_n5_m1
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ts_n5_m2
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3088,7 +3088,7 @@ static void sogl_ts_n5_m2
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ts_n5_m3
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3097,7 +3097,7 @@ static void sogl_ts_n5_m3
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ts_n5_m4
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3106,7 +3106,7 @@ static void sogl_ts_n5_m4
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ts_n5_m5
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3115,7 +3115,7 @@ static void sogl_ts_n5_m5
 #define NBINDING PER_VERTEX
 #define TEXTURES FALSE
 static void sogl_ts_n5_m6
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3131,7 +3131,7 @@ static void sogl_ts_n5_m6
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n6_m0
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3140,7 +3140,7 @@ static void sogl_ts_n6_m0
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n6_m1
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3149,7 +3149,7 @@ static void sogl_ts_n6_m1
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n6_m2
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3158,7 +3158,7 @@ static void sogl_ts_n6_m2
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n6_m3
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3167,7 +3167,7 @@ static void sogl_ts_n6_m3
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n6_m4
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3176,7 +3176,7 @@ static void sogl_ts_n6_m4
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n6_m5
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3185,7 +3185,7 @@ static void sogl_ts_n6_m5
 #define NBINDING PER_VERTEX_INDEXED
 #define TEXTURES FALSE
 static void sogl_ts_n6_m6
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 #undef TEXTURES
@@ -3198,49 +3198,49 @@ static void sogl_ts_n6_m6
 #define MBINDING OVERALL
 #define NBINDING OVERALL
 static void sogl_ts_n0_m0_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP
 #define NBINDING OVERALL
 static void sogl_ts_n0_m1_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP_INDEXED
 #define NBINDING OVERALL
 static void sogl_ts_n0_m2_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE
 #define NBINDING OVERALL
 static void sogl_ts_n0_m3_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE_INDEXED
 #define NBINDING OVERALL
 static void sogl_ts_n0_m4_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX
 #define NBINDING OVERALL
 static void sogl_ts_n0_m5_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX_INDEXED
 #define NBINDING OVERALL
 static void sogl_ts_n0_m6_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
@@ -3251,49 +3251,49 @@ static void sogl_ts_n0_m6_tex
 #define MBINDING OVERALL
 #define NBINDING PER_STRIP
 static void sogl_ts_n1_m0_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP
 #define NBINDING PER_STRIP
 static void sogl_ts_n1_m1_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP_INDEXED
 #define NBINDING PER_STRIP
 static void sogl_ts_n1_m2_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE
 #define NBINDING PER_STRIP
 static void sogl_ts_n1_m3_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE_INDEXED
 #define NBINDING PER_STRIP
 static void sogl_ts_n1_m4_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX
 #define NBINDING PER_STRIP
 static void sogl_ts_n1_m5_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX_INDEXED
 #define NBINDING PER_STRIP
 static void sogl_ts_n1_m6_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
@@ -3304,49 +3304,49 @@ static void sogl_ts_n1_m6_tex
 #define MBINDING OVERALL
 #define NBINDING PER_STRIP_INDEXED
 static void sogl_ts_n2_m0_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP
 #define NBINDING PER_STRIP_INDEXED
 static void sogl_ts_n2_m1_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP_INDEXED
 #define NBINDING PER_STRIP_INDEXED
 static void sogl_ts_n2_m2_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE
 #define NBINDING PER_STRIP_INDEXED
 static void sogl_ts_n2_m3_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE_INDEXED
 #define NBINDING PER_STRIP_INDEXED
 static void sogl_ts_n2_m4_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX
 #define NBINDING PER_STRIP_INDEXED
 static void sogl_ts_n2_m5_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX_INDEXED
 #define NBINDING PER_STRIP_INDEXED
 static void sogl_ts_n2_m6_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
@@ -3357,49 +3357,49 @@ static void sogl_ts_n2_m6_tex
 #define MBINDING OVERALL
 #define NBINDING PER_TRIANGLE
 static void sogl_ts_n3_m0_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP
 #define NBINDING PER_TRIANGLE
 static void sogl_ts_n3_m1_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP_INDEXED
 #define NBINDING PER_TRIANGLE
 static void sogl_ts_n3_m2_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE
 #define NBINDING PER_TRIANGLE
 static void sogl_ts_n3_m3_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE_INDEXED
 #define NBINDING PER_TRIANGLE
 static void sogl_ts_n3_m4_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX
 #define NBINDING PER_TRIANGLE
 static void sogl_ts_n3_m5_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX_INDEXED
 #define NBINDING PER_TRIANGLE
 static void sogl_ts_n3_m6_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
@@ -3409,49 +3409,49 @@ static void sogl_ts_n3_m6_tex
 #define MBINDING OVERALL
 #define NBINDING PER_TRIANGLE_INDEXED
 static void sogl_ts_n4_m0_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP
 #define NBINDING PER_TRIANGLE_INDEXED
 static void sogl_ts_n4_m1_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP_INDEXED
 #define NBINDING PER_TRIANGLE_INDEXED
 static void sogl_ts_n4_m2_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE
 #define NBINDING PER_TRIANGLE_INDEXED
 static void sogl_ts_n4_m3_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE_INDEXED
 #define NBINDING PER_TRIANGLE_INDEXED
 static void sogl_ts_n4_m4_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX
 #define NBINDING PER_TRIANGLE_INDEXED
 static void sogl_ts_n4_m5_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX_INDEXED
 #define NBINDING PER_TRIANGLE_INDEXED
 static void sogl_ts_n4_m6_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
@@ -3459,49 +3459,49 @@ static void sogl_ts_n4_m6_tex
 #define MBINDING OVERALL
 #define NBINDING PER_VERTEX
 static void sogl_ts_n5_m0_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP
 #define NBINDING PER_VERTEX
 static void sogl_ts_n5_m1_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP_INDEXED
 #define NBINDING PER_VERTEX
 static void sogl_ts_n5_m2_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE
 #define NBINDING PER_VERTEX
 static void sogl_ts_n5_m3_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE_INDEXED
 #define NBINDING PER_VERTEX
 static void sogl_ts_n5_m4_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX
 #define NBINDING PER_VERTEX
 static void sogl_ts_n5_m5_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX_INDEXED
 #define NBINDING PER_VERTEX
 static void sogl_ts_n5_m6_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
@@ -3513,49 +3513,49 @@ static void sogl_ts_n5_m6_tex
 #define MBINDING OVERALL
 #define NBINDING PER_VERTEX_INDEXED
 static void sogl_ts_n6_m0_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP
 #define NBINDING PER_VERTEX_INDEXED
 static void sogl_ts_n6_m1_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_STRIP_INDEXED
 #define NBINDING PER_VERTEX_INDEXED
 static void sogl_ts_n6_m2_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE
 #define NBINDING PER_VERTEX_INDEXED
 static void sogl_ts_n6_m3_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_TRIANGLE_INDEXED
 #define NBINDING PER_VERTEX_INDEXED
 static void sogl_ts_n6_m4_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX
 #define NBINDING PER_VERTEX_INDEXED
 static void sogl_ts_n6_m5_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 
 #define MBINDING PER_VERTEX_INDEXED
 #define NBINDING PER_VERTEX_INDEXED
 static void sogl_ts_n6_m6_tex
-#include "SoGLTristripTemplate.cpp"
+#include "SoGLTristripTemplate.icc"
 #undef MBINDING
 #undef NBINDING
 

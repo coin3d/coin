@@ -66,13 +66,13 @@ PrivateHeaders = \
 	GLUWrapper.h \
 	GLWrapper.h \
 	simage_wrapper.h \
-	SoGLFaceSetTemplate.cpp \
-	SoGLLineSetTemplate.cpp \
-	SoGLTristripTemplate.cpp \
-	SoGLindexedLineSetTemplate.cpp \
-	SoGLnonindexedFaceSetTemplate.cpp \
-	SoGLnonindexedTristripSetTemplate.cpp \
-	SoGLqmeshTemplate.cpp
+	SoGLFaceSetTemplate.icc \
+	SoGLLineSetTemplate.icc \
+	SoGLTristripTemplate.icc \
+	SoGLindexedLineSetTemplate.icc \
+	SoGLnonindexedFaceSetTemplate.icc \
+	SoGLnonindexedTristripSetTemplate.icc \
+	SoGLqmeshTemplate.icc
 
 ##$ BEGIN TEMPLATE Make-Common(misc)
 
