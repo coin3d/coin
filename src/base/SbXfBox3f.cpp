@@ -735,7 +735,13 @@ SbXfBox3f::getVolume(void) const
   // in the coordinate system specified by a 3x3 matrix, and that we
   // can find the volume of our box by multiplying the volume of the
   // orthogonal box with the determinant of the upper-left 3x3 matrix.
-  return SbBox3f::getVolume() * this->matrix.det3();
+
+  float volume = (SbBox3f::getVolume() * this->matrix.det3());
+
+  // The determinant might be negative if e.g. negative scaling has
+  // been performed on the matrix. To rectify this, we make sure the
+  // returned volume is positive.
+  return (volume > 0) ? volume : -volume;
 }
 
 /*!
