@@ -221,11 +221,6 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
 {
   if (to == from) return;
 
-  if (copyconnections) {
-    // FIXME: support copying of connections. 20000111 mortene.
-    COIN_STUB();
-  }
-
   const SoFieldData * fd0 = to->getFieldData();
   const SoFieldData * fd1 = from->getFieldData();
   if (!fd0 && !fd1) return;
@@ -234,8 +229,13 @@ SoFieldData::overlay(SoFieldContainer * to, const SoFieldContainer * from,
   assert(fd0 && fd1 && *fd0==*fd1);
 
   int num = fd0->getNumFields();
-  for (int i=0; i < num; i++)
-    fd0->getField(to, i)->copyFrom(*fd1->getField(from, i));
+  for (int i=0; i < num; i++) {
+    SoField * field0 = fd0->getField(to, i);
+    SoField * field1 = fd1->getField(from, i);
+    field0->copyFrom(*field1);
+    field0->fixCopy(copyconnections);
+    if (copyconnections) field0->copyConnection(field1);
+  }
 }
 
 /*!

@@ -180,7 +180,7 @@ SoGroup::copyContents(const SoFieldContainer * from, SbBool copyconnections)
   SoGroup * g = (SoGroup *)from;
 
   // Add children of "from" group node.
-  for (int i=0 ; i < getNumChildren(); i++) {
+  for (int i=0 ; i < g->getNumChildren(); i++) {
     SoNode * cp = (SoNode *)
       SoFieldContainer::findCopy(g->getChild(i), copyconnections);
     this->addChild(cp);

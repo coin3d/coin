@@ -73,10 +73,10 @@ public:
   virtual SoFieldContainer * copyThroughConnection(void) const;
 
   static void initCopyDict(void);
-  static void addCopy(const SoFieldContainer * const orig,
-                      const SoFieldContainer * const copy);
-  static SoFieldContainer * checkCopy(const SoFieldContainer * const orig);
-  static SoFieldContainer * findCopy(const SoFieldContainer * const orig,
+  static void addCopy(const SoFieldContainer * orig,
+                      const SoFieldContainer * copy);
+  static SoFieldContainer * checkCopy(const SoFieldContainer * orig);
+  static SoFieldContainer * findCopy(const SoFieldContainer * orig,
                                      const SbBool copyconnections);
   static void copyDone(void);
 

@@ -70,9 +70,9 @@ public:
   void disconnect(SoField * field);
   SbBool isConnectedFromField(void) const;
   SbBool getConnectedField(SoField *& master) const;
-  int getNumConnections(void);
+  int getNumConnections(void) const;
   int getForwardConnections(SoFieldList & slavelist) const;
-  int getConnections(SoFieldList & masterlist);
+  int getConnections(SoFieldList & masterlist) const;
 
   // Field<-Interpolator connection stuff.
   SbBool connectFrom(SoVRMLInterpOutput * master,

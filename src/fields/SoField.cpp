@@ -650,20 +650,23 @@ SoField::disconnect(SoEngineOutput * master)
   \sa getConnections()
 */
 int
-SoField::getNumConnections(void)
+SoField::getNumConnections(void) const
 {
   return this->hasExtendedStorage() ?
     this->storage->getNumFieldConnections() : 0;
 }
 
 /*!
-  Returns number of master fields this field is connected to, and places
-  references to all of them into \a masterlist.
+  Returns number of masters this field is connected to, and places
+  pointers to all of them into \a masterlist.
+
+  Note that we replace the contents of \a masterlist, i.e. we're not
+  \e appending new data.
 
   \sa getNumConnections()
 */
 int
-SoField::getConnections(SoFieldList & masterlist)
+SoField::getConnections(SoFieldList & masterlist) const
 {
   if (!this->hasExtendedStorage()) return 0;
 
@@ -1086,31 +1089,85 @@ SoField::isReadOnly(void) const
 }
 
 /*!
-  FIXME: write doc
- */
+  This method is internally called after copyFrom() during scene graph
+  copies, and should do the operations necessary for fixing up the
+  field instance after it has gotten a new value.
+
+  The default method in the SoField superclass does nothing.
+
+  The application programmer should normally not need to consider this
+  method, unless he constructs a complex field type which contains new
+  references to container instances (i.e. nodes or
+  engines). Overloading this method is then necessary to update the
+  reference pointers, as they could have been duplicated during the
+  copy operation.
+*/
 void
-SoField::fixCopy(SbBool /* copyConnections */)
+SoField::fixCopy(SbBool copyconnections)
 {
-  COIN_STUB();
 }
 
 /*!
-  FIXME: write doc
+  Returns \c TRUE if this field has references to any containers in
+  the scene graph which are also duplicated during the copy operation.
+
+  Note that this method \e only is valid to call during copy
+  operations.
+
+  See also the note about the relevance of the fixCopy() method for
+  application programmers, as it is applicable on this method aswell.
  */
 SbBool
 SoField::referencesCopy(void) const
 {
-  COIN_STUB();
+  SoFieldList masters;
+  int nr = this->getConnections(masters);
+
+  for (int i=0; i < nr; i++) {
+    SoFieldContainer * fc = masters[i]->getContainer();
+    if (SoFieldContainer::checkCopy(fc)) return TRUE;
+  }
+
   return FALSE;
 }
 
 /*!
-  FIXME: write doc
+  If \a fromfield contains a connection to another field, make this
+  field also use the same connection.
  */
 void
-SoField::copyConnection(const SoField * /* fromfield */)
+SoField::copyConnection(const SoField * fromfield)
 {
-  COIN_STUB();
+  // Consider most common case first.
+  if (!fromfield->isConnected()) return;
+
+  // FIXME: disconnect any connections already in place first?
+  // 20000116 mortene.
+
+  // FIXME: copy _all_ connections (in preparation for VRML2 support)?
+  // 20000116 mortene.
+
+#define COPYCONNECT(_fieldtype_, _getfunc_) \
+  _fieldtype_ * master; \
+  (void)fromfield->_getfunc_(master); \
+  SoFieldContainer * masterfc = master->getContainer(); \
+  int ptroffset = (char *)master - (char *)masterfc; \
+  SoFieldContainer * copyfc = masterfc->copyThroughConnection(); \
+  _fieldtype_ * copyfield = (_fieldtype_ *)((char *)copyfc + ptroffset); \
+  this->connectFrom(copyfield)
+
+
+  if (fromfield->isConnectedFromField()) {
+    COPYCONNECT(SoField, getConnectedField);
+  }
+  else if (fromfield->isConnectedFromEngine()) {
+    COPYCONNECT(SoEngineOutput, getConnectedEngine);
+  }
+  else if (fromfield->isConnectedFromVRMLInterp()) {
+    COPYCONNECT(SoVRMLInterpOutput, getConnectedVRMLInterp);
+  }
+
+#undef COPYCONNECT
 }
 
 /*!

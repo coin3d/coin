@@ -33,6 +33,7 @@
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/fields/SoField.h>
+#include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <assert.h>
@@ -127,22 +128,12 @@ SoNode::~SoNode()
 SoNode *
 SoNode::copy(SbBool copyconnections) const
 {
-  static unsigned int iscopying = 0;
-  if (!iscopying) inherited::initCopyDict();
-  iscopying++;
-
-  SoNode * newnode = (SoNode *)inherited::checkCopy(this);
-  if (!newnode) {
-    newnode = (SoNode *)this->getTypeId().createInstance();
-    assert(newnode != NULL);
-    inherited::addCopy(this, newnode);
-    newnode->copyContents(this, copyconnections);
-  }
-
-  iscopying--;
-  if (!iscopying) inherited::copyDone();
-
-  return newnode;
+  SoFieldContainer::initCopyDict();
+  SoNode * cpnode = this->addToCopyDict();
+  // Call findCopy() to have copyContents() run only once.
+  SoNode * cp = (SoNode *)SoFieldContainer::findCopy(this, copyconnections);
+  SoFieldContainer::copyDone();
+  return cp;
 }
 
 
@@ -315,7 +306,7 @@ SoNode::setOverride(const SbBool state)
     // setting, so the caches are regenerated.
     this->uniqueId = SoNode::nextUniqueId++;
   }
-  
+
   this->stateflags.override = state;
 }
 
@@ -778,8 +769,8 @@ SoNode::grabEventsCleanup(void)
 void
 SoNode::startNotify(void)
 {
-  SoNotList list; // FIXME: what should be added to this list? pederb, 19991214
-  this->notify(&list);
+  SoNotList l; // FIXME: what should be added to this list? pederb, 19991214
+  this->notify(&l);
 }
 
 /*!
@@ -804,13 +795,36 @@ SoNode::writeInstance(SoOutput * out)
 }
 
 /*!
-  FIXME: write function documentation
+  Add this node and (recursively) all children to the copy dictionary
+  of SoFieldContainer.
 */
 SoNode *
 SoNode::addToCopyDict(void) const
 {
-  COIN_STUB();
-  return NULL;
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoNode::addToCopyDict",
+                         "%s node", this->getTypeId().getName().getString());
+#endif // debug
+
+  SoNode * cp = (SoNode *)SoFieldContainer::checkCopy(this);
+  if (!cp) {
+    cp = (SoNode *)this->getTypeId().createInstance();
+    assert(cp);
+    SoFieldContainer::addCopy(this, cp);
+  }
+
+  SoChildList * l = this->getChildren();
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoNode::addToCopyDict",
+                         "adding %d children from %s node",
+                         l ? l->getLength() : 0,
+                         this->getTypeId().getName().getString());
+#endif // debug
+
+  for (int i=0; l && (i < l->getLength()); i++) (void)(*l)[i]->addToCopyDict();
+
+  return cp;
 }
 
 // Overloaded from parent class.
@@ -823,18 +837,20 @@ SoNode::copyContents(const SoFieldContainer * from, SbBool copyconnections)
   this->stateflags.override = src->isOverride();
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Overloaded from parent class.
 SoFieldContainer *
 SoNode::copyThroughConnection(void) const
 {
-  COIN_STUB();
-  return NULL;
+  // Important note: _don't_ switch checkCopy() here with findCopy(),
+  // as we're not supposed to create copies of containers "outside"
+  // the part of the scene graph which is involved in the copy
+  // operation.
+  SoFieldContainer * connfc = SoFieldContainer::checkCopy(this);
+  return connfc ? connfc : (SoFieldContainer *)this;
 }
 
 /*!
-  Return the next unique identification number to be assigned. 
+  Return the next unique identification number to be assigned.
 */
 uint32_t
 SoNode::getNextNodeId(void)

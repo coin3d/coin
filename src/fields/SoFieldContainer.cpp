@@ -541,17 +541,23 @@ SoFieldContainer::copyContents(const SoFieldContainer * from,
 
 
 /*!
-  FIXME: write doc
+  Return copy of this instance.
+
+  Note: default implementation just returns \c this pointer,
+  SoNode and SoEngine overloads this method to return the pointer
+  to the actual copy.
  */
 SoFieldContainer *
 SoFieldContainer::copyThroughConnection(void) const
 {
-  COIN_STUB();
-  return NULL;
+  // Cast away const.
+  return (SoFieldContainer *)this;
 }
 
 
-static SbDict * ptrsdict = NULL;
+static SbDict * copiedinstances = NULL;
+static SbDict * contentscopied = NULL;
+
 
 /*!
   \internal
@@ -565,8 +571,10 @@ static SbDict * ptrsdict = NULL;
 void
 SoFieldContainer::initCopyDict(void)
 {
-  assert(!ptrsdict);
-  ptrsdict = new SbDict;
+  assert(!copiedinstances);
+  copiedinstances = new SbDict;
+  assert(!contentscopied);
+  contentscopied = new SbDict;
 }
 
 
@@ -576,13 +584,17 @@ SoFieldContainer::initCopyDict(void)
   operations.
  */
 void
-SoFieldContainer::addCopy(const SoFieldContainer * const orig,
-                          const SoFieldContainer * const copy)
+SoFieldContainer::addCopy(const SoFieldContainer * orig,
+                          const SoFieldContainer * copy)
 {
-  assert(ptrsdict);
+  assert(copiedinstances);
+  assert(contentscopied);
   // FIXME: casting pointer to unsigned long is nasty. We badly need a
   // better hash class. 20000115 mortene.
-  ptrsdict->enter((unsigned long)orig, (void *)copy);
+  SbBool s = copiedinstances->enter((unsigned long)orig, (void *)copy);
+  assert(s);
+  s = contentscopied->enter((unsigned long)orig, (void *)FALSE);
+  assert(s);
 }
 
 
@@ -591,12 +603,13 @@ SoFieldContainer::addCopy(const SoFieldContainer * const orig,
   \c NULL pointer.
  */
 SoFieldContainer *
-SoFieldContainer::checkCopy(const SoFieldContainer * const orig)
+SoFieldContainer::checkCopy(const SoFieldContainer * orig)
 {
-  assert(ptrsdict);
+  assert(copiedinstances);
+
   void * fccopy;
-  return (SoFieldContainer *)(ptrsdict->find((unsigned long)orig, fccopy) ?
-                              fccopy : NULL);
+  return (copiedinstances->find((unsigned long)orig, fccopy) ?
+          (SoFieldContainer *)fccopy : NULL);
 }
 
 
@@ -607,21 +620,39 @@ SoFieldContainer::checkCopy(const SoFieldContainer * const orig)
   is made on-the-fly (which is the reason we need to pass along the
   \a copyconnections flag).
 
+  This method will also run the copyContents() method on the copy, if
+  it hasn't been run already. Note that if you call copyContents() on
+  the copy outside of this method, this will go undetected and the
+  guts of \a orig will be copied multiple times into its copy.
+
   \sa checkCopy()
 */
 SoFieldContainer *
-SoFieldContainer::findCopy(const SoFieldContainer * const orig,
+SoFieldContainer::findCopy(const SoFieldContainer * orig,
                            const SbBool copyconnections)
 {
-  assert(ptrsdict);
+  assert(copiedinstances);
+  assert(contentscopied);
 
   SoFieldContainer * cp = SoFieldContainer::checkCopy(orig);
   if (!cp) {
     cp = (SoFieldContainer *)orig->getTypeId().createInstance();
     assert(cp);
     SoFieldContainer::addCopy(orig, cp);
-    cp->copyContents(orig, copyconnections);
   }
+
+  void * tmp;
+  SbBool chk = contentscopied->find((unsigned long)orig, tmp);
+  assert(chk);
+  SbBool copied = tmp ? TRUE : FALSE;
+
+  if (!copied) {
+    cp->copyContents(orig, copyconnections);
+    chk = contentscopied->enter((unsigned long)orig, (void *)TRUE);
+    // SbDict::enter() returns FALSE if the key already exists.
+    assert(!chk);
+  }
+
   return cp;
 }
 
@@ -636,9 +667,8 @@ SoFieldContainer::findCopy(const SoFieldContainer * const orig,
 void
 SoFieldContainer::copyDone(void)
 {
-  assert(ptrsdict);
-  delete ptrsdict;
-  ptrsdict = NULL;
+  assert(copiedinstances); delete copiedinstances; copiedinstances = NULL;
+  assert(contentscopied); delete contentscopied; contentscopied = NULL;
 }
 
 // Overloaded from parent.
