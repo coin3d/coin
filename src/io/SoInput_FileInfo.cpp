@@ -215,19 +215,36 @@ SoInput_FileInfo::get(char & c)
 {
   if (this->backbuffer.getLength() > 0) {
     c = this->backbuffer.pop();
+    // backbuffer contains elements pushed back into the stream. These
+    // should never be anything else than what came out of the stream
+    // in the first place, and the '\0' character is never outputted.
+    assert(c != '\0');
   }
-  else if (this->readbufidx >= this->readbuflen) {
-    // doBufferRead() also does the right thing (i.e. sets the EOF
-    // flag for the stream) if we're reading from memory.
-    if (!this->doBufferRead()) {
-      c = (char) EOF;
-      return FALSE;
+  else {
+    if (this->readbufidx >= this->readbuflen) {
+      // doBufferRead() sets the EOF flag for the stream if there is
+      // nothing left of the buffer to read. But does not check if the
+      // returned characters are '\0' characters. This has to be done
+      // manually. See further down.
+      if (!this->doBufferRead()) {
+        c = (char) EOF;
+        return FALSE;
+      }
     }
 
     c = this->readbuf[this->readbufidx++];
-  }
-  else {
-    c = this->readbuf[this->readbufidx++];
+
+    // The memorybuffer reader does not do anything when reaching '\0'
+    // (the null-termination of character strings), so we have to
+    // handle it our selves.
+    if (c == '\0') {
+      this->readbufidx = 0;
+      this->readbuflen = 0;
+      this->eof = TRUE;
+
+      c = (char) EOF;
+      return FALSE;
+    }
   }
 
   // NB: the line counting is not working 100% if we start putting
