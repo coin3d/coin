@@ -38,10 +38,10 @@
   calculations will be reset after traversing the node specified by
   the field SoSurroundScale::numNodesUpToReset.
 
-  Here's a complete, stand-alone example which sets up am
-  SoTrackballDragger (connected to a cube), uses an SoSurroundScale
-  node to make it auto-scale to the size of the high cube and
-  translates it an offset to one side of the cube:
+  Here's a complete, stand-alone example which sets up an
+  SoTrackballDragger (connected to a cube), and uses an
+  SoSurroundScale node to make it auto-scale to the size of the high
+  cube and translates it an offset to one side of the cube:
 
   \code
   #include <Inventor/Qt/SoQt.h>
@@ -125,12 +125,12 @@
         AntiSquish {
            sizing BIGGEST_DIMENSION
         }
-        DEF +0 TrackballDragger {
+        DEF mydragger TrackballDragger {
         }
      }
      Rotation {
         rotation 0 0 1  0 =
-        USE +0		. rotation
+        USE mydragger	. rotation
      }
      Cube {
         height 10
@@ -147,9 +147,9 @@
   particular piece of geometry surround other geometry of unknown or
   changing extent.
 
-  SoSurroundScale nodes in the scenegraph is often paired up with
+  SoSurroundScale nodes in the scenegraph are often paired up with
   SoAntiSquish nodes to get uniform scaling along all three principal
-  axes.
+  axes, as has also been done in the above example.
 
   \sa SoAntiSquish
 */

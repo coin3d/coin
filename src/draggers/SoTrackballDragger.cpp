@@ -43,7 +43,7 @@
   dragging \e outside the pre-defined "rotation bands".
 
   Scale operations are made available by holding down a CTRL key when
-  clicking when the left mouse button. The dragger is then in scaling
+  clicking with the left mouse button. The dragger is then in scaling
   mode, and dragging while holding down the mouse button will \e
   uniformly scale the trackball sphere.
 

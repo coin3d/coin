@@ -130,6 +130,7 @@ _class_::createInstance(void) \
     assert(_class_::classTypeId != SoType::badType() && "you forgot init()!"); \
     /* Initialize a fielddata container for the class only once. */ \
     if (!_class_::fieldData) { \
+      /* FIXME: this is a "static" memory leak. 20030131 mortene. */ \
       _class_::fieldData = \
         new SoFieldData(_class_::parentFieldData ? \
                         *_class_::parentFieldData : NULL); \
