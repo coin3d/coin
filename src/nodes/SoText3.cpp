@@ -248,7 +248,6 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       int num;
       SbVec2f *coords;
       pn->getVertices(state, num, coords);
-      // find largest profile 'y' (positive y = negatice z...
       for (int j=0; j<num; j++) {
         if (-coords[j][0] > maxz) maxz = -coords[j][0];
         if (-coords[j][0] < minz) minz = -coords[j][0];
@@ -257,7 +256,7 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     }    
   }
   else {
-    // extrude only
+    // extrude
     if (this->parts.getValue() == SoText3::BACK) {
       maxz = -1.0f;
     }
@@ -437,32 +436,33 @@ SoText3::render(SoState * state, unsigned int part)
   // SbBool doTextures = SoGLTextureEnabledElement::get(state);
   int i, n = this->widths.getLength();
 
-  int      firstprofile = 0;
-  int      profnum;
+  int firstprofile = 0;
+  int profnum;
   SbVec2f *profcoords;
-  float    nearz = 0.0f;
-  float    farz  = -1.0f;
+  float nearz = 0.0f;
+  float farz  = 1.0f;
 
   const SoNodeList profilenodes = SoProfileElement::get(state);
   int numprofiles = profilenodes.getLength();
+
   if ( numprofiles > 0) {
     assert(profilenodes[0]->getTypeId().isDerivedFrom(SoProfile::getClassTypeId()));
-    // Find near/far z (for modifying position of front/back
-    for (int i=numprofiles-1; i>=0; i--) {
-      SoProfile *pn = (SoProfile *)profilenodes[i];
+    // Find near/far z (for modifying position of front/back)
+    for (int l=numprofiles-1; l>=0; l--) {
+      SoProfile *pn = (SoProfile *)profilenodes[l];
       pn->getVertices(state, profnum, profcoords);
       
+      if (profcoords[profnum-1][0] > farz) farz = profcoords[profnum-1][0];
+      if (profcoords[0][0] < nearz) nearz = profcoords[0][0];
+
       if (pn->linkage.getValue() == SoProfile::START_FIRST) {
-        nearz =  profcoords[0][0];
-        firstprofile = i;
+        firstprofile = l;
         break;
-      }
-      else {  // START_NEW & ADD_TO_CURRENT
-        farz  = -profcoords[profnum-1][0];
       }
     }    
   }
-  
+  nearz = -nearz;
+  farz = -farz;
   if (part != SoText3::SIDES) {
     glBegin(GL_TRIANGLES);
     if (part == SoText3::FRONT)
@@ -566,6 +566,9 @@ SoText3::render(SoState * state, unsigned int part)
             tmp2 = tmp2.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
             tmp2.normalize();
           
+            SoProfile *pn = (SoProfile *)profilenodes[firstprofile];
+            pn->getVertices(state, profnum, profcoords);
+
             SbVec2f edgea( va[0]+(profcoords[0][1]*tmp2[0]), va[1]+(profcoords[0][1]*tmp2[1]) );
             SbVec2f edgeb( vb[0]+(profcoords[0][1]*tmp1[0]), vb[1]+(profcoords[0][1]*tmp1[1]) );
             float edgez = profcoords[0][0];
@@ -576,13 +579,13 @@ SoText3::render(SoState * state, unsigned int part)
               pn->getVertices(state, profnum, profcoords);
               // iterate through all profile coords, drawing quads (and calculating normals)
               glBegin(GL_QUADS);
-              for (int i=0; i<profnum; i++) {
-                vd[0] = va[0] + ((profcoords[i][1] * tmp2[0]));
-                vd[1] = va[1] + ((profcoords[i][1] * tmp2[1]));
-                vc[0] = vb[0] + ((profcoords[i][1] * tmp1[0]));
-                vc[1] = vb[1] + ((profcoords[i][1] * tmp1[1]));
+              for (int k=0; k<profnum; k++) {
+                vd[0] = va[0] + ((profcoords[k][1] * tmp2[0]));
+                vd[1] = va[1] + ((profcoords[k][1] * tmp2[1]));
+                vc[0] = vb[0] + ((profcoords[k][1] * tmp1[0]));
+                vc[1] = vb[1] + ((profcoords[k][1] * tmp1[1]));
                 // normal
-                SbVec3f normal( vd[0]-edgea[0], vd[1]-edgea[1], -profcoords[i][0] - edgez );
+                SbVec3f normal( vd[0]-edgea[0], vd[1]-edgea[1], -profcoords[k][0] - edgez );
                 normal = normal.cross( SbVec3f( edgeb[0]-edgea[0], edgeb[1]-edgea[1], 0 ) );
                 if (normal.length() > 0) {
                   normal.normalize();
@@ -590,12 +593,12 @@ SoText3::render(SoState * state, unsigned int part)
                   // vertices
                   glVertex3f(edgeb[0], edgeb[1], edgez);
                   glVertex3f(edgea[0], edgea[1], edgez);
-                  glVertex3f(vd[0], vd[1], -profcoords[i][0] );
-                  glVertex3f(vc[0], vc[1], -profcoords[i][0] );
+                  glVertex3f(vd[0], vd[1], -profcoords[k][0] );
+                  glVertex3f(vc[0], vc[1], -profcoords[k][0] );
                 }  
                 edgeb = vc;
                 edgea = vd;
-                edgez = -profcoords[i][0];
+                edgez = -profcoords[k][0];
               }
               glEnd();
             }
