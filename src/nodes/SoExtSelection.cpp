@@ -2308,11 +2308,11 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
 
   // Calculate maximum colorcounter from RGB bit depth.
 #ifndef COLORBITS
-  const double maxcols = pow(2, red + green + blue);
+  const double maxcols = pow(2.0, double(red + green + blue));
 #else // COLORBITS debug
   // This is debug/testing stuff, forcing lower colorresolution. VERY
   // useful for testing.
-  const double maxcols = pow(2, COLORBITS);
+  const double maxcols = pow(2.0, double(COLORBITS));
 #endif
 
   // We do not want to use too many bits, as we later need to allocate
@@ -2321,7 +2321,7 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
   // not. So we set a limit at ~4 million, which should be enough to
   // do even really heavy scenes in a single pass, while this will
   // allocate a buffer of not more than ~0.5 MB.
-  const unsigned int threshold = (unsigned int)pow(2, 22);
+  const unsigned int threshold = (unsigned int)(1 << 22);
 
   this->maximumcolorcounter =
     (maxcols > threshold) ? threshold : (unsigned int)maxcols;
