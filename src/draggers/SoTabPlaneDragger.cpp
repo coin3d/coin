@@ -551,7 +551,7 @@ SoTabPlaneDragger::metaKeyChangeCB(void *, SoDragger * d)
 {
   SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
   if (!thisp->isActive.getValue()) return;
-  if (!thisp->whatkind == WHATKIND_TRANSLATE) return;
+  if (!(thisp->whatkind == WHATKIND_TRANSLATE)) return;
 
   const SoEvent *event = thisp->getEvent();
   if (event->wasShiftDown() && thisp->constraintState == CONSTRAINT_OFF) {
