@@ -127,10 +127,13 @@ SoGLTextureEnabledElement::isLazy(void) const
   state already is the same as \a onoff, nothing will happen.
 */
 void
-SoGLTextureEnabledElement::forceSend(const SbBool onoff) const
+SoGLTextureEnabledElement::forceSend(SoState * const state, 
+                                     const SbBool onoff)
 {
-  if (this->glstate != onoff) {
-    ((SoGLTextureEnabledElement*)this)->glstate = onoff;
+  SoGLTextureEnabledElement * te = (SoGLTextureEnabledElement *)
+    SoElement::getElement(state, classStackIndex);
+  if (te->glstate != onoff) {
+    te->glstate = onoff;
     if (onoff) glEnable(GL_TEXTURE_2D);
     else glDisable(GL_TEXTURE_2D);
   }

@@ -46,11 +46,11 @@ public:
   virtual void lazyEvaluate(void) const;
   virtual SbBool isLazy(void) const;
 
-  void forceSend(const SbBool twoside) const;
-  void forceSend(const SbBool ccw, const SbBool cull) const;
-  void forceSend(const SbBool ccw, const SbBool cull,
-                 const SbBool twoside) const;
-
+  static void forceSend(SoState * const state, const SbBool twoside);
+  static void forceSend(SoState * const state, 
+                        const SbBool ccw, const SbBool cull);
+  static void forceSend(SoState * const state, const SbBool ccw, 
+                        const SbBool cull, const SbBool twoside);
 
 protected:
   virtual void setElt(VertexOrdering vertexOrdering,

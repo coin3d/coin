@@ -118,11 +118,7 @@ SoCube::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  if (sendNormals) {
-    const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-      state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
-    ne->forceSend(TRUE);
-  }
+  if (sendNormals) SoGLNormalizeElement::forceSend(state, TRUE);
 
   unsigned int flags = 0;
   if (materialPerPart) flags |= SOGL_MATERIAL_PER_PART;

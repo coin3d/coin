@@ -148,9 +148,8 @@ SoAsciiText::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-    state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
-  ne->forceSend(TRUE); // we will provide unit length normals
+ // we will provide unit length normals
+  SoGLNormalizeElement::forceSend(state, TRUE);
 
   float size = SoFontSizeElement::get(state);
   SbBool doTextures = SoGLTextureEnabledElement::get(state);

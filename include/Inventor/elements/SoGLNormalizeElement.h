@@ -53,7 +53,8 @@ public:
   virtual void lazyEvaluate(void) const;
   virtual SbBool isLazy(void) const;
 
-  void forceSend(const SbBool normalsAreUnitLength) const;
+  static void forceSend(SoState * const state, 
+                        const SbBool normalsAreUnitLength);
 
 private:
 

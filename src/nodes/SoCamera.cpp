@@ -765,9 +765,8 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   }
   else { // FILL
     SoDrawStyleElement::set(state, this, SoDrawStyleElement::FILLED);
-    const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-      state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-    sh->forceSend(TRUE, FALSE); // turn off backface culling
+    // turn off backface culling
+    SoGLShapeHintsElement::forceSend(state, TRUE, FALSE);
     SoGLPolygonStippleElement::set(state, FALSE);
     const SoGLPolygonStippleElement * ps = (SoGLPolygonStippleElement *)
       state->getConstElement(SoGLPolygonStippleElement::getClassStackIndex());

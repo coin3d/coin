@@ -49,7 +49,7 @@ public:
 
   virtual void lazyEvaluate(void) const;
   virtual SbBool isLazy(void) const;
-  void forceSend(const SbBool flat) const;
+  static void forceSend(SoState * const state, const SbBool flat);
 
   static const SoGLShadeModelElement * getInstance(SoState * state);
 

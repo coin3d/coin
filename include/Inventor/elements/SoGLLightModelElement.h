@@ -46,7 +46,7 @@ public:
   virtual SbBool isLazy(void) const;
 
   // force this value without changing state
-  void forceSend(const Model model) const;
+  static void forceSend(SoState * const state, const Model model);
 
   static const SoGLLightModelElement *getInstance(SoState *state);
 

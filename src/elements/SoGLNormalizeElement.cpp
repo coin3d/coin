@@ -202,13 +202,16 @@ SoGLNormalizeElement::isLazy(void) const
   Normalizing is not disabled unless matrix is valid though.
 */
 void
-SoGLNormalizeElement::forceSend(const SbBool unit) const
+SoGLNormalizeElement::forceSend(SoState * const state, 
+                                const SbBool unit)
 {
 #if 0 // debug
   SoDebugError::postInfo("SoGLNormalizeElement::forceSend",
                          "%d", unit);
 #endif // debug
-  ((SoGLNormalizeElement*)this)->updategl(!(unit && this->okMatrix));
+  SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
+    SoElement::getElement(state, classStackIndex);
+  ne->updategl(!(unit && ne->okMatrix));
 }
 
 //! FIXME: write doc.

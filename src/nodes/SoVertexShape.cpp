@@ -161,9 +161,7 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
       // is unknown, force two-sided lighting
       if (SoShapeHintsElement::getVertexOrdering(state) ==
           SoShapeHintsElement::UNKNOWN_ORDERING) {
-        const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-          state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-        sh->forceSend(TRUE);
+        SoGLShapeHintsElement::forceSend(state, TRUE);
       }
 #endif // disabled code
     }

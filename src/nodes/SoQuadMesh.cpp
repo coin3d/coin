@@ -629,9 +629,8 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   Binding nbind = findNormalBinding(action->getState());
   if (!needNormals) nbind = OVERALL;
 
-  if ((nbind == PER_FACE) || (mbind == PER_FACE)) {
-    SoGLShadeModelElement::getInstance(state)->forceSend(TRUE);
-  }
+  if ((nbind == PER_FACE) || (mbind == PER_FACE))
+    SoGLShadeModelElement::forceSend(state, TRUE);
 
   if (needNormals && normals == NULL) {
     normals = getNormalCache()->getNormals();

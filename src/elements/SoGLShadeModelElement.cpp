@@ -152,11 +152,12 @@ SoGLShadeModelElement::isLazy(void) const
   state of the element.
 */
 void
-SoGLShadeModelElement::forceSend(const SbBool flat) const
+SoGLShadeModelElement::forceSend(SoState * const state, 
+                                 const SbBool flat)
 {
-  if (this->glflat != flat) {
-    ((SoGLShadeModelElement*)this)->updategl(flat);
-  }
+  SoGLShadeModelElement * se = (SoGLShadeModelElement *)
+    SoElement::getElement(state, classStackIndex);
+  if (se->glflat != flat) se->updategl(flat);
 }
 
 // set correct GL state

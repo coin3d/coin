@@ -352,9 +352,7 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     mb.sendFirst();
 
     {
-      const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
-        state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-      sh->forceSend(TRUE, FALSE, FALSE);
+      SoGLShapeHintsElement::forceSend(state, TRUE, FALSE, FALSE);
     }
 
     glPushMatrix();

@@ -171,12 +171,14 @@ SoGLShapeHintsElement::isLazy(void) const
 */
 
 void
-SoGLShapeHintsElement::forceSend(const SbBool twoside) const
+SoGLShapeHintsElement::forceSend(SoState * const state, 
+                                 const SbBool twoside)
 {
-  SoGLShapeHintsElement *elem = (SoGLShapeHintsElement*)this;
-  unsigned int flags = glflags & ~SOSH_TWOSIDE;
+  SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
+    SoElement::getElement(state, classStackIndex);
+  unsigned int flags = sh->glflags & ~SOSH_TWOSIDE;
   if (twoside) flags |= SOSH_TWOSIDE;
-  elem->updategl(flags);
+  sh->updategl(flags);
 }
 
 /*!
@@ -185,27 +187,31 @@ SoGLShapeHintsElement::forceSend(const SbBool twoside) const
 */
 
 void
-SoGLShapeHintsElement::forceSend(const SbBool ccw, const SbBool cull) const
+SoGLShapeHintsElement::forceSend(SoState * const state, 
+                                 const SbBool ccw, const SbBool cull)
 {
-  SoGLShapeHintsElement *elem = (SoGLShapeHintsElement*)this;
-  unsigned int flags = glflags & SOSH_TWOSIDE;
+  SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
+    SoElement::getElement(state, classStackIndex);
+  unsigned int flags = sh->glflags & SOSH_TWOSIDE;
   if (ccw) flags |= SOSH_CCW;
   if (cull) flags |= SOSH_CULL;
-  elem->updategl(flags);
+  sh->updategl(flags);
 }
 
 //! FIXME: write doc.
 
 void
-SoGLShapeHintsElement::forceSend(const SbBool ccw, const SbBool cull,
-                                 const SbBool twoside) const
+SoGLShapeHintsElement::forceSend(SoState * const state, 
+                                 const SbBool ccw, const SbBool cull,
+                                 const SbBool twoside)
 {
-  SoGLShapeHintsElement *elem = (SoGLShapeHintsElement*)this;
+  SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
+    SoElement::getElement(state, classStackIndex);
   unsigned int flags = 0;
   if (ccw) flags |= SOSH_CCW;
   if (cull) flags |= SOSH_CULL;
   if (twoside) flags |= SOSH_TWOSIDE;
-  elem->updategl(flags);
+  sh->updategl(flags);
 }
 
 //! FIXME: write doc.

@@ -46,7 +46,7 @@ public:
   virtual void lazyEvaluate(void) const;
   virtual SbBool isLazy(void) const;
 
-  virtual void forceSend(const SbBool onoff) const;
+  static  void forceSend(SoState * const state, const SbBool onoff);
   static  void set(SoState * const state, SoNode * const node,
                    const SbBool enabled);
   static  void set(SoState * const state, const SbBool enabled);

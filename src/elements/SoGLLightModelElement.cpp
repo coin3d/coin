@@ -121,11 +121,14 @@ SoGLLightModelElement::isLazy(void) const
 //! FIXME: write doc.
 
 void
-SoGLLightModelElement::forceSend(const Model model) const
+SoGLLightModelElement::forceSend(SoState * const state, 
+                                 const Model model)
 {
-  if (model != this->current) {
-    ((SoGLLightModelElement*)this)->current = model;
-    ((SoGLLightModelElement*)this)->updategl();
+  SoGLLightModelElement * le = 
+    (SoGLLightModelElement *)SoElement::getElement(state, classStackIndex);
+  if (model != le->current) {
+    le->current = model;
+    le->updategl();
   }
 }
 

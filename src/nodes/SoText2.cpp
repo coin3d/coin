@@ -357,8 +357,7 @@ SoText2::GLRender(SoGLRenderAction * action)
 
     // SoGLLightModelElement is lazy,
     // changing GL state without affecting state of element
-    SoGLLightModelElement::getInstance(state)->
-      forceSend(SoLightModelElement::BASE_COLOR);
+    SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
 
     glListBase(fontlistbase);
 
@@ -442,7 +441,7 @@ SoText2::GLRender(SoGLRenderAction * action)
   else {
     SoMaterialBundle mb(action);
     mb.sendFirst();
-    SoGLLightModelElement::getInstance(state)->forceSend(SoLightModelElement::BASE_COLOR);
+    SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
     SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
     const SbMatrix & mat = SoModelMatrixElement::get(state);
     mat.multVecMatrix(nilpoint, nilpoint);

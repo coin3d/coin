@@ -160,14 +160,10 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   // disable lighting
-  const SoGLLightModelElement * lm = (const SoGLLightModelElement *)
-    state->getConstElement(SoGLLightModelElement::getClassStackIndex());
-  lm->forceSend(SoLightModelElement::BASE_COLOR);
+  SoGLLightModelElement::forceSend(state, SoLightModelElement::BASE_COLOR);
 
   // disable texturing
-  const SoGLTextureEnabledElement * te = (const SoGLTextureEnabledElement *)
-    state->getConstElement(SoGLTextureEnabledElement::getClassStackIndex());
-  te->forceSend(FALSE);
+  SoGLTextureEnabledElement::forceSend(state, FALSE);
 
   // Create lazy element for GL_AUTO_NORMAL ?
   glEnable(GL_AUTO_NORMAL);

@@ -104,11 +104,7 @@ SoSphere::GLRender(SoGLRenderAction * action)
 
   float complexity = this->getComplexityValue(action);
 
-  if (sendNormals) {
-    const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-      state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
-    ne->forceSend(TRUE);
-  }
+  if (sendNormals) SoGLNormalizeElement::forceSend(state, TRUE);
 
   unsigned int flags = 0;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;

@@ -337,9 +337,8 @@ SoText3::GLRender(SoGLRenderAction * action)
 
   unsigned int prts = this->parts.getValue();
 
-  const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
-    state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
-  ne->forceSend(TRUE); // we will provide unit length normals
+  // we will provide unit length normals
+  SoGLNormalizeElement::forceSend(state, TRUE);
 
   if (prts & SoText3::FRONT) {
     this->render(state, SoText3::FRONT);
