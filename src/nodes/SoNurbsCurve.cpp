@@ -115,9 +115,6 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-  gluNurbsProperty(nurbsRenderer, (GLenum) GLU_SAMPLING_TOLERANCE, 50.0);
-  gluNurbsProperty(nurbsRenderer, (GLenum) GLU_DISPLAY_MODE, GLU_FILL);
-
   glEnable(GL_AUTO_NORMAL);
 
   int dim = coords->is3D() ? 3 : 4;
@@ -129,13 +126,17 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
     (GLfloat *)coordelem->getArrayPtr3() :
     (GLfloat *)coordelem->getArrayPtr4();
 
-  gluNurbsCurve(this->nurbsRenderer, knotVector.getNum(),
-                (GLfloat *)knotVector.getValues(0),
-                dim, ptr,
-                knotVector.getNum()-numControlPoints.getValue() ,
-                (GLenum)GLU_FILL);
 
-  gluEndSurface(this->nurbsRenderer);
+  gluBeginCurve(this->nurbsRenderer);
+  gluNurbsCurve(this->nurbsRenderer,
+                this->knotVector.getNum(),
+                (GLfloat *)this->knotVector.getValues(0),
+                dim,
+                ptr,
+                this->knotVector.getNum() - this->numControlPoints.getValue(),
+                (GLenum)(dim == 3 ? GL_MAP1_VERTEX_3 : GL_MAP1_VERTEX_4));
+
+  gluEndCurve(this->nurbsRenderer);
   glDisable(GL_AUTO_NORMAL);
 }
 
