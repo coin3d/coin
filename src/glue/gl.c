@@ -561,7 +561,6 @@ cc_glglue_instance(int contextid)
 {
   SbBool found;
   void * ptr;
-  void * handle;
   cc_glglue * gi = NULL;
 
   CC_SYNC_BEGIN(cc_glglue_instance);
