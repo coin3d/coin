@@ -4529,6 +4529,10 @@ diff -u -b -r1.27 SoIndexedFaceSet.h
 
     20041116 larsa.
 
+    UPDATE 20041210 mortene: GLU tessellation can do polygons with
+    holes, and we should probably use that for the implementation of
+    this feature.
+
 =====================================================================
 
 172 SoFieldContainer and private fields
@@ -4633,7 +4637,20 @@ Separator {
     20041208 mortene.
 
 =====================================================================
-188 SoVRMLScript copy (when connected) is buggy
+
+178 SbMatrixd and SbRotationd missing from Coin.
+
+    These classes are present both in TGS Inventor and in Coin, but in
+    Coin they are named SbDPMatrix and SbDPRotation. They should also
+    be named the same in Coin, to make migration easier.
+
+    Is it possible / sufficient to fix this with a simple typedef?
+
+    20041210 mortene.
+
+=====================================================================
+
+179 SoVRMLScript copy (when connected) is buggy
 
     The scene graph below triggers a crash when the scene is copied
     (using SoNode::copy(TRUE)), and the whichChild field in the Switch
@@ -4649,4 +4666,35 @@ Separator {
     ROUTE SwitchScript.whichChoice_changed TO testsw.set_whichChoice
 
     20041212 pederb
+
+=====================================================================
+
+180 Leaving the SoType classTypeId to be set implicitly to bit pattern
+    0x0000 doesn't work with the Intel compiler.
+
+    This means the following code from SoSubField.h must be fixed, and
+    similar code other places (SoNode.cpp, SoBase.cpp, others):
+
+      /* Don't set value explicitly to SoType::badType(), to avoid a bug in */ \
+      /* Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()). */ \
+      SoType _class_::classTypeId;
+
+    This code used to be
+
+      SoType _class_::classTypeId = SoType::badType();
+
+    but as the code comment indicates, this triggered a bug in Sun CC
+    v4.0, so we ended up with the somewhat hack-ish solution, which is
+    now found to fail with the Intel compiler (tested with the latest
+    release) in the following manner: the classTypeId variables will
+    be set to a random (?) non-0x000 value, which triggers the
+    assert-checks that detects whether any init()/initClass() method
+    is called multiple times.
+
+    pederb suggests fixing this by adding a separate static variable
+    to the classes, as a flag which remembers whether or not it was
+    initialized.
+
+    20041214 mortene.
+
 =====================================================================
