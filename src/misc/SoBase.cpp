@@ -1818,7 +1818,7 @@ SoBase::connectRoute(SoInput * in,
       SoType fromtype = from ? from->getTypeId() : output->getConnectionType();
       if (totype != fromtype) {
         SoType convtype = SoDB::getConverter(fromtype, totype);
-        if (convtype != SoType::badType()) {
+        if (convtype == SoType::badType()) {
           SoReadError::post(in,
                             "Tried to connect a ROUTE between entities "
                             "that can not be connected (due to lack of "
