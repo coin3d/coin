@@ -20,22 +20,12 @@
 #ifndef COIN_SOPICKEDPOINTLIST_H
 #define COIN_SOPICKEDPOINTLIST_H
 
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
 class SoPickedPoint;
 
-class SoPickedPointList : public SbPList {
-  typedef SbPList inherited;
-public:
-  SoPickedPointList(void);
-  SoPickedPointList(const int size);
-  SoPickedPointList(const SoPickedPointList &l);
-  ~SoPickedPointList(void);
-  void append(SoPickedPoint * const ptr);
-  void insert(SoPickedPoint * const ptr, const int addBefore);
-  void truncate(int start);
-  SoPickedPoint *operator [](const int i) const;
-  void set(const int i, SoPickedPoint * const ptr);
+
+class SoPickedPointList : public SbList<SoPickedPoint *> {
 };
 
 #endif // !COIN_SOPICKEDPOINTLIST_H

@@ -202,11 +202,29 @@ INPUT                = \
 	$(top_srcdir)/include/Inventor/lists/SoNodeList.h \
 	$(top_srcdir)/src/lists/SoPathList.cpp \
 	$(top_srcdir)/include/Inventor/lists/SoPathList.h \
+	$(top_srcdir)/src/misc/SoChildList.cpp \
+	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
+	$(top_srcdir)/src/lists/SoDetailList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoDetailList.h \
+	$(top_srcdir)/src/lists/SoFieldList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoFieldList.h \
+	$(top_srcdir)/src/lists/SoPickedPointList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoPickedPointList.h \
+	$(top_srcdir)/src/lists/SoTypeList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoTypeList.h \
+	$(top_srcdir)/src/lists/SoEngineOutputList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoEngineOutputList.h \
+	$(top_srcdir)/src/lists/SoVRMLInterpOutputList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoVRMLInterpOutputList.h \
+	$(top_srcdir)/src/lists/SoCallbackList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoCallbackList.h \
+	$(top_srcdir)/src/lists/SoEnabledElementsList.cpp \
+	$(top_srcdir)/include/Inventor/lists/SoEnabledElementsList.h \
         \
 	$(top_srcdir)/src/misc/SoNotification.cpp \
 	$(top_srcdir)/include/Inventor/misc/SoNotification.h \
 
-#        \
+#	\
 #	$(top_srcdir)/src/misc/SoBase.cpp \
 #	$(top_srcdir)/include/Inventor/misc/SoBase.h \
 #	\
@@ -398,25 +416,6 @@ INPUT                = \
 #	\
 #	$(top_srcdir)/src/SoType.cpp \
 #	$(top_srcdir)/include/Inventor/SoType.h \
-#	\
-#	$(top_srcdir)/src/lists/SoCallbackList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoCallbackList.h \
-#	$(top_srcdir)/src/lists/SoDetailList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoDetailList.h \
-#	$(top_srcdir)/src/lists/SoEnabledElementsList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoEnabledElementsList.h \
-#	$(top_srcdir)/src/lists/SoEngineOutputList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoEngineOutputList.h \
-#	$(top_srcdir)/src/lists/SoVRMLInterpOutputList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoVRMLInterpOutputList.h \
-#	$(top_srcdir)/src/lists/SoFieldList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoFieldList.h \
-#	$(top_srcdir)/src/lists/SoPickedPointList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoPickedPointList.h \
-#	$(top_srcdir)/src/lists/SoTypeList.cpp \
-#	$(top_srcdir)/include/Inventor/lists/SoTypeList.h \
-#	$(top_srcdir)/src/misc/SoChildList.cpp \
-#	$(top_srcdir)/include/Inventor/misc/SoChildList.h \
 #	\
 #	$(top_srcdir)/src/SoFullPath.cpp \
 #	$(top_srcdir)/include/Inventor/SoFullPath.h \

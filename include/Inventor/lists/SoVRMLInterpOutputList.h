@@ -20,23 +20,16 @@
 #ifndef COIN_SOVRMLINTERPOUTPUTLIST_H
 #define COIN_SOVRMLINTERPOUTPUTLIST_H
 
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
 class SoVRMLInterpOutput;
 
-class SoVRMLInterpOutputList : public SbPList {
-  typedef SbPList inherited;
 
+class SoVRMLInterpOutputList : public SbList<SoVRMLInterpOutput *> {
 public:
-  SoVRMLInterpOutputList(void);
-  SoVRMLInterpOutputList(const int size);
-  SoVRMLInterpOutputList(const SoVRMLInterpOutputList & l);
-  ~SoVRMLInterpOutputList(void);
-
-  void append(SoVRMLInterpOutput * const ptr);
-  void insert(SoVRMLInterpOutput * const ptr, const int addBefore);
-  void set(const int i, SoVRMLInterpOutput * const ptr);
-  SoVRMLInterpOutput * operator [](const int i) const;
+  SoVRMLInterpOutputList(void) : SbList<SoVRMLInterpOutput *>() { }
+  SoVRMLInterpOutputList(const int sizehint) : SbList<SoVRMLInterpOutput *>(sizehint) { }
+  SoVRMLInterpOutputList(const SoVRMLInterpOutputList & l) : SbList<SoVRMLInterpOutput *>(l) { }
 };
 
 #endif // !COIN_SOVRMLINTERPOUTPUTLIST_H

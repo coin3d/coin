@@ -121,9 +121,10 @@ SoBaseList::remove(const int index)
 }
 
 /*!
-  Makes the list contain only the \a length first items, removing
-  items from index \a length. Dereferences the objects to be removed
-  (unless addReferences() has been set to \c FALSE).
+  Makes the list contain only the \a length first items, removing all
+  items from index \a length and onwards to the end of the
+  list. Dereferences the objects to be removed (unless addReferences()
+  has been set to \c FALSE).
 
   \sa SbPList::truncate()
 */

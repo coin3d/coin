@@ -153,7 +153,7 @@ SoEngineOutput::getNumConnections() const
 SoField *
 SoEngineOutput::operator[](int i) const
 {
-  return connections.get(i);
+  return this->connections[i];
 }
 
 /*!

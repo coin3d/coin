@@ -20,24 +20,12 @@
 #ifndef COIN_SODETAILLIST_H
 #define COIN_SODETAILLIST_H
 
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
 class SoDetail;
 
-class SoDetailList : public SbPList {
-  typedef SbPList inherited;
-public:
-  SoDetailList(void);
-  SoDetailList(const int size);
-  SoDetailList(const SoDetailList &l);
-  ~SoDetailList(void);
-  void append(SoDetail * const ptr);
-  void insert(SoDetail * const ptr, const int addBefore);
-  void truncate(const int start);
-  void copy(const SoDetailList &l);
-  SoDetailList &operator =(const SoDetailList &l);
-  SoDetail *operator [](const int i) const;
-  void set(const int i, SoDetail * const ptr);
+
+class SoDetailList : public SbList<SoDetail *> {
 };
 
 #endif // !COIN_SODETAILLIST_H

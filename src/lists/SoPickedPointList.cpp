@@ -18,96 +18,12 @@
 \**************************************************************************/
 
 /*!
-  \class SoPickedPointList Inventor/lists/SoPickedPointList.h
-  \brief The SoPickedPointList class is a container class for arrays of
-  pointers to SoPickedPoint objects.
-
-  FIXME: write doc.
+  \class SoPickedPointList SoPickedPointList.h Inventor/lists/SoPickedPointList.h
+  \brief The SoPickedPointList class is a container for pointers to SoPickedPoint objects.
+  \ingroup general
 */
 
-#include <Inventor/lists/SoPickedPointList.h>
-
-/*!
-  A constructor (default).
-*/
-
-SoPickedPointList::SoPickedPointList(void)
-  :SbPList()
-{
-}
-
-/*!
-  A constructor.
-*/
-
-SoPickedPointList::SoPickedPointList(const int size)
-  : SbPList(size)
-{
-}
-
-/*!
-  A constructor (copy).
-*/
-
-SoPickedPointList::SoPickedPointList(const SoPickedPointList &l)
-  : SbPList(l)
-{
-}
-
-/*!
-  The destructor.
-*/
-
-SoPickedPointList::~SoPickedPointList()
-{
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoPickedPointList::append(SoPickedPoint * const ptr)
-{
-  SbPList::append((void*)ptr);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoPickedPointList::insert(SoPickedPoint * const ptr, const int addBefore)
-{
-  SbPList::insert((void*)ptr, addBefore);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoPickedPointList::truncate(int start)
-{
-  SbPList::truncate(start);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-SoPickedPoint *
-SoPickedPointList::operator [](const int i) const
-{
-  return (SoPickedPoint *)((*(const SbPList *)this)[i]);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoPickedPointList::set(const int i, SoPickedPoint * const ptr)
-{
-  SbPList::set(i, (void*)ptr);
-}
+// SoPickedPointList was moved from being a subclass of SbPList to
+// being a subclass of SbList. This removed the need to do lots of
+// ugly casts in overloaded methods, with the subsequent removal of
+// all code in this file. 20000228 mortene.

@@ -18,119 +18,12 @@
 \**************************************************************************/
 
 /*!
-  \class SoDetailList Inventor/lists/SoDetailList.h
-  \brief The SoDetailList class is yet to be documented.
-
-  FIXME: write doc.
+  \class SoDetailList SoDetailList.h Inventor/lists/SoDetailList.h
+  \brief The SoDetailList class is a container for pointers to SoDetail objects.
+  \ingroup details
 */
 
-#include <Inventor/lists/SoDetailList.h>
-
-#include <Inventor/misc/SoBase.h>
-
-/*!
-  A constructor (default).
-*/
-
-SoDetailList::SoDetailList(void)
-  :SbPList()
-{
-}
-
-/*!
-  A constructor.
-*/
-
-SoDetailList::SoDetailList(const int size)
-  : SbPList(size)
-{
-}
-
-/*!
-  A constructor.
-*/
-
-SoDetailList::SoDetailList(const SoDetailList &l)
-  : SbPList(l)
-{
-}
-
-/*!
-  The destructor.
-*/
-
-SoDetailList::~SoDetailList(void)
-{
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoDetailList::append(SoDetail * const ptr)
-{
-  SbPList::append((void*)ptr);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoDetailList::insert(SoDetail * const ptr, const int addBefore)
-{
-  SbPList::insert((void*)ptr, addBefore);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoDetailList::truncate(const int start)
-{
-  SbPList::truncate(start);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoDetailList::copy(const SoDetailList &l)
-{
-  SbPList::copy(l);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-SoDetailList &
-SoDetailList::operator =(const SoDetailList &l)
-{
-  this->copy(l);
-  return *this;
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-//$ EXPORT INLINE
-SoDetail *
-SoDetailList::operator [](const int i) const
-{
-  return (SoDetail *)((*(const SbPList *)this)[i]);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoDetailList::set(const int i, SoDetail * const ptr)
-{
-  SbPList::set(i, (void*)ptr);
-}
+// SoDetailList was moved from being a subclass of SbPList to being a
+// subclass of SbList. This removed the need to do lots of ugly casts
+// in overloaded methods, with the subsequent removal of all code in
+// this file. 20000228 mortene.

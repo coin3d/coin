@@ -18,107 +18,36 @@
 \**************************************************************************/
 
 /*!
-  \class SoFieldList Inventor/lists/SoFieldList.h
-  \brief The SoFieldList class is a container class for lists of pointers
-  to SoField-derived objects.
-
-  FIXME: write doc.
+  \class SoFieldList SoFieldList.h Inventor/lists/SoFieldList.h
+  \brief The SoFieldList class is a container for pointers to SoField objects.
+  \ingroup fields
 */
 
-#include <Inventor/lists/SoFieldList.h>
+// SoFieldList was moved from being a subclass of SbPList to being a
+// subclass of SbList. This removed the need to do lots of ugly casts
+// in overloaded methods, with the subsequent removal of most of the
+// code in this file. 20000228 mortene.
 
 /*!
-  A constructor (default).
+  \fn SoFieldList::SoFieldList(void)
+
+  Default constructor.
 */
 
-SoFieldList::SoFieldList(void)
-  :SbPList()
-{
-}
-
 /*!
-  A constructor.
+  \fn SoFieldList::SoFieldList(const int sizehint)
+
+  This constructor initializes the internal allocated size for the
+  list to \a sizehint. Note that the list will still initially contain
+  zero items.
+
+  \sa SbList::SbList(const int)
 */
 
-SoFieldList::SoFieldList(const int size)
-  : SbPList(size)
-{
-}
-
 /*!
+  \fn SoFieldList::SoFieldList(const SoFieldList & l)
+
   Copy constructor.
+
+  \sa SbList::SbList(const SbList<Type> & l)
 */
-SoFieldList::SoFieldList(const SoFieldList & source)
-  : SbPList()
-{
-  this->operator=(source);
-}
-
-/*!
-  The destructor.
-*/
-
-SoFieldList::~SoFieldList(void)
-{
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoFieldList::append(SoField * const ptr)
-{
-  SbPList::append((void *)ptr);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoFieldList::insert(SoField * const ptr, const int addBefore)
-{
-  SbPList::insert((void *)ptr, addBefore);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-SoField *
-SoFieldList::operator [](const int i) const
-{
-  return (SoField *)((*(const SbPList *)this)[i]);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-void
-SoFieldList::set(const int i, SoField * const ptr)
-{
-  SbPList::set(i, (void *)ptr);
-}
-
-/*!
-  FIXME: write doc.
-*/
-
-SoField *
-SoFieldList::get(const int i) const
-{
-  return (SoField *)SbPList::get(i);
-}
-
-/*!
-  Make a shallow copy of the contents of \a source into this list.
-  Returns a reference to \a this.
- */
-SoFieldList &
-SoFieldList::operator=(const SoFieldList & source)
-{
-  inherited::copy(source);
-  return *this;
-}

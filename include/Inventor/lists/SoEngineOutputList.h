@@ -20,24 +20,16 @@
 #ifndef COIN_SOENGINEOUTPUTLIST_H
 #define COIN_SOENGINEOUTPUTLIST_H
 
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
 class SoEngineOutput;
 
 
-class SoEngineOutputList : public SbPList {
-  typedef SbPList inherited;
-
+class SoEngineOutputList : public SbList<SoEngineOutput *> {
 public:
-  SoEngineOutputList(void);
-  SoEngineOutputList(const int size);
-  SoEngineOutputList(const SoEngineOutputList & l);
-  ~SoEngineOutputList();
-
-  void append(SoEngineOutput * const ptr);
-  void insert(SoEngineOutput * const ptr, const int addbefore);
-  void set(const int i, SoEngineOutput * const ptr);
-  SoEngineOutput * operator [](const int i) const;
+  SoEngineOutputList(void) : SbList<SoEngineOutput *>() { }
+  SoEngineOutputList(const int sizehint) : SbList<SoEngineOutput *>(sizehint) { }
+  SoEngineOutputList(const SoEngineOutputList & l) : SbList<SoEngineOutput *>(l) { }
 };
 
 #endif // !COIN_SOENGINEOUTPUTLIST_H

@@ -18,7 +18,7 @@
 \**************************************************************************/
 
 /*!
-  \class SoNodeList Inventor/lists/SoNodeList.h
+  \class SoNodeList SoNodeList.h Inventor/lists/SoNodeList.h
   \brief The SoNodeList class is a container for pointers to SoNode objects.
   \ingroup nodes
 

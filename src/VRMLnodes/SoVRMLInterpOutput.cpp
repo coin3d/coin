@@ -183,7 +183,7 @@ SoVRMLInterpOutput::operator[](int i) const
     return NULL;
   }
 #endif // COIN_DEBUG
-  return this->connectedfields.get(i);
+  return this->connectedfields[i];
 }
 
 /*!

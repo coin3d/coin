@@ -1,7 +1,7 @@
 # CONFIG "The List Classes"
 # factors: [work in progress / no work done]
 # FLAGS [0.8 0.6]
-# I = implementation complete, or nearly so
+# I = implementation complete, or nearly so [1.0]
 # D = documented for Doxygen [0.5]
 #
 # VALUES
@@ -21,21 +21,20 @@
 # ID          SoBaseList
 # ID              SoEngineList
 # ID              SoNodeList
-#                     SoChildList
+# ID                  SoChildList
 # ID              SoPathList
 # --              SoVRMLInterpList
-# I           SoDetailList
-# ID          SoEngineOutputList
-# ID          SoVRMLInterpOutputList
-# I           SoFieldList
-# I           SoPickedPointList
-#             SoRenderObjectList
+# --          SoRenderObjectList
 # --          SoVRMLEXTERNPROTOFieldList 
 # --          SoVRMLPROTOFieldList 
-# I       SoTypeList
-# I   SoCallbackList
-#     SoEnabledElementsList
-#     SoCompactPathList
+# ID      SoDetailList
+# ID      SoEngineOutputList
+# ID      SoFieldList
+# ID      SoPickedPointList
+# ID      SoTypeList
+# ID      SoVRMLInterpOutputList
+# ID  SoCallbackList
+# ID  SoEnabledElementsList
 #
 ############################################################################
 #
@@ -48,6 +47,9 @@
 # <li> SoVRMLEXTERNPROTOFieldList 
 # <li> SoVRMLPROTOFieldList 
 # </ul>
+#
+# The SoRenderObjectList is not in use either, so it has not been
+# implemented yet.
 #
 # END COMMENTS
 # 

@@ -19,76 +19,35 @@
 
 /*!
   \class SoEngineOutputList SoEngineOutputList.h Inventor/lists/SoEngineOutputList.h
-  \brief The SoEngineOutputList class is a container for lists of SoEngineOutput objects.
-  \ingroup lists
+  \brief The SoEngineOutputList class is a container for SoEngineOutput objects.
+  \ingroup engines
 */
 
-#include <Inventor/lists/SoEngineOutputList.h>
+// SoEngineOutputList was moved from being a subclass of SbPList to
+// being a subclass of SbList. This removed the need to do lots of
+// ugly casts in overloaded methods, with the subsequent removal of
+// most of the code in this file. 20000228 mortene.
 
 /*!
-  Default Constructor, initializes an empty list.
+  \fn SoEngineOutputList::SoEngineOutputList(void)
+
+  Default constructor.
 */
-SoEngineOutputList::SoEngineOutputList(void)
-  : inherited()
-{
-}
 
 /*!
-  Constructor which takes a hint about the list size for effective
-  allocation of resources.
+  \fn SoEngineOutputList::SoEngineOutputList(const int sizehint)
+
+  This constructor initializes the internal allocated size for the
+  list to \a sizehint. Note that the list will still initially contain
+  zero items.
+
+  \sa SbList::SbList(const int)
 */
-SoEngineOutputList::SoEngineOutputList(const int size)
-  : inherited(size)
-{
-}
 
 /*!
+  \fn SoEngineOutputList::SoEngineOutputList(const SoEngineOutputList & l)
+
   Copy constructor.
-*/
-SoEngineOutputList::SoEngineOutputList(const SoEngineOutputList & l)
-  : inherited(l)
-{
-}
 
-/*!
-  Destructor, free resources.
+  \sa SbList::SbList(const SbList<Type> & l)
 */
-SoEngineOutputList::~SoEngineOutputList(void)
-{
-}
-
-/*!
-  Add \a ptr to SoEngineOutput at the end of the list.
-*/
-void
-SoEngineOutputList::append(SoEngineOutput * const ptr)
-{
-  inherited::append((SoEngineOutput *)ptr);
-}
-
-/*!
-  Insert \a ptr into the list at index \a addbefore.
-*/
-void
-SoEngineOutputList::insert(SoEngineOutput * const ptr, const int addbefore)
-{
-  inherited::insert((SoEngineOutput *)ptr, addbefore);
-}
-
-/*!
-  Returns list element at index \a i.
-*/
-SoEngineOutput *
-SoEngineOutputList::operator [](const int i) const
-{
-  return (SoEngineOutput *)((*(const SbPList *)this)[i]);
-}
-
-/*!
-  Replace list element at index \a i with \a ptr.
-*/
-void
-SoEngineOutputList::set(const int i, SoEngineOutput * const ptr)
-{
-  inherited::set(i, (SoEngineOutput *)ptr);
-}

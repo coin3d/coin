@@ -18,85 +18,36 @@
 \**************************************************************************/
 
 /*!
-  \class SoVRMLInterpOutputList Inventor/lists/SoVRMLInterpOutputList.h
-  \brief The SoVRMLInterpOutputList class is a container class for lists of
-  SoVRMLInterpOutput objects.
-  \ingroup lists
+  \class SoVRMLInterpOutputList SoVRMLInterpOutputList.h Inventor/lists/SoVRMLInterpOutputList.h
+  \brief The SoVRMLInterpOutputList class is a container for SoVRMLInterpOutput objects.
+  \ingroup vrml2
 */
 
-#include <Inventor/lists/SoVRMLInterpOutputList.h>
+// SoVRMLInterpOutputList was moved from being a subclass of SbPList to
+// being a subclass of SbList. This removed the need to do lots of
+// ugly casts in overloaded methods, with the subsequent removal of
+// most of the code in this file. 20000228 mortene.
 
 /*!
-  A constructor (default).
+  \fn SoVRMLInterpOutputList::SoVRMLInterpOutputList(void)
+
+  Default constructor.
 */
 
-SoVRMLInterpOutputList::SoVRMLInterpOutputList()
-  :SbPList()
-{
-}
-
 /*!
-  A constructor which takes a hint for the list size.
+  \fn SoVRMLInterpOutputList::SoVRMLInterpOutputList(const int sizehint)
+
+  This constructor initializes the internal allocated size for the
+  list to \a sizehint. Note that the list will still initially contain
+  zero items.
+
+  \sa SbList::SbList(const int)
 */
 
-SoVRMLInterpOutputList::SoVRMLInterpOutputList(const int size)
-  : SbPList(size)
-{
-}
-
 /*!
+  \fn SoVRMLInterpOutputList::SoVRMLInterpOutputList(const SoVRMLInterpOutputList & l)
+
   Copy constructor.
+
+  \sa SbList::SbList(const SbList<Type> & l)
 */
-
-SoVRMLInterpOutputList::SoVRMLInterpOutputList(const SoVRMLInterpOutputList & l)
-  : SbPList(l)
-{
-}
-
-/*!
-  The destructor.
-*/
-
-SoVRMLInterpOutputList::~SoVRMLInterpOutputList(void)
-{
-}
-
-/*!
-  Add \a ptr at the end of the list.
-*/
-
-void
-SoVRMLInterpOutputList::append(SoVRMLInterpOutput * const ptr)
-{
-  SbPList::append((SoVRMLInterpOutput *)ptr);
-}
-
-/*!
-  Insert \a ptr into the list at index \a addBefore.
-*/
-
-void
-SoVRMLInterpOutputList::insert(SoVRMLInterpOutput * const ptr, const int addBefore)
-{
-  SbPList::insert((SoVRMLInterpOutput *)ptr, addBefore);
-}
-
-/*!
-  Returns list element at index \a i.
-*/
-
-//$ EXPORT INLINE
-SoVRMLInterpOutput *
-SoVRMLInterpOutputList::operator [](const int i) const
-{
-  return (SoVRMLInterpOutput *)((*(const SbPList *)this)[i]);
-}
-
-/*!
-  Replace list element at index \a with \a ptr.
-*/
-void
-SoVRMLInterpOutputList::set(const int i, SoVRMLInterpOutput * const ptr)
-{
-  SbPList::set(i, (SoVRMLInterpOutput *)ptr);
-}

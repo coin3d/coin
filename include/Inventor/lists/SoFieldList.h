@@ -20,25 +20,16 @@
 #ifndef COIN_SOFIELDLIST_H
 #define COIN_SOFIELDLIST_H
 
-#include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SbList.h>
 
 class SoField;
 
-class SoFieldList : public SbPList {
-  typedef SbPList inherited;
+
+class SoFieldList : public SbList<SoField *> {
 public:
-  SoFieldList(void);
-  SoFieldList(const int size);
-  SoFieldList(const SoFieldList & source);
-  ~SoFieldList(void);
-
-  void append(SoField * const ptr);
-  void insert(SoField * const ptr, const int addBefore);
-  SoField * operator [](const int i) const;
-  void set(const int i, SoField * const ptr);
-  SoField * get(const int i) const;
-
-  SoFieldList & operator=(const SoFieldList & source);
+  SoFieldList(void) : SbList<SoField *>() { }
+  SoFieldList(const int sizehint) : SbList<SoField *>(sizehint) { }
+  SoFieldList(const SoFieldList & l) : SbList<SoField *>(l) { }
 };
 
 #endif // !COIN_SOFIELDLIST_H
