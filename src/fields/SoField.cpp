@@ -120,7 +120,9 @@ public:
   SoConnectStorage(SoFieldContainer * c, SoType t)
     : container(c), fieldtype(t),
       maptoconverter(13) // save about ~1kB vs default SbDict nr of buckets
-    { }
+    {
+      CC_MUTEX_CONSTRUCT(this->mutex);
+    }
 
 #if COIN_DEBUG
   // Check that everything has been emptied.
@@ -136,6 +138,8 @@ public:
 
     assert(slaves.getLength() == 0);
     assert(auditors.getLength() == 0);
+
+    CC_MUTEX_DESTRUCT(this->mutex);
   }
 #endif // COIN_DEBUG
 
@@ -152,6 +156,9 @@ public:
   // Direct auditors of us.
   SoAuditorList auditors;
 
+  // we need a mutex if we have connections since we need to lock in
+  // evaluate() to avoid several threads evaluating at the same time.
+  void * mutex;
 
   // Convenience functions for adding, removing and finding SbDict
   // mappings.
@@ -1650,9 +1657,16 @@ SoField::evaluate(void) const
 #endif // debug
     return;
   }
-  // do some simple tests to optimize evaluations
-  if (this->getDirty() == FALSE) return;
+  
+  // return immediately if field is not connected
   if (this->isConnected() == FALSE) return;
+
+  CC_MUTEX_LOCK(this->storage->mutex);
+
+  if (this->getDirty() == FALSE) {
+    CC_MUTEX_UNLOCK(this->storage->mutex);
+    return;
+  }
 
   // Recursive calls to SoField::evalute() should _absolutely_ not
   // happen, as the state of the field variables might not be
@@ -1684,6 +1698,8 @@ SoField::evaluate(void) const
   this->evaluateConnection();
   that->clearStatusBits(FLAG_ISEVALUATING);
   that->setDirty(FALSE);
+
+  CC_MUTEX_UNLOCK(this->storage->mutex);
 }
 
 /*!
