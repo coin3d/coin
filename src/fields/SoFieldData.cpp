@@ -37,9 +37,14 @@
 
   \sa SoField, SoFieldContainer */
 
+/*¡
+  Some methods related to reading VRML 2 files are missing.
+ */
+
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldContainer.h>
@@ -294,58 +299,90 @@ SoFieldData::getEnumData(const char * enumname, int & num,
 }
 
 /*!
-  FIXME: write doc
- */
+  Read field data from the \a in stream for fields belonging to \a
+  object. Returns \c TRUE if everything went ok, or \c FALSE if any
+  error conditions occurs.
+
+  \a erroronunknownfield decides whether or not \c FALSE should be
+  returned if a name identifier not recognized as a fieldname of \a
+  object is encountered. Note that \a erroronunknownfield should be \c
+  FALSE if \a object is a container with child objects, otherwise the
+  code will fail upon the first child name specification.
+
+  If \a notbuiltin is \c TRUE on return, \a object is an unknown node
+  or engine type. Unknown nodes are recognized by the \c fields
+  keyword first in their file format definition, and unknown engines
+  by the \a inputs keyword.
+
+*/
 SbBool
 SoFieldData::read(SoInput * in, SoFieldContainer * object,
-                  SbBool errorOnUnknownField, SbBool & /* notBuiltIn */) const
+                  SbBool erroronunknownfield, SbBool & notbuiltin) const
 {
-  // FIXME: use notBuiltIn somehow. 19990610 mortene.
+  notbuiltin = FALSE;
 
   if (in->isBinary()) {
     int numfields;
     if (!in->read(numfields)) {
-      SoReadError::post(in, "premature EOF");
+      SoReadError::post(in, "Premature EOF");
       return FALSE;
     }
 
     // FIXME: invalid check? (same field may be written several
     // times?) 19990711 mortene.
     if (numfields > this->fields.getLength()) {
-      SoReadError::post(in, "invalid number of fields: %d", numfields);
+      SoReadError::post(in, "Invalid number of fields: %d", numfields);
       return FALSE;
     }
 
     if (numfields == 0) return TRUE;
 
     for (int i=0; i < numfields; i++) {
-      SbName fieldName;
-      // FIXME: return TRUE? Strange. Investigate closer. 19991230 mortene.
-      if (!in->read(fieldName, TRUE) || !fieldName) return TRUE;
+      SbName fieldname;
+      if (!in->read(fieldname, TRUE) || !fieldname) {
+        SoReadError::post(in, "Couldn't read field number %d", i);
+        return FALSE;
+      }
 
 #if COIN_DEBUG && 0 // debug
       SoDebugError::postInfo("SoFieldData::read",
-                             "fieldname: '%s'", fieldName.getString());
+                             "fieldname: '%s'", fieldname.getString());
 #endif // debug
-      SbBool foundName;
-      if (!this->read(in, object, fieldName, foundName)) return FALSE;
+      SbBool foundname;
+      if (!this->read(in, object, fieldname, foundname)) return FALSE;
 
       // FIXME: handle case for binary format. 19990711 mortene.
-      assert(foundName && "FIXME: doesn't work in binary mode yet");
+      assert(foundname && "FIXME: doesn't work in binary mode yet");
     }
   }
-  else {
+  else { // ASCII format.
+    SbBool firstidentifier = TRUE;
     while (TRUE) {
       SbName fieldname;
-      // FIXME: return TRUE? Strange. Investigate closer. 19991230 mortene.
-      if (!in->read(fieldname, TRUE) || !fieldname) return TRUE;
+      if (!in->read(fieldname, TRUE)) return TRUE; // Terminates loop on "}"
+
+      // This should be caught in SoInput::read(SbName, SbBool).
+      assert(fieldname != "");
 
       SbBool foundname;
       if (!this->read(in, object, fieldname, foundname) && foundname)
         return FALSE;
 
       if (!foundname) {
-        if (errorOnUnknownField) {
+        // User extension node with explicit field definitions.
+        if (firstidentifier && fieldname == "fields") {
+          notbuiltin = TRUE;
+          if (!this->readFieldDescriptions(in, object, 0)) return FALSE;
+        }
+        // User extension engine with explicit input field definitions.
+        else if (firstidentifier && fieldname == "inputs") {
+          notbuiltin = TRUE;
+          // FIXME: read input defs and inputs (and output
+          // defs?). 20000102 mortene.
+          COIN_STUB();
+          return FALSE;
+        }
+        else if (erroronunknownfield) {
           SoReadError::post(in, "Unknown field \"%s\"", fieldname.getString());
           return FALSE;
         }
@@ -354,6 +391,7 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
           return TRUE;
         }
       }
+      firstidentifier = FALSE;
     }
   }
 
@@ -361,27 +399,27 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
 }
 
 /*!
-  Find field \a fieldName in \a object, and if it is available, sets
-  \a foundName to \c TRUE and tries to read the field specification
-  from \a in. If \a foundName is returned as \c TRUE, the return value
+  Find field \a fieldname in \a object, and if it is available, sets
+  \a foundname to \c TRUE and tries to read the field specification
+  from \a in. If \a foundname is returned as \c TRUE, the return value
   says whether or not the field specification could be read without
   any problems.
 
-  If \a fieldName is not part of \a object, returns \c FALSE with \a
-  foundName also set to \c FALSE.
+  If \a fieldname is not part of \a object, returns \c FALSE with \a
+  foundname also set to \c FALSE.
 */
 SbBool
 SoFieldData::read(SoInput * in, SoFieldContainer * object,
-                  const SbName & fieldName, SbBool & foundName) const
+                  const SbName & fieldname, SbBool & foundname) const
 {
   for (int i = 0; i < this->fields.getLength(); i++) {
-    if (fieldName == this->getFieldName(i)) {
-      foundName = TRUE;
-      return this->getField(object, i)->read(in, fieldName);
+    if (fieldname == this->getFieldName(i)) {
+      foundname = TRUE;
+      return this->getField(object, i)->read(in, fieldname);
     }
   }
 
-  foundName = FALSE;
+  foundname = FALSE;
   return FALSE;
 }
 
@@ -396,7 +434,10 @@ SoFieldData::write(SoOutput * /* out */,
 }
 
 /*!
-  FIXME: write doc
+  Copy contents of \a src into this instance.
+
+  If there was any data set up in this instance before the method was
+  called, the old data is removed.
  */
 void
 SoFieldData::copy(const SoFieldData * src)
@@ -416,93 +457,132 @@ SoFieldData::copy(const SoFieldData * src)
   FIXME: write doc
  */
 SbBool
-SoFieldData::isSame(const SoFieldContainer * /* c1 */,
-                    const SoFieldContainer * /* c2 */) const
+SoFieldData::isSame(const SoFieldContainer * c1,
+                    const SoFieldContainer * c2) const
 {
+  if (c1 == c2) return TRUE;
+
   COIN_STUB();
   return FALSE;
 }
 
 /*!
-  FIXME: write doc
+  Reads a set of field specifications from \a in for an unknown nodeclass type,
+  in the form "[ FIELDCLASS FIELDNAME, FIELDCLASS FIELDNAME, ... ]".
+
  */
 SbBool
-SoFieldData::readFieldDescriptions(SoInput * /* in */, SoFieldContainer * /* object */,
-                                   int /* numDescriptionsExpected */) const
+SoFieldData::readFieldDescriptions(SoInput * in, SoFieldContainer * object,
+                                   int /* numdescriptionsexpected */) const
 {
-  COIN_STUB();
-  return FALSE;
-}
-
-/*!
-  FIXME: write doc
- */
-void
-SoFieldData::writeFieldDescriptions(SoOutput * /* out */,
-                                    const SoFieldContainer * /* object */) const
-{
-  COIN_STUB();
-}
-
-/*!
-  \fn SbBool SoFieldData::readFieldTypes(SoInput * in, SoFieldContainer * object)
-  FIXME: write doc
-*/
-SbBool
-SoFieldData::readFieldTypes(SoInput * in, SoFieldContainer * object)
-{
-  assert(!in->isBinary() && "FIXME: not implemented yet");
-
-  SbBool gotChar;
-  SbName fieldType, fieldName;
-  char c;
-
-  if (! ((gotChar = in->read(c)) || c != OPEN_BRACE_CHAR))
-    return FALSE;
-
-  if (in->read(c) && c == CLOSE_BRACE_CHAR)
-    return TRUE;
-
-  in->putBack(c);
-
-
-#if 0 // FIXME: tmp disabled while developing. 19980928 mortene.
-  SbBool alreadyHasFields =
-    (object->getTypeId() != SoUnknownNode::getClassTypeId() ||
-     getNumFields() != 0);
-#else // tmp enabled
-  SbBool alreadyHasFields = getNumFields() != 0;
-#endif // tmp enabled
-
-  while (TRUE) {
-
-    if (!in->read(fieldType, TRUE) || ! in->read(fieldName, TRUE))
-      return FALSE;
-
-    if (! alreadyHasFields) {
-      SoField * fld;
-
-      // FIXME: use canCreateInstance() and isOfType() for extra
-      // safety. 19980915 mortene.
-      fld = (SoField *)(SoType::fromName(fieldType).createInstance());
-
-      this->addField(object, fieldName.getString(), fld);
+  // These two macros are convenient for reading with error detection.
+#define READ_CHAR(c) \
+    if (!in->read(c)) { \
+      SoReadError::post(in, "Premature end of file"); \
+      return FALSE; \
     }
 
-    if (! in->read(c))
-      return FALSE;
-    if (c == VALUE_SEPARATOR_CHAR) {
+#define READ_NAME(n) \
+    if (!in->read(n, TRUE)) { \
+      SoReadError::post(in, "Premature end of file"); \
+      return FALSE; \
+    }
 
-      if (in->read(c)) {
-        if (c == CLOSE_BRACE_CHAR)
-          return TRUE;
-        else
-          in->putBack(c);
+
+  // Binary format.
+  if (in->isBinary()) {
+    COIN_STUB();
+    return FALSE;
+  }
+  // ASCII format.
+  else {
+    char c;
+    READ_CHAR(c);
+    if (c != OPEN_BRACE_CHAR) {
+      SoReadError::post(in, "Expected '%c', got '%c'", OPEN_BRACE_CHAR, c);
+      return FALSE;
+    }
+
+    while (TRUE) {
+      SbName fieldtype;
+      READ_NAME(fieldtype);
+
+      SoType type = SoType::fromName(fieldtype.getString());
+      if (type == SoType::badType()) {
+        SoReadError::post(in, "Unknown field type '%s'", fieldtype.getString());
+        return FALSE;
+      }
+      else if (!type.isDerivedFrom(SoField::getClassTypeId())) {
+        SoReadError::post(in, "'%s' is not a field type", fieldtype.getString());
+        return FALSE;
+      }
+      else if (!type.canCreateInstance()) {
+        SoReadError::post(in, "Abstract class type '%s'", fieldtype.getString());
+        return FALSE;
+      }
+
+      SbName fieldname;
+      READ_NAME(fieldname);
+
+#if COIN_DEBUG && 0 // debug
+      SoDebugError::postInfo("SoFieldData::readFieldDescriptions",
+                             "type: ``%s'', name: ``%s''",
+                             fieldtype.getString(), fieldname.getString());
+#endif // debug
+
+      SbBool found = FALSE;
+      for (int i=0; !found && (i < this->fields.getLength()); i++) {
+        if (this->fields[i]->name == fieldname) found = TRUE;
+      }
+      if (!found) {
+        // Cast away const -- ugly.
+        SoFieldData * thisp = (SoFieldData *)this;
+        thisp->addField(object, fieldname.getString(),
+                        (const SoField *)type.createInstance());
+      }
+
+      READ_CHAR(c);
+
+      if (c == VALUE_SEPARATOR_CHAR) {
+        READ_CHAR(c);
+        if (c == CLOSE_BRACE_CHAR) return TRUE;
+        else in->putBack(c);
+      }
+      else if (c == CLOSE_BRACE_CHAR) return TRUE;
+      else {
+        SoReadError::post(in, "Expected '%c' or '%c', got '%c'",
+                          VALUE_SEPARATOR_CHAR, CLOSE_BRACE_CHAR, c);
+        return FALSE;
       }
     }
-    else if (c == CLOSE_BRACE_CHAR)
-      return TRUE;
-    else
-      return FALSE;
+  }
+  return TRUE;
+}
+
+/*!
+  Write a set of field specifications to \a out for an unknown nodeclass type,
+  in the form "[ FIELDCLASS FIELDNAME, FIELDCLASS FIELDNAME, ... ]".
+ */
+void
+SoFieldData::writeFieldDescriptions(SoOutput * out,
+                                    const SoFieldContainer * object) const
+{
+  // Binary format.
+  if (out->isBinary()) {
+    COIN_STUB();
+  }
+  // ASCII format.
+  else {
+    out->indent();
+    out->write("fields [ ");
+
+    for (int i=0; i < this->getNumFields(); i++) {
+      out->write((const char *)(this->getField(object, i)->getTypeId().getName()));
+      out->write(' ');
+      out->write((const char *)(this->getFieldName(i)));
+      out->write(", ");
+    }
+
+    out->write(" ]\n");
   }
 }

@@ -56,23 +56,18 @@ public:
                    int & num, const int *& values, const SbName *& names);
 
   SbBool read(SoInput * in, SoFieldContainer * object,
-              SbBool errorOnUnknownField, SbBool & notBuiltIn) const;
+              SbBool erroronunknownfield, SbBool & notbuiltin) const;
   SbBool read(SoInput * in, SoFieldContainer * object,
-              const SbName & fieldName, SbBool & foundName) const;
+              const SbName & fieldname, SbBool & foundname) const;
   void write(SoOutput * out, const SoFieldContainer * object) const;
   void copy(const SoFieldData * src);
   SbBool isSame(const SoFieldContainer * c1,
                 const SoFieldContainer * c2) const;
 
   SbBool readFieldDescriptions(SoInput * in, SoFieldContainer * object,
-                               int numDescriptionsExpected) const;
+                               int numdescriptionsexpected) const;
   void writeFieldDescriptions(SoOutput * out,
                               const SoFieldContainer * object) const;
-
-  // -- FIXME: move to readFieldDescriptions()?
-
-  SbBool readFieldTypes(SoInput * in, SoFieldContainer * object);
-
 
 private:
   void freeResources(void);

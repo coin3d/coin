@@ -109,24 +109,6 @@ SoGroup::getNumChildren() const
 SbBool
 SoGroup::readInstance(SoInput * in, unsigned short flags)
 {
-  // FIXME: tmp disabled reading of not built in node types, as I need
-  // to find out how to do this properly for both ascii and binary
-  // formats (.iv and .wrl). 19990708 mortene.
-#if 0
-  SbName typeString;
-  if (in->read(typeString, TRUE)) {
-    if (typeString == "fields") {
-      if (!fdata->readFieldTypes(in, this)) {
-        SoReadError::post(in, "Bad field specifications for node");
-        return FALSE;
-      }
-    }
-    else {
-      in->putBack(typeString.getString());
-    }
-  }
-#endif
-
   // For nodes with fields inheriting SoGroup, the fields must come
   // before the children, according to the file format specification.
   return inherited::readInstance(in, flags) && this->readChildren(in);

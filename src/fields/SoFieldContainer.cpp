@@ -510,31 +510,11 @@ SoFieldContainer::copyDone(void)
 SbBool
 SoFieldContainer::readInstance(SoInput * in, unsigned short /* flags */)
 {
-  // FIXME: proof-read code (it has just been moved verbatim over from
-  // SoNode). 19990403 mortene.
-
-  // FIXME: handle non-builtin type correct for ASCII and binary
-  // formats. 19990403 mortene.
-#if 0 // old QvLib code
-  SbName typeString;
-  if (in->read(typeString, TRUE)) {
-    if (typeString == "fields") {
-      if (!this->fieldData.readFieldTypes(in, this)) {
-        SoReadError::post(in, "Bad field specifications for node");
-        return FALSE;
-      }
-    }
-    else {
-      in->putBack(typeString.getString());
-    }
-  }
-#endif // disabled
-
   const SoFieldData * fd = this->getFieldData();
   if (fd) {
     SbBool notbuiltin;
     // The "error on unknown field" is FALSE, in case we are a group
-    // node and hit a child name.
+    // node with children specified in the file.
     return fd->read(in, this, FALSE, notbuiltin);
   }
   return TRUE;
