@@ -75,15 +75,9 @@ expose_cb(void)
     GLuint textures[1];
     glGenTextures(1,textures);
 
-    static GLvoid * pixels = NULL;
-    if (!pixels) {
-      pixels = malloc(256*256*4);
-      (void)memset(pixels, 0x55, 256*256*4);
-    }
-
     glBindTexture(GL_TEXTURE_2D,textures[0]);
-    glTexImage2D(GL_TEXTURE_2D,0,0x0003,256,256,
-		 0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
+    GLubyte pixels[1] = { 0x55 };
+    glTexImage2D(GL_TEXTURE_2D,0,0x0003,1,1,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
 
     // *********************************************************************
 
@@ -130,7 +124,7 @@ expose_cb(void)
 int
 main(int argc, char ** argv)
 {
-  srand(atoi(argv[1]));
+  srand(argc > 1 ? atoi(argv[1]) : 0);
 
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
