@@ -26,10 +26,10 @@
   \brief The SoBumpMap class is used to map a bump map onto subsequent shapes.
   \ingroup nodes
 
-  Currently two types of maps are supported. If the image is a three
-  component (RGB) image, it will be treated as a normal map, where red
-  image component equals the X normal component, green equals Y, and
-  blue is Z. See
+  SoBumpMap has support for two types of maps. If the image is a three
+  component (RGB) image, it will be treated as a normal map, where the
+  red image component equals the X normal component, green equals Y,
+  and blue is Z. See
   http://www.paulsprojects.net/tutorials/simplebump/simplebump.html
   for a nice introduction about bump mapping and normal maps.
   
