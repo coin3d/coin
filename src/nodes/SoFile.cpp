@@ -45,6 +45,10 @@
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 
 /*!
   \var SoSFString SoFile::name
@@ -109,15 +113,21 @@ SoFile::GLRender(SoGLRenderAction * action)
 SbBool
 SoFile::readInstance(SoInput * in, unsigned short flags)
 {
-  if (!inherited::readInstance(in, flags)) return FALSE;
+  // We detach the sensor and later call readNamedFile() explicitly
+  // instead of letting readNamedFile() be called implicitly due to
+  // the SoFieldSensor on this->name.
+  //
+  // This is done so the same SoInput instance is used for
+  // readNamedFile() as for this method, and then also the same name
+  // dictionary -- which is necessary for "cross-file" references to
+  // work.
+  // 
+  // (Fixed Bugzilla #202.)
 
-  // Note that a file specified in the SoFile::name field will be
-  // automatically loaded upon import due to the SoFieldSensor
-  // attached to it.
-
-  // FIXME: this method isn't really necessary. 20000404 mortene.
-
-  return TRUE;
+  this->namesensor->detach();
+  SbBool result = inherited::readInstance(in, flags);
+  this->namesensor->attach(& this->name);
+  return result && this->readNamedFile(in);
 }
 
 // Private method. Read the file named in the SoFile::name field.
