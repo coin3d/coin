@@ -62,6 +62,13 @@ Concrete tasks:
           make it easier to get a "feeling" on which scenes / shapes /
           whatever that have bad rendering performance.
 
+          Update on this task: code for showing a FPS counter is now
+          in place in SoGuiViewer.cpp.in, but it is just a hack so far
+          and needs to be enabled by an environment variable. See
+          comments in the sourcecode file about what should be done to
+          include it properly in the public API of the
+          So[Qt|Gtk|Xt|Win|...]Viewer class.
+
         * SoSeparator is missing the rendercaching (with OpenGL
           renderlists) mechanisms.
 
