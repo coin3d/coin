@@ -35,6 +35,8 @@ Section 01 -- Basic build instructions.
   ...everything is probably set up for you already. If not, you need
   to add something like this to .bashrc and .bash_profile:
 
+  NB: This setup is for MSVC++ 6.0.
+
     # the Cygwin path to the Microsoft Visual Studio directory...
     MSVS_HOME="/cygdrive/c/Program Files/Microsoft Visual Studio"
     win_MSVS_HOME=`cygpath -w "$MSVS_HOME"`
@@ -45,6 +47,17 @@ Section 01 -- Basic build instructions.
     INCLUDE="$win_MSVS_HOME\\VC98\\Include"
 
     export PATH LIB INCLUDE
+
+  For MSVC++ 7, the locations have changed.  Try _something like_ the below
+  instead of the corresponding four lines above.  The lines are loosely
+  based on a problem report, and not been verified by us yet though -
+  please tell us if they need some tweaks, or work right out of the box
+  so we might update this information.
+
+    PATH="$PATH:$MSVS_HOME/VC7/Bin:$MSVS_HOME/VC7/Lib:$MSVS_HOME/VC7/PlatformSDK/Lib"
+    PATH="$PATH:$MSVS_HOME/Common/MSDev7/Bin"
+    LIB="$win_MSVS_HOME\\VC7\\Lib;$win_MSVS_HOME\\VC7\\platformSDK\\Lib"
+    INCLUDE="$win_MSVS_HOME\\VC7\\Include;$win_MSVS_HOME\\VC7\\PlatformSDK\\Include"
 
 
   (Then try again to see that the MSVC environment is working. If not,
