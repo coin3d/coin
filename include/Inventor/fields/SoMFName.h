@@ -28,13 +28,13 @@
 class SoMFName : public SoMField {
   typedef SoMField inherited;
 
-  SO_MFIELD_HEADER(SoMFName, SbName, SbName);
+  SO_MFIELD_HEADER(SoMFName, SbName, const SbName &);
 
 public:
   static void initClass(void);
 
-  void setValues(const int start, const int num, const char * const strings []);
-  void setValue(const char * const string);
+  void setValues(const int start, const int num, const char * strings[]);
+  void setValue(const char * str);
 
 private:
   virtual void convertTo(SoField * dest) const;

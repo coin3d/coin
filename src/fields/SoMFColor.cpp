@@ -19,10 +19,15 @@
 
 /*!
   \class SoMFColor SoMFColor.h Inventor/fields/SoMFColor.h
-  \brief The SoMFColor class ...
+  \brief The SoMFColor class is a container for SbColor values.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store multiple color values (i.e. "Red Green Blue"
+  triplets).
+
+  \sa SoSFColor
+
 */
 
 #include <Inventor/fields/SoMFColor.h>
@@ -35,49 +40,53 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
-#include <assert.h>
 
 
 
-SO_MFIELD_SOURCE_MALLOC(SoMFColor, SbColor, const SbColor &);
+SO_MFIELD_SOURCE(SoMFColor, SbColor, const SbColor &);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoMFColor class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent.
 void
 SoMFColor::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFColor);
 }
 
+
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFColor class.
+extern SbBool sosfcolor_read_value(SoInput * in, SbColor & val);
+extern void sosfcolor_write_value(SoOutput * out, const SbColor & val);
+
 SbBool
 SoMFColor::read1Value(SoInput * in, int idx)
 {
-  SoSFColor sfcolor;
-  SbBool result;
-  if ((result = sfcolor.readValue(in)))
-    this->set1Value(idx, sfcolor.getValue());
-  return result;
+  SbColor val;
+  if (!sosfcolor_read_value(in, val)) return FALSE;
+  this->set1Value(idx, val);
+  return TRUE;
 }
 
 void
 SoMFColor::write1Value(SoOutput * out, int idx) const
 {
-  SoSFColor sfcolor;
-  sfcolor.setValue((*this)[idx]);
-  sfcolor.writeValue(out);
+  sosfcolor_write_value(out, (*this)[idx]);
 }
 
+#endif // DOXYGEN_SKIP_THIS
+
+
 /*!
-  FIXME: write function documentation
+  Set \a num RGB color values, starting at index \a start.
 */
 void
 SoMFColor::setValues(const int start, const int num, const float rgb[][3])
 {
-  if(start+num > this->maxNum) this->allocValues(start+num);
+  if(start+num > this->maxNum) this->makeRoom(start+num);
   else if(start+num > this->num) this->num = start+num;
 
   for(int i=0; i < num; i++) this->values[i+start].setValue(rgb[i]);
@@ -85,26 +94,32 @@ SoMFColor::setValues(const int start, const int num, const float rgb[][3])
 }
 
 /*!
-  FIXME: write function documentation
+  Set \a num HSV color values, starting at index \a start.
 */
 void
-SoMFColor::setHSVValues(const int /* start */, const int /* num */,
-                        const float /* hsv */[][3])
+SoMFColor::setHSVValues(const int start, const int num, const float hsv[][3])
 {
-  COIN_STUB();
+  if(start+num > this->maxNum) this->makeRoom(start+num);
+  else if(start+num > this->num) this->num = start+num;
+
+  for(int i=0; i < num; i++) this->values[i+start].setHSVValue(hsv[i]);
+  this->valueChanged();
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color array to a single value. \a vec is interpreted as
+  a three element vector with the red, green and blue components,
+  respectively.
 */
 void
 SoMFColor::setValue(const SbVec3f & vec)
 {
-  this->setValue(SbColor(vec));
+  this->setValue(vec[0], vec[1], vec[2]);
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color array to a single value. \a r, \a g and \a b are the
+  red, green and blue components, respectively.
 */
 void
 SoMFColor::setValue(const float r, const float g, const float b)
@@ -113,7 +128,8 @@ SoMFColor::setValue(const float r, const float g, const float b)
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color array to a single value. \a rgb is a three element
+  vector with the red, green and blue components, respectively.
 */
 void
 SoMFColor::setValue(const float rgb[3])
@@ -122,25 +138,30 @@ SoMFColor::setValue(const float rgb[3])
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color array to a single value. \a h, \a s and \a v are the
+  hue, saturation and value components, respectively.
 */
 void
-SoMFColor::setHSVValue(const float /* h */, const float /* s */, const float /* v */)
+SoMFColor::setHSVValue(const float h, const float s, const float v)
 {
-  COIN_STUB();
+  SbColor col;
+  col.setHSVValue(h, s, v);
+  this->setValue(col);
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color array to a single value. \a hsv is a three element
+  vector with the hue, saturation and value components, respectively.
 */
 void
-SoMFColor::setHSVValue(const float /* hsv */[3])
+SoMFColor::setHSVValue(const float hsv[3])
 {
-  COIN_STUB();
+  this->setHSVValue(hsv[0], hsv[1], hsv[2]);
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color at \a idx. \a vec is interpreted as a three element
+  vector with the red, green and blue components, respectively.
 */
 void
 SoMFColor::set1Value(const int idx, const SbVec3f & vec)
@@ -149,41 +170,48 @@ SoMFColor::set1Value(const int idx, const SbVec3f & vec)
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color at \a idx. \a r, \a g and \a b is the red, green and
+  blue components, respectively.
 */
 void
 SoMFColor::set1Value(const int idx, const float r, const float g, const float b)
 {
-  this->set1Value(idx,SbColor(r,g,b));
+  this->set1Value(idx, SbColor(r, g, b));
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color at \a idx. \a rgb is interpreted as a three element
+  vector with the red, green and blue components, respectively.
 */
 void
 SoMFColor::set1Value(const int idx, const float rgb[3])
 {
-  this->set1Value(idx,SbColor(rgb));
+  this->set1Value(idx, SbColor(rgb));
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color at \a idx. \a h, \a s and \a v is the hue, saturation and
+  value components, respectively.
 */
 void
-SoMFColor::set1HSVValue(const int /* idx */,
-                        const float /* h */, const float /* s */, const float /* v */)
+SoMFColor::set1HSVValue(const int idx,
+                        const float h, const float s, const float v)
 {
-  COIN_STUB();
+  SbColor col;
+  col.setHSVValue(h, s, v);
+  this->set1Value(idx, col);
 }
 
 /*!
-  FIXME: write function documentation
+  Set the color at \a idx. \a hsv is a three element vector with the
+  hue, saturation and value components, respectively.
 */
 void
-SoMFColor::set1HSVValue(const int /* idx */, const float /* hsv */[3])
+SoMFColor::set1HSVValue(const int idx, const float hsv[3])
 {
-  COIN_STUB();
+  this->set1HSVValue(idx, hsv[0], hsv[1], hsv[2]);
 }
+
 
 void
 SoMFColor::convertTo(SoField * dest) const

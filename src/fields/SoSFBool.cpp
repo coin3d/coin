@@ -40,8 +40,6 @@
 #endif // COIN_DEBUG
 #include <Inventor/SbName.h>
 
-#include <assert.h>
-
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFUInt32.h>

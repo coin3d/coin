@@ -25,8 +25,6 @@
   FIXME: write class doc
 */
 
-#include <assert.h>
-
 #include <Inventor/fields/SoSFBitMask.h>
 #include <Inventor/errors/SoReadError.h>
 #if COIN_DEBUG

@@ -40,8 +40,6 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFRotation; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFROTATION_H__

@@ -19,19 +19,21 @@
 
 /*!
   \class SoMFShort SoMFShort.h Inventor/fields/SoMFShort.h
-  \brief The SoMFShort class ...
+  \brief The SoMFShort class is a container for short integer values.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a group of multiple short integer values.
+
+  \sa SoSFShort
+
 */
 
 #include <Inventor/fields/SoMFShort.h>
 #include <Inventor/fields/SoSFShort.h>
 
-#include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <assert.h>
 #include <Inventor/fields/SoSFString.h>
 #ifdef _WIN32
 #include <strstrea.h>
@@ -47,38 +49,42 @@
 SO_MFIELD_SOURCE_MALLOC(SoMFShort, short, short);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoMFShort class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoMFShort::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFShort);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFShort class.
+extern SbBool sosfshort_read_value(SoInput * in, short & val);
+extern void sosfshort_write_value(SoOutput * out, const short val);
+
 SbBool
 SoMFShort::read1Value(SoInput * in, int idx)
 {
-  SoSFShort sfshort;
-  SbBool result;
-  if ((result = sfshort.readValue(in)))
-    this->set1Value(idx, sfshort.getValue());
-  return result;
+  short val;
+  if (!sosfshort_read_value(in, val)) return FALSE;
+  this->set1Value(idx, val);
+  return TRUE;
 }
 
 void
 SoMFShort::write1Value(SoOutput * out, int idx) const
 {
-  SoSFShort sfshort;
-  sfshort.setValue((*this)[idx]);
-  sfshort.writeValue(out);
+  sosfshort_write_value(out, (*this)[idx]);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+#endif // DOXYGEN_SKIP_THIS
+
+
+// Store more than the default single value on each line for ASCII
+// format export.
 int
 SoMFShort::getNumValuesPerLine(void) const
 {

@@ -19,10 +19,14 @@
 
 /*!
   \class SoMFName SoMFName.h Inventor/fields/SoMFName.h
-  \brief The SoMFName class ...
+  \brief The SoMFName class is a container for SbName values.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store arrays of names.
+
+  \sa SoSFName
+
 */
 
 #include <Inventor/fields/SoMFName.h>
@@ -33,65 +37,68 @@
 #endif // COIN_DEBUG
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
-#include <assert.h>
 
 #include <Inventor/fields/SoSFString.h>
 
 
-SO_MFIELD_SOURCE_MALLOC(SoMFName, SbName, SbName);
+SO_MFIELD_SOURCE(SoMFName, SbName, const SbName &);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoMFName class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoMFName::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFName);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFName class.
+extern SbBool sosfname_read_value(SoInput * in, SbName & val);
+extern void sosfname_write_value(SoOutput * out, const SbName & val);
+
 SbBool
 SoMFName::read1Value(SoInput * in, int idx)
 {
-  SoSFName sfname;
-  SbBool result;
-  if ((result = sfname.readValue(in))) this->set1Value(idx, sfname.getValue());
-  return result;
+  SbName n;
+  if (!sosfname_read_value(in, n)) return FALSE;
+  this->set1Value(idx, n);
+  return TRUE;
 }
 
 void
 SoMFName::write1Value(SoOutput * out, int idx) const
 {
-  SoSFName sfname;
-  sfname.setValue((*this)[idx]);
-  sfname.writeValue(out);
+  sosfname_write_value(out, (*this)[idx]);
 }
 
+#endif // DOXYGEN_SKIP_THIS
+
+
 /*!
-  FIXME: write function documentation
+  Set \a num \a strings from index \a start in this multiple-value
+  field instance.
 */
 void
-SoMFName::setValues(const int start, const int num,
-                     const char * const strings [])
+SoMFName::setValues(const int start, const int num, const char * strings[])
 {
   if(start+num > this->maxNum) this->allocValues(start+num);
   else if(start+num > this->num) this->num = start+num;
 
-  for(int i=0; i < num; i++)
-    this->values[i+start] = SbName(strings[i]);
+  for(int i=0; i < num; i++) this->values[i+start] = SbName(strings[i]);
   this->valueChanged();
 }
 
 /*!
-  FIXME: write function documentation
+  Set this field to contain only a single name, given by \a str.
 */
 void
-SoMFName::setValue(const char * const string)
+SoMFName::setValue(const char * str)
 {
-  this->setValue(SbName(string));
+  this->setValue(SbName(str));
 }
 
 void

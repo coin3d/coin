@@ -19,16 +19,19 @@
 
 /*!
   \class SoSFInt32 SoSFInt32.h Inventor/fields/SoSFInt32.h
-  \brief The SoSFInt32 class ...
+  \brief The SoSFInt32 class is a container for a 32-bit integer value.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a single 32-bit integer value.
+
+  \sa SoMFInt32
 */
 
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -53,28 +56,56 @@
 SO_SFIELD_SOURCE(SoSFInt32, int32_t, const int32_t);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoSFInt32 class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent.
 void
 SoSFInt32::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFInt32);
 }
 
+
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read integer value from input stream, return TRUE if
+// successful. Also used from SoMFInt32 class.
+SbBool
+sosfint32_read_value(SoInput * in, int32_t & val)
+{
+  if (!in->read(val)) {
+    SoReadError::post(in, "Premature end of file");
+    return FALSE;
+  }
+  return TRUE;
+}
+
 SbBool
 SoSFInt32::readValue(SoInput * in)
 {
-  return in->read(this->value);
+  int32_t val;
+  if (!sosfint32_read_value(in, val)) return FALSE;
+  this->setValue(val);
+  return TRUE;
+}
+
+// Write integer value to output stream. Also used from SoMFInt32
+// class.
+void
+sosfint32_write_value(SoOutput * out, const int32_t val)
+{
+  out->write(val);
 }
 
 void
 SoSFInt32::writeValue(SoOutput * out) const
 {
-  out->write(this->getValue());
+  sosfint32_write_value(out, this->getValue());
 }
+
+#endif // DOXYGEN_SKIP_THIS
+
 
 void
 SoSFInt32::convertTo(SoField * dest) const

@@ -33,13 +33,10 @@ class SoMFString : public SoMField {
 public:
   static void initClass(void);
 
-  void setValues(const int start, const int num, const char * const strings[]);
-  void setValue(const char * const string);
-  void deleteText(const int fromLine, const int fromChar,
-                  const int toLine, const int toChar);
-
-  // SbString values need to have their constructors called.
-  virtual void allocValues(int num);
+  void setValues(const int start, const int num, const char * strings[]);
+  void setValue(const char * string);
+  void deleteText(const int fromline, const int fromchar,
+                  const int toline, const int tochar);
 
 private:
   virtual void convertTo(SoField * dest) const;

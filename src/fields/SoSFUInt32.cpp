@@ -19,16 +19,19 @@
 
 /*!
   \class SoSFUInt32 SoSFUInt32.h Inventor/fields/SoSFUInt32.h
-  \brief The SoSFUInt32 class ...
+  \brief The SoSFUInt32 class is a container for a 32-bit unsigned integer value.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a single 32-bit unsigned integer value.
+
+  \sa SoMFUInt32
 */
 
 #include <Inventor/fields/SoSFUInt32.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFInt32.h>
@@ -52,29 +55,55 @@
 
 SO_SFIELD_SOURCE(SoSFUInt32, uint32_t, const uint32_t);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoSFUInt32 class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFUInt32::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFUInt32);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read integer value from input stream, return TRUE if
+// successful. Also used from SoMFUInt32 class.
+SbBool
+sosfuint32_read_value(SoInput * in, uint32_t & val)
+{
+  if (!in->read(val)) {
+    SoReadError::post(in, "Premature end of file");
+    return FALSE;
+  }
+  return TRUE;
+}
+
 SbBool
 SoSFUInt32::readValue(SoInput * in)
 {
-  return in->read(value);
+  uint32_t val;
+  if (!sosfuint32_read_value(in, val)) return FALSE;
+  this->setValue(val);
+  return TRUE;
+}
+
+// Write integer value to output stream. Also used from SoMFUInt32
+// class.
+void
+sosfuint32_write_value(SoOutput * out, const uint32_t val)
+{
+  out->write(val);
 }
 
 void
 SoSFUInt32::writeValue(SoOutput * out) const
 {
-  out->write(this->getValue()); // using getValue() to evaluate
+  sosfuint32_write_value(out, this->getValue());
 }
+
+#endif // DOXYGEN_SKIP_THIS
+
 
 void
 SoSFUInt32::convertTo(SoField * dest) const

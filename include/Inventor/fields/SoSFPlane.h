@@ -35,8 +35,6 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFPlane; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFPLANE_H__

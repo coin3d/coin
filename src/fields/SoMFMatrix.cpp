@@ -19,23 +19,27 @@
 
 /*!
   \class SoMFMatrix SoMFMatrix.h Inventor/fields/SoMFMatrix.h
-  \brief The SoMFMatrix class ...
+  \brief The SoMFMatrix class is a container for SbMatrix values.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store matrices.
+
+  \sa SoSFMatrix
+
 */
 
 #include <Inventor/fields/SoMFMatrix.h>
-#include <Inventor/fields/SoSFMatrix.h>
 
+#include <Inventor/fields/SoSFMatrix.h>
 #include <Inventor/fields/SoSFString.h>
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <assert.h>
 
 #ifdef _WIN32
 #include <strstrea.h>
@@ -45,44 +49,49 @@
 
 
 
-SO_MFIELD_SOURCE_MALLOC(SoMFMatrix, SbMatrix, const SbMatrix &);
+SO_MFIELD_SOURCE(SoMFMatrix, SbMatrix, const SbMatrix &);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoMFMatrix class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent.
 void
 SoMFMatrix::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFMatrix);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFMatrix class.
+extern SbBool sosfmatrix_read_value(SoInput * in, SbMatrix & val);
+extern void sosfmatrix_write_value(SoOutput * out, const SbMatrix & val);
+
 SbBool
 SoMFMatrix::read1Value(SoInput * in, int idx)
 {
-  SoSFMatrix sfmatrix;
-  SbBool result;
-  if ((result = sfmatrix.readValue(in)))
-    this->set1Value(idx, sfmatrix.getValue());
-  return result;
+  SbMatrix m;
+  if (!sosfmatrix_read_value(in, m)) return FALSE;
+  this->set1Value(idx, m);
+  return TRUE;
 }
 
 void
 SoMFMatrix::write1Value(SoOutput * out, int idx) const
 {
-  SoSFMatrix sfmatrix;
-  sfmatrix.setValue((*this)[idx]);
   out->incrementIndent();
   if (idx == 0) out->incrementIndent();
-  sfmatrix.writeValue(out);
+  sosfmatrix_write_value(out, (*this)[idx]);
   if (idx == 0) out->decrementIndent();
   out->decrementIndent();
 }
 
+#endif // DOXYGEN_SKIP_THIS
+
+
 /*!
-  FIXME: write function documentation
+  Set field value array to a single matrix with the given components.
 */
 void
 SoMFMatrix::setValue(const float a11, const float a12,
@@ -94,10 +103,8 @@ SoMFMatrix::setValue(const float a11, const float a12,
                      const float a41, const float a42,
                      const float a43, const float a44)
 {
-  this->setValue(SbMatrix(a11,a12,a13,a14,
-                          a21,a22,a23,a24,
-                          a31,a32,a33,a34,
-                          a41,a42,a43,a44));
+  this->setValue(SbMatrix(a11,a12,a13,a14, a21,a22,a23,a24,
+                          a31,a32,a33,a34, a41,a42,a43,a44));
 }
 
 void

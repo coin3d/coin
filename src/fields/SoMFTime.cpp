@@ -19,54 +19,61 @@
 
 /*!
   \class SoMFTime SoMFTime.h Inventor/fields/SoMFTime.h
-  \brief The SoMFTime class ...
+  \brief The SoMFTime class is a container for SbTime values.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store multiple time representations.
+
+  \sa SoSFTime
+
 */
 
 #include <Inventor/fields/SoMFTime.h>
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
-#include <assert.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 
 
-SO_MFIELD_SOURCE_MALLOC(SoMFTime, SbTime, const SbTime &);
+SO_MFIELD_SOURCE(SoMFTime, SbTime, const SbTime &);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoMFTime class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoMFTime::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFTime);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFTime class.
+extern SbBool sosftime_read_value(SoInput * in, SbTime & val);
+extern void sosftime_write_value(SoOutput * out, const SbTime & val);
+
 SbBool
 SoMFTime::read1Value(SoInput * in, int idx)
 {
-  SoSFTime sftime;
-  SbBool result;
-  if ((result = sftime.readValue(in))) this->set1Value(idx, sftime.getValue());
-  return result;
+  SbTime p;
+  if (!sosftime_read_value(in, p)) return FALSE;
+  this->set1Value(idx, p);
+  return TRUE;
 }
 
 void
 SoMFTime::write1Value(SoOutput * out, int idx) const
 {
-  SoSFTime sftime;
-  sftime.setValue((*this)[idx]);
-  sftime.writeValue(out);
+  sosftime_write_value(out, (*this)[idx]);
 }
+
+#endif // DOXYGEN_SKIP_THIS
+
 
 void
 SoMFTime::convertTo(SoField * dest) const

@@ -19,10 +19,14 @@
 
 /*!
   \class SoMFVec2f SoMFVec2f.h Inventor/fields/SoMFVec2f.h
-  \brief The SoMFVec2f class ...
+  \brief The SoMFVec2f class is a container for SbVec2f vectors.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store an array of vectors with two elements.
+
+  \sa SoSFVec2f
+
 */
 
 #include <Inventor/fields/SoMFVec2f.h>
@@ -30,47 +34,52 @@
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 
 
-SO_MFIELD_SOURCE_MALLOC(SoMFVec2f, SbVec2f, const SbVec2f &);
+SO_MFIELD_SOURCE(SoMFVec2f, SbVec2f, const SbVec2f &);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoMFVec2f class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoMFVec2f::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFVec2f);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFVec2f class.
+extern SbBool sosfvec2f_read_value(SoInput * in, SbVec2f & v);
+extern void sosfvec2f_write_value(SoOutput * out, const SbVec2f & v);
+
 SbBool
 SoMFVec2f::read1Value(SoInput * in, int idx)
 {
-  SoSFVec2f sfvec2f;
-  SbBool result;
-  if ((result = sfvec2f.readValue(in)))
-    this->set1Value(idx, sfvec2f.getValue());
-  return result;
+  SbVec2f v;
+  if (!sosfvec2f_read_value(in, v)) return FALSE; 
+  this->set1Value(idx, v);
+  return TRUE;
 }
 
 void
 SoMFVec2f::write1Value(SoOutput * out, int idx) const
 {
-  SoSFVec2f sfvec2f;
-  sfvec2f.setValue((*this)[idx]);
-  sfvec2f.writeValue(out);
+  sosfvec2f_write_value(out, (*this)[idx]);
 }
 
+#endif // DOXYGEN_SKIP_THIS
+
+
 /*!
-  FIXME: write function documentation
+  Set \a num vector array elements from \a xy, starting at index
+  \a start.
 */
 void
 SoMFVec2f::setValues(const int start, const int num, const float xy[][2])
@@ -82,7 +91,7 @@ SoMFVec2f::setValues(const int start, const int num, const float xy[][2])
 }
 
 /*!
-  FIXME: write function documentation
+  Set the vector at \a idx.
 */
 void
 SoMFVec2f::set1Value(const int idx, const float x, const float y)
@@ -91,7 +100,7 @@ SoMFVec2f::set1Value(const int idx, const float x, const float y)
 }
 
 /*!
-  FIXME: write function documentation
+  Set the vector at \a idx.
 */
 void
 SoMFVec2f::set1Value(const int idx, const float xy[2])
@@ -100,7 +109,8 @@ SoMFVec2f::set1Value(const int idx, const float xy[2])
 }
 
 /*!
-  FIXME: write function documentation
+  Set this field to contain a single vector with the given
+  element values.
 */
 void
 SoMFVec2f::setValue(const float x, const float y)
@@ -109,7 +119,8 @@ SoMFVec2f::setValue(const float x, const float y)
 }
 
 /*!
-  FIXME: write function documentation
+  Set this field to contain a single vector with the given
+  element values.
 */
 void
 SoMFVec2f::setValue(const float xy[2])

@@ -2,7 +2,7 @@
 # factors: [work in progress / no work done]
 # FLAGS [1]
 # I = implementation complete, or nearly so
-# D = fully documented for Doxygen generation of html/man [0.5]
+# D = fully documented for Doxygen [0.5]
 #
 # VALUES
 # - = not applicable
@@ -15,50 +15,50 @@
 # ID SoField
 # ID     SoSField
 # ID         SoSFBool
-# i          SoSFColor
+# ID         SoSFColor
 #            SoSFEngine
 # i          SoSFEnum
 # i              SoSFBitMask
-# i          SoSFFloat
+# ID         SoSFFloat
 # i          SoSFImage
-# i          SoSFInt32
-# i          SoSFMatrix
-# i          SoSFName
+# ID         SoSFInt32
+# ID         SoSFMatrix
+# ID         SoSFName
 #            SoSFNode
 #            SoSFPath
-# i          SoSFPlane
-# i          SoSFRotation
-# i          SoSFShort
-# i          SoSFString
-# i          SoSFTime
+# ID         SoSFPlane
+# ID         SoSFRotation
+# ID         SoSFShort
+# ID         SoSFString
+# ID         SoSFTime
 #            SoSFTrigger
-# i          SoSFUInt32
-# i          SoSFUShort
-# i          SoSFVec2f
-# i          SoSFVec3f
-# i          SoSFVec4f
+# ID         SoSFUInt32
+# ID         SoSFUShort
+# ID         SoSFVec2f
+# ID         SoSFVec3f
+# ID         SoSFVec4f
 # ID     SoMField
 # ID         SoMFBool
-# i          SoMFColor
+# ID         SoMFColor
 #            SoMFEngine
 # i          SoMFEnum
 # i              SoMFBitMask
-# i          SoMFFloat
-# i          SoMFInt32
-# i          SoMFMatrix
-# i          SoMFName
+# ID         SoMFFloat
+# ID         SoMFInt32
+# ID         SoMFMatrix
+# ID         SoMFName
 #            SoMFNode
 #            SoMFPath
-# i          SoMFPlane
-# i          SoMFRotation
-# i          SoMFShort
-# i          SoMFString
-# i          SoMFTime
-# i          SoMFUInt32
-# i          SoMFUShort
-# i          SoMFVec2f
-# i          SoMFVec3f
-# i          SoMFVec4f
+# ID         SoMFPlane
+# ID         SoMFRotation
+# ID         SoMFShort
+# ID         SoMFString
+# ID         SoMFTime
+# ID         SoMFUInt32
+# ID         SoMFUShort
+# ID         SoMFVec2f
+# ID         SoMFVec3f
+# ID         SoMFVec4f
 # ID SoFieldContainer
 # ID SoFieldData
 # I- SoGlobalField

@@ -34,7 +34,6 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <assert.h>
 
 /*!
   \var SbBool SoMFEnum::legalValuesSet
@@ -56,6 +55,7 @@
 
 
 SO_MFIELD_REQUIRED_SOURCE(SoMFEnum);
+SO_MFIELD_MALLOC_SOURCE(SoMFEnum, int);
 SO_MFIELD_VALUE_SOURCE(SoMFEnum, int, int);
 
 

@@ -28,7 +28,7 @@
 class SoSFName : public SoSField {
   typedef SoSField inherited;
 
-  SO_SFIELD_HEADER(SoSFName, SbName, const SbName);
+  SO_SFIELD_HEADER(SoSFName, SbName, const SbName &);
 
 public:
   static void initClass(void);
@@ -37,8 +37,6 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFName; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFNAME_H__

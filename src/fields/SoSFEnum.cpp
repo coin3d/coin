@@ -25,8 +25,6 @@
   FIXME: write class doc
 */
 
-#include <assert.h>
-
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/SoInput.h>

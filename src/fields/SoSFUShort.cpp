@@ -19,16 +19,19 @@
 
 /*!
   \class SoSFUShort SoSFUShort.h Inventor/fields/SoSFUShort.h
-  \brief The SoSFUShort class ...
+  \brief The SoSFUShort class is a container for a unsigned short integer value.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a single short unsigned integer value.
+
+  \sa SoMFUShort
 */
 
 #include <Inventor/fields/SoSFUShort.h>
-#include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <Inventor/errors/SoReadError.h>
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFInt32.h>
@@ -54,29 +57,55 @@
 
 SO_SFIELD_SOURCE(SoSFUShort, unsigned short, const unsigned short);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoSFUShort class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFUShort::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFUShort);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read integer value from input stream, return TRUE if
+// successful. Also used from SoMFUShort class.
+SbBool
+sosfushort_read_value(SoInput * in, unsigned short & val)
+{
+  if (!in->read(val)) {
+    SoReadError::post(in, "Couldn't read unsigned short value");
+    return FALSE;
+  }
+  return TRUE;
+}
+
 SbBool
 SoSFUShort::readValue(SoInput * in)
 {
-  return in->read(value);
+  unsigned short val;
+  if (!sosfushort_read_value(in, val)) return FALSE;
+  this->setValue(val);
+  return TRUE;
+}
+
+// Write integer value to output stream. Also used from SoMFUShort
+// class.
+void
+sosfushort_write_value(SoOutput * out, const unsigned short val)
+{
+  out->write(val);
 }
 
 void
 SoSFUShort::writeValue(SoOutput * out) const
 {
-  out->write(this->getValue()); // using getValue() to evaluate
+  sosfushort_write_value(out, this->getValue());
 }
+
+#endif // DOXYGEN_SKIP_THIS
+
 
 void
 SoSFUShort::convertTo(SoField * dest) const

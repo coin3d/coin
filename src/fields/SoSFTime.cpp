@@ -19,16 +19,23 @@
 
 /*!
   \class SoSFTime SoSFTime.h Inventor/fields/SoSFTime.h
-  \brief The SoSFTime class ...
+  \brief The SoSFTime class is a container for an SbTime value.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a single time representation.
+
+  A field of this type stores its value to file as a floating
+  point number.
+
+  \sa SoMFTime
+
 */
 
 #include <Inventor/fields/SoSFTime.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFString.h>
@@ -43,31 +50,57 @@
 SO_SFIELD_SOURCE(SoSFTime, SbTime, const SbTime &);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoSFTime class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFTime::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFTime);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read SbTime from input stream, return TRUE if successful. Also
+// used from SoMFTime class.
+SbBool
+sosftime_read_value(SoInput * in, SbTime & t)
+{
+  double val;
+  if (!in->read(val)) {
+    SoReadError::post(in, "Couldn't read double value");
+    return FALSE;
+  }
+
+  t.setValue(val);
+  return TRUE;
+}
+
 SbBool
 SoSFTime::readValue(SoInput * in)
 {
-  double val;
-  if (!in->read(val)) return FALSE;
-  this->value.setValue(val);
+  SbTime t;
+  if (!sosftime_read_value(in, t)) return FALSE;
+  this->setValue(t);
   return TRUE;
+}
+
+// Write SbTime value to output stream. Also used from SoMFTime class.
+void
+sosftime_write_value(SoOutput * out, const SbTime & p)
+{
+  out->write(p.getValue());
 }
 
 void
 SoSFTime::writeValue(SoOutput * out) const
 {
-  out->write(this->getValue().getValue());
+  sosftime_write_value(out, this->getValue());
 }
+
+#endif // DOXYGEN_SKIP_THIS
+
 
 void
 SoSFTime::convertTo(SoField * dest) const

@@ -21,6 +21,7 @@
 #define __SOSUBFIELD_H__
 
 #include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
+#include <assert.h>
 
 
 /**************************************************************************
@@ -215,6 +216,7 @@ protected: \
   virtual int fieldSizeof(void) const; \
   virtual void * valuesPtr(void); \
   virtual void setValuesPtr(void * ptr); \
+  virtual void allocValues(int num); \
  \
   _valtype_ * values; \
 public: \
@@ -222,8 +224,8 @@ public: \
     { this->evaluate(); return this->values[idx]; } \
   const _valtype_ * getValues(const int start) const \
     { this->evaluate(); return (const _valtype_ *)(this->values + start); } \
-  int find(_valref_ value, SbBool addIfNotFound = FALSE); \
-  void setValues(const int start, const int num, const _valtype_ * values); \
+  int find(_valref_ value, SbBool addifnotfound = FALSE); \
+  void setValues(const int start, const int num, const _valtype_ * newvals); \
   void set1Value(const int idx, _valref_ value); \
   void setValue(_valref_ value); \
   _valref_ operator=(_valref_ val) { this->setValue(val); return val; } \
@@ -324,22 +326,22 @@ _class_::setValuesPtr(void * ptr) \
 } \
  \
 int \
-_class_::find(_valref_ value, SbBool addIfNotFound) \
+_class_::find(_valref_ value, SbBool addifnotfound) \
 { \
   for (int i=0; i < this->num; i++) if (this->values[i] == value) return i; \
  \
-  if (addIfNotFound) this->set1Value(this->num, value); \
+  if (addifnotfound) this->set1Value(this->num, value); \
   return -1; \
 } \
  \
 void \
-_class_::setValues(const int start, const int num, const _valtype_ * newValues) \
+_class_::setValues(const int start, const int num, const _valtype_ * newvals) \
 { \
   if (start+num > this->maxNum) this->allocValues(start+num); \
   else if (start+num > this->num) this->num = start+num; \
  \
   for (int i=0; i < num; i++) \
-    this->values[i+start] = (_valtype_) newValues[i]; \
+    this->values[i+start] = (_valtype_) newvals[i]; \
   this->valueChanged(); \
 } \
  \
@@ -419,7 +421,12 @@ _class_::allocValues(int number) \
 
 
 
-#define SO_MFIELD_MALLOC_SOURCE(_class_, _valtype_)
+#define SO_MFIELD_MALLOC_SOURCE(_class_, _valtype_) \
+void \
+_class_::allocValues(int number) \
+{ \
+  SoMField::allocValues(number); \
+}
 
 
 

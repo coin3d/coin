@@ -35,8 +35,6 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFTime; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFTIME_H__

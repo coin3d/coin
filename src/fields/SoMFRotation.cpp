@@ -19,10 +19,14 @@
 
 /*!
   \class SoMFRotation SoMFRotation.h Inventor/fields/SoMFRotation.h
-  \brief The SoMFRotation class ...
+  \brief The SoMFRotation class is a container for SbRotation values.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store multiple rotation definitions.
+
+  \sa SoSFRotation
+
 */
 
 #include <Inventor/fields/SoMFRotation.h>
@@ -30,9 +34,7 @@
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
 #include <Inventor/SbVec3f.h>
-#include <assert.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -47,39 +49,45 @@
 
 
 
-SO_MFIELD_SOURCE_MALLOC(SoMFRotation, SbRotation, const SbRotation &);
+SO_MFIELD_SOURCE(SoMFRotation, SbRotation, const SbRotation &);
 
-/*!
-  Does initialization common for all objects of the
-  SoMFRotation class. This includes setting up the
-  type system, among other things.
-*/
+// Override parent class.
 void
 SoMFRotation::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFRotation);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFRotation class.
+extern SbBool sosfrotation_read_value(SoInput * in, SbRotation & val);
+extern void sosfrotation_write_value(SoOutput * out, const SbRotation & val);
+
 SbBool
 SoMFRotation::read1Value(SoInput * in, int idx)
 {
-  SoSFRotation sfrotation;
-  SbBool result;
-  if ((result = sfrotation.readValue(in)))
-    this->set1Value(idx, sfrotation.getValue());
-  return result;
+  SbRotation r;
+  if (!sosfrotation_read_value(in, r)) return FALSE;
+  this->set1Value(idx, r);
+  return TRUE;
 }
 
 void
 SoMFRotation::write1Value(SoOutput * out, int idx) const
 {
-  SoSFRotation sfrotation;
-  sfrotation.setValue((*this)[idx]);
-  sfrotation.writeValue(out);
+  sosfrotation_write_value(out, (*this)[idx]);
 }
 
+#endif // DOXYGEN_SKIP_THIS
+
+
 /*!
-  FIXME: write function documentation
+  Set the values of \a num rotations, starting from index \a start,
+  using the quaternion quadruples from \a q.
 */
 void
 SoMFRotation::setValues(const int start, const int num, const float q[][4])
@@ -92,58 +100,59 @@ SoMFRotation::setValues(const int start, const int num, const float q[][4])
 }
 
 /*!
-  FIXME: write function documentation
+  Set the rotation at \a idx from the quaternion values.
 */
 void
 SoMFRotation::set1Value(const int idx, const float q0, const float q1,
-                         const float q2, const float q3)
+                        const float q2, const float q3)
 {
-  this->set1Value(idx,SbRotation(q0,q1,q2,q3));
+  this->set1Value(idx, SbRotation(q0, q1, q2, q3));
 }
 
 /*!
-  FIXME: write function documentation
+  Set the rotation at \a idx from the quaternion quadruple \a q.
 */
 void
 SoMFRotation::set1Value(const int idx, const float q[4])
 {
-  this->set1Value(idx,SbRotation(q[0],q[1],q[2],q[3]));
+  this->set1Value(idx, SbRotation(q));
 }
 
 /*!
-  FIXME: write function documentation
+  Set the rotation at \a idx from the rotation \a axis and \a angle.
 */
 void
 SoMFRotation::set1Value(const int idx, const SbVec3f & axis, const float angle)
 {
-  this->set1Value(idx,SbRotation(axis,angle));
+  this->set1Value(idx, SbRotation(axis, angle));
 }
 
 /*!
-  FIXME: write function documentation
+  Set the field to a single rotation from the quaternion values.
 */
 void
-SoMFRotation::setValue(const float q0, const float q1, const float q2, const float q3)
+SoMFRotation::setValue(const float q0, const float q1,
+                       const float q2, const float q3)
 {
-  this->setValue(SbRotation(q0,q1,q2,q3));
+  this->setValue(SbRotation(q0, q1, q2, q3));
 }
 
 /*!
-  FIXME: write function documentation
+  Set the field to a single rotation from the quaternion quadruple \a q.
 */
 void
 SoMFRotation::setValue(const float q[4])
 {
-  this->setValue(SbRotation(q[0],q[1],q[2],q[3]));
+  this->setValue(SbRotation(q[0], q[1], q[2], q[3]));
 }
 
 /*!
-  FIXME: write function documentation
+  Set the field to a single rotation from the \a axis and \a angle.
 */
 void
 SoMFRotation::setValue(const SbVec3f & axis, const float angle)
 {
-  this->setValue(SbRotation(axis,angle));
+  this->setValue(SbRotation(axis, angle));
 }
 
 void

@@ -34,8 +34,6 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFInt32; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFINT32_H__

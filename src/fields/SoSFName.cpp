@@ -19,10 +19,17 @@
 
 /*!
   \class SoSFName SoSFName.h Inventor/fields/SoSFName.h
-  \brief The SoSFName class ...
+  \brief The SoSFName class is a container for an SbName.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a single name string.
+
+  Fields of this type stores their value to file as a the name string
+  within quotes.
+
+  \sa SoMFName
+
 */
 
 #include <Inventor/fields/SoSFName.h>
@@ -30,41 +37,65 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 
-SO_SFIELD_SOURCE(SoSFName, SbName, const SbName);
+SO_SFIELD_SOURCE(SoSFName, SbName, const SbName &);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoSFName class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFName::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFName);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read SbName value from input stream, return TRUE if
+// successful. Also used from SoMFName class.
+SbBool
+sosfname_read_value(SoInput * in, SbName & val)
+{
+  if (in->read(val)) return TRUE;
+  SoReadError::post(in, "Couldn't read name");
+  return FALSE;
+}
+
 SbBool
 SoSFName::readValue(SoInput * in)
 {
-  return in->read(value);
+  SbName n;
+  if (!sosfname_read_value(in, n)) return FALSE;
+  this->setValue(n);
+  return TRUE;
+}
+
+// Write SbName value to output stream. Also used from SoMFName class.
+void
+sosfname_write_value(SoOutput * out, const SbName & val)
+{
+  out->write(val);
 }
 
 void
 SoSFName::writeValue(SoOutput * out) const
 {
-  out->write(this->getValue());
+  sosfname_write_value(out, this->getValue());
 }
 
+#endif // DOXYGEN_SKIP_THIS
+
+
 /*!
-  FIXME: write function documentation
+  Set value of field.
 */
 void
 SoSFName::setValue(const char * const name)

@@ -19,14 +19,17 @@
 
 /*!
   \class SoSFShort SoSFShort.h Inventor/fields/SoSFShort.h
-  \brief The SoSFShort class ...
+  \brief The SoSFShort class is a container for a short integer value.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a single short integer value.
+
+  \sa SoMFShort
 */
 
 #include <Inventor/fields/SoSFShort.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 
@@ -48,35 +51,57 @@
 #include <strstream.h>
 #endif // ! _WIN32
 
-#include <iomanip.h>
-
-
 
 SO_SFIELD_SOURCE(SoSFShort, short, const short);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoSFShort class. This includes setting up the
-  type system, among other things.
-*/
+// Override parent class.
 void
 SoSFShort::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFShort);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read integer value from input stream, return TRUE if
+// successful. Also used from SoMFShort class.
+SbBool
+sosfshort_read_value(SoInput * in, short & val)
+{
+  if (!in->read(val)) {
+    SoReadError::post(in, "Couldn't read short value");
+    return FALSE;
+  }
+  return TRUE;
+}
+
 SbBool
 SoSFShort::readValue(SoInput * in)
 {
-  return in->read(value);
+  short val;
+  if (!sosfshort_read_value(in, val)) return FALSE;
+  this->setValue(val);
+  return TRUE;
+}
+
+// Write integer value to output stream. Also used from SoMFShort
+// class.
+void
+sosfshort_write_value(SoOutput * out, const short val)
+{
+  out->write(val);
 }
 
 void
 SoSFShort::writeValue(SoOutput * out) const
 {
-  out->write(this->getValue()); // using getValue() to evaluate
+  sosfshort_write_value(out, this->getValue());
 }
+
+#endif // DOXYGEN_SKIP_THIS
 
 void
 SoSFShort::convertTo(SoField * dest) const

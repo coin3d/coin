@@ -41,10 +41,6 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFColor; // For readValue() & writeValue().
 };
-
-//$ IMPORT INLINE ../../../src/fields/SoSFColor.cpp
 
 #endif // !__SOSFCOLOR_H__

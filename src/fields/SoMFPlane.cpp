@@ -19,10 +19,14 @@
 
 /*!
   \class SoMFPlane SoMFPlane.h Inventor/fields/SoMFPlane.h
-  \brief The SoMFPlane class ...
+  \brief The SoMFPlane class is a container for SbPlane values.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store multiple 3D plane definitions.
+
+  \sa SoSFPlane
+
 */
 
 #include <Inventor/fields/SoMFPlane.h>
@@ -30,8 +34,6 @@
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
-#include <assert.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -46,41 +48,45 @@
 
 
 
-SO_MFIELD_SOURCE_MALLOC(SoMFPlane, SbPlane, const SbPlane &);
+SO_MFIELD_SOURCE(SoMFPlane, SbPlane, const SbPlane &);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoMFPlane class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoMFPlane::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFPlane);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFPlane class.
+extern SbBool sosfplane_read_value(SoInput * in, SbPlane & val);
+extern void sosfplane_write_value(SoOutput * out, const SbPlane & val);
+
 SbBool
 SoMFPlane::read1Value(SoInput * in, int idx)
 {
-  SoSFPlane sfplane;
-  SbBool result;
-  if ((result = sfplane.readValue(in)))
-    this->set1Value(idx, sfplane.getValue());
-  return result;
+  SbPlane p;
+  if (!sosfplane_read_value(in, p)) return FALSE;
+  this->set1Value(idx, p);
+  return TRUE;
 }
 
 void
 SoMFPlane::write1Value(SoOutput * out, int idx) const
 {
-  SoSFPlane sfplane;
-  sfplane.setValue((*this)[idx]);
-  sfplane.writeValue(out);
+  sosfplane_write_value(out, (*this)[idx]);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+#endif // DOXYGEN_SKIP_THIS
+
+
+// Store more than the default single value on each line for ASCII
+// format export.
 int
 SoMFPlane::getNumValuesPerLine(void) const
 {

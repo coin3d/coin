@@ -19,10 +19,14 @@
 
 /*!
   \class SoMFVec3f SoMFVec3f.h Inventor/fields/SoMFVec3f.h
-  \brief The SoMFVec3f class ...
+  \brief The SoMFVec3f class is a container for SbVec3f vectors.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store an array of vectors with three elements.
+
+  \sa SoSFVec3f
+
 */
 
 #include <Inventor/fields/SoMFVec3f.h>
@@ -30,47 +34,52 @@
 
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
 
 
-SO_MFIELD_SOURCE_MALLOC(SoMFVec3f, SbVec3f, const SbVec3f &);
+SO_MFIELD_SOURCE(SoMFVec3f, SbVec3f, const SbVec3f &);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoMFVec3f class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoMFVec3f::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFVec3f);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFVec3f class.
+extern SbBool sosfvec3f_read_value(SoInput * in, SbVec3f & v);
+extern void sosfvec3f_write_value(SoOutput * out, const SbVec3f & v);
+
 SbBool
 SoMFVec3f::read1Value(SoInput * in, int idx)
 {
-  SoSFVec3f sfvec3f;
-  SbBool result;
-  if ((result = sfvec3f.readValue(in)))
-    this->set1Value(idx, sfvec3f.getValue());
-  return result;
+  SbVec3f v;
+  if (!sosfvec3f_read_value(in, v)) return FALSE; 
+  this->set1Value(idx, v);
+  return TRUE;
 }
 
 void
 SoMFVec3f::write1Value(SoOutput * out, int idx) const
 {
-  SoSFVec3f sfvec3f;
-  sfvec3f.setValue((*this)[idx]);
-  sfvec3f.writeValue(out);
+  sosfvec3f_write_value(out, (*this)[idx]);
 }
 
+#endif // DOXYGEN_SKIP_THIS
+
+
 /*!
-  FIXME: write function documentation
+  Set \a num vector array elements from \a xyz, starting at index
+  \a start.
 */
 void
 SoMFVec3f::setValues(const int start, const int num, const float xyz[][3])
@@ -82,17 +91,17 @@ SoMFVec3f::setValues(const int start, const int num, const float xyz[][3])
 }
 
 /*!
-  FIXME: write function documentation
+  Set the vector at \a idx.
 */
 void
 SoMFVec3f::set1Value(const int idx,
-                      const float x, const float y, const float z)
+                     const float x, const float y, const float z)
 {
   this->set1Value(idx, SbVec3f(x, y, z));
 }
 
 /*!
-  FIXME: write function documentation
+  Set the vector at \a idx.
 */
 void
 SoMFVec3f::set1Value(const int idx, const float xyz[3])
@@ -101,7 +110,8 @@ SoMFVec3f::set1Value(const int idx, const float xyz[3])
 }
 
 /*!
-  FIXME: write function documentation
+  Set this field to contain a single vector with the given
+  element values.
 */
 void
 SoMFVec3f::setValue(const float x, const float y, const float z)
@@ -110,7 +120,8 @@ SoMFVec3f::setValue(const float x, const float y, const float z)
 }
 
 /*!
-  FIXME: write function documentation
+  Set this field to contain a single vector with the given
+  element values.
 */
 void
 SoMFVec3f::setValue(const float xyz[3])

@@ -38,10 +38,6 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFVec3f; // For readValue() & writeValue().
 };
-
-//$ IMPORT INLINE ../../../src/fields/SoSFVec3f.cpp
 
 #endif // !__SOSFVEC3F_H__

@@ -33,12 +33,10 @@ class SoSFString : public SoSField {
 public:
   static void initClass(void);
 
-  void setValue(const char * const string);
+  void setValue(const char * str);
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFString; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFSTRING_H__

@@ -40,7 +40,7 @@
   SoMFULong. You should use these classes instead (respectively):
   SoSFInt32, SoSFUInt32, SoMFInt32 and SoMFUInt32.
 
-  
+
   \sa SoFieldContainer, SoFieldData */
 
 

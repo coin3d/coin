@@ -32,7 +32,6 @@
 #endif // COIN_DEBUG
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
-#include <assert.h>
 
 
 

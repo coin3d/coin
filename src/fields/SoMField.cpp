@@ -27,7 +27,62 @@
 
   Use setValue(), setValues() or set1Value() to set the values of
   fields inheriting SoMField, and use getValues() or the index
-  operator [] to read values.
+  operator [] to read values. Example code:
+
+  \code
+    SoText2 * textnode = new SoText2;
+    textnode->ref();
+
+    /////// Setting multi-field values. /////////////////////////////
+
+    // Set the first value of the SoMFString field of the SoText2 node.
+    // The field array will be truncated to only contain this single value.
+    textnode->string.setValue("Morten");
+    // The setValue() method and the = operator is interchangeable,
+    // so this code line does the same as the previous line.
+    textnode->string = "Peder";
+
+    // Set the value at index 2. If the field value array contained
+    // fewer than 3 elements before this call, first expand it to contain
+    // 3 elements.
+    textnode->string.set1Value(2, "Lars");
+
+    // This sets 3 values of the array, starting at index 5. If the
+    // array container fewer than 8 elements before the setValues()
+    // call, the array will first be expanded.
+    SbString s[3] = { "Eriksen", "Blekken", "Aas" };
+    textnode->string.setValues(5, sizeof(s), s);
+
+
+    /////// Inspecting multi-field values. //////////////////////////
+
+    // This will read the second element (counting from zero) if the
+    // multivalue field and place it in "val".
+    SbString val = textnode->string[2];
+
+    // Gives us a pointer to the array which the multiple-value field
+    // is using to store the values. Note that the return value is
+    // "const", so you can only read from the array, not write to
+    // it.
+    const SbString * vals = textnode->string.getValues(0);
+
+
+    /////// Modifying multi-field values. ///////////////////////////
+
+    // You can of course modify multifield-values by using the set-
+    // and get-methods shown above, but when you're working with
+    // big sets of data, this will be ineffective. Then use this
+    // technique instead:
+    SbString * modvals = textnode->string.startEditing();
+
+    // ... lots of modifications to the "modvals" array here ...
+
+    // Calling the finishEditing() method is necessary for the
+    // scene graph to be updated (and re-rendered).
+    textnode->string.finishEditing();
+
+  \endcode
+
 
   When nodes, engines or other types of field containers are written
   to file, their multiple-value fields are written to file in this

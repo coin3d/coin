@@ -19,22 +19,25 @@
 
 /*!
   \class SoMFInt32 SoMFInt32.h Inventor/fields/SoMFInt32.h
-  \brief The SoMFInt32 class ...
+  \brief The SoMFInt32 class is a container for 32-bit integer values.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a group of multiple 32-bit integer values.
+
+  \sa SoSFInt32
 */
 
 #include <Inventor/fields/SoMFInt32.h>
-#include <Inventor/fields/SoSFInt32.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
+
 #include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFInt32.h>
 
 #ifdef _WIN32
 #include <strstrea.h>
@@ -47,38 +50,42 @@
 SO_MFIELD_SOURCE_MALLOC(SoMFInt32, int32_t, int32_t);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoMFInt32 class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent.
 void
 SoMFInt32::initClass(void)
 {
   SO_MFIELD_INTERNAL_INIT_CLASS(SoMFInt32);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// These are implemented in the SoSFInt32 class.
+extern SbBool sosfint32_read_value(SoInput * in, int32_t & val);
+extern void sosfint32_write_value(SoOutput * out, const int32_t val);
+
 SbBool
 SoMFInt32::read1Value(SoInput * in, int idx)
 {
-  SoSFInt32 sfint32;
-  SbBool result;
-  if ((result = sfint32.readValue(in)))
-    this->set1Value(idx, sfint32.getValue());
-  return result;
+  int32_t val;
+  if (!sosfint32_read_value(in, val)) return FALSE;
+  this->set1Value(idx, val);
+  return TRUE;
 }
 
 void
 SoMFInt32::write1Value(SoOutput * out, int idx) const
 {
-  SoSFInt32 sfint32;
-  sfint32.setValue((*this)[idx]);
-  sfint32.writeValue(out);
+  sosfint32_write_value(out, (*this)[idx]);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+#endif // DOXYGEN_SKIP_THIS
+
+
+// Store more than the default single value on each line for ASCII
+// format export.
 int
 SoMFInt32::getNumValuesPerLine(void) const
 {

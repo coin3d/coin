@@ -40,7 +40,6 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <malloc.h>
-#include <assert.h>
 
 
 SO_MFIELD_SOURCE_MALLOC(SoMFBool, SbBool, SbBool);
@@ -65,7 +64,7 @@ SbBool
 SoMFBool::read1Value(SoInput * in, int idx)
 {
   SbBool val;
-  if (!sosfbool_read_value(in, val)) return FALSE; 
+  if (!sosfbool_read_value(in, val)) return FALSE;
   this->set1Value(idx, val);
   return TRUE;
 }
@@ -79,7 +78,8 @@ SoMFBool::write1Value(SoOutput * out, int idx) const
 #endif // DOXYGEN_SKIP_THIS
 
 
-// Store 8 boolean values on each line for ASCII format export.
+// Don't store the default single value on each line for ASCII format
+// export.
 int
 SoMFBool::getNumValuesPerLine(void) const
 {

@@ -19,17 +19,23 @@
 
 /*!
   \class SoSFColor SoSFColor.h Inventor/fields/SoSFColor.h
-  \brief The SoSFColor class ...
+  \brief The SoSFColor class is a container for an SbColor value.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a single color value (i.e. Red + Green + Blue).
+
+  Fields of this type stores their value to file as a "R G B" triple
+  component, where each color component value is between 0.0 and 1.0.
+
+  \sa SoMFColor
+
 */
 
-#include <math.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoMFColor.h>
@@ -47,85 +53,114 @@
 
 SO_SFIELD_SOURCE(SoSFColor, SbColor, const SbColor &);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoSFColor class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent.
 void
 SoSFColor::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFColor);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read SbColor value from input stream, return TRUE if
+// successful. Also used from SoMFColor class.
+SbBool
+sosfcolor_read_value(SoInput * in, SbColor & val)
+{
+  if (in->read(val[0]) && in->read(val[1]) && in->read(val[2]))
+    return TRUE;
+
+  SoReadError::post(in, "Premature end of file");
+  return FALSE;
+}
+
 SbBool
 SoSFColor::readValue(SoInput * in)
 {
-  return
-    in->read(this->value[0]) &&
-    in->read(this->value[1]) &&
-    in->read(this->value[2]);
+  SbColor val;
+  if (!sosfcolor_read_value(in, val)) return FALSE;
+  this->valueChanged();
+  return TRUE;
+}
+
+// Write SbColor value to output stream. Also used from SoMFColor
+// class.
+void
+sosfcolor_write_value(SoOutput * out, const SbColor & val)
+{
+  out->write(val[0]);
+  if(!out->isBinary()) out->write(' ');
+  out->write(val[1]);
+  if(!out->isBinary()) out->write(' ');
+  out->write(val[2]);
 }
 
 void
 SoSFColor::writeValue(SoOutput * out) const
 {
-  SbColor c = this->getValue();
-
-  out->write(c[0]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(c[1]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(c[2]);
+  sosfcolor_write_value(out, this->getValue());
 }
 
+#endif // DOXYGEN_SKIP_THIS
+
+
 /*!
-  FIXME: write function documentation
+  Set color value from a vector with three elements. The three elements
+  will be interpreted as red, green and blue, respectively.
 */
 void
 SoSFColor::setValue(const SbVec3f & vec)
 {
-  value.setValue(vec[0], vec[1], vec[2]);
+  this->value.setValue(vec[0], vec[1], vec[2]);
+  this->valueChanged();
 }
 
 /*!
-  FIXME: write function documentation
+  Set color value from \a red, \a green and \a blue. Value range
+  for each component is between 0.0 and 1.0.
 */
 void
 SoSFColor::setValue(const float red, const float green, const float blue)
 {
-  value.setValue(red, green, blue);
+  this->value.setValue(red, green, blue);
   this->valueChanged();
 }
 
 /*!
-  FIXME: write function documentation
+  Set color value from a floating point number array with three
+  elements. The three elements will be interpreted as red, green and
+  blue, respectively.
 */
 void
 SoSFColor::setValue(const float rgb[3])
 {
-  value.setValue(rgb);
+  this->value.setValue(rgb);
   this->valueChanged();
 }
 
 /*!
-  FIXME: write function documentation
+  Set color value from \a h, \a s and \a v, where \a is "hue", \a s
+  is "saturation" and \a v is "value".
 */
 void
 SoSFColor::setHSVValue(const float h, const float s, const float v)
 {
-  value.setHSVValue(h, s, v);
+  this->value.setHSVValue(h, s, v);
   this->valueChanged();
 }
 
 /*!
-  FIXME: write function documentation
+  Set color value from a floating point number array with three
+  elements. The three elements will be interpreted as hue,
+  saturation and value, respectively.
 */
 void
 SoSFColor::setHSVValue(const float hsv[3])
 {
-  value.setHSVValue(hsv);
+  this->value.setHSVValue(hsv);
   this->valueChanged();
 }
 

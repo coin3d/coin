@@ -26,7 +26,6 @@
 */
 
 #include <Inventor/fields/SoSFTrigger.h>
-#include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 

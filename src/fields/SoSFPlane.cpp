@@ -19,17 +19,24 @@
 
 /*!
   \class SoSFPlane SoSFPlane.h Inventor/fields/SoSFPlane.h
-  \brief The SoSFPlane class ...
+  \brief The SoSFPlane class is a container for an SbPlane value.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a single definition of a 3D plane.
+
+  Fields of this type stores their value to file as a normalvector
+  plus an offset from origo: "v0 v1 v2 offset".
+
+  \sa SoMFPlane
+
 */
 
 #include <Inventor/fields/SoSFPlane.h>
 #include <Inventor/fields/SoMFPlane.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoInput.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSFString.h>
 
 #if COIN_DEBUG
@@ -47,35 +54,49 @@
 SO_SFIELD_SOURCE(SoSFPlane, SbPlane, const SbPlane &);
 
 
-/*!
-  Does initialization common for all objects of the
-  SoSFPlane class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFPlane::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFPlane);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read SbPlane from input stream, return TRUE if successful. Also
+// used from SoMFPlane class.
 SbBool
-SoSFPlane::readValue(SoInput * in)
+sosfplane_read_value(SoInput * in, SbPlane & p)
 {
   SbVec3f normal;
   float offset;
-  SbBool result = (in->read(normal[0]) &&
-                   in->read(normal[1]) &&
-                   in->read(normal[2]) &&
-                   in->read(offset));
-  this->setValue(SbPlane(normal, offset));
-  return result;
+  if (!(in->read(normal[0]) && in->read(normal[1]) && in->read(normal[2]) &&
+        in->read(offset))) {
+    SoReadError::post(in, "Couldn't read values");
+    return FALSE;
+  }
+
+  p = SbPlane(normal, offset);
+  return TRUE;
 }
 
-void
-SoSFPlane::writeValue(SoOutput * out) const
+SbBool
+SoSFPlane::readValue(SoInput * in)
 {
-  SbPlane p = this->getValue(); // implicit evaluate() call
+  SbPlane p;
+  if (!sosfplane_read_value(in, p)) return FALSE;
+  this->setValue(p);
+  return TRUE;
+}
 
+// Write SbPlane value to output stream. Also used from SoMFPlane
+// class.
+void
+sosfplane_write_value(SoOutput * out, const SbPlane & p)
+{
   out->write(p.getNormal()[0]);
   if (!out->isBinary()) out->write(' ');
   out->write(p.getNormal()[1]);
@@ -84,6 +105,15 @@ SoSFPlane::writeValue(SoOutput * out) const
   if (!out->isBinary()) out->write("  ");
   out->write(p.getDistanceFromOrigin());
 }
+
+void
+SoSFPlane::writeValue(SoOutput * out) const
+{
+  sosfplane_write_value(out, this->getValue());
+}
+
+#endif // DOXYGEN_SKIP_THIS
+
 
 void
 SoSFPlane::convertTo(SoField * dest) const

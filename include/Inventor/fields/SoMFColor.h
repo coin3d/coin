@@ -54,6 +54,4 @@ private:
   virtual void convertTo(SoField * dest) const;
 };
 
-//$ INSERT INLINE ../../../src/fields/SoMFColor.cpp
-
 #endif // !__SOMFCOLOR_H__

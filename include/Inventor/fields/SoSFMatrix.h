@@ -35,20 +35,15 @@ public:
 
   void setValue(const float a11, const float a12,
                 const float a13, const float a14,
-
                 const float a21, const float a22,
                 const float a23, const float a24,
-
                 const float a31, const float a32,
                 const float a33, const float a34,
-
                 const float a41, const float a42,
                 const float a43, const float a44);
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFMatrix; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFMATRIX_H__

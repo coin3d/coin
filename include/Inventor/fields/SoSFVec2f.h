@@ -38,8 +38,6 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
-
-  friend class SoMFVec2f; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFVEC2F_H__

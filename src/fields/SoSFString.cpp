@@ -19,17 +19,24 @@
 
 /*!
   \class SoSFString SoSFString.h Inventor/fields/SoSFString.h
-  \brief The SoSFString class ...
+  \brief The SoSFString class is a container for an SbString.
   \ingroup fields
 
-  FIXME: write class doc
+  This field is used where nodes, engines or other field containers
+  needs to store a single string.
+
+  Fields of this type stores their value to file as a the string
+  within quotes.
+
+  \sa SoMFString
+
 */
 
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoMFString.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
-#include <Inventor/SbName.h>
+#include <Inventor/errors/SoReadError.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -38,37 +45,60 @@
 
 SO_SFIELD_SOURCE(SoSFString, SbString, const SbString &);
 
-
-/*!
-  Does initialization common for all objects of the
-  SoSFString class. This includes setting up the
-  type system, among other things.
-*/
+// Override from parent class.
 void
 SoSFString::initClass(void)
 {
   SO_SFIELD_INTERNAL_INIT_CLASS(SoSFString);
 }
 
+// No need to document readValue() and writeValue() here, as the
+// necessary information is provided by the documentation of the
+// parent classes.
+#ifndef DOXYGEN_SKIP_THIS
+
+// Read SbString value from input stream, return TRUE if
+// successful. Also used from SoMFString class.
+SbBool
+sosfstring_read_value(SoInput * in, SbString & val)
+{
+  if (in->read(val)) return TRUE;
+  SoReadError::post(in, "Couldn't read string");
+  return FALSE;
+}
+
 SbBool
 SoSFString::readValue(SoInput * in)
 {
-  return in->read(value);
+  SbString n;
+  if (!sosfstring_read_value(in, n)) return FALSE;
+  this->setValue(n);
+  return TRUE;
+}
+
+// Write SbString value to output stream. Also used from SoMFString class.
+void
+sosfstring_write_value(SoOutput * out, const SbString & val)
+{
+  out->write(val);
 }
 
 void
 SoSFString::writeValue(SoOutput * out) const
 {
-  out->write(this->getValue());
+  sosfstring_write_value(out, this->getValue());
 }
 
+#endif // DOXYGEN_SKIP_THIS
+
+
 /*!
-  FIXME: write function documentation
+  Set string field value from \a str.
 */
 void
-SoSFString::setValue(const char * const string)
+SoSFString::setValue(const char * str)
 {
-  this->setValue(SbString(string));
+  this->setValue(SbString(str));
 }
 
 void

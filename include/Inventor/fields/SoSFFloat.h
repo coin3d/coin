@@ -34,8 +34,6 @@ public:
 
 private:
   virtual void convertTo(SoField *dest) const;
-
-  friend class SoMFFloat; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFFLOAT_H__
