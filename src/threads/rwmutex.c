@@ -115,7 +115,7 @@ cc_rwmutex_write_lock(cc_rwmutex * rwmutex)
       rwmutex->readwaiters == 0 &&
       rwmutex->writewaiters == 0) {
     rwmutex->writers++;
-    cc_mutex_unlock(&rwmutex->mutex);
+    (void) cc_mutex_unlock(&rwmutex->mutex);
     return CC_OK;
   }
   rwmutex->writewaiters++;
@@ -125,7 +125,7 @@ cc_rwmutex_write_lock(cc_rwmutex * rwmutex)
   rwmutex->writers++;
   rwmutex->writewaiters--;
   assert(rwmutex->writewaiters >= 0);
-  cc_mutex_unlock(&rwmutex->mutex);
+  (void) cc_mutex_unlock(&rwmutex->mutex);
   return CC_OK;
 } /* cc_rwmutex_write_lock() */
 
@@ -141,10 +141,10 @@ cc_rwmutex_write_try_lock(cc_rwmutex * rwmutex)
       rwmutex->readwaiters == 0 &&
       rwmutex->writewaiters == 0) {
     rwmutex->writers++;
-    cc_mutex_unlock(&rwmutex->mutex);
+    (void) cc_mutex_unlock(&rwmutex->mutex);
     return CC_OK;
   }
-  cc_mutex_unlock(&rwmutex->mutex);
+  (void) cc_mutex_unlock(&rwmutex->mutex);
   return CC_BUSY;
 } /* cc_rwmutex_write_try_lock() */
 
@@ -161,7 +161,6 @@ cc_rwmutex_write_unlock(cc_rwmutex * rwmutex)
   assert(rwmutex->writers >= 0);
   rwait = rwmutex->readwaiters;
   wwait = rwmutex->writewaiters;
-  (void) cc_mutex_unlock(&rwmutex->mutex);
 
   if (rwmutex->policy == CC_READ_PRECEDENCE) {
     if (rwait) cc_condvar_wake_all(&rwmutex->read);
@@ -171,6 +170,7 @@ cc_rwmutex_write_unlock(cc_rwmutex * rwmutex)
     if (wwait) cc_condvar_wake_one(&rwmutex->write);
     else cc_condvar_wake_all(&rwmutex->read);
   }
+  (void) cc_mutex_unlock(&rwmutex->mutex);
   return CC_OK;
 }
 
@@ -193,7 +193,7 @@ cc_rwmutex_read_lock(cc_rwmutex * rwmutex)
   rwmutex->readers++;
   rwmutex->readwaiters--;
   assert(rwmutex->readwaiters >= 0);
-  cc_mutex_unlock(&rwmutex->mutex);
+  (void) cc_mutex_unlock(&rwmutex->mutex);
   return CC_OK;
 }
 
@@ -231,7 +231,6 @@ cc_rwmutex_read_unlock(cc_rwmutex * rwmutex)
   assert(readers >= 0);
   rwait = rwmutex->readwaiters;
   wwait = rwmutex->writewaiters;
-  (void) cc_mutex_unlock(&rwmutex->mutex);
 
   if (rwmutex->policy == CC_READ_PRECEDENCE || readers) {
     if (rwait) cc_condvar_wake_all(&rwmutex->read);
@@ -241,6 +240,7 @@ cc_rwmutex_read_unlock(cc_rwmutex * rwmutex)
     if (wwait) cc_condvar_wake_one(&rwmutex->write);
     else cc_condvar_wake_all(&rwmutex->read);
   }
+  (void) cc_mutex_unlock(&rwmutex->mutex);
   return CC_OK;
 } /* cc_rwmutex_read_unlock() */
 
