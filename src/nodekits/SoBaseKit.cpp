@@ -38,6 +38,7 @@ SO_NODE_SOURCE(SoBaseKit);
 
 
 SoNodekitCatalog * SoBaseKit::classcatalog = NULL;
+const SoNodekitCatalog ** SoBaseKit::parentcatalogptr;
 
 
 /*!
@@ -64,6 +65,8 @@ void
 SoBaseKit::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoBaseKit);
+
+  SoBaseKit::parentcatalogptr = NULL;
 
   SoBaseKit::classcatalog = new SoNodekitCatalog;
   SoBaseKit::classcatalog->addEntry("this",
@@ -276,21 +279,47 @@ SoBaseKit::getChildren(void) const
 }
 
 /*!
-  Print out the nodekit catalog structure. Useful for debugging.
+  Print out the full nodekit catalog structure. Useful for debugging.
 */
 void
 SoBaseKit::printDiagram(void)
 {
+  fprintf(stdout, "CLASS %s\n", this->getTypeId().getName().getString());
   this->printSubDiagram("this", 0);
 }
 
 /*!
-  FIXME: write function documentation
+  Print out the nodekit catalog structure from \a rootname and downwards
+  in the catalog tree, with indentation starting at \a level.
 */
 void
-SoBaseKit::printSubDiagram(const SbName & /*rootname*/, int /*level*/)
+SoBaseKit::printSubDiagram(const SbName & rootname, int level)
 {
-  assert(0 && "FIXME: not implemented yet");
+  const SoNodekitCatalog * parentcatalog = NULL;
+  if (this->getTypeId() != SoBaseKit::getClassTypeId()) {
+    SoType parenttype = this->getTypeId().getParent();
+    SoBaseKit * parentobj = (SoBaseKit *)parenttype.createInstance();
+    parentcatalog = parentobj->getNodekitCatalog();
+    parentobj->ref();
+    parentobj->unref();
+  }
+
+  int i = 0;
+  if (!parentcatalog || (parentcatalog->getPartNumber(rootname) == SO_CATALOG_NAME_NOT_FOUND)) {
+    fprintf(stdout, "-->");
+    i++;
+  }
+  for (; i < level+1; i++) fprintf(stdout, "   ");
+
+  fprintf(stdout, "\"%s\"\n", rootname.getString());
+
+  const SoNodekitCatalog * thiscat = this->getNodekitCatalog();
+  for (int j=0; j < thiscat->getNumEntries(); j++) {
+    // FIXME: make a list of children sorted to get right siblings
+    // correctly. 19991118 mortene.
+    if (thiscat->getParentName(j) == rootname)
+      this->printSubDiagram(thiscat->getName(j), level + 1);
+  }
 }
 
 /*!

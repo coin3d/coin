@@ -124,6 +124,7 @@ protected:
 
 private:
   static SoNodekitCatalog * classcatalog;
+  static const SoNodekitCatalog ** parentcatalogptr;
 };
 
 #endif // !__SOBASEKIT_H__
