@@ -877,6 +877,10 @@ A few hints:
           programmer to ever having to resort to the header files or
           implementation sourcecode.
 
+        * Use "\e" in front of words you want to emphasize, "\c" in
+          front of words that should be shown in a font appropriate
+          for code keywords (like "TRUE" or "FALSE") and "\a" in front
+          of function argument names.
 
 ==============================================================================
 
