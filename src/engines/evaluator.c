@@ -87,7 +87,7 @@ so_eval_node *
 so_eval_create_reg(const char *regname)
 {
   so_eval_node *node = NULL;
-  int id, idx;
+  int idx;
 
   /* find where to look for field name (upper case means vectors) */
   if (regname[0] == 't' || regname[0] == 'o') {

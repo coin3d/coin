@@ -70,6 +70,9 @@ SoSelectOne::SoSelectOne(SoType inputType)
     SoMFVec4f::getClassTypeId(),SoMFVec4f::getClassTypeId()
   };
 
+  //Instead of SO_ENGINE_ADD_OUTPUT()
+  this->output=new SoEngineOutput;
+#if 0 // obsoleted. FIXME: reimplement, 20000309 pederb
   SoType outputType;
   for (int i=0;i<42;i+=2) {
     if (inputType==types[i]) {
@@ -77,10 +80,6 @@ SoSelectOne::SoSelectOne(SoType inputType)
       break;
     }
   }
-
-  //Instead of SO_ENGINE_ADD_OUTPUT()
-  this->output=new SoEngineOutput;
-#if 0 // obsoleted. FIXME: reimplement, 20000309 pederb
   this->output->setType(outputType);
 #endif // obsoleted
   this->output->setContainer(this);

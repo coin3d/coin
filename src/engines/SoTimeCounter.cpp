@@ -259,10 +259,8 @@ SoTimeCounter::inputChanged(SoField *which)
 void
 SoTimeCounter::calcNumSteps(void)
 {
-  short minval = this->min.getValue();
-  short maxval = this->max.getValue();
   short stepval = this->step.getValue();
-  this->numsteps = (max.getValue()-min.getValue()) / stepval + 1;
+  this->numsteps = (this->max.getValue() - this->min.getValue()) / stepval + 1;
 }
 
 // recalculate duty steps.
