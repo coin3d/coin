@@ -183,7 +183,12 @@ SoType::createType(const SoType parent, const SbName name,
                    const uint16_t data)
 {
 #if COIN_DEBUG
-  if (SoType::fromName(name.getString()) != SoType::badType()) {
+  // We don't use SoType::fromName() to test if a type with this name
+  // already exists to avoid loading extension nodes in this context.
+  // You should be able to "override" dynamically loadable nodes in program
+  // code.
+  void * discard;
+  if (SoType::typedict->find((unsigned long)name.getString(), discard)) {
     SoDebugError::post("SoType::createType",
                        "a type with name ``%s'' already created",
                        name.getString());
