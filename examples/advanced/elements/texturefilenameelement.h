@@ -24,21 +24,21 @@
 #include <Inventor/SbString.h>
 #include <assert.h>
 
-class SoTextureFilenameElement : public SoReplacedElement {
+class TextureFilenameElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;
 
-  SO_ELEMENT_HEADER(SoTextureFilenameElement);
+  SO_ELEMENT_HEADER(TextureFilenameElement);
 public:
   static void initClass(void);
 protected:
-  virtual ~SoTextureFilenameElement();
+  virtual ~TextureFilenameElement();
 
 public:
   virtual void init(SoState * state);
   static void set(SoState * const state, SoNode * const node,
                   const SbString & filename);
   static const SbString & get(SoState * const state);
-  static const SoTextureFilenameElement * getInstance(SoState * state);
+  static const TextureFilenameElement * getInstance(SoState * state);
 
 protected:
   virtual void setElt(const SbString & filename);

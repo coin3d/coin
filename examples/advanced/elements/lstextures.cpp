@@ -17,55 +17,102 @@
  *
 \**************************************************************************/
 
+/*
+  The purpose of this file is to make a small wrapper "tool" around
+  the TextureFilenameElement extension element, just for showing
+  example code on how to make use of a user-defined custom element.
+
+  The code goes like this:
+
+  We initialize the element, enable it for the SoCallbackAction, read
+  a scene graph file, set callbacks on SoTexture2 and all shape nodes
+  and applies the SoCallbackAction. The callbacks will then print out
+  the texture filename information from the TextureFilenameElement in
+  the callbacks each time an interesting node is hit.
+
+
+  Check the code in texturefilenameelement.cpp for further information
+  on how to construct your own elements.
+
+
+  Code by Peder Blekken <pederb@sim.no>. Cleaned up, integrated in
+  Coin distribution and commented by Morten Eriksen <mortene@sim.no>.
+  1999-12-09.
+*/
+
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTexture2.h>
-#include <Inventor/nodes/SoCube.h>
+#include <Inventor/nodes/SoShape.h>
 #include <Inventor/misc/SoState.h>
-#include <assert.h>
 #include <stdio.h>
 
 #include "texturefilenameelement.h"
 
+
 SoCallbackAction::Response
-pre_tex2_cb(void * data, SoCallbackAction * action, const SoNode * node)
+pre_tex2_cb(void * /*data*/, SoCallbackAction * action, const SoNode * node)
 {
-  fprintf(stdout, "tex2 callback\n");
-  SoTextureFilenameElement::set(action->getState(), (SoNode *)node,
-                                ((SoTexture2 *)node)->filename.getValue());
+  const SbString & filename = ((SoTexture2 *)node)->filename.getValue();
+  TextureFilenameElement::set(action->getState(), (SoNode *)node, filename);
+
+  fprintf(stdout, "=> New texture: %s\n",
+          filename.getLength() == 0 ? "<inlined>" : filename.getString());
+
   return SoCallbackAction::CONTINUE;
 }
 
 SoCallbackAction::Response
-pre_cube_cb(void * data, SoCallbackAction * action, const SoNode * node)
+pre_shape_cb(void * /*data*/, SoCallbackAction * action, const SoNode * node)
 {
-  const SbString & filename = SoTextureFilenameElement::get(action->getState());
-  fprintf(stdout, "Cube texture: %s\n", filename.getString());
+  const SbString & filename =
+    TextureFilenameElement::get(action->getState());
+
+  fprintf(stdout, "Texturemap on %s: %s\n",
+          node->getTypeId().getName().getString(),
+          filename.getLength() == 0 ? "<inlined>" : filename.getString());
+
   return SoCallbackAction::CONTINUE;
+}
+
+void
+usage(const char * appname)
+{
+  fprintf(stderr, "\n\tUsage: %s <modelfile.iv>\n\n", appname);
+  fprintf(stderr,
+          "\tLists all texture filenames in the model file,\n"
+          "\tand on which shape nodes they are used.\n\n"
+          "\tThe purpose of this example utility is simply to\n"
+          "\tshow how to create and use an extension element for\n"
+          "\tscene graph traversal.\n\n");
 }
 
 int
-main(int argc, char **argv)
+main(int argc, char ** argv)
 {
-  assert(argc == 2);
+  if (argc != 2) {
+    usage(argv[0]);
+    exit(1);
+  }
 
   SoDB::init();
 
-  SoTextureFilenameElement::initClass();
-  SO_ENABLE(SoCallbackAction, SoTextureFilenameElement);
+  TextureFilenameElement::initClass();
+  SO_ENABLE(SoCallbackAction, TextureFilenameElement);
 
   SoInput input;
-  assert(input.openFile(argv[1]));
+  if (!input.openFile(argv[1])) {
+    fprintf(stderr, "ERROR: couldn't open file ``%s''.\n", argv[1]);
+    exit(1);
+  }
 
   SoSeparator * root = SoDB::readAll(&input);
   if (root) {
     SoCallbackAction cbaction;
-    cbaction.addPreCallback(SoTexture2::getClassTypeId(),
-                            pre_tex2_cb, (void *) 4);
-    cbaction.addPreCallback(SoCube::getClassTypeId(),
-			    pre_cube_cb, (void *) 3);
+    cbaction.addPreCallback(SoTexture2::getClassTypeId(), pre_tex2_cb, NULL);
+    cbaction.addPreCallback(SoShape::getClassTypeId(), pre_shape_cb, NULL);
     cbaction.apply(root);
   }
   return 0;

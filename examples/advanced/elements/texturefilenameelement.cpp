@@ -17,56 +17,69 @@
  *
 \**************************************************************************/
 
+/*
+  The purpose of the code in this file is to demonstrate how you
+  can make your own elements for scene graph traversals.
+
+  See the description and source code in lstextures.cpp for an
+  explanation on how new, user-defined extensions elements can
+  be put to use.
+
+  Code by Peder Blekken <pederb@sim.no>, 1999-12-09.
+ */
+
 #include "texturefilenameelement.h"
 
-SO_ELEMENT_SOURCE(SoTextureFilenameElement);
+
+SO_ELEMENT_SOURCE(TextureFilenameElement);
+
 
 void
-SoTextureFilenameElement::initClass()
+TextureFilenameElement::initClass(void)
 {
-  SO_ELEMENT_INIT_CLASS(SoTextureFilenameElement, inherited);
+  SO_ELEMENT_INIT_CLASS(TextureFilenameElement, inherited);
 }
 
 void
-SoTextureFilenameElement::init(SoState * /* state */)
+TextureFilenameElement::init(SoState * /* state */)
 {
   this->filename.makeEmpty();
 }
 
-SoTextureFilenameElement::SoTextureFilenameElement()
+TextureFilenameElement::TextureFilenameElement(void)
 {
-  setTypeId(SoTextureFilenameElement::classTypeId);
-  setStackIndex(SoTextureFilenameElement::classStackIndex);
+  this->setTypeId(TextureFilenameElement::classTypeId);
+  this->setStackIndex(TextureFilenameElement::classStackIndex);
 }
 
-SoTextureFilenameElement::~SoTextureFilenameElement()
+TextureFilenameElement::~TextureFilenameElement()
 {
 }
 
 void
-SoTextureFilenameElement::set(SoState * const state, SoNode * const node,
-                              const SbString & filename)
+TextureFilenameElement::set(SoState * const state, SoNode * const node,
+                            const SbString & filename)
 {
-  SoTextureFilenameElement * elem = (SoTextureFilenameElement *)
+  TextureFilenameElement * elem = (TextureFilenameElement *)
     SoReplacedElement::getElement(state, classStackIndex, node);
   elem->setElt(filename);
 }
 
 const SbString &
-SoTextureFilenameElement::get(SoState * const state)
+TextureFilenameElement::get(SoState * const state)
 {
-  return SoTextureFilenameElement::getInstance(state)->filename;
+  return TextureFilenameElement::getInstance(state)->filename;
 }
 
 void
-SoTextureFilenameElement::setElt(const SbString & filename)
+TextureFilenameElement::setElt(const SbString & filename)
 {
   this->filename = filename;
 }
 
-const SoTextureFilenameElement *
-SoTextureFilenameElement::getInstance(SoState * state)
+const TextureFilenameElement *
+TextureFilenameElement::getInstance(SoState * state)
 {
-  return (const SoTextureFilenameElement *)
+  return (const TextureFilenameElement *)
     SoElement::getConstElement(state, classStackIndex);
 }
