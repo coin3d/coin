@@ -234,7 +234,19 @@ public:
     case SoShape::QUAD_STRIP:
       this->setVertex(this->counter++, v);
       if (counter == 4) {
-        this->handleFaceDetail(4);
+        // can't use handleFaceDetail(), because of the vertex
+        // order.
+        if (this->faceDetail) {
+          this->faceDetail->setNumPoints(4);
+          this->faceDetail->setPoint(0, &this->pointDetails[0]);
+          this->vertsArray[0].setDetail(this->faceDetail);
+          this->faceDetail->setPoint(1, &this->pointDetails[1]);
+          this->vertsArray[1].setDetail(this->faceDetail);
+          this->faceDetail->setPoint(2, &this->pointDetails[3]);
+          this->vertsArray[2].setDetail(this->faceDetail);
+          this->faceDetail->setPoint(3, &this->pointDetails[2]);
+          this->vertsArray[3].setDetail(this->faceDetail);
+        }
         this->shape->invokeTriangleCallbacks(this->action,
                                              &vertsArray[0],
                                              &vertsArray[1],
