@@ -837,9 +837,10 @@ SoField::disconnect(SoEngineOutput * master)
   // SoFieldConverter. If so, recursively call disconnect() with the
   // field on "the other side" of the converter.
 
-  SoType containertype = this->getContainer()->getTypeId();
+  SoType fieldconvtype = SoFieldConverter::getClassTypeId();
   SbBool containerisconverter =
-    containertype.isDerivedFrom(SoFieldConverter::getClassTypeId());
+    this->getContainer() &&
+    this->getContainer()->getTypeId().isDerivedFrom(fieldconvtype);
   if (containerisconverter) {
     SoFieldConverter * converter = (SoFieldConverter *)this->getContainer();
     SoEngineOutput * converterout =
