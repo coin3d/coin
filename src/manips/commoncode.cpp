@@ -85,6 +85,8 @@
 
 /***************************************************************************/
 
+// FIXME: this should, as far as I can tell, be possible to write as a
+// single function without doing it as a macro. 20020805 mortene.
 
 #define SOMANIP_REPLACEMANIPBODY(_class_, _parentclass_) \
 SbBool \
