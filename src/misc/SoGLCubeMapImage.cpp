@@ -54,6 +54,7 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
+#include <Inventor/misc/SoContextHandler.h>
 
 
 #ifdef COIN_THREADSAFE
@@ -142,6 +143,24 @@ public:
     SoGLCubeMapImageP::mutex->unlock();
 #endif // COIN_THREADSAFE
   }
+
+  static void contextCleanup(uint32_t context, void * closure)
+  {
+    SoGLCubeMapImageP * thisp = (SoGLCubeMapImageP *) closure;
+    thisp->lock();
+    int n = thisp->dlists.getLength();
+    int i = 0;
+    
+    while (i < n) {
+      if (thisp->dlists[i].dlist->getContext() == (int) context) {
+        thisp->dlists[i].dlist->unref(NULL);
+        thisp->dlists.remove(i);
+        n--;
+      }
+      else i++;
+    }
+    thisp->unlock();
+  }
 };
 
 SoType SoGLCubeMapImageP::classTypeId STATIC_SOTYPE_INIT;
@@ -159,6 +178,7 @@ SbMutex * SoGLCubeMapImageP::mutex = NULL;
 SoGLCubeMapImage::SoGLCubeMapImage(void)
 {
   PRIVATE(this) = new SoGLCubeMapImageP;
+  SoContextHandler::addContextDestructionCallback(SoGLCubeMapImageP::contextCleanup, PRIVATE(this));
 }
 
 /*!
@@ -166,6 +186,7 @@ SoGLCubeMapImage::SoGLCubeMapImage(void)
 */
 SoGLCubeMapImage::~SoGLCubeMapImage()
 {
+  SoContextHandler::removeContextDestructionCallback(SoGLCubeMapImageP::contextCleanup, PRIVATE(this));
   delete PRIVATE(this);
 }
 
