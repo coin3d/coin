@@ -302,9 +302,46 @@ static const char * fontfilenames[] = {
   "Verdana Italic", "Verdana_Italic.ttf", NULL,
   "Webdings", "Webdings.ttf", NULL
 };
+  
+  struct cc_flwft_globals {
+    cc_hash * fontname2filename;
+    cc_dynarray * fontfiledirs;
+    cc_hash * font2glyphhash;
+  };
 
-static cc_hash * fontname2filename = NULL;
-static cc_dynarray * fontfiledirs = NULL;
+  static struct cc_flwft_globals cc_flwft_globals = {
+    NULL, NULL, NULL
+  };
+  
+  struct cc_flwft_glyph {
+    struct cc_flw_bitmap * bitmap;
+    struct cc_flw_vector_glyph * vector;
+  };
+
+static cc_hash *
+ft_get_glyph_hash(void * font)
+{
+  void * val;
+  SbBool found;
+
+  found = cc_hash_get(cc_flwft_globals.font2glyphhash,
+                      (unsigned long)font, &val);
+  return found ? ((cc_hash *)val) : NULL;
+}
+  
+static struct cc_flwft_glyph *
+ft_get_glyph_struct(void * font, int glyph)
+{
+  void * val;
+  SbBool found;
+  
+  cc_hash * ghash = ft_get_glyph_hash(font);
+  if (ghash == NULL) { return NULL; }
+
+  found = cc_hash_get(ghash, (unsigned long)glyph, &val);
+  return found ? ((struct cc_flwft_glyph *)val) : NULL;
+}
+
 
 /* ************************************************************************* */
 
@@ -338,10 +375,10 @@ cc_flwft_initialize(void)
     library = NULL;
     return FALSE;
   }
-  assert((fontname2filename == NULL) && "call cc_flwft_initialize only once!");
+  assert((cc_flwft_globals.fontname2filename == NULL) && "call cc_flwft_initialize only once!");
 
   /* Set up hash of font name to array of file name mappings. */
-  fontname2filename = cc_hash_construct(50, 0.75);
+  cc_flwft_globals.fontname2filename = cc_hash_construct(50, 0.75);
   {
     unsigned int i = 0;
     while (i < sizeof(fontfilenames) / sizeof(fontfilenames[0])) {
@@ -350,13 +387,13 @@ cc_flwft_initialize(void)
       cc_dynarray * array;
       unsigned long key = (unsigned long)cc_namemap_get_address(fontfilenames[i]);
 
-      found = cc_hash_get(fontname2filename, key, &val);
+      found = cc_hash_get(cc_flwft_globals.fontname2filename, key, &val);
       if (found) {
         array = (cc_dynarray *)val;
       }
       else {
         array = cc_dynarray_new();
-        unused = cc_hash_put(fontname2filename, key, array);
+        unused = cc_hash_put(cc_flwft_globals.fontname2filename, key, array);
         assert(unused);
       }
 
@@ -372,12 +409,12 @@ cc_flwft_initialize(void)
   {
     const char * env;
     char * str;
-    fontfiledirs = cc_dynarray_new();
+    cc_flwft_globals.fontfiledirs = cc_dynarray_new();
 
     if ((env = coin_getenv("COIN_FONT_PATH")) != NULL) {
       str = strdup(env);
       assert(str);
-      cc_dynarray_append(fontfiledirs, str);
+      cc_dynarray_append(cc_flwft_globals.fontfiledirs, str);
     }
 
     /* FIXME: bad #ifdef, should ideally be a *run-time* check for
@@ -392,7 +429,7 @@ cc_flwft_initialize(void)
 
       str = strdup(cc_string_get_text(&fullpath));
       assert(str);
-      cc_dynarray_append(fontfiledirs, str);
+      cc_dynarray_append(cc_flwft_globals.fontfiledirs, str);
 
       cc_string_clean(&fullpath);
     }
@@ -401,15 +438,17 @@ cc_flwft_initialize(void)
     /* Try current working directory aswell. */
     str = strdup("./");
     assert(str);
-    cc_dynarray_append(fontfiledirs, str);
+    cc_dynarray_append(cc_flwft_globals.fontfiledirs, str);
   }
   
   /* Setup temporary glyph-struct used during for tessellation */
   flwft_tessellator.vertexlist = NULL;
   flwft_tessellator.faceindexlist = NULL;
   flwft_tessellator.edgeindexlist = NULL;
-  
 
+  /* set up font2glyph hash */
+  cc_flwft_globals.font2glyphhash = cc_hash_construct(50, 0.75); 
+ 
   return TRUE;
 }
 
@@ -423,16 +462,17 @@ clean_fontmap_hash(unsigned long key, void * val, void * closure)
 void
 cc_flwft_exit(void)
 {
-  unsigned int i, n = cc_dynarray_length(fontfiledirs);
+  unsigned int i, n = cc_dynarray_length(cc_flwft_globals.fontfiledirs);
   for (i = 0; i < n; i++) {
     /* All string pointers should have been allocated with
        strdup(). */
-    free(cc_dynarray_get(fontfiledirs, i));
+    free(cc_dynarray_get(cc_flwft_globals.fontfiledirs, i));
   }
-  cc_dynarray_destruct(fontfiledirs);
+  cc_dynarray_destruct(cc_flwft_globals.fontfiledirs);
 
-  cc_hash_apply(fontname2filename, clean_fontmap_hash, NULL);
-  cc_hash_destruct(fontname2filename);
+  cc_hash_apply(cc_flwft_globals.fontname2filename, clean_fontmap_hash, NULL);
+  cc_hash_destruct(cc_flwft_globals.fontname2filename);
+  cc_hash_destruct(cc_flwft_globals.font2glyphhash);
 
   cc_ftglue_FT_Done_FreeType(library);
 }
@@ -450,7 +490,7 @@ find_font_file(const char * fontname)
   unsigned long key;
 
   key = (unsigned long)cc_namemap_get_address(fontname);
-  found_in_hash = cc_hash_get(fontname2filename, key, &val);
+  found_in_hash = cc_hash_get(cc_flwft_globals.fontname2filename, key, &val);
   if (!found_in_hash) {
     const char * c = NULL;
     if (cc_flw_debug()) {
@@ -472,11 +512,11 @@ find_font_file(const char * fontname)
        a list of directories. Should move this to a new C ADT
        "cc_file" (or "cc_dir"?). If done, should also wrap the SoInput
        functions which does the same around it. 20030604 mortene. */
-    const unsigned int dirs = cc_dynarray_length(fontfiledirs);
+    const unsigned int dirs = cc_dynarray_length(cc_flwft_globals.fontfiledirs);
     for (j = 0; j < dirs; j++) {
       SbBool found = FALSE;
 
-      cc_string_set_text(&str, (const char *)cc_dynarray_get(fontfiledirs, j));
+      cc_string_set_text(&str, (const char *)cc_dynarray_get(cc_flwft_globals.fontfiledirs, j));
       cc_string_append_char(&str, '/');
       if (found_in_hash) {
         cc_string_append_text(&str, (const char *)cc_dynarray_get(possiblefilenames, i));
@@ -510,6 +550,7 @@ cc_flwft_get_font(const char * fontname)
   FT_Face face;
   const char * fontfilename = find_font_file(fontname);
   FT_Error error;
+  cc_hash * glyphhash;
 
   error = cc_ftglue_FT_New_Face(library, fontfilename ? fontfilename : fontname, 0, &face);
 
@@ -533,6 +574,9 @@ cc_flwft_get_font(const char * fontname)
 
   cc_flwft_set_charmap(face, FT_ENCODING_ADOBE_LATIN_1);
 
+  glyphhash = cc_hash_construct(128, 0.7f);
+  (void) cc_hash_put(cc_flwft_globals.font2glyphhash, (unsigned long)face, glyphhash);
+  
   return face;
 }
 
@@ -550,12 +594,23 @@ cc_flwft_done_font(void * font)
 {
   FT_Error error;
   FT_Face face;
+  cc_hash * glyphs;
+  SbBool found;
+
   assert(font);
   face = (FT_Face)font;
   error = cc_ftglue_FT_Done_Face(face);
   if (error) {
     if (cc_flw_debug()) cc_debugerror_postinfo("cc_flwft_done_font", "Error %d\n", error);
   }
+
+  glyphs = ft_get_glyph_hash(font);
+  assert(glyphs && "called with non-existent font");
+  
+  found = cc_hash_remove(cc_flwft_globals.font2glyphhash,
+                         (unsigned long)font);
+  assert(found && "huh?");
+  cc_hash_destruct(glyphs);
 }
 
 
@@ -784,7 +839,28 @@ cc_flwft_get_vector_kerning(void * font, int glyph1, int glyph2, float *x, float
 void
 cc_flwft_done_glyph(void * font, int glyph)
 {
-  /* No action, since an int is just an index. */
+  cc_hash * glyphhash;
+  struct cc_flwft_glyph * glyphstruct = ft_get_glyph_struct(font, glyph);
+    
+  assert(glyphstruct);
+
+  if (glyphstruct->bitmap) {
+    /* bitmap glyph */
+    if (glyphstruct->bitmap->buffer) free(glyphstruct->bitmap->buffer);
+    free(glyphstruct->bitmap);
+  }
+  else {
+    assert(glyphstruct->vector);
+    
+    free(glyphstruct->vector->vertices);
+    free(glyphstruct->vector->faceindices);
+    free(glyphstruct->vector->edgeindices);
+    free(glyphstruct->vector);
+  }
+
+  free(glyphstruct);
+  glyphhash = ft_get_glyph_hash(font);
+  (void) cc_hash_remove(glyphhash, (unsigned long) glyph);
 }
 
 struct cc_flw_bitmap *
@@ -796,6 +872,11 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   FT_Glyph g;
   FT_BitmapGlyph tfbmg;
   FT_Bitmap * tfbm;
+
+  struct cc_flwft_glyph * gs;
+  cc_hash * glyphhash;
+  SbBool unused;
+
   assert(font);
   
   face = (FT_Face)font;
@@ -830,7 +911,7 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
   }
   tfbmg = (FT_BitmapGlyph)g;
   tfbm = &tfbmg->bitmap;
-  /* FIXME: allocating the structure here is bad design. 20030528 mortene. */
+
   bm = (struct cc_flw_bitmap *) malloc(sizeof(struct cc_flw_bitmap));
   bm->buffer = (unsigned char *) malloc(tfbm->rows * tfbm->pitch);
   bm->bearingX = tfbmg->left;
@@ -841,13 +922,21 @@ cc_flwft_get_bitmap(void * font, unsigned int glyph)
 
   memcpy(bm->buffer, tfbm->buffer, tfbm->rows * tfbm->pitch);
   cc_ftglue_FT_Done_Glyph(g);
+
+  gs = (struct cc_flwft_glyph*) malloc(sizeof(struct cc_flwft_glyph));
+  gs->bitmap = bm;
+  gs->vector = NULL;
+  
+  glyphhash = ft_get_glyph_hash(font);
+  unused = cc_hash_put(glyphhash, (unsigned long)glyph, gs);
+  assert(unused);
+
   return bm;
 }
 
 struct cc_flw_vector_glyph * 
 cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
 { 
-
   struct cc_flw_vector_glyph * new_vector_glyph;
   FT_Outline_Funcs outline_funcs;
   FT_Error error;
@@ -856,6 +945,9 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   FT_Glyph tmp;
   FT_Outline outline;
   int glyphindex;
+  struct cc_flwft_glyph * gs;
+  cc_hash * glyphhash;
+  SbBool unused;
 
   if (!GLUWrapper()->available) {
     cc_debugerror_post("cc_flwft_get_vector_glyph",
@@ -973,6 +1065,14 @@ cc_flwft_get_vector_glyph(void * font, unsigned int glyph, float complexity)
   flwft_buildVertexList(new_vector_glyph);
   flwft_buildFaceIndexList(new_vector_glyph);
   flwft_buildEdgeIndexList(new_vector_glyph);
+
+  gs = (struct cc_flwft_glyph*) malloc(sizeof(struct cc_flwft_glyph));
+  gs->bitmap = NULL;
+  gs->vector = new_vector_glyph;
+  
+  glyphhash = ft_get_glyph_hash(font);
+  unused = cc_hash_put(glyphhash, (unsigned long)glyph, gs);
+  assert(unused);
   
   return new_vector_glyph; 
 

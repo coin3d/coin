@@ -69,6 +69,7 @@ extern "C" {
   
   int cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsigned int sizey, const float angle);
   const char * cc_flw_get_font_name(int fontid);
+  void * cc_flw_get_font_handle(int fontid);
 
   unsigned int cc_flw_get_glyph(int font, unsigned int charidx);
   void cc_flw_get_bitmap_advance(int font, unsigned int glyph, int * x, int * y);

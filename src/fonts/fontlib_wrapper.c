@@ -589,7 +589,19 @@ cc_flw_get_font_id(const char * fontname, const unsigned int sizex, const unsign
   return idx;
 }
 
-
+/*
+  Returns the native (win32 or freetype) font handle.
+*/
+void * 
+cc_flw_get_font_handle(int fontid)
+{
+  int idx;
+  static struct cc_flw_font * font;
+  font = flw_fontidx2fontptr(fontid);
+  assert(font);
+  
+  return font->font;
+}
 
 const char *
 cc_flw_get_font_name(int font)
@@ -625,6 +637,7 @@ cc_flw_get_glyph(int font, unsigned int charidx)
     if (glyph > 0) {
       struct cc_flw_glyph * gs = glyphstruct_new();
       gs->glyph = glyph;
+      gs->charidx = charidx;
       gs->fromdefaultfont = FALSE;
       fsid = gs->glyphindex;
       if (!cc_hash_put(fs->glyphdict, fsid, gs)) {
@@ -787,10 +800,10 @@ cc_flw_done_glyph(int font, unsigned int glyph)
   gs = flw_glyphidx2glyphptr(fs, glyph);
 
   if (win32api && !fs->defaultfont) {
-    cc_flww32_done_glyph(fs->font, gs->glyph);
+    cc_flww32_done_glyph(fs->font, gs->charidx);
   }
   else if (freetypelib && !fs->defaultfont) {
-    cc_flwft_done_glyph(fs->font, gs->glyph);
+    cc_flwft_done_glyph(fs->font, gs->charidx);
   }
 
   fontstruct_rmglyph(fs, glyph, 1);
