@@ -853,6 +853,12 @@ SoGLRenderAction::addTransPath(SoPath * path)
       tail->isOfType(SoShape::getClassTypeId())) { // common case
     SbBox3f dummy;
     SbVec3f center;
+    // FIXME: We've now introduced bounding box caching in
+    // shapes. However, computeBBox() will not use this cache, since
+    // the cache is controlled by SoShape. Consider adding a method in
+    // SoShape to gain access to this cache. I'm a unsure if this is
+    // so important though, since transparent shapes usually have few
+    // triangles.    pederb, 2002-06-12
     ((SoShape*)tail)->computeBBox(this, dummy, center);
     SoModelMatrixElement::get(this->state).multVecMatrix(center, center);
     dist = SoViewVolumeElement::get(this->state).getPlane(0.0f).getDistance(center);
