@@ -75,8 +75,8 @@ SoMultiTextureEnabledElement::~SoMultiTextureEnabledElement(void)
   Sets the state of this element.
 */
 void
-SoMultiTextureEnabledElement::set(SoState * const state,
-                                  SoNode * const node,
+SoMultiTextureEnabledElement::set(SoState * state,
+                                  SoNode * node,
                                   const int unit,
                                   const SbBool enabled)
 {
@@ -97,10 +97,10 @@ SoMultiTextureEnabledElement::init(SoState * state)
 }
 
 /*!
-  Return current state of this element.
+  Return current state of this element for \a unit.
 */
 SbBool
-SoMultiTextureEnabledElement::get(SoState * const state, const int unit)
+SoMultiTextureEnabledElement::get(SoState * state, const int unit)
 {
   SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
     state->getConstElement(classStackIndex);
@@ -109,12 +109,40 @@ SoMultiTextureEnabledElement::get(SoState * const state, const int unit)
   return PRIVATE(elem)->enabled[unit];
 }
 
+/*!
+  virtual element set function.
+*/
 void
 SoMultiTextureEnabledElement::setElt(const int unit, const SbBool enabled)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
   PRIVATE(this)->enabled[unit] = enabled;
 }
+
+/*!
+  Returns a pointer to a boolean array. TRUE means unit is enabled and
+  that texture coordinates must be sent to the unit. \a lastenabled 
+  is set to the last enabled unit.
+*/
+const SbBool *
+SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
+                                              int & lastenabled)
+{
+  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+    state->getConstElement(classStackIndex);
+
+  int i = MAX_UNITS-1;
+  while (i >= 0) {
+    if (PRIVATE(elem)->enabled[i]) break;
+    i--;
+  }
+  if (i >= 0) {
+    lastenabled = i;
+    return PRIVATE(elem)->enabled;
+  }
+  return NULL;
+}
+
 
 SbBool 
 SoMultiTextureEnabledElement::isEnabled(const int unit) const

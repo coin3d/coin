@@ -40,17 +40,20 @@ protected:
 
 public:
   virtual void init(SoState * state);
-  static void set(SoState * const state, SoNode * const node,
+  static void set(SoState * state, SoNode * node,
                   const int unit,
                   const SbBool enabled);
 
-  static SbBool get(SoState * const state, const int unit);
+  static SbBool get(SoState * state, const int unit);
 
   virtual void setElt(const int unit, const SbBool enabled);
 
   virtual void push(SoState * state);
   virtual SbBool matches(const SoElement * elem) const;
   SoElement * copyMatchInfo(void) const;
+
+  static const SbBool * getEnabledUnits(SoState * state,
+                                        int & lastenabled);
 
 protected:
   SbBool isEnabled(const int unit) const;
