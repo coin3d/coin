@@ -247,13 +247,13 @@ SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
           SoGLImage::tagImage(this->state, glimage);
           switch (model) {
           case SoTextureImageElement::DECAL:
-            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
             break;
           case SoTextureImageElement::MODULATE:
-            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
             break;
           case SoTextureImageElement::BLEND:
-            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
             glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, blendcolor.getValue());
             break;
           case SoTextureImageElement::REPLACE:
@@ -263,7 +263,7 @@ SoGLLazyElement::sendGLImage(const uint32_t glimageid) const
             //
             // FIXME: ..but we should do a sanity check anyway.
             // 20030901 mortene.
-            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
             break;
           default:
             assert(0 && "unknown model");
