@@ -671,11 +671,13 @@ calculate_z_axis(const SbVec3f * spine, const int i,
   // test if spine segments are collinear. If they are, the cross
   // product will not be reliable, and we should just use the previous
   // Z-axis instead.
-  if (SbAbs(z0.dot(z1)) > 0.999f) {
+  if (SbAbs(z0.dot(z1)) > 0.9f) {
     return SbVec3f(0.0f, 0.0f, 0.0f);
   }
   SbVec3f tmp = z0.cross(z1);
-  tmp.normalize();
+  if (my_normalize(tmp) == 0.0f) {
+    return SbVec3f(0.0f, 0.0f, 0.0f);
+  }
   return tmp;
 }
 
