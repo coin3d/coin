@@ -350,7 +350,7 @@ SoRayPickAction::setRay(const SbVec3f & start, const SbVec3f & direction,
 
   // D = shortest distance from origin to plane
   const float D = THIS->raydirection.dot(THIS->raystart);
-  THIS->nearplane = SbPlane(THIS->raydirection, D + THIS->raynear);
+  THIS->nearplane = SbPlane(THIS->raydirection, D + (float) THIS->raynear);
 
   THIS->setFlag(SoRayPickActionP::WS_RAY_SET);
 
@@ -654,8 +654,8 @@ SoRayPickAction::intersect(const SbVec3f & v0, const SbVec3f & v1,
 
   float raypos = THIS->nearplane.getDistance(p0);
 
-  float radius = THIS->rayradiusstart +
-    THIS->rayradiusdelta * raypos;
+  float radius = (float) (THIS->rayradiusstart +
+    THIS->rayradiusdelta * raypos);
 
   if (radius >= distance) {
     intersection = op1;
@@ -685,8 +685,8 @@ SoRayPickAction::intersect(const SbVec3f & point) const
 
   float raypos = THIS->nearplane.getDistance(ptonline);
 
-  float radius = THIS->rayradiusstart +
-    THIS->rayradiusdelta * raypos;
+  float radius = (float) (THIS->rayradiusstart +
+    THIS->rayradiusdelta * raypos);
 
   return (radius >= distance);
 }
@@ -841,8 +841,8 @@ SoRayPickAction::intersect(const SbBox3f & box, SbVec3f & intersection,
     float distance = (wptonray-wptonbox).length();
 
     // find ray radius at wptonray
-    float radius = THIS->rayradiusstart +
-      THIS->rayradiusdelta * raypos;
+    float radius = (float) (THIS->rayradiusstart +
+      THIS->rayradiusdelta * raypos);
 
     // test for cone intersection
     if (radius >= distance) {

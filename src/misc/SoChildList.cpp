@@ -271,8 +271,8 @@ void
 SoChildList::traverse(SoAction * const action, const int first, const int last)
 {
   int i;
-  int numindices;
-  const int * indices;
+  // int numindices;
+  // const int * indices;
   SoNode * node = NULL;
 
   // use a local array pointer for speed

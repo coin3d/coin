@@ -435,7 +435,7 @@ SbTri3f::getDistance(const SbVec3f & p) const
       SbPlane edgepl(thisp[i], thisp[i]+n, thisp[(i+1)%3]);
       if (!edgepl.isInHalfSpace(intersect)) break;
     }
-    if (i == 3) dist = fabs(pl.getDistance(p));
+    if (i == 3) dist = (float) fabs(pl.getDistance(p));
     else { // We didn't project inside triangle
       for (int j=0;j<3;j++) {
         float d = this->getDistance(p, thisp[j], thisp[(j+1)%3]);

@@ -577,7 +577,7 @@ SbRotation::slerp(const SbRotation & rot0, const SbRotation & rot1, float t)
 
   // fallback to linear interpolation, in case we run out of floating
   // point precision
-  float scale0 = 1.0 - t;
+  float scale0 = 1.0f - t;
   float scale1 = t;
 
   if ((1.0f - dot) > FLT_EPSILON) {

@@ -348,19 +348,19 @@ SoTabBoxDragger::initTransformNodes(void)
   tf->translation = SbVec3f(0.0f, 0.0f, 1.0f);
   tf = SO_GET_ANY_PART(this, "tabPlane2Xf", SoTransform);
   tf->translation = SbVec3f(0.0f, 0.0f, -1.0f);
-  tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI);
+  tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), (float) M_PI);
   tf = SO_GET_ANY_PART(this, "tabPlane3Xf", SoTransform);
   tf->translation = SbVec3f(1.0f, 0.0f, 0.0f);
-  tf->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), M_PI*0.5f);
+  tf->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) M_PI)*0.5f);
   tf = SO_GET_ANY_PART(this, "tabPlane4Xf", SoTransform);
   tf->translation = SbVec3f(-1.0f, 0.0f, 0.0f);
-  tf->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), -M_PI*0.5f);
+  tf->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) -M_PI)*0.5f);
   tf = SO_GET_ANY_PART(this, "tabPlane5Xf", SoTransform);
   tf->translation = SbVec3f(0.0f, 1.0f, 0.0f);
-  tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), -M_PI*0.5f);
+  tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) -M_PI)*0.5f);
   tf = SO_GET_ANY_PART(this, "tabPlane6Xf", SoTransform);
   tf->translation = SbVec3f(0.0f, -1.0f, 0.0f);
-  tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI*0.5f);
+  tf->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)*0.5f);
 }
 
 /*!

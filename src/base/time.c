@@ -33,6 +33,10 @@
 #include <sys/time.h> /* gettimeofday() */
 #endif /* HAVE_SYS_TIME_H */
 
+#ifdef HAVE_TIME_H
+#include <time.h>
+#endif /* HAVE_TIME_H */
+
 /* On Mac OS X / Darwin, timeb.h uses time_t from time.h, so the order
    of these two includes needs to be preserved. */
 #ifdef HAVE_SYS_TIMEB_H

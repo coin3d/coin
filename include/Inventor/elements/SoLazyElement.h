@@ -186,7 +186,7 @@ public:
 
 protected:
   
-  struct CoinState {
+  struct COIN_DLL_API CoinState {
     SbColor ambient;
     SbColor specular;
     SbColor emissive;

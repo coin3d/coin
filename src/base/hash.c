@@ -23,6 +23,7 @@
 
 #include <Inventor/C/base/hash.h>
 #include <Inventor/C/base/hashp.h>
+#include <Inventor/C/tidbits.h>
 #include <Inventor/C/errors/debugerror.h>
 #include <assert.h>
 #include <stdio.h>
@@ -50,13 +51,7 @@ hash_resize(cc_hash * ht, unsigned int newsize)
 {
   cc_hash_entry ** oldbuckets = ht->buckets;
   unsigned int oldsize = ht->size, i;
-
-  /* FIXME: this looks even more elegant than
-     coin_is_power_of_two(). Is it also guaranteed to be portable?
-     20021210 mortene.*/
-  /* FIXME: MSVC++ warns on using unary minus on unsigned value.  Get rid
-     of that warning somehow...  2030226 larsa  */
-  assert((newsize & -newsize) == newsize); /* must be power of 2 */
+  assert(coin_is_power_of_two(newsize));
 
   /* Never shrink the table */
   if (ht->size >= newsize)

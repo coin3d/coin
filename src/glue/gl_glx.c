@@ -52,7 +52,7 @@ void glxglue_init(cc_glglue * w) {
 void * glxglue_getprocaddress(const char * fname) { return NULL; }
 int glxglue_ext_supported(const cc_glglue * w, const char * extension) { return 0; }
 
-void * glxglue_context_create_offscreen(unsigned int width, unsigned int height) { assert(FALSE); }
+void * glxglue_context_create_offscreen(unsigned int width, unsigned int height) { assert(FALSE); return NULL; }
 SbBool glxglue_context_make_current(void * ctx) { assert(FALSE); return FALSE; }
 void glxglue_context_reinstate_previous(void * ctx) { assert(FALSE); }
 void glxglue_context_destruct(void * ctx) { assert(FALSE); }

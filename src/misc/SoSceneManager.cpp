@@ -219,7 +219,7 @@ SoSceneManager::render(SoGLRenderAction * action,
                    0.0f);
     }
     else {
-      glClearIndex(THIS->backgroundindex);
+      glClearIndex((GLfloat) THIS->backgroundindex);
     }
     // Registering a callback is needed since the correct GL viewport
     // is set by SoGLRenderAction before rendering.  It might not be

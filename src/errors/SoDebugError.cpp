@@ -157,7 +157,7 @@ SoDebugError::initClass(void)
 }
 
 void
-SoDebugError::callbackForwarder(const class cc_debugerror * error, void * data)
+SoDebugError::callbackForwarder(const struct cc_debugerror * error, void * data)
 {
   SoDebugError wrappederr;
 

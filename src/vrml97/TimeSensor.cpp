@@ -234,15 +234,14 @@ SoVRMLTimeSensor::initClass(void) // static
   SO_NODEENGINE_INTERNAL_INIT_CLASS(SoVRMLTimeSensor);
 }
 
-#undef THIS
-#define THIS this->pimpl
+#define PRIVATE(obj) ((obj)->pimpl)
 
 /*!
   Constructor.
 */
 SoVRMLTimeSensor::SoVRMLTimeSensor(void)
 {
-  THIS = new SoVRMLTimeSensorP;
+  PRIVATE(this) = new SoVRMLTimeSensorP;
 
   SO_NODEENGINE_INTERNAL_CONSTRUCTOR(SoVRMLTimeSensor);
 
@@ -261,13 +260,13 @@ SoVRMLTimeSensor::SoVRMLTimeSensor(void)
   this->isActive.enable(FALSE);
   this->cycleTime.enable(FALSE);
 
-  THIS->fraction = 0.0;
-  THIS->cyclestart = 0.0;
-  THIS->cycletime = 1.0;
-  THIS->running = FALSE;
-  THIS->loop = FALSE;
-  THIS->starttime = 0.0;
-  THIS->stoptime = 0.0;
+  PRIVATE(this)->fraction = 0.0;
+  PRIVATE(this)->cyclestart = 0.0;
+  PRIVATE(this)->cycletime = 1.0;
+  PRIVATE(this)->running = FALSE;
+  PRIVATE(this)->loop = FALSE;
+  PRIVATE(this)->starttime = 0.0;
+  PRIVATE(this)->stoptime = 0.0;
 
   this->timeIn.enableNotify(FALSE);
   SoField * realtime = SoDB::getGlobalField("realTime");
@@ -333,10 +332,10 @@ SoVRMLTimeSensor::write(SoWriteAction * action)
 void
 SoVRMLTimeSensor::evaluate(void)
 {
-  SO_ENGINE_OUTPUT(time, SoSFTime, setValue(THIS->currtime));
-  SO_ENGINE_OUTPUT(isActive, SoSFBool, setValue(THIS->running));
-  SO_ENGINE_OUTPUT(cycleTime, SoSFTime, setValue(THIS->cyclestart));
-  SO_ENGINE_OUTPUT(fraction_changed, SoSFFloat, setValue(THIS->fraction));
+  SO_ENGINE_OUTPUT(time, SoSFTime, setValue(PRIVATE(this)->currtime));
+  SO_ENGINE_OUTPUT(isActive, SoSFBool, setValue(PRIVATE(this)->running));
+  SO_ENGINE_OUTPUT(cycleTime, SoSFTime, setValue(PRIVATE(this)->cyclestart));
+  SO_ENGINE_OUTPUT(fraction_changed, SoSFFloat, setValue(PRIVATE(this)->fraction));
 }
 
 // Doc in parent
@@ -356,28 +355,28 @@ SoVRMLTimeSensor::inputChanged(SoField * which)
 
     if (!on) this->timeIn.enableNotify(FALSE);
 
-    if (THIS->running && !on) {
-      THIS->running = FALSE;
+    if (PRIVATE(this)->running && !on) {
+      PRIVATE(this)->running = FALSE;
       this->fraction_changed.enable(TRUE);
       this->isActive.enable(TRUE);
     }
-    else if (!THIS->running && on) {
+    else if (!PRIVATE(this)->running && on) {
       which = &this->startTime; // warning, hack
     }
   }
 
   if (which == &this->loop) {
-    THIS->loop = this->loop.getValue();
-    if (THIS->loop == TRUE && !this->timeIn.isNotifyEnabled())
+    PRIVATE(this)->loop = this->loop.getValue();
+    if (PRIVATE(this)->loop == TRUE && !this->timeIn.isNotifyEnabled())
       which = &this->startTime; // warning hack
   }
 
   if (which == &this->startTime) {
     double currtime = this->timeIn.getValue().getValue();
-    THIS->starttime = currtime;
-    if (!THIS->running) {
-      THIS->starttime = this->startTime.getValue().getValue();
-      if (currtime >= THIS->starttime) {
+    PRIVATE(this)->starttime = currtime;
+    if (!PRIVATE(this)->running) {
+      PRIVATE(this)->starttime = this->startTime.getValue().getValue();
+      if (currtime >= PRIVATE(this)->starttime) {
         SbBool old = this->timeIn.enableNotify(TRUE);
         assert(old == FALSE);
         which = &this->timeIn; // warning, hack
@@ -387,46 +386,46 @@ SoVRMLTimeSensor::inputChanged(SoField * which)
 
   if (which == &this->timeIn) {
     double currtime = this->timeIn.getValue().getValue();
-    if (!THIS->running) {
-      if (currtime >= THIS->starttime) {
+    if (!PRIVATE(this)->running) {
+      if (currtime >= PRIVATE(this)->starttime) {
         this->isActive.enable(TRUE);
         this->cycleTime.enable(TRUE);
-        THIS->cyclestart = THIS->starttime;
-        THIS->running = TRUE;
+        PRIVATE(this)->cyclestart = PRIVATE(this)->starttime;
+        PRIVATE(this)->running = TRUE;
       }
       else return; // wait for startTime
     }
-    THIS->currtime = currtime;
+    PRIVATE(this)->currtime = currtime;
     this->time.enable(TRUE);
     this->fraction_changed.enable(TRUE);
 
     SbBool stopit = FALSE;
-    if (currtime >= THIS->stoptime && THIS->stoptime > THIS->starttime) stopit = TRUE;
+    if (currtime >= PRIVATE(this)->stoptime && PRIVATE(this)->stoptime > PRIVATE(this)->starttime) stopit = TRUE;
 
-    double difftime = currtime - THIS->cyclestart;
+    double difftime = currtime - PRIVATE(this)->cyclestart;
 
-    if (difftime > THIS->cycletime) {
+    if (difftime > PRIVATE(this)->cycletime) {
       this->cycleTime.enable(TRUE);
-      double num = difftime / THIS->cycletime;
-      THIS->cyclestart += THIS->cycletime * floor(num);
-      difftime = currtime - THIS->cyclestart;
+      double num = difftime / PRIVATE(this)->cycletime;
+      PRIVATE(this)->cyclestart += PRIVATE(this)->cycletime * floor(num);
+      difftime = currtime - PRIVATE(this)->cyclestart;
 
-      if (THIS->loop == FALSE) stopit = TRUE;
+      if (PRIVATE(this)->loop == FALSE) stopit = TRUE;
     }
-    THIS->fraction = difftime / THIS->cycletime;
+    PRIVATE(this)->fraction = (float) (difftime / PRIVATE(this)->cycletime);
 
     if (stopit) {
-      THIS->running = FALSE;
+      PRIVATE(this)->running = FALSE;
       this->isActive.enable(TRUE);
       this->fraction_changed.enable(FALSE);
       this->timeIn.enableNotify(FALSE);
     }
   }
   else if (which == &this->stopTime) {
-    THIS->stoptime = this->stopTime.getValue().getValue();
+    PRIVATE(this)->stoptime = this->stopTime.getValue().getValue();
   }
   else if (which == &this->cycleInterval) {
-    THIS->cycletime = this->cycleInterval.getValue().getValue();
+    PRIVATE(this)->cycletime = this->cycleInterval.getValue().getValue();
   }
 }
 

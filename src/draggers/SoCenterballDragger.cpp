@@ -216,11 +216,11 @@ SoCenterballDragger::SoCenterballDragger(void)
   // initialize some nodes
   SoRotation *rot;
   rot = SO_GET_ANY_PART(this, "rot2X90", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI*0.5f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)*0.5f);
   rot = SO_GET_ANY_PART(this, "rotX90", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI*0.5f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)*0.5f);
   rot = SO_GET_ANY_PART(this, "rotY90", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), M_PI*0.5f);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) M_PI)*0.5f);
 
   SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
   squish->sizing = SoAntiSquish::LONGEST_DIAGONAL;

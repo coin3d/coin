@@ -259,24 +259,24 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
 
   SoRotation *rot;
   rot = SO_GET_ANY_PART(this, "rotator1Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), M_PI/2.0f);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), ((float) M_PI)/2.0f);
   rot = SO_GET_ANY_PART(this, "rotator2Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI/2.0f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)/2.0f);
   rot = SO_GET_ANY_PART(this, "rotator3Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f);
 
   rot = SO_GET_ANY_PART(this, "translator1Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), M_PI/2.0f);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) M_PI)/2.0f);
   rot = SO_GET_ANY_PART(this, "translator2Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), -M_PI/2.0f);
+  rot->rotation = SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), ((float) -M_PI)/2.0f);
 
   rot = SO_GET_ANY_PART(this, "translator3Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI/2.0f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) M_PI)/2.0f);
   rot = SO_GET_ANY_PART(this, "translator4Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), -M_PI/2.0f);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), ((float) -M_PI)/2.0f);
 
   rot = SO_GET_ANY_PART(this, "translator5Rot", SoRotation);
-  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), M_PI);
+  rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), (float) M_PI);
   rot = SO_GET_ANY_PART(this, "translator6Rot", SoRotation);
   rot->rotation = SbRotation(SbVec3f(1.0f, 0.0f, 0.0f), 0.0f);
 

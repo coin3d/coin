@@ -1819,10 +1819,10 @@ sogl_render_nurbs_surface(SoAction * action, SoShape * shape,
     // Should not set mode if GLU version is < 1.3, as NURBS_RENDERER
     // was the only game in town back then in the old days.
     GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_NURBS_MODE,
-                                   glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR);
+                                   (GLfloat) (glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR));
   }
   // Need to load sampling matrices if glrender==FALSE.
-  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_AUTO_LOAD_MATRIX, glrender);
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_AUTO_LOAD_MATRIX, (GLfloat) glrender);
 
   if (!glrender) { // supply the sampling matrices
     SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);
@@ -2031,15 +2031,15 @@ sogl_render_nurbs_curve(SoAction * action, SoShape * shape,
   const SoCoordinateElement * coords =
     SoCoordinateElement::getInstance(state);
 
-  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_DISPLAY_MODE, drawaspoints ? GLU_POINT : GLU_LINE);
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_DISPLAY_MODE, (GLfloat) (drawaspoints ? GLU_POINT : GLU_LINE));
   if (GLUWrapper()->versionMatchesAtLeast(1, 3, 0)) {
     // Should not set mode if GLU version is < 1.3, as NURBS_RENDERER
     // was the only game in town back then in the old days.
     GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_NURBS_MODE,
-                                   glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR);
+                                   (GLfloat) (glrender ? GLU_NURBS_RENDERER : GLU_NURBS_TESSELLATOR));
   }
   // Need to load sampling matrices if glrender==FALSE.
-  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_AUTO_LOAD_MATRIX, glrender);
+  GLUWrapper()->gluNurbsProperty(nurbsrenderer, (GLenum) GLU_AUTO_LOAD_MATRIX, (GLfloat) glrender);
 
   if (!glrender) { // supply the sampling matrices
     SbMatrix glmodelmatrix = SoViewingMatrixElement::get(state);

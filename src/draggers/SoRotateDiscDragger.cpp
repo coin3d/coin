@@ -314,7 +314,7 @@ SoRotateDiscDragger::drag(void)
   startPt.normalize();
   projPt.normalize();
   SbVec3f dir = startPt.cross(projPt);
-  float angle = acos(SbClamp(startPt.dot(projPt), -1.0f, 1.0f));
+  float angle = (float) acos(SbClamp(startPt.dot(projPt), -1.0f, 1.0f));
   if (dir[2] < 0.0f) angle = -angle;
 
   this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),

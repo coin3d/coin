@@ -111,7 +111,7 @@ static float cornertab_lookup[] = {
 };
 
 // FIXME: find a better solution than this lame Z_OFFSET hack, pederb 20000301
-#define Z_OFFSET 0.01        // dummy offset for tabs to get "correct" picking
+#define Z_OFFSET 0.01f       // dummy offset for tabs to get "correct" picking
 #define TABSIZE 10.0f        // size (in pixels when projected to screen) of tabs
 
 SO_KIT_SOURCE(SoTabPlaneDragger);

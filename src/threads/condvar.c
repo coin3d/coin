@@ -23,6 +23,7 @@
 
 #include <Inventor/C/threads/condvar.h>
 #include <Inventor/C/threads/condvarp.h>
+#include <Inventor/C/threads/mutex.h>
 
 #include <Inventor/C/errors/debugerror.h>
 

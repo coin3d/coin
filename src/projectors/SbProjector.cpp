@@ -189,7 +189,7 @@ SbProjector::findVanishingDistance(void) const
   // never happen, but it's here just in case something bad happens.
   int cnt = 0;
 
-  float unit = depth * 0.25;
+  float unit = depth * 0.25f;
   
   SbBox3f unitbox(-unit, -unit, -unit, unit, unit, unit);
   SbVec3f projdir = this->viewVol.getProjectionDirection();

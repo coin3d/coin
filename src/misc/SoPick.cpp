@@ -177,7 +177,7 @@ set_side_pp_data(SoPickedPoint * pp, const SbVec3f & isect,
   // the picked point texture coordinate
   SbVec4f texcoord;
   texcoord.setValue((float) atan2(isect[0], isect[2]) *
-                    (1.0f / (2.0f * M_PI)) + 0.5f,
+                    (1.0f / (2.0f * (float) M_PI)) + 0.5f,
                     (isect[1] + halfh) / (2.0f * halfh),
                     0.0f, 1.0f);
   pp->setObjectTextureCoords(texcoord);

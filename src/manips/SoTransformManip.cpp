@@ -332,7 +332,7 @@ SoTransformManip::getBoundingBox(SoGetBoundingBoxAction * action)
     action->resetCenter();
   }
   if (numcenters != 0) {
-    action->setCenter(center / numcenters, FALSE);
+    action->setCenter(center / (float) numcenters, FALSE);
   }
 }
 

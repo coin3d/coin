@@ -615,21 +615,21 @@ SoGLImage::SoGLImage(void)
   // check environment variables
   if (COIN_TEX2_LINEAR_LIMIT < 0.0f) {
     const char *env = coin_getenv("COIN_TEX2_LINEAR_LIMIT");
-    if (env) COIN_TEX2_LINEAR_LIMIT = atof(env);
+    if (env) COIN_TEX2_LINEAR_LIMIT = (float) atof(env);
     if (COIN_TEX2_LINEAR_LIMIT < 0.0f || COIN_TEX2_LINEAR_LIMIT > 1.0f) {
       COIN_TEX2_LINEAR_LIMIT = DEFAULT_LINEAR_LIMIT;
     }
   }
   if (COIN_TEX2_MIPMAP_LIMIT < 0.0f) {
     const char *env = coin_getenv("COIN_TEX2_MIPMAP_LIMIT");
-    if (env) COIN_TEX2_MIPMAP_LIMIT = atof(env);
+    if (env) COIN_TEX2_MIPMAP_LIMIT = (float) atof(env);
     if (COIN_TEX2_MIPMAP_LIMIT < 0.0f || COIN_TEX2_MIPMAP_LIMIT > 1.0f) {
       COIN_TEX2_MIPMAP_LIMIT = DEFAULT_MIPMAP_LIMIT;
     }
   }
   if (COIN_TEX2_LINEAR_MIPMAP_LIMIT < 0.0f) {
     const char *env = coin_getenv("COIN_TEX2_LINEAR_MIPMAP_LIMIT");
-    if (env) COIN_TEX2_LINEAR_MIPMAP_LIMIT = atof(env);
+    if (env) COIN_TEX2_LINEAR_MIPMAP_LIMIT = (float) atof(env);
     if (COIN_TEX2_LINEAR_MIPMAP_LIMIT < 0.0f || COIN_TEX2_LINEAR_MIPMAP_LIMIT > 1.0f) {
       COIN_TEX2_LINEAR_MIPMAP_LIMIT = DEFAULT_LINEAR_MIPMAP_LIMIT;
     }
@@ -637,7 +637,7 @@ SoGLImage::SoGLImage(void)
 
   if (COIN_TEX2_SCALEUP_LIMIT < 0.0f) {
     const char *env = coin_getenv("COIN_TEX2_SCALEUP_LIMIT");
-    if (env) COIN_TEX2_SCALEUP_LIMIT = atof(env);
+    if (env) COIN_TEX2_SCALEUP_LIMIT = (float) atof(env);
     if (COIN_TEX2_SCALEUP_LIMIT < 0.0f || COIN_TEX2_SCALEUP_LIMIT > 1.0f) {
       COIN_TEX2_SCALEUP_LIMIT = DEFAULT_SCALEUP_LIMIT;
     }
@@ -1611,16 +1611,16 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
   else {
     if (this->flags & SoGLImage::NO_MIPMAP || !ismipmap) {
       glTexParameterf(target, GL_TEXTURE_MAG_FILTER,
-                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
-                      GL_LINEAR : GL_NEAREST);
+                      (GLfloat) ((this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
+                      GL_LINEAR : GL_NEAREST));
       glTexParameterf(target, GL_TEXTURE_MIN_FILTER,
-                      (this->flags & SoGLImage::LINEAR_MIN_FILTER) ?
-                      GL_LINEAR : GL_NEAREST);
+                      (GLfloat) ((this->flags & SoGLImage::LINEAR_MIN_FILTER) ?
+                      GL_LINEAR : GL_NEAREST));
     }
     else {
       glTexParameterf(target, GL_TEXTURE_MAG_FILTER,
-                      (this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
-                      GL_LINEAR : GL_NEAREST);
+                      (GLfloat) ((this->flags & SoGLImage::LINEAR_MAG_FILTER) ?
+                      GL_LINEAR : GL_NEAREST));
       GLenum minfilter = GL_NEAREST_MIPMAP_NEAREST;
       if (this->flags & SoGLImage::LINEAR_MIPMAP_FILTER) {
         if (this->flags & SoGLImage::LINEAR_MIN_FILTER)
@@ -1632,7 +1632,7 @@ SoGLImageP::applyFilter(const SbBool ismipmap)
         minfilter = GL_NEAREST_MIPMAP_LINEAR;
 
       glTexParameterf(target, GL_TEXTURE_MIN_FILTER,
-                      minfilter);
+                      (GLfloat) minfilter);
     }
   }
 }

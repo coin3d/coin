@@ -405,7 +405,7 @@ SoVRMLBillboard::performRotation(SoState * state) const
     SbVec3f vecinplane = zaxis - n * n[2];
     (void) vecinplane.normalize();
     if (vecinplane.dot(toviewer) < 0.0f) vecinplane = - vecinplane;
-    float angle = acos(SbClamp(vecinplane.dot(zaxis), -1.0f, 1.0f));
+    float angle = (float) acos(SbClamp(vecinplane.dot(zaxis), -1.0f, 1.0f));
     rot.setValue(rotaxis, n[2] < 0.0f ? angle : - angle);
 
     SoModelMatrixElement::rotateBy(state, (SoNode*) this, rot);

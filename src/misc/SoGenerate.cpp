@@ -39,12 +39,12 @@ sogenerate_generate_3d_circle(SbVec3f *coords, const int num, const float radius
   // sogl_generate_3d_circle() in SoGL.cpp, AFAICS.  Should avoid
   // unnecessary duplication. 20010909 mortene.
 
-  float delta = 2*M_PI/num;
+  float delta = (float) ((2.0*M_PI)/(double)num);
   float angle = 0.0f;
   for (int i = 0; i < num; i++) {
-    coords[i][0] = -sin(angle) * radius;
+    coords[i][0] = (float) (-sin(angle) * radius);
     coords[i][1] = y;
-    coords[i][2] = -cos(angle) * radius;
+    coords[i][2] = (float) (-cos(angle) * radius);
     angle += delta;
   }
 }
@@ -57,11 +57,11 @@ sogenerate_generate_2d_circle(SbVec2f *coords, const int num, const float radius
   // sogl_generate_3d_circle() in SoGL.cpp, AFAICS.  Should avoid
   // unnecessary duplication. 20010909 mortene.
 
-  float delta = 2*M_PI/num;
+  float delta = (float) (2.0*M_PI/(double)num);
   float angle = 0.0f;
   for (int i = 0; i < num; i++) {
-    coords[i][0] = -sin(angle) * radius;
-    coords[i][1] = -cos(angle) * radius;
+    coords[i][0] = (float) (-sin(angle) * radius);
+    coords[i][1] = (float) (-cos(angle) * radius);
     angle += delta;
   }
 }
@@ -137,7 +137,7 @@ public:
     coords[slices] = coords[0];
 
     double a = atan(height/radius);
-    sogenerate_generate_3d_circle(normals, slices, sin(a), cos(a));
+    sogenerate_generate_3d_circle(normals, slices, (float) sin(a), (float) cos(a));
     normals[slices] = normals[0];
     normals[slices+1] = normals[1];
 

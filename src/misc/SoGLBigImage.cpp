@@ -493,9 +493,9 @@ SoGLBigImage::unrefOldDL(SoState * state, const uint32_t maxage)
   soglbigimage_unrefolddl_data data;
   data.maxage = maxage;
   data.state = state;
-  cc_storage_apply_to_all(THIS->storage, soglbigimage_unrefolddl_cb, &data);
+  cc_storage_apply_to_all(PRIVATE(this)->storage, soglbigimage_unrefolddl_cb, &data);
 #else // COIN_THREADSAFE
-  SoGLBigImageP::unrefOldDL(&THIS->storagedata, state, maxage);
+  SoGLBigImageP::unrefOldDL(&PRIVATE(this)->storagedata, state, maxage);
 #endif // ! COIN_THREADSAFE
   this->incAge();
 }

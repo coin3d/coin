@@ -209,8 +209,8 @@ SoOneShot::inputChanged(SoField * which)
   else if (which == &this->disable) {
     if (this->disable.getValue() && this->running) {
       this->holdduration = this->timeIn.getValue() - this->starttime;
-      this->holdramp =
-        this->holdduration.getValue() / this->duration.getValue().getValue();
+      this->holdramp = (float)
+        (this->holdduration.getValue() / this->duration.getValue().getValue());
       this->running = FALSE;
       // We need one more evaluation to send correct outputs.
       do_evaluate = TRUE;

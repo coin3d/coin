@@ -383,7 +383,7 @@ SoIndexedNurbsSurfaceP::doNurbs(SoAction * action, const SbBool glrender)
       break;
     }
   }
-  GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_DISPLAY_MODE, displaymode);
+  GLUWrapper()->gluNurbsProperty(this->nurbsrenderer, (GLenum) GLU_DISPLAY_MODE, (GLfloat) displaymode);
 
   sogl_render_nurbs_surface(action, PUBLIC(this), this->nurbsrenderer,
                             PUBLIC(this)->numUControlPoints.getValue(),

@@ -289,8 +289,7 @@ static SbBool qmeshNormalize(SbVec3f & v, float toLength2)
   // (sqrt and divisions are expensive operations)
   float vl2 = v.sqrLength();
   if (vl2 > 0.f) {
-    double d = sqrt(toLength2 / (vl2 * 4.0));
-    v *= d;
+    v *= (float) sqrt(toLength2 / (vl2 * 4.0));
     return TRUE;
   }
   return FALSE;

@@ -63,7 +63,7 @@ public:
 
   void reset(SoState* state, uint32_t bitmask) const;
 
-  typedef struct {
+  typedef struct COIN_DLL_API {
     uint32_t cachebitmask;
     uint32_t diffuse;
     SbColor ambient;

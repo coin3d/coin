@@ -403,10 +403,10 @@ SoDB::init(void)
     env = coin_getenv("COIN_SOUND_NUM_BUFFERS");
     int numbuffers = env ? atoi(env) : 5;
     env = coin_getenv("COIN_SOUND_THREAD_SLEEP_TIME");
-    float threadsleeptime = env ? atof(env) : 0.250f;
+    float threadsleeptime = env ? (float) atof(env) : 0.250f;
     SoVRMLSound::setDefaultBufferingProperties(bufferlength, numbuffers, threadsleeptime);
     env = coin_getenv("COIN_SOUND_INTRO_PAUSE");
-    float intropause = env ? atof(env) : 0.0f;
+    float intropause = env ? (float) atof(env) : 0.0f;
     SoVRMLAudioClip::setDefaultIntroPause(intropause);
   }
 #endif // HAVE_SOUND
