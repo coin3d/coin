@@ -44,6 +44,7 @@
 #include <Inventor/elements/SoGLShadeModelElement.h>
 #include <Inventor/elements/SoGLNormalizeElement.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/misc/SoGenerate.h>
 
 #include <assert.h>
@@ -135,7 +136,8 @@ SoCube::GLRender(SoGLRenderAction * action)
 
   const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
     action->getState()->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
-  sh->forceSend(TRUE, TRUE);
+  sh->forceSend(TRUE, 
+                SoDrawStyleElement::get(state) == SoDrawStyleElement::FILLED ? TRUE : FALSE);
 
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
     state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
