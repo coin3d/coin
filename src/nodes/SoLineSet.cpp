@@ -33,10 +33,10 @@
   a line through coordinates 0, 1 and 2, a line through coordinates 3, 4, 5
   and 6, and finally a single line segment between coordinates 7 and 8.
 
-  Binding PER_VERTEX, PER_FACE or OVERALL can be set for material,
-  and normals. The default material binding is OVERALL. The default
-  normal binding is PER_VERTEX. If no normals are set, the line set
-  will be rendered with lighting disabled.
+  Binding PER_VERTEX, PER_FACE, PER_PART or OVERALL can be set for
+  material, and normals. The default material binding is OVERALL. The
+  default normal binding is PER_VERTEX. If no normals are set, the
+  line set will be rendered with lighting disabled.
 */
 
 #include <Inventor/nodes/SoLineSet.h>
