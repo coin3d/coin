@@ -1,0 +1,402 @@
+/**************************************************************************\
+ *
+ *  Copyright (C) 1998-1999 by Systems in Motion.  All rights reserved.
+ *
+ *  This file is part of the Coin library.
+ *
+ *  This file may be distributed under the terms of the Q Public License
+ *  as defined by Troll Tech AS of Norway and appearing in the file
+ *  LICENSE.QPL included in the packaging of this file.
+ *
+ *  If you want to use Coin in applications not covered by licenses
+ *  compatible with the QPL, you can contact SIM to aquire a
+ *  Professional Edition license for Coin.
+ *
+ *  Systems in Motion AS, Prof. Brochs gate 6, N-7030 Trondheim, NORWAY
+ *  http://www.sim.no/ sales@sim.no Voice: +47 22114160 Fax: +47 67172912
+ *
+\**************************************************************************/
+
+/*!
+  \class SoBase SoOffscreenRenderer.h Inventor/SoOffscreenRenderer.h
+  \brief The SoOffscreenRenderer class is used for off screen rendering.
+  \ingroup general
+
+  If you want to render to a memory buffer instead of an on-screen
+  OpenGL context, use this class. Rendering to a memory buffer can be
+  used to generate texture maps on-the-fly, or for saving snapshots of
+  the scene to disk files (as pixel bitmaps or as Postscript files for
+  sending to a Postscript-capable printer).
+
+  Currently offscreen rendering can only be done if Mesa is used as
+  the OpenGL rendering library.
+
+ */
+
+#include <Inventor/SoOffscreenRenderer.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/misc/SoBasic.h>
+#include <GL/gl.h>
+#include <assert.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+
+#ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
+
+class SoOffscreenInternalData {
+public:
+  SoOffscreenInternalData(void) {
+    this->buffersize = SbVec2s(0, 0);
+  }
+  virtual ~SoOffscreenInternalData() {
+  }
+
+  // must be overloaded
+  virtual void makeContextCurrent(void) = 0;
+  virtual unsigned char * getBuffer(void) = 0;
+
+  virtual void setBufferSize(const SbVec2s & size) {
+    this->buffersize = size;
+  }
+
+  SbVec2s getSize(void) const {
+    return this->buffersize;
+  }
+
+protected:
+  SbVec2s buffersize;
+};
+
+#if HAVE_OSMESA
+#include <GL/osmesa.h>
+
+class SoOffscreenMesaData : public SoOffscreenInternalData {
+public:
+  SoOffscreenMesaData(void) {
+    this->context = OSMesaCreateContext(OSMESA_RGBA, NULL);
+    this->buffer = NULL;
+  }
+  virtual ~SoOffscreenMesaData() {
+    OSMesaDestroyContext(this->context);
+    delete this->buffer;
+  }
+
+  virtual void setBufferSize(const SbVec2s & size) {
+    SoOffscreenInternalData::setBufferSize(size);
+    delete this->buffer;
+    this->buffer =
+      new unsigned char[this->buffersize[0] * this->buffersize[1] * 4];
+  }
+
+  virtual void makeContextCurrent(void) {
+    assert(this->buffer);
+    assert(this->context);
+    OSMesaMakeCurrent(this->context, this->buffer,
+                      GL_UNSIGNED_BYTE,
+                      this->buffersize[0],
+                      this->buffersize[1]);
+  }
+
+  virtual unsigned char * getBuffer(void) {
+    return this->buffer;
+  }
+
+private:
+  unsigned char * buffer;
+  OSMesaContext context;
+};
+
+#endif // HAVE_OSMESA
+
+#endif // DOXYGEN_SKIP_THIS
+
+
+
+/*!
+  Constructor. Argument is the \a viewportregion we should use when
+  rendering. An internal SoGLRenderAction will be constructed.
+*/
+SoOffscreenRenderer::SoOffscreenRenderer(const SbViewportRegion & viewportregion)
+  : backgroundcolor(0.0f, 0.0f, 0.0f),
+    components(RGB_TRANSPARENCY),
+    renderaction(new SoGLRenderAction(viewportregion)),
+    didallocaction(TRUE),
+    internaldata(NULL)
+{
+#if HAVE_OSMESA
+  this->internaldata = new SoOffscreenMesaData();
+#endif // HAVE_OSMESA
+  this->setViewportRegion(viewportregion);
+}
+
+/*!
+  Constructor. Argument is the \a action we should apply to the
+  scene graph when rendering the scene. Information about the
+  viewport is extracted from the \a action.
+*/
+SoOffscreenRenderer::SoOffscreenRenderer(SoGLRenderAction * action)
+  : viewport(256, 256),
+    backgroundcolor(0.0f, 0.0f, 0.0f),
+    components(RGB_TRANSPARENCY),
+    renderaction(action),
+    didallocaction(FALSE),
+    internaldata(NULL)
+{
+#if HAVE_OSMESA
+  this->internaldata = new SoOffscreenMesaData();
+#endif // HAVE_OSMESA
+  assert(action);
+  this->setViewportRegion(action->getViewportRegion());
+}
+
+/*!
+  Destructor.
+*/
+SoOffscreenRenderer::~SoOffscreenRenderer()
+{
+  delete this->internaldata;
+  if (this->didallocaction) delete this->renderaction;
+}
+
+/*!
+  Returns the screen pixels per inch resolution of your monitor.
+*/
+float
+SoOffscreenRenderer::getScreenPixelsPerInch(void)
+{
+  COIN_STUB();
+  return 72.0f; // default value
+}
+
+/*!
+  Get maximum resolution of the offscreen buffer.
+*/
+SbVec2s
+SoOffscreenRenderer::getMaximumResolution(void)
+{
+  COIN_STUB();
+  // FIXME: pederb 20000109
+  // values found from osmesa.h, but should query GL about this.
+  return SbVec2s(1280, 1024);
+}
+
+/*!
+  Sets the components of the offscreen buffer. Currently only
+  the RGB_TRANSPARENCY format is supported.
+*/
+void
+SoOffscreenRenderer::setComponents(const Components components)
+{
+  // FIXME: create support for other image formats, pederb 20000109
+  if (components != RGB_TRANSPARENCY) {
+    COIN_STUB();
+    return;
+  }
+
+  this->components = components;
+}
+
+/*!
+  Returns the components of the offscreen buffer.
+
+  \sa SoOffscreenRenderer::setComponents()
+ */
+SoOffscreenRenderer::Components
+SoOffscreenRenderer::getComponents(void) const
+{
+  return this->components;
+}
+
+/*!
+  Sets the viewport region.
+*/
+void
+SoOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
+{
+  this->viewport = region;
+  if (this->renderaction)
+    this->renderaction->setViewportRegion(region);
+  if (this->internaldata)
+    this->internaldata->setBufferSize(region.getViewportSizePixels());
+}
+
+/*!
+  Returns the viewerport region.
+*/
+const SbViewportRegion &
+SoOffscreenRenderer::getViewportRegion(void) const
+{
+  return this->viewport;
+}
+
+/*!
+  Sets the background color. The buffer is cleared to this color
+  before rendering.
+*/
+void
+SoOffscreenRenderer::setBackgroundColor(const SbColor & color)
+{
+  this->backgroundcolor = color;
+}
+
+/*!
+  Returns the background color.
+*/
+const SbColor &
+SoOffscreenRenderer::getBackgroundColor(void) const
+{
+  return this->backgroundcolor;
+}
+
+/*!
+  Sets the render action. Use this if you have special rendering needs.
+*/
+void
+SoOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
+{
+  if (this->didallocaction) delete this->renderaction;
+  this->renderaction = action;
+  this->didallocaction = FALSE;
+}
+
+/*!
+  Returns the rendering action currently used.
+*/
+SoGLRenderAction *
+SoOffscreenRenderer::getGLRenderAction(void) const
+{
+  return this->renderaction;
+}
+
+/*!
+  Render \a scene into our internal memory buffer.
+*/
+SbBool
+SoOffscreenRenderer::render(SoNode * scene)
+{
+  if (this->internaldata) {
+    this->internaldata->makeContextCurrent();
+    glClearColor(this->backgroundcolor[0],
+                 this->backgroundcolor[1],
+                 this->backgroundcolor[2],
+                 0.0f);
+    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+    this->renderaction->apply(scene);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/*!
+  Render the \a scene path into our internal memory buffer.
+*/
+SbBool
+SoOffscreenRenderer::render(SoPath * scene)
+{
+  if (this->internaldata) {
+    this->internaldata->makeContextCurrent();
+    this->internaldata->makeContextCurrent();
+    glClearColor(this->backgroundcolor[0],
+                 this->backgroundcolor[1],
+                 this->backgroundcolor[2],
+                 0.0f);
+    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+    this->renderaction->apply(scene);
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/*!
+  Returns the offscreen memory buffer.
+*/
+unsigned char *
+SoOffscreenRenderer::getBuffer(void) const
+{
+  return this->internaldata ? this->internaldata->getBuffer() : NULL;
+}
+
+//
+// avoid endian problems (little endian sucks, right? :)
+//
+static int
+write_short(FILE * fp, unsigned short val)
+{
+  // FIXME: does this code work on both little endian and big endian
+  // platforms? 20000110 mortene.
+  unsigned char tmp[2];
+  tmp[0] = (unsigned char)(val >> 8);
+  tmp[1] = (unsigned char)(val & 0xff);
+  return fwrite(&tmp, 2, 1, fp);
+}
+
+/*!
+  Writes the buffer to an SGI format RGB file.
+*/
+SbBool
+SoOffscreenRenderer::writeToRGB(FILE * fp) const
+{
+  //
+  // FIXME: add code to rle rows, pederb 2000-01-10
+  //
+  if (this->internaldata) {
+    SbVec2s size = this->internaldata->getSize();
+    unsigned short comp = (unsigned short)this->getComponents();
+    write_short(fp, 0x01da); // imagic
+    write_short(fp, 0x0001); // raw (no rle yet)
+    if (comp == 1)
+      write_short(fp, 0x0002); // 2 dimensions (heightmap)
+    else
+      write_short(fp, 0x0003); // 3 dimensions
+    write_short(fp, (unsigned short) size[0]);
+    write_short(fp, (unsigned short) size[1]);
+    write_short(fp, (unsigned short) comp);
+
+    unsigned char buf[500];
+    memset(buf, 0, 500);
+    buf[7] = 255; // set maximum pixel value to 255
+    strcpy((char *)buf+8, "http://www.coin3d.org");
+    fwrite(buf, 1, 500, fp);
+
+    unsigned char * tmpbuf = new unsigned char[size[0]];
+
+    unsigned char * ptr = this->internaldata->getBuffer();
+    for (int c = 0; c < comp; c++) {
+      for (int y = 0; y < size[1]; y++) {
+        for (int x = 0; x < size[0]; x++) {
+          tmpbuf[x] = ptr[x * comp + y * comp * size[0] + c];
+        }
+        fwrite(tmpbuf, 1, size[0], fp);
+      }
+    }
+    delete [] tmpbuf;
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/*!
+  Writes the buffer to a file in Postscript format.
+*/
+SbBool
+SoOffscreenRenderer::writeToPostScript(FILE * fp) const
+{
+  COIN_STUB();
+  return FALSE;
+}
+
+/*!
+  Writes the buffer to a file in Postscript format, with \a printsize
+  dimensions.
+*/
+SbBool
+SoOffscreenRenderer::writeToPostScript(FILE * fp,
+                                       const SbVec2f & printsize) const
+{
+  COIN_STUB();
+  return FALSE;
+}

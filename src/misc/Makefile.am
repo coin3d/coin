@@ -2,42 +2,25 @@
 ## 19990904 mortene.
 
 ALLSOURCES = \
-	SoBase.cpp \
-	SoBase.h \
-	SoChildList.cpp \
-	SoChildList.h \
-	SoGL.cpp \
-	SoGL.h \
-	SoGLImage.cpp \
-	SoGLImage.h \
-	SoNormalGenerator.cpp \
-	SoNormalGenerator.h \
-	SoNotification.cpp \
-	SoNotification.h \
-	SoState.cpp \
-	SoState.h \
-	SoDB.cpp \
-	SoDB.h \
-	SoFullPath.cpp \
-	SoFullPath.h \
-	SoImageInterface.cpp \
-	SoImageInterface.h \
-	SoInput.cpp \
-	SoInput.h \
-	SoInteraction.cpp \
-	SoInteraction.h \
-	SoOutput.cpp \
-	SoOutput.h \
-	SoPath.cpp \
-	SoPath.h \
-	SoPickedPoint.cpp \
-	SoPickedPoint.h \
-	SoPrimitiveVertex.cpp \
-	SoPrimitiveVertex.h \
-	SoSceneManager.cpp \
-	SoSceneManager.h \
-	SoType.cpp \
-	SoType.h \
+	SoBase.cpp SoBase.h \
+	SoChildList.cpp SoChildList.h \
+	SoGL.cpp SoGL.h \
+	SoGLImage.cpp SoGLImage.h \
+	SoNormalGenerator.cpp SoNormalGenerator.h \
+	SoNotification.cpp SoNotification.h \
+	SoState.cpp SoState.h \
+	SoDB.cpp SoDB.h \
+	SoFullPath.cpp SoFullPath.h \
+	SoImageInterface.cpp SoImageInterface.h \
+	SoInput.cpp SoInput.h \
+	SoInteraction.cpp SoInteraction.h \
+	SoOutput.cpp SoOutput.h \
+	SoPath.cpp SoPath.h \
+	SoPickedPoint.cpp SoPickedPoint.h \
+	SoPrimitiveVertex.cpp SoPrimitiveVertex.h \
+	SoSceneManager.cpp SoSceneManager.h \
+	SoType.cpp SoType.h \
+	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
 	SoGenerate.cpp
 
 

@@ -96,6 +96,7 @@ libCoininc_HEADERS = \
 	$(top_srcdir)/include/Inventor/SoNodeKitPath.h \
 	$(top_srcdir)/include/Inventor/SoInput.h \
 	$(top_srcdir)/include/Inventor/SoInteraction.h \
+	$(top_srcdir)/include/Inventor/SoOffscreenRenderer.h \
 	$(top_srcdir)/include/Inventor/SoOutput.h \
 	$(top_srcdir)/include/Inventor/SoPath.h \
 	$(top_srcdir)/include/Inventor/SoPickedPoint.h \
