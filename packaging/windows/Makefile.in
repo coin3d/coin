@@ -228,7 +228,7 @@ build-files/coin@COIN_MAJOR_VERSION@.dsp: Coin-$(VERSION)
 	cd build-files; \
 	../Coin-$(VERSION)/configure \
 	  $(BUILDOPTIONS) \
-	  --disable-dependency-tracking; \
+	  --disable-dependency-tracking \
 	  --enable-msvcdsp; \
 	$(MAKE) clean && $(MAKE)
 
