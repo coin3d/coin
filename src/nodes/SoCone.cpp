@@ -162,16 +162,22 @@ SoCone::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   float r = this->bottomRadius.getValue();
   float h = this->height.getValue();
 
+  // Allow negative values.
+  if (h < 0.0f) h = -h;
+  if (r < 0.0f) r = -r;
+
+  float half_height = h/2.0f;
+
   // The SIDES are present, so just find the middle point and enclose
   // everything.
   if (this->parts.getValue() & SoCone::SIDES) {
     center.setValue(0.0f, 0.0f, 0.0f);
-    box.setBounds(SbVec3f(-r, -h/2.0f, -r), SbVec3f(r, h/2.0f, r));
+    box.setBounds(SbVec3f(-r, -half_height, -r), SbVec3f(r, half_height, r));
   }
   // ..no SIDES, but we've still got the bottom (NB: OIV misses this case).
   else if (this->parts.getValue() & SoCone::BOTTOM) {
-    center.setValue(0.0f, -h/2.0f, 0.0f);
-    box.setBounds(SbVec3f(-r, -h/2.0f, -r), SbVec3f(r, -h/2.0f, r));
+    center.setValue(0.0f, -half_height, 0.0f);
+    box.setBounds(SbVec3f(-r, -half_height, -r), SbVec3f(r, -half_height, r));
   }
   // ..no parts present. My confidence is shot -- I feel very small.
   else {
