@@ -107,6 +107,9 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/caches/SoGlyphCache.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLTexture3EnabledElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 
 #ifdef COIN_THREADSAFE
 #include <Inventor/threads/SbMutex.h>
@@ -386,6 +389,12 @@ SoText2::GLRender(SoGLRenderAction * action)
           if (cc_glyph2d_getmono(glyph)) {
             glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
           } else {
+            state->push();
+            // disable textures for all units
+            SoGLTextureEnabledElement::set(state, this, FALSE);
+            SoGLTexture3EnabledElement::set(state, this, FALSE);
+            SoGLMultiTextureEnabledElement::disableAll(state);
+
             glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
             glPushClientAttrib(GL_CLIENT_PIXEL_STORE_BIT);
           
@@ -395,7 +404,6 @@ SoText2::GLRender(SoGLRenderAction * action)
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
           
-            glDisable(GL_TEXTURE_2D);
 
             glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
         
@@ -432,6 +440,8 @@ SoText2::GLRender(SoGLRenderAction * action)
 
             glPopClientAttrib();
             glPopAttrib();
+            
+            state->pop();
           }
         }
 
