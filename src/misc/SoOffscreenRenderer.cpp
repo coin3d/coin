@@ -84,8 +84,13 @@ public:
     }
 #endif // COIN_DEBUG
 
-    this->buffersize[0] = SbMax((short)1, SbMin(size[0], maxsize[0]));
-    this->buffersize[1] = SbMax((short)1, SbMin(size[1], maxsize[1]));
+    // The explicit casts are done to humour the HPUX aCC compiler,
+    // which will otherwise say ``Template deduction failed to find a
+    // match for the call to 'SbMin'''. mortene.
+    this->buffersize[0] = SbMax((short)1,
+				SbMin((short)size[0], (short)maxsize[0]));
+    this->buffersize[1] = SbMax((short)1,
+				SbMin((short)size[1], (short)maxsize[1]));
   }
 
   SbVec2s getSize(void) const {
