@@ -42,7 +42,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_MAKE_DLL" /D /YX /FD /c
+# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_MAKE_DLL" /YX /FD /D /c
 # ADD CPP /nologo /MT /W3 /GX /O2 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "COIN_MAKE_DLL" /D "HAVE_CONFIG_H" /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386 /nodefaultlib /out:"Release/coin@COIN_VERSION@.dll"
+# ADD LINK32 Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /pdb:"Delease/coin@COIN_VERSION@.pdb" /machine:I386 /nodefaultlib /out:"Release/coin@COIN_VERSION@.dll"
 
 !ELSEIF  "$(CFG)" == "coin_dll - Win32 Debug"
 
@@ -79,7 +79,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /nodefaultlib /out:"Debug/coin@COIN_VERSION@d.dll" /pdbtype:sept
+# ADD LINK32 Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /pdb:"Debug/coin@COIN_VERSION@d.pdb" /debug /machine:I386 /nodefaultlib /out:"Debug/coin@COIN_VERSION@d.dll" /pdbtype:sept
 # SUBTRACT LINK32 /incremental:no
 
 !ENDIF 
@@ -94,18 +94,6 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE="@coin_src_dir@\src\manips\commoncode.cpp"
-# End Source File
-# Begin Source File
-
-SOURCE="@coin_src_dir@\src\misc\SoByteStream.cpp"
-# End Source File
-# Begin Source File
-
-SOURCE="@coin_src_dir@\src\misc\SoTranReceiver.cpp"
-# End Source File
-# Begin Source File
-
-SOURCE="@coin_src_dir@\src\misc\SoTranSender.cpp"
 # End Source File
 # Begin Source File
 
@@ -174,6 +162,10 @@ SOURCE="@coin_src_dir@\src\base\SbDict.cpp"
 # Begin Source File
 
 SOURCE="@coin_src_dir@\src\base\SbHeap.cpp"
+# End Source File
+# Begin Source File
+
+SOURCE="@coin_src_dir@\src\base\SbImage.cpp"
 # End Source File
 # Begin Source File
 
@@ -246,10 +238,6 @@ SOURCE="@coin_src_dir@\src\projectors\SbSphereSheetProjector.cpp"
 # Begin Source File
 
 SOURCE="@coin_src_dir@\src\base\SbString.cpp"
-# End Source File
-# Begin Source File
-
-SOURCE="@coin_src_dir@\src\base\SbImage.cpp"
 # End Source File
 # Begin Source File
 
@@ -406,6 +394,10 @@ SOURCE="@coin_src_dir@\src\bundles\SoBundle.cpp"
 # Begin Source File
 
 SOURCE="@coin_src_dir@\src\events\SoButtonEvent.cpp"
+# End Source File
+# Begin Source File
+
+SOURCE="@coin_src_dir@\src\misc\SoByteStream.cpp"
 # End Source File
 # Begin Source File
 
@@ -1886,6 +1878,14 @@ SOURCE="@coin_src_dir@\src\draggers\SoTrackballDragger.cpp"
 # Begin Source File
 
 SOURCE="@coin_src_dir@\src\manips\SoTrackballManip.cpp"
+# End Source File
+# Begin Source File
+
+SOURCE="@coin_src_dir@\src\misc\SoTranReceiver.cpp"
+# End Source File
+# Begin Source File
+
+SOURCE="@coin_src_dir@\src\misc\SoTranSender.cpp"
 # End Source File
 # Begin Source File
 

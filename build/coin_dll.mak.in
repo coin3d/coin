@@ -25,6 +25,10 @@ NULL=
 NULL=nul
 !ENDIF 
 
+CPP=cl.exe
+MTL=midl.exe
+RSC=rc.exe
+
 !IF  "$(CFG)" == "coin_dll - Win32 Release"
 
 OUTDIR=C:@libdir@
@@ -52,6 +56,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SbCylinderSheetProjector.obj"
 	-@erase "$(INTDIR)\SbDict.obj"
 	-@erase "$(INTDIR)\SbHeap.obj"
+	-@erase "$(INTDIR)\SbImage.obj"
 	-@erase "$(INTDIR)\SbIntList.obj"
 	-@erase "$(INTDIR)\SbLine.obj"
 	-@erase "$(INTDIR)\SbLineProjector.obj"
@@ -70,7 +75,6 @@ CLEAN :
 	-@erase "$(INTDIR)\SbSphereSectionProjector.obj"
 	-@erase "$(INTDIR)\SbSphereSheetProjector.obj"
 	-@erase "$(INTDIR)\SbString.obj"
-	-@erase "$(INTDIR)\SbImage.obj"
 	-@erase "$(INTDIR)\SbStringList.obj"
 	-@erase "$(INTDIR)\SbTesselator.obj"
 	-@erase "$(INTDIR)\SbTime.obj"
@@ -527,48 +531,14 @@ CLEAN :
 "$(INTDIR)" :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
-CPP=cl.exe
-CPP_PROJ=/nologo /MT /W3 /GX /O2 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "_DLL" /Fp"$(INTDIR)\coin_dll.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
-
-.c{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cpp{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cxx{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.c{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cpp{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cxx{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-MTL=midl.exe
+CPP_PROJ=/nologo /MT /W3 /GX /O2 /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "COIN_MAKE_DLL" /D "HAVE_CONFIG_H" /Fp"$(INTDIR)\coin_dll.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 MTL_PROJ=/nologo /D "NDEBUG" /mktyplib203 /win32 
-RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin_dll.bsc" 
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:no /pdb:"$(OUTDIR)\coin@COIN_VERSION@.pdb" /machine:I386 /nodefaultlib /out:"Release/coin@COIN_VERSION@.dll" /implib:"$(OUTDIR)\coin@COIN_VERSION@.lib" 
+LINK32_FLAGS=Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:no /pdb:"Delease/coin@COIN_VERSION@.pdb" /machine:I386 /nodefaultlib /out:"Release/coin@COIN_VERSION@.dll" /implib:"$(OUTDIR)\coin@COIN_VERSION@.lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\commoncode.obj" \
 	"$(INTDIR)\SoByteStream.obj" \
@@ -1085,6 +1055,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SbCylinderSheetProjector.obj"
 	-@erase "$(INTDIR)\SbDict.obj"
 	-@erase "$(INTDIR)\SbHeap.obj"
+	-@erase "$(INTDIR)\SbImage.obj"
 	-@erase "$(INTDIR)\SbIntList.obj"
 	-@erase "$(INTDIR)\SbLine.obj"
 	-@erase "$(INTDIR)\SbLineProjector.obj"
@@ -1103,7 +1074,6 @@ CLEAN :
 	-@erase "$(INTDIR)\SbSphereSectionProjector.obj"
 	-@erase "$(INTDIR)\SbSphereSheetProjector.obj"
 	-@erase "$(INTDIR)\SbString.obj"
-	-@erase "$(INTDIR)\SbImage.obj"
 	-@erase "$(INTDIR)\SbStringList.obj"
 	-@erase "$(INTDIR)\SbTesselator.obj"
 	-@erase "$(INTDIR)\SbTime.obj"
@@ -1553,9 +1523,9 @@ CLEAN :
 	-@erase "$(INTDIR)\vc60.pdb"
 	-@erase "$(OUTDIR)\coin@COIN_VERSION@d.exp"
 	-@erase "$(OUTDIR)\coin@COIN_VERSION@d.lib"
-	-@erase "$(OUTDIR)\coin@COIN_VERSION@d.pdb"
 	-@erase ".\Debug\coin@COIN_VERSION@d.dll"
 	-@erase ".\Debug\coin@COIN_VERSION@d.ilk"
+	-@erase ".\Debug\coin@COIN_VERSION@d.pdb"
 
 "$(OUTDIR)" :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
@@ -1563,48 +1533,14 @@ CLEAN :
 "$(INTDIR)" :
     if not exist "$(INTDIR)/$(NULL)" mkdir "$(INTDIR)"
 
-CPP=cl.exe
-CPP_PROJ=/nologo /MTd /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "COIN_MAKE_DLL" /Fp"$(INTDIR)\coin_dll.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
-
-.c{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cpp{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cxx{$(INTDIR)}.obj::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.c{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cpp{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-.cxx{$(INTDIR)}.sbr::
-   $(CPP) @<<
-   $(CPP_PROJ) $< 
-<<
-
-MTL=midl.exe
+CPP_PROJ=/nologo /MTd /W3 /Gm /GX /ZI /Od /I "C:@coin_build_dir@" /I "C:@coin_build_dir@\include" /I "C:@coin_src_dir@" /I "C:@coin_src_dir@\include" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "COIN_DLL_EXPORTS" /D "COIN_INTERNAL" /D "COIN_MAKE_DLL" /D "HAVE_CONFIG_H" /Fp"$(INTDIR)\coin_dll.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
 MTL_PROJ=/nologo /D "_DEBUG" /mktyplib203 /win32 
-RSC=rc.exe
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\coin_dll.bsc" 
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"$(OUTDIR)\coin@COIN_VERSION@d.pdb" /debug /machine:I386 /nodefaultlib /out:"Debug/coin@COIN_VERSION@d.dll" /implib:"$(OUTDIR)\coin@COIN_VERSION@d.lib" /pdbtype:sept 
+LINK32_FLAGS=Msvcrt.lib Oldnames.lib @LIBS@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"Debug/coin@COIN_VERSION@d.pdb" /debug /machine:I386 /nodefaultlib /out:"Debug/coin@COIN_VERSION@d.dll" /implib:"$(OUTDIR)\coin@COIN_VERSION@d.lib" /pdbtype:sept 
 LINK32_OBJS= \
 	"$(INTDIR)\commoncode.obj" \
 	"$(INTDIR)\SoByteStream.obj" \
@@ -2096,6 +2032,36 @@ LINK32_OBJS= \
 
 !ENDIF 
 
+.c{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cpp{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cxx{$(INTDIR)}.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.c{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cpp{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cxx{$(INTDIR)}.sbr::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
 
 !IF "$(NO_EXTERNAL_DEPS)" != "1"
 !IF EXISTS("coin_dll.dep")
@@ -2215,6 +2181,12 @@ SOURCE="@coin_src_dir@\src\base\SbHeap.cpp"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+SOURCE="@coin_src_dir@\src\base\SbImage.cpp"
+
+"$(INTDIR)\SbImage.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
 SOURCE="@coin_src_dir@\src\lists\SbIntList.cpp"
 
 "$(INTDIR)\SbIntList.obj" : $(SOURCE) "$(INTDIR)"
@@ -2320,12 +2292,6 @@ SOURCE="@coin_src_dir@\src\projectors\SbSphereSheetProjector.cpp"
 SOURCE="@coin_src_dir@\src\base\SbString.cpp"
 
 "$(INTDIR)\SbString.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE="@coin_src_dir@\src\base\SbImage.cpp"
-
-"$(INTDIR)\SbImage.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
