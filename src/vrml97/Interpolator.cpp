@@ -26,16 +26,42 @@
   \brief The SoVRMLInterpolator class is an internal abstract class.
   \ingroup VRMLnodes
 
-  \COININTERNAL
+  This class collects the two fields that are common for all
+  interpolator nodes, plus common code that operates on these
+  fields. Since this is an abstract "helper" class, it does not
+  represent an actual node from the VRML97 specification, so don't use
+  it as such.
+
+  For more information, a detailed discussion of interpolators is
+  available in section 4.6.8 of the VRML97 specification:
+
+  <http://www.web3d.org/technicalinfo/specifications/vrml97/part1/concepts.html#4.6.8>
 */
 
 /*!
-  \var SoMFFloat key
-  \COININTERNAL
+  \var SoMFFloat SoVRMLInterpolator::key
+
+  This field contains a set of floating point values which the
+  interpolation will run over. The key values should be monotonically
+  non-decreasing.
+
+  The field is inherited from it's declaration in the abstract
+  SoVRMLInterpolator class into a range of different VRML interpolator
+  nodes.
+
+  See the class documentation of the \e non-abstract VRML interpolator
+  node you want to use for information on what the key values
+  represent in that specific context.
 */
 /*!
-  \var SoSFFloat set_fraction
-  \COININTERNAL
+  \var SoSFFloat SoVRMLInterpolator::set_fraction
+
+  The set_fraction field gets an input signal that triggers a
+  calculation of the next value_changed eventOut value.
+
+  The field is inherited from it's declaration in the abstract
+  SoVRMLInterpolator class into a range of different VRML interpolator
+  nodes.
 */
 
 #include <Inventor/VRMLnodes/SoVRMLInterpolator.h>
