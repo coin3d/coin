@@ -1,5 +1,118 @@
-FIXME: the one in Coin-2 seems more up-to-date.  inspect diffs, and
-whether it can be just copied over to this repository.
+============================================================================
+==                        BUILDING COIN ON WINDOWS                        ==
+============================================================================
+
+Microsoft Visual Studio
+=======================
+
+The source code archive for Coin comes with Microsoft Visual Studio files
+for building and installing the Coin library.  Both Visual Studio 6 and
+Visual Studio 7/7.1 are supported.
+
+At the last stage of the build, the Coin development kit is automatically
+installed into the directory the COINDIR environment variable points to.
+Set it to "C:\Coin3D" or wherever you want the Coin SDK to reside by using
+
+  Control Panel => System => Advanced => Environment Variables
+
+and make sure you create that directory before starting the build - if the
+variable isn't set or the directory doesn't exist, the installation will
+break and you won't get a functional SDK.  Using the source hierarchy as
+the SDK is not recommended - let Coin be installed, and use COINDIR from
+your other projects that use Coin.
+
+For Microsoft Visual Studio 6, you will find the complete build file setup
+in the directory "build/msvc6/".  Select the dsw file.
+
+For Microsoft Visual Studio 7, you will find the complete build file setup
+in the directory build/msvc7/.  Select the sln file.
+
+This setup was implemented in mid-december 2004, and will probably need some
+adjustments and corrections as more people start using it.
+
+
+Other IDEs
+==========
+
+We unfortunately don't provide project files for anything other than Visual
+Studio at this point.
+
+
+============================================================================
+==                    OLD OBSOLETED INFORMATION BELOW                     ==
+============================================================================
+
+This below text is information about building Coin on MS Windows platforms
+with the Cygwin environment.
+
+
+Compilers
+=========
+
+In-house we more or less only use the Microsoft Visual C++ 6.0 compiler
+when building on Windows, and it is the one we primarily support.  All
+precompiled Coin SDKs are consequently built with this compiler.
+
+We have also had success reports from users about building Coin with the
+Intel compiler through using the Visual Studio project file setup for
+that.
+
+Supporting GCC (primarily the mingw fork) on Windows is in the works.
+It might, but probably doesn't, work out of the box yet.
+
+Borland C++ has for a long time been a wish to support, but we haven't
+gotten around to that yet.
+
+
+Environments
+============
+
+Microsoft Developer Studio
+--------------------------
+
+With the release of Coin 2.0.0, we started shipping Microsoft
+Developer Studio files with the binary Coin installer. The binary
+installer can be found at http://www.coin3d.org/windows.
+
+These files are automatically generated on our side in the Cygwin
+environment.  We are open for suggestions on how they ought to be
+changed, but since we don't create them manually we can only apply
+changes to the Developer Studio files that can go into the auto-
+generation process.
+
+Be aware that the Developer Studio project files will not help you
+with installing the SDK in any sensible place.  It just takes care of
+building the Coin DLL.  To install the header files for instance, you
+should use Cygwin, run "configure" with --prefix pointing to the
+dir where you want the files ("include" will be appended to the path
+you give), and afterwards run "make install-data" to get the public
+header files installed.
+
+Cygwin
+------
+
+Cygwin is a UNIX/POSIX-like environment from Cygnus.  See www.cygwin.com.
+We use this environment for building Coin.
+
+
+
+Building Coin under MS Windows
+==============================
+
+There are now two ways to build the Coin library with Microsoft Visual C++
+on MS Windows.
+
+
+
+You can use Cygwin and compile Coin with regular GNU makefiles,
+or you can use a Microsoft Visual Studio Project and Workspace file for
+building Coin from the IDE.
+
+
+
+
+[old Cygwin-specific information follows]
+
 
 
 Section 01 -- Basic build instructions.
@@ -66,6 +179,12 @@ Section 01 -- Basic build instructions.
 
   (Then try again to see that the MSVC environment is working. If not,
   you need to debug this on your end before proceeding.)
+
+  Then, make sure you have not set the variables CC and CXX before
+  running configure.  You unset them with these commands:
+
+        $ unset CC
+        $ unset CXX
 
   Configure and build the same way as you would on UNIX-based systems,
   i.e.
@@ -327,18 +446,46 @@ Section 06 -- What is this ``configure'' thing?
   have built and installed the library.
 
 
-Sectioon  07 -- Library Dependencies
+
+
+Section 07 -- Library Dependencies
 ====================================
 
   To find out which dynamically loadable libraries an application loads
   (depends on), the following commands might be of help:
 
   MSVC 6:
-
+        
     depends <app.exe>
-
-  MSVC 7:
   
-    dumpbin /dependents <app.exe>
+  MSVC 7:
 
+    dumpbin /dependents <app.exe>
+                      
+
+
+INCOMING
+
+[Sven-Kåre Evenseth]
+
+I ran into some problems building Coin 2.1.1 on windows today. We use
+cygwin, and // to prefix drives. It seems that use of // isn't very
+popular anymore...
+
+When running make install, it tries to do a
+mkdir -p -- //driveletter/some/long/path/being/created
+and fails, complaining about
+//driveletter: no such file or directory
+
+The problem is solved when changing how drives are prefixed in the
+registry key:
+HKEY_LOCAL_MACHINE\SOFTWARE\Cygnus Solutions\Cygwin\mounts v2
+
+It looks like anything goes, as long as there is something inbetween two
+slashes (/cygdrive/, /c/, /sunday_bloody_sunday/ etc).
+
+
+See also:
+  http://cygwin.com/faq/faq_4.html#SEC34
+  http://sources.redhat.com/ml/cygwin/2001-09/msg00014.html
 
