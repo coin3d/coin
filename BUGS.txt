@@ -4138,3 +4138,21 @@ Transform {
     20041025 mortene, reported by kintel.
 
 =====================================================================
+
+155 SoFont does not support styles under Windows.
+
+    When adding a style to a fontname, the fallback font is used
+    instead (Arial). This wrl file recreates the problem:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#Inventor V2.1 ascii
+
+Font { name "Times New Roman:Bold" }
+Text2 { string "test" }
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    (This works fine when using FreeType on Linux.)
+
+    20041102 handegar
+
+=====================================================================
