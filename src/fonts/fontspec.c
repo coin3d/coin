@@ -22,9 +22,7 @@
 \**************************************************************************/
 
 #include "fontspec.h"
-
 #include <string.h>
-
 
 void
 cc_fontspec_construct(cc_font_specification * spec,
@@ -48,9 +46,40 @@ cc_fontspec_construct(cc_font_specification * spec,
     const int pos = (int)(tmpptr - tmpstr);
     const int namelen = cc_string_length(&spec->name);
 
+    int trimstyleend, trimnamestart;
+    int trimposstyle = pos + 1;
+    int trimposname = pos - 1;
+
+    while (tmpstr[trimposstyle] == ' ') { 
+      ++trimposstyle;
+    }
+
+    while (tmpstr[trimposname] == ' ') { 
+      --trimposname;
+    }
+ 
     cc_string_set_text(&spec->style, cc_string_get_text(&spec->name));
-    cc_string_remove_substring(&spec->style, 0, pos);
-    cc_string_remove_substring(&spec->name, pos, namelen - 1);
+    cc_string_remove_substring(&spec->style, 0, trimposstyle - 1);
+    cc_string_remove_substring(&spec->name, trimposname + 1, namelen-1);
+    
+    trimstyleend = cc_string_length(&spec->style);
+    tmpstr = cc_string_get_text(&spec->style);
+
+    while (tmpstr[trimstyleend-1] == ' ') { 
+      --trimstyleend;
+    }
+
+    cc_string_remove_substring(&spec->style, trimstyleend, cc_string_length(&spec->style) - 1);
+    
+    tmpstr = cc_string_get_text(&spec->name);
+    trimnamestart = 0;
+    while (tmpstr[trimnamestart] == ' ') {
+      ++trimnamestart;
+    }
+    
+    if (trimnamestart != 0)
+      cc_string_remove_substring(&spec->name, 0, trimnamestart-1);
+   
   }
 }
 
