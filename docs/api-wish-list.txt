@@ -481,3 +481,26 @@ THE WISH LIST
 
   Add functionality to the SoMarkerSet node to make it possible to
   scale the marker bitmaps.
+
+* SbReal typedef
+  2001-09-05  Lars J. Aas  <larsa@sim.no>
+  [incompatible "improvement"]
+
+  SbReal could be either defined as float or double (and even "long double"),
+  depending on what precision the developer decided upon at configure time.
+  Lots of the API and internals should then be changed to use SbReals instead
+  of the fixed float-precision types.  Default would be float, since double
+  will break ABI-compatibiliy.
+
+  Similarly, SbVec2f and SbVec2d would both be fixed to float and double,
+  while SbVec2r could change, depending on the definition of SbReal.
+
+* The SbBool typedef
+  2001-09-05  Lars J. Aas  <larsa@sim.no>
+  [probably incompatible change]
+
+  The SbBool type is always int.  Consider detecting if the bool type exists
+  and use it instead when available.  How does this work across multiple
+  C++ compilers?  Since they're not ABI-compatible in the first place, this
+  change won't hinder anything, will it?
+
