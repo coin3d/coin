@@ -5,7 +5,7 @@
 // rendering on GeForce 2 MX and P4 1.5GHz. The performance is divided
 // by 3 probably because we're sending three times more vertices. And
 // the rest is spent on computations of the center vertices.
-// 
+//
 // Developed and contributed by PC John (Jan Peciva).
 
 
@@ -19,7 +19,7 @@
     int start )
 {
 
-  assert (coordEl->getNum() - start < rowsize * colsize);
+  assert (coordEl->getNum() - start <= rowsize * colsize);
 
 #if COORDS==D3
   const SbVec3f *coords = coordEl->getArrayPtr3();
