@@ -32,6 +32,34 @@
   \sa SoInput
 */
 
+/*!
+  \page compression_overview File compression
+
+  Coin can support reading and writing Inventor and VRML files compressed
+  with either gzip or bzip2 (as of yet - more formats may come in the
+  future).  This functionality is of course only enabled when Coin can link
+  with the corresponding compression libraries.
+
+  Reading of compressed files happens in a transparent manner - there is
+  nothing the developer has to do to support this.
+
+  Writing of compressed files is controlled through the
+  SoOutput::setCompression method.
+
+  The list of available compression methods can be fetched with the
+  SoOutput::getAvailableCompressionMethods method.
+
+  You can not use file compression together with I/O to memory buffers,
+  except for reading from memory buffers containing gzip-compressed files.
+ 
+  For backwards compatibility with Coin 2.0 and Coin 1.0, compressed files
+  must not be used.  Compressed files works only from Coin 2.1 and
+  upwards.
+
+  \since Coin 2.1
+  \sa SoOutput::setCompression, SoOutput::getAvailableCompressionMethods
+*/
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
