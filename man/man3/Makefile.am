@@ -3,7 +3,9 @@ $(top_builddir)/docs/coin.doxygen: $(top_srcdir)/docs/coin.doxygen.in $(top_buil
 	@( cd $(top_builddir); $(MAKE) docs/coin.doxygen )
 
 SoDB.3: $(top_builddir)/docs/coin.doxygen
-	@sim_ac_doxygen_exe@ $(top_builddir)/docs/coin.doxygen
+	@( cd ../..; \
+	echo " $(sim_ac_doxygen_exe) docs/coin.doxygen"; \
+	"$(sim_ac_doxygen_exe)" docs/coin.doxygen )
 
 filelist.txt: SoDB.3
 	ls *.3 >filelist.txt
@@ -13,16 +15,13 @@ if BUILD_MANPAGES
 
 all-local: filelist.txt
 
-clean-local:
-	rm -f filelist.txt *.3
-
 install-data-local: install-man
 
 uninstall-local: uninstall-man
 
 install-man: filelist.txt
 	@$(NORMAL_INSTALL)
-	$(mkinstalldirs) $(DESTDIR)$(mandir)
+	$(mkinstalldirs) $(DESTDIR)$(mandir)/man3
 	@list="`cat filelist.txt`"; \
 	for i in $$list; do \
 	  echo " $(INSTALL_DATA) $$i $(DESTDIR)$(mandir)/man3/$$i"; \
@@ -41,4 +40,9 @@ uninstall-man: filelist.txt
 	:
 
 endif
+
+# IRIX make barfs if clean-local is moved inside the conditional clause.
+# Automake bug?  20011025 larsa
+clean-local:
+	rm -f filelist.txt *.3
 
