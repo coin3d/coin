@@ -3,7 +3,9 @@
 SUBDIRS = include data src build
 
 dist_bin_SCRIPTS = \
-	coin-config \
+	coin-config
+
+noinst_SCRIPTS = \
 	cfg/m4/msvccc
 
 m4datadir = $(datadir)/aclocal
