@@ -71,7 +71,9 @@ void
 SoCacheElement::pop(SoState * state, const SoElement * prevTopElement)
 {
   inherited::pop(state, prevTopElement);
-  if (this->cache) this->cache->unref();
+  SoCacheElement * prev = (SoCacheElement*) prevTopElement;
+  if (prev->cache) prev->cache->unref();
+  if (!this->anyOpen(state)) state->setCacheOpen(FALSE);
 }
 
 
@@ -84,7 +86,10 @@ SoCacheElement::set(SoState * const state, SoCache * const cache)
   SoCacheElement * elem = (SoCacheElement*)
     SoElement::getElement(state, classStackIndex);
   elem->cache = cache;
-  if (elem->cache) elem->cache->ref();
+  if (elem->cache) {
+    elem->cache->ref();
+    state->setCacheOpen(TRUE);
+  }
 }
 
 /*!
@@ -104,16 +109,33 @@ SoCacheElement::getCache(void) const
 SbBool
 SoCacheElement::anyOpen(SoState * const state)
 {
-  return SoCacheElement::getCurrentCache(state) != NULL;
+  SoCacheElement * elem = (SoCacheElement*)
+    state->getElementNoPush(classStackIndex);
+  while (elem) {
+    if (elem->cache) return TRUE;
+    elem = (SoCacheElement*) elem->prev;
+  }
+  return FALSE;
 }
 
-/*!
-  This method invalidates open caches.  It should be called by uncacheable nodes.
+/*!  
+  This method invalidates open caches. It should be called by
+  uncacheable nodes. 
 */
 void
 SoCacheElement::invalidate(SoState * const state)
 {
   SoCacheElement::invalidated = TRUE;
+  SoCacheElement * elem = (SoCacheElement*)
+    state->getElementNoPush(classStackIndex);
+  while (elem) {
+    if (elem->cache) {
+      elem->cache->invalidate();
+      elem->cache->unref();
+      elem->cache = NULL;
+    }
+    elem = (SoCacheElement*) elem->prev;
+  }
 }
 
 /*!
