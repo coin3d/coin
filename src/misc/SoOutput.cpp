@@ -105,8 +105,33 @@ public:
   SbDict * sobase2id;
   int nextreferenceid;
   uint32_t annotationbits;
-  SbDict * defnames;
   SbList <SoProto*> protostack;
+  SbList <SbDict*> defstack;
+
+  void pushDefNames(const SbBool copyprev) {
+    const int n = this->defstack.getLength();
+    assert(n);
+    SbDict * prev = this->defstack[n-1];
+    if (copyprev && prev) {
+      this->defstack.append(new SbDict(*prev));
+    }
+    else this->defstack.append(NULL);
+  }
+  void popDefNames(void) {
+    assert(this->defstack.getLength());
+    delete this->defstack[this->defstack.getLength()-1];
+    this->defstack.pop();
+  }
+  SbDict * getCurrentDefNames(const SbBool createifnull) {
+    const int idx = this->defstack.getLength() - 1;
+    assert(idx >= 0);
+    SbDict * dict = this->defstack[idx];
+    if (createifnull && dict == NULL) {
+      dict = new SbDict;
+      this->defstack[idx] = dict;
+    }
+    return dict;
+  }
 };
 
 #endif // DOXYGEN_SKIP_THIS
@@ -124,7 +149,7 @@ SoOutput::SoOutput(void)
 {
   this->constructorCommon();
   THIS->sobase2id = NULL;
-  THIS->defnames = NULL;
+  THIS->defstack.append(NULL);
 }
 
 /*!
@@ -135,8 +160,10 @@ SoOutput::SoOutput(SoOutput * dictOut)
 {
   assert(dictOut != NULL);
   this->constructorCommon();
-  THIS->sobase2id = new SbDict(*(dictOut->pimpl->sobase2id));
-  THIS->defnames = new SbDict(*(dictOut->pimpl->defnames));
+  THIS->sobase2id = new SbDict(*(dictOut->pimpl->sobase2id));  
+  
+  SbDict * olddef = dictOut->pimpl->getCurrentDefNames(FALSE);
+  THIS->defstack.append(olddef ? new SbDict(*olddef) : NULL);
 }
 
 /*!
@@ -771,7 +798,13 @@ SoOutput::reset(void)
 {
   this->closeFile();
   delete THIS->sobase2id; THIS->sobase2id = NULL;
-  delete THIS->defnames; THIS->defnames = NULL;
+
+  THIS->protostack.truncate(0);
+  while (THIS->defstack.getLength()) {
+    delete THIS->defstack[0];
+    THIS->defstack.removeFast(0);
+  }
+  THIS->defstack.append(NULL);
 
   THIS->usersetfp = FALSE;
   THIS->disabledwriting = FALSE;
@@ -985,8 +1018,8 @@ void
 SoOutput::addDEFNode(SbName name)
 {
   void * value = NULL;
-  if (!THIS->defnames) THIS->defnames = new SbDict;
-  THIS->defnames->enter((unsigned long)name.getString(), value);
+  SbDict * defnames = THIS->getCurrentDefNames(TRUE);
+  defnames->enter((unsigned long)name.getString(), value);
 }
 
 /*!
@@ -997,8 +1030,8 @@ SbBool
 SoOutput::lookupDEFNode(SbName name)
 {
   void * value;
-  if (!THIS->defnames) THIS->defnames = new SbDict;
-  return THIS->defnames->find((unsigned long)name.getString(), value);
+  SbDict * defnames = THIS->getCurrentDefNames(TRUE);
+  return defnames->find((unsigned long)name.getString(), value);
 }
 
 /*!
@@ -1009,8 +1042,14 @@ SoOutput::lookupDEFNode(SbName name)
 void 
 SoOutput::removeDEFNode(SbName name)
 {
-  assert(THIS->defnames);
-  if (THIS->defnames) THIS->defnames->remove((unsigned long)name.getString());
+  SbDict * defnames = THIS->getCurrentDefNames(FALSE);
+  assert(defnames);
+#ifndef NDEBUG
+  SbBool ret = defnames->remove((unsigned long)name.getString());
+  assert(ret && "Tried to remove nonexisting DEFnode");
+#else
+  (void) defnames->remove((unsigned long)name.getString());
+#endif
 }
 
 /*!
@@ -1022,6 +1061,7 @@ void
 SoOutput::pushProto(SoProto * proto)
 {
   THIS->protostack.push(proto);
+  THIS->pushDefNames(FALSE);
 }
 
 /*!
@@ -1048,6 +1088,7 @@ SoOutput::popProto(void)
 {
   assert(THIS->protostack.getLength());
   THIS->protostack.pop();
+  THIS->popDefNames();
 }
 
 /*!
