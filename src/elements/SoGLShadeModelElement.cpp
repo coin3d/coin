@@ -152,6 +152,8 @@ SoGLShadeModelElement::push(SoState * state)
 {
   inherited::push(state);
   ((SoGLShadeModelElement*)this->next)->glflat = this->glflat;
+  ((SoGLShadeModelElement*)this->next)->matPerVertex = this->matPerVertex;
+  ((SoGLShadeModelElement*)this->next)->normPerVertex = this->normPerVertex;
 }
 
 //! FIXME: write doc.
