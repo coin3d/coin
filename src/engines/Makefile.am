@@ -33,7 +33,7 @@ RegularSources = \
 	SoNodeEngine.cpp \
 	SoOnOff.cpp \
 	SoOneShot.cpp \
-        SoOutputData.cpp \
+	SoOutputData.cpp \
 	SoSelectOne.cpp \
 	SoTimeCounter.cpp \
 	SoTransformVec3f.cpp \
@@ -88,7 +88,7 @@ PrivateHeaders = \
 	../../include/Inventor/engines/SoConvertAll.h \
 	../../include/Inventor/engines/SoSubNodeEngineP.h \
 	evaluator.h \
-	lex.so_eval.c
+	so_eval.ic
 
 EXTRA_DIST = \
 	evaluator.l \

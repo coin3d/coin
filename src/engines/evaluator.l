@@ -22,11 +22,15 @@
  *
 \**************************************************************************/
 
+#ifndef COIN_INTERNAL
+#error this is a private header file
+#endif /* !COIN_INTERNAL */
+
 /*
  * Lexical scanner for SoCalculator. Compile into lexical scanner
  * lex.so_eval.c with
  *
- *             flex -L evaluator.l
+ *             flex -oso_eval.ic -L evaluator.l
  *
  * (Note: flex version should be 2.5.4, since this is what is
  * installed on nfs.sim.no).

@@ -1297,7 +1297,7 @@ get_regname(char reg, int regtype)
 
 
 
-#include "lex.so_eval.c" /* our lexical scanner */
+#include "so_eval.ic" /* our lexical scanner */
 
 /* some very simple error handling for now :) */
 static char *myerrorptr;
