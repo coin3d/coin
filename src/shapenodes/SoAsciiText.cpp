@@ -42,7 +42,7 @@
   at this sample Inventor file in examinerviewer:
 
   \verbatim
-  #VRML V1.0 ascii
+  #Inventor V2.1 ascii
 
   Separator {
     Font {
@@ -135,33 +135,35 @@
 #include "../fonts/glyph3d.h"
 
 
-/*!  \enum SoAsciiText::Justification The font justification values
-  control the text alignment. Justification can have three distinct
-  values.  The default value is SoAsciiText::LEFT, and the strings are
-  rendered with a common left border. The second value is
-  SoAsciiText::RIGHT, and renders the strings with a common right
-  border. The last value is SoAsciiText::CENTER, in which the strings
-  are rendered with their centers aligned. The origo of the three
-  alignments are respectively left, right and center, located at the
-  baseline of the first line of text.
+/*!  \enum SoAsciiText::Justification
+  The font justification values control the text
+  alignment. Justification can have three distinct values.  The
+  default value is SoAsciiText::LEFT, and the strings are rendered
+  with a common left border. The second value is SoAsciiText::RIGHT,
+  and renders the strings with a common right border. The last value
+  is SoAsciiText::CENTER, in which the strings are rendered with their
+  centers aligned. The origo of the three alignments are respectively
+  left, right and center, located at the baseline of the first line of
+  text.
 */
 
-/*!  \var SoAsciiText::Justification SoAsciiText::LEFT The strings are
-  left-aligned; rendered with a common left border. This is the
-  default alignment.
+/*!  \var SoAsciiText::Justification SoAsciiText::LEFT
+  The strings are left-aligned; rendered with a common left
+  border. This is the default alignment.
 */
 
-/*!  \var SoAsciiText::Justification SoAsciiText::RIGHT The strings are
-  right-aligned; rendered with a common right border.
+/*!  \var SoAsciiText::Justification SoAsciiText::RIGHT
+  The strings are right-aligned; rendered with a common right border.
 */
 
-/*!  \var SoAsciiText::Justification SoAsciiText::CENTER The text is
-  center-aligned; all strings are centered.
+/*!  \var SoAsciiText::Justification SoAsciiText::CENTER
+  The text is center-aligned; all strings are centered.
 */
 
-/*!  \var SoMFString SoAsciiText::string Lines of text to
-  render. Several strings can be specified for this multifield, where
-  each string represents a line. Default value is empty.
+/*!  \var SoMFString SoAsciiText::string 
+  Lines of text to render. Several strings can be specified for this
+  multifield, where each string represents a line. Default value is
+  empty.
 */
 /*!
   \var SoSFFloat SoAsciiText::spacing
@@ -172,16 +174,16 @@
   Horizontal alignment. Default SoAsciiText::LEFT.
 */
 
-/*!  \var SoMFFloat SoAsciiText::width Defines the width of each
-  line. The text is scaled to be within the specified width. The size
-  of the text will remain the same; only the advance in the
-  x-direction is scaled. Width equal to the number of characters in
-  your text will not alter the text at all. When a width is set to 0,
-  the width field is ignored and the text rendered as normal. The
-  exact width of the rendered text depends in every case on the font
-  being used. If fewer widths are specified than the number of
-  strings, the strings without matching widths are rendered with
-  default width.
+/*!  \var SoMFFloat SoAsciiText::width
+  Defines the width of each line. The text is scaled to be within the
+  specified width. The size of the text will remain the same; only the
+  advance in the x-direction is scaled. Width equal to the number of
+  characters in your text will not alter the text at all. When a width
+  is set to 0, the width field is ignored and the text rendered as
+  normal. The exact width of the rendered text depends in every case
+  on the font being used. If fewer widths are specified than the
+  number of strings, the strings without matching widths are rendered
+  with default width.
 */
 
 #ifndef DOXYGEN_SKIP_THIS
