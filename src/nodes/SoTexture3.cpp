@@ -38,6 +38,7 @@
   be ignored (set to 0.0).
 
   \since 2002-01-10
+  \since TGS Inventor 2.6
 */
 
 #include <Inventor/SoInput.h>

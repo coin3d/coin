@@ -220,7 +220,7 @@ SoCoordinateElement::is3D() const
 
   This method is not part of the original SGI Open Inventor v2.1 API.
 
-  \since Coin 1.0.0
+  \since Coin 1.0
 */
 const SbVec3f *
 SoCoordinateElement::getArrayPtr3() const
@@ -242,7 +242,7 @@ SoCoordinateElement::getArrayPtr3() const
 
   This method is not part of the original SGI Open Inventor v2.1 API.
 
-  \since Coin 1.0.0
+  \since Coin 1.0
 */
 const SbVec4f *
 SoCoordinateElement::getArrayPtr4() const

@@ -32,6 +32,49 @@
   geometry it influences and taking care of the book-keeping routines
   for it's interaction with the relevant fields of an SoTransformation
   node.
+
+  Here's a dead simple, stand-alone example on how to set up an
+  SoTrackballManip in a scenegraph:
+
+  \code
+  #include <Inventor/Qt/SoQt.h>
+  #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+  #include <Inventor/nodes/SoCone.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/manips/SoTrackballManip.h>
+      
+  int
+  main(int argc, char* argv[])
+  {
+    QWidget * mainwin = SoQt::init(argv[0]);
+  
+    SoSeparator * root = new SoSeparator;
+    root->ref();
+  
+    SoTrackballManip * manip = new SoTrackballManip;
+    root->addChild(manip);
+  
+    root->addChild(new SoCone);
+      
+    SoQtExaminerViewer * viewer = new SoQtExaminerViewer(mainwin);
+    viewer->setSceneGraph(root);
+      
+    SoQt::show(mainwin);
+    SoQt::mainLoop();
+  
+    root->unref();
+      
+    return 0;
+  }
+  \endcode
+
+  Compile and hit 'ESC' to go into scenegraph interaction mode in the
+  examinerviewer, then change the rotation of the cone by interacting
+  with the dragger bands.
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball.png">
+  </center>
 */
 
 #include <Inventor/manips/SoTrackballManip.h>

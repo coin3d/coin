@@ -37,6 +37,12 @@
   material, and normals. The default material binding is OVERALL. The
   default normal binding is PER_VERTEX. If no normals are set, the
   line set will be rendered with lighting disabled.
+
+  The width of the rendered lines can be controlled through the
+  insertion of an SoDrawStyle node in front of SoLineSet node(s) in
+  the scenegraph.
+
+  \sa SoIndexedLineSet
 */
 
 #include <Inventor/nodes/SoLineSet.h>

@@ -41,6 +41,13 @@
   mode, and dragging while holding down the mouse button will \e
   uniformly scale the trackball sphere.
 
+  Here's how the dragger looks with it's default geometry (minus the
+  cone, which is part of the rest of the scenegraph, of course):
+
+  <center>
+  <img src="http://doc.coin3d.org/images/Coin/draggers/trackball.png">
+  </center>
+
   For the application programmer's convenience, the Coin library also
   provides a manipulator class called SoTrackballManip, which wraps
   the SoTrackballDragger into the necessary mechanisms for making

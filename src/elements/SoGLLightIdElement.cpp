@@ -137,6 +137,9 @@ SoGLLightIdElement::increment(SoState * const state,
 int32_t
 SoGLLightIdElement::getMaxGLSources()
 {
+  // FIXME: should also make a likewise method available as part of
+  // the So*GLWidget classes. 20020802 mortene.
+
   // FIXME: consider context. pederb, 20001012
   if (SoGLLightIdElement::maxGLSources == -1) {
     // NB: don't try to be clever and move this code to the

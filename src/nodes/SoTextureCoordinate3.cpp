@@ -40,7 +40,9 @@
   coordinates already present in the state (if any).
 
   \sa SoTextureCoordinate2
+
   \since 2001-11-27
+  \since TGS Inventor 2.6
 */
 
 #include <Inventor/nodes/SoTextureCoordinate3.h>

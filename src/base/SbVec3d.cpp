@@ -90,7 +90,7 @@ SbVec3d::SbVec3d(const double x, const double y, const double z)
 }
 
 /*!  
-  Constructs an SbVec3d instance with initial values from \the
+  Constructs an SbVec3d instance with initial values from the
   single precision vector \a v.  
 
   \since 2002-04-25

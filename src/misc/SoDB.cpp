@@ -375,6 +375,10 @@ SoDB::init(void)
   SoDB::registerHeader(SbString("#Inventor V2.1 binary  "), TRUE, 2.1f,
                        NULL, NULL, NULL);
 
+  // FIXME: this is really only valid if the HAVE_VRML97 define is in
+  // place. If it's not, we should register the header in a way so
+  // that we spit out a /specific/ warning about why VRML97 is not
+  // supported in the configuration of the compiled libCoin. 20020808 mortene.
   SoDB::registerHeader(SbString("#VRML V2.0 utf8"), FALSE, 2.1f,
                        NULL, NULL, NULL);
 

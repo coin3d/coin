@@ -90,6 +90,9 @@ SoGLClipPlaneElement::pop(SoState * state,
 int
 SoGLClipPlaneElement::getMaxGLPlanes(void)
 {
+  // FIXME: should also make a likewise method available as part of
+  // the So*GLWidget classes. 20020802 mortene.
+
   if (SoGLClipPlaneElement::maxGLPlanes == -1) {
     // NB: don't try to be clever and move this code to the
     // initClass() method, as it won't work -- the GL variables may

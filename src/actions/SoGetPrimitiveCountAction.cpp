@@ -36,6 +36,9 @@
   camera view volume and does not traverse those.) Like most other
   action classes, SoGetPrimitiveCountAction actually traverses the
   complete scenegraph, not just the parts currently in view.
+
+  \since Coin 1.0
+  \since TGS Inventor 2.5
 */
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>

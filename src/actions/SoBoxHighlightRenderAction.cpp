@@ -29,7 +29,7 @@
   This action performs the same tasks as its parent class,
   SoGLRenderAction, with the added ability to render highlighted
   bounding boxes around geometry in selected nodes. This is a simple
-  but convenient way of giving feedback to the user upo interaction
+  but convenient way of giving feedback to the user upon interaction
   with the scene graph.
 
   To have the highlighting actually happen (and to be able to

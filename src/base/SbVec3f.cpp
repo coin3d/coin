@@ -188,7 +188,7 @@ SbVec3f::SbVec3f(const SbPlane & p0, const SbPlane & p1, const SbPlane & p2)
 }
 
 /*!  
-  Constructs an SbVec3f instance with initial values from \the
+  Constructs an SbVec3f instance with initial values from the
   double precision vector \a v.  
 
   \since 2002-04-25

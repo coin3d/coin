@@ -179,7 +179,7 @@ SoDiffuseColorElement::getNum() const
 
   This method is not part of the original SGI Open Inventor v2.1 API.
 
-  \since Coin 1.0.0
+  \since Coin 1.0
 */
 const SbColor *
 SoDiffuseColorElement::getColorArrayPtr() const
@@ -200,7 +200,7 @@ SoDiffuseColorElement::getColorArrayPtr() const
 
   This method is not part of the original SGI Open Inventor v2.1 API.
 
-  \since Coin 1.0.0
+  \since Coin 1.0
 */
 const uint32_t *
 SoDiffuseColorElement::getPackedArrayPtr() const
