@@ -79,6 +79,9 @@
 /* define if you have AGL OpenGL bindings */
 #undef HAVE_AGL
 
+/* define if AGL pBuffers are available on the system */
+#undef HAVE_AGL_PBUFFER
+
 /* define if the AL header should be included as AL/al.h */
 #undef HAVE_AL_AL_H
 

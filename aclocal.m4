@@ -9680,7 +9680,7 @@ fi
 # **************************************************************************
 # SIM_AC_HAVE_AGL_IFELSE( IF-FOUND, IF-NOT-FOUND )
 #
-# Check whether WGL is on the system.
+# Check whether AGL is on the system.
 
 AC_DEFUN([SIM_AC_HAVE_AGL_IFELSE], [
 sim_ac_save_ldflags=$LDFLAGS
@@ -9705,6 +9705,22 @@ else
   ifelse([$2], , :, [$2])
 fi
 ]) # SIM_AC_HAVE_AGL_IFELSE()
+ 
+
+AC_DEFUN([SIM_AC_HAVE_AGL_PBUFFER], [
+  AC_CACHE_CHECK([whether we can use AGL pBuffers],
+    sim_cv_agl_pbuffer_avail,
+    [AC_TRY_LINK([ #include <AGL/agl.h> ],
+                 [AGLPbuffer pbuffer;],
+                 [sim_cv_agl_pbuffer_avail=yes],
+                 [sim_cv_agl_pbuffer_avail=no])])
+  
+  if test x"$sim_cv_agl_pbuffer_avail" = xyes; then
+    ifelse([$1], , :, [$1])
+  else
+    ifelse([$2], , :, [$2])
+  fi
+])
 
 
 # **************************************************************************
