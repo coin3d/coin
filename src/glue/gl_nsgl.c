@@ -27,6 +27,7 @@
 
 #include "gl_nsgl.h"
 #include <stdlib.h>
+#include <string.h>
 #include <Inventor/C/glue/gl.h>
 #include <Inventor/C/glue/glp.h>
 #include <Inventor/C/errors/debugerror.h>
