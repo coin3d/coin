@@ -31,6 +31,13 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef COIN_INTERNAL
+#include <stdio.h>
+#endif
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 
 #ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
@@ -370,6 +377,17 @@ GLWrapper(int contextid)
 #elif HAVE_GLXGETPROCADDRESSARB
     gi->glXGetProcAddressARB = &glXGetProcAddressARB;
 #endif
+#endif
+
+#ifdef COIN_INTERNAL
+#if COIN_DEBUG
+    SoDebugError::post("GLWrapper()",
+                       "Using %s for dynamic binding.\n", 
+                       GLWrapper_getProcAddressMethod(gi));
+#endif // COIN_DEBUG
+#else
+    printf("GLWrapper(): Using %s for dynamic binding.\n",
+           GLWrapper_getProcAddressMethod(gi));
 #endif
 
     // Initialize everything to zero.
