@@ -148,6 +148,7 @@ RegularSources = \
 	SbTime.cpp \
 	SbVec2f.cpp \
 	SbVec2s.cpp \
+	SbVec3s.cpp \
 	SbVec3f.cpp \
 	SbVec3d.cpp \
 	SbVec4f.cpp \
@@ -183,6 +184,7 @@ PrivateHeaders = \
 	../../include/Inventor/SbTime.h \
 	../../include/Inventor/SbVec2f.h \
 	../../include/Inventor/SbVec2s.h \
+	../../include/Inventor/SbVec3s.h \
 	../../include/Inventor/SbVec3d.h \
 	../../include/Inventor/SbVec3f.h \
 	../../include/Inventor/SbVec4f.h \
@@ -255,6 +257,7 @@ base_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SbTesselator.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SbTime.$(OBJEXT) SbVec2f.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SbVec2s.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec3s.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SbVec3f.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SbVec3d.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SbVec4f.$(OBJEXT) \
@@ -276,8 +279,8 @@ libbase_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SbRotation.lo SbSphere.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SbString.lo SbTesselator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SbTime.lo SbVec2f.lo SbVec2s.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SbVec3f.lo SbVec3d.lo SbVec4f.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SbViewVolume.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec3s.lo SbVec3f.lo SbVec3d.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec4f.lo SbViewVolume.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SbViewportRegion.lo SbXfBox3f.lo
 libbase_la_OBJECTS = $(am_libbase_la_OBJECTS)
 libbase@SUFFIX@LINKHACK_la_LDFLAGS =
@@ -294,8 +297,8 @@ libbase@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SbRotation.lo SbSphere.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SbString.lo SbTesselator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SbTime.lo SbVec2f.lo SbVec2s.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SbVec3f.lo SbVec3d.lo SbVec4f.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SbViewVolume.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec3s.lo SbVec3f.lo SbVec3d.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec4f.lo SbViewVolume.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SbViewportRegion.lo SbXfBox3f.lo
 libbase@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libbase@SUFFIX@LINKHACK_la_OBJECTS)
@@ -330,7 +333,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SbVec2f.Po $(DEPDIR)/SbVec2s.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SbVec2s.Po $(DEPDIR)/SbVec3d.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SbVec3d.Po $(DEPDIR)/SbVec3f.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SbVec3f.Po $(DEPDIR)/SbVec4f.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SbVec3f.Po $(DEPDIR)/SbVec3s.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SbVec3s.Po $(DEPDIR)/SbVec4f.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SbVec4f.Po $(DEPDIR)/SbViewVolume.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SbViewVolume.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SbViewportRegion.Plo \
@@ -471,6 +475,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SbVec3d.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SbVec3f.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SbVec3f.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SbVec3s.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SbVec3s.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SbVec4f.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SbVec4f.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SbViewVolume.Plo@am__quote@

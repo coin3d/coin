@@ -41,6 +41,7 @@
 #include "SbVec2f.cpp"
 #include "SbVec2s.cpp"
 #include "SbVec3f.cpp"
+#include "SbVec3s.cpp"
 #include "SbVec4f.cpp"
 #include "SbViewVolume.cpp"
 #include "SbViewportRegion.cpp"
