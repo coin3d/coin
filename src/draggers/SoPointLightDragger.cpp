@@ -44,6 +44,8 @@
   \sa SoPointLightManip
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoPointLightDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>

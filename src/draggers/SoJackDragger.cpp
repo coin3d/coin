@@ -58,6 +58,8 @@
   also uses this dragger, for controlling an SoClipPlane node.
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoJackDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>

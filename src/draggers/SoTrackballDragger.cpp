@@ -56,6 +56,8 @@
   \sa SoTrackballManip
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoTrackballDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoAntiSquish.h>

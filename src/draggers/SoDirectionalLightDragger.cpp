@@ -48,6 +48,8 @@
   \sa SoDirectionalLightManip
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoDragPointDragger.h>

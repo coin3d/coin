@@ -43,6 +43,8 @@
   \sa SoTranslate1Dragger, SoDragPointDragger
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>

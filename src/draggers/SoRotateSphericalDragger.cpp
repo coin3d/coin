@@ -41,6 +41,8 @@
   scenegraph, as usual.
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoRotateSphericalDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>

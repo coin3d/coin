@@ -44,6 +44,8 @@
 // FIXME: Should include an URL-link to the default geometry-file?
 // Plus a small usage example.  20011113 mortene.
 
+#include <string.h>
+
 #include <Inventor/draggers/SoHandleBoxDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoDrawStyle.h>

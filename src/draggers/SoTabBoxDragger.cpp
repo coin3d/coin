@@ -45,6 +45,8 @@
   SoTabPlaneDragger instances set up as the sides of a box.
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoTabBoxDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoTabPlaneDragger.h>

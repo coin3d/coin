@@ -45,6 +45,8 @@
 // 1) set up a vertical or "depth" version of the dragger by using a
 // rotation transform. 20011021 mortene.
 
+#include <string.h>
+
 #include <Inventor/draggers/SoTranslate1Dragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>

@@ -89,6 +89,8 @@
   \endverbatim
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>

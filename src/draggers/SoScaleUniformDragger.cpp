@@ -42,6 +42,8 @@
   \sa SoScale2UniformDragger
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoScaleUniformDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>

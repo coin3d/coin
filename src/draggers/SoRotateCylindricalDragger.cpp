@@ -40,6 +40,8 @@
   transformation node in your scenegraph, as usual.
 */
 
+#include <string.h>
+
 #include <Inventor/draggers/SoRotateCylindricalDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoSeparator.h>

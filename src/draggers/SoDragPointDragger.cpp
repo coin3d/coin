@@ -50,6 +50,8 @@
 // FIXME: Should include an URL-link to the default geometry-file?
 // Plus a small usage example.  20010909 mortene.
 
+#include <string.h>
+
 #include <Inventor/draggers/SoDragPointDragger.h>
 
 #include <Inventor/SbRotation.h>

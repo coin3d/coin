@@ -41,6 +41,7 @@
   \sa SoTabBoxDragger
 */
 
+#include <string.h>
 
 #include <Inventor/draggers/SoTabPlaneDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>

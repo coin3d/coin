@@ -69,6 +69,7 @@
   \sa SoTransformerManip
 */
 
+#include <string.h>
 
 #include <Inventor/draggers/SoTransformerDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
