@@ -102,7 +102,8 @@ SbTime::SbTime(const struct timeval * const tv)
 /*!
   Returns an SbTime instance with the current clock time. The current
   time will be given as a particular number of seconds and
-  microseconds since 00:00:00.00 January 1st 1970.
+  microseconds since 00:00:00 January 1, 1970, in Coordinated
+  Universal Time (UTC).
 
   \sa setToTimeOfDay().
  */
