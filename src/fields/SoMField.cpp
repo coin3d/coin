@@ -234,6 +234,9 @@ SoMField::get1(const int index, SbString & valuestring)
 SbBool
 SoMField::readValue(SoInput * in)
 {
+  // FIXME: temporary disable notification (if on) during reading the
+  // field elements. 20000429 mortene.
+
   // This macro is convenient for reading with error detection.
 #define READ_VAL(val) \
   if (!in->read(val)) { \
