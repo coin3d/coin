@@ -34,9 +34,10 @@
   width * height * bytesperpixel.
 
   For texture maps, the bytes per pixel setting translates to: 1 byte
-  means a grayscale imagemap, 2 bytes is grayscale + translucency, 3
-  bytes is 8-bit red + 8-bit green + 8-bit blue (aka RGB) and 4 bytes
-  per pixel means 3 bytes for RGB + 1 byte translucency value.
+  means a grayscale imagemap, 2 bytes is grayscale + opacity
+  (i.e. alpha value), 3 bytes is 8-bit red + 8-bit green + 8-bit blue
+  (aka RGB) and 4 bytes per pixel means 3 bytes for RGB + 1 byte
+  opacity value (aka RGBA).
 
   \sa SoTexture2
 */
@@ -110,7 +111,7 @@ SoSFImage::readValue(SoInput * in)
   }
 
   int buffersize = int(size[0]) * int(size[1]) * nc;
-  
+
   if (buffersize == 0 &&
       (size[0] != 0 || size[1] != 0 || nc != 0)) {
     SoReadError::post(in, "Invalid image specification %dx%dx%d",
