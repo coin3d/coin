@@ -132,15 +132,18 @@ void
 SoBlinker::notify(SoNotList * nl)
 {
   // See if the whichChild field was "manually" set.
-  short counterval = ((SoSFShort *)(this->counter->output)[0])->getValue();
-  if (this->whichChild.getValue() != counterval) {
-    this->counter->enableNotify(FALSE); // Wrap to avoid recursive invocation.
-    this->counter->reset.setValue(this->whichChild.getValue());
-    this->counter->enableNotify(TRUE);
+  if (nl->getFirstRec()->getBase() == this &&
+      nl->getLastField() == &this->whichChild) {
+    short counterval = ((SoSFShort *)(this->counter->output)[0])->getValue();
+    if (this->whichChild.getValue() != counterval) {
+      this->counter->enableNotify(FALSE); // Wrap to avoid recursive invocation.
+      this->counter->reset.setValue(this->whichChild.getValue());
+      this->counter->enableNotify(TRUE);
+    }
   }
 
   // Check if a child was added or removed.
-  int lastchildidx = this->getChildren()->getLength() - 1;
+  int lastchildidx = this->getNumChildren() - 1;
   if (this->counter->max.getValue() != lastchildidx) {
     this->counter->enableNotify(FALSE); // Wrap to avoid recursive invocation.
     this->counter->min.setValue(lastchildidx >= 0 ? 0 : SO_SWITCH_NONE);
