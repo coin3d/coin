@@ -26,6 +26,7 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
+#include <stddef.h>
 
 #include <Inventor/C/glue/fontlib_wrapper.h>
 #include <Inventor/C/tidbits.h>
