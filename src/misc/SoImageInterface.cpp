@@ -397,12 +397,25 @@ search_for_image(const char * const orgname, const SbStringList & dirlist)
   const char dirsplit = '/';
 #endif
 
+  int i;
+
   SbString fullname = orgname;
   TRY_FILE(fullname);
 
+  SbString path = SoInput::getPathname(fullname);
+  if (path.getLength()) {
+    SbBool insertdelim = path[path.getLength()-1] != dirsplit;
+    SbString tmpstring;
+    for (i = 0; i < dirlist.getLength(); i++) {
+      if (insertdelim) tmpstring.sprintf("%s%c%s", dirlist[i]->getString(), dirsplit, fullname.getString());
+      else tmpstring.sprintf("%s%s", dirlist[i]->getString(), fullname.getString());
+      TRY_FILE(tmpstring);
+    }
+  }
+
   SbString basename = SoInput::getBasename(orgname);
 
-  for (int i = 0; i < dirlist.getLength(); i++) {
+  for (i = 0; i < dirlist.getLength(); i++) {
     fullname.sprintf("%s%c%s", dirlist[i]->getString(), dirsplit, basename.getString());
     TRY_FILE(fullname);
 
