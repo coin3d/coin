@@ -733,6 +733,7 @@ SoGLRenderAction::abortNow(void)
 void
 SoGLRenderAction::setRenderingIsRemote(SbBool isremote)
 {
+  // FIXME: forward value to SoGLCacheContextElement aswell? 20011211 mortene.
   THIS->renderingremote = isremote;
 }
 
