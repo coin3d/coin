@@ -23,11 +23,14 @@
 
 #include <assert.h>
 #include <stddef.h>
+#include <stdlib.h>
 
 #define CC_LIST_DEFAULT_SIZE 4
 
 /* ********************************************************************** */
 
+/* FIXME: consider making this struct public to enable users to have
+   lists on the stack */
 struct cc_list {
   int itembuffersize;
   int numitems;
@@ -37,26 +40,22 @@ struct cc_list {
 
 /* ********************************************************************** */
 
-cc_list *  cc_list_construct(void);
-cc_list *  cc_list_construct_sized(unsigned int size);
-/* cc_list *  cc_list_clone(cc_list * list); */
-void        cc_list_destruct(cc_list * list);
+static void 
+list_grow(cc_list * list) 
+{
+  int i, n;
+  void ** newbuffer;
+  list->itembuffersize <<= 1;
 
-void        cc_list_append(cc_list * list, void * item);
-int         cc_list_find(cc_list * list, void * item);
-void        cc_list_insert(cc_list * list, void * item, unsigned int pos);
-void        cc_list_remove(cc_list * list, unsigned int pos);
-void        cc_list_remove_item(cc_list * list, void * item);
-void        cc_list_remove_fast(cc_list * list, unsigned int pos);
-void        cc_list_fit(cc_list * list);
-void        cc_list_truncate(cc_list * list, unsigned int length);
-void        cc_list_truncate_fit(cc_list * list, unsigned int length);
-
-int         cc_list_get_length(cc_list * list);
-void **     cc_list_get_array(cc_list * list);
-
-void        cc_list_push(cc_list * list, void * item);
-void *      cc_list_pop(cc_list * list);
+  newbuffer = (void**) malloc(list->itembuffersize*sizeof(void*));
+  
+  n = list->numitems;
+  for (i = 0; i < n; i++) newbuffer[i] = list->itembuffer[i];
+  if (list->itembuffer != list->builtinbuffer) {
+    free(list->itembuffer);
+  }
+  list->itembuffer = newbuffer;
+}
 
 /* ********************************************************************** */
 
@@ -64,171 +63,194 @@ cc_list *
 cc_list_construct(void)
 {
   return cc_list_construct_sized(CC_LIST_DEFAULT_SIZE);
-} /* cc_list_construct() */
+}
 
 cc_list *
-cc_list_construct_sized(unsigned int size)
+cc_list_construct_sized(int size)
 {
-    : itembuffersize(DEFAULTSIZE), numitems(0), itembuffer(builtinbuffer) {
-    if (sizehint > DEFAULTSIZE) this->grow(sizehint);
+  cc_list * list = (cc_list*) malloc(sizeof(cc_list));
+  assert(list);
+  if (size > CC_LIST_DEFAULT_SIZE) {
+    list->itembuffer = (void**) malloc(sizeof(void*)*size);
+    assert(list->itembuffer);
+    list->itembuffersize = size;
+  }
+  else {
+    list->itembuffer = list->builtinbuffer;
+    list->itembuffersize = CC_LIST_DEFAULT_SIZE;
+  }
+  list->numitems = 0;
+  return list;
+}
+
+cc_list * 
+cc_list_clone(cc_list * list)
+{
+  int i;
+  cc_list * cloned = cc_list_construct_sized(list->numitems);
+
+  for (i = 0; i < list->numitems; i++) {
+    cloned->itembuffer[i] = list->itembuffer[i];
+  }
+  cloned->numitems = list->numitems;
+  return cloned;
 }
 
 void
 cc_list_destruct(cc_list * list)
 {
-    if (this->itembuffer != builtinbuffer) delete[] this->itembuffer;
-} /* cc_list_destruct() */
+  if (list->itembuffer != list->builtinbuffer) {
+    free(list->itembuffer);
+  }
+  free(list);
+}
 
 void
-cc_list_append(cc_list * list,fvoid * item)
+cc_list_append(cc_list * list, void * item)
 {
-  if (this->numitems == this->itembuffersize) this->grow();
-  this->itembuffer[this->numitems++] = item;
+  if (list->numitems == list->itembuffersize) {
+    list_grow(list);
+  }
+  list->itembuffer[list->numitems++] = item;
 }
 
 int
 cc_list_find(cc_list * list, void * item)
 {
-  for (int i = 0; i < this->numitems; i++)
-    if (this->itembuffer[i] == item) return i;
+  int i, n = list->numitems;
+  for (i = 0; i < n; i++) {
+    if (list->itembuffer[i] == item) return i;
+  }
   return -1;
 }
 
 void
-cc_list_insert(cc_list * list, void * item, unsigned int pos)
+cc_list_insert(cc_list * list, void * item, int insertbefore)
 {
+  int i;
 #ifdef COIN_EXTRA_DEBUG
-    assert(insertbefore >= 0 && insertbefore <= this->numitems);
+  assert(insertbefore >= 0 && insertbefore <= list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
-    if (this->numitems == this->itembuffersize) this->grow();
-
-    for (int i = this->numitems; i > insertbefore; i--)
-      this->itembuffer[i] = this->itembuffer[i-1];
-    this->itembuffer[insertbefore] = item;
-    this->numitems++;
+  if (list->numitems == list->itembuffersize) {
+    list_grow(list);
+  }  
+  for (i = list->numitems; i > insertbefore; i--) {
+    list->itembuffer[i] = list->itembuffer[i-1];
+  }
+  list->itembuffer[insertbefore] = item;
+  list->numitems++;
 }
 
 void
-cc_list_remove(cc_list * list, const int index)
+cc_list_remove(cc_list * list, int index)
 {
+  int i;
 #ifdef COIN_EXTRA_DEBUG
-    assert(index >= 0 && index < this->numitems);
+  assert(index >= 0 && index < list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
-    this->numitems--;
-    for (int i = index; i < this->numitems; i++)
-      this->itembuffer[i] = this->itembuffer[i + 1];
+  list->numitems--;
+  for (i = index; i < list->numitems; i++) {
+    list->itembuffer[i] = list->itembuffer[i + 1];
+  }
 }
 
 void
-cc_list_remove_item(cc_list * list,void * item)
+cc_list_remove_item(cc_list * list, void * item)
 {
-    int idx = this->find(item);
+  int idx = cc_list_find(list, item);
 #ifdef COIN_EXTRA_DEBUG
-    assert(idx != -1);
+  assert(idx != -1);
 #endif /* COIN_EXTRA_DEBUG */
-    this->remove(idx);
+  cc_list_remove(list, idx);
 }
 
 void
-cccist_remove_fast(cc_list * list, const int index)
+cc_list_remove_fast(cc_list * list, int index)
 {
 #ifdef COIN_EXTRA_DEBUG
-    assert(index >= 0 && index < this->numitems);
+  assert(index >= 0 && index < list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
-    this->itembuffer[index] = this->itembuffer[--this->numitems];
+  list->itembuffer[index] = list->itembuffer[--list->numitems];
 }
 
 
 void
 cc_list_fit(cc_list * list)
 {
-    const int items = this->numitems;
-
-    if (items < this->itembuffersize) {
-      Type * newitembuffer = this->builtinbuffer;
-      if (items > DEFAULTSIZE) newitembuffer = new Type[items];
-
-      if (newitembuffer != this->itembuffer) {
-        for (int i = 0; i < items; i++) newitembuffer[i] = this->itembuffer[i];
+  int i;
+  int items = list->numitems;
+  
+  if (items < list->itembuffersize) {
+    void ** newitembuffer = list->builtinbuffer;
+    if (items > CC_LIST_DEFAULT_SIZE) newitembuffer = (void**) malloc(sizeof(void*)*items);
+    
+    if (newitembuffer != list->itembuffer) {
+      for (i = 0; i < items; i++) {
+        newitembuffer[i] = list->itembuffer[i];
       }
-
-      if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
-      this->itembuffer = newitembuffer;
-      this->itembuffersize = items > DEFAULTSIZE ? items : DEFAULTSIZE;
     }
+    
+    if (list->itembuffer != list->builtinbuffer) {
+      free(list->itembuffer);
+    }
+    list->itembuffer = newitembuffer;
+    list->itembuffersize = items > CC_LIST_DEFAULT_SIZE ? items : CC_LIST_DEFAULT_SIZE;
+  }
 }
 
 void
-cc_list_truncate(cc_list * list, const int length)
+cc_list_truncate(cc_list * list, int length)
 {
 #ifdef COIN_EXTRA_DEBUG
-    assert(length <= this->numitems);
+  assert(length <= list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
-    this->numitems = length;
-  }
+  list->numitems = length;
+}
 
 void
-cc_list_truncate_fit(cc_list * list, const int length)
+cc_list_truncate_fit(cc_list * list, int length)
 {
 #ifdef COIN_EXTRA_DEBUG
-    assert(length <= this->numitems);
+  assert(length <= list->numitems);
 #endif /* COIN_EXTRA_DEBUG */
-    this->numitems = length;
-    this->fit();
-  }
+  list->numitems = length;
+  cc_list_fit(list);
+}
 
 int
 cc_list_get_length(cc_list * list)
 {
-    return this->numitems;
-  }
+  return list->numitems;
+}
 
 void **
 cc_list_get_array(cc_list * list)
 {
-    return &this->itembuffer[start];
+  return list->itembuffer;
+}
+
+void * 
+cc_list_get(cc_list * list, int itempos)
+{
+#ifdef COIN_EXTRA_DEBUG
+  assert(itempos < list->numitems);
+#endif /* COIN_EXTRA_DEBUG */
+  return list->itembuffer[itempos];
 }
 
 void
 cc_list_push(cc_list * list, void * item)
 {
-  this->append(item);
+  cc_list_append(list, item);
 }
 
 void *
 cc_list_pop(cc_list * list)
 {
 #ifdef COIN_EXTRA_DEBUG
-    assert(this->numitems > 0);
+  assert(list->numitems > 0);
 #endif /* COIN_EXTRA_DEBUG */
-    return this->itembuffer[--this->numitems];
+  return list->itembuffer[--list->numitems];
 }
-
-#if 0
-
-  void expand(const int size) {
-    this->grow(size);
-    this->numitems = size;
-  }
-
-  int getArraySize(void) const {
-    return this->itembuffersize;
-  }
-
-private:
-  void grow(const int size = -1) {
-    // Default behavior is to double array size.
-    if (size == -1) this->itembuffersize <<= 1;
-    else if (size <= this->itembuffersize) return;
-    else { this->itembuffersize = size; }
-
-    Type * newbuffer = new Type[this->itembuffersize];
-    const int n = this->numitems;
-    for (int i = 0; i < n; i++) newbuffer[i] = this->itembuffer[i];
-    if (this->itembuffer != this->builtinbuffer) delete[] this->itembuffer;
-    this->itembuffer = newbuffer;
-  }
-
-#endif
 
 /* ********************************************************************** */

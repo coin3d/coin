@@ -5,11 +5,11 @@ baseinc_HEADERS = \
 	debug.h \
 	rbptree.h \
 	time.h \
-	string.h
+	string.h \
+	list.h
 
 EXTRA_DIST = \
 	basep.h \
-	list.h \
 	name.h \
 	string.h
 

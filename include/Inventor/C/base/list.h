@@ -30,25 +30,26 @@ extern "C" {
 
 /* ********************************************************************** */
 
-typedef  struct cc_list  cc_list;
+typedef struct cc_list cc_list;
 
 COIN_DLL_API cc_list * cc_list_construct(void);
-COIN_DLL_API cc_list * cc_list_construct_sized(unsigned int size);
-/* cc_list * cc_list_clone(cc_list * list); */
+COIN_DLL_API cc_list * cc_list_construct_sized(int size);
+COIN_DLL_API cc_list * cc_list_clone(cc_list * list);
 COIN_DLL_API void cc_list_destruct(cc_list * list);
 
 COIN_DLL_API void cc_list_append(cc_list * list, void * item);
 COIN_DLL_API int cc_list_find(cc_list * list, void * item);
-COIN_DLL_API void cc_list_insert(cc_list * list, void * item, unsigned int pos);
-COIN_DLL_API void cc_list_remove(cc_list * list, unsigned int pos);
+COIN_DLL_API void cc_list_insert(cc_list * list, void * item, int pos);
+COIN_DLL_API void cc_list_remove(cc_list * list, int pos);
 COIN_DLL_API void cc_list_remove_item(cc_list * list, void * item);
-COIN_DLL_API void cc_list_remove_fast(cc_list * list, unsigned int pos);
+COIN_DLL_API void cc_list_remove_fast(cc_list * list, int pos);
 COIN_DLL_API void cc_list_fit(cc_list * list);
-COIN_DLL_API void cc_list_truncate(cc_list * list, unsigned int length);
-COIN_DLL_API void cc_list_truncate_fit(cc_list * list, unsigned int length);
+COIN_DLL_API void cc_list_truncate(cc_list * list, int length);
+COIN_DLL_API void cc_list_truncate_fit(cc_list * list, int length);
 
 COIN_DLL_API int cc_list_get_length(cc_list * list);
 COIN_DLL_API void ** cc_list_get_array(cc_list * list);
+COIN_DLL_API void * cc_list_get(cc_list * list, int itempos);
 
 COIN_DLL_API void cc_list_push(cc_list * list, void * item);
 COIN_DLL_API void * cc_list_pop(cc_list * list);
