@@ -36,7 +36,9 @@
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoTextureUnitElement.h>
-
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLMultiTextureImageElement.h>
+#include <Inventor/elements/SoGLMultiTextureEnabledElement.h>
 
 /*!
   \var SoSFInt32 SoTextureUnit::unit
@@ -74,6 +76,10 @@ SoTextureUnit::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureUnit, SO_FROM_COIN_2_2);
 
   SO_ENABLE(SoGLRenderAction, SoTextureUnitElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureCoordinateElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureImageElement);
+  SO_ENABLE(SoGLRenderAction, SoGLMultiTextureEnabledElement);
+
 }
 
 // Doc from superclass.
