@@ -58,14 +58,14 @@ SoGLDiffuseColorElement::~SoGLDiffuseColorElement()
 {
 }
 
-inline void 
+inline void
 SoGLDiffuseColorElement::updategl(const uint32_t col)
 {
   this->currentpacked = col;
   glColor4ub((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, col&0xff);
 }
 
-inline void 
+inline void
 SoGLDiffuseColorElement::updategl(const SbVec4f & col)
 {
   this->current = col;
@@ -158,7 +158,13 @@ SoGLDiffuseColorElement::send(const int index)
 }
 
 /*!
-  Do not use. Provided only to support SoGLLazyElement.
+  Can be used to send a color to GL. If you plan to write your own
+  GL-code where you send colors to GL, it might be a good idea to
+  use this method to enable the element to keep track of the current
+  OpenGL color.
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
 */
 void
 SoGLDiffuseColorElement::sendOnePacked(const uint32_t packedcol)
@@ -172,7 +178,15 @@ SoGLDiffuseColorElement::sendOnePacked(const uint32_t packedcol)
   }
 }
 
-void 
+/*!
+  \overload
+
+  This method was not part of the Inventor v2.1 API, and is an
+  extension specific to Coin.
+
+  \since 2001-10-12
+*/
+void
 SoGLDiffuseColorElement::sendOneColor(const SbVec4f & color)
 {
   if (this->currentispacked) {
@@ -180,7 +194,6 @@ SoGLDiffuseColorElement::sendOneColor(const SbVec4f & color)
     this->updategl(color);
   }
   else {
-    if (this->current != color) this->updategl(color);    
+    if (this->current != color) this->updategl(color);
   }
 }
-
