@@ -690,7 +690,7 @@ SoIndexedFaceSet::generateDefaultNormals(SoState * state,
     nc->generatePerVertex(coords,
                           coordIndex.getValues(0),
                           coordIndex.getNum(),
-                          SoCreaseAngleElement::get(state),
+                          SoCreaseAngleElement::get(state, this->getNodeType() == SoNode::VRML1),
                           NULL,
                           ccw);
     break;

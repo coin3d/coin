@@ -231,8 +231,16 @@ SoShapeHints::doAction(SoAction * action)
                            vo, st, ft);
 
   if (!this->creaseAngle.isIgnored() && !TEST_OVERRIDE(CREASE_ANGLE)) {
-    SoCreaseAngleElement::set(state, this,
-                              this->creaseAngle.getValue());
+    float ca = this->creaseAngle.getValue();
+    // Fix to handle VRML1 ShapeHints nodes correctly. The default
+    // creaseAngle value for VRML1 is 0.5, while it's 0.0 for
+    // Inventor 2.1
+    if (this->creaseAngle.isDefault() &&
+        (this->getNodeType() == SoNode::VRML1) &&
+        (ca == 0.0f)) {
+      ca = 0.5f;
+    }
+    SoCreaseAngleElement::set(state, this, ca);
     if (this->isOverride()) {
       SoOverrideElement::setCreaseAngleOverride(state, this, TRUE);
     }
