@@ -25,6 +25,9 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <coindefs.h> // COIN_STUB()
 
+#include <data/draggerDefaults/rotateCylindricalDragger.h>
+
+
 SO_KIT_SOURCE(SoRotateCylindricalDragger);
 
 
@@ -46,7 +49,9 @@ SoRotateCylindricalDragger::SoRotateCylindricalDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(feedbackActive, SoSeparator, TRUE, feedbackSwitch, "", TRUE);
 
   if (SO_KIT_IS_FIRST_INSTANCE()) {
-    SoInteractionKit::readDefaultParts("rotateCylindricalDragger.iv", NULL, 0);
+    SoInteractionKit::readDefaultParts("rotateCylindricalDragger.iv",
+                                       ROTATECYLINDRICALDRAGGER_draggergeometry,
+                                       sizeof(ROTATECYLINDRICALDRAGGER_draggergeometry));
   }
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
