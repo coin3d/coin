@@ -296,6 +296,13 @@ SoCallbackAction::commonConstructor(void)
   THIS->viewportset = FALSE;
 }
 
+/*!  
+  Sets the viewport region for this action. When set, the viewport
+  element is initialized right before a traversal starts, making it
+  the current viewport.
+
+  This method is an extension versus the Open Inventor API.  
+*/
 void 
 SoCallbackAction::setViewportRegion(const SbViewportRegion & vp)
 {
