@@ -57,6 +57,14 @@ static SbList <SoProto*> * protolist;
 static SoFetchExternProtoCB * soproto_fetchextern_cb = NULL;
 static void * soproto_fetchextern_closure = NULL;
 
+// atexit callback
+static void
+soproto_cleanup(void)
+{
+  delete protolist;
+  protolist = NULL;
+}
+
 static SoProto *
 soproto_fetchextern_default_cb(SoInput * in,
                                const SbString * urls,
@@ -171,6 +179,7 @@ SoProto::initClass(void)
                                     SbName("SoProto"), NULL,
                                     SoNode::nextActionMethodIndex++);
   protolist = new SbList<SoProto*>;
+  coin_atexit((coin_atexit_f*) soproto_cleanup, 0);
   // this will set a default callback
   SoProto::setFetchExternProtoCallback(NULL, NULL);
 }
@@ -656,6 +665,51 @@ soproto_find_node(SoNode * root, SbName name, SoSearchAction & sa)
 }
 
 //
+// Used to check for fieldname. Wil first test "<name>", then "set_<name>",
+// and then "<name>_changed".
+//
+static SbName 
+soproto_find_fieldname(SoNode * node, const SbName & name)
+{
+  if (node->getField(name)) return name;
+  SbString test;
+  if (strncmp("set_", name.getString(), 4) == 0) {
+    test = name.getString() + 4;
+    if (node->getField(test.getString())) return SbName(test.getString());
+  }
+  test = name.getString();
+  // test for "_changed" at the end of the fieldname
+  if (test.getLength() > 8) { // 8 == strlen("_changed")
+    test = test.getSubString(0, test.getLength() - 9);
+    if (node->getField(test.getString())) return SbName(test.getString());
+  }
+  return name;
+}
+
+//
+// Used to check for outputname. Wil first test "<name>", then "set_<name>",
+// and then "<name>_changed".
+//
+static SbName 
+soproto_find_outputname(SoNodeEngine * node, const SbName & name)
+{
+  if (node->getOutput(name)) return name;
+  SbString test;
+  if (strncmp("set_", name.getString(), 4) == 0) {
+    test = name.getString() + 4;
+    if (node->getOutput(test.getString())) return SbName(test.getString());
+  }
+  test = name.getString();
+  // test for "_changed" at the end of the fieldname
+  if (test.getLength() > 8) { // 8 == strlen("_changed")
+    test = test.getSubString(0, test.getLength() - 9);
+    if (node->getOutput(test.getString())) return SbName(test.getString());
+  }
+  return name;
+}
+
+
+//
 // helper function to find field. First test the actual fieldname,
 // then set set_<fieldname>, then <fieldname>_changed.
 //
@@ -777,12 +831,13 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
     SoNode * node = PRIVATE(this)->isnodelist[i];
     
     SbName fieldname = PRIVATE(this)->isfieldlist[i];
+    fieldname = soproto_find_fieldname(node, fieldname);
     SoField * dstfield = node->getField(fieldname);
-
     SoEngineOutput * eventout = NULL;
 
     if (!dstfield) {
       if (node->isOfType(SoNodeEngine::getClassTypeId())) {
+        fieldname = soproto_find_outputname((SoNodeEngine*)node, fieldname);
         eventout = ((SoNodeEngine*)node)->getOutput(fieldname);
       }
       if (!eventout) {
