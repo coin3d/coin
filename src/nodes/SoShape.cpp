@@ -27,7 +27,6 @@
 
 #include <Inventor/misc/SoState.h>
 #include <coindefs.h> // COIN_STUB()
-#include <Inventor/SbBox2f.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -39,12 +38,9 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>
-#include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/elements/SoLightModelElement.h>
-#include <Inventor/elements/SoPickStyleElement.h>
 
 // Lazy GL-elements not handled by SoMaterialBundle
 #include <Inventor/elements/SoGLPointSizeElement.h>
@@ -72,7 +68,6 @@
 #include <GL/gl.h>
 #include <string.h>
 
-#include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 
 /*!

@@ -37,7 +37,6 @@
   SoUnknownEngine instead of SoUnknownNode.
 */
 
-#include <Inventor/misc/SoBase.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>

@@ -20,9 +20,7 @@
 #include <Inventor/draggers/SoScale1Dragger.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/SbVec2f.h>
 #include <Inventor/SbRotation.h>
-#include <Inventor/SbVec3f.h>
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
 

@@ -31,9 +31,6 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #include <coindefs.h> // COIN_STUB()
 

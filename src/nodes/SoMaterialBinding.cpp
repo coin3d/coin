@@ -26,7 +26,6 @@
 */
 
 
-#include <Inventor/nodes/SoMaterialBinding.h>
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoCallbackAction.h>

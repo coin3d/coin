@@ -46,7 +46,6 @@
 #include <Inventor/elements/SoComplexityTypeElement.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
-#include <Inventor/details/SoDetail.h>
 
 #define CYL_SIDE_NUMTRIS 40.0f
 

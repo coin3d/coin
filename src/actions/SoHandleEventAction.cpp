@@ -36,7 +36,6 @@
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoSubActionP.h>
 #include <Inventor/events/SoEvent.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>

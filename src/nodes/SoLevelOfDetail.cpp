@@ -32,13 +32,9 @@
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/nodes/SoShape.h>
-#include <Inventor/SbVec2s.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 // FIXME: this node should have a cleanUp-func
 static SoGetBoundingBoxAction *bboxAction = NULL;

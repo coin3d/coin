@@ -40,9 +40,6 @@
 #include <GL/gl.h>
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 #define FLAG_FUNCTION           0x01

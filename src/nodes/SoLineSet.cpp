@@ -42,7 +42,6 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/errors/SoDebugError.h>

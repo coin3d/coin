@@ -30,7 +30,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/actions/SoActions.h>
 #include <Inventor/errors/SoDebugError.h>
-#include <Inventor/fields/SoField.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoUnknownNode.h>

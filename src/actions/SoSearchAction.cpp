@@ -37,8 +37,6 @@
 #include <Inventor/actions/SoSearchAction.h>
 
 #include <Inventor/actions/SoSubActionP.h>
-#include <Inventor/errors/SoDebugError.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
 
 // *************************************************************************

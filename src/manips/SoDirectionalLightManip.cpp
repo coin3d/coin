@@ -40,10 +40,6 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SbMatrix.h>
-#include <Inventor/SbVec3f.h>
-#include <Inventor/SbRotation.h>
-#include <Inventor/SoFullPath.h>
 #include <Inventor/SoNodeKitPath.h>
 
 #if COIN_DEBUG

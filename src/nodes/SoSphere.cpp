@@ -46,7 +46,6 @@
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
-#include <Inventor/details/SoDetail.h>
 
 /*!
   \var SoSFFloat SoSphere::radius

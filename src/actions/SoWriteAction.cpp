@@ -48,7 +48,6 @@
 #include <Inventor/actions/SoSubActionP.h>
 
 #include <Inventor/SoOutput.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
 #include <coindefs.h> // COIN_STUB()
 

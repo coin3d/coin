@@ -38,7 +38,6 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#include <Inventor/SbName.h>
 
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFFloat.h>

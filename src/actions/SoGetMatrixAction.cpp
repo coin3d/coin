@@ -44,9 +44,6 @@
 #include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 SO_ACTION_SOURCE(SoGetMatrixAction);

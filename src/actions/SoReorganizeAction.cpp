@@ -24,7 +24,6 @@
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoReorganizeAction.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
 #include <coindefs.h> // COIN_STUB()
 
 

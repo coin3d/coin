@@ -31,9 +31,6 @@
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/sensors/SoDataSensor.h>
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 /*!

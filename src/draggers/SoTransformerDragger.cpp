@@ -18,12 +18,9 @@
 \**************************************************************************/
 
 #include <Inventor/draggers/SoTransformerDragger.h>
-#include <Inventor/SbVec2f.h>
 #include <Inventor/nodes/SoAntiSquish.h>
-#include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoLocateHighlight.h>
 #include <Inventor/nodes/SoRotation.h>
-#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
@@ -31,12 +28,10 @@
 #include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>
-#include <Inventor/SbRotation.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbSphereSectionProjector.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
-#include <Inventor/SoPath.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -44,9 +39,6 @@
 
 #include <coindefs.h> // COIN_STUB()
 
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #define WHATKIND_NONE      0
 #define WHATKIND_SCALE     1

@@ -41,8 +41,6 @@
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoSubActionP.h>
 
-#include <Inventor/SbName.h>
-#include <Inventor/SbVec4f.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/elements/SoAmbientColorElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
@@ -50,7 +48,6 @@
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>
 #include <Inventor/elements/SoDiffuseColorElement.h>
-#include <Inventor/elements/SoDrawStyleElement.h>
 #include <Inventor/elements/SoEmissiveColorElement.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoFontNameElement.h>
@@ -73,9 +70,7 @@
 #include <Inventor/elements/SoShininessElement.h>
 #include <Inventor/elements/SoSpecularColorElement.h>
 #include <Inventor/elements/SoSwitchElement.h>
-#include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 #include <Inventor/elements/SoTextureOverrideElement.h>
 #include <Inventor/elements/SoTransparencyElement.h>

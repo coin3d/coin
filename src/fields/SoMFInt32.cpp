@@ -28,12 +28,12 @@
   \sa SoSFInt32
 */
 
-#include <Inventor/fields/SoMFInt32.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFInt32.h>
 
 

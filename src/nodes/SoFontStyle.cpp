@@ -33,8 +33,6 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 

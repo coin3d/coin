@@ -44,7 +44,6 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 
-#include <Inventor/SbMatrix.h>
 
 /*!
   \enum SoSeparator::CacheEnabled

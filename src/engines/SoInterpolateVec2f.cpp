@@ -21,7 +21,6 @@
 
 #include <Inventor/engines/SoInterpolateVec2f.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/SoType.h>
 
 SO_ENGINE_SOURCE(SoInterpolateVec2f);
 

@@ -41,9 +41,7 @@
   Some methods related to reading VRML 2 files are missing.
  */
 
-#include <Inventor/fields/SoFieldData.h>
 #include <Inventor/nodes/SoUnknownNode.h>
-#include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>

@@ -33,7 +33,6 @@
 
 
 #include <Inventor/fields/SoGlobalField.h>
-#include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>

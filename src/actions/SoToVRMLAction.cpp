@@ -25,7 +25,6 @@
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoToVRMLAction.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
 #include <coindefs.h> // COIN_STUB()
 
 

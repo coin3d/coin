@@ -44,16 +44,9 @@
  */
 
 #include <Inventor/actions/SoActions.h>
-#include <Inventor/SoType.h>
 #include <Inventor/elements/SoOverrideElement.h>
-#include <Inventor/lists/SoEnabledElementsList.h>
-#include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoNode.h>
 #include <coindefs.h> // COIN_STUB()
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 
 #include <assert.h>

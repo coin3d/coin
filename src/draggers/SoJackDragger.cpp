@@ -32,7 +32,6 @@
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-#include <Inventor/SbMatrix.h>
 #include <coindefs.h> // COIN_STUB()
 
 

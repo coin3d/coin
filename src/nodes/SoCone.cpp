@@ -45,7 +45,6 @@
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
-#include <Inventor/details/SoDetail.h>
 
 /*!
   \enum SoCone::Part

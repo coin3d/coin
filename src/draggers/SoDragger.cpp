@@ -58,12 +58,9 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 
-#include <Inventor/SbViewVolume.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/nodes/SoMatrixTransform.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/misc/SoTempPath.h>
-#include <Inventor/SoNodeKitPath.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
