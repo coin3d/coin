@@ -30,13 +30,13 @@
 #include <Inventor/C/threads/mutex.h>
 
 #ifdef HAVE_UNISTD_H
-#include <unistd.h> // STDERR_FILENO
-#endif // HAVE_UNISTD_H
+#include <unistd.h> /* STDERR_FILENO */
+#endif /* HAVE_UNISTD_H */
 
 #ifndef STDERR_FILENO
-// stderr should always be on file descriptor 2, according to POSIX.
+/* stderr should always be on file descriptor 2, according to POSIX. */
 #define STDERR_FILENO 2
-#endif // STDERR_FILENO
+#endif /* STDERR_FILENO */
 
 static cc_mutex * cc_error_mutex = NULL;
 
@@ -47,11 +47,11 @@ static cc_mutex * cc_error_mutex = NULL;
 void
 cc_error_default_handler_cb(const cc_error * err, void * data)
 {
-  // It is not possible to "pass" C library data from the application
-  // to a MSWin .DLL, so this is necessary to get hold of the stderr
-  // FILE*. Just using fprintf(stderr, ...) or fprintf(stdout, ...)
-  // directly will result in a crash when Coin has been compiled as a
-  // .DLL.
+  /* It is not possible to "pass" C library data from the application
+     to a MSWin .DLL, so this is necessary to get hold of the stderr
+     FILE*. Just using fprintf(stderr, ...) or fprintf(stdout, ...)
+     directly will result in a crash when Coin has been compiled as a
+     .DLL. */
   static FILE * coin_stderr = NULL;
   if (!coin_stderr) { coin_stderr = fdopen(STDERR_FILENO, "w"); }
 
