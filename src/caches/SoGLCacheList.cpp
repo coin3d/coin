@@ -79,10 +79,6 @@ public:
   static void contextCleanup(uint32_t context, void * closure) {
     SoGLCacheListP * thisp = (SoGLCacheListP*) closure;
 
-    SoDebugError::post("SoGLCacheList contextCleanup()",
-		       "called.");
-
-#if 0 // disabled kyrah (again)
     int i = 0;
     int n = thisp->itemlist.getLength();
     while (i < n) {
@@ -93,7 +89,6 @@ public:
       }
       else i++;
     }
-#endif
   }
 };
 

@@ -618,10 +618,6 @@ SoSceneTexture2P::updatePBuffer(SoState * state, const float quality)
     this->glaction->setTransparencyType((SoGLRenderAction::TransparencyType)
                                         SoShapeStyleElement::getTransparencyType(state));
 
-    
-    SoDebugError::postWarning("SoSceneTexture2::updatePBuffer",
-			      "making current");
-
     cc_glglue_context_make_current(this->glcontext);
     glEnable(GL_DEPTH_TEST);
     this->glaction->apply(scene);
