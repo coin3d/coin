@@ -50,7 +50,7 @@
 #define GET_RUNTIME_SYMBOL(RBHANDLE, FUNCNAME) dlsym(RBHANDLE, FUNCNAME)
 #endif  /* HAVE_DL_LIB */
 
-/* FIXME: MSWin DLL runtime_binding not tested yet. 20010626 mortene. */
+/* This should work on all MSWindows systems. */
 #ifdef HAVE_WINDLL_RUNTIME_BINDING
 #define LIBHANDLE_T HINSTANCE
 #define OPEN_RUNTIME_BINDING(LIBNAME) LoadLibrary(LIBNAME)
