@@ -377,7 +377,6 @@ cc_dl_available(void)
 cc_libhandle
 cc_dl_open(const char * filename)
 {
-
   cc_libhandle h = (cc_libhandle) malloc(sizeof(struct cc_libhandle_struct));
   /* if (!h), FIXME: exception handling. 20020906 mortene. */
   h->nativehnd = NULL;
@@ -410,12 +409,6 @@ cc_dl_open(const char * filename)
 
 #elif defined (HAVE_DYLD_RUNTIME_BINDING) 
 
-{
-  NSLinkEditErrors c;
-  int e;
-  const char * file;
-  const char * errstr;
-
   if (filename != NULL) {
 
     /* Note that we must use NSAddImage, since we want to load a
@@ -425,29 +418,28 @@ cc_dl_open(const char * filename)
        and http://fink.sourceforge.net/doc/porting/shared.php for
        details. */
  
-    const struct stat * filestat;
     const char * fullpath;
-    if (!(filestat = cc_find_file(filename, &fullpath))) return NULL;
+    const struct stat * filestat = cc_find_file(filename, &fullpath);
 
-    if (cc_dl_debugging()) {
-      cc_debugerror_postinfo("cc_dlopen", "opening: %s", fullpath);
+    if (filestat) {
+      if (cc_dl_debugging()) {
+        cc_debugerror_postinfo("cc_dlopen", "opening: %s", fullpath);
+      }
+
+      h->nativehnd = (void *) NSAddImage(fullpath, 
+                                         NSADDIMAGE_OPTION_RETURN_ON_ERROR);
+
+      if (cc_dl_debugging() && !h->nativehnd) {
+        NSLinkEditErrors c;
+        int e;
+        const char * file;
+        const char * errstr;
+        NSLinkEditError(&c, &e, &file, &errstr);
+        cc_debugerror_post("cc_dlopen", "%s", errstr);
+      }
+
     }
-
-    h->nativehnd = (void *) NSAddImage(fullpath, 
-                                       NSADDIMAGE_OPTION_RETURN_ON_ERROR);
-
-    if (cc_dl_debugging() && !h->nativehnd) {
-      NSLinkEditError(&c, &e, &file, &errstr);
-      cc_debugerror_post("cc_dlopen", "%s", errstr);
-    }
-
-  } else {
-
-    h->nativehnd = NULL;
-    return h;
-
   }
-}
 
 #elif defined (HAVE_WINDLL_RUNTIME_BINDING)
 
@@ -460,34 +452,30 @@ cc_dl_open(const char * filename)
      other way to resolve symbols in the current process
      image. 20021015 mortene. */
 
-
-  /* Don't use GetModuleHandle(): LoadLibrary() will *not* load a new
-     image if the module is already loaded, it will only inc the
-     reference count.
-
-     Also, GetModuleHandle() doesn't inc the reference count, so it is
-     dangerous in the sense that the module could be free'd from
-     somewhere else between us opening it, and until it is used for
-     resolving symbols.
+  /* We don't want to call LoadLibrary(NULL) because this causes a
+     crash on some Windows platforms (Crashes on Windows2000 has been
+     reported). 20021101 thammer.
   */
+  if (filename != NULL) {
 
-  if (filename != NULL)
+    /* Don't use GetModuleHandle(): LoadLibrary() will *not* load a
+       new image if the module is already loaded, it will only inc the
+       reference count.
+
+       Also, GetModuleHandle() doesn't inc the reference count, so it
+       is dangerous in the sense that the module could be free'd from
+       somewhere else between us opening it, and until it is used for
+       resolving symbols.
+    */
     h->nativehnd = LoadLibrary(filename);
-  else
-    return NULL;
 
-  /*
-    We don't want to call LoadLibrary(NULL) because this causes a 
-    crash on some Windows platforms (Crashes on Windows2000 has 
-    been reported). 20021101 thammer
-   */
-
-  if (cc_dl_debugging() && (h->nativehnd == NULL)) {
-    cc_string funcstr;
-    cc_string_construct(&funcstr);
-    cc_string_sprintf(&funcstr, "LoadLibrary(\"%s\")", filename ? filename : "(null)");
-    cc_win32_print_error("cc_dl_open", cc_string_get_text(&funcstr), GetLastError());
-    cc_string_clean(&funcstr);
+    if (cc_dl_debugging() && (h->nativehnd == NULL)) {
+      cc_string funcstr;
+      cc_string_construct(&funcstr);
+      cc_string_sprintf(&funcstr, "LoadLibrary(\"%s\")", filename ? filename : "(null)");
+      cc_win32_print_error("cc_dl_open", cc_string_get_text(&funcstr), GetLastError());
+      cc_string_clean(&funcstr);
+    }
   }
 
 #elif defined (HAVE_DLD_LIB)
