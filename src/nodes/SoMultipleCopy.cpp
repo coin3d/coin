@@ -167,7 +167,7 @@ SoMultipleCopy::GLRender(SoGLRenderAction * action)
 SbBool
 SoMultipleCopy::affectsState(void) const
 {
-  // FIXME: is this correct? 19991117 mortene.
+  // state is pushed/popped for each traversal
   return FALSE;
 }
 
@@ -200,9 +200,17 @@ SoMultipleCopy::callback(SoCallbackAction *action)
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
-/*!
-  FIXME: write doc
- */
+
+/*!  
+  We came across what we think is a bug in TGS/SGI OIV when
+  implementing picking for this node. The SoPickedPoint class can
+  return the object space point, normal and texture
+  coordinates. TGS/SGI OIV do not consider the transformation inside
+  this node before returning the object space data from SoPickedPoint,
+  since the path in SoPickedPoint does not say anything about on which
+  copy the pick occured. We solved this simply by storing both world
+  space and object space data in SoPickedPoint.  
+*/
 void
 SoMultipleCopy::pick(SoPickAction *action)
 {
@@ -228,20 +236,8 @@ SoMultipleCopy::handleEvent(SoHandleEventAction *action)
 void
 SoMultipleCopy::getMatrix(SoGetMatrixAction *action)
 {
-  SbMatrix oldMatrix = action->getMatrix();
-  SbMatrix oldInvMatrix = action->getInverse();
-  for (int i=0; i < matrix.getNum(); i++) {
-    SoSwitchElement::set(action->getState(), i);
-    action->mult(this->matrix[i]);
-    inherited::getMatrix(action);
-#ifdef _WIN32 // fix for stupid m$ compiler
-    action->getMatrix() = oldMatrix;
-    action->getInverse() = oldInvMatrix;
-#else // normal code
-    action->getMatrix().setValue(oldMatrix);
-    action->getInverse().setValue(oldInvMatrix);
-#endif // end of normal code
-  }
+  // path does not specify which copy to traverse
+  inherited::getMatrix(action);
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
