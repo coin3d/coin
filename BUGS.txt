@@ -3972,54 +3972,6 @@ int main(int /*argc*/, char** argv)
 
 =====================================================================
 
-111 SoBoxHighlightRenderAction may render boxes around non-selected
-    shapes.
-
-    Reported by Jochen Stier on coin-discuss. To reproduce, make the
-    following modification to the SoGuiExamples/nodes/selection
-    example program, then select any one of the shapes except the
-    bottom one.
-
--------------8<---------------- [snip] --------------------------
-Index: selection.cpp.in
-===================================================================
-RCS file: /export/cvsroot/SoGuiExamples/nodes/selection.cpp.in,v
-retrieving revision 1.9
-diff -u -r1.9 selection.cpp.in
---- selection.cpp.in    17 Feb 2003 09:53:46 -0000      1.9
-+++ selection.cpp.in    3 May 2004 13:02:22 -0000
-@@ -68,7 +68,8 @@
-   for (int x = 0; x < 3; x++) {
-     for (int y = 0; y < 3; y++) {
-       for (int z = 0; z < 3; z++) {
--        SoSeparator * sep = new SoSeparator;
-+//         SoSeparator * sep = new SoSeparator;
-+        SoGroup * sep = new SoGroup;
-         topsep->addChild(sep);
- 
-         SoBaseColor * basecol = new SoBaseColor;
-
--------------8<---------------- [snip] --------------------------
-
-    I've investigated a little bit, and the reason more than one shape
-    is rendered with a bounding box is because
-    SoBoxHighlightRenderAction::drawBoxes() will use an
-    SoGLRenderAction for rendering the full path to the actual
-    shape. If there are other shapes in that path (e.g. because there
-    is an SoGroup with an appearance or transformation change below
-    it, aswell as a shape node) those shapes will also get boxes
-    around them.
-
-    20040503 mortene.
-
-    UPDATE 20040615 mortene: the best fix might be to just soup up the
-    world-coordinate bounding boxes on the pass over the list of
-    SoPath-instances. (That is, instead of rendering them highlighted
-    directly with a forced bbox drawstyle.) Then render the bounding
-    boxes directly by OpenGL-commands?
-
-=====================================================================
-
 113 SoBlinker import bug.
 
     The scene graph with the SoBlinker below will not behave as
