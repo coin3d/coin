@@ -51,6 +51,8 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoGLBigImage.h \
 	../../include/Inventor/misc/SoNormalGenerator.h \
 	../../include/Inventor/misc/SoNotification.h \
+	../../include/Inventor/misc/SoProto.h \
+	../../include/Inventor/misc/SoProtoInstance.h \
 	../../include/Inventor/misc/SoTranReceiver.h \
 	../../include/Inventor/misc/SoState.h \
 	../../include/Inventor/misc/SoTranscribe.h \
@@ -62,8 +64,6 @@ PrivateHeaders = \
 	../../include/Inventor/misc/SoGlyph.h \
 	../../include/Inventor/misc/SoGenerate.h \
 	../../include/Inventor/misc/SoPick.h \
-	../../include/Inventor/misc/SoProto.h \
-	../../include/Inventor/misc/SoProtoInstance.h \
 	GLUWrapper.h \
 	GLWrapper.h \
 	simage_wrapper.h \

@@ -132,13 +132,15 @@ sim_ac_perl_exe = @sim_ac_perl_exe@
 sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 
 RegularSources = \
+	error.c \
+	debugerror.c \
 	SoDebugError.cpp \
 	SoError.cpp \
 	SoMemoryError.cpp \
 	SoReadError.cpp
 
 LinkHackSources = \
-	all.cpp
+	all.cpp all-c.c
 
 PublicHeaders = \
 	../../include/Inventor/errors/SoErrors.h \
@@ -190,8 +192,10 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 errors_lst_AR = $(AR) cru
 errors_lst_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_errors_lst_OBJECTS = all.$(OBJEXT)
-@HACKING_COMPACT_BUILD_FALSE@am_errors_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_TRUE@am_errors_lst_OBJECTS = all.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_TRUE@	all-c.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_errors_lst_OBJECTS = error.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	debugerror.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoDebugError.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoError.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoMemoryError.$(OBJEXT) \
@@ -201,16 +205,18 @@ LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 liberrors_la_LDFLAGS =
 liberrors_la_LIBADD =
-@HACKING_COMPACT_BUILD_TRUE@am_liberrors_la_OBJECTS = all.lo
-@HACKING_COMPACT_BUILD_FALSE@am_liberrors_la_OBJECTS = SoDebugError.lo \
+@HACKING_COMPACT_BUILD_TRUE@am_liberrors_la_OBJECTS = all.lo all-c.lo
+@HACKING_COMPACT_BUILD_FALSE@am_liberrors_la_OBJECTS = error.lo \
+@HACKING_COMPACT_BUILD_FALSE@	debugerror.lo SoDebugError.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoError.lo SoMemoryError.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoReadError.lo
 liberrors_la_OBJECTS = $(am_liberrors_la_OBJECTS)
 liberrors@SUFFIX@LINKHACK_la_LDFLAGS =
 liberrors@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_liberrors@SUFFIX@LINKHACK_la_OBJECTS = \
-@HACKING_COMPACT_BUILD_TRUE@	all.lo
+@HACKING_COMPACT_BUILD_TRUE@	all.lo all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_liberrors@SUFFIX@LINKHACK_la_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@	error.lo debugerror.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoDebugError.lo SoError.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoMemoryError.lo SoReadError.lo
 liberrors@SUFFIX@LINKHACK_la_OBJECTS = \
@@ -226,7 +232,18 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoError.Po $(DEPDIR)/SoMemoryError.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoMemoryError.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoReadError.Plo $(DEPDIR)/SoReadError.Po \
-@AMDEP_TRUE@	$(DEPDIR)/all.Plo $(DEPDIR)/all.Po
+@AMDEP_TRUE@	$(DEPDIR)/all-c.Plo $(DEPDIR)/all-c.Po \
+@AMDEP_TRUE@	$(DEPDIR)/all.Plo $(DEPDIR)/all.Po \
+@AMDEP_TRUE@	$(DEPDIR)/debugerror.Plo $(DEPDIR)/debugerror.Po \
+@AMDEP_TRUE@	$(DEPDIR)/error.Plo $(DEPDIR)/error.Po
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
+	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+CFLAGS = @CFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -236,14 +253,6 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CXXFLAGS = @CXXFLAGS@
-CFLAGS = @CFLAGS@
-COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
-	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
-	$(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
-CCLD = $(CC)
-LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = $(errors_lst_SOURCES) $(EXTRA_errors_lst_SOURCES) \
 	$(liberrors_la_SOURCES) $(EXTRA_liberrors_la_SOURCES) \
 	$(liberrors@SUFFIX@LINKHACK_la_SOURCES) \
@@ -256,7 +265,7 @@ SOURCES = $(errors_lst_SOURCES) $(EXTRA_errors_lst_SOURCES) $(liberrors_la_SOURC
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .cpp .lo .o .obj
+.SUFFIXES: .c .cpp .lo .o .obj
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -319,11 +328,36 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMemoryError.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoReadError.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoReadError.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all-c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/all.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/debugerror.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/debugerror.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/error.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/error.Po@am__quote@
 
 distclean-depend:
 	-rm -rf $(DEPDIR)
+
+.c.o:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(COMPILE) -c `test -f $< || echo '$(srcdir)/'`$<
+
+.c.obj:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Po' tmpdepfile='$(DEPDIR)/$*.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(COMPILE) -c `cygpath -w $<`
+
+.c.lo:
+@AMDEP_TRUE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@	depfile='$(DEPDIR)/$*.Plo' tmpdepfile='$(DEPDIR)/$*.TPlo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+	$(LTCOMPILE) -c -o $@ `test -f $< || echo '$(srcdir)/'`$<
+CCDEPMODE = @CCDEPMODE@
 
 .cpp.o:
 @AMDEP_TRUE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
