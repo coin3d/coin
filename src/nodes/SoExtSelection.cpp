@@ -248,6 +248,7 @@ public:
                                  SbBool renderAsBlack);
   
   int scanOffscreenBuffer(SoNode * root);
+  void addVisitedPath(const SoPath *path);
 
   SbBool checkOffscreenRendererCapabilities();
 
@@ -1231,21 +1232,15 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
   if(hit){
 
     if(!PRIVATE(ext)->primcbdata.allshapes){ //VISIBLE_SHAPES
-
       if((ext->lassoPolicy.getValue() == SoExtSelection::FULL) &&
          (!PRIVATE(ext)->somefacesvisible))
         return SoCallbackAction::CONTINUE;
-
-      // FIXME: This is a linear search. Storing paths should have be
-      // done using something more sophisticated for better
-      // performance. (handegar)
-      const SoPath * curpath = action->getCurPath();
-      if(PRIVATE(ext)->visitedshapepaths->findPath(*curpath) < 0)
-        PRIVATE(ext)->visitedshapepaths->append(curpath->copy());
-
-    } else {
-      PRIVATE(ext)->doSelect(action->getCurPath());
     }
+
+    // Add visited shape to PathList of visited shapes
+    const SoPath * curpath = action->getCurPath();
+    PRIVATE(ext)->addVisitedPath(curpath);
+
     
   }
 
@@ -2011,6 +2006,19 @@ SoExtSelectionP::doSelect(const SoPath * path)
 }
 
 
+void
+SoExtSelectionP::addVisitedPath(const SoPath *path)
+{
+
+  // FIXME: This is a linear search. Storing paths should have be
+  // done using something more sophisticated for better
+  // performance. (handegar)
+      
+  if(this->visitedshapepaths->findPath(*path) < 0)
+    this->visitedshapepaths->append(path->copy());
+
+}
+
 // Call a doSelect for all paths in pathlist
 void
 SoExtSelectionP::selectPaths()
@@ -2255,11 +2263,26 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
     this->visibletrianglesbitarray[i] = 0;
   
 
-  // FIXME: optimalization possibility here -- should only need to
-  // scan within the rectangle bounding area of the lasso. 20020805 mortene.
-  for(int j=0; j < offscreenSizeY; ++j){
-    for(int i=0; i < offscreenSizeX*3; i+=3){
-      
+  // Find maximum and minimum lasso coord.
+  int minx = offscreenSizeX;;
+  int maxx = 0;
+  int miny = offscreenSizeY;;
+  int maxy = 0;
+  for(int i=0;i<this->coords.getLength();++i){
+    if(this->coords[i][0] < minx)
+      minx = this->coords[i][0];
+    if(this->coords[i][0] > maxx)
+      maxx = this->coords[i][0];
+    if(this->coords[i][1] < miny)
+      miny = this->coords[i][1];
+    if(this->coords[i][1] > maxy)
+      maxy = this->coords[i][1];
+  }
+
+
+  for(int j=miny; j < maxy; ++j){
+    for(int i=minx*3; i < maxx*3; i+=3){
+
       // If needed, we consult the stencil buffer before fetching pixelvalue
       if(this->lassostencilisdrawed){
         if(stencilBuffer[j*offscreenSizeX*3 + i] == 0)
@@ -2270,19 +2293,16 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
       pixelValue += (rgbBuffer[j*offscreenSizeX*3 + i + 1]<< (8));
       pixelValue += (rgbBuffer[j*offscreenSizeX*3 + i + 2]);
       
-      
       if(pixelValue != 0){
-        
         flag = 0x1 << (pixelValue & 0x07);
         index = pixelValue >> 3;
-        
         visibletrianglesbitarray[index] |= flag;
         hitflag = TRUE;
       }
 
     }
   }
-
+  
   return(hitflag);
 }
 
@@ -2447,10 +2467,10 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     delete this->renderer;
     delete this->lassorenderer;
 
-    selectPaths(); // Execute a 'doSelect' on all stored paths.
-   
   }
 
+  SoDebugError::postInfo("*","select");
+  selectPaths(); // Execute a 'doSelect' on all stored paths.
 }
 
 #endif // DOXYGEN_SKIP_THIS
