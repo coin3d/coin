@@ -88,7 +88,7 @@ SoPickAction::~SoPickAction(void)
 /*!
   Set a new viewport region to replace the one passed in with the
   constructor.
- */
+*/
 void
 SoPickAction::setViewportRegion(const SbViewportRegion & newregion)
 {
@@ -107,7 +107,7 @@ SoPickAction::getViewportRegion(void)
 /*!
   Overloads parent traversal to set up the state element for the
   viewport region.
- */
+*/
 void
 SoPickAction::beginTraversal(SoNode * node)
 {
@@ -122,7 +122,7 @@ SoPickAction::beginTraversal(SoNode * node)
 
   This can provide a speed-up in cases where the default setting of \c
   on would be inefficient.
- */
+*/
 void
 SoPickAction::enableCulling(const SbBool flag)
 {
@@ -131,7 +131,7 @@ SoPickAction::enableCulling(const SbBool flag)
 
 /*!
   Returns the current state of the culling flag.
- */
+*/
 SbBool
 SoPickAction::isCullingEnabled(void) const
 {

@@ -71,8 +71,6 @@ SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion & region)
   SO_ACTION_CONSTRUCTOR(SoGetMatrixAction);
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getMatrixS);
-
-  SoGetMatrixAction::methods->setUp();
 }
 
 /*!

@@ -248,8 +248,6 @@ SoCallbackAction::SoCallbackAction(void)
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::callbackS);
 
-  SoCallbackAction::methods->setUp();
-
   this->pretailcallback = NULL;
   this->posttailcallback = NULL;
 }

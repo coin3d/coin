@@ -81,8 +81,6 @@ SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion & vp)
   SO_ACTION_CONSTRUCTOR(SoGetBoundingBoxAction);
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getBoundingBoxS);
-
-  SoGetBoundingBoxAction::methods->setUp();
 }
 
 /*!

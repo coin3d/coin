@@ -53,8 +53,6 @@ SoGetPrimitiveCountAction::SoGetPrimitiveCountAction(void)
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::getPrimitiveCountS);
 
-  SoGetPrimitiveCountAction::methods->setUp();
-
   this->textastris = TRUE;
   this->approx = FALSE;
   this->nonvertexastris = TRUE;

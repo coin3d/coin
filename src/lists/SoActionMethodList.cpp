@@ -38,7 +38,7 @@
   are not based on inheriting from a parent action.
 */
 SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentlist)
-  : SbPList(0), parent(parentlist)
+  : SbPList(0), parent(parentlist), setupNumTypes(0)
 {
 }
 
@@ -57,35 +57,13 @@ SoActionMethodList::operator[](const int index)
 void
 SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
 {
-  // I'm a bit unsure about this one. Should I really find all nodes
-  // derived from a node when adding methods, and should perhaps the
-  // method for the children be overwritten even though method !=
-  // NULL?  pederb 19991029
-
-  const int index = node.getData();
-  (*this)[index] = method;
-
+  (*this)[(int)node.getData()] = method;
+  
   SoTypeList derivedtypes;
-  int n = SoType::getAllDerivedFrom(node, derivedtypes);
+  const int n = SoType::getAllDerivedFrom(node, derivedtypes);
   for (int i = 0; i < n; i++) {
-    SoType type = derivedtypes[i];
-    if ((*this)[(int)type.getData()] == NULL) {
-#if 0 // debug
-      {
-        SbString methodname;
-        if (method == SoNode::pickS) methodname = "pickS";
-        else if (method == SoNode::rayPickS) methodname = "rayPickS";
-        else methodname.sprintf("%p", method);
-
-        SoDebugError::postInfo("SoActionMethodList::addMethod",
-                               "(listp %p) ``%s'' overloaded with %s",
-                               this, type.getName().getString(),
-                               methodname.getString());
-      }
-#endif // debug
-      (*this)[(int)type.getData()] = method;
-    }
-  }
+    (*this)[(int)derivedtypes[i].getData()] = method;
+  }    
 }
 
 /*!
@@ -96,11 +74,14 @@ SoActionMethodList::addMethod(const SoType node, const SoActionMethod method)
 void
 SoActionMethodList::setUp(void)
 {
-  if (this->parent) {
-    this->parent->setUp();
-    const int max = this->parent->getLength();
-    for (int i = 0; i < max; i++) {
-      if ((*this)[i] == NULL) (*this)[i] = (*(this->parent))[i];
+  if (this->setupNumTypes != SoType::getNumTypes()) {
+    this->setupNumTypes = SoType::getNumTypes();
+    if (this->parent) {
+      this->parent->setUp();
+      const int max = this->parent->getLength();
+      for (int i = 0; i < max; i++) {
+        if ((*this)[i] == NULL) (*this)[i] = (*(this->parent))[i];
+      }
     }
   }
 }

@@ -165,8 +165,6 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::GLRenderS);
 
-  SoGLRenderAction::methods->setUp();
-
   // Can't just push this on the SoViewportRegionElement stack, as the
   // state hasn't been made yet.
   this->viewport = viewportregion;

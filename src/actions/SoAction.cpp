@@ -198,6 +198,7 @@ SoAction::isOfType(SoType type) const
 void
 SoAction::apply(SoNode * root)
 {
+  this->traversalMethods->setUp();
   this->terminated = FALSE;
 
   // So the graph is not deallocated during traversal.
@@ -227,6 +228,7 @@ SoAction::apply(SoNode * root)
 void
 SoAction::apply(SoPath * path)
 {
+  this->traversalMethods->setUp();
   this->terminated = FALSE;
 
   // So the path is not deallocated during traversal.
@@ -264,6 +266,7 @@ SoAction::apply(SoPath * path)
 void
 SoAction::apply(const SoPathList & pathlist, SbBool obeysrules)
 {
+  this->traversalMethods->setUp();
   if (pathlist.getLength() == 0) return;
 
   // FIXME: doesn't check obeysrules. 20000301 mortene.

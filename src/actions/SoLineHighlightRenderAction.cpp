@@ -106,8 +106,6 @@ SoLineHighlightRenderAction::init(void)
 {
   SO_ACTION_CONSTRUCTOR(SoLineHighlightRenderAction);
 
-  SoLineHighlightRenderAction::methods->setUp(); // initialize action methods
-
   this->hlVisible = TRUE;
   this->color = SbColor(1.0f, 0.0f, 0.0f);
   this->linepattern = 0xffff;

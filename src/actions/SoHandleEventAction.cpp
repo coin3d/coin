@@ -74,8 +74,6 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion & viewportregion
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::handleEventS);
-
-  methods->setUp();
 }
 
 /*!

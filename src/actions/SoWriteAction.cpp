@@ -88,8 +88,6 @@ SoWriteAction::commonConstructor(SoOutput * out)
 
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::writeS);
 
-  SoWriteAction::methods->setUp();
-
   this->outobj = out;
 }
 

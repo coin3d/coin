@@ -41,6 +41,7 @@ public:
 
 private:
   SoActionMethodList * parent;
+  int setupNumTypes;
 };
 
 #endif // !COIN_SOACTIONMETHODLIST_H
