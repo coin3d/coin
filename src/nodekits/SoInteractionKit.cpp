@@ -29,15 +29,16 @@
 */
 
 #include <Inventor/nodekits/SoInteractionKit.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/fields/SoSFNode.h>
 #include <Inventor/misc/SoBasic.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/actions/SoSearchAction.h>
-#include <Inventor/SoDB.h>
-#include <Inventor/SoInput.h>
-#include <Inventor/fields/SoSFNode.h>
-#include <Inventor/sensors/SoFieldSensor.h>
 #include <Inventor/nodes/SoText2.h>
+#include <Inventor/sensors/SoFieldSensor.h>
 
 #include <stdlib.h>
 
@@ -299,7 +300,7 @@ SoInteractionKit::readInstance(SoInput *in, unsigned short flags)
 /*!
   Reads default parts for a dragger. \a fileName is the user-changeable
   resource file (most often an ascii iv file), while \a defaultBuffer and
-  defBufSize contains the compiled-in default parts (binary iv).
+  \a defBufSize can point to the statically compiled default parts.
 
   This method is called from dragger constructors.
 */
@@ -308,37 +309,50 @@ SoInteractionKit::readDefaultParts(const char *fileName,
                                    const char defaultBuffer[],
                                    int defBufSize)
 {
-  SbString fullname;
-  char *dir = getenv("SO_DRAGGER_DIR");
-  if (dir == NULL) {
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoInteractionKit::readDefaultParts",
-                           "\n\n\nDraggers are under development. You must set the "
-                           "SO_DRAGGER_DIR environment\nvariable to the draggerDefaults "
-                           "directory to test the draggers!\n\n");
-#endif // debug
-    return;
-  }
-  fullname = dir;
+  SbBool foundsrc = FALSE;
+  SoInput input;
 
+  if (fileName) {
+    char * draggerdir = getenv("SO_DRAGGER_DIR");
+
+    if (input.openFile(fileName, TRUE)) foundsrc = TRUE;
+    else if (draggerdir) {
+      SbString fullname = draggerdir;
+      // FIXME: use configure to check this. 20000129 mortene.
 #ifdef _WIN32
-  if (fullname[fullname.getLength()-1] != '\\') fullname += "\\";
+      char dirsep = '\\';
 #else // ! WIN32
-  if (fullname[fullname.getLength()-1] != '/') fullname += "/";
+      char dirsep = '/';
 #endif // !WIN32
 
-  fullname += fileName;
+      if (fullname.getLength() && fullname[fullname.getLength()-1] != dirsep)
+        fullname += dirsep;
 
-  SoInput input;
-  if (!fileName || !input.openFile(fullname.getString())) {
-    input.setBuffer((void*)defaultBuffer, defBufSize);
+      fullname += fileName;
+      if (input.openFile(fullname.getString(), TRUE)) foundsrc = TRUE;
+    }
   }
+
+  if (!foundsrc && defaultBuffer) {
+    input.setBuffer((void*)defaultBuffer, defBufSize);
+    foundsrc = TRUE;
+  }
+
+  if (!foundsrc) {
+#if COIN_DEBUG
+    SoDebugError::post("SoInteractionKit::readDefaultParts",
+                       "Could not find any source for the dragger "
+                       "default parts. Have you forgotten to set the "
+                       "SO_DRAGGER_DIR environment variable?");
+#endif // COIN_DEBUG
+    return;
+  }
+
   SoNode *node = (SoNode*)SoDB::readAll(&input);
   if (node == NULL) {
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoInteractionKit::readDefaultParts",
-                           "error reading dragger defaults: %s", fullname.getString());
-#endif // debug
+#if COIN_DEBUG
+    SoReadError::post(&input, "error reading dragger defaults");
+#endif // COIN_DEBUG
   }
   else {
     node->ref(); // this node is unref'ed at exit
