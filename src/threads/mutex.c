@@ -295,7 +295,7 @@ cc_mutex_global_unlock(void)
 
   In the class constructor, SbMutex::lock() is called on the mutex,
   and when the function exits (this is the convenience part) the
-  destructor will automatically by invoked, calling SbMutex::unlock()
+  destructor will automatically be invoked, calling SbMutex::unlock()
   on the same mutex.
 */
 

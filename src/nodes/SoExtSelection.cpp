@@ -166,6 +166,12 @@
   \var SoSFEnum SoExtSelection::lassoPolicy
   Field for lasso policy. Default value is FULL_BBOX.
 */
+
+// FIXME: I wonder if this was a later addition to the API, possibly
+// both for Coin and TGS Inventor. Investigate. If so, this means it
+// must get special handling when exporting .iv-files, with regard to
+// what header we can put on the output. See also item #003 in the
+// Coin/docs/todo.txt file. 20030529 mortene.
 /*!
   \var SoSFEnum SoExtSelection::lassoMode
 
@@ -177,22 +183,23 @@
 
 // *************************************************************************
 
-#ifndef DOXYGEN_SKIP_THIS
-
 /*
-  KNOWN BUGS:
-  ===========
+  FIXME, KNOWN BUGS:
+  ==================
 
-  2002-08-02  Sometimes my GTK-lib (i think) gets corrupt (most likely because of a bug in Gimp 1.2).
-              This causes the 'glGetInteger' to fail causing incorrect 'maximumcolorcounter'
-              value. This often leads to infinite loop and crash when in VISIBLE_SHAPE mode. 
-              Other symptoms are 'GL_OUT_OF_MEMORY' error, Mozilla suddenly dies etc. A restart of 
-              X11 is needed. I am using the Mesa drivers. (handegar)
+  * Sometimes my GTK-lib (i think) gets corrupt (most likely because
+    of a bug in Gimp 1.2).  This causes the 'glGetInteger' to fail
+    causing incorrect 'maximumcolorcounter' value. This often leads to
+    infinite loop and crash when in VISIBLE_SHAPE mode.  Other
+    symptoms are 'GL_OUT_OF_MEMORY' error, Mozilla suddenly dies
+    etc. A restart of X11 is needed. I am using the Mesa
+    drivers. 2002-08-02 handegar.
 
-  2002-08-12  Offcreenrendering comes out wrong if offscreenrenderer decides to render to multiple
-              subscreens (due to size limitations). the 'offscreencolorcounter' is increased for each
-              pass on each subscreen which leads to inconsistency on second traversalpass. 
- 
+  * Offcreenrendering comes out wrong if offscreenrenderer decides to
+    render to multiple subscreens (due to size limitations). the
+    'offscreencolorcounter' is increased for each pass on each
+    subscreen which leads to inconsistency on second
+    traversalpass. 2002-08-12 handegar.
 */
 
 
@@ -372,11 +379,10 @@ public:
 
 };
 
-#endif // DOXYGEN_SKIP_THIS
-
 
 //
-// Faster line segment intersection by Franklin Antonio, from Graphics Gems III.
+// Faster line segment intersection by Franklin Antonio, from Graphics
+// Gems III.
 //
 
 static SbBool
@@ -1185,8 +1191,6 @@ SoExtSelection::wasShiftDown(void) const
 {
   return PRIVATE(this)->wasshiftdown;
 }
-
-#ifndef DOXYGEN_SKIP_THIS
 
 // timer callback for rendering lasso animation.
 void
@@ -2152,8 +2156,7 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
     COIN_EXTSELECTION_SCALE_PRECISION, or something like that.
 
     The downside of this is that the buffer scanning takes quite a lot
-    of time already. We would also need to fix SoOffscreenRenderer so
-    that it can handle arbitrary size buffers.
+    of time already.
 
     20020802 mortene.
   */
@@ -2504,5 +2507,3 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
   selectPaths(); // Execute a 'doSelect' on all stored paths.
 }
-
-#endif // DOXYGEN_SKIP_THIS

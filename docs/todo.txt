@@ -220,6 +220,10 @@ STUFF TO FIX IN COIN
     for import: whether or not the field is explicitly listed within
     the file).
 
+    (SoExtSelection may also have added a new field in later API
+    versions, see the FIXME in SoExtSelection.cpp on the lassoMode
+    field.)
+
     Adding or removing fields from nodes will in general do nasty
     things with file compatibilities, and we try to avoid it. But
     since TGS has already set a precedence (there are more nodes than
