@@ -276,15 +276,22 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
   bboxaction.apply(applynode);
 
   SbBox3f box = bboxaction.getBoundingBox();
-  box.getSize(this->cachedScale[0], this->cachedScale[1],
-              this->cachedScale[2]);
+  if (box.isEmpty()) {
+    this->cachedScale.setValue(1.0f, 1.0f, 1.0f);
+    this->cachedInvScale.setValue(1.0f, 1.0f, 1.0f);
+    this->cachedTranslation.setValue(0.0f, 0.0f, 0.0f);
+  }
+  else {
+    box.getSize(this->cachedScale[0], this->cachedScale[1],
+                this->cachedScale[2]);
 
-  this->cachedScale *= 0.5f;
-  this->cachedInvScale[0] = 1.0f / this->cachedScale[0];
-  this->cachedInvScale[1] = 1.0f / this->cachedScale[1];
-  this->cachedInvScale[2] = 1.0f / this->cachedScale[2];
+    this->cachedScale *= 0.5f;
+    this->cachedInvScale[0] = 1.0f / this->cachedScale[0];
+    this->cachedInvScale[1] = 1.0f / this->cachedScale[1];
+    this->cachedInvScale[2] = 1.0f / this->cachedScale[2];
 
-  this->cachedTranslation = box.getCenter();
+    this->cachedTranslation = box.getCenter();
+  }
 
   this->setIgnoreInBbox(storedignore);
   this->cacheOK = TRUE;
