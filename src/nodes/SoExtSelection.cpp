@@ -19,10 +19,12 @@
 
 /*!
   \class SoExtSelection SoExtSelection.h Inventor/nodes/SoExtSelection.h
-  \brief The SoExtSelection class ...
+  \brief The SoExtSelection class can be used for extended selection functionality.
   \ingroup nodes
 
-  FIXME: write class doc
+  This class enables you to select geometry by specifying a lasso (a
+  polygon) or a rectangle on screen. When objects are selected, you'll
+  receive the same callbacks as for the SoSelection node.
 */
 
 #include <Inventor/nodes/SoExtSelection.h>
@@ -57,7 +59,7 @@
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/lists/SoCallbackList.h>
-
+#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/SbMatrix.h>
 
 #ifdef HAVE_CONFIG_H
@@ -74,50 +76,51 @@
 
 /*!
   \enum SoExtSelection::LassoType
-  FIXME: write documentation for enum
+  Enum for type of lasso selection.
 */
 /*!
   \var SoExtSelection::LassoType SoExtSelection::NOLASSO
-  FIXME: write documentation for enum definition
+  Makes this node behave like a normal SoSelection node.
 */
 /*!
   \var SoExtSelection::LassoType SoExtSelection::LASSO
-  FIXME: write documentation for enum definition
+  Selecti objects using a lasso.
 */
 /*!
   \var SoExtSelection::LassoType SoExtSelection::RECTANGLE
-  FIXME: write documentation for enum definition
+  Select objects using a rectangle.
 */
 
 /*!
   \enum SoExtSelection::LassoPolicy
-  FIXME: write documentation for enum
+  Enum for specifying how objects are selected.
 */
+
 /*!
   \var SoExtSelection::LassoPolicy SoExtSelection::FULL_BBOX
-  FIXME: write documentation for enum definition
+  The entire bounding box must be inside the lasso/rectangle.
 */
 /*!
   \var SoExtSelection::LassoPolicy SoExtSelection::PART_BBOX
-  FIXME: write documentation for enum definition
+  Some part of the bounding box must intersect the lasso/rectangle.
 */
 /*!
   \var SoExtSelection::LassoPolicy SoExtSelection::FULL
-  FIXME: write documentation for enum definition
+  All primitives must be completely inside the lasso/rectangle.
 */
 /*!
   \var SoExtSelection::LassoPolicy SoExtSelection::PART
-q  FIXME: write documentation for enum definition
+  Some primitive must intersect the lasso/rectangle.
 */
 
 
 /*!
   \var SoSFEnum SoExtSelection::lassoType
-  FIXME: write documentation for field
+  Field for lasso type. Default value is NOLASSO.
 */
 /*!
   \var SoSFEnum SoExtSelection::lassoPolicy
-  FIXME: write documentation for field
+  Field for lasso policy. Default value is FULL_BBOX.
 */
 
 // *************************************************************************
@@ -156,9 +159,12 @@ public:
   SbViewportRegion curvp;
 
   static void timercallback(void *data, SoSensor *sensor);
-  static SoCallbackAction::Response myCallback(void *data,
-                                               SoCallbackAction *action,
-                                               const SoNode *node);
+  static SoCallbackAction::Response preShapeCallback(void *data,
+                                                     SoCallbackAction *action,
+                                                     const SoNode *node);
+  static SoCallbackAction::Response postShapeCallback(void *data,
+                                                      SoCallbackAction *action,
+                                                      const SoNode *node);
 
   static SoCallbackAction::Response cameraCB(void * data,
                                              SoCallbackAction * action,
@@ -178,9 +184,139 @@ public:
                                             const SbBox2s & lassorect,
                                             const SbBool full);
 
+  static void triangleCB(void *userData,
+                         SoCallbackAction *action,
+                         const SoPrimitiveVertex *v1,
+                         const SoPrimitiveVertex *v2,
+                         const SoPrimitiveVertex *v3);
+  static void lineSegmentCB(void *userData,
+                            SoCallbackAction *action,
+                            const SoPrimitiveVertex *v1,
+                            const SoPrimitiveVertex *v2);
+  static void pointCB(void *userData,
+                      SoCallbackAction *action,
+                      const SoPrimitiveVertex *v);
+
+  struct {
+    SbMatrix projmatrix;
+    SbBool fulltest;
+    SbBox2s lassorect;
+    SbBool hit;
+    SbBool allhit;
+    SbVec2s vporg;
+    SbVec2s vpsize;
+    SbBool abort;
+  } primcbdata;
 };
 
 #endif // DOXYGEN_SKIP_THIS
+
+
+//
+// Fast line intersection by Mukesh Prasad, from Graphics Gems II.
+//
+static SbBool
+linelineintersect(const SbVec2s &p00, const SbVec2s & p01,
+                  const SbVec2s &p10, const SbVec2s & p11)
+{
+#define DO_INTERSECT TRUE
+#define DONT_INTERSECT FALSE
+#define COLINEAR TRUE
+
+#define SAME_SIGNS( a, b )	\
+		(((long) ((unsigned long) a ^ (unsigned long) b)) >= 0 )
+
+  int x1 = p00[0];
+  int y1 = p00[1];
+
+  int x2 = p01[0];
+  int y2 = p01[1];
+
+  int x3 = p10[0];
+  int y3 = p10[1];
+
+  int x4 = p11[0];
+  int y4 = p11[1];
+
+  int a1, a2, b1, b2, c1, c2; /* Coefficients of line eqns. */
+  int r1, r2, r3, r4;         /* 'Sign' values */
+  int denom;
+#if 0 // not used
+  int offset, num;     /* Intermediate values */
+#endif
+
+  /* Compute a1, b1, c1, where line joining points 1 and 2
+   * is "a1 x  +  b1 y  +  c1  =  0".
+   */
+
+  a1 = y2 - y1;
+  b1 = x1 - x2;
+  c1 = x2 * y1 - x1 * y2;
+
+  /* Compute r3 and r4.
+   */
+
+  r3 = a1 * x3 + b1 * y3 + c1;
+  r4 = a1 * x4 + b1 * y4 + c1;
+
+  /* Check signs of r3 and r4.  If both point 3 and point 4 lie on
+   * same side of line 1, the line segments do not intersect.
+   */
+
+  if ( r3 != 0 &&
+       r4 != 0 &&
+       SAME_SIGNS( r3, r4 ))
+    return ( DONT_INTERSECT );
+
+  /* Compute a2, b2, c2 */
+
+  a2 = y4 - y3;
+  b2 = x3 - x4;
+  c2 = x4 * y3 - x3 * y4;
+
+  /* Compute r1 and r2 */
+
+  r1 = a2 * x1 + b2 * y1 + c2;
+  r2 = a2 * x2 + b2 * y2 + c2;
+
+  /* Check signs of r1 and r2.  If both point 1 and point 2 lie
+   * on same side of second line segment, the line segments do
+   * not intersect.
+   */
+
+  if ( r1 != 0 &&
+       r2 != 0 &&
+       SAME_SIGNS( r1, r2 ))
+    return ( DONT_INTERSECT );
+
+  /* Line segments intersect: compute intersection point.
+   */
+
+  denom = a1 * b2 - a2 * b1;
+  if ( denom == 0 )
+    return ( COLINEAR );
+#if 0 // we don't need the intersection point
+
+  offset = denom < 0 ? - denom / 2 : denom / 2;
+
+  /* The denom/2 is to get rounding instead of truncating.  It
+   * is added or subtracted to the numerator, depending upon the
+   * sign of the numerator.
+   */
+  num = b1 * c2 - b2 * c1;
+  *x = ( num < 0 ? num - offset : num + offset ) / denom;
+
+  num = a2 * c1 - a1 * c2;
+  *y = ( num < 0 ? num - offset : num + offset ) / denom;
+#endif // disabled code
+
+  return ( DO_INTERSECT );
+#undef SAME_SIGN
+#undef DO_INTERSECT
+#undef DONT_INTERSECT
+#undef COLINEAR
+}
+
 
 // The following code is by Randolph Franklin,
 // it returns 1 for interior points and 0 for exterior points.
@@ -211,7 +347,120 @@ pointinpoly(const SbList <SbVec2s> & coords, const SbVec2s & point)
   return c;
 }
 
-// ----------
+// do a bbox rejection test before calling this method. It's not fast,
+// but testing will usually (always) be done on polygon vs triangle in
+// which case it should be pretty fast.
+static SbBool
+polypolyintersect(const SbList <SbVec2s> & poly1,
+                  const SbList <SbVec2s> & poly2)
+{
+  int i;
+  int n1 = poly1.getLength();
+  int n2 = poly2.getLength();
+
+  if (n1 < n2) {
+    for (i = 0; i < n1; i++) {
+      if (pointinpoly(poly2, poly1[i])) return TRUE;
+    }
+    for (i = 0; i < n2; i++) {
+      if (pointinpoly(poly1, poly2[i])) return TRUE;
+    }
+  }
+  else {
+    for (i = 0; i < n2; i++) {
+      if (pointinpoly(poly1, poly2[i])) return TRUE;
+    }
+    for (i = 0; i < n1; i++) {
+      if (pointinpoly(poly2, poly1[i])) return TRUE;
+    }
+  }
+  // warning O(n^2)
+  SbVec2s prev1 = poly1[n1-1];
+  for (i = 0; i < n1; i++) {
+    SbVec2s prev2 = poly2[n2-1];
+    for (int j = 0; j < n2; j++) {
+      if (linelineintersect(prev1, poly1[i], prev2, poly2[j])) return TRUE;
+      prev2 = poly2[j];
+    }
+    prev1 = poly1[i];
+  }
+  return FALSE;
+}
+
+static SbBool
+polylineintersect(const SbList <SbVec2s> & poly,
+                  const SbVec2s & p0,
+                  const SbVec2s & p1)
+{
+  if (pointinpoly(poly, p0)) return TRUE;
+  if (pointinpoly(poly, p1)) return TRUE;
+
+  int n = poly.getLength();
+  SbVec2s prev = poly[n-1];
+  for (int i = 0; i < n; i++) {
+    if (linelineintersect(prev, poly[i], p0, p1)) return TRUE;
+  }
+  return FALSE;
+}
+
+// do a bbox rejection test before calling this method
+static SbBool
+polytriintersect(const SbList <SbVec2s> & poly,
+                 const SbVec2s & v0,
+                 const SbVec2s & v1,
+                 const SbVec2s & v2)
+{
+  SbList <SbVec2s> poly2;
+  poly2.append(v0);
+  poly2.append(v1);
+  poly2.append(v2);
+  return polypolyintersect(poly, poly2);
+}
+
+// only used by polyprojboxintersect()
+static SbBool
+test_quad_intersect(const SbList <SbVec2s> & poly,
+                    const SbVec2s & p0,
+                    const SbVec2s & p1,
+                    const SbVec2s & p2,
+                    const SbVec2s & p3)
+{
+  // test if front facing:
+  SbVec2s v0 = p1-p0;
+  SbVec2s v1 = p3-p0;
+  int crossz = v0[0]*v1[1] - v0[1]*v1[0];
+  if (crossz > 0) {
+    SbList <SbVec2s> poly2;
+    poly2.append(p0);
+    poly2.append(p1);
+    poly2.append(p2);
+    poly2.append(p3);
+    return polypolyintersect(poly, poly2);
+  }
+  return FALSE;
+}
+
+// do a bbox rejection test before calling this method
+static SbBool
+polyprojboxintersect(const SbList <SbVec2s> & poly,
+                     const SbVec2s * projpts)
+{
+  // test all size quads in the box
+  if (test_quad_intersect(poly, projpts[0], projpts[1],
+                          projpts[3], projpts[2])) return TRUE;
+  if (test_quad_intersect(poly, projpts[1], projpts[5],
+                          projpts[7], projpts[3])) return TRUE;
+  if (test_quad_intersect(poly, projpts[2], projpts[3],
+                          projpts[7], projpts[6])) return TRUE;
+  if (test_quad_intersect(poly, projpts[4], projpts[0],
+                          projpts[2], projpts[6])) return TRUE;
+  if (test_quad_intersect(poly, projpts[4], projpts[5],
+                          projpts[1], projpts[0])) return TRUE;
+  if (test_quad_intersect(poly, projpts[6], projpts[7],
+                          projpts[5], projpts[4])) return TRUE;
+
+  return FALSE;
+}
 
 #undef THIS
 #define THIS this->pimpl
@@ -248,8 +497,16 @@ SoExtSelection::SoExtSelection(void)
   THIS->timersensor->setInterval(SbTime(0.3));
 
   THIS->cbaction = new SoCallbackAction();
-  THIS->cbaction->addPreCallback(SoShape::getClassTypeId(), SoExtSelectionP::myCallback,
+  THIS->cbaction->addPreCallback(SoShape::getClassTypeId(), SoExtSelectionP::preShapeCallback,
                                  (void *) this);
+  THIS->cbaction->addPostCallback(SoShape::getClassTypeId(), SoExtSelectionP::postShapeCallback,
+                                  (void *) this);
+  THIS->cbaction->addTriangleCallback(SoShape::getClassTypeId(), SoExtSelectionP::triangleCB,
+                                      (void*) this);
+  THIS->cbaction->addLineSegmentCallback(SoShape::getClassTypeId(), SoExtSelectionP::lineSegmentCB,
+                                         (void*) this);
+  THIS->cbaction->addPointCallback(SoShape::getClassTypeId(), SoExtSelectionP::pointCB,
+                                   (void*) this);
   THIS->cbaction->addPostCallback(SoCamera::getClassTypeId(), SoExtSelectionP::cameraCB,
                                   (void *) this);
 
@@ -275,11 +532,7 @@ SoExtSelection::~SoExtSelection()
   delete THIS;
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoExtSelection class. This includes setting up the
-  type system, among other things.
-*/
+// doc in parent
 void
 SoExtSelection::initClass(void)
 {
@@ -288,8 +541,10 @@ SoExtSelection::initClass(void)
 
 
 /*!
-  FIXME: write doc
- */
+  Specifies whether the overlay planes should be used to render the
+  lasso.  Not supporte in Coin yet, as overlay planes are
+  hard to come by these days.
+*/
 void
 SoExtSelection::useOverlay(const SbBool /* overlay */)
 {
@@ -297,8 +552,10 @@ SoExtSelection::useOverlay(const SbBool /* overlay */)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns whether overlay planes are used to draw the lasso.
+
+  \sa useOverlay().
+*/
 SbBool
 SoExtSelection::isUsingOverlay(void)
 {
@@ -307,8 +564,9 @@ SoExtSelection::isUsingOverlay(void)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the scene graph for overlay rendering. Will always return NULL
+  in Coin.
+*/
 SoSeparator *
 SoExtSelection::getOverlaySceneGraph(void)
 {
@@ -317,8 +575,8 @@ SoExtSelection::getOverlaySceneGraph(void)
 }
 
 /*!
-  FIXME: write doc
- */
+  Set the color for the overlay lasso. Not supported in Coin.
+*/
 void
 SoExtSelection::setOverlayLassoColorIndex(const int /* index */)
 {
@@ -326,8 +584,10 @@ SoExtSelection::setOverlayLassoColorIndex(const int /* index */)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the overlay lasso color index.
+
+  \sa setOverlayLassoColorIndex().
+*/
 int
 SoExtSelection::getOverlayLassoColorIndex(void)
 {
@@ -336,8 +596,9 @@ SoExtSelection::getOverlayLassoColorIndex(void)
 }
 
 /*!
-  FIXME: write doc
- */
+  Sets the lasso/rectangle line color. Default value 
+  is (1.0, 1.0, 1.0).
+*/
 void
 SoExtSelection::setLassoColor(const SbColor & color)
 {
@@ -345,8 +606,8 @@ SoExtSelection::setLassoColor(const SbColor & color)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the lasso color.
+*/
 const SbColor &
 SoExtSelection::getLassoColor(void)
 {
@@ -354,8 +615,8 @@ SoExtSelection::getLassoColor(void)
 }
 
 /*!
-  FIXME: write doc
- */
+  Sets the lasso line width. Default value is 1.0.
+*/
 void
 SoExtSelection::setLassoWidth(const float width)
 {
@@ -363,8 +624,8 @@ SoExtSelection::setLassoWidth(const float width)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the lasso line width.
+*/
 float
 SoExtSelection::getLassoWidth(void)
 {
@@ -372,8 +633,8 @@ SoExtSelection::getLassoWidth(void)
 }
 
 /*!
-  FIXME: write doc
- */
+  Sets the lasso line pattern. Default value is 0xf0f0.
+*/
 void
 SoExtSelection::setOverlayLassoPattern(const unsigned short pattern)
 {
@@ -381,8 +642,8 @@ SoExtSelection::setOverlayLassoPattern(const unsigned short pattern)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns the lasso line pattern.
+*/
 unsigned short
 SoExtSelection::getOverlayLassoPattern(void)
 {
@@ -390,8 +651,9 @@ SoExtSelection::getOverlayLassoPattern(void)
 }
 
 /*!
-  FIXME: write doc
- */
+  Sets whether the lasso should be animated by scrolling
+  the line pattern.
+*/
 void
 SoExtSelection::animateOverlayLasso(const SbBool animate)
 {
@@ -399,14 +661,17 @@ SoExtSelection::animateOverlayLasso(const SbBool animate)
 }
 
 /*!
-  FIXME: write doc
- */
+  Returns whether the lasso is set to animate or not.
+*/
 SbBool
 SoExtSelection::isOverlayLassoAnimated(void)
 {
   return THIS->lassopatternanimate;
 }
 
+/*!
+  Overloaded to handle lasso selection.
+*/
 void
 SoExtSelection::handleEvent(SoHandleEventAction * action)
 {
@@ -586,7 +851,9 @@ SoExtSelection::draw(SoGLRenderAction *action)
   glPopAttrib();
 }
 
-// doc in parent
+/*!
+  Overloaded to render lasso.
+*/
 void
 SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
 {
@@ -629,11 +896,34 @@ SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
 }
 
 SoCallbackAction::Response
-SoExtSelectionP::myCallback(void *data, SoCallbackAction *action, const SoNode *node)
+SoExtSelectionP::preShapeCallback(void *data, SoCallbackAction *action, const SoNode *node)
 {
   SoExtSelection * ext = (SoExtSelection*)data;
   assert(node->isOfType(SoShape::getClassTypeId()));
   return ext->pimpl->testShape(action, (const SoShape*) node);
+}
+
+SoCallbackAction::Response
+SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const SoNode *node)
+{
+  SoExtSelection * ext = (SoExtSelection*)data;
+  SbBool hit = FALSE;
+  switch (ext->lassoPolicy.getValue()) {
+  case SoExtSelection::FULL:
+    hit = ext->pimpl->primcbdata.allhit;
+    break;
+  case SoExtSelection::PART:
+    hit = ext->pimpl->primcbdata.hit;
+    break;
+  default:
+    break;
+  }
+  if (hit) {
+    ext->startCBList->invokeCallbacks(ext);
+    ext->invokeSelectionPolicy((SoPath*) action->getCurPath(), TRUE);
+    ext->finishCBList->invokeCallbacks(ext);
+  }
+  return SoCallbackAction::CONTINUE;
 }
 
 SoCallbackAction::Response
@@ -659,6 +949,10 @@ SoExtSelectionP::cameraCB(void * data,
 
   float right = float(rectbbox.getMax()[0] - org[0]) / float(siz[0]);
   float top = float(rectbbox.getMax()[1] - org[1]) / float(siz[1]);
+
+  // increment to avoid empty view volume
+  if (left == right) right += 0.001f;
+  if (top == bottom) top += 0.001f;
 
   vv = vv.narrow(left, bottom, right, top);
   SoCullElement::setViewVolume(state, vv);
@@ -688,6 +982,7 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
   case SoExtSelection::PART_BBOX:
     return testBBox(action, projmatrix, shape, rectbbox, full);
   case SoExtSelection::FULL:
+    full = TRUE;
   case SoExtSelection::PART:
     return testPrimitives(action, projmatrix, shape, rectbbox, full);
   default:
@@ -695,6 +990,26 @@ SoExtSelectionP::testShape(SoCallbackAction * action, const SoShape * shape)
     break;
   }
   return SoCallbackAction::CONTINUE;
+}
+
+static SbVec2s
+project_pt(const SbMatrix & projmatrix, const SbVec3f & v,
+           const SbVec2s & vporg, const SbVec2s & vpsize)
+{
+  SbVec3f normpt;
+  projmatrix.multVecMatrix(v, normpt);
+  normpt[0] += 1.0f;
+  normpt[1] += 1.0f;
+  normpt[0] *= 0.5f;
+  normpt[1] *= 0.5f;
+
+  normpt[0] *= (float) vpsize[0];
+  normpt[1] *= (float) vpsize[1];
+  normpt[0] += (float) vporg[0];
+  normpt[1] += (float) vporg[1];
+
+  return SbVec2s((short) SbClamp(normpt[0], -32768.0f, 32767.0f),
+                 (short) SbClamp(normpt[1], -32768.0f, 32767.0f));
 }
 
 
@@ -721,24 +1036,11 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
 
   SbVec2s projpts[8];
 
-
   for (int i = 0; i < 8; i++) {
-    SbVec3f corner(i & 1 ? mincorner[0] : maxcorner[0],
-                   i & 2 ? mincorner[1] : maxcorner[1],
-                   i & 4 ? mincorner[2] : maxcorner[2]);
-    projmatrix.multVecMatrix(corner, normpt);
-    normpt[0] += 1.0f;
-    normpt[1] += 1.0f;
-    normpt[0] *= 0.5f;
-    normpt[1] *= 0.5f;
-
-    normpt[0] *= (float) vps[0];
-    normpt[1] *= (float) vps[1];
-    normpt[0] += (float)vpo[0];
-    normpt[1] += (float)vpo[1];
-
-    vppt[0] = (short) SbClamp(normpt[0], -32768.0f, 32767.0f);
-    vppt[1] = (short) SbClamp(normpt[1], -32768.0f, 32767.0f);
+    SbVec3f corner(i & 1 ? maxcorner[0] : mincorner[0],
+                   i & 2 ? maxcorner[1] : mincorner[1],
+                   i & 4 ? maxcorner[2] : mincorner[2]);
+    vppt = project_pt(projmatrix, corner, vpo, vps);
     projpts[i] = vppt;
     shapebbox.extendBy(vppt);
   }
@@ -754,16 +1056,7 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
         if (i == 8) hit = TRUE;
       }
       else {
-        // not 100% correct since we're testing against the
-        // projected shape bbox, but should be good enough
-        for (i = 0; i < this->coords.getLength(); i++) {
-          if (shapebbox.intersect(this->coords[i])) { hit = TRUE; break; }
-        }
-        if (!hit) {
-          for (i = 0; i < 8; i++) {
-            if (pointinpoly(this->coords, projpts[i])) { hit = TRUE; break; }
-          }
-        }
+        hit = polyprojboxintersect(this->coords, projpts);
       }
       break;
     case SoExtSelection::RECTANGLE:
@@ -788,18 +1081,159 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
       this->master->finishCBList->invokeCallbacks(this->master);
     }
   }
-  return SoCallbackAction::CONTINUE;
+  return SoCallbackAction::PRUNE; // we don't need do callbacks for primitives
 }
 
 SoCallbackAction::Response
 SoExtSelectionP::testPrimitives(SoCallbackAction * action,
                                 const SbMatrix & projmatrix,
-                                const SoShape * shape,
+                                const SoShape * /* shape */,
                                 const SbBox2s & lassorect,
                                 const SbBool full)
 {
-  COIN_STUB();
+  // FIXME: consider quick reject based on bounding box for now we
+  // just initialize some variables, and trust that the user has a
+  // sensible scene graph so that shapes are culled in the separators.
+
+  this->primcbdata.abort = FALSE;
+  this->primcbdata.fulltest = full;
+  this->primcbdata.projmatrix = projmatrix;
+  this->primcbdata.lassorect = lassorect;
+  this->primcbdata.hit = FALSE;
+  this->primcbdata.allhit = TRUE;
+  this->primcbdata.vporg = SoViewportRegionElement::get(action->getState()).getViewportOriginPixels();
+  this->primcbdata.vpsize = SoViewportRegionElement::get(action->getState()).getViewportSizePixels();
+
+  // signal to callback action that we want to generate primitives for
+  // this shape
   return SoCallbackAction::CONTINUE;
+}
+
+
+void
+SoExtSelectionP::triangleCB(void * userData,
+                            SoCallbackAction * action,
+                            const SoPrimitiveVertex * v1,
+                            const SoPrimitiveVertex * v2,
+                            const SoPrimitiveVertex * v3)
+{
+  SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
+  if (thisp->primcbdata.abort) return;
+
+  if (thisp->primcbdata.fulltest) {
+    SbVec2s p = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!thisp->primcbdata.lassorect.intersect(p) || !pointinpoly(thisp->coords, p)) {
+      thisp->primcbdata.abort = TRUE;
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+
+    p = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+                   thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!thisp->primcbdata.lassorect.intersect(p) || !pointinpoly(thisp->coords, p)) {
+      thisp->primcbdata.abort = TRUE;
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    p = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
+                   thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!thisp->primcbdata.lassorect.intersect(p) || !pointinpoly(thisp->coords, p)) {
+      thisp->primcbdata.abort = TRUE;
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    // FIXME: to be 100% correct, we should check for intersections
+    // between the three edges in the triangle and the edges in the lasso.
+    // this is not too difficult, but might be pretty slow...
+  }
+  else {
+    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    SbVec2s p2 = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+
+    SbBox2s bbox;
+    bbox.extendBy(p0);
+    bbox.extendBy(p1);
+    bbox.extendBy(p2);
+    if (bbox.intersect(thisp->primcbdata.lassorect) &&
+        polytriintersect(thisp->coords, p0, p1, p2)) {
+      thisp->primcbdata.hit = TRUE;
+      thisp->primcbdata.abort = TRUE;
+    }
+  }
+}
+
+
+void
+SoExtSelectionP::lineSegmentCB(void *userData,
+                               SoCallbackAction * action,
+                               const SoPrimitiveVertex * v1,
+                               const SoPrimitiveVertex * v2)
+{
+  SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
+  if (thisp->primcbdata.abort) return;
+
+  if (thisp->primcbdata.fulltest) {
+    SbVec2s p = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!thisp->primcbdata.lassorect.intersect(p) || !pointinpoly(thisp->coords, p)) {
+      thisp->primcbdata.abort = TRUE;
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+
+    p = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+                   thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    if (!thisp->primcbdata.lassorect.intersect(p) || !pointinpoly(thisp->coords, p)) {
+      thisp->primcbdata.abort = TRUE;
+      thisp->primcbdata.allhit = FALSE;
+      return;
+    }
+    // FIXME: to be 100% correct, we should check for intersections
+    // between line segment and all the edges in the lasso. This is
+    // not too difficult, but might be pretty slow...
+  }
+  else {
+    SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
+                            thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+    SbBox2s bbox;
+    bbox.extendBy(p0);
+    bbox.extendBy(p1);
+    if (bbox.intersect(thisp->primcbdata.lassorect) &&
+        polylineintersect(thisp->coords, p0, p1)) {
+      thisp->primcbdata.hit = TRUE;
+      thisp->primcbdata.abort = TRUE;
+    }
+  }
+}
+
+void
+SoExtSelectionP::pointCB(void *userData,
+                         SoCallbackAction *action,
+                         const SoPrimitiveVertex * v)
+{
+  SoExtSelectionP * thisp = ((SoExtSelection*)userData)->pimpl;
+  if (thisp->primcbdata.abort) return;
+  SbVec2s p = project_pt(thisp->primcbdata.projmatrix, v->getPoint(),
+                         thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
+
+  SbBool hit = thisp->primcbdata.lassorect.intersect(p) &&
+    pointinpoly(thisp->coords, p);
+
+  if (thisp->primcbdata.fulltest && !hit) {
+    thisp->primcbdata.abort = TRUE;
+    thisp->primcbdata.allhit = FALSE;
+  }
+  else if (!thisp->primcbdata.fulltest && hit) {
+    thisp->primcbdata.hit = TRUE;
+    thisp->primcbdata.abort = TRUE;
+  }
 }
 
 #endif // DOXYGEN_SKIP_THIS
