@@ -25,7 +25,7 @@ DLLCFLAGS = /GD
 
 BUILDOPTIONS = --enable-vrml97 --enable-threads --enable-threadsafe # --enable-3ds-import
 
-BUILDS = docs shared-release shared-debug build-files # static-release static-debug
+BUILDS = buildfiles docs shared-release shared-debug # static-release static-debug
 
 # **************************************************************************
 
