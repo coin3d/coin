@@ -162,11 +162,11 @@ SoMField::SoMField(void)
 }
 
 /*!
-  Destructor. Frees the resources used by the value array.
+  Destructor in SoMField does nothing. Resource deallocation needs to
+  be done from subclasses.
 */
 SoMField::~SoMField()
 {
-  this->allocValues(0);
 }
 
 /*!
