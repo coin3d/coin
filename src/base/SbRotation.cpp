@@ -221,7 +221,7 @@ SbRotation::getValue(SbMatrix& matrix) const
 
   \sa inverse()
  */
-SbRotation&
+SbRotation &
 SbRotation::invert(void)
 {
   float length = this->quat.length();
@@ -254,7 +254,7 @@ SbRotation::inverse(void) const
 #if COIN_DEBUG
   if (length==0.0f)
     SoDebugError::postWarning("SbRotation::inverse",
-                              "Quarternion has zero length => "
+                              "Quaternion has zero length => "
                               "undefined rotation.");
 #endif // COIN_DEBUG
 
@@ -423,19 +423,31 @@ SbRotation::setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
 /*!
   Multiplies the quaternions.
  */
-SbRotation&
-SbRotation::operator *=(const SbRotation& q)
+SbRotation &
+SbRotation::operator*=(const SbRotation & q)
 {
   // Formula from <http://www.lboro.ac.uk/departments/ma/gallery/quat/>
 
-  float a, b, c, d, x, y, z, w;
-  q.getValue(b, c, d, a);
-  this->getValue(y, z, w, x);
+  float tx, ty, tz, tw;
+  this->getValue(tx, ty, tz, tw);
+  float qx, qy, qz, qw;
+  q.getValue(qx, qy, qz, qw);
 
-  this->setValue(a*y+b*x+c*w-d*z,
-                 a*z-b*w+c*x+d*y,
-                 a*w+b*z-c*y+d*x,
-                 a*x-b*y-c*z-d*w);
+  this->setValue(qw*tx + qx*tw + qy*tz - qz*ty,
+                 qw*ty - qx*tz + qy*tw + qz*tx,
+                 qw*tz + qx*ty - qy*tx + qz*tw,
+                 qw*tw - qx*tx - qy*ty - qz*tz);
+  return *this;
+}
+
+/*!
+  Multiplies components of quaternion with scalar value \a s.
+  Returns reference to self.
+ */
+SbRotation &
+SbRotation::operator*=(const float s)
+{
+  this->quat *= s;
   return *this;
 }
 
