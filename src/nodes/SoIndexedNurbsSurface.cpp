@@ -149,7 +149,8 @@ SoIndexedNurbsSurface::computeBBox(SoAction * action,
   const SoCoordinateElement * coordelem =
     SoCoordinateElement::getInstance(state);
 
-  int num = this->coordIndex.getNum();
+  const int num = this->coordIndex.getNum();
+  const int32_t * idxptr = this->coordIndex.getValues(0);
 
   box.makeEmpty();
   SbVec3f acccenter(0.0f, 0.0f, 0.0f);
@@ -159,7 +160,7 @@ SoIndexedNurbsSurface::computeBBox(SoAction * action,
     const SbVec3f * coords = coordelem->getArrayPtr3();
     assert(coords);
     for (int i = 0; i < num; i++) {
-      tmp3D = coords[this->coordIndex[i]];
+      tmp3D = coords[idxptr[i]];
       box.extendBy(tmp3D);
       acccenter += tmp3D;
     }
@@ -168,9 +169,7 @@ SoIndexedNurbsSurface::computeBBox(SoAction * action,
     const SbVec4f * coords = coordelem->getArrayPtr4();
     assert(coords);
     for (int i = 0; i< num; i++) {
-      SbVec4f tmp = coords[this->coordIndex[i]];
-      float mul = (tmp[3] != 0.0f) ? 1.0f / tmp[4] : 1.0f;
-      tmp3D.setValue(tmp[0]*mul, tmp[1]*mul, tmp[2]*mul);
+      coords[idxptr[i]].getReal(tmp3D);
       box.extendBy(tmp3D);
       acccenter += tmp3D;
     }
