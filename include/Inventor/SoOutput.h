@@ -128,6 +128,8 @@ private:
 
   void checkHeader(void);
   void writeBytesWithPadding(const char * const p, const size_t nr);
+
+  friend class SoBase; // Need to be able to remove items from dict.
 };
 
 #endif // !COIN_SOOUTPUT_H

@@ -160,10 +160,8 @@ SoBase::initClass(void)
   SoBase::refwriteprefix = new SbString("+");
 }
 
-/*
-  Clean up all commonly allocated resources before applcation exit. Only
-  for debugging purposes.
- */
+// Clean up all commonly allocated resources before applcation
+// exit. Only for debugging purposes.
 void
 SoBase::cleanClass(void)
 {
@@ -279,7 +277,7 @@ SoBase::touch(void)
 }
 
 /*!
-  Returns \a TRUE if the type of this object is either of the same
+  Returns \c TRUE if the type of this object is either of the same
   type or inherited from \a type.
  */
 SbBool
@@ -469,6 +467,15 @@ SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
 {
   assert(out->getStage() == SoOutput::COUNT_REFS);
 
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoBase::addWriteReference",
+                         "%p/%s: %d -> %d",
+                         this,
+                         this->getTypeId().getName().getString(),
+                         this->objdata.writerefcount,
+                         this->objdata.writerefcount + 1);
+#endif // debug
+
   this->objdata.writerefcount++;
   if (this->objdata.writerefcount > 1) this->objdata.multirefs = TRUE;
   if (!isfromfield) this->objdata.ingraph = TRUE;
@@ -516,7 +523,7 @@ SoBase::decrementCurrentWriteCounter(void)
 /*!
   Returns the object of \a type, or derived from \a type, registered
   under \a name. If several has been registered under the same name
-  with the same type, returns the first.
+  with the same type, returns the \e last one which was registered.
 
   If no object of a valid type or subtype has been registered with the
   given name, returns \c NULL.
@@ -528,7 +535,7 @@ SoBase::getNamedBase(const SbName & name, SoType type)
   if (SoBase::name2obj->find((unsigned long)((const char *)name), t)) {
     SbPList * l = (SbPList *)t;
     if (l->getLength()) {
-      SoBase * b = (SoBase *)((*l)[0]);
+      SoBase * b = (SoBase *)((*l)[l->getLength() - 1]);
       if (b->isOfType(type)) return b;
     }
   }
@@ -704,9 +711,9 @@ SoBase::hasMultipleWriteRefs(void) const
 
   If the object has been completed just by writing the header (which will
   be the case if we're writing multiple references of an object),
-  we return \a TRUE, otherwise \a FALSE.
+  we return \c TRUE, otherwise \c FALSE.
 
-  If we return \a FALSE (i.e. there's more to write), we will
+  If we return \c FALSE (i.e. there's more to write), we will
   increment the indentation level.
 
   \sa writeFooter(), SoOutput::indent()
@@ -762,12 +769,26 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     }
   }
 
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoBase::writeHeader",
+                         "%p/%s: %d -> %d",
+                         this,
+                         this->getTypeId().getName().getString(),
+                         this->objdata.writerefcount,
+                         this->objdata.writerefcount - 1);
+#endif // debug
+
   SoBase * thisp = (SoBase *)this;
   thisp->objdata.writerefcount--;
+
   if (this->objdata.writerefcount == 0) {
     // Make ready for next inital write action pass.
     thisp->objdata.ingraph = FALSE;
     thisp->objdata.multirefs = FALSE;
+    // Ouch. Does this to avoid having two subsequent write actions on
+    // the same SoOutput to write "USE ..." when it should write a
+    // full node/subgraph specification on the second run.  -mortene.
+    out->sobase2id->remove((const unsigned long)this);
   }
 
   // Don't need to write out the rest if we are writing anything but
