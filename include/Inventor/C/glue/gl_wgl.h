@@ -34,6 +34,11 @@ extern "C" {
 
 void * coin_wgl_getprocaddress(const char * fname);
 
+void * wglglue_context_create_offscreen(unsigned int width, unsigned int height);
+SbBool wglglue_context_make_current(void * ctx);
+void wglglue_context_reinstate_previous(void * ctx);
+void wglglue_context_destruct(void * ctx);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
