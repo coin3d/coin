@@ -233,6 +233,16 @@ SoEngine::inputChanged(SoField * which)
 void
 SoEngine::notify(SoNotList * nl)
 {
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngine::notify",
+                         "%p (%s, '%s', dirty: %d) -- start",
+                         this,
+                         this->getTypeId().getName().getString(),
+                         this->getName().getString(),
+                         this->stateflags.dirty);
+  this->stateflags.dirty = 0;
+#endif // debug
+
   if (this->stateflags.dirty) {
     if (!this->isNotifying()) {
       // "notify" engine about the changed field
@@ -240,33 +250,55 @@ SoEngine::notify(SoNotList * nl)
       this->inputChanged(nl->getLastField());
       this->stateflags.isnotifying = 0;
     }
-    // just return, output connections have been notified earlier
-    return;
+    // nothing more to do, output connections have been notified earlier
   }
+  else {
+    this->stateflags.dirty = 1;
+    if (!this->isNotifying() && this->isNotifyEnabled()) {
+      this->stateflags.isnotifying = 1;
+      this->inputChanged(nl->getLastField());
 
-  this->stateflags.dirty = 1;
-  if (!this->isNotifying() && this->isNotifyEnabled()) {
-    this->stateflags.isnotifying = 1;
-    this->inputChanged(nl->getLastField());
+      SoEngineOutput * output;
+      SoField * field;
+      const SoEngineOutputData * outputs = this->getOutputData();
+      int numoutputs = outputs->getNumOutputs();
+      int numconnections;
 
-    SoEngineOutput * output;
-    SoField * field;
-    const SoEngineOutputData * outputs = this->getOutputData();
-    int numoutputs = outputs->getNumOutputs();
-    int numconnections;
-
-    for (int i = 0; i < numoutputs; i++) {
-      output = outputs->getOutput(this, i);
-      if (output->isEnabled()) {
-        numconnections = output->getNumConnections();
-        for (int j = 0; j < numconnections; j++) {
-          field = (*output)[j];
-          if (!field->getDirty()) field->notify(nl);
+      for (int i = 0; i < numoutputs; i++) {
+        output = outputs->getOutput(this, i);
+        if (output->isEnabled()) {
+          numconnections = output->getNumConnections();
+#if COIN_DEBUG && 0 // debug
+          SoDebugError::postInfo("SoEngine::notify",
+                                 "numconnections: %d",
+                                 numconnections);
+#endif // debug
+          for (int j = 0; j < numconnections; j++) {
+            field = (*output)[j];
+#if COIN_DEBUG && 0 // debug
+            SoDebugError::postInfo("SoEngine::notify",
+                                   "field %p (%s, '%s'), dirty: %d",
+                                   field,
+                                   field->getContainer() ? field->getContainer()->getTypeId().getName().getString() : "*none*",
+                                   field->getContainer() ? field->getContainer()->getName().getString() : "*none*",
+                                   field->getDirty());
+            if (field->getDirty()) field->notify(nl);
+#endif // debug
+            if (!field->getDirty()) field->notify(nl);
+          }
         }
       }
+      this->stateflags.isnotifying = 0;
     }
-    this->stateflags.isnotifying = 0;
   }
+
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoEngine::notify",
+                         "%p (%s, '%s') -- done",
+                         this,
+                         this->getTypeId().getName().getString(),
+                         this->getName().getString());
+#endif // debug
 }
 
 /*!
