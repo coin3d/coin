@@ -26,6 +26,9 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
+class SoElapsedTime;
+class SoCalculator;
+class SoInterpolateRotation;
 
 class SoPendulum : public SoRotation {
   typedef SoRotation inherited;
@@ -43,6 +46,11 @@ public:
 
 protected:
   virtual ~SoPendulum();
+
+private:
+  SoInterpolateRotation *interpolator;
+  SoCalculator *calculator;
+  SoElapsedTime *timer;
 };
 
 #endif // !COIN_SOPENDULUM_H
