@@ -61,40 +61,40 @@
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbMatrix.h>
-#include <Inventor/SbTesselator.h> 
+#include <Inventor/SbTesselator.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbViewportRegion.h>
-#include <Inventor/SoOffscreenRenderer.h> 
+#include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/details/SoFaceDetail.h> 
+#include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
-#include <Inventor/elements/SoPointSizeElement.h> 
+#include <Inventor/elements/SoPointSizeElement.h>
 #include <Inventor/elements/SoProjectionMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
-#include <Inventor/errors/SoDebugError.h> 
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/lists/SoCallbackList.h>
-#include <Inventor/lists/SoPathList.h> 
+#include <Inventor/lists/SoPathList.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/nodes/SoCallback.h> 
+#include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoExtSelection.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/nodes/SoVertexShape.h> 
+#include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <coindefs.h> // COIN_OBSOLETED()
 
@@ -222,28 +222,28 @@ public:
   SoExtSelectionP(SoExtSelection * masterptr) {
     PUBLIC(this) = masterptr;
   }
-  
+
   SbColor lassocolor;
   float lassowidth;
   SbBool lassopatternanimate;
   unsigned short lassopattern;
-  
+
   enum SelectionState {
     NONE,
     RECTANGLE,
     LASSO
   };
-  
+
   SelectionState selectionstate;
   SbBool isDragging;  // 0=no, 1=currently dragging a new point (mouse = last pos)
-  
+
   SbVec2s previousmousecoords;
   SbVec2s requestedsize;
-  
+
   SbList <SbVec2s> coords;
   SoTimerSensor * timersensor;
   SoCallbackAction * cbaction;
-  
+
   const SbList <SbVec2s> & getCoords(void) const {
     return coords;
   }
@@ -267,7 +267,7 @@ public:
   void addPointToOffscreenBuffer(SoCallbackAction * action,
                                  const SoPrimitiveVertex * v1,
                                  SbBool renderAsBlack);
-  
+
   int scanOffscreenBuffer(SoNode * root);
   void addVisitedPath(const SoPath *path);
 
@@ -278,7 +278,7 @@ public:
   static void offscreenRenderLassoCallback(void * userdata, SoAction * action);
 
   static void timercallback(void * data, SoSensor * sensor);
-  
+
   static SoCallbackAction::Response preShapeCallback(void * data,
                                                      SoCallbackAction * action,
                                                      const SoNode * node);
@@ -680,7 +680,7 @@ SoExtSelection::SoExtSelection(void)
   SO_NODE_DEFINE_ENUM_VALUE(LassoMode, VISIBLE_SHAPES);
   SO_NODE_DEFINE_ENUM_VALUE(LassoMode, ALL_SHAPES);
   SO_NODE_SET_SF_ENUM_TYPE(lassoMode, LassoMode);
- 
+
 
   // setup timer
   PRIVATE(this)->timersensor = new SoTimerSensor(&SoExtSelectionP::timercallback,
@@ -691,31 +691,31 @@ SoExtSelection::SoExtSelection(void)
 
 
   PRIVATE(this)->cbaction = new SoCallbackAction();
-  
-  PRIVATE(this)->cbaction->addPreCallback(SoShape::getClassTypeId(), 
+
+  PRIVATE(this)->cbaction->addPreCallback(SoShape::getClassTypeId(),
                                           SoExtSelectionP::preShapeCallback,
                                           (void *) this);
 
-  PRIVATE(this)->cbaction->addPostCallback(SoShape::getClassTypeId(), 
+  PRIVATE(this)->cbaction->addPostCallback(SoShape::getClassTypeId(),
                                            SoExtSelectionP::postShapeCallback,
                                            (void *) this);
 
-  PRIVATE(this)->cbaction->addTriangleCallback(SoShape::getClassTypeId(), 
+  PRIVATE(this)->cbaction->addTriangleCallback(SoShape::getClassTypeId(),
                                                SoExtSelectionP::triangleCB,
                                                (void*) this);
 
-  PRIVATE(this)->cbaction->addLineSegmentCallback(SoShape::getClassTypeId(), 
+  PRIVATE(this)->cbaction->addLineSegmentCallback(SoShape::getClassTypeId(),
                                                   SoExtSelectionP::lineSegmentCB,
                                                   (void*) this);
 
-  PRIVATE(this)->cbaction->addPointCallback(SoShape::getClassTypeId(), 
+  PRIVATE(this)->cbaction->addPointCallback(SoShape::getClassTypeId(),
                                             SoExtSelectionP::pointCB,
                                             (void*) this);
-  
-  PRIVATE(this)->cbaction->addPostCallback(SoCamera::getClassTypeId(), 
+
+  PRIVATE(this)->cbaction->addPostCallback(SoCamera::getClassTypeId(),
                                            SoExtSelectionP::cameraCB,
                                            (void *) this);
-  
+
 
   // some init (just to be sure?)
   PRIVATE(this)->lassocolor = SbColor(1.0f, 1.0f, 1.0f);
@@ -928,7 +928,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
 
     // ---------- RECTANGLE ----------
 
-  case SoExtSelection::RECTANGLE:    
+  case SoExtSelection::RECTANGLE:
     {
       // Make sure the new coord is inside the viewport
       const SbViewportRegion & vpr = action->getViewportRegion();
@@ -956,7 +956,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
       // scheduled, which is a bug..? Wasn't able to find a way to
       // reproduce the bug locally, however. I just left a note here
       // in case someone else stumbles over this problem.
-      // 
+      //
       // 20041217 mortene.
       PRIVATE(this)->timersensor->unschedule();
       PRIVATE(this)->isDragging = FALSE;
@@ -1029,7 +1029,7 @@ SoExtSelection::handleEvent(SoHandleEventAction * action)
     }
     break;
   }
-  
+
 }
 
 // internal method for drawing lasso
@@ -1056,7 +1056,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
 
 
   // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
-  // save the current color for later. 
+  // save the current color for later.
   GLfloat currentColor[4];
   glGetFloatv(GL_CURRENT_COLOR,currentColor);
 
@@ -1070,7 +1070,7 @@ SoExtSelection::draw(SoGLRenderAction *action)
   glDisable(GL_LIGHTING);
   glDisable(GL_TEXTURE_2D);
 
-  
+
 
   if(pimpl->has3DTextures) glDisable(GL_TEXTURE_3D);
   glDisable(GL_FOG);
@@ -1278,7 +1278,7 @@ SoExtSelectionP::preShapeCallback(void *data, SoCallbackAction *action, const So
   assert(node->isOfType(SoShape::getClassTypeId()));
 
   PRIVATE(ext)->somefacesvisible = FALSE;
-  
+
   return PRIVATE(ext)->testShape(action, (const SoShape*) node);
 }
 
@@ -1300,7 +1300,7 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
   default:
     break;
   }
-  
+
   if(hit){
 
     if(!PRIVATE(ext)->primcbdata.allshapes){ //VISIBLE_SHAPES
@@ -1313,7 +1313,7 @@ SoExtSelectionP::postShapeCallback(void *data, SoCallbackAction *action, const S
     const SoPath * curpath = action->getCurPath();
     PRIVATE(ext)->addVisitedPath(curpath);
 
-    
+
   }
 
   return SoCallbackAction::CONTINUE;
@@ -1327,14 +1327,14 @@ SoExtSelectionP::cameraCB(void * data,
                           const SoNode * node)
 {
   SoExtSelection * thisp = (SoExtSelection*) data;
- 
+
   SoState * state = action->getState();
   SbViewVolume vv = SoViewVolumeElement::get(state);
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
 
   // Save viewvolume for later use.
   thisp->pimpl->offscreenviewvolume = vv;
-  
+
   SbBox2s rectbbox;
   for (int i = 0; i < PRIVATE(thisp)->coords.getLength(); i++) {
     rectbbox.extendBy(PRIVATE(thisp)->coords[i]);
@@ -1348,9 +1348,11 @@ SoExtSelectionP::cameraCB(void * data,
   float right = float(rectbbox.getMax()[0] - org[0]) / float(siz[0]);
   float top = float(rectbbox.getMax()[1] - org[1]) / float(siz[1]);
 
+  const float EPS = 0.001f;
+
   // increment to avoid empty view volume
-  if (left == right) right += 0.001f;
-  if (top == bottom) top += 0.001f;
+  if (right - left < EPS) right = left + EPS;
+  if (top - bottom < EPS) top = bottom + EPS;
 
   vv = vv.narrow(left, bottom, right, top);
   SoCullElement::setViewVolume(state, vv);
@@ -1483,9 +1485,9 @@ SoExtSelectionP::testBBox(SoCallbackAction * action,
       break;
     }
 
-    if(hit) 
+    if(hit)
       this->doSelect(action->getCurPath());
-    
+
   }
   return SoCallbackAction::PRUNE; // we don't need do callbacks for primitives
 
@@ -1581,7 +1583,7 @@ SoExtSelectionP::triangleCB(void * userData,
     return;
   }
 
-  
+
   if(!thisp->triangleFilterCB && thisp->primcbdata.fulltest &&
      !thisp->primcbdata.allhit) {
     thisp->primcbdata.abort = TRUE;
@@ -1592,7 +1594,7 @@ SoExtSelectionP::triangleCB(void * userData,
     thisp->primcbdata.abort = TRUE;
     return;
   }
-  
+
 
   SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
@@ -1601,9 +1603,9 @@ SoExtSelectionP::triangleCB(void * userData,
   SbVec2s p2 = project_pt(thisp->primcbdata.projmatrix, v3->getPoint(),
                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
 
- 
+
   if(thisp->primcbdata.fulltest) { // entire triangle must be inside lasso
-    
+
     if(PUBLIC(thisp)->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only
       if (!thisp->primcbdata.lassorect.intersect(p0) || (!point_in_poly(thisp->coords, p0))) {
         thisp->primcbdata.allhit = FALSE;
@@ -1616,9 +1618,9 @@ SoExtSelectionP::triangleCB(void * userData,
       if (!thisp->primcbdata.lassorect.intersect(p2) || (!point_in_poly(thisp->coords, p2))) {
         thisp->primcbdata.allhit = FALSE;
         return;
-      }      
+      }
     }
-    
+
     if(poly_line_intersect(thisp->coords, p0, p1, FALSE) || !point_in_poly(thisp->coords, p0)) {
       thisp->primcbdata.allhit = FALSE;
       return;
@@ -1631,7 +1633,7 @@ SoExtSelectionP::triangleCB(void * userData,
       thisp->primcbdata.allhit = FALSE;
       return;
     }
-    
+
 
   } else { // some part of the triangle must be inside lasso
     if (!poly_tri_intersect(thisp->coords, p0, p1, p2)) {
@@ -1639,20 +1641,20 @@ SoExtSelectionP::triangleCB(void * userData,
       return;
     }
   }
-  
-  
-  
+
+
+
   if(!thisp->applyonlyonselectedtriangles){ // --- First pass
-    
+
     if(!thisp->primcbdata.allshapes){ // LassoMode==VISIBLE_SHAPES
       if(thisp->drawcounter > thisp->maximumcolorcounter)
         thisp->offscreencolorcounteroverflow = TRUE;
-      
+
       thisp->addTriangleToOffscreenBuffer(action, v1, v2, v3, thisp->offscreencolorcounteroverflow);
 
     } else if (thisp->triangleFilterCB && thisp->primcbdata.allshapes) {
-      
-      // Present accepted triangle to 'user' through a callback. 
+
+      // Present accepted triangle to 'user' through a callback.
       if(thisp->triangleFilterCB(thisp->triangleFilterCBData,
                                   action, v1, v2, v3)) {
         // Select shape.
@@ -1660,22 +1662,22 @@ SoExtSelectionP::triangleCB(void * userData,
         thisp->primcbdata.allhit = TRUE;
         thisp->primcbdata.abort = TRUE;
       }
-      
+
     } else {
       thisp->primcbdata.hit = TRUE;
-    }  
-    
+    }
+
   } else {  // --- Second pass. Feeding visible tris to client.
-    
+
 
     if(thisp->drawcounter > thisp->maximumcolorcounter){
       thisp->offscreencolorcounteroverflow = TRUE;
       return;
     }
-    
+
     int flag = 0x1 << (thisp->offscreencolorcounter & 0x07);
     int index = thisp->offscreencolorcounter >> 3;
-    
+
     if (thisp->visibletrianglesbitarray[index] & flag){
       thisp->somefacesvisible = TRUE;
       if (thisp->triangleFilterCB &&
@@ -1707,7 +1709,7 @@ SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
 
   if(primcbdata.allshapes)
     return;
-  
+
   SoState * state = action->getState();
   SbMatrix proj, affine;
   const SbMatrix & mm = SoModelMatrixElement::get(state);
@@ -1729,7 +1731,7 @@ SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
   SoShapeHintsElement::FaceType facetype; //Unused.
   SoShapeHintsElement::get(state, vertexorder, shapetype, facetype);
 
-    
+
   if(shapetype == SoShapeHintsElement::SOLID){
     if(vertexorder == SoShapeHintsElement::CLOCKWISE){
       glFrontFace(GL_CW);
@@ -1743,8 +1745,8 @@ SoExtSelectionP::addTriangleToOffscreenBuffer(SoCallbackAction * action,
   } else {
     glDisable(GL_CULL_FACE);
   }
-  
-  glBegin(GL_TRIANGLES);    
+
+  glBegin(GL_TRIANGLES);
 
   if(!renderAsBlack){
     glColor3ub((unsigned char) (this->offscreencolorcounter>>(8+8)),
@@ -1806,30 +1808,30 @@ SoExtSelectionP::lineSegmentCB(void *userData,
     thisp->primcbdata.abort = TRUE;
     return;
   }
-  
+
   SbBool onlyrect = thisp->primcbdata.onlyrect;
 
   SbVec2s p0 = project_pt(thisp->primcbdata.projmatrix, v1->getPoint(),
                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  
+
   SbVec2s p1 = project_pt(thisp->primcbdata.projmatrix, v2->getPoint(),
                           thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  
+
   if (thisp->primcbdata.fulltest) {
 
 
-    if(PUBLIC(thisp)->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only  
+    if(PUBLIC(thisp)->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only
       if (!thisp->primcbdata.lassorect.intersect(p0) || (!point_in_poly(thisp->coords, p0))) {
         thisp->primcbdata.allhit = FALSE;
         return;
       }
-      
+
       if (!thisp->primcbdata.lassorect.intersect(p1) || (!point_in_poly(thisp->coords, p1))) {
         thisp->primcbdata.allhit = FALSE;
         return;
       }
     }
-    
+
     if (poly_line_intersect(thisp->coords, p0, p1, FALSE) || !point_in_poly(thisp->coords, p0)) {
       thisp->primcbdata.allhit = FALSE;
       return;
@@ -1850,9 +1852,9 @@ SoExtSelectionP::lineSegmentCB(void *userData,
 
       if(thisp->drawcounter > thisp->maximumcolorcounter)
         thisp->offscreencolorcounteroverflow = TRUE;
-      
+
       thisp->addLineToOffscreenBuffer(action, v1, v2, thisp->offscreencolorcounteroverflow);
-      
+
     } else if (thisp->lineFilterCB && thisp->primcbdata.allshapes) {
 
       if (thisp->lineFilterCB(thisp->lineFilterCBData,
@@ -1866,15 +1868,15 @@ SoExtSelectionP::lineSegmentCB(void *userData,
     else thisp->primcbdata.hit = TRUE;
 
   } else { // ---- Second pass
-    
+
     if(thisp->drawcounter > thisp->maximumcolorcounter){
       thisp->offscreencolorcounteroverflow = TRUE;
       return;
     }
-    
+
     int flag = 0x1 << (thisp->offscreencolorcounter & 0x07);
     int index = thisp->offscreencolorcounter >> 3;
-    
+
     if (thisp->visibletrianglesbitarray[index] & flag) {
       if (thisp->lineFilterCB &&
           thisp->lineFilterCB(thisp->lineFilterCBData, action, v1, v2)) {
@@ -1902,16 +1904,16 @@ SoExtSelectionP::addLineToOffscreenBuffer(SoCallbackAction * action,
   const SbMatrix & mm = SoModelMatrixElement::get(state);
   offscreenviewvolume.getMatrices(affine, proj);
   affine.multLeft(mm);
-  
+
   glMatrixMode(GL_PROJECTION);
   glLoadMatrixf((float *)proj);
   glMatrixMode(GL_MODELVIEW);
   glLoadMatrixf((float *)affine);
-  
+
   glDepthFunc(GL_LEQUAL);
 
 
-  glBegin(GL_LINES);    
+  glBegin(GL_LINES);
 
   if(!renderAsBlack){
     glColor3ub((unsigned char) (this->offscreencolorcounter>>(8+8)),
@@ -1958,11 +1960,11 @@ SoExtSelectionP::pointCB(void *userData,
 
   // Increase draw counter. (Used below).
   thisp->drawcounter++;
-  
 
-  if(thisp->primcbdata.abort){ 
+
+  if(thisp->primcbdata.abort){
     return;
-  }  
+  }
 
   if(!thisp->pointFilterCB && thisp->primcbdata.fulltest &&
       !thisp->primcbdata.allhit) {
@@ -1974,37 +1976,37 @@ SoExtSelectionP::pointCB(void *userData,
     thisp->primcbdata.abort = TRUE;
     return;
   }
-  
- 
+
+
   SbVec2s p = project_pt(thisp->primcbdata.projmatrix, v->getPoint(),
                          thisp->primcbdata.vporg, thisp->primcbdata.vpsize);
-  
-  if(PUBLIC(thisp)->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only  
-    
+
+  if(PUBLIC(thisp)->lassoType.getValue() == SoExtSelection::RECTANGLE){ // Rectangle check only
+
     SbBool onlyrect = thisp->primcbdata.onlyrect;
     if (!thisp->primcbdata.lassorect.intersect(p) || (onlyrect || !point_in_poly(thisp->coords, p))) {
       thisp->primcbdata.allhit = FALSE;
       return;
     }
-    
+
   } else if(!point_in_poly(thisp->coords, p)) {
     thisp->primcbdata.allhit = FALSE;
     return;
   }
-  
-  
+
+
   if(!thisp->applyonlyonselectedtriangles){ // ---- First pass
-    
+
     if(!thisp->primcbdata.allshapes){
-      
+
       // Draw to offscreen
       if(thisp->drawcounter > thisp->maximumcolorcounter)
         thisp->offscreencolorcounteroverflow = TRUE;
-            
+
       thisp->addPointToOffscreenBuffer(action, v, thisp->offscreencolorcounteroverflow);
-      
+
     } else if (thisp->pointFilterCB && thisp->primcbdata.allshapes) {
-      
+
       if (thisp->pointFilterCB(thisp->pointFilterCBData, action, v)) {
         // select shape
         thisp->primcbdata.hit = TRUE;
@@ -2013,17 +2015,17 @@ SoExtSelectionP::pointCB(void *userData,
       }
     }
     else thisp->primcbdata.hit = TRUE;
-    
+
   } else { // ---- Second pass
 
     if(thisp->drawcounter > thisp->maximumcolorcounter){
       thisp->offscreencolorcounteroverflow = TRUE;
       return;
     }
-    
+
     int flag = 0x1 << (thisp->offscreencolorcounter & 0x07);
     int index = thisp->offscreencolorcounter >> 3;
-    
+
     if (thisp->visibletrianglesbitarray[index] & flag) {
       if (thisp->pointFilterCB &&
           thisp->pointFilterCB(thisp->pointFilterCBData, action, v)) {
@@ -2050,7 +2052,7 @@ SoExtSelectionP::addPointToOffscreenBuffer(SoCallbackAction * action,
   const SbMatrix & mm = SoModelMatrixElement::get(state);
   offscreenviewvolume.getMatrices(affine, proj);
   affine.multLeft(mm);
-  
+
   glMatrixMode(GL_PROJECTION);
   glLoadMatrixf((float *)proj);
   glMatrixMode(GL_MODELVIEW);
@@ -2060,7 +2062,7 @@ SoExtSelectionP::addPointToOffscreenBuffer(SoCallbackAction * action,
   glPointSize(SoPointSizeElement::get(action->getState()));
 
 
-  glBegin(GL_POINTS);    
+  glBegin(GL_POINTS);
 
   if(!renderAsBlack){
     glColor3ub((unsigned char) (this->offscreencolorcounter>>(8+8)),
@@ -2082,7 +2084,7 @@ void
 SoExtSelectionP::doSelect(const SoPath * path)
 {
   SoPath * newpath = (SoPath*) path;
-  
+
   if (this->filterCB && (!this->callfiltercbonlyifselectable ||
                          path->findNode(PUBLIC(this)) >= 0)) {
     newpath = this->filterCB(this->filterCBData, path);
@@ -2109,7 +2111,7 @@ SoExtSelectionP::addVisitedPath(const SoPath *path)
   // FIXME: This is a linear search. Storing paths should have be
   // done using something more sophisticated for better
   // performance. (handegar)
-      
+
   if(this->visitedshapepaths->findPath(*path) < 0)
     this->visitedshapepaths->append(path->copy());
 
@@ -2120,15 +2122,15 @@ void
 SoExtSelectionP::selectPaths(void)
 {
   int length = this->visitedshapepaths->getLength();
- 
+
   for(int i=0;i<length;++i) {
     this->doSelect((*(this->visitedshapepaths))[i]);
   }
- 
+
   this->visitedshapepaths->truncate(0);
 }
 
-void 
+void
 SoExtSelectionP::offscreenLassoTesselatorCallback(void * v0, void * v1, void * v2, void * userdata)
 {
 
@@ -2145,32 +2147,32 @@ SoExtSelectionP::offscreenLassoTesselatorCallback(void * v0, void * v1, void * v
    glColor3f(1,1,1);
    glVertex2f(vec0->getValue()[0],vec0->getValue()[1]);
    glVertex2f(vec1->getValue()[0],vec1->getValue()[1]);
-   glVertex2f(vec2->getValue()[0],vec2->getValue()[1]); 
+   glVertex2f(vec2->getValue()[0],vec2->getValue()[1]);
   glEnd();
 
 }
 
-void 
+void
 SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action)
 {
 
   SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
 
-  
+
   // Setup optimal screen-aspect according to lasso-size
   SoHandleEventAction * eventAction = pimpl->offscreenaction;
   const SbViewportRegion & vp = SoViewportRegionElement::get(eventAction->getState());
-  
+
   SbVec2s vpo = vp.getViewportOriginPixels();
   SbVec2s vps = vp.getViewportSizePixels();
-  
+
   glMatrixMode(GL_PROJECTION);
   glOrtho(vpo[0], vpo[0]+vps[0]-1,
           vpo[1], vpo[0]+vps[1]-1,
           -1, 1);
-  
+
   // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
-  // save the current color for later. 
+  // save the current color for later.
   GLfloat currentColor[4];
   glGetFloatv(GL_CURRENT_COLOR,currentColor);
 
@@ -2206,19 +2208,19 @@ SoExtSelectionP::offscreenRenderLassoCallback(void * userdata, SoAction * action
   for(i = 0; i < pimpl->coords.getLength(); i++)
     tesselator.addVertex(tmparray[i],(void*)&tmparray[i]);
   tesselator.endPolygon();
- 
+
   // Due to a Mesa 3.4.2 bug
   glColor3fv(currentColor);
- 
+
   glPopAttrib();
 }
 
-void 
+void
 SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
 {
- 
+
   SoExtSelectionP * pimpl = (SoExtSelectionP *) userdata;
-  
+
   /*
     FIXME: A nice feature could be an option to 'zoom' in on the
     selected area to increase pixel detail in the offscreen
@@ -2242,7 +2244,7 @@ SoExtSelectionP::offscreenRenderCallback(void * userdata, SoAction * action)
   */
 
   // Because Mesa 3.4.2 cant properly push & pop GL_CURRENT_BIT, we have to
-  // save the current color for later. 
+  // save the current color for later.
   GLfloat currentColor[4];
   glGetFloatv(GL_CURRENT_COLOR,currentColor);
 
@@ -2286,7 +2288,7 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
                        "system for driver errors.");
     return FALSE;
   }
-  
+
   // Check color-channel bitresolution
   GLint red, green, blue;
   glGetIntegerv(GL_RED_BITS, &red);
@@ -2336,7 +2338,7 @@ SoExtSelectionP::checkOffscreenRendererCapabilities()
 SbBool
 SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
 {
-  
+
   const SbViewportRegion vpr = renderer->getViewportRegion();
 
   int offscreenSizeX = vpr.getViewportSizePixels()[0];
@@ -2352,7 +2354,7 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
   // Clear entire table.
   (void)memset(this->visibletrianglesbitarray, 0,
                (this->maximumcolorcounter + 7) / 8);
-  
+
   SbBox2s rectbbox;
   for (int k = 0; k < this->coords.getLength(); k++)
     rectbbox.extendBy(this->coords[k]);
@@ -2363,7 +2365,7 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
   const int miny = (int) (rectbbox.getMin()[1] * ((float) offscreenSizeY/requestedsize[1]));
   const int maxy = (int) (rectbbox.getMax()[1] * ((float) offscreenSizeY/requestedsize[1]));
 
-  
+
   for(int j=miny; j < maxy; ++j){
     for(int i=minx*3; i < maxx*3; i+=3){
 
@@ -2372,11 +2374,11 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
         if(stencilBuffer[j*offscreenSizeX*3 + i] == 0)
           continue;
       }
-      
+
       pixelValue = (rgbBuffer[j*offscreenSizeX*3 + i]<< (8+8));
       pixelValue += (rgbBuffer[j*offscreenSizeX*3 + i + 1]<< (8));
       pixelValue += (rgbBuffer[j*offscreenSizeX*3 + i + 2]);
-      
+
       if(pixelValue != 0){
         flag = 0x1 << (pixelValue & 0x07);
         index = pixelValue >> 3;
@@ -2386,7 +2388,7 @@ SoExtSelectionP::scanOffscreenBuffer(SoNode *sceneRoot)
 
     }
   }
-  
+
   return(hitflag);
 }
 
@@ -2415,7 +2417,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     this->coords.append(SbVec2s(p0[0], p1[1]));
   }
 
-  // Send signalt to client that tris are comming up
+  //Send signalt to client that tris are comming up
   PUBLIC(this)->startCBList->invokeCallbacks(PUBLIC(this));
 
   this->curvp = SoViewportRegionElement::get(action->getState());
@@ -2443,7 +2445,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     // Execute 'search' for triangles
     primcbdata.allshapes = TRUE;
     this->cbaction->apply(action->getCurPath()->getHead());
-  
+
   } else {
 
     //
@@ -2468,7 +2470,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
 
     this->visibletrianglesbitarray =
       new unsigned char[(this->maximumcolorcounter + 7) / 8];
- 
+
     // --- Do this procedure several times if colorcounter overflows
     this->offscreencolorcounterpasses = 0;
 
@@ -2491,32 +2493,32 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
     cc_glglue_context_max_dimensions(&maxsize[0], &maxsize[1]);
 
     this->requestedsize = action->getViewportRegion().getViewportSizePixels();
-    
+
     if((unsigned int) requestedsize[0] > maxsize[0] || (unsigned int) requestedsize[1] > maxsize[1]){
-      
+
       double maxv = (float) SbMax(requestedsize[0],requestedsize[1]);
       double minv = (float) SbMin(maxsize[0],maxsize[1]);
       double scale = minv/maxv;
-      
+
       SbVec2s newsize;
       newsize[0] = (int) (requestedsize[0] * scale);
       newsize[1] = (int) (requestedsize[1] * scale);
-            
+
       const SbViewportRegion vp(newsize[0],newsize[1]);
       this->renderer = new SoOffscreenRenderer(vp);
       this->lassorenderer = new SoOffscreenRenderer(vp);
-      
+
     } else {
-      
+
       this->renderer = new SoOffscreenRenderer(action->getViewportRegion());
       this->lassorenderer = new SoOffscreenRenderer(action->getViewportRegion());
 
     }
- 
+
     SoCallback * cbnode = new SoCallback;
     cbnode->ref();
     cbnode->setCallback(offscreenRenderCallback, this);
- 
+
     do { // --- Render and processing loop.
 
       this->offscreencolorcounter = 1;
@@ -2525,7 +2527,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       this->offscreencolorcounteroverflow = FALSE;
       this->drawcallbackcounter = 0;
       this->drawcounter = 0;
-       
+
 
       // Render a offscreen stencil buffer of lasso-shape if needed
       if(PUBLIC(this)->lassoType.getValue() != SoExtSelection::NOLASSO){
@@ -2538,7 +2540,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
           cbnode2->unref();
         }
       }
-      
+
 
       // First render pass to offscreen buffer.
       this->renderer->render(cbnode);
@@ -2557,7 +2559,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
       // Scan buffer marking visible colors in the
       // 'visibletrianglesbitarray' array.
       if (this->scanOffscreenBuffer(action->getCurPath()->getHead()) != 0) {
-        
+
         // Render once more, but only selected triangles which are forwarded
         // to client code through 'triangleFilterCB'.
 
@@ -2566,7 +2568,7 @@ SoExtSelectionP::performSelection(SoHandleEventAction * action)
         this->offscreenskipcounter = 0;
         this->drawcallbackcounter = 0;
         this->drawcounter = 0;
- 
+
         this->applyonlyonselectedtriangles = TRUE;
         this->cbaction->apply(action->getCurPath()->getHead());
         PUBLIC(this)->touch();
