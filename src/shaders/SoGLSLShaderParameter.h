@@ -62,7 +62,7 @@ public:
 private:
   GLint    location;
   SbString cacheName;
-  int      cacheSize;
+  GLsizei  cacheSize;
   GLenum   cacheType;
 
   SbBool isValid(const SoGLShaderObject * shader, const char * name, 

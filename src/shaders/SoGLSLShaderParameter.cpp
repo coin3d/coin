@@ -169,7 +169,7 @@ SoGLSLShaderParameter::isValid(const SoGLShaderObject * shader,
   COIN_GLchar myName[128]; // FIXME: check this 20050128 martin
     
   g->glGetActiveUniformARB(pHandle, this->location, 128, &length,
-			   &this->cacheSize, &this->cacheType, myName);
+                           &this->cacheSize, &this->cacheType, myName);
 
   this->cacheName = name;
 
