@@ -58,6 +58,36 @@ SoGLDisplayList::SoGLDisplayList(SoState * state, Type type, int allocnum,
     refcount(0),
     mipmap(mipmaptexobj)
 {
+  // Check for known buggy OpenGL driver.
+  const char * versionstr = (const char *)glGetString(GL_VERSION);
+  if (strcmp(versionstr, "1.3.1 NVIDIA 28.02") == 0) {
+    // (From NVidia's changelog, it looks like the problem we've been
+    // seeing with the 28.02 driver and displaylists *might* have been
+    // fixed for the next version (28.80)).
+
+    // FIXME: should be more robust, and rather just disable the use
+    // of GL displaylists (but still issuing an
+    // SoDebugError::postWarning()). This should be straightforward to
+    // do when the FIXME below on better handling of the case where we
+    // are not able to allocate displaylist indices is taken care
+    // of. 20020911 mortene.
+
+    static SbBool first = TRUE;
+    if (first) {
+      SoDebugError::post("SoGLDisplayList::SoGLDisplayList",
+                         "This OpenGL driver ('%s') is known to contain serious "
+                         "bugs in GL displaylist handling, and we strongly urge "
+                         "you to upgrade! As long as you are using this driver, "
+                         "GL rendering is likely to cause all sorts of nasty "
+                         "problems.",
+                         versionstr);
+      first = FALSE;
+    }
+  }
+
+
+  // Reserve displaylist IDs.
+
   if (type == TEXTURE_OBJECT) {
     assert(allocnum == 1 && "it is only possible to create one texture object at a time");
     const cc_glglue * glw = cc_glglue_instance(this->context);
