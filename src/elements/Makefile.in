@@ -228,7 +228,11 @@ RegularSources = \
 	SoViewingMatrixElement.cpp \
 	SoViewportRegionElement.cpp \
 	SoWindowElement.cpp \
-	SoGLDisplayList.cpp
+	SoGLDisplayList.cpp \
+	SoListenerPositionElement.cpp \
+	SoListenerOrientationElement.cpp \
+	SoListenerGainElement.cpp \
+	SoListenerVelocityElement.cpp
 
 LinkHackSources = \
 	all.cpp
@@ -327,7 +331,11 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoViewVolumeElement.h \
 	../../include/Inventor/elements/SoViewingMatrixElement.h \
 	../../include/Inventor/elements/SoViewportRegionElement.h \
-	../../include/Inventor/elements/SoWindowElement.h
+	../../include/Inventor/elements/SoWindowElement.h \
+	../../include/Inventor/elements/SoListenerPositionElement.h \
+	../../include/Inventor/elements/SoListenerOrientationElement.h \
+	../../include/Inventor/elements/SoListenerGainElement.h \
+	../../include/Inventor/elements/SoListenerVelocityElement.h 
 
 PrivateHeaders = \
 	../../include/Inventor/elements/SoTextureScalePolicyElement.h
@@ -479,7 +487,11 @@ elements_lst_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoViewingMatrixElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoViewportRegionElement.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoWindowElement.$(OBJEXT) \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerPositionElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerOrientationElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerGainElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerVelocityElement.$(OBJEXT)
 elements_lst_OBJECTS = $(am_elements_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
@@ -576,7 +588,11 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoViewingMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoViewportRegionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoWindowElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerPositionElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerOrientationElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerGainElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerVelocityElement.lo
 libelements_la_OBJECTS = $(am_libelements_la_OBJECTS)
 libelements@SUFFIX@LINKHACK_la_LDFLAGS =
 libelements@SUFFIX@LINKHACK_la_LIBADD =
@@ -672,7 +688,11 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@	SoViewingMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoViewportRegionElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoWindowElement.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDisplayList.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerPositionElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerOrientationElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerGainElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoListenerVelocityElement.lo
 libelements@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libelements@SUFFIX@LINKHACK_la_OBJECTS)
 
@@ -794,6 +814,14 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoLinePatternElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLineWidthElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLineWidthElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerGainElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerGainElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerOrientationElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerOrientationElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerPositionElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerPositionElement.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerVelocityElement.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoListenerVelocityElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoLocalBBoxMatrixElement.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoLocalBBoxMatrixElement.Po \
 @AMDEP_TRUE@	$(DEPDIR)/SoMaterialBindingElement.Plo \
@@ -1063,6 +1091,14 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLinePatternElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineWidthElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLineWidthElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerGainElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerGainElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerOrientationElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerOrientationElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerPositionElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerPositionElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerVelocityElement.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoListenerVelocityElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLocalBBoxMatrixElement.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoLocalBBoxMatrixElement.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoMaterialBindingElement.Plo@am__quote@

@@ -93,7 +93,11 @@ RegularSources = \
 	SoViewingMatrixElement.cpp \
 	SoViewportRegionElement.cpp \
 	SoWindowElement.cpp \
-	SoGLDisplayList.cpp
+	SoGLDisplayList.cpp \
+	SoListenerPositionElement.cpp \
+	SoListenerOrientationElement.cpp \
+	SoListenerGainElement.cpp \
+	SoListenerVelocityElement.cpp
 LinkHackSources = \
 	all.cpp
 PublicHeaders = \
@@ -190,7 +194,11 @@ PublicHeaders = \
 	../../include/Inventor/elements/SoViewVolumeElement.h \
 	../../include/Inventor/elements/SoViewingMatrixElement.h \
 	../../include/Inventor/elements/SoViewportRegionElement.h \
-	../../include/Inventor/elements/SoWindowElement.h
+	../../include/Inventor/elements/SoWindowElement.h \
+	../../include/Inventor/elements/SoListenerPositionElement.h \
+	../../include/Inventor/elements/SoListenerOrientationElement.h \
+	../../include/Inventor/elements/SoListenerGainElement.h \
+	../../include/Inventor/elements/SoListenerVelocityElement.h 
 PrivateHeaders = \
 	../../include/Inventor/elements/SoTextureScalePolicyElement.h
 ObsoletedHeaders =
