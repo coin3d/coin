@@ -183,10 +183,8 @@ SoState::getAction(void) const
 SoElement *
 SoState::getElement(const int stackindex)
 {
+  assert(this->isElementEnabled(stackindex));
   SoElement * element = this->stack[stackindex];
-#ifdef COIN_EXTRA_DEBUG
-  assert(element);
-#endif // COIN_EXTRA_DEBUG
 
 #if 0 // debug
   SoDebugError::postInfo("SoState::getElement",
@@ -212,7 +210,6 @@ SoState::getElement(const int stackindex)
     element = next;
     THIS->pushstore->elements.append(stackindex);
   }
-  assert(element != NULL);
   return element;
 }
 
@@ -290,7 +287,7 @@ SoState::print(FILE * const file) const
 SbBool
 SoState::isElementEnabled(const int stackindex) const
 {
-  return (this->stack[stackindex] != NULL);
+  return (stackindex < THIS->numstacks) && (this->stack[stackindex] != NULL);
 }
 
 /*!
@@ -331,6 +328,7 @@ SoState::isCacheOpen(void) const
 SoElement *
 SoState::getElementNoPush(const int stackindex) const
 {
+  assert(this->isElementEnabled(stackindex));
   return this->stack[stackindex];
 }
 
