@@ -46,7 +46,7 @@ SO_NODE_SOURCE(SoEventCallback);
 */
 SoEventCallback::SoEventCallback()
 {
-  SO_NODE_CONSTRUCTOR(SoEventCallback);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoEventCallback);
 
 #if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   this->heaction = NULL;

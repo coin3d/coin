@@ -110,7 +110,7 @@ SO_NODE_SOURCE(SoArray);
 */
 SoArray::SoArray()
 {
-  SO_NODE_CONSTRUCTOR(SoArray);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoArray);
 
   SO_NODE_ADD_FIELD(origin, (SoArray::FIRST));
   SO_NODE_ADD_FIELD(numElements1, (1));

@@ -79,7 +79,7 @@ SO_NODE_SOURCE(SoRotationXYZ);
 */
 SoRotationXYZ::SoRotationXYZ()
 {
-  SO_NODE_CONSTRUCTOR(SoRotationXYZ);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoRotationXYZ);
 
   SO_NODE_ADD_FIELD(angle, (0.0f));
   SO_NODE_ADD_FIELD(axis, (SoRotationXYZ::X));

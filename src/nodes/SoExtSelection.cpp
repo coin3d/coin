@@ -86,7 +86,7 @@ SO_NODE_SOURCE(SoExtSelection);
 */
 SoExtSelection::SoExtSelection()
 {
-  SO_NODE_CONSTRUCTOR(SoExtSelection);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoExtSelection);
 
   SO_NODE_ADD_FIELD(lassoType, (SoExtSelection::NOLASSO));
   SO_NODE_ADD_FIELD(lassoPolicy, (SoExtSelection::FULL_BBOX));

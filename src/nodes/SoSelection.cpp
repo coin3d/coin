@@ -62,7 +62,7 @@ SO_NODE_SOURCE(SoSelection);
 */
 SoSelection::SoSelection()
 {
-  SO_NODE_CONSTRUCTOR(SoSelection);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSelection);
 
   SO_NODE_ADD_FIELD(policy, (SoSelection::SHIFT));
 

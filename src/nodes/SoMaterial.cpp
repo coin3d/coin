@@ -122,7 +122,7 @@ SO_NODE_SOURCE(SoMaterial);
 */
 SoMaterial::SoMaterial()
 {
-  SO_NODE_CONSTRUCTOR(SoMaterial);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoMaterial);
 
   SO_NODE_ADD_FIELD(ambientColor,(0.2f, 0.2f, 0.2f));
   SO_NODE_ADD_FIELD(diffuseColor,(0.8f, 0.8f, 0.8f));

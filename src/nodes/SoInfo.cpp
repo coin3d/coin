@@ -43,7 +43,7 @@ SO_NODE_SOURCE(SoInfo);
 */
 SoInfo::SoInfo()
 {
-  SO_NODE_CONSTRUCTOR(SoInfo);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoInfo);
 
   SO_NODE_ADD_FIELD(string, ("<Undefined info>"));
 }

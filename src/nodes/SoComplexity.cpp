@@ -100,7 +100,7 @@ SO_NODE_SOURCE(SoComplexity);
 */
 SoComplexity::SoComplexity(void)
 {
-  SO_NODE_CONSTRUCTOR(SoComplexity);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoComplexity);
   
   SO_NODE_ADD_FIELD(type, (SoComplexity::OBJECT_SPACE));
   SO_NODE_ADD_FIELD(value, (0.5f));

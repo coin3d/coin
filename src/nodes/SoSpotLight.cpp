@@ -79,7 +79,7 @@ SO_NODE_SOURCE(SoSpotLight);
 */
 SoSpotLight::SoSpotLight()
 {
-  SO_NODE_CONSTRUCTOR(SoSpotLight);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSpotLight);
 
   SO_NODE_ADD_FIELD(location, (SbVec3f(0.0f, 0.0f, 1.0f)));
   SO_NODE_ADD_FIELD(direction, (SbVec3f(0.0f, 0.0f, -1.0f)));

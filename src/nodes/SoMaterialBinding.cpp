@@ -106,7 +106,7 @@ SO_NODE_SOURCE(SoMaterialBinding);
 */
 SoMaterialBinding::SoMaterialBinding()
 {
-  SO_NODE_CONSTRUCTOR(SoMaterialBinding);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoMaterialBinding);
 
   SO_NODE_ADD_FIELD(value,(OVERALL));
 

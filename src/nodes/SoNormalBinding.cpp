@@ -101,7 +101,7 @@ SO_NODE_SOURCE(SoNormalBinding);
 */
 SoNormalBinding::SoNormalBinding()
 {
-  SO_NODE_CONSTRUCTOR(SoNormalBinding);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoNormalBinding);
 
   SO_NODE_ADD_FIELD(value, (DEFAULT));
 

@@ -34,7 +34,7 @@ SO_KIT_SOURCE(SoWrapperKit);
 */
 SoWrapperKit::SoWrapperKit(void)
 {
-  SO_KIT_CONSTRUCTOR(SoWrapperKit);
+  SO_KIT_INTERNAL_CONSTRUCTOR(SoWrapperKit);
 
   // FIXME: need to define catalog here. 19991107 mortene.
 

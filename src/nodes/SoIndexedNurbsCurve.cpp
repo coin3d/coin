@@ -52,7 +52,7 @@ SO_NODE_SOURCE(SoIndexedNurbsCurve);
 */
 SoIndexedNurbsCurve::SoIndexedNurbsCurve()
 {
-  SO_NODE_CONSTRUCTOR(SoIndexedNurbsCurve);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedNurbsCurve);
 
   SO_NODE_ADD_FIELD(numControlPoints, (0));
   SO_NODE_ADD_FIELD(coordIndex, (0));

@@ -104,7 +104,7 @@ SO_NODE_SOURCE(SoTriangleStripSet);
 */
 SoTriangleStripSet::SoTriangleStripSet()
 {
-  SO_NODE_CONSTRUCTOR(SoTriangleStripSet);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTriangleStripSet);
 
   SO_NODE_ADD_FIELD(numVertices, (-1));
 }

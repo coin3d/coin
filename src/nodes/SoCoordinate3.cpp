@@ -65,7 +65,7 @@ SO_NODE_SOURCE(SoCoordinate3);
 */
 SoCoordinate3::SoCoordinate3()
 {
-  SO_NODE_CONSTRUCTOR(SoCoordinate3);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoCoordinate3);
 
   SO_NODE_ADD_FIELD(point, (0.0f, 0.0f, 0.0f));
 }

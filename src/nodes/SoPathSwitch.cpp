@@ -43,7 +43,7 @@ SO_NODE_SOURCE(SoPathSwitch);
 */
 SoPathSwitch::SoPathSwitch()
 {
-  SO_NODE_CONSTRUCTOR(SoPathSwitch);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoPathSwitch);
 
   SO_NODE_ADD_FIELD(path, (NULL));
 }

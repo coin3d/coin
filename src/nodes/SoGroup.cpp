@@ -73,7 +73,7 @@ SO_NODE_SOURCE(SoGroup);
 */
 SoGroup::SoGroup()
 {
-  SO_NODE_CONSTRUCTOR(SoGroup);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoGroup);
 
   this->children = new SoChildList(this);
 }

@@ -62,7 +62,7 @@ SoType SoFieldContainer::classTypeId = SoType::badType();
 */
 
 SoFieldContainer::SoFieldContainer(void)
-  : fieldData(), isBuiltIn(FALSE), donotify(TRUE)
+  : fieldData(), isBuiltIn(TRUE), donotify(TRUE)
 {
 }
 

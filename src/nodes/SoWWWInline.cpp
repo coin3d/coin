@@ -89,7 +89,7 @@ SO_NODE_SOURCE(SoWWWInline);
 */
 SoWWWInline::SoWWWInline()
 {
-  SO_NODE_CONSTRUCTOR(SoWWWInline);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoWWWInline);
 
   SO_NODE_ADD_FIELD(name, ("<Undefined file>"));
   SO_NODE_ADD_FIELD(bboxCenter, (0.0f, 0.0f, 0.0f));

@@ -110,7 +110,7 @@ SO_NODE_SOURCE(SoQuadMesh);
 */
 SoQuadMesh::SoQuadMesh()
 {
-  SO_NODE_CONSTRUCTOR(SoQuadMesh);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoQuadMesh);
 
   SO_NODE_ADD_FIELD(verticesPerColumn, (1));
   SO_NODE_ADD_FIELD(verticesPerRow, (1));

@@ -410,7 +410,7 @@ SO_NODE_SOURCE(SoMarkerSet);
 */
 SoMarkerSet::SoMarkerSet()
 {
-  SO_NODE_CONSTRUCTOR(SoMarkerSet);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoMarkerSet);
 
   SO_NODE_ADD_FIELD(markerIndex, (0));
 }

@@ -74,7 +74,7 @@ SO_NODE_SOURCE(SoAnnoText3);
 */
 SoAnnoText3::SoAnnoText3()
 {
-  SO_NODE_CONSTRUCTOR(SoAnnoText3);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoAnnoText3);
 
   SO_NODE_ADD_FIELD(string, (""));
   SO_NODE_ADD_FIELD(spacing, (1.0f));

@@ -75,7 +75,7 @@ SO_NODE_SOURCE(SoResetTransform);
 */
 SoResetTransform::SoResetTransform()
 {
-  SO_NODE_CONSTRUCTOR(SoResetTransform);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoResetTransform);
 
   SO_NODE_ADD_FIELD(whatToReset, (SoResetTransform::TRANSFORM));
 

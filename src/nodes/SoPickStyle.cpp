@@ -71,7 +71,7 @@ SO_NODE_SOURCE(SoPickStyle);
 */
 SoPickStyle::SoPickStyle()
 {
-  SO_NODE_CONSTRUCTOR(SoPickStyle);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoPickStyle);
   
   SO_NODE_ADD_FIELD(style, (SoPickStyle::SHAPE));
 

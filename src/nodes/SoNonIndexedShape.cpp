@@ -51,7 +51,7 @@ SO_NODE_ABSTRACT_SOURCE(SoNonIndexedShape);
 */
 SoNonIndexedShape::SoNonIndexedShape()
 {
-  SO_NODE_CONSTRUCTOR(SoNonIndexedShape);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoNonIndexedShape);
 
   SO_NODE_ADD_FIELD(startIndex, (0));
 }

@@ -134,7 +134,7 @@ SO_NODE_SOURCE(SoIndexedLineSet);
 */
 SoIndexedLineSet::SoIndexedLineSet()
 {
-  SO_NODE_CONSTRUCTOR(SoIndexedLineSet);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedLineSet);
 }
 
 /*!

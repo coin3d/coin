@@ -70,8 +70,20 @@ _class_::createInstance(void) \
   do { \
     /* Catch attempts to use a node class which has not been initialized. */ \
     assert(_class_::classTypeId != SoType::badType()); \
+    /* Extensions classes from the application programmers should not be \
+       considered native. This is important to get the export code to do \
+       the Right Thing. */ \
+    this->isBuiltIn = FALSE; \
   } while (0)
 
+
+#if defined(__SOLIB_INTERNAL__)
+#define SO_NODE_INTERNAL_CONSTRUCTOR(_class_) \
+  do { \
+    /* Catch attempts to use a node class which has not been initialized. */ \
+    assert(_class_::classTypeId != SoType::badType()); \
+  } while (0)
+#endif // INTERNAL macro definition
 
 
 #define SO_NODE_INIT_CLASS(_class_, _parentclass_, _parentname_) \
@@ -91,11 +103,22 @@ _class_::createInstance(void) \
   } while (0)
 
 
+#if defined(__SOLIB_INTERNAL__)
 #define SO_NODE_INTERNAL_INIT_CLASS(_class_) \
   do { \
-    SO_NODE_INIT_CLASS(_class_, inherited, \
-                       &(inherited::getClassTypeId().getName().getString()[2])); \
+    /* Make sure we only initialize once. */ \
+    assert(_class_::classTypeId == SoType::badType()); \
+    /* Make sure superclass gets initialized before subclass. */ \
+    assert(inherited::getClassTypeId() != SoType::badType()); \
+ \
+    const char * classname = SO__QUOTE(_class_); \
+    _class_::classTypeId = \
+      SoType::createType(inherited::getClassTypeId(), \
+                         &classname[2], \
+                         &_class_::createInstance, \
+                         SoNode::nextActionMethodIndex++); \
   } while (0)
+#endif // INTERNAL macro definition
 
 
 
@@ -116,11 +139,22 @@ _class_::createInstance(void) \
   } while (0)
 
 
+#if defined(__SOLIB_INTERNAL__)
 #define SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(_class_) \
   do { \
-    SO_NODE_INIT_ABSTRACT_CLASS(_class_, inherited, \
-                                &(inherited::getClassTypeId().getName().getString()[2])); \
+    /* Make sure we only initialize once. */ \
+    assert(_class_::classTypeId == SoType::badType()); \
+    /* Make sure superclass gets initialized before subclass. */ \
+    assert(inherited::getClassTypeId() != SoType::badType()); \
+ \
+    const char * classname = SO__QUOTE(_class_); \
+    _class_::classTypeId = \
+      SoType::createType(inherited::getClassTypeId(), \
+                         &classname[2], \
+                         NULL, \
+                         SoNode::nextActionMethodIndex++); \
   } while (0)
+#endif // INTERNAL macro definition
 
 
 #define SO_NODE_ADD_FIELD(_fieldname_, _defaultval_) \

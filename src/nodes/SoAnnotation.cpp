@@ -48,7 +48,7 @@ SO_NODE_SOURCE(SoAnnotation);
 */
 SoAnnotation::SoAnnotation()
 {
-  SO_NODE_CONSTRUCTOR(SoAnnotation);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoAnnotation);
 }
 
 /*!

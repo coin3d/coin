@@ -93,7 +93,7 @@ SO_NODE_SOURCE(SoEnvironment);
 */
 SoEnvironment::SoEnvironment()
 {
-  SO_NODE_CONSTRUCTOR(SoEnvironment);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoEnvironment);
   
   SO_NODE_ADD_FIELD(ambientIntensity, (0.2f));
   SO_NODE_ADD_FIELD(ambientColor, (1.0f, 1.0f, 1.0f));

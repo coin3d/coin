@@ -68,7 +68,7 @@ SO_NODE_ABSTRACT_SOURCE(SoVertexShape);
 */
 SoVertexShape::SoVertexShape()
 {
-  SO_NODE_CONSTRUCTOR(SoVertexShape);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexShape);
   
   SO_NODE_ADD_FIELD(vertexProperty,(NULL));
 

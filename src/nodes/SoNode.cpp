@@ -160,7 +160,7 @@ SoNode::initClass(void)
   assert(inherited::getClassTypeId() != SoType::badType());
 
   SoNode::classTypeId =
-    SoType::createType(inherited::getClassTypeId(), "SoNode", NULL,
+    SoType::createType(inherited::getClassTypeId(), "Node", NULL,
 		       SoNode::nextActionMethodIndex++);
 
   SoNode::initClasses();

@@ -60,7 +60,7 @@ SO_NODE_ABSTRACT_SOURCE(SoTransformation);
 */
 SoTransformation::SoTransformation()
 {
-  SO_NODE_CONSTRUCTOR(SoTransformation);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformation);
 }
 
 /*!

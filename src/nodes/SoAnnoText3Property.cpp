@@ -98,7 +98,7 @@ SO_NODE_SOURCE(SoAnnoText3Property);
 */
 SoAnnoText3Property::SoAnnoText3Property()
 {
-  SO_NODE_CONSTRUCTOR(SoAnnoText3Property);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoAnnoText3Property);
   
   SO_NODE_ADD_FIELD(fontSizeHint, (FIT_VECTOR_TEXT));
   SO_NODE_ADD_FIELD(renderPrintType, (RENDER3D_PRINT_VECTOR));

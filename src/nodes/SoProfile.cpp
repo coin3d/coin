@@ -97,7 +97,7 @@ SO_NODE_ABSTRACT_SOURCE(SoProfile);
 */
 SoProfile::SoProfile()
 {
-  SO_NODE_CONSTRUCTOR(SoProfile);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoProfile);
 
   SO_NODE_ADD_FIELD(index, (0));
   SO_NODE_ADD_FIELD(linkage, (START_FIRST));

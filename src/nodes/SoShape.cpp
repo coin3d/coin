@@ -144,7 +144,7 @@ SO_NODE_ABSTRACT_SOURCE(SoShape);
 */
 SoShape::SoShape()
 {
-  SO_NODE_CONSTRUCTOR(SoShape);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShape);
 }
 
 /*!

@@ -48,7 +48,7 @@ SO_NODE_SOURCE(SoSurroundScale);
 */
 SoSurroundScale::SoSurroundScale()
 {
-  SO_NODE_CONSTRUCTOR(SoSurroundScale);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSurroundScale);
 
   SO_NODE_ADD_FIELD(numNodesUpToContainer, (0));
   SO_NODE_ADD_FIELD(numNodesUpToReset, (0));

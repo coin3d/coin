@@ -120,7 +120,7 @@ SO_NODE_SOURCE(SoText2);
 */
 SoText2::SoText2()
 {
-  SO_NODE_CONSTRUCTOR(SoText2);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoText2);
 
   SO_NODE_ADD_FIELD(string, (""));
   SO_NODE_ADD_FIELD(spacing, (1.0f));

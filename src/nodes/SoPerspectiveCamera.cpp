@@ -50,7 +50,7 @@ SO_NODE_SOURCE(SoPerspectiveCamera);
 */
 SoPerspectiveCamera::SoPerspectiveCamera()
 {
-  SO_NODE_CONSTRUCTOR(SoPerspectiveCamera);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoPerspectiveCamera);
 
   SO_NODE_ADD_FIELD(heightAngle, (SB_PI/4.0f));  // 45 degrees
 }

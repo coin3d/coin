@@ -43,7 +43,7 @@ SO_NODE_SOURCE(SoColorIndex);
 */
 SoColorIndex::SoColorIndex()
 {
-  SO_NODE_CONSTRUCTOR(SoColorIndex);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoColorIndex);
 
   SO_NODE_ADD_FIELD(index, (1));
 }

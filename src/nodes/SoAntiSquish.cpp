@@ -82,7 +82,7 @@ SO_NODE_SOURCE(SoAntiSquish);
 */
 SoAntiSquish::SoAntiSquish()
 {
-  SO_NODE_CONSTRUCTOR(SoAntiSquish);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoAntiSquish);
 
   SO_NODE_ADD_FIELD(recalcAlways, (TRUE));
   SO_NODE_ADD_FIELD(sizing, (SoAntiSquish::AVERAGE_DIMENSION));

@@ -55,7 +55,7 @@ SO_NODE_SOURCE(SoShuttle);
 */
 SoShuttle::SoShuttle()
 {
-  SO_NODE_CONSTRUCTOR(SoShuttle);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShuttle);
 
   SO_NODE_ADD_FIELD(translation0, (SbVec3f(0.0f, 0.0f, 0.0f)));
   SO_NODE_ADD_FIELD(translation1, (SbVec3f(0.0f, 0.0f, 0.0f)));

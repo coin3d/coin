@@ -43,7 +43,7 @@ SO_NODE_SOURCE(SoLevelOfDetail);
 */
 SoLevelOfDetail::SoLevelOfDetail()
 {
-  SO_NODE_CONSTRUCTOR(SoLevelOfDetail);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoLevelOfDetail);
 
   SO_NODE_ADD_FIELD(screenArea, (0));
 }

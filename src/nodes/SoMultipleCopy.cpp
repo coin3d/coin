@@ -67,7 +67,7 @@ SO_NODE_SOURCE(SoMultipleCopy);
 */
 SoMultipleCopy::SoMultipleCopy()
 {
-  SO_NODE_CONSTRUCTOR(SoMultipleCopy);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoMultipleCopy);
 
   SO_NODE_ADD_FIELD(matrix, (SbMatrix(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)));
 }

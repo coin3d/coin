@@ -35,7 +35,7 @@ SO_NODE_ABSTRACT_SOURCE(SoVRMLInterpolator);
 */
 SoVRMLInterpolator::SoVRMLInterpolator(void)
 {
-  SO_NODE_CONSTRUCTOR(SoVRMLInterpolator);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLInterpolator);
 }
 
 /*!

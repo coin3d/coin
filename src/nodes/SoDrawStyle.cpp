@@ -108,7 +108,7 @@ SO_NODE_SOURCE(SoDrawStyle);
 */
 SoDrawStyle::SoDrawStyle()
 {
-  SO_NODE_CONSTRUCTOR(SoDrawStyle);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoDrawStyle);
   
   SO_NODE_ADD_FIELD(style, (SoDrawStyle::FILLED));
   SO_NODE_ADD_FIELD(pointSize, (0));

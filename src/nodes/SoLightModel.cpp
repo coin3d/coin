@@ -68,7 +68,7 @@ SO_NODE_SOURCE(SoLightModel);
 */
 SoLightModel::SoLightModel()
 {
-  SO_NODE_CONSTRUCTOR(SoLightModel);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoLightModel);
   
   SO_NODE_ADD_FIELD(model, (SoLightModel::PHONG));
   SO_NODE_DEFINE_ENUM_VALUE(Model, BASE_COLOR);

@@ -100,7 +100,7 @@ SO_NODE_SOURCE(SoImage);
 */
 SoImage::SoImage()
 {
-  SO_NODE_CONSTRUCTOR(SoImage);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoImage);
 
 
   SO_NODE_ADD_FIELD(width, (-1));

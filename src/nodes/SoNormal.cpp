@@ -57,7 +57,7 @@ SO_NODE_SOURCE(SoNormal);
 */
 SoNormal::SoNormal()
 {
-  SO_NODE_CONSTRUCTOR(SoNormal);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoNormal);
 
   SO_NODE_ADD_FIELD(vector, (NULL));
 }

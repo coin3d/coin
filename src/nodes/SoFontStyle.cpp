@@ -107,7 +107,7 @@ SO_NODE_SOURCE(SoFontStyle);
 */
 SoFontStyle::SoFontStyle()
 {
-  SO_NODE_CONSTRUCTOR(SoFontStyle);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoFontStyle);
 
   SO_NODE_ADD_FIELD(family, (SoFontStyle::SERIF));
   SO_NODE_ADD_FIELD(style, (SoFontStyle::NONE));

@@ -111,7 +111,7 @@ SO_NODE_SOURCE(SoTexture2);
 */
 SoTexture2::SoTexture2()
 {
-  SO_NODE_CONSTRUCTOR(SoTexture2);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture2);
 
   SO_NODE_ADD_FIELD(filename,(""));
   SO_NODE_ADD_FIELD(image,(SbVec2s(0,0), 0, NULL));

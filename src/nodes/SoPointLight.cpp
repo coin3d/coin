@@ -64,7 +64,7 @@ SO_NODE_SOURCE(SoPointLight);
 */
 SoPointLight::SoPointLight()
 {
-  SO_NODE_CONSTRUCTOR(SoPointLight);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoPointLight);
 
   SO_NODE_ADD_FIELD(location, (0.0f, 0.0f, 1.0f));
 }

@@ -54,7 +54,7 @@ SO_NODE_SOURCE(SoTextureCoordinateEnvironment);
 */
 SoTextureCoordinateEnvironment::SoTextureCoordinateEnvironment()
 {
-  SO_NODE_CONSTRUCTOR(SoTextureCoordinateEnvironment);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateEnvironment);
 }
 
 /*!

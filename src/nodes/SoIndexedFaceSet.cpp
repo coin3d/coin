@@ -125,7 +125,7 @@ SO_NODE_SOURCE(SoIndexedFaceSet);
 */
 SoIndexedFaceSet::SoIndexedFaceSet()
 {
-  SO_NODE_CONSTRUCTOR(SoIndexedFaceSet);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedFaceSet);
 
   this->numQuads = this->numTriangles = this->numPolygons = -1;
   this->convexCache = NULL;

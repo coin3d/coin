@@ -62,7 +62,7 @@ SO_NODE_SOURCE(SoScale);
 */
 SoScale::SoScale()
 {
-  SO_NODE_CONSTRUCTOR(SoScale);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoScale);
 
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 }

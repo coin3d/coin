@@ -147,7 +147,7 @@ SO_NODE_SOURCE(SoUnits);
 */
 SoUnits::SoUnits()
 {
-  SO_NODE_CONSTRUCTOR(SoUnits);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoUnits);
 
   SO_NODE_ADD_FIELD(units, (SoUnits::METERS));
 

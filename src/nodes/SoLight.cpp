@@ -60,7 +60,7 @@ SO_NODE_ABSTRACT_SOURCE(SoLight);
 */
 SoLight::SoLight()
 {
-  SO_NODE_CONSTRUCTOR(SoLight);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoLight);
 
   SO_NODE_ADD_FIELD(on,(TRUE));
   SO_NODE_ADD_FIELD(intensity,(1.0f));

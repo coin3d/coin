@@ -85,7 +85,7 @@ SO_NODE_ABSTRACT_SOURCE(SoIndexedShape);
 */
 SoIndexedShape::SoIndexedShape()
 {
-  SO_NODE_CONSTRUCTOR(SoIndexedShape);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedShape);
 
   SO_NODE_ADD_FIELD(coordIndex,(0));
   SO_NODE_ADD_FIELD(materialIndex,(-1));

@@ -75,7 +75,7 @@ SO_NODE_SOURCE(SoTextureCoordinateBinding);
 */
 SoTextureCoordinateBinding::SoTextureCoordinateBinding()
 {
-  SO_NODE_CONSTRUCTOR(SoTextureCoordinateBinding);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateBinding);
   
   SO_NODE_ADD_FIELD(value, (SoTextureCoordinateBinding::PER_VERTEX_INDEXED));
 

@@ -38,7 +38,7 @@ SO_NODE_SOURCE(SoLinearProfile);
 */
 SoLinearProfile::SoLinearProfile()
 {
-  SO_NODE_CONSTRUCTOR(SoLinearProfile);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoLinearProfile);
 }
 
 /*!

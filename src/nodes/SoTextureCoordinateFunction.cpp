@@ -38,7 +38,7 @@ SO_NODE_ABSTRACT_SOURCE(SoTextureCoordinateFunction);
 */
 SoTextureCoordinateFunction::SoTextureCoordinateFunction()
 {
-  SO_NODE_CONSTRUCTOR(SoTextureCoordinateFunction);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateFunction);
 }
 
 /*!

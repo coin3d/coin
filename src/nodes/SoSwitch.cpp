@@ -67,7 +67,7 @@ SO_NODE_SOURCE(SoSwitch);
 */
 SoSwitch::SoSwitch()
 {
-  SO_NODE_CONSTRUCTOR(SoSwitch);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSwitch);
 
   SO_NODE_ADD_FIELD(whichChild, (SO_SWITCH_NONE));
 }

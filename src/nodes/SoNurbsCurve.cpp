@@ -77,7 +77,7 @@ SO_NODE_SOURCE(SoNurbsCurve);
 */
 SoNurbsCurve::SoNurbsCurve()
 {
-  SO_NODE_CONSTRUCTOR(SoNurbsCurve);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoNurbsCurve);
 
   SO_NODE_ADD_FIELD(numControlPoints, (0));
   SO_NODE_ADD_FIELD(knotVector, (0));

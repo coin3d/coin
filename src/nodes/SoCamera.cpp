@@ -143,7 +143,7 @@ SO_NODE_ABSTRACT_SOURCE(SoCamera);
 */
 SoCamera::SoCamera()
 {
-  SO_NODE_CONSTRUCTOR(SoCamera);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoCamera);
 
   SO_NODE_ADD_FIELD(viewportMapping,(ADJUST_CAMERA));
   SO_NODE_ADD_FIELD(position,(0.0f, 0.0f, 1.0f));

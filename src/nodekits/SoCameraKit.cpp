@@ -34,7 +34,7 @@ SO_KIT_SOURCE(SoCameraKit);
 */
 SoCameraKit::SoCameraKit(void)
 {
-  SO_KIT_CONSTRUCTOR(SoCameraKit);
+  SO_KIT_INTERNAL_CONSTRUCTOR(SoCameraKit);
 
   // FIXME: need to define catalog here. 19991107 mortene.
 

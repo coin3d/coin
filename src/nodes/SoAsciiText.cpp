@@ -74,7 +74,7 @@ SO_NODE_SOURCE(SoAsciiText);
 */
 SoAsciiText::SoAsciiText()
 {
-  SO_NODE_CONSTRUCTOR(SoAsciiText);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoAsciiText);
 
   SO_NODE_ADD_FIELD(string, (""));
   SO_NODE_ADD_FIELD(spacing, (1.0f));

@@ -84,7 +84,7 @@ SO_NODE_SOURCE(SoTransform);
 */
 SoTransform::SoTransform()
 {
-  SO_NODE_CONSTRUCTOR(SoTransform);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTransform);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));

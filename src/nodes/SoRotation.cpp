@@ -61,7 +61,7 @@ SO_NODE_SOURCE(SoRotation);
 */
 SoRotation::SoRotation()
 {
-  SO_NODE_CONSTRUCTOR(SoRotation);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoRotation);
 
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
 }

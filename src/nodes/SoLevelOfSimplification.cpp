@@ -58,7 +58,7 @@ SO_NODE_SOURCE(SoLevelOfSimplification);
 */
 SoLevelOfSimplification::SoLevelOfSimplification()
 {
-  SO_NODE_CONSTRUCTOR(SoLevelOfSimplification);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoLevelOfSimplification);
 
   SO_NODE_ADD_FIELD(percentages, (0.0f));
   // FIXME: is this the correct way of making an empty multifield?

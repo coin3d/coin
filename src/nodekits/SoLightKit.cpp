@@ -34,7 +34,7 @@ SO_KIT_SOURCE(SoLightKit);
 */
 SoLightKit::SoLightKit(void)
 {
-  SO_KIT_CONSTRUCTOR(SoLightKit);
+  SO_KIT_INTERNAL_CONSTRUCTOR(SoLightKit);
 
   // FIXME: need to define catalog here. 19991107 mortene.
 

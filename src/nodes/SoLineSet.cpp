@@ -108,7 +108,7 @@ SO_NODE_SOURCE(SoLineSet);
 */
 SoLineSet::SoLineSet()
 {
-  SO_NODE_CONSTRUCTOR(SoLineSet);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoLineSet);
 
   SO_NODE_ADD_FIELD(numVertices, (-1));
 }

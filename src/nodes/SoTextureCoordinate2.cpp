@@ -61,7 +61,7 @@ SO_NODE_SOURCE(SoTextureCoordinate2);
 */
 SoTextureCoordinate2::SoTextureCoordinate2()
 {
-  SO_NODE_CONSTRUCTOR(SoTextureCoordinate2);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinate2);
   SO_NODE_ADD_FIELD(point, (NULL));
 }
 

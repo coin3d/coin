@@ -61,7 +61,7 @@ SO_NODE_SOURCE(SoCoordinate4);
 */
 SoCoordinate4::SoCoordinate4()
 {
-  SO_NODE_CONSTRUCTOR(SoCoordinate4);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoCoordinate4);
 
   SO_NODE_ADD_FIELD(point, (SbVec4f(0.0f, 0.0f, 0.0f, 1.0f)));
 }

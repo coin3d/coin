@@ -63,7 +63,7 @@ SO_NODE_SOURCE(SoTextureCoordinatePlane);
 */
 SoTextureCoordinatePlane::SoTextureCoordinatePlane()
 {
-  SO_NODE_CONSTRUCTOR(SoTextureCoordinatePlane);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinatePlane);
 
   SO_NODE_ADD_FIELD(directionS, (1.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(directionT, (0.0f, 1.0f, 0.0f));

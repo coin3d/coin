@@ -80,7 +80,7 @@ SO_NODE_SOURCE(SoIndexedNurbsSurface);
 */
 SoIndexedNurbsSurface::SoIndexedNurbsSurface()
 {
-  SO_NODE_CONSTRUCTOR(SoIndexedNurbsSurface);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedNurbsSurface);
 
   SO_NODE_ADD_FIELD(numUControlPoints, (0));
   SO_NODE_ADD_FIELD(numVControlPoints, (0));

@@ -122,7 +122,7 @@ SO_NODE_SOURCE(SoShapeHints);
 */
 SoShapeHints::SoShapeHints()
 {
-  SO_NODE_CONSTRUCTOR(SoShapeHints);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoShapeHints);
 
   SO_NODE_ADD_FIELD(vertexOrdering,(UNKNOWN_ORDERING));
   SO_NODE_ADD_FIELD(shapeType,(UNKNOWN_SHAPE_TYPE));

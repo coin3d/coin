@@ -166,7 +166,7 @@ intersect_cone_line(const float bottomr,
 */
 SoCone::SoCone()
 {
-  SO_NODE_CONSTRUCTOR(SoCone);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoCone);
 
   SO_NODE_ADD_FIELD(bottomRadius,(1.0f));
   SO_NODE_ADD_FIELD(height,(2.0f));

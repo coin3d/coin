@@ -86,7 +86,7 @@ SO_NODE_SOURCE(SoPolygonOffset);
 */
 SoPolygonOffset::SoPolygonOffset()
 {
-  SO_NODE_CONSTRUCTOR(SoPolygonOffset);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoPolygonOffset);
   
   SO_NODE_ADD_FIELD(factor, (1.0f));
   SO_NODE_ADD_FIELD(units, (1.0f));

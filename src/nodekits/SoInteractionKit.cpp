@@ -34,7 +34,7 @@ SO_KIT_SOURCE(SoInteractionKit);
 */
 SoInteractionKit::SoInteractionKit(void)
 {
-  SO_KIT_CONSTRUCTOR(SoInteractionKit);
+  SO_KIT_INTERNAL_CONSTRUCTOR(SoInteractionKit);
 
   // FIXME: need to define catalog here. 19991107 mortene.
 

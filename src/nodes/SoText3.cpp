@@ -95,7 +95,7 @@ SO_NODE_SOURCE(SoText3);
 */
 SoText3::SoText3()
 {
-  SO_NODE_CONSTRUCTOR(SoText3);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoText3);
 
   SO_NODE_ADD_FIELD(string, (""));
   SO_NODE_ADD_FIELD(spacing, (1.0f));

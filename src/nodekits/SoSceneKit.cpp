@@ -34,7 +34,7 @@ SO_KIT_SOURCE(SoSceneKit);
 */
 SoSceneKit::SoSceneKit(void)
 {
-  SO_KIT_CONSTRUCTOR(SoSceneKit);
+  SO_KIT_INTERNAL_CONSTRUCTOR(SoSceneKit);
 
   // FIXME: need to define catalog here. 19991107 mortene.
 

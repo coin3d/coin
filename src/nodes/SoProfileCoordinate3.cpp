@@ -54,7 +54,7 @@ SO_NODE_SOURCE(SoProfileCoordinate3);
 */
 SoProfileCoordinate3::SoProfileCoordinate3()
 {
-  SO_NODE_CONSTRUCTOR(SoProfileCoordinate3);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoProfileCoordinate3);
   
   SO_NODE_ADD_FIELD(point, (0.0f, 0.0f, 1.0f));
 }

@@ -65,7 +65,7 @@ SO_NODE_SOURCE(SoTexture2Transform);
 */
 SoTexture2Transform::SoTexture2Transform()
 {
-  SO_NODE_CONSTRUCTOR(SoTexture2Transform);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTexture2Transform);
   
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f));
   SO_NODE_ADD_FIELD(rotation, (0.0f));

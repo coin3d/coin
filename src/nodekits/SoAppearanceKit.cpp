@@ -34,7 +34,7 @@ SO_KIT_SOURCE(SoAppearanceKit);
 */
 SoAppearanceKit::SoAppearanceKit(void)
 {
-  SO_KIT_CONSTRUCTOR(SoAppearanceKit);
+  SO_KIT_INTERNAL_CONSTRUCTOR(SoAppearanceKit);
 
   // FIXME: need to define catalog here. 19991107 mortene.
 

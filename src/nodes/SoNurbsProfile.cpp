@@ -43,7 +43,7 @@ SO_NODE_SOURCE(SoNurbsProfile);
 */
 SoNurbsProfile::SoNurbsProfile()
 {
-  SO_NODE_CONSTRUCTOR(SoNurbsProfile);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoNurbsProfile);
 
   SO_NODE_ADD_FIELD(knotVector, (0.0f));
 }

@@ -34,7 +34,7 @@ SO_KIT_SOURCE(SoSeparatorKit);
 */
 SoSeparatorKit::SoSeparatorKit(void)
 {
-  SO_KIT_CONSTRUCTOR(SoSeparatorKit);
+  SO_KIT_INTERNAL_CONSTRUCTOR(SoSeparatorKit);
 
   // FIXME: need to define catalog here. 19991107 mortene.
 

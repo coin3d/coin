@@ -46,7 +46,7 @@ SO_NODE_SOURCE(SoOrthographicCamera);
 */
 SoOrthographicCamera::SoOrthographicCamera()
 {
-  SO_NODE_CONSTRUCTOR(SoOrthographicCamera);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoOrthographicCamera);
 
   SO_NODE_ADD_FIELD(height, (2.0f));
 }

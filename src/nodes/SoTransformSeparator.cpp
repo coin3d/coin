@@ -56,7 +56,7 @@ SO_NODE_SOURCE(SoTransformSeparator);
 */
 SoTransformSeparator::SoTransformSeparator()
 {
-  SO_NODE_CONSTRUCTOR(SoTransformSeparator);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTransformSeparator);
 }
 
 /*!

@@ -65,7 +65,7 @@ SO_NODE_SOURCE(SoWWWAnchor);
 */
 SoWWWAnchor::SoWWWAnchor()
 {
-  SO_NODE_CONSTRUCTOR(SoWWWAnchor);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoWWWAnchor);
 
   SO_NODE_ADD_FIELD(name, ("<Undefined URL>"));
   SO_NODE_ADD_FIELD(description, (""));

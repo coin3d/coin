@@ -109,7 +109,7 @@ SO_NODE_SOURCE(SoCylinder);
 */
 SoCylinder::SoCylinder()
 {
-  SO_NODE_CONSTRUCTOR(SoCylinder);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoCylinder);
 
   SO_NODE_ADD_FIELD(radius, (1.0f));
   SO_NODE_ADD_FIELD(height, (2.0f));

@@ -71,7 +71,7 @@ SO_NODE_SOURCE(SoFont);
 */
 SoFont::SoFont()
 {
-  SO_NODE_CONSTRUCTOR(SoFont);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoFont);
 
   SO_NODE_ADD_FIELD(name, ("defaultFont"));
   SO_NODE_ADD_FIELD(size, (10.0f));

@@ -39,7 +39,7 @@ SO_NODE_SOURCE(SoCallback);
 */
 SoCallback::SoCallback()
 {
-  SO_NODE_CONSTRUCTOR(SoCallback);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoCallback);
 
   this->cbfunc = NULL;
 }

@@ -43,7 +43,7 @@ SO_NODE_SOURCE(SoLabel);
 */
 SoLabel::SoLabel()
 {
-  SO_NODE_CONSTRUCTOR(SoLabel);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoLabel);
   
   SO_NODE_ADD_FIELD(label, ("<Undefined label>"));
 }

@@ -54,7 +54,7 @@ SO_NODE_SOURCE(SoBaseColor);
 */
 SoBaseColor::SoBaseColor()
 {
-  SO_NODE_CONSTRUCTOR(SoBaseColor);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoBaseColor);
   
   SO_NODE_ADD_FIELD(rgb, (SbColor(0.8f, 0.8f, 0.8f)));
 }

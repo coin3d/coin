@@ -115,7 +115,7 @@ SO_NODE_SOURCE(SoSeparator);
 */
 SoSeparator::SoSeparator()
 {
-  SO_NODE_CONSTRUCTOR(SoSeparator);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSeparator);
 
   SO_NODE_ADD_FIELD(renderCaching, (SoSeparator::AUTO));
   SO_NODE_ADD_FIELD(boundingBoxCaching, (SoSeparator::AUTO));

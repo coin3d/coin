@@ -58,7 +58,7 @@ SO_NODE_SOURCE(SoLOD);
 */
 SoLOD::SoLOD()
 {
-  SO_NODE_CONSTRUCTOR(SoLOD);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoLOD);
 
   SO_NODE_ADD_FIELD(range, (0.0f));
   // FIXME: is this the correct way of making an empty multifield?

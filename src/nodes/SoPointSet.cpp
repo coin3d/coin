@@ -98,7 +98,7 @@ SO_NODE_SOURCE(SoPointSet);
 */
 SoPointSet::SoPointSet()
 {
-  SO_NODE_CONSTRUCTOR(SoPointSet);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoPointSet);
 
   SO_NODE_ADD_FIELD(numPoints, (-1));
 }

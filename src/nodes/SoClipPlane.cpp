@@ -65,7 +65,7 @@ SO_NODE_SOURCE(SoClipPlane);
 */
 SoClipPlane::SoClipPlane()
 {
-  SO_NODE_CONSTRUCTOR(SoClipPlane);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoClipPlane);
 
   SO_NODE_ADD_FIELD(plane, (SbPlane(SbVec3f(1.0f, 0.0f, 0.0f), 0.0f)));
   SO_NODE_ADD_FIELD(on, (TRUE));

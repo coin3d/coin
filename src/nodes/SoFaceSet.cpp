@@ -98,7 +98,7 @@ SO_NODE_SOURCE(SoFaceSet);
 */
 SoFaceSet::SoFaceSet()
 {
-  SO_NODE_CONSTRUCTOR(SoFaceSet);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoFaceSet);
 
   SO_NODE_ADD_FIELD(numVertices, (-1));
 }

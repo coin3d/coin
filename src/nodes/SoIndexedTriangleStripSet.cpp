@@ -125,7 +125,7 @@ SO_NODE_SOURCE(SoIndexedTriangleStripSet);
 */
 SoIndexedTriangleStripSet::SoIndexedTriangleStripSet()
 {
-  SO_NODE_CONSTRUCTOR(SoIndexedTriangleStripSet);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoIndexedTriangleStripSet);
 
   this->numTriangles = -1;
   this->numStrips = -1;

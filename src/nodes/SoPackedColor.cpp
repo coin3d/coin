@@ -54,7 +54,7 @@ SO_NODE_SOURCE(SoPackedColor);
 */
 SoPackedColor::SoPackedColor()
 {
-  SO_NODE_CONSTRUCTOR(SoPackedColor);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoPackedColor);
   
   SO_NODE_ADD_FIELD(orderedRGBA, (0xccccccff));
 }

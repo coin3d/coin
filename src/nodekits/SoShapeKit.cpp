@@ -34,7 +34,7 @@ SO_KIT_SOURCE(SoShapeKit);
 */
 SoShapeKit::SoShapeKit(void)
 {
-  SO_KIT_CONSTRUCTOR(SoShapeKit);
+  SO_KIT_INTERNAL_CONSTRUCTOR(SoShapeKit);
 
   // FIXME: need to define catalog here. 19991107 mortene.
 

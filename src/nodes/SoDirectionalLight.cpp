@@ -66,7 +66,7 @@ SO_NODE_SOURCE(SoDirectionalLight);
 */
 SoDirectionalLight::SoDirectionalLight()
 {
-  SO_NODE_CONSTRUCTOR(SoDirectionalLight);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoDirectionalLight);
 
   SO_NODE_ADD_FIELD(on,(TRUE));
   SO_NODE_ADD_FIELD(intensity,(1.0f));

@@ -143,7 +143,7 @@ SO_NODE_SOURCE(SoVertexProperty);
 */
 SoVertexProperty::SoVertexProperty()
 {
-  SO_NODE_CONSTRUCTOR(SoVertexProperty);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoVertexProperty);
 
   SO_NODE_ADD_FIELD(vertex, (0));
   SO_NODE_ADD_FIELD(texCoord, (0));

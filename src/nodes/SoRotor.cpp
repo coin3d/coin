@@ -47,7 +47,7 @@ SO_NODE_SOURCE(SoRotor);
 */
 SoRotor::SoRotor()
 {
-  SO_NODE_CONSTRUCTOR(SoRotor);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoRotor);
 
   SO_NODE_ADD_FIELD(speed, (1.0f));
   SO_NODE_ADD_FIELD(on, (TRUE));

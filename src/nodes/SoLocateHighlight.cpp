@@ -82,7 +82,7 @@ SO_NODE_SOURCE(SoLocateHighlight);
 */
 SoLocateHighlight::SoLocateHighlight()
 {
-  SO_NODE_CONSTRUCTOR(SoLocateHighlight);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoLocateHighlight);
 
   SO_NODE_ADD_FIELD(color, (SbColor(0.3f, 0.3f, 0.3f)));
   SO_NODE_ADD_FIELD(style, (EMISSIVE));

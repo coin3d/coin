@@ -50,7 +50,7 @@ SO_NODE_SOURCE(SoTextureCoordinateDefault);
 */
 SoTextureCoordinateDefault::SoTextureCoordinateDefault()
 {
-  SO_NODE_CONSTRUCTOR(SoTextureCoordinateDefault);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTextureCoordinateDefault);
 }
 
 /*!

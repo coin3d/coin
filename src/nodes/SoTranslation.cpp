@@ -57,7 +57,7 @@ SO_NODE_SOURCE(SoTranslation);
 */
 SoTranslation::SoTranslation()
 {
-  SO_NODE_CONSTRUCTOR(SoTranslation);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoTranslation);
 
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
 }

@@ -45,18 +45,26 @@ protected: SoSFNode _entry_; \
   } while (0)
 
 
-
+#if defined(__SOLIB_INTERNAL__)
 #define SO_KIT_INTERNAL_INIT_CLASS(_class_) \
   do { \
-    SO_KIT_INIT_CLASS(_class_, inherited, \
-                       &(inherited::getClassTypeId().getName().getString()[2])); \
+    SO_NODE_INTERNAL_INIT_CLASS(_class_); \
   } while (0)
+#endif // INTERNAL macro definition
 
 
 #define SO_KIT_CONSTRUCTOR(_class_) \
   do { \
     SO_NODE_CONSTRUCTOR(_class_); \
   } while (0)
+
+
+#if defined(__SOLIB_INTERNAL__)
+#define SO_KIT_INTERNAL_CONSTRUCTOR(_class_) \
+  do { \
+    SO_NODE_INTERNAL_CONSTRUCTOR(_class_); \
+  } while (0)
+#endif // INTERNAL macro definition
 
 
 #define SO_KIT_INIT_INSTANCE()

@@ -74,7 +74,7 @@ SO_NODE_SOURCE(SoSphere);
 */
 SoSphere::SoSphere()
 {
-  SO_NODE_CONSTRUCTOR(SoSphere);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoSphere);
 
   SO_NODE_ADD_FIELD(radius, (1.0f));
 }

@@ -48,7 +48,7 @@ SO_NODE_SOURCE(SoBlinker);
 */
 SoBlinker::SoBlinker()
 {
-  SO_NODE_CONSTRUCTOR(SoBlinker);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoBlinker);
 
   SO_NODE_ADD_FIELD(speed, (1));
   SO_NODE_ADD_FIELD(on, (TRUE));

@@ -67,7 +67,7 @@ SO_NODE_SOURCE(SoMatrixTransform);
 */
 SoMatrixTransform::SoMatrixTransform()
 {
-  SO_NODE_CONSTRUCTOR(SoMatrixTransform);
+  SO_NODE_INTERNAL_CONSTRUCTOR(SoMatrixTransform);
 
   SO_NODE_ADD_FIELD(matrix, (SbMatrix::identity()));
 }
