@@ -109,15 +109,13 @@
 static int imagedata_maxage;
 
 #ifdef HAVE_THREADS
-#include <Inventor/threads/SbThread.h>
-#include <Inventor/threads/SbMutex.h>
 
-typedef struct {
-  SbThread * thread;
-  SoVRMLImageTexture * node;
-  SbString filename;
-  SbImage * image;
-} readimagedata;
+#include <Inventor/C/threads/sched.h>
+#include <Inventor/threads/SbMutex.h>
+#include <Inventor/C/base/debug.h>
+
+static cc_sched * imagetexture_scheduler = NULL;
+static SbBool imagetexture_is_exiting = FALSE;
 
 #endif // HAVE_THREADS
 
@@ -132,8 +130,7 @@ public:
   SoFieldSensor * urlsensor;
   void readimage_cleanup(void);
 #ifdef HAVE_THREADS
-  readimagedata * scheduled;
-  readimagedata * finished;
+  SbString scheduledfilename;
   SbMutex readimagemutex;
 #endif // HAVE_THREADS
 };
@@ -142,16 +139,35 @@ public:
 
 SO_NODE_SOURCE(SoVRMLImageTexture);
 
+static void
+imagetexture_cleanup(void)
+{
+#ifdef HAVE_THREADS
+  imagetexture_is_exiting = TRUE;
+  if (imagetexture_scheduler) {
+    cc_sched_destruct(imagetexture_scheduler);
+  }
+#endif // HAVE_THREADS
+}
+
 // Doc in parent
 void
 SoVRMLImageTexture::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLImageTexture, SO_VRML97_NODE_TYPE);
   imagedata_maxage = 30;
+
+#ifdef HAVE_THREADS
+  imagetexture_scheduler = cc_sched_construct(1);
+  atexit(imagetexture_cleanup);
+#endif // HAVE_THREADS
 }
 
 #undef THIS
 #define THIS this->pimpl
+
+#undef THISP
+#define THISP thisp->pimpl
 
 /*!
   Constructor.
@@ -167,10 +183,6 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoVRMLImageTexture);
   SO_VRMLNODE_ADD_EMPTY_EXPOSED_MFIELD(url);
 
-#ifdef HAVE_THREADS
-  THIS->scheduled = NULL;
-  THIS->finished = NULL;
-#endif // HAVE_THREADS
   THIS->glimage = NULL;
   THIS->glimagevalid = FALSE;
   THIS->readstatus = 1;
@@ -188,9 +200,13 @@ SoVRMLImageTexture::SoVRMLImageTexture(void)
 */
 SoVRMLImageTexture::~SoVRMLImageTexture()
 {
-  // FIXME: destroy/wait for scheduled and finished
+  // lock and unlock in case a thread is currently reading the image
+  THIS->readimagemutex.lock();
+  THIS->readimagemutex.unlock();
+  
   if (THIS->glimage) THIS->glimage->unref(NULL);
   delete THIS->urlsensor;
+  delete THIS;
 }
 
 /*!
@@ -299,7 +315,7 @@ SoVRMLImageTexture::readInstance(SoInput * in,
   this->setReadStatus((int) ret);
   if (ret) {
     if (!this->loadUrl()) {
-      SoReadError::post(in, "Could not read texture file %s",
+      SoReadError::post(in, "Could not read texture file: %s",
                         url[0].getString());
       this->setReadStatus(FALSE);
     }
@@ -339,12 +355,16 @@ SoVRMLImageTexture::loadUrl(void)
   if (this->url.getNum() && this->url[0].getLength()) {
     const SbStringList & sl = SoInput::getDirectories();
 #ifdef HAVE_THREADS
+    // instruct SbImage to call image_read_cb the first time the image
+    // data is requested (typically when some shape using the texture
+    // is inside the view frustum).
     if (THIS->image.scheduleReadFile(image_read_cb, this,
                                      this->url[0],
                                      sl.getArrayPtr(), sl.getLength())) {
       retval = TRUE;
     }
 #else // HAVE_THREADS
+    // if we don't have threads, read the image file immedidately
     if (THIS->image.readFile(this->url[0],
                              sl.getArrayPtr(), sl.getLength())) {
       retval = TRUE;
@@ -365,13 +385,13 @@ SoVRMLImageTexture::glimage_callback(void * closure)
 {
 #ifdef HAVE_THREADS
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
-  if (thisp->pimpl->glimage) {
-    int age = thisp->pimpl->glimage->getNumFramesSinceUsed();
+  if (THISP->glimage) {
+    int age = THISP->glimage->getNumFramesSinceUsed();
     if (age > imagedata_maxage) {
-      thisp->pimpl->glimagevalid = FALSE;
-      assert(thisp->pimpl->glimage);
-      thisp->pimpl->glimage->setEndFrameCallback(NULL, NULL);
-      thisp->pimpl->image.setValue(SbVec2s(0,0), 0, NULL);
+      THISP->glimagevalid = FALSE;
+      assert(THISP->glimage);
+      THISP->glimage->setEndFrameCallback(NULL, NULL);
+      THISP->image.setValue(SbVec2s(0,0), 0, NULL);
       (void) thisp->loadUrl();
     }
   }
@@ -381,52 +401,48 @@ SoVRMLImageTexture::glimage_callback(void * closure)
 //
 // multithread loading thread
 //
-void *
+void
 SoVRMLImageTexture::read_thread(void * closure)
 {
 #ifdef HAVE_THREADS
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
-  (void) thisp->pimpl->readimagemutex.lock();
-  readimagedata * data = thisp->pimpl->scheduled;
-  thisp->pimpl->scheduled = NULL;
-  (void) data->image->readFile(data->filename);
-  assert(data->node->pimpl->glimage);
-  data->node->pimpl->glimage->setEndFrameCallback(glimage_callback, data->node);
-  assert(data->node->pimpl->finished == NULL);
-  data->node->pimpl->finished = data;
-  thisp->pimpl->glimagevalid = FALSE;
-  data->node->pimpl->readimagemutex.unlock();
+  
+  if (!imagetexture_is_exiting) {
+    
+    (void) THISP->image.readFile(THISP->scheduledfilename);
+    
+    assert(THISP->glimage);
+    THISP->glimage->setEndFrameCallback(glimage_callback, thisp);
+    THISP->glimagevalid = FALSE;
+  }
+  
+  thisp->unref(); // we ref'd in image_read_cb() 
+  THISP->readimagemutex.unlock(); // unlock to enable new images to be read
 #endif // HAVE_THREADS
-  return NULL;
 }
 
 //
-// called when image data is needed.
+// called (from SbImage) when image data is needed.
 //
 SbBool
 SoVRMLImageTexture::image_read_cb(const SbString & filename, SbImage * image, void * closure)
 {
 #ifdef HAVE_THREADS
+
   SoVRMLImageTexture * thisp = (SoVRMLImageTexture*) closure;
-  if (!thisp->pimpl->glimage) {
+  assert(&THISP->image == image);
+  assert(THISP->glimage);
+  if (!THISP->glimage) {
     return FALSE;
   }
-  (void) thisp->pimpl->readimagemutex.lock();
-  if (thisp->pimpl->scheduled) {
-    thisp->pimpl->readimagemutex.unlock();
-    return FALSE;
-  }
+  // lock mutex to avoid another thread overwriting our data.
+  (void) THISP->readimagemutex.lock();
+  thisp->ref(); // ref to make sure the node isn't deleted while we're reading
 
-  thisp->cleanupFinished(FALSE);
+  THISP->scheduledfilename = filename;
 
-  thisp->ref();
-  readimagedata * data = new readimagedata;
-  data->node = (SoVRMLImageTexture*) closure;
-  data->filename = filename;
-  data->image = image;
-  data->thread = SbThread::create(read_thread, thisp);
-  thisp->pimpl->scheduled = data;
-  (void) thisp->pimpl->readimagemutex.unlock();
+  cc_sched_schedule(imagetexture_scheduler,
+                    read_thread, thisp, 0);
   return TRUE;
 #endif // HAVE_THREADS
   return TRUE;
@@ -466,19 +482,4 @@ void
 SoVRMLImageTexture::setImageDataMaxAge(const uint32_t maxage)
 {
   imagedata_maxage = maxage;
-}
-
-void
-SoVRMLImageTexture::cleanupFinished(const SbBool needlock)
-{
-#ifdef HAVE_THREADS
-  if (needlock) THIS->readimagemutex.lock();
-  if (THIS->finished) {
-    THIS->finished->node->unref();
-    SbThread::destroy(THIS->finished->thread);
-    delete THIS->finished;
-    THIS->finished = NULL;
-  }
-  if (needlock) THIS->readimagemutex.unlock();
-#endif // HAVE_THREADS
 }

@@ -64,13 +64,12 @@ protected:
 
 private:
 
-  void cleanupFinished(const SbBool needlock);
   SbBool loadUrl(void);
   class SoVRMLImageTextureP * pimpl;
   static void urlSensorCB(void *, SoSensor *);
   static void glimage_callback(void * closure);
   static SbBool image_read_cb(const SbString &, SbImage *, void *);
-  static void * read_thread(void * closure);
+  static void read_thread(void * closure);
 }; // class SoVRMLImageTexture
 
 #endif // ! COIN_SOVRMLIMAGETEXTURE_H
