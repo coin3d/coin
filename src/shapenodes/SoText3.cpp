@@ -444,7 +444,7 @@ SoText3::GLRender(SoGLRenderAction * action)
   mb.sendFirst();
 
   const unsigned int prts = this->parts.getValue();
-  SoLazyElement * lazyelement = SoLazyElement::getWInstance(state);
+  SoLazyElement * lazyelement = SoLazyElement::getInstance(state);
   const int numdiffuse = lazyelement->getNumDiffuse();
 
   SbBool matperpart = (binding != SoMaterialBindingElement::OVERALL);
