@@ -310,7 +310,9 @@ SbBool SoAudioDevice::enable()
 
   PRIVATE(this)->enabled = TRUE;
 
+#ifdef HAVE_SOUND
   PRIVATE(this)->alcProcessContext(PRIVATE(this)->context);
+#endif
 
   return TRUE;
 }
@@ -326,7 +328,9 @@ void SoAudioDevice::disable()
   
   PRIVATE(this)->enabled = FALSE;
 
+#ifdef HAVE_SOUND
   PRIVATE(this)->alcSuspendContext(PRIVATE(this)->context);
+#endif
 }
 
 /*!
@@ -342,8 +346,9 @@ SoAudioDevice::isEnabled()
 void 
 SoAudioDevice::setGain(float gain)
 {
-  ALint error;
   gain = (gain < 0.0f) ? 0.0f : gain;
+#ifdef HAVE_SOUND
+  ALint error;
   alListenerf(AL_GAIN, gain);
   if ((error = alGetError()) != AL_NO_ERROR) {
     SoDebugError::postWarning("SoAudioDevice::setGain",
@@ -351,6 +356,7 @@ SoAudioDevice::setGain(float gain)
                               coin_get_openal_error(error));
     return;
   }
+#endif // HAVE_SOUND
   PRIVATE(this)->lastGain = gain;
 }
 
