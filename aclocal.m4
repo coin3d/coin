@@ -779,8 +779,7 @@ dnl    * [mortene:19991114] cache result for subsequent runs
 dnl    * [mortene:19991114] make this work on MSWin (with Cygwin installation)
 dnl
 
-AC_DEFUN(SIM_CHECK_MATHLIB,
-[
+AC_DEFUN(SIM_CHECK_MATHLIB,[
 dnl Autoconf is a developer tool, so don't bother to support older versions.
 AC_PREREQ([2.13])
 save=$LIBS
@@ -794,6 +793,7 @@ MATHLIB=""
 if test $mathlib = yes; then
   MATHLIB="-lm"
 fi
+unset save mathlib
 ])
 
 dnl  Let the user decide if compilation should be done in "debug mode".
@@ -1014,8 +1014,8 @@ if test "x$enable_warnings" = "xyes"; then
 dnl FIXME: -Werror-implicit-function-declaration doesn't seem to work
 dnl under egcs-1.0.2, so we need to check for availability. 19991106 mortene.
 dnl    CXXFLAGS="$CXXFLAGS -W -Wall -Werror-implicit-function-declaration"
-    CFLAGS="$CFLAGS -W -Wall"
-    CXXFLAGS="$CXXFLAGS -W -Wall"
+    CFLAGS="$CFLAGS -W -Wall -Wno-unused -Wno-multichar"
+    CXXFLAGS="$CXXFLAGS -W -Wall -Wno-unused -Wno-multichar"
   fi
 else
   if test "x$GXX" != "xyes" && test "x$GCC" != "xyes"; then

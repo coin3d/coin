@@ -260,6 +260,7 @@ AC_OUTPUT([
 	examples/Makefile
 	examples/ivcat/Makefile
 	examples/ivhierarchy/Makefile
+	tools/Makefile
 ])
 
 echo "Now, run 'make install' to build and install Coin."

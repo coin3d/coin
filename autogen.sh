@@ -68,13 +68,15 @@ echo "Running autoheader (generating config.h.in)..."
 autoheader
 
 echo "Running automake (generating the Makefile.in files)..."
-echo "(NB: if you're compiling without g++, you probably need to"
-echo "manually run automake with the --include-deps argument to"
-echo "avoid setting up dependency tracking. 19991006 mortene.)"
+echo "(note: if you're _not_ compiling with g++, you probably"
+echo "need to manually run automake with the --include-deps"
+echo "argument to avoid setting up dependency tracking."
+echo " 19991006 mortene.)"
 automake
 
 echo "Running autoconf (generating ./configure and the Makefile files)..."
 autoconf
 
-echo "Done: Now run './configure' and 'make install' to build $PROJECT."
+echo
+echo "Done. Now run './configure' and 'make install' to build $PROJECT."
 
