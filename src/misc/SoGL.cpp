@@ -73,7 +73,7 @@ const cc_glglue *
 sogl_glue_instance(const SoState * state)
 {
   SoGLRenderAction * action = (SoGLRenderAction *)state->getAction();
-  // disabled until we figure out why this doesn't work on some
+  // FIXME: disabled until we figure out why this doesn't work on some
   // Linux systems (gcc 3.2 systems, it seems). pederb, 2002-11-24
 #if 0
   assert(action->isOfType(SoGLRenderAction::getClassTypeId()) &&
