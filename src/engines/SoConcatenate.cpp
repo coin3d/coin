@@ -44,6 +44,7 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/fields/SoFields.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -215,26 +216,173 @@ SoConcatenate::copyContents(const SoFieldContainer * from,
   inherited::copyContents(from, copyconnections);
 }
 
+// macro used to generate code for all mfield subclasses
+#define OUTPUT_FUNC(_fieldtype_, _funcname_) \
+static void _funcname_ (const int numconnections, const int inputstop, \
+                        const int numvalues, SoEngineOutput * output, SoMField ** input) \
+{ \
+  assert(output->getConnectionType() == _fieldtype_::getClassTypeId()); \
+  for (int i = 0; i < numconnections; i++) { \
+    _fieldtype_ * out = (_fieldtype_*) (*output)[i]; \
+    if (!out->isReadOnly()) { \
+      int cnt = 0; \
+      out->setNum(numvalues); \
+      for (int j = 0; j <= inputstop; j++) { \
+        _fieldtype_ * in = (_fieldtype_ *) input[j]; \
+        const int num = in->getNum(); \
+        for (int k = 0; k < num; k++) { \
+          out->setValues(cnt, in->getNum(), in->getValues(0)); \
+          cnt += in->getNum(); \
+        } \
+      } \
+    } \
+  } \
+}
+
+OUTPUT_FUNC(SoMFBitMask, somfbitmask_out);
+OUTPUT_FUNC(SoMFBool, somfbool_out);
+OUTPUT_FUNC(SoMFColor, somfcolor_out);
+OUTPUT_FUNC(SoMFEngine, somfengine_out);
+OUTPUT_FUNC(SoMFEnum, somfenum_out);
+OUTPUT_FUNC(SoMFFloat, somffloat_out);
+OUTPUT_FUNC(SoMFInt32, somfint32_out);
+OUTPUT_FUNC(SoMFMatrix, somfmatrix_out);
+OUTPUT_FUNC(SoMFName, somfname_out);
+OUTPUT_FUNC(SoMFNode, somfnode_out);
+OUTPUT_FUNC(SoMFPath, somfpath_out);
+OUTPUT_FUNC(SoMFPlane, somfplane_out);
+OUTPUT_FUNC(SoMFRotation, somfrotation_out);
+OUTPUT_FUNC(SoMFShort, somfshort_out);
+OUTPUT_FUNC(SoMFString, somfstring_out);
+OUTPUT_FUNC(SoMFTime, somftime_out);
+OUTPUT_FUNC(SoMFUInt32, somfuint32_out);
+OUTPUT_FUNC(SoMFUShort, somfushort_out);
+OUTPUT_FUNC(SoMFVec2f, somfvec2f_out);
+OUTPUT_FUNC(SoMFVec3f, somfvec3f_out);
+OUTPUT_FUNC(SoMFVec4f, somfvec4f_out);
+
+#undef OUTPUT_FUNC
+
 // documented in superclass
 void
 SoConcatenate::evaluate(void)
 {
-  int n = 0, i, j;
-  SbString value;
+  // we can't use SO_ENGINE_OUTPUT here, so the functionality is
+  // duplicated in the for-loops.
 
-  for (i = 0; i < SoConcatenate::NUMINPUTS; i++)
-    n += this->input[i]->getNum();
+  int i;
 
-  SO_ENGINE_OUTPUT((*output),SoMField,setNum(n));
+  // we can do this check only once
+  if (!this->output->isEnabled()) return;
 
-  n = 0;
+  int inputstop = -1; // store the last field that has at least one value
+  int numvalues = 0;  // store the total number of values
   for (i = 0; i < SoConcatenate::NUMINPUTS; i++) {
-    for (j = 0; j < this->input[i]->getNum(); j++) {
-      this->input[i]->get1(j, value);
-      // FIXME: this is an amazingly ineffective way of copying the
-      // values. 20000920 mortene.
-      SO_ENGINE_OUTPUT((*output), SoMField, set1(n, value.getString()));
-      n++;
+    int cnt = this->input[i]->getNum();
+    if (cnt) {
+      numvalues += cnt;
+      inputstop = i;
     }
+  }
+  
+  const int numconnections = this->output->getNumConnections();
+  const SoType type = this->output->getConnectionType();
+  
+  // FIXME: is it safe to use type.isOfType() instead of the ==
+  // operator?  pederb, 2001-09-26
+  if (type == SoMFBitMask::getClassTypeId()) {
+    somfbitmask_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFBool::getClassTypeId()) {
+    somfbool_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFColor::getClassTypeId()) {
+    somfcolor_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFEngine::getClassTypeId()) {
+    somfengine_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFEnum::getClassTypeId()) {
+    somfenum_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFFloat::getClassTypeId()) {
+    somffloat_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFInt32::getClassTypeId()) {
+    somfint32_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFMatrix::getClassTypeId()) {
+    somfmatrix_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFName::getClassTypeId()) {
+    somfname_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFNode::getClassTypeId()) {
+    somfnode_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFPath::getClassTypeId()) {
+    somfpath_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFPlane::getClassTypeId()) {
+    somfplane_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFRotation::getClassTypeId()) {
+    somfrotation_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFShort::getClassTypeId()) {
+    somfshort_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFString::getClassTypeId()) {
+    somfstring_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFTime::getClassTypeId()) {
+    somftime_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFUInt32::getClassTypeId()) {
+    somfuint32_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFUShort::getClassTypeId()) {
+    somfushort_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFVec2f::getClassTypeId()) {
+    somfvec2f_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFVec3f::getClassTypeId()) {
+    somfvec3f_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }
+  else if (type == SoMFVec4f::getClassTypeId()) {
+    somfvec4f_out(numconnections, inputstop, numvalues, this->output, this->input);
+  }  
+  else {     
+    // fallback, in case of new (user-defined) field types. Warn once
+    // in case we forget to add code for some field.
+
+#if COIN_DEBUG
+    static int first = 1;
+    if (first) {
+      first = 0;
+      SoDebugError::postWarning("SoConcatenate::evaluate",
+                                "Unknown field type: %s.\n  Using unoptimized method to copy values.",
+                                this->output->getConnectionType().getName().getString());
+  }
+#endif
+
+    SbString value;
+    for (i = 0; i < numconnections; i++) {
+      SoMField * out = (SoMField*) (*this->output)[i];
+      if (!out->isReadOnly()) {
+        int cnt = 0;
+        out->setNum(numvalues);
+        for (int j = 0; j <= inputstop; j++) {
+          SoMField * in = this->input[j];
+          const int num = in->getNum();  
+          for (int k = 0; k < num; k++) {
+            in->get1(k, value);
+            out->set1(cnt, value.getString());
+            cnt++;
+          }
+        }
+      }
+    } 
   }
 }
