@@ -1,0 +1,191 @@
+%{ 
+#include "evaluator.h"
+#include <assert.h>
+#include <stdlib.h>
+%}
+
+%union
+{
+  int id;
+  float value;
+  char  reg;
+  so_eval_node *node;
+}
+
+/* tokens that needs the value */
+%token <value> LEX_VALUE
+%token <reg> LEX_TMP_FLT_REG LEX_IN_FLT_REG LEX_OUT_FLT_REG
+%token <reg> LEX_TMP_VEC_REG LEX_IN_VEC_REG LEX_OUT_VEC_REG
+%token <id> LEX_COMPARE LEX_FLTFUNC
+
+/* tokens that do not have an associated value */
+%token LEX_POW LEX_FMOD LEX_LEN
+%token LEX_CROSS LEX_DOT LEX_NORMALIZE LEX_VEC3F
+%token ',' '[' ']' '(' ')' ';'
+
+/* error token */
+%token LEX_ERROR
+
+/* typedefs of non-terminals */
+%type <node> expression subexpression fltlhs veclhs
+%type <node> fltstatement
+%type <node> vecstatement
+%type <node> boolstatement
+
+/* operator priorities (based on C operator precedence and associativity */
+%right '='
+%right '?' ':'
+%left LEX_OR
+%left LEX_AND
+%left LEX_EQ LEX_NEQ
+%left LEX_COMPARE
+%left '+' '-'
+%left '*' '/' '%'
+%left '!' UNARY
+
+%start expression
+
+%{
+static const char *get_regname(char reg, int regtype); 
+enum { REGTYPE_IN, REGTYPE_OUT, REGTYPE_TMP };
+so_eval_node *root_node;
+%}
+
+%%
+/* 
+ * FIXME: it might be legal to write an expression like this:
+ *     a = b = b = 1.0
+ *
+ * this is not supported yet, but it shouldn't be too difficult to support it if
+ * it is a legal expression.
+ */
+
+expression    : expression ';' subexpression { $$ = so_eval_create_binary(ID_SEPARATOR, $1, $3); }
+              | subexpression { root_node = $1; }
+              ;
+
+subexpression : fltlhs '=' fltstatement { $$ = so_eval_create_binary(ID_ASSIGN_FLT, $1, $3); }
+              | veclhs '=' vecstatement { $$ = so_eval_create_binary(ID_ASSIGN_VEC, $1, $3); }
+              ;
+
+fltlhs        : LEX_TMP_FLT_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_TMP)); }
+              | LEX_OUT_FLT_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_OUT)); }
+              | LEX_TMP_VEC_REG '[' LEX_VALUE ']' 
+              { $$ = so_eval_create_reg_comp(get_regname($1, REGTYPE_TMP), (int) $3); }
+              | LEX_OUT_VEC_REG '[' LEX_VALUE ']'
+              { $$ = so_eval_create_reg_comp(get_regname($1, REGTYPE_OUT), (int) $3); }
+              ;
+
+veclhs        : LEX_TMP_VEC_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_TMP));}
+              | LEX_OUT_VEC_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_OUT));}
+              ; 
+
+fltstatement  : boolstatement '?' fltstatement ':' fltstatement
+              { $$ = so_eval_create_ternary(ID_FLT_COND, $1, $3, $5); }
+              | fltstatement '?' fltstatement ':' fltstatement
+              { $$ = so_eval_create_ternary(ID_FLT_COND, so_eval_create_unary(ID_TEST_FLT, $1), $3, $5); }
+              | vecstatement '?' fltstatement ':' fltstatement
+              { $$ = so_eval_create_ternary(ID_FLT_COND, so_eval_create_unary(ID_TEST_VEC, $1), $3, $5); }
+ 
+              | fltstatement '+' fltstatement { $$ = so_eval_create_binary(ID_ADD, $1, $3); }
+              | fltstatement '-' fltstatement { $$ = so_eval_create_binary(ID_SUB, $1, $3); }
+              | fltstatement '/' fltstatement { $$ = so_eval_create_binary(ID_DIV, $1, $3); }
+              | fltstatement '*' fltstatement { $$ = so_eval_create_binary(ID_MUL, $1, $3); }
+              | fltstatement '%' fltstatement { $$ = so_eval_create_binary(ID_FMOD, $1, $3); }
+              | LEX_POW '(' fltstatement ',' fltstatement ')' 
+              { $$ = so_eval_create_binary(ID_POW, $3, $5); }
+              | LEX_FMOD '(' fltstatement ',' fltstatement ')' 
+              { $$ = so_eval_create_binary(ID_FMOD, $3, $5); }
+
+              | '-' fltstatement %prec UNARY { $$ = so_eval_create_unary(ID_NEG, $2); }
+              | LEX_FLTFUNC '(' fltstatement ')' { $$ = so_eval_create_unary($1, $3);}
+              | LEX_LEN '(' vecstatement ')' { $$ = so_eval_create_unary(ID_LEN, $3);}
+              | LEX_DOT '(' vecstatement ')' { $$ = so_eval_create_unary(ID_DOT, $3); }
+
+              | LEX_TMP_FLT_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_TMP));}
+              | LEX_OUT_FLT_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_OUT));}
+              | LEX_IN_FLT_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_IN));}
+              | LEX_TMP_VEC_REG '[' LEX_VALUE ']' 
+              { $$ = so_eval_create_reg_comp(get_regname($1, REGTYPE_TMP), (int) $3);}
+              | LEX_IN_VEC_REG '[' LEX_VALUE ']' 
+              { $$ = so_eval_create_reg_comp(get_regname($1, REGTYPE_OUT), (int) $3);}
+              | LEX_OUT_VEC_REG '[' LEX_VALUE ']' 
+              { $$ = so_eval_create_reg_comp(get_regname($1, REGTYPE_IN), (int) $3);}
+              | LEX_VALUE
+              { $$ = so_eval_create_flt_val($1); }
+              ;
+
+vecstatement  : boolstatement '?' vecstatement ':' vecstatement
+              { $$ = so_eval_create_ternary(ID_VEC_COND, $1, $3, $5); }
+              | fltstatement '?' vecstatement ':' vecstatement
+              { $$ = so_eval_create_ternary(ID_VEC_COND, so_eval_create_unary(ID_TEST_FLT, $1), $3, $5); }
+              | vecstatement '?' vecstatement ':' vecstatement
+              { $$ = so_eval_create_ternary(ID_VEC_COND, so_eval_create_unary(ID_TEST_VEC, $1), $3, $5); }
+
+              | vecstatement '+' vecstatement  { $$ = so_eval_create_binary(ID_ADD, $1, $3); }
+              | vecstatement '-' vecstatement  { $$ = so_eval_create_binary(ID_SUB, $1, $3); }
+              | LEX_CROSS '(' vecstatement ',' vecstatement ')'
+              { $$ = so_eval_create_binary(ID_CROSS, $3, $5); }
+
+              |'-' vecstatement %prec UNARY { $$ = so_eval_create_unary(ID_NEG, $2); }
+              | LEX_NORMALIZE '(' vecstatement ')'
+              { $$ = so_eval_create_unary(ID_NORMALIZE, $3); }
+
+              | LEX_TMP_VEC_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_TMP));}
+              | LEX_OUT_VEC_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_OUT));} 
+              | LEX_IN_VEC_REG { $$ = so_eval_create_reg(get_regname($1, REGTYPE_IN));}
+              | LEX_VEC3F '(' fltstatement ',' fltstatement ',' fltstatement ')'
+              { $$ = so_eval_create_ternary(ID_VEC3F, $3, $5, $7); }
+              ;
+
+boolstatement : fltstatement LEX_EQ fltstatement { $$ = so_eval_create_binary(ID_EQ, $1, $3); }
+              | fltstatement LEX_NEQ fltstatement { $$ = so_eval_create_binary(ID_NEQ, $1, $3); }
+              | vecstatement LEX_EQ vecstatement { $$ = so_eval_create_binary(ID_EQ, $1, $3); }
+              | vecstatement LEX_NEQ vecstatement { $$ = so_eval_create_binary(ID_NEQ, $1, $3); }
+              | fltstatement LEX_COMPARE fltstatement { $$ = so_eval_create_binary($2, $1, $3); }
+              | boolstatement LEX_AND boolstatement { $$ = so_eval_create_binary(ID_AND, $1, $3); }
+              | boolstatement LEX_OR boolstatement { $$ = so_eval_create_binary(ID_OR, $1, $3); }
+              | '!' boolstatement %prec UNARY { $$ = so_eval_create_unary(ID_NOT, $2); }
+              ;
+%%
+
+/*
+  creates a register name from the register type and register char
+*/
+static const char *
+get_regname(char reg, int regtype)
+{
+  static char buf[3];
+  buf[2] = 0;
+  
+  if (regtype != REGTYPE_IN) {
+    if (regtype == REGTYPE_TMP) buf[0] = 't';
+    else if (regtype == REGTYPE_OUT) buf[0] = 'o';
+    buf[1] = reg;
+    buf[2] = 0;
+  }
+  else {
+    buf[0] = reg;
+    buf[1] = 0;
+  }
+  return buf;
+} 
+
+
+#include "lex.so_eval.c" /* our lexical analyzer */
+
+/*
+ * parse the text string into a tree structure.
+ */
+so_eval_node *
+so_eval_parse(const char *buffer)
+{
+  /* FIXME: error handling is obviously needed */
+  YY_BUFFER_STATE state;
+  root_node = NULL;
+  state = so_eval_scan_string(buffer);
+  so_eval_delete_buffer(state);
+  assert(root_node != NULL);
+  return root_node;
+}
+

@@ -98,69 +98,41 @@ sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
 
 ALLSOURCES = \
-	SoBoolOperation.cpp \
-	SoBoolOperation.h \
-	SoCalculator.cpp \
-	SoCalculator.h \
-	SoComposeMatrix.cpp \
-	SoComposeMatrix.h \
-	SoComposeRotation.cpp \
-	SoComposeRotation.h \
-	SoComposeVec2f.cpp \
-	SoComposeVec2f.h \
-	SoComposeVec3f.cpp \
-	SoComposeVec3f.h \
-	SoComposeVec4f.cpp \
-	SoComposeVec4f.h \
-	SoConcatenate.cpp \
-	SoConcatenate.h \
-	SoConvertAll.cpp \
-	SoConvertAll.h \
-	SoCounter.cpp \
-	SoCounter.h \
-	SoDecomposeMatrix.cpp \
-	SoDecomposeMatrix.h \
-	SoDecomposeRotation.cpp \
-	SoDecomposeRotation.h \
-	SoDecomposeVec2f.cpp \
-	SoDecomposeVec2f.h \
-	SoDecomposeVec3f.cpp \
-	SoDecomposeVec3f.h \
-	SoDecomposeVec4f.cpp \
-	SoDecomposeVec4f.h \
-	SoElapsedTime.cpp \
-	SoElapsedTime.h \
-	SoEngine.cpp \
-	SoEngine.h \
-	SoEngineOutput.cpp \
-	SoEngineOutput.h \
-	SoExpressionParser.cpp \
-	SoExpressionParser.h \
-	SoFieldConverter.cpp \
-	SoFieldConverter.h \
-	SoGate.cpp \
-	SoGate.h \
-	SoInterpolateAbs.cpp \
-	SoInterpolateAbs.h \
-	SoInterpolateFloat.cpp \
-	SoInterpolateFloat.h \
-	SoInterpolateRotation.cpp \
-	SoInterpolateRotation.h \
-	SoInterpolateVec2f.cpp \
-	SoInterpolateVec2f.h \
-	SoInterpolateVec3f.cpp \
-	SoInterpolateVec3f.h \
-	SoInterpolateVec4f.cpp \
-	SoInterpolateVec4f.h \
-	SoOnOff.cpp \
-	SoOnOff.h \
-	SoOneShot.cpp \
-	SoOneShot.h \
-	SoSelectOne.cpp \
-	SoSelectOne.h \
-	SoTriggerAny.cpp \
-	SoTriggerAny.h
+	SoBoolOperation.cpp SoBoolOperation.h \
+	SoCalculator.cpp SoCalculator.h \
+	SoComposeMatrix.cpp SoComposeMatrix.h \
+	SoComposeRotation.cpp SoComposeRotation.h \
+	SoComposeVec2f.cpp SoComposeVec2f.h \
+	SoComposeVec3f.cpp SoComposeVec3f.h \
+	SoComposeVec4f.cpp SoComposeVec4f.h \
+	SoConcatenate.cpp SoConcatenate.h \
+	SoConvertAll.cpp SoConvertAll.h \
+	SoCounter.cpp SoCounter.h \
+	SoDecomposeMatrix.cpp SoDecomposeMatrix.h \
+	SoDecomposeRotation.cpp SoDecomposeRotation.h \
+	SoDecomposeVec2f.cpp SoDecomposeVec2f.h \
+	SoDecomposeVec3f.cpp SoDecomposeVec3f.h \
+	SoDecomposeVec4f.cpp SoDecomposeVec4f.h \
+	SoElapsedTime.cpp SoElapsedTime.h \
+	SoEngine.cpp SoEngine.h \
+	SoEngineOutput.cpp SoEngineOutput.h \
+	SoExpressionParser.cpp SoExpressionParser.h \
+	SoFieldConverter.cpp SoFieldConverter.h \
+	SoGate.cpp SoGate.h \
+	SoInterpolateAbs.cpp SoInterpolateAbs.h \
+	SoInterpolateFloat.cpp SoInterpolateFloat.h \
+	SoInterpolateRotation.cpp SoInterpolateRotation.h \
+	SoInterpolateVec2f.cpp SoInterpolateVec2f.h \
+	SoInterpolateVec3f.cpp SoInterpolateVec3f.h \
+	SoInterpolateVec4f.cpp SoInterpolateVec4f.h \
+	SoOnOff.cpp SoOnOff.h \
+	SoOneShot.cpp SoOneShot.h \
+	SoSelectOne.cpp SoSelectOne.h \
+	SoTriggerAny.cpp SoTriggerAny.h
 
+
+# Add these permanently when the code compiles.
+#	evaluator.c evaluator.h evaluator.tab.c lex.so_eval.c
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoSubEngine.h \
