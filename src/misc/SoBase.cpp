@@ -1,4 +1,3 @@
-
 /**************************************************************************\
  *
  *  This file is part of the Coin 3D visualization library.
@@ -380,11 +379,13 @@ SoBase::SoBase(void)
 
   // For debugging, store a pointer to all SoBase-instances.
 #if COIN_DEBUG
-  CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
-  void * dummy;
-  assert(!SoBaseP::allbaseobj->find((unsigned long)this, dummy));
-  SoBaseP::allbaseobj->enter((unsigned long)this, NULL);
-  CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
+  if (SoBaseP::trackbaseobjects) {
+    CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
+    void * dummy;
+    assert(!SoBaseP::allbaseobj->find((unsigned long)this, dummy));
+    SoBaseP::allbaseobj->enter((unsigned long)this, NULL);
+    CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
+  }
 #endif // COIN_DEBUG
 }
 
@@ -415,9 +416,12 @@ SoBase::~SoBase()
   cc_rbptree_clean(&this->auditortree);
 
 #if COIN_DEBUG
-  CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
-  const SbBool ok = SoBaseP::allbaseobj->remove((unsigned long)this);
-  CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
+  if (SoBaseP::trackbaseobjects) {
+    CC_MUTEX_LOCK(SoBaseP::allbaseobj_mutex);
+    const SbBool ok = SoBaseP::allbaseobj->remove((unsigned long)this);
+    assert(ok && "something fishy going on in debug object tracking");
+    CC_MUTEX_UNLOCK(SoBaseP::allbaseobj_mutex);
+  }
 #endif // COIN_DEBUG
 }
 
@@ -1048,9 +1052,9 @@ SoBase::getAuditors(void) const
     SoBaseP::auditordict->enter((unsigned long) this, (void*) list);
   }
   cc_rbptree_traverse(&this->auditortree, (cc_rbptree_traversecb*)sobase_audlist_add, (void*) list);
-  
+
   CC_MUTEX_UNLOCK(SoBaseP::auditor_mutex);
-  
+
   return *list;
 }
 
@@ -1537,7 +1541,7 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
         SbString vrml = nodename.getSubString(0, 3);
         // FIXME: using a temporary workaround to test if we're
         // exporting a VRML97 file. pederb, 2003-03-18
-        if ((vrml == "VRML") && 
+        if ((vrml == "VRML") &&
             (SoOutput_getHeaderString(out->pimpl) == "#VRML V2.0 utf8")) {
           SbString substring = nodename.getSubString(4);
           out->write(substring.getString());
@@ -1675,7 +1679,7 @@ SoBase::readReference(SoInput * in, SoBase *& base)
     return FALSE;
   }
 
-  // This code to handles cases where USE ref name is 
+  // This code to handles cases where USE ref name is
   // immediately followed by a "." and a fieldname, as can occur
   // when reading field-to-field connections.
   if (!in->isBinary()) {
@@ -1685,7 +1689,7 @@ SoBase::readReference(SoInput * in, SoBase *& base)
     // If the name ends with a }. E.g.
     //
     // USE mesh+0}
-    // 
+    //
     // then we are in trouble, but so is Open Inventor.
     // This is due to the ability for "}" to be a character
     // in the name of a node.
@@ -1867,7 +1871,7 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
     globalfield->ref(); // increase refcount to 2, so the next call will not destruct the node
     SoGlobalField::removeGlobalFieldContainer(globalfield);
     globalfield->unrefNoDelete(); // corrects ref count back to zero
-      
+
     // A read-error sanity check should have been done in
     // SoGlobalField::readInstance().
     assert(globalfield->getFieldData()->getNumFields() == 1);
@@ -1877,13 +1881,13 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
     if (f) {
       SoField * basefield = globalfield->getFieldData()->getField(globalfield, 0);
       assert(basefield && "base (SoGlobalField) does not appear to have a field");
-        
+
       if (!f->isOfType(basefield->getClassTypeId())) {
-        SoReadError::post(in, "Types of equally named global fields do not match: existing: %s, new: %s", 
+        SoReadError::post(in, "Types of equally named global fields do not match: existing: %s, new: %s",
                           f->getTypeId().getName().getString(), basefield->getTypeId().getName().getString());
         goto failed;
       }
-        
+
       SoGlobalField * container = (SoGlobalField *)f->getContainer();
 
       // Copy new field values into the existing field. Open Inventor
@@ -1899,7 +1903,7 @@ SoBase::readBaseInstance(SoInput * in, const SbName & classname,
         in->removeReference(refname);
         in->addReference(refname, container);
       }
-          
+
       // Remove newly made SoGlobalField, use the existing one instead:
       base->ref(); base->unref();
       base = container;
@@ -2260,22 +2264,21 @@ SoBase::doNotify(SoNotList * l, const void * auditor, const SoNotRec::Type type)
 }
 
 /*!
-  \internal 
+  \internal
   \since Coin 2.3
 */
-void 
+void
 SoBase::staticDataLock(void)
 {
   CC_MUTEX_LOCK(SoBaseP::global_mutex);
 }
 
 /*!
-  \internal 
+  \internal
   \since Coin 2.3
 */
-void 
+void
 SoBase::staticDataUnlock(void)
 {
   CC_MUTEX_UNLOCK(SoBaseP::global_mutex);
 }
-
