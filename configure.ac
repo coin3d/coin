@@ -1108,31 +1108,65 @@ AC_TRY_LINK([
 # * Handle the detection and inclusion of compression libraries
 # *******************************************************************
 
-SIM_AC_HAVE_LIBZLIB_IFELSE([
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libzlib_cppflags"
-  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libzlib_ldflags"
-  COIN_EXTRA_LIBS="$sim_ac_libzlib_libs $COIN_EXTRA_LIBS"
-  CPPFLAGS="$CPPFLAGS $sim_ac_libzlib_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_libzlib_ldflags"
-  LIBS="$sim_ac_libzlib_libs $LIBS"
-  SIM_AC_CONFIGURATION_SETTING([zlib support], [Yes, link-time binding])
-  AC_DEFINE([HAVE_ZLIB], 1, [Define to use zlib])
-],[
-  SIM_AC_CONFIGURATION_SETTING([zlib support], [No])
-])
+AC_ARG_ENABLE([dl-zlib],
+  AC_HELP_STRING([--disable-dl-zlib],
+                 [disable runtime dynamic linking for libz if possible [[default=--enable-dl-zlib]]]),
+  [case "${enableval}" in
+    yes | true) enable_dl_zlib=true ;;
+    no | false) enable_dl_zlib=false ;;
+    *) SIM_AC_ENABLE_ERROR([--enable-dl-zlib]) ;;
+  esac],
+  [enable_dl_zlib=true])
 
-SIM_AC_HAVE_LIBBZIP2_IFELSE([
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libbzip2_cppflags"
-  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libbzip2_ldflags"
-  COIN_EXTRA_LIBS="$sim_ac_libbzip2_libs $COIN_EXTRA_LIBS"
-  CPPFLAGS="$CPPFLAGS $sim_ac_libbzip2_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_libbzip2_ldflags"
-  LIBS="$sim_ac_libbzip2_libs $LIBS"
-  SIM_AC_CONFIGURATION_SETTING([bzip2 support], [Yes, link-time binding])
-  AC_DEFINE([HAVE_BZIP2], 1, [Define to use bzip2])
-],[
-  SIM_AC_CONFIGURATION_SETTING([bzip2 support], [No])
-])
+if $enable_dl_zlib && $coin_can_do_runtime_linking; then
+  AC_DEFINE_UNQUOTED([ZLIB_RUNTIME_LINKING],1,
+    [define for runtime linking with zlib])
+  SIM_AC_CONFIGURATION_SETTING([zlib support], [Yes, run-time binding])
+else
+  SIM_AC_HAVE_LIBZLIB_IFELSE([
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libzlib_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libzlib_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_libzlib_libs $COIN_EXTRA_LIBS"
+    CPPFLAGS="$CPPFLAGS $sim_ac_libzlib_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_libzlib_ldflags"
+    LIBS="$sim_ac_libzlib_libs $LIBS"
+    SIM_AC_CONFIGURATION_SETTING([zlib support], [Yes, link-time binding])
+    AC_DEFINE([HAVE_ZLIB], 1, [Define to use zlib])
+  ],[
+    SIM_AC_CONFIGURATION_SETTING([zlib support], [No])
+  ])
+fi
+
+# *******************************************************************
+
+AC_ARG_ENABLE([dl-libbzip2],
+  AC_HELP_STRING([--disable-dl-libbzip2],
+                 [disable runtime dynamic linking for libz if possible [[default=--enable-dl-libbzip2]]]),
+  [case "${enableval}" in
+    yes | true) enable_dl_libbzip2=true ;;
+    no | false) enable_dl_libbzip2=false ;;
+    *) SIM_AC_ENABLE_ERROR([--enable-dl-libbzip2]) ;;
+  esac],
+  [enable_dl_libbzip2=true])
+
+if $enable_dl_libbzip2 && $coin_can_do_runtime_linking; then
+  AC_DEFINE_UNQUOTED([LIBBZIP2_RUNTIME_LINKING],1,
+    [define for runtime linking with zlib])
+  SIM_AC_CONFIGURATION_SETTING([bzip2 support], [Yes, run-time binding])
+else
+  SIM_AC_HAVE_LIBBZIP2_IFELSE([
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libbzip2_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libbzip2_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_libbzip2_libs $COIN_EXTRA_LIBS"
+    CPPFLAGS="$CPPFLAGS $sim_ac_libbzip2_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_libbzip2_ldflags"
+    LIBS="$sim_ac_libbzip2_libs $LIBS"
+    SIM_AC_CONFIGURATION_SETTING([bzip2 support], [Yes, link-time binding])
+    AC_DEFINE([HAVE_BZIP2], 1, [Define to use bzip2])
+  ],[
+    SIM_AC_CONFIGURATION_SETTING([bzip2 support], [No])
+  ])
+fi
 
 # *******************************************************************
 # * Handle the detection and inclusion of X11 libraries.

@@ -1074,6 +1074,10 @@ Optional Features:
   --disable-sound         disable sound support
   --enable-dl-openal      use runtime dynamic linking for OpenAL if possible
                           [default=yes]
+  --disable-dl-zlib       disable runtime dynamic linking for libz if possible
+                          [default=--enable-dl-zlib]
+  --disable-dl-libbzip2   disable runtime dynamic linking for libz if possible
+                          [default=--enable-dl-libbzip2]
   --enable-dl-glu         use runtime dynamic linking for GLU if possible
                           [default=yes]
   --enable-compact        enable hack for compact compilation [default=no]
@@ -4077,7 +4081,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4080 "configure"' > conftest.$ac_ext
+  echo '#line 4084 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -5559,7 +5563,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:5562:" \
+echo "$as_me:5566:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -6564,11 +6568,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6567: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6571: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6571: \$? = $ac_status" >&5
+   echo "$as_me:6575: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6796,11 +6800,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6799: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6803: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6803: \$? = $ac_status" >&5
+   echo "$as_me:6807: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6863,11 +6867,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6866: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6870: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:6870: \$? = $ac_status" >&5
+   echo "$as_me:6874: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8875,7 +8879,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8878 "configure"
+#line 8882 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8973,7 +8977,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8976 "configure"
+#line 8980 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11105,11 +11109,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11108: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11112: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:11112: \$? = $ac_status" >&5
+   echo "$as_me:11116: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -11172,11 +11176,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:11175: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:11179: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:11179: \$? = $ac_status" >&5
+   echo "$as_me:11183: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12415,7 +12419,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12418 "configure"
+#line 12422 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12513,7 +12517,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 12516 "configure"
+#line 12520 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13335,11 +13339,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13338: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13342: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13342: \$? = $ac_status" >&5
+   echo "$as_me:13346: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -13402,11 +13406,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13405: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13409: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13409: \$? = $ac_status" >&5
+   echo "$as_me:13413: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15342,11 +15346,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15345: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15349: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15349: \$? = $ac_status" >&5
+   echo "$as_me:15353: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15574,11 +15578,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15577: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15581: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15581: \$? = $ac_status" >&5
+   echo "$as_me:15585: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15641,11 +15645,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15644: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15648: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15648: \$? = $ac_status" >&5
+   echo "$as_me:15652: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17653,7 +17657,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17656 "configure"
+#line 17660 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -17751,7 +17755,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17754 "configure"
+#line 17758 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -28967,7 +28971,37 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 # * Handle the detection and inclusion of compression libraries
 # *******************************************************************
 
-: ${sim_ac_have_libzlib=false}
+# Check whether --enable-dl-zlib or --disable-dl-zlib was given.
+if test "${enable_dl_zlib+set}" = set; then
+  enableval="$enable_dl_zlib"
+  case "${enableval}" in
+    yes | true) enable_dl_zlib=true ;;
+    no | false) enable_dl_zlib=false ;;
+    *)
+{ { echo "$as_me:$LINENO: error: invalid value \"${enableval}\" for \"--enable-dl-zlib\" configure argument" >&5
+echo "$as_me: error: invalid value \"${enableval}\" for \"--enable-dl-zlib\" configure argument" >&2;}
+   { (exit 1); exit 1; }; }
+ ;;
+  esac
+else
+  enable_dl_zlib=true
+fi;
+
+if $enable_dl_zlib && $coin_can_do_runtime_linking; then
+
+cat >>confdefs.h <<_ACEOF
+#define ZLIB_RUNTIME_LINKING 1
+_ACEOF
+
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|zlib support:Yes, run-time binding"
+else
+  sim_ac_configuration_settings="zlib support:Yes, run-time binding"
+fi
+
+else
+  : ${sim_ac_have_libzlib=false}
 echo "$as_me:$LINENO: checking for zlib" >&5
 echo $ECHO_N "checking for zlib... $ECHO_C" >&6
 
@@ -29067,12 +29101,12 @@ if $sim_ac_want_libzlib; then
     echo "$as_me:$LINENO: result: success ($sim_ac_libzlib_libs)" >&5
 echo "${ECHO_T}success ($sim_ac_libzlib_libs)" >&6
 
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libzlib_cppflags"
-  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libzlib_ldflags"
-  COIN_EXTRA_LIBS="$sim_ac_libzlib_libs $COIN_EXTRA_LIBS"
-  CPPFLAGS="$CPPFLAGS $sim_ac_libzlib_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_libzlib_ldflags"
-  LIBS="$sim_ac_libzlib_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libzlib_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libzlib_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_libzlib_libs $COIN_EXTRA_LIBS"
+    CPPFLAGS="$CPPFLAGS $sim_ac_libzlib_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_libzlib_ldflags"
+    LIBS="$sim_ac_libzlib_libs $LIBS"
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|zlib support:Yes, link-time binding"
@@ -29114,8 +29148,41 @@ fi
 fi
 # unset sim_ac_want_libzlib
 
+fi
 
-: ${sim_ac_have_libbzip2=false}
+# *******************************************************************
+
+# Check whether --enable-dl-libbzip2 or --disable-dl-libbzip2 was given.
+if test "${enable_dl_libbzip2+set}" = set; then
+  enableval="$enable_dl_libbzip2"
+  case "${enableval}" in
+    yes | true) enable_dl_libbzip2=true ;;
+    no | false) enable_dl_libbzip2=false ;;
+    *)
+{ { echo "$as_me:$LINENO: error: invalid value \"${enableval}\" for \"--enable-dl-libbzip2\" configure argument" >&5
+echo "$as_me: error: invalid value \"${enableval}\" for \"--enable-dl-libbzip2\" configure argument" >&2;}
+   { (exit 1); exit 1; }; }
+ ;;
+  esac
+else
+  enable_dl_libbzip2=true
+fi;
+
+if $enable_dl_libbzip2 && $coin_can_do_runtime_linking; then
+
+cat >>confdefs.h <<_ACEOF
+#define LIBBZIP2_RUNTIME_LINKING 1
+_ACEOF
+
+
+if test x"${sim_ac_configuration_settings+set}" = x"set"; then
+  sim_ac_configuration_settings="$sim_ac_configuration_settings|bzip2 support:Yes, run-time binding"
+else
+  sim_ac_configuration_settings="bzip2 support:Yes, run-time binding"
+fi
+
+else
+  : ${sim_ac_have_libbzip2=false}
 echo "$as_me:$LINENO: checking for bzip2 (library)" >&5
 echo $ECHO_N "checking for bzip2 (library)... $ECHO_C" >&6
 
@@ -29215,12 +29282,12 @@ if $sim_ac_want_libbzip2; then
     echo "$as_me:$LINENO: result: success ($sim_ac_libbzip2_libs)" >&5
 echo "${ECHO_T}success ($sim_ac_libbzip2_libs)" >&6
 
-  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libbzip2_cppflags"
-  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libbzip2_ldflags"
-  COIN_EXTRA_LIBS="$sim_ac_libbzip2_libs $COIN_EXTRA_LIBS"
-  CPPFLAGS="$CPPFLAGS $sim_ac_libbzip2_cppflags"
-  LDFLAGS="$LDFLAGS $sim_ac_libbzip2_ldflags"
-  LIBS="$sim_ac_libbzip2_libs $LIBS"
+    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_libbzip2_cppflags"
+    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_libbzip2_ldflags"
+    COIN_EXTRA_LIBS="$sim_ac_libbzip2_libs $COIN_EXTRA_LIBS"
+    CPPFLAGS="$CPPFLAGS $sim_ac_libbzip2_cppflags"
+    LDFLAGS="$LDFLAGS $sim_ac_libbzip2_ldflags"
+    LIBS="$sim_ac_libbzip2_libs $LIBS"
 
 if test x"${sim_ac_configuration_settings+set}" = x"set"; then
   sim_ac_configuration_settings="$sim_ac_configuration_settings|bzip2 support:Yes, link-time binding"
@@ -29262,6 +29329,7 @@ fi
 fi
 # unset sim_ac_want_libbzip2
 
+fi
 
 # *******************************************************************
 # * Handle the detection and inclusion of X11 libraries.

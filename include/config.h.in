@@ -304,6 +304,9 @@
 /* define if _vsnprintf() is available */
 #undef HAVE__VSNPRINTF
 
+/* define for runtime linking with zlib */
+#undef LIBBZIP2_RUNTIME_LINKING
+
 /* define for runtime linking with OpenAL */
 #undef OPENAL_RUNTIME_LINKING
 
@@ -342,3 +345,6 @@
 
 /* Define to 1 if the X Window System is missing or not being used. */
 #undef X_DISPLAY_MISSING
+
+/* define for runtime linking with zlib */
+#undef ZLIB_RUNTIME_LINKING
