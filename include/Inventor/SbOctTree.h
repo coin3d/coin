@@ -17,8 +17,8 @@
  *
 \**************************************************************************/
 
-#ifndef _SBOCTTREE_H_
-#define _SBOCTTREE_H_
+#ifndef COIN_SBOCTTREE_H
+#define COIN_SBOCTTREE_H
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/lists/SbList.h>
@@ -67,7 +67,7 @@ public:
   const SbBox3f & getBoundingBox(void) const;
   void clear(void);
   void debugTree(FILE * fp);
-  
+
 private:
   friend class SbOctTreeNode;
   SbBox3f boundingbox;
@@ -77,4 +77,4 @@ private:
 };
 
 
-#endif // _SBOCTTREE_H_
+#endif // !COIN_SBOCTTREE_H
