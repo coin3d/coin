@@ -656,9 +656,6 @@ SoBaseKit::countMyFields(SoOutput * out)
       if (node == NULL && ! catalog->isNullByDefault(i)) {
         field->setDefault(FALSE);
       }
-      if (node && !is_default_node(node, catalog->getDefaultType(i))) {
-        field->setDefault(FALSE);
-      }
     }
   }
 
@@ -1762,14 +1759,13 @@ SoBaseKitP::createWriteData(void)
   for (int pass = 0; pass < 3; pass++) {
     for (int i = 0; i < n; i++) {
       int part = catalog->getPartNumber(fielddata->getFieldName(i));
+      // never write private parts. SGI Inventor actually exports
+      // private parts in certain cases, but we feel this must be a
+      // bug, so we don't do this.  pederb, 2002-02-07
+      if (part > 0 && !catalog->isPublic(part)) continue;
       if ((pass == 0 && part < 0) ||
           (pass == 1 && part > 0 && catalog->isLeaf(part)) ||
           (pass == 2 && part > 0 && !catalog->isLeaf(part))) {
-#if COIN_DEBUG && 0 // debug
-        SoDebugError::postInfo("SoBaseKitP::createWriteData",
-                               "add field: %s, %d", fielddata->getFieldName(i).getString(),
-                               fielddata->getField(this->kit, i)->isDefault());
-#endif // debug
         this->writedata->addField(this->kit,
                                   fielddata->getFieldName(i).getString(),
                                   fielddata->getField(this->kit, i));
@@ -1794,9 +1790,16 @@ SoBaseKitP::testParentWrite(void)
       // don't write if NULL, of course
       if (node) {
         int parent = catalog->getParentPartNumber(i);
-        if (parent > 0 && !this->instancelist[parent]->isDefault()) {
+        if (parent > 0) {
+          assert(this->writedata);
+          SbName dummy;
+          SoNode * parentnode = this->instancelist[parent]->getValue();
           // we must write if parent is going to write
-          field->setDefault(FALSE);
+          if (parentnode &&
+              !this->instancelist[parent]->isDefault() &&
+              this->writedata->getIndex(node, this->instancelist[parent]) >= 0) {            
+            field->setDefault(FALSE);
+          }
         }
       }
     }
