@@ -311,6 +311,31 @@ SoNode::isOverride(void) const
   return this->stateflags.override;
 }
 
+/*!
+  Returns the last node that was registered under \a name.
+*/
+SoNode *
+SoNode::getByName(const SbName & name)
+{
+  SoBase * b = SoBase::getNamedBase(name, SoNode::getClassTypeId());
+  if (!b) return NULL;
+  return (SoNode *)b;
+}
+
+/*!
+  Finds all nodes with \a name and appends them to the \a l nodelist.
+  Returns the number of nodes with the specified name.
+*/
+int
+SoNode::getByName(const SbName & name, SoNodeList & l)
+{
+  SoBaseList bl;
+  int nr = SoBase::getNamedBases(name, bl, SoNode::getClassTypeId());
+  for (int i=0; i < nr; i++) l.append((SoNode *)bl[i]);
+  return nr;
+}
+
+
 // *************************************************************************
 // * ACTION STUFF
 // *************************************************************************
@@ -345,30 +370,6 @@ SoNode::affectsState(void) const
 }
 
 /*!
-  Returns the last node that was registered under \a name.
-*/
-SoNode *
-SoNode::getByName(const SbName & name)
-{
-  SoBase * b = SoBase::getNamedBase(name, SoNode::getClassTypeId());
-  if (!b) return NULL;
-  return (SoNode *)b;
-}
-
-/*!
-  Finds all nodes with \a name and appends them to the \a l nodelist.
-  Returns the number of nodes with the specified name.
-*/
-int
-SoNode::getByName(const SbName & name, SoNodeList & l)
-{
-  SoBaseList bl;
-  int nr = SoBase::getNamedBases(name, bl, SoNode::getClassTypeId());
-  for (int i=0; i < nr; i++) l.append((SoNode *)bl[i]);
-  return nr;
-}
-
-/*!
   This is a static "helper" method registered with the action, and
   used for calling the SoNode::getBoundingBox() virtual method which
   does the \e real work.
@@ -390,6 +391,9 @@ SoNode::getBoundingBoxS(SoAction * action, SoNode * node)
   the values of the \a action to encompass the bounding box for this
   node and to shift the center point for the scene more towards the
   one for this node.
+
+  Nodes influencing how geometry nodes calculates their bounding box
+  also overloads this method to change the relevant state variables.
 */
 void
 SoNode::getBoundingBox(SoGetBoundingBoxAction * action)
@@ -413,6 +417,10 @@ SoNode::getPrimitiveCountS(SoAction * action, SoNode * node)
 
   Calculates the number of triangle, line segment and point primitives
   for the node and adds these to the counters of the \a action.
+
+  Nodes influencing how geometry nodes calculates their primitive
+  count also overloads this method to change the relevant state
+  variables.
 */
 void
 SoNode::getPrimitiveCount(SoGetPrimitiveCountAction * action)
@@ -496,7 +504,8 @@ SoNode::GLRender(SoGLRenderAction * action)
 }
 
 /*!
-  Use a different traversal method for the rendering.
+  Implements the SoAction::BELOW_PATH traversal method for the
+  rendering action.
 */
 void
 SoNode::GLRenderBelowPath(SoGLRenderAction * action)
@@ -505,7 +514,8 @@ SoNode::GLRenderBelowPath(SoGLRenderAction * action)
 }
 
 /*!
-  Use a different traversal method for the rendering.
+  Implements the SoAction::IN_PATH traversal method for the rendering
+  action.
 */
 void
 SoNode::GLRenderInPath(SoGLRenderAction * action)
@@ -514,7 +524,8 @@ SoNode::GLRenderInPath(SoGLRenderAction * action)
 }
 
 /*!
-  Use a different traversal method for the rendering.
+  Implements the SoAction::OFF_PATH traversal method for the rendering
+  action.
 */
 void
 SoNode::GLRenderOffPath(SoGLRenderAction * action)
@@ -605,6 +616,9 @@ SoNode::handleEventS(SoAction * action, SoNode * node)
 
   Inspects the event data from \a action, and processes it if it is
   something which this node should react to.
+
+  Nodes influencing relevant state variables for how event handling is
+  done also overloads this method.
 */
 void
 SoNode::handleEvent(SoHandleEventAction * action)
@@ -654,6 +668,9 @@ SoNode::rayPickS(SoAction * action, SoNode * node)
 
   Checks the ray specification of the \a action and tests for
   intersection with the data of the node.
+
+  Nodes influencing relevant state variables for how picking is done
+  also overloads this method.
 */
 void
 SoNode::rayPick(SoRayPickAction * action)
