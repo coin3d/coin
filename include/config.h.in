@@ -76,6 +76,9 @@
 /* define if preprocessor can quote arguments with apostophes */
 #undef HAVE_APOSTROPHES_QUOTING
 
+/* Define to use bzip2 */
+#undef HAVE_BZIP2
+
 /* define if the DLD shared library loader is available */
 #undef HAVE_DLD_LIB
 
