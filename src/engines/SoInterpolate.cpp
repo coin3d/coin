@@ -110,4 +110,6 @@ SoInterpolate::~SoInterpolate()
 #if COIN_DEBUG && 0 // debug
   SoDebugError::postInfo("SoInterpolate::~SoInterpolate", "%p", this);
 #endif // debug
+  delete this->inputdata; this->inputdata = NULL;
+  delete this->outputdata; this->outputdata = NULL;
 }
