@@ -20,10 +20,10 @@ nodist_libCoininc_HEADERS = \
 
 # Avoid installing the SbBasic.h header-file if it's equal to
 # the one already in place, by overriding this make target.
-install-nodist_libCoinincHEADERS: $(libCoininc_HEADERS)
+install-nodist_libCoinincHEADERS: $(nodist_libCoininc_HEADERS)
 	@$(NORMAL_INSTALL)
 	$(mkinstalldirs) $(DESTDIR)$(libCoinincdir)
-	@list='$(libCoininc_HEADERS)'; for p in $$list; do \
+	@list='$(nodist_libCoininc_HEADERS)'; for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  src="$$d$$p"; dst="$(DESTDIR)$(libCoinincdir)/$$f"; \
