@@ -725,9 +725,11 @@ fi
 
 AM_CONDITIONAL([DEB_PACKAGEABLE], [$sim_ac_debian_packageable])
 
-sim_ac_macosx_packageable=false
-if test -d /Developer/Applications/PackageMaker.app; then
-  sim_ac_macosx_packageable=true
+SIM_AC_PACKAGEMAKER_APP
+AC_SUBST([sim_ac_packagemaker_app])
+sim_ac_macosx_packageable=true
+if test x"$sim_ac_packagemaker_app" = xfalse; then
+  sim_ac_macosx_packageable=false
 fi
 
 AM_CONDITIONAL([MACOSX_PACKAGEABLE], [$sim_ac_macosx_packageable])
