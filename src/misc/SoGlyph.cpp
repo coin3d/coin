@@ -70,11 +70,7 @@
 
 
 #include "../fonts/fontlib_wrapper.h"
-// FIXME: when is this defined? Looks bogus -- default 2D and 3D fonts
-// should always be present. 20030526 mortene.
-#if !defined(COIN_NO_DEFAULT_3DFONT)
 #include "../misc/defaultfonts.h"
-#endif // COIN_NO_DEFAULT_3DFONT
 
 class SoGlyphP {
 public:
@@ -101,9 +97,6 @@ public:
   int bitmapheight;
 
   struct {
-    unsigned int didalloccoords : 1;
-    unsigned int didallocfaceidx : 1;
-    unsigned int didallocedgeidx : 1;
     unsigned int didcalcbbox : 1;
   } flags;
 
@@ -122,9 +115,6 @@ SoGlyph::SoGlyph(void)
 {
   PRIVATE(this) = new SoGlyphP(this);
   PRIVATE(this)->refcount = 0;
-  PRIVATE(this)->flags.didalloccoords = 0;
-  PRIVATE(this)->flags.didallocfaceidx  = 0;
-  PRIVATE(this)->flags.didallocedgeidx = 0;
   PRIVATE(this)->flags.didcalcbbox = 0;
   PRIVATE(this)->coords = NULL;
   PRIVATE(this)->faceidx = NULL;
@@ -149,9 +139,6 @@ SoGlyph::SoGlyph(void)
 */
 SoGlyph::~SoGlyph()
 {
-  if (PRIVATE(this)->flags.didalloccoords) delete [] PRIVATE(this)->coords;
-  if (PRIVATE(this)->flags.didallocfaceidx) delete [] PRIVATE(this)->faceidx;
-  if (PRIVATE(this)->flags.didallocedgeidx) delete [] PRIVATE(this)->edgeidx;
   delete PRIVATE(this);
 }
 
@@ -320,66 +307,60 @@ SoGlyph::getBoundingBox(void) const
 }
 
 /*!
-  Sets the coordinates for this glyph. If \a numcoords > 0, the data
-  will be copied before returing. If \a numcoords <= 0, \a coords will
-  be used directly.
+  Sets the coordinates for this glyph.
 */
 void
 SoGlyph::setCoords(const SbVec2f *coords, int numcoords)
 {
-  if (PRIVATE(this)->flags.didalloccoords) delete [] PRIVATE(this)->coords;
-  if (numcoords > 0) {
-    SbVec2f * c = new SbVec2f[numcoords];
-    memcpy(c, coords, numcoords*sizeof(SbVec2f));
-    PRIVATE(this)->coords = c;
-    PRIVATE(this)->flags.didalloccoords = 1;
-  }
-  else {
-    PRIVATE(this)->coords = coords;
-    PRIVATE(this)->flags.didalloccoords = 0;
-  }
+  // It used to be valid to call this function with a negative value
+  // (which signified that data should not be copied). All invoking
+  // code just passed in -1, so we have simplified this function
+  // (SoGlyph is being obsoleted anyway).
+  //
+  // Note that since we are just copying the data pointer, we assume
+  // that all 3D glyphs use permanent storage for their publicly
+  // exposed data.
+  assert(numcoords == -1);
+
+  PRIVATE(this)->coords = coords;
 }
 
 /*!
-  Sets the face indices for this glyph. If \a numindices > 0, the
-  data will be copied before returning. If \a numcoords <= 0,
-  \a indices will be used directly.
+  Sets the face indices for this glyph.
 */
 void
 SoGlyph::setFaceIndices(const int *indices, int numindices)
 {
-  if (PRIVATE(this)->flags.didallocfaceidx) delete [] PRIVATE(this)->faceidx;
-  if (numindices > 0) {
-    int * f = new int[numindices];
-    memcpy(f, indices, numindices*sizeof(int));
-    PRIVATE(this)->faceidx = f;
-    PRIVATE(this)->flags.didallocfaceidx = 1;
-  }
-  else {
-    PRIVATE(this)->faceidx = indices;
-    PRIVATE(this)->flags.didallocfaceidx = 0;
-  }
+  // It used to be valid to call this function with a negative value
+  // (which signified that data should not be copied). All invoking
+  // code just passed in -1, so we have simplified this function
+  // (SoGlyph is being obsoleted anyway).
+  //
+  // Note that since we are just copying the data pointer, we assume
+  // that all 3D glyphs use permanent storage for their publicly
+  // exposed data.
+  assert(numindices == -1);
+
+  PRIVATE(this)->faceidx = indices;
 }
 
 /*!
-  Sets the edge indices for this glyph. If \a numindices > 0, the
-  data will be copied before returning. If \a numcoords <= 0,
-  \a indices will be used directly.
+  Sets the edge indices for this glyph.
 */
 void
 SoGlyph::setEdgeIndices(const int *indices, int numindices)
 {
-  if (PRIVATE(this)->flags.didallocedgeidx) delete [] PRIVATE(this)->edgeidx;
-  if (numindices > 0) {
-    int * e = new int[numindices];
-    memcpy(e, indices, numindices*sizeof(int));
-    PRIVATE(this)->edgeidx = e;
-    PRIVATE(this)->flags.didallocedgeidx = 1;
-  }
-  else {
-    PRIVATE(this)->edgeidx = indices;
-    PRIVATE(this)->flags.didallocedgeidx = 0;
-  }
+  // It used to be valid to call this function with a negative value
+  // (which signified that data should not be copied). All invoking
+  // code just passed in -1, so we have simplified this function
+  // (SoGlyph is being obsoleted anyway).
+  //
+  // Note that since we are just copying the data pointer, we assume
+  // that all 3D glyphs use permanent storage for their publicly
+  // exposed data.
+  assert(numindices == -1);
+
+  PRIVATE(this)->edgeidx = indices;
 }
 
 
@@ -485,16 +466,6 @@ SoGlyph::getGlyph(const char character, const SbName & font)
   // on making a square in the code we're calling into. Move the code
   // below to handle this deeper down into the call-stack. 20030527 mortene.
   if (glyph == NULL) { // no system font could be loaded
-#if defined(COIN_NO_DEFAULT_3DFONT)
-    // just create a square to render something
-    glyph = new SoGlyph;
-    static float dummycoords[] = {0.0f, 0.0f, 0.7f, 0.0f, 0.7f, 0.7f, 0.0f, 0.7f};
-    static int dummyfaceidx[] = {0,1,2,0,2,3,-1};
-    static int dummyedgeidx[] = {0,1,1,2,2,3,3,0,-1};
-    glyph->setCoords((SbVec2f*)dummycoords);
-    glyph->setFaceIndices(dummyfaceidx);
-    glyph->setEdgeIndices(dummyedgeidx);
-#else // ! COIN_NO_DEFAULT_3DFONT
     glyph = new SoGlyph;
     if (character <= 32 || character >= 127) {
       // treat all these characters as spaces
@@ -507,11 +478,10 @@ SoGlyph::getGlyph(const char character, const SbName & font)
     }
     else {
       const int idx = character-33;
-      glyph->setCoords((SbVec2f*)coin_default3dfont_get_coords()[idx]);
-      glyph->setFaceIndices((int*)coin_default3dfont_get_faceidx()[idx]);
-      glyph->setEdgeIndices((int*)coin_default3dfont_get_edgeidx()[idx]);
+      glyph->setCoords((const SbVec2f*)coin_default3dfont_get_coords()[idx]);
+      glyph->setFaceIndices(coin_default3dfont_get_faceidx()[idx]);
+      glyph->setEdgeIndices(coin_default3dfont_get_edgeidx()[idx]);
     }
-#endif // COIN_NO_DEFAULT_3DFONT
   }
   // Use impossible font size to avoid mixing polygonal & bitmap glyphs.
   coin_glyph_info info(character, -1.0, font, glyph, 0.0);
@@ -683,20 +653,9 @@ SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) cons
 
 
 void
-SoGlyphP::setup3DFontData()
+SoGlyphP::setup3DFontData(void)
 {
-
   master->setFontType(SoGlyph::FONT3D);
-  
-#if defined(COIN_NO_DEFAULT_3DFONT)
-  // just create a square to render something
-  static float dummycoords[] = {0.0f, 0.0f, 0.7f, 0.0f, 0.7f, 0.7f, 0.0f, 0.7f};
-  static int dummyfaceidx[] = {0,1,2,0,2,3,-1};
-  static int dummyedgeidx[] = {0,1,1,2,2,3,3,0,-1};
-  this->setCoords((SbVec2f*)dummycoords);
-  this->setFaceIndices(dummyfaceidx);
-  this->setEdgeIndices(dummyedgeidx);
-#else // ! COIN_NO_DEFAULT_3DFONT
   
   if (character <= 32 || character >= 127) {
     // treat all these characters as spaces
@@ -714,9 +673,9 @@ SoGlyphP::setup3DFontData()
     if (vector_glyph == NULL) {
       // Default hardcoded 3d font. Size = 1.0
       const int idx = this->character-33;
-      this->master->setCoords((const SbVec2f*)&(coin_default3dfont_get_coords()[idx]));
-      this->master->setFaceIndices(&(coin_default3dfont_get_faceidx()[idx]));
-      this->master->setEdgeIndices(&(coin_default3dfont_get_edgeidx()[idx]));
+      this->master->setCoords((const SbVec2f *)coin_default3dfont_get_coords()[idx]);
+      this->master->setFaceIndices(coin_default3dfont_get_faceidx()[idx]);
+      this->master->setEdgeIndices(coin_default3dfont_get_edgeidx()[idx]);
     } 
     else {
       // Install truetype font
@@ -725,10 +684,7 @@ SoGlyphP::setup3DFontData()
       this->master->setFaceIndices(cc_flw_get_vector_glyph_faceidx(vector_glyph));
       this->master->setEdgeIndices(cc_flw_get_vector_glyph_edgeidx(vector_glyph));
     }
-    
   }
-#endif // COIN_NO_DEFAULT_3DFONT
-  
 }
 
 
