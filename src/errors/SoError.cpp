@@ -104,6 +104,8 @@ SoError::getClassTypeId(void)
   return SoError::classTypeId;
 }
 
+// FIXME: grab better version of getTypeId() doc from SoBase, SoAction
+// and / or SoDetail. 20010913 mortene.
 /*!
   This method returns the SoType of a particular object instance.
 

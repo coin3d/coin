@@ -17,6 +17,13 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoHandleBoxManip SoHandleBoxManip.h Inventor/manips/SoHandleBoxManip.h
+  \brief The SoHandleBoxManip class wraps an SoHandleBoxDragger for manipulating a transformation.
+  \ingroup manips
+*/
+// FIXME: more class documentation? 20010909 mortene.
+
 #include <Inventor/manips/SoHandleBoxManip.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/nodes/SoSurroundScale.h>
@@ -24,26 +31,38 @@
 
 SO_NODE_SOURCE(SoHandleBoxManip);
 
-
+// Doc in super.
 void
 SoHandleBoxManip::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoHandleBoxManip);
 }
 
+/*!
+  Constructor sets us up with an SoHandleBoxDragger for manipulating a
+  transformation.
+ */
 SoHandleBoxManip::SoHandleBoxManip(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoHandleBoxManip);
 
-  SoHandleBoxDragger *dragger = new SoHandleBoxDragger;
+  SoHandleBoxDragger * dragger = new SoHandleBoxDragger;
   this->setDragger(dragger);
 
-  SoSurroundScale *ss = (SoSurroundScale*) dragger->getPart("surroundScale", TRUE);
+  SoSurroundScale * ss =
+    (SoSurroundScale *)dragger->getPart("surroundScale", TRUE);
+  // FIXME: be robust here in case user supplied a faulty graph for
+  // the dragger? Or is that taken care of by the import code in the
+  // dragger? 20010909 mortene.
+
   ss->numNodesUpToContainer = 4;
   ss->numNodesUpToReset = 3;
 }
 
-
+/*!
+  Protected destructor. (SoHandleBoxManip is automatically destructed
+  when it's reference count goes to 0.)
+ */
 SoHandleBoxManip::~SoHandleBoxManip()
 {
 }

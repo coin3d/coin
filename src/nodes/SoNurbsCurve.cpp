@@ -32,20 +32,21 @@
 
 #include <Inventor/nodes/SoNurbsCurve.h>
 #include <Inventor/nodes/SoSubNodeP.h>
+
+#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 #include <Inventor/elements/SoCoordinateElement.h>
-#include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
-#include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoPickStyleElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/misc/SoState.h>
-#include <Inventor/errors/SoDebugError.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -311,19 +312,24 @@ SoNurbsCurve::tessBegin(int type, void * data)
     break;
   case GL_LINE_LOOP:
     shapetype = SoShape::LINE_STRIP; // will not be closed...
-#if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoNurbsCurve::tessBegin",
-                           "LINE_LOOP is not supported yet");
-#endif // debug
+    // FIXME: implement this functionality. 20010909 mortene.
+    COIN_STUB();
+#if COIN_DEBUG
+    SoDebugError::postWarning("SoNurbsCurve::tessBegin",
+                              "LINE_LOOP is not supported yet");
+#endif // COIN_DEBUG
     break;
   case GL_POINTS:
     shapetype = SoShape::POINTS;
     break;
   default:
     shapetype = SoShape::POLYGON; // illegal value
+    // FIXME: should this be an assert, or does it represent
+    // something which is out of our control, like a possible future
+    // feature of the GLU tesselator?  20010909 mortene.
 #if COIN_DEBUG && 1 // debug
-    SoDebugError::postInfo("SoNurbsCurve::tessBegin",
-                           "unsupported GL enum: 0x%x", type);
+    SoDebugError::postWarning("SoNurbsCurve::tessBegin",
+                              "unsupported GL enum: 0x%x", type);
 #endif // debug
     break;
   }

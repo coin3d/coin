@@ -56,6 +56,10 @@ SO_EVENT_SOURCE(SoEvent);
   This static method returns the SoType object associated with objects
   of this class.
  */
+
+
+// FIXME: grab better version of getTypeId() doc from SoBase, SoAction
+// and / or SoDetail. 20010913 mortene.
 /*!
   \fn SoType SoEvent::getTypeId(void) const
 

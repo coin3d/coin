@@ -137,9 +137,7 @@ SoGLBigImage::unref(SoState * state)
   inherited::unref(state);
 }
 
-/*!
-  Returns the type id for this class.
-*/
+// Doc in superclass.
 SoType
 SoGLBigImage::getClassTypeId(void)
 {
@@ -150,9 +148,7 @@ SoGLBigImage::getClassTypeId(void)
   return SoGLBigImageP::classTypeId;
 }
 
-/*!
-  Returns the type id for an SoGLBigImage instance.
-*/
+// Doc in superclass.
 SoType
 SoGLBigImage::getTypeId(void) const
 {

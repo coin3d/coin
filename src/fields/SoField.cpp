@@ -172,6 +172,8 @@ private:
 
 // Documentation for abstract methods.
 
+// FIXME: grab better version of getTypeId() doc from SoBase, SoAction
+// and / or SoDetail. 20010913 mortene.
 /*!
   \fn SoType SoField::getTypeId(void) const
 
@@ -180,18 +182,22 @@ private:
 
   \sa getClassTypeId(), SoType
 */
+
 /*!
   \fn SbBool SoField::isSame(const SoField & f) const
   Check for equal type and value(s).
 */
+
 /*!
   \fn void SoField::copyFrom(const SoField & f)
   Copy value(s) from \a f into this field.
 */
+
 /*!
   \fn SbBool SoField::readValue(SoInput * in)
   Read field value(s).
 */
+
 /*!
   \fn void SoField::writeValue(SoOutput * out) const
   Write field value(s).

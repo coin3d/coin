@@ -409,10 +409,11 @@ SoElement::setTypeId(const SoType typeId)
   this->typeId = typeId;
 }
 
+// FIXME: grab better version of getTypeId() doc from SoBase, SoAction
+// and / or SoDetail. 20010913 mortene.
 /*!
   This method returns the type identifier for the element instance.
 */
-
 const SoType
 SoElement::getTypeId() const
 {

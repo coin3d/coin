@@ -513,8 +513,10 @@ operator*(const SbRotation & q1, const SbRotation & q2)
 void
 SbRotation::multVec(const SbVec3f & src, SbVec3f & dst) const
 {
-  SbMatrix mat;
+  // FIXME: this looks amazingly ineffective. Should
+  // optimize. 20010907 mortene.
 
+  SbMatrix mat;
   mat.setRotate(*this);
   mat.multVecMatrix(src, dst);
 }

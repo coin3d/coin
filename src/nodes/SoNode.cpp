@@ -1006,12 +1006,12 @@ SoNode::getFieldDataPtr(void)
   return NULL;
 }
 
-/*!
-  Overloaded to set node type.
-*/
+// Doc in super.
 SbBool
 SoNode::readInstance(SoInput * in, unsigned short flags)
 {
+  // Overridden to set node type.
+
   SbBool ret = inherited::readInstance(in, flags);
   if (ret) {
     if (in->isFileVRML1()) this->setNodeType(SoNode::VRML1);

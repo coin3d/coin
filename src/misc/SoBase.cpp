@@ -51,19 +51,67 @@
 #include <assert.h>
 #include <string.h>
 
+
+// Note: the following documentation for getTypeId() will also be
+// visible for subclasses, so keep it general.
 /*!
   \fn SoType SoBase::getTypeId(void) const
-  Returns the actual type id of an object derived from a class inheriting
-  SoBase. Needs to be overloaded in \e all subclasses.
+
+  Returns the type identification of an object derived from a class
+  inheriting SoBase.  This is used for run-time type checking and
+  "downward" casting.
+
+  Usage example:
+
+  \code
+  void foo(SoNode * node)
+  {
+    if (node->getTypeId() == SoFile::getClassTypeId()) {
+      /// [then something] ///
+    }
+    else if (node->getTypeId().isOfType(SoGroup::getClassTypeId())) {
+      SoGroup * group = (SoGroup *)node;  // safe downward cast, know the type
+      // then something else
+    }
+  }
+  \endcode
+
+
+  For application programmers wanting to extend the library with new
+  nodes, engines, nodekits, draggers or others: this method needs to
+  be overloaded in \e all subclasses. This is typically done as part
+  of setting up the full type system for extension classes, which is
+  usually accomplished by using the pre-defined macros available
+  through for instance Inventor/nodes/SoSubNode.h (SO_NODE_INIT_CLASS
+  and SO_NODE_CONSTRUCTOR for node classes),
+  Inventor/engines/SoSubEngine.h (for engine classes) and so on.
+
+  For more information on writing Coin extensions, see the class
+  documentation of the toplevel superclasses for the various class
+  groups.
 */
+
+// Note: the following documentation for readInstance() will also be
+// visible for subclasses, so keep it general.
 /*!
   \fn SbBool SoBase::readInstance(SoInput * in, unsigned short flags)
 
-  Reads definition of SoBase derived instance from input stream \a in.
+  This method is mainly intended for internal use during file import
+  operations.
+
+  It reads a definition of an instance from the input stream \a in.
+  The input stream state points to the start of a serialized /
+  persistant representation of an instance of this class type.
+
+  \c TRUE or \c FALSE is returned, depending on if the instantiation
+  and configuration of the new object of this class type went ok or
+  not.  The import process should be robust and handle corrupted input
+  streams by returning \c FALSE.
 
   \a flags is used internally during binary import when reading user
   extension nodes, group nodes or engines.
 */
+
 /*!
   \enum SoBase::BaseFlags
   \internal

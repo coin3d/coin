@@ -57,6 +57,8 @@
   Use picked point to decide front or back of projector.
 */
 
+// FIXME: document DraggerCB typedef? 20010909 mortene.
+
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
@@ -239,8 +241,10 @@ SoDragger::~SoDragger()
   delete this->pimpl;
 }
 
+// Note: the following documentation for initClass() will also be used
+// for dragger subclasses, so keep it general.
 /*!
-  Initializes this class and all built-in draggers.
+  Initializes type system for this class.
 */
 void
 SoDragger::initClass(void)
@@ -1412,14 +1416,14 @@ SoDragger::getActiveChildDragger(void) const
   return THIS->activechilddragger;
 }
 
-/*!  
-  Overloaded to set default on SoDragger::isActive,
-  SoDragger::motionMatrix and on common subdragger fields:
-  translation, center, scaleFactor and rotation.  
-*/
+// doc in super
 void
 SoDragger::setDefaultOnNonWritingFields(void)
 {
+  // Overloaded to set default on SoDragger::isActive,
+  // SoDragger::motionMatrix and on common subdragger fields:
+  // translation, center, scaleFactor and rotation.
+
 #define CHECK_DEFAULT(name, type, val) \
   f = (SoField*) this->getField(name); \
   if (f && !(f->isConnectionEnabled() && f->isConnected())) { \

@@ -31,6 +31,10 @@
 static void
 sogenerate_generate_3d_circle(SbVec3f *coords, const int num, const float radius, const float y)
 {
+  // FIXME: this function completely duplicates
+  // sogl_generate_3d_circle() in SoGL.cpp, AFAICS.  Should avoid
+  // unnecessary duplication. 20010909 mortene.
+
   float delta = 2*M_PI/num;
   float angle = 0.0f;
   for (int i = 0; i < num; i++) {
@@ -45,6 +49,10 @@ sogenerate_generate_3d_circle(SbVec3f *coords, const int num, const float radius
 static void
 sogenerate_generate_2d_circle(SbVec2f *coords, const int num, const float radius)
 {
+  // FIXME: this function completely duplicates
+  // sogl_generate_3d_circle() in SoGL.cpp, AFAICS.  Should avoid
+  // unnecessary duplication. 20010909 mortene.
+
   float delta = 2*M_PI/num;
   float angle = 0.0f;
   for (int i = 0; i < num; i++) {

@@ -285,13 +285,13 @@ SoInteractionKit::setSwitchValue(SoNode * node, const int newVal)
   }
 }
 
-/*!
-  Overloaded to copy the surrogate lists.
- */
+// Doc in superclass.
 void
 SoInteractionKit::copyContents(const SoFieldContainer * fromFC,
                                SbBool copyConnections)
 {
+  // Overloaded to copy the surrogate lists.
+
   int i;
   inherited::copyContents(fromFC, copyConnections);
 
@@ -308,15 +308,16 @@ SoInteractionKit::copyContents(const SoFieldContainer * fromFC,
   }
 }
 
-/*!
-  Overloaded to check topSeperator and fields after reading.
-*/
+// Doc in superclass.
 SbBool
 SoInteractionKit::readInstance(SoInput * in, unsigned short flags)
 {
+  // Overloaded to check topSeperator and fields after reading.
+
   SbBool ret = inherited::readInstance(in, flags); // will handle fields
   if (ret) {
-    // remove surrogate paths where part != NULL and not an empty group or separator
+    // remove surrogate paths where part != NULL and not an empty
+    // group or separator
     int n = THIS->surrogatenamelist.getLength();
     for (int i = 0; i < n; i++) {
       SbName name = THIS->surrogatenamelist[i];
@@ -568,13 +569,13 @@ SoInteractionKit::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
-/*!
-  Overloaded to detect when part changes value. If a substitute
-  path for that part exists, it must be cleared.
-*/
+// Doc in superclass.
 SbBool
 SoInteractionKit::setPart(const int partNum, SoNode * node)
 {
+  // Overriden to detect when part changes value. If a substitute path
+  // for that part exists, it must be cleared.
+
   THIS->removeSurrogatePath(this->getNodekitCatalog()->getName(partNum));
   return inherited::setPart(partNum, node);
 }

@@ -31,13 +31,15 @@
   plane.
 
   While the dragger is inactive (ie the user is not currently grabbing
-  and/or dragging it's parts), any of the CTRL keys on the keyboard
-  can be used to switch the orientation of the 2D-plane part and the
+  and / or dragging it's parts), the CTRL keys on the keyboard can be
+  used to switch the orientation of the 2D-plane part and the
   normal-axis part so the normal-axis part points along one of the
-  other principal axes.
+  other principal axes.  This is done by position the mouse pointer
+  over the dragger geometry and pressing and releasing a CTRL key.
 */
 // FIXME: Should include a diagram of the catalog structure in the
 // class documentation. Plus an URL-link to the default geometry-file?
+// Plus snapshot of how the dragger looks (and behaves?).
 // 20010909 mortene.
 
 #include <Inventor/draggers/SoDragPointDragger.h>
@@ -65,8 +67,11 @@ SoDragPointDragger::initClass(void)
   SO_KIT_INTERNAL_INIT_CLASS(SoDragPointDragger);
 }
 
+// FIXME: document which parts need to be present in the geometry
+// scenegraph, and what role they play in the dragger. 20010913 mortene.
 /*!
-  FIXME: doc
+  Constructor.  Sets up the dragger nodekit catalog from the default
+  geometry file.
  */
 SoDragPointDragger::SoDragPointDragger(void)
 {
@@ -246,6 +251,7 @@ SoDragPointDragger::setUpConnections(SbBool onoff, SbBool doitalways)
   return !(this->connectionsSetUp = onoff);
 }
 
+// doc in super
 void
 SoDragPointDragger::setDefaultOnNonWritingFields(void)
 {

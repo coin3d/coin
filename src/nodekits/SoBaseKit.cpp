@@ -24,12 +24,20 @@
 
   FIXME, write class doc:
 
-  * what are nodekits?
-  * why nodekits?
-  * how to use them
-  * how to define your own
-  * ...
+  <ul>
+  <li> what are nodekits?
+  <li> (explain catalogs)
+  <li> why nodekits?
+  <li> how to use them
+  <li> how to define your own
+  <li> ...
+  </ul>
 
+
+  If you as an application programmer is planning to write extensions
+  in the form of e.g. new nodekit classes or new dragger classes,
+  please also consult the book «The Inventor Toolmaker», ISBN
+  0-201-62493-1.
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
@@ -703,18 +711,39 @@ SoBaseKit::countMyFields(SoOutput * out)
   }
 }
 
+// Note: the following documentation for
+// setDefaultOnNonWritingFields() will also be used for nodekit and
+// dragger subclasses, so keep it general.
 /*!
-  A virtual method that should call setDefault(TRUE) on
-  part fields that should not be written.
+  (Be aware that this method is unlikely to be of interest to the
+  application programmer who does not want to extend the library with
+  new custom nodekits or draggers.  If you indeed \e are writing
+  extensions, see the information in the SoBaseKit class
+  documentation.)
 
-  This can be done when:
-  1) field value is NULL and part is NULL by default
-  2) leaf SoGroup or SoSeparator node with no children
-  3) leaf listpart with no children and a SoGroup or SoSeparator container
-  4) non-leaf and isOfType(SoGroup) && is_default_node (all fields default
-  and with default values).
+  A virtual method that should call SoField::setDefault() with
+  argument \c TRUE on part fields that should not be written upon
+  scenegraph export operations.
 
-  Subkits can overload this to do additional tests.
+  This is typically be done when:
+
+  <OL>
+
+  <LI> field value is \c NULL and part is \c NULL by default </LI>
+
+  <LI> it is a leaf SoGroup or SoSeparator node with no children </LI>
+
+  <LI> it is a leaf listpart with no children and a SoGroup or
+  SoSeparator container </LI>
+
+  <LI> it is a non-leaf part and it's of SoGroup type and all fields
+  are at their default values </LI>
+
+  </OL>
+
+  Subclasses should usually override this to do additional settings
+  for new member fields.  From the subclass, do remember to call
+  "upwards" to your superclass' setDefaultOnNonWritingFields() method.
 */
 void
 SoBaseKit::setDefaultOnNonWritingFields(void)
@@ -1369,7 +1398,7 @@ SoBaseKit::getCatalogInstances(void) const
 }
 
 /*!
-  Not supported in Coin.
+  Obsoleted from the API in Coin.
 */
 void
 SoBaseKit::catalogError(void)
@@ -1377,8 +1406,15 @@ SoBaseKit::catalogError(void)
   COIN_OBSOLETED();
 }
 
+// Note: the following documentation for setUpConnections() will also
+// be visible for subclass nodekits and draggers, so keep it general.
 /*!
-  FIXME: write function documentation
+  Sets up all internal connections for instances of this class.
+
+  (This method will usually not be of interest to the application
+  programmer, unless you want to extend the library with new custom
+  nodekits or dragger classes.  If so, see SoBaseKit class
+  documentation.)
 */
 SbBool
 SoBaseKit::setUpConnections(SbBool onoff, SbBool doitalways)
@@ -1386,9 +1422,7 @@ SoBaseKit::setUpConnections(SbBool onoff, SbBool doitalways)
   return this->connectionsSetUp;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc in super
 SbBool
 SoBaseKit::readInstance(SoInput * in, unsigned short flags)
 {
@@ -1624,12 +1658,12 @@ SoBaseKit::makePart(const int partnum)
 }
 
 /*!
-  Sets parts, updates nodekit scene graph, and makes sure
-  graph is valid with respect to right siblings and parent.
-  This method is virtual to enable subclasses to detect when a
-  part changes value.
+  Sets parts, updates nodekit scene graph, and makes sure graph is
+  valid with respect to right siblings and parent.  This method is
+  virtual to enable subclasses to detect when a part changes value.
 
-  This method is not part of the OIV API.
+  This method is not part of the original SGI Open Inventor API, but
+  is an extension specific to Coin.
 */
 SbBool
 SoBaseKit::setPart(const int partnum, SoNode * node)

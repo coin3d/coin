@@ -37,11 +37,41 @@ SoType SoDetail::classTypeId;
   \fn SoDetail * SoDetail::copy(void) const
   Return a copy of ourself.
 */
+
+// Note: the following documentation for getTypeId() will also be
+// visible for subclasses, so keep it general.  If you write any
+// additional documentation for this method, check the other top-level
+// classes with getTypeId() documentation to see if it is applicable
+// to update those also (it probably is).
 /*!
   \fn SoType SoDetail::getTypeId(void) const
 
-  Returns the actual type id of an object derived from a class
-  inheriting SoDetail. Overloaded in all subclasses.
+  Returns the type identification of a detail derived from a class
+  inheriting SoDetail.  This is used for run-time type checking and
+  "downward" casting.
+
+  Usage example:
+
+  \code
+  void fuhbear(SoDetail * detail)
+  {
+    if (detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
+      // safe downward cast, know the type
+      SoFaceDetail * facedetail = (SoFaceDetail *)detail;
+      /// [then something] ///
+    }
+    return; // ignore if not a SoFaceDetail
+  }
+  \endcode
+
+
+  For application programmers wanting to extend the library with new
+  detail classes: this method needs to be overloaded in \e all
+  subclasses. This is typically done as part of setting up the full
+  type system for extension classes, which is usually accomplished by
+  using the pre-defined macros available through
+  Inventor/nodes/SoSubDetail.h: SO_DETAIL_SOURCE and
+  SO_DETAIL_INIT_CLASS.
 */
 
 

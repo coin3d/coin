@@ -27,7 +27,8 @@
   instances of classes derived from SoElement).
 
   For more information on the inner workings of traversal states in
-  Coin, we recommend «The Inventor Toolmaker» (ISBN 0-201-62493-1).
+  Coin, we recommend the book «The Inventor Toolmaker» (ISBN
+  0-201-62493-1).
 */
 // FIXME: should link to example(s) sourcecode extending the library
 // by setting up new elements and/or actions. 20010716 mortene.
@@ -87,8 +88,7 @@ public:
   elements in the SoState stacks, but SoElement::init() is.
 */
 
-SoState::SoState(SoAction * theAction,
-                 const SoTypeList & enabledelements)
+SoState::SoState(SoAction * theAction, const SoTypeList & enabledelements)
 {
   THIS = new SoStateP;
 

@@ -27,14 +27,35 @@
   including search operations, rendering, interaction through picking,
   etc.
 
-  See the builtin actions for further information, or look at the
-  example code applications of the Coin library to see how actions are
-  generally used.
+  The basic operation is to instantiate an action, set it up with
+  miscellaneous parameters if necessary, then "apply it" to the root
+  node of the scenegraph (or sub-graph of a scenegraph).  The action
+  then traverses the scenegraph from the root node, depth-first and
+  left-to-right, applying it's specific processing at the nodes where
+  it is applicable.
+
+  \code
+   int write_scenegraph(const char * filename, SoNode * root)
+   {
+     SoOutput output;
+     if (output.openFile(filename)) return 0;
+     SoWriteAction wa(&output);
+     wa.apply(root);
+     return 1;
+   }
+  \endcode
+
+  See the various built-in actions for further information (ie the
+  subclasses of this class), or look at the example code applications
+  of the Coin library to see how actions are generally used.
+
 
   For extending the Coin library with your own action classes, we
   strongly recommend that you make yourself acquainted with the
-  excellent "The Inventor Toolmaker" book, which describes the tasks
-  involved in detail.
+  excellent «The Inventor Toolmaker» book (ISBN 0-201-62493-1), which
+  describes the tasks involved in detail.  Reading the sourcecode of
+  the built-in action classes in Coin should also provide very
+  helpful.
 */
 
 #include <Inventor/actions/SoActions.h>
@@ -62,6 +83,42 @@ SoActionMethodList * SoAction::methods = NULL;
 SoType SoAction::classTypeId;
 
 // *************************************************************************
+
+// Note: the following documentation for getTypeId() will also be
+// visible for subclasses, so keep it general.
+/*!
+  \fn SoType SoAction::getTypeId(void) const
+
+  Returns the type identification of an action derived from a class
+  inheriting SoAction.  This is used for run-time type checking and
+  "downward" casting.
+
+  Usage example:
+
+  \code
+  void bar(SoAction * action)
+  {
+    if (action->getTypeId() == SoGLRenderAction::getClassTypeId()) {
+      // safe downward cast, know the type
+      SoGLRenderAction * glrender = (SoGLRenderAction *)action;
+      /// [then something] ///
+    }
+    return; // ignore if not renderaction
+  }
+  \endcode
+
+
+  For application programmers wanting to extend the library with new
+  actions: this method needs to be overloaded in \e all
+  subclasses. This is typically done as part of setting up the full
+  type system for extension classes, which is usually accomplished by
+  using the pre-defined macros available through
+  Inventor/nodes/SoSubAction.h: SO_ACTION_SOURCE, SO_ACTION_INIT_CLASS
+  and SO_ACTION_CONSTRUCTOR.
+
+  For more information on writing Coin extensions, see the SoAction
+  class documentation.
+*/
 
 /*!
   \fn SoType SoAction::getTypeId(void) const

@@ -171,6 +171,7 @@ SoGlobalField::getClassTypeId(void)
 }
 
 // Virtual method which returns the class type id for this instance.
+// Doc in superclass.
 SoType
 SoGlobalField::getTypeId(void) const
 {

@@ -370,6 +370,10 @@ SoGLImage::getClassTypeId(void)
   return SoGLImageP::classTypeId;
 }
 
+
+// FIXME: grab better version of getTypeId() doc from SoBase, SoAction
+// and / or SoDetail?  At least if this ever makes it into the public
+// API.  20010913 mortene.
 /*!
   Returns the type id for an SoGLImage instance.
 */
