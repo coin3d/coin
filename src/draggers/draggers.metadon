@@ -14,7 +14,7 @@
 # I        SoDirectionalLightDragger
 # I        SoDragPointDragger
 # I        SoHandleBoxDragger
-#          SoJackDragger
+# I        SoJackDragger
 # I        SoPointLightDragger
 # I        SoRotateCylindricalDragger
 # I        SoRotateDiscDragger

@@ -23,6 +23,10 @@
 #include <Inventor/draggers/SoScaleUniformDragger.h>
 #include <Inventor/nodes/SoAntiSquish.h>
 #include <Inventor/nodes/SoSurroundScale.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbMatrix.h>
 
 
 SO_KIT_SOURCE(SoJackDragger);
@@ -44,46 +48,159 @@ SoJackDragger::SoJackDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(rotator, SoRotateSphericalDragger, TRUE, topSeparator, translator, TRUE);
   SO_KIT_ADD_CATALOG_ENTRY(translator, SoDragPointDragger, TRUE, topSeparator, geomSeparator, TRUE);
 
+
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoInteractionKit::readDefaultParts("jackDragger.iv", NULL, 0);
+  }
+  
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
   SO_KIT_INIT_INSTANCE();
+
+  SO_GET_ANY_PART(this, "translator", SoDragPointDragger);
+  SO_GET_ANY_PART(this, "rotator", SoRotateSphericalDragger);
+  SO_GET_ANY_PART(this, "scaler", SoScaleUniformDragger);
+
+  SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
+  squish->sizing = SoAntiSquish::BIGGEST_DIMENSION;
+
+  this->addValueChangedCallback(SoJackDragger::valueChangedCB);
+  this->rotFieldSensor = new SoFieldSensor(SoJackDragger::fieldSensorCB, this);
+  this->rotFieldSensor->setPriority(0);
+  this->translFieldSensor = new SoFieldSensor(SoJackDragger::fieldSensorCB, this);
+  this->translFieldSensor->setPriority(0);
+  this->scaleFieldSensor = new SoFieldSensor(SoJackDragger::fieldSensorCB, this);
+  this->scaleFieldSensor->setPriority(0);
+  this->setUpConnections(TRUE, TRUE);
 }
 
 
 SoJackDragger::~SoJackDragger()
 {
-  COIN_STUB();
+  delete this->rotFieldSensor;
+  delete this->scaleFieldSensor;
+  delete this->translFieldSensor;
 }
 
 SbBool
 SoJackDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  COIN_STUB();
-  return FALSE;
+  if (!doitalways && this->connectionsSetUp == onoff) return onoff;
+  
+  if (onoff) {
+    inherited::setUpConnections(onoff, doitalways);
+    SoDragger *child;
+    child = (SoDragger*) this->getAnyPart("rotator", FALSE);
+    child->setPartAsDefault("rotator", 
+                            "jackRotatorRotator");
+    child->setPartAsDefault("rotatorActive", 
+                            "jackRotatorRotatorActive");
+    child->setPartAsDefault("feedback", 
+                            "jackRotatorFeedback");
+    this->registerChildDragger(child);
+
+    child = (SoDragger*) this->getAnyPart("scaler", FALSE);
+    child->setPartAsDefault("scaler", "jackScalerScaler");
+    child->setPartAsDefault("scalerActive", "jackScalerScalerActive");
+    child->setPartAsDefault("feedback", "jackScalerFeedback");
+    child->setPartAsDefault("feedbackActive", "jackScalerFeedbackActive");
+    this->registerChildDragger(child);
+
+    child = (SoDragger*) this->getAnyPart("translator", FALSE);
+    child->setPartAsDefault("xTranslator.translator", "jackTranslatorLineTranslator");
+    child->setPartAsDefault("yTranslator.translator", "jackTranslatorLineTranslator");
+    child->setPartAsDefault("zTranslator.translator", "jackTranslatorLineTranslator");
+    child->setPartAsDefault("xTranslator.translatorActive", "jackTranslatorLineTranslatorActive");
+    child->setPartAsDefault("yTranslator.translatorActive", "jackTranslatorLineTranslatorActive");
+    child->setPartAsDefault("zTranslator.translatorActive", "jackTranslatorLineTranslatorActive");
+    child->setPartAsDefault("xzTranslator.translator", "jackTranslatorPlaneTranslator");
+    child->setPartAsDefault("xyTranslator.translator", "jackTranslatorPlaneTranslator");
+    child->setPartAsDefault("yzTranslator.translator", "jackTranslatorPlaneTranslator");
+    child->setPartAsDefault("xzTranslator.translatorActive", "jackTranslatorPlaneTranslatorActive");
+    child->setPartAsDefault("xyTranslator.translatorActive", "jackTranslatorPlaneTranslatorActive");
+    child->setPartAsDefault("yzTranslator.translatorActive", "jackTranslatorPlaneTranslatorActive");
+    child->setPartAsDefault("xFeedback", "jackTranslatorXFeedback");
+    child->setPartAsDefault("yFeedback", "jackTranslatorYFeedback");
+    child->setPartAsDefault("zFeedback", "jackTranslatorZFeedback");
+    child->setPartAsDefault("xzFeedback", "jackTranslatorXZFeedback");
+    child->setPartAsDefault("xyFeedback", "jackTranslatorXYFeedback");
+    child->setPartAsDefault("yzFeedback", "jackTranslatorYZFeedback");
+    
+    this->registerChildDragger(child);
+    if (this->rotFieldSensor->getAttachedField() != &this->rotation) {
+      this->rotFieldSensor->attach(&this->rotation);
+    }
+    if (this->scaleFieldSensor->getAttachedField() != &this->scaleFactor) {
+      this->scaleFieldSensor->attach(&this->scaleFactor);
+    }
+    if (this->translFieldSensor->getAttachedField() != &this->translation) {
+      this->translFieldSensor->attach(&this->translation);
+    }
+  }
+  else {
+    this->unregisterChildDragger((SoDragger*) this->getAnyPart("translator", FALSE));
+    if (this->rotFieldSensor->getAttachedField() != NULL) {
+      this->rotFieldSensor->detach();
+    }
+    if (this->translFieldSensor->getAttachedField() != NULL) {
+      this->translFieldSensor->detach();
+    }
+    if (this->scaleFieldSensor->getAttachedField() != NULL) {
+      this->scaleFieldSensor->detach();
+    }
+    inherited::setUpConnections(onoff, doitalways);
+  }
+  return !(this->connectionsSetUp = onoff);
 }
 
 void
 SoJackDragger::setDefaultOnNonWritingFields(void)
 {
   COIN_STUB();
+  inherited::setDefaultOnNonWritingFields();
 }
 
 void
-SoJackDragger::fieldSensorCB(void * f, SoSensor * s)
+SoJackDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  COIN_STUB();
+  SoJackDragger *thisp = (SoJackDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  thisp->workFieldsIntoTransform(matrix);
+  thisp->setMotionMatrix(matrix);
 }
 
 void
-SoJackDragger::valueChangedCB(void * f, SoDragger * d)
+SoJackDragger::valueChangedCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoJackDragger *thisp = (SoJackDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  matrix.getTransform(trans, rot, scale, scaleOrient);
+
+  thisp->translFieldSensor->detach();
+  if (thisp->translation.getValue() != trans)
+    thisp->translation = trans;
+  thisp->translFieldSensor->attach(&thisp->translation);
+
+  thisp->rotFieldSensor->detach();
+  if (thisp->rotation.getValue() != rot)
+    thisp->rotation = rot;
+  thisp->rotFieldSensor->attach(&thisp->rotation);
+
+  thisp->scaleFieldSensor->detach();
+  if (thisp->scaleFactor.getValue() != scale)
+    thisp->scaleFactor = scale;
+  thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
 void
 SoJackDragger::invalidateSurroundScaleCB(void * f, SoDragger * d)
 {
-  COIN_STUB();
+  SoJackDragger *thisp = (SoJackDragger*) d;
+  SoSurroundScale *surround = SO_GET_ANY_PART(thisp, "surroundScale", SoSurroundScale);
+  surround->invalidate();
 }
