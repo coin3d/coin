@@ -181,6 +181,9 @@ SoFontLib::createFont(const SbName &fontname, const SbName &stylename, const SbV
     else {  // Unknown font name, treat it as a font file name
       path = SoInput::searchForFile(fontname.getString(), SoInput::getDirectories(), emptylist);
     }
+    // File not to be found anywhere, use fontname as is (and get default font)
+    if (path.getLength() == 0)
+      path = fontname;
     font = cc_flw_create_font( path.getString(), size[0], size[1] );
     // Add font to openfonts dict
     if (font >= 0) {
