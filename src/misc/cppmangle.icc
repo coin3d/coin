@@ -18,9 +18,9 @@ gcc_initClassMangling(const char * classname)
 }
 
 /*
-  This function returns a string that corresponds to how gcc
-  mangles "static void <classname>::initClass(void)" in a
-  __declspec(dllexport) context.
+  This function returns a string that corresponds to how Microsoft
+  Visual C++ v6 mangles "static void <classname>::initClass(void)" in
+  a __declspec(dllexport) context.
 */
 
 static
@@ -50,7 +50,3 @@ getManglingFunction(void)
 #endif
   return manglefunc;
 }
-
-
-
-
