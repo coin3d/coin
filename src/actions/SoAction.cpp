@@ -423,10 +423,8 @@ SoAction::initClasses(void)
   SoRayPickAction::initClass();
   SoSearchAction::initClass();
   SoWriteAction::initClass();
-  SoAudioRenderAction::initClass();
-#if 0  // SoIntersectionDetectionAction disabled by larsa 20030226
+  SoAudioRenderAction::initClass();  
   SoIntersectionDetectionAction::initClass();
-#endif
 }
 
 /*!
