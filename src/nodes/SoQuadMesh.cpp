@@ -519,6 +519,7 @@ SoQuadMesh::generatePrimitives(SoAction *action)
 	  vertex.setTextureCoords(tb.get(curridx));
       }
       vertex.setPoint(coords->get3(start + curridx));
+      this->shapeVertex(&vertex);
     }
     this->endShape();
   }
