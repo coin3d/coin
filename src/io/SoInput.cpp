@@ -234,16 +234,17 @@ SoInputP::getTopOfStackPopOnEOF(void)
 SbBool
 SoInputP::isIdentStartChar(unsigned char c)
 {
-  // FIXME: the invalid characters for VRML1 and VRML2 may be identical,
-  // but I was unable to find good documentation for legal characters in
-  // VRML1, so I have used the best guess method. jornskaa 20040713
+  // FIXME: There may be problems in VRML 1.0 when reading fields
+  // because fields have different syntax than nodenames. There is no
+  // test here to see if a field is read or not. See
+  // method-comment. jornskaa 20040713
 
   // Cannot be unsigned when using strchr, but since all values are
   // below 128, it does not matter if they are signed or unsigned.
-  const char invalid_vrml1[11] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
-                                   0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
-                                 // '"',  '#',  ''',  '+',  '.',
-                                 // '[',  '\',  ']',  '{',  '}'
+  const char invalid_vrml1[9] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
+                                  0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+                                // '"',  '#',  ''',  '+',  '.',
+                                // '\',  '{',  '}'
 
   const char invalid_vrml2[14] = { 0x22, 0x23, 0x27, 0x2b, 0x2c, 0x2d, 0x2e, 
                                    0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f, 0x00 }; // 0x7f = 127
@@ -269,48 +270,17 @@ SoInputP::isIdentStartChar(unsigned char c)
 
 // Helperfunction to handle different filetypes (Inventor, VRML 1.0
 // and VRML 2.0).
-//
-// VRML 1.0 identifiers are defined as:
-//
-//  VRML 1.0 Node names must not begin with a digit, and must
-//  not contain spaces or control characters, single or double
-//  quote characters, backslashes, curly braces, the sharp (#)
-//  character, the plus (+) character or the period character.
-//
-//  Field names start with lower case letters, Node types start
-//  with upper case. The remainder of the characters may be any
-//  printable ascii (21H-7EH) except curly braces {}, square
-//  brackets [], single ' or double " quotes, sharp #, backslash
-//  \\ plus +, period . or ampersand &.
-//
-// The grammar for VRML2 identifiers is:
-//
-//  nodeNameId ::= Id ; 
-//  nodeTypeId ::= Id ; 
-//  fieldId ::= Id ;
-//
-//  Id ::= IdFirstChar | IdFirstChar IdRestChars ;
-//
-//  IdFirstChar ::= Any ISO-10646 character encoded using UTF-8
-//  except: 0x30-0x39, 0x0-0x20, 0x22, 0x23, 0x27, 0x2b, 0x2c,
-//  0x2d, 0x2e, 0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x7f ;
-//
-//  IdRestChars ::= Any number of ISO-10646 characters except:
-//  0x0-0x20, 0x22, 0x23, 0x27, 0x2c, 0x2e, 0x5b, 0x5c, 0x5d,
-//  0x7b, 0x7d, 0x7f ;
+// 
+// See SoInputP::isIdentStartChar for more information
 SbBool
 SoInputP::isIdentChar(unsigned char c)
 {
-  // FIXME: the invalid characters for VRML1 and VRML2 may be identical,
-  // but I was unable to find good documentation for legal characters in
-  // VRML1, so I have used the best guess method. jornskaa 20040713
-
   // Cannot be unsigned when using strchr, but since all values are
   // below 128, it does not matter if they are signed or unsigned.
-  const char invalid_vrml1[11] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
-                                   0x5b, 0x5c, 0x5d, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
+  const char invalid_vrml1[9] = { 0x22, 0x23, 0x27, 0x2b, 0x2e, 
+                                  0x5c, 0x7b, 0x7d, 0x00 }; // 0x7d = 125
                                  // '"',  '#',  ''',  '+',  '.',
-                                 // '[',  '\',  ']',  '{',  '}'
+                                 // '\',  '{',  '}'
 
   // Compared to isIdentStartChar, '+' and '-' have now become valid
   // characters (compared to isIdentStartChar).
@@ -1242,6 +1212,11 @@ SoInput::read(SbName & n, SbBool validIdent)
   else {
     if (!fi->skipWhiteSpace()) return FALSE;
 
+    // FIXME: To test for VRML 1.0 or VRML 2.0 here is a little
+    // hackish. The testing should really happen higher in the
+    // callchain, so that validIdent will be true in those cases.
+    // jornskaa 20040713
+    // 
     // In the VRML 1.0 and 2.0 standard, all nodestypes, nodenames and
     // fields have to be valid identifiers. Though the meaning of what
     // is a valid identifier differs slightly between the standards.
