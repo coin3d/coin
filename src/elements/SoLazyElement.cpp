@@ -23,7 +23,7 @@
 
 /*!
   \class SoLazyElement Inventor/elements/SoLazyElement.h
-  \brief The SoLazyElement class is a very stupid class..
+  \brief The SoLazyElement class is used to handle material and shape properties.
   \ingroup elements
 
 */
@@ -794,7 +794,7 @@ SoLazyElement::getWInstance(SoState * state)
 const uint32_t *
 SoLazyElement::getPackedPointer(void) const
 {
-  return NULL;
+  return this->coinstate.packedarray;
 }
 
 // ! FIXME: write doc
@@ -802,7 +802,7 @@ SoLazyElement::getPackedPointer(void) const
 const SbColor *
 SoLazyElement::getDiffusePointer(void) const
 {
-  return NULL;
+  return this->coinstate.diffusearray;
 }
 
 // ! FIXME: write doc
@@ -819,7 +819,7 @@ SoLazyElement::getColorIndexPointer(void) const
 const float *
 SoLazyElement::getTransparencyPointer(void) const
 {
-  return NULL;
+  return this->coinstate.transparray;
 }
 
 // ! FIXME: write doc
