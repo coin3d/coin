@@ -155,7 +155,6 @@ anything.
   README (multiple instances)
   RELNOTES
   INSTALL
-  HACKING
 
   Rerun bootstrap.  Commit.
 
@@ -173,7 +172,7 @@ anything.
 
 * Version Number Update
 
-  configure.in (update COIN_MICRO and set COIN_BETA to a)
+  configure.ac (update COIN_MICRO and set COIN_BETA to a)
   NEWS (start new section for Coin beta)
 
   Rerun bootstrap.  Commit changes.
