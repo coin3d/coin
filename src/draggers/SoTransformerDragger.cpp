@@ -17,6 +17,15 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTransformerDragger SoTransformerDragger.h Inventor/draggers/SoTransformerDragger.h
+  \brief The SoTransformerDragger class is (FIXME: doc)
+  \ingroup draggers
+
+  FIXME: document class
+*/
+
+
 #include <Inventor/draggers/SoTransformerDragger.h>
 #include <Inventor/nodekits/SoSubKitP.h>
 #include <Inventor/nodes/SoAntiSquish.h>
@@ -40,7 +49,7 @@
 
 #include <data/draggerDefaults/transformerDragger.h>
 
-#include <coindefs.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB() & COIN_OBSOLETED()
 
 
 #define WHATKIND_NONE      0
@@ -1238,41 +1247,45 @@ SoTransformerDragger::setAllPartSwitches(int scalewhich, int rotatewhich, int tr
 }
 
 /*!
-  STUB. Should probably have been private in OIV.
+  Not implemented in Coin; should probably not have been public in the
+  Open Inventor API.  We'll consider to implement it if requested.
 */
 int
 SoTransformerDragger::getMouseGestureDirection(SbBool x_ok, SbBool y_ok, SbBool z_ok)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return -1;
 }
 
 /*!
-  STUB. Should probably have been private in OIV.
+  Not implemented in Coin; should probably not have been public in the
+  Open Inventor API.  We'll consider to implement it if requested.
 */
 int
 SoTransformerDragger::getIgnoreAxis(SbVec2f axis[3][2], SbBool x_ok, SbBool y_ok, SbBool z_ok)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return -1;
 }
 
 /*!
-  STUB. Should probably have been private in OIV.
+  Not implemented in Coin; should probably not have been public in the
+  Open Inventor API.  We'll consider to implement it if requested.
 */
 void
 SoTransformerDragger::makeMinorAxisPerpendicularIfColinear(SbVec2f origin, SbVec2f axisends[3][2], int index_a, int index_b)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
 }
 
 /*!
-  STUB. Should probably have been private in OIV.
+  Not implemented in Coin; should probably not have been public in the
+  Open Inventor API.  We'll consider to implement it if requested.
 */
 SbBool
 SoTransformerDragger::isColinear(SbVec2f a1[2], SbVec2f a2[2], int pixels)
 {
-  COIN_STUB();
+  COIN_OBSOLETED();
   return FALSE;
 }
 
