@@ -57,6 +57,10 @@ static SbBool SIMAGE_failed_to_load = FALSE;
 static void * SIMAGE_libhandle = NULL;
 typedef unsigned char * (*SIMAGE_read_image_t)(const char *, int *, int *, int *);
 static SIMAGE_read_image_t SIMAGE_read_image;
+typedef void (*SIMAGE_clear_error_t)(void);
+static SIMAGE_clear_error_t SIMAGE_clear_error;
+typedef char * (*SIMAGE_get_last_error_t)(char *, int);
+static SIMAGE_get_last_error_t SIMAGE_get_last_error;
 
 static void SIMAGE_cleanup(void)
 {
@@ -294,7 +298,11 @@ SbImage::readFile(const SbString & filename,
 #if HAVE_LIBSIMAGE
     // Function symbol simage_read_image() from libsimage is already
     // loaded.
-    if (!SIMAGE_read_image) SIMAGE_read_image = simage_read_image;
+    if (!SIMAGE_read_image) {
+      SIMAGE_read_image = simage_read_image;
+      SIMAGE_clear_error = simage_clear_error;
+      SIMAGE_get_last_error = simage_get_last_error;
+    }
 #endif // HAVE_LIBSIMAGE
 
 #if SIMAGE_RUNTIME_LINKING
@@ -313,6 +321,10 @@ SbImage::readFile(const SbString & filename,
 
         SIMAGE_read_image =
           (SIMAGE_read_image_t)dlsym(SIMAGE_libhandle, "simage_read_image");
+        SIMAGE_clear_error =
+          (SIMAGE_clear_error_t)dlsym(SIMAGE_libhandle, "simage_clear_error");
+        SIMAGE_get_last_error =
+          (SIMAGE_get_last_error_t)dlsym(SIMAGE_libhandle, "simage_get_last_error");
 
         if (!SIMAGE_read_image) {
           SIMAGE_failed_to_load = TRUE;
@@ -328,6 +340,7 @@ SbImage::readFile(const SbString & filename,
 #endif // SIMAGE_RUNTIME_LINKING
 
     if (SIMAGE_read_image) {
+      SIMAGE_clear_error();
       simagedata = SIMAGE_read_image(finalname.getString(), &w, &h, &nc);
     }
     if (simagedata) {
@@ -335,6 +348,14 @@ SbImage::readFile(const SbString & filename,
       free(simagedata);
       return TRUE;
     }
+#if COIN_DEBUG
+    else {
+      char buffer[256];
+      SoDebugError::post("SbImage::readFile",
+                         "%s",
+                         SIMAGE_get_last_error(buffer, 255));
+    }
+#endif // COIN_DEBUG
   }
 
   this->setValue(SbVec2s(0,0), 0, NULL);
