@@ -26,6 +26,7 @@
 #include "mutex.c"
 #include "condvar.c"
 #include "rwmutex.c"
+#include "recmutex.c"
 #include "storage.c"
 #include "sched.c"
 #include "sync.c"

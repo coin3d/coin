@@ -253,6 +253,7 @@ RegularSources = \
 	condvar.c \
 	worker.c \
 	wpool.c \
+	recmutex.c \
 	sched.c \
 	sync.c \
 	fifo.c \
@@ -343,13 +344,14 @@ LIBRARIES = $(noinst_LIBRARIES)
 threads_lst_AR = $(AR) cru
 threads_lst_LIBADD =
 am__threads_lst_SOURCES_DIST = common.c thread.c mutex.c rwmutex.c \
-	storage.c condvar.c worker.c wpool.c sched.c sync.c fifo.c \
-	barrier.c threads-dummy.cpp all-threads-c.c
+	storage.c condvar.c worker.c wpool.c recmutex.c sched.c sync.c \
+	fifo.c barrier.c threads-dummy.cpp all-threads-c.c
 am__objects_1 = all-threads-c.$(OBJEXT) threads-dummy.$(OBJEXT)
 am__objects_2 = common.$(OBJEXT) thread.$(OBJEXT) mutex.$(OBJEXT) \
 	rwmutex.$(OBJEXT) storage.$(OBJEXT) condvar.$(OBJEXT) \
-	worker.$(OBJEXT) wpool.$(OBJEXT) sched.$(OBJEXT) sync.$(OBJEXT) \
-	fifo.$(OBJEXT) barrier.$(OBJEXT) threads-dummy.$(OBJEXT)
+	worker.$(OBJEXT) wpool.$(OBJEXT) recmutex.$(OBJEXT) \
+	sched.$(OBJEXT) sync.$(OBJEXT) fifo.$(OBJEXT) barrier.$(OBJEXT) \
+	threads-dummy.$(OBJEXT)
 @HACKING_COMPACT_BUILD_TRUE@am__objects_3 = $(am__objects_1)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_3 = $(am__objects_2)
 am_threads_lst_OBJECTS = $(am__objects_3)
@@ -357,19 +359,20 @@ am__EXTRA_threads_lst_SOURCES_DIST = condvar_pthread.ic condvar_win32.ic \
 	mutex_pthread.ic mutex_win32cs.ic mutex_win32mutex.ic \
 	thread_pthread.ic thread_win32.ic wrappers.cpp all-threads-c.c \
 	threads-dummy.cpp common.c thread.c mutex.c rwmutex.c storage.c \
-	condvar.c worker.c wpool.c sched.c sync.c fifo.c barrier.c
+	condvar.c worker.c wpool.c recmutex.c sched.c sync.c fifo.c \
+	barrier.c
 threads_lst_OBJECTS = $(am_threads_lst_OBJECTS)
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
 
 libthreads_la_LDFLAGS =
 libthreads_la_LIBADD =
 am__libthreads_la_SOURCES_DIST = common.c thread.c mutex.c rwmutex.c \
-	storage.c condvar.c worker.c wpool.c sched.c sync.c fifo.c \
-	barrier.c threads-dummy.cpp all-threads-c.c
+	storage.c condvar.c worker.c wpool.c recmutex.c sched.c sync.c \
+	fifo.c barrier.c threads-dummy.cpp all-threads-c.c
 am__objects_7 = all-threads-c.lo threads-dummy.lo
 am__objects_8 = common.lo thread.lo mutex.lo rwmutex.lo storage.lo \
-	condvar.lo worker.lo wpool.lo sched.lo sync.lo fifo.lo \
-	barrier.lo threads-dummy.lo
+	condvar.lo worker.lo wpool.lo recmutex.lo sched.lo sync.lo \
+	fifo.lo barrier.lo threads-dummy.lo
 @HACKING_COMPACT_BUILD_TRUE@am__objects_9 = $(am__objects_7)
 @HACKING_COMPACT_BUILD_FALSE@am__objects_9 = $(am__objects_8)
 am_libthreads_la_OBJECTS = $(am__objects_9)
@@ -378,20 +381,21 @@ am__EXTRA_libthreads_la_SOURCES_DIST = condvar_pthread.ic \
 	mutex_win32mutex.ic thread_pthread.ic thread_win32.ic \
 	wrappers.cpp all-threads-c.c threads-dummy.cpp common.c \
 	thread.c mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c \
-	sched.c sync.c fifo.c barrier.c
+	recmutex.c sched.c sync.c fifo.c barrier.c
 libthreads_la_OBJECTS = $(am_libthreads_la_OBJECTS)
 libthreads@SUFFIX@LINKHACK_la_LDFLAGS =
 libthreads@SUFFIX@LINKHACK_la_LIBADD =
 am__libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = common.c thread.c \
-	mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c sched.c \
-	sync.c fifo.c barrier.c threads-dummy.cpp all-threads-c.c
+	mutex.c rwmutex.c storage.c condvar.c worker.c wpool.c \
+	recmutex.c sched.c sync.c fifo.c barrier.c threads-dummy.cpp \
+	all-threads-c.c
 am_libthreads@SUFFIX@LINKHACK_la_OBJECTS = $(am__objects_9)
 am__EXTRA_libthreads@SUFFIX@LINKHACK_la_SOURCES_DIST = \
 	condvar_pthread.ic condvar_win32.ic mutex_pthread.ic \
 	mutex_win32cs.ic mutex_win32mutex.ic thread_pthread.ic \
 	thread_win32.ic wrappers.cpp all-threads-c.c threads-dummy.cpp \
 	common.c thread.c mutex.c rwmutex.c storage.c condvar.c \
-	worker.c wpool.c sched.c sync.c fifo.c barrier.c
+	worker.c wpool.c recmutex.c sched.c sync.c fifo.c barrier.c
 libthreads@SUFFIX@LINKHACK_la_OBJECTS = \
 	$(am_libthreads@SUFFIX@LINKHACK_la_OBJECTS)
 depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
@@ -403,6 +407,7 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/condvar.Plo ./$(DEPDIR)/condvar.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/fifo.Plo ./$(DEPDIR)/fifo.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/mutex.Plo ./$(DEPDIR)/mutex.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/recmutex.Plo ./$(DEPDIR)/recmutex.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/rwmutex.Plo ./$(DEPDIR)/rwmutex.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/sched.Plo ./$(DEPDIR)/sched.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/storage.Plo ./$(DEPDIR)/storage.Po \
@@ -511,6 +516,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/fifo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mutex.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mutex.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/recmutex.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/recmutex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rwmutex.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/rwmutex.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sched.Plo@am__quote@

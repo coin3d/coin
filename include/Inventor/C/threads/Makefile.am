@@ -4,6 +4,7 @@ PublicHeaders = \
 	thread.h \
 	mutex.h \
 	condvar.h \
+	recmutex.h \
 	rwmutex.h \
 	storage.h \
 	worker.h \
@@ -17,6 +18,7 @@ PrivateHeaders = \
 	condvarp.h \
 	fifop.h \
 	mutexp.h \
+	recmutexp.h \
 	rwmutexp.h \
 	schedp.h \
 	storagep.h \

@@ -8,6 +8,7 @@ RegularSources = \
 	condvar.c \
 	worker.c \
 	wpool.c \
+	recmutex.c \
 	sched.c \
 	sync.c \
 	fifo.c \
