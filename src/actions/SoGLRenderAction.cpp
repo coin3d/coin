@@ -338,11 +338,14 @@ public:
 
   SoGetBoundingBoxAction * bboxaction;
   SbVec2f updateorigin, updatesize;
-  SbBool renderingremote;
   SbBool needglinit;
   SoGLRenderAction::TransparencyType gltransptype;
   SbBool isrendering;
   SoCallbackList precblist;
+
+  enum { RENDERING_UNSET, RENDERING_SET_DIRECT, RENDERING_SET_INDIRECT };
+  int rendering;
+  SbBool isDirectRendering(const SoState * state) const;
 
 public:
   void setupTransparency(const SoGLRenderAction::TransparencyType newtype);
@@ -409,7 +412,7 @@ SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportregion)
   THIS->bboxaction = NULL;
   THIS->updateorigin.setValue(0.0f, 0.0f);
   THIS->updatesize.setValue(1.0f, 1.0f);
-  THIS->renderingremote = FALSE;
+  THIS->rendering = SoGLRenderActionP::RENDERING_UNSET;
   THIS->abortcallback = NULL;
   THIS->cachecontext = 0;
   THIS->needglinit = TRUE;
@@ -848,7 +851,9 @@ SoGLRenderAction::abortNow(void)
 void
 SoGLRenderAction::setRenderingIsRemote(SbBool isremote)
 {
-  THIS->renderingremote = isremote;
+  THIS->rendering = isremote ?
+    SoGLRenderActionP::RENDERING_SET_INDIRECT :
+    SoGLRenderActionP::RENDERING_SET_DIRECT;
 }
 
 /*!
@@ -859,7 +864,14 @@ SoGLRenderAction::setRenderingIsRemote(SbBool isremote)
 SbBool
 SoGLRenderAction::getRenderingIsRemote(void) const
 {
-  return THIS->renderingremote;
+  SbBool isdirect;
+  if (THIS->rendering == SoGLRenderActionP::RENDERING_UNSET) {
+    isdirect = TRUE;
+  }
+  else {
+    isdirect = THIS->rendering == SoGLRenderActionP::RENDERING_SET_DIRECT;
+  }
+  return !isdirect;
 }
 
 /*!
@@ -1050,6 +1062,27 @@ SoGLRenderActionP::disableBlend(void)
   }
 }
 
+// Private function which "unwinds" the real value of the "rendering"
+// variable.
+SbBool
+SoGLRenderActionP::isDirectRendering(const SoState * state) const
+{
+  SbBool isdirect;
+  if (this->rendering == RENDERING_UNSET) {
+    const cc_glglue * w = sogl_glue_instance(state);
+    isdirect = cc_glglue_isdirect(w);
+  }
+  else {
+    isdirect = this->rendering == RENDERING_SET_DIRECT;
+  }
+
+  // Update to keep in sync.
+  this->action->setRenderingIsRemote(!isdirect);
+
+  return isdirect;
+}
+
+
 //
 // render the scene. Called from beginTraversal()
 //
@@ -1076,7 +1109,7 @@ SoGLRenderActionP::render(SoNode * node)
                              this->updateorigin, this->updatesize);
 
   SoGLCacheContextElement::set(state, this->cachecontext,
-                               FALSE, this->renderingremote);
+                               FALSE, !this->isDirectRendering(state));
   SoGLRenderPassElement::set(state, 0);
 
   this->precblist.invokeCallbacks((void*) this->action);
@@ -1133,7 +1166,7 @@ SoGLRenderActionP::renderSingle(SoNode * node)
 
   SoGLRenderPassElement::set(state, this->currentpass);
   SoGLCacheContextElement::set(state, this->cachecontext,
-                               FALSE, this->renderingremote);
+                               FALSE, !this->isDirectRendering(state));
 
   assert(this->delayedpathrender == FALSE);
   assert(this->transparencyrender == FALSE);
@@ -1148,7 +1181,7 @@ SoGLRenderActionP::renderSingle(SoNode * node)
   if (this->transpobjpaths.getLength() && !this->action->hasTerminated()) {
     this->transparencyrender = TRUE;
     SoGLCacheContextElement::set(state, this->cachecontext,
-                                 TRUE, this->renderingremote);
+                                 TRUE, !this->isDirectRendering(state));
     this->enableBlend();
 
     // test if paths should be rendered back-to-front
