@@ -22,8 +22,8 @@ if test x"$@" = x"" -a ! -f cfg/mkinstalldirs; then
   shift
 fi
 
-AUTOCONF_VER=2.50
-AUTOMAKE_VER=1.4[efghij]  # Automake from CVS
+AUTOCONF_VER=2.5[023456789]
+AUTOMAKE_VER=1.4[efghij]     # Automake from CVS
 LIBTOOL_VER=1.3.5
 
 PROJECT=Coin
