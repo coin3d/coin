@@ -88,9 +88,7 @@ PrivateHeaders = \
 # Don't use the explicit rules, they will just confuse users on
 # systems without flex and/or bison. 20000606 mortene.
 
-#BUILT_SOURCES = \
-#	$(top_srcdir)/src/engines/lex.so_eval.c \
-#	$(top_srcdir)/src/engines/evaluator.tab.c
+#BUILT_SOURCES = $(top_srcdir)/src/engines/lex.so_eval.c $(top_srcdir)/src/engines/evaluator.tab.c
 
 #$(top_srcdir)/src/engines/lex.so_eval.c: $(top_srcdir)/src/engines/evaluator.l
 #	flex -o$(top_srcdir)/src/engines/lex.so_eval.c -L $(top_srcdir)/src/engines/evaluator.l
