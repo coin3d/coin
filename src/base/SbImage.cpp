@@ -177,8 +177,8 @@ SbImage::searchForFile(const SbString & basename,
   const char * lastunixdelim = strrchr(strptr, '/');
   const char * lastdosdelim = strrchr(strptr, '\\');
   if (!lastdosdelim) {
-    trypath = FALSE;
     lastdosdelim = strrchr(strptr, ':');
+    if (lastdosdelim) trypath = FALSE;
   }
   const char * lastdelim = SbMax(lastunixdelim, lastdosdelim);
 
