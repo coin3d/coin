@@ -148,6 +148,7 @@ SoElement::initElements(void)
   SoReplacedElement::initClass();
   SoCoordinateElement::initClass();
   SoGLCoordinateElement::initClass();
+  SoGLColorIndexElement::initClass();
   SoEnvironmentElement::initClass();
   SoGLEnvironmentElement::initClass();
   SoFontNameElement::initClass();

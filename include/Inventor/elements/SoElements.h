@@ -22,6 +22,7 @@
 
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoAccumulatedElement.h>
+#include <Inventor/elements/SoGLColorIndexElement.h>
 #include <Inventor/elements/SoClipPlaneElement.h>
 #include <Inventor/elements/SoGLClipPlaneElement.h>
 #include <Inventor/elements/SoLightElement.h>

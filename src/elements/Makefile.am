@@ -18,6 +18,7 @@ ALLSOURCES = \
 	SoCoordinateElement.cpp SoCoordinateElement.h \
 	SoCreaseAngleElement.cpp SoCreaseAngleElement.h \
 	SoCullElement.cpp SoCullElement.h \
+	SoGLColorIndexElement.cpp SoGLColorIndexElement.h \
 	SoDecimationPercentageElement.cpp SoDecimationPercentageElement.h \
 	SoDecimationTypeElement.cpp SoDecimationTypeElement.h \
 	SoDiffuseColorElement.cpp SoDiffuseColorElement.h \
@@ -119,6 +120,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoCoordinateElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoCreaseAngleElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoCullElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoGLColorIndexElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoDecimationPercentageElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoDecimationTypeElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoDiffuseColorElement.h \

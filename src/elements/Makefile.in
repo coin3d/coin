@@ -123,6 +123,7 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 @HACKING_COMPACT_BUILD_FALSE@	SoCoordinateElement.cpp SoCoordinateElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoCreaseAngleElement.cpp SoCreaseAngleElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoCullElement.cpp SoCullElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLColorIndexElement.cpp SoGLColorIndexElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationPercentageElement.cpp SoDecimationPercentageElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoDecimationTypeElement.cpp SoDecimationTypeElement.h \
 @HACKING_COMPACT_BUILD_FALSE@	SoDiffuseColorElement.cpp SoDiffuseColorElement.h \
@@ -223,6 +224,7 @@ ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoCoordinateElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoCreaseAngleElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoCullElement.h \
+	$(top_srcdir)/include/Inventor/elements/SoGLColorIndexElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoDecimationPercentageElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoDecimationTypeElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoDiffuseColorElement.h \
@@ -354,6 +356,7 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoComplexityTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoCreaseAngleElement.lo SoCullElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLColorIndexElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDecimationPercentageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDecimationTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDiffuseColorElement.lo \
@@ -443,6 +446,7 @@ libelementsLINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@SoComplexityTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoCoordinateElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoCreaseAngleElement.lo SoCullElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLColorIndexElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDecimationPercentageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDecimationTypeElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@SoDiffuseColorElement.lo \
@@ -549,7 +553,8 @@ $(DEPDIR)/SoElement.Plo $(DEPDIR)/SoEmissiveColorElement.Plo \
 $(DEPDIR)/SoEnvironmentElement.Plo $(DEPDIR)/SoFloatElement.Plo \
 $(DEPDIR)/SoFocalDistanceElement.Plo $(DEPDIR)/SoFontNameElement.Plo \
 $(DEPDIR)/SoFontSizeElement.Plo $(DEPDIR)/SoGLAmbientColorElement.Plo \
-$(DEPDIR)/SoGLClipPlaneElement.Plo $(DEPDIR)/SoGLCoordinateElement.Plo \
+$(DEPDIR)/SoGLClipPlaneElement.Plo $(DEPDIR)/SoGLColorIndexElement.Plo \
+$(DEPDIR)/SoGLCoordinateElement.Plo \
 $(DEPDIR)/SoGLDiffuseColorElement.Plo \
 $(DEPDIR)/SoGLDrawStyleElement.Plo \
 $(DEPDIR)/SoGLEmissiveColorElement.Plo \
@@ -744,6 +749,7 @@ maintainer-clean-tags:
 @AMDEP@include $(DEPDIR)/SoFontSizeElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLAmbientColorElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLClipPlaneElement.Plo
+@AMDEP@include $(DEPDIR)/SoGLColorIndexElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLCoordinateElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLDiffuseColorElement.Plo
 @AMDEP@include $(DEPDIR)/SoGLDrawStyleElement.Plo

@@ -19,19 +19,22 @@
 
 /*!
   \class SoColorIndex SoColorIndex.h Inventor/nodes/SoColorIndex.h
-  \brief The SoColorIndex class ...
+  \brief The SoColorIndex class is used to specify color indices for subsequent shapes.
   \ingroup nodes
 
-  FIXME: write class doc
+  This node should only be used in OpenGL color-index mode, and 
+  only when light model is BASE_COLOR.
 */
 
 #include <Inventor/nodes/SoColorIndex.h>
+#include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/elements/SoGLColorIndexElement.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
 
 /*!
   \var SoMFInt32 SoColorIndex::index
-  FIXME: write documentation for field
+  Color indices which can be used by shapes.
 */
 
 // *************************************************************************
@@ -55,22 +58,27 @@ SoColorIndex::~SoColorIndex()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoColorIndex class. This includes setting up the
-  type system, among other things.
-*/
+// doc in parent
 void
 SoColorIndex::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoColorIndex);
+
+  SO_ENABLE(SoGLRenderAction, SoGLColorIndexElement);
 }
 
-/*!
-  FIXME: write doc
-*/
+// doc in parent
 void
-SoColorIndex::GLRender(SoGLRenderAction * /* action */)
+SoColorIndex::GLRender(SoGLRenderAction * action)
 {
-  COIN_STUB();
+  SoState * state = action->getState();
+  if (!this->index.isIgnored() &&
+      !SoOverrideElement::getColorIndexOverride(state)) {
+    if (this->isOverride()) {
+      SoOverrideElement::setColorIndexOverride(state, this, TRUE);
+    }
+    SoGLColorIndexElement::set(state, this,
+                               this->index.getNum(),
+                               this->index.getValues(0));
+  }
 }

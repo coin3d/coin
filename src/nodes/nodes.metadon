@@ -87,7 +87,7 @@
 # IDT-G-P-C!      SoBaseColor
 # ID-BGMP-C!      SoCallback
 # IDT-G-P-C!      SoClipPlane
-#        - !      SoColorIndex
+# ID--G----!      SoColorIndex
 # ID-BG-P-C!      SoComplexity
 # ID-BG-P-C!      SoCoordinate3
 # ID-BG-P-C!      SoCoordinate4

@@ -36,6 +36,7 @@
 #include <Inventor/elements/SoTransparencyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoGLColorIndexElement.h>
 #include <Inventor/misc/SoState.h>
 
 #ifdef _WIN32
@@ -135,27 +136,31 @@ SoMaterialBundle::isColorOnly(void) const
 void
 SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
 {
-  if (this->doStipple) {
-    this->diffuseElt->send(index);
+  if (this->indexElt) {
+    this->indexElt->send(index);
   }
-  else if (!this->diffusePacked) {
+  else {
+    if (this->doStipple) {
+      this->diffuseElt->send(index);
+    }
+    else if (!this->diffusePacked) {
     float trans = this->transparencyElt->get(this->multiTrans ? index : 0);
     this->diffuseElt->send(index, 1.0f - trans);
-  }
-  else { // packed or stipple
-    this->diffuseElt->send(index);
-  }
+    }
+    else { // packed or stipple
+      this->diffuseElt->send(index);
+    }
 
-  if (!this->diffuseOnly) {
-    this->ambientElt->send(index);
-    this->emissiveElt->send(index);
-    this->specularElt->send(index);
-    this->shininessElt->send(index);
+    if (!this->diffuseOnly) {
+      this->ambientElt->send(index);
+      this->emissiveElt->send(index);
+      this->specularElt->send(index);
+      this->shininessElt->send(index);
+    }
   }
   // store current index
   this->currIndex = index;
 }
-
 //
 // private method. Stores info and element pointers.
 //
@@ -164,6 +169,15 @@ SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
 {
   this->currIndex = -1; // set to an impossible value
   this->firstTime = FALSE;
+  if (SoGLColorIndexElement::isColorIndexMode(this->state)) {
+    this->indexElt = (SoGLColorIndexElement*) SoGLColorIndexElement::getInstance(this->state);
+    // need to set these as they are read in sendFirst()
+    this->stippleElt = NULL;
+    this->diffuseOnly = TRUE;
+    return;
+  }
+  this->indexElt = NULL;
+
   this->diffuseOnly = this->colorOnly =
     SoLightModelElement::get(this->state) ==
     SoLightModelElement::BASE_COLOR;

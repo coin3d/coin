@@ -237,6 +237,7 @@ make doxygen-doc
 @includedir@/Inventor/elements/SoGLTextureMatrixElement.h
 @includedir@/Inventor/elements/SoGLUpdateAreaElement.h
 @includedir@/Inventor/elements/SoGLViewingMatrixElement.h
+@includedir@/Inventor/elements/SoGLColorIndexElement.h
 @includedir@/Inventor/elements/SoGLViewportRegionElement.h
 @includedir@/Inventor/elements/SoInt32Element.h
 @includedir@/Inventor/elements/SoLazyElement.h

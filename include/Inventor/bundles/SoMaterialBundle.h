@@ -32,6 +32,7 @@ class SoGLPolygonStippleElement;
 class SoGLShininessElement;
 class SoGLSpecularColorElement;
 class SoTransparencyElement;
+class SoGLColorIndexElement;
 
 class COIN_DLL_EXPORT SoMaterialBundle : public SoBundle {
   typedef SoBundle inherited;
@@ -58,13 +59,14 @@ private:
   SbBool diffusePacked;
   int currIndex;
 
-  SoGLAmbientColorElement *ambientElt;
-  SoGLDiffuseColorElement *diffuseElt;
-  SoGLSpecularColorElement *specularElt;
-  SoGLEmissiveColorElement *emissiveElt;
-  SoGLShininessElement *shininessElt;
-  SoTransparencyElement *transparencyElt;
-  SoGLPolygonStippleElement *stippleElt;
+  SoGLAmbientColorElement * ambientElt;
+  SoGLDiffuseColorElement * diffuseElt;
+  SoGLSpecularColorElement * specularElt;
+  SoGLEmissiveColorElement * emissiveElt;
+  SoGLShininessElement * shininessElt;
+  SoTransparencyElement * transparencyElt;
+  SoGLPolygonStippleElement * stippleElt;
+  SoGLColorIndexElement * indexElt;
 };
 
 #endif // !COIN_SOMATERIALBUNDLE_H

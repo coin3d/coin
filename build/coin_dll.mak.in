@@ -246,6 +246,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoGLTextureMatrixElement.obj"
 	-@erase "$(INTDIR)\SoGLUpdateAreaElement.obj"
 	-@erase "$(INTDIR)\SoGLViewingMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLColorIndexElement.obj"
 	-@erase "$(INTDIR)\SoGLViewportRegionElement.obj"
 	-@erase "$(INTDIR)\SoGlyph.obj"
 	-@erase "$(INTDIR)\SoGroup.obj"
@@ -750,6 +751,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\SoGLTextureMatrixElement.obj" \
 	"$(INTDIR)\SoGLUpdateAreaElement.obj" \
 	"$(INTDIR)\SoGLViewingMatrixElement.obj" \
+	"$(INTDIR)\SoGLColorIndexElement.obj" \
 	"$(INTDIR)\SoGLViewportRegionElement.obj" \
 	"$(INTDIR)\SoGlyph.obj" \
 	"$(INTDIR)\SoGroup.obj" \
@@ -1245,6 +1247,7 @@ CLEAN :
 	-@erase "$(INTDIR)\SoGLTextureMatrixElement.obj"
 	-@erase "$(INTDIR)\SoGLUpdateAreaElement.obj"
 	-@erase "$(INTDIR)\SoGLViewingMatrixElement.obj"
+	-@erase "$(INTDIR)\SoGLColorIndexElement.obj"
 	-@erase "$(INTDIR)\SoGLViewportRegionElement.obj"
 	-@erase "$(INTDIR)\SoGlyph.obj"
 	-@erase "$(INTDIR)\SoGroup.obj"
@@ -1752,6 +1755,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\SoGLTextureMatrixElement.obj" \
 	"$(INTDIR)\SoGLUpdateAreaElement.obj" \
 	"$(INTDIR)\SoGLViewingMatrixElement.obj" \
+	"$(INTDIR)\SoGLColorIndexElement.obj" \
 	"$(INTDIR)\SoGLViewportRegionElement.obj" \
 	"$(INTDIR)\SoGlyph.obj" \
 	"$(INTDIR)\SoGroup.obj" \
@@ -3318,6 +3322,12 @@ SOURCE="@coin_src_dir@\src\elements\SoGLUpdateAreaElement.cpp"
 SOURCE="@coin_src_dir@\src\elements\SoGLViewingMatrixElement.cpp"
 
 "$(INTDIR)\SoGLViewingMatrixElement.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE="@coin_src_dir@\src\elements\SoGLColorIndexElement.cpp"
+
+"$(INTDIR)\SoGLColorIndexElement.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
