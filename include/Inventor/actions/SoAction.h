@@ -25,6 +25,14 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/lists/SoActionMethodList.h>
 
+// Avoid problem with HPUX 10.20 C library API headers, which defines
+// IN_PATH in <sys/unistd.h>.
+#if defined(IN_PATH)
+#define SOACTION_STORE_INPATH_DEF IN_PATH
+#undef IN_PATH
+#endif /* ERROR */
+
+
 #define SO_ENABLE(actionClass, elementClass) \
   assert(! elementClass::getClassTypeId().isBad()); \
   actionClass::enableElement(elementClass::getClassTypeId(), \
@@ -145,5 +153,11 @@ private:
   int dummyArray[1];
   int nextInPathChildIndex;
 };
+
+// Avoid problem with HPUX API headers (see above).
+#if defined(SOACTION_STORE_INPATH_DEF)
+#define IN_PATH SOACTION_STORE_INPATH_DEF
+#undef SOACTION_STORE_INPATH_DEF
+#endif /* SOACTION_STORE_INPATH_DEF */
 
 #endif // !__SOACTION_H__
