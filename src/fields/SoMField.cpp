@@ -244,6 +244,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <Inventor/C/threads/threadsutilp.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -263,6 +264,15 @@
 // Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
 SoType SoMField::classTypeId;
 
+// need one static mutex for field_buffer in SoMField::get1(SbString &)
+static void * somfield_mutex = NULL;
+
+static void
+somfield_mutex_cleanup(void)
+{
+  CC_MUTEX_DESTRUCT(somfield_mutex);
+}
+
 // Overridden from parent class.
 SoType
 SoMField::getClassTypeId(void)
@@ -275,6 +285,9 @@ void
 SoMField::initClass(void)
 {
   PRIVATE_FIELD_INIT_CLASS(SoMField, "MField", inherited, NULL);
+
+  CC_MUTEX_CONSTRUCT(somfield_mutex);
+  coin_atexit((coin_atexit_f*) somfield_mutex_cleanup);
 }
 
 /*!
@@ -347,6 +360,8 @@ mfield_buffer_realloc(void * bufptr, size_t size)
 void
 SoMField::get1(const int index, SbString & valuestring)
 {
+  CC_MUTEX_LOCK(somfield_mutex); // need to lock since a static array is used
+
   // Note: this code has an almost verbatim copy in SoField::get(), so
   // remember to update both places if any fixes are done.
 
@@ -385,6 +400,7 @@ SoMField::get1(const int index, SbString & valuestring)
     // go back to startsize
     (void) mfield_buffer_realloc(mfield_buffer, STARTSIZE);
   }
+  CC_MUTEX_UNLOCK(somfield_mutex);
 }
 
 /*!
