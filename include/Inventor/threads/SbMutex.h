@@ -50,4 +50,18 @@ private:
   cc_mutex * mutex;
 };
 
+class SbMutexAutoLock
+{
+protected:
+  SbMutex *mutex;
+public:
+  SbMutexAutoLock(SbMutex *mutex) {
+    this->mutex = mutex;
+    this->mutex->lock();
+  }
+  ~SbMutexAutoLock() {
+    this->mutex->unlock();
+  }
+};
+
 #endif // !COIN_SBMUTEX_H
