@@ -121,6 +121,9 @@ protected:
   SoChildList * children;
   SoNodekitParts * nodekitPartsList;
   SbBool connectionsSetUp;
+
+private:
+  static SoNodekitCatalog * classcatalog;
 };
 
 #endif // !__SOBASEKIT_H__

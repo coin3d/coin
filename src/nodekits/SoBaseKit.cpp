@@ -19,16 +19,25 @@
 
 /*!
   \class SoBaseKit SoBaseKit.h Inventor/nodekits/SoBaseKit.h
-  \brief The SoBaseKit class ...
+  \brief The SoBaseKit class is the toplevel superclass for nodekits.
   \ingroup nodekits
 
   FIXME: write class doc
 */
 
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodekits/SoNodekitCatalog.h>
+#include <Inventor/nodekits/SoNodeKitListPart.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoCallback.h>
+#include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/SbString.h>
 
+
 SO_NODE_SOURCE(SoBaseKit);
+
+
+SoNodekitCatalog * SoBaseKit::classcatalog = NULL;
 
 
 /*!
@@ -55,27 +64,55 @@ void
 SoBaseKit::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoBaseKit);
+
+  SoBaseKit::classcatalog = new SoNodekitCatalog;
+  SoBaseKit::classcatalog->addEntry("this",
+				    SoBaseKit::getClassTypeId(),
+				    SoBaseKit::getClassTypeId(),
+				    TRUE, "", "", FALSE,
+				    SoType::badType(),
+				    SoType::badType(),
+				    FALSE);
+  SoBaseKit::classcatalog->addEntry("callbackList",
+				    SoNodeKitListPart::getClassTypeId(),
+				    SoNodeKitListPart::getClassTypeId(),
+				    TRUE, "this", "", TRUE,
+				    SoSeparator::getClassTypeId(),
+				    SoCallback::getClassTypeId(),
+				    TRUE);
+  SoBaseKit::classcatalog->addListItemType("callbackList",
+					   SoEventCallback::getClassTypeId());
 }
 
 
 /*!
-  FIXME: write function documentation
+  Returns the nodekit catalog which defines the layout of this
+  class' kit.
 */
 const SoNodekitCatalog *
 SoBaseKit::getClassNodekitCatalog(void)
 {
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
+  return SoBaseKit::classcatalog;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns the nodekit catalog which defines the layout of this
+  class' kit.
 */
 const SoNodekitCatalog *
 SoBaseKit::getNodekitCatalog(void) const
 {
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
+  return SoBaseKit::classcatalog;
+}
+
+/*!
+  Returns the pointer to the pointer of the nodekit catalog
+  for this class.
+*/
+const SoNodekitCatalog **
+SoBaseKit::getClassNodekitCatalogPtr(void)
+{
+  return &SoBaseKit::classcatalog;
 }
 
 /*!
@@ -239,12 +276,12 @@ SoBaseKit::getChildren(void) const
 }
 
 /*!
-  FIXME: write function documentation
+  Print out the nodekit catalog structure. Useful for debugging.
 */
 void
 SoBaseKit::printDiagram(void)
 {
-  assert(0 && "FIXME: not implemented yet");
+  this->printSubDiagram("this", 0);
 }
 
 /*!
@@ -308,16 +345,6 @@ SoBaseKit::setSearchingChildren(SbBool /*newval*/)
 */
 SoNode *
 SoBaseKit::typeCheck(const SbName & /*partname*/, const SoType & /*parttype*/, SoNode * /*node*/)
-{
-  assert(0 && "FIXME: not implemented yet");
-  return NULL;
-}
-
-/*!
-  FIXME: write function documentation
-*/
-const SoNodekitCatalog **
-SoBaseKit::getClassNodekitCatalogPtr(void)
 {
   assert(0 && "FIXME: not implemented yet");
   return NULL;
