@@ -199,13 +199,22 @@ zlibglue_init(void)
 
 #endif /* !ZLIBGLUE_ASSUME_ZLIB */
 
-    ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_zlibVersion_t, zlibVersion);
-
-    if (zi->available && !zi->zlibVersion) {
-      /* something is seriously wrong */
-      cc_debugerror_post("zlib glue",
-                         "Loaded zlib DLL ok, but couldn't resolve symbol "
-                         "zlibVersion().");
+    if (zi->available) {
+      ZLIBGLUE_REGISTER_FUNC(cc_zlibglue_zlibVersion_t, zlibVersion);
+    }
+    
+    if (!zi->available || !zi->zlibVersion) {
+      if (!zi->available) {
+        cc_debugerror_post("zlib glue",
+                           "Unable to load zlib DLL/shared object.");
+        
+      }
+      else {
+        /* something is seriously wrong */
+        cc_debugerror_post("zlib glue",
+                           "Loaded zlib DLL ok, but couldn't resolve symbol "
+                           "zlibVersion().");
+      }
       zi->available = 0;
       zlib_failed_to_load = 1;
 

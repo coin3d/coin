@@ -140,7 +140,7 @@ bzglue_init(void)
         bzlib_failed_to_load = 1;
       }
     }
-    /* Define ZLIBGLUE_REGISTER_FUNC macro. Casting the type is
+    /* Define BZGLUE_REGISTER_FUNC macro. Casting the type is
        necessary for this file to be compatible with C++ compilers. */
 #define BZGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
     do { \
@@ -148,27 +148,36 @@ bzglue_init(void)
       if (bi->_funcname_ == NULL) bi->available = 0; \
     } while (0)
 
-#elif defined(BZGLUE_ASSUME_ZLIB) /* !LIBBZIP2_RUNTIME_LINKING */
+#elif defined(BZGLUE_ASSUME_BZIP2) /* !LIBBZIP2_RUNTIME_LINKING */
 
     /* Define BZGLUE_REGISTER_FUNC macro. */
 #define BZGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
     bi->_funcname_ = (_funcsig_)_funcname_
 
-#else /* !BZGLUE_ASSUME_ZLIB */
+#else /* !BZGLUE_ASSUME_BZIP2 */
     bi->available = 0;
     /* Define BZGLUE_REGISTER_FUNC macro. */
 #define BZGLUE_REGISTER_FUNC(_funcsig_, _funcname_) \
     bi->_funcname_ = NULL
 
-#endif /* !ZLIBGLUE_ASSUME_ZLIB */
-    
-    BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzlibVersion_t, BZ2_bzlibVersion);
+#endif /* !BZGLUE_ASSUME_BZIP2 */
 
-    if (bi->available && !bi->BZ2_bzlibVersion) {
-      /* something is seriously wrong */
-      cc_debugerror_post("libbzip2 glue",
-                         "Loaded bzip2 DLL ok, but couldn't resolve symbol "
-                         "BZ2_bzlibVersion().");
+    if (bi->available) {
+      BZGLUE_REGISTER_FUNC(cc_bzglue_BZ2_bzlibVersion_t, BZ2_bzlibVersion);
+    }
+
+    if (!bi->available || !bi->BZ2_bzlibVersion) {
+      if (!bi->available) {
+        cc_debugerror_post("libbzip2 glue",
+                           "Unable to load bzip2 DLL/shared object.");
+        
+      }
+      else {
+        /* something is seriously wrong */
+        cc_debugerror_post("libbzip2 glue",
+                           "Loaded bzip2 DLL ok, but couldn't resolve symbol "
+                           "BZ2_bzlibVersion().");
+      }
       bi->available = 0;
       bzlib_failed_to_load = 1;
       bzlib_instance = bi;
