@@ -404,9 +404,8 @@ SbBool
 SoNodekitCatalog::isPublic(int part) const
 {
   assert( this->delayeditems.getLength() == 0 );
-  assert( (part < 0 && part <= this->getNumEntries()) &&
-          "invalid part");
-
+  assert( (part >= 0 && part < this->getNumEntries()) && "invalid part" );
+  
   return this->items[part]->ispublic;
 }
 
