@@ -68,6 +68,7 @@ public:
   static void enableRectangle(SoState * state, SoNode * node, const int unit);
   static void enableCubeMap(SoState * state, SoNode * node, const int unit);
   static Mode getMode(SoState * state, const int unit);
+  static void disableAll(SoState * state);
 
 protected:
   SbBool isEnabled(const int unit) const;

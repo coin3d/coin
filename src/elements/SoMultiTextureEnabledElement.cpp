@@ -150,6 +150,9 @@ SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
   return NULL;
 }
 
+/*!
+  Returns TRUE if unit is enabled (Mode == DISABLED).
+*/
 SbBool 
 SoMultiTextureEnabledElement::isEnabled(const int unit) const
 {
@@ -157,6 +160,7 @@ SoMultiTextureEnabledElement::isEnabled(const int unit) const
   return PRIVATE(this)->enabled[unit];
 }
 
+// doc in parent
 void
 SoMultiTextureEnabledElement::push(SoState * state)
 {
@@ -170,7 +174,12 @@ SoMultiTextureEnabledElement::push(SoState * state)
 }
 
 
+/*!
+  Returns the mode of all units. Also returns the last enabled unit
+  in \a lastenabled.
 
+  \since Coin 2.4
+*/
 const SoMultiTextureEnabledElement::Mode * 
 SoMultiTextureEnabledElement::getActiveUnits(SoState * state, int & lastenabled)
 {
@@ -189,6 +198,11 @@ SoMultiTextureEnabledElement::getActiveUnits(SoState * state, int & lastenabled)
   return NULL;
 }
 
+/*!
+  Enable RECTANGLE texture mode.
+
+  \since Coin 2.4
+*/
 void 
 SoMultiTextureEnabledElement::enableRectangle(SoState * state, 
                                               SoNode * node, 
@@ -201,6 +215,11 @@ SoMultiTextureEnabledElement::enableRectangle(SoState * state,
   elem->setElt(unit, (SbBool) RECTANGLE);
 }
 
+/*!
+  Enable CUBEMAP texture mode.
+
+  \since Coin 2.4
+*/
 void 
 SoMultiTextureEnabledElement::enableCubeMap(SoState * state, 
                                             SoNode * node, 
@@ -212,6 +231,30 @@ SoMultiTextureEnabledElement::enableCubeMap(SoState * state,
   // FIXME: in Coin-3, make sure the setElt() method is changed to
   // setElt(const int32_t mode). pederb, 2005-01-31
   elem->setElt(unit, (SbBool) CUBEMAP);
+}
+
+/*!
+
+  Disable all active texture units. Convenient when all textures needs
+  to be disabled before rendering.
+  
+  \since Coin 2.4
+*/
+void 
+SoMultiTextureEnabledElement::disableAll(SoState * state)
+{
+  int lastenabled;
+  const SbBool * enabled = getEnabledUnits(state, lastenabled);
+  if (enabled) {
+    SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+      state->getElement(classStackIndex);
+    
+    for (int i = 1; i <= lastenabled; i++) {
+      if (enabled[i]) {
+        elem->setElt(i, FALSE);
+      }
+    }
+  }
 }
 
 SoMultiTextureEnabledElement::Mode 
