@@ -110,10 +110,10 @@ SUBDIRS = include data src build
 bin_SCRIPTS = coin-config
 BUILT_SOURCES = coin-config
 
-EXTRA_DIST = conf-macros/coin.m4
+EXTRA_DIST = cfg/m4/coin.m4
 
 m4datadir = $(datadir)/aclocal
-m4data_DATA = conf-macros/coin.m4
+m4data_DATA = cfg/m4/coin.m4
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -380,7 +380,7 @@ dist-all: distdir
 distdir: $(DISTFILES)
 	-chmod -R a+w $(distdir) > /dev/null 2>&1; rm -rf $(distdir)
 	mkdir $(distdir)
-	$(mkinstalldirs) $(distdir)/cfg $(distdir)/conf-macros
+	$(mkinstalldirs) $(distdir)/cfg $(distdir)/cfg/m4
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
