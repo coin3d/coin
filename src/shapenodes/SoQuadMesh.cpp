@@ -1110,10 +1110,6 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   Binding nbind = findNormalBinding(action->getState());
   if (!needNormals) nbind = OVERALL;
 
-  if ((nbind == PER_FACE) || (mbind == PER_FACE)) {
-    SoGLLazyElement::sendFlatshading(state, TRUE);
-  }
-
   SoNormalCache * nc = NULL;
 
   if (needNormals && normals == NULL) {
@@ -1122,6 +1118,13 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   }
 
   mb.sendFirst(); // make sure we have the correct material
+
+  // this is needed to get correct per-face material/normal
+  // rendering. It must be after the SoMaterialBundle::sendFirst()
+  // call.
+  if ((nbind == PER_FACE) || (mbind == PER_FACE)) {
+    SoGLLazyElement::sendFlatshading(state, TRUE);
+  }
 
   // Check if precise lighting rendering is requested.
   static int preciselighting = -1;
