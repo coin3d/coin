@@ -16,6 +16,8 @@ SUBDIRS = \
 	engines errors events fields manips misc lists nodekits nodes \
 	projectors sensors $(VRML97DIR) .
 
+INCLUDES = -I$(top_srcdir)/include
+
 if BUILD_WITH_MSVC
 lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 else

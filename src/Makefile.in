@@ -131,6 +131,8 @@ SUBDIRS = \
 	projectors sensors $(VRML97DIR) .
 
 
+INCLUDES = -I$(top_srcdir)/include
+
 @BUILD_WITH_MSVC_TRUE@lib_LIBRARIES = coin@COIN_MAJOR_VERSION@@SUFFIX@.lib
 @BUILD_WITH_MSVC_FALSE@lib_LTLIBRARIES = libCoin@SUFFIX@.la
 
