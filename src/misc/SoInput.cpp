@@ -2258,9 +2258,9 @@ SoInput::convertDoubleArray(char * from, double * to, int len)
 }
 
 /*!
-  Returns \e TRUE if current file is a VRML V1.0 file.
+  Returns \c TRUE if current file is a VRML V1.0 file.
 
-  This method is an extension versus the Open Inventor API.
+  \COIN_FUNCTION_EXTENSION
 */
 SbBool
 SoInput::isFileVRML1(void)
@@ -2272,13 +2272,9 @@ SoInput::isFileVRML1(void)
 }
 
 /*!
-  Returns \a TRUE if current file is a VRML97 file.
-  This method is provided for backwards compatibility only,
-  and will always return the same as isFileVRML97(), which
-  we prefer that you use.
+  Returns \c TRUE if current file is a VRML 2 / VRML97 file.
 
-  This method is an extension versus the original SGI Open Inventor
-  API.
+  \COIN_FUNCTION_EXTENSION
 */
 SbBool
 SoInput::isFileVRML2(void)
