@@ -81,11 +81,14 @@ private:
   static struct SbNameChunk * chunk;
   unsigned long hashValue;
   SbNameEntry * next;
+
+  static void * mutex;
 };
 
 int SbNameEntry::nameTableSize;
 SbNameEntry * * SbNameEntry::nameTable;
 SbNameChunk * SbNameEntry::chunk;
+void * SbNameEntry::mutex = NULL;
 
 void 
 SbNameEntry::cleanup(void)
@@ -166,7 +169,10 @@ SbNameEntry::findStringAddress(const char * s)
 const SbNameEntry *
 SbNameEntry::insert(const char * const str)
 {
-  CC_SYNC_BEGIN(SbNameEntry::insert);
+  if (SbNameEntry::mutex == NULL) {
+    CC_MUTEX_CONSTRUCT(SbNameEntry::mutex);
+  }
+  CC_MUTEX_LOCK(SbNameEntry::mutex);
   if (nameTableSize == 0) { initClass(); }
 
   unsigned long h = SbString::hash(str);
@@ -184,8 +190,7 @@ SbNameEntry::insert(const char * const str)
     entry = new SbNameEntry(findStringAddress(str), h, head );
     nameTable[i] = entry;
   }
-
-  CC_SYNC_END(SbNameEntry::insert);
+  CC_MUTEX_UNLOCK(SbNameEntry::mutex);
   return entry;
 }
 
