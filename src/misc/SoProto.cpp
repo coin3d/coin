@@ -25,7 +25,47 @@
   \class SoProto SoProto.h Inventor/misc/SoProto.h
   \brief The SoProto class handles PROTO definitions.
 
-  \internal
+  SoProto and SoProtoInstance are mostly internal classes. They're
+  designed to read and handle VRML97 PROTOs. However, it's possible to
+  define your protos in C++. You must define your proto in a char
+  array, and read that char array using SoInput::setBuffer() and
+  SoDB::readAllVRML(). Example:
+
+  \code
+
+  char myproto[] =
+  "#VRML V2.0 utf8\n"
+  "PROTO ColorCube [\n"
+  "  field SFColor color 1 1 1\n"
+  "  field SFVec3f size 1 1 1\n"
+  "]\n"
+  "{\n"
+  "  Shape {\n"
+  "    appearance Appearance {\n"
+  "      material Material {\n"
+  "        diffuseColor IS color\n"
+  "      }\n"
+  "    }\n"
+  "    geometry Box { size IS size }\n"
+  "  }\n"
+  "}\n"
+  "ColorCube { color 1 0 0 size 2 1 1 }\n";
+
+  SoInput in;
+  in.setBuffer((void*) myproto, sizeof(myproto));
+  SoVRMLGroup * protoroot = SoDB::readAllVRML(&in);
+  
+  \endcode
+
+  Now you can create new instances of the ColorCube proto using
+  SoProto::findProto() and SoProto::createProtoInstance(). If you want
+  to insert proto instances into your scene graph, you should insert
+  the node returned from SoProtoInstance::getRootNode().
+  
+  See
+  http://www.web3d.org/technicalinfo/specifications/ISO_IEC_14772-All/part1/concepts.html#4.8
+  for more information about PROTOs in VRML97.  
+  
 */
 
 
@@ -81,7 +121,7 @@ soproto_fetchextern_default_cb(SoInput * in,
     filename = tmp.getSubString(0, nameidx-1);
     name = tmp.getSubString(nameidx+1);
   }
- 
+
   if (!in->pushFile(filename.getString())) {
     SoReadError::post(in, "Unable to find EXTERNPROTO file: ``%s''",
                       filename.getString());
@@ -97,7 +137,7 @@ soproto_fetchextern_default_cb(SoInput * in,
       char dummy;
       while (!in->eof()) in->get(dummy);
     }
-    
+
     SoReadError::post(in, "Unable to read EXTERNPROTO file: ``%s''",
                       filename.getString());
     return NULL;
@@ -111,7 +151,7 @@ soproto_fetchextern_default_cb(SoInput * in,
     sa.setSearchingAll(TRUE);
     sa.setInterest(SoSearchAction::ALL);
     sa.apply(root);
-    
+
     SoPathList & pl = sa.getPaths();
 
     if (pl.getLength() == 1) {
@@ -222,13 +262,13 @@ SoProto::~SoProto()
   delete PRIVATE(this);
 }
 
-void 
+void
 SoProto::setFetchExternProtoCallback(SoFetchExternProtoCB * cb,
                                      void * closure)
 {
   if (cb == NULL) {
     soproto_fetchextern_cb = soproto_fetchextern_default_cb;
-    soproto_fetchextern_closure = NULL;    
+    soproto_fetchextern_closure = NULL;
   }
   else {
     soproto_fetchextern_cb = cb;
@@ -304,7 +344,7 @@ SoProto::readInstance(SoInput * in, unsigned short flags)
                                                PRIVATE(this)->externurl->getNum(),
                                                soproto_fetchextern_closure);
       if (proto == NULL) {
-        SoReadError::post(in, "Error reading EXTERNPROTO definition.");        
+        SoReadError::post(in, "Error reading EXTERNPROTO definition.");
         ok = FALSE;
       }
       else {
@@ -358,7 +398,7 @@ SoProto::write(SoWriteAction * action)
       out->indent();
       out->write("{\n");
       out->incrementIndent();
-      
+
       if (PRIVATE(this)->defroot) {
         this->writeDefinition(action);
       }
@@ -403,7 +443,7 @@ SoProto::writeInterface(SoOutput * out)
       out->write(t.getName().getString());
       if (PRIVATE(this)->externurl) {
         out->write(' ');
-        out->write(fd->getFieldName(i).getString());        
+        out->write(fd->getFieldName(i).getString());
         out->write("\n");
       }
       else {
@@ -453,7 +493,7 @@ SoProto::writeDefinition(SoWriteAction * action)
   return TRUE;
 }
 
-SbBool 
+SbBool
 SoProto::writeURLs(SoOutput * out)
 {
   // We use this code to write the URLs to get nicer indentation. Just
@@ -668,7 +708,7 @@ soproto_find_node(SoNode * root, SbName name, SoSearchAction & sa)
 // Used to check for fieldname. Wil first test "<name>", then "set_<name>",
 // and then "<name>_changed".
 //
-static SbName 
+static SbName
 soproto_find_fieldname(SoNode * node, const SbName & name)
 {
   if (node->getField(name)) return name;
@@ -690,7 +730,7 @@ soproto_find_fieldname(SoNode * node, const SbName & name)
 // Used to check for outputname. Wil first test "<name>", then "set_<name>",
 // and then "<name>_changed".
 //
-static SbName 
+static SbName
 soproto_find_outputname(SoNodeEngine * node, const SbName & name)
 {
   if (node->getOutput(name)) return name;
@@ -749,12 +789,12 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
   if (PRIVATE(this)->extprotonode) {
     return PRIVATE(this)->extprotonode->createInstanceRoot(inst);
   }
-  
+
   SoNode * root;
   if (PRIVATE(this)->defroot->getNumChildren() == 1)
     root = PRIVATE(this)->defroot->getChild(0);
   else root = PRIVATE(this)->defroot;
-  
+
   SoNode * cpy;
   cpy = root->copy(FALSE);
   cpy->ref();
@@ -779,7 +819,7 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
       if (from == NULL && fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
         output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
       }
-      
+
       if (to && (from || output)) {
         SbBool notnotify = FALSE;
         SbBool append = FALSE;
@@ -787,7 +827,7 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
           notnotify = TRUE;
         }
         if (to->getFieldType() == SoField::EVENTIN_FIELD) append = TRUE;
-        
+
         // Check that there exists a field converter, if one is needed.
         SoType totype = to->getTypeId();
         SoType fromtype = from ? from->getTypeId() : output->getConnectionType();
@@ -797,13 +837,13 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
             continue;
           }
         }
-        
+
         SbBool ok;
         if (from) ok = to->connectFrom(from, notnotify, append);
         else ok = to->connectFrom(output, notnotify, append);
         // Both known possible failure points are caught above.
         assert(ok && "unexpected connection error");
-        
+
       }
     }
   }
@@ -829,7 +869,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
   SoSearchAction sa;
   for (int i = 0; i < n; i++) {
     SoNode * node = PRIVATE(this)->isnodelist[i];
-    
+
     SbName fieldname = PRIVATE(this)->isfieldlist[i];
     fieldname = soproto_find_fieldname(node, fieldname);
     SoField * dstfield = node->getField(fieldname);
@@ -850,7 +890,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
         continue; // skip to next field
       }
     }
-    
+
     SbBool isprotoinstance = FALSE;
     if (node->isOfType(SoProtoInstance::getClassTypeId())) {
       node = ((SoProtoInstance*) node)->getRootNode();
@@ -889,7 +929,7 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
     }
     assert(dstfield || eventout);
     SoField * srcfield = inst->getField(iname);
-    if (srcfield) {      
+    if (srcfield) {
       // if destination field is an eventOut field, or an EngineOutput,
       // reverse the connection, since we then just need to route the
       // events to the srcfield.
@@ -928,11 +968,10 @@ SoProto::connectISRefs(SoProtoInstance * inst, SoNode * src, SoNode * dst) const
 SbBool
 SoProto::setupExtern(SoInput * in, SoProto * externproto)
 {
-  assert(externproto);  
+  assert(externproto);
   PRIVATE(this)->extprotonode = externproto;
   PRIVATE(this)->extprotonode->ref();
   return TRUE;
 }
 
 #undef PRIVATE
-

@@ -25,8 +25,8 @@
 /*!
   \class SoProtoInstance SoProtoInstance.h Inventor/misc/SoProtoInstance.h
   \brief The SoProtoInstance class handles PROTO instances.
-  
-  FIXME: This is work in progress. Document later.
+
+  \sa SoProto
 */
 
 #include <Inventor/misc/SoProtoInstance.h>
@@ -210,7 +210,7 @@ SoProtoInstance::write(SoWriteAction * action)
 }
 
 // Doc in parent
-const char * 
+const char *
 SoProtoInstance::getFileFormatName(void) const
 {
   return THIS->protodef->getProtoName().getString();
@@ -262,5 +262,3 @@ SoProtoInstance::sensorCB(void * data, SoSensor *)
   thisp->pimpl->root = NULL;
   thisp->unref();
 }
-
-
