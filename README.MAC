@@ -16,15 +16,18 @@ Using Coin
 ==========
 
 If you want to use Coin on the Mac, you need a user interface binding. 
-At the moment you have two basic options for this:
+At the moment you have three basic options for this:
                                                                                 
   1. Use Qt/Mac. This requires Trolltech's Qt toolkit. You can get a            
      free evaluation version of Qt/Mac from [0]. After downloading and 
      installing Qt, you can download and build SoQt.
      Note that using Qt/X11 on Mac OS X is not yet supported, but we are
      planning to add this in the near future.
+
+  2. Use X11 for Mac OS X, and Qt/X11. See the README.MAC file in
+     the SoQt source code repository for instructions.
                            
-  2. Create your own OpenGL canvas, and use this for rendering. This            
+  3. Create your own OpenGL canvas, and use this for rendering. This            
      is not the easiest way to do, since it involves quite some
      programmatic overhead. The "Coin in a Cocoanut Shell" application 
      (distributed with the Coin/Mac binary SDK, and available from our 
