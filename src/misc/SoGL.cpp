@@ -26,7 +26,7 @@
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
-#include <Inventor/actions/SoAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -59,6 +59,18 @@
 
 #include <Inventor/system/gl.h>
 #include <GLUWrapper.h>
+
+// Convenience function for access to OpenGL wrapper from an SoState
+// pointer.
+const cc_glglue *
+sogl_glue_instance(const SoState * state)
+{
+  SoGLRenderAction * action = (SoGLRenderAction *)state->getAction();
+  assert(action->isOfType(SoGLRenderAction::getClassTypeId()) &&
+         "must have state from SoGLRenderAction to get hold of GL wrapper");
+  return cc_glglue_instance(action->getCacheContext());
+}
+
 
 // generate a 3d circle in the x-z plane
 static void

@@ -24,11 +24,11 @@
  *
 \**************************************************************************/
 
-//
-// This file contains GL code which is shared between two or more nodes.
-//
+// This file contains GL code which is shared internally. It contains
+// mostly rendering code shared between several node types.
 
 #include <Inventor/SbString.h>
+#include <Inventor/C/glue/gl.h>
 
 class SoShape;
 class SoState;
@@ -48,6 +48,11 @@ class SbVec2f;
 #define SOGL_NEED_NORMALS      0x10
 #define SOGL_NEED_TEXCOORDS    0x20
 #define SOGL_NEED_3DTEXCOORDS  0x40
+
+// Convenience function for access to OpenGL wrapper from an SoState
+// pointer.
+const cc_glglue * sogl_glue_instance(const SoState * state);
+
 
 // render
 void sogl_render_cone(const float bottomRadius,
