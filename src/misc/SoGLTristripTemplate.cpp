@@ -77,18 +77,18 @@
     v3 = *viptr++;
     assert(v1 >= 0 && v2 >= 0 && v3 >= 0);
 
-    glBegin(GL_TRIANGLE_STRIP); // move to right before glArrayElement()?
+    glBegin(GL_TRIANGLE_STRIP);
 
     /* vertex 1 *********************************************************/
-#if MBINDING==PER_VERTEX || MBINDING==PER_TRIANGLE || MBINDING==PER_STRIP
+#if MBINDING==PER_VERTEX || MBINDING==PER_STRIP
     materials->send(matnr++, TRUE);
-#elif MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_STRIP_INDEXED || MBINDING==PER_TRIANGLE_INDEXED
+#elif MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_STRIP_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
-#if NBINDING==PER_VERTEX || NBINDING==PER_TRIANGLE || NBINDING==PER_STRIP
+#if NBINDING==PER_VERTEX || NBINDING==PER_STRIP
     currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
-#elif NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_TRIANGLE_INDEXED || NBINDING==PER_STRIP_INDEXED
+#elif NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_STRIP_INDEXED
     currnormal = &normals[*normalindices++];
     glNormal3fv((const GLfloat*)currnormal);
 #endif
@@ -120,15 +120,15 @@
     vertexlist->send(v2);
 
     /* vertex 3 *********************************************************/
-#if MBINDING==PER_VERTEX
+#if MBINDING==PER_VERTEX || MBINDING==PER_TRIANGLE
     materials->send(matnr++, TRUE);
-#elif MBINDING==PER_VERTEX_INDEXED
+#elif MBINDING==PER_VERTEX_INDEXED || MBINDING==PER_TRIANGLE_INDEXED
     materials->send(*matindices++, TRUE);
 #endif
-#if NBINDING==PER_VERTEX
+#if NBINDING==PER_VERTEX || NBINDING==PER_TRIANGLE
     currnormal = normals++;
     glNormal3fv((const GLfloat*)currnormal);
-#elif NBINDING==PER_VERTEX_INDEXED
+#elif NBINDING==PER_VERTEX_INDEXED || NBINDING==PER_TRIANGLE_INDEXED
     currnormal = &normals[*normalindices++];
     glNormal3fv((const GLfloat*)currnormal);
 #endif
