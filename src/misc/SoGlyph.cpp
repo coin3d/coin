@@ -25,6 +25,9 @@
   \class SoGlyph include/Inventor/misc/SoGlyph.h
   \brief The SoGlyph class is used to control and reuse font glyphs.
 
+  FIXME: class doc
+
+  \since Coin 2.0
 */
 
 #include <Inventor/misc/SoGlyph.h>
