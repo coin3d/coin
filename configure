@@ -6433,9 +6433,75 @@ EOF
   fi
 
   # *******************************************************************
-  # ** Check if GLU headers and lib is available on build host.
+  # ** Check if GLU should be loaded and linked at runtime (to avoid
+  # ** install dependency libCoin -> libGLU).
   # *******************************************************************
-  sim_ac_libs_before_glu_check=$LIBS
+  # Check whether --enable-dl-glu or --disable-dl-glu was given.
+if test "${enable_dl_glu+set}" = set; then
+  enableval="$enable_dl_glu"
+  case "${enableval}" in
+      yes | no) enable_dl_glu=${enableval} ;;
+      *) { echo "configure: error: bad value \"${enableval}\" for --enable-dl-glu" >&2; exit 1; } ;;
+    esac
+else
+  enable_dl_glu=yes
+fi;
+
+  if test x"$sim_ac_dl_avail" = xyes -a x"$enable_dl_glu" = xyes; then
+    # See if GLU is part of GL library (this is the case on BeOS, for
+    # instance) before setting us up for runtime linking.
+    echo "configure:6453: checking if GLU is available as part of GL library" >&5
+echo $ECHO_N "checking if GLU is available as part of GL library... $ECHO_C" >&6
+if test "${sim_cv_glu_ready+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line 6459 "configure"
+#include "confdefs.h"
+
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+#include <GL/gl.h>
+#include <GL/glu.h>
+
+int
+main ()
+{
+
+gluSphere(0L, 1.0, 1, 1);
+
+  ;
+  return 0;
+}
+_ACEOF
+if { (eval echo configure:6478: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest$ac_exeext; then
+  sim_cv_glu_ready=true
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  sim_cv_glu_ready=false
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+fi
+echo "configure:6487: result: $sim_cv_glu_ready" >&5
+echo "${ECHO_T}$sim_cv_glu_ready" >&6
+if ${sim_cv_glu_ready}; then
+  cat >>confdefs.h <<\EOF
+#define HAVE_GLU 1
+EOF
+
+else
+  cat >>confdefs.h <<EOF
+#define GLU_RUNTIME_LINKING 1
+EOF
+
+fi
+
+  else
+    # *******************************************************************
+    # ** Check if GLU headers and lib is available on build host.
+    # *******************************************************************
 
 unset sim_ac_glu_cppflags
 unset sim_ac_glu_ldflags
@@ -6481,7 +6547,7 @@ if test x"$with_glu" != xno; then
   CPPFLAGS="$CPPFLAGS $sim_ac_glu_cppflags"
   LDFLAGS="$LDFLAGS $sim_ac_glu_ldflags"
 
-  echo "configure:6484: checking whether GLU is available" >&5
+  echo "configure:6550: checking whether GLU is available" >&5
 echo $ECHO_N "checking whether GLU is available... $ECHO_C" >&6
 if test "${sim_cv_lib_glu+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -6494,7 +6560,7 @@ else
       if test "x$sim_cv_lib_glu" = "xUNRESOLVED"; then
         LIBS="$sim_ac_glu_libcheck $sim_ac_save_libs"
         cat >conftest.$ac_ext <<_ACEOF
-#line 6497 "configure"
+#line 6563 "configure"
 #include "confdefs.h"
 
 #ifdef _WIN32
@@ -6513,7 +6579,7 @@ gluSphere(0L, 1.0, 1, 1);
   return 0;
 }
 _ACEOF
-if { (eval echo configure:6516: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest$ac_exeext; then
+if { (eval echo configure:6582: \"$ac_link\") >&5; (eval $ac_link) 2>&5; } && test -s conftest$ac_exeext; then
   sim_cv_lib_glu="$sim_ac_glu_libcheck"
 else
   echo "configure: failed program was:" >&5
@@ -6524,7 +6590,7 @@ rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
     done
 
 fi
-echo "configure:6527: result: $sim_cv_lib_glu" >&5
+echo "configure:6593: result: $sim_cv_lib_glu" >&5
 echo "${ECHO_T}$sim_cv_lib_glu" >&6
 
   LIBS="$sim_ac_save_libs"
@@ -6533,9 +6599,14 @@ echo "${ECHO_T}$sim_cv_lib_glu" >&6
     sim_ac_glu_libs="$sim_cv_lib_glu"
     LIBS="$sim_ac_glu_libs $sim_ac_save_libs"
     sim_ac_glu_avail=yes
-    cat >>confdefs.h <<\EOF
+
+      cat >>confdefs.h <<\EOF
 #define HAVE_GLU 1
 EOF
+
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_glu_libs $COIN_EXTRA_LIBS"
 
   else
     CPPFLAGS=$sim_ac_save_cppflags
@@ -6545,32 +6616,6 @@ EOF
   fi
 fi
 
-  # *******************************************************************
-  # ** Check if GLU should be loaded and linked at runtime (to avoid
-  # ** install dependency libCoin -> libGLU).
-  # *******************************************************************
-  # Check whether --enable-dl-glu or --disable-dl-glu was given.
-if test "${enable_dl_glu+set}" = set; then
-  enableval="$enable_dl_glu"
-  case "${enableval}" in
-      yes | no) enable_dl_glu=${enableval} ;;
-      *) { echo "configure: error: bad value \"${enableval}\" for --enable-dl-glu" >&2; exit 1; } ;;
-    esac
-else
-  enable_dl_glu=yes
-fi;
-
-  if test x"$sim_ac_dl_avail" = xyes -a x"$enable_dl_glu" = xyes; then
-    cat >>confdefs.h <<EOF
-#define GLU_RUNTIME_LINKING 1
-EOF
-
-    # Restore to strip off additional libraries from GLU check.
-    LIBS=$sim_ac_libs_before_glu_check
-  else
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
-    COIN_EXTRA_LIBS="$sim_ac_glu_libs $COIN_EXTRA_LIBS"
   fi
 
 else # couldn't link with OpenGL

@@ -311,13 +311,6 @@ if test x"$sim_ac_gl_avail" = xyes; then
 
 
   # *******************************************************************
-  # ** Check if GLU headers and lib is available on build host.
-  # *******************************************************************
-  sim_ac_libs_before_glu_check=$LIBS
-  SIM_AC_CHECK_GLU([AC_DEFINE(HAVE_GLU)])
-
-
-  # *******************************************************************
   # ** Check if GLU should be loaded and linked at runtime (to avoid
   # ** install dependency libCoin -> libGLU).
   # *******************************************************************
@@ -331,13 +324,22 @@ if test x"$sim_ac_gl_avail" = xyes; then
     [enable_dl_glu=yes])
 
   if test x"$sim_ac_dl_avail" = xyes -a x"$enable_dl_glu" = xyes; then
-    AC_DEFINE_UNQUOTED(GLU_RUNTIME_LINKING)
-    # Restore to strip off additional libraries from GLU check.
-    LIBS=$sim_ac_libs_before_glu_check
+    # See if GLU is part of GL library (this is the case on BeOS, for
+    # instance) before setting us up for runtime linking.
+    SIM_AC_GLU_READY_IFELSE(
+      AC_DEFINE(HAVE_GLU),
+      AC_DEFINE_UNQUOTED(GLU_RUNTIME_LINKING)
+    )
   else
-    COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
-    COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
-    COIN_EXTRA_LIBS="$sim_ac_glu_libs $COIN_EXTRA_LIBS"
+    # *******************************************************************
+    # ** Check if GLU headers and lib is available on build host.
+    # *******************************************************************
+    SIM_AC_CHECK_GLU([
+      AC_DEFINE(HAVE_GLU)
+      COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_glu_cppflags"
+      COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_glu_ldflags"
+      COIN_EXTRA_LIBS="$sim_ac_glu_libs $COIN_EXTRA_LIBS"
+    ])
   fi
 
 

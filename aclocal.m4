@@ -2415,6 +2415,34 @@ fi
 ])
 
 
+# **************************************************************************
+# SIM_AC_GLU_READY_IFELSE( [ACTION-IF-TRUE], [ACTION-IF-FALSE] )
+
+AC_DEFUN([SIM_AC_GLU_READY_IFELSE],
+[AC_CACHE_CHECK(
+  [if GLU is available as part of GL library],
+  [sim_cv_glu_ready],
+  [AC_TRY_LINK(
+    [
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif /* HAVE_WINDOWS_H */
+#include <GL/gl.h>
+#include <GL/glu.h>
+],
+    [
+gluSphere(0L, 1.0, 1, 1);
+],
+    [sim_cv_glu_ready=true],
+    [sim_cv_glu_ready=false])])
+if ${sim_cv_glu_ready}; then
+  ifelse([$1], , :, [$1])
+else
+  ifelse([$2], , :, [$2])
+fi
+]) # SIM_AC_glu_READY_IFELSE()
+
+
 # Usage:
 #  SIM_AC_GLU_NURBSOBJECT([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 #
