@@ -1142,3 +1142,59 @@
     20021015 mortene.
 
 =====================================================================
+
+040 setRealtimeInterval() doesn't work
+
+    The interval value is set correctly, but the realTime field updates
+    follows another speed...
+
+    #include <Inventor/Qt/SoQt.h>
+    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+
+    #include <Inventor/SoDB.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    #include <Inventor/nodes/SoMaterial.h>
+    #include <Inventor/nodes/SoText3.h>
+    #include <Inventor/nodes/SoPerspectiveCamera.h>
+    #include <Inventor/nodes/SoDirectionalLight.h>
+
+    #include <stdio.h>
+
+    int
+    main(int , char **argv)
+    {  
+       QWidget * myWindow = SoQt::init(argv[0]);
+       if (myWindow == NULL) exit(1);
+    
+       SoSeparator *root = new SoSeparator;
+       root->ref();
+    
+       SoPerspectiveCamera *myCamera = new SoPerspectiveCamera;
+       root->addChild(myCamera);
+       root->addChild(new SoDirectionalLight);
+       SoMaterial *myMaterial = new SoMaterial;
+       myMaterial->diffuseColor.setValue(1.0, 1.0, 1.0);
+       root->addChild(myMaterial);
+    
+       SoText3 *myText = new SoText3;
+       root->addChild(myText);
+       myText->string.connectFrom(SoDB::getGlobalField("realTime"));
+    
+       //-----------------------------------------------------------
+       SoDB::setRealTimeInterval(SbTime(10.0f));
+       fprintf(stderr, "%s\n", SoDB::getRealTimeInterval().format().getString());
+       //-----------------------------------------------------------
+    
+       SoQtExaminerViewer *myRenderArea = new SoQtExaminerViewer(myWindow);
+       myCamera->viewAll(root, myRenderArea->getSize());
+       myRenderArea->setSceneGraph(root);
+       myRenderArea->setTitle("Date & Time");
+       myRenderArea->show();
+    
+       SoQt::show(myWindow);
+
+       SoQt::mainLoop();
+       return 0;
+    }
+
+=====================================================================
