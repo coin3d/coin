@@ -335,8 +335,9 @@ SbVec3f::negate(void)
 
   We've made Coin spit out a warning when an attempt at normalizing a
   null-vector is made, as that seems to always be a symptom caused by
-  some graver programming error somewhere else -- either internally in
-  Coin code, or in application code.
+  some graver error somewhere else -- either an internal error in Coin
+  code, a programming error in application code, or an error in an
+  input file (like for instance invalid polygon specifications).
 
   If this happens, you should run the application in a debugger and see
   how the call-stack backtrace looks when it hits. An easy way of
@@ -351,6 +352,16 @@ SbVec3f::negate(void)
   bug, please report the call-stack to us at \e coin-support@coin3d.org
   and we'll look into it. Example code that triggers the bug would
   then also be very helpful.
+
+  A note for developers porting code from SGI or TGS Inventor to Coin:
+  those Inventor implementations are more slack about detecting and
+  giving out warning messages upon API misuses, and you may suddenly
+  have gotten this warning with Coin without seeing any indication of
+  an error with SGI/TGS Inventor. This does \e not necessarily mean
+  that it is a bug in Coin -- it is much more likely that you are
+  getting a warning as an indication of API misuse or import file
+  errors which were just not detected and/or reported with those
+  Inventor implementations.
 */
 float
 SbVec3f::normalize(void)
