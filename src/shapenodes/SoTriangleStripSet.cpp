@@ -827,12 +827,13 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   vertex.setDetail(&pointDetail);
 
   while (ptr < end) {
-    n = *ptr++ - 2;
-    assert(n > 0);
+    n = *ptr++ - 3;
+    if (n < 0) continue; // triangle with < 3 vertices, try next one
 
     faceDetail.setFaceIndex(0);
     this->beginShape(action, TRIANGLE_STRIP, &faceDetail);
 
+    // first vertex
     if (nbind != OVERALL) {
       pointDetail.setNormalIndex(normnr);
       currnormal = &normals[normnr++];
@@ -856,6 +857,7 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
     vertex.setPoint(coords->get3(idx++));
     this->shapeVertex(&vertex);
 
+    // second vertex
     if (nbind == PER_VERTEX) {
       pointDetail.setNormalIndex(normnr);
       currnormal = &normals[normnr++];
@@ -879,6 +881,31 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
     vertex.setPoint(coords->get3(idx++));
     this->shapeVertex(&vertex);
 
+    // third vertex
+    if (nbind == PER_VERTEX) {
+      pointDetail.setNormalIndex(normnr);
+      currnormal = &normals[normnr++];
+      vertex.setNormal(*currnormal);
+    }
+    if (mbind == PER_VERTEX) {
+      pointDetail.setMaterialIndex(matnr);
+      vertex.setMaterialIndex(matnr++);
+    }
+    if (doTextures) {
+      if (tb.isFunction()) {
+        vertex.setTextureCoords(tb.get(coords->get3(idx), *currnormal));
+        if (tb.needIndices()) pointDetail.setTextureCoordIndex(texnr++);
+      }
+      else {
+        pointDetail.setTextureCoordIndex(texnr);
+        vertex.setTextureCoords(tb.get(texnr++));
+      }
+    }
+    pointDetail.setCoordinateIndex(idx);
+    vertex.setPoint(coords->get3(idx++));
+    this->shapeVertex(&vertex);
+
+    // loop for vertices 4-n
     while (n--) {
       if (nbind >= PER_FACE) {
         pointDetail.setNormalIndex(normnr);
