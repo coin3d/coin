@@ -108,7 +108,6 @@ SoGLTextureImageElement::pop(SoState * state,
 static SoTextureImageElement::Wrap
 translateWrap(const SoGLImage::Wrap wrap)
 {
-  // FIXME: add test when OpenGL 1.2 feature CLAMP_TO_EDGE is added
   if (wrap == SoGLImage::REPEAT) return SoTextureImageElement::REPEAT;
   return SoTextureImageElement::CLAMP;
 }

@@ -355,16 +355,6 @@ static SoGLImage::Wrap
 translateWrap(const SoTexture2::Wrap wrap)
 {
   if (wrap == SoTexture2::REPEAT) return SoGLImage::REPEAT;
-  // FIXME: this should better be CLAMP_TO_EDGE, but that would break
-  // compatibility with old code (and besides, it's only supported by
-  // OpenGL 1.2+ (or 1.1+?)). pederb's suggestion (which I support) is
-  // that we provide an environment variable for app programmers to
-  // control this behavior.
-  //
-  // There is also a case of this problem in SoTexture3, and perhaps
-  // other places too.
-  //
-  // 20021118 mortene.
   return SoGLImage::CLAMP;
 }
 
