@@ -64,13 +64,6 @@ public:
   void adjustScaleTabSize(void);
 
 protected:
-  enum State {
-    INACTIVE,
-    TRANSLATING,
-    EDGE_SCALING,
-    CORNER_SCALING,
-    UNIFORM_SCALING
-  };
 
   ~SoTabPlaneDragger();
 
@@ -88,15 +81,14 @@ protected:
   void drag(void);
   void dragFinish(void);
 
-  void translateStart(void);
-  void translateDrag(void);
-  void edgeScaleStart(void);
-  void edgeScaleDrag(void);
-  void cornerScaleStart(void);
-  void cornerScaleDrag(void);
-  void scaleUniformStart(void);
-  void scaleUniformDrag(void);
+  // Lots of public/protected methods and members were removed from
+  // this class as they clearly should have been private.
+  // Let us know if we've removed something that you need.
+  // pederb, 20000226
+  
+private:
 
+  // static methods moved from public to private
   static void startCB(void * f, SoDragger * d);
   static void motionCB(void * f, SoDragger * d);
   static void finishCB(void * f, SoDragger * d);
@@ -104,18 +96,21 @@ protected:
   static void fieldSensorCB(void * f, SoSensor * s);
   static void valueChangedCB(void * f, SoDragger * d);
 
-  SbBool needScaleTabAdjustment;
-  SbBool shftDown;
-  SbLineProjector * lineProj;
-  SbPlaneProjector * planeProj;
-  SbVec3f scaleCenter;
-  SbVec3f worldRestartPt;
+  void createPrivateParts(void);
+  SoNode *getNodeFieldNode(const char *fieldname);
+
   SoFieldSensor * scaleFieldSensor;
   SoFieldSensor * translFieldSensor;
-  State currentState;
-  State restartState;
-  int currentScalePatch;
-  int translateDir;
+  SbLineProjector *lineProj;
+  SbPlaneProjector *planeProj;
+  int whatkind;
+  int constraintState;
+  float prevsizex;
+  float prevsizey;
+  SbBool adjustTabs;
+  SbVec3f worldRestartPt;
+  SbVec3f scaleCenter;
 };
 
 #endif // !COIN_SOTABPLANEDRAGGER_H
+

@@ -25,7 +25,7 @@
 # I        SoScaleUniformDragger
 # I        SoSpotLightDragger
 #          SoTabBoxDragger
-#          SoTabPlaneDragger
+# I        SoTabPlaneDragger
 # I        SoTrackballDragger
 # I        SoTransformBoxDragger
 # i        SoTransformerDragger

@@ -17,6 +17,15 @@
  *
 \**************************************************************************/
 
+/*!
+  \class SoTabPlaneDragger SoTabPlaneDragger.h Inventor/draggers/SoTabPlaneDragger.h
+  \brief The SoTabPlaneDragger class is a dragger you can translate and scale within a plane.
+  \ingroup draggers
+  
+  FIXME: write class doc
+*/
+
+
 #include <Inventor/draggers/SoTabPlaneDragger.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -27,11 +36,51 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/projectors/SbPlaneProjector.h>
+#include <Inventor/projectors/SbLineProjector.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/sensors/SoFieldSensor.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SoPath.h>
 #include <coindefs.h> // COIN_STUB()
+#include <assert.h>
 
+#define WHATKIND_NONE      0
+#define WHATKIND_SCALE     1
+#define WHATKIND_TRANSLATE 2
+
+#define CONSTRAINT_OFF  0
+#define CONSTRAINT_WAIT 1
+#define CONSTRAINT_X    2
+#define CONSTRAINT_Y    3
+#define CONSTRAINT_Z    4
+
+
+// used to quickly find correct position of tabs
+
+static float edgetab_lookup[] = {
+  0.0f, 1.0f,
+  1.0f, 0.0f,
+  0.0f, -1.0f,
+  -1.0f, 0.0f
+};
+
+static float cornertab_lookup[] = {
+  1.0f, 1.0f,
+  1.0f, -1.0f,
+  -1.0f, -1.0f,
+  -1.0f, 1.0f
+};
+
+#define Z_OFFSET 0.0000001       // dummy offset for tabs to get correct picking
+#define TABSIZE 10.0f            // size (in pixels when projected to screen) of tabs
 
 SO_KIT_SOURCE(SoTabPlaneDragger);
-
 
 void
 SoTabPlaneDragger::initClass(void)
@@ -39,6 +88,9 @@ SoTabPlaneDragger::initClass(void)
   SO_KIT_INTERNAL_INIT_CLASS(SoTabPlaneDragger);
 }
 
+/*!
+  Constructor.
+*/
 SoTabPlaneDragger::SoTabPlaneDragger(void)
 {
   SO_KIT_INTERNAL_CONSTRUCTOR(SoTabPlaneDragger);
@@ -62,153 +114,502 @@ SoTabPlaneDragger::SoTabPlaneDragger(void)
   SO_KIT_ADD_CATALOG_ENTRY(cornerScaleTab2, SoIndexedFaceSet, TRUE, scaleTabs, cornerScaleTab3, FALSE);
   SO_KIT_ADD_CATALOG_ENTRY(cornerScaleTab3, SoIndexedFaceSet, TRUE, scaleTabs, "", FALSE);
 
+  if (SO_KIT_IS_FIRST_INSTANCE()) {
+    SoInteractionKit::readDefaultParts("tabPlaneDragger.iv", NULL, 0);
+  }
+  
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
 
   SO_KIT_INIT_INSTANCE();
+  
+  this->setPartAsDefault("translator", "tabPlaneTranslator");
+  this->setPartAsDefault("scaleTabMaterial", "tabPlaneScaleTabMaterial");
+  this->setPartAsDefault("scaleTabHints", "tabPlaneScaleTabHints");
+
+  SoSwitch *sw = SO_GET_ANY_PART(this, "planeSwitch", SoSwitch);
+  SoInteractionKit::setSwitchValue(sw, SO_SWITCH_ALL);
+
+  this->createPrivateParts();
+  this->prevsizex = this->prevsizey = 0.0f;
+  this->reallyAdjustScaleTabSize(NULL);
+  this->constraintState = CONSTRAINT_OFF;
+  this->whatkind = WHATKIND_NONE;
+  this->adjustTabs = TRUE;
+
+  this->addStartCallback(SoTabPlaneDragger::startCB);
+  this->addMotionCallback(SoTabPlaneDragger::motionCB);
+  this->addFinishCallback(SoTabPlaneDragger::finishCB);
+  this->addValueChangedCallback(SoTabPlaneDragger::valueChangedCB);
+  this->addOtherEventCallback(SoTabPlaneDragger::metaKeyChangeCB);
+
+  this->planeProj = new SbPlaneProjector;
+  this->lineProj = new SbLineProjector;
+
+  this->translFieldSensor = new SoFieldSensor(SoTabPlaneDragger::fieldSensorCB, this);
+  this->translFieldSensor->setPriority(0);
+  this->scaleFieldSensor = new SoFieldSensor(SoTabPlaneDragger::fieldSensorCB, this);
+  this->scaleFieldSensor->setPriority(0);
+
+  this->setUpConnections(TRUE, TRUE);
 }
 
-
+/*!
+  Destructor.
+*/
 SoTabPlaneDragger::~SoTabPlaneDragger()
 {
-  COIN_STUB();
+  delete this->translFieldSensor;
+  delete this->scaleFieldSensor;
+  delete this->planeProj;
+  delete this->lineProj;
 }
+
+//!
 
 SbBool
 SoTabPlaneDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
-  COIN_STUB();
-  return FALSE;
+  if (!doitalways && this->connectionsSetUp == onoff) return onoff;
+
+  if (onoff) {
+    inherited::setUpConnections(onoff, doitalways);
+    
+    SoTabPlaneDragger::fieldSensorCB(this, NULL);
+
+    if (this->translFieldSensor->getAttachedField() != &this->translation) {
+      this->translFieldSensor->attach(&this->translation);
+    }
+    if (this->scaleFieldSensor->getAttachedField() != &this->scaleFactor) {
+      this->scaleFieldSensor->attach(&this->scaleFactor);
+    }
+  }
+  else {
+    if (this->translFieldSensor->getAttachedField() != NULL) {
+      this->translFieldSensor->detach();
+    }
+    if (this->scaleFieldSensor->getAttachedField() != NULL) {
+      this->scaleFieldSensor->detach();
+    }
+    inherited::setUpConnections(onoff, doitalways);
+  }
+  return !(this->connectionsSetUp = onoff);
 }
+
+//!
 
 void
 SoTabPlaneDragger::setDefaultOnNonWritingFields(void)
 {
   COIN_STUB();
+  inherited::setDefaultOnNonWritingFields();
 }
 
 void
-SoTabPlaneDragger::fieldSensorCB(void * f, SoSensor * s)
+SoTabPlaneDragger::fieldSensorCB(void * d, SoSensor *)
 {
-  COIN_STUB();
+  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  thisp->workFieldsIntoTransform(matrix);
+  thisp->setMotionMatrix(matrix);
 }
 
 void
-SoTabPlaneDragger::valueChangedCB(void * f, SoDragger * d)
+SoTabPlaneDragger::valueChangedCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  SbMatrix matrix = thisp->getMotionMatrix();
+  SbVec3f trans, scale;
+  SbRotation rot, scaleOrient;
+  matrix.getTransform(trans, rot, scale, scaleOrient);
+
+  thisp->translFieldSensor->detach();
+  if (thisp->translation.getValue() != trans)
+    thisp->translation = trans;
+  thisp->translFieldSensor->attach(&thisp->translation);
+
+  thisp->scaleFieldSensor->detach();
+  if (thisp->scaleFactor.getValue() != scale)
+    thisp->scaleFactor = scale;
+  thisp->scaleFieldSensor->attach(&thisp->scaleFactor);
 }
 
+/*!
+  Adjusts tabs and renders dragger geometry.
+*/ 
 void
 SoTabPlaneDragger::GLRender(SoGLRenderAction * action)
 {
-  COIN_STUB();
+  //
+  // I think it is best to always recalculate tabs. In OIV, you'll need to
+  // click into the dragger sometimes to make the dragger recalculate tabs
+  // (after zooming, for instance).
+  //
+  if (1 || this->adjustTabs) {
+    this->reallyAdjustScaleTabSize(action);
+    this->adjustTabs = FALSE;
+  }
+  inherited::GLRender(action);
 }
 
+/*!
+  Signals the dragger to recalculate the size of its tabs. This method
+  is not doing anything useful in Coin, since the tab sizes are recalculated
+  every time the dragger is rendered, even though this method has not
+  been called.
+*/
 void
 SoTabPlaneDragger::adjustScaleTabSize(void)
 {
-  COIN_STUB();
+  this->adjustTabs = TRUE;
 }
 
-void
-SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction * action)
+/*!
+  Recalculates the size of the tabs, based on the current view volume,
+  the current viewport, the current model matrix and the current scale
+  factor. If \a action == \e NULL, a default size will be used.
+*/
+void 
+SoTabPlaneDragger::reallyAdjustScaleTabSize(SoGLRenderAction *action)
 {
-  COIN_STUB();
+  int i;
+  SoCoordinate3 *coordnode;
+  SbVec3f *coords;
+
+  float sizex = 0.08f;
+  float sizey = 0.08f;
+  if (action != NULL) {
+    SoState *state = action->getState();
+    const SbMatrix &toworld = SoModelMatrixElement::get(state);
+    const SbViewVolume &vv = SoViewVolumeElement::get(state);
+    const SbViewportRegion &vp = SoViewportRegionElement::get(state);
+    SbVec3f center(0.0f, 0.0f, 0.0f);
+    toworld.multVecMatrix(center, center);
+    sizex = sizey = 
+      vv.getWorldToScreenScale(center, TABSIZE/float(vp.getViewportSizePixels()[0]));
+    
+    SbVec3f scale = this->scaleFactor.getValue();
+    sizex /= scale[0];
+    sizey /= scale[1];
+  }
+  
+  if (sizex == this->prevsizex && this->prevsizey == sizey) return;
+  this->prevsizex = sizex;
+  this->prevsizey = sizey;
+  float halfx = sizex * 0.5f;
+  float halfy = sizey * 0.5f;
+
+  coordnode = SO_GET_ANY_PART(this, "edgeScaleCoords", SoCoordinate3);
+  coordnode->point.setNum(16);
+  coords = coordnode->point.startEditing();
+  {
+    coords[0].setValue(halfx, 1.0f, Z_OFFSET);
+    coords[1].setValue(-halfx, 1.0f, Z_OFFSET);
+    coords[2].setValue(-halfx, 1.0f-sizey, Z_OFFSET);
+    coords[3].setValue(halfx, 1.0f-sizey, Z_OFFSET);
+
+    coords[4].setValue(1.0f, -halfy, Z_OFFSET);
+    coords[5].setValue(1.0f, halfy, Z_OFFSET);
+    coords[6].setValue(1.0f-sizex, halfy, Z_OFFSET);
+    coords[7].setValue(1.0f-sizex, -halfy, Z_OFFSET);
+
+    coords[8].setValue(-halfx, -1.0f, Z_OFFSET);
+    coords[9].setValue(halfx, -1.0f, Z_OFFSET);
+    coords[10].setValue(halfx, -1.0f+sizey, Z_OFFSET);
+    coords[11].setValue(-halfx, -1.0f+sizey, Z_OFFSET);
+
+    coords[12].setValue(-1.0f, halfy, Z_OFFSET);
+    coords[13].setValue(-1.0f, -halfy, Z_OFFSET);
+    coords[14].setValue(-1.0f+sizex, -halfy, Z_OFFSET);
+    coords[15].setValue(-1.0f+sizex, halfy, Z_OFFSET);
+  }
+  coordnode->point.finishEditing();
+
+  coordnode = SO_GET_ANY_PART(this, "cornerScaleCoords", SoCoordinate3);
+  coordnode->point.setNum(16);
+  coords = coordnode->point.startEditing();
+  {
+    coords[0].setValue(1.0f, 1.0f, Z_OFFSET);
+    coords[1].setValue(1.0f-sizex, 1.0f, Z_OFFSET);
+    coords[2].setValue(1.0f-sizex, 1.0f-sizey, Z_OFFSET);
+    coords[3].setValue(1.0f, 1.0f-sizey, Z_OFFSET);
+
+    coords[4].setValue(1.0f, -1.0f, Z_OFFSET);
+    coords[5].setValue(1.0f, -1.0f+sizey, Z_OFFSET);
+    coords[6].setValue(1.0f-sizex, -1.0f+sizey, Z_OFFSET);
+    coords[7].setValue(1.0f-sizex, -1.0f, Z_OFFSET);
+
+    coords[8].setValue(-1.0f, -1.0f, Z_OFFSET);
+    coords[9].setValue(-1.0f+sizex, -1.0f, Z_OFFSET);
+    coords[10].setValue(-1.0f+sizex, -1.0f+sizey, Z_OFFSET);
+    coords[11].setValue(-1.0f, -1.0f+sizey, Z_OFFSET);
+
+    coords[12].setValue(-1.0f, 1.0f, Z_OFFSET);
+    coords[13].setValue(-1.0f, 1.0f-sizey, Z_OFFSET);
+    coords[14].setValue(-1.0f+sizex, 1.0f-sizey, Z_OFFSET);
+    coords[15].setValue(-1.0f+sizex, 1.0f, Z_OFFSET);
+  }
+  coordnode->point.finishEditing();
 }
 
-void
-SoTabPlaneDragger::getXYScreenLengths(SbVec2f & lengths, const SbMatrix & localtoscreen, const SbVec2s & winsize)
-{
-  COIN_STUB();
-}
-
+/*!
+  Called when dragger is selected by the user.
+*/
 void
 SoTabPlaneDragger::dragStart(void)
 {
-  COIN_STUB();
+  int i;
+  const SoPath *pickpath = this->getPickPath();
+  const SoEvent *event = this->getEvent();
+
+  SbBool found = FALSE;
+  SbVec3f startpt = this->getLocalStartingPoint();
+  
+  this->constraintState = CONSTRAINT_OFF;
+  
+  SbString str;
+  if (!found) {
+    for (i = 0; i < 4; i++) {
+      str.sprintf("edgeScaleTab%d", i);
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0) break;
+    }
+    if (i < 4) {
+      found = TRUE;
+      this->constraintState = i & 1 ? CONSTRAINT_X : CONSTRAINT_Y;
+      this->whatkind = WHATKIND_SCALE;
+      this->scaleCenter.setValue(-edgetab_lookup[i*2], -edgetab_lookup[i*2+1], 0.0f);
+    }
+  }
+  if (!found) {
+    for (i = 0; i < 4; i++) {
+      str.sprintf("cornerScaleTab%d", i);
+      if (pickpath->findNode(this->getNodeFieldNode(str.getString())) >= 0) break;
+    }
+    if (i < 4) {
+      found = TRUE;
+      this->whatkind = WHATKIND_SCALE;
+      this->scaleCenter.setValue(-cornertab_lookup[i*2], -cornertab_lookup[i*2+1], 0.0f);
+    }
+  }
+  if (!found) {
+    assert(pickpath->findNode(this->getNodeFieldNode("translator")) >= 0);
+    found = TRUE;
+    this->whatkind = WHATKIND_TRANSLATE;
+  }
+
+  if (this->whatkind == WHATKIND_SCALE) {
+    this->lineProj->setLine(SbLine(this->scaleCenter, startpt));
+  }
+  else { // translate
+    this->planeProj->setPlane(SbPlane(SbVec3f(0.0f, 0.0f, 1.0f), startpt));
+    this->constraintState = CONSTRAINT_OFF;
+    if (event->wasShiftDown()) {
+      this->getLocalToWorldMatrix().multVecMatrix(startpt, this->worldRestartPt);
+      this->constraintState = CONSTRAINT_WAIT;
+    }
+  }
 }
 
+/*!
+  Called when use drags the mouse.
+*/
 void
 SoTabPlaneDragger::drag(void)
 {
-  COIN_STUB();
+  if (this->whatkind == WHATKIND_SCALE) {
+    SbVec3f startpt = this->getLocalStartingPoint();
+    this->lineProj->setViewVolume(this->getViewVolume());
+    this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
+    SbVec3f projpt = this->lineProj->project(this->getNormalizedLocaterPosition());
+    
+    SbVec3f center = this->scaleCenter;
+    
+    float orglen = (startpt-center).length();
+    float currlen = (projpt-center).length();
+    float scale = 0.0f;
+    
+    if (orglen > 0.0f) scale = currlen / orglen;
+    if (scale > 0.0f && (startpt-center).dot(projpt-center) <= 0.0f) scale = 0.0f;
+    
+    SbVec3f scalevec(scale, scale, 1.0f);
+    if (this->constraintState == CONSTRAINT_X) {
+      scalevec[1] = 1.0f;
+    }
+    else if (this->constraintState == CONSTRAINT_Y) {
+      scalevec[0] = 1.0f;
+    }
+    this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
+                                            scalevec,
+                                            center));
+    
+  }
+  else { // translate
+    SbVec3f startpt = this->getLocalStartingPoint();  
+    this->planeProj->setViewVolume(this->getViewVolume());
+    this->planeProj->setWorkingSpace(this->getLocalToWorldMatrix());
+    SbVec3f projpt = this->planeProj->project(this->getNormalizedLocaterPosition());
+    
+    const SoEvent *event = this->getEvent();
+    SbBool reset = FALSE;
+    if (event->wasShiftDown() && this->constraintState == CONSTRAINT_OFF) {
+      this->constraintState = CONSTRAINT_WAIT;
+      this->setStartLocaterPosition(event->getPosition());
+      this->getLocalToWorldMatrix().multVecMatrix(projpt, this->worldRestartPt);
+      reset = TRUE;
+    }
+    else if (!event->wasShiftDown() && this->constraintState != CONSTRAINT_OFF) {
+      this->constraintState = CONSTRAINT_OFF;
+      reset = TRUE;
+    }
+    if (reset) {
+      this->saveStartParameters();
+      SbVec3f worldpt;
+      this->getLocalToWorldMatrix().multVecMatrix(projpt, worldpt);
+      this->setStartingPoint(worldpt);
+      startpt = projpt;
+    }
+    SbVec3f motion;
+    SbVec3f localrestartpt;
+    if (this->constraintState != CONSTRAINT_OFF) {
+      this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt,
+                                                  localrestartpt);
+      motion = localrestartpt - startpt;
+    }
+    else motion = projpt - startpt;
+    switch(this->constraintState) {
+    case CONSTRAINT_OFF:
+      break;
+    case CONSTRAINT_WAIT:
+      if (this->isAdequateConstraintMotion()) {
+        SbVec3f newmotion = projpt - localrestartpt;
+        int biggest = 0;
+        double bigval = fabs(newmotion[0]);
+        if (fabs(newmotion[1]) > bigval) {
+          biggest = 1;
+        }
+        motion[biggest] += newmotion[biggest];
+        this->constraintState = CONSTRAINT_X + biggest;
+      }
+      else {
+        return;
+      }
+      break;
+    case CONSTRAINT_X:
+      motion[0] += projpt[0] - localrestartpt[0];
+      break;
+    case CONSTRAINT_Y:
+      motion[1] += projpt[1] - localrestartpt[1];
+      break;
+    case CONSTRAINT_Z:
+      motion[2] += projpt[2] - localrestartpt[2];
+    }
+    this->setMotionMatrix(this->appendTranslation(this->getStartMotionMatrix(), motion));
+  }
 }
 
+/*!
+  Called when mouse button is released.
+*/
 void
 SoTabPlaneDragger::dragFinish(void)
 {
-  COIN_STUB();
+  this->whatkind = WHATKIND_NONE;
 }
 
 void
-SoTabPlaneDragger::translateStart(void)
+SoTabPlaneDragger::startCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  thisp->dragStart();
 }
 
 void
-SoTabPlaneDragger::translateDrag(void)
+SoTabPlaneDragger::motionCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  thisp->drag();
 }
 
 void
-SoTabPlaneDragger::edgeScaleStart(void)
+SoTabPlaneDragger::finishCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  thisp->dragFinish();
 }
 
 void
-SoTabPlaneDragger::edgeScaleDrag(void)
+SoTabPlaneDragger::metaKeyChangeCB(void *, SoDragger * d)
 {
-  COIN_STUB();
+  SoTabPlaneDragger *thisp = (SoTabPlaneDragger*)d;
+  if (!thisp->isActive.getValue()) return;
+  if (!thisp->whatkind == WHATKIND_TRANSLATE) return;
+  
+  const SoEvent *event = thisp->getEvent();
+  if (event->wasShiftDown() && thisp->constraintState == CONSTRAINT_OFF) {
+    thisp->drag();
+  }
+  else if (!event->wasShiftDown() && thisp->constraintState != CONSTRAINT_OFF) {
+    thisp->drag();
+  }
 }
 
-void
-SoTabPlaneDragger::cornerScaleStart(void)
-{
-  COIN_STUB();
+
+//
+// this method is not as naughty as it sounds :-) It simply creates the parts
+// it is not possible to configure through the dragger defaults file.
+//
+void 
+SoTabPlaneDragger::createPrivateParts(void)
+{  
+  SoMaterialBinding *mb = SO_GET_ANY_PART(this, "scaleTabMaterialBinding", SoMaterialBinding);
+  mb->value = SoMaterialBinding::OVERALL;
+  
+  SoNormalBinding *nb = SO_GET_ANY_PART(this, "scaleTabNormalBinding", SoNormalBinding);
+  nb->value = SoNormalBinding::OVERALL;
+
+  SoNormal *normal = SO_GET_ANY_PART(this, "scaleTabNormal", SoNormal);
+  normal->vector.setValue(SbVec3f(0.0f, 0.0f, 1.0f));
+
+  SoIndexedFaceSet *fs;
+  SbString str;
+  int idx = 0;
+  int i, j;
+  int32_t *ptr;
+  
+  for (i = 0; i < 8; i++) {
+    if (i == 0 || i == 4) idx = 0; 
+    if (i < 4)
+      str.sprintf("edgeScaleTab%d", i);
+    else
+      str.sprintf("cornerScaleTab%d", i-4);
+    fs = (SoIndexedFaceSet*) this->getAnyPart(SbName(str.getString()), TRUE);
+    fs->coordIndex.setNum(5);
+    ptr = fs->coordIndex.startEditing();
+    {
+      for (j = 0; j < 4; j++) ptr[j] = idx++;
+      ptr[4] = -1;
+    }
+    fs->coordIndex.finishEditing();
+    fs->normalIndex.setValue(0);
+    fs->materialIndex.setValue(0);
+  }
+
+  // turn off render caching since the geometry below this node might 
+  // change very often.
+  SoSeparator *sep = SO_GET_ANY_PART(this, "scaleTabs", SoSeparator);
+  sep->renderCaching = SoSeparator::OFF;
 }
 
-void
-SoTabPlaneDragger::cornerScaleDrag(void)
+//
+// returns the node in the SoSFNode field fieldname
+//
+SoNode *
+SoTabPlaneDragger::getNodeFieldNode(const char *fieldname)
 {
-  COIN_STUB();
+  SoField *field = this->getField(fieldname);
+  assert(field != NULL);
+  assert(field->isOfType(SoSFNode::getClassTypeId()));
+  assert(((SoSFNode*)field)->getValue() != NULL);
+  return ((SoSFNode*)field)->getValue();
 }
 
-void
-SoTabPlaneDragger::scaleUniformStart(void)
-{
-  COIN_STUB();
-}
-
-void
-SoTabPlaneDragger::scaleUniformDrag(void)
-{
-  COIN_STUB();
-}
-
-void
-SoTabPlaneDragger::startCB(void * f, SoDragger * d)
-{
-  COIN_STUB();
-}
-
-void
-SoTabPlaneDragger::motionCB(void * f, SoDragger * d)
-{
-  COIN_STUB();
-}
-
-void
-SoTabPlaneDragger::finishCB(void * f, SoDragger * d)
-{
-  COIN_STUB();
-}
-
-void
-SoTabPlaneDragger::metaKeyChangeCB(void * f, SoDragger * d)
-{
-  COIN_STUB();
-}
