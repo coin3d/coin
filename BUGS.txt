@@ -1524,31 +1524,3 @@
     20030312 mortene.
 
 =====================================================================
-
-063 Crash on using SoDB::cleanup().
-
-    This causes a segfault for me:
-
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-    #include <Inventor/SoDB.h>
-    #include <Inventor/SoInput.h>
-    
-    int
-    main(int argc, char ** argv)
-    {
-      SoDB::init();
-    
-      assert(argc == 2 && "usage: testapp <filename.wrl>");
-    
-      SoInput in;
-      SbBool ok = in.openFile(argv[1]);
-      assert(ok);
-
-      SoDB::cleanup();
-      return 0;
-    }
-    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
-
-    20030403 mortene.
-
-=====================================================================
