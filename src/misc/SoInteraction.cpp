@@ -19,9 +19,18 @@
 
 /*!
   \class SoInteraction SoInteraction.h Inventor/SoInteraction.h
-  \brief The SoInteraction class ... blablabla ...
+  \brief The SoInteraction class takes care of initalizing internal classes.
+  \ingroup general
 
-  FIXME: write doc
+  SoInteraction is present for the sole purpose of providing an
+  interface to the initialization methods of the classes in Coin which
+  are somehow related to user interaction, like the draggers and
+  manipulators.
+
+  It is unlikely that the application programmer should need to worry
+  about this class, as SoInteraction::init() is called by the GUI
+  specific initialization methods.
+
  */
 
 #include <Inventor/SoInteraction.h>
@@ -46,7 +55,12 @@
 
 
 /*!
-  FIXME: write doc
+  Calls the initClass() methods of these classes:
+  SoAntiSquish, SoSelection, SoExtSelection, SoSurroundScale,
+  SoInteractionKit, SoDragger, SoClipPlaneManip, SoDirectionalLightManip,
+  SoPointLightManip, SoSpotLightManip, SoTransformManip, SoCenterballManip,
+  SoHandleBoxManip, SoJackManip, SoTabBoxManip, SoTrackballManip,
+  SoTransformBoxManip, SoTransformerManip.
  */
 void
 SoInteraction::init(void)

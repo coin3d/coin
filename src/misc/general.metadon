@@ -19,8 +19,8 @@
 # id  SoDB
 # ID  SoInput
 # ID  SoOutput
-#     SoOffscreenRenderer
-# I   SoInteraction
+# iD  SoOffscreenRenderer
+# ID  SoInteraction
 # id  SoPath
 # id      SoFullPath
 #     SoPickedPoint
