@@ -44,6 +44,32 @@
 // this value is used to signal an invalid inverse matrix
 #define INVALID_TAG FLT_MAX
 
+static SbVec3f
+SbXfBox3f_get_scaled_span_vec(const SbXfBox3f & xfbox)
+{
+  const SbMatrix & m = xfbox.getTransform();
+
+  // FIXME: is this really correct? Won't we get the wrong result if
+  // there are rotations in the transformation matrix? 20020209 mortene.
+  float scalex = (float)sqrt(m[0][0] * m[0][0] +
+                             m[1][0] * m[1][0] +
+                             m[2][0] * m[2][0]);
+  float scaley = (float)sqrt(m[0][1] * m[0][1] +
+                             m[1][1] * m[1][1] +
+                             m[2][1] * m[2][1]);
+  float scalez = (float)sqrt(m[0][2] * m[0][2] +
+                             m[1][2] * m[1][2] +
+                             m[2][2] * m[2][2]);
+
+  SbVec3f min, max;
+  xfbox.getBounds(min, max);
+
+  return SbVec3f((max[0] - min[0]) * scalex,
+                 (max[1] - min[1]) * scaley,
+                 (max[2] - min[2]) * scalez);
+}
+
+
 /*!
   The default constructor makes an empty box and identity matrix.
  */
@@ -86,8 +112,8 @@ SbXfBox3f::~SbXfBox3f()
 }
 
 /*!
-  Overloaded from SbBox3f, as the transformations are to be kept separate
-  from the box in the SbXfBox3f class.
+  Overridden from SbBox3f, as the transformations are to be kept
+  separate from the box in the SbXfBox3f class.
  */
 void
 SbXfBox3f::transform(const SbMatrix & m)
@@ -227,7 +253,28 @@ SbXfBox3f::extendBy(const SbBox3f &bb)
 
   // Choose result from one of the two techniques based on the volume
   // of the resultant bbox.
-  if (xfbox.getVolume() < box2.getVolume()) {
+  SbBool firstsmaller;
+  float vol1 = xfbox.getVolume(), vol2 = box2.getVolume();
+  if ((vol1 != 0.0f) || (vol2 != 0.0f)) {
+    firstsmaller = (vol1 < vol2);
+  }
+  // If one dimension has zero span, we need to compare area (or
+  // length, if two dimensions have zero span).
+  else {
+    SbVec3f s1 = SbXfBox3f_get_scaled_span_vec(xfbox);
+    SbVec3f s2 = SbXfBox3f_get_scaled_span_vec(box2);
+
+    float v1 = (float)fabs((s1[0] != 0.0f ? s1[0] : 1.0f) *
+                           (s1[1] != 0.0f ? s1[1] : 1.0f) *
+                           (s1[2] != 0.0f ? s1[2] : 1.0f));
+    float v2 = (float)fabs((s2[0] != 0.0f ? s2[0] : 1.0f) *
+                           (s2[1] != 0.0f ? s2[1] : 1.0f) *
+                           (s2[2] != 0.0f ? s2[2] : 1.0f));
+
+    firstsmaller = (v1 < v2);
+  }
+
+  if (firstsmaller) {
     this->setBounds(box1.getMin(), box1.getMax());
   }
   else {
@@ -350,8 +397,27 @@ SbXfBox3f::extendBy(const SbXfBox3f & bb)
 #endif // debug
 
   // Compare volumes and pick the smallest bounding box.
-  if (box1.getVolume() < box2.getVolume()) *this = box1;
-  else *this = box2;
+  SbBool firstsmaller;
+  float vol1 = box1.getVolume(), vol2 = box2.getVolume();
+  if ((vol1 != 0.0f) || (vol2 != 0.0f)) {
+    firstsmaller = (vol1 < vol2);
+  }
+  // If one dimension has zero span, we need to compare area (or
+  // length, if two dimensions have zero span).
+  else {
+    SbVec3f s1 = SbXfBox3f_get_scaled_span_vec(box1);
+    SbVec3f s2 = SbXfBox3f_get_scaled_span_vec(box2);
+
+    float v1 = (float)fabs((s1[0] != 0.0f ? s1[0] : 1.0f) *
+                           (s1[1] != 0.0f ? s1[1] : 1.0f) *
+                           (s1[2] != 0.0f ? s1[2] : 1.0f));
+    float v2 = (float)fabs((s2[0] != 0.0f ? s2[0] : 1.0f) *
+                           (s2[1] != 0.0f ? s2[1] : 1.0f) *
+                           (s2[2] != 0.0f ? s2[2] : 1.0f));
+
+    firstsmaller = (v1 < v2);
+  }
+  *this = (firstsmaller ? box1 : box2);
 }
 
 /*!
@@ -525,11 +591,11 @@ SbXfBox3f::intersect(const SbBox3f &bb) const
 }
 
 /*!
-  Find the span of the box in the given direction (i.e. how much room in
-  the given direction the box needs). The distance is returned as the minimum
-  and maximum distance from Origo to the closest and furthest plane defined
-  by the direction vector and each of the box' corners. The difference
-  between these values gives the span.
+  Find the span of the box in the given direction (i.e. how much room
+  in the given direction the box needs). The distance is returned as
+  the minimum and maximum distance from origo to the closest and
+  furthest plane defined by the direction vector and each of the box'
+  corners. The difference between these values gives the span.
 */
 void
 SbXfBox3f::getSpan(const SbVec3f &direction, float &dMin, float &dMax) const
@@ -576,30 +642,16 @@ operator !=(const SbXfBox3f &b1, const SbXfBox3f &b2)
 }
 
 /*!
-  Return box volume. Overloaded from parent class to take into account
+  Return box volume. Overridden from parent class to take into account
   the possibility of scaling in the transformation matrix.
- */
+*/
 float
 SbXfBox3f::getVolume(void) const
 {
   if (!this->hasVolume()) return 0.0f;
 
-  float scalex = (float)sqrt(this->matrix[0][0] * this->matrix[0][0] +
-                             this->matrix[1][0] * this->matrix[1][0] +
-                             this->matrix[2][0] * this->matrix[2][0]);
-  float scaley = (float)sqrt(this->matrix[0][1] * this->matrix[0][1] +
-                             this->matrix[1][1] * this->matrix[1][1] +
-                             this->matrix[2][1] * this->matrix[2][1]);
-  float scalez = (float)sqrt(this->matrix[0][2] * this->matrix[0][2] +
-                             this->matrix[1][2] * this->matrix[1][2] +
-                             this->matrix[2][2] * this->matrix[2][2]);
-
-  SbVec3f min, max;
-  this->getBounds(min, max);
-
-  return (float)fabs(((max[0]-min[0]) * scalex *
-                      (max[1]-min[1]) * scaley *
-                      (max[2]-min[2]) * scalez));
+  SbVec3f scaledspan = SbXfBox3f_get_scaled_span_vec(*this);
+  return (float)fabs(scaledspan[0] * scaledspan[1] * scaledspan[2]);
 }
 
 /*!
