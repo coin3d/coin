@@ -127,7 +127,7 @@
 #   T-G-p-c               SoTextureCoordinatePlane
 #    BG-P-C       SoVertexProperty
 #    B   -        SoWWWInline
-# I- BG-P--S      SoUnknownNode
+# I--BG-P--S      SoUnknownNode
 #
 # ************************************************************************
 #
@@ -140,12 +140,6 @@
 # Status "yellow" for the .iv compliance testfile column means the tests
 # contained in the file(s) are not very extensive, and should be improved
 # upon.
-#
-# We need to implement and check override functionality, which is not done
-# at all now.
-#
-# Add flags for "Implementation" (codifying all methods besides the
-# action methods) and "Documentation".
 #
 # END COMMENTS
 #
