@@ -34,11 +34,12 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSFNode.h>
-#include <Inventor/misc/SoBasic.h>
+#include <coindefs.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <coindefs.h> // COIN_STUB()
 
 #include <stdlib.h>
 

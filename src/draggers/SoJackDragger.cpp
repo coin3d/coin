@@ -27,6 +27,7 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 SO_KIT_SOURCE(SoJackDragger);
@@ -52,7 +53,7 @@ SoJackDragger::SoJackDragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("jackDragger.iv", NULL, 0);
   }
-  
+
   SO_NODE_ADD_FIELD(rotation, (SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), 0.0f)));
   SO_NODE_ADD_FIELD(translation, (0.0f, 0.0f, 0.0f));
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
@@ -88,16 +89,16 @@ SbBool
 SoJackDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
   if (!doitalways && this->connectionsSetUp == onoff) return onoff;
-  
+
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
     SoDragger *child;
     child = (SoDragger*) this->getAnyPart("rotator", FALSE);
-    child->setPartAsDefault("rotator", 
+    child->setPartAsDefault("rotator",
                             "jackRotatorRotator");
-    child->setPartAsDefault("rotatorActive", 
+    child->setPartAsDefault("rotatorActive",
                             "jackRotatorRotatorActive");
-    child->setPartAsDefault("feedback", 
+    child->setPartAsDefault("feedback",
                             "jackRotatorFeedback");
     this->registerChildDragger(child);
 
@@ -127,7 +128,7 @@ SoJackDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     child->setPartAsDefault("xzFeedback", "jackTranslatorXZFeedback");
     child->setPartAsDefault("xyFeedback", "jackTranslatorXYFeedback");
     child->setPartAsDefault("yzFeedback", "jackTranslatorYZFeedback");
-    
+
     this->registerChildDragger(child);
     if (this->rotFieldSensor->getAttachedField() != &this->rotation) {
       this->rotFieldSensor->attach(&this->rotation);

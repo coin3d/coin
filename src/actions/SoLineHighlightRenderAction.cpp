@@ -26,7 +26,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoLineHighlightRenderAction.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 
 // *************************************************************************
 

@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoTexture2.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>

@@ -24,7 +24,6 @@
 */
 
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/SbName.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/actions/SoSubAction.h>
@@ -32,8 +31,8 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoGL.h>
 #include <Inventor/SbPlane.h>
-
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <coindefs.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

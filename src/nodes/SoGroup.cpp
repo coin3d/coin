@@ -27,8 +27,7 @@
 
 #include <Inventor/nodes/SoGroup.h>
 #include <assert.h>
-
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/misc/SoChildList.h>

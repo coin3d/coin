@@ -40,7 +40,6 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldData.h>
 #include <Inventor/lists/SoBaseList.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

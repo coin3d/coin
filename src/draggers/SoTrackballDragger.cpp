@@ -38,6 +38,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <coindefs.h> // COIN_STUB()
+
 // don't change these values!
 #define WHATKIND_NONE          0
 #define WHATKIND_ROTATOR       1
@@ -129,9 +131,9 @@ SoTrackballDragger::SoTrackballDragger(void)
   this->rotFieldSensor->setPriority(0);
   this->scaleFieldSensor = new SoFieldSensor(SoTrackballDragger::fieldSensorCB, this);
   this->scaleFieldSensor->setPriority(0);
-  
+
   this->timerSensor = new SoTimerSensor(SoTrackballDragger::timerSensorCB, this);
-  
+
   this->setUpConnections(TRUE, TRUE);
 }
 
@@ -152,7 +154,7 @@ SoTrackballDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    
+
     SoTrackballDragger::fieldSensorCB(this, NULL);
 
     if (this->rotFieldSensor->getAttachedField() != &this->rotation) {
@@ -203,7 +205,7 @@ SoTrackballDragger::valueChangedCB(void *, SoDragger * d)
   if (thisp->rotation.getValue() != rot)
     thisp->rotation = rot;
   thisp->rotFieldSensor->attach(&thisp->rotation);
-  
+
   thisp->scaleFieldSensor->detach();
   if (thisp->scaleFactor.getValue() != scale)
     thisp->scaleFactor = scale;
@@ -274,13 +276,13 @@ SoTrackballDragger::dragStart(void)
       SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation.getValue();
     rot.multVec(axis, axis);
   }
-  
+
   SbVec3f hitPt = this->getLocalStartingPoint();
-  
+
   if (this->whatkind == WHATKIND_ROTATOR || this->whatkind == WHATKIND_USERAXIS) {
     this->sphereProj->setSphere(SbSphere(SbVec3f(0.0f, 0.0f, 0.0f),
                                          hitPt.length()));
-    
+
     if (this->whatkind == WHATKIND_USERAXIS) {
       hitPt.normalize();
       SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation =
@@ -290,7 +292,7 @@ SoTrackballDragger::dragStart(void)
   else if (this->whatkind == WHATKIND_XROTATOR ||
            this->whatkind == WHATKIND_YROTATOR ||
            this->whatkind == WHATKIND_ZROTATOR ||
-           this->whatkind == WHATKIND_USERROTATOR) {    
+           this->whatkind == WHATKIND_USERROTATOR) {
     this->cylProj->setCylinder(SbCylinder(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), axis),
                                           hitPt.length()));
     this->cylProj->setViewVolume(this->getViewVolume());
@@ -322,7 +324,7 @@ SoTrackballDragger::drag(void)
     SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation =
       SbRotation(SbVec3f(0.0f, 1.0f, 0.0f), vec);
   }
-  
+
   else if (this->whatkind == WHATKIND_ROTATOR) {
     this->sphereProj->setViewVolume(this->getViewVolume());
     this->sphereProj->setWorkingSpace(this->getLocalToWorldMatrix());
@@ -340,21 +342,21 @@ SoTrackballDragger::drag(void)
     SbVec3f projPt = this->cylProj->project(this->getNormalizedLocaterPosition());
     SbRotation rot = this->cylProj->getRotation(startPt, projPt);
     this->setMotionMatrix(this->appendRotation(this->getStartMotionMatrix(),
-                                               rot, SbVec3f(0.0f, 0.0f, 0.0f))); 
+                                               rot, SbVec3f(0.0f, 0.0f, 0.0f)));
   }
   else if (this->whatkind == WHATKIND_SCALE) {
     this->lineProj->setViewVolume(this->getViewVolume());
     this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
     SbVec3f startPt = this->getLocalStartingPoint();
     SbVec3f projPt = lineProj->project(this->getNormalizedLocaterPosition());
-    
+
     float orglen = startPt.length();
     float currlen = projPt.length();
-    
+
     float scale = 0.0f;
     if (orglen > 0.0f) scale = currlen / orglen;
     if (scale > 0.0f && startPt.dot(projPt) < 0.0f) scale = 0.0f;
-    
+
     this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
                                             SbVec3f(scale, scale, scale),
                                             SbVec3f(0.0f, 0.0f, 0.0f)));
@@ -370,12 +372,12 @@ SoTrackballDragger::dragFinish(void)
   this->setAllPartsActive(FALSE);
   this->updateUserAxisSwitches();
 
-  if (this->hasDragged && 
-      this->animationEnabled && 
+  if (this->hasDragged &&
+      this->animationEnabled &&
       this->whatkind != WHATKIND_SCALE &&
       this->whatkind != WHATKIND_USERAXIS) {
     SbVec2f pos = this->getNormalizedLocaterPosition();
-    
+
     if (pos == this->prevMousePos) return;
 
     //
@@ -411,16 +413,16 @@ SoTrackballDragger::dragFinish(void)
   }
 }
 
-void 
+void
 SoTrackballDragger::timerSensorCB(void *d, SoSensor *)
 {
   SoTrackballDragger *thisp = (SoTrackballDragger*)d;
- 
-  SbTime difftime = SbTime::getTimeOfDay() - thisp->prevTime;  
+
+  SbTime difftime = SbTime::getTimeOfDay() - thisp->prevTime;
   float angle = thisp->animAngle * float(difftime.getValue()/thisp->animTime.getValue());
   SbRotation rot(thisp->animAxis, angle);
   thisp->setMotionMatrix(thisp->appendRotation(thisp->getStartMotionMatrix(),
-                                               rot, SbVec3f(0.0f, 0.0f, 0.0f))); 
+                                               rot, SbVec3f(0.0f, 0.0f, 0.0f)));
 }
 
 void
@@ -477,7 +479,7 @@ SoTrackballDragger::getNodeFieldNode(const char *fieldname)
   return ((SoSFNode*)field)->getValue();
 }
 
-void 
+void
 SoTrackballDragger::updateUserAxisSwitches(const SbBool setactive)
 {
   SoSwitch *sw;
@@ -485,11 +487,11 @@ SoTrackballDragger::updateUserAxisSwitches(const SbBool setactive)
 
   if (!setactive) {
     SbVec3f vec(0.0f, 1.0f, 0.0f);
-    SbRotation rot = 
+    SbRotation rot =
       SO_GET_ANY_PART(this, "userAxisRotation", SoRotation)->rotation.getValue();
     rot.multVec(vec, vec);
     vec.normalize();
-    
+
     if (vec[0] >= USER_AXIS_DISAPPEAR_LIMIT) val = SO_SWITCH_NONE;
     else if (vec[1] >= USER_AXIS_DISAPPEAR_LIMIT) val = SO_SWITCH_NONE;
     else if (vec[2] >= USER_AXIS_DISAPPEAR_LIMIT) val = SO_SWITCH_NONE;

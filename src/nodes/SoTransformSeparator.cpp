@@ -28,7 +28,7 @@
 
 #include <Inventor/nodes/SoTransformSeparator.h>
 
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>

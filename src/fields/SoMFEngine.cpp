@@ -31,7 +31,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 #include <Inventor/SbName.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 
 
 

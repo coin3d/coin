@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoSurroundScale.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 

@@ -26,7 +26,7 @@
 
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 
 /*!
   \fn SoLocalBBoxMatrixElement::localMatrix

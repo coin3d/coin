@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoIndexedNurbsCurve.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 
@@ -144,4 +145,3 @@ SoIndexedNurbsCurve::generatePrimitives(SoAction * /* action */)
 {
   COIN_STUB();
 }
-

@@ -26,8 +26,7 @@
 */
 
 #include <Inventor/nodes/SoAsciiText.h>
-
-
+#include <coindefs.h> // COIN_STUB()
 
 /*!
   \enum SoAsciiText::Justification

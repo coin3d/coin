@@ -119,7 +119,6 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubField.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <assert.h>
 #include <malloc.h>
 

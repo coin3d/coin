@@ -46,7 +46,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbLine.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 #include <string.h>
 #if COIN_DEBUG

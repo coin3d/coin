@@ -26,8 +26,7 @@
 */
 
 #include <Inventor/nodes/SoAnnoText3.h>
-
-
+#include <coindefs.h> // COIN_STUB()
 
 
 /*!

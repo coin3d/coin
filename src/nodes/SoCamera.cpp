@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoCamera.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -293,7 +293,7 @@ SoCamera::handleEvent(SoHandleEventAction *action)
 
   float aspectratio =
     SoViewportRegionElement::get(state).getViewportAspectRatio();
-  
+
   SbViewVolume vv = this->getViewVolume(aspectratio);
   SoViewVolumeElement::set(state, this, vv);
 }

@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodes/SoWWWAnchor.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 /*!

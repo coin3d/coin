@@ -32,7 +32,7 @@
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 
 #define FLAG_LIGHTING     0x0001

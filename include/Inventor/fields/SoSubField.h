@@ -20,7 +20,7 @@
 #ifndef COIN_SOSUBFIELD_H
 #define COIN_SOSUBFIELD_H
 
-#include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
+#include <Inventor/SbBasic.h> // for SO__QUOTE() definition
 #include <assert.h>
 #ifndef COIN_INTERNAL
 // Added for Inventor compliance

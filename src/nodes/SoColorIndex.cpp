@@ -26,8 +26,7 @@
 */
 
 #include <Inventor/nodes/SoColorIndex.h>
-
-
+#include <coindefs.h> // COIN_STUB()
 
 /*!
   \var SoMFInt32 SoColorIndex::index

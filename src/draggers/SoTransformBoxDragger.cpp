@@ -29,6 +29,7 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>
+#include <coindefs.h> // COIN_STUB()
 
 SO_KIT_SOURCE(SoTransformBoxDragger);
 
@@ -120,7 +121,7 @@ SoTransformBoxDragger::SoTransformBoxDragger(void)
 
   SoAntiSquish *squish = SO_GET_ANY_PART(this, "antiSquish", SoAntiSquish);
   squish->sizing = SoAntiSquish::BIGGEST_DIMENSION;
-  
+
   this->addValueChangedCallback(SoTransformBoxDragger::valueChangedCB);
   this->rotFieldSensor = new SoFieldSensor(SoTransformBoxDragger::fieldSensorCB, this);
   this->rotFieldSensor->setPriority(0);
@@ -143,7 +144,7 @@ SbBool
 SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
   if (!doitalways && this->connectionsSetUp == onoff) return onoff;
-  
+
   if (onoff) {
     int i;
     char buf[512];
@@ -195,7 +196,7 @@ SoTransformBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator4", FALSE));
     this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator5", FALSE));
     this->unregisterChildDragger((SoDragger*)this->getAnyPart("translator6", FALSE));
-    
+
     if (this->translFieldSensor->getAttachedField() != NULL) {
       this->translFieldSensor->detach();
     }
@@ -259,5 +260,3 @@ SoTransformBoxDragger::invalidateSurroundScaleCB(void *, SoDragger * d)
   SoSurroundScale *surround = SO_GET_ANY_PART(thisp, "surroundScale", SoSurroundScale);
   surround->invalidate();
 }
-
-

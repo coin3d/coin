@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoMarkerSet.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 

@@ -48,8 +48,7 @@
 //         -- 19990418 mortene.
 
 #include <Inventor/nodes/SoText2.h>
-
-
+#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

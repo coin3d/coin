@@ -26,7 +26,6 @@
 */
 
 #include <Inventor/SoNodeKitPath.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <Inventor/nodekits/SoBaseKit.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <stdlib.h>
@@ -51,7 +50,7 @@ SoNodeKitPath::SoNodeKitPath(const int approxLength)
   }
   SoDebugError::postInfo("SoNodeKitPath::SoNodeKitPath",
                          "no nodekits in path");
-#endif // debug 
+#endif // debug
 }
 
 /*!
@@ -176,8 +175,8 @@ SoNodeKitPath::pop(void)
 
 /*!
   Appends \a childKit to the path. childKit should be a part in the
-  tail nodekit of this path. In effect, the path from the tail to first 
-  occurrance of \a childKit will be appended to the path. 
+  tail nodekit of this path. In effect, the path from the tail to first
+  occurrance of \a childKit will be appended to the path.
 */
 void
 SoNodeKitPath::append(SoBaseKit *childKit)
@@ -204,7 +203,7 @@ SoNodeKitPath::append(SoBaseKit *childKit)
 }
 
 /*!
-  Appends the nodekit path to this path. Head of \a fromPath must 
+  Appends the nodekit path to this path. Head of \a fromPath must
   be a part in the current tail.
 */
 void
@@ -245,10 +244,10 @@ SoNodeKitPath::findFork(const SoNodeKitPath *path) const
 int
 operator==(const SoNodeKitPath &p1, const SoNodeKitPath &p2)
 {
-  if (&p1 == &p2) return TRUE; 
+  if (&p1 == &p2) return TRUE;
   int n = p1.getLength();
   if (n != p2.getLength()) return FALSE;
-  
+
   for (int i = 0; i < n; i++) {
     if (p1.getNode(i) != p2.getNode(i)) return FALSE;
   }
@@ -285,54 +284,50 @@ SoNodeKitPath::getSearchAction(void)
 // private methods, just to keep the user from making mistakes
 //
 
-void 
+void
 SoNodeKitPath::append(const int)
 {
 
 }
 
-void 
+void
 SoNodeKitPath::append(SoNode *)
 {
 }
 
-void 
+void
 SoNodeKitPath::append(const SoPath *)
 {
 }
 
-void 
+void
 SoNodeKitPath::push(const int)
 {
 }
 
-int 
+int
 SoNodeKitPath::getIndex(const int) const
 {
   return 0;
 }
 
-int 
+int
 SoNodeKitPath::getIndexFromTail(const int) const
 {
   return 0;
 }
 
-void 
+void
 SoNodeKitPath::insertIndex(SoNode *, const int)
 {
 }
 
-void 
+void
 SoNodeKitPath::removeIndex(SoNode *,const int)
 {
 }
 
-void 
+void
 SoNodeKitPath::replaceIndex(SoNode *, const int, SoNode *)
 {
 }
-
-
-
-

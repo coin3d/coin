@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodes/SoPathSwitch.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 /*!

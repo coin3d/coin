@@ -27,7 +27,7 @@
  */
 
 #include <Inventor/sensors/SoPathSensor.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 #include <stdlib.h> // NULL
 #include <assert.h>
 

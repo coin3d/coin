@@ -29,6 +29,7 @@
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoActions.h>
+#include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/SoType.h>
 #include <Inventor/elements/SoOverrideElement.h>
@@ -39,6 +40,7 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
+
 
 #include <assert.h>
 

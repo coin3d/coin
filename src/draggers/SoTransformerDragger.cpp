@@ -28,6 +28,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 SO_KIT_SOURCE(SoTransformerDragger);

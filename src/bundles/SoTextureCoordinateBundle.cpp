@@ -25,6 +25,7 @@
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>

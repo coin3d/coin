@@ -38,7 +38,7 @@
 
 #include <Inventor/SbString.h>
 #include <Inventor/SbName.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/misc/SoChildList.h>

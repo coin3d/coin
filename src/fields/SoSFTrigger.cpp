@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFTrigger.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 SO_SFIELD_CONSTRUCTOR_SOURCE(SoSFTrigger);

@@ -28,7 +28,7 @@
 
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoSubAction.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/SbName.h>
 #include <Inventor/SoOutput.h>

@@ -48,7 +48,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoFieldContainer.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <ctype.h>
 

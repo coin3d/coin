@@ -29,7 +29,7 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/misc/SoNotification.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 
 /*!

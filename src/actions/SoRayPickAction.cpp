@@ -25,7 +25,7 @@
   FIXME: write full doc
 */
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/actions/SoRayPickAction.h>

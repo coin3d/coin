@@ -27,7 +27,7 @@
 
 #include <Inventor/nodes/SoWWWInline.h>
 
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbColor.h>
 

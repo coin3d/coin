@@ -180,7 +180,7 @@ SoScale2UniformDragger::dragStart(void)
   SoInteractionKit::setSwitchValue(sw, 1);
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 1);
-   
+
   SbVec3f startPt = this->getLocalStartingPoint();
   startPt[2] = 0.0f;
   this->lineProj->setLine(SbLine(SbVec3f(0.0f, 0.0f, 0.0f), startPt));
@@ -198,7 +198,7 @@ SoScale2UniformDragger::drag(void)
 
   float orglen = startPt.length();
   float currlen = projPt.length();
-  
+
   float scale = 0.0f;
   if (orglen > 0.0f) scale = currlen / orglen;
 

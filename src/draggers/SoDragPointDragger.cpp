@@ -33,6 +33,8 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <coindefs.h> // COIN_STUB()
+
 
 SO_KIT_SOURCE(SoDragPointDragger);
 
@@ -139,7 +141,7 @@ SoDragPointDragger::SoDragPointDragger(void)
   this->addMotionCallback(SoDragPointDragger::motionCB, this);
   this->addFinishCallback(SoDragPointDragger::finishCB, this);
   this->addOtherEventCallback(SoDragPointDragger::metaKeyChangeCB, this);
-  
+
   this->addValueChangedCallback(SoDragPointDragger::valueChangedCB);
   this->fieldSensor = new SoFieldSensor(SoDragPointDragger::fieldSensorCB, this);
   this->fieldSensor->setPriority(0);
@@ -157,10 +159,10 @@ SbBool
 SoDragPointDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
   if (!doitalways && this->connectionsSetUp == onoff) return onoff;
-  
+
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    
+
     SoDragger *xdragger = (SoDragger*) this->getAnyPart("xTranslator", FALSE);
     xdragger->setPartAsDefault("translator", "dragPointXTranslatorTranslator");
     xdragger->setPartAsDefault("translatorActive", "dragPointXTranslatorTranslatorActive");
@@ -206,7 +208,7 @@ SoDragPointDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     if (this->fieldSensor->getAttachedField() != NULL) {
       this->fieldSensor->detach();
     }
-    
+
     inherited::setUpConnections(onoff, doitalways);
   }
   return !(this->connectionsSetUp = onoff);
@@ -237,7 +239,7 @@ SoDragPointDragger::valueChangedCB(void *, SoDragger * d)
   t[0] = matrix[3][0];
   t[1] = matrix[3][1];
   t[2] = matrix[3][2];
-  
+
   thisp->fieldSensor->detach();
   if (thisp->translation.getValue() != t) {
     thisp->translation = t;
@@ -266,7 +268,7 @@ SoDragPointDragger::showNextDraggerSet(void)
 
 void
 SoDragPointDragger::dragStart(void)
-{  
+{
   SoSwitch *sw;
   if (this->getActiveChildDragger()->isOfType(SoTranslate2Dragger::getClassTypeId())) {
     sw = SO_GET_ANY_PART(this, "planeFeedbackSwitch", SoSwitch);
@@ -274,13 +276,13 @@ SoDragPointDragger::dragStart(void)
   }
   else {
     switch (this->currAxis) {
-    case 0: 
+    case 0:
       sw = SO_GET_ANY_PART(this, "xFeedbackSwitch", SoSwitch);
       break;
-    case 1: 
+    case 1:
       sw = SO_GET_ANY_PART(this, "yFeedbackSwitch", SoSwitch);
       break;
-    case 2: 
+    case 2:
       sw = SO_GET_ANY_PART(this, "zFeedbackSwitch", SoSwitch);
       break;
     default:
@@ -344,21 +346,21 @@ SoDragPointDragger::metaKeyChangeCB(void * d, SoDragger *)
     thisp->showNextDraggerSet();
   }
 }
-  
-void 
+
+void
 SoDragPointDragger::registerDragger(SoDragger *dragger)
 {
   this->registerChildDragger(dragger);
 }
 
-void 
+void
 SoDragPointDragger::unregisterDragger(const char *name)
 {
   SoDragger *dragger = (SoDragger*) this->getAnyPart(name, FALSE);
   this->unregisterChildDragger(dragger);
 }
 
-void 
+void
 SoDragPointDragger::updateSwitchNodes()
 {
   SoSwitch *sw;
@@ -376,5 +378,3 @@ SoDragPointDragger::updateSwitchNodes()
   sw = SO_GET_ANY_PART(this, "yzTranslatorSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, this->currAxis == 0 ? 0 : SO_SWITCH_NONE);
 }
-
-

@@ -192,10 +192,10 @@ SoScaleUniformDragger::drag(void)
 
   float orglen = startPt.length();
   float currlen = projPt.length();
-  
+
   float scale = 0.0f;
   if (orglen > 0.0f) scale = currlen / orglen;
-  
+
   if (scale > 0.0f && startPt.dot(projPt) < 0.0f) scale = 0.0f;
 
   this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),

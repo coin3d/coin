@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoEventCallback.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/events/SoEvent.h>
 
 #if COIN_DEBUG
@@ -243,4 +243,3 @@ SoEventCallback::handleEvent(SoHandleEventAction * action)
   // Reset.
   this->heaction = NULL;
 }
-

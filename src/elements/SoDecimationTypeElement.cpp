@@ -26,7 +26,7 @@
 
 #include <Inventor/elements/SoDecimationTypeElement.h>
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 
 #include <assert.h>
 

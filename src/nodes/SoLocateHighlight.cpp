@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodes/SoLocateHighlight.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 /*!

@@ -27,6 +27,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/projectors/SbCylinderPlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <coindefs.h> // COIN_STUB()
 
 SO_KIT_SOURCE(SoRotateCylindricalDragger);
 

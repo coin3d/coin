@@ -36,6 +36,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <coindefs.h> // COIN_STUB()
+
+
 #define WHATKIND_NONE       0
 #define WHATKIND_TRANSLATOR 1
 #define WHATKIND_EXTRUDER   2
@@ -247,7 +250,7 @@ SoHandleBoxDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    
+
     SoHandleBoxDragger::fieldSensorCB(this, NULL);
 
     if (this->translFieldSensor->getAttachedField() != &this->translation) {
@@ -299,7 +302,7 @@ SoHandleBoxDragger::valueChangedCB(void * f, SoDragger * d)
   if (thisp->translation.getValue() != trans)
     thisp->translation = trans;
   thisp->translFieldSensor->attach(&thisp->translation);
-  
+
   thisp->scaleFieldSensor->detach();
   if (thisp->scaleFactor.getValue() != scale)
     thisp->scaleFactor = scale;
@@ -332,7 +335,7 @@ SoHandleBoxDragger::metaKeyChangeCB(void *, SoDragger * d)
 {
   SoHandleBoxDragger *thisp = (SoHandleBoxDragger*)d;
   if (!thisp->isActive.getValue()) return;
-  
+
   const SoEvent *event = thisp->getEvent();
   if (SO_KEY_RELEASE_EVENT(event, LEFT_SHIFT) ||
       SO_KEY_RELEASE_EVENT(event, RIGHT_SHIFT)) {
@@ -401,10 +404,10 @@ SoHandleBoxDragger::dragStart(void)
 
   switch(this->whatkind) {
   case WHATKIND_TRANSLATOR:
-    {        
+    {
       SbVec3f n;
       if (this->whatnum <= 2) {
-        n = SbVec3f(0.0f, 1.0f, 0.0f);        
+        n = SbVec3f(0.0f, 1.0f, 0.0f);
       }
       else if (this->whatnum <= 4) {
         n = SbVec3f(1.0f, 0.0f, 0.0f);
@@ -437,12 +440,12 @@ void
 SoHandleBoxDragger::drag(void)
 {
   SbVec3f startPt = this->getLocalStartingPoint();
-  
+
   if (this->whatkind == WHATKIND_TRANSLATOR) {
     this->planeProj->setViewVolume(this->getViewVolume());
     this->planeProj->setWorkingSpace(this->getLocalToWorldMatrix());
     SbVec3f projPt = this->planeProj->project(this->getNormalizedLocaterPosition());
-    
+
     const SoEvent *event = this->getEvent();
     if (event->wasShiftDown() && this->constraintState == CONSTRAINT_OFF) {
       this->constraintState = CONSTRAINT_WAIT;
@@ -453,10 +456,10 @@ SoHandleBoxDragger::drag(void)
       this->constraintState = CONSTRAINT_OFF;
       this->updateArrows();
     }
-        
+
     SbVec3f motion, localrestartpt;
     if (this->constraintState != CONSTRAINT_OFF) {
-      this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt, 
+      this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt,
                                                   localrestartpt);
       motion = localrestartpt - startPt;
     }
@@ -475,7 +478,7 @@ SoHandleBoxDragger::drag(void)
         }
         if (fabs(newmotion[2]) > bigval) {
           biggest = 2;
-        } 
+        }
         motion[biggest] += newmotion[biggest];
         this->constraintState = CONSTRAINT_X + biggest;
         this->updateArrows();
@@ -514,7 +517,7 @@ SoHandleBoxDragger::drag(void)
       else if (this->whatnum <= 4) scalevec[1] = scalevec[2] = 1.0f;
       else scalevec[0] = scalevec[1] = 1.0f;
     }
-    
+
     this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
                                             scalevec,
                                             center));
@@ -545,12 +548,12 @@ SoHandleBoxDragger::setAllPartsActive(SbBool onoroff)
     sprintf(buf, "extruder%dSwitch", i);
     sw = SO_GET_ANY_PART(this, buf, SoSwitch);
     SoInteractionKit::setSwitchValue(sw, val);
-  } 
+  }
   for (i = 1; i <= 8; i++) {
     sprintf(buf, "uniform%dSwitch", i);
     sw = SO_GET_ANY_PART(this, buf, SoSwitch);
     SoInteractionKit::setSwitchValue(sw, val);
-  } 
+  }
   this->updateArrows();
 }
 
@@ -564,7 +567,7 @@ SoHandleBoxDragger::getNodeFieldNode(const char *fieldname)
   return ((SoSFNode*)field)->getValue();
 }
 
-void 
+void
 SoHandleBoxDragger::updateSwitches()
 {
   int i;
@@ -589,7 +592,7 @@ SoHandleBoxDragger::updateSwitches()
     }
     sprintf(buf, "uniform%dSwitch", this->whatnum);
     sw = SO_GET_ANY_PART(this, buf, SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, 1);    
+    SoInteractionKit::setSwitchValue(sw, 1);
   }
   else if (this->whatkind == WHATKIND_EXTRUDER) {
     int othernum = ((this->whatnum-1) & ~1) + 1;
@@ -600,7 +603,7 @@ SoHandleBoxDragger::updateSwitches()
     SoInteractionKit::setSwitchValue(sw, 1);
     sprintf(buf, "extruder%dSwitch", othernum);
     sw = SO_GET_ANY_PART(this, buf, SoSwitch);
-    SoInteractionKit::setSwitchValue(sw, this->ctrlDown ? 0 : 1);    
+    SoInteractionKit::setSwitchValue(sw, this->ctrlDown ? 0 : 1);
   }
   else {
     this->setAllPartsActive(TRUE);
@@ -608,13 +611,13 @@ SoHandleBoxDragger::updateSwitches()
   }
 }
 
-void 
+void
 SoHandleBoxDragger::updateArrows()
 {
   int i;
   char buf[512];
   SoSwitch *sw;
-  
+
   if (this->constraintState >= CONSTRAINT_X) {
     int onval = -1;
     switch (this->constraintState) {
@@ -637,15 +640,15 @@ SoHandleBoxDragger::updateArrows()
       else {
         SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
       }
-    }    
+    }
   }
   else if (this->whatkind == WHATKIND_TRANSLATOR) {
     int num = (this->whatnum-1) & ~1;
-    for (i = 0; i < 6; i++) { 
+    for (i = 0; i < 6; i++) {
       sprintf(buf, "arrow%dSwitch", i+1);
       sw = SO_GET_ANY_PART(this, buf, SoSwitch);
       if (i == num || i == num+1) {
-        SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);      
+        SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
       }
       else {
         SoInteractionKit::setSwitchValue(sw, 0);

@@ -36,7 +36,7 @@
 
 #include <Inventor/elements/SoGLNormalizeElement.h>
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 
 #ifdef _WIN32
 #include <windows.h>

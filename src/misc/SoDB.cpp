@@ -56,6 +56,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/sensors/SoTimerSensor.h>
+#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

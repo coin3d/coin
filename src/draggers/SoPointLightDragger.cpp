@@ -25,6 +25,7 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbMatrix.h>
+#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -57,7 +58,7 @@ SoPointLightDragger::SoPointLightDragger(void)
   assert(pdragger);
 
   this->setPartAsDefault("material", "pointLightOverallMaterial");
-  
+
   this->addValueChangedCallback(SoPointLightDragger::valueChangedCB);
   this->fieldSensor = new SoFieldSensor(SoPointLightDragger::fieldSensorCB, this);
   this->fieldSensor->setPriority(0);
@@ -74,15 +75,15 @@ SbBool
 SoPointLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
 {
   if (!doitalways && this->connectionsSetUp == onoff) return onoff;
-  
+
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
     SoDragger *child = (SoDragger*) this->getAnyPart("translator", FALSE);
-    child->setPartAsDefault("yzTranslator.translator", 
+    child->setPartAsDefault("yzTranslator.translator",
                             "pointLightTranslatorPlaneTranslator");
-    child->setPartAsDefault("xzTranslator.translator", 
+    child->setPartAsDefault("xzTranslator.translator",
                             "pointLightTranslatorPlaneTranslator");
-    child->setPartAsDefault("xyTranslator.translator", 
+    child->setPartAsDefault("xyTranslator.translator",
                             "pointLightTranslatorPlaneTranslator");
 
     child->setPartAsDefault("yzTranslator.translatorActive",
@@ -92,18 +93,18 @@ SoPointLightDragger::setUpConnections(SbBool onoff, SbBool doitalways)
     child->setPartAsDefault("xyTranslator.translatorActive",
                             "pointLightTranslatorPlaneTranslatorActive");
 
-    child->setPartAsDefault("xTranslator.translator", 
+    child->setPartAsDefault("xTranslator.translator",
                             "pointLightTranslatorLineTranslator");
-    child->setPartAsDefault("yTranslator.translator", 
+    child->setPartAsDefault("yTranslator.translator",
                             "pointLightTranslatorLineTranslator");
-    child->setPartAsDefault("zTranslator.translator", 
+    child->setPartAsDefault("zTranslator.translator",
                             "pointLightTranslatorLineTranslator");
 
-    child->setPartAsDefault("xTranslator.translatorActive", 
+    child->setPartAsDefault("xTranslator.translatorActive",
                             "pointLightTranslatorLineTranslatorActive");
-    child->setPartAsDefault("yTranslator.translatorActive", 
+    child->setPartAsDefault("yTranslator.translatorActive",
                             "pointLightTranslatorLineTranslatorActive");
-    child->setPartAsDefault("zTranslator.translatorActive", 
+    child->setPartAsDefault("zTranslator.translatorActive",
                             "pointLightTranslatorLineTranslatorActive");
     this->registerChildDragger(child);
     if (this->fieldSensor->getAttachedField() != &this->translation) {
@@ -148,7 +149,7 @@ SoPointLightDragger::valueChangedCB(void *, SoDragger * d)
   t[0] = matrix[3][0];
   t[1] = matrix[3][1];
   t[2] = matrix[3][2];
-  
+
   thisp->fieldSensor->detach();
   if (thisp->translation.getValue() != t) {
     thisp->translation = t;

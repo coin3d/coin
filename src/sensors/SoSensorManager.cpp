@@ -49,7 +49,7 @@
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <Inventor/sensors/SoTimerQueueSensor.h>
 #include <Inventor/sensors/SoTimerSensor.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

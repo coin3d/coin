@@ -24,7 +24,7 @@
   This is not in use yet.
 */
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoCacheElement.h>
 #include <assert.h>

@@ -26,8 +26,7 @@
 */
 
 #include <Inventor/nodes/SoCallback.h>
-
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoActions.h> // SoCallback uses all of them.
 
 // *************************************************************************

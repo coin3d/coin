@@ -30,6 +30,7 @@
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/SoPath.h>
+#include <coindefs.h> // COIN_STUB()
 
 /*!
   \enum SoSelection::Policy

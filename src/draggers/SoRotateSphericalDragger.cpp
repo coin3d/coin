@@ -26,6 +26,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/projectors/SbSpherePlaneProjector.h>
 #include <Inventor/sensors/SoFieldSensor.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 //

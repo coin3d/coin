@@ -22,6 +22,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 SO_KIT_SOURCE(SoTabBoxDragger);

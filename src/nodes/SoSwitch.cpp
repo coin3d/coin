@@ -28,7 +28,7 @@
 
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/misc/SoChildList.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Inventor/actions/SoAction.h>

@@ -26,7 +26,7 @@
 
 #include <Inventor/elements/SoPROTOElement.h>
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/SoType.h>
 

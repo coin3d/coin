@@ -26,8 +26,7 @@
 */
 
 #include <Inventor/nodes/SoFile.h>
-
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoReadError.h>

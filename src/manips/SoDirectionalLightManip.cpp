@@ -81,7 +81,7 @@ SoDirectionalLightManip::~SoDirectionalLightManip()
 
   delete this->colorFieldSensor;
   delete this->directionFieldSensor;
-  
+
   delete this->children;
 }
 
@@ -101,7 +101,7 @@ SoDirectionalLightManip::setDragger(SoDragger * newdragger)
       this->children->append(newdragger);
       SoDirectionalLightManip::fieldSensorCB(this, NULL);
       newdragger->addValueChangedCallback(SoDirectionalLightManip::valueChangedCB, this);
-    } 
+    }
   }
 }
 
@@ -123,7 +123,7 @@ SoDirectionalLightManip::getDragger(void)
 }
 
 /*!
-  Replaces the node specified by \a path with this manipulator. 
+  Replaces the node specified by \a path with this manipulator.
   The manipulator will copy the field data from the node, to make
   it affect the state in the same way as the node.
 */
@@ -178,7 +178,7 @@ SoDirectionalLightManip::replaceNode(SoPath * path)
   this->transferFieldValues((SoDirectionalLight*)fulltail, this);
   this->attachSensors(TRUE);
   SoDirectionalLightManip::fieldSensorCB(this, NULL);
-  
+
   ((SoGroup*)parent)->replaceChild(fulltail, this);
   this->unrefNoDelete();
   return TRUE;
@@ -260,7 +260,7 @@ void
 SoDirectionalLightManip::GLRender(SoGLRenderAction * action)
 {
   SoDirectionalLightManip::doAction(action);
-  SoDirectionalLight::GLRender(action);  
+  SoDirectionalLight::GLRender(action);
 }
 
 /*!
@@ -273,7 +273,7 @@ SoDirectionalLightManip::getBoundingBox(SoGetBoundingBoxAction * action)
   int lastchild;
   SbVec3f center(0.0f, 0.0f, 0.0f);
   int numcenters = 0;
-  
+
   if (action->getPathCode(numindices, indices) == SoAction::IN_PATH) {
     lastchild  = indices[numindices-1];
   }
@@ -328,7 +328,7 @@ void
 SoDirectionalLightManip::handleEvent(SoHandleEventAction * action)
 {
   SoDirectionalLightManip::doAction(action);
-  SoDirectionalLight::handleEvent(action);  
+  SoDirectionalLight::handleEvent(action);
 }
 
 /*!
@@ -337,7 +337,7 @@ void
 SoDirectionalLightManip::pick(SoPickAction * action)
 {
   SoDirectionalLightManip::doAction(action);
-  SoDirectionalLight::pick(action);  
+  SoDirectionalLight::pick(action);
 }
 
 /*!
@@ -351,9 +351,9 @@ SoDirectionalLightManip::search(SoSearchAction * action)
 }
 
 /*!
-  Returns the children of this node. This node only has the dragger 
+  Returns the children of this node. This node only has the dragger
   as a child.
-*/ 
+*/
 SoChildList *
 SoDirectionalLightManip::getChildren(void) const
 {
@@ -367,12 +367,12 @@ void
 SoDirectionalLightManip::valueChangedCB(void * m, SoDragger * dragger)
 {
   SoDirectionalLightManip * thisp = (SoDirectionalLightManip*)m;
-  
+
   SbMatrix matrix = dragger->getMotionMatrix();
   SbVec3f direction(0.0f, 0.0f, -1.0f);
   matrix.multDirMatrix(direction, direction);
   direction.normalize();
-  
+
   thisp->attachSensors(FALSE);
   if (thisp->direction.getValue() != direction) {
     thisp->direction = direction;
@@ -433,5 +433,5 @@ SoDirectionalLightManip::attachSensors(const SbBool onoff)
   else {
     this->directionFieldSensor->detach();
     this->colorFieldSensor->detach();
-  } 
+  }
 }

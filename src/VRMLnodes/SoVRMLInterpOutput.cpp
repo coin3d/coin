@@ -30,7 +30,7 @@
 
 #include <Inventor/VRMLnodes/SoVRMLInterpOutput.h>
 #include <Inventor/fields/SoField.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

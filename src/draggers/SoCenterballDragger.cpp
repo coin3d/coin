@@ -28,6 +28,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoSurroundScale.h>
 #include <Inventor/nodes/SoSwitch.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 SO_KIT_SOURCE(SoCenterballDragger);

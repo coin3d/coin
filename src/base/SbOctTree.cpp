@@ -22,7 +22,7 @@
 #include <Inventor/SbPlane.h>
 #include <float.h>
 #include <stddef.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 
 /*!
   \class SbOctTree SbOctTree.h Inventor/SbOctTree.h

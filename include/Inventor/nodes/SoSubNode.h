@@ -23,7 +23,6 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/fields/SoFieldData.h>
-#include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
 
 
 

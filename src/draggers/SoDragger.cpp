@@ -74,6 +74,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#include <coindefs.h> // COIN_STUB()
+
+
 #ifndef DOXYGEN_SKIP_THIS // Don't document internal classes.
 
 class SoDraggerCache {
@@ -94,14 +97,14 @@ public:
     }
     this->updateMatrix();
   }
-  
+
   void updateMatrix() {
     SoGetMatrixAction action(this->dragger->getViewportRegion());
     action.apply(&this->path);
     this->draggerToWorld = action.getMatrix();
     this->worldToDragger = action.getInverse();
   }
-  
+
   SoTempPath path;
   SoDragger *dragger;
   SbMatrix draggerToWorld;
@@ -999,7 +1002,7 @@ SoDragger::handleEvent(SoHandleEventAction * action)
   // are called when the dragger is not active.
   //
   if (!this->isActive.getValue() &&
-      (SO_KEY_PRESS_EVENT(event, LEFT_CONTROL) || 
+      (SO_KEY_PRESS_EVENT(event, LEFT_CONTROL) ||
        SO_KEY_PRESS_EVENT(event, RIGHT_CONTROL))) {
     const SoPickedPoint *pp = action->getPickedPoint();
     if (pp && this->isPicked(pp->getPath())) {
@@ -1151,7 +1154,7 @@ void
 SoDragger::childFinishCB(void *data, SoDragger *child)
 {
   SoDragger *thisp = (SoDragger*)data;
-  thisp->finishCB.invokeCallbacks(thisp);  
+  thisp->finishCB.invokeCallbacks(thisp);
   thisp->setActiveChildDragger(NULL);
 }
 
@@ -1159,9 +1162,9 @@ void
 SoDragger::childOtherEventCB(void *data, SoDragger *child)
 {
   SoDragger *thisp = (SoDragger*)data;
-  thisp->currentEvent = child->currentEvent; 
+  thisp->currentEvent = child->currentEvent;
   thisp->eventAction = child->eventAction;
-  thisp->otherEventCB.invokeCallbacks(thisp);  
+  thisp->otherEventCB.invokeCallbacks(thisp);
 }
 
 //
@@ -1172,10 +1175,10 @@ SoDragger::isPicked(SoPath *path)
 {
   // last dragger in path must be this one
   SoFullPath *fullpath = (SoFullPath*)path;
-  
+
   int i = fullpath->findNode(this);
   if (i < 0) return FALSE;
-  
+
   int n = fullpath->getLength();
   for (++i; i < n; i++) {
     SoNode *node = fullpath->getNode(i);

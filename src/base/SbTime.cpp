@@ -900,6 +900,6 @@ SbTime::print(FILE * fp) const
   this->getValue(&tm);
   SbString str = this->formatDate("   %A %D %T %Z");
   fprintf( fp, "%s", str.getString() );
-  fprintf( fp, ", secs: %d, msecs: %d\n", tm.tv_sec, tm.tv_usec );
+  fprintf( fp, ", secs: %ld, msecs: %ld\n", tm.tv_sec, tm.tv_usec );
 #endif // COIN_DEBUG
 }

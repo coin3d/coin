@@ -65,7 +65,7 @@ endif
 # needed in the submodules -- only in the toplevel libCoin build.
 LIBS = 
 
-INCLUDES = -I$(top_srcdir)/include -I$(top_builddir)/include
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/include -I$(top_builddir)/include
 
 libdraggers_la_SOURCES = $(ALLSOURCES)
 libdraggersLINKHACK_la_SOURCES = $(ALLSOURCES)

@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoPackedColor.h>
-
+#include <coindefs.h> // COIN_STUB()
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoIndexedShape.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/actions/SoAction.h>

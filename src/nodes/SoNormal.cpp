@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoNormal.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/elements/SoNormalElement.h>

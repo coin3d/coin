@@ -36,10 +36,11 @@
 #include <Inventor/SoOffscreenRenderer.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/misc/SoBasic.h>
+#include <coindefs.h>
 #include <GL/gl.h>
 #include <assert.h>
 #include <config.h>
+#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>

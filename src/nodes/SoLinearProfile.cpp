@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoLinearProfile.h>
-
+#include <coindefs.h> // COIN_STUB()
 
 
 // *************************************************************************

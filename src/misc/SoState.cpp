@@ -38,6 +38,7 @@
 
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/lists/SoTypeList.h>
 #include <Inventor/elements/SoElement.h>

@@ -29,7 +29,7 @@
 #include <Inventor/fields/SoMFEngine.h>
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/SbName.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #if COIN_DEBUG

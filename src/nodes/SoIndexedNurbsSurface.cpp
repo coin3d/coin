@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/nodes/SoIndexedNurbsSurface.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 

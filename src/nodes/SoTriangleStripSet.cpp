@@ -27,6 +27,7 @@
 
 #include <Inventor/nodes/SoTriangleStripSet.h>
 
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
@@ -392,7 +393,7 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
   if (action->canApproximateCount()) {
     // this is a wild guess, disable? pederb, 20000131
-    action->addNumTriangles((end-ptr)*8); 
+    action->addNumTriangles((end-ptr)*8);
   }
   else {
     int cnt = 0;

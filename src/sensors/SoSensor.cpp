@@ -33,7 +33,7 @@
  */
 
 #include <Inventor/sensors/SoSensor.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 #include <stdlib.h> // to get NULL definition
 #include <assert.h>
 

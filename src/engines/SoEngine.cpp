@@ -19,7 +19,7 @@
 
 #include <Inventor/engines/SoEngine.h>
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/engines/SoEngines.h>
 #include <Inventor/errors/SoDebugError.h>

@@ -21,10 +21,9 @@
 #define COIN_SOSUBENGINE_H
 
 #include <Inventor/engines/SoEngine.h>
-#include <Inventor/misc/SoBasic.h>
-#include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/errors/SoDebugError.h>
+
 
 // FIXME: document macro for Doxygen. 19990925 mortene.
 

@@ -27,7 +27,7 @@
 
 
 #include <Inventor/nodes/SoLevelOfSimplification.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoDecimationTypeElement.h>
 #include <Inventor/elements/SoDecimationPercentageElement.h>

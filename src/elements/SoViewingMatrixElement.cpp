@@ -26,7 +26,7 @@
 
 #include <Inventor/elements/SoViewingMatrixElement.h>
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 #ifdef COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG

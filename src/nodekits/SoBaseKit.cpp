@@ -51,6 +51,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <ctype.h>
+#include <coindefs.h> // COIN_STUB()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -209,12 +210,12 @@ SoBaseKit::getPartString(const SoBase *part)
 #endif // debug
           return SbString();
         }
-        node = path->getNode(pathidx); 
-        int childidx = list->findChild(node); 
+        node = path->getNode(pathidx);
+        int childidx = list->findChild(node);
         assert(childidx >= 0);
         partname += '[';
         partname.addIntString(childidx);
-        partname += ']'; 
+        partname += ']';
       }
       if (node->isOfType(SoBaseKit::getClassTypeId())) {
         kit = (SoBaseKit*) node;
@@ -1227,7 +1228,7 @@ SoBaseKit::getRightSiblingIndex(const int partNum)
 //
 // parentnum is checked if >= 0
 //
-int 
+int
 SoBaseKit::findNodeInThisKit(SoNode *node, const int parentnum) const
 {
   const SoNodekitCatalog *catalog = this->getNodekitCatalog();

@@ -27,6 +27,7 @@
 
 
 #include <Inventor/nodes/SoExtSelection.h>
+#include <coindefs.h> // COIN_STUB()
 
 
 /*!

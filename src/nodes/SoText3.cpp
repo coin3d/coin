@@ -26,7 +26,7 @@
 */
 
 #include <Inventor/nodes/SoText3.h>
-
+#include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/errors/SoDebugError.h>
 

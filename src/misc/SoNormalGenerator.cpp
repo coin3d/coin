@@ -23,7 +23,7 @@
 */
 
 #include <Inventor/misc/SoNormalGenerator.h>
-#include <Inventor/misc/SoBasic.h> // COIN_STUB()
+#include <coindefs.h> // COIN_STUB()
 #include <stdio.h>
 
 /*!

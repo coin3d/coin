@@ -33,6 +33,7 @@
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
+#include <coindefs.h> // COIN_STUB()
 
 /*!
   \var SoSFVec3f SoTextureCoordinatePlane::directionS

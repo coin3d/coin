@@ -237,12 +237,12 @@ SoTranslate2Dragger::drag(void)
   SbVec3f localrestartpt;
 
   if (this->constraintState != CONSTRAINT_OFF) {
-    this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt, 
+    this->getWorldToLocalMatrix().multVecMatrix(this->worldRestartPt,
                                                 localrestartpt);
     motion = localrestartpt - startPt;
   }
   else motion = projPt - startPt;
-  
+
   switch(this->constraintState) {
   case CONSTRAINT_OFF:
     break;

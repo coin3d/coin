@@ -52,6 +52,7 @@
  */
 
 #include <assert.h>
+#include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/fields/SoField.h>
 

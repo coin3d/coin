@@ -26,7 +26,7 @@
 */
 
 //
-// FIXME: cache element pointers to make this class a bit more effective 
+// FIXME: cache element pointers to make this class a bit more effective
 //        pederb, 20000208
 //
 
@@ -41,7 +41,7 @@
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFColor.h>
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 #include <assert.h>
 
 SO_ELEMENT_SOURCE(SoLazyElement);
@@ -73,7 +73,7 @@ SoLazyElement::~SoLazyElement()
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::init(SoState *state)
 {
   this->colorMaterial = TRUE;
@@ -85,7 +85,7 @@ SoLazyElement::init(SoState *state)
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::push(SoState *state)
 {
   inherited::push(state);
@@ -99,7 +99,7 @@ SoLazyElement::push(SoState *state)
 
 // ! FIXME: write doc
 
-SbBool 
+SbBool
 SoLazyElement::matches(const SoElement *element) const
 {
   SoLazyElement *elem = (SoLazyElement*) element;
@@ -108,14 +108,14 @@ SoLazyElement::matches(const SoElement *element) const
   if (elem->colorMaterial != this->colorMaterial) return FALSE;
   if (elem->blending != this->blending) return FALSE;
   if (elem->transparencyType != this->transparencyType) return FALSE;
-  
-  if (!SoLightModelElement::getInstance(this->state)->matches(elem->lightModelMatchInfo)) 
+
+  if (!SoLightModelElement::getInstance(this->state)->matches(elem->lightModelMatchInfo))
     return FALSE;
-  if (!SoDiffuseColorElement::getInstance(this->state)->matches(elem->diffuseMatchInfo)) 
+  if (!SoDiffuseColorElement::getInstance(this->state)->matches(elem->diffuseMatchInfo))
     return FALSE;
-  if (!SoAmbientColorElement::getInstance(this->state)->matches(elem->ambientMatchInfo)) 
+  if (!SoAmbientColorElement::getInstance(this->state)->matches(elem->ambientMatchInfo))
     return FALSE;
-  if (!SoEmissiveColorElement::getInstance(this->state)->matches(elem->emissiveMatchInfo)) 
+  if (!SoEmissiveColorElement::getInstance(this->state)->matches(elem->emissiveMatchInfo))
     return FALSE;
   if (!SoSpecularColorElement::getInstance(this->state)->matches(elem->specularMatchInfo))
     return FALSE;
@@ -123,7 +123,7 @@ SoLazyElement::matches(const SoElement *element) const
     return FALSE;
   if (!SoTransparencyElement::getInstance(this->state)->matches(elem->transparencyMatchInfo))
     return FALSE;
-  
+
   return TRUE;
 }
 
@@ -145,13 +145,13 @@ SoLazyElement::copyMatchInfo(void) const
   element->blending = this->blending;
   element->shininess = this->shininess;
   element->transparencyType = this->transparencyType;
-  
+
   return element;
 }
 
 // ! FIXME: write doc
- 
-void 
+
+void
 SoLazyElement::print(FILE *fp) const
 {
   COIN_STUB();
@@ -159,17 +159,17 @@ SoLazyElement::print(FILE *fp) const
 
 // ! FIXME: write doc
 
-void 
-SoLazyElement::setDiffuse(SoState *state, SoNode *node, int32_t numcolors, 
+void
+SoLazyElement::setDiffuse(SoState *state, SoNode *node, int32_t numcolors,
                           const SbColor *colors, SoColorPacker *)
 {
   SoDiffuseColorElement::set(state, node, numcolors, colors);
-}    
+}
 
 // ! FIXME: write doc
 
-void 
-SoLazyElement::setTransparency(SoState *state, SoNode *node, int32_t numvalues, 
+void
+SoLazyElement::setTransparency(SoState *state, SoNode *node, int32_t numvalues,
                                const float *transparency, SoColorPacker *)
 {
   SoTransparencyElement::set(state, node, numvalues, transparency);
@@ -177,17 +177,17 @@ SoLazyElement::setTransparency(SoState *state, SoNode *node, int32_t numvalues,
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setPacked(SoState *state, SoNode *node,
                          int32_t numcolors, const uint32_t *colors)
 {
-  SoDiffuseColorElement::set(state, node, numcolors, colors); 
+  SoDiffuseColorElement::set(state, node, numcolors, colors);
 }
 
 // ! FIXME: write doc
 
-void 
-SoLazyElement::setColorIndices(SoState *state, SoNode *node, 
+void
+SoLazyElement::setColorIndices(SoState *state, SoNode *node,
                                int32_t numIndices, const int32_t *indices)
 {
   assert(0 && "color index mode is not supported in Coin");
@@ -195,7 +195,7 @@ SoLazyElement::setColorIndices(SoState *state, SoNode *node,
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setAmbient(SoState *state, const SbColor* color)
 {
   SoAmbientColorElement::set(state, NULL, 1, color);
@@ -203,7 +203,7 @@ SoLazyElement::setAmbient(SoState *state, const SbColor* color)
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setEmissive(SoState *state, const SbColor* color)
 {
   SoEmissiveColorElement::set(state, NULL, 1, color);
@@ -211,7 +211,7 @@ SoLazyElement::setEmissive(SoState *state, const SbColor* color)
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setSpecular(SoState *state, const SbColor* color)
 {
   SoSpecularColorElement::set(state, NULL, 1, color);
@@ -219,7 +219,7 @@ SoLazyElement::setSpecular(SoState *state, const SbColor* color)
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setShininess(SoState *state, float value)
 {
   SoLazyElement *elem = (SoLazyElement*)
@@ -230,7 +230,7 @@ SoLazyElement::setShininess(SoState *state, float value)
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setColorMaterial(SoState *state, SbBool value)
 {
   SoLazyElement *elem = (SoLazyElement*)
@@ -240,7 +240,7 @@ SoLazyElement::setColorMaterial(SoState *state, SbBool value)
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setBlending(SoState *state,  SbBool value)
 {
   SoLazyElement *elem = (SoLazyElement*)
@@ -250,7 +250,7 @@ SoLazyElement::setBlending(SoState *state,  SbBool value)
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setLightModel(SoState *state, const int32_t model)
 {
   SoLightModelElement::set(state, NULL, (SoLightModelElement::Model)model);
@@ -266,7 +266,7 @@ SoLazyElement::getDiffuse(SoState* state, int index)
 
 // ! FIXME: write doc
 
-float 
+float
 SoLazyElement::getTransparency(SoState *state, int index)
 {
   return SoTransparencyElement::getInstance(state)->get(index);
@@ -291,7 +291,7 @@ SoLazyElement::getColorIndices(SoState*)
 
 // ! FIXME: write doc
 
-int32_t 
+int32_t
 SoLazyElement::getColorIndex(SoState*, int num)
 {
   assert(0 && "color index mode is not supported in Coin");
@@ -307,7 +307,7 @@ SoLazyElement::getAmbient(SoState *state)
 }
 
 // ! FIXME: write doc
- 
+
 const SbColor &
 SoLazyElement::getEmissive(SoState *state)
 {
@@ -324,7 +324,7 @@ SoLazyElement::getSpecular(SoState *state)
 
 // ! FIXME: write doc
 
-float 
+float
 SoLazyElement::getShininess(SoState *state)
 {
   return SoShininessElement::getInstance(state)->get(0);
@@ -332,7 +332,7 @@ SoLazyElement::getShininess(SoState *state)
 
 // ! FIXME: write doc
 
-SbBool 
+SbBool
 SoLazyElement::getColorMaterial(SoState *state)
 {
   return SoLazyElement::getInstance(state)->colorMaterial;
@@ -340,7 +340,7 @@ SoLazyElement::getColorMaterial(SoState *state)
 
 // ! FIXME: write doc
 
-SbBool 
+SbBool
 SoLazyElement::getBlending(SoState *state)
 {
   return SoLazyElement::getInstance(state)->blending;
@@ -348,7 +348,7 @@ SoLazyElement::getBlending(SoState *state)
 
 // ! FIXME: write doc
 
-int32_t 
+int32_t
 SoLazyElement::getLightModel(SoState *state)
 {
   return (int32_t) SoLightModelElement::get(state);
@@ -356,7 +356,7 @@ SoLazyElement::getLightModel(SoState *state)
 
 // ! FIXME: write doc
 
-int32_t 
+int32_t
 SoLazyElement::getNumDiffuse(void) const
 {
   return SoDiffuseColorElement::getInstance(this->state)->getNum();
@@ -364,15 +364,15 @@ SoLazyElement::getNumDiffuse(void) const
 
 // ! FIXME: write doc
 
-int32_t 
+int32_t
 SoLazyElement::getNumTransparencies(void) const
 {
-  return SoTransparencyElement::getInstance(this->state)->getNum(); 
+  return SoTransparencyElement::getInstance(this->state)->getNum();
 }
 
 // ! FIXME: write doc
 
-int32_t 
+int32_t
 SoLazyElement::getNumColorIndices(void) const
 {
   assert(0 && "color index mode is not supported in Coin");
@@ -381,7 +381,7 @@ SoLazyElement::getNumColorIndices(void) const
 
 // ! FIXME: write doc
 
-SbBool 
+SbBool
 SoLazyElement::isPacked(void) const
 {
   return SoDiffuseColorElement::getInstance(this->state)->isPacked();
@@ -389,7 +389,7 @@ SoLazyElement::isPacked(void) const
 
 // ! FIXME: write doc
 
-SbBool 
+SbBool
 SoLazyElement::isTransparent(void) const
 {
   if (this->isPacked()) {
@@ -412,15 +412,15 @@ SoLazyElement::getInstance(SoState *state)
 
 // ! FIXME: write doc
 
-float 
+float
 SoLazyElement::getDefaultAmbientIntensity(void)
 {
   return 0.2f;
 }
 
 // ! FIXME: write doc
-	 
-SbColor 
+	
+SbColor
 SoLazyElement::getDefaultDiffuse(void)
 {
   return SbColor(0.8f, 0.8f, 0.8f);
@@ -428,7 +428,7 @@ SoLazyElement::getDefaultDiffuse(void)
 
 // ! FIXME: write doc
 
-SbColor 
+SbColor
 SoLazyElement::getDefaultAmbient(void)
 {
   return SbColor(0.2f, 0.2f, 0.2f);
@@ -436,7 +436,7 @@ SoLazyElement::getDefaultAmbient(void)
 
 // ! FIXME: write doc
 
-SbColor 
+SbColor
 SoLazyElement::getDefaultSpecular(void)
 {
   return SbColor(0.0f, 0.0f, 0.0f);
@@ -444,7 +444,7 @@ SoLazyElement::getDefaultSpecular(void)
 
 // ! FIXME: write doc
 
-SbColor 
+SbColor
 SoLazyElement::getDefaultEmissive(void)
 {
   return SbColor(0.0f, 0.0f, 0.0f);
@@ -452,7 +452,7 @@ SoLazyElement::getDefaultEmissive(void)
 
 // ! FIXME: write doc
 
-float 
+float
 SoLazyElement::getDefaultShininess(void)
 {
   return 0.2f;
@@ -460,7 +460,7 @@ SoLazyElement::getDefaultShininess(void)
 
 // ! FIXME: write doc
 
-uint32_t 
+uint32_t
 SoLazyElement::getDefaultPacked(void)
 {
   return 0xccccccff;
@@ -468,7 +468,7 @@ SoLazyElement::getDefaultPacked(void)
 
 // ! FIXME: write doc
 
-float 
+float
 SoLazyElement::getDefaultTransparency(void)
 {
   return 0.0f;
@@ -476,7 +476,7 @@ SoLazyElement::getDefaultTransparency(void)
 
 // ! FIXME: write doc
 
-int32_t 
+int32_t
 SoLazyElement::getDefaultLightModel(void)
 {
   return (int32_t) SoLightModelElement::PHONG;
@@ -484,7 +484,7 @@ SoLazyElement::getDefaultLightModel(void)
 
 // ! FIXME: write doc
 
-int32_t 
+int32_t
 SoLazyElement::getDefaultColorIndex(void)
 {
   assert(0 && "color index mode is not supported in Coin");
@@ -493,11 +493,11 @@ SoLazyElement::getDefaultColorIndex(void)
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setMaterials(SoState *state, SoNode *node, uint32_t bitmask,
-                            SoColorPacker *cPacker,   
-                            const SoMFColor& diffuse, const SoMFFloat& transp, 
-                            const SoMFColor& ambient, const SoMFColor& emissive, 
+                            SoColorPacker *cPacker,
+                            const SoMFColor& diffuse, const SoMFFloat& transp,
+                            const SoMFColor& ambient, const SoMFColor& emissive,
                             const SoMFColor& specular, const SoMFFloat& shininess)
 {
   // FIXME: check bitmask, pederb 20000208
@@ -511,7 +511,7 @@ SoLazyElement::setMaterials(SoState *state, SoNode *node, uint32_t bitmask,
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setMaterials(SoState *state, SoNode *node, uint32_t bitmask,
                             SoColorPacker *packer,
                             SoMFColor *diffuse, SoMFFloat *transp,
@@ -527,11 +527,11 @@ SoLazyElement::setMaterials(SoState *state, SoNode *node, uint32_t bitmask,
 SoLazyElement *
 SoLazyElement::getWInstance(SoState *state)
 {
-  return (SoLazyElement*) SoElement::getElement(state, classStackIndex); 
+  return (SoLazyElement*) SoElement::getElement(state, classStackIndex);
 }
 
 // ! FIXME: write doc
-  
+
 const uint32_t *
 SoLazyElement::getPackedPointer(void) const
 {
@@ -556,7 +556,7 @@ SoLazyElement::getColorIndexPointer(void) const
 }
 
 // ! FIXME: write doc
-  
+
 const float *
 SoLazyElement::getTransparencyPointer(void) const
 {
@@ -565,7 +565,7 @@ SoLazyElement::getTransparencyPointer(void) const
 
 // ! FIXME: write doc
 
-void 
+void
 SoLazyElement::setTransparencyType(SoState *state, int32_t type)
 {
   SoLazyElement::getWInstance(state)->transparencyType = type;

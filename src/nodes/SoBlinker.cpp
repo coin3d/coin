@@ -26,8 +26,8 @@
 */
 
 
-
 #include <Inventor/nodes/SoBlinker.h>
+#include <coindefs.h> // COIN_STUB()
 
 /*!
   \var SoSFFloat SoBlinker::speed

@@ -20,7 +20,8 @@
 #ifndef COIN_SOSUBELEMENT_H
 #define COIN_SOSUBELEMENT_H
 
-#include <Inventor/misc/SoBasic.h> // for SO__QUOTE() definition
+#include <Inventor/SbBasic.h> // for SO__QUOTE() definition
+#include <Inventor/SbName.h>
 
 /*
  * This file contains macro definitions with common declarations and

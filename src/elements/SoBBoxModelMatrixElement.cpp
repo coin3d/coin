@@ -26,7 +26,7 @@
 
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 
 SO_ELEMENT_SOURCE(SoBBoxModelMatrixElement);

@@ -18,6 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/manips/SoJackManip.h>
+#include <coindefs.h> // COIN_STUB()
 
 SO_NODE_SOURCE(SoJackManip);
 

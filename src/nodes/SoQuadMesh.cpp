@@ -27,7 +27,7 @@
 
 #include <Inventor/nodes/SoQuadMesh.h>
 #include <Inventor/SoPrimitiveVertex.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/misc/SoState.h>
 

@@ -27,7 +27,7 @@
 
 
 #include <Inventor/misc/SoChildList.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>

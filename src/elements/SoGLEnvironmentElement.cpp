@@ -25,7 +25,7 @@
 
 #include <Inventor/elements/SoGLEnvironmentElement.h>
 
-#include <Inventor/SbName.h>
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbColor4f.h>
 

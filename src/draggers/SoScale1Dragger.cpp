@@ -55,9 +55,9 @@ SoScale1Dragger::SoScale1Dragger(void)
   if (SO_KIT_IS_FIRST_INSTANCE()) {
     SoInteractionKit::readDefaultParts("scale1Dragger.iv", NULL, 0);
   }
-  
+
   SO_NODE_ADD_FIELD(scaleFactor, (1.0f, 1.0f, 1.0f));
-  
+
   SO_KIT_INIT_INSTANCE();
 
   // initialize default parts
@@ -72,7 +72,7 @@ SoScale1Dragger::SoScale1Dragger(void)
   SoInteractionKit::setSwitchValue(sw, 0);
   sw = SO_GET_ANY_PART(this, "feedbackSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, 0);
-  
+
   // setup projector
   this->lineProj = new SbLineProjector();
   this->addStartCallback(SoScale1Dragger::startCB);
@@ -80,10 +80,10 @@ SoScale1Dragger::SoScale1Dragger(void)
   this->addFinishCallback(SoScale1Dragger::finishCB);
 
   this->addValueChangedCallback(SoScale1Dragger::valueChangedCB);
-  
+
   this->fieldSensor = new SoFieldSensor(SoScale1Dragger::fieldSensorCB, this);
   this->fieldSensor->setPriority(0);
- 
+
   this->setUpConnections(TRUE, TRUE);
 }
 
@@ -100,12 +100,12 @@ SoScale1Dragger::setUpConnections(SbBool onoff, SbBool doitalways)
   if (!doitalways && this->connectionsSetUp == onoff) return onoff;
 
   SbBool oldval = this->connectionsSetUp;
-  
+
   if (onoff) {
     inherited::setUpConnections(onoff, doitalways);
-    
+
     SoScale1Dragger::fieldSensorCB(this, NULL);
-    
+
     if (this->fieldSensor->getAttachedField() != &this->scaleFactor) {
       this->fieldSensor->attach(&this->scaleFactor);
     }
@@ -126,10 +126,10 @@ SoScale1Dragger::fieldSensorCB(void * d, SoSensor *)
   assert(d);
   SoScale1Dragger *thisp = (SoScale1Dragger*)d;
   SbMatrix matrix = thisp->getMotionMatrix();
-  
+
   SbVec3f t, s;
   SbRotation r, so;
-  
+
   matrix.getTransform(t, r, s, so);
   s = thisp->scaleFactor.getValue();
   matrix.setTransform(t, r, s, so);
@@ -141,7 +141,7 @@ SoScale1Dragger::valueChangedCB(void * f, SoDragger * d)
 {
   SoScale1Dragger *thisp = (SoScale1Dragger*)d;
   SbMatrix matrix = thisp->getMotionMatrix();
-  
+
   SbVec3f trans, scale;
   SbRotation rot, scaleOrient;
   matrix.getTransform(trans, rot, scale, scaleOrient);
@@ -190,17 +190,17 @@ SoScale1Dragger::drag(void)
 {
   this->lineProj->setViewVolume(this->getViewVolume());
   this->lineProj->setWorkingSpace(this->getLocalToWorldMatrix());
-  
+
   SbVec3f projPt = lineProj->project(this->getNormalizedLocaterPosition());
   SbVec3f startPt = this->getLocalStartingPoint();
 
-  float motion = projPt[0]; 
+  float motion = projPt[0];
   if (startPt[0] != 0.0f)
     motion /= startPt[0];
   else
     motion = 0.0f;
-  
-  this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(), 
+
+  this->setMotionMatrix(this->appendScale(this->getStartMotionMatrix(),
                                           SbVec3f(fabs(motion), 1.0f, 1.0f),
                                           SbVec3f(0.0f, 0.0f, 0.0f)));
 }

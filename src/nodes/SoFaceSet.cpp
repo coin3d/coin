@@ -28,7 +28,7 @@
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
-
+#include <coindefs.h> // COIN_STUB()
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
 #include <windows.h>
@@ -335,7 +335,7 @@ SoFaceSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 
     const SoCoordinateElement * coords =
       SoCoordinateElement::getInstance(state);
-    
+
     while (ptr < end) {
       int num = *ptr++;
       assert(num >= 3);
@@ -377,7 +377,7 @@ SoFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   const int32_t * ptr = numVertices.getValues(0);
   const int32_t * end = ptr + numVertices.getNum();
   this->fixNumVerticesPointers(action->getState(), ptr, end, dummyarray);
-  
+
   if (action->canApproximateCount()) {
     action->addNumTriangles((end-ptr)*3);
   }
