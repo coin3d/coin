@@ -48,9 +48,13 @@
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <assert.h>
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+
 #if COIN_DEBUG
 #ifdef HAVE_WINDOWS_H
-#include <windows.h>
+#include <windows.h> // gl.h needs this
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h> // glGetError
 #endif // COIN_DEBUG

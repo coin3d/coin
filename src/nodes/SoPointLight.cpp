@@ -42,6 +42,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
 #ifdef HAVE_WINDOWS_H
 #include <windows.h> // Needed to include gl.h.
 #endif // HAVE_WINDOWS_H
