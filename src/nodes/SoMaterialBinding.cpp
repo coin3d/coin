@@ -60,9 +60,16 @@
 
   With SoMaterialBinding::value set to \c PER_VERTEX_INDEXED above,
   the material indices will be taken from the
-  SoIndexedFaceSet::materialIndex field when rendering. If
-  SoMaterialBinding::value is set to \c PER_VERTEX, they will follow
-  the indices of the SoIndexedFaceSet::coordIndex field.
+  SoIndexedFaceSet::materialIndex field when rendering.
+
+  If SoMaterialBinding::value was set to \c PER_VERTEX_INDEXED as
+  above, and the SoIndexedFaceSet::materialIndex was undefined or
+  empty, indices would implicitly be taken from the
+  SoIndexedFaceSet::coordIndex field.
+
+  If SoMaterialBinding::value is set to \c PER_VERTEX, colors will be
+  fetched in a monotonically increasing manner from the
+  SoMaterial::diffuseColor field, starting at index 0.
 
   \sa SoMaterial
 */
