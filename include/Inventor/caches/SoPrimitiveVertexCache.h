@@ -83,6 +83,7 @@ public:
 
 private:
 
+  friend class SoPrimitiveVertexCacheP;
   class Vertex {
   public:
     SbVec3f vertex;
