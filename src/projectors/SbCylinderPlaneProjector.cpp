@@ -113,6 +113,7 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
     return SbRotation(this->cylinder.getAxis().getDirection(), 0.0f);
   }
 
+
   // create a line to project projections onto. This will make
   // the below calculations much simpler.
   SbLine horizline;
@@ -162,9 +163,9 @@ SbCylinderPlaneProjector::getRotation(const SbVec3f & point1, const SbBool tol1,
   float angle;
   rot.getValue(axis, angle);
 
-  if (axis.dot(this->cylinder.getAxis().getDirection()) > 0.0f) {
+  if (axis.dot(this->cylinder.getAxis().getDirection()) < 0.0f) {
     axis = -axis;
-    angle = -angle;
+    angle = 2.0f*float(M_PI) - angle;
   }
   float len = 0.0f;
 
