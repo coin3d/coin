@@ -304,10 +304,12 @@ SoCamera::GLRender(SoGLRenderAction * action)
 {
   SoCamera::doAction(action);
   SoState * state = action->getState();
-  const SbViewVolume &vv = SoViewVolumeElement::get(state);
-  SbPlane plane[6];
-  vv.getViewVolumePlanes(plane);
-  SoCullElement::addPlanes(state, plane, 6);
+  const SbViewVolume & vv = SoViewVolumeElement::get(state);
+  if (vv.getDepth() != 0.0f && vv.getWidth() != 0.0f && vv.getHeight() != 0.0f) {
+    SbPlane plane[6];
+    vv.getViewVolumePlanes(plane);
+    SoCullElement::addPlanes(state, plane, 6);
+  }
 }
 
 // Doc in superclass.
@@ -411,7 +413,7 @@ SoCamera::doAction(SoAction * action)
     const SbMatrix &mm = SoModelMatrixElement::get(state, isidentity);
     if (!isidentity) vv.transform(mm);
   }
-  
+
   SbBool adjustvp = FALSE;
 
   switch (vpm) {
