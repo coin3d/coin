@@ -223,9 +223,9 @@ GLUWrapper(void)
 
   {
 
-  // On Mac OS X, the glu* functions are part of the OpenGL framework,
-  // which at this point is already loaded, so no need to try and open
-  // the library here...
+    /* On Mac OS X, the glu* functions are part of the OpenGL framework,
+       which at this point is already loaded, so no need to try and open
+       the library here... */
 
     /* FIXME: should we get the system shared library name from an
        Autoconf check? 20000930 mortene. */
@@ -253,7 +253,7 @@ GLUWrapper(void)
     }
   } 
 
-#endif // !GLU_IS_PART_OF_GL
+#endif /* !GLU_IS_PART_OF_GL */
 
   /* Define GLUWRAPPER_REGISTER_FUNC macro. Casting the type is
      necessary for this file to be compatible with C++ compilers. */
