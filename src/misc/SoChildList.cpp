@@ -208,6 +208,9 @@ SoChildList::copy(const SoChildList & cl)
   // FIXME: actually I think we _should_ copy the auditor list, but it
   // seems like this method is never used. We should copy it in case
   // it is used in the future though. pederb, 2002-10-02
+  //
+  // UPDATE 20031217 mortene: just for information; this method is at
+  // least used from SoFile::readNamedFile().
 
   if (this->parent) {
     this->parent->startNotify();

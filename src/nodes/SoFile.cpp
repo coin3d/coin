@@ -207,13 +207,21 @@ SoFile::readNamedFile(SoInput * in)
 
   this->fullname = in->getCurFileName();
 
-  SoSeparator * node = SoDB::readAll(in);
-  // Popping the file off the stack again is done implicit in SoInput
-  // upon hitting EOF (unless the read fails, see below).
+  SoChildList cl(this);
+  SbBool readok = TRUE;
+  do {
+    SoNode * n;
+    readok = SoDB::read(in, n);
+    if (!readok) { break; } // actual read error
+    if (n == NULL) { break; } // this is what happens on EOF
+    cl.append(n);
+  } while (TRUE);
 
-  if (node) {
-    this->children->truncate(0);
-    this->children->append((SoNode *)node);
+  // (Popping the file off the stack again is done implicit in SoInput
+  // upon hitting EOF (unless the read fails, see below).)
+
+  if (readok) {
+    this->children->copy(cl); // (copy() implicitly truncates before copying)
   }
   else {
     // Take care of popping the file off the stack. This is a bit
@@ -249,11 +257,25 @@ SoFile::nameFieldModified(void * userdata, SoSensor * sensor)
 SoGroup *
 SoFile::copyChildren(void) const
 {
-  if (this->children->getLength() == 0) return NULL;
-  assert(this->children->getLength() == 1);
-  SoNode * rootcopy = (*(this->children))[0]->copy();
-  assert(rootcopy->isOfType(SoGroup::getClassTypeId()));
-  return (SoGroup *)rootcopy;
+  SoGroup * tmproot = new SoGroup;
+  tmproot->ref();
+
+  // Instead of individually copying our children one by one and
+  // attaching to the new group node root, we use a temporary group
+  // node to first *attach* our children to, and then copying the
+  // root. This is done so any interconnections between sub-graphs are
+  // also copied.
+
+  const SoChildList * cl = this->children;
+  for (int i = 0; i < cl->getLength(); i++) {
+    tmproot->addChild(cl->operator[](i));
+  }
+
+  SoNode * n = tmproot->copy(TRUE);
+
+  tmproot->unref();
+
+  return (SoGroup *)n;
 }
 
 // Doc from superclass.
@@ -323,16 +345,17 @@ SoFile::audioRender(SoAudioRenderAction * action)
 void
 SoFile::copyContents(const SoFieldContainer * from, SbBool copyconnections)
 {
-  this->children->truncate(0);
+  // so we don't reload when resetting the name field
+  this->namesensor->detach();
   inherited::copyContents(from, copyconnections);
+  this->namesensor->attach(&this->name);
 
   SoFile * filenode = (SoFile *)from;
 
-  if (filenode->children->getLength() == 0) return;
-
-  assert(filenode->children->getLength() == 1);
-
-  SoNode * cp = (SoNode *)
-    SoFieldContainer::findCopy((*(filenode->children))[0], copyconnections);
-  this->children->append(cp);
+  this->children->truncate(0);
+  for (int i=0; i < filenode->children->getLength(); i++) {
+    SoNode * cp = (SoNode *)
+      SoFieldContainer::findCopy((*(filenode->children))[i], copyconnections);
+    this->children->append(cp);
+  }
 }
