@@ -16,37 +16,22 @@ Ideas for this wish list can be submitted by anyone.
 THE WISH LIST
 =============
 
-* SoSFEnum, SoMFEnum
-  2000-12-05  Lars J. Aas  <larsa@sim.no>
-  [upwards compatible extension]
-
-  It would be preferable to have methods for getting the valid enum names
-  (add more introspection), so you can connect generic GUI selection boxes to
-  enum fields without having to know the node/field combination intimately.
-
-  Proposition:
-    public:
-  +   int getNumEnums(void);
-  +   int getEnum( int idx, SbName & name ); // returns enum value
-
 * missing base class fields
   2000-12-05  Lars J. Aas  <larsa@sim.no>
   [upwards compatible extension]
 
   The following base classes have no corresponding fields:
     SbBox2f, SbBox2s, SbBox3f, SbColor4f, SbCylinder, SbLine, SbSphere,
-    SbVec2s, SbXfBox3f
+    SbXfBox3f
 
   Probably not that many are worth implementing...
 
-  [I would really like an SbVec2s field, 2000-12-07 pederb]
-
-* SbVec2i, SbVec2d, SbVec4d
+* SbVec2i
   2000-12-07  Peder Blekken  <pederb@sim.no>
   [upwards compatible extension]
 
-  It would be very useful to have these classes. SbVec2i for storing
-  2D integer vectors, SbVec2d, SbVec4d for storing doubles.
+  It would be very useful to have this class for storing
+  2D integer vectors.
 
   The corresponding field classes should also be added.
 
@@ -348,15 +333,6 @@ THE WISH LIST
     Another possibility is to have an SoOptions node (or some similar name)
     that could be placed in the scene graph to control some of these options.
     This can be complimentary to the current envvar-scheme.
-
-* SbString::apply(int (*func)(int))
-  2001-05-07  Peder Blekken  <pederb@sim.no>
-
-  It would be nice to be able to do operations on each character in 
-  the string, for instance toupper(), tolower() or some other 
-  user-defined method. This could be handled by invoking callbacks
-  for each character in the string, and setting the character to
-  the value returned from the callback function.
 
 * SbString / SbName / Coin internationalization
   2001-06-28  Morten Eriksen  <mortene@sim.no>
@@ -677,17 +653,6 @@ THE WISH LIST
   [upwards compatible extension]
 
   ...with corresponding SbVec and field types.
-
-
-* SoType::getInstantiationMethod()
-  2002-01-17  Lars J. Aas  <larsa@sim.no>
-  [upwards compatible extension]
-
-  For temporary overriding of nodes, the current instantiation method is
-  lost when you set the new one, and calling overrideType() with NULL
-  just disables the type.  To be able to properly save the current state
-  you need to be able to get the current pointer for the instantiation
-  method.
 
 
 * SoMField::setValuesPointer()
