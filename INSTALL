@@ -36,11 +36,11 @@ are building.
     cd coin-build
     ../Coin-1.0.0/configure
 
-  # 3. Build library:
+  # 3. Build the Coin library:
 
     make
 
-  # 4. Install Coin:
+  # 4. Install the Coin library:
 
     make install
 
@@ -335,6 +335,23 @@ Configuration Options
   used together with the --with-alternate option to avoid installing
   the new Coin library over the old one.  The default is the empty
   string.
+
+CPPFLAGS="<string>"
+CFLAGS="<string>"
+CXXFLAGS="<string>"
+LDFLAGS="<string>"
+
+  If you need to add command line flags to respectively the source code
+  preprocessor, the C compiler, the C++ compiler, and the linker, invoke
+  configure with an argument like one of the above.  For instance,
+  with MS Visual C++, you would typically set the CRT to link with like
+  the following:
+
+    [coin]/configure CFLAGS=/MDd CXXFLAGS=/MDd [...]
+
+  This would cause compilation of both C and C++ files to be done with
+  the /MDd option which is for compiling/linking with the debug version
+  of the multi-thread CRT (run-time library).
 
 
 Build Options
