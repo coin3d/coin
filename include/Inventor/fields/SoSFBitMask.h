@@ -58,6 +58,8 @@ protected:
 
 private:
   virtual void convertTo(SoField * dest) const;
+
+  friend class SoMFBitMask; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFBITMASK_H__

@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFInt32.h>
-#if !defined(COIN_EXCLUDE_SOSFINT32)
 #include <Inventor/fields/SoSFInt32.h>
-#endif // !COIN_EXCLUDE_SOSFINT32
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -84,7 +83,7 @@ SoMFInt32::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFInt32::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -124,6 +123,8 @@ SoMFInt32::operator = (const SoMFInt32 & field)
 */
 SoMFInt32::SoMFInt32(void)
 {
+  // Make sure we have initialized class.
+  assert(SoMFInt32::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
@@ -282,24 +283,21 @@ SoMFInt32::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
-SoMFInt32::read1Value(SoInput * in, int index)
+SoMFInt32::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-  return in->read(values[index]);
+  SoSFInt32 sfint32;
+  SbBool result;
+  if (result = sfint32.readValue(in)) this->set1Value(idx, sfint32.getValue());
+  return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFInt32::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-  out->write(this->values[idx]);
+  SoSFInt32 sfint32;
+  sfint32.setValue((*this)[idx]);
+  sfint32.writeValue(out);
 }
 
 /*!
@@ -314,13 +312,10 @@ SoMFInt32::getNumValuesPerLine(void) const
 void
 SoMFInt32::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFINT32)
-  else if (dest->getTypeId()==SoSFInt32::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFInt32::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFInt32 *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFINT32
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     const int num=this->getNum();

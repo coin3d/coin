@@ -6,6 +6,8 @@
 */
 _classname_::_classname_(void)
 {
+  // Make sure we have initialized class.
+  assert(_classname_::classTypeId != SoType::badType());
 }
 
 /*!

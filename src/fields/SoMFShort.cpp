@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFShort.h>
-#if !defined(COIN_EXCLUDE_SOSFSHORT)
 #include <Inventor/fields/SoSFShort.h>
-#endif // !COIN_EXCLUDE_SOSFSHORT
+
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -87,7 +86,7 @@ SoMFShort::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFShort::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -127,6 +126,8 @@ SoMFShort::operator = (const SoMFShort & field)
 */
 SoMFShort::SoMFShort(void)
 {
+  // Make sure we have initialized class.
+  assert(SoMFShort::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
@@ -284,24 +285,21 @@ SoMFShort::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
-SoMFShort::read1Value(SoInput * in, int index)
+SoMFShort::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-  return in->read(values[index]);
+  SoSFShort sfshort;
+  SbBool result;
+  if (result = sfshort.readValue(in)) this->set1Value(idx, sfshort.getValue());
+  return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFShort::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-  out->write(this->values[idx]);
+  SoSFShort sfshort;
+  sfshort.setValue((*this)[idx]);
+  sfshort.writeValue(out);
 }
 
 /*!
@@ -316,13 +314,10 @@ SoMFShort::getNumValuesPerLine(void) const
 void
 SoMFShort::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFSHORT)
-  else if (dest->getTypeId()==SoSFShort::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFShort::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFShort *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFSHORT
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     const int num=this->getNum();

@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFVec4f.h>
-#if !defined(COIN_EXCLUDE_SOSFVEC4F)
 #include <Inventor/fields/SoSFVec4f.h>
-#endif // !COIN_EXCLUDE_SOSFVEC4F
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -82,7 +81,7 @@ SoMFVec4f::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFVec4f::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -122,6 +121,8 @@ SoMFVec4f::operator = (const SoMFVec4f & field)
 */
 SoMFVec4f::SoMFVec4f(void)
 {
+  // Make sure we have initialized class.
+  assert(SoMFVec4f::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
@@ -279,36 +280,21 @@ SoMFVec4f::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
-SoMFVec4f::read1Value(SoInput * in, int index)
+SoMFVec4f::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  float val[2];
-
-  SbBool result = in->read(val[0]) && in->read(val[1]);
-  if(result) this->values[index].setValue(val);
+  SoSFVec4f sfvec4f;
+  SbBool result;
+  if (result = sfvec4f.readValue(in)) this->set1Value(idx, sfvec4f.getValue());
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFVec4f::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  out->write(this->values[idx][0]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx][1]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx][2]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx][3]);
+  SoSFVec4f sfvec4f;
+  sfvec4f.setValue((*this)[idx]);
+  sfvec4f.writeValue(out);
 }
 
 /*!
@@ -366,13 +352,10 @@ SoMFVec4f::setValue(const float xyzw[4])
 void
 SoMFVec4f::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFVEC4F)
-  else if (dest->getTypeId()==SoSFVec4f::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFVec4f::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFVec4f *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFVEC4F
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFVec4f::convertTo",

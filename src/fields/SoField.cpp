@@ -22,9 +22,10 @@
   \brief The SoField class is the top-level abstract base class for fields.
   \ingroup fields
 
-  Fields is the mechanism used throughout Coin for storing data
-  within higher level class types. All public properties in nodes are
-  for instance stored in fields.
+  Fields is the mechanism used throughout Coin for encapsulating basic
+  data types to detect changes made to them, and to provide conversion,
+  import and export facilities. All public properties in nodes are stored in
+  fields, along with the inputs and outputs of engines.
 
   Forcing data modification to go through a method interface makes it
   possible to automatically detect and react upon changes in the

@@ -75,6 +75,8 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
+
+  friend class SoMFString; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFSTRING_H__

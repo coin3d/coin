@@ -91,7 +91,7 @@ SoSFColor::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoSFColor::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -130,6 +130,8 @@ SoSFColor::operator = (const SoSFColor & field)
 */
 SoSFColor::SoSFColor(void)
 {
+  // Make sure we have initialized class.
+  assert(SoSFColor::classTypeId != SoType::badType());
 }
 
 /*!
@@ -195,24 +197,22 @@ SoSFColor::cleanClass(void)
 SbBool
 SoSFColor::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  if (in->read(value[0]) && in->read(value[1]) && in->read(value[2])) {
-    return TRUE;
-  }
-  else return FALSE;
+  return
+    in->read(this->value[0]) &&
+    in->read(this->value[1]) &&
+    in->read(this->value[2]);
 }
 
 void
 SoSFColor::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
+  SbColor c = this->getValue();
 
-  out->write(this->value[0]);
+  out->write(c[0]);
   if(!out->isBinary()) out->write(' ');
-  out->write(this->value[1]);
+  out->write(c[1]);
   if(!out->isBinary()) out->write(' ');
-  out->write(this->value[2]);
+  out->write(c[2]);
 }
 
 /*!

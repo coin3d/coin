@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFColor.h>
-#if !defined(COIN_EXCLUDE_SOSFCOLOR)
 #include <Inventor/fields/SoSFColor.h>
-#endif // !COIN_EXCLUDE_SOSFCOLOR
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -83,7 +82,7 @@ SoMFColor::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFColor::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -123,6 +122,8 @@ SoMFColor::operator = (const SoMFColor & field)
 */
 SoMFColor::SoMFColor(void)
 {
+  // Make sure we have initialized class.
+  assert(SoMFColor::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
@@ -281,34 +282,21 @@ SoMFColor::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
-SoMFColor::read1Value(SoInput * in, int index)
+SoMFColor::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  float rgb[3];
-  
-  SbBool result = in->read(rgb[0]) && in->read(rgb[1]) && in->read(rgb[2]);
-  if(result) this->values[index].setValue(rgb);
+  SoSFColor sfcolor;
+  SbBool result;
+  if (result = sfcolor.readValue(in)) this->set1Value(idx, sfcolor.getValue());
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFColor::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  out->write(this->values[idx][0]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx][1]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx][2]);
+  SoSFColor sfcolor;
+  sfcolor.setValue((*this)[idx]);
+  sfcolor.writeValue(out);
 }
 
 /*!
@@ -426,13 +414,10 @@ SoMFColor::set1HSVValue(const int idx, const float hsv[3])
 void
 SoMFColor::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFCOLOR)
-  else if (dest->getTypeId()==SoSFColor::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFColor::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFColor *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFCOLOR
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFColor::convertTo",

@@ -63,7 +63,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SField(SoSFFloat, const float)
+//$ BEGIN TEMPLATE SField( SoSFFloat, const float )
 
 SoType SoSFFloat::classTypeId = SoType::badType();
 
@@ -107,7 +107,7 @@ SoSFFloat::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoSFFloat::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -146,6 +146,8 @@ SoSFFloat::operator = (const SoSFFloat & field)
 */
 SoSFFloat::SoSFFloat(void)
 {
+  // Make sure we have initialized class.
+  assert(SoSFFloat::classTypeId != SoType::badType());
 }
 
 /*!
@@ -186,7 +188,7 @@ SoSFFloat::operator == (const SoSFFloat & field) const
 void
 SoSFFloat::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFFloat)
+//$ BEGIN TEMPLATE FieldInitClass( SFFloat )
   // Make sure we only initialize once.
   assert(SoSFFloat::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -210,14 +212,12 @@ SoSFFloat::cleanClass(void)
 SbBool
 SoSFFloat::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
   return in->read(value);
 }
 
 void
 SoSFFloat::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
   out->write(this->value);
 }
 

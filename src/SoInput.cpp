@@ -910,9 +910,15 @@ READ_NUM(readReal, double, num, type)
 SbBool
 SoInput::read(int & i)
 {
-  // FIXME: binary read version not implemented yet. 19990626 mortene.
-  assert(!this->isBinary());
-  READ_INTEGER(i, int);
+  if (this->isBinary()) {
+    int32_t tmp;
+    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
+    i = tmp;
+    return TRUE;
+  }
+  else {
+    READ_INTEGER(i, int);
+  }
 }
 
 /*!
@@ -970,9 +976,15 @@ SoInput::read(unsigned short & s)
 SbBool
 SoInput::read(float & f)
 {
-  // FIXME: binary read version not implemented yet. 19990626 mortene.
-  assert(!this->isBinary());
-  READ_REAL(f, float);
+  if (this->isBinary()) {
+    float tmp;
+    if (!this->readBinaryArray(&tmp, 1)) return FALSE;
+    f = tmp;
+    return TRUE;
+  }
+  else {
+    READ_REAL(f, float);
+  }
 }
 
 /*!
@@ -1074,7 +1086,8 @@ SoInput::eof(void) const
 void
 SoInput::getLocationString(SbString & str) const
 {
-  if (this->isBinary()) {
+  // FIXME: hack to cast away constness. Ugly. 19990713 mortene.
+  if (((SoInput *)this)->isBinary()) {
     str = "\tOccurred at position ";
     char buf[32];
     sprintf(buf, "%d", this->getTopOfStack()->getNumBytesParsedSoFar());

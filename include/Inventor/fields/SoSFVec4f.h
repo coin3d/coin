@@ -76,6 +76,8 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
+
+  friend class SoMFVec4f; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFVEC4F_H__

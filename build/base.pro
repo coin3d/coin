@@ -110,26 +110,45 @@ SOURCES       =	\
 	../src/fields/SoFieldData.cpp \
 	../src/fields/SoField.cpp \
 	  ../src/fields/SoSField.cpp \
-	    ../src/fields/SoSFInt32.cpp \
 	    ../src/fields/SoSFBool.cpp \
+	    ../src/fields/SoSFInt32.cpp \
+	    ../src/fields/SoSFUInt32.cpp \
 	    ../src/fields/SoSFString.cpp \
-	\
-	    ../src/fields/SoSFBitMask.cpp \
-	    ../src/fields/SoSFColor.cpp \
 	    ../src/fields/SoSFEnum.cpp \
+	    ../src/fields/SoSFBitMask.cpp \
 	    ../src/fields/SoSFFloat.cpp \
-	    ../src/fields/SoSFImage.cpp \
+	    ../src/fields/SoSFColor.cpp \
 	    ../src/fields/SoSFMatrix.cpp \
 	    ../src/fields/SoSFName.cpp \
-	    ../src/fields/SoSFPlane.cpp \
-	    ../src/fields/SoSFRotation.cpp \
-	    ../src/fields/SoSFShort.cpp \
-	    ../src/fields/SoSFTime.cpp \
-	    ../src/fields/SoSFUInt32.cpp \
-	    ../src/fields/SoSFUShort.cpp \
 	    ../src/fields/SoSFVec2f.cpp \
 	    ../src/fields/SoSFVec3f.cpp \
 	    ../src/fields/SoSFVec4f.cpp \
+	    ../src/fields/SoSFRotation.cpp \
+	    ../src/fields/SoSFPlane.cpp \
+	    ../src/fields/SoSFTime.cpp \
+	    ../src/fields/SoSFShort.cpp \
+	    ../src/fields/SoSFUShort.cpp \
+	    ../src/fields/SoSFImage.cpp \
+	\
+	  ../src/fields/SoMField.cpp \
+	    ../src/fields/SoMFInt32.cpp \
+	    ../src/fields/SoMFBool.cpp \
+	    ../src/fields/SoMFString.cpp \
+	    ../src/fields/SoMFEnum.cpp \
+	    ../src/fields/SoMFBitMask.cpp \
+	    ../src/fields/SoMFFloat.cpp \
+	    ../src/fields/SoMFMatrix.cpp \
+	    ../src/fields/SoMFName.cpp \
+	    ../src/fields/SoMFPlane.cpp \
+	    ../src/fields/SoMFRotation.cpp \
+	    ../src/fields/SoMFShort.cpp \
+	    ../src/fields/SoMFTime.cpp \
+	    ../src/fields/SoMFUInt32.cpp \
+	    ../src/fields/SoMFUShort.cpp \
+	    ../src/fields/SoMFVec2f.cpp \
+	    ../src/fields/SoMFVec3f.cpp \
+	    ../src/fields/SoMFVec4f.cpp \
+	    ../src/fields/SoMFColor.cpp \
 	\
 	../src/nodes/SoNode.cpp \
 	  ../src/nodes/SoGroup.cpp \

@@ -1884,8 +1884,78 @@
 
 
 //////////////////////////////////////////////////////////////////////
-// Subclass -> superclass and other dependencies among fields.      //
+// Subclass->superclass and multifield->singlefield dependencies    //
+// among fields.                                                    //
 //////////////////////////////////////////////////////////////////////
+
+// multifield->singlefield
+
+#if !defined(COIN_EXCLUDE_SOMFBOOL)
+#undef COIN_EXCLUDE_SOSFBOOL
+#endif // !COIN_EXCLUDE_SOMFBOOL
+#if !defined(COIN_EXCLUDE_SOMFBITMASK)
+#undef COIN_EXCLUDE_SOSFBITMASK
+#endif // !COIN_EXCLUDE_SOMFBITMASK
+#if !defined(COIN_EXCLUDE_SOMFCOLOR)
+#undef COIN_EXCLUDE_SOSFCOLOR
+#endif // !COIN_EXCLUDE_SOMFCOLOR
+#if !defined(COIN_EXCLUDE_SOMFENGINE)
+#undef COIN_EXCLUDE_SOSFENGINE
+#endif // !COIN_EXCLUDE_SOMFENGINE
+#if !defined(COIN_EXCLUDE_SOMFENUM)
+#undef COIN_EXCLUDE_SOSFENUM
+#endif // !COIN_EXCLUDE_SOMFENUM
+#if !defined(COIN_EXCLUDE_SOMFFLOAT)
+#undef COIN_EXCLUDE_SOSFFLOAT
+#endif // !COIN_EXCLUDE_SOMFFLOAT
+#if !defined(COIN_EXCLUDE_SOMFINT32)
+#undef COIN_EXCLUDE_SOSFINT32
+#endif // !COIN_EXCLUDE_SOMFINT32
+#if !defined(COIN_EXCLUDE_SOMFMATRIX)
+#undef COIN_EXCLUDE_SOSFMATRIX
+#endif // !COIN_EXCLUDE_SOMFMATRIX
+#if !defined(COIN_EXCLUDE_SOMFNAME)
+#undef COIN_EXCLUDE_SOSFNAME
+#endif // !COIN_EXCLUDE_SOMFNAME
+#if !defined(COIN_EXCLUDE_SOMFNODE)
+#undef COIN_EXCLUDE_SOSFNODE
+#endif // !COIN_EXCLUDE_SOMFNODE
+#if !defined(COIN_EXCLUDE_SOMFPATH)
+#undef COIN_EXCLUDE_SOSFPATH
+#endif // !COIN_EXCLUDE_SOMFPATH
+#if !defined(COIN_EXCLUDE_SOMFPLANE)
+#undef COIN_EXCLUDE_SOSFPLANE
+#endif // !COIN_EXCLUDE_SOMFPLANE
+#if !defined(COIN_EXCLUDE_SOMFROTATION)
+#undef COIN_EXCLUDE_SOSFROTATION
+#endif // !COIN_EXCLUDE_SOMFROTATION
+#if !defined(COIN_EXCLUDE_SOMFSHORT)
+#undef COIN_EXCLUDE_SOSFSHORT
+#endif // !COIN_EXCLUDE_SOMFSHORT
+#if !defined(COIN_EXCLUDE_SOMFSTRING)
+#undef COIN_EXCLUDE_SOSFSTRING
+#endif // !COIN_EXCLUDE_SOMFSTRING
+#if !defined(COIN_EXCLUDE_SOMFTIME)
+#undef COIN_EXCLUDE_SOSFTIME
+#endif // !COIN_EXCLUDE_SOMFTIME
+#if !defined(COIN_EXCLUDE_SOMFUINT32)
+#undef COIN_EXCLUDE_SOSFUINT32
+#endif // !COIN_EXCLUDE_SOMFUINT32
+#if !defined(COIN_EXCLUDE_SOMFUSHORT)
+#undef COIN_EXCLUDE_SOSFUSHORT
+#endif // !COIN_EXCLUDE_SOMFUSHORT
+#if !defined(COIN_EXCLUDE_SOMFVEC2F)
+#undef COIN_EXCLUDE_SOSFVEC2F
+#endif // !COIN_EXCLUDE_SOMFVEC2F
+#if !defined(COIN_EXCLUDE_SOMFVEC3F)
+#undef COIN_EXCLUDE_SOSFVEC3F
+#endif // !COIN_EXCLUDE_SOMFVEC3F
+#if !defined(COIN_EXCLUDE_SOMFVEC4F)
+#undef COIN_EXCLUDE_SOSFVEC4F
+#endif // !COIN_EXCLUDE_SOMFVEC4F
+
+
+// subclass->superclass
 
 #if !defined(COIN_EXCLUDE_SOSFBOOL)
 #undef COIN_EXCLUDE_SOSFIELD

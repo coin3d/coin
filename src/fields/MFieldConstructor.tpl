@@ -1,17 +1,19 @@
-//$ TEMPLATE MFieldConstructor(_fieldname_)
+//$ TEMPLATE MFieldConstructor(_classname_)
 
 /*!
   Constructor.
 */
-_fieldname_::_fieldname_(void)
+_classname_::_classname_(void)
 {
+  // Make sure we have initialized class.
+  assert(_classname_::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
 /*!
   Destructor.
 */
-_fieldname_::~_fieldname_(void)
+_classname_::~_classname_(void)
 {
   this->deleteAllValues();
 }

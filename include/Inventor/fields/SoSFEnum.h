@@ -86,6 +86,8 @@ protected:
 
 private:
   virtual void convertTo(SoField * dest) const;
+
+  friend class SoMFEnum; // For readValue() & writeValue().
 };
 
 

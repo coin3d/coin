@@ -26,10 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFBitMask.h>
-
-#if !defined(COIN_EXCLUDE_SOSFBITMASK)
 #include <Inventor/fields/SoSFBitMask.h>
-#endif // !COIN_EXCLUDE_SOSFBITMASK
+
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -81,7 +79,7 @@ SoMFBitMask::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFBitMask::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -150,51 +148,23 @@ SoMFBitMask::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoMFBitMask::read1Value(SoInput * in, int idx)
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+  SoSFBitMask sfbitmask;
+  sfbitmask.setEnums(this->numEnums, this->enumValues, this->enumNames);
+  SbBool result;
+  if (result = sfbitmask.readValue(in)) this->set1Value(idx, sfbitmask.getValue());
+  return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFBitMask::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  SbBool paran=FALSE;
-  int out_vals_written = 0;
-  
-  int restval = this->values[idx];
-  int i=0;
-  while (restval) {
-    if (i>=numEnums) break;
-    if (enumValues[i] & restval) {
-      restval &= ~enumValues[i];
-      if (!out_vals_written && restval) {
-	out->write('(');
-	paran=TRUE;
-      }
-      if (out_vals_written++) out->write(" | ");
-      out->write((const char *)enumNames[i].getString());
-    }
-
-    i++;
-  }
-  if (paran) out->write(')');
-  if (!out_vals_written) out->write("()");
-
-  if(restval) {
-    SoDebugError::post("SoMFBitMask::write1Value",
-		       "unable to write some bits (0x%x)",
-		       restval);
-  }
+  SoSFBitMask sfbitmask;
+  sfbitmask.setEnums(this->numEnums, this->enumValues, this->enumNames);
+  sfbitmask.setValue((*this)[idx]);
+  sfbitmask.writeValue(out);
 }
 
 /*!
@@ -216,13 +186,10 @@ SoMFBitMask::findEnumValue(const SbName & name, int & val)
 void
 SoMFBitMask::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFBITMASK)
-  else if (dest->getTypeId()==SoSFBitMask::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFBitMask::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFBitMask *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFBITMASK
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFBitMask::convertTo",

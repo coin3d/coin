@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFVec3f.h>
-#if !defined(COIN_EXCLUDE_SOSFVEC3F)
 #include <Inventor/fields/SoSFVec3f.h>
-#endif // !COIN_EXCLUDE_SOSFVEC3F
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -82,7 +81,7 @@ SoMFVec3f::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFVec3f::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -122,6 +121,8 @@ SoMFVec3f::operator = (const SoMFVec3f & field)
 */
 SoMFVec3f::SoMFVec3f(void)
 {
+  // Make sure we have initialized class.
+  assert(SoMFVec3f::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
@@ -279,34 +280,21 @@ SoMFVec3f::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
-SoMFVec3f::read1Value(SoInput * in, int index)
+SoMFVec3f::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  float val[3];
-
-  SbBool result = in->read(val[0]) && in->read(val[1]) && in->read(val[2]);
-  if(result) this->values[index].setValue(val);
+  SoSFVec3f sfvec3f;
+  SbBool result;
+  if (result = sfvec3f.readValue(in)) this->set1Value(idx, sfvec3f.getValue());
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFVec3f::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  out->write(this->values[idx][0]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx][1]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx][2]);
+  SoSFVec3f sfvec3f;
+  sfvec3f.setValue((*this)[idx]);
+  sfvec3f.writeValue(out);
 }
 
 /*!
@@ -362,13 +350,10 @@ SoMFVec3f::setValue(const float xyz[3])
 void
 SoMFVec3f::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFVEC3F)
-  else if (dest->getTypeId()==SoSFVec3f::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFVec3f::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFVec3f *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFVEC3F
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFVec3f::convertTo",

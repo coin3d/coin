@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFMatrix.h>
-#if !defined(COIN_EXCLUDE_SOSFMATRIX)
 #include <Inventor/fields/SoSFMatrix.h>
-#endif // !COIN_EXCLUDE_SOSFMATRIX
+
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
 #endif // !COIN_EXCLUDE_SOSFSTRING
@@ -87,7 +86,7 @@ SoMFMatrix::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFMatrix::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -127,6 +126,8 @@ SoMFMatrix::operator = (const SoMFMatrix & field)
 */
 SoMFMatrix::SoMFMatrix(void)
 {
+  // Make sure we have initialized class.
+  assert(SoMFMatrix::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
@@ -284,56 +285,21 @@ SoMFMatrix::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoMFMatrix::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  // FIXME: this code has a lot in common with
-  // SoSFMatrix::readValue(), could it be shared somehow? 19990324
-  // mortene.
-
-  SbMat mat;
-
-  SbBool result =
-    in->read(mat[0][0]) && in->read(mat[0][1]) &&
-    in->read(mat[0][2]) && in->read(mat[0][3]) &&
-    in->read(mat[1][0]) && in->read(mat[1][1]) &&
-    in->read(mat[1][2]) && in->read(mat[1][3]) &&
-    in->read(mat[2][0]) && in->read(mat[2][1]) &&
-    in->read(mat[2][2]) && in->read(mat[2][3]) &&
-    in->read(mat[3][0]) && in->read(mat[3][1]) &&
-    in->read(mat[3][2]) && in->read(mat[3][3]);
-  
-  if (result) this->set1Value(idx, mat);
+  SoSFMatrix sfmatrix;
+  SbBool result;
+  if (result = sfmatrix.readValue(in)) this->set1Value(idx, sfmatrix.getValue());
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFMatrix::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  for(int i=0; i < 4; i++) {
-    for(int j=0; j < 4; j++) {
-      out->write(this->values[idx][i][j]);
-      if(j != 3) if(!out->isBinary()) out->write(' ');
-    }
-
-    if(i == 0) out->incrementIndent();
-    if(i != 3) {
-      out->write('\n');
-      out->indent();
-    }
-  }
-
-  out->decrementIndent();
+  SoSFMatrix sfmatrix;
+  sfmatrix.setValue((*this)[idx]);
+  sfmatrix.writeValue(out);
 }
 
 /*!
@@ -358,13 +324,10 @@ SoMFMatrix::setValue(const float a11, const float a12,
 void
 SoMFMatrix::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFMATRIX)
-  else if (dest->getTypeId()==SoSFMatrix::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFMatrix::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFMatrix *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFMATRIX
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;

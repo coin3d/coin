@@ -1,9 +1,9 @@
-//$ TEMPLATE FieldInitClass(fieldname)
+//$ TEMPLATE FieldInitClass(_fieldname_)
   // Make sure we only initialize once.
-  assert(So##fieldname::classTypeId == SoType::badType());
+  assert(So##_fieldname_::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
   assert(inherited::getClassTypeId() != SoType::badType());
 
-  So##fieldname::classTypeId =
-    SoType::createType(So##fieldname::getClassTypeId(),
-                       "fieldname", &So##fieldname::createInstance);
+  So##_fieldname_::classTypeId =
+    SoType::createType(So##_fieldname_::getClassTypeId(),
+                       "_fieldname_", &So##_fieldname_::createInstance);

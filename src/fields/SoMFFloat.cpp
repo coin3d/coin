@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFFloat.h>
-#if !defined(COIN_EXCLUDE_SOSFFLOAT)
 #include <Inventor/fields/SoSFFloat.h>
-#endif // !COIN_EXCLUDE_SOSFFLOAT
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -87,7 +86,7 @@ SoMFFloat::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFFloat::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -127,6 +126,8 @@ SoMFFloat::operator = (const SoMFFloat & field)
 */
 SoMFFloat::SoMFFloat(void)
 {
+  // Make sure we have initialized class.
+  assert(SoMFFloat::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
@@ -284,24 +285,21 @@ SoMFFloat::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
-SoMFFloat::read1Value(SoInput * in, int index)
+SoMFFloat::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-  return in->read(values[index]);
+  SoSFFloat sffloat;
+  SbBool result;
+  if (result = sffloat.readValue(in)) this->set1Value(idx, sffloat.getValue());
+  return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFFloat::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-  out->write(this->values[idx]);
+  SoSFFloat sffloat;
+  sffloat.setValue((*this)[idx]);
+  sffloat.writeValue(out);
 }
 
 /*!
@@ -316,13 +314,10 @@ SoMFFloat::getNumValuesPerLine(void) const
 void
 SoMFFloat::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFFLOAT)
-  else if (dest->getTypeId()==SoSFFloat::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFFloat::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFFloat *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFFLOAT
 #if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     const int num=this->getNum();

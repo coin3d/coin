@@ -72,6 +72,8 @@ protected:
 
 private:
   virtual void convertTo(SoField * dest) const;
+
+  friend class SoMFUInt32; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFUINT32_H__

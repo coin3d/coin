@@ -91,7 +91,7 @@ SoSFVec3f::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoSFVec3f::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -130,6 +130,8 @@ SoSFVec3f::operator = (const SoSFVec3f & field)
 */
 SoSFVec3f::SoSFVec3f(void)
 {
+  // Make sure we have initialized class.
+  assert(SoSFVec3f::classTypeId != SoType::badType());
 }
 
 /*!
@@ -196,20 +198,19 @@ SoSFVec3f::cleanClass(void)
 SbBool
 SoSFVec3f::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
   return (in->read(value[0]) && in->read(value[1]) && in->read(value[2]));
 }
 
 void
 SoSFVec3f::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
+  SbVec3f v = this->getValue(); // evaluate
 
-  out->write(this->value[0]);
+  out->write(v[0]);
   if(!out->isBinary()) out->write(' ');
-  out->write(this->value[1]);
+  out->write(v[1]);
   if(!out->isBinary()) out->write(' ');
-  out->write(this->value[2]);
+  out->write(v[2]);
 }
 
 /*!

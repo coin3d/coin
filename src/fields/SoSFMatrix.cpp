@@ -91,7 +91,7 @@ SoSFMatrix::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoSFMatrix::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -130,6 +130,8 @@ SoSFMatrix::operator = (const SoSFMatrix & field)
 */
 SoSFMatrix::SoSFMatrix(void)
 {
+  // Make sure we have initialized class.
+  assert(SoSFMatrix::classTypeId != SoType::badType());
 }
 
 /*!
@@ -195,8 +197,6 @@ SoSFMatrix::cleanClass(void)
 SbBool
 SoSFMatrix::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
   SbMat mat;
 
   SbBool result =
@@ -216,11 +216,19 @@ SoSFMatrix::readValue(SoInput * in)
 void
 SoSFMatrix::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
+  if (out->isBinary()) {
+    for(int i = 0; i < 4; i++) {
+      for(int j = 0; j < 4; j++) {
+	out->write(this->getValue()[i][j]);
+      }
+    }
+    return;
+  }
+
 
   for(int k=0; k < 4; k++) {
     out->write(this->getValue()[0][k]);
-    if(!out->isBinary() && (k != 3)) out->write(' ');
+    if(k != 3) out->write(' ');
   }
 
   out->write('\n'); // FIXME: ok on mac/win32?
@@ -230,7 +238,7 @@ SoSFMatrix::writeValue(SoOutput * out) const
     out->indent();
     for(int j=0; j < 4; j++) {
       out->write(this->getValue()[i][j]);
-      if(!out->isBinary() && (j != 3)) out->write(' ');
+      if(j != 3) out->write(' ');
     }
     if(i != 3) out->write('\n'); // FIXME: ok on mac/win32?
   }

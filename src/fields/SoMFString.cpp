@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFString.h>
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -83,7 +82,7 @@ SoMFString::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFString::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -123,6 +122,8 @@ SoMFString::operator = (const SoMFString & field)
 */
 SoMFString::SoMFString(void)
 {
+  // Make sure we have initialized class.
+  assert(SoMFString::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
@@ -317,32 +318,21 @@ SoMFString::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoMFString::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-  SbBool ok = in->read(this->values[idx]);
-
-#if 0 // debug
-  for (int i=0; i < this->getNum(); i++)
-    SoDebugError::postInfo("SoMFString::read1Value",
-			   "str %d: '%s'", i, (*this)[i].getString());
-#endif // debug
-
-  return ok;
+  SoSFString sfstring;
+  SbBool result;
+  if (result = sfstring.readValue(in)) this->set1Value(idx, sfstring.getValue());
+  return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFString::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-  out->write(this->values[idx]);
+  SoSFString sfstring;
+  sfstring.setValue((*this)[idx]);
+  sfstring.writeValue(out);
 }
 
 /*!
@@ -381,13 +371,10 @@ SoMFString::deleteText(const int fromLine, const int fromChar,
 void
 SoMFString::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
-  else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFString *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFString::convertTo",

@@ -70,6 +70,8 @@ protected:
 
 private:
   virtual void convertTo(SoField * dest) const;
+
+  friend class SoMFBool; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFBOOL_H__

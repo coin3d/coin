@@ -34,6 +34,10 @@
 #include <malloc.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \var int SoMField::num
   FIXME: write doc
@@ -50,7 +54,7 @@ SoType SoMField::classTypeId = SoType::badType();
   FIXME: write function documentation
 */
 int 
-SoMField::fieldSizeof() const
+SoMField::fieldSizeof(void) const
 {
   assert(0);
   return 0; // should never be called
@@ -60,7 +64,7 @@ SoMField::fieldSizeof() const
   FIXME: write function documentation
 */
 void *
-SoMField::valuesPtr()
+SoMField::valuesPtr(void)
 {
   assert(0);
   return NULL;
@@ -113,7 +117,7 @@ SoMField::cleanClass(void)
 /*!
   Constructor.
 */
-SoMField::SoMField()
+SoMField::SoMField(void)
 {
   this->maxNum = this->num = 0;
 }
@@ -132,7 +136,7 @@ void
 SoMField::makeRoom(int newNum)
 {
   assert(newNum >= 0);
-  if(newNum != num) this->allocValues(newNum);
+  if (newNum != num) this->allocValues(newNum);
 }
 
 /*!
@@ -143,9 +147,9 @@ SoMField::set1(const int index, const char * const valueString)
 {
   SoInput in;
 
-  in.setBuffer((void *)valueString,strlen(valueString));
+  in.setBuffer((void *)valueString, strlen(valueString));
 
-  this->read1Value(&in,index);
+  this->read1Value(&in, index);
   this->touch();
   return TRUE;
 }
@@ -161,12 +165,12 @@ SoMField::get1(const int index, SbString & valueString)
   size_t size;
 
   out.setHeaderString("");
-  out.setBuffer(buffer,10,SoField::reallocOutputBuf);
+  out.setBuffer(buffer, 10, SoField::reallocOutputBuf);
 
   this->evaluate();
-  this->write1Value(&out,index);
+  this->write1Value(&out, index);
 
-  out.getBuffer(buffer,size);
+  out.getBuffer(buffer, size);
   valueString=(char *)buffer;
 
   out.resetHeaderString();
@@ -174,101 +178,88 @@ SoMField::get1(const int index, SbString & valueString)
 }
 
 /*!
-  FIXME: write function documentation
+  Read and set values for this field from input stream \a in.
 */
 SbBool
 SoMField::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
+  if (in->isBinary()) {
+    int numtoread;
+    if (!in->read(numtoread)) return FALSE;
+    // FIXME: sanity check on number of values to read. 19990713 mortene.
+    if (numtoread) this->makeRoom(numtoread);
+    return this->readBinaryValues(in, numtoread);
+  }
 
   char c;
   int curIndex = 0;
 
-  if(in->read(c) && c == '[') {
-    if(in->read(c) && c == ']') {}
+  if (in->read(c) && c == '[') {
+    if (in->read(c) && c == ']') {}
     else {
       in->putBack(c);
       
-      while(TRUE) {
-	if(curIndex >= num) makeRoom(curIndex + 1);
+      while (TRUE) {
+	if (curIndex >= num) this->makeRoom(curIndex + 1);
 #if 0 // FIXME: temporary disabled, should move progress code to SoInput. 19980913 mortene.
-	if(curIndex && (curIndex%500 == 0)) {
-	  if(!SoDB::progress(in)) return FALSE;
+	if (curIndex && (curIndex%500 == 0)) {
+	  if (!SoDB::progress(in)) return FALSE;
 	}
 #endif
-	if(!this->read1Value(in, curIndex++) || !in->read(c)) {
+	if (!this->read1Value(in, curIndex++) || !in->read(c)) {
 	  SoReadError::post(in, "Couldn't read value %d of field",
 			    curIndex);
 	  return FALSE;
 	}
 
-	if(c == ',') {
-	  if(in->read(c)) {
-	    if(c == ']') break;
+	if (c == ',') {
+	  if (in->read(c)) {
+	    if (c == ']') break;
 	    else in->putBack(c);
 	  }
 	}
-	else if(c == ']')
+	else if (c == ']')
 	  break;
 	else
 	  in->putBack(c);
       }
     }
 
-    if(curIndex < num) makeRoom(curIndex);
+    if (curIndex < num) this->makeRoom(curIndex);
   }
 
   else {
     in->putBack(c);
-    makeRoom(1);
-    if(!this->read1Value(in, 0)) return FALSE;
+    this->makeRoom(1);
+    if (!this->read1Value(in, 0)) return FALSE;
   }
 
   return TRUE;
 }
 
 /*!
-  FIXME: write function documentation
-*/
-void
-SoMField::write(SoOutput * out, const SbName & name) const
-{
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  if(this->getNum() == 0) return;
-
-  // Must cast to avoid "'s.
-  out->write((const char *)name);
-  out->write(' ');
-  if(this->getNum() > 1) out->write("[ ");
-
-  this->writeValue(out);
-
-  if(this->getNum() > 1) out->write(" ]");
-
-  out->write('\n'); // FIXME: '\n' not correct on win32/mac? 19980910 mortene.
-}
-
-/*!
-  FIXME: write function documentation
+  Write all field values to \a out.
 */
 void
 SoMField::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
+  if (out->isBinary()) {
+    this->writeBinaryValues(out);
+    return;
+  }
 
   SbBool indented = FALSE;
 
   const int num=this->getNum();
   if (num>1) out->write("[ ");
 
-  for(int i=0; i < num; i++) {
+  for (int i=0; i < num; i++) {
     this->write1Value(out, i);
 
-    if(i != num-1) {
-      if(((i+1) % this->getNumValuesPerLine()) == 0) {
-	out->write(",\n");
-	if(!indented) {
+    if (i != num-1) {
+      if (((i+1) % this->getNumValuesPerLine()) == 0) {
+	out->write(", \n");
+	if (!indented) {
 	  out->incrementIndent();
 	  indented = TRUE;
 	}
@@ -281,26 +272,32 @@ SoMField::writeValue(SoOutput * out) const
   }
   if (num>1) out->write(" ]");
 
-  if(indented) out->decrementIndent();
+  if (indented) out->decrementIndent();
 }
 
 /*!
-  FIXME: write function documentation
+  Read \a numToRead binary format values from \a in into this field.
 */
 SbBool
 SoMField::readBinaryValues(SoInput * in, int numToRead)
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+  assert(in->isBinary());
+
+  for (int i=0; i < numToRead; i++) if (!this->read1Value(in, i)) return FALSE;
+  return TRUE;
 }
 
 /*!
-  FIXME: write function documentation
+  Write all values of field to \a out in binary format.
 */
 void
 SoMField::writeBinaryValues(SoOutput * out) const
 {
-  assert(0 && "FIXME: not implemented yet");
+  assert(out->isBinary());
+
+  const int num = this->getNum();
+  out->write(num);
+  for (int i=0; i < num; i++) this->write1Value(out, i);
 }
 
 /*!
@@ -357,7 +354,7 @@ SoMField::allocValues(int number)
 {
   assert(number >= 0);
 
-  if(number == 0) {
+  if (number == 0) {
     delete (unsigned char *) this->valuesPtr();
     this->setValuesPtr(NULL);
     this->maxNum = 0;
@@ -371,9 +368,12 @@ SoMField::allocValues(int number)
       while (number > maxNum) maxNum<<=1;
       while ((maxNum >> 1) >= number) maxNum >>= 1;
 
-//       fprintf(stderr,"SoMField::allocValues: %d --> %d\n"
-// 	      "name: %s, ptr: %p\n",
-// 	      number, maxNum, getTypeId().getName().getString(), this);
+#if 0 // debug
+      SoDebugError::postInfo("SoMField::allocValues",
+			     "%d --> %d, name: '%s', ptr: %p",
+			     number, maxNum, getTypeId().getName().getString(),
+			     this);
+#endif // debug
 
 
       unsigned char * newblock = new unsigned char[maxNum * fsize];

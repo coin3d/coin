@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFVec2f.h>
-#if !defined(COIN_EXCLUDE_SOSFVEC2F)
 #include <Inventor/fields/SoSFVec2f.h>
-#endif // !COIN_EXCLUDE_SOSFVEC2F
+
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -82,7 +81,7 @@ SoMFVec2f::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFVec2f::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -122,6 +121,8 @@ SoMFVec2f::operator = (const SoMFVec2f & field)
 */
 SoMFVec2f::SoMFVec2f(void)
 {
+  // Make sure we have initialized class.
+  assert(SoMFVec2f::classTypeId != SoType::badType());
   this->values = NULL;
 }
 
@@ -279,32 +280,21 @@ SoMFVec2f::cleanClass(void)
 
 // *************************************************************************
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
-SoMFVec2f::read1Value(SoInput * in, int index)
+SoMFVec2f::read1Value(SoInput * in, int idx)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
-  float val[2];
-
-  SbBool result = in->read(val[0]) && in->read(val[1]);
-  if(result) this->values[index].setValue(val);
+  SoSFVec2f sfvec2f;
+  SbBool result;
+  if (result = sfvec2f.readValue(in)) this->set1Value(idx, sfvec2f.getValue());
   return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFVec2f::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  out->write(this->values[idx][0]);
-  if(!out->isBinary()) out->write(' ');
-  out->write(this->values[idx][1]);
+  SoSFVec2f sfvec2f;
+  sfvec2f.setValue((*this)[idx]);
+  sfvec2f.writeValue(out);
 }
 
 /*!
@@ -359,13 +349,10 @@ SoMFVec2f::setValue(const float xy[2])
 void
 SoMFVec2f::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFVEC2F)
-  else if (dest->getTypeId()==SoSFVec2f::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFVec2f::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFVec2f *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFVEC2F
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFVec2f::convertTo",

@@ -323,6 +323,8 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
       }
     }
   }
+
+  return TRUE;
 }
 
 /*!

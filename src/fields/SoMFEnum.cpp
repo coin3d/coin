@@ -26,9 +26,8 @@
 */
 
 #include <Inventor/fields/SoMFEnum.h>
-#if !defined(COIN_EXCLUDE_SOSFENUM)
 #include <Inventor/fields/SoSFEnum.h>
-#endif // !COIN_EXCLUDE_SOSFENUM
+
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -100,7 +99,7 @@ SoMFEnum::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoMFEnum::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -300,49 +299,26 @@ SoMFEnum::SoMFEnum(void)
 */
 SoMFEnum::~SoMFEnum(void)
 {
-    deleteAllValues();
+  this->deleteAllValues();
 }
 
-/*!
-  FIXME: write function documentation
-*/
 SbBool
 SoMFEnum::read1Value(SoInput * in, int idx)
 {
-  assert(0 && "FIXME: not implemented yet");
-  return FALSE;
+  SoSFEnum sfenum;
+  sfenum.setEnums(this->numEnums, this->enumValues, this->enumNames);
+  SbBool result;
+  if (result = sfenum.readValue(in)) this->set1Value(idx, sfenum.getValue());
+  return result;
 }
 
-/*!
-  FIXME: write function documentation
-*/
 void
 SoMFEnum::write1Value(SoOutput * out, int idx) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-
-  if (this->isDefault()) {
-    // FIXME: what happens here on binary write? 19980913 mortene.
-    out->write("DEFAULT");
-  }
-  else {
-    SbBool written = FALSE;
-
-    for (int i = 0; i < this->numEnums; i++) {
-      if (this->enumValues[i] == this->values[idx]) {
-	// FIXME: what happens here on binary write? 19980913 mortene.
-	out->write((char *) this->enumNames[i].getString());
-	written = TRUE;
-	break;
-      }
-    }
-
-#if COIN_DEBUG
-    if(!written) SoDebugError::post("SoMFEnum::write1Value",
-				    "Illegal value (%d) in field",
-				    this->values[idx]);
-#endif // COIN_DEBUG
-  }
+  SoSFEnum sfenum;
+  sfenum.setEnums(this->numEnums, this->enumValues, this->enumNames);
+  sfenum.setValue((*this)[idx]);
+  sfenum.writeValue(out);
 }
 
 /*!
@@ -435,13 +411,10 @@ SoMFEnum::findEnumName(int val, const SbName * & name) const
 void
 SoMFEnum::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFENUM)
-  else if (dest->getTypeId()==SoSFEnum::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFEnum::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFEnum *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFENUM
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFEnum::convertTo",

@@ -105,7 +105,7 @@ SoSFEnum::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoSFEnum::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -215,15 +215,19 @@ SoSFEnum::setEnums(const int num, const int * vals, const SbName * names)
 }
 
 /*!
-  FIXME: write function documentation
+  Return in \a val the enumeration value which matches the given
+  enumeration string.
+
+  Returns \a TRUE if \a name is a valid enumeration string, otherwise
+  \a FALSE.
 */
 SbBool
 SoSFEnum::findEnumValue(const SbName & name, int & val)
 {
   // Look through names table for one that matches
-  for (int i = 0; i < numEnums; i++) {
-    if (name == enumNames[i]) {
-      val = enumValues[i];
+  for (int i = 0; i < this->numEnums; i++) {
+    if (name == this->enumNames[i]) {
+      val = this->enumValues[i];
       return TRUE;
     }
   }
@@ -231,15 +235,18 @@ SoSFEnum::findEnumValue(const SbName & name, int & val)
 }
 
 /*!
-  FIXME: write function documentation
+  Return the enumeration string which matches the given enumeration value.
+
+  Returns \a TRUE if \a value is a valid enumeration value, otherwise
+  \a FALSE.
 */
 SbBool
-SoSFEnum::findEnumName(int value, const SbName * & name) const
+SoSFEnum::findEnumName(int value, const SbName *& name) const
 {
   // Look through values table for one that matches
-  for (int i = 0; i < numEnums; i++) {
-    if (value == enumValues[i]) {
-      name = &(enumNames[i]);
+  for (int i = 0; i < this->numEnums; i++) {
+    if (value == this->enumValues[i]) {
+      name = &(this->enumNames[i]);
       return TRUE;
     }
   }
@@ -249,26 +256,20 @@ SoSFEnum::findEnumName(int value, const SbName * & name) const
 SbBool
 SoSFEnum::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
-
   assert(this->enumValues != NULL);
 
   SbName n;
   // Read mnemonic value as a character string identifier
-  if (! in->read(n, TRUE))
-    return FALSE;
+  if (!in->read(n, TRUE)) return FALSE;
+  if (this->findEnumValue(n, this->value)) return TRUE;
 
-  if (this->findEnumValue(n, this->value))
-    return TRUE;
-
-    // Not found? Too bad
   SoReadError::post(in, "Unknown SoSFEnum enumeration value \"%s\"",
 		    n.getString());
   return FALSE;
 }
 
 /*!
-  FIXME: write function documentation
+  Set the value of this field by specifying an enumeration integer value.
 */
 void
 SoSFEnum::setValue(int newValue)
@@ -278,18 +279,21 @@ SoSFEnum::setValue(int newValue)
 }
 
 /*!
-  FIXME: write function documentation
+  Set the value of this field by specifying an enumeration string value.
 */
 void
 SoSFEnum::setValue(const SbName name)
 {
   int val;
   SbBool result = this->findEnumValue(name, val);
-  if(result) {
+  if (result) {
     this->setValue(val);
   }
   else {
-    // FIXME: SoDebugError? 19980913 mortene.
+#if COIN_DEBUG
+    SoDebugError::postInfo("SoSFEnum::setValue",
+			   "Unknown enum '%s'", name.getString());
+#endif // COIN_DEBUG
   }
 }
 
@@ -300,40 +304,30 @@ int
 SoSFEnum::operator ==(const SoSFEnum & f) const
 {
   // FIXME: should check enum types aswell? 19980913 mortene.
-
-  if (this->value != f.value)
-    return FALSE;
+  if (this->value != f.value) return FALSE;
   return TRUE;
 }
 
 void
 SoSFEnum::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
+  SbBool written = FALSE;
 
-  if (this->isDefault()) {
-    // FIXME: what happens here on binary write? 19980913 mortene.
-    out->write("DEFAULT");
-  }
-  else {
-    SbBool written = FALSE;
-
-    for (int i = 0; i < this->numEnums; i++) {
-      if (this->enumValues[i] == this->value) {
-	// FIXME: what happens here on binary write? 19980913 mortene.
-	out->write((char *) this->enumNames[i].getString());
-	written = TRUE;
-	break;
-      }
+  for (int i = 0; i < this->numEnums; i++) {
+    if (this->enumValues[i] == this->value) {
+      out->write((char *)this->enumNames[i].getString());
+      written = TRUE;
+      break;
     }
+  }
 
 #if COIN_DEBUG
-    if(!written)
-      SoDebugError::post("SoSFEnum::writeValue",
-			 "Illegal value (%d) in field",
-			 this->value);
+  // FIXME: this will in the common case screw up the output file so
+  // it can't be re-read. 19990713 mortene.
+  if (!written)
+    SoDebugError::post("SoSFEnum::writeValue", "Illegal value (%d) in field",
+		       this->value);
 #endif // COIN_DEBUG
-  }
 }
 
 void

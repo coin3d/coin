@@ -41,7 +41,7 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE SFieldRequired(SoSFBitMask)
+//$ BEGIN TEMPLATE SFieldRequired( SoSFBitMask )
 
 SoType SoSFBitMask::classTypeId = SoType::badType();
 
@@ -85,7 +85,7 @@ SoSFBitMask::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoSFBitMask::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -130,7 +130,7 @@ SoSFBitMask::operator = (const SoSFBitMask & field)
 void
 SoSFBitMask::initClass(void)
 {
-//$ BEGIN TEMPLATE FieldInitClass(SFBitMask)
+//$ BEGIN TEMPLATE FieldInitClass( SFBitMask )
   // Make sure we only initialize once.
   assert(SoSFBitMask::classTypeId == SoType::badType());
   // Make sure superclass has been initialized before subclass.
@@ -170,30 +170,48 @@ SoSFBitMask::findEnumValue(const SbName & name, int & val)
 SbBool
 SoSFBitMask::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
+  assert(this->enumValues != NULL);
 
-  char c;
+  this->value = 0;
   SbName n;
-  int v;
 
-  assert(enumValues != NULL);
+  if (in->isBinary()) {
+    while (TRUE) {
+      if (!in->read(n, TRUE)) {
+	SoReadError::post(in, "Couldn't read SoSFBitMask bitmask value");
+	return FALSE;
+      }
+      if (n.getLength() == 0) break;
 
-  value = 0;
+      int v;
+      if (this->findEnumValue(n, v)) {
+	this->value |= v;
+      }
+      else {
+	SoReadError::post(in, "Unknown SoSFBitMask bit "
+			  "mask value \"%s\"", n.getString());
+	return FALSE;
+      }
+    }
 
-    // Read first character
-  if (! in->read(c))
-    return FALSE;
+    return TRUE;
+  }
 
-    // Check for parenthesized list of bitwise-or'ed flags
+
+  // Read first character
+  char c;
+  if (!in->read(c)) return FALSE;
+
+  // Check for parenthesized list of bitwise-or'ed flags
   if (c == '(') {
-
     // Read names separated by '|'
     while (TRUE) {
-      if (in->read(n, TRUE) && ! (! n)) {
+      if (in->read(n, TRUE) && !(!n)) {
 
-	if (findEnumValue(n, v))
-	  value |= v;
-
+	int v;
+	if (this->findEnumValue(n, v)) {
+	  this->value |= v;
+	}
 	else {
 	  SoReadError::post(in, "Unknown SoSFBitMask bit "
 			    "mask value \"%s\"", n.getString());
@@ -201,32 +219,29 @@ SoSFBitMask::readValue(SoInput * in)
 	}
       }
 
-      if (! in->read(c)) {
+      if (!in->read(c)) {
 	SoReadError::post(in, "EOF reached before '%c' "
 			  "in SoSFBitMask value", ')');
 	return FALSE;
       }
 
-      if (c == ')')
-	break;
+      if (c == ')') break;
 
       else if (c != '|') {
-	SoReadError::post(in, "Expected '%c' or '%c', got '%c' ",
-			  "in SoSFBitMask value",
-			  '|', ')', c);
+	SoReadError::post(in,
+			  "Expected '|' or ')', got '%c' in SoSFBitMask value",
+			  c);
 	return FALSE;
       }
     }
   }
-
   else {
     in->putBack(c);
 
     // Read mnemonic value as a character string identifier
-    if (! in->read(n, TRUE))
-      return FALSE;
+    if (!in->read(n, TRUE)) return FALSE;
 
-    if (! findEnumValue(n, value)) {
+    if (!this->findEnumValue(n, this->value)) {
       SoReadError::post(in, "Unknown SoSFBitMask bit "
 			"mask value \"%s\"", n.getString());
       return FALSE;
@@ -239,40 +254,34 @@ SoSFBitMask::readValue(SoInput * in)
 void
 SoSFBitMask::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-#if 0 // FIXME: not as simple as this? 19990711 mortene.
-  if (out->isBinary()) {
-    out->write(this->value);
-    return;
-  }
-#endif
-
-  SbBool paran=FALSE;
+  SbBool paran = FALSE;
   int out_vals_written = 0;
   
-  int restval=this->value;
-  int i=0;
+  int restval = this->value;
+  int i = 0;
   while (restval) {
-    if (i>=this->numEnums) break;
+    if (i >= this->numEnums) break;
     if (this->enumValues[i] & restval) {
       restval &= ~this->enumValues[i];
       if (!out_vals_written && restval) {
-	out->write('(');
-	paran=TRUE;
+	if (!out->isBinary()) out->write('(');
+	paran = TRUE;
       }
-      if (out_vals_written++) out->write(" | ");
+      if (out_vals_written++ && !out->isBinary()) out->write(" | ");
       out->write((const char *)this->enumNames[i].getString());
     }
 
     i++;
   }
-  if (paran) out->write(')');
-  if (!out_vals_written) out->write("()");
+  if (paran && !out->isBinary()) out->write(')');
+  if (!out_vals_written && !out->isBinary()) out->write("()");
+
+  if (out->isBinary()) out->write(0x00000000);
 
 #if COIN_DEBUG
   if (restval) {
     SoDebugError::post("SoSFBitMask::writeValue",
-		       "unable to write some bits (0x%x)",
+		       "invalid bitmask -- some bits \"lost\" (0x%x)",
 		       restval);
   }
 #endif // COIN_DEBUG

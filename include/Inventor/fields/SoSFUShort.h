@@ -72,6 +72,8 @@ protected:
 
 private:
   virtual void convertTo(SoField * dest) const;
+
+  friend class SoMFUShort; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFUSHORT_H__

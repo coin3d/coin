@@ -85,6 +85,8 @@ public:
 
 private:
   virtual void convertTo(SoField * dest) const;
+
+  friend class SoMFMatrix; // For readValue() & writeValue().
 };
 
 #endif // !__SOSFMATRIX_H__

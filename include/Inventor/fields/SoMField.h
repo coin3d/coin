@@ -51,20 +51,14 @@ public:
   static void initClass(void);
   static void cleanClass(void);
 
-  virtual void write(SoOutput * out, const SbName & name) const;
-
 protected:
   SoMField(void);
   virtual void makeRoom(int newNum);
-  virtual int fieldSizeof() const;
-  virtual void * valuesPtr();
+  virtual int fieldSizeof(void) const;
+  virtual void * valuesPtr(void);
   virtual void setValuesPtr(void * ptr);
   virtual void allocValues(int num);
-#if 0
-  // FIXME: is method this necessary? It's not used. 19990620 mortene.
-  /*! FIXME: doc */
-  virtual SoType getSFType() {return SoSField::getClassTypeId();}
-#endif // disabled
+
   int num;
   int maxNum;
 

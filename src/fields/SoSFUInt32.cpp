@@ -103,7 +103,7 @@ SoSFUInt32::copyFrom(const SoField & field)
 #if 0 // COIN_DEBUG
   // Calling field.getTypeId() here fails when "this" is connected to "field"
   // and "field" is destructed. The error message is "pure virtual method
-  // called" with egcs 1.0.2 under Linux.
+  // called" with egcs 1.0.2 under Linux. 19990713 mortene.
   if (field.getTypeId() != this->getTypeId()) {
     SoDebugError::postWarning("SoSFUInt32::copyFrom",
                               "not of the same type: (this) '%s' (from) '%s'",
@@ -142,6 +142,8 @@ SoSFUInt32::operator = (const SoSFUInt32 & field)
 */
 SoSFUInt32::SoSFUInt32(void)
 {
+  // Make sure we have initialized class.
+  assert(SoSFUInt32::classTypeId != SoType::badType());
 }
 
 /*!
@@ -208,15 +210,13 @@ SoSFUInt32::cleanClass(void)
 SbBool
 SoSFUInt32::readValue(SoInput * in)
 {
-  assert(!in->isBinary() && "FIXME: not implemented");
   return in->read(value);
 }
 
 void
 SoSFUInt32::writeValue(SoOutput * out) const
 {
-  assert(!out->isBinary() && "FIXME: not implemented");
-  out->write(this->value);
+  out->write(this->getValue()); // using getValue() to evaluate
 }
 
 void
