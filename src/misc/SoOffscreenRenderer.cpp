@@ -51,6 +51,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <simage_wrapper.h>
+#include "../misc/GLWrapper.h"
 #include <math.h> // for ceil()
 
 /*!
@@ -73,7 +74,7 @@ public:
 
   // Return FALSE if the necessary resource for rendering are not
   // available.
-  virtual SbBool makeContextCurrent(void) = 0;
+  virtual SbBool makeContextCurrent(uint32_t contextid) = 0;
 
   virtual unsigned char * getBuffer(void) = 0;
 
@@ -251,57 +252,18 @@ public:
     }
   }
 
-  virtual SbBool makeContextCurrent(void) {
+  virtual SbBool makeContextCurrent(uint32_t contextid) {
     assert(this->buffer);
     if (this->context && this->glxpixmap) {
-#if GLX_VERSION_1_2
-
-      // glXGetCurrenDisplay() is a GLX 1.2 feature
-      //
-      /////////////////////////////////////
-      //
-      // FIXME: we should probably dlopen() libGLX.so, to avoid
-      // problems when compiling with GLX 1.2 and running on GLX <
-      // 1.2.  pederb, 2001-05-25
-      //
-      /////////////////////////////////////
-      //
-      // UPDATE, mortene 2001-06-05: there is no "libGLX.so" on any
-      // platforms known to me, the glX*() functions seem to always be
-      // part of the main OpenGL library for X11 platforms. So this is
-      // hard to handle at run-time, unless we set up a wrapper around
-      // the dynamic OpenGL library -- which is likely[*] to have
-      // performance implications.
-      //
-      // Note also that we have a lot of other cases spread around in
-      // the Coin source which are basically the same problem: we bind
-      // against OpenGL 1.1 or 1.2 features at compile-time.
-      //
-      // [*] This might not be the case, though, and should be
-      // investigated closer. Using a dynamic, run-time loading
-      // wrapper around the OpenGL library would save us a few
-      // headaches over a few hard-to-solve important problems.
-      //
-      /////////////////////////////////////
-      //
-      // UPDATE2, mortene 2001-06-05: there *is* a simple solution to
-      // this, I think. So simple, it's embarrassing I didn't think of
-      // it immediately: do _both_ compile-time and run-time linking
-      // against the OpenGL library. Use exclusively compile-time
-      // linking against features known to be part of OpenGL 1.0 (ie
-      // even the oldest, weakest OpenGL libraries around) to work
-      // around the possible performance hit problem, but use run-time
-      // binding against features from later versions. This is
-      // possible since one can dlopen() and then inspect an already
-      // loaded library.
-      //
-
-      this->storedcontext = glXGetCurrentContext();
-      if (this->storedcontext) {
-        this->storeddrawable = glXGetCurrentDrawable();
-        this->storeddisplay = glXGetCurrentDisplay();
+      const GLWrapper_t * glw = GLWrapper(contextid);
+      if (glw->glXGetCurrentDisplay) {
+        this->storedcontext = glXGetCurrentContext();
+        if (this->storedcontext) {
+          this->storeddrawable = glXGetCurrentDrawable();
+          this->storeddisplay = glw->glXGetCurrentDisplay();
+        }
       }
-#endif // GLX_VERSION_1_2
+
       glXMakeCurrent(this->display, this->glxpixmap, this->context);
       return TRUE;
     }
@@ -384,7 +346,7 @@ public:
     this->initWGL();
   }
 
-  virtual SbBool makeContextCurrent(void) {
+  virtual SbBool makeContextCurrent(uint32_t contextid) {
     assert(this->buffer);
     if (this->context && this->bitmap) {
       this->storedcontext = wglGetCurrentContext();
@@ -768,7 +730,9 @@ pre_render_cb(void * userdata, SoGLRenderAction * action)
 SbBool
 SoOffscreenRenderer::renderFromBase(SoBase * base)
 {
-  if (this->internaldata && this->internaldata->makeContextCurrent()) {
+  uint32_t oldcontext = this->renderaction->getCacheContext();
+  if (this->internaldata && 
+      this->internaldata->makeContextCurrent(oldcontext)) {
     glEnable(GL_DEPTH_TEST);
     glClearColor(this->backgroundcolor[0],
                  this->backgroundcolor[1],
@@ -778,7 +742,6 @@ SoOffscreenRenderer::renderFromBase(SoBase * base)
     // needed to clear viewport after glViewport is called
     this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
 
-    uint32_t oldcontext = this->renderaction->getCacheContext();
     if (!this->didallocaction) {
       this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
     }
