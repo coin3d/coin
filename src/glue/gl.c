@@ -3913,8 +3913,6 @@ proxy_mipmap_2d(int width, int height, const int nc, GLenum format, SbBool mipma
                  NULL);
     glGetTexLevelParameteriv(GL_PROXY_TEXTURE_2D, 0,
                              GL_TEXTURE_WIDTH, &w);
-    fprintf(stderr,"proxy test (%d): %d %d ==> %d\n",
-            level, width, height, w);
     if (w == 0) return FALSE;
   }
   return TRUE;
