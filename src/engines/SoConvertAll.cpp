@@ -27,21 +27,8 @@
 #endif // COIN_DEBUG
 #include <assert.h>
 
-// FIXME:
-
-// SoSFTime -> SoSFString
-//      if (this->getValue().getValue()>31500000.0)
-//        ((SoSFString *)dest)->setValue(this->getValue().formatDate());
-//      else
-//        ((SoSFString *)dest)->setValue(this->getValue().format());
-
-// SoSFRotation -> SoSFMatrix
-//      SbMatrix mat;
-//      mat.setRotate(this->getValue());
-//      ((SoSFMatrix *)dest)->setValue(mat);
-
-// SoSFMatrix -> SoSFRotation
-//      ((SoSFRotation *)dest)->setValue(this->getValue());
+// FIXME: should perhaps use SbTime::formatDate() for So[SM]FTime ->
+// So[SM]FString conversion? 20000312 mortene.
 
 
 SbDict * SoConvertAll::converter_dict = NULL;
@@ -113,7 +100,7 @@ SOCONVERTALL_MULTI2SINGLE(SoMFVec4f_SoSFVec4f, SoMFVec4f, SoSFVec4f);
 #undef SOCONVERTALL_MULTI2SINGLE
 
 
-// Defines function for converting SoField -> SoSFString.
+// Function for converting SoField -> SoSFString.
 static void field_to_sfstring(SoField * from, SoField * to)
 {
   SbString s;
@@ -121,13 +108,13 @@ static void field_to_sfstring(SoField * from, SoField * to)
   ((SoSFString *)to)->setValue(s);
 }
 
-// Defines function for converting SoSFString -> SoField.
+// Function for converting SoSFString -> SoField.
 static void sfstring_to_field(SoField * from, SoField * to)
 {
   to->set(((SoSFString *)from)->getValue().getString());
 }
 
-// Defines function for converting SoSField -> SoMFString.
+// Function for converting SoSField -> SoMFString.
 static void sfield_to_mfstring(SoField * from, SoField * to)
 {
   SbString s;
@@ -135,13 +122,13 @@ static void sfield_to_mfstring(SoField * from, SoField * to)
   ((SoMFString *)to)->setValue(s);
 }
 
-// Defines function for converting SoMFString -> SoSField.
+// Function for converting SoMFString -> SoSField.
 static void mfstring_to_sfield(SoField * from, SoField * to)
 {
   if (((SoMFString *)from)->getNum() > 0) ((SoSField *)to)->set((*((SoMFString *)from))[0].getString());
 }
 
-// Defines function for converting SoMField -> SoMFString.
+// Function for converting SoMField -> SoMFString.
 static void mfield_to_mfstring(SoField * from, SoField * to)
 {
   SbString s;
@@ -151,12 +138,259 @@ static void mfield_to_mfstring(SoField * from, SoField * to)
   }
 }
 
-// Defines function for converting SoMFString -> SoMField.
+// Function for converting SoMFString -> SoMField.
 static void mfstring_to_mfield(SoField * from, SoField * to)
 {
   for (int i=0; i < ((SoMFString *)from)->getNum(); i++)
     ((SoMField *)to)->set1(i, (*((SoMFString *)from))[i].getString());
 }
+
+// Defines function for converting SoSField -> SoField, where
+// conversion is just a typecast.
+#define SOCONVERTALL_CAST_SFIELD2FIELD(_fromto_, _from_, _to_, _tobase_) \
+static void _fromto_(SoField * from, SoField * to) \
+{ \
+  ((_to_ *)to)->setValue((_tobase_)((_from_ *)from)->getValue()); \
+}
+
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoSFFloat, SoSFBool, SoSFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoMFFloat, SoSFBool, SoMFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoSFBool, SoSFFloat, SoSFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoMFBool, SoSFFloat, SoMFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoSFInt32, SoSFBool, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoMFInt32, SoSFBool, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoSFBool, SoSFInt32, SoSFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoMFBool, SoSFInt32, SoMFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoSFShort, SoSFBool, SoSFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoMFShort, SoSFBool, SoMFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoSFBool, SoSFShort, SoSFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoMFBool, SoSFShort, SoMFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoSFUInt32, SoSFBool, SoSFUInt32, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoMFUInt32, SoSFBool, SoMFUInt32, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoSFBool, SoSFUInt32, SoSFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoMFBool, SoSFUInt32, SoMFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoSFUShort, SoSFBool, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFBool_SoMFUShort, SoSFBool, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoSFBool, SoSFUShort, SoSFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoMFBool, SoSFUShort, SoMFBool, SbBool);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFColor_SoSFVec3f, SoSFColor, SoSFVec3f, SbVec3f);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFColor_SoMFVec3f, SoSFColor, SoMFVec3f, SbVec3f);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFVec3f_SoSFColor, SoSFVec3f, SoSFColor, SbColor);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFVec3f_SoMFColor, SoSFVec3f, SoMFColor, SbColor);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoSFInt32, SoSFFloat, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoMFInt32, SoSFFloat, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoSFFloat, SoSFInt32, SoSFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoMFFloat, SoSFInt32, SoMFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoSFShort, SoSFFloat, SoSFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoMFShort, SoSFFloat, SoMFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoSFFloat, SoSFShort, SoSFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoMFFloat, SoSFShort, SoMFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoSFUInt32, SoSFFloat, SoSFUInt32, uint32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoMFUInt32, SoSFFloat, SoMFUInt32, uint32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoSFFloat, SoSFUInt32, SoSFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoMFFloat, SoSFUInt32, SoMFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoSFUShort, SoSFFloat, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoMFUShort, SoSFFloat, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoSFFloat, SoSFUShort, SoSFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoMFFloat, SoSFUShort, SoMFFloat, float);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoSFShort, SoSFInt32, SoSFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoMFShort, SoSFInt32, SoMFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoSFInt32, SoSFShort, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoMFInt32, SoSFShort, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoSFUInt32, SoSFInt32, SoSFUInt32, uint32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoMFUInt32, SoSFInt32, SoMFUInt32, uint32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoSFInt32, SoSFUInt32, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoMFInt32, SoSFUInt32, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoSFUShort, SoSFInt32, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFInt32_SoMFUShort, SoSFInt32, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoSFInt32, SoSFUShort, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoMFInt32, SoSFUShort, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoSFUInt32, SoSFShort, SoSFUInt32, uint32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoMFUInt32, SoSFShort, SoMFUInt32, uint32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoSFShort, SoSFUInt32, SoSFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoMFShort, SoSFUInt32, SoMFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoSFUShort, SoSFShort, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFShort_SoMFUShort, SoSFShort, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoSFShort, SoSFUShort, SoSFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoMFShort, SoSFUShort, SoMFShort, short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoSFUShort, SoSFUInt32, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUInt32_SoMFUShort, SoSFUInt32, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoSFUInt32, SoSFUShort, SoSFUInt32, uint32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFUShort_SoMFUInt32, SoSFUShort, SoMFUInt32, uint32_t);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoSFTime, SoSFFloat, SoSFTime, SbTime);
+SOCONVERTALL_CAST_SFIELD2FIELD(SoSFFloat_SoMFTime, SoSFFloat, SoMFTime, SbTime);
+
+// Defines function for converting SoMField -> SoSField, where
+// conversion is just a typecast.
+#define SOCONVERTALL_CAST_MFIELD2SFIELD(_fromto_, _from_, _to_, _tobase_) \
+static void _fromto_(SoField * from, SoField * to) \
+{ \
+  if (((_from_ *)from)->getNum() > 0) \
+    ((_to_ *)to)->setValue((_tobase_)((*((_from_ *)from))[0])); \
+}
+
+
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFBool_SoSFFloat, SoMFBool, SoSFFloat, float);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFFloat_SoSFBool, SoMFFloat, SoSFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFBool_SoSFInt32, SoMFBool, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFInt32_SoSFBool, SoMFInt32, SoSFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFBool_SoSFShort, SoMFBool, SoSFShort, short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFShort_SoSFBool, SoMFShort, SoSFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFBool_SoSFUInt32, SoMFBool, SoSFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUInt32_SoSFBool, SoMFUInt32, SoSFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFBool_SoSFUShort, SoMFBool, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUShort_SoSFBool, SoMFUShort, SoSFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFColor_SoSFVec3f, SoMFColor, SoSFVec3f, SbVec3f);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFVec3f_SoSFColor, SoMFVec3f, SoSFColor, SbColor);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFFloat_SoSFInt32, SoMFFloat, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFInt32_SoSFFloat, SoMFInt32, SoSFFloat, float);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFFloat_SoSFShort, SoMFFloat, SoSFShort, short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFShort_SoSFFloat, SoMFShort, SoSFFloat, float);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFFloat_SoSFUInt32, SoMFFloat, SoSFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUInt32_SoSFFloat, SoMFUInt32, SoSFFloat, float);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFFloat_SoSFUShort, SoMFFloat, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUShort_SoSFFloat, SoMFUShort, SoSFFloat, float);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFInt32_SoSFShort, SoMFInt32, SoSFShort, short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFShort_SoSFInt32, SoMFShort, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFInt32_SoSFUInt32, SoMFInt32, SoSFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUInt32_SoSFInt32, SoMFUInt32, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFInt32_SoSFUShort, SoMFInt32, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUShort_SoSFInt32, SoMFUShort, SoSFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFShort_SoSFUInt32, SoMFShort, SoSFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUInt32_SoSFShort, SoMFUInt32, SoSFShort, short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFShort_SoSFUShort, SoMFShort, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUShort_SoSFShort, SoMFUShort, SoSFShort, short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUInt32_SoSFUShort, SoMFUInt32, SoSFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFUShort_SoSFUInt32, SoMFUShort, SoSFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2SFIELD(SoMFFloat_SoSFTime, SoMFFloat, SoSFTime, SbTime);
+
+// Defines functions for converting SoMField -> SoMField, where
+// conversion is just a typecast.
+#define SOCONVERTALL_CAST_MFIELD2MFIELD(_fromto_, _from_, _to_, _tobase_) \
+static void _fromto_(SoField * from, SoField * to) \
+{ \
+  for (int i=0; i < ((SoMField *)from)->getNum(); i++) \
+    ((_to_ *)to)->set1Value(i, (_tobase_)((*((_from_ *)from))[i])); \
+}
+
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFBool_SoMFFloat, SoMFBool, SoMFFloat, float);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFFloat_SoMFBool, SoMFFloat, SoMFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFBool_SoMFInt32, SoMFBool, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFInt32_SoMFBool, SoMFInt32, SoMFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFBool_SoMFShort, SoMFBool, SoMFShort, short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFShort_SoMFBool, SoMFShort, SoMFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFBool_SoMFUInt32, SoMFBool, SoMFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUInt32_SoMFBool, SoMFUInt32, SoMFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFBool_SoMFUShort, SoMFBool, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUShort_SoMFBool, SoMFUShort, SoMFBool, SbBool);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFColor_SoMFVec3f, SoMFColor, SoMFVec3f, SbVec3f);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFVec3f_SoMFColor, SoMFVec3f, SoMFColor, SbColor);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFFloat_SoMFInt32, SoMFFloat, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFInt32_SoMFFloat, SoMFInt32, SoMFFloat, float);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFFloat_SoMFShort, SoMFFloat, SoMFShort, short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFShort_SoMFFloat, SoMFShort, SoMFFloat, float);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFFloat_SoMFUInt32, SoMFFloat, SoMFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUInt32_SoMFFloat, SoMFUInt32, SoMFFloat, float);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFFloat_SoMFUShort, SoMFFloat, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUShort_SoMFFloat, SoMFUShort, SoMFFloat, float);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFInt32_SoMFShort, SoMFInt32, SoMFShort, short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFShort_SoMFInt32, SoMFShort, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFInt32_SoMFUInt32, SoMFInt32, SoMFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUInt32_SoMFInt32, SoMFUInt32, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFInt32_SoMFUShort, SoMFInt32, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUShort_SoMFInt32, SoMFUShort, SoMFInt32, int32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFShort_SoMFUInt32, SoMFShort, SoMFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUInt32_SoMFShort, SoMFUInt32, SoMFShort, short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFShort_SoMFUShort, SoMFShort, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUShort_SoMFShort, SoMFUShort, SoMFShort, short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUInt32_SoMFUShort, SoMFUInt32, SoMFUShort, unsigned short);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFUShort_SoMFUInt32, SoMFUShort, SoMFUInt32, uint32_t);
+SOCONVERTALL_CAST_MFIELD2MFIELD(SoMFFloat_SoMFTime, SoMFFloat, SoMFTime, SbTime);
+
+
+// Defines function for converting SoSFTime -> So[SM]FFloat.
+#define SOCONVERTALL_CAST_SFTIME2SFFLOAT(_fromto_, _to_) \
+static void _fromto_(SoField * from, SoField * to) \
+{ \
+  ((_to_ *)to)->setValue((float)((SoSFTime *)from)->getValue().getValue()); \
+}
+
+SOCONVERTALL_CAST_SFTIME2SFFLOAT(SoSFTime_SoSFFloat, SoSFFloat);
+SOCONVERTALL_CAST_SFTIME2SFFLOAT(SoSFTime_SoMFFloat, SoMFFloat);
+
+// Function for converting SoMFTime -> SoSFFloat.
+static void SoMFTime_SoSFFloat(SoField * from, SoField * to)
+{
+  if (((SoMField *)from)->getNum() > 0)
+    ((SoSFFloat *)to)->setValue((float)((*((SoMFTime *)from))[0]).getValue());
+}
+
+// Function for converting SoMFTime -> SoMFFloat.
+static void SoMFTime_SoMFFloat(SoField * from, SoField * to)
+{
+  for (int i=0; i < ((SoMField *)from)->getNum(); i++)
+    ((SoMFFloat *)to)->set1Value(i, (float)((*((SoMFTime *)from))[i]).getValue());
+}
+
+
+
+// Defines function for converting SoSFMatrix -> So[SM]FRotation.
+#define SOCONVERTALL_SFMATRIX2ROTATION(_fromto_, _to_) \
+static void _fromto_(SoField * from, SoField * to) \
+{ \
+  ((_to_ *)to)->setValue(SbRotation(((SoSFMatrix *)from)->getValue())); \
+}
+
+SOCONVERTALL_SFMATRIX2ROTATION(SoSFMatrix_SoSFRotation, SoSFRotation);
+SOCONVERTALL_SFMATRIX2ROTATION(SoSFMatrix_SoMFRotation, SoMFRotation);
+
+// Function for converting SoMFMatrix -> SoSFRotation.
+static void SoMFMatrix_SoSFRotation(SoField * from, SoField * to)
+{
+  if (((SoMField *)from)->getNum() > 0)
+    ((SoSFRotation *)to)->setValue(SbRotation(((*((SoMFMatrix *)from))[0])));
+}
+
+// Function for converting SoMFMatrix -> SoMFRotation.
+static void SoMFMatrix_SoMFRotation(SoField * from, SoField * to)
+{
+  for (int i=0; i < ((SoMField *)from)->getNum(); i++)
+    ((SoMFRotation *)to)->set1Value(i, SbRotation(((*((SoMFMatrix *)from))[i])));
+}
+
+
+// Defines function for converting SoSFRotation -> So[SM]FMatrix.
+#define SOCONVERTALL_SFROTATION2MATRIX(_fromto_, _to_) \
+static void _fromto_(SoField * from, SoField * to) \
+{ \
+  SbMatrix mat; \
+  mat.setRotate(((SoSFRotation *)from)->getValue()); \
+  ((_to_ *)to)->setValue(mat); \
+}
+
+SOCONVERTALL_SFROTATION2MATRIX(SoSFRotation_SoSFMatrix, SoSFMatrix);
+SOCONVERTALL_SFROTATION2MATRIX(SoSFRotation_SoMFMatrix, SoMFMatrix);
+
+// Function for converting SoMFRotation -> SoSFMatrix.
+static void SoMFRotation_SoSFMatrix(SoField * from, SoField * to)
+{
+  if (((SoMField *)from)->getNum() > 0) {
+    SbMatrix mat;
+    mat.setRotate((*((SoMFRotation *)from))[0]);
+    ((SoSFMatrix *)to)->setValue(mat);
+  }
+}
+
+// Function for converting SoMFRotation -> SoMFMatrix.
+static void SoMFRotation_SoMFMatrix(SoField * from, SoField * to)
+{
+  for (int i=0; i < ((SoMField *)from)->getNum(); i++) {
+    SbMatrix mat;
+    mat.setRotate((*((SoMFRotation *)from))[i]);
+    ((SoMFMatrix *)to)->set1Value(i, mat);
+  }
+}
+
 
 
 void
@@ -167,6 +401,7 @@ SoConvertAll::register_converter(converter_func * f, SoType from, SoType to)
   SbBool nonexist = SoConvertAll::converter_dict->enter(val, (void *)f);
   assert(nonexist);
 }
+
 
 void
 SoConvertAll::initClass(void)
@@ -374,6 +609,154 @@ SoConvertAll::initClass(void)
   SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec2f);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec3f);
   SOCONVERTALL_ADDCONVERTER(mfstring_to_mfield, SoMFString, SoMFVec4f);
+
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFFloat, SoSFBool, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFFloat, SoSFBool, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFBool, SoSFFloat, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFBool, SoSFFloat, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFInt32, SoSFBool, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFInt32, SoSFBool, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFBool, SoSFInt32, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFBool, SoSFInt32, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFShort, SoSFBool, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFShort, SoSFBool, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFBool, SoSFShort, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFBool, SoSFShort, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFUInt32, SoSFBool, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFUInt32, SoSFBool, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFBool, SoSFUInt32, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFBool, SoSFUInt32, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoSFUShort, SoSFBool, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFBool_SoMFUShort, SoSFBool, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFBool, SoSFUShort, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFBool, SoSFUShort, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoSFColor_SoSFVec3f, SoSFColor, SoSFVec3f);
+  SOCONVERTALL_ADDCONVERTER(SoSFColor_SoMFVec3f, SoSFColor, SoMFVec3f);
+  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_SoSFColor, SoSFVec3f, SoSFColor);
+  SOCONVERTALL_ADDCONVERTER(SoSFVec3f_SoMFColor, SoSFVec3f, SoMFColor);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFInt32, SoSFFloat, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFInt32, SoSFFloat, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFFloat, SoSFInt32, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFFloat, SoSFInt32, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFShort, SoSFFloat, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFShort, SoSFFloat, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFFloat, SoSFShort, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFFloat, SoSFShort, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFUInt32, SoSFFloat, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFUInt32, SoSFFloat, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFFloat, SoSFUInt32, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFFloat, SoSFUInt32, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFUShort, SoSFFloat, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFUShort, SoSFFloat, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFFloat, SoSFUShort, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFFloat, SoSFUShort, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFShort, SoSFInt32, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFShort, SoSFInt32, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFInt32, SoSFShort, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFInt32, SoSFShort, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFUInt32, SoSFInt32, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFUInt32, SoSFInt32, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFInt32, SoSFUInt32, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFInt32, SoSFUInt32, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoSFUShort, SoSFInt32, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFInt32_SoMFUShort, SoSFInt32, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFInt32, SoSFUShort, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFInt32, SoSFUShort, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFUInt32, SoSFShort, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFUInt32, SoSFShort, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFShort, SoSFUInt32, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFShort, SoSFUInt32, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoSFUShort, SoSFShort, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFShort_SoMFUShort, SoSFShort, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFShort, SoSFUShort, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFShort, SoSFUShort, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoSFUShort, SoSFUInt32, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFUInt32_SoMFUShort, SoSFUInt32, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoSFUInt32, SoSFUShort, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFUShort_SoMFUInt32, SoSFUShort, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoSFTime, SoSFFloat, SoSFTime);
+  SOCONVERTALL_ADDCONVERTER(SoSFFloat_SoMFTime, SoSFFloat, SoMFTime);
+  SOCONVERTALL_ADDCONVERTER(SoSFTime_SoSFFloat, SoSFTime, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoSFTime_SoMFFloat, SoSFTime, SoMFFloat);
+
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFFloat, SoMFBool, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFBool, SoMFFloat, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFInt32, SoMFBool, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFBool, SoMFInt32, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFShort, SoMFBool, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFBool, SoMFShort, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFUInt32, SoMFBool, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFBool, SoMFUInt32, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoSFUShort, SoMFBool, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFBool, SoMFUShort, SoSFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFColor_SoSFVec3f, SoMFColor, SoSFVec3f);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_SoSFColor, SoMFVec3f, SoSFColor);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFInt32, SoMFFloat, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFFloat, SoMFInt32, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFShort, SoMFFloat, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFFloat, SoMFShort, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFUInt32, SoMFFloat, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFFloat, SoMFUInt32, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFUShort, SoMFFloat, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFFloat, SoMFUShort, SoSFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFShort, SoMFInt32, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFInt32, SoMFShort, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFUInt32, SoMFInt32, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFInt32, SoMFUInt32, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoSFUShort, SoMFInt32, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFInt32, SoMFUShort, SoSFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFUInt32, SoMFShort, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFShort, SoMFUInt32, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoSFUShort, SoMFShort, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFShort, SoMFUShort, SoSFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoSFUShort, SoMFUInt32, SoSFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoSFUInt32, SoMFUShort, SoSFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoSFTime, SoMFFloat, SoSFTime);
+  SOCONVERTALL_ADDCONVERTER(SoMFTime_SoSFFloat, SoMFTime, SoSFFloat);
+
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFFloat, SoMFBool, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFBool, SoMFFloat, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFInt32, SoMFBool, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFBool, SoMFInt32, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFShort, SoMFBool, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFBool, SoMFShort, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFUInt32, SoMFBool, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFBool, SoMFUInt32, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFBool_SoMFUShort, SoMFBool, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFBool, SoMFUShort, SoMFBool);
+  SOCONVERTALL_ADDCONVERTER(SoMFColor_SoMFVec3f, SoMFColor, SoMFVec3f);
+  SOCONVERTALL_ADDCONVERTER(SoMFVec3f_SoMFColor, SoMFVec3f, SoMFColor);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFInt32, SoMFFloat, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFFloat, SoMFInt32, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFShort, SoMFFloat, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFFloat, SoMFShort, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFUInt32, SoMFFloat, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFFloat, SoMFUInt32, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFUShort, SoMFFloat, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFFloat, SoMFUShort, SoMFFloat);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFShort, SoMFInt32, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFInt32, SoMFShort, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFUInt32, SoMFInt32, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFInt32, SoMFUInt32, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFInt32_SoMFUShort, SoMFInt32, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFInt32, SoMFUShort, SoMFInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFUInt32, SoMFShort, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFShort, SoMFUInt32, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFShort_SoMFUShort, SoMFShort, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFShort, SoMFUShort, SoMFShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUInt32_SoMFUShort, SoMFUInt32, SoMFUShort);
+  SOCONVERTALL_ADDCONVERTER(SoMFUShort_SoMFUInt32, SoMFUShort, SoMFUInt32);
+  SOCONVERTALL_ADDCONVERTER(SoMFFloat_SoMFTime, SoMFFloat, SoMFTime);
+  SOCONVERTALL_ADDCONVERTER(SoMFTime_SoMFFloat, SoMFTime, SoMFFloat);
+
+  SOCONVERTALL_ADDCONVERTER(SoSFMatrix_SoSFRotation, SoSFMatrix, SoSFRotation);
+  SOCONVERTALL_ADDCONVERTER(SoMFMatrix_SoSFRotation, SoMFMatrix, SoSFRotation);
+  SOCONVERTALL_ADDCONVERTER(SoSFMatrix_SoMFRotation, SoSFMatrix, SoMFRotation);
+  SOCONVERTALL_ADDCONVERTER(SoMFMatrix_SoMFRotation, SoMFMatrix, SoMFRotation);
+  SOCONVERTALL_ADDCONVERTER(SoSFRotation_SoSFMatrix, SoSFRotation, SoSFMatrix);
+  SOCONVERTALL_ADDCONVERTER(SoMFRotation_SoSFMatrix, SoMFRotation, SoSFMatrix);
+  SOCONVERTALL_ADDCONVERTER(SoSFRotation_SoMFMatrix, SoSFRotation, SoMFMatrix);
+  SOCONVERTALL_ADDCONVERTER(SoMFRotation_SoMFMatrix, SoMFRotation, SoMFMatrix);
 
 #undef SOCONVERTALL_ADDCONVERTER
 }

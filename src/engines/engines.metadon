@@ -1,6 +1,6 @@
 # CONFIG "The Engine Classes"
 # factors: [work in progress / no work done]
-# FLAGS [0.8 0.6]
+# FLAGS [1.0 0.5]
 # I = implementation complete, or nearly so
 # D = documented for Doxygen generation of html/man [0.5]
 #
@@ -53,24 +53,18 @@
 #
 # COMMENTS
 #
-# Field converters we need to make (integrate this information in the class
-# inheritance hierarchy):
+# Field converters we need to make:
 # <UL>
-# <LI>Any to String</LI>
-# <LI>String to Any</LI>
-# <LI>Scalars</LI>
+# <LI>Scalar casting</LI>
 # <LI>Color <=> Vec3f</LI>
 # <LI>Float <=> Time</LI>
 # <LI>Matrix <=> Rotation</LI>
 # <LI>Name <=> Enum</LI>
 # <LI>Rotation <=> Vec4f (quaternion)</LI>
-# <LI>MF <=> SF</LI>
 # </UL>
 #
 # Miscellaneous tasks:
 # <UL>
-# <LI>the SoConvertAll class is not part of OIV, check with Kintel
-#     the reason why we're using it</LI>
 # <LI>Set dirty-bits and check it during notify to prevent redundant
 #     notifying</LI>
 # <LI>evaluate</LI>
