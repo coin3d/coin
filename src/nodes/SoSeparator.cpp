@@ -245,7 +245,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 
   switch (action->getCurPathCode()) {
   case SoAction::IN_PATH:
-    // can't cache if we're not not traversing all children
+    // can't cache if we're not traversing all children
     iscaching = FALSE;
     break;
   case SoAction::OFF_PATH:
@@ -330,9 +330,7 @@ SoSeparator::callback(SoCallbackAction * action)
   // culling planes should normally not be set, but can be set
   // manually by the application programmer to optimize callback
   // action traversal.
-  if (!this->cullTest(state)) {
-    SoGroup::callback(action);
-  }
+  if (!this->cullTest(state)) { SoGroup::callback(action); }
   state->pop();
 }
 
@@ -355,11 +353,14 @@ SoSeparator::GLRender(SoGLRenderAction * action)
 }
 
 /*!
-  OIV 2.1 obsoleted support SoGLRenderAction::addMethod().
-  Instead, GLRender() might be called directly, and to optimize
-  traversal, the SoSeparator node calls GLRenderBelowPath whenever
-  the path code is BELOW_PATH or NO_PATH (path code is guaranteed
-  not to change).
+  SGI Open Inventor v2.1 obsoleted support for
+  SoGLRenderAction::addMethod().  Instead, GLRender() might be called
+  directly, and to optimize traversal, the SoSeparator node calls
+  GLRenderBelowPath whenever the path code is BELOW_PATH or NO_PATH
+  (path code is guaranteed not to change). To be compatible with SGI's
+  Inventor (and thereby also TGS') we have chosen to follow their
+  implementation in this respect.
+
   SoSeparator::GLRenderBelowPath() do not traverse its children using
   SoChildList::traverse(), but calls GLRenderBelowPath() directly
   for all its children.
@@ -367,9 +368,9 @@ SoSeparator::GLRender(SoGLRenderAction * action)
 void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 {
-  // Temporary caching code. For now we just cache if the
+  // FIXME: temporary caching code. For now we just cache if the
   // renderCaching field is ON. We'll develop an auto-caching scheme
-  // for auto-caching later.    pederb, 20001005
+  // for auto-caching later.  pederb, 20001005
 
   if (COIN_RENDER_CACHING < 0) {
     char * env = getenv("COIN_RENDER_CACHING");
