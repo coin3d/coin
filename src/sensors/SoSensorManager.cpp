@@ -103,10 +103,24 @@
 #define DEBUG_DELAY_SENSORHANDLING 0
 #define DEBUG_TIMER_SENSORHANDLING 0
 
-#ifndef DOXYGEN_SKIP_THIS
+// This can be any "magic" bitpattern of 32 bits which seems unlikely
+// to be randomly assigned to a memory word upon destruction.
+//
+// The 32 bits allocated for the "alive" bitpattern is used to try to
+// detect when the instance has been prematurely destructed. This
+// should prove useful to catch errors related to when SoSensorManager
+// is destructed (on exit) while there are still live SoSensor-derived
+// instances in the system, which then subsequently tries to
+// unschedule themselves.
+//
+// <mortene@sim.no>
+#define ALIVE_PATTERN 0x600dc0de /* spells "goodcode" */
+
 
 class SoSensorManagerP {
 public:
+  SoSensorManagerP(void) : alive(ALIVE_PATTERN) { }
+  ~SoSensorManagerP() { this->alive = 0xdeadbeef; /* set to whatever != ALIVE_PATTERN */ }
 
   SbBool processingtimerqueue, processingdelayqueue;
   SbBool processingimmediatequeue;
@@ -130,6 +144,9 @@ public:
 
   SbTime delaysensortimeout;
 
+  uint32_t alive;
+  static void assertAlive(SoSensorManagerP * that);
+
 #ifdef HAVE_THREADS
   SbMutex timermutex;
   SbMutex delaymutex;
@@ -138,7 +155,19 @@ public:
 #endif // HAVE_THREADS
 };
 
-#endif // DOXYGEN_SKIP_THIS 
+void
+SoSensorManagerP::assertAlive(SoSensorManagerP * that)
+{
+  if (that->alive != ALIVE_PATTERN) {
+    SoDebugError::post("SoSensorManagerP::assertAlive",
+                       "Detected an attempt to access SoSensorManager "
+                       "instance after it was destructed!  "
+                       "This is most likely to be the result of some grave "
+                       "programming error in the internal library code. "
+                       "Please report this problem");
+    assert(FALSE && "SoSensorManager-object no longer alive!");
+  }
+}
 
 #ifdef HAVE_THREADS
 
@@ -219,6 +248,7 @@ SoSensorManager::~SoSensorManager()
 void
 SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
 {
+  SoSensorManagerP::assertAlive(THIS);
   assert(newentry);
 
   // immediate sensors are stored in a separate list. We don't need to
@@ -232,7 +262,7 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
   else {
     LOCK_DELAY_QUEUE(this);
     SbList <SoDelayQueueSensor *> & delayqueue = THIS->delayqueue;
-    
+
     int pos = 0;
     while((pos < delayqueue.getLength()) &&
           ((SoSensor*)delayqueue[pos])->isBefore(newentry)) {
@@ -263,10 +293,11 @@ SoSensorManager::insertDelaySensor(SoDelayQueueSensor * newentry)
 void
 SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
 {
+  SoSensorManagerP::assertAlive(THIS);
   assert(newentry);
 
   SbList <SoTimerQueueSensor *> & timerqueue = THIS->timerqueue;
-  
+
   LOCK_TIMER_QUEUE(this);
   int i = 0;
   while (i < timerqueue.getLength() &&
@@ -274,7 +305,7 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
     i++;
   }
   timerqueue.insert(newentry, i);
-  
+
   UNLOCK_TIMER_QUEUE(this);
 
 #if DEBUG_TIMER_SENSORHANDLING || 0 // debug
@@ -301,6 +332,8 @@ SoSensorManager::insertTimerSensor(SoTimerQueueSensor * newentry)
 void
 SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   LOCK_DELAY_QUEUE(this);
   // Check "real" queue first..
   int idx = THIS->delayqueue.find(entry);
@@ -320,9 +353,9 @@ SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
       idx = 0; // make sure notifyChanged() is called.
     }
   }
-  
+
   if (idx != -1) this->notifyChanged();
-  
+
 #if COIN_DEBUG
   if (idx == -1) {
     SoDebugError::postWarning("SoSensorManager::removeDelaySensor",
@@ -337,6 +370,8 @@ SoSensorManager::removeDelaySensor(SoDelayQueueSensor * entry)
 void
 SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   LOCK_TIMER_QUEUE(this);
   int idx = THIS->timerqueue.find(entry);
   if (idx != -1) {
@@ -359,6 +394,8 @@ SoSensorManager::removeTimerSensor(SoTimerQueueSensor * entry)
 void
 SoSensorManager::processTimerQueue(void)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   if (THIS->processingtimerqueue || THIS->timerqueue.getLength() == 0)
     return;
 
@@ -418,8 +455,8 @@ SoSensorManager::processTimerQueue(void)
 //
 // callback from reinsertdict which will reinsert the sensor
 //
-static void 
-reinsert_dict_cb(unsigned long, void * sensor, void * sensormanager) 
+static void
+reinsert_dict_cb(unsigned long, void * sensor, void * sensormanager)
 {
   SoSensorManager * thisp = (SoSensorManager*) sensormanager;
   thisp->insertDelaySensor((SoDelayQueueSensor*) sensor);
@@ -440,12 +477,14 @@ reinsert_dict_cb(unsigned long, void * sensor, void * sensormanager)
 
   A delay queue sensor with priority 0 is called an immediate sensor.
 
-  \sa SoDB::setDelaySensorTimeout() 
-  \sa SoSensorManager::processImmediateQueue() 
+  \sa SoDB::setDelaySensorTimeout()
+  \sa SoSensorManager::processImmediateQueue()
 */
 void
 SoSensorManager::processDelayQueue(SbBool isidle)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   this->processImmediateQueue();
 
   if (THIS->processingdelayqueue || THIS->delayqueue.getLength() == 0)
@@ -518,11 +557,13 @@ SoSensorManager::processDelayQueue(SbBool isidle)
   sensors. Unlike delay queue sensors, immediate sensors can be
   rescheduled and triggered multiple times during immediate queue
   processing.
-  
+
   \sa SoDelayQueueSensor::setPriority() */
 void
 SoSensorManager::processImmediateQueue(void)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   if (THIS->processingimmediatequeue) return;
 
 #if DEBUG_DELAY_SENSORHANDLING || 0 // debug
@@ -533,7 +574,7 @@ SoSensorManager::processImmediateQueue(void)
 
   THIS->processingimmediatequeue = TRUE;
 
-  // FIXME: implement some better logic to break out of the 
+  // FIXME: implement some better logic to break out of the
   // processing loop. Right now we break out if more than 10000
   // immediate sensors are processed. pederb, 2002-01-30
   int triggercnt = 0;
@@ -572,6 +613,8 @@ SoSensorManager::processImmediateQueue(void)
 void
 SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   LOCK_RESCHEDULE_LIST(this);
   THIS->reschedulelist.append(s);
   UNLOCK_RESCHEDULE_LIST(this);
@@ -583,6 +626,8 @@ SoSensorManager::rescheduleTimer(SoTimerSensor * s)
 void
 SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   LOCK_RESCHEDULE_LIST(this);
   int idx = THIS->reschedulelist.find((SoTimerSensor*)s);
   if (idx >= 0) {
@@ -602,7 +647,9 @@ SoSensorManager::removeRescheduledTimer(SoTimerQueueSensor * s)
 SbBool
 SoSensorManager::isDelaySensorPending(void)
 {
-  return (THIS->delayqueue.getLength() || 
+  SoSensorManagerP::assertAlive(THIS);
+
+  return (THIS->delayqueue.getLength() ||
           THIS->immediatequeue.getLength()) ? TRUE : FALSE;
 }
 
@@ -616,6 +663,8 @@ SoSensorManager::isDelaySensorPending(void)
 SbBool
 SoSensorManager::isTimerSensorPending(SbTime & tm)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   LOCK_TIMER_QUEUE(this);
   if (THIS->timerqueue.getLength() > 0) {
     tm = THIS->timerqueue[0]->getTriggerTime();
@@ -643,6 +692,8 @@ SoSensorManager::isTimerSensorPending(SbTime & tm)
 void
 SoSensorManager::setDelaySensorTimeout(const SbTime & t)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
 #if COIN_DEBUG
   if(t < SbTime(0.0)) {
     SoDebugError::postWarning("SoDB::setDelaySensorTimeout",
@@ -662,6 +713,8 @@ SoSensorManager::setDelaySensorTimeout(const SbTime & t)
 const SbTime &
 SoSensorManager::getDelaySensorTimeout(void)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   return THIS->delaysensortimeout;
 }
 
@@ -675,6 +728,8 @@ SoSensorManager::getDelaySensorTimeout(void)
 void
 SoSensorManager::setChangedCallback(void (*func)(void *), void * data)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   THIS->queueChangedCB = func;
   THIS->queueChangedCBData = data;
 }
@@ -682,6 +737,8 @@ SoSensorManager::setChangedCallback(void (*func)(void *), void * data)
 void
 SoSensorManager::notifyChanged(void)
 {
+  SoSensorManagerP::assertAlive(THIS);
+
   if (THIS->queueChangedCB &&
       !THIS->processingtimerqueue &&
       !THIS->processingdelayqueue &&
@@ -709,14 +766,14 @@ SoSensorManager::doSelect(int nfds, void * readfds, void * writefds,
   return 0;
 }
 
-int 
+int
 SoSensorManager::mergeTimerQueues(void)
 {
   assert(0 && "obsoleted");
   return 0;
 }
 
-int 
+int
 SoSensorManager::mergeDelayQueues(void)
 {
   assert(0 && "obsoleted");
