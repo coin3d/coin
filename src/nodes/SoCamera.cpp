@@ -801,7 +801,7 @@ SoCamera::drawCroppedFrame(SoGLRenderAction *action,
   
   SoGLDiffuseColorElement * elem = (SoGLDiffuseColorElement*)
     SoDiffuseColorElement::getInstance(state);
-  elem->sendOneColor(SbColor4f(0.8f, 0.8f, 0.8f, 1.0f));
+  elem->sendOnePacked(SbColor4f(0.8f, 0.8f, 0.8f, 1.0f).getPackedValue());
 
   SbVec2s origin = newvp.getViewportOriginPixels();
   SbVec2s size = newvp.getViewportSizePixels();

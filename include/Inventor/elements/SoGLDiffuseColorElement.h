@@ -25,18 +25,15 @@
 \**************************************************************************/
 
 #include <Inventor/elements/SoDiffuseColorElement.h>
-#include <Inventor/SbVec4f.h>
+
 
 class COIN_DLL_API SoGLDiffuseColorElement : public SoDiffuseColorElement {
   typedef SoDiffuseColorElement inherited;
-
   SO_ELEMENT_HEADER(SoGLDiffuseColorElement);
+
 public:
   static void initClass(void);
-protected:
-  virtual ~SoGLDiffuseColorElement();
 
-public:
   virtual void init(SoState *state);
   virtual void push(SoState *state);
   virtual void pop(SoState *state, const SoElement *prevTopElement);
@@ -44,14 +41,13 @@ public:
   void send(const int index, const float alpha);
   void send(const int index);
   void sendOnePacked(const uint32_t packedcol);
-  void sendOneColor(const SbVec4f & color);
+
+protected:
+  virtual ~SoGLDiffuseColorElement();
 
 private:
   void updategl(const uint32_t col);
-  void updategl(const SbVec4f & col);
-  SbVec4f current;
-  uint32_t currentpacked;
-  SbBool currentispacked;
+  uint32_t packedRGBA;
 };
 
 #endif // !COIN_SOGLDIFFUSECOLORELEMENT_H

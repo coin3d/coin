@@ -31,7 +31,7 @@
 
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
 
-#include <Inventor/SbColor.h>
+#include <Inventor/SbColor4f.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -65,15 +65,7 @@ SoGLDiffuseColorElement::~SoGLDiffuseColorElement()
 inline void
 SoGLDiffuseColorElement::updategl(const uint32_t col)
 {
-  this->currentpacked = col;
   glColor4ub((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff, col&0xff);
-}
-
-inline void
-SoGLDiffuseColorElement::updategl(const SbVec4f & col)
-{
-  this->current = col;
-  glColor4fv((const GLfloat*) &col);
 }
 
 //! FIXME: write doc.
@@ -82,10 +74,8 @@ void
 SoGLDiffuseColorElement::init(SoState *state)
 {
   inherited::init(state);
-  this->current.setValue(0.8f, 0.8f, 0.8f, 1.0f);
-  this->currentpacked = 0xccccccff;
-  this->currentispacked = FALSE;
-  this->updategl(SbVec4f(0.8f, 0.8f, 0.8f, 1.0f));
+  this->packedRGBA = 0xccccccff;
+  this->updategl(this->packedRGBA);
 }
 
 //! FIXME: write doc.
@@ -96,13 +86,7 @@ SoGLDiffuseColorElement::push(SoState * state)
   inherited::push(state);
   SoGLDiffuseColorElement * const prev =
     (SoGLDiffuseColorElement *)this->getNextInStack();
-  this->currentispacked = prev->currentispacked;
-  if (this->currentispacked) {
-    this->currentpacked = prev->currentpacked;
-  }
-  else {
-    this->current = prev->current;
-  }
+  this->packedRGBA = prev->packedRGBA;
 }
 
 //! FIXME: write doc.
@@ -113,13 +97,7 @@ SoGLDiffuseColorElement::pop(SoState *state, const SoElement * prevTopElement)
   inherited::pop(state, prevTopElement);
   SoGLDiffuseColorElement * const prev =
     (SoGLDiffuseColorElement *)prevTopElement;
-  this->currentispacked = prev->currentispacked;
-  if (this->currentispacked) {
-    this->currentpacked = prev->currentpacked;
-  }
-  else {
-    this->current = prev->current;
-  }
+  this->packedRGBA = prev->packedRGBA;
 }
 
 //! FIXME: write doc.
@@ -128,27 +106,22 @@ void
 SoGLDiffuseColorElement::send(const int index, const float alpha)
 {
   int realindex = SbClamp(index, 0, this->numColors - 1);
-  if (this->colors) {
-    const SbVec3f & c = this->colors[realindex];
-    SbVec4f col(c[0], c[1], c[2], alpha);
+  // FIXME: shouldn't there be a warning here? 20020119 mortene.
+  
+  uint32_t packed = 0;
 
-    if (!this->currentispacked) {
-      if (this->current != col) this->updategl(col);
-    }
-    else {
-      this->currentispacked = FALSE;
-      this->updategl(col);
-    }
+  if (this->colors) {
+    SbColor4f rgba(this->colors[realindex], alpha);
+    packed = rgba.getPackedValue();
   }
   else if (this->packedColors) {
-    uint32_t col = this->packedColors[realindex];
-    if (this->currentispacked) {
-      if (col != this->currentpacked) this->updategl(col);
-    }
-    else {
-      this->currentispacked = TRUE;
-      this->updategl(col);
-    }
+    packed = this->packedColors[realindex] | uint32_t(alpha * 255);
+  }
+  // FIXME: "else {"? Warning? Assert? 20020119 mortene.
+
+  if (this->packedRGBA != packed) {
+    this->updategl(packed);
+    this->packedRGBA = packed;
   }
 }
 
@@ -158,7 +131,7 @@ SoGLDiffuseColorElement::send(const int index, const float alpha)
 void
 SoGLDiffuseColorElement::send(const int index)
 {
-  this->send(index, this->current[3]);
+  this->send(index, (this->packedRGBA & 0xff) / 255.0f);
 }
 
 /*!
@@ -167,37 +140,18 @@ SoGLDiffuseColorElement::send(const int index)
   use this method to enable the element to keep track of the current
   OpenGL color.
 
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
+  Colors represented in the SbColor or SbColor4f types are easily
+  converted to packed format by using either SbColor::getPackedValue()
+  or SbColor4f::getPackedValue().
+
+  This method was not part of the original SGI Inventor v2.1 API, and
+  is an extension specific to Coin.
 */
 void
 SoGLDiffuseColorElement::sendOnePacked(const uint32_t packedcol)
 {
-  if (this->currentispacked) {
-    if (this->currentpacked != packedcol) this->updategl(packedcol);
-  }
-  else {
-    this->currentispacked = TRUE;
+  if (this->packedRGBA != packedcol) {
     this->updategl(packedcol);
-  }
-}
-
-/*!
-  \overload
-
-  This method was not part of the Inventor v2.1 API, and is an
-  extension specific to Coin.
-
-  \since 2001-10-12
-*/
-void
-SoGLDiffuseColorElement::sendOneColor(const SbVec4f & color)
-{
-  if (this->currentispacked) {
-    this->currentispacked = FALSE;
-    this->updategl(color);
-  }
-  else {
-    if (this->current != color) this->updategl(color);
+    this->packedRGBA = packedcol;
   }
 }
