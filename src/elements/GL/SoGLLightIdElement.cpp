@@ -38,6 +38,8 @@
 #include <Inventor/elements/SoGLLightIdElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
+#include <Inventor/C/glue/gl.h>
+#include <Inventor/misc/SoGL.h>
 
 int32_t SoGLLightIdElement::maxGLSources = -1;
 
@@ -114,8 +116,17 @@ SoGLLightIdElement::increment(SoState * const state,
     getElement(state, getClassStackIndex());
   
   if (element) {
+    const cc_glglue * glue = sogl_glue_instance(state);
     element->data++;
-    if (element->data >= SoGLLightIdElement::getMaxGLSources()) {
+    int maxl = cc_glglue_get_max_lights(glue);
+
+    // update static variable in case somebody uses the maxGLLights()
+    // function
+    if (SoGLLightIdElement::maxGLSources != maxl) {
+      SoGLLightIdElement::maxGLSources = maxl;
+    }
+
+    if (element->data >= maxl) {
       element->data--;
 #if COIN_DEBUG
       static SbBool warn = TRUE;

@@ -1469,6 +1469,8 @@ cc_glglue_instance(int contextid)
 {
   SbBool found;
   void * ptr;
+  GLint gltmp;
+
   cc_glglue * gi = NULL;
 
   CC_SYNC_BEGIN(cc_glglue_instance);
@@ -1530,6 +1532,10 @@ cc_glglue_instance(int contextid)
     gi->vendor_is_SGI = strcmp((const char *)gi->vendorstr, "SGI") == 0;
     gi->rendererstr = (const char *)glGetString(GL_RENDERER);
     gi->extensionsstr = (const char *)glGetString(GL_EXTENSIONS);
+
+    /* read some limits */
+    glGetIntegerv(GL_MAX_LIGHTS, &gltmp);
+    gi->max_lights = (int) gltmp;
 
     if (coin_glglue_debug()) {
       cc_debugerror_postinfo("cc_glglue_instance",
@@ -2584,6 +2590,11 @@ cc_glglue_can_do_sortedlayersblend(const cc_glglue * glue)
   return glue->can_do_sortedlayersblend;
 }
 
+int 
+cc_glglue_get_max_lights(const cc_glglue * glue)
+{
+  return glue->max_lights;
+}
 
 /* GL_NV_register_combiners functions */
 SbBool
