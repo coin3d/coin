@@ -631,6 +631,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoAsciiText.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBaseColor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBlinker.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoBumpMap.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCallback.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoCamera.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoClipPlane.h \
@@ -698,6 +699,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoRotationXYZ.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoRotor.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoScale.h \
+                         @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSceneTexture2.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSelection.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoSeparator.h \
                          @path_tag@@coin_src_dir@/include/Inventor/nodes/SoShape.h \
@@ -1094,6 +1096,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoAsciiText.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoBaseColor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoBlinker.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoBumpMap.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoCallback.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoCamera.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoClipPlane.cpp \
@@ -1161,6 +1164,7 @@ INPUT                  = @path_tag@@coin_build_dir@/include/Inventor/C/basic.h \
                          @path_tag@@coin_src_dir@/src/nodes/SoRotationXYZ.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoRotor.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoScale.cpp \
+                         @path_tag@@coin_src_dir@/src/nodes/SoSceneTexture2.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSelection.cpp \
                          @path_tag@@coin_src_dir@/src/nodes/SoSeparator.cpp \
                          @path_tag@@coin_src_dir@/src/shapenodes/SoShape.cpp \
