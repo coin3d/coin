@@ -27,6 +27,7 @@
 #include <assert.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbDict.h>
+#include <Inventor/C/threads/threadsutilp.h>
 #include "normalcache_numcoords_hack.h"
 
 #if COIN_MINOR_VERSION > 3
@@ -41,7 +42,7 @@
 static SbDict * numcoordshash_hack = NULL;
 
 static void
-cleanup(void)
+numcoords_hack_cleanup(void)
 {
   delete numcoordshash_hack;
 }
@@ -49,22 +50,24 @@ cleanup(void)
 void
 normalcache_set_num_coords_hack(const SoNormalCache * n, unsigned int nr)
 {
+  CC_GLOBAL_LOCK;
   if (!numcoordshash_hack) {
     numcoordshash_hack = new SbDict;
-    coin_atexit(cleanup, 0);
+    coin_atexit(numcoords_hack_cleanup, 0);
   }
-
   numcoordshash_hack->enter((unsigned long)n, (void *)nr);
+  CC_GLOBAL_UNLOCK;
 }
 
 unsigned int
 normalcache_get_num_coords_hack(const SoNormalCache * n)
 {
   assert(numcoordshash_hack);
-
   void * val;
+  CC_GLOBAL_LOCK;
   const SbBool ok = numcoordshash_hack->find((unsigned long)n, val);
   assert(ok);
+  CC_GLOBAL_UNLOCK;
 
   return (unsigned int)val;
 }
