@@ -92,7 +92,7 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 
 
-SUBDIRS = ivcat ivhierarchy ivNodeKitStructure
+SUBDIRS = ivcat ivhierarchy ivNodeKitStructure renderos
 subdir = tools
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h ../include/Inventor/SbBasic.h

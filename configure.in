@@ -320,6 +320,7 @@ AC_OUTPUT([
 	tools/ivcat/Makefile
 	tools/ivhierarchy/Makefile
 	tools/ivNodeKitStructure/Makefile
+	tools/renderos/Makefile
 	examples/Makefile
 	examples/advanced/Makefile
 	examples/advanced/elements/Makefile

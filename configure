@@ -3802,7 +3802,7 @@ config_files="\\
     src/nodes/Makefile src/projectors/Makefile src/sensors/Makefile
     src/system/Makefile tools/Makefile tools/ivcat/Makefile
     tools/ivhierarchy/Makefile tools/ivNodeKitStructure/Makefile
-    examples/Makefile examples/advanced/Makefile
+    tools/renderos/Makefile examples/Makefile examples/advanced/Makefile
     examples/advanced/elements/Makefile"
 config_headers="\\
     config.h include/Inventor/SbBasic.h"
@@ -3874,6 +3874,7 @@ do
   'tools/ivcat/Makefile' ) CONFIG_FILES="\$CONFIG_FILES tools/ivcat/Makefile" ;;
   'tools/ivhierarchy/Makefile' ) CONFIG_FILES="\$CONFIG_FILES tools/ivhierarchy/Makefile" ;;
   'tools/ivNodeKitStructure/Makefile' ) CONFIG_FILES="\$CONFIG_FILES tools/ivNodeKitStructure/Makefile" ;;
+  'tools/renderos/Makefile' ) CONFIG_FILES="\$CONFIG_FILES tools/renderos/Makefile" ;;
   'examples/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/Makefile" ;;
   'examples/advanced/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/advanced/Makefile" ;;
   'examples/advanced/elements/Makefile' ) CONFIG_FILES="\$CONFIG_FILES examples/advanced/elements/Makefile" ;;
