@@ -617,8 +617,6 @@ SoShape::computeObjectSpaceRay(SoRayPickAction * const action,
 
   This method returns \c NULL in Open Inventor, and subclasses will
   need to override this method to create details for a SoPickedPoint.
-  Detail classes must be allocated on the heap (using new), since the
-  SoPickedPoint instance will delete the detail upon destruction.
 
   This is not necessary with Coin. Of course, if you choose to
   override it, it will work in the same way as Open Inventor.
@@ -911,18 +909,45 @@ SoShape::invokePointCallbacks(SoAction * const action,
 }
 
 /*!
-  FIXME: document this method properly. It's a must for app
-  programmers extending the library with new SoShape-derived
-  nodes. One item for the doc when it's written: mention that
-  beginShape() and endShape() can be called several times during
-  generatePrimitives() (seems to be a FAQ). 20020523 mortene.
+
+  This method is used to generate primitives for a shape. It's
+  typically called from a node's generatePrimitives() method. If you
+  have your own shape and want to write a generatePrimitives() method
+  for that shape, it's probably a good idea to take a peek in the
+  generatePrimitives() method for a similar shape in Coin.
+
+  generatePrimitives() can contain several beginShape()/endShape()
+  sequences. shapeVertex() is used for each vertex between
+  beginShape() and endShape(). For instance, to generate primitives
+  for a triangle you'd do something like this:
+
+  \begin verbatim
+  SoPrimitiveVertex vertex;
+  
+  this->beginShape(action, SoShape::POLYGON);
+  vertex.setPoint(SbVec3f(0.0f, 0.0f, 0.0f));
+  this->shapeVertex(&vertex);
+  vertex.setPoint(SbVec3f(1.0f, 0.0f, 0.0f));
+  this->shapeVertex(&vertex);
+  vertex.setPoint(SbVec3f(1.0f, 1.0f, 0.0f));
+  this->shapeVertex(&vertex);
+  this->endShape();
+  \end verbatim
+
+  Note that the SoPrimitiveVertex instance can simply be placed on the
+  stack and not allocated. SoShape will copy the needed information
+  when you call shapeVertex().
+
+  Before calling shapeVertex(), you can set extra information for the
+  SoPrimitiveVertex, including normal, material index, and texture
+  coordinates.
 
   This method is slightly different from its counterpart from the
   original Open Inventor library, as this method has an SoDetail as
   the last argument, and not an SoFaceDetail. This is because we
   accept more TriangleShape types, and the detail might be a
   SoFaceDetail or a SoLineDetail. There is no use sending in a
-  SoPointDetail, as nothing will be done with it.
+  SoPointDetail, as nothing will be done with it.  
 */
 void
 SoShape::beginShape(SoAction * const action, const TriangleShape shapetype,
@@ -933,7 +958,11 @@ SoShape::beginShape(SoAction * const action, const TriangleShape shapetype,
 
 
 /*!
-  \COININTERNAL
+
+  This method is used while generating primitives for a shape. See
+  beginShape() for more details.
+
+  \sa beginShape(), endShape()
 */
 void
 SoShape::shapeVertex(const SoPrimitiveVertex * const v)
@@ -941,11 +970,12 @@ SoShape::shapeVertex(const SoPrimitiveVertex * const v)
   soshape_get_staticdata()->primdata->shapeVertex(v);
 }
 
-// FIXME: document this method properly. It's a must for app
-// programmers extending the library with new SoShape-derived
-// nodes. 20020523 mortene.
 /*!
-  \COININTERNAL
+
+  This method is used while generating primitives for a shape. See
+  beginShape() for more details.
+
+  \sa beginShape(), shapeVertex()
 */
 void
 SoShape::endShape(void)
