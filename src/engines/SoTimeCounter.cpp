@@ -359,9 +359,10 @@ SoTimeCounter::setOutputValue(short value)
     this->outputvalue = value;
     this->output.enable(TRUE);
   }
+
   // FIXME: is this really necessary? Can't we just set
   // this->output.enable(TRUE) in the constructor instead? 20000907 mortene.
-  else if (this->firstoutputenable) {
+  if (this->firstoutputenable) {
     this->firstoutputenable = FALSE;
     this->output.enable(TRUE);
   }
