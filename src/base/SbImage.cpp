@@ -428,7 +428,11 @@ SbImage::readFile(const SbString & filename,
   // FIXME: Add 3D image support when that is added to simage (kintel 20011118)
   SbString finalname = SbImage::searchForFile(filename, searchdirectories,
                                               numdirectories);
-  assert(finalname.getLength() > 0);
+  if (finalname.getLength() == 0) {
+    SoDebugError::post("SbImage::readFile",
+                       "couldn't find '%s'.", filename.getString());
+    return FALSE;
+  }
 
   assert(simage_wrapper()->simage_read_image);
   int w, h, nc;
