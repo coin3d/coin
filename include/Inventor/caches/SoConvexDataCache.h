@@ -35,9 +35,11 @@ public:
   ~SoConvexDataCache();
 
   enum Binding {
+    // do not change these values. We rely on them matching
+    // values in SoIndededFaceSet.h and SoGL.cpp...
     NONE = 0,
-    PER_FACE,         // not for texbinding
-    PER_FACE_INDEXED,  //
+    PER_FACE,
+    PER_FACE_INDEXED,
     PER_VERTEX,
     PER_VERTEX_INDEXED
   };

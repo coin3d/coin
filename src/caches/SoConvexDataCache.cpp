@@ -234,12 +234,12 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
   if (texbind != NONE)
     tessdata.texIndex = &this->texIndices;
 
-  tessellator.beginPolygon();
+  tessellator.beginPolygon(TRUE);
   for (int i = 0; i < numv; i++) {
     if (vind[i] < 0) {
       tessellator.endPolygon();
-      if (matbind != PER_VERTEX) matnr++;
-      if (normbind != PER_VERTEX) normnr++;
+      if (matbind == PER_VERTEX_INDEXED) matnr++;
+      if (normbind == PER_VERTEX_INDEXED) normnr++;
       if (texbind == PER_VERTEX_INDEXED) texnr++;
       if (i < numv - 1) { // if not last polygon
         tessellator.beginPolygon();
@@ -272,12 +272,10 @@ SoConvexDataCache::generate(const SoCoordinateElement * const coords,
 
   delete [] tessdata.vertexInfo;
 
-  // get rid of wasted memory. Is not absolutely necessary,
-  // and it will be faster not to do this.
-//   this->coordIndices.fit();
-//   if (tessdata.matIndex) this->materialIndices.fit();
-//   if (tessdata.normIndex) this->normalIndices.fit();
-//   if (tessdata.texIndex) this->texIndices.fit();
+  this->coordIndices.fit();
+  if (tessdata.matIndex) this->materialIndices.fit();
+  if (tessdata.normIndex) this->normalIndices.fit();
+  if (tessdata.texIndex) this->texIndices.fit();
 }
 
 //
