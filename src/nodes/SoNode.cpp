@@ -341,31 +341,33 @@ SoNode::doAction(SoAction * action)
 SbBool
 SoNode::affectsState(void) const
 {
+  // FIXME: shouldn't this be "FALSE", as mostly just appearance type
+  // nodes affects the state? 20000213 mortene.
   return TRUE; // default
 }
 
 /*!
-  Returns the last node that was give \a name in SoBase::setName()
+  Returns the last node that was registered under \a name.
 */
 SoNode *
-SoNode::getByName(const SbName & /* name */)
+SoNode::getByName(const SbName & name)
 {
-  // got to search through dictionary to find the last node with
-  // 'name'
-  assert(0);
-  return NULL;
+  SoBase * b = SoBase::getNamedBase(name, SoNode::getClassTypeId());
+  if (!b) return NULL;
+  return (SoNode *)b;
 }
 
 /*!
-  Finds all nodes with name set the \a name. Returns the number
-  of nodes with the specified name.
+  Finds all nodes with \a name and appends them to the \a l nodelist.
+  Returns the number of nodes with the specified name.
 */
 int
-SoNode::getByName(const SbName & /* name */, SoNodeList & /* l */)
+SoNode::getByName(const SbName & name, SoNodeList & l)
 {
-  // FIXME
-  assert(0);
-  return 0;
+  SoBaseList bl;
+  int nr = SoBase::getNamedBases(name, bl, SoNode::getClassTypeId());
+  for (int i=0; i < nr; i++) l.append((SoNode *)bl[i]);
+  return nr;
 }
 
 /*!
