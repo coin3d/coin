@@ -364,44 +364,6 @@ SoOffscreenRenderer::getScreenPixelsPerInch(void)
   return pixprmm * 25.4f; // an inch is 25.4 mm.
 }
 
-static void
-getMaxCB(void * ptr, SoAction * action)
-{
-  GLint * size = (GLint *)ptr;
-  glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
-
-  const char * vendor = (const char *)glGetString(GL_VENDOR);
-  if (strcmp(vendor, "NVIDIA Corporation") == 0) {
-
-    // NVIDIA seems to have a bug where max render size is limited by
-    // desktop resolution (at least for their Linux X11 drivers), not
-    // the texture maxsize returned by OpenGL. So we use a workaround
-    // by limiting max size to the lowend resolution for desktop
-    // monitors.
-    //
-    // According to pederb, there are versions of the NVidia drivers
-    // where the offscreen buffer also has to have dimensions that are
-    // 2^x, so we limit further down to these dimension settings to be
-    // sure.
-
-    size[0] = 512;
-    size[1] = 512;
-  }
-
-  // Makes it possible to override the default tilesizes. Should prove
-  // useful for debugging problems on remote sites.
-  static int forcedtilewidth = -1;
-  static int forcedtileheight = -1;
-  if (forcedtilewidth == -1) {
-    const char * env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
-    forcedtilewidth = env ? atoi(env) : 0;
-    env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
-    forcedtileheight = env ? atoi(env) : 0;
-  }
-  if (forcedtilewidth != 0) { size[0] = forcedtilewidth; }
-  if (forcedtileheight != 0) { size[1] = forcedtileheight; }
-}
-
 /*!
   Get maximum dimensions (width, height) of the offscreen buffer.
 
@@ -1527,37 +1489,56 @@ SoOffscreenRendererP::getMaxTileSize(void)
   if (wasvisited) { return SbVec2s(dims[0], dims[1]); }
   wasvisited = TRUE;
 
-  GLint temp[2] = { 128, 128 };
+  GLint size[2] = { 128, 128 };
 
-#if defined(HAVE_GLX) || defined(HAVE_WGL)
   void * ctx = cc_glglue_context_create_offscreen(128, 128);
   if (ctx) {
     SbBool ok = cc_glglue_context_make_current(ctx);
     if (ok) {
-      getMaxCB(temp, NULL);
+      glGetIntegerv(GL_MAX_VIEWPORT_DIMS, size);
+
+      const char * vendor = (const char *)glGetString(GL_VENDOR);
+      if (strcmp(vendor, "NVIDIA Corporation") == 0) {
+
+        // NVIDIA seems to have a bug where max render size is limited by
+        // desktop resolution (at least for their Linux X11 drivers), not
+        // the texture maxsize returned by OpenGL. So we use a workaround
+        // by limiting max size to the lowend resolution for desktop
+        // monitors.
+        //
+        // According to pederb, there are versions of the NVidia drivers
+        // where the offscreen buffer also has to have dimensions that are
+        // 2^x, so we limit further down to these dimension settings to be
+        // sure.
+
+        size[0] = 512;
+        size[1] = 512;
+      }
+
+      // Makes it possible to override the default tilesizes. Should prove
+      // useful for debugging problems on remote sites.
+      static int forcedtilewidth = -1;
+      static int forcedtileheight = -1;
+      if (forcedtilewidth == -1) {
+        const char * env = coin_getenv("COIN_OFFSCREENRENDERER_TILEWIDTH");
+        forcedtilewidth = env ? atoi(env) : 0;
+        env = coin_getenv("COIN_OFFSCREENRENDERER_TILEHEIGHT");
+        forcedtileheight = env ? atoi(env) : 0;
+      }
+      if (forcedtilewidth != 0) { size[0] = forcedtilewidth; }
+      if (forcedtileheight != 0) { size[1] = forcedtileheight; }
+      
       cc_glglue_context_reinstate_previous(ctx);
     }
     cc_glglue_context_destruct(ctx);
   }
-#else // !HAVE_GLX && !HAVE_WGL
-  // FIXME: remove this when the cc_glglue_context_*() functions are
-  // implemented for AGL aswell. Also: walk through the code and get
-  // rid of the other SoOffscreenRender+SoCallback hacks. 20030213 mortene.
-  SoOffscreenRenderer * osr = new SoOffscreenRenderer(SbViewportRegion(128,128));
-  SoCallback *cb = new SoCallback();
-  cb->ref();
-  cb->setCallback(getMaxCB, temp);
-  osr->render(cb);
-  delete osr;
-  cb->unref();
-#endif // !HAVE_GLX
 
-  dims[0] = SbMin((short)temp[0], (short)SHRT_MAX);
-  dims[1] = SbMin((short)temp[1], (short)SHRT_MAX);
+  dims[0] = SbMin((short)size[0], (short)SHRT_MAX);
+  dims[1] = SbMin((short)size[1], (short)SHRT_MAX);
 
   if (SoOffscreenRendererP::debug()) {
     SoDebugError::postInfo("SoOffscreenRendererP::getMaxTileSize",
-                           "<%d, %d>", temp[0], temp[1]);
+                           "<%d, %d>", size[0], size[1]);
   }
 
   return SbVec2s(dims[0], dims[1]);
