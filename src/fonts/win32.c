@@ -441,7 +441,7 @@ cc_flww32_get_font(const char * fontname, int sizex, int sizey, float angle)
 void
 cc_flww32_get_font_name(void * font, cc_string * str)
 {
-  int size;
+  int size, newsize;
   char * s;
 
   /* Connect device context to font. */
@@ -451,14 +451,24 @@ cc_flww32_get_font_name(void * font, cc_string * str)
     cc_win32_print_error("cc_flww32_get_font_name", "SelectObject()", GetLastError());
     return;
   }
-
+  
   size = cc_win32()->GetTextFace(cc_flww32_globals.devctx, 0, NULL);
+  /* 'size' will never be 0. Then GetTextFace would have asserted. */
   s = (char *)malloc(size);
   assert(s); /* FIXME: handle alloc problem better. 20030530 mortene. */
-
-  (void)cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
+  
+  newsize = cc_win32()->GetTextFace(cc_flww32_globals.devctx, size, s);
   cc_string_set_text(str, s);
 
+  if (newsize == size) {
+    /* The returned fontname length is longer than expected. This
+       means that the system has cropped the string. Requested font
+       will most probably not be found. */
+    cc_debugerror_postwarning("cc_flww32_get_font_name", 
+			      "GetTextFace(). The length of the returned fontname is"
+			      " >= expected size. Fontname has been cropped.");
+  }
+  
   free(s);
 
   /* Reconnect device context to default font. */
@@ -541,8 +551,11 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
 
   LOGFONT lfont;
   GLYPHMETRICS gm;
-  static const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
-                                       { 0, 0 }, { 0, 1 } };
+
+  /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME fails if
+     the idmatrix is static. Newer versions seems to not mind though. */
+  const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
+				{ 0, 0 }, { 0, 1 } };
   DWORD ret;
   DWORD size = 0;
   HFONT previousfont;
@@ -566,20 +579,11 @@ cc_flww32_get_vector_advance(void * font, int glyph, float * x, float * y)
                         &identitymatrix /* transformation matrix */
                         );
 
-  /* As of now, GetGlyphOutline() should have no known reason to
-     fail.
-     FIXME: We should eventually allow non-TT fonts to be loaded
-     aswell, by changing the "precision" setting in the call to
-     CreateFont() to also allow raster fonts (see FIXME comment where
-     CreateFont() is called). Then, when GetGlyphOutline() fails, use
-     TextOut() and GetDIBits() to grab a font glyph's bitmap.
-     20030610 mortene.
-  */
   if (ret == GDI_ERROR) {
     cc_string str;
     cc_string_construct(&str);
     cc_string_sprintf(&str,
-                      "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_BITMAP, "
+                      "GetGlyphOutline(HDC=%p, 0x%x '%c', GGO_METRICS, "
                       "<metricsstruct>, 0, NULL, <idmatrix>)",
                       cc_flww32_globals.devctx, glyph, (unsigned char)glyph);
     cc_win32_print_error("cc_flww32_get_vector_advance", cc_string_get_text(&str), GetLastError());
@@ -670,8 +674,11 @@ cc_flww32_get_bitmap(void * font, int glyph)
 {
   struct cc_flw_bitmap * bm = NULL;
   GLYPHMETRICS gm;
-  static const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
-                                       { 0, 0 }, { 0, 1 } };
+
+  /* NOTE: Do not make this matrix 'static'. It seems like Win95/98/ME fails if
+     the idmatrix is static. Newer versions seems to not mind though. */
+  const MAT2 identitymatrix = { { 0, 1 }, { 0, 0 },
+				{ 0, 0 }, { 0, 1 } };
   DWORD ret;
   DWORD size = 0;
   uint8_t * w32bitmap = NULL;
