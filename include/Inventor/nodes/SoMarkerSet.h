@@ -88,6 +88,16 @@ public:
 
 protected:
   virtual ~SoMarkerSet();
+  
+private:
+  enum Binding {
+    OVERALL = 0,
+    PER_VERTEX
+  };
+
+  Binding findNormalBinding(SoState * const state) const;
+  Binding findMaterialBinding(SoState * const state) const;
+  
 };
 
 #endif // !COIN_SOMARKERSET_H
