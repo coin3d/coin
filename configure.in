@@ -135,7 +135,7 @@ SIM_AC_CHECK_VAR_FUNCTIONNAME
 #
 #    A self-extracting executable SETUPEX.EXE with the InstallShield install
 #    should then be available under [coin_builddir]/build/coin/. Move
-#    to <ftp://ftp.sim.no/pub/coin/bin/win32/coin-sdk-@COIN_VERSION@.exe>.
+#    to <ftp://ftp.sim.no/pub/coin/bin/win32/coin-@COIN_VERSION@.exe>.
 #
 #  * RPM packages: follow the instructions at the top of the
 #    build/coin.spec.in file, make one package for each major platform
@@ -211,7 +211,7 @@ AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h)
 #  Can be overridden by the user with --enable-static.
 AM_DISABLE_STATIC
 
-#  Turn off default maintainer make-rules -- use ./autogen.sh instead.
+#  Turn off default maintainer make-rules -- use ./bootstrap instead.
 AM_MAINTAINER_MODE
 
 #  Initialize libtool
