@@ -69,10 +69,17 @@ protected:
 
 private:
   static SoType classTypeId;
+  // FIXME: the ifndef wrapper is a workaround for a bug in Doxygen
+  // 1.0.0, where private members in a structure doesn't "inherit" the
+  // private status of their "parent". (This has been confirmed to be
+  // a bug by Dimitri.) Remove the workaround when a fixed Doxygen
+  // appears. 20000201 mortene.
+#ifndef DOXYGEN_SKIP_THIS
   struct {
     unsigned int dirty : 1;
     unsigned int isnotifying : 1;
   } stateflags;
+#endif // !DOXYGEN_SKIP_THIS
 
   friend class SoEngineOutput;
 };

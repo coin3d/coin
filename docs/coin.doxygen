@@ -185,18 +185,7 @@ INPUT                = \
 	\
 	$(top_srcdir)/src/fields/SoFieldContainer.cpp $(top_srcdir)/include/Inventor/fields/SoFieldContainer.h \
 	\
-	$(top_srcdir)/src/sensors/SoSensorManager.cpp $(top_srcdir)/include/Inventor/sensors/SoSensorManager.h \
-	$(top_srcdir)/src/sensors/SoSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoSensor.h \
-	$(top_srcdir)/src/sensors/SoTimerQueueSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoTimerQueueSensor.h \
-	$(top_srcdir)/src/sensors/SoTimerSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoTimerSensor.h \
-	$(top_srcdir)/src/sensors/SoAlarmSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h \
-	$(top_srcdir)/src/sensors/SoDelayQueueSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h \
-	$(top_srcdir)/src/sensors/SoOneShotSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoOneShotSensor.h \
-	$(top_srcdir)/src/sensors/SoIdleSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoIdleSensor.h \
-	$(top_srcdir)/src/sensors/SoDataSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoDataSensor.h \
-	$(top_srcdir)/src/sensors/SoPathSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoPathSensor.h \
-	$(top_srcdir)/src/sensors/SoNodeSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoNodeSensor.h \
-	$(top_srcdir)/src/sensors/SoFieldSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoFieldSensor.h \
+	$(top_srcdir)/src/engines/SoEngine.cpp $(top_srcdir)/include/Inventor/engines/SoEngine.h \
 	\
 	$(top_srcdir)/src/nodes/SoNode.cpp $(top_srcdir)/include/Inventor/nodes/SoNode.h \
 	$(top_srcdir)/src/nodes/SoCamera.cpp $(top_srcdir)/include/Inventor/nodes/SoCamera.h \
@@ -405,6 +394,19 @@ INPUT                = \
 #	$(top_srcdir)/src/fields/SoSFNode.cpp $(top_srcdir)/include/Inventor/fields/SoSFNode.h \
 #	$(top_srcdir)/src/fields/SoMFNode.cpp $(top_srcdir)/include/Inventor/fields/SoMFNode.h \
 #	$(top_srcdir)/src/fields/SoSFTrigger.cpp $(top_srcdir)/include/Inventor/fields/SoSFTrigger.h \
+#	\
+#	$(top_srcdir)/src/sensors/SoSensorManager.cpp $(top_srcdir)/include/Inventor/sensors/SoSensorManager.h \
+#	$(top_srcdir)/src/sensors/SoSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoSensor.h \
+#	$(top_srcdir)/src/sensors/SoTimerQueueSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoTimerQueueSensor.h \
+#	$(top_srcdir)/src/sensors/SoTimerSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoTimerSensor.h \
+#	$(top_srcdir)/src/sensors/SoAlarmSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoAlarmSensor.h \
+#	$(top_srcdir)/src/sensors/SoDelayQueueSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoDelayQueueSensor.h \
+#	$(top_srcdir)/src/sensors/SoOneShotSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoOneShotSensor.h \
+#	$(top_srcdir)/src/sensors/SoIdleSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoIdleSensor.h \
+#	$(top_srcdir)/src/sensors/SoDataSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoDataSensor.h \
+#	$(top_srcdir)/src/sensors/SoPathSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoPathSensor.h \
+#	$(top_srcdir)/src/sensors/SoNodeSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoNodeSensor.h \
+#	$(top_srcdir)/src/sensors/SoFieldSensor.cpp $(top_srcdir)/include/Inventor/sensors/SoFieldSensor.h \
 
 #######################
 
