@@ -168,9 +168,10 @@ flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
 /*         name = "latin_1"; break; */
 
         /* FIXME: disabled, as "ft_encoding_latin_2" not defined on my
-           Freetype dev system. 20030316 mortene.*/
+           Freetype dev system (FreeType v2.1.3 that comes as
+           libfreetype6-dev on Debian Linux). 20030316 mortene.*/
 
-/*       case ft_encoding_latin_2:	 */
+/*       case ft_encoding_latin_2: */
 /*         name = "latin_2"; break; */
 
       case ft_encoding_sjis:	
@@ -192,6 +193,11 @@ flwftGetCharmapName(FLWfont font, int charmap, char * buffer, int bufsize)
       case ft_encoding_apple_roman:
         name = "apple_roman"; break;
       default:
+        if (cc_freetype_debug()) {
+          cc_debugerror_postwarning("flwftGetCharmapName",
+                                    "unknown encoding: 0x%x",
+                                    face->charmaps[charmap]->encoding);
+        }
         /* name will be set to unknown */
         break;
       }
@@ -254,16 +260,17 @@ flwftSetFontRotation(FLWfont font, float angle)
     return -1;
 }
 
+/*
+  Returns the glyph index. If the character code is undefined, returns
+  0.
+*/
 FLWglyph
 flwftGetGlyph(FLWfont font, unsigned int charidx)
 {
-  FT_Face face;
-  if (font) {
-    face = (FT_Face)font;
-    return FT_Get_Char_Index(face, charidx);
-  } else
-    return 0;
+  FT_Face face = (FT_Face)font;
+  assert(face != NULL);
 
+  return FT_Get_Char_Index(face, charidx);
 }
 
 int

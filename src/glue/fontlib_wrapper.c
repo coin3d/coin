@@ -111,8 +111,6 @@ fontstruct_new(FLWfont font)
   int i;
   struct fontstruct * fs;
   fs = (struct fontstruct *)malloc(sizeof(struct fontstruct));
-  if (!fs)
-    return (struct fontstruct *)0;
   fs->font = font;
   fs->fontname = (char *)0;
   fs->requestname = (char *)0;
@@ -122,8 +120,7 @@ fontstruct_new(FLWfont font)
   fs->sizey = 0;
   fs->defaultfont = 0;
   fs->glyphs = (struct glyphstruct *)malloc(10*sizeof(struct glyphstruct));
-  if (fs->glyphs)
-    fs->glyphmax = 10;
+  fs->glyphmax = 10;
   for (i=0; i<fs->glyphmax; i++)
     glyphstruct_init(&fs->glyphs[i]);
   return fs;
@@ -364,37 +361,35 @@ flwExit()
   fontstruct_cleanup();
 }
 
-/*
-  Create one font. fontname is the name & style _requested_, outname will hold
-  the name of the font actually created - these will typically be different.
-  If a font has already been created for this fontname, the function will not
-  create a duplicate, but simply return that font. If lookup, the method will
-  look up whether the font already exists, and fail (return -1) if it doesn't.
+/*!
+  Create one font. \a fontname is the name & style \e requested, \a
+  outname will hold the name of the font actually created - these will
+  typically be different.  If a font has already been created for this
+  \a fontname, the function will not create a duplicate, but simply
+  return that font.
 */
 int
-flwCreateFont(const char * fontname, char * outname, const int outnamelen, const int sizex, const int sizey)
+flwCreateFont(const char * fontname, char * outname, const int outnamelen,
+              const int sizex, const int sizey)
 {
   struct fontstruct * fs;
   char newname[300];
   FLWfont font;
   int i;
 
-  // Don't create font if one has already been created for this requestname and size
-  for (i=0; i<fontcnt; i++)
-    if (fonts[i]->sizex == sizex && fonts[i]->sizey == sizey && !strcmp(fontname, fonts[i]->requestname)) {
-      if ((int) strlen(fonts[i]->fontname) < outnamelen)
-        sprintf(outname, fonts[i]->fontname);
-      return i;
-    }
+  /* Don't create font if one has already been created for this
+     requestname and size. */
+  i = flwGetFont(fontname, sizex, sizey);
+  if (i != -1) { return i; }
+
+  font = NULL;
+
 #ifdef HAVE_FREETYPE
   font = flwftGetFont(fontname);
-#else
-  font = (FLWfont)0;
 #endif
+
   if (font) {
     fs = fontstruct_new(font);
-    if (!fs)
-      return -1;
     fontstruct_set_requestname(fs, fontname);
     fontstruct_set_size(fs, sizex, sizey);
 #ifdef HAVE_FREETYPE
@@ -407,11 +402,12 @@ flwCreateFont(const char * fontname, char * outname, const int outnamelen, const
     if ((int) strlen(newname) < outnamelen)
       sprintf(outname, newname);
     return fontstruct_insert(fs);
-  } else {
-    // Return default font.
-    fs = fontstruct_new((FLWfont)0);
-    if (!fs)
-      return -1;
+  }
+  else {
+    /* Use the default font for the given fontname and size. */
+    /* FIXME: the defaultfont size is now fixed at 12-pt. Should scale
+       it to match sizey. 20030317 mortene. */
+    fs = fontstruct_new(NULL);
     fontstruct_set_requestname(fs, fontname);
     fontstruct_set_size(fs, 0, 0);
     fontstruct_set_fontname(fs, "defaultFont");
@@ -422,6 +418,13 @@ flwCreateFont(const char * fontname, char * outname, const int outnamelen, const
   }
 }
 
+/*!
+  Returns internal index of given font specification, for subsequent
+  use as input argument to other functions as identification.
+
+  Returns -1 if no font with the given name and size has been made
+  yet.
+*/
 int
 flwGetFont(const char * fontname, const int sizex, const int sizey)
 {
@@ -436,8 +439,10 @@ flwGetFont(const char * fontname, const int sizex, const int sizey)
   if (i == fontcnt) { i = -1; }
 
   if (cc_fontlib_debug()) {
-    cc_debugerror_postinfo("flwGetFont", "'%s', size==<%d, %d> => idx %d",
-                           fontname, sizex, sizey, i);
+    cc_debugerror_postinfo("flwGetFont",
+                           "'%s', size==<%d, %d> => idx==%d %s",
+                           fontname, sizex, sizey, i,
+                           (i == -1) ? "" : (fonts[i]->defaultfont ? "(defaultfont)" : "(not defaultfont)"));
   }
 
   return i;
@@ -529,20 +534,37 @@ flwGetGlyph(int font, int charidx)
 {
   FLWglyph glyph;
   int idx;
-  if (font >= 0 && font < fontcnt && fonts[font]) {
+
+  assert(font >= 0 && font < fontcnt && fonts[font]);
+
+  glyph = 0;
+
 #ifdef HAVE_FREETYPE
-    glyph = flwftGetGlyph(fonts[font]->font, charidx);
-#else
-    glyph = (FLWglyph)0;
+  glyph = flwftGetGlyph(fonts[font]->font, charidx);
 #endif
-    if (glyph)
-      return fontstruct_insert_glyph(font, glyph, 0);
-    else {
-      // Create glyph from default font, mark as default.
-      return fontstruct_insert_glyph(font, charidx, 1);
-    }
+
+  if (glyph) {
+    return fontstruct_insert_glyph(font, glyph, 0);
   }
-  return -1;
+  else {
+    /* Create glyph from default font, mark as default. */
+
+    /* FIXME: shouldn't it rather be handled by making an empty
+       rectangle glyph of the correct size, like it's at least done
+       for X11 (and probably other systems aswell)?
+
+       Or perhaps this strategy _is_ better, but then we should at
+       least scale the defaultfont glyph to the correct size.
+       20030317 mortene. */
+
+    if (cc_fontlib_debug()) {
+      cc_debugerror_postwarning("flwGetGlyph",
+                                "no character 0x%x was found in font '%s'",
+                                charidx, fonts[font]->fontname);
+    }
+
+    return fontstruct_insert_glyph(font, charidx, 1);
+  }
 }
 
 int
