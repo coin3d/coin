@@ -42,6 +42,14 @@
   parts of scenegraphs, should be very quick on successive runs for
   "static" parts of the scene.
 
+  Note: the algorithm used is not guaranteed to give an optimal bbox;
+  it always considers two bounding boxes and extends one of them to
+  contain the other. Since the boxes need not be parallel to the
+  principal axes the new box might not be a perfect fit for the box
+  not extended (it's coordinate system is changed, and to make a
+  perfect fit all objects contained within it would have to be
+  re-examined).
+
   \sa SoSeparator::boundingBoxCaching
 */
 
@@ -357,7 +365,30 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f & box)
   }
 
   xfbox.transform(transform);
+
+  float x1,y1,z1,x2,y2,z2;
+  xfbox.getBounds(x1,y1,z1,x2,y2,z2);
+  printf("xfbox: (%f,%f,%f) (%f,%f,%f)\n", x1,y1,z1,x2,y2,z2);
+  
   this->bbox.extendBy(xfbox);
+
+  bbox.getBounds(x1,y1,z1,x2,y2,z2);
+  /*
+  static int cc = 0;
+  if (++cc == 3) {
+      z1 += 0.3f;
+      z2 -= 0.3f;
+      bbox.setBounds(x1,y1,z1,x2,y2,z2);
+  }
+  */
+      
+  printf(" bbox: (%f,%f,%f) (%f,%f,%f)\n", x1,y1,z1,x2,y2,z2);
+  /*
+  z1 -= ;
+  z2 = 1.41f;
+  bbox.setBounds(x1,y1,z1,x2,y2,z2);
+  */
+
 }
 
 /*! \overload */
