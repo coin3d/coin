@@ -36,13 +36,27 @@
 #include <windows.h>
 #endif /* HAVE_WINDOWS_H */
 
-/* Under Win32, we need to make sure we use the correct calling method
-   by using the APIENTRY define for the function signature types (or
-   else we'll get weird stack errors). On other platforms, just define
-   APIENTRY empty. */
-#ifndef APIENTRY
-#define APIENTRY
-#endif /* !APIENTRY */
+/* Note: Under Win32, we need to make sure we use the correct calling
+   method by using the OPENALWRAPPER_APIENTRY define for the function
+   signature types (or else we'll get weird stack errors). The calling
+   convention must match the calling convention used in the
+   OpenAL32.dll we link against. Both the LGPL version of OpenAL in
+   CVS (www.openal.org), Creative Lab's (binary) SDK, and nVidia's
+   AudioSDK, uses this calling method, so I think it is quite safe to
+   assume that all OpenAL32.dlls use this method.  On other platforms,
+   just define OPENALWRAPPER_APIENTRY empty. Stack errors (under Win32)
+   can be detected by specifying the /GZ linker option. 
+   2003-03-19 thammer. */
+
+#ifdef _WIN32
+  #define OPENALWRAPPER_APIENTRY __cdecl
+#else
+  #define OPENALWRAPPER_APIENTRY
+#endif /* _WIN32 */
+
+//#ifndef APIENTRY
+//#define APIENTRY
+//#endif /* !APIENTRY */
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,48 +65,48 @@ extern "C" {
 /* Typedefinitions of function signatures for openal calls we use. We
    need these for casting from the void-pointer return of dlsym().*/
 
-  typedef const unsigned char * (APIENTRY *alGetString_t)(int param);
-  typedef int (APIENTRY *alGetError_t)(void);
+  typedef const unsigned char * (OPENALWRAPPER_APIENTRY *alGetString_t)(int param);
+  typedef int (OPENALWRAPPER_APIENTRY *alGetError_t)(void);
 
-  typedef void (APIENTRY *alListenerfv_t)(int pname, float *param);
-  typedef void (APIENTRY *alListenerf_t)(int pname, float param);
+  typedef void (OPENALWRAPPER_APIENTRY *alListenerfv_t)(int pname, float *param);
+  typedef void (OPENALWRAPPER_APIENTRY *alListenerf_t)(int pname, float param);
 
-  typedef void (APIENTRY *alDistanceModel_t)(int distanceModel);
+  typedef void (OPENALWRAPPER_APIENTRY *alDistanceModel_t)(int distanceModel);
 
-  typedef void (APIENTRY *alGenSources_t)(int n, unsigned int *sources);
-  typedef void (APIENTRY *alDeleteSources_t)(int n, unsigned int *sources);
-  typedef void (APIENTRY *alSourcePlay_t)(unsigned int source);
-  typedef void (APIENTRY *alSourceStop_t)(unsigned int source);
-  typedef void (APIENTRY *alSourceRewind_t)(unsigned int source);
-  typedef void (APIENTRY *alSourcefv_t)(unsigned int source, int param, 
+  typedef void (OPENALWRAPPER_APIENTRY *alGenSources_t)(int n, unsigned int *sources);
+  typedef void (OPENALWRAPPER_APIENTRY *alDeleteSources_t)(int n, unsigned int *sources);
+  typedef void (OPENALWRAPPER_APIENTRY *alSourcePlay_t)(unsigned int source);
+  typedef void (OPENALWRAPPER_APIENTRY *alSourceStop_t)(unsigned int source);
+  typedef void (OPENALWRAPPER_APIENTRY *alSourceRewind_t)(unsigned int source);
+  typedef void (OPENALWRAPPER_APIENTRY *alSourcefv_t)(unsigned int source, int param, 
                                         float *values);
-  typedef void (APIENTRY *alSourcef_t)(unsigned int source, int param, 
+  typedef void (OPENALWRAPPER_APIENTRY *alSourcef_t)(unsigned int source, int param, 
                                        float value);
-  typedef void (APIENTRY *alSourcei_t)(unsigned int source, int param, 
+  typedef void (OPENALWRAPPER_APIENTRY *alSourcei_t)(unsigned int source, int param, 
                                        int value);
-  typedef void (APIENTRY *alGetSourcei_t)(unsigned int source, int param, 
+  typedef void (OPENALWRAPPER_APIENTRY *alGetSourcei_t)(unsigned int source, int param, 
                                           int *value);
-  typedef void (APIENTRY *alSourceQueueBuffers_t)(unsigned int source, 
+  typedef void (OPENALWRAPPER_APIENTRY *alSourceQueueBuffers_t)(unsigned int source, 
                                                   unsigned int n, 
                                                   unsigned int *buffers);
-  typedef void (APIENTRY *alSourceUnqueueBuffers_t)(unsigned int source, 
+  typedef void (OPENALWRAPPER_APIENTRY *alSourceUnqueueBuffers_t)(unsigned int source, 
                                                   unsigned int n, 
                                                   unsigned int *buffers);
 
-  typedef void (APIENTRY *alBufferData_t)(unsigned int buffer, int format,
+  typedef void (OPENALWRAPPER_APIENTRY *alBufferData_t)(unsigned int buffer, int format,
                                        void *data, unsigned int size,
                                        unsigned int freq);
-  typedef void (APIENTRY *alGenBuffers_t)(int n, unsigned int *buffers);
-  typedef void (APIENTRY *alDeleteBuffers_t)(int n, unsigned int *buffers);
+  typedef void (OPENALWRAPPER_APIENTRY *alGenBuffers_t)(int n, unsigned int *buffers);
+  typedef void (OPENALWRAPPER_APIENTRY *alDeleteBuffers_t)(int n, unsigned int *buffers);
 
-  typedef void * (APIENTRY *alcCreateContext_t)(void *device, int *attrlist);
-  typedef int (APIENTRY *alcMakeContextCurrent_t)(void *context);
-  typedef void (APIENTRY *alcProcessContext_t)(void *context);
-  typedef void (APIENTRY *alcSuspendContext_t)(void *context);
-  typedef void (APIENTRY *alcDestroyContext_t)(void *context);
+  typedef void * (OPENALWRAPPER_APIENTRY *alcCreateContext_t)(void *device, int *attrlist);
+  typedef int (OPENALWRAPPER_APIENTRY *alcMakeContextCurrent_t)(void *context);
+  typedef void (OPENALWRAPPER_APIENTRY *alcProcessContext_t)(void *context);
+  typedef void (OPENALWRAPPER_APIENTRY *alcSuspendContext_t)(void *context);
+  typedef void (OPENALWRAPPER_APIENTRY *alcDestroyContext_t)(void *context);
 
-  typedef void * (APIENTRY *alcOpenDevice_t)(unsigned char *deviceName);
-  typedef void (APIENTRY *alcCloseDevice_t)(void *device);
+  typedef void * (OPENALWRAPPER_APIENTRY *alcOpenDevice_t)(unsigned char *deviceName);
+  typedef void (OPENALWRAPPER_APIENTRY *alcCloseDevice_t)(void *device);
   /* Fixme: investigate if it's OK to have a different pointertype
      from the one defined in the openal headers. 2002-01-27
      thammer. */
