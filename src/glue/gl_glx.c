@@ -691,23 +691,23 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
 
   /* set frame buffer attributes */
   const int attrs[] = {
-    /* FIXME: if I enable any of these attributes on my system, the
-       glXChooseFBConfig() call fails (i.e. produces no valid
-       configs). 20030808 mortene. */
-/*     GLX_RGBA_BIT, */
-/*     GLX_RED_SIZE,   8, */
-/*     GLX_GREEN_SIZE, 8, */
-/*     GLX_BLUE_SIZE,  8, */
-/*     GLX_ALPHA_SIZE, 8, */
+    GLX_RENDER_TYPE, GLX_RGBA_BIT,
+    GLX_RED_SIZE,   8,
+    GLX_GREEN_SIZE, 8,
+    GLX_BLUE_SIZE,  8,
+    GLX_ALPHA_SIZE, 8,
     GLX_DRAWABLE_TYPE, GLX_PBUFFER_BIT,
-/*     GLX_DEPTH_SIZE, 24, */
+    GLX_DEPTH_SIZE, 24,
     None
   };
 
   dpy = glxglue_get_display();
   if (!dpy) { return FALSE; }
 
-  /* get frame buffer configuration */
+  /* get a list of matching GLX frame buffer configurations. the list is
+     sorted according to precedence rules where the first entry should be
+     fine. */
+
   fbc = glxglue_glXChooseFBConfig(dpy, DefaultScreen(dpy), attrs, &fbc_cnt);
   assert(fbc_cnt >= 0);
   if ((fbc_cnt == 0) || (fbc == NULL)) {
@@ -716,7 +716,6 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
     return FALSE;
   }
 
-  /* FIXME: always config[0]? Why? 20030808 mortene. */
   pb = glxglue_glXCreatePbuffer(dpy, fbc[0], context->width, context->height);
 
   if (pb == 0) {
@@ -726,13 +725,20 @@ glxglue_context_create_pbuffer(struct glxglue_contextdata * context)
     return FALSE;
   }
 
-  /* FIXME: shouldn't we error check the return value of the next
-     call? Find function docs and investigate. 20030807 mortene. */
-
   /* direct rendering graphic context creation == Hardware use */
 
   context->glxcontext = glxglue_glXCreateNewContext(dpy, fbc[0],
                                                     GLX_RGBA_TYPE, NULL, TRUE);
+
+  /* free the config list */
+  XFree(fbc);
+
+  if (context->glxcontext == NULL) {
+    cc_debugerror_postwarning("glxglue_context_create_pbuffer",
+                              "Couldn't create GLX context.");
+    glxglue_contextdata_cleanup(context);
+    return FALSE;
+  }
   
   if (coin_glglue_debug()) {
     cc_debugerror_postinfo("glxglue_context_create_pbuffer",
