@@ -111,6 +111,8 @@ static struct cc_flw_bitmap *
 get_default_bitmap(unsigned int character)
 {
   struct cc_flw_bitmap * bm;
+
+
   if (character < 256) {
     const int fontsize = coin_default2dfont_get_size();
     const int * isomapping = coin_default2dfont_get_isolatin1_mapping();
@@ -234,7 +236,7 @@ flw_fontidx2fontptr(unsigned int fontidx)
   struct cc_flw_font * fs;
 
   assert(fontidx < cc_dynarray_length(fontarray));
-  fs = (struct cc_flw_font *)cc_dynarray_get(fontarray, fontidx);
+  fs = (struct cc_flw_font *) cc_dynarray_get(fontarray, fontidx);
   assert(fs);
 
   return fs;
@@ -368,10 +370,10 @@ cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned 
 {
   void * font;
   int idx;
-  
   /* Don't create font if one has already been created for this name
      and size. */
   idx = cc_flw_find_font(fontname, sizex, sizey);
+
   if (idx != -1) { return idx; }
 
   font = NULL;
@@ -380,6 +382,7 @@ cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned 
 
   if (win32api) { font = cc_flww32_get_font(fontname, sizex, sizey); }
   else if (freetypelib) { font = cc_flwft_get_font(fontname); }
+
 
   if (font) {
     struct cc_flw_font * fs;
@@ -417,6 +420,7 @@ cc_flw_get_font(const char * fontname, const unsigned int sizex, const unsigned 
 
     cc_dynarray_append(fontarray, fs);
     idx = cc_dynarray_length(fontarray) - 1;
+
   }
   else {
     /* Use the default font for the given fontname and size. */
@@ -452,6 +456,7 @@ cc_flw_find_font(const char * fontname, const unsigned int sizex, const unsigned
   if (flw_global_lock == NULL) { flw_initialize(); }
 
   FLW_MUTEX_LOCK(flw_global_lock);
+
 
   n = cc_dynarray_length(fontarray);
   for (i = 0; i < n; i++) {
@@ -604,7 +609,7 @@ cc_flw_get_glyph(unsigned int font, unsigned int charidx)
   FLW_MUTEX_LOCK(flw_global_lock);
 
   fs = flw_fontidx2fontptr(font);
-  
+
   if (!fs->defaultfont) {
     if (win32api) { glyph = cc_flww32_get_glyph(fs->font, charidx); }
     else if (freetypelib) { glyph = cc_flwft_get_glyph(fs->font, charidx); }
@@ -661,12 +666,19 @@ cc_flw_get_advance(unsigned int font, unsigned int glyph, float * x, float * y)
   struct cc_flw_glyph * gs;
 
   FLW_MUTEX_LOCK(flw_global_lock);
+  
+  if (font == 0) { // font == 0 -> default hardcoded font
+    *x = 0;
+    *y = 0;
+    return;
+  }
+
 
   fs = flw_fontidx2fontptr(font);
   gs = flw_glyphidx2glyphptr(fs, glyph);
 
   if (fs->defaultfont || gs->fromdefaultfont) {
-    *x = 8;
+    *x = 0;
     *y = 0;
   }
   else {
@@ -736,8 +748,7 @@ cc_flw_get_bitmap(unsigned int font, unsigned int glyph)
   struct cc_flw_glyph * gs;
   struct cc_flw_bitmap * bm = NULL;
   unsigned int i;
-  SbBool fromdefaultfont = FALSE;
-  bm = NULL;
+  /*SbBool fromdefaultfont = FALSE;*/
 
   FLW_MUTEX_LOCK(flw_global_lock);
 
@@ -760,9 +771,8 @@ cc_flw_get_bitmap(unsigned int font, unsigned int glyph)
     /* glyph handle == char value in default font. &255 to avoid
        index out of range. */
     bm = get_default_bitmap(gs->glyph & 0xff);
-    fromdefaultfont = TRUE;
   }
-  if (bm && bm->buffer && !fromdefaultfont) {
+  else if (bm && bm->buffer) {
     buf = (unsigned char *)malloc(bm->pitch * bm->rows);
     /* Copy & reverse buffer to OpenGL "up" direction. */
     for (i = 0; i < bm->rows; i++) {
@@ -775,8 +785,68 @@ cc_flw_get_bitmap(unsigned int font, unsigned int glyph)
   }
 
   gs->bitmap = bm;
-  gs->fromdefaultfont = fromdefaultfont;
+  /*gs->fromdefaultfont = fromdefaultfont;*/
  done:
   FLW_MUTEX_UNLOCK(flw_global_lock);
   return bm;
+}
+
+struct cc_flw_vector_glyph * 
+cc_flw_get_vector_glyph(unsigned int font, unsigned int glyph)
+{
+
+  struct cc_flw_vector_glyph * vector_glyph = NULL;
+  struct cc_flw_font * fs;
+  struct cc_flw_glyph * gs;
+ 
+  FLW_MUTEX_LOCK(flw_global_lock);
+
+  fs = flw_fontidx2fontptr(font);
+  
+  /* FIXME: Only FreeType is supported for now. Win32 coming up
+     next. (19082003 handegar) */
+  if (freetypelib) {      
+    vector_glyph = cc_flwft_get_vector_glyph(fs->font, glyph);
+  } 
+  else {
+    cc_debugerror_postwarning("cc_flw_get_vector_glyph", "Only Freetype is supported.");
+    return NULL;
+  }
+  
+  FLW_MUTEX_UNLOCK(flw_global_lock);
+  return vector_glyph;
+    
+}
+
+float * 
+cc_flw_get_vector_glyph_coords(struct cc_flw_vector_glyph * vecglyph)
+{
+  if(freetypelib)
+    return cc_flwft_get_vector_glyph_coords(vecglyph);
+  else {
+    cc_debugerror_postwarning("cc_flw_get_vector_glyph_coords", "Only Freetype is supported.");
+    return NULL;
+  }
+}
+
+int * 
+cc_flw_get_vector_glyph_faceidx(struct cc_flw_vector_glyph * vecglyph)
+{
+  if(freetypelib)
+    return cc_flwft_get_vector_glyph_faceidx(vecglyph);
+  else {
+    cc_debugerror_postwarning("cc_flw_get_vector_glyph_faceidx", "Only Freetype is supported.");
+    return NULL;
+  }
+}
+
+int * 
+cc_flw_get_vector_glyph_edgeidx(struct cc_flw_vector_glyph * vecglyph)
+{
+  if(freetypelib)
+    return cc_flwft_get_vector_glyph_edgeidx(vecglyph);
+  else {
+    cc_debugerror_postwarning("cc_flw_get_vector_glyph_edgeidx", "Only Freetype is supported.");
+    return NULL;
+  }
 }
