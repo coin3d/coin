@@ -260,6 +260,16 @@ SoSurroundScale::updateMySurroundParams(SoAction * action,
 
   int start = curpath->getLength() - 1 - numtocontainer;
   int end = curpath->getLength() - 1 - numtoreset;
+
+  if (start < 0 || end < 0) {
+    // if values are out of range, just return. This might happen if an
+    // SoGetMatrixAction is applied directly on the node..
+    this->cachedScale.setValue(1.0f, 1.0f, 1.0f);
+    this->cachedInvScale.setValue(1.0f, 1.0f, 1.0f);
+    this->cachedTranslation.setValue(0.0f, 0.0f, 0.0f);
+    this->cacheOK = FALSE;
+    return;
+  }
   assert(start >= 0);
   assert(end >= 0);
 
