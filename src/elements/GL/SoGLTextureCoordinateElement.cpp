@@ -27,19 +27,24 @@
   \ingroup elements
 */
 
-#include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
-#include <Inventor/elements/SoTextureEnabledElement.h>
-#include <Inventor/elements/SoTexture3EnabledElement.h>
-#include <Inventor/elements/SoShapeStyleElement.h>
+// *************************************************************************
+
 #include <assert.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
+#include <Inventor/elements/SoGLMultiTextureCoordinateElement.h>
+#include <Inventor/elements/SoGLTextureCoordinateElement.h>
+#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#include <Inventor/elements/SoShapeStyleElement.h>
+#include <Inventor/elements/SoTexture3EnabledElement.h>
+#include <Inventor/elements/SoTextureEnabledElement.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/system/gl.h>
+
+// *************************************************************************
 
 class SoGLTextureCoordinateElementP {
 public:
@@ -66,7 +71,11 @@ public:
 #undef PRIVATE
 #define PRIVATE(obj) ((SoGLTextureCoordinateElementP*)(obj->texgenData))
 
+// *************************************************************************
+
 SO_ELEMENT_CUSTOM_CONSTRUCTOR_SOURCE(SoGLTextureCoordinateElement);
+
+// *************************************************************************
 
 SoGLTextureCoordinateElement::SoGLTextureCoordinateElement(void)
 {
@@ -107,6 +116,8 @@ SoGLTextureCoordinateElement::init(SoState * state)
   PRIVATE(this)->multielem = NULL;
   PRIVATE(this)->sendlookup = SoGLTextureCoordinateElementP::NONE;
 }
+
+// *************************************************************************
 
 //!  FIXME: write doc.
 
@@ -234,6 +245,30 @@ SoGLTextureCoordinateElement::send(const int index,
                                    const SbVec3f &c,
                                    const SbVec3f &n) const
 {
+  // Check for out-of-array-bounds errors.
+  switch (PRIVATE(this)->sendlookup) {
+  case SoGLTextureCoordinateElementP::TEXCOORD2:
+  case SoGLTextureCoordinateElementP::TEXCOORD3: 
+  case SoGLTextureCoordinateElementP::TEXCOORD4: 
+    assert((index >= 0) && "negative array index, something is seriously wrong");
+    if (index >= this->numCoords) {
+      static SbBool first = TRUE;
+      if (first) {
+        first = FALSE;
+        SoDebugError::post("SoGLTextureCoordinateElement::send",
+                           "Index value %d into texture coordinate array "
+                           "of size %d is out of bounds. This is usually an "
+                           "indication that too few texture coordinates "
+                           "were supplied in the scene graph.",
+                           index, this->numCoords);
+      }
+      return;
+    }
+    break;
+
+  default: break;
+  }
+
   switch (PRIVATE(this)->sendlookup) {
   case SoGLTextureCoordinateElementP::NONE:
     break;
@@ -242,18 +277,12 @@ SoGLTextureCoordinateElement::send(const int index,
     glTexCoord4fv(this->funcCB(this->funcCBData, c, n).getValue());
     break;
   case SoGLTextureCoordinateElementP::TEXCOORD2:
-    assert(index >= 0);
-    assert(index < this->numCoords);
     glTexCoord2fv(coords2[index].getValue());
     break;
   case SoGLTextureCoordinateElementP::TEXCOORD3: 
-    assert(index >= 0);
-    assert(index < this->numCoords);
     glTexCoord3fv(coords3[index].getValue());
     break;
   case SoGLTextureCoordinateElementP::TEXCOORD4: 
-    assert(index >= 0);
-    assert(index < this->numCoords);
     glTexCoord4fv(coords4[index].getValue());
     break;
   default:
