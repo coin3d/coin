@@ -30,6 +30,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbSphere.h>
 #include <assert.h>
+#include <math.h> // for atan()
 
 /*!
   \var SoSFFloat SoPerspectiveCamera::heightAngle
