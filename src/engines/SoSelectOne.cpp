@@ -27,10 +27,11 @@
 */
 
 #include <Inventor/engines/SoSelectOne.h>
-#include <Inventor/lists/SoEngineOutputList.h>
+#include <Inventor/SoOutput.h>
 #include <Inventor/engines/SoEngineOutput.h>
-#include <Inventor/fields/SoFields.h>
 #include <Inventor/engines/SoSubEngineP.h>
+#include <Inventor/fields/SoFields.h>
+#include <Inventor/lists/SoEngineOutputList.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -44,8 +45,6 @@
 PRIVATE_ENGINE_TYPESYSTEM_SOURCE(SoSelectOne);
 
 unsigned int SoSelectOne::classinstances = 0;
-/* The next four variables are not used, we keep them here just */
-/* because they are defined by SO_ENGINE_HEADER. */
 SoFieldData * SoSelectOne::inputdata = NULL;
 const SoFieldData ** SoSelectOne::parentinputdata = NULL;
 SoEngineOutputData * SoSelectOne::outputdata = NULL;
@@ -53,8 +52,7 @@ const SoEngineOutputData ** SoSelectOne::parentoutputdata = NULL;
 
 const SoFieldData ** SoSelectOne::getInputDataPtr(void)
 {
-  // FIXME: not correct! We have the index field. 20000919 mortene.
-  assert(0 && "no static inputs");
+  assert(0 && "function not in use for SoSelectOne");
   return NULL;
 }
 
@@ -67,7 +65,7 @@ SoSelectOne::getFieldData(void) const
 const SoEngineOutputData **
 SoSelectOne::getOutputDataPtr(void)
 {
-  assert(0 && "no static outputs");
+  assert(0 && "function not in use for SoSelectOne");
   return NULL;
 }
 
@@ -100,7 +98,7 @@ SoSelectOne::SoSelectOne(SoType inputtype)
   // Instead of SO_ENGINE_ADD_INPUT().
   this->input = (SoMField *)inputtype.createInstance();
   this->input->setNum(0);
-  this->dynamicinput = new SoFieldData;
+  this->dynamicinput = new SoFieldData(SoSelectOne::inputdata);
   this->dynamicinput->addField(this, "input", this->input);
 
   // FIXME: couldn't this be extracted by the use of
@@ -141,7 +139,7 @@ SoSelectOne::SoSelectOne(SoType inputtype)
 
   // Instead of SO_ENGINE_ADD_OUTPUT().
   this->output = new SoEngineOutput;
-  this->dynamicoutput = new SoEngineOutputData;
+  this->dynamicoutput = new SoEngineOutputData(SoSelectOne::outputdata);
   this->dynamicoutput->addOutput(this, "output", this->output, outputtype);
   this->output->setContainer(this);
 }
@@ -191,4 +189,23 @@ SoSelectOne::evaluate(void)
     SoDebugError::post("SoSelectOne::evaluate", "invalid index %d", idx);
   }
 #endif // COIN_DEBUG
+}
+
+// overloaded from parent
+void
+SoSelectOne::writeInstance(SoOutput * out)
+{
+  if (this->writeHeader(out, FALSE, TRUE)) return;
+
+  SbBool binarywrite = out->isBinary();
+
+  if (!binarywrite) out->indent();
+  out->write("type");
+  if (!binarywrite) out->write(' ');
+  out->write(this->input->getTypeId().getName());
+  if (binarywrite) out->write((unsigned int)0);
+  else out->write('\n');
+
+  this->getFieldData()->write(out, this);
+  this->writeFooter(out);
 }

@@ -27,7 +27,7 @@
 (set-mfield-values! (somffloat-cast (-> selectone 'input)) 0
                     '(0.1 0.2 0.4))
 (-> (-> selectone 'index) 'getvalue)
-(-> (-> selectone 'index) 'setvalue 2)
+(-> (-> selectone 'index) 'setvalue 0)
                     
 
 ;; Copy the scenegraph.
