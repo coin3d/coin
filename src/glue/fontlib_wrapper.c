@@ -273,15 +273,15 @@ flw_initialize(void)
 {
   const char * env;
 
-  cc_mutex_global_lock();
+  CC_GLOBAL_LOCK;
 
   /* On the slim chance that several threads entered flw_initialize()
      concurrently. */
-  if (flw_global_lock != NULL) { cc_mutex_global_unlock(); return; }
+  if (flw_global_lock != NULL) { CC_GLOBAL_UNLOCK; return; }
 
-  flw_global_lock = (void *)cc_mutex_construct();
+  CC_MUTEX_CONSTRUCT(flw_global_lock);
   FLW_MUTEX_LOCK(flw_global_lock);
-  cc_mutex_global_unlock();
+  CC_GLOBAL_UNLOCK;
 
   fontarray = cc_dynarray_new();
 
