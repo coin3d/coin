@@ -33,8 +33,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoState.h>
 #include <../tidbits.h> // coin_atexit()
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
+#include <Inventor/misc/SoGL.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -267,7 +266,7 @@ SoGLCacheContextElement::extSupported(SoState * state, int extid)
 
 /*!
   Returns the OpenGL version for the current context. This method is
-  an extension versus the Open Inventor API.
+  an extension versus the Open Inventor API.  
 */
 void
 SoGLCacheContextElement::getOpenGLVersion(SoState * state,
@@ -275,8 +274,10 @@ SoGLCacheContextElement::getOpenGLVersion(SoState * state,
 {
   int currcontext = SoGLCacheContextElement::get(state);
   const cc_glglue * w = cc_glglue_instance(currcontext);
-  major = w->glVersion.major;
-  minor = w->glVersion.minor;
+  unsigned int majoru, minoru, dummy;
+  cc_glglue_glversion(w, &majoru, &minoru, &dummy);
+  major = (int)majoru;
+  minor = (int)minoru;
 }
 
 /*!

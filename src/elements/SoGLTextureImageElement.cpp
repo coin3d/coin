@@ -33,14 +33,17 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/misc/SoGL.h> // GL wrapper.
 #include <Inventor/misc/SoGLImage.h>
 #include <Inventor/SbImage.h>
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif // HAVE_CONFIG_H
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 
 SO_ELEMENT_SOURCE(SoGLTextureImageElement);
@@ -320,9 +323,9 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
   // FIXME: mipmaps must be handled specifically, which we are not
   // doing. 20020701 mortene.
 
-  const cc_glglue * glw = GLGLUE_FROM_STATE(this->state);
+  const cc_glglue * glw = sogl_glue_instance(this->state);
   if (zsize==0) { // 2D textures
-    if (glw->has2DProxyTextures) {
+    if (cc_glglue_has_2d_proxy_textures(glw)) {
       GLint w;
       glTexImage2D(GL_PROXY_TEXTURE_2D, 0, bytespertexel,
                    xsize, ysize, 0,
@@ -341,17 +344,29 @@ SoGLTextureImageElement::isTextureSizeLegal(int xsize, int ysize, int zsize,
     }
   }
   else { // 3D textures
-    if (glw->has3DProxyTextures && glw->glTexImage3D) {
+    if (cc_glglue_has_3d_textures(glw) &&
+        cc_glglue_has_3d_proxy_textures(glw)) {
+      cc_glglue_glTexImage3D(glw,
+                             GL_PROXY_TEXTURE_3D, 0, bytespertexel,
+                             xsize, ysize, zsize, 0,
+                             GL_RGBA, GL_UNSIGNED_BYTE,
+                             NULL);
       GLint w;
-      glw->glTexImage3D(GL_PROXY_TEXTURE_3D, 0, bytespertexel,
-                        xsize, ysize, zsize, 0,
-                        GL_RGBA, GL_UNSIGNED_BYTE,
-                        NULL);
       glGetTexLevelParameteriv(GL_PROXY_TEXTURE_3D, 0,
                                GL_TEXTURE_WIDTH, &w);
       if (w==0) return FALSE;
       return TRUE;
     }
-    return FALSE; // 3D textured not supported
+    else {
+#if COIN_DEBUG
+      SbString err("3D textures");
+      if (cc_glglue_has_3d_textures(glw)) err = "3D proxy textures";
+                   
+      SoDebugError::post("SoGLTextureImageElement::isTextureSizeLegal",
+                         "%s not supported with this OpenGL driver",
+                         err.getString());
+#endif // COIN_DEBUG
+      return FALSE;
+    }
   }
 }

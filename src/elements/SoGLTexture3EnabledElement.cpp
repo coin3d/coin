@@ -44,10 +44,11 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Inventor/C/glue/gl.h>
-#include <Inventor/C/glue/glp.h>
+#include <Inventor/misc/SoGL.h> // GL wrapper.
+
 
 SO_ELEMENT_SOURCE(SoGLTexture3EnabledElement);
+
 
 // doc from parent
 void
@@ -84,8 +85,8 @@ SoGLTexture3EnabledElement::init(SoState * state)
   this->state = state;
   this->data = SoGLTexture3EnabledElement::getDefault();
   this->glstate = 0;
-  const cc_glglue * glw = GLGLUE_FROM_STATE(state);
-  if (glw->has3DTextures) glDisable(GL_TEXTURE_3D);
+  const cc_glglue * glw = sogl_glue_instance(state);
+  if (cc_glglue_has_3d_textures(glw)) glDisable(GL_TEXTURE_3D);
 }
 
 // Documented in superclass. Overridden to track GL state.
@@ -138,8 +139,8 @@ SoGLTexture3EnabledElement::forceSend(SoState * const state,
     SoElement::getConstElement(state, classStackIndex);
   if (te->glstate != onoff) {
     te->glstate = onoff;
-    const cc_glglue * glw = GLGLUE_FROM_STATE(state);
-    if (glw->has3DTextures) {
+    const cc_glglue * glw = sogl_glue_instance(state);
+    if (cc_glglue_has_3d_textures(glw)) {
       if (onoff) glEnable(GL_TEXTURE_3D);
       else glDisable(GL_TEXTURE_3D);
     }
@@ -184,8 +185,8 @@ void
 SoGLTexture3EnabledElement::updategl(void)
 {
   this->glstate = this->data;
-  const cc_glglue * glw = GLGLUE_FROM_STATE(this->state);
-  if (glw->has3DTextures) {
+  const cc_glglue * glw = sogl_glue_instance(this->state);
+  if (cc_glglue_has_3d_textures(glw)) {
     if (this->data) glEnable(GL_TEXTURE_3D);
     else glDisable(GL_TEXTURE_3D);
   }
