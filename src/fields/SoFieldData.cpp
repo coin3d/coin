@@ -382,12 +382,11 @@ SoFieldData::read(SoInput * in, SoFieldContainer * object,
       return FALSE;
     }
 
-    // FIXME: these should actually be uint8_t types. 20000102 mortene.
-    uint16_t numfields = fieldsval & 0xff;
-    uint16_t fieldflags = fieldsval >> 8;
+    uint8_t numfields = fieldsval & 0xff;
+    uint8_t fieldflags = fieldsval >> 8;
 
 #if COIN_DEBUG && 0 // debug
-    SoDebugError::postInfo("SoFieldData::read", "0x%04x => 0x%04x 0x%04x",
+    SoDebugError::postInfo("SoFieldData::read", "0x%08x => 0x%02x 0x%02x",
                            fieldsval, fieldflags, numfields);
 #endif // debug
 
@@ -533,16 +532,22 @@ SoFieldData::write(SoOutput * out, const SoFieldContainer * object) const
   // numfields value? 20000102 mortene.
 
   if (out->isBinary()) {
-    // FIXME: the uint16_t types should be uint8_t. 20000102 mortene.
-
     // Check how many fields will be written.
-    uint16_t numfields = 0;
-    for (uint16_t j=0; j < this->getNumFields(); j++) {
+    uint8_t numfields = 0;
+    for (int j=0; j < this->getNumFields(); j++) {
       const SoField * f = this->getField(object, j);
-      if (f->shouldWrite()) numfields++;
+      if (f->shouldWrite()) {
+        // This is an amazingly lame limitation, but we can't really
+        // fix it without breaking compatibility with the SGI binary
+        // .iv format.  (The moral of the story is: avoid binary
+        // .iv-files.)
+        assert((numfields < 255) &&
+               "too many fields to handle with binary .iv format");
+        numfields++;
+      }
     }
 
-    uint16_t fieldflags = 0x00;
+    uint16_t fieldflags = 0x0000;
     // FIXME: take care of setting flags for SoUnknownEngines, if
     // necessary. 20000102 mortene.
     if (!object->getIsBuiltIn()) fieldflags |= SoFieldData::NOTBUILTIN;
