@@ -227,9 +227,9 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
     SbVec2s size;
     const unsigned char * bytes =
       this->image.getValue(size, nc);
-    SbBool needbig =
-      SoTextureScalePolicyElement::get(state) ==
-      SoTextureScalePolicyElement::FRACTURE;
+    SoTextureScalePolicyElement::Policy scalepolicy =
+      SoTextureScalePolicyElement::get(state);      
+    SbBool needbig = (scalepolicy == SoTextureScalePolicyElement::FRACTURE);
 
     if (needbig &&
         (THIS->glimage == NULL ||
@@ -242,6 +242,10 @@ SoVRMLPixelTexture::GLRender(SoGLRenderAction * action)
               THIS->glimage->getTypeId() != SoGLImage::getClassTypeId())) {
       if (THIS->glimage) THIS->glimage->unref(state);
       THIS->glimage = new SoGLImage();
+    }
+
+    if (scalepolicy == SoTextureScalePolicyElement::SCALE_DOWN) {
+      THIS->glimage->setFlags(THIS->glimage->getFlags()|SoGLImage::SCALE_DOWN);
     }
 
     if (bytes && size != SbVec2s(0,0)) {

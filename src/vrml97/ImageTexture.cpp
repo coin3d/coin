@@ -434,9 +434,9 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
   LOCK_GLIMAGE(this);
   
   if (!PRIVATE(this)->glimagevalid) {
-    SbBool needbig =
-      SoTextureScalePolicyElement::get(state) ==
-      SoTextureScalePolicyElement::FRACTURE;
+    SoTextureScalePolicyElement::Policy scalepolicy =
+      SoTextureScalePolicyElement::get(state);      
+    SbBool needbig = (scalepolicy == SoTextureScalePolicyElement::FRACTURE);
 
     if (needbig &&
         (PRIVATE(this)->glimage == NULL ||
@@ -455,6 +455,10 @@ SoVRMLImageTexture::GLRender(SoGLRenderAction * action)
         PRIVATE(this)->glimage->unref(state);
       }
       PRIVATE(this)->glimage = new SoGLImage();
+    }
+
+    if (scalepolicy == SoTextureScalePolicyElement::SCALE_DOWN) {
+      PRIVATE(this)->glimage->setFlags(PRIVATE(this)->glimage->getFlags()|SoGLImage::SCALE_DOWN);
     }
 
     PRIVATE(this)->glimagevalid = TRUE;

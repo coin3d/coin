@@ -1249,7 +1249,14 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
 
   // if >= 256 and low quality, don't scale up unless size is
   // close to an above power of two. This saves a lot of texture memory
-  if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
+
+  if (this->flags & SoGLImage::SCALE_DOWN) {
+    // no use scaling down for very small images
+    if (newx > xsize && newx > 16) newx >>= 1;
+    if (newy > ysize && newy > 16) newy >>= 1;
+    if (newz > zsize && newz > 16) newz >>= 1;
+  }
+  else if (this->flags & SoGLImage::USE_QUALITY_VALUE) {
     if (this->quality < COIN_TEX2_SCALEUP_LIMIT) {
       if ((newx >= 256) && ((newx - (xsize-2*this->border)) > (newx>>3)))
         newx >>= 1;
@@ -1258,12 +1265,6 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
       if ((newz >= 256) && ((newz - (zsize-2*this->border)) > (newz>>3)))
         newz >>= 1;
     }
-  }
-  else if (this->flags & SoGLImage::SCALE_DOWN) {
-    // no use scaling down for very small images
-    if (newx > xsize && newx > 16) newx >>= 1;
-    if (newy > ysize && newy > 16) newy >>= 1;
-    if (newz > zsize && newz > 16) newz >>= 1;
   }
 
   // downscale to legal GL size (implementation dependent)
@@ -1337,6 +1338,7 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
       else if (simage_wrapper()->available &&
           simage_wrapper()->versionMatchesAtLeast(1,1,1) &&
           simage_wrapper()->simage_resize) {
+        
         unsigned char *result =
           simage_wrapper()->simage_resize((unsigned char*) bytes,
                                           xsize, ysize, numcomponents,
