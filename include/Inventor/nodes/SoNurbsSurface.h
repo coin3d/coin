@@ -65,6 +65,10 @@ private:
 #else // !_WIN32
   GLUnurbsObj * nurbsRenderer;
 #endif // ! _WIN32
+
+  SbBool rendererHasCallbacks;
+  void doNurbs(SoAction * action, const SbBool glrender);
+
 };
 
 #endif // !COIN_SONURBSSURFACE_H
