@@ -78,6 +78,7 @@ private:
   void commonConstructor(void);
 
   class SoBoundingBoxCache * bboxcache;
+  class SoGLCacheList * glcachelist;
   static int numrendercaches;
 };
 

@@ -43,6 +43,7 @@
 #include <coindefs.h> // COIN_STUB()
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
+#include <Inventor/caches/SoGLCacheList.h>
 
 #include <Inventor/misc/SoState.h>
 
@@ -57,6 +58,7 @@
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
 #include <Inventor/elements/SoCullElement.h>
+#include <stdlib.h> // for getenv()
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -66,6 +68,15 @@
 #include <windows.h> // needed for gl.h
 #endif // HAVE_WINDOWS_H
 #include <GL/gl.h>
+
+#if COIN_DEBUG
+#define GLCACHE_DEBUG 0 // set to 1 to debug caching
+#else
+#define GLCACHE_DEBUG 0
+#endif
+
+// environment variable
+static int COIN_RENDER_CACHING = -1;
 
 // Maximum number of caches available for allocation for the
 // rendercaching (FIXME: which is not implemented yet.. 20000426 mortene).
@@ -109,7 +120,12 @@ int SoSeparator::numrendercaches = 2;
   scene will change a lot (like for every redraw), it will be
   beneficial to set this field to SoSeparator::OFF for the top-level
   separator node of this (sub)graph.
+
+  For now, render caching is in the beta stage. You can enable 
+  render caching by setting the environment variable COIN_RENDER_CACHING to 1.
+  Separators will then be cached if the renderCaching field is set to ON.
 */
+
 /*!
   \var SoSFEnum SoSeparator::boundingBoxCaching
 
@@ -188,6 +204,7 @@ SoSeparator::commonConstructor(void)
   SO_NODE_SET_SF_ENUM_TYPE(pickCulling, CacheEnabled);
 
   this->bboxcache = NULL;
+  this->glcachelist = NULL;
 }
 
 /*!
@@ -196,6 +213,7 @@ SoSeparator::commonConstructor(void)
 SoSeparator::~SoSeparator()
 {
   if (this->bboxcache) this->bboxcache->unref();
+  delete this->glcachelist;
 }
 
 // Doc from superclass.
@@ -316,6 +334,82 @@ SoSeparator::GLRender(SoGLRenderAction * action)
   }
 }
 
+//
+// temporary code that will evaluate all lazy elements before
+// creating or executing a render cache.
+//
+
+#include <Inventor/elements/SoGLPointSizeElement.h>
+#include <Inventor/elements/SoGLLineWidthElement.h>
+#include <Inventor/elements/SoGLPolygonOffsetElement.h>
+#include <Inventor/elements/SoGLShadeModelElement.h>
+#include <Inventor/elements/SoGLLightModelElement.h>
+#include <Inventor/elements/SoGLTextureImageElement.h>
+#include <Inventor/elements/SoGLTextureEnabledElement.h>
+#include <Inventor/elements/SoGLShapeHintsElement.h>
+#include <Inventor/elements/SoGLNormalizeElement.h>
+#include <Inventor/bundles/SoMaterialBundle.h>
+
+static void
+evaluateLazyElements(SoState * state)
+{
+  {
+    const SoGLPointSizeElement * ps = (SoGLPointSizeElement *)
+      state->getConstElement(SoGLPointSizeElement::getClassStackIndex());
+    ps->evaluate();
+  }
+
+  {
+    const SoGLLineWidthElement * lw = (SoGLLineWidthElement *)
+      state->getConstElement(SoGLLineWidthElement::getClassStackIndex());
+    lw->evaluate();
+  }
+
+  {
+    const SoGLPolygonOffsetElement * off = (SoGLPolygonOffsetElement *)
+      state->getConstElement(SoGLPolygonOffsetElement::getClassStackIndex());
+    off->evaluate();
+  }
+
+  {
+    const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
+      state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
+    sm->evaluate();
+  }
+
+  {
+    const SoGLLightModelElement * lm = (SoGLLightModelElement *)
+      state->getConstElement(SoGLLightModelElement::getClassStackIndex());
+    lm->evaluate();
+  }
+
+  {
+    const SoGLTextureImageElement * ti = (SoGLTextureImageElement *)
+      state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
+    // alpha test not possible in display list...
+    ti->evaluate(SoGLTextureEnabledElement::get(state), TRUE);
+  }
+
+  {
+    const SoGLTextureEnabledElement * te = (SoGLTextureEnabledElement *)
+      state->getConstElement(SoGLTextureEnabledElement::getClassStackIndex());
+    te->evaluate();
+  }
+
+
+  {
+    const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
+      state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
+    sh->evaluate();
+  }
+
+  {
+    const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
+      state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
+    ne->evaluate();
+  }
+}
+
 /*!
   OIV 2.1 obsoleted support SoGLRenderAction::addMethod().
   Instead, GLRender() might be called directly, and to optimize
@@ -329,9 +423,55 @@ SoSeparator::GLRender(SoGLRenderAction * action)
 void
 SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
 {
+  // Temporary caching code. For now we just cache if the
+  // renderCaching field is ON. We'll develop an auto-caching scheme
+  // for auto-caching later.    pederb, 20001005
+
+  if (COIN_RENDER_CACHING < 0) {
+    char * env = getenv("COIN_RENDER_CACHING");
+    if (env) COIN_RENDER_CACHING = atoi(env);
+    else COIN_RENDER_CACHING = 0;
+  }
+
+  SbBool didlazyeval = FALSE;
   SoState * state = action->getState();
+  SoGLCacheList * createcache = NULL;
+  if ((this->renderCaching.getValue() == ON) && COIN_RENDER_CACHING) {
+    if (!this->glcachelist) {
+      this->glcachelist = new SoGLCacheList(SoSeparator::getNumRenderCaches());
+    }
+    else {
+      SoMaterialBundle mb(action);
+      mb.sendFirst();
+      evaluateLazyElements(state); didlazyeval = TRUE;
+      if (this->glcachelist->call(action, GL_ALL_ATTRIB_BITS)) {
+#if GLCACHE_DEBUG && 1 // debug
+        SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+                               "Executing GL cache: %p", this);
+#endif // debug
+        return;
+      }
+    }
+    if (!SoCacheElement::anyOpen(state)) { // nested GL caches not supported yet
+#if GLCACHE_DEBUG // debug
+      SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
+                             "Creating GL cache: %p", this);
+#endif // debug
+      createcache = this->glcachelist;
+    }
+  }
+
   state->push();
-  if (!this->cullTest(state)) {
+  if (createcache) {
+    if (!didlazyeval) {
+      evaluateLazyElements(state);
+      SoMaterialBundle mb(action);
+      mb.sendFirst();
+    }
+    createcache->open(action);
+  }
+  
+  if (createcache || !this->cullTest(state)) {
     int n = this->children->getLength();
     SoAction::PathCode pathcode = action->getCurPathCode();
     for (int i = 0; i < n; i++) {
@@ -380,6 +520,9 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
     }
   }
   state->pop();
+  if (createcache) {
+    createcache->close(action);
+  }
 }
 
 // Doc from superclass.
@@ -504,6 +647,13 @@ SoSeparator::notify(SoNotList * nl)
   inherited::notify(nl);
 
   if (this->bboxcache) this->bboxcache->invalidate();
+  if (this->glcachelist) {
+#if GLCACHE_DEBUG && 0 // debug
+    SoDebugError::postInfo("SoSeparator::notify",
+                           "Invalidating GL cache: %p", this);
+#endif // debug
+    this->glcachelist->invalidateAll();
+  }
   // FIXME: flag other caches (as they are implemented) as
   // dirty. 20000426 mortene.
 }

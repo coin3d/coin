@@ -37,6 +37,13 @@
 #include <Inventor/misc/SoState.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif // HAVE_CONFIG_H
+#if HAVE_WINDOWS_H
+#include <windows.h>
+#endif // HAVE_WINDOWS_H
+#include <GL/gl.h>
 
 /*!
   Constructor. Currently the \a numcaches argument is not used.
@@ -63,9 +70,12 @@ SoGLCacheList::~SoGLCacheList()
   Test for valid cache and execute. Returns TRUE if a valid cache
   could be found, FALSE otherwise. Note that when a valid cache is
   found, it is executed before returning from this method.
+  If \a pushattribbits != 0, these bits will be pushed using a 
+  glPushAttrib() call before calling the cache, and popped off
+  the GL state stack again after calling the cache.
 */
 SbBool
-SoGLCacheList::call(SoGLRenderAction * action)
+SoGLCacheList::call(SoGLRenderAction * action, const uint32_t pushattribbits)
 {
   SoState * state = action->getState();
   int context = SoGLCacheContextElement::get(state);
@@ -75,7 +85,9 @@ SoGLCacheList::call(SoGLRenderAction * action)
     SoGLRenderCache * cache = this->itemlist[i];
     if (cache->getCacheContext() == context) {
       if (cache->isValid(state)) {
+        if (pushattribbits) glPushAttrib(pushattribbits);
         cache->call(state);
+        if (pushattribbits) glPopAttrib();
         return TRUE;
       }
       // if we get here cache is invalid. Throw it away.
@@ -88,12 +100,12 @@ SoGLCacheList::call(SoGLRenderAction * action)
   return FALSE;
 }
 
-/*!  
+/*!
   Start recording a new cache. The \a autocache element is currently
   ignored. Remember to call close() when you've finished recoring the
   cache.
 
-  \sa close() 
+  \sa close()
 */
 void
 SoGLCacheList::open(SoGLRenderAction * action, SbBool autocache)
