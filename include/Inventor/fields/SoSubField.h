@@ -385,31 +385,49 @@ _class_::copyValue(int to, int from) \
 
 #define SO_MFIELD_ALLOC_SOURCE(_class_, _valtype_) \
 void \
-_class_::allocValues(int number) \
+_class_::allocValues(int newnum) \
 { \
-  assert(number >= 0); \
+  /* Important notice: the "malloc-version" of this method is found */ \
+  /* in SoMField.cpp. If you make modifications here, do check whether */ \
+  /* or not they should be matched with modifications in that method */ \
+  /* aswell. */ \
  \
-  if (number == 0) { \
-    delete[] this->values; \
-    this->values = NULL; \
+  assert(newnum >= 0); \
+ \
+  if (newnum == 0) { \
+    delete[] this->valuesPtr(); \
+    this->setValuesPtr(NULL); \
+    this->maxNum = 0; \
   } \
-  else { \
-    if (this->values) { \
-      _valtype_ * newblock = new _valtype_[number]; \
-      for (int i=0; i < SbMin(this->num, number); i++) \
+  else if (newnum > this->maxNum || newnum < this->num) { \
+    if (this->valuesPtr()) { \
+ \
+      /* Allocation strategy is to repeatedly double the size of the */ \
+      /* allocated block until it will at least match the requested size. */ \
+      /* (Unless the requested size is less than what we've got, */ \
+      /* then we'll repeatedly halve the allocation size.) */ \
+      /* */ \
+      /* I think this will handle both cases quite gracefully: */ \
+      /* 1) newnum > this->maxNum, 2) newnum < num */ \
+      while (newnum > this->maxNum) this->maxNum <<= 1; \
+      while ((this->maxNum >> 1) >= newnum) this->maxNum >>= 1; \
+ \
+      _valtype_ * newblock = new _valtype_[this->maxNum]; \
+ \
+      for (int i=0; i < SbMin(this->num, newnum); i++) \
         newblock[i] = this->values[i]; \
  \
-      delete[] this->values; \
-      this->values = newblock; \
+      delete[] this->valuesPtr(); \
+      this->setValuesPtr(newblock); \
     } \
     else { \
-      this->values = new _valtype_[number]; \
+      this->setValuesPtr(new _valtype_[newnum]); \
+      this->maxNum = newnum; \
     } \
   } \
  \
-  SbBool valchanged = number < this->num ? TRUE : FALSE; \
-  this->num = number; \
-  this->maxNum = number; \
+  SbBool valchanged = newnum < this->num ? TRUE : FALSE; \
+  this->num = newnum; \
   if (valchanged) this->valueChanged(); \
 }
 
