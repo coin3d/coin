@@ -53,6 +53,7 @@ private:
 
   SoOutput * outobj;
   SbBool localoutputalloc;
+  SbBool continuing;
 };
 
 #endif // !COIN_SOWRITEACTION_H

@@ -39,18 +39,11 @@
   \sa SoOutput
 */
 
-// Metadon doc
-/*¡
-  FIXME: the implementation for continueApply() on paths is
-  missing. 20000306 mortene.
- */
-
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/actions/SoSubActionP.h>
 
 #include <Inventor/SoOutput.h>
 #include <Inventor/nodes/SoNode.h>
-#include <coindefs.h> // COIN_STUB()
 
 
 SO_ACTION_SOURCE(SoWriteAction);
@@ -90,6 +83,7 @@ SoWriteAction::commonConstructor(SoOutput * out)
   SO_ACTION_ADD_METHOD_INTERNAL(SoNode, SoNode::writeS);
 
   this->outobj = out;
+  this->continuing = FALSE;
 }
 
 /*!
@@ -120,7 +114,10 @@ SoWriteAction::getOutput(void) const
 void
 SoWriteAction::continueToApply(SoNode * node)
 {
-  this->traverse(node);
+  SbBool wascontinuing = this->continuing;
+  this->continuing = TRUE;
+  this->apply(node);
+  this->continuing = wascontinuing;
 }
 
 /*!
@@ -133,7 +130,10 @@ SoWriteAction::continueToApply(SoNode * node)
 void
 SoWriteAction::continueToApply(SoPath * path)
 {
-  COIN_STUB(); // FIXME
+  SbBool wascontinuing = this->continuing;
+  this->continuing = TRUE;
+  this->apply(path);
+  this->continuing = wascontinuing;
 }
 
 /*!
@@ -147,9 +147,11 @@ SoWriteAction::continueToApply(SoPath * path)
 void
 SoWriteAction::beginTraversal(SoNode * node)
 {
-  this->outobj->setStage(SoOutput::COUNT_REFS);
-  this->traverse(node);
-  this->outobj->setStage(SoOutput::WRITE);
+  if (this->continuing == FALSE) { // Run through both stages.
+    this->outobj->setStage(SoOutput::COUNT_REFS);
+    this->traverse(node);
+    this->outobj->setStage(SoOutput::WRITE);
+  }
   this->traverse(node);
   if (!this->outobj->isBinary()) outobj->write('\n');
 }
