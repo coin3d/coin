@@ -149,7 +149,7 @@
 
 */
 
-/*!  
+/*!
   \var SoSFNode SoVRMLSound::source
 
   The audio stream. Either an SoVRMLAudioClip or an
@@ -296,7 +296,7 @@ public:
 
   static int defaultBufferLength;
   static int defaultNumBuffers;
-  static SbTime defaultSleepTime;
+  static double defaultSleepTime;
 
   int bufferLength; // bytesize = bufferLength*bitspersample/8*channels
   int numBuffers;
@@ -311,7 +311,7 @@ public:
 
 int SoVRMLSoundP::defaultBufferLength = 44100/10;
 int SoVRMLSoundP::defaultNumBuffers = 5;
-SbTime SoVRMLSoundP::defaultSleepTime = 0.100; // 100ms
+double SoVRMLSoundP::defaultSleepTime = 0.100; // 100ms
 
 SO_NODE_SOURCE(SoVRMLSound);
 
@@ -380,7 +380,7 @@ SoVRMLSound::SoVRMLSound(void)
 
   this->setBufferingProperties(SoVRMLSoundP::defaultBufferLength,
                                SoVRMLSoundP::defaultNumBuffers,
-                               SoVRMLSoundP::defaultSleepTime);
+                               SbTime(SoVRMLSoundP::defaultSleepTime));
 
   PRIVATE(this)->sourceId = 0;
 
@@ -393,19 +393,19 @@ SoVRMLSound::SoVRMLSound(void)
     if (!SoAudioDevice::instance()->haveSound()) {
       warningprintedonce = TRUE;
       SbBool unsupportedplatform = TRUE;
-#ifdef _WIN32  
+#ifdef _WIN32
       unsupportedplatform = FALSE;
 #endif // _WIN32
       SbBool forceenable = FALSE;
       if (unsupportedplatform) {
         const char * env;
         env = coin_getenv("COIN_SOUND_ENABLE");
-        if (env && atoi(env)) 
+        if (env && atoi(env))
           forceenable = TRUE;
       }
 
       if (unsupportedplatform && (!forceenable)) {
-        SoDebugError::postWarning("SoVRMLSound::SoVRMLSound", 
+        SoDebugError::postWarning("SoVRMLSound::SoVRMLSound",
           "You are using a SoVRMLSound node, but sound support on this "
           "platform is considered experimental and is not enabled by default. "
           "If you'd like to enable sound, set the environment variable "
@@ -414,7 +414,7 @@ SoVRMLSound::SoVRMLSound(void)
       }
       else {
         if (!openal_wrapper()->available) {
-          SoDebugError::postWarning("SoVRMLSound::SoVRMLSound", 
+          SoDebugError::postWarning("SoVRMLSound::SoVRMLSound",
             "You are using a SoVRMLSound node, but Coin was "
             "unable to link with the OpenAL library. Attempted to use %s "
             "linking. Sound will not be available. "
@@ -422,12 +422,12 @@ SoVRMLSound::SoVRMLSound(void)
             "needed for rendering 3D audio, is not installed correctly on "
             "your system. If you'd like to use sounds in Coin, "
             "download the latest "
-            "version of OpenAL from www.openal.org [all platforms], " 
+            "version of OpenAL from www.openal.org [all platforms], "
             "ftp://opensource.creative.com/pub/sdk/ (OpenALWEAX.exe or "
             "OpenALWEAX2.exe) [Windows platform only], or ask the "
             "manufacturer of "
             "your soundcard for a native OpenAL driver (several soundcard"
-            "manufacturers offer this).", 
+            "manufacturers offer this).",
             openal_wrapper()->runtime ? "run-time" : "link-time");
           if (openal_wrapper()->runtime) {
             SoDebugError::postInfo("SoVRMLSound::SoVRMLSound",
@@ -448,7 +448,7 @@ SoVRMLSound::SoVRMLSound(void)
   }
 #else // !HAVE_SOUND
   if (!warningprintedonce) {
-    SoDebugError::postWarning("SoVRMLSound::SoVRMLSound", 
+    SoDebugError::postWarning("SoVRMLSound::SoVRMLSound",
       "You are using a SoVRMLSound node, but this version of Coin was built "
       "without sound support. If you'd like to have sound support in Coin, "
       "please reconfigure and rebuild the Coin library without specifying "
@@ -481,12 +481,12 @@ SoVRMLSound::~SoVRMLSound(void)
   delete PRIVATE(this);
 }
 
-/*!  
+/*!
   Sets the doppler velocity relative to the global coordinate
-  system. Not implemented yet.  
+  system. Not implemented yet.
 */
 
-void 
+void
 SoVRMLSound::setDopplerVelocity(float velocity)
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
@@ -495,12 +495,12 @@ SoVRMLSound::setDopplerVelocity(float velocity)
                             "Get in touch if you need this functionality.");
 }
 
-/*!  
+/*!
   Returns the doppler velocity relative to the global coordinate
-  system. Not implemented yet.  
+  system. Not implemented yet.
 */
 
-float 
+float
 SoVRMLSound::getDopplerVelocity()
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
@@ -510,11 +510,11 @@ SoVRMLSound::getDopplerVelocity()
   return 0.0f;
 }
 
-/*!  
-  Sets the doppler factor. Not implemented yet.  
+/*!
+  Sets the doppler factor. Not implemented yet.
 */
 
-void 
+void
 SoVRMLSound::setDopplerFactor(float factor)
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
@@ -523,11 +523,11 @@ SoVRMLSound::setDopplerFactor(float factor)
                             "Get in touch if you need this functionality.");
 }
 
-/*!  
-  Returns the doppler factor. Not implemented yet.  
+/*!
+  Returns the doppler factor. Not implemented yet.
 */
 
-float 
+float
 SoVRMLSound::getDopplerFactor()
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
@@ -537,12 +537,12 @@ SoVRMLSound::getDopplerFactor()
   return 0.0f;
 }
 
-/*!  
+/*!
   Starts playing the sound. Not implemented yet.
   Please use the fields of SoVRMLAudioClip to start and stop sounds.
 */
 
-void 
+void
 SoVRMLSound::startPlaying(SoPath *path, void *userdataptr)
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
@@ -550,12 +550,12 @@ SoVRMLSound::startPlaying(SoPath *path, void *userdataptr)
                             "Not yet implemented for Coin.");
 }
 
-/*!  
+/*!
   Stops playing the sound. Not implemented yet.
   Please use the fields of SoVRMLAudioClip to start and stop sounds.
 */
 
-void 
+void
 SoVRMLSound::stopPlaying(SoPath *path, void *userdataptr)
 {
   // FIXME: as of yet unimplemented. 2003-02-26 thammer.
@@ -573,7 +573,7 @@ void SoVRMLSound::setDefaultBufferingProperties(int bufferLength, int numBuffers
 {
   SoVRMLSoundP::defaultBufferLength = bufferLength;
   SoVRMLSoundP::defaultNumBuffers = numBuffers;
-  SoVRMLSoundP::defaultSleepTime = sleepTime;
+  SoVRMLSoundP::defaultSleepTime = sleepTime.getValue();
 }
 
 void SoVRMLSound::setBufferingProperties(int bufferLength, int numBuffers, SbTime sleepTime)
@@ -1315,7 +1315,7 @@ void SoVRMLSoundP::fillBuffers()
                              "alSourceUnqueueBuffers failed. "
                              "Queued: %d, Processed: %d."
                              "OpenAL error: %s.",
-                             queued, processed, 
+                             queued, processed,
                              coin_get_openal_error(error));
           this->errorInThread = TRUE;
           return;
@@ -1357,7 +1357,7 @@ void SoVRMLSoundP::fillBuffers()
          get away with not unlocking syncmutex here afterall.
 
          2002-11-18 thammer */
-      ret = this->currentAudioClip->read(this->cliphandle, 
+      ret = this->currentAudioClip->read(this->cliphandle,
                                          this->audioBuffer,
                                          this->bufferLength, numchannels);
 

@@ -234,12 +234,25 @@ public:
   SoFieldSensor * stopTimeSensor;
   SoTimerSensor * timerSensor;
 
-  static SbStringList subdirectories;
-  static SbTime pauseBetweenTracks;
-  static SbTime introPause;
-  static int defaultSampleRate;
-  static SbTime defaultTimerInterval;
+  class StaticData {
+  public:
+    StaticData(void) {
+      this->pauseBetweenTracks = 2.0;
+      this->introPause = 0.0;
+      this->defaultTimerInterval = 0.1f;
+      this->defaultSampleRate = 44100;
+      this->warnAboutMissingSimage = TRUE;
+    }
+    SbStringList subdirectories;
+    SbTime pauseBetweenTracks;
+    SbTime introPause;
+    int defaultSampleRate;
+    SbTime defaultTimerInterval;
+    SbBool warnAboutMissingSimage;
+  };
 
+  static StaticData * staticdata;
+  
   int sampleRate;
 
   SbTime currentPause;
@@ -267,15 +280,15 @@ public:
   SbTime actualStartTime;
   int totalNumberOfFramesToPlay;
 
-  static SbBool warnAboutMissingSimage;
 };
 
-SbStringList SoVRMLAudioClipP::subdirectories = SbStringList();
-SbTime SoVRMLAudioClipP::pauseBetweenTracks = 2.0f;
-SbTime SoVRMLAudioClipP::introPause = 0.0f;
-int SoVRMLAudioClipP::defaultSampleRate = 44100;
-SbTime SoVRMLAudioClipP::defaultTimerInterval = 0.1f;
-SbBool SoVRMLAudioClipP::warnAboutMissingSimage = TRUE;
+SoVRMLAudioClipP::StaticData * SoVRMLAudioClipP::staticdata = NULL;
+
+static void
+cleanup_audioclip(void)
+{
+  delete SoVRMLAudioClipP::staticdata;
+}
 
 #define PRIVATE(p) ((p)->pimpl)
 #define PUBLIC(p) ((p)->master)
@@ -287,6 +300,7 @@ void
 SoVRMLAudioClip::initClass(void) // static
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVRMLAudioClip, SO_VRML97_NODE_TYPE);
+  SoVRMLAudioClipP::staticdata = new SoVRMLAudioClipP::StaticData;
 }
 
 /*!
@@ -331,7 +345,7 @@ SoVRMLAudioClip::SoVRMLAudioClip(void)
   PRIVATE(this)->timerSensor = new SoTimerSensor;
   PRIVATE(this)->timerSensor->setFunction(PRIVATE(this)->timerCBWrapper);
   PRIVATE(this)->timerSensor->setData(PRIVATE(this));
-  PRIVATE(this)->timerSensor->setInterval(SoVRMLAudioClipP::defaultTimerInterval);
+  PRIVATE(this)->timerSensor->setInterval(SoVRMLAudioClipP::staticdata->defaultTimerInterval);
   PRIVATE(this)->timerSensor->schedule();
 
   PRIVATE(this)->loop = FALSE;
@@ -345,7 +359,7 @@ SoVRMLAudioClip::SoVRMLAudioClip(void)
   PRIVATE(this)->currentPlaylistIndex = 0;
   PRIVATE(this)->playlistDirty = FALSE;
 
-  PRIVATE(this)->sampleRate = SoVRMLAudioClipP::defaultSampleRate;
+  PRIVATE(this)->sampleRate = SoVRMLAudioClipP::staticdata->defaultSampleRate;
 
   this->setCallbacks(PRIVATE(this)->internal_open_wrapper,
                      PRIVATE(this)->internal_read_wrapper,
@@ -378,50 +392,50 @@ SoVRMLAudioClip::~SoVRMLAudioClip()
 void
 SoVRMLAudioClip::setDefaultSampleRate(int samplerate)
 {
-  SoVRMLAudioClipP::defaultSampleRate = samplerate;
+  SoVRMLAudioClipP::staticdata->defaultSampleRate = samplerate;
 }
 
 int 
 SoVRMLAudioClip::getDefaultSampleRate(void)
 {
-  return SoVRMLAudioClipP::defaultSampleRate;
+  return SoVRMLAudioClipP::staticdata->defaultSampleRate;
 }
 
 void
 SoVRMLAudioClip::setDefaultPauseBetweenTracks(SbTime pause)
 {
   // FIXME: use both default and node-specific pause. 20021007 thammer.
-  SoVRMLAudioClipP::pauseBetweenTracks = pause;
+  SoVRMLAudioClipP::staticdata->pauseBetweenTracks = pause;
 }
 
 SbTime 
 SoVRMLAudioClip::getDefaultPauseBetweenTracks(void)
 {
-  return SoVRMLAudioClipP::pauseBetweenTracks;
+  return SoVRMLAudioClipP::staticdata->pauseBetweenTracks;
 }
 
 void
 SoVRMLAudioClip::setDefaultIntroPause(SbTime pause)
 {
-  SoVRMLAudioClipP::introPause = pause;
+  SoVRMLAudioClipP::staticdata->introPause = pause;
 }
 
 SbTime 
 SoVRMLAudioClip::getDefaultIntroPause(void)
 {
-  return SoVRMLAudioClipP::introPause;
+  return SoVRMLAudioClipP::staticdata->introPause;
 }
 
 void
 SoVRMLAudioClip::setDefaultTimerInterval(SbTime interval)
 {
-  SoVRMLAudioClipP::defaultTimerInterval = interval;
+  SoVRMLAudioClipP::staticdata->defaultTimerInterval = interval;
 }
 
 SbTime 
 SoVRMLAudioClip::getDefaultTimerInterval(void)
 {
-  return SoVRMLAudioClipP::defaultTimerInterval;
+  return SoVRMLAudioClipP::staticdata->defaultTimerInterval;
 }
 
 int
@@ -544,18 +558,18 @@ void
 SoVRMLAudioClip::setSubdirectories(const SbList<SbString> &subdirectories)
 {
   int i;
-  for (i = 0; i < SoVRMLAudioClipP::subdirectories.getLength(); i++) {
-    delete SoVRMLAudioClipP::subdirectories[i];
+  for (i = 0; i < SoVRMLAudioClipP::staticdata->subdirectories.getLength(); i++) {
+    delete SoVRMLAudioClipP::staticdata->subdirectories[i];
   }
   for (i = 0; i < subdirectories.getLength(); i++) {
-    SoVRMLAudioClipP::subdirectories.append(new SbString(subdirectories[i]));
+    SoVRMLAudioClipP::staticdata->subdirectories.append(new SbString(subdirectories[i]));
   }
 }
 
 const SbStringList &
 SoVRMLAudioClip::getSubdirectories()
 {
-  return SoVRMLAudioClipP::subdirectories;
+  return SoVRMLAudioClipP::staticdata->subdirectories;
 }
 
 SbBool
@@ -571,13 +585,13 @@ SoVRMLAudioClipP::simageVersionOK(const char *functionName)
       simage_wrapper()->s_stream_destroy) {
       return TRUE;
   } else {
-    if (SoVRMLAudioClipP::warnAboutMissingSimage) {
+    if (SoVRMLAudioClipP::staticdata->warnAboutMissingSimage) {
       SoDebugError::postWarning(functionName,
                                 "This function needs a version of simage that supports"
                                 "the stream interface and parameter access to be able "
                                 "to read audio files. Please visit www.coin3d.org "
                                 "and download the latest version of simage.");
-      SoVRMLAudioClipP::warnAboutMissingSimage = FALSE;
+      SoVRMLAudioClipP::staticdata->warnAboutMissingSimage = FALSE;
     }
     return FALSE;
   }
@@ -592,7 +606,7 @@ SoVRMLAudioClipP::startPlaying()
 #ifdef HAVE_THREADS
   this->syncmutex.lock();
 #endif
-  this->currentPause = SoVRMLAudioClipP::introPause;
+  this->currentPause = SoVRMLAudioClipP::staticdata->introPause;
   this->currentPlaylistIndex = 0;
   this->soundHasFinishedPlaying = FALSE;
   this->actualStartTime = 0.0f; // will be set in read()
@@ -727,7 +741,7 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
         sizeof(int16_t);
       memset(((int16_t *)buffer) + framepos*channelsdelivered, 0, outputsize);
       this->currentPause -= (double)(numframes - framepos) / 
-        (double)SoVRMLAudioClipP::defaultSampleRate;
+        (double)SoVRMLAudioClipP::staticdata->defaultSampleRate;
       channelsref = channelsdelivered;
 
       return numframes;
@@ -801,7 +815,7 @@ SoVRMLAudioClipP::internal_read(void *datasource, void *buffer, int numframes,
       this->currentPlaylistIndex++;
       if ( (this->currentPlaylistIndex<this->playlist.getLength()) && 
            this->loop )
-        this->currentPause = SoVRMLAudioClipP::pauseBetweenTracks;
+        this->currentPause = SoVRMLAudioClipP::staticdata->pauseBetweenTracks;
     } else {
       bufferFilled = TRUE;
     }
