@@ -465,10 +465,12 @@ SoSeparator::GLRenderBelowPath(SoGLRenderAction * action)
             errorstring = "Unknown GL error";
             break;
           }
+#if COIN_DEBUG
           SoDebugError::postInfo("SoSeparator::GLRenderBelowPath",
                                  "GL error: %s, nodetype: %s",
                                  errorstring,
                                  (*this->children)[i]->getTypeId().getName().getString());
+#endif // COIN_DEBUG
         }
       }
     }
