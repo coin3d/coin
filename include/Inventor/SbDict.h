@@ -21,6 +21,7 @@
 #define __SBDICT_H__
 
 #include <Inventor/SbBasic.h>
+#include <stddef.h>
 
 class SbPList;
 class SbDictEntry;
@@ -48,10 +49,14 @@ private:
   int tablesize;
   SbDictEntry ** buckets;
   SbDictEntry *& findEntry(const unsigned long key) const;
+  SbDictEntry *findEntry(const unsigned long key,
+			 const unsigned long bucketnum,
+			 SbDictEntry **prev = NULL) const;
   static void addEntryToPLists(const unsigned long key, 
 			       void * const value, 
 			       void * const data);
   static void copyval(unsigned long key, void * value, void * data);
+
 };
 
 #endif // !__SBDICT_H__

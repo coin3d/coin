@@ -182,9 +182,9 @@ SoScale::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoScale::callback(SoCallbackAction * /* action */)
+SoScale::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoScale::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -193,9 +193,9 @@ SoScale::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoScale::getMatrix(SoGetMatrixAction * /* action */)
+SoScale::getMatrix(SoGetMatrixAction * action)
 {
-  assert(0 && "FIXME: not implemented");
+  action->scaleBy(scaleFactor.getValue());
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -204,9 +204,9 @@ SoScale::getMatrix(SoGetMatrixAction * /* action */)
   FIXME: write doc
  */
 void
-SoScale::pick(SoPickAction * /* action */)
+SoScale::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoScale::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

@@ -66,6 +66,10 @@
 #if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
 #endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+
 
 // FIXME: see comment on SoGLViewportRegionElement::set in
 // beginTraversel() below. 19990228 mortene.
@@ -110,7 +114,8 @@
 */
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoGLRenderAction)
+//$ BEGIN TEMPLATE ActionSource( SoGLRenderAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoGLRenderAction )
 
 SoType SoGLRenderAction::classTypeId = SoType::badType();
 
@@ -131,6 +136,9 @@ SoGLRenderAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoGLRenderAction::enabledElements;
@@ -152,6 +160,7 @@ SoActionMethodList * SoGLRenderAction::methods;
 const SoEnabledElementsList &
 SoGLRenderAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -162,6 +171,7 @@ SoGLRenderAction::getEnabledElements(void) const
 void 
 SoGLRenderAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -171,6 +181,7 @@ SoGLRenderAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoGLRenderAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -185,7 +196,7 @@ SoGLRenderAction::enableElement(const SoType type, const int stackIndex)
 void
 SoGLRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoGLRenderAction)
+//$ BEGIN TEMPLATE InitActionSource( SoGLRenderAction )
   assert(SoGLRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -195,9 +206,6 @@ SoGLRenderAction::initClass(void)
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
-
-  
-  methods->setDefault((void *)SoNode::GLRenderS);
 
   ENABLE_ELEMENT(SoViewportRegionElement);
   ENABLE_ELEMENT(SoGLRenderPassElement);
@@ -213,6 +221,11 @@ SoGLRenderAction::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   ENABLE_ELEMENT(SoGLNormalizeElement);
 #endif
+
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+  ENABLE_ELEMENT(SoOverrideElement);
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+
 
   // FIXME: see comment on SoGLViewportRegionElement::set in
   // beginTraversel() below. 19990228 mortene.
@@ -238,7 +251,16 @@ SoGLRenderAction::cleanClass(void)
 SoGLRenderAction::SoGLRenderAction(const SbViewportRegion & viewportRegion)
 {
   SO_ACTION_CONSTRUCTOR(SoGLRenderAction);  
+  
+  static int first = 1;
+  if (first) {
+    // cannot be set in initClass, since nodes are not initialized yet
+    SO_ACTION_ADD_METHOD(SoNode, SoNode::GLRenderS); 
+    first = 0;
+  }
 
+  methods->setUp(); // FIXME: not sure if this should be called here...
+  
   // Can't just push this on the SoViewportRegionElement stack, as the
   // state hasn't been made yet.
   this->viewport = viewportRegion;

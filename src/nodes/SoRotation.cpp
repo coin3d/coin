@@ -189,17 +189,7 @@ SoRotation::getBoundingBox(SoGetBoundingBoxAction * action)
 void 
 SoRotation::getMatrix(SoGetMatrixAction * action)
 {
-#if 0 // use extended SoGetMatrixAction functions instead
-  SbRotation rot = this->rotation.getValue();
-  SbMatrix matrix;
-  matrix.setRotate(rot);
-  action->getMatrix().multRight(matrix);
-  rot.invert();
-  matrix.setRotate(rot);
-  action->getInverse().multRight(matrix);
-#else // extended
   action->rotateBy(this->rotation.getValue());
-#endif // extended
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 

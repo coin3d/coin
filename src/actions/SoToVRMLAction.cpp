@@ -29,7 +29,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoToVRMLAction)
+//$ BEGIN TEMPLATE ActionSource( SoToVRMLAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoToVRMLAction )
 
 SoType SoToVRMLAction::classTypeId = SoType::badType();
 
@@ -50,6 +51,9 @@ SoToVRMLAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoToVRMLAction::enabledElements;
@@ -71,6 +75,7 @@ SoActionMethodList * SoToVRMLAction::methods;
 const SoEnabledElementsList &
 SoToVRMLAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -81,6 +86,7 @@ SoToVRMLAction::getEnabledElements(void) const
 void 
 SoToVRMLAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -90,6 +96,7 @@ SoToVRMLAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoToVRMLAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -104,7 +111,7 @@ SoToVRMLAction::enableElement(const SoType type, const int stackIndex)
 void
 SoToVRMLAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoToVRMLAction)
+//$ BEGIN TEMPLATE InitActionSource( SoToVRMLAction )
   assert(SoToVRMLAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

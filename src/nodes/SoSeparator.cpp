@@ -374,6 +374,11 @@ SoSeparator::handleEvent(SoHandleEventAction * action)
 void 
 SoSeparator::rayPick(SoRayPickAction * action)
 {
+#if 0 // debug
+  SoDebugError::postInfo("SoSeparator::rayPick",
+			 "");
+#endif // debug
+
   SoSeparator::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
@@ -396,24 +401,9 @@ SoSeparator::search(SoSearchAction * action)
 void 
 SoSeparator::getMatrix(SoGetMatrixAction * action)
 {
-  SbMat matrix, invMatrix, texMatrix, invTexMatrix;
+  if (action->getCurPathCode() == SoAction::IN_PATH)
+    inherited::getMatrix(action);
 
-  action->getMatrix().getValue(matrix);
-  action->getInverse().getValue(invMatrix);
-  action->getTextureMatrix().getValue(texMatrix);
-  action->getTextureInverse().getValue(invTexMatrix);
-  SoSeparator::doAction(action);
-#ifdef _WIN32 // don't ask me why...
-  action->getMatrix() = matrix;
-  action->getInverse() = invMatrix;
-  action->getTextureMatrix() = texMatrix;
-  action->getTextureInverse() = invTexMatrix;
-#else // !_WIN32
-  action->getMatrix().setValue(matrix);
-  action->getInverse().setValue(invMatrix);
-  action->getTextureMatrix().setValue(texMatrix);
-  action->getTextureInverse().setValue(invTexMatrix);
-#endif // !_WIN32
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 

@@ -38,6 +38,9 @@
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
@@ -186,9 +189,9 @@ SoMatrixTransform::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoMatrixTransform::callback(SoCallbackAction * /* action */)
+SoMatrixTransform::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMatrixTransform::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -197,9 +200,9 @@ SoMatrixTransform::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoMatrixTransform::getMatrix(SoGetMatrixAction * /* action */)
+SoMatrixTransform::getMatrix(SoGetMatrixAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  action->mult(this->matrix.getValue());
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -208,9 +211,9 @@ SoMatrixTransform::getMatrix(SoGetMatrixAction * /* action */)
   FIXME: write doc
  */
 void
-SoMatrixTransform::pick(SoPickAction * /* action */)
+SoMatrixTransform::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMatrixTransform::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

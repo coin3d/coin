@@ -61,6 +61,9 @@
 #if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
 #endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLE
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 #include <math.h>
 
@@ -210,45 +213,7 @@ SoMaterial::cleanClass(void)
 void 
 SoMaterial::GLRender(SoGLRenderAction * action)
 {
-  // FIXME: check for isIgnored() for all fields
-  // FIXME: check light model element
-  SoState * state = action->getState();
-  if (!ambientColor.isIgnored()) {
-    SoAmbientColorElement::set(state,
-			       this,
-			       ambientColor.getNum(),
-			       ambientColor.getValues(0));
-  }
-  if (!diffuseColor.isIgnored()) {
-    SoDiffuseColorElement::set(action->getState(),
-			       this,
-			       diffuseColor.getNum(),
-			       diffuseColor.getValues(0));
-  }
-  if (!emissiveColor.isIgnored()) {
-    SoEmissiveColorElement::set(action->getState(),
-				this,
-				emissiveColor.getNum(),
-				emissiveColor.getValues(0));
-  }
-  if (!specularColor.isIgnored()) {
-    SoSpecularColorElement::set(action->getState(),
-				this,
-				specularColor.getNum(),
-				specularColor.getValues(0));
-  }
-  if (!shininess.isIgnored()) {
-    SoShininessElement::set(action->getState(),
-			    this,
-			    shininess.getNum(),
-			    shininess.getValues(0));
-  }
-  if (!transparency.isIgnored()) {
-    SoTransparencyElement::set(action->getState(),
-			       this,
-			       transparency.getNum(),
-			       transparency.getValues(0));
-  }
+  SoMaterial::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -282,9 +247,54 @@ SoMaterial::compareAppearanceVRML2(SoMaterial * otherMaterial)
   FIXME: write doc
  */
 void
-SoMaterial::doAction(SoAction * /* action */)
+SoMaterial::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState *state = action->getState();
+
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+  uint32_t flags = SoOverrideElement::getFlags(state);
+#define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
+#else // COIN_EXCLUDE_SOOVERRIDEELEMENT
+#define TEST_OVERRIDE(x,y) FALSE // a neat little trick (don't nag, Morten :-)
+#endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
+
+  if (!ambientColor.isIgnored() && !TEST_OVERRIDE(AMBIENT_COLOR)) {
+    SoAmbientColorElement::set(state,
+			       this,
+			       ambientColor.getNum(),
+			       ambientColor.getValues(0));
+  }
+  if (!diffuseColor.isIgnored() && !TEST_OVERRIDE(DIFFUSE_COLOR)) {
+    SoDiffuseColorElement::set(action->getState(),
+			       this,
+			       diffuseColor.getNum(),
+			       diffuseColor.getValues(0));
+  }
+  if (!emissiveColor.isIgnored() && !TEST_OVERRIDE(EMISSIVE_COLOR)) {
+    SoEmissiveColorElement::set(action->getState(),
+				this,
+				emissiveColor.getNum(),
+				emissiveColor.getValues(0));
+  }
+  if (!specularColor.isIgnored() && !TEST_OVERRIDE(SPECULAR_COLOR)) {
+    SoSpecularColorElement::set(action->getState(),
+				this,
+				specularColor.getNum(),
+				specularColor.getValues(0));
+  }
+  if (!shininess.isIgnored() && !TEST_OVERRIDE(SHININESS)) {
+    SoShininessElement::set(action->getState(),
+			    this,
+			    shininess.getNum(),
+			    shininess.getValues(0));
+  }
+  if (!transparency.isIgnored() && !TEST_OVERRIDE(TRANSPARENCY)) {
+    SoTransparencyElement::set(action->getState(),
+			       this,
+			       transparency.getNum(),
+			       transparency.getValues(0));
+  }
+#undef TEST_OVERRIDE
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -293,8 +303,8 @@ SoMaterial::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoMaterial::callback(SoCallbackAction * /* action */)
+SoMaterial::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMaterial::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION

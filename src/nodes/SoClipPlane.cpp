@@ -32,6 +32,12 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 #if !defined(COIN_EXCLUDE_SOGLCLIPPLANEELEMENT)
 #include <Inventor/elements/SoGLClipPlaneElement.h>
 #endif // !COIN_EXCLUDE_SOGLCLIPPLANEELEMENT
@@ -127,6 +133,12 @@ SoClipPlane::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLClipPlaneElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoClipPlaneElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+  SO_ENABLE(SoCallbackAction, SoClipPlaneElement);
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
 /*!
@@ -168,9 +180,9 @@ SoClipPlane::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoClipPlane::callback(SoCallbackAction * /* action */)
+SoClipPlane::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoClipPlane::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -179,8 +191,9 @@ SoClipPlane::callback(SoCallbackAction * /* action */)
   FIXME: write doc
 */
 void
-SoClipPlane::pick(SoPickAction * /* action */)
+SoClipPlane::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoClipPlane::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
+

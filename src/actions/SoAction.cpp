@@ -554,15 +554,7 @@ SoAction::traverse(SoNode * const node)
   case IN_PATH:
     {
       int idx = this->currentPath.getLength();
-
-#if 0 // debug
-      fprintf(stderr, "currpathlen: %d, pathlen: %d, node: %p, pathnode %p\n",
-	      idx,
-	      this->appliedData.path->getLength(),
-	      node,
-	      this->appliedData.path->getNode(idx-1));
-#endif      
-
+      
       if (this->appliedData.path->getNode(idx-1) != node) {
 	this->currentPathCode = OFF_PATH;
       }

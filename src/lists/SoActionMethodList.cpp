@@ -26,10 +26,14 @@
 */
 
 #include <Inventor/lists/SoActionMethodList.h>
-
+#include <Inventor/actions/SoAction.h>
 #include <Inventor/nodes/SoNode.h>
-
+#include <Inventor/SbName.h>
 #include <assert.h>
+
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
 
 /*!
   The constructor.  The \a parentList argument is the parent action's
@@ -38,7 +42,7 @@
 */
 
 SoActionMethodList::SoActionMethodList(SoActionMethodList * const parentList)
-  : SbPList(0), parent(parentList), numValidTypes(0)
+  : SbPList(0), parent(parentList)
 {
   this->setDefault((void *)dummyAction);
 }
@@ -73,41 +77,44 @@ void
 SoActionMethodList::addMethod(const SoType nodeType,
 			      const SoActionMethod method)
 {
+  //
+  // I'm a bit unsure about this one. Should I really find all
+  // nodes derived from a node when adding methods, and should
+  // perhaps the method for the children be overwritten even
+  // though method != dummyAction?  pederb 19991029 
+
   const int index = nodeType.getData();
-  if ((*this)[ index ] == NULL)
-    this->numValidTypes++;
   (*this)[ index ] = method;
+  
+  dummyList.truncate(0);
+  int n = nodeType.getAllSubTypes(dummyList);
+  for (int i = 0; i < n; i++) {
+    SoType type = dummyList[i];
+    if ((*this)[(int)type.getData()] == dummyAction) 
+      (*this)[i] = method;
+  }
 }
 
 /*!
   This method must be called before using the list.  It fills in NULL
-  entries with their parents' method.
+  entries with their parents' method. Also, nodes will inherit method
+  from their parent, so parent nodes are also searched for methods.
 */
 
 void
 SoActionMethodList::setUp(void)
 {
-  if (! parent)
-    return;
-
-  const int max = parent->getLength();
-  for (int i = 0; i < max; i++) {
-    if ((*this)[i] == NULL) {
-      (*this)[i] = (*parent)[i];
-      this->numValidTypes++;
+  this->dummyList.clear(); // free memory
+  
+  if (parent) {
+    parent->setUp();
+    const int max = parent->getLength();
+    for (int i = 0; i < max; i++) {
+      if ((*this)[i] == dummyAction) {
+	(*this)[i] = (*parent)[i];
+      }
     }
   }
-}
-
-/*!
-  This method returns the action method for type from the parent node.
-*/
-
-SoActionMethod
-SoActionMethodList::parentMethod(const SoType nodeType) const
-{
-  if (!parent) return NULL; // maybe return dummyAction?
-  return (*parent)[ (int) nodeType.getData() ];
 }
 
 /*!
@@ -115,7 +122,14 @@ SoActionMethodList::parentMethod(const SoType nodeType) const
 */
 
 void
-SoActionMethodList::dummyAction(SoAction * const,
-				SoNode * const)
+SoActionMethodList::dummyAction(SoAction *action,
+				SoNode *node)
 {
+#if COIN_DEBUG // debug
+  SoDebugError::postInfo("SoActionMethodList::dummyAction",
+			 "action: %s, node: %s",
+			 action->getTypeId().getName().getString(),
+			 node->getTypeId().getName().getString());
+#endif // debug
 }
+

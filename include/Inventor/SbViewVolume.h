@@ -78,6 +78,10 @@ public:
   float getHeight(void) const;
   float getDepth(void) const;
 
+  void getNearFarRay(const SbVec2f &normPoint,
+		     SbVec3f &start,
+		     SbVec3f &dir);
+
   void print(ostream & file) const;
 
 private:

@@ -21,9 +21,9 @@
 #define __SBLIST_H__
 
 #include <Inventor/SbBasic.h>
+#include <stddef.h>
 #include <assert.h>
 
-const int MIN_LIST_SIZE = 4;
 
 template <class Type>
 class SbList {
@@ -33,21 +33,23 @@ private:
   int numItems;
 
 public:
-  SbList(const int initSize = MIN_LIST_SIZE);
+  SbList(const int initSize = 4);
   SbList(const SbList<Type> & list);
   ~SbList();
 
   void copy(const SbList<Type> & list);
   
   void append(const Type item);
+#if 0 // OBSOLETED: see comments by mortene in SbPList
   void append(const SbList<Type> & list);
+#endif // OBSOLETED
   int find(const Type item) const;
   void insert(const Type item, const int addBefore);
   void remove(const int index);
   void removeFast(const int index);
   int getLength(void) const;
   void truncate(const int length);
-  void clear(const int newSize = MIN_LIST_SIZE);
+  void clear(const int newSize = 4);
 
   void push(const Type item);
   Type pop(void);
@@ -95,7 +97,7 @@ template <class Type> inline
 SbList<Type>::SbList(const int initSize)
   : numItems(0)
 {
-  this->itemBufferSize = initSize;
+  this->itemBufferSize = SbMax(4, initSize);
   this->itemBuffer = new Type[initSize];
 }
 
@@ -104,8 +106,9 @@ SbList<Type>::SbList(const SbList<Type> & list)
   : numItems(0)
 {
   const int n = list.numItems;
-  this->itemBufferSize = list.numItems;
-  this->itemBuffer = new Type[n];
+  this->itemBufferSize = SbMax(4, n); 
+  this->numItems = n;
+  this->itemBuffer = new Type[this->itemBufferSize];
   for (int i = 0; i < n; i++) this->itemBuffer[i] = list.itemBuffer[i];
 }
 
@@ -121,8 +124,9 @@ SbList<Type>::copy(const SbList<Type> & list)
   assert(this != &list); // can't do this - but can just return, though
   delete [] this->itemBuffer;
   const int n = list.numItems;
-  this->itemBufferSize = this->numItems = n;
-  this->itemBuffer = new Type[n];
+  this->itemBufferSize = SbMax(4,n); 
+  this->numItems = n;
+  this->itemBuffer = new Type[this->itemBufferSize];
   for (int i = 0; i < n; i++) this->itemBuffer[i] = list.itemBuffer[i];
 }
 
@@ -135,14 +139,17 @@ SbList<Type>::append(const Type item)
   this->itemBuffer[this->numItems++] = item;
 }
 
+#if 0 // OBSLETED, see comments by mortene in SbPList
 template <class Type> inline void
 SbList<Type>::append(const SbList<Type> & list)
 {
+  
   assert(this != &list);
   const int items = list.getLength();
   for (int i = 0; i < items; i++)
     append(list.itemBuffer[i]);
 }
+#endif // OBSOLETED
 
 template <class Type> inline int
 SbList<Type>::find(const Type item) const
@@ -192,6 +199,7 @@ SbList<Type>::getLength() const
 template <class Type> inline void
 SbList<Type>::truncate(const int length)
 {
+  assert(length <= this->numItems);
   this->numItems = length;
 }
 
@@ -201,7 +209,8 @@ SbList<Type>::clear(const int newSize)
   this->numItems = 0;
   if (this->itemBufferSize != newSize) {
     delete [] this->itemBuffer;
-    this->itemBuffer = new Type[newSize];
+    this->itemBufferSize = SbMax(4, newSize);
+    this->itemBuffer = new Type[this->itemBufferSize];
   }
 }
 
@@ -314,7 +323,7 @@ SbList<Type>::set(const int index,
 template <class Type> inline void
 SbList<Type>::fit()
 {
-  const int items = SbMax(this->numItems, MIN_LIST_SIZE);
+  const int items = SbMax(this->numItems, 4);
   if (items < this->itemBufferSize) {
     Type * newItemBuffer = new Type[items];
     for (int i = 0; i < this->numItems; i++)
@@ -329,7 +338,7 @@ template <class Type> inline Type *
 SbList<Type>::stealPointer()
 {
   Type * ptr = this->itemBuffer;
-  this->itemBuffer = 0;
+  this->itemBuffer = NULL;
   this->numItems = 0;
   this->itemBufferSize = 0;
   return ptr;
@@ -338,6 +347,7 @@ SbList<Type>::stealPointer()
 template <class Type> inline void 
 SbList<Type>::setBufferSize(const int newsize)
 {
+  assert(newsize > 0);
   Type * newbuffer = new Type[newsize];
 
   // just skip items beyond new buffer

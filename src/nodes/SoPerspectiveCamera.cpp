@@ -32,6 +32,10 @@
 #include <assert.h>
 #include <math.h> // for atan()
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 /*!
   \var SoSFFloat SoPerspectiveCamera::heightAngle
   FIXME: write documentation for field
@@ -143,7 +147,7 @@ SoPerspectiveCamera::getViewVolume(float useAspectRatio) const
   SoDebugError::postInfo("SoPerspectiveCamera::getViewVolume",
 			 "useAspectRatio: %f",
 			 useAspectRatio);
-#endif // 0
+#endif // 0  
 
   SbViewVolume volume;
   volume.perspective(heightAngle.getValue(), useAspectRatio, 

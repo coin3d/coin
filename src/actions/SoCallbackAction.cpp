@@ -29,7 +29,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoCallbackAction)
+//$ BEGIN TEMPLATE ActionSource( SoCallbackAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoCallbackAction )
 
 SoType SoCallbackAction::classTypeId = SoType::badType();
 
@@ -50,6 +51,9 @@ SoCallbackAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoCallbackAction::enabledElements;
@@ -71,6 +75,7 @@ SoActionMethodList * SoCallbackAction::methods;
 const SoEnabledElementsList &
 SoCallbackAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -81,6 +86,7 @@ SoCallbackAction::getEnabledElements(void) const
 void 
 SoCallbackAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -90,6 +96,7 @@ SoCallbackAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoCallbackAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -104,7 +111,7 @@ SoCallbackAction::enableElement(const SoType type, const int stackIndex)
 void
 SoCallbackAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoCallbackAction)
+//$ BEGIN TEMPLATE InitActionSource( SoCallbackAction )
   assert(SoCallbackAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

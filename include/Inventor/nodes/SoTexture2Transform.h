@@ -28,6 +28,8 @@
 #error Configuration settings disrespected -- do not include this file!
 #endif // COIN_EXCLUDE_SOTEXTURE2TRANSFORM
 
+class SbMatrix;
+
 // *************************************************************************
 
 class SoTexture2Transform : public SoNode {
@@ -71,6 +73,12 @@ public:
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+private:
+
+  void calcMatrix(SbMatrix &mat);
 };
+
+
 
 #endif // !__SOTEXTURE2TRANSFORM_H__

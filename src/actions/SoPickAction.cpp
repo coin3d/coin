@@ -24,12 +24,25 @@
 
 #include <Inventor/SbName.h>
 #include <Inventor/actions/SoPickAction.h>
-
+#include <Inventor/actions/SoSubAction.h>
+#include <Inventor/misc/SoState.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
+#include <Inventor/nodes/SoNode.h>
+
+#if !defined(COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT)
+#include <Inventor/elements/SoViewportRegionElement.h>
+#endif // !COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT
+#if !defined(COIN_EXCLUDE_SODECIMATIONTYPEELEMENT)
+#include <Inventor/elements/SoDecimationTypeElement.h>
+#endif // !COIN_EXCLUDE_SODECIMATIONTYPEELEMENT
+#if !defined(COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT)
+#include <Inventor/elements/SoDecimationPercentageElement.h>
+#endif // !COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoPickAction)
+//$ BEGIN TEMPLATE ActionSource( SoPickAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoPickAction )
 
 SoType SoPickAction::classTypeId = SoType::badType();
 
@@ -50,6 +63,9 @@ SoPickAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoPickAction::enabledElements;
@@ -71,6 +87,7 @@ SoActionMethodList * SoPickAction::methods;
 const SoEnabledElementsList &
 SoPickAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -81,6 +98,7 @@ SoPickAction::getEnabledElements(void) const
 void 
 SoPickAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -90,6 +108,7 @@ SoPickAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoPickAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -104,7 +123,7 @@ SoPickAction::enableElement(const SoType type, const int stackIndex)
 void
 SoPickAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoPickAction)
+//$ BEGIN TEMPLATE InitActionSource( SoPickAction )
   assert(SoPickAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -114,6 +133,10 @@ SoPickAction::initClass(void)
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
+
+  ENABLE_ELEMENT(SoViewportRegionElement);
+  ENABLE_ELEMENT(SoDecimationTypeElement);
+  ENABLE_ELEMENT(SoDecimationPercentageElement);
 }
 
 /*!
@@ -132,9 +155,14 @@ SoPickAction::cleanClass(void)
   A constructor.
 */
 
-SoPickAction::SoPickAction(const SbViewportRegion & /* viewportRegion */)
+SoPickAction::SoPickAction(const SbViewportRegion & viewportRegion)
+  : vpRegion(viewportRegion),
+    cullingEnabled(TRUE)
 {
-  assert(0 && "FIXME: not implemented");
+  static int first = 1;
+  if (first) {
+    SO_ACTION_ADD_METHOD(SoNode, SoNode::pickS);
+  }
 }
 
 /*!
@@ -144,4 +172,28 @@ SoPickAction::SoPickAction(const SbViewportRegion & /* viewportRegion */)
 SoPickAction::~SoPickAction(void)
 {
 }
+
+void 
+SoPickAction::beginTraversal(SoNode *node)
+{
+  this->getState()->push();
+  SoViewportRegionElement::set(this->getState(), this->vpRegion);
+  inherited::beginTraversal(node);
+  this->getState()->pop();
+}
+
+void 
+SoPickAction::enableCulling(const SbBool flag)
+{
+  this->cullingEnabled = flag;
+}
+
+SbBool 
+SoPickAction::isCullingEnabled() const
+{
+  return this->cullingEnabled;
+}
+
+
+
 

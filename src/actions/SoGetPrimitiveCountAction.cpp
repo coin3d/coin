@@ -33,7 +33,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoGetPrimitiveCountAction)
+//$ BEGIN TEMPLATE ActionSource( SoGetPrimitiveCountAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoGetPrimitiveCountAction )
 
 SoType SoGetPrimitiveCountAction::classTypeId = SoType::badType();
 
@@ -54,6 +55,9 @@ SoGetPrimitiveCountAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoGetPrimitiveCountAction::enabledElements;
@@ -75,6 +79,7 @@ SoActionMethodList * SoGetPrimitiveCountAction::methods;
 const SoEnabledElementsList &
 SoGetPrimitiveCountAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -85,6 +90,7 @@ SoGetPrimitiveCountAction::getEnabledElements(void) const
 void 
 SoGetPrimitiveCountAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -94,6 +100,7 @@ SoGetPrimitiveCountAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoGetPrimitiveCountAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -108,7 +115,7 @@ SoGetPrimitiveCountAction::enableElement(const SoType type, const int stackIndex
 void
 SoGetPrimitiveCountAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoGetPrimitiveCountAction)
+//$ BEGIN TEMPLATE InitActionSource( SoGetPrimitiveCountAction )
   assert(SoGetPrimitiveCountAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

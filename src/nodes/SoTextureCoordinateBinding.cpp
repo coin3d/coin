@@ -33,9 +33,18 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
+
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
 #if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT)
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT
+
 
 /*!
   \enum SoTextureCoordinateBinding::Binding
@@ -137,6 +146,12 @@ SoTextureCoordinateBinding::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoTextureCoordinateBindingElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoTextureCoordinateBindingElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+  SO_ENABLE(SoCallbackAction, SoTextureCoordinateBindingElement);
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
 /*!
@@ -155,9 +170,7 @@ SoTextureCoordinateBinding::cleanClass(void)
 void 
 SoTextureCoordinateBinding::GLRender(SoGLRenderAction * action)
 {
-  if (!value.isIgnored()) 
-    SoTextureCoordinateBindingElement::set(action->getState(), this,
-     (SoTextureCoordinateBindingElement::Binding)value.getValue());
+  SoTextureCoordinateBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -168,9 +181,11 @@ SoTextureCoordinateBinding::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoTextureCoordinateBinding::doAction(SoAction * /* action */)
+SoTextureCoordinateBinding::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!value.isIgnored()) 
+    SoTextureCoordinateBindingElement::set(action->getState(), this,
+     (SoTextureCoordinateBindingElement::Binding)value.getValue());
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -179,9 +194,9 @@ SoTextureCoordinateBinding::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoTextureCoordinateBinding::callback(SoCallbackAction * /* action */)
+SoTextureCoordinateBinding::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoTextureCoordinateBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -190,9 +205,9 @@ SoTextureCoordinateBinding::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoTextureCoordinateBinding::pick(SoPickAction * /* action */)
+SoTextureCoordinateBinding::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoTextureCoordinateBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

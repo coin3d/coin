@@ -131,8 +131,9 @@ SbDict::clear(void)
 SbBool
 SbDict::enter(const unsigned long key, void * const value)
 {
+#if 0 // OBSOLETED, 19991026, pederb (ugly code)
   SbDictEntry *& entry = this->findEntry(key);
-  
+
   if (entry == NULL) {
     entry = new SbDictEntry(key, value);
     entry->next = NULL;
@@ -142,6 +143,20 @@ SbDict::enter(const unsigned long key, void * const value)
     entry->value = value;
     return FALSE;
   }
+#else // new code
+  const unsigned long bucketnum = key % this->tablesize;
+  SbDictEntry *entry = findEntry(key, bucketnum);
+  if (entry == NULL) {
+    entry = new SbDictEntry(key, value);
+    entry->next = this->buckets[bucketnum];
+    this->buckets[bucketnum] = entry;
+    return TRUE;
+  }
+  else {
+    entry->value = value;
+    return FALSE;
+  }
+#endif // end of new code
 }
 
 /*!
@@ -152,6 +167,7 @@ SbDict::enter(const unsigned long key, void * const value)
 SbBool
 SbDict::find(const unsigned long key, void *& value) const
 {
+#if 0 // OBSOLETED 19991026, pederb
   SbDictEntry *& entry = this->findEntry(key);
 
   if (entry == NULL) {
@@ -162,6 +178,18 @@ SbDict::find(const unsigned long key, void *& value) const
     value = entry->value;
     return TRUE;
   }
+#else // new code
+  const unsigned long bucketnum = key % this->tablesize;
+  SbDictEntry *entry = findEntry(key, bucketnum);
+  if (entry == NULL) {
+    value = NULL;
+    return FALSE;
+  }
+  else {
+    value = entry->value;
+    return TRUE;
+  }
+#endif // new code
 }
 
 /*!
@@ -171,6 +199,7 @@ SbDict::find(const unsigned long key, void *& value) const
 SbBool
 SbDict::remove(const unsigned long key)
 {
+#if 0 // OBSOLETED 19991026, pederb
   SbDictEntry *& entry = this->findEntry(key);
   SbDictEntry * tmp;
   
@@ -182,6 +211,23 @@ SbDict::remove(const unsigned long key)
     delete tmp;
     return TRUE;
   }
+#else // new code
+  const unsigned long bucketnum = key % this->tablesize;
+  SbDictEntry *prev = NULL;
+  SbDictEntry *entry = findEntry(key, bucketnum, &prev);
+  if (entry == NULL)
+    return FALSE;
+  else {
+    if (prev) {
+      prev->next = entry->next;
+    }
+    else {
+      this->buckets[bucketnum] = entry->next;
+    }
+    delete entry;
+    return TRUE;
+  }
+#endif // new code
 }
 
 /*!
@@ -239,6 +285,9 @@ SbDict::makePList(SbPList & keys, SbPList & values)
 //
 // private method
 //
+// this code seems to crash on Solaris 2.6. Testing new
+// code below, 19991026, pederb
+//
 SbDictEntry *&
 SbDict::findEntry(const unsigned long key) const
 {
@@ -249,6 +298,21 @@ SbDict::findEntry(const unsigned long key) const
     entry = &(*entry)->next;
   }
   return *entry;
+}
+
+SbDictEntry *
+SbDict::findEntry(const unsigned long key,
+		  const unsigned long bucketnum,
+		  SbDictEntry **prev) const
+{
+  if (prev) *prev = NULL;
+  SbDictEntry *entry = buckets[key % tablesize];
+  while (entry) {
+    if (entry->key == key) break;
+    if (prev) *prev = entry;
+    entry = entry->next;
+  }
+  return entry;
 }
 
 

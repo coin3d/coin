@@ -42,6 +42,9 @@
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*!
   \enum SoMaterialBinding::Binding
@@ -180,6 +183,14 @@ SoMaterialBinding::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoMaterialBindingElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoMaterialBindingElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
+
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+  SO_ENABLE(SoCallbackAction, SoMaterialBindingElement);
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
 /*!
@@ -198,9 +209,7 @@ SoMaterialBinding::cleanClass(void)
 void 
 SoMaterialBinding::GLRender(SoGLRenderAction * action)
 {
-  SoMaterialBindingElement::set(action->getState(), 
-				(SoMaterialBindingElement::Binding)
-				value.getValue());
+  SoMaterialBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -210,9 +219,17 @@ SoMaterialBinding::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoMaterialBinding::doAction(SoAction * /* action */)
+SoMaterialBinding::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!value.isIgnored()
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getMaterialBindingOverride(action->getState())
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+      ) {
+    SoMaterialBindingElement::set(action->getState(), 
+				  (SoMaterialBindingElement::Binding)
+				  value.getValue());
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -221,9 +238,9 @@ SoMaterialBinding::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoMaterialBinding::callback(SoCallbackAction * /* action */)
+SoMaterialBinding::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMaterialBinding::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -232,9 +249,9 @@ SoMaterialBinding::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoMaterialBinding::pick(SoPickAction * /* action */)
+SoMaterialBinding::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMaterialBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

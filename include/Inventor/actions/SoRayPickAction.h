@@ -26,13 +26,19 @@
 #endif // COIN_EXCLUDE_SORAYPICKACTION
 
 #include <Inventor/actions/SoPickAction.h>
+#include <Inventor/SbViewVolume.h>
+#include <Inventor/SbLine.h>
+#include <Inventor/SbPlane.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/lists/SoPickedPointList.h>
 
 class SbVec2s;
 class SbVec2f;
 class SbVec3f;
 class SbViewportRegion;
 class SoPickedPoint;
-class SoPickedPointList;
+
+
 
 class SoRayPickAction : public SoPickAction {
   typedef SoPickAction inherited;
@@ -65,15 +71,71 @@ public:
 
   void setPoint(const SbVec2s & viewportPoint);
   void setNormalizedPoint(const SbVec2f & normPoint);
-  void setRadius(float radiusInPixels);
+  void setRadius(const float radiusInPixels);
   void setRay(const SbVec3f & start, const SbVec3f & direction,
 	      float nearDistance = -1.0,
 	      float farDistance = -1.0);
-  void setPickAll(SbBool flag);
-  SbBool isPickAll(void) const;
-  const SoPickedPointList & getPickedPointList(void) const;
-  SoPickedPoint * getPickedPoint(int index = 0) const;
+  void setPickAll(const SbBool flag);
+  SbBool isPickAll() const;
+  const SoPickedPointList & getPickedPointList() const;
+  SoPickedPoint *getPickedPoint(const int index = 0) const;
 
+
+  void computeWorldSpaceRay();
+  SbBool hasWorldSpaceRay() const;
+  void setObjectSpace();
+  void setObjectSpace(const SbMatrix &matrix);
+  SbBool intersect(const SbVec3f &v0,
+		   const SbVec3f &v1,
+		   const SbVec3f &v2,
+		   SbVec3f &intersection, SbVec3f &barycentric,
+		   SbBool &front) const;
+  SbBool intersect(const SbVec3f &v0, const SbVec3f &v1,
+		   SbVec3f &intersection) const;
+  SbBool intersect(const SbVec3f &point) const;
+  SbBool intersect(const SbBox3f &box,
+		   const SbBool useFullViewVolume = TRUE);
+  const SbViewVolume &getViewVolume();
+  const SbLine &getLine();
+  SbBool isBetweenPlanes(const SbVec3f &intersection) const;
+  SoPickedPoint *addIntersection(const SbVec3f &objectSpacePoint);
+
+protected:
+
+  virtual void beginTraversal(SoNode *node);
+
+private:
+  
+  void setFlag(const unsigned int flag);
+  void clearFlag(const unsigned int flag);
+  SbBool isFlagSet(const unsigned int flag) const;
+  void calcObjectSpaceData();
+  void calcMatrices();
+  float calcRayRadius(const float radiusInPixels);
+
+  SbViewVolume osVolume;
+  SbLine osLine;
+  SbPlane nearPlane;
+  SbVec2s vpPoint;
+  SbVec2f normvpPoint;
+  SbVec3f rayStart;
+  SbVec3f rayDirection;
+  float rayRadiusStart;
+  float rayRadiusFar;
+  float rayNear;
+  float rayFar;
+  float radiusInPixels;
+
+  float currentPickDistance;
+
+  SbLine wsLine;
+  SbMatrix obj2World;
+  SbMatrix world2Obj;
+  SbMatrix extraMatrix;
+  
+  SoPickedPointList pickedPointList;
+ 
+  unsigned int flags;
 };
 
 #endif // !__SORAYPICKACTION_H__

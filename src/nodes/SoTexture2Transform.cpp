@@ -169,7 +169,7 @@ SoTexture2Transform::GLRender(SoGLRenderAction * action)
     tmp.makeIdentity();
     tmp[0][0] = scale[0];
     tmp[1][1] = scale[1];
-    mat.multRight(tmp);
+    mat.multLeft(tmp);
   }
   if (!rotation.isIgnored() && rotation.getValue() != 0.0f) {
     float cosa = (float)cos(rotation.getValue());
@@ -179,7 +179,7 @@ SoTexture2Transform::GLRender(SoGLRenderAction * action)
     tmp[1][0] = -sina;
     tmp[0][1] = sina;
     tmp[1][1] = cosa;
-    mat.multRight(tmp);
+    mat.multLeft(tmp);
   }
   c += translation.getValue();
   if (!translation.isIgnored() && 
@@ -187,7 +187,7 @@ SoTexture2Transform::GLRender(SoGLRenderAction * action)
     tmp.makeIdentity();
     tmp[3][0] = c[0];
     tmp[3][1] = c[1];
-    mat.multRight(tmp);
+    mat.multLeft(tmp);
   }
   
   SoTextureMatrixElement::mult(action->getState(), this,
@@ -240,3 +240,44 @@ SoTexture2Transform::pick(SoPickAction * /* action */)
   assert(0 && "FIXME: not implemented");
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
+
+void 
+SoTexture2Transform::calcMatrix(SbMatrix &mat)
+{
+  SbMatrix tmp;
+  SbVec2f c = center.isIgnored() ? 
+    SbVec2f(0.0f, 0.0f) :
+    center.getValue();
+
+  mat.makeIdentity();
+  mat[3][0] = -c[0];
+  mat[3][1] = -c[1];
+  
+  SbVec2f scale = scaleFactor.getValue();
+  if (!scaleFactor.isIgnored() && 
+      scale != SbVec2f(1.0f, 1.0f)) {
+    tmp.makeIdentity();
+    tmp[0][0] = scale[0];
+    tmp[1][1] = scale[1];
+    mat.multRight(tmp);
+  }
+  if (!rotation.isIgnored() && rotation.getValue() != 0.0f) {
+    float cosa = (float)cos(rotation.getValue());
+    float sina = (float)sin(rotation.getValue());
+    tmp.makeIdentity();
+    tmp[0][0] = cosa;
+    tmp[1][0] = -sina;
+    tmp[0][1] = sina;
+    tmp[1][1] = cosa;
+    mat.multRight(tmp);
+  }
+  c += translation.getValue();
+  if (!translation.isIgnored() && 
+      c != SbVec2f(0.0f, 0.0f)) {
+    tmp.makeIdentity();
+    tmp[3][0] = c[0];
+    tmp[3][1] = c[1];
+    mat.multRight(tmp);
+  }
+}
+

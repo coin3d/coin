@@ -39,6 +39,9 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
+#include <Inventor/actions/SoGetMatrixAction.h>
+#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
 #if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -204,13 +207,7 @@ SoMultipleCopy::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoMultipleCopy::GLRender(SoGLRenderAction * action)
 {
-  for (int i=0; i < matrix.getNum(); i++) {
-    action->getState()->push();
-    SoSwitchElement::set(action->getState(), i);
-    SoModelMatrixElement::mult(action->getState(), this, matrix[i]);
-    inherited::GLRender(action);
-    action->getState()->pop();
-  }
+  SoMultipleCopy::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -221,8 +218,7 @@ SoMultipleCopy::GLRender(SoGLRenderAction * action)
 SbBool
 SoMultipleCopy::affectsState(void) const
 {
-  assert(0 && "FIXME: not implemented");
-  return TRUE;
+  return FALSE;
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -230,9 +226,19 @@ SoMultipleCopy::affectsState(void) const
   FIXME: write doc
  */
 void
-SoMultipleCopy::doAction(SoAction * /* action */)
+SoMultipleCopy::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  //
+  // FIXME: what about path-traversal for thie node???
+  //
+
+  for (int i=0; i < matrix.getNum(); i++) {
+    action->getState()->push();
+    SoSwitchElement::set(action->getState(), i);
+    SoModelMatrixElement::mult(action->getState(), this, matrix[i]);
+    inherited::doAction(action);
+    action->getState()->pop();
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -241,9 +247,9 @@ SoMultipleCopy::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoMultipleCopy::callback(SoCallbackAction * /* action */)
+SoMultipleCopy::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMultipleCopy::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -252,9 +258,9 @@ SoMultipleCopy::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoMultipleCopy::pick(SoPickAction * /* action */)
+SoMultipleCopy::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoMultipleCopy::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
@@ -263,9 +269,9 @@ SoMultipleCopy::pick(SoPickAction * /* action */)
   FIXME: write doc
  */
 void
-SoMultipleCopy::handleEvent(SoHandleEventAction * /* action */)
+SoMultipleCopy::handleEvent(SoHandleEventAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  inherited::handleEvent(action);
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
@@ -274,9 +280,17 @@ SoMultipleCopy::handleEvent(SoHandleEventAction * /* action */)
   FIXME: write doc
  */
 void
-SoMultipleCopy::getMatrix(SoGetMatrixAction * /* action */)
+SoMultipleCopy::getMatrix(SoGetMatrixAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SbMatrix oldMatrix = action->getMatrix();
+  SbMatrix oldInvMatrix = action->getInverse();
+  for (int i=0; i < matrix.getNum(); i++) {
+    SoSwitchElement::set(action->getState(), i);
+    action->mult(this->matrix[i]);
+    inherited::getMatrix(action);
+    action->getMatrix().setValue(oldMatrix);
+    action->getInverse().setValue(oldInvMatrix);
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -285,9 +299,10 @@ SoMultipleCopy::getMatrix(SoGetMatrixAction * /* action */)
   FIXME: write doc
  */
 void
-SoMultipleCopy::search(SoSearchAction * /* action */)
+SoMultipleCopy::search(SoSearchAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoNode::search(action);
+  inherited::search(action);
 }
 #endif // !COIN_EXCLUDE_SOSEARCHACTION
 

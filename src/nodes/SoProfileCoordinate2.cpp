@@ -35,6 +35,9 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT)
 #include <Inventor/elements/SoProfileCoordinateElement.h>
@@ -124,6 +127,9 @@ SoProfileCoordinate2::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
 }
 
 /*!
@@ -142,8 +148,7 @@ SoProfileCoordinate2::cleanClass(void)
 void 
 SoProfileCoordinate2::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoProfileCoordinateElement::set2(action->getState(), this,
-				   point.getNum(), point.getValues(0));
+  SoProfileCoordinate2::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -153,9 +158,10 @@ SoProfileCoordinate2::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoProfileCoordinate2::doAction(SoAction * /* action */)
+SoProfileCoordinate2::doAction(SoAction *action )
 {
-  assert(0 && "FIXME: not implemented");
+  SoProfileCoordinateElement::set2(action->getState(), this,
+				   point.getNum(), point.getValues(0));
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -164,9 +170,9 @@ SoProfileCoordinate2::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoProfileCoordinate2::GLRender(SoGLRenderAction * /* action */)
+SoProfileCoordinate2::GLRender(SoGLRenderAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoProfileCoordinate2::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -186,9 +192,9 @@ SoProfileCoordinate2::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoProfileCoordinate2::pick(SoPickAction * /* action */)
+SoProfileCoordinate2::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoProfileCoordinate2::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

@@ -146,7 +146,7 @@ SoFile::getBoundingBox(SoGetBoundingBoxAction * action)
 void 
 SoFile::GLRender(SoGLRenderAction * action)
 {
-  this->children->traverse((SoAction *)action);
+  SoFile::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -207,9 +207,9 @@ SoFile::getChildren() const
   FIXME: write doc
  */
 void
-SoFile::doAction(SoAction * /* action */)
+SoFile::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  this->children->traverse((SoAction *)action);
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -218,9 +218,9 @@ SoFile::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoFile::callback(SoCallbackAction * /* action */)
+SoFile::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoFile::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -229,9 +229,9 @@ SoFile::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoFile::getMatrix(SoGetMatrixAction * /* action */)
+SoFile::getMatrix(SoGetMatrixAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoFile::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -240,9 +240,9 @@ SoFile::getMatrix(SoGetMatrixAction * /* action */)
   FIXME: write doc
  */
 void
-SoFile::handleEvent(SoHandleEventAction * /* action */)
+SoFile::handleEvent(SoHandleEventAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoFile::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
@@ -251,9 +251,9 @@ SoFile::handleEvent(SoHandleEventAction * /* action */)
   FIXME: write doc
  */
 void
-SoFile::pick(SoPickAction * /* action */)
+SoFile::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoFile::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

@@ -26,7 +26,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoGraphVerifyAction)
+//$ BEGIN TEMPLATE ActionSource( SoGraphVerifyAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoGraphVerifyAction )
 
 SoType SoGraphVerifyAction::classTypeId = SoType::badType();
 
@@ -47,6 +48,9 @@ SoGraphVerifyAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoGraphVerifyAction::enabledElements;
@@ -68,6 +72,7 @@ SoActionMethodList * SoGraphVerifyAction::methods;
 const SoEnabledElementsList &
 SoGraphVerifyAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -78,6 +83,7 @@ SoGraphVerifyAction::getEnabledElements(void) const
 void 
 SoGraphVerifyAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -87,6 +93,7 @@ SoGraphVerifyAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoGraphVerifyAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource

@@ -449,8 +449,7 @@ SoArray::GLRender(SoGLRenderAction * action)
 SbBool
 SoArray::affectsState(void) const
 {
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
+  return inherited::affectsState();
 }
 
 #if !defined(COIN_EXCLUDE_SOACTION)
@@ -458,9 +457,54 @@ SoArray::affectsState(void) const
   FIXME: write doc
 */
 void
-SoArray::doAction(SoAction * /* action */)
+SoArray::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  int N = 0;
+  for (int i=0; i < numElements3.getValue(); i++) {
+    for (int j=0; j < numElements2.getValue(); j++) {
+      for (int k=0; k < numElements1.getValue(); k++) {
+	
+	float multfactor_i = float(i);
+	float multfactor_j = float(j);
+	float multfactor_k = float(k);
+	
+	switch (origin.getValue()) {
+	case SoArray::FIRST:
+	  break;
+	case SoArray::CENTER:
+	  multfactor_i = -float(numElements3.getValue()-1.0f)/2.0f + float(i);
+	  multfactor_j = -float(numElements2.getValue()-1.0f)/2.0f + float(j);
+	  multfactor_k = -float(numElements1.getValue()-1.0f)/2.0f + float(k);
+	  break;
+	case SoArray::LAST:
+	  multfactor_i = -multfactor_i;
+	  multfactor_j = -multfactor_j;
+	  multfactor_k = -multfactor_k;
+	  break;
+
+	  // FIXME: catch w/SoDebugError. 19990324 mortene.
+	default: assert(0); break;
+	}
+
+	SbVec3f instance_pos =
+	  separation3.getValue() * multfactor_i +
+	  separation2.getValue() * multfactor_j +
+	  separation1.getValue() * multfactor_k;
+
+	action->getState()->push();
+	
+	SoSwitchElement::set(action->getState(),
+			     ++N);
+
+	// set local matrix to identity
+	SoModelMatrixElement::translateBy(action->getState(), this,
+					  instance_pos);
+	inherited::doAction(action);
+    
+	action->getState()->pop();
+      }
+    }
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -469,9 +513,9 @@ SoArray::doAction(SoAction * /* action */)
   FIXME: write doc
 */
 void
-SoArray::callback(SoCallbackAction * /* action */)
+SoArray::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoArray::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -480,9 +524,9 @@ SoArray::callback(SoCallbackAction * /* action */)
   FIXME: write doc
 */
 void
-SoArray::pick(SoPickAction * /* action */)
+SoArray::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoArray::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
@@ -491,9 +535,10 @@ SoArray::pick(SoPickAction * /* action */)
   FIXME: write doc
 */
 void
-SoArray::handleEvent(SoHandleEventAction * /* action */)
+SoArray::handleEvent(SoHandleEventAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoNode::handleEvent(action);
+  inherited::handleEvent(action);
 }
 #endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
@@ -502,9 +547,9 @@ SoArray::handleEvent(SoHandleEventAction * /* action */)
   FIXME: write doc
 */
 void
-SoArray::getMatrix(SoGetMatrixAction * /* action */)
+SoArray::getMatrix(SoGetMatrixAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoArray::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -515,10 +560,8 @@ SoArray::getMatrix(SoGetMatrixAction * /* action */)
 void
 SoArray::search(SoSearchAction * action)
 {
-  // 990615 pederb, should this differ from SoGroup::search()?
+  SoNode::search(action);
   inherited::search(action);
-
-  // assert(0 && "FIXME: not implemented");
 }
 #endif // !COIN_EXCLUDE_SOSEARCHACTION
 

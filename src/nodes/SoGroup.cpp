@@ -52,6 +52,10 @@
 #endif // !COIN_EXCLUDE_SOWRITEACTION
 #include <Inventor/errors/SoReadError.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
 static const char * const DEFINITION_KEYWORD = "DEF";
 static const char * const REFERENCE_KEYWORD  = "USE";
 
@@ -313,14 +317,14 @@ SoGroup::doAction(SoAction * action)
   int numIndices;
   const int * indices;
   switch (action->getPathCode(numIndices, indices)) {
-  case SoAction::IN_PATH: 
+  case SoAction::IN_PATH:     
     // FIXME: not necessary to traverse children which do not
     // affect state and is not in indices[] ?
     // But, traversal will stop pretty soon anyway, so it might
     // be slower to include a check here. pederb, 990618
     this->children->traverse(action, 0, indices[numIndices - 1]);
     break;
-    
+      
   case SoAction::NO_PATH:
   case SoAction::BELOW_PATH:
     this->children->traverse(action); // traverse all children
@@ -407,7 +411,15 @@ SoGroup::callback(SoCallbackAction * action)
 void 
 SoGroup::getMatrix(SoGetMatrixAction * action)
 {
-  SoGroup::doAction((SoAction *)action);
+  switch (action->getCurPathCode()) {
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:
+    break;
+  case SoAction::OFF_PATH:
+  case SoAction::IN_PATH:
+    SoGroup::doAction((SoAction *)action);
+    break;
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 

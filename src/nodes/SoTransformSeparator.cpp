@@ -29,6 +29,9 @@
 #include <Inventor/nodes/SoTransformSeparator.h>
 #include <Inventor/nodes/SoSubNode.h>
 
+#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
+#include <Inventor/actions/SoGetMatrixAction.h>
+#endif // ! COIN_EXCLUDE_SOGETMATRIXACTION
 #if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
 #endif
@@ -210,9 +213,20 @@ SoTransformSeparator::pick(SoPickAction * /* action */)
   FIXME: write doc
  */
 void
-SoTransformSeparator::getMatrix(SoGetMatrixAction * /* action */)
+SoTransformSeparator::getMatrix(SoGetMatrixAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (action->getCurPathCode() == SoAction::OFF_PATH) {
+    SbMatrix matrix, invmatrix;
+    matrix = action->getMatrix();
+    invmatrix = action->getInverse();
+    inherited::getMatrix(action);
+    action->getMatrix().setValue(matrix);
+    action->getInverse().setValue(invmatrix);
+  }
+  else {
+    assert(action->getCurPathCode() == SoAction::IN_PATH);
+    inherited::getMatrix(action);
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 

@@ -175,9 +175,9 @@ SoTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoTranslation::callback(SoCallbackAction * /* action */)
+SoTranslation::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoTranslation::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -186,10 +186,11 @@ SoTranslation::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoTranslation::getMatrix(SoGetMatrixAction * /* action */)
+SoTranslation::getMatrix(SoGetMatrixAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  action->translateBy(translation.getValue());
 }
+
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
 #if !defined(COIN_EXCLUDE_SOPICKACTION)
@@ -197,9 +198,9 @@ SoTranslation::getMatrix(SoGetMatrixAction * /* action */)
   FIXME: write doc
  */
 void
-SoTranslation::pick(SoPickAction * /* action */)
+SoTranslation::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoTranslation::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

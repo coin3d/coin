@@ -24,6 +24,8 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
+#include <Inventor/lists/SoDetailList.h>
+#include <Inventor/SbViewportRegion.h>
 
 class SoPath;
 class SoDetail;
@@ -37,26 +39,43 @@ public:
   SoPickedPoint(const SoPath * const path, SoState * const state,
 		const SbVec3f & objSpacePoint);
   ~SoPickedPoint();
-  SoPickedPoint * copy(void) const;
-  const SbVec3f & getPoint(void) const;
-  const SbVec3f & getNormal(void) const;
-  const SbVec4f & getTextureCoords(void) const;
-  int getMaterialIndex(void) const;
-  SoPath * getPath(void) const;
-  SbBool isOnGeometry(void) const;
-  const SoDetail * getDetail(const SoNode * const node = NULL) const;
-  const SbMatrix getObjectToWorld(const SoNode * const node = NULL) const;
-  const SbMatrix getWorldToObject(const SoNode * const node = NULL) const;
-  const SbMatrix getObjectToImage(const SoNode * const node = NULL) const;
-  const SbMatrix getImageToObject(const SoNode * const node = NULL) const;
-  const SbVec3f getObjectPoint(const SoNode * const node = NULL) const;
-  const SbVec3f getObjectNormal(const SoNode * const node = NULL) const;
-  const SbVec4f getObjectTextureCoords(const SoNode * const node = NULL) const;
+  SoPickedPoint *copy() const;
+  const SbVec3f &getPoint() const;
+  const SbVec3f &getNormal() const;
+  const SbVec4f &getTextureCoords() const;
+  int getMaterialIndex() const;
+  SoPath *getPath() const;
+  SbBool isOnGeometry() const;
+  const SoDetail *getDetail(const SoNode * const node = NULL) const;
+  const SbMatrix &getObjectToWorld(const SoNode * const node = NULL) const;
+  const SbMatrix &getWorldToObject(const SoNode * const node = NULL) const;
+  const SbMatrix &getObjectToImage(const SoNode * const node = NULL) const;
+  const SbMatrix &getImageToObject(const SoNode * const node = NULL) const;
+  SbVec3f getObjectPoint(const SoNode * const node = NULL) const;
+  SbVec3f getObjectNormal(const SoNode * const node = NULL) const;
+  SbVec4f getObjectTextureCoords(const SoNode * const node = NULL) const;
 
-  void setObjectNormal(const SbVec3f & normal);
-  void setObjectTextureCoords(const SbVec4f & texCoords);
+  void setObjectNormal(const SbVec3f &normal);
+  void setObjectTextureCoords(const SbVec4f &texCoords);
   void setMaterialIndex(const int index);
   void setDetail(SoDetail * detail, SoNode * node);
+
+  static void cleanClass();
+
+private:
+
+  SbVec3f point;
+  SbVec3f normal;
+  SbVec4f texCoords;
+  int materialIndex;
+  SoPath *path;
+  SbBool onGeometry;
+  SoDetailList detailList;
+  SoState *state;
+  SbViewportRegion viewport;
+
+  class SoGetMatrixAction *getMatrixAction() const;  
+  void applyMatrixAction(const SoNode * const node) const;
 };
 
 #endif // !__SOPICKEDPOINT_H__

@@ -29,7 +29,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoToVRML2Action)
+//$ BEGIN TEMPLATE ActionSource( SoToVRML2Action )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoToVRML2Action )
 
 SoType SoToVRML2Action::classTypeId = SoType::badType();
 
@@ -50,6 +51,9 @@ SoToVRML2Action::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoToVRML2Action::enabledElements;
@@ -71,6 +75,7 @@ SoActionMethodList * SoToVRML2Action::methods;
 const SoEnabledElementsList &
 SoToVRML2Action::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -81,6 +86,7 @@ SoToVRML2Action::getEnabledElements(void) const
 void 
 SoToVRML2Action::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -90,6 +96,7 @@ SoToVRML2Action::addMethod(const SoType type, SoActionMethod method)
 void 
 SoToVRML2Action::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -104,7 +111,7 @@ SoToVRML2Action::enableElement(const SoType type, const int stackIndex)
 void
 SoToVRML2Action::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoToVRML2Action)
+//$ BEGIN TEMPLATE InitActionSource( SoToVRML2Action )
   assert(SoToVRML2Action::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

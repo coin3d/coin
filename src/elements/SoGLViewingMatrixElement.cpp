@@ -205,15 +205,18 @@ SoGLViewingMatrixElement::getNodeId(SoState * const state)
 void
 SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
 {
-#if 0 // too much debug output.. 981021 mortene.
-  SoDebugError::postInfo("SoGLViewingMatrixElement::setElt()", "");
-#endif // 0
   this->viewingMatrix = matrix;
 
 #if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
   SbBool isIdentity = FALSE;
   const SbMatrix &mat = SoModelMatrixElement::get(this->state, isIdentity);
-  if (!isIdentity) this->viewingMatrix.multRight(mat);
+  if (!isIdentity) {
+#if COIN_DEBUG // debug
+    SoDebugError::postInfo("SoGLViewingMatrixElement::setElt",
+			   "mult model");
+#endif // debug
+    this->viewingMatrix.multRight(mat);
+  }
 #endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
   this->updategl();
 }

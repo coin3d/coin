@@ -26,8 +26,18 @@
 */
 
 #include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/elements/SoPickStyleElement.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/SbName.h>
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // ! COIN_EXCLUDE_SOPICKACTION
+
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+
 
 /*!
   \enum SoPickStyle::Style
@@ -129,6 +139,10 @@ SoPickStyle::initClass(void)
                        &SoPickStyle::createInstance,
                        SoNode::nextActionMethodIndex++);
 //$ END TEMPLATE InitNodeSource
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoPickStyleElement);
+#endif // ! COIN_EXCLUDE_SOPICKACTION
 }
 
 /*!
@@ -146,9 +160,16 @@ SoPickStyle::cleanClass(void)
   FIXME: write doc
  */
 void
-SoPickStyle::doAction(SoAction * /* action */)
+SoPickStyle::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!style.isIgnored() 
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getPickStyleOverride(action->getState())
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+      ) {
+    SoPickStyleElement::set(action->getState(), this, 
+			    (int32_t) style.getValue());
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -168,8 +189,8 @@ SoPickStyle::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoPickStyle::pick(SoPickAction * /* action */)
+SoPickStyle::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoPickStyle::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION

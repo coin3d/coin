@@ -32,9 +32,19 @@
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
+#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
+#include <Inventor/actions/SoGLRenderAction.h>
+#endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
+
 #if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
 #endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
+#if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
+#include <Inventor/elements/SoGLCoordinateElement.h>
+#endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
 
 /*!
   \var SoMFVec4f SoCoordinate4::point
@@ -114,6 +124,18 @@ SoCoordinate4::initClass(void)
                        &SoCoordinate4::createInstance,
                        SoNode::nextActionMethodIndex++);
 //$ END TEMPLATE InitNodeSource
+
+#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
+  SO_ENABLE(SoGetBoundingBoxAction, SoCoordinateElement);
+#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
+
+#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
+  SO_ENABLE(SoGLRenderAction, SoGLCoordinateElement);
+#endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoCoordinateElement);
+#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 }
 
 /*!
@@ -132,8 +154,7 @@ SoCoordinate4::cleanClass(void)
 void 
 SoCoordinate4::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoCoordinateElement::set4(action->getState(), this,
-			    point.getNum(), point.getValues(0));
+  SoCoordinate4::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -143,9 +164,10 @@ SoCoordinate4::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
 */
 void
-SoCoordinate4::doAction(SoAction * /* action */)
+SoCoordinate4::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCoordinateElement::set4(action->getState(), this,
+			    point.getNum(), point.getValues(0));
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -154,9 +176,9 @@ SoCoordinate4::doAction(SoAction * /* action */)
   FIXME: write doc
 */
 void
-SoCoordinate4::GLRender(SoGLRenderAction * /* action */)
+SoCoordinate4::GLRender(SoGLRenderAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCoordinate4::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -176,9 +198,9 @@ SoCoordinate4::callback(SoCallbackAction * /* action */)
   FIXME: write doc
 */
 void
-SoCoordinate4::pick(SoPickAction * /* action */)
+SoCoordinate4::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCoordinate4::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

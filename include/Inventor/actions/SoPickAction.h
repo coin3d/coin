@@ -26,6 +26,7 @@
 #endif // COIN_EXCLUDE_SOPICKACTION
 
 #include <Inventor/actions/SoAction.h>
+#include <Inventor/SbViewportRegion.h>
 
 class SbViewportRegion;
 
@@ -56,9 +57,16 @@ public:
 //$ END TEMPLATE ActionHeader
 
 public:
+  void enableCulling(const SbBool flag);
+  SbBool isCullingEnabled() const;
 
 protected:
   SoPickAction(const SbViewportRegion & viewportRegion);
+  virtual void beginTraversal(SoNode *node);
+  SbViewportRegion vpRegion;
+
+private:
+  SbBool cullingEnabled;
 };
 
 #endif // !__SOPICKACTION_H__

@@ -37,6 +37,10 @@
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
 #endif // !COIN_EXCLUDE_SOGLPOLYGONOFFSETELEMENT
 
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+
 /*!
   \enum SoPolygonOffset::Style
   FIXME: write documentation for enum
@@ -176,16 +180,28 @@ SoPolygonOffset::cleanClass(void)
 void
 SoPolygonOffset::doAction(SoAction * action)
 {
-  //
-  // FIXME: check override
-  //
+  SoState *state = action->getState();
+
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+  if (SoOverrideElement::getPolygonOffsetOverride(state)) return;
+#endif
+
+  float _factor, _units;
+  SoPolygonOffsetElement::Style _styles;
+  SbBool _on;
+  
+  SoPolygonOffsetElement::get(state, _factor, _units, _styles, _on);
+  if (!factor.isIgnored()) _factor = factor.getValue();
+  if (!units.isIgnored()) _units = units.getValue();
+  if (!styles.isIgnored()) _styles = (SoPolygonOffsetElement::Style)styles.getValue();
+  if (!on.isIgnored()) _on = on.getValue();
+
   SoPolygonOffsetElement::set(action->getState(),
 			      this,
-			      factor.getValue(),
-			      units.getValue(),
-			      (SoPolygonOffsetElement::Style)
-			      styles.getValue(),
-			      on.getValue());
+			      _factor,
+			      _units,
+			      _styles,
+			      _on);
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

@@ -288,7 +288,7 @@ SoShape::getScreenSize(SoState * const state,
     tmp = SbVec3f(i&4 ? v0[0] : v1[0],
 		  i&2 ? v0[1] : v1[1],
 		  i&1 ? v0[2] : v1[2]);
-    mat.multMatrixVec(tmp, tmp); // to world coordinates
+    mat.multVecMatrix(tmp, tmp); // to world coordinates
     vv.projectToScreen(tmp, tmp);
     bbox2.extendBy(SbVec2f(tmp[0], tmp[1]));
   }

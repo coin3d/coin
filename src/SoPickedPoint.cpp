@@ -24,27 +24,78 @@
   FIXME: write doc
  */
 
+
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/details/SoDetail.h>
 #include <assert.h>
 
+#if COIN_DEBUG
+#include <Inventor/errors/SoDebugError.h>
+#endif // COIN_DEBUG
+
+//
+// this is not thread-safe, but creating a new matrix action for
+// each picked point is not very efficient.
+//
+static SoGetMatrixAction *matrixAction = NULL;
+
 /*!
-  FIXME: write doc
- */
-SoPickedPoint::SoPickedPoint(const SoPickedPoint & /* pp */)
+  Will be called at the end of your program to free static memory
+  used by this class.
+*/
+void 
+SoPickedPoint::cleanClass()
 {
-  // FIXME: implement.
-  assert(0);
+  delete matrixAction;
+  matrixAction = NULL;
 }
 
 /*!
   FIXME: write doc
  */
-SoPickedPoint::SoPickedPoint(const SoPath * const /* path */,
-			     SoState * const /* state */,
-			     const SbVec3f & /* objSpacePoint */)
+SoPickedPoint::SoPickedPoint(const SoPickedPoint &pp)
 {
-  // FIXME: implement.
-  assert(0);
+  this->path = pp.path;
+  this->path->ref();
+  this->state = pp.state;
+  this->point = pp.point;
+  this->normal = pp.normal;
+  this->texCoords = pp.texCoords;
+  this->materialIndex = pp.materialIndex;
+  this->onGeometry = pp.onGeometry;
+  this->viewport = pp.viewport;
+  this->detailList = pp.detailList;
+}
+
+/*!
+  FIXME: write doc
+*/
+SoPickedPoint::SoPickedPoint(const SoPath * const path, SoState * const state,
+			     const SbVec3f &objSpacePoint)
+{
+  this->path = path->copy();
+  this->path->ref();
+  this->state = state;
+  this->getObjectToWorld().multVecMatrix(objSpacePoint, this->point);
+#if COIN_DEBUG // debug
+  SoDebugError::postInfo("SoPickedPoint::SoPickedPoint",
+			 "%g %g %g -> %g %g %g",
+			 objSpacePoint[0], objSpacePoint[1], objSpacePoint[2],
+			 point[0], point[1], point[2]);
+#endif // debug
+
+  this->normal = SbVec3f(0,0,1);
+  this->texCoords = SbVec4f(0,0,0,1);
+  this->materialIndex = 0;
+  this->onGeometry = TRUE;
+  this->viewport = SoViewportRegionElement::get(state);
+  
+  int pathlen = this->path->getLength();
+  for (int i = 0; i < pathlen; i++) {
+    this->detailList.append(NULL);
+  }
 }
 
 /*!
@@ -52,214 +103,227 @@ SoPickedPoint::SoPickedPoint(const SoPath * const /* path */,
  */
 SoPickedPoint::~SoPickedPoint()
 {
-  // FIXME: implement.
-  assert(0);
+  assert(this->path);
+  this->path->unref();
+
+  int n = this->detailList.getLength();
+  for (int i = 0; i < n; i++) {
+    delete this->detailList[i];
+  }
 }
 
 /*!
   FIXME: write doc
  */
 SoPickedPoint *
-SoPickedPoint::copy(void) const
+SoPickedPoint::copy() const
 {
-  // FIXME: implement.
-  assert(0);
-  return NULL;
+  return new SoPickedPoint(*this);
 }
 
 /*!
   FIXME: write doc
  */
 const SbVec3f &
-SoPickedPoint::getPoint(void) const
+SoPickedPoint::getPoint() const
 {
-  // FIXME: implement.
-  assert(0);
-  static SbVec3f v(0,0,0);
-  return v;
+  return this->point;
 }
 
 /*!
   FIXME: write doc
  */
 const SbVec3f &
-SoPickedPoint::getNormal(void) const
+SoPickedPoint::getNormal() const
 {
-  // FIXME: implement.
-  assert(0);
-  static SbVec3f v(0,0,0);
-  return v;
+  return this->normal;
 }
 
 /*!
   FIXME: write doc
  */
 const SbVec4f &
-SoPickedPoint::getTextureCoords(void) const
+SoPickedPoint::getTextureCoords() const
 {
-  // FIXME: implement.
-  assert(0);
-  static SbVec4f v(0,0,0,0);
-  return v;
+  return this->texCoords;
 }
 
 /*!
   FIXME: write doc
  */
 int
-SoPickedPoint::getMaterialIndex(void) const
+SoPickedPoint::getMaterialIndex() const
 {
-  // FIXME: implement.
-  assert(0);
-  return 0;
+  return this->materialIndex;
 }
 
 /*!
   FIXME: write doc
  */
 SoPath *
-SoPickedPoint::getPath(void) const
+SoPickedPoint::getPath() const
 {
-  // FIXME: implement.
-  assert(0);
-  return NULL;
+  // FIXME: return copy?
+  return (SoPath*)this->path;
 }
 
 /*!
   FIXME: write doc
  */
 SbBool 
-SoPickedPoint::isOnGeometry(void) const
+SoPickedPoint::isOnGeometry() const
 {
-  // FIXME: implement.
-  assert(0);
-  return FALSE;
+  return this->onGeometry;
 }
 
 /*!
   FIXME: write doc
  */
 const SoDetail *
-SoPickedPoint::getDetail(const SoNode * const /* node */) const
+SoPickedPoint::getDetail(const SoNode * const node) const
 {
-  // FIXME: implement.
-  assert(0);
-  return NULL;
+  int idx = node ? this->path->findNode(node) : this->path->getLength() - 1;
+  return idx >= 0 ? this->detailList[idx] : NULL;
+}
+
+const SbMatrix &
+SoPickedPoint::getObjectToWorld(const SoNode * const node) const
+{
+  this->applyMatrixAction(node);
+  return getMatrixAction()->getMatrix();
+}
+
+const SbMatrix &
+SoPickedPoint::getWorldToObject(const SoNode * const node) const
+{
+  this->applyMatrixAction(node);
+  return getMatrixAction()->getInverse();
 }
 
 /*!
   FIXME: write doc
  */
-const SbMatrix
-SoPickedPoint::getObjectToWorld(const SoNode * const /* node */) const
+const SbMatrix &
+SoPickedPoint::getObjectToImage(const SoNode * const node) const
 {
-  // FIXME: implement.
-  assert(0);
-  return SbMatrix::identity();
+  this->applyMatrixAction(node);
+  return getMatrixAction()->getTextureMatrix();
 }
 
 /*!
   FIXME: write doc
  */
-const SbMatrix
-SoPickedPoint::getWorldToObject(const SoNode * const /* node */) const
+const SbMatrix &
+SoPickedPoint::getImageToObject(const SoNode * const node) const
 {
-  // FIXME: implement.
-  assert(0);
-  return SbMatrix::identity();
+  this->applyMatrixAction(node);
+  return getMatrixAction()->getTextureInverse();
 }
 
 /*!
   FIXME: write doc
  */
-const SbMatrix
-SoPickedPoint::getObjectToImage(const SoNode * const /* node */) const
+SbVec3f
+SoPickedPoint::getObjectPoint(const SoNode * const node) const
 {
-  // FIXME: implement.
-  assert(0);
-  return SbMatrix::identity();
+  SbVec3f ret;
+  this->getWorldToObject(node).multVecMatrix(this->point, ret);
+  return ret;
 }
 
 /*!
   FIXME: write doc
  */
-const SbMatrix
-SoPickedPoint::getImageToObject(const SoNode * const /* node */) const
+SbVec3f
+SoPickedPoint::getObjectNormal(const SoNode * const node) const
 {
-  // FIXME: implement.
-  assert(0);
-  return SbMatrix::identity();
+  SbVec3f ret;
+  this->getWorldToObject(node).multDirMatrix(this->normal, ret);
+  return ret;
 }
 
 /*!
   FIXME: write doc
  */
-const SbVec3f
-SoPickedPoint::getObjectPoint(const SoNode * const /* node */) const
+SbVec4f
+SoPickedPoint::getObjectTextureCoords(const SoNode * const node) const
 {
-  // FIXME: implement.
-  assert(0);
-  return SbVec3f(0,0,0);
-}
-
-/*!
-  FIXME: write doc
- */
-const SbVec3f
-SoPickedPoint::getObjectNormal(const SoNode * const /* node */) const
-{
-  // FIXME: implement.
-  assert(0);
-  return SbVec3f(0,0,0);
-}
-
-/*!
-  FIXME: write doc
- */
-const SbVec4f
-SoPickedPoint::getObjectTextureCoords(const SoNode * const /* node */) const
-{
-  // FIXME: implement.
-  assert(0);
-  return SbVec4f(0,0,0,0);
+  SbVec4f ret;
+  this->getImageToObject(node).multVecMatrix(this->texCoords, ret);
+  return ret;
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoPickedPoint::setObjectNormal(const SbVec3f & /* normal */)
+SoPickedPoint::setObjectNormal(const SbVec3f &normal)
 {
-  // FIXME: implement.
-  assert(0);
+  this->getObjectToWorld().multVecMatrix(normal, this->normal);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoPickedPoint::setObjectTextureCoords(const SbVec4f & /* texCoords */)
+SoPickedPoint::setObjectTextureCoords(const SbVec4f &texCoords)
 {
-  // FIXME: implement.
-  assert(0);
+  this->getObjectToImage().multVecMatrix(texCoords, this->texCoords);
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoPickedPoint::setMaterialIndex(const int /* index */)
+SoPickedPoint::setMaterialIndex(const int index)
 {
-  // FIXME: implement.
-  assert(0);
+  this->materialIndex = index;
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoPickedPoint::setDetail(SoDetail * /* detail */, SoNode * /* node */)
+SoPickedPoint::setDetail(SoDetail *detail, SoNode *node)
 {
-  // FIXME: implement.
-  assert(0);
+  int idx = this->path->findNode(node);
+  if (idx >= 0) {
+    delete this->detailList[idx];
+    this->detailList.set(idx, detail);
+  }
 }
+
+void 
+SoPickedPoint::applyMatrixAction(const SoNode * const node) const
+{
+  if (node) {
+    // FIXME: it should be possible to optimize this by 
+    // avoiding to create 
+    int idx = this->path->findNode(node);
+    assert(idx >= 0);
+    SoPath *subpath = this->path->copy(idx+1);
+    assert(subpath);
+    subpath->ref();
+    getMatrixAction()->apply(subpath);
+    subpath->unref();
+  }
+  else {
+    getMatrixAction()->apply(this->path);
+  }
+}
+
+/*!
+  Used to return a matrix action to be used to find scene matrices.
+*/
+SoGetMatrixAction *
+SoPickedPoint::getMatrixAction() const
+{
+  if (matrixAction == NULL) {
+    matrixAction = new SoGetMatrixAction(this->viewport);
+  }
+  else {
+    matrixAction->setViewportRegion(this->viewport);
+  }
+  return matrixAction;
+}
+

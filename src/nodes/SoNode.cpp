@@ -1034,6 +1034,12 @@ SoNode::callback(SoCallbackAction * /* action */)
 void
 SoNode::getMatrixS(SoAction * const action, SoNode * const node)
 {
+#if 1 // debug
+  SoDebugError::postInfo("SoNode::getMatrixS",
+			 "%s",
+			 node->getTypeId().getName().getString());
+#endif // debug
+
   assert(action && node);
   assert(action->getTypeId() == SoGetMatrixAction::getClassTypeId());
   SoGetMatrixAction * const getMatrixAction =
@@ -1064,7 +1070,7 @@ void
 SoNode::handleEventS(SoAction * const action, SoNode * const node)
 {
   assert(action && node);
-  assert(action->getTypeId() == SoHandleEventAction::getClassTypeId());
+  assert(action->getTypeId().isDerivedFrom(SoHandleEventAction::getClassTypeId()));
   SoHandleEventAction * const handleEventAction =
     (SoHandleEventAction *)(action);
   node->handleEvent(handleEventAction);
@@ -1089,7 +1095,7 @@ void
 SoNode::pickS(SoAction * const action, SoNode * const node)
 {
   assert(action && node);
-  assert(action->getTypeId() == SoPickAction::getClassTypeId());
+  assert(action->getTypeId().isDerivedFrom(SoPickAction::getClassTypeId()));
   SoPickAction * const pickAction =
     (SoPickAction *)(action);
   node->pick(pickAction);
@@ -1114,7 +1120,13 @@ void
 SoNode::rayPickS(SoAction * const action, SoNode * const node)
 {
   assert(action && node);
-  assert(action->getTypeId() == SoRayPickAction::getClassTypeId());
+  assert(action->getTypeId().isDerivedFrom(SoRayPickAction::getClassTypeId()));
+
+#if 0 // debug
+  SoDebugError::postInfo("SoNode::rayPickS",
+			 "%s", node->getTypeId().getName().getString());
+#endif // debug
+
   SoRayPickAction * const rayPickAction =
     (SoRayPickAction *)(action);
   node->rayPick(rayPickAction);
@@ -1139,7 +1151,7 @@ void
 SoNode::searchS(SoAction * const action, SoNode * const node)
 {
   assert(action && node);
-  assert(action->getTypeId() == SoSearchAction::getClassTypeId());
+  assert(action->getTypeId().isDerivedFrom(SoSearchAction::getClassTypeId()));
   SoSearchAction * const searchAction =
     (SoSearchAction *)(action);
   node->search(searchAction);
@@ -1206,7 +1218,7 @@ void
 SoNode::writeS(SoAction * const action, SoNode * const node)
 {
   assert(action && node);
-  assert(action->getTypeId() == SoWriteAction::getClassTypeId());
+  assert(action->getTypeId().isDerivedFrom(SoWriteAction::getClassTypeId()));
   SoWriteAction * const writeAction = (SoWriteAction *)(action);
   node->write(writeAction);
 }

@@ -29,7 +29,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoShapeSimplifyAction)
+//$ BEGIN TEMPLATE ActionSource( SoShapeSimplifyAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoShapeSimplifyAction )
 
 SoType SoShapeSimplifyAction::classTypeId = SoType::badType();
 
@@ -50,6 +51,9 @@ SoShapeSimplifyAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoShapeSimplifyAction::enabledElements;
@@ -71,6 +75,7 @@ SoActionMethodList * SoShapeSimplifyAction::methods;
 const SoEnabledElementsList &
 SoShapeSimplifyAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -81,6 +86,7 @@ SoShapeSimplifyAction::getEnabledElements(void) const
 void 
 SoShapeSimplifyAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -90,6 +96,7 @@ SoShapeSimplifyAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoShapeSimplifyAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -104,7 +111,7 @@ SoShapeSimplifyAction::enableElement(const SoType type, const int stackIndex)
 void
 SoShapeSimplifyAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoShapeSimplifyAction)
+//$ BEGIN TEMPLATE InitActionSource( SoShapeSimplifyAction )
   assert(SoShapeSimplifyAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

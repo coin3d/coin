@@ -54,7 +54,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoSearchAction)
+//$ BEGIN TEMPLATE ActionSource( SoSearchAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoSearchAction )
 
 SoType SoSearchAction::classTypeId = SoType::badType();
 
@@ -75,6 +76,9 @@ SoSearchAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoSearchAction::enabledElements;
@@ -96,6 +100,7 @@ SoActionMethodList * SoSearchAction::methods;
 const SoEnabledElementsList &
 SoSearchAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -106,6 +111,7 @@ SoSearchAction::getEnabledElements(void) const
 void 
 SoSearchAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -115,6 +121,7 @@ SoSearchAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoSearchAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -129,7 +136,7 @@ SoSearchAction::enableElement(const SoType type, const int stackIndex)
 void
 SoSearchAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoSearchAction)
+//$ BEGIN TEMPLATE InitActionSource( SoSearchAction )
   assert(SoSearchAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -139,11 +146,6 @@ SoSearchAction::initClass(void)
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
-  // with so few methods - these could be removed from the SoNode interface
-  // and it's virtual table...
-  SO_ACTION_ADD_METHOD(SoNode, (SoActionMethodFunc*)SoNode::searchS);
-
-  methods->setDefault((void *)SoNode::searchS);
 }
 
 /*!
@@ -168,6 +170,15 @@ SoSearchAction::SoSearchAction(void)
     path(NULL) // paths(0)
 {
   SO_ACTION_CONSTRUCTOR(SoSearchAction);
+
+  static int first = 1;
+  if (first) {
+    first = 0;
+    // with so few methods - this could be removed from the SoNode interface
+    // and it's virtual table...
+    SO_ACTION_ADD_METHOD(SoNode, SoNode::searchS);
+  }
+  methods->setUp(); // FIXME: not sure if this should be called here...
 }
 
 /*!

@@ -98,7 +98,7 @@ SoPath::getClassTypeId(void)
   This virtual method returns the run-time type identifier for (in this case)
   this SoPath-derived object.
 */
-
+ 
 SoType
 SoPath::getTypeId(void) const
 {
@@ -545,6 +545,19 @@ SoPath::findFork(const SoPath * const path) const
   return i - 1;
 }
 
+/*!
+  Returns the node index if found in path, -1 otherwise
+*/
+int 
+SoPath::findNode(const SoNode * const node) const
+{
+  const int len = this->nodes.getLength();
+  for (int i = 0; i < len; i++) {
+    if (nodes[i] == node) return i;
+  }
+  return -1;
+}
+
 // *************************************************************************
 // some tests
 
@@ -651,8 +664,9 @@ SoPath::copy(const int startFromNodeIndex, int numNodes) const
 
   SoPath * newPath = new SoPath(numNodes);
   const int max = startFromNodeIndex + numNodes;
-  for (int i = startFromNodeIndex; i < max; i++)
+  for (int i = startFromNodeIndex; i < max; i++) {
     newPath->append((SoNode *) this->nodes[ i ], this->indices[ i ]);
+  }
   return newPath;
 }
 

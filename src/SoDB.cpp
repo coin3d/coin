@@ -41,6 +41,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoBase.h>
 #include <Inventor/system/kosher.h>
+#include <Inventor/SoPickedPoint.h>
 
 #include <Inventor/fields/SoField.h>
 #if !defined(COIN_EXCLUDE_SOSFTIME)
@@ -184,10 +185,10 @@ SoDB::init(void)
   SoElement::initClass();
 #endif // !(COIN_EXCLUDE_SOELEMENT
 #if !defined(COIN_EXCLUDE_SOACTION)
+  // Actions must be initialized before nodes (because of SO_ENABLE)
   SoAction::initClass();
 #endif // !COIN_EXCLUDE_SOACTION
 #if !defined(COIN_EXCLUDE_SONODE)
-  // Nodes must be initialized after actions.
   SoNode::initClass();
 #endif // !COIN_EXCLUDE_SONODE
 #if !defined(COIN_EXCLUDE_SOENGINE)
@@ -273,6 +274,7 @@ SoDB::clean(void)
   SoBase::cleanClass();
   SoInput::clean();
   SoError::cleanErrors();
+  SoPickedPoint::cleanClass();
   SoType::clean();
 
 #if !defined(COIN_EXCLUDE_SOTIMERSENSOR)

@@ -150,7 +150,7 @@ SoDirectionalLight::cleanClass(void)
 void 
 SoDirectionalLight::GLRender(SoGLRenderAction * action)
 {
-  if (!on.isIgnored() && !on.getValue()) return;
+  if (!on.getValue()) return;
 
   SoState *state = action->getState();
   int idx = SoGLLightIdElement::increment(state);
@@ -172,19 +172,16 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
 #endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
   glLightfv(light, GL_AMBIENT, lightcolor.getValue());
   
-  if (!color.isIgnored()) lightcolor.setRGB(color.getValue());
-  else lightcolor.setRGB(SbColor(1.0f, 1.0f, 1.0f));
+  lightcolor.setRGB(color.getValue());
   if (!intensity.isIgnored()) lightcolor *= intensity.getValue();
   
   glLightfv(light, GL_DIFFUSE, lightcolor.getValue());
   glLightfv(light, GL_SPECULAR, lightcolor.getValue());
     
   // GL directional light is specified towards light source
-  SbVec3f dir(0,0,1);
-  if (!direction.isIgnored()) {
-    dir = -direction.getValue(); 
-    dir.normalize();
-  }
+  SbVec3f dir = -direction.getValue(); 
+  dir.normalize();
+
   // directional when w = 0.0
   SbVec4f dirvec(dir[0], dir[1], dir[2], 0.0f);
   glLightfv(light, GL_POSITION, dirvec.getValue());

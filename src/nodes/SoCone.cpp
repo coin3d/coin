@@ -131,6 +131,65 @@ SoCone::getTypeId(void) const
 }
 //$ END TEMPLATE NodeSource
 
+
+// parameterized equation for a point on a line:
+//     Q = P + t*D,  P is a known line point, D is the line direction
+//
+// equation for a point on a cone:
+// 
+//  |Q - L| = r
+//
+//     h - y 
+// r = ----- * bottomr,  L = y-axis
+//       h 
+//
+// |P + t*D - L| = r
+//
+// some algebra (phew) leads to:
+// 
+// h * ((dx^2 + dy^2 + dz^2 + 1) * t^2 +
+// (2dx - 2y0^2 + 3y0 + 2dz) * t  +
+// x0^2 + 2y0^2 + z0^2 - h)            =  0
+//                                   
+// using
+//
+// t = -b +/- sqrt(b^2 - 4ac)/2a
+//
+// a = h(dx^2 + dy^2 +dz^2 + 1)
+// b = h(2dx - 2y0^2 + 3y0 + 2dz)
+// c = h(x0^2 + 2y0^2 + z0^2 - h)
+//
+// we get zero, one or two t-values.
+//
+// After backsubstitution in the line equation, 
+// we have to check if 0 <= y <= h.
+//
+static SbBool 
+intersect_cone_line(const float bottomr,
+		    const float h,
+		    const SbLine &line,
+		    SbVec3f &enter,
+		    SbVec3f &exit)
+{
+#if 0
+  const SbVec3f &d = line.getDirection();
+  const SbVec3f &p = line.getPosition();
+  float a = h*(d.dot(d) + 1.0f);
+  float b = h*(d[0] - 2.0f*p[1]*p[1] + 3.0f*p[1] + 2.0f*d[2]);
+  float c = h*(p[0]*p[0] + 2.0f*p[1]*p[1] + p[2]*p[2] - h);
+
+  float root = b*b - 4.0f*a*c;
+  if (root < 0.0f) return FALSE; // no solutions
+  
+  root = sqrt(root);
+  
+  float t0 = (-b + root) / (2.0f*a);
+  float t1 = (-b - root) / (2.0f*a);
+#endif
+
+}
+
+
 /*!
   Constructor.
 */
@@ -359,7 +418,10 @@ SoCone::hasPart(SoCone::Part part) const
 void
 SoCone::rayPick(SoRayPickAction * /* action */)
 {
-  assert(0 && "FIXME: not implemented");
+#if 0
+  action->setObjectSpace();
+  const SbLine &line = action->getLine();
+#endif
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 

@@ -32,6 +32,9 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOGLNORMALELEMENT)
 #include <Inventor/elements/SoGLNormalElement.h>
@@ -121,6 +124,10 @@ SoNormal::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLNormalElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoNormalElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
 }
 
 /*!
@@ -166,8 +173,7 @@ SoNormal::GLRender(SoGLRenderAction * action)
   //       should be passed on to SoGLNormalizeElement
   //       to optimize rendering (pederb)
   //
-  SoNormalElement::set(action->getState(), this,
-		       vector.getNum(), vector.getValues(0));
+  SoNormal::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -177,10 +183,12 @@ SoNormal::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoNormal::doAction(SoAction * /* action */)
+SoNormal::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoNormalElement::set(action->getState(), this,
+		       vector.getNum(), vector.getValues(0));
 }
+
 #endif // !COIN_EXCLUDE_SOACTION
 
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
@@ -199,9 +207,9 @@ SoNormal::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoNormal::pick(SoPickAction * /* action */)
+SoNormal::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoNormal::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

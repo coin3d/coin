@@ -35,6 +35,9 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
 #if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
@@ -51,6 +54,10 @@
 #if !defined(COIN_EXCLUDE_SOTEXTUREQUALITYELEMENT)
 #include <Inventor/elements/SoTextureQualityElement.h>
 #endif // !COIN_EXCLUDE_SOTEXTUREQUALITYELEMENT
+
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*!
   \enum SoComplexity::Type
@@ -176,6 +183,20 @@ SoComplexity::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoShapeStyleElement);
   SO_ENABLE(SoGLRenderAction, SoTextureQualityElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+  SO_ENABLE(SoCallbackAction, SoComplexityElement);
+  SO_ENABLE(SoCallbackAction, SoComplexityTypeElement);
+  SO_ENABLE(SoCallbackAction, SoShapeStyleElement);
+  SO_ENABLE(SoCallbackAction, SoTextureQualityElement);
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoComplexityElement);
+  SO_ENABLE(SoPickAction, SoComplexityTypeElement);
+  SO_ENABLE(SoPickAction, SoShapeStyleElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
+
 }
 
 /*!
@@ -194,27 +215,7 @@ SoComplexity::cleanClass(void)
 void 
 SoComplexity::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoState * state = action->getState();
-
-  SoComplexityTypeElement::Type ctype;
-  switch (type.getValue()) {
-  case SCREEN_SPACE:
-    ctype = SoComplexityTypeElement::SCREEN_SPACE;
-    break;
-  case OBJECT_SPACE:
-    ctype = SoComplexityTypeElement::OBJECT_SPACE;
-    break;
-  case BOUNDING_BOX:
-    ctype = SoComplexityTypeElement::BOUNDING_BOX;
-    break;
-  default:
-    assert(0); // FIXME: do something a bit more graceful here. 19990315 mortene.
-    break;
-  }
-
-  SoComplexityElement::set(state, value.getValue());
-  SoComplexityTypeElement::set(state, ctype);
-  // FIXME: what about textureQuality info? 19990315 mortene.
+  SoComplexity::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -225,15 +226,11 @@ SoComplexity::getBoundingBox(SoGetBoundingBoxAction * action)
 void 
 SoComplexity::GLRender(SoGLRenderAction * action)
 {
-  SoState * state = action->getState();
-
-  if (!value.isIgnored()) 
-    SoComplexityElement::set(state, value.getValue());
-  if (!type.isIgnored()) 
-    SoComplexityTypeElement::set(state, (SoComplexityTypeElement::Type) 
-				 type.getValue());
-
-  // FIXME: what about textureQuality info? 19990315 mortene.
+  SoComplexity::doAction(action);
+  if (!textureQuality.isIgnored()) {
+    SoTextureQualityElement::set(action->getState(), this, 
+				 textureQuality.getValue());
+  }
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -243,9 +240,27 @@ SoComplexity::GLRender(SoGLRenderAction * action)
   FIXME: write doc
 */
 void
-SoComplexity::doAction(SoAction * /* action */)
+SoComplexity::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState * state = action->getState();
+#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
+  if (!value.isIgnored() 
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getComplexityOverride(state)
+#endif // ! COIN_EXCLUDE_SOOVERRIDEELEMENT
+      ) 
+    SoComplexityElement::set(state, value.getValue());
+#endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
+
+#if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
+  if (!type.isIgnored()
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getComplexityTypeOverride(state)
+#endif // ! COIN_EXCLUDE_SOOVERRIDEELEMENT
+      )
+    SoComplexityTypeElement::set(state, (SoComplexityTypeElement::Type) 
+				 type.getValue());
+#endif // ! COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT 
 }
 #endif // !COIN_EXCLUDE_DOACTION
 
@@ -254,9 +269,13 @@ SoComplexity::doAction(SoAction * /* action */)
   FIXME: write doc
 */
 void
-SoComplexity::callback(SoCallbackAction * /* action */)
+SoComplexity::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoComplexity::doAction((SoAction*)action);
+  if (!textureQuality.isIgnored()) {
+    SoTextureQualityElement::set(action->getState(), this, 
+				 textureQuality.getValue());
+  }
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -265,9 +284,9 @@ SoComplexity::callback(SoCallbackAction * /* action */)
   FIXME: write doc
 */
 void
-SoComplexity::pick(SoPickAction * /* action */)
+SoComplexity::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoComplexity::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
@@ -281,3 +300,4 @@ SoComplexity::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
   assert(0 && "FIXME: not implemented");
 }
 #endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+

@@ -558,3 +558,29 @@ SoMarkerSet::isMarkerBitSet(int /* markerIndex */, int /* bitNumber */)
   assert(0 && "FIXME: not implemented");
   return FALSE;
 }
+
+// Need some perl-magic from Larsa
+
+//$ INSERT MARKER CROSS_5_5
+// "x...x"
+// ".x.x."
+// "..x.."
+// ".x.x."
+// "x...x"
+
+//$ INSERT MARKER PLUS_5_5
+// "..x.."
+// "..x.."
+// "xxxxx"
+// "..x.."
+// "..x.."
+
+//$ INSERT MARKER MINUS_5_5
+// "..x.."
+// "....."
+// "xxxxx"
+// "....."
+// "..x.."
+
+
+

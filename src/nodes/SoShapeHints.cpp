@@ -35,6 +35,9 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
@@ -45,6 +48,9 @@
 #if !defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
 #include <Inventor/elements/SoCreaseAngleElement.h>
 #endif // !COIN_EXCLUDE_SOCREASEANGLEELEMENT
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*!
   \enum SoShapeHints::VertexOrdering
@@ -207,6 +213,11 @@ SoShapeHints::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLShapeHintsElement);
   SO_ENABLE(SoGLRenderAction, SoCreaseAngleElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoShapeHintsElement);
+  SO_ENABLE(SoPickAction, SoCreaseAngleElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
 }
 
 /*!
@@ -225,17 +236,35 @@ SoShapeHints::cleanClass(void)
 void 
 SoShapeHints::doAction(SoAction * action)
 {
-  // FIXME: this is not in accordance with OIV. 19990315 mortene.
-  SoShapeHintsElement::set(action->getState(), this,
-			   (SoShapeHintsElement::VertexOrdering)
-			   vertexOrdering.getValue(),
-			   (SoShapeHintsElement::ShapeType)
-			   shapeType.getValue(),
-			   (SoShapeHintsElement::FaceType)
-			   faceType.getValue());
+  SoState *state = action->getState();
 
-  SoCreaseAngleElement::set(action->getState(), this,
-			    creaseAngle.getValue());
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+  uint32_t flags = SoOverrideElement::getFlags(state);
+#define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
+#else // COIN_EXCLUDE_SOOVERRIDEELEMENT
+#define TEST_OVERRIDE(x,y) FALSE // a neat little trick (don't nag, Morten :-)
+#endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
+  
+  // store current values, in case some are overridden or ignored
+  SoShapeHintsElement::VertexOrdering vo;
+  SoShapeHintsElement::ShapeType st;
+  SoShapeHintsElement::FaceType ft;
+  SoShapeHintsElement::get(state, vo, st, ft);
+  
+  if (!vertexOrdering.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS))
+    vo = (SoShapeHintsElement::VertexOrdering) vertexOrdering.getValue();
+  if (!shapeType.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS))
+    st = (SoShapeHintsElement::ShapeType) shapeType.getValue();
+  if (!faceType.isIgnored() && !TEST_OVERRIDE(SHAPE_HINTS)) 
+    ft = (SoShapeHintsElement::FaceType) faceType.getValue();
+
+  SoShapeHintsElement::set(action->getState(), this,
+			   vo, st, ft);
+  
+  if (!creaseAngle.isIgnored() && !TEST_OVERRIDE(CREASE_ANGLE))
+    SoCreaseAngleElement::set(state, this,
+			      creaseAngle.getValue());
+#undef TEST_OVERRIDE
 }
 #endif // !COIN_EXCLUDE_SOACTION
 

@@ -25,6 +25,13 @@
   FIXME: write class doc
 */
 
+
+//
+// FIXME: this class is really not correctly implemented. Each
+// vertex shape node should support this node internally.
+// Right now we just push its values on the stack.
+//
+
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoSubNode.h>
 
@@ -34,6 +41,12 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 #if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -55,6 +68,9 @@
 #endif // !COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
 #if !defined(COIN_EXCLUDE_SODIFFUSECOLORELEMENT)
 #include <Inventor/elements/SoDiffuseColorElement.h>
+#endif 
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
 #endif 
 
 /*!
@@ -222,6 +238,14 @@ SoVertexProperty::initClass()
   SO_ENABLE(SoGLRenderAction, SoGLNormalElement);
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoCoordinateElement);
+  SO_ENABLE(SoPickAction, SoMaterialBindingElement);
+  SO_ENABLE(SoPickAction, SoNormalBindingElement);
+  SO_ENABLE(SoPickAction, SoNormalElement);
+  SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
 }
 
 /*!
@@ -254,35 +278,8 @@ SoVertexProperty::getBoundingBox(SoGetBoundingBoxAction * action)
 void 
 SoVertexProperty::GLRender(SoGLRenderAction * action)
 {
-  SoState * state = action->getState();
-  if (vertex.getNum() > 0 && !vertex.isIgnored()) 
-    SoCoordinateElement::set3(state, this, vertex.getNum(),
-			      vertex.getValues(0));
-  
-  if (texCoord.getNum() > 0 && !texCoord.isIgnored()) {
-    SoTextureCoordinateElement::set2(state, this, texCoord.getNum(),
-				     texCoord.getValues(0));
-  }
-  if (normal.getNum() > 0 && !normal.isIgnored()) {
-    SoNormalElement::set(state, this, normal.getNum(),
-			 normal.getValues(0));
-    if (!normalBinding.isIgnored()) {
-      SoNormalBindingElement::set(state, this,
-				  (SoNormalBindingElement::Binding)
-				  normalBinding.getValue());
-    }
-  }
-  if (orderedRGBA.getNum() > 0 && !orderedRGBA.isIgnored()) {
-    SoDiffuseColorElement::set(state, this, orderedRGBA.getNum(),
-			       orderedRGBA.getValues(0));
-    if (!materialBinding.isIgnored()) {
-      SoMaterialBindingElement::set(state, this, 
-				    (SoMaterialBindingElement::Binding)
-				    materialBinding.getValue());
-    }
-  }
+  SoVertexProperty::doAction((SoAction*)action);
 }
-
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 
@@ -291,9 +288,44 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoVertexProperty::doAction(SoAction * /* action */)
+SoVertexProperty::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoState * state = action->getState();
+  if (vertex.getNum() > 0) 
+    SoCoordinateElement::set3(state, this, vertex.getNum(),
+			      vertex.getValues(0));
+  
+  if (texCoord.getNum() > 0) {
+    SoTextureCoordinateElement::set2(state, this, texCoord.getNum(),
+				     texCoord.getValues(0));
+  }
+  if (normal.getNum() > 0) {
+    SoNormalElement::set(state, this, normal.getNum(),
+			 normal.getValues(0));
+  }
+  if (!normalBinding.isIgnored()
+      ) {
+    SoNormalBindingElement::set(state, this,
+				(SoNormalBindingElement::Binding)
+				normalBinding.getValue());
+  }
+  if (orderedRGBA.getNum() > 0
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getDiffuseColorOverride(state)
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+      ) {
+    SoDiffuseColorElement::set(state, this, orderedRGBA.getNum(),
+			       orderedRGBA.getValues(0));
+  }
+  if (!materialBinding.isIgnored()
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getMaterialBindingOverride(state)
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+      ) {
+    SoMaterialBindingElement::set(state, this, 
+				  (SoMaterialBindingElement::Binding)
+				  materialBinding.getValue());
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -302,9 +334,9 @@ SoVertexProperty::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoVertexProperty::callback(SoCallbackAction * /* action */)
+SoVertexProperty::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoVertexProperty::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -313,9 +345,9 @@ SoVertexProperty::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoVertexProperty::pick(SoPickAction * /* action */)
+SoVertexProperty::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoVertexProperty::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

@@ -41,7 +41,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoHandleEventAction)
+//$ BEGIN TEMPLATE ActionSource( SoHandleEventAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoHandleEventAction )
 
 SoType SoHandleEventAction::classTypeId = SoType::badType();
 
@@ -62,6 +63,9 @@ SoHandleEventAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoHandleEventAction::enabledElements;
@@ -83,6 +87,7 @@ SoActionMethodList * SoHandleEventAction::methods;
 const SoEnabledElementsList &
 SoHandleEventAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -93,6 +98,7 @@ SoHandleEventAction::getEnabledElements(void) const
 void 
 SoHandleEventAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -102,6 +108,7 @@ SoHandleEventAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoHandleEventAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -116,7 +123,7 @@ SoHandleEventAction::enableElement(const SoType type, const int stackIndex)
 void
 SoHandleEventAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoHandleEventAction)
+//$ BEGIN TEMPLATE InitActionSource( SoHandleEventAction )
   assert(SoHandleEventAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -134,8 +141,6 @@ SoHandleEventAction::initClass(void)
   ENABLE_ELEMENT(SoViewportRegionElement);
   ENABLE_ELEMENT(SoWindowElement);
 
-//    SO_ACTION_ADD_METHOD(SoNode, SoNode::handleEventS);
-  methods->setDefault((void *)SoNode::handleEventS);
 }
 
 /*!
@@ -156,6 +161,13 @@ SoHandleEventAction::SoHandleEventAction(const SbViewportRegion &
 					 viewportRegion)
 {
   SO_ACTION_CONSTRUCTOR(SoHandleEventAction);  
+
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD(SoNode, SoNode::handleEventS);
+  }
+  methods->setUp(); // FIXME: not sure if this should be called here...
 
   this->vpregion = viewportRegion;
   this->event = NULL;

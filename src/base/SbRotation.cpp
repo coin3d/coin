@@ -369,9 +369,10 @@ SbRotation::setValue(const SbVec3f& rotateFrom, const SbVec3f& rotateTo)
 {
 #if COIN_DEBUG
   // Check if the vectors are valid.
-  if (rotateFrom.length()==0.0f)
+  if (rotateFrom.length()==0.0f) {
     SoDebugError::postWarning("SbRotation::setValue",
 			      "rotateFrom parameter has zero length.");
+  }
   if (rotateTo.length()==0.0f)
     SoDebugError::postWarning("SbRotation::setValue",
 			      "rotateTo parameter has zero length.");

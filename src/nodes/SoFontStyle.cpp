@@ -39,6 +39,12 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 #if !defined(COIN_EXCLUDE_SOFONTNAMEELEMENT)
 #include <Inventor/elements/SoFontNameElement.h>
@@ -289,9 +295,9 @@ SoFontStyle::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoFontStyle::callback(SoCallbackAction * /* action */)
+SoFontStyle::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoFontStyle::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -300,9 +306,9 @@ SoFontStyle::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoFontStyle::pick(SoPickAction * /* action */)
+SoFontStyle::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoFontStyle::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

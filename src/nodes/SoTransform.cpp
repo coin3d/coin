@@ -344,8 +344,7 @@ SoTransform::getMatrix(SoGetMatrixAction * action)
 		      scaleFactor.getValue(),
 		      scaleOrientation.getValue(),
 		      center.getValue());
-  action->getMatrix().multRight(matrix);
-  action->getInverse().multRight(matrix.inverse());
+  action->mult(matrix);
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 

@@ -46,7 +46,9 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
 #if !defined(COIN_EXCLUDE_SOSWITCHELEMENT)
 #include <Inventor/elements/SoSwitchElement.h>
 #endif // !COIN_EXCLUDE_SOSWITCHELEMENT
@@ -141,6 +143,9 @@ SoSwitch::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoSwitchElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoSwitchElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
 }
 
 /*!
@@ -248,63 +253,45 @@ SoSwitch::doAction(SoAction * action)
   
   int numIndices;
   const int *indices;
-
+  int idx;    
+  
+  idx = whichChild.getValue();
   SbBool inheritIdx = FALSE;
-  int idx = whichChild.getValue();
   if (idx == SO_SWITCH_INHERIT) {
     inheritIdx = TRUE;
     idx = SoSwitchElement::get(action->getState());
   }
-  
-  if (idx == SO_SWITCH_NONE) return;
-  
-  SbBool checkAffects = FALSE;
+    
   int startIdx, endIdx;
-
-  if (idx == SO_SWITCH_ALL) {
-    startIdx = 0;
-    endIdx = getNumChildren()-1;
-  }
-  else {
-    startIdx = endIdx = idx;
-  }
   
   switch (action->getPathCode(numIndices, indices)) {
   case SoAction::IN_PATH:
-    // FIXME: not necessary to traverse children which
-    // do not affect state and is not in indices[]
-    
+    startIdx = 0;
+    endIdx = indices[numIndices-1];    
+    break;
+  case SoAction::OFF_PATH:
+  case SoAction::NO_PATH:
+  case SoAction::BELOW_PATH:  
     if (idx == SO_SWITCH_ALL) {
-      // only traverse until last child in paths
-      endIdx = indices[numIndices-1];
+      startIdx = 0;
+      endIdx = this->getNumChildren() - 1;
+    }
+    else if (idx < 0) {
+      startIdx = 0;
+      endIdx = -1; // don't traverse
     }
     else {
-      // probably not possible with numIndices != 1 ?
-      for (int i = 0; i < numIndices; i++) {
-	if (!inheritIdx) SoSwitchElement::set(state, this, indices[i]);
-	this->children->traverse(action, indices[i]);
-      }
-      endIdx = -1; // traversing is finished
+      startIdx = endIdx = idx;
     }
     break;
-
-  case SoAction::OFF_PATH:
-    checkAffects = TRUE;
-    // otherwise normal behaviour
-    break;
-
-    // FIXME: these where missing -- is this behaviour correct?
-    // 19990925 mortene.
-  case SoAction::NO_PATH:
-  case SoAction::BELOW_PATH:
-    break;
+  default:
+    startIdx = 0;
+    endIdx = -1;
+    assert(0 && "Unknown path code");
   }
-  
   for (int i = startIdx; i <= endIdx; i++) {
-    if (!checkAffects || this->getChild(i)->affectsState()) {
-      if (!inheritIdx) SoSwitchElement::set(state, this, i);
-      this->children->traverse(action, i);
-    }
+    if (!inheritIdx) SoSwitchElement::set(state, this, i);
+    this->children->traverse(action, i);
   }
 }
 #endif // !COIN_EXCLUDE_SOACTION
@@ -342,9 +329,9 @@ SoSwitch::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoSwitch::pick(SoPickAction * /* action */)
+SoSwitch::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoSwitch::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 
@@ -364,9 +351,9 @@ SoSwitch::handleEvent(SoHandleEventAction * /* action */)
   FIXME: write doc
  */
 void
-SoSwitch::getMatrix(SoGetMatrixAction * /* action */)
+SoSwitch::getMatrix(SoGetMatrixAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoSwitch::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 

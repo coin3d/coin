@@ -298,9 +298,18 @@ SoUnits::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoUnits::doAction(SoAction * /* action */)
+SoUnits::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoUnitsElement::Units currentunit = SoUnitsElement::get(action->getState());
+  
+  if (currentunit != (SoUnitsElement::Units)units.getValue()) {
+    SoUnitsElement::set(action->getState(),
+			(SoUnitsElement::Units)units.getValue());
+    
+    float scale = factors[units.getValue()] / factors[currentunit];
+    SoModelMatrixElement::scaleBy(action->getState(), this,
+				  SbVec3f(scale, scale, scale));    
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -309,9 +318,9 @@ SoUnits::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoUnits::callback(SoCallbackAction * /* action */)
+SoUnits::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoUnits::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -320,9 +329,9 @@ SoUnits::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoUnits::getMatrix(SoGetMatrixAction * /* action */)
+SoUnits::getMatrix(SoGetMatrixAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoUnits::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
@@ -331,9 +340,9 @@ SoUnits::getMatrix(SoGetMatrixAction * /* action */)
   FIXME: write doc
  */
 void
-SoUnits::pick(SoPickAction * /* action */)
+SoUnits::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoUnits::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

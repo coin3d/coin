@@ -38,6 +38,9 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOPROFILEELEMENT)
 #include <Inventor/elements/SoProfileElement.h>
@@ -159,6 +162,11 @@ SoProfile::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoProfileElement);
   SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoProfileElement);
+  SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
+#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 }
 
 /*!
@@ -177,7 +185,7 @@ SoProfile::cleanClass(void)
 void 
 SoProfile::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  SoProfileElement::add(action->getState(), this);
+  SoProfile::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -187,9 +195,9 @@ SoProfile::getBoundingBox(SoGetBoundingBoxAction * action)
   FIXME: write doc
  */
 void
-SoProfile::doAction(SoAction * /* action */)
+SoProfile::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoProfileElement::add(action->getState(), this);
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -209,9 +217,9 @@ SoProfile::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoProfile::GLRender(SoGLRenderAction * /* action */)
+SoProfile::GLRender(SoGLRenderAction * action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoProfile::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -220,9 +228,9 @@ SoProfile::GLRender(SoGLRenderAction * /* action */)
   FIXME: write doc
  */
 void
-SoProfile::pick(SoPickAction * /* action */)
+SoProfile::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoProfile::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

@@ -27,6 +27,8 @@
 #error Configuration settings disrespected -- do not include this file!
 #endif // COIN_EXCLUDE_SOPICKSTYLE
 
+#include <Inventor/elements/SoPickStyleElement.h>
+
 // *************************************************************************
 
 class SoPickStyle : public SoNode {
@@ -51,7 +53,9 @@ protected:
 
 public:
   enum Style {
-    SHAPE, BOUNDING_BOX, UNPICKABLE
+    SHAPE = SoPickStyleElement::SHAPE, 
+    BOUNDING_BOX = SoPickStyleElement::BOUNDING_BOX, 
+    UNPICKABLE = SoPickStyleElement::UNPICKABLE
   };
 
   SoSFEnum style;

@@ -1,6 +1,8 @@
 //$ TEMPLATE ActionSource(_actionname_)
 //$ INSERT TEMPLATE ActionClassTypeSource(_actionname_)
 
+#include <assert.h>
+
 // static variables
 SoEnabledElementsList * _actionname_::enabledElements;
 SoActionMethodList * _actionname_::methods;
@@ -21,6 +23,7 @@ SoActionMethodList * _actionname_::methods;
 const SoEnabledElementsList &
 _actionname_::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -31,6 +34,7 @@ _actionname_::getEnabledElements(void) const
 void 
 _actionname_::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -40,5 +44,6 @@ _actionname_::addMethod(const SoType type, SoActionMethod method)
 void 
 _actionname_::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }

@@ -21,6 +21,7 @@
 #define __SOACTIONMETHODLIST_H__
 
 #include <Inventor/lists/SbPList.h>
+#include <Inventor/lists/SoTypeList.h>
 #include <Inventor/SoType.h>
 
 class SoAction;
@@ -42,12 +43,11 @@ public:
   void setUp(void);
 
 private:
-  SoActionMethod parentMethod(const SoType nodeType) const;
   
-  SoActionMethodList * const parent;
-  int numValidTypes;
+  SoActionMethodList *parent;
+  SoTypeList dummyList;
 
-  static void dummyAction(SoAction * const action, SoNode * const node);
+  static void dummyAction(SoAction *action, SoNode *node);
 };
 
 #endif // !__SOACTIONMETHODLIST_H__

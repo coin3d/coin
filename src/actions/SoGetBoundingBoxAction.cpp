@@ -55,7 +55,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoGetBoundingBoxAction)
+//$ BEGIN TEMPLATE ActionSource( SoGetBoundingBoxAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoGetBoundingBoxAction )
 
 SoType SoGetBoundingBoxAction::classTypeId = SoType::badType();
 
@@ -76,6 +77,9 @@ SoGetBoundingBoxAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoGetBoundingBoxAction::enabledElements;
@@ -97,6 +101,7 @@ SoActionMethodList * SoGetBoundingBoxAction::methods;
 const SoEnabledElementsList &
 SoGetBoundingBoxAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -107,6 +112,7 @@ SoGetBoundingBoxAction::getEnabledElements(void) const
 void 
 SoGetBoundingBoxAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -116,6 +122,7 @@ SoGetBoundingBoxAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoGetBoundingBoxAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -132,6 +139,16 @@ SoGetBoundingBoxAction::SoGetBoundingBoxAction(const SbViewportRegion &
     flags(FLAG_RESET_BEFORE)
 {
   SO_ACTION_CONSTRUCTOR(SoGetBoundingBoxAction);  
+
+  static int first = 1;
+  if (first) {
+    // FIXME: only enable action methods for nodes that can affect the
+    // bouding box calculations... No big deal, though.
+    SO_ACTION_ADD_METHOD(SoNode, SoNode::getBoundingBoxS);
+    first = 0;
+  }
+  
+  methods->setUp(); // FIXME: not sure if this should be called here...
 }
 
 /*!
@@ -150,7 +167,7 @@ SoGetBoundingBoxAction::~SoGetBoundingBoxAction()
 void
 SoGetBoundingBoxAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoGetBoundingBoxAction)
+//$ BEGIN TEMPLATE InitActionSource( SoGetBoundingBoxAction )
   assert(SoGetBoundingBoxAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -160,8 +177,6 @@ SoGetBoundingBoxAction::initClass(void)
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
-
-  methods->setDefault((void *)SoNode::getBoundingBoxS);
 
   ENABLE_ELEMENT(SoViewportRegionElement);
 }

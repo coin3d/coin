@@ -55,6 +55,9 @@
 #if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
 #endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*!
   \enum SoDrawStyle::Style
@@ -214,19 +217,28 @@ void
 SoDrawStyle::GLRender(SoGLRenderAction * action)
 {
   SoState * state = action->getState();
-  if (!style.isIgnored()) {
+
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+  uint32_t flags = SoOverrideElement::getFlags(state);
+#define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
+#else // COIN_EXCLUDE_SOOVERRIDEELEMENT
+#define TEST_OVERRIDE(x,y) FALSE
+#endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
+  
+  if (!style.isIgnored() && !TEST_OVERRIDE(DRAW_STYLE)) {
     SoDrawStyleElement::set(state, this, 
 			    (SoDrawStyleElement::Style)style.getValue());
   }
-  if (!linePattern.isIgnored()) {
+  if (!linePattern.isIgnored() && !TEST_OVERRIDE(LINE_PATTERN)) {
     SoLinePatternElement::set(state, this, linePattern.getValue());
   }
-  if (!lineWidth.isIgnored()) {
+  if (!lineWidth.isIgnored() && !TEST_OVERRIDE(LINE_WIDTH)) {
     SoLineWidthElement::set(state, this, lineWidth.getValue());
   }
-  if (!pointSize.isIgnored()) {
+  if (!pointSize.isIgnored() && !TEST_OVERRIDE(POINT_SIZE)) {
     SoPointSizeElement::set(state, this, pointSize.getValue());
   }
+#undef TEST_OVERRIDE
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

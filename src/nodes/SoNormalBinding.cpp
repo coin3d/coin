@@ -32,6 +32,12 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 #if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
@@ -170,6 +176,14 @@ SoNormalBinding::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoNormalBindingElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoNormalBindingElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
+
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+  SO_ENABLE(SoCallbackAction, SoNormalBindingElement);
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
 /*!
@@ -188,9 +202,7 @@ SoNormalBinding::cleanClass(void)
 void 
 SoNormalBinding::GLRender(SoGLRenderAction * action)
 {
-  SoNormalBindingElement::set(action->getState(), this,
-			      (SoNormalBindingElement::Binding)
-			      value.getValue());
+  SoNormalBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -200,9 +212,13 @@ SoNormalBinding::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoNormalBinding::doAction(SoAction * /* action */)
+SoNormalBinding::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  if (!value.isIgnored()) {
+    SoNormalBindingElement::set(action->getState(), this,
+				(SoNormalBindingElement::Binding)
+				value.getValue());
+  }
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -211,9 +227,9 @@ SoNormalBinding::doAction(SoAction * /* action */)
   FIXME: write doc
  */
 void
-SoNormalBinding::callback(SoCallbackAction * /* action */)
+SoNormalBinding::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoNormalBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -222,9 +238,9 @@ SoNormalBinding::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoNormalBinding::pick(SoPickAction * /* action */)
+SoNormalBinding::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoNormalBinding::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

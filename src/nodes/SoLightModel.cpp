@@ -36,6 +36,9 @@
 #if !defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
 #include <Inventor/elements/SoGLLightModelElement.h>
 #endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*!
   \enum SoLightModel::Model
@@ -153,8 +156,14 @@ SoLightModel::cleanClass(void)
 void 
 SoLightModel::GLRender(SoGLRenderAction * action)
 {
-  SoLightModelElement::set(action->getState(), this,
-			   (SoLightModelElement::Model)model.getValue());
+  if (!model.isIgnored()
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+      && !SoOverrideElement::getLightModelOverride(action->getState())
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
+      ) {
+    SoLightModelElement::set(action->getState(), this,
+			     (SoLightModelElement::Model)model.getValue());
+  }
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 

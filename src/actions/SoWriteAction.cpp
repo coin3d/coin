@@ -40,7 +40,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoWriteAction)
+//$ BEGIN TEMPLATE ActionSource( SoWriteAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoWriteAction )
 
 SoType SoWriteAction::classTypeId = SoType::badType();
 
@@ -61,6 +62,9 @@ SoWriteAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoWriteAction::enabledElements;
@@ -82,6 +86,7 @@ SoActionMethodList * SoWriteAction::methods;
 const SoEnabledElementsList &
 SoWriteAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -92,6 +97,7 @@ SoWriteAction::getEnabledElements(void) const
 void 
 SoWriteAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -101,6 +107,7 @@ SoWriteAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoWriteAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -114,7 +121,7 @@ SoWriteAction::enableElement(const SoType type, const int stackIndex)
 void
 SoWriteAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoWriteAction)
+//$ BEGIN TEMPLATE InitActionSource( SoWriteAction )
   assert(SoWriteAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -124,8 +131,6 @@ SoWriteAction::initClass(void)
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
-
-  methods->setDefault((void *)SoNode::writeS);
 }
 
 /*!
@@ -138,12 +143,20 @@ SoWriteAction::cleanClass(void)
 
 // *************************************************************************
 
+static int first = 1;
+
 /*!
   Default constructor. Output will be written to stdout in ASCII format.
 */
 SoWriteAction::SoWriteAction(void)
 {
   SO_ACTION_CONSTRUCTOR(SoWriteAction);
+
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD(SoNode, SoNode::writeS);
+  }
+  methods->setUp(); // FIXME: not sure if this should be called here...
 
   this->outobj = new SoOutput;
   this->localoutputalloc = TRUE;
@@ -155,6 +168,12 @@ SoWriteAction::SoWriteAction(void)
 SoWriteAction::SoWriteAction(SoOutput * out)
 {
   SO_ACTION_CONSTRUCTOR(SoWriteAction);
+
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD(SoNode, SoNode::writeS);
+  }
+  methods->setUp(); // FIXME: not sure if this should be called here...
 
   this->outobj = out;
   this->localoutputalloc = FALSE;

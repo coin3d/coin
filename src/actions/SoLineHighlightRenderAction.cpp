@@ -29,7 +29,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoLineHighlightRenderAction)
+//$ BEGIN TEMPLATE ActionSource( SoLineHighlightRenderAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoLineHighlightRenderAction )
 
 SoType SoLineHighlightRenderAction::classTypeId = SoType::badType();
 
@@ -50,6 +51,9 @@ SoLineHighlightRenderAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoLineHighlightRenderAction::enabledElements;
@@ -71,6 +75,7 @@ SoActionMethodList * SoLineHighlightRenderAction::methods;
 const SoEnabledElementsList &
 SoLineHighlightRenderAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -81,6 +86,7 @@ SoLineHighlightRenderAction::getEnabledElements(void) const
 void 
 SoLineHighlightRenderAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -90,6 +96,7 @@ SoLineHighlightRenderAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoLineHighlightRenderAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -104,7 +111,7 @@ SoLineHighlightRenderAction::enableElement(const SoType type, const int stackInd
 void
 SoLineHighlightRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoLineHighlightRenderAction)
+//$ BEGIN TEMPLATE InitActionSource( SoLineHighlightRenderAction )
   assert(SoLineHighlightRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

@@ -26,6 +26,7 @@
 */
 
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoSubAction.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
@@ -33,7 +34,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoGetMatrixAction)
+//$ BEGIN TEMPLATE ActionSource( SoGetMatrixAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoGetMatrixAction )
 
 SoType SoGetMatrixAction::classTypeId = SoType::badType();
 
@@ -54,6 +56,9 @@ SoGetMatrixAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoGetMatrixAction::enabledElements;
@@ -75,6 +80,7 @@ SoActionMethodList * SoGetMatrixAction::methods;
 const SoEnabledElementsList &
 SoGetMatrixAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -85,6 +91,7 @@ SoGetMatrixAction::getEnabledElements(void) const
 void 
 SoGetMatrixAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -94,6 +101,7 @@ SoGetMatrixAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoGetMatrixAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -108,7 +116,7 @@ SoGetMatrixAction::enableElement(const SoType type, const int stackIndex)
 void
 SoGetMatrixAction::initClass()
 {
-//$ BEGIN TEMPLATE InitActionSource(SoGetMatrixAction)
+//$ BEGIN TEMPLATE InitActionSource( SoGetMatrixAction )
   assert(SoGetMatrixAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 
@@ -118,8 +126,7 @@ SoGetMatrixAction::initClass()
   enabledElements = new SoEnabledElementsList(inherited::enabledElements);
   methods = new SoActionMethodList(inherited::methods);
 //$ END TEMPLATE InitActionSource
-
-  methods->setDefault((void *)SoNode::getMatrixS);
+  
   ENABLE_ELEMENT(SoViewportRegionElement);
   //FIXME: enable other elements (check with Toolmaker p.13->) (kintel 1990616)
 }
@@ -142,6 +149,15 @@ SoGetMatrixAction::cleanClass()
 
 SoGetMatrixAction::SoGetMatrixAction(const SbViewportRegion &newRegion)
 {
+  SO_ACTION_CONSTRUCTOR(SoGetMatrixAction);
+
+  static int first = 1;
+  if (first) {
+    first = 0;
+    SO_ACTION_ADD_METHOD(SoNode, SoNode::getMatrixS);
+  }
+  methods->setUp();
+  
   this->viewportRegion = newRegion;
 }
 
@@ -224,9 +240,13 @@ void
 SoGetMatrixAction::beginTraversal(SoNode *node)
 {
   assert(this->traversalMethods);
-  
-  (*this->traversalMethods)
-    [SoNode::getActionMethodIndex(node->getTypeId())](this, node);
+
+  this->matrix.makeIdentity();
+  this->invMatrix.makeIdentity();
+  this->texMatrix.makeIdentity();
+  this->invTexMatrix.makeIdentity();
+
+  this->traverse(node);
 }
 
 // the following functions are not in the original Inventor API
@@ -238,8 +258,8 @@ SoGetMatrixAction::beginTraversal(SoNode *node)
 void 
 SoGetMatrixAction::mult(const SbMatrix &matrix)
 {
-  this->matrix.multRight(matrix);
-  this->invMatrix.multRight(matrix.inverse());
+  this->matrix.multLeft(matrix);
+  this->invMatrix = this->matrix.inverse();
 }
 
 /*!
@@ -251,9 +271,9 @@ SoGetMatrixAction::translateBy(const SbVec3f &vec)
 {
   SbMatrix mat;
   mat.setTranslate(vec);
-  this->matrix.multRight(mat);
+  this->matrix.multLeft(mat);
   mat.setTranslate(-vec);
-  this->invMatrix.multRight(mat);
+  this->invMatrix.multLeft(mat);
 }
 
 /*!
@@ -265,9 +285,9 @@ SoGetMatrixAction::rotateBy(const SbRotation &rot)
 {
   SbMatrix mat;
   mat.setRotate(rot);
-  this->matrix.multRight(mat);
+  this->matrix.multLeft(mat);
   mat.setRotate(rot.inverse());
-  this->invMatrix.multRight(mat);
+  this->invMatrix.multLeft(mat);
 }
 
 /*!
@@ -279,8 +299,8 @@ SoGetMatrixAction::scaleBy(const SbVec3f &scaleFactor)
 {
   SbMatrix mat;
   mat.setScale(scaleFactor);
-  this->matrix.multRight(mat);
+  this->matrix.multLeft(mat);
   mat.setScale(-scaleFactor);
-  this->invMatrix.multRight(mat);
+  this->invMatrix.multLeft(mat);
 }
 

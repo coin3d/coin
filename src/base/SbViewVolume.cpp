@@ -884,6 +884,27 @@ SbViewVolume::getDepth(void) const
   return this->nearfardistance;
 }
 
+void 
+SbViewVolume::getNearFarRay(const SbVec2f &normPoint,
+			    SbVec3f &start,
+			    SbVec3f &dir)
+{
+  SbVec3f dx = this->lowerrightfrust - this->lowerleftfrust;
+  SbVec3f dy = this->upperleftfrust - this->lowerleftfrust;
+
+  
+
+  
+  start = this->lowerleftfrust + dx*normPoint[0] + dy*normPoint[1];
+  if (this->type == PERSPECTIVE) {
+    dir = start - projectionpt;
+    dir.normalize();
+  }
+  else {
+    dir = this->projectiondir;
+  }
+}
+
 /*!
   Private method to make a matrix for orthogonal parallel projection.
  */

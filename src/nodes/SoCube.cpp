@@ -40,6 +40,12 @@
 #include <Inventor/misc/SoGL.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
+#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
+#include <Inventor/actions/SoRayPickAction.h>
+#include <Inventor/SoPickedPoint.h>
+#include <Inventor/details/SoCubeDetail.h>
+#endif // !COIN_EXCLUDE_SORAYPICKACTION
+
 #if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
@@ -274,9 +280,9 @@ SoCube::GLRender(SoGLRenderAction * action)
   if (doTextures) flags |= SOGL_NEED_TEXCOORDS;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;
 
-  sogl_render_cube(width.isIgnored()?2.0f:width.getValue(),
-		   height.isIgnored()?2.0f:height.getValue(),
-		   depth.isIgnored()?2.0f:depth.getValue(),
+  sogl_render_cube(width.getValue(),
+		   height.getValue(),
+		   depth.getValue(),
 		   &mb,
 		   flags);
 }
@@ -297,7 +303,7 @@ SoCube::generatePrimitives(SoAction * action)
      (SoTextureCoordinateElement::getType(state) ==
       SoTextureCoordinateElement::FUNCTION);
   
-  const SoTextureCoordinateElement * tce;
+  const SoTextureCoordinateElement * tce = NULL;
   SbVec4f texCoord;
   if (useTexFunc) 
     tce = SoTextureCoordinateElement::getInstance(state);
@@ -389,7 +395,7 @@ SoCube::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 {
   center.setValue(0.0f, 0.0f, 0.0f);
   float w,h,d;
-  getHalfSize(w,h,d);
+  this->getHalfSize(w,h,d);
   box.setBounds(-w, -h, -d, w, h, d);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
@@ -400,9 +406,45 @@ SoCube::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
   FIXME: write function documentation
 */
 void 
-SoCube::rayPick(SoRayPickAction * /* action */)
+SoCube::rayPick(SoRayPickAction *action)
 {
-  assert(0 && "FIXME: not implemented yet");
+  static int translation[6] = {2,3,5,4,1,0}; // translate into detail part-num
+  action->setObjectSpace();
+  const SbLine &line = action->getLine();
+  float size[3];
+  this->getHalfSize(size[0],size[1],size[2]);
+#if 0
+  fprintf(stderr,"obj line: %g %g %g, %g %g %g\n",
+	  line.getPosition()[0], line.getPosition()[1], line.getPosition()[2],
+	  line.getDirection()[0], line.getDirection()[1], line.getDirection()[2]);
+#endif
+  int cnt = 0;
+  // test intersection with all six planes
+  for (int i = 0; i < 3; i++) {
+    for (float j = -1.0f; j <= 1.0f; j += 2.0f) {
+      SbVec3f norm(0,0,0);
+      norm[i] = j;
+      SbVec3f isect;
+      
+      SbPlane plane(norm, size[i]);
+      if (plane.intersect(line, isect)) {
+	int i1 = (i+1) % 3;
+	int i2 = (i+2) % 3;
+
+	if (isect[i1] >= -size[i1] && isect[i1] <= size[i1] &&
+	    isect[i2] >= -size[i2] && isect[i2] <= size[i2] &&
+	    action->isBetweenPlanes(isect)) {
+	  SoPickedPoint *pp = action->addIntersection(isect);
+	  if (pp) {
+	    SoCubeDetail *detail = new SoCubeDetail();
+	    detail->setPart(translation[cnt]);
+	    pp->setDetail(detail, this);
+	  }
+	}
+      }
+      cnt++;
+    }
+  }
 }
 
 /*!

@@ -163,7 +163,7 @@ SoSpotLight::cleanClass(void)
 void 
 SoSpotLight::GLRender(SoGLRenderAction * action)
 {
-  if (!on.isIgnored() && !on.getValue()) return;
+  if (!on.getValue()) return;
 
   SoState *state = action->getState();
   int idx = SoGLLightIdElement::increment(state);
@@ -191,15 +191,13 @@ SoSpotLight::GLRender(SoGLRenderAction * action)
   glLightf(light, GL_LINEAR_ATTENUATION, attenuation[1]);
   glLightf(light, GL_CONSTANT_ATTENUATION, attenuation[2]);
   
-  if (!color.isIgnored()) lightcolor.setRGB(color.getValue());
-  else lightcolor.setRGB(SbColor(1.0f, 1.0f, 1.0f));
+  lightcolor.setRGB(color.getValue());
   if (!intensity.isIgnored()) lightcolor *= intensity.getValue();
   
   glLightfv(light, GL_DIFFUSE, lightcolor.getValue());
   glLightfv(light, GL_SPECULAR, lightcolor.getValue());
   
-  SbVec3f loc(0.0f, 0.0f, 1.0f); // default
-  if (!location.isIgnored()) loc = location.getValue();
+  SbVec3f loc = location.getValue();
 
   // point (or spot) light when w = 1.0
   SbVec4f posvec(loc[0], loc[1], loc[2], 1.0f);

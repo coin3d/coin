@@ -216,10 +216,7 @@ SoRotationXYZ::getMatrix(SoGetMatrixAction * action)
 {
   SbVec3f rotvec;
   if (getVector(rotvec)) {
-    SbMatrix m;
-    m.setRotate(SbRotation(rotvec, angle.getValue()));
-    action->getMatrix().multRight(m);
-    action->getInverse().multRight(m);
+    action->rotateBy(SbRotation(rotvec, angle.getValue()));
   }
 }
 #endif // !COIN_EXCLUDE_SOGETMATRIXACTION
@@ -240,9 +237,7 @@ SoRotationXYZ::pick(SoPickAction * action)
 */
 SbBool 
 SoRotationXYZ::getVector(SbVec3f & rotvec)
-{
-  if (axis.isIgnored() || angle.isIgnored()) return FALSE;
-  
+{  
   assert((int)axis.getValue() >= 0 && (int)axis.getValue() <= 2);
   
   rotvec.setValue(0.0f, 0.0f, 0.0f);

@@ -28,7 +28,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoBoxHighlightRenderAction)
+//$ BEGIN TEMPLATE ActionSource( SoBoxHighlightRenderAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoBoxHighlightRenderAction )
 
 SoType SoBoxHighlightRenderAction::classTypeId = SoType::badType();
 
@@ -49,6 +50,9 @@ SoBoxHighlightRenderAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoBoxHighlightRenderAction::enabledElements;
@@ -70,6 +74,7 @@ SoActionMethodList * SoBoxHighlightRenderAction::methods;
 const SoEnabledElementsList &
 SoBoxHighlightRenderAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -80,6 +85,7 @@ SoBoxHighlightRenderAction::getEnabledElements(void) const
 void 
 SoBoxHighlightRenderAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -89,6 +95,7 @@ SoBoxHighlightRenderAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoBoxHighlightRenderAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -103,7 +110,7 @@ SoBoxHighlightRenderAction::enableElement(const SoType type, const int stackInde
 void
 SoBoxHighlightRenderAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoBoxHighlightRenderAction)
+//$ BEGIN TEMPLATE InitActionSource( SoBoxHighlightRenderAction )
   assert(SoBoxHighlightRenderAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

@@ -27,24 +27,7 @@
 #error "Configuration settings disable this class!"
 #endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
 
-#define SO_GET_OVERRIDE(flag)                             \
-    do {                                                    \
-        const SoOverrideElement * const element =           \
-            (const SoOverrideElement *)                     \
-            getConstElement(state, classStackIndex);      \
-        return (element->flags & flag);                     \
-    } while (0)
 
-#define SO_SET_OVERRIDE(flag)                             \
-    do {                                                    \
-        SoOverrideElement * const element =                 \
-            (SoOverrideElement *)                           \
-            getElement(state, classStackIndex);           \
-        if (override)                                     \
-            element->flags |= flag;                         \
-        else                                                \
-            element->flags &= ~flag;                        \
-    } while (0)
 
 class SoType; // lame doxygen "fix"
 
@@ -96,12 +79,14 @@ public:
   virtual void init(SoState * state);
 
   virtual void push(SoState * state);
-  virtual void pop(SoState * state,
-		   const SoElement * prevTopElement);
 
   virtual SbBool matches(const SoElement * element) const;
   virtual SoElement * copyMatchInfo(void) const;
 
+  static uint32_t getFlags(SoState * const state) {
+    return ((SoOverrideElement*)getConstElement(state, classStackIndex))->flags;
+  }
+  
   static SbBool getAmbientColorOverride(SoState * const state);
   static SbBool getColorIndexOverride(SoState * const state);
   static SbBool getComplexityOverride(SoState * const state);
@@ -191,8 +176,6 @@ public:
   virtual void print(FILE * file) const;
 
 private:
-  void pFlag(FILE * const file, const char * const format,
-	     const int32_t flag) const;
 
   uint32_t flags;
 };

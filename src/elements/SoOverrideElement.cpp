@@ -29,6 +29,22 @@
 #include <Inventor/SbName.h>
 #include <assert.h>
 
+#define SO_GET_OVERRIDE(flag)                             \
+        const SoOverrideElement * const element =           \
+            (const SoOverrideElement *)                     \
+            getConstElement(state, classStackIndex);      \
+        return (element->flags & flag)
+
+#define SO_SET_OVERRIDE(flag)                             \
+        SoOverrideElement * const element =                 \
+            (SoOverrideElement *)                           \
+            getElement(state, classStackIndex);           \
+        if (override)                                     \
+            element->flags |= flag;                         \
+        else                                                \
+            element->flags &= ~flag
+
+
 /*!
   \enum SoOverrideElement::FlagBits
 
@@ -128,7 +144,6 @@ SoOverrideElement::cleanClass(void)
 */
 
 SoOverrideElement::SoOverrideElement(void)
-  : flags(0)
 {
   setTypeId(SoOverrideElement::classTypeId);
   setStackIndex(SoOverrideElement::classStackIndex);
@@ -148,6 +163,7 @@ void
 SoOverrideElement::init(SoState * state)
 {
   inherited::init(state);
+  this->flags = 0;
 }
 
 //! FIXME: write doc.
@@ -156,23 +172,16 @@ void
 SoOverrideElement::push(SoState * state)
 {
   inherited::push(state);
-}
-
-//! FIXME: write doc.
-
-void
-SoOverrideElement::pop(SoState * state, const SoElement * prevTopElement)
-{
-  inherited::pop(state, prevTopElement);
+  SoOverrideElement *next = (SoOverrideElement*) this->next;
+  next->flags = this->flags;
 }
 
 //! FIXME: write doc.
 
 SbBool
-SoOverrideElement::matches(const SoElement * /* element */) const
+SoOverrideElement::matches(const SoElement *element) const
 {
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
+  return ((SoOverrideElement*)element)->flags == this->flags;
 }
 
 //! FIXME: write doc.
@@ -180,8 +189,9 @@ SoOverrideElement::matches(const SoElement * /* element */) const
 SoElement *
 SoOverrideElement::copyMatchInfo(void) const
 {
-  assert(0 && "FIXME: not implemented");
-  return FALSE;
+  SoOverrideElement *elem = new SoOverrideElement;
+  elem->flags = this->flags;
+  return elem;
 }
 
 //! FIXME: write doc.
@@ -190,17 +200,6 @@ void
 SoOverrideElement::print(FILE * /* file */) const
 {
 }
-
-//! FIXME: write doc.
-
-void
-SoOverrideElement::pFlag(FILE * const /* file */,
-			 const char * const /* format */,
-			 const int32_t /* flag */) const
-{
-  assert(0 && "FIXME: not implemented");
-}
-
 
 /*!
   FIXME: write doc.
@@ -475,11 +474,11 @@ SoOverrideElement::setCreaseAngleOverride(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoOverrideElement::setDiffuseColorOverride(SoState * const /* state */,
+SoOverrideElement::setDiffuseColorOverride(SoState * const state,
 					   SoNode * const /* node */,
-					   const SbBool /* override */)
+					   const SbBool override)
 {
-  assert(0 && "FIXME: not implemented");
+  SO_SET_OVERRIDE(DIFFUSE_COLOR);
 }
 
 /*!
@@ -569,11 +568,11 @@ SoOverrideElement::setLineWidthOverride(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoOverrideElement::setMaterialBindingOverride(SoState * const /* state */,
+SoOverrideElement::setMaterialBindingOverride(SoState * const state,
 					      SoNode * const /* node */,
-					      const SbBool /* override */)
+					      const SbBool override)
 {
-  assert(0 && "FIXME: not implemented");
+  SO_SET_OVERRIDE(MATERIAL_BINDING);
 }
 
 /*!
@@ -651,9 +650,9 @@ SoOverrideElement::setSpecularColorOverride(SoState * const state,
 //! FIXME: write doc.
 
 void
-SoOverrideElement::setTransparencyOverride(SoState * const /* state */,
+SoOverrideElement::setTransparencyOverride(SoState * const state,
 					   SoNode * const /* node */,
-					   const SbBool /* override */)
+					   const SbBool override)
 {
-  assert(0 && "FIXME: not implemented");
+  SO_SET_OVERRIDE(TRANSPARENCY);
 }

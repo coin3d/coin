@@ -28,7 +28,8 @@
 
 // *************************************************************************
 
-//$ BEGIN TEMPLATE ActionSource(SoReorganizeAction)
+//$ BEGIN TEMPLATE ActionSource( SoReorganizeAction )
+//$ BEGIN TEMPLATE ActionClassTypeSource( SoReorganizeAction )
 
 SoType SoReorganizeAction::classTypeId = SoType::badType();
 
@@ -49,6 +50,9 @@ SoReorganizeAction::getTypeId(void) const
 {
   return classTypeId;
 }
+//$ END TEMPLATE ActionClassTypeSource
+
+#include <assert.h>
 
 // static variables
 SoEnabledElementsList * SoReorganizeAction::enabledElements;
@@ -70,6 +74,7 @@ SoActionMethodList * SoReorganizeAction::methods;
 const SoEnabledElementsList &
 SoReorganizeAction::getEnabledElements(void) const
 {
+  assert(enabledElements);
   return *enabledElements;
 }
 
@@ -80,6 +85,7 @@ SoReorganizeAction::getEnabledElements(void) const
 void 
 SoReorganizeAction::addMethod(const SoType type, SoActionMethod method)
 {
+  assert(methods);
   methods->addMethod(type, method);
 }
 
@@ -89,6 +95,7 @@ SoReorganizeAction::addMethod(const SoType type, SoActionMethod method)
 void 
 SoReorganizeAction::enableElement(const SoType type, const int stackIndex)
 {
+  assert(enabledElements);
   enabledElements->enable(type, stackIndex);
 }
 //$ END TEMPLATE ActionSource
@@ -103,7 +110,7 @@ SoReorganizeAction::enableElement(const SoType type, const int stackIndex)
 void
 SoReorganizeAction::initClass(void)
 {
-//$ BEGIN TEMPLATE InitActionSource(SoReorganizeAction)
+//$ BEGIN TEMPLATE InitActionSource( SoReorganizeAction )
   assert(SoReorganizeAction::getClassTypeId() == SoType::badType());
   assert(inherited::getClassTypeId() != SoType::badType());
 

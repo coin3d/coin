@@ -59,7 +59,7 @@ public:
   SoPath(const int approxLength = 0);
   SoPath(SoNode * const head);
   SoPath(const SoPath & rhs);
-  SoPath & operator = (const SoPath & rhs);
+  SoPath & operator = (const SoPath & rhs); 
 protected:
   virtual ~SoPath(void); // destructed by ref()
 
@@ -80,6 +80,7 @@ public:
   void truncate(const int length);
 
   int findFork(const SoPath * const path) const;
+  int findNode(const SoNode * const node) const;
 
   SbBool containsNode(const SoNode * const node) const;
   SbBool containsPath(const SoPath * const path) const;

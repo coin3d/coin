@@ -35,6 +35,9 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
+#include <Inventor/actions/SoRayPickAction.h>
+#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT)
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
@@ -222,6 +225,13 @@ SoCamera::initClass(void)
   SO_ENABLE(SoGetBoundingBoxAction, SoViewVolumeElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoViewingMatrixElement);
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
+
+#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
+  SO_ENABLE(SoRayPickAction, SoFocalDistanceElement);
+  SO_ENABLE(SoRayPickAction, SoProjectionMatrixElement);
+  SO_ENABLE(SoRayPickAction, SoViewVolumeElement);
+  SO_ENABLE(SoRayPickAction, SoViewingMatrixElement);
+#endif // !COIN_EXCLUDE_SORAYPICKACTION
 }
 
 /*!
@@ -369,8 +379,10 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
 {
   // FIXME: viewportMapping field is not accounted for. 19990315
   // mortene.
+  float aspectratio =
+    SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
 
-  SbViewVolume vv = this->getViewVolume(1.0f);
+  SbViewVolume vv = this->getViewVolume(aspectratio);
   SoViewVolumeElement::set(action->getState(), this, vv);
 
   SbMatrix affine, proj;
@@ -413,9 +425,25 @@ SoCamera::jitter(int /* numPasses */, int /* curPass */,
   FIXME: write doc
 */
 void
-SoCamera::doAction(SoAction * /* action */)
+SoCamera::doAction(SoAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  // FIXME: viewportMapping field is not accounted for. 19990315
+  // mortene.
+
+  float aspectratio =
+    SoViewportRegionElement::get(action->getState()).getViewportAspectRatio();
+  
+  SbViewVolume vv = this->getViewVolume(aspectratio);
+  SoViewVolumeElement::set(action->getState(), this, vv);
+
+  SbMatrix affine, proj;
+  vv.getMatrices(affine, proj);
+  SoProjectionMatrixElement::set(action->getState(), this, proj);
+  SoViewingMatrixElement::set(action->getState(), this, affine);
+#if 0 // debug
+  SoDebugError::postInfo("SoCamera::getBoundingBox", "viewingmatrix:");
+  affine.print(stdout);
+#endif // debug
 }
 #endif // !COIN_EXCLUDE_DOACTION
 
@@ -435,9 +463,10 @@ SoCamera::callback(SoCallbackAction * /* action */)
   FIXME: write doc
 */
 void
-SoCamera::rayPick(SoRayPickAction * /* action */)
+SoCamera::rayPick(SoRayPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoCamera::doAction(action);
+  action->computeWorldSpaceRay();
 }
 #endif // !COIN_EXCLUDE_SORAYPICKACTION
 

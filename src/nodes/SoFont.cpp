@@ -35,6 +35,13 @@
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+#include <Inventor/actions/SoCallbackAction.h>
+#endif // !COIN_EXCLUDE_SOCALLBACKACTION
+
 
 #if !defined(COIN_EXCLUDE_SOFONTNAMEELEMENT)
 #include <Inventor/elements/SoFontNameElement.h>
@@ -42,6 +49,9 @@
 #if !defined(COIN_EXCLUDE_SOFONTSIZEELEMENT)
 #include <Inventor/elements/SoFontSizeElement.h>
 #endif // !COIN_EXCLUDE_SOFONTSIZEELEMENT
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+#include <Inventor/elements/SoOverrideElement.h>
+#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*!
   \var SoSFName SoFont::name
@@ -135,6 +145,16 @@ SoFont::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoFontNameElement);
   SO_ENABLE(SoGLRenderAction, SoFontSizeElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
+  SO_ENABLE(SoCallbackAction, SoFontNameElement);
+  SO_ENABLE(SoCallbackAction, SoFontSizeElement);
+#endif // !COIN_EXCLUDE_SOGLRENDERACTION
+
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoFontNameElement);
+  SO_ENABLE(SoPickAction, SoFontSizeElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
 }
 
 /*!
@@ -153,12 +173,23 @@ SoFont::cleanClass(void)
 void
 SoFont::doAction(SoAction * action)
 {
+  SoState *state = action->getState();
+#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
+  uint32_t flags = SoOverrideElement::getFlags(state);
+#define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
+#else // COIN_EXCLUDE_SOOVERRIDEELEMENT
+#define TEST_OVERRIDE(x,y) FALSE
+#endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
+
 #if !defined(COIN_EXCLUDE_SOFONTNAMEELEMENT)
-  SoFontNameElement::set(action->getState(), this, this->name.getValue());
+  if (!name.isIgnored() && !TEST_OVERRIDE(FONT_NAME))
+    SoFontNameElement::set(state, this, this->name.getValue());
 #endif // !COIN_EXCLUDE_SOFONTNAMEELEMENT
 #if !defined(COIN_EXCLUDE_SOFONTSIZEELEMENT)
-  SoFontSizeElement::set(action->getState(), this, this->size.getValue());
+  if (!size.isIgnored() && !TEST_OVERRIDE(FONT_SIZE))
+    SoFontSizeElement::set(state, this, this->size.getValue());
 #endif // !COIN_EXCLUDE_SOFONTSIZEELEMENT
+#undef TEST_OVERRIDE
 }
 #endif // !COIN_EXCLUDE_SOACTION
 
@@ -169,7 +200,7 @@ SoFont::doAction(SoAction * action)
 void
 SoFont::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-  this->doAction(action);
+  SoFont::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
@@ -180,7 +211,7 @@ SoFont::getBoundingBox(SoGetBoundingBoxAction * action)
 void
 SoFont::GLRender(SoGLRenderAction * action)
 {
-  this->doAction(action);
+  SoFont::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
@@ -190,9 +221,9 @@ SoFont::GLRender(SoGLRenderAction * action)
   FIXME: write doc
  */
 void
-SoFont::callback(SoCallbackAction * /* action */)
+SoFont::callback(SoCallbackAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoFont::doAction((SoAction*)action);
 }
 #endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
@@ -201,9 +232,9 @@ SoFont::callback(SoCallbackAction * /* action */)
   FIXME: write doc
  */
 void
-SoFont::pick(SoPickAction * /* action */)
+SoFont::pick(SoPickAction *action)
 {
-  assert(0 && "FIXME: not implemented");
+  SoFont::doAction(action);
 }
 #endif // !COIN_EXCLUDE_SOPICKACTION
 

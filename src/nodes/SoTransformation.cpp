@@ -35,6 +35,9 @@
 #if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+#include <Inventor/actions/SoPickAction.h>
+#endif // !COIN_EXCLUDE_SOPICKACTION
 
 #if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
@@ -119,6 +122,9 @@ SoTransformation::initClass(void)
 #if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLModelMatrixElement);
 #endif // !COIN_EXCLUDE_SOGLRENDERACTION
+#if !defined(COIN_EXCLUDE_SOPICKACTION)
+  SO_ENABLE(SoPickAction, SoModelMatrixElement);
+#endif // !COIN_EXCLUDE_SOPICKACTION
 }
 
 /*!
