@@ -71,6 +71,7 @@
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
+#include <Inventor/C/threads/threadsutilp.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbBox2f.h>
 #include <Inventor/SbClip.h>
@@ -86,13 +87,14 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef COIN_THREADSAFE
-#include <Inventor/threads/SbStorage.h>
-#endif // COIN_THREADSAFE
-
 #include <Inventor/system/gl.h>
 #include <string.h>
 #include <stdlib.h>
+
+#ifdef COIN_THREADSAFE
+#include <Inventor/threads/SbStorage.h>
+#include <Inventor/threads/SbMutex.h>
+#endif // COIN_THREADSAFE
 
 /*!
   \enum SoShape::TriangleShape
@@ -129,9 +131,20 @@ public:
   SoBoundingBoxCache * bboxcache;
   int invalidcounter;
   int readcounter;
+#ifdef COIN_THREADSAFE
+  SbMutex bboxmutex;
+#endif // COIN_THREADSAFE
 };
 
 #endif // DOXYGEN_SKIP_THIS
+
+#ifdef COIN_THREADSAFE
+#define LOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.lock()
+#define UNLOCK_BBOX(_thisp_) (_thisp_)->pimpl->bboxmutex.unlock()
+#else // COIN_THREADSAFE
+#define LOCK_BBOX(_thisp_)
+#define UNLOCK_BBOX(_thisp_)
+#endif // COIN_THREADSAFE
 
 #undef THIS
 #define THIS this->pimpl
@@ -304,11 +317,16 @@ SoShape::rayPick(SoRayPickAction * action)
 
     // if we have a valid bbox cache, test bbox/ray intersection
     // before testing all triangles.
+    LOCK_BBOX(this);
     if (!THIS ||
         !THIS->bboxcache ||
         !THIS->bboxcache->isValid(action->getState()) ||
         soshape_ray_intersect(action, THIS->bboxcache->getProjectedBox())) {
+      UNLOCK_BBOX(this);
       this->generatePrimitives(action);
+    }
+    else {
+      UNLOCK_BBOX(this);
     }
   }
 }
@@ -410,12 +428,20 @@ SoShape::shouldGLRender(SoGLRenderAction * action)
     return FALSE;
 
   // if we have a valid bbox cache, do a view volume cull test here.
-  if (THIS &&
-      THIS->bboxcache &&
-      THIS->bboxcache->isValid(state)) {
-    if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) return FALSE;
-  }
 
+  if (THIS) {
+    LOCK_BBOX(this);
+    if (THIS->bboxcache && THIS->bboxcache->isValid(state)) {
+      if (!SoCullElement::completelyInside(state)) {
+        if (SoCullElement::cullTest(state, THIS->bboxcache->getProjectedBox())) {
+          UNLOCK_BBOX(this);
+          return FALSE;
+        }
+      }
+    }
+    UNLOCK_BBOX(this);
+  }
+  
   SbBool transparent = SoTextureImageElement::containsTransparency(state);
   if (!transparent) {
     const SoDiffuseColorElement * diffelt =
@@ -1088,11 +1114,18 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   SbBool shouldcache = FALSE;
 
   if (this->isOfType(SoVertexShape::getClassTypeId())) {
-    if (THIS && THIS->bboxcache && THIS->bboxcache->isValid(action->getState())) {
+    CC_GLOBAL_LOCK;
+    if (THIS == NULL) {
+      THIS = new SoShapeP;
+    }
+    CC_GLOBAL_UNLOCK;
+    
+    LOCK_BBOX(this);
+
+    if (THIS->bboxcache && THIS->bboxcache->isValid(action->getState())) {
       isvalid = TRUE;
     }
     else {
-      if (!THIS) THIS = new SoShapeP;
       shouldcache = TRUE;
     }
   }
@@ -1101,6 +1134,7 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     box = THIS->bboxcache->getProjectedBox();
     // we know center will be set, so just fetch it from the cache
     center = THIS->bboxcache->getCenter();
+    UNLOCK_BBOX(this);
   }
   else {
     SoState * state = action->getState();
@@ -1120,9 +1154,13 @@ SoShape::getBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
       // pop state since we pushed it
       state->pop();
       SoCacheElement::setInvalid(storedinvalid);
+      UNLOCK_BBOX(this);
     }
   }
 }
 
 
 #undef THIS
+#undef LOCK_BBOX
+#undef UNLOCK_BBOX
+
