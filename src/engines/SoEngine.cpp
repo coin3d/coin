@@ -231,16 +231,6 @@ SoEngine::getOutputName(const SoEngineOutput * output,
 }
 
 /*!
-  Returns a copy of the engine. Input connections are shallow copied.
-*/
-SoEngine *
-SoEngine::copy(void) const
-{
-  COIN_STUB();
-  return NULL;
-}
-
-/*!
   Returns the engine named \a name, or \c NULL if no such engine
   exists.  If several engines have been registered under the same
   name, returns the \e last one which was registered.
@@ -336,6 +326,14 @@ SoEngine::getOutputDataPtr(void)
 }
 
 // overloaded from parent
+SbBool
+SoEngine::readInstance(SoInput * in, unsigned short flags)
+{
+  COIN_STUB();
+  return inherited::readInstance(in, flags);
+}
+
+// overloaded from parent
 void
 SoEngine::writeInstance(SoOutput * out)
 {
@@ -355,31 +353,68 @@ SoEngine::writeOutputTypes(SoOutput * out)
 }
 
 /*!
-  FIXME: doc
+  Returns a copy of the engine. Input connections are shallow copied.
 */
+SoEngine *
+SoEngine::copy(void) const
+{
+  // This code is like a combination of SoNode::copy() and
+  // SoNode::addToCopyDict() (minus the children traversal -- engines
+  // don't have children).
+
+  SoFieldContainer::initCopyDict();
+
+  // This snippet is the same as SoNode::addToCopyDict().
+  SoEngine * cp = (SoEngine *)SoFieldContainer::checkCopy(this);
+  if (!cp) {
+    cp = (SoEngine *)this->getTypeId().createInstance();
+    assert(cp);
+    SoFieldContainer::addCopy(this, cp);
+  }
+
+  // Call findCopy() to have copyContents() run once.
+  SoEngine * dummy = (SoEngine *)SoFieldContainer::findCopy(this, TRUE);
+  assert(dummy == cp);
+
+  SoFieldContainer::copyDone();
+  return cp;
+}
+
+// Overloaded from parent class.
 SoFieldContainer *
 SoEngine::copyThroughConnection(void) const
 {
-  COIN_STUB();
-  return NULL;
-}
+  // Important note: _don't_ switch checkCopy() here with findCopy(),
+  // as we're not supposed to create copies of containers "outside"
+  // the part of the scene graph which is involved in the copy
+  // operation.
+  SoFieldContainer * connfc = SoFieldContainer::checkCopy(this);
+  if (connfc) return connfc;
 
-// overloaded from parent
-SbBool
-SoEngine::readInstance(SoInput * in, unsigned short flags)
-{
-  COIN_STUB();
-  return inherited::readInstance(in, flags);
+  // If we're outside the scenegraph.
+  if (this->shouldCopy() == FALSE) return (SoFieldContainer *)this;
+
+  // Ok, make the first copy and return its pointer.
+  SoEngine * cp = (SoEngine *)SoFieldContainer::findCopy(this, TRUE);
+  assert(cp);
+  return cp;
 }
 
 /*!
   Returns whether this engine should be copied or simply referenced in
   a copy operation.
+
+  Engines which are not really part of the scenegraph should not be
+  copied.
 */
 SbBool
 SoEngine::shouldCopy(void) const
 {
-  COIN_STUB();
+  SoFieldList fl;
+  int nr = this->getFields(fl);
+  for (int i=0; i < nr; i++)
+    if (fl[i]->referencesCopy()) return TRUE;
+
   return FALSE;
 }
 

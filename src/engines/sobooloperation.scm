@@ -113,6 +113,11 @@
 (-> (-> booloperation 'operation) 'setnum 0)
 
 
+;; Copy the scenegraph.
+(define viewer-copy (new-soxtexaminerviewer))
+(-> viewer-copy 'setscenegraph (-> (-> viewer 'getscenegraph) 'copy 1))
+(-> viewer-copy 'show)
+
 ;; Export scenegraph with engine.
 (define writeaction (new-sowriteaction))
 (-> writeaction 'apply (-> viewer 'getscenegraph))

@@ -23,14 +23,19 @@
 ;;;;; Test input fields of SoTimeCounter engine, play around ;;;;;;;;;;;;;;;;;
 
 (-> (-> timecounter 'min) 'setValue 0)
-(-> (-> timecounter 'max) 'setValue 20)
-(-> (-> timecounter 'frequency) 'setValue 0.1)
+(-> (-> timecounter 'max) 'setValue 10)
+(-> (-> timecounter 'frequency) 'setValue 0.4)
 (-> (-> timecounter 'step) 'setValue 1)
 (-> (-> timecounter 'syncIn) 'setValue) ; trigger restart at min value
 
 ;; FIXME: should have code for playing around with the
 ;; SoTimeCounter::duty field. 20000911 mortene.
 
+
+;; Copy the scenegraph.
+(define viewer-copy (new-soxtexaminerviewer))
+(-> viewer-copy 'setscenegraph (-> (-> viewer 'getscenegraph) 'copy 1))
+(-> viewer-copy 'show)
 
 ;; Export scenegraph with engine.
 (define writeaction (new-sowriteaction))
