@@ -33,10 +33,48 @@
 #include "gzmemio.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <zlib.h> // FIXME: remove this include. pederb, 2003-07-07
 #include <string.h>
 #include <assert.h>
 #include <Inventor/C/glue/zlib.h>
+
+/* stuff copied from the zlib.h header file (we want to avoid
+   including it here so that zlib is not required to compile Coin) */
+struct internal_state;
+typedef void * (*alloc_func)(void * opaque, unsigned int items, unsigned int size);
+typedef void   (*free_func)(void * opaque, void * address);
+
+#define Z_DEFAULT_COMPRESSION  (-1)
+#define Z_DEFAULT_STRATEGY 0
+#define Z_OK 0
+#define Z_DATA_ERROR   (-3)
+#define Z_STREAM_ERROR (-2)
+#define Z_ERRNO        (-1)
+#define Z_STREAM_END    1
+#define Z_NO_FLUSH      0
+#define Z_DEFLATED   8
+#define MAX_WBITS   15 /* 32K LZ77 window */
+
+/* This zlib struct should never change */
+typedef struct {
+  unsigned char * next_in;  /* next input byte */
+  unsigned int avail_in;  /* number of bytes available at next_in */
+  unsigned long total_in;  /* total nb of input bytes read so far */
+  
+  unsigned char * next_out; /* next output byte should be put there */
+  unsigned int avail_out; /* remaining free space at next_out */
+  unsigned long total_out; /* total nb of bytes output so far */
+  
+  char * msg;      /* last error message, NULL if no error */
+  struct internal_state * state; /* not visible by applications */
+  
+  alloc_func zalloc;  /* used to allocate the internal state */
+  free_func  zfree;   /* used to free the internal state */
+  void * opaque;  /* private data object passed to zalloc and zfree */
+  
+  int data_type;  /* best guess about the data type: ascii or binary */
+  unsigned long adler;      /* adler32 value of the uncompressed data */
+  unsigned long reserved;   /* reserved for future use */
+} z_stream;
 
 #define Z_BUFSIZE 16384
 #define Z_NO_DEFLATE 1
@@ -111,7 +149,7 @@ void * cc_gzm_open(const uint8_t * buffer, uint32_t len)
   s->stream.avail_in = s->stream.avail_out = 0;
   s->z_err = Z_OK;
   s->z_eof = 0;
-  s->crc = crc32(0L, NULL, 0);
+  s->crc = cc_zlibglue_crc32(0L, NULL, 0);
   s->msg = NULL;
   s->transparent = 0;
   s->path = NULL;
@@ -352,7 +390,7 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
 
     if (s->z_err == Z_STREAM_END) {
       /* Check CRC and original size */
-      s->crc = crc32(s->crc, start, (uint32_t)(s->stream.next_out - start));
+      s->crc = cc_zlibglue_crc32(s->crc, start, (uint32_t)(s->stream.next_out - start));
       start = s->stream.next_out;
 
       if (getInt32(s) != s->crc) {
@@ -371,13 +409,13 @@ cc_gzm_read (void * file, void * buf, uint32_t len)
           cc_zlibglue_inflateReset(&(s->stream));
           s->stream.total_in = total_in;
           s->stream.total_out = total_out;
-          s->crc = crc32(0L, NULL, 0);
+          s->crc = cc_zlibglue_crc32(0L, NULL, 0);
         }
       }
     }
     if (s->z_err != Z_OK || s->z_eof) break;
   }
-  s->crc = crc32(s->crc, start, (uint32_t)(s->stream.next_out - start));
+  s->crc = cc_zlibglue_crc32(s->crc, start, (uint32_t)(s->stream.next_out - start));
 
   return (int)(len - s->stream.avail_out);
 }
@@ -466,7 +504,7 @@ cc_gzm_write(void * file, void * buf, unsigned int len)
     s->z_err = cc_zlibglue_deflate(&(s->stream), Z_NO_FLUSH);
     if (s->z_err != Z_OK) break;
   }
-  s->crc = crc32(s->crc, (const uint8_t *)buf, len);
+  s->crc = cc_zlibglue_crc32(s->crc, (const uint8_t *)buf, len);
 
   return (int)(len - s->stream.avail_in);
 }
@@ -587,7 +625,7 @@ cc_gzm_seek(void * file, off_t offset, int whence)
 
       offset -= size;
     }
-    return (z_off_t)s->stream.total_in;
+    return (off_t)s->stream.total_in;
 #endif
   }
   /* Rest of function is for reading only */
@@ -611,7 +649,7 @@ cc_gzm_seek(void * file, off_t offset, int whence)
   /* For a negative seek, rewind and use positive seek */
   if ((uint32_t)offset >= s->stream.total_out) {
     offset -= s->stream.total_out;
-  } else if (gzrewind(file) < 0) {
+  } else if (cc_zlibglue_gzrewind(file) < 0) {
     return -1L;
   }
   /* offset is now the number of bytes to skip. */
@@ -623,11 +661,11 @@ cc_gzm_seek(void * file, off_t offset, int whence)
     int size = Z_BUFSIZE;
     if (offset < Z_BUFSIZE) size = (int)offset;
 
-    size = gzread(file, s->outbuf, (uint32_t)size);
+    size = cc_zlibglue_gzread(file, s->outbuf, (uint32_t)size);
     if (size <= 0) return -1L;
     offset -= size;
   }
-  return (z_off_t)s->stream.total_out;
+  return (off_t) s->stream.total_out;
 }
 
 /* ===========================================================================
@@ -643,7 +681,7 @@ int cc_gzm_rewind(void * file)
   s->z_eof = 0;
   s->stream.avail_in = 0;
   s->stream.next_in = s->inbuf;
-  s->crc = crc32(0L, NULL, 0);
+  s->crc = cc_zlibglue_crc32(0L, NULL, 0);
 
   if (s->startpos == 0) { /* not a compressed file */
     s->memfile->currpos = 0;
