@@ -40,7 +40,8 @@ public:
   enum Mode {
     DISABLED,
     TEXTURE2D,
-    RECTANGLE
+    RECTANGLE,
+    CUBEMAP
   };
   virtual void init(SoState * state);
 
@@ -58,6 +59,7 @@ public:
   virtual void setElt(int32_t value);
 
   static void enableRectangle(SoState * state, SoNode * node);
+  static void enableCubeMap(SoState * state, SoNode * node);
   static Mode getMode(SoState * state);
 
 private:

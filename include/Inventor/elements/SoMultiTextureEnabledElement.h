@@ -39,6 +39,14 @@ protected:
   virtual ~SoMultiTextureEnabledElement();
 
 public:
+  enum Mode {
+    DISABLED,
+    TEXTURE2D,
+    RECTANGLE,
+    CUBEMAP,
+    TEXTURE3D
+  };
+
   virtual void init(SoState * state);
   static void set(SoState * state, SoNode * node,
                   const int unit,
@@ -54,9 +62,16 @@ public:
 
   static const SbBool * getEnabledUnits(SoState * state,
                                         int & lastenabled);
+  static const Mode * getActiveUnits(SoState * state,
+                                     int & lastenabled);
+
+  static void enableRectangle(SoState * state, SoNode * node, const int unit);
+  static void enableCubeMap(SoState * state, SoNode * node, const int unit);
+  static Mode getMode(SoState * state, const int unit);
 
 protected:
   SbBool isEnabled(const int unit) const;
+  Mode getMode(const int unit) const;
 
 private:
   SoMultiTextureEnabledElementP * pimpl;

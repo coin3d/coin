@@ -29,6 +29,21 @@
   \sa SoGLTexture3EnabledElement
 */
 
+/*!
+  \enum SoGLTextureEnabledElement::Mode
+*/
+
+/*!
+  \var SoGLTextureEnabledElement::Mode SoGLTextureEnabledElement::DISABLED
+*/
+/*!
+  \var SoGLTextureEnabledElement::Mode SoGLTextureEnabledElement::RECTANGLE
+*/
+/*!
+  \var SoGLTextureEnabledElement::Mode SoGLTextureEnabledElement::CUBEMAP
+*/
+
+
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 
@@ -55,9 +70,10 @@ SoGLTextureEnabledElement::~SoGLTextureEnabledElement(void)
 {
 }
 
-/*!
-  Sets the state of this element. Used for enabling GL_TEXTURE_2D and 
-  disabling GL_TEXTURE_2D or GL_TEXTURE_RECTANGLE_EXT.
+/*
+  Sets the state of this element. Used for enabling GL_TEXTURE_2D and
+  disabling GL_TEXTURE_2D, GL_TEXTURE_RECTANGLE_EXT or
+  GL_TEXTURE_CUBE_MAP.
 */
 void
 SoGLTextureEnabledElement::set(SoState * const state,
@@ -69,7 +85,7 @@ SoGLTextureEnabledElement::set(SoState * const state,
 }
 
 /*!
-  Enables GL_TEXTURE_RECTANGLE_EXT/NV. GL_TEXTURE_2D will be
+  Enables GL_TEXTURE_RECTANGLE_EXT/NV. GL_TEXTURE_2D/GL_TEXTURE_CUBE_MAP will be
   disabled if it's enabled earlier.
 
   \since Coin 2.2
@@ -77,10 +93,26 @@ SoGLTextureEnabledElement::set(SoState * const state,
 void 
 SoGLTextureEnabledElement::enableRectangle(SoState * state, SoNode * node)
 {
-  SoInt32Element::set(classStackIndex, state, node, 2);
+  SoInt32Element::set(classStackIndex, state, node, (int32_t) RECTANGLE);
   SoShapeStyleElement::setTextureEnabled(state, TRUE);
 }
 
+/*!
+  Enables GL_TEXTURE_CUBE+MAP. GL_TEXTURE_2D and/or
+  GL_TEXTURE_RECTANGLE will be disabled if it's enabled earlier.
+*/
+void 
+SoGLTextureEnabledElement::enableCubeMap(SoState * state, SoNode * node)
+{
+  SoInt32Element::set(classStackIndex, state, node, (int32_t) CUBEMAP);
+  SoShapeStyleElement::setTextureEnabled(state, TRUE);
+}
+
+/*!
+
+  Returns the current texture mode.
+
+*/
 SoGLTextureEnabledElement::Mode 
 SoGLTextureEnabledElement::getMode(SoState * state)
 {
@@ -156,7 +188,6 @@ SoGLTextureEnabledElement::setElt(int32_t value)
   }
 }
 
-
 //
 // updates GL state (obsoleted)
 //
@@ -173,6 +204,8 @@ SoGLTextureEnabledElement::updategl(const Mode newvalue, const Mode oldvalue)
 {
   // FIXME: the code below looks fairly non-optimal. Should at least
   // avoid doing glDisable() then glEnable(). 20040802 mortene.
+  //
+  // We check for this before calling this method. 2005-01-27 pederb.
 
   switch (oldvalue) {
   case DISABLED:
@@ -182,6 +215,9 @@ SoGLTextureEnabledElement::updategl(const Mode newvalue, const Mode oldvalue)
     break;
   case RECTANGLE:
     glDisable(GL_TEXTURE_RECTANGLE_EXT);
+    break;
+  case CUBEMAP: 
+    glDisable(GL_TEXTURE_CUBE_MAP);
     break;
   default:
     assert(0 && "should not happen");
@@ -195,6 +231,9 @@ SoGLTextureEnabledElement::updategl(const Mode newvalue, const Mode oldvalue)
     break;
   case RECTANGLE:
     glEnable(GL_TEXTURE_RECTANGLE_EXT);
+    break;
+  case CUBEMAP:
+    glEnable(GL_TEXTURE_CUBE_MAP);
     break;
   default:
     assert(0 && "should not happen");

@@ -37,8 +37,9 @@
 #define MAX_UNITS 16
 
 class SoMultiTextureEnabledElementP {
-public:
+ public:
   SbBool enabled[MAX_UNITS];
+  SoMultiTextureEnabledElement::Mode mode[MAX_UNITS];
 };
 
 #define PRIVATE(obj) obj->pimpl
@@ -92,6 +93,7 @@ void
 SoMultiTextureEnabledElement::init(SoState * state)
 {
   for (int i = 0; i < MAX_UNITS; i++) {
+    PRIVATE(this)->mode[i] = DISABLED;
     PRIVATE(this)->enabled[i] = FALSE;
   }
 }
@@ -103,7 +105,7 @@ SbBool
 SoMultiTextureEnabledElement::get(SoState * state, const int unit)
 {
   SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    state->getConstElement(classStackIndex);
+    SoElement::getConstElement(state, classStackIndex);
 
   assert(unit >= 0 && unit < MAX_UNITS);
   return PRIVATE(elem)->enabled[unit];
@@ -116,20 +118,25 @@ void
 SoMultiTextureEnabledElement::setElt(const int unit, const SbBool enabled)
 {
   assert(unit >= 0 && unit < MAX_UNITS);
-  PRIVATE(this)->enabled[unit] = enabled;
+  
+  Mode mode = (Mode) enabled;
+  
+  PRIVATE(this)->enabled[unit] = mode != DISABLED; 
+  PRIVATE(this)->mode[unit] = mode;
 }
 
 /*!
   Returns a pointer to a boolean array. TRUE means unit is enabled and
   that texture coordinates must be sent to the unit. \a lastenabled 
   is set to the last enabled unit.
+
 */
 const SbBool *
 SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
                                               int & lastenabled)
-{
+{ 
   SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
-    state->getConstElement(classStackIndex);
+    SoElement::getConstElement(state, classStackIndex);
 
   int i = MAX_UNITS-1;
   while (i >= 0) {
@@ -142,7 +149,6 @@ SoMultiTextureEnabledElement::getEnabledUnits(SoState * state,
   }
   return NULL;
 }
-
 
 SbBool 
 SoMultiTextureEnabledElement::isEnabled(const int unit) const
@@ -158,8 +164,70 @@ SoMultiTextureEnabledElement::push(SoState * state)
     this->getNextInStack();
 
   for (int i = 0; i < MAX_UNITS; i++) {
+    PRIVATE(this)->mode[i] = PRIVATE(prev)->mode[i];
     PRIVATE(this)->enabled[i] = PRIVATE(prev)->enabled[i];
   }
+}
+
+
+
+const SoMultiTextureEnabledElement::Mode * 
+SoMultiTextureEnabledElement::getActiveUnits(SoState * state, int & lastenabled)
+{
+  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+    SoElement::getConstElement(state, classStackIndex);
+
+  int i = MAX_UNITS-1;
+  while (i >= 0) {
+    if (PRIVATE(elem)->mode[i] != DISABLED) break;
+    i--;
+  }
+  if (i >= 0) {
+    lastenabled = i;
+    return PRIVATE(elem)->mode;
+  }
+  return NULL;
+}
+
+void 
+SoMultiTextureEnabledElement::enableRectangle(SoState * state, 
+                                              SoNode * node, 
+                                              const int unit)
+{
+  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+    state->getElement(classStackIndex);
+  // FIXME: in Coin-3, make sure the setElt() method is changed to
+  // setElt(const int32_t mode). pederb, 2005-01-31
+  elem->setElt(unit, (SbBool) RECTANGLE);
+}
+
+void 
+SoMultiTextureEnabledElement::enableCubeMap(SoState * state, 
+                                            SoNode * node, 
+                                            const int unit)
+{
+  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+    state->getElement(classStackIndex);
+  
+  // FIXME: in Coin-3, make sure the setElt() method is changed to
+  // setElt(const int32_t mode). pederb, 2005-01-31
+  elem->setElt(unit, (SbBool) CUBEMAP);
+}
+
+SoMultiTextureEnabledElement::Mode 
+SoMultiTextureEnabledElement::getMode(SoState * state, const int unit)
+{
+  SoMultiTextureEnabledElement * elem = (SoMultiTextureEnabledElement *)
+    SoElement::getConstElement(state, classStackIndex);
+
+  return elem->getMode(unit);
+}
+
+SoMultiTextureEnabledElement::Mode 
+SoMultiTextureEnabledElement::getMode(const int unit) const
+{
+  assert(unit >= 0 && unit < MAX_UNITS);
+  return PRIVATE(this)->mode[unit];
 }
 
 SbBool
@@ -168,7 +236,7 @@ SoMultiTextureEnabledElement::matches(const SoElement * elem) const
   SoMultiTextureEnabledElement * e =
     (SoMultiTextureEnabledElement *) elem;
   for (int i = 0; i < MAX_UNITS; i++) {
-    if (PRIVATE(e)->enabled[i] != PRIVATE(this)->enabled[i]) {
+    if (PRIVATE(e)->mode[i] != PRIVATE(this)->mode[i]) {
       return FALSE;
     }
   }
@@ -181,7 +249,7 @@ SoMultiTextureEnabledElement::copyMatchInfo(void) const
   SoMultiTextureEnabledElement * elem =
     (SoMultiTextureEnabledElement *)(getTypeId().createInstance());
   for (int i = 0; i < MAX_UNITS; i++) {
-    PRIVATE(elem)->enabled[i]= PRIVATE(this)->enabled[i];
+    PRIVATE(elem)->mode[i]= PRIVATE(this)->mode[i];
   }
   return elem;
 }

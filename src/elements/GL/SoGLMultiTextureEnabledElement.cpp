@@ -95,8 +95,10 @@ SoGLMultiTextureEnabledElement::pop(SoState * state,
 {
   SoGLMultiTextureEnabledElement * prev = (SoGLMultiTextureEnabledElement*) prevTopElement;
   for (int i = 0; i < MAX_UNITS; i++) {
-    if (this->isEnabled(i) != prev->isEnabled(i)) {
-      this->updategl(i);
+    Mode oldmode = prev->getMode(i);
+    Mode newmode =  this->getMode(i);
+    if (oldmode != newmode) {
+      this->updategl(i, newmode, oldmode);
     }
   }
 }
@@ -104,12 +106,14 @@ SoGLMultiTextureEnabledElement::pop(SoState * state,
 void
 SoGLMultiTextureEnabledElement::setElt(const int unit, const SbBool value)
 {
-  if (this->isEnabled(unit) != value) {
+  Mode oldmode = this->getMode(unit);
+  Mode newmode = (Mode) value;
+
+  if (oldmode != newmode) {
     inherited::setElt(unit, value);
-    this->updategl(unit);
+    this->updategl(unit, newmode, oldmode);
   }
 }
-
 
 //
 // updates GL state
@@ -121,6 +125,53 @@ SoGLMultiTextureEnabledElement::updategl(const int unit)
   if (this->isEnabled(unit)) glEnable(GL_TEXTURE_2D);
   else glDisable(GL_TEXTURE_2D);
   cc_glglue_glActiveTexture(this->glue, (GLenum) GL_TEXTURE0);
+}
+
+void 
+SoGLMultiTextureEnabledElement::updategl(const int unit, const Mode newvalue, const Mode oldvalue)
+{
+  cc_glglue_glActiveTexture(this->glue, (GLenum) (int(GL_TEXTURE0) + unit));
+
+  switch (oldvalue) {
+  case DISABLED:
+    break;
+  case TEXTURE2D:
+    glDisable(GL_TEXTURE_2D);
+    break;
+  case RECTANGLE:
+    glDisable(GL_TEXTURE_RECTANGLE_EXT);
+    break;
+  case CUBEMAP: 
+    glDisable(GL_TEXTURE_CUBE_MAP);
+    break;
+  case TEXTURE3D: 
+    glDisable(GL_TEXTURE_3D);
+    break;
+  default:
+    assert(0 && "should not happen");
+    break;
+  }
+  switch (newvalue) {
+  case DISABLED:
+    break;
+  case TEXTURE2D:
+    glEnable(GL_TEXTURE_2D);
+    break;
+  case RECTANGLE:
+    glEnable(GL_TEXTURE_RECTANGLE_EXT);
+    break;
+  case CUBEMAP:
+    glEnable(GL_TEXTURE_CUBE_MAP);
+    break;
+  case TEXTURE3D:
+    glEnable(GL_TEXTURE_3D);
+    break;
+  default:
+    assert(0 && "should not happen");
+    break;
+  }
+  cc_glglue_glActiveTexture(this->glue, (GLenum) GL_TEXTURE0);
+
 }
 
 #undef MAX_UNITS
