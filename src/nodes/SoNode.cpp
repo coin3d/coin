@@ -188,6 +188,7 @@
 #include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
 #include <Inventor/nodes/SoUnknownNode.h>
 #include <Inventor/nodes/SoSceneTexture2.h>
+#include <Inventor/nodes/SoTextureCombine.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -612,6 +613,7 @@ SoNode::initClasses(void)
   SoTextureCoordinateCube::initClass();
   SoTextureCoordinateSphere::initClass();
 
+  SoTextureCombine::initClass();
 }
 
 /*!

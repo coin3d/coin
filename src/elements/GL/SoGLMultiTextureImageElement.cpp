@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/elements/SoTextureImageElement.h>
+#include <Inventor/elements/SoTextureCombineElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h> // GL wrapper.
 #include <Inventor/misc/SoGLImage.h>
@@ -255,29 +256,34 @@ SoGLMultiTextureImageElement::updateGL(const int unit)
     // tag image (for GLImage LRU cache).
     SoGLImage::tagImage(state, glud.glimage);
     
-    switch (ud.model) {
-    case SoTextureImageElement::DECAL:
-      glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-      break;
-    case SoTextureImageElement::MODULATE:
-      glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-      break;
-    case SoTextureImageElement::BLEND:
-      glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
-      glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, ud.blendColor.getValue());
-      break;
-    case SoTextureImageElement::REPLACE:
-      // GL_REPLACE mode was introduced with OpenGL 1.1. It is
-      // considered the client code's responsibility to check
-      // that it can use this mode.
-      //
-      // FIXME: ..but we should do a sanity check anyway.
-      // 20030901 mortene.
-      glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-      break;
-    default:
-      assert(0 && "unknown model");
-      break;
+    if (SoTextureCombineElement::isDefault(state, unit)) {
+      switch (ud.model) {
+      case SoTextureImageElement::DECAL:
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+        break;
+      case SoTextureImageElement::MODULATE:
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        break;
+      case SoTextureImageElement::BLEND:
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
+        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, ud.blendColor.getValue());
+        break;
+      case SoTextureImageElement::REPLACE:
+        // GL_REPLACE mode was introduced with OpenGL 1.1. It is
+        // considered the client code's responsibility to check
+        // that it can use this mode.
+        //
+        // FIXME: ..but we should do a sanity check anyway.
+        // 20030901 mortene.
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        break;
+      default:
+        assert(0 && "unknown model");
+        break;
+      }
+    }
+    else { 
+      SoTextureCombineElement::apply(state, unit);
     }
     
     dl->call(state);
