@@ -52,7 +52,7 @@ void
 cc_condvar_struct_init(cc_condvar * condvar_struct)
 {
   int ok;
-  ok = internal_struct_init(condvar_struct);
+  ok = internal_condvar_struct_init(condvar_struct);
   assert(ok == CC_OK);
 }
 
@@ -64,7 +64,7 @@ cc_condvar_struct_clean(cc_condvar * condvar_struct)
 {
   int ok;
   assert(condvar_struct != NULL);
-  ok = internal_struct_clean(condvar_struct);
+  ok = internal_condvar_struct_clean(condvar_struct);
   assert(ok == CC_OK);
 }
 
@@ -102,7 +102,7 @@ cc_condvar_wait(cc_condvar * condvar, cc_mutex * mutex)
 {
   int ok;
   assert(condvar != NULL);
-  ok = internal_wait(condvar, mutex);
+  ok = internal_condvar_wait(condvar, mutex);
   assert(ok == CC_OK);
   return ok;
 }
@@ -117,7 +117,7 @@ cc_condvar_timed_wait(cc_condvar * condvar,
 {
   int ret;
   assert(condvar != NULL);
-  ret = internal_timed_wait(condvar, mutex, period);
+  ret = internal_condvar_timed_wait(condvar, mutex, period);
   assert(ret == CC_OK || ret == CC_TIMEOUT);
   return ret;
 }
@@ -130,7 +130,7 @@ cc_condvar_wake_one(cc_condvar * condvar)
 {
   int ok;
   assert(condvar != NULL);
-  ok = internal_wake_one(condvar);
+  ok = internal_condvar_wake_one(condvar);
   assert(ok == CC_OK);
 }
 
@@ -142,7 +142,7 @@ cc_condvar_wake_all(cc_condvar * condvar)
   int ok;
   assert(condvar != NULL);
 
-  ok = internal_wake_all(condvar);
+  ok = internal_condvar_wake_all(condvar);
   assert(ok == CC_OK);
 }
 

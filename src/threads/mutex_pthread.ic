@@ -22,7 +22,7 @@
 /* this file should only be included from mutex.c */
 
 static int
-internal_struct_init(cc_mutex * mutex_struct)
+internal_mutex_struct_init(cc_mutex * mutex_struct)
 {
   int status = pthread_mutex_init(&mutex_struct->pthread.mutexid, NULL);
   if (status != 0) {
@@ -34,7 +34,7 @@ internal_struct_init(cc_mutex * mutex_struct)
 }
 
 static int
-internal_struct_clean(cc_mutex * mutex_struct)
+internal_mutex_struct_clean(cc_mutex * mutex_struct)
 {
   int status = pthread_mutex_destroy(&mutex_struct->pthread.mutexid);
   if (status != 0) {
@@ -46,7 +46,7 @@ internal_struct_clean(cc_mutex * mutex_struct)
 }
 
 static int
-internal_lock(cc_mutex * mutex)
+internal_mutex_lock(cc_mutex * mutex)
 {
   int status = pthread_mutex_lock(&mutex->pthread.mutexid);
   if (status != 0) {
@@ -58,7 +58,7 @@ internal_lock(cc_mutex * mutex)
 }
 
 static int
-internal_try_lock(cc_mutex * mutex)
+internal_mutex_try_lock(cc_mutex * mutex)
 {
   int status = pthread_mutex_trylock(&mutex->pthread.mutexid);
   if (status == EBUSY) return CC_BUSY;
@@ -71,7 +71,7 @@ internal_try_lock(cc_mutex * mutex)
 }
 
 static int
-internal_unlock(cc_mutex * mutex)
+internal_mutex_unlock(cc_mutex * mutex)
 {
   int status = pthread_mutex_unlock(&mutex->pthread.mutexid);
   if (status != 0) {

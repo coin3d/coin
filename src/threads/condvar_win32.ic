@@ -32,7 +32,7 @@
  */
 
 static int
-internal_struct_init(cc_condvar * condvar_struct)
+internal_condvar_struct_init(cc_condvar * condvar_struct)
 {
   /* auto-reset, initially is non-signaled */
   condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] =
@@ -70,7 +70,7 @@ internal_struct_init(cc_condvar * condvar_struct)
 }
 
 static int
-internal_struct_clean(cc_condvar * condvar_struct)
+internal_condvar_struct_clean(cc_condvar * condvar_struct)
 {
   BOOL status;
   int ret = CC_OK;
@@ -105,7 +105,7 @@ internal_struct_clean(cc_condvar * condvar_struct)
 }
 
 static int
-internal_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD period)
+internal_condvar_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD period)
 {
   int result;
   int last_waiter;
@@ -154,19 +154,19 @@ internal_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD period)
 }
 
 static int
-internal_wait(cc_condvar * condvar, cc_mutex * mutex)
+internal_condvar_wait(cc_condvar * condvar, cc_mutex * mutex)
 {
-  return internal_wait_common(condvar, mutex, INFINITE);
+  return internal_condvar_wait_common(condvar, mutex, INFINITE);
 }
 
 static int
-internal_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
+internal_condvar_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
 {
-  return internal_wait_common(condvar, mutex, (DWORD)floor(period*1000.0f));
+  return internal_condvar_wait_common(condvar, mutex, (DWORD)floor(period*1000.0f));
 }
 
 static int
-internal_wake_one(cc_condvar * condvar)
+internal_condvar_wake_one(cc_condvar * condvar)
 {
   int have_waiters;
   EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
@@ -180,7 +180,7 @@ internal_wake_one(cc_condvar * condvar)
 }
 
 static int
-internal_wake_all(cc_condvar * condvar)
+internal_condvar_wake_all(cc_condvar * condvar)
 {
   int have_waiters;
   EnterCriticalSection(&condvar->w32thread.waiters_count_lock);

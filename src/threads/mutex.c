@@ -60,7 +60,7 @@ cc_mutex_struct_init(cc_mutex * mutex_struct)
   else 
     ok = win32_mutex_struct_init(mutex_struct);
 #else /* USE_W32THREAD */
-  ok = internal_struct_init(mutex_struct);
+  ok = internal_mutex_struct_init(mutex_struct);
 #endif /* ! USE_W32THREAD */
   assert(ok);
 }
@@ -80,7 +80,7 @@ cc_mutex_struct_clean(cc_mutex * mutex_struct)
   else 
     ok = win32_mutex_struct_clean(mutex_struct);
 #else /* USE_W32THREAD */  
-  ok = internal_struct_clean(mutex_struct);
+  ok = internal_mutex_struct_clean(mutex_struct);
 #endif /* ! USE_W32THREAD */
   assert(ok == CC_OK);
 }
@@ -129,7 +129,7 @@ cc_mutex_lock(cc_mutex * mutex)
   else 
     ok = win32_mutex_lock(mutex);
 #else /* USE_W32THREAD */  
-  ok = internal_lock(mutex);
+  ok = internal_mutex_lock(mutex);
 #endif /* USE_W32THREAD */
   assert(ok == CC_OK);
   return ok;
@@ -149,7 +149,7 @@ cc_mutex_try_lock(cc_mutex * mutex)
   else 
     ok = win32_mutex_try_lock(mutex);
 #else /* USE_W32THREAD */  
-  ok = internal_try_lock(mutex);
+  ok = internal_mutex_try_lock(mutex);
 #endif /* ! USE_W32THREAD */
   assert(ok == CC_OK || ok == CC_BUSY);
   return ok;
@@ -169,7 +169,7 @@ cc_mutex_unlock(cc_mutex * mutex)
   else 
     ok = win32_mutex_unlock(mutex);
 #else /* USE_W32THREAD */  
-  ok = internal_unlock(mutex);
+  ok = internal_mutex_unlock(mutex);
 #endif /* USE_W32THREAD */
   assert(ok == CC_OK);
   return ok;

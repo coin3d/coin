@@ -24,7 +24,7 @@
 #include <Inventor/C/threads/mutexp.h>
 
 static int
-internal_struct_init(cc_condvar * condvar_struct)
+internal_condvar_struct_init(cc_condvar * condvar_struct)
 {
   int status = pthread_cond_init(&(condvar_struct->pthread.condid), NULL);
   if (status != 0) {
@@ -36,7 +36,7 @@ internal_struct_init(cc_condvar * condvar_struct)
 }
 
 static int
-internal_struct_clean(cc_condvar * condvar_struct)
+internal_condvar_struct_clean(cc_condvar * condvar_struct)
 {
   int status;
   int ret = CC_OK;
@@ -50,7 +50,7 @@ internal_struct_clean(cc_condvar * condvar_struct)
 }
 
 static int
-internal_wait(cc_condvar * condvar, cc_mutex * mutex)
+internal_condvar_wait(cc_condvar * condvar, cc_mutex * mutex)
 {
   int status;
 
@@ -65,7 +65,7 @@ internal_wait(cc_condvar * condvar, cc_mutex * mutex)
 }
 
 static int
-internal_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
+internal_condvar_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
 {
   struct timespec timeout;
   int status, ret;
@@ -109,7 +109,7 @@ internal_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
 }
 
 static int
-internal_wake_one(cc_condvar * condvar)
+internal_condvar_wake_one(cc_condvar * condvar)
 {
   int status;
   status = pthread_cond_signal(&condvar->pthread.condid);
@@ -122,7 +122,7 @@ internal_wake_one(cc_condvar * condvar)
 }
 
 static int
-internal_wake_all(cc_condvar * condvar)
+internal_condvar_wake_all(cc_condvar * condvar)
 {
   int status = pthread_cond_broadcast(&condvar->pthread.condid);
   if (status != 0) {
