@@ -223,6 +223,17 @@ dont_mangle_output_names(const SoBase *base)
 // parallel. 20020324 mortene.
 static SbDict * writerefs = NULL;
 
+#if COIN_DEBUG
+// Imported (with extern <funcdef>) and used from SoWriteAction to
+// check the writeref dict after a completed action traversal. The
+// dict should be empty, if writeref counting was correct.
+SbDict *
+coin_debug_get_writeref_dict(void)
+{
+  return writerefs;
+}
+#endif // COIN_DEBUG
+
 static inline int
 get_current_writeref(const SoBase * base)
 {
@@ -238,6 +249,28 @@ set_current_writeref(const SoBase * base, const int rc)
 {
   assert(rc >= 0 && "buggy writerefcounter");
   (void)writerefs->enter((unsigned long)base, (void *)rc);
+}
+
+static SbBool
+debug_writerefs(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_WRITEREFS");
+    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+  return dbg;
+}
+
+static SbBool
+debug_import(void)
+{
+  static int dbg = -1;
+  if (dbg == -1) {
+    const char * env = coin_getenv("COIN_DEBUG_IMPORT");
+    dbg = (env && (atoi(env) > 0)) ? 1 : 0;
+  }
+  return dbg;
 }
 
 /**********************************************************************/
@@ -898,12 +931,15 @@ SoBase::addWriteReference(SoOutput * out, SbBool isfromfield)
 
   int refcount = get_current_writeref(this);
 
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoBase::addWriteReference",
-                         "%p/%s: %d -> %d",
-                         this, this->getTypeId().getName().getString(),
-                         refcount, refcount + 1);
-#endif // debug
+#if COIN_DEBUG
+  if (debug_writerefs()) {
+    SoDebugError::postInfo("SoBase::addWriteReference",
+                           "%p/%s/'%s': %d -> %d",
+                           this, this->getTypeId().getName().getString(),
+                           this->getName().getString(),
+                           refcount, refcount + 1);
+  }
+#endif // COIN_DEBUG
 
   refcount++;
 
@@ -1041,13 +1077,14 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
   SbName name;
   SbBool result = in->read(name, TRUE);
 
-#if COIN_DEBUG && 0 // debug
-  // This debug statement is extremely useful when debugging the
-  // import code, so keep it around.
-  SoDebugError::postInfo("SoBase::read",
-                         "SoInput::read(name, TRUE) => returns %s, name=='%s'",
-                         result ? "TRUE" : "FALSE", name.getString());
-#endif // debug
+#if COIN_DEBUG
+  if (debug_import()) {
+    // This output is extremely useful when debugging the import code.
+    SoDebugError::postInfo("SoBase::read",
+                           "SoInput::read(&name, TRUE) => returns %s, name=='%s'",
+                           result ? "TRUE" : "FALSE", name.getString());
+  }
+#endif // COIN_DEBUG
 
   //.read all (vrml97) routes
   if (in->isFileVRML2()) {
@@ -1092,9 +1129,12 @@ SoBase::read(SoInput * in, SoBase *& base, SoType expectedtype)
     base->unref();
   }
 
-#if COIN_DEBUG && 0 // debug
-  if (result) SoDebugError::postInfo("SoBase::read", "baseptr: %p", base);
-#endif // debug
+#if COIN_DEBUG
+  if (debug_import()) {
+    SoDebugError::postInfo("SoBase::read", "done, name=='%s' baseptr==%p, result==%s",
+                           name.getString(), base, result ? "TRUE" : "FALSE");
+  }
+#endif // COIN_DEBUG
 
   return result;
 }
@@ -1392,21 +1432,25 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     }
   }
 
-  int refcount = get_current_writeref(this);
+  int writerefcount = get_current_writeref(this);
 
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("SoBase::writeHeader",
-                         "%p/%s: %d -> %d",
-                         this,
-                         this->getTypeId().getName().getString(),
-                         refcount, refcount - 1);
-#endif // debug
+#if COIN_DEBUG
+  if (debug_writerefs()) {
+    SoDebugError::postInfo("SoBase::writeHeader",
+                           "%p/%s/'%s': %d -> %d",
+                           this,
+                           this->getTypeId().getName().getString(),
+                           this->getName().getString(),
+                           writerefcount, writerefcount - 1);
+  }
+#endif // COIN_DEBUG
 
   SoBase * thisp = (SoBase *)this;
-  refcount--;
+  writerefcount--;
 
-  if (refcount == 0) {
-    // Make ready for next inital write action pass by resetting data.
+  if (writerefcount == 0) {
+    // Make ready for next initial write action pass by resetting
+    // data.
     thisp->objdata.ingraph = FALSE;
     SbBool found = writerefs->remove((unsigned long)this);
     assert(found && "writeref hash in trouble");
@@ -1417,12 +1461,12 @@ SoBase::writeHeader(SoOutput * out, SbBool isgroup, SbBool isengine) const
     //
     // FIXME: accessing out->removeSoBase2IdRef() directly takes a
     // "friend SoBase" in the SoOutput class definition. Should fix
-    // with proper design for Coin-2. 20020426 mortene
+    // with proper design for next major Coin release. 20020426 mortene.
     if (out->findReference(this) != REFID_FIRSTWRITE)
       out->removeSoBase2IdRef(this);
   }
   else {
-    set_current_writeref(this, refcount);
+    set_current_writeref(this, writerefcount);
   }
 
   // Don't need to write out the rest if we are writing anything but
