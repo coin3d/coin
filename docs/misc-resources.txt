@@ -226,6 +226,8 @@ THE LINKS
   purpose (licensing certainly seems liberal enough for us to include
   in Coin).
 
+  UPDATE 2003-04-20: now released, at <URL:http://www.gnome.org/fonts>.
+
 * OpenGL and ActiveX:
 
   - Working demo code:
