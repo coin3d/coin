@@ -10,6 +10,11 @@ publicly under the Q Public License for developers of free software
 and is also available for commercial use under a "professional
 edition" license.
 
+Some of the files in the distribution is covered by the GNU GPL, but
+this does not include any of the files which are compiled to the final
+binary products.
+
+
 STATUS
 mid-development
 
