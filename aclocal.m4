@@ -65,18 +65,33 @@ fi
 AC_DEFUN([SIM_AC_CHECK_VAR_FUNCTIONNAME], [
 AC_CACHE_CHECK([for function name variable],
   sim_cv_var_functionname, [
+  # __func__ is the identifier used by compilers which are
+  # compliant with the C99 ISO/IEC 9899:1999 standard.
   AC_TRY_COMPILE(
     [#include <stdio.h>],
-    [(void)printf("%s\n",__PRETTY_FUNCTION__)],
-    [sim_cv_var_functionname=__PRETTY_FUNCTION__],
+    [(void)printf("%s\n",__func__)],
+    [sim_cv_var_functionname=__func__],
     [sim_cv_var_functionname=none])
-  if test x"$sim_cv_pretty_function" = x"none"; then
+  if test x"$sim_cv_var_functionname" = x"none"; then
+    # GCC uses __PRETTY_FUNCTION__
+    AC_TRY_COMPILE(
+      [#include <stdio.h>],
+      [(void)printf("%s\n",__PRETTY_FUNCTION__)],
+      [sim_cv_var_functionname=__PRETTY_FUNCTION__],
+      [sim_cv_var_functionname=none])
+  fi
+  if test x"$sim_cv_var_functionname" = x"none"; then
     AC_TRY_COMPILE(
       [#include <stdio.h>],
       [(void)printf("%s\n",__FUNCTION__)],
       [sim_cv_var_functionname=__FUNCTION__],
       [sim_cv_var_functionname=none])
   fi])
+
+if test x"$sim_cv_var_functionname" = x"__func__"; then
+  AC_DEFINE([HAVE_VAR___func__], 1,
+    [Define this to true if the __func__ variable contains the current function name])
+fi
 
 if test x"$sim_cv_var_functionname" = x"__PRETTY_FUNCTION__"; then
   AC_DEFINE([HAVE_VAR___PRETTY_FUNCTION__], 1,
@@ -1544,38 +1559,56 @@ fi
 # Authors:
 #   Lars Jørgen Aas, <larsa@sim.no>
 #   Morten Eriksen, <mortene@sim.no>
+#   Rupert Kittinger, <kittinger@mechanik.tu-graz.ac.at>
+#
 
-AC_DEFUN([SIM_AC_CHECK_MATHLIB], [
-
-sim_ac_store_libs=$LIBS
-sim_ac_libm=
+AC_DEFUN([SIM_AC_CHECK_MATHLIB],
+[sim_ac_libm=
 
 AC_CACHE_CHECK(
-  [for math library functions],
+  [for math functions library],
   [sim_cv_lib_math],
   [sim_cv_lib_math=UNDEFINED
-  # BeOS and Cygwin platforms has implicit math library linking,
+  # BeOS and MSWin platforms has implicit math library linking,
   # and ncr-sysv4.3 might use -lmw (according to AC_CHECK_LIBM in
   # libtool.m4).
   for sim_ac_math_chk in "" -lm -lmw; do
     if test x"$sim_cv_lib_math" = xUNDEFINED; then
+      sim_ac_store_libs=$LIBS
       LIBS="$sim_ac_store_libs $sim_ac_math_chk"
-      AC_TRY_LINK([#include <math.h>],
-                  [fmod(1.0, 1.0); pow(1.0, 1.0); exp(1.0); sin(1.0)],
+      AC_TRY_LINK([#include <math.h>
+                  #include <stdlib.h>
+                  #include <stdio.h>],
+                  [char s[16];
+                   /*
+                      SGI IRIX MIPSpro compilers may "fold" math
+                      functions with constant arguments already
+                      at compile time.
+
+                      It is also theoretically possible to do this
+                      for atof(), so to be _absolutely_ sure the
+                      math functions aren't replaced by constants at
+                      compile time, we get the arguments from a guaranteed
+                      non-constant source (stdin).
+                   */
+                  fmod(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
+                  pow(atof(fgets(s,15,stdin)), atof(fgets(s,15,stdin)));
+                  exp(atof(fgets(s,15,stdin)));
+                  sin(atof(fgets(s,15,stdin)))],
                   [sim_cv_lib_math=$sim_ac_math_chk])
+      LIBS=$sim_ac_store_libs
     fi
   done
   ])
 
 if test x"$sim_cv_lib_math" != xUNDEFINED; then
   sim_ac_libm=$sim_cv_lib_math
-  LIBS="$sim_ac_libm $sim_ac_store_libs"
+  LIBS="$sim_ac_libm $LIBS"
   $1
 else
-  LIBS=$sim_ac_store_libs
-  $2
+  ifelse([$2], , :, [$2])
 fi
-])
+])# SIM_AC_CHECK_MATHLIB
 
 # Usage:
 #  SIM_CHECK_X11([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])

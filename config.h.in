@@ -52,6 +52,10 @@
    current function name */
 #undef HAVE_VAR___PRETTY_FUNCTION__
 
+/* Define this to true if the __func__ variable contains the current function
+   name */
+#undef HAVE_VAR___func__
+
 /* Name of package */
 #undef PACKAGE
 
