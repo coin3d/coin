@@ -26,16 +26,6 @@
 
 // Usually you get all you need from time.h
 #include <time.h>
-
-// FIXME: the following system testing and conditional header file
-// inclusion should be cleaned up. Sort it out properly (with a
-// configure check, if necessary -- investigate if sys/time.h is
-// really needed, and if so; exactly where and when). 20011019 mortene.
-#ifndef _WIN32
-// Sometimes (linux) sys/time.h is also needed
-#include <sys/time.h>
-#endif // !_WIN32
-
 #include <stdio.h>
 
 #include <Inventor/system/inttypes.h>
