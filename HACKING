@@ -500,7 +500,9 @@ accomplished.
 
 First, the larger issues:
 
-   I. Some specific remarks about portability: this is very far from
+   I. PORTABILITY.
+
+      Some specific remarks about portability: this is very far from
       being a trivial matter with C++, as not only is system
       portability difficult (due to differences in core libraries for
       various platforms), but _compiler_ portability is also a big
@@ -531,7 +533,9 @@ First, the larger issues:
       systems.
 
 
-  II. There is one important "trick" to apply to C++ classes when they
+  II. THE CHESHIRE CAT / THE BRIDGE PATTERN
+
+      There is one important "trick" to apply to C++ classes when they
       are part of a library with a public API where binary
       compatibility (ie a stable ABI[1]) between releases are
       important -- as it is for the Coin library. The trick is to hide
@@ -627,8 +631,30 @@ First, the larger issues:
       neither is SoBase or SoField -- which both permeates library
       usage at run-time, so we want to keep them as slim as possible.
 
+      The preferred way to access the pimpl pointer, and to access the
+      "real" class (in the public interface) back from the private
+      class, is to set up a couple of macros:
 
- III. Don't you ever dare pollute the global namespace unnecessary!
+        #define PRIVATE(p) (p->pimpl)
+        #define PUBLIC(p) (p->master)
+
+
+      ..and then use it in statements like this:
+
+        PRIVATE(pimpl)->number2 = obj->doSomeThing(PRIVATE(pimpl)->number1);
+
+      Specifically, don't use the "THIS" define which we used to do in
+      earlier times:
+
+        #define THIS this->pimpl
+
+      ..as it clashes with a define for "THIS" made somewhere in the
+      header files of Microsoft Visual Studio.
+
+
+ III. GLOBAL NAMESPACE POLLUTION
+
+      Don't you ever dare pollute the global namespace unnecessary!
 
       That goes for: defines, macros, enums, typedefs, function names,
       etc etc. If you *have* to make something global, you should at
