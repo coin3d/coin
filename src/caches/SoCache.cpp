@@ -36,16 +36,15 @@
   Constructor with \a state being the current state.
 */
 SoCache::SoCache(SoState * const state)
-  : elements(), 
-  elementflags(NULL), 
-  refcount(0), 
-  invalidated(FALSE), 
+  : elements(),
+  elementflags(NULL),
+  refcount(0),
+  invalidated(FALSE),
   statedepth(state ? state->getDepth() : 0)
 {
-  assert(state != NULL);
   int numidx = SoElement::getNumStackIndices();
   int numbytes = (numidx >> 3) + 1;
-  // one bit per element is used to quickly determine whether an 
+  // one bit per element is used to quickly determine whether an
   // element of a given type already has been added.
   this->elementflags = new unsigned char[numbytes];
   memset(this->elementflags, 0, numbytes);
@@ -136,7 +135,7 @@ const SoElement *
 SoCache::getInvalidElement(const SoState * const state) const
 {
   if (this->invalidated) return NULL;
-  
+
   // use local variables for speed
   int n = this->elements.getLength();
   const SoElement * const * ptr = this->elements.getArrayPtr();
