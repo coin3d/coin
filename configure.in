@@ -1,14 +1,11 @@
 dnl  This can be any file in the package.
 AC_INIT(src/misc/SoDB.cpp)
 
-dnl  Locate C++ compiler and set C++ as the default compiler to run
-dnl  in tests.
+dnl  Locate C++ compiler and set C++ as the default language to use
+dnl  in tests. The configure script will automatically terminate if
+dnl  it doesn't find a C++ compiler.
 AC_PROG_CXX
 AC_LANG_CPLUSPLUS
-
-if test "x$GXX" != "xyes"; then
-  AC_MSG_WARN(You are not using the GNU compiler -- other compilers are not well supported at the moment)
-fi
 
 
 dnl *******************************************************************
@@ -62,7 +59,7 @@ dnl *******************************************************************
 
 AM_INIT_AUTOMAKE(libCoin, $VERSION)
 
-dnl  File to cram results from the configure tests into.
+dnl  Files to cram results from the configure tests into.
 AM_CONFIG_HEADER(config.h include/Inventor/SbBasic.h)
 
 dnl  Default to not building a static library.
@@ -75,85 +72,128 @@ AM_MAINTAINER_MODE
 dnl  Initialize libtool
 AC_PROG_LIBTOOL
 
-dnl  Yep, this is important in case we want to add code to make
-dnl  the API interface "Open Inventor strict", meaning the user must
-dnl  use the exact same include files as under "real" Open Inventor.
-dnl  We would then need to know that we are actually allowed to include
-dnl  any file during internal build.
-CXXFLAGS="$CXXFLAGS -D__SOLIB_INTERNAL__"
+
+dnl  These are used for constructing the coin-config file.
+COIN_EXTRA_CPPFLAGS=
+COIN_EXTRA_LDFLAGS=
+COIN_EXTRA_LIBS=
+AC_SUBST(COIN_EXTRA_CPPFLAGS)
+AC_SUBST(COIN_EXTRA_LDFLAGS)
+AC_SUBST(COIN_EXTRA_LIBS)
 
 
 dnl *******************************************************************
-dnl * Test for installation of Mesa or OpenGL development system.
+dnl * Set us up for using the simage library (if wanted, and if
+dnl * available).
+dnl *******************************************************************
+
+SIM_CHECK_SIMAGE([AC_DEFINE(HAVE_LIBSIMAGE)
+                 COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_simage_cppflags"
+                 COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_simage_ldflags"
+                 COIN_EXTRA_LIBS="$sim_ac_simage_libs $COIN_EXTRA_LIBS"],
+                 [AC_MSG_WARN(simage development system not found)])
+
+dnl  We need to check for the math library on our own if its not
+dnl  "inherited" from the simage library.
+if test x"$sim_ac_simage_avail" = xno; then
+  AC_CHECK_LIBM
+  LIBS="$LIBM $LIBS"
+  COIN_EXTRA_LIBS="$LIBM $COIN_EXTRA_LIBS"
+fi
+
+
+dnl *******************************************************************
+dnl * Handle the detection and inclusion of X11 libraries.
 dnl *******************************************************************
 
 dnl Code using the OpenGL/Mesa library needs X11 to link on UNIX systems.
 AC_PATH_XTRA
 
-dnl *** DEBUG ***
-dnl Keep this around, as it can be handy when testing on new systems.
-dnl echo "X_CFLAGS: $X_CFLAGS"
-dnl echo "X_PRE_LIBS: $X_PRE_LIBS"
-dnl echo "X_LIBS: $X_LIBS"
-dnl echo "X_EXTRA_LIBS: $X_EXTRA_LIBS"
+if test x"$no_x" != xyes; then
+  #  *** DEBUG ***
+  #  Keep this around, as it can be handy when testing on new systems.
+  # echo "X_CFLAGS: $X_CFLAGS"
+  # echo "X_PRE_LIBS: $X_PRE_LIBS"
+  # echo "X_LIBS: $X_LIBS"
+  # echo "X_EXTRA_LIBS: $X_EXTRA_LIBS"
+  # echo
+  # echo "CFLAGS: $CFLAGS"
+  # echo "CPPFLAGS: $CPPFLAGS"
+  # echo "CXXFLAGS: $CXXFLAGS"
+  # echo "LDFLAGS: $LDFLAGS"
+  # echo "LIBS: $LIBS"
+  # exit 0
 
-AC_ARG_ENABLE(Mesa,
-  [  --enable-Mesa           prefer Mesa (if found) over native OpenGL
-                          [default=yes]],
-  [case "${enableval}" in
-    yes) enable_mesa=yes ;;
-    no)  enable_mesa=no ;;
-    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-Mesa) ;;
-  esac],
-  enable_mesa=yes)
-
-if test "x$enable_mesa" = "xyes"; then
-  GL_search_list="MesaGL GL"
-  GLU_search_list="MesaGLU GLU"
-else
-  GL_search_list="GL MesaGL"
-  GLU_search_list="GLU MesaGLU"
-fi
-
-if test "x$no_x" != "xyes"; then
-  dnl FIXME: -lXext is needed by -lSM. -lSM is added by AC_PATH_XTRA to
-  dnl $X_PRE_LIBS, so -lXext _should_ be automatically added to $X_EXTRA_LIBS
-  dnl by the AC_PATH_XTRA macro. This is not the case on my RedHat Linux
-  dnl 5.2, at least. Autoconf bug, methinks. 19991030 mortene.
-  LIBS="$LIBS $X_LIBS $X_PRE_LIBS -lX11 -lXext $X_EXTRA_LIBS"
+  LIBS="$X_PRE_LIBS -lX11 $X_EXTRA_LIBS $LIBS"
   CPPFLAGS="$CPPFLAGS $X_CFLAGS"
+  LDFLAGS="$LDFLAGS $X_LIBS"
+
+  AC_CACHE_CHECK([whether we can link against X11],
+    sim_cv_lib_X11_avail,
+    [AC_TRY_LINK([#include <X11/Xlib.h>],
+                 [(void)XOpenDisplay(0L);],
+                 sim_cv_lib_X11_avail=yes,
+                 sim_cv_lib_X11_avail=no)])
+
+  if test x"$sim_cv_lib_X11_avail" = xno; then
+    AC_MSG_ERROR([Weird X11 installation.])
+  fi
+
+  COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $X_CFLAGS"
+  COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $X_LIBS"
+  COIN_EXTRA_LIBS="$X_PRE_LIBS -lX11 $X_EXTRA_LIBS $COIN_EXTRA_LIBS"
+
+  dnl If the X11 shared memory extension is available, it is likely that
+  dnl the Mesa libraries will be using it, so include it to be sure.
+
+  sim_ac_save_libs=$LIBS
+  LIBS="-lXext $LIBS"
+
+  AC_CACHE_CHECK([whether the X11 shared memory extension is available],
+    sim_cv_lib_x11shmem_avail,
+    [AC_TRY_LINK([#include <X11/Xlib.h>
+                  #include <X11/extensions/XShm.h>],
+                 [(void)XShmQueryVersion(0L, 0L, 0L, 0L);],
+                 sim_cv_lib_x11shmem_avail=yes,
+                 sim_cv_lib_x11shmem_avail=no)])
+
+  if test x"$sim_cv_lib_x11shmem_avail" = xyes; then
+    COIN_EXTRA_LIBS="-lXext $COIN_EXTRA_LIBS"
+  else
+    LIBS=$sim_ac_save_libs
+  fi
+
 fi
 
-AC_LANG_SAVE
-AC_LANG_C
+dnl *******************************************************************
+dnl * Test for installation of Mesa or OpenGL development system.
+dnl *******************************************************************
 
-SIM_CHECK_MATHLIB
+SIM_CHECK_OPENGL([AC_DEFINE(HAVE_OPENGL)
+                 COIN_EXTRA_CPPFLAGS="$COIN_EXTRA_CPPFLAGS $sim_ac_gl_cppflags"
+                 COIN_EXTRA_LDFLAGS="$COIN_EXTRA_LDFLAGS $sim_ac_gl_ldflags"
+                 COIN_EXTRA_LIBS="$sim_ac_gl_libs $COIN_EXTRA_LIBS"],
+                 AC_MSG_ERROR(needs an OpenGL-compatible development system installation to compile Coin))
 
-dnl ************************************************************************
-
-AC_SEARCH_LIBS(glAccum, $GL_search_list, , AC_MSG_ERROR([
-*** Needs an OpenGL-compatible development installation to compile Coin!]),
-               $MATHLIB)
-AC_SEARCH_LIBS(gluBeginCurve, $GLU_search_list, , AC_MSG_ERROR([
-*** Needs the GLU library to compile Coin!]),
-               $MATHLIB)
+# FIXME: should be able to handle systems where OpenGL is not available,
+# as it would be handy for making e.g. import/export-only versions of the
+# library. 20000123 mortene.
 
 dnl *******************************************************************
-dnl ** Check if the Mesa offscreen-rendering interface is available.
+dnl ** Check if the Mesa offscreen rendering interface is available.
 dnl *******************************************************************
-AC_CACHE_CHECK([whether Mesa offscreen rendering is available],
-  sim_cv_func_osmesacreatecontext_avail,
-  [AC_TRY_LINK([#include <GL/osmesa.h>],
-               [(void)OSMesaCreateContext(OSMESA_RGB, 0L);],
-               sim_cv_func_osmesacreatecontext_avail=yes,
-               sim_cv_func_osmesacreatecontext_avail=no)])
+if test x"$sim_ac_gl_is_mesa" = xyes; then
+  AC_CACHE_CHECK([whether Mesa offscreen rendering is available],
+    sim_cv_func_osmesacreatecontext_avail,
+    [AC_TRY_LINK([#include <GL/osmesa.h>],
+                 [(void)OSMesaCreateContext(OSMESA_RGB, 0L);],
+                 sim_cv_func_osmesacreatecontext_avail=yes,
+                 sim_cv_func_osmesacreatecontext_avail=no)])
 
-if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
-  AC_DEFINE(HAVE_OSMESACREATECONTEXT)
+  if test x"$sim_cv_func_osmesacreatecontext_avail" = xyes; then
+    AC_DEFINE(HAVE_OSMESACREATECONTEXT)
+  fi
 fi
-
-
-AC_LANG_RESTORE
 
 
 dnl *******************************************************************
@@ -172,6 +212,15 @@ SIM_RTTI_SUPPORT
 SIM_EXCEPTION_HANDLING
 SIM_PROFILING_SUPPORT
 SIM_COMPILER_WARNINGS
+
+dnl  Yep, this is important in case we want to add code to make
+dnl  the API interface "Open Inventor strict", meaning the user must
+dnl  use the exact same include files as under "real" Open Inventor.
+dnl  We would then need to know that we are actually allowed to include
+dnl  any file during internal build.
+CPPFLAGS="$CPPFLAGS -D__SOLIB_INTERNAL__"
+
+
 
 AC_CHECK_HEADERS(unistd.h io.h)
 AC_CHECK_FUNCS(vsnprintf _vsnprintf snprintf _snprintf)
@@ -192,59 +241,6 @@ AC_ARG_ENABLE(hacking,
 
 AM_CONDITIONAL(HACKING_DYNAMIC_MODULES, test "x$enable_hacking" = "xyes")
 
-
-dnl *******************************************************************
-dnl * Check if we want to use simage (if available).
-dnl *******************************************************************
-
-AC_ARG_WITH(simage,
-  [  --with-simage           use simage (if found) for texture import [default=yes]],
-  [case "${withval}" in
-    yes) want_simage=yes ;;
-    no)  want_simage=no ;;
-    *) AC_MSG_ERROR(bad value \"${withval}\" for --with-simage) ;;
-  esac],
-  [want_simage=yes])
-
-dnl *******************************************************************
-dnl * Check if libsimage development system is installed (if necessary).
-dnl *******************************************************************
-
-if test "x$want_simage" = "xyes"; then
-  AC_MSG_CHECKING(for simage header file)
-
-  dnl First try standard system locations.
-  AC_TRY_CPP([#include <simage.h>], simage_dev=yes, simage_dev=no)
-
-  dnl Not found in any of the standard system locations, try libCoin
-  dnl installation directory.
-  dnl FIXME: use AC_DEFINE_DIR from the autoconf macro archive. 19991127 mortene.
-  if test "x$simage_dev" = "xno"; then
-    _COINPREFIX=$prefix
-    test "x$_COINPREFIX" = xNONE && _COINPREFIX=$ac_default_prefix
-    _COINEPREFIX=$exec_prefix
-    test "x$_COINEPREFIX" = xNONE && _COINEPREFIX=$_COINPREFIX
-    _SAVECPPFLAGS=$CPPFLAGS
-    CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
-    AC_TRY_CPP([#include <simage.h>], simage_dev=yes, simage_dev=no)
-    CPPFLAGS=$_SAVECPPFLAGS
-    if test "x$simage_dev" = "xyes"; then
-      CPPFLAGS="-I$_COINPREFIX/include $CPPFLAGS"
-      LDFLAGS="-L$_COINEPREFIX/lib $LDFLAGS"
-    fi
-  fi
-
-  AC_MSG_RESULT($simage_dev)
-
-  if test "x$simage_dev" = "xyes"; then
-    AC_CHECK_LIB(simage, simage_read_image, , simage_dev=no, -lz $MATHLIB)
-  fi
-  if test "$simage_dev" = no; then
-    AC_MSG_WARN(libsimage development system not found)
-  fi
-fi
-
-LIBS="$LIBS $MATHLIB"
 
 dnl *******************************************************************
 dnl * Do we want to build the tools?
@@ -293,38 +289,40 @@ test -d include           || mkdir include
 test -d include/Inventor  || mkdir include/Inventor
 
 AC_OUTPUT([
-	Makefile
-	src/Makefile
-	src/coindev/Makefile
-	src/base/Makefile
-	src/VRMLnodes/Makefile
-	src/actions/Makefile
-	src/bundles/Makefile
-	src/caches/Makefile
-	src/details/Makefile
-	src/draggers/Makefile
-	src/elements/Makefile
-	src/engines/Makefile
-	src/errors/Makefile
-	src/events/Makefile
-	src/fields/Makefile
-	src/manips/Makefile
-	src/misc/Makefile
-	src/lists/Makefile
-	src/nodekits/Makefile
-	src/nodes/Makefile
-	src/projectors/Makefile
-	src/sensors/Makefile
-	src/system/Makefile
-	tools/Makefile
-	tools/ivcat/Makefile
-	tools/ivhierarchy/Makefile
-	tools/ivNodeKitStructure/Makefile
-	tools/renderos/Makefile
-	examples/Makefile
-	examples/advanced/Makefile
-	examples/advanced/elements/Makefile
-])
+        coin-config
+        Makefile
+        src/Makefile
+        src/coindev/Makefile
+        src/base/Makefile
+        src/VRMLnodes/Makefile
+        src/actions/Makefile
+        src/bundles/Makefile
+        src/caches/Makefile
+        src/details/Makefile
+        src/draggers/Makefile
+        src/elements/Makefile
+        src/engines/Makefile
+        src/errors/Makefile
+        src/events/Makefile
+        src/fields/Makefile
+        src/manips/Makefile
+        src/misc/Makefile
+        src/lists/Makefile
+        src/nodekits/Makefile
+        src/nodes/Makefile
+        src/projectors/Makefile
+        src/sensors/Makefile
+        src/system/Makefile
+        tools/Makefile
+        tools/ivcat/Makefile
+        tools/ivhierarchy/Makefile
+        tools/ivNodeKitStructure/Makefile
+        tools/renderos/Makefile
+        examples/Makefile
+        examples/advanced/Makefile
+        examples/advanced/elements/Makefile
+        ],
+        [chmod a+x coin-config])
 
 echo "Now, run 'make install' to build and install Coin."
 

@@ -750,37 +750,174 @@ else
   $1_FALSE=
 fi])
 
-dnl  Check if linker needs -lm for math functions. Sets environment
-dnl  variable $MATHLIB to the necessary linker flags and libraries.
+dnl Usage:
+dnl  SIM_CHECK_SIMAGE([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
 dnl
-dnl  Author: Lars Jørgen Aas, <larsa@sim.no>.
+dnl  Try to find the simage library development system, which is used
+dnl  by e.g. the Coin library for importing texture bitmap files. If
+dnl  it is found, these shell variables are set:
 dnl
-dnl Note: this macro duplicates the effort of AC_CHECK_LIBM from the libtool
-dnl distribution.
+dnl    $sim_ac_simage_cppflags (extra flags the compiler needs for simage)
+dnl    $sim_ac_simage_ldflags  (extra flags the linker needs for simage)
+dnl    $sim_ac_simage_libs     (link libraries the linker needs for simage)
 dnl
-dnl  TODO:
-dnl    * [mortene:19991114] cache result for subsequent runs
-dnl    * [mortene:19991114] make this work on MSWin (with Cygwin installation)
+dnl  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+dnl  In addition, the variable $sim_ac_simage_avail is set to "yes"
+dnl  if the simage development system is found.
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl TODO:
+dnl    * [mortene:20000122] make sure this work on MSWin (with
+dnl      Cygwin installation)
 dnl
 
-AC_DEFUN(SIM_CHECK_MATHLIB,[
+AC_DEFUN(SIM_CHECK_SIMAGE,[
 dnl Autoconf is a developer tool, so don't bother to support older versions.
-AC_PREREQ([2.13])
-save=$LIBS
-LIBS=
-AC_CACHE_CHECK([whether we must explicitly link with the math library],
-  ac_cv_lib_EXPLICITMATH,
-  [AC_TRY_LINK([#include <math.h>],
-               [fmod(1.0f, 1.0f)],
-               ac_cv_lib_EXPLICITMATH=no,
-               ac_cv_lib_EXPLICITMATH=yes)])
-LIBS=$save
+AC_PREREQ([2.14.1])
 
-MATHLIB=""
-if test $ac_cv_lib_EXPLICITMATH = yes; then
-  MATHLIB="-lm"
+AC_ARG_WITH(simage, AC_HELP_STRING([--with-simage=DIR], [use simage for loading texture files [default=yes]]), , [with_simage=yes])
+
+sim_ac_simage_avail=no
+
+if ! test x"$with_simage" = xno; then
+  sim_ac_conf_cmd=simage-config
+
+  if ! test x"$with_simage" = xyes; then
+    sim_ac_conf_cmd=${with_simage}/bin/simage-config
+  fi
+
+  sim_ac_simage_cppflags=`$sim_ac_conf_cmd --cppflags`
+  sim_ac_simage_ldflags=`$sim_ac_conf_cmd --ldflags`
+  sim_ac_simage_libs=`$sim_ac_conf_cmd --libs`
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+  sim_ac_save_libs=$LIBS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_simage_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_simage_ldflags"
+  LIBS="$sim_ac_simage_libs $LIBS"
+
+  AC_CACHE_CHECK([whether the simage library is available],
+    sim_cv_lib_simage_avail,
+    [AC_TRY_LINK([#include <simage.h>],
+                 [(void)simage_read_image(0L, 0L, 0L, 0L);],
+                 sim_cv_lib_simage_avail=yes,
+                 sim_cv_lib_simage_avail=no)])
+
+  if test x"$sim_cv_lib_simage_avail" = xyes; then
+    sim_ac_simage_avail=yes
+    ifelse($1, , :, $1)
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    ifelse($2, , :, $2)
+  fi
 fi
-unset save
+])
+
+dnl Usage:
+dnl  SIM_CHECK_OPENGL([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl  Try to find an OpenGL development system, either a native
+dnl  implementation or the OpenGL-compatible Mesa libraries. If
+dnl  it is found, these shell variables are set:
+dnl
+dnl    $sim_ac_gl_cppflags (extra flags the compiler needs for OpenGL/Mesa)
+dnl    $sim_ac_gl_ldflags  (extra flags the linker needs for OpenGL/Mesa)
+dnl    $sim_ac_gl_libs     (link libraries the linker needs for OpenGL/Mesa)
+dnl
+dnl  The CPPFLAGS, LDFLAGS and LIBS flags will also be modified accordingly.
+dnl  In addition, the variable $sim_ac_gl_avail is set to "yes" if an
+dnl  OpenGL-compatible development system is found. If the OpenGL system
+dnl  found is the Mesa libraries, we will also set $sim_ac_gl_is_mesa to
+dnl  "yes".
+dnl
+dnl
+dnl Author: Morten Eriksen, <mortene@sim.no>.
+dnl
+dnl TODO:
+dnl    * [mortene:20000122] make sure this work on MSWin (with
+dnl      Cygwin installation)
+dnl
+
+AC_DEFUN(SIM_CHECK_OPENGL,[
+dnl Autoconf is a developer tool, so don't bother to support older versions.
+AC_PREREQ([2.14.1])
+
+AC_ARG_WITH(opengl, AC_HELP_STRING([--with-opengl=DIR], [OpenGL/Mesa installation directory]), , [with_opengl=yes])
+
+sim_ac_gl_avail=no
+sim_ac_gl_is_mesa=no
+
+if ! test x"$with_opengl" = xno; then
+  if ! test x"$with_opengl" = xyes; then
+    sim_ac_gl_cppflags="-I${with_opengl}/include"
+    sim_ac_gl_ldflags="-L${with_opengl}/lib"
+  fi
+
+  sim_ac_save_cppflags=$CPPFLAGS
+  sim_ac_save_ldflags=$LDFLAGS
+
+  CPPFLAGS="$CPPFLAGS $sim_ac_gl_cppflags"
+  LDFLAGS="$LDFLAGS $sim_ac_gl_ldflags"
+
+  sim_ac_save_libs=$LIBS
+  sim_ac_gl_libs="-lMesaGLU -lMesaGL"
+  LIBS="$sim_ac_gl_libs $LIBS"
+
+  AC_CACHE_CHECK([whether OpenGL libraries with the Mesa prefix are available],
+    sim_cv_lib_mesa_avail,
+    [AC_TRY_LINK([#include <GL/gl.h>
+                  #include <GL/glu.h>],
+                 [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
+                 sim_cv_lib_mesa_avail=yes,
+                 sim_cv_lib_mesa_avail=no)])
+
+  if test x"$sim_cv_lib_mesa_avail" = xyes; then
+    sim_ac_gl_is_mesa=yes
+    sim_ac_gl_avail=yes
+  else
+    sim_ac_gl_libs="-lGLU -lGL"
+    LIBS="$sim_ac_gl_libs $sim_ac_save_libs"
+
+    AC_CACHE_CHECK([whether OpenGL libraries are available],
+      sim_cv_lib_gl_avail,
+      [AC_TRY_LINK([#include <GL/gl.h>
+                    #include <GL/glu.h>],
+                   [glPointSize(1.0f); gluSphere(0L, 1.0, 1, 1);],
+                   sim_cv_lib_gl_avail=yes,
+                   sim_cv_lib_gl_avail=no)])
+
+    if test x"$sim_cv_lib_gl_avail" = xyes; then
+      sim_ac_gl_avail=yes
+      AC_CACHE_CHECK([whether OpenGL libraries actually are the Mesa libraries],
+        sim_cv_lib_gl_ismesa,
+        [AC_TRY_LINK([#include <GL/gl.h>
+                      #include <GL/glu.h>],
+                     [#ifndef MESA
+                      #error not mesa
+                      #endif],
+                     sim_cv_lib_gl_ismesa=yes,
+                     sim_cv_lib_gl_ismesa=no)])
+      if test x"$sim_cv_lib_gl_ismesa" = xyes; then
+        sim_ac_gl_is_mesa=yes
+      fi
+    fi
+  fi
+
+  if test x"$sim_ac_gl_avail" = xyes; then
+    ifelse($1, , :, $1)
+  else
+    CPPFLAGS=$sim_ac_save_cppflags
+    LDFLAGS=$sim_ac_save_ldflags
+    LIBS=$sim_ac_save_libs
+    ifelse($2, , :, $2)
+  fi
+fi
 ])
 
 dnl  Let the user decide if compilation should be done in "debug mode".

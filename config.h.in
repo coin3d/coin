@@ -1,10 +1,12 @@
 /* config.h.in.  Generated automatically from configure.in by autoheader.  */
 
-#undef HAVE_LIBSIMAGE
 #undef COIN_MAJOR_VERSION
 #undef COIN_MINOR_VERSION
 #undef COIN_MICRO_VERSION
 #undef COIN_VERSION
+
+#undef HAVE_LIBSIMAGE
+#undef HAVE_OPENGL
 #undef HAVE_OSMESACREATECONTEXT
 
 /* Define if you have the <io.h> header file. */
@@ -22,14 +24,17 @@
 /* Define if you have the `ipc' library (-lipc). */
 #undef HAVE_LIBIPC
 
+/* Define if you have the `m' library (-lm). */
+#undef HAVE_LIBM
+
+/* Define if you have the `mw' library (-lmw). */
+#undef HAVE_LIBMW
+
 /* Define if you have the `nsl' library (-lnsl). */
 #undef HAVE_LIBNSL
 
 /* Define if you have the `posix' library (-lposix). */
 #undef HAVE_LIBPOSIX
-
-/* Define if you have the `simage' library (-lsimage). */
-#undef HAVE_LIBSIMAGE
 
 /* Define if you have the `socket' library (-lsocket). */
 #undef HAVE_LIBSOCKET
