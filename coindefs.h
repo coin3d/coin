@@ -58,6 +58,11 @@
 /*
   COIN_STUB(): this is the method which prints out stub
   information. Used where there is functionality missing.
+
+  COIN_OBSOLETED: this is the method which prints out obsoleted
+  information. Used where there is an obsoleted or unsupported
+  function. Typically a function that we feel should have been private
+  in Open Inventor.  
 */
 
 #if COIN_DEBUG
@@ -75,9 +80,21 @@
     (void)fprintf(stderr, "\n"); \
   } while (0)
 
+#define COIN_OBSOLETED() \
+  do { \
+    (void)fprintf(stderr, "OBSOLETED: functionality not supported (any more)"); \
+    if (COIN_STUB_FILE) { \
+      (void)fprintf(stderr, " at %s", COIN_STUB_FILE); \
+      if (COIN_STUB_LINE > 0) (void)fprintf(stderr, ":line %u", COIN_STUB_LINE); \
+      if (COIN_STUB_FUNC) (void)fprintf(stderr, ":[%s]", COIN_STUB_FUNC); \
+    } \
+    (void)fprintf(stderr, "\n"); \
+  } while (0)
+
 #else /* !COIN_DEBUG */
 
-#define COIN_STUB()  do { } while (0)
+#define COIN_STUB()       do { } while (0)
+#define COIN_OBSOLETED()  do { } while (0)
 
 #endif /* !COIN_DEBUG */
 
