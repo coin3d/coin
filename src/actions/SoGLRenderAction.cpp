@@ -667,8 +667,8 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
     break;
   default:
     assert(0 && "unknown transparency mode.");
-    return FALSE; // just render
   }
+  return FALSE;
 }
 
 /*!
