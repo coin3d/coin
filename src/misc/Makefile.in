@@ -216,6 +216,7 @@ PrivateHeaders = \
 	SoGLnonindexedFaceSetTemplate.icc \
 	SoGLnonindexedTristripSetTemplate.icc \
 	SoGLqmeshTemplate.icc \
+	SoGLqmeshpreciselightingTemplate.icc \
 	SoOffscreenAGLData.icc \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc
