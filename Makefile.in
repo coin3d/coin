@@ -84,8 +84,12 @@ PACKAGE = @PACKAGE@
 RANLIB = @RANLIB@
 USE_SYMBOL_UNDERSCORE = @USE_SYMBOL_UNDERSCORE@
 VERSION = @VERSION@
+@BUILD_EXAMPLES_TRUE@EXAMPLEDIR = examples
+@BUILD_EXAMPLES_FALSE@EXAMPLEDIR = 
+@BUILD_TOOLS_TRUE@TOOLDIR = tools
+@BUILD_TOOLS_FALSE@TOOLDIR = 
 
-SUBDIRS = src examples tools
+SUBDIRS = src $(TOOLDIR) $(EXAMPLEDIR)
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = config.h ./include/Inventor/SbBasic.h
@@ -101,6 +105,7 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 
 TAR = gtar
 GZIP_ENV = --best
+DIST_SUBDIRS =  src tools examples
 all: all-redirect
 .SUFFIXES:
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
@@ -307,7 +312,7 @@ distdir: $(DISTFILES)
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
-	for subdir in $(SUBDIRS); do \
+	for subdir in $(DIST_SUBDIRS); do \
 	  if test "$$subdir" = .; then :; else \
 	    test -d $(distdir)/$$subdir \
 	    || mkdir $(distdir)/$$subdir \

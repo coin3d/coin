@@ -229,6 +229,57 @@ fi
 LIBS="$LIBS $MATHLIB"
 
 dnl *******************************************************************
+dnl * Do we want to build the tools?
+dnl *******************************************************************
+
+TOOLMAKEFILES="
+	tools/Makefile
+	tools/ivcat/Makefile
+	tools/ivhierarchy/Makefile
+	tools/ivNodeKitStructure/Makefile
+"
+
+AC_ARG_WITH(tools,
+  [  --with-tools            build Coin-based tools [default=yes]],
+  [case "${withval}" in
+    yes) want_tools=yes ;;
+    no)  want_tools=no ;;
+    *) AC_MSG_ERROR(bad value \"${withval}\" for --with-tools) ;;
+  esac],
+  [want_tools=yes])
+
+if test "x$want_tools" = "xno"; then
+  TOOLMAKEFILES=""
+fi
+
+AM_CONDITIONAL(BUILD_TOOLS, test "x$want_tools" = "xyes")
+
+dnl *******************************************************************
+dnl * Do we want to build the example programs?
+dnl *******************************************************************
+
+EXAMPLEMAKEFILES="
+	examples/Makefile
+	examples/advanced/Makefile
+	examples/advanced/elements/Makefile
+"
+
+AC_ARG_WITH(examples,
+  [  --with-examples         build Coin example programs [default=yes]],
+  [case "${withval}" in
+    yes) want_examples=yes ;;
+    no)  want_examples=no ;;
+    *) AC_MSG_ERROR(bad value \"${withval}\" for --with-examples) ;;
+  esac],
+  [want_examples=yes])
+
+if test "x$want_examples" = "xno"; then
+  EXAMPLEMAKEFILES=""
+fi
+
+AM_CONDITIONAL(BUILD_EXAMPLES, test "x$want_examples" = "xyes")
+
+dnl *******************************************************************
 dnl * List all files configure shall generate.
 dnl *******************************************************************
 
@@ -258,14 +309,10 @@ AC_OUTPUT([
 	src/sensors/Makefile
 	src/system/Makefile
 	src/details/Makefile
-	examples/Makefile
-	examples/advanced/Makefile
-	examples/advanced/elements/Makefile
-	tools/Makefile
-	tools/ivcat/Makefile
-	tools/ivhierarchy/Makefile
-	tools/ivNodeKitStructure/Makefile
-])
+] \
+	${TOOLMAKEFILES} \
+	${EXAMPLEMAKEFILES} \
+)
 
 echo "Now, run 'make install' to build and install Coin."
 
