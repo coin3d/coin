@@ -31,8 +31,9 @@ o configure and build freetype
 
 o Build & package Coin
 
-  tar xzf /path/to/Coin-$(VERSION).tar.gz
-  Coin-$(VERSION)/configure
+  cp /path/to/Coin-$(VERSION).tar.gz .
+  tar xzf Coin-$(VERSION).tar.gz
+  ./Coin-$(VERSION)/configure
   make macosx-packages
 
 ---
