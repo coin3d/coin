@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoNodeKit.cpp SoNodeKit.h \
 	SoNodeKitPath.cpp SoNodeKitPath.h \
@@ -16,6 +19,7 @@ ALLSOURCES = \
 	SoShapeKit.cpp SoShapeKit.h \
 	SoWrapperKit.cpp SoWrapperKit.h \
 	SoSubKit.h SoSubKitP.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodekits/SoSubKit.h \

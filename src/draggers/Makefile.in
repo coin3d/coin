@@ -96,31 +96,30 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoDragger.cpp SoDragger.h \
-	SoCenterballDragger.cpp SoCenterballDragger.h \
-	SoDirectionalLightDragger.cpp SoDirectionalLightDragger.h \
-	SoDragPointDragger.cpp SoDragPointDragger.h \
-	SoHandleBoxDragger.cpp SoHandleBoxDragger.h \
-	SoJackDragger.cpp SoJackDragger.h \
-	SoPointLightDragger.cpp SoPointLightDragger.h \
-	SoRotateCylindricalDragger.cpp SoRotateCylindricalDragger.h \
-	SoRotateDiscDragger.cpp SoRotateDiscDragger.h \
-	SoRotateSphericalDragger.cpp SoRotateSphericalDragger.h \
-	SoScale1Dragger.cpp SoScale1Dragger.h \
-	SoScale2Dragger.cpp SoScale2Dragger.h \
-	SoScale2UniformDragger.cpp SoScale2UniformDragger.h \
-	SoScaleUniformDragger.cpp SoScaleUniformDragger.h \
-	SoSpotLightDragger.cpp SoSpotLightDragger.h \
-	SoTabBoxDragger.cpp SoTabBoxDragger.h \
-	SoTabPlaneDragger.cpp SoTabPlaneDragger.h \
-	SoTrackballDragger.cpp SoTrackballDragger.h \
-	SoTransformBoxDragger.cpp SoTransformBoxDragger.h \
-	SoTransformerDragger.cpp SoTransformerDragger.h \
-	SoTranslate1Dragger.cpp SoTranslate1Dragger.h \
-	SoTranslate2Dragger.cpp SoTranslate2Dragger.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoDragger.cpp SoDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCenterballDragger.cpp SoCenterballDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDirectionalLightDragger.cpp SoDirectionalLightDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDragPointDragger.cpp SoDragPointDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoHandleBoxDragger.cpp SoHandleBoxDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoJackDragger.cpp SoJackDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointLightDragger.cpp SoPointLightDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoRotateCylindricalDragger.cpp SoRotateCylindricalDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoRotateDiscDragger.cpp SoRotateDiscDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoRotateSphericalDragger.cpp SoRotateSphericalDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoScale1Dragger.cpp SoScale1Dragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoScale2Dragger.cpp SoScale2Dragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoScale2UniformDragger.cpp SoScale2UniformDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoScaleUniformDragger.cpp SoScaleUniformDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSpotLightDragger.cpp SoSpotLightDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTabBoxDragger.cpp SoTabBoxDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTabPlaneDragger.cpp SoTabPlaneDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTrackballDragger.cpp SoTrackballDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransformBoxDragger.cpp SoTransformBoxDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransformerDragger.cpp SoTransformerDragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTranslate1Dragger.cpp SoTranslate1Dragger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTranslate2Dragger.cpp SoTranslate2Dragger.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/draggers/SoDragger.h \
@@ -181,27 +180,47 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libdraggers_la_LDFLAGS = 
 libdraggers_la_LIBADD = 
-am_libdraggers_la_OBJECTS =  SoDragger.lo SoCenterballDragger.lo \
-SoDirectionalLightDragger.lo SoDragPointDragger.lo \
-SoHandleBoxDragger.lo SoJackDragger.lo SoPointLightDragger.lo \
-SoRotateCylindricalDragger.lo SoRotateDiscDragger.lo \
-SoRotateSphericalDragger.lo SoScale1Dragger.lo SoScale2Dragger.lo \
-SoScale2UniformDragger.lo SoScaleUniformDragger.lo \
-SoSpotLightDragger.lo SoTabBoxDragger.lo SoTabPlaneDragger.lo \
-SoTrackballDragger.lo SoTransformBoxDragger.lo SoTransformerDragger.lo \
-SoTranslate1Dragger.lo SoTranslate2Dragger.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libdraggers_la_OBJECTS =  SoDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCenterballDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDirectionalLightDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDragPointDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoHandleBoxDragger.lo SoJackDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPointLightDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoRotateCylindricalDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoRotateDiscDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoRotateSphericalDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoScale1Dragger.lo SoScale2Dragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoScale2UniformDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoScaleUniformDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSpotLightDragger.lo SoTabBoxDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTabPlaneDragger.lo SoTrackballDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformBoxDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformerDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTranslate1Dragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTranslate2Dragger.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libdraggers_la_OBJECTS =  all.lo
 libdraggers_la_OBJECTS =  $(am_libdraggers_la_OBJECTS)
 libdraggersLINKHACK_la_LDFLAGS = 
 libdraggersLINKHACK_la_LIBADD = 
-am_libdraggersLINKHACK_la_OBJECTS =  SoDragger.lo SoCenterballDragger.lo \
-SoDirectionalLightDragger.lo SoDragPointDragger.lo \
-SoHandleBoxDragger.lo SoJackDragger.lo SoPointLightDragger.lo \
-SoRotateCylindricalDragger.lo SoRotateDiscDragger.lo \
-SoRotateSphericalDragger.lo SoScale1Dragger.lo SoScale2Dragger.lo \
-SoScale2UniformDragger.lo SoScaleUniformDragger.lo \
-SoSpotLightDragger.lo SoTabBoxDragger.lo SoTabPlaneDragger.lo \
-SoTrackballDragger.lo SoTransformBoxDragger.lo SoTransformerDragger.lo \
-SoTranslate1Dragger.lo SoTranslate2Dragger.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libdraggersLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoDragger.lo SoCenterballDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDirectionalLightDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDragPointDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoHandleBoxDragger.lo SoJackDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPointLightDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoRotateCylindricalDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoRotateDiscDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoRotateSphericalDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoScale1Dragger.lo SoScale2Dragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoScale2UniformDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoScaleUniformDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSpotLightDragger.lo SoTabBoxDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTabPlaneDragger.lo SoTrackballDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformBoxDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformerDragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTranslate1Dragger.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTranslate2Dragger.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libdraggersLINKHACK_la_OBJECTS =  all.lo
 libdraggersLINKHACK_la_OBJECTS =  $(am_libdraggersLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -237,7 +256,7 @@ $(DEPDIR)/SoScaleUniformDragger.Plo $(DEPDIR)/SoSpotLightDragger.Plo \
 $(DEPDIR)/SoTabBoxDragger.Plo $(DEPDIR)/SoTabPlaneDragger.Plo \
 $(DEPDIR)/SoTrackballDragger.Plo $(DEPDIR)/SoTransformBoxDragger.Plo \
 $(DEPDIR)/SoTransformerDragger.Plo $(DEPDIR)/SoTranslate1Dragger.Plo \
-$(DEPDIR)/SoTranslate2Dragger.Plo
+$(DEPDIR)/SoTranslate2Dragger.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libdraggers_la_SOURCES) $(libdraggersLINKHACK_la_SOURCES)
 OBJECTS = $(am_libdraggers_la_OBJECTS) $(am_libdraggersLINKHACK_la_OBJECTS)
 
@@ -391,6 +410,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoTransformerDragger.Plo
 @AMDEP@include $(DEPDIR)/SoTranslate1Dragger.Plo
 @AMDEP@include $(DEPDIR)/SoTranslate2Dragger.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

@@ -96,23 +96,22 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoAction.cpp SoAction.h \
-	SoBoxHighlightRenderAction.cpp SoBoxHighlightRenderAction.h \
-	SoCallbackAction.cpp SoCallbackAction.h \
-	SoGLRenderAction.cpp SoGLRenderAction.h \
-	SoGetBoundingBoxAction.cpp SoGetBoundingBoxAction.h \
-	SoGetMatrixAction.cpp SoGetMatrixAction.h \
-	SoGetPrimitiveCountAction.cpp SoGetPrimitiveCountAction.h \
-	SoHandleEventAction.cpp SoHandleEventAction.h \
-	SoLineHighlightRenderAction.cpp SoLineHighlightRenderAction.h \
-	SoPickAction.cpp SoPickAction.h \
-	SoRayPickAction.cpp SoRayPickAction.h \
-	SoSearchAction.cpp SoSearchAction.h \
-	SoWriteAction.cpp SoWriteAction.h \
-	SoSubAction.h SoSubActionP.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoAction.cpp SoAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoBoxHighlightRenderAction.cpp SoBoxHighlightRenderAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCallbackAction.cpp SoCallbackAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLRenderAction.cpp SoGLRenderAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGetBoundingBoxAction.cpp SoGetBoundingBoxAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGetMatrixAction.cpp SoGetMatrixAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGetPrimitiveCountAction.cpp SoGetPrimitiveCountAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoHandleEventAction.cpp SoHandleEventAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLineHighlightRenderAction.cpp SoLineHighlightRenderAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPickAction.cpp SoPickAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoRayPickAction.cpp SoRayPickAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSearchAction.cpp SoSearchAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoWriteAction.cpp SoWriteAction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSubAction.h SoSubActionP.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/actions/SoSubAction.h \
@@ -166,20 +165,31 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libactions_la_LDFLAGS = 
 libactions_la_LIBADD = 
-am_libactions_la_OBJECTS =  SoAction.lo SoBoxHighlightRenderAction.lo \
-SoCallbackAction.lo SoGLRenderAction.lo SoGetBoundingBoxAction.lo \
-SoGetMatrixAction.lo SoGetPrimitiveCountAction.lo \
-SoHandleEventAction.lo SoLineHighlightRenderAction.lo SoPickAction.lo \
-SoRayPickAction.lo SoSearchAction.lo SoWriteAction.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libactions_la_OBJECTS =  SoAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoBoxHighlightRenderAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCallbackAction.lo SoGLRenderAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGetBoundingBoxAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGetMatrixAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGetPrimitiveCountAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoHandleEventAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLineHighlightRenderAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickAction.lo SoRayPickAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSearchAction.lo SoWriteAction.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libactions_la_OBJECTS =  all.lo
 libactions_la_OBJECTS =  $(am_libactions_la_OBJECTS)
 libactionsLINKHACK_la_LDFLAGS = 
 libactionsLINKHACK_la_LIBADD = 
-am_libactionsLINKHACK_la_OBJECTS =  SoAction.lo \
-SoBoxHighlightRenderAction.lo SoCallbackAction.lo SoGLRenderAction.lo \
-SoGetBoundingBoxAction.lo SoGetMatrixAction.lo \
-SoGetPrimitiveCountAction.lo SoHandleEventAction.lo \
-SoLineHighlightRenderAction.lo SoPickAction.lo SoRayPickAction.lo \
-SoSearchAction.lo SoWriteAction.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libactionsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoAction.lo SoBoxHighlightRenderAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCallbackAction.lo SoGLRenderAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGetBoundingBoxAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGetMatrixAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGetPrimitiveCountAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoHandleEventAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLineHighlightRenderAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickAction.lo SoRayPickAction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSearchAction.lo SoWriteAction.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libactionsLINKHACK_la_OBJECTS =  all.lo
 libactionsLINKHACK_la_OBJECTS =  $(am_libactionsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -209,7 +219,7 @@ $(DEPDIR)/SoGetMatrixAction.Plo $(DEPDIR)/SoGetPrimitiveCountAction.Plo \
 $(DEPDIR)/SoHandleEventAction.Plo \
 $(DEPDIR)/SoLineHighlightRenderAction.Plo $(DEPDIR)/SoPickAction.Plo \
 $(DEPDIR)/SoRayPickAction.Plo $(DEPDIR)/SoSearchAction.Plo \
-$(DEPDIR)/SoWriteAction.Plo
+$(DEPDIR)/SoWriteAction.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libactions_la_SOURCES) $(libactionsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libactions_la_OBJECTS) $(am_libactionsLINKHACK_la_OBJECTS)
 
@@ -354,6 +364,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoRayPickAction.Plo
 @AMDEP@include $(DEPDIR)/SoSearchAction.Plo
 @AMDEP@include $(DEPDIR)/SoWriteAction.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

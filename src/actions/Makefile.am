@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoAction.cpp SoAction.h \
 	SoBoxHighlightRenderAction.cpp SoBoxHighlightRenderAction.h \
@@ -16,6 +19,7 @@ ALLSOURCES = \
 	SoSearchAction.cpp SoSearchAction.h \
 	SoWriteAction.cpp SoWriteAction.h \
 	SoSubAction.h SoSubActionP.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/actions/SoSubAction.h \

@@ -220,7 +220,7 @@ public:
 
 static SbList <coin_glyph_info> *activeGlyphs = NULL;
 
-void cleanup(void)
+void SoGlyph_cleanup(void)
 {
   delete activeGlyphs;
 }
@@ -239,7 +239,7 @@ SoGlyph::getGlyph(const char character, const SbName &font)
 
   if (activeGlyphs == NULL) {
     activeGlyphs = new SbList <coin_glyph_info>;
-    atexit(cleanup);
+    atexit(SoGlyph_cleanup);
   }
   int i, n = activeGlyphs->getLength();
   for (i = 0; i < n; i++) {

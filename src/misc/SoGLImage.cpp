@@ -170,14 +170,14 @@ SoGLImage::getImage() const
   return this->image;
 }
 
-/*!  
+/*!
   Returns texture quality for this GL image. For now, if quality >
   0.5 when created, we create mipmaps, otherwise a normal texture is
   created.  Be aware, if you for instance create a texture with
   texture quality 0.4, and then later try to apply the texture with a
   texture quality greater than 0.5, you will not get a mipmap
   texture. If you suspect you might need a mipmap texture, it should
-  be created with a texture quality greater than 0.5.  
+  be created with a texture quality greater than 0.5.
 */
 float
 SoGLImage::getQuality() const
@@ -271,7 +271,7 @@ SoGLImage::checkResize()
 static SbList <SoGLImage *> *storedImages = NULL;
 
 // atexit-function
-static void cleanup(void)
+static void SoGLImage_cleanup(void)
 {
   delete storedImages;
 }
@@ -303,7 +303,7 @@ SoGLImage::findOrCreateGLImage(SoImageInterface * const image,
 {
   if (storedImages == NULL) {
     storedImages = new SbList <SoGLImage*>;
-    atexit(cleanup);
+    atexit(SoGLImage_cleanup);
   }
   int i, n = storedImages->getLength();
   for (i = 0; i < n; i++) {

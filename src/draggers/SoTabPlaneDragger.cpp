@@ -617,3 +617,17 @@ SoTabPlaneDragger::getNodeFieldNode(const char *fieldname)
   assert(((SoSFNode*)field)->getValue() != NULL);
   return ((SoSFNode*)field)->getValue();
 }
+
+// Undefine these again, as some of them are also used in other
+// dragger sourcecode files (which causes trouble when using the
+// compact build hack where all .cpp files are included into all.cpp).
+
+#undef WHATKIND_NONE
+#undef WHATKIND_SCALE
+#undef WHATKIND_TRANSLATE
+
+#undef CONSTRAINT_OFF
+#undef CONSTRAINT_WAIT
+#undef CONSTRAINT_X
+#undef CONSTRAINT_Y
+#undef CONSTRAINT_Z

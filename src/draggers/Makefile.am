@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19991229 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoDragger.cpp SoDragger.h \
 	SoCenterballDragger.cpp SoCenterballDragger.h \
@@ -24,7 +27,7 @@ ALLSOURCES = \
 	SoTransformerDragger.cpp SoTransformerDragger.h \
 	SoTranslate1Dragger.cpp SoTranslate1Dragger.h \
 	SoTranslate2Dragger.cpp SoTranslate2Dragger.h
-
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/draggers/SoDragger.h \

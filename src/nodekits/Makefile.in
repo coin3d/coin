@@ -96,23 +96,22 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoNodeKit.cpp SoNodeKit.h \
-	SoNodeKitPath.cpp SoNodeKitPath.h \
-	SoNodeKitListPart.cpp SoNodeKitListPart.h \
-	SoNodekitCatalog.cpp SoNodekitCatalog.h \
-	SoBaseKit.cpp SoBaseKit.h \
-	SoAppearanceKit.cpp SoAppearanceKit.h \
-	SoCameraKit.cpp SoCameraKit.h \
-	SoInteractionKit.cpp SoInteractionKit.h \
-	SoLightKit.cpp SoLightKit.h \
-	SoSceneKit.cpp SoSceneKit.h \
-	SoSeparatorKit.cpp SoSeparatorKit.h \
-	SoShapeKit.cpp SoShapeKit.h \
-	SoWrapperKit.cpp SoWrapperKit.h \
-	SoSubKit.h SoSubKitP.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeKit.cpp SoNodeKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeKitPath.cpp SoNodeKitPath.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeKitListPart.cpp SoNodeKitListPart.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodekitCatalog.cpp SoNodekitCatalog.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoBaseKit.cpp SoBaseKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAppearanceKit.cpp SoAppearanceKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCameraKit.cpp SoCameraKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInteractionKit.cpp SoInteractionKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLightKit.cpp SoLightKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSceneKit.cpp SoSceneKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSeparatorKit.cpp SoSeparatorKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoShapeKit.cpp SoShapeKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoWrapperKit.cpp SoWrapperKit.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSubKit.h SoSubKitP.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodekits/SoSubKit.h \
@@ -164,17 +163,26 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libnodekits_la_LDFLAGS = 
 libnodekits_la_LIBADD = 
-am_libnodekits_la_OBJECTS =  SoNodeKit.lo SoNodeKitPath.lo \
-SoNodeKitListPart.lo SoNodekitCatalog.lo SoBaseKit.lo \
-SoAppearanceKit.lo SoCameraKit.lo SoInteractionKit.lo SoLightKit.lo \
-SoSceneKit.lo SoSeparatorKit.lo SoShapeKit.lo SoWrapperKit.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libnodekits_la_OBJECTS =  SoNodeKit.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNodeKitPath.lo SoNodeKitListPart.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNodekitCatalog.lo SoBaseKit.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAppearanceKit.lo SoCameraKit.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInteractionKit.lo SoLightKit.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSceneKit.lo SoSeparatorKit.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoShapeKit.lo SoWrapperKit.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libnodekits_la_OBJECTS =  all.lo
 libnodekits_la_OBJECTS =  $(am_libnodekits_la_OBJECTS)
 libnodekitsLINKHACK_la_LDFLAGS = 
 libnodekitsLINKHACK_la_LIBADD = 
-am_libnodekitsLINKHACK_la_OBJECTS =  SoNodeKit.lo SoNodeKitPath.lo \
-SoNodeKitListPart.lo SoNodekitCatalog.lo SoBaseKit.lo \
-SoAppearanceKit.lo SoCameraKit.lo SoInteractionKit.lo SoLightKit.lo \
-SoSceneKit.lo SoSeparatorKit.lo SoShapeKit.lo SoWrapperKit.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libnodekitsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoNodeKit.lo SoNodeKitPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNodeKitListPart.lo SoNodekitCatalog.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoBaseKit.lo SoAppearanceKit.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCameraKit.lo SoInteractionKit.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLightKit.lo SoSceneKit.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSeparatorKit.lo SoShapeKit.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoWrapperKit.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libnodekitsLINKHACK_la_OBJECTS =  all.lo
 libnodekitsLINKHACK_la_OBJECTS =  $(am_libnodekitsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -203,7 +211,7 @@ $(DEPDIR)/SoInteractionKit.Plo $(DEPDIR)/SoLightKit.Plo \
 $(DEPDIR)/SoNodeKit.Plo $(DEPDIR)/SoNodeKitListPart.Plo \
 $(DEPDIR)/SoNodeKitPath.Plo $(DEPDIR)/SoNodekitCatalog.Plo \
 $(DEPDIR)/SoSceneKit.Plo $(DEPDIR)/SoSeparatorKit.Plo \
-$(DEPDIR)/SoShapeKit.Plo $(DEPDIR)/SoWrapperKit.Plo
+$(DEPDIR)/SoShapeKit.Plo $(DEPDIR)/SoWrapperKit.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libnodekits_la_SOURCES) $(libnodekitsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libnodekits_la_OBJECTS) $(am_libnodekitsLINKHACK_la_OBJECTS)
 
@@ -348,6 +356,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoSeparatorKit.Plo
 @AMDEP@include $(DEPDIR)/SoShapeKit.Plo
 @AMDEP@include $(DEPDIR)/SoWrapperKit.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

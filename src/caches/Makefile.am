@@ -1,17 +1,16 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
-	SoBoundingBoxCache.cpp \
-	SoBoundingBoxCache.h \
-	SoCache.cpp \
-	SoCache.h \
-	SoConvexDataCache.cpp \
-	SoConvexDataCache.h \
-	SoNormalCache.cpp \
-	SoNormalCache.h \
-	SoTextureCoordinateCache.cpp \
-	SoTextureCoordinateCache.h
+	SoBoundingBoxCache.cpp SoBoundingBoxCache.h \
+	SoCache.cpp SoCache.h \
+	SoConvexDataCache.cpp SoConvexDataCache.h \
+	SoNormalCache.cpp SoNormalCache.h \
+	SoTextureCoordinateCache.cpp SoTextureCoordinateCache.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/caches/SoBoundingBoxCache.h \

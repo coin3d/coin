@@ -1438,3 +1438,21 @@ SoTransformerDragger::setDynamicRotatorSwitches(const SoEvent *event)
 
   return changed;
 }
+
+
+// Undefine these again, as some of them are also used in other
+// dragger sourcecode files (which causes trouble when using the
+// compact build hack where all .cpp files are included into all.cpp).
+
+#undef WHATKIND_NONE
+#undef WHATKIND_SCALE
+#undef WHATKIND_TRANSLATE
+#undef WHATKIND_ROTATE
+
+#undef CONSTRAINT_OFF
+#undef CONSTRAINT_WAIT
+#undef CONSTRAINT_X
+#undef CONSTRAINT_Y
+#undef CONSTRAINT_Z
+
+#undef KNOB_DISTANCE

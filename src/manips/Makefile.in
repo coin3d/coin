@@ -96,21 +96,20 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoClipPlaneManip.cpp SoClipPlaneManip.h \
-	SoDirectionalLightManip.cpp SoDirectionalLightManip.h \
-	SoPointLightManip.cpp SoPointLightManip.h \
-	SoSpotLightManip.cpp SoSpotLightManip.h \
-	SoTransformManip.cpp SoTransformManip.h \
-	SoCenterballManip.cpp SoCenterballManip.h \
-	SoHandleBoxManip.cpp SoHandleBoxManip.h \
-	SoJackManip.cpp SoJackManip.h \
-	SoTabBoxManip.cpp SoTabBoxManip.h \
-	SoTrackballManip.cpp SoTrackballManip.h \
-	SoTransformBoxManip.cpp SoTransformBoxManip.h \
-	SoTransformerManip.cpp SoTransformerManip.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoClipPlaneManip.cpp SoClipPlaneManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDirectionalLightManip.cpp SoDirectionalLightManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointLightManip.cpp SoPointLightManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSpotLightManip.cpp SoSpotLightManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransformManip.cpp SoTransformManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCenterballManip.cpp SoCenterballManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoHandleBoxManip.cpp SoHandleBoxManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoJackManip.cpp SoJackManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTabBoxManip.cpp SoTabBoxManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTrackballManip.cpp SoTrackballManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransformBoxManip.cpp SoTransformBoxManip.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransformerManip.cpp SoTransformerManip.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/manips/SoClipPlaneManip.h \
@@ -161,19 +160,29 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libmanips_la_LDFLAGS = 
 libmanips_la_LIBADD = 
-am_libmanips_la_OBJECTS =  SoClipPlaneManip.lo \
-SoDirectionalLightManip.lo SoPointLightManip.lo SoSpotLightManip.lo \
-SoTransformManip.lo SoCenterballManip.lo SoHandleBoxManip.lo \
-SoJackManip.lo SoTabBoxManip.lo SoTrackballManip.lo \
-SoTransformBoxManip.lo SoTransformerManip.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libmanips_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoClipPlaneManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDirectionalLightManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPointLightManip.lo SoSpotLightManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformManip.lo SoCenterballManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoHandleBoxManip.lo SoJackManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTabBoxManip.lo SoTrackballManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformBoxManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformerManip.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libmanips_la_OBJECTS =  all.lo
 libmanips_la_OBJECTS =  $(am_libmanips_la_OBJECTS)
 libmanipsLINKHACK_la_LDFLAGS = 
 libmanipsLINKHACK_la_LIBADD = 
-am_libmanipsLINKHACK_la_OBJECTS =  SoClipPlaneManip.lo \
-SoDirectionalLightManip.lo SoPointLightManip.lo SoSpotLightManip.lo \
-SoTransformManip.lo SoCenterballManip.lo SoHandleBoxManip.lo \
-SoJackManip.lo SoTabBoxManip.lo SoTrackballManip.lo \
-SoTransformBoxManip.lo SoTransformerManip.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libmanipsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoClipPlaneManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDirectionalLightManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPointLightManip.lo SoSpotLightManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformManip.lo SoCenterballManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoHandleBoxManip.lo SoJackManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTabBoxManip.lo SoTrackballManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformBoxManip.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformerManip.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libmanipsLINKHACK_la_OBJECTS =  all.lo
 libmanipsLINKHACK_la_OBJECTS =  $(am_libmanipsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -201,7 +210,7 @@ $(DEPDIR)/SoHandleBoxManip.Plo $(DEPDIR)/SoJackManip.Plo \
 $(DEPDIR)/SoPointLightManip.Plo $(DEPDIR)/SoSpotLightManip.Plo \
 $(DEPDIR)/SoTabBoxManip.Plo $(DEPDIR)/SoTrackballManip.Plo \
 $(DEPDIR)/SoTransformBoxManip.Plo $(DEPDIR)/SoTransformManip.Plo \
-$(DEPDIR)/SoTransformerManip.Plo
+$(DEPDIR)/SoTransformerManip.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libmanips_la_SOURCES) $(libmanipsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libmanips_la_OBJECTS) $(am_libmanipsLINKHACK_la_OBJECTS)
 
@@ -345,6 +354,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoTransformBoxManip.Plo
 @AMDEP@include $(DEPDIR)/SoTransformManip.Plo
 @AMDEP@include $(DEPDIR)/SoTransformerManip.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

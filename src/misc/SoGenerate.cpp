@@ -29,7 +29,7 @@
 
 // generate a 3d circle in the x-z plane
 static void
-generate_3d_circle(SbVec3f *coords, const int num, const float radius, const float y)
+sogenerate_generate_3d_circle(SbVec3f *coords, const int num, const float radius, const float y)
 {
   float delta = 2*M_PI/num;
   float angle = 0.0f;
@@ -43,7 +43,7 @@ generate_3d_circle(SbVec3f *coords, const int num, const float radius, const flo
 
 // generate a 2d circle
 static void
-generate_2d_circle(SbVec2f *coords, const int num, const float radius)
+sogenerate_generate_2d_circle(SbVec2f *coords, const int num, const float radius)
 {
   float delta = 2*M_PI/num;
   float angle = 0.0f;
@@ -57,7 +57,7 @@ generate_2d_circle(SbVec2f *coords, const int num, const float radius)
 //
 // the 12 triangles in the cube
 //
-static int cube_vindices[] =
+static int sogenerate_cube_vindices[] =
 {
   0, 1, 3, 2,
   1, 5, 7, 3,
@@ -67,7 +67,7 @@ static int cube_vindices[] =
   2, 3, 7, 6
 };
 
-static float cube_texcoords[] =
+static float sogenerate_cube_texcoords[] =
 {
   1.0f, 1.0f,
   0.0f, 1.0f,
@@ -78,7 +78,7 @@ static float cube_texcoords[] =
 //
 // a cube needs 6 normals
 //
-static float cube_normals[] =
+static float sogenerate_cube_normals[] =
 {
   0.0f, 0.0f, 1.0f,
   -1.0f, 0.0f, 0.0f,
@@ -89,7 +89,7 @@ static float cube_normals[] =
 };
 
 static void
-generate_cube_vertices(SbVec3f *varray,
+sogenerate_generate_cube_vertices(SbVec3f *varray,
                        const float w,
                        const float h,
                        const float d)
@@ -121,11 +121,11 @@ public:
     SbVec3f normals[130];
     SbVec2f texcoords[129];
 
-    generate_3d_circle(coords, slices, radius, -h2);
+    sogenerate_generate_3d_circle(coords, slices, radius, -h2);
     coords[slices] = coords[0];
 
     double a = atan(height/radius);
-    generate_3d_circle(normals, slices, sin(a), cos(a));
+    sogenerate_generate_3d_circle(normals, slices, sin(a), cos(a));
     normals[slices] = normals[0];
     normals[slices+1] = normals[1];
 
@@ -174,7 +174,7 @@ public:
       vertex.setDetail(&bottomDetail);
       vertex.setMaterialIndex(matnr);
 
-      generate_2d_circle(texcoords, slices, 0.5f);
+      sogenerate_generate_2d_circle(texcoords, slices, 0.5f);
       texcoords[slices] = texcoords[0];
 
       shape->beginShape(action, SoShape::TRIANGLE_FAN);
@@ -205,10 +205,10 @@ public:
     SbVec3f normals[130];
     SbVec2f texcoords[129];
 
-    generate_3d_circle(coords, slices, radius, -h2);
+    sogenerate_generate_3d_circle(coords, slices, radius, -h2);
     coords[slices] = coords[0];
 
-    generate_3d_circle(normals, slices, 1.0f, 0.0f);
+    sogenerate_generate_3d_circle(normals, slices, 1.0f, 0.0f);
     normals[slices] = normals[0];
     normals[slices+1] = normals[1];
 
@@ -248,7 +248,7 @@ public:
     }
 
     if (flags & (SOGEN_GENERATE_BOTTOM | SOGEN_GENERATE_TOP)) {
-      generate_2d_circle(texcoords, slices, 0.5f);
+      sogenerate_generate_2d_circle(texcoords, slices, 0.5f);
       texcoords[slices] = texcoords[0];
     }
 
@@ -289,7 +289,7 @@ public:
                             SoAction * const action) {
     static int translate[6] = {0, 2, 1, 3, 4, 5};
     SbVec3f varray[8];
-    generate_cube_vertices(varray,
+    sogenerate_generate_cube_vertices(varray,
                            width * 0.5f,
                            height * 0.5f,
                            depth * 0.5f);
@@ -301,9 +301,9 @@ public:
     vertex.setMaterialIndex(0);
 
     shape->beginShape(action, SoShape::QUADS);
-    int *iptr = cube_vindices;
-    SbVec3f *nptr = (SbVec3f*) cube_normals;
-    SbVec2f *tptr = (SbVec2f*) cube_texcoords;
+    int *iptr = sogenerate_cube_vindices;
+    SbVec3f *nptr = (SbVec3f*) sogenerate_cube_normals;
+    SbVec2f *tptr = (SbVec2f*) sogenerate_cube_texcoords;
 
     for (int i = 0; i < 6; i++) { // 6 quads
       vertex.setNormal(nptr[i]);
@@ -324,17 +324,17 @@ public:
                               SoAction * const action) {
     int stacks = numstacks;
     int slices = numslices;
-    
+
     if (stacks < 3) stacks = 3;
     if (slices < 4) slices = 4;
-    
+
     if (slices > 128) slices = 128;
-    
+
     // used to cache last stack's data
     SbVec3f coords[129];
     SbVec3f normals[129];
     float S[129];
-    
+
     int i, j;
     float rho;
     float drho;
@@ -342,10 +342,10 @@ public:
     float dtheta;
     float tc, ts;
     SbVec3f tmp;
-  
+
     drho = float(M_PI) / (float) (stacks-1);
     dtheta = 2.0f * float(M_PI) / (float) slices;
-    
+
     float currs = 0.0f;
     float incs = 1.0f / (float)slices;
     rho = drho;
@@ -361,40 +361,40 @@ public:
     S[0] = currs;
     float dT = 1.0f / (float) (stacks-1);
     float T = 1.0f - dT;
-  
+
     SoPrimitiveVertex vertex;
     shape->beginShape(action, SoShape::TRIANGLES);
-    
+
     for (j = 1; j <= slices; j++) {
       vertex.setNormal(SbVec3f(0.0f, 1.0f, 0.0f));
       vertex.setTextureCoords(SbVec2f(currs + 0.5f * incs, 1.0f));
       vertex.setPoint(SbVec3f(0.0f, radius, 0.0f));
       shape->shapeVertex(&vertex);
-      
+
       vertex.setNormal(normals[j-1]);
       vertex.setTextureCoords(SbVec2f(currs, T));
       vertex.setPoint(coords[j-1]);
       shape->shapeVertex(&vertex);
-      
+
       currs += incs;
       theta += dtheta;
       S[j] = currs;
       tmp.setValue(float(sin(theta))*ts,
                    tc,
                    float(cos(theta))*ts);
-      
+
       normals[j] = tmp;
       tmp *= radius;
       coords[j] = tmp;
-      
+
       vertex.setNormal(normals[j]);
       vertex.setTextureCoords(SbVec2f(currs, T));
       vertex.setPoint(coords[j]);
       shape->shapeVertex(&vertex);
-      
+
     }
     shape->endShape();
-    
+
     rho += drho;
 
     for (i = 2; i < stacks-1; i++) {
@@ -407,7 +407,7 @@ public:
         vertex.setNormal(normals[j]);
         vertex.setPoint(coords[j]);
         shape->shapeVertex(&vertex);
-        
+
         vertex.setTextureCoords(SbVec2f(S[j], T-dT));
         tmp.setValue(float(sin(theta))*ts,
                      tc,
@@ -431,7 +431,7 @@ public:
       vertex.setNormal(normals[j]);
       vertex.setPoint(coords[j]);
       shape->shapeVertex(&vertex);
-      
+
       vertex.setTextureCoords(SbVec2f(S[j]+incs*0.5f, 0.0f));
       vertex.setNormal(SbVec3f(0.0f, -1.0f, 0.0f));
       vertex.setPoint(SbVec3f(0.0f, -radius, 0.0f));

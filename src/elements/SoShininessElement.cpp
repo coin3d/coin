@@ -31,7 +31,7 @@
 
 #include <assert.h>
 
-static const float defaultValue = 0.2f;
+static const float defaultshininessval = 0.2f;
 
 /*!
   \fn SoShininessElement::numValues
@@ -70,7 +70,7 @@ SoShininessElement::~SoShininessElement()
 void
 SoShininessElement::init(SoState * /* state */)
 {
-  this->values = &defaultValue;
+  this->values = &defaultshininessval;
   this->numValues = 1;
 }
 
@@ -86,7 +86,7 @@ SoShininessElement::set(SoState * const state, SoNode * const node,
   if (numValues > 0)
     elem->setElt(numValues, values);
   else
-    elem->setElt(1, &defaultValue);
+    elem->setElt(1, &defaultshininessval);
 }
 
 //! FIXME: write doc.

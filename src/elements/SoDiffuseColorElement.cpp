@@ -30,7 +30,7 @@
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
-static SbColor * defaultcolor = NULL;
+static SbColor * defaultdiffusecolor = NULL;
 
 
 /*!
@@ -62,8 +62,8 @@ void
 SoDiffuseColorElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoDiffuseColorElement, inherited);
-  defaultcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
-  defaultcolor->setValue(0.8f, 0.8f, 0.8f);
+  defaultdiffusecolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultdiffusecolor->setValue(0.8f, 0.8f, 0.8f);
 }
 
 //! FIXME: write doc.
@@ -71,7 +71,7 @@ SoDiffuseColorElement::initClass(void)
 void
 SoDiffuseColorElement::init(SoState * /* state */)
 {
-  this->colors = defaultcolor;
+  this->colors = defaultdiffusecolor;
   this->packedColors = NULL;
   this->numColors = 1;
 }
@@ -96,7 +96,7 @@ SoDiffuseColorElement::set(SoState * const state, SoNode * const node,
   if (numColors > 0)
     elem->setElt(numColors, colors);
   else
-    elem->setElt(1, defaultcolor);
+    elem->setElt(1, defaultdiffusecolor);
 }
 
 //! FIXME: write doc.

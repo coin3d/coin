@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoBase.cpp SoBase.h \
 	SoChildList.cpp SoChildList.h \
@@ -27,7 +30,7 @@ ALLSOURCES = \
 	SoGenerate.cpp SoGenerate.h \
 	default3dfont.cpp \
 	default2dfont.cpp
-
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h \

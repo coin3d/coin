@@ -96,31 +96,30 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SbCylinderPlaneProjector.cpp \
-	SbCylinderPlaneProjector.h \
-	SbCylinderProjector.cpp \
-	SbCylinderProjector.h \
-	SbCylinderSectionProjector.cpp \
-	SbCylinderSectionProjector.h \
-	SbCylinderSheetProjector.cpp \
-	SbCylinderSheetProjector.h \
-	SbLineProjector.cpp \
-	SbLineProjector.h \
-	SbPlaneProjector.cpp \
-	SbPlaneProjector.h \
-	SbProjector.cpp \
-	SbProjector.h \
-	SbSpherePlaneProjector.cpp \
-	SbSpherePlaneProjector.h \
-	SbSphereProjector.cpp \
-	SbSphereProjector.h \
-	SbSphereSectionProjector.cpp \
-	SbSphereSectionProjector.h \
-	SbSphereSheetProjector.cpp \
-	SbSphereSheetProjector.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SbCylinderPlaneProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbCylinderPlaneProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbCylinderProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbCylinderProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbCylinderSectionProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbCylinderSectionProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbCylinderSheetProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbCylinderSheetProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbLineProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbLineProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbPlaneProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbPlaneProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbSpherePlaneProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbSpherePlaneProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbSphereProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbSphereProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbSphereSectionProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbSphereSectionProjector.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbSphereSheetProjector.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SbSphereSheetProjector.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/projectors/SbProjectors.h \
@@ -171,19 +170,32 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libprojectors_la_LDFLAGS = 
 libprojectors_la_LIBADD = 
-am_libprojectors_la_OBJECTS =  SbCylinderPlaneProjector.lo \
-SbCylinderProjector.lo SbCylinderSectionProjector.lo \
-SbCylinderSheetProjector.lo SbLineProjector.lo SbPlaneProjector.lo \
-SbProjector.lo SbSpherePlaneProjector.lo SbSphereProjector.lo \
-SbSphereSectionProjector.lo SbSphereSheetProjector.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libprojectors_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SbCylinderPlaneProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbCylinderProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbCylinderSectionProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbCylinderSheetProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbLineProjector.lo SbPlaneProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbProjector.lo SbSpherePlaneProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbSphereProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbSphereSectionProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbSphereSheetProjector.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libprojectors_la_OBJECTS =  all.lo
 libprojectors_la_OBJECTS =  $(am_libprojectors_la_OBJECTS)
 libprojectorsLINKHACK_la_LDFLAGS = 
 libprojectorsLINKHACK_la_LIBADD = 
-am_libprojectorsLINKHACK_la_OBJECTS =  SbCylinderPlaneProjector.lo \
-SbCylinderProjector.lo SbCylinderSectionProjector.lo \
-SbCylinderSheetProjector.lo SbLineProjector.lo SbPlaneProjector.lo \
-SbProjector.lo SbSpherePlaneProjector.lo SbSphereProjector.lo \
-SbSphereSectionProjector.lo SbSphereSheetProjector.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libprojectorsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SbCylinderPlaneProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbCylinderProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbCylinderSectionProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbCylinderSheetProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbLineProjector.lo SbPlaneProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbProjector.lo SbSpherePlaneProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbSphereProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbSphereSectionProjector.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbSphereSheetProjector.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libprojectorsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_TRUE@all.lo
 libprojectorsLINKHACK_la_OBJECTS =  \
 $(am_libprojectorsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -214,7 +226,7 @@ $(DEPDIR)/SbCylinderSheetProjector.Plo $(DEPDIR)/SbLineProjector.Plo \
 $(DEPDIR)/SbPlaneProjector.Plo $(DEPDIR)/SbProjector.Plo \
 $(DEPDIR)/SbSpherePlaneProjector.Plo $(DEPDIR)/SbSphereProjector.Plo \
 $(DEPDIR)/SbSphereSectionProjector.Plo \
-$(DEPDIR)/SbSphereSheetProjector.Plo
+$(DEPDIR)/SbSphereSheetProjector.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libprojectors_la_SOURCES) $(libprojectorsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libprojectors_la_OBJECTS) $(am_libprojectorsLINKHACK_la_OBJECTS)
 
@@ -357,6 +369,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SbSphereProjector.Plo
 @AMDEP@include $(DEPDIR)/SbSphereSectionProjector.Plo
 @AMDEP@include $(DEPDIR)/SbSphereSheetProjector.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

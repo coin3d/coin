@@ -216,6 +216,25 @@ dnl **obsoleted**  AC_CHECK_FUNCS(vsnprintf _vsnprintf snprintf _snprintf)
 
 
 dnl *******************************************************************
+dnl * Provide this nasty hack to help building Coin on platforms
+dnl * where one can bump into the "Arg list too long" problem
+dnl * (both AIX and IRIX 6.2 with standard settings are known to fail).
+dnl *******************************************************************
+
+AC_ARG_ENABLE(compact,
+  AC_HELP_STRING([--enable-compact], [enable hack for compact compilation [default=no]]),
+  [case "${enableval}" in
+    yes) enable_compact=yes ;;
+    no)  enable_compact=no ;;
+    *) AC_MSG_ERROR(bad value \"${enableval}\" for --enable-compact) ;;
+  esac],
+  enable_compact=no)
+
+AM_CONDITIONAL(HACKING_COMPACT_BUILD, test x"$enable_compact" = x"yes")
+
+
+
+dnl *******************************************************************
 dnl * Enable/disable compilation with the "incremental linking through
 dnl * the use of dynamic libraries"-hack.
 dnl *******************************************************************
@@ -344,6 +363,9 @@ case "$host_os" in
   irix6.2)
     if test "$CXX" = CC; then ac_coin_unknown_platform=no; fi
     ;;
+  aix*)
+    if test "$CXX" = xlC; then ac_coin_unknown_platform=no; fi
+    ;;
   hpux10.20)
     if test "$CXX" = aCC; then ac_coin_unknown_platform=no; fi
     ;;
@@ -393,6 +415,10 @@ case "$host_os" in
     echo
     echo "      # mv /unix.install /unix"
     echo
+    echo "    An alternative fix for this (if you don't have root access to"
+    echo "    the system, for instance) is to configure with the --enable-compact"
+    echo "    option."
+    echo
     echo
     echo "  2 if linking fails with the error messages:"
     echo
@@ -402,6 +428,15 @@ case "$host_os" in
     echo "    ..you're typically trying to link over NFS, which the SGI linker"
     echo "    is not too fond of in certain situations. If this happens to you,"
     echo "    try compiling and linking on a local disk instead."
+    echo ;;
+
+  aix*)
+    echo
+    echo "Detected IBM AIX. A hint for building on this platform:"
+    echo
+    echo "  If you get the error message \"Arg list too long\" when linking"
+    echo "  the Coin library, you need to re-configure with the"
+    echo "  --enable-compact option and try to make again."
     echo ;;
 esac
 

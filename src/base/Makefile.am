@@ -1,59 +1,37 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
-	SbBSPTree.cpp \
-	SbBSPTree.h \
-	SbBox2f.cpp \
-	SbBox2f.h \
-	SbBox2s.cpp \
-	SbBox2s.h \
-	SbBox3f.cpp \
-	SbBox3f.h \
-	SbColor.cpp \
-	SbColor.h \
-	SbColor4f.cpp \
-	SbColor4f.h \
-	SbCylinder.cpp \
-	SbCylinder.h \
-	SbDict.cpp \
-	SbDict.h \
-	SbHeap.cpp \
-	SbHeap.h \
-	SbLine.cpp \
-	SbLine.h \
-	SbMatrix.cpp \
-	SbMatrix.h \
-	SbName.cpp \
-	SbName.h \
-	SbOctTree.cpp \
-	SbOctTree.h \
-	SbPlane.cpp \
-	SbPlane.h \
-	SbRotation.cpp \
-	SbRotation.h \
-	SbSphere.cpp \
-	SbSphere.h \
-	SbString.cpp \
-	SbString.h \
-	SbTesselator.cpp \
-	SbTesselator.h \
-	SbTime.cpp \
-	SbTime.h \
-	SbVec2f.cpp \
-	SbVec2f.h \
-	SbVec2s.cpp \
-	SbVec2s.h \
-	SbVec3f.cpp \
-	SbVec3f.h \
-	SbVec4f.cpp \
-	SbVec4f.h \
-	SbViewVolume.cpp \
-	SbViewVolume.h \
-	SbViewportRegion.cpp \
-	SbViewportRegion.h \
-	SbXfBox3f.cpp \
-	SbXfBox3f.h
+	SbBSPTree.cpp SbBSPTree.h \
+	SbBox2f.cpp SbBox2f.h \
+	SbBox2s.cpp SbBox2s.h \
+	SbBox3f.cpp SbBox3f.h \
+	SbColor.cpp SbColor.h \
+	SbColor4f.cpp SbColor4f.h \
+	SbCylinder.cpp SbCylinder.h \
+	SbDict.cpp SbDict.h \
+	SbHeap.cpp SbHeap.h \
+	SbLine.cpp SbLine.h \
+	SbMatrix.cpp SbMatrix.h \
+	SbName.cpp SbName.h \
+	SbOctTree.cpp SbOctTree.h \
+	SbPlane.cpp SbPlane.h \
+	SbRotation.cpp SbRotation.h \
+	SbSphere.cpp SbSphere.h \
+	SbString.cpp SbString.h \
+	SbTesselator.cpp SbTesselator.h \
+	SbTime.cpp SbTime.h \
+	SbVec2f.cpp SbVec2f.h \
+	SbVec2s.cpp SbVec2s.h \
+	SbVec3f.cpp SbVec3f.h \
+	SbVec4f.cpp SbVec4f.h \
+	SbViewVolume.cpp SbViewVolume.h \
+	SbViewportRegion.cpp SbViewportRegion.h \
+	SbXfBox3f.cpp SbXfBox3f.h
+endif
 
 ALLINSTHEADERS = 
 

@@ -1,0 +1,5 @@
+#include "SoBoundingBoxCache.cpp"
+#include "SoCache.cpp"
+#include "SoConvexDataCache.cpp"
+#include "SoNormalCache.cpp"
+#include "SoTextureCoordinateCache.cpp"

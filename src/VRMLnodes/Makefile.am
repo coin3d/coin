@@ -3,11 +3,15 @@
 
 ## Sources and installation headers.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoVRMLInterpOutput.cpp \
 	SoVRMLInterpOutput.h \
 	SoVRMLInterpolator.cpp \
 	SoVRMLInterpolator.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/VRMLnodes/SoVRMLInterpOutput.h \

@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoAnnoText3.cpp SoAnnoText3.h \
 	SoAnnoText3Property.cpp SoAnnoText3Property.h \
@@ -108,7 +111,7 @@ ALLSOURCES = \
 	SoWWWAnchor.cpp SoWWWAnchor.h \
 	SoWWWInline.cpp SoWWWInline.h \
 	SoSubNode.h SoSubNodeP.h
-
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h \

@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoAccumulatedElement.cpp SoAccumulatedElement.h \
 	SoAmbientColorElement.cpp SoAmbientColorElement.h \
@@ -97,6 +100,7 @@ ALLSOURCES = \
 	SoViewportRegionElement.cpp SoViewportRegionElement.h \
 	SoWindowElement.cpp SoWindowElement.h \
 	SoSubElement.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoSubElement.h \

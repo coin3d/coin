@@ -96,23 +96,15 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoButtonEvent.cpp \
-	SoButtonEvent.h \
-	SoEvent.cpp \
-	SoEvent.h \
-	SoKeyboardEvent.cpp \
-	SoKeyboardEvent.h \
-	SoLocation2Event.cpp \
-	SoLocation2Event.h \
-	SoMotion3Event.cpp \
-	SoMotion3Event.h \
-	SoMouseButtonEvent.cpp \
-	SoMouseButtonEvent.h \
-	SoSpaceballButtonEvent.cpp \
-	SoSpaceballButtonEvent.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoButtonEvent.cpp SoButtonEvent.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEvent.cpp SoEvent.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoKeyboardEvent.cpp SoKeyboardEvent.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLocation2Event.cpp SoLocation2Event.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMotion3Event.cpp SoMotion3Event.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMouseButtonEvent.cpp SoMouseButtonEvent.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSpaceballButtonEvent.cpp SoSpaceballButtonEvent.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/events/SoSubEvent.h \
@@ -160,15 +152,21 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libevents_la_LDFLAGS = 
 libevents_la_LIBADD = 
-am_libevents_la_OBJECTS =  SoButtonEvent.lo SoEvent.lo \
-SoKeyboardEvent.lo SoLocation2Event.lo SoMotion3Event.lo \
-SoMouseButtonEvent.lo SoSpaceballButtonEvent.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libevents_la_OBJECTS =  SoButtonEvent.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEvent.lo SoKeyboardEvent.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLocation2Event.lo SoMotion3Event.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMouseButtonEvent.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSpaceballButtonEvent.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libevents_la_OBJECTS =  all.lo
 libevents_la_OBJECTS =  $(am_libevents_la_OBJECTS)
 libeventsLINKHACK_la_LDFLAGS = 
 libeventsLINKHACK_la_LIBADD = 
-am_libeventsLINKHACK_la_OBJECTS =  SoButtonEvent.lo SoEvent.lo \
-SoKeyboardEvent.lo SoLocation2Event.lo SoMotion3Event.lo \
-SoMouseButtonEvent.lo SoSpaceballButtonEvent.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libeventsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoButtonEvent.lo SoEvent.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoKeyboardEvent.lo SoLocation2Event.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMotion3Event.lo SoMouseButtonEvent.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSpaceballButtonEvent.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libeventsLINKHACK_la_OBJECTS =  all.lo
 libeventsLINKHACK_la_OBJECTS =  $(am_libeventsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -193,7 +191,7 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoButtonEvent.Plo $(DEPDIR)/SoEvent.Plo \
 $(DEPDIR)/SoKeyboardEvent.Plo $(DEPDIR)/SoLocation2Event.Plo \
 $(DEPDIR)/SoMotion3Event.Plo $(DEPDIR)/SoMouseButtonEvent.Plo \
-$(DEPDIR)/SoSpaceballButtonEvent.Plo
+$(DEPDIR)/SoSpaceballButtonEvent.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libevents_la_SOURCES) $(libeventsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libevents_la_OBJECTS) $(am_libeventsLINKHACK_la_OBJECTS)
 
@@ -332,6 +330,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoMotion3Event.Plo
 @AMDEP@include $(DEPDIR)/SoMouseButtonEvent.Plo
 @AMDEP@include $(DEPDIR)/SoSpaceballButtonEvent.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

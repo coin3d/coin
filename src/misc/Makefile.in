@@ -96,34 +96,33 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoBase.cpp SoBase.h \
-	SoChildList.cpp SoChildList.h \
-	SoGL.cpp SoGL.h \
-	SoGLImage.cpp SoGLImage.h \
-	SoGlyph.cpp SoGlyph.h \
-	SoNormalGenerator.cpp SoNormalGenerator.h \
-	SoNotification.cpp SoNotification.h \
-	SoState.cpp SoState.h \
-	SoDB.cpp SoDB.h \
-	SoFullPath.cpp SoFullPath.h \
-	SoTempPath.cpp SoTempPath.h \
-	SoLightPath.cpp SoLightPath.h \
-	SoImageInterface.cpp SoImageInterface.h \
-	SoInput.cpp SoInput.h \
-	SoInteraction.cpp SoInteraction.h \
-	SoOutput.cpp SoOutput.h \
-	SoPath.cpp SoPath.h \
-	SoPickedPoint.cpp SoPickedPoint.h \
-	SoPrimitiveVertex.cpp SoPrimitiveVertex.h \
-	SoSceneManager.cpp SoSceneManager.h \
-	SoType.cpp SoType.h \
-	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
-	SoGenerate.cpp SoGenerate.h \
-	default3dfont.cpp \
-	default2dfont.cpp
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoBase.cpp SoBase.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoChildList.cpp SoChildList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGL.cpp SoGL.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLImage.cpp SoGLImage.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGlyph.cpp SoGlyph.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormalGenerator.cpp SoNormalGenerator.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNotification.cpp SoNotification.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoState.cpp SoState.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDB.cpp SoDB.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFullPath.cpp SoFullPath.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTempPath.cpp SoTempPath.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLightPath.cpp SoLightPath.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoImageInterface.cpp SoImageInterface.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInput.cpp SoInput.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInteraction.cpp SoInteraction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoOutput.cpp SoOutput.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPath.cpp SoPath.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPickedPoint.cpp SoPickedPoint.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPrimitiveVertex.cpp SoPrimitiveVertex.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSceneManager.cpp SoSceneManager.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoType.cpp SoType.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoOffscreenRenderer.cpp SoOffscreenRenderer.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGenerate.cpp SoGenerate.h \
+@HACKING_COMPACT_BUILD_FALSE@	default3dfont.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	default2dfont.cpp
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/misc/SoAuditorList.h \
@@ -171,21 +170,33 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libmisc_la_LDFLAGS = 
 libmisc_la_LIBADD = 
-am_libmisc_la_OBJECTS =  SoBase.lo SoChildList.lo SoGL.lo SoGLImage.lo \
-SoGlyph.lo SoNormalGenerator.lo SoNotification.lo SoState.lo SoDB.lo \
-SoFullPath.lo SoTempPath.lo SoLightPath.lo SoImageInterface.lo \
-SoInput.lo SoInteraction.lo SoOutput.lo SoPath.lo SoPickedPoint.lo \
-SoPrimitiveVertex.lo SoSceneManager.lo SoType.lo SoOffscreenRenderer.lo \
-SoGenerate.lo default3dfont.lo default2dfont.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libmisc_la_OBJECTS =  SoBase.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoChildList.lo SoGL.lo SoGLImage.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGlyph.lo SoNormalGenerator.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNotification.lo SoState.lo SoDB.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFullPath.lo SoTempPath.lo SoLightPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoImageInterface.lo SoInput.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInteraction.lo SoOutput.lo SoPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickedPoint.lo SoPrimitiveVertex.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSceneManager.lo SoType.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoOffscreenRenderer.lo SoGenerate.lo \
+@HACKING_COMPACT_BUILD_FALSE@default3dfont.lo default2dfont.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS =  all.lo
 libmisc_la_OBJECTS =  $(am_libmisc_la_OBJECTS)
 libmiscLINKHACK_la_LDFLAGS = 
 libmiscLINKHACK_la_LIBADD = 
-am_libmiscLINKHACK_la_OBJECTS =  SoBase.lo SoChildList.lo SoGL.lo \
-SoGLImage.lo SoGlyph.lo SoNormalGenerator.lo SoNotification.lo \
-SoState.lo SoDB.lo SoFullPath.lo SoTempPath.lo SoLightPath.lo \
-SoImageInterface.lo SoInput.lo SoInteraction.lo SoOutput.lo SoPath.lo \
-SoPickedPoint.lo SoPrimitiveVertex.lo SoSceneManager.lo SoType.lo \
-SoOffscreenRenderer.lo SoGenerate.lo default3dfont.lo default2dfont.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libmiscLINKHACK_la_OBJECTS =  SoBase.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoChildList.lo SoGL.lo SoGLImage.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGlyph.lo SoNormalGenerator.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNotification.lo SoState.lo SoDB.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFullPath.lo SoTempPath.lo SoLightPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoImageInterface.lo SoInput.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInteraction.lo SoOutput.lo SoPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickedPoint.lo SoPrimitiveVertex.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSceneManager.lo SoType.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoOffscreenRenderer.lo SoGenerate.lo \
+@HACKING_COMPACT_BUILD_FALSE@default3dfont.lo default2dfont.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libmiscLINKHACK_la_OBJECTS =  all.lo
 libmiscLINKHACK_la_OBJECTS =  $(am_libmiscLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -217,7 +228,8 @@ $(DEPDIR)/SoOffscreenRenderer.Plo $(DEPDIR)/SoOutput.Plo \
 $(DEPDIR)/SoPath.Plo $(DEPDIR)/SoPickedPoint.Plo \
 $(DEPDIR)/SoPrimitiveVertex.Plo $(DEPDIR)/SoSceneManager.Plo \
 $(DEPDIR)/SoState.Plo $(DEPDIR)/SoTempPath.Plo $(DEPDIR)/SoType.Plo \
-$(DEPDIR)/default2dfont.Plo $(DEPDIR)/default3dfont.Plo
+$(DEPDIR)/all.Plo $(DEPDIR)/default2dfont.Plo \
+$(DEPDIR)/default3dfont.Plo
 SOURCES = $(libmisc_la_SOURCES) $(libmiscLINKHACK_la_SOURCES)
 OBJECTS = $(am_libmisc_la_OBJECTS) $(am_libmiscLINKHACK_la_OBJECTS)
 
@@ -372,6 +384,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoState.Plo
 @AMDEP@include $(DEPDIR)/SoTempPath.Plo
 @AMDEP@include $(DEPDIR)/SoType.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 @AMDEP@include $(DEPDIR)/default2dfont.Plo
 @AMDEP@include $(DEPDIR)/default3dfont.Plo
 

@@ -497,3 +497,19 @@ SoTrackballDragger::updateUserAxisSwitches(const SbBool setactive)
   sw = SO_GET_ANY_PART(this, "userRotatorSwitch", SoSwitch);
   SoInteractionKit::setSwitchValue(sw, val);
 }
+
+
+// Undefine these again, as some of them are also used in other
+// dragger sourcecode files (which causes trouble when using the
+// compact build hack where all .cpp files are included into all.cpp).
+
+#undef WHATKIND_NONE
+#undef WHATKIND_ROTATOR
+#undef WHATKIND_XROTATOR
+#undef WHATKIND_YROTATOR
+#undef WHATKIND_ZROTATOR
+#undef WHATKIND_USERAXIS
+#undef WHATKIND_USERROTATOR
+#undef WHATKIND_SCALE
+
+#undef USER_AXIS_DISAPPEAR_LIMIT

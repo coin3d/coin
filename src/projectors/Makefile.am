@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SbCylinderPlaneProjector.cpp \
 	SbCylinderPlaneProjector.h \
@@ -24,7 +27,7 @@ ALLSOURCES = \
 	SbSphereSectionProjector.h \
 	SbSphereSheetProjector.cpp \
 	SbSphereSheetProjector.h
-
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/projectors/SbProjectors.h \

@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19991229 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoClipPlaneManip.cpp SoClipPlaneManip.h \
 	SoDirectionalLightManip.cpp SoDirectionalLightManip.h \
@@ -14,6 +17,7 @@ ALLSOURCES = \
 	SoTrackballManip.cpp SoTrackballManip.h \
 	SoTransformBoxManip.cpp SoTransformBoxManip.h \
 	SoTransformerManip.cpp SoTransformerManip.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/manips/SoClipPlaneManip.h \

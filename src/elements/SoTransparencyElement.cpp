@@ -28,7 +28,7 @@
 
 #include <assert.h>
 
-static const float defaultValue = 0.0f;
+static const float defaulttransparencyval = 0.0f;
 
 /*!
   \fn SoTransparencyElement::numValues
@@ -68,7 +68,7 @@ SoTransparencyElement::~SoTransparencyElement()
 void
 SoTransparencyElement::init(SoState * /* state */)
 {
-  this->values = &defaultValue;
+  this->values = &defaulttransparencyval;
   this->numValues = 1;
 }
 
@@ -84,7 +84,7 @@ SoTransparencyElement::set(SoState * const state, SoNode * const node,
   if (numValues)
     elem->setElt(numValues, values);
   else
-    elem->setElt(1, &defaultValue);
+    elem->setElt(1, &defaulttransparencyval);
 }
 
 //! FIXME: write doc.

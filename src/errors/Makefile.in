@@ -96,17 +96,16 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoDebugError.cpp \
-	SoDebugError.h \
-	SoError.cpp \
-	SoError.h \
-	SoMemoryError.cpp \
-	SoMemoryError.h \
-	SoReadError.cpp \
-	SoReadError.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoDebugError.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoDebugError.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoError.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoError.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMemoryError.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoMemoryError.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoReadError.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoReadError.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/errors/SoErrors.h \
@@ -150,13 +149,16 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 liberrors_la_LDFLAGS = 
 liberrors_la_LIBADD = 
-am_liberrors_la_OBJECTS =  SoDebugError.lo SoError.lo SoMemoryError.lo \
-SoReadError.lo
+@HACKING_COMPACT_BUILD_FALSE@am_liberrors_la_OBJECTS =  SoDebugError.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoError.lo SoMemoryError.lo SoReadError.lo
+@HACKING_COMPACT_BUILD_TRUE@am_liberrors_la_OBJECTS =  all.lo
 liberrors_la_OBJECTS =  $(am_liberrors_la_OBJECTS)
 liberrorsLINKHACK_la_LDFLAGS = 
 liberrorsLINKHACK_la_LIBADD = 
-am_liberrorsLINKHACK_la_OBJECTS =  SoDebugError.lo SoError.lo \
-SoMemoryError.lo SoReadError.lo
+@HACKING_COMPACT_BUILD_FALSE@am_liberrorsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoDebugError.lo SoError.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMemoryError.lo SoReadError.lo
+@HACKING_COMPACT_BUILD_TRUE@am_liberrorsLINKHACK_la_OBJECTS =  all.lo
 liberrorsLINKHACK_la_OBJECTS =  $(am_liberrorsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -179,7 +181,7 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoDebugError.Plo $(DEPDIR)/SoError.Plo \
-$(DEPDIR)/SoMemoryError.Plo $(DEPDIR)/SoReadError.Plo
+$(DEPDIR)/SoMemoryError.Plo $(DEPDIR)/SoReadError.Plo $(DEPDIR)/all.Plo
 SOURCES = $(liberrors_la_SOURCES) $(liberrorsLINKHACK_la_SOURCES)
 OBJECTS = $(am_liberrors_la_OBJECTS) $(am_liberrorsLINKHACK_la_OBJECTS)
 
@@ -315,6 +317,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoError.Plo
 @AMDEP@include $(DEPDIR)/SoMemoryError.Plo
 @AMDEP@include $(DEPDIR)/SoReadError.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

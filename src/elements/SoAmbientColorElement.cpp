@@ -28,7 +28,7 @@
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
-static SbColor * defaultcolor = NULL;
+static SbColor * defaultambientcolor = NULL;
 
 
 /*!
@@ -54,8 +54,8 @@ void
 SoAmbientColorElement::initClass(void)
 {
   SO_ELEMENT_INIT_CLASS(SoAmbientColorElement, inherited);
-  defaultcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
-  defaultcolor->setValue(0.2f, 0.2f, 0.2f);
+  defaultambientcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultambientcolor->setValue(0.2f, 0.2f, 0.2f);
 }
 
 //! FIXME: write doc.
@@ -63,7 +63,7 @@ SoAmbientColorElement::initClass(void)
 void
 SoAmbientColorElement::init(SoState * /* state */)
 {
-  this->colors = defaultcolor;
+  this->colors = defaultambientcolor;
   this->numColors = 1;
 }
 
@@ -87,7 +87,7 @@ SoAmbientColorElement::set(SoState * const state, SoNode * const node,
   if (numColors > 0)
     elem->setElt(numColors, colors);
   else
-    elem->setElt(1, defaultcolor);
+    elem->setElt(1, defaultambientcolor);
 }
 
 //! FIXME: write doc.

@@ -96,33 +96,20 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoAlarmSensor.cpp \
-	SoAlarmSensor.h \
-	SoDataSensor.cpp \
-	SoDataSensor.h \
-	SoDelayQueueSensor.cpp \
-	SoDelayQueueSensor.h \
-	SoFieldSensor.cpp \
-	SoFieldSensor.h \
-	SoIdleSensor.cpp \
-	SoIdleSensor.h \
-	SoNodeSensor.cpp \
-	SoNodeSensor.h \
-	SoOneShotSensor.cpp \
-	SoOneShotSensor.h \
-	SoPathSensor.cpp \
-	SoPathSensor.h \
-	SoSensor.cpp \
-	SoSensor.h \
-	SoSensorManager.cpp \
-	SoSensorManager.h \
-	SoTimerQueueSensor.cpp \
-	SoTimerQueueSensor.h \
-	SoTimerSensor.cpp \
-	SoTimerSensor.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoAlarmSensor.cpp SoAlarmSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDataSensor.cpp SoDataSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDelayQueueSensor.cpp SoDelayQueueSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFieldSensor.cpp SoFieldSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoIdleSensor.cpp SoIdleSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeSensor.cpp SoNodeSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoOneShotSensor.cpp SoOneShotSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPathSensor.cpp SoPathSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSensor.cpp SoSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSensorManager.cpp SoSensorManager.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTimerQueueSensor.cpp SoTimerQueueSensor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTimerSensor.cpp SoTimerSensor.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/sensors/SoSensors.h \
@@ -174,17 +161,25 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libsensors_la_LDFLAGS = 
 libsensors_la_LIBADD = 
-am_libsensors_la_OBJECTS =  SoAlarmSensor.lo SoDataSensor.lo \
-SoDelayQueueSensor.lo SoFieldSensor.lo SoIdleSensor.lo SoNodeSensor.lo \
-SoOneShotSensor.lo SoPathSensor.lo SoSensor.lo SoSensorManager.lo \
-SoTimerQueueSensor.lo SoTimerSensor.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libsensors_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoAlarmSensor.lo SoDataSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDelayQueueSensor.lo SoFieldSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoIdleSensor.lo SoNodeSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoOneShotSensor.lo SoPathSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSensor.lo SoSensorManager.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTimerQueueSensor.lo SoTimerSensor.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libsensors_la_OBJECTS =  all.lo
 libsensors_la_OBJECTS =  $(am_libsensors_la_OBJECTS)
 libsensorsLINKHACK_la_LDFLAGS = 
 libsensorsLINKHACK_la_LIBADD = 
-am_libsensorsLINKHACK_la_OBJECTS =  SoAlarmSensor.lo SoDataSensor.lo \
-SoDelayQueueSensor.lo SoFieldSensor.lo SoIdleSensor.lo SoNodeSensor.lo \
-SoOneShotSensor.lo SoPathSensor.lo SoSensor.lo SoSensorManager.lo \
-SoTimerQueueSensor.lo SoTimerSensor.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libsensorsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoAlarmSensor.lo SoDataSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDelayQueueSensor.lo SoFieldSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoIdleSensor.lo SoNodeSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoOneShotSensor.lo SoPathSensor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSensor.lo SoSensorManager.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTimerQueueSensor.lo SoTimerSensor.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libsensorsLINKHACK_la_OBJECTS =  all.lo
 libsensorsLINKHACK_la_OBJECTS =  $(am_libsensorsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -213,7 +208,7 @@ $(DEPDIR)/SoFieldSensor.Plo $(DEPDIR)/SoIdleSensor.Plo \
 $(DEPDIR)/SoNodeSensor.Plo $(DEPDIR)/SoOneShotSensor.Plo \
 $(DEPDIR)/SoPathSensor.Plo $(DEPDIR)/SoSensor.Plo \
 $(DEPDIR)/SoSensorManager.Plo $(DEPDIR)/SoTimerQueueSensor.Plo \
-$(DEPDIR)/SoTimerSensor.Plo
+$(DEPDIR)/SoTimerSensor.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libsensors_la_SOURCES) $(libsensorsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libsensors_la_OBJECTS) $(am_libsensorsLINKHACK_la_OBJECTS)
 
@@ -357,6 +352,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoSensorManager.Plo
 @AMDEP@include $(DEPDIR)/SoTimerQueueSensor.Plo
 @AMDEP@include $(DEPDIR)/SoTimerSensor.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

@@ -96,28 +96,27 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoDetail.cpp \
-	SoDetail.h \
-	SoDetails.h \
-	SoConeDetail.cpp \
-	SoConeDetail.h \
-	SoCubeDetail.cpp \
-	SoCubeDetail.h \
-	SoCylinderDetail.cpp \
-	SoCylinderDetail.h \
-	SoFaceDetail.cpp \
-	SoFaceDetail.h \
-	SoLineDetail.cpp \
-	SoLineDetail.h \
-	SoNodeKitDetail.cpp \
-	SoNodeKitDetail.h \
-	SoPointDetail.cpp \
-	SoPointDetail.h \
-	SoTextDetail.cpp \
-	SoTextDetail.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoDetail.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDetails.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoConeDetail.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoConeDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCubeDetail.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoCubeDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCylinderDetail.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoCylinderDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFaceDetail.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoFaceDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLineDetail.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoLineDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeKitDetail.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeKitDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointDetail.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextDetail.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextDetail.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/details/SoDetail.h \
@@ -166,15 +165,22 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libdetails_la_LDFLAGS = 
 libdetails_la_LIBADD = 
-am_libdetails_la_OBJECTS =  SoDetail.lo SoConeDetail.lo SoCubeDetail.lo \
-SoCylinderDetail.lo SoFaceDetail.lo SoLineDetail.lo SoNodeKitDetail.lo \
-SoPointDetail.lo SoTextDetail.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libdetails_la_OBJECTS =  SoDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoConeDetail.lo SoCubeDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCylinderDetail.lo SoFaceDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLineDetail.lo SoNodeKitDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPointDetail.lo SoTextDetail.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libdetails_la_OBJECTS =  all.lo
 libdetails_la_OBJECTS =  $(am_libdetails_la_OBJECTS)
 libdetailsLINKHACK_la_LDFLAGS = 
 libdetailsLINKHACK_la_LIBADD = 
-am_libdetailsLINKHACK_la_OBJECTS =  SoDetail.lo SoConeDetail.lo \
-SoCubeDetail.lo SoCylinderDetail.lo SoFaceDetail.lo SoLineDetail.lo \
-SoNodeKitDetail.lo SoPointDetail.lo SoTextDetail.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libdetailsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoDetail.lo SoConeDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCubeDetail.lo SoCylinderDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFaceDetail.lo SoLineDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNodeKitDetail.lo SoPointDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextDetail.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libdetailsLINKHACK_la_OBJECTS =  all.lo
 libdetailsLINKHACK_la_OBJECTS =  $(am_libdetailsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -201,7 +207,8 @@ DEP_FILES =  @AMDEP@ $(DEPDIR)/SoConeDetail.Plo \
 $(DEPDIR)/SoCubeDetail.Plo $(DEPDIR)/SoCylinderDetail.Plo \
 $(DEPDIR)/SoDetail.Plo $(DEPDIR)/SoFaceDetail.Plo \
 $(DEPDIR)/SoLineDetail.Plo $(DEPDIR)/SoNodeKitDetail.Plo \
-$(DEPDIR)/SoPointDetail.Plo $(DEPDIR)/SoTextDetail.Plo
+$(DEPDIR)/SoPointDetail.Plo $(DEPDIR)/SoTextDetail.Plo \
+$(DEPDIR)/all.Plo
 SOURCES = $(libdetails_la_SOURCES) $(libdetailsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libdetails_la_OBJECTS) $(am_libdetailsLINKHACK_la_OBJECTS)
 
@@ -342,6 +349,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoNodeKitDetail.Plo
 @AMDEP@include $(DEPDIR)/SoPointDetail.Plo
 @AMDEP@include $(DEPDIR)/SoTextDetail.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

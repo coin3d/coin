@@ -96,60 +96,59 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoField.cpp SoField.h \
-	SoFieldContainer.cpp SoFieldContainer.h \
-	SoFieldData.cpp SoFieldData.h \
-	SoMFBitMask.cpp SoMFBitMask.h \
-	SoMFBool.cpp SoMFBool.h \
-	SoMFColor.cpp SoMFColor.h \
-	SoMFEngine.cpp SoMFEngine.h \
-	SoMFEnum.cpp SoMFEnum.h \
-	SoMFFloat.cpp SoMFFloat.h \
-	SoMFInt32.cpp SoMFInt32.h \
-	SoMFMatrix.cpp SoMFMatrix.h \
-	SoMFName.cpp SoMFName.h \
-	SoMFNode.cpp SoMFNode.h \
-	SoMFPath.cpp SoMFPath.h \
-	SoMFPlane.cpp SoMFPlane.h \
-	SoMFRotation.cpp SoMFRotation.h \
-	SoMFShort.cpp SoMFShort.h \
-	SoMFString.cpp SoMFString.h \
-	SoMFTime.cpp SoMFTime.h \
-	SoMFUInt32.cpp SoMFUInt32.h \
-	SoMFUShort.cpp SoMFUShort.h \
-	SoMFVec2f.cpp SoMFVec2f.h \
-	SoMFVec3f.cpp SoMFVec3f.h \
-	SoMFVec4f.cpp SoMFVec4f.h \
-	SoMField.cpp SoMField.h \
-	SoSFBitMask.cpp SoSFBitMask.h \
-	SoSFBool.cpp SoSFBool.h \
-	SoSFColor.cpp SoSFColor.h \
-	SoSFEngine.cpp SoSFEngine.h \
-	SoSFEnum.cpp SoSFEnum.h \
-	SoSFFloat.cpp SoSFFloat.h \
-	SoSFImage.cpp SoSFImage.h \
-	SoSFInt32.cpp SoSFInt32.h \
-	SoSFMatrix.cpp SoSFMatrix.h \
-	SoSFName.cpp SoSFName.h \
-	SoSFNode.cpp SoSFNode.h \
-	SoSFPath.cpp SoSFPath.h \
-	SoSFPlane.cpp SoSFPlane.h \
-	SoSFRotation.cpp SoSFRotation.h \
-	SoSFShort.cpp SoSFShort.h \
-	SoSFString.cpp SoSFString.h \
-	SoSFTime.cpp SoSFTime.h \
-	SoSFTrigger.cpp SoSFTrigger.h \
-	SoSFUInt32.cpp SoSFUInt32.h \
-	SoSFUShort.cpp SoSFUShort.h \
-	SoSFVec2f.cpp SoSFVec2f.h \
-	SoSFVec3f.cpp SoSFVec3f.h \
-	SoSFVec4f.cpp SoSFVec4f.h \
-	SoSField.cpp SoSField.h \
-	SoGlobalField.cpp SoGlobalField.h \
-	SoSubField.h SoSubFieldP.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoField.cpp SoField.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFieldContainer.cpp SoFieldContainer.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFieldData.cpp SoFieldData.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFBitMask.cpp SoMFBitMask.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFBool.cpp SoMFBool.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFColor.cpp SoMFColor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFEngine.cpp SoMFEngine.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFEnum.cpp SoMFEnum.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFFloat.cpp SoMFFloat.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFInt32.cpp SoMFInt32.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFMatrix.cpp SoMFMatrix.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFName.cpp SoMFName.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFNode.cpp SoMFNode.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFPath.cpp SoMFPath.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFPlane.cpp SoMFPlane.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFRotation.cpp SoMFRotation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFShort.cpp SoMFShort.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFString.cpp SoMFString.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFTime.cpp SoMFTime.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFUInt32.cpp SoMFUInt32.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFUShort.cpp SoMFUShort.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFVec2f.cpp SoMFVec2f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFVec3f.cpp SoMFVec3f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMFVec4f.cpp SoMFVec4f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMField.cpp SoMField.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFBitMask.cpp SoSFBitMask.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFBool.cpp SoSFBool.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFColor.cpp SoSFColor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFEngine.cpp SoSFEngine.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFEnum.cpp SoSFEnum.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFFloat.cpp SoSFFloat.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFImage.cpp SoSFImage.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFInt32.cpp SoSFInt32.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFMatrix.cpp SoSFMatrix.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFName.cpp SoSFName.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFNode.cpp SoSFNode.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFPath.cpp SoSFPath.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFPlane.cpp SoSFPlane.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFRotation.cpp SoSFRotation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFShort.cpp SoSFShort.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFString.cpp SoSFString.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFTime.cpp SoSFTime.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFTrigger.cpp SoSFTrigger.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFUInt32.cpp SoSFUInt32.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFUShort.cpp SoSFUShort.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFVec2f.cpp SoSFVec2f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFVec3f.cpp SoSFVec3f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSFVec4f.cpp SoSFVec4f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSField.cpp SoSField.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGlobalField.cpp SoGlobalField.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSubField.h SoSubFieldP.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/fields/SoSubField.h \
@@ -243,31 +242,47 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libfields_la_LDFLAGS = 
 libfields_la_LIBADD = 
-am_libfields_la_OBJECTS =  SoField.lo SoFieldContainer.lo SoFieldData.lo \
-SoMFBitMask.lo SoMFBool.lo SoMFColor.lo SoMFEngine.lo SoMFEnum.lo \
-SoMFFloat.lo SoMFInt32.lo SoMFMatrix.lo SoMFName.lo SoMFNode.lo \
-SoMFPath.lo SoMFPlane.lo SoMFRotation.lo SoMFShort.lo SoMFString.lo \
-SoMFTime.lo SoMFUInt32.lo SoMFUShort.lo SoMFVec2f.lo SoMFVec3f.lo \
-SoMFVec4f.lo SoMField.lo SoSFBitMask.lo SoSFBool.lo SoSFColor.lo \
-SoSFEngine.lo SoSFEnum.lo SoSFFloat.lo SoSFImage.lo SoSFInt32.lo \
-SoSFMatrix.lo SoSFName.lo SoSFNode.lo SoSFPath.lo SoSFPlane.lo \
-SoSFRotation.lo SoSFShort.lo SoSFString.lo SoSFTime.lo SoSFTrigger.lo \
-SoSFUInt32.lo SoSFUShort.lo SoSFVec2f.lo SoSFVec3f.lo SoSFVec4f.lo \
-SoSField.lo SoGlobalField.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libfields_la_OBJECTS =  SoField.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFieldContainer.lo SoFieldData.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFBitMask.lo SoMFBool.lo SoMFColor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFEngine.lo SoMFEnum.lo SoMFFloat.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFInt32.lo SoMFMatrix.lo SoMFName.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFNode.lo SoMFPath.lo SoMFPlane.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFRotation.lo SoMFShort.lo SoMFString.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFTime.lo SoMFUInt32.lo SoMFUShort.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFVec2f.lo SoMFVec3f.lo SoMFVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMField.lo SoSFBitMask.lo SoSFBool.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFColor.lo SoSFEngine.lo SoSFEnum.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFFloat.lo SoSFImage.lo SoSFInt32.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFMatrix.lo SoSFName.lo SoSFNode.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFPath.lo SoSFPlane.lo SoSFRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFShort.lo SoSFString.lo SoSFTime.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFTrigger.lo SoSFUInt32.lo SoSFUShort.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFVec2f.lo SoSFVec3f.lo SoSFVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSField.lo SoGlobalField.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libfields_la_OBJECTS =  all.lo
 libfields_la_OBJECTS =  $(am_libfields_la_OBJECTS)
 libfieldsLINKHACK_la_LDFLAGS = 
 libfieldsLINKHACK_la_LIBADD = 
-am_libfieldsLINKHACK_la_OBJECTS =  SoField.lo SoFieldContainer.lo \
-SoFieldData.lo SoMFBitMask.lo SoMFBool.lo SoMFColor.lo SoMFEngine.lo \
-SoMFEnum.lo SoMFFloat.lo SoMFInt32.lo SoMFMatrix.lo SoMFName.lo \
-SoMFNode.lo SoMFPath.lo SoMFPlane.lo SoMFRotation.lo SoMFShort.lo \
-SoMFString.lo SoMFTime.lo SoMFUInt32.lo SoMFUShort.lo SoMFVec2f.lo \
-SoMFVec3f.lo SoMFVec4f.lo SoMField.lo SoSFBitMask.lo SoSFBool.lo \
-SoSFColor.lo SoSFEngine.lo SoSFEnum.lo SoSFFloat.lo SoSFImage.lo \
-SoSFInt32.lo SoSFMatrix.lo SoSFName.lo SoSFNode.lo SoSFPath.lo \
-SoSFPlane.lo SoSFRotation.lo SoSFShort.lo SoSFString.lo SoSFTime.lo \
-SoSFTrigger.lo SoSFUInt32.lo SoSFUShort.lo SoSFVec2f.lo SoSFVec3f.lo \
-SoSFVec4f.lo SoSField.lo SoGlobalField.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libfieldsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoField.lo SoFieldContainer.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFieldData.lo SoMFBitMask.lo SoMFBool.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFColor.lo SoMFEngine.lo SoMFEnum.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFFloat.lo SoMFInt32.lo SoMFMatrix.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFName.lo SoMFNode.lo SoMFPath.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFPlane.lo SoMFRotation.lo SoMFShort.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFString.lo SoMFTime.lo SoMFUInt32.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFUShort.lo SoMFVec2f.lo SoMFVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMFVec4f.lo SoMField.lo SoSFBitMask.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFBool.lo SoSFColor.lo SoSFEngine.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFEnum.lo SoSFFloat.lo SoSFImage.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFInt32.lo SoSFMatrix.lo SoSFName.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFNode.lo SoSFPath.lo SoSFPlane.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFRotation.lo SoSFShort.lo SoSFString.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFTime.lo SoSFTrigger.lo SoSFUInt32.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFUShort.lo SoSFVec2f.lo SoSFVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSFVec4f.lo SoSField.lo SoGlobalField.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libfieldsLINKHACK_la_OBJECTS =  all.lo
 libfieldsLINKHACK_la_OBJECTS =  $(am_libfieldsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -309,7 +324,8 @@ $(DEPDIR)/SoSFRotation.Plo $(DEPDIR)/SoSFShort.Plo \
 $(DEPDIR)/SoSFString.Plo $(DEPDIR)/SoSFTime.Plo \
 $(DEPDIR)/SoSFTrigger.Plo $(DEPDIR)/SoSFUInt32.Plo \
 $(DEPDIR)/SoSFUShort.Plo $(DEPDIR)/SoSFVec2f.Plo \
-$(DEPDIR)/SoSFVec3f.Plo $(DEPDIR)/SoSFVec4f.Plo $(DEPDIR)/SoSField.Plo
+$(DEPDIR)/SoSFVec3f.Plo $(DEPDIR)/SoSFVec4f.Plo $(DEPDIR)/SoSField.Plo \
+$(DEPDIR)/all.Plo
 SOURCES = $(libfields_la_SOURCES) $(libfieldsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libfields_la_OBJECTS) $(am_libfieldsLINKHACK_la_OBJECTS)
 
@@ -491,6 +507,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoSFVec3f.Plo
 @AMDEP@include $(DEPDIR)/SoSFVec4f.Plo
 @AMDEP@include $(DEPDIR)/SoSField.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

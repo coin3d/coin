@@ -96,115 +96,114 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoAnnoText3.cpp SoAnnoText3.h \
-	SoAnnoText3Property.cpp SoAnnoText3Property.h \
-	SoAnnotation.cpp SoAnnotation.h \
-	SoAntiSquish.cpp SoAntiSquish.h \
-	SoArray.cpp SoArray.h \
-	SoAsciiText.cpp SoAsciiText.h \
-	SoBaseColor.cpp SoBaseColor.h \
-	SoBlinker.cpp SoBlinker.h \
-	SoCallback.cpp SoCallback.h \
-	SoCamera.cpp SoCamera.h \
-	SoClipPlane.cpp SoClipPlane.h \
-	SoColorIndex.cpp SoColorIndex.h \
-	SoComplexity.cpp SoComplexity.h \
-	SoCone.cpp SoCone.h \
-	SoCoordinate3.cpp SoCoordinate3.h \
-	SoCoordinate4.cpp SoCoordinate4.h \
-	SoCube.cpp SoCube.h \
-	SoCylinder.cpp SoCylinder.h \
-	SoDirectionalLight.cpp SoDirectionalLight.h \
-	SoDrawStyle.cpp SoDrawStyle.h \
-	SoEnvironment.cpp SoEnvironment.h \
-	SoEventCallback.cpp SoEventCallback.h \
-	SoExtSelection.cpp SoExtSelection.h \
-	SoFaceSet.cpp SoFaceSet.h \
-	SoFile.cpp SoFile.h \
-	SoFont.cpp SoFont.h \
-	SoFontStyle.cpp SoFontStyle.h \
-	SoGroup.cpp SoGroup.h \
-	SoImage.cpp SoImage.h \
-	SoIndexedFaceSet.cpp SoIndexedFaceSet.h \
-	SoIndexedLineSet.cpp SoIndexedLineSet.h \
-	SoIndexedNurbsCurve.cpp SoIndexedNurbsCurve.h \
-	SoIndexedNurbsSurface.cpp SoIndexedNurbsSurface.h \
-	SoIndexedShape.cpp SoIndexedShape.h \
-	SoIndexedTriangleStripSet.cpp SoIndexedTriangleStripSet.h \
-	SoInfo.cpp SoInfo.h \
-	SoLOD.cpp SoLOD.h \
-	SoLabel.cpp SoLabel.h \
-	SoLevelOfDetail.cpp SoLevelOfDetail.h \
-	SoLevelOfSimplification.cpp SoLevelOfSimplification.h \
-	SoLight.cpp SoLight.h \
-	SoLightModel.cpp SoLightModel.h \
-	SoLineSet.cpp SoLineSet.h \
-	SoLinearProfile.cpp SoLinearProfile.h \
-	SoLocateHighlight.cpp SoLocateHighlight.h \
-	SoMarkerSet.cpp SoMarkerSet.h \
-	SoMaterial.cpp SoMaterial.h \
-	SoMaterialBinding.cpp SoMaterialBinding.h \
-	SoMatrixTransform.cpp SoMatrixTransform.h \
-	SoMultipleCopy.cpp SoMultipleCopy.h \
-	SoNode.cpp SoNode.h \
-	SoNonIndexedShape.cpp SoNonIndexedShape.h \
-	SoNormal.cpp SoNormal.h \
-	SoNormalBinding.cpp SoNormalBinding.h \
-	SoNurbsCurve.cpp SoNurbsCurve.h \
-	SoNurbsProfile.cpp SoNurbsProfile.h \
-	SoNurbsSurface.cpp SoNurbsSurface.h \
-	SoOrthographicCamera.cpp SoOrthographicCamera.h \
-	SoPackedColor.cpp SoPackedColor.h \
-	SoPathSwitch.cpp SoPathSwitch.h \
-	SoPendulum.cpp SoPendulum.h \
-	SoPerspectiveCamera.cpp SoPerspectiveCamera.h \
-	SoPickStyle.cpp SoPickStyle.h \
-	SoPointLight.cpp SoPointLight.h \
-	SoPointSet.cpp SoPointSet.h \
-	SoPolygonOffset.cpp SoPolygonOffset.h \
-	SoProfile.cpp SoProfile.h \
-	SoProfileCoordinate2.cpp SoProfileCoordinate2.h \
-	SoProfileCoordinate3.cpp SoProfileCoordinate3.h \
-	SoQuadMesh.cpp SoQuadMesh.h \
-	SoResetTransform.cpp SoResetTransform.h \
-	SoRotation.cpp SoRotation.h \
-	SoRotationXYZ.cpp SoRotationXYZ.h \
-	SoRotor.cpp SoRotor.h \
-	SoScale.cpp SoScale.h \
-	SoSelection.cpp SoSelection.h \
-	SoSeparator.cpp SoSeparator.h \
-	SoShape.cpp SoShape.h \
-	SoShapeHints.cpp SoShapeHints.h \
-	SoShuttle.cpp SoShuttle.h \
-	SoSphere.cpp SoSphere.h \
-	SoSpotLight.cpp SoSpotLight.h \
-	SoSurroundScale.cpp SoSurroundScale.h \
-	SoSwitch.cpp SoSwitch.h \
-	SoText2.cpp SoText2.h \
-	SoText3.cpp SoText3.h \
-	SoTexture2.cpp SoTexture2.h \
-	SoTexture2Transform.cpp SoTexture2Transform.h \
-	SoTextureCoordinate2.cpp SoTextureCoordinate2.h \
-	SoTextureCoordinateBinding.cpp SoTextureCoordinateBinding.h \
-	SoTextureCoordinateDefault.cpp SoTextureCoordinateDefault.h \
-	SoTextureCoordinateEnvironment.cpp SoTextureCoordinateEnvironment.h \
-	SoTextureCoordinateFunction.cpp SoTextureCoordinateFunction.h \
-	SoTextureCoordinatePlane.cpp SoTextureCoordinatePlane.h \
-	SoTransform.cpp SoTransform.h \
-	SoTransformSeparator.cpp SoTransformSeparator.h \
-	SoTransformation.cpp SoTransformation.h \
-	SoTranslation.cpp SoTranslation.h \
-	SoTriangleStripSet.cpp SoTriangleStripSet.h \
-	SoUnits.cpp SoUnits.h \
-	SoUnknownNode.cpp SoUnknownNode.h \
-	SoVertexProperty.cpp SoVertexProperty.h \
-	SoVertexShape.cpp SoVertexShape.h \
-	SoWWWAnchor.cpp SoWWWAnchor.h \
-	SoWWWInline.cpp SoWWWInline.h \
-	SoSubNode.h SoSubNodeP.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoAnnoText3.cpp SoAnnoText3.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAnnoText3Property.cpp SoAnnoText3Property.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAnnotation.cpp SoAnnotation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAntiSquish.cpp SoAntiSquish.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoArray.cpp SoArray.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAsciiText.cpp SoAsciiText.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoBaseColor.cpp SoBaseColor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoBlinker.cpp SoBlinker.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCallback.cpp SoCallback.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCamera.cpp SoCamera.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoClipPlane.cpp SoClipPlane.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoColorIndex.cpp SoColorIndex.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComplexity.cpp SoComplexity.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCone.cpp SoCone.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCoordinate3.cpp SoCoordinate3.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCoordinate4.cpp SoCoordinate4.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCube.cpp SoCube.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCylinder.cpp SoCylinder.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDirectionalLight.cpp SoDirectionalLight.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDrawStyle.cpp SoDrawStyle.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEnvironment.cpp SoEnvironment.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEventCallback.cpp SoEventCallback.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoExtSelection.cpp SoExtSelection.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFaceSet.cpp SoFaceSet.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFile.cpp SoFile.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFont.cpp SoFont.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFontStyle.cpp SoFontStyle.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGroup.cpp SoGroup.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoImage.cpp SoImage.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedFaceSet.cpp SoIndexedFaceSet.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedLineSet.cpp SoIndexedLineSet.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsCurve.cpp SoIndexedNurbsCurve.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedNurbsSurface.cpp SoIndexedNurbsSurface.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedShape.cpp SoIndexedShape.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoIndexedTriangleStripSet.cpp SoIndexedTriangleStripSet.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInfo.cpp SoInfo.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLOD.cpp SoLOD.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLabel.cpp SoLabel.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLevelOfDetail.cpp SoLevelOfDetail.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLevelOfSimplification.cpp SoLevelOfSimplification.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLight.cpp SoLight.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLightModel.cpp SoLightModel.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLineSet.cpp SoLineSet.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLinearProfile.cpp SoLinearProfile.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLocateHighlight.cpp SoLocateHighlight.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMarkerSet.cpp SoMarkerSet.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMaterial.cpp SoMaterial.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMaterialBinding.cpp SoMaterialBinding.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMatrixTransform.cpp SoMatrixTransform.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMultipleCopy.cpp SoMultipleCopy.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNode.cpp SoNode.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNonIndexedShape.cpp SoNonIndexedShape.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormal.cpp SoNormal.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormalBinding.cpp SoNormalBinding.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNurbsCurve.cpp SoNurbsCurve.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNurbsProfile.cpp SoNurbsProfile.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNurbsSurface.cpp SoNurbsSurface.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoOrthographicCamera.cpp SoOrthographicCamera.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPackedColor.cpp SoPackedColor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPathSwitch.cpp SoPathSwitch.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPendulum.cpp SoPendulum.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPerspectiveCamera.cpp SoPerspectiveCamera.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPickStyle.cpp SoPickStyle.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointLight.cpp SoPointLight.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointSet.cpp SoPointSet.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPolygonOffset.cpp SoPolygonOffset.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoProfile.cpp SoProfile.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate2.cpp SoProfileCoordinate2.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinate3.cpp SoProfileCoordinate3.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoQuadMesh.cpp SoQuadMesh.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoResetTransform.cpp SoResetTransform.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoRotation.cpp SoRotation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoRotationXYZ.cpp SoRotationXYZ.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoRotor.cpp SoRotor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoScale.cpp SoScale.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSelection.cpp SoSelection.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSeparator.cpp SoSeparator.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoShape.cpp SoShape.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoShapeHints.cpp SoShapeHints.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoShuttle.cpp SoShuttle.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSphere.cpp SoSphere.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSpotLight.cpp SoSpotLight.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSurroundScale.cpp SoSurroundScale.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSwitch.cpp SoSwitch.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoText2.cpp SoText2.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoText3.cpp SoText3.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTexture2.cpp SoTexture2.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTexture2Transform.cpp SoTexture2Transform.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinate2.cpp SoTextureCoordinate2.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBinding.cpp SoTextureCoordinateBinding.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateDefault.cpp SoTextureCoordinateDefault.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateEnvironment.cpp SoTextureCoordinateEnvironment.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateFunction.cpp SoTextureCoordinateFunction.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinatePlane.cpp SoTextureCoordinatePlane.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransform.cpp SoTransform.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransformSeparator.cpp SoTransformSeparator.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransformation.cpp SoTransformation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTranslation.cpp SoTranslation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTriangleStripSet.cpp SoTriangleStripSet.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoUnits.cpp SoUnits.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoUnknownNode.cpp SoUnknownNode.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoVertexProperty.cpp SoVertexProperty.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoVertexShape.cpp SoVertexShape.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoWWWAnchor.cpp SoWWWAnchor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoWWWInline.cpp SoWWWInline.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSubNode.h SoSubNodeP.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h \
@@ -349,67 +348,114 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libnodes_la_LDFLAGS = 
 libnodes_la_LIBADD = 
-am_libnodes_la_OBJECTS =  SoAnnoText3.lo SoAnnoText3Property.lo \
-SoAnnotation.lo SoAntiSquish.lo SoArray.lo SoAsciiText.lo \
-SoBaseColor.lo SoBlinker.lo SoCallback.lo SoCamera.lo SoClipPlane.lo \
-SoColorIndex.lo SoComplexity.lo SoCone.lo SoCoordinate3.lo \
-SoCoordinate4.lo SoCube.lo SoCylinder.lo SoDirectionalLight.lo \
-SoDrawStyle.lo SoEnvironment.lo SoEventCallback.lo SoExtSelection.lo \
-SoFaceSet.lo SoFile.lo SoFont.lo SoFontStyle.lo SoGroup.lo SoImage.lo \
-SoIndexedFaceSet.lo SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
-SoIndexedNurbsSurface.lo SoIndexedShape.lo SoIndexedTriangleStripSet.lo \
-SoInfo.lo SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
-SoLevelOfSimplification.lo SoLight.lo SoLightModel.lo SoLineSet.lo \
-SoLinearProfile.lo SoLocateHighlight.lo SoMarkerSet.lo SoMaterial.lo \
-SoMaterialBinding.lo SoMatrixTransform.lo SoMultipleCopy.lo SoNode.lo \
-SoNonIndexedShape.lo SoNormal.lo SoNormalBinding.lo SoNurbsCurve.lo \
-SoNurbsProfile.lo SoNurbsSurface.lo SoOrthographicCamera.lo \
-SoPackedColor.lo SoPathSwitch.lo SoPendulum.lo SoPerspectiveCamera.lo \
-SoPickStyle.lo SoPointLight.lo SoPointSet.lo SoPolygonOffset.lo \
-SoProfile.lo SoProfileCoordinate2.lo SoProfileCoordinate3.lo \
-SoQuadMesh.lo SoResetTransform.lo SoRotation.lo SoRotationXYZ.lo \
-SoRotor.lo SoScale.lo SoSelection.lo SoSeparator.lo SoShape.lo \
-SoShapeHints.lo SoShuttle.lo SoSphere.lo SoSpotLight.lo \
-SoSurroundScale.lo SoSwitch.lo SoText2.lo SoText3.lo SoTexture2.lo \
-SoTexture2Transform.lo SoTextureCoordinate2.lo \
-SoTextureCoordinateBinding.lo SoTextureCoordinateDefault.lo \
-SoTextureCoordinateEnvironment.lo SoTextureCoordinateFunction.lo \
-SoTextureCoordinatePlane.lo SoTransform.lo SoTransformSeparator.lo \
-SoTransformation.lo SoTranslation.lo SoTriangleStripSet.lo SoUnits.lo \
-SoUnknownNode.lo SoVertexProperty.lo SoVertexShape.lo SoWWWAnchor.lo \
-SoWWWInline.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libnodes_la_OBJECTS =  SoAnnoText3.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3Property.lo SoAnnotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAntiSquish.lo SoArray.lo SoAsciiText.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoBaseColor.lo SoBlinker.lo SoCallback.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCamera.lo SoClipPlane.lo SoColorIndex.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComplexity.lo SoCone.lo SoCoordinate3.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCoordinate4.lo SoCube.lo SoCylinder.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDirectionalLight.lo SoDrawStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEnvironment.lo SoEventCallback.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoExtSelection.lo SoFaceSet.lo SoFile.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFont.lo SoFontStyle.lo SoGroup.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoImage.lo SoIndexedFaceSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoIndexedNurbsSurface.lo SoIndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoIndexedTriangleStripSet.lo SoInfo.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLevelOfSimplification.lo SoLight.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLightModel.lo SoLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLinearProfile.lo SoLocateHighlight.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMarkerSet.lo SoMaterial.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMaterialBinding.lo SoMatrixTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMultipleCopy.lo SoNode.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNonIndexedShape.lo SoNormal.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNormalBinding.lo SoNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNurbsProfile.lo SoNurbsSurface.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoOrthographicCamera.lo SoPackedColor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPathSwitch.lo SoPendulum.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPerspectiveCamera.lo SoPickStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPointLight.lo SoPointSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPolygonOffset.lo SoProfile.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinate3.lo SoQuadMesh.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoResetTransform.lo SoRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoRotationXYZ.lo SoRotor.lo SoScale.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSelection.lo SoSeparator.lo SoShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoShapeHints.lo SoShuttle.lo SoSphere.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSpotLight.lo SoSurroundScale.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSwitch.lo SoText2.lo SoText3.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTexture2.lo SoTexture2Transform.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateBinding.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateDefault.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateEnvironment.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateFunction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinatePlane.lo SoTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformSeparator.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformation.lo SoTranslation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTriangleStripSet.lo SoUnits.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoUnknownNode.lo SoVertexProperty.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoVertexShape.lo SoWWWAnchor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoWWWInline.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libnodes_la_OBJECTS =  all.lo
 libnodes_la_OBJECTS =  $(am_libnodes_la_OBJECTS)
 libnodesLINKHACK_la_LDFLAGS = 
 libnodesLINKHACK_la_LIBADD = 
-am_libnodesLINKHACK_la_OBJECTS =  SoAnnoText3.lo SoAnnoText3Property.lo \
-SoAnnotation.lo SoAntiSquish.lo SoArray.lo SoAsciiText.lo \
-SoBaseColor.lo SoBlinker.lo SoCallback.lo SoCamera.lo SoClipPlane.lo \
-SoColorIndex.lo SoComplexity.lo SoCone.lo SoCoordinate3.lo \
-SoCoordinate4.lo SoCube.lo SoCylinder.lo SoDirectionalLight.lo \
-SoDrawStyle.lo SoEnvironment.lo SoEventCallback.lo SoExtSelection.lo \
-SoFaceSet.lo SoFile.lo SoFont.lo SoFontStyle.lo SoGroup.lo SoImage.lo \
-SoIndexedFaceSet.lo SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
-SoIndexedNurbsSurface.lo SoIndexedShape.lo SoIndexedTriangleStripSet.lo \
-SoInfo.lo SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
-SoLevelOfSimplification.lo SoLight.lo SoLightModel.lo SoLineSet.lo \
-SoLinearProfile.lo SoLocateHighlight.lo SoMarkerSet.lo SoMaterial.lo \
-SoMaterialBinding.lo SoMatrixTransform.lo SoMultipleCopy.lo SoNode.lo \
-SoNonIndexedShape.lo SoNormal.lo SoNormalBinding.lo SoNurbsCurve.lo \
-SoNurbsProfile.lo SoNurbsSurface.lo SoOrthographicCamera.lo \
-SoPackedColor.lo SoPathSwitch.lo SoPendulum.lo SoPerspectiveCamera.lo \
-SoPickStyle.lo SoPointLight.lo SoPointSet.lo SoPolygonOffset.lo \
-SoProfile.lo SoProfileCoordinate2.lo SoProfileCoordinate3.lo \
-SoQuadMesh.lo SoResetTransform.lo SoRotation.lo SoRotationXYZ.lo \
-SoRotor.lo SoScale.lo SoSelection.lo SoSeparator.lo SoShape.lo \
-SoShapeHints.lo SoShuttle.lo SoSphere.lo SoSpotLight.lo \
-SoSurroundScale.lo SoSwitch.lo SoText2.lo SoText3.lo SoTexture2.lo \
-SoTexture2Transform.lo SoTextureCoordinate2.lo \
-SoTextureCoordinateBinding.lo SoTextureCoordinateDefault.lo \
-SoTextureCoordinateEnvironment.lo SoTextureCoordinateFunction.lo \
-SoTextureCoordinatePlane.lo SoTransform.lo SoTransformSeparator.lo \
-SoTransformation.lo SoTranslation.lo SoTriangleStripSet.lo SoUnits.lo \
-SoUnknownNode.lo SoVertexProperty.lo SoVertexShape.lo SoWWWAnchor.lo \
-SoWWWInline.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libnodesLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3.lo SoAnnoText3Property.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAnnotation.lo SoAntiSquish.lo SoArray.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAsciiText.lo SoBaseColor.lo SoBlinker.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCallback.lo SoCamera.lo SoClipPlane.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoColorIndex.lo SoComplexity.lo SoCone.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCoordinate3.lo SoCoordinate4.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCube.lo SoCylinder.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDirectionalLight.lo SoDrawStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEnvironment.lo SoEventCallback.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoExtSelection.lo SoFaceSet.lo SoFile.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFont.lo SoFontStyle.lo SoGroup.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoImage.lo SoIndexedFaceSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoIndexedLineSet.lo SoIndexedNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoIndexedNurbsSurface.lo SoIndexedShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoIndexedTriangleStripSet.lo SoInfo.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLOD.lo SoLabel.lo SoLevelOfDetail.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLevelOfSimplification.lo SoLight.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLightModel.lo SoLineSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLinearProfile.lo SoLocateHighlight.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMarkerSet.lo SoMaterial.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMaterialBinding.lo SoMatrixTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMultipleCopy.lo SoNode.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNonIndexedShape.lo SoNormal.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNormalBinding.lo SoNurbsCurve.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNurbsProfile.lo SoNurbsSurface.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoOrthographicCamera.lo SoPackedColor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPathSwitch.lo SoPendulum.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPerspectiveCamera.lo SoPickStyle.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPointLight.lo SoPointSet.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPolygonOffset.lo SoProfile.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinate3.lo SoQuadMesh.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoResetTransform.lo SoRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoRotationXYZ.lo SoRotor.lo SoScale.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSelection.lo SoSeparator.lo SoShape.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoShapeHints.lo SoShuttle.lo SoSphere.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSpotLight.lo SoSurroundScale.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSwitch.lo SoText2.lo SoText3.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTexture2.lo SoTexture2Transform.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinate2.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateBinding.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateDefault.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateEnvironment.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateFunction.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinatePlane.lo SoTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformSeparator.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformation.lo SoTranslation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTriangleStripSet.lo SoUnits.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoUnknownNode.lo SoVertexProperty.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoVertexShape.lo SoWWWAnchor.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoWWWInline.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libnodesLINKHACK_la_OBJECTS =  all.lo
 libnodesLINKHACK_la_OBJECTS =  $(am_libnodesLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -483,7 +529,7 @@ $(DEPDIR)/SoTransformSeparator.Plo $(DEPDIR)/SoTransformation.Plo \
 $(DEPDIR)/SoTranslation.Plo $(DEPDIR)/SoTriangleStripSet.Plo \
 $(DEPDIR)/SoUnits.Plo $(DEPDIR)/SoUnknownNode.Plo \
 $(DEPDIR)/SoVertexProperty.Plo $(DEPDIR)/SoVertexShape.Plo \
-$(DEPDIR)/SoWWWAnchor.Plo $(DEPDIR)/SoWWWInline.Plo
+$(DEPDIR)/SoWWWAnchor.Plo $(DEPDIR)/SoWWWInline.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libnodes_la_SOURCES) $(libnodesLINKHACK_la_SOURCES)
 OBJECTS = $(am_libnodes_la_OBJECTS) $(am_libnodesLINKHACK_la_OBJECTS)
 
@@ -720,6 +766,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoVertexShape.Plo
 @AMDEP@include $(DEPDIR)/SoWWWAnchor.Plo
 @AMDEP@include $(DEPDIR)/SoWWWInline.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

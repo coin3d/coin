@@ -6,6 +6,9 @@ BUILT_SOURCES = \
 	$(top_srcdir)/src/engines/evaluator.tab.c
 
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoBoolOperation.cpp SoBoolOperation.h \
 	SoCalculator.cpp SoCalculator.h \
@@ -45,7 +48,7 @@ ALLSOURCES = \
 	SoSubEngine.h SoSubEngineP.h \
 	evaluator.c evaluator.h \
 	evaluator.tab.c
-
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoSubEngine.h \

@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoField.cpp SoField.h \
 	SoFieldContainer.cpp SoFieldContainer.h \
@@ -53,7 +56,7 @@ ALLSOURCES = \
 	SoSField.cpp SoSField.h \
 	SoGlobalField.cpp SoGlobalField.h \
 	SoSubField.h SoSubFieldP.h
-
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/fields/SoSubField.h \

@@ -96,15 +96,14 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoBundle.cpp \
-	SoBundle.h \
-	SoMaterialBundle.cpp \
-	SoMaterialBundle.h \
-	SoTextureCoordinateBundle.cpp \
-	SoTextureCoordinateBundle.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoBundle.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoBundle.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMaterialBundle.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoMaterialBundle.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBundle.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBundle.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/bundles/SoBundle.h \
@@ -146,13 +145,17 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libbundles_la_LDFLAGS = 
 libbundles_la_LIBADD = 
-am_libbundles_la_OBJECTS =  SoBundle.lo SoMaterialBundle.lo \
-SoTextureCoordinateBundle.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libbundles_la_OBJECTS =  SoBundle.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMaterialBundle.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateBundle.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libbundles_la_OBJECTS =  all.lo
 libbundles_la_OBJECTS =  $(am_libbundles_la_OBJECTS)
 libbundlesLINKHACK_la_LDFLAGS = 
 libbundlesLINKHACK_la_LIBADD = 
-am_libbundlesLINKHACK_la_OBJECTS =  SoBundle.lo SoMaterialBundle.lo \
-SoTextureCoordinateBundle.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libbundlesLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoBundle.lo SoMaterialBundle.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateBundle.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libbundlesLINKHACK_la_OBJECTS =  all.lo
 libbundlesLINKHACK_la_OBJECTS =  $(am_libbundlesLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -176,7 +179,8 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoBundle.Plo \
-$(DEPDIR)/SoMaterialBundle.Plo $(DEPDIR)/SoTextureCoordinateBundle.Plo
+$(DEPDIR)/SoMaterialBundle.Plo $(DEPDIR)/SoTextureCoordinateBundle.Plo \
+$(DEPDIR)/all.Plo
 SOURCES = $(libbundles_la_SOURCES) $(libbundlesLINKHACK_la_SOURCES)
 OBJECTS = $(am_libbundles_la_OBJECTS) $(am_libbundlesLINKHACK_la_OBJECTS)
 
@@ -311,6 +315,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoBundle.Plo
 @AMDEP@include $(DEPDIR)/SoMaterialBundle.Plo
 @AMDEP@include $(DEPDIR)/SoTextureCoordinateBundle.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

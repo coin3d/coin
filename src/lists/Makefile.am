@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SbList.cpp SbList.h \
 	SbPList.cpp SbPList.h \
@@ -21,6 +24,7 @@ ALLSOURCES = \
 	SoPickedPointList.cpp SoPickedPointList.h \
 	SoTypeList.cpp SoTypeList.h \
 	SoVRMLInterpOutputList.cpp SoVRMLInterpOutputList.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/lists/SbList.h \

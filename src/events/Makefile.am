@@ -1,21 +1,18 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
-	SoButtonEvent.cpp \
-	SoButtonEvent.h \
-	SoEvent.cpp \
-	SoEvent.h \
-	SoKeyboardEvent.cpp \
-	SoKeyboardEvent.h \
-	SoLocation2Event.cpp \
-	SoLocation2Event.h \
-	SoMotion3Event.cpp \
-	SoMotion3Event.h \
-	SoMouseButtonEvent.cpp \
-	SoMouseButtonEvent.h \
-	SoSpaceballButtonEvent.cpp \
-	SoSpaceballButtonEvent.h
+	SoButtonEvent.cpp SoButtonEvent.h \
+	SoEvent.cpp SoEvent.h \
+	SoKeyboardEvent.cpp SoKeyboardEvent.h \
+	SoLocation2Event.cpp SoLocation2Event.h \
+	SoMotion3Event.cpp SoMotion3Event.h \
+	SoMouseButtonEvent.cpp SoMouseButtonEvent.h \
+	SoSpaceballButtonEvent.cpp SoSpaceballButtonEvent.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/events/SoSubEvent.h \

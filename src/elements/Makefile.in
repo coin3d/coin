@@ -96,104 +96,103 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoAccumulatedElement.cpp SoAccumulatedElement.h \
-	SoAmbientColorElement.cpp SoAmbientColorElement.h \
-	SoAnnoText3CharOrientElement.cpp SoAnnoText3CharOrientElement.h \
-	SoAnnoText3FontSizeHintElement.cpp SoAnnoText3FontSizeHintElement.h \
-	SoAnnoText3RenderPrintElement.cpp SoAnnoText3RenderPrintElement.h \
-	SoBBoxModelMatrixElement.cpp SoBBoxModelMatrixElement.h \
-	SoCacheElement.cpp SoCacheElement.h \
-	SoClipPlaneElement.cpp SoClipPlaneElement.h \
-	SoComplexityElement.cpp SoComplexityElement.h \
-	SoComplexityTypeElement.cpp SoComplexityTypeElement.h \
-	SoCoordinateElement.cpp SoCoordinateElement.h \
-	SoCreaseAngleElement.cpp SoCreaseAngleElement.h \
-	SoDecimationPercentageElement.cpp SoDecimationPercentageElement.h \
-	SoDecimationTypeElement.cpp SoDecimationTypeElement.h \
-	SoDiffuseColorElement.cpp SoDiffuseColorElement.h \
-	SoDrawStyleElement.cpp SoDrawStyleElement.h \
-	SoElement.cpp SoElement.h \
-	SoEmissiveColorElement.cpp SoEmissiveColorElement.h \
-	SoEnvironmentElement.cpp SoEnvironmentElement.h \
-	SoFloatElement.cpp SoFloatElement.h \
-	SoFocalDistanceElement.cpp SoFocalDistanceElement.h \
-	SoFontNameElement.cpp SoFontNameElement.h \
-	SoFontSizeElement.cpp SoFontSizeElement.h \
-	SoGLAmbientColorElement.cpp SoGLAmbientColorElement.h \
-	SoGLClipPlaneElement.cpp SoGLClipPlaneElement.h \
-	SoGLCoordinateElement.cpp SoGLCoordinateElement.h \
-	SoGLDiffuseColorElement.cpp SoGLDiffuseColorElement.h \
-	SoGLDrawStyleElement.cpp SoGLDrawStyleElement.h \
-	SoGLEmissiveColorElement.cpp SoGLEmissiveColorElement.h \
-	SoGLEnvironmentElement.cpp SoGLEnvironmentElement.h \
-	SoGLLazyElement.cpp SoGLLazyElement.h \
-	SoGLLightIdElement.cpp SoGLLightIdElement.h \
-	SoGLLightModelElement.cpp SoGLLightModelElement.h \
-	SoGLLinePatternElement.cpp SoGLLinePatternElement.h \
-	SoGLLineWidthElement.cpp SoGLLineWidthElement.h \
-	SoGLModelMatrixElement.cpp SoGLModelMatrixElement.h \
-	SoGLNormalElement.cpp SoGLNormalElement.h \
-	SoGLNormalizeElement.cpp SoGLNormalizeElement.h \
-	SoGLPointSizeElement.cpp SoGLPointSizeElement.h \
-	SoGLPolygonOffsetElement.cpp SoGLPolygonOffsetElement.h \
-	SoGLPolygonStippleElement.cpp SoGLPolygonStippleElement.h \
-	SoGLProjectionMatrixElement.cpp SoGLProjectionMatrixElement.h \
-	SoGLRenderPassElement.cpp SoGLRenderPassElement.h \
-	SoGLShadeModelElement.cpp SoGLShadeModelElement.h \
-	SoGLShapeHintsElement.cpp SoGLShapeHintsElement.h \
-	SoGLShininessElement.cpp SoGLShininessElement.h \
-	SoGLSpecularColorElement.cpp SoGLSpecularColorElement.h \
-	SoGLTextureCoordinateElement.cpp SoGLTextureCoordinateElement.h \
-	SoGLTextureEnabledElement.cpp SoGLTextureEnabledElement.h \
-	SoGLTextureImageElement.cpp SoGLTextureImageElement.h \
-	SoGLTextureMatrixElement.cpp SoGLTextureMatrixElement.h \
-	SoGLUpdateAreaElement.cpp SoGLUpdateAreaElement.h \
-	SoGLViewingMatrixElement.cpp SoGLViewingMatrixElement.h \
-	SoGLViewportRegionElement.cpp SoGLViewportRegionElement.h \
-	SoInt32Element.cpp SoInt32Element.h \
-	SoLazyElement.cpp SoLazyElement.h \
-	SoLightAttenuationElement.cpp SoLightAttenuationElement.h \
-	SoLightElement.cpp SoLightElement.h \
-	SoLightModelElement.cpp SoLightModelElement.h \
-	SoLinePatternElement.cpp SoLinePatternElement.h \
-	SoLineWidthElement.cpp SoLineWidthElement.h \
-	SoLocalBBoxMatrixElement.cpp SoLocalBBoxMatrixElement.h \
-	SoMaterialBindingElement.cpp SoMaterialBindingElement.h \
-	SoModelMatrixElement.cpp SoModelMatrixElement.h \
-	SoNormalBindingElement.cpp SoNormalBindingElement.h \
-	SoNormalElement.cpp SoNormalElement.h \
-	SoOverrideElement.cpp SoOverrideElement.h \
-	SoPROTOElement.cpp SoPROTOElement.h \
-	SoPickRayElement.cpp SoPickRayElement.h \
-	SoPickStyleElement.cpp SoPickStyleElement.h \
-	SoPointSizeElement.cpp SoPointSizeElement.h \
-	SoPolygonOffsetElement.cpp SoPolygonOffsetElement.h \
-	SoProfileCoordinateElement.cpp SoProfileCoordinateElement.h \
-	SoProfileElement.cpp SoProfileElement.h \
-	SoProjectionMatrixElement.cpp SoProjectionMatrixElement.h \
-	SoReplacedElement.cpp SoReplacedElement.h \
-	SoShapeHintsElement.cpp SoShapeHintsElement.h \
-	SoShapeStyleElement.cpp SoShapeStyleElement.h \
-	SoShininessElement.cpp SoShininessElement.h \
-	SoSpecularColorElement.cpp SoSpecularColorElement.h \
-	SoSwitchElement.cpp SoSwitchElement.h \
-	SoTextOutlineEnabledElement.cpp SoTextOutlineEnabledElement.h \
-	SoTextureCoordinateBindingElement.cpp SoTextureCoordinateBindingElement.h \
-	SoTextureCoordinateElement.cpp SoTextureCoordinateElement.h \
-	SoTextureImageElement.cpp SoTextureImageElement.h \
-	SoTextureMatrixElement.cpp SoTextureMatrixElement.h \
-	SoTextureOverrideElement.cpp SoTextureOverrideElement.h \
-	SoTextureQualityElement.cpp SoTextureQualityElement.h \
-	SoTransparencyElement.cpp SoTransparencyElement.h \
-	SoUnitsElement.cpp SoUnitsElement.h \
-	SoViewVolumeElement.cpp SoViewVolumeElement.h \
-	SoViewingMatrixElement.cpp SoViewingMatrixElement.h \
-	SoViewportRegionElement.cpp SoViewportRegionElement.h \
-	SoWindowElement.cpp SoWindowElement.h \
-	SoSubElement.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoAccumulatedElement.cpp SoAccumulatedElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAmbientColorElement.cpp SoAmbientColorElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAnnoText3CharOrientElement.cpp SoAnnoText3CharOrientElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAnnoText3FontSizeHintElement.cpp SoAnnoText3FontSizeHintElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAnnoText3RenderPrintElement.cpp SoAnnoText3RenderPrintElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoBBoxModelMatrixElement.cpp SoBBoxModelMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCacheElement.cpp SoCacheElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoClipPlaneElement.cpp SoClipPlaneElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComplexityElement.cpp SoComplexityElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComplexityTypeElement.cpp SoComplexityTypeElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCoordinateElement.cpp SoCoordinateElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCreaseAngleElement.cpp SoCreaseAngleElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDecimationPercentageElement.cpp SoDecimationPercentageElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDecimationTypeElement.cpp SoDecimationTypeElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDiffuseColorElement.cpp SoDiffuseColorElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDrawStyleElement.cpp SoDrawStyleElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoElement.cpp SoElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEmissiveColorElement.cpp SoEmissiveColorElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEnvironmentElement.cpp SoEnvironmentElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFloatElement.cpp SoFloatElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFocalDistanceElement.cpp SoFocalDistanceElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFontNameElement.cpp SoFontNameElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFontSizeElement.cpp SoFontSizeElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLAmbientColorElement.cpp SoGLAmbientColorElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLClipPlaneElement.cpp SoGLClipPlaneElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLCoordinateElement.cpp SoGLCoordinateElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDiffuseColorElement.cpp SoGLDiffuseColorElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLDrawStyleElement.cpp SoGLDrawStyleElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLEmissiveColorElement.cpp SoGLEmissiveColorElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLEnvironmentElement.cpp SoGLEnvironmentElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLazyElement.cpp SoGLLazyElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLightIdElement.cpp SoGLLightIdElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLightModelElement.cpp SoGLLightModelElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLinePatternElement.cpp SoGLLinePatternElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLLineWidthElement.cpp SoGLLineWidthElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLModelMatrixElement.cpp SoGLModelMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalElement.cpp SoGLNormalElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLNormalizeElement.cpp SoGLNormalizeElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLPointSizeElement.cpp SoGLPointSizeElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonOffsetElement.cpp SoGLPolygonOffsetElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLPolygonStippleElement.cpp SoGLPolygonStippleElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLProjectionMatrixElement.cpp SoGLProjectionMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLRenderPassElement.cpp SoGLRenderPassElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLShadeModelElement.cpp SoGLShadeModelElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLShapeHintsElement.cpp SoGLShapeHintsElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLShininessElement.cpp SoGLShininessElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLSpecularColorElement.cpp SoGLSpecularColorElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureCoordinateElement.cpp SoGLTextureCoordinateElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureEnabledElement.cpp SoGLTextureEnabledElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureImageElement.cpp SoGLTextureImageElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLTextureMatrixElement.cpp SoGLTextureMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLUpdateAreaElement.cpp SoGLUpdateAreaElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLViewingMatrixElement.cpp SoGLViewingMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLViewportRegionElement.cpp SoGLViewportRegionElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInt32Element.cpp SoInt32Element.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLazyElement.cpp SoLazyElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLightAttenuationElement.cpp SoLightAttenuationElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLightElement.cpp SoLightElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLightModelElement.cpp SoLightModelElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLinePatternElement.cpp SoLinePatternElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLineWidthElement.cpp SoLineWidthElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoLocalBBoxMatrixElement.cpp SoLocalBBoxMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoMaterialBindingElement.cpp SoMaterialBindingElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoModelMatrixElement.cpp SoModelMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormalBindingElement.cpp SoNormalBindingElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormalElement.cpp SoNormalElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoOverrideElement.cpp SoOverrideElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPROTOElement.cpp SoPROTOElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPickRayElement.cpp SoPickRayElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPickStyleElement.cpp SoPickStyleElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPointSizeElement.cpp SoPointSizeElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPolygonOffsetElement.cpp SoPolygonOffsetElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoProfileCoordinateElement.cpp SoProfileCoordinateElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoProfileElement.cpp SoProfileElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoProjectionMatrixElement.cpp SoProjectionMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoReplacedElement.cpp SoReplacedElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoShapeHintsElement.cpp SoShapeHintsElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoShapeStyleElement.cpp SoShapeStyleElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoShininessElement.cpp SoShininessElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSpecularColorElement.cpp SoSpecularColorElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSwitchElement.cpp SoSwitchElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextOutlineEnabledElement.cpp SoTextOutlineEnabledElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateBindingElement.cpp SoTextureCoordinateBindingElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureCoordinateElement.cpp SoTextureCoordinateElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureImageElement.cpp SoTextureImageElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureMatrixElement.cpp SoTextureMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureOverrideElement.cpp SoTextureOverrideElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTextureQualityElement.cpp SoTextureQualityElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransparencyElement.cpp SoTransparencyElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoUnitsElement.cpp SoUnitsElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoViewVolumeElement.cpp SoViewVolumeElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoViewingMatrixElement.cpp SoViewingMatrixElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoViewportRegionElement.cpp SoViewportRegionElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoWindowElement.cpp SoWindowElement.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSubElement.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/elements/SoSubElement.h \
@@ -329,91 +328,181 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libelements_la_LDFLAGS = 
 libelements_la_LIBADD = 
-am_libelements_la_OBJECTS =  SoAccumulatedElement.lo \
-SoAmbientColorElement.lo SoAnnoText3CharOrientElement.lo \
-SoAnnoText3FontSizeHintElement.lo SoAnnoText3RenderPrintElement.lo \
-SoBBoxModelMatrixElement.lo SoCacheElement.lo SoClipPlaneElement.lo \
-SoComplexityElement.lo SoComplexityTypeElement.lo \
-SoCoordinateElement.lo SoCreaseAngleElement.lo \
-SoDecimationPercentageElement.lo SoDecimationTypeElement.lo \
-SoDiffuseColorElement.lo SoDrawStyleElement.lo SoElement.lo \
-SoEmissiveColorElement.lo SoEnvironmentElement.lo SoFloatElement.lo \
-SoFocalDistanceElement.lo SoFontNameElement.lo SoFontSizeElement.lo \
-SoGLAmbientColorElement.lo SoGLClipPlaneElement.lo \
-SoGLCoordinateElement.lo SoGLDiffuseColorElement.lo \
-SoGLDrawStyleElement.lo SoGLEmissiveColorElement.lo \
-SoGLEnvironmentElement.lo SoGLLazyElement.lo SoGLLightIdElement.lo \
-SoGLLightModelElement.lo SoGLLinePatternElement.lo \
-SoGLLineWidthElement.lo SoGLModelMatrixElement.lo SoGLNormalElement.lo \
-SoGLNormalizeElement.lo SoGLPointSizeElement.lo \
-SoGLPolygonOffsetElement.lo SoGLPolygonStippleElement.lo \
-SoGLProjectionMatrixElement.lo SoGLRenderPassElement.lo \
-SoGLShadeModelElement.lo SoGLShapeHintsElement.lo \
-SoGLShininessElement.lo SoGLSpecularColorElement.lo \
-SoGLTextureCoordinateElement.lo SoGLTextureEnabledElement.lo \
-SoGLTextureImageElement.lo SoGLTextureMatrixElement.lo \
-SoGLUpdateAreaElement.lo SoGLViewingMatrixElement.lo \
-SoGLViewportRegionElement.lo SoInt32Element.lo SoLazyElement.lo \
-SoLightAttenuationElement.lo SoLightElement.lo SoLightModelElement.lo \
-SoLinePatternElement.lo SoLineWidthElement.lo \
-SoLocalBBoxMatrixElement.lo SoMaterialBindingElement.lo \
-SoModelMatrixElement.lo SoNormalBindingElement.lo SoNormalElement.lo \
-SoOverrideElement.lo SoPROTOElement.lo SoPickRayElement.lo \
-SoPickStyleElement.lo SoPointSizeElement.lo SoPolygonOffsetElement.lo \
-SoProfileCoordinateElement.lo SoProfileElement.lo \
-SoProjectionMatrixElement.lo SoReplacedElement.lo \
-SoShapeHintsElement.lo SoShapeStyleElement.lo SoShininessElement.lo \
-SoSpecularColorElement.lo SoSwitchElement.lo \
-SoTextOutlineEnabledElement.lo SoTextureCoordinateBindingElement.lo \
-SoTextureCoordinateElement.lo SoTextureImageElement.lo \
-SoTextureMatrixElement.lo SoTextureOverrideElement.lo \
-SoTextureQualityElement.lo SoTransparencyElement.lo SoUnitsElement.lo \
-SoViewVolumeElement.lo SoViewingMatrixElement.lo \
-SoViewportRegionElement.lo SoWindowElement.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libelements_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoAccumulatedElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAmbientColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3CharOrientElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3FontSizeHintElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3RenderPrintElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoBBoxModelMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCacheElement.lo SoClipPlaneElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComplexityElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComplexityTypeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCreaseAngleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDecimationPercentageElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDecimationTypeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDiffuseColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDrawStyleElement.lo SoElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEmissiveColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEnvironmentElement.lo SoFloatElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFocalDistanceElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFontNameElement.lo SoFontSizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLAmbientColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLClipPlaneElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLDiffuseColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLDrawStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLEmissiveColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLEnvironmentElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLLazyElement.lo SoGLLightIdElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLLightModelElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLLinePatternElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLLineWidthElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLModelMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLNormalElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLNormalizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLPointSizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLPolygonOffsetElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLPolygonStippleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLProjectionMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLRenderPassElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLShadeModelElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLShapeHintsElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLShininessElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLSpecularColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLTextureCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLTextureEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLTextureImageElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLTextureMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLUpdateAreaElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLViewingMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLViewportRegionElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInt32Element.lo SoLazyElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLightAttenuationElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLightElement.lo SoLightModelElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLinePatternElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLineWidthElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLocalBBoxMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMaterialBindingElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoModelMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNormalBindingElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNormalElement.lo SoOverrideElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPROTOElement.lo SoPickRayElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPointSizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPolygonOffsetElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProfileElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProjectionMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoReplacedElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoShapeHintsElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoShapeStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoShininessElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSpecularColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSwitchElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextOutlineEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateBindingElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureImageElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureOverrideElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureQualityElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransparencyElement.lo SoUnitsElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoViewVolumeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoViewingMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoViewportRegionElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoWindowElement.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libelements_la_OBJECTS =  all.lo
 libelements_la_OBJECTS =  $(am_libelements_la_OBJECTS)
 libelementsLINKHACK_la_LDFLAGS = 
 libelementsLINKHACK_la_LIBADD = 
-am_libelementsLINKHACK_la_OBJECTS =  SoAccumulatedElement.lo \
-SoAmbientColorElement.lo SoAnnoText3CharOrientElement.lo \
-SoAnnoText3FontSizeHintElement.lo SoAnnoText3RenderPrintElement.lo \
-SoBBoxModelMatrixElement.lo SoCacheElement.lo SoClipPlaneElement.lo \
-SoComplexityElement.lo SoComplexityTypeElement.lo \
-SoCoordinateElement.lo SoCreaseAngleElement.lo \
-SoDecimationPercentageElement.lo SoDecimationTypeElement.lo \
-SoDiffuseColorElement.lo SoDrawStyleElement.lo SoElement.lo \
-SoEmissiveColorElement.lo SoEnvironmentElement.lo SoFloatElement.lo \
-SoFocalDistanceElement.lo SoFontNameElement.lo SoFontSizeElement.lo \
-SoGLAmbientColorElement.lo SoGLClipPlaneElement.lo \
-SoGLCoordinateElement.lo SoGLDiffuseColorElement.lo \
-SoGLDrawStyleElement.lo SoGLEmissiveColorElement.lo \
-SoGLEnvironmentElement.lo SoGLLazyElement.lo SoGLLightIdElement.lo \
-SoGLLightModelElement.lo SoGLLinePatternElement.lo \
-SoGLLineWidthElement.lo SoGLModelMatrixElement.lo SoGLNormalElement.lo \
-SoGLNormalizeElement.lo SoGLPointSizeElement.lo \
-SoGLPolygonOffsetElement.lo SoGLPolygonStippleElement.lo \
-SoGLProjectionMatrixElement.lo SoGLRenderPassElement.lo \
-SoGLShadeModelElement.lo SoGLShapeHintsElement.lo \
-SoGLShininessElement.lo SoGLSpecularColorElement.lo \
-SoGLTextureCoordinateElement.lo SoGLTextureEnabledElement.lo \
-SoGLTextureImageElement.lo SoGLTextureMatrixElement.lo \
-SoGLUpdateAreaElement.lo SoGLViewingMatrixElement.lo \
-SoGLViewportRegionElement.lo SoInt32Element.lo SoLazyElement.lo \
-SoLightAttenuationElement.lo SoLightElement.lo SoLightModelElement.lo \
-SoLinePatternElement.lo SoLineWidthElement.lo \
-SoLocalBBoxMatrixElement.lo SoMaterialBindingElement.lo \
-SoModelMatrixElement.lo SoNormalBindingElement.lo SoNormalElement.lo \
-SoOverrideElement.lo SoPROTOElement.lo SoPickRayElement.lo \
-SoPickStyleElement.lo SoPointSizeElement.lo SoPolygonOffsetElement.lo \
-SoProfileCoordinateElement.lo SoProfileElement.lo \
-SoProjectionMatrixElement.lo SoReplacedElement.lo \
-SoShapeHintsElement.lo SoShapeStyleElement.lo SoShininessElement.lo \
-SoSpecularColorElement.lo SoSwitchElement.lo \
-SoTextOutlineEnabledElement.lo SoTextureCoordinateBindingElement.lo \
-SoTextureCoordinateElement.lo SoTextureImageElement.lo \
-SoTextureMatrixElement.lo SoTextureOverrideElement.lo \
-SoTextureQualityElement.lo SoTransparencyElement.lo SoUnitsElement.lo \
-SoViewVolumeElement.lo SoViewingMatrixElement.lo \
-SoViewportRegionElement.lo SoWindowElement.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libelementsLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoAccumulatedElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAmbientColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3CharOrientElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3FontSizeHintElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAnnoText3RenderPrintElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoBBoxModelMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCacheElement.lo SoClipPlaneElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComplexityElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComplexityTypeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCreaseAngleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDecimationPercentageElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDecimationTypeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDiffuseColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDrawStyleElement.lo SoElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEmissiveColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEnvironmentElement.lo SoFloatElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFocalDistanceElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoFontNameElement.lo SoFontSizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLAmbientColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLClipPlaneElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLDiffuseColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLDrawStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLEmissiveColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLEnvironmentElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLLazyElement.lo SoGLLightIdElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLLightModelElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLLinePatternElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLLineWidthElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLModelMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLNormalElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLNormalizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLPointSizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLPolygonOffsetElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLPolygonStippleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLProjectionMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLRenderPassElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLShadeModelElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLShapeHintsElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLShininessElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLSpecularColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLTextureCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLTextureEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLTextureImageElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLTextureMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLUpdateAreaElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLViewingMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGLViewportRegionElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInt32Element.lo SoLazyElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLightAttenuationElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLightElement.lo SoLightModelElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLinePatternElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLineWidthElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoLocalBBoxMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoMaterialBindingElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoModelMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNormalBindingElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNormalElement.lo SoOverrideElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPROTOElement.lo SoPickRayElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPointSizeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPolygonOffsetElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProfileCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProfileElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoProjectionMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoReplacedElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoShapeHintsElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoShapeStyleElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoShininessElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSpecularColorElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSwitchElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextOutlineEnabledElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateBindingElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureCoordinateElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureImageElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureOverrideElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTextureQualityElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransparencyElement.lo SoUnitsElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoViewVolumeElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoViewingMatrixElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoViewportRegionElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoWindowElement.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libelementsLINKHACK_la_OBJECTS =  all.lo
 libelementsLINKHACK_la_OBJECTS =  $(am_libelementsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -497,7 +586,8 @@ $(DEPDIR)/SoTextureOverrideElement.Plo \
 $(DEPDIR)/SoTextureQualityElement.Plo \
 $(DEPDIR)/SoTransparencyElement.Plo $(DEPDIR)/SoUnitsElement.Plo \
 $(DEPDIR)/SoViewVolumeElement.Plo $(DEPDIR)/SoViewingMatrixElement.Plo \
-$(DEPDIR)/SoViewportRegionElement.Plo $(DEPDIR)/SoWindowElement.Plo
+$(DEPDIR)/SoViewportRegionElement.Plo $(DEPDIR)/SoWindowElement.Plo \
+$(DEPDIR)/all.Plo
 SOURCES = $(libelements_la_SOURCES) $(libelementsLINKHACK_la_SOURCES)
 OBJECTS = $(am_libelements_la_OBJECTS) $(am_libelementsLINKHACK_la_OBJECTS)
 
@@ -723,6 +813,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoViewingMatrixElement.Plo
 @AMDEP@include $(DEPDIR)/SoViewportRegionElement.Plo
 @AMDEP@include $(DEPDIR)/SoWindowElement.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

@@ -96,28 +96,27 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SbList.cpp SbList.h \
-	SbPList.cpp SbPList.h \
-	SbIntList.cpp SbIntList.h \
-	SbVec3fList.cpp SbVec3fList.h \
-	SbStringList.cpp SbStringList.h \
-	SoActionMethodList.cpp SoActionMethodList.h \
-	SoAuditorList.cpp SoAuditorList.h \
-	SoBaseList.cpp SoBaseList.h \
-	SoCallbackList.cpp SoCallbackList.h \
-	SoDetailList.cpp SoDetailList.h \
-	SoEnabledElementsList.cpp SoEnabledElementsList.h \
-	SoEngineList.cpp SoEngineList.h \
-	SoEngineOutputList.cpp SoEngineOutputList.h \
-	SoFieldList.cpp SoFieldList.h \
-	SoNodeList.cpp SoNodeList.h \
-	SoPathList.cpp SoPathList.h \
-	SoPickedPointList.cpp SoPickedPointList.h \
-	SoTypeList.cpp SoTypeList.h \
-	SoVRMLInterpOutputList.cpp SoVRMLInterpOutputList.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SbList.cpp SbList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbPList.cpp SbPList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbIntList.cpp SbIntList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec3fList.cpp SbVec3fList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbStringList.cpp SbStringList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoActionMethodList.cpp SoActionMethodList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoAuditorList.cpp SoAuditorList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoBaseList.cpp SoBaseList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCallbackList.cpp SoCallbackList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDetailList.cpp SoDetailList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEnabledElementsList.cpp SoEnabledElementsList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEngineList.cpp SoEngineList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEngineOutputList.cpp SoEngineOutputList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFieldList.cpp SoFieldList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoNodeList.cpp SoNodeList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPathList.cpp SoPathList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoPickedPointList.cpp SoPickedPointList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTypeList.cpp SoTypeList.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoVRMLInterpOutputList.cpp SoVRMLInterpOutputList.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/lists/SbList.h \
@@ -175,21 +174,31 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 liblists_la_LDFLAGS = 
 liblists_la_LIBADD = 
-am_liblists_la_OBJECTS =  SbList.lo SbPList.lo SbIntList.lo \
-SbVec3fList.lo SbStringList.lo SoActionMethodList.lo SoAuditorList.lo \
-SoBaseList.lo SoCallbackList.lo SoDetailList.lo \
-SoEnabledElementsList.lo SoEngineList.lo SoEngineOutputList.lo \
-SoFieldList.lo SoNodeList.lo SoPathList.lo SoPickedPointList.lo \
-SoTypeList.lo SoVRMLInterpOutputList.lo
+@HACKING_COMPACT_BUILD_FALSE@am_liblists_la_OBJECTS =  SbList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbPList.lo SbIntList.lo SbVec3fList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbStringList.lo SoActionMethodList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAuditorList.lo SoBaseList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCallbackList.lo SoDetailList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEnabledElementsList.lo SoEngineList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEngineOutputList.lo SoFieldList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNodeList.lo SoPathList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickedPointList.lo SoTypeList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoVRMLInterpOutputList.lo
+@HACKING_COMPACT_BUILD_TRUE@am_liblists_la_OBJECTS =  all.lo
 liblists_la_OBJECTS =  $(am_liblists_la_OBJECTS)
 liblistsLINKHACK_la_LDFLAGS = 
 liblistsLINKHACK_la_LIBADD = 
-am_liblistsLINKHACK_la_OBJECTS =  SbList.lo SbPList.lo SbIntList.lo \
-SbVec3fList.lo SbStringList.lo SoActionMethodList.lo SoAuditorList.lo \
-SoBaseList.lo SoCallbackList.lo SoDetailList.lo \
-SoEnabledElementsList.lo SoEngineList.lo SoEngineOutputList.lo \
-SoFieldList.lo SoNodeList.lo SoPathList.lo SoPickedPointList.lo \
-SoTypeList.lo SoVRMLInterpOutputList.lo
+@HACKING_COMPACT_BUILD_FALSE@am_liblistsLINKHACK_la_OBJECTS =  SbList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbPList.lo SbIntList.lo SbVec3fList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbStringList.lo SoActionMethodList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoAuditorList.lo SoBaseList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCallbackList.lo SoDetailList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEnabledElementsList.lo SoEngineList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEngineOutputList.lo SoFieldList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoNodeList.lo SoPathList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoPickedPointList.lo SoTypeList.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoVRMLInterpOutputList.lo
+@HACKING_COMPACT_BUILD_TRUE@am_liblistsLINKHACK_la_OBJECTS =  all.lo
 liblistsLINKHACK_la_OBJECTS =  $(am_liblistsLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -220,7 +229,7 @@ $(DEPDIR)/SoEnabledElementsList.Plo $(DEPDIR)/SoEngineList.Plo \
 $(DEPDIR)/SoEngineOutputList.Plo $(DEPDIR)/SoFieldList.Plo \
 $(DEPDIR)/SoNodeList.Plo $(DEPDIR)/SoPathList.Plo \
 $(DEPDIR)/SoPickedPointList.Plo $(DEPDIR)/SoTypeList.Plo \
-$(DEPDIR)/SoVRMLInterpOutputList.Plo
+$(DEPDIR)/SoVRMLInterpOutputList.Plo $(DEPDIR)/all.Plo
 SOURCES = $(liblists_la_SOURCES) $(liblistsLINKHACK_la_SOURCES)
 OBJECTS = $(am_liblists_la_OBJECTS) $(am_liblistsLINKHACK_la_OBJECTS)
 
@@ -371,6 +380,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoPickedPointList.Plo
 @AMDEP@include $(DEPDIR)/SoTypeList.Plo
 @AMDEP@include $(DEPDIR)/SoVRMLInterpOutputList.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

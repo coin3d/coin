@@ -96,13 +96,12 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SoVRMLInterpOutput.cpp \
-	SoVRMLInterpOutput.h \
-	SoVRMLInterpolator.cpp \
-	SoVRMLInterpolator.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoVRMLInterpOutput.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoVRMLInterpOutput.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoVRMLInterpolator.cpp \
+@HACKING_COMPACT_BUILD_FALSE@	SoVRMLInterpolator.h
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/VRMLnodes/SoVRMLInterpOutput.h \
@@ -143,13 +142,17 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libVRMLnodes_la_LDFLAGS = 
 libVRMLnodes_la_LIBADD = 
-am_libVRMLnodes_la_OBJECTS =  SoVRMLInterpOutput.lo \
-SoVRMLInterpolator.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libVRMLnodes_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoVRMLInterpOutput.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoVRMLInterpolator.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libVRMLnodes_la_OBJECTS =  all.lo
 libVRMLnodes_la_OBJECTS =  $(am_libVRMLnodes_la_OBJECTS)
 libVRMLnodesLINKHACK_la_LDFLAGS = 
 libVRMLnodesLINKHACK_la_LIBADD = 
-am_libVRMLnodesLINKHACK_la_OBJECTS =  SoVRMLInterpOutput.lo \
-SoVRMLInterpolator.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libVRMLnodesLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoVRMLInterpOutput.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoVRMLInterpolator.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libVRMLnodesLINKHACK_la_OBJECTS =  all.lo
 libVRMLnodesLINKHACK_la_OBJECTS =  $(am_libVRMLnodesLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -173,7 +176,7 @@ DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 GZIP_ENV = --best
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 DEP_FILES =  @AMDEP@ $(DEPDIR)/SoVRMLInterpOutput.Plo \
-$(DEPDIR)/SoVRMLInterpolator.Plo
+$(DEPDIR)/SoVRMLInterpolator.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libVRMLnodes_la_SOURCES) $(libVRMLnodesLINKHACK_la_SOURCES)
 OBJECTS = $(am_libVRMLnodes_la_OBJECTS) $(am_libVRMLnodesLINKHACK_la_OBJECTS)
 
@@ -307,6 +310,7 @@ distdir: $(DISTFILES)
 
 @AMDEP@include $(DEPDIR)/SoVRMLInterpOutput.Plo
 @AMDEP@include $(DEPDIR)/SoVRMLInterpolator.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 

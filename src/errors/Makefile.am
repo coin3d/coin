@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoDebugError.cpp \
 	SoDebugError.h \
@@ -10,6 +13,7 @@ ALLSOURCES = \
 	SoMemoryError.h \
 	SoReadError.cpp \
 	SoReadError.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/errors/SoErrors.h \

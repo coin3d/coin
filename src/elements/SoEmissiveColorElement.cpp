@@ -31,7 +31,7 @@
 
 // Dynamically allocated to avoid problems on systems which doesn't
 // handle static constructors.
-static SbColor * defaultcolor = NULL;
+static SbColor * defaultemissivecolor = NULL;
 
 
 /*!
@@ -57,8 +57,8 @@ void
 SoEmissiveColorElement::initClass()
 {
   SO_ELEMENT_INIT_CLASS(SoEmissiveColorElement, inherited);
-  defaultcolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
-  defaultcolor->setValue(0.0f, 0.0f, 0.0f);
+  defaultemissivecolor = new SbColor; // FIXME: deallocate on exit. 20000406 mortene.
+  defaultemissivecolor->setValue(0.0f, 0.0f, 0.0f);
 }
 
 /*!
@@ -74,7 +74,7 @@ SoEmissiveColorElement::~SoEmissiveColorElement()
 void
 SoEmissiveColorElement::init(SoState * /* state */)
 {
-  this->colors = defaultcolor;
+  this->colors = defaultemissivecolor;
   this->numColors = 1;
 }
 
@@ -90,7 +90,7 @@ SoEmissiveColorElement::set(SoState * const state, SoNode * const node,
   if (numColors > 0)
     elem->setElt(numColors, colors);
   else
-    elem->setElt(1, defaultcolor);
+    elem->setElt(1, defaultemissivecolor);
 }
 
 //! FIXME: write doc.

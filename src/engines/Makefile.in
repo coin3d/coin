@@ -101,47 +101,46 @@ BUILT_SOURCES = \
 	$(top_srcdir)/src/engines/lex.so_eval.c \
 	$(top_srcdir)/src/engines/evaluator.tab.c
 
-
-ALLSOURCES = \
-	SoBoolOperation.cpp SoBoolOperation.h \
-	SoCalculator.cpp SoCalculator.h \
-	SoComposeMatrix.cpp SoComposeMatrix.h \
-	SoComposeRotation.cpp SoComposeRotation.h \
-	SoComposeRotationFromTo.cpp SoComposeRotationFromTo.h \
-	SoComposeVec2f.cpp SoComposeVec2f.h \
-	SoComposeVec3f.cpp SoComposeVec3f.h \
-	SoComposeVec4f.cpp SoComposeVec4f.h \
-	SoComputeBoundingBox.cpp SoComputeBoundingBox.h \
-	SoConcatenate.cpp SoConcatenate.h \
-	SoConvertAll.cpp SoConvertAll.h \
-	SoCounter.cpp SoCounter.h \
-	SoDecomposeMatrix.cpp SoDecomposeMatrix.h \
-	SoDecomposeRotation.cpp SoDecomposeRotation.h \
-	SoDecomposeVec2f.cpp SoDecomposeVec2f.h \
-	SoDecomposeVec3f.cpp SoDecomposeVec3f.h \
-	SoDecomposeVec4f.cpp SoDecomposeVec4f.h \
-	SoElapsedTime.cpp SoElapsedTime.h \
-	SoEngine.cpp SoEngine.h \
-	SoEngineOutput.cpp SoEngineOutput.h \
-	SoFieldConverter.cpp SoFieldConverter.h \
-	SoGate.cpp SoGate.h \
-	SoInterpolate.cpp SoInterpolate.h \
-	SoInterpolateFloat.cpp SoInterpolateFloat.h \
-	SoInterpolateRotation.cpp SoInterpolateRotation.h \
-	SoInterpolateVec2f.cpp SoInterpolateVec2f.h \
-	SoInterpolateVec3f.cpp SoInterpolateVec3f.h \
-	SoInterpolateVec4f.cpp SoInterpolateVec4f.h \
-	SoOnOff.cpp SoOnOff.h \
-	SoOneShot.cpp SoOneShot.h \
-        SoOutputData.cpp SoOutputData.h \
-	SoSelectOne.cpp SoSelectOne.h \
-	SoTimeCounter.cpp SoTimeCounter.h \
-	SoTransformVec3f.cpp SoTransformVec3f.h \
-	SoTriggerAny.cpp SoTriggerAny.h \
-	SoSubEngine.h SoSubEngineP.h \
-	evaluator.c evaluator.h \
-	evaluator.tab.c
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SoBoolOperation.cpp SoBoolOperation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCalculator.cpp SoCalculator.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComposeMatrix.cpp SoComposeMatrix.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComposeRotation.cpp SoComposeRotation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComposeRotationFromTo.cpp SoComposeRotationFromTo.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComposeVec2f.cpp SoComposeVec2f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComposeVec3f.cpp SoComposeVec3f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComposeVec4f.cpp SoComposeVec4f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoComputeBoundingBox.cpp SoComputeBoundingBox.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoConcatenate.cpp SoConcatenate.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoConvertAll.cpp SoConvertAll.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoCounter.cpp SoCounter.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeMatrix.cpp SoDecomposeMatrix.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeRotation.cpp SoDecomposeRotation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeVec2f.cpp SoDecomposeVec2f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeVec3f.cpp SoDecomposeVec3f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoDecomposeVec4f.cpp SoDecomposeVec4f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoElapsedTime.cpp SoElapsedTime.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEngine.cpp SoEngine.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoEngineOutput.cpp SoEngineOutput.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoFieldConverter.cpp SoFieldConverter.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoGate.cpp SoGate.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInterpolate.cpp SoInterpolate.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateFloat.cpp SoInterpolateFloat.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateRotation.cpp SoInterpolateRotation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec2f.cpp SoInterpolateVec2f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec3f.cpp SoInterpolateVec3f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoInterpolateVec4f.cpp SoInterpolateVec4f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoOnOff.cpp SoOnOff.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoOneShot.cpp SoOneShot.h \
+@HACKING_COMPACT_BUILD_FALSE@        SoOutputData.cpp SoOutputData.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSelectOne.cpp SoSelectOne.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTimeCounter.cpp SoTimeCounter.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTransformVec3f.cpp SoTransformVec3f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoTriggerAny.cpp SoTriggerAny.h \
+@HACKING_COMPACT_BUILD_FALSE@	SoSubEngine.h SoSubEngineP.h \
+@HACKING_COMPACT_BUILD_FALSE@	evaluator.c evaluator.h \
+@HACKING_COMPACT_BUILD_FALSE@	evaluator.tab.c
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/engines/SoSubEngine.h \
@@ -217,31 +216,55 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libengines_la_LDFLAGS = 
 libengines_la_LIBADD = 
-am_libengines_la_OBJECTS =  SoBoolOperation.lo SoCalculator.lo \
-SoComposeMatrix.lo SoComposeRotation.lo SoComposeRotationFromTo.lo \
-SoComposeVec2f.lo SoComposeVec3f.lo SoComposeVec4f.lo \
-SoComputeBoundingBox.lo SoConcatenate.lo SoConvertAll.lo SoCounter.lo \
-SoDecomposeMatrix.lo SoDecomposeRotation.lo SoDecomposeVec2f.lo \
-SoDecomposeVec3f.lo SoDecomposeVec4f.lo SoElapsedTime.lo SoEngine.lo \
-SoEngineOutput.lo SoFieldConverter.lo SoGate.lo SoInterpolate.lo \
-SoInterpolateFloat.lo SoInterpolateRotation.lo SoInterpolateVec2f.lo \
-SoInterpolateVec3f.lo SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo \
-SoOutputData.lo SoSelectOne.lo SoTimeCounter.lo SoTransformVec3f.lo \
-SoTriggerAny.lo evaluator.lo evaluator.tab.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libengines_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoBoolOperation.lo SoCalculator.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComposeMatrix.lo SoComposeRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComposeRotationFromTo.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComposeVec2f.lo SoComposeVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComposeVec4f.lo SoComputeBoundingBox.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoConcatenate.lo SoConvertAll.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCounter.lo SoDecomposeMatrix.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDecomposeRotation.lo SoDecomposeVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoElapsedTime.lo SoEngine.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEngineOutput.lo SoFieldConverter.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGate.lo SoInterpolate.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateFloat.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec4f.lo SoOnOff.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoOneShot.lo SoOutputData.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSelectOne.lo SoTimeCounter.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformVec3f.lo SoTriggerAny.lo \
+@HACKING_COMPACT_BUILD_FALSE@evaluator.lo evaluator.tab.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libengines_la_OBJECTS =  all.lo
 libengines_la_OBJECTS =  $(am_libengines_la_OBJECTS)
 libenginesLINKHACK_la_LDFLAGS = 
 libenginesLINKHACK_la_LIBADD = 
-am_libenginesLINKHACK_la_OBJECTS =  SoBoolOperation.lo SoCalculator.lo \
-SoComposeMatrix.lo SoComposeRotation.lo SoComposeRotationFromTo.lo \
-SoComposeVec2f.lo SoComposeVec3f.lo SoComposeVec4f.lo \
-SoComputeBoundingBox.lo SoConcatenate.lo SoConvertAll.lo SoCounter.lo \
-SoDecomposeMatrix.lo SoDecomposeRotation.lo SoDecomposeVec2f.lo \
-SoDecomposeVec3f.lo SoDecomposeVec4f.lo SoElapsedTime.lo SoEngine.lo \
-SoEngineOutput.lo SoFieldConverter.lo SoGate.lo SoInterpolate.lo \
-SoInterpolateFloat.lo SoInterpolateRotation.lo SoInterpolateVec2f.lo \
-SoInterpolateVec3f.lo SoInterpolateVec4f.lo SoOnOff.lo SoOneShot.lo \
-SoOutputData.lo SoSelectOne.lo SoTimeCounter.lo SoTransformVec3f.lo \
-SoTriggerAny.lo evaluator.lo evaluator.tab.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libenginesLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SoBoolOperation.lo SoCalculator.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComposeMatrix.lo SoComposeRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComposeRotationFromTo.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComposeVec2f.lo SoComposeVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoComposeVec4f.lo SoComputeBoundingBox.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoConcatenate.lo SoConvertAll.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoCounter.lo SoDecomposeMatrix.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDecomposeRotation.lo SoDecomposeVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoDecomposeVec3f.lo SoDecomposeVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoElapsedTime.lo SoEngine.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoEngineOutput.lo SoFieldConverter.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoGate.lo SoInterpolate.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateFloat.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoInterpolateVec4f.lo SoOnOff.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoOneShot.lo SoOutputData.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoSelectOne.lo SoTimeCounter.lo \
+@HACKING_COMPACT_BUILD_FALSE@SoTransformVec3f.lo SoTriggerAny.lo \
+@HACKING_COMPACT_BUILD_FALSE@evaluator.lo evaluator.tab.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libenginesLINKHACK_la_OBJECTS =  all.lo
 libenginesLINKHACK_la_OBJECTS =  $(am_libenginesLINKHACK_la_OBJECTS)
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -282,7 +305,7 @@ $(DEPDIR)/SoInterpolateVec4f.Plo $(DEPDIR)/SoOnOff.Plo \
 $(DEPDIR)/SoOneShot.Plo $(DEPDIR)/SoOutputData.Plo \
 $(DEPDIR)/SoSelectOne.Plo $(DEPDIR)/SoTimeCounter.Plo \
 $(DEPDIR)/SoTransformVec3f.Plo $(DEPDIR)/SoTriggerAny.Plo \
-$(DEPDIR)/evaluator.Plo $(DEPDIR)/evaluator.tab.Plo
+$(DEPDIR)/all.Plo $(DEPDIR)/evaluator.Plo $(DEPDIR)/evaluator.tab.Plo
 SOURCES = $(libengines_la_SOURCES) $(libenginesLINKHACK_la_SOURCES)
 OBJECTS = $(am_libengines_la_OBJECTS) $(am_libenginesLINKHACK_la_OBJECTS)
 
@@ -449,6 +472,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SoTimeCounter.Plo
 @AMDEP@include $(DEPDIR)/SoTransformVec3f.Plo
 @AMDEP@include $(DEPDIR)/SoTriggerAny.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 @AMDEP@include $(DEPDIR)/evaluator.Plo
 @AMDEP@include $(DEPDIR)/evaluator.tab.Plo
 

@@ -1,6 +1,9 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
 	SoDetail.cpp \
 	SoDetail.h \
@@ -21,6 +24,7 @@ ALLSOURCES = \
 	SoPointDetail.h \
 	SoTextDetail.cpp \
 	SoTextDetail.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/details/SoDetail.h \

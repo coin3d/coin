@@ -1,31 +1,23 @@
 ## Process this file with automake to generate Makefile.in.
 ## 19990904 mortene.
 
+if HACKING_COMPACT_BUILD
+ALLSOURCES = all.cpp
+else
 ALLSOURCES = \
-	SoAlarmSensor.cpp \
-	SoAlarmSensor.h \
-	SoDataSensor.cpp \
-	SoDataSensor.h \
-	SoDelayQueueSensor.cpp \
-	SoDelayQueueSensor.h \
-	SoFieldSensor.cpp \
-	SoFieldSensor.h \
-	SoIdleSensor.cpp \
-	SoIdleSensor.h \
-	SoNodeSensor.cpp \
-	SoNodeSensor.h \
-	SoOneShotSensor.cpp \
-	SoOneShotSensor.h \
-	SoPathSensor.cpp \
-	SoPathSensor.h \
-	SoSensor.cpp \
-	SoSensor.h \
-	SoSensorManager.cpp \
-	SoSensorManager.h \
-	SoTimerQueueSensor.cpp \
-	SoTimerQueueSensor.h \
-	SoTimerSensor.cpp \
-	SoTimerSensor.h
+	SoAlarmSensor.cpp SoAlarmSensor.h \
+	SoDataSensor.cpp SoDataSensor.h \
+	SoDelayQueueSensor.cpp SoDelayQueueSensor.h \
+	SoFieldSensor.cpp SoFieldSensor.h \
+	SoIdleSensor.cpp SoIdleSensor.h \
+	SoNodeSensor.cpp SoNodeSensor.h \
+	SoOneShotSensor.cpp SoOneShotSensor.h \
+	SoPathSensor.cpp SoPathSensor.h \
+	SoSensor.cpp SoSensor.h \
+	SoSensorManager.cpp SoSensorManager.h \
+	SoTimerQueueSensor.cpp SoTimerQueueSensor.h \
+	SoTimerSensor.cpp SoTimerSensor.h
+endif
 
 ALLINSTHEADERS = \
 	$(top_srcdir)/include/Inventor/sensors/SoSensors.h \

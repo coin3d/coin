@@ -96,61 +96,34 @@ VERSION = @VERSION@
 install_sh = @install_sh@
 sim_ac_conf_cmd = @sim_ac_conf_cmd@
 
-
-ALLSOURCES = \
-	SbBSPTree.cpp \
-	SbBSPTree.h \
-	SbBox2f.cpp \
-	SbBox2f.h \
-	SbBox2s.cpp \
-	SbBox2s.h \
-	SbBox3f.cpp \
-	SbBox3f.h \
-	SbColor.cpp \
-	SbColor.h \
-	SbColor4f.cpp \
-	SbColor4f.h \
-	SbCylinder.cpp \
-	SbCylinder.h \
-	SbDict.cpp \
-	SbDict.h \
-	SbHeap.cpp \
-	SbHeap.h \
-	SbLine.cpp \
-	SbLine.h \
-	SbMatrix.cpp \
-	SbMatrix.h \
-	SbName.cpp \
-	SbName.h \
-	SbOctTree.cpp \
-	SbOctTree.h \
-	SbPlane.cpp \
-	SbPlane.h \
-	SbRotation.cpp \
-	SbRotation.h \
-	SbSphere.cpp \
-	SbSphere.h \
-	SbString.cpp \
-	SbString.h \
-	SbTesselator.cpp \
-	SbTesselator.h \
-	SbTime.cpp \
-	SbTime.h \
-	SbVec2f.cpp \
-	SbVec2f.h \
-	SbVec2s.cpp \
-	SbVec2s.h \
-	SbVec3f.cpp \
-	SbVec3f.h \
-	SbVec4f.cpp \
-	SbVec4f.h \
-	SbViewVolume.cpp \
-	SbViewVolume.h \
-	SbViewportRegion.cpp \
-	SbViewportRegion.h \
-	SbXfBox3f.cpp \
-	SbXfBox3f.h
-
+@HACKING_COMPACT_BUILD_TRUE@ALLSOURCES = @HACKING_COMPACT_BUILD_TRUE@all.cpp
+@HACKING_COMPACT_BUILD_FALSE@ALLSOURCES = @HACKING_COMPACT_BUILD_FALSE@\
+@HACKING_COMPACT_BUILD_FALSE@	SbBSPTree.cpp SbBSPTree.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbBox2f.cpp SbBox2f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbBox2s.cpp SbBox2s.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbBox3f.cpp SbBox3f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbColor.cpp SbColor.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbColor4f.cpp SbColor4f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbCylinder.cpp SbCylinder.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbDict.cpp SbDict.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbHeap.cpp SbHeap.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbLine.cpp SbLine.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbMatrix.cpp SbMatrix.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbName.cpp SbName.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbOctTree.cpp SbOctTree.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbPlane.cpp SbPlane.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbRotation.cpp SbRotation.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbSphere.cpp SbSphere.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbString.cpp SbString.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbTesselator.cpp SbTesselator.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbTime.cpp SbTime.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec2f.cpp SbVec2f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec2s.cpp SbVec2s.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec3f.cpp SbVec3f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbVec4f.cpp SbVec4f.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbViewVolume.cpp SbViewVolume.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbViewportRegion.cpp SbViewportRegion.h \
+@HACKING_COMPACT_BUILD_FALSE@	SbXfBox3f.cpp SbXfBox3f.h
 
 ALLINSTHEADERS = 
 
@@ -188,19 +161,31 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 libbase_la_LDFLAGS = 
 libbase_la_LIBADD = 
-am_libbase_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo SbBox3f.lo \
-SbColor.lo SbColor4f.lo SbCylinder.lo SbDict.lo SbHeap.lo SbLine.lo \
-SbMatrix.lo SbName.lo SbOctTree.lo SbPlane.lo SbRotation.lo SbSphere.lo \
-SbString.lo SbTesselator.lo SbTime.lo SbVec2f.lo SbVec2s.lo SbVec3f.lo \
-SbVec4f.lo SbViewVolume.lo SbViewportRegion.lo SbXfBox3f.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libbase_la_OBJECTS =  SbBSPTree.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbBox2f.lo SbBox2s.lo SbBox3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbColor.lo SbColor4f.lo SbCylinder.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbDict.lo SbHeap.lo SbLine.lo SbMatrix.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbName.lo SbOctTree.lo SbPlane.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbRotation.lo SbSphere.lo SbString.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbTesselator.lo SbTime.lo SbVec2f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbVec2s.lo SbVec3f.lo SbVec4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbViewVolume.lo SbViewportRegion.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbXfBox3f.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libbase_la_OBJECTS =  all.lo
 libbase_la_OBJECTS =  $(am_libbase_la_OBJECTS)
 libbaseLINKHACK_la_LDFLAGS = 
 libbaseLINKHACK_la_LIBADD = 
-am_libbaseLINKHACK_la_OBJECTS =  SbBSPTree.lo SbBox2f.lo SbBox2s.lo \
-SbBox3f.lo SbColor.lo SbColor4f.lo SbCylinder.lo SbDict.lo SbHeap.lo \
-SbLine.lo SbMatrix.lo SbName.lo SbOctTree.lo SbPlane.lo SbRotation.lo \
-SbSphere.lo SbString.lo SbTesselator.lo SbTime.lo SbVec2f.lo SbVec2s.lo \
-SbVec3f.lo SbVec4f.lo SbViewVolume.lo SbViewportRegion.lo SbXfBox3f.lo
+@HACKING_COMPACT_BUILD_FALSE@am_libbaseLINKHACK_la_OBJECTS =  \
+@HACKING_COMPACT_BUILD_FALSE@SbBSPTree.lo SbBox2f.lo SbBox2s.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbBox3f.lo SbColor.lo SbColor4f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbCylinder.lo SbDict.lo SbHeap.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbLine.lo SbMatrix.lo SbName.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbOctTree.lo SbPlane.lo SbRotation.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbSphere.lo SbString.lo SbTesselator.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbTime.lo SbVec2f.lo SbVec2s.lo SbVec3f.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbVec4f.lo SbViewVolume.lo \
+@HACKING_COMPACT_BUILD_FALSE@SbViewportRegion.lo SbXfBox3f.lo
+@HACKING_COMPACT_BUILD_TRUE@am_libbaseLINKHACK_la_OBJECTS =  all.lo
 libbaseLINKHACK_la_OBJECTS =  $(am_libbaseLINKHACK_la_OBJECTS)
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -231,7 +216,7 @@ $(DEPDIR)/SbRotation.Plo $(DEPDIR)/SbSphere.Plo $(DEPDIR)/SbString.Plo \
 $(DEPDIR)/SbTesselator.Plo $(DEPDIR)/SbTime.Plo $(DEPDIR)/SbVec2f.Plo \
 $(DEPDIR)/SbVec2s.Plo $(DEPDIR)/SbVec3f.Plo $(DEPDIR)/SbVec4f.Plo \
 $(DEPDIR)/SbViewVolume.Plo $(DEPDIR)/SbViewportRegion.Plo \
-$(DEPDIR)/SbXfBox3f.Plo
+$(DEPDIR)/SbXfBox3f.Plo $(DEPDIR)/all.Plo
 SOURCES = $(libbase_la_SOURCES) $(libbaseLINKHACK_la_SOURCES)
 OBJECTS = $(am_libbase_la_OBJECTS) $(am_libbaseLINKHACK_la_OBJECTS)
 
@@ -388,6 +373,7 @@ distdir: $(DISTFILES)
 @AMDEP@include $(DEPDIR)/SbViewVolume.Plo
 @AMDEP@include $(DEPDIR)/SbViewportRegion.Plo
 @AMDEP@include $(DEPDIR)/SbXfBox3f.Plo
+@AMDEP@include $(DEPDIR)/all.Plo
 
 mostlyclean-depend:
 
