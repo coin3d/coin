@@ -136,39 +136,45 @@ SoIndexedNurbsSurface::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoIndexedNurbsSurface);
 }
 
-// doc from parent
+/*!
+  Calculates the bounding box of all control points and sets the center
+  to the average of these points.
+*/
 void
 SoIndexedNurbsSurface::computeBBox(SoAction * action,
                                    SbBox3f & box, SbVec3f & center)
 {
-  // FIXME: this is just a quick approximation
   SoState * state = action->getState();
-  const SoCoordinateElement *coordelem =
+  const SoCoordinateElement * coordelem =
     SoCoordinateElement::getInstance(state);
 
   int num = this->coordIndex.getNum();
 
+  box.makeEmpty();
+  SbVec3f acccenter(0.0f, 0.0f, 0.0f);
+  SbVec3f tmp3D;
+
   if (coordelem->is3D()) {
     const SbVec3f * coords = coordelem->getArrayPtr3();
     assert(coords);
-    box.makeEmpty();
-    for (int i = 0; i < num; i++) box.extendBy(coords[this->coordIndex[i]]);
+    for (int i = 0; i < num; i++) {
+      tmp3D = coords[this->coordIndex[i]];
+      box.extendBy(tmp3D);
+      acccenter += tmp3D;
+    }
   }
   else {
     const SbVec4f * coords = coordelem->getArrayPtr4();
     assert(coords);
     for (int i = 0; i< num; i++) {
       SbVec4f tmp = coords[this->coordIndex[i]];
-      if (tmp[3] != 0.0f) {
-        float mul = 1.0f / tmp[3];
-        tmp[0] *= mul;
-        tmp[1] *= mul;
-        tmp[2] *= mul;
-      }
-      box.extendBy(SbVec3f(tmp[0], tmp[1], tmp[2]));
+      float mul = (tmp[3] != 0.0f) ? 1.0f / tmp[4] : 1.0f;
+      tmp3D.setValue(tmp[0]*mul, tmp[1]*mul, tmp[2]*mul);
+      box.extendBy(tmp3D);
+      acccenter += tmp3D;
     }
   }
-  center = box.getCenter();
+  if (num) center = acccenter / float(num);
 }
 
 /*!
@@ -266,8 +272,9 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
 #ifdef HAVE_GLU_NURBSOBJECT
   if (!this->coordIndex.getNum()) return;
 
+  HAVE_GLU_NURBSOBJECT * nurbsobj;
   if (this->nurbsrenderer == NULL) {
-    HAVE_GLU_NURBSOBJECT * nurbsobj = gluNewNurbsRenderer();
+    nurbsobj = gluNewNurbsRenderer();
     this->nurbsrenderer = (void*) nurbsobj;
 
 #if GLU_VERSION_1_3
@@ -279,11 +286,12 @@ SoIndexedNurbsSurface::doNurbs(SoAction * action, const SbBool glrender)
     gluNurbsCallback(nurbsobj, (GLenum) GLU_NURBS_END_DATA, (void (*)(...))tessEnd);
 #endif // GLU_VERSION_1_3
   }
+  nurbsobj = (HAVE_GLU_NURBSOBJECT *) this->nurbsrenderer;
 
 #if GLU_VERSION_1_3
   coin_ins_cbdata cbdata;
   if (!glrender) {
-    gluNurbsCallbackData((GLUnurbs*) this->nurbsrenderer, &cbdata);
+    gluNurbsCallbackData(nurbsobj, &cbdata);
     cbdata.action = action;
     cbdata.thisp = this;
     cbdata.vertex.setNormal(SbVec3f(0.0f, 0.0f, 1.0f));
