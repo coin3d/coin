@@ -1349,4 +1349,8 @@
     20021118 mortene, problem reported by Michael Wimmer on
     coin-discuss.
 
+    20021118 larsa - the --disable-symbols problem is fixed, and I'm
+    against adding "--enable-optimization".  The users should rather
+    specify the optimization options they want in CFLAGS/CXXFLAGS.
+
 =====================================================================
