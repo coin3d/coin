@@ -70,7 +70,6 @@ EXTRA_libmanips@SUFFIX@LINKHACK_la_SOURCES = \
 libmanipsincdir = $(includedir)/Inventor/manips
 libmanipsinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 manips_lst_SOURCES = $(BuildSources)
 EXTRA_manips_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -82,6 +81,5 @@ manips.lst: Makefile $(manips_lst_OBJECTS)
 	  $(manips_lst_OBJECTS); \
 	$(CC) /LST:manips.lst \
 	  $(manips_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

@@ -83,7 +83,6 @@ EXTRA_liblists@SUFFIX@LINKHACK_la_SOURCES = \
 liblistsincdir = $(includedir)/Inventor/lists
 liblistsinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 lists_lst_SOURCES = $(BuildSources)
 EXTRA_lists_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -95,6 +94,5 @@ lists.lst: Makefile $(lists_lst_OBJECTS)
 	  $(lists_lst_OBJECTS); \
 	$(CC) /LST:lists.lst \
 	  $(lists_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

@@ -158,9 +158,9 @@ EXTRA_libbundles@SUFFIX@LINKHACK_la_SOURCES = \
 libbundlesincdir = $(includedir)/Inventor/bundles
 libbundlesinc_HEADERS = $(PublicHeaders)
 
-@BUILD_WITH_MSVC_TRUE@bundles_lst_SOURCES = $(BuildSources)
-@BUILD_WITH_MSVC_TRUE@EXTRA_bundles_lst_SOURCES = \
-@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+bundles_lst_SOURCES = $(BuildSources)
+EXTRA_bundles_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/bundles
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -178,8 +178,10 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 bundles_lst_AR = $(AR) cru
 bundles_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_bundles_lst_OBJECTS =
-@HACKING_COMPACT_BUILD_FALSE@am_bundles_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_TRUE@am_bundles_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_bundles_lst_OBJECTS = SoBundle.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoMaterialBundle.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateBundle.$(OBJEXT)
 bundles_lst_OBJECTS = $(am_bundles_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -475,12 +477,12 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libbundlesincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-@BUILD_WITH_MSVC_TRUE@bundles.lst: Makefile $(bundles_lst_OBJECTS)
-@BUILD_WITH_MSVC_TRUE@	@echo "Linking bundles.lst..."; \
-@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:bundles.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(bundles_lst_OBJECTS); \
-@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:bundles.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(bundles_lst_OBJECTS);
+bundles.lst: Makefile $(bundles_lst_OBJECTS)
+	@echo "Linking bundles.lst..."; \
+	echo $(CC) /LST:bundles.lst \
+	  $(bundles_lst_OBJECTS); \
+	$(CC) /LST:bundles.lst \
+	  $(bundles_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -65,7 +65,6 @@ EXTRA_libdetails@SUFFIX@LINKHACK_la_SOURCES = \
 libdetailsincdir = $(includedir)/Inventor/details
 libdetailsinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 details_lst_SOURCES = $(BuildSources)
 EXTRA_details_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -77,6 +76,5 @@ details.lst: Makefile $(details_lst_OBJECTS)
 	  $(details_lst_OBJECTS); \
 	$(CC) /LST:details.lst \
 	  $(details_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

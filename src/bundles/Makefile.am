@@ -51,7 +51,6 @@ EXTRA_libbundles@SUFFIX@LINKHACK_la_SOURCES = \
 libbundlesincdir = $(includedir)/Inventor/bundles
 libbundlesinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 bundles_lst_SOURCES = $(BuildSources)
 EXTRA_bundles_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -63,6 +62,5 @@ bundles.lst: Makefile $(bundles_lst_OBJECTS)
 	  $(bundles_lst_OBJECTS); \
 	$(CC) /LST:bundles.lst \
 	  $(bundles_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

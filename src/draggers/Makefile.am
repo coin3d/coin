@@ -89,7 +89,6 @@ EXTRA_libdraggers@SUFFIX@LINKHACK_la_SOURCES = \
 libdraggersincdir = $(includedir)/Inventor/draggers
 libdraggersinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 draggers_lst_SOURCES = $(BuildSources)
 EXTRA_draggers_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -101,7 +100,6 @@ draggers.lst: Makefile $(draggers_lst_OBJECTS)
 	  $(draggers_lst_OBJECTS); \
 	$(CC) /LST:draggers.lst \
 	  $(draggers_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common
 

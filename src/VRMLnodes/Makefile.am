@@ -51,7 +51,6 @@ EXTRA_libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = \
 libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
 libVRMLnodesinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 VRMLnodes_lst_SOURCES = $(BuildSources)
 EXTRA_VRMLnodes_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -63,6 +62,5 @@ VRMLnodes.lst: Makefile $(VRMLnodes_lst_OBJECTS)
 	  $(VRMLnodes_lst_OBJECTS); \
 	$(CC) /LST:VRMLnodes.lst \
 	  $(VRMLnodes_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

@@ -243,7 +243,6 @@ EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES = \
 libelementsincdir = $(includedir)/Inventor/elements
 libelementsinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 elements_lst_SOURCES = $(BuildSources)
 EXTRA_elements_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -255,6 +254,5 @@ elements.lst: Makefile $(elements_lst_OBJECTS)
 	  $(elements_lst_OBJECTS); \
 	$(CC) /LST:elements.lst \
 	  $(elements_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

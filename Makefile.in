@@ -519,10 +519,10 @@ doxygen-doc:
 built-sources: $(BUILT_SOURCES)
 
 include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in
-	./config.status --header=$@
+	@./config.status --header=$@
 
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in
-	./config.status --header=$@
+	@./config.status --header=$@
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

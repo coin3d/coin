@@ -36,7 +36,6 @@ EXTRA_lib-xxx-@SUFFIX@LINKHACK_la_SOURCES = \
 lib-xxx-incdir = $(includedir)/Inventor/-xxx-
 lib-xxx-inc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 -xxx-_lst_SOURCES = $(BuildSources)
 EXTRA_-xxx-_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -48,5 +47,4 @@ EXTRA_-xxx-_lst_SOURCES = \
 	  $(-xxx-_lst_OBJECTS); \
 	$(CC) /LST:-xxx-.lst \
 	  $(-xxx-_lst_OBJECTS);
-endif
 

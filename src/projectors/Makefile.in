@@ -175,9 +175,9 @@ EXTRA_libprojectors@SUFFIX@LINKHACK_la_SOURCES = \
 libprojectorsincdir = $(includedir)/Inventor/projectors
 libprojectorsinc_HEADERS = $(PublicHeaders)
 
-@BUILD_WITH_MSVC_TRUE@projectors_lst_SOURCES = $(BuildSources)
-@BUILD_WITH_MSVC_TRUE@EXTRA_projectors_lst_SOURCES = \
-@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+projectors_lst_SOURCES = $(BuildSources)
+EXTRA_projectors_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/projectors
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -195,8 +195,19 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 projectors_lst_AR = $(AR) cru
 projectors_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_projectors_lst_OBJECTS =
-@HACKING_COMPACT_BUILD_FALSE@am_projectors_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_TRUE@am_projectors_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_projectors_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SbCylinderPlaneProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbCylinderProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbCylinderSectionProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbCylinderSheetProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbLineProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbPlaneProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbSpherePlaneProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbSphereProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbSphereSectionProjector.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbSphereSheetProjector.$(OBJEXT)
 projectors_lst_OBJECTS = $(am_projectors_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -536,12 +547,12 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libprojectorsincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-@BUILD_WITH_MSVC_TRUE@projectors.lst: Makefile $(projectors_lst_OBJECTS)
-@BUILD_WITH_MSVC_TRUE@	@echo "Linking projectors.lst..."; \
-@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:projectors.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(projectors_lst_OBJECTS); \
-@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:projectors.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(projectors_lst_OBJECTS);
+projectors.lst: Makefile $(projectors_lst_OBJECTS)
+	@echo "Linking projectors.lst..."; \
+	echo $(CC) /LST:projectors.lst \
+	  $(projectors_lst_OBJECTS); \
+	$(CC) /LST:projectors.lst \
+	  $(projectors_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

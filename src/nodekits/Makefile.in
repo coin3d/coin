@@ -180,9 +180,9 @@ EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES = \
 libnodekitsincdir = $(includedir)/Inventor/nodekits
 libnodekitsinc_HEADERS = $(PublicHeaders)
 
-@BUILD_WITH_MSVC_TRUE@nodekits_lst_SOURCES = $(BuildSources)
-@BUILD_WITH_MSVC_TRUE@EXTRA_nodekits_lst_SOURCES = \
-@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+nodekits_lst_SOURCES = $(BuildSources)
+EXTRA_nodekits_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/nodekits
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -200,8 +200,20 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 nodekits_lst_AR = $(AR) cru
 nodekits_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_nodekits_lst_OBJECTS =
-@HACKING_COMPACT_BUILD_FALSE@am_nodekits_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_TRUE@am_nodekits_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_nodekits_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodeKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodeKitPath.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodeKitListPart.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodekitCatalog.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoBaseKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoAppearanceKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCameraKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoInteractionKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLightKit.$(OBJEXT) SoSceneKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSeparatorKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoShapeKit.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoWrapperKit.$(OBJEXT)
 nodekits_lst_OBJECTS = $(am_nodekits_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -535,12 +547,12 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libnodekitsincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-@BUILD_WITH_MSVC_TRUE@nodekits.lst: Makefile $(nodekits_lst_OBJECTS)
-@BUILD_WITH_MSVC_TRUE@	@echo "Linking nodekits.lst..."; \
-@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:nodekits.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(nodekits_lst_OBJECTS); \
-@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:nodekits.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(nodekits_lst_OBJECTS);
+nodekits.lst: Makefile $(nodekits_lst_OBJECTS)
+	@echo "Linking nodekits.lst..."; \
+	echo $(CC) /LST:nodekits.lst \
+	  $(nodekits_lst_OBJECTS); \
+	$(CC) /LST:nodekits.lst \
+	  $(nodekits_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -368,9 +368,9 @@ EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES = \
 libnodesincdir = $(includedir)/Inventor/nodes
 libnodesinc_HEADERS = $(PublicHeaders)
 
-@BUILD_WITH_MSVC_TRUE@nodes_lst_SOURCES = $(BuildSources)
-@BUILD_WITH_MSVC_TRUE@EXTRA_nodes_lst_SOURCES = \
-@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+nodes_lst_SOURCES = $(BuildSources)
+EXTRA_nodes_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/nodes
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -388,8 +388,94 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 nodes_lst_AR = $(AR) cru
 nodes_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_nodes_lst_OBJECTS =
-@HACKING_COMPACT_BUILD_FALSE@am_nodes_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_TRUE@am_nodes_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_nodes_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoAnnotation.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoAntiSquish.$(OBJEXT) SoArray.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoAsciiText.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoBaseColor.$(OBJEXT) SoBlinker.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCallback.$(OBJEXT) SoCamera.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoClipPlane.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoColorIndex.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoComplexity.$(OBJEXT) SoCone.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCoordinate3.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCoordinate4.$(OBJEXT) SoCube.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCylinder.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDirectionalLight.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDrawStyle.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoEnvironment.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoEventCallback.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoExtSelection.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoFaceSet.$(OBJEXT) SoFile.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoFont.$(OBJEXT) SoFontStyle.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGroup.$(OBJEXT) SoImage.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedFaceSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedLineSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedNurbsCurve.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedNurbsSurface.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoIndexedTriangleStripSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoInfo.$(OBJEXT) SoLOD.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLabel.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLevelOfDetail.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLight.$(OBJEXT) SoLightModel.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLineSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLinearProfile.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLocateHighlight.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoMarkerSet.$(OBJEXT) SoMaterial.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoMaterialBinding.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoMatrixTransform.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoMultipleCopy.$(OBJEXT) SoNode.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNonIndexedShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNormal.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNormalBinding.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNurbsCurve.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNurbsProfile.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNurbsSurface.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoOrthographicCamera.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPackedColor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPathSwitch.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPendulum.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPerspectiveCamera.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPickStyle.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPointLight.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPointSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPolygonOffset.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoProfile.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoProfileCoordinate2.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoProfileCoordinate3.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoQuadMesh.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoResetTransform.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoRotation.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoRotationXYZ.$(OBJEXT) SoRotor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoScale.$(OBJEXT) SoSelection.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSeparator.$(OBJEXT) SoShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoShapeHints.$(OBJEXT) SoShuttle.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSphere.$(OBJEXT) SoSpotLight.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSurroundScale.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSwitch.$(OBJEXT) SoText2.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoText3.$(OBJEXT) SoTexture2.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTexture2Transform.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinate2.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateBinding.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateDefault.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateEnvironment.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateFunction.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinatePlane.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureScalePolicy.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransform.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformSeparator.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransformation.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTranslation.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTriangleStripSet.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoUnits.$(OBJEXT) SoUnknownNode.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoVertexProperty.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoVertexShape.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoWWWAnchor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoWWWInline.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ soshape_primdata.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ soshape_bigtexture.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ soshape_trianglesort.$(OBJEXT)
 nodes_lst_OBJECTS = $(am_nodes_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -1101,12 +1187,12 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libnodesincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-@BUILD_WITH_MSVC_TRUE@nodes.lst: Makefile $(nodes_lst_OBJECTS)
-@BUILD_WITH_MSVC_TRUE@	@echo "Linking nodes.lst..."; \
-@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:nodes.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(nodes_lst_OBJECTS); \
-@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:nodes.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(nodes_lst_OBJECTS);
+nodes.lst: Makefile $(nodes_lst_OBJECTS)
+	@echo "Linking nodes.lst..."; \
+	echo $(CC) /LST:nodes.lst \
+	  $(nodes_lst_OBJECTS); \
+	$(CC) /LST:nodes.lst \
+	  $(nodes_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

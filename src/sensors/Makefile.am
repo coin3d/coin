@@ -70,7 +70,6 @@ EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES = \
 libsensorsincdir = $(includedir)/Inventor/sensors
 libsensorsinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 sensors_lst_SOURCES = $(BuildSources)
 EXTRA_sensors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -82,6 +81,5 @@ sensors.lst: Makefile $(sensors_lst_OBJECTS)
 	  $(sensors_lst_OBJECTS); \
 	$(CC) /LST:sensors.lst \
 	  $(sensors_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

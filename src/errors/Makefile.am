@@ -54,7 +54,6 @@ EXTRA_liberrors@SUFFIX@LINKHACK_la_SOURCES = \
 liberrorsincdir = $(includedir)/Inventor/errors
 liberrorsinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 errors_lst_SOURCES = $(BuildSources)
 EXTRA_errors_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -66,6 +65,5 @@ errors.lst: Makefile $(errors_lst_OBJECTS)
 	  $(errors_lst_OBJECTS); \
 	$(CC) /LST:errors.lst \
 	  $(errors_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

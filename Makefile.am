@@ -40,10 +40,9 @@ doxygen-doc:
 # sources needed to generate docs must be created by this rule
 built-sources: $(BUILT_SOURCES)
 
-
 include/Inventor/SbBasic.h: $(srcdir)/include/Inventor/SbBasic.h.in
-	./config.status --header=$@
+	@./config.status --header=$@
 
 include/Inventor/system/inttypes.h: $(srcdir)/include/Inventor/system/inttypes.h.in
-	./config.status --header=$@
+	@./config.status --header=$@
 

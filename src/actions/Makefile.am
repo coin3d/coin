@@ -74,7 +74,6 @@ EXTRA_libactions@SUFFIX@LINKHACK_la_SOURCES = \
 libactionsincdir = $(includedir)/Inventor/actions
 libactionsinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 actions_lst_SOURCES = $(BuildSources)
 EXTRA_actions_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -86,6 +85,5 @@ actions.lst: Makefile $(actions_lst_OBJECTS)
 	  $(actions_lst_OBJECTS); \
 	$(CC) /LST:actions.lst \
 	  $(actions_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

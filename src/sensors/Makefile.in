@@ -177,9 +177,9 @@ EXTRA_libsensors@SUFFIX@LINKHACK_la_SOURCES = \
 libsensorsincdir = $(includedir)/Inventor/sensors
 libsensorsinc_HEADERS = $(PublicHeaders)
 
-@BUILD_WITH_MSVC_TRUE@sensors_lst_SOURCES = $(BuildSources)
-@BUILD_WITH_MSVC_TRUE@EXTRA_sensors_lst_SOURCES = \
-@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+sensors_lst_SOURCES = $(BuildSources)
+EXTRA_sensors_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/sensors
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -197,8 +197,19 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 sensors_lst_AR = $(AR) cru
 sensors_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_sensors_lst_OBJECTS =
-@HACKING_COMPACT_BUILD_FALSE@am_sensors_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_TRUE@am_sensors_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_sensors_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoAlarmSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDataSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDelayQueueSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoFieldSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoIdleSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNodeSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoOneShotSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPathSensor.$(OBJEXT) SoSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSensorManager.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTimerQueueSensor.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTimerSensor.$(OBJEXT)
 sensors_lst_OBJECTS = $(am_sensors_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -528,12 +539,12 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libsensorsincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-@BUILD_WITH_MSVC_TRUE@sensors.lst: Makefile $(sensors_lst_OBJECTS)
-@BUILD_WITH_MSVC_TRUE@	@echo "Linking sensors.lst..."; \
-@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:sensors.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(sensors_lst_OBJECTS); \
-@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:sensors.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(sensors_lst_OBJECTS);
+sensors.lst: Makefile $(sensors_lst_OBJECTS)
+	@echo "Linking sensors.lst..."; \
+	echo $(CC) /LST:sensors.lst \
+	  $(sensors_lst_OBJECTS); \
+	$(CC) /LST:sensors.lst \
+	  $(sensors_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

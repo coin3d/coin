@@ -351,9 +351,9 @@ EXTRA_libelements@SUFFIX@LINKHACK_la_SOURCES = \
 libelementsincdir = $(includedir)/Inventor/elements
 libelementsinc_HEADERS = $(PublicHeaders)
 
-@BUILD_WITH_MSVC_TRUE@elements_lst_SOURCES = $(BuildSources)
-@BUILD_WITH_MSVC_TRUE@EXTRA_elements_lst_SOURCES = \
-@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+elements_lst_SOURCES = $(BuildSources)
+EXTRA_elements_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/elements
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -371,8 +371,106 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 elements_lst_AR = $(AR) cru
 elements_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_elements_lst_OBJECTS =
-@HACKING_COMPACT_BUILD_FALSE@am_elements_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_TRUE@am_elements_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_elements_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoAccumulatedElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoAmbientColorElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoAnnoText3CharOrientElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoAnnoText3FontSizeHintElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoAnnoText3RenderPrintElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoBBoxModelMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCacheElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoClipPlaneElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoComplexityElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoComplexityTypeElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCoordinateElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCreaseAngleElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoCullElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLColorIndexElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDecimationPercentageElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDecimationTypeElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDiffuseColorElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoDrawStyleElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoEmissiveColorElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoEnvironmentElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoFloatElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoFocalDistanceElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoFontNameElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoFontSizeElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLAmbientColorElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLCacheContextElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLClipPlaneElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLCoordinateElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLDiffuseColorElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLDrawStyleElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLEmissiveColorElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLEnvironmentElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLLazyElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLLightIdElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLLightModelElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLLinePatternElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLLineWidthElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLModelMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLNormalElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLNormalizeElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLPointSizeElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLPolygonOffsetElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLPolygonStippleElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLProjectionMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLRenderPassElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLShadeModelElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLShapeHintsElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLShininessElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLSpecularColorElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLTextureCoordinateElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLTextureEnabledElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLTextureImageElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLTextureMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLUpdateAreaElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLViewingMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLViewportRegionElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoInt32Element.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLazyElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLightAttenuationElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLightElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLightModelElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLinePatternElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLineWidthElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoLocalBBoxMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoMaterialBindingElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoModelMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNormalBindingElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoNormalElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoOverrideElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPickRayElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPickStyleElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPointSizeElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoPolygonOffsetElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoProfileCoordinateElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoProfileElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoProjectionMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoReplacedElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoShapeHintsElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoShapeStyleElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoShininessElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSpecularColorElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoSwitchElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextOutlineEnabledElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateBindingElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureImageElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureOverrideElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureScalePolicyElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureQualityElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoTransparencyElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoUnitsElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoViewVolumeElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoViewingMatrixElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoViewportRegionElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoWindowElement.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoGLDisplayList.$(OBJEXT)
 elements_lst_OBJECTS = $(am_elements_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -1189,12 +1287,12 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libelementsincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-@BUILD_WITH_MSVC_TRUE@elements.lst: Makefile $(elements_lst_OBJECTS)
-@BUILD_WITH_MSVC_TRUE@	@echo "Linking elements.lst..."; \
-@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:elements.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(elements_lst_OBJECTS); \
-@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:elements.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(elements_lst_OBJECTS);
+elements.lst: Makefile $(elements_lst_OBJECTS)
+	@echo "Linking elements.lst..."; \
+	echo $(CC) /LST:elements.lst \
+	  $(elements_lst_OBJECTS); \
+	$(CC) /LST:elements.lst \
+	  $(elements_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

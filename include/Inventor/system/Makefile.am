@@ -6,12 +6,14 @@
 ## Inventor is _not_ a good idea here, as they expose the inttypes.h
 ## publicly, with the danger of making it "override" the inttypes.h
 ## file on the system. 19990912 mortene.
+##
+## I think the above comment can be ignored/removed. 20010712 larsa.
 
 BUILT_SOURCES = \
 	inttypes.h
 
 inttypes.h: $(srcdir)/inttypes.h.in
-	( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
+	@( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
 
 # header installation information
 

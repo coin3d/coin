@@ -156,9 +156,9 @@ EXTRA_libVRMLnodes@SUFFIX@LINKHACK_la_SOURCES = \
 libVRMLnodesincdir = $(includedir)/Inventor/VRMLnodes
 libVRMLnodesinc_HEADERS = $(PublicHeaders)
 
-@BUILD_WITH_MSVC_TRUE@VRMLnodes_lst_SOURCES = $(BuildSources)
-@BUILD_WITH_MSVC_TRUE@EXTRA_VRMLnodes_lst_SOURCES = \
-@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+VRMLnodes_lst_SOURCES = $(BuildSources)
+EXTRA_VRMLnodes_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/VRMLnodes
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -176,8 +176,10 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 VRMLnodes_lst_AR = $(AR) cru
 VRMLnodes_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_VRMLnodes_lst_OBJECTS =
-@HACKING_COMPACT_BUILD_FALSE@am_VRMLnodes_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_TRUE@am_VRMLnodes_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_VRMLnodes_lst_OBJECTS = \
+@HACKING_COMPACT_BUILD_FALSE@ SoVRMLInterpOutput.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SoVRMLInterpolator.$(OBJEXT)
 VRMLnodes_lst_OBJECTS = $(am_VRMLnodes_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -470,12 +472,12 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libVRMLnodesincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-@BUILD_WITH_MSVC_TRUE@VRMLnodes.lst: Makefile $(VRMLnodes_lst_OBJECTS)
-@BUILD_WITH_MSVC_TRUE@	@echo "Linking VRMLnodes.lst..."; \
-@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:VRMLnodes.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(VRMLnodes_lst_OBJECTS); \
-@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:VRMLnodes.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(VRMLnodes_lst_OBJECTS);
+VRMLnodes.lst: Makefile $(VRMLnodes_lst_OBJECTS)
+	@echo "Linking VRMLnodes.lst..."; \
+	echo $(CC) /LST:VRMLnodes.lst \
+	  $(VRMLnodes_lst_OBJECTS); \
+	$(CC) /LST:VRMLnodes.lst \
+	  $(VRMLnodes_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

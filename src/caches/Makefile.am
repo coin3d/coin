@@ -59,7 +59,6 @@ EXTRA_libcaches@SUFFIX@LINKHACK_la_SOURCES = \
 libcachesincdir = $(includedir)/Inventor/caches
 libcachesinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 caches_lst_SOURCES = $(BuildSources)
 EXTRA_caches_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -71,6 +70,5 @@ caches.lst: Makefile $(caches_lst_OBJECTS)
 	  $(caches_lst_OBJECTS); \
 	$(CC) /LST:caches.lst \
 	  $(caches_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

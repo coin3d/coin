@@ -134,7 +134,6 @@ EXTRA_libengines@SUFFIX@LINKHACK_la_SOURCES = \
 libenginesincdir = $(includedir)/Inventor/engines
 libenginesinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 engines_lst_SOURCES = $(BuildSources)
 EXTRA_engines_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -146,6 +145,5 @@ engines.lst: Makefile $(engines_lst_OBJECTS)
 	  $(engines_lst_OBJECTS); \
 	$(CC) /LST:engines.lst \
 	  $(engines_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

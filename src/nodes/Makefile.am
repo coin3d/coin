@@ -261,7 +261,6 @@ EXTRA_libnodes@SUFFIX@LINKHACK_la_SOURCES = \
 libnodesincdir = $(includedir)/Inventor/nodes
 libnodesinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 nodes_lst_SOURCES = $(BuildSources)
 EXTRA_nodes_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -273,6 +272,5 @@ nodes.lst: Makefile $(nodes_lst_OBJECTS)
 	  $(nodes_lst_OBJECTS); \
 	$(CC) /LST:nodes.lst \
 	  $(nodes_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

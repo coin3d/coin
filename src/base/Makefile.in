@@ -208,9 +208,9 @@ EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES = \
 libbaseincdir = $(includedir)/Inventor/base
 libbaseinc_HEADERS = $(PublicHeaders)
 
-@BUILD_WITH_MSVC_TRUE@base_lst_SOURCES = $(BuildSources)
-@BUILD_WITH_MSVC_TRUE@EXTRA_base_lst_SOURCES = \
-@BUILD_WITH_MSVC_TRUE@	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
+base_lst_SOURCES = $(BuildSources)
+EXTRA_base_lst_SOURCES = \
+	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
 
 subdir = src/base
 mkinstalldirs = $(SHELL) $(top_srcdir)/cfg/mkinstalldirs
@@ -228,8 +228,23 @@ X_EXTRA_LIBS = @X_EXTRA_LIBS@
 X_PRE_LIBS = @X_PRE_LIBS@
 base_lst_AR = $(AR) cru
 base_lst_LIBADD = 
-@HACKING_COMPACT_BUILD_TRUE@am_base_lst_OBJECTS =
-@HACKING_COMPACT_BUILD_FALSE@am_base_lst_OBJECTS =
+@HACKING_COMPACT_BUILD_TRUE@am_base_lst_OBJECTS = all.$(OBJEXT)
+@HACKING_COMPACT_BUILD_FALSE@am_base_lst_OBJECTS = SbBSPTree.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbBox2f.$(OBJEXT) SbBox2s.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbBox3f.$(OBJEXT) SbClip.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbColor.$(OBJEXT) SbColor4f.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbCylinder.$(OBJEXT) SbDict.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbHeap.$(OBJEXT) SbImage.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbLine.$(OBJEXT) SbMatrix.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbName.$(OBJEXT) SbOctTree.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbPlane.$(OBJEXT) SbRotation.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbSphere.$(OBJEXT) SbString.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbTesselator.$(OBJEXT) SbTime.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbVec2f.$(OBJEXT) SbVec2s.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbVec3f.$(OBJEXT) SbVec4f.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbViewVolume.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbViewportRegion.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@ SbXfBox3f.$(OBJEXT)
 base_lst_OBJECTS = $(am_base_lst_OBJECTS)
 AR = ar
 LTLIBRARIES = $(lib_LTLIBRARIES) $(noinst_LTLIBRARIES)
@@ -608,12 +623,12 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-libbaseincHEADERS
 
 
 # this rule causes a make warning, so we remove it when it is not in use
-@BUILD_WITH_MSVC_TRUE@base.lst: Makefile $(base_lst_OBJECTS)
-@BUILD_WITH_MSVC_TRUE@	@echo "Linking base.lst..."; \
-@BUILD_WITH_MSVC_TRUE@	echo $(CC) /LST:base.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(base_lst_OBJECTS); \
-@BUILD_WITH_MSVC_TRUE@	$(CC) /LST:base.lst \
-@BUILD_WITH_MSVC_TRUE@	  $(base_lst_OBJECTS);
+base.lst: Makefile $(base_lst_OBJECTS)
+	@echo "Linking base.lst..."; \
+	echo $(CC) /LST:base.lst \
+	  $(base_lst_OBJECTS); \
+	$(CC) /LST:base.lst \
+	  $(base_lst_OBJECTS);
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

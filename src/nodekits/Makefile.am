@@ -72,7 +72,6 @@ EXTRA_libnodekits@SUFFIX@LINKHACK_la_SOURCES = \
 libnodekitsincdir = $(includedir)/Inventor/nodekits
 libnodekitsinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 nodekits_lst_SOURCES = $(BuildSources)
 EXTRA_nodekits_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -84,6 +83,5 @@ nodekits.lst: Makefile $(nodekits_lst_OBJECTS)
 	  $(nodekits_lst_OBJECTS); \
 	$(CC) /LST:nodekits.lst \
 	  $(nodekits_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

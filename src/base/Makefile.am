@@ -101,7 +101,6 @@ EXTRA_libbase@SUFFIX@LINKHACK_la_SOURCES = \
 libbaseincdir = $(includedir)/Inventor/base
 libbaseinc_HEADERS = $(PublicHeaders)
 
-if BUILD_WITH_MSVC
 base_lst_SOURCES = $(BuildSources)
 EXTRA_base_lst_SOURCES = \
 	$(PublicHeaders) $(PrivateHeaders) $(RegularSources) $(LinkHackSources)
@@ -113,6 +112,5 @@ base.lst: Makefile $(base_lst_OBJECTS)
 	  $(base_lst_OBJECTS); \
 	$(CC) /LST:base.lst \
 	  $(base_lst_OBJECTS);
-endif
 
 ##$ END TEMPLATE Make-Common

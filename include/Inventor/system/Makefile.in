@@ -298,7 +298,7 @@ uninstall-am: uninstall-systemincHEADERS
 
 
 inttypes.h: $(srcdir)/inttypes.h.in
-	( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
+	@( cd $(top_builddir); $(MAKE) include/Inventor/system/inttypes.h )
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
