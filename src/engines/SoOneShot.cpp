@@ -30,6 +30,56 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/engines/SoSubEngineP.h>
 
+/*!
+  \var SoSFTime SoOneShot::timeIn
+
+  Input time source. Connected by default to the realTime global
+  field, but the application programmer is free to change this to any
+  other time source.
+*/
+/*!
+  \var SoSFTime SoOneShot::duration
+
+  The time the engine should run for when it is triggered. Defaults to
+  1 second.
+*/
+/*!
+  \var SoSFTrigger SoOneShot::trigger
+
+  A pulse on this input field starts the engine.
+*/
+/*!
+  \var SoSFBitMask SoOneShot::flags
+
+  Control flags.
+
+  There are two flags available: \c RETRIGGERABLE will cause the
+  engine to restart at 0 if the SoOneShot::trigger field is activated
+  during a run (otherwise the trigger is ignored during runs).
+
+  \c HOLD_FINAL will make the engine outputs keep their values after a
+  run, instead of resetting them.
+*/
+/*!
+  \var SoSFBool SoOneShot::disable
+
+  Set to \c TRUE to disable the engine completely.
+*/
+/*!
+  \var SoEngineOutput SoOneShot::timeOut
+
+  (SoSFTime) Output time. Will run from 0 to the value of
+  SoOneShot::duration.
+*/
+/*!
+  \var SoEngineOutput SoOneShot::ramp
+  (SoSFFloat) Will run from 0 to 1 during the active period.
+*/
+/*!
+  \var SoEngineOutput SoOneShot::isActive
+  (SoSFBool) \c TRUE while the engine is running, \c FALSE otherwise.
+*/
+
 
 SO_ENGINE_SOURCE(SoOneShot);
 
