@@ -442,9 +442,7 @@ SoBaseKit::set(const char * partnamestring, const char * parameterstring)
   return FALSE;
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoBaseKit::doAction(SoAction * action)
 {
@@ -458,27 +456,21 @@ SoBaseKit::doAction(SoAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoBaseKit::callback(SoCallbackAction * action)
 {
   SoBaseKit::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoBaseKit::GLRender(SoGLRenderAction * action)
 {
   SoBaseKit::doAction((SoAction *)action);
 }
 
-/*!
-  Overloaded to calculate bounding box center.
-*/
+// Doc in superclass. Overriden to calculate bounding box center.
 void
 SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -491,7 +483,7 @@ SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
   int numacc = 0;
   
   for (int i = 0; i <= last; i++) {
-    children->traverse(action, i, i);
+    this->children->traverse(action, i, i);
     if (action->isCenterSet()) {
       acccenter += action->getCenter();
       numacc++;
@@ -501,9 +493,7 @@ SoBaseKit::getBoundingBox(SoGetBoundingBoxAction * action)
   if (numacc) action->setCenter(acccenter / float(numacc), FALSE);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoBaseKit::getMatrix(SoGetMatrixAction * action)
 {
@@ -514,18 +504,14 @@ SoBaseKit::getMatrix(SoGetMatrixAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoBaseKit::handleEvent(SoHandleEventAction * action)
 {
   SoBaseKit::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoBaseKit::rayPick(SoRayPickAction * action)
 {
@@ -542,22 +528,17 @@ SoBaseKit::rayPick(SoRayPickAction * action)
   }
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc in superclass.
 void
 SoBaseKit::search(SoSearchAction * action)
 {
   inherited::search(action);
-  if (action->isFound() || !this->searchchildren) return;
+  if (action->isFound() || !SoBaseKit::searchchildren) return;
   SoBaseKit::doAction((SoAction *)action);
 }
 
-//
-// test if node has all fields set to default and if the
-// fields contains the default values. If so, we don't
-// need to write it.
-//
+// Test if node has all fields set to default and if the fields
+// contains the default values. If so, we don't need to write it.
 static SbBool
 is_default_node(SoNode * node, const SoType & typecheck)
 {
@@ -582,7 +563,7 @@ is_default_node(SoNode * node, const SoType & typecheck)
   return i == n;
 }
 
-// documented in superclass
+// Doc in superclass.
 void
 SoBaseKit::write(SoWriteAction * action)
 {
@@ -844,18 +825,14 @@ SoBaseKit::forceChildDrivenWriteRefs(SoOutput * out)
 }
 
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 void
 SoBaseKit::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoBaseKit::doAction((SoAction *)action);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Documented in superclass.
 SoChildList *
 SoBaseKit::getChildren(void) const
 {

@@ -27,10 +27,15 @@
   \ingroup draggers
 
   It holds the motion matrix, and offers lots of convenience methods
-  for subdraggers. The motion matrix is used to modify the model
-  matrix during traversal, and all draggers should update this during
-  dragging.
+  for subdraggers.
+
+  The motion matrix is used to modify the model matrix during
+  traversal, and all draggers should update this during dragging.
 */
+// FIXME: more class doc! The general concept of draggers should be
+// explained here. And include at least one general usage example.
+// 20011219 mortene.
+
 
 /*!
   \var SoSFBool SoDragger::isActive
@@ -161,8 +166,8 @@ public:
     this->path->truncate(0);
   }
 
-  SoFullPath * path;                // use temp path to avoid auditor overhead
-  SoDragger * dragger;              // pointer to cache owner
+  SoFullPath * path; // use temp path to avoid auditor overhead
+  SoDragger * dragger; // pointer to cache owner
   SoGetMatrixAction * matrixAction; // avoid reallocating this action each frame
   SbMatrix draggerToWorld;
   SbMatrix worldToDragger;
@@ -250,7 +255,7 @@ SoDragger::~SoDragger()
 // Note: the following documentation for initClass() will also be used
 // for dragger subclasses, so keep it general.
 /*!
-  Initializes type system for this class.
+  Initializes type system for this dragger class.
 
   Application programmers should usually not have to invoke this
   method, see documentation of SoInteraction::initClass().
@@ -295,8 +300,8 @@ SoDragger::initClasses(void)
   SoTranslate2Dragger::initClass();
 }
 
-// private method that sets some elements to default 
-// (for our draggers) values
+// Private method that sets some elements to default (for our
+// draggers) values.
 void 
 SoDragger::updateElements(SoState * state)
 {
@@ -359,13 +364,11 @@ SoDragger::updateElements(SoState * state)
   // hopefully we didn't forget something...
 }
 
-// the action methods are overloaded in case we decide to do some
-// extra work before passing the control on the SoBaseKit
+// The action methods are overloaded in case we decide to do some
+// extra work before passing the control on the SoBaseKit.
 
-/*!
-  Overloaded to initialize some elements before traversing
-  children.
-*/
+// Doc in superclass. Overloaded to initialize some elements before
+// traversing children.
 void
 SoDragger::callback(SoCallbackAction * action)
 {
@@ -375,10 +378,8 @@ SoDragger::callback(SoCallbackAction * action)
   state->pop();
 }
 
-/*!
-  Overloaded to initialize some elements before traversing
-  children.
-*/
+// Doc in superclass. Overloaded to initialize some elements before
+// traversing children.
 void 
 SoDragger::GLRender(SoGLRenderAction * action)
 {
@@ -389,10 +390,8 @@ SoDragger::GLRender(SoGLRenderAction * action)
   state->pop();
 }
 
-/*!
-  Overloaded to initialize some elements before traversing
-  children.
-*/
+// Doc in superclass. Overloaded to initialize some elements before
+// traversing children.
 void 
 SoDragger::getMatrix(SoGetMatrixAction * action)
 {
@@ -400,10 +399,8 @@ SoDragger::getMatrix(SoGetMatrixAction * action)
   inherited::getMatrix(action);
 }
 
-/*!
-  Overloaded to initialize some elements before traversing
-  children.
-*/
+// Doc in superclass. Overloaded to initialize some elements before
+// traversing children.
 void 
 SoDragger::rayPick(SoRayPickAction * action)
 {
@@ -414,10 +411,8 @@ SoDragger::rayPick(SoRayPickAction * action)
   state->pop();
 }
 
-/*!
-  Overloaded to initialize some elements before traversing
-  children.
-*/
+// Doc in superclass. Overloaded to initialize some elements before
+// traversing children.
 void 
 SoDragger::search(SoSearchAction * action)
 {
@@ -425,10 +420,8 @@ SoDragger::search(SoSearchAction * action)
   inherited::search(action);
 }
 
-/*!
-  Overloaded to initialize some elements before traversing
-  children.
-*/
+// Doc in superclass. Overloaded to initialize some elements before
+// traversing children.
 void 
 SoDragger::write(SoWriteAction * action)
 {
@@ -436,10 +429,8 @@ SoDragger::write(SoWriteAction * action)
   inherited::write(action);
 }
 
-/*!
-  Overloaded to initialize some elements before traversing
-  children.
-*/
+// Doc in superclass. Overloaded to initialize some elements before
+// traversing children.
 void 
 SoDragger::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
@@ -451,8 +442,8 @@ SoDragger::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 /*!
-  Adds a callback which is called at the start of a drag, after
-  the mouse butten 1 is pressed, and dragger is picked.
+  Adds a callback which is called at the start of a drag, after the
+  mouse button 1 is pressed, and dragger is picked.
 */
 void
 SoDragger::addStartCallback(SoDraggerCB * func, void * data)
@@ -461,7 +452,8 @@ SoDragger::addStartCallback(SoDraggerCB * func, void * data)
 }
 
 /*!
-  Removes a start callback,
+  Removes a previously registered start callback.
+
   \sa addStartCallback()
 */
 void
@@ -481,7 +473,8 @@ SoDragger::addMotionCallback(SoDraggerCB * func, void * data)
 }
 
 /*!
-  Removes a motion callback.
+  Removes a previously registered motion callback.
+
   \sa addMotionCallback()
 */
 void
@@ -501,6 +494,7 @@ SoDragger::addFinishCallback(SoDraggerCB * func, void * data)
 
 /*!
   Removes a finish callback.
+
   \sa addFinishCallback()
 */
 void
@@ -511,8 +505,9 @@ SoDragger::removeFinishCallback(SoDraggerCB * func, void * data)
 
 /*!
   Adds a callback which is called after a dragger has changed a field.
-  It is not called if the \e SoDragger::isActive field is changed.
-  \sa enableValueChangedCallback
+  It is not called if the SoDragger::isActive field is changed.
+
+  \sa enableValueChangedCallback()
 */
 void
 SoDragger::addValueChangedCallback(SoDraggerCB * func, void * data)
@@ -521,7 +516,8 @@ SoDragger::addValueChangedCallback(SoDraggerCB * func, void * data)
 }
 
 /*!
-  Remoes a value changed callback.
+  Removes a value changed callback.
+
   \sa addValueChangedCallback()
 */
 void
@@ -531,8 +527,8 @@ SoDragger::removeValueChangedCallback(SoDraggerCB * func, void * data)
 }
 
 /*!
-  Sets the number of pixel movement needed to trigger a constraint gesture.
-  Default is 8 pixels.
+  Sets the number of pixel movement needed to trigger a constraint
+  gesture.  Default is 8 pixels.
 */
 void
 SoDragger::setMinGesture(int pixels)
@@ -541,7 +537,8 @@ SoDragger::setMinGesture(int pixels)
 }
 
 /*!
-  Returns the minimum gesture pixels.
+  Returns the gesture pixels threshold value.
+
   \sa setMinGesture()
 */
 int
@@ -551,7 +548,8 @@ SoDragger::getMinGesture(void) const
 }
 
 /*!
-  Enable/disable value changed callbacks.
+  Enable or disable "value changed" callbacks.
+
   \sa addValueChangedCallback()
 */
 SbBool
@@ -574,10 +572,10 @@ SoDragger::getMotionMatrix(void)
 }
 
 /*!
-  Adds an event callback for events other then drag events.
-  As soon as dragging starts, the dragger grabs all events (until
-  mouse button is released). This method can be used to handle
-  other events during dragging.
+  Adds an event callback for events other then drag events.  As soon
+  as dragging starts, the dragger grabs all events (until mouse button
+  is released). This method can be used to handle other events during
+  dragging.
 */
 void
 SoDragger::addOtherEventCallback(SoDraggerCB * func, void * data)
@@ -587,6 +585,7 @@ SoDragger::addOtherEventCallback(SoDraggerCB * func, void * data)
 
 /*!
   Removes a other event callback.
+
   \sa addOtherEventCallback()
 */
 void
@@ -807,9 +806,11 @@ SoDragger::getStartMotionMatrix(void)
 }
 
 /*!
-  Is called to save start parameters to enable draggers to calculate
-  relative motion. Default method just saves the motion matrix, but
-  subclasses should overload this method if other data needs to be
+  This is invoked to save start parameters, to enable draggers to
+  calculate relative motion.
+
+  Default method in superclass SoDragger just saves the motion matrix,
+  but subclasses should overload this method if other data needs to be
   saved.
 */
 void
@@ -988,9 +989,9 @@ SoDragger::grabEventsCleanup(void)
 }
 
 /*!
-  Examines the fields of the dragger, changes the matrix according
-  to those fields and leaves the rest of the matrix as it was.
-  The following field names  are supported: translation, scaleFactor,
+  Examines the fields of the dragger, changes the matrix according to
+  those fields and leaves the rest of the matrix as it was.  The
+  following field names are supported: translation, scaleFactor,
   rotation and scaleOrientation.
 
   Not implemented.
@@ -1064,8 +1065,9 @@ SoDragger::getMinScale(void)
 }
 
 /*!
-  Same as above, but pointers to values are supplied. If a pointer is NULL, the
-  matrix value for that argument is used when reconstructing the matrix.
+  Same as above, but pointers to values are supplied. If a pointer is
+  \c NULL, the matrix value for that argument is used when reconstructing
+  the matrix.
 
   Not implemented.
 */
@@ -1087,8 +1089,9 @@ SoDragger::workValuesIntoTransform(SbMatrix & matrix, const SbVec3f * translatio
 }
 
 /*!
-  Use when there is no scaleorientation. Faster than workValuesIntoTransform().
-  Not implemented in Coin. We just forward the call to workValuesIntoTransform().
+  Use when there is no scaleorientation. Faster than
+  workValuesIntoTransform().  Not implemented in Coin. We just forward
+  the call to workValuesIntoTransform().
 */
 void
 SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation & rotation, SbVec3f & scalefactor, SbRotation & scaleorientation, const SbVec3f & center)
@@ -1099,7 +1102,9 @@ SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation
 
 /*!
   \overload
-  Not implemented in Coin. We just forward the call to workValuesIntoTransform().
+
+  Not implemented in Coin. We just forward the call to
+  workValuesIntoTransform().
 */
 void
 SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation & rotation, SbVec3f & scalefactor, SbRotation & scaleorientation)
@@ -1109,9 +1114,9 @@ SoDragger::getTransformFast(SbMatrix & matrix, SbVec3f & translation, SbRotation
 }
 
 /*!
-  Returns \a matrix after \a translation has been appended.
-  If \a conversion != NULL it is used to transform \a translation into
-  the space \matrix is defined.
+  Returns \a matrix after \a translation has been appended.  If \a
+  conversion != \c NULL it is used to transform \a translation into
+  the space \a matrix is defined.
 */
 SbMatrix
 SoDragger::appendTranslation(const SbMatrix & matrix, const SbVec3f & translation, const SbMatrix * conversion)
@@ -1127,9 +1132,9 @@ SoDragger::appendTranslation(const SbMatrix & matrix, const SbVec3f & translatio
 }
 
 /*!
-  Returns \a matrix after \a scale and \a scalecenter has been appended.
-  If \a conversion != NULL it is used to transform scale into
-  the space \matrix is defined.
+  Returns \a matrix after \a scale and \a scalecenter has been
+  appended.  If \a conversion != \c NULL it is used to transform scale
+  into the space \a matrix is defined.
 */
 
 SbMatrix
@@ -1138,7 +1143,7 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
   SbVec3f clampedscale;
   // The explicit casts are done to humour the HPUX aCC compiler,
   // which will otherwise say ``Template deduction failed to find a
-  // match for the call to 'SbMax'''. mortene.
+  // match for the call to 'SbMax'''.  mortene.
   clampedscale[0] = SbMax((float)scale[0], SoDragger::minscale);
   clampedscale[1] = SbMax((float)scale[1], SoDragger::minscale);
   clampedscale[2] = SbMax((float)scale[2], SoDragger::minscale);
@@ -1159,9 +1164,9 @@ SoDragger::appendScale(const SbMatrix & matrix, const SbVec3f & scale, const SbV
 }
 
 /*!  
-  Appends \a rot, around \a rotcenter, to \a matrix. If \a
-  conversion is != NULL, this is used to move the rotation into that
-  coordinate systems before appending the rotation.  
+  Appends \a rot, around \a rotcenter, to \a matrix. If \a conversion
+  is != \c NULL, this is used to move the rotation into that
+  coordinate systems before appending the rotation.
 */
 SbMatrix
 SoDragger::appendRotation(const SbMatrix & matrix, const SbRotation & rot, const SbVec3f & rotcenter, const SbMatrix * conversion)
@@ -1181,7 +1186,7 @@ SoDragger::appendRotation(const SbMatrix & matrix, const SbRotation & rot, const
 }
 
 /*!
-  Returns the position of the locater
+  Returns the position of the locater.
 */
 SbVec2f
 SoDragger::getNormalizedLocaterPosition(void)
@@ -1232,7 +1237,10 @@ SoDragger::setStartLocaterPosition(SbVec2s pos)
 }
 
 /*!
-  FIXME: doc
+  Checks if the mouse pointer has been moved enough after the end-user
+  hit a constraint mode key (which is typically \c SHIFT, sometimes
+  also \c CTRL for the built-in draggers) that we should act upon and
+  decide which direction the constraint should be set to.
 */
 SbBool
 SoDragger::isAdequateConstraintMotion(void)
@@ -1241,9 +1249,9 @@ SoDragger::isAdequateConstraintMotion(void)
     this->getStartLocaterPosition() -
     this->getLocaterPosition();
 
-  // The cast is done to avoid ambigouity error from HPUX aCC, as
-  // sqrt() can be either "long double sqrt(long double)" or "float
-  // sqrt(float)". mortene.
+  // The cast is done to avoid HPUX aCC failing with an "ambiguity
+  // error", as sqrt() can be either "long double sqrt(long double)"
+  // or "float sqrt(float)".  mortene.
   double len = sqrt(double(delta[0]*delta[0] + delta[1]*delta[1]));
 
   if (len >= (double) THIS->mingesture) return TRUE;
@@ -1251,8 +1259,9 @@ SoDragger::isAdequateConstraintMotion(void)
 }
 
 /*!
-  Checks if \a pickpath contains \a surrogatepath and returns TRUE if
-  the tail of \a surrogatepath is before any dragger in \a pickpath.
+  Checks if \a pickpath contains \a surrogatepath and returns \c TRUE
+  if the tail of \a surrogatepath is before any dragger in \a
+  pickpath.
 */
 SbBool
 SoDragger::shouldGrabBasedOnSurrogate(const SoPath * pickpath, const SoPath * surrogatepath)
@@ -1275,7 +1284,7 @@ SoDragger::shouldGrabBasedOnSurrogate(const SoPath * pickpath, const SoPath * su
 }
 
 /*!
-  FIXME: doc
+  Store data about the current camera in the given action.
 */
 void
 SoDragger::setCameraInfo(SoAction * action)
@@ -1417,7 +1426,7 @@ SoDragger::isIgnoreInBbox(void)
 
 /*!  
   Overloaded to ignore dragger bounding box if
-  SoDragger::isIgnoreInBbox() is TRUE.  
+  SoDragger::isIgnoreInBbox() is \c TRUE.
 */
 void
 SoDragger::getBoundingBox(SoGetBoundingBoxAction * action)
@@ -1542,9 +1551,7 @@ SoDragger::childOtherEventCB(void * data, SoDragger * child)
   THISP->otherEventCB.invokeCallbacks(thisp);
 }
 
-//
-// returns whether path goes through this node (dragger is picked)
-//
+// Returns whether path goes through this node (dragger is picked).
 SbBool
 SoDragger::isPicked(SoPath * path)
 {

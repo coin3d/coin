@@ -26,11 +26,17 @@
   \brief The SoCenterballDragger class is a dragger you can rotate and translate.
   \ingroup draggers
 
+  For rotation, click either the ball "bands" to contraint rotation to
+  happen around the normal vector of the disc, or anywhere else on the
+  (invisible) ball for free-form rotation.
+
+  Translation is done by clicking and dragging any of the four arrow
+  markers. Hold \c SHIFT to constrain translation to a single axis
+  instead of in the plane.
+
   When translating, instead of modifying the translation part of the
   motion matrix, a \e center field is updated, and the geometry is
   moved using an internal transformation node.
-
-  FIXME: more doc.
 */
 
 #include <Inventor/draggers/SoCenterballDragger.h>
@@ -51,11 +57,15 @@
 
 /*!
   \var SoSFRotation SoCenterballDragger::rotation
-  FIXME: doc
+
+  This field is continuously updated to contain the rotation of the
+  ball.
 */
 /*!
   \var SoSFVec3f SoCenterballDragger::center
-  FIXME: doc
+
+  Continuously updated to contain the current translation from the
+  dragger's internal local origo position.
 */
 
 /*!
@@ -166,9 +176,8 @@ SoCenterballDragger::~SoCenterballDragger()
   delete this->centerFieldSensor;
 }
 
-/*!
-  overloaded to save some information necessary to move center correctly.
-*/
+// Doc in superclass. Overloaded to save some information necessary to
+// move center correctly.
 void
 SoCenterballDragger::saveStartParameters(void)
 {
@@ -181,7 +190,8 @@ SoCenterballDragger::saveStartParameters(void)
 }
 
 /*!
-  Should be called after motion matrix has been updated by a child dragger.
+  Should be called after motion matrix has been updated by a child
+  dragger.
 */
 void
 SoCenterballDragger::transferCenterDraggerMotion(SoDragger * childdragger)
@@ -225,8 +235,8 @@ SoCenterballDragger::transferCenterDraggerMotion(SoDragger * childdragger)
 }
 
 /*!
-  Sets values for the internal SoSwitch parts. If \a activechild == NULL,
-  all feedback is deactivated.
+  Sets values for the internal SoSwitch parts. If \a activechild ==
+  \c NULL, all feedback is deactivated.
 */
 void
 SoCenterballDragger::setSwitches(SoDragger * activechild)
@@ -399,6 +409,7 @@ SoCenterballDragger::valueChangedCB(void *, SoDragger * d)
 }
 
 /*!
+  \internal
   Needed to activate some feedback.
 */
 void
@@ -413,6 +424,7 @@ SoCenterballDragger::kidStartCB(void * d , SoDragger * child)
 }
 
 /*!
+  \internal
   Needed to deactive some feedback.
 */
 void
@@ -426,9 +438,8 @@ SoCenterballDragger::kidFinishCB(void * d, SoDragger * child)
   if (scale) scale->invalidate();
 }
 
-//
-// convenience method that takes care of callbacks before registering child
-//
+// Convenience method that takes care of callbacks before registering
+// child.
 void
 SoCenterballDragger::addChildDragger(SoDragger *child)
 {
@@ -449,6 +460,7 @@ SoCenterballDragger::removeChildDragger(const char *childname)
   this->unregisterChildDragger(child);
 }
 
+// Doc in superclass.
 void 
 SoCenterballDragger::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -463,6 +475,7 @@ SoCenterballDragger::getBoundingBox(SoGetBoundingBoxAction * action)
   else inherited::getBoundingBox(action);
 }
 
+// Doc in superclass.
 void 
 SoCenterballDragger::getMatrix(SoGetMatrixAction * action)
 {
