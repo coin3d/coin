@@ -48,6 +48,7 @@
 #               SoTransformVec3f
 # CI            SoTriggerAny
 # ci    SoEngineOutput
+#       SoUnknownEngine
 #
 #############################################################################
 #
@@ -80,43 +81,3 @@
 # END COMMENTS
 #
 #############################################################################
-
-bool 'Disable engines' COIN_EXCLUDE_SOENGINE
-if [ "$COIN_EXCLUDE_SOENGINE" = "n" ]; then
-  bool '   Exclude SoBoolOperation' COIN_EXCLUDE_SOBOOLOPERATION
-  bool '   Exclude SoCalculator' COIN_EXCLUDE_SOCALCULATOR
-  bool '   Exclude SoComposeVec2f' COIN_EXCLUDE_SOCOMPOSEVEC2F
-  bool '   Exclude SoComposeVec3f' COIN_EXCLUDE_SOCOMPOSEVEC3F
-  bool '   Exclude SoComposeVec4f' COIN_EXCLUDE_SOCOMPOSEVEC4F
-  bool '   Exclude SoDecomposeVec2f' COIN_EXCLUDE_SODECOMPOSEVEC2F
-  bool '   Exclude SoDecomposeVec3f' COIN_EXCLUDE_SODECOMPOSEVEC3F
-  bool '   Exclude SoDecomposeVec4f' COIN_EXCLUDE_SODECOMPOSEVEC4F
-  bool '   Exclude SoComposeRotation' COIN_EXCLUDE_SOCOMPOSEROTATION
-  bool '   Exclude SoComposeRotationFromTo' COIN_EXCLUDE_SOCOMPOSEROTATIONFROMTO
-  bool '   Exclude SoDecomposeRotation' COIN_EXCLUDE_SODECOMPOSEROTATION
-  bool '   Exclude SoComposeMatrix' COIN_EXCLUDE_SOCOMPOSEMATRIX
-  bool '   Exclude SoDecomposeMatrix' COIN_EXCLUDE_SODECOMPOSEMATRIX
-  bool '   Exclude SoComputeBoundingBox' COIN_EXCLUDE_SOCOMPUTEBOUNDINGBOX
-  bool '   Exclude SoConcatenate' COIN_EXCLUDE_SOCONCATENATE
-  bool '   Exclude SoCounter' COIN_EXCLUDE_SOCOUNTER
-  bool '   Exclude SoElapsedTime' COIN_EXCLUDE_SOELAPSEDTIME
-  bool '   Exclude SoFieldConverter' COIN_EXCLUDE_SOFIELDCONVERTER
-    if [ "$COIN_EXCLUDE_SOFIELDCONVERTER" = "n" ]; then
-      bool '      Exclude SoConvertAll' COIN_EXCLUDE_SOCONVERTALL
-    fi
-  bool '   Exclude SoGate' COIN_EXCLUDE_SOGATE
-  bool '   Exclude SoInterpolate' COIN_EXCLUDE_SOINTERPOLATE
-    if [ "$COIN_EXCLUDE_SOINTERPOLATE" = "n" ]; then
-      bool '      Exclude SoInterpolateFloat' COIN_EXCLUDE_SOINTERPOLATEFLOAT
-      bool '      Exclude SoInterpolateRotation' COIN_EXCLUDE_SOINTERPOLATEROTATION
-      bool '      Exclude SoInterpolateVec2f' COIN_EXCLUDE_SOINTERPOLATEVEC2F
-      bool '      Exclude SoInterpolateVec3f' COIN_EXCLUDE_SOINTERPOLATEVEC3F
-      bool '      Exclude SoInterpolateVec4f' COIN_EXCLUDE_SOINTERPOLATEVEC4F
-    fi
-  bool '   Exclude SoOnOff' COIN_EXCLUDE_SOONOFF
-  bool '   Exclude SoOneShot' COIN_EXCLUDE_SOONESHOT
-  bool '   Exclude SoSelectOne' COIN_EXCLUDE_SOSELECTONE
-  bool '   Exclude SoTimeCounter' COIN_EXCLUDE_SOTIMECOUNTER
-  bool '   Exclude SoTransformVec3f' COIN_EXCLUDE_SOTRANSFORMVEC3F
-  bool '   Exclude SoTriggerAny' COIN_EXCLUDE_SOTRIGGERANY
-fi

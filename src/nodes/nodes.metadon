@@ -124,6 +124,7 @@
 # T-G-p-c              SoTextureCoordinatePlane
 #  BG-P-C      SoVertexProperty
 #  B   -       SoWWWInline
+#              SoUnknownNode
 #
 # ************************************************************************
 #
@@ -135,6 +136,9 @@
 #
 # We need to implement and check override functionality, which is not done
 # at all now.
+#
+# Add flags for "Implementation" (codifying all methods besides the
+# action methods) and "Documentation".
 #
 # END COMMENTS
 #
