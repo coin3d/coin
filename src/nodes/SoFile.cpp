@@ -38,22 +38,20 @@
   which imports the filename you set in the field.
 */
 
+#include <string.h>
+
 #include <Inventor/nodes/SoFile.h>
-#include <Inventor/nodes/SoSubNodeP.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
+
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoGroup.h>
+#include <Inventor/nodes/SoSubNodeP.h>
 #include <Inventor/sensors/SoFieldSensor.h>
-
-#if COIN_DEBUG
-#include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
-
-#include <string.h>
 
 /*!
   \var SoSFString SoFile::name

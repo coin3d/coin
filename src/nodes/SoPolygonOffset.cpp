@@ -49,6 +49,54 @@
   polygons, lines and/or points should be offset with regard to other
   primitives.
 
+  As for the details of how the SoPolygonOffset::factor and
+  SoPolygonOffset::units should be set, we quote the OpenGL
+  documentation:
+
+  \verbatim
+
+      The value of the offset is
+
+          factor * DZ + r * units
+
+      where DZ is a measurement of the change in depth relative to the
+      screen area of the polygon, and r is the smallest value that is
+      guaranteed to produce a resolvable offset for a given
+      implementation. The offset is added before the depth test is
+      performed and before the value is written into the depth buffer.
+
+  \endverbatim
+
+
+  Below is a simple usage example:
+
+  \verbatim
+  #Inventor V2.1 ascii
+  
+  Separator {
+     Coordinate3 { point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] }
+  
+     BaseColor { rgb 1 1 0 }
+     IndexedLineSet { coordIndex [ 0, 1, 2, 3, 0, 2, -1, 1, 3 -1 ] }
+  
+     PolygonOffset {
+       styles FILLED
+       factor 1.0
+       units 1.0
+     }
+  
+     BaseColor { rgb 0 0.5 0 }
+     FaceSet { numVertices [ 4 ] }
+  }
+  \endverbatim
+
+  Without the polygonoffset node in the above example, the line will
+  look irregularly stippled, as parts of it will show through the
+  faceset, others not. This happen on seemingly random parts, as the
+  z-buffer floating point calculations will be fickle with regard to
+  whether or not the polygon or the line will be closer to the camera.
+
+
   \since TGS Inventor 2.5
   \since Coin 1.0
 */
@@ -72,18 +120,38 @@
 /*!
   \var SoSFFloat SoPolygonOffset::factor
 
-  Offset multiplication factor.
+  Offset multiplication factor. Scales the variable depth in the
+  z-buffer of the rendered primitives.
+
+  See SoPolygonOffset's main class documentation above for detailed
+  information on how the factor value is used.
+
+  Default value is 1.0.
 */
 /*!
   \var SoSFFloat SoPolygonOffset::units
 
-  Absolute offset translation value.
+  Offset translation multiplication factor. Will be multiplied with
+  the value which represents the smallest discrete step that can be
+  distinguished with the underlying Z-buffer resolution.
+
+  See SoPolygonOffset's main class documentation above for detailed
+  information on how the units value is used.
+
+  Note that positive values will push geometry "away" into the
+  Z-buffer, while negative values will "move" geometry closer.
+
+  Default value is 1.0.
 */
 /*!
   \var SoSFBitMask SoPolygonOffset::styles
 
-  The rendering primitive type to be influenced by this node. Defaults
-  to SoPolygonOffset::FILLED.
+  The rendering primitive type to be influenced by this node. This is
+  a bitmask variable, so you can select several primitive types (out
+  of filled polygons, lines and points) be influenced by the offset at
+  the same time.
+
+  Defaults to SoPolygonOffset::FILLED.
 */
 /*!
   \var SoSFBool SoPolygonOffset::on

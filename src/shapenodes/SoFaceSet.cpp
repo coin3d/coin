@@ -30,7 +30,7 @@
   normals, materials and texture coordinates are fetched in order from
   the current state or from the vertexProperty node if set. For
   example, if numVertices is set to [3, 4, 5, 3], this node would
-  specify a tringle from coordinates 0, 1 and 2, a quad from
+  specify a triangle from coordinates 0, 1 and 2, a quad from
   coordinates 3, 4, 5 and 6, a polygon from coordinates 7, 8, 9, 10
   and 11 and finally a triangle from coordinates 12, 13, 14.
 
