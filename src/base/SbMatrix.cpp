@@ -27,9 +27,22 @@
   \ingroup base
 
   SbMatrix is used by many other classes in Coin.  It provides storage
-  for a 4x4 matrix in row-major mode. Many common geometrical
-  operations which involves matrix calculations are implemented as
-  methods on this class.
+  for a 4x4 matrix of single-precision floating point values.
+
+  By definition, matrices in Coin should be set up in column-order
+  mode. This is the same order as used by e.g. OpenGL, but note that
+  books on geometry often uses the opposite row-order mode, which can
+  confuse new-comers to the API.
+
+  Another way to think of column-order matrices is that they use
+  post-order multiplications: that is, to concatenate a transformation
+  from a second matrix with your current matrix, it should be
+  multiplied on the right-hand side, i.e. with the
+  SbMatrix::multRight() method.
+
+  If you have a matrix in row-order from some other source, it can be
+  "converted" to column-order by transposing it with
+  SbMatrix::transpose().
 */
 
 // FIXME:
@@ -38,8 +51,8 @@
 //
 //  * The element access methods should be inlined.
 //
-//  * Optimizations are not done yet, so there's a lot of room for
-//    improvements.
+//  * Not a lot of optimizations have been done yet, so there's a lot
+//    of room for improvements.
 
 
 #include <Inventor/SbMatrix.h>
@@ -1206,6 +1219,10 @@ SbMatrix::transpose(void) const
   Let this matrix be right-multiplied by \a m. Returns reference to
   self.
 
+  This is the most common multiplication / concatenation operation
+  when using column-order matrices, as SbMatrix instances are, by
+  definition.
+
   \sa multLeft()
 */
 SbMatrix &
@@ -1241,6 +1258,11 @@ SbMatrix::multRight(const SbMatrix & m)
   Let this matrix be left-multiplied by \a m. Returns reference to
   self.
 
+  (Be aware that it is more common to use the SbMatrix::multRight()
+  operation, when doing concatenation of transformations, as SbMatrix
+  instances are by definition in column-order, and uses
+  post-multiplication for common geometry operations.)
+
   \sa multRight()
 */
 SbMatrix&
@@ -1273,6 +1295,12 @@ SbMatrix::multLeft(const SbMatrix & m)
   Multiply \a src vector with this matrix and return the result in \a dst.
   Multiplication is done with the vector on the right side of the
   expression, i.e. dst = M * src.
+
+  (Be aware that it is more common to use the
+  SbMatrix::multVecMatrix() operation, when doing vector
+  transformations, as SbMatrix instances are by definition in
+  column-order, and uses post-multiplication for common geometry
+  operations.)
 
   \sa multVecMatrix(), multDirMatrix() and multLineMatrix().
 */
@@ -1307,6 +1335,10 @@ SbMatrix::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
   This method can be used (using the current model matrix) to
   transform a point from an object coordinate systems to the world
   coordinate system.
+
+  This operation is what you would usually do when transforming
+  vectors, as SbMatrix instances are, by definition, column-order
+  matrices.
 
   \sa multMatrixVec(), multDirMatrix() and multLineMatrix().  
 */

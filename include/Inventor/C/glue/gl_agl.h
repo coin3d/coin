@@ -32,13 +32,17 @@
 extern "C" {
 #endif /* __cplusplus */
 
-void * coin_agl_getprocaddress(const char * fname);
 
-void * aglglue_context_create_offscreen(unsigned int width, 
+void * aglglue_getprocaddress(const char * fname);
+void * aglglue_context_create_offscreen(unsigned int width,
                                         unsigned int height);
 SbBool aglglue_context_make_current(void * ctx);
 void aglglue_context_reinstate_previous(void * ctx);
 void aglglue_context_destruct(void * ctx);
+void aglglue_context_bind_pbuffer(void * ctx);
+void aglglue_context_release_pbuffer(void * ctx);
+SbBool aglglue_context_pbuffer_is_bound(void * ctx);
+SbBool aglglue_context_can_render_to_texture(void * ctx);
 
 #ifdef __cplusplus
 }

@@ -25,7 +25,7 @@
 \**************************************************************************/
 
 #ifndef COIN_INTERNAL
-#error this is a private header file
+#error You have tried to use one of the private Coin header files
 #endif /* ! COIN_INTERNAL */
 
 #include <Inventor/system/inttypes.h>

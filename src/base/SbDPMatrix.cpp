@@ -23,16 +23,14 @@
 
 /*!
   \class SbDPMatrix SbDPMatrix.h Inventor/SbDPMatrix.h
-  \brief The SbDPMatrix class is a 4x4 dimensional representation of a
-    double-precision matrix.
+  \brief The SbDPMatrix class is a 4x4 dimensional representation of a double-precision matrix.
   \ingroup base
 
-  SbDPMatrix is not used by many classes in Coin.  It provides storage
-  for a 4x4 matrix in row-major mode.  Many common geometrical
-  operations which involves matrix calculations are implemented as
-  methods on this class.
+  This class is like the SbMatrix class, but uses double-precision
+  floating point values for its elements. For more class
+  documentation, see SbMatrix.
 
-  \since
+  \since Coin 2.0.
 */
 
 // FIXME: we should _really_ have double-precision classes compatible

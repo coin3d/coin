@@ -21,152 +21,34 @@
  *
 \**************************************************************************/
 
-/*!
-  \class SoIntersectionDetectionAction Inventor/collision/SoIntersectionDetectionAction.h
-  \brief The SoIntersectionDetectionAction class is for detecting intersecting
-  primitives in a scene.
-  \ingroup actions
-  \ingroup collision
-
-  Below is a simple usage example for this class. It was written as a
-  stand-alone framework set up for profiling and optimization of the
-  SoIntersectionDetectionAction. It tests intersection of all shapes
-  against each other for the loaded file.
-
-  \code
-  #include <stdlib.h>
-  #include <Inventor/SbTime.h>
-  #include <Inventor/SoDB.h>
-  #include <Inventor/SoInteraction.h>
-  #include <Inventor/collision/SoIntersectionDetectionAction.h>
-  #include <Inventor/errors/SoDebugError.h>
-  #include <Inventor/nodekits/SoNodeKit.h>
-  #include <Inventor/nodes/SoSeparator.h>
-  
-  static SoIntersectionDetectionAction::Resp
-  intersectionCB(void * closure, 
-                 const SoIntersectingPrimitive * pr1,
-                 const SoIntersectingPrimitive * pr2)
-  {
-    (void)fprintf(stdout, "intersection hit!\n");
-    return SoIntersectionDetectionAction::NEXT_PRIMITIVE;
-  }
-  
-  int
-  main(int argc, char ** argv)
-  {
-    SoDB::init();
-    SoNodeKit::init();
-    SoInteraction::init();
-  
-    if (argc != 2) {
-      (void)fprintf(stderr, "\n\tUsage: testapp <filename.iv>\n\n");
-      exit(1);
-    }
-  
-    SoInput in;
-    SbBool ok = in.openFile(argv[1]);
-    assert(ok);
-    SoSeparator * root = SoDB::readAll(&in);
-    assert(root);
-  
-    root->ref();
-  
-    SoIntersectionDetectionAction ida;
-    ida.addIntersectionCallback(intersectionCB, NULL);
-    ida.setManipsEnabled(FALSE);
-    ida.setDraggersEnabled(FALSE);
-    ida.setIntersectionDetectionEpsilon(10.0f);
-  
-    SbTime starttime = SbTime::getTimeOfDay();
-    SoDebugError::postInfo("main", "SoIntersectionDetectionAction::apply");
-  
-    ida.apply(root);
-  
-    SoDebugError::postInfo("main", "apply() done after %f seconds.",
-                           (SbTime::getTimeOfDay() - starttime).getValue());
-  
-    root->unref();
-  
-    return 0;
-  }
-  \endcode
-
-  \since Coin 2.1
-  \since TGS Inventor 2.4
-*/
-
-// FIXME: intersection with lines not implemented yet. 20030507 mortene.
-
-#include <Inventor/collision/SoIntersectionDetectionAction.h>
-
-#include <Inventor/C/tidbits.h>
-#include <Inventor/SbOctTree.h>
-#include <Inventor/SbTime.h>
-#include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbXfBox3f.h>
 #include <Inventor/SoPath.h>
 #include <Inventor/SoPrimitiveVertex.h>
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
-#include <Inventor/actions/SoWriteAction.h>
-#include <Inventor/caches/SoBoundingBoxCache.h>
-#include <Inventor/draggers/SoDragger.h>
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/lists/SbPList.h>
+#include <Inventor/errors/SoDebugError.h>
+#include <Inventor/nodes/SoShape.h>
+#include <Inventor/draggers/SoDragger.h>
+#include <Inventor/manips/SoTransformManip.h>
 #include <Inventor/manips/SoClipPlaneManip.h>
 #include <Inventor/manips/SoDirectionalLightManip.h>
 #include <Inventor/manips/SoPointLightManip.h>
 #include <Inventor/manips/SoSpotLightManip.h>
-#include <Inventor/manips/SoTransformManip.h>
-#include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoIndexedLineSet.h>
-#include <Inventor/nodes/SoMatrixTransform.h>
-#include <Inventor/nodes/SoShape.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Inventor/nodes/SoText2.h>
-#include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/collision/SoIntersectionDetectionAction.h>
+#include <Inventor/caches/SoBoundingBoxCache.h>
 
 #include "SbTri3f.ih"
 #include "SbTri3f.icc"
 
 // *************************************************************************
 
-/*!
-  \struct SoIntersectingPrimitive Inventor/collision/SoIntersectionDetectionAction.h
-  \brief Struct with collision information.
-
-  This struct is passed to the collision callback registered by the
-  application programmer. It contains information about which
-  primitives are intersecting each other.
-*/
-
-// FIXME: should document all elements in the struct;
-//
-// struct SoIntersectingPrimitive {
-//   SoPath * path;
-//   enum PrimitiveType {
-//     SEGMENT = 2,
-//     LINE_SEGMENT = 2,
-//     TRIANGLE = 3
-//   } type;
-//   SbVec3f vertex[3];
-//   SbVec3f xf_vertex[3];
-// };
-//
-// 20030613 mortene.
-
-// *************************************************************************
-
-class ShapeData;
-class PrimitiveData;
+struct ShapeData;
+struct PrimitiveData;
 
 class SoIntersectionDetectionActionP {
 public:
   SoIntersectionDetectionActionP(void);
-  ~SoIntersectionDetectionActionP();
+  ~SoIntersectionDetectionActionP(void);
 
   static float staticepsilon;
   float epsilon;
@@ -190,18 +72,21 @@ public:
   static SoCallbackAction::Response draggerCB(void * closure, SoCallbackAction * action, const SoNode * node);
   static SoCallbackAction::Response pruneCB(void * closure, SoCallbackAction * action, const SoNode * node);
 
+  static void triangleCB(void * closure, SoCallbackAction * action, const SoPrimitiveVertex * v1, const SoPrimitiveVertex * v2, const SoPrimitiveVertex * v3);
+  static PrimitiveData * generatePrimitives(ShapeData * shape);
+  static void deletePrimitives(PrimitiveData * primitives);
+
   void reset(void);
   void doIntersectionTesting(void);
-  void doPrimitiveIntersectionTesting(PrimitiveData * primitives1, PrimitiveData * primitives2, SbBool & cont);
-  void doInternalPrimitiveIntersectionTesting(PrimitiveData * primitives, SbBool & cont);
+  SbBool doPrimitiveIntersectionTesting(PrimitiveData * primitives1, PrimitiveData * primitives2);
+  SbBool doInternalPrimitiveIntersectionTesting(PrimitiveData * primitives);
 
   SoTypeList * prunetypes;
 
   SoTypeList * traversaltypes;
   SbPList * traversalcallbacks;
 
-  SbList<ShapeData*> shapedata;
-  SbXfBox3f fullxfbbox;
+  SbPList * shapedata;
 };
 
 float SoIntersectionDetectionActionP::staticepsilon = 0.0f;
@@ -217,6 +102,7 @@ SoIntersectionDetectionActionP::SoIntersectionDetectionActionP(void)
   this->filterclosure = NULL;
   this->callbacks = new SbPList;
   this->traverser = NULL;
+  this->shapedata = new SbPList;
   this->prunetypes = new SoTypeList;
   this->traversaltypes = new SoTypeList;
   this->traversalcallbacks = new SbPList;
@@ -227,6 +113,7 @@ SoIntersectionDetectionActionP::~SoIntersectionDetectionActionP(void)
   this->reset();
   delete this->callbacks;
   delete this->traverser;
+  delete this->shapedata;
   delete this->prunetypes;
   delete this->traversaltypes;
   delete this->traversalcallbacks;
@@ -243,22 +130,24 @@ SoIntersectionDetectionActionP::getEpsilon(void) const
 
 #define PRIVATE(obj) ((obj)->pimpl)
 
-// *************************************************************************
-
-static SbBool
-ida_debug(void)
-{
-  static int dbg = -1;
-  if (dbg == -1) {
-    const char * env = coin_getenv("COIN_IDA_DEBUG");
-    dbg = env && atoi(env) > 0;
-  }
-  return dbg == 0 ? FALSE : TRUE;
-}
-
-// *************************************************************************
-
 SO_ACTION_SOURCE(SoIntersectionDetectionAction);
+
+/*!
+  \class SoIntersectionDetectionAction Inventor/collision/SoIntersectionDetectionAction.h
+  \brief The SoIntersectionDetectionAction class is for detecting intersecting
+  primitives in a scene.
+  \ingroup actions
+  \ingroup collision
+
+  HUGE WARNING SIGN:
+  Note that the implementation is somewhat incomplete. Only intersection
+  testing between triangles is done, and the algorithm used is O(N^2) -
+  no significant optimizations is done at this time.
+  The algorithm used when specifying an epsilon value is even more
+  non-optimized and unusable for any real scenario.
+
+  \since 20021022
+*/
 
 void
 SoIntersectionDetectionAction::initClass(void)
@@ -276,9 +165,6 @@ SoIntersectionDetectionAction::~SoIntersectionDetectionAction(void)
   delete PRIVATE(this);
 }
 
-// FIXME: is the "epsilon is not supported yet" statement below false?
-// 20030326 mortene.
-
 /*!
   Sets the global intersection detection distance epsilon value.
   This will affect all intersection detection action objects in use that
@@ -286,19 +172,12 @@ SoIntersectionDetectionAction::~SoIntersectionDetectionAction(void)
 
   The epsilon value is a worldspace value.
 
-  Be aware that increasing the epsilon value can \e dramatically
-  increase the number of primitive intersection tests being done to
-  decide intersections. Increasing the epsilon value can therefore
-  cause serious slow-downs in the running time of the intersections
-  checks.
-
   Epsilon is not supported yet.
 */
 
 void
 SoIntersectionDetectionAction::setIntersectionEpsilon(float epsilon) // static
 {
-  assert(epsilon >= 0.0f);
   SoIntersectionDetectionActionP::staticepsilon = epsilon;
 }
 
@@ -313,16 +192,17 @@ SoIntersectionDetectionAction::getIntersectionEpsilon(void) // static
 }
 
 /*!
-  Sets the intersection detection distance epsilon value for the
-  action object.  This overrides the global value.
+  Sets the intersection detection distance epsilon value for the action object.
+  This overrides the global value.
 
-  See also SoIntersectionDetectionAction::setIntersectionEpsilon() for
-  important information about how this setting influences performance.
+  The epsilon value is a worldspace value.
+
+  Epsilon is not supported yet.
 */
+
 void
 SoIntersectionDetectionAction::setIntersectionDetectionEpsilon(float epsilon)
 {
-  assert(epsilon >= 0.0f);
   PRIVATE(this)->epsilon = epsilon;
   PRIVATE(this)->epsilonset = TRUE;
 }
@@ -460,7 +340,7 @@ SoIntersectionDetectionAction::isDraggersEnabled(void) const
   Sets whether nodes in the scene graph should be checked for intersecting
   primitives within themselves.
 
-  Default is \c FALSE.
+  This setting is not supported yet.
 
   \sa isShapeInternalsEnabled()
 */
@@ -475,7 +355,7 @@ SoIntersectionDetectionAction::setShapeInternalsEnabled(SbBool enable)
   Returns whether nodes in the scene graph will be checked for
   intersecting primitives within themselves.
 
-  The default value for this setting is \c FALSE.
+  The default value for this setting is FALSE.
 
   \sa setShapeInternalsEnabled()
 */
@@ -596,65 +476,15 @@ SoIntersectionDetectionAction::removeIntersectionCallback(SoIntersectionCB * cb,
 void
 SoIntersectionDetectionAction::apply(SoNode * node)
 {
-  // Keep this around for now, for getting a stand-alone scene to work
-  // with from an invocation from the ToyotaViewer
-  // application. mortene.
-#if 0 // disabled
-  SoOutput out;
-  SbBool ok = out.openFile("/tmp/assembly.wrl");
-  assert(ok);
-  SoWriteAction wa(&out);
-  wa.apply(node);
-  out.closeFile();
-#endif // disabled
-
   PRIVATE(this)->reset();
-
-  // Needs a bounding box for the full scene, for later initialization
-  // of the SbOctTree of shape bounding boxes.
-  SbViewportRegion vp;
-  SoGetBoundingBoxAction bboxaction(vp);
-  bboxaction.apply(node);
-  PRIVATE(this)->fullxfbbox = bboxaction.getXfBoundingBox();
-
-  if (ida_debug()) { // debug
-    SoGetPrimitiveCountAction counter;
-    counter.apply(node);
-    SoDebugError::postInfo("SoIntersectionDetectionAction::apply",
-                           "number of triangle primitives in scene: %d",
-                           counter.getTriangleCount());
-  }
-
   PRIVATE(this)->traverser->apply(node);
-
-  SbTime starttime;
-  if (ida_debug()) { // debug
-    starttime = SbTime::getTimeOfDay();
-    SoDebugError::postInfo("SoIntersectionDetectionAction::apply",
-                           "calling doIntersectionTesting()...");
-  }
-
   PRIVATE(this)->doIntersectionTesting();
-
-  if (ida_debug()) { // debug
-    SoDebugError::postInfo("SoIntersectionDetectionAction::apply",
-                           "doIntersectionTesting() done after %f seconds.",
-                           (SbTime::getTimeOfDay() - starttime).getValue());
-  }
 }
 
 void
 SoIntersectionDetectionAction::apply(SoPath * path)
 {
   PRIVATE(this)->reset();
-
-  // Needs a bounding box for the full scene, for later initialization
-  // of the SbOctTree of shape bounding boxes.
-  SbViewportRegion vp;
-  SoGetBoundingBoxAction bboxaction(vp);
-  bboxaction.apply(path);
-  PRIVATE(this)->fullxfbbox = bboxaction.getXfBoundingBox();
-
   PRIVATE(this)->traverser->apply(path);
   PRIVATE(this)->doIntersectionTesting();
 }
@@ -663,185 +493,69 @@ void
 SoIntersectionDetectionAction::apply(const SoPathList & paths, SbBool obeysRules)
 {
   PRIVATE(this)->reset();
-
-  // Needs a bounding box for the full scene, for later initialization
-  // of the SbOctTree of shape bounding boxes.
-  SbViewportRegion vp;
-  SoGetBoundingBoxAction bboxaction(vp);
-  bboxaction.apply(paths, obeysRules);
-  PRIVATE(this)->fullxfbbox = bboxaction.getXfBoundingBox();
-
   PRIVATE(this)->traverser->apply(paths, obeysRules);
   PRIVATE(this)->doIntersectionTesting();
 }
 
 // *************************************************************************
 
-class PrimitiveData {
-public:
-  PrimitiveData(void)
-  {
-    this->path = NULL;
-    this->octtree = NULL;
-  }
-
-  ~PrimitiveData()
-  {
-    if (this->octtree) { delete this->octtree; }
-    for (unsigned int i = 0; i < this->numTriangles(); i++) { delete this->getTriangle(i); }
-  }
-
-
-  const SbOctTree * getOctTree(void) {
-    if (this->octtree == NULL) {
-      SbOctTreeFuncs funcs = {
-        NULL /* bboxfunc */, NULL /* ptinsidefunc */,
-        PrimitiveData::insideboxfunc,
-        NULL /* insidespherefunc */, NULL /* insideplanesfunc */
-      };
-
-      this->octtree = new SbOctTree(this->getBoundingBox(), funcs);
-      if (ida_debug()) {
-        SoDebugError::postInfo("PrimitiveData::getOctTree",
-                               "made new octtree for PrimitiveData %p", this);
-      }
-
-      for (unsigned int k = 0; k < this->numTriangles(); k++) {
-        SbTri3f * t = this->getTriangle(k);
-        this->octtree->addItem(t);
-      }
-    }
-    return this->octtree;
-  }
-
-
-  void setPath(SoPath * p) { this->path = p; }
-  SoPath * getPath(void) const { return this->path; }
-
-  void addTriangle(SbTri3f * t)
-  {
-    assert(this->octtree == NULL && "all triangles must be added before making octtree");
-    this->triangles.append(t);
-    this->bbox.extendBy(t->getBoundingBox());
-  }
-
-  unsigned int numTriangles(void) const { return this->triangles.getLength(); }
-  SbTri3f * getTriangle(const int idx) const { return this->triangles[idx]; }
-
-  const SbBox3f & getBoundingBox(void) const { return this->bbox; }
-
-  SbMatrix transform;
-  SbMatrix invtransform;
-
-private:
-  static SbBool insideboxfunc(void * const item, const SbBox3f & box);
-
+struct ShapeData {
   SoPath * path;
-  SbList<SbTri3f*> triangles;
-  SbBox3f bbox;
-  SbOctTree * octtree;
+  SbXfBox3f bbox;
 };
 
-SbBool
-PrimitiveData::insideboxfunc(void * const item, const SbBox3f & box)
-{
-  SbTri3f * tri = (SbTri3f *)item;
-  return box.intersect(tri->getBoundingBox());
-}
-
-// *************************************************************************
-
-class ShapeData {
-public:
-  ShapeData(void)
-  {
-    this->primitives = NULL;
-  }
-
-  ~ShapeData()
-  {
-    if (this->primitives) { delete this->primitives; }
-  }
-
-  PrimitiveData * getPrimitives(void);
-
+struct PrimitiveData {
+  SbPList * triangles;
   SoPath * path;
-  SbXfBox3f xfbbox;
-
-private:
-  static void triangleCB(void * closure, SoCallbackAction *,
-                         const SoPrimitiveVertex * v1,
-                         const SoPrimitiveVertex * v2,
-                         const SoPrimitiveVertex * v3);
-
-  PrimitiveData * primitives;
+  SbMatrix transform;
+  SbMatrix invtransform;
 };
 
 void
-ShapeData::triangleCB(void * closure, SoCallbackAction *,
-                      const SoPrimitiveVertex * v1,
-                      const SoPrimitiveVertex * v2,
-                      const SoPrimitiveVertex * v3)
+SoIntersectionDetectionActionP::triangleCB(void * closure, SoCallbackAction * action, const SoPrimitiveVertex * v1, const SoPrimitiveVertex * v2, const SoPrimitiveVertex * v3)
 {
   PrimitiveData * primitives = (PrimitiveData *) closure;
-  const SbVec3f & oa = v1->getPoint();
-  const SbVec3f & ob = v2->getPoint();
-  const SbVec3f & oc = v3->getPoint();
+  const SbVec3f & oa =  v1->getPoint();
+  const SbVec3f & ob =  v2->getPoint();
+  const SbVec3f & oc =  v3->getPoint();
   SbVec3f wa, wb, wc;
   primitives->transform.multVecMatrix(oa, wa);
   primitives->transform.multVecMatrix(ob, wb);
   primitives->transform.multVecMatrix(oc, wc);
-
-  // Only add valid triangles.
-  const SbVec3f normal = (wa - wb).cross(wa - wc);
-  if (normal.length() > 0.0f) {
-    SbTri3f * triangle = new SbTri3f(wa, wb, wc);
-    primitives->addTriangle(triangle);
-  }
-  else {
-    static SbBool warn = TRUE;
-    if (warn) {
-      warn = FALSE;
-      SoDebugError::postWarning("ShapeData::triangleCB",
-                                "Found an invalid triangle while souping up "
-                                "triangle primitives from a shape for "
-                                "intersection testing. Transformed=="
-                                "<<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>>. "
-                                "Untransformed=="
-                                "<<%f, %f, %f>, <%f, %f, %f>, <%f, %f, %f>>. "
-                                "Will only warn once, there could be more "
-                                "cases.",
-                                wa[0], wa[1], wa[2],
-                                wb[0], wb[1], wb[2],
-                                wc[0], wc[1], wc[2],
-                                oa[0], oa[1], oa[2],
-                                ob[0], ob[1], ob[2],
-                                oc[0], oc[1], oc[2]);
-    }
-  }
+  SbTri3f * triangle = new SbTri3f(wa, wb, wc);
+  primitives->triangles->append(triangle);
 }
 
 PrimitiveData *
-ShapeData::getPrimitives(void)
+SoIntersectionDetectionActionP::generatePrimitives(ShapeData * shape)
 {
-  if (this->primitives) { return this->primitives; }
-
-  this->primitives = new PrimitiveData;
-  this->primitives->setPath(this->path);
-  this->primitives->transform = this->xfbbox.getTransform();
-  this->primitives->invtransform = primitives->transform.inverse();
+  PrimitiveData * primitives = new PrimitiveData;
+  primitives->triangles = new SbPList;
+  primitives->path = shape->path;
+  primitives->transform = shape->bbox.getTransform();
+  primitives->invtransform = primitives->transform.inverse();
   SoCallbackAction generator;
-  generator.addTriangleCallback(SoShape::getClassTypeId(),
-                                ShapeData::triangleCB,
-                                this->primitives);
-  generator.apply(this->path);
-  return this->primitives;
+  generator.addTriangleCallback(SoShape::getClassTypeId(), triangleCB, primitives);
+  generator.apply(shape->path);
+  return primitives;
 }
 
-// *************************************************************************
+void
+SoIntersectionDetectionActionP::deletePrimitives(PrimitiveData * primitives)
+{
+  if ( !primitives ) return;
+  int i;
+  for ( i = 0; i < primitives->triangles->getLength(); i++ ) {
+    SbTri3f * triangle = (SbTri3f *) (*(primitives->triangles))[i];
+    delete triangle;
+  }
+  delete primitives->triangles;
+  delete primitives;
+}
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::shape(SoCallbackAction * action, SoShape * shape)
+SoIntersectionDetectionActionP::shape(SoCallbackAction * action,
+                                      SoShape * shape)
 {
   SbBox3f bbox;
   SbVec3f center;
@@ -858,9 +572,9 @@ SoIntersectionDetectionActionP::shape(SoCallbackAction * action, SoShape * shape
   ShapeData * data = new ShapeData;
   data->path = new SoPath(*(action->getCurPath()));
   data->path->ref();
-  data->xfbbox = bbox;
-  data->xfbbox.setTransform(action->getModelMatrix());
-  this->shapedata.append(data);
+  data->bbox = bbox;
+  data->bbox.setTransform(action->getModelMatrix());
+  this->shapedata->append(data);
   return SoCallbackAction::CONTINUE;
 }
 
@@ -895,7 +609,7 @@ SoIntersectionDetectionActionP::traverseCB(void * closure, SoCallbackAction * ac
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::dragger(SoCallbackAction * action, const SoNode *)
+SoIntersectionDetectionActionP::dragger(SoCallbackAction * action, const SoNode * node)
 {
   if ( !this->draggersenabled ) // dragger setting overrides setting for manipulators
     return SoCallbackAction::PRUNE;
@@ -920,7 +634,7 @@ SoIntersectionDetectionActionP::draggerCB(void * closure, SoCallbackAction * act
 }
 
 SoCallbackAction::Response
-SoIntersectionDetectionActionP::pruneCB(void *, SoCallbackAction *, const SoNode *)
+SoIntersectionDetectionActionP::pruneCB(void * closure, SoCallbackAction * action, const SoNode * node)
 {
   return SoCallbackAction::PRUNE;
 }
@@ -929,12 +643,12 @@ void
 SoIntersectionDetectionActionP::reset(void)
 {
   int i;
-  for (i = 0; i < this->shapedata.getLength(); i++) {
-    ShapeData * data = this->shapedata[i];
+  for (i = 0; i < this->shapedata->getLength(); i++) {
+    ShapeData * data = (ShapeData *)(*(this->shapedata))[i];
     data->path->unref();
     delete data;
   }
-  this->shapedata.truncate(0);
+  this->shapedata->truncate(0);
   this->traverser = new SoCallbackAction;
   this->traverser->addPreCallback(SoDragger::getClassTypeId(),
                                   draggerCB, this);
@@ -947,360 +661,106 @@ SoIntersectionDetectionActionP::reset(void)
                                   shapeCB, this);
 }
 
-// This is a helper function for debugging purposes: it sets up an
-// SoCoordinate3 + SoIndexedLineSet pair of nodes exposing the
-// geometry of the SbBox3f input argument.
-static void
-make_scene_graph(const SbBox3f & box, SoCoordinate3 *& coord3, SoIndexedLineSet *& ils)
-{
-  const SbVec3f & vmin = box.getMin();
-  const SbVec3f & vmax = box.getMax();
-
-  const SbVec3f corners[] = {
-    // back face
-    SbVec3f(vmin[0], vmin[1], vmin[2]),
-    SbVec3f(vmax[0], vmin[1], vmin[2]),
-    SbVec3f(vmax[0], vmax[1], vmin[2]),
-    SbVec3f(vmin[0], vmax[1], vmin[2]),
-
-    // front face
-    SbVec3f(vmin[0], vmin[1], vmax[2]),
-    SbVec3f(vmax[0], vmin[1], vmax[2]),
-    SbVec3f(vmax[0], vmax[1], vmax[2]),
-    SbVec3f(vmin[0], vmax[1], vmax[2])
-  };
-
-  const int32_t indices[] = {
-    0, 1, 2, 3, 0, -1, // back face
-    4, 5, 6, 7, 4, -1, // front face
-    0, 4, -1, 1, 5, -1, 2, 6, -1, 3, 7, -1 // "crossover" lines
-  };
-
-  coord3 = new SoCoordinate3;
-  coord3->point.setValues(0, sizeof(corners) / sizeof(corners[0]), corners);
-
-  ils = new SoIndexedLineSet;
-  ils->coordIndex.setValues(0, sizeof(indices) / sizeof(indices[0]), indices);
-}
-
-// This is a helper function for debugging purposes: it sets up a
-// small scene graph that shows the geometry of the SbXfBox3f input
-// argument, with the identity tag at it's corner.
-static SoSeparator *
-make_scene_graph(const SbXfBox3f & xfbox, const char * tag)
-{
-  SoSeparator * root = new SoSeparator;
-  root->setName(tag);
-
-  // Add the geometry for the projected SbXfBox3f.
-
-  const SbBox3f projbox = xfbox.project();
-  SoCoordinate3 * coord3;
-  SoIndexedLineSet * ils;
-  make_scene_graph(projbox, coord3, ils);
-
-  root->addChild(coord3);
-  root->addChild(ils);
-
-  // Add the geometry for the non-projected SbXfBox3f.
-
-  SoBaseColor * basecol = new SoBaseColor;
-  basecol->rgb.setValue(SbColor(1, 1, 0));
-  root->addChild(basecol);
-
-  SoMatrixTransform * transform = new SoMatrixTransform;
-  transform->matrix = xfbox.getTransform();
-  root->addChild(transform);
-
-  const SbBox3f & box3f = (const SbBox3f &)xfbox;
-  SoCoordinate3 * xfcoord3;
-  SoIndexedLineSet * xfils;
-  make_scene_graph(box3f, xfcoord3, xfils);
-
-  root->addChild(xfcoord3);
-  root->addChild(xfils);
-
-  SoSeparator * tagsep = new SoSeparator;
-  root->addChild(tagsep);
-
-  SoBaseColor * textcol = new SoBaseColor;
-  textcol->rgb.setValue(SbColor(1, 0, 0));
-  tagsep->addChild(textcol);
-
-  SoTranslation * translation = new SoTranslation;
-  translation->translation = xfcoord3->point[0];
-  tagsep->addChild(translation);
-
-  SoText2 * tagtext = new SoText2;
-  tagtext->string = tag;
-  tagsep->addChild(tagtext);
-
-  return root;
-}
-
-// Expand SbXfBox3f in all directions with an epsilon value.
-static SbXfBox3f
-expand_SbXfBox3f(const SbXfBox3f & box, float epsilon)
-{
-  assert(epsilon > 0.0f);
-
-  // FIXME: quality check the calculation for the epsilon-extended
-  // bbox. It needs to be correct _and_ not adding on too much
-  // fat. 20030331 mortene.
-
-  // This invokes the copy constructor (and not the SbXfBox3f(SbBox3f)
-  // constructor), so the transformation matrix is also copied.
-  SbXfBox3f extbox(box);
-
-  SbVec3f epsilonvec(epsilon, epsilon, epsilon);
-  // Move epsilon to object space.
-  box.getTransform().multDirMatrix(epsilonvec, epsilonvec);
-  const float localepsilon = epsilonvec.length(); // yes, it's a bit large...
-  epsilonvec = SbVec3f(localepsilon, localepsilon, localepsilon);
-
-  // Get superclass-pointer, so we can modify the box corners
-  // directly.
-  SbBox3f * extboxp = (SbBox3f *)&extbox;
-
-  extboxp->getMin() -= epsilonvec;
-  extboxp->getMax() += epsilonvec;
-
-  return extbox;
-}
-
-// The callback test function for the SbOctTree.
-static SbBool
-shapeinsideboxfunc(void * const item, const SbBox3f & box)
-{
-  ShapeData * shape = (ShapeData *)item;
-  return shape->xfbbox.intersect(box);
-}
-
-// Execute full set of intersection detection operations on all the
-// primitives that has been souped up from the scene graph.
 void
 SoIntersectionDetectionActionP::doIntersectionTesting(void)
 {
-  if (this->callbacks->getLength() == 0) {
-    SoDebugError::postWarning("SoIntersectionDetectionActionP::doIntersectionTesting",
-                              "intersection testing invoked, but no callbacks set up");
-    return;
-  }
-
+  if (this->callbacks->getLength() == 0) return;
+  const float epsilon = this->getEpsilon();
   delete this->traverser;
   this->traverser = NULL;
-
-  if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doIntersectionTesting",
-                           "total number of shapedata items == %d",
-                           this->shapedata.getLength());
-    
-  }
-
-  SbOctTreeFuncs funcs = {
-    NULL /* bboxfunc */, NULL /* ptinsidefunc */,
-    shapeinsideboxfunc,
-    NULL /* insidespherefunc */, NULL /* insideplanesfunc */
-  };
-
-  SbOctTree shapetree(this->fullxfbbox.project(), funcs);
-  for (int k = 0; k < this->shapedata.getLength(); k++) {
-    ShapeData * shape = this->shapedata[k];
-    if (shape->xfbbox.isEmpty()) { continue; }
-    shapetree.addItem(shape);
-  }
-
-  if (ida_debug()) { shapetree.debugTree(stderr); }
-
-  // For debugging.
-  unsigned int nrshapeshapeisects = 0;
-  unsigned int nrselfisects = 0;
-
-  const float epsilon = this->getEpsilon();
-
-  for (int i = 0; i < this->shapedata.getLength(); i++) {
-    ShapeData * shape1 = this->shapedata[i];
-
-    // If the shape has no geometry, immediately skip to next
-    // iteration of for-loop.
-    if (shape1->xfbbox.isEmpty()) { continue; }
-
-    // Remove shapes from octtree as we iterate over the full set, to
-    // avoid self-intersection and to avoid checks against other
-    // shapes happening both ways.
-    shapetree.removeItem(shape1);
-
-    // FIXME: shouldn't we also invoke the filter-callback here? 20030403 mortene.
+  int i, j;
+  for (i = 0; i < this->shapedata->getLength(); i++) {
+    ShapeData * shape1 = (ShapeData *)(*(this->shapedata))[i];
+    PrimitiveData * primitives1 = NULL;
     if (this->internalsenabled) {
-      nrselfisects++;
-      SbBool cont;
-      this->doInternalPrimitiveIntersectionTesting(shape1->getPrimitives(), cont);
-      if (!cont) { goto done; }
+      primitives1 =
+        SoIntersectionDetectionActionP::generatePrimitives(shape1);
+      SbBool cont =
+        this->doInternalPrimitiveIntersectionTesting(primitives1);
+      if (!cont) {
+        SoIntersectionDetectionActionP::deletePrimitives(primitives1);
+        return;
+      }
     }
-
-    SbBox3f shapebbox = shape1->xfbbox.project();
-    if (epsilon > 0.0f) {
-      const SbVec3f e(epsilon, epsilon, epsilon);
-      // Extend bbox in all 6 directions with the epsilon value.
-      shapebbox.getMin() -= e;
-      shapebbox.getMax() += e;
-    }
-    SbList<void*> candidateshapes;
-    shapetree.findItems(shapebbox, candidateshapes);
-
-    if (ida_debug()) {
-      SoDebugError::postInfo("SoIntersectionDetectionActionP::doIntersectionTesting",
-                             "shape %d intersects %d other shapes",
-                             i, candidateshapes.getLength());
-
-      // debug, dump to .iv-file the "master" shape bbox given by i,
-      // plus ditto for all intersected shapes
-#if 0
-      if (i == 4) {
-        SoSeparator * root = new SoSeparator;
-        root->ref();
-
-        root->addChild(make_scene_graph(shape1->xfbbox, "mastershape"));
-
-        for (int j = 0; j < candidateshapes.getLength(); j++) {
-          ShapeData * s = (ShapeData * )candidateshapes[j];
-          SbString str;
-          str.sprintf("%d", j);
-          root->addChild(make_scene_graph(s->xfbbox, str.getString()));
+    for (j = i + 1; j < this->shapedata->getLength(); j++) {
+      SbBool bboxhit = FALSE;
+      ShapeData * shape2 = (ShapeData *)(*(this->shapedata))[j];
+      // support for negative epsilons can be added here
+      // note that if support is added for this, negative bounding box volumes must be filtered
+      if (epsilon > 0.0f) {
+        SbVec3f epsilonvec(epsilon, epsilon, epsilon);
+        SbBox3f shape2box(shape2->bbox);
+        // move epsilon to object space
+        shape2->bbox.getTransform().multDirMatrix(epsilonvec, epsilonvec);
+        float localepsilon = epsilonvec.length(); // yes, it's a bit large...
+        shape2box.getMin() -=
+          SbVec3f(localepsilon, localepsilon, localepsilon);
+        shape2box.getMax() +=
+          SbVec3f(localepsilon, localepsilon, localepsilon);
+        SbXfBox3f shape2xfbbox(shape2box);
+        shape2xfbbox.setTransform(shape2->bbox.getTransform());
+        if (shape1->bbox.intersect(shape2xfbbox)) bboxhit = TRUE;
+      }
+      else {
+        if (shape1->bbox.intersect(shape2->bbox)) bboxhit = TRUE;
+      }
+      if (bboxhit) {
+        if (!this->filtercb || this->filtercb(this->filterclosure,
+                                              shape1->path,
+                                              shape2->path)) {
+          if (primitives1 == NULL)
+            primitives1 =
+              SoIntersectionDetectionActionP::generatePrimitives(shape1);
+          PrimitiveData * primitives2 =
+            SoIntersectionDetectionActionP::generatePrimitives(shape2);
+          SbBool cont = this->doPrimitiveIntersectionTesting(primitives1,
+                                                             primitives2);
+          SoIntersectionDetectionActionP::deletePrimitives(primitives2);
+          if (!cont) {
+            SoIntersectionDetectionActionP::deletePrimitives(primitives1);
+            return;
+          }
         }
-
-        SoOutput out;
-        SbBool ok = out.openFile("/tmp/shapechk.iv");
-        assert(ok);
-        SoWriteAction wa(&out);
-        wa.apply(root);
-
-        root->unref();
-      }
-#endif // debug
-    }
-
-    SbXfBox3f xfboxchk;
-    if (epsilon > 0.0f) { xfboxchk = expand_SbXfBox3f(shape1->xfbbox, epsilon); }
-    else { xfboxchk = shape1->xfbbox; }
-
-    for (int j = 0; j < candidateshapes.getLength(); j++) {
-      ShapeData * shape2 = (ShapeData * )candidateshapes[j];
-
-      if (!xfboxchk.intersect(shape2->xfbbox)) {
-        if (ida_debug()) {
-          SoDebugError::postInfo("SoIntersectionDetectionActionP::doIntersectionTesting",
-                                 "shape %d intersecting %d is a miss when tried with SbXfBox3f::intersect(SbXfBox3f)",
-                                 i, j);
-        }
-        continue;
-      }
-
-      if (!this->filtercb ||
-          this->filtercb(this->filterclosure, shape1->path, shape2->path)) {
-        nrshapeshapeisects++;
-        SbBool cont;
-        this->doPrimitiveIntersectionTesting(shape1->getPrimitives(), shape2->getPrimitives(), cont);
-        if (!cont) { goto done; }
       }
     }
-  }
-
- done:
-  if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doIntersectionTesting",
-                           "shape-shape intersections: %d, shape self-intersections: %d",
-                           nrshapeshapeisects, nrselfisects);
+    SoIntersectionDetectionActionP::deletePrimitives(primitives1);
   }
 }
 
-// Intersection testing between primitives of different shapes.
-void
-SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * primitives1,
-                                                             PrimitiveData * primitives2,
-                                                             SbBool & cont)
+SbBool
+SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * primitives1, PrimitiveData * primitives2)
 {
-  cont = TRUE;
-
-  // for debugging
-  if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting",
-                           "primitives1 (%p) = %d tris, primitives2 (%p) = %d tris",
-                           primitives1, primitives1->numTriangles(),
-                           primitives2, primitives2->numTriangles());
-  }
-  unsigned int nrisectchks = 0;
-  unsigned int nrhits = 0;
-
-  // Use the majority size shape from an octtree.
-  //
-  // (Some initial investigation indicates that this isn't a clear-cut
-  // choice, by the way -- should investigate further. mortene.)
-  PrimitiveData * octtreeprims = primitives1;
-  PrimitiveData * iterationprims = primitives2;
-  if (primitives1->numTriangles() < primitives2->numTriangles()) {
-    octtreeprims = primitives2;
-    iterationprims = primitives1;
-  }
-
-  const SbOctTree * octtree = octtreeprims->getOctTree();
-
-  const float epsilon = this->getEpsilon();
-  const SbVec3f e(epsilon, epsilon, epsilon);
- 
-  for (unsigned int i = 0; i < iterationprims->numTriangles(); i++) {
-    SbTri3f * t1 = (SbTri3f *) iterationprims->getTriangle(i);
-
-    SbBox3f tribbox = t1->getBoundingBox();
-    if (epsilon > 0.0f) {
-      // Extend bbox in all 6 directions with the epsilon value.
-      tribbox.getMin() -= e;
-      tribbox.getMax() += e;
-    }
-    
-    SbList<void*> candidatetris;
-    octtree->findItems(tribbox, candidatetris);
-
-    for (int j = 0; j < candidatetris.getLength(); j++) {
-      SbTri3f * t2 = (SbTri3f *) candidatetris[j];
-
-      nrisectchks++;
-
-      if (t1->intersect(*t2, epsilon)) {
-        nrhits++;
-
+  int i, j;
+  for (i = 0; i < primitives1->triangles->getLength(); i++) {
+    SbTri3f * t1 = (SbTri3f *) (*(primitives1->triangles))[i];
+    for (j = 0; j < primitives2->triangles->getLength(); j++) {
+      SbTri3f * t2 = (SbTri3f *) (*(primitives2->triangles))[j];
+      if (t1->intersect(*t2, this->getEpsilon())) {
         SoIntersectingPrimitive p1;
-        p1.path = iterationprims->getPath();
+        p1.path = primitives1->path;
         p1.type = SoIntersectingPrimitive::TRIANGLE;
         t1->getValue(p1.xf_vertex[0], p1.xf_vertex[1], p1.xf_vertex[2]);
-        iterationprims->invtransform.multVecMatrix(p1.xf_vertex[0], p1.vertex[0]);
-        iterationprims->invtransform.multVecMatrix(p1.xf_vertex[1], p1.vertex[1]);
-        iterationprims->invtransform.multVecMatrix(p1.xf_vertex[2], p1.vertex[2]);
-
+        primitives1->invtransform.multVecMatrix(p1.xf_vertex[0], p1.vertex[0]);
+        primitives1->invtransform.multVecMatrix(p1.xf_vertex[1], p1.vertex[1]);
+        primitives1->invtransform.multVecMatrix(p1.xf_vertex[2], p1.vertex[2]);
         SoIntersectingPrimitive p2;
-        p2.path = octtreeprims->getPath();
+        p2.path = primitives2->path;
         p2.type = SoIntersectingPrimitive::TRIANGLE;
         t2->getValue(p2.xf_vertex[0], p2.xf_vertex[1], p2.xf_vertex[2]);
-        octtreeprims->invtransform.multVecMatrix(p2.xf_vertex[0], p2.vertex[0]);
-        octtreeprims->invtransform.multVecMatrix(p2.xf_vertex[1], p2.vertex[1]);
-        octtreeprims->invtransform.multVecMatrix(p2.xf_vertex[2], p2.vertex[2]);
-
+        primitives2->invtransform.multVecMatrix(p2.xf_vertex[0], p2.vertex[0]);
+        primitives2->invtransform.multVecMatrix(p2.xf_vertex[1], p2.vertex[1]);
+        primitives2->invtransform.multVecMatrix(p2.xf_vertex[2], p2.vertex[2]);
         int c;
         for ( c = 0; c < this->callbacks->getLength(); c += 2 ) {
           SoIntersectionDetectionAction::SoIntersectionCB * cb =
             (SoIntersectionDetectionAction::SoIntersectionCB *) (*(this->callbacks))[c];
           switch ( cb((*(this->callbacks))[c+1], &p1, &p2) ) {
           case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
-            // Break out of the switch, invoke next callback.
             break;
           case SoIntersectionDetectionAction::NEXT_SHAPE:
-            // FIXME: remaining callbacks won't be invoked -- should they? 20030328 mortene.
-            cont = TRUE;
-            goto done;
+            return TRUE;
           case SoIntersectionDetectionAction::ABORT:
-            // FIXME: remaining callbacks won't be invoked -- should they? 20030328 mortene.
-            cont = FALSE;
-            goto done;
+            return FALSE;
           default:
             assert(0);
           }
@@ -1308,61 +768,28 @@ SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting(PrimitiveData * p
       }
     }
   }
-
-done:
-  // for debugging
-  if (ida_debug()) {
-    const unsigned int total = primitives1->numTriangles() + primitives2->numTriangles();
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting",
-                           "intersection checks = %d (pr primitive: %f)",
-                           nrisectchks, float(nrisectchks) / total);
-    SbString chksprhit;
-    if (nrhits == 0) { chksprhit = "-"; }
-    else { chksprhit.sprintf("%f", float(nrisectchks) / nrhits); }
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doPrimitiveIntersectionTesting",
-                           "hits = %d (chks pr hit: %s)", nrhits, chksprhit.getString());
-  }
+  return TRUE;
 }
 
-// Does intersection testing internally within the same
-// shape. Triangles are not tested against themselves.
-//
-// Can ignore epsilon setting, as that only indicates a distance
-// between distinct shapes.
-void
-SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(PrimitiveData * primitives,
-                                                                     SbBool & cont)
+SbBool
+SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(PrimitiveData * primitives)
 {
-  // for debugging
-  if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting",
-                           "triangles shape = %d", primitives->numTriangles());
-  }
-  unsigned int nrisectchks = 0;
-
-  // FIXME: use the SbOctTree optimization, as above. Should refactor
-  // doPrimitiveIntersectionTesting() and
-  // doInternalPrimitiveIntersectionTesting() into common
-  // code. 20030328 mortene.
-
-  cont = TRUE;
-  const int numprimitives = primitives->numTriangles();
-  for (int i = 0; i < numprimitives; i++ ) {
-    SbTri3f * t1 = (SbTri3f *) primitives->getTriangle(i);
-    for (int j = i + 1; j < numprimitives; j++ ) {
-      SbTri3f * t2 = (SbTri3f *) primitives->getTriangle(j);
-      nrisectchks++;
+  int i, j;
+  const int numprimitives = primitives->triangles->getLength();
+  for ( i = 0; i < numprimitives; i++ ) {
+    SbTri3f * t1 = (SbTri3f *) (*(primitives->triangles))[i];
+    for ( j = i + 1; j < numprimitives; j++ ) {
+      SbTri3f * t2 = (SbTri3f *) (*(primitives->triangles))[j];
       if ( t1->intersect(*t2) ) {
         SoIntersectingPrimitive p1;
-        p1.path = primitives->getPath();
+        p1.path = primitives->path;
         p1.type = SoIntersectingPrimitive::TRIANGLE;
         t1->getValue(p1.xf_vertex[0], p1.xf_vertex[1], p1.xf_vertex[2]);
         primitives->invtransform.multVecMatrix(p1.xf_vertex[0], p1.vertex[0]);
         primitives->invtransform.multVecMatrix(p1.xf_vertex[1], p1.vertex[1]);
         primitives->invtransform.multVecMatrix(p1.xf_vertex[2], p1.vertex[2]);
-
         SoIntersectingPrimitive p2;
-        p2.path = primitives->getPath();
+        p2.path = primitives->path;
         p2.type = SoIntersectingPrimitive::TRIANGLE;
         t2->getValue(p2.xf_vertex[0], p2.xf_vertex[1], p2.xf_vertex[2]);
         primitives->invtransform.multVecMatrix(p2.xf_vertex[0], p2.vertex[0]);
@@ -1376,11 +803,9 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
           case SoIntersectionDetectionAction::NEXT_PRIMITIVE:
             break;
           case SoIntersectionDetectionAction::NEXT_SHAPE:
-            cont = TRUE;
-            goto done;
+            return TRUE;
           case SoIntersectionDetectionAction::ABORT:
-            cont = FALSE;
-            goto done;
+            return FALSE;
 	  default:
 	    assert(0);
           }
@@ -1388,10 +813,5 @@ SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting(Primitive
       }
     }
   }
- done:
-  // for debugging
-  if (ida_debug()) {
-    SoDebugError::postInfo("SoIntersectionDetectionActionP::doInternalPrimitiveIntersectionTesting",
-                           "intersection checks = %d", nrisectchks);
-  }
+  return TRUE;
 }

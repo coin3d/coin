@@ -194,7 +194,7 @@ cc_string_set_text(cc_string * me, const char * text)
 void
 cc_string_set_subtext(cc_string * me, const char * text, int start, int end)
 {
-  static char * emptystring = "";
+  static const char * emptystring = "";
   int len, size;
   if ( text == NULL ) text = emptystring;
   len = strlen(text);
@@ -447,7 +447,7 @@ cc_string_compare_subtext(const cc_string * me, const char * text, int offset)
 */
 
 void
-cc_string_apply(cc_string * string, char (*function)(char input))
+cc_string_apply(cc_string * string, cc_apply_f function)
 {
   int len, i;
   assert(function != NULL);

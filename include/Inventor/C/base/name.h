@@ -1,5 +1,5 @@
-#ifndef COIN_NAME_H
-#define COIN_NAME_H
+#ifndef CC_NAME_H
+#define CC_NAME_H
 
 /**************************************************************************\
  *
@@ -24,16 +24,6 @@
  *
 \**************************************************************************/
 
-/* This is the interface for a C ADT for unique string mappings. */
-
-/*************************************************************************/
-
-#ifndef COIN_INTERNAL
-#error Only for internal use.
-#endif /* COIN_INTERNAL */
-
-/*************************************************************************/
-
 #include <Inventor/C/basic.h>
 
 #ifdef __cplusplus
@@ -42,21 +32,34 @@ extern "C" {
 
 /* ********************************************************************** */
 
-  typedef struct cc_name cc_name;
+COIN_DLL_API cc_name * cc_name_construct(void);
+COIN_DLL_API cc_name * cc_name_clone(cc_name * name);
+COIN_DLL_API void cc_name_destruct(cc_name * name);
 
-  cc_name * cc_name_new(const char * str);
-  void cc_name_destruct(cc_name * name);
+/*
+SbName(const char * nameString);
+SbName(const SbString & str);
+*/
 
-  const char * cc_name_get_string(const cc_name * name);
-  unsigned int cc_name_get_length(const cc_name * name);
+COIN_DLL_API const char * cc_name_get_string(cc_name * name);
+COIN_DLL_API unsigned int cc_name_get_length(cc_name * name);
 
-  SbBool cc_name_equals(const cc_name * name1, const cc_name * name2);
-  SbBool cc_name_equals_string(const cc_name * name, const char * str);
+COIN_DLL_API int cc_name_equals(cc_name * name, cc_name * name2);
+COIN_DLL_API int cc_name_equals_string(cc_name * name, const char * string);
+
+/*
+static SbBool isIdentStartChar(const char c);
+static SbBool isIdentChar(const char c);
+static SbBool isBaseNameStartChar(const char c);
+static SbBool isBaseNameChar(const char c);
+
+int operator ! (void) const;
+*/
 
 /* ********************************************************************** */
 
 #ifdef __cplusplus
-} /* extern "C" */
+} /* extern "C" { */
 #endif /* __cplusplus */
 
-#endif /* ! COIN_NAME_H */
+#endif /* ! CC_NAME_H */

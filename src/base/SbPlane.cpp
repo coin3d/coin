@@ -61,9 +61,10 @@ SbPlane::SbPlane(void)
 SbPlane::SbPlane(const SbVec3f& normal, const float D)
 {
 #if COIN_DEBUG
-  if(!(normal.length() != 0.0f))
+  if (normal.sqrLength() == 0.0f) {
     SoDebugError::postWarning("SbPlane::SbPlane",
                               "Plane normal vector is a null vector.");
+  }
 #endif // COIN_DEBUG
 
   this->normal = normal;
@@ -73,8 +74,8 @@ SbPlane::SbPlane(const SbVec3f& normal, const float D)
 
 /*!
   Construct an SbPlane with three points laying in the plane.  Make
-  sure \a p0, \a p1 and \a p2 are actually three distinct points when
-  using this constructor.
+  sure \a p0, \a p1 and \a p2 are actually three distinct points,
+  not on a line, when using this constructor.
 */
 SbPlane::SbPlane(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
 {
@@ -86,8 +87,15 @@ SbPlane::SbPlane(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
 #endif // COIN_DEBUG
 
   this->normal = (p1 - p0).cross(p2 - p0);
-  this->normal.normalize();
+#if COIN_DEBUG
+  if (this->normal.sqrLength() == 0.0f) {
+    SoDebugError::postWarning("SbPlane::SbPlane",
+                              "The three points defining the plane cannot "
+                              "be on line.");
+  }
+#endif // COIN_DEBUG
 
+  this->normal.normalize();
   //     N·point
   // d = -------, |N| == 1
   //       |N|²
@@ -103,7 +111,7 @@ SbPlane::SbPlane(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
 SbPlane::SbPlane(const SbVec3f& normal, const SbVec3f& point)
 {
 #if COIN_DEBUG
-  if(!(normal.length() != 0.0f))
+  if(normal.sqrLength() == 0.0f)
     SoDebugError::postWarning("SbPlane::SbPlane",
                               "Plane normal vector is a null vector.");
 #endif // COIN_DEBUG
@@ -140,12 +148,12 @@ SbBool
 SbPlane::intersect(const SbLine& l, SbVec3f& intersection) const
 {
 #if COIN_DEBUG
-  if (this->normal.length() == 0.0f) {
+  if (this->normal.sqrLength() == 0.0f) {
     SoDebugError::postWarning("SbPlane::intersect",
                               "Normal vector for plane is null vector");
 
   }
-  if (l.getDirection().length() == 0.0f) {
+  if (l.getDirection().sqrLength() == 0.0f) {
     SoDebugError::postWarning("SbPlane::intersect",
                               "Intersecting line doesn't have a direction.");
   }

@@ -300,36 +300,48 @@ SbString::findAll(const SbString & str, SbIntList & found) const
   \fn int operator==(const SbString & str, const char * s)
 
   Equality operator. Check if the strings have the same contents.
+
+  \relates SbString
 */
 
 /*!
   \fn int operator==(const char * s, const SbString & str)
 
   Equality operator. Check if the strings have the same contents.
+
+  \relates SbString
 */
 
 /*!
   \fn int operator==(const SbString & str1, const SbString & str2)
 
   Equality operator. Check if the strings have the same contents.
+
+  \relates SbString
 */
 
 /*!
   \fn int operator!=(const SbString & str, const char * s)
 
   Inequality operator.
+
+  \relates SbString
 */
 
 /*!
   \fn int operator!=(const char * s, const SbString & str)
 
   Inequality operator.
+
+  \relates SbString
 */
 
 /*!
   \fn int operator!=(const SbString & str1, const SbString & str2)
 
   Inequality operator.
+
+  \relates SbString
 */
 
 /*!

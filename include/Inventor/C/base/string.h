@@ -80,7 +80,7 @@ COIN_DLL_API int cc_string_compare(const cc_string * lhs, const cc_string * rhs)
 COIN_DLL_API int cc_string_compare_text(const char * lhs, const char * rhs);
 COIN_DLL_API int cc_string_compare_subtext(const cc_string * str, const char * text, int offset);
 
-COIN_DLL_API void cc_string_apply(cc_string * str, char (*function)(char input));
+COIN_DLL_API void cc_string_apply(cc_string * str, cc_apply_f function);
 
 COIN_DLL_API void cc_string_sprintf(cc_string * str, const char * formatstr, ...);
 COIN_DLL_API void cc_string_vsprintf(cc_string * str, const char * formatstr, va_list args);

@@ -60,6 +60,7 @@ Options:
   --compile <sourcefile> [<sourcefile>]...
   --link <program> <object> [<object>]...
   --build <program> <sourcefile> [<sourcefile>]...
+  --build-app <program> <sourcefile> [<sourcefile>]...
   --setup | --setup-front
   --header <class>
   --version
@@ -167,23 +168,6 @@ do
       $LDFLAGS $ldflags \
       -o $progname $@ \
       $libs $LIBS || exit $?
-      case $host in
-      *-darwin*)
-        echo "$me: making Mac OS X application"
-        mkdir $progname.app 2>/dev/null
-        mkdir $progname.app/Contents 2>/dev/null
-        mkdir $progname.app/Contents/MacOS 2>/dev/null
-        if test -d $progname.app/Contents/MacOS &&
-          mv -f $progname $progname.app/Contents/MacOS/ &&
-          echo "APPL????" >$progname.app/Contents/PkgInfo; then
-          :
-        else
-          echo >&2 "$me: failed to make Mac OS X application"
-          echo >&2 " - problem is probably user permission or disk space related"
-          exit 1 
-        fi
-        ;;
-      esac
     exit 0
     ;;
   --build)
@@ -217,23 +201,32 @@ do
       $LDFLAGS $ldflags $extraldflags \
       -o $progname $objs \
       $extralibs $libs $LIBS || exit $?
-      case $host in
-      *-darwin*)
-        echo "$me: making Mac OS X application"
-        mkdir $progname.app 2>/dev/null
-        mkdir $progname.app/Contents 2>/dev/null
-        mkdir $progname.app/Contents/MacOS 2>/dev/null
-        if test -d $progname.app/Contents/MacOS &&
-          mv -f $progname $progname.app/Contents/MacOS/ &&
-          echo "APPL????" >$progname.app/Contents/PkgInfo; then
-          :
-        else
-          echo >&2 "$me: failed to make Mac OS X application"
-          echo >&2 " - problem is probably user permission or disk space related"
-          exit 1
-        fi
-        ;;
-      esac
+    exit 0
+    ;;
+  --build-app)
+    case $host in
+    *-darwin*)
+      shift
+      progname=$1
+      shift
+      if test $@; then
+        $program --alternate="$alternate" --build $progname $@ || exit $?
+      fi
+      echo "$me: making Mac OS X application"
+      mkdir $progname.app 2>/dev/null
+      mkdir $progname.app/Contents 2>/dev/null
+      mkdir $progname.app/Contents/MacOS 2>/dev/null
+      if test -d $progname.app/Contents/MacOS &&
+        mv -f $progname $progname.app/Contents/MacOS/ &&
+        echo "APPL????" >$progname.app/Contents/PkgInfo; then
+        :
+      else
+        echo >&2 "$me: failed to make Mac OS X application"
+        echo >&2 " - problem is probably user permission or disk space related"
+        exit 1
+      fi
+      ;;
+    esac
     exit 0
     ;;
   --setup)

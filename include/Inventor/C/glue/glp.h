@@ -37,6 +37,7 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <Inventor/system/gl.h>
+#include <Inventor/C/base/hash.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -114,12 +115,18 @@ typedef void (APIENTRY * COIN_PFNGLTEXSUBIMAGE2DPROC)(GLenum target,
                                                       const GLvoid * pixels);
 
 typedef void (APIENTRY * COIN_PFNGLACTIVETEXTUREPROC)(GLenum texture);
+typedef void (APIENTRY * COIN_PFNGLCLIENTACTIVETEXTUREPROC)(GLenum texture);
 typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD2FPROC)(GLenum target,
                                                         GLfloat s,
                                                         GLfloat t);
+typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD2FVPROC)(GLenum target,
+                                                         const GLfloat * v);
+typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD3FVPROC)(GLenum target,
+                                                         const GLfloat * v);
+typedef void (APIENTRY * COIN_PFNGLMULTITEXCOORD4FVPROC)(GLenum target,
+                                                         const GLfloat * v);
 
 /* typedefs for texture compression */
-
 typedef void (APIENTRY * COIN_PFNGLCOMPRESSEDTEXIMAGE3DPROC)(GLenum target,
                                                              GLint level,
                                                              GLenum internalformat,
@@ -214,11 +221,12 @@ typedef void (APIENTRY * COIN_PFNGLDISABLECLIENTSTATEPROC)(GLenum array);
 typedef void (APIENTRY * COIN_PFNGLINTERLEAVEDARRAYSPROC)(GLenum format, GLsizei stride, const GLvoid * pointer);
 typedef void (APIENTRY * COIN_PFNGLDRAWARRAYSPROC)(GLenum mode, GLint first, GLsizei count);
 typedef void (APIENTRY * COIN_PFNGLDRAWELEMENTSPROC)(GLenum mode, GLsizei count, GLenum type, const GLvoid * indices);
+typedef void (APIENTRY * COIN_PFNGLDRAWRANGEELEMENTSPROC)(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, const GLvoid * indices);
 typedef void (APIENTRY * COIN_PFNGLARRAYELEMENTPROC)(GLint i);
 
-typedef void (APIENTRY * COIN_PFNGLMULTIDRAWARRAYSPROC)(GLenum mode, const GLint * first, 
+typedef void (APIENTRY * COIN_PFNGLMULTIDRAWARRAYSPROC)(GLenum mode, const GLint * first,
                                                         const GLsizei * count, GLsizei primcount);
-typedef void (APIENTRY * COIN_PFNGLMULTIDRAWELEMENTSPROC)(GLenum mode, const GLsizei * count, 
+typedef void (APIENTRY * COIN_PFNGLMULTIDRAWELEMENTSPROC)(GLenum mode, const GLsizei * count,
                                                           GLenum type, const GLvoid ** indices, GLsizei primcount);
 
 /* Typedefs for NV_vertex_array_range */
@@ -254,6 +262,132 @@ typedef void (APIENTRY * COIN_PFNGLGETBUFFERPARAMETERIVPROC)(GLenum target,
 typedef void (APIENTRY * COIN_PFNGLGETBUFFERPOINTERVPROC)(GLenum target,
                                                           GLenum pname,
                                                           GLvoid ** params);
+
+/* Typedefs for GL_NV_register_combiners */
+typedef void (APIENTRY * COIN_PFNGLCOMBINERPARAMETERFVNVPROC)(GLenum pname,
+                                                              const GLfloat *params);
+typedef void (APIENTRY * COIN_PFNGLCOMBINERPARAMETERIVNVPROC)(GLenum pname,
+                                                              const GLint *params);
+typedef void (APIENTRY * COIN_PFNGLCOMBINERPARAMETERFNVPROC)(GLenum pname,
+                                                             GLfloat param);
+typedef void (APIENTRY * COIN_PFNGLCOMBINERPARAMETERINVPROC)(GLenum pname,
+                                                            GLint param);
+typedef void (APIENTRY * COIN_PFNGLCOMBINERINPUTNVPROC)(GLenum stage,
+                                                        GLenum portion,
+                                                        GLenum variable,
+                                                        GLenum input,
+                                                        GLenum mapping,
+                                                        GLenum componentUsage);
+typedef void (APIENTRY * COIN_PFNGLCOMBINEROUTPUTNVPROC)(GLenum stage,
+                                                         GLenum portion, 
+                                                         GLenum abOutput,
+                                                         GLenum cdOutput,
+                                                         GLenum sumOutput,
+                                                         GLenum scale,
+                                                         GLenum bias,
+                                                         GLboolean abDotProduct,
+                                                         GLboolean cdDotProduct,
+                                                         GLboolean muxSum);
+typedef void (APIENTRY * COIN_PFNGLFINALCOMBINERINPUTNVPROC)(GLenum variable,
+                                                             GLenum input,
+                                                             GLenum mapping,
+                                                             GLenum componentUsage);
+typedef void (APIENTRY * COIN_PFNGLGETCOMBINERINPUTPARAMETERFVNVPROC)(GLenum stage,
+                                                                      GLenum portion,
+                                                                      GLenum variable,
+                                                                      GLenum pname,
+                                                                      GLfloat *params);
+typedef void (APIENTRY * COIN_PFNGLGETCOMBINERINPUTPARAMETERIVNVPROC)(GLenum stage,
+                                                                      GLenum portion,
+                                                                      GLenum variable,
+                                                                      GLenum pname,
+                                                                      GLint *params);
+typedef void (APIENTRY * COIN_PFNGLGETCOMBINEROUTPUTPARAMETERFVNVPROC)(GLenum stage,
+                                                                       GLenum portion, 
+                                                                       GLenum pname,
+                                                                       GLfloat *params);
+typedef void (APIENTRY * COIN_PFNGLGETCOMBINEROUTPUTPARAMETERIVNVPROC)(GLenum stage,
+                                                                       GLenum portion, 
+                                                                       GLenum pname,
+                                                                       GLint *params);
+typedef void (APIENTRY * COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC)(GLenum variable,
+                                                                           GLenum pname,
+                                                                           GLfloat *params);
+typedef void (APIENTRY * COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC)(GLenum variable,
+                                                                           GLenum pname,
+                                                                           GLint *params);
+/* Typedefs for GL_ARB_fragment_program */
+typedef void (APIENTRY * COIN_PFNGLPROGRAMSTRINGARBPROC)(GLenum target, 
+                                                         GLenum format, 
+                                                         GLsizei len, 
+                                                         const GLvoid *string); 
+
+typedef void (APIENTRY * COIN_PFNGLBINDPROGRAMARBPROC)(GLenum target, 
+                                                       GLuint program);
+
+typedef void (APIENTRY * COIN_PFNGLDELETEPROGRAMSARBPROC)(GLsizei n, 
+                                                          const GLuint *programs);
+
+typedef void (APIENTRY * COIN_PFNGLGENPROGRAMSARBPROC)(GLsizei n, 
+                                                       GLuint *programs);
+
+typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4DARBPROC)(GLenum target, 
+                                                                 GLuint index,
+                                                                 GLdouble x, 
+                                                                 GLdouble y, 
+                                                                 GLdouble z, 
+                                                                 GLdouble w);
+typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4DVARBPROC)(GLenum target, 
+                                                                  GLuint index,
+                                                                  const GLdouble *params);
+typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4FARBPROC)(GLenum target, 
+                                                                 GLuint index,
+                                                                 GLfloat x, 
+                                                                 GLfloat y, 
+                                                                 GLfloat z, 
+                                                                 GLfloat w);
+typedef void (APIENTRY * COIN_PFNGLPROGRAMENVPARAMETER4FVARBPROC)(GLenum target, 
+                                                                  GLuint index,
+                                                                  const GLfloat *params);
+typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4DARBPROC)(GLenum target, 
+                                                                   GLuint index,
+                                                                   GLdouble x, 
+                                                                   GLdouble y, 
+                                                                   GLdouble z, 
+                                                                   GLdouble w);
+typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4DVARBPROC)(GLenum target, 
+                                                                    GLuint index,
+                                                                    const GLdouble *params);
+typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4FARBPROC)(GLenum target, 
+                                                                   GLuint index,
+                                                                   GLfloat x, 
+                                                                   GLfloat y, 
+                                                                   GLfloat z, 
+                                                                   GLfloat w);
+typedef void (APIENTRY * COIN_PFNGLPROGRAMLOCALPARAMETER4FVARBPROC)(GLenum target, 
+                                                                    GLuint index,
+                                                                    const GLfloat *params);
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMENVPARAMETERDVARBPROC)(GLenum target, 
+                                                                    GLuint index,
+                                                                    GLdouble *params);
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMENVPARAMETERFVARBPROC)(GLenum target, 
+                                                                    GLuint index, 
+                                                                    GLfloat *params);
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMLOCALPARAMETERDVARBPROC)(GLenum target, 
+                                                                      GLuint index,
+                                                                      GLdouble *params);
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMLOCALPARAMETERFVARBPROC)(GLenum target, 
+                                                                      GLuint index, 
+                                                                      GLfloat *params);
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMIVARBPROC)(GLenum target, 
+                                                        GLenum pname, 
+                                                        GLint *params);
+typedef void (APIENTRY * COIN_PFNGLGETPROGRAMSTRINGARBPROC)(GLenum target, 
+                                                            GLenum pname, 
+                                                            GLvoid *string);
+typedef GLboolean (APIENTRY * COIN_PFNGLISPROGRAMARBPROC)(GLuint program);
+
+
 
 /* Typedefs for GLX functions. */
 typedef void *(APIENTRY * COIN_PFNGLXGETCURRENTDISPLAYPROC)(void);
@@ -303,7 +437,11 @@ struct cc_glglue {
   COIN_PFNGLTEXSUBIMAGE2DPROC glTexSubImage2D;
 
   COIN_PFNGLACTIVETEXTUREPROC glActiveTexture;
+  COIN_PFNGLCLIENTACTIVETEXTUREPROC glClientActiveTexture;
   COIN_PFNGLMULTITEXCOORD2FPROC glMultiTexCoord2f;
+  COIN_PFNGLMULTITEXCOORD2FVPROC glMultiTexCoord2fv;
+  COIN_PFNGLMULTITEXCOORD3FVPROC glMultiTexCoord3fv;
+  COIN_PFNGLMULTITEXCOORD4FVPROC glMultiTexCoord4fv;
 
   COIN_PFNGLCOLORTABLEPROC glColorTable;
   COIN_PFNGLCOLORSUBTABLEPROC glColorSubTable;
@@ -334,11 +472,12 @@ struct cc_glglue {
   COIN_PFNGLINTERLEAVEDARRAYSPROC glInterleavedArrays;
   COIN_PFNGLDRAWARRAYSPROC glDrawArrays;
   COIN_PFNGLDRAWELEMENTSPROC glDrawElements;
+  COIN_PFNGLDRAWRANGEELEMENTSPROC glDrawRangeElements;
   COIN_PFNGLARRAYELEMENTPROC glArrayElement;
-  
+
   COIN_PFNGLMULTIDRAWARRAYSPROC glMultiDrawArrays;
   COIN_PFNGLMULTIDRAWELEMENTSPROC glMultiDrawElements;
-  
+
   COIN_PFNGLVERTEXARRAYRANGENVPROC glVertexArrayRangeNV;
   COIN_PFNGLFLUSHVERTEXARRAYRANGENVPROC glFlushVertexArrayRangeNV;
   COIN_PFNGLALLOCATEMEMORYNVPROC glAllocateMemoryNV;
@@ -356,18 +495,74 @@ struct cc_glglue {
   COIN_PFNGLGETBUFFERPARAMETERIVPROC glGetBufferParameteriv;
   COIN_PFNGLGETBUFFERPOINTERVPROC glGetBufferPointerv;
 
+  COIN_PFNGLCOMBINERPARAMETERFVNVPROC glCombinerParameterfvNV;
+  COIN_PFNGLCOMBINERPARAMETERIVNVPROC glCombinerParameterivNV;
+  COIN_PFNGLCOMBINERPARAMETERFNVPROC glCombinerParameterfNV;
+  COIN_PFNGLCOMBINERPARAMETERINVPROC glCombinerParameteriNV;
+  COIN_PFNGLCOMBINERINPUTNVPROC glCombinerInputNV;
+  COIN_PFNGLCOMBINEROUTPUTNVPROC glCombinerOutputNV;
+  COIN_PFNGLFINALCOMBINERINPUTNVPROC glFinalCombinerInputNV;
+  COIN_PFNGLGETCOMBINERINPUTPARAMETERFVNVPROC glGetCombinerInputParameterfvNV;
+  COIN_PFNGLGETCOMBINERINPUTPARAMETERIVNVPROC glGetCombinerInputParameterivNV;
+  COIN_PFNGLGETCOMBINEROUTPUTPARAMETERFVNVPROC glGetCombinerOutputParameterfvNV;
+  COIN_PFNGLGETCOMBINEROUTPUTPARAMETERIVNVPROC glGetCombinerOutputParameterivNV;
+  COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERFVNVPROC glGetFinalCombinerInputParameterfvNV;
+  COIN_PFNGLGETFINALCOMBINERINPUTPARAMETERIVNVPROC glGetFinalCombinerInputParameterivNV;
+
+  COIN_PFNGLPROGRAMSTRINGARBPROC glProgramStringARB;
+  COIN_PFNGLBINDPROGRAMARBPROC glBindProgramARB;
+  COIN_PFNGLDELETEPROGRAMSARBPROC glDeleteProgramsARB;
+  COIN_PFNGLGENPROGRAMSARBPROC glGenProgramsARB;
+  COIN_PFNGLPROGRAMENVPARAMETER4DARBPROC glProgramEnvParameter4dARB;
+  COIN_PFNGLPROGRAMENVPARAMETER4DVARBPROC glProgramEnvParameter4dvARB;
+  COIN_PFNGLPROGRAMENVPARAMETER4FARBPROC glProgramEnvParameter4fARB;
+  COIN_PFNGLPROGRAMENVPARAMETER4FVARBPROC glProgramEnvParameter4fvARB;
+  COIN_PFNGLPROGRAMLOCALPARAMETER4DARBPROC glProgramLocalParameter4dARB;
+  COIN_PFNGLPROGRAMLOCALPARAMETER4DVARBPROC glProgramLocalParameter4dvARB;
+  COIN_PFNGLPROGRAMLOCALPARAMETER4FARBPROC glProgramLocalParameter4fARB;
+  COIN_PFNGLPROGRAMLOCALPARAMETER4FVARBPROC glProgramLocalParameter4fvARB;
+  COIN_PFNGLGETPROGRAMENVPARAMETERDVARBPROC glGetProgramEnvParameterdvARB;
+  COIN_PFNGLGETPROGRAMENVPARAMETERFVARBPROC glGetProgramEnvParameterfvARB;
+  COIN_PFNGLGETPROGRAMLOCALPARAMETERDVARBPROC glGetProgramLocalParameterdvARB;
+  COIN_PFNGLGETPROGRAMLOCALPARAMETERFVARBPROC glGetProgramLocalParameterfvARB;
+  COIN_PFNGLGETPROGRAMIVARBPROC glGetProgramivARB;
+  COIN_PFNGLGETPROGRAMSTRINGARBPROC glGetProgramStringARB;
+  COIN_PFNGLISPROGRAMARBPROC glIsProgramARB;
+
   const char * versionstr;
   const char * vendorstr;
   SbBool vendor_is_SGI;
   const char * rendererstr;
   const char * extensionsstr;
-
+  int maxtextureunits;
   struct cc_glxglue glx;
+
+  /* normalization cube map */
+  GLuint normalizationcubemap;
+
+  SbBool can_do_bumpmapping;
+  SbBool can_do_sortedlayersblend;
+
+  SbBool has_nv_register_combiners;
+  SbBool has_ext_texture_rectangle;
+  SbBool has_nv_texture_shader;
+  SbBool has_depth_texture;
+  SbBool has_shadow;
+  SbBool has_arb_fragment_program;
+  SbBool has_texture_env_combine;
+
+  int max_lights;
+  float line_width_range[2];
+  float point_size_range[2];
+  cc_hash * glextdict;
 };
 
 /* Exported internally to gl_glx.c and gl_wgl.c. */
 int coin_glglue_debug(void);
 int coin_glglue_extension_available(const char * extensions, const char * ext);
+
+/* needed for bumpmap rendering */
+void coin_apply_normalization_cube_map(const cc_glglue * glue);
 
 #ifdef __cplusplus
 }

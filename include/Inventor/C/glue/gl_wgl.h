@@ -39,6 +39,11 @@ SbBool wglglue_context_make_current(void * ctx);
 void wglglue_context_reinstate_previous(void * ctx);
 void wglglue_context_destruct(void * ctx);
 
+void wglglue_context_bind_pbuffer(void * ctx);
+void wglglue_context_release_pbuffer(void * ctx);
+SbBool wglglue_context_pbuffer_is_bound(void * ctx);
+SbBool wglglue_context_can_render_to_texture(void * ctx);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

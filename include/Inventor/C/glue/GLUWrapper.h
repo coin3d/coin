@@ -91,6 +91,7 @@ typedef void (APIENTRY *gluTessBeginContour_t)(coin_GLUtessellator * tessobj);
 typedef void (APIENTRY *gluTessEndContour_t)(coin_GLUtessellator * tessobj);
 typedef void (APIENTRY *gluTessVertex_t)(coin_GLUtessellator * tessobj, GLdouble coords[3], void * vertex_data);
 typedef void (APIENTRY *gluDeleteTess_t)(coin_GLUtessellator * tessobj);
+typedef void (APIENTRY *gluTessNormal_t)(coin_GLUtessellator * tessobj, GLdouble x, GLdouble y, GLdouble z);
 
 typedef struct {
   /* Is the GLU library at all available? */
@@ -137,6 +138,7 @@ typedef struct {
   gluTessEndContour_t gluTessEndContour;
   gluTessVertex_t gluTessVertex;
   gluDeleteTess_t gluDeleteTess;
+  gluTessNormal_t gluTessNormal;
 
 } GLUWrapper_t;
 

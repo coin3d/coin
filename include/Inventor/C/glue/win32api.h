@@ -61,10 +61,12 @@ extern "C" {
 
   typedef int (WINAPI * GetTextFace_t)(HDC, int, LPTSTR);
   typedef void (WINAPI * LocalFree_t)(HLOCAL);
-
+  typedef void (WINAPI * GetVersionEx_t)(LPOSVERSIONINFO);
+ 
   struct cc_win32_api {
     GetTextFace_t GetTextFace;
     LocalFree_t LocalFree;
+    GetVersionEx_t GetVersionEx;
   };
 
   /* Force singleton access. */

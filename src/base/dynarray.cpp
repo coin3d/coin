@@ -33,6 +33,9 @@
 // design fares versus others.
 //
 // 20030604 mortene.
+//
+// UPDATE 20030915 mortene: this had actually been implemented in C
+// already as cc_list...
 
 #include <Inventor/C/base/dynarray.h>
 #include <Inventor/lists/SbPList.h>
