@@ -2941,7 +2941,7 @@ cc_glglue_context_max_dimensions(unsigned int * width, unsigned int * height)
 void
 cc_glglue_context_bind_pbuffer(void * ctx)
 {
-  // FIXME: Implement for WGL and GLX. kyrah 20031123.
+  // FIXME: Implement for GLX. kyrah 20031123.
 #if defined(HAVE_AGL)
   aglglue_context_bind_pbuffer(ctx);
 #elif defined(HAVE_WGL)
@@ -2954,7 +2954,7 @@ cc_glglue_context_bind_pbuffer(void * ctx)
 void
 cc_glglue_context_release_pbuffer(void * ctx)
 {
-  // FIXME: Implement for WGL and GLX. kyrah 20031123.
+  // FIXME: Implement for GLX. kyrah 20031123.
 #if defined(HAVE_AGL)
   aglglue_context_release_pbuffer(ctx);
 #elif defined(HAVE_WGL)
@@ -2967,7 +2967,7 @@ cc_glglue_context_release_pbuffer(void * ctx)
 SbBool
 cc_glglue_context_pbuffer_is_bound(void * ctx)
 {
-  // FIXME: Implement for WGL and GLX. kyrah 20031123.
+  // FIXME: Implement for GLX. kyrah 20031123.
 #if defined(HAVE_AGL)
   return aglglue_context_pbuffer_is_bound(ctx);
 #elif defined(HAVE_WGL)
