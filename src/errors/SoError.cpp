@@ -243,8 +243,10 @@ SoError::defaultHandlerCB(const SoError * error, void * data)
   static FILE * coin_stderr = NULL;
   if (!coin_stderr) coin_stderr = fdopen(STDERR_FILENO, "w");
 
-  if (coin_stderr) (void)fprintf(coin_stderr, "%s\n",
-                                 error->getDebugString().getString());
+  if (coin_stderr) {
+    (void)fprintf(coin_stderr, "%s\n", error->getDebugString().getString());
+    (void)fflush(coin_stderr);
+  }
 }
 
 /*!
