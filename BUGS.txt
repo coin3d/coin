@@ -1334,16 +1334,6 @@
 
 =====================================================================
 
-058 SoPathSensor triggers too often
-
-  SoPathSensor will now trigger for all changes below the path's root
-  node. It should only trigger for node changes that actually affect a
-  node in the path.
-
-  20030227 pederb
-
-=====================================================================
-
 059 VRML97 file crashes Coin.
 
     ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --      
