@@ -292,6 +292,12 @@ if test "x$want_simage" = "xyes"; then
   fi
 fi
 
+dnl *******************************************************************
+dnl FIXME: quick hack until we do proper libm detection and proper
+dnl Mesa/OpenGL detection. 19991019 mortene.
+dnl *******************************************************************
+
+LIBS="$LIBS -lm"
 
 
 dnl *******************************************************************

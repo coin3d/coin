@@ -93,10 +93,10 @@ fi
     # messages.
     exec AC_FD_MSG>/dev/null
 
-    AC_SEARCH_LIBS(glAccum,          $GL_search_list, have_GL=yes,   have_GL=no)
-    AC_SEARCH_LIBS(gluBeginCurve,   $GLU_search_list, have_GLU=yes,  have_GLU=no)
-    AC_SEARCH_LIBS(glXChooseVisual, $GLX_search_list, have_GLX=yes,  have_GLX=no)
-    AC_SEARCH_LIBS(glutInit,        glut,             have_glut=yes, have_glut=no)
+    AC_SEARCH_LIBS(glAccum,          $GL_search_list, have_GL=yes,   have_GL=no,   -lm)
+    AC_SEARCH_LIBS(gluBeginCurve,   $GLU_search_list, have_GLU=yes,  have_GLU=no,  -lm)
+    AC_SEARCH_LIBS(glXChooseVisual, $GLX_search_list, have_GLX=yes,  have_GLX=no,  -lm)
+    AC_SEARCH_LIBS(glutInit,        glut,             have_glut=yes, have_glut=no, -lm)
 
 
 

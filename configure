@@ -3060,7 +3060,7 @@ else
 fi
 rm -f conftest*
 test "$ac_cv_search_glAccum" = "no" && for i in $GL_search_list; do
-LIBS="-l$i  $ac_func_search_save_LIBS"
+LIBS="-l$i -lm $ac_func_search_save_LIBS"
 cat > conftest.$ac_ext <<EOF
 #line 3066 "configure"
 #include "confdefs.h"
@@ -3122,7 +3122,7 @@ else
 fi
 rm -f conftest*
 test "$ac_cv_search_gluBeginCurve" = "no" && for i in $GLU_search_list; do
-LIBS="-l$i  $ac_func_search_save_LIBS"
+LIBS="-l$i -lm $ac_func_search_save_LIBS"
 cat > conftest.$ac_ext <<EOF
 #line 3128 "configure"
 #include "confdefs.h"
@@ -3184,7 +3184,7 @@ else
 fi
 rm -f conftest*
 test "$ac_cv_search_glXChooseVisual" = "no" && for i in $GLX_search_list; do
-LIBS="-l$i  $ac_func_search_save_LIBS"
+LIBS="-l$i -lm $ac_func_search_save_LIBS"
 cat > conftest.$ac_ext <<EOF
 #line 3190 "configure"
 #include "confdefs.h"
@@ -3246,7 +3246,7 @@ else
 fi
 rm -f conftest*
 test "$ac_cv_search_glutInit" = "no" && for i in glut; do
-LIBS="-l$i  $ac_func_search_save_LIBS"
+LIBS="-l$i -lm $ac_func_search_save_LIBS"
 cat > conftest.$ac_ext <<EOF
 #line 3252 "configure"
 #include "confdefs.h"
@@ -3601,6 +3601,8 @@ fi
   fi
 fi
 
+
+LIBS="$LIBS -lm"
 
 
 
