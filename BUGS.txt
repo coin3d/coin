@@ -4698,3 +4698,23 @@ Separator {
     20050106 mortene.
 
 =====================================================================
+
+187 Mac OS X: Frameworks containing static libaries should be disallowed
+
+    Putting a static library into a framework does not work, so 
+
+    o explicitly specifying "--disable-shared" should imply 
+      "--without-framework"
+
+    o explicitly specifying "--enable-static" should also imply 
+      "--without-framework"
+      
+    o explicitly specifying ("--enable-static" or "--disable-shared") 
+      and "--with-framework" should generate an error
+
+    This is very low-priority, since we can assume that users who
+    use these flags know what they are doing, but still...
+
+    20050112 kyrah.
+
+=====================================================================
