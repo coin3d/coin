@@ -24,7 +24,7 @@
 #include <Inventor/SoType.h>
 
 
-class SoTypeList : public SbList<SoType> {
+class COIN_DLL_API SoTypeList : public SbList<SoType> {
 public:
   SoTypeList(void) : SbList<SoType>() { }
   SoTypeList(const int sizehint) : SbList<SoType>(sizehint) { }
