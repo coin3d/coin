@@ -46,6 +46,7 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
+#include <Inventor/misc/SoAudioDevice.h>
 
 #if HAVE_CONFIG_H
 #include <config.h>
@@ -180,7 +181,8 @@ void
 SoSceneManager::render(const SbBool clearwindow, const SbBool clearzbuffer)
 {
 #ifdef HAVE_SOUND
-  if (THIS->scene) 
+  if ( THIS->scene && SoAudioDevice::instance()->haveSound() &&
+       SoAudioDevice::instance()->isEnabled())
     THIS->audiorenderaction->apply(THIS->scene);
 #endif
 
