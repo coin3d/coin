@@ -62,6 +62,7 @@
 #include <Inventor/elements/SoGLTextureImageElement.h>
 #include <Inventor/elements/SoComplexityElement.h>
 #include <Inventor/SbPlane.h>
+#include <Inventor/SbBox2f.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -478,16 +479,37 @@ void
 SoShape::getScreenSize(SoState * const state, const SbBox3f & boundingbox,
                        SbVec2s & rectsize)
 {
-  const SbViewVolume & vv = SoViewVolumeElement::get(state);
-  SbBox3f worldBox(boundingbox);
-  worldBox.transform(SoModelMatrixElement::get(state));
-  SbVec2f normSize = vv.projectBox(worldBox);
-  const SbViewportRegion & vr = SoViewportRegionElement::get(state);
-  SbVec2s pixelSize = vr.getViewportSizePixels();
+  SbMatrix projmatrix;
+  projmatrix = (SoModelMatrixElement::get(state) *
+                SoViewingMatrixElement::get(state) *
+                SoProjectionMatrixElement::get(state));
+  
+  SbVec2s vpsize = SoViewportRegionElement::get(state).getViewportSizePixels();
+  SbVec3f bmin, bmax;
+  boundingbox.getBounds(bmin, bmax);
+  
+  SbVec3f v;
+  SbBox2f normbox;
+  normbox.makeEmpty();
+  for (int i = 0; i < 8; i++) {
+    v.setValue(i&1 ? bmin[0] : bmax[0],
+               i&2 ? bmin[1] : bmax[1],
+               i&4 ? bmin[2] : bmax[2]);
+    projmatrix.multVecMatrix(v, v);
+    normbox.extendBy(SbVec2f(v[0], v[1]));
+  }
+  float nx, ny;
+  normbox.getSize(nx, ny);
 
-  // make sure short doesn't overflow
-  rectsize[0] = (short) SbMin(32767.0f, (float(pixelSize[0])* normSize[0]));
-  rectsize[1] = (short) SbMin(32767.0f, (float(pixelSize[1])* normSize[1]));
+  // restrict size of projection. It is often way off when object
+  // intersects the near plane. We should probably do clipping against
+  // the view volume do be 100% correct, but that would be too slow.
+  // pederb, 2001-05-20
+  if (nx > 10.0f) nx = 10.0f;
+  if (ny > 10.0f) ny = 10.0f;
+  
+  rectsize[0] = (short) SbMin(32767.0f, float(vpsize[0])*0.5f*nx);
+  rectsize[1] = (short) SbMin(32767.0f, float(vpsize[1])*0.5f*ny);
 }
 
 /*!
