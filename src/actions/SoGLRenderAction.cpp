@@ -693,7 +693,16 @@ SoGLRenderAction::handleTransparency(SbBool istransparent)
 
   // check common case first
   if (!istransparent || transptype == SoGLRenderAction::NONE) {
-    THIS->disableBlend();
+    if (THIS->smoothing) {
+      // needed for line/point smoothing to work
+      THIS->setupTransparency(BLEND);
+      if (!THIS->isblendenabled) {
+        // enable blending but don't disable depth mask
+        glEnable(GL_BLEND);
+        THIS->isblendenabled = TRUE;
+      }
+    }
+    else THIS->disableBlend();
     return FALSE;
   }
   // for the transparency render pass(es) we should always render when
