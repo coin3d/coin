@@ -248,13 +248,13 @@ SoAction::apply(SoNode * rootNode)
   this->currentPathCode = NO_PATH;
   this->appliedData.node = rootNode;
   this->appliedCode = NODE;
-  this->isTerminated = FALSE;
   if (this->state == NULL)
     this->state = new SoState(this, getEnabledElements().getElements());
+  this->isTerminated = FALSE;
   this->beginTraversal(rootNode);
   this->endTraversal(rootNode);
-  this->appliedData.node = NULL;
   this->isTerminated = TRUE;
+  this->appliedData.node = NULL;
   // An action should not trigger node (or node tree) destruction.
   rootNode->unrefNoDelete();
 #else // FIXME: Handles rootNode == NULL gracefully, not sure if that is a Good Thing, though. 19990819 mortene.
@@ -263,14 +263,14 @@ SoAction::apply(SoNode * rootNode)
   this->appliedData.node = rootNode;
   this->appliedCode = NODE;
   if (rootNode) {
-    this->isTerminated = FALSE;
     if (this->state == NULL)
       this->state = new SoState(this, getEnabledElements().getElements());
+    this->isTerminated = FALSE;
     this->beginTraversal(rootNode);
     this->endTraversal(rootNode);
+    this->isTerminated = TRUE;
     this->appliedData.node = NULL;
   }
-  this->isTerminated = TRUE;
   // An action should not trigger node (or node tree) destruction.
   if (rootNode) rootNode->unrefNoDelete();
 #endif
@@ -289,9 +289,9 @@ SoAction::apply(SoPath * path)
   this->currentPathCode = IN_PATH;
   this->appliedData.path = path;
   this->appliedCode = PATH;
-  this->isTerminated = FALSE;
   if (this->state == NULL)
     this->state = new SoState(this, getEnabledElements().getElements());
+  this->isTerminated = FALSE;
   this->beginTraversal(path->getNode(0));
   this->endTraversal(path->getNode(0));
   this->isTerminated = TRUE;
@@ -317,10 +317,10 @@ SoAction::apply(const SoPathList & pathList, SbBool /* obeysRules */)
   assert(pathList[0]->getNode(0));
 
   int n = pathList.getLength();
-  this->isTerminated = FALSE;
   if (this->state == NULL)
     this->state = new SoState(this, getEnabledElements().getElements());
 
+  this->isTerminated = FALSE;
   for (int i = 0; i < n; i++) {
     SoPath * path = pathList[i];
     this->currentPathCode = IN_PATH;
@@ -699,7 +699,7 @@ SoAction::getEnabledElements() const
 void
 SoAction::beginTraversal(SoNode * node)
 {
-  traverse(node);
+  this->traverse(node);
 }
 
 /*!
