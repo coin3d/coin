@@ -20,6 +20,10 @@ TODO:
 
 *** BUILD ITEMS ***
 
+* [mortene:19991113] is it possible to get the make process to print
+  out which dependency causes recompilation of a file? That would be a
+  nice feature.
+
 * [mortene:19991108] it looks like the header files are copied twice
   upon ``make install'', so the hack in the Makefile.am files to work
   around an Automake bug should be improved a bit.. or perhaps we
