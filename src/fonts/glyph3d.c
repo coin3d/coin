@@ -22,8 +22,8 @@
 #include "glyph3d.h"
 #include "../misc/defaultfonts.h"
 
-static SbBool specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
-static void calcboundingbox(cc_glyph3d * g);
+static SbBool glyph3d_specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
+static void glyph3d_calcboundingbox(cc_glyph3d * g);
 
 struct cc_glyph3d {
   int fontidx;
@@ -35,8 +35,8 @@ struct cc_glyph3d {
 };
 
 static cc_hash * glyph3d_fonthash = NULL;
-static int spaceglyphindices[] = { -1, -1 };
-static float spaceglyphvertices[] = { 0, 0 };
+static int glyph3d_spaceglyphindices[] = { -1, -1 };
+static float glyph3d_spaceglyphvertices[] = { 0, 0 };
 static SbBool glyph3d_initialized = FALSE;
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
@@ -107,7 +107,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
   GLYPH3D_MUTEX_LOCK(glyph3d_fonthash_lock);
   if (cc_hash_get(glyph3d_fonthash, (unsigned long) character, &val)) {
     glyph = (cc_glyph3d *) val;
-    if (specmatch(spec, glyph->fontspec)) {
+    if (glyph3d_specmatch(spec, glyph->fontspec)) {
       GLYPH3D_MUTEX_UNLOCK(glyph3d_fonthash_lock);
       return glyph;
     }
@@ -156,9 +156,9 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
       */
 
       /* treat all these characters as spaces*/
-      glyph->vectorglyph->vertices = (float *) spaceglyphvertices;
-      glyph->vectorglyph->faceindices = (int *) spaceglyphindices;
-      glyph->vectorglyph->edgeindices = (int *) spaceglyphindices;
+      glyph->vectorglyph->vertices = (float *) glyph3d_spaceglyphvertices;
+      glyph->vectorglyph->faceindices = (int *) glyph3d_spaceglyphindices;
+      glyph->vectorglyph->edgeindices = (int *) glyph3d_spaceglyphindices;
     }
     else {
 
@@ -169,7 +169,7 @@ cc_glyph3d_getglyph(uint32_t character, const cc_font_specification * spec)
 
   }
 
-  calcboundingbox(glyph);
+  glyph3d_calcboundingbox(glyph);
   glyph->width = glyph->bbox[2] - glyph->bbox[0];
 
   cc_hash_put(glyph3d_fonthash, (unsigned long) character, glyph);
@@ -216,7 +216,7 @@ cc_glyph3d_getwidth(const cc_glyph3d * g)
 }
 
 static void
-calcboundingbox(cc_glyph3d * g)
+glyph3d_calcboundingbox(cc_glyph3d * g)
 {
   float * coordptr;
   int * edgeptr;
@@ -269,7 +269,8 @@ cc_glyph3d_getkerning(const cc_glyph3d * left, const cc_glyph3d * right,
 }
 
 static SbBool
-specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2)
+glyph3d_specmatch(const cc_font_specification * spec1, 
+                  const cc_font_specification * spec2)
 {
 
   assert(spec1);

@@ -16,7 +16,7 @@
 #include "freetype.h"
 #include "glyph2d.h"
 
-static SbBool specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
+static SbBool glyph2d_specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2);
 
 struct cc_glyph2d {
   int fontidx;    
@@ -32,7 +32,7 @@ struct cc_glyph2d {
   unsigned char * bitmap;
 };
 
-static cc_hash * fonthash = NULL;
+static cc_hash * glyph2d_fonthash = NULL;
 static SbBool glyph2d_initialized = FALSE;
 
 /*
@@ -75,7 +75,7 @@ cc_glyph2d_initialize()
   if (!glyph2d_initialized) {
     CC_MUTEX_CONSTRUCT(glyph2d_fonthash_lock);
     GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
-    fonthash = cc_hash_construct(15, 0.75);
+    glyph2d_fonthash = cc_hash_construct(15, 0.75);
     GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
     glyph2d_initialized = TRUE;
   }
@@ -102,10 +102,10 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   GLYPH2D_MUTEX_LOCK(glyph2d_fonthash_lock);
 
   /* Has the glyph been created before? */
-  if (cc_hash_get(fonthash, (unsigned long) character, &val)) {    
+  if (cc_hash_get(glyph2d_fonthash, (unsigned long) character, &val)) {    
     glyph = (cc_glyph2d *) val;
     if (angle == glyph->angle) {
-      if (specmatch(spec, glyph->fontspec)) {
+      if (glyph2d_specmatch(spec, glyph->fontspec)) {
         GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);         
         return glyph;
       }
@@ -152,14 +152,15 @@ cc_glyph2d_getglyph(uint32_t character, const cc_font_specification * spec, floa
   glyph->bitmap = bm->buffer;
   
   /* Insert the new glyph into the hash-table using 'character' as key */
-  cc_hash_put(fonthash, (unsigned long) character, glyph);
+  cc_hash_put(glyph2d_fonthash, (unsigned long) character, glyph);
   
   GLYPH2D_MUTEX_UNLOCK(glyph2d_fonthash_lock);
   return glyph;
 }
 
 static SbBool 
-specmatch(const cc_font_specification * spec1, const cc_font_specification * spec2)
+glyph2d_specmatch(const cc_font_specification * spec1, 
+                  const cc_font_specification * spec2)
 {
 
   assert(spec1);
