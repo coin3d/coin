@@ -28,6 +28,7 @@
   efficient.
 */
 
+#include <Inventor/SbName.h>
 #include <Inventor/SbString.h>
 #include <stdio.h>
 #include <ctype.h>
