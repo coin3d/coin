@@ -69,7 +69,7 @@
 
   \code
    // Control realTime field ourselves, so animations within the scene
-   // follows "move-time" and not "wallclock-time".
+   // follows "movie-time" and not "wallclock-time".
    SoSFTime * realtime = SoDB::getGlobalField("realTime");
    SoDB::enableRealTimeSensor(FALSE);
    realtime->setValue(0.0);
