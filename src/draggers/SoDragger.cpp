@@ -1725,6 +1725,9 @@ SoDragger::isPicked(SoPath * path)
   int i = fullpath->findNode(this);
   if (i < 0) return FALSE;
 
+  // if this is a composite dragger, the path will go through this
+  // dragger, but it should not be regarded as picked if a child
+  // dragger is picked.
   int n = fullpath->getLength();
   for (++i; i < n; i++) {
     SoNode * node = fullpath->getNode(i);
