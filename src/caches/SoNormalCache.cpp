@@ -181,6 +181,14 @@ SoNormalCache::generatePerVertex(const SbVec3f * const coords,
   this->indices.truncate(0);
   this->normalArray.truncate(0);
 
+#if COIN_DEBUG && 0 // debug
+  SoDebugError::postInfo("SoNormalCache::generatePerVertex", "%d", numvi);
+  for (int vrtidx=0; vrtidx < numvi; vrtidx++)
+    fprintf(stdout, "%d ", vindex[vrtidx]);
+  fprintf(stdout, "\n");
+#endif // debug
+
+
   SoNormalCache tempcache(NULL);
   const SbVec3f * facenorm = (SbVec3f *) facenormals;
   if (facenorm == NULL) {
