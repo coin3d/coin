@@ -1169,6 +1169,10 @@ SoBaseKit::countMyFields(SoOutput * out)
       SoNode * node = field->getValue();
       if ((node == NULL && !catalog->isNullByDefault(i)) ||
           (node != NULL && catalog->isNullByDefault(i)) ||
+          // FIXME: SoBase::shouldWrite() _probably_ doesn't return
+          // the correct value because we're not through with the
+          // first write pass yet (see API doc on
+          // shouldWrite()). 20030528 mortene.
           (node && node->shouldWrite())) {
 
 #if COIN_DEBUG && 0 // debug
