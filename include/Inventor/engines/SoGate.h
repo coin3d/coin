@@ -47,22 +47,27 @@ public:
 
 protected:
   virtual void inputChanged(SoField * which);
-  virtual SbBool readInstance(SoInput *in, unsigned short flags);
-  virtual void writeInstance(SoOutput *out);
+  virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  virtual void writeInstance(SoOutput * out);
 
 private:
-  friend class dummyClassToStopCompilerNagging;
   SoGate(void);
   ~SoGate();
-  void commonConstructor();
+  void commonConstructor(void);
   void initInputOutput(const SoType type);
 
-  virtual void evaluate();
+  virtual void evaluate(void);
 
-  SoFieldData *gateInputData;
-  SoEngineOutputData *gateOutputData;
+  // SoSelectOne instances uses a dynamic set of inputs and outputs,
+  // as they are not common for all instances of the class (like for
+  // most of the other engines).
+  SoFieldData * dynamicinput;
+  SoEngineOutputData * dynamicoutput;
 
   SoSFName typeField;
+
+  // Avoid a g++/egcs warning due to the private default constructor.
+  friend class dummy;
 };
 
 #endif // !COIN_SOGATE_H

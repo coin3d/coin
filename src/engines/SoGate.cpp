@@ -22,69 +22,49 @@
   \brief The SoGate class is used to selectively copy values from input to output.
   \ingroup engines
 
-  FIXME: doc
+  This engine will forward values from the SoGate::input field to the
+  SoGate::output field when the SoGate::enable field is \c TRUE.
 */
 
 #include <Inventor/engines/SoGate.h>
-#include <Inventor/lists/SoEngineOutputList.h>
-#include <Inventor/engines/SoEngineOutput.h>
-#include <Inventor/SbString.h>
-#include <Inventor/errors/SoReadError.h>
-#include <assert.h>
 #include <Inventor/engines/SoSubEngineP.h>
 
-/*
- * We cannot use the SO_ENGINE_SOURCE macro, since we need to make
- * an instance of SoFieldData and SoEngineOutputData for every
- * SoGate instance, since the input and output is allocated in the
- * constructor. This makes it impossible to inherit this class,
- * but I guess that is the case in OIV too. pederb, 20000331
- */
+#include <Inventor/SbString.h>
+#include <Inventor/engines/SoEngineOutput.h>
+#include <Inventor/errors/SoReadError.h>
+#include <Inventor/lists/SoEngineOutputList.h>
+#include <assert.h>
 
-// Don't set value explicitly to SoType::badType(), to avoid a bug in
-// Sun CC v4.0. (Bitpattern 0x0000 equals SoType::badType()).
-SoType SoGate::classTypeId;
 
-SoType SoGate::getClassTypeId(void) { return SoGate::classTypeId; }
-SoType SoGate::getTypeId(void) const { return SoGate::classTypeId; }
+/*!
+  \var SoMField * SoGate::input
+  The multivalue input field which we will forward to the output when
+  SoGate::enable is \c TRUE.
+*/
+/*!
+  \var SoSFBool SoGate::enable
+  Set whether or not to forward from input to output field.
+*/
+/*!
+  \var SoSFTrigger SoGate::trigger
+  Copy the current values of the input field once to the output field.
+*/
+/*!
+  \var SoEngineOutput * SoGate::output
 
-unsigned int SoGate::classinstances = 0;
-SoFieldData * SoGate::inputdata = NULL;
-const SoFieldData ** SoGate::parentinputdata = NULL;
-SoEngineOutputData * SoGate::outputdata = NULL;
-const SoEngineOutputData ** SoGate::parentoutputdata = NULL;
+  (SoMField) This is the field output containing with the values of
+  SoGate::input.
 
-const SoFieldData **
-SoGate::getInputDataPtr(void)
-{
-  assert(0 && "no static fielddata available for SoGate");
-  return NULL;
-}
+  The type of the field will of course match the type of the input
+  field.
+*/
 
-const SoFieldData *
-SoGate::getFieldData(void) const
-{
-  return this->gateInputData;
-}
-
-const SoEngineOutputData **
-SoGate::getOutputDataPtr(void)
-{
-  assert(0 && "no static outputdata available for SoGate");
-  return NULL;
-}
-
-const SoEngineOutputData *
-SoGate::getOutputData(void) const
-{
-  return this->gateOutputData;
-}
-
-void *
-SoGate::createInstance(void)
-{
-  return new SoGate;
-}
+// Can't use the standard SO_ENGINE_SOURCE macro, as this engine
+// doesn't keep a class-global set of inputs and outputs: we need to
+// make an instance of SoFieldData and SoEngineOutputData for every
+// instance of the class, since the input and output fields are
+// dynamically allocated.
+SO_INTERNAL_ENGINE_SOURCE_DYNAMIC_IO(SoGate);
 
 
 /**************************************************************************/
@@ -109,7 +89,7 @@ SoGate::SoGate(SoType type)
 
 // doc from parent
 void
-SoGate::initClass()
+SoGate::initClass(void)
 {
   SO_ENGINE_INTERNAL_INIT_CLASS(SoGate);
 }
@@ -117,8 +97,8 @@ SoGate::initClass()
 void
 SoGate::commonConstructor(void)
 {
-  this->gateInputData = new SoFieldData;
-  this->gateOutputData = new SoEngineOutputData;
+  this->dynamicinput = new SoFieldData;
+  this->dynamicoutput = new SoEngineOutputData;
 
   this->enable.setValue(FALSE);
   this->enable.setContainer(this);
@@ -128,9 +108,9 @@ SoGate::commonConstructor(void)
 
   // The "type" field must be added first, so it comes out first when
   // writing.
-  this->gateInputData->addField(this, "type", &this->typeField);
-  this->gateInputData->addField(this, "enable", &this->enable);
-  this->gateInputData->addField(this, "trigger", &this->trigger);
+  this->dynamicinput->addField(this, "type", &this->typeField);
+  this->dynamicinput->addField(this, "enable", &this->enable);
+  this->dynamicinput->addField(this, "trigger", &this->trigger);
 
   this->output = new SoEngineOutput;
   this->output->enable(this->enable.getValue());
@@ -148,8 +128,8 @@ SoGate::initInputOutput(const SoType type)
   this->input->setNum(0);
   this->input->setContainer(this);
 
-  this->gateInputData->addField(this, "input", this->input);
-  this->gateOutputData->addOutput(this, "output", this->output, type);
+  this->dynamicinput->addField(this, "input", this->input);
+  this->dynamicoutput->addOutput(this, "output", this->output, type);
 }
 
 /*!
@@ -157,15 +137,15 @@ SoGate::initInputOutput(const SoType type)
 */
 SoGate::~SoGate()
 {
-  delete this->gateInputData;
-  delete this->gateOutputData;
+  delete this->dynamicinput;
+  delete this->dynamicoutput;
   delete this->input;
   delete this->output;
 }
 
 // doc from parent
 void
-SoGate::evaluate()
+SoGate::evaluate(void)
 {
   SbString valueString;
 
