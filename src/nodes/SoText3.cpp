@@ -197,8 +197,15 @@ SoText3::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
     if (tmp > maxw) maxw = tmp;
   }
 
-  float maxy = size * 0.7f; // this is an approximation
-  float miny = maxy - (size + (n-1) * size * this->spacing.getValue());
+  SbBox2f maxbox;
+  int numglyphs = this->glyphs.getLength();
+  for (i = 0; i < numglyphs; i++) {
+    maxbox.extendBy(this->glyphs[i]->getBoundingBox());
+  }
+  float maxglyphsize = maxbox.getMax()[1] - maxbox.getMin()[1];
+
+  float maxy = size * maxbox.getMax()[1];
+  float miny = maxy - (maxglyphsize*size + (n-1) * size * this->spacing.getValue());
 
   float minx, maxx;
   switch (this->justification.getValue()) {
