@@ -97,7 +97,9 @@ protected:
   virtual void jitter(int numpasses, int curpass,
                       const SbViewportRegion & vpreg,
                       SbVec3f & jitteramount) const;
-  void drawCroppedFrame(SoGLRenderAction *action,
+
+private:
+  void drawCroppedFrame(SoGLRenderAction * action,
                         const int viewportmapping,
                         const SbViewportRegion & oldvp,
                         const SbViewportRegion & newvp);
