@@ -417,8 +417,8 @@ created from the source release tarball.
 
 ==============================================================================
 
-Coin Code Standard
-==================
+Coin Code Standards
+===================
 
 The main goal is of course to write good, bugfree, portable C++ code,
 in a way that clearly expresses the intent of what is attempted
@@ -443,53 +443,63 @@ guide written for the Mozilla browser project:
         <URL:http://www.mozilla.org/hacking/portable-cpp.html>
 
 We consider this a must read for any internal resources writing
-production C++ code.
+production C++ code. One issue it's particularly easy to "sin" against
+is the following:
+
+  * Use the ``SbBool'' type instead of bool, and ``TRUE'' and
+    ``FALSE'' keywords instead of ``true'' and ``false''. Compilers
+    that do not support the ``bool'' type is still in widespread use
+    (SGI MIPSPro v7.30 is but one example), so we are using the more
+    portable ``SbBool'' instead to make sure our code build on those
+    systems.
 
 
 Enough about the larger issues, now for the mucky details that has
 been written down to guide the Coin programmers in being consistent
 versus the code "layout" (to make it more easily readable):
 
-* If the code you write is not 100% complete;
+  * If the code you write is not 100% complete;
 
-  - Leave a "FIXME" message if you believe the code is fairly correct,
-    but you are unsure and have not checked the correctness yet, or if
-    there are known deficiencies. This includes cases like ambiguities
-    in the OIV docs that will require some investigation to resolve,
-    error-cases or places where one should be more robust that haven't
-    been fixed yet due to time constraints, etc.
+    - Leave a "FIXME" message if you believe the code is fairly
+      correct, but you are unsure and have not checked the correctness
+      yet, or if there are known deficiencies. This includes cases
+      like ambiguities in the OIV docs that will require some
+      investigation to resolve, error-cases or places where one should
+      be more robust that haven't been fixed yet due to time
+      constraints, etc.
 
-  - Insert "COIN_STUB();" statements if the code lacks certain
-    important functionality, so situations where unimplemented
-    features are used will be detected at run-time.
+    - Insert "COIN_STUB();" statements if the code lacks certain
+      important functionality, so situations where unimplemented
+      features are used will be detected at run-time.
 
-  - Leave FIXMEs if you see obvious cases for performance improvements
-    which should be explored.
+    - Leave FIXMEs if you see obvious cases for performance
+      improvements which should be explored.
 
-  A FIXME-message must include a description of the problem, who wrote
-  the message, and when.  Please include whatever you have already
-  found out about the problem in the FIXME text, so your next of kin
-  don't have to painstakingly re-do all the thought-work you already
-  have laid down.  Example:
+    A FIXME-message must include a description of the problem, who
+    wrote the message, and when.  Please include whatever you have
+    already found out about the problem in the FIXME text, so your
+    next of kin don't have to painstakingly re-do all the thought-work
+    you already have laid down.  Example:
 
     // FIXME: should be possible to simplify cylinder test, since this
     // cylinder is aligned with the y-axis. 19991110 pederb.
 
-  or
+    or
 
      // FIXME: this looks wrong, shouldn't we rather reset the
      // alignment value to what it was previously?  20010824 mortene.
 
-  This goes also for other keywords in comments (see below).  It makes
-  it much easier when others try to fix code that doesn't work.  You
-  will know who to ask if you don't understand the problem, and the
-  date could indicate among other things the urgency of the problem.
+    This goes also for other keywords in comments (see below).  It
+    makes it much easier when others try to fix code that doesn't
+    work.  You will know who to ask if you don't understand the
+    problem, and the date could indicate among other things the
+    urgency of the problem.
  
-* If blocks of code are commented out (obsoleted) to make place for
-  new code, or because it has become superfluous, one should mark it
-  like the example below if it is a large block of code, if the new
-  code is very experimental, or if the new code is obfuscated
-  (e.g. because of optimizations).
+  * If blocks of code are commented out (obsoleted) to make place for
+    new code, or because it has become superfluous, one should mark it
+    like the example below if it is a large block of code, if the new
+    code is very experimental, or if the new code is obfuscated
+    (e.g. because of optimizations).
 
     #if 0// OBSOLETE: <textual description>. <yyyymmdd userid>.
     ...old code...
@@ -497,55 +507,55 @@ versus the code "layout" (to make it more easily readable):
     ...new code...
     #endif // newcode
 
-  So do _not_ leave any code which has been commented out with the
-  language constructs "// ..." or "/* ... */" in anything you check
-  into CVS, at least not without commenting _why_ the code is still
-  present.  It's a bloody pain in the ass trying to figure out why
-  commented-out code is still present in a source file (is it new code
-  which *might* fix a bug, but which haven't been tested yet? is it
-  old code found to be buggy which have been removed? is it commented
-  out because it is a new feature which is yet to be completed? etc
-  etc etc).  People who do this should be taken out behind the barn to
-  be shot.
+    So do _not_ leave any code which has been commented out with the
+    language constructs "// ..." or "/* ... */" in anything you check
+    into CVS, at least not without commenting _why_ the code is still
+    present.  It's a bloody pain in the ass trying to figure out why
+    commented-out code is still present in a source file (is it new
+    code which *might* fix a bug, but which haven't been tested yet?
+    is it old code found to be buggy which have been removed? is it
+    commented out because it is a new feature which is yet to be
+    completed? etc etc etc).  People who do this should be taken out
+    behind the barn to be shot.
 
-* During debugging, write debug code like this:
+  * During debugging, write debug code like this:
 
     #if COIN_DEBUG && 1 // debug
       SoDebugError::postInfo(...
     #endif // debug
 
-  Then, flip the "#if COIN_DEBUG && 1" to "#if COIN_DEBUG && 0" if
-  there is a chance that the debug information might be useful later.
-  If not, remove it before making a patch or checking in.
+    Then, flip the "#if COIN_DEBUG && 1" to "#if COIN_DEBUG && 0" if
+    there is a chance that the debug information might be useful
+    later.  If not, remove it before making a patch or checking in.
 
-  If there are many debug statements in the same category, use a
-  define for that category (#if DEBUG_<category>) and define it to 0
-  at the top of the file before checking in the code.  See
-  src/sensors/SoSensorManager.cpp for examples of how this should be
-  done.
+    If there are many debug statements in the same category, use a
+    define for that category (#if DEBUG_<category>) and define it to 0
+    at the top of the file before checking in the code.  See
+    src/sensors/SoSensorManager.cpp for examples of how this should be
+    done.
 
-  UPDATE 2001-11-21 larsa:
-  Actually, we now prefer that you use this define as an if-condition
-  instead, because of the cleaner look the source code gets when it is
-  not littered with preprocessing directives.  For permanent debugging
-  code, write therefore source code like this instead:
+    UPDATE 2001-11-21 larsa: Actually, we now prefer that you use this
+    define as an if-condition instead, because of the cleaner look the
+    source code gets when it is not littered with preprocessing
+    directives.  For permanent debugging code, write therefore source
+    code like this instead:
 
     if ( COIN_DEBUG ) {
       SoDebugError::postInfo("SoDB::funnyRabbit", "follow the white rabbit");
     }
 
-* Do not under any circumstances use printf() / fprintf() / puts() or
-  related functions for output.  It should not be necessary -- the
-  Coin class SoDebugError (and SoReadError) was implemented for a
-  reason.  Debug messages with printf() / fprintf() is extremely
-  uncool when you use Coin as a DLL under Windows (it's likely to
-  cause mysterious crashes), and besides it's bloody irritating to
-  walk through the code later to remove them.
+  * Do not under any circumstances use printf() / fprintf() / puts()
+    or related functions for output.  It should not be necessary --
+    the Coin class SoDebugError (and SoReadError) was implemented for
+    a reason.  Debug messages with printf() / fprintf() is extremely
+    uncool when you use Coin as a DLL under Windows (it's likely to
+    cause mysterious crashes), and besides it's bloody irritating to
+    walk through the code later to remove them.
 
-* Code formatting rules. The default is to use Kernighan and Ritchie style.
+  * Code formatting rules. The default is to use Kernighan and Ritchie style.
 
-  - Braces: keep opening braces on the end of the line, and closing braces
-    at the start. Like this:
+    - Braces: keep opening braces on the end of the line, and closing
+      braces at the start. Like this:
 
       if (...) {
         ...
@@ -558,27 +568,27 @@ versus the code "layout" (to make it more easily readable):
         ...
       }
 
-    The exception from this rule is functions, which should have the
-    opening brace on the next line.
+      The exception from this rule is functions, which should have the
+      opening brace on the next line.
 
-  - Indentation: use 2 spaces extra for each level of nesting.
-    *Never* use tabulator characters (ie ASCII code 0x09).
+    - Indentation: use 2 spaces extra for each level of nesting.
+      *Never* use tabulator characters (ie ASCII code 0x09).
 
-  - Spacing: use 1 space after commas and around operators (like +, -,
-    *, /, ==, &&, etc), but not after or before parentheses.
+    - Spacing: use 1 space after commas and around operators (like +,
+      -, *, /, ==, &&, etc), but not after or before parentheses.
 
-    Like this:
+      Like this:
 
       if (val) { i = sqrt(a) * func(b, c); }
 
-    Not like this:
+      Not like this:
 
       if ( val ) { i=sqrt(a)*func(b,c); }
 
-  - Naming: class names should be uppercased for each word, function
-    names for each word except the first one, variable names should be
-    all lowercase, and defines, enums and constants should be all
-    uppercase. Example:
+    - Naming: class names should be uppercased for each word, function
+      names for each word except the first one, variable names should
+      be all lowercase, and defines, enums and constants should be all
+      uppercase. Example:
 
       float
       MathClass::calculateValue(float in)
@@ -588,23 +598,23 @@ versus the code "layout" (to make it more easily readable):
         ...
       }
 
-  - Pointer types and references: use a space on each side of the '*'
-    and '&' operators, like this
+    - Pointer types and references: use a space on each side of the
+      '*' and '&' operators, like this
 
         SoNode * mynode = NULL;
 
-    not like this
+      not like this
 
         SoNode *mynode = NULL;
 
-    because it makes it look like the '*' "belongs" to the variable
-    name (which of course is wrong -- it's part of the type), and not
-    like this either
+      because it makes it look like the '*' "belongs" to the variable
+      name (which of course is wrong -- it's part of the type), and
+      not like this either
 
         SoNode* mynode = NULL;
 
-    because it's ugly and unusual. So for consistency, _please_ stick
-    with the space-on-both-sides convention in Coin code.
+      because it's ugly and unusual. So for consistency, _please_
+      stick with the space-on-both-sides convention in Coin code.
 
 ==============================================================================
 
