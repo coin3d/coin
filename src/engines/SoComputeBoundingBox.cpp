@@ -43,9 +43,16 @@ SO_ENGINE_SOURCE(SoComputeBoundingBox);
 
 /*!
   \var SoSFNode SoComputeBoundingBox::node
+
+  If this input field is set and SoComputeBoundingBox::path is \c
+  NULL, the resultant bounding box will be the box encompassing the
+  scene graph rooted at this node pointer.
 */
 /*!
   \var SoSFPath SoComputeBoundingBox::path
+
+  If this input field is not \c NULL, the bounding box values of the
+  given path will be set on the outputs.
 */
 /*!
   \var SoEngineOutput SoComputeBoundingBox::min
