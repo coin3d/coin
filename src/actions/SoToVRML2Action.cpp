@@ -113,6 +113,7 @@
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoNormalElement.h>
+#include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 
 #include <Inventor/errors/SoDebugError.h>
@@ -834,7 +835,14 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
 
   const SoSwitch * oldswitch = (const SoSwitch *) node;  
   SoVRMLSwitch * newswitch = new SoVRMLSwitch;
-  newswitch->whichChoice = oldswitch->whichChild.getValue();
+
+  // SO_SWITCH_INHERIT is not supported in VRML97, so just translate
+  // it here. We could perhaps consider creating a ROUTE from the
+  // inherited whichChoice field to this field...
+  int wc = oldswitch->whichChild.getValue() == SO_SWITCH_INHERIT ?
+    action->getSwitch() : oldswitch->whichChild.getValue();
+  
+  newswitch->whichChoice = wc;
   prevgroup->addChild(newswitch);
   thisp->vrml2path->append(newswitch);
 
@@ -843,20 +851,24 @@ SoToVRML2ActionP::push_switch_cb(void * closure, SoCallbackAction * action, cons
    * afterwards.  This is needed so that traversing the not selected
    * children won't influence the selected child.
    */
-  int wc = oldswitch->whichChild.getValue() == SO_SWITCH_INHERIT ?
-    action->getSwitch() : oldswitch->whichChild.getValue();
   if (wc != SO_SWITCH_ALL) {
+    SoState * state = action->getState();
+    state->push();
+    // update SwitchElement before traversing children (this is
+    // usually done in SoSwitch::doAction)
+    SoSwitchElement::set(state, wc);
     int n = oldswitch->getNumChildren();
     for (int i = 0; i < n; i++) {
       if (i != wc) {
-        action->getState()->push();
+        state->push();
         action->switchToNodeTraversal(oldswitch->getChild(i));
-        action->getState()->pop();
+        state->pop();
       }
     }
     if (wc >= 0 && wc < oldswitch->getNumChildren()) {
       action->switchToNodeTraversal(oldswitch->getChild(wc));
     }
+    state->pop();
     // so that the children will not be traversed
     return SoCallbackAction::PRUNE;
   }
@@ -879,9 +891,22 @@ SoToVRML2ActionP::pop_switch_cb(void * closure, SoCallbackAction * action, const
   } while (grp->getTypeId() != SoVRMLSwitch::getClassTypeId());
 
   SoVRMLSwitch * sw = (SoVRMLSwitch *) grp;
-  int wc = sw->whichChoice.getValue() == SO_SWITCH_INHERIT ?
-    action->getSwitch() : sw->whichChoice.getValue();
-  if (wc >= 0 && wc < sw->getNumChoices()) {
+  int wc = sw->whichChoice.getValue();
+  
+  if (wc == SO_SWITCH_ALL) {
+    // workaround since VRML97 does not support SO_SWITCH_ALL.
+    SoVRMLGroup * allfix = new SoVRMLGroup;
+    allfix->ref();
+    for (int i = 0; i < sw->getNumChoices(); i++) {
+      allfix->addChild(sw->getChoice(i));
+    }
+    sw->removeAllChoices();
+    sw->addChoice(allfix);
+    allfix->unrefNoDelete();
+    // set whichChoice to point to the new group node
+    sw->whichChoice = 0;
+  }
+  else if (wc >= 0 && wc < sw->getNumChoices()) {
     // Move the last child (which is the selected child) to its correct position
     SoNode * n = sw->getChoice(sw->getNumChildren()-1);
     sw->removeChoice(sw->getNumChildren()-1);
