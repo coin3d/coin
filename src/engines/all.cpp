@@ -34,4 +34,4 @@
 #include "SoTransformVec3f.cpp"
 #include "SoTriggerAny.cpp"
 #include "evaluator.c"
-#include "evaluator.tab.c"
+#include "evaluator_tab.c"
