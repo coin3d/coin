@@ -206,7 +206,7 @@ SbString::findAll(const SbString & str, SbIntList & found) const
 */
 
 /*!
-  \fn uint32_t SbString::hash(void)
+  \fn uint32_t SbString::hash(void) const
 
   This method returns a reasonable hash value for the current string.
 

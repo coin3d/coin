@@ -48,7 +48,7 @@ public:
 
   ~SbString() { cc_string_clean(&this->str); }
 
-  uint32_t hash(void) { return cc_string_hash(&this->str); }
+  uint32_t hash(void) const { return cc_string_hash(&this->str); }
   static uint32_t hash(const char * s) { return cc_string_hash_text(s); }
 
   int getLength(void) const { return cc_string_length(&this->str); }
