@@ -4,32 +4,55 @@ on the screen by the configure script.
 
 !too-old-qt
 Versions of the Qt library older than version 2.0.0 is not supported.
+You must upgrade to be able to build and use this software package.
 
 !no-qt
 Could not find any way to build against the Qt library. If you
 are sure Qt is properly installed on your system, see the file
 config.log to find out what went wrong.
 
+One common way to solve this problem is to set up the environment
+variable QTDIR to the base of the Qt installation directory. Or if it
+was already set up, double check to see that it is pointing at the
+correct directory.
+
 Note that it is possible to override the combinations of Qt libraries
 configure tries to link against by setting up the environment variable
-CONFIG_QTLIBS.
+CONFIG_QTLIBS. This might be necessary if you have installed the Qt
+library in a manner that is not compatible with any of the known
+configurations, for instance by changing the name of the library or
+the Qt library having more dependencies on other libraries that we are
+aware of.
 
-If you for instance know the correct set of libraries to be
-qt304.lib, qtmain.lib and gdi32.lib (on an MSWindows system),
-then set CONFIG_QTLIBS to the string "-lqt304 -lqtmain -lgdi32"
-before re-running configure.
+If you for instance know the correct set of libraries to be qt304.lib,
+qtmain.lib and gdi32.lib (this would be on an MSWindows system), then
+set CONFIG_QTLIBS to the string ''-lqt304 -lqtmain -lgdi32'' before
+re-running configure.
+
+If you still can't get the configure script to detect the presence of
+and how to use the Qt library, please mail the config.log file to
+<coin-support@coin3d.org> and ask for help.
 
 !no-qgl
 The configure script could not find any way to build code which uses
 Qt's OpenGL bindings (called "QGL"), neither as part of the main Qt
 library, nor as a stand-alone library.
 
-You must rebuild your local Qt library with OpenGL support to be able
-to resolve this problem.
+You must install a Qt library configured with OpenGL support to be
+able to resolve this problem.
+
+If you are *sure* that Qt has been built with OpenGL support and you
+still can't get the configure script to detect the presence of QGL,
+please mail the config.log file to <coin-support@coin3d.org> and ask
+for help.
 
 !no-msvc++
 You need to have the Microsoft Visual C++ compiler suite accessible in the
-Cygwin environment.  Look in README.WIN32.
+Cygwin environment.  Read the file <srcdir>/README.WIN32.
+
+If you are absolutely sure you want to attempt to run the configure script
+and the build process without Microsoft Visual C++, and you know what you
+are doing, use the ''--disable-msvc'' option to configure.
 
 !c--inlinefor
 This C++ compiler (\"$CXX\") does not seem to be capable of compiling
@@ -47,10 +70,17 @@ that it causes g++ to exit due to an internal compiler error, which is
 of course a "should never happen" condition for any compiler. If you
 are hit by this problem, try upgrading to a later g++ version.)
 
+If you become stuck on this problem, please mail the config.log file
+to <coin-support@coin3d.org> and ask for help.
+
 !c--vdest
 This C++ compiler (\"$CXX\") is not capable of compiling Coin.
+
 If you are using the Sun CC compiler, try upgrading to a new version,
 or even downgrading to an older version.
+
+If not, please mail the config.log file to <coin-support@coin3d.org>
+and ask for help.
 
 !c--gcc296bug
 Your compiler contains a nasty bug which makes it unsuited for
@@ -77,24 +107,45 @@ you still want to go ahead with increasing the optimization level,
 just set up the CPPFLAGS environment variable when invoking configure,
 like this:
 
-        $ <srcdir>/configure [your-options] CPPFLAGS="-O3"
+        # <srcdir>/configure [your-options] CPPFLAGS="-O3"
 
+
+If this is *not* the GCC 2.96.x compiler, please mail the config.log
+file to <coin-support@coin3d.org> and ask for help.
 
 !no-network-conversion
 Could not find network conversion functions like htonl() and its variants.
+
+On MSWindows systems, this can be caused by problems linking with the
+winsock library (which is either in wsock32.dll or ws2_32.dll).
+
+If you can't figure out what caused this problem, please mail the
+config.log file to <coin-support@coin3d.org> and ask for help.
 
 !no-doxygen
 Could not find the doxygen tool.
 See http://www.doxygen.org for download information.
 
 !no-opengl
-Could not find an OpenGL software development kit.
+Could not figure out how to use the OpenGL software development kit
+on this system.
+
+If you are sure OpenGL is actually installed and usable on this
+system, and can't figure out why configure still can't use OpenGL,
+please mail the config.log file to <coin-support@coin3d.org> and ask
+for help.
 
 !no-cpp-quoting
 Couldn't figure out how to quote strings in CPP macros.
 
+This is a freak condition. Please mail the config.log file to
+<coin-support@coin3d.org> and ask for help.
+
 !no-math-library
 Could not find a way to use the math library.
+
+Please mail the config.log file to <coin-support@coin3d.org> and ask
+for help.
 
 !invalid-msvcrt
 Your choice for MSVC++ C library (the --with-msvcrt=<crt> option) was
@@ -106,5 +157,23 @@ invalid.  Use one of the following choices (aliases on the right):
   multithread-static-debug   [ /mtd | mtd | libcmtd ]
   multithread-dynamic        [ /md  | md  | msvcrt  ]
   multithread-dynamic-debug  [ /mdd | mdd | msvcrtd ]
+
+!unable-to-run-soxx-config
+configure was not able to find or run the required so*-config utility.
+
+Note that the default So*-library to link against is the SoXt
+library. If you want to use another library, for instance SoQt, you
+need to specify this by an additional option to the configure script,
+e.g.: ''--with-soqt''.
+
+To be able to run the script, the <installdir>/bin/ installation
+directory for the So*-library must also be set up in the shell's PATH
+environment variable before invoking the configure script.
+
+!x11-qt-on-mac
+You are using the X11 version of the Qt toolkit, which requires the
+X11 SDK, available at http://www.apple.com/macosx/x11/. Since the
+default on Mac OS X is not to use X11, you have to specify the
+--enable-x11 configure option.
 
 !end
