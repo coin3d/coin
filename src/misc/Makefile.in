@@ -70,6 +70,7 @@ COIN_BETA_VERSION = @COIN_BETA_VERSION@
 COIN_COMPILER = @COIN_COMPILER@
 COIN_DOC_HTML = @COIN_DOC_HTML@
 COIN_DOC_MAN = @COIN_DOC_MAN@
+COIN_DSP_LIBS = @COIN_DSP_LIBS@
 COIN_EXTRA_CFLAGS = @COIN_EXTRA_CFLAGS@
 COIN_EXTRA_CPPFLAGS = @COIN_EXTRA_CPPFLAGS@
 COIN_EXTRA_CXXFLAGS = @COIN_EXTRA_CXXFLAGS@
@@ -145,6 +146,7 @@ sim_ac_simage_configcmd = @sim_ac_simage_configcmd@
 RegularSources = \
 	SoBase.cpp \
 	SoChildList.cpp \
+	SoContextHandler.cpp \
 	SoGL.cpp \
 	SoGLImage.cpp \
 	SoGLBigImage.cpp \
@@ -190,6 +192,7 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoByteStream.h \
 	../../include/Inventor/misc/SoCallbackList.h \
 	../../include/Inventor/misc/SoChildList.h \
+	../../include/Inventor/misc/SoContextHandler.h \
 	../../include/Inventor/misc/SoGLImage.h \
 	../../include/Inventor/misc/SoGLBigImage.h \
 	../../include/Inventor/misc/SoNormalGenerator.h \
@@ -280,6 +283,7 @@ misc_lst_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@	all-c.$(OBJEXT)
 @HACKING_COMPACT_BUILD_FALSE@am_misc_lst_OBJECTS = SoBase.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoChildList.$(OBJEXT) \
+@HACKING_COMPACT_BUILD_FALSE@	SoContextHandler.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGL.$(OBJEXT) SoGLImage.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLBigImage.$(OBJEXT) \
 @HACKING_COMPACT_BUILD_FALSE@	SoGlyph.$(OBJEXT) \
@@ -317,9 +321,10 @@ libmisc_la_LDFLAGS =
 libmisc_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc_la_OBJECTS = all-cpp.lo all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libmisc_la_OBJECTS = SoBase.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoChildList.lo SoGL.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGLImage.lo SoGLBigImage.lo \
-@HACKING_COMPACT_BUILD_FALSE@	SoGlyph.lo SoNormalGenerator.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoChildList.lo SoContextHandler.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGL.lo SoGLImage.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoGLBigImage.lo SoGlyph.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoNormalGenerator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoNotification.lo SoNotRec.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoState.lo SoDB.lo SoFullPath.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoTempPath.lo SoLightPath.lo \
@@ -341,7 +346,8 @@ libmisc@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_TRUE@am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
 @HACKING_COMPACT_BUILD_TRUE@	all-cpp.lo all-c.lo
 @HACKING_COMPACT_BUILD_FALSE@am_libmisc@SUFFIX@LINKHACK_la_OBJECTS = \
-@HACKING_COMPACT_BUILD_FALSE@	SoBase.lo SoChildList.lo SoGL.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoBase.lo SoChildList.lo \
+@HACKING_COMPACT_BUILD_FALSE@	SoContextHandler.lo SoGL.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGLImage.lo SoGLBigImage.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoGlyph.lo SoNormalGenerator.lo \
 @HACKING_COMPACT_BUILD_FALSE@	SoNotification.lo SoNotRec.lo \
@@ -372,7 +378,9 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP_TRUE@	$(DEPDIR)/SoAudioDevice.Po $(DEPDIR)/SoBase.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoBase.Po $(DEPDIR)/SoByteStream.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoByteStream.Po $(DEPDIR)/SoChildList.Plo \
-@AMDEP_TRUE@	$(DEPDIR)/SoChildList.Po $(DEPDIR)/SoDB.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoChildList.Po \
+@AMDEP_TRUE@	$(DEPDIR)/SoContextHandler.Plo \
+@AMDEP_TRUE@	$(DEPDIR)/SoContextHandler.Po $(DEPDIR)/SoDB.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoDB.Po $(DEPDIR)/SoFullPath.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoFullPath.Po $(DEPDIR)/SoGL.Plo \
 @AMDEP_TRUE@	$(DEPDIR)/SoGL.Po $(DEPDIR)/SoGLBigImage.Plo \
@@ -510,6 +518,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoByteStream.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoChildList.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoChildList.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoContextHandler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoContextHandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoDB.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoDB.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/SoFullPath.Plo@am__quote@

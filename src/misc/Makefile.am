@@ -4,6 +4,7 @@
 RegularSources = \
 	SoBase.cpp \
 	SoChildList.cpp \
+	SoContextHandler.cpp \
 	SoGL.cpp \
 	SoGLImage.cpp \
 	SoGLBigImage.cpp \
@@ -47,6 +48,7 @@ PublicHeaders = \
 	../../include/Inventor/misc/SoByteStream.h \
 	../../include/Inventor/misc/SoCallbackList.h \
 	../../include/Inventor/misc/SoChildList.h \
+	../../include/Inventor/misc/SoContextHandler.h \
 	../../include/Inventor/misc/SoGLImage.h \
 	../../include/Inventor/misc/SoGLBigImage.h \
 	../../include/Inventor/misc/SoNormalGenerator.h \
