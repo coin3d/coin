@@ -589,15 +589,24 @@ SoMField::allocValues(int newnum)
       // FIXME: Umm.. aren't we supposed to use realloc() here?
       // 20000915 mortene.
       unsigned char * newblock = new unsigned char[this->maxNum * fsize];
-
-      (void)memcpy(newblock, this->valuesPtr(),
-                   fsize * SbMin(this->num, newnum));
-
+      int copysize = fsize * SbMin(this->num, newnum);
+      (void) memcpy(newblock, this->valuesPtr(), copysize);
+      // we have to dereference old values in SoMFNode, SoMFPath and
+      // SoMFEngine, so we just initialize the part of the array with
+      // no defined values to NULL.
+      int rest = this->maxNum*fsize - copysize;
+      if (rest > 0) {
+        (void)memset(newblock + copysize, 0, rest);
+      }
       delete[] (unsigned char *) this->valuesPtr();
       this->setValuesPtr(newblock);
     }
     else {
-      this->setValuesPtr(new unsigned char[newnum * fsize]);
+      unsigned char * data = new unsigned char[newnum * fsize];
+      // we have to dereference old values in SoMFNode, SoMFPath and
+      // SoMFEngine, so we just initialize the array to NULL.
+      (void)memset(data, 0, newnum * fsize);
+      this->setValuesPtr(data);
       this->maxNum = newnum;
     }
   }

@@ -94,12 +94,10 @@ SoMFEngine::valuesPtr(void)
 void
 SoMFEngine::setValuesPtr(void * ptr)
 {
-#if COIN_DEBUG
   // We don't get any ref()'ing done here, or any notification
-  // mechanisms set up.
-  SoDebugError::postWarning("SoMFEngine::setValuesPtr", "**dangerous code**");
-#endif // COIN_DEBUG
-
+  // mechanisms set up -- so this function should _only_ be used for
+  // initial setup of array memory.  In Coin, it's only used from
+  // SoMField::allocValues().
   this->values = (SoEngine **)ptr;
 }
 
@@ -150,7 +148,9 @@ SoMFEngine::set1Value(const int idx, SoEngine * newval)
     this->setNum(idx + 1);
   }
 
-  SoEngine * oldptr = (*this)[idx];
+  // Don't use getValues() or operator[[] to find oldptr, since this
+  // might trigger a recursive evaluation call if the field is connected.
+  SoEngine * oldptr = this->values[idx];
   if (oldptr == newval) return;
 
   if (oldptr) {

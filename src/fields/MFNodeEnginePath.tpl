@@ -72,12 +72,10 @@ SoMF_Typename_::valuesPtr(void)
 void
 SoMF_Typename_::setValuesPtr(void * ptr)
 {
-#if COIN_DEBUG
   // We don't get any ref()'ing done here, or any notification
-  // mechanisms set up.
-  SoDebugError::postWarning("SoMF_Typename_::setValuesPtr", "**dangerous code**");
-#endif // COIN_DEBUG
-
+  // mechanisms set up -- so this function should _only_ be used for
+  // initial setup of array memory.  In Coin, it's only used from
+  // SoMField::allocValues().
   this->values = (So_Typename_ **)ptr;
 }
 
@@ -128,7 +126,9 @@ SoMF_Typename_::set1Value(const int idx, So_Typename_ * newval)
     this->setNum(idx + 1);
   }
 
-  So_Typename_ * oldptr = (*this)[idx];
+  // Don't use getValues() or operator[[] to find oldptr, since this
+  // might trigger a recursive evaluation call if the field is connected.
+  So_Typename_ * oldptr = this->values[idx];
   if (oldptr == newval) return;
 
   if (oldptr) {

@@ -95,12 +95,10 @@ SoMFPath::valuesPtr(void)
 void
 SoMFPath::setValuesPtr(void * ptr)
 {
-#if COIN_DEBUG
   // We don't get any ref()'ing done here, or any notification
-  // mechanisms set up.
-  SoDebugError::postWarning("SoMFPath::setValuesPtr", "**dangerous code**");
-#endif // COIN_DEBUG
-
+  // mechanisms set up -- so this function should _only_ be used for
+  // initial setup of array memory.  In Coin, it's only used from
+  // SoMField::allocValues().
   this->values = (SoPath **)ptr;
 }
 
@@ -151,7 +149,9 @@ SoMFPath::set1Value(const int idx, SoPath * newval)
     this->setNum(idx + 1);
   }
 
-  SoPath * oldptr = (*this)[idx];
+  // Don't use getValues() or operator[[] to find oldptr, since this
+  // might trigger a recursive evaluation call if the field is connected.
+  SoPath * oldptr = this->values[idx];
   if (oldptr == newval) return;
 
   if (oldptr) {
