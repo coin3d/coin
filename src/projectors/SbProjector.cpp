@@ -172,14 +172,17 @@ SbProjector::findVanishingDistance(void) const
   // FIXME: find a proper algorithm to calculate the vanishing
   // distance. Now we just use an incremental algorithm to detect when
   // the projected box is less than one pixel on a screen with height
-  // = 1024 pixels. pederb, 2001-10-11
+  // = 512 pixels. pederb, 2001-10-11
   assert(vv.getProjectionType() == SbViewVolume::PERSPECTIVE);
   float depth = vv.getHeight();
 
   // used to break out if we get too many iterations. Will probably
   // never happen, but it's here just in case something bad happens.
   int cnt = 0;
-  SbBox3f unitbox(-0.5f, -0.5f, -0.5, 0.5f, 0.5f, 0.5f);
+
+  float unit = depth * 0.25;
+  
+  SbBox3f unitbox(-unit, -unit, -unit, unit, unit, unit);
   SbVec3f projdir = this->viewVol.getProjectionDirection();
   SbMatrix m;
   m.setTranslate(projdir * depth);
@@ -187,7 +190,7 @@ SbProjector::findVanishingDistance(void) const
   box.transform(m);
   
   SbVec2f siz = vv.projectBox(box);
-  while (cnt < 64 && (siz[1] > (1.0f / 1024.0f))) {
+  while (cnt < 64 && (siz[1] > (1.0f / 512.0f))) {
     depth *= 2.0f;
     m.setTranslate(projdir * depth);
     SbBox3f box = unitbox;
