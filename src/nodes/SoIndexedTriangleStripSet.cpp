@@ -271,7 +271,7 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
 {
   // Note: default coordIndex field setting is [ 0 ] so this check is
   // absolutely necessary.
-  if (this->coordIndex.getNum() < 3) return;
+  if (this->coordIndex.getNum() < 3) return FALSE;
 
   SbBool ccw = TRUE;
   const SoCoordinateElement * coordelem =
