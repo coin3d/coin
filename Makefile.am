@@ -72,6 +72,7 @@ EXTRA_DIST = \
 	cfg/ltconfig \
 	cfg/m4/wrapmsvc.cpp \
 	cfg/m4/wrapmsvc.exe \
+	cfg/m4/gendsp.sh \
 	packaging/debian/changelog.in \
 	packaging/debian/control.in \
 	packaging/debian/copyright.in \
