@@ -200,7 +200,7 @@ cc_mutex_lock(
 #ifdef USE_W32THREAD
 #ifdef USE_W32_MUTEX
   status = WaitForSingleObject(mutex->w32thread.mutexhandle, INFINITE);
-  if (status == WAIT_FAILED) {  
+  if (status == WAIT_FAILED) {
     if ( COIN_DEBUG ) {
       DWORD err;
       char *errstr;
@@ -252,7 +252,7 @@ cc_mutex_try_lock(
 #ifdef USE_W32_MUTEX
   status = WaitForSingleObject(mutex->w32thread.mutexhandle, 0);
   if (status == WAIT_TIMEOUT)
-    return CC_BUSY; // FIXME: correct return value
+    return FALSE; // FIXME: correct return value. Sync with SbMutex.
   else if ( (status == WAIT_OBJECT_0) || (status == WAIT_ABANDONED) )
     return TRUE;
   else {
