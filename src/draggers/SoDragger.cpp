@@ -701,14 +701,36 @@ SoDragger::getWorldStartingPoint(void)
 void
 SoDragger::getPartToLocalMatrix(const SbName & partname, SbMatrix & parttolocalmatrix, SbMatrix & localtopartmatrix)
 {
-  SoPath * path = (SoPath *)this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, NULL);
+  // ref, in case somebody is operating on a zero-ref instance to the
+  // dragger.
+  this->ref();
+  // we need to create a path from the root node, since
+  // SoSurroundScale nodes need the entire path to calculate the
+  // surround parameters correctly.
+  SoPath * pathtothis = this->createPathToThis();
+  assert(pathtothis);
+  pathtothis->ref();
+  SoPath * path = (SoPath *)this->createPathToAnyPart(partname, FALSE, FALSE, FALSE, pathtothis);
   assert(path);
+  pathtothis->unref();
+  
   path->ref();
   SoGetMatrixAction action(THIS->viewport);
   action.apply(path);
-  parttolocalmatrix = action.getMatrix();
-  localtopartmatrix = action.getInverse();
+  SbMatrix p2w = action.getMatrix();
+  SbMatrix w2p = action.getInverse();
   path->unref();
+  
+  // premultiply with matrix to/from this dragger to remove
+  // contributions before the dragger.
+  parttolocalmatrix = p2w;
+  parttolocalmatrix.multRight(this->getWorldToLocalMatrix());
+  
+  localtopartmatrix = this->getLocalToWorldMatrix();
+  localtopartmatrix.multRight(w2p);
+
+  // we ref'ed at the beginning of the function
+  this->unrefNoDelete();
 }
 
 /*!
@@ -822,7 +844,8 @@ SoPath *
 SoDragger::createPathToThis(void)
 {
   if (THIS->draggercache == NULL) return NULL; // should not happen
-  SoPath * orgpath = (SoPath *)&THIS->draggercache->path;
+  assert(THIS->draggercache->path);
+  SoPath * orgpath = (SoPath *) THIS->draggercache->path;
   return new SoPath(*orgpath);
 }
 
@@ -1152,15 +1175,8 @@ SoDragger::appendRotation(const SbMatrix & matrix, const SbRotation & rot, const
     transform.multRight(*conversion);
     transform.multLeft(conversion->inverse());
   }
-  // need to do some work to keep scaleorientation valid
-  SbMatrix res;
-  SbRotation tmprot(transform);
-  SbRotation r, so;
-  SbVec3f t, s;
-  matrix.getTransform(t, r, s, so);
-  so *= tmprot;
-  res.setTransform(t, r, s, so);
-  return res.multLeft(transform);
+  transform.multRight(matrix);
+  return transform;
 }
 
 /*!
