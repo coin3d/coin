@@ -139,7 +139,7 @@
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoSubField.h>
 #include <assert.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <string.h>
 
 #if COIN_DEBUG
