@@ -52,6 +52,7 @@ Options:
   --ldflags
   --libs
   --msvcrt
+  --prefix
   --includedir
   --frameworkdir
   --datadir
@@ -121,6 +122,7 @@ do
   case $1 in
   --usage | --help)  echo "$usage"         ;;
   --version)         echo "$version"       ;;
+  --prefix)          echo "$prefix"        ;;
   --cppflags)        echo "$cppflags"      ;;
   --cflags)          echo "$cflags"        ;;
   --cxxflags)        echo "$cxxflags"      ;;
