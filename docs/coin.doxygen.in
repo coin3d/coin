@@ -171,9 +171,9 @@ JAVADOC_AUTOBRIEF      = YES
 # member inherits the documentation from any documented member that it 
 # reimplements. 
 
-# We don't want to repeat the doc for all overridden node-action methods,
-# for instance, as it's more confusing and ugly than helpful. 20020319 mortene.
-INHERIT_DOCS           = NO
+# (If this is set to "NO", Doxygen expect all overridden methods to be
+# separately documented. 20020319 mortene.)
+INHERIT_DOCS           = YES
 
 # If the INLINE_INFO tag is set to YES (the default) then a tag [inline] 
 # is inserted in the documentation for inline members. 
