@@ -1268,14 +1268,14 @@ SoGLImageP::resizeImage(SoState * state, unsigned char *& imageptr,
   }
 
   // downscale to legal GL size (implementation dependent)
-  SoGLTextureImageElement * elem = (SoGLTextureImageElement *)
-    state->getConstElement(SoGLTextureImageElement::getClassStackIndex());
+  const cc_glglue * glw = sogl_glue_instance(state);
   SbBool sizeok = FALSE;
 #if COIN_DEBUG
   uint32_t orgsize[3] = { newx, newy, newz };
 #endif // COIN_DEBUG
   while (!sizeok) {
-    sizeok = elem->isTextureSizeLegal(newx, newy, newz, numcomponents);
+    sizeok = cc_glglue_is_texture_size_legal(glw, newx, newy, newz, 
+                                             numcomponents, this->shouldCreateMipmap());
     if (!sizeok) {
       unsigned int max = SbMax(newx, SbMax(newy, newz));
       if (max==newz) newz >>= 1;
