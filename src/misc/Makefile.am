@@ -37,7 +37,8 @@ RegularSources = \
 	default3dfont.cpp \
 	default2dfont.cpp \
 	SoAudioDevice.cpp \
-	AudioTools.cpp
+	AudioTools.cpp \
+        SoFontLib.cpp
 LinkHackSources = \
 	all-cpp.cpp \
 	all-c.c
@@ -80,7 +81,8 @@ PrivateHeaders = \
 	SoOffscreenAGLData.icc \
 	SoOffscreenGLXData.icc \
 	SoOffscreenWGLData.icc \
-	cppmangle.icc
+	cppmangle.icc \
+	../../include/Inventor/misc/SoFontLib.h
 
 ##$ BEGIN TEMPLATE Make-Common(misc, misc)
 # **************************************************************************

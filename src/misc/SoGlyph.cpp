@@ -23,13 +23,26 @@
 
 /*!
   \class SoGlyph include/Inventor/misc/SoGlyph.h
-  \brief The SoGlyph class is used to control and reuse font glyphs.
-
-  FIXME: class doc
-
+  \brief The SoGlyph class is used to generate and reuse font glyph bitmaps and outlines.
+  
+  SoGlyph is the public interface all text nodes (both built-in and extensions) should
+  use to generate bitmaps and outlines for font glyphs. SoGlyph uses the private
+  class \c SoFontLib to provide bitmaps and outlines. It maintains an internal cache
+  of previously requested glyphs to avoid needless calls into the font library.
+  
+  Primer: a \e glyph is the graphical representation of a given character of a given font
+  at a given size and orientation. It can be either a \e bitmap (pixel aligned with
+  the viewport) or an \e outline (polygonal representation) that can be transformed or
+  extruded like any other 3D geometry. Bitmaps are used by SoText2, while the other
+  text nodes uses outlines.
+  
+  FIXME: font support for outline glyphs.
+  
   \COIN_CLASS_EXTENSION
 
   \since Coin 2.0
+
+  \sa SoText2, SoText3, SoAsciiText, SoFontLib
 */
 
 #include <Inventor/misc/SoGlyph.h>
@@ -38,11 +51,17 @@
 #include <Inventor/C/tidbits.h>
 #include <Inventor/C/tidbitsp.h>
 #include <Inventor/SbName.h>
+#include <Inventor/SbString.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/lists/SbList.h>
+#include <Inventor/elements/SoFontNameElement.h>
+#include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/misc/SoFontLib.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef DOXYGEN_SKIP_THIS
 
 #if !defined(COIN_NO_DEFAULT_3DFONT)
 // our default font (misc/default3dfont.cpp)
@@ -62,7 +81,13 @@ public:
   int * edgeidx;
   int refcount;
   float ymin, ymax;
-
+  
+  int fontidx;
+  int glyphidx;
+  float angle;
+  SbVec2s size;
+  unsigned int character;
+  
   struct {
     unsigned int didalloccoords : 1;
     unsigned int didallocfaceidx : 1;
@@ -72,14 +97,18 @@ public:
 
   static SoGlyph *createSystemGlyph(const char character, const SbName & font);
   static SoGlyph *createSystemGlyph(const unsigned int character, SoState * state) {return NULL;};
+  
+  // static SoGlyph *getGlyph(const SbName &font, const SbName &style, const SbVec2s &size, const float angle);
 };
 
+#endif  // Doxygen
 
 /*!
   Constructor.
 */
 SoGlyph::SoGlyph()
 {
+  // fprintf(stderr,"SoGlyph constructor called.\n"); // DEBUG
   THIS = new SoGlyphP();
   THIS->refcount = 0;
   THIS->flags.didalloccoords = 0;
@@ -288,28 +317,31 @@ class coin_glyph_info {
 public:
   coin_glyph_info() {
     this->character = 0;
+    this->size = 0.0;
     this->glyph = NULL;
   }
-  coin_glyph_info(const char character, const SbName &font, SoGlyph *glyph)
-    : character(character), font(font), glyph(glyph) {}
-
-  SbBool matches(const char character, const SbName font) {
-    return (this->character == character) && (this->font == font);
+  coin_glyph_info(const unsigned int character, const float size, const SbName &font, SoGlyph *glyph)
+    : character(character), size(size), font(font), glyph(glyph) {}
+  
+  // Note: bitmap glyphs have valid size, polygonal glyphs have size=-1.0
+  SbBool matches(const unsigned int character, const float size, const SbName font) {
+    return (this->character == character) && (this->size == size) && (this->font == font);
   }
-
+  
   // AIX native compiler xlC needs equality and inequality operators
   // to compile templates where these operators are referenced (even
   // if they are actually never used).
-
+  
   SbBool operator==(const coin_glyph_info & gi) {
-    return this->matches(gi.character, gi.font) && this->glyph == gi.glyph;
+    return this->matches(gi.character, gi.size, gi.font) && this->glyph == gi.glyph;
   }
   SbBool operator!=(const coin_glyph_info & gi) {
     return !(*this == gi);
   }
 
-  char character;
+  unsigned int character;
   SbName font;
+  float size;
   SoGlyph *glyph;
 };
 
@@ -323,11 +355,12 @@ void SoGlyph_cleanup(void)
 }
 
 /*!
-  Returns a character of the specified font.
+  Returns a character of the specified font, suitable for polygonal rendering.
 */
 const SoGlyph *
 SoGlyph::getGlyph(const char character, const SbName & font)
 {
+  // Similar code in start of getGlyph(..., state) - keep in sync.
   if (SoGlyph_mutex == NULL) {
     CC_MUTEX_CONSTRUCT(SoGlyph_mutex);
   }
@@ -347,7 +380,8 @@ SoGlyph::getGlyph(const char character, const SbName & font)
 
   int i, n = activeGlyphs->getLength();
   for (i = 0; i < n; i++) {
-    if ((*activeGlyphs)[i].matches(character, font)) break;
+    // Search for fontsize -1 to avoid getting a bitmap glyph.
+    if ((*activeGlyphs)[i].matches(character, -1.0, font)) break;
   }
   if (i < n) {
     SoGlyph *glyph = (*activeGlyphs)[i].glyph;
@@ -385,7 +419,8 @@ SoGlyph::getGlyph(const char character, const SbName & font)
     }
 #endif // COIN_NO_DEFAULT_3DFONT
   }
-  coin_glyph_info info(character, font, glyph);
+  // Use impossible font size to avoid mixing polygonal & bitmap glyphs.
+  coin_glyph_info info(character, -1.0, font, glyph);
   glyph->pimpl->refcount++;
   activeGlyphs->append(info);
   CC_MUTEX_UNLOCK(SoGlyph_mutex);
@@ -412,14 +447,73 @@ SoGlyph::unrefGlyph(SoGlyph *glyph)
   CC_MUTEX_UNLOCK(SoGlyph_mutex);
 }
 
-// Get glyph according to state's font elements.
-// The size parameter overrides state's FontSizeElement (if not SbVec2s(0,0))
+/*!
+  Returns a character of the specified font, suitable for bitmap rendering.
+  The size parameter overrides state's SoFontSizeElement (if != SbVec2s(0,0))
+*/
 const SoGlyph *
 SoGlyph::getGlyph(SoState * state,
                   const unsigned int character,
                   const SbVec2s & size,
                   const float angle)
 {
+  if (!state)
+    return NULL;
+  SbName state_name = SoFontNameElement::get(state);
+  float state_size = SoFontSizeElement::get(state);
+  if (!state_name || state_name == SbName("")) {
+    state_name = SbName("defaultFont");
+    state_size = 12.0;
+  }
+  SbVec2s fontsize;
+  if (size == SbVec2s(0,0))
+    fontsize = SbVec2s(state_size, state_size);
+  else
+    fontsize = size;
+  
+  // Similar code in start of getGlyph(..., fontname) - keep in sync.
+  if (SoGlyph_mutex == NULL) {
+    CC_MUTEX_CONSTRUCT(SoGlyph_mutex);
+  }
+
+  CC_MUTEX_LOCK(SoGlyph_mutex);
+  
+  if (activeGlyphs == NULL) {
+    activeGlyphs = new SbList <coin_glyph_info>;
+    coin_atexit((coin_atexit_f *)SoGlyph_cleanup, 0);
+  }
+
+  int i, n = activeGlyphs->getLength();
+  for (i = 0; i < n; i++) {
+    if ((*activeGlyphs)[i].matches(character, fontsize[0], state_name)) break;
+  }
+  if (i < n) {
+    SoGlyph *glyph = (*activeGlyphs)[i].glyph;
+    glyph->pimpl->refcount++;
+    CC_MUTEX_UNLOCK(SoGlyph_mutex);
+    return glyph;
+  }
+
+  // FIXME: use font style in addition to font name. preng 2003-03-03
+  SbString fontname = state_name.getString();
+  int font = SoFontLib::getFont( fontname, fontsize);
+  if (font >= 0) {
+    // FIXME: use rotation angle. preng 2003-03-03
+    int glyphidx = SoFontLib::getGlyph(font, character);
+    if (glyphidx >= 0) {
+      SoGlyph * g = new SoGlyph();
+      g->pimpl->fontidx = font;
+      g->pimpl->glyphidx = glyphidx;
+      g->pimpl->size = fontsize;
+      g->pimpl->angle = angle;
+      g->pimpl->character = character;
+      coin_glyph_info info(character, fontsize[0], state_name, g);
+      g->pimpl->refcount++;
+      activeGlyphs->append(info);
+      return g;
+    }
+  }
+  CC_MUTEX_UNLOCK(SoGlyph_mutex);
   return NULL;
 }
 
@@ -427,6 +521,10 @@ SoGlyph::getGlyph(SoState * state,
 SbVec2s
 SoGlyph::getAdvance(void) const
 {
+  if (this->pimpl->fontidx >= 0 && this->pimpl->glyphidx >= 0) {
+    return SoFontLib::getAdvance(this->pimpl->fontidx, this->pimpl->glyphidx);
+  }
+  fprintf(stderr,"SoGlyph::getAdvance error: fontidx=%d glyphidx=%d\n", this->pimpl->fontidx, this->pimpl->glyphidx);
   return SbVec2s(0,0);
 }
 
@@ -434,18 +532,28 @@ SoGlyph::getAdvance(void) const
 SbVec2s
 SoGlyph::getKerning(const SoGlyph & rightglyph) const
 {
+  if (this->pimpl->fontidx >= 0 && this->pimpl->glyphidx >= 0 &&
+      rightglyph.pimpl->fontidx >= 0 && rightglyph.pimpl->glyphidx >= 0) {
+    return SoFontLib::getKerning(this->pimpl->fontidx, this->pimpl->glyphidx, rightglyph.pimpl->glyphidx);
+  }
+  fprintf(stderr,"SoGlyph::getKerning error: fontidx=%d glyphidx=%d\n", this->pimpl->fontidx, this->pimpl->glyphidx);
   return SbVec2s(0,0);
 }
 
 // Bitmap for glyph. size and pos are return parameters.
 // antialiased -> 8 bits per pixel
 // !antialiased -> 1 bit per pixel.
-// Only 1bbp currently supported.
+// FIXME: Only 1bpp currently supported. preng 2003-03-03.
 unsigned char *
 SoGlyph::getBitmap(SbVec2s & size, SbVec2s & pos, const SbBool antialiased) const
 {
+  if (this->pimpl->fontidx >= 0 && this->pimpl->glyphidx >= 0) {
+    return SoFontLib::getBitmap(this->pimpl->fontidx, this->pimpl->glyphidx, size, pos, antialiased);
+  }
   return NULL;
 }
+
+#ifndef DOXYGEN_SKIP_THIS
 
 // should handle platform-specific font loading
 SoGlyph *
@@ -454,3 +562,5 @@ SoGlyphP::createSystemGlyph(const char character, const SbName & font)
   // FIXME: implement me somebody, please
   return NULL;
 }
+
+#endif // Doxygen

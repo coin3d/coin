@@ -30,12 +30,28 @@
   etc) will use the font specified from an SoFont node when
   visualizing text.
 
-  \sa SoFontStyle, SoText2, SoText3
+  The mapping from \c SoFont::name to a font happens like this:
+  
+  1. If the font name is on the built-in list of (font name, font file) pairs,
+     use the font file from the list. This list is defined in the \c SoFontLib.cpp
+     file.
+  2. Try using the font name directly as a font file name.
+  3. If all else fails, use the built-in default font.
+
+  Font files are searched for in SoInput::getDirectories(), and in COIN_FONT_PATH
+  if that environment variable is defined. On Win32 systems the c:/WINDOWS/Fonts
+  directory will also be searched.
+
+  Currently, font files in the TrueType format (.ttf) are supported.
+  
+  \sa SoFontStyle, SoFontLib, SoGlyph, SoText2, SoText3, SoAsciiText
 */
 
 #include <Inventor/nodes/SoFont.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 
+#include <Inventor/C/tidbits.h>
+#include <Inventor/C/tidbitsp.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -44,6 +60,7 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
+#include <Inventor/misc/SoFontLib.h>
 
 /*!
   \var SoSFName SoFont::name
@@ -66,7 +83,7 @@
 /*!
   \var SoSFFloat SoFont::size
 
-  Size of font. Defaults to 10.0.
+  Size of font. Defaults to 12.0.
 
   For 2D rendered bitmap fonts (like for SoText2), this value is the
   height of a character in screen pixels. For 3D text, this value is
@@ -76,7 +93,63 @@
 
 // *************************************************************************
 
+
+#ifndef DOXYGEN_SKIP_THIS
+
+class SoFontP {
+ public:
+  SoFont * owner;
+  SbString lastreqname;
+  SbString lastfontname;
+  float lastsize;
+  SbBool firsttime;
+  
+  SoFontP(SoFont * owner) {
+    this->owner = owner;
+    this->lastsize = 0.0;
+    this->firsttime = TRUE;
+  }
+};
+
+// The following missing_pimpl_workaround taken from Coin-1 SoWWWInline.cpp
+
+// We forgot about this class before locking the Coin 2.0 ABI, so we
+// have to use an SbDict to store per-instance data members for this
+// class. In Coin 3.0 it's ok to break ABI-compatibility again, so we
+// don't use this little hack there, but rather the usual Cheshire Cat
+// pattern.
+
+static SbDict * sofont_private_data_dict = NULL;
+
+static void
+sofont_private_data_cleanup(void)
+{
+  delete sofont_private_data_dict;
+  sofont_private_data_dict = NULL;
+}
+
+static SoFontP *
+sofont_get_private_data(const SoFont * thisp)
+{
+  if (sofont_private_data_dict == NULL) {
+    sofont_private_data_dict = new SbDict;
+    coin_atexit((coin_atexit_f *)sofont_private_data_cleanup, 0);
+  }
+  void * pimpl;
+  if (!sofont_private_data_dict->find((unsigned long) thisp, pimpl)) {
+    pimpl = (void*) new SoFontP((SoFont*) thisp);
+    (void) sofont_private_data_dict->enter((unsigned long) thisp, pimpl);
+  }
+  return (SoFontP*) pimpl;
+}
+
+#endif // DOXYGEN_SKIP_THIS
+
 SO_NODE_SOURCE(SoFont);
+
+#undef THIS
+// WARNING: Slow! Don't use this macro if you need speed
+#define THIS (sofont_get_private_data(this))
 
 /*!
   Constructor.
@@ -86,7 +159,7 @@ SoFont::SoFont(void)
   SO_NODE_INTERNAL_CONSTRUCTOR(SoFont);
 
   SO_NODE_ADD_FIELD(name, ("defaultFont"));
-  SO_NODE_ADD_FIELD(size, (10.0f));
+  SO_NODE_ADD_FIELD(size, (12.0f));
 }
 
 /*!
@@ -118,19 +191,32 @@ SoFont::initClass(void)
 void
 SoFont::doAction(SoAction * action)
 {
+  // __asm { int 3};
   SoState * state = action->getState();
   uint32_t flags = SoOverrideElement::getFlags(state);
-
+  
+  SoFontP * pimpl = THIS;
+  const char * this_name = this->name.getValue().getString();
+  const float this_size = this->size.getValue();
+  if (pimpl->firsttime || 
+      pimpl->lastsize != this_size || 
+      strcmp(pimpl->lastreqname.getString(), this_name)) {
+    pimpl->lastfontname = SoFontLib::createFont(this->name.getValue(), SbString(""), SbVec2s(this_size, this_size));
+    pimpl->lastreqname = this->name.getValue();
+    pimpl->lastsize = this_size;
+    pimpl->firsttime = FALSE;
+  }
+  
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
-
+  
   if (!name.isIgnored() && !TEST_OVERRIDE(FONT_NAME)) {
-    SoFontNameElement::set(state, this, this->name.getValue());
+    SoFontNameElement::set(state, this, pimpl->lastfontname);
     if (this->isOverride()) {
       SoOverrideElement::setFontNameOverride(state, this, TRUE);
     }
   }
   if (!size.isIgnored() && !TEST_OVERRIDE(FONT_SIZE)) {
-    SoFontSizeElement::set(state, this, this->size.getValue());
+    SoFontSizeElement::set(state, this, this_size);
     if (this->isOverride()) {
       SoOverrideElement::setFontSizeOverride(state, this, TRUE);
     }

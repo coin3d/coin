@@ -60,18 +60,16 @@
   SoSeparator node, outside areas in the scene graph that otherwise
   contains static geometry.
 
-  \sa SoFont, SoFontStyle, SoText3, SoAsciiText
-*/
+  Also note that SoText2 nodes cache the ids and positions of each glyph
+  bitmap used to render \c string. This means that \c USE of a \c DEF'ed
+  SoText2 node, with a different font, will be noticeably slower than using
+  two separate SoText2 nodes, one for each font, since it will have to
+  recalculate glyph bitmap ids and positions for each call to \c GLrender().
 
-// FIXME -- FIXME -- FIXME
-//
-//  * computeBoundingBox() is not implemented properly, rayPick() and
-//    generatePrimitives() are just stubs
-//  * allocations aren't cleaned out on exit (Display *, XFontStructs,
-//    SbDict, OpenGL display lists, ...)
-//  * integrate with libfreetype to remove dependency on X11.
-//
-//         -- 19990418 mortene.
+  SoText2 uses the \c SoGlyph class to generate glyph bitmaps.
+
+  \sa SoFont, SoFontStyle, SoText3, SoAsciiText, SoGlyph, SoFontLib
+*/
 
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoSubNodeP.h>
@@ -84,11 +82,6 @@
 #include <config.h>
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_X11_AVAILABLE
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
-#endif // HAVE_X11_AVAILABLE
-
 #ifdef HAVE_GLX
 #include <GL/glx.h>
 #endif // HAVE_GLX
@@ -100,6 +93,7 @@
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
 #include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoCullElement.h>
 #include <Inventor/elements/SoGLCacheContextElement.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
@@ -109,6 +103,9 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbLine.h>
+#include <Inventor/SbString.h>
+#include <Inventor/SbBox2s.h>
+#include <Inventor/misc/SoGlyph.h>
 
 #include <limits.h>
 #include <string.h>
@@ -119,7 +116,7 @@ static const unsigned int NOT_AVAILABLE = UINT_MAX;
   \enum SoText2::Justification
 
   Enum contains the various options for how the horizontal text layout
-  text should be done.
+  text should be done. Valid values are LEFT, RIGHT and CENTER.
 */
 
 
@@ -152,19 +149,29 @@ public:
   SoText2P(SoText2 * textnode) : textnode(textnode) {}
 
   SoText2 * textnode;
-
+  
+  SbBool useglyphcache;
+  SoGlyph *** glyphs;
+  SbVec2s ** positions;
+  // FIXME: use notify() to handle changes, not comparison with last value.
+  SbString ** laststring;
+  int * stringwidth;
+  SbBox2s bbox;
+  int linecnt;
+  int validarraydims;
+  SbName prevfontname;
+  float prevfontsize;
+  SbBool hasbuiltglyphcache;
+  
 public:
   void getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                SbVec3f & v2, SbVec3f & v3);
-  SbVec2f getFontSize(SoState * state);
+  void flushGlyphCache(const SbBool unrefglyphs);
+  int buildGlyphCache(SoState * state);
+  SbBool shouldBuildGlyphCache(SoState * state);
+  void dumpGlyphCache();
+  void dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos);
 };
-
-#ifdef HAVE_X11_AVAILABLE
-struct FontStructMapping {
-  XFontStruct * fontstruct;
-  unsigned int glbase;
-};
-#endif // HAVE_X11_AVAILABLE
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -181,7 +188,18 @@ SO_NODE_SOURCE(SoText2);
 SoText2::SoText2(void)
 {
   THIS = new SoText2P(this);
-
+  THIS->glyphs = NULL;
+  THIS->positions = NULL;
+  THIS->laststring = NULL;
+  THIS->linecnt = 0;
+  THIS->validarraydims = 0;
+  THIS->stringwidth = NULL;
+  THIS->bbox.makeEmpty();
+  THIS->useglyphcache = TRUE;
+  THIS->prevfontname = SbName("");
+  THIS->prevfontsize = 0.0;
+  THIS->hasbuiltglyphcache = SbBool(FALSE);
+  
   SO_NODE_INTERNAL_CONSTRUCTOR(SoText2);
 
   SO_NODE_ADD_FIELD(string, (""));
@@ -199,6 +217,7 @@ SoText2::SoText2(void)
 */
 SoText2::~SoText2()
 {
+  THIS->flushGlyphCache(TRUE);
   delete THIS;
 }
 
@@ -211,158 +230,6 @@ SoText2::initClass(void)
 
 
 // **************************************************************************
-
-#ifdef HAVE_X11_AVAILABLE
-
-static Display * d = NULL;
-
-static XFontStruct *
-tryFont(const char * fs)
-{
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("tryFont", "'%s'", fs);
-#endif // debug
-  XFontStruct * font = XLoadQueryFont(d, fs);
-  // FIXME: match call with XFreeFont. 19990418 mortene.
-#if COIN_DEBUG && 0 // debug
-  SoDebugError::postInfo("tryFont", "%s", font ? "hit!" : "miss...");
-#endif // debug
-  return font;
-}
-
-static XFontStruct *
-setFont(SbName fontname, int fontsize)
-{
-  if (!d) d = XOpenDisplay(NULL);
-  // FIXME: handle !d. match with XCloseDisplay. 19990418 mortene.
-
-#if 0 // debug
-  int num;
-  char ** fontnames = XListFonts(d, "*", INT_MAX, &num);
-  for (int i=0; i < num; i++) {
-    SoDebugError::postInfo("findFont", "'%s'", fontnames[i]);
-  }
-#endif // debug
-
-  XFontStruct * fstruc = NULL;
-
-  // First try with only the fontname setting, in case the user
-  // specified a full X11 font string.
-  if ((fstruc = tryFont(fontname.getString()))) return fstruc;
-
-  // Try with the full fontname and size setting with non-italic style.
-  SbString fs("-*-");
-  fs += fontname;
-  fs += "-*-r-*-*-";
-  fs.addIntString(fontsize);
-  fs += "-*-*-*-*-*-*-*";
-
-  if ((fstruc = tryFont(fs.getString()))) return fstruc;
-
-  // Try with the full fontname and size setting -- any style.
-  fs = "-*-";
-  fs += fontname;
-  fs += "-*-*-*-*-";
-  fs.addIntString(fontsize);
-  fs += "-*-*-*-*-*-*-*";
-
-  if ((fstruc = tryFont(fs.getString()))) return fstruc;
-
-  // Can't seem to find a way to use the fontname, so lets try to get
-  // _any_ non-italic font at the correct size.
-  fs = "-*-*-*-r-*-*-";
-  fs.addIntString(fontsize);
-  fs += "-*-*-*-*-*-*-*";
-
-  if ((fstruc = tryFont(fs.getString()))) return fstruc;
-
-  // That didn't work out either, so lets try settle for any font of
-  // the correct size.
-  fs = "-*-*-*-*-*-*-";
-  fs.addIntString(fontsize);
-  fs += "-*-*-*-*-*-*-*";
-
-  if ((fstruc = tryFont(fs.getString()))) return fstruc;
-
-  // Last resort -- try to read _any_ font on the system. If this
-  // doesn't work, something is seriously pucked up (either on the
-  // user's system or in this code). --mortene
-  fs = "-*-*-*-*-*-*-*-*-*-*-*-*-*-*";
-
-  if ((fstruc = tryFont(fs.getString()))) return fstruc;
-
-#if COIN_DEBUG
-  SoDebugError::postWarning("setFont", "Couldn't load a font!");
-#endif // COIN_DEBUG
-
-  return NULL;
-}
-
-static unsigned int
-getGLList(SoGLRenderAction * action, XFontStruct *& fontstruct)
-{
-  // (Don't use a static constructor, as that is not portable.)
-  static SbDict * fontdict = new SbDict; // FIXME: should deallocate on exit. 20000406 mortene.
-
-  SoState * state = action->getState();
-  SbName fontname = SoFontNameElement::get(state);
-  int fontsize = int(SoFontSizeElement::get(state));
-
-  SbString fontid(fontname.getString());
-  fontid.addIntString(fontsize);
-
-  // FIXME: hack. Need a proper (templatized?) dict which can do
-  // mapping based on string keys. 19990418 mortene.
-  uint32_t fontkey = fontid.hash();
-
-  void * fontptrs;
-  if (fontdict->find(fontkey, fontptrs)) {
-    struct FontStructMapping * fsm = (struct FontStructMapping *)fontptrs;
-    fontstruct = fsm->fontstruct;
-    return fsm->glbase;
-  }
-  else {
-    unsigned int base = NOT_AVAILABLE;
-    if ((fontstruct = setFont(fontname, fontsize))) {
-      base = glGenLists(256);
-      // FIXME: be robust -- don't just assert here! GL displaylists
-      // can be a scarce resource. 20020212 mortene.
-      assert(base != 0 && "could not reserve a displaylist resource");
-
-#ifdef HAVE_GLX
-      glXUseXFont(fontstruct->fid, 0, 256, base);
-#endif // HAVE_GLX
-    }
-
-    struct FontStructMapping * fsm = new struct FontStructMapping;
-    fsm->glbase = base;
-    fsm->fontstruct = fontstruct;
-
-    fontdict->enter(fontkey, (void *)fsm);
-
-    return base;
-  }
-}
-
-#endif // HAVE_X11_AVAILABLE
-
-static void
-string_dimensions(void * fontdata, const char * s,
-                  float & strwidth, float & strheight)
-{
-#ifdef HAVE_X11_AVAILABLE
-  int direction, ascent, descent;
-  XCharStruct cs;
-  XTextExtents((XFontStruct *)fontdata, s, strlen(s),
-               &direction, &ascent, &descent, &cs);
-  strwidth = cs.width;
-  strheight = ascent + descent;
-  return;
-#endif // HAVE_X11_AVAILABLE
-
-  strwidth = strheight = 0.0f;
-}
-
 
 extern unsigned char coin_default2dfont[][12];
 extern int coin_default2dfont_isolatin1_mapping[];
@@ -377,167 +244,100 @@ SoText2::GLRender(SoGLRenderAction * action)
 
   state->push();
   SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+  
+  // Render using SoGlyphs
+  if (THIS->buildGlyphCache(state) == 0) {
+    // Render only if bbox not outside cull planes.
+    SbBox3f box;
+    SbVec3f center;
+    // FIXME: Culling sometimes too agressive, disable until fixed. preng 2003-03-11.
+    // this->computeBBox(action, box, center);
+    // if (!SoCullElement::cullTest(state, box, SbBool(FALSE))) {
+    if (1) {
+      // __asm { int 3};
+      SoMaterialBundle mb(action);
+      mb.sendFirst();
+      SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
+      const SbMatrix & mat = SoModelMatrixElement::get(state);
+      mat.multVecMatrix(nilpoint, nilpoint);
+      const SbViewVolume & vv = SoViewVolumeElement::get(state);
+      // this function will also modify the z-value of nilpoint
+      // according to the view matrix
+      vv.projectToScreen(nilpoint, nilpoint);
+      // change z-range from [0,1] to [-1,1]
+      nilpoint[2] *= 2.0f;
+      nilpoint[2] -= 1.0f;
 
-  // Default to no available GL displaylist with font bitmaps.
-  unsigned int fontlistbase = NOT_AVAILABLE;
-  void * fontdata = NULL;
+      const SbViewportRegion & vp = SoViewportRegionElement::get(state);
+      SbVec2s vpsize = vp.getViewportSizePixels();
+      nilpoint[0] = nilpoint[0] * float(vpsize[0]);
+      nilpoint[1] = nilpoint[1] * float(vpsize[1]);
+      // Set new state.
+      glMatrixMode(GL_MODELVIEW);
+      glPushMatrix();
+      glLoadIdentity();
+      glMatrixMode(GL_PROJECTION);
+      glPushMatrix();
+      glLoadIdentity();
+      glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
+      glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
-#ifdef HAVE_X11_AVAILABLE
-  // FIXME: crashes on freya.sim.no? 20000905 mortene.
-// fontlistbase = getGLList(action, (XFontStruct *)fontdata);
-#endif // HAVE_X11_AVAILABLE
-
-  if (fontlistbase != NOT_AVAILABLE) {
-    SoMaterialBundle mb(action);
-    mb.sendFirst();
-
-    glListBase(fontlistbase);
-
-    SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
-    const SbMatrix & mat = SoModelMatrixElement::get(state);
-    mat.multVecMatrix(nilpoint, nilpoint);
-
-    const SbViewVolume & vv = SoViewVolumeElement::get(state);
-
-    // this function will also modify the z-value of nilpoint
-    // according to the view matrix
-    vv.projectToScreen(nilpoint, nilpoint);
-    // change z range from [0,1] to [-1,1]
-    nilpoint[2] *= 2.0f;
-    nilpoint[2] -= 1.0f;
-
-#if 0 // debug
-    SoDebugError::postInfo("SoText2::GLRender",
-                           "nilpoint projected: <%f, %f>",
-                           nilpoint[0], nilpoint[1]);
-#endif // debug
-
-    const SbViewportRegion & vp = SoViewportRegionElement::get(state);
-    SbVec2s vpsize = vp.getViewportSizePixels();
-    nilpoint[0] = nilpoint[0] * float(vpsize[0]);
-    nilpoint[1] = nilpoint[1] * float(vpsize[1]);
-
-#if 0 // debug
-    SoDebugError::postInfo("SoText2::GLRender",
-                           "nilpoint de-normalized: <%f, %f>",
-                           nilpoint[0], nilpoint[1]);
-#endif // debug
-
-    // Set new state.
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-
-    glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
-
-    float linepos = nilpoint[1];
-    for (int i = 0; i < this->string.getNum(); i++) {
-      const char * s = this->string[i].getString();
-
-      // Find text field dimensions.
-      float strwidth, strheight;
-      string_dimensions(fontdata, s, strwidth, strheight);
-
-      float xpos = 0.0; // init unnecessary, but kills a compiler warning.
-      switch (this->justification.getValue()) {
-      case SoText2::LEFT:
-        xpos = nilpoint[0];
-        break;
-      case SoText2::RIGHT:
-        xpos = nilpoint[0] - strwidth;
-        break;
-      case SoText2::CENTER:
-        xpos = nilpoint[0] - strwidth/2;
-        break;
-#if COIN_DEBUG
-      default:
-        SoDebugError::post("SoText2::GLRender",
-                           "value of justification field is invalid");
-        break;
-#endif // COIN_DEBUG
-      }
-
-      glRasterPos3f(xpos, linepos - strheight/2.0f, -nilpoint[2]);
-      glCallLists(strlen(s), GL_UNSIGNED_BYTE, (GLubyte *)s);
-      linepos -= strheight * this->spacing.getValue();
-    }
-
-    // Pop old GL state.
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-  }
-
-  // Default font drawing.
-  else {
-    SoMaterialBundle mb(action);
-    mb.sendFirst();
-    SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
-    const SbMatrix & mat = SoModelMatrixElement::get(state);
-    mat.multVecMatrix(nilpoint, nilpoint);
-    const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    // this function will also modify the z-value of nilpoint
-    // according to the view matrix
-    vv.projectToScreen(nilpoint, nilpoint);
-    // change z-range from [0,1] to [-1,1]
-    nilpoint[2] *= 2.0f;
-    nilpoint[2] -= 1.0f;
-
-    const SbViewportRegion & vp = SoViewportRegionElement::get(state);
-    SbVec2s vpsize = vp.getViewportSizePixels();
-    nilpoint[0] = nilpoint[0] * float(vpsize[0]);
-    nilpoint[1] = nilpoint[1] * float(vpsize[1]);
-    // Set new state.
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
-    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-
-    int strwidth;
-
-    float xpos = nilpoint[0];      // to get rid of compiler warning..
-    float ypos = nilpoint[1];
-    for (int i = 0; i < this->string.getNum(); i++) {
-      const unsigned char *s = 
-        (const unsigned char *) this->string[i].getString();
-      strwidth = strlen((const char *)s);
-      switch (this->justification.getValue()) {
-      case SoText2::LEFT:
-        xpos = nilpoint[0];
-        break;
-      case SoText2::RIGHT:
-        xpos = nilpoint[0] - (strwidth * 8.0f);
-        break;
-      case SoText2::CENTER:
-        xpos = nilpoint[0] - (strwidth * 8.0f)/2.0f;
-        break;
-      }
-      for (int i2 = 0; i2 < strwidth; i2++) {
-        if ( (s[i2] >= 32) /*&& (s[i2] <= 127)*/ ) { // just in case?
-          glRasterPos3f(xpos, ypos, -nilpoint[2]);
-          glBitmap(8,12,0,0,0,0,(const GLubyte *)coin_default2dfont 
-                   + 12 * coin_default2dfont_isolatin1_mapping[s[i2]]);
+      float xpos = nilpoint[0];      // to get rid of compiler warning..
+      float ypos = nilpoint[1];
+      float fx, fy, rasterx, rastery, rpx, rpy, offsetx, offsety;
+      int ix, iy, charcnt, offvp;
+      SbVec2s thispos;
+      SbVec2s position;
+      SbVec2s thissize;
+      unsigned char * buffer;
+      // fprintf(stderr,"SoText2::renderGL called.\n");
+      for (int i = 0; i < THIS->linecnt; i++) {
+        // fprintf(stderr,"  render text line %d\n", i);
+        switch (this->justification.getValue()) {
+        case SoText2::LEFT:
+          xpos = nilpoint[0];
+          break;
+        case SoText2::RIGHT:
+          xpos = nilpoint[0] - THIS->stringwidth[i];
+          break;
+        case SoText2::CENTER:
+          xpos = nilpoint[0] - THIS->stringwidth[i]/2.0f;
+          break;
         }
-        xpos += 8.0f;
+        charcnt = THIS->laststring[i]->getLength();
+        for (int i2 = 0; i2 < charcnt; i2++) {
+          buffer = THIS->glyphs[i][i2]->getBitmap(thissize, thispos, SbBool(FALSE));
+          ix = thissize[0];
+          iy = thissize[1];
+          position = THIS->positions[i][i2];
+          fx = (float)position[0];
+          fy = (float)position[1];
+          // THIS->dumpBuffer(buffer, thissize, thispos);  // DEBUG
+          
+          rasterx = xpos + fx;
+          rpx = rasterx >= 0 ? rasterx : 0;
+          offvp = rasterx < 0 ? 1 : 0;
+          offsetx = rasterx >= 0 ? 0 : rasterx;
+          
+          rastery = ypos + fy;
+          rpy = rastery >= 0 ? rastery : 0;
+          offvp = offvp || rastery < 0 ? 1 : 0;
+          offsety = rastery >= 0 ? 0 : rastery;
+          
+          glRasterPos3f(rpx, rpy, -nilpoint[2]);
+          if (offvp)
+            glBitmap(0,0,0,0,offsetx,offsety,NULL);
+          glBitmap(ix,iy,0,0,0,0,(const GLubyte *)buffer);
+        }
       }
-      // - instead of + because of OpenGL's "inverted" y coordinate...
-      ypos -= ( 12.0f * this->spacing.getValue() );
+      
+      glPixelStorei(GL_UNPACK_ALIGNMENT,4);
+      // Pop old GL state.
+      glMatrixMode(GL_PROJECTION);
+      glPopMatrix();
+      glMatrixMode(GL_MODELVIEW);
+      glPopMatrix();
     }
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT,4);
-    // Pop old GL state.
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
   }
   
   state->pop();
@@ -572,8 +372,8 @@ void
 SoText2::rayPick(SoRayPickAction * action)
 {
   if (!this->shouldRayPick(action)) return;
+  THIS->buildGlyphCache(action->getState());
   action->setObjectSpace();
-
   SbVec3f v0, v1, v2, v3;
   THIS->getQuad(action->getState(), v0, v1, v2, v3);
   if (v0 == v1 || v0 == v3) return; // empty
@@ -598,7 +398,7 @@ SoText2::rayPick(SoRayPickAction * action)
     float hdist = (ptonline-isect).length();
     hdist /= w;
 
-    // find which string and character was hit
+    // find which string was hit
     float fonth =  1.0f / float(this->string.getNum());
     int stringidx = SbClamp(int(vdist/fonth), 0, this->string.getNum()-1);
 
@@ -607,29 +407,42 @@ SoText2::rayPick(SoRayPickAction * action)
       int len = this->string[i].getLength();
       if (len > maxlen) maxlen = len;
     }
-    // assumes all characters are equal size...
-    float fontw = 1.0f / float(maxlen);
 
     // find the character
     int charidx = -1;
     int strlength = this->string[stringidx].getLength();
+    short minx, miny, maxx, maxy;
+    THIS->bbox.getBounds(minx, miny, maxx, maxy);
+    float bbleft = minx;
+    float bbwidth = maxx - minx;
+    float strleft = (bbwidth - THIS->stringwidth[stringidx]) / bbwidth;
+    float strright = 1.0;
     switch (this->justification.getValue()) {
     case LEFT:
-      charidx = int(hdist / fontw);
+      strleft = 0.0;
+      strright = THIS->stringwidth[stringidx] / bbwidth;
       break;
     case RIGHT:
-      charidx = (strlength-1) - int((1.0f-hdist)/fontw);
       break;
     case CENTER:
-      {
-        float strstart = 0.5f - fontw*float(strlength)*0.5f;
-        charidx = int((hdist-strstart) / fontw);
-      }
+      strleft /= 2.0;
+      strright = 1.0 - strleft;
       break;
     default:
-      assert(0 && "unknown justification");
+      assert(0 && "SoText2::rayPick: unknown justification");
     }
-
+    
+    float charleft, charright;
+    for (i=0; i<strlength; i++) {
+      charleft = strleft + (THIS->positions[stringidx][i][0] / bbwidth);
+      charright = (i==strlength-1 ? strright : strleft + (THIS->positions[stringidx][i+1][0] / bbwidth));
+      if (hdist >= charleft && hdist <= charright) {
+        charidx = i;
+        i = strlength;
+      }
+    }
+    
+    // fprintf(stderr, "rayPick: stringidx %d charidx %d\n", stringidx, charidx);  // DEBUG
     if (charidx >= 0 && charidx < strlength) { // we have a hit!
       SoPickedPoint * pp = action->addIntersection(isect);
       if (pp) {
@@ -666,11 +479,61 @@ SoText2::generatePrimitives(SoAction * action)
 
 #ifndef DOXYGEN_SKIP_THIS
 
+void
+SoText2P::flushGlyphCache(const SbBool unrefglyphs)
+{
+  if (this->glyphs && validarraydims > 0) {
+    free(this->stringwidth);
+    for (int i=0; i<this->linecnt; i++) {
+      if (validarraydims == 2) {
+        if (this->laststring[i] && unrefglyphs)
+          for (int j=0; j<this->laststring[i]->getLength(); j++) {
+            if (this->glyphs[i][j])
+              this->glyphs[i][j]->unref();
+          }
+        free(this->positions[i]);
+      }
+      delete this->laststring[i];
+      free(this->glyphs[i]);
+    }
+    free(this->positions);
+    free(this->glyphs);
+  }
+  this->glyphs = NULL;
+  this->positions = NULL;
+  this->laststring = NULL;
+  this->linecnt = 0;
+  this->validarraydims = 0;
+  this->stringwidth = NULL;
+  this->bbox.makeEmpty();
+}
+
+// Debug convenience method.
+void
+SoText2P::dumpGlyphCache()
+{
+  fprintf(stderr,"dumpGlyphCache: validarraydims=%d\n", validarraydims);
+  if (this->glyphs && validarraydims > 0) {
+    for (int i=0; i<this->linecnt; i++) {
+      fprintf(stderr,"  stringwidth[%d]=%d\n", i, this->stringwidth[i]);
+      fprintf(stderr,"  laststring[%d]=%s\n", i, this->laststring[i]->getString());
+      if (validarraydims == 2) {
+        for (int j=0; j<strlen(this->laststring[i]->getString()); j++) {
+          fprintf(stderr,"    glyph[%d][%d]=%x\n", i, j, this->glyphs[i][j]);
+          fprintf(stderr,"    position[%d][%d]=(%d, %d)\n", i, j, this->positions[i][j][0], this->positions[i][j][1]);
+        }
+      }
+    }
+  }
+}
+
 // Calculates a quad around the text in 3D.
 void
 SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
                   SbVec3f & v2, SbVec3f & v3)
 {
+  this->buildGlyphCache(state);
+
   SbVec3f nilpoint(0.0f, 0.0f, 0.0f);
   const SbMatrix & mat = SoModelMatrixElement::get(state);
   mat.multVecMatrix(nilpoint, nilpoint);
@@ -679,35 +542,28 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
 
   SbVec3f screenpoint;
   vv.projectToScreen(nilpoint, screenpoint);
-
+  
+  // fprintf(stderr,"computeBBox: screenpoint %f %f %f\n", screenpoint[0], screenpoint[1], screenpoint[2]);
+  
   const SbViewportRegion & vp = SoViewportRegionElement::get(state);
   SbVec2s vpsize = vp.getViewportSizePixels();
-
-  // find normalized width and height of text
-
-  // FIXME: this only works for the default font
-  SbVec2f fontsize = this->getFontSize(state);
-
-  // normalize size
-  fontsize[0] /= vpsize[0];
-  fontsize[1] /= vpsize[1];
-
-  float nh = this->textnode->string.getNum() * fontsize[1] * this->textnode->spacing.getValue();
-  float nw = 0.0f;
-  for (int i = 0; i < this->textnode->string.getNum(); i++) {
-    const SbString & s = this->textnode->string[i];
-    float w = s.getLength()*fontsize[0];
-    if (w > nw) nw = w;
-  }
-
-  float halfw = nw * 0.5f;
-  SbVec2f n0, n1, n2, n3;
-
-  n0 = SbVec2f(screenpoint[0]-halfw, screenpoint[1]-nh+fontsize[1]);
-  n1 = SbVec2f(screenpoint[0]+halfw, screenpoint[1]-nh+fontsize[1]);
-  n2 = SbVec2f(screenpoint[0]+halfw, screenpoint[1]+fontsize[1]);
-  n3 = SbVec2f(screenpoint[0]-halfw, screenpoint[1]+fontsize[1]);
-
+  
+  SbVec2f n0, n1, n2, n3, center;
+  short xmin, ymin, xmax, ymax;
+  float minx, miny, maxx, maxy;
+  this->bbox.getBounds(xmin, ymin, xmax, ymax);
+  center = SbVec2f( (xmin+xmax)/2.0, (ymin+ymax)/2.0);
+  minx = (xmin - center[0]) / vpsize[0];
+  miny = (ymin - center[1]) / vpsize[1];
+  maxx = (xmax - center[0]) / vpsize[0];
+  maxy = (ymax - center[1]) / vpsize[1];
+  n0 = SbVec2f(screenpoint[0] + minx, screenpoint[1] + miny);
+  n1 = SbVec2f(screenpoint[0] + maxx, screenpoint[1] + miny);
+  n2 = SbVec2f(screenpoint[0] + maxx, screenpoint[1] + maxy);
+  n3 = SbVec2f(screenpoint[0] + minx, screenpoint[1] + maxy);
+  // fprintf(stderr,"computeBBox: bbox = %f %f - %f %f\n", n0[0], n0[1], n2[0], n2[1]);
+  
+  float halfw = (maxx - minx) / 2.0;
   switch (this->textnode->justification.getValue()) {
   case SoText2::LEFT:
     n0[0] += halfw;
@@ -727,7 +583,7 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
     assert(0 && "unknown alignment");
     break;
   }
-
+  
   // get distance from nilpoint to camera plane
   float dist = -vv.getPlane(0.0f).getDistance(nilpoint);
 
@@ -745,11 +601,132 @@ SoText2P::getQuad(SoState * state, SbVec3f & v0, SbVec3f & v1,
   inv.multVecMatrix(v3, v3);
 }
 
-SbVec2f
-SoText2P::getFontSize(SoState * /* state */)
+// Debug convenience method.
+void
+SoText2P::dumpBuffer(unsigned char * buffer, SbVec2s size, SbVec2s pos)
 {
-  // FIXME: consider state when we support font loading
-  return SbVec2f(8.0f, 12.0f);
+  if (!buffer) {
+    fprintf(stderr,"bitmap error: buffer pointer NULL.\n");
+  } else {
+    int rows = size[1];
+    int bytes = size[0] >> 3;
+    fprintf(stderr,"bitmap dump %d * %d bytes at %d, %d:\n", rows, bytes, pos[0], pos[1]);
+    for (int y=rows-1; y>=0; y--) {
+      for (int byte=0; byte<bytes; byte++) 
+        for (int bit=0; bit<8; bit++)
+          fprintf(stderr,"%d", buffer[y*bytes + byte] & 0x80>>bit ? 1 : 0);
+      fprintf(stderr,"\n");
+    }
+  }
+}
+
+SbBool
+SoText2P::shouldBuildGlyphCache(SoState * state)
+{
+  if (!this->hasbuiltglyphcache)
+    return SbBool(TRUE);
+  if (!this->useglyphcache)
+    return SbBool(FALSE);
+  SbName curfontname = SoFontNameElement::get(state);
+  float curfontsize = SoFontSizeElement::get(state);
+  SbBool fonthaschanged = (this->prevfontname != curfontname 
+                           || this->prevfontsize != curfontsize);
+  if (fonthaschanged)
+    return fonthaschanged;
+  // FIXME: Use notify() mechanism to detect field changes. For Coin3. preng, 2003-03-10.
+  if (this->linecnt != this->textnode->string.getNum())
+    return SbBool(TRUE);
+  for (int i=0; i<this->linecnt; i++)
+    if (strcmp(laststring[i]->getString(), this->textnode->string[i].getString()) != 0)
+      return SbBool(TRUE);
+  return SbBool(FALSE);
+}
+
+int
+SoText2P::buildGlyphCache(SoState * state)
+{
+  if (this->shouldBuildGlyphCache(state)) {
+    // __asm { int 3};
+    SoText2 * t = this->textnode;
+    const char * s;
+    int len;
+    SbVec2s penpos, advance, kerning, thissize, thispos;
+    unsigned int idx;
+    SbName curfontname;
+    float curfontsize;
+    
+    curfontname = SoFontNameElement::get(state);
+    curfontsize = SoFontSizeElement::get(state);
+    this->prevfontname = curfontname;
+    this->prevfontsize = curfontsize;
+    this->flushGlyphCache(FALSE);
+    this->hasbuiltglyphcache = SbBool(TRUE);
+    this->linecnt = t->string.getNum();
+    this->validarraydims = 0;
+    this->glyphs = (SoGlyph ***)malloc(this->linecnt*sizeof(SoGlyph*));
+    this->positions = (SbVec2s **)malloc(this->linecnt*sizeof(SbVec2s*));
+    this->laststring = (SbString **)malloc(this->linecnt*sizeof(SbString*));
+    this->stringwidth = (int *)malloc(this->linecnt*sizeof(int));
+    if (!this->glyphs || !this->positions || !this->laststring || !this->stringwidth) {
+      flushGlyphCache(FALSE);
+      return -1;
+    }
+    // Avoid confusing flushGlyphCache with halfway init'l'ed arrays
+    memset(this->glyphs, 0, this->linecnt*sizeof(SoGlyph*));
+    memset(this->positions, 0, this->linecnt*sizeof(SbVec2s*));
+    memset(this->laststring, 0, this->linecnt*sizeof(SbString*));
+    memset(this->stringwidth, 0, this->linecnt*sizeof(int));
+    this->validarraydims = 1;
+    penpos[0] = 0;
+    penpos[1] = 0;
+    advance = penpos;
+    kerning = penpos;
+    for (int i=0; i<this->linecnt; i++) {
+      s = t->string[i].getString();
+      if ((len = strlen(s)) > 0) {
+        this->glyphs[i] = (SoGlyph **)malloc(len*sizeof(SoGlyph*));
+        this->positions[i] = (SbVec2s *)malloc(len*sizeof(SbVec2s));
+        if (!this->glyphs[i] || !this->positions[i]) {
+          flushGlyphCache(FALSE);
+          return -1;
+        }
+        // Avoid confusing flushGlyphCache with halfway init'l'ed arrays
+        memset(this->glyphs[i], 0, len*sizeof(SoGlyph*));
+        memset(this->positions[i], 0, len*sizeof(SbVec2s));
+        this->validarraydims = 2;
+        this->laststring[i] = new SbString(s);
+        for (int j=0; j<len; j++) {
+          idx = s[j];
+          // fprintf(stderr,"buildGlyphCache: char idx=%d\n", idx);
+          this->glyphs[i][j] = (SoGlyph *)(SoGlyph::getGlyph(state, idx, SbVec2s(0,0), 0.0));
+          if (!this->glyphs[i][j]) {
+            this->flushGlyphCache(FALSE);
+            this->useglyphcache = FALSE;
+            fprintf(stderr,"SoText2 ERROR: unable to build glyph cache.\n");  // DEBUG
+            return -1;
+          }
+          this->glyphs[i][j]->getBitmap(thissize, thispos, SbBool(FALSE));
+          // fprintf(stderr,"  thissize=(%d,%d) thispos=(%d,%d)\n", (int)thissize[0], (int)thissize[1], (int)thispos[0], (int)thispos[1]);
+          if (j > 0) {
+            kerning = this->glyphs[i][j-1]->getKerning((const SoGlyph &)*this->glyphs[i][j]);
+            advance = this->glyphs[i][j-1]->getAdvance();
+          } else {
+            kerning = SbVec2s(0,0);
+            advance = SbVec2s(0,0);
+          }
+          penpos = penpos + advance + kerning;
+          this->positions[i][j] = penpos + thispos + SbVec2s(0, -thissize[1]);
+          // fprintf(stderr,"  position=(%d,%d)\n", (int)this->positions[i][j][0], (int)this->positions[i][j][1]);
+          this->bbox.extendBy(this->positions[i][j]);
+          this->bbox.extendBy(this->positions[i][j] + SbVec2s(thissize[0], -thissize[1]));
+          // fprintf(stderr,"  advance=(%d,%d) kerning=(%d,%d)\n", (int)advance[0], (int)advance[1], (int)kerning[0], (int)kerning[1]);
+        }
+        this->stringwidth[i] = this->positions[i][len-1][0] + thissize[0];
+        penpos = SbVec2s(0, penpos[1] - this->prevfontsize * t->spacing.getValue());
+      }
+    }
+  }
+  return 0;
 }
 
 #endif // DOXYGEN_SKIP_THIS
