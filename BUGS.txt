@@ -4633,3 +4633,20 @@ Separator {
     20041208 mortene.
 
 =====================================================================
+188 SoVRMLScript copy (when connected) is buggy
+
+    The scene graph below triggers a crash when the scene is copied
+    (using SoNode::copy(TRUE)), and the whichChild field in the Switch
+    node is connected from the eventOut in the script node. If you
+    comment out the ROUTE, the scene is copied correctly.
+
+    #VRML V2.0 utf8
+
+    DEF SwitchScript Script {
+        eventOut SFInt32 whichChoice_changed
+    }
+    DEF testsw Switch { }
+    ROUTE SwitchScript.whichChoice_changed TO testsw.set_whichChoice
+
+    20041212 pederb
+=====================================================================
