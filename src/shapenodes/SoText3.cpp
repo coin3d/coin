@@ -527,6 +527,8 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
   float nearz =  FLT_MAX;
   float farz  = -FLT_MAX;
 
+  float creaseangle = SoCreaseAngleElement::get(state);
+
   SbBool do2Dtextures = FALSE;
   SbBool do3Dtextures = FALSE;
   if (SoGLTextureEnabledElement::get(state)) do2Dtextures = TRUE;
@@ -684,7 +686,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
 
             SbBool flatshading = FALSE;
             float dot = normala.dot(normalb);
-            if(acos(dot) > SoCreaseAngleElement::get(state)) {
+            if(acos(dot) > creaseangle) {
               normala = SbVec3f(v1[0] - v0[0], v1[1] - v0[1], 0.0f);
               normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
               if (normala.length() > 0)
@@ -834,7 +836,7 @@ SoText3P::render(SoState * state, const cc_font_specification * fontspec,
             
           }
               
-          normalgenerator->generate(SoCreaseAngleElement::get(state));
+          normalgenerator->generate(creaseangle);
           const SbVec3f * normals = normalgenerator->getNormals();          
           const int size = vertexlist.getLength();
 
@@ -906,7 +908,12 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
                    unsigned int part)
 {
   SoState * state = action->getState();
-  
+ 
+  // SoCreaseAngleElement is not enabled for SoGetPrimitiveCountAction.
+  float creaseangle = 0.5f;
+  if (state->isElementEnabled(SoCreaseAngleElement::getClassStackIndex())) {
+    creaseangle = SoCreaseAngleElement::get(state);
+  }
   SoPrimitiveVertex vertex;
   SoTextDetail detail;
   detail.setPart(part);
@@ -1107,7 +1114,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
 
             SbBool flatshading = FALSE;
             float dot = normala.dot(normalb);
-            if(acos(dot) > SoCreaseAngleElement::get(state)) {
+            if(acos(dot) > creaseangle) {
               normala = SbVec3f(v1[0] - v0[0], v1[1] - v0[1], 0.0f);
               normala = normala.cross(SbVec3f(0.0f, 0.0f,  -1.0f));
               if (normala.length() > 0)
@@ -1276,7 +1283,7 @@ SoText3P::generate(SoAction * action, const cc_font_specification * fontspec,
           }
 
 
-          normalgenerator->generate(SoCreaseAngleElement::get(state));
+          normalgenerator->generate(creaseangle);
           const SbVec3f * normals = normalgenerator->getNormals();          
           const int size = vertexlist.getLength();
 
