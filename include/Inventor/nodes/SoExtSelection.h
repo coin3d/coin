@@ -23,8 +23,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/SbColor.h>
 
+class SbColor;
 
 class COIN_DLL_API SoExtSelection : public SoSelection {
   typedef SoSelection inherited;
@@ -46,22 +46,31 @@ public:
   SoSFEnum lassoType;
   SoSFEnum lassoPolicy;
 
-  void useOverlay(SbBool flg = TRUE);
+  void useOverlay(SbBool overlay = TRUE);
   SbBool isUsingOverlay(void);
   SoSeparator * getOverlaySceneGraph(void);
-  void setOverlayLassoColorIndex(int index);
+  void setOverlayLassoColorIndex(const int index);
   int getOverlayLassoColorIndex(void);
-  void setLassoColor(SbColor c);
-  SbColor getLassoColor(void);
-  void setLassoWidth(float width);
+  void setLassoColor(const SbColor & color);
+  const SbColor & getLassoColor(void);
+  void setLassoWidth(const float width);
   float getLassoWidth(void);
-  void setOverlayLassoPattern(unsigned short pattern);
+  void setOverlayLassoPattern(const unsigned short pattern);
   unsigned short getOverlayLassoPattern(void);
-  void animateOverlayLasso(SbBool flg = TRUE);
+  void animateOverlayLasso(const SbBool animate = TRUE);
   SbBool isOverlayLassoAnimated(void);
+
+  virtual void handleEvent(SoHandleEventAction * action);
+  virtual void GLRenderBelowPath(SoGLRenderAction * action);
 
 protected:
   virtual ~SoExtSelection();
+
+private:
+  void draw(SoGLRenderAction * action);
+
+  friend class SoExtSelectionP;
+  class SoExtSelectionP * pimpl;
 };
 
 #endif // !COIN_SOEXTSELECTION_H

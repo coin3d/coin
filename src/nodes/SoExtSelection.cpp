@@ -25,10 +25,48 @@
   FIXME: write class doc
 */
 
-
 #include <Inventor/nodes/SoExtSelection.h>
 #include <Inventor/nodes/SoSubNodeP.h>
 #include <coindefs.h> // COIN_STUB()
+
+#include <Inventor/events/SoEvent.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
+#include <Inventor/events/SoKeyboardEvent.h>
+#include <Inventor/events/SoLocation2Event.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/misc/SoState.h>
+#include <Inventor/SbTime.h>
+
+#include <Inventor/sensors/SoTimerSensor.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/nodes/SoShape.h>
+
+#include <Inventor/SbBox3f.h>
+#include <Inventor/SbBox2s.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/SbViewVolume.h>
+#include <Inventor/SbMatrix.h>
+#include <Inventor/SbViewportRegion.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
+#include <Inventor/elements/SoProjectionMatrixElement.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoViewingMatrixElement.h>
+#include <Inventor/lists/SoCallbackList.h>
+
+#include <Inventor/SbMatrix.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
+
+#include <GL/gl.h>
+#include <float.h>
 
 
 /*!
@@ -66,7 +104,7 @@
 */
 /*!
   \var SoExtSelection::LassoPolicy SoExtSelection::PART
-  FIXME: write documentation for enum definition
+q  FIXME: write documentation for enum definition
 */
 
 
@@ -81,13 +119,190 @@
 
 // *************************************************************************
 
+
+class SoExtSelectionP {
+public:
+  SoExtSelectionP(SoExtSelection * master) {
+    this->master = master;
+  }
+
+  SbColor lassocolor;
+  float lassowidth;
+  SbBool lassopatternanimate;
+  unsigned short lassopattern;
+
+  enum SelectionState {
+    NONE,
+    RECTANGLE,
+    LASSO
+  };
+
+  SelectionState selectionstate;
+  SbBool isDragging;  // 0=no, 1=currently dragging a new point (mouse = last pos)
+
+  SbList <SbVec2s> coords;
+  SoTimerSensor * timersensor;
+  SoCallbackAction * cbaction;
+
+  const SbList <SbVec2s> & getCoords(void) const {
+    return coords;
+  }
+
+  SoExtSelection * master;
+  SbViewportRegion curvp;
+
+  static void timercallback(void *data, SoSensor *sensor);
+  static SoCallbackAction::Response myCallback(void *data,
+                                               SoCallbackAction *action,
+                                               const SoNode *node);
+
+};
+
+void
+SoExtSelectionP::timercallback(void *data, SoSensor *sensor)
+{
+  SoExtSelection *ext = (SoExtSelection *)data;
+  if (ext == NULL) return;
+  if (ext->isOverlayLassoAnimated()) {
+    int pat = ext->getOverlayLassoPattern();
+    int pat2 = pat << 1;
+    if ((pat & 0x8000) != 0) pat2 |= 1;
+    ext->setOverlayLassoPattern(pat2 & 0xffff);
+    ext->touch();
+  }
+}
+
+// ----------
+
+    // The following code is by Randolph Franklin,
+    // it returns 1 for interior points and 0 for exterior points.
+    // http://astronomy.swin.edu.au/pbourke/geometry/insidepoly/
+    /*
+      int
+      pnpoly(int npol, float *xp, float *yp, float x, float y)
+      {
+        int i, j, c = 0;
+        for (i = 0, j = npol-1; i < npol; j = i++) {
+          if ((((yp[i] <= y) && (y < yp[j])) ||
+            ((yp[j] <= y) && (y < yp[i]))) &&
+            (x < (xp[j] - xp[i]) * (y - yp[i]) / (yp[j] - yp[i]) + xp[i]))
+          c = !c;
+        }
+        return c;
+      }
+    */
+
+static int
+pointinpoly(const SbList <SbVec2s> & coords, float x, float y)
+{
+  int i, j, c = 0;
+  int npol = coords.getLength();
+  for (i = 0, j = npol-1; i < npol; j = i++) {
+    SbVec2s pi = coords[i];
+    SbVec2s pj = coords[j];
+    if ((((pi[1] <= y) && (y < pj[1])) ||
+	 ((pj[1] <= y) && (y < pi[1]))) &&
+	(x < (pj[0] - pi[0]) * (y - pi[1]) / (pj[1] - pi[1]) + pi[0]))
+      c = !c;
+  }
+  return c;
+}
+
+// ----------
+
+SoCallbackAction::Response
+SoExtSelectionP::myCallback(void *data, SoCallbackAction *action, const SoNode *node)
+{
+  SoState * state = action->getState();
+
+  SoExtSelection * ext = (SoExtSelection*)data;
+
+  SoShape *shape = (SoShape *)node;
+  SbBox3f bbox;
+  SbVec3f center;
+  shape->computeBBox(action, bbox, center);
+
+  SbVec3f mincorner = bbox.getMin();
+  SbVec3f maxcorner = bbox.getMax();
+
+  SbMatrix projmatrix;
+  projmatrix = (SoModelMatrixElement::get(state) *
+                SoViewingMatrixElement::get(state) *
+                SoProjectionMatrixElement::get(state));
+
+  SbBox2s shapebbox;
+
+  SbVec2s vppt;
+  SbVec3f normpt;
+  SbVec2s vpo = ext->pimpl->curvp.getViewportOriginPixels();
+  SbVec2s vps = ext->pimpl->curvp.getViewportSizePixels();
+
+  for(int i=0; i < 2; i++) {
+    for(int j=0; j < 2; j++) {
+      for(int k=0; k < 2; k++) {
+	SbVec3f corner(i ? mincorner[0] : maxcorner[0],
+                       j ? mincorner[1] : maxcorner[1],
+                       k ? mincorner[2] : maxcorner[2]);
+	projmatrix.multVecMatrix(corner, normpt);
+        normpt[0] += 1.0f;
+        normpt[1] += 1.0f;
+        normpt[0] *= 0.5f;
+        normpt[1] *= 0.5f;
+
+        normpt[0] *= (float) vps[0];
+        normpt[1] *= (float) vps[1];
+        normpt[0] += (float)vpo[0];
+        normpt[1] += (float)vpo[1];
+        
+        vppt[0] = (short) SbClamp(normpt[0], -32768.0f, 32767.0f);
+        vppt[1] = (short) SbClamp(normpt[1], -32768.0f, 32767.0f);
+        shapebbox.extendBy(vppt);
+      }
+    }
+  }
+
+  const SbList <SbVec2s> & coords = ext->pimpl->getCoords();;
+  switch(ext->lassoType.getValue()) {
+  case SoExtSelection::NOLASSO:
+    break;
+  case SoExtSelection::LASSO:
+#if 0
+    if ((pointinpoly(coords, bbminx,bbminy) == 1)
+	&& (pointinpoly(coords, bbmaxx, bbminy) == 1)
+	&& (pointinpoly(coords, bbminx, bbmaxy) == 1)
+	&& (pointinpoly(coords, bbmaxx, bbmaxy) == 1)) {
+    }
+#endif
+    break;
+
+  case SoExtSelection::RECTANGLE:
+    {
+      SbBox2s rectbbox;
+      rectbbox.extendBy(coords[0]);
+      rectbbox.extendBy(coords[1]);
+      if (rectbbox.intersect(shapebbox)) {
+        ext->startCBList->invokeCallbacks(ext);
+        ext->invokeSelectionPolicy((SoPath*) action->getCurPath(), TRUE);
+        ext->finishCBList->invokeCallbacks(ext);
+      }
+    }
+    break;
+  }
+  return SoCallbackAction::CONTINUE;
+}
+
+#undef THIS
+#define THIS this->pimpl
+
 SO_NODE_SOURCE(SoExtSelection);
 
 /*!
   Constructor.
 */
-SoExtSelection::SoExtSelection()
+SoExtSelection::SoExtSelection(void)
 {
+  THIS = new SoExtSelectionP(this);
+
   SO_NODE_INTERNAL_CONSTRUCTOR(SoExtSelection);
 
   SO_NODE_ADD_FIELD(lassoType, (SoExtSelection::NOLASSO));
@@ -103,6 +318,26 @@ SoExtSelection::SoExtSelection()
   SO_NODE_DEFINE_ENUM_VALUE(LassoPolicy, FULL);
   SO_NODE_DEFINE_ENUM_VALUE(LassoPolicy, PART);
   SO_NODE_SET_SF_ENUM_TYPE(lassoPolicy, LassoPolicy);
+
+  // setup timer
+  THIS->timersensor = new SoTimerSensor(&SoExtSelectionP::timercallback,
+                                        (void *)this);
+  THIS->timersensor->setBaseTime(SbTime(0.0));
+  THIS->timersensor->setInterval(SbTime(0.3));
+
+  THIS->cbaction = new SoCallbackAction();
+  THIS->cbaction->addPreCallback(SoShape::getClassTypeId(), SoExtSelectionP::myCallback,
+                                 (void *) this);
+
+  // some init (just to be sure?)
+  THIS->lassocolor = SbColor(1.0f, 1.0f, 1.0f);
+  THIS->lassowidth = 1.0f;
+  THIS->lassopatternanimate = TRUE;
+  THIS->lassopattern = 0xf0f0;
+
+  THIS->selectionstate = SoExtSelectionP::NONE;
+  THIS->isDragging = FALSE;
+  THIS->coords.truncate(0);
 }
 
 /*!
@@ -110,6 +345,10 @@ SoExtSelection::SoExtSelection()
 */
 SoExtSelection::~SoExtSelection()
 {
+  if (THIS->timersensor->isScheduled()) THIS->timersensor->unschedule();
+  delete THIS->timersensor;
+  delete THIS->cbaction;
+  delete THIS;
 }
 
 /*!
@@ -128,7 +367,7 @@ SoExtSelection::initClass(void)
   FIXME: write doc
  */
 void
-SoExtSelection::useOverlay(SbBool /* flg */)
+SoExtSelection::useOverlay(const SbBool /* overlay */)
 {
   COIN_STUB();
 }
@@ -157,7 +396,7 @@ SoExtSelection::getOverlaySceneGraph(void)
   FIXME: write doc
  */
 void
-SoExtSelection::setOverlayLassoColorIndex(int /* index */)
+SoExtSelection::setOverlayLassoColorIndex(const int /* index */)
 {
   COIN_STUB();
 }
@@ -176,29 +415,27 @@ SoExtSelection::getOverlayLassoColorIndex(void)
   FIXME: write doc
  */
 void
-SoExtSelection::setLassoColor(SbColor /* c */)
+SoExtSelection::setLassoColor(const SbColor & color)
 {
-  COIN_STUB();
+  THIS->lassocolor = color;
 }
 
 /*!
   FIXME: write doc
  */
-SbColor
+const SbColor &
 SoExtSelection::getLassoColor(void)
 {
-  COIN_STUB();
-  static SbColor col;
-  return col;
+  return THIS->lassocolor;
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoExtSelection::setLassoWidth(float /* width */)
+SoExtSelection::setLassoWidth(const float width)
 {
-  COIN_STUB();
+  THIS->lassowidth = width;
 }
 
 /*!
@@ -207,17 +444,16 @@ SoExtSelection::setLassoWidth(float /* width */)
 float
 SoExtSelection::getLassoWidth(void)
 {
-  COIN_STUB();
-  return 0.0f;
+  return THIS->lassowidth;
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoExtSelection::setOverlayLassoPattern(unsigned short /* pattern */)
+SoExtSelection::setOverlayLassoPattern(const unsigned short pattern)
 {
-  COIN_STUB();
+  THIS->lassopattern = pattern;
 }
 
 /*!
@@ -226,17 +462,16 @@ SoExtSelection::setOverlayLassoPattern(unsigned short /* pattern */)
 unsigned short
 SoExtSelection::getOverlayLassoPattern(void)
 {
-  COIN_STUB();
-  return 0;
+  return THIS->lassopattern;
 }
 
 /*!
   FIXME: write doc
  */
 void
-SoExtSelection::animateOverlayLasso(SbBool /* flg */)
+SoExtSelection::animateOverlayLasso(const SbBool animate)
 {
-  COIN_STUB();
+  THIS->lassopatternanimate = animate;
 }
 
 /*!
@@ -245,6 +480,207 @@ SoExtSelection::animateOverlayLasso(SbBool /* flg */)
 SbBool
 SoExtSelection::isOverlayLassoAnimated(void)
 {
-  COIN_STUB();
-  return FALSE;
+  return THIS->lassopatternanimate;
 }
+
+void
+SoExtSelection::handleEvent(SoHandleEventAction * action)
+{
+  // do not call SoSelction::handleEvent()
+  SoSeparator::handleEvent(action);
+  if (action->isHandled()) return;
+
+  const SoEvent *event = action->getEvent();
+  const SbVec2s mousecoords = event->getPosition();
+
+  switch (this->lassoType.getValue()) {
+
+    // ---------- NO LASSO ----------
+
+  case SoExtSelection::NOLASSO:
+    // nothing to do here..
+    break;
+
+    // ---------- RECTANGLE ----------
+
+  case SoExtSelection::RECTANGLE:
+    // mouse click
+    if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
+      THIS->isDragging = TRUE;
+      THIS->selectionstate = SoExtSelectionP::RECTANGLE;
+      THIS->coords.truncate(0);
+      THIS->coords.append(mousecoords);
+      THIS->coords.append(mousecoords);
+      if (!THIS->timersensor->isScheduled()) THIS->timersensor->schedule();
+    }
+    // mouse release
+    else if (SO_MOUSE_RELEASE_EVENT(event,BUTTON1)) {
+      THIS->timersensor->unschedule();
+      THIS->isDragging = FALSE;
+      THIS->selectionstate = SoExtSelectionP::NONE;
+      THIS->curvp = action->getViewportRegion();
+      THIS->cbaction->setViewportRegion(THIS->curvp);
+
+      this->deselectAll();
+      THIS->cbaction->apply(action->getCurPath()->getHead());
+      this->touch();
+    }
+    // mouse move
+    else if ((event->isOfType( SoLocation2Event::getClassTypeId()))) {
+      if (THIS->isDragging == TRUE) {
+	assert(THIS->coords.getLength() >= 2);
+	THIS->coords[1] = mousecoords;
+	this->touch();
+      }
+    }
+
+    break;
+
+    // ---------- LASSO ----------
+
+  case SoExtSelection::LASSO:
+    // mouse click
+    if (SO_MOUSE_PRESS_EVENT(event,BUTTON1)) {
+      if (event->wasShiftDown()) {
+	if (THIS->selectionstate == SoExtSelectionP::NONE) {
+	  THIS->coords.truncate(0);
+	  THIS->coords.append(mousecoords);
+	  THIS->selectionstate = SoExtSelectionP::LASSO;
+	}
+	THIS->isDragging = TRUE;
+	THIS->coords.append(mousecoords);
+        if (!THIS->timersensor->isScheduled()) THIS->timersensor->schedule();
+	this->touch();
+      }
+    }
+    // mouse release
+    else if (SO_MOUSE_RELEASE_EVENT(event,BUTTON1)) {
+      THIS->isDragging = FALSE;
+    }
+    // mouse move
+    else if ( ( event->isOfType( SoLocation2Event::getClassTypeId() ) ) ) {
+      if (THIS->isDragging == TRUE) {
+	assert(THIS->coords.getLength());
+	THIS->coords[THIS->coords.getLength()-1] = mousecoords;
+	this->touch();
+      }
+    }
+    // SHIFT press
+    else if (SO_KEY_PRESS_EVENT(event,LEFT_SHIFT)) {
+    }
+    // SHIFT release
+    else if (SO_KEY_RELEASE_EVENT(event,LEFT_SHIFT)) {
+      THIS->timersensor->unschedule();
+      if (THIS->selectionstate == SoExtSelectionP::LASSO) {
+	THIS->curvp = action->getViewportRegion();
+	THIS->cbaction->setViewportRegion(THIS->curvp);
+
+        this->deselectAll();
+	THIS->cbaction->apply(action->getCurPath()->getHead());
+	this->touch();
+      }
+      THIS->isDragging = FALSE;
+      THIS->selectionstate = SoExtSelectionP::NONE;
+      THIS->coords.truncate(0);
+    }
+    break;
+  }
+}
+
+// internal method for drawing lasso
+void
+SoExtSelection::draw(SoGLRenderAction *action)
+{
+  SbViewportRegion vp = action->getViewportRegion();
+  SbVec2s vpo = vp.getViewportOriginPixels();
+  SbVec2s vps = vp.getViewportSizePixels();
+
+  // matrices
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(vpo[0], vpo[0]+vps[0]-1,
+	  vpo[1], vpo[0]+vps[1]-1,
+	  -1, 1);
+
+  // attributes
+  glPushAttrib(GL_LIGHTING_BIT|
+	       GL_FOG_BIT|
+	       GL_DEPTH_BUFFER_BIT|
+	       GL_TEXTURE_BIT|
+	       GL_LINE_BIT|
+	       GL_CURRENT_BIT);
+  glDisable(GL_LIGHTING);
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_FOG);
+  glDisable(GL_DEPTH_TEST);
+
+  // line color & width
+  glColor3f(THIS->lassocolor[0],THIS->lassocolor[1],THIS->lassocolor[2]);
+  glLineWidth(THIS->lassowidth);
+
+  // stipple pattern
+  glEnable(GL_LINE_STIPPLE);
+  glLineStipple(1, THIS->lassopattern);
+
+  // --- RECTANGLE ---
+
+  if (THIS->selectionstate == SoExtSelectionP::RECTANGLE) {
+    assert(THIS->coords.getLength() >= 2);
+    SbVec2s c1 = THIS->coords[0];
+    SbVec2s c2 = THIS->coords[1];
+    glBegin(GL_LINE_LOOP);
+    glVertex2s(c1[0], c1[1]);
+    glVertex2s(c2[0], c1[1]);
+    glVertex2s(c2[0], c2[1]);
+    glVertex2s(c1[0], c2[1]);
+    glEnd();
+  }
+
+  // --- LASSO ---
+
+  else if (THIS->selectionstate == SoExtSelectionP::LASSO) {
+    glBegin(GL_LINE_LOOP);
+    for (int i = 0; i < THIS->coords.getLength(); i++) {
+      SbVec2s temp = THIS->coords[i];
+      glVertex2s(temp[0],temp[1]);
+    }
+    glEnd();
+  }
+
+  // finish - restore state
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+  glPopAttrib();
+}
+
+// doc in parent
+void
+SoExtSelection::GLRenderBelowPath(SoGLRenderAction * action)
+{
+  inherited::GLRenderBelowPath(action);
+  SoState *state = action->getState();
+  state->push();
+
+  if (action->isRenderingDelayedPaths()) {
+
+    SbViewportRegion vp = SoViewportRegionElement::get(state);
+    SbVec2s vpo = vp.getViewportOriginPixels();
+    SbVec2s vps = vp.getViewportSizePixels();
+    this->draw(action);
+  }
+  // render this path after all other (delayed)
+  else {
+    if (THIS->selectionstate != SoExtSelectionP::NONE) {
+      action->addDelayedPath(action->getCurPath()->copy());
+    }
+  }
+  state->pop();
+}
+
+#undef THIS
