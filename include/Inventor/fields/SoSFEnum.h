@@ -23,10 +23,6 @@
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/SbString.h>
 
-#if defined(COIN_EXCLUDE_SOSFENUM)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSFENUM
-
 
 class SoSFEnum : public SoSField {
   typedef SoSField inherited;

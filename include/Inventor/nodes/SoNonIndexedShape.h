@@ -24,10 +24,6 @@
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/fields/SoSFInt32.h>
 
-#if defined(COIN_EXCLUDE_SONONINDEXEDSHAPE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SONONINDEXEDSHAPE
-
 
 class SoNonIndexedShape : public SoVertexShape {
   typedef SoVertexShape inherited;
@@ -43,10 +39,8 @@ protected:
   SoNonIndexedShape(void);
   virtual ~SoNonIndexedShape();
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   void computeCoordBBox(SoAction * action, int numVertices,
                         SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 };
 
 

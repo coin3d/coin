@@ -24,11 +24,6 @@
 #include <Inventor/lists/SbIntList.h>
 #include <Inventor/lists/SoNodeList.h>
 
-#if defined(COIN_EXCLUDE_SOPATH)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOPATH
-
-
 class SoPath;
 typedef SoPath SoLightPath;
 typedef SoPath SoTempPath;
@@ -38,6 +33,7 @@ class SoWriteAction;
 class SoNotList;
 class SoInput;
 class SoPathList;
+
 
 class SoPath : public SoBase {
   typedef SoBase inherited;

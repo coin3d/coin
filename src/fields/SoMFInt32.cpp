@@ -312,7 +312,6 @@ SoMFInt32::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFInt32 *)dest)->setValue((*this)[0]);
   }
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     const int num=this->getNum();
     ostrstream ostr;
@@ -325,7 +324,6 @@ SoMFInt32::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFInt32::convertTo",

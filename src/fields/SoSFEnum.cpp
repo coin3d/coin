@@ -36,9 +36,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOMFENUM)
 #include <Inventor/fields/SoMFEnum.h>
-#endif // !COIN_EXCLUDE_SOMFENUM
 
 /*!
   \var int SoSFEnum::numEnums
@@ -324,12 +322,9 @@ SoSFEnum::writeValue(SoOutput * out) const
 void
 SoSFEnum::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOMFENUM)
-  else if (dest->getTypeId()==SoMFEnum::getClassTypeId()) {
+  if (dest->getTypeId()==SoMFEnum::getClassTypeId()) {
     ((SoMFEnum *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFENUM
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFEnum::convertTo",

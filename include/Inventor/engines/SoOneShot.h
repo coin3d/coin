@@ -27,9 +27,6 @@
 #include <Inventor/fields/SoSFTrigger.h>
 #include <Inventor/fields/SoSFBitMask.h>
 
-#if defined(COIN_EXCLUDE_SOONESHOT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOONESHOT
 
 class SoOneShot : public SoEngine {
   typedef SoEngine inherited;

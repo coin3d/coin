@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFColor.h>
 
-#if defined(COIN_EXCLUDE_SOBASECOLOR)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOBASECOLOR
-
-// *************************************************************************
 
 class SoBaseColor : public SoNode {
   typedef SoNode inherited;
@@ -41,15 +36,9 @@ public:
 
   SoMFColor rgb;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
   virtual void pick(SoPickAction * action);
 protected:
   virtual ~SoBaseColor();

@@ -20,12 +20,8 @@
 #ifndef __SOLIGHTMODELELEMENT_H__
 #define __SOLIGHTMODELELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOLIGHTMODELELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoLightModelElement : public SoInt32Element {
   typedef SoInt32Element inherited;

@@ -27,20 +27,10 @@
 
 #include <Inventor/nodes/SoLightModel.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 
 /*!
@@ -96,14 +86,11 @@ SoLightModel::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLightModel);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLLightModelElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoLightModelElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -112,10 +99,7 @@ SoLightModel::GLRender(SoGLRenderAction * action)
 {
   SoLightModel::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -123,17 +107,12 @@ void
 SoLightModel::doAction(SoAction *action)
 {
   if (!model.isIgnored()
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-      && !SoOverrideElement::getLightModelOverride(action->getState())
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
-      ) {
+      && !SoOverrideElement::getLightModelOverride(action->getState())) {
     SoLightModelElement::set(action->getState(), this,
                              (SoLightModelElement::Model)model.getValue());
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -142,4 +121,3 @@ SoLightModel::callback(SoCallbackAction *action)
 {
   SoLightModel::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION

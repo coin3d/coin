@@ -23,13 +23,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
-#if defined(COIN_EXCLUDE_SOINDEXEDFACESET)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOINDEXEDFACESET
-
 #define SO_END_FACE_INDEX (-1)
 
-// *************************************************************************
 
 class SoConvexDataCache;
 
@@ -51,28 +46,20 @@ public:
     NONE = OVERALL
   };
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
   SbBool generateDefaultNormals(SoState *state, SoNormalBundle *nb);
 
 protected:
   virtual ~SoIndexedFaceSet();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction *action);
-#endif // !COIN_EXCLUDE_SOACTION
 
 private:
   int findNumFaces() const;
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
   virtual void notify(SoNotList *list);
 
   SbBool countPrimitives();

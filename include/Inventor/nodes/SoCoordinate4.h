@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFVec4f.h>
 
-#if defined(COIN_EXCLUDE_SOCOORDINATE4)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOCOORDINATE4
-
-// *************************************************************************
 
 class SoCoordinate4 : public SoNode {
   typedef SoNode inherited;
@@ -41,24 +36,12 @@ public:
 
   SoMFVec4f point;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoCoordinate4();

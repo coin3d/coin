@@ -26,9 +26,6 @@
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFString.h>
 
-#if defined(COIN_EXCLUDE_SOCALCULATOR)
-#error "Configuration settings disrespected!"
-#endif // COIN_EXCLUDE_SOCALCULATOR
 
 class SoCalculator : public SoEngine {
   typedef SoEngine inherited;

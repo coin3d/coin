@@ -27,19 +27,9 @@
 
 #include <Inventor/nodes/SoProfileCoordinate3.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT)
 #include <Inventor/elements/SoProfileCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
@@ -79,18 +69,12 @@ SoProfileCoordinate3::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoProfileCoordinate3);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
   SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoProfileCoordinateElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -100,9 +84,7 @@ SoProfileCoordinate3::doAction(SoAction *action)
   SoProfileCoordinateElement::set3(action->getState(), this,
                                    point.getNum(), point.getValues(0));
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -111,9 +93,7 @@ SoProfileCoordinate3::GLRender(SoGLRenderAction *action)
 {
   SoProfileCoordinate3::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -122,9 +102,7 @@ SoProfileCoordinate3::callback(SoCallbackAction *action)
 {
   SoProfileCoordinate3::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -133,9 +111,7 @@ SoProfileCoordinate3::pick(SoPickAction *action)
 {
   SoProfileCoordinate3::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -144,4 +120,3 @@ SoProfileCoordinate3::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoProfileCoordinate3::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

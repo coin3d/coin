@@ -20,12 +20,8 @@
 #ifndef __SOPOLYGONOFFSETELEMENT_H__
 #define __SOPOLYGONOFFSETELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOPOLYGONOFFSETELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOPOLYGONOFFSETELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
+
 
 class SoPolygonOffsetElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

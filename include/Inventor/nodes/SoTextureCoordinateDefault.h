@@ -23,11 +23,6 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
 
-#if defined(COIN_EXCLUDE_SOTEXTURECOORDINATEDEFAULT)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEDEFAULT
-
-// *************************************************************************
 
 class SoTextureCoordinateDefault : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
@@ -39,18 +34,10 @@ public:
   SoTextureCoordinateDefault(void);
 
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction *action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
 protected:
   virtual ~SoTextureCoordinateDefault();

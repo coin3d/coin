@@ -30,15 +30,9 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
 
-#if !defined(COIN_EXCLUDE_SOSFFLOAT)
 #include <Inventor/fields/SoSFFloat.h>
-#endif // !COIN_EXCLUDE_SOSFFLOAT
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOMFTIME)
 #include <Inventor/fields/SoMFTime.h>
-#endif // !COIN_EXCLUDE_SOMFTIME
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -209,25 +203,18 @@ SoSFTime::writeValue(SoOutput * out) const
 void
 SoSFTime::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFFLOAT)
-  else if (dest->getTypeId()==SoSFFloat::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFFloat::getClassTypeId()) {
     ((SoSFFloat *)dest)->setValue(float(this->getValue().getValue()));
   }
-#endif // !COIN_EXCLUDE_SOSFFLOAT
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     if (this->getValue().getValue()>31500000.0)
       ((SoSFString *)dest)->setValue(this->getValue().formatDate());
     else
       ((SoSFString *)dest)->setValue(this->getValue().format());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOMFTIME)
   else if (dest->getTypeId()==SoMFTime::getClassTypeId()) {
     ((SoMFTime *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFTIME
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFTime::convertTo",

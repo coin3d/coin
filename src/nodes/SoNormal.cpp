@@ -27,19 +27,9 @@
 
 #include <Inventor/nodes/SoNormal.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
-#if !defined(COIN_EXCLUDE_SONORMALELEMENT)
 #include <Inventor/elements/SoNormalElement.h>
-#endif // !COIN_EXCLUDE_SONORMALELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
@@ -79,13 +69,9 @@ SoNormal::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoNormal);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoNormalElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoNormalElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
   SO_ENABLE(SoCallbackAction, SoNormalElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoNormalElement);
@@ -112,7 +98,6 @@ SoNormal::initClass(void)
 // }
 
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -128,10 +113,7 @@ SoNormal::GLRender(SoGLRenderAction * action)
   SoNormal::doAction(action);
 
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -142,9 +124,6 @@ SoNormal::doAction(SoAction *action)
                        vector.getNum(), vector.getValues(0));
 }
 
-#endif // !COIN_EXCLUDE_SOACTION
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -153,9 +132,7 @@ SoNormal::callback(SoCallbackAction *action)
 {
   SoNormal::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -164,9 +141,7 @@ SoNormal::pick(SoPickAction *action)
 {
   SoNormal::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -175,4 +150,3 @@ SoNormal::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

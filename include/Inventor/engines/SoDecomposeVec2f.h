@@ -25,9 +25,6 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFVec2f.h>
 
-#if defined(COIN_EXCLUDE_SODECOMPOSEVEC2F)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SODECOMPOSEVEC2F
 
 class SoDecomposeVec2f : public SoEngine {
   SO_COMPOSE__HEADER(SoDecomposeVec2f);

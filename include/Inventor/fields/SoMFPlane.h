@@ -23,10 +23,6 @@
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/SbPlane.h>
 
-#if defined(COIN_EXCLUDE_SOMFPLANE)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOMFPLANE
-
 
 class SoMFPlane : public SoMField {
   typedef SoMField inherited;

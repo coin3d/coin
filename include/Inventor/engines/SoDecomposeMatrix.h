@@ -24,9 +24,6 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoMFMatrix.h>
 
-#if defined(COIN_EXCLUDE_SODECOMPOSEMATRIX)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SODECOMPOSEMATRIX
 
 class SoDecomposeMatrix : public SoEngine {
   SO_COMPOSE__HEADER(SoDecomposeMatrix);

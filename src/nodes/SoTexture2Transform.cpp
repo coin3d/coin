@@ -30,14 +30,8 @@
 
 #include <math.h>
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREMATRIXELEMENT)
 #include <Inventor/elements/SoGLTextureMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTUREMATRIXELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoTextureMatrixElement.h>
 
@@ -94,15 +88,12 @@ SoTexture2Transform::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTexture2Transform);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLTextureMatrixElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoTextureMatrixElement);
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -111,11 +102,7 @@ SoTexture2Transform::GLRender(SoGLRenderAction * action)
 {
   SoTexture2Transform::doAction(action);
 }
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
 
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -161,9 +148,7 @@ SoTexture2Transform::doAction(SoAction *action)
   SoTextureMatrixElement::mult(action->getState(), this,
                                mat);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -172,9 +157,7 @@ SoTexture2Transform::callback(SoCallbackAction *action)
 {
   SoTexture2Transform::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -183,9 +166,7 @@ SoTexture2Transform::getMatrix(SoGetMatrixAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -194,4 +175,3 @@ SoTexture2Transform::pick(SoPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION

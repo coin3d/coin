@@ -20,11 +20,6 @@
 #ifndef __SORAYPICKACTION_H__
 #define __SORAYPICKACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SORAYPICKACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SORAYPICKACTION
-
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbLine.h>
@@ -37,7 +32,6 @@ class SbVec2f;
 class SbVec3f;
 class SbViewportRegion;
 class SoPickedPoint;
-
 
 
 class SoRayPickAction : public SoPickAction {

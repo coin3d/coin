@@ -22,10 +22,6 @@
 
 #include <Inventor/elements/SoElement.h>
 
-#if defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-
 
 class SoShapeStyleElement : public SoElement {
   typedef SoElement inherited;

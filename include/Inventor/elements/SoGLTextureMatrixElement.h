@@ -20,12 +20,8 @@
 #ifndef __SOGLTEXTUREMATRIXELEMENT_H__
 #define __SOGLTEXTUREMATRIXELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLTEXTUREMATRIXELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLTEXTUREMATRIXELEMENT
-
 #include <Inventor/elements/SoTextureMatrixElement.h>
+
 
 class SoGLTextureMatrixElement : public SoTextureMatrixElement {
   typedef SoTextureMatrixElement inherited;

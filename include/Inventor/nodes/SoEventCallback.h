@@ -25,11 +25,6 @@
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/lists/SoTypeList.h>
 
-#if defined(COIN_EXCLUDE_SOEVENTCALLBACK)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOEVENTCALLBACK
-
-// *************************************************************************
 
 class SoEventCallback;
 class SoPath;
@@ -57,7 +52,6 @@ public:
   void removeEventCallback(SoType eventType, SoEventCallbackCB * f,
                            void * userData = NULL);
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   SoHandleEventAction * getAction(void) const;
   const SoEvent * getEvent(void) const;
   const SoPickedPoint * getPickedPoint(void) const;
@@ -67,19 +61,14 @@ public:
 
   void grabEvents(void);
   void releaseEvents(void);
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
 protected:
   virtual ~SoEventCallback();
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   virtual void handleEvent(SoHandleEventAction * action);
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
 private:
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   SoHandleEventAction * heaction;
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
   SbPList callbacks;
   SoTypeList callbackTypes;
 };

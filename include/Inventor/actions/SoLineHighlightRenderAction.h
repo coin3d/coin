@@ -20,12 +20,8 @@
 #ifndef __SOLINEHIGHLIGHTRENDERACTION_H__
 #define __SOLINEHIGHLIGHTRENDERACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOLINEHIGHLIGHTRENDERACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOLINEHIGHLIGHTRENDERACTION
-
 #include <Inventor/actions/SoGLRenderAction.h>
+
 
 class SoLineHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;

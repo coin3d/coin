@@ -20,21 +20,12 @@
 #ifndef __SOGETMATRIXACTION_H__
 #define __SOGETMATRIXACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGETMATRIXACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOGETMATRIXACTION
-
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbRotation.h>
-
-#ifdef __SOLIB_INTERNAL__
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
-#else // !__SOLIB_INTERNAL__
-#include <Inventor/SbLinear.h>
-#endif // !__SOLIB_INTERNAL__
+
 
 class SoGetMatrixAction : public SoAction {
   typedef SoAction inherited;

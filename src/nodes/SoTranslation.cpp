@@ -27,21 +27,10 @@
 
 #include <Inventor/nodes/SoTranslation.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 
 /*!
   \var SoSFVec3f SoTranslation::translation
@@ -80,23 +69,18 @@ SoTranslation::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTranslation);
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
 void
 SoTranslation::doAction(SoAction * action)
 {
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
   if (this->translation.getValue() != SbVec3f(0.0f, 0.0f, 0.0f)) {
     SoModelMatrixElement::translateBy(action->getState(), this,
                                       this->translation.getValue());
   }
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -105,9 +89,7 @@ SoTranslation::GLRender(SoGLRenderAction * action)
 {
   SoTranslation::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -116,10 +98,7 @@ SoTranslation::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoTranslation::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -128,9 +107,7 @@ SoTranslation::callback(SoCallbackAction *action)
 {
   SoTranslation::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -140,9 +117,6 @@ SoTranslation::getMatrix(SoGetMatrixAction *action)
   action->translateBy(translation.getValue());
 }
 
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -151,9 +125,7 @@ SoTranslation::pick(SoPickAction *action)
 {
   SoTranslation::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -162,4 +134,3 @@ SoTranslation::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoTranslation::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

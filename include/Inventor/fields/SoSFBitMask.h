@@ -22,9 +22,6 @@
 
 #include <Inventor/fields/SoSFEnum.h>
 
-#if defined(COIN_EXCLUDE_SOSFBITMASK)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSFBITMASK
 
 class SoSFBitMask : public SoSFEnum {
   typedef SoSFEnum inherited;

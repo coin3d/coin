@@ -26,9 +26,7 @@
 
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoNode.h>
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -150,7 +148,6 @@ SoChildList::set(const int index, SoNode * const node)
   this->parent->startNotify();
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc.
 */
@@ -179,8 +176,6 @@ SoChildList::traverse(SoAction * const action, const int index)
 {
   this->traverse(action, index, index);
 }
-
-#endif // !COIN_EXCLUDE_SOACTION
 
 /*!
   FIXME: write doc.

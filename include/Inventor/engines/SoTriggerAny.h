@@ -24,9 +24,6 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoSFTrigger.h>
 
-#if defined(COIN_EXCLUDE_SOTRIGGERANY)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOTRIGGERANY
 
 class SoTriggerAny : public SoEngine {
   typedef SoEngine inherited;

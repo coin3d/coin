@@ -20,12 +20,8 @@
 #ifndef __SOGLNORMALELEMENT_H__
 #define __SOGLNORMALELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLNORMALELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLNORMALELEMENT
-
 #include <Inventor/elements/SoNormalElement.h>
+
 
 class SoGLNormalElement : public SoNormalElement {
   typedef SoNormalElement inherited;

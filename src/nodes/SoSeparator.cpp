@@ -32,41 +32,19 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/caches/SoBoundingBoxCache.h>
 
-#if !defined(COIN_EXCLUDE_SOSTATE)
 #include <Inventor/misc/SoState.h>
-#endif // !COIN_EXCLUDE_SOSTATE
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 #include <Inventor/actions/SoHandleEventAction.h>
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 #include <Inventor/actions/SoRayPickAction.h>
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 #include <Inventor/actions/SoSearchAction.h>
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCACHEELEMENT)
 #include <Inventor/elements/SoCacheElement.h>
-#endif // !COIN_EXCLUDE_SOCACHEELEMENT
-#if !defined(COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT)
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT
 
 #include <Inventor/SbMatrix.h>
 
@@ -152,16 +130,11 @@ SoSeparator::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoSeparator);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoCacheElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoCacheElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -172,9 +145,7 @@ SoSeparator::doAction(SoAction * action)
   inherited::doAction(action);
   action->getState()->pop();
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -241,9 +212,7 @@ SoSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
     action->setCenter(childrencenter, TRUE);
   }
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -254,9 +223,7 @@ SoSeparator::callback(SoCallbackAction * action)
   SoGroup::callback(action);
   action->getState()->pop();
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -305,9 +272,6 @@ SoSeparator::GLRenderOffPath(SoGLRenderAction *)
   // do nothing, since all state changes will be reset by the separator
 }
 
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write function documentation
 */
@@ -316,9 +280,7 @@ SoSeparator::handleEvent(SoHandleEventAction * action)
 {
   SoSeparator::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -332,9 +294,7 @@ SoSeparator::rayPick(SoRayPickAction * action)
 
   SoSeparator::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 /*!
   FIXME: write function documentation
 */
@@ -343,9 +303,7 @@ SoSeparator::search(SoSearchAction * action)
 {
   SoSeparator::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -356,7 +314,6 @@ SoSeparator::getMatrix(SoGetMatrixAction * action)
     inherited::getMatrix(action);
 
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
 /*!
   FIXME: write function documentation
@@ -395,7 +352,6 @@ SoSeparator::affectsState(void) const
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -404,7 +360,6 @@ SoSeparator::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoSeparator::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 /*!
   FIXME: write doc
@@ -416,7 +371,6 @@ SoSeparator::notify(SoNotList * list)
   inherited::notify(list);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -426,7 +380,6 @@ SoSeparator::cullTest(SoGLRenderAction * /* action */, int & /* cullResults */)
   COIN_STUB();
   return FALSE;
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!
   FIXME: write doc

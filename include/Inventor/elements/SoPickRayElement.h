@@ -20,13 +20,9 @@
 #ifndef __SOPICKRAYELEMENT_H__
 #define __SOPICKRAYELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOPICKRAYELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOPICKRAYELEMENT
-
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/SbViewVolume.h>
+
 
 class SoPickRayElement : public SoElement {
   typedef SoElement inherited;

@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoVertexShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
-#if defined(COIN_EXCLUDE_SOINDEXEDSHAPE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOINDEXEDSHAPE
-
-
 class SoTextureCoordinateElement;
 class SoCoordinateElement;
 
@@ -50,9 +45,7 @@ protected:
   SoIndexedShape(void);
   virtual ~SoIndexedShape();
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
   int getNumVerts(const int startCoord);
   void setupIndices(const int numParts, const int numFaces,
                     const SbBool needNormals, const SbBool needTexCoords);
@@ -63,9 +56,7 @@ protected:
 
   virtual void notify(SoNotList * list);
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   static SbBool areTexCoordsIndexed(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
 
   SbBool getVertexData(SoState * state,
                        const SoCoordinateElement *& coords,
@@ -79,10 +70,8 @@ protected:
                        SbBool & normalCacheUsed);
 
 private:
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual SbBool generateDefaultNormals(SoState * state,
                                         SoNormalCache * cache);
-#endif // !COIN_EXCLUDE_SOACTION
 
   int32_t * tIndices;
   int32_t * nIndices;

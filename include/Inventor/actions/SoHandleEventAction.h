@@ -20,17 +20,13 @@
 #ifndef __SOHANDLEEVENTACTION_H__
 #define __SOHANDLEEVENTACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOHANDLEEVENTACTION
-
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbViewportRegion.h>
 
 class SoEvent;
 class SoPickedPoint;
 class SoPickedPointList;
+
 
 class SoHandleEventAction : public SoAction {
   typedef SoAction inherited;

@@ -27,11 +27,6 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoMFFloat.h>
 
-#if defined(COIN_EXCLUDE_SOASCIITEXT)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOASCIITEXT
-
-// *************************************************************************
 
 class SoAsciiText : public SoShape {
   typedef SoShape inherited;
@@ -53,25 +48,15 @@ public:
   SoSFEnum justification;
   SoMFFloat width;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction * action);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoAsciiText();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction *);
-#endif // !COIN_EXCLUDE_SOACTION
 };
 
 #endif // !__SOASCIITEXT_H__

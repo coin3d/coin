@@ -66,7 +66,6 @@ SoColorIndex::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoColorIndex);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
 */
@@ -75,4 +74,3 @@ SoColorIndex::GLRender(SoGLRenderAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION

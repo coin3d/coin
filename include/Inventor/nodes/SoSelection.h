@@ -25,10 +25,6 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/lists/SoPathList.h>
 
-#if defined(COIN_EXCLUDE_SOSELECTION)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOSELECTION
-
 class SoSelection;
 class SoPath;
 class SoPickedPoint;
@@ -38,7 +34,6 @@ typedef void SoSelectionPathCB(void * data, SoPath * path);
 typedef void SoSelectionClassCB(void * data, SoSelection * sel);
 typedef SoPath * SoSelectionPickCB(void * data, const SoPickedPoint * pick);
 
-// *************************************************************************
 
 class SoSelection : public SoSeparator {
   typedef SoSeparator inherited;

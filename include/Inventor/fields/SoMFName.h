@@ -23,10 +23,6 @@
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/SbName.h>
 
-#if defined(COIN_EXCLUDE_SOMFNAME)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOMFNAME
-
 
 class SoMFName : public SoMField {
   typedef SoMField inherited;

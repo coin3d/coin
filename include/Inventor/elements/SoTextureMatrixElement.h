@@ -20,13 +20,9 @@
 #ifndef __SOTEXTUREMATRIXELEMENT_H__
 #define __SOTEXTUREMATRIXELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOTEXTUREMATRIXELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOTEXTUREMATRIXELEMENT
-
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/SbMatrix.h>
+
 
 class SoTextureMatrixElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;

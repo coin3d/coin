@@ -23,11 +23,6 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoCamera.h>
 
-#if defined(COIN_EXCLUDE_SOPERSPECTIVECAMERA)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOPERSPECTIVECAMERA
-
-// *************************************************************************
 
 class SoPerspectiveCamera : public SoCamera {
   typedef SoCamera inherited;

@@ -20,13 +20,9 @@
 #ifndef __SOVIEWPORTREGIONELEMENT_H__
 #define __SOVIEWPORTREGIONELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT
-
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/SbViewportRegion.h>
+
 
 class SoViewportRegionElement : public SoElement {
   typedef SoElement inherited;

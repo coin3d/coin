@@ -27,30 +27,14 @@
 
 #include <Inventor/nodes/SoCoordinate3.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
 
 
 /*!
@@ -90,23 +74,13 @@ SoCoordinate3::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoCoordinate3);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
   SO_ENABLE(SoCallbackAction, SoCoordinateElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoCoordinateElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -116,9 +90,7 @@ SoCoordinate3::doAction(SoAction * action)
   SoCoordinateElement::set3(action->getState(), this,
                             point.getNum(), point.getValues(0));
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -127,9 +99,7 @@ SoCoordinate3::GLRender(SoGLRenderAction * action)
 {
   SoCoordinate3::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -138,9 +108,7 @@ SoCoordinate3::callback(SoCallbackAction * action)
 {
   SoCoordinate3::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -149,9 +117,7 @@ SoCoordinate3::pick(SoPickAction * action)
 {
   SoCoordinate3::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -160,10 +126,7 @@ SoCoordinate3::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoCoordinate3::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -172,4 +135,3 @@ SoCoordinate3::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoCoordinate3::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

@@ -74,14 +74,10 @@ public:
   uint32_t getRedrawPriority(void) const;
   void setAntialiasing(const SbBool smoothing, const int numPasses);
   void getAntialiasing(SbBool & smoothing, int & numPasses) const;
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   void setGLRenderAction(SoGLRenderAction * const action);
   SoGLRenderAction * getGLRenderAction(void) const;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   void setHandleEventAction(SoHandleEventAction * hea);
   SoHandleEventAction * getHandleEventAction(void) const;
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
   static uint32_t getDefaultRedrawPriority(void);
   static void enableRealTimeUpdate(const SbBool flag);
@@ -98,14 +94,10 @@ private:
   SoSceneManagerRenderCB * renderCB;
   void * renderCBdata;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SoGLRenderAction * glAction;
   SbBool deleteGLAction;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   SoHandleEventAction * handleeventaction;
   SbBool deletehandleeventaction;
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
   SoNode * scene;
   SoNodeSensor * rootsensor;

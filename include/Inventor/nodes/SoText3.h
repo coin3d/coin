@@ -27,11 +27,6 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBitMask.h>
 
-#if defined(COIN_EXCLUDE_SOTEXT3)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOTEXT3
-
-// *************************************************************************
 
 class SoText3 : public SoShape {
   typedef SoShape inherited;
@@ -62,25 +57,15 @@ public:
 
   SbBox3f getCharacterBounds(SoState *state, int stringIndex, int charIndex);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction * action);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoText3();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction *);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 };
 
 #endif // !__SOTEXT3_H__

@@ -72,7 +72,6 @@ SoCallback::setCallback(SoCallbackCB * func, void * userdata)
   this->cbdata = userdata;
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -81,12 +80,10 @@ SoCallback::doAction(SoAction * action)
 {
   if (this->cbfunc) this->cbfunc(this->cbdata, action);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
 // FIXME: seems a bit weird that they should all call only
 // doAction()? 19990315 mortene.
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -95,9 +92,7 @@ SoCallback::callback(SoCallbackAction * action)
 {
   SoCallback::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -106,9 +101,7 @@ SoCallback::GLRender(SoGLRenderAction * action)
 {
   SoCallback::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -117,9 +110,7 @@ SoCallback::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoCallback::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -128,9 +119,7 @@ SoCallback::getMatrix(SoGetMatrixAction * action)
 {
   SoCallback::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write function documentation
 */
@@ -139,9 +128,7 @@ SoCallback::handleEvent(SoHandleEventAction * action)
 {
   SoCallback::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -150,9 +137,7 @@ SoCallback::pick(SoPickAction * action)
 {
   SoCallback::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 /*!
   FIXME: write function documentation
 */
@@ -161,9 +146,7 @@ SoCallback::search(SoSearchAction * action)
 {
   SoCallback::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
 
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
 /*!
   FIXME: write function documentation
 */
@@ -172,9 +155,7 @@ SoCallback::write(SoWriteAction * action)
 {
   SoCallback::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOWRITEACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write function documentation
 */
@@ -183,7 +164,6 @@ SoCallback::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 {
   SoCallback::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 /*!
   FIXME: write doc

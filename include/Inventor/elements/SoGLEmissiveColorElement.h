@@ -20,13 +20,9 @@
 #ifndef __SOGLEMISSIVECOLORELEMENT_H__
 #define __SOGLEMISSIVECOLORELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT
-
 #include <Inventor/elements/SoEmissiveColorElement.h>
 #include <Inventor/SbColor.h>
+
 
 class SoGLEmissiveColorElement : public SoEmissiveColorElement {
   typedef SoEmissiveColorElement inherited;

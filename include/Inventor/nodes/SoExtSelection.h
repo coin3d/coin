@@ -25,11 +25,6 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/SbColor.h>
 
-#if defined(COIN_EXCLUDE_SOEXTSELECTION)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOEXTSELECTION
-
-// *************************************************************************
 
 class SoExtSelection : public SoSelection {
   typedef SoSelection inherited;

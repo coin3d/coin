@@ -22,9 +22,6 @@
 
 #include <Inventor/sensors/SoDataSensor.h>
 
-#if defined(COIN_EXCLUDE_SONODESENSOR)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SONODESENSOR
 
 class SoNodeSensor : public SoDataSensor {
   typedef SoDataSensor inherited;

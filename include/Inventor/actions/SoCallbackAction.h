@@ -20,11 +20,6 @@
 #ifndef __SOCALLBACKACTION_H__
 #define __SOCALLBACKACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOCALLBACKACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOCALLBACKACTION
-
 #include <Inventor/actions/SoAction.h>
 
 #include <Inventor/nodes/SoComplexity.h>

@@ -168,7 +168,6 @@ SoImage::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoImage);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -196,10 +195,7 @@ SoImage::computeBBox(SoAction *action,
   box.extendBy(v3);
   center = box.getCenter();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
 */
@@ -300,9 +296,7 @@ SoImage::GLRender(SoGLRenderAction *action)
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 void
 SoImage::rayPick(SoRayPickAction * action)
 {
@@ -330,10 +324,7 @@ SoImage::rayPick(SoRayPickAction * action)
     }
   }
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -342,9 +333,7 @@ SoImage::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   if (this->shouldPrimitiveCount(action)) action->incNumImage();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -397,7 +386,6 @@ SoImage::generatePrimitives(SoAction *action)
 
   state->pop();
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
 /*!
   FIXME: write function documentation

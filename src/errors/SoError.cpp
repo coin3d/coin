@@ -63,13 +63,9 @@ void coin_stub(const char *, unsigned int, const char *) { }
 
 #include <Inventor/SoType.h>
 #include <Inventor/nodes/SoNode.h>
-#if !defined(COIN_EXCLUDE_SOPATH)
 #include <Inventor/SoPath.h>
-#endif // !COIN_EXCLUDE_SOPATH
 #include <Inventor/SbName.h>
-#if !defined(COIN_EXCLUDE_SOENGINE)
 #include <Inventor/engines/SoEngine.h>
-#endif // !COIN_EXCLUDE_SOENGINE
 
 #include <stdarg.h>
 #include <assert.h>
@@ -236,8 +232,6 @@ SoError::getString(const SoNode * const node)
 /*!
   FIXME: write doc.
 */
-
-#if !defined(COIN_EXCLUDE_SOPATH)
 SbString
 SoError::getString(const SoPath * const path)
 {
@@ -245,13 +239,10 @@ SoError::getString(const SoPath * const path)
   generateBaseString(string, path, "path");
   return string;
 }
-#endif // !COIN_EXCLUDE_SOPATH
 
 /*!
   FIXME: write doc.
 */
-
-#if !defined(COIN_EXCLUDE_SOENGINE)
 SbString
 SoError::getString(const SoEngine * const engine)
 {
@@ -259,7 +250,6 @@ SoError::getString(const SoEngine * const engine)
   generateBaseString(string, engine, "engine");
   return string;
 }
-#endif // !COIN_EXCLUDE_SOENGINE
 
 /*!
   FIXME: write doc.

@@ -24,10 +24,6 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbRotation.h>
 
-#if defined(COIN_EXCLUDE_SOMOTION3EVENT)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOMOTION3EVENT
-
 
 class SoMotion3Event : public SoEvent {
   typedef SoEvent inherited;

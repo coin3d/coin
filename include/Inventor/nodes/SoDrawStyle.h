@@ -27,12 +27,6 @@
 #include <Inventor/fields/SoSFUShort.h>
 #include <Inventor/elements/SoDrawStyleElement.h>
 
-#if defined(COIN_EXCLUDE_SODRAWSTYLE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SODRAWSTYLE
-
-
-// *************************************************************************
 
 class SoDrawStyle : public SoNode {
   typedef SoNode inherited;
@@ -56,16 +50,10 @@ public:
   SoSFUShort linePattern;
 
 public:
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction *action);
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction *action);
-#endif
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction *action);
-#endif
 
 protected:
   virtual ~SoDrawStyle();

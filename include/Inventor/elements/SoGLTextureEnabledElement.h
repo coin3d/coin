@@ -20,12 +20,8 @@
 #ifndef __SOGLTEXTUREENABLEDELEMENT_H__
 #define __SOGLTEXTUREENABLEDELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoGLTextureEnabledElement : public SoInt32Element {
   typedef SoInt32Element inherited;

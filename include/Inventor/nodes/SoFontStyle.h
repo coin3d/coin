@@ -25,11 +25,6 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBitMask.h>
 
-#if defined(COIN_EXCLUDE_SOFONTSTYLE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOFONTSTYLE
-
-// *************************************************************************
 
 class SoFontStyle : public SoFont {
   typedef SoFont inherited;
@@ -53,24 +48,12 @@ public:
 
   SbString getFontName(void) const;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction *action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction *action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction *action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoFontStyle();

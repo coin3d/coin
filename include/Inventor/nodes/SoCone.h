@@ -25,11 +25,6 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoShape.h>
 
-#if defined(COIN_EXCLUDE_SOCONE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOCONE
-
-// *************************************************************************
 
 class SoCone : public SoShape {
   typedef SoShape inherited;
@@ -54,28 +49,18 @@ public:
   void removePart(SoCone::Part part);
   SbBool hasPart(SoCone::Part part) const;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
   virtual SbBool willSetShapeHints() const;
   virtual SbBool willSetShadeModel() const;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction *action);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction *action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoCone();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction *action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 };
 
 #endif // !__SOCONE_H__

@@ -46,39 +46,17 @@
 #include <Inventor/nodekits/SoNodeKit.h>
 
 #include <Inventor/fields/SoField.h>
-#if !defined(COIN_EXCLUDE_SOSFTIME)
 #include <Inventor/fields/SoSFTime.h>
-#endif // !COIN_EXCLUDE_SOSFTIME
-#if !defined(COIN_EXCLUDE_SOEVENT)
 #include <Inventor/events/SoEvent.h>
-#endif // !COIN_EXCLUDE_SOEVENT
-#if !defined(COIN_EXCLUDE_SOTIMERSENSOR)
 #include <Inventor/sensors/SoTimerSensor.h>
-#endif // !COIN_EXCLUDE_SOTIMERSENSOR
-#if !defined(COIN_EXCLUDE_SONODE)
 #include <Inventor/nodes/SoNode.h>
-#endif // !COIN_EXCLUDE_SONODE
-#if !defined(COIN_EXCLUDE_SOSEPARATOR)
 #include <Inventor/nodes/SoSeparator.h>
-#endif // !COIN_EXCLUDE_SOSEPARATOR
-#if !defined(COIN_EXCLUDE_SOELEMENT)
 #include <Inventor/elements/SoElement.h>
-#endif // !(COIN_EXCLUDE_SOELEMENT
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !(COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOENGINE)
 #include <Inventor/engines/SoEngine.h>
-#endif // !COIN_EXCLUDE_SOENGINE
-#if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
 #include <Inventor/engines/SoFieldConverter.h>
-#endif // !COIN_EXCLUDE_SOFIELDCONVERTER
-#if !defined(COIN_EXCLUDE_SOCONVERTALL)
 #include <Inventor/engines/SoConvertAll.h>
-#endif // !COIN_EXCLUDE_SOCONVERTALL
-#if !defined(COIN_EXCLUDE_SODETAIL)
 #include <Inventor/details/SoDetail.h>
-#endif // !COIN_EXCLUDE_SODETAIL
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -122,15 +100,11 @@ template class SbList<SoField *>;
 #endif // ! defined(NEED_TEMPLATE_DEFINITION)
 
 SbList<SoDB_HeaderInfo *> SoDB::headerlist;
-#if !defined(COIN_EXCLUDE_SOSENSORMANAGER)
 SoSensorManager SoDB::sensormanager;
-#endif // !COIN_EXCLUDE_SOSENSORMANAGER
 SbTime SoDB::realtimeinterval;
 SbList<SbName> SoDB::fieldnamelist;
 SbList<SoField *> SoDB::fieldlist;
-#if !defined(COIN_EXCLUDE_SOTIMERSENSOR)
 SoTimerSensor * SoDB::globaltimersensor = NULL;
-#endif // !COIN_EXCLUDE_SOTIMERSENSOR
 SbDict SoDB::converters;
 int SoDB::notificationcounter = 0;
 SbBool SoDB::isinitialized = FALSE;
@@ -188,26 +162,13 @@ SoDB::init(void)
   SoPath::initClass();
   SoFieldContainer::initClass();
   SoField::initClass();
-#if !defined(COIN_EXCLUDE_SOELEMENT)
   // Elements must be initialized before actions.
   SoElement::initClass();
-#endif // !(COIN_EXCLUDE_SOELEMENT
-#if !defined(COIN_EXCLUDE_SOACTION)
   // Actions must be initialized before nodes (because of SO_ENABLE)
   SoAction::initClass();
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SONODE)
   SoNode::initClass();
-#endif // !COIN_EXCLUDE_SONODE
-#if !defined(COIN_EXCLUDE_SOENGINE)
   SoEngine::initClass();
-#endif // !COIN_EXCLUDE_SOENGINE
-#if !defined(COIN_EXCLUDE_SOEVENT)
   SoEvent::initClass();
-#endif // !COIN_EXCLUDE_SOEVENT
-#if !defined(COIN_EXCLUDE_SODETAIL)
-  SoDetail::initClass();
-#endif // !COIN_EXCLUDE_SODETAIL
 
 
   // Register all valid file format headers.
@@ -238,7 +199,6 @@ SoDB::init(void)
 
   SoDB::realtimeinterval.setValue(1.0/12.0);
 
-#if !defined(COIN_EXCLUDE_SOTIMERSENSOR)
   SoDB::createGlobalField("realTime", SoSFTime::getClassTypeId());
   SoDB::globaltimersensor = new SoTimerSensor;
   SoDB::globaltimersensor->setFunction(SoDB::updateRealTimeFieldCB);
@@ -250,7 +210,6 @@ SoDB::init(void)
 
   // Force correct time on first getValue() from "realTime" field.
   SoDB::updateRealTimeFieldCB(NULL, NULL);
-#endif // !COIN_EXCLUDE_SOTIMERSENSOR
 
   SoDB::isinitialized = TRUE;
 }
@@ -272,9 +231,7 @@ SoDB::clean(void)
   // FIXME: attach this to the ANSI C "on exit" hook. Ditto for the
   // clean methods elsewhere. 19991106 mortene.
 
-#if !defined(COIN_EXCLUDE_SOTIMERSENSOR)
   delete SoDB::globaltimersensor; SoDB::globaltimersensor = NULL;
-#endif // !COIN_EXCLUDE_SOTIMERSENSOR
 }
 #endif // re-code
 
@@ -326,7 +283,6 @@ SoDB::read(SoInput * in, SoBase *& base)
   \a NULL if we hit end of file instead of a new node specification in
   the file.
  */
-#if !defined(COIN_EXCLUDE_SONODE)
 SbBool
 SoDB::read(SoInput * in, SoNode *& rootNode)
 {
@@ -344,9 +300,7 @@ SoDB::read(SoInput * in, SoNode *& rootNode)
   }
   return result;
 }
-#endif // !COIN_EXCLUDE_SONODE
 
-#if !defined(COIN_EXCLUDE_SOSEPARATOR)
 /*!
   Reads all graphs from \a in and returns them under an SoSeparator node. If
   the file contains only a single graph under an SoSeparator node (which is
@@ -414,6 +368,8 @@ SoDB::readAll(SoInput * in)
 
   if (in->isValidFile()) {
     root = new SoSeparator;
+    // This doesn't work anymore (moved readChildren() from public to
+    // protected in SoGroup). 19991214 mortene.
     result = root->readChildren(in);
   }
 
@@ -455,7 +411,6 @@ SoDB::readAll(SoInput * in)
   return root;
 #endif
 }
-#endif // !COIN_EXCLUDE_SOSEPARATOR
 
 /*!
   Check if \a testString is a valid file format header identifier string.
@@ -718,12 +673,10 @@ SoDB::renameGlobalField(const SbName & oldName, const SbName & newName)
 void
 SoDB::updateRealTimeFieldCB(void * /* data */, SoSensor * /* sensor */)
 {
-#if !defined(COIN_EXCLUDE_SOSFTIME)
   SoField * f = SoDB::getGlobalField("realTime");
   if (f && (f->getTypeId() == SoSFTime::getClassTypeId())) {
     ((SoSFTime *)f)->setValue(SbTime::getTimeOfDay());
   }
-#endif // !COIN_EXCLUDE_SOSFTIME
 }
 
 /*!
@@ -743,14 +696,13 @@ SoDB::setRealTimeInterval(const SbTime & deltaT)
   }
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOTIMERSENSOR)
   SbBool isscheduled = SoDB::globaltimersensor->isScheduled();
   if (isscheduled) SoDB::globaltimersensor->unschedule();
   if (deltaT != SbTime(0.0)) {
     SoDB::globaltimersensor->setInterval(deltaT);
     if (isscheduled) SoDB::globaltimersensor->schedule();
   }
-#endif // !COIN_EXCLUDE_SOTIMERSENSOR
+
   SoDB::realtimeinterval = deltaT;
 }
 
@@ -766,7 +718,6 @@ SoDB::getRealTimeInterval(void)
   return SoDB::realtimeinterval;
 }
 
-#if !defined(COIN_EXCLUDE_SOSENSORMANAGER)
 /*!
   This is just a wrapper for the method in SoSensorManager by the
   same name.
@@ -802,7 +753,6 @@ SoDB::getSensorManager(void)
 {
   return &(SoDB::sensormanager);
 }
-#endif // !COIN_EXCLUDE_SOSENSORMANAGER
 
 /*!
   This is a wrapper around the POSIX \a select() call. It is provided
@@ -837,7 +787,6 @@ SoDB::addConverter(SoType fromType, SoType toType, SoType converterType)
   //FIXME: Check output => warning? kintel
 }
 
-#if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
 /*!
   TODO: doc
  */
@@ -849,17 +798,14 @@ SoDB::createConverter(SoType fromType, SoType toType)
   if (converters.find(val, type)) {
     uint16_t key = (uint16_t)((uint32_t)type);
     SoFieldConverter * conv;
-#if !defined(COIN_EXCLUDE_SOCONVERTALL)
     if (SoType::fromKey(key)==SoConvertAll::getClassTypeId())
       conv=new SoConvertAll(fromType, toType);
     else
-#endif // !COIN_EXCLUDE_SOCONVERTALL
       conv=(SoFieldConverter *)SoType::fromKey(key).createInstance();
     return conv;
   }
   return NULL;
 }
-#endif // !COIN_EXCLUDE_SOFIELDCONVERTER
 
 /*!
   TODO: doc
@@ -935,7 +881,6 @@ SoDB::enableRealTimeSensor(SbBool on)
 {
   assert(SoDB::isInitialized());
 
-#if !defined(COIN_EXCLUDE_SOTIMERSENSOR)
   SbBool isscheduled = SoDB::globaltimersensor->isScheduled();
   if (isscheduled && !on) SoDB::globaltimersensor->unschedule();
   else if (!isscheduled && on) SoDB::globaltimersensor->schedule();
@@ -944,5 +889,4 @@ SoDB::enableRealTimeSensor(SbBool on)
                                  "realtime sensor already %s",
                                  on ? "on" : "off");
 #endif // COIN_DEBUG
-#endif // !COIN_EXCLUDE_SOTIMERSENSOR
 }

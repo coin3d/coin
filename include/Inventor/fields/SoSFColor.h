@@ -23,9 +23,6 @@
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/SbColor.h>
 
-#if defined(COIN_EXCLUDE_SOSFCOLOR)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSFCOLOR
 
 class SoSFColor : public SoSField {
   typedef SoSField inherited;

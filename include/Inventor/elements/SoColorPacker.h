@@ -20,13 +20,9 @@
 #ifndef __SOCOLORPACKER_H__
 #define __SOCOLORPACKER_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOCOLORPACKER)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOCOLORPACKER
-
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
+
 
 class SoColorPacker { // this is not an element
 public:

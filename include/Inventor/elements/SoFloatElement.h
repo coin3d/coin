@@ -20,12 +20,8 @@
 #ifndef __SOFLOATELEMENT_H__
 #define __SOFLOATELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOFLOATELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOFLOATELEMENT
-
 #include <Inventor/elements/SoElement.h>
+
 
 class SoFloatElement : public SoElement {
   typedef SoElement inherited;

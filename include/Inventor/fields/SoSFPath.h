@@ -22,12 +22,9 @@
 
 #include <Inventor/fields/SoSField.h>
 
-#if defined(COIN_EXCLUDE_SOSFPATH)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSFPATH
-
 class SoPath;
 class SoNotList;
+
 
 class SoSFPath : public SoSField {
   typedef SoSField inherited;

@@ -23,9 +23,6 @@
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/SbPlane.h>
 
-#if defined(COIN_EXCLUDE_SOSFPLANE)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSFPLANE
 
 class SoSFPlane : public SoSField {
   typedef SoSField inherited;

@@ -25,9 +25,6 @@
 #include <Inventor/fields/SoSFTrigger.h>
 #include <Inventor/fields/SoSFShort.h>
 
-#if defined(COIN_EXCLUDE_SOCOUNTER)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOCOUNTER
 
 class SoCounter : public SoEngine {
   typedef SoEngine inherited;

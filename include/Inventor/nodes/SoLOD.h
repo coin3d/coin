@@ -25,11 +25,6 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-#if defined(COIN_EXCLUDE_SOLOD)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOLOD
-
-// *************************************************************************
 
 class SoLOD : public SoGroup {
   typedef SoGroup inherited;
@@ -43,34 +38,20 @@ public:
   SoMFFloat range;
   SoSFVec3f center;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
   virtual void GLRenderOffPath(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction * action);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoLOD();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual int whichToTraverse(SoAction *);
-#endif // !COIN_EXCLUDE_SOACTION
 };
 
 #endif // !__SOLOD_H__

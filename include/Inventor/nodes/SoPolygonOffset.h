@@ -25,14 +25,8 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBitMask.h>
 #include <Inventor/fields/SoSFBool.h>
-
-#if defined(COIN_EXCLUDE_SOPOLYGONOFFSET)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOPOLYGONOFFSET
-
 #include <Inventor/elements/SoPolygonOffsetElement.h>
 
-// *************************************************************************
 
 class SoPolygonOffset : public SoNode {
   typedef SoNode inherited;
@@ -54,15 +48,9 @@ public:
   SoSFBitMask styles;
   SoSFBool on;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 protected:
   virtual ~SoPolygonOffset();

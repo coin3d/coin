@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoTextureCoordinateFunction.h>
 #include <Inventor/SbVec4f.h>
 
-#if defined(COIN_EXCLUDE_SOTEXTURECOORDINATEENVIRONMENT)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEENVIRONMENT
-
-// *************************************************************************
 
 class SoTextureCoordinateEnvironment : public SoTextureCoordinateFunction {
   typedef SoTextureCoordinateFunction inherited;
@@ -40,18 +35,10 @@ public:
   SoTextureCoordinateEnvironment(void);
 
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   void pick(SoPickAction * action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 protected:
   virtual ~SoTextureCoordinateEnvironment();
@@ -60,9 +47,7 @@ private:
   static const SbVec4f &generate(void * userdata,
                                  const SbVec3f & p,
                                  const SbVec3f & n);
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   static void handleTexgen(void *data);
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
 };
 
 #endif // !__SOTEXTURECOORDINATEENVIRONMENT_H__

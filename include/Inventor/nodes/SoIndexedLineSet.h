@@ -23,13 +23,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
-#if defined(COIN_EXCLUDE_SOINDEXEDLINESET)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOINDEXEDLINESET
-
 #define SO_END_LINE_INDEX (-1)
 
-// *************************************************************************
 
 class SoIndexedLineSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
@@ -51,24 +46,16 @@ public:
   };
 
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
   virtual SbBool willSetShapeHints() const;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoIndexedLineSet();
 
 private:
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
 
   SbBool generateDefaultNormals(SoState *, SoNormalCache *nc);
 
@@ -77,7 +64,6 @@ private:
 
   int numLines() const;
   int numLineSegments() const;
-
 };
 
 #endif // !__SOINDEXEDLINESET_H__

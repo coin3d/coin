@@ -22,10 +22,6 @@
 
 #include <Inventor/events/SoEvent.h>
 
-#if defined(COIN_EXCLUDE_SOLOCATION2EVENT)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOLOCATION2EVENT
-
 
 class SoLocation2Event : public SoEvent {
   typedef SoEvent inherited;

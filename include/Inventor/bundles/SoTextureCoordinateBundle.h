@@ -20,24 +20,17 @@
 #ifndef __SOTEXTURECOORDINATEBUNDLE_H__
 #define __SOTEXTURECOORDINATEBUNDLE_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBUNDLE)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEBUNDEL
-
 #include <Inventor/bundles/SoBundle.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
-
-#if !defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif
 
 #include <Inventor/SbVec4f.h>
 
 class SoTextureCoordinateElement;
 class SoGLTextureCoordinateElement;
 class SoTextureCoordinateCache;
+
 
 class SoTextureCoordinateBundle : public SoBundle {
   typedef SoBundle inherited;
@@ -53,7 +46,6 @@ public:
   const SbVec4f &get(const int index);
   const SbVec4f &get(const SbVec3f &point, const SbVec3f &normal);
 
-#if !defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
   void send(const int index) const {
     glElt->send(index);
   }
@@ -61,7 +53,6 @@ public:
             const SbVec3f &normal) const {
     glElt->send(index, point, normal);
   }
-#endif // ! COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
 
 private:
   const SoTextureCoordinateElement *coordElt;

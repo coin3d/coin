@@ -22,9 +22,6 @@
 
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 
-#if defined(COIN_EXCLUDE_SOONESHOTSENSOR)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOONESHOTSENSOR
 
 class SoOneShotSensor : public SoDelayQueueSensor {
   typedef SoDelayQueueSensor inherited;

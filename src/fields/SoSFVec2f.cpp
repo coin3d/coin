@@ -26,9 +26,7 @@
 */
 
 #include <Inventor/fields/SoSFVec2f.h>
-#if !defined(COIN_EXCLUDE_SOMFVEC2F)
 #include <Inventor/fields/SoMFVec2f.h>
-#endif // !COIN_EXCLUDE_SOMFVEC2F
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -212,12 +210,9 @@ SoSFVec2f::setValue(const float xy[2])
 void
 SoSFVec2f::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOMFVEC2F)
-  else if (dest->getTypeId()==SoMFVec2f::getClassTypeId()) {
+  if (dest->getTypeId()==SoMFVec2f::getClassTypeId()) {
     ((SoMFVec2f *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFVEC2F
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFVec2f::convertTo",

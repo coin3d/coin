@@ -20,13 +20,9 @@
 #ifndef __SOLIGHTATTENUATIONELEMENT_H__
 #define __SOLIGHTATTENUATIONELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOLIGHTATTENUATIONELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOLIGHTATTENUATIONELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec3f.h>
+
 
 class SoLightAttenuationElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

@@ -27,26 +27,12 @@
 
 #include <Inventor/nodes/SoNormalBinding.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
-#endif
 
 /*!
   \enum SoNormalBinding::Binding
@@ -137,22 +123,12 @@ SoNormalBinding::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoNormalBinding);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoNormalBindingElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoNormalBindingElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoNormalBindingElement);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-
   SO_ENABLE(SoGetPrimitiveCountAction, SoNormalBindingElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -160,19 +136,14 @@ void
 SoNormalBinding::GLRender(SoGLRenderAction * action)
 {
   SoNormalBinding::doAction(action);
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   if (!value.isIgnored()) {
     Binding binding = (Binding)value.getValue();
     SoGLShadeModelElement::setNormal(action->getState(),
                                      binding == PER_VERTEX ||
                                      binding == PER_VERTEX_INDEXED);
   }
-#endif
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -185,9 +156,7 @@ SoNormalBinding::doAction(SoAction *action)
                                 value.getValue());
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -196,9 +165,7 @@ SoNormalBinding::callback(SoCallbackAction *action)
 {
   SoNormalBinding::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -207,9 +174,7 @@ SoNormalBinding::pick(SoPickAction *action)
 {
   SoNormalBinding::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -218,7 +183,6 @@ SoNormalBinding::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoNormalBinding::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 /*!
   FIXME: write doc

@@ -20,20 +20,13 @@
 #ifndef __SOGLRENDERACTION_H__
 #define __SOGLRENDERACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLRENDERACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOGLRENDERACTION
-
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/system/inttypes.h>
-
-#if !defined(COIN_EXCLUDE_SOPATH)
 #include <Inventor/lists/SoPathList.h>
-#endif // !COIN_EXCLUDE_SOPATH
 #include <Inventor/lists/SbList.h>
+
 
 class SoGLRenderAction : public SoAction {
   typedef SoAction inherited;
@@ -102,9 +95,7 @@ public:
   void setCacheContext(const uint32_t context);
   uint32_t getCacheContext() const;
 
-#if !defined(COIN_EXCLUDE_SOPATH)
   void addDelayedPath(SoPath *path);
-#endif // ! COIN_EXCLUDE_SOPATH
   SbBool isRenderingDelayedPaths() const;
 
 public:
@@ -135,11 +126,9 @@ private:
   void disableBlend(const SbBool force = FALSE);
   void enableBlend(const SbBool force = FALSE);
 
-#if !defined(COIN_EXCLUDE_SOPATH)
   SoPathList delayedPaths;
-#endif // !COIN_EXCLUDE_SOPATH
   SbBool delayedRender;
-  
+
   SbBool sortRender;
   SoPathList transpObjPaths;
   SbList <float> transpObjDistances;

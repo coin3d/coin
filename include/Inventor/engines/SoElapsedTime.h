@@ -27,9 +27,6 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFTrigger.h>
 
-#if defined(COIN_EXCLUDE_SOELAPSEDTIME)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOELAPSEDTIME
 
 class SoElapsedTime : public SoEngine {
   typedef SoEngine inherited;

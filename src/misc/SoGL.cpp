@@ -19,15 +19,9 @@
 
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoGL.h>
-#if !defined(COIN_EXCLUDE_SOMATERIALBUNDLE)
 #include <Inventor/bundles/SoMaterialBundle.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBUNDLE
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBUNDLE)
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEBUNDLE
-#if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
 #include <assert.h>

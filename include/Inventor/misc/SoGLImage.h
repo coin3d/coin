@@ -20,19 +20,12 @@
 #ifndef __SOGLIMAGE_H__
 #define __SOGLIMAGE_H__
 
-// FIXME: couldn't some of this code be used independently of OpenGL?
-// And shouldn't its inclusion be based on the presence of texture
-// handling instead?  19990408 mortene.
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLRENDERACTION)
-#error This file is excluded from Coin through the configuration system!
-#endif // COIN_EXCLUDE_SOGLRENDERACTION
-
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SbVec2s.h>
 
 class SoImageInterface;
+
 
 class SoGLImage {
 public:
@@ -47,7 +40,7 @@ public:
 
   SbBool matches(const SbBool clamps, const SbBool clampt,
                  const float quality) const;
-  
+
   void apply() const;
   int getHandle() const;
   SbBool hasTransparency() const;
@@ -71,7 +64,7 @@ private:
   SbBool GLinit();
 
   SoImageInterface *image;
-  
+
   SbBool clampS;
   SbBool clampT;
   void *context;

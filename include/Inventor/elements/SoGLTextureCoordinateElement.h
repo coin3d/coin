@@ -20,14 +20,10 @@
 #ifndef __SOGLTEXTURECOORDINATEELEMENT_H__
 #define __SOGLTEXTURECOORDINATEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
-
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 
 typedef void SoTexCoordTexgenCB(void * data);
+
 
 class SoGLTextureCoordinateElement : public SoTextureCoordinateElement {
   typedef SoTextureCoordinateElement inherited;

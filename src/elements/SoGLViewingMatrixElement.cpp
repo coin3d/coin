@@ -27,9 +27,7 @@
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
 
 #include <Inventor/SbName.h>
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -133,7 +131,6 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
 {
   this->viewingMatrix = matrix;
 
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
   SbBool isIdentity = FALSE;
   const SbMatrix &mat = SoModelMatrixElement::get(this->state, isIdentity);
   if (!isIdentity) {
@@ -143,7 +140,7 @@ SoGLViewingMatrixElement::setElt(const SbMatrix & matrix)
 #endif // debug
     this->viewingMatrix.multRight(mat);
   }
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
+
   this->updategl();
 }
 

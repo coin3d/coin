@@ -20,12 +20,8 @@
 #ifndef __SOMATERIALBINDINGELEMENT_H__
 #define __SOMATERIALBINDINGELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoMaterialBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;

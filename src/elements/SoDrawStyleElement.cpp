@@ -26,9 +26,7 @@
 
 #include <Inventor/elements/SoDrawStyleElement.h>
 
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // ! COIN_EXCLUDE_SOSHAPEHINTSELEMENT
 
 #include <Inventor/SbName.h>
 
@@ -90,9 +88,7 @@ SoDrawStyleElement::set(SoState * const state,
                         const Style style)
 {
   SoInt32Element::set(classStackIndex, state, node, (int32_t)style);
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setDrawStyle(state, (int32_t)style);
-#endif // !COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 }
 
 //! FIXME: write doc.

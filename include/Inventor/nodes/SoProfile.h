@@ -25,10 +25,6 @@
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFEnum.h>
 
-#if defined(COIN_EXCLUDE_SOPROFILE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOPROFILE
-
 class SbVec2f;
 class SoState;
 
@@ -48,24 +44,12 @@ public:
   SoMFInt32 index;
   SoSFEnum linkage;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
   virtual void getTrimCurve(SoState * state, int32_t & numPoints,
                             float *& points, int & floatsPerVec,

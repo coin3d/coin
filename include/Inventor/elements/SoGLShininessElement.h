@@ -20,12 +20,8 @@
 #ifndef __SOGLSHININESSELEMENT_H__
 #define __SOGLSHININESSELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLSHININESSELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLSHININESSELEMENT
-
 #include <Inventor/elements/SoShininessElement.h>
+
 
 class SoGLShininessElement : public SoShininessElement {
   typedef SoShininessElement inherited;

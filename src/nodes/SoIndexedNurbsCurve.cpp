@@ -77,7 +77,6 @@ SoIndexedNurbsCurve::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoIndexedNurbsCurve);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -87,10 +86,7 @@ SoIndexedNurbsCurve::computeBBox(SoAction * /* action */,
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
 */
@@ -103,9 +99,7 @@ SoIndexedNurbsCurve::GLRender(SoGLRenderAction * /* action */)
   // See comment in SoNurbsSurface::GLRender
   //
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -114,9 +108,7 @@ SoIndexedNurbsCurve::rayPick(SoRayPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -125,9 +117,7 @@ SoIndexedNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write doc
 */
@@ -136,9 +126,7 @@ SoIndexedNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -147,9 +135,7 @@ SoIndexedNurbsCurve::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -158,4 +144,4 @@ SoIndexedNurbsCurve::generatePrimitives(SoAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION
+

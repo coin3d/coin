@@ -20,12 +20,8 @@
 #ifndef __SODECIMATIONPERCENTAGEELEMENT_H__
 #define __SODECIMATIONPERCENTAGEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT
-
 #include <Inventor/elements/SoFloatElement.h>
+
 
 class SoDecimationPercentageElement : public SoFloatElement {
   typedef SoFloatElement inherited;

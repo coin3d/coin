@@ -28,15 +28,8 @@
 #include <Inventor/nodes/SoNonIndexedShape.h>
 
 #include <Inventor/nodes/SoVertexProperty.h>
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
 
 /*!
   \var SoSFInt32 SoNonIndexedShape::startIndex
@@ -74,7 +67,6 @@ SoNonIndexedShape::initClass()
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoNonIndexedShape);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   This method is provided as a convenient means for the subclasses of this
   class to find their bounding box and center value.
@@ -91,7 +83,7 @@ void
 SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
                                     SbBox3f & box, SbVec3f & center)
 {
-  const SoCoordinateElement *coordelem = 
+  const SoCoordinateElement *coordelem =
     SoCoordinateElement::getInstance(action->getState());
 
   SoVertexProperty * vp = (SoVertexProperty *) this->vertexProperty.getValue();
@@ -127,4 +119,3 @@ SoNonIndexedShape::computeCoordBBox(SoAction * action, int numVertices,
 
   center /= float(lastidx + 1 - startidx);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION

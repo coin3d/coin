@@ -25,9 +25,6 @@
 #include <Inventor/fields/SoMFBool.h>
 #include <Inventor/fields/SoMFEnum.h>
 
-#if defined(COIN_EXCLUDE_SOBOOLOPERATION)
-#error "Configuration settings disrespected!"
-#endif // COIN_EXCLUDE_SOBOOLOPERATION
 
 class SoBoolOperation : public SoEngine {
   typedef SoEngine inherited;

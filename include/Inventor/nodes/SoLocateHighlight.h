@@ -25,11 +25,6 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 
-#if defined(COIN_EXCLUDE_SOLOCATEHIGHLIGHT)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOLOCATEHIGHLIGHT
-
-// *************************************************************************
 
 class SoLocateHighlight : public SoSeparator {
   typedef SoSeparator inherited;
@@ -52,21 +47,15 @@ public:
   SoSFEnum style;
   SoSFEnum mode;
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   virtual void handleEvent(SoHandleEventAction * action);
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
   static void turnOffCurrentHighlight(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 protected:
   virtual ~SoLocateHighlight();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void redrawHighlighted(SoAction *act, SbBool  flag);
-#endif // !COIN_EXCLUDE_SOACTION
 };
 
 #endif // !__SOLOCATEHIGHLIGHT_H__

@@ -108,7 +108,6 @@ SoAnnoText3::initClass(void)
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write doc
 */
@@ -118,7 +117,6 @@ SoAnnoText3::computeBBox(SoAction * /* action */,
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
 /*!
   FIXME: write doc
@@ -132,7 +130,6 @@ SoAnnoText3::getCharacterBounds(SoState * /* state */,
   return b;
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
 */
@@ -141,8 +138,7 @@ SoAnnoText3::GLRender(SoGLRenderAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
+
 /*!
   FIXME: write doc
 */
@@ -151,8 +147,7 @@ SoAnnoText3::rayPick(SoRayPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
+
 /*!
   FIXME: write doc
 */
@@ -161,8 +156,7 @@ SoAnnoText3::write(SoWriteAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOWRITEACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
+
 /*!
   FIXME: write doc
 */
@@ -171,8 +165,7 @@ SoAnnoText3::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
-#if !defined(COIN_EXCLUDE_SOACTION)
+
 /*!
   FIXME: write doc
 */
@@ -181,4 +174,3 @@ SoAnnoText3::generatePrimitives(SoAction *)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION

@@ -20,12 +20,8 @@
 #ifndef __SOGLLIGHTMODELELEMENT_H__
 #define __SOGLLIGHTMODELELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
-
 #include <Inventor/elements/SoLightModelElement.h>
+
 
 class SoGLLightModelElement : public SoLightModelElement {
   typedef SoLightModelElement inherited;

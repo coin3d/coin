@@ -31,15 +31,9 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SbVec3f.h>
 
-#if !defined(COIN_EXCLUDE_SOSFMATRIX)
 #include <Inventor/fields/SoSFMatrix.h>
-#endif // !COIN_EXCLUDE_SOSFMATRIX
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOMFROTATION)
 #include <Inventor/fields/SoMFRotation.h>
-#endif // !COIN_EXCLUDE_SOMFROTATION
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -267,15 +261,11 @@ SoSFRotation::setValue(const SbVec3f & axis, const float angle)
 void
 SoSFRotation::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFMATRIX)
-  else if (dest->getTypeId()==SoSFMatrix::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFMatrix::getClassTypeId()) {
     SbMatrix mat;
     mat.setRotate(this->getValue());
     ((SoSFMatrix *)dest)->setValue(mat);
   }
-#endif // !COIN_EXCLUDE_SOSFMATRIX
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     SbVec3f vec;
@@ -285,12 +275,9 @@ SoSFRotation::convertTo(SoField * dest) const
       rad << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOMFROTATION)
   else if (dest->getTypeId()==SoMFRotation::getClassTypeId()) {
     ((SoMFRotation *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFROTATION
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFRotation::convertTo",

@@ -1,1 +1,0 @@
-#define COIN_EXCLUDE_NOTHING 1

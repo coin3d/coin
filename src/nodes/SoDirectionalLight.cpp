@@ -27,25 +27,17 @@
 
 #include <Inventor/nodes/SoDirectionalLight.h>
 
-
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbColor4f.h>
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGLLIGHTIDELEMENT)
 #include <Inventor/elements/SoGLLightIdElement.h>
-#endif // !COIN_EXCLUDE_SOGLLIGHTIDELEMENT
-
-#if !defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
 #include <Inventor/elements/SoEnvironmentElement.h>
-#endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -92,7 +84,6 @@ SoDirectionalLight::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoDirectionalLight);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -115,10 +106,8 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
   GLenum light = (GLenum) (idx + GL_LIGHT0);
 
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
-#if !defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
   lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));
   lightcolor *= SoEnvironmentElement::getAmbientIntensity(state);
-#endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
   glLightfv(light, GL_AMBIENT, lightcolor.getValue());
 
   lightcolor.setRGB(color.getValue());
@@ -143,4 +132,4 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
   glLightf(light, GL_LINEAR_ATTENUATION, 0);
   glLightf(light, GL_QUADRATIC_ATTENUATION, 0);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
+

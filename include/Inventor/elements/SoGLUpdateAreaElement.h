@@ -20,18 +20,9 @@
 #ifndef __SOGLUPDATEAREAELEMENT_H__
 #define __SOGLUPDATEAREAELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLUPDATEAREAELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLUPDATEAREAELEMENT
-
 #include <Inventor/elements/SoElement.h>
-
-#ifdef __SOLIB_INTERNAL__
 #include <Inventor/SbVec2f.h>
-#else // ! __SOLIB_INTERNAL__
-#include <Inventor/SbLinear.h>
-#endif // ! __SOLIB_INTERNAL__
+
 
 class SoGLUpdateAreaElement : public SoElement {
   typedef SoElement inherited;

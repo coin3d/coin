@@ -20,12 +20,8 @@
 #ifndef __SOGLPOLYGONSTIPPLEELEMENT_H__
 #define __SOGLPOLYGONSTIPPLEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT
-
 #include <Inventor/elements/SoElement.h>
+
 
 class SoGLPolygonStippleElement : public SoElement {
   typedef SoElement inherited;

@@ -20,17 +20,13 @@
 #ifndef __SOCONVEXDATACACHE_H__
 #define __SOCONVEXDATACACHE_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOCONVEXDATACACHE)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOCONVEXDATACACHE
-
 #include <Inventor/caches/SoCache.h>
 #include <Inventor/system/inttypes.h>
 #include <Inventor/lists/SbList.h>
 
 class SbVec3f;
 class SoCoordinateElement;
+
 
 class SoConvexDataCache : public SoCache {
   typedef SoCache inherited;

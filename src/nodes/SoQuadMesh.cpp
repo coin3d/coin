@@ -31,36 +31,20 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/misc/SoState.h>
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // !_WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-#include <Inventor/errors/SoDebugError.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#if !defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <GL/gl.h>
@@ -139,7 +123,6 @@ SoQuadMesh::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoQuadMesh);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -151,9 +134,7 @@ SoQuadMesh::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
                               this->verticesPerColumn.getValue(),
                               box, center);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   \internal
 */
@@ -258,13 +239,9 @@ SoQuadMesh::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals = TRUE;
-
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
-  needNormals =
+  SbBool needNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
                                needNormals);
@@ -401,10 +378,7 @@ SoQuadMesh::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   }
   return TRUE;
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -416,7 +390,6 @@ SoQuadMesh::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   action->addNumTriangles(2 * this->verticesPerRow.getValue() *
                           this->verticesPerColumn.getValue());
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 /*!
   FIXME: write doc
@@ -428,7 +401,6 @@ SoQuadMesh::generateDefaultNormals(SoState * /* state */, SoNormalBundle * /* nb
   return FALSE;
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -567,4 +539,3 @@ SoQuadMesh::generatePrimitives(SoAction *action)
     state->pop();
 
 }
-#endif // !COIN_EXCLUDE_SOACTION

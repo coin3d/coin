@@ -20,14 +20,10 @@
 #ifndef __SOGLTEXTUREIMAGEELEMENT_H__
 #define __SOGLTEXTUREIMAGEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLTEXTUREIMAGEELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLTEXTUREIMAGEELEMENT
-
 #include <Inventor/elements/SoTextureImageElement.h>
 
 class SoGLImage;
+
 
 class SoGLTextureImageElement : public SoTextureImageElement {
   typedef SoTextureImageElement inherited;

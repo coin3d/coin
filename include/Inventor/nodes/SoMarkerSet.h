@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/fields/SoMFInt32.h>
 
-#if defined(COIN_EXCLUDE_SOMARKERSET)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOMARKERSET
-
-// *************************************************************************
 
 class SoMarkerSet : public SoPointSet {
   typedef SoPointSet inherited;
@@ -79,12 +74,8 @@ public:
 
   SoMFInt32 markerIndex;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
   static int getNumDefinedMarkers(void);
   static void addMarker(int markerIndex, const SbVec2s & size,

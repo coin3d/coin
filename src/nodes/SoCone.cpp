@@ -38,42 +38,17 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/details/SoConeDetail.h>
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOGLSHAPEHINTSELEMENY
-
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
-#endif // !COIN_EXCLUDE_SOGLSHADEMODELELEMENT
-
-
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
 #include <Inventor/elements/SoComplexityElement.h>
-#endif
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -206,7 +181,6 @@ SoCone::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoCone);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -233,9 +207,7 @@ SoCone::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
     box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
   }
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -251,37 +223,29 @@ SoCone::GLRender(SoGLRenderAction * action)
   if (p & SoCone::SIDES) flags |= SOGL_RENDER_SIDE;
   if (p & SoCone::BOTTOM) flags |= SOGL_RENDER_BOTTOM;
 
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   SoMaterialBindingElement::Binding bind =
     SoMaterialBindingElement::get(state);
   if (bind == SoMaterialBindingElement::PER_PART ||
       bind == SoMaterialBindingElement::PER_PART_INDEXED)
     flags |= SOGL_MATERIAL_PER_PART;
-#endif
-
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
   const SoGLShapeHintsElement *sh = (SoGLShapeHintsElement*)
     state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
 
   if (p == ALL) sh->forceSend(TRUE, TRUE);
   else sh->forceSend(TRUE, FALSE, TRUE);
-#endif
 
   float complexity = this->getComplexityValue(action);
 
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
     state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
   if (!(p & SIDES))
     sm->forceSend(TRUE); // flatshading
   else
     sm->forceSend(FALSE); // smooth
-
-#endif // ! COIN_EXCLUDE_SOGLSHADEMODELELEMENT
 
   sogl_render_cone(this->bottomRadius.getValue(),
                    this->height.getValue(),
@@ -308,7 +272,6 @@ SoCone::willSetShadeModel(void) const
   return TRUE;
 }
 
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 
 /*!
@@ -358,7 +321,6 @@ SoCone::hasPart(SoCone::Part part) const
   return (this->parts.getValue() & part) ? TRUE : FALSE;
 }
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -410,9 +372,7 @@ SoCone::rayPick(SoRayPickAction *action)
     }
   }
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -436,9 +396,7 @@ SoCone::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->incNumCones();
   }
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -455,9 +413,9 @@ SoCone::generatePrimitives(SoAction *action)
   if (bind == SoMaterialBindingElement::PER_PART ||
       bind == SoMaterialBindingElement::PER_PART_INDEXED)
     flags |= SOGL_MATERIAL_PER_PART;
-  
+
   float complexity = this->getComplexityValue(action);
-  
+
   sogen_generate_cone(this->bottomRadius.getValue(),
                       this->height.getValue(),
                       (int)(CONE_SIDE_NUMTRIS*complexity),
@@ -465,4 +423,4 @@ SoCone::generatePrimitives(SoAction *action)
                       this,
                       action);
 }
-#endif // !COIN_EXCLUDE_SOACTION
+

@@ -32,9 +32,7 @@
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
-#if !defined(COIN_EXCLUDE_SOMFBITMASK)
 #include <Inventor/fields/SoMFBitMask.h>
-#endif // !COIN_EXCLUDE_SOMFBITMASK
 #include <Inventor/SbName.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>

@@ -26,34 +26,15 @@
 */
 
 #include <Inventor/nodes/SoVertexShape.h>
-
 #include <Inventor/caches/SoNormalCache.h>
-
 #include <Inventor/misc/SoState.h>
-
-#if !defined(COIN_EXCLUDE_SOVERTEXPROPERTY)
 #include <Inventor/nodes/SoVertexProperty.h>
-#endif // !COIN_EXCLUDE_SOVERTEXPROPERTY
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALELEMENT)
 #include <Inventor/elements/SoNormalElement.h>
-#endif // !COIN_EXCLUDE_SONORMALELEMENT
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#endif // ! COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
 
 /*!
   \var SoSFNode SoVertexShape::vertexProperty
@@ -133,7 +114,6 @@ SoVertexShape::generateDefaultNormals(SoState * /* state */,
   return FALSE;
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -144,16 +124,11 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
 
   SoState * state = action->getState();
 
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   SbBool needNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#else // COIN_EXCLUDE_SOLIGHTMODELELEMENT
-  SbBool needNormals = FALSE;
-#endif // COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
   if (needNormals) {
-#if !defined(COIN_EXCLUDE_SONORMALELEMENT)
     const SoNormalElement * elem = SoNormalElement::getInstance(state);
     const SoVertexProperty * vp =
       (SoVertexProperty *) this->vertexProperty.getValue();
@@ -163,7 +138,6 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
           !this->normalCache->isValid(state)) {
         generateNormals(state);
       }
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
       // if normals are automatically generated, and vertexordering
       // is unknown, force tow-side lighting
       if (SoShapeHintsElement::getVertexOrdering(state) ==
@@ -172,19 +146,14 @@ SoVertexShape::shouldGLRender(SoGLRenderAction * action)
           state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
         sh->forceSend(TRUE);
       }
-#endif // ! COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
     }
-#endif // !COIN_EXCLUDE_SONORMALELEMENT
 
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
     /* will supply unit normals when normal cache is used */
     if (SoVertexShape::willUpdateNormalizeElement(state)) {
       const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
         state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
       ne->forceSend(TRUE);
     }
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-
   }
   return TRUE;
 }
@@ -210,7 +179,6 @@ SoVertexShape::willUpdateNormalizeElement(SoState *state) const
   return FALSE;
 }
 
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!
   FIXME: write function documentation
@@ -278,7 +246,6 @@ SoVertexShape::getVertexData(SoState * state,
 }
 
 
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
 /*!
   FIXME: write doc
  */
@@ -288,4 +255,3 @@ SoVertexShape::write(SoWriteAction * writeAction)
   // FIXME: something missing here? 19991009 mortene.
   inherited::write(writeAction);
 }
-#endif // !COIN_EXCLUDE_SOWRITEACTION

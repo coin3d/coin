@@ -27,18 +27,9 @@
 
 #include <Inventor/nodes/SoLight.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOLIGHTATTENUATIONELEMENT)
 #include <Inventor/elements/SoLightAttenuationElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTATTENUATIONELEMENT
-#if !defined(COIN_EXCLUDE_SOGLLIGHTIDELEMENT)
 #include <Inventor/elements/SoGLLightIdElement.h>
-#endif // !COIN_EXCLUDE_SOGLLIGHTIDELEMENT
-
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoLightElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
@@ -89,16 +80,13 @@ SoLight::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoLight);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoLightAttenuationElement);
   SO_ENABLE(SoGLRenderAction, SoGLLightIdElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoLightAttenuationElement);
   SO_ENABLE(SoCallbackAction, SoLightElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -109,4 +97,3 @@ SoLight::callback(SoCallbackAction *action)
   SoLightElement::add(state, this,
                       SoModelMatrixElement::get(state));
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION

@@ -23,14 +23,8 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFEnum.h>
-
-#if defined(COIN_EXCLUDE_SOPICKSTYLE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOPICKSTYLE
-
 #include <Inventor/elements/SoPickStyleElement.h>
 
-// *************************************************************************
 
 class SoPickStyle : public SoNode {
   typedef SoNode inherited;
@@ -49,15 +43,9 @@ public:
 
   SoSFEnum style;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
 protected:
   virtual ~SoPickStyle();

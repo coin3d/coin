@@ -27,21 +27,10 @@
 
 #include <Inventor/nodes/SoPolygonOffset.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLPolygonOffsetElement.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOPOLYGONOFFSETELEMENT)
 #include <Inventor/elements/SoPolygonOffsetElement.h>
-#endif // !COIN_EXCLUDE_SOGLPOLYGONOFFSETELEMENT
-
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 
 /*!
@@ -119,15 +108,12 @@ SoPolygonOffset::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPolygonOffset);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLPolygonOffsetElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoPolygonOffsetElement);
 }
 
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -136,9 +122,7 @@ SoPolygonOffset::doAction(SoAction * action)
 {
   SoState *state = action->getState();
 
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
   if (SoOverrideElement::getPolygonOffsetOverride(state)) return;
-#endif
 
   float _factor, _units;
   SoPolygonOffsetElement::Style _styles;
@@ -157,9 +141,7 @@ SoPolygonOffset::doAction(SoAction * action)
                               _styles,
                               _on);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -168,9 +150,7 @@ SoPolygonOffset::callback(SoCallbackAction * action)
 {
   SoPolygonOffset::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -179,4 +159,4 @@ SoPolygonOffset::GLRender(SoGLRenderAction * action)
 {
   SoPolygonOffset::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
+

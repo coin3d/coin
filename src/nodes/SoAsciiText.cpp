@@ -105,7 +105,6 @@ SoAsciiText::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoAsciiText);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
 */
@@ -114,9 +113,7 @@ SoAsciiText::GLRender(SoGLRenderAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -125,9 +122,7 @@ SoAsciiText::rayPick(SoRayPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -136,9 +131,7 @@ SoAsciiText::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -148,9 +141,7 @@ SoAsciiText::computeBBox(SoAction * /* action */,
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -159,4 +150,3 @@ SoAsciiText::generatePrimitives(SoAction *)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION

@@ -22,10 +22,6 @@
 
 #include <Inventor/elements/SoEnvironmentElement.h>
 
-#if defined(COIN_EXCLUDE_SOGLENVIRONMENTELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif /// defined(COIN_EXCLUDE_SOGLENVIRONMENTELEMENT)
-
 
 class SoGLEnvironmentElement : public SoEnvironmentElement {
   typedef SoEnvironmentElement inherited;

@@ -26,24 +26,13 @@
 */
 
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
-
-
-
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!
   \var SoSFVec3f SoTextureCoordinatePlane::directionS
@@ -100,7 +89,6 @@ SoTextureCoordinatePlane::generate(void * /* userdata */,
   return s;
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -111,9 +99,7 @@ SoTextureCoordinatePlane::doAction(SoAction * action)
                                           generate,
                                           this);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -124,9 +110,7 @@ SoTextureCoordinatePlane::GLRender(SoGLRenderAction * action)
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
                                           this, handleTexgen, this);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -135,9 +119,7 @@ SoTextureCoordinatePlane::callback(SoCallbackAction * action)
 {
   SoTextureCoordinatePlane::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -146,9 +128,7 @@ SoTextureCoordinatePlane::pick(SoPickAction * action)
 {
   SoTextureCoordinatePlane::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 void
 SoTextureCoordinatePlane::handleTexgen(void *data)
 {
@@ -172,4 +152,3 @@ SoTextureCoordinatePlane::handleTexgen(void *data)
   glEnable(GL_TEXTURE_GEN_S);
   glEnable(GL_TEXTURE_GEN_T);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION

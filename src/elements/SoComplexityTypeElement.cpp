@@ -26,9 +26,7 @@
 
 #include <Inventor/elements/SoComplexityTypeElement.h>
 
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 
 #include <Inventor/SbName.h>
 
@@ -83,9 +81,7 @@ SoComplexityTypeElement::set(SoState * const state,
 {
   assert(type == OBJECT_SPACE || type == SCREEN_SPACE || type == BOUNDING_BOX);
 
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setComplexityType(state, type);
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 
   SoInt32Element::set(classStackIndex, state, node, type);
 }

@@ -25,11 +25,6 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFInt32.h>
 
-#if defined(COIN_EXCLUDE_SOLEVELOFSIMPLIFICATION)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOLEVELOFSIMPLIFICATION
-
-// *************************************************************************
 
 class SoLevelOfSimplification : public SoLOD {
   typedef SoLOD inherited;
@@ -43,16 +38,12 @@ public:
   SoMFFloat percentages;
   SoSFInt32 numTriangles;
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoLevelOfSimplification();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual int whichToTraverse(SoAction *);
-#endif // !COIN_EXCLUDE_SOACTION
 };
 
 #endif // !__SOLEVELOFSIMPLIFICATION_H__

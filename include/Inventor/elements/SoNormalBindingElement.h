@@ -20,12 +20,8 @@
 #ifndef __SONORMALBINDINGELEMENT_H__
 #define __SONORMALBINDINGELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SONORMALBINDINGELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoNormalBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;

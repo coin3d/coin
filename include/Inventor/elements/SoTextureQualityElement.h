@@ -20,12 +20,8 @@
 #ifndef __SOTEXTUREQUALITYELEMENT_H__
 #define __SOTEXTUREQUALITYELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOTEXTUREQUALITYELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOTEXTUREQUALITYELEMENT
-
 #include <Inventor/elements/SoFloatElement.h>
+
 
 class SoTextureQualityElement : public SoFloatElement {
   typedef SoFloatElement inherited;

@@ -33,16 +33,12 @@
 
 #include <Inventor/SoInput.h>
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!
   \enum SoWWWInline::BboxVisibility
@@ -271,7 +267,6 @@ SoWWWInline::getReadAsSoFile(void)
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -324,9 +319,7 @@ SoWWWInline::GLRender(SoGLRenderAction * /* action */)
 
   if (lightenabled) glEnable(GL_LIGHTING);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -346,8 +339,6 @@ SoWWWInline::getBoundingBox(SoGetBoundingBoxAction * action)
   assert(! action->isCenterSet());
   action->setCenter(center, TRUE);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
 
 /*!
   FIXME: write doc
@@ -359,7 +350,6 @@ SoWWWInline::getChildren(void) const
   return NULL;
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -377,9 +367,7 @@ SoWWWInline::doActionOnKidsOrBox(SoAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -388,9 +376,7 @@ SoWWWInline::callback(SoCallbackAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -399,9 +385,7 @@ SoWWWInline::getMatrix(SoGetMatrixAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write doc
  */
@@ -410,9 +394,7 @@ SoWWWInline::handleEvent(SoHandleEventAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 /*!
   FIXME: write doc
  */
@@ -421,9 +403,7 @@ SoWWWInline::search(SoSearchAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -432,9 +412,7 @@ SoWWWInline::pick(SoPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -443,7 +421,6 @@ SoWWWInline::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 /*!
   FIXME: write doc

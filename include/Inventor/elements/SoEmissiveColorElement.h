@@ -20,14 +20,10 @@
 #ifndef __SOEMISSIVECOLORELEMENT_H__
 #define __SOEMISSIVECOLORELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOEMISSIVECOLORELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOEMISSIVECOLORELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
 
 class SbColor;
+
 
 class SoEmissiveColorElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

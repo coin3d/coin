@@ -23,11 +23,6 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoProfile.h>
 
-#if defined(COIN_EXCLUDE_SOLINEARPROFILE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOLINEARPROFILE
-
-// *************************************************************************
 
 class SoLinearProfile : public SoProfile {
   typedef SoProfile inherited;

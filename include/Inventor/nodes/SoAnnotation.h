@@ -23,11 +23,6 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoSeparator.h>
 
-#if defined(COIN_EXCLUDE_SOANNOTATION)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOANNOTATION
-
-// *************************************************************************
 
 class SoAnnotation : public SoSeparator {
   typedef SoSeparator inherited;
@@ -38,12 +33,10 @@ public:
   static void initClass(void);
   SoAnnotation(void);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
   virtual void GLRenderBelowPath(SoGLRenderAction * action);
   virtual void GLRenderInPath(SoGLRenderAction * action);
   virtual void GLRenderOffPath(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 protected:
   virtual ~SoAnnotation();

@@ -26,9 +26,7 @@
 
 #include <Inventor/elements/SoLightModelElement.h>
 
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 
 #include <Inventor/SbName.h>
 
@@ -87,9 +85,7 @@ void
 SoLightModelElement::set(SoState * const state, const Model model)
 {
   SoInt32Element::set(classStackIndex, state, model);
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setLightModel(state, (int32_t)model);
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 }
 
 //! FIXME: write doc.
@@ -99,9 +95,7 @@ SoLightModelElement::set(SoState * const state, SoNode * const node,
                          const Model model)
 {
   SoInt32Element::set(classStackIndex, state, node, model);
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setLightModel(state, (int32_t)model);
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 }
 
 //! FIXME: write doc.

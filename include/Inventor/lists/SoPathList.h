@@ -22,11 +22,8 @@
 
 #include <Inventor/lists/SoBaseList.h>
 
-#if defined(COIN_EXCLUDE_SOPATH)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOPATH
-
 class SoPath;
+
 
 class SoPathList : public SoBaseList {
   typedef SoBaseList inherited;

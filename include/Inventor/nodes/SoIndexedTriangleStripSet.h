@@ -23,11 +23,6 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoIndexedShape.h>
 
-#if defined(COIN_EXCLUDE_SOINDEXEDTRIANGLESTRIPSET)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOINDEXEDTRIANGLESTRIPSET
-
-// *************************************************************************
 
 class SoIndexedTriangleStripSet : public SoIndexedShape {
   typedef SoIndexedShape inherited;
@@ -48,34 +43,24 @@ public:
     PER_VERTEX_INDEXED
   };
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
 
 protected:
   virtual ~SoIndexedTriangleStripSet();
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
 
 private:
   int getNumTriangles(void);
   int getNumStrips(void);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   int numTriangles;
   int numStrips;

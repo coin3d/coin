@@ -20,12 +20,8 @@
 #ifndef __SOLINEWIDTHELEMENT_H__
 #define __SOLINEWIDTHELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOLINEWIDTHELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOLINEWIDTHELEMENT
-
 #include <Inventor/elements/SoFloatElement.h>
+
 
 class SoLineWidthElement : public SoFloatElement {
   typedef SoFloatElement inherited;
@@ -39,12 +35,11 @@ protected:
 public:
   virtual void init(SoState * state);
 
-  static  void set(SoState * const state, SoNode * const node,
-              const float lineWidth);
-  static  void set(SoState * const state, const float lineWidth);
-  static  float get(SoState * const state);
-  static  float getDefault();
-
+  static void set(SoState * const state, SoNode * const node,
+                  const float lineWidth);
+  static void set(SoState * const state, const float lineWidth);
+  static float get(SoState * const state);
+  static float getDefault();
 };
 
 #endif // !__SOLINEWIDTHELEMENT_H__

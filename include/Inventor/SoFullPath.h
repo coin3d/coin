@@ -20,12 +20,8 @@
 #ifndef __SOFULLPATH_H__
 #define __SOFULLPATH_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOFULLPATH)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOFULLPATH
-
 #include <Inventor/SoPath.h>
+
 
 class SoFullPath : public SoPath {
   typedef SoPath inherited;
@@ -41,7 +37,6 @@ public:
   SoNode * getNodeFromTail(const int index) const;
   int getIndexFromTail(const int index) const;
   int getLength(void) const;
-
 };
 
 #endif // !__SOFULLPATH_H__

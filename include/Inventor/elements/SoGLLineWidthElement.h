@@ -20,12 +20,8 @@
 #ifndef __SOGLLINEWIDTHELEMENT_H__
 #define __SOGLLINEWIDTHELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLLINEWIDTHELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLLINEWIDTHELEMENT
-
 #include <Inventor/elements/SoLineWidthElement.h>
+
 
 class SoGLLineWidthElement : public SoLineWidthElement {
   typedef SoLineWidthElement inherited;

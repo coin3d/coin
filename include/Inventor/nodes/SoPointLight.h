@@ -24,12 +24,6 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodes/SoLight.h>
 
-#if defined(COIN_EXCLUDE_SOPOINTLIGHT)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOPOINTLIGHT
-
-
-// *************************************************************************
 
 class SoPointLight : public SoLight {
   typedef SoLight inherited;
@@ -42,9 +36,7 @@ public:
 
   SoSFVec3f location;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 protected:
   virtual ~SoPointLight();

@@ -20,16 +20,6 @@
 #ifndef __SODB_H__
 #define __SODB_H__
 
-// Don't include the classes listed below when compiling a minimal
-// version of the Coin library. This is for debugging purposes only,
-// see the comments in the Coin/build/base.pro file. 19990623 mortene.
-
-#if defined(__SOLIB_MAKEASBASE__)
-#define COIN_EXCLUDE_SOSENSORMANAGER 1
-#define COIN_EXCLUDE_SOTIMERSENSOR 1
-#define COIN_EXCLUDE_SOEVENT 1
-#endif // __SOLIB_MAKEASBASE__
-
 #ifdef _WIN32
 typedef struct fd_set fd_set;
 #else // ! _WIN32
@@ -39,9 +29,7 @@ typedef struct fd_set fd_set;
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbString.h>
 #include <Inventor/SoType.h>
-#if !defined(COIN_EXCLUDE_SOSENSORMANAGER)
 #include <Inventor/sensors/SoSensorManager.h>
-#endif // !COIN_EXCLUDE_SOSENSORMANAGER
 
 class SbName;
 class SbTime;
@@ -70,12 +58,8 @@ public:
   static const char * getVersion(void);
   static SbBool read(SoInput * in, SoPath *& path);
   static SbBool read(SoInput * in, SoBase *& base);
-#if !defined(COIN_EXCLUDE_SONODE)
   static SbBool read(SoInput * in, SoNode *& rootNode);
-#endif // !COIN_EXCLUDE_SONODE
-#if !defined(COIN_EXCLUDE_SOSEPARATOR)
   static SoSeparator * readAll(SoInput * in);
-#endif // !COIN_EXCLUDE_SOSEPARATOR
   static void createRoute(SoNode * fromnode, const char * eventout,
                           SoNode * tonode, const char * eventin);
   static SoVRMLGroup * readAllVRML(SoInput * in);
@@ -98,19 +82,15 @@ public:
   static const SbTime & getRealTimeInterval(void);
   static void enableRealTimeSensor(SbBool on);
 
-#if !defined(COIN_EXCLUDE_SOSENSORMANAGER)
   static SoSensorManager * getSensorManager(void);
   static void setDelaySensorTimeout(const SbTime & t);
   static const SbTime & getDelaySensorTimeout(void);
-#endif // !COIN_EXCLUDE_SOSENSORMANAGER
   static int doSelect(int nfds, fd_set * readfds, fd_set * writefds,
                       fd_set * exceptfds, struct timeval * userTimeOut);
 
   static void addConverter(SoType fromType, SoType toType,
                            SoType converterType);
-#if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
   static SoFieldConverter * createConverter(SoType fromType, SoType toType);
-#endif // !COIN_EXCLUDE_SOFIELDCONVERTER
 
   static SbBool isInitialized(void);
 
@@ -122,12 +102,8 @@ private:
   static void updateRealTimeFieldCB(void * data, SoSensor * sensor);
 
   static SbList<SoDB_HeaderInfo *> headerlist;
-#if !defined(COIN_EXCLUDE_SOSENSORMANAGER)
   static SoSensorManager sensormanager;
-#endif // !COIN_EXCLUDE_SOSENSORMANAGER
-#if !defined(COIN_EXCLUDE_SOTIMERSENSOR)
   static SoTimerSensor * globaltimersensor;
-#endif // !COIN_EXCLUDE_SOTIMERSENSOR
   static SbTime realtimeinterval;
   static SbList<SbName> fieldnamelist;
   static SbList<SoField *> fieldlist;

@@ -20,12 +20,8 @@
 #ifndef __SOPOINTSIZEELEMENT_H__
 #define __SOPOINTSIZEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOPOINTSIZEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOPOINTSIZEELEMENT
-
 #include <Inventor/elements/SoFloatElement.h>
+
 
 class SoPointSizeElement : public SoFloatElement {
   typedef SoFloatElement inherited;

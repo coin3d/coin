@@ -47,24 +47,12 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOSHAPE)
 #include <Inventor/nodes/SoShape.h>
-#endif // !COIN_EXCLUDE_SOSHAPE
-#if !defined(COIN_EXCLUDE_SOCAMERA)
 #include <Inventor/nodes/SoCamera.h>
-#endif // !COIN_EXCLUDE_SOCAMERA
-#if !defined(COIN_EXCLUDE_SOSEPARATOR)
 #include <Inventor/nodes/SoSeparator.h>
-#endif // !COIN_EXCLUDE_SOSEPARATOR
-#if !defined(COIN_EXCLUDE_SOLOD)
 #include <Inventor/nodes/SoLOD.h>
-#endif // !COIN_EXCLUDE_SOLOD
-#if !defined(COIN_EXCLUDE_SOLEVELOFDETAIL)
 #include <Inventor/nodes/SoLevelOfDetail.h>
-#endif // !COIN_EXCLUDE_SOLEVELOFDETAIL
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*
  * Use bit-flags to hide implementation details.
@@ -174,9 +162,7 @@ SoRayPickAction::initClass(void)
 
   ENABLE_ELEMENT(SoPickRayElement);
   ENABLE_ELEMENT(SoViewportRegionElement);
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
   ENABLE_ELEMENT(SoOverrideElement);
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 }
 
 // *************************************************************************
@@ -196,21 +182,11 @@ SoRayPickAction::SoRayPickAction(const SbViewportRegion & viewportRegion)
   if (first) {
     first = 0;
     // most methods are inherited from SoPickAction
-#if !defined(COIN_EXCLUDE_SOCAMERA)
     SO_ACTION_ADD_METHOD(SoCamera, SoNode::rayPickS);
-#endif //!COIN_EXCLUDE_SOCAMERA
-#if !defined(COIN_EXCLUDE_SOSEPARATOR)
     SO_ACTION_ADD_METHOD(SoSeparator, SoNode::rayPickS);
-#endif //!COIN_EXCLUDE_SOSEPARATOR
-#if !defined(COIN_EXCLUDE_SOLOD)
     SO_ACTION_ADD_METHOD(SoLOD, SoNode::rayPickS);
-#endif //!COIN_EXCLUDE_SOLOD
-#if !defined(COIN_EXCLUDE_SOLEVELOFDETAIL)
     SO_ACTION_ADD_METHOD(SoLevelOfDetail, SoNode::rayPickS);
-#endif //!COIN_EXCLUDE_SOLEVELOFDETAIL
-#if !defined(COIN_EXCLUDE_SOSHAPE)
     SO_ACTION_ADD_METHOD(SoShape, SoNode::rayPickS);
-#endif //!COIN_EXCLUDE_SOSHAPE
   }
 
   methods->setUp(); // FIXME: not sure if this should be called here...

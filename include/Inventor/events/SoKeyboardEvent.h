@@ -22,10 +22,6 @@
 
 #include <Inventor/events/SoButtonEvent.h>
 
-#if defined(COIN_EXCLUDE_SOKEYBOARDEVENT)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOKEYBOARDEVENT
-
 
 #define SO_KEY_PRESS_EVENT(EVENT, KEY) \
  (SoKeyboardEvent::isKeyPressEvent(EVENT, SoKeyboardEvent::KEY))

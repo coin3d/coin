@@ -27,23 +27,10 @@
 
 #include <Inventor/nodes/SoTextureCoordinateBinding.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT)
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT
 
 
 /*!
@@ -101,18 +88,11 @@ SoTextureCoordinateBinding::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateBinding);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoTextureCoordinateBindingElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoTextureCoordinateBindingElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateBindingElement);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -121,11 +101,7 @@ SoTextureCoordinateBinding::GLRender(SoGLRenderAction * action)
 {
   SoTextureCoordinateBinding::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -136,9 +112,7 @@ SoTextureCoordinateBinding::doAction(SoAction *action)
     SoTextureCoordinateBindingElement::set(action->getState(), this,
      (SoTextureCoordinateBindingElement::Binding)value.getValue());
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -147,9 +121,7 @@ SoTextureCoordinateBinding::callback(SoCallbackAction *action)
 {
   SoTextureCoordinateBinding::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -158,7 +130,6 @@ SoTextureCoordinateBinding::pick(SoPickAction *action)
 {
   SoTextureCoordinateBinding::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
 /*!
   FIXME: write doc

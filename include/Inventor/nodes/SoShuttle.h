@@ -26,11 +26,6 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
-#if defined(COIN_EXCLUDE_SOSHUTTLE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOSHUTTLE
-
-// *************************************************************************
 
 class SoShuttle : public SoTranslation {
   typedef SoTranslation inherited;

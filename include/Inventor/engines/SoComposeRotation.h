@@ -25,9 +25,6 @@
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoMFVec3f.h>
 
-#if defined(COIN_EXCLUDE_SOCOMPOSEROTATION)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOCOMPOSEROTATION
 
 class SoComposeRotation : public SoEngine {
   SO_COMPOSE__HEADER(SoComposeRotation);

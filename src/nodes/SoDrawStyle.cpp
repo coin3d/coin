@@ -27,37 +27,15 @@
 
 #include <Inventor/nodes/SoDrawStyle.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOGLDRAWSTYLEELEMENT)
 #include <Inventor/elements/SoGLDrawStyleElement.h>
-#endif // !COIN_EXCLUDE_SOGLDRAWSTYLEELEMENT
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLLINEPATTERNELEMENT)
 #include <Inventor/elements/SoGLLinePatternElement.h>
-#endif // !COIN_EXCLUDE_SOGLLINEPATTERNELEMENT
-#if !defined(COIN_EXCLUDE_SOGLLINEWIDTHELEMENT)
 #include <Inventor/elements/SoGLLineWidthElement.h>
-#endif // !COIN_EXCLUDE_SOGLLINEWIDTHELEMENT
-#if !defined(COIN_EXCLUDE_SOGLPOINTSIZEELEMENT)
 #include <Inventor/elements/SoGLPointSizeElement.h>
-#endif // !COIN_EXCLUDE_SOGLPOINTSIZEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
-#endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*!
   \enum SoDrawStyle::Style
@@ -139,22 +117,18 @@ SoDrawStyle::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoDrawStyle);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLDrawStyleElement);
   SO_ENABLE(SoGLRenderAction, SoShapeStyleElement);
   SO_ENABLE(SoGLRenderAction, SoGLLinePatternElement);
   SO_ENABLE(SoGLRenderAction, SoGLLineWidthElement);
   SO_ENABLE(SoGLRenderAction, SoGLPointSizeElement);
   SO_ENABLE(SoGLRenderAction, SoGLPolygonStippleElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoDrawStyleElement);
   SO_ENABLE(SoCallbackAction, SoShapeStyleElement);
   SO_ENABLE(SoCallbackAction, SoLinePatternElement);
   SO_ENABLE(SoCallbackAction, SoLineWidthElement);
   SO_ENABLE(SoCallbackAction, SoPointSizeElement);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
 /*!
@@ -165,12 +139,8 @@ SoDrawStyle::doAction(SoAction *action)
 {
   SoState * state = action->getState();
 
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
   uint32_t flags = SoOverrideElement::getFlags(state);
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
-#else // COIN_EXCLUDE_SOOVERRIDEELEMENT
-#define TEST_OVERRIDE(x,y) FALSE
-#endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
 
   if (!style.isIgnored() && !TEST_OVERRIDE(DRAW_STYLE)) {
     SoDrawStyleElement::set(state, this,
@@ -189,7 +159,6 @@ SoDrawStyle::doAction(SoAction *action)
 
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -198,10 +167,7 @@ SoDrawStyle::GLRender(SoGLRenderAction * action)
 {
   SoDrawStyle::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
 */
@@ -210,4 +176,4 @@ SoDrawStyle::callback(SoCallbackAction *action)
 {
   SoDrawStyle::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
+

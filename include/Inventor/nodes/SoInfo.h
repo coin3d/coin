@@ -24,14 +24,9 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/nodes/SoNode.h>
 
-#if defined(COIN_EXCLUDE_SOINFO)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOINFO
-
-// *************************************************************************
 
 class SoInfo : public SoNode {
-    typedef SoNode inherited;
+  typedef SoNode inherited;
 
   SO_NODE_HEADER(SoInfo);
 

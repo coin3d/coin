@@ -55,7 +55,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #if defined(_WIN32)
 #include <windows.h>
 #elif !defined(__BEOS__)
@@ -73,7 +72,6 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/elements/SoGLLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
@@ -154,8 +152,6 @@ SoText2::initClass(void)
 
 
 // **************************************************************************
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 
 #if defined(_WIN32) || defined(__BEOS__)
 
@@ -397,12 +393,10 @@ SoText2::GLRender(SoGLRenderAction * action)
   }
 #endif // _WIN32 || __BEOS__
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 // **************************************************************************
 
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -414,10 +408,7 @@ SoText2::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
 	            SbVec3f(1.0f, 1.0f, 0.1f));
   center.setValue(0.0f, 0.0f, 0.0f);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -426,9 +417,7 @@ SoText2::rayPick(SoRayPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -439,9 +428,7 @@ SoText2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
   action->addNumText(this->string.getNum());
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -450,4 +437,3 @@ SoText2::generatePrimitives(SoAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION

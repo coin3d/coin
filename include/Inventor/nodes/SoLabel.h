@@ -24,14 +24,9 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFName.h>
 
-#if defined(COIN_EXCLUDE_SOLABEL)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOLABEL
-
-// *************************************************************************
 
 class SoLabel : public SoNode {
-    typedef SoNode inherited;
+  typedef SoNode inherited;
 
   SO_NODE_HEADER(SoLabel);
 

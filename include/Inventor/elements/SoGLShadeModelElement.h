@@ -22,10 +22,6 @@
 
 #include <Inventor/elements/SoElement.h>
 
-#if defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif /// defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
-
 
 class SoGLShadeModelElement : public SoElement {
   typedef SoElement inherited;

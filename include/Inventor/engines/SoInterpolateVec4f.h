@@ -20,11 +20,6 @@
 #ifndef __SOINTERPOLATEVEC4F_H__
 #define __SOINTERPOLATEVEC4F_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOINTERPOLATEVEC4F)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOINTERPOLATEVEC4F
-
 //$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateVec4f, SoMFVec4f)
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/fields/SoMFVec4f.h>

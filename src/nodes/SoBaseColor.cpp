@@ -33,14 +33,9 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SODIFFUSECOLORELEMENT)
 #include <Inventor/elements/SoDiffuseColorElement.h>
-#endif // !COIN_EXCLUDE_SODIFFUSECOLORELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
 
@@ -81,16 +76,13 @@ SoBaseColor::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoBaseColor);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
   SO_ENABLE(SoPickAction, SoDiffuseColorElement);
   SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -99,9 +91,7 @@ SoBaseColor::GLRender(SoGLRenderAction * action)
 {
   SoBaseColor::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_DOACTION)
 /*!
   FIXME: write doc
 */
@@ -115,9 +105,7 @@ SoBaseColor::doAction(SoAction *action)
                                rgb.getValues(0));
   }
 }
-#endif // !COIN_EXCLUDE_DOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
 */
@@ -126,7 +114,6 @@ SoBaseColor::callback(SoCallbackAction *action)
 {
   SoBaseColor::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 void
 SoBaseColor::pick(SoPickAction *action)

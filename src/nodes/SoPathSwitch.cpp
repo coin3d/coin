@@ -66,7 +66,6 @@ SoPathSwitch::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoPathSwitch);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -75,10 +74,7 @@ SoPathSwitch::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -87,9 +83,7 @@ SoPathSwitch::doAction(SoAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -98,9 +92,7 @@ SoPathSwitch::GLRender(SoGLRenderAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -109,9 +101,7 @@ SoPathSwitch::pick(SoPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write doc
  */
@@ -120,9 +110,7 @@ SoPathSwitch::handleEvent(SoHandleEventAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -131,9 +119,7 @@ SoPathSwitch::getMatrix(SoGetMatrixAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 /*!
   FIXME: write doc
  */
@@ -142,9 +128,7 @@ SoPathSwitch::search(SoSearchAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -153,4 +137,3 @@ SoPathSwitch::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

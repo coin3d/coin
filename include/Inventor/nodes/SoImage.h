@@ -27,11 +27,6 @@
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSFString.h>
 
-#if defined(COIN_EXCLUDE_SOIMAGE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOIMAGE
-
-// *************************************************************************
 
 class SoImage : public SoShape {
   typedef SoShape inherited;
@@ -61,25 +56,15 @@ public:
   SoSFImage image;
   SoSFString filename;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction * action);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoImage();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SBVEC3F)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SBVEC3F
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
   int getReadStatus(void);

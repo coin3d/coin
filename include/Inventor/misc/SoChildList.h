@@ -40,11 +40,9 @@ public:
   void copy(const SoChildList & list);
   void set(const int index, SoNode * const node);
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   void traverse(SoAction * const action);
   void traverse(SoAction * const action, const int index);
   void traverse(SoAction * const action, const int first, const int last);
-#endif // !COIN_EXCLUDE_SOACTION
 
   void addPathAuditor(SoPath * const path);
   void removePathAuditor(SoPath * const path);

@@ -20,12 +20,8 @@
 #ifndef __SOGLVIEWINGMATRIXELEMENT_H__
 #define __SOGLVIEWINGMATRIXELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLVIEWINGMATRIXELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLVIEWINGMATRIXELEMENT
-
 #include <Inventor/elements/SoViewingMatrixElement.h>
+
 
 class SoGLViewingMatrixElement : public SoViewingMatrixElement {
   typedef SoViewingMatrixElement inherited;

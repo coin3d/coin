@@ -72,7 +72,6 @@ SoBlinker::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoBlinker);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write doc
 */
@@ -81,9 +80,7 @@ SoBlinker::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
 /*!
   FIXME: write doc
 */
@@ -92,4 +89,3 @@ SoBlinker::write(SoWriteAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOWRITEACTION

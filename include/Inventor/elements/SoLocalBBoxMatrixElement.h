@@ -20,12 +20,8 @@
 #ifndef __SOLOCALBBOXMATRIXELEMENT_H__
 #define __SOLOCALBBOXMATRIXELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT
-
 #include <Inventor/elements/SoModelMatrixElement.h>
+
 
 class SoLocalBBoxMatrixElement : public SoElement {
   typedef SoElement inherited;

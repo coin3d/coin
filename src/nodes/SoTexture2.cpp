@@ -27,23 +27,12 @@
 
 #include <Inventor/nodes/SoTexture2.h>
 
-
-
 #include <Inventor/SoInput.h>
 #include <Inventor/errors/SoDebugError.h>
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGLImage.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREIMAGEELEMENT)
 #include <Inventor/elements/SoGLTextureImageElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTUREIMAGEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 #include <Inventor/elements/SoTextureQualityElement.h>
@@ -137,9 +126,7 @@ SoTexture2::SoTexture2()
   SO_NODE_SET_SF_ENUM_TYPE(model, Model);
 
   this->imageData = NULL;
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   this->glImage = NULL;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 }
 
 /*!
@@ -148,9 +135,7 @@ SoTexture2::SoTexture2()
 SoTexture2::~SoTexture2()
 {
   if (this->imageData) this->imageData->unref();
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   if (this->glImage) this->glImage->unref();
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 }
 
 /*!
@@ -163,10 +148,8 @@ SoTexture2::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTexture2);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLTextureImageElement);
   SO_ENABLE(SoGLRenderAction, SoGLTextureEnabledElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoTextureImageElement);
 }
@@ -197,7 +180,6 @@ SoTexture2::readImage(void)
   return FALSE;
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -234,10 +216,7 @@ SoTexture2::GLRender(SoGLRenderAction * action)
   SoGLTextureEnabledElement::set(state,
                                  this, this->glImage != NULL);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -266,9 +245,7 @@ SoTexture2::doAction(SoAction *action)
                                this->blendColor.getValue());
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -277,7 +254,6 @@ SoTexture2::callback(SoCallbackAction *action)
 {
   SoTexture2::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 /*!
   FIXME: write doc

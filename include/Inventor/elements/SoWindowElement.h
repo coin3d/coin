@@ -22,10 +22,6 @@
 
 #include <Inventor/elements/SoElement.h>
 
-#if defined(COIN_EXCLUDE_SOWINDOWELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOWINDOWELEMENT
-
 // FIXME: ugly -- this pucks up system-independence within the base
 // Coin library. What is this element used for anyway? 19990808 mortene.
 #if defined(_WIN32) || defined(__BEOS__)
@@ -39,6 +35,7 @@ typedef void Display;
 #endif // _WIN32 || __BEOS__
 
 class SoGLRenderAction;
+
 
 class SoWindowElement : public SoElement {
   typedef SoElement inherited;

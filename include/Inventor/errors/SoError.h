@@ -48,12 +48,8 @@ public:
   static void post(const char * const format, ...);
 
   static SbString getString(const SoNode * const node);
-#if !defined(COIN_EXCLUDE_SOPATH)
   static SbString getString(const SoPath * const path);
-#endif // !COIN_EXCLUDE_SOPATH
-#if !defined(COIN_EXCLUDE_SOENGINE)
   static SbString getString(const SoEngine * const engine);
-#endif // !COIN_EXCLUDE_SOENGINE
 
   static void initClass(void);
 

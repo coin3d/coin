@@ -26,25 +26,11 @@
 
 #include <Inventor/elements/SoShapeStyleElement.h>
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
 #include <Inventor/elements/SoDrawStyleElement.h>
-#endif // !COIN_EXCLUDE_SODRAWSTYLEELEMENT
-
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#endif // !COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
-
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // ! COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
 #include <Inventor/SbName.h>
 #include <assert.h>
@@ -153,7 +139,6 @@ void
 SoShapeStyleElement::setDrawStyle(SoState * const state,
                                   const int32_t value)
 {
-#if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
   SoShapeStyleElement * elem = getElement(state);
   if (value == (int32_t)SoDrawStyleElement::INVISIBLE) {
     elem->flags |= FLAG_INVISIBLE;
@@ -161,7 +146,6 @@ SoShapeStyleElement::setDrawStyle(SoState * const state,
   else {
     elem->flags &= ~FLAG_INVISIBLE;
   }
-#endif // ! COIN_EXCLUDE_SODRAWSTYLEELEMENT
 }
 
 //! FIXME: write doc.
@@ -170,7 +154,6 @@ void
 SoShapeStyleElement::setComplexityType(SoState * const state,
                                        const int32_t value)
 {
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
   SoShapeStyleElement * elem = getElement(state);
   if (value == (int32_t) SoComplexityTypeElement::BOUNDING_BOX) {
     elem->flags |= FLAG_BBOXCMPLX;
@@ -178,7 +161,6 @@ SoShapeStyleElement::setComplexityType(SoState * const state,
   else {
     elem->flags &= ~FLAG_BBOXCMPLX;
   }
-#endif // ! COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
 }
 
 //! FIXME: write doc.
@@ -187,7 +169,6 @@ void
 SoShapeStyleElement::setTransparencyType(SoState * const state,
                                          const int32_t value)
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SoShapeStyleElement * elem = getElement(state);
   if (value == (int32_t) SoGLRenderAction::SCREEN_DOOR) {
     elem->flags |= FLAG_SCREENDOOR;
@@ -195,7 +176,6 @@ SoShapeStyleElement::setTransparencyType(SoState * const state,
   else {
     elem->flags &= ~FLAG_SCREENDOOR;
   }
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
 }
 
 //! FIXME: write doc.
@@ -234,7 +214,6 @@ void
 SoShapeStyleElement::setLightModel(SoState * const state,
                                    const int32_t value)
 {
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   SoShapeStyleElement * elem = getElement(state);
 
   if (value != (int32_t) SoLightModelElement::BASE_COLOR) {
@@ -243,7 +222,6 @@ SoShapeStyleElement::setLightModel(SoState * const state,
   else {
     elem->flags &= ~FLAG_LIGHTING;
   }
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 }
 
 //! FIXME: write doc.

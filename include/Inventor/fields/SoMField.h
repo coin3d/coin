@@ -23,10 +23,6 @@
 #include <Inventor/fields/SoField.h>
 #include <Inventor/fields/SoSField.h>
 
-#if defined(COIN_EXCLUDE_SOMFIELD)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOMFIELD
-
 class SoInput;
 class SoOutput;
 

@@ -33,9 +33,7 @@
 
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/fields/SoMFNode.h>
-#if !defined(COIN_EXCLUDE_SOSFNODE)
 #include <Inventor/fields/SoSFNode.h>
-#endif // !COIN_EXCLUDE_SOSFNODE
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
@@ -328,13 +326,10 @@ SoMFNode::referencesCopy(void) const
 void
 SoMFNode::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFNODE)
-  else if (dest->getTypeId()==SoSFNode::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFNode::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFNode *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFNODE
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFNode::convertTo",

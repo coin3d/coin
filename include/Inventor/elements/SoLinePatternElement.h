@@ -20,12 +20,8 @@
 #ifndef __SOLINEPATTERNELEMENT_H__
 #define __SOLINEPATTERNELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOLINEPATTERNELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOLINEPATTERNELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoLinePatternElement : public SoInt32Element {
   typedef SoInt32Element inherited;

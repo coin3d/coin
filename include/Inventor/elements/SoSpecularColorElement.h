@@ -20,14 +20,10 @@
 #ifndef __SOSPECULARCOLORELEMENT_H__
 #define __SOSPECULARCOLORELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOSPECULARCOLORELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOSPECULARCOLORELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
 
 class SbColor;
+
 
 class SoSpecularColorElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

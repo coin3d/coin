@@ -31,39 +31,23 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // !_WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
-#if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#if !defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-#if !defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#endif // !COIN_EXCLUDE_SOCREASEANGLEELEMENT
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoNormalGenerator.h>
@@ -130,7 +114,6 @@ SoTriangleStripSet::initClass(void)
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -145,9 +128,6 @@ SoTriangleStripSet::computeBBox(SoAction * action,
   inherited::computeCoordBBox(action, numvertices, box, center);
 }
 
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   \internal
 */
@@ -244,13 +224,9 @@ SoTriangleStripSet::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals = TRUE;
-
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
-  needNormals =
+  SbBool needNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
                                needNormals);
@@ -344,7 +320,6 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
 
   SbBool perVertex = TRUE;
 
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
   SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
 
@@ -358,7 +333,6 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   default:
     break;
   }
-#endif // COIN_EXCLUDE_SONORMALBINDINGELEMENT
 
   if (perVertex) {
     SoNormalGenerator * gen =
@@ -400,10 +374,6 @@ SoTriangleStripSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   return TRUE;
 }
 
-#endif // COIN_EXCLUDE_SOGLRENDERACTION
-
-
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -426,7 +396,6 @@ SoTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->addNumTriangles(cnt);
   }
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 /*!
   FIXME: write doc
@@ -439,7 +408,6 @@ SoTriangleStripSet::generateDefaultNormals(SoState * /* state */,
   return FALSE;
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -574,4 +542,3 @@ SoTriangleStripSet::generatePrimitives(SoAction *action)
   if (this->vertexProperty.getValue())
     state->pop();
 }
-#endif // !COIN_EXCLUDE_SOACTION

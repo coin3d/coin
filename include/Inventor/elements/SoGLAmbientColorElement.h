@@ -20,13 +20,9 @@
 #ifndef __SOGLAMBIENTCOLORELEMENT_H__
 #define __SOGLAMBIENTCOLORELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT
-
 #include <Inventor/elements/SoAmbientColorElement.h>
 #include <Inventor/SbColor.h>
+
 
 class SoGLAmbientColorElement : public SoAmbientColorElement {
   typedef SoAmbientColorElement inherited;

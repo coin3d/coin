@@ -26,9 +26,6 @@
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFRotation.h>
 
-#if defined(COIN_EXCLUDE_SOCOMPOSEMATRIX)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOCOMPOSEMATRIX
 
 class SoComposeMatrix : public SoEngine {
   SO_COMPOSE__HEADER(SoComposeMatrix);

@@ -26,12 +26,8 @@
 */
 
 #include <Inventor/fields/SoSFEngine.h>
-#if !defined(COIN_EXCLUDE_SOMFENGINE)
 #include <Inventor/fields/SoMFEngine.h>
-#endif // !COIN_EXCLUDE_SOMFENGINE
-#if !defined(COIN_EXCLUDE_SOENGINE)
 #include <Inventor/engines/SoEngine.h>
-#endif // !COIN_EXCLUDE_SOENGINE
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <Inventor/SoInput.h>
@@ -216,12 +212,9 @@ SoSFEngine::writeValue(SoOutput * /* out */) const
 void
 SoSFEngine::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOMFENGINE)
-  else if (dest->getTypeId()==SoMFEngine::getClassTypeId()) {
+  if (dest->getTypeId()==SoMFEngine::getClassTypeId()) {
     ((SoMFEngine *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFENGINE
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFEngine::convertTo",

@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoLight.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-#if defined(COIN_EXCLUDE_SODIRECTIONALLIGHT)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SODIRECTIONALLIGHT
-
-// *************************************************************************
 
 class SoDirectionalLight : public SoLight {
   typedef SoLight inherited;
@@ -41,9 +36,7 @@ public:
 
   SoSFVec3f direction;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 protected:
   virtual ~SoDirectionalLight();

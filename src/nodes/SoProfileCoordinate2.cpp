@@ -27,22 +27,10 @@
 
 #include <Inventor/nodes/SoProfileCoordinate2.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT)
 #include <Inventor/elements/SoProfileCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
@@ -82,21 +70,13 @@ SoProfileCoordinate2::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoProfileCoordinate2);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoProfileCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
   SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoProfileCoordinateElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -105,10 +85,7 @@ SoProfileCoordinate2::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoProfileCoordinate2::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -118,9 +95,7 @@ SoProfileCoordinate2::doAction(SoAction *action )
   SoProfileCoordinateElement::set2(action->getState(), this,
                                    point.getNum(), point.getValues(0));
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -129,9 +104,7 @@ SoProfileCoordinate2::GLRender(SoGLRenderAction *action)
 {
   SoProfileCoordinate2::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -140,9 +113,7 @@ SoProfileCoordinate2::callback(SoCallbackAction *action)
 {
   SoProfileCoordinate2::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -151,9 +122,7 @@ SoProfileCoordinate2::pick(SoPickAction *action)
 {
   SoProfileCoordinate2::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -162,4 +131,3 @@ SoProfileCoordinate2::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoProfileCoordinate2::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

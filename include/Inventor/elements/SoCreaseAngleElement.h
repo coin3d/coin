@@ -20,12 +20,8 @@
 #ifndef __SOCREASEANGLEELEMENT_H__
 #define __SOCREASEANGLEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOCREASEANGLEELEMENT
-
 #include <Inventor/elements/SoFloatElement.h>
+
 
 class SoCreaseAngleElement : public SoFloatElement {
   typedef SoFloatElement inherited;

@@ -27,15 +27,9 @@
 #include <Inventor/actions/SoSubAction.h>
 #include <Inventor/lists/SoEnabledElementsList.h>
 
-#if !defined(COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT)
 #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOVIEWINGMATRIXELEMENT)
 #include <Inventor/elements/SoViewingMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOVIEWINGMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT)
 #include <Inventor/elements/SoViewportRegionElement.h>
-#endif // !COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT
 
 #include <Inventor/errors/SoDebugError.h>
 
@@ -389,10 +383,7 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
 {
   // FIXME: maybe we should convert to an SbXfBox3f? 19990320 mortene.
   SbBox3f tbox = box;
-#if !defined(COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT)
   tbox.transform(SoLocalBBoxMatrixElement::get(this->state));
-#endif // !COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOVIEWINGMATRIXELEMENT)
   if (this->isInCameraSpace()) {
     const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
 #if 0 // debug
@@ -401,7 +392,6 @@ SoGetBoundingBoxAction::extendBy(const SbBox3f &box)
 #endif // debug
     tbox.transform(mat);
   }
-#endif // !COIN_EXCLUDE_SOVIEWINGMATRIXELEMENT
 
   this->bbox.extendBy(tbox);
 }
@@ -414,10 +404,7 @@ void
 SoGetBoundingBoxAction::extendBy(const SbXfBox3f &box)
 {
   SbXfBox3f lbox = box;
-#if !defined(COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT)
   lbox.transform(SoLocalBBoxMatrixElement::get(this->state));
-#endif // !COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOVIEWINGMATRIXELEMENT)
   if (this->isInCameraSpace()) {
     const SbMatrix & mat = SoViewingMatrixElement::get(this->state);
 #if 0 // debug
@@ -426,7 +413,6 @@ SoGetBoundingBoxAction::extendBy(const SbXfBox3f &box)
 #endif // debug
     lbox.transform(mat);
   }
-#endif // !COIN_EXCLUDE_SOVIEWINGMATRIXELEMENT
   this->bbox.extendBy(lbox);
 }
 
@@ -443,16 +429,12 @@ SoGetBoundingBoxAction::setCenter(const SbVec3f &center,
 
   if (transformCenter) {
     this->center = center;
-#if !defined(COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT)
     const SbMatrix & lmat = SoLocalBBoxMatrixElement::get(this->state);
     lmat.multVecMatrix(this->center, this->center);
-#endif // COIN_EXCLUDE_SOLOCALBBOXMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOVIEWINGMATRIXELEMENT)
     if (this->isInCameraSpace()) {
       const SbMatrix & vmat = SoViewingMatrixElement::get(this->state);
       vmat.multVecMatrix(this->center, this->center);
     }
-#endif // COIN_EXCLUDE_SOVIEWINGMATRIXELEMENT
   }
   else {
     this->center = center;

@@ -20,14 +20,10 @@
 #ifndef __SOINTERPOLATEABS_H__
 #define __SOINTERPOLATEABS_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOINTERPOLATE)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOINTERPOLATE
-
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoSFFloat.h>
+
 
 class SoInterpolate : public SoEngine {
   typedef SoEngine inherited;

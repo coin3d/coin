@@ -22,10 +22,6 @@
 
 #include <Inventor/actions/SoAction.h>
 
-#if defined(COIN_EXCLUDE_SOWRITEACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOWRITEACTION
-
 class SoVRMLPROTODef;
 class SoVRMLEXTERNPROTODef;
 

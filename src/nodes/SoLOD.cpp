@@ -29,15 +29,10 @@
 #include <Inventor/nodes/SoLOD.h>
 
 #include <Inventor/misc/SoChildList.h>
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
-
 #include <Inventor/actions/SoCallbackAction.h>
-
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
@@ -89,7 +84,6 @@ SoLOD::initClass(void)
 }
 
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -99,9 +93,7 @@ SoLOD::doAction(SoAction *action)
   int idx = this->whichToTraverse(action);;
   if (idx >= 0) this->children->traverse(action, idx);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -114,9 +106,7 @@ SoLOD::callback(SoCallbackAction *action)
     action->invokePostCallbacks(this);
   }
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -164,9 +154,7 @@ SoLOD::GLRenderOffPath(SoGLRenderAction * action)
   if (idx >= 0 && this->getChild(idx)->affectsState())
     this->children->traverse(action, idx);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -175,9 +163,7 @@ SoLOD::rayPick(SoRayPickAction *action)
 {
   SoLOD::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write doc
  */
@@ -188,9 +174,7 @@ SoLOD::getBoundingBox(SoGetBoundingBoxAction * action)
   // time LOD is changed might hurt bbox cache performance.
   inherited::getBoundingBox(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -199,9 +183,7 @@ SoLOD::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoLOD::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   Returns the child to traverse based on the ranges in
   SoLOD::range. Will clamp to index to the number of children.
@@ -229,4 +211,3 @@ SoLOD::whichToTraverse(SoAction *action)
   if (i >= this->getNumChildren()) i = this->getNumChildren() - 1;
   return i;
 }
-#endif // !COIN_EXCLUDE_SOACTION

@@ -39,52 +39,26 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOGLLIGHTIDELEMENT)
 #include <Inventor/elements/SoGLLightIdElement.h>
-#endif // !COIN_EXCLUDE_SOGLLIGHTIDELEMENT
-#if !defined(COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT)
 #include <Inventor/elements/SoViewportRegionElement.h>
-#endif // !COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT
-#if !defined(COIN_EXCLUDE_SOGLRENDERPASSELEMENT)
 #include <Inventor/elements/SoGLRenderPassElement.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERPASSELEMENT
-#if !defined(COIN_EXCLUDE_SOGLUPDATEAREAELEMENT)
 #include <Inventor/elements/SoGLUpdateAreaElement.h>
-#endif // !COIN_EXCLUDE_SOGLUPDATEAREAELEMENT
-#if !defined(COIN_EXCLUDE_SODECIMATIONTYPEELEMENT)
 #include <Inventor/elements/SoDecimationTypeElement.h>
-#endif // !COIN_EXCLUDE_SODECIMATIONTYPEELEMENT
-#if !defined(COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT)
 #include <Inventor/elements/SoDecimationPercentageElement.h>
-#endif // !COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT
-#if !defined(COIN_EXCLUDE_SOWINDOWELEMENT)
 #include <Inventor/elements/SoWindowElement.h>
-#endif // !COIN_EXCLUDE_SOWINDOWELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
-#endif // ! COIN_EXCLUDE_SOGLSHADEMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 
 // FIXME: see comment on SoGLViewportRegionElement::set in
 // beginTraversel() below. 19990228 mortene.
-#if !defined(COIN_EXCLUDE_SOGLVIEWPORTREGIONELEMENT)
 #include <Inventor/elements/SoGLViewportRegionElement.h>
-#endif // !COIN_EXCLUDE_SOGLVIEWPORTREGIONELEMENT
 // FIXME: these should not be necessary here. tmp hack. 19990228 mortene.
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
 
 #ifdef _WIN32
 #include <windows.h>
@@ -218,16 +192,10 @@ SoGLRenderAction::initClass(void)
   ENABLE_ELEMENT(SoGLLightIdElement);
   ENABLE_ELEMENT(SoGLUpdateAreaElement);
 
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   ENABLE_ELEMENT(SoGLShadeModelElement);
-#endif
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   ENABLE_ELEMENT(SoGLNormalizeElement);
-#endif
 
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
   ENABLE_ELEMENT(SoOverrideElement);
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 
   // FIXME: see comment on SoGLViewportRegionElement::set in
@@ -595,9 +563,7 @@ SoGLRenderAction::beginTraversal(SoNode * node)
   }
   this->getState()->push();
 
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setTransparencyType(this->getState(), this->transType);
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 
   SoGLViewportRegionElement::set(this->getState(), this->viewport);
 
@@ -721,7 +687,6 @@ SoGLRenderAction::abortNow()
   return FALSE;
 }
 
-#if !defined(COIN_EXCLUDE_SOPATH)
 void
 SoGLRenderAction::addDelayedPath(SoPath * path)
 {
@@ -729,7 +694,6 @@ SoGLRenderAction::addDelayedPath(SoPath * path)
   SoPath * copy = path->copy();
   this->delayedPaths.append(copy);
 }
-#endif // ! COIN_EXCLUDE_SOPATH
 
 void
 SoGLRenderAction::addTransPath(SoPath *path)

@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoNonIndexedShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
-#if defined(COIN_EXCLUDE_SOTRIANGLESTRIPSET)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOTRIANGLESTRIPSET
-
-// *************************************************************************
 
 class SoTriangleStripSet : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
@@ -48,35 +43,22 @@ public:
 
   SoMFInt32 numVertices;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
 
 protected:
   virtual ~SoTriangleStripSet();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool generateDefaultNormals(SoState *, SoNormalCache *);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 private:
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
-#endif
-
 };
 
 #endif // !__SOTRIANGLESTRIPSET_H__

@@ -31,9 +31,7 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
 
 #ifdef _WIN32
 #include <strstrea.h>
@@ -316,7 +314,6 @@ SoMFUInt32::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFUInt32 *)dest)->setValue((*this)[0]);
   }
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     const int num=this->getNum();
     ostrstream ostr;
@@ -330,7 +327,6 @@ SoMFUInt32::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFUInt32::convertTo",

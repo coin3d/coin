@@ -26,18 +26,10 @@
 */
 
 #include <Inventor/nodes/SoPickStyle.h>
+
 #include <Inventor/elements/SoPickStyleElement.h>
-
-
-
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // ! COIN_EXCLUDE_SOPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 
 /*!
@@ -99,15 +91,12 @@ SoPickStyle::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPickStyle);
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoPickStyleElement);
-#endif // ! COIN_EXCLUDE_SOPICKACTION
 
   SO_ENABLE(SoCallbackAction, SoPickStyleElement);
 }
 
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -115,17 +104,12 @@ void
 SoPickStyle::doAction(SoAction *action)
 {
   if (!style.isIgnored()
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-      && !SoOverrideElement::getPickStyleOverride(action->getState())
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
-      ) {
+      && !SoOverrideElement::getPickStyleOverride(action->getState())) {
     SoPickStyleElement::set(action->getState(), this,
                             (int32_t) style.getValue());
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -134,9 +118,7 @@ SoPickStyle::callback(SoCallbackAction *action)
 {
   SoPickStyle::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -145,4 +127,3 @@ SoPickStyle::pick(SoPickAction *action)
 {
   SoPickStyle::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION

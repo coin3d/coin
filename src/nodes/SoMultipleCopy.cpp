@@ -28,31 +28,13 @@
 
 #include <Inventor/nodes/SoMultipleCopy.h>
 
-
-#if !defined(COIN_EXCLUDE_SOSTATE)
 #include <Inventor/misc/SoState.h>
-#endif // !COIN_EXCLUDE_SOSTATE
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOSWITCHELEMENT)
 #include <Inventor/elements/SoSwitchElement.h>
-#endif // !COIN_EXCLUDE_SOSWITCHELEMENT
-#if !defined(COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT)
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 
 /*!
@@ -92,7 +74,6 @@ SoMultipleCopy::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoMultipleCopy);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -149,9 +130,7 @@ SoMultipleCopy::getBoundingBox(SoGetBoundingBoxAction * action)
   if (numCenters != 0)
     action->setCenter(acccenter / float(numCenters), FALSE);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -160,8 +139,6 @@ SoMultipleCopy::GLRender(SoGLRenderAction * action)
 {
   SoMultipleCopy::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
 
 /*!
   FIXME: write doc
@@ -173,7 +150,6 @@ SoMultipleCopy::affectsState(void) const
   return FALSE;
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -188,9 +164,7 @@ SoMultipleCopy::doAction(SoAction *action)
     action->getState()->pop();
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -198,14 +172,11 @@ void
 SoMultipleCopy::callback(SoCallbackAction *action)
 {
   action->invokePreCallbacks(this);
-  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {  
+  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
     SoMultipleCopy::doAction((SoAction*)action);
     action->invokePostCallbacks(this);
   }
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 
 /*!
   We came across what we think is a bug in TGS/SGI OIV when
@@ -222,9 +193,7 @@ SoMultipleCopy::pick(SoPickAction *action)
 {
   SoMultipleCopy::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write doc
  */
@@ -233,9 +202,7 @@ SoMultipleCopy::handleEvent(SoHandleEventAction *action)
 {
   inherited::handleEvent(action);
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -245,9 +212,7 @@ SoMultipleCopy::getMatrix(SoGetMatrixAction *action)
   // path does not specify which copy to traverse
   inherited::getMatrix(action);
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 /*!
   FIXME: write doc
  */
@@ -257,9 +222,7 @@ SoMultipleCopy::search(SoSearchAction *action)
   SoNode::search(action);
   inherited::search(action);
 }
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -268,4 +231,3 @@ SoMultipleCopy::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoMultipleCopy::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

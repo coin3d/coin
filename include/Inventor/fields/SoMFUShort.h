@@ -22,10 +22,6 @@
 
 #include <Inventor/fields/SoMField.h>
 
-#if defined(COIN_EXCLUDE_SOMFUSHORT)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOMFUSHORT
-
 
 class SoMFUShort : public SoMField {
   typedef SoMField inherited;

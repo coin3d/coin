@@ -24,9 +24,6 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoMField.h>
 
-#if defined(COIN_EXCLUDE_SOCONCATENATE)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOCONCATENATE
 
 class SoConcatenate : public SoEngine {
   typedef SoEngine inherited;

@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoNonIndexedShape.h>
 #include <Inventor/fields/SoMFInt32.h>
 
-#if defined(COIN_EXCLUDE_SOFACESET)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOFACESET
-
-// *************************************************************************
 
 class SoFaceSet : public SoNonIndexedShape {
   typedef SoNonIndexedShape inherited;
@@ -47,32 +42,20 @@ public:
 
   SoMFInt32 numVertices;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
-#endif
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   virtual ~SoFaceSet();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool generateDefaultNormals(SoState *, SoNormalCache *);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 private:
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;
-#endif
 };
 
 #endif // !__SOFACESET_H__

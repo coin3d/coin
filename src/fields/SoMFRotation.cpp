@@ -37,9 +37,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
 
 #ifdef _WIN32
 #include <strstrea.h>
@@ -376,7 +374,6 @@ SoMFRotation::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFRotation *)dest)->setValue((*this)[0]);
   }
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     SbVec3f vec;
@@ -394,7 +391,6 @@ SoMFRotation::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFRotation::convertTo",

@@ -20,14 +20,10 @@
 #ifndef __SONORMALELEMENT_H__
 #define __SONORMALELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SONORMALELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SONORMALELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec3f.h>
 #include <assert.h>
+
 
 class SoNormalElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

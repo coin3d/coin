@@ -25,13 +25,8 @@
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-#if defined(COIN_EXCLUDE_SOTEXTURE2TRANSFORM)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOTEXTURE2TRANSFORM
-
 class SbMatrix;
 
-// *************************************************************************
 
 class SoTexture2Transform : public SoNode {
   typedef SoNode inherited;
@@ -47,25 +42,14 @@ public:
   SoSFVec2f scaleFactor;
   SoSFVec2f center;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
   virtual void getMatrix(SoGetMatrixAction * action);
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
 protected:
   virtual ~SoTexture2Transform();
-
 };
 
 

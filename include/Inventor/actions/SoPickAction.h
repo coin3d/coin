@@ -20,15 +20,11 @@
 #ifndef __SOPICKACTION_H__
 #define __SOPICKACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOPICKACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOPICKACTION
-
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbViewportRegion.h>
 
 class SbViewportRegion;
+
 
 class SoPickAction : public SoAction {
   typedef SoAction inherited;

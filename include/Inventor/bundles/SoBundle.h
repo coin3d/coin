@@ -20,13 +20,9 @@
 #ifndef __SOBUNDLE_H__
 #define __SOBUNDLE_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOBUNDLE)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOBUNDLE
-
 class SoAction;
 class SoState;
+
 
 class SoBundle {
 protected:

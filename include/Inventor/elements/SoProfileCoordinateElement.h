@@ -20,11 +20,6 @@
 #ifndef __SOPROFILECOORDINATEELEMENT_H__
 #define __SOPROFILECOORDINATEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec3f.h>
@@ -34,6 +29,7 @@
  * TODO
  * - conversion between coord2 and coord3 (done in Inventor)
  */
+
 
 class SoProfileCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

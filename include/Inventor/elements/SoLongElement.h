@@ -17,9 +17,4 @@
  *
 \**************************************************************************/
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOLONGELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOLONGELEMENT
-
-#error "STRICT SUPPORT ONLY: SoLongElement is obsoleted by SoInt32Element."
+#error "SoLongElement is obsoleted by SoInt32Element."

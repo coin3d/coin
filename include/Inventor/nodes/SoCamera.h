@@ -32,10 +32,6 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbBox3f.h>
 
-#if defined(COIN_EXCLUDE_SOCAMERA)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOCAMERA
-
 #define SO_ASPECT_SQUARE        1.0f
 #define SO_ASPECT_VIDEO         (4.0f/3.0f)
 #define SO_ASPECT_35mm_ACADEMY  1.371
@@ -50,7 +46,6 @@
 
 class SoPath;
 
-// *************************************************************************
 
 class SoCamera : public SoNode {
   typedef SoNode inherited;
@@ -79,37 +74,21 @@ public:
   void pointAt(const SbVec3f & targetPoint);
   virtual void scaleHeight(float scaleFactor) = 0;
   virtual SbViewVolume getViewVolume(float useAspectRatio = 0.0f) const = 0;
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   void viewAll(SoNode * const sceneRoot,
                const SbViewportRegion & vpRegion,
                const float slack = 1.0f);
   void viewAll(SoPath * const path,
                const SbViewportRegion & vpRegion,
                const float slack = 1.0f);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
   SbViewportRegion getViewportBounds(const SbViewportRegion & region) const;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   virtual void handleEvent(SoHandleEventAction * action);
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction * action);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 protected:
   SoCamera(void);

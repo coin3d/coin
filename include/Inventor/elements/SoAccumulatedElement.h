@@ -20,13 +20,9 @@
 #ifndef __SOACCUMULATEDELEMENT_H__
 #define __SOACCUMULATEDELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOACCUMULATEDELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOACCUMULATEDELEMENT
-
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/lists/SbPList.h>
+
 
 class SoAccumulatedElement : public SoElement {
   typedef SoElement inherited;

@@ -23,10 +23,6 @@
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/SbRotation.h>
 
-#if defined(COIN_EXCLUDE_SOSFROTATION)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSFROTATION
-
 
 class SoSFRotation : public SoSField {
   typedef SoSField inherited;

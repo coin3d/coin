@@ -25,11 +25,6 @@
 #include <Inventor/fields/SoSFPlane.h>
 #include <Inventor/fields/SoSFBool.h>
 
-#if defined(COIN_EXCLUDE_SOCLIPPLANE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOCLIPPLANE
-
-// *************************************************************************
 
 class SoClipPlane : public SoNode {
   typedef SoNode inherited;
@@ -43,18 +38,10 @@ public:
   SoSFPlane plane;
   SoSFBool on;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction *action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction *action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction *action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction *action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
 protected:
   virtual ~SoClipPlane();

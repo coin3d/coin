@@ -27,48 +27,21 @@
 
 #include <Inventor/nodes/SoMaterial.h>
 
-
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
-
-
-#if !defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
 #include <Inventor/elements/SoGLAmbientColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT)
 #include <Inventor/elements/SoGLEmissiveColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT)
 #include <Inventor/elements/SoGLSpecularColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHININESSELEMENT)
 #include <Inventor/elements/SoGLShininessElement.h>
-#endif // !COIN_EXCLUDE_SOGLSHININESSELEMENT
-#if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
 #include <Inventor/elements/SoTransparencyElement.h>
-#endif // !COIN_EXCLUDE_SOTRANSPARENCYELEMENT
-#if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
-#endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLE
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 #include <math.h>
 
@@ -112,7 +85,7 @@ compareAppearance(SoMFColor * firstColor, int firstIdx,
     0.587 * pow(firstColor->getValues(0)[firstIdx][1]-otherColor->getValues(0)[otherIdx][1],2)+
     0.114 * pow(firstColor->getValues(0)[firstIdx][2]-otherColor->getValues(0)[otherIdx][2],2);
 }
-#endif // OBSOLETED 
+#endif // OBSOLETED
 
 // *************************************************************************
 
@@ -150,7 +123,6 @@ SoMaterial::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoMaterial);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLAmbientColorElement);
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
   SO_ENABLE(SoGLRenderAction, SoGLEmissiveColorElement);
@@ -158,29 +130,22 @@ SoMaterial::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoGLShininessElement);
   SO_ENABLE(SoGLRenderAction, SoTransparencyElement);
   SO_ENABLE(SoGLRenderAction, SoGLPolygonStippleElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoAmbientColorElement);
   SO_ENABLE(SoPickAction, SoDiffuseColorElement);
   SO_ENABLE(SoPickAction, SoEmissiveColorElement);
   SO_ENABLE(SoPickAction, SoSpecularColorElement);
   SO_ENABLE(SoPickAction, SoShininessElement);
   SO_ENABLE(SoPickAction, SoTransparencyElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoAmbientColorElement);
   SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
   SO_ENABLE(SoCallbackAction, SoEmissiveColorElement);
   SO_ENABLE(SoCallbackAction, SoSpecularColorElement);
   SO_ENABLE(SoCallbackAction, SoShininessElement);
   SO_ENABLE(SoCallbackAction, SoTransparencyElement);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -189,8 +154,6 @@ SoMaterial::GLRender(SoGLRenderAction * action)
 {
   SoMaterial::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
 
 //
 // Compares materials
@@ -218,7 +181,6 @@ SoMaterial::compareAppearanceVRML2(SoMaterial * otherMaterial)
 }
 #endif // OBSOLETED
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -227,12 +189,8 @@ SoMaterial::doAction(SoAction *action)
 {
   SoState *state = action->getState();
 
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
   uint32_t flags = SoOverrideElement::getFlags(state);
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
-#else // COIN_EXCLUDE_SOOVERRIDEELEMENT
-#define TEST_OVERRIDE(x,y) FALSE // a neat little trick (don't nag, Morten :-)
-#endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
 
   if (!ambientColor.isIgnored() && !TEST_OVERRIDE(AMBIENT_COLOR)) {
     SoAmbientColorElement::set(state,
@@ -272,9 +230,7 @@ SoMaterial::doAction(SoAction *action)
   }
 #undef TEST_OVERRIDE
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -283,4 +239,3 @@ SoMaterial::callback(SoCallbackAction *action)
 {
   SoMaterial::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION

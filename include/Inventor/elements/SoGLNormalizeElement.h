@@ -22,10 +22,6 @@
 
 #include <Inventor/elements/SoElement.h>
 
-#if defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif /// defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
-
 
 class SoGLNormalizeElement : public SoElement {
   typedef SoElement inherited;

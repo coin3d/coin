@@ -23,10 +23,6 @@
 #include <Inventor/SoType.h>
 #include <Inventor/misc/SoNotification.h>
 
-#if defined(COIN_EXCLUDE_SOFIELD)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOFIELD
-
 class SbString;
 class SoEngineOutput;
 class SoFieldContainer;
@@ -36,60 +32,6 @@ class SoInput;
 class SoOutput;
 class SoVRMLInterpOutput;
 
-// Don't include the fields listed below when compiling a minimal
-// version of the Coin library. This is for debugging purposes only,
-// see the comments in the Coin/build/base.pro file. 19990610 mortene.
-
-#if defined(__SOLIB_MAKEASBASE__)
-#define COIN_EXCLUDE_SOFIELDCONVERTER 1
-// The rest is field subclasses.
-//  #define COIN_EXCLUDE_SOMFBITMASK 1
-//  #define COIN_EXCLUDE_SOMFBOOL 1
-//  #define COIN_EXCLUDE_SOMFCOLOR 1
-#define COIN_EXCLUDE_SOMFENGINE 1
-//  #define COIN_EXCLUDE_SOMFENUM 1
-//  #define COIN_EXCLUDE_SOMFFLOAT 1
-//  #define COIN_EXCLUDE_SOMFIELD 1
-//  #define COIN_EXCLUDE_SOMFINT32 1
-//  #define COIN_EXCLUDE_SOMFMATRIX 1
-//  #define COIN_EXCLUDE_SOMFNAME 1
-#define COIN_EXCLUDE_SOMFNODE 1
-#define COIN_EXCLUDE_SOMFPATH 1
-//  #define COIN_EXCLUDE_SOMFPLANE 1
-//  #define COIN_EXCLUDE_SOMFROTATION 1
-//  #define COIN_EXCLUDE_SOMFSHORT 1
-//  #define COIN_EXCLUDE_SOMFSTRING 1
-//  #define COIN_EXCLUDE_SOMFTIME 1
-//  #define COIN_EXCLUDE_SOMFUINT32 1
-//  #define COIN_EXCLUDE_SOMFUSHORT 1
-//  #define COIN_EXCLUDE_SOMFVEC2F 1
-//  #define COIN_EXCLUDE_SOMFVEC3F 1
-//  #define COIN_EXCLUDE_SOMFVEC4F 1
-//  #define COIN_EXCLUDE_SOSFIELD 1
-//  #define COIN_EXCLUDE_SOSFBOOL 1
-//  #define COIN_EXCLUDE_SOSFINT32 1
-//  #define COIN_EXCLUDE_SOSFSTRING 1
-//  #define COIN_EXCLUDE_SOSFBITMASK 1
-//  #define COIN_EXCLUDE_SOSFCOLOR 1
-#define COIN_EXCLUDE_SOSFENGINE 1
-//  #define COIN_EXCLUDE_SOSFENUM 1
-//  #define COIN_EXCLUDE_SOSFFLOAT 1
-//  #define COIN_EXCLUDE_SOSFIMAGE 1
-//  #define COIN_EXCLUDE_SOSFMATRIX 1
-//  #define COIN_EXCLUDE_SOSFNAME 1
-#define COIN_EXCLUDE_SOSFNODE 1
-#define COIN_EXCLUDE_SOSFPATH 1
-//  #define COIN_EXCLUDE_SOSFPLANE 1
-//  #define COIN_EXCLUDE_SOSFROTATION 1
-//  #define COIN_EXCLUDE_SOSFSHORT 1
-//  #define COIN_EXCLUDE_SOSFTIME 1
-#define COIN_EXCLUDE_SOSFTRIGGER 1
-//  #define COIN_EXCLUDE_SOSFUINT32 1
-//  #define COIN_EXCLUDE_SOSFUSHORT 1
-//  #define COIN_EXCLUDE_SOSFVEC2F 1
-//  #define COIN_EXCLUDE_SOSFVEC3F 1
-//  #define COIN_EXCLUDE_SOSFVEC4F 1
-#endif // __SOLIB_MAKEASBASE__
 
 class SoField {
 
@@ -114,14 +56,12 @@ public:
   SbBool isConnectionEnabled(void) const;
 
   // Field<-Engine connection stuff.
-#if !defined(COIN_EXCLUDE_SOENGINE)
   SbBool connectFrom(SoEngineOutput * master,
                      SbBool notnotify = FALSE, SbBool append = FALSE);
   SbBool appendConnection(SoEngineOutput * master, SbBool notnotify = FALSE);
   void disconnect(SoEngineOutput * engineoutput);
   SbBool isConnectedFromEngine(void) const;
   SbBool getConnectedEngine(SoEngineOutput *& master) const;
-#endif // !COIN_EXCLUDE_SOENGINE
 
   // Field<->Field connection stuff.
   SbBool connectFrom(SoField * master,
@@ -205,13 +145,9 @@ protected:
 private:
   void doConnect(SoField * master, SbBool notify);
   void doConnect(SoVRMLInterpOutput * master, SbBool notify);
-#if !defined(COIN_EXCLUDE_SOENGINE)
   void doConnect(SoEngineOutput * master, SbBool notify);
-#endif // !COIN_EXCLUDE_SOENGINE
-#if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
   SbBool createConverter(SoType fromType, SoType toType,
                          SoFieldConverter *& conv);
-#endif // !COIN_EXCLUDE_SOFIELDCONVERTER
 
 
   void notifyAuditors(SoNotList * list);
@@ -239,12 +175,8 @@ private:
 };
 
 #if !defined(__SOLIB_INTERNAL__)
-#if !defined(COIN_EXCLUDE_SOSFIELD)
 #include <Inventor/fields/SoSField.h>
-#endif // !COIN_EXCLUDE_SOSFIELD
-#if !defined(COIN_EXCLUDE_SOMFIELD)
 #include <Inventor/fields/SoMField.h>
-#endif // !COIN_EXCLUDE_SOMFIELD
 #endif // !__SOLIB_INTERNAL__
 
 #endif // !__SOFIELD_H__

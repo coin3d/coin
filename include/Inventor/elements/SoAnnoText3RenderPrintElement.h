@@ -20,12 +20,8 @@
 #ifndef __SOANNOTEXT3RENDERPRINTELEMENT_H__
 #define __SOANNOTEXT3RENDERPRINTELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOANNOTEXT3RENDERPRINTELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOANNOTEXT3RENDERPRINTELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoAnnoText3RenderPrintElement : public SoInt32Element {
   typedef SoInt32Element inherited;

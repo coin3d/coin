@@ -27,28 +27,12 @@
 
 #include <Inventor/nodes/SoProfile.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOPROFILEELEMENT)
 #include <Inventor/elements/SoProfileElement.h>
-#endif // !COIN_EXCLUDE_SOPROFILEELEMENT
-#if !defined(COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT)
 #include <Inventor/elements/SoProfileCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOPROFILECOORDINATEELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
@@ -123,20 +107,14 @@ SoProfile::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoProfile);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoProfileElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoProfileCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoProfileElement);
   SO_ENABLE(SoGLRenderAction, SoProfileCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoProfileElement);
   SO_ENABLE(SoPickAction, SoProfileCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoProfileElement);
   SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
@@ -145,7 +123,6 @@ SoProfile::initClass(void)
   SO_ENABLE(SoCallbackAction, SoProfileCoordinateElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -154,10 +131,7 @@ SoProfile::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoProfile::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -166,9 +140,7 @@ SoProfile::doAction(SoAction *action)
 {
   SoProfileElement::add(action->getState(), this);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -177,9 +149,7 @@ SoProfile::callback(SoCallbackAction *action)
 {
   SoProfile::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -188,9 +158,7 @@ SoProfile::GLRender(SoGLRenderAction * action)
 {
   SoProfile::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -199,9 +167,7 @@ SoProfile::pick(SoPickAction *action)
 {
   SoProfile::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -210,4 +176,4 @@ SoProfile::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoProfile::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
+

@@ -25,26 +25,17 @@
   FIXME: write class doc
 */
 
-#include <Inventor/SoDB.h>
 #include <Inventor/nodes/SoPointLight.h>
-
 
 #include <Inventor/SbVec4f.h>
 #include <Inventor/SbColor4f.h>
-
-#if !defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
 #include <Inventor/elements/SoEnvironmentElement.h>
-#endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGLLIGHTIDELEMENT)
 #include <Inventor/elements/SoGLLightIdElement.h>
-#endif // !COIN_EXCLUDE_SOGLLIGHTIDELEMENT
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -87,7 +78,6 @@ SoPointLight::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoPointLight);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -112,11 +102,9 @@ SoPointLight::GLRender(SoGLRenderAction * action)
 
   SbColor4f lightcolor(0.0f, 0.0f, 0.0f, 1.0f);
   SbVec3f attenuation(0.0f, 0.0f, 1.0f);
-#if !defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
   lightcolor.setRGB(SoEnvironmentElement::getAmbientColor(state));
   lightcolor *= SoEnvironmentElement::getAmbientIntensity(state);
   attenuation = SoEnvironmentElement::getLightAttenuation(state);
-#endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
 
   glLightfv(light, GL_AMBIENT, lightcolor.getValue());
   glLightf(light, GL_QUADRATIC_ATTENUATION, attenuation[0]);
@@ -139,4 +127,3 @@ SoPointLight::GLRender(SoGLRenderAction * action)
   glLightf(light, GL_SPOT_EXPONENT, 0.0);
   glLightf(light, GL_SPOT_CUTOFF, 180.0);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION

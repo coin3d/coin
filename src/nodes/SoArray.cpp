@@ -33,27 +33,12 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOSTATE)
 #include <Inventor/misc/SoState.h>
-#endif // !COIN_EXCLUDE_SOSTATE
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT)
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOSWITCHELEMENT)
 #include <Inventor/elements/SoSwitchElement.h>
-#endif // !COIN_EXCLUDE_SOSWITCHELEMENT
-
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/misc/SoChildList.h>
@@ -149,7 +134,6 @@ SoArray::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoArray);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -327,9 +311,7 @@ SoArray::getBoundingBox(SoGetBoundingBoxAction * action)
     action->setCenter(acccenter / float(numCenters), FALSE);
 #endif // end of new code by pederb
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -338,8 +320,6 @@ SoArray::GLRender(SoGLRenderAction * action)
 {
   SoArray::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
 
 /*!
   FIXME: write doc
@@ -350,7 +330,6 @@ SoArray::affectsState(void) const
   return FALSE; // state is pushed/popped for each traversal
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -403,9 +382,7 @@ SoArray::doAction(SoAction *action)
     }
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
 */
@@ -413,14 +390,12 @@ void
 SoArray::callback(SoCallbackAction *action)
 {
   action->invokePreCallbacks(this);
-  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {  
+  if (action->getCurrentResponse() == SoCallbackAction::CONTINUE) {
     SoArray::doAction((SoAction*)action);
     action->invokePostCallbacks(this);
   }
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   We came across what we think is a bug in TGS/SGI OIV when
   implementing picking for this node. The SoPickedPoint class can
@@ -436,9 +411,7 @@ SoArray::pick(SoPickAction *action)
 {
   SoArray::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write doc
 */
@@ -448,9 +421,7 @@ SoArray::handleEvent(SoHandleEventAction *action)
   SoNode::handleEvent(action);
   inherited::handleEvent(action);
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
 */
@@ -460,9 +431,7 @@ SoArray::getMatrix(SoGetMatrixAction *action)
   // path does not specify which copy to traverse
   inherited::getMatrix(action);
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 /*!
   FIXME: write doc
 */
@@ -472,9 +441,7 @@ SoArray::search(SoSearchAction * action)
   SoNode::search(action);
   inherited::search(action);
 }
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -483,4 +450,3 @@ SoArray::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoArray::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

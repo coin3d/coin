@@ -24,9 +24,6 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/fields/SoSFNode.h>
 
-#if defined(COIN_EXCLUDE_SOVERTEXSHAPE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOVERTEXSHAPE
 
 class SoNormalCache;
 class SoNormalBundle;
@@ -53,18 +50,14 @@ public:
                                         SoNormalCache * cache);
   void generateNormals(SoState * const state);
 
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
   virtual void write(SoWriteAction * writeAction);
-#endif // !COIN_EXCLUDE_SOWRITEACTION
 
 protected:
   SoVertexShape(void);
   virtual ~SoVertexShape();
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual SbBool willUpdateNormalizeElement(SoState *) const;
   virtual SbBool shouldGLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   void setNormalCache(SoState * const state,
                       const int num, const SbVec3f * normals);

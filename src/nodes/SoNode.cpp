@@ -178,306 +178,105 @@ SoNode::initClass(void)
 void
 SoNode::initClasses(void)
 {
-#if !defined(COIN_EXCLUDE_SOCAMERA)
   SoCamera::initClass();
-#endif // COIN_EXCLUDE_SOCAMERA
-#if !defined(COIN_EXCLUDE_SOPERSPECTIVECAMERA)
   SoPerspectiveCamera::initClass();
-#endif // COIN_EXCLUDE_SOPERSPECTIVECAMERA
-#if !defined(COIN_EXCLUDE_SOORTHOGRAPHICCAMERA)
   SoOrthographicCamera::initClass();
-#endif // COIN_EXCLUDE_SOORTHOGRAPHICCAMERA
-#if !defined(COIN_EXCLUDE_SOSHAPE)
   SoShape::initClass();
-#endif // COIN_EXCLUDE_SOSHAPE
-#if !defined(COIN_EXCLUDE_SOANNOTEXT3)
   SoAnnoText3::initClass();
-#endif // COIN_EXCLUDE_SOANNOTEXT3
-#if !defined(COIN_EXCLUDE_SOASCIITEXT)
   SoAsciiText::initClass();
-#endif // COIN_EXCLUDE_SOASCIITEXT
-#if !defined(COIN_EXCLUDE_SOCONE)
   SoCone::initClass();
-#endif // COIN_EXCLUDE_SOCONE
-#if !defined(COIN_EXCLUDE_SOCUBE)
   SoCube::initClass();
-#endif // COIN_EXCLUDE_SOCUBE
-//  #if !defined(COIN_EXCLUDE_SOSPHERE)
-//    SoSphere::initClass();
-//  #endif // COIN_EXCLUDE_SOSPHERE
-#if !defined(COIN_EXCLUDE_SOCYLINDER)
   SoCylinder::initClass();
-#endif // COIN_EXCLUDE_SOCYLINDER
-#if !defined(COIN_EXCLUDE_SOVERTEXSHAPE)
   SoVertexShape::initClass();
-#endif // COIN_EXCLUDE_SOVERTEXSHAPE
-#if !defined(COIN_EXCLUDE_SONONINDEXEDSHAPE)
   SoNonIndexedShape::initClass();
-#endif // COIN_EXCLUDE_SONONINDEXEDSHAPE
-#if !defined(COIN_EXCLUDE_SOFACESET)
   SoFaceSet::initClass();
-#endif // COIN_EXCLUDE_SOFACESET
-#if !defined(COIN_EXCLUDE_SOLINESET)
   SoLineSet::initClass();
-#endif // COIN_EXCLUDE_SOLINESET
-#if !defined(COIN_EXCLUDE_SOPOINTSET)
   SoPointSet::initClass();
-#endif // COIN_EXCLUDE_SOPOINTSET
-#if !defined(COIN_EXCLUDE_SOMARKERSET)
   SoMarkerSet::initClass();
-#endif // COIN_EXCLUDE_SOMARKERSET
-#if !defined(COIN_EXCLUDE_SOQUADMESH)
   SoQuadMesh::initClass();
-#endif // COIN_EXCLUDE_SOQUADMESH
-#if !defined(COIN_EXCLUDE_SOTRIANGLESTRIPSET)
   SoTriangleStripSet::initClass();
-#endif // COIN_EXCLUDE_SOTRIANGLESTRIPSET
-#if !defined(COIN_EXCLUDE_SOINDEXEDSHAPE)
   SoIndexedShape::initClass();
-#endif // COIN_EXCLUDE_SOINDEXEDSHAPE
-#if !defined(COIN_EXCLUDE_SOINDEXEDFACESET)
   SoIndexedFaceSet::initClass();
-#endif // COIN_EXCLUDE_SOINDEXEDFACESET
-#if !defined(COIN_EXCLUDE_SOINDEXEDLINESET)
   SoIndexedLineSet::initClass();
-#endif // COIN_EXCLUDE_SOINDEXEDLINESET
-#if !defined(COIN_EXCLUDE_SOINDEXEDTRIANGLESTRIPSET)
   SoIndexedTriangleStripSet::initClass();
-#endif // COIN_EXCLUDE_SOINDEXEDTRIANGLESTRIPSET
-#if !defined(COIN_EXCLUDE_SOIMAGE)
   SoImage::initClass();
-#endif // COIN_EXCLUDE_SOIMAGE
-#if !defined(COIN_EXCLUDE_SOINDEXEDNURBSCURVE)
   SoIndexedNurbsCurve::initClass();
-#endif // COIN_EXCLUDE_SOINDEXEDNURBSCURVE
-#if !defined(COIN_EXCLUDE_SOINDEXEDNURBSSURFACE)
   SoIndexedNurbsSurface::initClass();
-#endif // COIN_EXCLUDE_SOINDEXEDNURBSSURFACE
-#if !defined(COIN_EXCLUDE_SONURBSCURVE)
   SoNurbsCurve::initClass();
-#endif // COIN_EXCLUDE_SONURBSCURVE
-#if !defined(COIN_EXCLUDE_SONURBSSURFACE)
   SoNurbsSurface::initClass();
-#endif // COIN_EXCLUDE_SONURBSSURFACE
-#if !defined(COIN_EXCLUDE_SOSPHERE)
   SoSphere::initClass();
-#endif // COIN_EXCLUDE_SOSPHERE
-#if !defined(COIN_EXCLUDE_SOTEXT2)
   SoText2::initClass();
-#endif // COIN_EXCLUDE_SOTEXT2
-#if !defined(COIN_EXCLUDE_SOTEXT3)
   SoText3::initClass();
-#endif // COIN_EXCLUDE_SOTEXT3
-#if !defined(COIN_EXCLUDE_SOANNOTEXT3PROPERTY)
   SoAnnoText3Property::initClass();
-#endif // COIN_EXCLUDE_SOANNOTEXT3PROPERTY
-#if !defined(COIN_EXCLUDE_SOGROUP)
   SoGroup::initClass();
-#endif // COIN_EXCLUDE_SOGROUP
-#if !defined(COIN_EXCLUDE_SOSEPARATOR)
   SoSeparator::initClass();
-#endif // COIN_EXCLUDE_SOSEPARATOR
-#if !defined(COIN_EXCLUDE_SOANNOTATION)
   SoAnnotation::initClass();
-#endif // COIN_EXCLUDE_SOANNOTATION
-#if !defined(COIN_EXCLUDE_SOLOCATEHIGHLIGHT)
   SoLocateHighlight::initClass();
-#endif // COIN_EXCLUDE_SOLOCATEHIGHLIGHT
-#if !defined(COIN_EXCLUDE_SOWWWANCHOR)
   SoWWWAnchor::initClass();
-#endif // COIN_EXCLUDE_SOWWWANCHOR
-#if !defined(COIN_EXCLUDE_SOARRAY)
   SoArray::initClass();
-#endif // COIN_EXCLUDE_SOARRAY
-#if !defined(COIN_EXCLUDE_SOSWITCH)
   SoSwitch::initClass();
-#endif // COIN_EXCLUDE_SOSWITCH
-#if !defined(COIN_EXCLUDE_SOBLINKER)
   SoBlinker::initClass();
-#endif // COIN_EXCLUDE_SOBLINKER
-#if !defined(COIN_EXCLUDE_SOLOD)
   SoLOD::initClass();
-#endif // COIN_EXCLUDE_SOLOD
-#if !defined(COIN_EXCLUDE_SOLEVELOFSIMPLIFICATION)
   SoLevelOfSimplification::initClass();
-#endif // COIN_EXCLUDE_SOLEVELOFSIMPLIFICATION
-#if !defined(COIN_EXCLUDE_SOLEVELOFDETAIL)
   SoLevelOfDetail::initClass();
-#endif // COIN_EXCLUDE_SOLEVELOFDETAIL
-#if !defined(COIN_EXCLUDE_SOMULTIPLECOPY)
   SoMultipleCopy::initClass();
-#endif // COIN_EXCLUDE_SOMULTIPLECOPY
-#if !defined(COIN_EXCLUDE_SOPATHSWITCH)
   SoPathSwitch::initClass();
-#endif // COIN_EXCLUDE_SOPATHSWITCH
-#if !defined(COIN_EXCLUDE_SOTRANSFORMSEPARATOR)
   SoTransformSeparator::initClass();
-#endif // COIN_EXCLUDE_SOTRANSFORMSEPARATOR
-#if !defined(COIN_EXCLUDE_SOTRANSFORMATION)
   SoTransformation::initClass();
-#endif // COIN_EXCLUDE_SOTRANSFORMATION
-#if !defined(COIN_EXCLUDE_SOMATRIXTRANSFORM)
   SoMatrixTransform::initClass();
-#endif // COIN_EXCLUDE_SOMATRIXTRANSFORM
-#if !defined(COIN_EXCLUDE_SOROTATION)
   SoRotation::initClass();
-#endif // COIN_EXCLUDE_SOROTATION
-#if !defined(COIN_EXCLUDE_SOPENDULUM)
   SoPendulum::initClass();
-#endif // COIN_EXCLUDE_SOPENDULUM
-#if !defined(COIN_EXCLUDE_SOROTOR)
   SoRotor::initClass();
-#endif // COIN_EXCLUDE_SOROTOR
-#if !defined(COIN_EXCLUDE_SORESETTRANSFORM)
   SoResetTransform::initClass();
-#endif // COIN_EXCLUDE_SORESETTRANSFORM
-#if !defined(COIN_EXCLUDE_SOROTATIONXYZ)
   SoRotationXYZ::initClass();
-#endif // COIN_EXCLUDE_SOROTATIONXYZ
-#if !defined(COIN_EXCLUDE_SOSCALE)
   SoScale::initClass();
-#endif // COIN_EXCLUDE_SOSCALE
-#if !defined(COIN_EXCLUDE_SOTRANSLATION)
   SoTranslation::initClass();
-#endif // COIN_EXCLUDE_SOTRANSLATION
-#if !defined(COIN_EXCLUDE_SOSHUTTLE)
   SoShuttle::initClass();
-#endif // COIN_EXCLUDE_SOSHUTTLE
-#if !defined(COIN_EXCLUDE_SOTRANSFORM)
   SoTransform::initClass();
-#endif // COIN_EXCLUDE_SOTRANSFORM
-#if !defined(COIN_EXCLUDE_SOUNITS)
   SoUnits::initClass();
-#endif // COIN_EXCLUDE_SOUNITS
-#if !defined(COIN_EXCLUDE_SOBASECOLOR)
   SoBaseColor::initClass();
-#endif // COIN_EXCLUDE_SOBASECOLOR
-#if !defined(COIN_EXCLUDE_SOCALLBACK)
   SoCallback::initClass();
-#endif // COIN_EXCLUDE_SOCALLBACK
-#if !defined(COIN_EXCLUDE_SOCLIPPLANE)
   SoClipPlane::initClass();
-#endif // COIN_EXCLUDE_SOCLIPPLANE
-#if !defined(COIN_EXCLUDE_SOCOLORINDEX)
   SoColorIndex::initClass();
-#endif // COIN_EXCLUDE_SOCOLORINDEX
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITY)
   SoComplexity::initClass();
-#endif // COIN_EXCLUDE_SOCOMPLEXITY
-#if !defined(COIN_EXCLUDE_SOCOORDINATE3)
   SoCoordinate3::initClass();
-#endif // COIN_EXCLUDE_SOCOORDINATE3
-#if !defined(COIN_EXCLUDE_SOCOORDINATE4)
   SoCoordinate4::initClass();
-#endif // COIN_EXCLUDE_SOCOORDINATE4
-#if !defined(COIN_EXCLUDE_SOLIGHT)
   SoLight::initClass();
-#endif // COIN_EXCLUDE_SOLIGHT
-#if !defined(COIN_EXCLUDE_SODIRECTIONALLIGHT)
   SoDirectionalLight::initClass();
-#endif // COIN_EXCLUDE_SODIRECTIONALLIGHT
-#if !defined(COIN_EXCLUDE_SOSPOTLIGHT)
   SoSpotLight::initClass();
-#endif // COIN_EXCLUDE_SOSPOTLIGHT
-#if !defined(COIN_EXCLUDE_SOPOINTLIGHT)
   SoPointLight::initClass();
-#endif // COIN_EXCLUDE_SOPOINTLIGHT
-#if !defined(COIN_EXCLUDE_SODRAWSTYLE)
   SoDrawStyle::initClass();
-#endif // COIN_EXCLUDE_SODRAWSTYLE
-#if !defined(COIN_EXCLUDE_SOENVIRONMENT)
   SoEnvironment::initClass();
-#endif // COIN_EXCLUDE_SOENVIRONMENT
-#if !defined(COIN_EXCLUDE_SOEVENTCALLBACK)
   SoEventCallback::initClass();
-#endif // COIN_EXCLUDE_SOEVENTCALLBACK
-#if !defined(COIN_EXCLUDE_SOFILE)
   SoFile::initClass();
-#endif // COIN_EXCLUDE_SOFILE
-#if !defined(COIN_EXCLUDE_SOFONT)
   SoFont::initClass();
-#endif // COIN_EXCLUDE_SOFONT
-#if !defined(COIN_EXCLUDE_SOFONTSTYLE)
   SoFontStyle::initClass();
-#endif // COIN_EXCLUDE_SOFONTSTYLE
-#if !defined(COIN_EXCLUDE_SOINFO)
   SoInfo::initClass();
-#endif // COIN_EXCLUDE_SOINFO
-#if !defined(COIN_EXCLUDE_SOLABEL)
   SoLabel::initClass();
-#endif // COIN_EXCLUDE_SOLABEL
-#if !defined(COIN_EXCLUDE_SOLIGHTMODEL)
   SoLightModel::initClass();
-#endif // COIN_EXCLUDE_SOLIGHTMODEL
-#if !defined(COIN_EXCLUDE_SOPROFILE)
   SoProfile::initClass();
-#endif // COIN_EXCLUDE_SOPROFILE
-#if !defined(COIN_EXCLUDE_SOLINEARPROFILE)
   SoLinearProfile::initClass();
-#endif // COIN_EXCLUDE_SOLINEARPROFILE
-#if !defined(COIN_EXCLUDE_SONURBSPROFILE)
   SoNurbsProfile::initClass();
-#endif // COIN_EXCLUDE_SONURBSPROFILE
-#if !defined(COIN_EXCLUDE_SOMATERIAL)
   SoMaterial::initClass();
-#endif // COIN_EXCLUDE_SOMATERIAL
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDING)
   SoMaterialBinding::initClass();
-#endif // COIN_EXCLUDE_SOMATERIALBINDING
-#if !defined(COIN_EXCLUDE_SONORMAL)
   SoNormal::initClass();
-#endif // COIN_EXCLUDE_SONORMAL
-#if !defined(COIN_EXCLUDE_SONORMALBINDING)
   SoNormalBinding::initClass();
-#endif // COIN_EXCLUDE_SONORMALBINDING
-#if !defined(COIN_EXCLUDE_SOPACKEDCOLOR)
   SoPackedColor::initClass();
-#endif // COIN_EXCLUDE_SOPACKEDCOLOR
-#if !defined(COIN_EXCLUDE_SOPICKSTYLE)
   SoPickStyle::initClass();
-#endif // COIN_EXCLUDE_SOPICKSTYLE
-#if !defined(COIN_EXCLUDE_SOPOLYGONOFFSET)
   SoPolygonOffset::initClass();
-#endif // COIN_EXCLUDE_SOPOLYGONOFFSET
-#if !defined(COIN_EXCLUDE_SOPROFILECOORDINATE2)
   SoProfileCoordinate2::initClass();
-#endif // COIN_EXCLUDE_SOPROFILECOORDINATE2
-#if !defined(COIN_EXCLUDE_SOPROFILECOORDINATE3)
   SoProfileCoordinate3::initClass();
-#endif // COIN_EXCLUDE_SOPROFILECOORDINATE3
-#if !defined(COIN_EXCLUDE_SOSHAPEHINTS)
   SoShapeHints::initClass();
-#endif // COIN_EXCLUDE_SOSHAPEHINTS
-#if !defined(COIN_EXCLUDE_SOTEXTURE2)
   SoTexture2::initClass();
-#endif // COIN_EXCLUDE_SOTEXTURE2
-#if !defined(COIN_EXCLUDE_SOTEXTURE2TRANSFORM)
   SoTexture2Transform::initClass();
-#endif // COIN_EXCLUDE_SOTEXTURE2TRANSFORM
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATE2)
   SoTextureCoordinate2::initClass();
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATE2
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDING)
   SoTextureCoordinateBinding::initClass();
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEBINDING
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEFUNCTION)
   SoTextureCoordinateFunction::initClass();
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEFUNCTION
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEDEFAULT)
   SoTextureCoordinateDefault::initClass();
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEDEFAULT
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEENVIRONMENT)
   SoTextureCoordinateEnvironment::initClass();
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEENVIRONMENT
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEPLANE)
   SoTextureCoordinatePlane::initClass();
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEPLANE
-#if !defined(COIN_EXCLUDE_SOVERTEXPROPERTY)
   SoVertexProperty::initClass();
-#endif // COIN_EXCLUDE_SOVERTEXPROPERTY
-#if !defined(COIN_EXCLUDE_SOWWWINLINE)
   SoWWWInline::initClass();
-#endif // COIN_EXCLUDE_SOWWWINLINE
 }
 
 // *************************************************************************
@@ -504,7 +303,6 @@ SoNode::isOverride(void) const
 // * ACTION STUFF
 // *************************************************************************
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   This function performs the typical operation of a node for any action.
   Default method does nothing.
@@ -513,8 +311,6 @@ void
 SoNode::doAction(SoAction *)
 {
 }
-#endif // !COIN_EXCLUDE_SOACTION
-
 
 /*!
   FIXME: write function documentation
@@ -549,8 +345,6 @@ SoNode::getByName(const SbName & /* name */, SoNodeList & /* list */)
   return 0;
 }
 
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -572,10 +366,7 @@ void
 SoNode::getBoundingBox(SoGetBoundingBoxAction *)
 {
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write function documentation
 */
@@ -594,11 +385,7 @@ void
 SoNode::getPrimitiveCount(SoGetPrimitiveCountAction *)
 {
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-// *************************************************************************
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   This static method is used for calling the respective virtual method on the
   node.
@@ -675,11 +462,7 @@ SoNode::GLRenderOffPath(SoGLRenderAction * action)
 {
   this->GLRender(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-// *************************************************************************
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -713,11 +496,7 @@ void
 SoNode::callback(SoCallbackAction * /* action */)
 {
 }
-#endif // COIN_EXCLUDE_SOCALLBACKACTION
 
-// *************************************************************************
-
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -748,11 +527,7 @@ SoNode::getMatrix(SoGetMatrixAction * /* action */)
 {
   //FIXME: This should return identity as default (kintel 19990615)
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-// *************************************************************************
-
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write function documentation
 */
@@ -773,11 +548,7 @@ void
 SoNode::handleEvent(SoHandleEventAction * /* action */)
 {
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-// *************************************************************************
-
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -798,11 +569,7 @@ void
 SoNode::pick(SoPickAction * /* action */)
 {
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-// *************************************************************************
-
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -829,11 +596,7 @@ void
 SoNode::rayPick(SoRayPickAction * /* action */)
 {
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-// *************************************************************************
-
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 /*!
   FIXME: write function documentation
 */
@@ -893,11 +656,6 @@ SoNode::search(SoSearchAction * action)
   //doAction(action);  // this is correct, right? I don't think so: pederb
 }
 
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
-
-// *************************************************************************
-
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
 /*!
   \internal
 
@@ -935,7 +693,6 @@ SoNode::write(SoWriteAction * action)
   }
   else assert(0 && "unknown stage");
 }
-#endif // !COIN_EXCLUDE_SOWRITEACTION
 
 /*!
   FIXME: write function documentation

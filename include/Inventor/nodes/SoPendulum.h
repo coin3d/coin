@@ -26,11 +26,6 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
-#if defined(COIN_EXCLUDE_SOPENDULUM)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOPENDULUM
-
-// *************************************************************************
 
 class SoPendulum : public SoRotation {
   typedef SoRotation inherited;

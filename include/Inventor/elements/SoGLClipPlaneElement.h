@@ -20,12 +20,8 @@
 #ifndef __SOGLCLIPPLANEELEMENT_H__
 #define __SOGLCLIPPLANEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLCLIPPLANEELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLCLIPPLANEELEMENT
-
 #include <Inventor/elements/SoClipPlaneElement.h>
+
 
 class SoGLClipPlaneElement : public SoClipPlaneElement {
   typedef SoClipPlaneElement inherited;

@@ -26,11 +26,6 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFColor.h>
 
-#if defined(COIN_EXCLUDE_SOLIGHT)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOLIGHT
-
-// *************************************************************************
 
 class SoLight : public SoNode {
   typedef SoNode inherited;
@@ -44,9 +39,7 @@ public:
   SoSFFloat intensity;
   SoSFColor color;
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 protected:
   SoLight(void);

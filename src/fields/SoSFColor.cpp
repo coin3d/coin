@@ -31,15 +31,9 @@
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
 
-#if !defined(COIN_EXCLUDE_SOSFVEC3F)
 #include <Inventor/fields/SoSFVec3f.h>
-#endif // !COIN_EXCLUDE_SOSFVEC3F
-#if !defined(COIN_EXCLUDE_SOMFCOLOR)
 #include <Inventor/fields/SoMFColor.h>
-#endif // !COIN_EXCLUDE_SOMFCOLOR
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #ifdef _WIN32
 #include <strstrea.h>
 #else // ! _WIN32
@@ -262,13 +256,9 @@ SoSFColor::setHSVValue(const float hsv[3])
 void
 SoSFColor::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFVEC3F)
-  else if (dest->getTypeId()==SoSFVec3f::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFVec3f::getClassTypeId()) {
     ((SoSFVec3f *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOSFVEC3F
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     ostr << this->getValue()[0] << " " <<
@@ -276,12 +266,9 @@ SoSFColor::convertTo(SoField * dest) const
       this->getValue()[2] << '\0';
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOMFCOLOR)
   else if (dest->getTypeId()==SoMFColor::getClassTypeId()) {
     ((SoMFColor *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFCOLOR
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFColor::convertTo",

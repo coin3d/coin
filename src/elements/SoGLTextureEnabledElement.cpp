@@ -30,9 +30,7 @@
 
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
 
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 
 #include <Inventor/SbName.h>
 
@@ -85,9 +83,7 @@ SoGLTextureEnabledElement::set(SoState * const state,
                                const SbBool enabled)
 {
   SoInt32Element::set(classStackIndex, state, node, (int32_t) enabled);
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setTextureEnabled(state, enabled);
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 }
 
 //! FIXME: write doc.

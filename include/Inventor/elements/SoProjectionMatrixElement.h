@@ -20,13 +20,9 @@
 #ifndef __SOPROJECTIONMATRIXELEMENT_H__
 #define __SOPROJECTIONMATRIXELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOPROJECTIONMATRIXELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOPROJECTIONMATRIXELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbMatrix.h>
+
 
 class SoProjectionMatrixElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

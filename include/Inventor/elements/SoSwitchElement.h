@@ -20,12 +20,8 @@
 #ifndef __SOSWITCHELEMENT_H__
 #define __SOSWITCHELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOSWITCHELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOSWITCHELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoSwitchElement : public SoInt32Element {
   typedef SoInt32Element inherited;

@@ -23,10 +23,6 @@
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/SbVec3f.h>
 
-#if defined(COIN_EXCLUDE_SOMFVEC3F)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOMFVEC3F
-
 
 class SoMFVec3f : public SoMField {
   typedef SoMField inherited;

@@ -20,12 +20,8 @@
 #ifndef __SOREORGANIZEACTION_H__
 #define __SOREORGANIZEACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOREORGANIZEACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOREORGANIZEACTION
-
 #include <Inventor/actions/SoSimplifyAction.h>
+
 
 class SoReorganizeAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;

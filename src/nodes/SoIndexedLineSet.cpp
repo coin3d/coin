@@ -29,58 +29,30 @@
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoRayPickAction.h>
-
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/misc/SoState.h>
-
-#if !defined(COIN_EXCLUDE_SOMATERIALBUNDLE)
 #include <Inventor/bundles/SoMaterialBundle.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBUNDLE
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // !_WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALELEMENT)
 #include <Inventor/elements/SoNormalElement.h>
-#endif // !COIN_EXCLUDE_SONORMALELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT)
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
 #include <Inventor/elements/SoDrawStyleElement.h>
-#endif
-#if !defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
 #include <Inventor/elements/SoGLLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
 
 #include <assert.h>
 
@@ -204,7 +176,6 @@ SoIndexedLineSet::findNormalBinding(SoState * state)
 {
   Binding binding = PER_VERTEX_INDEXED;
 
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
   SoNormalBindingElement::Binding normbind =
     (SoNormalBindingElement::Binding) SoNormalBindingElement::get(state);
 
@@ -237,7 +208,6 @@ SoIndexedLineSet::findNormalBinding(SoState * state)
 #endif // COIN_DEBUG
     break;
   }
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
 
   return binding;
 }
@@ -250,7 +220,6 @@ SoIndexedLineSet::findMaterialBinding(SoState * state)
 {
   Binding binding = OVERALL;
 
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   SoMaterialBindingElement::Binding matbind =
     (SoMaterialBindingElement::Binding) SoMaterialBindingElement::get(state);
 
@@ -283,13 +252,11 @@ SoIndexedLineSet::findMaterialBinding(SoState * state)
 #endif // COIN_DEBUG
     break;
   }
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
 
   return binding;
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -320,14 +287,11 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   const int32_t * tindices;
   const int32_t * mindices;
   SbBool doTextures;
-  SbBool sendNormals = TRUE;
   SbBool normalCacheUsed;
 
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
-  sendNormals =
+  SbBool sendNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
   getVertexData(state, coords, normals, cindices,
                 nindices, tindices, mindices, numindices,
@@ -352,11 +316,9 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 
   if (!sendNormals) {
     nbind = OVERALL;
-#if !defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
     const SoGLLightModelElement * lm = (SoGLLightModelElement *)
       state->getConstElement(SoGLLightModelElement::getClassStackIndex());
     lm->forceSend(SoLightModelElement::BASE_COLOR);
-#endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
   }
   else if (nbind == OVERALL) {
     glNormal3fv((const GLfloat *)normals);
@@ -364,17 +326,12 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst(); // make sure we have the correct material
 
-  SbBool drawPoints = FALSE;
-#if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
-  drawPoints = SoDrawStyleElement::get(state) ==
-    SoDrawStyleElement::POINTS;
-#endif
+  SbBool drawPoints =
+    SoDrawStyleElement::get(state) == SoDrawStyleElement::POINTS;
 
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
   const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
     action->getState()->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
   sh->forceSend(TRUE, FALSE, TRUE); // enable twoside lighting
-#endif
 
   sogl_render_lineset((SoGLCoordinateElement *)coords,
                       cindices,
@@ -404,8 +361,6 @@ SoIndexedLineSet::willSetShapeHints(void) const
   return TRUE;
 }
 
-#endif // COIN_EXCLUDE_SOGLRENDERACTION
-
 /*!
   FIXME: write function documentation
 */
@@ -418,8 +373,6 @@ SoIndexedLineSet::generateDefaultNormals(SoState * ,
   return TRUE;
 }
 
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write doc
 */
@@ -429,9 +382,7 @@ SoIndexedLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
   inherited::getBoundingBox(action);
   // FIXME: tell cache that geometry contain lines
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -461,9 +412,7 @@ SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->addNumLines(add);
   }
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -763,4 +712,3 @@ SoIndexedLineSet::generatePrimitives(SoAction *action)
     state->pop();
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION

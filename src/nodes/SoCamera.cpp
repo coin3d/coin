@@ -27,40 +27,17 @@
 
 #include <Inventor/nodes/SoCamera.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 #include <Inventor/actions/SoRayPickAction.h>
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
-#if !defined(COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT)
 #include <Inventor/elements/SoGLProjectionMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOGLVIEWINGMATRIXELEMENT)
 #include <Inventor/elements/SoGLViewingMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOGLVIEWINGMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOGLVIEWPORTREGIONELEMENT)
 #include <Inventor/elements/SoGLViewportRegionElement.h>
-#endif // !COIN_EXCLUDE_SOGLVIEWPORTREGIONELEMENT
-#if !defined(COIN_EXCLUDE_SOGLUPDATEAREAELEMENT)
 #include <Inventor/elements/SoGLUpdateAreaElement.h>
-#endif // !COIN_EXCLUDE_SOGLUPDATEAREAELEMENT
-#if !defined(COIN_EXCLUDE_SOFOCALDISTANCEELEMENT)
 #include <Inventor/elements/SoFocalDistanceElement.h>
-#endif // !COIN_EXCLUDE_SOFOCALDISTANCEELEMENT
-#if !defined(COIN_EXCLUDE_SOVIEWVOLUMEELEMENT)
 #include <Inventor/elements/SoViewVolumeElement.h>
-#endif // !COIN_EXCLUDE_SOVIEWVOLUMEELEMENT
-
 #include <Inventor/elements/SoModelMatrixElement.h>
 
 #if COIN_DEBUG
@@ -184,33 +161,25 @@ SoCamera::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_ABSTRACT_CLASS(SoCamera);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoFocalDistanceElement);
   SO_ENABLE(SoGLRenderAction, SoGLProjectionMatrixElement);
   SO_ENABLE(SoGLRenderAction, SoViewVolumeElement);
   SO_ENABLE(SoGLRenderAction, SoGLViewingMatrixElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoFocalDistanceElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoProjectionMatrixElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoViewVolumeElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoViewingMatrixElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   SO_ENABLE(SoRayPickAction, SoFocalDistanceElement);
   SO_ENABLE(SoRayPickAction, SoProjectionMatrixElement);
   SO_ENABLE(SoRayPickAction, SoViewVolumeElement);
   SO_ENABLE(SoRayPickAction, SoViewingMatrixElement);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoFocalDistanceElement);
   SO_ENABLE(SoCallbackAction, SoProjectionMatrixElement);
   SO_ENABLE(SoCallbackAction, SoViewVolumeElement);
   SO_ENABLE(SoCallbackAction, SoViewingMatrixElement);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
   SO_ENABLE(SoGetPrimitiveCountAction, SoFocalDistanceElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoProjectionMatrixElement);
@@ -233,7 +202,6 @@ SoCamera::pointAt(const SbVec3f & targetPoint)
   orientation.setValue(rot);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -267,7 +235,6 @@ SoCamera::viewAll(SoPath * const path,
   SbBox3f box = action.getBoundingBox();
   this->viewBoundingBox(box, aspectRatio.getValue(), slack);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
 /*!
   FIXME: write function documentation
@@ -279,7 +246,6 @@ SoCamera::getViewportBounds(const SbViewportRegion & /* region */) const
   return SbViewportRegion();
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -288,9 +254,7 @@ SoCamera::GLRender(SoGLRenderAction *action)
 {
   SoCamera::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -299,9 +263,7 @@ SoCamera::getBoundingBox(SoGetBoundingBoxAction *action)
 {
   SoCamera::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write function documentation
 */
@@ -312,7 +274,6 @@ SoCamera::handleEvent(SoHandleEventAction * /* action */)
   // SoHandleEventAction handling of ray picks correct? 19990214
   // mortene.
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
 /*!
   FIXME: write function documentation
@@ -325,7 +286,6 @@ SoCamera::jitter(int /* numPasses */, int /* curPass */,
   COIN_STUB();
 }
 
-#if !defined(COIN_EXCLUDE_DOACTION)
 /*!
   FIXME: write doc
 */
@@ -349,9 +309,7 @@ SoCamera::doAction(SoAction *action)
   SoViewingMatrixElement::set(state, this, affine);
   SoFocalDistanceElement::set(state, this, this->focalDistance.getValue());
 }
-#endif // !COIN_EXCLUDE_DOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
 */
@@ -360,9 +318,7 @@ SoCamera::callback(SoCallbackAction *action)
 {
   SoCamera::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -372,9 +328,7 @@ SoCamera::rayPick(SoRayPickAction *action)
   SoCamera::doAction(action);
   action->computeWorldSpaceRay();
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -383,4 +337,3 @@ SoCamera::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoCamera::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

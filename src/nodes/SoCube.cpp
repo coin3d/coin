@@ -30,44 +30,19 @@
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SoState.h>
-
-#if !defined(COIN_EXCLUDE_SOMATERIALBUNDLE)
 #include <Inventor/bundles/SoMaterialBundle.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBUNDLE
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/details/SoCubeDetail.h>
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOGLSHAPEHINTSELEMENY
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
-#endif // !COIN_EXCLUDE_SOGLSHADEMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
 
@@ -125,7 +100,6 @@ SoCube::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoCube);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -135,24 +109,15 @@ SoCube::GLRender(SoGLRenderAction * action)
   if (!this->shouldGLRender(action)) return;
   SoState * state = action->getState();
 
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   SoMaterialBindingElement::Binding binding =
     SoMaterialBindingElement::get(state);
 
   SbBool materialPerPart =
     (binding == SoMaterialBindingElement::PER_PART ||
      binding == SoMaterialBindingElement::PER_PART_INDEXED);
-#else // COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-  SbBool materialPerPart = FALSE;
-#endif // COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
 
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
-#else // COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
-  SbBool doTextures = FALSE;
-#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
 
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
   SbBool useTexFunc =
     (SoTextureCoordinateElement::getType(state) ==
      SoTextureCoordinateElement::FUNCTION);
@@ -160,40 +125,27 @@ SoCube::GLRender(SoGLRenderAction * action)
   const SoTextureCoordinateElement * tce;
   if (useTexFunc)
     tce = SoTextureCoordinateElement::getInstance(state);
-#else // COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
-  SbBool useTexFunc = FALSE;
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
 
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   SbBool sendNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#else // COIN_EXCLUDE_SOLIGHTMODELELEMENT
-  SbBool sendNormals = FALSE;
-#endif // COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
   const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
     action->getState()->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
   sh->forceSend(TRUE, TRUE);
-#endif
 
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
     state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
   sm->forceSend(TRUE);
-#endif
 
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   if (sendNormals) {
     const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
       state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
     ne->forceSend(TRUE);
   }
-#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
   unsigned int flags = 0;
   if (materialPerPart) flags |= SOGL_MATERIAL_PER_PART;
@@ -255,9 +207,6 @@ SoCube::willUpdateNormalizeElement(SoState *) const
   return TRUE;
 }
 
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -269,10 +218,7 @@ SoCube::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
   this->getHalfSize(w,h,d);
   box.setBounds(-w, -h, -d, w, h, d);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -319,7 +265,6 @@ SoCube::rayPick(SoRayPickAction *action)
     }
   }
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
 /*!
   \internal
@@ -335,7 +280,6 @@ SoCube::getHalfSize(float & w, float & h, float & d)
        depth.getValue() / 2.0f);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -351,4 +295,3 @@ SoCube::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->incNumCubes();
   }
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

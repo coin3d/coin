@@ -27,24 +27,11 @@
 
 #include <Inventor/nodes/SoResetTransform.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 
 /*!
   \enum SoResetTransform::ResetType
@@ -102,7 +89,6 @@ SoResetTransform::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoResetTransform);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -112,15 +98,11 @@ SoResetTransform::GLRender(SoGLRenderAction * action)
   if (this->whatToReset.getValue() & SoResetTransform::TRANSFORM) {
     SoModelMatrixElement::set(action->getState(), this,
                               SbMatrix::identity());
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
     SoGLNormalizeElement::setMatrixState(action->getState(), TRUE);
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
   }
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -134,10 +116,7 @@ SoResetTransform::getBoundingBox(SoGetBoundingBoxAction * action)
     SoModelMatrixElement::set(action->getState(), this,
                               SbMatrix::identity());
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -148,9 +127,7 @@ SoResetTransform::doAction(SoAction *action)
     SoModelMatrixElement::set(action->getState(), this,
                               SbMatrix::identity());
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -159,9 +136,7 @@ SoResetTransform::callback(SoCallbackAction *action)
 {
   SoResetTransform::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
 */
@@ -173,9 +148,7 @@ SoResetTransform::getMatrix(SoGetMatrixAction *action)
     action->getInverse().makeIdentity();
   }
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -184,9 +157,7 @@ SoResetTransform::pick(SoPickAction *action)
 {
   SoResetTransform::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -195,4 +166,3 @@ SoResetTransform::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoResetTransform::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

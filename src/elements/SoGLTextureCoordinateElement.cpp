@@ -25,9 +25,7 @@
 
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
 
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 
 #include <Inventor/SbName.h>
 
@@ -115,9 +113,7 @@ SoGLTextureCoordinateElement::setTexGen(SoState * const state,
                                         SoTextureCoordinateFunctionCB * const func,
                                         void * const funcData)
 {
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   SoShapeStyleElement::setTextureFunction(state, texgenFunc && !func);
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 
   SoTextureCoordinateElement::setFunction(state, node, func, funcData);
 

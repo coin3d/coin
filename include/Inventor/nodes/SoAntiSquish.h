@@ -26,12 +26,6 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/SbMatrix.h>
 
-#if defined(COIN_EXCLUDE_SOANTISQUISH)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOANTISQUISH
-
-
-// *************************************************************************
 
 class SoAntiSquish : public SoTransformation {
   typedef SoTransformation inherited;
@@ -51,28 +45,16 @@ public:
   SoSFBool recalcAlways;
 
   void recalc(void);
-#if !defined(COIN_EXCLUDE_SOACTION)
   void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
 
 protected:
   virtual ~SoAntiSquish();
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
   virtual void getMatrix(SoGetMatrixAction * action);
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
   SbMatrix getUnsquishingMatrix(SbMatrix squishedMatrix,
                                 SbBool doInverse, SbMatrix &inverseAnswer);

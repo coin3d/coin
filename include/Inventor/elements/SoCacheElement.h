@@ -20,14 +20,10 @@
 #ifndef __SOCACHEELEMENT_H__
 #define __SOCACHEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOCACHEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOCACHEELEMENT
-
 #include <Inventor/elements/SoElement.h>
 
 class SoCache;
+
 
 class SoCacheElement : public SoElement {
   typedef SoElement inherited;

@@ -22,11 +22,6 @@
 
 #include <Inventor/events/SoButtonEvent.h>
 
-#if defined(COIN_EXCLUDE_SOSPACEBALLBUTTONEVENT)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSPACEBALLBUTTONEVENT
-
-
 #define SO_SPACEBALL_PRESS_EVENT(EVENT, BUTTON) \
  (SoSpaceballButtonEvent::isButtonPressEvent(EVENT, \
                                              SoSpaceballButtonEvent::BUTTON))

@@ -20,12 +20,8 @@
 #ifndef __SOFOCALDISTANCEELEMENT_H__
 #define __SOFOCALDISTANCEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOFOCALDISTANCEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOFOCALDISTANCEELEMENT
-
 #include <Inventor/elements/SoFloatElement.h>
+
 
 class SoFocalDistanceElement : public SoFloatElement {
   typedef SoFloatElement inherited;

@@ -24,10 +24,6 @@
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbTime.h>
 
-#if defined(COIN_EXCLUDE_SOEVENT)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOEVENT
-
 class SbViewportRegion;
 class SbVec2f;
 

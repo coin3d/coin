@@ -27,37 +27,16 @@
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 
-#if !defined(COIN_EXCLUDE_SOSTATE)
 #include <Inventor/misc/SoState.h>
-#endif // !COIN_EXCLUDE_SOSTATE
-
-#if !defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
 #include <Inventor/elements/SoGLAmbientColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT)
 #include <Inventor/elements/SoGLEmissiveColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
 #include <Inventor/elements/SoGLPolygonStippleElement.h>
-#endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHININESSELEMENT)
 #include <Inventor/elements/SoGLShininessElement.h>
-#endif // !COIN_EXCLUDE_SOGLSHININESSELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT)
 #include <Inventor/elements/SoGLSpecularColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
 #include <Inventor/elements/SoTransparencyElement.h>
-#endif // !COIN_EXCLUDE_SOTRANSPARENCYELEMENT
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // ! COIN_EXCLUDE_SOLIGHTMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
 
 #include <Inventor/misc/SoState.h>
 
@@ -111,19 +90,11 @@ SoMaterialBundle::sendFirst()
   // testing (it is most common to have multiple diffuse values)
   if (!diffuseOnly) {
     if (TRUE &&
-#if !defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
         ambientElt->getNum() <= 1 &&
-#endif
-#if !defined(COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT)
         specularElt->getNum() <= 1 &&
-#endif
-#if !defined(COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT)
         emissiveElt->getNum() <= 1 &&
-#endif
-#if !defined(COIN_EXCLUDE_SOGLSHININESSELEMENT)
-        shininessElt->getNum() <= 1
-#endif
-        ) diffuseOnly = TRUE;
+        shininessElt->getNum() <= 1)
+      diffuseOnly = TRUE;
   }
 }
 
@@ -171,9 +142,7 @@ SoMaterialBundle::isColorOnly() const
 void
 SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
 {
-#if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
   if (doStipple && !isBetweenBeginEnd) {
-#if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
     float trans = transparencyElt->get(index);
     if (packedColors) {
       trans = (255 - (packedColors[index] & 0xff)) / 255.0f;
@@ -183,11 +152,9 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
       SoGLPolygonStippleElement::setTransparency(this->state, trans);
     }
     else
-#endif // !COIN_EXCLUDE_SOTRANSPARENCYELEMENT
       SoGLPolygonStippleElement::set(this->state, FALSE);
     stippleElt->evaluate(); // this is a lazy element. Force send.
   }
-#endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT
 
   // FIXME: probably not needed anymore. It was an ugly piece
   // of code anyway... pederb, 990608
@@ -203,37 +170,22 @@ SoMaterialBundle::reallySend(const int index, const SbBool isBetweenBeginEnd)
                  p&0xff);
     }
   }
-#if !defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
   else {
     if (!isBetweenBeginEnd) {
-#if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
       diffuseElt->send(index, 1.0f - transparencyElt->get(index));
-#else // COIN_EXCLUDE_SOTRANSPARENCYELEMENT
       diffuseElt->send(index);
-#endif // ! COIN_EXCLUDE_SOTRANSPARENCYELEMENT
     }
     else {
       diffuseElt->send(index);
     }
   }
-#endif // !COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT
 
   if (!diffuseOnly) {
-#if !defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
     ambientElt->send(index);
-#endif // !COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT)
     emissiveElt->send(index);
-#endif // !COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT)
     specularElt->send(index);
-#endif // !COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHININESSELEMENT)
     shininessElt->send(index);
-#endif // !COIN_EXCLUDE_SOGLSHININESSELEMENT
-#if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
     //    if (doStipple) stippleElt->send();
-#endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT
   }
   // store current index
   this->currIndex = index;
@@ -247,50 +199,32 @@ SoMaterialBundle::setupElements(const SbBool /* betweenBeginEnd */)
 {
   this->currIndex = -1; // set to an impossible value
   this->firstTime = FALSE;
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
   this->doStipple = SoShapeStyleElement::isScreenDoor(this->state);
-#else // COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-  this->doStipple = TRUE;
-#endif // ! COIN_EXCLUDE_SOSHAPESTYLEELEMENT
   this->diffuseOnly = this->colorOnly =
     SoLightModelElement::get(this->state) ==
     SoLightModelElement::BASE_COLOR;
 
-#if !defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
   diffuseElt = (SoGLDiffuseColorElement*)
     state->getConstElement(SoGLDiffuseColorElement::getClassStackIndex());
   if (diffuseElt->isPacked())
     setPacked(diffuseElt->packedColors, diffuseElt->numColors);
-#endif // !COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
   transparencyElt = (SoTransparencyElement*)
     state->getConstElement(SoTransparencyElement::getClassStackIndex());
-#endif // !COIN_EXCLUDE_SOTRANSPARENCYELEMENT
 
-#if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
   if (doStipple) {
     stippleElt = (SoGLPolygonStippleElement*)
       state->getElement(SoGLPolygonStippleElement::getClassStackIndex());
   }
-#endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT
 
   if (!colorOnly) {
-#if !defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
     ambientElt = (SoGLAmbientColorElement*)
       state->getConstElement(SoGLAmbientColorElement::getClassStackIndex());
-#endif // !COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT)
     emissiveElt = (SoGLEmissiveColorElement*)
       state->getConstElement(SoGLEmissiveColorElement::getClassStackIndex());
-#endif // !COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT)
     specularElt = (SoGLSpecularColorElement*)
       state->getConstElement(SoGLSpecularColorElement::getClassStackIndex());
-#endif // !COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHININESSELEMENT)
     shininessElt = (SoGLShininessElement*)
       state->getConstElement(SoGLShininessElement::getClassStackIndex());
-#endif // !COIN_EXCLUDE_SOGLSHININESSELEMENT
   }
 }
 

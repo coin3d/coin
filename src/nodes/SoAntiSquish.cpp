@@ -115,7 +115,6 @@ SoAntiSquish::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoAntiSquish);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -124,7 +123,6 @@ SoAntiSquish::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
 /*!
   FIXME: write doc
@@ -135,7 +133,6 @@ SoAntiSquish::recalc(void)
   COIN_STUB();
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -144,9 +141,6 @@ SoAntiSquish::doAction(SoAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
 */
@@ -155,9 +149,6 @@ SoAntiSquish::callback(SoCallbackAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
 */
@@ -166,9 +157,7 @@ SoAntiSquish::GLRender(SoGLRenderAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
 */
@@ -177,9 +166,7 @@ SoAntiSquish::getMatrix(SoGetMatrixAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -188,7 +175,6 @@ SoAntiSquish::pick(SoPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
 /*!
   FIXME: write doc

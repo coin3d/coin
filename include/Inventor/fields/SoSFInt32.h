@@ -22,10 +22,6 @@
 
 #include <Inventor/fields/SoSField.h>
 
-#if defined(COIN_EXCLUDE_SOSFINT32)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSFINT32
-
 
 class SoSFInt32 : public SoSField {
   typedef SoSField inherited;

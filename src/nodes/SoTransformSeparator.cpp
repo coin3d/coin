@@ -29,28 +29,14 @@
 #include <Inventor/nodes/SoTransformSeparator.h>
 
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // ! COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
-#include <Inventor/elements/SoModelMatrixElement.h>
-#endif
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
-#include <Inventor/elements/SoBBoxModelMatrixElement.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
+#include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoBBoxModelMatrixElement.h>
 
-// *************************************************************************
 
 SO_NODE_SOURCE(SoTransformSeparator);
 
@@ -80,27 +66,21 @@ SoTransformSeparator::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTransformSeparator);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
 void
 SoTransformSeparator::getBoundingBox(SoGetBoundingBoxAction * action)
 {
-#if !defined(COIN_EXCLUDE_SOBBOXMODELMATRIXELMENT)
   SbMatrix matrix, localMatrix;
   SoBBoxModelMatrixElement::pushMatrix(action->getState(),
                                        matrix,
                                        localMatrix);
-#endif
   inherited::getBoundingBox(action);
-#if !defined(COIN_EXCLUDE_SOBBOXMODELMATRIXELMENT)
   SoBBoxModelMatrixElement::popMatrix(action->getState(),
                                       matrix,
                                       localMatrix);
-#endif
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
 /*!
   FIXME: write doc
@@ -110,7 +90,6 @@ SoTransformSeparator::SoTransformSeparator(int /* nChildren */)
   COIN_STUB();
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -121,9 +100,7 @@ SoTransformSeparator::doAction(SoAction *action)
   inherited::doAction(action);
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -134,9 +111,7 @@ SoTransformSeparator::callback(SoCallbackAction *action)
   inherited::callback(action);
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -147,9 +122,7 @@ SoTransformSeparator::GLRender(SoGLRenderAction * action)
   inherited::GLRender(action);
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -160,9 +133,7 @@ SoTransformSeparator::pick(SoPickAction *action)
   inherited::pick(action);
   SoModelMatrixElement::popMatrix(action->getState(), matrix);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -187,9 +158,7 @@ SoTransformSeparator::getMatrix(SoGetMatrixAction *action)
     inherited::getMatrix(action);
   }
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -198,4 +167,3 @@ SoTransformSeparator::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoTransformSeparator::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

@@ -20,12 +20,8 @@
 #ifndef __SOGETPRIMITIVECOUNTACTION_H__
 #define __SOGETPRIMITIVECOUNTACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
-
 #include <Inventor/actions/SoAction.h>
+
 
 class SoGetPrimitiveCountAction : public SoAction {
   typedef SoAction inherited;

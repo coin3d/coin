@@ -32,26 +32,13 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/misc/SoChildList.h>
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 #include <Inventor/actions/SoSearchAction.h>
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
 #include <Inventor/actions/SoWriteAction.h>
-#endif // !COIN_EXCLUDE_SOWRITEACTION
 #include <Inventor/errors/SoReadError.h>
-
 #include <Inventor/actions/SoCallbackAction.h>
 
 #if COIN_DEBUG
@@ -272,7 +259,6 @@ SoGroup::initClass()
 }
 
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -309,9 +295,7 @@ SoGroup::doAction(SoAction * action)
     break;
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -345,9 +329,7 @@ SoGroup::getBoundingBox(SoGetBoundingBoxAction * action)
   if (numCenters != 0)
     action->setCenter(acccenter / float(numCenters), FALSE);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -356,9 +338,7 @@ SoGroup::GLRender(SoGLRenderAction * action)
 {
   SoGroup::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -371,9 +351,7 @@ SoGroup::callback(SoCallbackAction * action)
     action->invokePostCallbacks(this);
   }
 }
-#endif // COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -390,9 +368,7 @@ SoGroup::getMatrix(SoGetMatrixAction * action)
     break;
   }
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -401,9 +377,7 @@ SoGroup::pick(SoPickAction * action)
 {
   SoGroup::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write function documentation
 */
@@ -412,9 +386,7 @@ SoGroup::handleEvent(SoHandleEventAction * action)
 {
   SoGroup::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
 /*!
   Write action method is overloaded from SoNode to call
   SoBase::addWriteReference() on the children of the group.
@@ -443,9 +415,7 @@ SoGroup::write(SoWriteAction * action)
   }
   else assert(0 && "unknown stage");
 }
-#endif // !COIN_EXCLUDE_SOWRITEACTION
 
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 /*!
   FIXME: write function documentation
 */
@@ -459,7 +429,6 @@ SoGroup::search(SoSearchAction * action)
   // If we're not the one being sought after, try child subgraphs.
   SoGroup::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
 
 /*!
   FIXME: write function documentation
@@ -517,8 +486,6 @@ SoGroup::replaceChild(SoNode * const oldChild, SoNode * const newChild)
   this->replaceChild(this->findChild(oldChild), newChild);
 }
 
-
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -527,4 +494,3 @@ SoGroup::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoGroup::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

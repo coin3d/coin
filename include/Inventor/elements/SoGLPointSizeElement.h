@@ -20,12 +20,8 @@
 #ifndef __SOGLPOINTSIZEELEMENT_H__
 #define __SOGLPOINTSIZEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLPOINTSIZEELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLPOINTSIZEELEMENT
-
 #include <Inventor/elements/SoPointSizeElement.h>
+
 
 class SoGLPointSizeElement : public SoPointSizeElement {
   typedef SoPointSizeElement inherited;

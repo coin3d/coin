@@ -22,11 +22,6 @@
 
 #include <Inventor/events/SoButtonEvent.h>
 
-#if defined(COIN_EXCLUDE_SOMOUSEBUTTONEVENT)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOMOUSEBUTTONEVENT
-
-
 #define SO_MOUSE_PRESS_EVENT(EVENT, BUTTON) \
  (SoMouseButtonEvent::isButtonPressEvent(EVENT, SoMouseButtonEvent::BUTTON))
 

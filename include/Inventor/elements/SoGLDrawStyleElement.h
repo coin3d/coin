@@ -20,12 +20,8 @@
 #ifndef __SOGLDRAWSTYLEELEMENT_H__
 #define __SOGLDRAWSTYLEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLDRAWSTYLEELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLDRAWSTYLEELEMENT
-
 #include <Inventor/elements/SoDrawStyleElement.h>
+
 
 class SoGLDrawStyleElement : public SoDrawStyleElement {
   typedef SoDrawStyleElement inherited;

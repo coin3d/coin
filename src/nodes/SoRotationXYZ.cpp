@@ -31,16 +31,9 @@
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbMatrix.h>
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 
 /*!
   \enum SoRotationXYZ::Axis
@@ -108,7 +101,6 @@ SoRotationXYZ::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoRotationXYZ);
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -121,9 +113,7 @@ SoRotationXYZ::doAction(SoAction * action)
                                    SbRotation(rotvec, angle.getValue()));
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -132,9 +122,7 @@ SoRotationXYZ::callback(SoCallbackAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -143,9 +131,7 @@ SoRotationXYZ::GLRender(SoGLRenderAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -154,9 +140,7 @@ SoRotationXYZ::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -168,9 +152,7 @@ SoRotationXYZ::getMatrix(SoGetMatrixAction * action)
     action->rotateBy(SbRotation(rotvec, angle.getValue()));
   }
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -179,7 +161,6 @@ SoRotationXYZ::pick(SoPickAction * action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
 /*!
   FIXME: write function documentation
@@ -206,7 +187,6 @@ SoRotationXYZ::getRotation(void) const
   return SbRotation(axis, this->angle.getValue());
 }
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -215,4 +195,3 @@ SoRotationXYZ::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoRotationXYZ::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

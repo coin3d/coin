@@ -20,12 +20,8 @@
 #ifndef __SOGLPROJECTIONMATRIXELEMENT_H__
 #define __SOGLPROJECTIONMATRIXELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLPROJECTIONMATRIXELEMENT
-
 #include <Inventor/elements/SoProjectionMatrixElement.h>
+
 
 class SoGLProjectionMatrixElement : public SoProjectionMatrixElement {
   typedef SoProjectionMatrixElement inherited;
@@ -45,7 +41,6 @@ protected:
 
 private:
   void updategl();
-
 };
 
 #endif // !__SOGLPROJECTIONMATRIXELEMENT_H__

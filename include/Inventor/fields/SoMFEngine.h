@@ -22,11 +22,8 @@
 
 #include <Inventor/fields/SoMField.h>
 
-#if defined(COIN_EXCLUDE_SOMFENGINE)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOMFENGINE
-
 class SoEngine;
+
 
 class SoMFEngine : public SoMField {
   typedef SoMField inherited;

@@ -20,12 +20,8 @@
 #ifndef __SOCOMPLEXITYTYPEELEMENT_H__
 #define __SOCOMPLEXITYTYPEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoComplexityTypeElement : public SoInt32Element {
   typedef SoInt32Element inherited;

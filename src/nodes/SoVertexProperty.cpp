@@ -35,48 +35,22 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOGLNORMALELEMENT)
 #include <Inventor/elements/SoGLNormalElement.h>
-#endif // !COIN_EXCLUDE_SOGLNORMALELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SODIFFUSECOLORELEMENT)
 #include <Inventor/elements/SoDiffuseColorElement.h>
-#endif
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
-#endif
 
 /*!
   \enum SoVertexProperty::Binding
@@ -190,25 +164,19 @@ SoVertexProperty::initClass()
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoVertexProperty);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLCoordinateElement);
   SO_ENABLE(SoGLRenderAction, SoMaterialBindingElement);
   SO_ENABLE(SoGLRenderAction, SoNormalBindingElement);
   SO_ENABLE(SoGLRenderAction, SoGLNormalElement);
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoCoordinateElement);
   SO_ENABLE(SoPickAction, SoMaterialBindingElement);
   SO_ENABLE(SoPickAction, SoNormalBindingElement);
   SO_ENABLE(SoPickAction, SoNormalElement);
   SO_ENABLE(SoPickAction, SoTextureCoordinateElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
   SO_ENABLE(SoCallbackAction, SoCoordinateElement);
   SO_ENABLE(SoCallbackAction, SoMaterialBindingElement);
@@ -223,7 +191,6 @@ SoVertexProperty::initClass()
   SO_ENABLE(SoGetPrimitiveCountAction, SoTextureCoordinateElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -235,9 +202,7 @@ SoVertexProperty::getBoundingBox(SoGetBoundingBoxAction * action)
                               vertex.getNum(), vertex.getValues(0));
   }
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -250,7 +215,6 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
   }
 
   SoVertexProperty::doAction((SoAction*)action);
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   SoState *state = action->getState();
   if (!normalBinding.isIgnored()) {
     Binding binding = (Binding)normalBinding.getValue();
@@ -259,10 +223,7 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
                                      binding == PER_VERTEX_INDEXED);
   }
   if (!materialBinding.isIgnored()
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-      && !SoOverrideElement::getMaterialBindingOverride(state)
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
-      ) {
+      && !SoOverrideElement::getMaterialBindingOverride(state)) {
     Binding binding = (Binding)materialBinding.getValue();
     SoGLShadeModelElement::setMaterial(state,
                                        binding == PER_VERTEX ||
@@ -270,12 +231,8 @@ SoVertexProperty::GLRender(SoGLRenderAction * action)
 
 
   }
-#endif // !COIN_EXCLUDE_SOGLSHADEMODELELEMENT
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -302,26 +259,18 @@ SoVertexProperty::doAction(SoAction *action)
                                 normalBinding.getValue());
   }
   if (orderedRGBA.getNum() > 0
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-      && !SoOverrideElement::getDiffuseColorOverride(state)
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
-      ) {
+      && !SoOverrideElement::getDiffuseColorOverride(state)) {
     SoDiffuseColorElement::set(state, this, orderedRGBA.getNum(),
                                orderedRGBA.getValues(0));
   }
   if (!materialBinding.isIgnored()
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-      && !SoOverrideElement::getMaterialBindingOverride(state)
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
-      ) {
+      && !SoOverrideElement::getMaterialBindingOverride(state)) {
     SoMaterialBindingElement::set(state, this,
                                   (SoMaterialBindingElement::Binding)
                                   materialBinding.getValue());
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -330,9 +279,7 @@ SoVertexProperty::callback(SoCallbackAction *action)
 {
   SoVertexProperty::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -341,9 +288,7 @@ SoVertexProperty::pick(SoPickAction *action)
 {
   SoVertexProperty::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -352,4 +297,3 @@ SoVertexProperty::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoVertexProperty::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

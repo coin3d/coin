@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFInt32.h>
 
-#if defined(COIN_EXCLUDE_SOCOLORINDEX)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOCOLORINDEX
-
-// *************************************************************************
 
 class SoColorIndex : public SoNode {
   typedef SoNode inherited;
@@ -41,9 +36,7 @@ public:
 
   SoMFInt32 index;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 protected:
   virtual ~SoColorIndex();

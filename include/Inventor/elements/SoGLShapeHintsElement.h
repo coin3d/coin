@@ -20,12 +20,8 @@
 #ifndef __SOGLSHAPEHINTSELEMENT_H__
 #define __SOGLSHAPEHINTSELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
-
 #include <Inventor/elements/SoShapeHintsElement.h>
+
 
 class SoGLShapeHintsElement : public SoShapeHintsElement {
   typedef SoShapeHintsElement inherited;

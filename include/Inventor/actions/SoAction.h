@@ -25,36 +25,6 @@
 #include <Inventor/SoPath.h>
 #include <Inventor/lists/SoActionMethodList.h>
 
-#if defined(COIN_EXCLUDE_SOACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOACTION
-
-// Remove all these dependencies in SoAction when compiling a minimal
-// version of the Coin library. This is for debugging purposes only,
-// see the Coin/build/base.pro file for further information.
-// 19990629 mortene.
-
-#if defined(__SOLIB_MAKEASBASE__)
-// Remove all actions except SoWriteAction.
-#define COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION 1
-#define COIN_EXCLUDE_SOCALLBACKACTION 1
-#define COIN_EXCLUDE_SOGETBOUNDINGBOXACTION 1
-#define COIN_EXCLUDE_SOGETMATRIXACTION 1
-#define COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION 1
-#define COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION 1
-#define COIN_EXCLUDE_SOGLRENDERACTION 1
-#define COIN_EXCLUDE_SOHANDLEEVENTACTION 1
-#define COIN_EXCLUDE_SOLINEHIGHLIGHTRENDERACTION 1
-#define COIN_EXCLUDE_SOPICKACTION 1
-#define COIN_EXCLUDE_SORAYPICKACTION 1
-#define COIN_EXCLUDE_SOREORGANIZEACTION 1
-#define COIN_EXCLUDE_SOSEARCHACTION 1
-#define COIN_EXCLUDE_SOSHAPESIMPLIFYACTION 1
-#define COIN_EXCLUDE_SOSIMPLIFYACTION 1
-#define COIN_EXCLUDE_SOTOVRML2ACTION 1
-#define COIN_EXCLUDE_SOTOVRMLACTION 1
-#endif // __SOLIB_MAKEASBASE__
-
 #define SO_ENABLE(actionClass, elementClass) \
   assert(! elementClass::getClassTypeId().isBad()); \
   actionClass::enableElement(elementClass::getClassTypeId(), \
@@ -70,6 +40,7 @@ class SoNode;
 class SoPath;
 class SoPathList;
 class SoState;
+
 
 class SoAction {
 public:

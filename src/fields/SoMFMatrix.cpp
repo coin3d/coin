@@ -28,9 +28,7 @@
 #include <Inventor/fields/SoMFMatrix.h>
 #include <Inventor/fields/SoSFMatrix.h>
 
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -329,7 +327,6 @@ SoMFMatrix::convertTo(SoField * dest) const
     if (this->getNum()>0)
       ((SoSFMatrix *)dest)->setValue((*this)[0]);
   }
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     int num=this->getNum();
@@ -361,7 +358,6 @@ SoMFMatrix::convertTo(SoField * dest) const
     ostr << ends;
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFMatrix::convertTo",

@@ -27,36 +27,16 @@
 
 #include <Inventor/nodes/SoIndexedShape.h>
 
-
-
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-#if !defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#endif // !COIN_EXCLUDE_SOCREASEANGLEELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALELEMENT)
 #include <Inventor/elements/SoNormalElement.h>
-#endif // !COIN_EXCLUDE_SONORMALELEMENT
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 
@@ -121,7 +101,6 @@ SoIndexedShape::notify(SoNotList * /* list */)
   // destruction?). 19990405 mortene.
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -172,9 +151,7 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
   }
   center = box.getCenter();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -184,7 +161,6 @@ SoIndexedShape::areTexCoordsIndexed(SoAction * /* action */)
   COIN_STUB();
   return TRUE;
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
 /*!
   FIXME: write function documentation
@@ -242,7 +218,6 @@ SoIndexedShape::getTexCoordIndices()
   return NULL;
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -257,7 +232,6 @@ SoIndexedShape::generateDefaultNormals(SoState * state,
   const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
   assert(coords);
 
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
   SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
 
@@ -284,17 +258,8 @@ SoIndexedShape::generateDefaultNormals(SoState * state,
   default:
     break;
   }
-#else // COIN_EXCLUDE_SONORMALBINDINGELEMENT
-  nc->generatePerVertex(coords,
-                        coordIndex.getValues(0),
-                        coordIndex.getNum(),
-                        SoCreaseAngleElement::get(state),
-                        ccw);
-#endif // COIN_EXCLUDE_SONORMALBINDINGELEMENT
-
   return TRUE;
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!
   FIXME: write function documentation

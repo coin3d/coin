@@ -20,12 +20,8 @@
 #ifndef __SODECIMATIONTYPEELEMENT_H__
 #define __SODECIMATIONTYPEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SODECIMATIONTYPEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SODECIMATIONTYPEELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoDecimationTypeElement : public SoInt32Element {
   typedef SoInt32Element inherited;

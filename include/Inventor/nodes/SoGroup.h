@@ -23,11 +23,6 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 
-#if defined(COIN_EXCLUDE_SOGROUP)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOGROUP
-
-// *************************************************************************
 
 class SoGroup : public SoNode {
   typedef SoNode inherited;
@@ -51,46 +46,23 @@ public:
   void replaceChild(const int index, SoNode * const newChild);
   void replaceChild(SoNode * const oldChild, SoNode * const newChild);
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
   virtual void getMatrix(SoGetMatrixAction * action);
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   virtual void handleEvent(SoHandleEventAction * action);
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
   virtual void search(SoSearchAction * action);
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
   virtual void write(SoWriteAction * action);
-#endif // !COIN_EXCLUDE_SOWRITEACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
   SoChildList * getChildren(void) const;
-
-  // FIXME: this method is supposed to be protected, but its now used
-  // in SoDB. 19990611 mortene.
-  virtual SbBool readChildren(SoInput * in);
 
 protected:
   virtual ~SoGroup();
 
   virtual SbBool readInstance(SoInput * in, unsigned short flags);
+  virtual SbBool readChildren(SoInput * in);
 
   SoChildList * children;
 

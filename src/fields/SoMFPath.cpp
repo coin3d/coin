@@ -26,9 +26,7 @@
 */
 
 #include <Inventor/fields/SoMFPath.h>
-#if !defined(COIN_EXCLUDE_SOSFPATH)
 #include <Inventor/fields/SoSFPath.h>
-#endif // !COIN_EXCLUDE_SOSFPATH
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
 #include <assert.h>
@@ -322,13 +320,10 @@ SoMFPath::referencesCopy(void) const
 void
 SoMFPath::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFPATH)
-  else if (dest->getTypeId()==SoSFPath::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFPath::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFPath *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFPATH
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFPath::convertTo",

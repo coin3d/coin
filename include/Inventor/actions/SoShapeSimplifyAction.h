@@ -20,12 +20,8 @@
 #ifndef __SOSHAPESIMPLIFYACTION_H__
 #define __SOSHAPESIMPLIFYACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOSHAPESIMPLIFYACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOSHAPESIMPLIFYACTION
-
 #include <Inventor/actions/SoSimplifyAction.h>
+
 
 class SoShapeSimplifyAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;

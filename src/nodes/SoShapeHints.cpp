@@ -29,28 +29,14 @@
 
 
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT
-#if !defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-#if !defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#endif // !COIN_EXCLUDE_SOCREASEANGLEELEMENT
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 #include <Inventor/actions/SoCallbackAction.h>
 
@@ -164,26 +150,19 @@ SoShapeHints::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoShapeHints);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoShapeHintsElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoCreaseAngleElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLShapeHintsElement);
   SO_ENABLE(SoGLRenderAction, SoCreaseAngleElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoShapeHintsElement);
   SO_ENABLE(SoPickAction, SoCreaseAngleElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
   SO_ENABLE(SoCallbackAction, SoShapeHintsElement);
   SO_ENABLE(SoCallbackAction, SoCreaseAngleElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -192,12 +171,8 @@ SoShapeHints::doAction(SoAction * action)
 {
   SoState *state = action->getState();
 
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
   uint32_t flags = SoOverrideElement::getFlags(state);
 #define TEST_OVERRIDE(bit) ((SoOverrideElement::bit & flags) != 0)
-#else // COIN_EXCLUDE_SOOVERRIDEELEMENT
-#define TEST_OVERRIDE(x,y) FALSE // a neat little trick (don't nag, Morten :-)
-#endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
 
   // store current values, in case some are overridden or ignored
   SoShapeHintsElement::VertexOrdering vo;
@@ -220,9 +195,7 @@ SoShapeHints::doAction(SoAction * action)
                               creaseAngle.getValue());
 #undef TEST_OVERRIDE
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -231,9 +204,7 @@ SoShapeHints::GLRender(SoGLRenderAction * action)
 {
   SoShapeHints::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -242,9 +213,7 @@ SoShapeHints::callback(SoCallbackAction * action)
 {
   SoShapeHints::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -253,9 +222,7 @@ SoShapeHints::pick(SoPickAction * action)
 {
   SoShapeHints::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -264,4 +231,3 @@ SoShapeHints::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoShapeHints::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION

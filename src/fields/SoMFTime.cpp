@@ -26,9 +26,7 @@
 */
 
 #include <Inventor/fields/SoMFTime.h>
-#if !defined(COIN_EXCLUDE_SOSFTIME)
 #include <Inventor/fields/SoSFTime.h>
-#endif // !COIN_EXCLUDE_SOSFTIME
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -293,13 +291,10 @@ SoMFTime::write1Value(SoOutput * out, int idx) const
 void
 SoMFTime::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFTIME)
-  else if (dest->getTypeId()==SoSFTime::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFTime::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFTime *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFTIME
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFTime::convertTo",

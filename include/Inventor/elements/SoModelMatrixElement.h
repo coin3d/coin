@@ -20,14 +20,10 @@
 #ifndef __SOMODELMATRIXELEMENT_H__
 #define __SOMODELMATRIXELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOMODELMATRIXELEMENT
-
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/lists/SbPList.h>
+
 
 class SoModelMatrixElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;

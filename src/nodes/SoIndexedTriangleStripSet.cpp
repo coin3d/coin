@@ -35,50 +35,25 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/SoPrimitiveVertex.h>
-
-#if !defined(COIN_EXCLUDE_SOMATERIALBUNDLE)
 #include <Inventor/bundles/SoMaterialBundle.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBUNDLE
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // !_WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALELEMENT)
 #include <Inventor/elements/SoNormalElement.h>
-#endif // !COIN_EXCLUDE_SONORMALELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
-#if !defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-#if !defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#endif // !COIN_EXCLUDE_SOCREASEANGLEELEMENT
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT)
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT
-
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoPointDetail.h>
@@ -154,7 +129,6 @@ SoIndexedTriangleStripSet::initClass(void)
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   \internal
 */
@@ -163,7 +137,6 @@ SoIndexedTriangleStripSet::findMaterialBinding(SoState * const state) const
 {
   Binding binding = OVERALL;
 
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   SoMaterialBindingElement::Binding matbind =
     SoMaterialBindingElement::get(state);
 
@@ -196,7 +169,6 @@ SoIndexedTriangleStripSet::findMaterialBinding(SoState * const state) const
 #endif // COIN_DEBUG
     break;
   }
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
   return binding;
 }
 
@@ -207,7 +179,6 @@ SoIndexedTriangleStripSet::Binding
 SoIndexedTriangleStripSet::findNormalBinding(SoState * const state) const
 {
   Binding binding = PER_VERTEX_INDEXED;
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
   SoNormalBindingElement::Binding normbind =
     SoNormalBindingElement::get(state);
 
@@ -240,7 +211,6 @@ SoIndexedTriangleStripSet::findNormalBinding(SoState * const state) const
 #endif // COIN_DEBUG
     break;
   }
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
   return binding;
 }
 
@@ -276,14 +246,11 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   const int32_t * tindices;
   const int32_t * mindices;
   SbBool doTextures;
-  SbBool sendNormals = TRUE;
   SbBool normalCacheUsed;
 
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
-  sendNormals =
+  SbBool sendNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
   getVertexData(state, coords, normals, cindices,
                 nindices, tindices, mindices, numindices,
@@ -359,7 +326,6 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
     coordelem->getArrayPtr3();
   assert(coords);
 
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
   SoNormalBindingElement::Binding normbind = vpnorm ?
     (SoNormalBindingElement::Binding) vp->normalBinding.getValue() :
     SoNormalBindingElement::get(state);
@@ -371,11 +337,7 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
     nc->generatePerVertex(coords,
                           coordIndex.getValues(0),
                           coordIndex.getNum(),
-#if !defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
                           SoCreaseAngleElement::get(state),
-#else // COIN_EXCLUDE_SOCREASEANGLEELEMENT
-                          0.0f, // default element value (0.5 is nicer though)
-#endif // COIN_EXCLUDE_SOCREASEANGLEELEMENT
                           NULL,
                           ccw,
                           -1,
@@ -401,24 +363,8 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
   default:
     break;
   }
-#else // COIN_EXCLUDE_SONORMALBINDINGELEMENT
-  // As for PER_VERTEX_INDEXED (default value).
-  nc->generatePerVertex(coords,
-                        coordIndex.getValues(0),
-                        coordIndex.getNum(),
-#if !defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
-                        SoCreaseAngleElement::get(state),
-#else // COIN_EXCLUDE_SOCREASEANGLEELEMENT
-                        0.0f, // default element value
-#endif // COIN_EXCLUDE_SOCREASEANGLEELEMENT
-                        NULL,
-                        ccw,
-                        -1,
-                        TRUE);
-#endif // COIN_EXCLUDE_SONORMALBINDINGELEMENT
   return TRUE;
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!
   FIXME: write function documentation
@@ -464,7 +410,6 @@ SoIndexedTriangleStripSet::getNumStrips()
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -483,7 +428,6 @@ SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->addNumTriangles(this->getNumTriangles());
   }
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 /*!
   FIXME: write doc
@@ -496,7 +440,6 @@ SoIndexedTriangleStripSet::generateDefaultNormals(SoState * /* state */,
   return FALSE;
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -741,4 +684,3 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction *action)
     state->pop();
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION

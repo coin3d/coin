@@ -20,14 +20,10 @@
 #ifndef __SOCLIPPLANEELEMENT_H__
 #define __SOCLIPPLANEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOCLIPPLANEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOCLIPPLANEELEMENT
-
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbPlane.h>
+
 
 class so_plane_data // internal
 {

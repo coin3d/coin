@@ -20,12 +20,8 @@
 #ifndef __SOGLCOORDINATEELEMENT_H__
 #define __SOGLCOORDINATEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLCOORDINATEELEMENT
-
 #include <Inventor/elements/SoCoordinateElement.h>
+
 
 class SoGLCoordinateElement : public SoCoordinateElement {
   typedef SoCoordinateElement inherited;

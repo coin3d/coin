@@ -23,14 +23,10 @@
 #include <Inventor/SbBasic.h>
 #include <stdio.h>
 
-#if defined(COIN_EXCLUDE_SOSTATE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOSTATE
-
-
 class SoAction;
 class SoTypeList;
 class SoElement;
+
 
 class SoState {
 public:

@@ -20,14 +20,10 @@
 #ifndef __SODIFFUSECOLORELEMENT_H__
 #define __SODIFFUSECOLORELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SODIFFUSECOLORELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SODIFFUSECOLORELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
 
 class SbColor;
+
 
 class SoDiffuseColorElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

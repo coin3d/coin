@@ -29,29 +29,17 @@
 
 
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
-#if !defined(COIN_EXCLUDE_SOUNITSELEMENT)
 #include <Inventor/elements/SoUnitsElement.h>
-#endif // !COIN_EXCLUDE_SOUNITSELEMENT
-#if !defined(COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT)
 #include <Inventor/elements/SoBBoxModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 
 /*!
   \enum SoUnits::Units
@@ -189,18 +177,13 @@ SoUnits::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoUnits);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoUnitsElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoUnitsElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
   SO_ENABLE(SoPickAction, SoUnitsElement);
   SO_ENABLE(SoCallbackAction, SoUnitsElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoUnitsElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -218,9 +201,7 @@ SoUnits::getBoundingBox(SoGetBoundingBoxAction * action)
                                       SbVec3f(scale, scale, scale));
   }
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -237,19 +218,12 @@ SoUnits::GLRender(SoGLRenderAction * action)
     SoModelMatrixElement::scaleBy(action->getState(), this,
                                   SbVec3f(scale, scale, scale));
 
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
     if (scale != 1.0f) {
       SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
     }
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-
   }
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -267,9 +241,7 @@ SoUnits::doAction(SoAction *action)
                                   SbVec3f(scale, scale, scale));
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -278,9 +250,7 @@ SoUnits::callback(SoCallbackAction *action)
 {
   SoUnits::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -289,9 +259,7 @@ SoUnits::getMatrix(SoGetMatrixAction *action)
 {
   SoUnits::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -300,9 +268,7 @@ SoUnits::pick(SoPickAction *action)
 {
   SoUnits::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -311,4 +277,3 @@ SoUnits::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoUnits::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

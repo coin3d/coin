@@ -20,13 +20,9 @@
 #ifndef __SOBOXHIGHLIGHTRENDERACTION_H__
 #define __SOBOXHIGHLIGHTRENDERACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION
-
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SbColor.h>
+
 
 class SoBoxHighlightRenderAction : public SoGLRenderAction {
   typedef SoGLRenderAction inherited;

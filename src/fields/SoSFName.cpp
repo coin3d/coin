@@ -26,12 +26,8 @@
 */
 
 #include <Inventor/fields/SoSFName.h>
-#if !defined(COIN_EXCLUDE_SOMFNAME)
 #include <Inventor/fields/SoMFName.h>
-#endif // !COIN_EXCLUDE_SOMFNAME
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -211,19 +207,14 @@ SoSFName::setValue(const char * const name)
 void
 SoSFName::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOMFNAME)
-  else if (dest->getTypeId()==SoMFName::getClassTypeId()) {
+  if (dest->getTypeId()==SoMFName::getClassTypeId()) {
     ((SoMFName *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFNAME
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     ostr << '"' << this->getValue().getString() << '"';
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFName::convertTo",

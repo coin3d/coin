@@ -23,13 +23,8 @@
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/system/inttypes.h>
 
-#if defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOOVERRIDEELEMENT
-
-
-
 class SoType; // lame doxygen "fix"
+
 
 class SoOverrideElement : public SoElement {
   typedef SoElement inherited;

@@ -20,11 +20,6 @@
 #ifndef _sogl_h_
 #define _sogl_h_
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLRENDERACTION)
-#error This file is excluded from Coin through the configuration system!
-#endif // COIN_EXCLUDE_SOGLRENDERACTION
-
 //
 // this file containes some useful (and necessary) GL wraparounds.
 // The sogl_global_init() function _must_ be called once before
@@ -114,15 +109,6 @@ void sogl_free_texture(unsigned int handle);
 //
 //
 
-#define NO_FACESET_RENDER 1
-#if !defined(COIN_EXCLUDE_SOINDEXEDFACESET)
-#undef NO_FACESET_RENDER
-#endif // !COIN_EXCLUDE_SOINDEXEDFACESET
-#if !defined(COIN_EXCLUDE_SOFACESET)
-#undef NO_FACESET_RENDER
-#endif // !COIN_EXCLUDE_SOFACESET
-
-#if !defined(NO_FACESET_RENDER)
 void sogl_render_faceset(const SoGLCoordinateElement * const coords,
                          const int32_t *vertexindices,
                          int num_vertexindices,
@@ -135,17 +121,7 @@ void sogl_render_faceset(const SoGLCoordinateElement * const coords,
                          const int nbind,
                          const int mbind,
                          const int texture);
-#endif // !NO_FACESET_RENDER
 
-#define NO_TRISTRIPSET_RENDER 1
-#if !defined(COIN_EXCLUDE_SOINDEXEDTRIANGLESTRIPSET)
-#undef NO_TRISTRIPSET_RENDER
-#endif // !COIN_EXCLUDE_SOINDEXEDTRIANGLESTRIPSET
-#if !defined(COIN_EXCLUDE_SOTRIANGLESTRIPSET)
-#undef NO_TRISTRIPSET_RENDER
-#endif // !COIN_EXCLUDE_SOTRIANGLESTRIPSET
-
-#if !defined(NO_TRISTRIPSET_RENDER)
 void
 sogl_render_tristrip(const SoGLCoordinateElement * const coords,
                      const int32_t *vertexindices,
@@ -159,18 +135,7 @@ sogl_render_tristrip(const SoGLCoordinateElement * const coords,
                      const int nbind,
                      const int mbind,
                      const int texture);
-#endif // !NO_TRISTRIPSET_RENDER
 
-
-#define NO_LINESET_RENDER 1
-#if !defined(COIN_EXCLUDE_SOINDEXEDLINESET)
-#undef NO_LINESET_RENDER
-#endif // !COIN_EXCLUDE_SOINDEXEDLINESET
-#if !defined(COIN_EXCLUDE_SOLINESET)
-#undef NO_LINESET_RENDER
-#endif // !COIN_EXCLUDE_SOLINESET
-
-#if !defined(NO_LINESET_RENDER)
 void
 sogl_render_lineset(const SoGLCoordinateElement * const coords,
                     const int32_t *vertexindices,
@@ -185,8 +150,5 @@ sogl_render_lineset(const SoGLCoordinateElement * const coords,
                     int mbind,
                     const int texture,
                     const int drawAsPoints);
-#endif // !NO_LINESET_RENDER
-
-
 
 #endif // _sogl_h_

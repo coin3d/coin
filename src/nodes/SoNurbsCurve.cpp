@@ -27,37 +27,21 @@
 
 #include <Inventor/nodes/SoNurbsCurve.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // !_WIN32
 #include <GL/gl.h>
 #include <GL/glu.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-#if !defined(COIN_EXCLUDE_SOCREASEANGLEELEMENT)
 #include <Inventor/elements/SoCreaseAngleElement.h>
-#endif // !COIN_EXCLUDE_SOCREASEANGLEELEMENT
 
 /*!
   \var SoSFInt32 SoNurbsCurve::numControlPoints
@@ -106,7 +90,6 @@ SoNurbsCurve::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoNurbsCurve);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -160,10 +143,7 @@ SoNurbsCurve::GLRender(SoGLRenderAction * action)
   gluEndSurface(this->nurbsRenderer);
   glDisable(GL_AUTO_NORMAL);
 }
-#endif
 
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -198,10 +178,6 @@ SoNurbsCurve::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
   center = box.getCenter();
 }
 
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
-
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -210,9 +186,7 @@ SoNurbsCurve::rayPick(SoRayPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -221,9 +195,7 @@ SoNurbsCurve::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write doc
  */
@@ -232,9 +204,7 @@ SoNurbsCurve::getBoundingBox(SoGetBoundingBoxAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -243,9 +213,7 @@ SoNurbsCurve::sendPrimitive(SoAction *,  SoPrimitiveVertex *)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -254,4 +222,3 @@ SoNurbsCurve::generatePrimitives(SoAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION

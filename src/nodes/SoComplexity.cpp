@@ -27,39 +27,16 @@
 
 #include <Inventor/nodes/SoComplexity.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
 #include <Inventor/elements/SoComplexityElement.h>
-#endif // !COIN_EXCLUDE_SOCOMPLEXITYELEMENT
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#endif // !COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
-#if !defined(COIN_EXCLUDE_SOSHAPESTYLEELEMENT)
 #include <Inventor/elements/SoShapeStyleElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPESTYLEELEMENT
-#if !defined(COIN_EXCLUDE_SOTEXTUREQUALITYELEMENT)
 #include <Inventor/elements/SoTextureQualityElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTUREQUALITYELEMENT
-
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
 #include <Inventor/elements/SoOverrideElement.h>
-#endif // !COIN_EXCLUDE_SOOVERRIDEELEMENT
 
 /*!
   \enum SoComplexity::Type
@@ -131,38 +108,29 @@ SoComplexity::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoComplexity);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoComplexityElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoComplexityTypeElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoShapeStyleElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoComplexityElement);
   SO_ENABLE(SoGLRenderAction, SoComplexityTypeElement);
   SO_ENABLE(SoGLRenderAction, SoShapeStyleElement);
   SO_ENABLE(SoGLRenderAction, SoTextureQualityElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoComplexityElement);
   SO_ENABLE(SoCallbackAction, SoComplexityTypeElement);
   SO_ENABLE(SoCallbackAction, SoShapeStyleElement);
   SO_ENABLE(SoCallbackAction, SoTextureQualityElement);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoComplexityElement);
   SO_ENABLE(SoPickAction, SoComplexityTypeElement);
   SO_ENABLE(SoPickAction, SoShapeStyleElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
   SO_ENABLE(SoGetPrimitiveCountAction, SoComplexityElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoComplexityTypeElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoShapeStyleElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -171,9 +139,7 @@ SoComplexity::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoComplexity::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -186,10 +152,7 @@ SoComplexity::GLRender(SoGLRenderAction * action)
                                  textureQuality.getValue());
   }
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_DOACTION)
 /*!
   FIXME: write doc
 */
@@ -197,28 +160,13 @@ void
 SoComplexity::doAction(SoAction *action)
 {
   SoState * state = action->getState();
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
-  if (!value.isIgnored()
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-      && !SoOverrideElement::getComplexityOverride(state)
-#endif // ! COIN_EXCLUDE_SOOVERRIDEELEMENT
-      )
+  if (!value.isIgnored() && !SoOverrideElement::getComplexityOverride(state))
     SoComplexityElement::set(state, value.getValue());
-#endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
-
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
-  if (!type.isIgnored()
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-      && !SoOverrideElement::getComplexityTypeOverride(state)
-#endif // ! COIN_EXCLUDE_SOOVERRIDEELEMENT
-      )
+  if (!type.isIgnored() && !SoOverrideElement::getComplexityTypeOverride(state))
     SoComplexityTypeElement::set(state, (SoComplexityTypeElement::Type)
                                  type.getValue());
-#endif // ! COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
 }
-#endif // !COIN_EXCLUDE_DOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
 */
@@ -231,9 +179,7 @@ SoComplexity::callback(SoCallbackAction *action)
                                  textureQuality.getValue());
   }
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -242,9 +188,7 @@ SoComplexity::pick(SoPickAction *action)
 {
   SoComplexity::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -252,14 +196,8 @@ void
 SoComplexity::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoState * state = action->getState();
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
-  if (!value.isIgnored()
-#if !defined(COIN_EXCLUDE_SOOVERRIDEELEMENT)
-      && !SoOverrideElement::getComplexityOverride(state)
-#endif // ! COIN_EXCLUDE_SOOVERRIDEELEMENT
-      )
+  if (!value.isIgnored() && !SoOverrideElement::getComplexityOverride(state))
     SoComplexityElement::set(state, value.getValue());
-#endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
 
   // complexity type element is always OBJECT_SPACE for this action.
   // this is somewhat odd. If it had been possible to supply a
@@ -267,4 +205,3 @@ SoComplexity::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   // to also calculate SCREEN_SPACE complexity.
   // pederb, 1999-11-25
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

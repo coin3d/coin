@@ -20,15 +20,11 @@
 #ifndef __SOPROFILEELEMENT_H__
 #define __SOPROFILEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOPROFILEELEMENT)
-#error "Configuration settings disrespected -- this class should not be in use!"
-#endif // COIN_EXCLUDE_SOPROFILEELEMENT
-
 #include <Inventor/elements/SoAccumulatedElement.h>
 #include <Inventor/lists/SoNodeList.h>
 
 class SoProfile;
+
 
 class SoProfileElement : public SoAccumulatedElement {
   typedef SoAccumulatedElement inherited;

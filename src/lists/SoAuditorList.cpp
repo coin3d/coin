@@ -28,9 +28,7 @@
 
 #include <Inventor/fields/SoFieldContainer.h>
 #include <Inventor/fields/SoField.h>
-#if !defined(COIN_EXCLUDE_SODATASENSOR)
 #include <Inventor/sensors/SoDataSensor.h>
-#endif // !COIN_EXCLUDE_SODATASENSOR
 #include <Inventor/nodes/SoNode.h>
 #include <assert.h>
 
@@ -183,14 +181,12 @@ SoAuditorList::notify(SoNotList * list)
         obj->notify(list);
       }
       break;
-#if !defined(COIN_EXCLUDE_SODATASENSOR)
     case SoNotRec::SENSOR:
       {
         SoDataSensor * obj = (SoDataSensor *)this->getObject(i);
         obj->schedule();
       }
       break;
-#endif // !COIN_EXCLUDE_SODATASENSOR
     case SoNotRec::FIELD:
     case SoNotRec::ENGINE:
     case SoNotRec::INTERP:

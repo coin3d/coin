@@ -26,9 +26,7 @@
 */
 
 #include <Inventor/fields/SoSFString.h>
-#if !defined(COIN_EXCLUDE_SOMFSTRING)
 #include <Inventor/fields/SoMFString.h>
-#endif // !COIN_EXCLUDE_SOMFSTRING
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 #include <Inventor/SbName.h>
@@ -199,12 +197,9 @@ SoSFString::setValue(const char * const string)
 void
 SoSFString::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOMFSTRING)
-  else if (dest->getTypeId()==SoMFString::getClassTypeId()) {
+  if (dest->getTypeId()==SoMFString::getClassTypeId()) {
     ((SoMFString *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFSTRING
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFString::convertTo",

@@ -23,9 +23,6 @@
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/SbMatrix.h>
 
-#if defined(COIN_EXCLUDE_SOMFMATRIX)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOMFMATRIX
 
 class SoMFMatrix : public SoMField {
   typedef SoMField inherited;

@@ -20,12 +20,8 @@
 #ifndef __SOGLVIEWPORTREGIONELEMENT_H__
 #define __SOGLVIEWPORTREGIONELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLVIEWPORTREGIONELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLVIEWPORTREGIONELEMENT
-
 #include <Inventor/elements/SoViewportRegionElement.h>
+
 
 class SoGLViewportRegionElement : public SoViewportRegionElement {
   typedef SoViewportRegionElement inherited;

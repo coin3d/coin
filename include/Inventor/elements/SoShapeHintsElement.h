@@ -20,12 +20,8 @@
 #ifndef __SOSHAPEHINTSELEMENT_H__
 #define __SOSHAPEHINTSELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-
 #include <Inventor/elements/SoElement.h>
+
 
 class SoShapeHintsElement : public SoElement {
   typedef SoElement inherited;

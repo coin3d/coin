@@ -22,9 +22,6 @@
 
 #include <Inventor/sensors/SoTimerQueueSensor.h>
 
-#if defined(COIN_EXCLUDE_SOTIMERSENSOR)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOTIMERSENSOR
 
 class SoTimerSensor : public SoTimerQueueSensor {
   typedef SoTimerQueueSensor inherited;

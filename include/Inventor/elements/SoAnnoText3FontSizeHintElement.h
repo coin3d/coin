@@ -20,12 +20,8 @@
 #ifndef __SOANNOTEXT3FONTSIZEHINTELEMENT_H__
 #define __SOANNOTEXT3FONTSIZEHINTELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOANNOTEXT3FONTSIZEHINTELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOANNOTEXT3FONTSIZEHINTELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoAnnoText3FontSizeHintElement : public SoInt32Element {
   typedef SoInt32Element inherited;

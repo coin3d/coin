@@ -36,54 +36,27 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/details/SoPointDetail.h>
-
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/details/SoFaceDetail.h>
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOMATERIALBUNDLE)
 #include <Inventor/bundles/SoMaterialBundle.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBUNDLE
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // !_WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALELEMENT)
 #include <Inventor/elements/SoNormalElement.h>
-#endif // !COIN_EXCLUDE_SONORMALELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
-#if !defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT)
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT
 #include <assert.h>
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
@@ -213,7 +186,6 @@ SoIndexedFaceSet::countPrimitives(void)
   return TRUE;
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   \internal
 */
@@ -221,7 +193,6 @@ SoIndexedFaceSet::Binding
 SoIndexedFaceSet::findMaterialBinding(SoState * const state) const
 {
   Binding binding = OVERALL;
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   SoMaterialBindingElement::Binding matbind =
     SoMaterialBindingElement::get(state);
 
@@ -250,7 +221,6 @@ SoIndexedFaceSet::findMaterialBinding(SoState * const state) const
 #endif // COIN_DEBUG
     break;
   }
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
   return binding;
 }
 
@@ -262,7 +232,6 @@ SoIndexedFaceSet::Binding
 SoIndexedFaceSet::findNormalBinding(SoState * const state) const
 {
   Binding binding = PER_VERTEX_INDEXED;
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
   SoNormalBindingElement::Binding normbind =
     (SoNormalBindingElement::Binding) SoNormalBindingElement::get(state);
 
@@ -291,10 +260,8 @@ SoIndexedFaceSet::findNormalBinding(SoState * const state) const
 #endif // COIN_DEBUG
     break;
   }
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
   return binding;
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!
   FIXME: write function documentation
@@ -307,7 +274,6 @@ SoIndexedFaceSet::notify(SoNotList * /* list */)
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -350,14 +316,11 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   const int32_t * tindices;
   const int32_t * mindices;
   SbBool doTextures;
-  SbBool sendNormals = TRUE;
   SbBool normalCacheUsed;
 
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
-  sendNormals =
+  SbBool sendNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
   getVertexData(state, coords, normals, cindices,
                 nindices, tindices, mindices, numindices,
@@ -435,9 +398,6 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     state->pop();
   }
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 
   // this define actually makes the code below more readable  :-)
 #define DO_VERTEX(idx) \
@@ -672,9 +632,6 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
 }
 #undef DO_VERTEX
 
-#endif // !COIN_EXCLUDE_SOACTION
-
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -704,7 +661,6 @@ SoIndexedFaceSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->addNumTriangles(add);
   }
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 /*!
   FIXME: write doc

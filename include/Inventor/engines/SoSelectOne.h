@@ -24,11 +24,8 @@
 #include <Inventor/fields/SoMField.h>
 #include <Inventor/fields/SoSFInt32.h>
 
-#if defined(COIN_EXCLUDE_SOSELECTONE)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOSELECTONE
-
 class SoEngineOutput;
+
 
 class SoSelectOne : public SoEngine {
   typedef SoEngine inherited;

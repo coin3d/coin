@@ -20,13 +20,7 @@
 #ifndef __SOTEXTURECOORDINATEELEMENT_H__
 #define __SOTEXTURECOORDINATEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
-
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec4f.h>
 

@@ -25,9 +25,6 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFEnum.h>
 
-#if defined(COIN_EXCLUDE_SOWWWANCHOR)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOWWWANCHOR
 
 class SoWWWAnchor;
 
@@ -56,9 +53,7 @@ public:
   void setFullURLName(const SbString & url);
   const SbString & getFullURLName(void);
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   virtual void handleEvent(SoHandleEventAction * action);
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
   static void setFetchURLCallBack(SoWWWAnchorCB * f, void * userData);
   static void setHighlightURLCallBack(SoWWWAnchorCB * f, void * userData);

@@ -23,10 +23,6 @@
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/system/inttypes.h>
 
-#if defined(COIN_EXCLUDE_SOREPLACEDELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOREPLACEDELEMENT
-
 
 class SoReplacedElement : public SoElement {
   typedef SoElement inherited;

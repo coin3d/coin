@@ -20,21 +20,11 @@
 #ifndef __SOGETBOUNDINGBOXACTION_H__
 #define __SOGETBOUNDINGBOXACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
 #include <Inventor/actions/SoAction.h>
-
 #include <Inventor/SbViewportRegion.h>
-
-#ifdef __SOLIB_INTERNAL__
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbXfBox3f.h>
-#else // !__SOLIB_INTERNAL__
-#include <Inventor/SbBox.h>
-#endif // !__SOLIB_INTERNAL__
+
 
 class SoGetBoundingBoxAction : public SoAction {
   typedef SoAction inherited;

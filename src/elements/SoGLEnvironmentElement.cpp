@@ -29,9 +29,7 @@
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/SbColor4f.h>
 
-#if !defined(COIN_EXCLUDE_SOVIEWVOLUMEELEMENT)
 #include <Inventor/elements/SoViewVolumeElement.h>
-#endif // ! COIN_EXCLUDE_SOVIEWVOLUMEELEMENT
 
 #ifdef _WIN32
 #include <windows.h>
@@ -150,11 +148,9 @@ SoGLEnvironmentElement::updategl(SoState * const state)
   float nearval = 1.0f;
   float farval = 10.0f;
 
-#if !defined(COIN_EXCLUDE_SOVIEWVOLUMEELEMENT)
   const SbViewVolume &vv = SoViewVolumeElement::get(state);
   nearval = vv.getNearDist();
   farval = nearval + vv.getDepth();
-#endif // ! COIN_EXCLUDE_SOVIEWVOLUMEELEMENT
 
   float dist = fogVisibility;
   if (dist > 0.0f) farval = dist;

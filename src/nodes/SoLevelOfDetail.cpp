@@ -83,8 +83,6 @@ SoLevelOfDetail::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoLevelOfDetail);
 }
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -150,9 +148,7 @@ SoLevelOfDetail::doAction(SoAction *action)
   this->getChildren()->traverse(action, this->getNumChildren()-1);
   state->pop();
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -165,9 +161,7 @@ SoLevelOfDetail::callback(SoCallbackAction *action)
     action->invokePostCallbacks(this);
   }
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -176,9 +170,7 @@ SoLevelOfDetail::GLRender(SoGLRenderAction *action)
 {
   SoLevelOfDetail::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -187,4 +179,3 @@ SoLevelOfDetail::rayPick(SoRayPickAction *action)
 {
   SoLevelOfDetail::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION

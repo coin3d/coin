@@ -23,10 +23,6 @@
 #include <Inventor/lists/SbPList.h>
 #include <Inventor/misc/SoNotification.h>
 
-// See Coin/build/base.pro for explanation.
-#if defined(__SOLIB_MAKEASBASE__)
-#define COIN_EXCLUDE_SODATASENSOR 1
-#endif // __SOLIB_MAKEASBASE__
 
 class SoAuditorList : private SbPList {
   typedef SbPList inherited;

@@ -33,13 +33,10 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 #include <Inventor/actions/SoHandleEventAction.h>
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
-
-// *************************************************************************
 
 SO_NODE_SOURCE(SoEventCallback);
+
 
 /*!
   Constructor.
@@ -48,9 +45,7 @@ SoEventCallback::SoEventCallback()
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoEventCallback);
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   this->heaction = NULL;
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 }
 
 /*!
@@ -127,7 +122,6 @@ SoEventCallback::removeEventCallback(SoType /* eventType */,
 }
 
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write function documentation
 */
@@ -249,4 +243,4 @@ SoEventCallback::handleEvent(SoHandleEventAction * action)
   // Reset.
   this->heaction = NULL;
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
+

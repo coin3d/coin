@@ -22,11 +22,8 @@
 
 #include <Inventor/lists/SbPList.h>
 
-#if defined(COIN_EXCLUDE_SOENGINE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOENGINE
-
 class SoEngineOutput;
+
 
 class SoEngineOutputList : public SbPList {
   typedef SbPList inherited;

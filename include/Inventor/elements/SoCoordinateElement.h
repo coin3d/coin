@@ -20,14 +20,10 @@
 #ifndef __SOCOORDINATEELEMENT_H__
 #define __SOCOORDINATEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOCOORDINATEELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbVec4f.h>
+
 
 class SoCoordinateElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

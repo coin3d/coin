@@ -112,7 +112,6 @@ SoIndexedNurbsSurface::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoIndexedNurbsSurface);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -122,10 +121,7 @@ SoIndexedNurbsSurface::computeBBox(SoAction * /* action */,
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
 */
@@ -139,9 +135,7 @@ SoIndexedNurbsSurface::GLRender(SoGLRenderAction * /* action */)
   //
 
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -150,9 +144,7 @@ SoIndexedNurbsSurface::rayPick(SoRayPickAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -161,9 +153,7 @@ SoIndexedNurbsSurface::getPrimitiveCount(SoGetPrimitiveCountAction * /* action *
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -172,9 +162,7 @@ SoIndexedNurbsSurface::sendPrimitive(SoAction * ,  SoPrimitiveVertex *)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -183,4 +171,3 @@ SoIndexedNurbsSurface::generatePrimitives(SoAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION

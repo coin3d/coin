@@ -24,9 +24,6 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoMFRotation.h>
 
-#if defined(COIN_EXCLUDE_SODECOMPOSEROTATION)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SODECOMPOSEROTATION
 
 class SoDecomposeRotation : public SoEngine {
   SO_COMPOSE__HEADER(SoDecomposeRotation);

@@ -27,31 +27,16 @@
 
 #include <Inventor/nodes/SoFontStyle.h>
 
-
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-
-#if !defined(COIN_EXCLUDE_SOFONTNAMEELEMENT)
 #include <Inventor/elements/SoFontNameElement.h>
-#endif // !COIN_EXCLUDE_SOFONTNAMEELEMENT
-#if !defined(COIN_EXCLUDE_SOFONTSIZEELEMENT)
 #include <Inventor/elements/SoFontSizeElement.h>
-#endif // !COIN_EXCLUDE_SOFONTSIZEELEMENT
 
 /*!
   \enum SoFontStyle::Family
@@ -200,23 +185,16 @@ SoFontStyle::getFontName(void) const
   return fontname;
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
 void
 SoFontStyle::doAction(SoAction * action)
 {
-#if !defined(COIN_EXCLUDE_SOFONTNAMEELEMENT)
   SoFontNameElement::set(action->getState(), this, this->getFontName());
-#endif // !COIN_EXCLUDE_SOFONTNAMEELEMENT
-#if !defined(COIN_EXCLUDE_SOFONTSIZEELEMENT)
   SoFontSizeElement::set(action->getState(), this, this->size.getValue());
-#endif // !COIN_EXCLUDE_SOFONTSIZEELEMENT
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -225,9 +203,7 @@ SoFontStyle::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   this->doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -236,10 +212,7 @@ SoFontStyle::GLRender(SoGLRenderAction * action)
 {
   this->doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -248,9 +221,7 @@ SoFontStyle::callback(SoCallbackAction *action)
 {
   SoFontStyle::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -259,9 +230,7 @@ SoFontStyle::pick(SoPickAction *action)
 {
   SoFontStyle::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -270,4 +239,3 @@ SoFontStyle::getPrimitiveCount(SoGetPrimitiveCountAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

@@ -53,18 +53,12 @@
 #include <Inventor/lists/SoAuditorList.h>
 #include <Inventor/lists/SoFieldList.h>
 #include <Inventor/lists/SoVRMLInterpOutputList.h>
-#if !defined(COIN_EXCLUDE_SOENGINE)
 #include <Inventor/engines/SoEngine.h>
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/lists/SoEngineOutputList.h>
-#endif // !COIN_EXCLUDE_SOENGINE
-#if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
 #include <Inventor/SoDB.h>
 #include <Inventor/engines/SoFieldConverter.h>
-#endif // !COIN_EXCLUDE_SOFIELDCONVERTER
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
 #include <Inventor/actions/SoWriteAction.h>
-#endif // !COIN_EXCLUDE_SOWRITEACTION
 
 static const char IGNOREDCHAR = '~';
 // FIXME: '\n' not correct on win32/mac? 19980910 mortene.
@@ -511,7 +505,6 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
     return TRUE;
   }
 
-#if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
   SoFieldConverter * conv=NULL;
   SbBool OK=this->createConverter(mastertype, slavetype, conv);
   if (OK) {
@@ -521,7 +514,6 @@ SoField::connectFrom(SoField * master, SbBool notnotify, SbBool append)
     this->doConnect(conv->getOutput(slavetype), !notnotify);
     return TRUE;
   }
-#endif // !COIN_EXCLUDE_SOFIELDCONVERTER
 
   return FALSE;
 }
@@ -557,7 +549,6 @@ SoField::connectFrom(SoVRMLInterpOutput * master,
     return TRUE;
   }
 
-#if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
   SoFieldConverter * conv=NULL;
   SbBool OK=this->createConverter(mastertype, slavetype, conv);
   if (OK) {
@@ -567,7 +558,6 @@ SoField::connectFrom(SoVRMLInterpOutput * master,
     this->doConnect(conv->getOutput(slavetype), !notnotify);
     return TRUE;
   }
-#endif // !COIN_EXCLUDE_SOFIELDCONVERTER
 
   return FALSE;
 }
@@ -591,7 +581,6 @@ SoField::connectFrom(SoVRMLInterpOutput * master,
   \sa enableConnection(), isConnectionEnabled(), isConnectedFromField()
   \sa getConnectedField(), appendConnection(SoEngineOutput *)
 */
-#if !defined(COIN_EXCLUDE_SOENGINE)
 SbBool
 SoField::connectFrom(SoEngineOutput * master,
                      SbBool notnotify, SbBool append)
@@ -605,7 +594,6 @@ SoField::connectFrom(SoEngineOutput * master,
     return TRUE;
   }
 
-#if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
   SoFieldConverter * conv=NULL;
   SbBool OK=this->createConverter(mastertype, slavetype, conv);
   if (OK) {
@@ -615,11 +603,9 @@ SoField::connectFrom(SoEngineOutput * master,
     this->doConnect(conv->getOutput(slavetype), !notnotify);
     return TRUE;
   }
-#endif // !COIN_EXCLUDE_SOFIELDCONVERTER
 
   return FALSE;
 }
-#endif // !COIN_EXCLUDE_SOENGINE
 
 /*!
   Disconnect this field as a slave from \a master.
@@ -647,7 +633,6 @@ SoField::disconnect(SoVRMLInterpOutput * master)
   this->storage->removeConnection(master);
 }
 
-#if !defined(COIN_EXCLUDE_SOENGINE)
 /*!
   Disconnect this field as a slave from \a master.
 */
@@ -658,7 +643,6 @@ SoField::disconnect(SoEngineOutput * master)
   master->removeConnection(this);
   this->storage->removeConnection(master);
 }
-#endif // !COIN_EXCLUDE_SOENGINE
 
 /*!
   Returns number of fields this field is a slave of.
@@ -701,11 +685,9 @@ SoField::disconnect(void)
   while (this->isConnectedFromField())
     this->disconnect(this->storage->getFieldConnection(0));
 
-#if !defined(COIN_EXCLUDE_SOENGINE)
   // Disconnect us from all master engine outputs.
   while (this->isConnectedFromEngine())
     this->disconnect(this->storage->getEngineConnection(0));
-#endif // !COIN_EXCLUDE_SOENGINE
 
   // Disconnect us from all master VRML interpolator outputs.
   while (this->isConnectedFromVRMLInterp())
@@ -725,9 +707,7 @@ SbBool
 SoField::isConnected(void) const
 {
   return (this->isConnectedFromField() ||
-#if !defined(COIN_EXCLUDE_SOENGINE)
           this->isConnectedFromEngine() ||
-#endif // !COIN_EXCLUDE_SOENGINE
           this->isConnectedFromVRMLInterp());
 }
 
@@ -763,14 +743,12 @@ SoField::isConnectedFromVRMLInterp(void) const
   \sa isConnected(), isConnectedFromVRMLInterp(), isConnectedFromField()
   \sa connectFrom(SoEngineOutput *)
  */
-#if !defined(COIN_EXCLUDE_SOENGINE)
 SbBool
 SoField::isConnectedFromEngine(void) const
 {
   return (this->hasExtendedStorage() &&
           this->storage->getNumEngineConnections());
 }
-#endif // !COIN_EXCLUDE_SOENGINE
 
 /*!
   Returns \a TRUE if we are connected as a slave to at least one other field.
@@ -811,7 +789,6 @@ SoField::getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const
   \sa isConnectedFromEngine(), connectFrom(SoEngineOutput *)
   \sa appendConnection(SoEngineOutput *)
  */
-#if !defined(COIN_EXCLUDE_SOENGINE)
 SbBool
 SoField::getConnectedEngine(SoEngineOutput *& master) const
 {
@@ -819,7 +796,6 @@ SoField::getConnectedEngine(SoEngineOutput *& master) const
   if (nr) master = this->storage->getEngineConnection(nr - 1);
   return nr ? TRUE : FALSE;
 }
-#endif // !COIN_EXCLUDE_SOENGINE
 
 /*!
   Appends all the fields which are auditing this field in \a slavelist,
@@ -1207,8 +1183,6 @@ SoField::read(SoInput * in, const SbName & name)
 void
 SoField::write(SoOutput * out, const SbName & name) const
 {
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
-
   // ASCII write.
   if (!out->isBinary()) {
     if(!this->shouldWrite()) return;
@@ -1244,10 +1218,6 @@ SoField::write(SoOutput * out, const SbName & name) const
     assert(!this->isConnected() &&
            "FIXME: binary export of connections not implemented yet");
   }
-
-#else // COIN_EXCLUDE_SOWRITEACTION
-  assert(0); // write() should never be called but from within an write action
-#endif // COIN_EXCLUDE_SOWRITEACTION
 }
 
 /*!
@@ -1335,7 +1305,6 @@ SoField::appendConnection(SoVRMLInterpOutput * master, SbBool notnotify)
   return this->connectFrom(master, notnotify, TRUE);
 }
 
-#if !defined(COIN_EXCLUDE_SOFIELDCONVERTER)
 /*!
   FIXME: write function documentation
 */
@@ -1349,7 +1318,6 @@ SoField::createConverter(SoType fromType, SoType toType,
   if (conv) return TRUE;
   else return FALSE;
 }
-#endif // !COIN_EXCLUDE_SOFIELDCONVERTER
 
 /*!
   \internal
@@ -1374,7 +1342,6 @@ SoField::doConnect(SoField * master, SbBool notify)
   }
 }
 
-#if !defined(COIN_EXCLUDE_SOENGINE)
 /*!
   FIXME: write function documentation
 */
@@ -1398,7 +1365,6 @@ SoField::doConnect(SoEngineOutput * master, SbBool notify)
     }
   }
 }
-#endif // !COIN_EXCLUDE_SOENGINE
 
 /*!
   FIXME: write function documentation
@@ -1449,8 +1415,6 @@ SoField::readConnection(SoInput * /* in */)
 void
 SoField::writeConnection(SoOutput * out) const
 {
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
-
   SoField * fieldmaster;
   SoFieldContainer * fieldcont = NULL;
   SoEngineOutput * enginemaster;
@@ -1505,10 +1469,6 @@ SoField::writeConnection(SoOutput * out) const
   out->write(". ");
 
   out->write(name.getString());
-
-#else // COIN_EXCLUDE_SOWRITEACTION
-  assert(0); // write() should never be called but from within an write action
-#endif // COIN_EXCLUDE_SOWRITEACTION
 }
 
 /*!
@@ -1525,12 +1485,10 @@ SoField::evaluateConnection(void) const
     int idx = this->storage->getNumFieldConnections() - 1;
     ((SoField *)(this))->copyFrom(*(this->storage->getFieldConnection(idx)));
   }
-#if !defined(COIN_EXCLUDE_SOENGINE)
   else if (this->isConnectedFromEngine()) {
     int idx = this->storage->getNumEngineConnections() - 1;
     ((SoEngineOutput *)this->storage->getEngineConnection(idx))->getContainer()->startEvaluate();
   }
-#endif // !COIN_EXCLUDE_SOENGINE
   else if (this->isConnectedFromVRMLInterp()) {
     COIN_STUB();
   }
@@ -1602,144 +1560,52 @@ SoField::getFieldType(void) const
 void
 SoField::initClasses(void)
 {
-#if !defined(COIN_EXCLUDE_SOSFIELD)
   SoSField::initClass();
-#endif // !COIN_EXCLUDE_SOSFIELD
-#if !defined(COIN_EXCLUDE_SOSFBOOL)
   SoSFBool::initClass();
-#endif // !COIN_EXCLUDE_SOSFBOOL
-#if !defined(COIN_EXCLUDE_SOSFCOLOR)
   SoSFColor::initClass();
-#endif // !COIN_EXCLUDE_SOSFCOLOR
-#if !defined(COIN_EXCLUDE_SOSFENGINE)
   SoSFEngine::initClass();
-#endif // !COIN_EXCLUDE_SOSFENGINE
-#if !defined(COIN_EXCLUDE_SOSFFLOAT)
   SoSFFloat::initClass();
-#endif // !COIN_EXCLUDE_SOSFFLOAT
-#if !defined(COIN_EXCLUDE_SOSFSHORT)
   SoSFShort::initClass();
-#endif // !COIN_EXCLUDE_SOSFSHORT
-#if !defined(COIN_EXCLUDE_SOSFUSHORT)
   SoSFUShort::initClass();
-#endif // !COIN_EXCLUDE_SOSFUSHORT
-#if !defined(COIN_EXCLUDE_SOSFINT32)
   SoSFInt32::initClass();
-#endif // !COIN_EXCLUDE_SOSFINT32
-#if !defined(COIN_EXCLUDE_SOSFUINT32)
   SoSFUInt32::initClass();
-#endif // !COIN_EXCLUDE_SOSFUINT32
-#if !defined(COIN_EXCLUDE_SOSFVEC2F)
   SoSFVec2f::initClass();
-#endif // !COIN_EXCLUDE_SOSFVEC2F
-#if !defined(COIN_EXCLUDE_SOSFVEC3F)
   SoSFVec3f::initClass();
-#endif // !COIN_EXCLUDE_SOSFVEC3F
-#if !defined(COIN_EXCLUDE_SOSFVEC4F)
   SoSFVec4f::initClass();
-#endif // !COIN_EXCLUDE_SOSFVEC4F
-#if !defined(COIN_EXCLUDE_SOSFMATRIX)
   SoSFMatrix::initClass();
-#endif // !COIN_EXCLUDE_SOSFMATRIX
-#if !defined(COIN_EXCLUDE_SOSFENUM)
   SoSFEnum::initClass();
-#endif // !COIN_EXCLUDE_SOSFENUM
-#if !defined(COIN_EXCLUDE_SOSFBITMASK)
   SoSFBitMask::initClass();
-#endif // !COIN_EXCLUDE_SOSFBITMASK
-#if !defined(COIN_EXCLUDE_SOSFIMAGE)
   SoSFImage::initClass();
-#endif // !COIN_EXCLUDE_SOSFIMAGE
-#if !defined(COIN_EXCLUDE_SOSFNAME)
   SoSFName::initClass();
-#endif // !COIN_EXCLUDE_SOSFNAME
-#if !defined(COIN_EXCLUDE_SOSFNODE)
   SoSFNode::initClass();
-#endif // !COIN_EXCLUDE_SOSFNODE
-#if !defined(COIN_EXCLUDE_SOSFPATH)
   SoSFPath::initClass();
-#endif // !COIN_EXCLUDE_SOSFPATH
-#if !defined(COIN_EXCLUDE_SOSFPLANE)
   SoSFPlane::initClass();
-#endif // !COIN_EXCLUDE_SOSFPLANE
-#if !defined(COIN_EXCLUDE_SOSFROTATION)
   SoSFRotation::initClass();
-#endif // !COIN_EXCLUDE_SOSFROTATION
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   SoSFString::initClass();
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOSFTIME)
   SoSFTime::initClass();
-#endif // !COIN_EXCLUDE_SOSFTIME
-#if !defined(COIN_EXCLUDE_SOSFTRIGGER)
   SoSFTrigger::initClass();
-#endif // !COIN_EXCLUDE_SOSFTRIGGER
-#if !defined(COIN_EXCLUDE_SOMFIELD)
   SoMField::initClass();
-#endif // !COIN_EXCLUDE_SOMFIELD
-#if !defined(COIN_EXCLUDE_SOMFBOOL)
   SoMFBool::initClass();
-#endif // !COIN_EXCLUDE_SOMFBOOL
-#if !defined(COIN_EXCLUDE_SOMFCOLOR)
   SoMFColor::initClass();
-#endif // !COIN_EXCLUDE_SOMFCOLOR
-#if !defined(COIN_EXCLUDE_SOMFENGINE)
   SoMFEngine::initClass();
-#endif // !COIN_EXCLUDE_SOMFENGINE
-#if !defined(COIN_EXCLUDE_SOMFENUM)
   SoMFEnum::initClass();
-#endif // !COIN_EXCLUDE_SOMFENUM
-#if !defined(COIN_EXCLUDE_SOMFBITMASK)
   SoMFBitMask::initClass();
-#endif // !COIN_EXCLUDE_SOMFBITMASK
-#if !defined(COIN_EXCLUDE_SOMFFLOAT)
   SoMFFloat::initClass();
-#endif // !COIN_EXCLUDE_SOMFFLOAT
-#if !defined(COIN_EXCLUDE_SOMFINT32)
   SoMFInt32::initClass();
-#endif // !COIN_EXCLUDE_SOMFINT32
-#if !defined(COIN_EXCLUDE_SOMFMATRIX)
   SoMFMatrix::initClass();
-#endif // !COIN_EXCLUDE_SOMFMATRIX
-#if !defined(COIN_EXCLUDE_SOMFNAME)
   SoMFName::initClass();
-#endif // !COIN_EXCLUDE_SOMFNAME
-#if !defined(COIN_EXCLUDE_SOMFNODE)
   SoMFNode::initClass();
-#endif // !COIN_EXCLUDE_SOMFNODE
-#if !defined(COIN_EXCLUDE_SOMFPATH)
   SoMFPath::initClass();
-#endif // !COIN_EXCLUDE_SOMFPATH
-#if !defined(COIN_EXCLUDE_SOMFPLANE)
   SoMFPlane::initClass();
-#endif // !COIN_EXCLUDE_SOMFPLANE
-#if !defined(COIN_EXCLUDE_SOMFROTATION)
   SoMFRotation::initClass();
-#endif // !COIN_EXCLUDE_SOMFROTATION
-#if !defined(COIN_EXCLUDE_SOMFSHORT)
   SoMFShort::initClass();
-#endif // !COIN_EXCLUDE_SOMFSHORT
-#if !defined(COIN_EXCLUDE_SOMFSTRING)
   SoMFString::initClass();
-#endif // !COIN_EXCLUDE_SOMFSTRING
-#if !defined(COIN_EXCLUDE_SOMFTIME)
   SoMFTime::initClass();
-#endif // !COIN_EXCLUDE_SOMFTIME
-#if !defined(COIN_EXCLUDE_SOMFUINT32)
   SoMFUInt32::initClass();
-#endif // !COIN_EXCLUDE_SOMFUINT32
-#if !defined(COIN_EXCLUDE_SOMFUSHORT)
   SoMFUShort::initClass();
-#endif // !COIN_EXCLUDE_SOMFUSHORT
-#if !defined(COIN_EXCLUDE_SOMFVEC2F)
   SoMFVec2f::initClass();
-#endif // !COIN_EXCLUDE_SOMFVEC2F
-#if !defined(COIN_EXCLUDE_SOMFVEC3F)
   SoMFVec3f::initClass();
-#endif // !COIN_EXCLUDE_SOMFVEC3F
-#if !defined(COIN_EXCLUDE_SOMFVEC4F)
   SoMFVec4f::initClass();
-#endif // !COIN_EXCLUDE_SOMFVEC4F
 
   // Create these obsoleted types for backwards compatibility. They
   // are typedef'ed to the types which obsoleted them, but this is

@@ -20,12 +20,8 @@
 #ifndef __SOANNOTEXT3CHARORIENTELEMENT_H__
 #define __SOANNOTEXT3CHARORIENTELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOANNOTEXT3CHARORIENTELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOANNOTEXT3CHARORIENTELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoAnnoText3CharOrientElement : public SoInt32Element {
   typedef SoInt32Element inherited;

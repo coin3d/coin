@@ -20,12 +20,8 @@
 #ifndef __SOSHININESSELEMENT_H__
 #define __SOSHININESSELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOSHININESSELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOSHININESSELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
+
 
 class SoShininessElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

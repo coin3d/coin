@@ -29,11 +29,6 @@
 #include <GL/glu.h>
 #endif // ! _WIN32
 
-#if defined(COIN_EXCLUDE_SONURBSSURFACE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SONURBSSURFACE
-
-// *************************************************************************
 
 class SoNurbsSurface : public SoShape {
   typedef SoShape inherited;
@@ -53,28 +48,16 @@ public:
   SoMFFloat sKnotVector;
   SoMFFloat tKnotVector;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction * action);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
-#if !defined(COIN_EXCLUDE_SOACTION)
   void sendPrimitive(SoAction *,  SoPrimitiveVertex *);
-#endif // !COIN_EXCLUDE_SOACTION
 
 protected:
   virtual ~SoNurbsSurface();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
 private:
 #ifdef _WIN32

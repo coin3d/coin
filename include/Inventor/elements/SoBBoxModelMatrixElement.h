@@ -20,14 +20,10 @@
 #ifndef __SOBBOXMODELMATRIXELEMENT_H__
 #define __SOBBOXMODELMATRIXELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOBBOXMODELMATRIXELEMENT
-
 #include <Inventor/elements/SoModelMatrixElement.h>
 
 class SoLocalBBoxMatrixElement;
+
 
 class SoBBoxModelMatrixElement : public SoModelMatrixElement {
   typedef SoModelMatrixElement inherited;

@@ -20,12 +20,8 @@
 #ifndef __SOTEXTOUTLINEENABLEDELEMENT_H__
 #define __SOTEXTOUTLINEENABLEDELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOTEXTOUTLINEENABLEDELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOTEXTOUTLINEENABLEDELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoTextOutlineEnabledElement : public SoInt32Element {
   typedef SoInt32Element inherited;

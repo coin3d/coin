@@ -24,9 +24,6 @@
 #include <Inventor/SbDict.h>
 #include <Inventor/engines/SoEngineOutput.h>
 
-#if defined(COIN_EXCLUDE_SOCONVERTALL)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOCONVERTALL
 
 class SoConvertAll : public SoFieldConverter {
   typedef SoFieldConverter inherited;

@@ -23,10 +23,6 @@
 #include <Inventor/SoType.h>
 #include <Inventor/lists/SoFieldList.h>
 
-#if defined(COIN_EXCLUDE_SOENGINE)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOENGINE
-
 
 class SoEngineOutput {
 public:

@@ -18,9 +18,7 @@
 \**************************************************************************/
 
 #include <Inventor/engines/SoFieldConverter.h>
-#if !defined(COIN_EXCLUDE_SOCONVERTALL)
 #include <Inventor/engines/SoConvertAll.h>
-#endif // !COIN_EXCLUDE_SOCONVERTALL
 
 SO_ENGINE_ABSTRACT_SOURCE(SoFieldConverter);
 
@@ -39,9 +37,7 @@ SoFieldConverter::initClass()
 void
 SoFieldConverter::initConverters()
 {
-#if !defined(COIN_EXCLUDE_SOCONVERTALL)
   SoConvertAll::initClass();
-#endif // !COIN_EXCLUDE_SOCONVERTALL
 }
 
 SoFieldConverter::~SoFieldConverter()

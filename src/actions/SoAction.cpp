@@ -152,60 +152,24 @@ SoAction::initClass()
 void
 SoAction::initActions()
 {
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SoCallbackAction::initClass();
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SoGLRenderAction::initClass();
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION)
   SoBoxHighlightRenderAction::initClass();
-#endif // !COIN_EXCLUDE_SOBOXHIGHLIGHTRENDERACTION
-#if !defined(COIN_EXCLUDE_SOLINEHIGHLIGHTRENDERACTION)
   SoLineHighlightRenderAction::initClass();
-#endif // !COIN_EXCLUDE_SOLINEHIGHLIGHTRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SoGetBoundingBoxAction::initClass();
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
   SoGetMatrixAction::initClass();
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   SoGetPrimitiveCountAction::initClass();
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   SoHandleEventAction::initClass();
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SoPickAction::initClass();
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   SoRayPickAction::initClass();
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
   SoSearchAction::initClass();
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
-#if !defined(COIN_EXCLUDE_SOSIMPLIFYACTION)
   SoSimplifyAction::initClass();
-#endif // !COIN_EXCLUDE_SOSIMPLIFYACTION
-#if !defined(COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION)
   SoGlobalSimplifyAction::initClass();
-#endif // !COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION
-#if !defined(COIN_EXCLUDE_SOREORGANIZEACTION)
   SoReorganizeAction::initClass();
-#endif // !COIN_EXCLUDE_SOREORGANIZEACTION
-#if !defined(COIN_EXCLUDE_SOSHAPESIMPLIFYACTION)
   SoShapeSimplifyAction::initClass();
-#endif // !COIN_EXCLUDE_SOSHAPESIMPLIFYACTION
-#if !defined(COIN_EXCLUDE_SOTOVRMLACTION)
   SoToVRMLAction::initClass();
-#endif // !COIN_EXCLUDE_SOTOVRMLACTION
-#if !defined(COIN_EXCLUDE_SOTOVRML2ACTION)
   SoToVRML2Action::initClass();
-#endif // !COIN_EXCLUDE_SOTOVRML2ACTION
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
   SoWriteAction::initClass();
-#endif // !COIN_EXCLUDE_SOWRITEACTION
 }
 
 // *************************************************************************

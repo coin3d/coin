@@ -25,14 +25,9 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
-#if defined(COIN_EXCLUDE_SOBLINKER)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOBLINKER
-
-// *************************************************************************
 
 class SoBlinker : public SoSwitch {
-    typedef SoSwitch inherited;
+  typedef SoSwitch inherited;
 
   SO_NODE_HEADER(SoBlinker);
 
@@ -43,12 +38,8 @@ public:
   SoSFFloat speed;
   SoSFBool on;
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
   virtual void write(SoWriteAction * action);
-#endif // !COIN_EXCLUDE_SOWRITEACTION
 
 protected:
   virtual ~SoBlinker();

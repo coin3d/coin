@@ -26,16 +26,11 @@
 */
 
 #include <Inventor/fields/SoSFPlane.h>
-#if !defined(COIN_EXCLUDE_SOMFPLANE)
 #include <Inventor/fields/SoMFPlane.h>
-#endif // !COIN_EXCLUDE_SOMFPLANE
 #include <Inventor/SoOutput.h>
 #include <Inventor/SoInput.h>
 #include <Inventor/SbName.h>
-
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -216,13 +211,9 @@ SoSFPlane::writeValue(SoOutput * out) const
 void
 SoSFPlane::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOMFPLANE)
-  else if (dest->getTypeId()==SoMFPlane::getClassTypeId()) {
+  if (dest->getTypeId()==SoMFPlane::getClassTypeId()) {
     ((SoMFPlane *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFPLANE
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     const SbPlane plane=this->getValue();
@@ -233,7 +224,6 @@ SoSFPlane::convertTo(SoField * dest) const
 
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFPlane::convertTo",

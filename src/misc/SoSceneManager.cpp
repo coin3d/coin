@@ -29,7 +29,6 @@
 #include <Inventor/SoSceneManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/sensors/SoOneShotSensor.h>
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
 
@@ -39,10 +38,8 @@
 
 #include <GL/gl.h>
 #include <GL/glu.h> // For gluErrorString - not absolutely necessary.
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
+
 #include <Inventor/actions/SoHandleEventAction.h>
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 #include <Inventor/nodes/SoNode.h>
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -61,15 +58,11 @@
  */
 SoSceneManager::SoSceneManager()
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   this->glAction = new SoGLRenderAction(SbViewportRegion(400,400));
   this->deleteGLAction = TRUE;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   this->handleeventaction = new SoHandleEventAction(SbViewportRegion(400,400));
   this->deletehandleeventaction = TRUE;
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
   this->scene = NULL;
   this->rootsensor = NULL;
@@ -90,12 +83,8 @@ SoSceneManager::SoSceneManager()
  */
 SoSceneManager::~SoSceneManager()
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   if (this->deleteGLAction) delete this->glAction;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   if (this->deletehandleeventaction) delete this->handleeventaction;
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
   delete this->rootsensor;
   delete this->redrawshot;
@@ -108,7 +97,6 @@ void
 SoSceneManager::render(const SbBool clearWindow,
                        const SbBool clearZbuffer)
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   // FIXME: this probably only needs to be done at the first
   // invocation, since the viewport will later always be
   // up-to-date. (?)  The division of initialization work between
@@ -136,8 +124,6 @@ SoSceneManager::render(const SbBool clearWindow,
   glLoadIdentity();
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
 
   // If there has been changes in the scene graph leading to a node
   // sensor detect and schedule before we've gotten around to serving
@@ -180,10 +166,8 @@ SoSceneManager::render(const SbBool clearWindow,
                          "to the scenegraph _now_");
 #endif // debug
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   // Apply the GLRenderAction to the scenegraph root.
   this->glAction->apply(this->scene);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 }
 
 /*!
@@ -193,7 +177,6 @@ SoSceneManager::render(const SbBool clearWindow,
 SbBool
 SoSceneManager::processEvent(const SoEvent * const event)
 {
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   assert(this->handleeventaction);
 
   this->handleeventaction->setEvent(event);
@@ -201,13 +184,6 @@ SoSceneManager::processEvent(const SoEvent * const event)
 
   this->handleeventaction->apply(this->scene);
   return this->handleeventaction->isHandled();
-#else // COIN_EXCLUDE_SOHANDLEEVENTACTION
-#if COIN_DEBUG
-  SoDebugError::postInfo("SoSceneManager::processEvent",
-                         "SoHandleEventAction support was not compiled in");
-#endif // COIN_DEBUG
-  return FALSE;
-#endif // COIN_EXCLUDE_SOHANDLEEVENTACTION
 }
 
 /*!
@@ -316,17 +292,13 @@ SoSceneManager::getSceneGraph(void) const
 void
 SoSceneManager::setWindowSize(const SbVec2s &newSize)
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SbViewportRegion region = this->glAction->getViewportRegion();
   region.setWindowSize(newSize[0], newSize[1]);
   this->glAction->setViewportRegion(region);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   region = this->handleeventaction->getViewportRegion();
   region.setWindowSize(newSize[0], newSize[1]);
   this->handleeventaction->setViewportRegion(region);
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 }
 
 /*!
@@ -335,13 +307,7 @@ SoSceneManager::setWindowSize(const SbVec2s &newSize)
 const SbVec2s &
 SoSceneManager::getWindowSize(void) const
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   return this->glAction->getViewportRegion().getWindowSize();
-#elif !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
-  return this->handleventaction->getViewportRegion().getWindowSize();
-#else // COIN_EXCLUDE_SOGLRENDERACTION && COIN_EXCLUDE_SOHANDLEEVENTACTION
-  return SbVec2s(100, 100);
-#endif // COIN_EXCLUDE_SOGLRENDERACTION && COIN_EXCLUDE_SOHANDLEEVENTACTION
 }
 
 /*!
@@ -350,19 +316,15 @@ SoSceneManager::getWindowSize(void) const
 void
 SoSceneManager::setSize(const SbVec2s &newSize)
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SbViewportRegion region = this->glAction->getViewportRegion();
   SbVec2s origin = region.getViewportOriginPixels();
   region.setViewportPixels(origin, newSize);
   this->glAction->setViewportRegion(region);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   region = this->handleeventaction->getViewportRegion();
   origin = region.getViewportOriginPixels();
   region.setViewportPixels(origin, newSize);
   this->handleeventaction->setViewportRegion(region);
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 }
 
 /*!
@@ -371,13 +333,7 @@ SoSceneManager::setSize(const SbVec2s &newSize)
 const SbVec2s &
 SoSceneManager::getSize(void) const
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   return this->glAction->getViewportRegion().getViewportSizePixels();
-#elif !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
-  return this->handleventaction->getViewportRegion().getViewportSizePixels();
-#else // COIN_EXCLUDE_SOGLRENDERACTION && COIN_EXCLUDE_SOHANDLEEVENTACTION
-  return SbVec2s(100, 100);
-#endif // COIN_EXCLUDE_SOGLRENDERACTION && COIN_EXCLUDE_SOHANDLEEVENTACTION
 }
 
 /*!
@@ -386,19 +342,15 @@ SoSceneManager::getSize(void) const
 void
 SoSceneManager::setOrigin(const SbVec2s &newOrigin)
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SbViewportRegion region = this->glAction->getViewportRegion();
   SbVec2s size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
   this->glAction->setViewportRegion(region);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
   region = this->handleeventaction->getViewportRegion();
   size = region.getViewportSizePixels();
   region.setViewportPixels(newOrigin, size);
   this->handleeventaction->setViewportRegion(region);
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 }
 
 /*!
@@ -407,13 +359,7 @@ SoSceneManager::setOrigin(const SbVec2s &newOrigin)
 const SbVec2s &
 SoSceneManager::getOrigin(void) const
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   return this->glAction->getViewportRegion().getViewportOriginPixels();
-#elif !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
-  return this->handleventaction->getViewportRegion().getViewportOriginPixels();
-#else // COIN_EXCLUDE_SOGLRENDERACTION && COIN_EXCLUDE_SOHANDLEEVENTACTION
-  return SbVec2s(0, 0);
-#endif // COIN_EXCLUDE_SOGLRENDERACTION && COIN_EXCLUDE_SOHANDLEEVENTACTION
 }
 
 /*!
@@ -557,10 +503,8 @@ SoSceneManager::getRedrawPriority(void) const
 void
 SoSceneManager::setAntialiasing(const SbBool smoothing, const int numPasses)
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   this->glAction->setSmoothing(smoothing);
   this->glAction->setNumPasses(numPasses);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 }
 
 /*!
@@ -569,16 +513,10 @@ SoSceneManager::setAntialiasing(const SbBool smoothing, const int numPasses)
 void
 SoSceneManager::getAntialiasing(SbBool &smoothing, int &numPasses) const
 {
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   smoothing = this->glAction->isSmoothing();
   numPasses = this->glAction->getNumPasses();
-#else // COIN_EXCLUDE_SOGLRENDERACTION
-  smoothing = FALSE;
-  numPasses = 0;
-#endif // COIN_EXCLUDE_SOGLRENDERACTION
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -598,9 +536,7 @@ SoSceneManager::getGLRenderAction(void) const
 {
   return this->glAction;
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write doc
  */
@@ -620,7 +556,6 @@ SoSceneManager::getHandleEventAction(void) const
 {
   return this->handleeventaction;
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
 /*!
   FIXME: write doc

@@ -20,12 +20,8 @@
 #ifndef __SOTEXTURECOORDINATEBINDINGELEMENT_H__
 #define __SOTEXTURECOORDINATEBINDINGELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOTEXTURECOORDINATEBINDINGELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoTextureCoordinateBindingElement : public SoInt32Element {
   typedef SoInt32Element inherited;

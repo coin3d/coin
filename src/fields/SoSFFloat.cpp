@@ -30,30 +30,14 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SoOutput.h>
 
-#if !defined(COIN_EXCLUDE_SOSFBOOL)
 #include <Inventor/fields/SoSFBool.h>
-#endif // !COIN_EXCLUDE_SOSFBOOL
-#if !defined(COIN_EXCLUDE_SOSFINT32)
 #include <Inventor/fields/SoSFInt32.h>
-#endif // !COIN_EXCLUDE_SOSFINT32
-#if !defined(COIN_EXCLUDE_SOSFUINT32)
 #include <Inventor/fields/SoSFUInt32.h>
-#endif // !COIN_EXCLUDE_SOSFUINT32
-#if !defined(COIN_EXCLUDE_SOSFSHORT)
 #include <Inventor/fields/SoSFShort.h>
-#endif // !COIN_EXCLUDE_SOSFSHORT
-#if !defined(COIN_EXCLUDE_SOSFUSHORT)
 #include <Inventor/fields/SoSFUShort.h>
-#endif // !COIN_EXCLUDE_SOSFUSHORT
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOMFFLOAT)
 #include <Inventor/fields/SoMFFloat.h>
-#endif // !COIN_EXCLUDE_SOMFFLOAT
-#if !defined(COIN_EXCLUDE_SOSFTIME)
 #include <Inventor/fields/SoSFTime.h>
-#endif // !COIN_EXCLUDE_SOSFTIME
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -219,49 +203,32 @@ SoSFFloat::writeValue(SoOutput * out) const
 void
 SoSFFloat::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFBOOL)
-  else if (dest->getTypeId()==SoSFBool::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFBool::getClassTypeId()) {
     ((SoSFBool *)dest)->setValue((SbBool)this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOSFBOOL
-#if !defined(COIN_EXCLUDE_SOSFINT32)
   else if (dest->getTypeId()==SoSFInt32::getClassTypeId()) {
     ((SoSFInt32 *)dest)->setValue((int32_t)this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOSFINT32
-#if !defined(COIN_EXCLUDE_SOSFSHORT)
   else if (dest->getTypeId()==SoSFShort::getClassTypeId()) {
     ((SoSFShort *)dest)->setValue((short)this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOSFSHORT
-#if !defined(COIN_EXCLUDE_SOSFUINT32)
   else if (dest->getTypeId()==SoSFUInt32::getClassTypeId()) {
     ((SoSFUInt32 *)dest)->setValue((uint32_t)this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOSFUINT32
-#if !defined(COIN_EXCLUDE_SOSFUSHORT)
   else if (dest->getTypeId()==SoSFUShort::getClassTypeId()) {
     ((SoSFUShort *)dest)->setValue((unsigned short)this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOSFUSHORT
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     ostr << this->getValue() << '\0';
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOMFFLOAT)
   else if (dest->getTypeId()==SoMFFloat::getClassTypeId()) {
     ((SoMFFloat *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFFLOAT
-#if !defined(COIN_EXCLUDE_SOSFTIME)
   else if (dest->getTypeId()==SoSFTime::getClassTypeId()) {
     ((SoSFTime *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOSFTIME
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFFloat::convertTo",

@@ -20,12 +20,8 @@
 #ifndef __SOGLPOLYGONOFFSETELEMENT_H__
 #define __SOGLPOLYGONOFFSETELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLPOLYGONOFFSETELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLPOLYGONOFFSETELEMENT
-
 #include <Inventor/elements/SoPolygonOffsetElement.h>
+
 
 class SoGLPolygonOffsetElement : public SoPolygonOffsetElement {
   typedef SoPolygonOffsetElement inherited;

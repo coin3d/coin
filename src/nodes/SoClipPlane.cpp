@@ -27,24 +27,11 @@
 
 #include <Inventor/nodes/SoClipPlane.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 #include <Inventor/actions/SoCallbackAction.h>
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGLCLIPPLANEELEMENT)
 #include <Inventor/elements/SoGLClipPlaneElement.h>
-#endif // !COIN_EXCLUDE_SOGLCLIPPLANEELEMENT
-
-#if !defined(COIN_EXCLUDE_SOCLIPPLANEELEMENT)
 #include <Inventor/elements/SoClipPlaneElement.h>
-#endif
 
 /*!
   \var SoSFPlane SoClipPlane::plane
@@ -88,18 +75,11 @@ SoClipPlane::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoClipPlane);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLClipPlaneElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoClipPlaneElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   SO_ENABLE(SoCallbackAction, SoClipPlaneElement);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -111,9 +91,7 @@ SoClipPlane::doAction(SoAction *action)
     SoClipPlaneElement::add(action->getState(), this, plane.getValue());
   }
 }
-#endif
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -122,9 +100,7 @@ SoClipPlane::GLRender(SoGLRenderAction * action)
 {
   SoClipPlane::doAction(action);
 }
-#endif
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
 */
@@ -133,9 +109,7 @@ SoClipPlane::callback(SoCallbackAction *action)
 {
   SoClipPlane::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -144,4 +118,3 @@ SoClipPlane::pick(SoPickAction *action)
 {
   SoClipPlane::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION

@@ -35,41 +35,17 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/details/SoCylinderDetail.h>
 #include <Inventor/SoPickedPoint.h>
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOGLSHAPEHINTSELEMENY
-
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
-#endif // ! COIN_EXCLUDE_SOGLSHADEMODELELEMENT
-
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // ! COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
-
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#endif // ! COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT
-
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
 #include <Inventor/elements/SoComplexityElement.h>
-#endif // ! COIN_EXCLUDE_SOCOMPLEXITYELEMENT
-
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/misc/SoGenerate.h>
 #include <Inventor/SoPrimitiveVertex.h>
@@ -155,7 +131,6 @@ SoCylinder::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoCylinder);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -192,9 +167,7 @@ SoCylinder::computeBBox(SoAction * /* action */,
     box.setBounds(SbVec3f(0.0f, 0.0f, 0.0f), SbVec3f(0.0f, 0.0f, 0.0f));
   }
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -215,33 +188,25 @@ SoCylinder::GLRender(SoGLRenderAction * action)
   if (p & TOP) flags |= SOGL_RENDER_TOP;
   if (p & BOTTOM) flags |= SOGL_RENDER_BOTTOM;
 
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   SoMaterialBindingElement::Binding bind =
     SoMaterialBindingElement::get(state);
   if (bind == SoMaterialBindingElement::PER_PART ||
       bind == SoMaterialBindingElement::PER_PART_INDEXED)
     flags |= SOGL_MATERIAL_PER_PART;
-#endif
 
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
   const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
     state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
   if (p == ALL) sh->forceSend(TRUE, TRUE);
   else sh->forceSend(TRUE, FALSE, TRUE);
-#endif
-
 
   float complexity = this->getComplexityValue(action);
 
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
     state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
   if (!(p & SIDES))
     sm->forceSend(TRUE); // flatshading
   else
     sm->forceSend(FALSE); // smooth
-
-#endif // ! COIN_EXCLUDE_SOGLSHADEMODELELEMENT
 
   sogl_render_cylinder(this->radius.getValue(),
                        this->height.getValue(),
@@ -268,7 +233,6 @@ SoCylinder::willSetShapeHints(void) const
   return TRUE;
 }
 
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 
 /*!
@@ -318,7 +282,6 @@ SoCylinder::hasPart(SoCylinder::Part part) const
   return (this->parts.getValue() & part) ? TRUE : FALSE;
 }
 
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -395,9 +358,7 @@ SoCylinder::rayPick(SoRayPickAction *action)
     }
   }
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -424,9 +385,7 @@ SoCylinder::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->incNumCylinders();
   }
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -438,15 +397,15 @@ SoCylinder::generatePrimitives(SoAction *action)
   if (p & SoCylinder::SIDES) flags |= SOGEN_GENERATE_SIDE;
   if (p & SoCylinder::BOTTOM) flags |= SOGEN_GENERATE_BOTTOM;
   if (p & SoCylinder::TOP) flags |= SOGEN_GENERATE_TOP;
-  
+
   SoMaterialBindingElement::Binding bind =
     SoMaterialBindingElement::get(action->getState());
   if (bind == SoMaterialBindingElement::PER_PART ||
       bind == SoMaterialBindingElement::PER_PART_INDEXED)
     flags |= SOGL_MATERIAL_PER_PART;
-  
+
   float complexity = this->getComplexityValue(action);
-  
+
   sogen_generate_cylinder(this->radius.getValue(),
                           this->height.getValue(),
                           (int)(CYL_SIDE_NUMTRIS*complexity),
@@ -454,4 +413,4 @@ SoCylinder::generatePrimitives(SoAction *action)
                           this,
                           action);
 }
-#endif // !COIN_EXCLUDE_SOACTION
+

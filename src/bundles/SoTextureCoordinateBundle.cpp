@@ -25,21 +25,10 @@
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 
-#if !defined(COIN_EXCLUDE_SOSTATE)
 #include <Inventor/misc/SoState.h>
-#endif // !COIN_EXCLUDE_SOSTATE
-
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#endif
 
 #ifdef _WIN32
 #include <windows.h>
@@ -72,7 +61,6 @@ SoTextureCoordinateBundle(SoAction * const action,
 {
   this->flags = 0;
 
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
   coordElt = SoTextureCoordinateElement::getInstance(state);
   switch (coordElt->getType()) {
   case SoTextureCoordinateElement::DEFAULT:
@@ -99,13 +87,10 @@ SoTextureCoordinateBundle(SoAction * const action,
     break;
   }
 
-#endif
   glElt = NULL;
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
   if (forRendering && SoGLTextureEnabledElement::get(state)) {
     glElt = (SoGLTextureCoordinateElement*) coordElt;
   }
-#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
   if (setUpDefault) {
     assert(0 && "FIXME: implement default texture coordinates (pederb)");
   }

@@ -20,17 +20,12 @@
 #ifndef __SOTEXTUREIMAGEELEMENT_H__
 #define __SOTEXTUREIMAGEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOTEXTUREIMAGEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOTEXTUREIMAGEELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
-
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbColor.h>
 
 class SoState;
+
 
 class SoTextureImageElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

@@ -115,7 +115,6 @@ SoWWWAnchor::getFullURLName(void)
   return s;
 }
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write doc
  */
@@ -124,7 +123,6 @@ SoWWWAnchor::handleEvent(SoHandleEventAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
 /*!
   FIXME: write doc

@@ -23,11 +23,6 @@
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/nodes/SoNode.h>
 
-#if defined(COIN_EXCLUDE_SOTRANSFORMATION)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOTRANSFORMATION
-
-// *************************************************************************
 
 class SoTransformation : public SoNode {
   typedef SoNode inherited;

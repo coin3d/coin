@@ -20,11 +20,6 @@
 #ifndef __SOINTERPOLATEROTATION_H__
 #define __SOINTERPOLATEROTATION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOINTERPOLATEROTATION)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOINTERPOLATEROTATION
-
 //$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateRotation, SoMFRotation)
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/fields/SoMFRotation.h>

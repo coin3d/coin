@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoProfile.h>
 #include <Inventor/fields/SoMFFloat.h>
 
-#if defined(COIN_EXCLUDE_SONURBSPROFILE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SONURBSPROFILE
-
-// *************************************************************************
 
 class SoNurbsProfile : public SoProfile {
   typedef SoProfile inherited;

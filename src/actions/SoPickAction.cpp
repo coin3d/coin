@@ -29,15 +29,9 @@
 #include <Inventor/lists/SoEnabledElementsList.h>
 #include <Inventor/nodes/SoNode.h>
 
-#if !defined(COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT)
 #include <Inventor/elements/SoViewportRegionElement.h>
-#endif // !COIN_EXCLUDE_SOVIEWPORTREGIONELEMENT
-#if !defined(COIN_EXCLUDE_SODECIMATIONTYPEELEMENT)
 #include <Inventor/elements/SoDecimationTypeElement.h>
-#endif // !COIN_EXCLUDE_SODECIMATIONTYPEELEMENT
-#if !defined(COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT)
 #include <Inventor/elements/SoDecimationPercentageElement.h>
-#endif // !COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT
 
 // *************************************************************************
 

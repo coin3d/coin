@@ -20,14 +20,10 @@
 #ifndef __SOENGINELIST_H__
 #define __SOENGINELIST_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOENGINE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOENGINE
-
 #include <Inventor/lists/SoBaseList.h>
 
 class SoEngine;
+
 
 class SoEngineList : public SoBaseList {
   typedef SoBaseList inherited;

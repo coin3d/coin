@@ -33,26 +33,13 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
-
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
 /*!
   \var SoSFVec3f SoTransform::translation
@@ -206,7 +193,6 @@ SoTransform::recenter(const SbVec3f & /* newCenter */)
   COIN_STUB();
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -240,7 +226,6 @@ SoTransform::doAction(SoAction * action)
                      center.getValue()[2]);
 #endif // debug
 
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
   SbMatrix matrix;
   matrix.setTransform(translation.getValue(),
                       rotation.getValue(),
@@ -249,27 +234,20 @@ SoTransform::doAction(SoAction * action)
                       center.getValue());
 
   SoModelMatrixElement::mult(action->getState(), this, matrix);
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
 void
 SoTransform::GLRender(SoGLRenderAction * action)
 {
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   if (scaleFactor.getValue() != SbVec3f(1.0f, 1.0f, 1.0f)) {
     SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
   }
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
   SoTransform::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -278,9 +256,7 @@ SoTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoTransform::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -295,9 +271,7 @@ SoTransform::getMatrix(SoGetMatrixAction * action)
                       center.getValue());
   action->mult(matrix);
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -306,9 +280,7 @@ SoTransform::callback(SoCallbackAction * action)
 {
   SoTransform::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -317,10 +289,7 @@ SoTransform::pick(SoPickAction * action)
 {
   SoTransform::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -329,4 +298,3 @@ SoTransform::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoTransform::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

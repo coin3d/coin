@@ -27,19 +27,10 @@
 
 #include <Inventor/nodes/SoTextureCoordinateDefault.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#endif
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
 
 // *************************************************************************
 
@@ -71,7 +62,6 @@ SoTextureCoordinateDefault::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinateDefault);
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -80,9 +70,7 @@ SoTextureCoordinateDefault::doAction(SoAction * action)
 {
   SoTextureCoordinateElement::setDefault(action->getState(), this);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -93,9 +81,7 @@ SoTextureCoordinateDefault::GLRender(SoGLRenderAction * action)
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
                                           this, NULL);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -104,9 +90,7 @@ SoTextureCoordinateDefault::callback(SoCallbackAction * action)
 {
   SoTextureCoordinateDefault::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -115,4 +99,3 @@ SoTextureCoordinateDefault::pick(SoPickAction * action)
 {
   SoTextureCoordinateDefault::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION

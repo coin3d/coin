@@ -20,14 +20,9 @@
 #ifndef __SOVIEWVOLUMEELEMENT_H__
 #define __SOVIEWVOLUMEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOVIEWVOLUMEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOVIEWVOLUMEELEMENT
-
 #include <Inventor/elements/SoReplacedElement.h>
-
 #include <Inventor/SbViewVolume.h>
+
 
 class SoViewVolumeElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

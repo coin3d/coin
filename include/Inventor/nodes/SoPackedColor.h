@@ -24,11 +24,6 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFUInt32.h>
 
-#if defined(COIN_EXCLUDE_SOPACKEDCOLOR)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOPACKEDCOLOR
-
-// *************************************************************************
 
 class SoPackedColor : public SoNode {
     typedef SoNode inherited;
@@ -41,15 +36,9 @@ public:
 
   SoMFUInt32 orderedRGBA;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
   SbBool isTransparent(void);
 

@@ -20,12 +20,8 @@
 #ifndef __SOGLMODELMATRIXELEMENT_H__
 #define __SOGLMODELMATRIXELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLMODELMATRIXELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLMODELMATRIXELEMENT
-
 #include <Inventor/elements/SoModelMatrixElement.h>
+
 
 class SoGLModelMatrixElement : public SoModelMatrixElement {
   typedef SoModelMatrixElement inherited;

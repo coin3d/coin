@@ -77,7 +77,6 @@ SoFile::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoFile);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -86,9 +85,7 @@ SoFile::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   this->children->traverse((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -97,7 +94,6 @@ SoFile::GLRender(SoGLRenderAction * action)
 {
   SoFile::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!
   FIXME: write function documentation
@@ -151,7 +147,6 @@ SoFile::getChildren() const
 }
 
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -160,9 +155,7 @@ SoFile::doAction(SoAction *action)
 {
   this->children->traverse((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -175,9 +168,7 @@ SoFile::callback(SoCallbackAction *action)
     action->invokePostCallbacks(this);
   }
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -186,9 +177,7 @@ SoFile::getMatrix(SoGetMatrixAction *action)
 {
   SoFile::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write doc
  */
@@ -197,9 +186,7 @@ SoFile::handleEvent(SoHandleEventAction *action)
 {
   SoFile::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -208,9 +195,7 @@ SoFile::pick(SoPickAction *action)
 {
   SoFile::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -219,7 +204,6 @@ SoFile::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoFile::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
 /*!
   FIXME: write doc

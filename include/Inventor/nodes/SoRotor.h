@@ -25,11 +25,6 @@
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBool.h>
 
-#if defined(COIN_EXCLUDE_SOROTOR)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOROTOR
-
-// *************************************************************************
 
 class SoRotor : public SoRotation {
   typedef SoRotation inherited;

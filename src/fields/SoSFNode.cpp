@@ -27,9 +27,7 @@
 
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/fields/SoSFNode.h>
-#if !defined(COIN_EXCLUDE_SOMFNODE)
 #include <Inventor/fields/SoMFNode.h>
-#endif // !COIN_EXCLUDE_SOMFNODE
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/SbName.h>
 #include <Inventor/misc/SoBasic.h> // COIN_STUB()
@@ -269,12 +267,9 @@ SoSFNode::writeValue(SoOutput * out) const
 void
 SoSFNode::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOMFNODE)
-  else if (dest->getTypeId()==SoMFNode::getClassTypeId()) {
+  if (dest->getTypeId()==SoMFNode::getClassTypeId()) {
     ((SoMFNode *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFNODE
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFNode::convertTo",

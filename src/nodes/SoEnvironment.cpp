@@ -27,17 +27,9 @@
 
 #include <Inventor/nodes/SoEnvironment.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLEnvironmentElement.h>
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
 #include <Inventor/elements/SoEnvironmentElement.h>
-#endif // ! COIN_EXCLUDE_SOENVIRONMENTELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 
 /*!
@@ -130,14 +122,11 @@ SoEnvironment::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoEnvironment);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLEnvironmentElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoEnvironmentElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
 */
@@ -153,9 +142,7 @@ SoEnvironment::GLRender(SoGLRenderAction * action)
                             fogColor.getValue(),
                             fogVisibility.getValue());
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
 */
@@ -171,4 +158,4 @@ SoEnvironment::callback(SoCallbackAction *action)
                             fogColor.getValue(),
                             fogVisibility.getValue());
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
+

@@ -29,25 +29,11 @@
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
-
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/elements/SoTextureCoordinateElement.h>
 
@@ -86,14 +72,11 @@ SoTextureCoordinate2::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoTextureCoordinate2);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLTextureCoordinateElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoTextureCoordinateElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -104,9 +87,7 @@ SoTextureCoordinate2::doAction(SoAction * action)
                                    point.getNum(),
                                    point.getValues(0));
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -117,9 +98,7 @@ SoTextureCoordinate2::GLRender(SoGLRenderAction * action)
                                           this, NULL);
   SoTextureCoordinate2::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -128,9 +107,7 @@ SoTextureCoordinate2::callback(SoCallbackAction * action)
 {
   SoTextureCoordinate2::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -139,4 +116,3 @@ SoTextureCoordinate2::pick(SoPickAction * action)
 {
   SoTextureCoordinate2::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION

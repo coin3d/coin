@@ -27,22 +27,10 @@
 
 #include <Inventor/nodes/SoAnnoText3Property.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOANNOTEXT3FONTSIZEHINTELEMENT)
 #include <Inventor/elements/SoAnnoText3FontSizeHintElement.h>
-#endif // !COIN_EXCLUDE_SOANNOTEXT3FONTSIZEHINTELEMENT
-#if !defined(COIN_EXCLUDE_SOANNOTEXT3RENDERPRINTELEMENT)
 #include <Inventor/elements/SoAnnoText3RenderPrintElement.h>
-#endif // !COIN_EXCLUDE_SOANNOTEXT3RENDERPRINTELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
@@ -135,16 +123,11 @@ SoAnnoText3Property::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoAnnoText3Property);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoAnnoText3FontSizeHintElement);
   SO_ENABLE(SoGLRenderAction, SoAnnoText3RenderPrintElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoAnnoText3FontSizeHintElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoAnnoText3RenderPrintElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
 
   SO_ENABLE(SoCallbackAction, SoAnnoText3FontSizeHintElement);
   SO_ENABLE(SoCallbackAction, SoAnnoText3RenderPrintElement);
@@ -156,7 +139,6 @@ SoAnnoText3Property::initClass(void)
   SO_ENABLE(SoGetPrimitiveCountAction, SoAnnoText3RenderPrintElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -165,10 +147,7 @@ SoAnnoText3Property::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoAnnoText3Property::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
 */
@@ -213,9 +192,7 @@ SoAnnoText3Property::doAction(SoAction *action)
   SoAnnoText3FontSizeHintElement::set(state, hint);
   SoAnnoText3RenderPrintElement::set(state, print);
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
 */
@@ -224,9 +201,7 @@ SoAnnoText3Property::GLRender(SoGLRenderAction *action)
 {
   SoAnnoText3Property::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
 */
@@ -235,9 +210,7 @@ SoAnnoText3Property::callback(SoCallbackAction *action)
 {
   SoAnnoText3Property::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
 */
@@ -246,9 +219,7 @@ SoAnnoText3Property::pick(SoPickAction *action)
 {
   SoAnnoText3Property::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -257,4 +228,3 @@ SoAnnoText3Property::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoAnnoText3Property::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

@@ -22,10 +22,6 @@
 
 #include <Inventor/SbBasic.h>
 
-#if defined(COIN_EXCLUDE_SOSENSOR)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSENSOR
-
 class SoSensor;
 
 typedef void SoSensorCB(void * data, SoSensor * sensor);

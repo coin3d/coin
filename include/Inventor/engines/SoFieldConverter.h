@@ -22,11 +22,8 @@
 
 #include <Inventor/engines/SoSubEngine.h>
 
-#if defined(COIN_EXCLUDE_SOFIELDCONVERTER)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOFIELDCONVERTER
-
 class SoEngineOutput;
+
 
 class SoFieldConverter : public SoEngine {
   typedef SoEngine inherited;

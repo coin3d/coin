@@ -25,11 +25,6 @@
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFFloat.h>
 
-#if defined(COIN_EXCLUDE_SOSPOTLIGHT)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOSPOTLIGHT
-
-// *************************************************************************
 
 class SoSpotLight : public SoLight {
   typedef SoLight inherited;
@@ -45,9 +40,7 @@ public:
   SoSFFloat dropOffRate;
   SoSFFloat cutOffAngle;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif
 
 protected:
   virtual ~SoSpotLight();

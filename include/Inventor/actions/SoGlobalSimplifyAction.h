@@ -20,12 +20,8 @@
 #ifndef __SOGLOBALSIMPLIFYACTION_H__
 #define __SOGLOBALSIMPLIFYACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOGLOBALSIMPLIFYACTION
-
 #include <Inventor/actions/SoSimplifyAction.h>
+
 
 class SoGlobalSimplifyAction : public SoSimplifyAction {
   typedef SoSimplifyAction inherited;

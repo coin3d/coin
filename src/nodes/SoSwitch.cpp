@@ -31,28 +31,13 @@
 
 #include <Inventor/errors/SoDebugError.h>
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 #include <Inventor/actions/SoSearchAction.h>
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOSWITCHELEMENT)
 #include <Inventor/elements/SoSwitchElement.h>
-#endif // !COIN_EXCLUDE_SOSWITCHELEMENT
-
 #include <Inventor/actions/SoCallbackAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 
@@ -92,27 +77,16 @@ SoSwitch::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoSwitch);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoSwitchElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
   SO_ENABLE(SoSearchAction, SoSwitchElement);
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
   SO_ENABLE(SoGetMatrixAction, SoSwitchElement);
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoSwitchElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   SO_ENABLE(SoPickAction, SoSwitchElement);
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
   SO_ENABLE(SoCallbackAction, SoSwitchElement);
   SO_ENABLE(SoGetPrimitiveCountAction, SoSwitchElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -121,9 +95,7 @@ SoSwitch::GLRender(SoGLRenderAction * action)
 {
   this->doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -175,9 +147,7 @@ SoSwitch::getBoundingBox(SoGetBoundingBoxAction * action)
     this->getChildren()->traverse(action, idx);
   }
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOSEARCHACTION)
 /*!
   FIXME: write function documentation
 */
@@ -195,9 +165,7 @@ SoSwitch::search(SoSearchAction * action)
     doAction(action);
   }
 }
-#endif // !COIN_EXCLUDE_SOSEARCHACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -249,9 +217,6 @@ SoSwitch::doAction(SoAction * action)
     this->children->traverse(action, i);
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
-
-
 
 /*!
   FIXME: write doc
@@ -268,7 +233,6 @@ SoSwitch::affectsState(void) const
   return TRUE;
 }
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -281,9 +245,7 @@ SoSwitch::callback(SoCallbackAction *action)
     action->invokePostCallbacks(this);
   }
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -292,9 +254,7 @@ SoSwitch::pick(SoPickAction *action)
 {
   SoSwitch::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write doc
  */
@@ -303,9 +263,7 @@ SoSwitch::handleEvent(SoHandleEventAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -314,9 +272,7 @@ SoSwitch::getMatrix(SoGetMatrixAction *action)
 {
   SoSwitch::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOWRITEACTION)
 /*!
   FIXME: write doc
  */
@@ -326,9 +282,7 @@ SoSwitch::write(SoWriteAction * action)
   // FIXME: anything missing? 19991112 mortene.
   inherited::write(action);
 }
-#endif // !COIN_EXCLUDE_SOWRITEACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -337,9 +291,7 @@ SoSwitch::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoSwitch::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -348,4 +300,3 @@ SoSwitch::traverseChildren(SoAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION

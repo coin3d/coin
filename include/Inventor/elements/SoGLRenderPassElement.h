@@ -20,12 +20,8 @@
 #ifndef __SOGLRENDERPASSELEMENT_H__
 #define __SOGLRENDERPASSELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLRENDERPASSELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLRENDERPASSELEMENT
-
 #include <Inventor/elements/SoElement.h>
+
 
 class SoGLRenderPassElement : public SoElement {
   typedef SoElement inherited;

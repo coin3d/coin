@@ -27,21 +27,15 @@
 
 #include <Inventor/nodes/SoAnnotation.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-
-// *************************************************************************
 
 SO_NODE_SOURCE(SoAnnotation);
+
 
 /*!
   Constructor.
@@ -69,23 +63,18 @@ SoAnnotation::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoAnnotation);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
 void
 SoAnnotation::GLRender(SoGLRenderAction * action)
 {
-#if !defined(COIN_EXCLUDE_SOPATH)
   if (action->isRenderingDelayedPaths()) {
     inherited::GLRender(action);
   }
   else {
     action->addDelayedPath((SoPath*)action->getCurPath());
   }
-#else //  COIN_EXCLUDE_SOPATH
-  inherited::GLRender(action);
-#endif // COIN_EXCLUDE_SOPATH
 }
 
 /*!
@@ -94,13 +83,9 @@ SoAnnotation::GLRender(SoGLRenderAction * action)
 void
 SoAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 {
-#if !defined(COIN_EXCLUDE_SOPATH)
   if (action->isRenderingDelayedPaths()) {
     inherited::GLRenderBelowPath(action);
   }
-#else // COIN_EXCLUDE_SOPATH
-  inherited::GLRenderInPath(action);
-#endif // COIN_EXCLUDE_SOPATH
 }
 
 /*!
@@ -109,13 +94,9 @@ SoAnnotation::GLRenderBelowPath(SoGLRenderAction * action)
 void
 SoAnnotation::GLRenderInPath(SoGLRenderAction * action)
 {
-#if !defined(COIN_EXCLUDE_SOPATH)
   if (action->isRenderingDelayedPaths()) {
     inherited::GLRenderInPath(action);
   }
-#else // COIN_EXCLUDE_SOPATH
-  inherited::GLRenderInPath(action);
-#endif // COIN_EXCLUDE_SOPATH
 }
 
 /*!
@@ -126,5 +107,3 @@ SoAnnotation::GLRenderOffPath(SoGLRenderAction *)
 {
   // should never render
 }
-
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION

@@ -20,12 +20,8 @@
 #ifndef __SOTOVRMLACTION_H__
 #define __SOTOVRMLACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOTOVRMLACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOTOVRMLACTION
-
 #include <Inventor/actions/SoAction.h>
+
 
 class SoToVRMLAction : public SoAction {
   typedef SoAction inherited;

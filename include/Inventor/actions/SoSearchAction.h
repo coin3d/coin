@@ -20,14 +20,10 @@
 #ifndef __SOSEARCHACTION_H__
 #define __SOSEARCHACTION_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOSEARCHACTION)
-#error "This file is excluded from Coin through the configuration system!"
-#endif // COIN_EXCLUDE_SOSEARCHACTION
-
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/SbName.h>
 #include <Inventor/lists/SoPathList.h>
+
 
 class SoSearchAction : public SoAction {
   typedef SoAction inherited;

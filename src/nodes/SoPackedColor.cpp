@@ -27,20 +27,13 @@
 
 #include <Inventor/nodes/SoPackedColor.h>
 
-
-
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLDiffuseColorElement.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SODIFFUSECOLORELEMENT)
 #include <Inventor/elements/SoDiffuseColorElement.h>
-#endif // !COIN_EXCLUDE_SODIFFUSECOLORELEMENT
-
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/actions/SoCallbackAction.h>
 
@@ -80,14 +73,11 @@ SoPackedColor::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoPackedColor);
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   SO_ENABLE(SoGLRenderAction, SoGLDiffuseColorElement);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
   SO_ENABLE(SoCallbackAction, SoDiffuseColorElement);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -96,10 +86,7 @@ SoPackedColor::GLRender(SoGLRenderAction * action)
 {
   SoPackedColor::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -115,9 +102,7 @@ SoPackedColor::doAction(SoAction *action)
                                orderedRGBA.getValues(0));
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -126,7 +111,6 @@ SoPackedColor::callback(SoCallbackAction *action)
 {
   SoPackedColor::doAction(action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
 /*!
   FIXME: write doc

@@ -20,11 +20,6 @@
 #ifndef __SOMATERIALBUNDLE_H__
 #define __SOMATERIALBUNDLE_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOMATERIALBUNDLE)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOMATERIALBUNDLE
-
 #include <Inventor/bundles/SoBundle.h>
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
@@ -64,27 +59,13 @@ private:
   SbBool diffuseOnly;
   int currIndex;
 
-#if !defined(COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT)
   SoGLAmbientColorElement *ambientElt;
-#endif // !COIN_EXCLUDE_SOGLAMBIENTCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT)
   SoGLDiffuseColorElement *diffuseElt;
-#endif // !COIN_EXCLUDE_SOGLDIFFUSECOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT)
   SoGLSpecularColorElement *specularElt;
-#endif // !COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT)
   SoGLEmissiveColorElement *emissiveElt;
-#endif // !COIN_EXCLUDE_SOGLEMISSIVECOLORELEMENT
-#if !defined(COIN_EXCLUDE_SOGLSHININESSELEMENT)
   SoGLShininessElement *shininessElt;
-#endif // !COIN_EXCLUDE_SOGLSHININESSELEMENT
-#if !defined(COIN_EXCLUDE_SOTRANSPARENCYELEMENT)
   SoTransparencyElement *transparencyElt;
-#endif // !COIN_EXCLUDE_SOTRANSPARENCYELEMENT
-#if !defined(COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT)
   SoGLPolygonStippleElement *stippleElt;
-#endif // !COIN_EXCLUDE_SOGLPOLYGONSTIPPLEELEMENT
 
   const uint32_t *packedColors;
   int numPacked;

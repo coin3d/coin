@@ -27,29 +27,13 @@
 
 #include <Inventor/nodes/SoMatrixTransform.h>
 
-
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoAction.h>
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 #include <Inventor/actions/SoGetMatrixAction.h>
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 #include <Inventor/actions/SoPickAction.h>
-#endif // !COIN_EXCLUDE_SOPICKACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOMODELMATRIXELEMENT)
 #include <Inventor/elements/SoModelMatrixElement.h>
-#endif // !COIN_EXCLUDE_SOMODELMATRIXELEMENT
 
 /*!
   \var SoSFMatrix SoMatrixTransform::matrix
@@ -89,7 +73,6 @@ SoMatrixTransform::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoMatrixTransform);
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -101,26 +84,20 @@ SoMatrixTransform::doAction(SoAction * action)
                                this->matrix.getValue());
   }
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
 void
 SoMatrixTransform::GLRender(SoGLRenderAction * action)
 {
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   // TODO: code to test if matrix is legal. For now we'll
   // just invalidate the flag in the normalize element (pederb).
   SoGLNormalizeElement::setMatrixState(action->getState(), FALSE);
-#endif // ! COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
   SoMatrixTransform::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -129,10 +106,7 @@ SoMatrixTransform::getBoundingBox(SoGetBoundingBoxAction * action)
 {
   SoMatrixTransform::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write doc
  */
@@ -141,9 +115,7 @@ SoMatrixTransform::callback(SoCallbackAction *action)
 {
   SoMatrixTransform::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
 /*!
   FIXME: write doc
  */
@@ -152,9 +124,7 @@ SoMatrixTransform::getMatrix(SoGetMatrixAction *action)
 {
   action->mult(this->matrix.getValue());
 }
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -163,9 +133,7 @@ SoMatrixTransform::pick(SoPickAction *action)
 {
   SoMatrixTransform::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -174,4 +142,3 @@ SoMatrixTransform::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
   SoMatrixTransform::doAction((SoAction*)action);
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION

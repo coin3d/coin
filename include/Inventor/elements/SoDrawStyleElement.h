@@ -20,12 +20,8 @@
 #ifndef __SODRAWSTYLEELEMENT_H__
 #define __SODRAWSTYLEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SODRAWSTYLEELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoDrawStyleElement : public SoInt32Element {
   typedef SoInt32Element inherited;

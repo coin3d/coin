@@ -28,17 +28,9 @@
 
 #include <Inventor/nodes/SoLevelOfSimplification.h>
 
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-
-#if !defined(COIN_EXCLUDE_SODECIMATIONTYPEELEMENT)
 #include <Inventor/elements/SoDecimationTypeElement.h>
-#endif // !COIN_EXCLUDE_SODECIMATIONTYPEELEMENT
-#if !defined(COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT)
 #include <Inventor/elements/SoDecimationPercentageElement.h>
-#endif // !COIN_EXCLUDE_SODECIMATIONPERCENTAGEELEMENT
 
 /*!
   \var SoMFFloat SoLevelOfSimplification::percentages
@@ -85,14 +77,11 @@ SoLevelOfSimplification::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoLevelOfSimplification);
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   SO_ENABLE(SoGetBoundingBoxAction, SoDecimationTypeElement);
   SO_ENABLE(SoGetBoundingBoxAction, SoDecimationPercentageElement);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 }
 
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -101,9 +90,7 @@ SoLevelOfSimplification::getPrimitiveCount(SoGetPrimitiveCountAction * /* action
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -113,4 +100,3 @@ SoLevelOfSimplification::whichToTraverse(SoAction *)
   COIN_STUB();
   return 0;
 }
-#endif // !COIN_EXCLUDE_SOACTION

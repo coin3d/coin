@@ -30,39 +30,20 @@
 
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/misc/SoState.h>
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoGLShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOGLSHAPEHINTSELEMENY
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
 #include <Inventor/elements/SoGLTextureEnabledElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
 
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
 #include <Inventor/elements/SoGLShadeModelElement.h>
-#endif // ! COIN_EXCLUDE_SOGLSHADEMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
 #include <Inventor/elements/SoGLNormalizeElement.h>
-#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/misc/SoGL.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SORAYPICKRACTION)
 #include <Inventor/actions/SoRayPickAction.h>
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYTYPEELEMENT)
 #include <Inventor/elements/SoComplexityTypeElement.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
 #include <Inventor/elements/SoComplexityElement.h>
-#endif
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -113,7 +94,6 @@ SoSphere::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoSphere);
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -127,41 +107,27 @@ SoSphere::GLRender(SoGLRenderAction * action)
   SoMaterialBundle mb(action);
   mb.sendFirst();
 
-#if !defined(COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT)
   SbBool doTextures = SoGLTextureEnabledElement::get(state);
-#else // COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
-  SbBool doTextures = FALSE;
-#endif // !COIN_EXCLUDE_SOGLTEXTUREENABLEDELEMENT
 
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
   SbBool sendNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#else // COIN_EXCLUDE_SOLIGHTMODELELEMENT
-  SbBool sendNormals = FALSE;
-#endif // COIN_EXCLUDE_SOLIGHTMODELELEMENT
 
-#if !defined(COIN_EXCLUDE_SOGLSHAPEHINTSELEMENT)
   const SoGLShapeHintsElement * sh = (SoGLShapeHintsElement *)
     state->getConstElement(SoGLShapeHintsElement::getClassStackIndex());
   sh->forceSend(TRUE, TRUE, FALSE);
-#endif
 
   float complexity = this->getComplexityValue(action);
 
-#if !defined(COIN_EXCLUDE_SOGLSHADEMODELELEMENT)
   const SoGLShadeModelElement * sm = (SoGLShadeModelElement *)
     state->getConstElement(SoGLShadeModelElement::getClassStackIndex());
   sm->forceSend(FALSE);
-#endif
 
-#if !defined(COIN_EXCLUDE_SOGLNORMALIZEELEMENT)
   if (sendNormals) {
     const SoGLNormalizeElement * ne = (SoGLNormalizeElement *)
       state->getConstElement(SoGLNormalizeElement::getClassStackIndex());
     ne->forceSend(TRUE);
   }
-#endif // !COIN_EXCLUDE_SOGLNORMALIZEELEMENT
 
   unsigned int flags = 0;
   if (sendNormals) flags |= SOGL_NEED_NORMALS;
@@ -199,9 +165,6 @@ SoSphere::willUpdateNormalizeElement(SoState *) const
   return TRUE;
 }
 
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -212,10 +175,7 @@ SoSphere::computeBBox(SoAction * /* action */, SbBox3f & box, SbVec3f & center)
   box.setBounds(SbVec3f(-r, -r, -r), SbVec3f(r, r, r));
   center.setValue(0.0f, 0.0f, 0.0f);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
 /*!
   FIXME: write doc
  */
@@ -233,9 +193,7 @@ SoSphere::rayPick(SoRayPickAction *action)
     if (action->isBetweenPlanes(exit)) action->addIntersection(exit);
   }
 }
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
  */
@@ -252,9 +210,7 @@ SoSphere::getPrimitiveCount(SoGetPrimitiveCountAction *action)
     action->incNumSpheres();
   }
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -270,4 +226,3 @@ SoSphere::generatePrimitives(SoAction *action)
                         action);
 
 }
-#endif // !COIN_EXCLUDE_SOACTION

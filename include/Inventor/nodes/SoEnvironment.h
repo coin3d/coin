@@ -26,14 +26,8 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFEnum.h>
-
-#if defined(COIN_EXCLUDE_SOENVIRONMENT)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOENVIRONMENT
-
 #include <Inventor/elements/SoEnvironmentElement.h>
 
-// *************************************************************************
 
 class SoEnvironment : public SoNode {
   typedef SoNode inherited;
@@ -51,12 +45,8 @@ public:
     SMOKE = SoEnvironmentElement::SMOKE
   };
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
   SoSFFloat ambientIntensity;
   SoSFColor ambientColor;

@@ -23,10 +23,6 @@
 #include <Inventor/fields/SoSField.h>
 #include <Inventor/SbTime.h>
 
-#if defined(COIN_EXCLUDE_SOSFTIME)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSFTIME
-
 
 class SoSFTime : public SoSField {
   typedef SoSField inherited;

@@ -26,11 +26,6 @@
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoMFFloat.h>
 
-#if defined(COIN_EXCLUDE_SOINDEXEDNURBSCURVE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOINDEXEDNURBSCURVE
-
-// *************************************************************************
 
 class SoIndexedNurbsCurve : public SoShape {
   typedef SoShape inherited;
@@ -45,31 +40,17 @@ public:
   SoMFInt32 coordIndex;
   SoMFFloat knotVector;
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SORAYPICKACTION)
   virtual void rayPick(SoRayPickAction * action);
-#endif // !COIN_EXCLUDE_SORAYPICKACTION
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOACTION)
   void sendPrimitive(SoAction *,  SoPrimitiveVertex *);
-#endif // !COIN_EXCLUDE_SOACTION
 
 protected:
   virtual ~SoIndexedNurbsCurve();
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void generatePrimitives(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 };
 
 #endif // !__SOINDEXEDNURBSCURVE_H__

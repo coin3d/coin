@@ -20,12 +20,8 @@
 #ifndef __SOUNITSELEMENT_H__
 #define __SOUNITSELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOUNITSELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOUNITSELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoUnitsElement : public SoInt32Element {
   typedef SoInt32Element inherited;

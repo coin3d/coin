@@ -31,46 +31,24 @@
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 #include <Inventor/SoPrimitiveVertex.h>
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
 #ifdef _WIN32
 #include <windows.h>
 #endif // !_WIN32
 #include <GL/gl.h>
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
-
-#if !defined(COIN_EXCLUDE_SOCOORDINATEELEMENT)
 #include <Inventor/elements/SoCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLCOORDINATEELEMENT)
 #include <Inventor/elements/SoGLCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLCOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
-#endif // !COIN_EXCLUDE_SOGLTEXTURECOORDINATEELEMENT
-#if !defined(COIN_EXCLUDE_SONORMALBINDINGELEMENT)
 #include <Inventor/elements/SoNormalBindingElement.h>
-#endif // !COIN_EXCLUDE_SONORMALBINDINGELEMENT
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
 #include <Inventor/elements/SoMaterialBindingElement.h>
-#endif // !COIN_EXCLUDE_SOMATERIALBINDINGELEMENT
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
-#if !defined(COIN_EXCLUDE_SOSHAPEHINTSELEMENT)
 #include <Inventor/elements/SoShapeHintsElement.h>
-#endif // !COIN_EXCLUDE_SOSHAPEHINTSELEMENT
-#if !defined(COIN_EXCLUDE_SODRAWSTYLEELEMENT)
 #include <Inventor/elements/SoDrawStyleElement.h>
-#endif
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
 #include <Inventor/elements/SoLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOLIGHTMODELELEMENT
-#if !defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
 #include <Inventor/elements/SoGLLightModelElement.h>
-#endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
-
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/details/SoPointDetail.h>
 
@@ -124,7 +102,6 @@ SoPointSet::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoPointSet);
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write function documentation
 */
@@ -133,7 +110,6 @@ SoPointSet::computeBBox(SoAction * action, SbBox3f & box, SbVec3f & center)
 {
   inherited::computeCoordBBox(action, this->numPoints.getValue(), box, center);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
 /*!
   \internal
@@ -142,10 +118,8 @@ SoPointSet::Binding
 SoPointSet::findMaterialBinding(SoState * const state) const
 {
   Binding binding = OVERALL;
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   if (SoMaterialBindingElement::get(state) !=
       SoMaterialBindingElement::OVERALL) binding = PER_VERTEX;
-#endif
   return binding;
 }
 
@@ -158,14 +132,11 @@ SoPointSet::findNormalBinding(SoState * const state) const
 {
   Binding binding = PER_VERTEX;
 
-#if !defined(COIN_EXCLUDE_SOMATERIALBINDINGELEMENT)
   if (SoNormalBindingElement::get(state) ==
       SoNormalBindingElement::OVERALL) binding = OVERALL;
-#endif
   return binding;
 }
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -188,13 +159,9 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   const SoCoordinateElement * tmp;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals = TRUE;
-
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
-  needNormals =
+  SbBool needNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
   SoVertexShape::getVertexData(action->getState(), tmp, normals,
                                needNormals);
@@ -211,11 +178,9 @@ SoPointSet::GLRender(SoGLRenderAction * action)
 
   if (!needNormals) {
     nbind = OVERALL;
-#if !defined(COIN_EXCLUDE_SOGLLIGHTMODELELEMENT)
     const SoGLLightModelElement * lm = (SoGLLightModelElement *)
       state->getConstElement(SoGLLightModelElement::getClassStackIndex());
     lm->forceSend(SoLightModelElement::BASE_COLOR);
-#endif // !COIN_EXCLUDE_SOGLLIGHTMODELELEMENT
   }
 
   SbVec3f dummynormal(0.0f, 0.0f, 1.0f);
@@ -248,7 +213,6 @@ SoPointSet::GLRender(SoGLRenderAction * action)
   if (this->vertexProperty.getValue())
     state->pop();
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
 /*!
   FIXME: write function documentation
@@ -261,7 +225,6 @@ SoPointSet::generateDefaultNormals(SoState *, SoNormalCache * nc)
   return TRUE;
 }
 
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
 /*!
   FIXME: write doc
  */
@@ -270,9 +233,7 @@ SoPointSet::getBoundingBox(SoGetBoundingBoxAction *action)
 {
   inherited::getBoundingBox(action);
 }
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
 
-#if !defined(COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION)
 /*!
   FIXME: write doc
 */
@@ -283,9 +244,7 @@ SoPointSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 
   action->addNumPoints(this->numPoints.getValue());
 }
-#endif // !COIN_EXCLUDE_SOGETPRIMITIVECOUNTACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -302,13 +261,9 @@ SoPointSet::generatePrimitives(SoAction *action)
   const SoCoordinateElement *coords;
   const SbVec3f * normals;
   SbBool doTextures;
-  SbBool needNormals = TRUE;
-
-#if !defined(COIN_EXCLUDE_SOLIGHTMODELELEMENT)
-  needNormals =
+  SbBool needNormals =
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
-#endif // !COIN_EXCLUDE_SOLOGHTMODELELEMENT
 
   SoVertexShape::getVertexData(action->getState(), coords, normals,
                                needNormals);
@@ -370,4 +325,3 @@ SoPointSet::generatePrimitives(SoAction *action)
     state->pop();
 
 }
-#endif // !COIN_EXCLUDE_SOACTION

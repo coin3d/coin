@@ -20,11 +20,6 @@
 #ifndef __SOINTERPOLATEFLOAT_H__
 #define __SOINTERPOLATEFLOAT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOINTERPOLATEFLOAT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOINTERPOLATEFLOAT
-
 //$ BEGIN TEMPLATE InterpolateHeader(SoInterpolateFloat, SoMFFloat)
 #include <Inventor/engines/SoInterpolateAbs.h>
 #include <Inventor/fields/SoMFFloat.h>

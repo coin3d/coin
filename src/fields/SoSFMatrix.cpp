@@ -30,15 +30,9 @@
 #include <Inventor/SoInput.h>
 #include <Inventor/SbName.h>
 
-#if !defined(COIN_EXCLUDE_SOSFROTATION)
 #include <Inventor/fields/SoSFRotation.h>
-#endif // !COIN_EXCLUDE_SOSFROTATION
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
 #include <Inventor/fields/SoSFString.h>
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOMFMATRIX)
 #include <Inventor/fields/SoMFMatrix.h>
-#endif // !COIN_EXCLUDE_SOMFMATRIX
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -262,13 +256,9 @@ SoSFMatrix::setValue(const float a11, const float a12,
 void
 SoSFMatrix::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFROTATION)
-  else if (dest->getTypeId()==SoSFRotation::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFRotation::getClassTypeId()) {
     ((SoSFRotation *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOSFROTATION
-#if !defined(COIN_EXCLUDE_SOSFSTRING)
   else if (dest->getTypeId()==SoSFString::getClassTypeId()) {
     ostrstream ostr;
     const SbMatrix mat=this->getValue();
@@ -291,12 +281,9 @@ SoSFMatrix::convertTo(SoField * dest) const
 
     ((SoSFString *)dest)->setValue(ostr.str());
   }
-#endif // !COIN_EXCLUDE_SOSFSTRING
-#if !defined(COIN_EXCLUDE_SOMFMATRIX)
   else if (dest->getTypeId()==SoMFMatrix::getClassTypeId()) {
     ((SoMFMatrix *)dest)->setValue(this->getValue());
   }
-#endif // !COIN_EXCLUDE_SOMFMATRIX
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoSFMatrix::convertTo",

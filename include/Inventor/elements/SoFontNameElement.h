@@ -20,13 +20,9 @@
 #ifndef __SOFONTNAMEELEMENT_H__
 #define __SOFONTNAMEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOFONTNAMEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOFONTNAMEELEMENT
-
 #include <Inventor/SbName.h>
 #include <Inventor/elements/SoReplacedElement.h>
+
 
 class SoFontNameElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

@@ -20,13 +20,9 @@
 #ifndef __SOGLSPECULARCOLORELEMENT_H__
 #define __SOGLSPECULARCOLORELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLSPECULARCOLORELEMENT
-
 #include <Inventor/elements/SoSpecularColorElement.h>
 #include <Inventor/SbColor.h>
+
 
 class SoGLSpecularColorElement : public SoSpecularColorElement {
   typedef SoSpecularColorElement inherited;

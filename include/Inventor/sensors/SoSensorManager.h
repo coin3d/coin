@@ -23,10 +23,8 @@
 #include <Inventor/lists/SbList.h>
 #include <Inventor/SbTime.h>
 
-#if defined(COIN_EXCLUDE_SOSENSORMANAGER)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SOSENSORMANAGER
-
+// FIXME: do this properly through something configure based.
+// 19991214 mortene.
 #if defined(_WIN32) || defined(__BEOS__)
 typedef struct fd_set fd_set;
 #endif //_WIN32 || __BEOS__

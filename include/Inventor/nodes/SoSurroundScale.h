@@ -24,13 +24,8 @@
 #include <Inventor/nodes/SoTransformation.h>
 #include <Inventor/fields/SoSFInt32.h>
 
-#if defined(COIN_EXCLUDE_SOSURROUNDSCALE)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOSURROUNDSCALE
-
 class SbMatrix;
 
-// *************************************************************************
 
 class SoSurroundScale : public SoTransformation {
   typedef SoTransformation inherited;
@@ -45,30 +40,18 @@ public:
   SoSFInt32 numNodesUpToReset;
 
   void invalidate(void);
-#if !defined(COIN_EXCLUDE_SOACTION)
   void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
   void setDoingTranslations(SbBool doEm);
   SbBool isDoingTranslations(void);
 
 protected:
   virtual ~SoSurroundScale();
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOGETBOUNDINGBOXACTION)
   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
-#endif // !COIN_EXCLUDE_SOGETBOUNDINGBOXACTION
-#if !defined(COIN_EXCLUDE_SOGETMATRIXACTION)
   virtual void getMatrix(SoGetMatrixAction * action);
-#endif // !COIN_EXCLUDE_SOGETMATRIXACTION
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
   virtual void pick(SoPickAction * action);
-#endif // !COIN_EXCLUDE_SOPICKACTION)
   void updateMySurroundParams(SoAction * action, const SbMatrix & inv);
   void setIgnoreInBbox(SbBool newVal);
   SbBool isIgnoreInBbox(void);

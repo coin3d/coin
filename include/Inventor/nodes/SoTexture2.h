@@ -28,11 +28,6 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/elements/SoTextureImageElement.h>
 
-#if defined(COIN_EXCLUDE_SOTEXTURE2)
-#error Configuration settings disrespected -- do not include this file!
-#endif // COIN_EXCLUDE_SOTEXTURE2
-
-// *************************************************************************
 
 class SoTexture2 : public SoNode {
   typedef SoNode inherited;
@@ -56,7 +51,7 @@ public:
     REPEAT = SoTextureImageElement::REPEAT,
     CLAMP = SoTextureImageElement::CLAMP
   };
-  
+
   SoSFString filename;
   SoSFImage image;
   SoSFEnum wrapS;
@@ -64,15 +59,9 @@ public:
   SoSFEnum model;
   SoSFColor blendColor;
 
-#if !defined(COIN_EXCLUDE_SOACTION)
   virtual void doAction(SoAction * action);
-#endif // !COIN_EXCLUDE_SOACTION
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   virtual void GLRender(SoGLRenderAction * action);
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
   virtual void callback(SoCallbackAction * action);
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
   static SbBool readImage(const SbString & fname, int & w, int & h, int & nc,
                           unsigned char *& bytes);
@@ -87,9 +76,7 @@ protected:
 private:
   void getImage();
   class SoImageInterface *imageData;
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
   class SoGLImage * glImage;
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 };
 
 #endif // !__SOTEXTURE2_H__

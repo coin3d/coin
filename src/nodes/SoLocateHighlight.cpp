@@ -126,7 +126,6 @@ SoLocateHighlight::turnOffCurrentHighlight(SoGLRenderAction * /* action */)
 }
 
 
-#if !defined(COIN_EXCLUDE_SOHANDLEEVENTACTION)
 /*!
   FIXME: write doc
  */
@@ -135,9 +134,7 @@ SoLocateHighlight::handleEvent(SoHandleEventAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOHANDLEEVENTACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write doc
  */
@@ -155,9 +152,7 @@ SoLocateHighlight::GLRenderInPath(SoGLRenderAction * /* action */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write doc
  */
@@ -166,4 +161,3 @@ SoLocateHighlight::redrawHighlighted(SoAction * /* act */, SbBool /* flag */)
 {
   COIN_STUB();
 }
-#endif // !COIN_EXCLUDE_SOACTION

@@ -23,9 +23,6 @@
 #include <Inventor/sensors/SoDelayQueueSensor.h>
 #include <stdlib.h> // for NULL definition
 
-#if defined(COIN_EXCLUDE_SODATASENSOR)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SODATASENSOR
 
 class SoNode;
 class SoField;

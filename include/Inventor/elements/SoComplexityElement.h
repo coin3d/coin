@@ -20,12 +20,8 @@
 #ifndef __SOCOMPLEXITYELEMENT_H__
 #define __SOCOMPLEXITYELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOCOMPLEXITYELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOCOMPLEXITYELEMENT
-
 #include <Inventor/elements/SoFloatElement.h>
+
 
 class SoComplexityElement : public SoFloatElement {
   typedef SoFloatElement inherited;

@@ -20,12 +20,8 @@
 #ifndef __SOGLLINEPATTERNELEMENT_H__
 #define __SOGLLINEPATTERNELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOGLLINEPATTERNELEMENT)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOGLLINEPATTERNELEMENT
-
 #include <Inventor/elements/SoLinePatternElement.h>
+
 
 class SoGLLinePatternElement : public SoLinePatternElement {
   typedef SoLinePatternElement inherited;

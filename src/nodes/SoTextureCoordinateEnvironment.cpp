@@ -29,23 +29,14 @@
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec3f.h>
-
-#if !defined(COIN_EXCLUDE_SOTEXTURECOORDINATEELEMENT)
 #include <Inventor/elements/SoTextureCoordinateElement.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOACTION)
 #include <Inventor/actions/SoGLRenderAction.h>
-#endif
-
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 #include <Inventor/elements/SoGLTextureCoordinateElement.h>
+
 #ifdef _WIN32
 #include <windows.h>
 #endif // _WIN32
 #include <GL/gl.h>
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION
-
 #include <math.h>
 #include <float.h>
 
@@ -117,7 +108,6 @@ SoTextureCoordinateEnvironment::generate(void *userdata,
   return texcoords;
 }
 
-#if !defined(COIN_EXCLUDE_SOACTION)
 /*!
   FIXME: write function documentation
 */
@@ -128,9 +118,7 @@ SoTextureCoordinateEnvironment::doAction(SoAction * action)
                                           generate,
                                           action->getState());
 }
-#endif // !COIN_EXCLUDE_SOACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 /*!
   FIXME: write function documentation
 */
@@ -141,9 +129,7 @@ SoTextureCoordinateEnvironment::GLRender(SoGLRenderAction * action)
   SoGLTextureCoordinateElement::setTexGen(action->getState(),
                                           this, handleTexgen);
 }
-#endif // !COIN_EXCLUDE_SOGLRENDERACTION
 
-#if !defined(COIN_EXCLUDE_SOCALLBACKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -152,9 +138,7 @@ SoTextureCoordinateEnvironment::callback(SoCallbackAction * action)
 {
   SoTextureCoordinateEnvironment::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOCALLBACKACTION
 
-#if !defined(COIN_EXCLUDE_SOPICKACTION)
 /*!
   FIXME: write function documentation
 */
@@ -163,9 +147,7 @@ SoTextureCoordinateEnvironment::pick(SoPickAction * action)
 {
   SoTextureCoordinateEnvironment::doAction((SoAction *)action);
 }
-#endif // !COIN_EXCLUDE_SOPICKACTION
 
-#if !defined(COIN_EXCLUDE_SOGLRENDERACTION)
 void
 SoTextureCoordinateEnvironment::handleTexgen(void * /* data */)
 {
@@ -181,4 +163,3 @@ SoTextureCoordinateEnvironment::handleTexgen(void * /* data */)
   glEnable(GL_TEXTURE_GEN_T);
 #endif
 }
-#endif // ! COIN_EXCLUDE_SOGLRENDERACTION

@@ -24,9 +24,6 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/system/inttypes.h>
 
-#if defined(COIN_EXCLUDE_SODELAYQUEUESENSOR)
-#error "Configuration settings not respected, should not include this file!"
-#endif // COIN_EXCLUDE_SODELAYQUEUESENSOR
 
 class SoDelayQueueSensor : public SoSensor {
   typedef SoSensor inherited;

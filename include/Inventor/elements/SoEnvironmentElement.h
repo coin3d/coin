@@ -23,10 +23,6 @@
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/SbColor.h>
 
-#if defined(COIN_EXCLUDE_SOENVIRONMENTELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOENVIRONMENTELEMENT
-
 
 class SoEnvironmentElement : public SoReplacedElement {
   typedef SoReplacedElement inherited;

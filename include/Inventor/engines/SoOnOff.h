@@ -24,9 +24,6 @@
 #include <Inventor/engines/SoEngineOutput.h>
 #include <Inventor/fields/SoSFTrigger.h>
 
-#if defined(COIN_EXCLUDE_SOONOFF)
-#error "Configuration settings disrespected -- do not include this file!"
-#endif // COIN_EXCLUDE_SOONOFF
 
 class SoOnOff : public SoEngine {
   typedef SoEngine inherited;

@@ -20,12 +20,8 @@
 #ifndef __SOPICKSTYLEELEMENT_H__
 #define __SOPICKSTYLEELEMENT_H__
 
-#include <Inventor/confdep.h>
-#if defined(COIN_EXCLUDE_SOPICKSTYLEELEMENT)
-#error "Configuration settings disable this class!"
-#endif // COIN_EXCLUDE_SOPICKSTYLEELEMENT
-
 #include <Inventor/elements/SoInt32Element.h>
+
 
 class SoPickStyleElement : public SoInt32Element {
   typedef SoInt32Element inherited;

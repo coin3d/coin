@@ -26,9 +26,7 @@
 */
 
 #include <Inventor/fields/SoMFEngine.h>
-#if !defined(COIN_EXCLUDE_SOSFENGINE)
 #include <Inventor/fields/SoSFEngine.h>
-#endif // !COIN_EXCLUDE_SOSFENGINE
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
 #endif // COIN_DEBUG
@@ -313,13 +311,10 @@ SoMFEngine::referencesCopy(void) const
 void
 SoMFEngine::convertTo(SoField * dest) const
 {
-  if (0);
-#if !defined(COIN_EXCLUDE_SOSFENGINE)
-  else if (dest->getTypeId()==SoSFEngine::getClassTypeId()) {
+  if (dest->getTypeId()==SoSFEngine::getClassTypeId()) {
     if (this->getNum()>0)
       ((SoSFEngine *)dest)->setValue((*this)[0]);
   }
-#endif // !COIN_EXCLUDE_SOSFENGINE
 #if COIN_DEBUG
   else {
     SoDebugError::post("SoMFEngine::convertTo",
