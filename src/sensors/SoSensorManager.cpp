@@ -326,7 +326,7 @@ SoSensorManager::processImmediateQueue(void)
       this->delayqueue[this->delayqueue.getLength()-1]->getPriority() != 0)
     return;
 
-#if DEBUG_DELAY_SENSORHANDLING // debug
+#if DEBUG_DELAY_SENSORHANDLING || 0 // debug
   SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                          "start: %d elements in full delay queue",
                          this->delayqueue.getLength());
@@ -334,9 +334,10 @@ SoSensorManager::processImmediateQueue(void)
 
   this->processingdelayqueue = TRUE;
 
-  while (this->delayqueue[this->delayqueue.getLength()-1]->getPriority() == 0)
+  while (this->delayqueue.getLength() &&
+         this->delayqueue[this->delayqueue.getLength()-1]->getPriority() == 0)
     {
-#if DEBUG_DELAY_SENSORHANDLING // debug
+#if DEBUG_DELAY_SENSORHANDLING || 0 // debug
       SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                              "trigger element");
 #endif // debug
@@ -345,7 +346,7 @@ SoSensorManager::processImmediateQueue(void)
 
   this->processingdelayqueue = FALSE;
 
-#if DEBUG_DELAY_SENSORHANDLING // debug
+#if DEBUG_DELAY_SENSORHANDLING || 0 // debug
   SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                          "end, before merge: %d elements in full delay queue",
                          this->delayqueue.getLength());
@@ -353,7 +354,7 @@ SoSensorManager::processImmediateQueue(void)
 
   this->mergeDelayQueues();
 
-#if DEBUG_DELAY_SENSORHANDLING // debug
+#if DEBUG_DELAY_SENSORHANDLING || 0 // debug
   SoDebugError::postInfo("SoSensorManager::processImmediateQueue",
                          "end, after merge: %d elements in full delay queue",
                          this->delayqueue.getLength());
