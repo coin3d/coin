@@ -91,8 +91,8 @@
 # ID-BG-P-C!      SoComplexity
 # ID-BG-P-C!      SoCoordinate3
 # ID-BG-P-C!      SoCoordinate4
-#   ------C!      SoLight
-#   T-G---!!              SoDirectionalLight
+# ID------C!      SoLight
+# IDT-G---!!              SoDirectionalLight
 #   T-G---!!              SoSpotLight
 #   T-G---!!              SoPointLight
 #   T-G---C!      SoDrawStyle

@@ -19,25 +19,37 @@
 
 /*!
   \class SoDirectionalLight SoDirectionalLight.h Inventor/nodes/SoDirectionalLight.h
-  \brief The SoDirectionalLight class ...
+  \brief The SoDirectionalLight class is a node type for specifying directional light sources.
   \ingroup nodes
 
-  FIXME: write class doc
+  A directional light source provides a model of light sources which
+  are at infinite distance from the geometry it illuminates, thereby
+  having no set position and consisting of an infinite volume of
+  parallel rays.
+
+  This is of course a simplified model of far-away light sources, as
+  "infinite distance" is impossible.
+
+  The sun shining on objects on earth is a good example of something
+  which can be modeled rather well for the most common purposes with a
+  directional light source.
+
+  See also documentation of parent class for important information
+  regarding light sources in general.
 */
 
 #include <Inventor/nodes/SoDirectionalLight.h>
 
-#include <Inventor/SbVec4f.h>
 #include <Inventor/SbColor4f.h>
+#include <Inventor/SbVec4f.h>
+#include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/elements/SoEnvironmentElement.h>
+#include <Inventor/elements/SoGLLightIdElement.h>
 
 #ifdef _WIN32
-#include <windows.h>
+#include <windows.h> // Needed for stuff that GL/gl.h depends on.
 #endif // _WIN32
 #include <GL/gl.h>
-#include <Inventor/actions/SoGLRenderAction.h>
-
-#include <Inventor/elements/SoGLLightIdElement.h>
-#include <Inventor/elements/SoEnvironmentElement.h>
 
 #if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
@@ -45,7 +57,9 @@
 
 /*!
   \var SoSFVec3f SoDirectionalLight::direction
-  FIXME: write documentation for field
+
+  The direction of the light source. Defaults to pointing along the
+  negative z-axis.
 */
 
 
@@ -56,14 +70,14 @@ SO_NODE_SOURCE(SoDirectionalLight);
 /*!
   Constructor.
 */
-SoDirectionalLight::SoDirectionalLight()
+SoDirectionalLight::SoDirectionalLight(void)
 {
   SO_NODE_INTERNAL_CONSTRUCTOR(SoDirectionalLight);
 
-  SO_NODE_ADD_FIELD(on,(TRUE));
-  SO_NODE_ADD_FIELD(intensity,(1.0f));
-  SO_NODE_ADD_FIELD(color,(1.0f, 1.0f, 1.0f));
-  SO_NODE_ADD_FIELD(direction,(0.0f, 0.0f, -1.0f));
+  SO_NODE_ADD_FIELD(on, (TRUE));
+  SO_NODE_ADD_FIELD(intensity, (1.0f));
+  SO_NODE_ADD_FIELD(color, (1.0f, 1.0f, 1.0f));
+  SO_NODE_ADD_FIELD(direction, (0.0f, 0.0f, -1.0f));
 }
 
 /*!
@@ -73,26 +87,20 @@ SoDirectionalLight::~SoDirectionalLight()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoDirectionalLight class. This includes setting up the
-  type system, among other things.
-*/
+// Doc from superclass.
 void
 SoDirectionalLight::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoDirectionalLight);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// Doc from superclass.
 void
 SoDirectionalLight::GLRender(SoGLRenderAction * action)
 {
-  if (!on.getValue()) return;
+  if (!this->on.getValue()) return;
 
-  SoState *state = action->getState();
+  SoState * state = action->getState();
   int idx = SoGLLightIdElement::increment(state);
 
   if (idx < 0) {
@@ -110,14 +118,14 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
   lightcolor *= SoEnvironmentElement::getAmbientIntensity(state);
   glLightfv(light, GL_AMBIENT, lightcolor.getValue());
 
-  lightcolor.setRGB(color.getValue());
-  if (!intensity.isIgnored()) lightcolor *= intensity.getValue();
+  lightcolor.setRGB(this->color.getValue());
+  if (!this->intensity.isIgnored()) lightcolor *= this->intensity.getValue();
 
   glLightfv(light, GL_DIFFUSE, lightcolor.getValue());
   glLightfv(light, GL_SPECULAR, lightcolor.getValue());
 
   // GL directional light is specified towards light source
-  SbVec3f dir = -direction.getValue();
+  SbVec3f dir = - this->direction.getValue();
   dir.normalize();
 
   // directional when w = 0.0
@@ -132,4 +140,3 @@ SoDirectionalLight::GLRender(SoGLRenderAction * action)
   glLightf(light, GL_LINEAR_ATTENUATION, 0);
   glLightf(light, GL_QUADRATIC_ATTENUATION, 0);
 }
-
