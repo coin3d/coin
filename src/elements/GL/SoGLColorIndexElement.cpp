@@ -112,3 +112,16 @@ SoGLColorIndexElement::getInstance(SoState *state)
   return (const SoGLColorIndexElement *)
     state->getElementNoPush(classStackIndex);
 }
+
+int32_t 
+SoGLColorIndexElement::get(const int index) const
+{
+  assert(index >= 0 && index < this->getNum());
+  return SoLazyElement::getColorIndices(this->state)[index];
+}
+
+int32_t 
+SoGLColorIndexElement::getDefault(void)
+{
+  return SoLazyElement::getDefaultColorIndex();
+}

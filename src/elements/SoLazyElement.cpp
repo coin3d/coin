@@ -492,6 +492,14 @@ SoLazyElement::getLightModel(SoState * state)
 }
 
 // ! FIXME: write doc
+SbBool 
+SoLazyElement::getAlphaTest(SoState * state)
+{
+  SoLazyElement * elem = getInstance(state);
+  return elem->coinstate.alphatest;
+}
+
+// ! FIXME: write doc
 
 int32_t
 SoLazyElement::getNumDiffuse(void) const

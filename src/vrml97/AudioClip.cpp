@@ -383,11 +383,23 @@ SoVRMLAudioClip::setDefaultSampleRate(int samplerate)
   SoVRMLAudioClipP::defaultSampleRate = samplerate;
 }
 
+int 
+SoVRMLAudioClip::getDefaultSampleRate(void)
+{
+  return SoVRMLAudioClipP::defaultSampleRate;
+}
+
 void
 SoVRMLAudioClip::setDefaultPauseBetweenTracks(SbTime pause)
 {
   // FIXME: use both default and node-specific pause. 20021007 thammer.
   SoVRMLAudioClipP::pauseBetweenTracks = pause;
+}
+
+SbTime 
+SoVRMLAudioClip::getDefaultPauseBetweenTracks(void)
+{
+  return SoVRMLAudioClipP::pauseBetweenTracks;
 }
 
 void
@@ -396,10 +408,22 @@ SoVRMLAudioClip::setDefaultIntroPause(SbTime pause)
   SoVRMLAudioClipP::introPause = pause;
 }
 
+SbTime 
+SoVRMLAudioClip::getDefaultIntroPause(void)
+{
+  return SoVRMLAudioClipP::introPause;
+}
+
 void
 SoVRMLAudioClip::setDefaultTimerInterval(SbTime interval)
 {
   SoVRMLAudioClipP::defaultTimerInterval = interval;
+}
+
+SbTime 
+SoVRMLAudioClip::getDefaultTimerInterval(void)
+{
+  return SoVRMLAudioClipP::defaultTimerInterval;
 }
 
 int
