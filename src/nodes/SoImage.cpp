@@ -19,15 +19,20 @@
 
 /*!
   \class SoImage SoImage.h Inventor/nodes/SoImage.h
-  \brief The SoImage class ...
+  \brief The SoImage class draws a 2D image on the viewport.
   \ingroup nodes
 
-  FIXME: write class doc
+  An image can be specified either by using the image field, or by 
+  specifying a filename. If width and or height is specified, the
+  image will be resized to match those values before it is displayed.
+  
+  The current modelview matrix will be used to find the viewport
+  position, and the image is rendered in that position, with 
+  z-buffer testing activated.
 */
 
 #include <Inventor/nodes/SoImage.h>
 #include <Inventor/nodes/SoSubNodeP.h>
-#include <coindefs.h> // COIN_STUB()
 
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -42,6 +47,7 @@
 
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/SbBasic.h>
 
 #ifdef _WIN32
 #include <windows.h> // sigh...
@@ -58,64 +64,63 @@
   the width and/or height and/or numcomponents values? 20000217 mortene.
  */
 
-
 /*!
   \enum SoImage::VertAlignment
-  FIXME: write documentation for enum
+  Vertical alignment for image.
 */
 /*!
   \var SoImage::VertAlignment SoImage::BOTTOM
-  FIXME: write documentation for enum definition
+  Vertical alignment at bottom of image.
 */
 /*!
   \var SoImage::VertAlignment SoImage::HALF
-  FIXME: write documentation for enum definition
+  Vertical alignment at center of image.
 */
 /*!
   \var SoImage::VertAlignment SoImage::TOP
-  FIXME: write documentation for enum definition
+  Vertical alignment at top of image.
 */
 /*!
   \enum SoImage::HorAlignment
-  FIXME: write documentation for enum
+  Horizontal alignment for image.
 */
 /*!
   \var SoImage::HorAlignment SoImage::LEFT
-  FIXME: write documentation for enum definition
+  Horizontal alignment at left border. 
 */
 /*!
   \var SoImage::HorAlignment SoImage::CENTER
-  FIXME: write documentation for enum definition
+  Horizontal alignment at center of image.
 */
 /*!
   \var SoImage::HorAlignment SoImage::RIGHT
-  FIXME: write documentation for enum definition
+  Horizontal alignment ar right border.
 */
 
 
 /*!
   \var SoSFInt32 SoImage::width
-  FIXME: write documentation for field
+  If bigger than 0, resize image to this width.
 */
 /*!
   \var SoSFInt32 SoImage::height
-  FIXME: write documentation for field
+  if bigger than 0, resize image to this height.
 */
 /*!
   \var SoSFEnum SoImage::vertAlignment
-  FIXME: write documentation for field
+  Vertical alignment.
 */
 /*!
   \var SoSFEnum SoImage::horAlignment
-  FIXME: write documentation for field
+  Horizontal alignment.
 */
 /*!
   \var SoSFImage SoImage::image
-  FIXME: write documentation for field
+  Inline image data.
 */
 /*!
   \var SoSFString SoImage::filename
-  FIXME: write documentation for field
+  Image filename.
 */
 
 
@@ -151,6 +156,7 @@ SoImage::SoImage()
 
   this->imageData = NULL;
   this->orgImageData = NULL;
+  this->readstatus = TRUE;
 }
 
 /*!
@@ -162,29 +168,21 @@ SoImage::~SoImage()
   if (this->orgImageData) this->orgImageData->unref();
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoImage class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoImage::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoImage);
 }
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoImage::computeBBox(SoAction *action,
                      SbBox3f &box, SbVec3f &center)
 {
-  //
+  // FIXME: pederb, 20000509
   // need to invalidate the bbox-cache for this to work 100%,
-  // since bbox changes position each time modelmatrix
-  // is changed. Or am I doing something wrong? pederb 19991131
-  //
+  // since bbox changes position each time modelmatrix has changed.
   if (!this->getImage()) {
     box.setBounds(0,0,0,0,0,0);
     center = SbVec3f(0,0,0);
@@ -201,9 +199,7 @@ SoImage::computeBBox(SoAction *action,
   center = box.getCenter();
 }
 
-/*!
-  FIXME: write doc
-*/
+// doc from parent
 void
 SoImage::GLRender(SoGLRenderAction *action)
 {
@@ -287,13 +283,29 @@ SoImage::GLRender(SoGLRenderAction *action)
   glPushMatrix();
   glLoadIdentity();
 
+  short srcw = size[0];
+  short srch = size[1];
+  
+  if (xpos < 0.0f) {
+    srcw += (short)xpos;
+    xpos = 0;
+  }
+  if (ypos < 0.0f) {
+    srch += (short)ypos;
+    ypos = 0;
+  }
+
+  srcw = SbMin(srcw, (short)(vpsize[0]-(short)xpos));
+  srch = SbMin(srch, (short)(vpsize[1]-(short)ypos));
+
   // FIXME: push raster state?
   glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
+
   glRasterPos3f(xpos, ypos, -nilpoint[2]);
   glPixelStorei(GL_UNPACK_ROW_LENGTH, size[0]);
   glPixelStorei(GL_PACK_ROW_LENGTH, vpsize[0]); // needed?
 
-  glDrawPixels(size[0], size[1], format, GL_UNSIGNED_BYTE,
+  glDrawPixels(srcw, srch, format, GL_UNSIGNED_BYTE,
                (const GLvoid*)this->imageData->getDataPtr());
 
   glMatrixMode(GL_PROJECTION);
@@ -302,6 +314,7 @@ SoImage::GLRender(SoGLRenderAction *action)
   glPopMatrix();
 }
 
+// doc from parent
 void
 SoImage::rayPick(SoRayPickAction * action)
 {
@@ -330,9 +343,7 @@ SoImage::rayPick(SoRayPickAction * action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// doc from parent
 void
 SoImage::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -340,7 +351,7 @@ SoImage::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 }
 
 /*!
-  FIXME: write doc
+  Will generate a textured quad, representing the image in 3D.
 */
 void
 SoImage::generatePrimitives(SoAction *action)
@@ -393,34 +404,37 @@ SoImage::generatePrimitives(SoAction *action)
 }
 
 /*!
-  FIXME: write function documentation
+  Overloaded to load image file.
 */
 SbBool
 SoImage::readInstance(SoInput * in, unsigned short flags)
 {
-  COIN_STUB();
-  return inherited::readInstance(in, flags);
+  this->readstatus = FALSE;
+  if (inherited::readInstance(in, flags)) {
+    this->readstatus = this->getImage();
+  }
+  return this->readstatus;
 }
 
 /*!
-  FIXME: write function documentation
+  Returns \e TRUE if node was read ok.
 */
 int
 SoImage::getReadStatus(void)
 {
-  COIN_STUB();
-  return 0;
+  return this->readstatus;
 }
 
 /*!
-  FIXME: write function documentation
+  Set read status for this node.
 */
 void
-SoImage::setReadStatus(SbBool /* flag */)
+SoImage::setReadStatus(SbBool flag)
 {
-  COIN_STUB();
+  this->readstatus = flag;
 }
 
+// loads and resizes image
 SbBool
 SoImage::getImage()
 {
@@ -446,7 +460,7 @@ SoImage::getImage()
       const char * imgname = this->filename. getValue().getString();
       this->orgImageData =
         SoImageInterface::findOrCreateImage(imgname, dirlist);
-      this->orgImageData->load();
+      if (this->orgImageData) this->orgImageData->load();
     }
   }
 
@@ -493,6 +507,9 @@ SoImage::getNilpoint(SoState *state)
   return nilpoint;
 }
 
+//
+// calculates the quad in 3D
+//
 void
 SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
                  SbVec3f &v2, SbVec3f &v3)
@@ -584,6 +601,7 @@ SoImage::getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
   inv.multVecMatrix(v3, v3);
 }
 
+// returns requested on-screen size 
 SbVec2s
 SoImage::getSize() const
 {

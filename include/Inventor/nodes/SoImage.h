@@ -78,6 +78,9 @@ protected:
   SbBool getImage();
   void getQuad(SoState *state, SbVec3f &v0, SbVec3f &v1,
                SbVec3f &v2, SbVec3f &v3);
+
+private:
+  SbBool readstatus;
 };
 
 #endif // !COIN_SOIMAGE_H
