@@ -4,7 +4,31 @@ pure C implementation of the same functionality.
 Installing it changes the Coin ABI heavily - all dependencies
 has to be recompiled.
 
-This implementation seems to be quite bugfree now.
+You have to change the build setup yourself - I have other changes
+in mine that makes producing good diffs for this a hassle.  Fix
+these files if you apply this patch.
+
+  src/base/all.cpp
+  src/base/Makefile.am
+  include/Inventor/C/base/Makefile.am
+
+The patch also extends the SbString class with the following
+functions:
+
+  int compareSubString(const char * text, int offset = 0);
+  void apply(char (*func)(char input));
+
+Former can optimize some code (see "So"-prefix comparison in
+SoType::fromName() for an example of lots of instantiations for
+some really trivial stuff), and the latter is a wishlist
+item from Peder.
+
+The SbString documentation is not part of this patch - since
+SbString.cpp won't any longer be compiled the doc blocks should be
+extracted and put in /*! \fn ... */ blocks at the end of string.c
+or something.
+
+Anyways, the implementation seems to be quite bugfree now.
 
   Lars J
 
@@ -14,8 +38,8 @@ RCS file: /export/cvsroot/Coin/include/Inventor/SbString.h,v
 retrieving revision 1.19
 diff -u -r1.19 SbString.h
 --- include/Inventor/SbString.h	23 Nov 2001 14:25:46 -0000	1.19
-+++ include/Inventor/SbString.h	17 Jan 2002 12:02:15 -0000
-@@ -25,65 +25,107 @@
++++ include/Inventor/SbString.h	28 Jan 2002 11:29:25 -0000
+@@ -25,65 +25,110 @@
  \**************************************************************************/
  
  #include <Inventor/system/inttypes.h>
@@ -118,7 +142,7 @@ diff -u -r1.19 SbString.h
 +
 +  int operator ! (void) const { return ! cc_string_is(&this->string); }
 +
-+  int compareSubString(const char * text, int offset = 0)
++  int compareSubString(const char * text, int offset = 0) const
 +    { return cc_string_compare_subtext(&this->string, text, offset); }
 +
 +  SbString & sprintf(const char * formatstr, ...)
@@ -127,6 +151,9 @@ diff -u -r1.19 SbString.h
 +      va_end(args); return *this; }
 +  SbString & vsprintf(const char * formatstr, va_list args)
 +    { cc_string_vsprintf(&this->string, formatstr, args); return *this; }
++
++  void apply(char (*func)(char input))
++    { cc_string_apply(&this->string, func); }
 +
 +  friend int operator == (const SbString & str, const char * s);
 +  friend int operator == (const char * s, const SbString & str);
@@ -173,86 +200,3 @@ diff -u -r1.19 SbString.h
  
  #ifndef COIN_INTERNAL
  // For Open Inventor compatibility.
-Index: include/Inventor/C/base/Makefile.am
-===================================================================
-RCS file: /export/cvsroot/Coin/include/Inventor/C/base/Makefile.am,v
-retrieving revision 1.2
-diff -u -r1.2 Makefile.am
---- include/Inventor/C/base/Makefile.am	20 Nov 2001 12:49:06 -0000	1.2
-+++ include/Inventor/C/base/Makefile.am	17 Jan 2002 12:02:15 -0000
-@@ -1,13 +1,13 @@
- 
- baseincdir = $(includedir)/Inventor/C/base
- baseinc_HEADERS = \
--	dict.h \
- 	debug.h \
--	time.h
-+	dict.h \
-+	time.h \
-+	string.h
- 
- EXTRA_DIST = \
- 	basep.h \
- 	list.h \
--	name.h \
--	string.h
-+	name.h
- 
-Index: src/base/Makefile.am
-===================================================================
-RCS file: /export/cvsroot/Coin/src/base/Makefile.am,v
-retrieving revision 1.32
-diff -u -r1.32 Makefile.am
---- src/base/Makefile.am	29 Nov 2001 12:49:27 -0000	1.32
-+++ src/base/Makefile.am	17 Jan 2002 12:02:15 -0000
-@@ -5,7 +5,8 @@
- ThreadsDependentSources = \
- 	base.c \
- 	debug.c \
--	time.c
-+	time.c \
-+	string.c
- else
- ThreadsDependentSources =
- endif
-@@ -29,7 +30,6 @@
- 	SbPlane.cpp \
- 	SbRotation.cpp \
- 	SbSphere.cpp \
--	SbString.cpp \
- 	SbTesselator.cpp \
- 	SbTime.cpp \
- 	SbVec2f.cpp \
-Index: src/base/all.cpp
-===================================================================
-RCS file: /export/cvsroot/Coin/src/base/all.cpp,v
-retrieving revision 1.11
-diff -u -r1.11 all.cpp
---- src/base/all.cpp	20 Nov 2001 12:52:48 -0000	1.11
-+++ src/base/all.cpp	17 Jan 2002 12:02:15 -0000
-@@ -25,6 +25,14 @@
- #include <config.h>
- #endif /* HAVE_CONFIG_H */
- 
-+// C Types
-+#include "base.c"
-+#include "debug.c"
-+#include "time.c"
-+#include "string.c"
-+#include "name.c"
-+
-+// C++ Types
- #include "SbBSPTree.cpp"
- #include "SbBox2f.cpp"
- #include "SbBox2s.cpp"
-@@ -54,10 +62,3 @@
- #include "SbViewVolume.cpp"
- #include "SbViewportRegion.cpp"
- #include "SbXfBox3f.cpp"
--
--#ifdef HAVE_THREADS
--#include "base.c"
--#include "debug.c"
--#include "time.c"
--#endif
--
