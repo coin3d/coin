@@ -34,15 +34,15 @@
 # ID-B-----!                      SoNonIndexedShape
 # IDTBG----!                              SoFaceSet
 # IDTBG----!                              SoLineSet
-# I TBG----!                              SoPointSet
+# IDTBG----!                              SoPointSet
 #   T! ----!                                      SoMarkerSet
-# I tBG----!                              SoQuadMesh
-# I TBG----!                              SoTriangleStripSet
-# I -B-----!                      SoIndexedShape
-# I T!G----!                              SoIndexedFaceSet
-# I T!G----!                              SoIndexedLineSet
-# I T!G----!                              SoIndexedTriangleStripSet
-# I T  -- -!              SoImage
+# IDtBG----!                              SoQuadMesh
+# IDTBG----!                              SoTriangleStripSet
+# ID-B-----!                      SoIndexedShape
+# IDT!G----!                              SoIndexedFaceSet
+# IDT!G----!                              SoIndexedLineSet
+# IDT!G----!                              SoIndexedTriangleStripSet
+# IDT  -- -!              SoImage
 # I  BG--R-!              SoIndexedNurbsCurve
 # I  BG--R-!              SoIndexedNurbsSurface
 # I  BG--R-!              SoNurbsCurve

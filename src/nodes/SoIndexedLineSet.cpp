@@ -19,10 +19,18 @@
 
 /*!
   \class SoIndexedLineSet SoIndexedLineSet.h Inventor/nodes/SoIndexedLineSet.h
-  \brief The SoIndexedLineSet class ...
+  \brief The SoIndexedLineSet class is used to render and otherwise represent indexed lines.
   \ingroup nodes
 
-  FIXME: write class doc
+  The indexed counterpart of SoLineSet. Lines can specified using
+  indices for coordinates, normals, materials and texture coordinates.
+
+  If no normals are supplied on the stack (or in the vertexProperty
+  field), the lines will be rendered with lighting disabled.
+
+  For more information about line sets, see documentation in
+  SoLineSet.  For more information about indexed shapes, see
+  documentation in SoIndexedShape and SoIndexedFaceSet.  
 */
 
 #include <Inventor/nodes/SoIndexedLineSet.h>
@@ -59,44 +67,6 @@
 #include <Inventor/errors/SoDebugError.h>
 #endif
 
-#include <GL/gl.h>
-
-
-/*!
-  \enum SoIndexedLineSet::Binding
-  FIXME: write documentation for enum
-*/
-/*!
-  \var SoIndexedLineSet::Binding SoIndexedLineSet::OVERALL
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedLineSet::Binding SoIndexedLineSet::PER_SEGMENT
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedLineSet::Binding SoIndexedLineSet::PER_SEGMENT_INDEXED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedLineSet::Binding SoIndexedLineSet::PER_LINE
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedLineSet::Binding SoIndexedLineSet::PER_LINE_INDEXED
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedLineSet::Binding SoIndexedLineSet::PER_VERTEX
-  FIXME: write documentation for enum definition
-*/
-/*!
-  \var SoIndexedLineSet::Binding SoIndexedLineSet::PER_VERTEX_INDEXED
-  FIXME: write documentation for enum definition
-*/
-
-
-// *************************************************************************
 
 SO_NODE_SOURCE(SoIndexedLineSet);
 
@@ -115,57 +85,16 @@ SoIndexedLineSet::~SoIndexedLineSet()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoIndexedLineSet class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoIndexedLineSet::initClass(void)
 {
   SO_NODE_INTERNAL_INIT_CLASS(SoIndexedLineSet);
 }
 
-/*!
-  \internal
-*/
-int
-SoIndexedLineSet::numLines() const
-{
-  int i, n = coordIndex.getNum();
-  int cnt = 0;
-  for (i = 0; i < n ; i++) {
-    if (coordIndex.getValues(0)[i] < 0) cnt++;
-  }
-  return cnt;
-}
-
-/*!
-  \internal
-*/
-int
-SoIndexedLineSet::numLineSegments() const
-{
-  int i = 0, n = coordIndex.getNum();
-  int cnt = 0;
-  int tmpcnt;
-  while (i < n) {
-    tmpcnt = 0;
-    // i < n not necessary if the array is guaranteed to be terminated
-    // with -1.
-    while (i < n && coordIndex.getValues(0)[i] >= 0) {
-      tmpcnt++;
-      i++;
-    }
-    cnt += tmpcnt - 1;
-    i++;
-  }
-  return cnt;
-}
-
-/*!
-  \internal
-*/
+//
+// translates current normal binding into the internal Binding enum
+//
 SoIndexedLineSet::Binding
 SoIndexedLineSet::findNormalBinding(SoState * state)
 {
@@ -207,9 +136,9 @@ SoIndexedLineSet::findNormalBinding(SoState * state)
   return binding;
 }
 
-/*!
-  \internal
-*/
+//
+// translates current material binding into the internal Binding enum
+//
 SoIndexedLineSet::Binding
 SoIndexedLineSet::findMaterialBinding(SoState * state)
 {
@@ -252,9 +181,7 @@ SoIndexedLineSet::findMaterialBinding(SoState * state)
 }
 
 
-/*!
-  FIXME: write function documentation
-*/
+// doc from parent
 void
 SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 {
@@ -346,16 +273,26 @@ SoIndexedLineSet::GLRender(SoGLRenderAction * action)
 }
 
 /*!
-  FIXME: write function documentation
+  Overloaded to return TRUE. Two side lighting is enabled for lines.
 */
 SbBool
 SoIndexedLineSet::willSetShapeHints(void) const
 {
+  //  FIXME: should I really do this? pederb, 20000809
   return TRUE;
 }
 
 /*!
-  FIXME: write function documentation
+  Overloaded to return FALSE.
+*/
+SbBool
+SoIndexedLineSet::generateDefaultNormals(SoState *, SoNormalBundle *)
+{
+  return FALSE;
+}
+
+/*!
+  Overloaded to clear normal cache.
 */
 SbBool
 SoIndexedLineSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
@@ -365,9 +302,7 @@ SoIndexedLineSet::generateDefaultNormals(SoState * state, SoNormalCache * nc)
   return TRUE;
 }
 
-/*!
-  FIXME: write doc
-*/
+// doc from parent
 void
 SoIndexedLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
 {
@@ -375,9 +310,7 @@ SoIndexedLineSet::getBoundingBox(SoGetBoundingBoxAction * action)
   // FIXME: tell cache that geometry contain lines
 }
 
-/*!
-  FIXME: write doc
-*/
+// doc from parent
 void
 SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
 {
@@ -405,9 +338,7 @@ SoIndexedLineSet::getPrimitiveCount(SoGetPrimitiveCountAction *action)
   }
 }
 
-/*!
-  FIXME: write doc
-*/
+// doc from parent
 void
 SoIndexedLineSet::generatePrimitives(SoAction *action)
 {

@@ -27,6 +27,9 @@
 
   For more information, see the documentation of the \c
   GL_TRIANGLE_STRIP primitive rendering type in OpenGL.
+
+  For more information about indexed shapes, see documentation in
+  SoIndexedShape and SoIndexedFaceSet.
 */
 
 #include <Inventor/nodes/SoIndexedTriangleStripSet.h>
@@ -60,15 +63,6 @@
 #endif // !_WIN32
 #include <GL/gl.h>
 
-
-/*!
-  \enum SoIndexedTriangleStripSet::Binding
-
-  Enumeration of possible bindings to use for materials and normals
-  for triangle strip nodes.
-*/
-
-// *************************************************************************
 
 SO_NODE_SOURCE(SoIndexedTriangleStripSet);
 
@@ -272,6 +266,15 @@ SoIndexedTriangleStripSet::GLRender(SoGLRenderAction * action)
   }
 }
 
+/*!
+  Overloaded to return FALSE. Normals are generated directly in normal cache.
+*/
+SbBool 
+SoIndexedTriangleStripSet::generateDefaultNormals(SoState *, SoNormalBundle *)
+{
+  return FALSE;
+}
+
 // doc in SoVertexShape
 SbBool
 SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
@@ -382,18 +385,10 @@ SoIndexedTriangleStripSet::getPrimitiveCount(SoGetPrimitiveCountAction * action)
 }
 
 /*!
-  FIXME: write doc
+  Overloaded to return TRUE, since shade model must be set to flat
+  if normal or material binding is PER_FACE or PER_FACE_INDEXED.
 */
 SbBool
-SoIndexedTriangleStripSet::generateDefaultNormals(SoState * state,
-                                                  SoNormalBundle * nb)
-{
-  COIN_STUB();
-  return FALSE;
-}
-
-// doc from parent
-SbBool 
 SoIndexedTriangleStripSet::willSetShadeModel(void) const
 {
   return TRUE;
@@ -507,8 +502,8 @@ SoIndexedTriangleStripSet::generatePrimitives(SoAction * action)
       currnormal = &normals[normnr++];
       vertex.setNormal(*currnormal);
     }
-    else if (nbind == PER_VERTEX_INDEXED || 
-             nbind == PER_TRIANGLE_INDEXED || 
+    else if (nbind == PER_VERTEX_INDEXED ||
+             nbind == PER_TRIANGLE_INDEXED ||
              nbind == PER_STRIP_INDEXED) {
       pointdetail.setNormalIndex(*nindices);
       currnormal = &normals[*nindices++];

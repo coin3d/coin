@@ -54,8 +54,6 @@ protected:
   const int32_t * getColorIndices(void);
   const int32_t * getTexCoordIndices(void);
 
-  virtual void notify(SoNotList * list);
-
   static SbBool areTexCoordsIndexed(SoAction * action);
 
   SbBool getVertexData(SoState * state,
@@ -70,11 +68,6 @@ protected:
                        SbBool & normalCacheUsed);
 
 private:
-  virtual SbBool generateDefaultNormals(SoState * state,
-                                        SoNormalBundle * bundle);
-  virtual SbBool generateDefaultNormals(SoState * state,
-                                        SoNormalCache * cache);
-
   int32_t * tIndices;
   int32_t * nIndices;
   int32_t * mIndices;

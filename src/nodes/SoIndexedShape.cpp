@@ -19,10 +19,12 @@
 
 /*!
   \class SoIndexedShape SoIndexedShape.h Inventor/nodes/SoIndexedShape.h
-  \brief The SoIndexedShape class ...
+  \brief The SoIndexedShape class is the superclass for all indexed vertex shapes.
   \ingroup nodes
 
-  FIXME: write class doc
+  It holds four field for storing indices to coordinates, normals,
+  materials and texture coordinates, and also has some convenience
+  methods which can be used by subclasses.  
 */
 
 #include <Inventor/nodes/SoIndexedShape.h>
@@ -31,26 +33,26 @@
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoShapeHintsElement.h>
-#include <Inventor/elements/SoCreaseAngleElement.h>
 #include <Inventor/elements/SoNormalBindingElement.h>
+#include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/caches/SoNormalCache.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 
 /*!
   \var SoMFInt32 SoIndexedShape::coordIndex
-  FIXME: write documentation for field
+  Coordinate indices.
 */
 /*!
   \var SoMFInt32 SoIndexedShape::materialIndex
-  FIXME: write documentation for field
+  Material indices.
 */
 /*!
   \var SoMFInt32 SoIndexedShape::normalIndex
-  FIXME: write documentation for field
+  Normal indices.
 */
 /*!
   \var SoMFInt32 SoIndexedShape::textureCoordIndex
-  FIXME: write documentation for field
+  Texture coordinate indices.
 */
 
 
@@ -76,11 +78,7 @@ SoIndexedShape::~SoIndexedShape()
 {
 }
 
-/*!
-  Does initialization common for all objects of the
-  SoIndexedShape class. This includes setting up the
-  type system, among other things.
-*/
+// doc from parent
 void
 SoIndexedShape::initClass()
 {
@@ -88,17 +86,8 @@ SoIndexedShape::initClass()
 }
 
 /*!
-  FIXME: write function documentation
-*/
-void
-SoIndexedShape::notify(SoNotList * /* list */)
-{
-  // FIXME: implement what's necessary here (cache
-  // destruction?). 19990405 mortene.
-}
-
-/*!
-  FIXME: write function documentation
+  Overloaded to calculate bounding box of all indexed coordinates, 
+  using the coordIndex field.
 */
 void
 SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
@@ -150,17 +139,18 @@ SoIndexedShape::computeBBox(SoAction * action, SbBox3f & box,
 }
 
 /*!
-  FIXME: write function documentation
+  Returns whether texture coordinates should be indexed or not.
 */
 SbBool
-SoIndexedShape::areTexCoordsIndexed(SoAction * /* action */)
+SoIndexedShape::areTexCoordsIndexed(SoAction * action)
 {
-  COIN_STUB();
-  return TRUE;
+  return SoTextureCoordinateBindingElement::get(action->getState()) ==
+    SoTextureCoordinateBindingElement::PER_VERTEX_INDEXED;
 }
 
-/*!
-  FIXME: write function documentation
+/*!  
+  Starting at index position \a startCoord, returns the number of
+  indices until either the end of index array or a separator index (-1).  
 */
 int
 SoIndexedShape::getNumVerts(const int startCoord)
@@ -174,7 +164,8 @@ SoIndexedShape::getNumVerts(const int startCoord)
 }
 
 /*!
-  FIXME: write function documentation
+  Not implemented. Probably only used internally in OIV.
+  Let us know if you need this method and we'll implement it.
 */
 void
 SoIndexedShape::setupIndices(const int /* numParts */,
@@ -186,7 +177,8 @@ SoIndexedShape::setupIndices(const int /* numParts */,
 }
 
 /*!
-  FIXME: write function documentation
+  Not implemented. Probably only used internally in OIV.
+  Let us know if you need this method and we'll implement it.
 */
 const int32_t *
 SoIndexedShape::getNormalIndices()
@@ -196,7 +188,8 @@ SoIndexedShape::getNormalIndices()
 }
 
 /*!
-  FIXME: write function documentation
+  Not implemented. Probably only used internally in OIV.
+  Let us know if you need this method and we'll implement it.
 */
 const int32_t *
 SoIndexedShape::getColorIndices()
@@ -206,7 +199,8 @@ SoIndexedShape::getColorIndices()
 }
 
 /*!
-  FIXME: write function documentation
+  Not implemented. Probably only used internally in OIV.
+  Let us know if you need this method and we'll implement it.
 */
 const int32_t *
 SoIndexedShape::getTexCoordIndices()
@@ -215,58 +209,10 @@ SoIndexedShape::getTexCoordIndices()
   return NULL;
 }
 
-// doc from superclass
-SbBool
-SoIndexedShape::generateDefaultNormals(SoState *, SoNormalBundle *)
-{
-  // FIXME: create to SoNormalBundle class.
-  COIN_STUB();
-  return FALSE;
-}
-
-// doc from superclass
-SbBool
-SoIndexedShape::generateDefaultNormals(SoState * state,
-                                       SoNormalCache * nc)
-{
-  SbBool ccw = TRUE;
-  if (SoShapeHintsElement::getVertexOrdering(state) ==
-      SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
-
-  const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
-  assert(coords);
-
-  SoNormalBindingElement::Binding normbind =
-    SoNormalBindingElement::get(state);
-
-
-  switch (normbind) {
-  case SoNormalBindingElement::PER_VERTEX:
-  case SoNormalBindingElement::PER_VERTEX_INDEXED:
-    nc->generatePerVertex(coords,
-                          coordIndex.getValues(0),
-                          coordIndex.getNum(),
-                          SoCreaseAngleElement::get(state),
-                          NULL,
-                          ccw);
-    break;
-  case SoNormalBindingElement::PER_FACE:
-  case SoNormalBindingElement::PER_FACE_INDEXED:
-  case SoNormalBindingElement::PER_PART: // FIXME: is this correct?
-  case SoNormalBindingElement::PER_PART_INDEXED:
-    nc->generatePerFace(coords,
-                        coordIndex.getValues(0),
-                        coordIndex.getNum(),
-                        ccw);
-    break;
-  default:
-    break;
-  }
-  return TRUE;
-}
-
 /*!
-  FIXME: write function documentation
+  Convenience method that will fetch data needed for rendering or
+  generating primitives. Takes care of normal cache. This method
+  is not part of the OIV API.
 */
 SbBool
 SoIndexedShape::getVertexData(SoState * state,
@@ -281,7 +227,7 @@ SoIndexedShape::getVertexData(SoState * state,
                               SbBool & normalCacheUsed)
 {
   SoVertexShape::getVertexData(state, coords, normals, needNormals);
-
+  
   cindices = this->coordIndex.getValues(0);
   numcindices = this->coordIndex.getNum();
 
@@ -299,7 +245,7 @@ SoIndexedShape::getVertexData(SoState * state,
     if (normals == NULL) {
       if (this->getNormalCache() == NULL ||
           !this->getNormalCache()->isValid(state)) {
-        generateNormals(state);
+          this->generateNormals(state);
       }
       normals = this->getNormalCache()->getNormals();
       nindices = this->getNormalCache()->getIndices();

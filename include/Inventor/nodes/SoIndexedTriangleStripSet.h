@@ -37,16 +37,6 @@ public:
   static void initClass(void);
   SoIndexedTriangleStripSet(void);
 
-  enum Binding {
-    OVERALL = 0,
-    PER_STRIP,
-    PER_STRIP_INDEXED,
-    PER_TRIANGLE,
-    PER_TRIANGLE_INDEXED,
-    PER_VERTEX,
-    PER_VERTEX_INDEXED
-  };
-
   virtual void GLRender(SoGLRenderAction * action);
   virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * nb);
@@ -59,6 +49,16 @@ protected:
   virtual void generatePrimitives(SoAction * action);
 
 private:
+  enum Binding {
+    OVERALL = 0,
+    PER_STRIP,
+    PER_STRIP_INDEXED,
+    PER_TRIANGLE,
+    PER_TRIANGLE_INDEXED,
+    PER_VERTEX,
+    PER_VERTEX_INDEXED
+  };
+
   void countPrimitives(int & strips, int & tris);
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;

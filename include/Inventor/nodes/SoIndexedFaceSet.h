@@ -37,6 +37,21 @@ public:
   static void initClass(void);
   SoIndexedFaceSet(void);
 
+  virtual void GLRender(SoGLRenderAction * action);
+  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
+
+  virtual SbBool generateDefaultNormals(SoState * state,
+                                        SoNormalBundle * bundle);
+  virtual SbBool generateDefaultNormals(SoState * state,
+                                        SoNormalCache * cache);
+
+
+protected:
+  virtual ~SoIndexedFaceSet();
+
+  virtual void generatePrimitives(SoAction * action);
+
+private:
   enum Binding {
     OVERALL = 0,
     PER_FACE,
@@ -46,15 +61,6 @@ public:
     NONE = OVERALL
   };
 
-  virtual void GLRender(SoGLRenderAction * action);
-  virtual void getPrimitiveCount(SoGetPrimitiveCountAction * action);
-
-protected:
-  virtual ~SoIndexedFaceSet();
-
-  virtual void generatePrimitives(SoAction * action);
-
-private:
   SbBool useConvexCache(SoAction * action);
   Binding findMaterialBinding(SoState * const state) const;
   Binding findNormalBinding(SoState * const state) const;

@@ -19,10 +19,27 @@
 
 /*!
   \class SoIndexedFaceSet SoIndexedFaceSet.h Inventor/nodes/SoIndexedFaceSet.h
-  \brief The SoIndexedFaceSet class is used to handle generic facesets.
+  \brief The SoIndexedFaceSet class is used to handle generic indexed facesets.
   \ingroup nodes
 
-  FIXME: more doc.
+  Faces are specified using the coordIndex field. Each face must be
+  terminated by a negative (-1) index. Coordinates, normals, materials
+  and texture coordinates from the current state (or from the
+  vertexProperty node if set), can be indexed to create triangles,
+  quads or polygons.
+
+  Binding PER_VERTEX_INDEXED, PER_VERTEX, PER_FACE_INDEXED, PER_FACE
+  or OVERALL can be set for material, and normals. The default
+  material binding is OVERALL. The default normal binding is
+  PER_VERTEX_INDEXED. When PER_VERTEX_INDEXED binding is used and the
+  corresponding materialIndex, normalIndex, texCoordIndex field is
+  empty, the coordIndex field will be used to index material, normal
+  or texture coordinate. If you do specify indices for material,
+  normals or texture coordinates for PER_VERTEX_INDEXED binding, make
+  sure your index array matches the coordIndex array (there should be
+  -1 wherever there is a -1 in the coordIndex field. This is done to
+  make this node more human readable.)
+
 */
 
 #include <Inventor/nodes/SoIndexedFaceSet.h>
@@ -49,47 +66,18 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/elements/SoTextureCoordinateBindingElement.h>
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoCreaseAngleElement.h>
+#include <Inventor/caches/SoNormalCache.h>
 #include <assert.h>
 
 #include <Inventor/bundles/SoTextureCoordinateBundle.h>
 
-
-/*!
-   \enum SoIndexedFaceSet::Binding
-   Enum used to specify normal, material and texture coordinate binding.
-*/
-/*!
-  \var SoIndexedFaceSet::Binding SoIndexedFaceSet::OVERALL
-  Specifies overall binding.
-*/
-/*!
-  \var SoIndexedFaceSet::Binding SoIndexedFaceSet::PER_FACE
-  Specifies per face binding.
-*/
-/*!
-  \var SoIndexedFaceSet::Binding SoIndexedFaceSet::PER_FACE_INDEXED
-  Specifies per face indexed binding.
-*/
-/*!
-  \var SoIndexedFaceSet::Binding SoIndexedFaceSet::PER_VERTEX
-  Specifies per vertex binding.
-*/
-/*!
-  \var SoIndexedFaceSet::Binding SoIndexedFaceSet::PER_VERTEX_INDEXED
-  Specifies per vertex indexed binding.
-*/
-/*!
-  \var SoIndexedFaceSet::Binding SoIndexedFaceSet::NONE
-  Specifies no binding. Normals, materials or texcoords should not be used.
-*/
 
 // for concavestatus
 #define STATUS_UNKNOWN 0
 #define STATUS_CONVEX  1
 #define STATUS_CONCAVE 2
 
-
-// *************************************************************************
 
 SO_NODE_SOURCE(SoIndexedFaceSet);
 
@@ -119,9 +107,9 @@ SoIndexedFaceSet::initClass(void)
   SO_NODE_INTERNAL_INIT_CLASS(SoIndexedFaceSet);
 }
 
-/*!
-  \internal
-*/
+//
+// translates current material binding into the internal Binding enum.
+//
 SoIndexedFaceSet::Binding
 SoIndexedFaceSet::findMaterialBinding(SoState * const state) const
 {
@@ -158,9 +146,9 @@ SoIndexedFaceSet::findMaterialBinding(SoState * const state) const
 }
 
 
-/*!
-  \internal
-*/
+//
+// translates current normal binding into the internal Binding enum.
+//
 SoIndexedFaceSet::Binding
 SoIndexedFaceSet::findNormalBinding(SoState * const state) const
 {
@@ -246,10 +234,10 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
     (SoLightModelElement::get(state) !=
      SoLightModelElement::BASE_COLOR);
 
-  getVertexData(state, coords, normals, cindices,
-                nindices, tindices, mindices, numindices,
-                sendNormals, normalCacheUsed);
-
+  this->getVertexData(state, coords, normals, cindices,
+                      nindices, tindices, mindices, numindices,
+                      sendNormals, normalCacheUsed);
+  
   SoTextureCoordinateBundle tb(action, TRUE, FALSE);
   doTextures = tb.needCoordinates();
 
@@ -312,7 +300,7 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   }
 }
 
-  // this define actually makes the code below more readable  :-)
+  // this macro actually makes the code below more readable  :-)
 #define DO_VERTEX(idx) \
   if (mbind == PER_VERTEX) {                  \
     pointDetail.setMaterialIndex(matnr);      \
@@ -637,5 +625,56 @@ SoIndexedFaceSet::useConvexCache(SoAction * action)
                               (SoConvexDataCache::Binding)tbind);
   state->pop();
   SoCacheElement::setInvalid(storedinvalid);
+  return TRUE;
+}
+
+/*!
+  Overloaded to return FALSE. Normals are generated in normal cache.
+*/
+SbBool
+SoIndexedFaceSet::generateDefaultNormals(SoState *, SoNormalBundle *)
+{
+  return FALSE;
+}
+
+/*!
+  Overloaded to create default normals for this shape.
+*/
+SbBool
+SoIndexedFaceSet::generateDefaultNormals(SoState * state,
+                                       SoNormalCache * nc)
+{
+  SbBool ccw = TRUE;
+  if (SoShapeHintsElement::getVertexOrdering(state) ==
+      SoShapeHintsElement::CLOCKWISE) ccw = FALSE;
+
+  const SbVec3f * coords = SoCoordinateElement::getInstance(state)->getArrayPtr3();
+  assert(coords);
+
+  SoNormalBindingElement::Binding normbind =
+    SoNormalBindingElement::get(state);
+
+  switch (normbind) {
+  case SoNormalBindingElement::PER_VERTEX:
+  case SoNormalBindingElement::PER_VERTEX_INDEXED:
+    nc->generatePerVertex(coords,
+                          coordIndex.getValues(0),
+                          coordIndex.getNum(),
+                          SoCreaseAngleElement::get(state),
+                          NULL,
+                          ccw);
+    break;
+  case SoNormalBindingElement::PER_FACE:
+  case SoNormalBindingElement::PER_FACE_INDEXED:
+  case SoNormalBindingElement::PER_PART:
+  case SoNormalBindingElement::PER_PART_INDEXED:
+    nc->generatePerFace(coords,
+                        coordIndex.getValues(0),
+                        coordIndex.getNum(),
+                        ccw);
+    break;
+  default:
+    break;
+  }
   return TRUE;
 }

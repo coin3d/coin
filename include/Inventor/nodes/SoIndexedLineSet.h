@@ -57,13 +57,11 @@ protected:
 private:
   virtual void generatePrimitives(SoAction * action);
 
+  virtual SbBool generateDefaultNormals(SoState * state, SoNormalBundle * bundle);
   virtual SbBool generateDefaultNormals(SoState * state, SoNormalCache * nc);
 
   Binding findNormalBinding(SoState * state);
   Binding findMaterialBinding(SoState * state);
-
-  int numLines() const;
-  int numLineSegments() const;
 };
 
 #endif // !COIN_SOINDEXEDLINESET_H
