@@ -788,28 +788,32 @@ cc_flwft_get_vector_glyph(void * font, int glyph)
       (GLUWrapper()->gluDeleteTess == NULL) ||
       (GLUWrapper()->gluTessVertex == NULL) ||
       (GLUWrapper()->gluTessBeginContour == NULL)) {
-    /* FIXME: unexpected error -- should report. 20030908 mortene. */
+    cc_debugerror_post("cc_flwft_get_vector_glyph","Error binding GLU tesselation functions.");
     return NULL;
   }
 
   face = (FT_Face) font;
 
   error = cc_ftglue_FT_Set_Char_Size(face, (font3dsize<<6), (font3dsize<<6), 72, 72);
-  /* FIXME: unexpected error -- should report. 20030908 mortene. */
-  if (error != 0) 
+  if (error != 0) {
+    cc_debugerror_post("cc_flwft_get_vector_glyph","Error setting character size.");
     return NULL;
+  }
 
   glyphindex = cc_ftglue_FT_Get_Char_Index(face, glyph);
 
   error = cc_ftglue_FT_Load_Glyph(face, glyphindex, FT_LOAD_DEFAULT );
-  /* FIXME: unexpected error -- should report. 20030908 mortene. */
-  if (error != 0)
+  if (error != 0) {
+    cc_debugerror_post("cc_flwft_get_vector_glyph","Error loading glyph.");
     return NULL;
+  }
 
   error = cc_ftglue_FT_Get_Glyph(face->glyph, &tmp);
-  /* FIXME: unexpected error -- should report. 20030908 mortene. */
-  if (error != 0)
+  if (error != 0) {
+    cc_debugerror_post("cc_flwft_get_vector_glyph","Error fetching glyph.");
     return NULL;
+  }
+
   g = (FT_OutlineGlyph)tmp;
 
   outline = g->outline;
