@@ -206,6 +206,9 @@ struct wglglue_contextdata {
   unsigned int width, height;
 
   HDC memorydc;
+  HWND pbufferwnd;
+  SbBool didcreatememorydc;
+  SbBool shouldreleasememorydc;
   HBITMAP bitmap, oldbitmap;
   HGLRC wglcontext;
 
@@ -328,6 +331,9 @@ wglglue_contextdata_init(unsigned int width, unsigned int height)
   context->width = width;
   context->height = height;
   context->memorydc = NULL;
+  context->pbufferwnd = NULL;
+  context->didcreatememorydc = FALSE;
+  context->shouldreleasememorydc = FALSE;
   context->bitmap = NULL;
   context->hpbuffer = NULL;
   context->oldbitmap = NULL;
@@ -386,11 +392,27 @@ wglglue_contextdata_cleanup(struct wglglue_contextdata * ctx)
       }
     }
   }
-  if (ctx->memorydc && ctx->noappglcontextavail) { 
-    const BOOL r = DeleteDC(ctx->memorydc);
+  if (ctx->memorydc) {
+    if (ctx->didcreatememorydc) { 
+      const BOOL r = DeleteDC(ctx->memorydc);
+      if (!r) {
+        cc_win32_print_error("wglglue_contextdata_cleanup",
+                             "DeleteDC", GetLastError());
+      }
+    }
+    else if (ctx->shouldreleasememorydc && ctx->pbufferwnd) {
+      int ok = ReleaseDC(ctx->pbufferwnd, ctx->memorydc);
+      if (!ok) {
+        cc_win32_print_error("wglglue_contextdata_cleanup",
+                             "ReleaseDC", GetLastError());
+      }
+    }
+  }
+  if (ctx->pbufferwnd) {
+    BOOL r = DestroyWindow(ctx->pbufferwnd);
     if (!r) {
       cc_win32_print_error("wglglue_contextdata_cleanup",
-                           "DeleteDC", GetLastError());
+                           "DestroyWindow", GetLastError());
     }
   }
 
@@ -474,11 +496,15 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
   }
 
   context->memorydc = CreateCompatibleDC(NULL);
+  context->didcreatememorydc = TRUE;
+  context->shouldreleasememorydc = FALSE;
   if (context->memorydc == NULL) {
-    DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_software",
-                              "CreateCompatibleDC(NULL) failed with "
-                              "error code %d.", dwError);
+    if (warnonerrors || coin_glglue_debug()) {
+      DWORD dwError = GetLastError();
+      cc_debugerror_postwarning("wglglue_context_create_software",
+                                "CreateCompatibleDC(NULL) failed with "
+                                "error code %d.", dwError);
+    }
     return FALSE;
   }
   
@@ -506,10 +532,12 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
     context->bitmap = CreateDIBSection(context->memorydc, &bmi, DIB_RGB_COLORS,
                                       &pvbits, NULL, 0);
     if (context->bitmap == NULL) {
-      DWORD dwError = GetLastError();
-      cc_debugerror_postwarning("wglglue_context_create_software",
-                                "CreateDIBSection() failed with error "
-                                "code %d.", dwError);
+      if (warnonerrors || coin_glglue_debug()) {
+        DWORD dwError = GetLastError();
+        cc_debugerror_postwarning("wglglue_context_create_software",
+                                  "CreateDIBSection() failed with error "
+                                  "code %d.", dwError);
+      }
       return FALSE;
     }
   }
@@ -517,17 +545,19 @@ wglglue_context_create_software(struct wglglue_contextdata * ctx, SbBool warnone
   context->oldbitmap = (HBITMAP)
     SelectObject(context->memorydc, context->bitmap);
   if (context->oldbitmap == NULL) {
-    DWORD dwError = GetLastError();
-    cc_debugerror_postwarning("wglglue_context_create_software",
-                              "SelectObject() failed with error code %d.",
-                              dwError);
+    if (warnonerrors || coin_glglue_debug()) {
+      DWORD dwError = GetLastError();
+      cc_debugerror_postwarning("wglglue_context_create_software",
+                                "SelectObject() failed with error code %d.",
+                                dwError);
+    }
     return FALSE;
   }
   
   if (!(wglglue_context_create_context(context, PFD_DRAW_TO_BITMAP))) {
     return FALSE;
   }
-
+  
   if (coin_glglue_debug()) {
     cc_debugerror_postwarning("wglglue_context_create_softwarae",
                               "success creating software buffer");
@@ -545,17 +575,19 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
     cc_debugerror_postwarning("wglglue_context_create_pbuffere",
                               "creating pbuffer");
   }
-
+  
   if ((context->memorydc = wglGetCurrentDC())) { 
+    context->shouldreleasememorydc = FALSE;
+    context->didcreatememorydc = FALSE;
     context->wglcontext = wglGetCurrentContext();
   }
   else { context->noappglcontextavail = TRUE; }
 
   if (context->noappglcontextavail) {
-    /* check if a window class for a device context has already been 
-       registered and if not register one */
-    if (!FindWindow("coin_gl_wgl", "coin_gl_wgl")) {
+    static int didregister = 0;
+    if (!didregister) {
       WNDCLASS wc;
+      didregister = 1;
       
       wc.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
       wc.lpfnWndProc    = DefWindowProc;
@@ -581,6 +613,10 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
       HWND hWnd;
       HINSTANCE hInstance = GetModuleHandle(NULL);
       
+      /* FIXME: what happens to hWnd? Should we delete it? pederb,
+         2003-12-15
+       */
+
       if (!(hWnd = CreateWindow(
                      "coin_gl_wgl",   /* class name */
                      "coin_gl_wgl",   /* window title */
@@ -600,7 +636,10 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
         return FALSE;
       }
       
+      context->pbufferwnd = hWnd;
       context->memorydc = GetDC(hWnd);
+      context->shouldreleasememorydc = TRUE;
+      context->didcreatememorydc = FALSE;
       if (context->memorydc == NULL) {
         DWORD dwError = GetLastError();
         cc_debugerror_postwarning("wglglue_context_create_pbuffer",
@@ -652,9 +691,11 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
 
     /* choose pixel format */
     if (!wglglue_wglChoosePixelFormat(context->memorydc, attrs, fAttribList, 1,
-                                         &pixformat, &numFormats)) {
-      cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                "wglChoosePixelFormat() failed");
+                                      &pixformat, &numFormats)) {
+      if (warnonerrors || coin_glglue_debug()) {
+        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                  "wglChoosePixelFormat() failed");
+      }
       return FALSE;
     }
         
@@ -665,27 +706,68 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
                                                  context->height, 
                                                  pbufferflags);
     if (!context->hpbuffer) {
-      cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                "wglCreatePbuffer(..., %d, %d, %d, ...) failed",
-                                pixformat, context->width, context->height);
+      if (warnonerrors || coin_glglue_debug()) {
+        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                  "wglCreatePbuffer(..., %d, %d, %d, ...) failed",
+                                  pixformat, context->width, context->height);
+      }
       return FALSE;
     }
 
-    /* delete device context in case we created it ourselves */
-    if (context->noappglcontextavail) { DeleteDC(context->memorydc); }
+    /* delete/release device context and window in case we created it
+       ourselves */
+    if (context->memorydc) {
+      if (context->didcreatememorydc) { 
+        BOOL r = DeleteDC(context->memorydc); 
+        if (!r) {
+          cc_win32_print_error("wglglue_context_create_pbuffer",
+                               "DeleteDC", GetLastError());
+        }
+      }
+      else if (context->shouldreleasememorydc && context->pbufferwnd) {
+        BOOL r = ReleaseDC(context->pbufferwnd, context->memorydc);
+        if (!r) {
+          cc_win32_print_error("wglglue_context_create_pbuffer",
+                               "ReleaseDC", GetLastError());
+        }        
+      }
+    }
+    if (context->pbufferwnd) {
+      BOOL r = DestroyWindow(context->pbufferwnd);
+      if (!r) {
+        cc_win32_print_error("wglglue_context_create_pbuffer",
+                             "DestroyWindow", GetLastError());
+      } 
+      context->pbufferwnd = NULL;
+    }
+
     context->memorydc = wglglue_wglGetPbufferDC(context->hpbuffer);
+    context->didcreatememorydc = FALSE;
+    context->shouldreleasememorydc = FALSE;
     if (!context->memorydc) {
-      cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                "Couldn't create pbuffer's device context.");
+      if (warnonerrors || coin_glglue_debug()) {
+        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                  "Couldn't create pbuffer's device context.");
+      }
       return FALSE;
     }
 
     /* delete wgl context in case we created it ourselves */
-    if (context->noappglcontextavail) { (void)wglDeleteContext(context->wglcontext); }
+    if (context->noappglcontextavail) { 
+      BOOL r = wglDeleteContext(context->wglcontext); 
+      if (!r) {
+        if (warnonerrors || coin_glglue_debug()) {
+          cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                    "Couldn't create pbuffer's device context.");
+        }
+      }
+    }
     context->wglcontext = wglCreateContext(context->memorydc);
     if (!context->wglcontext) {
-      cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                "Couldn't create rendering context for the pbuffer.");
+      if (warnonerrors || coin_glglue_debug()) {
+        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                  "Couldn't create rendering context for the pbuffer.");
+      }
       return FALSE;
     }
     
@@ -693,16 +775,20 @@ wglglue_context_create_pbuffer(struct wglglue_contextdata * ctx, SbBool warnoner
     if (!wglglue_wglQueryPbuffer(context->hpbuffer, 
                                     WGL_PBUFFER_WIDTH_ARB, 
                                     &(context->width))) {
-      cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                "Couldn't query the pbuffer width.");
+      if (warnonerrors || coin_glglue_debug()) {
+        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                  "Couldn't query the pbuffer width.");
+      }
       return FALSE;
     }
 
     if (!wglglue_wglQueryPbuffer(context->hpbuffer,
                                     WGL_PBUFFER_HEIGHT_ARB,
                                     &(context->height))) {
-      cc_debugerror_postwarning("wglglue_context_create_pbuffer",
-                                "Couldn't query the pbuffer height.");
+      if (warnonerrors || coin_glglue_debug()) {
+        cc_debugerror_postwarning("wglglue_context_create_pbuffer",
+                                  "Couldn't query the pbuffer height.");
+      }
       return FALSE;
     }
   }
