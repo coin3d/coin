@@ -48,6 +48,7 @@
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/SoDB.h>
+#include <Inventor/engines/SoEngineOutput.h>
 
 static SoType soproto_type;
 
@@ -633,6 +634,55 @@ SoProto::readDefinition(SoInput * in)
   return ok && in->read(c) && c == '}';
 }
 
+static SoNode *
+soproto_find_node(SoNode * root, SbName name, SoSearchAction & sa)
+{
+  sa.setName(name);
+  sa.setInterest(SoSearchAction::FIRST);
+  sa.setSearchingAll(TRUE);
+
+  sa.apply(root);
+
+  SoNode * ret = NULL;
+
+  if (sa.getPath()) {
+    ret = ((SoFullPath*)sa.getPath())->getTail();
+  }
+  sa.reset();
+  return ret;
+}
+
+//
+// helper function to find field. First test the actual fieldname,
+// then set set_<fieldname>, then <fieldname>_changed.
+//
+static SoField *
+soproto_find_field(SoNode * node, const SbName & fieldname)
+{
+  SoField * field = node->getField(fieldname);
+
+  if (!field) {
+    if (strncmp(fieldname.getString(), "set_", 4) == 0) {
+      SbName newname = fieldname.getString() + 4;
+      field = node->getField(newname);
+    }
+    else {
+      SbString str = fieldname.getString();
+      int len = str.getLength();
+      const char CHANGED[] = "_changed";
+      const int changedsize = sizeof(CHANGED) - 1;
+
+      if (len > changedsize && strcmp(str.getString()+len-changedsize,
+                                      CHANGED) == 0) {
+        SbString substr = str.getSubString(0, len-(changedsize+1));
+        SbName newname = substr.getString();
+        field = node->getField(newname);
+      }
+    }
+  }
+  return field;
+}
+
 //
 // Create a root node for a PROTO instance
 //
@@ -652,6 +702,56 @@ SoProto::createInstanceRoot(SoProtoInstance * inst) const
   cpy = root->copy(FALSE);
   cpy->ref();
   this->connectISRefs(inst, root, cpy);
+
+  int n = PRIVATE(this)->routelist.getLength() / 4;
+  
+  SoSearchAction sa;
+
+  for (int i = 0; i < n; i++) {
+    SbName fromnodename = PRIVATE(this)->routelist[i*4];
+    SbName fromfieldname = PRIVATE(this)->routelist[i*4+1];
+    SbName tonodename = PRIVATE(this)->routelist[i*4+2];
+    SbName tofieldname = PRIVATE(this)->routelist[i*4+3];
+
+    SoNode * fromnode = soproto_find_node(cpy, fromnodename, sa);
+    SoNode * tonode = soproto_find_node(cpy, tonodename, sa);
+
+    if (fromnode && tonode) {
+      SoField * from = soproto_find_field(fromnode, fromfieldname);
+      SoField * to = soproto_find_field(tonode, tofieldname);
+      SoEngineOutput * output = NULL;
+      if (from == NULL && fromnode->isOfType(SoNodeEngine::getClassTypeId())) {
+        output = ((SoNodeEngine*) fromnode)->getOutput(fromfieldname);
+      }
+      
+      if (to && (from || output)) {
+        SbBool notnotify = FALSE;
+        SbBool append = FALSE;
+        if (output || from->getFieldType() == SoField::EVENTOUT_FIELD) {
+          notnotify = TRUE;
+        }
+        if (to->getFieldType() == SoField::EVENTIN_FIELD) append = TRUE;
+        
+        // Check that there exists a field converter, if one is needed.
+        SoType totype = to->getTypeId();
+        SoType fromtype = from ? from->getTypeId() : output->getConnectionType();
+        if (totype != fromtype) {
+          SoType convtype = SoDB::getConverter(fromtype, totype);
+          if (convtype == SoType::badType()) {
+            continue;
+          }
+        }
+        
+        SbBool ok;
+        if (from) ok = to->connectFrom(from, notnotify, append);
+        else ok = to->connectFrom(output, notnotify, append);
+        // Both known possible failure points are caught above.
+        assert(ok && "unexpected connection error");
+        
+      }
+    }
+  }
+
   cpy->unrefNoDelete();
   return cpy;
 }
