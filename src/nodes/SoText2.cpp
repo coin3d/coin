@@ -483,33 +483,32 @@ SoText2::GLRender(SoGLRenderAction * action)
     glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
-    int xpos,ypos,width;
+    int strwidth;
 
-    xpos = (int)nilpoint[0];      // to get rid of compiler warning..
-    ypos = (int)nilpoint[1];
+    float xpos = nilpoint[0];      // to get rid of compiler warning..
+    float ypos = nilpoint[1];
     for (int i = 0; i < this->string.getNum(); i++) {
       const unsigned char *s = 
         (const unsigned char *) this->string[i].getString();
-      width = strlen((const char *)s);
-      //xpos = nilpoint[0];
+      strwidth = strlen((const char *)s);
       switch (this->justification.getValue()) {
       case SoText2::LEFT:
-        xpos = (int)nilpoint[0];
+        xpos = nilpoint[0];
         break;
       case SoText2::RIGHT:
-        xpos = (int)nilpoint[0] - (width*8);
+        xpos = nilpoint[0] - (strwidth * 8.0f);
         break;
       case SoText2::CENTER:
-        xpos = (int)nilpoint[0] - (width*8)/2;
+        xpos = nilpoint[0] - (strwidth * 8.0f)/2.0f;
         break;
       }
-      for (int i2 = 0; i2 < width; i2++) {
+      for (int i2 = 0; i2 < strwidth; i2++) {
         if (s[i2] >= 32) { // just in case?
-          glRasterPos3f(float(xpos), float(ypos), -nilpoint[2]);
+          glRasterPos3f(xpos, ypos, -nilpoint[2]);
           glBitmap(8,12,0,0,0,0,(const GLubyte *)coin_default2dfont 
                    + 12 * coin_default2dfont_isolatin1_mapping[s[i2]]);
         }
-        xpos += 8;
+        xpos += 8.0f;
       }
       // - instead of + because of OpenGL's "inverted" y coordinate...
       ypos -= ( 12.0f * this->spacing.getValue() );
