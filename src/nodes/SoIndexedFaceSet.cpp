@@ -368,6 +368,8 @@ SoIndexedFaceSet::GLRender(SoGLRenderAction * action)
   if (this->vertexProperty.getValue()) {
     state->pop();
   }
+  // send approx number of triangles for autocache handling
+  sogl_autocache_update(state, this->coordIndex.getNum() / 4);
 }
 
   // this macro actually makes the code below more readable  :-)
@@ -607,8 +609,6 @@ SoIndexedFaceSet::generatePrimitives(SoAction *action)
   if (this->vertexProperty.getValue()) {
     state->pop();
   }
-  // send approx number of triangles for autocache handling
-  sogl_autocache_update(state, this->coordIndex.getNum() / 4);
 }
 
 #undef DO_VERTEX
