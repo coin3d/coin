@@ -1,33 +1,41 @@
 //$ TEMPLATE SbPlane-Doxygen(-type-, -elements-, -letter-)
-//$ DEFINE -class-name- SbPlane
-
+//$ IF "-type-" =~ m/^(float|double|long double)$/
+//$ DEFINE -integertype- 0
+//$ ELSE
+//$ DEFINE -integertype- 1
+//$ ERROR "unimplemented data type"
+//$ ENDIF
+//$ IF -elements- < 3 || -elements- > 3
+//$ ERROR "unimplemented dimension"
+//$ ENDIF
+//$ DEFINE -cxx_class- SbPlane
+//$ DEFINE -cc_class- cc_plane-elements--letter-
+//$ DEFINE -cxx_element- SbVec-elements--letter-
 //$ INSERT TEMPLATE Copyright
-
-#include <Inventor/-class-name-.h>
 
 /* ********************************************************************** */
 
 /*!
-  \class -class-name- -class-name-.h Inventor/SbLinear.h
-  \brief The -class-name- class represents a plane in 3D space.
+  \class -cxx_class- -cxx_class-.h Inventor/SbLinear.h
+  \brief The -cxx_class- class represents a plane in 3D space.
   \ingroup base
 
-  -class-name- is used by many other classes in Coin.  It provides a way of
+  -cxx_class- is used by many other classes in Coin.  It provides a way of
   representing a plane, specified by a plane normal vector and a
   distance from the origin of the coordinate system.
 */
 
 /*!
-  \fn -class-name-::-class-name-(void)
+  \fn -cxx_class-::-cxx_class-(void)
 
-  An -class-name- instantiated with the default constructor will be
+  An -cxx_class- instantiated with the default constructor will be
   uninitialized.
 */
 
 /*!
-  \fn -class-name-::-class-name-(const SbVec3f& normal, const float D)
+  \fn -cxx_class-::-cxx_class-(const -cxx_element-& normal, const float D)
 
-  Construct an -class-name- instance with a normal pointing in the given
+  Construct an -cxx_class- instance with a normal pointing in the given
   direction and the given shortest distance from the origin of the
   coordinate system to a point in the plane.
 
@@ -35,47 +43,47 @@
 */
 
 /*!
-  \fn -class-name-::-class-name-(const SbVec3f& p0, const SbVec3f& p1, const SbVec3f& p2)
+  \fn -cxx_class-::-cxx_class-(const -cxx_element-& p0, const -cxx_element-& p1, const -cxx_element-& p2)
 
-  Construct an -class-name- with three points laying in the plane.  Make
+  Construct an -cxx_class- with three points laying in the plane.  Make
   sure \a p0, \a p1 and \a p2 are actually three distinct points when
   using this constructor.
 */
 
 /*!
-  \fn -class-name-::-class-name-(const SbVec3f& normal, const SbVec3f& point)
+  \fn -cxx_class-::-cxx_class-(const -cxx_element-& normal, const -cxx_element-& point)
 
-  Construct an -class-name- from a normal and a point laying in the plane.
+  Construct an -cxx_class- from a normal and a point laying in the plane.
 
   \a normal must not be a null vector.
 */
 
 /*!
-  \fn -class-name- & -class-name-::setValue(const SbVec3f & normal, const float D);
+  \fn -cxx_class- & -cxx_class-::setValue(const -cxx_element- & normal, const float D);
 
   \since 2002-04-08
 */
 
 /*!
-  \fn -class-name- & -class-name-::setValue(const SbVec3f & p0, const SbVec3f & p1, const SbVec3f & p2);
+  \fn -cxx_class- & -cxx_class-::setValue(const -cxx_element- & p0, const -cxx_element- & p1, const -cxx_element- & p2);
 
   \since 2002-04-08
 */
 
 /*!
-  \fn -class-name- & -class-name-::setValue(const SbVec3f & normal, const SbVec3f & point);
+  \fn -cxx_class- & -cxx_class-::setValue(const -cxx_element- & normal, const -cxx_element- & point);
 
   \since 2002-04-08
 */
 
 /*!
-  \fn void -class-name-::offset(const float d)
+  \fn void -cxx_class-::offset(const float d)
 
   Add the given offset \a d to the plane distance from the origin.
 */
 
 /*!
-  \fn SbBool -class-name-::intersect(const SbLine& l, SbVec3f& intersection) const
+  \fn SbBool -cxx_class-::intersect(const SbLine& l, -cxx_element-& intersection) const
 
   Find the point on given line \a l intersecting the plane and return
   it in \a intersection. If the line is parallel to the plane,
@@ -86,7 +94,7 @@
 */
 
 /*!
-  \fn void -class-name-::transform(const SbMatrix& matrix)
+  \fn void -cxx_class-::transform(const SbMatrix& matrix)
 
   Transform the plane by \a matrix.
 
@@ -94,14 +102,14 @@
 */
 
 /*!
-  \fn SbBool -class-name-::isInHalfSpace(const SbVec3f& point) const
+  \fn SbBool -cxx_class-::isInHalfSpace(const -cxx_element-& point) const
 
   Check if the given point lies in the halfspace of the plane which the
   plane normal vector is pointing.
 */
 
 /*!
-  \fn float -class-name-::getDistance(const SbVec3f &point) const
+  \fn float -cxx_class-::getDistance(const -cxx_element- &point) const
 
   Return the distance from \a point to plane. Positive distance means
   the point is in the plane's half space.
@@ -111,7 +119,7 @@
 */
 
 /*!
-  \fn const SbVec3f & -class-name-::getNormal(void) const
+  \fn const -cxx_element- & -cxx_class-::getNormal(void) const
 
   Return the plane's normal vector, which indicates which direction the plane
   is oriented.
@@ -120,7 +128,7 @@
 */
 
 /*!
-  \fn float -class-name-::getDistanceFromOrigin(void) const
+  \fn float -cxx_class-::getDistanceFromOrigin(void) const
 
   Return distance from origin of coordinate system to the point in the plane
   which is closest to the origin.
@@ -129,7 +137,7 @@
 */
 
 /*!
-  \fn SbBool -class-name-::intersect(const -class-name- & pl, SbLine & line)
+  \fn SbBool -cxx_class-::intersect(const -cxx_class- & pl, SbLine & line)
 
   Intersect this plane with \a pl, and return the resulting line in \a
   line. Returns \c TRUE if an intersection line can be found, and \c
@@ -142,23 +150,23 @@
 */
 
 /*!
-  \fn int operator ==(const -class-name-& p1, const -class-name-& p2)
+  \fn int operator ==(const -cxx_class-& p1, const -cxx_class-& p2)
 
-  \relates -class-name-
+  \relates -cxx_class-
 
   Check the two given planes for equality.
 */
 
 /*!
-  \fn int operator !=(const -class-name-& p1, const -class-name-& p2)
+  \fn int operator !=(const -cxx_class-& p1, const -cxx_class-& p2)
 
-  \relates -class-name-
+  \relates -cxx_class-
 
   Check the two given planes for unequality.
 */
 
 /*!
-  \fn void -class-name-::print(FILE * fp) const
+  \fn void -cxx_class-::print(FILE * fp) const
 
   Dump the state of this object to the \a file stream. Only works in
   debug version of library, method does nothing in an optimized build.

@@ -1,28 +1,38 @@
 //$ TEMPLATE SbMatrix-Doxygen(-type-, -elements-, -letter-)
-
+//$ IF "-type-" =~ m/^(float|double|long double)$/
+//$ DEFINE -integertype- 0
+//$ ELSE
+//$ DEFINE -integertype- 1
+//$ ERROR "unimplemented data type"
+//$ ENDIF
+//$ IF -elements- < 4 || -elements- > 4
+//$ ERROR "unimplemented dimension"
+//$ ENDIF
+//$ DEFINE -cxx_class- SbMatrix
+//$ DEFINE -cc_class- cc_mat-elements--letter-
 //$ INSERT TEMPLATE Copyright
 
-/* ********************************************************************** */
-
 /*!
-  \class -class-name- SbLinear.h Inventor/SbLinear.h
-  \brief The -class-name- class is a 4x4 dimensional representation of a matrix.
+  \class -cxx_class- SbLinear.h Inventor/SbLinear.h
+  \brief The -cxx_class- class is a 4x4 dimensional representation of a matrix.
   \ingroup base
 
-  -class-name- is used by many other classes in Coin.  It provides storage
+  -cxx_class- is used by many other classes in Coin.  It provides storage
   for a 4x4 matrix in row-major mode. Many common geometrical
   operations which involves matrix calculations are implemented as
   methods on this class.
 */
 
+/* ********************************************************************** */
+
 /*!
-  \fn -class-name-::-class-name-(void)
+  \fn -cxx_class-::-cxx_class-(void)
 
   The default constructor does nothing. The matrix will be uninitialized.
 */
 
 /*!
-  \fn -class-name-::-class-name-(const float a11, const float a12, const float a13, const float a14, const float a21, const float a22, const float a23, const float a24, const float a31, const float a32, const float a33, const float a34, const float a41, const float a42, const float a43, const float a44)
+  \fn -cxx_class-::-cxx_class-(const -type- a11, const -type- a12, const -type- a13, const -type- a14, const -type- a21, const -type- a22, const -type- a23, const -type- a24, const -type- a31, const -type- a32, const -type- a33, const -type- a34, const -type- a41, const -type- a42, const -type- a43, const -type- a44)
 
   Constructs a matrix instance with the given initial elements.
 */
@@ -31,29 +41,29 @@
   Constructs a matrix instance with the initial elements from the
   \a matrix argument.
 */
--class-name-::-class-name-(const SbMat & matrix)
+-cxx_class-::-cxx_class-(const SbMat & matrix)
 
 /*!
   This constructor is courtesy of the Microsoft Visual C++ compiler.
 */
--class-name-::-class-name-(const SbMat * matrix)
+-cxx_class-::-cxx_class-(const SbMat * matrix)
 
 /*!
   Default destructor does nothing.
  */
--class-name-::~-class-name-(void)
+-cxx_class-::~-cxx_class-(void)
 
 /*!
-  \fn const SbMat & -class-name-::getValue(void) const
+  \fn const SbMat & -cxx_class-::getValue(void) const
 
-  Returns a pointer to the 2 dimensional float array with the matrix
+  Returns a pointer to the 2 dimensional -type- array with the matrix
   elements.
 
   \sa setValue().
 */
 
 /*!
-  \fn void -class-name-::setValue(const SbMat & m)
+  \fn void -cxx_class-::setValue(const SbMat & m)
 
   Copies the elements from \a m into the matrix.
 
@@ -61,19 +71,19 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::operator=(const SbMat & m)
+  \fn -cxx_class- & -cxx_class-::operator=(const SbMat & m)
 
   Assignment operator. Copies the elements from \a m to the matrix.
 */
 
 /*!
-  \fn -class-name- & -class-name-::operator=(const -class-name- & m)
+  \fn -cxx_class- & -cxx_class-::operator=(const -cxx_class- & m)
 
   Assignment operator. Copies the elements from \a m to the matrix.
 */
 
 /*!
-  \fn void -class-name-::makeIdentity(void)
+  \fn void -cxx_class-::makeIdentity(void)
 
   Set the matrix to be the identity matrix.
 
@@ -81,7 +91,7 @@
 */
 
 /*!
-  \fn void -class-name-::setRotate(const SbRotation & q)
+  \fn void -cxx_class-::setRotate(const SbRotation & q)
 
   Set matrix to be a rotation matrix with the given rotation.
 
@@ -89,48 +99,48 @@
 */
 
 /*!
-  \fn void -class-name-::operator *= (const float v)
+  \fn void -cxx_class-::operator *= (const -type- v)
 
   Multiply all element values in the matrix with \a v.
 */
 
 /*!
-  \fn void -class-name-::operator /= (const float v)
+  \fn void -cxx_class-::operator /= (const -type- v)
 
   Divide all element values in the matrix on \a v.
 */
 
 /*!
-  \fn float -class-name-::det3(int r1, int r2, int r3, int c1, int c2, int c3) const
+  \fn -type- -cxx_class-::det3(int r1, int r2, int r3, int c1, int c2, int c3) const
 
   Returns the determinant of the 3x3 submatrix specified by the row and
   column indices.
 */
 
 /*!
-  \fn float -class-name-::det3(void) const
+  \fn -type- -cxx_class-::det3(void) const
 
   Returns the determinant of the upper left 3x3 submatrix.
 */
 
 /*!
-  \fn float -class-name-::det4(void) const
+  \fn -type- -cxx_class-::det4(void) const
 
   Returns the determinant of the matrix.
 */
 
 /*!
-  \fn -class-name- -class-name-::inverse(void) const
+  \fn -cxx_class- -cxx_class-::inverse(void) const
 
   Return a new matrix which is the inverse matrix of this.
 
   The user is responsible for checking that this is a valid operation
-  to execute, by first making sure that the result of -class-name-::det4()
+  to execute, by first making sure that the result of -cxx_class-::det4()
   is not equal to zero.
 */
 
 /*!
-  \fn SbBool -class-name-::equals(const -class-name- & m, float tolerance) const
+  \fn SbBool -cxx_class-::equals(const -cxx_class- & m, -type- tolerance) const
 
   Check if the \a m matrix is equal to this one, within the given tolerance
   value. The tolerance value is applied in the comparison on a component by
@@ -138,19 +148,19 @@
 */
 
 /*!
-  \fn -class-name-::operator float * (void)
+  \fn -cxx_class-::operator -type- * (void)
 
-  Return pointer to the matrix' 4x4 float array.
+  Return pointer to the matrix' 4x4 -type- array.
 */
 
 /*!
-  \fn -class-name-::operator SbMat & (void)
+  \fn -cxx_class-::operator SbMat & (void)
 
-  Return pointer to the matrix' 4x4 float array.
+  Return pointer to the matrix' 4x4 -type- array.
 */
 
 /*!
-  \fn float * -class-name-::operator [] (int i)
+  \fn -type- * -cxx_class-::operator [] (int i)
 
   Returns pointer to the 4 element array representing a matrix row.
   \a i should be within [0, 3].
@@ -159,7 +169,7 @@
 */
 
 /*!
-  \fn const float * -class-name-::operator [](int i) const
+  \fn const -type- * -cxx_class-::operator [](int i) const
 
   Returns pointer to the 4 element array representing a matrix row.
   \a i should be within [0, 3].
@@ -168,7 +178,7 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::operator = (const SbRotation & q)
+  \fn -cxx_class- & -cxx_class-::operator = (const SbRotation & q)
 
   Set matrix to be a rotation matrix with the given rotation.
 
@@ -176,7 +186,7 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::operator *= (const -class-name- & m)
+  \fn -cxx_class- & -cxx_class-::operator *= (const -cxx_class- & m)
 
   Right-multiply with the \a m matrix.
 
@@ -184,18 +194,18 @@
 */
 
 /*!
-  \fn -class-name- operator * (const -class-name- & m1, const -class-name- & m2)
+  \fn -cxx_class- operator * (const -cxx_class- & m1, const -cxx_class- & m2)
 
-  \relates -class-name-
+  \relates -cxx_class-
 
   Multiplies matrix \a m1 with matrix \a m2 and returns the resultant
   matrix.
 */
 
 /*!
-  \fn int operator == (const -class-name- & m1, const -class-name- & m2)
+  \fn int operator == (const -cxx_class- & m1, const -cxx_class- & m2)
 
-  \relates -class-name-
+  \relates -cxx_class-
 
   Compare matrices to see if they are equal. For two matrices to be equal,
   all their individual elements must be equal.
@@ -204,9 +214,9 @@
 */
 
 /*!
-  \fn int operator != (const -class-name- & m1, const -class-name- & m2)
+  \fn int operator != (const -cxx_class- & m1, const -cxx_class- & m2)
 
-  \relates -class-name-
+  \relates -cxx_class-
 
   Compare matrices to see if they are not equal. For two matrices to not be
   equal, it is enough that at least one of their elements are unequal.
@@ -215,7 +225,7 @@
 */
 
 /*!
-  \fn void -class-name-::getValue(SbMat & m) const
+  \fn void -cxx_class-::getValue(SbMat & m) const
 
   Return matrix components in the SbMat structure.
 
@@ -223,7 +233,7 @@
 */
 
 /*!
-  \fn -class-name- -class-name-::identity(void)
+  \fn -cxx_class- -cxx_class-::identity(void)
 
   Return the identity matrix.
 
@@ -232,7 +242,7 @@
 
 
 /*!
-  \fn void -class-name-::setScale(const float s)
+  \fn void -cxx_class-::setScale(const -type- s)
 
   Set matrix to be a pure scaling matrix. Scale factors are specified
   by \a s.
@@ -241,7 +251,7 @@
 */
 
 /*!
-  \fn void -class-name-::setScale(const SbVec3f & s)
+  \fn void -cxx_class-::setScale(const SbVec3f & s)
 
   Set matrix to be a pure scaling matrix. Scale factors in x, y and z
   is specified by the \a s vector.
@@ -250,7 +260,7 @@
 */
 
 /*!
-  \fn void -class-name-::setTranslate(const SbVec3f & t)
+  \fn void -cxx_class-::setTranslate(const SbVec3f & t)
 
   Make this matrix into a pure translation matrix (no scale or rotation
   components) with the given vector \t as the translation.
@@ -259,7 +269,7 @@
 */
 
 /*!
-  \fn void -class-name-::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & s)
+  \fn void -cxx_class-::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & s)
 
   Set translation, rotation and scaling all at once. The resulting
   matrix gets calculated like this:
@@ -275,7 +285,7 @@
 */
 
 /*!
-  \fn void -class-name-::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & s, const SbRotation & so)
+  \fn void -cxx_class-::setTransform(const SbVec3f & t, const SbRotation & r, const SbVec3f & s, const SbRotation & so)
   Set translation, rotation and scaling all at once with a specified
   scale orientation. The resulting matrix gets calculated like this:
 
@@ -290,7 +300,7 @@
 */
 
 /*!
-  \fn void -class-name-::setTransform(const SbVec3f & translation, const SbRotation & rotation, const SbVec3f & scaleFactor, const SbRotation & scaleOrientation, const SbVec3f & center)
+  \fn void -cxx_class-::setTransform(const SbVec3f & translation, const SbRotation & rotation, const SbVec3f & scaleFactor, const SbRotation & scaleOrientation, const SbVec3f & center)
 
   Set translation, rotation and scaling all at once with a specified
   scale orientation and center point. The resulting matrix gets
@@ -307,7 +317,7 @@
 */
 
 /*!
-  \fn void -class-name-::getTransform(SbVec3f & t, SbRotation & r, SbVec3f & s, SbRotation & so) const
+  \fn void -cxx_class-::getTransform(SbVec3f & t, SbRotation & r, SbVec3f & s, SbRotation & so) const
 
   Factor the matrix back into its translation, rotation, scale and
   scaleorientation components.
@@ -316,7 +326,7 @@
 */
 
 /*!
-  \fn void -class-name-::getTransform(SbVec3f & translation, SbRotation & rotation, SbVec3f & scaleFactor, SbRotation & scaleOrientation, const SbVec3f & center) const
+  \fn void -cxx_class-::getTransform(SbVec3f & translation, SbRotation & rotation, SbVec3f & scaleFactor, SbRotation & scaleOrientation, const SbVec3f & center) const
 
   Factor the matrix back into its \a translation, \a rotation,
   \a scaleFactor and \a scaleorientation components. Will eliminate
@@ -326,7 +336,7 @@
 */
 
 /*!
-  \fn SbBool -class-name-::factor(-class-name- & r, SbVec3f & s, -class-name- & u, SbVec3f & t, -class-name- & proj)
+  \fn SbBool -cxx_class-::factor(-cxx_class- & r, SbVec3f & s, -cxx_class- & u, SbVec3f & t, -cxx_class- & proj)
 
   This function is not implemented in Coin.
 
@@ -334,7 +344,7 @@
 */
 
 /*!
-  \fn SbBool -class-name-::LUDecomposition(int index[4], float & d)
+  \fn SbBool -cxx_class-::LUDecomposition(int index[4], -type- & d)
 
   This function produces a permuted LU decomposition of the matrix.  It
   uses the common single-row-pivoting strategy.
@@ -355,11 +365,11 @@
   with those produced by Open Inventor for the same matrices, because the
   pivoting strategy in OI was never fully understood.
 
-  \sa -class-name-::LUBackSubstitution
+  \sa -cxx_class-::LUBackSubstitution
 */
 
 /*!
-  \fn void -class-name-::LUBackSubstitution(int index[4], float b[4]) const
+  \fn void -cxx_class-::LUBackSubstitution(int index[4], -type- b[4]) const
 
   This function does a solve on the "Ax = b" system, given that the matrix
   is LU-decomposed in advance.  First, a forward substitution is done on the
@@ -367,7 +377,7 @@
   upper triangular system (Ux = y).
 
   The index[] argument is the one returned from
-  -class-name-::LUDecomposition(), so see that function for an explanation.
+  -cxx_class-::LUDecomposition(), so see that function for an explanation.
 
   The b[] argument must contain the b vector in "Ax = b" when calling the
   function.  After the function has solved the system, the b[] vector contains
@@ -378,13 +388,13 @@
 */
 
 /*!
-  \fn -class-name- -class-name-::transpose(void) const
+  \fn -cxx_class- -cxx_class-::transpose(void) const
 
   Returns the transpose of this matrix.
 */
 
 /*!
-  \fn -class-name- & -class-name-::multRight(const -class-name- & m)
+  \fn -cxx_class- & -cxx_class-::multRight(const -cxx_class- & m)
 
   Let this matrix be right-multiplied by \a m. Returns reference to
   self.
@@ -393,7 +403,7 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::multLeft(const -class-name- & m)
+  \fn -cxx_class- & -cxx_class-::multLeft(const -cxx_class- & m)
 
   Let this matrix be left-multiplied by \a m. Returns reference to
   self.
@@ -402,7 +412,7 @@
 */
 
 /*!
-  \fn void -class-name-::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
+  \fn void -cxx_class-::multMatrixVec(const SbVec3f & src, SbVec3f & dst) const
 
   Multiply \a src vector with this matrix and return the result in \a dst.
   Multiplication is done with the vector on the right side of the
@@ -412,7 +422,7 @@
 */
 
 /*!
-  \fn void -class-name-::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
+  \fn void -cxx_class-::multVecMatrix(const SbVec3f & src, SbVec3f & dst) const
 
   Multiply \a src vector with this matrix and return the result in \a dst.
   Multiplication is done with the vector on the left side of the
@@ -424,13 +434,13 @@
 */
 
 /*!
-  \fn void -class-name-::multVecMatrix(const SbVec4f & src, SbVec4f & dst) const
+  \fn void -cxx_class-::multVecMatrix(const SbVec4f & src, SbVec4f & dst) const
 
   \overload
 */
 
 /*!
-  \fn void -class-name-::multDirMatrix(const SbVec3f & src, SbVec3f & dst) const
+  \fn void -cxx_class-::multDirMatrix(const SbVec3f & src, SbVec3f & dst) const
 
   Multiplies \a src by the matrix. \a src is assumed to be a direction
   vector, and the translation components of the matrix are therefore
@@ -443,7 +453,7 @@
 */
 
 /*!
-  \fn void -class-name-::multLineMatrix(const SbLine & src, SbLine & dst) const
+  \fn void -cxx_class-::multLineMatrix(const SbLine & src, SbLine & dst) const
 
   Multiplies line point with the full matrix and multiplies the
   line direction with the matrix without the translation components.
@@ -453,7 +463,7 @@
 
 
 /*!
-  \fn void -class-name-::print(FILE * fp) const
+  \fn void -cxx_class-::print(FILE * fp) const
 
   Write out the matrix contents to the given file.
 */

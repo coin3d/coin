@@ -1,44 +1,51 @@
-//$ TEMPLATE cc_rotation_source(-type-, -elements-, -letter-)
-//$ DEFINE -class-name- SbRotation
-
+//$ TEMPLATE SbRotation-Doxygen(-type-, -elements-, -letter-)
+//$ IF "-type-" =~ m/^(float|double|long double)$/
+//$ DEFINE -integertype- 0
+//$ ELSE
+//$ DEFINE -integertype- 1
+//$ ERROR "unimplemented data type"
+//$ ENDIF
+//$ IF -elements- < 4 || -elements- > 4
+//$ ERROR "unimplemented dimension"
+//$ ENDIF
+//$ DEFINE -cxx_class- SbRotation
+//$ DEFINE -cc_class- cc_rot-elements--letter-
 //$ INSERT TEMPLATE Copyright
 
-#include <Inventor/C/base/rot4f.h>
-
-/* ********************************************************************** */
-
 /*!
-  \class -class-name- SbLinear.h Inventor/SbLinear.h
-  \brief The -class-name- class represents a rotation in 3D space.
+  \class -cxx_class- SbLinear.h Inventor/SbLinear.h
+  \brief The -cxx_class- class represents a rotation in 3D space.
   \ingroup base
 
-  -class-name- is used extensively throughout the Coin library.
+  -cxx_class- is used extensively throughout the Coin library.
 
-  An -class-name- is stored internally as a quaternion for speed and
+  An -cxx_class- is stored internally as a quaternion for speed and
   storage reasons, but inquiries can be done to get and set axis and
   angle values for convenience.
 
   \sa SbMatrix
 */
 
+/* ********************************************************************** */
+
 /*!
-  \fn -class-name-::-class-name-(void)
+  \fn -cxx_class-::-cxx_class-(void)
 
   The default constructor just initializes a valid rotation.  The
   actual value is unspecified, and you should not depend on it.
 */
 
 /*!
-  \fn -class-name-::-class-name-(const SbVec3f & axis, const float radians)
+  \fn -cxx_class-::-cxx_class-(const SbVec3f & axis, const -type- radians)
 
-  Construct a new -class-name- object initialized with the given
+  Construct a new -cxx_class- object initialized with the given
   axis-of-rotation and rotation angle.
 */
 
 /*!
-  \fn -class-name-::-class-name-(const float q[4])
+  \fn -cxx_class-::-cxx_class-(const -type- q[4])
 
-  Construct a new -class-name- object initialized with the given quaternion
+  Construct a new -cxx_class- object initialized with the given quaternion
   components.
 
   The array must be ordered as follows:
@@ -48,28 +55,28 @@
 */
 
 /*!
-  \fn -class-name-::-class-name-(const float q0, const float q1, const float q2, const float q3)
+  \fn -cxx_class-::-cxx_class-(const -type- q0, const -type- q1, const -type- q2, const -type- q3)
 
-  Construct a new -class-name- object initialized with the given quaternion
+  Construct a new -cxx_class- object initialized with the given quaternion
   components.
 */
 
 /*!
-  \fn -class-name-::-class-name-(const SbMatrix & m)
+  \fn -cxx_class-::-cxx_class-(const SbMatrix & m)
 
-  Construct a new -class-name- object initialized with the given rotation
+  Construct a new -cxx_class- object initialized with the given rotation
   matrix.
 */
 
 /*!
-  \fn -class-name-::-class-name-(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
+  \fn -cxx_class-::-cxx_class-(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
 
   Construct a rotation which is the minimum rotation necessary to make vector
   \a rotateFrom point in the direction of vector \a rotateTo.
 */
 
 /*!
-  \fn const float * -class-name-::getValue(void) const
+  \fn const -type- * -cxx_class-::getValue(void) const
 
   Return pointer to an array with the rotation expressed as four
   quaternion values.
@@ -78,7 +85,7 @@
 */
 
 /*!
-  \fn void -class-name-::getValue(float & q0, float & q1, float & q2, float & q3) const
+  \fn void -cxx_class-::getValue(-type- & q0, -type- & q1, -type- & q2, -type- & q3) const
 
   Return the four quaternion components representing the rotation.
 
@@ -86,7 +93,7 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::setValue(const float q0, const float q1, const float q2, const float q3)
+  \fn -cxx_class- & -cxx_class-::setValue(const -type- q0, const -type- q1, const -type- q2, const -type- q3)
 
   Set the rotation.
 
@@ -94,7 +101,7 @@
 */
 
 /*!
-  \fn void -class-name-::getValue(SbVec3f & axis, float & radians) const
+  \fn void -cxx_class-::getValue(SbVec3f & axis, -type- & radians) const
 
   Return the rotation in the form of an axis-of-rotation and a rotation
   angle.
@@ -104,7 +111,7 @@
 
 
 /*!
-  \fn void -class-name-::getValue(SbMatrix & matrix) const
+  \fn void -cxx_class-::getValue(SbMatrix & matrix) const
 
   Return this rotation in the form of a matrix.
 
@@ -112,7 +119,7 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::invert(void)
+  \fn -cxx_class- & -cxx_class-::invert(void)
 
   Invert the rotation. Returns reference to self.
 
@@ -121,7 +128,7 @@
 
 
 /*!
-  \fn -class-name- -class-name-::inverse(void) const
+  \fn -cxx_class- -cxx_class-::inverse(void) const
 
   Non-destructively inverses the rotation and returns the result.
 
@@ -130,7 +137,7 @@
 
 
 /*!
-  \fn -class-name- & -class-name-::setValue(const float q[4])
+  \fn -cxx_class- & -cxx_class-::setValue(const -type- q[4])
 
   Reset the rotation by the four quaternions in the array.
 
@@ -138,7 +145,7 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::setValue(const SbMatrix & m)
+  \fn -cxx_class- & -cxx_class-::setValue(const SbMatrix & m)
 
   Set the rotation from the components of the given matrix. Returns
   reference to self.
@@ -147,7 +154,7 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::setValue(const SbVec3f & axis, const float radians)
+  \fn -cxx_class- & -cxx_class-::setValue(const SbVec3f & axis, const -type- radians)
 
   Reset rotation with the given axis-of-rotation and rotation angle.
   Returns reference to self.
@@ -158,7 +165,7 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
+  \fn -cxx_class- & -cxx_class-::setValue(const SbVec3f & rotateFrom, const SbVec3f & rotateTo)
 
   Construct a rotation which is the minimum rotation necessary to make vector
   \a rotateFrom point in the direction of vector \a rotateTo.
@@ -169,7 +176,7 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::operator *= (const -class-name- & q)
+  \fn -cxx_class- & -cxx_class-::operator *= (const -cxx_class- & q)
 
   Multiplies the quaternions.
 
@@ -178,15 +185,15 @@
 */
 
 /*!
-  \fn -class-name- & -class-name-::operator*=(const float s)
+  \fn -cxx_class- & -cxx_class-::operator*=(const -type- s)
 
   Multiplies components of quaternion with scalar value \a s.
   Returns reference to self.
 */
 
 /*!
-  \fn int operator == (const -class-name- & q1, const -class-name- & q2)
-  \relates -class-name-
+  \fn int operator == (const -cxx_class- & q1, const -cxx_class- & q2)
+  \relates -cxx_class-
 
   Check if the two rotations are equal.
 
@@ -194,9 +201,9 @@
 */
 
 /*!
-  \fn int operator != (const -class-name- & q1, const -class-name- & q2)
+  \fn int operator != (const -cxx_class- & q1, const -cxx_class- & q2)
 
-  \relates -class-name-
+  \relates -cxx_class-
 
   Check if the two rotations are unequal.
 
@@ -204,16 +211,16 @@
 */
 
 /*!
-  \fn SbBool -class-name-::equals(const -class-name- & r, const float tolerance) const
+  \fn SbBool -cxx_class-::equals(const -cxx_class- & r, const -type- tolerance) const
 
   Check the internal quaternion representation vectors for equality
   within the given tolerance.
 */
 
 /*!
-  \fn -class-name- operator * (const -class-name- & q1, const -class-name- & q2)
+  \fn -cxx_class- operator * (const -cxx_class- & q1, const -cxx_class- & q2)
 
-  \relates -class-name-
+  \relates -cxx_class-
 
   Multiplies the two rotations and returns the result.
 
@@ -222,26 +229,26 @@
 */
 
 /*!
-  \fn void -class-name-::multVec(const SbVec3f & src, SbVec3f & dst) const
+  \fn void -cxx_class-::multVec(const SbVec3f & src, SbVec3f & dst) const
 
   Rotate the \a src vector and put the result in \a dst.
 */
 
 /*!
-  \fn void -class-name-::scaleAngle(const float scaleFactor)
+  \fn void -cxx_class-::scaleAngle(const -type- scaleFactor)
 
   Scale the angle of rotation by \a scaleFactor.
 */
 
 /*!
-  \fn -class-name- -class-name-::slerp(const -class-name- & rot0, const -class-name- & rot1, float t)
+  \fn -cxx_class- -cxx_class-::slerp(const -cxx_class- & rot0, const -cxx_class- & rot1, -type- t)
 
-  \relates -class-name-
+  \relates -cxx_class-
 
   Interpolates along the shortest path between the two rotation
   positions (from \a rot0 to \a rot1).
 
-  Returns the -class-name- which will rotate \a rot0 the given part \a t
+  Returns the -cxx_class- which will rotate \a rot0 the given part \a t
   of the spherical distance towards \a rot1, where \a t=0 will yield \a rot0
   and \a t=1 will yield \a rot1.
 
@@ -249,13 +256,13 @@
 */
 
 /*!
-  \fn -class-name- -class-name-::identity(void)
+  \fn -cxx_class- -cxx_class-::identity(void)
 
   Returns an identity rotation.
 */
 
 /*!
-  \fn void -class-name-::print(FILE * fp) const
+  \fn void -cxx_class-::print(FILE * fp) const
 
   Dump the state of this object to the \a file stream. Only works in
   debug version of library, method does nothing in an optimized compile.

@@ -1,6 +1,4 @@
 //$ TEMPLATE SbBox-Doxygen(-type-, -elements-, -letter-)
-//$ DEFINE -class-name- SbBox-elements--letter-
-//$ DEFINE -cc-class- cc_box-elements--letter-
 //$ IF "-type-" =~ m/^(float|double|long double)$/
 //$ DEFINE -integertype- 0
 //$ ELSE
@@ -9,41 +7,43 @@
 //$ IF -elements- < 2 || -elements- > 3
 //$ ERROR "unimplemented dimension"
 //$ ENDIF
-
+//$ DEFINE -cxx_class- SbBox-elements--letter-
+//$ DEFINE -cc_class- cc_box-elements--letter-
+//$ DEFINE -element- SbVec-elements--letter-
 //$ INSERT TEMPLATE Copyright
 
-#include <Inventor/-class-name-.h>
+#include <Inventor/-cxx_class-.h>
 
 /* ********************************************************************** */
 /* DOXYGEN DOC for C++ WRAPPER */
 
 /*!
-  \class -class-name- -class-name-.h Inventor/-class-name-.h
-  \brief The -class-name- class is an abstraction for an axis aligned 3 dimensional box.
+  \class -cxx_class- -cxx_class-.h Inventor/-cxx_class-.h
+  \brief The -cxx_class- class is an abstraction for an axis aligned 3 dimensional box.
   \ingroup base
 
   This box abstraction class is used by other entities in the Coin
   library for data exchange and storage. It provides a representation
   of the defining corners of a box in 3D space, with the sides aligned
   with the 3 principal axes.
-//$ IF "-class-name- !~ m/(SbBox2f|SbBox2s|SbBox3f)/
+//$ IF "-cxx_class- !~ m/(SbBox2f|SbBox2s|SbBox3f)/
 
   This class is a Coin extension.
 //$ ENDIF
 
-  \sa SbBox2f, SbBox2s, SbXfBox3f
+  \sa SbBox2f, SbBox2s, SbXfBox3f, -cc_class-
 */
 
 
 /*!
-  \fn -class-name-::-class-name-(void)
+  \fn -cxx_class-::-cxx_class-(void)
 
   The default constructor makes an empty box.
 */
 
 /*!
 //$ CASE -elements-:
-3:  \fn -class-name-::-class-name-(const -type- minx, const -type- miny, const -type- minz, const -type- maxx, const -type- maxy, const -type- maxz)
+3:  \fn -cxx_class-::-cxx_class-(const -type- minx, const -type- miny, const -type- minz, const -type- maxx, const -type- maxy, const -type- maxz)
 //$ ESAC
 
   Constructs a box with the given corners.
@@ -54,7 +54,7 @@
 */
 
 /*!
-  \fn -class-name-::-class-name-(const -element- & min, const -element- & max)
+  \fn -cxx_class-::-cxx_class-(const -element- & min, const -element- & max)
 
   Constructs a box with the given corners.
 
@@ -63,13 +63,13 @@
 */
 
 /*!
-  \fn -class-name-::~-class-name-(void)
+  \fn -cxx_class-::~-cxx_class-(void)
 
   Destructor does nothing.
 */
 
 /*!
-  \fn const -element- & -class-name-::getMin(void) const
+  \fn const -element- & -cxx_class-::getMin(void) const
 
   Returns the minimum point. This should usually be the lower left corner
   point of the box.
@@ -78,7 +78,7 @@
 */
 
 /*!
-  \fn const -element- & -class-name-::getMax(void) const
+  \fn const -element- & -cxx_class-::getMax(void) const
 
   Returns the maximum point. This should usually be the upper right corner
   point of the box.
@@ -87,33 +87,33 @@
 */
 
 /*!
-  \fn -element- & -class-name-::getMin(void)
+  \fn -element- & -cxx_class-::getMin(void)
 
   Returns a modifiable reference the minimum point.
 */
 
 
 /*!
-  \fn -element- & -class-name-::getMax(void)
+  \fn -element- & -cxx_class-::getMax(void)
 
   Returns a modifiable reference the maximum point.
 */
 
 /*!
-  \fn -element- -class-name-::getCenter(void) const
+  \fn -element- -cxx_class-::getCenter(void) const
 
   Returns the center point of the box.
 */
 
 /*!
-  \fn void -class-name-::extendBy(const -element- & point)
+  \fn void -cxx_class-::extendBy(const -element- & point)
 
   Extend the boundaries of the box by the given point, i.e. make the
   point fit inside the box if it isn't already so.
 */
 
 /*!
-  \fn void -class-name-::extendBy(const -class-name- & box)
+  \fn void -cxx_class-::extendBy(const -cxx_class- & box)
 
   Extend the boundaries of the box by the given \a box parameter. This
   is equal to calling extendBy() twice with the corner points.
@@ -121,20 +121,20 @@
 
 
 /*!
-  \fn SbBool -class-name-::intersect(const -element- & point) const
+  \fn SbBool -cxx_class-::intersect(const -element- & point) const
 
   Check if the given point lies within the boundaries of this box.
 */
 
 /*!
-  \fn SbBool -class-name-::intersect(const -element- & box) const
+  \fn SbBool -cxx_class-::intersect(const -element- & box) const
 
   Check if the given \a box lies wholly or partly within the boundaries
   of this box.
 */
 
 /*!
-  \fn void -class-name-::setBounds(const -type- minx, const -type- miny, const -type- minz, const -type- maxx, const -type- maxy, const -type- maxz)
+  \fn void -cxx_class-::setBounds(const -type- minx, const -type- miny, const -type- minz, const -type- maxx, const -type- maxy, const -type- maxz)
 
   Reset the boundaries of the box.
 
@@ -146,7 +146,7 @@
 */
 
 /*!
-  \fn void -class-name-::setBounds(const -element- & min, const -element- & max)
+  \fn void -cxx_class-::setBounds(const -element- & min, const -element- & max)
 
   Reset the boundaries of the box with the given corners.
 
@@ -157,7 +157,7 @@
  */
 
 /*!
-  \fn void -class-name-::getBounds(-type- & minx, -type- & miny, -type- & minz, -type- & maxx, -type- & maxy, -type- & maxz) const
+  \fn void -cxx_class-::getBounds(-type- & minx, -type- & miny, -type- & minz, -type- & maxx, -type- & maxy, -type- & maxz) const
 
   Returns the box boundaries.
 
@@ -166,7 +166,7 @@
 
 
 /*!
-  \fn void -class-name-::getBounds(-element- & min, -element- & max) const
+  \fn void -cxx_class-::getBounds(-element- & min, -element- & max) const
 
   Returns the box corner points.
 
@@ -174,7 +174,7 @@
 */
 
 /*!
-  void -class-name-::getOrigin(-type- & x0, -type- & y0, -type- & z0) const
+  void -cxx_class-::getOrigin(-type- & x0, -type- & y0, -type- & z0) const
 
   Returns the coordinates of the box origin (i.e. the lower left corner).
 
@@ -182,13 +182,13 @@
 */
 
 /*!
-  \fn void -class-name-::getSize(-type- & dx, -type- & dy, -type- & dz) const
+  \fn void -cxx_class-::getSize(-type- & dx, -type- & dy, -type- & dz) const
 
   Returns width, height and depth of box.
 */
 
 /*!
-  \fn void -class-name-::makeEmpty(void)
+  \fn void -cxx_class-::makeEmpty(void)
 
   Marks this as an empty box.
 
@@ -197,7 +197,7 @@
 
 
 /*!
-  \fn SbBool -class-name-::isEmpty(void) const
+  \fn SbBool -cxx_class-::isEmpty(void) const
 
   Check if this has been marked as an empty box.
 
@@ -205,21 +205,21 @@
 */
 
 /*!
-  \fn SbBool -class-name-::hasVolume(void) const
+  \fn SbBool -cxx_class-::hasVolume(void) const
 
   Check if the box has been correctly specified and by that virtue
   has volume.
 */
 
 /*!
-  \fn -type- -class-name-::getVolume(void) const
+  \fn -type- -cxx_class-::getVolume(void) const
 
   Check if the box has "positive" volume, i.e. the lower left corner is
   actually lower and more left than the maximum point.
 */
 
 /*!
-  \fn void -class-name-::getSpan(const -element- & dir, -type- & dmin, -type- & dmax) const
+  \fn void -cxx_class-::getSpan(const -element- & dir, -type- & dmin, -type- & dmax) const
 
   Find the span of the box in the given direction (i.e. how much room in
   the given direction the box needs). The distance is returned as the minimum
@@ -229,7 +229,7 @@
 */
 
 /*!
-  \fn void -class-name-::transform(const SbMatrix & matrix)
+  \fn void -cxx_class-::transform(const SbMatrix & matrix)
 
   Transform the box by the matrix, and change its boundaries to contain
   the transformed box.
@@ -238,7 +238,7 @@
 */
 
 /*!
-  \fn void -class-name-::print(FILE * fp) const
+  \fn void -cxx_class-::print(FILE * fp) const
 
   Dump the state of this object to the \a file stream. Only works in
   debug version of library, method does nothing in an optimized compile.
@@ -246,7 +246,7 @@
 
 
 /*!
-  \fn int operator == (const -class-name- & b1, const -class-name- & b2)
+  \fn int operator == (const -cxx_class- & b1, const -cxx_class- & b2)
 
   \relates SbBox3f
 
@@ -254,7 +254,7 @@
 */
 
 /*!
-  \fn int operator != (const -class-name- & b1, const -class-name- & b2)
+  \fn int operator != (const -cxx_class- & b1, const -cxx_class- & b2)
 
   \relates SbBox3f
 
@@ -262,7 +262,7 @@
 */
 
 /*!
-  \fn SbBool -class-name-::outside(const SbMatrix & mvp, int & cullbits) const
+  \fn SbBool -cxx_class-::outside(const SbMatrix & mvp, int & cullbits) const
 
   Check if the box is outside the view volume defined by the \a mvp
   matrix. Sets \a cullbits according to which planes we're inside or
@@ -276,7 +276,7 @@
 */
 
 /*!
-  \fn -element- -class-name-::getClosestPoint(const -element- & point) const
+  \fn -element- -cxx_class-::getClosestPoint(const -element- & point) const
 
   Return the point on the box closest to the given \a point.
 */

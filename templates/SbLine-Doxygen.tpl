@@ -1,34 +1,44 @@
 //$ TEMPLATE SbLine-Doxygen(-type-, -elements-, -letter-)
-
+//$ IF "-type-" =~ m/^(float|double|long double)$/
+//$ DEFINE -integertype- 0
+//$ ELSE
+//$ DEFINE -integertype- 1
+//$ ENDIF
+//$ IF -elements- < 3 || -elements- > 3
+//$ ERROR "unimplemented dimension"
+//$ ENDIF
+//$ DEFINE -cxx_class- SbLine
+//$ DEFINE -cc_class- cc_line-elements--letter-
+//$ DEFINE -cxx_element- SbVec-elements--letter-
 //$ INSERT TEMPLATE Copyright
 
-#include <Inventor/-class-name-.h>
+#include <Inventor/-cxx_class-.h>
 
 /* ********************************************************************** */
 
 /*!
-  \class -class-name- SbLinear.h Inventor/SbLinear.h
-  \brief The -class-name- class represents a line in 3D space.
+  \class -cxx_class- SbLinear.h Inventor/SbLinear.h
+  \brief The -cxx_class- class represents a line in 3D space.
   \ingroup base
 
-  -class-name- is used by many other classes in Coin.  It provides a way of
+  -cxx_class- is used by many other classes in Coin.  It provides a way of
   specifying a directed line through a specified point (origin) and a
   direction in 3D space.  Note that the line is infinite in both directions
   from its definition point as far as the getClosestPoint() functions are
   concerned.
 
-  \sa SbVec3f
+  \sa -cxx_element-
 */
 
 /*!
-  \fn -class-name-::-class-name-(void)
+  \fn -cxx_class-::-cxx_class-(void)
 
   The empty constructor does nothing. The line will be uninitialized until
   the first assignment or setValue() call.
 */
 
 /*!
-  \fn -class-name-::-class-name-(const SbVec3f& origin, const SbVec3f& point)
+  \fn -cxx_class-::-cxx_class-(const -cxx_element-& origin, const -cxx_element-& point)
 
   Constructor with \a origin specifying the line origin point, and \a point
   specifying another point on the line that is used to determine the line's
@@ -43,7 +53,7 @@
 */
 
 /*!
-  \fn void -class-name-::setValue(const SbVec3f& origin, const SbVec3f& point)
+  \fn void -cxx_class-::setValue(const -cxx_element-& origin, const -cxx_element-& point)
 
   Set new position and direction of the line by specifying line origin
   and another point on the line that is used to determine the line's
@@ -59,7 +69,7 @@
 */
 
 /*!
-  \fn SbBool -class-name-::getClosestPoints(const -class-name- & line2, SbVec3f& ptOnThis, SbVec3f& ptOnLine2) const
+  \fn SbBool -cxx_class-::getClosestPoints(const -cxx_class- & line2, -cxx_element-& ptOnThis, -cxx_element-& ptOnLine2) const
 
   Returns the two closest points on the lines.  If the lines are
   parallel, all points are equally close and we return \c FALSE. If
@@ -70,7 +80,7 @@
 */
 
 /*!
-  \fn SbVec3f -class-name-::getClosestPoint(const SbVec3f& point) const
+  \fn -cxx_element- -cxx_class-::getClosestPoint(const -cxx_element-& point) const
 
   Returns the point on the line which is closest to \a point.
 
@@ -78,7 +88,7 @@
 */
 
 /*!
-  \fn const SbVec3f& -class-name-::getPosition(void) const
+  \fn const -cxx_element- & -cxx_class-::getPosition(void) const
 
   Return a vector representing the origin point on the line.
 
@@ -86,14 +96,14 @@
 */
 
 /*!
-  \fn const SbVec3f & -class-name-::getDirection(void) const
+  \fn const -cxx_element- & -cxx_class-::getDirection(void) const
 
   Return a vector representing the direction of the line. The direction
   vector will always be normalized.
 */
 
 /*!
-  \fn void -class-name-::print(FILE * fp) const
+  \fn void -cxx_class-::print(FILE * fp) const
 
   Dump the state of this object to the \a file stream. Only works in
   debug version of library, method does nothing in an optimized compile.
