@@ -432,6 +432,7 @@ STUFF TO FIX IN COIN
     offer, so the code will be maintained instead of bit-rotting, etc
     etc.
 
+
 018 Check out and build simage as part of the Coin build process.
     2002-08-01  Morten Eriksen  <mortene@sim.no>
 
@@ -451,3 +452,14 @@ STUFF TO FIX IN COIN
      configure option that makes it possible to _exclude_ simage from
      Coin build, as not everyone needs to be able to load textures
      from disk.
+
+
+019 Detect and link with libz if present and update SoInput accordingly.
+    2002-08-29  Lars J. Aas  <larsa@sim.no>
+    
+    This would make Coin able to read compressed iv/wrl files directly.
+
+    It should also be possible to write compressed iv/wrl files.  This
+    requires some thinking on what API extensions to make for this.
+
+
