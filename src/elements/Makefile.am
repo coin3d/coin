@@ -91,6 +91,7 @@ RegularSources = \
 	SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp \
 	SoTextureOverrideElement.cpp \
+	SoTextureScalePolicyElement.cpp \
 	SoTextureQualityElement.cpp \
 	SoTransparencyElement.cpp \
 	SoUnitsElement.cpp \
@@ -201,7 +202,8 @@ PublicHeaders = \
 	$(top_srcdir)/include/Inventor/elements/SoViewingMatrixElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoViewportRegionElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h
-PrivateHeaders =
+PrivateHeaders = \
+	$(top_srcdir)/include/Inventor/elements/SoTextureScalePolicyElement.h
 
 ##$ BEGIN TEMPLATE Make-Common(elements)
 

@@ -25,6 +25,7 @@
 
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoCullElement.h> // internal element
+#include <Inventor/elements/SoTextureScalePolicyElement.h> // future element
 #include <Inventor/misc/SoState.h>
 #include <stdlib.h>
 #include <Inventor/lists/SoTypeList.h>
@@ -194,6 +195,8 @@ SoElement::initElements(void)
   SoLazyElement::initClass();
   SoCullElement::initClass();
   SoGLCacheContextElement::initClass();
+
+  SoTextureScalePolicyElement::initClass();
 }
 
 /*!

@@ -208,6 +208,7 @@ RegularSources = \
 	SoTextureImageElement.cpp \
 	SoTextureMatrixElement.cpp \
 	SoTextureOverrideElement.cpp \
+	SoTextureScalePolicyElement.cpp \
 	SoTextureQualityElement.cpp \
 	SoTransparencyElement.cpp \
 	SoUnitsElement.cpp \
@@ -321,7 +322,9 @@ PublicHeaders = \
 	$(top_srcdir)/include/Inventor/elements/SoViewportRegionElement.h \
 	$(top_srcdir)/include/Inventor/elements/SoWindowElement.h
 
-PrivateHeaders = 
+PrivateHeaders = \
+	$(top_srcdir)/include/Inventor/elements/SoTextureScalePolicyElement.h
+
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
 
@@ -457,6 +460,7 @@ libelements_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureImageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureOverrideElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureScalePolicyElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureQualityElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTransparencyElement.lo SoUnitsElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoViewVolumeElement.lo \
@@ -548,6 +552,7 @@ libelements@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureImageElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureMatrixElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureOverrideElement.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureScalePolicyElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureQualityElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTransparencyElement.lo SoUnitsElement.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoViewVolumeElement.lo \
@@ -729,6 +734,8 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@ $(DEPDIR)/SoTextureOverrideElement.Po \
 @AMDEP@ $(DEPDIR)/SoTextureQualityElement.Plo \
 @AMDEP@ $(DEPDIR)/SoTextureQualityElement.Po \
+@AMDEP@ $(DEPDIR)/SoTextureScalePolicyElement.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureScalePolicyElement.Po \
 @AMDEP@ $(DEPDIR)/SoTransparencyElement.Plo \
 @AMDEP@ $(DEPDIR)/SoTransparencyElement.Po $(DEPDIR)/SoUnitsElement.Plo \
 @AMDEP@ $(DEPDIR)/SoUnitsElement.Po $(DEPDIR)/SoViewVolumeElement.Plo \
@@ -1035,6 +1042,8 @@ distclean-tags:
 @AMDEP@@_am_include@ $(DEPDIR)/SoTextureOverrideElement.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTextureQualityElement.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoTextureQualityElement.Po
+@AMDEP@@_am_include@ $(DEPDIR)/SoTextureScalePolicyElement.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTextureScalePolicyElement.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransparencyElement.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransparencyElement.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoUnitsElement.Plo

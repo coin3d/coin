@@ -93,6 +93,7 @@ RegularSources = \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp \
 	SoTextureCoordinatePlane.cpp \
+	SoTextureScalePolicy.cpp \
 	SoTransform.cpp \
 	SoTransformSeparator.cpp \
 	SoTransformation.cpp \
@@ -212,7 +213,9 @@ PublicHeaders = \
 	$(top_srcdir)/include/Inventor/nodes/SoWWWInline.h
 PrivateHeaders = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNodeP.h \
-	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h
+	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTextureScalePolicy.h
+	
 
 ##$ BEGIN TEMPLATE Make-Common(nodes)
 

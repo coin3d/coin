@@ -210,6 +210,7 @@ RegularSources = \
 	SoTextureCoordinateEnvironment.cpp \
 	SoTextureCoordinateFunction.cpp \
 	SoTextureCoordinatePlane.cpp \
+	SoTextureScalePolicy.cpp \
 	SoTransform.cpp \
 	SoTransformSeparator.cpp \
 	SoTransformation.cpp \
@@ -332,7 +333,8 @@ PublicHeaders = \
 
 PrivateHeaders = \
 	$(top_srcdir)/include/Inventor/nodes/SoSubNodeP.h \
-	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h
+	$(top_srcdir)/include/Inventor/nodes/SoUnknownNode.h \
+	$(top_srcdir)/include/Inventor/nodes/SoTextureScalePolicy.h
 
 @HACKING_COMPACT_BUILD_TRUE@BuildSources = $(LinkHackSources)
 @HACKING_COMPACT_BUILD_FALSE@BuildSources = $(RegularSources)
@@ -431,7 +433,8 @@ libnodes_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateDefault.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateEnvironment.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateFunction.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinatePlane.lo SoTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinatePlane.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureScalePolicy.lo SoTransform.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTransformSeparator.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTransformation.lo SoTranslation.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTriangleStripSet.lo SoUnits.lo \
@@ -486,7 +489,8 @@ libnodes@SUFFIX@LINKHACK_la_LIBADD =
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateDefault.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateEnvironment.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinateFunction.lo \
-@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinatePlane.lo SoTransform.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureCoordinatePlane.lo \
+@HACKING_COMPACT_BUILD_FALSE@ SoTextureScalePolicy.lo SoTransform.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTransformSeparator.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTransformation.lo SoTranslation.lo \
 @HACKING_COMPACT_BUILD_FALSE@ SoTriangleStripSet.lo SoUnits.lo \
@@ -610,7 +614,9 @@ depcomp = $(SHELL) $(top_srcdir)/cfg/depcomp
 @AMDEP@ $(DEPDIR)/SoTextureCoordinateFunction.Plo \
 @AMDEP@ $(DEPDIR)/SoTextureCoordinateFunction.Po \
 @AMDEP@ $(DEPDIR)/SoTextureCoordinatePlane.Plo \
-@AMDEP@ $(DEPDIR)/SoTextureCoordinatePlane.Po $(DEPDIR)/SoTransform.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureCoordinatePlane.Po \
+@AMDEP@ $(DEPDIR)/SoTextureScalePolicy.Plo \
+@AMDEP@ $(DEPDIR)/SoTextureScalePolicy.Po $(DEPDIR)/SoTransform.Plo \
 @AMDEP@ $(DEPDIR)/SoTransform.Po $(DEPDIR)/SoTransformSeparator.Plo \
 @AMDEP@ $(DEPDIR)/SoTransformSeparator.Po $(DEPDIR)/SoTransformation.Plo \
 @AMDEP@ $(DEPDIR)/SoTransformation.Po $(DEPDIR)/SoTranslation.Plo \
@@ -918,6 +924,8 @@ distclean-tags:
 @AMDEP@@_am_include@ $(DEPDIR)/SoTextureCoordinateFunction.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTextureCoordinatePlane.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoTextureCoordinatePlane.Po
+@AMDEP@@_am_include@ $(DEPDIR)/SoTextureScalePolicy.Plo
+@AMDEP@@_am_include@ $(DEPDIR)/SoTextureScalePolicy.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransform.Plo
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransform.Po
 @AMDEP@@_am_include@ $(DEPDIR)/SoTransformSeparator.Plo

@@ -46,6 +46,7 @@
 #include <Inventor/misc/SoChildList.h>
 #include <Inventor/nodes/SoNodes.h>
 #include <Inventor/nodes/SoUnknownNode.h>
+#include <Inventor/nodes/SoTextureScalePolicy.h> // possible part of public API in the future
 #include <Inventor/elements/SoCacheElement.h>
 #include <Inventor/SoInput.h>
 #include <assert.h>
@@ -265,7 +266,7 @@ SoNode::initClass(void)
                        SoNode::nextActionMethodIndex++);
 
   SoNode::initClasses();
-  
+
   // action methods must be initialized here, since both nodes and
   // actions must be initialized before we can use
   // SO_ACTION_ADD_METHOD
@@ -375,6 +376,9 @@ SoNode::initClasses(void)
   SoUnknownNode::initClass();
   SoVertexProperty::initClass();
   SoWWWInline::initClass();
+
+  // this node is not part of the public API yet.
+  SoTextureScalePolicy::initClass();
 }
 
 /*!
