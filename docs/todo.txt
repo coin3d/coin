@@ -1,13 +1,10 @@
 This file contains a list of semi-large tasks which needs to be done
-with simage, SoQt and Coin. The items are roughly categorized in
-these categories:
+with Coin. The items are roughly categorized in these categories:
 
 * Build: tasks for improving the build process of the components in
   the Coin project.
 
 * Rendering: making improvements to or adding rendering functionality.
-
-* SoQt: tasks related to the Qt interface components.
 
 * VRML: tasks related to implementing the support necessary for
   handling VRML1 and VRML2/VRML97 files and structures.
@@ -47,10 +44,6 @@ these categories:
 007. (Modules) [1999????] Complete the implementation of sensors. Its
      nearly there.
 
-009. (Build) [1999????] Make simage build under MSWindows.
-
-011. (Build) [1999????] Make SoQt build under MSWindows.
-
 013. (Build) [1999????] Make Coin build under MSWindows.
 
 016. (VRML) [1999????] Add VRML2 classes.
@@ -60,22 +53,6 @@ these categories:
 018. (VRML) [1999????] VRML1 import/export.
 
 019. (VRML) [1999????] VRML1 upgraders.
-
-020. (SoQt) [1999????] Implement editors (materialeditor,
-     lighteditor).
-
-021. (SoQt) [1999????] Implement missing viewers (flyviewer,
-     planeviewer, walkviewer, collisionviewer).
-
-022. (SoQt) [1999????] Add misc small components of minor importance
-     to complete the library.
-
-023. (SoQt) [1999????] Add misc stuff missing from the implemented
-     components and viewers (overplay planes under X11, large model
-     visualization stuff).
-
-024. (SoQt) [1999????] Port pederb's VRML viewer framework from
-     QvLib/RR to Coin/SoQt.
 
 025. (Modules) [1999????] Make code in the node classes be aware of
      the override flag. Necessary to get the mechanism in the viewers

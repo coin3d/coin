@@ -234,6 +234,7 @@ libnodesincdir = $(includedir)/Inventor/nodes
 libnodesLINKHACKincdir = $(includedir)/Inventor/nodes
 
 ALLINSTHEADERS = \
+	$(top_srcdir)/include/Inventor/nodes/SoSubNode.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnoText3Property.h \
 	$(top_srcdir)/include/Inventor/nodes/SoAnnotation.h \
