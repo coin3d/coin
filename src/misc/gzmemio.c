@@ -26,6 +26,10 @@
    jloup@gzip.org          madler@alumni.caltech.edu
 */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif /* HAVE_CONFIG_H */
+
 #ifdef HAVE_ZLIB
 
 #include "gzmemio.h"
@@ -87,7 +91,7 @@ static size_t gzm_fread(void * ptr, size_t size, size_t nmemb, gzm_file * file);
 static int gzm_ferror(gzm_file * file);
 
 /* ===========================================================================
-     Opens a gzip (.gz) mem buffer for reading or writing. 
+     Opens a gzip (.gz) mem buffer for reading or writing.
 */
 
 void * gzm_open(const uint8_t * buffer, uint32_t len)
@@ -205,7 +209,7 @@ get_byte(gzm_stream * s)
        s->stream.avail_in is zero for the first time, but may be non-zero
        for concatenated .gz files.
 */
-static void 
+static void
 check_header(gzm_stream * s)
 {
   int method; /* method byte */
@@ -278,7 +282,7 @@ static int destroy (gzm_stream * s)
       err = inflateEnd(&(s->stream));
     }
   }
-  
+
   if (s->z_err < 0) err = s->z_err;
 
   Z_TRYFREE(s->memfile);
@@ -732,7 +736,7 @@ int gzm_close(void * file)
 
 /* stdio layer */
 
-static int 
+static int
 gzm_fseek(gzm_file * file, long offset, int whence)
 {
   switch (whence) {
@@ -769,13 +773,13 @@ gzm_fseek(gzm_file * file, long offset, int whence)
   return 0;
 }
 
-static int 
+static int
 gzm_ftell(gzm_file * file)
 {
   return file->currpos;
 }
 
-static size_t 
+static size_t
 gzm_fread(void * ptr, size_t size, size_t nmemb, gzm_file * file)
 {
   uint32_t remain;
@@ -791,7 +795,7 @@ gzm_fread(void * ptr, size_t size, size_t nmemb, gzm_file * file)
   return remain;
 }
 
-static int 
+static int
 gzm_ferror(gzm_file * file)
 {
   return 0;
@@ -809,5 +813,3 @@ gzm_ferror(gzm_file * file)
 #undef Z_RESERVED
 
 #endif /* HAVE_ZLIB */
-
-
