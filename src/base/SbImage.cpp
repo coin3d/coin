@@ -43,10 +43,7 @@
 #include <../misc/simage_wrapper.h>
 #include <Inventor/SoInput.h> // for SoInput::searchForFile()
 #include <Inventor/lists/SbStringList.h>
-
-#if COIN_DEBUG
 #include <Inventor/errors/SoDebugError.h>
-#endif // COIN_DEBUG
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
