@@ -64,15 +64,10 @@ public:
 
 protected:
   virtual ~SoWWWAnchor();
-
   virtual void redrawHighlighted(SoAction * act, SbBool isNowHighlighting);
 
 private:
   SoWWWAnchorP * pimpl;
-  static SoWWWAnchorCB * fetchfunc;
-  static void * fetchdata;
-  static SoWWWAnchorCB * highlightfunc;
-  static void * highlightdata;
 };
 
 #endif // !COIN_SOWWWANCHOR_H

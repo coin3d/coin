@@ -76,12 +76,6 @@
   Enum describing how a node's position should be mapped to the URL.
 */
 
-// static members
-SoWWWAnchorCB * SoWWWAnchor::fetchfunc;
-void * SoWWWAnchor::fetchdata;
-SoWWWAnchorCB * SoWWWAnchor::highlightfunc;
-void * SoWWWAnchor::highlightdata;
-
 // *************************************************************************
 
 #ifndef DOXYGEN_SKIP_THIS
@@ -96,7 +90,18 @@ class SoWWWAnchorP {
   SoWWWAnchor * owner;
   SbString fullname;
   SbString name;
+
+  static SoWWWAnchorCB * fetchfunc;
+  static void * fetchdata;
+  static SoWWWAnchorCB * highlightfunc;
+  static void * highlightdata;
 };
+
+// static members
+SoWWWAnchorCB * SoWWWAnchorP::fetchfunc;
+void * SoWWWAnchorP::fetchdata;
+SoWWWAnchorCB * SoWWWAnchorP::highlightfunc;
+void * SoWWWAnchorP::highlightdata;
 
 #endif // DOXYGEN_SKIP_THIS
 
@@ -174,7 +179,7 @@ SoWWWAnchor::handleEvent(SoHandleEventAction * action)
 {
   const SoEvent * event = action->getEvent();
   if (event->isOfType(SoMouseButtonEvent::getClassTypeId()) &&
-      SoWWWAnchor::fetchfunc) {
+      SoWWWAnchorP::fetchfunc) {
     const SoMouseButtonEvent * mbevent = (SoMouseButtonEvent*)event;
     if (SoMouseButtonEvent::isButtonPressEvent(mbevent, 
                                                SoMouseButtonEvent::BUTTON1)) {
@@ -190,7 +195,7 @@ SoWWWAnchor::handleEvent(SoHandleEventAction * action)
         s.operator+=(temp);
       }
       
-      fetchfunc(s, fetchdata, this);
+      SoWWWAnchorP::fetchfunc(s, SoWWWAnchorP::fetchdata, this);
     }
   }
   inherited::handleEvent(action);
@@ -207,8 +212,8 @@ SoWWWAnchor::handleEvent(SoHandleEventAction * action)
 void
 SoWWWAnchor::setFetchURLCallBack(SoWWWAnchorCB * f, void * userData)
 {
-  SoWWWAnchor::fetchfunc = f;
-  SoWWWAnchor::fetchdata = userData;
+  SoWWWAnchorP::fetchfunc = f;
+  SoWWWAnchorP::fetchdata = userData;
 }
 
 /*!
@@ -223,8 +228,8 @@ SoWWWAnchor::setFetchURLCallBack(SoWWWAnchorCB * f, void * userData)
 void
 SoWWWAnchor::setHighlightURLCallBack(SoWWWAnchorCB * f, void * userData)
 {
-  SoWWWAnchor::highlightfunc = f;
-  SoWWWAnchor::highlightdata = userData;
+  SoWWWAnchorP::highlightfunc = f;
+  SoWWWAnchorP::highlightdata = userData;
 }
 
 /*!
@@ -240,8 +245,8 @@ SoWWWAnchor::redrawHighlighted(SoAction * act, SbBool isNowHighlighting)
   if (s.getLength() == 0) {
     this->name.get(s);
   }
-  if (SoWWWAnchor::highlightfunc) {
-    SoWWWAnchor::highlightfunc(s, SoWWWAnchor::highlightdata, this);  
+  if (SoWWWAnchorP::highlightfunc) {
+    SoWWWAnchorP::highlightfunc(s, SoWWWAnchorP::highlightdata, this);  
   }
 }
 
