@@ -21,7 +21,6 @@
 #define COIN_SOWWWINLINE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/fields/SoSFNode.h>

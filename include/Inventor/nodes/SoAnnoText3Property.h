@@ -21,7 +21,6 @@
 #define COIN_SOANNOTEXT3PROPERTY_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFBool.h>
 

@@ -21,7 +21,6 @@
 #define COIN_SOPROFILE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFEnum.h>
 

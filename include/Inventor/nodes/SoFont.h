@@ -21,7 +21,6 @@
 #define COIN_SOFONT_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFName.h>
 #include <Inventor/fields/SoSFFloat.h>
 

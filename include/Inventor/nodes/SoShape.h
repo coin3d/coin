@@ -21,7 +21,6 @@
 #define COIN_SOSHAPE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbVec2s.h>
 #include <Inventor/SbBox3f.h>

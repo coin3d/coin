@@ -21,7 +21,6 @@
 #define COIN_SOBASECOLOR_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFColor.h>
 
 

@@ -23,7 +23,6 @@
 #include <Inventor/elements/SoShapeHintsElement.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 
 

@@ -21,7 +21,6 @@
 #define COIN_SOCAMERA_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/SbViewVolume.h>
 #include <Inventor/fields/SoSFRotation.h>

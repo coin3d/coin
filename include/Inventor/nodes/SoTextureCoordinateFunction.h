@@ -21,7 +21,6 @@
 #define COIN_SOTEXTURECOORDINATEFUNCTION_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 
 
 class SoTextureCoordinateFunction : public SoNode {

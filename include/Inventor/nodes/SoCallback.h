@@ -21,7 +21,6 @@
 #define COIN_SOCALLBACK_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 
 
 typedef void SoCallbackCB(void * userdata, SoAction * action);

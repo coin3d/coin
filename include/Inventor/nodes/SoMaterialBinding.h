@@ -22,7 +22,6 @@
 
 #include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/fields/SoSFEnum.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 
 

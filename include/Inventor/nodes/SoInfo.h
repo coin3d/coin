@@ -22,7 +22,6 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFString.h>
-#include <Inventor/nodes/SoNode.h>
 
 
 class SoInfo : public SoNode {

@@ -22,7 +22,6 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec3f.h>
-#include <Inventor/nodes/SoNode.h>
 
 class SbVec3f;
 

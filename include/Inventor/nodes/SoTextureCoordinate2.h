@@ -22,7 +22,6 @@
 
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoMFVec2f.h>
-#include <Inventor/nodes/SoNode.h>
 
 
 class SoTextureCoordinate2 : public SoNode {

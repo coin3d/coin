@@ -21,7 +21,6 @@
 #define COIN_SOPOLYGONOFFSET_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFBitMask.h>
 #include <Inventor/fields/SoSFBool.h>

@@ -21,7 +21,6 @@
 #define COIN_SOTEXTURE2TRANSFORM_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFFloat.h>
 

@@ -21,7 +21,6 @@
 #define COIN_SOCLIPPLANE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFPlane.h>
 #include <Inventor/fields/SoSFBool.h>
 

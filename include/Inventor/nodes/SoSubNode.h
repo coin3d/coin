@@ -23,7 +23,7 @@
 #include <Inventor/SbName.h>
 #include <Inventor/SoType.h>
 #include <Inventor/fields/SoFieldData.h>
-
+#include <Inventor/nodes/SoNode.h>
 
 
 #define PRIVATE_NODE_TYPESYSTEM_HEADER( ) \

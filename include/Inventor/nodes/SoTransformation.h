@@ -21,7 +21,6 @@
 #define COIN_SOTRANSFORMATION_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 
 
 class SoTransformation : public SoNode {

@@ -21,7 +21,6 @@
 #define COIN_SOENVIRONMENT_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFVec3f.h>

@@ -21,7 +21,6 @@
 #define COIN_SOEVENTCALLBACK_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/lists/SbList.h>
 
 #ifndef COIN_INTERNAL
@@ -76,11 +75,11 @@ private:
     SoEventCallbackCB * func;
     SoType eventtype;
     void * userdata;
-    
+
     // AIX native compiler xlC needs equality and inequality operators
     // to compile templates where these operators are referenced (even
     // if they are actually never used).
-    
+
     SbBool operator==(const CallbackInfo & cbi) {
       return this->func == cbi.func && this->eventtype == cbi.eventtype && this->userdata == cbi.userdata;
     }

@@ -21,7 +21,6 @@
 #define COIN_SOVERTEXPROPERTY_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoMFUInt32.h>
 #include <Inventor/fields/SoMFVec3f.h>
 #include <Inventor/fields/SoMFVec2f.h>

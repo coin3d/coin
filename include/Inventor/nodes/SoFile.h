@@ -21,7 +21,6 @@
 #define COIN_SOFILE_H
 
 #include <Inventor/nodes/SoSubNode.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/fields/SoSFString.h>
 
 class SoFieldSensor;

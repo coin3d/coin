@@ -24,7 +24,6 @@
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFUShort.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 
 

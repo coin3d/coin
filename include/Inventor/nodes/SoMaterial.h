@@ -24,7 +24,6 @@
 #include <Inventor/fields/SoMFColor.h>
 #include <Inventor/fields/SoMFFloat.h>
 #include <Inventor/fields/SoSFFloat.h>
-#include <Inventor/nodes/SoNode.h>
 
 
 class SoMaterial : public SoNode {

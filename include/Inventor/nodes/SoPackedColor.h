@@ -21,7 +21,6 @@
 #define COIN_SOPACKEDCOLOR_H
 
 #include <Inventor/fields/SoMFUInt32.h>
-#include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 
 
@@ -45,7 +44,7 @@ public:
 protected:
   virtual ~SoPackedColor();
   virtual void notify(SoNotList *list);
- 
+
 private:
   SbBool transparent;
   SbBool checktransparent;
